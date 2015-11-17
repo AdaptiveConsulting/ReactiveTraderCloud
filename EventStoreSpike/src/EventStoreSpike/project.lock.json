@@ -1,0 +1,112 @@
+{
+  "locked": false,
+  "version": 2,
+  "targets": {
+    "DNX,Version=v4.5.1": {
+      "EventStore.Client/3.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/EventStore.ClientAPI.dll": {}
+        },
+        "runtime": {
+          "lib/net40/EventStore.ClientAPI.dll": {}
+        }
+      },
+      "EventStore.Client.Embedded/3.3.1": {
+        "type": "package",
+        "dependencies": {
+          "EventStore.Client": "[3.3.1]"
+        },
+        "compile": {
+          "lib/net40/EventStore.ClientAPI.Embedded.dll": {}
+        },
+        "runtime": {
+          "lib/net40/EventStore.ClientAPI.Embedded.dll": {}
+        }
+      }
+    },
+    "DNX,Version=v4.5.1/win7-x86": {
+      "EventStore.Client/3.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/EventStore.ClientAPI.dll": {}
+        },
+        "runtime": {
+          "lib/net40/EventStore.ClientAPI.dll": {}
+        }
+      },
+      "EventStore.Client.Embedded/3.3.1": {
+        "type": "package",
+        "dependencies": {
+          "EventStore.Client": "[3.3.1]"
+        },
+        "compile": {
+          "lib/net40/EventStore.ClientAPI.Embedded.dll": {}
+        },
+        "runtime": {
+          "lib/net40/EventStore.ClientAPI.Embedded.dll": {}
+        }
+      }
+    },
+    "DNX,Version=v4.5.1/win7-x64": {
+      "EventStore.Client/3.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/EventStore.ClientAPI.dll": {}
+        },
+        "runtime": {
+          "lib/net40/EventStore.ClientAPI.dll": {}
+        }
+      },
+      "EventStore.Client.Embedded/3.3.1": {
+        "type": "package",
+        "dependencies": {
+          "EventStore.Client": "[3.3.1]"
+        },
+        "compile": {
+          "lib/net40/EventStore.ClientAPI.Embedded.dll": {}
+        },
+        "runtime": {
+          "lib/net40/EventStore.ClientAPI.Embedded.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "EventStore.Client/3.3.1": {
+      "type": "package",
+      "sha512": "Xn6xmnaztmuqRJbstTAQG+FcbxN1Hz3hxM+KussKKS3tOeXrqEcW7LKm2SVDTXvRD8ZSmhndav4yY0+EqlUDAQ==",
+      "files": [
+        "EventStore.Client.3.3.1.nupkg",
+        "EventStore.Client.3.3.1.nupkg.sha512",
+        "EventStore.Client.nuspec",
+        "lib/net40/EventStore.ClientAPI.dll",
+        "lib/net40/EventStore.ClientAPI.xml"
+      ]
+    },
+    "EventStore.Client.Embedded/3.3.1": {
+      "type": "package",
+      "sha512": "izWDkSYnC/PkPa6g2uvX3qhkgaBYeUwLrFXCvRN5eF1FPciTr9rYPT06Q0+epbAH3RVDOYxsvD67tMPy9240Vw==",
+      "files": [
+        "build/EventStore.Client.Embedded.targets",
+        "EventStore.Client.Embedded.3.3.1.nupkg",
+        "EventStore.Client.Embedded.3.3.1.nupkg.sha512",
+        "EventStore.Client.Embedded.nuspec",
+        "lib/net40/EventStore.ClientAPI.Embedded.dll",
+        "lib/net40/EventStore.ClientAPI.Embedded.xml",
+        "native/x64/win/js1.dll",
+        "Prelude/1Prelude.js",
+        "Prelude/Modules.js",
+        "Prelude/ModulesExecuted.js",
+        "Prelude/Projections.js"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "EventStore.Client >= 3.3.1",
+      "EventStore.Client.Embedded >= 3.3.1"
+    ],
+    "DNX,Version=v4.5.1": []
+  }
+}
