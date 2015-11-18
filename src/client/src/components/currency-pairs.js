@@ -1,5 +1,6 @@
 import React from 'react';
 import CurrencyPair from './currency-pair';
+import _ from 'lodash';
 
 //todo: hook up socket stream
 const pairs = [{
@@ -7,6 +8,11 @@ const pairs = [{
   buy: 1.44,
   sell: 1.42,
   id: 1
+}, {
+  pair: 'CHFEUR',
+  buy: 0.96,
+  sell: 0.965,
+  id: 2
 }];
 
 /**
@@ -34,9 +40,12 @@ class CurrencyPairs extends React.Component {
 
     // simulate some ticks
     let tick = () => {
-      const p = Object.assign({}, pairs[0]),
-            rand = Math.random(),
-            rand2 = Math.random() * .01;
+      // actual pair is by reference. oh no!
+      const
+        item = _.random(0, pairs.length - 1),
+        p = pairs[item],
+        rand = Math.random(),
+        rand2 = Math.random() * .01;
 
       if (rand > .5){
         p.buy = Number((p.buy + rand2).toFixed(3));
@@ -47,11 +56,10 @@ class CurrencyPairs extends React.Component {
         p.sell = Number((p.sell - rand2).toFixed(3));
       }
 
-
       this.setState({
-        pairs: [p]
+        pairs
       });
-      setTimeout(tick, rand * 3000);
+      setTimeout(tick, rand * pairs.length * 750);
     };
 
     tick();
