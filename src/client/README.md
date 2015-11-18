@@ -54,6 +54,7 @@ Getting Started
 Just clone the repo and install the necessary node modules:
 
 ```sh
+$ cd src/client
 $ npm i                         # Install Node modules listed in ./package.json (may take a while the first time)
 $ npm start                     # Compile and launch
 ```
