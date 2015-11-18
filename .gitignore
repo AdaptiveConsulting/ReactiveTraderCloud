@@ -5,3 +5,4 @@ dist/
 *.suo
 project.lock.json
 *.xproj.user
+artifacts

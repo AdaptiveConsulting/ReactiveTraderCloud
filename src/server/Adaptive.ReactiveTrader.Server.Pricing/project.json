@@ -1,0 +1,31 @@
+{
+    "version": "1.0.0-*",
+    "description": "Pricing Pricing Service",
+    "authors": [ "james.watson" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+
+
+    "dependencies": {
+        "Adaptive.ReactiveTrader.Transport": "1.0.0-*"
+    },
+
+    "commands": {
+        "Adaptive.ReactiveTrader.Server.Pricing": "Adaptive.ReactiveTrader.Server.Pricing"
+    },
+
+    "frameworks": {
+        "dnx451": {
+            "frameworkAssemblies": {
+                "System.Runtime": "",
+                "System.Collections": ""
+            },
+
+            "dependencies": {
+
+            }
+        }
+       
+    }
+}
