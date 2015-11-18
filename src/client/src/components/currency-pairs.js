@@ -31,6 +31,30 @@ class CurrencyPairs extends React.Component {
     this.setState({
       pairs: pairs
     });
+
+    // simulate some ticks
+    let tick = () => {
+      const p = Object.assign({}, pairs[0]),
+            rand = Math.random(),
+            rand2 = Math.random() * .01;
+
+      if (rand > .5){
+        p.buy = Number((p.buy + rand2).toFixed(3));
+        p.sell = Number((p.sell + rand2).toFixed(3));
+      }
+      else {
+        p.buy = Number((p.buy - rand2).toFixed(3));
+        p.sell = Number((p.sell - rand2).toFixed(3));
+      }
+
+
+      this.setState({
+        pairs: [p]
+      });
+      setTimeout(tick, rand * 3000);
+    };
+
+    tick();
   }
 
   onExecute(payload){
@@ -41,6 +65,7 @@ class CurrencyPairs extends React.Component {
     return <div className='currency-pairs'>
       {this.state.pairs.map((cp) => {
         const spread = Math.abs(cp.buy - cp.sell);
+
         return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
                              pair={cp.pair}
                              size="100m"

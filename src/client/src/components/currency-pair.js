@@ -25,14 +25,30 @@ class CurrencyPair extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {
-      size: 0
+      size: 0,
+      historic: []
     }
   }
 
   componentWillMount(){
-    console.log(this._getSize(this.props.size), this.props.size);
+    const size = this._getSize(this.props.size);
+
     this.setState({
-      size: this._getSize(this.props.size)
+      size,
+      historic: [this.props.buy]
+    });
+  }
+
+  componentWillReceiveProps(props){
+    const historic = this.state.historic;
+
+    historic.unshift(props.buy);
+
+    // 30 max historic prices
+    historic.length > 30 && (historic.length = 30);
+
+    this.setState({
+      historic
     });
   }
 
@@ -92,20 +108,29 @@ class CurrencyPair extends React.Component {
   }
 
   render(){
+    const { historic, size } = this.state;
+    const { buy, sell, pair } = this.props;
+
+    // up, down, even
+    const direction = (historic.length > 1) ? historic[1] > buy ? 'up' : historic[1] < buy ? 'down' : '-' :'-';
+
     return <div className='currency-pair'>
       <div className='currency-pair-title'>
-        {this.props.pair}
+        {pair}
       </div>
       <div className='currency-pair-actions'>
         <div className="buy" onClick={() => this.execute('buy')}>
-          {this.props.buy}
+          buy {buy.toFixed(3)}
+        </div>
+        <div className="direction">
+          {direction}
         </div>
         <div className="sell" onClick={() => this.execute('sell')}>
-          {this.props.sell}
+          sell {sell.toFixed(3)}
         </div>
       </div>
-      <input type='text' ref='size' defaultValue={this.state.size} onChange={(e) => this.setSizeFromInput(e)} />
-      <button  >Buy</button>
+      size:
+      <input type='text' ref='size' defaultValue={size} onChange={(e) => this.setSizeFromInput(e)} />
     </div>
   }
 }
