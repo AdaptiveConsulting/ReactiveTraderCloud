@@ -1,0 +1,21 @@
+{
+    "dependencies": {
+        "EventStore.Client": "3.3.1",
+        "Rx-Core": "2.2.5",
+        "Rx-Interfaces": "2.2.5",
+        "Rx-Linq": "2.2.5",
+        "Rx-Main": "2.2.5",
+        "Rx-PlatformServices": "2.2.5"
+    },
+    "commands": {
+        "ConsoleApp": "ConsoleApp"
+    },
+    "frameworks": {
+        "dnx451": { },
+        "dnxcore50": {
+            "dependencies": {
+                "System.Console": "4.0.0-beta-beta8"
+            }
+        }
+    }
+}
