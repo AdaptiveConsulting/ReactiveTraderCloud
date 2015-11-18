@@ -13,7 +13,8 @@ namespace ReferenceDataWrite
 
         public async Task WriteInitialEventsAsync()
         {
-            await Task.WhenAll(_repository.Create("EURUSD", 4, 5, 1.3629m),
+            await Task.WhenAll(
+                _repository.Create("EURUSD", 4, 5, 1.3629m),
                 _repository.Create("USDJPY", 2, 3, 102.14m),
                 _repository.Create("GBPUSD", 4, 5, 1.6395m, "Server waits 1.5sec to execute then sends a trade done."),
                 _repository.Create("GBPJPY", 2, 3, 167.67m, "Always rejects upon execution."),
@@ -35,10 +36,11 @@ namespace ReferenceDataWrite
                 _repository.Create("EURNOK", 4, 4, 8.3613m),
                 _repository.Create("EURSEK", 4, 4, 8.8505m));
 
-            await Task.WhenAll(_repository.Activate("EURUSD"),
-                    _repository.Activate("USDJPY"),
-                    _repository.Activate("GBPUSD"),
-                    _repository.Activate("GBPJPY"));
+            await Task.WhenAll(
+                _repository.Activate("EURUSD"),
+                _repository.Activate("USDJPY"),
+                _repository.Activate("GBPUSD"),
+                _repository.Activate("GBPJPY"));
         }
     }
 }
