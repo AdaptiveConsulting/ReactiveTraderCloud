@@ -1,1 +1,3 @@
 *.suo
+project.lock.json
+*.xproj.user
