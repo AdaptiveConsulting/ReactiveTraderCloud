@@ -1,8 +1,8 @@
-﻿using EventStore.ClientAPI;
-using System;
+﻿using System;
 using System.Net;
+using EventStore.ClientAPI;
 
-namespace ReferenceDataWrite
+namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class Program
     {

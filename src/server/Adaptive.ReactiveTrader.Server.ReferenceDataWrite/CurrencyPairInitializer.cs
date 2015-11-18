@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace ReferenceDataWrite
+namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class CurrencyPairInitializer
     {
