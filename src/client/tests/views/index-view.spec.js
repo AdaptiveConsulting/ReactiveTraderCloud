@@ -1,7 +1,7 @@
 import React                  from 'react';
 import TestUtils              from 'react-addons-test-utils';
 import { bindActionCreators } from 'redux';
-import { HomeView }           from 'views/index-view';
+import { IndexView }           from 'views/index-view';
 
 function shallowRender (component) {
   const renderer = TestUtils.createRenderer();
@@ -11,11 +11,11 @@ function shallowRender (component) {
 }
 
 function renderWithProps (props = {}) {
-  return TestUtils.renderIntoDocument(<HomeView {...props} />);
+  return TestUtils.renderIntoDocument(<IndexView {...props} />);
 }
 
 function shallowRenderWithProps (props = {}) {
-  return shallowRender(<HomeView {...props} />);
+  return shallowRender(<IndexView {...props} />);
 }
 
 xdescribe('(View) Home', function () {
