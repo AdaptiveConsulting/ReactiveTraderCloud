@@ -1,17 +1,20 @@
 import React from 'react';
 
+
+const numberConvertRegex = /^([0-9.]+)?([MK]{1})?$/;
+
 /**
- * @class CurrencyPair
+ * @class CurrencyPairs
  * @extends {React.Component}
  */
 class CurrencyPair extends React.Component {
 
   static propTypes = {
     pair: React.PropTypes.string,
-    id: React.PropType.string,
-    buy: React.PropType.number,
-    sell: React.PropType.number,
-    onExecute: React.PropType.function
+    buy: React.PropTypes.number,
+    sell: React.PropTypes.number,
+    spread: React.PropTypes.number
+    // onExecute: React.PropTypes.function
   }
 
   /**
@@ -27,20 +30,21 @@ class CurrencyPair extends React.Component {
   }
 
   componentWillMount(){
+    console.log(this._getSize(this.props.size), this.props.size);
     this.setState({
-      size: this.props.size
+      size: this._getSize(this.props.size)
     });
   }
 
   /**
-   * Sets trade amount. Supports k/m modifiers for 1000s or millions.
-   * @param {DOMEvent=} e
+   * Returns the expanded price from k/m shorthand.
+   * @param {String|Number} size
+   * @returns {Number}
+   * @private
    */
-  setSize(e){
-    let size = (this.refs.size || e.target.value).trim(),
-      state;
-
-    const matches = size.match(/^([0-9.]+)?([MK]{1})?$/);
+  _getSize(size){
+    size = String(size).toUpperCase();
+    const matches = size.match(numberConvertRegex);
 
     if (!size.length || !matches || !matches.length){
       size = 0;
@@ -50,9 +54,22 @@ class CurrencyPair extends React.Component {
       matches[2] && (size = size * (matches[2] === 'K' ? 1000 : 1000000));
     }
 
-    this.setState({
-      size
-    });
+    return size;
+  }
+
+  /**
+   * Sets trade amount. Supports k/m modifiers for 1000s or millions.
+   * @param {DOMEvent=} e
+   */
+  setSizeFromInput(e){
+    let size = this._getSize((this.refs.size.value || e.target.value).trim());
+
+    if (!isNaN(size)){
+      this.setState({
+        size
+      });
+      this.refs.size.value = size;
+    }
   }
 
   /**
@@ -61,15 +78,16 @@ class CurrencyPair extends React.Component {
    */
   execute(direction){
     // attempt to capture price we request against.
-    if (this.props.onExecute){
+    if (this.props.onExecute && this.state.size !== 0){
       this.props.onExecute({
         direction: direction,
         size: this.state.size,
-        price: this.props[direction]
+        price: this.props[direction],
+        pair: this.props.pair
       });
     }
     else {
-      console.error('You need to pass onExecute({Payload}) to the currency pair');
+      console.error('To execute spot trade, you need onExecute({Payload}) callback and a valid size');
     }
   }
 
@@ -78,8 +96,16 @@ class CurrencyPair extends React.Component {
       <div className='currency-pair-title'>
         {this.props.pair}
       </div>
-      <input type='text' ref='size' defaultValue='100m' onChange={(e) => this.setSize(e)} />
-      <button onClick={() => this.execute('buy')} >Buy</button>
+      <div className='currency-pair-actions'>
+        <div className="buy" onClick={() => this.execute('buy')}>
+          {this.props.buy}
+        </div>
+        <div className="sell" onClick={() => this.execute('sell')}>
+          {this.props.sell}
+        </div>
+      </div>
+      <input type='text' ref='size' defaultValue={this.state.size} onChange={(e) => this.setSizeFromInput(e)} />
+      <button  >Buy</button>
     </div>
   }
 }

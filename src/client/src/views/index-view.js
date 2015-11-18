@@ -1,10 +1,11 @@
 import React from 'react';
+import CurrecnyPairs from '../components/currency-pairs';
 
 export class IndexView extends React.Component {
   render(){
     return (
-      <div className='container text-center'>
-        Hello
+      <div className='container'>
+        <CurrecnyPairs />
       </div>
     );
   }
