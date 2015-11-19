@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using WampSharp.V2.Realm;
 
 namespace Adaptive.ReactiveTrader.Transport
 {

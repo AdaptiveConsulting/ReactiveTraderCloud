@@ -6,11 +6,13 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     internal class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.WriteLine("Pricing Server starting...");
 
-            Run().Wait();
+            await Run();
+
+            Console.WriteLine("Press any key...");
 
             Console.ReadLine();
         }
@@ -21,7 +23,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             const string realm = "com.weareadaptive.reactivetrader";
 
             var channel = await BrokerFactory.Create(uri, realm);
-            
+            var s = await channel.CreateChannelAsync<string>("com.blah");
+            s.OnNext("Test");
         }
     }
 }
