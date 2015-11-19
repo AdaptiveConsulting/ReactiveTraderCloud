@@ -4,13 +4,12 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>9a38c9d0-8c55-4db8-942d-83c34b52dd1c</ProjectGuid>
-    <RootNamespace>ReferenceDataWrite</RootNamespace>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">..\..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
+    <ProjectGuid>0a6f43bb-118d-4d43-ad0b-e296d50bef6c</ProjectGuid>
+    <RootNamespace>Adaptive.ReactiveTrader.Transport</RootNamespace>
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\Adaptive.ReactiveTrader.Server.Pricing\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+    <OutputPath Condition="'$(OutputPath)'=='' ">..\Adaptive.ReactiveTrader.Server.Pricing\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
