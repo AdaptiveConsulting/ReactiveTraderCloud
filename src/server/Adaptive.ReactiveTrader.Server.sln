@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Tests", "Adaptive.ReactiveTrader.Server.Tests\Adaptive.ReactiveTrader.Server.Tests.xproj", "{797A2A7F-639E-4E47-A218-11B65AE88931}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,10 +42,19 @@ Global
 		{C003F91B-7A1D-4429-AE63-3ABC67B2D4AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C003F91B-7A1D-4429-AE63-3ABC67B2D4AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C003F91B-7A1D-4429-AE63-3ABC67B2D4AD}.Release|Any CPU.Build.0 = Release|Any CPU
+
+
+
+
+
 		{E50053C2-5491-47C0-B29B-25038653F632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E50053C2-5491-47C0-B29B-25038653F632}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E50053C2-5491-47C0-B29B-25038653F632}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E50053C2-5491-47C0-B29B-25038653F632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{797A2A7F-639E-4E47-A218-11B65AE88931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{797A2A7F-639E-4E47-A218-11B65AE88931}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{797A2A7F-639E-4E47-A218-11B65AE88931}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{797A2A7F-639E-4E47-A218-11B65AE88931}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
