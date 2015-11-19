@@ -2,7 +2,10 @@ import React from 'react';
 
 
 const numberConvertRegex = /^([0-9.]+)?([MK]{1})?$/,
-  SEPARATOR = '.';
+  SEPARATOR = '.',
+  MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+let SPOTDATE;
 
 /**
  * @class CurrencyPairs
@@ -14,7 +17,7 @@ class CurrencyPair extends React.Component {
     pair: React.PropTypes.string,
     buy: React.PropTypes.number,
     sell: React.PropTypes.number,
-    spread: React.PropTypes.number,
+    spread: React.PropTypes.string,
     precision: React.PropTypes.number,
     pip: React.PropTypes.number,
     onExecute: React.PropTypes.func
@@ -29,17 +32,21 @@ class CurrencyPair extends React.Component {
     super(props, context);
     this.state = {
       size: 0,
+      state: 'listening',
       historic: []
     }
   }
 
   componentWillMount(){
-    const size = this._getSize(this.props.size);
+    const size = this._getSize(this.props.size),
+      today = new Date;
 
     this.setState({
       size,
       historic: [this.props.buy]
     });
+
+    SPOTDATE = ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' ');
   }
 
   componentWillReceiveProps(props){
@@ -120,6 +127,7 @@ class CurrencyPair extends React.Component {
         price: this.props[direction],
         pair: this.props.pair
       });
+      this.setState({state: 'executing'});
     }
     else {
       console.error('To execute spot trade, you need onExecute({Payload}) callback and a valid size');
@@ -137,22 +145,28 @@ class CurrencyPair extends React.Component {
     const b = this.parsePrice(buy),
           s = this.parsePrice(sell);
 
-    return <div className='currency-pair'>
+    return <div className={this.state.state + ' currency-pair'}>
       <div className='currency-pair-title'>
         {pair}
       </div>
       <div className='currency-pair-actions'>
-        <div className="buy" onClick={() => this.execute('buy')}>
+        <div className='buy action' onClick={() => this.execute('buy')}>
+          <div>BUY</div>
           <span className='big'></span>{b.bigFigures}<span className='pip'>{b.pip}</span><span className='tenth'>{b.pipFraction}</span>
         </div>
         <div className={direction + ' direction'}>{spread}</div>
-        <div className="sell" onClick={() => this.execute('sell')}>
+        <div className='sell action' onClick={() => this.execute('sell')}>
+          <div>SELL</div>
           <span className='big'></span>{s.bigFigures}<span className='pip'>{s.pip}</span><span className='tenth'>{s.pipFraction}</span>
         </div>
       </div>
-      <div className="sizer">
+      <div className='clearFix'></div>
+      <div className='sizer'>
         <label>{base}
         <input className='size' type='text' ref='size' defaultValue={size} onChange={(e) => this.setSizeFromInput(e)} /></label>
+        <div className='pull-right'>
+          {SPOTDATE}
+        </div>
       </div>
 
     </div>

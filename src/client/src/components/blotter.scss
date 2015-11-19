@@ -1,0 +1,32 @@
+.blotter {
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  height: 300px;
+  table {
+    tbody, thead {
+      display: block;
+      tr {
+        width: 100%;
+      }
+    }
+    thead {
+      box-shadow: 0 2px 2px rgba(0,0,0,.5);
+      th {
+        border-bottom: none;
+      }
+    }
+    tbody {
+      height: 268px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    td, th {
+      width: 100px;
+      &.large {
+        width: 200px;
+      }
+    }
+  }
+}

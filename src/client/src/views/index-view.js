@@ -1,11 +1,13 @@
 import React from 'react';
-import CurrecnyPairs from '../components/currency-pairs';
+import CurrencyPairs from '../components/currency-pairs';
+import Blotter from '../components/blotter';
 
 export class IndexView extends React.Component {
   render(){
     return (
-      <div className='container'>
-        <CurrecnyPairs />
+      <div className=''>
+        <CurrencyPairs />
+        <Blotter />
       </div>
     );
   }
