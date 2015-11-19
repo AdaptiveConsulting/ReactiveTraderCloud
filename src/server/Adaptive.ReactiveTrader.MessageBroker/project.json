@@ -8,7 +8,7 @@
 
 
     "dependencies": {
-        "Adaptive.ReactiveTrader.Transport": "1.0.0-*",
+        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
         "WampSharp.SignalR": "1.2.3.12-beta"
         
     },
