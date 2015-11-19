@@ -1,7 +1,6 @@
 ﻿{
-  "projects": [ "src", "test" ],
   "sdk": {
-    "version": "1.0.0-rc2-16177",
+    "version": "1.0.0-rc1-final",
     "runtime": "clr",
     "architecture": "x86"
   }

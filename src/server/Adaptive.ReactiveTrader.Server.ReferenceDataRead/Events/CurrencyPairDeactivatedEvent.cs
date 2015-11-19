@@ -1,4 +1,4 @@
-﻿namespace ReferenceDataWrite.Events
+﻿namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead.Events
 {
     public class CurrencyPairDeactivatedEvent
     {
