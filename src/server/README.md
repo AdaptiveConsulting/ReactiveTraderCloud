@@ -9,5 +9,6 @@ Instructions [here](http://blogs.msdn.com/b/sujitdmello/archive/2015/04/23/step-
 Run 'Get Dependencies.bat' once to grab external dependencies (this runs `dnu restore`)
 
 #### Start Services
+* Run `Message Broker Instance.bat` first
 * Run `Pricing Instance.bat`
 * Run `Reference Instance.bat`
