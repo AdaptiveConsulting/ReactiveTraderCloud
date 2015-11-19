@@ -3,7 +3,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 
-namespace Adaptive.ReactiveTrader.Server.ReferenceData
+namespace Adaptive.ReactiveTrader.Server.ReferenceData.Domain
 {
     public class CurrencyPairUpdatePublisher : IObservable<CurrencyPairUpdateDto>
     {

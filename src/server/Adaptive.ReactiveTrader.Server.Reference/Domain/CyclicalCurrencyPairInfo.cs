@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using Adaptive.ReactiveTrader.Contract;
 
-namespace Adaptive.ReactiveTrader.Server.ReferenceData
+namespace Adaptive.ReactiveTrader.Server.ReferenceData.Domain
 {
     public sealed class CyclicalCurrencyPairInfo : CurrencyPairInfo
     {

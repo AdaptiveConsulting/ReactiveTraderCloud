@@ -10,18 +10,16 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
     public class ReferenceService : IReferenceService, IDisposable
     {
-        private readonly ICurrencyPairRepository _repository;
-        private readonly IRepository _rep;
+        private readonly IObservable<CurrencyPairUpdatesDto> _repository;
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceService>();
         private readonly object _gate = new object();
 
         private readonly HashSet<Action<CurrencyPairUpdatesDto>> _observers =
             new HashSet<Action<CurrencyPairUpdatesDto>>();
 
-        public ReferenceService(ICurrencyPairRepository repository, IRepository rep )
+        public ReferenceService(IObservable<CurrencyPairUpdatesDto> repository )
         {
             _repository = repository;
-            _rep = rep;
         }
 
         public IDisposable GetCurrencyPairUpdatesStream(IRequestContext context, NothingDto request,
@@ -29,17 +27,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
         {
             Log.DebugFormat("[REQ. STREAM] subscribed: ({0})", context.UserSession.Username);
             var subscription = new SingleAssignmentDisposable();
-            
-            streamHandler.OnNext(new CurrencyPairUpdatesDto
-            {
-                Updates = _repository.GetAllCurrencyPairs().Select(
-                    c => new CurrencyPairUpdateDto
-                    {
-                        UpdateType = UpdateTypeDto.Added,
-                        CurrencyPair = c.CurrencyPair,
-                    })
-            });
 
+            _repository.Subscribe(streamHandler);
+            
             lock (_gate)
             {
                 _observers.Add(streamHandler.OnNext);

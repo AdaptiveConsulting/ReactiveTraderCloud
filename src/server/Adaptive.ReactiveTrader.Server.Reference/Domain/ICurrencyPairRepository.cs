@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Adaptive.ReactiveTrader.Contract;
 
-namespace Adaptive.ReactiveTrader.Server.ReferenceData
+namespace Adaptive.ReactiveTrader.Server.ReferenceData.Domain
 {
     public interface ICurrencyPairRepository
     {
@@ -10,5 +11,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
         bool Exists(string symbol);
         decimal GetSampleRate(string symbol);
         IEnumerable<CurrencyPairInfo> GetAllCurrencyPairInfos();
+
+        IObservable<CurrencyPairUpdatesDto> GetCurrencyUpdateStream();
     }
 }

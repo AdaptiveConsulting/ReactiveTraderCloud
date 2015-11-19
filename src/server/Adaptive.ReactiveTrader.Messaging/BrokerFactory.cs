@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.Messaging
@@ -6,9 +7,16 @@ namespace Adaptive.ReactiveTrader.Messaging
     {
         public static async Task<IBroker> Create(string uri, string realm)
         {
-            var broker = new Broker(uri, realm);
-            await broker.Open();
-            return broker;
+            try
+            {
+                var broker = new Broker(uri, realm);
+                await broker.Open();
+                return broker;
+            }
+            catch (SocketException e)
+            {
+                throw new MessagingException("Could not connect to Message Broker", e);
+            }
         }
     }
 }

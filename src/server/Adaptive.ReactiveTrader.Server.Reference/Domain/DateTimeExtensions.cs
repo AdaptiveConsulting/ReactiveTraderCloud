@@ -1,6 +1,6 @@
 using System;
 
-namespace Adaptive.ReactiveTrader.Server.ReferenceData
+namespace Adaptive.ReactiveTrader.Server.ReferenceData.Domain
 {
     public static class DateTimeExtensions
     {

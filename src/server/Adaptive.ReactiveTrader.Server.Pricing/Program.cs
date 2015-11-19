@@ -10,21 +10,34 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         {
             Console.WriteLine("Pricing Server starting...");
 
-            await Run();
+            var uri = "ws://127.0.0.1:8080/ws";
+            var realm = "com.weareadaptive.reactivetrader";
 
-            Console.WriteLine("Press any key...");
+            if (args.Length > 0)
+            {
+                uri = args[0];
+                if (args.Length > 1)
+                    realm = args[1];
+            }
 
+            await Run(uri, realm);
+
+            Console.WriteLine("Press Any Key To Stop...");
             Console.ReadLine();
         }
 
-        private static async Task Run()
+        private static async Task Run(string uri, string realm)
         {
-            const string uri = "ws://127.0.0.1:8080/ws";
-            const string realm = "com.weareadaptive.reactivetrader";
+            Console.WriteLine("Doing Nothing.");
 
-            var channel = await BrokerFactory.Create(uri, realm);
-            var s = await channel.CreateChannelAsync<string>("com.blah");
-            s.OnNext("Test");
+            try
+            {
+                var channel = await BrokerFactory.Create(uri, realm);
+            }
+            catch (MessagingException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
