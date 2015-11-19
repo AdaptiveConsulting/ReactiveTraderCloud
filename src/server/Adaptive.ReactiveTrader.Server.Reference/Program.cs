@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Transport;
 
@@ -7,12 +8,21 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.WriteLine("Reference Data Service starting...");
 
-            Run().Wait();
+            try
+            {
+                await Run();
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("Could not connect to Message Broker");
+                Console.WriteLine(e.Message);
+            }
 
+            Console.WriteLine("Press Any Key To Stop...");
             Console.ReadLine();
         }
 
@@ -29,6 +39,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
 
             var rr = new RequestStreamParadigm<CurrencyPairUpdateDto>(channel, () => hub.GetCurrencyPairs(), publisher);
 
+            Console.WriteLine("Service Started.");
             await channel.RegisterService(rr);
 
             Console.WriteLine("procedure GetCurrencyPairs() registered");
