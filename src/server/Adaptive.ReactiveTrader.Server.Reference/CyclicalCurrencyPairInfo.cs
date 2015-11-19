@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {

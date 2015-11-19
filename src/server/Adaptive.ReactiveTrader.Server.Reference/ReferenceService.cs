@@ -1,85 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
-using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Contract;
 using Common.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
-    public interface IReferenceService
-    {
-        IDisposable GetCurrencyPairUpdatesStream(RequestContext context, NothingDto request,
-            IObserver<CurrencyPairUpdatesDto> streamHandler);
-    }
-
-    public class NothingDto
-    {
-        public string Test { get; set; }
-    }
-
-    public class CurrencyPairUpdatesDto
-    {
-        public IEnumerable<CurrencyPairUpdateDto> Updates { get; set; }
-    }
-
-
-    public class ReferenceServiceHost
-    {
-        private readonly IReferenceService _referenceService;
-        private readonly IBroker _broker;
-
-        public ReferenceServiceHost(IReferenceService referenceService, IBroker broker)
-        {
-            _referenceService = referenceService;
-            _broker = broker;
-        }
-
-        public void GetCurrencyPairUpdatesStream(Message message)
-        {
-            var payload = JsonConvert.DeserializeObject<NothingDto>(message.Payload.ToString());
-
-            var requestContext = new RequestContext
-            {
-                RequestMessage = message,
-                UserSession = new UserSession
-                {
-                    Username = "Unknown"
-                }
-            };
-
-            var replyTo = message.ReplyTo;
-
-            var responseChannel = _broker.CreateChannelAsync<CurrencyPairUpdatesDto>(replyTo).Result;
-            // todo maintain list of clients
-            _referenceService.GetCurrencyPairUpdatesStream(requestContext, payload, responseChannel);
-        }
-
-        public void Start()
-        {
-            _broker.RegisterCall("reference.getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
-        }
-    }
-
-    public class UserSession
-    {
-        public string Username { get; set; }
-    }
-
-    public class RequestContext
-    {
-        public Message RequestMessage { get; set; }
-        public UserSession UserSession { get; set; }
-    }
-
-
-    public interface Repository
-    {
-        IObservable<CurrencyPairUpdatesDto> GetCurrencyUpdateStream();
-    }
-    
     public class ReferenceService : IReferenceService, IDisposable
     {
         private readonly ICurrencyPairRepository _repository;

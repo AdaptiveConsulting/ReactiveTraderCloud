@@ -1,4 +1,4 @@
-namespace Adaptive.ReactiveTrader.Server.ReferenceData
+namespace Adaptive.ReactiveTrader.Contract
 {
     public enum UpdateTypeDto
     {

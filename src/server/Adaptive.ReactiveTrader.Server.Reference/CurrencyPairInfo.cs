@@ -1,3 +1,5 @@
+using Adaptive.ReactiveTrader.Contract;
+
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
     public abstract class CurrencyPairInfo

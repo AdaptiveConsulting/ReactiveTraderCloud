@@ -1,6 +1,7 @@
 using System;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {

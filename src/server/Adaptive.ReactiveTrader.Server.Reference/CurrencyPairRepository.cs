@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {

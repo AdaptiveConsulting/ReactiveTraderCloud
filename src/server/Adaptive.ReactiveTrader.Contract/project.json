@@ -1,6 +1,6 @@
 {
     "version": "1.0.0-*",
-    "description": "Pricing Service",
+    "description": "Reactive Trader Contracts",
     "authors": [ "james.watson" ],
     "tags": [ "" ],
     "projectUrl": "",
@@ -8,12 +8,7 @@
 
 
     "dependencies": {
-        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Contract": "1.0.0-*"
-    },
-
-    "commands": {
-        "Adaptive.ReactiveTrader.Server.Pricing": "Adaptive.ReactiveTrader.Server.Pricing"
+       
     },
 
     "frameworks": {
