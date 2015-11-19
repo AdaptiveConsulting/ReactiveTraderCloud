@@ -1,5 +1,12 @@
+src/client/node_modules
+.idea/
+npm-debug.log
+dist/
 *.suo
 project.lock.json
 *.xproj.user
 artifacts
+<<<<<<< HEAD
 AdaptiveTrader.iml
+=======
+>>>>>>> refs/remotes/origin/master

@@ -1,0 +1,284 @@
+Reactive Trader - UI
+=======================
+
+Table of Contents
+-----------------
+1. [Requirements](#requirements)
+1. [Features](#features)
+1. [Getting Started](#getting-started)
+1. [Usage](#usage)
+1. [Structure](#structure)
+1. [Webpack](#webpack)
+1. [Styles](#styles)
+1. [Testing](#testing)
+1. [Utilities](#utilities)
+1. [Troubleshooting](#troubleshooting)
+
+Requirements
+------------
+
+Node `^4.0.0` or `^5.0.0` ([npm3](https://www.npmjs.com/package/npm3) recommended).
+
+Features
+--------
+
+* [React](https://github.com/facebook/react) (`^0.14.0`)
+  * Includes react-addons-test-utils (`^0.14.0`)
+* [React-Router](https://github.com/rackt/react-router) (`1.0.0-rc1`)
+* [Redux](https://github.com/gaearon/redux) (`^3.0.0`)
+  * redux-router (`^1.0.0-beta3`)
+  * react-redux (`^4.0.0`)
+  * redux-devtools
+    * use `npm run dev:nw` to display in a separate window.
+  * redux-thunk middleware
+* [Karma](https://github.com/karma-runner/karma)
+  * Mocha w/ Chai, Sinon-Chai, and Chai-as-Promised
+  * PhantomJS
+  * Code coverage reports
+* [Babel](https://github.com/babel/babel)
+  * `react-transform-hmr` for hot reloading
+  * `react-transform-catch-errors` with `redbox-react` for more visible error reporting
+  * Uses babel runtime rather than inline transformations
+* [Webpack](https://github.com/webpack/webpack)
+  * Separates application code from vendor dependencies
+  * webpack-dev-server
+  * sass-loader with CSS extraction
+  * Pre-configured folder aliases and globals
+* [ESLint](http://eslint.org)
+  * Uses [Airbnb's ESLint config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb) (with some softened rules)
+  * Includes separate test-specific `.eslintrc` to work with Mocha and Chai
+
+Getting Started
+---------------
+
+Just clone the repo and install the necessary node modules:
+
+```sh
+$ cd src/client
+$ npm i                         # Install Node modules listed in ./package.json (may take a while the first time)
+$ npm start                     # Compile and launch
+```
+
+Usage
+-----
+
+#### `npm start`
+Runs the webpack build system with webpack-dev-server (by default found at `localhost:3000`).
+
+#### `npm run dev:nw`
+Same as `npm run start` but opens the debug tools in a new window.
+
+**Note:** you'll need to allow popups in Chrome, or you'll see an error: [issue 110](https://github.com/davezuko/react-redux-starter-kit/issues/110)
+
+#### `npm run dev:no-debug`
+Same as `npm run start` but disables devtools.
+
+#### `npm run compile`
+Runs the webpack build system with your current NODE_ENV and compiles the application to disk (`~/dist`).
+
+#### `npm run test`
+Runs unit tests with Karma and generates coverage reports.
+
+#### `npm run test:dev`
+Similar to `npm run test`, but will watch for changes and re-run tests; does not generate coverage reports.
+
+#### `npm run lint`
+Run ESLint against all `.js` files in `~/src`. This used to be a webpack preloader, but the browser console output could get fairly ugly. If you want development-time linting, consider using an `eslint` plugin for your text editor.
+
+#### `npm run lint:tests`
+Lint all `.spec.js` files in of `~/tests`.
+
+#### `npm run deploy`
+Helper script to run linter, tests, and then, on success, compile your application to disk.
+
+### `npm run dist`
+Runs build and starts the backend server, mounting `dist` as root with port configured as `8888`
+
+### Configuration
+
+Basic project configuration can be found in `~/config/index.js`. Here you'll be able to redefine your src and dist directories, add/remove aliases, tweak your vendor dependencies, and more. For the most part, you should be able to make your changes in here without ever having to touch the webpack build configuration.
+
+## Backend server
+
+Change into the `serv` directory and run:
+
+```sh
+$ ./demo-server.js
+xpress running on http://0.0.0.0:8888
+Express  also available on http://127.0.0.1:8888
+Express  also available on http://192.168.11.5:8888
+```
+
+## Populating data
+
+The database is a dirty-db implementation, to reset it just change into the `serv` directory and run:
+
+```sh
+$ rm dirty.db
+$ ./data-import -i ../bin/instruments.csv -m instruments
+$ ./data-import -i ../bin/clients.csv -m client
+$ ./data-import -i ../bin/traders.csv -m traders
+```
+
+Structure
+---------
+
+The folder structure provided is only meant to serve as a guide, it is by no means prescriptive. It is something that has worked very well for me and my team, but use only what makes sense to you.
+
+```
+.
+├── bin                      # Build/Start scripts
+├── build                    # All build-related configuration
+│   ├── webpack              # Environment-specific configuration files for webpack
+├── config                   # Project configuration settings
+├── src                      # Application source code
+│   ├── actions              # Redux action creators
+│   ├── components           # Generic React Components (generally Dumb components)
+│   ├── containers           # Components that provide context (e.g. Redux Providers)
+│   ├── layouts              # Components that dictate major page structure
+│   ├── reducers             # Redux reducers
+│   ├── routes               # Application route definitions
+│   ├── stores               # Redux store configuration
+│   ├── utils                # Generic utilities
+│   ├── views                # Components that live at a route
+│   └── app.js               # Application bootstrap and rendering
+└── tests                    # Unit tests
+```
+
+### Components vs. Views vs. Layouts
+
+**TL;DR:** They're all components.
+
+This distinction may not be important for you, but as an explanation: A **Layout** is something that describes an entire page structure, such as a fixed navigation, viewport, sidebar, and footer. Most applications will probably only have one layout, but keeping these components separate makes their intent clear. **Views** are components that live at routes, and are generally rendered within a **Layout**. What this ends up meaning is that, with this structure, nearly everything inside of **Components** ends up being a dumb component.
+
+Webpack
+-------
+
+### Configuration
+The webpack compiler configuration is located in `~/build/webpack`. Here you'll find configurations for each environment; `development`, `production`, and `development_hot` exist out of the box. These configurations are selected based on your current `NODE_ENV`, with the exception of `development_hot` which will _always_ be used by webpack dev server.
+
+### Vendor Bundle
+You can redefine which packages to treat as vendor dependencies by editing `vendor_dependencies` in `~/config/index.js`. These default to:
+
+```js
+[
+  'history',
+  'react',
+  'react-redux',
+  'react-router',
+  'redux-router',
+  'redux'
+]
+```
+
+### Aliases
+As mentioned in features, the default webpack configuration provides some globals and aliases to make your life easier. These can be used as such:
+
+```js
+// current file: ~/src/views/some/nested/View.js
+import SomeComponent from '../../../components/SomeComponent'; // without alias
+import SomeComponent from 'components/SomeComponent'; // with alias
+```
+
+Available aliases:
+```js
+actions     => '~/src/actions'
+components  => '~/src/components'
+constants   => '~/src/constants'
+containers  => '~/src/containers'
+layouts     => '~/src/layouts'
+reducers    => '~/src/reducers'
+routes      => '~/src/routes'
+services    => '~/src/services'
+styles      => '~/src/styles'
+utils       => '~/src/utils'
+views       => '~/src/views'
+```
+
+### Globals
+
+These are global variables available to you anywhere in your source code. If you wish to modify them, they can be found as the `globals` key in `~/config/index.js`.
+
+#### `__DEV__`
+True when `process.env.NODE_ENV` is `development`
+
+#### `__PROD__`
+True when `process.env.NODE_ENV` is `production`
+
+#### `__DEBUG__`
+True when the compiler is run with `--debug` (any environment).
+
+Styles
+------
+
+All `.scss` imports will be run through the sass-loader and extracted during production builds. If you're requiring styles from a base styles directory (useful for generic, app-wide styles), you can make use of the `styles` alias, e.g.:
+
+```js
+// current file: ~/src/components/some/nested/component/index.jsx
+import 'styles/core.scss'; // this imports ~/src/styles/core.scss
+```
+
+Furthermore, this `styles` directory is aliased for sass imports, which further eliminates manual directory traversing; this is especially useful for importing variables/mixins.
+
+Here's an example:
+
+```scss
+// current file: ~/src/styles/some/nested/style.scss
+// what used to be this (where base is ~/src/styles/_base.scss):
+@import '../../base';
+
+// can now be this:
+@import 'base';
+```
+
+Testing
+-------
+
+To add a unit test, simply create `.spec.js` file anywhere in `~/tests`. Karma will pick up on these files automatically, and Mocha and Chai will be available within your test without the need to import them.
+
+Coverage reports will be compiled to `~/coverage` by default. If you wish to change what reporters are used and where reports are compiled, you can do so by modifying `coverage_reporters` in `~/config/index.js`.
+
+Utilities
+---------
+
+This boilerplate comes with two simple utilities to help speed up your Redux development process. In `~/client/utils` you'll find exports for `createConstants` and `createReducer`. The former is pretty much an even lazier `keyMirror`, so if you _really_ hate typing out those constants you may want to give it a shot. Check it out:
+
+```js
+import { createConstants } from 'utils';
+
+export default createConstants(
+  'TODO_CREATE',
+  'TODO_DESTROY',
+  'TODO_TOGGLE_COMPLETE'
+);
+```
+
+The other utility, `create-reducer`, is designed to expedite creating reducers when they're defined via an object map rather than switch statements. As an example, what once looked like this:
+
+```js
+import { TODO_CREATE } from 'constants/todo';
+
+const initialState = [];
+const handlers = {
+  [TODO_CREATE] : (state, payload) => { ... }
+};
+
+export default function todo (state = initialState, action) {
+  const handler = handlers[action.type];
+
+  return handler ? handler(state, action.payload) : state;
+}
+```
+
+Can now look like this:
+
+```js
+import { TODO_CREATE }   from 'constants/todo';
+import { createReducer } from 'utils';
+
+const initialState = [];
+
+export default createReducer(initialState, {
+  [TODO_CREATE] : (state, payload) => { ... }
+});
+```
