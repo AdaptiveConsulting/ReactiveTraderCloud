@@ -1,15 +1,15 @@
-namespace ReferenceDataWrite.Events
+﻿namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Events
 {
-    public class CurrencyPairCreatedEvent
+    public class CurrencyPairChangedEvent
     {
         public string Symbol { get; }
         public int PipsPosition { get; }
         public int RatePrecision { get; }
-        public decimal SampleRate { get; }
+        public int SampleRate { get; }
         public string Comment { get; }
-        public string Name { get; } = "Currency Pair Created";
+        public string Name { get; } = "Currency Pair Changed";
 
-        public CurrencyPairCreatedEvent(string symbol, int pipsPosition, int ratePrecision, decimal sampleRate, string comment)
+        public CurrencyPairChangedEvent(string symbol, int pipsPosition, int ratePrecision, int sampleRate, string comment)
         {
             Symbol = symbol;
             PipsPosition = pipsPosition;

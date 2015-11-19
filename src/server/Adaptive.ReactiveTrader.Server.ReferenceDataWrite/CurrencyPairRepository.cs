@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Events;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
-using ReferenceDataWrite.Events;
 
-namespace ReferenceDataWrite
+namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class CurrencyPairRepository
     {
