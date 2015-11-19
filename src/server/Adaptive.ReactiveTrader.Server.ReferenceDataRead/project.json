@@ -1,0 +1,23 @@
+{
+    "version": "1.0.0-*",
+    "description": "ReferenceDataRead Console Application",
+    "authors": [ "jon.clare" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+
+    "dependencies": {
+        "EventStore.Client": "3.3.1",
+        "Newtonsoft.Json": "7.0.1",
+        "Rx-Main": "2.2.5",
+        "System.Collections.Immutable.Net40": "1.0.30.17"
+    },
+
+    "commands": {
+        "ReferenceDataRead": "Adaptive.ReactiveTrader.Server.ReferenceDataRead"
+    },
+
+    "frameworks": {
+        "dnx451": { }
+    }
+}
