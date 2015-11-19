@@ -14,7 +14,7 @@
     },
 
     "commands": {
-        "ReferenceDataRead": "ReferenceDataRead"
+        "ReferenceDataRead": "Adaptive.ReactiveTrader.Server.ReferenceDataRead"
     },
 
     "frameworks": {

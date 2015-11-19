@@ -1,15 +1,15 @@
-﻿namespace ReferenceDataRead.Events
+﻿namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
-    public class CurrencyPairChangedEvent
+    public class CurrencyPair
     {
         public string Symbol { get; }
         public int PipsPosition { get; }
         public int RatePrecision { get; }
-        public int SampleRate { get; }
+        public decimal SampleRate { get; }
         public string Comment { get; }
-        public string Name { get; } = "Currency Pair Changed";
+        public bool IsEnabled { get; set; }
 
-        public CurrencyPairChangedEvent(string symbol, int pipsPosition, int ratePrecision, int sampleRate, string comment)
+        public CurrencyPair(string symbol, int pipsPosition, int ratePrecision, decimal sampleRate, string comment)
         {
             Symbol = symbol;
             PipsPosition = pipsPosition;

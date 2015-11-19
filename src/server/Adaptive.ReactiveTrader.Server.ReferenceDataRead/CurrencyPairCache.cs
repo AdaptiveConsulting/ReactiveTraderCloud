@@ -6,11 +6,11 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Text;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Server.ReferenceDataRead.Events;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
-using ReferenceDataRead.Events;
 
-namespace ReferenceDataRead
+namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class CurrencyPairCache
     {
