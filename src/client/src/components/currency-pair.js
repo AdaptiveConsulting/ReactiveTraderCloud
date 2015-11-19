@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 
 const numberConvertRegex = /^([0-9.]+)?([MK]{1})?$/,
   SEPARATOR = '.',
@@ -32,6 +33,7 @@ class CurrencyPair extends React.Component {
     super(props, context);
     this.state = {
       size: 0,
+      chart: false,
       state: 'listening',
       historic: []
     }
@@ -52,14 +54,18 @@ class CurrencyPair extends React.Component {
   componentWillReceiveProps(props){
     const historic = this.state.historic;
 
-    historic.unshift(props.buy);
+    historic.push(props.buy);
 
     // 30 max historic prices
-    historic.length > 30 && (historic.length = 30);
+    historic.length > 30 && (historic.shift());
 
     this.setState({
       historic
     });
+  }
+
+  shouldComponentUpdate(props){
+    return props.buy != this.props.buy || props.sell != this.props.sell;
   }
 
   /**
@@ -138,9 +144,10 @@ class CurrencyPair extends React.Component {
     const { historic, size } = this.state;
     const { buy, sell, pair, spread } = this.props;
 
-    const base = pair.substr(0, 3);
+    const base = pair.substr(0, 3),
+      len = historic.length - 2;
     // up, down, even
-    const direction = (historic.length > 1) ? historic[1] > buy ? 'up' : historic[1] < buy ? 'down' : '-' :'-';
+    const direction = (historic.length > 1) ? historic[len] < buy ? 'up' : historic[len] > buy ? 'down' : '-' :'-';
 
     const b = this.parsePrice(buy),
           s = this.parsePrice(sell);
@@ -148,6 +155,7 @@ class CurrencyPair extends React.Component {
     return <div className={this.state.state + ' currency-pair'}>
       <div className='currency-pair-title'>
         {pair}
+        <i className='fa fa-line-chart pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       <div className='currency-pair-actions'>
         <div className='buy action' onClick={() => this.execute('buy')}>
@@ -168,7 +176,13 @@ class CurrencyPair extends React.Component {
           {SPOTDATE}
         </div>
       </div>
-
+      <div className="clearfix"></div>
+      {this.state.chart ?
+        <Sparklines data={historic.slice()} width={326} height={24} margin={0}>
+          <SparklinesLine />
+          <SparklinesSpots />
+          <SparklinesReferenceLine type="avg" />
+        </Sparklines> : <div className='sparkline-holder'></div>}
     </div>
   }
 }

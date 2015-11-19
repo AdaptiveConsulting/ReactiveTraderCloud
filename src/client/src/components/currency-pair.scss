@@ -16,6 +16,11 @@
     color: white;
     padding-left: 8px;
     border-bottom: 1px solid $gray-dark;
+    i {
+      font-size: 16px;
+      cursor: pointer;
+      color: $gray-light;
+    }
   }
   .currency-pair-actions {
     position: relative;
@@ -102,5 +107,8 @@
     }
   }
 
+  .sparkline-holder {
+    height: 28px;
+  }
 
 }
