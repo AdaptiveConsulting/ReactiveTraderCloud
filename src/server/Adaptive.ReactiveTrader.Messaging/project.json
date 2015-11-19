@@ -6,7 +6,8 @@
     "projectUrl": "",
     "licenseUrl": "",
     "dependencies": {
-        "WampSharp.Default": "1.2.3.12-beta"
+        "WampSharp.Default": "1.2.3.12-beta",
+        "Common.Logging": "3.3.1"
     },
     "frameworks": {
         "dnx451": {

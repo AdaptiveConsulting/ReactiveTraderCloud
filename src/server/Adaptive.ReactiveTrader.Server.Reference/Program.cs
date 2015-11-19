@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Transport;
+using Adaptive.ReactiveTrader.Messaging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
@@ -34,13 +34,16 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
             var channel = await BrokerFactory.Create(uri, realm);
 
             var repository = new CurrencyPairRepository();
+            var service = new ReferenceService(repository, null);
             var publisher = new CurrencyPairUpdatePublisher();
-            var hub = new ReferenceDataHub(repository);
+            publisher.Subscribe(o => service.Publish(o));
+            var serviceHost = new ReferenceServiceHost(service, channel);
 
-            var rr = new RequestStreamParadigm<CurrencyPairUpdateDto>(channel, () => hub.GetCurrencyPairs(), publisher);
+            serviceHost.Start();
+
+            //var rr = new RequestStreamParadigm<CurrencyPairUpdateDto>(channel, () => hub.GetCurrencyPairs(), publisher);
 
             Console.WriteLine("Service Started.");
-            await channel.RegisterService(rr);
 
             Console.WriteLine("procedure GetCurrencyPairs() registered");
 

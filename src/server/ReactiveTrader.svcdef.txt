@@ -1,0 +1,145 @@
+namespace {
+    java com.weareadaptive.reactivetrader;
+    html ReactiveTrader;
+}
+
+messages {
+    message NothingDto {
+    }
+
+    message TradesDto {
+        repeated TradeDto trades;
+    }
+
+    message CurrencyPairDto {
+        required string symbol;
+        required int ratePrecision;
+        required int pipsPosition;
+    }
+
+    message TradeDto {
+        required int tradeId;
+        required string traderName;
+        required string currencyPair;
+        required int notional;
+        required string dealtCurrency;
+        required DirectionDto direction;
+        required double spotRate;
+        required string tradeDate;
+        required string valueDate;
+        required TradeStatusDto status;
+    }
+
+    enum DirectionDto {
+        BUY,
+        SELL
+    }
+
+    enum TradeStatusDto {
+        DONE,
+        REJECTED
+    }
+
+    message ExecuteTradeRequestDto {
+        required string currencyPair;
+        required double spotRate;
+        required string valueDate;
+        required DirectionDto direction;
+        required int notional;
+        required string dealtCurrency;
+    }
+
+    message ExecuteTradeResponseDto {
+        required TradeDto trade;
+    }
+
+    message GetSpotStreamRequestDto {
+        required string currencyPair;
+    }
+
+    message SpotPriceDto {
+        required string symbol;
+        required double bid;
+        required double ask;
+        required string valueDate;
+        required string creationTimestamp;
+    }
+
+    message CurrencyPairUpdatesDto {
+        repeated CurrencyPairUpdateDto updates;
+    }
+
+    message CurrencyPairUpdateDto {
+        required CurrencyPairDto currencyPair;
+        required UpdateTypeDto updateType;
+    }
+
+    enum UpdateTypeDto {
+        ADDED,
+        REMOVED
+    }
+
+    message PositionUpdatesDto {
+        repeated CurrencyPairPositionDto currentPositions;
+        repeated HistoricPositionDto history;
+    }
+
+    message CurrencyPairPositionDto {
+        required string symbol;
+        required int basePnl;
+        required int baseTradedAmount;
+    }
+
+    message HistoricPositionDto {
+        required string timestamp;
+        required int usdPnl;
+    }
+
+    message FeedThroughputDto {
+        required double throughput;
+    }
+
+    message CurrencyPairStatesDto {
+        repeated CurrencyPairStateDto states;
+    }
+
+    message CurrencyPairStateDto {
+        required CurrencyPairDto currencyPair;
+        required bool enabled;
+        required bool stale;
+    }
+
+}
+
+services {
+    service Blotter {
+        REQUEST_STREAM getTradesStream(NothingDto) yields TradesDto;
+    }
+
+    service Execution {
+        REQUEST_RESPONSE executeTrade(ExecuteTradeRequestDto) yields ExecuteTradeResponseDto;
+    }
+
+    service Pricing {
+        PUBLISH_SUBSCRIBE getSpotStream(GetSpotStreamRequestDto) yields SpotPriceDto;
+    }
+
+    service ReferenceData {
+        REQUEST_STREAM getCurrencyPairUpdatesStream(NothingDto) yields CurrencyPairUpdatesDto;
+    }
+
+    service Analytics {
+        REQUEST_STREAM getPositionStream(NothingDto) yields PositionUpdatesDto;
+    }
+
+    service Control {
+        REQUEST_RESPONSE getPriceFeedThroughput(NothingDto) yields FeedThroughputDto;
+        REQUEST_RESPONSE setPriceFeedThroughput(FeedThroughputDto) yields NothingDto;
+        REQUEST_RESPONSE getCurrencyPairStates(NothingDto) yields CurrencyPairStatesDto;
+        REQUEST_RESPONSE setCurrencyPairState(CurrencyPairStateDto) yields NothingDto;
+    }
+
+    service Ping {
+        REQUEST_RESPONSE ping(NothingDto) yields NothingDto;
+    }
+}

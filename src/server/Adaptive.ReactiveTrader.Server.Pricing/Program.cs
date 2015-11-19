@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Transport;
+using Adaptive.ReactiveTrader.Messaging;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
