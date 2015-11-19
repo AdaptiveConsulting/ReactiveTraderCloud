@@ -4,9 +4,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class CurrencyPairInitializer
     {
-        private readonly CurrencyPairRepository _repository;
+        private readonly ICurrencyPairRepository _repository;
 
-        public CurrencyPairInitializer(CurrencyPairRepository repository)
+        public CurrencyPairInitializer(ICurrencyPairRepository repository)
         {
             _repository = repository;
         }
