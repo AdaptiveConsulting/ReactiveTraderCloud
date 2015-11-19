@@ -1,0 +1,11 @@
+machine:
+  services:
+    - docker
+
+dependencies: 
+  override:
+    - docker info
+
+test:
+  override:
+    - cd docker/run && ./build.sh 1.0.0-rc1-final
