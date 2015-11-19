@@ -6,7 +6,4 @@ dist/
 project.lock.json
 *.xproj.user
 artifacts
-<<<<<<< HEAD
 AdaptiveTrader.iml
-=======
->>>>>>> refs/remotes/origin/master
