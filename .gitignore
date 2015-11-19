@@ -1,3 +1,7 @@
+src/client/node_modules
+.idea/
+npm-debug.log
+dist/
 *.suo
 project.lock.json
 *.xproj.user

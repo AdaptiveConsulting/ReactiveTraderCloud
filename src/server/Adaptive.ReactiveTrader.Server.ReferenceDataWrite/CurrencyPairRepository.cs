@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
-    public class CurrencyPairRepository
+    public class CurrencyPairRepository : ICurrencyPairRepository
     {
         private readonly IEventStoreConnection _eventStoreConnection;
 
@@ -28,7 +28,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
             var activateEvent = new CurrencyPairActivatedEvent(symbol);
             var eventData = new EventData(Guid.NewGuid(), activateEvent.Name, false, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(activateEvent)), new byte[0]);
             return _eventStoreConnection.AppendToStreamAsync($"ccyPair-{symbol}", ExpectedVersion.Any, eventData);
-
         }
 
         public Task Deactivate(string symbol)
