@@ -1,6 +1,6 @@
 namespace Adaptive.ReactiveTrader.Messaging
 {
-    internal class RequestContext : IRequestContext
+    public class RequestContext : IRequestContext
     {
         public IMessage RequestMessage { get; }
         public IUserSession UserSession { get; }

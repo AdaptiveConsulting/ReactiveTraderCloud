@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
@@ -10,20 +11,20 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
     public class ReferenceService : IReferenceService, IDisposable
     {
         private readonly ICurrencyPairRepository _repository;
-        private readonly Repository _rep;
+        private readonly IRepository _rep;
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceService>();
         private readonly object _gate = new object();
 
         private readonly HashSet<Action<CurrencyPairUpdatesDto>> _observers =
             new HashSet<Action<CurrencyPairUpdatesDto>>();
 
-        public ReferenceService(ICurrencyPairRepository repository, Repository rep )
+        public ReferenceService(ICurrencyPairRepository repository, IRepository rep )
         {
             _repository = repository;
             _rep = rep;
         }
 
-        public IDisposable GetCurrencyPairUpdatesStream(RequestContext context, NothingDto request,
+        public IDisposable GetCurrencyPairUpdatesStream(IRequestContext context, NothingDto request,
             IObserver<CurrencyPairUpdatesDto> streamHandler)
         {
             Log.DebugFormat("[REQ. STREAM] subscribed: ({0})", context.UserSession.Username);

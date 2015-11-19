@@ -1,3 +1,4 @@
+using System.Text;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Newtonsoft.Json;
@@ -15,24 +16,13 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
             _broker = broker;
         }
 
-        public void GetCurrencyPairUpdatesStream(Message message)
+        public void GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
-            var payload = JsonConvert.DeserializeObject<NothingDto>(message.Payload.ToString());
-
-            var requestContext = new RequestContext
-            {
-                RequestMessage = message,
-                UserSession = new UserSession
-                {
-                    Username = "Unknown"
-                }
-            };
-
+            var payload = JsonConvert.DeserializeObject<NothingDto>(Encoding.UTF8.GetString(message.Payload));
             var replyTo = message.ReplyTo;
 
             var responseChannel = _broker.CreateChannelAsync<CurrencyPairUpdatesDto>(replyTo).Result;
-            // todo maintain list of clients
-            _referenceService.GetCurrencyPairUpdatesStream(requestContext, payload, responseChannel);
+            _referenceService.GetCurrencyPairUpdatesStream(context, payload, responseChannel);
         }
 
         public void Start()
