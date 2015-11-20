@@ -19,7 +19,11 @@ const trades = [{
 }];
 
 for (let i = 10; i; i--){
-  trades.push(Object.assign({}, trades[0], {id: _.uniqueId(), direction: _.sample(['buy', 'sell'])}));
+  trades.push(Object.assign({}, trades[0], {
+    id: _.uniqueId(),
+    direction: _.sample(['buy', 'sell']),
+    status: _.sample(['Done', 'Processing', 'Rejected'])
+  }));
 }
 
 /**
@@ -70,14 +74,14 @@ class CurrencyPairs extends React.Component {
 
 
           return (
-            <tr key={trade.id}>
+            <tr key={trade.id} className={trade.status}>
               <td>{trade.id}</td>
               <td className='large'>{dateTime}</td>
-              <td>{trade.direction}</td>
+              <td className={'direction ' + trade.direction}>{trade.direction}</td>
               <td>{trade.pair}</td>
               <td className='large text-right'>{notional}</td>
               <td className='text-right'>{trade.rate}</td>
-              <td>{trade.status}</td>
+              <td className='status'>{trade.status}</td>
               <td>{trade.valueDate}</td>
               <td className='large'>{trade.trader}</td>
             </tr>

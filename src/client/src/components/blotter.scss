@@ -9,6 +9,16 @@
       display: block;
       tr {
         width: 100%;
+        &.Rejected {
+          .status {
+            color: $brand-danger;
+            text-decoration: none;
+            text-transform: uppercase;
+          }
+          td {
+            text-decoration: line-through;
+          }
+        }
       }
     }
     thead {
