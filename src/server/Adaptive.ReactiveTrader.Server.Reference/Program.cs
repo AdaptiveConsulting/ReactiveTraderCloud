@@ -1,36 +1,65 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Transport;
+using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Server.ReferenceData.Domain;
+using Common.Logging;
+using Microsoft.Framework.ConfigurationModel;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
     public class Program
     {
-        public static void Main(string[] args)
+        protected static readonly ILog Log = LogManager.GetLogger<Program>();
+
+        public static async Task Main(string[] args)
         {
-            Console.WriteLine("Reference Data Service starting...");
+         
+            var uri = "ws://127.0.0.1:8080/ws";
+            var realm = "com.weareadaptive.reactivetrader";
 
-            Run().Wait();
+            if (args.Length > 0)
+            {
+                uri = args[0];
+                if (args.Length > 1)
+                    realm = args[1];
+            }
+        
+            try
+            {
+                await Run(uri, realm);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
+            Console.WriteLine("Press Any Key To Stop...");
             Console.ReadLine();
         }
 
-        private static async Task Run()
+        private static async Task Run(string uri, string realm)
         {
-            const string uri = "ws://127.0.0.1:8080/ws";
-            const string realm = "com.weareadaptive.reactivetrader";
-
-            var channel = await BrokerFactory.Create(uri, realm);
+            Console.WriteLine("Reference Data Service starting...");
 
             var repository = new CurrencyPairRepository();
-            var publisher = new CurrencyPairUpdatePublisher();
-            var hub = new ReferenceDataHub(repository);
 
-            var rr = new RequestStreamParadigm<CurrencyPairUpdateDto>(channel, () => hub.GetCurrencyPairs(), publisher);
+            try
+            {
+                var channel = await BrokerFactory.Create(uri, realm);
+                var service = new ReferenceService(repository.GetCurrencyUpdateStream());
+                var serviceHost = new ReferenceServiceHost(service, channel);
 
-            await channel.RegisterService(rr);
+                await serviceHost.Start();
+            }
+            catch (MessagingException e)
+            {
+                Log.Error(e);
+                Console.WriteLine("Exiting");
+                return;
+            }
 
+            Console.WriteLine("Service Started.");
             Console.WriteLine("procedure GetCurrencyPairs() registered");
 
             var random = new Random();
@@ -45,12 +74,12 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
                 ccy.Enabled = !ccy.Enabled;
 
                 if (ccy.Enabled)
-                    await publisher.AddCurrencyPair(ccy.CurrencyPair);
+                    await repository.AddCurrencyPair(ccy.CurrencyPair);
                 else
-                    await publisher.RemoveCurrencyPair(ccy.CurrencyPair);
+                    await repository.RemoveCurrencyPair(ccy.CurrencyPair);
 
                 Console.WriteLine("published to 'reference.onCurrencyPairUpdate'");
-                await Task.Delay(TimeSpan.FromSeconds(5));
+                await Task.Delay(TimeSpan.FromSeconds(1));
             }
         }
     }

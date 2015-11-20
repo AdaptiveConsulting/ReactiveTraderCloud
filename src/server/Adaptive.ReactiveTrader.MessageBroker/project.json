@@ -1,6 +1,6 @@
 {
     "version": "1.0.0-*",
-    "description": "Pricing Service",
+    "description": "MessageBroker Service",
     "authors": [ "james.watson" ],
     "tags": [ "" ],
     "projectUrl": "",
@@ -9,11 +9,12 @@
 
     "dependencies": {
         "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Contract": "1.0.0-*"
+        "WampSharp.SignalR": "1.2.3.12-beta"
+        
     },
 
     "commands": {
-        "Adaptive.ReactiveTrader.Server.Pricing": "Adaptive.ReactiveTrader.Server.Pricing"
+        "Adaptive.ReactiveTrader.MessageBroker": "Adaptive.ReactiveTrader.MessageBroker"
     },
 
     "frameworks": {

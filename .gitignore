@@ -6,3 +6,4 @@ dist/
 project.lock.json
 *.xproj.user
 artifacts
+src/server/.vs/config/applicationhost.config
