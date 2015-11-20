@@ -1,38 +1,49 @@
-$trader-base: #212A35;
-$trader-base-two: #293543;
-$trader-base-three: #90AFC1;
-
-
 .currency-pair {
   box-sizing: border-box;
   float: left;
-  width: 300px;
-  border: 1px solid $trader-base;
-  background: $trader-base-two;
-  color: $trader-base-three;
+  width: 328px;
+  border: 1px solid $gray-darker;
+  background: $gray-dark;
+  color: $gray-light;
   margin: 2px;
   &:hover {
     background: #294464;
   }
 
   .currency-pair-title {
-    font-size: 20px;
+    font-size: 26px;
     font-weight: bold;
     color: white;
-    padding-left: 4px;
+    padding-left: 8px;
+    border-bottom: 1px solid $gray-dark;
+    i {
+      font-size: 16px;
+      cursor: pointer;
+      color: $gray-light;
+    }
   }
   .currency-pair-actions {
     position: relative;
-    height: 70px;
+    height: 78px;
     > div {
       position: absolute;
-      width: 50%;
+      width: 45%;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+    .action {
+      box-sizing: border-box;
     }
     .buy {
       left: 0;
+      &:hover {
+        background: linear-gradient(to left, rgba(0,0,0,0), $gray-dark);
+        cursor: pointer;
+      }
     }
     .direction {
       left: calc(50% - 20px);
+      margin-top: 30px;
       width: 40px;
       height: 16px;
       &:before {
@@ -59,23 +70,45 @@ $trader-base-three: #90AFC1;
     .sell {
       right: 0;
       text-align: right;
+      &:hover {
+        background: linear-gradient(to right, rgba(0,0,0,0), $gray-dark);
+        cursor: pointer;
+      }
     }
 
     span {
       font-family: "Courier New";
+      font-size: 18px;
     }
     .pip {
       font-weight: bold;
-      font-size: 1.5em;
+      font-size: 48px;
+      color: $gray-lighter;
     }
   }
 
-  input.size {
-    border: none;
-    border-bottom: 1px solid lighten($trader-base-two, 10%);
-    background: transparent;
-    outline: none !important;
-    width: 100px;
-    margin-left: 8px;
+  .sizer {
+    clear: both;
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-top: 1px solid $gray-dark;
+
+    input.size {
+      border: none;
+      border-bottom: 1px solid lighten($gray-dark, 10%);
+      background: transparent;
+      outline: none !important;
+      width: 100px;
+      margin-left: 8px;
+    }
+    label {
+      @extend .pull-left;
+    }
   }
+
+  .sparkline-holder {
+    height: 28px;
+  }
+
 }

@@ -70,7 +70,8 @@ class CurrencyPairs extends React.Component {
       this.setState({
         pairs
       });
-      setTimeout(tick, rand * pairs.length * 300);
+
+      setTimeout(tick, rand * pairs.length * 600);
     };
 
     tick();
