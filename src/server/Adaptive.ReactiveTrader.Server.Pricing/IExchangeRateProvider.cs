@@ -1,4 +1,4 @@
-﻿namespace Adaptive.ReactiveTrader.Server.Pricing.ExchangeRate
+﻿namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public interface IExchangeRateProvider
     {

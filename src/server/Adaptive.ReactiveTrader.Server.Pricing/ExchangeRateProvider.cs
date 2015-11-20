@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Adaptive.ReactiveTrader.Server.Pricing.ExchangeRate
+namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     internal sealed class ExchangeRateProvider : IExchangeRateProvider
     {
