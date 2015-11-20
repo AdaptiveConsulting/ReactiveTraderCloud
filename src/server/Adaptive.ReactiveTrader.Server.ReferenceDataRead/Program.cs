@@ -1,25 +1,83 @@
 ﻿using System;
-using System.Linq;
+using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Server.ReferenceData;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class Program
     {
-        public void Main(string[] args)
+        protected static readonly ILog Log = LogManager.GetLogger<Program>();
+        private static ReferenceService _service;
+        private static ReferenceServiceHost _serviceHost;
+        private static IBroker _channel;
+        private static CurrencyPairCache _cache;
+
+        public static async Task Main(string[] args)
         {
-            var cache = new CurrencyPairCache();
-            
-            cache.Populate().Wait();
+            var uri = "ws://127.0.0.1:8080/ws";
+            var realm = "com.weareadaptive.reactivetrader";
 
-            Console.WriteLine("Active Currency Pairs");
-
-            foreach (var ccyPair in cache.GetAll().Where(x => x.IsEnabled))
+            if (args.Length > 0)
             {
-                Console.WriteLine($"Symbol: {ccyPair.Symbol}. Pips Position: {ccyPair.PipsPosition}. Rate Precision: {ccyPair.RatePrecision}. Sample Rate: {ccyPair.SampleRate}");
+                uri = args[0];
+                if (args.Length > 1)
+                    realm = args[1];
             }
 
-            Console.WriteLine("Press a key to exit");
-            Console.ReadKey();
+            try
+            {
+                using (await Run(uri, realm))
+                {
+                    Console.WriteLine("Press Any Key To Stop...");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        private static async Task<IDisposable> Run(string uri, string realm)
+        {
+            Console.WriteLine("Reference Data Service starting...");
+
+            try
+            {
+                _cache = new CurrencyPairCache();
+                _cache.Initialize();
+
+                _channel = await BrokerFactory.Create(uri, realm);
+                _service = new ReferenceService(_cache.GetCurrencyPairUpdates());
+                _serviceHost = new ReferenceServiceHost(_service, _channel);
+
+                await _serviceHost.Start();
+
+                Console.WriteLine("Service Started.");
+                Console.WriteLine("procedure GetCurrencyPairs() registered");
+
+                await Task.Run(() => Console.ReadLine());
+
+                return _serviceHost;
+
+            }
+            catch (MessagingException e)
+            {
+                throw new Exception("Can't start service", e);
+            }
+        }
+
+        private void WriteUpdateDto(CurrencyPairUpdatesDto updatesDto)
+        {
+            Console.WriteLine("Received CurrencyPairUpdatesDto");
+
+            foreach (var update in updatesDto.Updates)
+            {
+                Console.WriteLine(
+                    $"Symbol: {update.CurrencyPair.Symbol}. Pips Position: {update.CurrencyPair.PipsPosition}. Rate Precision: {update.CurrencyPair.RatePrecision}. Type: {update.UpdateType}");
+            }
         }
     }
 }

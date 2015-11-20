@@ -7,3 +7,4 @@ project.lock.json
 *.xproj.user
 artifacts
 AdaptiveTrader.iml
+src/server/.vs/config/applicationhost.config

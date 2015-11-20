@@ -1,1 +1,1 @@
-dnx -p Adaptive.ReactiveTrader.Server.Reference run
+dnx ReferenceDataRead
