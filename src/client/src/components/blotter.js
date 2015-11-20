@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import numeral from 'numeral'
+import numeral from 'numeral';
+import moment from 'moment';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   today = new Date();
@@ -64,12 +65,14 @@ class CurrencyPairs extends React.Component {
         </thead>
         <tbody>
         {this.state.trades.map((trade) => {
-          const notional = numeral(trade.amount).format('0,000,000.00') + ' ' + trade.pair.substr(0, 3);
+          const notional = numeral(trade.amount).format('0,000,000.00') + ' ' + trade.pair.substr(0, 3),
+            dateTime = moment(trade.dateTime).format('MMM Do, h:mm:ss a');
+
 
           return (
             <tr key={trade.id}>
               <td>{trade.id}</td>
-              <td className='large'>{trade.dateTime}</td>
+              <td className='large'>{dateTime}</td>
               <td>{trade.direction}</td>
               <td>{trade.pair}</td>
               <td className='large text-right'>{notional}</td>

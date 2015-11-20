@@ -64,8 +64,8 @@ class CurrencyPair extends React.Component {
     });
   }
 
-  shouldComponentUpdate(props){
-    return props.buy != this.props.buy || props.sell != this.props.sell;
+  shouldComponentUpdate(props, state){
+    return props.buy != this.props.buy || props.sell != this.props.sell || state.chart !== this.state.chart;
   }
 
   /**
