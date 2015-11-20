@@ -1,32 +1,20 @@
-{
+﻿{
     "version": "1.0.0-*",
-    "description": "Pricing Service",
+    "description": "Reactive Trader Transport Layer",
     "authors": [ "james.watson" ],
     "tags": [ "" ],
     "projectUrl": "",
     "licenseUrl": "",
-
-
     "dependencies": {
-        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Contract": "1.0.0-*"
+        "WampSharp.Default": "1.2.3.12-beta",
+        "Common.Logging": "3.3.1"
     },
-
-    "commands": {
-        "Adaptive.ReactiveTrader.Server.Pricing": "Adaptive.ReactiveTrader.Server.Pricing"
-    },
-
     "frameworks": {
         "dnx451": {
             "frameworkAssemblies": {
                 "System.Runtime": "",
                 "System.Collections": ""
-            },
-
-            "dependencies": {
-
             }
         }
-       
     }
 }

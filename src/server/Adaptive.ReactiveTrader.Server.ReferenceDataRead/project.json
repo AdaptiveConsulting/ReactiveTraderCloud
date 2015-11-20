@@ -8,15 +8,22 @@
 
     "dependencies": {
         "EventStore.Client": "3.3.1",
-        "Newtonsoft.Json": "7.0.1",
-        "Rx-Main": "2.2.5"
+        "WampSharp.Default": "1.2.3.12-beta",
+        "Common.Logging": "3.3.1",
+        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
+        "Adaptive.ReactiveTrader.Contract": "1.0.0-*"
     },
+
 
     "commands": {
         "ReferenceDataRead": "Adaptive.ReactiveTrader.Server.ReferenceDataRead"
     },
-
-    "frameworks": {
-        "dnx451": { }
+     "frameworks": {
+        "dnx451": {
+            "frameworkAssemblies": {
+                "System.Runtime": "",
+                "System.Collections": ""
+            }
+        }
     }
 }
