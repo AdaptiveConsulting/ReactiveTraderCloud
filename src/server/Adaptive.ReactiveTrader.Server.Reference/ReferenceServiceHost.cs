@@ -1,12 +1,15 @@
 using System.Text;
+using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
+using Common.Logging;
 using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
     public class ReferenceServiceHost
     {
+        protected static readonly ILog Log = LogManager.GetLogger<ReferenceServiceHost>();
         private readonly IReferenceService _referenceService;
         private readonly IBroker _broker;
 
@@ -18,6 +21,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
 
         public void GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
+            Log.DebugFormat("Received GetCurrencyPairUpdatesStream from {0}", context.UserSession.Username);
+
             var payload = JsonConvert.DeserializeObject<NothingDto>(Encoding.UTF8.GetString(message.Payload));
             var replyTo = message.ReplyTo;
 
@@ -25,9 +30,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
             _referenceService.GetCurrencyPairUpdatesStream(context, payload, responseChannel);
         }
 
-        public void Start()
+        public async Task Start()
         {
-            _broker.RegisterCall("reference.getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
+            await _broker.RegisterCall("reference.getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
         }
     }
 }

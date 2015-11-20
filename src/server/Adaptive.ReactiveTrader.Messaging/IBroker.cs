@@ -5,7 +5,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     public interface IBroker
     {
-        void RegisterCall(string v, Action<IRequestContext, IMessage> onMessage);
+        Task RegisterCall(string v, Action<IRequestContext, IMessage> onMessage);
         Task<IObserver<T>> CreateChannelAsync<T>(ITransientDestination replyTo);
     }
 }

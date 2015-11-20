@@ -17,6 +17,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             var factory = new DefaultWampChannelFactory();
             _channel = factory.CreateJsonChannel(uri, realm);
 
+
             var monitor = _channel.RealmProxy.Monitor;
 
             monitor.ConnectionBroken += OnClose;
@@ -25,12 +26,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             _services = _channel.RealmProxy.Services;
         }
       
-        public async Task<IObserver<T>> CreateChannelAsync<T>(string topic)
-        {
-            return await Task.Run(() => _services.GetSubject<T>(topic));
-        }
-
-        public void RegisterCall(string v, Action<IRequestContext, IMessage> onMessage)
+        public async Task RegisterCall(string v, Action<IRequestContext, IMessage> onMessage)
         {
             var rpcOperation = new RpcOperation(v, onMessage);
             var realm = _channel.RealmProxy;
@@ -40,13 +36,12 @@ namespace Adaptive.ReactiveTrader.Messaging
                 Invoke = "roundrobin",
             };
 
-            realm.RpcCatalog.Register(rpcOperation, registerOptions);
+            await realm.RpcCatalog.Register(rpcOperation, registerOptions);
         }
 
         public async Task<IObserver<T>> CreateChannelAsync<T>(ITransientDestination replyTo)
         {
             var desination = (WampTransientDestination) replyTo;
-
             return await Task.Run(() => _services.GetSubject<T>(desination.Topic));
         }
 

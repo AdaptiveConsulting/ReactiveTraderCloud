@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
@@ -10,14 +9,14 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
     public class ReferenceService : IReferenceService, IDisposable
     {
-        private readonly IObservable<CurrencyPairUpdatesDto> _repository;
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceService>();
         private readonly object _gate = new object();
+        private readonly IObservable<CurrencyPairUpdatesDto> _repository;
 
         private readonly HashSet<Action<CurrencyPairUpdatesDto>> _observers =
             new HashSet<Action<CurrencyPairUpdatesDto>>();
 
-        public ReferenceService(IObservable<CurrencyPairUpdatesDto> repository )
+        public ReferenceService(IObservable<CurrencyPairUpdatesDto> repository)
         {
             _repository = repository;
         }
@@ -29,7 +28,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
             var subscription = new SingleAssignmentDisposable();
 
             _repository.Subscribe(streamHandler);
-            
+
             lock (_gate)
             {
                 _observers.Add(streamHandler.OnNext);
@@ -42,25 +41,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
                 }
             });
             return subscription;
-        }
-
-        public void Publish(CurrencyPairUpdateDto update)
-        {
-            List<Action<CurrencyPairUpdatesDto>> sub;
-
-            lock (_gate)
-            {
-                if (!_observers.Any()) return;
-                sub = _observers.ToList();
-            }
-
-            foreach (var s in sub)
-            {
-                s(new CurrencyPairUpdatesDto
-                {
-                    Updates = new[] {update},
-                });
-            }
         }
 
         public void Dispose()

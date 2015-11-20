@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Linq;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.ReferenceData.Domain;
+using Common.Logging;
+using Microsoft.Framework.ConfigurationModel;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
     public class Program
     {
+        protected static readonly ILog Log = LogManager.GetLogger<Program>();
+
         public static async Task Main(string[] args)
         {
+         
             var uri = "ws://127.0.0.1:8080/ws";
             var realm = "com.weareadaptive.reactivetrader";
 
@@ -20,8 +24,15 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
                 if (args.Length > 1)
                     realm = args[1];
             }
-
-            await Run(uri, realm);
+        
+            try
+            {
+                await Run(uri, realm);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             Console.WriteLine("Press Any Key To Stop...");
             Console.ReadLine();
@@ -39,11 +50,13 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
                 var service = new ReferenceService(repository.GetCurrencyUpdateStream());
                 var serviceHost = new ReferenceServiceHost(service, channel);
 
-                serviceHost.Start();
+                await serviceHost.Start();
             }
             catch (MessagingException e)
             {
-                Console.WriteLine(e.Message);
+                Log.Error(e);
+                Console.WriteLine("Exiting");
+                return;
             }
 
             Console.WriteLine("Service Started.");
