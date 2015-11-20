@@ -79,6 +79,7 @@ class CurrencyPairs extends React.Component {
 
   onExecute(payload){
     //todo: send to socket.
+    this.props.onExecute && this.props.onExecute(payload);
   }
 
   render(){

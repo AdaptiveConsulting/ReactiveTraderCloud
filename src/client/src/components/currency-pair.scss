@@ -6,6 +6,7 @@
   background: $gray-dark;
   color: $gray-light;
   margin: 2px;
+  overflow: hidden;
   &:hover {
     background: #294464;
   }
@@ -108,7 +109,7 @@
   }
 
   .sparkline-holder {
-    height: 28px;
+    height: 29px;
   }
 
 }

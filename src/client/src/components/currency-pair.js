@@ -129,9 +129,11 @@ class CurrencyPair extends React.Component {
     if (this.props.onExecute && this.state.size !== 0){
       this.props.onExecute({
         direction: direction,
-        size: this.state.size,
-        price: this.props[direction],
-        pair: this.props.pair
+        amount: this.state.size,
+        rate: this.props[direction].toFixed(this.props.precision),
+        pair: this.props.pair,
+        valueDate: SPOTDATE,
+        trader: 'SJP'
       });
       this.setState({state: 'executing'});
     }
@@ -152,7 +154,7 @@ class CurrencyPair extends React.Component {
     const b = this.parsePrice(buy),
           s = this.parsePrice(sell);
 
-    return <div className={this.state.state + ' currency-pair'}>
+    return <div className={this.state.state + ' currency-pair animated flipInX'}>
       <div className='currency-pair-title'>
         {pair}
         <i className='fa fa-line-chart pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
