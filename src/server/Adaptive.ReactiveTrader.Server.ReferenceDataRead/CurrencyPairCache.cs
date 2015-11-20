@@ -33,8 +33,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         private readonly Dictionary<string, CurrencyPair> _stateOfTheWorld = new Dictionary<string, CurrencyPair>();
         private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
         private readonly BehaviorSubject<Dictionary<string, CurrencyPair>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<string, CurrencyPair>>(null);
-        private readonly Subject<RecordedEvent> _currencyPairUpdates = new Subject<RecordedEvent>();
-
+        private IConnectableObservable<RecordedEvent> _currencyPairEvents;
         private bool _isCaughtUp;
 
         public CurrencyPairCache()
@@ -48,26 +47,25 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         {
             _isCaughtUp = false;
 
-            Disposables.Add(GetAllCurrencyPairEvents()
-                            .SubscribeOn(_eventLoopScheduler)
-                            .Subscribe(evt =>
-                            {
-                                UpdateStateOfTheWorld(_stateOfTheWorld, evt);
+            _currencyPairEvents = GetAllCurrencyPairEvents().Publish();
+            Disposables.Add(_currencyPairEvents.Connect());
 
-                                if (_isCaughtUp)
-                                {
-                                    _stateOfTheWorldUpdates.OnNext(_stateOfTheWorld);
-                                }
+            Disposables.Add(_currencyPairEvents.SubscribeOn(_eventLoopScheduler)
+                                               .Subscribe(evt =>
+                                               {
+                                                   UpdateStateOfTheWorld(_stateOfTheWorld, evt);
 
-                                _currencyPairUpdates.OnNext(evt);
-                            }));
+                                                   if (_isCaughtUp)
+                                                   {
+                                                       _stateOfTheWorldUpdates.OnNext(_stateOfTheWorld);
+                                                   }
+                                               }));
         }
 
-        private IObservable<RecordedEvent> GetAllCurrencyPairEvents(long? fromVersion = null)
+        private IObservable<RecordedEvent> GetAllCurrencyPairEvents()
         {
-            return GetAllEvents(EventStoreUri, fromVersion)
-                .Where(x => CurrencyPairEventTypes.Contains(x.Event.EventType))
-                .Select(x => x.Event);
+            return GetAllEvents(EventStoreUri).Where(x => CurrencyPairEventTypes.Contains(x.Event.EventType))
+                                              .Select(x => x.Event);
         }
 
         public IObservable<CurrencyPairUpdatesDto> GetCurrencyPairUpdates()
@@ -80,29 +78,30 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             return Observable.Create<CurrencyPairUpdatesDto>(obs =>
             {
                 var sow = _stateOfTheWorldUpdates.Where(x => x != null)
-                    .Take(1)
-                    .Select(x => BuildUpdateDto(x.Values.Where(cp => cp.IsEnabled)));
+                                                 .Take(1)
+                                                 .Select(x => BuildUpdateDto(x.Values.Where(cp => cp.IsEnabled)));
 
-                return sow.Concat(_currencyPairUpdates
-                          .Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorld, evt)))
+                return sow.Concat(_currencyPairEvents.Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorld, evt)))
                           .Subscribe(obs);
             });
         }
 
         private static CurrencyPairUpdatesDto BuildUpdateDto(IEnumerable<CurrencyPair> currencyPairs)
         {
-            return new CurrencyPairUpdatesDto(currencyPairs.Select(x => new CurrencyPairUpdateDto
-            {
-                CurrencyPair = new CurrencyPairDto(x.Symbol, x.RatePrecision, x.PipsPosition),
-                UpdateType = UpdateTypeDto.Added
-            }).ToList());
+            return new CurrencyPairUpdatesDto(currencyPairs.Where(x => x.IsEnabled)
+                                                           .Select(x => new CurrencyPairUpdateDto
+                                                           {
+                                                               CurrencyPair = new CurrencyPairDto(x.Symbol, x.RatePrecision, x.PipsPosition),
+                                                               UpdateType = UpdateTypeDto.Added
+                                                           })
+                                                           .ToList());
         }
 
-        private IObservable<ResolvedEvent> GetAllEvents(string eventStoreUri, long? fromVersion = null)
+        private IObservable<ResolvedEvent> GetAllEvents(string eventStoreUri)
         {
             return Observable.Create<ResolvedEvent>(async o =>
             {
-                var conn = await Connect(eventStoreUri);
+                var conn = await ConnectToEventStore(eventStoreUri);
 
                 Action<EventStoreCatchUpSubscription, ResolvedEvent> onEvent = (_, resolvedEvent) =>
                 {
@@ -121,9 +120,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                     });
                 };
 
-                var initialPosition = fromVersion == null ? Position.Start : new Position(fromVersion.Value, fromVersion.Value);
-
-                var subscription = conn.SubscribeToAllFrom(initialPosition, false, onEvent, onCaughtUp);
+                var subscription = conn.SubscribeToAllFrom(Position.Start, false, onEvent, onCaughtUp);
                 return new CompositeDisposable(Disposable.Create(() => subscription.Stop()), conn);
             });
         }
@@ -191,7 +188,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             return JsonConvert.DeserializeObject<T>(eventString);
         }
 
-        private async Task<IEventStoreConnection> Connect(string uriString)
+        private async Task<IEventStoreConnection> ConnectToEventStore(string uriString)
         {
             var connectionSettings = ConnectionSettings.Create().KeepReconnecting();
 
