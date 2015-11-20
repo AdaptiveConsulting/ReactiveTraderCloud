@@ -1,20 +1,19 @@
 {
-    "version": "1.0.0-*",
-    "description": "Pricing Service",
-    "authors": [ "james.watson" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.0-*",
+  "description": "Pricing Service",
+  "authors": [ "james.watson" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
 
   "dependencies": {
-    "Adaptive.ReactiveTrader.Transport": "1.0.0-*",
-    "Newtonsoft.Json": "7.0.1"
+    "Newtonsoft.Json": "7.0.1",
+    "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Contract": "1.0.0-*"
   },
 
-    "dependencies": {
-        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Contract": "1.0.0-*"
-    },
+  "frameworks": {
+    "dnx451": {
 
     }
   }
