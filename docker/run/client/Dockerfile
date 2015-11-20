@@ -1,11 +1,10 @@
-#FROM        weareadaptive/node
-FROM        node:5
-MAINTAINER  weareadaptive <thibault@weareadaptive.com>
+FROM        weareadaptive/node
 
-#RUN         apk add --update git
+MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
 COPY        client    /client
 
 WORKDIR     /client/
 RUN         npm install
-RUN         npm test
+RUN         npm run compile
+#RUN         npm test
