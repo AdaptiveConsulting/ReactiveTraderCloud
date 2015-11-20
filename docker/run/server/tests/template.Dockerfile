@@ -1,12 +1,12 @@
 FROM        weareadaptive/mono.net:__VERSION__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
-COPY        src    /src
+COPY        server    /server
 
 ENV         PATH    /root/.dnx/runtimes/dnx-mono.__VERSION__/bin:$PATH
 
-WORKDIR     /src/server/
+WORKDIR     /server/
 RUN         dnu restore
 
-WORKDIR     /src/server/Adaptive.ReactiveTrader.Server.Tests/
+WORKDIR     /server/Adaptive.ReactiveTrader.Server.Tests/
 RUN         dnx test -parallel none

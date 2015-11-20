@@ -2,10 +2,10 @@ machine:
   services:
     - docker
 
-dependencies: 
+dependencies:
   override:
     - docker info
 
 test:
   override:
-    - cd docker/run && ./build.sh 1.0.0-rc1-final
+    - cd docker/run/server/tests && ./build.sh 1.0.0-rc1-final
