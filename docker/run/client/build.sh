@@ -2,4 +2,4 @@
 
 rsync -aq ../../../src/client ./
 
-docker build -t weareadaptive/reactive-trader-client .
+docker build --no-cache -t weareadaptive/reactive-trader-client .

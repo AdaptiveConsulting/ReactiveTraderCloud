@@ -1,6 +1,9 @@
-FROM        weareadaptive/node
-
+FROM        node:5
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
+
+RUN        apt-get update
+RUN        apt-get install -y python \
+                              git
 
 COPY        client    /client
 
