@@ -6,15 +6,27 @@
   "projectUrl": "",
   "licenseUrl": "",
 
-  "dependencies": {
-    "Newtonsoft.Json": "7.0.1",
-    "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
-    "Adaptive.ReactiveTrader.Contract": "1.0.0-*"
-  },
+    "dependencies": {
+        "Newtonsoft.Json": "7.0.1",
+        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
+        "Adaptive.ReactiveTrader.Contract": "1.0.0-*"
+    },
 
-  "frameworks": {
-    "dnx451": {
+    "commands": {
+        "Pricing": "Adaptive.ReactiveTrader.Server.Pricing"
+    },
 
+   "frameworks": {
+        "dnx451": {
+            "frameworkAssemblies": {
+                "System.Runtime": "",
+                "System.Collections": ""
+            },
+
+            "dependencies": {
+
+            }
+        }
+       
     }
-  }
 }

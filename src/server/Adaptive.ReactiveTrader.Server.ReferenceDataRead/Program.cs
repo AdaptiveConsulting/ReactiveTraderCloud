@@ -15,7 +15,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         private static IBroker _channel;
         private static CurrencyPairCache _cache;
 
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var uri = "ws://127.0.0.1:8080/ws";
             var realm = "com.weareadaptive.reactivetrader";
@@ -29,9 +29,10 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
             try
             {
-                using (await Run(uri, realm))
+                using (Run(uri, realm).Result)
                 {
                     Console.WriteLine("Press Any Key To Stop...");
+                    Console.ReadLine();
                 }
             }
             catch (Exception e)
@@ -57,9 +58,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
                 Console.WriteLine("Service Started.");
                 Console.WriteLine("procedure GetCurrencyPairs() registered");
-
-                await Task.Run(() => Console.ReadLine());
-
+                
                 return _serviceHost;
 
             }
