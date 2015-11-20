@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    internal class Program
+    public class Program
     {
-        public static async Task Main(string[] args)
-        {
-            Console.WriteLine("Pricing Server starting...");
+        protected static readonly ILog Log = LogManager.GetLogger<Program>();
+        private static PricingService _service;
+        private static PricingServiceHost _serviceHost;
+        private static IBroker _channel;
+        private static PriceGenerator _cache;
 
+        public static void Main(string[] args)
+        {
             var uri = "ws://127.0.0.1:8080/ws";
             var realm = "com.weareadaptive.reactivetrader";
 
@@ -20,23 +25,41 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                     realm = args[1];
             }
 
-            await Run(uri, realm);
-
-            Console.WriteLine("Press Any Key To Stop...");
-            Console.ReadLine();
+            try
+            {
+                using (Run(uri, realm).Result)
+                {
+                    Console.WriteLine("Press Any Key To Stop...");
+                    Console.ReadLine();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
-        private static async Task Run(string uri, string realm)
+        private static async Task<IDisposable> Run(string uri, string realm)
         {
-            Console.WriteLine("Doing Nothing.");
+            Console.WriteLine("Pricing Data Service starting...");
 
             try
             {
-                var channel = await BrokerFactory.Create(uri, realm);
+                _cache = new PriceGenerator();
+
+                _channel = await BrokerFactory.Create(uri, realm);
+                _service = new PricingService(_cache.GetPriceStream);
+                _serviceHost = new PricingServiceHost(_service, _channel);
+
+                await _serviceHost.Start();
+
+                Console.WriteLine("Service Started.");
+
+                return _serviceHost;
             }
             catch (MessagingException e)
             {
-                Console.WriteLine(e.Message);
+                throw new Exception("Can't start service", e);
             }
         }
     }
