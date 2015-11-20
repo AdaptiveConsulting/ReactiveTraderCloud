@@ -1,4 +1,4 @@
-﻿using Adaptive.ReactiveTrader.Server.ReferenceData;
+﻿using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Server.ReferenceDataRead.Events;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
@@ -11,7 +11,6 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
@@ -48,11 +47,13 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         {
             _isCaughtUp = false;
 
-            _currencyPairEvents = GetAllCurrencyPairEvents().Publish();
-            Disposables.Add(_currencyPairEvents.Connect());
+            _currencyPairEvents = GetAllEvents(EventStoreUri).Where(x => CurrencyPairEventTypes.Contains(x.Event.EventType))
+                                                             .Select(x => x.Event)
+                                                             .SubscribeOn(_eventLoopScheduler)
+                                                             .Publish();
 
-            Disposables.Add(_currencyPairEvents.SubscribeOn(_eventLoopScheduler)
-                                               .Subscribe(evt =>
+            Disposables.Add(_currencyPairEvents.Connect());
+            Disposables.Add(_currencyPairEvents.Subscribe(evt =>
                                                {
                                                    UpdateStateOfTheWorld(_stateOfTheWorld, evt);
 
@@ -61,12 +62,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                                                        _stateOfTheWorldUpdates.OnNext(_stateOfTheWorld);
                                                    }
                                                }));
-        }
-
-        private IObservable<RecordedEvent> GetAllCurrencyPairEvents()
-        {
-            return GetAllEvents(EventStoreUri).Where(x => CurrencyPairEventTypes.Contains(x.Event.EventType))
-                                              .Select(x => x.Event);
         }
 
         public IObservable<CurrencyPairUpdatesDto> GetCurrencyPairUpdates()
@@ -80,14 +75,14 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             {
                 var sow = _stateOfTheWorldUpdates.Where(x => x != null)
                                                  .Take(1)
-                                                 .Select(x => BuildUpdateDto(x.Values.Where(cp => cp.IsEnabled)));
+                                                 .Select(x => BuildStateOfTheWorldDto(x.Values.Where(cp => cp.IsEnabled)));
 
                 return sow.Concat(_currencyPairEvents.Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorld, evt)))
                           .Subscribe(obs);
             });
         }
 
-        private static CurrencyPairUpdatesDto BuildUpdateDto(IEnumerable<CurrencyPair> currencyPairs)
+        private static CurrencyPairUpdatesDto BuildStateOfTheWorldDto(IEnumerable<CurrencyPair> currencyPairs)
         {
             return new CurrencyPairUpdatesDto(currencyPairs.Where(x => x.IsEnabled)
                                                            .Select(x => new CurrencyPairUpdateDto
@@ -126,21 +121,21 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             });
         }
 
-        private void UpdateStateOfTheWorld(IDictionary<string, CurrencyPair> currencyPairs, RecordedEvent evt)
+        private void UpdateStateOfTheWorld(IDictionary<string, CurrencyPair> currentSow, RecordedEvent evt)
         {
             switch (evt.EventType)
             {
                 case CurrencyPairCreatedEventType:
                     var createdEvent = GetEvent<CurrencyPairCreatedEvent>(evt);
-                    currencyPairs.Add(createdEvent.Symbol, new CurrencyPair(createdEvent.Symbol, createdEvent.PipsPosition, createdEvent.RatePrecision, createdEvent.SampleRate, createdEvent.Comment));
+                    currentSow.Add(createdEvent.Symbol, new CurrencyPair(createdEvent.Symbol, createdEvent.PipsPosition, createdEvent.RatePrecision, createdEvent.SampleRate, createdEvent.Comment));
                     break;
                 case CurrencyPairActivatedEventType:
                     var activatedEvent = GetEvent<CurrencyPairActivatedEvent>(evt);
-                    currencyPairs[activatedEvent.Symbol].IsEnabled = true;
+                    currentSow[activatedEvent.Symbol].IsEnabled = true;
                     break;
                 case CurrencyPairDeactivatedEventType:
                     var deactivatedEvent = GetEvent<CurrencyPairActivatedEvent>(evt);
-                    currencyPairs[deactivatedEvent.Symbol].IsEnabled = false;
+                    currentSow[deactivatedEvent.Symbol].IsEnabled = false;
                     break;
                 case CurrencyPairChangedEventType:
                     break;
@@ -154,27 +149,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             switch (evt.EventType)
             {
                 case CurrencyPairActivatedEventType:
-                    var activatedEvent = GetEvent<CurrencyPairActivatedEvent>(evt);
-                    var ccyPairToActivate = currentSow[activatedEvent.Symbol];
-                    return new CurrencyPairUpdatesDto(new[]
-                    {
-                        new CurrencyPairUpdateDto
-                        {
-                            CurrencyPair =new CurrencyPairDto(ccyPairToActivate.Symbol, ccyPairToActivate.RatePrecision, ccyPairToActivate.PipsPosition),
-                            UpdateType = UpdateTypeDto.Added
-                        }
-                    });
-                    case CurrencyPairDeactivatedEventType:
-                    var deactivatedEvent = GetEvent<CurrencyPairDeactivatedEvent>(evt);
-                    var ccyPairToDeactivate = currentSow[deactivatedEvent.Symbol];
-                    return new CurrencyPairUpdatesDto(new[]
-                    {
-                        new CurrencyPairUpdateDto
-                        {
-                            CurrencyPair =new CurrencyPairDto(ccyPairToDeactivate.Symbol, ccyPairToDeactivate.RatePrecision, ccyPairToDeactivate.PipsPosition),
-                            UpdateType = UpdateTypeDto.Removed
-                        }
-                    });
+                    return CreateSingleEventUpdateDto(currentSow, GetEvent<CurrencyPairActivatedEvent>(evt).Symbol, UpdateTypeDto.Added);
+                case CurrencyPairDeactivatedEventType:
+                    return CreateSingleEventUpdateDto(currentSow, GetEvent<CurrencyPairDeactivatedEvent>(evt).Symbol, UpdateTypeDto.Removed);
                 case CurrencyPairCreatedEventType:
                 case CurrencyPairChangedEventType:
                     return CurrencyPairUpdatesDto.Empty;
@@ -183,7 +160,20 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             }
         }
 
-        private T GetEvent<T>(RecordedEvent evt)
+        private static CurrencyPairUpdatesDto CreateSingleEventUpdateDto(IDictionary<string, CurrencyPair> currentSow, string symbol, UpdateTypeDto updateType)
+        {
+            var ccyPairToDeactivate = currentSow[symbol];
+            return new CurrencyPairUpdatesDto(new[]
+            {
+                new CurrencyPairUpdateDto
+                {
+                    CurrencyPair = new CurrencyPairDto(ccyPairToDeactivate.Symbol, ccyPairToDeactivate.RatePrecision, ccyPairToDeactivate.PipsPosition),
+                    UpdateType = updateType
+                }
+            });
+        }
+
+        private static T GetEvent<T>(RecordedEvent evt)
         {
             var eventString = Encoding.UTF8.GetString(evt.Data);
             return JsonConvert.DeserializeObject<T>(eventString);
