@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
@@ -7,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
-    public class ReferenceServiceHost
+    public class ReferenceServiceHost : IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceServiceHost>();
         private readonly IReferenceService _referenceService;
@@ -33,6 +34,11 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
         public async Task Start()
         {
             await _broker.RegisterCall("reference.getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
+        }
+
+        public void Dispose()
+        {
+            Console.WriteLine("Killing ReferenceRead ServiceHost");
         }
     }
 }
