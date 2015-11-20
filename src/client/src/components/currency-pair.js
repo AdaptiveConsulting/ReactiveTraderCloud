@@ -1,8 +1,12 @@
 import React from 'react';
 
+import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 
 const numberConvertRegex = /^([0-9.]+)?([MK]{1})?$/,
-  SEPARATOR = '.';
+  SEPARATOR = '.',
+  MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+let SPOTDATE;
 
 /**
  * @class CurrencyPairs
@@ -14,7 +18,7 @@ class CurrencyPair extends React.Component {
     pair: React.PropTypes.string,
     buy: React.PropTypes.number,
     sell: React.PropTypes.number,
-    spread: React.PropTypes.number,
+    spread: React.PropTypes.string,
     precision: React.PropTypes.number,
     pip: React.PropTypes.number,
     onExecute: React.PropTypes.func
@@ -29,30 +33,39 @@ class CurrencyPair extends React.Component {
     super(props, context);
     this.state = {
       size: 0,
+      chart: false,
+      state: 'listening',
       historic: []
     }
   }
 
   componentWillMount(){
-    const size = this._getSize(this.props.size);
+    const size = this._getSize(this.props.size),
+      today = new Date;
 
     this.setState({
       size,
       historic: [this.props.buy]
     });
+
+    SPOTDATE = ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' ');
   }
 
   componentWillReceiveProps(props){
     const historic = this.state.historic;
 
-    historic.unshift(props.buy);
+    historic.push(props.buy);
 
     // 30 max historic prices
-    historic.length > 30 && (historic.length = 30);
+    historic.length > 30 && (historic.shift());
 
     this.setState({
       historic
     });
+  }
+
+  shouldComponentUpdate(props, state){
+    return props.buy != this.props.buy || props.sell != this.props.sell || state.chart !== this.state.chart;
   }
 
   /**
@@ -120,6 +133,7 @@ class CurrencyPair extends React.Component {
         price: this.props[direction],
         pair: this.props.pair
       });
+      this.setState({state: 'executing'});
     }
     else {
       console.error('To execute spot trade, you need onExecute({Payload}) callback and a valid size');
@@ -130,31 +144,45 @@ class CurrencyPair extends React.Component {
     const { historic, size } = this.state;
     const { buy, sell, pair, spread } = this.props;
 
-    const base = pair.substr(0, 3);
+    const base = pair.substr(0, 3),
+      len = historic.length - 2;
     // up, down, even
-    const direction = (historic.length > 1) ? historic[1] > buy ? 'up' : historic[1] < buy ? 'down' : '-' :'-';
+    const direction = (historic.length > 1) ? historic[len] < buy ? 'up' : historic[len] > buy ? 'down' : '-' :'-';
 
     const b = this.parsePrice(buy),
           s = this.parsePrice(sell);
 
-    return <div className='currency-pair'>
+    return <div className={this.state.state + ' currency-pair'}>
       <div className='currency-pair-title'>
         {pair}
+        <i className='fa fa-line-chart pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       <div className='currency-pair-actions'>
-        <div className="buy" onClick={() => this.execute('buy')}>
+        <div className='buy action' onClick={() => this.execute('buy')}>
+          <div>BUY</div>
           <span className='big'></span>{b.bigFigures}<span className='pip'>{b.pip}</span><span className='tenth'>{b.pipFraction}</span>
         </div>
         <div className={direction + ' direction'}>{spread}</div>
-        <div className="sell" onClick={() => this.execute('sell')}>
+        <div className='sell action' onClick={() => this.execute('sell')}>
+          <div>SELL</div>
           <span className='big'></span>{s.bigFigures}<span className='pip'>{s.pip}</span><span className='tenth'>{s.pipFraction}</span>
         </div>
       </div>
-      <div className="sizer">
+      <div className='clearFix'></div>
+      <div className='sizer'>
         <label>{base}
         <input className='size' type='text' ref='size' defaultValue={size} onChange={(e) => this.setSizeFromInput(e)} /></label>
+        <div className='pull-right'>
+          {SPOTDATE}
+        </div>
       </div>
-
+      <div className="clearfix"></div>
+      {this.state.chart ?
+        <Sparklines data={historic.slice()} width={326} height={24} margin={0}>
+          <SparklinesLine />
+          <SparklinesSpots />
+          <SparklinesReferenceLine type="avg" />
+        </Sparklines> : <div className='sparkline-holder'></div>}
     </div>
   }
 }
