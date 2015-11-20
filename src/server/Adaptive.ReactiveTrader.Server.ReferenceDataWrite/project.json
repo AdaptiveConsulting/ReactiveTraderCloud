@@ -12,7 +12,7 @@
     },
 
     "commands": {
-        "ReferenceDataWrite": "ReferenceDataWrite"
+        "ReferenceDataWrite": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite"
     },
 
     "frameworks": {
