@@ -1,0 +1,1 @@
+dnx -p Adaptive.ReactiveTrader.Server.ReferenceDataWrite refDataWritePopulate
