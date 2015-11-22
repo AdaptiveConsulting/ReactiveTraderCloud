@@ -1,0 +1,18 @@
+machine:
+  node:
+    version: 5.1.0
+  services:
+    - docker
+
+dependencies:
+  cache_directories:
+    - ~/.npm
+  override:
+    - docker info
+
+test:
+  override:
+    - cd docker/run/server/tests && ./build.sh 1.0.0-rc1-final
+    - cd src/client && npm install
+    - cd src/client && npm run compile
+    # - cd docker/run/client && ./build.sh
