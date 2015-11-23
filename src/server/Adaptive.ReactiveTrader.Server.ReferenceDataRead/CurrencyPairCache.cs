@@ -1,5 +1,4 @@
-﻿using Adaptive.ReactiveTrader.Server.ReferenceData;
-using Adaptive.ReactiveTrader.Server.ReferenceDataRead.Events;
+﻿using Adaptive.ReactiveTrader.Server.ReferenceDataRead.Events;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using System;

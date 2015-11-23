@@ -1,35 +1,12 @@
 ﻿using System;
-using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.MessageBroker;
 using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Server.Pricing;
+using Adaptive.ReactiveTrader.Server.ReferenceDataRead;
 using Common.Logging;
 
-namespace Adaptive.ReactiveTrader.Server.Pricing
+namespace Adaptive.ReactiveTrader.Server.Launcher
 {
-    public class PriceServiceLauncher
-    {
-        public static async Task<IDisposable> Run(IBroker broker)
-        {
-            var cache = new PriceGenerator();
-
-            var service = new PricingService(cache.GetPriceStream);
-            var serviceHost = new PricingServiceHost(service, broker);
-            try
-            {
-                Console.WriteLine("Pricing Data Service starting...");
-                await serviceHost.Start();
-            }
-            catch (MessagingException e)
-            {
-                throw new Exception("Can't start service", e);
-            }
-
-            Console.WriteLine("Service Started.");
-
-            return serviceHost;
-        }
-    }
-
-
     public class Program
     {
         protected static readonly ILog Log = LogManager.GetLogger<Program>();
@@ -48,7 +25,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             {
                 var broker = BrokerFactory.Create(uri, realm);
 
+                using (MessageBrokerLauncher.Run())
                 using (PriceServiceLauncher.Run(broker.Result).Result)
+                using (ReferenceDataReaderLauncher.Run(broker.Result).Result)
                 {
                     Console.WriteLine("Press Any Key To Stop...");
                     Console.ReadLine();

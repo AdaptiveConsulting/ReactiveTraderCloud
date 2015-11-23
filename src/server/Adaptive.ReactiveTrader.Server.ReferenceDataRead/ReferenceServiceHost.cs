@@ -3,10 +3,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Server.ReferenceData;
 using Common.Logging;
 using Newtonsoft.Json;
 
-namespace Adaptive.ReactiveTrader.Server.ReferenceData
+namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class ReferenceServiceHost : IDisposable
     {
