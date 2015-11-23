@@ -1,0 +1,37 @@
+{
+    "version": "1.0.0-*",
+    "description": "Service Launcher",
+    "authors": [ "james.watson" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+
+    "dependencies": {
+        "Newtonsoft.Json": "7.0.1",
+        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
+        "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
+        "Adaptive.ReactiveTrader.MessageBroker": "",
+        "Adaptive.ReactiveTrader.EventStore": "",
+        "Adaptive.ReactiveTrader.Server.Pricing": "",
+        "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "",
+        "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": ""
+    },
+
+    "commands": {
+        "default": "Adaptive.ReactiveTrader.Server.Launcher"
+    },
+
+   "frameworks": {
+        "dnx451": {
+            "frameworkAssemblies": {
+                "System.Runtime": "",
+                "System.Collections": ""
+            },
+
+            "dependencies": {
+
+            }
+        }
+       
+    }
+}

@@ -4,7 +4,7 @@ using Adaptive.ReactiveTrader.Messaging;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    internal class PricingService : IPricingService
+    public class PricingService : IPricingService
     {
         private readonly Func<string, IObservable<SpotPriceDto>> _getPriceStream;
 

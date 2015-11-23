@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    internal class PricingServiceHost : IDisposable
+    public class PricingServiceHost : IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
         private readonly IPricingService _service;

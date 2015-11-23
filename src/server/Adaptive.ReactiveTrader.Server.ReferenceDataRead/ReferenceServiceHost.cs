@@ -6,7 +6,7 @@ using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 using Newtonsoft.Json;
 
-namespace Adaptive.ReactiveTrader.Server.ReferenceData
+namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class ReferenceServiceHost : IDisposable
     {

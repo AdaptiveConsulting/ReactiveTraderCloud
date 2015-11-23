@@ -1,4 +1,4 @@
-﻿using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Server.ReferenceDataRead.Events;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
@@ -11,12 +11,13 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.EventStore;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class CurrencyPairCache : IDisposable
     {
-        private const string EventStoreUri = "tcp://admin:changeit@127.0.0.1:1113";
+        private readonly IEventStore _es;
         private const string CurrencyPairCreatedEventType = "Currency Pair Created";
         private const string CurrencyPairChangedEventType = "Currency Pair Changed";
         private const string CurrencyPairActivatedEventType = "Currency Pair Activated";
@@ -33,11 +34,12 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         private readonly Dictionary<string, CurrencyPair> _stateOfTheWorld = new Dictionary<string, CurrencyPair>();
         private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
         private readonly BehaviorSubject<Dictionary<string, CurrencyPair>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<string, CurrencyPair>>(null);
-        private IConnectableObservable<RecordedEvent> _currencyPairEvents;
+        private IConnectableObservable<IEvent> _currencyPairEvents;
         private bool _isCaughtUp;
 
-        public CurrencyPairCache()
+        public CurrencyPairCache(IEventStore es)
         {
+            _es = es;
             Disposables = new CompositeDisposable();
         }
 
@@ -47,21 +49,21 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         {
             _isCaughtUp = false;
 
-            _currencyPairEvents = GetAllEvents(EventStoreUri).Where(x => CurrencyPairEventTypes.Contains(x.Event.EventType))
-                                                             .Select(x => x.Event)
+            _currencyPairEvents = GetAllEvents().Where(x => CurrencyPairEventTypes.Contains(x.EventType))
+                                                             .Select(x => x)
                                                              .SubscribeOn(_eventLoopScheduler)
                                                              .Publish();
 
-            Disposables.Add(_currencyPairEvents.Connect());
             Disposables.Add(_currencyPairEvents.Subscribe(evt =>
-                                               {
-                                                   UpdateStateOfTheWorld(_stateOfTheWorld, evt);
+            {
+                UpdateStateOfTheWorld(_stateOfTheWorld, evt);
 
-                                                   if (_isCaughtUp)
-                                                   {
-                                                       _stateOfTheWorldUpdates.OnNext(_stateOfTheWorld);
-                                                   }
-                                               }));
+                if (_isCaughtUp)
+                {
+                    _stateOfTheWorldUpdates.OnNext(_stateOfTheWorld);
+                }
+            }));
+            Disposables.Add(_currencyPairEvents.Connect());
         }
 
         public IObservable<CurrencyPairUpdatesDto> GetCurrencyPairUpdates()
@@ -93,17 +95,15 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                                                            .ToList());
         }
 
-        private IObservable<ResolvedEvent> GetAllEvents(string eventStoreUri)
+        private IObservable<IEvent> GetAllEvents()
         {
-            return Observable.Create<ResolvedEvent>(async o =>
+            return Observable.Create<IEvent>(o =>
             {
-                var conn = await ConnectToEventStore(eventStoreUri);
-
-                Action<EventStoreCatchUpSubscription, ResolvedEvent> onEvent = (_, resolvedEvent) =>
+                Action<IEvent> onEvent = e =>
                 {
                     _eventLoopScheduler.Schedule(() =>
                     {
-                        o.OnNext(resolvedEvent);
+                        o.OnNext(e);
                     });
                 };
 
@@ -116,12 +116,12 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                     });
                 };
 
-                var subscription = conn.SubscribeToAllFrom(Position.Start, false, onEvent, onCaughtUp);
-                return new CompositeDisposable(Disposable.Create(() => subscription.Stop()), conn);
+                var subscription = _es.SubscribeToAllFrom(Position.Start, false, onEvent, onCaughtUp);
+                return new CompositeDisposable(Disposable.Create(() => subscription.Stop()));
             });
         }
 
-        private void UpdateStateOfTheWorld(IDictionary<string, CurrencyPair> currentSow, RecordedEvent evt)
+        private void UpdateStateOfTheWorld(IDictionary<string, CurrencyPair> currentSow, IEvent evt)
         {
             switch (evt.EventType)
             {
@@ -144,7 +144,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             }
         }
 
-        private CurrencyPairUpdatesDto MapSingleEventToUpdateDto(IDictionary<string, CurrencyPair> currentSow, RecordedEvent evt)
+        private CurrencyPairUpdatesDto MapSingleEventToUpdateDto(IDictionary<string, CurrencyPair> currentSow, IEvent evt)
         {
             switch (evt.EventType)
             {
@@ -173,22 +173,12 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             });
         }
 
-        private static T GetEvent<T>(RecordedEvent evt)
+        private static T GetEvent<T>(IEvent evt)
         {
             var eventString = Encoding.UTF8.GetString(evt.Data);
             return JsonConvert.DeserializeObject<T>(eventString);
         }
-
-        private async Task<IEventStoreConnection> ConnectToEventStore(string uriString)
-        {
-            var connectionSettings = ConnectionSettings.Create().KeepReconnecting();
-
-            var uri = new Uri(uriString);
-            var conn = EventStoreConnection.Create(connectionSettings, uri);
-            await conn.ConnectAsync();
-            return conn;
-        }
-
+        
         public void Dispose()
         {
             Disposables.Dispose();

@@ -22,6 +22,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Ser
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Contract", "Adaptive.ReactiveTrader.Contract\Adaptive.ReactiveTrader.Contract.xproj", "{4DEE8EB8-0CE4-426F-9C46-B33F5FAF3AF7}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Launcher", "Adaptive.ReactiveTrader.Server.Launcher\Adaptive.ReactiveTrader.Server.Launcher.xproj", "{EF987BEC-380A-45BB-BDFE-70303E5BFB4F}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.EventStore", "Adaptive.ReactiveTrader.EventStore\Adaptive.ReactiveTrader.EventStore.xproj", "{9DB332BD-3FF8-4AE3-AD4E-46D917471B75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +60,14 @@ Global
 		{4DEE8EB8-0CE4-426F-9C46-B33F5FAF3AF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DEE8EB8-0CE4-426F-9C46-B33F5FAF3AF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DEE8EB8-0CE4-426F-9C46-B33F5FAF3AF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF987BEC-380A-45BB-BDFE-70303E5BFB4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF987BEC-380A-45BB-BDFE-70303E5BFB4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF987BEC-380A-45BB-BDFE-70303E5BFB4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF987BEC-380A-45BB-BDFE-70303E5BFB4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DB332BD-3FF8-4AE3-AD4E-46D917471B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DB332BD-3FF8-4AE3-AD4E-46D917471B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DB332BD-3FF8-4AE3-AD4E-46D917471B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DB332BD-3FF8-4AE3-AD4E-46D917471B75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
