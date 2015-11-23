@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "default": {
+      "commandName": "default",
+      "commandLineArgs": "es mb p ref --realm test"
+    }
+  }
+}

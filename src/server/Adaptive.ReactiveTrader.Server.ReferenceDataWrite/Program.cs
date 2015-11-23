@@ -1,6 +1,8 @@
-﻿using EventStore.ClientAPI;
+using Adaptive.ReactiveTrader.EventStore;
+using EventStore.ClientAPI;
 using System;
 using System.Net;
+
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
@@ -8,10 +10,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
     {
         public void Main(string[] args)
         {
-            var connection = EventStoreConnection.Create(new IPEndPoint(IPAddress.Loopback, 1113));
-            connection.ConnectAsync().Wait();
-
-            var repository = new CurrencyPairRepository(connection);
+            var eventStore = new NetworkEventStore();
+            var repository = new CurrencyPairRepository(eventStore);
 
             if (args.Length > 0)
             {

@@ -1,7 +1,6 @@
 using System;
 using WampSharp.Binding;
 using WampSharp.Fleck;
-using WampSharp.SignalR;
 using WampSharp.V2;
 
 namespace Adaptive.ReactiveTrader.MessageBroker
