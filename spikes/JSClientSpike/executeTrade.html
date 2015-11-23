@@ -1,0 +1,41 @@
+<html>
+<body>
+  <h1>Trade Execution</h1>
+
+<div id="executeInputs">
+
+    <p>
+        CurrencyPair: <input type="text" id="ccyPair"/>
+    </p>
+
+    <p>
+        Spot Rate: <input type="text" id="spot"/>
+    </p>
+
+    <p>
+        Direction:
+        Buy <input type="radio" name="direction" value="buy"/>
+        Sell <input type="radio" name="direction" value="sell"/>
+    </p>
+
+    <p>
+        Notional: <input type="text" id="notional"/>
+    </p>
+
+    <p>
+        Dealt Currency: <input type="text" id="dealtCcy"/>
+    </p>
+
+</div>
+
+<input type="button" id="executeTradeButton" value="Execute Trade" />
+
+<hr/>
+
+<!--<script>AUTOBAHN_DEBUG = true;</script>-->
+<script src="http://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="messaging.js"></script>
+<script src="tradeExecute.js"></script>
+</body>
+</html>
