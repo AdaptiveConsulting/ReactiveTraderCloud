@@ -6,6 +6,6 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public interface IPricingService
     {
-        IDisposable GetPriceUpdates(IRequestContext context, GetSpotStreamRequestDto request, IObserver<SpotPriceDto> streamHandler);
+        IObservable<SpotPriceDto> GetPriceUpdates(IRequestContext context, GetSpotStreamRequestDto request);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
@@ -26,20 +27,24 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             Console.WriteLine("procedure pricing.getPriceUpdates() registered");
         }
 
-        public void GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
+
+        public async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
             Log.DebugFormat("Received GetCurrencyPairUpdatesStream from {0}", context.UserSession.Username);
 
-            var payload = JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
+            var spotStreamRequest =
+                JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
             var replyTo = message.ReplyTo;
 
-            var responseChannel = _broker.CreateChannelAsync<SpotPriceDto>(replyTo).Result;
-            _service.GetPriceUpdates(context, payload, responseChannel);
+            var endpoint = await _broker.GetEndPoint<SpotPriceDto>(replyTo);
+            
+            _service.GetPriceUpdates(context, spotStreamRequest)
+                .TakeUntil(endpoint.TerminationSignal)
+                .Subscribe(endpoint.PushMessage, endpoint.PushError, () => Console.WriteLine("Remove subscription for subscription to {0}", spotStreamRequest.symbol));
         }
 
         public void Dispose()
         {
-            
         }
     }
 }

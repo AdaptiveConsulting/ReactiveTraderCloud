@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Reactive.Concurrency;
 using System.Text;
+using System.Threading.Tasks;
 using WampSharp.Core.Serialization;
 using WampSharp.V2.Core;
 using WampSharp.V2.Core.Contracts;
@@ -10,9 +12,9 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class RpcOperation : IWampRpcOperation
     {
-        private readonly Action<IRequestContext, IMessage> _serviceMethod;
+        private readonly Func<IRequestContext, IMessage, Task> _serviceMethod;
 
-        public RpcOperation(string name, Action<IRequestContext, IMessage> serviceMethod)
+        public RpcOperation(string name, Func<IRequestContext, IMessage, Task> serviceMethod)
         {
             Procedure = name;
             _serviceMethod = serviceMethod;
@@ -43,7 +45,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             InnerInvoke(_serviceMethod, caller, formatter, arguments);
         }
 
-        private static void InnerInvoke<T>(Action<IRequestContext, IMessage> serviceMethod,
+        private static void InnerInvoke<T>(Func<IRequestContext, IMessage, Task> serviceMethod,
             IWampRawRpcOperationRouterCallback caller,
             IWampFormatter<T> formatter,
             T[] arguments)
@@ -63,10 +65,10 @@ namespace Adaptive.ReactiveTrader.Messaging
 
             var userContext = new RequestContext(message, userSession);
 
-            serviceMethod(userContext, message);
-
             var dummyDetails = new YieldOptions();
             caller.Result(WampObjectFormatter.Value, dummyDetails);
+
+            ThreadPoolScheduler.Instance.Schedule(() => serviceMethod(userContext, message).Wait());
         }
     }
 }
