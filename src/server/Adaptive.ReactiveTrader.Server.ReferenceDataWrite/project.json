@@ -11,7 +11,8 @@
     },
 
     "commands": {
-        "ReferenceDataWrite": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite"
+        "refDataWritePopulate": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite populate",
+        "refDataWriteModify": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite modify"
     },
 
     "frameworks": {
