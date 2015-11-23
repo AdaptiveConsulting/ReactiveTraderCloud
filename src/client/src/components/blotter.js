@@ -9,23 +9,17 @@ import moment from 'moment';
  */
 class CurrencyPairs extends React.Component {
 
-  /**
-   * @constructs CurrencyPair
-   * @param {Object=} props
-   * @param {Object=} context
+	/**
+   * Renders an individual trade in blotter
+   * @param {Object} trade
+   * @returns {HTMLElement.TR}
    */
-  constructor(props, context){
-    super(props, context);
-    this.state = {
-    };
-  }
-
   renderRow(trade){
     const notional = numeral(trade.amount).format('0,000,000[.]00') + ' ' + trade.pair.substr(0, 3),
-          dateTime = moment(trade.dateTime).format('MMM Do, h:mm:ss a');
+          dateTime = moment(trade.dateTime).format('MMM Do, HH:mm:ss');
 
     return (
-      <tr key={trade.id} className={trade.status}>
+      <tr key={trade.id} className={trade.status + ' animated slideInDown'}>
         <td>{trade.id}</td>
         <td className='large'><div>{dateTime}</div></td>
         <td className={'direction ' + trade.direction}>{trade.direction}</td>

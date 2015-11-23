@@ -11,6 +11,9 @@
     background: $gray;
   }
 
+  .fa-plug {
+    display: none;
+  }
   // states
   &.executing {
     opacity: .5;
@@ -21,12 +24,15 @@
 
   &.stale {
     opacity: .5;
-    background: $brand-warning;
+    background: $gray-darker;
     .currency-pair-actions, .sizer {
       pointer-events: none;
     }
     &:hover {
-      background: lighten($brand-warning, 5%);
+      opacity: 1;
+    }
+    .fa-plug {
+      display: inline-block;
     }
   }
 
@@ -48,8 +54,10 @@
     border-bottom: 1px solid $gray-dark;
     i {
       font-size: 16px;
-      cursor: pointer;
       color: $gray-light;
+      &.fa-line-chart {
+        cursor: pointer;
+      }
     }
   }
   .currency-pair-actions {

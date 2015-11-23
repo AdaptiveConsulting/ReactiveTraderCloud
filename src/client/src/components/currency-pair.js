@@ -7,8 +7,6 @@ const numberConvertRegex = /^([0-9.]+)?([MK]{1})?$/,
   SEPARATOR = '.',
   MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-let SPOTDATE;
-
 /**
  * @class CurrencyPairs
  * @extends {React.Component}
@@ -41,7 +39,9 @@ class CurrencyPair extends React.Component {
       info: false,
       state: 'listening',
       historic: []
-    }
+    };
+
+    this._checkStaleConnection = this._checkStaleConnection.bind(this);
   }
 
   componentWillMount(){
@@ -50,13 +50,24 @@ class CurrencyPair extends React.Component {
 
     this.setState({
       size,
-      historic: [this.props.buy]
+      historic: [this.props.buy],
+      state: this.props.state
     });
 
-    SPOTDATE = ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' ');
+    this.SPOTDATE = ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' ');
   }
 
-  componentWillReceiveProps(props){
+  _checkStaleConnection(){
+    const diff = Date.now() - this.lastUpdated;
+    if (diff > STALE_TIMEOUT){
+      this.setState({
+        state: 'stale',
+        message: 'Pricing has become unavailable, no data received for over 4 seconds'
+      });
+    }
+  }
+
+  componentWillReceiveProps(props, state){
     const historic = this.state.historic;
 
     historic.push(props.buy);
@@ -64,21 +75,22 @@ class CurrencyPair extends React.Component {
     // 30 max historic prices
     historic.length > 30 && (historic.shift());
 
-    this.setState({
+    const payload = {
       historic,
-      state: props.state
-    });
+      state: props.state ? props.state : state.state || 'listening'
+    };
 
-    if (!this.state.info && props.response != null){
-      this.setState({
-        info: true
-      });
-    }
+    this.setState(payload);
   }
 
   shouldComponentUpdate(props, state){
     //refuse props updates while we have a summary or error message info div shown until this.setState()
-    return props.buy != this.props.buy || props.sell != this.props.sell || state.chart !== this.state.chart || props.state !== this.state.state || this.state.info != state.info;
+    if ((props.buy != this.props.buy || props.sell != this.props.sell) || props.state !== this.state.state){
+      return true;
+    }
+    else {
+      return state.chart !== this.state.chart || state.state !== this.state.state || this.state.info != state.info;
+    }
   }
 
   /**
@@ -152,7 +164,7 @@ class CurrencyPair extends React.Component {
         amount: this.state.size,
         rate: this.props[direction].toFixed(this.props.precision),
         pair: this.props.pair,
-        valueDate: SPOTDATE,
+        valueDate: this.SPOTDATE,
         trader: 'SJP'
       });
       this.setState({
@@ -185,11 +197,19 @@ class CurrencyPair extends React.Component {
     if (!response)
       return false;
 
+    if (response.message){
+      return this.lastResponse = (
+        <div className='summary-state animated flipInX'>
+          {response.message}
+        </div>
+      );
+    }
+
     const action = response.direction === 'sell' ? 'Sold' : 'Bought',
       amount = numeral(response.amount).format('0,000,000[.]00');
 
     // we will cache last response to diverge from state until user dismisses it.
-    this.lastResponse = (
+    return this.lastResponse = (
       <div className='summary-state animated flipInX'>
         <span className='key'>{action}</span> {response.pair.substr(0, 3)} {amount}<br/>
         <span className='key'>vs</span> {response.pair.substr(3, 3)} <span className='key'>at</span> {response.rate}<br/>
@@ -198,8 +218,6 @@ class CurrencyPair extends React.Component {
         <a href='#' className='pull-right' onClick={(e) => this.onDismissLastResponse(e)}>Done</a>
       </div>
     );
-
-    return this.lastResponse;
   }
 
 
@@ -211,11 +229,12 @@ class CurrencyPair extends React.Component {
           direction = (historic.length > 1) ? historic[len] < buy ? 'up' : historic[len] > buy ? 'down' : '-' :'-',
           b = this.parsePrice(buy),
           s = this.parsePrice(sell),
-          lastTradeState = this.state.info ? (this.lastResponse || this.renderLastResponse(response)) : false;
+          lastTradeState = this.state.info ? (this.lastResponse || this.renderLastResponse(response)) : false,
+          className = ['currency-pair', 'animated', 'flipInX', state].join(' ');
 
-    return <div className={state + ' currency-pair animated flipInX'}>
+    return <div className={className}>
       <div className='currency-pair-title'>
-        {pair}
+        {pair} <i className='fa fa-plug animated infinite pulse'></i>
         <i className='fa fa-line-chart pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       {lastTradeState}
@@ -235,7 +254,7 @@ class CurrencyPair extends React.Component {
         <label>{base}
         <input className='size' type='text' ref='size' defaultValue={size} onChange={(e) => this.setSizeFromInput(e)} /></label>
         <div className='pull-right'>
-          {SPOTDATE}
+          {this.SPOTDATE}
         </div>
       </div>
       <div className="clearfix"></div>

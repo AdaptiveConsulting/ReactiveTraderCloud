@@ -9,22 +9,28 @@ const pairs = [{
   sell: 1.42,
   id: 1,
   precision: 5,
-  pip: 5
+  pip: 5,
+  lastUpdated: Date.now()
 }, {
   pair: 'CHFEUR',
   buy: 0.955,
   sell: 0.965,
   id: 2,
   precision: 5,
-  pip: 5
+  pip: 5,
+  lastUpdated: Date.now()
 }, {
   pair: 'GBPJPY',
   buy: 163.871,
   sell: 163.920,
   id: 3,
   precision: 5,
-  pip: 5
+  pip: 5,
+  lastUpdated: Date.now()
 }];
+
+const STALE_TIMEOUT = 5000;
+
 
 /**
  * @class CurrencyPairs
@@ -53,8 +59,7 @@ class CurrencyPairs extends React.Component {
     let tick = () => {
       // actual pair is by reference. oh no!
       const
-        item = _.random(0, pairs.length - 1),
-        p = pairs[item],
+        p = _.sample(pairs),
         rand = Math.random(),
         rand2 = Math.random() * .01;
 
@@ -67,11 +72,17 @@ class CurrencyPairs extends React.Component {
         p.sell = p.sell - rand2;
       }
 
+      p.lastUpdated = Date.now();
+
+      pairs.forEach((pair) => {
+        pair.state = Date.now() - (pair.lastUpdated || 0) > STALE_TIMEOUT ? 'stale' : 'listening';
+      });
+
       this.setState({
         pairs
       });
 
-      setTimeout(tick, rand * pairs.length * 600);
+      setTimeout(tick, rand * pairs.length * 1500);
     };
 
     tick();
