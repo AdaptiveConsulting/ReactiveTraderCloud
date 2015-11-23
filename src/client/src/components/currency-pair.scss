@@ -8,7 +8,36 @@
   margin: 2px;
   overflow: hidden;
   &:hover {
-    background: #294464;
+    background: $gray;
+  }
+
+  // states
+  &.executing {
+    opacity: .5;
+    .currency-pair-actions, .sizer {
+      pointer-events: none;
+    }
+  }
+
+  &.stale {
+    opacity: .5;
+    background: $brand-warning;
+    .currency-pair-actions, .sizer {
+      pointer-events: none;
+    }
+    &:hover {
+      background: lighten($brand-warning, 5%);
+    }
+  }
+
+  .summary-state {
+    background: linear-gradient(to bottom,rgba(255,255,255,.1), rgba(255,255,255,0));
+    height: 78px;
+    padding: 8px;
+    color: white;
+    span.key {
+      color: $gray-light;
+    }
   }
 
   .currency-pair-title {
@@ -105,6 +134,9 @@
     }
     label {
       @extend .pull-left;
+    }
+    &.disabled {
+      visibility: hidden;
     }
   }
 

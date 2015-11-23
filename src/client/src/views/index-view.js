@@ -26,6 +26,7 @@ for (let i = 10; i; i--){
   }));
 }
 
+trades.reverse();
 
 export class IndexView extends React.Component {
 
@@ -43,20 +44,23 @@ export class IndexView extends React.Component {
   }
 
   addTrade(payload){
-    console.log(payload);
-    payload.id = _.uniqueId();
     payload.status = _.sample(['Done', 'Processing', 'Rejected']);
+    payload.id = _.uniqueId();
 
     trades.unshift(payload);
     this.setState({
       trades: trades
-    })
-  };
+    });
+
+    setTimeout(() => {
+      payload.onACK(payload);
+    }, 500);
+  }
 
   render(){
     return (
       <div className=''>
-        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} />
+        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)}/>
         <Blotter trades={this.state.trades} />
       </div>
     );

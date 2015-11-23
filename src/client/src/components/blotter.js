@@ -21,7 +21,7 @@ class CurrencyPairs extends React.Component {
   }
 
   renderRow(trade){
-    const notional = numeral(trade.amount).format('0,000,000.00') + ' ' + trade.pair.substr(0, 3),
+    const notional = numeral(trade.amount).format('0,000,000[.]00') + ' ' + trade.pair.substr(0, 3),
           dateTime = moment(trade.dateTime).format('MMM Do, h:mm:ss a');
 
     return (

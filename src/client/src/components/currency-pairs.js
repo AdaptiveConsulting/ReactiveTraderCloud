@@ -77,15 +77,42 @@ class CurrencyPairs extends React.Component {
     tick();
   }
 
+  onACK(payload){
+    const pairs = this.state.pairs,
+          pair = _.findWhere(pairs, {pair: payload.pair});
+
+    pair.state = 'listening';
+    pair.response = payload;
+
+    this.setState({
+      pairs
+    });
+  }
+
+  componentDidUpdate(){
+    // silently remove last response
+    this.state.pairs.forEach((pair)=>{
+      delete pair.response;
+    });
+  }
+
   onExecute(payload){
     //todo: send to socket.
-    this.props.onExecute && this.props.onExecute(payload);
+    if (this.props.onExecute){
+      const pair = _.findWhere(this.state.pairs, {pair: payload.pair});
+      pair.state = 'executing';
+
+      payload.onACK = (...args) => this.onACK(...args);
+
+      this.props.onExecute(payload);
+    }
   }
 
   render(){
     return <div className='currency-pairs'>
       {this.state.pairs.map((cp) => {
-        const spread = (Math.abs(cp.buy - cp.sell)).toFixed(2);
+        const spread = (Math.abs(cp.buy - cp.sell)).toFixed(2),
+          response = cp.response;
 
         return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
                              pair={cp.pair}
@@ -95,6 +122,8 @@ class CurrencyPairs extends React.Component {
                              sell={cp.sell}
                              precision={cp.precision}
                              pip={cp.pip}
+                             state={cp.state}
+                             response={response}
                              spread={spread} />
       })}
     </div>
