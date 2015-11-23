@@ -20,12 +20,26 @@ class CurrencyPairs extends React.Component {
     };
   }
 
-  componentWillMount(){
+  renderRow(trade){
+    const notional = numeral(trade.amount).format('0,000,000.00') + ' ' + trade.pair.substr(0, 3),
+          dateTime = moment(trade.dateTime).format('MMM Do, h:mm:ss a');
 
+    return (
+      <tr key={trade.id} className={trade.status}>
+        <td>{trade.id}</td>
+        <td className='large'><div>{dateTime}</div></td>
+        <td className={'direction ' + trade.direction}>{trade.direction}</td>
+        <td>{trade.pair}</td>
+        <td className='large text-right'>{notional}</td>
+        <td className='text-right'>{trade.rate}</td>
+        <td className='status'>{trade.status}</td>
+        <td>{trade.valueDate}</td>
+        <td className='large'>{trade.trader}</td>
+      </tr>
+    );
   }
 
   render(){
-
     return <div className='blotter'>
       <table className='table table-compact'>
         <thead>
@@ -42,26 +56,7 @@ class CurrencyPairs extends React.Component {
         </tr>
         </thead>
         <tbody>
-        {this.props.trades.map((trade) => {
-          console.log(trade.dateTime);
-          const notional = numeral(trade.amount).format('0,000,000.00') + ' ' + trade.pair.substr(0, 3),
-            dateTime = moment(trade.dateTime).format('MMM Do, h:mm:ss a');
-
-
-          return (
-            <tr key={trade.id} className={trade.status}>
-              <td>{trade.id}</td>
-              <td className='large'><div>{dateTime}</div></td>
-              <td className={'direction ' + trade.direction}>{trade.direction}</td>
-              <td>{trade.pair}</td>
-              <td className='large text-right'>{notional}</td>
-              <td className='text-right'>{trade.rate}</td>
-              <td className='status'>{trade.status}</td>
-              <td>{trade.valueDate}</td>
-              <td className='large'>{trade.trader}</td>
-            </tr>
-          );
-        })}
+        {this.props.trades.map(this.renderRow)}
         </tbody>
       </table>
 
