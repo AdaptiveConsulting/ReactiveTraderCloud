@@ -7,11 +7,8 @@
     "licenseUrl": "",
 
     "dependencies": {
-        "Adaptive.ReactiveTrader.EventStore": ""
-    },
-
-    "commands": {
-        "ReferenceDataWrite": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite"
+        "EventStore.Client": "3.3.1",
+        "Newtonsoft.Json": "7.0.1"
     },
 
     "frameworks": {

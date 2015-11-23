@@ -1,8 +1,10 @@
 ﻿using System;
+using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.MessageBroker;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Pricing;
 using Adaptive.ReactiveTrader.Server.ReferenceDataRead;
+using Adaptive.ReactiveTrader.Server.ReferenceDataWrite;
 using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
@@ -25,9 +27,24 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             {
                 var broker = BrokerFactory.Create(uri, realm);
 
+                var memoryEventStore = true;
+                IEventStore es;
+
+                if (memoryEventStore)
+                {
+                    es = new InMemoryEventStore();
+                    ReferenceDataWriterLauncher.Initialize(es).Wait();
+                }
+                else
+                {
+                    var news = new NetworkEventStore();
+                    news.Connect().Wait();
+                    es = news;
+                }
+
                 using (MessageBrokerLauncher.Run())
                 using (PriceServiceLauncher.Run(broker.Result).Result)
-                using (ReferenceDataReaderLauncher.Run(broker.Result).Result)
+                using (ReferenceDataReaderLauncher.Run(es, broker.Result).Result)
                 {
                     Console.WriteLine("Press Any Key To Stop...");
                     Console.ReadLine();

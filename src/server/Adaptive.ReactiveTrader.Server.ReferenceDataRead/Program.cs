@@ -1,40 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
-
-    public static class ReferenceDataReaderLauncher
-    {
-        public static async Task<IDisposable> Run(IBroker broker)
-        {
-            Console.WriteLine("Reference Data Service starting...");
-            try
-            {
-                var cache = new CurrencyPairCache();
-                cache.Initialize();
-
-                var service = new ReferenceService(cache.GetCurrencyPairUpdates());
-                var serviceHost = new ReferenceServiceHost(service, broker);
-
-                await serviceHost.Start();
-
-                Console.WriteLine("procedure GetCurrencyPairs() registered");
-
-                Console.WriteLine("Service Started.");
-                
-                return serviceHost;
-
-            }
-            catch (MessagingException e)
-            {
-                throw new Exception("Can't start service", e);
-            }
-        }
-    }
-
     public class Program
     {
         protected static readonly ILog Log = LogManager.GetLogger<Program>();
@@ -54,8 +24,10 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             try
             {
                 var broker = BrokerFactory.Create(uri, realm);
+                var es = new NetworkEventStore();
+                es.Connect().RunSynchronously();
 
-                using (ReferenceDataReaderLauncher.Run(broker.Result).Result)
+                using (ReferenceDataReaderLauncher.Run(es, broker.Result).Result)
                 {
                     Console.WriteLine("Press Any Key To Stop...");
                     Console.ReadLine();

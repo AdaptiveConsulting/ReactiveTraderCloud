@@ -11,9 +11,10 @@
         "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
         "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
         "Adaptive.ReactiveTrader.MessageBroker": "",
+        "Adaptive.ReactiveTrader.EventStore": "",
         "Adaptive.ReactiveTrader.Server.Pricing": "",
         "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "",
-        "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "",
+        "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": ""
     },
 
     "commands": {

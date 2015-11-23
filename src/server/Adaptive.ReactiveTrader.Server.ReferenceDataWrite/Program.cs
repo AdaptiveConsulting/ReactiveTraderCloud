@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using EventStore.ClientAPI;
+﻿using Adaptive.ReactiveTrader.EventStore;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
@@ -8,24 +6,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
     {
         public void Main(string[] args)
         {
-            var connection = EventStoreConnection.Create(new IPEndPoint(IPAddress.Loopback, 1113));
-            connection.ConnectAsync().Wait();
-
-            var repository = new CurrencyPairRepository(connection);
-            //new CurrencyPairInitializer(repository).WriteInitialEventsAsync().Wait();
-
-            Console.WriteLine("Press a key to deactivate GBPJPY");
-            Console.ReadKey();
-
-            repository.Deactivate("GBPJPY");
-
-            Console.WriteLine("Press a key to activate it again");
-            Console.ReadKey();
-
-            repository.Activate("GBPJPY");
-
-            Console.WriteLine("Press a key to exit");
-            Console.ReadKey();
+            var memoryEventStore = new NetworkEventStore();
+            ReferenceDataWriterLauncher.Run(memoryEventStore).RunSynchronously();
         }
     }
 }
