@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.MessageBroker;
 using Adaptive.ReactiveTrader.Messaging;
@@ -18,19 +20,11 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             var uri = "ws://127.0.0.1:8080/ws";
             var realm = "com.weareadaptive.reactivetrader";
 
-            if (args.Length > 0)
-                uri = args[0];
-            if (args.Length > 1)
-                realm = args[1];
-
             try
             {
-                var broker = BrokerFactory.Create(uri, realm);
-
-                var memoryEventStore = true;
                 IEventStore es;
 
-                if (memoryEventStore)
+                if (args.Contains("es"))
                 {
                     es = new InMemoryEventStore();
                     ReferenceDataWriterLauncher.Initialize(es).Wait();
@@ -42,9 +36,20 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     es = news;
                 }
 
-                using (MessageBrokerLauncher.Run())
-                using (PriceServiceLauncher.Run(broker.Result).Result)
-                using (ReferenceDataReaderLauncher.Run(es, broker.Result).Result)
+                var compositeDispo = new CompositeDisposable();
+
+                if (args.Contains("mb"))
+                    compositeDispo.Add(MessageBrokerLauncher.Run());
+
+                var broker = BrokerFactory.Create(uri, realm);
+
+                if (args.Contains("p"))
+                    compositeDispo.Add(PriceServiceLauncher.Run(broker.Result).Result);
+
+                if (args.Contains("ref"))
+                    compositeDispo.Add(ReferenceDataReaderLauncher.Run(es, broker.Result).Result);
+
+                using (compositeDispo)
                 {
                     Console.WriteLine("Press Any Key To Stop...");
                     Console.ReadLine();
@@ -53,6 +58,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                Console.ReadLine();
             }
         }
     }
