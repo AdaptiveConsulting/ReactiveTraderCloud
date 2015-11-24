@@ -26,7 +26,9 @@ class CurrencyPairs extends React.Component {
     super(props, context);
     this.state = {
       pairs: []
-    }
+    };
+
+    this.subscribed = [];
   }
 
   /**
@@ -34,34 +36,61 @@ class CurrencyPairs extends React.Component {
    */
   attachSubs(){
     transport.subscribe('reference.getCurrencyPairUpdatesStream', (referenceData) => {
+      const update = _.debounce((src) => {
+        this.setState({
+          pairs: src || this.state.pairs
+        });
+      }, 500);
+
       // normalise the currency pair reference data
-      const pairs = _.pluck(referenceData.Updates, 'CurrencyPair').map((rawPair) => {
-        return {
-          //todo: accept rawPair.PipPosition and rawPair.RatePrecision
-          pip: 5,
-          precision: 5,
-          pair: rawPair.Symbol,
-          id: rawPair.Symbol,
-          buy: 0,
-          sell: 0
-        };
+      const pairs = _.map(referenceData.Updates, (updatedPair) => {
+        const pair = updatedPair.CurrencyPair;
+
+        if (updatedPair.UpdateType == 0){
+          return {
+            //todo: accept rawPair.PipPosition and rawPair.RatePrecision
+            pip: 5,
+            precision: 5,
+            pair: pair.Symbol,
+            id: pair.Symbol,
+            buy: undefined,
+            sell: undefined
+          };
+        }
+        else {
+          // removed?
+          console.log(updatedPair.UpdateType);
+          update(this.state.pairs.filter((p) => p.id != pair.Symbol));
+          transport.unsubscribe('pricing.getPriceUpdates', existing.handler, {id: pair.Symbol})
+        }
+      }, this);
+
+      this.setState({
+        pairs: pairs
       });
 
+      console.log(this.state.pairs);
+
       // subscribe to individual streams
-      pairs.forEach((pair) => {
-        transport.subscribe('pricing.getPriceUpdates', (priceData) => {
+      this.state.pairs.forEach((pair) => {
+        transport.subscribe('pricing.getPriceUpdates', pair.handler = (priceData) => {
           let found = _.findWhere(this.state.pairs, {id: priceData.symbol});
 
+          // transport.log(found);
+          // console.count('tick ' + pair.id);
           if (!found){
-            found = _.findWhere(pairs, {id: priceData.symbol});
-            this.state.pairs.push(found);
+            //todo: we should unsubscribe!
+            return;
           }
+          //if (!found){
+          //  found = _.findWhere(pairs, {id: priceData.symbol});
+          //  this.state.pairs.push(found);
+          //}
 
-          found.buy = priceData.bid;
-          found.sell = priceData.ask;
-          this.setState({
-            pairs: this.state.pairs
-          });
+          found.buy = Number(priceData.bid);
+          found.sell = Number(priceData.ask);
+
+          update();
         }, {
           symbol: pair.id
         })
@@ -113,11 +142,12 @@ class CurrencyPairs extends React.Component {
   }
 
   render(){
-    return <div className='currency-pairs'>
-      {this.state.pairs.map((cp) => {
-        const spread = (Math.abs(cp.buy - cp.sell)).toFixed(2),
-          response = cp.response;
+    const p = this.state.pairs.filter((a) => {
+      return a.buy && a.sell;
+    });
 
+    return <div className='currency-pairs'>
+      {p.map((cp) => {
         return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
                              pair={cp.pair}
                              size="100m"
@@ -127,8 +157,7 @@ class CurrencyPairs extends React.Component {
                              precision={cp.precision}
                              pip={cp.pip}
                              state={cp.state}
-                             response={response}
-                             spread={spread} />
+                             response={cp.response} />
       })}
     </div>
   }

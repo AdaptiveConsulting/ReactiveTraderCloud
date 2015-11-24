@@ -29,19 +29,21 @@ class Transport extends emitter {
   }
 
   subscribe(event, callback, options = {}){
-    const payload = {
-      ReplyTo: event,
-      Payload: options
-    };
+    const reply = _.uniqueId(event);
 
-    this.session.subscribe(event, (a) => callback(a[0]), options).then(()=> this.session.call(event, [payload]));
+    this.session.subscribe(reply, (a) => {
+      callback(a[0]);
+    }, options).then(()=> this.session.call(event, [{
+      ReplyTo: reply,
+      Payload: options
+    }]));
   }
 
   unsubscribe(...args){
     return this.session.unsubscribe(...args);
   }
 
-  emit(...args){
+  publish(...args){
     return this.session.publish(...args);
   }
 

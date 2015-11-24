@@ -18,7 +18,7 @@ class CurrencyPair extends React.Component {
     pair: React.PropTypes.string,
     buy: React.PropTypes.number,
     sell: React.PropTypes.number,
-    spread: React.PropTypes.string,
+    // spread: React.PropTypes.string,
     precision: React.PropTypes.number,
     pip: React.PropTypes.number,
     onExecute: React.PropTypes.func,
@@ -229,14 +229,15 @@ class CurrencyPair extends React.Component {
 
   render(){
     const { historic, size, state, info, chart } = this.state;
-    const { buy, sell, pair, spread, response } = this.props;
+    const { buy, sell, pair, response } = this.props;
     const base = pair.substr(0, 3),
           len = historic.length - 2,
           direction = (historic.length > 1) ? historic[len] < buy ? 'up' : historic[len] > buy ? 'down' : '-' :'-',
           b = this.parsePrice(buy),
           s = this.parsePrice(sell),
           lastTradeState = this.state.info ? (this.lastResponse || this.renderLastResponse(response)) : false,
-          className = ['currency-pair', 'animated', 'flipInX', state].join(' ');
+          className = ['currency-pair', 'animated', 'flipInX', state].join(' '),
+          spread = Math.abs((s.pip + '.' + s.pipFraction) - (b.pip + '.' + b.pipFraction)).toFixed(1);
 
     return <div className={className}>
       <div className='currency-pair-title'>
