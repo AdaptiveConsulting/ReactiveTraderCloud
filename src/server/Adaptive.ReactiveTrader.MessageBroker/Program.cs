@@ -6,12 +6,8 @@ namespace Adaptive.ReactiveTrader.MessageBroker
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Messagee Broker Starting...");
-
-            using (var broker = new MessageBroker())
+            using (MessageBrokerLauncher.Run())
             {
-                broker.Start();
-                
                 Console.WriteLine("Press any key...");
                 Console.ReadLine();
             }

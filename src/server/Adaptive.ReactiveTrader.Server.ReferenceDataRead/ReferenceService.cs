@@ -5,7 +5,7 @@ using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 
-namespace Adaptive.ReactiveTrader.Server.ReferenceData
+namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class ReferenceService : IReferenceService, IDisposable
     {
