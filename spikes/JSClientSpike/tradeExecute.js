@@ -47,11 +47,13 @@ $(function() {
 
 function executeTrade(session) {
 
+    var direction = $("input[type='radio'][name='direction']:checked").val();
+
     var request = {
         CurrencyPair: $("#ccyPair").val(),
         SpotRate: $("#spot").val(),
         ValueDate: new Date(),
-        Direction: 'Buy',
+        Direction: direction,
         Notional: $("#notional").val(),
         DealtCurrency: $("#dealtCcy").val()
     };
@@ -61,8 +63,12 @@ function executeTrade(session) {
     session.call('execution.ExecuteTrade', [createMessage(request)])
         .then(function logResult(res) {
             console.log('Got execution response' + res);
-            console.log("Status is " + res.Result.Trade.Status);
+            var status = res.Result.Trade.Status == 0 ? 'Accepted' : "Rejected";
+            console.log("Status is " + status);
+            $("#executingIndicator").text('Execution Complete. Trade ' + status);
         });
+
+    $("#executingIndicator").text('Executing...');
 
     console.log("Called ExecuteTrade procedure");
 

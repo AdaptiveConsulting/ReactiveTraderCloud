@@ -14,8 +14,8 @@
 
     <p>
         Direction:
-        Buy <input type="radio" name="direction" value="buy"/>
-        Sell <input type="radio" name="direction" value="sell"/>
+        Buy <input type="radio" name="direction" id="buyDirection" value="buy"/>
+        Sell <input type="radio" name="direction" id="sellDirection" value="sell"/>
     </p>
 
     <p>
@@ -28,7 +28,8 @@
 
 </div>
 
-<input type="button" id="executeTradeButton" value="Execute Trade" />
+<input type="button" id="executeTradeButton" value="Execute Trade"/>
+<p id="executingIndicator"></p>
 
 <hr/>
 
