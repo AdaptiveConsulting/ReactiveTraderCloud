@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
 using WampSharp.Core.Serialization;
@@ -8,14 +7,13 @@ using WampSharp.V2.Core;
 using WampSharp.V2.Core.Contracts;
 using WampSharp.V2.Rpc;
 
-namespace Adaptive.ReactiveTrader.Messaging.WAMP
+namespace Adaptive.ReactiveTrader.Messaging
 {
-    internal class RpcOperation : IWampRpcOperation
+    internal class RpcResponseOperation<TResponse> : IWampRpcOperation
     {
-        private readonly Func<IRequestContext, IMessage, Task> _serviceMethod;
-        private readonly IScheduler _scheduler = TaskPoolScheduler.Default;
+        private readonly Func<IRequestContext, IMessage, Task<TResponse>> _serviceMethod;
 
-        public RpcOperation(string name, Func<IRequestContext, IMessage, Task> serviceMethod)
+        public RpcResponseOperation(string name, Func<IRequestContext, IMessage, Task<TResponse>> serviceMethod)
         {
             Procedure = name;
             _serviceMethod = serviceMethod;
@@ -29,7 +27,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
             var dummyDetails = new Dictionary<string, object>();
 
             caller.Error(WampObjectFormatter.Value, dummyDetails, "wamp.error.runtime_error",
-                new object[] {"Expected parameters"});
+                new object[] { "Expected parameters" });
         }
 
         public void Invoke<TMessage>(IWampRawRpcOperationRouterCallback caller, IWampFormatter<TMessage> formatter,
@@ -46,7 +44,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
             InnerInvoke(_serviceMethod, caller, formatter, arguments);
         }
 
-        private void InnerInvoke<T>(Func<IRequestContext, IMessage, Task> serviceMethod,
+        private static void InnerInvoke<T>(Func<IRequestContext, IMessage, Task<TResponse>> serviceMethod,
             IWampRawRpcOperationRouterCallback caller,
             IWampFormatter<T> formatter,
             T[] arguments)
@@ -66,10 +64,10 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
             var userContext = new RequestContext(message, userSession);
 
-            var dummyDetails = new YieldOptions();
-            caller.Result(WampObjectFormatter.Value, dummyDetails);
+            var response = serviceMethod(userContext, message);
 
-            _scheduler.Schedule(() => serviceMethod(userContext, message).Wait());
+            var dummyDetails = new YieldOptions();
+            caller.Result(WampObjectFormatter.Value, dummyDetails, new object[] {response});
         }
     }
 }

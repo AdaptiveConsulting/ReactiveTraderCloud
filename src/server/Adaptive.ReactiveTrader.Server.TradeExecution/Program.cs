@@ -1,34 +1,31 @@
-﻿using System;
+﻿using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.Messaging;
-using Common.Logging;
-using Common.Logging.Simple;
+using System;
 
-namespace Adaptive.ReactiveTrader.Server.Pricing
+namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     public class Program
     {
-        protected static readonly ILog Log = LogManager.GetLogger<Program>();
-
         public static void Main(string[] args)
         {
-            LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
-            {
-                ShowLogName = true
-            };
-
             var uri = "ws://127.0.0.1:8080/ws";
             var realm = "com.weareadaptive.reactivetrader";
 
             if (args.Length > 0)
+            {
                 uri = args[0];
-            if (args.Length > 1)
-                realm = args[1];
+                if (args.Length > 1)
+                    realm = args[1];
+            }
 
             try
             {
-                var broker = BrokerFactory.Create(uri, realm);
+                var broker = BrokerFactory.Create(uri, realm).Result;
 
-                using (PriceServiceLauncher.Run(broker.Result).Result)
+                var es = new NetworkEventStore();
+                es.Connect().Wait();
+
+                using (TradeExecutionLauncher.Run(es, broker))
                 {
                     Console.WriteLine("Press Any Key To Stop...");
                     Console.ReadLine();

@@ -7,7 +7,9 @@ using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Pricing;
 using Adaptive.ReactiveTrader.Server.ReferenceDataRead;
 using Adaptive.ReactiveTrader.Server.ReferenceDataWrite;
+using Adaptive.ReactiveTrader.Server.TradeExecution;
 using Common.Logging;
+using Common.Logging.Simple;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
@@ -19,6 +21,11 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         {
             var uri = "ws://127.0.0.1:8080/ws";
             var realm = "com.weareadaptive.reactivetrader";
+
+            LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
+            {
+                ShowLogName = true
+            };
 
             try
             {
@@ -48,6 +55,9 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 if (args.Contains("ref"))
                     compositeDispo.Add(ReferenceDataReaderLauncher.Run(es, broker.Result).Result);
+
+                if (args.Contains("exec"))
+                    compositeDispo.Add(TradeExecutionLauncher.Run(es, broker.Result).Result);
 
                 using (compositeDispo)
                 {
