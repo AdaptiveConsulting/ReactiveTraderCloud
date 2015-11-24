@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging.WAMP;
 using Common.Logging;
 using WampSharp.V2;
+using WampSharp.V2.Client;
 using WampSharp.V2.Core.Contracts;
+using WampSharp.V2.Fluent;
 using WampSharp.V2.MetaApi;
 
 namespace Adaptive.ReactiveTrader.Messaging
@@ -23,8 +25,11 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public Broker(string uri, string realm)
         {
-            var factory = new DefaultWampChannelFactory();
-            _channel = factory.CreateJsonChannel(uri, realm);
+            _channel = new WampChannelFactory()
+                .ConnectToRealm(realm)
+                .WebSocketTransport(uri)
+                .JsonSerialization()
+                .Build();
 
             _sessionTeardowns =
                 Observable.Create<long>(async o =>
