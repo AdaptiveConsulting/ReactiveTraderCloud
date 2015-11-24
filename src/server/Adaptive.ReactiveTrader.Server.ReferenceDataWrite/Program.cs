@@ -11,6 +11,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         public void Main(string[] args)
         {
             var eventStore = new NetworkEventStore();
+            eventStore.Connect().Wait();
             var repository = new CurrencyPairRepository(eventStore);
 
             if (args.Length > 0)
