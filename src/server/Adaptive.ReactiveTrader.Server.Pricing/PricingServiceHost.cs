@@ -1,4 +1,4 @@
-using System;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
@@ -8,38 +8,39 @@ using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    public class PricingServiceHost : IDisposable
+    public class PricingServiceHost : ServiceHostBase
     {
         protected static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
+
         private readonly IPricingService _service;
         private readonly IBroker _broker;
 
-        public PricingServiceHost(IPricingService service, IBroker broker)
+        public PricingServiceHost(IPricingService service, IBroker broker) :base( broker, "price")
         {
             _service = service;
             _broker = broker;
         }
 
-        public async Task Start()
+        public override async Task Start()
         {
+            await base.Start();
             await _broker.RegisterCall("pricing.getPriceUpdates", GetCurrencyPairUpdatesStream);
-            Console.WriteLine("procedure pricing.getPriceUpdates() registered");
+            Log.Info("procedure pricing.getPriceUpdates() registered");
         }
-
-        public void GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
+        
+        public async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
-            Log.DebugFormat("Received GetCurrencyPairUpdatesStream from {0}", context.UserSession.Username);
+            Log.DebugFormat("Received GetCurrencyPairUpdatesStream from [{0}]", context.UserSession.Username ?? "Unknown User");
 
-            var payload = JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
+            var spotStreamRequest =
+                JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
             var replyTo = message.ReplyTo;
 
-            var responseChannel = _broker.CreateChannelAsync<SpotPriceDto>(replyTo).Result;
-            _service.GetPriceUpdates(context, payload, responseChannel);
-        }
+            var endpoint = await _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo);
 
-        public void Dispose()
-        {
-            
+            _service.GetPriceUpdates(context, spotStreamRequest)
+                .TakeUntil(endpoint.TerminationSignal)
+                .Subscribe(endpoint);
         }
     }
 }

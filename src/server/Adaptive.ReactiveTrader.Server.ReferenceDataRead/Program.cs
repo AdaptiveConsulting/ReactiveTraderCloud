@@ -2,6 +2,7 @@
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
+using Common.Logging.Simple;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
@@ -11,6 +12,11 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
         public static void Main(string[] args)
         {
+            LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
+            {
+                ShowLogName = true
+            };
+
             var uri = "ws://127.0.0.1:8080/ws";
             var realm = "com.weareadaptive.reactivetrader";
 
@@ -25,8 +31,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             {
                 var broker = BrokerFactory.Create(uri, realm);
                 var es = new NetworkEventStore();
-                es.Connect().RunSynchronously();
-
+                es.Connect().Wait();
+                
                 using (ReferenceDataReaderLauncher.Run(es, broker.Result).Result)
                 {
                     Console.WriteLine("Press Any Key To Stop...");

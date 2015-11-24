@@ -13,8 +13,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
             Console.WriteLine("Initializing Event Store with Currency Pair Data");
             await new CurrencyPairInitializer(repository).WriteInitialEventsAsync();
         }
-
-
+        
         public static async Task Run(IEventStore eventStore)
         {
             var repository = new CurrencyPairRepository(eventStore);

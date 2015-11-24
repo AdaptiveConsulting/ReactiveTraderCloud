@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Contract;
 
@@ -15,12 +16,26 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             return new RandomWalkPriceGenerator(symbol, initial, precision);
         }
 
+        private static IObservable<Unit> CreatePriceTrigger(bool delayPeriods)
+        {
+            if (delayPeriods)
+                return
+                    Observable.Interval(TimeSpan.FromSeconds(0.5))
+                        .Take(TimeSpan.FromSeconds(30))
+                        .Concat(Observable.Interval(TimeSpan.FromSeconds(10)).Take(1))
+                        .Repeat()
+                        .Select(_ => Unit.Default);
+
+            return Observable.Interval(TimeSpan.FromSeconds(0.5)).Select(_ => Unit.Default);
+        }
+
+
         public PriceGenerator()
         {
             var priceGenerators = new List<IPriceGenerator>
             {
                 CreatePriceGenerator("EURUSD", 1.3629m),
-                CreatePriceGenerator("USDJPY", 100.200m),
+                CreatePriceGenerator("USDJPY", 100.20m),
                 CreatePriceGenerator("GBPUSD", 1.5200m),
                 CreatePriceGenerator("GBPJPY", 160.200m),
             };
@@ -34,7 +49,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                     prices.MoveNext();
                     observer.OnNext(prices.Current);
 
-                    var disp = Observable.Interval(TimeSpan.FromSeconds(5)).Subscribe(o =>
+                    var disp = CreatePriceTrigger(ccy.Symbol == "GBPJPY").Subscribe(o =>
                     {
                         prices.MoveNext();
                         observer.OnNext(prices.Current);
@@ -52,29 +67,6 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         public IObservable<SpotPriceDto> GetPriceStream(string symbol)
         {
             return _priceStreams[symbol];
-        }
-    }
-
-
-    public interface IPriceGenerator
-    {
-        IEnumerable<SpotPriceDto> Sequence();
-        string Symbol { get; }
-    }
-
-    public static class DateTimeExtensions
-    {
-        public static DateTime ToWeekday(this DateTime date)
-        {
-            switch (date.DayOfWeek)
-            {
-                case DayOfWeek.Saturday:
-                    return date.AddDays(2);
-                case DayOfWeek.Sunday:
-                    return date.AddDays(1);
-                default:
-                    return date;
-            }
         }
     }
 }
