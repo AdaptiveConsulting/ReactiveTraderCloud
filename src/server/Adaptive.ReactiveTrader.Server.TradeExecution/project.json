@@ -13,6 +13,7 @@
         "Common.Logging": "3.3.1",
         "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
         "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
+        "Adaptive.ReactiveTrader.EventStore": "1.0.0-*",
     },
 
     "commands": {
