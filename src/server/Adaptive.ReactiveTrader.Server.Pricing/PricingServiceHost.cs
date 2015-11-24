@@ -9,25 +9,25 @@ using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    public class PricingServiceHost : IDisposable
+    public class PricingServiceHost : ServiceHostBase
     {
         protected static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
         private readonly IPricingService _service;
         private readonly IBroker _broker;
 
-        public PricingServiceHost(IPricingService service, IBroker broker)
+        public PricingServiceHost(IPricingService service, IBroker broker) :base( broker, "price")
         {
             _service = service;
             _broker = broker;
         }
 
-        public async Task Start()
+        public override async Task Start()
         {
+            await base.Start();
             await _broker.RegisterCall("pricing.getPriceUpdates", GetCurrencyPairUpdatesStream);
             Console.WriteLine("procedure pricing.getPriceUpdates() registered");
         }
-
-
+        
         public async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
             Log.DebugFormat("Received GetCurrencyPairUpdatesStream from {0}", context.UserSession.Username);
@@ -36,15 +36,11 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
             var replyTo = message.ReplyTo;
 
-            var endpoint = await _broker.GetEndPoint<SpotPriceDto>(replyTo);
-            
+            var endpoint = await _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo);
+
             _service.GetPriceUpdates(context, spotStreamRequest)
                 .TakeUntil(endpoint.TerminationSignal)
-                .Subscribe(endpoint.PushMessage, endpoint.PushError, () => Console.WriteLine("Remove subscription for subscription to {0}", spotStreamRequest.symbol));
-        }
-
-        public void Dispose()
-        {
+                .Subscribe(endpoint);
         }
     }
 }

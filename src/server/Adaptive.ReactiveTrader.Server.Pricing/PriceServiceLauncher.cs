@@ -9,9 +9,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         public static async Task<IDisposable> Run(IBroker broker)
         {
             var cache = new PriceGenerator();
-
             var service = new PricingService(cache.GetPriceStream);
             var serviceHost = new PricingServiceHost(service, broker);
+            
             try
             {
                 Console.WriteLine("Pricing Data Service starting...");

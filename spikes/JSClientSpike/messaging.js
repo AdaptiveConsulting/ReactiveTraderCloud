@@ -46,6 +46,11 @@ function createRequestStream(session, destination, request, onUpdate, onError) {
   // subscribe to timer 'req.heartbeat'
 }
 
+function createSubscription(session, topic, onUpdate, onError) {
+  console.log('create subscription');
+  session.subscribe(topic, function(dto) {onUpdate(dto[0]);}).then(function(val) {console.log(val);},function(err) {console.log(err);})
+}
+
 function createRequestStreamBasic(session, destination, onUpdate) {
   return createRequestStream(session, destination, {}, onUpdate, function(err) {console.log(err);});
 }

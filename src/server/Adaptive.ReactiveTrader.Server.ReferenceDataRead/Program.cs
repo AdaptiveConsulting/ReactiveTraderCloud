@@ -25,8 +25,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             {
                 var broker = BrokerFactory.Create(uri, realm);
                 var es = new NetworkEventStore();
-                es.Connect().RunSynchronously();
-
+                es.Connect().Wait();
+                
                 using (ReferenceDataReaderLauncher.Run(es, broker.Result).Result)
                 {
                     Console.WriteLine("Press Any Key To Stop...");

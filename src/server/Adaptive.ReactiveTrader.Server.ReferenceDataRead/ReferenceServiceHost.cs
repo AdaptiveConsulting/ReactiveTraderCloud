@@ -1,7 +1,7 @@
 using System;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
@@ -9,13 +9,13 @@ using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
-    public class ReferenceServiceHost : IDisposable
+    public class ReferenceServiceHost : ServiceHostBase
     {
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceServiceHost>();
         private readonly IReferenceService _service;
         private readonly IBroker _broker;
 
-        public ReferenceServiceHost(IReferenceService service, IBroker broker)
+        public ReferenceServiceHost(IReferenceService service, IBroker broker) : base(broker, "ref")
         {
             _service = service;
             _broker = broker;
@@ -28,21 +28,23 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             var payload = JsonConvert.DeserializeObject<NothingDto>(Encoding.UTF8.GetString(message.Payload));
             var replyTo = message.ReplyTo;
 
-            var privateEndpoint = await _broker.GetEndPoint<CurrencyPairUpdatesDto>(replyTo);
+            var endPoint = await _broker.GetPrivateEndPoint<CurrencyPairUpdatesDto>(replyTo);
 
             _service.GetCurrencyPairUpdatesStream(context, payload)
-                .TakeUntil(privateEndpoint.TerminationSignal)
-                .Subscribe(privateEndpoint.PushMessage, privateEndpoint.PushError, privateEndpoint.PushComplete);
+                .TakeUntil(endPoint.TerminationSignal)
+                .Subscribe(endPoint);
         }
 
-        public async Task Start()
+        public override async Task Start()
         {
+            await base.Start();
             await _broker.RegisterCall("reference.getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             Console.WriteLine("Killing ReferenceRead ServiceHost");
+            base.Dispose();
         }
     }
 }

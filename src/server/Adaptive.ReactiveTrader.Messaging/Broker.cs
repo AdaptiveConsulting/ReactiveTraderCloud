@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Messaging.WAMP;
 using WampSharp.V2;
 using WampSharp.V2.Core.Contracts;
 using WampSharp.V2.MetaApi;
@@ -52,7 +53,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             await realm.RpcCatalog.Register(rpcOperation, registerOptions);
         }
 
-        public async Task<IPrivateEndPoint<T>> GetEndPoint<T>(ITransientDestination destination)
+        public async Task<IPrivateEndPoint<T>> GetPrivateEndPoint<T>(ITransientDestination destination)
         {
             var desination = (WampTransientDestination) destination;
             var subID = await _meta.LookupSubscriptionIdAsync(desination.Topic, new SubscribeOptions {Match = "exact"});
@@ -74,14 +75,12 @@ namespace Adaptive.ReactiveTrader.Messaging
             return new PrivateEndPoint<T>(subject, breaker);
         }
 
-        public async Task<bool> Subscribers(string topic)
+        public async Task<IEndPoint<T>> GetPublicEndPoint<T>(string destination)
         {
-            var subscriptionID = await _meta.LookupSubscriptionIdAsync(topic, new SubscribeOptions());
-            var sub = await _meta.CountSubscribersAsync(subscriptionID.Value);
-
-            return sub > 1;
+            var subject = _channel.RealmProxy.Services.GetSubject<T>(destination);
+            return new EndPoint<T>(subject);
         }
-
+        
         public async Task Open()
         {
             await _channel.Open();
@@ -89,4 +88,5 @@ namespace Adaptive.ReactiveTrader.Messaging
             _meta = _channel.RealmProxy.GetMetaApiServiceProxy();
         }
     }
+
 }

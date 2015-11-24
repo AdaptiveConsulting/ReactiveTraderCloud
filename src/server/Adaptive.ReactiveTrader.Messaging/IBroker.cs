@@ -6,6 +6,8 @@ namespace Adaptive.ReactiveTrader.Messaging
     public interface IBroker
     {
         Task RegisterCall(string v, Func<IRequestContext, IMessage, Task> onMessage);
-        Task<IPrivateEndPoint<T>> GetEndPoint<T>(ITransientDestination replyTo);
+        Task<IPrivateEndPoint<T>> GetPrivateEndPoint<T>(ITransientDestination replyTo);
+        Task<IEndPoint<T>> GetPublicEndPoint<T>(string topic);
+
     }
 }
