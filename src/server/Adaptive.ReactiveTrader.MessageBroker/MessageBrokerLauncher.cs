@@ -1,12 +1,15 @@
 using System;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.MessageBroker
 {
-    public static class MessageBrokerLauncher
+    public class MessageBrokerLauncher
     {
+        protected static readonly ILog Log = LogManager.GetLogger<MessageBrokerLauncher>();
+
         public static IDisposable Run()
         {
-            Console.WriteLine("Messagee Broker Starting...");
+           Log.Info("Messagee Broker Starting...");
 
             var broker = new MessageBroker();
             broker.Start();

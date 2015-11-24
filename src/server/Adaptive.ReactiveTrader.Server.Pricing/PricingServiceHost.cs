@@ -1,4 +1,3 @@
-using System;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +11,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     public class PricingServiceHost : ServiceHostBase
     {
         protected static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
+
         private readonly IPricingService _service;
         private readonly IBroker _broker;
 
@@ -25,12 +25,12 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         {
             await base.Start();
             await _broker.RegisterCall("pricing.getPriceUpdates", GetCurrencyPairUpdatesStream);
-            Console.WriteLine("procedure pricing.getPriceUpdates() registered");
+            Log.Info("procedure pricing.getPriceUpdates() registered");
         }
         
         public async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
-            Log.DebugFormat("Received GetCurrencyPairUpdatesStream from {0}", context.UserSession.Username);
+            Log.DebugFormat("Received GetCurrencyPairUpdatesStream from [{0}]", context.UserSession.Username ?? "Unknown User");
 
             var spotStreamRequest =
                 JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));

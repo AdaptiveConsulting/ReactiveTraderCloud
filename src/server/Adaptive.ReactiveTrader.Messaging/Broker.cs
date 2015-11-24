@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging.WAMP;
+using Common.Logging;
 using WampSharp.V2;
 using WampSharp.V2.Core.Contracts;
 using WampSharp.V2.MetaApi;
@@ -13,6 +14,8 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class Broker : IBroker
     {
+        protected static readonly ILog Log = LogManager.GetLogger<Broker>();
+
         private readonly IWampChannel _channel;
         private WampMetaApiServiceProxy _meta;
         private readonly IObservable<long> _sessionTeardowns;
@@ -42,6 +45,8 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public async Task RegisterCall(string v, Func<IRequestContext, IMessage, Task> onMessage)
         {
+             Log.InfoFormat("Registering call [{0}]", v);
+
             var rpcOperation = new RpcOperation(v, onMessage);
             var realm = _channel.RealmProxy;
 
@@ -58,7 +63,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             var desination = (WampTransientDestination) destination;
             var subID = await _meta.LookupSubscriptionIdAsync(desination.Topic, new SubscribeOptions {Match = "exact"});
 
-            Console.WriteLine("Create subscription {0} ({1})", subID, desination);
+            Log.DebugFormat("Create subscription {0} ({1})", subID, desination);
 
             if (!subID.HasValue) // subscription is already disposed
                 throw new Exception();
@@ -68,7 +73,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                 _sessionTeardowns.Where(s => s == sessionID).Select(_ => Unit.Default)
                     .Merge(_subscriptionTeardowns.Where(s => s == subID.Value).Select(_ => Unit.Default))
                     .Take(1)
-                    .Do(o => Console.WriteLine("Remove subscription for {0} ({1})", subID, desination));
+                    .Do(o =>Log.DebugFormat("Remove subscription for {0} ({1})", subID, desination));
 
             var subject = _channel.RealmProxy.Services.GetSubject<T>(desination.Topic);
 

@@ -11,6 +11,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class ReferenceServiceHost : ServiceHostBase
     {
+
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceServiceHost>();
         private readonly IReferenceService _service;
         private readonly IBroker _broker;
@@ -43,7 +44,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
         public override void Dispose()
         {
-            Console.WriteLine("Killing ReferenceRead ServiceHost");
+            Log.Info("Dispose()");
             base.Dispose();
         }
     }
