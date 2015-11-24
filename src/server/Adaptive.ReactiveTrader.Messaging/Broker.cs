@@ -45,9 +45,24 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public async Task RegisterCall(string procName, Func<IRequestContext, IMessage, Task> onMessage)
         {
-             Log.InfoFormat("Registering call [{0}]", procName);
+            Log.InfoFormat("Registering call [{0}]", procName);
 
             var rpcOperation = new RpcOperation(procName, onMessage);
+            var realm = _channel.RealmProxy;
+
+            var registerOptions = new RegisterOptions
+            {
+                Invoke = "roundrobin",
+            };
+
+            await realm.RpcCatalog.Register(rpcOperation, registerOptions);
+        }
+
+
+        public async Task RegisterCallResponse<TResponse>(string procName,
+            Func<IRequestContext, IMessage, Task<TResponse>> onMessage)
+        {
+            var rpcOperation = new RpcResponseOperation<TResponse>(procName, onMessage);
             var realm = _channel.RealmProxy;
 
             var registerOptions = new RegisterOptions
@@ -73,7 +88,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                 _sessionTeardowns.Where(s => s == sessionID).Select(_ => Unit.Default)
                     .Merge(_subscriptionTeardowns.Where(s => s == subID.Value).Select(_ => Unit.Default))
                     .Take(1)
-                    .Do(o =>Log.DebugFormat("Remove subscription for {0} ({1})", subID, desination));
+                    .Do(o => Log.DebugFormat("Remove subscription for {0} ({1})", subID, desination));
 
             var subject = _channel.RealmProxy.Services.GetSubject<T>(desination.Topic);
 
@@ -85,7 +100,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             var subject = _channel.RealmProxy.Services.GetSubject<T>(destination);
             return new EndPoint<T>(subject);
         }
-        
+
         public async Task Open()
         {
             await _channel.Open();
@@ -93,5 +108,4 @@ namespace Adaptive.ReactiveTrader.Messaging
             _meta = _channel.RealmProxy.GetMetaApiServiceProxy();
         }
     }
-
 }
