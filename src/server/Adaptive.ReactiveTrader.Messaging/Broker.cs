@@ -28,9 +28,9 @@ namespace Adaptive.ReactiveTrader.Messaging
             _channel = new WampChannelFactory()
                 .ConnectToRealm(realm)
                 .WebSocketTransport(uri)
-                .JsonSerialization()
+                .MsgpackSerialization()
                 .Build();
-
+            
             _sessionTeardowns =
                 Observable.Create<long>(async o =>
                 {

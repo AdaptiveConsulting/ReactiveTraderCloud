@@ -11,20 +11,19 @@ if (!String.prototype.supplant) {
 
 $(function() {
 
- var wsuri;
- if (document.location.origin == "file://") {
-   wsuri = "ws://127.0.0.1:8080/ws";
-
- } else {
-   wsuri = (document.location.protocol === "http:" ? "ws:" : "wss:") + "//" +
-   document.location.host + "/ws";
- }
-
-
 // the WAMP connection to the Router
 //
 var connection = new autobahn.Connection({
- url: wsuri,
+transports: [
+      {
+         'type': 'websocket',
+         'url': 'ws://127.0.0.1:8080/ws',
+      },
+      {
+         'type': 'longpoll',
+         'url': 'http://127.0.0.1:9000/lp'
+      }
+   ],
  realm: "com.weareadaptive.reactivetrader"
 });
 
