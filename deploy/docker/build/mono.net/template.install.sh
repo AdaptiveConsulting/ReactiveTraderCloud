@@ -10,7 +10,7 @@ echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat ma
 sudo apt-get install -y mono-complete
 
 # install LIBUV
-sudo apt-get install -y automake             \
+sudo apt-get install -y automake        \
                    libtool              \
                    unzip                \
                    libunwind8           \
