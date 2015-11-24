@@ -1,4 +1,4 @@
-﻿namespace Adaptive.ReactiveTrader.Server.TradeExecution.Events
+﻿namespace Adaptive.ReactiveTrader.Contract.Events.Trade
 {
     public class TradeRejectedEvent
     {

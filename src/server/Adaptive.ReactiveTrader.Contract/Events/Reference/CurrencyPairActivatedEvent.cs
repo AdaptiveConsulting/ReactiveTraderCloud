@@ -1,4 +1,4 @@
-namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Events
+namespace Adaptive.ReactiveTrader.Contract.Events.Reference
 {
     public class CurrencyPairActivatedEvent
     {

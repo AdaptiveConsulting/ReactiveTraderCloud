@@ -60,7 +60,7 @@ function executeTrade(session) {
 
     console.log("Built Request object");
 
-    session.call('execution.ExecuteTrade', [createMessage(request)])
+    session.call('execution.ExecuteTrade', [createMessage(request, 'Jon')])
         .then(function logResult(res) {
             console.log('Got execution response' + res);
             var status = res.Result.Trade.Status == 0 ? 'Accepted' : "Rejected";

@@ -1,11 +1,12 @@
 ﻿using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore;
-using Adaptive.ReactiveTrader.Server.TradeExecution.Events;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Contract.Events.Trade;
+using Adaptive.ReactiveTrader.Server.Common;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
@@ -25,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             var id = await _tradeIdProvider.GetNextId();
             var tradeDate = DateTime.UtcNow;
 
-            var tradeCreatedEvent = new TradeCreatedEvent(id, request.CurrencyPair, request.SpotRate, tradeDate, request.ValueDate, request.Direction, request.Notional, request.DealtCurrency);
+            var tradeCreatedEvent = new TradeCreatedEvent(id, user, request.CurrencyPair, request.SpotRate, DateUtils.ToSerializationFormat(tradeDate), DateUtils.ToSerializationFormat(request.ValueDate), request.Direction.ToString(), request.Notional, request.DealtCurrency);
             await _eventStore.AppendToStreamAsync($"trade-{id}", ExpectedVersion.Any, new EventData(Guid.NewGuid(), "Trade Created", false, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(tradeCreatedEvent)), new byte[0]));
 
             var status = await ExecuteImpl(request);

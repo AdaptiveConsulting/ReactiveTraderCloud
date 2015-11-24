@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Contract.Events.Reference;
 using Adaptive.ReactiveTrader.EventStore;
-using Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Events;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 
