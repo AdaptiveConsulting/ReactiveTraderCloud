@@ -1,7 +1,7 @@
 function createMessage(payload) {
   var mess = {
     ReplyTo: newQueueName(),
-    Payload: payload,
+    Payload: payload
   };
 
   return mess;

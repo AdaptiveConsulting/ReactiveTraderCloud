@@ -43,11 +43,11 @@ namespace Adaptive.ReactiveTrader.Messaging
                     }).Publish().RefCount();
         }
 
-        public async Task RegisterCall(string v, Func<IRequestContext, IMessage, Task> onMessage)
+        public async Task RegisterCall(string procName, Func<IRequestContext, IMessage, Task> onMessage)
         {
-             Log.InfoFormat("Registering call [{0}]", v);
+             Log.InfoFormat("Registering call [{0}]", procName);
 
-            var rpcOperation = new RpcOperation(v, onMessage);
+            var rpcOperation = new RpcOperation(procName, onMessage);
             var realm = _channel.RealmProxy;
 
             var registerOptions = new RegisterOptions

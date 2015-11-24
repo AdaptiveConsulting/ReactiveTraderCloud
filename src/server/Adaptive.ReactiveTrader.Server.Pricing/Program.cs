@@ -1,6 +1,7 @@
 ﻿using System;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
+using Common.Logging.Simple;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
@@ -10,6 +11,11 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         public static void Main(string[] args)
         {
+            LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
+            {
+                ShowLogName = true
+            };
+
             var uri = "ws://127.0.0.1:8080/ws";
             var realm = "com.weareadaptive.reactivetrader";
 
