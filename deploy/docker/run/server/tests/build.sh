@@ -5,7 +5,7 @@ containerPath="./container"
 
 
 mkdir -p $containerPath
-rsync -aq ../../../../src/server $containerPath/
+rsync -aq ../../../../../src/server $containerPath/
 
 sed "s/__VERSION__/$version/g" template.Dockerfile > $containerPath/Dockerfile
 
