@@ -22,7 +22,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         public async Task<ExecuteTradeResponseDto> ExecuteAsync(ExecuteTradeRequestDto request, string user)
         {
-            var id = _tradeIdProvider.GetNextId();
+            var id = await _tradeIdProvider.GetNextId();
             var tradeDate = DateTime.UtcNow;
 
             var tradeCreatedEvent = new TradeCreatedEvent(id, request.CurrencyPair, request.SpotRate, tradeDate, request.ValueDate, request.Direction, request.Notional, request.DealtCurrency);

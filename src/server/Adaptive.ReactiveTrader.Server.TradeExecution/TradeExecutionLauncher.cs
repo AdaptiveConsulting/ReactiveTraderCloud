@@ -14,7 +14,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
                 try
                 {
-                    var executionEngine = new TradeExecutionEngine(eventStore, new TradeIdProvider());
+                    var executionEngine = new TradeExecutionEngine(eventStore, new TradeIdProvider(eventStore));
 
                     var service = new TradeExecutionService(executionEngine);
                     var serviceHost = new TradeExecutionServiceHost(service, broker);
