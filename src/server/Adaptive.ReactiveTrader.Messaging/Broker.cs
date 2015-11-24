@@ -39,6 +39,19 @@ namespace Adaptive.ReactiveTrader.Messaging
             await realm.RpcCatalog.Register(rpcOperation, registerOptions);
         }
 
+        public async Task RegisterCallResponse<TResponse>(string v, Func<IRequestContext, IMessage, Task<TResponse>> onMessage)
+        {
+            var rpcOperation = new RpcResponseOperation<TResponse>(v, onMessage);
+            var realm = _channel.RealmProxy;
+
+            var registerOptions = new RegisterOptions
+            {
+                Invoke = "roundrobin",
+            };
+
+            await realm.RpcCatalog.Register(rpcOperation, registerOptions);
+        }
+
         public async Task<IObserver<T>> CreateChannelAsync<T>(ITransientDestination replyTo)
         {
             var desination = (WampTransientDestination) replyTo;
