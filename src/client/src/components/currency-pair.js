@@ -77,8 +77,14 @@ class CurrencyPair extends React.Component {
 
     const payload = {
       historic,
-      state: props.state ? props.state : state.state || 'listening'
+      state: state.state ? state.state : props.state || 'listening'
     };
+
+    if (!this.state.info && props.response != null){
+      this.setState({
+        info: true
+      });
+    }
 
     this.setState(payload);
   }

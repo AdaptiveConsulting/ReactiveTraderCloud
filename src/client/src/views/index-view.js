@@ -2,6 +2,9 @@ import React from 'react';
 import CurrencyPairs from '../components/currency-pairs';
 import Blotter from '../components/blotter';
 
+import transport from '../utils/transport';
+
+
 //todo: remove mocks
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   today = new Date();
@@ -31,7 +34,8 @@ trades.reverse();
 export class IndexView extends React.Component {
 
   constructor(props, context){
-    super(props, context)
+    super(props, context);
+
     this.state = {
       trades: []
     };

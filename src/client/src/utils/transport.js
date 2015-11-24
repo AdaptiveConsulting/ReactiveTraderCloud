@@ -1,9 +1,12 @@
 import autobahn from 'autobahn';
+import emitter from './emitter';
 
-class Transport {
 
-  constructor(url = 'ws://localhost:9000', realm = 'ReactiveTrader'){
-    this.connection = autobahn.Connection({
+class Transport extends emitter {
+
+  constructor(url = 'ws://localhost:8080/ws', realm = 'com.weareadaptive.reactivetrader'){
+    super();
+    this.connection = new autobahn.Connection({
       url,
       realm,
       use_es6_promises: true
@@ -15,18 +18,26 @@ class Transport {
 
     this.connection.onopen = (ws) => {
       this.session = ws;
+      this.trigger('open');
     };
 
     this.connection.onclose = () => {
-
+      this.trigger('close');
     };
+
+     this.connection.open();
   }
 
-  on(event, callback, options){
-    return this.session.subscribe(event, callback, options);
+  subscribe(event, callback, options = {}){
+    const payload = {
+      ReplyTo: event,
+      Payload: options
+    };
+
+    this.session.subscribe(event, (a) => callback(a[0]), options).then(()=> this.session.call(event, [payload]));
   }
 
-  off(...args){
+  unsubscribe(...args){
     return this.session.unsubscribe(...args);
   }
 
@@ -78,4 +89,4 @@ class Transport {
 
 }
 
-export default Transport;
+export default new Transport;
