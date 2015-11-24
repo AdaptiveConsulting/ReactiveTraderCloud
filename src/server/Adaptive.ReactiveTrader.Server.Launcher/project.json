@@ -14,14 +14,15 @@
         "Adaptive.ReactiveTrader.EventStore": "",
         "Adaptive.ReactiveTrader.Server.Pricing": "",
         "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "",
-        "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": ""
+        "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "",
+        "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*"
     },
 
     "commands": {
         "default": "Adaptive.ReactiveTrader.Server.Launcher"
     },
 
-   "frameworks": {
+    "frameworks": {
         "dnx451": {
             "frameworkAssemblies": {
                 "System.Runtime": "",
@@ -32,6 +33,6 @@
 
             }
         }
-       
+
     }
 }
