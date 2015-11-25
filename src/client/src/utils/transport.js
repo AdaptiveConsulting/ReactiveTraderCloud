@@ -18,7 +18,9 @@ class Transport extends emitter {
     };
 
     this.connection.onopen = (ws) => {
+      console.log('connected');
       this.session = ws;
+      this.discovery();
       this.trigger('open');
     };
 
@@ -26,42 +28,52 @@ class Transport extends emitter {
       this.trigger('close');
     };
 
-    this.services = {};
+    this.services = {'pricing':{ subscriptions: [] }, 'reference':{ subscriptions: [] }, 'blotter':{ subscriptions: [] }};
 
-    this.monitor = _.debounce(this.monitor, 5000);
     this.connection.open();
   }
 
-  subscribe(event, callback, options = {}){
-    const reply = _.uniqueId(event);
-
-    this.session.subscribe(reply, (a) => {
-      callback(a[0]);
-    }, options).then(() => this.sessionRPC({
-        ReplyTo: reply,
-        Payload: options,
-        event
-      }));
+  logHeartbeat(heartbeat) {
+      heartbeat.Instance in this.services[heartbeat.Type] || ( this.services[heartbeat.Type][heartbeat.Instance] = {killer: _.debounce(()=>this.markAsDead(heartbeat.Type, heartbeat.Instance), 2000)});
+      this.services[heartbeat.Type][heartbeat.Instance].killer();
+      this.services[heartbeat.Type].subscriptions.forEach( sub=>{ if( !sub.called ) { sub.called = true; sub.instanceID = heartbeat.Instance; this.sessionRPC(sub, heartbeat.Instance); }});
   }
 
-  sessionRPC(obj){
-    // console.log(response);
-    const { event } = obj;
-    delete obj.event;
+  discovery() {
+    console.log('starting subscription');
+    this.session.subscribe('status', (a) => this.logHeartbeat(a[0])).then(this.session.log, this.session.log);
+    console.log('subscribed');
+  }
 
-    this.session.call(event, [obj]).then((rpcResponse) => {
-      rpcResponse.InstanceID in this.services || (this.services[rpcResponse.InstanceID] = []);
-      this.services[rpcResponse.InstanceID] = obj;
-      this.services[rpcResponse.InstanceID].event = event;
-    });
+  subscribe(event, callback, message = {}){
+    const reply = _.uniqueId(event);
+
+    this.session.subscribe(reply, (a) => callback(a[0])).then(this.session.log, this.session.log);
+ 
+    if(event == 'reference.getCurrencyPairUpdatesStream') {
+      this.services.reference.subscriptions.push({proc: 'getCurrencyPairUpdatesStream', message, reply, called: false});
+      console.log('added subscription', this.services);
+    }
+
+    if(event == 'pricing.getPriceUpdates') {
+      this.services.pricing.subscriptions.push({proc: 'getPriceUpdates', message, reply, called: false});
+      console.log('added subscription', this.services);
+    }
+  }
+
+  sessionRPC(sub, instanceID){
+    var ins = instanceID +'.'+ sub.proc;
+    this.session.call(ins, [{replyTo: sub.reply, payload: sub.message}]).then(_ => console.log('called'),err=>{sub.called = false; sub.instanceID = undefined;});
   }
 
   unsubscribe(...args){
     return this.session.unsubscribe(...args);
   }
 
-  monitor(){
-    this.log('Connection has gone down');
+  markAsDead(type, instanceID) {
+    console.log('killing ' + instanceID);
+    console.log(this.services[type].subscriptions);
+     this.services[type].subscriptions.forEach( sub=>{ if( sub.instanceID == instanceID ) { console.log('marked subscription ' + sub.proc); sub.called = false; sub.instanceID = undefined; }});
   }
 
   publish(...args){
