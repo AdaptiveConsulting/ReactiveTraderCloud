@@ -12,14 +12,12 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 {
     internal class RpcOperation : IWampRpcOperation
     {
-        private readonly string _serviceInstanceID;
         private readonly Func<IRequestContext, IMessage, Task> _serviceMethod;
         private readonly IScheduler _scheduler = TaskPoolScheduler.Default;
 
-        public RpcOperation(string name, string serviceInstanceID, Func<IRequestContext, IMessage, Task> serviceMethod)
+        public RpcOperation(string name, Func<IRequestContext, IMessage, Task> serviceMethod)
         {
             Procedure = name;
-            _serviceInstanceID = serviceInstanceID;
             _serviceMethod = serviceMethod;
         }
 
@@ -69,8 +67,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
             var userContext = new RequestContext(message, userSession);
 
             var dummyDetails = new YieldOptions();
-            caller.Result(WampObjectFormatter.Value, dummyDetails,
-                new object[] {new ServiceInstanceDto {InstanceID = _serviceInstanceID } });
+            caller.Result(WampObjectFormatter.Value, dummyDetails);
 
             _scheduler.Schedule(() => serviceMethod(userContext, message).Wait());
         }
