@@ -48,11 +48,11 @@ namespace Adaptive.ReactiveTrader.Messaging
                     }).Publish().RefCount();
         }
 
-        public async Task RegisterCall(string procName, Func<IRequestContext, IMessage, Task> onMessage)
+        public async Task RegisterCall(string procName, string instanceID, Func<IRequestContext, IMessage, Task> onMessage)
         {
             Log.InfoFormat("Registering call [{0}]", procName);
 
-            var rpcOperation = new RpcOperation(procName, onMessage);
+            var rpcOperation = new RpcOperation(procName, instanceID, onMessage);
             var realm = _channel.RealmProxy;
 
             var registerOptions = new RegisterOptions
@@ -80,22 +80,32 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public async Task<IPrivateEndPoint<T>> GetPrivateEndPoint<T>(ITransientDestination destination)
         {
-            var desination = (WampTransientDestination) destination;
-            var subID = await _meta.LookupSubscriptionIdAsync(desination.Topic, new SubscribeOptions {Match = "exact"});
+            var dest = (WampTransientDestination) destination;
+            var subID = await _meta.LookupSubscriptionIdAsync(dest.Topic, new SubscribeOptions {Match = "exact"});
 
-            Log.DebugFormat("Create subscription {0} ({1})", subID, desination);
+            Log.DebugFormat("Create subscription {0} ({1})", subID, dest);
 
-            if (!subID.HasValue) // subscription is already disposed
-                throw new Exception();
+            if (!subID.HasValue)
+            {
+                // subscription is already disposed 
+                Log.ErrorFormat("Subscription not found for topic {0}", dest.Topic);
+                throw new Exception("No subscribers found for private subscription.");
+            }
+            var sessionID = (await _meta.GetSubscribersAsync(subID.Value)).FirstOrDefault();
 
-            var sessionID = (await _meta.GetSubscribersAsync(subID.Value)).First();
+            if (sessionID == 0)
+            {
+                Log.ErrorFormat("Subscription found but there are no subscriptions for topic {0}", dest.Topic);
+                throw new Exception("No subscribers found for private subscription.");
+            }
+
             var breaker =
                 _sessionTeardowns.Where(s => s == sessionID).Select(_ => Unit.Default)
                     .Merge(_subscriptionTeardowns.Where(s => s == subID.Value).Select(_ => Unit.Default))
                     .Take(1)
-                    .Do(o => Log.DebugFormat("Remove subscription for {0} ({1})", subID, desination));
+                    .Do(o => Log.DebugFormat("Remove subscription for {0} ({1})", subID, dest));
 
-            var subject = _channel.RealmProxy.Services.GetSubject<T>(desination.Topic);
+            var subject = _channel.RealmProxy.Services.GetSubject<T>(dest.Topic);
 
             return new PrivateEndPoint<T>(subject, breaker);
         }

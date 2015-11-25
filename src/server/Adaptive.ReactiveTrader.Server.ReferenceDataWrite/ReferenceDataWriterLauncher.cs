@@ -1,16 +1,19 @@
 using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class ReferenceDataWriterLauncher
     {
+        protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriterLauncher>();
+
         public static async Task Initialize(IEventStore eventStore)
         {
-            Console.WriteLine("Reference Data Service starting...");
+            Log.Info("Reference Writer Service starting...");
             var repository = new CurrencyPairRepository(eventStore);
-            Console.WriteLine("Initializing Event Store with Currency Pair Data");
+            Log.Info("Initializing Event Store with Currency Pair Data");
             await new CurrencyPairInitializer(repository).WriteInitialEventsAsync();
         }
         

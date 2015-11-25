@@ -8,13 +8,13 @@ namespace Adaptive.ReactiveTrader.Messaging
     internal class Heartbeat : IDisposable
     {
         private readonly string _serviceType;
-        private readonly Guid _serviceInstance;
+        private readonly string _serviceInstance;
         private readonly IBroker _broker;
         private readonly IObservable<long> _heartbeatStream;
-        public TimeSpan HeartbeatInterval { get; set; }
+        public TimeSpan HeartbeatInterval { get; }
         private IDisposable _disp = Disposable.Empty;
 
-        public Heartbeat(string serviceType, Guid serviceInstance, IBroker broker)
+        public Heartbeat(string serviceType, string serviceInstance, IBroker broker)
         {
             _serviceType = serviceType;
             _serviceInstance = serviceInstance;

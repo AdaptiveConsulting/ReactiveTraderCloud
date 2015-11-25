@@ -12,12 +12,14 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 {
     internal class RpcOperation : IWampRpcOperation
     {
+        private readonly string _serviceInstanceID;
         private readonly Func<IRequestContext, IMessage, Task> _serviceMethod;
         private readonly IScheduler _scheduler = TaskPoolScheduler.Default;
 
-        public RpcOperation(string name, Func<IRequestContext, IMessage, Task> serviceMethod)
+        public RpcOperation(string name, string serviceInstanceID, Func<IRequestContext, IMessage, Task> serviceMethod)
         {
             Procedure = name;
+            _serviceInstanceID = serviceInstanceID;
             _serviceMethod = serviceMethod;
         }
 
@@ -53,7 +55,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
         {
             var x = formatter.Deserialize<MessageDto>(arguments[0]);
 
-            var message = new Message()
+            var message = new Message
             {
                 ReplyTo = new WampTransientDestination(x.ReplyTo),
                 Payload = Encoding.UTF8.GetBytes(x.Payload.ToString()) // TODO need to stop this from deserializing
@@ -67,7 +69,8 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
             var userContext = new RequestContext(message, userSession);
 
             var dummyDetails = new YieldOptions();
-            caller.Result(WampObjectFormatter.Value, dummyDetails);
+            caller.Result(WampObjectFormatter.Value, dummyDetails,
+                new object[] {new ServiceInstanceDto {InstanceID = _serviceInstanceID } });
 
             _scheduler.Schedule(() => serviceMethod(userContext, message).Wait());
         }

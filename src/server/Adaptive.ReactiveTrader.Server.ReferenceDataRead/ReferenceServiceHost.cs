@@ -1,4 +1,3 @@
-using System;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class ReferenceServiceHost : ServiceHostBase
     {
-
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceServiceHost>();
         private readonly IReferenceService _service;
         private readonly IBroker _broker;
@@ -39,7 +37,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         public override async Task Start()
         {
             await base.Start();
-            await _broker.RegisterCall("reference.getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
+            await _broker.RegisterCall("reference.getCurrencyPairUpdatesStream", InstanceID, GetCurrencyPairUpdatesStream);
         }
 
         public override void Dispose()

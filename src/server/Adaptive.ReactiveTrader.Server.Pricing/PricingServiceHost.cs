@@ -24,7 +24,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         public override async Task Start()
         {
             await base.Start();
-            await _broker.RegisterCall("pricing.getPriceUpdates", GetCurrencyPairUpdatesStream);
+            await _broker.RegisterCall("pricing.getPriceUpdates", InstanceID, GetCurrencyPairUpdatesStream);
             Log.Info("procedure pricing.getPriceUpdates() registered");
         }
         
