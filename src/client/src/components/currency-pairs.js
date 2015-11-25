@@ -47,6 +47,8 @@ class CurrencyPairs extends React.Component {
         const pair = updatedPair.CurrencyPair;
 
         if (updatedPair.UpdateType == 0){
+
+
           return {
             //todo: accept rawPair.PipPosition and rawPair.RatePrecision
             pip: 5,
@@ -69,23 +71,15 @@ class CurrencyPairs extends React.Component {
         pairs: pairs
       });
 
-      console.log(this.state.pairs);
-
       // subscribe to individual streams
       this.state.pairs.forEach((pair) => {
         transport.subscribe('pricing.getPriceUpdates', pair.handler = (priceData) => {
           let found = _.findWhere(this.state.pairs, {id: priceData.symbol});
 
-          // transport.log(found);
-          // console.count('tick ' + pair.id);
           if (!found){
             //todo: we should unsubscribe!
             return;
           }
-          //if (!found){
-          //  found = _.findWhere(pairs, {id: priceData.symbol});
-          //  this.state.pairs.push(found);
-          //}
 
           found.buy = Number(priceData.bid);
           found.sell = Number(priceData.ask);
@@ -142,23 +136,37 @@ class CurrencyPairs extends React.Component {
   }
 
   render(){
+    // filter cps that have got pric data only.
     const p = this.state.pairs.filter((a) => {
       return a.buy && a.sell;
     });
 
-    return <div className='currency-pairs'>
-      {p.map((cp) => {
-        return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
-                             pair={cp.pair}
-                             size="100m"
-                             key={cp.id}
-                             buy={cp.buy}
-                             sell={cp.sell}
-                             precision={cp.precision}
-                             pip={cp.pip}
-                             state={cp.state}
-                             response={cp.response} />
-      })}
+    return <div>
+      <nav className='navbar navbar-default'>
+        <a className='navbar-brand' href='/'>ReactiveTrader</a>
+        <ul className='nav navbar-nav hidden-xs navbar-left'>
+          <li>
+            <a href='/admin' className='nav-link' activeClassName='active'>Admin Cluster</a>
+          </li>
+        </ul>
+        <ul className="nav navbar-nav pull-right">
+          <li><a href="#" name='status'>{p.length ? 'online' : 'Waiting for pricing data...'}</a></li>
+        </ul>
+      </nav>
+      <div className='currency-pairs'>
+        {p.length ? p.map((cp) => {
+          return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
+                               pair={cp.pair}
+                               size="100m"
+                               key={cp.id}
+                               buy={cp.buy}
+                               sell={cp.sell}
+                               precision={cp.precision}
+                               pip={cp.pip}
+                               state={cp.state}
+                               response={cp.response} />
+        }) : <div className="text-center"><i className="fa fa-5x fa-cog fa-spin"></i></div> }
+      </div>
     </div>
   }
 }
