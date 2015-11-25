@@ -70,7 +70,7 @@ class CurrencyPair extends React.Component {
   componentWillReceiveProps(props, state){
     const historic = this.state.historic;
 
-    historic.push(props.buy);
+    historic.push(props.mid);
 
     // 30 max historic prices
     historic.length > 30 && (historic.shift());

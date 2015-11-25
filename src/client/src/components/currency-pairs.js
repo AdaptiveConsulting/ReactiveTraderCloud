@@ -89,6 +89,7 @@ class CurrencyPairs extends React.Component {
 
           existingPair.buy = Number(priceData.bid);
           existingPair.sell = Number(priceData.ask);
+          existingPair.mid = Number(priceData.mid);
 
           existingPair.lastUpdated = Date.now();
 
@@ -169,6 +170,7 @@ class CurrencyPairs extends React.Component {
                                key={cp.id}
                                buy={cp.buy}
                                sell={cp.sell}
+                               mid={cp.mid}
                                precision={cp.precision}
                                pip={cp.pip}
                                state={cp.state}
