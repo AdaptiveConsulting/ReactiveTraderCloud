@@ -23,7 +23,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 - go to `properties` (click on left top corner -> Properties)
 - Check `QuickEdit Mode` and `Insert Mode`, 
-- go to `layout` and enlarge width to you convenience 
+- go to `layout` and enlarge width to your convenience 
 - `copy`: select a zone with the mouse and right click
 - `paste`: press `insert` or `right click` under a container
 - `.bashrc` file is named `.bash_profile` and need to be placed in your user folder
