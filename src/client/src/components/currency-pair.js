@@ -149,10 +149,10 @@ class CurrencyPair extends React.Component {
    */
   parsePrice(price: number){
     const { precision, pip } = this.props;
-    price = price.toFixed(precision + 1);
+    price = price.toFixed(precision);
 
     return {
-      bigFigures: price.substring(0, pip - 1),
+      bigFigures: price.substring(0, pip),
       pip: price.substring(pip, pip + 2),
       pipFraction: price.substring(pip + 2, pip + 3)
     };

@@ -53,12 +53,10 @@ class CurrencyPairs extends React.Component {
         const pair = updatedPair.CurrencyPair;
 
         if (updatedPair.UpdateType == 0){
-
-
           return {
             //todo: accept rawPair.PipPosition and rawPair.RatePrecision
-            pip: 5,
-            precision: 5,
+            pip: pair.PipsPosition,
+            precision: pair.RatePrecision,
             pair: pair.Symbol,
             id: pair.Symbol,
             buy: undefined,

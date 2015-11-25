@@ -4,7 +4,7 @@ import emitter from './emitter';
 
 class Transport extends emitter {
 
-  constructor(url = 'ws://localhost:8080/ws', realm = 'com.weareadaptive.reactivetrader'){
+  constructor(url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader'){
     super();
     this.connection = new autobahn.Connection({
       url,
