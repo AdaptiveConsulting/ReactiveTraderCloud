@@ -6,8 +6,47 @@
   background: $gray-dark;
   color: $gray-light;
   margin: 2px;
+  overflow: hidden;
   &:hover {
-    background: #294464;
+    background: $gray;
+  }
+
+  .fa-plug {
+    display: none;
+  }
+  // states
+  &.executing {
+    opacity: .5;
+    .currency-pair-actions, .sizer {
+      pointer-events: none;
+    }
+  }
+
+  &.stale {
+    opacity: .5;
+    background: $gray-darker;
+    .currency-pair-actions, .sizer {
+      pointer-events: none;
+    }
+    &:hover {
+      opacity: 1;
+    }
+    .fa-plug {
+      display: inline-block;
+    }
+    .fa-line-chart {
+      display: none;
+    }
+  }
+
+  .summary-state {
+    background: linear-gradient(to bottom,rgba(255,255,255,.1), rgba(255,255,255,0));
+    height: 78px;
+    padding: 8px;
+    color: white;
+    span.key {
+      color: $gray-light;
+    }
   }
 
   .currency-pair-title {
@@ -18,8 +57,10 @@
     border-bottom: 1px solid $gray-dark;
     i {
       font-size: 16px;
-      cursor: pointer;
       color: $gray-light;
+      &.fa-line-chart {
+        cursor: pointer;
+      }
     }
   }
   .currency-pair-actions {
@@ -105,10 +146,13 @@
     label {
       @extend .pull-left;
     }
+    &.disabled {
+      visibility: hidden;
+    }
   }
 
   .sparkline-holder {
-    height: 28px;
+    height: 29px;
   }
 
 }

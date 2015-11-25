@@ -66,6 +66,10 @@ const webpackConfig = {
           'sass-loader'
         ]
       },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
       /* eslint-disable */
       { test: /\.woff(\?.*)?$/,  loader: "url-loader?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff" },
       { test: /\.woff2(\?.*)?$/, loader: "url-loader?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff2" },

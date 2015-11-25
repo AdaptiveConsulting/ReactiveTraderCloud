@@ -1,12 +1,11 @@
 import React from 'react';
 
 import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
+import numeral from 'numeral';
 
 const numberConvertRegex = /^([0-9.]+)?([MK]{1})?$/,
   SEPARATOR = '.',
   MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-let SPOTDATE;
 
 /**
  * @class CurrencyPairs
@@ -15,13 +14,16 @@ let SPOTDATE;
 class CurrencyPair extends React.Component {
 
   static propTypes = {
+    id: React.PropTypes.number,
     pair: React.PropTypes.string,
     buy: React.PropTypes.number,
     sell: React.PropTypes.number,
-    spread: React.PropTypes.string,
+    // spread: React.PropTypes.string,
     precision: React.PropTypes.number,
     pip: React.PropTypes.number,
-    onExecute: React.PropTypes.func
+    onExecute: React.PropTypes.func,
+    state: React.PropTypes.string,
+    response: React.PropTypes.object
   }
 
   /**
@@ -34,9 +36,12 @@ class CurrencyPair extends React.Component {
     this.state = {
       size: 0,
       chart: false,
+      info: false,
       state: 'listening',
       historic: []
-    }
+    };
+
+    this._checkStaleConnection = this._checkStaleConnection.bind(this);
   }
 
   componentWillMount(){
@@ -45,13 +50,24 @@ class CurrencyPair extends React.Component {
 
     this.setState({
       size,
-      historic: [this.props.buy]
+      historic: [this.props.buy],
+      state: this.props.state
     });
 
-    SPOTDATE = ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' ');
+    this.SPOTDATE = ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' ');
   }
 
-  componentWillReceiveProps(props){
+  _checkStaleConnection(){
+    const diff = Date.now() - this.lastUpdated;
+    if (diff > STALE_TIMEOUT){
+      this.setState({
+        state: 'stale',
+        message: 'Pricing has become unavailable, no data received for over 4 seconds'
+      });
+    }
+  }
+
+  componentWillReceiveProps(props, state){
     const historic = this.state.historic;
 
     historic.push(props.buy);
@@ -59,13 +75,28 @@ class CurrencyPair extends React.Component {
     // 30 max historic prices
     historic.length > 30 && (historic.shift());
 
-    this.setState({
-      historic
-    });
+    const payload = {
+      historic,
+      state: state.state ? state.state : props.state || 'listening'
+    };
+
+    if (!this.state.info && props.response != null){
+      this.setState({
+        info: true
+      });
+    }
+
+    this.setState(payload);
   }
 
   shouldComponentUpdate(props, state){
-    return props.buy != this.props.buy || props.sell != this.props.sell || state.chart !== this.state.chart;
+    //refuse props updates while we have a summary or error message info div shown until this.setState()
+    if ((props.buy != this.props.buy || props.sell != this.props.sell) || props.state !== this.state.state){
+      return true;
+    }
+    else {
+      return state.chart !== this.state.chart || state.state !== this.state.state || this.state.info != state.info;
+    }
   }
 
   /**
@@ -94,12 +125,19 @@ class CurrencyPair extends React.Component {
    * @param {DOMEvent=} e
    */
   setSizeFromInput(e){
-    let size = this._getSize((this.refs.size.value || e.target.value).trim());
+    const val = (this.refs.size.value || e.target.value).trim();
+    let size = this._getSize(val);
 
     if (!isNaN(size)){
       this.setState({
         size
       });
+
+      // user may be trying to enter decimals. restore into input
+      if (val.indexOf('.') === val.length-1){
+        size = size + '.';
+      }
+
       this.refs.size.value = size;
     }
   }
@@ -129,35 +167,85 @@ class CurrencyPair extends React.Component {
     if (this.props.onExecute && this.state.size !== 0){
       this.props.onExecute({
         direction: direction,
-        size: this.state.size,
-        price: this.props[direction],
-        pair: this.props.pair
+        amount: this.state.size,
+        rate: this.props[direction].toFixed(this.props.precision),
+        pair: this.props.pair,
+        valueDate: this.SPOTDATE,
+        trader: 'SJP'
       });
-      this.setState({state: 'executing'});
+      this.setState({
+        state: 'executing'
+      });
     }
     else {
       console.error('To execute spot trade, you need onExecute({Payload}) callback and a valid size');
     }
   }
 
+  /**
+   * Click handler for the 'Done'
+   * @param {HTMLEvent} e
+   */
+  onDismissLastResponse(e){
+    e && e.preventDefault();
+    this.setState({
+      info: false
+    });
+    delete this.lastResponse;
+  }
+
+  /**
+   * Parses an ACK response string, saves element into instance until user action
+   * @param {Object} response
+   * @returns {ReactDOM.Element}
+   */
+  renderLastResponse(response){
+    if (!response)
+      return false;
+
+    if (response.message){
+      return this.lastResponse = (
+        <div className='summary-state animated flipInX'>
+          {response.message}
+        </div>
+      );
+    }
+
+    const action = response.direction === 'sell' ? 'Sold' : 'Bought',
+      amount = numeral(response.amount).format('0,000,000[.]00');
+
+    // we will cache last response to diverge from state until user dismisses it.
+    return this.lastResponse = (
+      <div className='summary-state animated flipInX'>
+        <span className='key'>{action}</span> {response.pair.substr(0, 3)} {amount}<br/>
+        <span className='key'>vs</span> {response.pair.substr(3, 3)} <span className='key'>at</span> {response.rate}<br/>
+        <span className='key'>{response.valueDate}</span><br/>
+        <span className='key'>Trade ID</span> {response.id}
+        <a href='#' className='pull-right' onClick={(e) => this.onDismissLastResponse(e)}>Done</a>
+      </div>
+    );
+  }
+
+
   render(){
-    const { historic, size } = this.state;
-    const { buy, sell, pair, spread } = this.props;
-
+    const { historic, size, state, info, chart } = this.state;
+    const { buy, sell, pair, response } = this.props;
     const base = pair.substr(0, 3),
-      len = historic.length - 2;
-    // up, down, even
-    const direction = (historic.length > 1) ? historic[len] < buy ? 'up' : historic[len] > buy ? 'down' : '-' :'-';
+          len = historic.length - 2,
+          direction = (historic.length > 1) ? historic[len] < buy ? 'up' : historic[len] > buy ? 'down' : '-' :'-',
+          b = this.parsePrice(buy),
+          s = this.parsePrice(sell),
+          lastTradeState = this.state.info ? (this.lastResponse || this.renderLastResponse(response)) : false,
+          className = ['currency-pair', 'animated', 'flipInX', state].join(' '),
+          spread = Math.abs((s.pip + '.' + s.pipFraction) - (b.pip + '.' + b.pipFraction)).toFixed(1);
 
-    const b = this.parsePrice(buy),
-          s = this.parsePrice(sell);
-
-    return <div className={this.state.state + ' currency-pair'}>
+    return <div className={className}>
       <div className='currency-pair-title'>
-        {pair}
+        {pair} <i className='fa fa-plug animated infinite pulse'></i>
         <i className='fa fa-line-chart pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
-      <div className='currency-pair-actions'>
+      {lastTradeState}
+      <div className={lastTradeState ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
         <div className='buy action' onClick={() => this.execute('buy')}>
           <div>BUY</div>
           <span className='big'></span>{b.bigFigures}<span className='pip'>{b.pip}</span><span className='tenth'>{b.pipFraction}</span>
@@ -169,15 +257,15 @@ class CurrencyPair extends React.Component {
         </div>
       </div>
       <div className='clearFix'></div>
-      <div className='sizer'>
+      <div className={lastTradeState ? 'sizer disabled' : 'sizer'}>
         <label>{base}
         <input className='size' type='text' ref='size' defaultValue={size} onChange={(e) => this.setSizeFromInput(e)} /></label>
         <div className='pull-right'>
-          {SPOTDATE}
+          {this.SPOTDATE}
         </div>
       </div>
       <div className="clearfix"></div>
-      {this.state.chart ?
+      {chart ?
         <Sparklines data={historic.slice()} width={326} height={24} margin={0}>
           <SparklinesLine />
           <SparklinesSpots />
