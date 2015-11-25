@@ -1,5 +1,6 @@
 import autobahn from 'autobahn';
 import emitter from './emitter';
+import _ from 'lodash';
 
 
 class Transport extends emitter {
@@ -25,7 +26,10 @@ class Transport extends emitter {
       this.trigger('close');
     };
 
-     this.connection.open();
+    this.services = {};
+
+    this.monitor = _.debounce(this.monitor, 5000);
+    this.connection.open();
   }
 
   subscribe(event, callback, options = {}){
@@ -33,14 +37,31 @@ class Transport extends emitter {
 
     this.session.subscribe(reply, (a) => {
       callback(a[0]);
-    }, options).then(()=> this.session.call(event, [{
-      ReplyTo: reply,
-      Payload: options
-    }]));
+    }, options).then(() => this.sessionRPC({
+        ReplyTo: reply,
+        Payload: options,
+        event
+      }));
+  }
+
+  sessionRPC(obj){
+    // console.log(response);
+    const { event } = obj;
+    delete obj.event;
+
+    this.session.call(event, [obj]).then((rpcResponse) => {
+      rpcResponse.InstanceID in this.services || (this.services[rpcResponse.InstanceID] = []);
+      this.services[rpcResponse.InstanceID] = obj;
+      this.services[rpcResponse.InstanceID].event = event;
+    });
   }
 
   unsubscribe(...args){
     return this.session.unsubscribe(...args);
+  }
+
+  monitor(){
+    this.log('Connection has gone down');
   }
 
   publish(...args){
