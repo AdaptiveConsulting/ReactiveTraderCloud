@@ -2,14 +2,17 @@ using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.Messaging;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
-    public static class ReferenceDataReaderLauncher
+    public class ReferenceDataReaderLauncher
     {
+        protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataReaderLauncher>();
+
         public static async Task<IDisposable> Run(IEventStore es, IBroker broker)
         {
-            Console.WriteLine("Reference Data Service starting...");
+            Log.Info("Reference Data Service starting...");
             try
             {
                 var cache = new CurrencyPairCache(es);
@@ -20,9 +23,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
                 await serviceHost.Start();
 
-                Console.WriteLine("procedure GetCurrencyPairs() registered");
-
-                Console.WriteLine("Service Started.");
+                Log.Info("Service Started.");
                 
                 return serviceHost;
 

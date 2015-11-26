@@ -5,8 +5,10 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     public interface IBroker
     {
-        Task RegisterCall(string v, Action<IRequestContext, IMessage> onMessage);
-        Task<IObserver<T>> CreateChannelAsync<T>(ITransientDestination replyTo);
-        Task RegisterCallResponse<TResponse>(string v, Func<IRequestContext, IMessage, Task<TResponse>> onMessage);
+        Task RegisterCall(string procName, Func<IRequestContext, IMessage, Task> onMessage);
+        Task RegisterCallResponse<TResponse>(string procName, Func<IRequestContext, IMessage, Task<TResponse>> onMessage);
+
+        Task<IPrivateEndPoint<T>> GetPrivateEndPoint<T>(ITransientDestination replyTo);
+        Task<IEndPoint<T>> GetPublicEndPoint<T>(string topic);
     }
 }
