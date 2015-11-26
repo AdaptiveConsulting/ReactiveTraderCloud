@@ -89,26 +89,28 @@
       }
     }
     .direction {
-      left: calc(50% - 20px);
-      margin-top: 30px;
+      margin-left: calc(50% - 20px);
+      transform: translate3d(0, 30px, 0);
       width: 40px;
-      height: 16px;
+      height: 26px;
+      text-align: center;
       &:before {
-        width: 16px;
         height: 16px;
         position: absolute;
+        left: 0;
+        right: 0;
         @extend .fa;
       }
       &.up {
         &:before {
           @extend .fa-caret-up;
           color: $brand-success;
-          transform: translate(50%, -10px);
+          transform: translate(0, -10px);
         }
       }
       &.down {
         &:before {
-          transform: translate(50%, 14px);
+          transform: translate(0, 14px);
           @extend .fa-caret-down;
           color: $brand-warning;
         }
