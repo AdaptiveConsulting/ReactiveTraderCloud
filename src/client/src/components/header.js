@@ -4,7 +4,7 @@ import React from 'react';
 
 class Header extends React.Component {
   render(){
-    return <nav className='navbar navbar-default'>
+    return <nav className='navbar navbar-default navbar-fixed-top'>
       <a className='navbar-brand' href='/'>ReactiveTrader</a>
       <ul className='nav navbar-nav hidden-xs navbar-left'>
         <li>
