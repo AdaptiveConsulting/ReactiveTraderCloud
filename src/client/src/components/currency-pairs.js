@@ -152,7 +152,7 @@ class CurrencyPairs extends React.Component {
     return <div>
 
       <Header status={p.length ? 'Online' : 'Waiting for prices'} />
-      <div className='currency-pairs container'>
+      <div className='currency-pairs'>
         {p.length ? p.map((cp) => {
           return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
                                pair={cp.pair}

@@ -257,8 +257,8 @@ class CurrencyPair extends React.Component {
 
     return <div className={className}>
       <div className='currency-pair-title'>
-        {pair} <i className='fa fa-plug animated infinite fa-pulse'></i>
-        <i className='fa fa-line-chart pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
+        {pair} <i className='fa fa-plug animated infinite fadeIn'></i>
+        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       {lastTradeState}
       <div className={lastTradeState ? 'currency-pair-actions hide' : 'currency-pair-actions'}>

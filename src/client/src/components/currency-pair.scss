@@ -1,3 +1,7 @@
+.currency-pairs {
+  margin-left: 8px;
+}
+
 .currency-pair {
   box-sizing: border-box;
   float: left;
@@ -34,7 +38,7 @@
     .fa-plug {
       display: inline-block;
     }
-    .fa-line-chart {
+    .glyphicon {
       display: none;
     }
   }
@@ -58,8 +62,10 @@
     i {
       font-size: 16px;
       color: $gray-light;
-      &.fa-line-chart {
+      &.glyphicon {
         cursor: pointer;
+        padding: 8px;
+        padding-bottom: 0;
       }
     }
   }
