@@ -114,8 +114,14 @@ class ServiceDef {
     console.log('killing instance', instance );
   }
 
-  killAllInstances() {
+  markEverythingAsDead() {
+    console.log('mark everything as dead');
+
     // move everything to pending...
+    for (var instance in this.instances) {
+      this.instances[instance].subscriptions.forEach((s) => this.pendingSubscriptions.push(s));
+      delete this.instances[instance];
+    }
   }
 
   addSubscription(subscription) {
@@ -173,10 +179,11 @@ class Transport extends emitter {
     };
 
     this.connection.onclose = () => {
+      this.markEverythingAsDead();
       this.pushChangeOfState({messageBroker: 'disconnected'});
 
       this.trigger('close');
-      this.markEverythingAsDead();
+
     };
     this.connection.open();
   }
@@ -229,9 +236,12 @@ class Transport extends emitter {
   }
 
   markEverythingAsDead() {
+
+    console.log('marking queues as dead');
     this.queues.forEach((q) => q.subscriptionID = undefined);
 
-    for(service in this.services) {
+    console.log('marking instances as dead');
+    for(var service in this.services) {
       this.services[service].markEverythingAsDead();
     }
   }
