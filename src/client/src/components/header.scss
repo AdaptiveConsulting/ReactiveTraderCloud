@@ -1,0 +1,18 @@
+.text-danger {
+  color: $brand-danger;
+}
+
+.text-success {
+  color: $brand-success;
+}
+
+.nav {
+  &.nav-status {
+    padding-top: 8px;
+    padding-right: 8px;
+    .service-status {
+      padding-top: 6px;
+      padding-left: 4px;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import CurrencyPair from './currency-pair';
+import Header from './header';
 import _ from 'lodash';
 
 import rt from '../utils/transport';
@@ -141,19 +142,18 @@ class CurrencyPairs extends React.Component {
       return a.buy && a.sell;
     });
 
+    const status = {
+      connection: p.length > 0,
+      services: {
+        Pricing: true,
+        Reference: true,
+        Blotter: false,
+        Execution: false
+      }
+    };
     return <div>
-      <nav className='navbar navbar-default'>
-        <a className='navbar-brand' href='/'>ReactiveTrader</a>
-        <ul className='nav navbar-nav hidden-xs navbar-left'>
-          <li>
-            <a href='/admin' className='nav-link' activeClassName='active'>Admin Cluster</a>
-          </li>
-        </ul>
-        <ul className="nav navbar-nav pull-right">
-          <li><a href="#" name='status'>{p.length ? 'online' : 'Waiting for pricing data...'}</a></li>
-        </ul>
-      </nav>
-      <div className='currency-pairs container'>
+      <Header status={status} />
+      <div className='currency-pairs'>
         {p.length ? p.map((cp) => {
           return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
                                pair={cp.pair}

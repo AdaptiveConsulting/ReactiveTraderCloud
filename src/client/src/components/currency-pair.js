@@ -3,7 +3,7 @@ import React from 'react';
 import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 import numeral from 'numeral';
 
-const numberConvertRegex = /^([0-9.]+)?([MK]{1})?$/,
+const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/,
   SEPARATOR = '.',
   MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -106,7 +106,7 @@ class CurrencyPair extends React.Component {
    * @private
    */
   _getSize(size){
-    size = String(size).toUpperCase();
+    size = String(size).toUpperCase().replace(',', '');
     const matches = size.match(numberConvertRegex);
 
     if (!size.length || !matches || !matches.length){
@@ -125,8 +125,12 @@ class CurrencyPair extends React.Component {
    * @param {DOMEvent=} e
    */
   setSizeFromInput(e){
-    const val = (this.refs.size.value || e.target.value).trim();
+    const val = (this.refs.size.value || e.target.value).trim(),
+      hasdot = val.indexOf('.') !== -1;
+
     let size = this._getSize(val);
+
+    hasdot && (size+='.');
 
     if (!isNaN(size)){
       this.setState({
@@ -138,24 +142,36 @@ class CurrencyPair extends React.Component {
         size = size + '.';
       }
 
-      this.refs.size.value = size;
+      this.refs.size.value = numeral(size).format('0,000,000[.]00');
     }
   }
 
-	/**
+  /**
    * Explodes a price into big, pip, 10th.
    * @param {Number} price
    * @returns {{bigFigures: string, pip: string, pipFraction: string}}
    */
   parsePrice(price: number){
-    const { precision, pip } = this.props;
-    price = price.toFixed(precision);
+    const { precision, pip } = this.props,
+      priceString = price.toFixed(precision),
+      fractions = priceString.split('.')[1];
 
     return {
-      bigFigures: price.substring(0, pip),
-      pip: price.substring(pip, pip + 2),
-      pipFraction: price.substring(pip + 2, pip + 3)
+      bigFigures: Math.floor(price) + '.' + fractions.substring(0, pip - 2),
+      pip: fractions.substring(pip-2, pip),
+      pipFraction: fractions.substring(pip, pip + 1)
     };
+  }
+
+  /**
+   * Formats spread
+   * @param sell
+   * @param buy
+   * @returns {string}
+   */
+  getSpread(sell: number, buy: number){
+    const { pip, precision } = this.props;
+    return ((sell - buy) * Math.pow(10, pip)).toFixed(precision - pip);
   }
 
   /**
@@ -226,23 +242,23 @@ class CurrencyPair extends React.Component {
     );
   }
 
-
   render(){
-    const { historic, size, state, info, chart } = this.state;
-    const { buy, sell, pair, response } = this.props;
-    const base = pair.substr(0, 3),
+    const { historic, size, state, info, chart } = this.state,
+          { buy, sell, pair, response } = this.props,
+          base = pair.substr(0, 3),
           len = historic.length - 2,
           direction = (historic.length > 1) ? historic[len] < buy ? 'up' : historic[len] > buy ? 'down' : '-' :'-',
           b = this.parsePrice(buy),
           s = this.parsePrice(sell),
+          spread = this.getSpread(sell, buy),
           lastTradeState = this.state.info ? (this.lastResponse || this.renderLastResponse(response)) : false,
           className = ['currency-pair', 'animated', 'flipInX', state].join(' '),
-          spread = Math.abs((s.pip + '.' + s.pipFraction) - (b.pip + '.' + b.pipFraction)).toFixed(1);
+          formattedSize = numeral(size).format('0,000,000[.]00');
 
     return <div className={className}>
       <div className='currency-pair-title'>
-        {pair} <i className='fa fa-plug animated infinite pulse'></i>
-        <i className='fa fa-line-chart pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
+        {pair} <i className='fa fa-plug animated infinite fadeIn'></i>
+        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       {lastTradeState}
       <div className={lastTradeState ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
@@ -259,7 +275,7 @@ class CurrencyPair extends React.Component {
       <div className='clearFix'></div>
       <div className={lastTradeState ? 'sizer disabled' : 'sizer'}>
         <label>{base}
-        <input className='size' type='text' ref='size' defaultValue={size} onChange={(e) => this.setSizeFromInput(e)} /></label>
+        <input className='size' type='text' ref='size' defaultValue={formattedSize} onChange={(e) => this.setSizeFromInput(e)} /></label>
         <div className='pull-right'>
           {this.SPOTDATE}
         </div>
@@ -271,7 +287,7 @@ class CurrencyPair extends React.Component {
           <SparklinesSpots />
           <SparklinesReferenceLine type="avg" />
         </Sparklines> : <div className='sparkline-holder'></div>}
-    </div>
+    </div>;
   }
 }
 
