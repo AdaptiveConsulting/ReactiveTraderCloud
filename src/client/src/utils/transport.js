@@ -170,7 +170,7 @@ class Transport extends emitter {
 
 
     this.connection.onopen = (ws) => {
-      this.pushChangeOfState({messageBroker: 'connected'});
+      this.pushChangeOfState({messageBroker: 'status'});
 
       this.session = ws;
 

@@ -3,11 +3,12 @@ import React from 'react';
 class Header extends React.Component {
 
   static propTypes = {
-    status: React.PropTypes.object
+    status: React.PropTypes.bool,
+    services: React.PropTypes.object
   }
 
-  getBrokerStatus(connection){
-    return connection ? <span className='fa-stack text-success animated fadeIn' title='Online'><i className='fa fa-signal fa-stack-1x'/></span> : <span className='fa-stack' title='Connection offline'><i className='fa fa-signal fa-stack-1x' /><i className='fa fa-ban fa-stack-2x text-danger'/></span>;
+  getBrokerStatus(status:boolean){
+    return status ? <span className='fa-stack text-success animated fadeIn' title='Online'><i className='fa fa-signal fa-stack-1x'/></span> : <span className='fa-stack' title='Connection offline'><i className='fa fa-signal fa-stack-1x' /><i className='fa fa-ban fa-stack-2x text-danger'/></span>;
   }
 
   getServices(services:object){
@@ -20,7 +21,9 @@ class Header extends React.Component {
   }
 
   render(){
-    const { connection, services } = this.props.status;
+    const { status, services } = this.props;
+
+    console.log(this.props);
 
     return <nav className='navbar navbar-default navbar-fixed-top'>
       <a className='navbar-brand' href='/'>ReactiveTrader</a>
@@ -30,7 +33,7 @@ class Header extends React.Component {
         </li>
       </ul>
       <ul className="nav navbar-nav pull-right nav-status">
-        <li>{this.getBrokerStatus(connection)}</li>
+        <li>{this.getBrokerStatus(status)}</li>
         {this.getServices(services)}
       </ul>
     </nav>;

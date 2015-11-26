@@ -25,7 +25,11 @@ class CurrencyPairs extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {
-      pairs: []
+      pairs: [],
+      connected: false,
+      services: {
+
+      }
     };
 
     this.subscribed = [];
@@ -44,7 +48,8 @@ class CurrencyPairs extends React.Component {
         });
 
         this.setState({
-          pairs: pairs
+          pairs: pairs,
+          connected: rt.transport.isOpen
         });
       }, 5);
 
@@ -95,6 +100,10 @@ class CurrencyPairs extends React.Component {
         });
       });
     });
+
+    rt.transport
+      .on('open', ()=> this.setState({connected: true}))
+      .on('close', ()=> this.setState({connected: false}));
   }
 
   componentWillMount(){
@@ -142,17 +151,9 @@ class CurrencyPairs extends React.Component {
       return a.buy && a.sell;
     });
 
-    const status = {
-      connection: p.length > 0,
-      services: {
-        Pricing: true,
-        Reference: true,
-        Blotter: false,
-        Execution: false
-      }
-    };
     return <div>
-      <Header status={status} />
+
+      <Header status={this.state.connected} services={this.state.services} />
       <div className='currency-pairs'>
         {p.length ? p.map((cp) => {
           return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
