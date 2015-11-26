@@ -2,7 +2,7 @@
 
 if [[ $1 = "" ]];then
   echo "you must give version as parameter."
-  echo "  ie: ./build.sh 1.0.0-beta8"
+  echo "  ie: ./build.sh 1.0.0-rc1-final"
   exit 1
 fi
 

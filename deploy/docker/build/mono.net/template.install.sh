@@ -9,27 +9,6 @@ echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat ma
 | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
 sudo apt-get install -y mono-complete
 
-# install LIBUV
-sudo apt-get install -y automake        \
-                   libtool              \
-                   unzip                \
-                   libunwind8           \
-                   libssl-dev           \
-                   curl                 \
-                   libcurl4-openssl-dev \
-                   libcurl3-gnutls      \
-                   make
-curl -sSL https://github.com/libuv/libuv/archive/v1.4.2.tar.gz \
-| sudo tar zxfv - -C /usr/local/src
-cd /usr/local/src/libuv-1.4.2
-sh autogen.sh
-./configure
-make
-make install
-rm -rf /usr/local/src/libuv-1.4.2
-cd  ~
-ldconfig
-
 # install DNVM
 curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh \
 | DNX_BRANCH=dev sh
