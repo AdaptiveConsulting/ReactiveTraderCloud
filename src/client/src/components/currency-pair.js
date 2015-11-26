@@ -106,7 +106,7 @@ class CurrencyPair extends React.Component {
    * @private
    */
   _getSize(size){
-    size = String(size).toUpperCase();
+    size = String(size).toUpperCase().replace(',', '');
     const matches = size.match(numberConvertRegex);
 
     if (!size.length || !matches || !matches.length){
@@ -138,7 +138,7 @@ class CurrencyPair extends React.Component {
         size = size + '.';
       }
 
-      this.refs.size.value = size;
+      this.refs.size.value = numeral(size).format('0,000,000[.]00');
     }
   }
 
@@ -239,16 +239,17 @@ class CurrencyPair extends React.Component {
   }
 
   render(){
-    const { historic, size, state, info, chart } = this.state;
-    const { buy, sell, pair, response } = this.props;
-    const base = pair.substr(0, 3),
+    const { historic, size, state, info, chart } = this.state,
+          { buy, sell, pair, response } = this.props,
+          base = pair.substr(0, 3),
           len = historic.length - 2,
           direction = (historic.length > 1) ? historic[len] < buy ? 'up' : historic[len] > buy ? 'down' : '-' :'-',
           b = this.parsePrice(buy),
           s = this.parsePrice(sell),
           spread = this.getSpread(sell, buy),
           lastTradeState = this.state.info ? (this.lastResponse || this.renderLastResponse(response)) : false,
-          className = ['currency-pair', 'animated', 'flipInX', state].join(' ');
+          className = ['currency-pair', 'animated', 'flipInX', state].join(' '),
+          formattedSize = numeral(size).format('0,000,000[.]00');
 
     return <div className={className}>
       <div className='currency-pair-title'>
@@ -270,7 +271,7 @@ class CurrencyPair extends React.Component {
       <div className='clearFix'></div>
       <div className={lastTradeState ? 'sizer disabled' : 'sizer'}>
         <label>{base}
-        <input className='size' type='text' ref='size' defaultValue={size} onChange={(e) => this.setSizeFromInput(e)} /></label>
+        <input className='size' type='text' ref='size' defaultValue={formattedSize} onChange={(e) => this.setSizeFromInput(e)} /></label>
         <div className='pull-right'>
           {this.SPOTDATE}
         </div>
