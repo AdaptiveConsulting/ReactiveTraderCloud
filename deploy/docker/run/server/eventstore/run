@@ -1,3 +1,13 @@
 #! /bin/bash
 
-docker run -d --net=host jmkelly/eventstore
+# start EventStore
+docker run -d --net=host jmkelly/eventstore > container_id
+
+
+
+# populate store
+populateCommand=`cat "../../../../../src/server/Populate Event Store.bat"`
+echo $populateCommand 
+docker run --rm \
+     --net=host \
+     weareadaptive/reactive-trader-server dnx -p Adaptive.ReactiveTrader.Server.ReferenceDataWrite refDataWritePopulate 

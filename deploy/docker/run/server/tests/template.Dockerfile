@@ -10,3 +10,5 @@ RUN         dnu restore
 
 WORKDIR     /server/Adaptive.ReactiveTrader.Server.Tests/
 RUN         dnx test -parallel none
+
+WORKDIR     /server

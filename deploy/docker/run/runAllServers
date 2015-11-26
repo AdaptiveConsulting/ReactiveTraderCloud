@@ -1,3 +1,9 @@
 #! /bin/bash
 
-server/eventstore/run > eventStore_container_Id
+for server in "eventstore"  
+do
+    pushd server/$server
+    ./run
+    ./test || echo "error on $server" && exit 1
+    popd
+done
