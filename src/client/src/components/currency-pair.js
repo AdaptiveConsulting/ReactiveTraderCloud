@@ -3,7 +3,7 @@ import React from 'react';
 import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 import numeral from 'numeral';
 
-const numberConvertRegex = /^([0-9.]+)?([MK]{1})?$/,
+const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/,
   SEPARATOR = '.',
   MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -252,7 +252,7 @@ class CurrencyPair extends React.Component {
 
     return <div className={className}>
       <div className='currency-pair-title'>
-        {pair} {this.props.pip} {this.props.precision} <i className='fa fa-plug animated infinite pulse'></i>
+        {pair} <i className='fa fa-plug animated infinite fa-pulse'></i>
         <i className='fa fa-line-chart pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       {lastTradeState}
