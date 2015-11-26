@@ -1,0 +1,6 @@
+#! /bin/bash
+
+if [[ -f eventStore_container_id ]];then
+  docker kill `cat eventStore_container_id`
+  rm eventStore_container_id
+fi

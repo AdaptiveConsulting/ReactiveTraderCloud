@@ -1,0 +1,3 @@
+#! /bin/bash
+
+server/eventstore/run > eventStore_container_Id
