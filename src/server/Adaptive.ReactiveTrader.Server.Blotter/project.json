@@ -1,7 +1,7 @@
 ﻿{
   "version": "1.0.0-*",
   "description": "Adaptive.ReactiveTrader.Server.Blotter Console Application",
-  "authors": [ "Qiming" ],
+  "authors": [ "Qiming Liu" ],
   "tags": [ "" ],
   "projectUrl": "",
   "licenseUrl": "",

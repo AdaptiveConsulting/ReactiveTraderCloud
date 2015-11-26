@@ -15,7 +15,17 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         public string ValueDate { get; }
         public TradeStatusDto Status { get; set; }
 
-        public Trade(long tradeId, string traderName, string currencyPair, long notional, string dealtCurrency, DirectionDto direction, decimal spotRate, string tradeDate, string valueDate, TradeStatusDto status)
+        public Trade(
+            long tradeId,
+            string traderName,
+            string currencyPair,
+            long notional,
+            string dealtCurrency,
+            DirectionDto direction,
+            decimal spotRate,
+            string tradeDate,
+            string valueDate,
+            TradeStatusDto status)
         {
             TradeId = tradeId;
             TraderName = traderName;

@@ -8,8 +8,6 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 {
     public class Program
     {
-        protected static readonly ILog Log = LogManager.GetLogger<Program>();
-
         public static void Main(string[] args)
         {
             LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter

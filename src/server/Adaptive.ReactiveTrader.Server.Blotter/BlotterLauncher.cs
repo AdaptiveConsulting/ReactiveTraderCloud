@@ -8,7 +8,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 {
     public class BlotterLauncher
     {
-        protected static readonly ILog Log = LogManager.GetLogger<BlotterLauncher>();
+        private static readonly ILog Log = LogManager.GetLogger<BlotterLauncher>();
 
         public static async Task<IDisposable> Run(IEventStore es, IBroker broker)
         {

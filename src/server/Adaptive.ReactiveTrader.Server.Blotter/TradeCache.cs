@@ -98,7 +98,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                 case TradeRejectedEvent:
                     return CreateSingleEventUpdateDto(currentSotw, evt.GetEvent<TradeRejectedEvent>().TradeId, TradeStatusDto.Rejected);
                 default:
-                    throw new ArgumentOutOfRangeException("Unsupported Trade vent type");
+                    throw new ArgumentOutOfRangeException("Unsupported Trade event type");
             }
         }
 
