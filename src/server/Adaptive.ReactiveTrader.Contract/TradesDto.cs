@@ -11,6 +11,6 @@ namespace Adaptive.ReactiveTrader.Contract
             Trades = trades;
         }
 
-        IList<TradeDto> Trades { get; }
+        public IList<TradeDto> Trades { get; }
     }
 }
