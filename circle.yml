@@ -10,7 +10,7 @@ dependencies:
   pre:
     - curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
     - chmod 755 jq
-    - `cat src/server/global.json | jq '.sdk.version' | sed 's/"//g'` > dnxVersion 
+    - cat src/server/global.json | jq '.sdk.version' | sed 's/"//g' > dnxVersion 
   override:
     - docker info
 
