@@ -108,7 +108,7 @@ class CurrencyPairs extends React.Component {
 
     rt.transport
       .on('open', ()=> this.setState({connected: true}))
-      .on('close', ()=> this.setState({connected: false}))
+      .on('close', ()=> this.setState({connected: false, services: rt.transport.getStatus()}))
       .on('statusUpdate', ()=>this.setState({services: rt.transport.getStatus()}));
   }
 

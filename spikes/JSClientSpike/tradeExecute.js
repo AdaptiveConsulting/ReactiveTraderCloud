@@ -11,14 +11,7 @@ if (!String.prototype.supplant) {
 
 $(function() {
 
-    var wsuri;
-    if (document.location.origin == "file://" || document.location.protocol == "file:") {
-        wsuri = "ws://127.0.0.1:8080/ws";
-
-    } else {
-        wsuri = (document.location.protocol === "http:" ? "ws:" : "wss:") + "//" +
-            document.location.host + "/ws";
-    }
+    var wsuri= "ws://127.0.0.1:8080/ws";
 
     // the WAMP connection to the Router
     //
@@ -52,7 +45,7 @@ function executeTrade(session) {
     var request = {
         CurrencyPair: $("#ccyPair").val(),
         SpotRate: $("#spot").val(),
-        ValueDate: new Date(),
+        ValueDate: '2012-03-19T07:22Z',
         Direction: direction,
         Notional: $("#notional").val(),
         DealtCurrency: $("#dealtCcy").val()

@@ -166,8 +166,8 @@ class Transport extends emitter {
       blotter: new ServiceDef(this)
     };
 
-    const triggerUpdate = _.debounce(() =>  this.trigger('statusUpdate'), 50);
-    //const triggerUpdate = () =>  this.trigger('statusUpdate');
+    //const triggerUpdate = _.debounce(() =>  this.trigger('statusUpdate'), 50);
+    const triggerUpdate = () =>  this.trigger('statusUpdate');
 
     this.services.pricing
       .on('addInstance', triggerUpdate)
