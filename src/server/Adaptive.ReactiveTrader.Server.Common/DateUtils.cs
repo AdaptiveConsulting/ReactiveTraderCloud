@@ -16,7 +16,7 @@ namespace Adaptive.ReactiveTrader.Server.Common
 
         public static DateTime FromSerializationFormat(string dateTimeString)
         {
-            var date = DateTime.ParseExact(dateTimeString, "u", CultureInfo.CurrentCulture);
+            var date = DateTime.ParseExact(dateTimeString, "o", CultureInfo.CurrentCulture);
             return date.ToUniversalTime();
         }
     }

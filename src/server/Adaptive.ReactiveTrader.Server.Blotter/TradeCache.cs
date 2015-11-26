@@ -72,11 +72,12 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         {
             return Observable.Create<TradesDto>(obs =>
             {
-                var sow = _stateOfTheWorldUpdates.Where(x => x != null)
-                                                 .Take(1)
-                                                 .Select(x => BuildStateOfTheWorldDto(x.Values));
+                var sotw = _stateOfTheWorldUpdates
+                    .Where(x => x != null)
+                    .Take(1)
+                    .Select(x => BuildStateOfTheWorldDto(x.Values));
 
-                return sow.Concat(_tradeEvents.Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorld, evt)))
+                return sotw.Concat(_tradeEvents.Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorld, evt)))
                           .Subscribe(obs);
             });
         }
@@ -134,7 +135,6 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                 return new CompositeDisposable(Disposable.Create(() => subscription.Stop()));
             });
         }
-
 
         private static void UpdateStateOfTheWorld(IDictionary<long, Trade> currentSotw, IEvent evt)
         {

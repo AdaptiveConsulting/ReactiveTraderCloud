@@ -1,4 +1,5 @@
 ﻿using System;
+using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
@@ -10,9 +11,10 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         {
             _tradesRepository = tradesRepository;
         }
-    }
 
-    public interface IBlotterService
-    {
+        public IObservable<TradesDto> GetTradesStream()
+        {
+            return _tradesRepository;
+        }
     }
 }
