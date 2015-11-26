@@ -125,8 +125,12 @@ class CurrencyPair extends React.Component {
    * @param {DOMEvent=} e
    */
   setSizeFromInput(e){
-    const val = (this.refs.size.value || e.target.value).trim();
+    const val = (this.refs.size.value || e.target.value).trim(),
+      hasdot = val.indexOf('.') !== -1;
+
     let size = this._getSize(val);
+
+    hasdot && (size+='.');
 
     if (!isNaN(size)){
       this.setState({

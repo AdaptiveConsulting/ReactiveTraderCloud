@@ -1,5 +1,6 @@
 import React from 'react';
 import CurrencyPair from './currency-pair';
+import Header from './header';
 import _ from 'lodash';
 
 import transport from '../utils/transport';
@@ -149,17 +150,8 @@ class CurrencyPairs extends React.Component {
     });
 
     return <div>
-      <nav className='navbar navbar-default'>
-        <a className='navbar-brand' href='/'>ReactiveTrader</a>
-        <ul className='nav navbar-nav hidden-xs navbar-left'>
-          <li>
-            <a href='/admin' className='nav-link' activeClassName='active'>Admin Cluster</a>
-          </li>
-        </ul>
-        <ul className="nav navbar-nav pull-right">
-          <li><a href="#" name='status'>{p.length ? 'online' : 'Waiting for pricing data...'}</a></li>
-        </ul>
-      </nav>
+
+      <Header status={p.length ? 'Online' : 'Waiting for prices'} />
       <div className='currency-pairs container'>
         {p.length ? p.map((cp) => {
           return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
