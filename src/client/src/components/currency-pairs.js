@@ -39,6 +39,12 @@ class CurrencyPairs extends React.Component {
    * Deals with socket comms for pairs - gets reference data, subscribes to each pair.
    */
   attachSubs(){
+
+    this.setState({
+      connected: rt.transport.isOpen,
+      services: rt.transport.getStatus()
+    });
+
     rt.reference.getCurrencyPairUpdatesStream( (referenceData) => {
       const update = _.debounce((src) => {
         const pairs = src || this.state.pairs;
@@ -48,8 +54,7 @@ class CurrencyPairs extends React.Component {
         });
 
         this.setState({
-          pairs: pairs,
-          connected: rt.transport.isOpen
+          pairs: pairs
         });
       }, 5);
 
@@ -103,7 +108,8 @@ class CurrencyPairs extends React.Component {
 
     rt.transport
       .on('open', ()=> this.setState({connected: true}))
-      .on('close', ()=> this.setState({connected: false}));
+      .on('close', ()=> this.setState({connected: false}))
+      .on('statusUpdate', ()=>this.setState({services: rt.transport.getStatus()}));
   }
 
   componentWillMount(){

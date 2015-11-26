@@ -14,7 +14,9 @@ class Header extends React.Component {
   getServices(services:object){
     const resp = [];
     for (let k in services){
-      resp.push(services[k] ? <li className='service-status'><i className='fa fa-circle ' title={k + ' online'} /></li> : <li className='service-status text-danger animated infinite fadeIn'><i className='fa fa-circle-o' title={k + ' offline'} /></li>);
+      resp.push(services[k] ?
+        <li className='service-status'><i className='fa fa-circle ' title={k + ' ' + services[k] + ' nodes online'} /><i className='node-badge'>{services[k]}</i></li> :
+        <li className='service-status text-danger animated infinite fadeIn'><i className='fa fa-circle-o' title={k + ' offline'} /></li>);
     }
 
     return resp;
@@ -22,8 +24,6 @@ class Header extends React.Component {
 
   render(){
     const { status, services } = this.props;
-
-    console.log(this.props);
 
     return <nav className='navbar navbar-default navbar-fixed-top'>
       <a className='navbar-brand' href='/'>ReactiveTrader</a>

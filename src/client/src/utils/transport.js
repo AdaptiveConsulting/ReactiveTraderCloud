@@ -69,23 +69,22 @@ class ReactiveTrader {
 
     this.transport = t;
   }
-
-  subscribeToStatusUpdate(handler) {
-    this.transport.subscribeToStatusUpdate(handler);
-  }
 }
 
-class ServiceDef {
+class ServiceDef extends emitter {
   constructor(t) {
+    super();
+
     this.pendingSubscriptions = [];
     this.instances = {};
     this.transport = t;
   }
 
   registerOrUpdateInstance(instance, load) {
-    instance in this.instances || (
-      this.instances[instance] = this.createNewInstance(instance, load)
-    );
+    if(!(instance in this.instances)) {
+      (this.instances[instance] = this.createNewInstance(instance, load));
+      this.trigger('addInstance')
+    }
 
     const instanceDef = this.instances[instance];
     instanceDef.keepalive();
@@ -93,8 +92,10 @@ class ServiceDef {
   }
 
   createNewInstance(instance, load) {
+    console.log('add instance', instance );
+
     var instanceRef = {
-      keepalive: _.debounce(() => this.killInstance(instance), 2000),
+      keepalive: _.debounce(() => this.killInstance(instance), 3000),
       subscriptions: [],
       load
     };
@@ -112,11 +113,10 @@ class ServiceDef {
 
   killInstance(instance) {
     console.log('killing instance', instance );
+    this.trigger('removeInstance');
   }
 
   markEverythingAsDead() {
-    console.log('mark everything as dead');
-
     // move everything to pending...
     for (var instance in this.instances) {
       this.instances[instance].subscriptions.forEach((s) => this.pendingSubscriptions.push(s));
@@ -166,12 +166,25 @@ class Transport extends emitter {
       blotter: new ServiceDef(this)
     };
 
+    const triggerUpdate = _.debounce(() =>  this.trigger('statusUpdate'), 50);
+    //const triggerUpdate = () =>  this.trigger('statusUpdate');
+
+    this.services.pricing
+      .on('addInstance', triggerUpdate)
+      .on('removeInstance', triggerUpdate);
+
+    this.services.reference
+      .on('addInstance', triggerUpdate)
+      .on('removeInstance',triggerUpdate);
+
+    this.services.blotter
+      .on('addInstance', triggerUpdate)
+      .on('removeInstance', triggerUpdate);
+
     this.subscribeToStatusUpdates();
 
 
     this.connection.onopen = (ws) => {
-      this.pushChangeOfState({messageBroker: 'status'});
-
       this.session = ws;
 
       this.subscribeToQueues();
@@ -180,12 +193,21 @@ class Transport extends emitter {
 
     this.connection.onclose = () => {
       this.markEverythingAsDead();
-      this.pushChangeOfState({messageBroker: 'disconnected'});
-
       this.trigger('close');
 
     };
     this.connection.open();
+  }
+
+  getStatus() {
+    var status = {
+      pricing: Object.keys(this.services.pricing.instances).length,
+      reference: Object.keys(this.services.reference.instances).length,
+      blotter: Object.keys(this.services.blotter.instances).length,
+    };
+
+    console.log(status);
+    return status;
   }
 
   createQueue(handler) {
@@ -201,10 +223,6 @@ class Transport extends emitter {
       this.subscribe(sub);
 
     return sub;
-  }
-
-  pushChangeOfState(obj) {
-    console.log(obj);
   }
 
   registerSubscription(serviceType, serviceProcName, responseQueue, request) {
@@ -236,7 +254,6 @@ class Transport extends emitter {
   }
 
   markEverythingAsDead() {
-
     console.log('marking queues as dead');
     this.queues.forEach((q) => q.subscriptionID = undefined);
 
