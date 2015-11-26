@@ -41,7 +41,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
         public override double GetLoad()
         {
-            return _clients/100;
+            return _clients/100d;
         }
 
         public override async Task Start()

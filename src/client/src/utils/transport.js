@@ -3,8 +3,48 @@ import emitter from './emitter';
 import _ from 'lodash';
 
 
-class Transport extends emitter {
 
+
+class PricingService {
+  constructor(t) {
+    this.transport = t;
+  }
+
+  getPriceUpdates(symbol, callback) {
+        console.log('called price update' + symbol);
+        return this.transport.subscribe('pricing.getPriceUpdates', callback, {symbol});
+      }
+}
+
+class ReferenceService {
+  constructor(t) {
+    this.transport = t;
+  }
+
+  getCurrencyPairUpdatesStream( callback) {
+    console.log('called getCurrencyPairUpdatesStream');
+    return this.transport.registerSubscription(callback);
+  }
+}
+
+// reactiveTrader
+//    pricing
+//        getPriceUdaptes
+//    reference
+//        getCurrencyPairUpdates
+//    blotter
+//
+
+class ReactiveTrader {
+  constructor(t) {
+    this.pricing = new PricingService(t);
+    this.reference= new ReferenceService(t);
+  }
+
+
+}
+
+class Transport extends emitter {
   constructor(url = 'ws://localhost:8080/ws', realm = 'com.weareadaptive.reactivetrader'){
     super();
     this.connection = new autobahn.Connection({
@@ -13,14 +53,15 @@ class Transport extends emitter {
       use_es6_promises: true
     });
 
-    this.session = {
-      subscriptions: []
-    };
+    this.pricing = new PricingService(this);
 
+    this.session = {};
     this.connection.onopen = (ws) => {
       console.log('connected');
       this.session = ws;
-      this.discovery();
+
+      // on connection open, subscribe to all queues
+      this.subscribeToStatusUpdates();
       this.trigger('open');
     };
 
@@ -28,37 +69,76 @@ class Transport extends emitter {
       this.trigger('close');
     };
 
-    this.services = {'pricing':{ subscriptions: [] }, 'reference':{ subscriptions: [] }, 'blotter':{ subscriptions: [] }};
+    this.queues = [];
+
+    // todo: get this from config
+    this.services = {
+      pricing:{
+        subscriptions: []
+      },
+      reference:{
+        subscriptions: []
+      },
+      blotter:{
+        subscriptions: []
+      }
+    };
 
     this.connection.open();
   }
 
-  logHeartbeat(heartbeat) {
-      heartbeat.Instance in this.services[heartbeat.Type] || ( this.services[heartbeat.Type][heartbeat.Instance] = {killer: _.debounce(()=>this.markAsDead(heartbeat.Type, heartbeat.Instance), 2000)});
-      this.services[heartbeat.Type][heartbeat.Instance].killer();
-      this.services[heartbeat.Type].subscriptions.forEach( sub=>{ if( !sub.called ) { sub.called = true; sub.instanceID = heartbeat.Instance; this.sessionRPC(sub, heartbeat.Instance); }});
+  registerSubscription(handler) {
+    const reply = _.uniqueId('queue'+event);
+    const sub = {reply, handler, subscriptionID: undefined};
+    this.queues.push(sub);
+
+    this.log(sub);
   }
 
-  discovery() {
-    console.log('starting subscription');
+  logHeartbeat(heartbeat) {
+    const type = heartbeat.Type,
+      typeService = this.services[type],
+      instanceID = heartbeat.Instance;
+
+    instanceID in typeService || (typeService[instanceID] = {
+      killer: _.debounce(() => this.markAsDead(type, instanceID), 2000)
+    });
+
+    typeService[instanceID].killer();
+    typeService.subscriptions.forEach((sub) => {
+      if (!sub.called){
+        sub.called = true;
+        sub.instanceID = instanceID;
+        this.sessionRPC(sub, instanceID);
+      }});
+  }
+
+  subscribeToStatusUpdates() {
     this.session.subscribe('status', (a) => this.logHeartbeat(a[0])).then(this.session.log, this.session.log);
-    console.log('subscribed');
   }
 
   subscribe(event, callback, message = {}){
-    const reply = _.uniqueId(event);
+    // do this in batch
+    this.session.subscribe(reply, (a) => callback(a[0])).then((subResult) => {
+      sub.subscriptionID = subResult.id;
+    }, () => this.session.log);
 
-    this.session.subscribe(reply, (a) => callback(a[0])).then(this.session.log, this.session.log);
- 
-    if(event == 'reference.getCurrencyPairUpdatesStream') {
-      this.services.reference.subscriptions.push({proc: 'getCurrencyPairUpdatesStream', message, reply, called: false});
+    // call method calls directly i.e. reference.getCurrencyPairUpdatesStream(handler);
+    if (event == 'reference.getCurrencyPairUpdatesStream') {
+      this.services.reference.subscriptions.push({
+        proc: 'getCurrencyPairUpdatesStream',
+        message, reply,
+        called: false
+      });
       console.log('added subscription', this.services);
     }
 
+    // call method calls directly i.e. pricing.getPriceUpdates(ccyPair, handler);
     if(event == 'pricing.getPriceUpdates') {
       this.services.pricing.subscriptions.push({proc: 'getPriceUpdates', message, reply, called: false});
       console.log('added subscription', this.services);
     }
+
   }
 
   sessionRPC(sub, instanceID){
@@ -69,6 +149,8 @@ class Transport extends emitter {
   unsubscribe(...args){
     return this.session.unsubscribe(...args);
   }
+
+
 
   markAsDead(type, instanceID) {
     console.log('killing ' + instanceID);
@@ -115,13 +197,14 @@ class Transport extends emitter {
   }
 
   log(...args){
-    this.session.log(...args);
+   console.log(...args);
+
   }
 
   prefix(...args){
     this.session.prefix(...args);
   }
-
 }
 
-export default new Transport;
+export default new ReactiveTrader(new Transport);
+//export default new Transport;
