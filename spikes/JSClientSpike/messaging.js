@@ -7,6 +7,17 @@ function createMessage(payload) {
   return mess;
 }
 
+function createMessage(payload, username) {
+  var mess = {
+    ReplyTo: newQueueName(),
+    Payload: payload,
+	UserName: username
+  };
+
+  return mess;
+}
+
+
 function newQueueName()  {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
