@@ -1,4 +1,4 @@
-﻿namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead.Events
+﻿namespace Adaptive.ReactiveTrader.Contract.Events.Reference
 {
     public class CurrencyPairDeactivatedEvent
     {

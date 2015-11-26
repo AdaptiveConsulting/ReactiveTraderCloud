@@ -30,6 +30,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Eve
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Blotter", "Adaptive.ReactiveTrader.Server.Blotter\Adaptive.ReactiveTrader.Server.Blotter.xproj", "{ACB76D7B-8275-4BBE-B07A-E3D75D52B6CC}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Common", "Adaptive.ReactiveTrader.Server.Common\Adaptive.ReactiveTrader.Server.Common.xproj", "{FDD96AA9-3BA0-458C-8CD8-A85D2FCFADBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{ACB76D7B-8275-4BBE-B07A-E3D75D52B6CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACB76D7B-8275-4BBE-B07A-E3D75D52B6CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACB76D7B-8275-4BBE-B07A-E3D75D52B6CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDD96AA9-3BA0-458C-8CD8-A85D2FCFADBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDD96AA9-3BA0-458C-8CD8-A85D2FCFADBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDD96AA9-3BA0-458C-8CD8-A85D2FCFADBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDD96AA9-3BA0-458C-8CD8-A85D2FCFADBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

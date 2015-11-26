@@ -23,7 +23,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         public Task<ExecuteTradeResponseDto> ExecuteTrade(IRequestContext context, ExecuteTradeRequestDto request)
         {
-            Log.DebugFormat("[REQ. STREAM] subscribed: ({0})", context.UserSession.Username);
+            Log.DebugFormat("[REQ. RESPONSE] Executing Trade: ({0})", context.UserSession.Username);
             return _executionEngine.ExecuteAsync(request, context.UserSession.Username);
         }
 
