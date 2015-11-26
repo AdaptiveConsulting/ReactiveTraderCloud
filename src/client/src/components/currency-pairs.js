@@ -2,7 +2,7 @@ import React from 'react';
 import CurrencyPair from './currency-pair';
 import _ from 'lodash';
 
-import transport from '../utils/transport';
+import rt from '../utils/transport';
 
 
 //todo: hook up socket stream
@@ -34,7 +34,7 @@ class CurrencyPairs extends React.Component {
    * Deals with socket comms for pairs - gets reference data, subscribes to each pair.
    */
   attachSubs(){
-    transport.reference.getCurrencyPairUpdatesStream( (referenceData) => {
+    rt.reference.getCurrencyPairUpdatesStream( (referenceData) => {
       const update = _.debounce((src) => {
         const pairs = src || this.state.pairs;
 
@@ -66,7 +66,7 @@ class CurrencyPairs extends React.Component {
           // removed?
           // console.log(updatedPair.UpdateType);
           update(this.state.pairs.filter((p) => p.id != pair.Symbol));
-          transport.unsubscribe('pricing.getPriceUpdates', existing.handler, {id: pair.Symbol});
+          rt.pricing.unsubscribe(existing.pricingSub);
         }
       }, this);
 
@@ -76,7 +76,7 @@ class CurrencyPairs extends React.Component {
 
       // subscribe to individual streams
       this.state.pairs.forEach((pair) => {
-        transport.pricing.getPriceUpdates(pair.id, pair.handler = (priceData) => {
+        pair.pricingSub = rt.pricing.getPriceUpdates(pair.id, (priceData) => {
           let existingPair = _.findWhere(this.state.pairs, {id: priceData.symbol});
 
           if (!existingPair){
