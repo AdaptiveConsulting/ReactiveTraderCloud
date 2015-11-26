@@ -3,8 +3,6 @@ import emitter from './emitter';
 import _ from 'lodash';
 
 
-
-
 class PricingService {
   constructor(t) {
     this.transport = t;
@@ -38,14 +36,12 @@ class ReferenceService {
 class ReactiveTrader {
   constructor(t) {
     this.pricing = new PricingService(t);
-    this.reference= new ReferenceService(t);
+    this.reference = new ReferenceService(t);
   }
-
-
 }
 
 class Transport extends emitter {
-  constructor(url = 'ws://localhost:8080/ws', realm = 'com.weareadaptive.reactivetrader'){
+  constructor(url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader'){
     super();
     this.connection = new autobahn.Connection({
       url,

@@ -8,4 +8,5 @@ project.lock.json
 artifacts
 AdaptiveTrader.iml
 src/server/.vs/config/applicationhost.config
+.vscode
 node.pid

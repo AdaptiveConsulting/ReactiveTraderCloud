@@ -1,5 +1,4 @@
 using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.Server.ReferenceDataRead.Events;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using System;
@@ -11,6 +10,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Contract.Events.Reference;
 using Adaptive.ReactiveTrader.EventStore;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead

@@ -12,7 +12,7 @@ dependencies:
 
 test:
   override:
-    - cd docker/run/server/tests && ./build.sh 1.0.0-rc1-final
+    - cd deploy/docker/run/server/tests && ./build.sh 1.0.0-rc1-final
     - cd src/client && npm install
     - cd src/client && npm run compile
     # - cd docker/run/client && ./build.sh

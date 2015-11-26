@@ -70,7 +70,7 @@ class CurrencyPair extends React.Component {
   componentWillReceiveProps(props, state){
     const historic = this.state.historic;
 
-    historic.push(props.buy);
+    historic.push(props.mid);
 
     // 30 max historic prices
     historic.length > 30 && (historic.shift());
@@ -149,10 +149,10 @@ class CurrencyPair extends React.Component {
    */
   parsePrice(price: number){
     const { precision, pip } = this.props;
-    price = price.toFixed(precision + 1);
+    price = price.toFixed(precision);
 
     return {
-      bigFigures: price.substring(0, pip - 1),
+      bigFigures: price.substring(0, pip),
       pip: price.substring(pip, pip + 2),
       pipFraction: price.substring(pip + 2, pip + 3)
     };
