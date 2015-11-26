@@ -57,7 +57,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
             var registerOptions = new RegisterOptions
             {
-                Invoke = "roundrobin",
+                Invoke = "single"
             };
 
             await realm.RpcCatalog.Register(rpcOperation, registerOptions);
