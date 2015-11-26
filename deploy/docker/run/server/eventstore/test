@@ -1,6 +1,6 @@
 #! /bin/bash
 
 # TODO
-# docker run --rm weareadaptive/curl \
-#   --net=host                       \
-#   curl https://localhost:2113/web/index.html
+docker run --net=host \
+  weareadaptive/curl  \
+  bash -c "curl -L -silent localhost:2113/web > garbage"

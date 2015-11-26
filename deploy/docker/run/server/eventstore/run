@@ -1,13 +1,19 @@
 #! /bin/bash
 
-# start EventStore
-docker run -d --net=host jmkelly/eventstore > container_id
+echo "EventStore"
+docker rm eventstore 2&> garbage
 
+docker run -d --net=host \
+  --name eventstore      \
+  jmkelly/eventstore > container_id
 
+rm garbage
+echo "  started"
 
-# populate store
 populateCommand=`cat "../../../../../src/server/Populate Event Store.bat"`
-echo $populateCommand 
-docker run --rm \
-     --net=host \
-     weareadaptive/reactive-trader-server dnx -p Adaptive.ReactiveTrader.Server.ReferenceDataWrite refDataWritePopulate 
+docker run --rm --net=host                \
+     weareadaptive/reactive-trader-server \
+     $populateCommand 
+
+echo "  populated"
+echo " "

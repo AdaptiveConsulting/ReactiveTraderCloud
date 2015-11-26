@@ -1,8 +1,0 @@
-#! /bin/bash
-
-for server in "eventstore"  
-do
-    pushd server/$server
-    ./kill
-    popd
-done

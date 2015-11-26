@@ -1,5 +1,6 @@
 container
 build/mono.net/build
-run/client/client
+build/client/client
 jq
 container_id
+garbage

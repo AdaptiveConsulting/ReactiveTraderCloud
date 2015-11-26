@@ -1,14 +1,14 @@
 #! /bin/bash
 
-echo "Broker"
+echo "Reference"
 
-startCommand=`cat "../../../../../src/server/Message Broker Instance.bat"`
+startCommand=`cat "../../../../../src/server/ReferenceInstance.bat"`
 waitCommand="while true; do echo ping; sleep 60; done"
 
-docker rm broker 2&> garbage
+docker rm reference 2&> garbage
 
 docker run -d --net=host                     \
-     --name broker                           \
+     --name reference                        \
      weareadaptive/reactive-trader-server    \
      bash -c "$startCommand && $waitCommand" \
      > container_id 

@@ -16,7 +16,7 @@ dependencies:
 
 test:
   override:
-    - cd deploy/docker/run/server/tests && ./build.sh `cat dnxVersion`
+    - cd deploy/docker/build/servers && ./build.sh `cat dnxVersion`
     - cd src/client && npm install
     - cd src/client && npm run compile
-    # - cd docker/run/client && ./build.sh
+    # - cd deploy/docker/build/client && ./build.sh

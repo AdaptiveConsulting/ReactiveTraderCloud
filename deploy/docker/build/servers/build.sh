@@ -7,12 +7,12 @@ if [[ ! -f jq ]];then
 fi
 
 # Get parameters
-version=`cat ../../../../../src/server/global.json | jq '.sdk.version' | sed 's/"//g'`
+version=`cat ../../../../src/server/global.json | jq '.sdk.version' | sed 's/"//g'`
 containerPath="./container"
 
 # sync server src
 mkdir -p $containerPath
-rsync -aq ../../../../../src/server $containerPath/
+rsync -aq ../../../../src/server $containerPath/
 
 # generate Dockerfile from template
 sed "s/__VERSION__/$version/g" template.Dockerfile > $containerPath/Dockerfile
