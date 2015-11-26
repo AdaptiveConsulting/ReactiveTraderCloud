@@ -7,12 +7,16 @@ machine:
 dependencies:
   cache_directories:
     - ~/.npm
+  pre:
+    - curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+    - chmod 755 jq
+    - `cat src/server/global.json | jq '.sdk.version' | sed 's/"//g'` > dnxVersion 
   override:
     - docker info
 
 test:
   override:
-    - cd deploy/docker/run/server/tests && ./build.sh 1.0.0-rc1-final
+    - cd deploy/docker/run/server/tests && ./build.sh `cat dnxVersion`
     - cd src/client && npm install
     - cd src/client && npm run compile
     # - cd docker/run/client && ./build.sh
