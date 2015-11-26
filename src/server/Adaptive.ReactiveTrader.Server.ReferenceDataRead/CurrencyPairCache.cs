@@ -126,15 +126,15 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             switch (evt.EventType)
             {
                 case CurrencyPairCreatedEventType:
-                    var createdEvent = GetEvent<CurrencyPairCreatedEvent>(evt);
+                    var createdEvent = evt.GetEvent<CurrencyPairCreatedEvent>();
                     currentSow.Add(createdEvent.Symbol, new CurrencyPair(createdEvent.Symbol, createdEvent.PipsPosition, createdEvent.RatePrecision, createdEvent.SampleRate, createdEvent.Comment));
                     break;
                 case CurrencyPairActivatedEventType:
-                    var activatedEvent = GetEvent<CurrencyPairActivatedEvent>(evt);
+                    var activatedEvent = evt.GetEvent<CurrencyPairActivatedEvent>();
                     currentSow[activatedEvent.Symbol].IsEnabled = true;
                     break;
                 case CurrencyPairDeactivatedEventType:
-                    var deactivatedEvent = GetEvent<CurrencyPairActivatedEvent>(evt);
+                    var deactivatedEvent = evt.GetEvent<CurrencyPairActivatedEvent>();
                     currentSow[deactivatedEvent.Symbol].IsEnabled = false;
                     break;
                 case CurrencyPairChangedEventType:
@@ -149,9 +149,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             switch (evt.EventType)
             {
                 case CurrencyPairActivatedEventType:
-                    return CreateSingleEventUpdateDto(currentSow, GetEvent<CurrencyPairActivatedEvent>(evt).Symbol, UpdateTypeDto.Added);
+                    return CreateSingleEventUpdateDto(currentSow, evt.GetEvent<CurrencyPairActivatedEvent>().Symbol, UpdateTypeDto.Added);
                 case CurrencyPairDeactivatedEventType:
-                    return CreateSingleEventUpdateDto(currentSow, GetEvent<CurrencyPairDeactivatedEvent>(evt).Symbol, UpdateTypeDto.Removed);
+                    return CreateSingleEventUpdateDto(currentSow, evt.GetEvent<CurrencyPairDeactivatedEvent>().Symbol, UpdateTypeDto.Removed);
                 case CurrencyPairCreatedEventType:
                 case CurrencyPairChangedEventType:
                     return CurrencyPairUpdatesDto.Empty;
@@ -171,12 +171,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                     UpdateType = updateType
                 }
             });
-        }
-
-        private static T GetEvent<T>(IEvent evt)
-        {
-            var eventString = Encoding.UTF8.GetString(evt.Data);
-            return JsonConvert.DeserializeObject<T>(eventString);
         }
         
         public void Dispose()

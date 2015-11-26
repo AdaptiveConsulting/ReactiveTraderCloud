@@ -2,6 +2,7 @@
 {
     public enum TradeStatusDto
     {
+        Pending,
         Done,
         Rejected
     }
