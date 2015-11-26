@@ -32,7 +32,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         };
 
         private readonly Dictionary<string, CurrencyPair> _stateOfTheWorld = new Dictionary<string, CurrencyPair>();
-        private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
+        private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
         private readonly BehaviorSubject<Dictionary<string, CurrencyPair>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<string, CurrencyPair>>(null);
         private IConnectableObservable<IEvent> _currencyPairEvents;
         private bool _isCaughtUp;
