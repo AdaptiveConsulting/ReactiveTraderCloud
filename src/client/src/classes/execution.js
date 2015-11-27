@@ -1,5 +1,5 @@
 import transport from '../utils/transport';
-import traders from 'traders';
+import traders from './traders';
 
 export default class Execution {
 
@@ -11,14 +11,12 @@ export default class Execution {
     this.transport = transport;
   }
 
-  execute(payload){
+  execute(payload, success, fail){
     const replyTo = event + (Math.random() * Math.pow(36, 8) << 0).toString(36);
     this.transport.session.call(Execution.options.event, [{
       ReplyTo: replyTo,
       Payload: payload,
       Trader: traders.code
-    }]).then((response) => {
-      console.log(response);
-    });
+    }]).then((response) => success(response), (error) => fail && fail(error));
   }
 }
