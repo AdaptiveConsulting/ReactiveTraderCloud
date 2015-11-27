@@ -113,7 +113,6 @@ class ServiceDef extends emitter {
     console.log('killing instance', instance);
     const instanceToKill = this.instances[instance];
     delete this.instances[instance];
-
     instanceToKill.subscriptions.forEach((s) => this.addSubscription(s));
 
     this.trigger('removeInstance');
@@ -149,6 +148,7 @@ class ServiceDef extends emitter {
       return;
     }
 
+    picked.subscriptions.push(subscription);
     this.transport.remoteCall(subscription, pickedInstanceID);
   }
 }
@@ -227,7 +227,6 @@ class Transport extends emitter {
 
     this.queues.push(sub);
 
-    console.dir(this.session);
     if (!_.isPlainObject(this.session)){
       this.subscribe(sub);
     }
