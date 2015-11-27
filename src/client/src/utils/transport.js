@@ -10,12 +10,12 @@ import _ from 'lodash';
 //
 
 class PricingService {
-  constructor(t) {
+  constructor(t){
     this.transport = t;
   }
 
-  getPriceUpdates(symbol, callback) {
-    console.log('called getPriceUpdates('+ symbol +')');
+  getPriceUpdates(symbol, callback){
+    console.log('called getPriceUpdates(' + symbol + ')');
     const queue = this.transport.createQueue(callback);
     this.transport.registerSubscription('pricing', 'getPriceUpdates', queue, {symbol});
     return queue;
@@ -23,11 +23,11 @@ class PricingService {
 }
 
 class ReferenceService {
-  constructor(t) {
+  constructor(t){
     this.transport = t;
   }
 
-  getCurrencyPairUpdatesStream(callback) {
+  getCurrencyPairUpdatesStream(callback){
     console.log('called getCurrencyPairUpdatesStream');
     // register call
     const queue = this.transport.createQueue(callback);
@@ -37,30 +37,29 @@ class ReferenceService {
 }
 
 class BlotterService {
-  constructor(t) {
+  constructor(t){
     this.transport = t;
   }
 
-  getTradesStream(callback) {
-      console.log('called getTradesStream');
-      return this.transport.createQueue(callback);
+  getTradesStream(callback){
+    console.log('called getTradesStream');
+    return this.transport.createQueue(callback);
   }
 }
 
 class ExecutionService {
-  constructor(t) {
+  constructor(t){
     this.transport = t;
   }
 
-  executeTrade(callback) {
+  executeTrade(callback){
     console.log('called executeTrade');
     // should return value
   }
 }
 
-
 class ReactiveTrader {
-  constructor(t) {
+  constructor(t){
     this.pricing = new PricingService(t);
     this.reference = new ReferenceService(t);
     this.blotter = new BlotterService(t);
@@ -71,7 +70,7 @@ class ReactiveTrader {
 }
 
 class ServiceDef extends emitter {
-  constructor(t) {
+  constructor(t){
     super();
 
     this.pendingSubscriptions = [];
@@ -79,8 +78,8 @@ class ServiceDef extends emitter {
     this.transport = t;
   }
 
-  registerOrUpdateInstance(instance, load) {
-    if(!(instance in this.instances)) {
+  registerOrUpdateInstance(instance, load){
+    if (!(instance in this.instances)){
       (this.instances[instance] = this.createNewInstance(instance, load));
       this.trigger('addInstance')
     }
@@ -90,29 +89,29 @@ class ServiceDef extends emitter {
     instanceDef.load = load;
   }
 
-  createNewInstance(instance, load) {
-    console.log('add instance', instance );
+  createNewInstance(instance, load){
+    console.log('add instance', instance);
 
-    var instanceRef = {
+    const instanceRef = {
       keepalive: _.debounce(() => this.killInstance(instance), 3000),
       subscriptions: [],
       load
     };
 
-    while (this.pendingSubscriptions.length > 0) {
-      var p = this.pendingSubscriptions.pop();
+    while (this.pendingSubscriptions.length > 0){
+      const p = this.pendingSubscriptions.pop();
       instanceRef.subscriptions.push(p);
 
       console.log('remoteCall', p, instance);
-      this.transport.remoteCall(p, instance).then(this.session.log);
+      this.transport.remoteCall(p, instance).then(this.log);
     }
 
     return instanceRef;
   }
 
-  killInstance(instance) {
-    console.log('killing instance', instance );
-    var instanceToKill = this.instances[instance];
+  killInstance(instance){
+    console.log('killing instance', instance);
+    const instanceToKill = this.instances[instance];
     delete this.instances[instance];
 
     instanceToKill.subscriptions.forEach((s) => this.addSubscription(s));
@@ -120,30 +119,31 @@ class ServiceDef extends emitter {
     this.trigger('removeInstance');
   }
 
-  markEverythingAsDead() {
+  markEverythingAsDead(){
     // move everything to pending...
-    for (var instance in this.instances) {
+    for (let instance in this.instances){
       this.instances[instance].subscriptions.forEach((s) => this.pendingSubscriptions.push(s));
       delete this.instances[instance];
     }
   }
 
-  addSubscription(subscription) {
+  addSubscription(subscription){
     // strategy, grab the one with least load
-    var min = 1000;
-    var picked = undefined;
-    var pickedInstanceID = undefined;
-    for (var instance in this.instances) {
-      var current = this.instances[instance];
+    let min = 1000,
+        picked,
+        pickedInstanceID;
 
-      if(current.load < min ) {
+    for (let instance in this.instances){
+      let current = this.instances[instance];
+
+      if (current.load < min){
         min = current.load;
         picked = current;
         pickedInstanceID = instance;
       }
     }
 
-    if( !picked ) {
+    if (!picked){
       this.pendingSubscriptions.push(subscription);
       console.log('adding subscription to pending', subscription);
       return;
@@ -153,9 +153,21 @@ class ServiceDef extends emitter {
   }
 }
 
+/**
+ * @class Transport
+ * @extends emitter
+ */
 class Transport extends emitter {
-  constructor(url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader') {
+
+  //todo: move to config for env
+  /**
+   * @constructs Transport
+   * @param {String=} url
+   * @param {String=} realm
+   */
+  constructor(url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader'){
     super();
+
     this.connection = new autobahn.Connection({
       url,
       realm,
@@ -163,122 +175,120 @@ class Transport extends emitter {
     });
 
     this.queues = [];
-    this.session = undefined;
+    this.session = {
+      log: (...args) => console.log(...args)
+    };
     this.services = {
       pricing: new ServiceDef(this),
       reference: new ServiceDef(this),
       blotter: new ServiceDef(this)
     };
 
-    //const triggerUpdate = _.debounce(() =>  this.trigger('statusUpdate'), 50);
-    const triggerUpdate = () =>  this.trigger('statusUpdate');
-
-    this.services.pricing
-      .on('addInstance', triggerUpdate)
-      .on('removeInstance', triggerUpdate);
-
-    this.services.reference
-      .on('addInstance', triggerUpdate)
-      .on('removeInstance',triggerUpdate);
-
-    this.services.blotter
-      .on('addInstance', triggerUpdate)
-      .on('removeInstance', triggerUpdate);
+    // sub for all known services
+    Object.keys(this.services).forEach((service) => this.services[service].on('addInstance removeInstance', () => this.trigger('statusUpdate', this.getStatus())));
 
     this.subscribeToStatusUpdates();
 
-    this.connection.onopen = (ws) => {
+    this.connection.onopen = (ws) =>{
       this.session = ws;
-
       this.subscribeToQueues();
       this.trigger('open');
     };
 
-    this.connection.onclose = () => {
+    this.connection.onclose = () =>{
       this.markEverythingAsDead();
       this.trigger('close');
-
     };
+
     this.connection.open();
   }
 
-  getStatus() {
-    var status = {
-      pricing: Object.keys(this.services.pricing.instances).length,
-      reference: Object.keys(this.services.reference.instances).length,
-      blotter: Object.keys(this.services.blotter.instances).length,
-    };
+  /**
+   * Returns node status per service as map
+   * @returns {Object}
+   */
+  getStatus(){
+    const statusObject = {};
+    Object.keys(this.services).forEach((service) => statusObject[service] = Object.keys(this.services[service].instances).length);
 
-    console.log(status);
-    return status;
+    return statusObject;
   }
 
-  createQueue(handler) {
+  createQueue(handler){
     const name = _.uniqueId('queue');
     return this.subscribeToTopic(name, handler);
   }
 
-  subscribeToTopic(name, handler) {
-    const sub = {replyToAddress: name, handler, subscriptionID: undefined};
+  subscribeToTopic(name, handler){
+    const sub = {
+      replyToAddress: name,
+      handler
+    };
+
     this.queues.push(sub);
 
-    if (this.session)
+    console.dir(this.session);
+    if (!_.isPlainObject(this.session)){
       this.subscribe(sub);
+    }
 
     return sub;
   }
 
-  registerSubscription(serviceType, serviceProcName, responseQueue, request) {
-    var typeService = this.services[serviceType];
-    typeService.addSubscription({proc: serviceProcName, replyTo: responseQueue, message: request});
+  registerSubscription(serviceType, serviceProcName, responseQueue, request){
+    this.services[serviceType].addSubscription({proc: serviceProcName, replyTo: responseQueue, message: request});
   }
 
-  logHeartBeat(heartbeat) {
-    const type = heartbeat.Type,
-      typeService = this.services[type],
-      instanceID = heartbeat.Instance;
+  logHeartBeat(heartbeat){
+    const type        = heartbeat.Type,
+          typeService = this.services[type],
+          instanceID  = heartbeat.Instance;
 
     typeService.registerOrUpdateInstance(instanceID, heartbeat.Load);
   }
 
   // TODO move to ReactiveTrader
-  subscribeToStatusUpdates() {
-    this.subscribeToTopic('status', (h) => this.logHeartBeat(h));
+  subscribeToStatusUpdates(){
+    this.subscribeToTopic('status', (...args) => this.logHeartBeat(...args));
   }
 
-  subscribeToQueues() {
+  subscribeToQueues(){
     console.log('subscribing to queues');
 
-    this.queues.forEach((q) => {
-      if( !q.subscriptionID ) {
+    this.queues.forEach((q) =>{
+      if (q.subscriptionID == null){
         this.subscribe(q);
       }
     });
   }
 
-  markEverythingAsDead() {
+  markEverythingAsDead(){
     console.log('marking queues as dead');
-    this.queues.forEach((q) => q.subscriptionID = undefined);
+    this.queues.forEach((q) => delete q.subscriptionID);
 
     console.log('marking instances as dead');
-    for(var service in this.services) {
+    for (let service in this.services){
       this.services[service].markEverythingAsDead();
     }
   }
 
   // TODO make this private?
   subscribe(sub){
-    this.session.subscribe(sub.replyToAddress, (a) => sub.handler(a[0])).then((subResult) => {
-      sub.subscription = subResult;
-    }, () => this.session.log);
+    this.session.subscribe(sub.replyToAddress, (a) => sub.handler(a[0])).then((subResult) =>{
+      sub.subscriptionID = subResult;
+    }, (error) => console.error(error));
 
     return sub;
   }
 
   remoteCall(sub, instanceID){
-    var ins = instanceID +'.'+ sub.proc;
+    const ins = instanceID + '.' + sub.proc;
     console.log(ins);
-    this.session.call(ins, [{replyTo: sub.replyTo.replyToAddress, payload: sub.message}]).then(o => {},err=>{});
+
+    return this.session.call(ins, [{
+      replyTo: sub.replyTo.replyToAddress,
+      payload: sub.message
+    }]);
   }
 
   unsubscribe(...args){
@@ -324,8 +334,8 @@ class Transport extends emitter {
   }
 
   log(...args){
-   console.log(...args);
-
+    //console.info(...args);
+    this.session.log(...args);
   }
 
   prefix(...args){

@@ -45,19 +45,22 @@ class CurrencyPairs extends React.Component {
       services: rt.transport.getStatus()
     });
 
-    rt.reference.getCurrencyPairUpdatesStream( (referenceData) => {
-      const update = _.debounce((src) => {
-        const pairs = src || this.state.pairs;
+    const updatePairs = _.debounce((src) => {
+      const pairs = src || this.state.pairs;
 
-        pairs.forEach((pair) => {
-          pair.state = Date.now() - (pair.lastUpdated || 0) > STALE_TIMEOUT ? 'stale' : 'listening';
-        });
+      pairs.forEach((pair) => {
+        const timeOutState = Date.now() - (pair.lastUpdated || 0) > STALE_TIMEOUT ? 'stale' : 'listening';
+        pair.state = this.state.services.pricing ? timeOutState : 'stale';
+      });
 
-        this.setState({
-          pairs: pairs
-        });
-      }, 5);
+      this.setState({
+        pairs: pairs
+      });
+      console.count('updatePairs');
 
+    }, 5);
+
+    rt.reference.getCurrencyPairUpdatesStream((referenceData) => {
       // normalise the currency pair reference data
       const pairs = _.map(referenceData.Updates, (updatedPair) => {
         const pair = updatedPair.CurrencyPair;
@@ -76,7 +79,7 @@ class CurrencyPairs extends React.Component {
         else {
           // removed?
           // console.log(updatedPair.UpdateType);
-          update(this.state.pairs.filter((p) => p.id != pair.Symbol));
+          updatePairs(this.state.pairs.filter((p) => p.id != pair.Symbol));
           rt.pricing.unsubscribe(existing.pricingSub);
         }
       }, this);
@@ -101,15 +104,23 @@ class CurrencyPairs extends React.Component {
 
           existingPair.lastUpdated = Date.now();
 
-          update();
+          updatePairs();
         });
       });
     });
 
+    const self = this;
     rt.transport
-      .on('open', ()=> this.setState({connected: true}))
-      .on('close', ()=> this.setState({connected: false, services: rt.transport.getStatus()}))
-      .on('statusUpdate', ()=>this.setState({services: rt.transport.getStatus()}));
+      .on('open', ()=> self.setState({connected: true}))
+      .on('close', ()=> self.setState({connected: false, services: rt.transport.getStatus()}))
+      .on('statusUpdate', (services) => {
+        // update ui indicators
+        self.setState({
+          services
+        });
+        console.count('statusUpdate');
+        updatePairs();
+      });
   }
 
   componentWillMount(){

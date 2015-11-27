@@ -115,14 +115,12 @@ class emitter {
    * @param {*=} argN optional arguments
    * @returns {emitter}
    */
-  trigger(event){
+  trigger(event, ...args){
     let events = this._listeners,
-        k,
-        args;
+        k;
 
     if (events && events[event]){
-      if (arguments.length > 1){
-        args = slice(arguments, 1);
+      if (args.length){
         for (k in events[event]) events[event][k].apply(this, args);
       }
       else {

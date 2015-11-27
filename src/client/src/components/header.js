@@ -1,4 +1,5 @@
 import React from 'react';
+import traders from '../classes/traders';
 
 class Header extends React.Component {
 
@@ -15,8 +16,8 @@ class Header extends React.Component {
     const resp = [];
     for (let k in services){
       resp.push(services[k] ?
-        <li className='service-status'><i className='fa fa-circle ' title={k + ' ' + services[k] + ' nodes online'} /><i className='node-badge'>{services[k]}</i></li> :
-        <li className='service-status text-danger animated infinite fadeIn'><i className='fa fa-circle-o' title={k + ' offline'} /></li>);
+        <li key={k} className='service-status'><i className='fa fa-circle ' title={k + ' ' + services[k] + ' nodes online'} /><i className='node-badge'>{services[k]}</i></li> :
+        <li key={k} className='service-status text-danger animated infinite fadeIn'><i className='fa fa-circle-o' title={k + ' offline'} /></li>);
     }
 
     return resp;
@@ -33,6 +34,7 @@ class Header extends React.Component {
         </li>
       </ul>
       <ul className="nav navbar-nav pull-right nav-status">
+        <li>{traders.code}</li>
         <li>{this.getBrokerStatus(status)}</li>
         {this.getServices(services)}
       </ul>

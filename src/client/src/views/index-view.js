@@ -3,7 +3,8 @@ import CurrencyPairs from '../components/currency-pairs';
 import Blotter from '../components/blotter';
 
 import transport from '../utils/transport';
-
+import Execution from '../classes/execution';
+import moment from 'moment';
 
 //todo: remove mocks
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -54,6 +55,20 @@ export class IndexView extends React.Component {
     trades.unshift(payload);
     this.setState({
       trades: trades
+    });
+
+    new Execution().execute({
+      CurrencyPair: payload.pair,
+      SpotRate: payload.rate,
+      ValueDate: moment().toISOString(),
+      Direction: payload.direction,
+      Notional: payload.amount,
+      DealtCurrency: payload.direction === 'buy' ? payload.pair.substr(0, 3) : payload.pair.substr(3, 3)
+    }, (response) => {
+      console.log(response);
+      payload.onACK(response);
+    }, (error) => {
+      console.error(error);
     });
 
     setTimeout(() => {
