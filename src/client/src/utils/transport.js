@@ -9,7 +9,6 @@ import _ from 'lodash';
 //    blotter...()
 //
 
-
 class PricingService {
   constructor(t) {
     this.transport = t;
@@ -105,7 +104,7 @@ class ServiceDef extends emitter {
       instanceRef.subscriptions.push(p);
 
       console.log('remoteCall', p, instance);
-      this.transport.remoteCall(p, instance);
+      this.transport.remoteCall(p, instance).then(this.session.log);
     }
 
     return instanceRef;
@@ -183,7 +182,6 @@ class Transport extends emitter {
 
     this.subscribeToStatusUpdates();
 
-
     this.connection.onopen = (ws) => {
       this.session = ws;
 
@@ -244,7 +242,7 @@ class Transport extends emitter {
   }
 
   subscribeToQueues() {
-    this.log('subscribing to queues');
+    console.log('subscribing to queues');
 
     this.queues.forEach((q) => {
       if( !q.subscriptionID ) {
@@ -274,6 +272,7 @@ class Transport extends emitter {
 
   remoteCall(sub, instanceID){
     var ins = instanceID +'.'+ sub.proc;
+    console.log(ins);
     this.session.call(ins, [{replyTo: sub.replyTo.replyToAddress, payload: sub.message}]).then(o => {},err=>{});
   }
 

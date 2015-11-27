@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.MessageBroker;
 using Adaptive.ReactiveTrader.Messaging;
@@ -13,10 +15,34 @@ using Common.Logging.Simple;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
+    public class ServiceLauncher
+    {
+        private Dictionary<int, IDisposable> _pricingServices = new Dictionary<int, IDisposable>();
+
+        private IBroker _broker;
+
+        public ServiceLauncher()
+        {
+            var uri = "ws://127.0.0.1:8080/ws";
+            var realm = "com.weareadaptive.reactivetrader";
+            _broker = BrokerFactory.Create(uri, realm).Result;
+        }
+
+        public async Task StartPricingService()
+        {
+            var p = await PriceServiceLauncher.Run(_broker);
+        }
+
+        public void StopPricingService(int instance)
+        {
+            Console.WriteLine();
+        }
+    }
+
     public class Program
     {
         protected static readonly ILog Log = LogManager.GetLogger<Program>();
-
+        
         public static void Main(string[] args)
         {
             var uri = "ws://127.0.0.1:8080/ws";
@@ -26,7 +52,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             {
                 ShowLogName = true
             };
-
+            
             try
             {
                 IEventStore es;
@@ -62,7 +88,21 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 using (compositeDispo)
                 {
                     Console.WriteLine("Press Any Key To Stop...");
-                    Console.ReadLine();
+                    
+                    while( true)
+                    {
+                        var x = Console.ReadLine();
+
+                        if (x == "exit")
+                            break;
+
+                        if (x == "ref")
+                        {
+                            Console.WriteLine("Adding reference service");
+                            compositeDispo.Add(ReferenceDataReaderLauncher.Run(es, broker.Result).Result);
+                        }   
+
+                    }
                 }
             }
             catch (Exception e)

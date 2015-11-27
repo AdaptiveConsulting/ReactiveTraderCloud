@@ -33,7 +33,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             Interlocked.Increment(ref _clients);
 
             _service.GetCurrencyPairUpdatesStream(context, payload)
+                .Do(o => { Log.DebugFormat("Sending currency pair update to {0}", replyTo); })
                 .TakeUntil(endPoint.TerminationSignal).Finally(() => Interlocked.Decrement(ref _clients))
+                .Finally(() => { Log.DebugFormat("Tidying up subscripting.", replyTo); })
                 .Subscribe(endPoint);
         }
 

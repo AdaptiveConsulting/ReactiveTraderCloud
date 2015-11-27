@@ -9,7 +9,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     {
         protected static readonly ILog Log = LogManager.GetLogger<PriceServiceLauncher>();
 
-        public static async Task<IDisposable> Run(IBroker broker)
+        public static async Task<PricingServiceHost> Run(IBroker broker)
         {
             var cache = new PriceGenerator();
             var service = new PricingService(cache.GetPriceStream);
