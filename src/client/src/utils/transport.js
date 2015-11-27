@@ -16,10 +16,8 @@ class PricingService {
 
   getPriceUpdates(symbol, callback){
     console.log('called getPriceUpdates(' + symbol + ')');
-    const queue = this.transport.createQueue(callback);
-    this.transport.registerSubscription('pricing', 'getPriceUpdates', queue, {symbol});
-    return queue;
-  }
+    this.transport.requestStream('pricing', 'getPriceUpdates', {symbol}, callback);
+ }
 }
 
 class ReferenceService {
@@ -29,10 +27,7 @@ class ReferenceService {
 
   getCurrencyPairUpdatesStream(callback){
     console.log('called getCurrencyPairUpdatesStream');
-    // register call
-    const queue = this.transport.createQueue(callback);
-    this.transport.registerSubscription('reference', 'getCurrencyPairUpdatesStream', queue, {});
-    return queue;
+    this.transport.requestStream('reference', 'getCurrencyPairUpdatesStream', {}, callback);
   }
 }
 
@@ -43,7 +38,7 @@ class BlotterService {
 
   getTradesStream(callback){
     console.log('called getTradesStream');
-    return this.transport.createQueue(callback);
+    this.transport.requestStream('blotter', 'getTradesStream', {}, callback);
   }
 }
 
@@ -81,7 +76,7 @@ class ServiceDef extends emitter {
   registerOrUpdateInstance(instance, load){
     if (!(instance in this.instances)){
       (this.instances[instance] = this.createNewInstance(instance, load));
-      this.trigger('addInstance')
+      this.trigger('addInstance');
     }
 
     const instanceDef = this.instances[instance];
@@ -113,7 +108,6 @@ class ServiceDef extends emitter {
     console.log('killing instance', instance);
     const instanceToKill = this.instances[instance];
     delete this.instances[instance];
-
     instanceToKill.subscriptions.forEach((s) => this.addSubscription(s));
 
     this.trigger('removeInstance');
@@ -149,6 +143,7 @@ class ServiceDef extends emitter {
       return;
     }
 
+    picked.subscriptions.push(subscription);
     this.transport.remoteCall(subscription, pickedInstanceID);
   }
 }
@@ -181,7 +176,8 @@ class Transport extends emitter {
     this.services = {
       pricing: new ServiceDef(this),
       reference: new ServiceDef(this),
-      blotter: new ServiceDef(this)
+      blotter: new ServiceDef(this),
+      execution: new ServiceDef(this)
     };
 
     // sub for all known services
@@ -219,6 +215,11 @@ class Transport extends emitter {
     return this.subscribeToTopic(name, handler);
   }
 
+  requestStream(serviceName, callName, args, callback) {
+    const queue = this.createQueue(callback);
+    this.registerSubscription(serviceName, callName, queue, args);
+  }
+
   subscribeToTopic(name, handler){
     const sub = {
       replyToAddress: name,
@@ -227,7 +228,6 @@ class Transport extends emitter {
 
     this.queues.push(sub);
 
-    console.dir(this.session);
     if (!_.isPlainObject(this.session)){
       this.subscribe(sub);
     }

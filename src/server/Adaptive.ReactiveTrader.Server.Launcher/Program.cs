@@ -4,6 +4,7 @@ using System.Linq;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.MessageBroker;
 using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Server.Blotter;
 using Adaptive.ReactiveTrader.Server.Pricing;
 using Adaptive.ReactiveTrader.Server.ReferenceDataRead;
 using Adaptive.ReactiveTrader.Server.ReferenceDataWrite;
@@ -59,6 +60,9 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 if (args.Contains("exec"))
                     Servers.Add("e1", TradeExecutionLauncher.Run(es, broker.Result).Result);
 
+                if (args.Contains("b"))
+                    Servers.Add("b1", BlotterLauncher.Run(es, broker.Result).Result);
+
                 Console.WriteLine("Press Any Key To Stop...");
 
 
@@ -84,7 +88,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                                 continue;
                             }
 
-                            if (serviceType == "ref")
+                            if (serviceType == "r")
                             {
                                 Console.WriteLine("Adding reference service");
                                 Servers.Add(serviceName,
@@ -97,11 +101,20 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                                 Servers.Add(serviceName, PriceServiceLauncher.Run(broker.Result).Result);
                             }
 
-                            if (serviceType == "exec")
+                            if (serviceType == "e")
                             {
                                 Console.WriteLine("Adding exec service");
                                 Servers.Add(serviceName, TradeExecutionLauncher.Run(es, broker.Result).Result);
                             }
+
+                            if (serviceType == "b")
+                            {
+                                Console.WriteLine("Adding blotter service");
+                                Servers.Add(serviceName, BlotterLauncher.Run(es, broker.Result).Result);
+                            }
+
+
+                            continue;
                         }
 
                         if (x.StartsWith("kill"))
@@ -114,6 +127,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                             var server = Servers[serviceName];
                             Servers.Remove(serviceName);
                             server.Dispose();
+                            continue;
                         }
 
                         if (x == "status")
@@ -124,17 +138,21 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                             {
                                 Console.WriteLine("{0}", s);
                             }
+                            continue;
                         }
                         
-                        if (x == "hep")
+                        if (x == "help")
                         {
                             Console.WriteLine("Available Commands");
                             Console.WriteLine("==================");
-                            Console.WriteLine("start [ref|p|exec] [name]");
+                            Console.WriteLine("start [r|p|e|b] [name]");
                             Console.WriteLine("kill [name]");
                             Console.WriteLine("status");
                             Console.WriteLine("help");
+                            continue;
                         }
+
+                        Console.WriteLine("Didn't understand command {0}", x);
                     }
                     catch (Exception e)
                     {

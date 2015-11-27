@@ -63,9 +63,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
             return await realm.RpcCatalog.Register(rpcOperation, registerOptions);
         }
-
         
-
         public async Task<IAsyncDisposable> RegisterCallResponse<TResponse>(string procName,
             Func<IRequestContext, IMessage, Task<TResponse>> onMessage)
         {

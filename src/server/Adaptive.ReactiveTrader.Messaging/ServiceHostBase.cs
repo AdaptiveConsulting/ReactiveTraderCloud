@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 
@@ -27,6 +26,12 @@ namespace Adaptive.ReactiveTrader.Messaging
             var instanceProcedureName = $"{InstanceID}.{procName}";
 
             _registedCalls.Add(_broker.RegisterCall(instanceProcedureName, procedure));
+        }
+
+        protected void RegisterCallResponse<T>(string procName, Func<IRequestContext, IMessage, Task<T>> procedure)
+        {
+            var instanceProcedureName = $"{InstanceID}.{procName}";
+            _registedCalls.Add(_broker.RegisterCallResponse(instanceProcedureName, procedure));
         }
 
         public virtual async Task Start()
