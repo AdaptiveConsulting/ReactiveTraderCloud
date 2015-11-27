@@ -56,8 +56,6 @@ class CurrencyPairs extends React.Component {
       this.setState({
         pairs: pairs
       });
-      console.count('updatePairs');
-
     }, 5);
 
     rt.reference.getCurrencyPairUpdatesStream((referenceData) => {
@@ -118,7 +116,6 @@ class CurrencyPairs extends React.Component {
         self.setState({
           services
         });
-        console.count('statusUpdate');
         updatePairs();
       });
   }
