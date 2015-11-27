@@ -36,7 +36,7 @@
     defaultSubComparer = Rx.helpers.defaultSubComparer = function (x, y) { return x > y ? 1 : (x < y ? -1 : 0); },
     defaultKeySerializer = Rx.helpers.defaultKeySerializer = function (x) { return x.toString(); },
     defaultError = Rx.helpers.defaultError = function (err) { throw err; },
-    isPromise = Rx.helpers.isPromise = function (p) { return !!p && typeof p.subscribe !== 'function' && typeof p.then === 'function'; },
+    isPromise = Rx.helpers.isPromise = function (p) { return !!p && typeof p._subscribe !== 'function' && typeof p.then === 'function'; },
     isFunction = Rx.helpers.isFunction = (function () {
 
       var isFn = function (value) {
@@ -56,7 +56,7 @@
   function cloneArray(arr) { for(var a = [], i = 0, len = arr.length; i < len; i++) { a.push(arr[i]); } return a;}
 
   var errorObj = {e: {}};
-  
+
   function tryCatcherGen(tryCatchTarget) {
     return function tryCatcher() {
       try {
@@ -587,7 +587,7 @@ var isEqual = Rx.internals.isEqual = function (value, other) {
   // Rx Utils
   var addRef = Rx.internals.addRef = function (xs, r) {
     return new AnonymousObservable(function (observer) {
-      return new BinaryDisposable(r.getDisposable(), xs.subscribe(observer));
+      return new BinaryDisposable(r.getDisposable(), xs._subscribe(observer));
     });
   };
 
@@ -2010,7 +2010,7 @@ var isEqual = Rx.internals.isEqual = function (value, other) {
     * @returns {Boolean} true if an Observable, else false.
     */
     Observable.isObservable = function (o) {
-      return o && isFunction(o.subscribe);
+      return o && isFunction(o._subscribe);
     };
 
     /**
@@ -2106,7 +2106,7 @@ var FlatMapObservable = Rx.FlatMapObservable = (function(__super__) {
     }
 
     FlatMapObservable.prototype.subscribeCore = function(o) {
-      return this.source.subscribe(new InnerObserver(o, this.selector, this.resultSelector, this));
+      return this.source._subscribe(new InnerObserver(o, this.selector, this.resultSelector, this));
     };
 
     inherits(InnerObserver, AbstractObserver);
@@ -2176,7 +2176,7 @@ var FlatMapObservable = Rx.FlatMapObservable = (function(__super__) {
 
       var d = new SingleAssignmentDisposable();
       state.subscription.setDisposable(d);
-      d.setDisposable(currentValue.subscribe(new InnerObserver(state, recurse)));
+      d.setDisposable(currentValue._subscribe(new InnerObserver(state, recurse)));
     }
 
     ConcatEnumerableObservable.prototype.subscribeCore = function (o) {
@@ -2230,7 +2230,7 @@ var FlatMapObservable = Rx.FlatMapObservable = (function(__super__) {
 
       var d = new SingleAssignmentDisposable();
       state.subscription.setDisposable(d);
-      d.setDisposable(currentValue.subscribe(new InnerObserver(state, recurse)));
+      d.setDisposable(currentValue._subscribe(new InnerObserver(state, recurse)));
     }
 
     CatchErrorObservable.prototype.subscribeCore = function (o) {
@@ -2272,7 +2272,7 @@ var FlatMapObservable = Rx.FlatMapObservable = (function(__super__) {
       var exceptions = new Subject(),
         notifier = new Subject(),
         handled = notificationHandler(exceptions),
-        notificationDisposable = handled.subscribe(notifier);
+        notificationDisposable = handled._subscribe(notifier);
 
       var e = sources[$iterator$]();
 
@@ -2300,10 +2300,10 @@ var FlatMapObservable = Rx.FlatMapObservable = (function(__super__) {
         var outer = new SingleAssignmentDisposable();
         var inner = new SingleAssignmentDisposable();
         subscription.setDisposable(new BinaryDisposable(inner, outer));
-        outer.setDisposable(currentValue.subscribe(
+        outer.setDisposable(currentValue._subscribe(
           function(x) { o.onNext(x); },
           function (exn) {
-            inner.setDisposable(notifier.subscribe(self, function(ex) {
+            inner.setDisposable(notifier._subscribe(self, function(ex) {
               o.onError(ex);
             }, function() {
               o.onCompleted();
@@ -2386,7 +2386,7 @@ var ObserveOnObservable = (function (__super__) {
   }
 
   ObserveOnObservable.prototype.subscribeCore = function (o) {
-    return this.source.subscribe(new ObserveOnObserver(this._s, o));
+    return this.source._subscribe(new ObserveOnObserver(this._s, o));
   };
 
   return ObserveOnObservable;
@@ -2415,7 +2415,7 @@ var ObserveOnObservable = (function (__super__) {
 
     function scheduleMethod(scheduler, state) {
       var source = state[0], d = state[1], o = state[2];
-      d.setDisposable(new ScheduledDisposable(scheduler, source.subscribe(o)));
+      d.setDisposable(new ScheduledDisposable(scheduler, source._subscribe(o)));
     }
 
     SubscribeOnObservable.prototype.subscribeCore = function (o) {
@@ -2505,7 +2505,7 @@ var ObserveOnObservable = (function (__super__) {
     return new promiseCtor(function (resolve, reject) {
       // No cancellation can be done
       var value;
-      source.subscribe(function (v) {
+      source._subscribe(function (v) {
         value = v;
       }, reject, function () {
         resolve(value);
@@ -2521,7 +2521,7 @@ var ObserveOnObservable = (function (__super__) {
     }
 
     ToArrayObservable.prototype.subscribeCore = function(o) {
-      return this.source.subscribe(new InnerObserver(o));
+      return this.source._subscribe(new InnerObserver(o));
     };
 
     inherits(InnerObserver, AbstractObserver);
@@ -2530,7 +2530,7 @@ var ObserveOnObservable = (function (__super__) {
       this.a = [];
       AbstractObserver.call(this);
     }
-    
+
     InnerObserver.prototype.next = function (x) { this.a.push(x); };
     InnerObserver.prototype.error = function (e) { this.o.onError(e);  };
     InnerObserver.prototype.completed = function () { this.o.onNext(this.a); this.o.onCompleted(); };
@@ -2568,9 +2568,9 @@ var ObserveOnObservable = (function (__super__) {
 
     Defer.prototype.subscribeCore = function (o) {
       var result = tryCatch(this._f)();
-      if (result === errorObj) { return observableThrow(result.e).subscribe(o);}
+      if (result === errorObj) { return observableThrow(result.e)._subscribe(o);}
       isPromise(result) && (result = observableFromPromise(result));
-      return result.subscribe(o);
+      return result._subscribe(o);
     };
 
     return Defer;
@@ -2918,7 +2918,7 @@ var ObserveOnObservable = (function (__super__) {
           observer.onNext(changes[i]);
         }
       }
-      
+
       Array.observe(array, observerFn);
 
       return function () {
@@ -3187,14 +3187,14 @@ var ObserveOnObservable = (function (__super__) {
       var disposable = disposableEmpty;
       var resource = tryCatch(this._resFn)();
       if (resource === errorObj) {
-        return new BinaryDisposable(observableThrow(resource.e).subscribe(o), disposable);
+        return new BinaryDisposable(observableThrow(resource.e)._subscribe(o), disposable);
       }
       resource && (disposable = resource);
       var source = tryCatch(this._obsFn)(resource);
       if (source === errorObj) {
-        return new BinaryDisposable(observableThrow(source.e).subscribe(o), disposable);
+        return new BinaryDisposable(observableThrow(source.e)._subscribe(o), disposable);
       }
-      return new BinaryDisposable(source.subscribe(o), disposable);
+      return new BinaryDisposable(source._subscribe(o), disposable);
     };
 
     return UsingObservable;
@@ -3268,7 +3268,7 @@ var ObserveOnObservable = (function (__super__) {
         }
       );
 
-      leftSubscription.setDisposable(leftSource.subscribe(leftSubscribe));
+      leftSubscription.setDisposable(leftSource._subscribe(leftSubscribe));
       rightSubscription.setDisposable(rightSource.subscribe(rightSubscribe));
 
       return new BinaryDisposable(leftSubscription, rightSubscription);
@@ -3307,7 +3307,7 @@ var ObserveOnObservable = (function (__super__) {
     CatchObservable.prototype.subscribeCore = function (o) {
       var d1 = new SingleAssignmentDisposable(), subscription = new SerialDisposable();
       subscription.setDisposable(d1);
-      d1.setDisposable(this.source.subscribe(new CatchObserver(o, subscription, this._fn)));
+      d1.setDisposable(this.source._subscribe(new CatchObserver(o, subscription, this._fn)));
       return subscription;
     };
 
@@ -3332,7 +3332,7 @@ var ObserveOnObservable = (function (__super__) {
 
       var d = new SingleAssignmentDisposable();
       this._s.setDisposable(d);
-      d.setDisposable(result.subscribe(this._o));
+      d.setDisposable(result._subscribe(this._o));
     };
 
     return CatchObserver;
@@ -3414,7 +3414,7 @@ var ObserveOnObservable = (function (__super__) {
         var source = this._params[i], sad = new SingleAssignmentDisposable();
         subscriptions[i] = sad;
         isPromise(source) && (source = observableFromPromise(source));
-        sad.setDisposable(source.subscribe(new CombineLatestObserver(observer, i, this._cb, state)));
+        sad.setDisposable(source._subscribe(new CombineLatestObserver(observer, i, this._cb, state)));
       }
 
       return new NAryDisposable(subscriptions);
@@ -3521,7 +3521,7 @@ var ObserveOnObservable = (function (__super__) {
 
       var d = new SingleAssignmentDisposable();
       state.subscription.setDisposable(d);
-      d.setDisposable(currentValue.subscribe(new ConcatObserver(state, recurse)));
+      d.setDisposable(currentValue._subscribe(new ConcatObserver(state, recurse)));
     }
 
     ConcatObservable.prototype.subscribeCore = function(o) {
@@ -3577,7 +3577,7 @@ var ObserveOnObservable = (function (__super__) {
 
     MergeObservable.prototype.subscribeCore = function(observer) {
       var g = new CompositeDisposable();
-      g.add(this.source.subscribe(new MergeObserver(observer, this.maxConcurrent, g)));
+      g.add(this.source._subscribe(new MergeObserver(observer, this.maxConcurrent, g)));
       return g;
     };
 
@@ -3602,7 +3602,7 @@ var ObserveOnObservable = (function (__super__) {
       var sad = new SingleAssignmentDisposable();
       this.g.add(sad);
       isPromise(xs) && (xs = observableFromPromise(xs));
-      sad.setDisposable(xs.subscribe(new InnerObserver(this, sad)));
+      sad.setDisposable(xs._subscribe(new InnerObserver(this, sad)));
     };
 
     MergeObserver.prototype.next = function (innerSource) {
@@ -3685,7 +3685,7 @@ var ObserveOnObservable = (function (__super__) {
     MergeAllObservable.prototype.subscribeCore = function (o) {
       var g = new CompositeDisposable(), m = new SingleAssignmentDisposable();
       g.add(m);
-      m.setDisposable(this.source.subscribe(new MergeAllObserver(o, g)));
+      m.setDisposable(this.source._subscribe(new MergeAllObserver(o, g)));
       return g;
     };
 
@@ -3706,7 +3706,7 @@ var ObserveOnObservable = (function (__super__) {
       var sad = new SingleAssignmentDisposable();
       this.g.add(sad);
       isPromise(innerSource) && (innerSource = observableFromPromise(innerSource));
-      sad.setDisposable(innerSource.subscribe(new InnerObserver(this, sad)));
+      sad.setDisposable(innerSource._subscribe(new InnerObserver(this, sad)));
     };
 
     MergeAllObserver.prototype.error = function (e) {
@@ -3769,7 +3769,7 @@ var ObserveOnObservable = (function (__super__) {
         state = { isStopped: false, errors: [], o: o };
 
       group.add(m);
-      m.setDisposable(this.source.subscribe(new MergeDelayErrorObserver(group, state)));
+      m.setDisposable(this.source._subscribe(new MergeDelayErrorObserver(group, state)));
 
       return group;
     };
@@ -3801,7 +3801,7 @@ var ObserveOnObservable = (function (__super__) {
 
       // Check for promises support
       isPromise(x) && (x = observableFromPromise(x));
-      inner.setDisposable(x.subscribe(new InnerObserver(inner, this._group, this._state)));
+      inner.setDisposable(x._subscribe(new InnerObserver(inner, this._group, this._state)));
     };
 
     MergeDelayErrorObserver.prototype.error = function (e) {
@@ -3884,7 +3884,7 @@ var ObserveOnObservable = (function (__super__) {
         isPromise(current) && (current = observableFromPromise(current));
         var d = new SingleAssignmentDisposable();
         state.subscription.setDisposable(d);
-        d.setDisposable(current.subscribe(new OnErrorResumeNextObserver(state, recurse)));
+        d.setDisposable(current._subscribe(new OnErrorResumeNextObserver(state, recurse)));
       } else {
         state.o.onCompleted();
       }
@@ -3944,12 +3944,12 @@ var ObserveOnObservable = (function (__super__) {
 
     SkipUntilObservable.prototype.subscribeCore = function(o) {
       var leftSubscription = new SingleAssignmentDisposable();
-      leftSubscription.setDisposable(this._s.subscribe(new SkipUntilSourceObserver(o, this)));
+      leftSubscription.setDisposable(this._s._subscribe(new SkipUntilSourceObserver(o, this)));
 
       isPromise(this._o) && (this._o = observableFromPromise(this._o));
 
       var rightSubscription = new SingleAssignmentDisposable();
-      rightSubscription.setDisposable(this._o.subscribe(new SkipUntilOtherObserver(o, this, rightSubscription)));
+      rightSubscription.setDisposable(this._o._subscribe(new SkipUntilOtherObserver(o, this, rightSubscription)));
 
       return new BinaryDisposable(leftSubscription, rightSubscription);
     };
@@ -4022,7 +4022,7 @@ var ObserveOnObservable = (function (__super__) {
     }
 
     SwitchObservable.prototype.subscribeCore = function (o) {
-      var inner = new SerialDisposable(), s = this.source.subscribe(new SwitchObserver(o, inner));
+      var inner = new SerialDisposable(), s = this.source._subscribe(new SwitchObserver(o, inner));
       return new BinaryDisposable(s, inner);
     };
 
@@ -4041,7 +4041,7 @@ var ObserveOnObservable = (function (__super__) {
       this.hasLatest = true;
       this.inner.setDisposable(d);
       isPromise(innerSource) && (innerSource = observableFromPromise(innerSource));
-      d.setDisposable(innerSource.subscribe(new InnerObserver(this, id)));
+      d.setDisposable(innerSource._subscribe(new InnerObserver(this, id)));
     };
 
     SwitchObserver.prototype.error = function (e) {
@@ -4096,8 +4096,8 @@ var ObserveOnObservable = (function (__super__) {
 
     TakeUntilObservable.prototype.subscribeCore = function(o) {
       return new BinaryDisposable(
-        this.source.subscribe(o),
-        this.other.subscribe(new TakeUntilObserver(o))
+        this.source._subscribe(o),
+        this.other._subscribe(new TakeUntilObserver(o))
       );
     };
 
@@ -4161,12 +4161,12 @@ var ObserveOnObservable = (function (__super__) {
       for (var i = 0; i < n; i++) {
         var other = this._ss[i], sad = new SingleAssignmentDisposable();
         isPromise(other) && (other = observableFromPromise(other));
-        sad.setDisposable(other.subscribe(new WithLatestFromOtherObserver(o, i, state)));
+        sad.setDisposable(other._subscribe(new WithLatestFromOtherObserver(o, i, state)));
         subscriptions[i] = sad;
       }
 
       var outerSad = new SingleAssignmentDisposable();
-      outerSad.setDisposable(this._s.subscribe(new WithLatestFromSourceObserver(o, this._cb, state)));
+      outerSad.setDisposable(this._s._subscribe(new WithLatestFromSourceObserver(o, this._cb, state)));
       subscriptions[n] = outerSad;
 
       return new NAryDisposable(subscriptions);
@@ -4263,7 +4263,7 @@ var ObserveOnObservable = (function (__super__) {
         var source = this._s[i], sad = new SingleAssignmentDisposable();
         subscriptions[i] = sad;
         isPromise(source) && (source = observableFromPromise(source));
-        sad.setDisposable(source.subscribe(new ZipObserver(observer, i, this, q, done)));
+        sad.setDisposable(source._subscribe(new ZipObserver(observer, i, this, q, done)));
       }
 
       return new NAryDisposable(subscriptions);
@@ -4382,7 +4382,7 @@ var ZipIterableObservable = (function(__super__) {
         (isArrayLike(source) || isIterable(source)) && (source = observableFrom(source));
 
         subscriptions[i] = sad;
-        sad.setDisposable(source.subscribe(new ZipIterableObserver(state, i)));
+        sad.setDisposable(source._subscribe(new ZipIterableObserver(state, i)));
       }(i));
     }
 
@@ -4448,7 +4448,7 @@ observableProto.zipIterable = function () {
 };
 
   function asObservable(source) {
-    return function subscribe(o) { return source.subscribe(o); };
+    return function subscribe(o) { return source._subscribe(o); };
   }
 
   /**
@@ -4483,7 +4483,7 @@ observableProto.zipIterable = function () {
     }
 
     DematerializeObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new DematerializeObserver(o));
+      return this.source._subscribe(new DematerializeObserver(o));
     };
 
     return DematerializeObservable;
@@ -4522,7 +4522,7 @@ observableProto.zipIterable = function () {
     }
 
     DistinctUntilChangedObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new DistinctUntilChangedObserver(o, this.keyFn, this.comparer));
+      return this.source._subscribe(new DistinctUntilChangedObserver(o, this.keyFn, this.comparer));
     };
 
     return DistinctUntilChangedObservable;
@@ -4587,7 +4587,7 @@ observableProto.zipIterable = function () {
     }
 
     TapObservable.prototype.subscribeCore = function(o) {
-      return this.source.subscribe(new InnerObserver(o, this));
+      return this.source._subscribe(new InnerObserver(o, this));
     };
 
     inherits(InnerObserver, AbstractObserver);
@@ -4672,7 +4672,7 @@ observableProto.zipIterable = function () {
     }
 
     FinallyObservable.prototype.subscribeCore = function (o) {
-      var d = tryCatch(this.source.subscribe).call(this.source, o);
+      var d = tryCatch(this.source._subscribe).call(this.source, o);
       if (d === errorObj) {
         this._fn();
         thrower(d.e);
@@ -4716,7 +4716,7 @@ observableProto.zipIterable = function () {
     }
 
     IgnoreElementsObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new InnerObserver(o));
+      return this.source._subscribe(new InnerObserver(o));
     };
 
     function InnerObserver(o) {
@@ -4766,7 +4766,7 @@ observableProto.zipIterable = function () {
     }
 
     MaterializeObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new MaterializeObserver(o));
+      return this.source._subscribe(new MaterializeObserver(o));
     };
 
     return MaterializeObservable;
@@ -4819,7 +4819,7 @@ observableProto.zipIterable = function () {
   };
 
   /**
-   *  Repeats the source observable sequence upon error each time the notifier emits or until it successfully terminates. 
+   *  Repeats the source observable sequence upon error each time the notifier emits or until it successfully terminates.
    *  if the notifier completes, the observable sequence completes.
    *
    * @example
@@ -4842,7 +4842,7 @@ observableProto.zipIterable = function () {
     }
 
     ScanObservable.prototype.subscribeCore = function(o) {
-      return this.source.subscribe(new ScanObserver(o,this));
+      return this.source._subscribe(new ScanObserver(o,this));
     };
 
     return ScanObservable;
@@ -4913,7 +4913,7 @@ observableProto.zipIterable = function () {
     }
 
     SkipLastObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new SkipLastObserver(o, this._c));
+      return this.source._subscribe(new SkipLastObserver(o, this._c));
     };
 
     return SkipLastObservable;
@@ -5015,7 +5015,7 @@ observableProto.zipIterable = function () {
     if (count < 0) { throw new ArgumentOutOfRangeError(); }
     var source = this;
     return new AnonymousObservable(function (o) {
-      return source.subscribe(new TakeLastObserver(o, count));
+      return source._subscribe(new TakeLastObserver(o, count));
     }, source);
   };
 
@@ -5058,7 +5058,7 @@ observableProto.zipIterable = function () {
     if (count < 0) { throw new ArgumentOutOfRangeError(); }
     var source = this;
     return new AnonymousObservable(function (o) {
-      return source.subscribe(new TakeLastBufferObserver(o, count));
+      return source._subscribe(new TakeLastBufferObserver(o, count));
     }, source);
   };
 
@@ -5092,7 +5092,7 @@ observableProto.zipIterable = function () {
 
       createWindow();
 
-      m.setDisposable(source.subscribe(
+      m.setDisposable(source._subscribe(
         function (x) {
           for (var i = 0, len = q.length; i < len; i++) { q[i].onNext(x); }
           var c = n - count + 1;
@@ -5173,7 +5173,7 @@ observableProto.zipIterable = function () {
         onCompletedFunc = bindCallback(onCompleted, thisArg, 0);
     return new AnonymousObservable(function (observer) {
       var index = 0;
-      return source.subscribe(
+      return source._subscribe(
         function (x) {
           var result;
           try {
@@ -5284,7 +5284,7 @@ observableProto.zipIterable = function () {
     }
 
     DistinctObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new DistinctObserver(o, this._keyFn, this._cmpFn));
+      return this.source._subscribe(new DistinctObserver(o, this._keyFn, this._cmpFn));
     };
 
     return DistinctObservable;
@@ -5371,7 +5371,7 @@ observableProto.zipIterable = function () {
           handleError = function (e) { return function (item) { item.onError(e); }; };
 
         groupDisposable.add(
-          source.subscribe(function (x) {
+          source._subscribe(function (x) {
             var key = tryCatch(keySelector)(x);
             if (key === errorObj) {
               map.forEach(handleError(key.e));
@@ -5451,7 +5451,7 @@ observableProto.zipIterable = function () {
     };
 
     MapObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new InnerObserver(o, this.selector, this));
+      return this.source._subscribe(new InnerObserver(o, this.selector, this));
     };
 
     inherits(InnerObserver, AbstractObserver);
@@ -5539,7 +5539,7 @@ observableProto.flatMap = observableProto.selectMany = function(selector, result
     return new AnonymousObservable(function (observer) {
       var index = 0;
 
-      return source.subscribe(
+      return source._subscribe(
         function (x) {
           var result;
           try {
@@ -5590,7 +5590,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     SkipObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new SkipObserver(o, this._count));
+      return this.source._subscribe(new SkipObserver(o, this._count));
     };
 
     function SkipObserver(o, c) {
@@ -5633,7 +5633,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     SkipWhileObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new SkipWhileObserver(o, this));
+      return this.source._subscribe(new SkipWhileObserver(o, this));
     };
 
     return SkipWhileObservable;
@@ -5688,7 +5688,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     TakeObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new TakeObserver(o, this._count));
+      return this.source._subscribe(new TakeObserver(o, this._count));
     };
 
     function TakeObserver(o, c) {
@@ -5734,7 +5734,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     TakeWhileObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new TakeWhileObserver(o, this));
+      return this.source._subscribe(new TakeWhileObserver(o, this));
     };
 
     return TakeWhileObservable;
@@ -5790,7 +5790,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     FilterObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new InnerObserver(o, this.predicate, this));
+      return this.source._subscribe(new InnerObserver(o, this.predicate, this));
     };
 
     function innerPredicate(predicate, self) {
@@ -5851,7 +5851,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     ExtremaByObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new ExtremaByObserver(o, this._k, this._c));
+      return this.source._subscribe(new ExtremaByObserver(o, this._k, this._c));
     };
 
     return ExtremaByObservable;
@@ -5915,7 +5915,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     ReduceObservable.prototype.subscribeCore = function(observer) {
-      return this.source.subscribe(new ReduceObserver(observer,this));
+      return this.source._subscribe(new ReduceObserver(observer,this));
     };
 
     return ReduceObservable;
@@ -5987,7 +5987,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     SomeObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new SomeObserver(o, this._fn, this.source));
+      return this.source._subscribe(new SomeObserver(o, this._fn, this.source));
     };
 
     return SomeObservable;
@@ -6039,7 +6039,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     IsEmptyObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new IsEmptyObserver(o));
+      return this.source._subscribe(new IsEmptyObserver(o));
     };
 
     return IsEmptyObservable;
@@ -6082,7 +6082,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     EveryObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new EveryObserver(o, this._fn, this.source));
+      return this.source._subscribe(new EveryObserver(o, this._fn, this.source));
     };
 
     return EveryObservable;
@@ -6146,7 +6146,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
         return disposableEmpty;
       }
 
-      return this.source.subscribe(new IncludesObserver(o, this._elem, this._n));
+      return this.source._subscribe(new IncludesObserver(o, this._elem, this._n));
     };
 
     return IncludesObservable;
@@ -6197,7 +6197,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     CountObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new CountObserver(o, this._fn, this.source));
+      return this.source._subscribe(new CountObserver(o, this._fn, this.source));
     };
 
     return CountObservable;
@@ -6263,7 +6263,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
         return disposableEmpty;
       }
 
-      return this.source.subscribe(new IndexOfObserver(o, this._e, this._n));
+      return this.source._subscribe(new IndexOfObserver(o, this._e, this._n));
     };
 
     return IndexOfObservable;
@@ -6313,7 +6313,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     SumObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new SumObserver(o, this._fn, this.source));
+      return this.source._subscribe(new SumObserver(o, this._fn, this.source));
     };
 
     return SumObservable;
@@ -6421,7 +6421,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     AverageObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new AverageObserver(o, this._fn, this.source));
+      return this.source._subscribe(new AverageObserver(o, this._fn, this.source));
     };
 
     return AverageObservable;
@@ -6489,7 +6489,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     comparer || (comparer = defaultComparer);
     return new AnonymousObservable(function (o) {
       var donel = false, doner = false, ql = [], qr = [];
-      var subscription1 = first.subscribe(function (x) {
+      var subscription1 = first._subscribe(function (x) {
         if (qr.length > 0) {
           var v = qr.shift();
           var equal = tryCatch(comparer)(v, x);
@@ -6560,7 +6560,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     ElementAtObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new ElementAtObserver(o, this._i, this._d));
+      return this.source._subscribe(new ElementAtObserver(o, this._i, this._d));
     };
 
     return ElementAtObservable;
@@ -6673,7 +6673,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
         obj.predicate = bindCallback(fn, obj.thisArg, 3);
       }
       return new AnonymousObservable(function (o) {
-        return source.subscribe(new SingleObserver(o, obj, source));
+        return source._subscribe(new SingleObserver(o, obj, source));
       }, source);
     };
 
@@ -6686,7 +6686,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     FirstObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new FirstObserver(o, this._obj, this.source));
+      return this.source._subscribe(new FirstObserver(o, this._obj, this.source));
     };
 
     return FirstObservable;
@@ -6759,7 +6759,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     LastObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new LastObserver(o, this._obj, this.source));
+      return this.source._subscribe(new LastObserver(o, this._obj, this.source));
     };
 
     return LastObservable;
@@ -6867,7 +6867,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
   function findValue (source, predicate, thisArg, yieldIndex) {
     var callback = bindCallback(predicate, thisArg, 3);
     return new AnonymousObservable(function (o) {
-      return source.subscribe(new FindValueObserver(o, source, callback, yieldIndex));
+      return source._subscribe(new FindValueObserver(o, source, callback, yieldIndex));
     }, source);
   }
 
@@ -6900,7 +6900,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     ToSetObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new ToSetObserver(o));
+      return this.source._subscribe(new ToSetObserver(o));
     };
 
     return ToSetObservable;
@@ -6949,7 +6949,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     ToMapObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new ToMapObserver(o, this._k, this._e));
+      return this.source._subscribe(new ToMapObserver(o, this._k, this._e));
     };
 
     return ToMapObservable;
@@ -7010,7 +7010,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
 
     SliceObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new SliceObserver(o, this._b, this._e));
+      return this.source._subscribe(new SliceObserver(o, this._b, this._e));
     };
 
     return SliceObservable;
@@ -7076,7 +7076,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
         return disposableEmpty;
       }
 
-      return this.source.subscribe(new LastIndexOfObserver(o, this._e, this._n));
+      return this.source._subscribe(new LastIndexOfObserver(o, this._e, this._n));
     };
 
     return LastIndexOfObservable;
@@ -7172,7 +7172,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
         var value = null;
         var hasValue = false;
         if (Observable.isObservable(obs)) {
-          g.add(obs.subscribe(function(val) {
+          g.add(obs._subscribe(function(val) {
             hasValue = true;
             value = val;
           }, onError, function() {
@@ -7355,7 +7355,7 @@ function createCbHandler(o, ctx, selector) {
  */
 Observable.fromCallback = function (fn, ctx, selector) {
   return function () {
-    typeof ctx === 'undefined' && (ctx = this); 
+    typeof ctx === 'undefined' && (ctx = this);
 
     var len = arguments.length, args = new Array(len)
     for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
@@ -7405,7 +7405,7 @@ function createNodeHandler(o, ctx, selector) {
  */
 Observable.fromNodeCallback = function (fn, ctx, selector) {
   return function () {
-    typeof ctx === 'undefined' && (ctx = this); 
+    typeof ctx === 'undefined' && (ctx = this);
     var len = arguments.length, args = new Array(len);
     for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
     return createNodeObservable(fn, ctx, selector, args);
@@ -7587,7 +7587,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       this.source = source;
       this.controller = new Subject();
 
-      if (pauser && pauser.subscribe) {
+      if (pauser && pauser._subscribe) {
         this.pauser = this.controller.merge(pauser);
       } else {
         this.pauser = this.controller;
@@ -7658,7 +7658,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       }
 
       return new BinaryDisposable(
-        source.subscribe(
+        source._subscribe(
           function (x) {
             next(x, 0);
           },
@@ -7673,7 +7673,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
             isDone = true;
             values[1] && o.onCompleted();
           }),
-        subject.subscribe(
+        subject._subscribe(
           function (x) {
             next(x, 1);
           },
@@ -7692,7 +7692,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       this.source = source;
       this.controller = new Subject();
 
-      if (pauser && pauser.subscribe) {
+      if (pauser && pauser._subscribe) {
         this.pauser = this.controller.merge(pauser);
       } else {
         this.pauser = this.controller;
@@ -7713,7 +7713,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
           function (data, shouldFire) {
             return { data: data, shouldFire: shouldFire };
           })
-          .subscribe(
+          ._subscribe(
             function (results) {
               if (previousShouldFire !== undefined && results.shouldFire !== previousShouldFire) {
                 previousShouldFire = results.shouldFire;
@@ -7738,7 +7738,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
               o.onCompleted();
             }
           );
-      return subscription;      
+      return subscription;
     };
 
     PausableBufferedObservable.prototype.pause = function () {
@@ -7775,7 +7775,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     }
 
     ControlledObservable.prototype._subscribe = function (o) {
-      return this.source.subscribe(o);
+      return this.source._subscribe(o);
     };
 
     ControlledObservable.prototype.request = function (numberOfItems) {
@@ -7805,7 +7805,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
 
     addProperties(ControlledSubject.prototype, Observer, {
       _subscribe: function (o) {
-        return this.subject.subscribe(o);
+        return this.subject._subscribe(o);
       },
       onCompleted: function () {
         this.hasCompleted = true;
@@ -7915,7 +7915,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     }
 
     StopAndWaitObservable.prototype._subscribe = function (o) {
-      this.subscription = this.source.subscribe(new StopAndWaitObserver(o, this, this.subscription));
+      this.subscription = this.source._subscribe(new StopAndWaitObserver(o, this, this.subscription));
       return new BinaryDisposable(
         this.subscription,
         defaultScheduler.schedule(this, scheduleMethod)
@@ -7992,7 +7992,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     }
 
     WindowedObservable.prototype._subscribe = function (o) {
-      this.subscription = this.source.subscribe(new WindowedObserver(o, this, this.subscription));
+      this.subscription = this.source._subscribe(new WindowedObserver(o, this, this.subscription));
       return new BinaryDisposable(
         this.subscription,
         defaultScheduler.schedule(this, scheduleMethod)
@@ -8101,7 +8101,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
 
     MulticastObservable.prototype.subscribeCore = function (o) {
       var connectable = this.source.multicast(this._fn1());
-      return new BinaryDisposable(this._fn2(connectable).subscribe(o), connectable.connect());
+      return new BinaryDisposable(this._fn2(connectable)._subscribe(o), connectable.connect());
     };
 
     return MulticastObservable;
@@ -8267,7 +8267,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     }
 
     RefCountObservable.prototype.subscribeCore = function (o) {
-      var subscription = this.source.subscribe(o);
+      var subscription = this.source._subscribe(o);
       ++this._count === 1 && (this._connectableSubscription = this.source.connect());
       return new RefCountDisposable(this, subscription);
     };
@@ -8321,7 +8321,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     };
 
     ConnectableObservable.prototype._subscribe = function (o) {
-      return this._subject.subscribe(o);
+      return this._subject._subscribe(o);
     };
 
     ConnectableObservable.prototype.refCount = function () {
@@ -8348,7 +8348,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     }
 
     return new AnonymousObservable(function(o) {
-      return getObservable().subscribe(o);
+      return getObservable()._subscribe(o);
     });
   };
 
@@ -8370,7 +8370,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       var leftMap = new Map(), rightMap = new Map();
       var handleError = function (e) { o.onError(e); };
 
-      group.add(left.subscribe(
+      group.add(left._subscribe(
         function (value) {
           var id = leftId++, md = new SingleAssignmentDisposable();
 
@@ -8455,7 +8455,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
 
       function handleError(e) { };
 
-      group.add(left.subscribe(
+      group.add(left._subscribe(
         function (value) {
           var s = new Subject();
           var id = leftId++;
@@ -8578,7 +8578,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
 
       observer.onNext(addRef(win, r));
 
-      d.add(source.subscribe(function (x) {
+      d.add(source._subscribe(function (x) {
         win.onNext(x);
       }, function (err) {
         win.onError(err);
@@ -8590,7 +8590,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
 
       isPromise(windowBoundaries) && (windowBoundaries = observableFromPromise(windowBoundaries));
 
-      d.add(windowBoundaries.subscribe(function (w) {
+      d.add(windowBoundaries._subscribe(function (w) {
         win.onCompleted();
         win = new Subject();
         observer.onNext(addRef(win, r));
@@ -8614,7 +8614,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
         r = new RefCountDisposable(d),
         win = new Subject();
       observer.onNext(addRef(win, r));
-      d.add(source.subscribe(function (x) {
+      d.add(source._subscribe(function (x) {
           win.onNext(x);
       }, function (err) {
           win.onError(err);
@@ -8661,7 +8661,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     }
 
     PairwiseObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new PairwiseObserver(o));
+      return this.source._subscribe(new PairwiseObserver(o));
     };
 
     return PairwiseObservable;
@@ -8739,10 +8739,10 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     };
     return WhileEnumerable;
   }(Enumerable));
-  
+
   function enumerableWhile(condition, source) {
     return new WhileEnumerable(condition, source);
-  }  
+  }
 
    /**
    *  Returns an observable sequence that is the result of invoking the selector on the source sequence, without sharing subscriptions.
@@ -8756,7 +8756,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
   };
 
    /**
-   *  Determines whether an observable collection contains values. 
+   *  Determines whether an observable collection contains values.
    *
    * @example
    *  1 - res = Rx.Observable.if(condition, obs1);
@@ -8857,7 +8857,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       }
       var m1 = new SingleAssignmentDisposable();
       state.d.add(m1);
-      m1.setDisposable(work.subscribe(new ExpandObserver(state, self, m1)));
+      m1.setDisposable(work._subscribe(new ExpandObserver(state, self, m1)));
       recurse([state, self]);
     }
 
@@ -8966,7 +8966,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       for (var i = 0, len = this._sources.length; i < len; i++) {
         var source = this._sources[i];
         isPromise(source) && (source = observableFromPromise(source));
-        subscriptions.add(source.subscribe(new ForkJoinObserver(o, state, i, this._cb, subscriptions)));
+        subscriptions.add(source._subscribe(new ForkJoinObserver(o, state, i, this._cb, subscriptions)));
       }
 
       return subscriptions;
@@ -9380,11 +9380,11 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
           }));
         }
       } catch (e) {
-        observableThrow(e).subscribe(o);
+        observableThrow(e)._subscribe(o);
       }
       var group = new CompositeDisposable();
       externalSubscriptions.forEach(function (joinObserver) {
-        joinObserver.subscribe();
+        joinObserver._subscribe();
         group.add(joinObserver);
       });
 
@@ -9565,13 +9565,13 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       var delays = new CompositeDisposable(), atEnd = false, subscription = new SerialDisposable();
 
       function start() {
-        subscription.setDisposable(source.subscribe(
+        subscription.setDisposable(source._subscribe(
           function (x) {
             var delay = tryCatch(selector)(x);
             if (delay === errorObj) { return o.onError(delay.e); }
             var d = new SingleAssignmentDisposable();
             delays.add(d);
-            d.setDisposable(delay.subscribe(
+            d.setDisposable(delay._subscribe(
               function () {
                 o.onNext(x);
                 delays.remove(d);
@@ -9601,7 +9601,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       if (!subDelay) {
         start();
       } else {
-        subscription.setDisposable(subDelay.subscribe(start, function (e) { o.onError(e); }, start));
+        subscription.setDisposable(subDelay._subscribe(start, function (e) { o.onError(e); }, start));
       }
 
       return new BinaryDisposable(subscription, delays);
@@ -9644,7 +9644,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     DebounceObservable.prototype.subscribeCore = function (o) {
       var cancelable = new SerialDisposable();
       return new BinaryDisposable(
-        this.source.subscribe(new DebounceObserver(o, this._dt, this._s, cancelable)),
+        this.source._subscribe(new DebounceObserver(o, this._dt, this._s, cancelable)),
         cancelable);
     };
 
@@ -9701,7 +9701,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
   function debounceWithSelector(source, durationSelector) {
     return new AnonymousObservable(function (o) {
       var value, hasValue = false, cancelable = new SerialDisposable(), id = 0;
-      var subscription = source.subscribe(
+      var subscription = source._subscribe(
         function (x) {
           var throttle = tryCatch(durationSelector)(x);
           if (throttle === errorObj) { return o.onError(throttle.e); }
@@ -9713,7 +9713,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
           id++;
           var currentid = id, d = new SingleAssignmentDisposable();
           cancelable.setDisposable(d);
-          d.setDisposable(throttle.subscribe(
+          d.setDisposable(throttle._subscribe(
             function () {
               hasValue && id === currentid && o.onNext(value);
               hasValue = false;
@@ -9818,7 +9818,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       q.push(new Subject());
       observer.onNext(addRef(q[0], refCountDisposable));
       createTimer();
-      groupDisposable.add(source.subscribe(
+      groupDisposable.add(source._subscribe(
         function (x) {
           for (var i = 0, len = q.length; i < len; i++) { q[i].onNext(x); }
         },
@@ -9870,7 +9870,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       observer.onNext(addRef(s, refCountDisposable));
       createTimer(0);
 
-      groupDisposable.add(source.subscribe(
+      groupDisposable.add(source._subscribe(
         function (x) {
           var newId = 0, newWindow = false;
           s.onNext(x);
@@ -9931,7 +9931,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     }
 
     TimeIntervalObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new TimeIntervalObserver(o, this._s));
+      return this.source._subscribe(new TimeIntervalObserver(o, this._s));
     };
 
     return TimeIntervalObservable;
@@ -9982,7 +9982,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     }
 
     TimestampObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new TimestampObserver(o, this._s));
+      return this.source._subscribe(new TimestampObserver(o, this._s));
     };
 
     return TimestampObservable;
@@ -10043,10 +10043,10 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
         sourceSubscription: new SingleAssignmentDisposable()
       };
 
-      state.sourceSubscription.setDisposable(this.source.subscribe(new SampleSourceObserver(state)));
+      state.sourceSubscription.setDisposable(this.source._subscribe(new SampleSourceObserver(state)));
       return new BinaryDisposable(
         state.sourceSubscription,
-        this._sampler.subscribe(new SamplerObserver(state))
+        this._sampler._subscribe(new SamplerObserver(state))
       );
     };
 
@@ -10146,13 +10146,13 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
         }
 
         timer.setDisposable(d);
-        d.setDisposable(timeout.subscribe(function () {
-          timerWins() && subscription.setDisposable(other.subscribe(o));
+        d.setDisposable(timeout._subscribe(function () {
+          timerWins() && subscription.setDisposable(other._subscribe(o));
           d.dispose();
         }, function (e) {
           timerWins() && o.onError(e);
         }, function () {
-          timerWins() && subscription.setDisposable(other.subscribe(o));
+          timerWins() && subscription.setDisposable(other._subscribe(o));
         }));
       };
 
@@ -10164,7 +10164,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
         return res;
       }
 
-      original.setDisposable(source.subscribe(function (x) {
+      original.setDisposable(source._subscribe(function (x) {
         if (oWins()) {
           o.onNext(x);
           var timeout = tryCatch(timeoutDurationSelector)(x);
@@ -10203,14 +10203,14 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
           switched = id === myId;
           if (switched) {
             isPromise(other) && (other = observableFromPromise(other));
-            subscription.setDisposable(other.subscribe(o));
+            subscription.setDisposable(other._subscribe(o));
           }
         }));
       }
 
       createTimer();
 
-      original.setDisposable(source.subscribe(function (x) {
+      original.setDisposable(source._subscribe(function (x) {
         if (!switched) {
           id++;
           o.onNext(x);
@@ -10405,7 +10405,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
 
     function scheduleMethod(s, state) {
       var source = state[0], o = state[1], d = state[2];
-      d.setDisposable(source.subscribe(o));
+      d.setDisposable(source._subscribe(o));
     }
 
     return DelaySubscription;
@@ -10437,7 +10437,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     }
 
     SkipLastWithTimeObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new SkipLastWithTimeObserver(o, this));
+      return this.source._subscribe(new SkipLastWithTimeObserver(o, this));
     };
 
     return SkipLastWithTimeObservable;
@@ -10498,7 +10498,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     }
 
     TakeLastWithTimeObservable.prototype.subscribeCore = function (o) {
-      return this.source.subscribe(new TakeLastWithTimeObserver(o, this._d, this._s));
+      return this.source._subscribe(new TakeLastWithTimeObserver(o, this._d, this._s));
     };
 
     return TakeLastWithTimeObservable;
@@ -10565,7 +10565,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     isScheduler(scheduler) || (scheduler = defaultScheduler);
     return new AnonymousObservable(function (o) {
       var q = [];
-      return source.subscribe(function (x) {
+      return source._subscribe(function (x) {
         var now = scheduler.now();
         q.push({ interval: now, value: x });
         while (q.length > 0 && now - q[0].interval >= duration) {
@@ -10599,7 +10599,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     TakeWithTimeObservable.prototype.subscribeCore = function (o) {
       return new BinaryDisposable(
         this._s.scheduleFuture(o, this._d, scheduleMethod),
-        this.source.subscribe(o)
+        this.source._subscribe(o)
       );
     };
 
@@ -10641,7 +10641,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     SkipWithTimeObservable.prototype.subscribeCore = function (o) {
       return new BinaryDisposable(
         this._s.scheduleFuture(this, this._d, scheduleMethod),
-        this.source.subscribe(new SkipWithTimeObserver(o, this))
+        this.source._subscribe(new SkipWithTimeObserver(o, this))
       );
     };
 
@@ -10698,7 +10698,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
       this._open = false;
       return new BinaryDisposable(
         this._s.scheduleFuture(this, this._st, scheduleMethod),
-        this.source.subscribe(new SkipUntilWithTimeObserver(o, this))
+        this.source._subscribe(new SkipUntilWithTimeObserver(o, this))
       );
     };
 
@@ -10750,7 +10750,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     return new AnonymousObservable(function (o) {
       return new BinaryDisposable(
         scheduler.scheduleFuture(o, endTime, function (_, o) { o.onCompleted(); }),
-        source.subscribe(o));
+        source._subscribe(o));
     }, source);
   };
 
@@ -10767,7 +10767,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     var source = this;
     return new AnonymousObservable(function (o) {
       var lastOnNext = 0;
-      return source.subscribe(
+      return source._subscribe(
         function (x) {
           var now = scheduler.now();
           if (lastOnNext === 0 || now - lastOnNext >= duration) {
@@ -10824,7 +10824,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     var source = this;
     return new AnonymousObservable(function(o) {
       var xform = transducer(transformForObserver(o));
-      return source.subscribe(new TransduceObserver(o, xform));
+      return source._subscribe(new TransduceObserver(o, xform));
     }, source);
   };
 
@@ -10846,7 +10846,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
         };
 
       g.add(m);
-      m.setDisposable(this.source.subscribe(new SwitchFirstObserver(state)));
+      m.setDisposable(this.source._subscribe(new SwitchFirstObserver(state)));
       return g;
     };
 
@@ -10866,7 +10866,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
         isPromise(x) && (x = observableFromPromise(x));
         var inner = new SingleAssignmentDisposable();
         this._s.g.add(inner);
-        inner.setDisposable(x.subscribe(new InnerObserver(this._s, inner)));
+        inner.setDisposable(x._subscribe(new InnerObserver(this._s, inner)));
       }
     };
 
@@ -11285,7 +11285,7 @@ var ReactiveTest = Rx.ReactiveTest = {
    * @returns {Boolean} true if both objects are equal; false otherwise.
    */
   Subscription.prototype.equals = function (other) {
-    return this.subscribe === other.subscribe && this.unsubscribe === other.unsubscribe;
+    return this.subscribe === other._subscribe && this.unsubscribe === other.unsubscribe;
   };
 
   /**
@@ -11373,13 +11373,13 @@ var ReactiveTest = Rx.ReactiveTest = {
         }
         var idx = self.observers.indexOf(observer);
         self.observers.splice(idx, 1);
-        self.subscriptions[index] = new Subscription(self.subscriptions[index].subscribe, self.scheduler.clock);
+        self.subscriptions[index] = new Subscription(self.subscriptions[index]._subscribe, self.scheduler.clock);
       },
       function (err) {
         onRejected(err);
         var idx = self.observers.indexOf(observer);
         self.observers.splice(idx, 1);
-        self.subscriptions[index] = new Subscription(self.subscriptions[index].subscribe, self.scheduler.clock);
+        self.subscriptions[index] = new Subscription(self.subscriptions[index]._subscribe, self.scheduler.clock);
       }
     );
     this.observers.push(observer);
@@ -11421,7 +11421,7 @@ var ReactiveTest = Rx.ReactiveTest = {
       return disposableCreate(function () {
         var idx = observable.observers.indexOf(o);
         observable.observers.splice(idx, 1);
-        observable.subscriptions[index] = new Subscription(observable.subscriptions[index].subscribe, observable.scheduler.clock);
+        observable.subscriptions[index] = new Subscription(observable.subscriptions[index]._subscribe, observable.scheduler.clock);
       });
     };
 
@@ -11454,7 +11454,7 @@ var ReactiveTest = Rx.ReactiveTest = {
         })(notification);
       }
       return disposableCreate(function () {
-        observable.subscriptions[index] = new Subscription(observable.subscriptions[index].subscribe, observable.scheduler.clock);
+        observable.subscriptions[index] = new Subscription(observable.subscriptions[index]._subscribe, observable.scheduler.clock);
         d.dispose();
       });
     };
@@ -11537,7 +11537,7 @@ var ReactiveTest = Rx.ReactiveTest = {
       });
 
       this.scheduleAbsolute(null, settings.subscribed, function () {
-        subscription = source.subscribe(observer);
+        subscription = source._subscribe(observer);
         return disposableEmpty;
       });
 
@@ -11702,7 +11702,7 @@ var ReactiveTest = Rx.ReactiveTest = {
     }
 
     UnderlyingObservable.prototype.subscribeCore = function (o) {
-      return new BinaryDisposable(this._m.getDisposable(), this._u.subscribe(o));
+      return new BinaryDisposable(this._m.getDisposable(), this._u._subscribe(o));
     };
 
     return UnderlyingObservable;
@@ -11719,7 +11719,7 @@ var ReactiveTest = Rx.ReactiveTest = {
     }
 
     GroupedObservable.prototype._subscribe = function (o) {
-      return this.underlyingObservable.subscribe(o);
+      return this.underlyingObservable._subscribe(o);
     };
 
     return GroupedObservable;
@@ -12187,7 +12187,7 @@ var ReactiveTest = Rx.ReactiveTest = {
 
     addProperties(AnonymousSubject.prototype, Observer.prototype, {
       _subscribe: function (o) {
-        return this.observable.subscribe(o);
+        return this.observable._subscribe(o);
       },
       onCompleted: function () {
         this.observer.onCompleted();

@@ -110,7 +110,7 @@ class CurrencyPairs extends React.Component {
     const self = this;
     rt.transport
       .on('open', ()=> self.setState({connected: true}))
-      .on('close', ()=> self.setState({connected: false, services: rt.transport.getStatus()}))
+      .on('close', ()=> self.setState({connected: false}))
       .on('statusUpdate', (services) => {
         // update ui indicators
         self.setState({

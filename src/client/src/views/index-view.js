@@ -2,8 +2,7 @@ import React from 'react';
 import CurrencyPairs from '../components/currency-pairs';
 import Blotter from '../components/blotter';
 
-import transport from '../utils/transport';
-import Execution from '../classes/execution';
+import rt from '../utils/transport';
 import moment from 'moment';
 
 //todo: remove mocks
@@ -57,18 +56,16 @@ export class IndexView extends React.Component {
       trades: trades
     });
 
-    new Execution().execute({
+    rt.execution.executeTrade({
       CurrencyPair: payload.pair,
       SpotRate: payload.rate,
-      ValueDate: moment().toISOString(),
+      ValueDate: '2015-11-27T17:00Z',
       Direction: payload.direction,
       Notional: payload.amount,
       DealtCurrency: payload.direction === 'buy' ? payload.pair.substr(0, 3) : payload.pair.substr(3, 3)
-    }, (response) => {
-      console.log(response);
-      payload.onACK(response);
-    }, (error) => {
-      console.error(error);
+    }).then((response) => console.log(response), (error) => {
+      console.error(error)
+      console.trace();
     });
 
     setTimeout(() => {

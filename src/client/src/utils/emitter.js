@@ -1,7 +1,5 @@
 'use srict';
 
-const slice = Array.prototype.slice;
-
 /**
  * unique event ids to store in object
  * @type {number}
@@ -29,6 +27,9 @@ const pseudoEvents = {
   }
 };
 
+const REGEX_WHITESPACE = /\s+/,
+      PSEUDO_SEPARATOR = ':';
+
 /**
  * @class emitter
  * @description mixin class for firing class events
@@ -43,7 +44,7 @@ class emitter {
    */
   on(event, fn){
     // supports multiple events split by white space
-    event = event.split(/\s+/);
+    event = event.split(REGEX_WHITESPACE);
     let i = 0,
         len = event.length,
         listeners = this._listeners,
@@ -60,7 +61,7 @@ class emitter {
 
     loopEvents:
       for (; i < len; ++i){
-        pseudos = event[i].split(':');
+        pseudos = event[i].split(PSEUDO_SEPARATOR);
         eventName = pseudos.shift();
         knownPseudo = pseudos.length && pseudos[0] in pseudoEvents;
 
@@ -111,20 +112,20 @@ class emitter {
   /**
    * @description fires an event
    * @param {string} event name
-   * @param {*=} arg1 optional arguments
-   * @param {*=} argN optional arguments
+   * @param {*=} args optional arguments
    * @returns {emitter}
    */
   trigger(event, ...args){
     let events = this._listeners,
+        handlers = events ? events[event] : false,
         k;
 
-    if (events && events[event]){
-      if (args.length){
-        for (k in events[event]) events[event][k].apply(this, args);
+    if (handlers){
+      if (args){
+        for (k in handlers) handlers[k].apply(this, args);
       }
       else {
-        for (k in events[event]) events[event][k].call(this);
+        for (k in handlers) handlers[k].call(this);
       }
     }
     return this;
