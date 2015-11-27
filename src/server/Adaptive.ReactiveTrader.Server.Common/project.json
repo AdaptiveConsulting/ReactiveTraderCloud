@@ -1,0 +1,12 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Adaptive.ReactiveTrader.Server.Common Class Library",
+  "authors": [ "jon.clare" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "frameworks": {
+    "dnx451": { }
+  }
+}

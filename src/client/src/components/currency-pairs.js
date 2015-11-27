@@ -53,12 +53,10 @@ class CurrencyPairs extends React.Component {
         const pair = updatedPair.CurrencyPair;
 
         if (updatedPair.UpdateType == 0){
-
-
           return {
             //todo: accept rawPair.PipPosition and rawPair.RatePrecision
-            pip: 5,
-            precision: 5,
+            pip: pair.PipsPosition,
+            precision: pair.RatePrecision,
             pair: pair.Symbol,
             id: pair.Symbol,
             buy: undefined,
@@ -89,6 +87,7 @@ class CurrencyPairs extends React.Component {
 
           existingPair.buy = Number(priceData.bid);
           existingPair.sell = Number(priceData.ask);
+          existingPair.mid = Number(priceData.mid);
 
           existingPair.lastUpdated = Date.now();
 
@@ -169,6 +168,7 @@ class CurrencyPairs extends React.Component {
                                key={cp.id}
                                buy={cp.buy}
                                sell={cp.sell}
+                               mid={cp.mid}
                                precision={cp.precision}
                                pip={cp.pip}
                                state={cp.state}
