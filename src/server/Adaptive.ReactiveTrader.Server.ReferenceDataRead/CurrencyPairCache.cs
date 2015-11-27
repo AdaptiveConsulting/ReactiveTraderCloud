@@ -51,9 +51,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             _isCaughtUp = false;
 
             _currencyPairEvents = GetAllEvents().Where(x => CurrencyPairEventTypes.Contains(x.EventType))
-                                                             .Select(x => x)
-                                                             .SubscribeOn(_eventLoopScheduler)
-                                                             .Publish();
+                                                .Select(x => x)
+                                                .SubscribeOn(_eventLoopScheduler)
+                                                .Publish();
 
             Disposables.Add(_currencyPairEvents.Subscribe(evt =>
             {
@@ -64,6 +64,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                     _stateOfTheWorldUpdates.OnNext(_stateOfTheWorld);
                 }
             }));
+
             Disposables.Add(_currencyPairEvents.Connect());
         }
 
@@ -81,6 +82,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                                                  .Select(x => BuildStateOfTheWorldDto(x.Values.Where(cp => cp.IsEnabled)));
 
                 return sow.Concat(_currencyPairEvents.Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorld, evt)))
+                          .Where(x => x != CurrencyPairUpdatesDto.Empty)
                           .Subscribe(obs);
             });
         }
@@ -93,7 +95,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                                                                CurrencyPair = new CurrencyPairDto(x.Symbol, x.RatePrecision, x.PipsPosition),
                                                                UpdateType = UpdateTypeDto.Added
                                                            })
-                                                           .ToList());
+                                                           .ToList(), true);
         }
 
         private IObservable<IEvent> GetAllEvents()
@@ -171,7 +173,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                     CurrencyPair = new CurrencyPairDto(ccyPairToDeactivate.Symbol, ccyPairToDeactivate.RatePrecision, ccyPairToDeactivate.PipsPosition),
                     UpdateType = updateType
                 }
-            });
+            }, false);
         }
 
         private static T GetEvent<T>(IEvent evt)
