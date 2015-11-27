@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using SystemEx;
 using Adaptive.ReactiveTrader.Messaging.WAMP;
 using Common.Logging;
 using WampSharp.V2;
@@ -48,7 +49,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                     }).Publish().RefCount();
         }
 
-        public async Task RegisterCall(string procName, Func<IRequestContext, IMessage, Task> onMessage)
+        public async Task<IAsyncDisposable> RegisterCall(string procName, Func<IRequestContext, IMessage, Task> onMessage)
         {
             Log.InfoFormat("Registering call [{0}]", procName);
 
@@ -60,11 +61,12 @@ namespace Adaptive.ReactiveTrader.Messaging
                 Invoke = "single"
             };
 
-            await realm.RpcCatalog.Register(rpcOperation, registerOptions);
+            return await realm.RpcCatalog.Register(rpcOperation, registerOptions);
         }
 
+        
 
-        public async Task RegisterCallResponse<TResponse>(string procName,
+        public async Task<IAsyncDisposable> RegisterCallResponse<TResponse>(string procName,
             Func<IRequestContext, IMessage, Task<TResponse>> onMessage)
         {
             var rpcOperation = new RpcResponseOperation<TResponse>(procName, onMessage);
@@ -75,7 +77,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                 Invoke = "roundrobin",
             };
 
-            await realm.RpcCatalog.Register(rpcOperation, registerOptions);
+            return await realm.RpcCatalog.Register(rpcOperation, registerOptions);
         }
 
         public async Task<IPrivateEndPoint<T>> GetPrivateEndPoint<T>(ITransientDestination destination)
@@ -115,6 +117,8 @@ namespace Adaptive.ReactiveTrader.Messaging
             var subject = _channel.RealmProxy.Services.GetSubject<T>(destination);
             return new EndPoint<T>(subject);
         }
+
+      
 
         public async Task Open()
         {

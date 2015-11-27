@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.Messaging
@@ -8,7 +10,8 @@ namespace Adaptive.ReactiveTrader.Messaging
         private readonly IBroker _broker;
         public readonly string InstanceID;
         private readonly Heartbeat _heartbreat;
-        
+        private CompositeDisposable _registedCalls = new CompositeDisposable();
+
         protected ServiceHostBase(IBroker broker, string type)
         {
             ServiceType = type;
@@ -21,7 +24,9 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         protected void RegisterCall(string procName, Func<IRequestContext, IMessage, Task> procedure)
         {
-            _broker.RegisterCall($"{InstanceID}.{procName}", procedure);
+            var instanceProcedureName = $"{InstanceID}.{procName}";
+
+            _registedCalls.Add(_broker.RegisterCall(instanceProcedureName, procedure));
         }
 
         public virtual async Task Start()
@@ -36,6 +41,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public virtual void Dispose()
         {
+            _registedCalls.Dispose();
             _heartbreat.Dispose();
         }
     }

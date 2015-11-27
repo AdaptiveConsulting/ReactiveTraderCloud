@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
@@ -9,7 +10,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     {
         protected static readonly ILog Log = LogManager.GetLogger<PriceServiceLauncher>();
 
-        public static async Task<PricingServiceHost> Run(IBroker broker)
+        public static async Task<IDisposable> Run(IBroker broker)
         {
             var cache = new PriceGenerator();
             var service = new PricingService(cache.GetPriceStream);
@@ -28,7 +29,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             Log.Info("Service Started.");
 
-            return serviceHost;
+            return new CompositeDisposable() { cache, serviceHost};
         }
     }
 }

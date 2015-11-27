@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    public sealed class PriceGenerator
+    public sealed class PriceGenerator : IDisposable
     {
         private readonly Dictionary<string, IObservable<SpotPriceDto>> _priceStreams =
             new Dictionary<string, IObservable<SpotPriceDto>>();
+
+        private CompositeDisposable _disposable = new CompositeDisposable();
 
         private static IPriceGenerator CreatePriceGenerator(string symbol, decimal initial, int precision = 4)
         {
@@ -28,8 +31,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             return Observable.Interval(TimeSpan.FromSeconds(0.5)).Select(_ => Unit.Default);
         }
-
-
+        
         public PriceGenerator()
         {
             var priceGenerators = new List<IPriceGenerator>
@@ -39,6 +41,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 CreatePriceGenerator("GBPUSD", 1.5200m),
                 CreatePriceGenerator("GBPJPY", 160.200m),
             };
+
+
 
             foreach (var ccy in priceGenerators)
             {
@@ -55,6 +59,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                         observer.OnNext(prices.Current);
                     });
 
+                    _disposable.Add(disp);
+
                     return disp;
                 })
                     .Replay(1)
@@ -67,6 +73,11 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         public IObservable<SpotPriceDto> GetPriceStream(string symbol)
         {
             return _priceStreams[symbol];
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
         }
     }
 }
