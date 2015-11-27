@@ -38,7 +38,6 @@ class BlotterService {
 
   getTradesStream(callback){
     console.log('called getTradesStream');
-
     this.transport.requestStream('blotter', 'getTradesStream', {}, callback);
   }
 }
@@ -177,7 +176,8 @@ class Transport extends emitter {
     this.services = {
       pricing: new ServiceDef(this),
       reference: new ServiceDef(this),
-      blotter: new ServiceDef(this)
+      blotter: new ServiceDef(this),
+      execution: new ServiceDef(this)
     };
 
     // sub for all known services
