@@ -3,14 +3,13 @@ import CurrencyPair from './currency-pair';
 import Header from './header';
 import _ from 'lodash';
 
-import transport from '../utils/transport';
+import rt from '../utils/transport';
 
 
 //todo: hook up socket stream
 let pairs = [];
 
 const STALE_TIMEOUT = 4000;
-
 
 /**
  * @class CurrencyPairs
@@ -26,7 +25,11 @@ class CurrencyPairs extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {
-      pairs: []
+      pairs: [],
+      connected: false,
+      services: {
+
+      }
     };
 
     this.subscribed = [];
@@ -36,7 +39,13 @@ class CurrencyPairs extends React.Component {
    * Deals with socket comms for pairs - gets reference data, subscribes to each pair.
    */
   attachSubs(){
-    transport.subscribe('reference.getCurrencyPairUpdatesStream', (referenceData) => {
+
+    this.setState({
+      connected: rt.transport.isOpen,
+      services: rt.transport.getStatus()
+    });
+
+    rt.reference.getCurrencyPairUpdatesStream( (referenceData) => {
       const update = _.debounce((src) => {
         const pairs = src || this.state.pairs;
 
@@ -68,7 +77,7 @@ class CurrencyPairs extends React.Component {
           // removed?
           // console.log(updatedPair.UpdateType);
           update(this.state.pairs.filter((p) => p.id != pair.Symbol));
-          transport.unsubscribe('pricing.getPriceUpdates', existing.handler, {id: pair.Symbol})
+          rt.pricing.unsubscribe(existing.pricingSub);
         }
       }, this);
 
@@ -78,7 +87,7 @@ class CurrencyPairs extends React.Component {
 
       // subscribe to individual streams
       this.state.pairs.forEach((pair) => {
-        transport.subscribe('pricing.getPriceUpdates', pair.handler = (priceData) => {
+        pair.pricingSub = rt.pricing.getPriceUpdates(pair.id, (priceData) => {
           let existingPair = _.findWhere(this.state.pairs, {id: priceData.symbol});
 
           if (!existingPair){
@@ -93,20 +102,19 @@ class CurrencyPairs extends React.Component {
           existingPair.lastUpdated = Date.now();
 
           update();
-        }, {
-          symbol: pair.id
-        })
+        });
       });
     });
+
+    rt.transport
+      .on('open', ()=> this.setState({connected: true}))
+      .on('close', ()=> this.setState({connected: false, services: rt.transport.getStatus()}))
+      .on('statusUpdate', ()=>this.setState({services: rt.transport.getStatus()}));
   }
 
   componentWillMount(){
-    if (transport.isOpen){
-      this.attachSubs();
-    }
-    else {
-      transport.on('open', () => this.attachSubs());
-    }
+    this.attachSubs();
+
     this.setState({
       pairs: pairs
     });
@@ -149,17 +157,9 @@ class CurrencyPairs extends React.Component {
       return a.buy && a.sell;
     });
 
-    const status = {
-      connection: p.length > 0,
-      services: {
-        Pricing: true,
-        Reference: true,
-        Blotter: false,
-        Execution: false
-      }
-    };
     return <div>
-      <Header status={status} />
+
+      <Header status={this.state.connected} services={this.state.services} />
       <div className='currency-pairs'>
         {p.length ? p.map((cp) => {
           return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
@@ -175,7 +175,7 @@ class CurrencyPairs extends React.Component {
                                response={cp.response} />
         }) : <div className="text-center"><i className="fa fa-5x fa-cog fa-spin"></i></div> }
       </div>
-    </div>
+    </div>;
   }
 }
 

@@ -15,7 +15,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         private readonly IPricingService _service;
         private readonly IBroker _broker;
 
-        public PricingServiceHost(IPricingService service, IBroker broker) :base( broker, "price")
+        public PricingServiceHost(IPricingService service, IBroker broker) :base( broker, "pricing")
         {
             _service = service;
             _broker = broker;
@@ -24,10 +24,11 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         public override async Task Start()
         {
             await base.Start();
-            await _broker.RegisterCall("pricing.getPriceUpdates", GetCurrencyPairUpdatesStream);
-            Log.Info("procedure pricing.getPriceUpdates() registered");
+            RegisterCall("getPriceUpdates", GetCurrencyPairUpdatesStream);
+            Log.Info("procedure getPriceUpdates() registered");
         }
-        
+
+        // [ServiceMethod]
         public async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
             Log.DebugFormat("Received GetCurrencyPairUpdatesStream from [{0}]", context.UserSession.Username ?? "Unknown User");
