@@ -16,6 +16,7 @@ dependencies:
 
 test:
   override:
+    - chmod 755 deploy/docker/build/servers/build.sh
     - cd deploy/docker/build/servers && ./build.sh `cat dnxVersion`
     - cd src/client && npm install
     - cd src/client && npm run compile

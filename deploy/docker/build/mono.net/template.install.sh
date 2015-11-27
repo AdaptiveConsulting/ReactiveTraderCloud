@@ -7,7 +7,7 @@ echo "deb http://download.mono-project.com/repo/debian wheezy main" \
 apt-get update  || exit 1
 echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat main" \
 | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list  || exit 1
-sudo apt-get install -y mono-complete  || exit 1
+sudo apt-get install -y mono-complete ca-certificates-mono || exit 1
 
 # install dependencies
 sudo apt-get install -y unzip                \
