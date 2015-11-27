@@ -1,17 +1,18 @@
 {
-    "version": "1.0.0-*",
-    "description": "ReferenceDataWrite Console Application",
-    "authors": [ "jon.clare" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.0-*",
+  "description": "ReferenceDataWrite Console Application",
+  "authors": [ "jon.clare" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
 
-    "dependencies": {
-        "EventStore.Client": "3.3.1",
-        "Newtonsoft.Json": "7.0.1"
-    },
+  "dependencies": {
+    "EventStore.Client": "3.3.1",
+    "Newtonsoft.Json": "7.0.1",
+    "Rx-Main": "2.2.5"
+  },
 
-    "frameworks": {
-        "dnx451": { }
-    }
+  "frameworks": {
+    "dnx451": { }
+  }
 }

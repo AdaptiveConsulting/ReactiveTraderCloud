@@ -294,9 +294,9 @@
         }
       }
     },
-    "DNX,Version=v4.5.1/osx.10.10-x86": {},
-    "DNX,Version=v4.5.1/osx.10.10-x64": {},
-    "DNXCore,Version=v5.0/osx.10.10-x86": {
+    "DNX,Version=v4.5.1/win7-x86": {},
+    "DNX,Version=v4.5.1/win7-x64": {},
+    "DNXCore,Version=v5.0/win7-x86": {
       "Microsoft.CSharp/4.0.1-beta-23409": {
         "type": "package",
         "dependencies": {
@@ -322,6 +322,44 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.CSharp.dll": {}
+        }
+      },
+      "runtime.win7.System.Console/4.0.0-beta-23409": {
+        "type": "package",
+        "dependencies": {
+          "System.IO": "4.0.10",
+          "System.IO.FileSystem.Primitives": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.InteropServices": "4.0.20",
+          "System.Text.Encoding": "4.0.10",
+          "System.Text.Encoding.Extensions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Threading.Tasks": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/_._": {}
+        },
+        "runtime": {
+          "runtimes/win7/lib/dotnet/System.Console.dll": {}
+        }
+      },
+      "runtime.win7.System.Private.Uri/4.0.1-beta-23409": {
+        "type": "package",
+        "compile": {
+          "ref/dotnet/_._": {}
+        },
+        "runtime": {
+          "runtimes/win7/lib/DNXCore50/System.Private.Uri.dll": {}
+        }
+      },
+      "runtime.win7.System.Threading/4.0.11-beta-23409": {
+        "type": "package",
+        "compile": {
+          "ref/dotnet/_._": {}
+        },
+        "runtime": {
+          "runtimes/win7/lib/DNXCore50/System.Threading.dll": {}
         }
       },
       "System.Collections/4.0.11-beta-23409": {
@@ -391,6 +429,18 @@
         },
         "compile": {
           "ref/dotnet/System.IO.dll": {}
+        }
+      },
+      "System.IO.FileSystem.Primitives/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime": "4.0.20"
+        },
+        "compile": {
+          "ref/dotnet/System.IO.FileSystem.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.IO.FileSystem.Primitives.dll": {}
         }
       },
       "System.Linq/4.0.1-beta-23409": {
@@ -558,13 +608,29 @@
           "lib/DNXCore50/System.Runtime.InteropServices.dll": {}
         }
       },
-      "System.Text.Encoding/4.0.0": {
+      "System.Text.Encoding/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
           "ref/dotnet/System.Text.Encoding.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Text.Encoding.dll": {}
+        }
+      },
+      "System.Text.Encoding.Extensions/4.0.10": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime": "4.0.0",
+          "System.Text.Encoding": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Text.Encoding.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Text.Encoding.Extensions.dll": {}
         }
       },
       "System.Threading/4.0.11-beta-23409": {
@@ -577,17 +643,20 @@
           "ref/dotnet/System.Threading.dll": {}
         }
       },
-      "System.Threading.Tasks/4.0.0": {
+      "System.Threading.Tasks/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
           "ref/dotnet/System.Threading.Tasks.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Threading.Tasks.dll": {}
         }
       }
     },
-    "DNXCore,Version=v5.0/osx.10.10-x64": {
+    "DNXCore,Version=v5.0/win7-x64": {
       "Microsoft.CSharp/4.0.1-beta-23409": {
         "type": "package",
         "dependencies": {
@@ -615,15 +684,13 @@
           "lib/dotnet/Microsoft.CSharp.dll": {}
         }
       },
-      "runtime.unix.System.Console/4.0.0-beta-23409": {
+      "runtime.win7.System.Console/4.0.0-beta-23409": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.10",
           "System.IO.FileSystem.Primitives": "4.0.0",
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20",
-          "System.Runtime.Extensions": "4.0.10",
-          "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
           "System.Text.Encoding": "4.0.10",
           "System.Text.Encoding.Extensions": "4.0.10",
@@ -634,25 +701,25 @@
           "ref/dotnet/_._": {}
         },
         "runtime": {
-          "lib/dotnet/System.Console.dll": {}
+          "runtimes/win7/lib/dotnet/System.Console.dll": {}
         }
       },
-      "runtime.unix.System.Private.Uri/4.0.1-beta-23409": {
+      "runtime.win7.System.Private.Uri/4.0.1-beta-23409": {
         "type": "package",
         "compile": {
           "ref/dotnet/_._": {}
         },
         "runtime": {
-          "lib/dotnet/System.Private.Uri.dll": {}
+          "runtimes/win7/lib/DNXCore50/System.Private.Uri.dll": {}
         }
       },
-      "runtime.unix.System.Threading/4.0.11-beta-23409": {
+      "runtime.win7.System.Threading/4.0.11-beta-23409": {
         "type": "package",
         "compile": {
           "ref/dotnet/_._": {}
         },
         "runtime": {
-          "lib/dotnet/System.Threading.dll": {}
+          "runtimes/win7/lib/DNXCore50/System.Threading.dll": {}
         }
       },
       "System.Collections/4.0.11-beta-23409": {
@@ -992,40 +1059,74 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "runtime.unix.System.Console/4.0.0-beta-23409": {
+    "runtime.win7.System.Console/4.0.0-beta-23409": {
       "type": "package",
       "serviceable": true,
-      "sha512": "XyACC0ZMOouc7Dhb/oZ0LK5lWqwwuZpL131fj2odJaa3/XtwSLoJjUB2cRoM+WzFGBGxzwfiAZhiY09aUjKVXw==",
+      "sha512": "NMFGQxP/3qlBYknm/9RcdlDNh7A+B+d1d3qaQlV7mHqjHmgB/IOEGWvToEl3PbVOZIq0kjdx7TbRmOJxW0aE0A==",
       "files": [
-        "lib/dotnet/System.Console.dll",
         "ref/dotnet/_._",
-        "runtime.unix.System.Console.4.0.0-beta-23409.nupkg",
-        "runtime.unix.System.Console.4.0.0-beta-23409.nupkg.sha512",
-        "runtime.unix.System.Console.nuspec"
+        "runtime.win7.System.Console.4.0.0-beta-23409.nupkg",
+        "runtime.win7.System.Console.4.0.0-beta-23409.nupkg.sha512",
+        "runtime.win7.System.Console.nuspec",
+        "runtimes/win7/lib/dotnet/de/System.Console.xml",
+        "runtimes/win7/lib/dotnet/es/System.Console.xml",
+        "runtimes/win7/lib/dotnet/fr/System.Console.xml",
+        "runtimes/win7/lib/dotnet/it/System.Console.xml",
+        "runtimes/win7/lib/dotnet/ja/System.Console.xml",
+        "runtimes/win7/lib/dotnet/ko/System.Console.xml",
+        "runtimes/win7/lib/dotnet/ru/System.Console.xml",
+        "runtimes/win7/lib/dotnet/System.Console.dll",
+        "runtimes/win7/lib/dotnet/System.Console.xml",
+        "runtimes/win7/lib/dotnet/zh-hans/System.Console.xml",
+        "runtimes/win7/lib/dotnet/zh-hant/System.Console.xml"
       ]
     },
-    "runtime.unix.System.Private.Uri/4.0.1-beta-23409": {
+    "runtime.win7.System.Private.Uri/4.0.1-beta-23409": {
       "type": "package",
       "serviceable": true,
-      "sha512": "Qgm08fjDAVZHdvxCDMC1BOELWVDEp+2T6lH3DW2lVgCF8QyY7jD+y1BLvj7suyIQIgPwjMdye8/aClUJ84TAKg==",
+      "sha512": "DuShsPp9slm2buJjxbBeKycZbs0nP0KWlm/ZGRDDFcfwgbAXp1ncd7e0dqHPSRl8P0Gg0aj8WYHIIKBJbIfbAg==",
       "files": [
-        "lib/dotnet/System.Private.Uri.dll",
         "ref/dotnet/_._",
-        "runtime.unix.System.Private.Uri.4.0.1-beta-23409.nupkg",
-        "runtime.unix.System.Private.Uri.4.0.1-beta-23409.nupkg.sha512",
-        "runtime.unix.System.Private.Uri.nuspec"
+        "runtime.win7.System.Private.Uri.4.0.1-beta-23409.nupkg",
+        "runtime.win7.System.Private.Uri.4.0.1-beta-23409.nupkg.sha512",
+        "runtime.win7.System.Private.Uri.nuspec",
+        "runtimes/win7/lib/DNXCore50/System.Private.Uri.dll",
+        "runtimes/win7/lib/netcore50/System.Private.Uri.dll",
+        "runtimes/win8-aot/lib/netcore50/System.Private.Uri.dll"
       ]
     },
-    "runtime.unix.System.Threading/4.0.11-beta-23409": {
+    "runtime.win7.System.Threading/4.0.11-beta-23409": {
       "type": "package",
       "serviceable": true,
-      "sha512": "uOa/bbZm0juCP5dyjHbEqLqPMxxVuaMyG3/M6es2RICkr4pZ4yrfVONGRf1AscSKsNa15poSAhFBTQEQcujDUg==",
+      "sha512": "V9BYsks+TUXbB52ze7t9OM5KB8aD/KuvRml9arSfToJdZMo7zYSTrcj8xCRuIE7ClFCyNplJzs53zYA9qQi8zw==",
       "files": [
-        "lib/dotnet/System.Threading.dll",
         "ref/dotnet/_._",
-        "runtime.unix.System.Threading.4.0.11-beta-23409.nupkg",
-        "runtime.unix.System.Threading.4.0.11-beta-23409.nupkg.sha512",
-        "runtime.unix.System.Threading.nuspec"
+        "runtime.win7.System.Threading.4.0.11-beta-23409.nupkg",
+        "runtime.win7.System.Threading.4.0.11-beta-23409.nupkg.sha512",
+        "runtime.win7.System.Threading.nuspec",
+        "runtimes/win7/lib/DNXCore50/de/System.Threading.xml",
+        "runtimes/win7/lib/DNXCore50/es/System.Threading.xml",
+        "runtimes/win7/lib/DNXCore50/fr/System.Threading.xml",
+        "runtimes/win7/lib/DNXCore50/it/System.Threading.xml",
+        "runtimes/win7/lib/DNXCore50/ja/System.Threading.xml",
+        "runtimes/win7/lib/DNXCore50/ko/System.Threading.xml",
+        "runtimes/win7/lib/DNXCore50/ru/System.Threading.xml",
+        "runtimes/win7/lib/DNXCore50/System.Threading.dll",
+        "runtimes/win7/lib/DNXCore50/System.Threading.xml",
+        "runtimes/win7/lib/DNXCore50/zh-hans/System.Threading.xml",
+        "runtimes/win7/lib/DNXCore50/zh-hant/System.Threading.xml",
+        "runtimes/win7/lib/netcore50/de/System.Threading.xml",
+        "runtimes/win7/lib/netcore50/es/System.Threading.xml",
+        "runtimes/win7/lib/netcore50/fr/System.Threading.xml",
+        "runtimes/win7/lib/netcore50/it/System.Threading.xml",
+        "runtimes/win7/lib/netcore50/ja/System.Threading.xml",
+        "runtimes/win7/lib/netcore50/ko/System.Threading.xml",
+        "runtimes/win7/lib/netcore50/ru/System.Threading.xml",
+        "runtimes/win7/lib/netcore50/System.Threading.dll",
+        "runtimes/win7/lib/netcore50/System.Threading.xml",
+        "runtimes/win7/lib/netcore50/zh-hans/System.Threading.xml",
+        "runtimes/win7/lib/netcore50/zh-hant/System.Threading.xml",
+        "runtimes/win8-aot/lib/netcore50/System.Threading.dll"
       ]
     },
     "System.Collections/4.0.11-beta-23409": {
