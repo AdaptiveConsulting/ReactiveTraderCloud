@@ -246,6 +246,7 @@ class Transport extends emitter {
     this.connection.onclose = () =>{
       this.markEverythingAsDead();
       this.trigger('close');
+      this.trigger('statusUpdate', this.getStatus());
     };
 
     this.connection.open();
