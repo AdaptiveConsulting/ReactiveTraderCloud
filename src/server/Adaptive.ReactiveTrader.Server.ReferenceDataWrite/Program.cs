@@ -1,6 +1,8 @@
-using System;
 using Adaptive.ReactiveTrader.EventStore;
+using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
+using Common.Logging.Simple;
+using System;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
@@ -10,35 +12,37 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 
         public void Main(string[] args)
         {
-            var eventStore = new NetworkEventStore();
-            eventStore.Connect().Wait();
-            var repository = new CurrencyPairRepository(eventStore);
+            LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
+            {
+                ShowLogName = true
+            };
+
+            var uri = "ws://127.0.0.1:8080/ws";
+            var realm = "com.weareadaptive.reactivetrader";
 
             if (args.Length > 0)
             {
-                switch (args[0])
-                {
-                    case "populate":
-                        Log.Info("Populating Event Store...");
-                        new CurrencyPairInitializer(repository).WriteInitialEventsAsync().Wait();
-                        Log.Info("Completed");
-                        break;
-                    case "modify":
-                        Console.WriteLine("Press a key to deactivate GBPJPY");
-                        Console.ReadKey();
-
-                        repository.Deactivate("GBPJPY");
-
-                        Console.WriteLine("Press a key to activate it again");
-                        Console.ReadKey();
-
-                        repository.Activate("GBPJPY");
-                        break;
-                }
+                uri = args[0];
+                if (args.Length > 1)
+                    realm = args[1];
             }
 
-            Console.WriteLine("Press a key to exit");
-            Console.ReadKey();
+            try
+            {
+                var broker = BrokerFactory.Create(uri, realm);
+                var es = new ExternalEventStore();
+                es.Connection.ConnectAsync().Wait();
+
+                using (ReferenceDataWriterLauncher.Run(es.Connection, broker.Result).Result)
+                {
+                    Console.WriteLine("Press Any Key To Stop...");
+                    Console.ReadLine();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }

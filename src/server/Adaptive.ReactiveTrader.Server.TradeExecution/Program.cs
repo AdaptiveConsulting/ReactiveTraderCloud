@@ -22,10 +22,10 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             {
                 var broker = BrokerFactory.Create(uri, realm).Result;
 
-                var es = new NetworkEventStore();
-                es.Connect().Wait();
+                var es = new ExternalEventStore();
+                es.Connection.ConnectAsync().Wait();
 
-                using (TradeExecutionLauncher.Run(es, broker))
+                using (TradeExecutionLauncher.Run(es.Connection, broker))
                 {
                     Console.WriteLine("Press Any Key To Stop...");
                     Console.ReadLine();

@@ -1,35 +1,44 @@
+using Adaptive.ReactiveTrader.EventStore.Domain;
+using Adaptive.ReactiveTrader.Messaging;
+using EventStore.ClientAPI;
 using System;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.EventStore;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class ReferenceDataWriterLauncher
     {
-        public static async Task Initialize(IEventStore eventStore)
+        private static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriterLauncher>();
+
+        public static async Task PopulateRefData(IEventStoreConnection eventStoreConnection)
         {
             Console.WriteLine("Reference Data Service starting...");
-            var repository = new CurrencyPairRepository(eventStore);
+            var repository = new Repository(eventStoreConnection);
             Console.WriteLine("Initializing Event Store with Currency Pair Data");
-            await new CurrencyPairInitializer(repository).WriteInitialEventsAsync();
+            await new CurrencyPairInitializer(repository).CreateInitialCurrencyPairsAsync();
         }
-        
-        public static async Task Run(IEventStore eventStore)
+
+        public static async Task<IDisposable> Run(IEventStoreConnection eventStoreConnection, IBroker broker)
         {
-            var repository = new CurrencyPairRepository(eventStore);
+            Log.Info("Reference Data Write Service starting...");
 
-            Console.WriteLine("Press a key to deactivate GBPJPY");
-            Console.ReadKey();
+            try
+            {
+                var service = new RefDataWriteService(new Repository(eventStoreConnection));
+                var serviceHost = new RefDataWriteServiceHost(service, broker);
 
-            await repository.Deactivate("GBPJPY");
+                await serviceHost.Start();
 
-            Console.WriteLine("Press a key to activate it again");
-            Console.ReadKey();
+                Log.Info("Service Started.");
 
-            await repository.Activate("GBPJPY");
+                return serviceHost;
+            }
 
-            Console.WriteLine("Press a key to exit");
-            Console.ReadKey();
+            catch (MessagingException e)
+            {
+                throw new Exception("Can't start service", e);
+            }
         }
     }
 }

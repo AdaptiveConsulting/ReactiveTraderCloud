@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Adaptive.ReactiveTrader.Messaging;
+using EventStore.ClientAPI;
+using System;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.EventStore;
-using Adaptive.ReactiveTrader.Messaging;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     public class TradeExecutionLauncher
     {
-        public static async Task<IDisposable> Run(IEventStore eventStore, IBroker broker)
+        public static async Task<IDisposable> Run(IEventStoreConnection eventStore, IBroker broker)
         {
             {
                 Console.WriteLine("Trade Execution Service starting...");

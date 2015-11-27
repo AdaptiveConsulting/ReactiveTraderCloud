@@ -1,21 +1,20 @@
 ﻿using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.EventStore;
+using Adaptive.ReactiveTrader.Contract.Events.Trade;
+using Adaptive.ReactiveTrader.Server.Common;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Contract.Events.Trade;
-using Adaptive.ReactiveTrader.Server.Common;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     public class TradeExecutionEngine
     {
-        private readonly IEventStore _eventStore;
+        private readonly IEventStoreConnection _eventStore;
         private readonly TradeIdProvider _tradeIdProvider;
 
-        public TradeExecutionEngine(IEventStore eventStore, TradeIdProvider tradeIdProvider)
+        public TradeExecutionEngine(IEventStoreConnection eventStore, TradeIdProvider tradeIdProvider)
         {
             _eventStore = eventStore;
             _tradeIdProvider = tradeIdProvider;

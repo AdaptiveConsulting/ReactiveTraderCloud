@@ -9,18 +9,17 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
     {
         private readonly Task _gotLatestEvent;
         private long _tradeId;
-        private TaskCompletionSource<object> _gotLatestTask;
 
-        public TradeIdProvider(IEventStore eventStore)
+        public TradeIdProvider(IEventStoreConnection eventStore)
         {
             var tcs = new TaskCompletionSource<object>();
             _gotLatestEvent = tcs.Task;
 
             eventStore.SubscribeToAllFrom(Position.Start,
                 false,
-                evt =>
+                (_, resolvedEvent) =>
                 {
-                    if (!tcs.Task.IsCompleted && evt.EventType == "Trade Created")
+                    if (!tcs.Task.IsCompleted && resolvedEvent.Event.EventType == "Trade Created")
                     {
                         _tradeId ++;
                     }

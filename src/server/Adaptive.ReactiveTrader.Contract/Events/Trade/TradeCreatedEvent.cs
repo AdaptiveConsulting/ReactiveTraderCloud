@@ -2,6 +2,7 @@
 {
     public class TradeCreatedEvent
     {
+        public static string Type { get; } = "Trade Crreated";
         public long TradeId { get; }
         public string UserName { get; }
         public string CurrencyPair { get; }
