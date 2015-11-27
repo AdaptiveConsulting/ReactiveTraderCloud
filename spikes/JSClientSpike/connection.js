@@ -53,11 +53,11 @@ connection.onopen = function (session, details) {
    function onCurrencyPairUpdate (ccyPair) {
     var symbol = ccyPair.CurrencyPair.Symbol;
 
-      if( ccyPair.UpdateType == 0 ) {// added
+      if( ccyPair.UpdateType == 'Added' ) {
        console.log("adding");
        $tableBody.append(rowTemplate.supplant(ccyPair.CurrencyPair));
      }     
-     else if( ccyPair.UpdateType == 1 ) {
+     else if( ccyPair.UpdateType == 'Removed' ) {
        console.log("removing");
        $tableBody.find("tr[data-symbol=" + symbol +"]").remove()
      }
