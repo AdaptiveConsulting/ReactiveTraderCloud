@@ -52,7 +52,7 @@ class CurrencyPairs extends React.Component {
       const pairs = _.map(referenceData.Updates, (updatedPair) => {
         const pair = updatedPair.CurrencyPair;
 
-        if (updatedPair.UpdateType == 0){
+        if (updatedPair.UpdateType == 'Added'){
           return {
             //todo: accept rawPair.PipPosition and rawPair.RatePrecision
             pip: pair.PipsPosition,
