@@ -17,7 +17,7 @@ class PricingService {
   getPriceUpdates(symbol, callback){
     console.log('called getPriceUpdates(' + symbol + ')');
     this.transport.requestStream('pricing', 'getPriceUpdates', {symbol}, callback);
- }
+  }
 }
 
 class ReferenceService {
@@ -43,13 +43,14 @@ class BlotterService {
 }
 
 class ExecutionService {
+
   constructor(t){
     this.transport = t;
   }
 
-  executeTrade(callback){
-    console.log('called executeTrade');
-    // should return value
+  executeTrade(options){
+    console.info('called executeTrade with', options);
+    return this.transport.requestResponse('execution', 'executeTrade', options);
   }
 }
 
@@ -64,13 +65,22 @@ class ReactiveTrader {
   }
 }
 
+const HEARTBEAT_TIMEOUT = 3000;
+
+/**
+ * @class ServiceDef
+ */
 class ServiceDef extends emitter {
-  constructor(t){
+  /**
+   * @constructs ServiceDef
+   * @param {transport} transport
+   */
+  constructor(transport:Transport){
     super();
 
     this.pendingSubscriptions = [];
     this.instances = {};
-    this.transport = t;
+    this.transport = transport;
   }
 
   registerOrUpdateInstance(instance, load){
@@ -88,7 +98,7 @@ class ServiceDef extends emitter {
     console.log('add instance', instance);
 
     const instanceRef = {
-      keepalive: _.debounce(() => this.killInstance(instance), 3000),
+      keepalive: _.debounce(() => this.killInstance(instance), HEARTBEAT_TIMEOUT),
       subscriptions: [],
       load
     };
@@ -107,6 +117,10 @@ class ServiceDef extends emitter {
   killInstance(instance){
     console.log('killing instance', instance);
     const instanceToKill = this.instances[instance];
+    // if server dies, this may already be cleaned up. function is debounced to check every `HEARTBEAT_TIMEOUT`ms.
+    if (!instanceToKill)
+      return;
+
     delete this.instances[instance];
     instanceToKill.subscriptions.forEach((s) => this.addSubscription(s));
 
@@ -121,7 +135,11 @@ class ServiceDef extends emitter {
     }
   }
 
-  addSubscription(subscription){
+  /**
+   * @param {Object} subscription
+   * @returns {}
+   */
+  addSubscription(subscription:object){
     // strategy, grab the one with least load
     let min = 1000,
         picked,
@@ -138,13 +156,47 @@ class ServiceDef extends emitter {
     }
 
     if (!picked){
-      this.pendingSubscriptions.push(subscription);
       console.log('adding subscription to pending', subscription);
-      return;
+      this.pendingSubscriptions.push(subscription);
+      return this;
     }
 
     picked.subscriptions.push(subscription);
     this.transport.remoteCall(subscription, pickedInstanceID);
+
+    return this;
+  }
+
+  /**
+   * @param {Object} proc
+   * @returns {}
+   */
+  requestResponse(subscription){
+    // strategy, grab the one with least load
+    let min = 1000,
+        picked,
+        pickedInstanceID;
+
+    for (let instance in this.instances){
+      let current = this.instances[instance];
+
+      if (current.load < min){
+        min = current.load;
+        picked = current;
+        pickedInstanceID = instance;
+      }
+    }
+
+    console.dir(arguments);
+
+    return new Promise((resolve, reject) => {
+
+      if (!pickedInstanceID){
+        return reject(new Error('No instance for ' + proc));
+      }
+      this.transport.remoteCall(subscription, pickedInstanceID).then(resolve, reject);
+
+    });
   }
 }
 
@@ -211,13 +263,28 @@ class Transport extends emitter {
   }
 
   createQueue(handler){
-    const name = _.uniqueId('queue');
+    const name = 'queue' + (Math.random() * Math.pow(36, 8) << 0).toString(36);
     return this.subscribeToTopic(name, handler);
   }
 
-  requestStream(serviceName, callName, args, callback) {
+  requestStream(serviceName, callName, args, callback){
     const queue = this.createQueue(callback);
     this.registerSubscription(serviceName, callName, queue, args);
+  }
+
+  /**
+   * Requests an immediate response
+   * @param {String} serviceName
+   * @param {String} callName
+   * @param {Object=} message
+   * @returns {*}
+   * */
+  requestResponse(serviceName:string, callName:string, message:object = {}){
+    console.dir(arguments);
+    return this.services[serviceName].requestResponse({
+      proc: callName,
+      message
+    });
   }
 
   subscribeToTopic(name, handler){
@@ -229,39 +296,61 @@ class Transport extends emitter {
     this.queues.push(sub);
 
     if (!_.isPlainObject(this.session)){
-      this.subscribe(sub);
+      this._subscribe(sub);
     }
 
     return sub;
   }
 
   registerSubscription(serviceType, serviceProcName, responseQueue, request){
-    this.services[serviceType].addSubscription({proc: serviceProcName, replyTo: responseQueue, message: request});
+    this.services[serviceType].addSubscription({
+      proc: serviceProcName,
+      replyTo: responseQueue,
+      message: request
+    });
   }
 
-  logHeartBeat(heartbeat){
+  /**
+   * @param {Object=} heartbeat
+   * @returns {Transport}
+   */
+  logHeartBeat(heartbeat:object){
     const type        = heartbeat.Type,
           typeService = this.services[type],
           instanceID  = heartbeat.Instance;
 
     typeService.registerOrUpdateInstance(instanceID, heartbeat.Load);
+
+    return this;
   }
 
-  // TODO move to ReactiveTrader
+  /**
+   * @returns {*}
+   */
   subscribeToStatusUpdates(){
-    this.subscribeToTopic('status', (...args) => this.logHeartBeat(...args));
+    // TODO move to ReactiveTrader
+    return this.subscribeToTopic('status', (...args) => this.logHeartBeat(...args));
   }
 
+  /**
+   * @returns {Transport}
+   */
   subscribeToQueues(){
     console.log('subscribing to queues');
 
-    this.queues.forEach((q) =>{
-      if (q.subscriptionID == null){
-        this.subscribe(q);
+    this.queues.forEach((queuedItem:object) =>{
+      if (queuedItem.subscriptionID == null){
+        this._subscribe(queuedItem);
       }
     });
+
+    return this;
   }
 
+  /**
+   * Cleans up after a connection fails
+   * @returns {Transport}
+   */
   markEverythingAsDead(){
     console.log('marking queues as dead');
     this.queues.forEach((q) => delete q.subscriptionID);
@@ -270,24 +359,38 @@ class Transport extends emitter {
     for (let service in this.services){
       this.services[service].markEverythingAsDead();
     }
+
+    return this;
   }
 
-  // TODO make this private?
-  subscribe(sub){
-    this.session.subscribe(sub.replyToAddress, (a) => sub.handler(a[0])).then((subResult) =>{
-      sub.subscriptionID = subResult;
+  /**
+   * Low level API to autobahn subscribe, kind of private
+   * @param {object} subscription
+   * @returns {*}
+   * @private
+   */
+  _subscribe(subscription:object){
+    this.session.subscribe(subscription.replyToAddress, (response) => subscription.handler(response[0])).then((subResult) =>{
+      subscription.subscriptionID = subResult;
     }, (error) => console.error(error));
 
-    return sub;
+    return subscription;
   }
 
-  remoteCall(sub, instanceID){
-    const ins = instanceID + '.' + sub.proc;
-    console.log(ins);
+  /**
+   * @param {Object} subscription
+   * @param {String} instanceID
+   * @returns {{log: Transport.session.log}|*}
+   */
+  remoteCall(subscription:object, instanceID:string){
+    const ins = instanceID + '.' + subscription.proc,
+      replyTo = subscription.replyTo && subscription.replyTo.replyToAddress ? subscription.replyTo.replyToAddress : undefined;
+
+    // console.log(ins);
 
     return this.session.call(ins, [{
-      replyTo: sub.replyTo.replyToAddress,
-      payload: sub.message
+      replyTo,
+      payload: subscription.message
     }]);
   }
 
