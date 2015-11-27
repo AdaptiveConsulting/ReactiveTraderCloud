@@ -42,8 +42,8 @@ class BlotterService {
   }
 
   getTradesStream(callback) {
-    console.log('called getTradesStream');
-    return this.transport.createQueue(callback);
+      console.log('called getTradesStream');
+      return this.transport.createQueue(callback);
   }
 }
 
@@ -112,6 +112,11 @@ class ServiceDef extends emitter {
 
   killInstance(instance) {
     console.log('killing instance', instance );
+    var instanceToKill = this.instances[instance];
+    delete this.instances[instance];
+
+    instanceToKill.subscriptions.forEach((s) => this.addSubscription(s));
+
     this.trigger('removeInstance');
   }
 
