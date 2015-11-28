@@ -7,7 +7,7 @@ using WampSharp.V2.Core;
 using WampSharp.V2.Core.Contracts;
 using WampSharp.V2.Rpc;
 
-namespace Adaptive.ReactiveTrader.Messaging
+namespace Adaptive.ReactiveTrader.Messaging.WAMP
 {
     internal class RpcResponseOperation<TResponse> : IWampRpcOperation
     {
@@ -64,7 +64,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
             var userContext = new RequestContext(message, userSession);
 
-            var response = serviceMethod(userContext, message);
+            var response = serviceMethod(userContext, message).Result;
 
             var dummyDetails = new YieldOptions();
             caller.Result(WampObjectFormatter.Value, dummyDetails, new object[] {response});

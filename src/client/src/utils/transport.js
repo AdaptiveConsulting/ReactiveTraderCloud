@@ -106,8 +106,6 @@ class ServiceDef extends emitter {
     while (this.pendingSubscriptions.length > 0){
       const p = this.pendingSubscriptions.pop();
       instanceRef.subscriptions.push(p);
-
-      console.log('remoteCall', p, instance);
       this.transport.remoteCall(p, instance).then(this.log);
     }
 
@@ -187,8 +185,6 @@ class ServiceDef extends emitter {
       }
     }
 
-    console.dir(arguments);
-
     return new Promise((resolve, reject) => {
 
       if (!pickedInstanceID){
@@ -221,6 +217,7 @@ class Transport extends emitter {
       use_es6_promises: true
     });
 
+    this.username = 'user-' + (Math.random() * Math.pow(36, 8) << 0).toString(36); // todo maybe do some slightly better authentication
     this.queues = [];
     this.session = {
       log: (...args) => console.log(...args)
@@ -281,7 +278,6 @@ class Transport extends emitter {
    * @returns {*}
    * */
   requestResponse(serviceName:string, callName:string, message:object = {}){
-    console.dir(arguments);
     return this.services[serviceName].requestResponse({
       proc: callName,
       message
@@ -329,7 +325,6 @@ class Transport extends emitter {
    * @returns {*}
    */
   subscribeToStatusUpdates(){
-    // TODO move to ReactiveTrader
     return this.subscribeToTopic('status', (...args) => this.logHeartBeat(...args));
   }
 
@@ -391,6 +386,7 @@ class Transport extends emitter {
 
     return this.session.call(ins, [{
       replyTo,
+      Username: this.username,
       payload: subscription.message
     }]);
   }

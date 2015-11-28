@@ -59,17 +59,36 @@ export class IndexView extends React.Component {
     rt.execution.executeTrade({
       CurrencyPair: payload.pair,
       SpotRate: payload.rate,
-      ValueDate: '2015-11-27T17:00Z',
+      ValueDate: (new Date()).toISOString(), // todo find a date format that serializes properly
       Direction: payload.direction,
       Notional: payload.amount,
-      DealtCurrency: payload.direction === 'buy' ? payload.pair.substr(0, 3) : payload.pair.substr(3, 3)
-    }).then((response) => console.log(response), (error) => {
-      console.error(error)
-      console.trace();
-    });
+      DealtCurrency: payload.pair.substr(0, 3)
+    }).then((response) => {
+
+        const trade = response.Trade;
+        const dt = new Date(trade.ValueDate);
+
+        const result = {
+          pair: trade.CurrencyPair,
+          id: trade.TradeId,
+          status: trade.Status,
+          direction: trade.Direction,
+          amount: trade.Notional,
+          trader: trade.TraderName,
+          valueDate: ['SP.', dt.getDate(), MONTHS[dt.getMonth()]].join(' '), // todo get this from DTO
+          rate: trade.SpotRate
+        };
+
+        console.log(payload, response.Trade, result);
+        payload.onACK(result);
+    }, (error) => {
+        console.error(error);
+        console.trace();
+      }
+    );
 
     setTimeout(() => {
-      payload.onACK(payload);
+      //todo should so something here
     }, 500);
   }
 

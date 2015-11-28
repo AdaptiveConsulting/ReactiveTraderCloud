@@ -12,12 +12,10 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
     {
         private static readonly ILog Log = LogManager.GetLogger<TradeExecutionServiceHost>();
         private readonly ITradeExecutionService _service;
-        private readonly IBroker _broker;
 
         public TradeExecutionServiceHost(ITradeExecutionService service, IBroker broker) : base(broker, "execution")
         {
             _service = service;
-            _broker = broker;
         }
        
         public override Task Start()
