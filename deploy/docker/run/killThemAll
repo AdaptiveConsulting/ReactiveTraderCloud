@@ -6,3 +6,7 @@ do
     ./kill
     cd ../..
 done
+
+cd client
+    ./kill
+cd ..

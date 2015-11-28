@@ -12,3 +12,8 @@ do
     ./test || scream $server
     cd ../..
 done
+
+cd client
+    ./run  || scream $server
+    ./test || scream $server
+cd ..

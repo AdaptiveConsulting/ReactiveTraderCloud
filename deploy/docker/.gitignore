@@ -1,6 +1,7 @@
 container
 build/mono.net/build
 build/client/client
+build/crossbar/.crossbar
 jq
 container_id
 garbage

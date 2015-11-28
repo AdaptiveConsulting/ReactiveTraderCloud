@@ -3,16 +3,17 @@
 echo "EventStore"
 docker rm eventstore 2&> garbage
 
-docker run -d --net=host \
-  --name eventstore      \
-  jmkelly/eventstore > container_id
+docker run -d --net=host      \
+  --name eventstore           \
+  weareadaptive/at-eventstore \
+  > container_id
 
 rm garbage
 echo "  started"
 
 populateCommand=`cat "../../../../../src/server/Populate Event Store.bat"`
-docker run --rm --net=host                \
-     weareadaptive/reactive-trader-server \
+docker run --rm --net=host    \
+     weareadaptive/at-servers \
      $populateCommand 
 
 echo "  populated"

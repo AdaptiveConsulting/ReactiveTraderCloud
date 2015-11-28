@@ -1,4 +1,4 @@
-FROM        node:5
+FROM        weareadaptive/node:__VNODE__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
 RUN        apt-get update
@@ -10,4 +10,4 @@ COPY        client    /client
 WORKDIR     /client/
 RUN         npm install
 RUN         npm run compile
-#RUN         npm test
+RUN         npm test

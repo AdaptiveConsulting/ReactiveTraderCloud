@@ -1,6 +1,4 @@
-#FROM            alpine:3.2
-#FROM            ubuntu:14.04.2
-FROM            debian:8.2 
+FROM            debian:__VDEBIAN__
 MAINTAINER 	    weareadaptive <thibault@weareadaptive.com>
 
 COPY    install.sh    /opt/install.sh

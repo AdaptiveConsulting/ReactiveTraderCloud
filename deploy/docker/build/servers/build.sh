@@ -18,4 +18,4 @@ rsync -aq ../../../../src/server $containerPath/
 sed "s/__VERSION__/$version/g" template.Dockerfile > $containerPath/Dockerfile
 
 # build
-docker build -t weareadaptive/reactive-trader-server $containerPath/.
+docker build -t weareadaptive/at-servers $containerPath/.

@@ -1,0 +1,16 @@
+#! /bin/bash
+
+echo "WebUi"
+
+docker rm web 2&> garbage
+
+docker run -d --net=host   \
+     --name web            \
+     weareadaptive/at-web  \
+       bash -c "npm start" \
+     > container_id 
+
+rm garbage
+
+echo "  started"
+echo " "

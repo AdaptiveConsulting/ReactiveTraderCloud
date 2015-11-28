@@ -22,7 +22,7 @@ sudo apt-get install -y unzip                \
 curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh \
 | DNX_BRANCH=dev sh  || exit 1
 mozroots --import --sync  || exit 1
-bash -c "source /root/.dnx/dnvm/dnvm.sh && dnvm upgrade -r mono && dnvm install __VERSION__ -p"  || exit 1
+bash -c "source /root/.dnx/dnvm/dnvm.sh && dnvm upgrade -r mono && dnvm install __VDNX__ -p"  || exit 1
 
 # Clean
 apt-get autoremove -y  || exit 1

@@ -1,4 +1,4 @@
-FROM        weareadaptive/mono.net:__VERSION__
+FROM        weareadaptive/mono:__VERSION__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
 COPY        server    /server

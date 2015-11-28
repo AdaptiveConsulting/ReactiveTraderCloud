@@ -9,7 +9,7 @@ docker rm pricing 2&> garbage
 
 docker run -d --net=host                     \
      --name pricing                          \
-     weareadaptive/reactive-trader-server    \
+     weareadaptive/at-servers                \
      bash -c "$startCommand && $waitCommand" \
      > container_id 
 
