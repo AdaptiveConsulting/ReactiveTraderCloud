@@ -6,7 +6,7 @@ docker rm broker 2&> garbage
 
 docker run -d --net=host        \
      --name broker              \
-     weareadaptive/at-broker    \
+     adaptivetrader/broker      \
        bash -c "crossbar start" \
      > container_id 
 

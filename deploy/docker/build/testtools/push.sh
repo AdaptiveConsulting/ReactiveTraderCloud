@@ -1,14 +1,18 @@
 #! /bin/bash
 
-# get versions
-. ../../../versions
+# get and control config
+. ../../../config
 
-if [[ $vUbuntu = "" ]];then
-  echo "ubuntu version required, fill in adaptivetrader/deploy/version"
+if [[ $testtoolsContainer = "" ]];then
+  echo "testtools-build: container name required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vTesttools = "" ]];then
+  echo "testtools-build: testtools version required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
 
 
 # push
-docker push weareadaptive/testtools:$vTesttools
-docker push weareadaptive/testtools:latest
+docker push $testtoolsContainer:$vTesttools
+docker push $testtoolsContainer:latest

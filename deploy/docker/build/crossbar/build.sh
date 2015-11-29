@@ -1,15 +1,18 @@
 #! /bin/bash
 
-# get versions
-. ../../../versions
+# get and control config
+. ../../../config
 
 if [[ $vUbuntu = "" ]];then
-  echo "ubuntu version required, fill in adaptivetrader/deploy/version"
+  echo "crossbar-build: ubuntu version required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
-
 if [[ $vCrossbar = "" ]];then
-  echo "crossbar version required, fill in adaptivetrader/deploy/version"
+  echo "crossbar-build: version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $crossbarContainer = "" ]];then
+  echo "crossbar-build: container name required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
 
@@ -20,6 +23,4 @@ sed "s/__VUBUNTU__/$vUbuntu/g" ./template.Dockerfile > ./build/Dockerfile
 cp ./template.install.sh ./build/install.sh
 
 # build
-docker build --no-cache                \
-  -t weareadaptive/crossbar:$vCrossbar \
-  ./build/.
+docker build --no-cache -t $crossbarContainer:$vCrossbar ./build/.

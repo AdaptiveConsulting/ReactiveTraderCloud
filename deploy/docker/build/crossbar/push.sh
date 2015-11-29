@@ -1,17 +1,16 @@
 #! /bin/bash
 
-# get versions
-. ../../../versions
-
-if [[ $vUbuntu = "" ]];then
-  echo "ubuntu version required, fill in adaptivetrader/deploy/version"
-  exit 1
-fi
+# get and control config
+. ../../../config
 
 if [[ $vCrossbar = "" ]];then
-  echo "crossbar version required, fill in adaptivetrader/deploy/version"
+  echo "crossbar-build: version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $crossbarContainer = "" ]];then
+  echo "crossbar-build: container name required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
 
 # build
-docker push weareadaptive/crossbar:$vCrossbar 
+docker push $crossbarContainer:$vCrossbar 

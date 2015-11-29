@@ -1,15 +1,18 @@
 #! /bin/bash
 
-# get versions
-. ../../../versions
+# get and control config
+. ../../../config
 
 if [[ $vUbuntu = "" ]];then
-  echo "ubuntu version required, fill in adaptivetrader/deploy/version"
+  echo "eventstore-build: ubuntu version required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
-
 if [[ $vEventstore = "" ]];then
-  echo "eventstore version required, fill in adaptivetrader/deploy/version"
+  echo "eventstore-build: eventstore version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $eventstoreContainer = "" ]];then
+  echo "eventstore-build: container name required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
 
@@ -24,6 +27,4 @@ cp ./template.install.sh ./build/install.sh
 sed -i "s/__VEVENTSTORE__/$vEventstore/g" ./build/install.sh 
 
 # build
-docker build --no-cache                    \
-  -t weareadaptive/eventstore:$vEventstore \
-  ./build/.
+docker build --no-cache -t $eventstoreContainer:$vEventstore ./build/.

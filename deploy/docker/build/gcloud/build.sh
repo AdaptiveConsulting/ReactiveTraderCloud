@@ -1,10 +1,18 @@
 #! /bin/bash
 
-# get versions
-. ../../../versions
+# get and control config
+. ../../../config
 
 if [[ $vDebian = "" ]];then
-  echo "debian version required, fill in adaptivetrader/deploy/version"
+  echo "gcloud-build: debian version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $gcloudContainer = "" ]];then
+  echo "gcloud-build: container name required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $kubectlContainer = "" ]];then
+  echo "gcloud-build: container name required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
 
@@ -15,10 +23,8 @@ mkdir -p ./build
 # generate container folder
 mkdir -p ./build
 
-cp ./template.Dockerfile ./build/Dockerfile
-sed -i "s/__VDEBIAN__/$vDebian/g"         ./build/Dockerfile
-
+sed -i "s/__VDEBIAN__/$vDebian/g" ./template.Dockerfile > ./build/Dockerfile
 cp ./template.install.sh ./build/install.sh
 
-docker build --no-cache -t weareadaptive/gcloud:latest ./build/.
-docker tag weareadaptive/gcloud:latest weareadaptive/kubectl:latest
+docker build --no-cache -t $gcloudContainer:latest ./build/.
+docker tag $gcloudContainer:latest $kubectlContainer:latest
