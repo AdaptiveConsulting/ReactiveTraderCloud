@@ -1,0 +1,19 @@
+#! /bin/bash
+
+scream() {
+    echo "error on $1"
+    exit 1
+}
+
+for server in "eventstore" "broker" "pricing" "reference"
+do
+    cd server/$server
+    ./run  || scream $server
+    ./test || scream $server
+    cd ../..
+done
+
+cd client
+    ./run  || scream $server
+    ./test || scream $server
+cd ..

@@ -1,0 +1,18 @@
+#! /bin/bash
+
+echo "Broker"
+
+. ../../../../config
+
+docker rm broker 2&> garbage
+
+docker run -d --net=host        \
+     --name broker              \
+     adaptivetrader/broker:$vMajor.$vMinor.$vBuild      \
+       bash -c "crossbar start" \
+     > container_id 
+
+rm garbage
+
+echo "  started"
+echo " "
