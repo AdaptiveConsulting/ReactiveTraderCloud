@@ -1,5 +1,7 @@
 import autobahn from 'autobahn';
 import emitter from './emitter';
+import traders from './traders';
+
 import _ from 'lodash';
 
 const HEARTBEAT_TIMEOUT = 3000;
@@ -154,7 +156,7 @@ class Transport extends emitter {
       use_es6_promises: true
     });
 
-    this.username = 'user-' + (Math.random() * Math.pow(36, 8) << 0).toString(36); // todo maybe do some slightly better authentication
+    this.username = traders.code;
     this.queues = [];
     this.session = {
       log: (...args) => console.log(...args)
@@ -323,7 +325,7 @@ class Transport extends emitter {
 
     return this.session.call(ins, [{
       replyTo,
-      Username: this.username,
+      Username: this.code,
       payload: subscription.message
     }]);
   }

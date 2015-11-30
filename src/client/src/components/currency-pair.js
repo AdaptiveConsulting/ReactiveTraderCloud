@@ -199,13 +199,13 @@ class CurrencyPair extends React.Component {
 
     // we will cache last response to diverge from state until user dismisses it.
     return this.lastResponse = (
-      <div className='summary-state animated flipInX'>
+      <div className={response.status + ' summary-state animated flipInX'}>
         <span className='key'>{action}</span> {response.pair.substr(0, 3)} {amount}<br/>
         <span className='key'>vs</span> {response.pair.substr(3, 3)}
         <span className='key'>at</span> {response.rate}<br/>
         <span className='key'>{response.valueDate}</span><br/>
         <span className='key'>Trade ID</span> {response.id}
-        <a href='#' className='pull-right' onClick={(e) => this.onDismissLastResponse(e)}>Done</a>
+        <a href='#' className='pull-right' onClick={(e) => this.onDismissLastResponse(e)}>{response.status}</a>
       </div>
     );
   }
