@@ -1,1 +1,0 @@
-dnx -p Adaptive.ReactiveTrader.Server.Pricing run
