@@ -1,18 +1,18 @@
 #! /bin/bash
 
-echo "TradeExecution"
+echo "Blotter"
 
 . ../../../../config
 
 startCommand="dnx -p Adaptive.ReactiveTrader.Server.Blotter run"
 waitCommand="while true; do echo ping; sleep 60; done"
 
-docker rm reference 2&> garbage
+docker rm blotter 2&> garbage
 
-docker run -d --net=host                        \
-     --name reference                           \
-     $serversContainers:$vMajor.$vMinor.$vBuild \
-     bash -c "$startCommand && $waitCommand"    \
+docker run -d --net=host                       \
+     --name blotter                            \
+     $serversContainer:$vMajor.$vMinor.$vBuild \
+     bash -c "$startCommand && $waitCommand"   \
      > container_id 
 
 rm garbage

@@ -7,12 +7,12 @@ echo "TradeExecution"
 startCommand="dnx -p Adaptive.ReactiveTrader.Server.TradeExecution run"
 waitCommand="while true; do echo ping; sleep 60; done"
 
-docker rm reference 2&> garbage
+docker rm tradeexecution 2&> garbage
 
-docker run -d --net=host                        \
-     --name reference                           \
-     $serversContainers:$vMajor.$vMinor.$vBuild \
-     bash -c "$startCommand && $waitCommand"    \
+docker run -d --net=host                       \
+     --name tradeexecution                     \
+     $serversContainer:$vMajor.$vMinor.$vBuild \
+     bash -c "$startCommand && $waitCommand"   \
      > container_id 
 
 rm garbage

@@ -3,7 +3,7 @@
 . ../../../../config
 
 populateCommand=`cat "../../../../../src/server/Populate Event Store.bat"`
-docker run --rm --net=host                          \
+docker run -d --net=host                          \
      $serversContainer:$vMajor.$vMinor.$vBuild \
      $populateCommand 
 
