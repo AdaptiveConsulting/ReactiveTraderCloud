@@ -6,10 +6,10 @@ echo "Broker"
 
 docker rm broker 2&> garbage
 
-docker run -d --net=host        \
-     --name broker              \
-     adaptivetrader/broker:$vMajor.$vMinor.$vBuild      \
-       bash -c "crossbar start" \
+docker run -d --net=host                      \
+     --name broker                            \
+     $brokerContainer:$vMajor.$vMinor.$vBuild \
+       bash -c "crossbar start"               \
      > container_id 
 
 rm garbage

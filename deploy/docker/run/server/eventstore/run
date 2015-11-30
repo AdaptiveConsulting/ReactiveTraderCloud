@@ -6,9 +6,9 @@ echo "EventStore"
 
 docker rm eventstore 2&> garbage
 
-docker run -d --net=host   \
-  --name eventstore        \
-  weareadaptive/eventstore:$vEventstore \
+docker run -d --net=host            \
+  --name eventstore                 \
+  $eventstoreContainer:$vEventstore \
   > container_id
 
 rm garbage
