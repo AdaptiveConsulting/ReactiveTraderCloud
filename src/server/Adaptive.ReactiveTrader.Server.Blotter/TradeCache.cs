@@ -144,7 +144,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                     var createdEvent = evt.GetEvent<TradeCreatedEvent>();
                     currentSotw.Add(createdEvent.TradeId, new Trade(
                         createdEvent.TradeId,
-                        createdEvent.UserName,
+                        createdEvent.TraderName,
                         createdEvent.CurrencyPair,
                         createdEvent.Notional,
                         createdEvent.DealtCurrency,

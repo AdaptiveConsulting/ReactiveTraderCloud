@@ -52,7 +52,7 @@ function executeTrade(session) {
     var request = {
         CurrencyPair: $("#ccyPair").val(),
         SpotRate: $("#spot").val(),
-        ValueDate: new Date(),
+        ValueDate: '2015-11-30 11:37:00Z',
         Direction: direction,
         Notional: $("#notional").val(),
         DealtCurrency: $("#dealtCcy").val()
@@ -63,7 +63,7 @@ function executeTrade(session) {
     session.call('execution.ExecuteTrade', [createMessage(request, 'Jon')])
         .then(function logResult(res) {
             console.log('Got execution response' + res);
-            var status = res.Result.Trade.Status == 0 ? 'Accepted' : "Rejected";
+            var status = res.Result.Trade.Status == 1 ? 'Accepted' : "Rejected";
             console.log("Status is " + status);
             $("#executingIndicator").text('Execution Complete. Trade ' + status);
         });

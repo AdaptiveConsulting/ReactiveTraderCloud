@@ -1,7 +1,6 @@
-﻿using System.Threading;
+﻿using EventStore.ClientAPI;
+using System.Threading;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.EventStore;
-using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
@@ -19,9 +18,9 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                 false,
                 (_, resolvedEvent) =>
                 {
-                    if (!tcs.Task.IsCompleted && resolvedEvent.Event.EventType == "Trade Created")
+                    if (!tcs.Task.IsCompleted && resolvedEvent.Event.EventType == "TradeCreatedEvent")
                     {
-                        _tradeId ++;
+                        Interlocked.Increment(ref _tradeId);
                     }
                 },
                 _ => tcs.TrySetResult(new object()));
