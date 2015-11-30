@@ -1,3 +1,8 @@
+.currency-pairs {
+  margin-top: 54px;
+  margin-left: 4px;
+}
+
 .currency-pair {
   box-sizing: border-box;
   float: left;
@@ -34,7 +39,7 @@
     .fa-plug {
       display: inline-block;
     }
-    .fa-line-chart {
+    .glyphicon {
       display: none;
     }
   }
@@ -58,8 +63,10 @@
     i {
       font-size: 16px;
       color: $gray-light;
-      &.fa-line-chart {
+      &.glyphicon {
         cursor: pointer;
+        padding: 8px;
+        padding-bottom: 0;
       }
     }
   }
@@ -67,6 +74,7 @@
     position: relative;
     height: 78px;
     > div {
+      text-transform: uppercase;
       position: absolute;
       width: 45%;
       padding-left: 8px;
@@ -83,26 +91,28 @@
       }
     }
     .direction {
-      left: calc(50% - 20px);
-      margin-top: 30px;
+      margin-left: calc(50% - 20px);
+      transform: translate3d(0, 30px, 0);
       width: 40px;
-      height: 16px;
+      height: 26px;
+      text-align: center;
       &:before {
-        width: 16px;
         height: 16px;
         position: absolute;
+        left: 0;
+        right: 0;
         @extend .fa;
       }
       &.up {
         &:before {
           @extend .fa-caret-up;
           color: $brand-success;
-          transform: translate(50%, -10px);
+          transform: translate(0, -10px);
         }
       }
       &.down {
         &:before {
-          transform: translate(50%, 14px);
+          transform: translate(0, 14px);
           @extend .fa-caret-down;
           color: $brand-warning;
         }

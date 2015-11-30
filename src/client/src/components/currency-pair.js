@@ -2,11 +2,12 @@ import React from 'react';
 
 import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 import numeral from 'numeral';
+import { getConvertedSize } from '../utils'
 
-const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/,
-  SEPARATOR = '.',
-  MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
+// sub components
+import Direction from './cp-parts/cp-direction';
+import Sizer from './cp-parts/cp-sizer';
+import Pricer from './cp-parts/cp-pricer';
 /**
  * @class CurrencyPairs
  * @extends {React.Component}
@@ -45,16 +46,13 @@ class CurrencyPair extends React.Component {
   }
 
   componentWillMount(){
-    const size = this._getSize(this.props.size),
-      today = new Date;
+    const size = getConvertedSize(this.props.size);
 
     this.setState({
       size,
       historic: [this.props.buy],
       state: this.props.state
     });
-
-    this.SPOTDATE = ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' ');
   }
 
   _checkStaleConnection(){
@@ -100,61 +98,18 @@ class CurrencyPair extends React.Component {
   }
 
   /**
-   * Returns the expanded price from k/m shorthand.
-   * @param {String|Number} size
-   * @returns {Number}
-   * @private
-   */
-  _getSize(size){
-    size = String(size).toUpperCase();
-    const matches = size.match(numberConvertRegex);
-
-    if (!size.length || !matches || !matches.length){
-      size = 0;
-    }
-    else {
-      size = Number(matches[1]);
-      matches[2] && (size = size * (matches[2] === 'K' ? 1000 : 1000000));
-    }
-
-    return size;
-  }
-
-  /**
-   * Sets trade amount. Supports k/m modifiers for 1000s or millions.
-   * @param {DOMEvent=} e
-   */
-  setSizeFromInput(e){
-    const val = (this.refs.size.value || e.target.value).trim();
-    let size = this._getSize(val);
-
-    if (!isNaN(size)){
-      this.setState({
-        size
-      });
-
-      // user may be trying to enter decimals. restore into input
-      if (val.indexOf('.') === val.length-1){
-        size = size + '.';
-      }
-
-      this.refs.size.value = size;
-    }
-  }
-
-  /**
    * Explodes a price into big, pip, 10th.
    * @param {Number} price
    * @returns {{bigFigures: string, pip: string, pipFraction: string}}
    */
-  parsePrice(price: number){
+  parsePrice(price:number){
     const { precision, pip } = this.props,
-      priceString = price.toFixed(precision),
-      fractions = priceString.split('.')[1];
+          priceString = price.toFixed(precision),
+          fractions   = priceString.split('.')[1];
 
     return {
       bigFigures: Math.floor(price) + '.' + fractions.substring(0, pip - 2),
-      pip: fractions.substring(pip-2, pip),
+      pip: fractions.substring(pip - 2, pip),
       pipFraction: fractions.substring(pip, pip + 1)
     };
   }
@@ -165,9 +120,25 @@ class CurrencyPair extends React.Component {
    * @param buy
    * @returns {string}
    */
-  getSpread(sell: number, buy: number){
+  getSpread(sell:number, buy:number){
     const { pip, precision } = this.props;
     return ((sell - buy) * Math.pow(10, pip)).toFixed(precision - pip);
+  }
+
+  /**
+   * Determine the change as up or down on a tick.
+   * @returns {string}
+   */
+  getDirection(buy){
+    const historic = this.state.historic,
+          len      = historic.length - 2;
+
+    return (historic.length > 1) ?
+      historic[len] < buy ? 'up' :
+        historic[len] > buy ?
+          'down' :
+          '-'
+      : '-';
   }
 
   /**
@@ -211,7 +182,7 @@ class CurrencyPair extends React.Component {
    * @param {Object} response
    * @returns {ReactDOM.Element}
    */
-  renderLastResponse(response){
+  renderMessage(response){
     if (!response)
       return false;
 
@@ -224,13 +195,14 @@ class CurrencyPair extends React.Component {
     }
 
     const action = response.direction === 'sell' ? 'Sold' : 'Bought',
-      amount = numeral(response.amount).format('0,000,000[.]00');
+          amount = numeral(response.amount).format('0,000,000[.]00');
 
     // we will cache last response to diverge from state until user dismisses it.
     return this.lastResponse = (
       <div className='summary-state animated flipInX'>
         <span className='key'>{action}</span> {response.pair.substr(0, 3)} {amount}<br/>
-        <span className='key'>vs</span> {response.pair.substr(3, 3)} <span className='key'>at</span> {response.rate}<br/>
+        <span className='key'>vs</span> {response.pair.substr(3, 3)}
+        <span className='key'>at</span> {response.rate}<br/>
         <span className='key'>{response.valueDate}</span><br/>
         <span className='key'>Trade ID</span> {response.id}
         <a href='#' className='pull-right' onClick={(e) => this.onDismissLastResponse(e)}>Done</a>
@@ -239,48 +211,36 @@ class CurrencyPair extends React.Component {
   }
 
   render(){
-    const { historic, size, state, info, chart } = this.state;
-    const { buy, sell, pair, response } = this.props;
-    const base = pair.substr(0, 3),
-          len = historic.length - 2,
-          direction = (historic.length > 1) ? historic[len] < buy ? 'up' : historic[len] > buy ? 'down' : '-' :'-',
-          b = this.parsePrice(buy),
-          s = this.parsePrice(sell),
-          spread = this.getSpread(sell, buy),
-          lastTradeState = this.state.info ? (this.lastResponse || this.renderLastResponse(response)) : false,
-          className = ['currency-pair', 'animated', 'flipInX', state].join(' ');
+    const { historic, size, state, info, chart } = this.state,
+          { buy, sell, pair, response } = this.props;
+
+    const parsedBuy  = this.parsePrice(buy),
+          parsedSell = this.parsePrice(sell),
+          execute = this.execute.bind(this),
+          className  = 'currency-pair animated flipInX ' + state;
+
+    // any ACK or failed messages will come via state.info / last response
+    const message = this.state.info ? (this.lastResponse || this.renderMessage(response)) : false;
 
     return <div className={className}>
       <div className='currency-pair-title'>
-        {pair} <i className='fa fa-plug animated infinite fa-pulse'></i>
-        <i className='fa fa-line-chart pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
+        {pair} <i className='fa fa-plug animated infinite fadeIn'></i>
+        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
-      {lastTradeState}
-      <div className={lastTradeState ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
-        <div className='buy action' onClick={() => this.execute('buy')}>
-          <div>BUY</div>
-          <span className='big'></span>{b.bigFigures}<span className='pip'>{b.pip}</span><span className='tenth'>{b.pipFraction}</span>
-        </div>
-        <div className={direction + ' direction'}>{spread}</div>
-        <div className='sell action' onClick={() => this.execute('sell')}>
-          <div>SELL</div>
-          <span className='big'></span>{s.bigFigures}<span className='pip'>{s.pip}</span><span className='tenth'>{s.pipFraction}</span>
-        </div>
+      {message}
+      <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
+        <Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
+        <Direction direction={this.getDirection(buy)} spread={this.getSpread(sell, buy)}/>
+        <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
       </div>
       <div className='clearFix'></div>
-      <div className={lastTradeState ? 'sizer disabled' : 'sizer'}>
-        <label>{base}
-        <input className='size' type='text' ref='size' defaultValue={size} onChange={(e) => this.setSizeFromInput(e)} /></label>
-        <div className='pull-right'>
-          {this.SPOTDATE}
-        </div>
-      </div>
+      <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})} pair={pair}/>
       <div className="clearfix"></div>
       {chart ?
         <Sparklines data={historic.slice()} width={326} height={24} margin={0}>
           <SparklinesLine />
           <SparklinesSpots />
-          <SparklinesReferenceLine type="avg" />
+          <SparklinesReferenceLine type="avg"/>
         </Sparklines> : <div className='sparkline-holder'></div>}
     </div>;
   }

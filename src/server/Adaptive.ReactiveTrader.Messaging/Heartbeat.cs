@@ -7,18 +7,17 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class Heartbeat : IDisposable
     {
-        private readonly string _serviceType;
-        private readonly Guid _serviceInstance;
+        
         private readonly IBroker _broker;
+        private readonly ServiceHostBase _host;
         private readonly IObservable<long> _heartbeatStream;
-        public TimeSpan HeartbeatInterval { get; set; }
+        public TimeSpan HeartbeatInterval { get; }
         private IDisposable _disp = Disposable.Empty;
 
-        public Heartbeat(string serviceType, Guid serviceInstance, IBroker broker)
+        public Heartbeat( ServiceHostBase host, IBroker broker)
         {
-            _serviceType = serviceType;
-            _serviceInstance = serviceInstance;
             _broker = broker;
+            _host = host;
             HeartbeatInterval = TimeSpan.FromSeconds(1);
             _heartbeatStream = Observable.Timer(TimeSpan.Zero, HeartbeatInterval);
         }
@@ -33,7 +32,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             var endpoint = await _broker.GetPublicEndPoint<HeartbeatDto>("status");
 
             _disp = _heartbeatStream.Select(
-                _ => new HeartbeatDto { Instance = _serviceInstance, Timestamp = DateTime.Now, Type = _serviceType })
+                _ => new HeartbeatDto { Instance = _host.InstanceID, Timestamp = DateTime.Now, Type = _host.ServiceType, Load = _host.GetLoad() })
                 .Subscribe(endpoint);
         }
     }

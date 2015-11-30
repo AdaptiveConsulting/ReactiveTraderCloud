@@ -1,0 +1,7 @@
+#! /bin/bash
+
+. ../../../../config
+
+docker run --net=host                 \
+  weareadaptive/testtools:$vTesttools \
+  bash -c "curl -L -silent localhost:2113/web > garbage"

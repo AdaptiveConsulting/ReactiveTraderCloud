@@ -1,3 +1,15 @@
 container
-build/mono.net/build
-run/client/client
+build/broker/build
+build/crossbar/build
+build/eventstore/build
+build/gcloud/build
+build/mono/build
+build/node/build
+build/servers/build
+build/testtools/build
+build/web/build
+
+
+jq
+container_id
+garbage

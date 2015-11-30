@@ -42,11 +42,11 @@ function createRequestStream(session, destination, request, onUpdate, onError) {
   var wampRPCError = function(err) {
     if( err.error == 'wamp.error.no_such_procedure')
       onError('no servers up for ' + destination);
-    else 
+    else
       onError(err.error);
   }
 
-  session.subscribe(message.ReplyTo, function(dto) {onUpdate(dto[0]);}).then(
+  session._subscribe(message.ReplyTo, function(dto) {onUpdate(dto[0]);}).then(
     function(val) {
       console.log('subscribe call');
       session.call(destination, [message]).then(function(val){
@@ -59,7 +59,7 @@ function createRequestStream(session, destination, request, onUpdate, onError) {
 
 function createSubscription(session, topic, onUpdate, onError) {
   console.log('create subscription');
-  session.subscribe(topic, function(dto) {onUpdate(dto[0]);}).then(function(val) {console.log(val);},function(err) {console.log(err);})
+  session._subscribe(topic, function(dto) {onUpdate(dto[0]);}).then(function(val) {console.log(val);},function(err) {console.log(err);})
 }
 
 function createRequestStreamBasic(session, destination, onUpdate) {

@@ -16,8 +16,8 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                 DealtCurrency = t.DealtCurrency,
                 Direction = t.Direction,
                 SpotRate = t.SpotRate,
-                TradeDate = DateUtils.FromSerializationFormat(t.TradeDate),
-                ValueDate = DateUtils.FromSerializationFormat(t.ValueDate),
+                TradeDate = t.TradeDate,
+                ValueDate = t.ValueDate,
                 Status = t.Status
             };
         }

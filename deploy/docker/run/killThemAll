@@ -1,0 +1,12 @@
+#! /bin/bash
+
+for server in "reference" "pricing" "broker" "eventstore"
+do
+    cd server/$server
+    ./kill
+    cd ../..
+done
+
+cd client
+    ./kill
+cd ..

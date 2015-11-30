@@ -43,3 +43,25 @@ export function createDevToolsWindow(store){
     );
   }, 10);
 }
+
+const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/;
+
+      /**
+ * Returns the expanded price from k/m shorthand.
+ * @param {String|Number} size
+ * @returns {Number}
+ */
+export function getConvertedSize(size){
+  size = String(size).toUpperCase().replace(',', '');
+  const matches = size.match(numberConvertRegex);
+
+  if (!size.length || !matches || !matches.length){
+    size = 0;
+  }
+  else {
+    size = Number(matches[1]);
+    matches[2] && (size = size * (matches[2] === 'K' ? 1000 : 1000000));
+  }
+
+  return size;
+}

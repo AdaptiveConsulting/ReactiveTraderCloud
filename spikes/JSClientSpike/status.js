@@ -36,7 +36,7 @@ connection.onopen = function (session, details) {
   console.log("Connected");
   console.log(details);
 
-  var services = ['price', 'ref', 'blotter'];
+  var services = ['pricing', 'reference', 'blotter'];
   var openings = Rx.Observable.interval(2000);
 
   var source = Rx.Observable.create(obs => {
