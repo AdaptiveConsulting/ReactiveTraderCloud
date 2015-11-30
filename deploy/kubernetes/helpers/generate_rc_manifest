@@ -1,4 +1,13 @@
 #! /bin/bash
 
-# to sed
-# __SERVICENAME__
+manifestFolder="../generated_manifests"
+rcFile="$manifestFolder/rc.yml"
+
+mkdir -p $manifestFolder
+cp rc.yml $rcFile
+sed -i  "s/__SERVICE__//g" $rcFile
+sed -i  "s/__MAJOR__//g" $rcFile
+sed -i  "s/__MINOR__//g" $rcFile
+sed -i  "s/__BUILD__//g" $rcFile
+sed -i  "s/__CONTAINER__//g" $rcFile
+sed -i  "s/__CONTAINERPORT__//g" $rcFile

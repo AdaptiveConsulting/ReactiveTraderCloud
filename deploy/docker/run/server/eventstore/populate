@@ -1,0 +1,10 @@
+#! /bin/bash
+
+. ../../../../config
+
+populateCommand=`cat "../../../../../src/server/Populate Event Store.bat"`
+docker run --rm --net=host                          \
+     adaptivetrader/servers:$vMajor.$vMinor.$vBuild \
+     $populateCommand 
+
+echo "  populated"
