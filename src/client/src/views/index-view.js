@@ -7,7 +7,7 @@ import moment from 'moment';
 
 //todo: remove mocks
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-  today = new Date();
+      today  = new Date();
 
 const trades = [{
   id: _.uniqueId(),
@@ -59,11 +59,12 @@ export class IndexView extends React.Component {
     rt.execution.executeTrade({
       CurrencyPair: payload.pair,
       SpotRate: payload.rate,
-      ValueDate: (new Date()).toISOString(), // todo find a date format that serializes properly
+      //todo: support valueDate and non spot
+      // ValueDate: (new Date()).toISOString(),
       Direction: payload.direction,
       Notional: payload.amount,
       DealtCurrency: payload.pair.substr(0, 3)
-    }).then((response) => {
+    }).then((response) =>{
 
         const trade = response.Trade;
         const dt = new Date(trade.ValueDate);
@@ -81,13 +82,13 @@ export class IndexView extends React.Component {
 
         console.log(payload, response.Trade, result);
         payload.onACK(result);
-    }, (error) => {
+      }, (error) =>{
         console.error(error);
         console.trace();
       }
     );
 
-    setTimeout(() => {
+    setTimeout(() =>{
       //todo should so something here
     }, 500);
   }
@@ -96,7 +97,7 @@ export class IndexView extends React.Component {
     return (
       <div className=''>
         <CurrencyPairs onExecute={(payload) => this.addTrade(payload)}/>
-        <Blotter trades={this.state.trades} />
+        <Blotter trades={this.state.trades}/>
       </div>
     );
   }
