@@ -24,8 +24,6 @@ const formatTradeForDOM = (DTO) =>{
   };
 };
 
-
-
 export class IndexView extends React.Component {
 
   constructor(props, context){
@@ -44,7 +42,7 @@ export class IndexView extends React.Component {
     });
   }
 
-	/**
+  /**
    * Processor for data coming from the blotter service that converts DTO object to DOM
    * @param {Object} trade
    * @param {Boolean=} update immediately, defaults to false
@@ -65,7 +63,6 @@ export class IndexView extends React.Component {
       trades: this.state.trades
     });
   }
-
 
   /**
    * Sends a trade to execution service, preps response back for show in CP tile
