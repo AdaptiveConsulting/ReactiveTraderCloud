@@ -18,11 +18,11 @@ const pseudoEvents = {
    * @returns {function} wrapped fn
    */
   once: (event, fn) =>{
-    var self = this,
-        wrapped = function(){
-          fn.apply(this, arguments);
-          self.off(event, wrapped);
-        };
+    const self = this,
+      wrapped = function(){
+        fn.apply(this, arguments);
+        self.off(event, wrapped);
+      };
     return wrapped;
   }
 };

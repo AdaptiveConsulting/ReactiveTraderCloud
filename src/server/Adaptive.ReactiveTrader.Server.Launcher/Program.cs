@@ -34,7 +34,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     ShowLogName = true,
                 };
 
-                var eventStoreConnection = GetEventStoreConnection(args.Contains("es")).Result;
+                var eventStoreConnection = GetEventStoreConnection(args.Contains("es"), args.Contains("init-es")).Result;
+                
 
                 if (args.Contains("mb"))
                     Servers.Add("mb1", MessageBrokerLauncher.Run());
@@ -158,7 +159,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             }
         }
 
-        private static async Task<IEventStoreConnection> GetEventStoreConnection(bool embedded)
+        private static async Task<IEventStoreConnection> GetEventStoreConnection(bool embedded, bool populate)
         {
             IEventStore eventStore;
 
@@ -166,13 +167,15 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             {
                 eventStore = new EmbeddedEventStore();
                 await eventStore.Connection.ConnectAsync();
-                await ReferenceDataWriterLauncher.PopulateRefData(eventStore.Connection);
             }
             else
             {
                 eventStore = new ExternalEventStore();
                 await eventStore.Connection.ConnectAsync();
             }
+
+            if (embedded || populate)
+                ReferenceDataWriterLauncher.PopulateRefData(eventStore.Connection).Wait();
 
             return eventStore.Connection;
         }

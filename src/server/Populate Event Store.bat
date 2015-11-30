@@ -1,1 +1,1 @@
-dnx -p Adaptive.ReactiveTrader.Server.ReferenceDataWrite refDataWritePopulate
+dnx -p Adaptive.ReactiveTrader.Server.Launcher run init-es
