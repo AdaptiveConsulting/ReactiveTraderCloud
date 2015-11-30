@@ -26,7 +26,14 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             var id = await _tradeIdProvider.GetNextId();
             var tradeDate = DateTime.UtcNow;
 
-            var tradeCreatedEvent = new TradeCreatedEvent(id, user, request.CurrencyPair, request.SpotRate, DateUtils.ToSerializationFormat(tradeDate), DateUtils.ToSerializationFormat(request.ValueDate), request.Direction.ToString(), request.Notional, request.DealtCurrency);
+            DateTime valueDate;
+            if( !DateTime.TryParse(request.ValueDate, out valueDate) )
+            {
+                valueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday();
+            }
+
+
+            var tradeCreatedEvent = new TradeCreatedEvent(id, user, request.CurrencyPair, request.SpotRate, DateUtils.ToSerializationFormat(tradeDate), DateUtils.ToSerializationFormat(valueDate), request.Direction.ToString(), request.Notional, request.DealtCurrency);
             await _eventStore.AppendToStreamAsync($"trade-{id}", ExpectedVersion.Any, new EventData(Guid.NewGuid(), "Trade Created", false, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(tradeCreatedEvent)), new byte[0]));
 
             var status = await ExecuteImpl(request);
@@ -56,8 +63,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                     Notional = request.Notional,
                     SpotRate = request.SpotRate,
                     Status = status,
-                    TradeDate = tradeDate,
-                    ValueDate = request.ValueDate,
+                    TradeDate = tradeDate.ToShortDateString(),
+                    ValueDate =  "SP. " + valueDate.Day + " " + valueDate.ToString("MMM"),
                     TradeId = id,
                     TraderName = user,
                     DealtCurrency = request.DealtCurrency

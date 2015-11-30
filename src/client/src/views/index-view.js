@@ -59,7 +59,7 @@ export class IndexView extends React.Component {
     rt.execution.executeTrade({
       CurrencyPair: payload.pair,
       SpotRate: payload.rate,
-      ValueDate: (new Date()).toISOString(), // todo find a date format that serializes properly
+      //ValueDate: (new Date()).toISOString(), // todo find a date format that serializes properly
       Direction: payload.direction,
       Notional: payload.amount,
       DealtCurrency: payload.pair.substr(0, 3)
@@ -75,7 +75,7 @@ export class IndexView extends React.Component {
           direction: trade.Direction,
           amount: trade.Notional,
           trader: trade.TraderName,
-          valueDate: ['SP.', dt.getDate(), MONTHS[dt.getMonth()]].join(' '), // todo get this from DTO
+          valueDate: trade.ValueDate, // todo get this from DTO
           rate: trade.SpotRate
         };
 
