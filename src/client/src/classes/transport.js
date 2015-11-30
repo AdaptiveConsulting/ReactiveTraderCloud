@@ -2,69 +2,6 @@ import autobahn from 'autobahn';
 import emitter from './emitter';
 import _ from 'lodash';
 
-// reactiveTrader.
-//    getStatusUpdates()
-//    pricing.getPriceUdaptes(symbol)
-//    reference.getCurrencyPairUpdates()
-//    blotter...()
-//
-
-class PricingService {
-  constructor(t){
-    this.transport = t;
-  }
-
-  getPriceUpdates(symbol, callback){
-    console.log('called getPriceUpdates(' + symbol + ')');
-    this.transport.requestStream('pricing', 'getPriceUpdates', {symbol}, callback);
-  }
-}
-
-class ReferenceService {
-  constructor(t){
-    this.transport = t;
-  }
-
-  getCurrencyPairUpdatesStream(callback){
-    console.log('called getCurrencyPairUpdatesStream');
-    this.transport.requestStream('reference', 'getCurrencyPairUpdatesStream', {}, callback);
-  }
-}
-
-class BlotterService {
-  constructor(t){
-    this.transport = t;
-  }
-
-  getTradesStream(callback){
-    console.log('called getTradesStream');
-    this.transport.requestStream('blotter', 'getTradesStream', {}, callback);
-  }
-}
-
-class ExecutionService {
-
-  constructor(t){
-    this.transport = t;
-  }
-
-  executeTrade(options){
-    console.info('called executeTrade with', options);
-    return this.transport.requestResponse('execution', 'executeTrade', options);
-  }
-}
-
-class ReactiveTrader {
-  constructor(t){
-    this.pricing = new PricingService(t);
-    this.reference = new ReferenceService(t);
-    this.blotter = new BlotterService(t);
-    this.execution = new ExecutionService(t);
-
-    this.transport = t;
-  }
-}
-
 const HEARTBEAT_TIMEOUT = 3000;
 
 /**
@@ -443,4 +380,4 @@ class Transport extends emitter {
   }
 }
 
-export default new ReactiveTrader(new Transport());
+export default new Transport;

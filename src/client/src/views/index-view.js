@@ -2,8 +2,8 @@ import React from 'react';
 import CurrencyPairs from '../components/currency-pairs';
 import Blotter from '../components/blotter';
 
-import rt from '../utils/transport';
 import moment from 'moment';
+import rt from '../classes/services/reactive-trader';
 
 //todo: remove mocks
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],

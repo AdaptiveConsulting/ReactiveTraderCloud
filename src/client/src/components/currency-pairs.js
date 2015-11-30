@@ -3,7 +3,7 @@ import CurrencyPair from './currency-pair';
 import Header from './header';
 import _ from 'lodash';
 
-import rt from '../utils/transport';
+import rt from '../classes/services/reactive-trader';
 
 
 //todo: hook up socket stream

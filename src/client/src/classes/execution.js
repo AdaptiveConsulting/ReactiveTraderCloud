@@ -1,4 +1,4 @@
-import rt from '../utils/transport';
+import rt from 'transport';
 import traders from './traders';
 
 export default class Execution {
