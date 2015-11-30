@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.Messaging;
@@ -26,7 +27,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
                 Log.Info("Service Started.");
                 
-                return serviceHost;
+                return new CompositeDisposable {cache, serviceHost};
 
             }
             catch (MessagingException e)

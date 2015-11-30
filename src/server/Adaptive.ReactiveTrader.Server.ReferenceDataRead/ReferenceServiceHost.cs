@@ -1,3 +1,4 @@
+using System.Threading;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
@@ -14,18 +15,12 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         private readonly IReferenceService _service;
         private readonly IBroker _broker;
 
-        public ReferenceServiceHost(IReferenceService service, IBroker broker) : base(broker, "ref")
+        public ReferenceServiceHost(IReferenceService service, IBroker broker) : base(broker, "reference")
         {
             _service = service;
             _broker = broker;
         }
-
-        public override async Task Start()
-        {
-            await base.Start();
-            await _broker.RegisterCall("reference.getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
-        }
-
+		
         private async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
             Log.DebugFormat("Received GetCurrencyPairUpdatesStream from {0}", context.UserSession.Username ?? "<UNKNOWN USER>");
@@ -35,9 +30,26 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
             var endPoint = await _broker.GetPrivateEndPoint<CurrencyPairUpdatesDto>(replyTo);
 
+            Interlocked.Increment(ref _clients);
+
             _service.GetCurrencyPairUpdatesStream(context, payload)
-                .TakeUntil(endPoint.TerminationSignal)
+                .Do(o => { Log.DebugFormat("Sending currency pair update to {0}", replyTo); })
+                .TakeUntil(endPoint.TerminationSignal).Finally(() => Interlocked.Decrement(ref _clients))
+                .Finally(() => { Log.DebugFormat("Tidying up subscripting.", replyTo); })
                 .Subscribe(endPoint);
+        }
+
+        private int _clients;
+
+        public override double GetLoad()
+        {
+            return _clients/100d;
+        }
+
+        public override async Task Start()
+        {
+            await base.Start();
+            RegisterCall("getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
         }
 
         public override void Dispose()

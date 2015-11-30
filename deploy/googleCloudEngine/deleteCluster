@@ -1,0 +1,19 @@
+#! /bin/bash
+
+if [[ ! -f ./config/config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
+    exit 1
+fi
+
+if [[ $1 != "-y" ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to confirm deletion by adding -y"
+    echo "  ie: ./deleteCluster -y"
+    exit 1
+fi
+
+. ./config/config
+./gcloud container clusters delete --quiet $kube_cluster 

@@ -1,3 +1,4 @@
+using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 using EventStore.ClientAPI;
@@ -24,9 +25,8 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                 await serviceHost.Start();
 
                 Log.Info("Service Started.");
-                
-                return serviceHost;
 
+                return new CompositeDisposable {cache, serviceHost};
             }
             catch (MessagingException e)
             {

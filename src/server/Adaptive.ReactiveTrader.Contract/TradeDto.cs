@@ -1,4 +1,6 @@
 ﻿using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Adaptive.ReactiveTrader.Contract
 {
@@ -9,10 +11,14 @@ namespace Adaptive.ReactiveTrader.Contract
         public string CurrencyPair { get; set; }
         public long Notional { get; set; }
         public string DealtCurrency { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
         public DirectionDto Direction { get; set; }
         public decimal SpotRate { get; set; }
-        public DateTime TradeDate { get; set; }
-        public DateTime ValueDate { get; set; }
+        public string TradeDate { get; set; }
+        public string ValueDate { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
         public TradeStatusDto Status { get; set; }
 
         public override string ToString()

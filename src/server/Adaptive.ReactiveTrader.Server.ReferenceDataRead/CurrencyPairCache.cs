@@ -12,6 +12,8 @@ using System.Reactive.Subjects;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
+    // TODO when state of the world is 'empty', should emit DTO
+    // TODO add logging
     public class CurrencyPairCache : IDisposable
     {
         private readonly IEventStoreConnection _es;

@@ -9,13 +9,13 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class ReferenceDataWriterLauncher
     {
-        private static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriterLauncher>();
+        protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriterLauncher>();
 
         public static async Task PopulateRefData(IEventStoreConnection eventStoreConnection)
         {
-            Console.WriteLine("Reference Data Service starting...");
+            Log.Info("Reference Writer Service starting...");
             var repository = new Repository(eventStoreConnection);
-            Console.WriteLine("Initializing Event Store with Currency Pair Data");
+            Log.Info("Initializing Event Store with Currency Pair Data");
             await new CurrencyPairInitializer(repository).CreateInitialCurrencyPairsAsync();
         }
 

@@ -53,7 +53,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
         {
             var x = formatter.Deserialize<MessageDto>(arguments[0]);
 
-            var message = new Message()
+            var message = new Message
             {
                 ReplyTo = new WampTransientDestination(x.ReplyTo),
                 Payload = Encoding.UTF8.GetBytes(x.Payload.ToString()) // TODO need to stop this from deserializing

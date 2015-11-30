@@ -1,0 +1,36 @@
+#! /bin/bash
+
+# to deploy a new kubernetes `service` and kubernetes `replication controller`
+
+if [[ $# != 5 ]];then
+  echo " "
+  echo "usage:"
+  echo "  ./deployNewService SERVICE_NAME MAJOR MINOR BUILD NAMESPACE"
+  echo "  "
+  echo "  parameters:"
+  echo "    1. SERVICE_NAME"
+  echo "    2. MAJOR"
+  echo "    3. MINOR"
+  echo "    4. BUILD"
+  echo "    5. NAMESPACE"
+  echo " "
+  echo "  ie: ./deployNewService broker 1 0 45 test"
+  exit 1
+fi
+
+service_name=$1
+major=$2
+minor=$3
+build=$4
+namespace=$5
+manifestsPath="manifests"
+
+mkdir -p $manifestsPath
+helpers/generate_service_manifest $service_name $major $minor $build $namespace
+helpers/generate_rc_manifest $service_name $major $minor $build $namespace
+
+svc=$manifestsPath/svc.yml
+rc=$manifestsPath/rc.yml
+
+kubectl create svc -f $svc
+kubectl create rc  -f $rc

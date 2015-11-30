@@ -21,7 +21,7 @@ namespace Adaptive.ReactiveTrader.MessageBroker
             var jsonBinding = new JTokenJsonBinding();
             var msgPack = new JTokenMsgpackBinding();
 
-            _router.RegisterTransport(new FleckWebSocketTransport("ws://127.0.0.1:8080/ws"), jsonBinding, msgPack);
+            _router.RegisterTransport(new FleckWebSocketTransport("ws://0.0.0.0:8080/ws"), jsonBinding, msgPack);
             _router.Open();
 
             var realm = _router.RealmContainer.GetRealmByName("com.weareadaptive.reactivetrader");

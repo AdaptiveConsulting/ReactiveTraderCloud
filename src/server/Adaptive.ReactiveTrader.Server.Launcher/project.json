@@ -15,7 +15,8 @@
         "Adaptive.ReactiveTrader.Server.Pricing": "",
         "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "",
         "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "",
-        "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*"
+        "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*",
+        "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0-*"
     },
 
     "commands": {

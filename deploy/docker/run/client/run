@@ -1,0 +1,18 @@
+#! /bin/bash
+
+echo "WebUi"
+
+. ../../../config
+
+docker rm web 2&> garbage
+
+docker run -d --net=host                        \
+     --name web                                 \
+     adaptivetrader/web:$vMajor.$vMinor.$vBuild \
+       bash -c "npm start"                      \
+     > container_id 
+
+rm garbage
+
+echo "  started"
+echo " "

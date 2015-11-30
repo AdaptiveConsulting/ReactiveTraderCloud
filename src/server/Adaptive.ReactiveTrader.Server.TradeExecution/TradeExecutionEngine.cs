@@ -3,6 +3,7 @@ using Adaptive.ReactiveTrader.EventStore.Domain;
 using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
+using Adaptive.ReactiveTrader.Server.Common;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
@@ -22,7 +23,14 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             var id = await _tradeIdProvider.GetNextId();
             var tradeDate = DateTime.UtcNow;
 
-            var trade = new Trade(id, user, request.CurrencyPair, request.SpotRate, tradeDate, request.ValueDate, request.Direction, request.Notional, request.DealtCurrency);
+            DateTime valueDate;
+            if( !DateTime.TryParse(request.ValueDate, out valueDate) )
+            {
+                valueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday();
+            }
+
+
+            var trade = new Trade(id, user, request.CurrencyPair, request.SpotRate, tradeDate, valueDate, request.Direction, request.Notional, request.DealtCurrency);
             await _repository.SaveAsync(trade);
 
             await ExecuteImpl(trade);
@@ -42,8 +50,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                     Notional = trade.Notional,
                     SpotRate = trade.SpotRate,
                     Status = trade.State,
-                    TradeDate = tradeDate,
-                    ValueDate = trade.ValueDate,
+                    TradeDate = tradeDate.ToShortDateString(),
+                    ValueDate = "SP. " + valueDate.Day + " " + valueDate.ToString("MMM"),
                     TradeId = id,
                     TraderName = user,
                     DealtCurrency = trade.DealtCurrency

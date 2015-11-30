@@ -12,18 +12,16 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
     {
         private static readonly ILog Log = LogManager.GetLogger<TradeExecutionServiceHost>();
         private readonly ITradeExecutionService _service;
-        private readonly IBroker _broker;
 
         public TradeExecutionServiceHost(ITradeExecutionService service, IBroker broker) : base(broker, "execution")
         {
             _service = service;
-            _broker = broker;
         }
-
-        public override async Task Start()
+       
+        public override Task Start()
         {
-            await _broker.RegisterCallResponse("execution.ExecuteTrade", ExecuteTrade);
-            Console.WriteLine("procedure execution.ExecuteTrade() registered");
+            RegisterCallResponse("executeTrade", ExecuteTrade);
+            return base.Start();
         }
 
         public Task<ExecuteTradeResponseDto> ExecuteTrade(IRequestContext context, IMessage message)
