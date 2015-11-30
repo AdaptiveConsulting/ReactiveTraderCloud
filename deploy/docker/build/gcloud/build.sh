@@ -26,5 +26,5 @@ mkdir -p ./build
 sed -i "s/__VDEBIAN__/$vDebian/g" ./template.Dockerfile > ./build/Dockerfile
 cp ./template.install.sh ./build/install.sh
 
-docker build --no-cache -t $gcloudContainer:latest ./build/.
-docker tag $gcloudContainer:latest $kubectlContainer:latest
+docker build -t $gcloudContainer:latest ./build/.
+docker tag -f $gcloudContainer:latest $kubectlContainer:latest

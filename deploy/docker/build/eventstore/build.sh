@@ -27,4 +27,4 @@ cp ./template.install.sh ./build/install.sh
 sed -i "s/__VEVENTSTORE__/$vEventstore/g" ./build/install.sh 
 
 # build
-docker build --no-cache -t $eventstoreContainer:$vEventstore ./build/.
+docker build -t $eventstoreContainer:$vEventstore ./build/.

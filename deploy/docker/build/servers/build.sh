@@ -33,4 +33,4 @@ sed "s/__VDNX__/$vDnx/g" ./template.Dockerfile > ./build/Dockerfile
 # build
 containerTaggedName="$serversContainer:$vMajor.$vMinor.$vBuild"
 docker build -t $containerTaggedName ./build/.
-docker tag $containerTaggedName $serversContainer:latest
+docker tag -f $containerTaggedName $serversContainer:latest

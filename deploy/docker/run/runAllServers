@@ -13,7 +13,7 @@ do
     cd ../..
 done
 
-# cd client
-#     ./run  || scream $server
-#     ./test || scream $server
-# cd ..
+cd client
+    ./run  || scream $server
+    ./test || scream $server
+cd ..
