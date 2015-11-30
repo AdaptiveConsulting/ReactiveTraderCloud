@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: __SERVICENAME__
+  labels:
+    name: __SERVICENAME__
+    major: __MAJOR__ 
+    minor: __MINOR__ 
+    build: __BUILD__ 
+spec:
+  replicas: 1
+  selector:
+    name: __SERVICENAME__
+    major: __MAJOR__ 
+    minor: __MINOR__ 
+    build: __BUILD__ 
+  template:
+    metadata:
+      labels:
+        name: __SERVICENAME__
+        major: __MAJOR__ 
+        minor: __MINOR__ 
+        build: __BUILD__ 
+    spec:
+      containers:
+      - name: __SERVICENAME__
+        image: __SERVICECONTAINER__:__MAJOR__.__MINOR__.__BUILD__
+        ports:
+          containerPort: __CONTAINERPORT__

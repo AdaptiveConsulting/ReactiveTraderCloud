@@ -76,7 +76,7 @@ export class IndexView extends React.Component {
           direction: trade.Direction,
           amount: trade.Notional,
           trader: trade.TraderName,
-          valueDate: ['SP.', dt.getDate(), MONTHS[dt.getMonth()]].join(' '), // todo get this from DTO
+          valueDate: trade.ValueDate, // todo get this from DTO
           rate: trade.SpotRate
         };
 
@@ -87,10 +87,6 @@ export class IndexView extends React.Component {
         console.trace();
       }
     );
-
-    setTimeout(() =>{
-      //todo should so something here
-    }, 500);
   }
 
   render(){

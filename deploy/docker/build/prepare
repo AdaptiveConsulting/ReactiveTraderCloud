@@ -1,0 +1,89 @@
+#! /bin/bash
+
+# CONFIGURATION
+# =============
+possibleCommands="build push"
+services="servers broker web eventstore"
+possibleGroup="services gcloud mono node testtools crossbar $services"
+
+# USAGE
+# =====
+listcontains() {
+  for word in $1; do
+    [[ $word = $2 ]] && return 0
+  done
+  return 1
+}
+
+usage() {
+    echo " "
+    echo " usage:"
+    echo "   prepare COMMAND GROUP"
+    echo " "
+    echo " COMMAND can be:"
+    echo "   $possibleCommands"
+    echo " "
+    echo " GROUP can be:"
+    echo "   $possibleGroup"
+    echo " "
+    echo " ie: prepare build services"
+    echo "     prepare build mono"
+    echo "     prepare push node"
+    echo " "
+}
+
+command=$1
+group=$2
+
+if [[ $# != 2 ]];then
+  usage
+  exit 1
+fi
+
+# control build/push
+if ! listcontains "$possibleCommands" $command; then 
+    echo "command $command is not recognised"
+    echo "possible commands are $possibleCommands"
+    exit 1
+fi 
+
+# control services/crossbar/eventstore ...
+if ! listcontains "$possibleGroup" $group; then 
+    echo "group $group is not recognised"
+    echo "possible groups are $possibleGroup"
+    exit 1
+fi
+
+# define services
+if [[ $group = "services" ]];then
+    group=$services
+fi
+
+# BUILD
+# =====
+if [[ $command = "build" ]];then
+  for service in $group
+  do
+    pushd $service > garbage
+      rm garbage
+      ./build.sh
+    popd > garbage
+    rm garbage
+  done
+  exit 0
+fi
+
+
+# PUSH
+# ====
+if [[ $command = "push" ]];then
+  for service in $group
+  do
+    pushd $service > garbage
+      rm garbage
+      ./push.sh
+    popd > garbage
+    rm garbage
+  done
+  exit 0
+fi
