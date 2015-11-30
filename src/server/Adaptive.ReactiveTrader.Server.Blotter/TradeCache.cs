@@ -31,7 +31,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 
         private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
         private readonly Dictionary<long, Trade> _stateOfTheWorld = new Dictionary<long, Trade>();
-        private readonly BehaviorSubject<Dictionary<long, Trade>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<long, Trade>>(null);
+        private readonly BehaviorSubject<Dictionary<long, Trade>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<long, Trade>>(new Dictionary<long, Trade>());
         private CompositeDisposable Disposables { get; }
 
         public TradeCache(IEventStoreConnection eventStoreConnection)
@@ -73,7 +73,6 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             return Observable.Create<TradesDto>(obs =>
             {
                 var sotw = _stateOfTheWorldUpdates
-                    .Where(x => x != null)
                     .Take(1)
                     .Select(x => BuildStateOfTheWorldDto(x.Values));
 
