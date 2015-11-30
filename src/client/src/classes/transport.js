@@ -318,6 +318,7 @@ class Transport extends emitter {
    * @returns {{log: Transport.session.log}|*}
    */
   remoteCall(subscription:object, instanceID:string){
+    console.error(this.username);
     const ins = instanceID + '.' + subscription.proc,
       replyTo = subscription.replyTo && subscription.replyTo.replyToAddress ? subscription.replyTo.replyToAddress : undefined;
 
@@ -325,7 +326,7 @@ class Transport extends emitter {
 
     return this.session.call(ins, [{
       replyTo,
-      Username: this.code,
+      Username: this.username,
       payload: subscription.message
     }]);
   }

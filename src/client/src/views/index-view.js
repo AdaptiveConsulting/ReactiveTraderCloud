@@ -58,7 +58,7 @@ export class IndexView extends React.Component {
       this.state.trades.unshift(trade);
     }
     else {
-      this.state.trades[_.indexOf(trades, exists)] = trade;
+      this.state.trades[_.indexOf(this.state.trades, exists)] = trade;
     }
 
     update && this.setState({
