@@ -4,7 +4,7 @@ echo "Reference"
 
 . ../../../../config
 
-startCommand=`cat "../../../../../src/server/ReferenceInstance.bat"`
+startCommand="dnx -p Adaptive.ReactiveTrader.Server.ReferenceDataRead run"
 waitCommand="while true; do echo ping; sleep 60; done"
 
 docker rm reference 2&> garbage

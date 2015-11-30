@@ -4,7 +4,7 @@ echo "Pricing"
 
 . ../../../../config
 
-startCommand=`cat "../../../../../src/server/PricingInstance.bat"`
+startCommand="dnx -p Adaptive.ReactiveTrader.Server.Pricing run"
 waitCommand="while true; do echo ping; sleep 60; done"
 
 docker rm pricing 2&> garbage
