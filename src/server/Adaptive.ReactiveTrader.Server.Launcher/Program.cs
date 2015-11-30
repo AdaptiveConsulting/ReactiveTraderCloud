@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.MessageBroker;
@@ -56,6 +57,10 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 Console.WriteLine("Press Any Key To Stop...");
 
+                if (!args.Contains("--interactive"))
+                    while (true)
+                        Thread.Sleep(TimeSpan.FromSeconds(5));
+
 
                 while (true)
                 {
@@ -63,7 +68,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                     try
                     {
-                        if (x == "exit" || x == "")
+                        if (x == null || x == "exit" || x == "")
                             break;
 
                         if (x.StartsWith("start"))
