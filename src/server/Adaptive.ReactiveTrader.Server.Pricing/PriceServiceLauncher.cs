@@ -29,7 +29,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             Log.Info("Service Started.");
 
-            return new CompositeDisposable() { cache, serviceHost};
+            return new CompositeDisposable { cache, serviceHost};
         }
     }
 }
