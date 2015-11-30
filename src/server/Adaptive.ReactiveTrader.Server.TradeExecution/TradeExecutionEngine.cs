@@ -1,23 +1,20 @@
 ﻿using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.EventStore;
-using EventStore.ClientAPI;
-using Newtonsoft.Json;
+using Adaptive.ReactiveTrader.EventStore.Domain;
 using System;
-using System.Text;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Contract.Events.Trade;
+using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
 using Adaptive.ReactiveTrader.Server.Common;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     public class TradeExecutionEngine
     {
-        private readonly IEventStore _eventStore;
+        private readonly IRepository _repository;
         private readonly TradeIdProvider _tradeIdProvider;
 
-        public TradeExecutionEngine(IEventStore eventStore, TradeIdProvider tradeIdProvider)
+        public TradeExecutionEngine(IRepository repository, TradeIdProvider tradeIdProvider)
         {
-            _eventStore = eventStore;
+            _repository = repository;
             _tradeIdProvider = tradeIdProvider;
         }
 
@@ -33,48 +30,38 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             }
 
 
-            var tradeCreatedEvent = new TradeCreatedEvent(id, user, request.CurrencyPair, request.SpotRate, DateUtils.ToSerializationFormat(tradeDate), DateUtils.ToSerializationFormat(valueDate), request.Direction.ToString(), request.Notional, request.DealtCurrency);
-            await _eventStore.AppendToStreamAsync($"trade-{id}", ExpectedVersion.Any, new EventData(Guid.NewGuid(), "Trade Created", false, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(tradeCreatedEvent)), new byte[0]));
+            var trade = new Trade(id, user, request.CurrencyPair, request.SpotRate, tradeDate, valueDate, request.Direction, request.Notional, request.DealtCurrency);
+            await _repository.SaveAsync(trade);
 
-            var status = await ExecuteImpl(request);
-
-            switch (status)
-            {
-                case TradeStatusDto.Done:
-                    {
-                        var tradeCompletedEvent = new TradeCompletedEvent(id);
-                        await _eventStore.AppendToStreamAsync($"trade-{id}", ExpectedVersion.Any, new EventData(Guid.NewGuid(), "Trade Completed", false, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(tradeCompletedEvent)), new byte[0]));
-                    }
-                    break;
-                case TradeStatusDto.Rejected:
-                    {
-                        var tradeRejectedEvent = new TradeRejectedEvent(id, "Execution engine rejected trade");
-                        await _eventStore.AppendToStreamAsync($"trade-{id}", ExpectedVersion.Any, new EventData(Guid.NewGuid(), "Trade Rejected", false, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(tradeRejectedEvent)), new byte[0]));
-                    }
-                    break;
-            }
+            await ExecuteImpl(trade);
+            
+            // We do the saving in two phases here as this gives us the created event emitted when the first save happens, then
+            // the completed/rejected event emitted after the actual execution happens, which will be after a slight delay.
+            // This gives us a sequence of events that is more like a real world application
+            // rather than both events being received on the client almost simultaneously
+            await _repository.SaveAsync(trade);
 
             return new ExecuteTradeResponseDto
             {
                 Trade = new TradeDto
                 {
-                    CurrencyPair = request.CurrencyPair,
-                    Direction = request.Direction,
-                    Notional = request.Notional,
-                    SpotRate = request.SpotRate,
-                    Status = status,
+                    CurrencyPair = trade.CurrencyPair,
+                    Direction = trade.Direction,
+                    Notional = trade.Notional,
+                    SpotRate = trade.SpotRate,
+                    Status = trade.State,
                     TradeDate = tradeDate.ToShortDateString(),
-                    ValueDate =  "SP. " + valueDate.Day + " " + valueDate.ToString("MMM"),
+                    ValueDate = "SP. " + valueDate.Day + " " + valueDate.ToString("MMM"),
                     TradeId = id,
                     TraderName = user,
-                    DealtCurrency = request.DealtCurrency
+                    DealtCurrency = trade.DealtCurrency
                 }
             };
         }
 
-        private async Task<TradeStatusDto> ExecuteImpl(ExecuteTradeRequestDto request)
+        private async Task ExecuteImpl(Trade trade)
         {
-            switch (request.CurrencyPair)
+            switch (trade.CurrencyPair)
             {
                 case "EURJPY":
                     await Task.Delay(TimeSpan.FromSeconds(5));
@@ -87,7 +74,14 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                     break;
             }
 
-            return request.CurrencyPair == "GBPJPY" ? TradeStatusDto.Rejected : TradeStatusDto.Done;
+            if (trade.CurrencyPair == "GBPJPY")
+            {
+                trade.Reject("Execution engine rejected trade");
+            }
+            else
+            {
+                trade.Complete();
+            }
         }
     }
 }

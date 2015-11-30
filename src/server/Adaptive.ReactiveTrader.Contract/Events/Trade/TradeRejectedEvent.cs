@@ -2,6 +2,7 @@
 {
     public class TradeRejectedEvent
     {
+        public static string Type { get; } = "Trade Rejected";
         public long TradeId { get; }
         public string Reason { get; }
 

@@ -2,8 +2,8 @@
 {
     public class CurrencyPairDeactivatedEvent
     {
+        public static string Type { get; } = "Currency Pair Deactivated";
         public string Symbol { get; }
-        public string Name { get; } = "Currency Pair Deactivated";
 
         public CurrencyPairDeactivatedEvent(string symbol)
         {

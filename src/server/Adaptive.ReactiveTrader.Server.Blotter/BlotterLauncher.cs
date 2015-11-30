@@ -1,9 +1,9 @@
-using System;
 using System.Reactive.Disposables;
-using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
+using EventStore.ClientAPI;
+using System;
+using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
@@ -11,7 +11,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
     {
         private static readonly ILog Log = LogManager.GetLogger<BlotterLauncher>();
 
-        public static async Task<IDisposable> Run(IEventStore es, IBroker broker)
+        public static async Task<IDisposable> Run(IEventStoreConnection es, IBroker broker)
         {
             Log.Info("Reference Data Service starting...");
             try

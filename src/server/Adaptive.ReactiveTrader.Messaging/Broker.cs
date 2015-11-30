@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Adaptive.ReactiveTrader.Messaging.WAMP;
+using Common.Logging;
+using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using SystemEx;
-using Adaptive.ReactiveTrader.Messaging.WAMP;
-using Common.Logging;
 using WampSharp.V2;
 using WampSharp.V2.Client;
 using WampSharp.V2.Core.Contracts;
@@ -17,7 +17,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class Broker : IBroker
     {
-        protected static readonly ILog Log = LogManager.GetLogger<Broker>();
+        private static readonly ILog Log = LogManager.GetLogger<Broker>();
 
         private readonly IWampChannel _channel;
         private WampMetaApiServiceProxy _meta;
@@ -51,7 +51,10 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public async Task<IAsyncDisposable> RegisterCall(string procName, Func<IRequestContext, IMessage, Task> onMessage)
         {
-            Log.InfoFormat("Registering call [{0}]", procName);
+            if (Log.IsInfoEnabled)
+            {
+                Log.Info($"Registering call: [{procName}]");
+            }
 
             var rpcOperation = new RpcOperation(procName, onMessage);
             var realm = _channel.RealmProxy;
@@ -67,6 +70,11 @@ namespace Adaptive.ReactiveTrader.Messaging
         public async Task<IAsyncDisposable> RegisterCallResponse<TResponse>(string procName,
             Func<IRequestContext, IMessage, Task<TResponse>> onMessage)
         {
+            if (Log.IsInfoEnabled)
+            {
+                Log.Info($"Registering call with response: [{procName}]");
+            }
+
             var rpcOperation = new RpcResponseOperation<TResponse>(procName, onMessage);
             var realm = _channel.RealmProxy;
 
@@ -112,6 +120,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public async Task<IEndPoint<T>> GetPublicEndPoint<T>(string destination)
         {
+            await Task.Delay(0);
             var subject = _channel.RealmProxy.Services.GetSubject<T>(destination);
             return new EndPoint<T>(subject);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.MessageBroker;
 using Adaptive.ReactiveTrader.Messaging;
@@ -11,6 +12,7 @@ using Adaptive.ReactiveTrader.Server.ReferenceDataWrite;
 using Adaptive.ReactiveTrader.Server.TradeExecution;
 using Common.Logging;
 using Common.Logging.Simple;
+using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
@@ -32,19 +34,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     ShowLogName = true,
                 };
 
-                IEventStore es;
-
-                if (args.Contains("es"))
-                {
-                    es = new InMemoryEventStore();
-                    ReferenceDataWriterLauncher.Initialize(es).Wait();
-                }
-                else
-                {
-                    var news = new NetworkEventStore();
-                    news.Connect().Wait();
-                    es = news;
-                }
+                var eventStoreConnection = GetEventStoreConnection(args.Contains("es")).Result;
 
                 if (args.Contains("mb"))
                     Servers.Add("mb1", MessageBrokerLauncher.Run());
@@ -55,13 +45,13 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     Servers.Add("p1", PriceServiceLauncher.Run(broker.Result).Result);
 
                 if (args.Contains("ref"))
-                    Servers.Add("r1", ReferenceDataReaderLauncher.Run(es, broker.Result).Result);
+                    Servers.Add("r1", ReferenceDataReaderLauncher.Run(eventStoreConnection, broker.Result).Result);
 
                 if (args.Contains("exec"))
-                    Servers.Add("e1", TradeExecutionLauncher.Run(es, broker.Result).Result);
+                    Servers.Add("e1", TradeExecutionLauncher.Run(eventStoreConnection, broker.Result).Result);
 
                 if (args.Contains("b"))
-                    Servers.Add("b1", BlotterLauncher.Run(es, broker.Result).Result);
+                    Servers.Add("b1", BlotterLauncher.Run(eventStoreConnection, broker.Result).Result);
 
                 Console.WriteLine("Press Any Key To Stop...");
 
@@ -92,7 +82,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                             {
                                 Console.WriteLine("Adding reference service");
                                 Servers.Add(serviceName,
-                                    ReferenceDataReaderLauncher.Run(es, broker.Result).Result);
+                                    ReferenceDataReaderLauncher.Run(eventStoreConnection, broker.Result).Result);
                             }
 
                             if (serviceType == "p")
@@ -104,13 +94,13 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                             if (serviceType == "e")
                             {
                                 Console.WriteLine("Adding exec service");
-                                Servers.Add(serviceName, TradeExecutionLauncher.Run(es, broker.Result).Result);
+                                Servers.Add(serviceName, TradeExecutionLauncher.Run(eventStoreConnection, broker.Result).Result);
                             }
 
                             if (serviceType == "b")
                             {
                                 Console.WriteLine("Adding blotter service");
-                                Servers.Add(serviceName, BlotterLauncher.Run(es, broker.Result).Result);
+                                Servers.Add(serviceName, BlotterLauncher.Run(eventStoreConnection, broker.Result).Result);
                             }
 
 
@@ -166,6 +156,25 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 Console.WriteLine(e);
                 Console.ReadLine();
             }
+        }
+
+        private static async Task<IEventStoreConnection> GetEventStoreConnection(bool embedded)
+        {
+            IEventStore eventStore;
+
+            if (embedded)
+            {
+                eventStore = new EmbeddedEventStore();
+                await eventStore.Connection.ConnectAsync();
+                await ReferenceDataWriterLauncher.PopulateRefData(eventStore.Connection);
+            }
+            else
+            {
+                eventStore = new ExternalEventStore();
+                await eventStore.Connection.ConnectAsync();
+            }
+
+            return eventStore.Connection;
         }
     }
 }

@@ -14,9 +14,9 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 {
     public class TradeCache : IDisposable
     {
-        private readonly IEventStore _eventStore;
+        private readonly IEventStoreConnection _eventStoreConnection;
         private bool _isCaughtUp;
-        private IConnectableObservable<IEvent> _tradeEvents;
+        private IConnectableObservable<RecordedEvent> _tradeEvents;
 
         private const string TradeCompletedEvent = "TradeCompletedEvent";
         private const string TradeRejectedEvent = "TradeRejectedEvent";
@@ -34,9 +34,9 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         private readonly BehaviorSubject<Dictionary<long, Trade>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<long, Trade>>(null);
         private CompositeDisposable Disposables { get; }
 
-        public TradeCache(IEventStore eventStore)
+        public TradeCache(IEventStoreConnection eventStoreConnection)
         {
-            _eventStore = eventStore;
+            _eventStoreConnection = eventStoreConnection;
             Disposables = new CompositeDisposable();
         }
 
@@ -87,7 +87,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             return new TradesDto(trades.Select(x => x.ToDto()).ToList());
         }
 
-        private static TradesDto MapSingleEventToUpdateDto(IDictionary<long, Trade> currentSotw, IEvent evt)
+        private static TradesDto MapSingleEventToUpdateDto(IDictionary<long, Trade> currentSotw, RecordedEvent evt)
         {
             switch (evt.EventType)
             {
@@ -110,15 +110,15 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             return new TradesDto(new[] { dto });
         }
 
-        private IObservable<IEvent> GetAllEvents()
+        private IObservable<RecordedEvent> GetAllEvents()
         {
-            return Observable.Create<IEvent>(o =>
+            return Observable.Create<RecordedEvent>(o =>
             {
-                Action<IEvent> onEvent = e =>
+                Action<EventStoreCatchUpSubscription, ResolvedEvent> onEvent = (_, e) =>
                 {
                     _eventLoopScheduler.Schedule(() =>
                     {
-                        o.OnNext(e);
+                        o.OnNext(e.Event);
                     });
                 };
 
@@ -131,12 +131,12 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                     });
                 };
 
-                var subscription = _eventStore.SubscribeToAllFrom(Position.Start, false, onEvent, onCaughtUp);
+                var subscription = _eventStoreConnection.SubscribeToAllFrom(Position.Start, false, onEvent, onCaughtUp);
                 return new CompositeDisposable(Disposable.Create(() => subscription.Stop()));
             });
         }
 
-        private static void UpdateStateOfTheWorld(IDictionary<long, Trade> currentSotw, IEvent evt)
+        private static void UpdateStateOfTheWorld(IDictionary<long, Trade> currentSotw, RecordedEvent evt)
         {
             switch (evt.EventType)
             {
@@ -144,7 +144,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                     var createdEvent = evt.GetEvent<TradeCreatedEvent>();
                     currentSotw.Add(createdEvent.TradeId, new Trade(
                         createdEvent.TradeId,
-                        createdEvent.UserName,
+                        createdEvent.TraderName,
                         createdEvent.CurrencyPair,
                         createdEvent.Notional,
                         createdEvent.DealtCurrency,

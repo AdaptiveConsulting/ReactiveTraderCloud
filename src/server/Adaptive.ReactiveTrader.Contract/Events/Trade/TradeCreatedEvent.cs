@@ -2,8 +2,9 @@
 {
     public class TradeCreatedEvent
     {
+        public static string Type { get; } = "Trade Crreated";
         public long TradeId { get; }
-        public string UserName { get; }
+        public string TraderName { get; }
         public string CurrencyPair { get; }
         public decimal SpotRate { get; }
         public string TradeDate { get; }
@@ -12,10 +13,10 @@
         public int Notional { get; }
         public string DealtCurrency { get; }
 
-        public TradeCreatedEvent(long tradeId, string userName, string currencyPair, decimal spotRate, string tradeDate, string valueDate, string direction, int notional, string dealtCurrency)
+        public TradeCreatedEvent(long tradeId, string traderName, string currencyPair, decimal spotRate, string tradeDate, string valueDate, string direction, int notional, string dealtCurrency)
         {
             TradeId = tradeId;
-            UserName = userName;
+            TraderName = traderName;
             CurrencyPair = currencyPair;
             SpotRate = spotRate;
             TradeDate = tradeDate;

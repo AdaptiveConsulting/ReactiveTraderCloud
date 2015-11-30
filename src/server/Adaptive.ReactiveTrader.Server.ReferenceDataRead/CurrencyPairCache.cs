@@ -1,6 +1,7 @@
 using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.Contract.Events.Reference;
+using Adaptive.ReactiveTrader.EventStore;
 using EventStore.ClientAPI;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,6 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Text;
-using Adaptive.ReactiveTrader.Contract.Events.Reference;
-using Adaptive.ReactiveTrader.EventStore;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
@@ -18,11 +16,11 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
     // TODO add logging
     public class CurrencyPairCache : IDisposable
     {
-        private readonly IEventStore _es;
-        private const string CurrencyPairCreatedEventType = "Currency Pair Created";
-        private const string CurrencyPairChangedEventType = "Currency Pair Changed";
-        private const string CurrencyPairActivatedEventType = "Currency Pair Activated";
-        private const string CurrencyPairDeactivatedEventType = "Currency Pair Deactivated";
+        private readonly IEventStoreConnection _es;
+        private const string CurrencyPairCreatedEventType = "CurrencyPairCreatedEvent";
+        private const string CurrencyPairChangedEventType = "CurrencyPairChangedEvent";
+        private const string CurrencyPairActivatedEventType = "CurrencyPairActivatedEvent";
+        private const string CurrencyPairDeactivatedEventType = "CurrencyPairDeactivatedEvent";
 
         private static readonly ISet<string> CurrencyPairEventTypes = new HashSet<string>
         {
@@ -35,10 +33,10 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         private readonly Dictionary<string, CurrencyPair> _stateOfTheWorld = new Dictionary<string, CurrencyPair>();
         private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
         private readonly BehaviorSubject<Dictionary<string, CurrencyPair>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<string, CurrencyPair>>(null);
-        private IConnectableObservable<IEvent> _currencyPairEvents;
+        private IConnectableObservable<RecordedEvent> _currencyPairEvents;
         private bool _isCaughtUp;
 
-        public CurrencyPairCache(IEventStore es)
+        public CurrencyPairCache(IEventStoreConnection es)
         {
             _es = es;
             Disposables = new CompositeDisposable();
@@ -98,15 +96,15 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                                                            .ToList(), true);
         }
 
-        private IObservable<IEvent> GetAllEvents()
+        private IObservable<RecordedEvent> GetAllEvents()
         {
-            return Observable.Create<IEvent>(o =>
+            return Observable.Create<RecordedEvent>(o =>
             {
-                Action<IEvent> onEvent = e =>
+                Action<EventStoreCatchUpSubscription, ResolvedEvent> onEvent = (_, e) =>
                 {
                     _eventLoopScheduler.Schedule(() =>
                     {
-                        o.OnNext(e);
+                        o.OnNext(e.Event);
                     });
                 };
 
@@ -124,7 +122,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             });
         }
 
-        private void UpdateStateOfTheWorld(IDictionary<string, CurrencyPair> currentSow, IEvent evt)
+        private void UpdateStateOfTheWorld(IDictionary<string, CurrencyPair> currentSow, RecordedEvent evt)
         {
             switch (evt.EventType)
             {
@@ -147,7 +145,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             }
         }
 
-        private CurrencyPairUpdatesDto MapSingleEventToUpdateDto(IDictionary<string, CurrencyPair> currentSow, IEvent evt)
+        private CurrencyPairUpdatesDto MapSingleEventToUpdateDto(IDictionary<string, CurrencyPair> currentSow, RecordedEvent evt)
         {
             switch (evt.EventType)
             {
@@ -175,7 +173,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                 }
             }, false);
         }
-        
+                
         public void Dispose()
         {
             Disposables.Dispose();

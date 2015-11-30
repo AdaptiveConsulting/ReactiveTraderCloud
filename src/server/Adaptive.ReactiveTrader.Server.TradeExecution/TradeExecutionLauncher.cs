@@ -1,20 +1,22 @@
-﻿using System;
+﻿using Adaptive.ReactiveTrader.Messaging;
+using EventStore.ClientAPI;
+using System;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.EventStore;
-using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.EventStore.Domain;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     public class TradeExecutionLauncher
     {
-        public static async Task<IDisposable> Run(IEventStore eventStore, IBroker broker)
+        public static async Task<IDisposable> Run(IEventStoreConnection eventStoreConnection, IBroker broker)
         {
             {
                 Console.WriteLine("Trade Execution Service starting...");
 
                 try
                 {
-                    var executionEngine = new TradeExecutionEngine(eventStore, new TradeIdProvider(eventStore));
+                    var repository = new Repository(eventStoreConnection);
+                    var executionEngine = new TradeExecutionEngine(repository, new TradeIdProvider(eventStoreConnection));
 
                     var service = new TradeExecutionService(executionEngine);
                     var serviceHost = new TradeExecutionServiceHost(service, broker);

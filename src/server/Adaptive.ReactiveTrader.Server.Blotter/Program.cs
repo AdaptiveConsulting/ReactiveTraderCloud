@@ -28,10 +28,10 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             try
             {
                 var broker = BrokerFactory.Create(uri, realm);
-                var es = new NetworkEventStore();
-                es.Connect().Wait();
+                var es = new ExternalEventStore();
+                es.Connection.ConnectAsync().Wait();
 
-                using (BlotterLauncher.Run(es, broker.Result).Result)
+                using (BlotterLauncher.Run(es.Connection, broker.Result).Result)
                 {
                     Console.WriteLine("Press Any Key To Stop...");
                     Console.ReadLine();
