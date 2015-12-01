@@ -24,7 +24,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             }
             catch (Exception e)
             {
-                Log.Error("Could not send message", e);
+                Log.Error("Could not send message" + e.Message);
             }
         }
 

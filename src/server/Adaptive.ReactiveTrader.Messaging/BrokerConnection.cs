@@ -44,13 +44,15 @@ namespace Adaptive.ReactiveTrader.Messaging
 
                 try
                 {
+                    _compositeDisposable = new CompositeDisposable();
+                    _sessionDispose.Disposable = _compositeDisposable;
                     await _channel.Open();
 
                     Log.Info("Connected");
 
                     _broker = new Broker(_channel);
-                    _compositeDisposable = new CompositeDisposable {_broker};
-                    _sessionDispose.Disposable = _compositeDisposable;
+                    _compositeDisposable.Add( _broker);
+                    
 
                     Log.Info("Creating Service Hosts..");
                     foreach (var s in _serviceHostFactories)

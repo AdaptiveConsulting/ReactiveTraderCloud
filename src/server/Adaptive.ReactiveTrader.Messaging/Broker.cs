@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using SystemEx;
 using Adaptive.ReactiveTrader.Messaging.WAMP;
@@ -21,6 +22,9 @@ namespace Adaptive.ReactiveTrader.Messaging
         private readonly WampMetaApiServiceProxy _meta;
         private readonly IObservable<long> _sessionTeardowns;
         private readonly IObservable<long> _subscriptionTeardowns;
+        private readonly Subject<Unit> _brokerTeardown;
+
+
 
         public Broker(IWampChannel channel)
         {
@@ -32,7 +36,17 @@ namespace Adaptive.ReactiveTrader.Messaging
                 Observable.Create<long>(async o =>
                 {
                     var r = await _meta.SubscribeTo.Session.OnLeave(o.OnNext);
-                    return Disposable.Create(async () => await r.DisposeAsync());
+                    return Disposable.Create(async () =>
+                    {
+                        try
+                        {
+                            await r.DisposeAsync();
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error("Couldn't close subscription to sessions. Perhaps broker shutdown." + e.Message);
+                        }
+                    });
                 }).Publish().RefCount();
 
             _subscriptionTeardowns =
@@ -41,10 +55,19 @@ namespace Adaptive.ReactiveTrader.Messaging
                     {
                         var r = await _meta.SubscribeTo.Subscription.OnUnsubscribe(
                             (sessionID, subscriptionId) => { observer.OnNext(subscriptionId); });
-                        return Disposable.Create(async () => await r.DisposeAsync());
+                        return Disposable.Create(async () => {
+                            try
+                            {
+                                await r.DisposeAsync();
+                            }
+                            catch (Exception e)
+                            {
+                                Log.Error("Couldn't close subscription to subscriptions. Perhaps broker shutdown." + e.Message);
+                            }
+                        });
                     }).Publish().RefCount();
 
-            // should add broker teardown
+            _brokerTeardown = new Subject<Unit>();
         }
 
         public async Task<IAsyncDisposable> RegisterCall(string procName,
@@ -109,6 +132,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             var breaker =
                 _sessionTeardowns.Where(s => s == sessionID).Select(_ => Unit.Default)
                     .Merge(_subscriptionTeardowns.Where(s => s == subID.Value).Select(_ => Unit.Default))
+                        .Merge(_brokerTeardown)
                     .Take(1)
                     .Do(o => Log.DebugFormat("Remove subscription for {0} ({1})", subID, dest));
 
@@ -126,7 +150,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public void Dispose()
         {
-            // trigger teardown
+          _brokerTeardown.OnNext(Unit.Default);
         }
     }
 }
