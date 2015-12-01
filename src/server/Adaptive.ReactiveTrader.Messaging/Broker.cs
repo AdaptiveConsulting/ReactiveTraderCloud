@@ -125,8 +125,6 @@ namespace Adaptive.ReactiveTrader.Messaging
             return new EndPoint<T>(subject);
         }
 
-      
-
         public async Task Open()
         {
             await _channel.Open();

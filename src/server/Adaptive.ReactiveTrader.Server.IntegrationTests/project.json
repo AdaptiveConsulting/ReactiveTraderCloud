@@ -1,6 +1,6 @@
-{
+﻿{
   "version": "1.0.0-*",
-  "description": "Adaptive.ReactiveTrader.Server.Tests Class Library",
+  "description": "Adaptive.ReactiveTrader.Server.IntegrationTests Class Library",
   "authors": [ "Qiming Liu" ],
   "tags": [ "" ],
   "projectUrl": "",
@@ -9,9 +9,10 @@
   "dependencies": {
     "xunit": "2.1.0",
     "xunit.runner.dnx": "2.1.0-rc1-build204",
-    "FakeItEasy": "1.25.3",
-    "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0-*"
+    "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
+    "Adaptive.ReactiveTrader.EventStore": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
+    "Newtonsoft.Json": "7.0.1"
   },
 
   "commands": {
