@@ -1,15 +1,16 @@
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Server.Common.Config;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
     public static class BrokerFactory
     {
-        public static async Task<IBroker> Create(string uri, string realm)
+        public static async Task<IBroker> Create(IBrokerConfiguration config)
         {
             try
             {
-                var broker = new Broker(uri, realm);
+                var broker = new Broker(BrokerUri.FromConfig(config), config.Realm);
                 await broker.Open();
                 return broker;
             }

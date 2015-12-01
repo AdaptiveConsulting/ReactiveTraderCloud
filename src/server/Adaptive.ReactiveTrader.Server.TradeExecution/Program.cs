@@ -1,6 +1,9 @@
 ﻿using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Server.Common.Config;
 using System;
+using Common.Logging;
+using Common.Logging.Simple;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
@@ -8,24 +11,20 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
     {
         public static void Main(string[] args)
         {
-            var uri = "ws://127.0.0.1:8080/ws";
-            var realm = "com.weareadaptive.reactivetrader";
-
-            if (args.Length > 0)
+            LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
             {
-                uri = args[0];
-                if (args.Length > 1)
-                    realm = args[1];
-            }
+                ShowLogName = true
+            };
 
             try
             {
-                var broker = BrokerFactory.Create(uri, realm).Result;
+                var config = ServiceConfiguration.FromArgs(args);
+                var broker = BrokerFactory.Create(config.Broker).Result;
 
-                var es = new ExternalEventStore();
-                es.Connection.ConnectAsync().Wait();
+                var eventStoreConnection = EventStoreConnectionFactory.Create(EventStoreLocation.External, config.EventStore);
+                eventStoreConnection.ConnectAsync().Wait();
 
-                using (TradeExecutionLauncher.Run(es.Connection, broker))
+                using (TradeExecutionLauncher.Run(eventStoreConnection, broker))
                 {
                     Console.WriteLine("Press Any Key To Stop...");
                     Console.ReadLine();

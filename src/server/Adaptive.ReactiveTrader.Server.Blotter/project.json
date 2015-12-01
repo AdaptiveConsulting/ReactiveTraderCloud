@@ -15,7 +15,8 @@
   },
 
   "commands": {
-    "Adaptive.ReactiveTrader.Server.Blotter": "Adaptive.ReactiveTrader.Server.Blotter"
+    "dev": "Adaptive.ReactiveTrader.Server.Blotter dev",
+    "prod": "Adaptive.ReactiveTrader.Server.Blotter prod"
   },
 
   "frameworks": {

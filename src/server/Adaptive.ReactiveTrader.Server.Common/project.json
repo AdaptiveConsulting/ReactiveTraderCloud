@@ -6,6 +6,13 @@
   "projectUrl": "",
   "licenseUrl": "",
 
+
+  "dependencies": {
+    "Common.Logging": "3.3.1",
+    "Microsoft.Framework.Configuration": "1.0.0-beta8",
+    "Microsoft.Framework.Configuration.Json": "1.0.0-beta8"
+  },
+
   "frameworks": {
     "dnx451": { }
   }
