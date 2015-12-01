@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace Adaptive.ReactiveTrader.Server.Common
+namespace Adaptive.ReactiveTrader.Common
 {
     public static class DateUtils
     {

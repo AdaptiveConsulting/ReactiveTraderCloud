@@ -1,42 +1,52 @@
-﻿using Adaptive.ReactiveTrader.Messaging.WAMP;
-using Common.Logging;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using SystemEx;
+using Adaptive.ReactiveTrader.Messaging.WAMP;
+using Common.Logging;
 using WampSharp.V2;
-using WampSharp.V2.Client;
 using WampSharp.V2.Core.Contracts;
-using WampSharp.V2.Fluent;
 using WampSharp.V2.MetaApi;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
-    internal class Broker : IBroker
+    internal class Broker : IBroker, IDisposable
     {
         private static readonly ILog Log = LogManager.GetLogger<Broker>();
 
         private readonly IWampChannel _channel;
-        private WampMetaApiServiceProxy _meta;
+        private readonly WampMetaApiServiceProxy _meta;
         private readonly IObservable<long> _sessionTeardowns;
         private readonly IObservable<long> _subscriptionTeardowns;
+        private readonly Subject<Unit> _brokerTeardown;
 
-        public Broker(string uri, string realm)
+
+
+        public Broker(IWampChannel channel)
         {
-            _channel = new WampChannelFactory()
-                .ConnectToRealm(realm)
-                .WebSocketTransport(uri)
-                .MsgpackSerialization()
-                .Build();
-            
+            _channel = channel;
+
+            _meta = _channel.RealmProxy.GetMetaApiServiceProxy();
+
             _sessionTeardowns =
                 Observable.Create<long>(async o =>
                 {
                     var r = await _meta.SubscribeTo.Session.OnLeave(o.OnNext);
-                    return Disposable.Create(async () => await r.DisposeAsync());
+                    return Disposable.Create(async () =>
+                    {
+                        try
+                        {
+                            await r.DisposeAsync();
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error("Couldn't close subscription to sessions. Perhaps broker shutdown." + e.Message);
+                        }
+                    });
                 }).Publish().RefCount();
 
             _subscriptionTeardowns =
@@ -45,11 +55,23 @@ namespace Adaptive.ReactiveTrader.Messaging
                     {
                         var r = await _meta.SubscribeTo.Subscription.OnUnsubscribe(
                             (sessionID, subscriptionId) => { observer.OnNext(subscriptionId); });
-                        return Disposable.Create(async () => await r.DisposeAsync());
+                        return Disposable.Create(async () => {
+                            try
+                            {
+                                await r.DisposeAsync();
+                            }
+                            catch (Exception e)
+                            {
+                                Log.Error("Couldn't close subscription to subscriptions. Perhaps broker shutdown." + e.Message);
+                            }
+                        });
                     }).Publish().RefCount();
+
+            _brokerTeardown = new Subject<Unit>();
         }
 
-        public async Task<IAsyncDisposable> RegisterCall(string procName, Func<IRequestContext, IMessage, Task> onMessage)
+        public async Task<IAsyncDisposable> RegisterCall(string procName,
+            Func<IRequestContext, IMessage, Task> onMessage)
         {
             if (Log.IsInfoEnabled)
             {
@@ -66,7 +88,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
             return await realm.RpcCatalog.Register(rpcOperation, registerOptions);
         }
-        
+
         public async Task<IAsyncDisposable> RegisterCallResponse<TResponse>(string procName,
             Func<IRequestContext, IMessage, Task<TResponse>> onMessage)
         {
@@ -110,6 +132,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             var breaker =
                 _sessionTeardowns.Where(s => s == sessionID).Select(_ => Unit.Default)
                     .Merge(_subscriptionTeardowns.Where(s => s == subID.Value).Select(_ => Unit.Default))
+                        .Merge(_brokerTeardown)
                     .Take(1)
                     .Do(o => Log.DebugFormat("Remove subscription for {0} ({1})", subID, dest));
 
@@ -125,13 +148,9 @@ namespace Adaptive.ReactiveTrader.Messaging
             return new EndPoint<T>(subject);
         }
 
-      
-
-        public async Task Open()
+        public void Dispose()
         {
-            await _channel.Open();
-
-            _meta = _channel.RealmProxy.GetMetaApiServiceProxy();
+          _brokerTeardown.OnNext(Unit.Default);
         }
     }
 }

@@ -1,0 +1,20 @@
+{
+    "version": "1.0.0-*",
+    "description": "Adaptive.ReactiveTrader.Server.Core Class Library",
+    "authors": [ "jon.clare" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+
+
+  "dependencies": {
+	"Adaptive.ReactiveTrader.Contract": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Common": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
+    "Adaptive.ReactiveTrader.EventStore": "1.0.0-*"
+  },
+
+    "frameworks": {
+        "dnx451": { }
+    }
+}
