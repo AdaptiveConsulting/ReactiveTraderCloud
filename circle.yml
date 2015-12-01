@@ -10,10 +10,10 @@ dependencies:
   override:
     - docker info
     - echo "pull base containers"
-    - . ./deploy/config && docker pull $nginxContainer
-    - . ./deploy/config && docker pull $crossbarContainer
-    - . ./deploy/config && docker pull $monoContainer
-    - . ./deploy/config && docker pull $eventstoreContainer
+    - . ./deploy/config && docker pull $nginxContainer:$vNginx
+    - . ./deploy/config && docker pull $crossbarContainer:$vCrossbar
+    - . ./deploy/config && docker pull $monoContainer:$vDnx
+    - . ./deploy/config && docker pull $eventstoreContainer:$vEventstore
 
 test:
   override:
