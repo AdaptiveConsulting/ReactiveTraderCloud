@@ -9,6 +9,11 @@ dependencies:
     - ~/.npm
   override:
     - docker info
+    - echo "pull base containers"
+    - . ./deploy/config && docker pull $nginxContainer
+    - . ./deploy/config && docker pull $crossbarContainer
+    - . ./deploy/config && docker pull $monoContainer
+    - . ./deploy/config && docker pull $eventstoreContainer
 
 test:
   override:
