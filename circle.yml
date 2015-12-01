@@ -19,17 +19,14 @@ dependencies:
     - . ./deploy/config && docker pull $eventstoreContainer:$vEventstore
     # Insure permissions 
     - chmod 755 deploy/docker/build/prepare
-    - chmod 755 deploy/docker/build/broker/build.sh
     - chmod 755 deploy/docker/build/servers/build.sh
+    - chmod 755 deploy/docker/build/broker/build.sh
+    - chmod 755 deploy/docker/build/populatedEventstore/build.sh
     - chmod 755 deploy/docker/build/web/build.sh
     # build AdaptiveTrader containers
-    #   servers      
     - cd deploy/docker/build && ./prepare build servers
-    #   broker
     - cd deploy/docker/build && ./prepare build broker
-    #   web
     - cd deploy/docker/build && ./prepare build populatedEventstore
-    #   eventstore
     - cd deploy/docker/build && ./prepare build web
 
 test:
@@ -41,6 +38,7 @@ test:
       - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$vBuild bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
       - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$vBuild bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
       - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$vBuild bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
+      - docker ps
 
 deployment:
   hub:
