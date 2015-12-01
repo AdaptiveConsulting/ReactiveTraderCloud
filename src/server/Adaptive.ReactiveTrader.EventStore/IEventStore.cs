@@ -11,4 +11,9 @@ namespace Adaptive.ReactiveTrader.EventStore
     {
         void Stop();
     }
+
+    public interface IEventStoreConsumer
+    {
+        void Initialize(IEventStoreConnection es);
+    }
 }

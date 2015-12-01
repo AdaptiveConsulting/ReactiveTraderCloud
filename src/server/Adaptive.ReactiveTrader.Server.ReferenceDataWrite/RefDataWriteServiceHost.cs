@@ -10,35 +10,36 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
     public class RefDataWriteServiceHost : ServiceHostBase
     {
         private static readonly ILog Log = LogManager.GetLogger<RefDataWriteServiceHost>();
-        private static readonly string ActivateCurrencyPairProcedureName = "refdatawrite.ActivateCurrencyPair";
-        private static readonly string DeactivateCurrencyPairProcedureName = "refdatawrite.DeactivateCurrencyPair";
+        private const string ActivateCurrencyPairProcedureName = "activateCurrencyPair";
+        private const string DeactivateCurrencyPairProcedureName = "deactivateCurrencyPair";
 
         private readonly RefDataWriteService _service;
-        private readonly IBroker _broker;
 
-        public RefDataWriteServiceHost(RefDataWriteService service, IBroker broker) : base(broker, "refWrite")
+        public RefDataWriteServiceHost(RefDataWriteService service, IBroker broker) : base(broker, "reference")
         {
             _service = service;
-            _broker = broker;
         }
 
         public override async Task Start()
         {
-            await _broker.RegisterCall(ActivateCurrencyPairProcedureName, ActivateCurrencyPair);
-            await _broker.RegisterCall(DeactivateCurrencyPairProcedureName, DeactivateCurrencyPair);
+            RegisterCall(ActivateCurrencyPairProcedureName, ActivateCurrencyPair);
+            RegisterCall(DeactivateCurrencyPairProcedureName, DeactivateCurrencyPair);
+
+            await base.Start();
         }
 
         private Task ActivateCurrencyPair(IRequestContext context, IMessage message)
         {
-
-            var payload = JsonConvert.DeserializeObject<ActivateCurrencyPairRequestDto>(Encoding.UTF8.GetString(message.Payload));
+            var payload =
+                JsonConvert.DeserializeObject<ActivateCurrencyPairRequestDto>(Encoding.UTF8.GetString(message.Payload));
 
             return _service.ActivateCurrencyPair(context, payload);
         }
 
         private Task DeactivateCurrencyPair(IRequestContext context, IMessage message)
         {
-            var payload = JsonConvert.DeserializeObject<DeactivateCurrencyPairRequestDto>(Encoding.UTF8.GetString(message.Payload));
+            var payload =
+                JsonConvert.DeserializeObject<DeactivateCurrencyPairRequestDto>(Encoding.UTF8.GetString(message.Payload));
             return _service.DeactivateCurrencyPair(context, payload);
         }
 

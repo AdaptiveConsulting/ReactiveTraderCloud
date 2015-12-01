@@ -1,44 +1,40 @@
-using Adaptive.ReactiveTrader.EventStore.Domain;
-using Adaptive.ReactiveTrader.Messaging;
-using EventStore.ClientAPI;
 using System;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.EventStore;
+using Adaptive.ReactiveTrader.EventStore.Domain;
+using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
+using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
-    public class ReferenceDataWriterLauncher
+    public class ReferenceDataWriteServiceHostFactory : IServiceHostFactory, IEventStoreConsumer, IDisposable
     {
-        protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriterLauncher>();
+        protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriteServiceHostFactory>();
 
-        public static async Task PopulateRefData(IEventStoreConnection eventStoreConnection)
+        private Repository _repository;
+        private RefDataWriteService _service;
+
+        public void Initialize(IEventStoreConnection es)
         {
-            Log.Info("Reference Writer Service starting...");
-            var repository = new Repository(eventStoreConnection);
-            Log.Info("Initializing Event Store with Currency Pair Data");
-            await new CurrencyPairInitializer(repository).CreateInitialCurrencyPairsAsync();
+            _repository = new Repository(es);
+            _service = new RefDataWriteService(_repository);
         }
 
-        public static async Task<IDisposable> Run(IEventStoreConnection eventStoreConnection, IBroker broker)
+        public async Task<ServiceHostBase> Create(IBroker broker)
         {
-            Log.Info("Reference Data Write Service starting...");
 
-            try
-            {
-                var service = new RefDataWriteService(new Repository(eventStoreConnection));
-                var serviceHost = new RefDataWriteServiceHost(service, broker);
+            Log.Info("Reference Data Service Starting...");
+            var serviceHost = new RefDataWriteServiceHost(_service, broker);
+            await serviceHost.Start();
+            Log.Info("Reference Data Service Started.");
 
-                await serviceHost.Start();
+            return serviceHost;
+        }
 
-                Log.Info("Service Started.");
-
-                return serviceHost;
-            }
-
-            catch (MessagingException e)
-            {
-                throw new Exception("Can't start service", e);
-            }
+        public void Dispose()
+        {
+            //_repository.Dispose();
         }
     }
 }

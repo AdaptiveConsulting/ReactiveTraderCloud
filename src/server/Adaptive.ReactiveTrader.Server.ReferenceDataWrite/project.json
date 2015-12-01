@@ -7,8 +7,6 @@
     "licenseUrl": "",
 
     "dependencies": {
-        "Adaptive.ReactiveTrader.EventStore": "",
-        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
         "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
         "Adaptive.ReactiveTrader.Server.Common": "1.0.0-*"
     },

@@ -1,5 +1,4 @@
-﻿using Adaptive.ReactiveTrader.Server.Common;
-using Common.Logging;
+﻿using Common.Logging;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using System;

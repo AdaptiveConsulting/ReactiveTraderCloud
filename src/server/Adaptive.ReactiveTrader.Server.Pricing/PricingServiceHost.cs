@@ -23,12 +23,12 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         public override async Task Start()
         {
-            await base.Start();
             RegisterCall("getPriceUpdates", GetCurrencyPairUpdatesStream);
             Log.Info("procedure getPriceUpdates() registered");
+
+            await base.Start();
         }
 
-        // [ServiceMethod]
         public async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
             Log.DebugFormat("Received GetCurrencyPairUpdatesStream from [{0}]",

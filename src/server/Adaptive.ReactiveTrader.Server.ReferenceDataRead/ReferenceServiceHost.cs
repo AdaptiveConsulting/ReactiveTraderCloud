@@ -48,8 +48,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
         public override async Task Start()
         {
-            await base.Start();
             RegisterCall("getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
+            await base.Start();
         }
 
         public override void Dispose()

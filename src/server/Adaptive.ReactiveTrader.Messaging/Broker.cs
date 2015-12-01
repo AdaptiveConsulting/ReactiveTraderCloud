@@ -1,37 +1,33 @@
-﻿using Adaptive.ReactiveTrader.Messaging.WAMP;
-using Common.Logging;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using SystemEx;
+using Adaptive.ReactiveTrader.Messaging.WAMP;
+using Common.Logging;
 using WampSharp.V2;
-using WampSharp.V2.Client;
 using WampSharp.V2.Core.Contracts;
-using WampSharp.V2.Fluent;
 using WampSharp.V2.MetaApi;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
-    internal class Broker : IBroker
+    internal class Broker : IBroker, IDisposable
     {
         private static readonly ILog Log = LogManager.GetLogger<Broker>();
 
         private readonly IWampChannel _channel;
-        private WampMetaApiServiceProxy _meta;
+        private readonly WampMetaApiServiceProxy _meta;
         private readonly IObservable<long> _sessionTeardowns;
         private readonly IObservable<long> _subscriptionTeardowns;
 
-        public Broker(string uri, string realm)
+        public Broker(IWampChannel channel)
         {
-            _channel = new WampChannelFactory()
-                .ConnectToRealm(realm)
-                .WebSocketTransport(uri)
-                .MsgpackSerialization()
-                .Build();
-            
+            _channel = channel;
+
+            _meta = _channel.RealmProxy.GetMetaApiServiceProxy();
+
             _sessionTeardowns =
                 Observable.Create<long>(async o =>
                 {
@@ -47,9 +43,12 @@ namespace Adaptive.ReactiveTrader.Messaging
                             (sessionID, subscriptionId) => { observer.OnNext(subscriptionId); });
                         return Disposable.Create(async () => await r.DisposeAsync());
                     }).Publish().RefCount();
+
+            // should add broker teardown
         }
 
-        public async Task<IAsyncDisposable> RegisterCall(string procName, Func<IRequestContext, IMessage, Task> onMessage)
+        public async Task<IAsyncDisposable> RegisterCall(string procName,
+            Func<IRequestContext, IMessage, Task> onMessage)
         {
             if (Log.IsInfoEnabled)
             {
@@ -66,7 +65,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
             return await realm.RpcCatalog.Register(rpcOperation, registerOptions);
         }
-        
+
         public async Task<IAsyncDisposable> RegisterCallResponse<TResponse>(string procName,
             Func<IRequestContext, IMessage, Task<TResponse>> onMessage)
         {
@@ -125,13 +124,9 @@ namespace Adaptive.ReactiveTrader.Messaging
             return new EndPoint<T>(subject);
         }
 
-      
-
-        public async Task Open()
+        public void Dispose()
         {
-            await _channel.Open();
-
-            _meta = _channel.RealmProxy.GetMetaApiServiceProxy();
+            // trigger teardown
         }
     }
 }

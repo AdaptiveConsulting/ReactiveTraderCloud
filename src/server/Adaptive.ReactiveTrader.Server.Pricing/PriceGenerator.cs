@@ -41,9 +41,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 CreatePriceGenerator("GBPUSD", 1.5200m),
                 CreatePriceGenerator("GBPJPY", 160.200m),
             };
-
-
-
+            
             foreach (var ccy in priceGenerators)
             {
                 var observable = Observable.Create<SpotPriceDto>(observer =>

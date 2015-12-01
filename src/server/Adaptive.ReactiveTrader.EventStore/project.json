@@ -10,7 +10,6 @@
     "EventStore.Client": "3.3.1",
     "Newtonsoft.Json": "7.0.1",
     "Common.Logging": "3.3.1",
-    "Adaptive.ReactiveTrader.Server.Common": "1.0.0-*",
     "EventStore.Client.Embedded": "3.3.1",
     "Rx-Main": "2.2.5"
   },
