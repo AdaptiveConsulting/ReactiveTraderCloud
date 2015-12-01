@@ -9,7 +9,7 @@ dependencies:
     - ~/.npm
   override:
     - docker info
-    - echo "pull base containers"
+    # pull base containers
     - . ./deploy/config && docker pull $nginxContainer:$vNginx
     - . ./deploy/config && docker pull $crossbarContainer:$vCrossbar
     - . ./deploy/config && docker pull $monoContainer:$vDnx
