@@ -28,7 +28,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 
         public void Dispose()
         {
-            //_repository.Dispose();
+
         }
     }
 }

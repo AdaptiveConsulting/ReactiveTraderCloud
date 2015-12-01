@@ -30,14 +30,15 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
         public async Task<TAggregate> GetById<TAggregate>(object id) where TAggregate : IAggregate, new()
         {
-            var streamName = $"{typeof(TAggregate).Name}-{id}";
+            var aggregate = new TAggregate();
+
+            var streamName = $"{aggregate.Identifier}{id}";
 
             if (Log.IsInfoEnabled)
             {
                 Log.Info($"Loading aggregate {streamName} from Event Store");
             }
-            var aggregate = new TAggregate();
-
+            
             var eventNumber = 0;
             StreamEventsSlice currentSlice;
             do

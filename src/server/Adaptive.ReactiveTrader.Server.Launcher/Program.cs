@@ -15,12 +15,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common.Config;
+using Adaptive.ReactiveTrader.EventStore.Domain;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
     public class Program
     {
-        protected static readonly ILog Log = LogManager.GetLogger<Program>();
+        
         private static readonly Dictionary<string, IDisposable> Servers = new Dictionary<string, IDisposable>();
 
         private static readonly Dictionary<string, Lazy<IServiceHostFactory>> Factories =
@@ -71,6 +72,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         {
             InitializeFactories();
 
+
             try
             {
                 LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
@@ -78,8 +80,10 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     ShowLogName = true,
                 };
 
-                // We should only be using the launcher during development, so hard code this to use the dev config
-                var config = ServiceConfiguration.FromArgs(args.Where(a=>a.Contains(".json")).ToArray());
+                Log = LogManager.GetLogger<Program>();
+
+        // We should only be using the launcher during development, so hard code this to use the dev config
+        var config = ServiceConfiguration.FromArgs(args.Where(a=>a.Contains(".json")).ToArray());
                 
                 _eventStoreConnection = GetEventStoreConnection(config.EventStore, args.Contains("es"), args.Contains("init-es")).Result;
                 _conn = BrokerConnectionFactory.Create(config.Broker);
@@ -99,6 +103,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 if (args.Contains("b"))
                     StartService("b1", GetFactory("blotter"));
 
+                var repository = new Repository(_eventStoreConnection);
+             
                 _conn.Start();
 
                 if (!args.Contains("--interactive"))
@@ -111,7 +117,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                     try
                     {
-                        if (x == null || x == "exit" || x == "")
+                        if (x == null || x == "exit")
                             break;
 
                         
@@ -132,7 +138,31 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                             continue;
                         }
-                        
+
+                        if (x.StartsWith("switch"))
+                        {
+                            var a = x.Split(' ');
+
+                            var ccyPair = a[1];
+
+                            var currencyPair =
+                                repository.GetById<ReferenceDataWrite.Domain.CurrencyPair>(ccyPair).Result;
+
+                            if (currencyPair.IsActive)
+                            {
+                                Console.WriteLine("** Deactivating {0}", ccyPair);
+                                currencyPair.Deactivate();
+                            }
+                            else
+                            {
+                                Console.WriteLine("** Activating {0}", ccyPair);
+                                currencyPair.Activate();
+                            }
+
+                            repository.SaveAsync(currencyPair).Wait();
+                            continue;
+                        }
+
 
                         if (x.StartsWith("kill"))
                         {
@@ -184,6 +214,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 Console.ReadLine();
             }
         }
+
+        public static ILog Log { get; set; }
 
         private static async Task<IEventStoreConnection> GetEventStoreConnection(IEventStoreConfiguration configuration, bool embedded, bool populate)
         {
