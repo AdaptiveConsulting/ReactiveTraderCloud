@@ -1,9 +1,9 @@
 import autobahn from 'autobahn';
-import emitter from './emitter';
-import traders from './traders';
-import ServiceDef from './services/service-def';
-
 import _ from 'lodash';
+
+import traders from './traders';
+import emitter from './emitter';
+import ServiceDef from './services/service-def';
 
 const SERVICES = 'pricing,reference,blotter,execution'.split(',');
 
@@ -39,8 +39,7 @@ class Transport extends emitter {
 
     // register and subscribe to known services
     SERVICES.forEach((service) =>{
-      this.services[service] = new ServiceDef(this);
-      this.services[service].on('addInstance removeInstance', () => this.trigger('statusUpdate', this.getStatus()));
+      this.services[service] = new ServiceDef(this).on('addInstance removeInstance', () => this.trigger('statusUpdate', this.getStatus()));
     });
 
     this.subscribeToStatusUpdates();
