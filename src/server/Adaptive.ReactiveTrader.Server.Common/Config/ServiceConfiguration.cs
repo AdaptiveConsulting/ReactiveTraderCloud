@@ -19,7 +19,7 @@ namespace Adaptive.ReactiveTrader.Server.Common.Config
 
         private const string ConfigFolderName = "configs";
         private const string DevConfigName = @"config.dev.json";
-        private const string ProdConfigName = @"config.json";
+        private const string ProdConfigName = @"config.prod.json";
 
         private static readonly string DevConfigLocation = Path.Combine(Environment.CurrentDirectory, ConfigFolderName, DevConfigName);
         private static readonly string ProdConfigLocation = Path.Combine(Environment.CurrentDirectory, ConfigFolderName, ProdConfigName);
