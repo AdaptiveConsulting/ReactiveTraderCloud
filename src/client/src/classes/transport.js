@@ -1,137 +1,11 @@
 import autobahn from 'autobahn';
-import emitter from './emitter';
 import _ from 'lodash';
 
-const HEARTBEAT_TIMEOUT = 3000;
+import traders from './traders';
+import emitter from './emitter';
+import ServiceDef from './services/service-def';
 
-/**
- * @class ServiceDef
- */
-class ServiceDef extends emitter {
-  /**
-   * @constructs ServiceDef
-   * @param {transport} transport
-   */
-  constructor(transport:Transport){
-    super();
-
-    this.pendingSubscriptions = [];
-    this.instances = {};
-    this.transport = transport;
-  }
-
-  registerOrUpdateInstance(instance, load){
-    if (!(instance in this.instances)){
-      (this.instances[instance] = this.createNewInstance(instance, load));
-      this.trigger('addInstance');
-    }
-
-    const instanceDef = this.instances[instance];
-    instanceDef.keepalive();
-    instanceDef.load = load;
-  }
-
-  createNewInstance(instance, load){
-    console.log('add instance', instance);
-
-    const instanceRef = {
-      keepalive: _.debounce(() => this.killInstance(instance), HEARTBEAT_TIMEOUT),
-      subscriptions: [],
-      load
-    };
-
-    while (this.pendingSubscriptions.length > 0){
-      const p = this.pendingSubscriptions.pop();
-      instanceRef.subscriptions.push(p);
-      this.transport.remoteCall(p, instance).then(this.log);
-    }
-
-    return instanceRef;
-  }
-
-  killInstance(instance){
-    console.log('killing instance', instance);
-    const instanceToKill = this.instances[instance];
-    // if server dies, this may already be cleaned up. function is debounced to check every `HEARTBEAT_TIMEOUT`ms.
-    if (!instanceToKill)
-      return;
-
-    delete this.instances[instance];
-    instanceToKill.subscriptions.forEach((s) => this.addSubscription(s));
-
-    this.trigger('removeInstance');
-  }
-
-  markEverythingAsDead(){
-    // move everything to pending...
-    for (let instance in this.instances){
-      this.instances[instance].subscriptions.forEach((s) => this.pendingSubscriptions.push(s));
-      delete this.instances[instance];
-    }
-  }
-
-  /**
-   * @param {Object} subscription
-   * @returns {}
-   */
-  addSubscription(subscription:object){
-    // strategy, grab the one with least load
-    let min = 1000,
-        picked,
-        pickedInstanceID;
-
-    for (let instance in this.instances){
-      let current = this.instances[instance];
-
-      if (current.load < min){
-        min = current.load;
-        picked = current;
-        pickedInstanceID = instance;
-      }
-    }
-
-    if (!picked){
-      console.log('adding subscription to pending', subscription);
-      this.pendingSubscriptions.push(subscription);
-      return this;
-    }
-
-    picked.subscriptions.push(subscription);
-    this.transport.remoteCall(subscription, pickedInstanceID);
-
-    return this;
-  }
-
-  /**
-   * @param {Object} proc
-   * @returns {}
-   */
-  requestResponse(subscription){
-    // strategy, grab the one with least load
-    let min = 1000,
-        picked,
-        pickedInstanceID;
-
-    for (let instance in this.instances){
-      let current = this.instances[instance];
-
-      if (current.load < min){
-        min = current.load;
-        picked = current;
-        pickedInstanceID = instance;
-      }
-    }
-
-    return new Promise((resolve, reject) => {
-
-      if (!pickedInstanceID){
-        return reject(new Error('No instance for ' + proc));
-      }
-      this.transport.remoteCall(subscription, pickedInstanceID).then(resolve, reject);
-
-    });
-  }
-}
+const SERVICES = 'pricing,reference,blotter,execution'.split(',');
 
 /**
  * @class Transport
@@ -148,26 +22,25 @@ class Transport extends emitter {
   constructor(url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader'){
     super();
 
+    this.username = traders.code;
     this.connection = new autobahn.Connection({
       url,
       realm,
       use_es6_promises: true
     });
 
-    this.username = 'user-' + (Math.random() * Math.pow(36, 8) << 0).toString(36); // todo maybe do some slightly better authentication
     this.queues = [];
+    this.services = {};
+
+    // stub session
     this.session = {
       log: (...args) => console.log(...args)
     };
-    this.services = {
-      pricing: new ServiceDef(this),
-      reference: new ServiceDef(this),
-      blotter: new ServiceDef(this),
-      execution: new ServiceDef(this)
-    };
 
-    // sub for all known services
-    Object.keys(this.services).forEach((service) => this.services[service].on('addInstance removeInstance', () => this.trigger('statusUpdate', this.getStatus())));
+    // register and subscribe to known services
+    SERVICES.forEach((service) =>{
+      this.services[service] = new ServiceDef(this).on('addInstance removeInstance', () => this.trigger('statusUpdate', this.getStatus()));
+    });
 
     this.subscribeToStatusUpdates();
 
@@ -316,8 +189,8 @@ class Transport extends emitter {
    * @returns {{log: Transport.session.log}|*}
    */
   remoteCall(subscription:object, instanceID:string){
-    const ins = instanceID + '.' + subscription.proc,
-      replyTo = subscription.replyTo && subscription.replyTo.replyToAddress ? subscription.replyTo.replyToAddress : undefined;
+    const ins     = instanceID + '.' + subscription.proc,
+          replyTo = subscription.replyTo && subscription.replyTo.replyToAddress ? subscription.replyTo.replyToAddress : undefined;
 
     // console.log(ins);
 
