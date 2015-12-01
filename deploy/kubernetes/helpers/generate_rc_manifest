@@ -1,13 +1,43 @@
 #! /bin/bash
 
-manifestFolder="../generated_manifests"
+service=$1
+namespace=$2
+. ../../config
+
+if [[ $vMajor = "" ]];then
+  echo "generate_rc_manifest: major version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vMinor = "" ]];then
+  echo "generate_rc_manifest: minor version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vBuild = "" ]];then
+  echo "generate_rc_manifest: build number required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+
+
+manifestFolder="../manifests"
 rcFile="$manifestFolder/rc.yml"
 
 mkdir -p $manifestFolder
-cp rc.yml $rcFile
-sed -i  "s/__SERVICE__//g" $rcFile
-sed -i  "s/__MAJOR__//g" $rcFile
-sed -i  "s/__MINOR__//g" $rcFile
-sed -i  "s/__BUILD__//g" $rcFile
-sed -i  "s/__CONTAINER__//g" $rcFile
-sed -i  "s/__CONTAINERPORT__//g" $rcFile
+
+cp ./$service/rc.yml $rcFile
+
+# get good docker image
+dockerImage=""
+if [[ $service == "web" ]];then dockerImage="$webContainer:$vMajor.$vMinor.$vBuild"; fi
+if [[ $service == "broker" ]];then dockerImage="$brokerContainer:$vMajor.$vMinor.$vBuild"; fi
+if [[ $service == "eventstore" ]];then dockerImage="$eventstoreContainer:$vMajor.$vMinor.$vBuild"; fi
+if [[ $service == "blotter" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$vBuild"; fi
+if [[ $service == "pricing" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$vBuild"; fi
+if [[ $service == "referencedataread" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$vBuild"; fi
+if [[ $service == "tradeexecution" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$vBuild"; fi
+
+sed -i  "s/__SERVICE__/$service/g" $rcFile
+sed -i  "s/__MAJOR__/$vMajor/g" $rcFile
+sed -i  "s/__MINOR__/$vMinor/g" $rcFile
+sed -i  "s/__BUILD__/$vBuild/g" $rcFile
+sed -i  "s|__DOCKERIMAGE__|$dockerImage|g" $rcFile
+sed -i  "s/__CONTAINERPORT__/80/g" $rcFile
