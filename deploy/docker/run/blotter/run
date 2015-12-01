@@ -1,16 +1,17 @@
 #! /bin/bash
 
-echo "Pricing"
+echo "Blotter"
 
-. ../../../../config
+. ../../../config
 
-startCommand="dnx -p Adaptive.ReactiveTrader.Server.Pricing run"
+#startCommand="dnx -p Adaptive.ReactiveTrader.Server.Blotter run"
+startCommand="dnx -p Adaptive.ReactiveTrader.Server.Launcher run b"
 waitCommand="while true; do echo ping; sleep 60; done"
 
-docker rm pricing 2&> garbage
+docker rm blotter 2&> garbage
 
 docker run -d --net=host                       \
-     --name pricing                            \
+     --name blotter                            \
      $serversContainer:$vMajor.$vMinor.$vBuild \
      bash -c "$startCommand && $waitCommand"   \
      > container_id 

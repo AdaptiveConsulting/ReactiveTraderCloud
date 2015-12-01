@@ -5,15 +5,10 @@ scream() {
     exit 1
 }
 
-for server in "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter"
+for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter"
 do
-    cd server/$server
+    cd $server
     ./run  || scream $server
     ./test || scream $server
-    cd ../..
+    cd ..
 done
-
-cd client
-    ./run  || scream $server
-    ./test || scream $server
-cd ..

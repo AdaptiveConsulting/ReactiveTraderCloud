@@ -2,7 +2,7 @@
 
 echo "Broker"
 
-. ../../../../config
+. ../../../config
 
 docker rm broker 2&> garbage
 

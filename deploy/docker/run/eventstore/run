@@ -2,7 +2,7 @@
 
 echo "EventStore"
 
-. ../../../../config
+. ../../../config
 
 docker rm eventstore 2&> garbage
 

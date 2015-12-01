@@ -1,16 +1,17 @@
 #! /bin/bash
 
-echo "ReferenceDataRead"
+echo "TradeExecution"
 
-. ../../../../config
+. ../../../config
 
-startCommand="dnx -p Adaptive.ReactiveTrader.Server.ReferenceDataRead run"
+#startCommand="dnx -p Adaptive.ReactiveTrader.Server.TradeExecution run"
+startCommand="dnx -p Adaptive.ReactiveTrader.Server.Launcher run exec"
 waitCommand="while true; do echo ping; sleep 60; done"
 
-docker rm reference 2&> garbage
+docker rm tradeexecution 2&> garbage
 
 docker run -d --net=host                       \
-     --name reference                          \
+     --name tradeexecution                     \
      $serversContainer:$vMajor.$vMinor.$vBuild \
      bash -c "$startCommand && $waitCommand"   \
      > container_id 
