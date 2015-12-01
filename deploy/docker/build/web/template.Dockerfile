@@ -1,13 +1,7 @@
-FROM        weareadaptive/node:__VNODE__
+FROM        weareadaptive/nginx:__VNGINX__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
-RUN        apt-get update
-RUN        apt-get install -y python \
-                              git
+COPY        dist  /www
+COPY        nginx.conf  /etc/nginx/nginx.conf
 
-COPY        client    /client
-
-WORKDIR     /client
-
-RUN        npm install
-RUN        npm run compile
+CMD         ["nginx", "-g", "daemon off;"]

@@ -24,6 +24,8 @@ vDebian="8.2"
 # TestTools container
 vTesttools="1.0"
 
+# nginx/web2
+vNginx="1.9.7"
 
 # here is written the name of all containers
 
@@ -34,6 +36,7 @@ testtoolsContainer="weareadaptive/testtools"
 nodeContainer="weareadaptive/node"
 eventstoreContainer="weareadaptive/eventstore"
 gcloudContainer="weareadaptive/gcloud"
+nginxContainer="weareadaptive/nginx"
 
 # Adaptive Trader
 brokerContainer="adaptivetrader/broker"

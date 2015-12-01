@@ -8,8 +8,7 @@ docker rm web 2&> garbage
 
 docker run -d --net=host                   \
      --name web                            \
-     $webContainer:$vMajor.$vMinor.$vBuild \
-       bash -c "npm start"                 \
+     $webContainer:$vMajor.$vMinor.$vBuild
      > container_id 
 
 rm garbage
