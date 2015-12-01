@@ -9,7 +9,7 @@ vBuild="spike"
 vUbuntu="14.04.2"
 vCrossbar="0.11.1"
 
-# eventStore container
+# eventstore container
 vEventstore="3.3.0"
 
 # mono/servers container
@@ -42,3 +42,4 @@ nginxContainer="weareadaptive/nginx"
 brokerContainer="adaptivetrader/broker"
 serversContainer="adaptivetrader/servers"
 webContainer="adaptivetrader/web"
+populatedEventstoreContainer="adaptivetrader/eventstore"

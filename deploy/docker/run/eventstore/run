@@ -6,13 +6,12 @@ echo "EventStore"
 
 docker rm eventstore 2&> garbage
 
-docker run -d --net=host            \
-  --name eventstore                 \
-  $eventstoreContainer:$vEventstore \
+docker run -d --net=host                                \
+  --name eventstore                                     \
+  $populatedEventstoreContainer:$vMajor.$vMinor.$vBuild \
   > container_id
 
 rm garbage
 echo "  started"
 
-./populate
 echo " "
