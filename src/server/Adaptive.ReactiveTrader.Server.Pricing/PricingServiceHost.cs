@@ -31,8 +31,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         public async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
-            Log.DebugFormat("Received GetCurrencyPairUpdatesStream from [{0}]",
-                context.UserSession.Username ?? "Unknown User");
+            Log.DebugFormat("{1} Received GetCurrencyPairUpdatesStream from [{0}]",
+                context.UserSession.Username ?? "Unknown User", this);
 
             var spotStreamRequest =
                 JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));

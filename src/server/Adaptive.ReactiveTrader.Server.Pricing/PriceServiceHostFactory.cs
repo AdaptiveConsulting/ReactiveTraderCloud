@@ -21,14 +21,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             Log.Info("Started Service");
         }
 
-        public async Task<ServiceHostBase> Create(IBroker broker)
+        public Task<ServiceHostBase> Create(IBroker broker)
         {
-            Log.Info("Pricing Data Service Starting...");
-            var serviceHost = new PricingServiceHost(_service, broker);
-            await serviceHost.Start();
-            Log.Info("Pricing Data Service Started.");
-
-            return serviceHost;
+            return Task.FromResult<ServiceHostBase>(new PricingServiceHost(_service, broker));
         }
 
         public void Dispose()

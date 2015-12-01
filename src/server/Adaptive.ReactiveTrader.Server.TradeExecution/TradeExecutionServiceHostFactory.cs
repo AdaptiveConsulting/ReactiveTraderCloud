@@ -23,13 +23,9 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             _service = new TradeExecutionService(_executionEngine);
         }
 
-        public async Task<ServiceHostBase> Create(IBroker broker)
+        public Task<ServiceHostBase> Create(IBroker broker)
         {
-            var serviceHost = new TradeExecutionServiceHost(_service, broker);
-
-            await serviceHost.Start();
-            
-            return serviceHost;
+            return Task.FromResult<ServiceHostBase>(new TradeExecutionServiceHost(_service, broker));
         }
 
         public void Dispose()

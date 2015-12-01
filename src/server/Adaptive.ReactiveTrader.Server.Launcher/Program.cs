@@ -33,8 +33,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         {
             var esConsumer = factory as IEventStoreConsumer;
             esConsumer?.Initialize(_eventStoreConnection);
-            var disp = _conn.Register(factory);
-            Servers.Add(name, disp);
+
+            Servers.Add(name, _conn.Register(name, factory));
         }
 
         private static IServiceHostFactory GetFactory(string type)
@@ -46,7 +46,6 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 case "ref":
                     return Factories["reference-read"].Value;
-
                 case "ref-write":
                     return Factories["reference-write"].Value;
 
@@ -57,14 +56,11 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     return Factories[type].Value;
             }
         }
-
-
+        
         public static void InitializeFactories()
         {
-            Factories.Add("reference-read",
-                new Lazy<IServiceHostFactory>(() => new ReferenceDataReadServiceHostFactory()));
-            Factories.Add("reference-write",
-                new Lazy<IServiceHostFactory>(() => new ReferenceDataWriteServiceHostFactory()));
+            Factories.Add("reference-read", new Lazy<IServiceHostFactory>(() => new ReferenceDataReadServiceHostFactory()));
+            Factories.Add("reference-write", new Lazy<IServiceHostFactory>(() => new ReferenceDataWriteServiceHostFactory()));
             Factories.Add("pricing", new Lazy<IServiceHostFactory>(() => new PriceServiceHostFactory()));
             Factories.Add("blotter", new Lazy<IServiceHostFactory>(() => new BlotterServiceHostFactory()));
             Factories.Add("execution", new Lazy<IServiceHostFactory>(() => new TradeExecutionServiceHostFactory()));
@@ -117,7 +113,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                         if (x == null || x == "exit" || x == "")
                             break;
 
-                        /*
+                        
                         if (x.StartsWith("start"))
                         {
                             var a = x.Split(' ');
@@ -131,38 +127,11 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                                 continue;
                             }
 
-                            if (serviceType == "r")
-                            {
-                                Console.WriteLine("Adding reference service");
-                                Servers.Add(serviceName,
-                                    ReferenceDataReaderLauncher.Run(eventStoreConnection, brokerConnection.Result)
-                                        .Result);
-                            }
-
-                            if (serviceType == "p")
-                            {
-                                Console.WriteLine("Adding pricing service");
-                                Servers.Add(serviceName, PriceServiceLauncher.Run(brokerConnection.Result).Result);
-                            }
-
-                            if (serviceType == "e")
-                            {
-                                Console.WriteLine("Adding exec service");
-                                Servers.Add(serviceName,
-                                    TradeExecutionLauncher.Run(eventStoreConnection, brokerConnection.Result).Result);
-                            }
-
-                            if (serviceType == "b")
-                            {
-                                Console.WriteLine("Adding blotter service");
-                                Servers.Add(serviceName,
-                                    BlotterLauncher.Run(eventStoreConnection, brokerConnection.Result).Result);
-                            }
-
+                            StartService(serviceName, GetFactory(serviceType));
 
                             continue;
                         }
-                        */
+                        
 
                         if (x.StartsWith("kill"))
                         {

@@ -22,14 +22,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             _service = new ReferenceService(_cache.GetCurrencyPairUpdates());
         }
 
-        public async Task<ServiceHostBase> Create(IBroker broker)
+        public Task<ServiceHostBase> Create(IBroker broker)
         {
-            Log.Info("Reference Data Service Starting...");
-            var serviceHost = new ReferenceServiceHost(_service, broker);
-            await serviceHost.Start();
-            Log.Info("Reference Data Service Started.");
-
-            return serviceHost;
+            return Task.FromResult<ServiceHostBase>(new ReferenceReadServiceHost(_service, broker));
         }
 
         public void Dispose()

@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
-    public class RefDataWriteServiceHost : ServiceHostBase
+    public class ReferenceWriteServiceHost : ServiceHostBase
     {
-        private static readonly ILog Log = LogManager.GetLogger<RefDataWriteServiceHost>();
+        private static readonly ILog Log = LogManager.GetLogger<ReferenceWriteServiceHost>();
         private const string ActivateCurrencyPairProcedureName = "activateCurrencyPair";
         private const string DeactivateCurrencyPairProcedureName = "deactivateCurrencyPair";
 
-        private readonly RefDataWriteService _service;
+        private readonly ReferenceWriteService _service;
 
-        public RefDataWriteServiceHost(RefDataWriteService service, IBroker broker) : base(broker, "reference")
+        public ReferenceWriteServiceHost(ReferenceWriteService service, IBroker broker) : base(broker, "reference")
         {
             _service = service;
         }

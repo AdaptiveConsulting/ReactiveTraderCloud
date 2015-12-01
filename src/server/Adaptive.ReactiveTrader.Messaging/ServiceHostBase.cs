@@ -8,15 +8,16 @@ namespace Adaptive.ReactiveTrader.Messaging
     {
         private readonly IBroker _broker;
         public readonly string InstanceID;
-        private readonly Heartbeat _heartbreat;
-        private CompositeDisposable _registedCalls = new CompositeDisposable();
+        private readonly Heartbeat _heartbeat;
+        private readonly CompositeDisposable _registedCalls = new CompositeDisposable();
+        private bool _started;
 
         protected ServiceHostBase(IBroker broker, string type)
         {
             ServiceType = type;
             _broker = broker;
             InstanceID = type + "." + Guid.NewGuid().ToString().Substring(0, 4);
-            _heartbreat = new Heartbeat(this, broker);
+            _heartbeat = new Heartbeat(this, broker);
         }
 
         public readonly string ServiceType;
@@ -24,7 +25,6 @@ namespace Adaptive.ReactiveTrader.Messaging
         protected void RegisterCall(string procName, Func<IRequestContext, IMessage, Task> procedure)
         {
             var instanceProcedureName = $"{InstanceID}.{procName}";
-
             _registedCalls.Add(_broker.RegisterCall(instanceProcedureName, procedure));
         }
 
@@ -36,7 +36,9 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public virtual async Task Start()
         {
-            await _heartbreat.Start();
+            if (_started) throw new MethodAccessException(this + " has already been started.");
+            _started = true;
+            await _heartbeat.Start();
         }
 
         public virtual double GetLoad()
@@ -47,7 +49,12 @@ namespace Adaptive.ReactiveTrader.Messaging
         public virtual void Dispose()
         {
             _registedCalls.Dispose();
-            _heartbreat.Dispose();
+            _heartbeat.Dispose();
+        }
+
+        public override string ToString()
+        {
+            return $"{InstanceID}";
         }
     }
 }

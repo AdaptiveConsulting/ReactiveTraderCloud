@@ -13,23 +13,17 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriteServiceHostFactory>();
 
         private Repository _repository;
-        private RefDataWriteService _service;
+        private ReferenceWriteService _service;
 
         public void Initialize(IEventStoreConnection es)
         {
             _repository = new Repository(es);
-            _service = new RefDataWriteService(_repository);
+            _service = new ReferenceWriteService(_repository);
         }
 
-        public async Task<ServiceHostBase> Create(IBroker broker)
+        public Task<ServiceHostBase> Create(IBroker broker)
         {
-
-            Log.Info("Reference Data Service Starting...");
-            var serviceHost = new RefDataWriteServiceHost(_service, broker);
-            await serviceHost.Start();
-            Log.Info("Reference Data Service Started.");
-
-            return serviceHost;
+            return Task.FromResult<ServiceHostBase>(new ReferenceWriteServiceHost(_service, broker));
         }
 
         public void Dispose()

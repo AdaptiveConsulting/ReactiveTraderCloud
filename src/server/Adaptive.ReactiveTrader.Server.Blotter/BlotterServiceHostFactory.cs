@@ -22,11 +22,9 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             _service = new BlotterService(_cache.GetTrades());
         }
 
-        public async Task<ServiceHostBase> Create(IBroker broker)
+        public Task<ServiceHostBase> Create(IBroker broker)
         {
-            var serviceHost = new BlotterServiceHost(_service, broker);
-            await serviceHost.Start();
-            return serviceHost;
+            return Task.FromResult<ServiceHostBase>(new BlotterServiceHost(_service, broker));
         }
 
         public void Dispose()

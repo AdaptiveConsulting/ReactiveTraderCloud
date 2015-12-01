@@ -11,7 +11,8 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     public interface IBrokerConnection : IDisposable
     {
-        IDisposable Register(IServiceHostFactory serviceHostFactory);
+        Task<IDisposable> Register(IServiceHostFactory serviceHostFactory);
+        Task<IDisposable> Register(string name, IServiceHostFactory serviceHostFactory);
         void Start();
     }
 
@@ -22,16 +23,26 @@ namespace Adaptive.ReactiveTrader.Messaging
 
     public class BrokerConnection : IBrokerConnection
     {
+
+        class FactoryItem
+        {
+            public IServiceHostFactory Factory { get; set; }
+            public CompositeDisposable CleanupDisposable { get; set; }
+        }
+
         protected static readonly ILog Log = LogManager.GetLogger<BrokerConnection>();
 
         private readonly IWampChannel _channel;
 
-        private readonly Dictionary<IServiceHostFactory, CompositeDisposable> _serviceHostFactories =
-            new Dictionary<IServiceHostFactory, CompositeDisposable>();
+        private readonly Dictionary<string, FactoryItem> _serviceHostFactories =
+            new Dictionary<string, FactoryItem>();
 
         private readonly WampChannelReconnector _reconnector;
         private readonly SerialDisposable _sessionDispose = new SerialDisposable();
-        
+
+        private Broker _broker;
+        private CompositeDisposable _compositeDisposable;
+
         public BrokerConnection(string uri, string realm)
         {
             _channel = new WampChannelFactory()
@@ -44,36 +55,59 @@ namespace Adaptive.ReactiveTrader.Messaging
             {
                 Log.InfoFormat("Trying to connect to broker {0}", uri);
 
-                await _channel.Open();
-
-                Log.Info("Connected");
-
-                var broker = new Broker(_channel);
-                var comp = new CompositeDisposable {broker};
-                _sessionDispose.Disposable = comp;
-
-                Log.Info("Creating Service Hosts..");
-                foreach (var s in _serviceHostFactories)
+                try
                 {
-                    var serviceHost = await s.Key.Create(broker);
-                    await serviceHost.Start();
-                    
-                    var disposable = Disposable.Create(() => { serviceHost.Dispose(); });
-                    comp.Add(disposable);
-                    s.Value.Add(disposable);
-                }
+                    await _channel.Open();
 
-                Log.Info("Created Service Hosts.");
+                    Log.Info("Connected");
+
+                    _broker = new Broker(_channel);
+                    _compositeDisposable = new CompositeDisposable {_broker};
+                    _sessionDispose.Disposable = _compositeDisposable;
+
+                    Log.Info("Creating Service Hosts..");
+                    foreach (var s in _serviceHostFactories)
+                    {
+                        var serviceHost = await s.Value.Factory.Create(_broker);
+                        await serviceHost.Start();
+
+                        var disposable = Disposable.Create(() => { serviceHost.Dispose(); });
+                        _compositeDisposable.Add(disposable);
+                        s.Value.CleanupDisposable.Add(disposable);
+                    }
+
+                    Log.Info("Created Service Hosts.");
+                }
+                catch (Exception)
+                {
+                    _broker = null;
+                    throw;
+                }
             };
 
             _reconnector = new WampChannelReconnector(_channel, connect);
         }
 
-        public IDisposable Register(IServiceHostFactory serviceHostFactory)
+        public Task<IDisposable> Register(IServiceHostFactory serviceHostFactory)
         {
-            _serviceHostFactories.Add(serviceHostFactory,
-                new CompositeDisposable {Disposable.Create(() => _serviceHostFactories.Remove(serviceHostFactory))});
-            return _serviceHostFactories[serviceHostFactory];
+            return Register(serviceHostFactory.GetType().Name, serviceHostFactory);
+        }
+
+        public async Task<IDisposable> Register(string key, IServiceHostFactory serviceHostFactory)
+        {
+            _serviceHostFactories.Add(key, new FactoryItem { Factory = serviceHostFactory, CleanupDisposable = new CompositeDisposable { Disposable.Create(() => _serviceHostFactories.Remove(key)) } });
+
+            if (_broker != null)
+            {
+                var serviceHost = await serviceHostFactory.Create(_broker);
+                await serviceHost.Start();
+
+                var disposable = Disposable.Create(() => { serviceHost.Dispose(); });
+                _compositeDisposable.Add(disposable);
+                _serviceHostFactories[key].CleanupDisposable.Add(disposable);
+            }
+
+            return _serviceHostFactories[key].CleanupDisposable;
         }
 
         public void Start()

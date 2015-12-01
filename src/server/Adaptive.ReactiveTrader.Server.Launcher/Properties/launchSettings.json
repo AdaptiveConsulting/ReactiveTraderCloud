@@ -2,7 +2,7 @@
   "profiles": {
     "default": {
       "commandName": "default",
-      "commandLineArgs": "p ref exec b --realm test"
+      "commandLineArgs": "p ref exec b --interactive"
     }
   }
 }

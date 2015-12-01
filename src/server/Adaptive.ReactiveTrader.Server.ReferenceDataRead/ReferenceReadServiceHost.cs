@@ -9,21 +9,22 @@ using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
-    public class ReferenceServiceHost : ServiceHostBase
+    public class ReferenceReadServiceHost : ServiceHostBase
     {
-        private static readonly ILog Log = LogManager.GetLogger<ReferenceServiceHost>();
+        private static readonly ILog Log = LogManager.GetLogger<ReferenceReadServiceHost>();
         private readonly IReferenceService _service;
         private readonly IBroker _broker;
 
-        public ReferenceServiceHost(IReferenceService service, IBroker broker) : base(broker, "reference")
+        public ReferenceReadServiceHost(IReferenceService service, IBroker broker) : base(broker, "reference")
         {
             _service = service;
             _broker = broker;
         }
-		
+
         private async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
-            Log.DebugFormat("Received GetCurrencyPairUpdatesStream from {0}", context.UserSession.Username ?? "<UNKNOWN USER>");
+            Log.DebugFormat("Received GetCurrencyPairUpdatesStream from {0}",
+                context.UserSession.Username ?? "<UNKNOWN USER>");
 
             var payload = JsonConvert.DeserializeObject<NothingDto>(Encoding.UTF8.GetString(message.Payload));
             var replyTo = message.ReplyTo;
@@ -50,12 +51,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         {
             RegisterCall("getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
             await base.Start();
-        }
-
-        public override void Dispose()
-        {
-            Log.Info("Dispose()");
-            base.Dispose();
         }
     }
 }
