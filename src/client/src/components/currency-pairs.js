@@ -192,15 +192,14 @@ class CurrencyPairs extends React.Component {
 
   render(){
     // filter cps that have got price data only.
-    const p = this.state.pairs.filter((a) =>{
+    const pairsWithPrices = this.state.pairs.filter((a) =>{
       return a.buy && a.sell;
     });
 
     return <div>
-
       <Header status={this.state.connected} services={this.state.services}/>
       <div className='currency-pairs'>
-        {p.length ? p.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
+        {pairsWithPrices.length ? pairsWithPrices.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
                                                 pair={cp.pair}
                                                 size="100m"
                                                 key={cp.id}

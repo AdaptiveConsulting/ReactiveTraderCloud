@@ -27,7 +27,7 @@ class Header extends React.Component {
   render(){
     const { status, services } = this.props;
 
-    return <nav className='navbar navbar-default navbar-fixed-top'>
+    return <nav className='navbar navbar-default'>
       <Link className='navbar-brand' to='/'>Reactive Trader 2</Link>
       <ul className='nav navbar-nav hidden-xs navbar-left'>
         <li>

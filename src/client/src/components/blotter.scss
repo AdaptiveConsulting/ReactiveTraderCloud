@@ -41,7 +41,7 @@
     }
     td, th {
       width: 100px;
-      max-height: 36px;
+      max-height: 26px;
       div {
         display: block;
         word-wrap: break-word;
@@ -49,7 +49,7 @@
         overflow-x: hidden;
         overflow-y: hidden;
         width: 100%;
-        height: 36px !important;
+        //height: 36px !important;
       }
       &.large {
         width: 200px;

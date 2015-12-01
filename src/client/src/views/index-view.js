@@ -1,8 +1,8 @@
 import React from 'react';
 import CurrencyPairs from '../components/currency-pairs';
 import Blotter from '../components/blotter';
+import Modal from '../components/modal';
 
-import moment from 'moment';
 import rt from '../classes/services/reactive-trader';
 
 /**
@@ -39,6 +39,26 @@ export class IndexView extends React.Component {
       this.setState({
         trades: this.state.trades
       });
+    });
+  }
+
+  reconnect(){
+    Modal.close();
+    rt.transport.open();
+  }
+
+  componentDidMount(){
+    rt.on('timeout', () => {
+      Modal.setTitle('Session expired')
+        .setBody(<div>
+          <div>Your 15 minute session expired, you are now disconnected from the server.</div>
+          <div>Click reconnect to start a new session.</div>
+          <div className='modal-action'>
+            <button className='btn btn-large' onClick={() => this.reconnect()}>Reconnect</button>
+          </div>
+        </div>)
+        .setClass('error-modal')
+        .open();
     });
   }
 
@@ -100,6 +120,7 @@ export class IndexView extends React.Component {
 
   render(){
     return <div>
+      <Modal/>
       <CurrencyPairs onExecute={(payload) => this.addTrade(payload)}/>
       <Blotter trades={this.state.trades}/>
     </div>;
