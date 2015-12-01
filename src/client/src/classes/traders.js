@@ -99,7 +99,7 @@ class Traders {
 
     this.name = trader.firstName;
     this.surname = trader.lastName;
-    this.code = trader.code;
+    this.code = trader.shortCode;
   }
 }
 
