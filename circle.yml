@@ -42,10 +42,10 @@ test:
 
 deployment:
   hub:
-    branch: /*/
+    branch: Make-CircleCI-build-all-containers
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - . ./deploy/config && docker pull $serversContainer:$vMajor.$vMinor.$vBuild
-      - . ./deploy/config && docker pull $populatedEventstoreContainer:$vMajor.$vMinor.$vBuild
-      - . ./deploy/config && docker pull $brokerContainer:$vMajor.$vMinor.$vBuild
-      - . ./deploy/config && docker pull $webContainer:$vMajor.$vMinor.$vBuild
+      - . ./deploy/config && docker push $serversContainer:$vMajor.$vMinor.$vBuild
+      - . ./deploy/config && docker push $populatedEventstoreContainer:$vMajor.$vMinor.$vBuild
+      - . ./deploy/config && docker push $brokerContainer:$vMajor.$vMinor.$vBuild
+      - . ./deploy/config && docker push $webContainer:$vMajor.$vMinor.$vBuild
