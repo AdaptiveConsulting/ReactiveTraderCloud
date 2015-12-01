@@ -34,7 +34,7 @@ export class IndexView extends React.Component {
     };
 
     rt.blotter.getTradesStream((blotter) =>{
-      blotter.Trades.forEach((trade) => this._processTrade(trade, false))
+      blotter.Trades.forEach((trade) => this._processTrade(trade, false));
 
       this.setState({
         trades: this.state.trades
@@ -102,7 +102,7 @@ export class IndexView extends React.Component {
     return <div>
       <CurrencyPairs onExecute={(payload) => this.addTrade(payload)}/>
       <Blotter trades={this.state.trades}/>
-    </div>
+    </div>;
   }
 }
 

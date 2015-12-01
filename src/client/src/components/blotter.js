@@ -59,8 +59,7 @@ class CurrencyPairs extends React.Component {
         {this.props.trades.map(this.renderRow)}
         </tbody>
       </table>
-
-    </div>
+    </div>;
   }
 }
 

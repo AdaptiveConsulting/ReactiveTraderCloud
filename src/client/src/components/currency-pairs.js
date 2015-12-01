@@ -169,8 +169,7 @@ class CurrencyPairs extends React.Component {
 
       <Header status={this.state.connected} services={this.state.services} />
       <div className='currency-pairs'>
-        {p.length ? p.map((cp) => {
-          return <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
+        {p.length ? p.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
                                pair={cp.pair}
                                size="100m"
                                key={cp.id}
@@ -180,8 +179,8 @@ class CurrencyPairs extends React.Component {
                                precision={cp.precision}
                                pip={cp.pip}
                                state={cp.state}
-                               response={cp.response} />
-        }) : <div className="text-center"><i className="fa fa-5x fa-cog fa-spin"></i></div> }
+                               response={cp.response} />) :
+          <div className="text-center"><i className="fa fa-5x fa-cog fa-spin"></i></div> }
       </div>
     </div>;
   }
