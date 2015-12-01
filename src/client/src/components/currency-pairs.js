@@ -8,7 +8,12 @@ import rt from '../classes/services/reactive-trader';
 //todo: hook up socket stream
 let pairs = [];
 
-const STALE_TIMEOUT = 4000;
+const STALE_TIMEOUT = 4000,
+      UPDATE_TYPES  = {
+        ADD: 'Added',
+        UPDATE: 'Updated',
+        DELETE: 'Deleted'
+      };
 
 /**
  * @class CurrencyPairs
@@ -33,6 +38,32 @@ class CurrencyPairs extends React.Component {
   }
 
   /**
+   * Returns if trading is allowed
+   * @returns {Boolean}
+   */
+  canTrade(){
+    return this.state.services.pricing && this.state.services.execution;
+  }
+
+  /**
+   * Updates pairs state and also marks them as stale when services required are down
+   * @param src
+   */
+  updatePairs(src){
+    const pairs = src || this.state.pairs;
+
+    pairs.forEach((pair) =>{
+      const timeOutState = Date.now() - (pair.lastUpdated || 0) > STALE_TIMEOUT ? 'stale' : 'listening';
+      // if either pricing or execution reports down, we cannot trade.
+      pair.state = this.canTrade() ? timeOutState : 'stale';
+    });
+
+    this.setState({
+      pairs: pairs
+    });
+  }
+
+  /**
    * Deals with socket comms for pairs - gets reference data, subscribes to each pair.
    */
   attachSubs(){
@@ -42,40 +73,41 @@ class CurrencyPairs extends React.Component {
       services: rt.transport.getStatus()
     });
 
-    const updatePairs = (src) =>{
-      const pairs = src || this.state.pairs;
-
-      pairs.forEach((pair) =>{
-        const timeOutState = Date.now() - (pair.lastUpdated || 0) > STALE_TIMEOUT ? 'stale' : 'listening';
-        // if either pricing or execution reports down, we cannot trade.
-        pair.state = this.state.services.pricing && this.state.services.execution ? timeOutState : 'stale';
-      });
-
-      this.setState({
-        pairs: pairs
-      });
-    };
-
     rt.reference.getCurrencyPairUpdatesStream((referenceData) =>{
-      const pairs = this.state.pairs;
-      let hasUpdates = false;
+      let shouldStateUpdate = false;
+
+      if (referenceData.IsStateOfTheWorld){
+        // compact pairs if it has any instances not in the new state of the world
+        const len = this.state.pairs.length,
+              ids = _.pluck(referenceData.Updates, 'id');
+
+        this.state.pairs = this.state.pairs.filter((pair) =>{
+          const pairShouldRemain = _.indexOf(ids, pair.id) !== -1;
+
+          pairShouldRemain || rt.pricing.unsubscribe(pair.pricingSub);
+
+          return pairShouldRemain;
+        });
+
+        shouldStateUpdate = len !== this.state.pairs.length;
+      }
 
       // loop through updates
       _.forEach(referenceData.Updates, (updatedPair) =>{
         const pairData = updatedPair.CurrencyPair;
 
         // added new?
-        if (updatedPair.UpdateType == 'Added'){
-          let localPair = {
-            pip: pairData.PipsPosition,
-            precision: pairData.RatePrecision,
-            pair: pairData.Symbol,
-            id: pairData.Symbol,
-            buy: undefined,
-            sell: undefined
-          };
-
-          let existingPair = _.findWhere(pairs, {id: localPair.id});
+        if (updatedPair.UpdateType === UPDATE_TYPES.ADD){
+          let existingPair = _.findWhere(this.state.pairs, {id: pairData.id}),
+              localPair    = {
+                pip: pairData.PipsPosition,
+                precision: pairData.RatePrecision,
+                pair: pairData.Symbol,
+                id: pairData.Symbol,
+                buy: undefined,
+                sell: undefined,
+                disabled: false
+              };
 
           // only subscribe if we don't already listen for prices
           if (!existingPair){
@@ -86,11 +118,11 @@ class CurrencyPairs extends React.Component {
               localPair.mid = Number(priceData.mid);
 
               localPair.lastUpdated = Date.now();
-              updatePairs();
+              this.updatePairs();
             });
 
-            hasUpdates = true;
-            pairs.push(localPair);
+            shouldStateUpdate = true;
+            this.state.pairs.push(localPair);
           }
           else {
             console.warn('already exists', this.state.pairs, existingPair);
@@ -99,13 +131,13 @@ class CurrencyPairs extends React.Component {
         else {
           // removed existing?
           rt.pricing.unsubscribe(existingPair.pricingSub);
-          pairs.splice(_.indexOf(pairs, existingPair), 1);
-          hasUpdates = true;
+          this.state.pairs.splice(_.indexOf(this.state.pairs, existingPair), 1);
+          shouldStateUpdate = true;
         }
       });
 
       // update state if we detected changes
-      hasUpdates && updatePairs();
+      shouldStateUpdate && this.updatePairs();
     });
 
     const self = this;
@@ -119,7 +151,7 @@ class CurrencyPairs extends React.Component {
           services
         });
         // also update pairs in case pricing has gone down
-        updatePairs();
+        self.updatePairs();
       });
   }
 
