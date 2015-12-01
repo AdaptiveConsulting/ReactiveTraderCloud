@@ -35,7 +35,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             var esConsumer = factory as IEventStoreConsumer;
             esConsumer?.Initialize(_eventStoreConnection);
 
-            Servers.Add(name, _conn.Register(name, factory));
+            Servers.Add(name, _conn.Register(name, factory).Result);
         }
 
         private static IServiceHostFactory GetFactory(string type)
@@ -79,9 +79,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 };
 
                 // We should only be using the launcher during development, so hard code this to use the dev config
-                var config = ServiceConfiguration.FromArgs(args);
+                var config = ServiceConfiguration.FromArgs(args.Where(a=>a.Contains(".json")).ToArray());
                 
-
                 _eventStoreConnection = GetEventStoreConnection(config.EventStore, args.Contains("es"), args.Contains("init-es")).Result;
                 _conn = BrokerConnectionFactory.Create(config.Broker);
 

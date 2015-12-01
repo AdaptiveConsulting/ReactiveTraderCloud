@@ -4,9 +4,4 @@
     {
          public string CurrencyPair { get; set; }
     }
-
-    public class DeactivateCurrencyPairRequestDto
-    {
-        public string CurrencyPair { get; set; }
-    }
 }

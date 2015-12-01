@@ -2,14 +2,6 @@
 
 namespace Adaptive.ReactiveTrader.EventStore.Domain
 {
-    public interface IAggregate
-    {
-        int Version { get; }
-        void ApplyEvent(object @event);
-        ICollection<object> GetPendingEvents();
-        void ClearPendingEvents();
-    }
-
     public abstract class AggregateBase : IAggregate
     {
         private readonly List<object> _pendingEvents = new List<object>();

@@ -21,10 +21,4 @@ namespace Adaptive.ReactiveTrader.EventStore
             return eventStore.Connection;
         }
     }
-
-    public enum EventStoreLocation
-    {
-        Embedded,
-        External
-    }
 }

@@ -8,12 +8,6 @@ using Microsoft.Framework.Configuration.Json;
 
 namespace Adaptive.ReactiveTrader.Common.Config
 {
-    public interface IServiceConfiguration
-    {
-        IEventStoreConfiguration EventStore { get; }
-        IBrokerConfiguration Broker { get; }
-    }
-
     public class ServiceConfiguration : IServiceConfiguration
     {
         private static readonly ILog Log = LogManager.GetLogger<ServiceConfiguration>();
