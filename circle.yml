@@ -34,7 +34,13 @@ dependencies:
 
 test:
   override:
-    - chmod 755 deploy/docker/run/runAllServers && cd deploy/docker/run && ./runAllServers
+      - . ./deploy/config && docker run -d --net=host $webContainer:$vMajor.$vMinor.$vBuild
+      - . ./deploy/config && docker run -d --net=host $populatedEventstoreContainer:$vMajor.$vMinor.$vBuild
+      - . ./deploy/config && docker run -d --net=host $brokerContainer:$vMajor.$vMinor.$vBuild
+      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$vBuild bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run ref && while true; do echo ping; sleep 60; done"
+      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$vBuild bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
+      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$vBuild bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
+      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$vBuild bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
 
 deployment:
   hub:
