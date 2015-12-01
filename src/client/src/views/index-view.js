@@ -76,7 +76,7 @@ export class IndexView extends React.Component {
       // ValueDate: (new Date()).toISOString(),
       Direction: payload.direction,
       Notional: payload.amount,
-      DealtCurrency: payload.pair.substr(0, 3)
+      DealtCurrency: payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
     }).then((response) =>{
         const trade = response.Trade,
               dt    = new Date(trade.ValueDate);
@@ -85,7 +85,7 @@ export class IndexView extends React.Component {
           pair: trade.CurrencyPair,
           id: trade.TradeId,
           status: trade.Status,
-          direction: trade.Direction,
+          direction: trade.Direction.toLowerCase(),
           amount: trade.Notional,
           trader: trade.TraderName,
           valueDate: trade.ValueDate, // todo get this from DTO
