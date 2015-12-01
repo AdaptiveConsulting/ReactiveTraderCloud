@@ -1,7 +1,4 @@
-﻿using Adaptive.ReactiveTrader.EventStore;
-using Adaptive.ReactiveTrader.Messaging;
-using System;
-using Adaptive.ReactiveTrader.Server.Common;
+﻿using Adaptive.ReactiveTrader.Server.Core;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {

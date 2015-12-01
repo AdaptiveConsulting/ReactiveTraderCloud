@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Common.Config;
 using Common.Logging;
 using WampSharp.V2;
 using WampSharp.V2.Client;
@@ -23,7 +24,6 @@ namespace Adaptive.ReactiveTrader.Messaging
 
     public class BrokerConnection : IBrokerConnection
     {
-
         class FactoryItem
         {
             public IServiceHostFactory Factory { get; set; }
@@ -95,7 +95,13 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public async Task<IDisposable> Register(string key, IServiceHostFactory serviceHostFactory)
         {
-            _serviceHostFactories.Add(key, new FactoryItem { Factory = serviceHostFactory, CleanupDisposable = new CompositeDisposable { Disposable.Create(() => _serviceHostFactories.Remove(key)) } });
+            _serviceHostFactories.Add(key,
+                new FactoryItem
+                {
+                    Factory = serviceHostFactory,
+                    CleanupDisposable =
+                        new CompositeDisposable {Disposable.Create(() => _serviceHostFactories.Remove(key))}
+                });
 
             if (_broker != null)
             {
@@ -124,9 +130,9 @@ namespace Adaptive.ReactiveTrader.Messaging
 
     public static class BrokerConnectionFactory
     {
-        public static IBrokerConnection Create(string uri, string realm)
+        public static IBrokerConnection Create(IBrokerConfiguration config)
         {
-            return new BrokerConnection(uri, realm);
+            return new BrokerConnection(BrokerUri.FromConfig(config), config.Realm);
         }
     }
 }

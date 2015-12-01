@@ -1,22 +1,21 @@
 {
-    "version": "1.0.0-*",
-    "description": "ReferenceDataWrite Console Application",
-    "authors": [ "jon.clare" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.0-*",
+  "description": "ReferenceDataWrite Console Application",
+  "authors": [ "jon.clare" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
 
-    "dependencies": {
-        "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Server.Common": "1.0.0-*"
-    },
+  "dependencies": {
+     "Adaptive.ReactiveTrader.Server.Core": "1.0.0-*"
+  },
 
-    "commands": {
-        "refDataWritePopulate": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite populate",
-        "refDataWriteModify": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite modify"
-    },
+  "commands": {
+    "dev": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite config.dev.json",
+    "prod": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite config.prod.json"
+  },
 
-    "frameworks": {
-        "dnx451": { }
-    }
+  "frameworks": {
+    "dnx451": { }
+  }
 }

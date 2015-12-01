@@ -20,8 +20,7 @@
     },
 
     "commands": {
-      "default": "Adaptive.ReactiveTrader.Server.Launcher",
-        "runall": "Adaptive.ReactiveTrader.Server.Launcher mb es p ref --realm test"
+      "run": "Adaptive.ReactiveTrader.Server.Launcher config.dev.json es p ref"
     },
 
     "frameworks": {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.EventStore;
+﻿using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.MessageBroker;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Blotter;
@@ -14,6 +9,12 @@ using Adaptive.ReactiveTrader.Server.TradeExecution;
 using Common.Logging;
 using Common.Logging.Simple;
 using EventStore.ClientAPI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Common.Config;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
@@ -70,9 +71,6 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         {
             InitializeFactories();
 
-            var uri = "ws://127.0.0.1:8080/ws";
-            var realm = "com.weareadaptive.reactivetrader";
-
             try
             {
                 LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
@@ -80,8 +78,12 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     ShowLogName = true,
                 };
 
-                _eventStoreConnection = GetEventStoreConnection(args.Contains("es"), args.Contains("init-es")).Result;
-                _conn = BrokerConnectionFactory.Create(uri, realm);
+                // We should only be using the launcher during development, so hard code this to use the dev config
+                var config = ServiceConfiguration.FromArgs(args);
+                
+
+                _eventStoreConnection = GetEventStoreConnection(config.EventStore, args.Contains("es"), args.Contains("init-es")).Result;
+                _conn = BrokerConnectionFactory.Create(config.Broker);
 
                 if (args.Contains("mb"))
                     Servers.Add("mb1", MessageBrokerLauncher.Run());
@@ -184,25 +186,15 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             }
         }
 
-        private static async Task<IEventStoreConnection> GetEventStoreConnection(bool embedded, bool populate)
+        private static async Task<IEventStoreConnection> GetEventStoreConnection(IEventStoreConfiguration configuration, bool embedded, bool populate)
         {
-            IEventStore eventStore;
-
-            if (embedded)
-            {
-                eventStore = new EmbeddedEventStore();
-                await eventStore.Connection.ConnectAsync();
-            }
-            else
-            {
-                eventStore = new ExternalEventStore();
-                await eventStore.Connection.ConnectAsync();
-            }
+            var eventStoreConnection = EventStoreConnectionFactory.Create(embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
+            await eventStoreConnection.ConnectAsync();
 
             if (embedded || populate)
-                ReferenceDataHelper.PopulateRefData(eventStore.Connection).Wait();
+                ReferenceDataHelper.PopulateRefData(eventStoreConnection).Wait();
 
-            return eventStore.Connection;
+            return eventStoreConnection;
         }
     }
 }

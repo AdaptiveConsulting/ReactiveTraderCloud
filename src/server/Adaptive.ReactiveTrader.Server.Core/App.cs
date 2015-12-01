@@ -1,12 +1,13 @@
 using System;
 using System.Reactive.Disposables;
 using System.Threading;
+using Adaptive.ReactiveTrader.Common.Config;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 using Common.Logging.Simple;
 
-namespace Adaptive.ReactiveTrader.Server.Common
+namespace Adaptive.ReactiveTrader.Server.Core
 {
     public class App
     {
@@ -14,24 +15,17 @@ namespace Adaptive.ReactiveTrader.Server.Common
 
         public static void Run(string[] args, IServiceHostFactory factory)
         {
+            var config = ServiceConfiguration.FromArgs(args);
+
             LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
             {
                 ShowLogName = true
             };
 
-            var uri = "ws://127.0.0.1:8080/ws";
-            var realm = "com.weareadaptive.reactivetrader";
-
-            if (args.Length > 0)
-                uri = args[0];
-            if (args.Length > 1)
-                realm = args[1];
-
-
             try
             {
-                using (InitializeEventStore(factory))
-                using (var brokerFactory = BrokerConnectionFactory.Create(uri, realm))
+                using (InitializeEventStore(factory, config.EventStore))
+                using (var brokerFactory = BrokerConnectionFactory.Create(config.Broker))
                 {
                     brokerFactory.Register(factory);
                     brokerFactory.Start();
@@ -46,17 +40,17 @@ namespace Adaptive.ReactiveTrader.Server.Common
             }
         }
 
-        private static IDisposable InitializeEventStore(IServiceHostFactory factory)
+        private static IDisposable InitializeEventStore(IServiceHostFactory factory, IEventStoreConfiguration config)
         {
             var eventStoreConsumer = factory as IEventStoreConsumer;
             if (eventStoreConsumer == null) return Disposable.Empty;
 
-            var es = new ExternalEventStore();
-            es.Connection.ConnectAsync().Wait();
+            var eventStoreConnection = EventStoreConnectionFactory.Create(EventStoreLocation.External, config);
+            eventStoreConnection.ConnectAsync().Wait();
 
-            eventStoreConsumer.Initialize(es.Connection);
+            eventStoreConsumer.Initialize(eventStoreConnection);
 
-            return es.Connection;
+            return eventStoreConnection;
         }
 
         public const int ThreadSleep = 5000;

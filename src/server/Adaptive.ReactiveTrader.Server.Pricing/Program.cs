@@ -1,4 +1,4 @@
-﻿using Adaptive.ReactiveTrader.Server.Common;
+﻿using Adaptive.ReactiveTrader.Server.Core;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {

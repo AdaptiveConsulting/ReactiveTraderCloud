@@ -1,5 +1,5 @@
+using Adaptive.ReactiveTrader.Server.Core;
 using Common.Logging;
-using Adaptive.ReactiveTrader.Server.Common;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
