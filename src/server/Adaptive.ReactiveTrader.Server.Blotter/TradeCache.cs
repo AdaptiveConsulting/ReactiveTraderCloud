@@ -31,7 +31,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 
         private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
         private readonly Dictionary<long, Trade> _stateOfTheWorld = new Dictionary<long, Trade>();
-        private readonly BehaviorSubject<Dictionary<long, Trade>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<long, Trade>>(null);
+        private readonly BehaviorSubject<Dictionary<long, Trade>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<long, Trade>>(new Dictionary<long, Trade>());
         private CompositeDisposable Disposables { get; }
 
         public TradeCache(IEventStoreConnection eventStoreConnection)
@@ -73,7 +73,6 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             return Observable.Create<TradesDto>(obs =>
             {
                 var sotw = _stateOfTheWorldUpdates
-                    .Where(x => x != null)
                     .Take(1)
                     .Select(x => BuildStateOfTheWorldDto(x.Values));
 
@@ -84,7 +83,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 
         private static TradesDto BuildStateOfTheWorldDto(IEnumerable<Trade> trades)
         {
-            return new TradesDto(trades.Select(x => x.ToDto()).ToList());
+            return new TradesDto(trades.Select(x => x.ToDto()).ToList(), true);
         }
 
         private static TradesDto MapSingleEventToUpdateDto(IDictionary<long, Trade> currentSotw, RecordedEvent evt)
@@ -107,7 +106,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             var trade = currentSotw[tradeId];
             var dto = trade.ToDto();
             dto.Status = status;
-            return new TradesDto(new[] { dto });
+            return new TradesDto(new[] { dto }, false);
         }
 
         private IObservable<RecordedEvent> GetAllEvents()
