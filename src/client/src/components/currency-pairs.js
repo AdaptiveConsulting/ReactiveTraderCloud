@@ -125,10 +125,6 @@ class CurrencyPairs extends React.Component {
 
   componentWillMount(){
     this.attachSubs();
-
-    this.setState({
-      pairs: pairs
-    });
   }
 
   onACK(payload){
