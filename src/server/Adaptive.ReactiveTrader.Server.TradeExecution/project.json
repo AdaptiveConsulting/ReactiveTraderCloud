@@ -1,27 +1,21 @@
 {
-    "version": "1.0.0-*",
-    "description": "Adaptive.ReactiveTrader.Server.TradeExecution Console Application",
-    "authors": [ "jon.clare" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.0-*",
+  "description": "Adaptive.ReactiveTrader.Server.TradeExecution Console Application",
+  "authors": [ "jon.clare" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
 
-    "dependencies": {
-        "EventStore.Client": "3.3.1",
-        "Newtonsoft.Json": "7.0.1",
-        "WampSharp.Default": "1.2.3.12-beta",
-        "Common.Logging": "3.3.1",
-        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
-        "Adaptive.ReactiveTrader.EventStore": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Server.Common": "1.0.0-*",
-    },
+  "dependencies": {
+    "Adaptive.ReactiveTrader.Server.Core": "1.0.0-*"
+  },
 
-    "commands": {
-        "Adaptive.ReactiveTrader.Server.TradeExecution": "Adaptive.ReactiveTrader.Server.TradeExecution"
-    },
+  "commands": {
+    "dev": "Adaptive.ReactiveTrader.Server.TradeExecution config.dev.json",
+    "prod": "Adaptive.ReactiveTrader.Server.TradeExecution config.prod.json"
+  },
 
-    "frameworks": {
-        "dnx451": { }
-    }
+  "frameworks": {
+    "dnx451": { }
+  }
 }

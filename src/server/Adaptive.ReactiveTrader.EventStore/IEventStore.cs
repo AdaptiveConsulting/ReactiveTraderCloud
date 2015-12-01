@@ -6,9 +6,4 @@ namespace Adaptive.ReactiveTrader.EventStore
     {
         IEventStoreConnection Connection { get; }
     }
-
-    public interface IEventStoreSubscription
-    {
-        void Stop();
-    }
 }

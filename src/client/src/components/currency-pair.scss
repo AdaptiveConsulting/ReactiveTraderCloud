@@ -52,6 +52,9 @@
     span.key {
       color: $gray-light;
     }
+    &.Rejected {
+      background: linear-gradient(to bottom, rgba(100,0,0,.5), rgba(0,0,0,0));
+    }
   }
 
   .currency-pair-title {

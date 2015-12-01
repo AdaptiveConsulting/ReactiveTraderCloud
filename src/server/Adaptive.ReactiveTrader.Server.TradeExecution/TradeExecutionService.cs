@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
-    public interface ITradeExecutionService
-    {
-        Task<ExecuteTradeResponseDto> ExecuteTrade(IRequestContext context, ExecuteTradeRequestDto request);
-    }
-
     public class TradeExecutionService : ITradeExecutionService, IDisposable
     {
         private static readonly ILog Log = LogManager.GetLogger<TradeExecutionService>();

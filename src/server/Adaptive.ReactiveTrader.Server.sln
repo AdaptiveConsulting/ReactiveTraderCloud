@@ -30,9 +30,19 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Eve
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Blotter", "Adaptive.ReactiveTrader.Server.Blotter\Adaptive.ReactiveTrader.Server.Blotter.xproj", "{ACB76D7B-8275-4BBE-B07A-E3D75D52B6CC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Common", "Adaptive.ReactiveTrader.Server.Common\Adaptive.ReactiveTrader.Server.Common.xproj", "{FDD96AA9-3BA0-458C-8CD8-A85D2FCFADBA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{9EB7F80F-1D5A-4BB2-B9B5-646541354706}"
+	ProjectSection(SolutionItems) = preProject
+		configs\config.dev.json = configs\config.dev.json
+		configs\config.prod.json = configs\config.prod.json
+	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F8217A00-88FB-4039-837E-20E27D2C6874}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Common", "Adaptive.ReactiveTrader.Common\Adaptive.ReactiveTrader.Common.xproj", "{3FE78B9D-BE39-434F-81A4-C92633D07D4C}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Core", "Adaptive.ReactiveTrader.Server.Core\Adaptive.ReactiveTrader.Server.Core.xproj", "{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Common", "Adaptive.ReactiveTrader.Server.Common\Adaptive.ReactiveTrader.Server.Common.xproj", "{20A825B6-21C5-4EDF-9BE4-7E2F7BB8C4AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B6AEC7D9-1F8F-45C0-B0EA-3191CB2AC343}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.IntegrationTests", "Adaptive.ReactiveTrader.Server.IntegrationTests\Adaptive.ReactiveTrader.Server.IntegrationTests.xproj", "{E91BF503-5523-4F11-BD95-544EEE37E115}"
 EndProject
@@ -86,10 +96,18 @@ Global
 		{ACB76D7B-8275-4BBE-B07A-E3D75D52B6CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACB76D7B-8275-4BBE-B07A-E3D75D52B6CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACB76D7B-8275-4BBE-B07A-E3D75D52B6CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FDD96AA9-3BA0-458C-8CD8-A85D2FCFADBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FDD96AA9-3BA0-458C-8CD8-A85D2FCFADBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FDD96AA9-3BA0-458C-8CD8-A85D2FCFADBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FDD96AA9-3BA0-458C-8CD8-A85D2FCFADBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FE78B9D-BE39-434F-81A4-C92633D07D4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FE78B9D-BE39-434F-81A4-C92633D07D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FE78B9D-BE39-434F-81A4-C92633D07D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FE78B9D-BE39-434F-81A4-C92633D07D4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20A825B6-21C5-4EDF-9BE4-7E2F7BB8C4AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20A825B6-21C5-4EDF-9BE4-7E2F7BB8C4AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20A825B6-21C5-4EDF-9BE4-7E2F7BB8C4AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20A825B6-21C5-4EDF-9BE4-7E2F7BB8C4AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E91BF503-5523-4F11-BD95-544EEE37E115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E91BF503-5523-4F11-BD95-544EEE37E115}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E91BF503-5523-4F11-BD95-544EEE37E115}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -99,7 +117,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{797A2A7F-639E-4E47-A218-11B65AE88931} = {F8217A00-88FB-4039-837E-20E27D2C6874}
-		{E91BF503-5523-4F11-BD95-544EEE37E115} = {F8217A00-88FB-4039-837E-20E27D2C6874}
+		{797A2A7F-639E-4E47-A218-11B65AE88931} = {B6AEC7D9-1F8F-45C0-B0EA-3191CB2AC343}
+		{9EB7F80F-1D5A-4BB2-B9B5-646541354706} = {08F51E3B-21F1-441B-A381-E03B99FE7728}
+		{E91BF503-5523-4F11-BD95-544EEE37E115} = {B6AEC7D9-1F8F-45C0-B0EA-3191CB2AC343}
 	EndGlobalSection
 EndGlobal

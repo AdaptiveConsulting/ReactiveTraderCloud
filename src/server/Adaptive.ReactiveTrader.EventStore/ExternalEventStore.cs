@@ -10,11 +10,7 @@ namespace Adaptive.ReactiveTrader.EventStore
             var connectionSettings = ConnectionSettings.Create().KeepReconnecting();
             Connection = EventStoreConnection.Create(connectionSettings, uri);
         }
-
-        public ExternalEventStore() : this(EventStoreConstants.DefaultConnectionUri)
-        {
-        }
-
+        
         public IEventStoreConnection Connection { get; }
     }
 }
