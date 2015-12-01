@@ -1,0 +1,22 @@
+#! /bin/bash
+
+echo "TradeExecution"
+
+. ../../../config
+
+#startCommand="dnx -p Adaptive.ReactiveTrader.Server.TradeExecution run"
+startCommand="dnx -p Adaptive.ReactiveTrader.Server.Launcher run exec"
+waitCommand="while true; do echo ping; sleep 60; done"
+
+docker rm tradeexecution 2&> garbage
+
+docker run -d --net=host                       \
+     --name tradeexecution                     \
+     $serversContainer:$vMajor.$vMinor.$vBuild \
+     bash -c "$startCommand && $waitCommand"   \
+     > container_id 
+
+rm garbage
+
+echo "  started"
+echo " "

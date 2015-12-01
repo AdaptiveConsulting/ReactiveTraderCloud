@@ -1,12 +1,8 @@
 #! /bin/bash
 
-for server in "reference" "pricing" "broker" "eventstore"
+for server in "referencedataread" "pricing" "tradeexecution" "blotter" "broker" "eventstore" "web"
 do
-    cd server/$server
+    cd $server
     ./kill
-    cd ../..
+    cd ..
 done
-
-cd client
-    ./kill
-cd ..
