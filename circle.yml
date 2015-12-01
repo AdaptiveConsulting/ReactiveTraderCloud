@@ -9,16 +9,30 @@ dependencies:
     - ~/.npm
   override:
     - docker info
+    # update build number
+    - sed -i "s/spike/$CIRCLE_BUILD_NUM/g" deploy/config
+    - cat deploy/config
     # pull base containers
     - . ./deploy/config && docker pull $nginxContainer:$vNginx
     - . ./deploy/config && docker pull $crossbarContainer:$vCrossbar
     - . ./deploy/config && docker pull $monoContainer:$vDnx
     - . ./deploy/config && docker pull $eventstoreContainer:$vEventstore
+    # Insure permissions 
+    - chmod 755 deploy/docker/build/prepare
+    - chmod 755 deploy/docker/build/broker/build.sh
+    - chmod 755 deploy/docker/build/servers/build.sh
+    - chmod 755 deploy/docker/build/web/build.sh
+    - chmod 755 deploy/docker/run/runAllServers
+    # build AdaptiveTrader containers
+    #   servers      
+    - cd deploy/docker/build && ./prepare build servers
+    #   broker
+    - cd deploy/docker/build && ./prepare build broker
+    #   web
+    - cd deploy/docker/build && ./prepare build populatedEventstore
+    #   eventstore
+    - cd deploy/docker/build && ./prepare build web
 
 test:
   override:
-    - chmod 755 deploy/docker/build/prepare
-    - chmod 755 deploy/docker/build/servers/build.sh
-    - cd deploy/docker/build && ./prepare build servers
-    - cd src/client && npm install
-    - cd src/client && npm run compile
+    - cd deploy/docker/run && ./runAllServers
