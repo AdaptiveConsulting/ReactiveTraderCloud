@@ -22,7 +22,6 @@ dependencies:
     - chmod 755 deploy/docker/build/broker/build.sh
     - chmod 755 deploy/docker/build/servers/build.sh
     - chmod 755 deploy/docker/build/web/build.sh
-    - chmod 755 deploy/docker/run/runAllServers
     # build AdaptiveTrader containers
     #   servers      
     - cd deploy/docker/build && ./prepare build servers
@@ -35,4 +34,15 @@ dependencies:
 
 test:
   override:
+    - chmod 755 deploy/docker/run/runAllServers
     - cd deploy/docker/run && ./runAllServers
+
+deployment:
+  hub:
+    branch: /*/
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - . ./deploy/config && docker pull $serversContainer:$vMajor.$vMinor.$vBuild
+      - . ./deploy/config && docker pull $populatedEventstoreContainer:$vMajor.$vMinor.$vBuild
+      - . ./deploy/config && docker pull $brokerContainer:$vMajor.$vMinor.$vBuild
+      - . ./deploy/config && docker pull $webContainer:$vMajor.$vMinor.$vBuild
