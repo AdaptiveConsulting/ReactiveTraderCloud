@@ -34,8 +34,7 @@ dependencies:
 
 test:
   override:
-    - chmod 755 deploy/docker/run/runAllServers
-    - cd deploy/docker/run && ./runAllServers
+    - chmod 755 deploy/docker/run/runAllServers && cd deploy/docker/run && ./runAllServers
 
 deployment:
   hub:
