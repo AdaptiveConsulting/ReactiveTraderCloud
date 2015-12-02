@@ -1,6 +1,5 @@
 using System;
 using System.Reactive.Disposables;
-using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.EventStore.Domain;
@@ -11,10 +10,11 @@ using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
-    public class ReferenceDataWriteServiceHostFactory : IServceHostFactoryWithEventStore, IEventStoreConsumer, IDisposable
+    public class ReferenceDataWriteServiceHostFactory : IServceHostFactoryWithEventStore, IEventStoreConsumer,
+        IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriteServiceHostFactory>();
-        private readonly SerialDisposable _cleanup = new SerialDisposable();
+        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
 
         private Repository _repository;
@@ -25,16 +25,23 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
             _repository = new Repository(es);
             _service = new ReferenceWriteService(_repository);
         }
-        public void Initialize(IObservable<IConnected<IBroker>> broker)
-        {
 
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
+        {
+            return Disposable.Empty;
         }
 
-        public void Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream,
+            IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
             var repositoryStream = eventStoreStream.LaunchOrKill(conn => new Repository(conn));
             var serviceStream = repositoryStream.LaunchOrKill(engine => new ReferenceWriteService(engine));
-            _cleanup.Disposable = serviceStream.LaunchOrKill(brokerStream, (service, broker) => new ReferenceWriteServiceHost(service, broker)).Subscribe();
+            var disposable =
+                serviceStream.LaunchOrKill(brokerStream,
+                    (service, broker) => new ReferenceWriteServiceHost(service, broker)).Subscribe();
+
+            _cleanup.Add(disposable);
+            return disposable;
         }
 
         public void Dispose()

@@ -1,7 +1,18 @@
-﻿using Adaptive.ReactiveTrader.EventStore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Common;
+using Adaptive.ReactiveTrader.Common.Config;
+using Adaptive.ReactiveTrader.EventStore;
+using Adaptive.ReactiveTrader.EventStore.Connection;
+using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.MessageBroker;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Blotter;
+using Adaptive.ReactiveTrader.Server.Core;
 using Adaptive.ReactiveTrader.Server.Pricing;
 using Adaptive.ReactiveTrader.Server.ReferenceDataRead;
 using Adaptive.ReactiveTrader.Server.ReferenceDataWrite;
@@ -9,37 +20,30 @@ using Adaptive.ReactiveTrader.Server.TradeExecution;
 using Common.Logging;
 using Common.Logging.Simple;
 using EventStore.ClientAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Common.Config;
-using Adaptive.ReactiveTrader.EventStore.Domain;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
-
     public class Program
     {
         private static readonly Dictionary<string, IDisposable> Servers = new Dictionary<string, IDisposable>();
 
-        private static readonly Dictionary<string, Lazy<IServiceHostFactory>> Factories =
-            new Dictionary<string, Lazy<IServiceHostFactory>>();
+        private static readonly Dictionary<string, Lazy<IServceHostFactor>> Factories =
+            new Dictionary<string, Lazy<IServceHostFactor>>();
 
-        private static IBrokerConnection _conn;
+        private static IObservable<IConnected<IBroker>> _brokerStream;
+        private static IObservable<IConnected<IEventStoreConnection>> _esStream;
 
-        private static IEventStoreConnection _eventStoreConnection;
-
-        public static void StartService(string name, IServiceHostFactory factory)
+        public static void StartService(string name, IServceHostFactor factory)
         {
-            var esConsumer = factory as IEventStoreConsumer;
-            esConsumer?.Initialize(_eventStoreConnection);
-
-            Servers.Add(name, _conn.Register(name, factory).Result);
+            var esConsumer = factory as IServceHostFactoryWithEventStore;
+            var d = esConsumer != null ? 
+                esConsumer.Initialize(_brokerStream, _esStream) 
+                : factory.Initialize(_brokerStream);
+            
+            Servers.Add(name, d);
         }
 
-        private static IServiceHostFactory GetFactory(string type)
+        private static IServceHostFactor GetFactory(string type)
         {
             switch (type)
             {
@@ -58,14 +62,15 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     return Factories[type].Value;
             }
         }
-        
+
         public static void InitializeFactories()
         {
-            Factories.Add("reference-read", new Lazy<IServiceHostFactory>(() => new ReferenceDataReadServiceHostFactory()));
-            Factories.Add("reference-write", new Lazy<IServiceHostFactory>(() => new ReferenceDataWriteServiceHostFactory()));
-            Factories.Add("pricing", new Lazy<IServiceHostFactory>(() => new PriceServiceHostFactory()));
-            Factories.Add("blotter", new Lazy<IServiceHostFactory>(() => new BlotterServiceHostFactory()));
-            Factories.Add("execution", new Lazy<IServiceHostFactory>(() => new TradeExecutionServiceHostFactory()));
+            Factories.Add("reference-read", new Lazy<IServceHostFactor>(() => new ReferenceDataReadServiceHostFactory()));
+            Factories.Add("reference-write",
+                new Lazy<IServceHostFactor>(() => new ReferenceDataWriteServiceHostFactory()));
+            Factories.Add("pricing", new Lazy<IServceHostFactor>(() => new PriceServiceHostFactory()));
+            Factories.Add("blotter", new Lazy<IServceHostFactor>(() => new BlotterServiceHostFactory()));
+            Factories.Add("execution", new Lazy<IServceHostFactor>(() => new TradeExecutionServiceHostFactory()));
         }
 
         public static void Main(string[] args)
@@ -82,11 +87,32 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 Log = LogManager.GetLogger<Program>();
 
-        // We should only be using the launcher during development, so hard code this to use the dev config
-        var config = ServiceConfiguration.FromArgs(args.Where(a=>a.Contains(".json")).ToArray());
-                
-                _eventStoreConnection = GetEventStoreConnection(config.EventStore, args.Contains("es"), args.Contains("init-es")).Result;
-                _conn = BrokerConnectionFactory.Create(config.Broker);
+                // We should only be using the launcher during development, so hard code this to use the dev config
+                var config = ServiceConfiguration.FromArgs(args.Where(a => a.Contains(".json")).ToArray());
+
+                var embedded = args.Contains("es");
+                var populate = args.Contains("init-is");
+
+                var eventStoreConnection =
+                    GetEventStoreConnection(config.EventStore, embedded);
+                var mon = new ConnectionStatusMonitor(eventStoreConnection);
+                _esStream =
+                    mon.ConnectionInfoChanged.Select(
+                        c =>
+                            c.Status == ConnectionStatus.Connected
+                                ? Connected.Yes(eventStoreConnection)
+                                : Connected.No<IEventStoreConnection>());
+
+                eventStoreConnection.ConnectAsync().Wait();
+
+                if (populate)
+                {
+                    ReferenceDataHelper.PopulateRefData(eventStoreConnection).Wait();
+                }
+
+                var conn = BrokerConnectionFactory.Create(config.Broker);
+                _brokerStream = conn.GetBrokerStream();
+
 
                 if (args.Contains("mb"))
                     Servers.Add("mb1", MessageBrokerLauncher.Run());
@@ -103,14 +129,14 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 if (args.Contains("b"))
                     StartService("b1", GetFactory("blotter"));
 
-                var repository = new Repository(_eventStoreConnection);
-             
-                _conn.Start();
+                var repository = new Repository(eventStoreConnection);
+
+                conn.Start();
 
                 if (!args.Contains("--interactive"))
                     while (true)
                         Thread.Sleep(TimeSpan.FromSeconds(1));
-                
+
                 while (true)
                 {
                     var x = Console.ReadLine();
@@ -120,7 +146,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                         if (x == null || x == "exit")
                             break;
 
-                        
+
                         if (x.StartsWith("start"))
                         {
                             var a = x.Split(' ');
@@ -217,13 +243,13 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
         public static ILog Log { get; set; }
 
-        private static async Task<IEventStoreConnection> GetEventStoreConnection(IEventStoreConfiguration configuration, bool embedded, bool populate)
+        private static IEventStoreConnection GetEventStoreConnection(IEventStoreConfiguration configuration,
+            bool embedded)
         {
-            var eventStoreConnection = EventStoreConnectionFactory.Create(embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
-            await eventStoreConnection.ConnectAsync();
+            var eventStoreConnection =
+                EventStoreConnectionFactory.Create(
+                    embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
 
-            if (embedded || populate)
-                ReferenceDataHelper.PopulateRefData(eventStoreConnection).Wait();
 
             return eventStoreConnection;
         }
