@@ -25,7 +25,8 @@ class Transport extends emitter {
     this.connection = new autobahn.Connection({
       url,
       realm,
-      use_es6_promises: true
+      use_es6_promises: true,
+      max_retries: 0
     });
 
     this.queues = [];

@@ -148,9 +148,10 @@ class CurrencyPair extends React.Component {
   execute(direction){
     // attempt to capture price we request against.
     if (this.props.onExecute && this.state.size !== 0){
-      this.props.onExecute({
+      let s = Number(this.state.size);
+      isNaN(s) || this.props.onExecute({
         direction: direction,
-        amount: this.state.size,
+        amount: s,
         rate: this.props[direction].toFixed(this.props.precision),
         pair: this.props.pair,
         valueDate: this.SPOTDATE,

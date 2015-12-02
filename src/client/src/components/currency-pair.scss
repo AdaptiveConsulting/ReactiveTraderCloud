@@ -83,6 +83,10 @@
       padding-left: 8px;
       padding-right: 8px;
     }
+    .big, .tenth {
+      transform: translate(0px, -8px);
+      display: inline-block;
+    }
     .action {
       box-sizing: border-box;
     }
@@ -142,6 +146,7 @@
   }
 
   .sizer {
+    border-bottom: 1px solid transparent;
     clear: both;
     padding: 8px;
     margin-top: 8px;
@@ -150,11 +155,13 @@
 
     input.size {
       border: none;
-      border-bottom: 1px solid lighten($gray-dark, 10%);
       background: transparent;
       outline: none !important;
       width: 100px;
       margin-left: 8px;
+      &:hover, &:focus {
+        border-bottom: 1px solid lighten($gray-dark, 10%);
+      }
     }
     label {
       @extend .pull-left;

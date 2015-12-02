@@ -40,7 +40,7 @@ class Header extends React.Component {
           <Link to='/user' className='nav-link' activeClassName='active'><i className='fa fa-user' /> {traders.code} ({traders.name} {traders.surname})</Link>
         </li>
       </ul>
-      <ul className='nav navbar-nav pull-right nav-status'>
+      <ul className='nav navbar-nav pull-right nav-status hidden-xs'>
         <li>{this.getBrokerStatus(status)}</li>
         {this.getServices(services)}
       </ul>
