@@ -12,7 +12,7 @@ const STALE_TIMEOUT = 4000,
       UPDATE_TYPES  = {
         ADD: 'Added',
         UPDATE: 'Updated',
-        DELETE: 'Deleted'
+        DELETE: 'Removed'
       };
 
 /**
@@ -98,7 +98,7 @@ class CurrencyPairs extends React.Component {
 
         // added new?
         if (updatedPair.UpdateType === UPDATE_TYPES.ADD){
-          let existingPair = _.findWhere(this.state.pairs, {id: pairData.id}),
+          let existingPair = _.findWhere(this.state.pairs, {id: pairData.Symbol}),
               localPair    = {
                 pip: pairData.PipsPosition,
                 precision: pairData.RatePrecision,
@@ -128,13 +128,17 @@ class CurrencyPairs extends React.Component {
             console.warn('already exists', this.state.pairs, existingPair);
           }
         }
-        else {
+        else if (updatedPair.UpdateType === UPDATE_TYPES.DELETE){
           // removed existing?
-          rt.pricing.unsubscribe(existingPair.pricingSub);
-          this.state.pairs.splice(_.indexOf(this.state.pairs, existingPair), 1);
-          shouldStateUpdate = true;
+          let existingPair = _.findWhere(this.state.pairs, {id: pairData.Symbol});
+
+          if (existingPair){
+            // rt.pricing.unsubscribe(existingPair.pricingSub);
+            this.state.pairs.splice(_.indexOf(this.state.pairs, existingPair), 1);
+            shouldStateUpdate = true;
+          }
         }
-      });
+      }, this);
 
       // update state if we detected changes
       shouldStateUpdate && this.updatePairs();
