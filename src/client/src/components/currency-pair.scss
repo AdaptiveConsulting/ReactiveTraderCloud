@@ -185,3 +185,15 @@
   }
 
 }
+
+#popout-content-container {
+  .glyphicon-new-window {
+    display: none;
+  }
+  .currency-pair {
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid $gray-darker;
+    margin: 0;
+  }
+}

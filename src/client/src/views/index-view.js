@@ -24,7 +24,7 @@ const formatTradeForDOM = (DTO) =>{
   };
 };
 
-export class IndexView extends React.Component {
+class IndexView extends React.Component {
 
   constructor(props, context){
     super(props, context);

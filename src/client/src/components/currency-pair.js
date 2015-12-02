@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
+import Popout from 'react-popout';
+
 import numeral from 'numeral';
 import { getConvertedSize } from '../utils';
 
@@ -38,6 +40,7 @@ class CurrencyPair extends React.Component {
       size: 0,
       chart: false,
       info: false,
+      tearoff: false,
       state: 'listening',
       historic: []
     };
@@ -211,6 +214,10 @@ class CurrencyPair extends React.Component {
     );
   }
 
+  tearoff(){
+    this.setState({tearoff: !this.state.tearoff});
+  }
+
   render(){
     const { historic, size, state, info, chart } = this.state,
           { buy, sell, pair, response } = this.props;
@@ -224,10 +231,10 @@ class CurrencyPair extends React.Component {
     // any ACK or failed messages will come via state.info / last response
     const message = this.state.info ? (this.lastResponse || this.renderMessage(response)) : false;
 
-    return <div className={className}>
+    const tile = <div className={className}>
       <div className='currency-pair-title'>
         {title} <i className='fa fa-plug animated infinite fadeIn'></i>
-        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
+        <i className='glyphicon glyphicon-new-window pull-right' onClick={() => this.tearoff()}/> <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       {message}
       <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
@@ -245,6 +252,10 @@ class CurrencyPair extends React.Component {
           <SparklinesReferenceLine type="avg"/>
         </Sparklines> : <div className='sparkline-holder'></div>}
     </div>;
+
+    return this.state.tearoff ?
+      <Popout url='/tile' title={title} options={{width: 332, height: 190, resizable: 'no'}} onClosing={() => this.tearoff()}>{tile}</Popout> :
+      tile;
   }
 }
 
