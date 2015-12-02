@@ -17,10 +17,10 @@ listcontains() {
   return 1
 }
 
-if [[ $# != 3 ]];then
+if [[ $# != 4 ]];then
   echo " "
   echo "usage:"
-  echo "  kube COMMAND SERVICE NAMESPACE"
+  echo "  kube COMMAND SERVICE BUILD NAMESPACE"
   echo " "
   echo " "
   echo " COMMAND can be:"
@@ -28,6 +28,8 @@ if [[ $# != 3 ]];then
   echo " "
   echo " SERVICE can be:"
   echo "   $services"
+  echo " "
+  echo " BUILD is the build number"
   echo " "
   echo " NAMESPACE can be:"
   echo "   $namespaces"
@@ -40,7 +42,8 @@ fi
 
 command=$1
 service=$2
-namespace=$3
+build=$3
+namespace=$4
 
 # control parameters
 if ! listcontains "$commands" $command; then 
@@ -64,10 +67,6 @@ if [[ $vMinor = "" ]];then
   echo "kube: minor version required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
-if [[ $vBuild = "" ]];then
-  echo "kube: build number required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 manifestsPath="./manifests"
 
@@ -76,8 +75,8 @@ mkdir -p $manifestsPath
 
 # generate manifests
 pushd templates > garbage
-generate_service_manifest $service $namespace
-generate_rc_manifest $service $namespace
+generate_service_manifest $service $namespace $build
+generate_rc_manifest $service $namespace $build
 generate_ns_manifest $namespace
 popd > garbage
 rm templates/garbage

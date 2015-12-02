@@ -27,7 +27,5 @@ spec:
       - name: "__SERVICE__"
         image: "__DOCKERIMAGE__"
         ports:
-          - containerPort: 80
-            name: "http"
           - containerPort: 8080
             name: "ws"
