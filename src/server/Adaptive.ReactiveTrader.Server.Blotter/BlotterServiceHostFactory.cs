@@ -28,17 +28,19 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             _cache.Dispose();
         }
 
-        public void Initialize(IObservable<IConnected<IBroker>> broker)
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
         {
-            
+            return null;
         }
 
-        public void Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStore)
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStore)
         {
-            _cache = new TradeCache(eventStore);
-            _cache.Initialize();
-            _service = new BlotterService(_cache.GetTrades());
-            _cleanup.Disposable = brokerStream.LaunchOrKill(broker => new BlotterServiceHost(_service, broker)).Subscribe();
+            //_cache = new TradeCache(eventStore);
+            //_cache.Initialize();
+            //_service = new BlotterService(_cache.GetTrades());
+            //_cleanup.Disposable = brokerStream.LaunchOrKill(broker => new BlotterServiceHost(_service, broker)).Subscribe();
+
+            return null;
         }
     }
 }

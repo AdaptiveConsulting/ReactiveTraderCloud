@@ -1,4 +1,7 @@
-﻿using Adaptive.ReactiveTrader.EventStore;
+﻿using Adaptive.ReactiveTrader.Common.Config;
+using Adaptive.ReactiveTrader.EventStore;
+using Adaptive.ReactiveTrader.EventStore.Connection;
+using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.MessageBroker;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Blotter;
@@ -8,21 +11,18 @@ using Adaptive.ReactiveTrader.Server.ReferenceDataWrite;
 using Adaptive.ReactiveTrader.Server.TradeExecution;
 using Common.Logging;
 using Common.Logging.Simple;
-using EventStore.ClientAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Common.Config;
-using Adaptive.ReactiveTrader.EventStore.Connection;
-using Adaptive.ReactiveTrader.EventStore.Domain;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
 
     public class Program
     {
+        /*
         private static readonly Dictionary<string, IDisposable> Servers = new Dictionary<string, IDisposable>();
 
         private static readonly Dictionary<string, Lazy<IServiceHostFactory>> Factories =
@@ -30,13 +30,12 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
         private static IBrokerConnection _conn;
 
-        private static IEventStoreConnection _eventStoreConnection;
-        private static IConnectionStatusMonitor _connectionStatusMonitor;
+        private static IMonitoredEventStoreConnection _eventStoreConnection;
 
         public static void StartService(string name, IServiceHostFactory factory)
         {
             var esConsumer = factory as IEventStoreConsumer;
-            esConsumer?.Initialize(_eventStoreConnection, _connectionStatusMonitor);
+            esConsumer?.Initialize(_eventStoreConnection);
 
             Servers.Add(name, _conn.Register(name, factory).Result);
         }
@@ -87,9 +86,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         // We should only be using the launcher during development, so hard code this to use the dev config
         var config = ServiceConfiguration.FromArgs(args.Where(a=>a.Contains(".json")).ToArray());
                 
-                var tuple = GetEventStoreConnection(config.EventStore, args.Contains("es"), args.Contains("init-es")).Result;
-                _eventStoreConnection = tuple.Item1;
-                _connectionStatusMonitor = tuple.Item2;
+                 _eventStoreConnection = GetEventStoreConnection(config.EventStore, args.Contains("es"), args.Contains("init-es")).Result;
                 _conn = BrokerConnectionFactory.Create(config.Broker);
 
                 if (args.Contains("mb"))
@@ -221,17 +218,16 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
         public static ILog Log { get; set; }
 
-        private static async Task<Tuple<IEventStoreConnection, IConnectionStatusMonitor>> GetEventStoreConnection(IEventStoreConfiguration configuration, bool embedded, bool populate)
+        private static async Task<IMonitoredEventStoreConnection> GetEventStoreConnection(IEventStoreConfiguration configuration, bool embedded, bool populate)
         {
             var eventStoreConnection = EventStoreConnectionFactory.Create(embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
-            IConnectionStatusMonitor monitor = new ConnectionStatusMonitor(eventStoreConnection);
 
             await eventStoreConnection.ConnectAsync();
 
             if (embedded || populate)
                 ReferenceDataHelper.PopulateRefData(eventStoreConnection).Wait();
 
-            return Tuple.Create(eventStoreConnection, monitor);
-        }
+            return eventStoreConnection;
+        }*/
     }
 }

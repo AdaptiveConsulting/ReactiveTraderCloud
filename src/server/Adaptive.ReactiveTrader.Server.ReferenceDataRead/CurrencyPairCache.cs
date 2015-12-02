@@ -1,6 +1,8 @@
+using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Contract.Events.Reference;
 using Adaptive.ReactiveTrader.EventStore;
+using Common.Logging;
 using EventStore.ClientAPI;
 using System;
 using System.Collections.Generic;
@@ -9,8 +11,6 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using Adaptive.ReactiveTrader.EventStore.Connection;
-using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
@@ -18,7 +18,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
     public class CurrencyPairCache : IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<CurrencyPairCache>();
-        private readonly IEventStoreConnection _es;
         private const string CurrencyPairCreatedEventType = "CurrencyPairCreatedEvent";
         private const string CurrencyPairChangedEventType = "CurrencyPairChangedEvent";
         private const string CurrencyPairActivatedEventType = "CurrencyPairActivatedEvent";
@@ -34,32 +33,53 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
         private readonly Dictionary<string, CurrencyPair> _stateOfTheWorld = new Dictionary<string, CurrencyPair>();
         private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
-        private readonly BehaviorSubject<Dictionary<string, CurrencyPair>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<string, CurrencyPair>>(new Dictionary<string, CurrencyPair>());
+        private readonly BehaviorSubject<Dictionary<string, CurrencyPair>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<string, CurrencyPair>>(null);
         private IConnectableObservable<RecordedEvent> _currencyPairEvents;
         private bool _isCaughtUp;
 
-        public CurrencyPairCache(IEventStoreConnection es, IConnectionStatusMonitor monitor)
+        private readonly SerialDisposable _currencyPairsSubscription = new SerialDisposable();
+        private readonly SerialDisposable _currencyPairsConnection = new SerialDisposable();
+        private readonly IConnectableObservable<IConnected<IEventStoreConnection>> _reconnected;
+
+        public CurrencyPairCache(IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
             Disposables = new CompositeDisposable();
-            _es = es;
 
-            Disposables.Add(monitor.ConnectionStatusChanged
-                                   .ObserveOn(_eventLoopScheduler)
-                                   .Subscribe(x => Log.Info(x)));
+            _reconnected = eventStoreStream.ObserveOn(_eventLoopScheduler)
+                               .Where(c => c.IsConnected)
+                               .Do(_ => Log.Info("Reconnected Fired"))
+                               .Publish();
+
+            _reconnected.Connect();
+
+            Disposables.Add(eventStoreStream
+                              .ObserveOn(_eventLoopScheduler)
+                              .Where(x => x.IsConnected)
+                              .Subscribe(x => Initialize(x.Value)));
+
+            Disposables.Add(eventStoreStream
+                                .ObserveOn(_eventLoopScheduler)
+                                .Subscribe(x => Log.Info($"IsConnected {x.IsConnected}")));
         }
 
         private CompositeDisposable Disposables { get; }
 
-        public void Initialize()
+        private void Initialize(IEventStoreConnection connection)
         {
+            if (Log.IsInfoEnabled)
+            {
+                Log.Info("Initializing Cache");
+            }
+
+            _stateOfTheWorld.Clear();
             _isCaughtUp = false;
 
-            _currencyPairEvents = GetAllEvents().Where(x => CurrencyPairEventTypes.Contains(x.EventType))
+            _currencyPairEvents = GetAllEvents(connection).Where(x => CurrencyPairEventTypes.Contains(x.EventType))
                                                 .Select(x => x)
                                                 .SubscribeOn(_eventLoopScheduler)
                                                 .Publish();
 
-            Disposables.Add(_currencyPairEvents.Subscribe(evt =>
+            _currencyPairsSubscription.Disposable = _currencyPairEvents.Subscribe(evt =>
             {
                 UpdateStateOfTheWorld(_stateOfTheWorld, evt);
 
@@ -67,26 +87,58 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                 {
                     _stateOfTheWorldUpdates.OnNext(_stateOfTheWorld);
                 }
-            }));
+            });
 
-            Disposables.Add(_currencyPairEvents.Connect());
+            _currencyPairsConnection.Disposable = _currencyPairEvents.Connect();
         }
 
         public IObservable<CurrencyPairUpdatesDto> GetCurrencyPairUpdates()
         {
-            return GetCurrencyPairUpdatesImpl().SubscribeOn(_eventLoopScheduler);
+            return GetCurrencyPairUpdatesImpl().SubscribeOn(_eventLoopScheduler)
+                                               .TakeUntil(_reconnected)
+                                               .Repeat();
         }
 
         private IObservable<CurrencyPairUpdatesDto> GetCurrencyPairUpdatesImpl()
         {
             return Observable.Create<CurrencyPairUpdatesDto>(obs =>
             {
-                var sow = _stateOfTheWorldUpdates.Take(1)
-                                                 .Select(x => BuildStateOfTheWorldDto(x.Values.Where(cp => cp.IsEnabled)));
+                if (Log.IsInfoEnabled)
+                {
+                    Log.Info("Creating observable for CurrencyPairUpdates");
+                }
 
-                return sow.Concat(_currencyPairEvents.Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorld, evt)))
+                var sow = _stateOfTheWorldUpdates.Where(x => x != null)
+                                                 .Take(1)
+                                                 .Select(x => BuildStateOfTheWorldDto(x.Values.Where(cp => cp.IsEnabled)))
+                                                 .Do(_ =>
+                                                 {
+                                                     if (Log.IsInfoEnabled)
+                                                     {
+                                                         Log.Info("Publishing State Of The World update");
+                                                     }
+                                                 });
+
+                return sow.Concat(_currencyPairEvents.Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorld, evt)).
+                                                      Do(_ =>
+                                                      {
+                                                          if (Log.IsInfoEnabled)
+                                                          {
+                                                              Log.Info("Publishing update");
+                                                          }
+                                                      }))
                           .Where(x => x != CurrencyPairUpdatesDto.Empty)
-                          .Subscribe(obs);
+                          .Subscribe(obs.OnNext,
+                                     ex =>
+                                     {
+                                         Log.Info(@"Stream Errored: {ex}");
+                                         obs.OnError(ex);
+                                     },
+                                     () =>
+                                     {
+                                         Log.Info("Stream Completed");
+                                         obs.OnCompleted();
+                                     });
             });
         }
 
@@ -101,7 +153,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                                                            .ToList(), true);
         }
 
-        private IObservable<RecordedEvent> GetAllEvents()
+        private IObservable<RecordedEvent> GetAllEvents(IEventStoreConnection connection)
         {
             return Observable.Create<RecordedEvent>(o =>
             {
@@ -122,7 +174,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                     });
                 };
 
-                var subscription = _es.SubscribeToAllFrom(Position.Start, false, onEvent, onCaughtUp);
+                var subscription = connection.SubscribeToAllFrom(Position.Start, false, onEvent, onCaughtUp);
                 return new CompositeDisposable(Disposable.Create(() => subscription.Stop()));
             });
         }
@@ -181,6 +233,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                 
         public void Dispose()
         {
+            _currencyPairsSubscription.Dispose();
+            _currencyPairsConnection.Dispose();
             Disposables.Dispose();
         }
     }

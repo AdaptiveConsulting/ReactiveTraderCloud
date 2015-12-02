@@ -18,13 +18,13 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         public ReferenceWriteServiceHost(ReferenceWriteService service, IBroker broker) : base(broker, "reference")
         {
             _service = service;
+
+            RegisterCall(ActivateCurrencyPairProcedureName, ActivateCurrencyPair);
+            RegisterCall(DeactivateCurrencyPairProcedureName, DeactivateCurrencyPair);
         }
 
         public override async Task Start()
         {
-            RegisterCall(ActivateCurrencyPairProcedureName, ActivateCurrencyPair);
-            RegisterCall(DeactivateCurrencyPairProcedureName, DeactivateCurrencyPair);
-
             await base.Start();
         }
 

@@ -60,12 +60,12 @@ namespace Adaptive.ReactiveTrader.Server.Core
 
     public interface IServceHostFactor
     {
-        void Initialize(IObservable<IConnected<IBroker>> broker);
+        IDisposable Initialize(IObservable<IConnected<IBroker>> broker);
     }
 
     public interface IServceHostFactoryWithEventStore : IServceHostFactor
     {
-        void Initialize(IObservable<IConnected<IBroker>> broker,
+        IDisposable Initialize(IObservable<IConnected<IBroker>> broker,
             IObservable<IConnected<IEventStoreConnection>> eventStore);
     }
 
@@ -87,7 +87,9 @@ namespace Adaptive.ReactiveTrader.Server.Core
 
             try
             {
-                var brokerStream = BrokerConnectionFactory.Create(config.Broker).GetBrokerStream();
+                var connectionFactory = BrokerConnectionFactory.Create(config.Broker);
+
+                var brokerStream = connectionFactory.GetBrokerStream();
 
                 factory.Initialize(brokerStream);
 
@@ -113,6 +115,8 @@ namespace Adaptive.ReactiveTrader.Server.Core
                     esFactory.Initialize(brokerStream, esStream);
                 }
 
+                connectionFactory.Start();
+                
                 while (true)
                     Thread.Sleep(ThreadSleep);
             }

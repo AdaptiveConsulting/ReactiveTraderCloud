@@ -12,22 +12,27 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         protected static readonly ILog Log = LogManager.GetLogger<PriceServiceHostFactory>();
 
         private readonly PricingService _service;
-        private readonly PriceGenerator _cache;
 
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
         public PriceServiceHostFactory()
         {
-            _cache = new PriceGenerator();
+            var cache = new PriceGenerator();
             Log.Info("Started Generator");
 
-            _service = new PricingService(_cache.GetPriceStream);
+            _service = new PricingService(cache.GetPriceStream);
             Log.Info("Started Service");
+
+            _cleanup.Add(cache);
         }
         
-        public void Initialize(IObservable<IConnected<IBroker>> brokerStream)
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream)
         {
-            _cleanup.Add(brokerStream.LaunchOrKill(broker => new PricingServiceHost(_service, broker)).Subscribe());
+            var disposable = brokerStream.LaunchOrKill(broker => new PricingServiceHost(_service, broker)).Subscribe();
+
+            _cleanup.Add(disposable);
+
+            return disposable;
         }
 
         public void Dispose()
