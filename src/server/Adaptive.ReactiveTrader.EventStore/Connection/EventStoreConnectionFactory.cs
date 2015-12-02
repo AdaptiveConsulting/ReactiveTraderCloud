@@ -1,11 +1,10 @@
 ﻿using Adaptive.ReactiveTrader.Common.Config;
-using EventStore.ClientAPI;
 
-namespace Adaptive.ReactiveTrader.EventStore
+namespace Adaptive.ReactiveTrader.EventStore.Connection
 {
     public class EventStoreConnectionFactory
     {
-        public static IEventStoreConnection Create(EventStoreLocation eventStoreLocation, IEventStoreConfiguration configuration)
+        public static IMonitoredEventStoreConnection Create(EventStoreLocation eventStoreLocation, IEventStoreConfiguration configuration)
         {
             IEventStore eventStore;
 
@@ -18,7 +17,7 @@ namespace Adaptive.ReactiveTrader.EventStore
                 eventStore = new ExternalEventStore(EventStoreUri.FromConfig(configuration));
             }
 
-            return eventStore.Connection;
+            return new MonitoredEventStoreConnection(eventStore.Connection);
         }
     }
 }

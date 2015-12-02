@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore;
+using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
@@ -15,7 +16,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         private Repository _repository;
         private ReferenceWriteService _service;
 
-        public void Initialize(IEventStoreConnection es)
+        public void Initialize(IEventStoreConnection es, IConnectionStatusMonitor monitor)
         {
             _repository = new Repository(es);
             _service = new ReferenceWriteService(_repository);

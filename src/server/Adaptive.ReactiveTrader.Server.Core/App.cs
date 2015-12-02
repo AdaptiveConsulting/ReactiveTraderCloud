@@ -3,6 +3,7 @@ using System.Reactive.Disposables;
 using System.Threading;
 using Adaptive.ReactiveTrader.Common.Config;
 using Adaptive.ReactiveTrader.EventStore;
+using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 using Common.Logging.Simple;
@@ -46,9 +47,10 @@ namespace Adaptive.ReactiveTrader.Server.Core
             if (eventStoreConsumer == null) return Disposable.Empty;
 
             var eventStoreConnection = EventStoreConnectionFactory.Create(EventStoreLocation.External, config);
+            var monitor = new ConnectionStatusMonitor(eventStoreConnection);
             eventStoreConnection.ConnectAsync().Wait();
 
-            eventStoreConsumer.Initialize(eventStoreConnection);
+            eventStoreConsumer.Initialize(eventStoreConnection, monitor);
 
             return eventStoreConnection;
         }

@@ -4,6 +4,7 @@ using EventStore.ClientAPI;
 using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore;
+using Adaptive.ReactiveTrader.EventStore.Connection;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
@@ -14,7 +15,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         private BlotterService _service;
         private TradeCache _cache;
 
-        public void Initialize(IEventStoreConnection es)
+        public void Initialize(IEventStoreConnection es, IConnectionStatusMonitor monitor)
         {
             _cache = new TradeCache(es);
             _cache.Initialize();

@@ -9,12 +9,15 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Adaptive.ReactiveTrader.EventStore.Connection;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     // TODO add logging
     public class CurrencyPairCache : IDisposable
     {
+        protected static readonly ILog Log = LogManager.GetLogger<CurrencyPairCache>();
         private readonly IEventStoreConnection _es;
         private const string CurrencyPairCreatedEventType = "CurrencyPairCreatedEvent";
         private const string CurrencyPairChangedEventType = "CurrencyPairChangedEvent";
@@ -35,10 +38,14 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         private IConnectableObservable<RecordedEvent> _currencyPairEvents;
         private bool _isCaughtUp;
 
-        public CurrencyPairCache(IEventStoreConnection es)
+        public CurrencyPairCache(IEventStoreConnection es, IConnectionStatusMonitor monitor)
         {
-            _es = es;
             Disposables = new CompositeDisposable();
+            _es = es;
+
+            Disposables.Add(monitor.ConnectionStatusChanged
+                                   .ObserveOn(_eventLoopScheduler)
+                                   .Subscribe(x => Log.Info(x)));
         }
 
         private CompositeDisposable Disposables { get; }

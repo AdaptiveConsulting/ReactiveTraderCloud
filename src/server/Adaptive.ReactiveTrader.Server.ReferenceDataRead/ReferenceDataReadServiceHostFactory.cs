@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore;
+using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 using EventStore.ClientAPI;
@@ -14,9 +15,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         private ReferenceService _service;
         private CurrencyPairCache _cache;
     
-        public void Initialize(IEventStoreConnection es)
+        public void Initialize(IEventStoreConnection es, IConnectionStatusMonitor monitor)
         {
-            _cache = new CurrencyPairCache(es);
+            _cache = new CurrencyPairCache(es, monitor);
             _cache.Initialize();
 
             _service = new ReferenceService(_cache.GetCurrencyPairUpdates());

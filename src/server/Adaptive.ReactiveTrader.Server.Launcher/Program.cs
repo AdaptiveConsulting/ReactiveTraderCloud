@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common.Config;
+using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
@@ -30,11 +31,12 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         private static IBrokerConnection _conn;
 
         private static IEventStoreConnection _eventStoreConnection;
+        private static IConnectionStatusMonitor _connectionStatusMonitor;
 
         public static void StartService(string name, IServiceHostFactory factory)
         {
             var esConsumer = factory as IEventStoreConsumer;
-            esConsumer?.Initialize(_eventStoreConnection);
+            esConsumer?.Initialize(_eventStoreConnection, _connectionStatusMonitor);
 
             Servers.Add(name, _conn.Register(name, factory).Result);
         }
@@ -85,7 +87,9 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         // We should only be using the launcher during development, so hard code this to use the dev config
         var config = ServiceConfiguration.FromArgs(args.Where(a=>a.Contains(".json")).ToArray());
                 
-                _eventStoreConnection = GetEventStoreConnection(config.EventStore, args.Contains("es"), args.Contains("init-es")).Result;
+                var tuple = GetEventStoreConnection(config.EventStore, args.Contains("es"), args.Contains("init-es")).Result;
+                _eventStoreConnection = tuple.Item1;
+                _connectionStatusMonitor = tuple.Item2;
                 _conn = BrokerConnectionFactory.Create(config.Broker);
 
                 if (args.Contains("mb"))
@@ -217,15 +221,17 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
         public static ILog Log { get; set; }
 
-        private static async Task<IEventStoreConnection> GetEventStoreConnection(IEventStoreConfiguration configuration, bool embedded, bool populate)
+        private static async Task<Tuple<IEventStoreConnection, IConnectionStatusMonitor>> GetEventStoreConnection(IEventStoreConfiguration configuration, bool embedded, bool populate)
         {
             var eventStoreConnection = EventStoreConnectionFactory.Create(embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
+            IConnectionStatusMonitor monitor = new ConnectionStatusMonitor(eventStoreConnection);
+
             await eventStoreConnection.ConnectAsync();
 
             if (embedded || populate)
                 ReferenceDataHelper.PopulateRefData(eventStoreConnection).Wait();
 
-            return eventStoreConnection;
+            return Tuple.Create(eventStoreConnection, monitor);
         }
     }
 }

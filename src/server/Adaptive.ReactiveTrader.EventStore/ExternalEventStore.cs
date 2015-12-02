@@ -1,5 +1,6 @@
 using EventStore.ClientAPI;
 using System;
+using Adaptive.ReactiveTrader.EventStore.Connection;
 
 namespace Adaptive.ReactiveTrader.EventStore
 {
@@ -7,8 +8,7 @@ namespace Adaptive.ReactiveTrader.EventStore
     {
         public ExternalEventStore(Uri uri)
         {
-            var connectionSettings = ConnectionSettings.Create().KeepReconnecting();
-            Connection = EventStoreConnection.Create(connectionSettings, uri);
+            Connection = EventStoreConnection.Create(EventStoreConnectionSettings.Default, uri);
         }
         
         public IEventStoreConnection Connection { get; }
