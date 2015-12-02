@@ -1,0 +1,6 @@
+#! /bin/bash
+
+./prepare build broker
+./prepare build servers
+./prepare build web
+./prepare build populatedEventstore

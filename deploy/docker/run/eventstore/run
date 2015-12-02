@@ -1,0 +1,17 @@
+#! /bin/bash
+
+echo "EventStore"
+
+. ../../../config
+
+docker rm eventstore 2&> garbage
+
+docker run -d --net=host                                \
+  --name eventstore                                     \
+  $populatedEventstoreContainer:$vMajor.$vMinor.$vBuild \
+  > container_id
+
+rm garbage
+echo "  started"
+
+echo " "

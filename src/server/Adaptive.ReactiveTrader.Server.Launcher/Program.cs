@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.EventStore;
+﻿using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.MessageBroker;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Blotter;
@@ -14,19 +9,69 @@ using Adaptive.ReactiveTrader.Server.TradeExecution;
 using Common.Logging;
 using Common.Logging.Simple;
 using EventStore.ClientAPI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Common.Config;
+using Adaptive.ReactiveTrader.EventStore.Domain;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
     public class Program
     {
-        protected static readonly ILog Log = LogManager.GetLogger<Program>();
+        
+        private static readonly Dictionary<string, IDisposable> Servers = new Dictionary<string, IDisposable>();
 
-        static readonly Dictionary<string, IDisposable> Servers = new Dictionary<string, IDisposable>();
+        private static readonly Dictionary<string, Lazy<IServiceHostFactory>> Factories =
+            new Dictionary<string, Lazy<IServiceHostFactory>>();
+
+        private static IBrokerConnection _conn;
+
+        private static IEventStoreConnection _eventStoreConnection;
+
+        public static void StartService(string name, IServiceHostFactory factory)
+        {
+            var esConsumer = factory as IEventStoreConsumer;
+            esConsumer?.Initialize(_eventStoreConnection);
+
+            Servers.Add(name, _conn.Register(name, factory).Result);
+        }
+
+        private static IServiceHostFactory GetFactory(string type)
+        {
+            switch (type)
+            {
+                case "p":
+                    return Factories["pricing"].Value;
+
+                case "ref":
+                    return Factories["reference-read"].Value;
+                case "ref-write":
+                    return Factories["reference-write"].Value;
+
+                case "exec":
+                    return Factories["execution"].Value;
+
+                default:
+                    return Factories[type].Value;
+            }
+        }
+        
+        public static void InitializeFactories()
+        {
+            Factories.Add("reference-read", new Lazy<IServiceHostFactory>(() => new ReferenceDataReadServiceHostFactory()));
+            Factories.Add("reference-write", new Lazy<IServiceHostFactory>(() => new ReferenceDataWriteServiceHostFactory()));
+            Factories.Add("pricing", new Lazy<IServiceHostFactory>(() => new PriceServiceHostFactory()));
+            Factories.Add("blotter", new Lazy<IServiceHostFactory>(() => new BlotterServiceHostFactory()));
+            Factories.Add("execution", new Lazy<IServiceHostFactory>(() => new TradeExecutionServiceHostFactory()));
+        }
 
         public static void Main(string[] args)
         {
-            var uri = "ws://127.0.0.1:8080/ws";
-            var realm = "com.weareadaptive.reactivetrader";
+            InitializeFactories();
+
 
             try
             {
@@ -35,42 +80,47 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     ShowLogName = true,
                 };
 
-                var eventStoreConnection = GetEventStoreConnection(args.Contains("es"), args.Contains("init-es")).Result;
+                Log = LogManager.GetLogger<Program>();
+
+        // We should only be using the launcher during development, so hard code this to use the dev config
+        var config = ServiceConfiguration.FromArgs(args.Where(a=>a.Contains(".json")).ToArray());
                 
+                _eventStoreConnection = GetEventStoreConnection(config.EventStore, args.Contains("es"), args.Contains("init-es")).Result;
+                _conn = BrokerConnectionFactory.Create(config.Broker);
 
                 if (args.Contains("mb"))
                     Servers.Add("mb1", MessageBrokerLauncher.Run());
 
-                var broker = BrokerFactory.Create(uri, realm);
-
                 if (args.Contains("p"))
-                    Servers.Add("p1", PriceServiceLauncher.Run(broker.Result).Result);
+                    StartService("p1", GetFactory("p"));
 
                 if (args.Contains("ref"))
-                    Servers.Add("r1", ReferenceDataReaderLauncher.Run(eventStoreConnection, broker.Result).Result);
+                    StartService("r1", GetFactory("ref"));
 
                 if (args.Contains("exec"))
-                    Servers.Add("e1", TradeExecutionLauncher.Run(eventStoreConnection, broker.Result).Result);
+                    StartService("e1", GetFactory("exec"));
 
                 if (args.Contains("b"))
-                    Servers.Add("b1", BlotterLauncher.Run(eventStoreConnection, broker.Result).Result);
+                    StartService("b1", GetFactory("blotter"));
 
-                Console.WriteLine("Press Any Key To Stop...");
+                var repository = new Repository(_eventStoreConnection);
+             
+                _conn.Start();
 
                 if (!args.Contains("--interactive"))
                     while (true)
-                        Thread.Sleep(TimeSpan.FromSeconds(5));
-
-
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                
                 while (true)
                 {
                     var x = Console.ReadLine();
 
                     try
                     {
-                        if (x == null || x == "exit" || x == "")
+                        if (x == null || x == "exit")
                             break;
 
+                        
                         if (x.StartsWith("start"))
                         {
                             var a = x.Split(' ');
@@ -84,34 +134,35 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                                 continue;
                             }
 
-                            if (serviceType == "r")
-                            {
-                                Console.WriteLine("Adding reference service");
-                                Servers.Add(serviceName,
-                                    ReferenceDataReaderLauncher.Run(eventStoreConnection, broker.Result).Result);
-                            }
-
-                            if (serviceType == "p")
-                            {
-                                Console.WriteLine("Adding pricing service");
-                                Servers.Add(serviceName, PriceServiceLauncher.Run(broker.Result).Result);
-                            }
-
-                            if (serviceType == "e")
-                            {
-                                Console.WriteLine("Adding exec service");
-                                Servers.Add(serviceName, TradeExecutionLauncher.Run(eventStoreConnection, broker.Result).Result);
-                            }
-
-                            if (serviceType == "b")
-                            {
-                                Console.WriteLine("Adding blotter service");
-                                Servers.Add(serviceName, BlotterLauncher.Run(eventStoreConnection, broker.Result).Result);
-                            }
-
+                            StartService(serviceName, GetFactory(serviceType));
 
                             continue;
                         }
+
+                        if (x.StartsWith("switch"))
+                        {
+                            var a = x.Split(' ');
+
+                            var ccyPair = a[1];
+
+                            var currencyPair =
+                                repository.GetById<ReferenceDataWrite.Domain.CurrencyPair>(ccyPair).Result;
+
+                            if (currencyPair.IsActive)
+                            {
+                                Console.WriteLine("** Deactivating {0}", ccyPair);
+                                currencyPair.Deactivate();
+                            }
+                            else
+                            {
+                                Console.WriteLine("** Activating {0}", ccyPair);
+                                currencyPair.Activate();
+                            }
+
+                            repository.SaveAsync(currencyPair).Wait();
+                            continue;
+                        }
+
 
                         if (x.StartsWith("kill"))
                         {
@@ -136,7 +187,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                             }
                             continue;
                         }
-                        
+
                         if (x == "help")
                         {
                             Console.WriteLine("Available Commands");
@@ -164,25 +215,17 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             }
         }
 
-        private static async Task<IEventStoreConnection> GetEventStoreConnection(bool embedded, bool populate)
-        {
-            IEventStore eventStore;
+        public static ILog Log { get; set; }
 
-            if (embedded)
-            {
-                eventStore = new EmbeddedEventStore();
-                await eventStore.Connection.ConnectAsync();
-            }
-            else
-            {
-                eventStore = new ExternalEventStore();
-                await eventStore.Connection.ConnectAsync();
-            }
+        private static async Task<IEventStoreConnection> GetEventStoreConnection(IEventStoreConfiguration configuration, bool embedded, bool populate)
+        {
+            var eventStoreConnection = EventStoreConnectionFactory.Create(embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
+            await eventStoreConnection.ConnectAsync();
 
             if (embedded || populate)
-                ReferenceDataWriterLauncher.PopulateRefData(eventStore.Connection).Wait();
+                ReferenceDataHelper.PopulateRefData(eventStoreConnection).Wait();
 
-            return eventStore.Connection;
+            return eventStoreConnection;
         }
     }
 }

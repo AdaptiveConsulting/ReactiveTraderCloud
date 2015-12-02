@@ -11,21 +11,28 @@ namespace Adaptive.ReactiveTrader.EventStore
 {
     public class EmbeddedEventStore : IEventStore
     {
+        private readonly Uri _uri;
+
         public EmbeddedEventStore()
         {
+            _uri = EventStoreUri.Local;
             StartEmbeddedEventStore();
 
             var connectionSettings = ConnectionSettings.Create().KeepReconnecting();
-            Connection = EventStoreConnection.Create(connectionSettings, EventStoreConstants.DefaultConnectionUri);
+            
+            Connection = EventStoreConnection.Create(connectionSettings, _uri);
         }
 
         public IEventStoreConnection Connection { get; }
         
-        private static void StartEmbeddedEventStore()
+        private void StartEmbeddedEventStore()
         {
             var timeout = TimeSpan.FromSeconds(10);
 
-            const int httpExternalPort = 2113;
+            var internalTcpPort = _uri.Port - 1;
+            var externalTcpPort = _uri.Port;
+            var externalHttpPort = externalTcpPort + 1000;
+            var internalHttpPort = internalTcpPort + 1000;
 
             var builder = EmbeddedVNodeBuilder.AsSingleNode()
                 //Getting OOM exception on TC builds.
@@ -34,12 +41,12 @@ namespace Adaptive.ReactiveTrader.EventStore
                 .RunInMemory()
                 .RunProjections(ProjectionsMode.All)
                 .NoStatsOnPublicInterface()
-                .WithInternalTcpOn(new IPEndPoint(IPAddress.Loopback, 1112))
-                .WithExternalTcpOn(new IPEndPoint(IPAddress.Loopback, 1113))
-                .WithInternalHttpOn(new IPEndPoint(IPAddress.Loopback, 2112))
-                .WithExternalHttpOn(new IPEndPoint(IPAddress.Loopback, httpExternalPort))
-                .AddExternalHttpPrefix($"http://localhost:{httpExternalPort}/")
-                .AddExternalHttpPrefix($"http://127.0.0.1:{httpExternalPort}/")
+                .WithInternalTcpOn(new IPEndPoint(IPAddress.Loopback, internalTcpPort))
+                .WithExternalTcpOn(new IPEndPoint(IPAddress.Loopback, externalTcpPort))
+                .WithInternalHttpOn(new IPEndPoint(IPAddress.Loopback, internalHttpPort))
+                .WithExternalHttpOn(new IPEndPoint(IPAddress.Loopback, externalHttpPort))
+                .AddExternalHttpPrefix($"http://localhost:{externalHttpPort}/")
+                .AddExternalHttpPrefix($"http://127.0.0.1:{externalHttpPort}/")
                 .RunInMemory();
 
             var clusterVNode = builder.Build();

@@ -1,32 +1,31 @@
 {
-  "version": "1.0.0-*",
-  "description": "Pricing Service",
-  "authors": [ "james.watson" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
+    "version": "1.0.0-*",
+    "description": "Pricing Service",
+    "authors": [ "james.watson" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
 
-    "dependencies": {
-        "Newtonsoft.Json": "7.0.1",
-        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Contract": "1.0.0-*"
-    },
+  "dependencies": {
+    "Adaptive.ReactiveTrader.Server.Core": "1.0.0-*"
+  },
 
-    "commands": {
-        "Pricing": "Adaptive.ReactiveTrader.Server.Pricing"
-    },
+  "commands": {
+    "dev": "Adaptive.ReactiveTrader.Server.Pricing config.dev.json",
+    "prod": "Adaptive.ReactiveTrader.Server.Pricing config.prod.json"
+  },
 
    "frameworks": {
-        "dnx451": {
-            "frameworkAssemblies": {
-                "System.Runtime": "",
-                "System.Collections": ""
-            },
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Collections": ""
+      },
 
-            "dependencies": {
+      "dependencies": {
 
-            }
-        }
-       
+      }
     }
+
+  }
 }
