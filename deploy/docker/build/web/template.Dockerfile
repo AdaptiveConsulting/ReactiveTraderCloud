@@ -3,7 +3,7 @@ MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
 COPY        dist  /www
 
-COPY        dev.nginx.conf   /localhost/nginx.conf
+COPY        dev.nginx.conf  /localhost/nginx.conf
 COPY        prod.nginx.conf  /etc/nginx/nginx.conf
 
 # run as prod

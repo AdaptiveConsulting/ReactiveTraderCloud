@@ -36,11 +36,8 @@ fi
 mkdir -p ./build
 sed "s/__VNGINX__/$vNginx/g"    ./template.Dockerfile > ./build/Dockerfile
 
-cp ./template.nginx.conf ./build/dev.nginx.conf
-sed -i "s/__BROKER__/localhost/g"   ./build/dev.nginx.conf
-
-cp ./template.nginx.conf ./build/prod.nginx.conf
-sed -i "s/__BROKER__/broker/g"      ./build/prod.nginx.conf
+cp ./dev.nginx.conf  ./build/dev.nginx.conf
+cp ./prod.nginx.conf ./build/prod.nginx.conf
 
 # todo: remove the node dependency !
 pushd ../../../../src/client 
