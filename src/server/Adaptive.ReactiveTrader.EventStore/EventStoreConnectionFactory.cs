@@ -5,7 +5,8 @@ namespace Adaptive.ReactiveTrader.EventStore
 {
     public class EventStoreConnectionFactory
     {
-        public static IEventStoreConnection Create(EventStoreLocation eventStoreLocation, IEventStoreConfiguration configuration)
+        public static IEventStoreConnection Create(EventStoreLocation eventStoreLocation,
+            IEventStoreConfiguration configuration)
         {
             IEventStore eventStore;
 
