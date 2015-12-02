@@ -34,17 +34,15 @@ fi
 
 # generate container folder
 mkdir -p ./build
-sed "s/__VNGINX__/$vNginx/g"  ./template.Dockerfile > ./build/Dockerfile
-cp ./template.nginx.conf ./build/nginx.conf
+sed "s/__VNGINX__/$vNginx/g"    ./template.Dockerfile > ./build/Dockerfile
 
-# currentDirectory="$(PWD)"
-# use a container to build the dist
-# docker run --rm                                        \
-#   -v /$currentDirectory/../../../../src/client:/client \
-#   -v /$currentDirectory/build/www:/www                 \
-#   $nodeContainer:$vNode                                \
-#     bash -c "cd /client && npm install ; npm run compile ; cp -r /client/dist /dist"
+cp ./template.nginx.conf ./build/dev.nginx.conf
+sed -i "s/__BROKER__/localhost/g"   ./build/dev.nginx.conf
 
+cp ./template.nginx.conf ./build/prod.nginx.conf
+sed -i "s/__BROKER__/broker/g"      ./build/prod.nginx.conf
+
+# todo: remove the node dependency !
 pushd ../../../../src/client 
 npm install
 npm run compile
