@@ -20,7 +20,7 @@
     },
 
     "commands": {
-      "run": "Adaptive.ReactiveTrader.Server.Launcher p ref --interactive"
+      "default": "Adaptive.ReactiveTrader.Server.Launcher p ref --interactive"
     },
 
     "frameworks": {
