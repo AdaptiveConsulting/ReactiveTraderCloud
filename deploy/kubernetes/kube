@@ -6,7 +6,6 @@
 
 commands="start update stop"
 services="web eventstore broker referencedataread pricing tradeexecution blotter"
-namespaces="default test prod"
 
 
 # USAGE
@@ -54,11 +53,6 @@ if ! listcontains "$services" $service; then
     echo "possible services are: $services"
     exit 1
 fi 
-if ! listcontains "$namespaces" $namespace; then 
-    echo "namespace $namespace is not recognised"
-    echo "possible namespaces are: $namespaces"
-    exit 1
-fi 
 
 # control configuration
 . ../config
@@ -84,15 +78,17 @@ mkdir -p $manifestsPath
 pushd templates > garbage
 generate_service_manifest $service $namespace
 generate_rc_manifest $service $namespace
+generate_ns_manifest $namespace
 popd > garbage
 rm templates/garbage
 
+
 # EXECUTE COMMANDS
 # ================
-
 # start
 # =====
 if [[ $command == "start" ]];then
+  ./kubectl create -f $manifestsPath/ns.yml
   ./kubectl create -f $manifestsPath/svc.yml
   ./kubectl create -f $manifestsPath/rc.yml
 fi

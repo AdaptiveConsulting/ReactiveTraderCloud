@@ -25,3 +25,4 @@ sed -i  "s/__MAJOR__/$vMajor/g" $svcFile
 sed -i  "s/__MINOR__/$vMinor/g" $svcFile
 sed -i  "s/__CONTAINERPORT__/80/g" $svcFile
 sed -i  "s/__SERVICEPORT__/80/g" $svcFile
+sed -i  "s/__NAMESPACE__/$namespace/g" $svcFile

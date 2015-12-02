@@ -41,3 +41,4 @@ sed -i  "s/__MINOR__/$vMinor/g" $rcFile
 sed -i  "s/__BUILD__/$vBuild/g" $rcFile
 sed -i  "s|__DOCKERIMAGE__|$dockerImage|g" $rcFile
 sed -i  "s/__CONTAINERPORT__/80/g" $rcFile
+sed -i  "s/__NAMESPACE__/$namespace/g" $rcFile
