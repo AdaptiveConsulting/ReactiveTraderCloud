@@ -1,9 +1,9 @@
-﻿namespace Adaptive.ReactiveTrader.EventStore.Connection
+namespace Adaptive.ReactiveTrader.EventStore.Connection
 {
     public enum ConnectionStatus
     {
-        Disconnected = 0,
-        Connected,
-        Connecting
+        Disconnected,
+        Connecting,
+        Connected
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace Adaptive.ReactiveTrader.EventStore.Connection
+﻿
+namespace Adaptive.ReactiveTrader.EventStore.Connection
 {
     public struct ConnectionInfo
     {

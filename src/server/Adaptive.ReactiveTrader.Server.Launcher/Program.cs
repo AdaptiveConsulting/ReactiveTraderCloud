@@ -20,9 +20,9 @@ using Adaptive.ReactiveTrader.EventStore.Domain;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
+
     public class Program
     {
-        
         private static readonly Dictionary<string, IDisposable> Servers = new Dictionary<string, IDisposable>();
 
         private static readonly Dictionary<string, Lazy<IServiceHostFactory>> Factories =

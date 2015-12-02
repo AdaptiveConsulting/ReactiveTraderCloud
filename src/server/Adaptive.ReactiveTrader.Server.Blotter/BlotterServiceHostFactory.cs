@@ -2,26 +2,21 @@ using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 using EventStore.ClientAPI;
 using System;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.EventStore;
-using Adaptive.ReactiveTrader.EventStore.Connection;
+using Adaptive.ReactiveTrader.Common;
+using Adaptive.ReactiveTrader.Server.Core;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
-    public class BlotterServiceHostFactory : IServiceHostFactory, IEventStoreConsumer, IDisposable
+    public class BlotterServiceHostFactory : IServceHostFactoryWithEventStore, IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<BlotterServiceHostFactory>();
 
         private BlotterService _service;
         private TradeCache _cache;
 
-        public void Initialize(IEventStoreConnection es, IConnectionStatusMonitor monitor)
-        {
-            _cache = new TradeCache(es);
-            _cache.Initialize();
-
-            _service = new BlotterService(_cache.GetTrades());
-        }
+        private readonly SerialDisposable _cleanup = new SerialDisposable();
 
         public Task<ServiceHostBase> Create(IBroker broker)
         {
@@ -31,6 +26,19 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         public void Dispose()
         {
             _cache.Dispose();
+        }
+
+        public void Initialize(IObservable<IConnected<IBroker>> broker)
+        {
+            
+        }
+
+        public void Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStore)
+        {
+            _cache = new TradeCache(eventStore);
+            _cache.Initialize();
+            _service = new BlotterService(_cache.GetTrades());
+            _cleanup.Disposable = brokerStream.LaunchOrKill(broker => new BlotterServiceHost(_service, broker)).Subscribe();
         }
     }
 }
