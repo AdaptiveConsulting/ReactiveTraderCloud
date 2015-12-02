@@ -45,15 +45,24 @@
   }
 
   .summary-state {
+    box-sizing: border-box;
     background: linear-gradient(to bottom,rgba(255,255,255,.1), rgba(255,255,255,0));
-    height: 78px;
+    height: 121px;
     padding: 8px;
     color: white;
     span.key {
       color: $gray-light;
     }
     &.Rejected {
-      background: linear-gradient(to bottom, rgba(100,0,0,.5), rgba(0,0,0,0));
+      background: linear-gradient(to bottom, darken($brand-danger, 5%), darken($brand-danger, 10%));;
+      border: 1px solid rgba(0,0,0,.7);
+      box-shadow: 0 1px 0px rgba(255,255,255,.1), inset 0 -1px 1px rgba(0,0,0,.3);
+      span.key {
+        color: $gray-lighter;
+      }
+    }
+    .dismiss-message {
+      transform: translate(0, 24px);
     }
   }
 
@@ -167,7 +176,7 @@
       @extend .pull-left;
     }
     &.disabled {
-      visibility: hidden;
+      display: none;
     }
   }
 

@@ -206,7 +206,7 @@ class CurrencyPair extends React.Component {
         <span className='key'>at</span> {response.rate}<br/>
         <span className='key'>{response.valueDate}</span><br/>
         <span className='key'>Trade ID</span> {response.id}
-        <a href='#' className='pull-right' onClick={(e) => this.onDismissLastResponse(e)}>{response.status}</a>
+        <a href='#' className='pull-right dismiss-message' onClick={(e) => this.onDismissLastResponse(e)}>{response.status}</a>
       </div>
     );
   }
@@ -218,6 +218,7 @@ class CurrencyPair extends React.Component {
     const parsedBuy  = this.parsePrice(buy),
           parsedSell = this.parsePrice(sell),
           execute = this.execute.bind(this),
+          title = pair.substr(0, 3) + ' / ' + pair.substr(3, 3),
           className  = 'currency-pair animated flipInX ' + state;
 
     // any ACK or failed messages will come via state.info / last response
@@ -225,7 +226,7 @@ class CurrencyPair extends React.Component {
 
     return <div className={className}>
       <div className='currency-pair-title'>
-        {pair} <i className='fa fa-plug animated infinite fadeIn'></i>
+        {title} <i className='fa fa-plug animated infinite fadeIn'></i>
         <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       {message}
