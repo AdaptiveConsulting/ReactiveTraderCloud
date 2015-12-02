@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.EventStore.Domain;
-using Adaptive.ReactiveTrader.Server.Common;
+using Adaptive.ReactiveTrader.Common;
 using WampSharp.Core.Serialization;
 using WampSharp.V2.Core.Contracts;
 using WampSharp.V2.Rpc;
@@ -24,7 +24,16 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
         public ExecutionToBlotterTests()
         {
-            _eventStore = new ExternalEventStore();
+            var eventStoreUriBuilder = new UriBuilder
+            {
+                Scheme = "tcp",
+                UserName = "admin",
+                Password = "changeit",
+                Host = "localhost",
+                Port = 1113
+            };
+
+            _eventStore = new ExternalEventStore(eventStoreUriBuilder.Uri);
             _repo = new Repository(_eventStore.Connection);
             _broker = new TestBroker();
         }

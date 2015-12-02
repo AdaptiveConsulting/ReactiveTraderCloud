@@ -12,7 +12,8 @@
     "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
     "Adaptive.ReactiveTrader.EventStore": "1.0.0-*",
     "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
-    "Newtonsoft.Json": "7.0.1"
+    "Newtonsoft.Json": "7.0.1",
+    "Adaptive.ReactiveTrader.Common": "1.0.0-*"
   },
 
   "commands": {
