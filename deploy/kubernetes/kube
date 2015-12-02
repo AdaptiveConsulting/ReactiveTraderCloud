@@ -81,11 +81,11 @@ manifestsPath="./manifests"
 mkdir -p $manifestsPath
 
 # generate manifests
-pushd helpers > garbage
+pushd templates > garbage
 generate_service_manifest $service $namespace
 generate_rc_manifest $service $namespace
 popd > garbage
-rm helpers/garbage
+rm templates/garbage
 
 # EXECUTE COMMANDS
 # ================
