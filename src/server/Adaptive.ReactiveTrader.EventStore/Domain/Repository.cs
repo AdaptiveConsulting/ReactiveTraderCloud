@@ -1,5 +1,4 @@
-﻿using Adaptive.ReactiveTrader.Server.Common;
-using Common.Logging;
+﻿using Common.Logging;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using System;
@@ -13,12 +12,6 @@ using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.EventStore.Domain
 {
-    public interface IRepository
-    {
-        Task<TAggregate> GetById<TAggregate>(object id) where TAggregate : IAggregate, new();
-        Task<int> SaveAsync(AggregateBase aggregate, params KeyValuePair<string, string>[] extraHeaders);
-    }
-
     public class Repository : IRepository
     {
         private readonly IEventStoreConnection _eventStoreConnection;
@@ -37,14 +30,15 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
         public async Task<TAggregate> GetById<TAggregate>(object id) where TAggregate : IAggregate, new()
         {
-            var streamName = $"{typeof(TAggregate).Name}-{id}";
+            var aggregate = new TAggregate();
+
+            var streamName = $"{aggregate.Identifier}{id}";
 
             if (Log.IsInfoEnabled)
             {
                 Log.Info($"Loading aggregate {streamName} from Event Store");
             }
-            var aggregate = new TAggregate();
-
+            
             var eventNumber = 0;
             StreamEventsSlice currentSlice;
             do

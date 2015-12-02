@@ -7,12 +7,12 @@ using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
-    public class RefDataWriteService
+    public class ReferenceWriteService
     {
-        private static readonly ILog Log = LogManager.GetLogger<RefDataWriteService>();
+        private static readonly ILog Log = LogManager.GetLogger<ReferenceWriteService>();
         private readonly IRepository _repository;
 
-        public RefDataWriteService(IRepository repository)
+        public ReferenceWriteService(IRepository repository)
         {
             _repository = repository;
         }

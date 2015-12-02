@@ -12,7 +12,6 @@ using System.Reactive.Subjects;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
-    // TODO when state of the world is 'empty', should emit DTO
     // TODO add logging
     public class CurrencyPairCache : IDisposable
     {
@@ -32,7 +31,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
         private readonly Dictionary<string, CurrencyPair> _stateOfTheWorld = new Dictionary<string, CurrencyPair>();
         private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
-        private readonly BehaviorSubject<Dictionary<string, CurrencyPair>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<string, CurrencyPair>>(null);
+        private readonly BehaviorSubject<Dictionary<string, CurrencyPair>> _stateOfTheWorldUpdates = new BehaviorSubject<Dictionary<string, CurrencyPair>>(new Dictionary<string, CurrencyPair>());
         private IConnectableObservable<RecordedEvent> _currencyPairEvents;
         private bool _isCaughtUp;
 
@@ -75,8 +74,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         {
             return Observable.Create<CurrencyPairUpdatesDto>(obs =>
             {
-                var sow = _stateOfTheWorldUpdates.Where(x => x != null)
-                                                 .Take(1)
+                var sow = _stateOfTheWorldUpdates.Take(1)
                                                  .Select(x => BuildStateOfTheWorldDto(x.Values.Where(cp => cp.IsEnabled)));
 
                 return sow.Concat(_currencyPairEvents.Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorld, evt)))

@@ -1,28 +1,26 @@
 {
-    "version": "1.0.0-*",
-    "description": "ReferenceDataRead Console Application",
-    "authors": [ "jon.clare" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.0-*",
+  "description": "ReferenceDataRead Console Application",
+  "authors": [ "jon.clare" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
 
-    "dependencies": {
-       "Adaptive.ReactiveTrader.EventStore": "",
-        "Common.Logging": "3.3.1",
-        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Contract": "1.0.0-*"
-    },
+  "dependencies": {
+     "Adaptive.ReactiveTrader.Server.Core": "1.0.0-*"
+  },
 
 
-    "commands": {
-        "ReferenceDataRead": "Adaptive.ReactiveTrader.Server.ReferenceDataRead"
-    },
-     "frameworks": {
-        "dnx451": {
-            "frameworkAssemblies": {
-                "System.Runtime": "",
-                "System.Collections": ""
-            }
-        }
+  "commands": {
+    "dev": "Adaptive.ReactiveTrader.Server.ReferenceDataRead config.dev.json",
+    "prod": "Adaptive.ReactiveTrader.Server.ReferenceDataRead config.prod.json"
+  },
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Collections": ""
+      }
     }
+  }
 }

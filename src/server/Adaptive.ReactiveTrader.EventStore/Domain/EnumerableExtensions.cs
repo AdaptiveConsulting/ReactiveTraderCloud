@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Adaptive.ReactiveTrader.Server.Common
+namespace Adaptive.ReactiveTrader.EventStore.Domain
 {
     public static class EnumerableExtensions
     {
@@ -15,7 +15,7 @@ namespace Adaptive.ReactiveTrader.Server.Common
             }
         }
 
-        private static IEnumerable<T> YieldBatchElements<T>(IEnumerator<T> source,int batchSize)
+        private static IEnumerable<T> YieldBatchElements<T>(IEnumerator<T> source, int batchSize)
         {
             yield return source.Current;
 

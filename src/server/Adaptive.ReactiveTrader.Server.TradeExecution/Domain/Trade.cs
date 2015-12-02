@@ -1,8 +1,8 @@
 using System;
+using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Contract.Events.Trade;
 using Adaptive.ReactiveTrader.EventStore.Domain;
-using Adaptive.ReactiveTrader.Server.Common;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
 {
