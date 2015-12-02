@@ -26,7 +26,8 @@ class Transport extends emitter {
       url,
       realm,
       use_es6_promises: true,
-      max_retries: 0
+      // unlimited retries
+      max_retries: -1
     });
 
     this.queues = [];
