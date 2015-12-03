@@ -1,5 +1,5 @@
 import rt from 'transport';
-import traders from './traders';
+import traders from './../traders';
 
 export default class Execution {
 

@@ -19,4 +19,8 @@ export default class PricingService {
     console.log('called getPriceUpdates(' + symbol + ')');
     this.transport.requestStream('pricing', 'getPriceUpdates', {symbol}, callback);
   }
+
+  unsubscribe(){
+
+  }
 }

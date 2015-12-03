@@ -1,5 +1,9 @@
 import _ from 'lodash';
 
+/**
+ * @class Traders
+ * @description quick way to assign a random username
+ */
 class Traders {
   static list = [{
     shortCode: 'LMO',
@@ -83,16 +87,27 @@ class Traders {
     lastName: 'Gerdts'
   }]
 
+  /**
+   * @constructs Trader
+   * @param trader
+   */
   constructor(trader){
     this.setTrader(trader);
   }
 
-  setTrader(trader){
-    if (trader){
+  /**
+   * Sets the current trader to their short code or picks a random one.
+   * @param {String=} traderCode
+   */
+  setTrader(traderCode:string){
+    let trader;
+
+    if (traderCode){
       trader = _.findWhere(Traders.list, {
-        shortCode: trader
+        shortCode: traderCode
       });
     }
+
     if (!trader){
       trader = _.sample(Traders.list);
     }

@@ -1,12 +1,11 @@
 import autobahn from 'autobahn';
 import _ from 'lodash';
 
-import traders from './traders';
-import emitter from './emitter';
-import ServiceDef from './services/service-def';
+import traders from '../utils/traders';
+import emitter from '../utils/emitter';
+import ServiceDef from './service-def';
 
 const SERVICES = 'pricing,reference,blotter,execution'.split(',');
-
 /**
  * @class Transport
  * @extends emitter
@@ -26,7 +25,9 @@ class Transport extends emitter {
     this.connection = new autobahn.Connection({
       url,
       realm,
-      use_es6_promises: true
+      use_es6_promises: true,
+      // unlimited retries
+      max_retries: -1
     });
 
     this.queues = [];
@@ -56,7 +57,7 @@ class Transport extends emitter {
       this.trigger('statusUpdate', this.getStatus());
     };
 
-    this.connection.open();
+    this.open();
   }
 
   /**
@@ -65,7 +66,7 @@ class Transport extends emitter {
    */
   getStatus(){
     const statusObject = {};
-    Object.keys(this.services).forEach((service) => statusObject[service] = Object.keys(this.services[service].instances).length);
+    SERVICES.forEach((service) => statusObject[service] = Object.keys(this.services[service].instances).length);
 
     return statusObject;
   }
@@ -210,11 +211,11 @@ class Transport extends emitter {
   }
 
   open(){
-    return this.session.open();
+    return this.connection.open();
   }
 
   close(){
-    return this.session.close();
+    return this.connection.close();
   }
 
   // connection getters
