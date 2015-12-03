@@ -1,0 +1,12 @@
+#! /bin/bash
+
+namespace=$1
+
+manifestFolder="../manifests"
+nsFile="$manifestFolder/ns.yml"
+
+mkdir -p $manifestFolder
+
+cp ./ns.yml $nsFile
+
+sed -i  "s/__NAMESPACE__/$namespace/g" $nsFile

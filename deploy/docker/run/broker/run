@@ -1,0 +1,17 @@
+#! /bin/bash
+
+echo "Broker"
+
+. ../../../config
+
+docker rm broker 2&> garbage
+
+docker run -d --net=host                      \
+     --name broker                            \
+     $brokerContainer:$vMajor.$vMinor.$vBuild \
+     > container_id 
+
+rm garbage
+
+echo "  started"
+echo " "

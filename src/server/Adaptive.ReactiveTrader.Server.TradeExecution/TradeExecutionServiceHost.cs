@@ -17,7 +17,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
         {
             _service = service;
         }
-       
+
         public override Task Start()
         {
             RegisterCallResponse("executeTrade", ExecuteTrade);

@@ -11,7 +11,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Domain
         private int RatePrecision { get; set; }
         private decimal SampleRate { get; set; }
         private string Comment { get; set; }
-        private bool IsActive { get; set; }
+        public bool IsActive { get; private set; }
         private bool IsCreated { get; set; }
 
         public CurrencyPair()

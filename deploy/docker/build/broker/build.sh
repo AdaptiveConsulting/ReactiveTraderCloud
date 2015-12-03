@@ -35,5 +35,5 @@ cp -r ../../../../src/server/.crossbar  ./build/.crossbar
 
 # build
 containerTaggedName="$brokerContainer:$vMajor.$vMinor.$vBuild"
-docker build -t $containerTaggedName ./build/.
+docker build --no-cache -t $containerTaggedName ./build/.
 docker tag -f $containerTaggedName $brokerContainer:latest

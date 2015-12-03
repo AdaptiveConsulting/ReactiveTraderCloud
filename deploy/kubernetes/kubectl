@@ -1,8 +1,11 @@
 #! /bin/bash
 
 cacheFolder=$(pwd)/../cache
+currentFolder=$(pwd)
 
 docker run --rm -ti                       \
   -v /$cacheFolder/.config://root/.config \
   -v /$cacheFolder/.kube://root/.kube     \
+  -v /$currentFolder:/currentFolder       \
+  -w //currentFolder                      \
   weareadaptive/gcloud kubectl $@

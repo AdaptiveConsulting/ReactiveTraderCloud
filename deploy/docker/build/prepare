@@ -3,8 +3,8 @@
 # CONFIGURATION
 # =============
 possibleCommands="build push"
-services="servers broker web eventstore"
-possibleGroup="services gcloud mono node testtools crossbar $services"
+services="servers broker web populatedEventstore"
+possibleGroup="services gcloud mono node testtools crossbar eventstore $services"
 
 # USAGE
 # =====

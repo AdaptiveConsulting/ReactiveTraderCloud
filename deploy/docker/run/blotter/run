@@ -1,0 +1,21 @@
+#! /bin/bash
+
+echo "Blotter"
+
+. ../../../config
+
+startCommand="dnx -p Adaptive.ReactiveTrader.Server.Launcher run b"
+waitCommand="while true; do echo ping; sleep 60; done"
+
+docker rm blotter 2&> garbage
+
+docker run -d --net=host                       \
+     --name blotter                            \
+     $serversContainer:$vMajor.$vMinor.$vBuild \
+     bash -c "$startCommand && $waitCommand"   \
+     > container_id 
+
+rm garbage
+
+echo "  started"
+echo " "

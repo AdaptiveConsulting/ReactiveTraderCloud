@@ -5,31 +5,24 @@ import Blotter from '../components/blotter';
 import moment from 'moment';
 import rt from '../classes/services/reactive-trader';
 
-//todo: remove mocks
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      today  = new Date();
-
-const trades = [{
-  id: _.uniqueId(),
-  dateTime: today,
-  direction: 'buy',
-  pair: 'EURGBP',
-  amount: 100000,
-  rate: 1.44,
-  status: 'Done',
-  valueDate: ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' '),
-  trader: 'JDP'
-}];
-
-for (let i = 10; i; i--){
-  trades.push(Object.assign({}, trades[0], {
-    id: _.uniqueId(),
-    direction: _.sample(['buy', 'sell']),
-    status: _.sample(['Done', 'Processing', 'Rejected'])
-  }));
-}
-
-trades.reverse();
+/**
+ *
+ * @param DTO
+ * @returns {{id: *, trader: (*|string), status: *, direction: *, pair: *, rate: *, dateTime: *, valueDate: *, amount: *}}
+ */
+const formatTradeForDOM = (DTO) =>{
+  return {
+    id: DTO.TradeId,
+    trader: DTO.TraderName,
+    status: DTO.Status,
+    direction: DTO.Direction,
+    pair: DTO.CurrencyPair,
+    rate: DTO.SpotRate,
+    dateTime: DTO.TradeDate,
+    valueDate: DTO.ValueDate,
+    amount: DTO.Notional
+  };
+};
 
 export class IndexView extends React.Component {
 
@@ -39,23 +32,43 @@ export class IndexView extends React.Component {
     this.state = {
       trades: []
     };
-  }
 
-  componentWillMount(){
-    this.setState({
-      trades: trades
+    rt.blotter.getTradesStream((blotter) =>{
+      blotter.Trades.forEach((trade) => this._processTrade(trade, false));
+
+      this.setState({
+        trades: this.state.trades
+      });
     });
   }
 
+  /**
+   * Processor for data coming from the blotter service that converts DTO object to DOM
+   * @param {Object} trade
+   * @param {Boolean=} update immediately, defaults to false
+   * @private
+   */
+  _processTrade(trade, update){
+    trade = formatTradeForDOM(trade);
+    const exists = _.findWhere(this.state.trades, {id: trade.id});
+
+    if (!exists){
+      this.state.trades.unshift(trade);
+    }
+    else {
+      this.state.trades[_.indexOf(this.state.trades, exists)] = trade;
+    }
+
+    update && this.setState({
+      trades: this.state.trades
+    });
+  }
+
+  /**
+   * Sends a trade to execution service, preps response back for show in CP tile
+   * @param {Object} payload
+   */
   addTrade(payload){
-    payload.status = _.sample(['Done', 'Processing', 'Rejected']);
-    payload.id = _.uniqueId();
-
-    trades.unshift(payload);
-    this.setState({
-      trades: trades
-    });
-
     rt.execution.executeTrade({
       CurrencyPair: payload.pair,
       SpotRate: payload.rate,
@@ -63,25 +76,21 @@ export class IndexView extends React.Component {
       // ValueDate: (new Date()).toISOString(),
       Direction: payload.direction,
       Notional: payload.amount,
-      DealtCurrency: payload.pair.substr(0, 3)
+      DealtCurrency: payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
     }).then((response) =>{
+        const trade = response.Trade,
+              dt    = new Date(trade.ValueDate);
 
-        const trade = response.Trade;
-        const dt = new Date(trade.ValueDate);
-
-        const result = {
+        payload.onACK({
           pair: trade.CurrencyPair,
           id: trade.TradeId,
           status: trade.Status,
-          direction: trade.Direction,
+          direction: trade.Direction.toLowerCase(),
           amount: trade.Notional,
           trader: trade.TraderName,
           valueDate: trade.ValueDate, // todo get this from DTO
           rate: trade.SpotRate
-        };
-
-        console.log(payload, response.Trade, result);
-        payload.onACK(result);
+        });
       }, (error) =>{
         console.error(error);
         console.trace();
@@ -90,12 +99,10 @@ export class IndexView extends React.Component {
   }
 
   render(){
-    return (
-      <div className=''>
-        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)}/>
-        <Blotter trades={this.state.trades}/>
-      </div>
-    );
+    return <div>
+      <CurrencyPairs onExecute={(payload) => this.addTrade(payload)}/>
+      <Blotter trades={this.state.trades}/>
+    </div>;
   }
 }
 

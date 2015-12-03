@@ -4,4 +4,4 @@ MAINTAINER 	weareadaptive <thibault@weareadaptive.com>
 COPY        .crossbar  /server/.crossbar
 
 WORKDIR     /server
-CMD         /bin/bash
+CMD         crossbar start

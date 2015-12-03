@@ -1,0 +1,28 @@
+#! /bin/bash
+
+service=$1
+namespace=$2
+. ../../config
+
+if [[ $vMajor = "" ]];then
+  echo "DeployNewService: major version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vMinor = "" ]];then
+  echo "DeployNewService: minor version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+
+manifestFolder="../manifests"
+svcFile="$manifestFolder/svc.yml"
+
+mkdir -p $manifestFolder
+
+cp ./$service/svc.yml $svcFile
+
+sed -i  "s/__SERVICE__/$service/g" $svcFile
+sed -i  "s/__MAJOR__/$vMajor/g" $svcFile
+sed -i  "s/__MINOR__/$vMinor/g" $svcFile
+#sed -i  "s/__CONTAINERPORT__/80/g" $svcFile
+#sed -i  "s/__SERVICEPORT__/80/g" $svcFile
+sed -i  "s/__NAMESPACE__/$namespace/g" $svcFile

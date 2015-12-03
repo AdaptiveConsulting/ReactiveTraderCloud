@@ -1,20 +1,20 @@
-﻿{
-    "version": "1.0.0-*",
-    "description": "Reactive Trader Transport Layer",
-    "authors": [ "james.watson" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
-    "dependencies": {
-        "WampSharp.Default": "1.2.3.12-beta",
-        "Common.Logging": "3.3.1"
-    },
-    "frameworks": {
-        "dnx451": {
-            "frameworkAssemblies": {
-                "System.Runtime": "",
-                "System.Collections": ""
-            }
-        }
+{
+  "version": "1.0.0-*",
+  "description": "Reactive Trader Transport Layer",
+  "authors": [ "james.watson" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "dependencies": {
+    "WampSharp.Default": "1.2.3.12-beta",
+    "Adaptive.ReactiveTrader.Common": "1.0.0-*"
+  },
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Collections": ""
+      }
     }
+  }
 }
