@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "servers-build: build number required as first parameter"
+  exit 1
+fi
+
 # get and control config
 . ../../../config
 
@@ -11,16 +17,12 @@ if [[ $serversContainer = "" ]];then
   echo "servers-build: container name required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
-if [[ $vDnx = "" ]];then
+if [[ $vMajor = "" ]];then
   echo "servers-build: major version required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
-if [[ $vDnx = "" ]];then
+if [[ $vMinor = "" ]];then
   echo "servers-build: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vDnx = "" ]];then
-  echo "servers-build: build number required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
 
@@ -31,6 +33,6 @@ sed "s/__VDNX__/$vDnx/g" ./template.Dockerfile > ./build/Dockerfile
 
 
 # build
-containerTaggedName="$serversContainer:$vMajor.$vMinor.$vBuild"
+containerTaggedName="$serversContainer:$vMajor.$vMinor.$build"
 docker build --no-cache -t $containerTaggedName ./build/.
 docker tag -f $containerTaggedName $serversContainer:latest

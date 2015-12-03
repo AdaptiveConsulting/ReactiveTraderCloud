@@ -1,5 +1,11 @@
 #! /bin/bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "broker-build: build number required as first parameter"
+  exit 1
+fi
+
 # get and control config
 . ../../../config
 
@@ -19,10 +25,6 @@ if [[ $vMinor = "" ]];then
   echo "broker-build: minor version required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
-if [[ $vBuild = "" ]];then
-  echo "broker-build: build number required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 
 # generate container folder
@@ -34,6 +36,6 @@ cp -r ../../../../src/server/.crossbar  ./build/.crossbar
 
 
 # build
-containerTaggedName="$brokerContainer:$vMajor.$vMinor.$vBuild"
+containerTaggedName="$brokerContainer:$vMajor.$vMinor.$build"
 docker build --no-cache -t $containerTaggedName ./build/.
 docker tag -f $containerTaggedName $brokerContainer:latest
