@@ -20,4 +20,4 @@ mkdir -p ./build
 sed "s/__VUBUNTU__/$vUbuntu/g" ./template.Dockerfile > ./build/Dockerfile
 sed "s/__VDNX__/$vDnx/g" ./template.install.sh > ./build/install.sh
 
-docker build -t $monoContainer:$vDnx ./build/.
+docker build --no-cache -t $monoContainer:$vDnx ./build/.

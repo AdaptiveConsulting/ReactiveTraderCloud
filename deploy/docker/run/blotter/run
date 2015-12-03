@@ -4,7 +4,6 @@ echo "Blotter"
 
 . ../../../config
 
-#startCommand="dnx -p Adaptive.ReactiveTrader.Server.Blotter run"
 startCommand="dnx -p Adaptive.ReactiveTrader.Server.Launcher run b"
 waitCommand="while true; do echo ping; sleep 60; done"
 

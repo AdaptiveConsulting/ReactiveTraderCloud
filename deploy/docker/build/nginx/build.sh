@@ -17,4 +17,4 @@ mkdir -p ./build
 sed "s/__VNGINX__/$vNginx/g" ./template.Dockerfile > ./build/Dockerfile
 
 # build
-docker build -t $nginxContainer:$vNginx ./build/.
+docker build --no-cache -t $nginxContainer:$vNginx ./build/.

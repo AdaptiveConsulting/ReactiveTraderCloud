@@ -48,5 +48,5 @@ popd
 cp -r ../../../../src/client/dist ./build/dist
 
 # build
-docker build -t $webContainer:$vMajor.$vMinor.$vBuild ./build/.
+docker build --no-cache -t $webContainer:$vMajor.$vMinor.$vBuild ./build/.
 docker tag -f $webContainer:$vMajor.$vMinor.$vBuild $webContainer:latest
