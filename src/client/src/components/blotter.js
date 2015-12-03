@@ -3,8 +3,6 @@ import _ from 'lodash';
 import numeral from 'numeral';
 import moment from 'moment';
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
 /**
  * @class CurrencyPairs
  * @extends {React.Component}
@@ -19,8 +17,10 @@ class CurrencyPairs extends React.Component {
   renderRow(trade){
     const notional           = numeral(trade.amount).format('0,000,000[.]00') + ' ' + trade.pair.substr(0, 3),
           dateTime           = moment(trade.dateTime).format('MMM Do, HH:mm:ss'),
-          valueDay           = new Date(trade.valueDate),
-          formattedValueDate = ['SP.', valueDay.getDate(), MONTHS[valueDay.getMonth()]].join(' ');
+          valueDay           = moment(trade.valueDate),
+          formattedValueDate = ['SP.', valueDay.format('DD MMM')].join(' ');
+
+    console.log(trade.valueDate);
 
     return (
       <tr key={trade.id} className={trade.status + ' animated slideInDown'}>
