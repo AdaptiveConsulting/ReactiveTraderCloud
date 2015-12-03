@@ -55,7 +55,9 @@ class CurrencyPairs extends React.Component {
     pairs.forEach((pair) =>{
       const timeOutState = Date.now() - (pair.lastUpdated || 0) > STALE_TIMEOUT ? 'stale' : 'listening';
       // if either pricing or execution reports down, we cannot trade.
-      pair.state = this.canTrade() && pair.disabled !== true ? timeOutState : 'stale';
+      if (pair.state !== 'executing'){
+        pair.state = this.canTrade() && pair.disabled !== true ? timeOutState : 'stale';
+      }
     });
 
     this.setState({
@@ -190,7 +192,7 @@ class CurrencyPairs extends React.Component {
 
       payload.onACK = (...args) => this.onACK(...args);
 
-      this.props.onExecute(payload);
+      this.props.onExecute(payload, pair);
     }
   }
 

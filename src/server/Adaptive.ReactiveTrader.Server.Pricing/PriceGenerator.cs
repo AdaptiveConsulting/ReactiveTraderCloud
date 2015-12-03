@@ -31,7 +31,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             return Observable.Interval(TimeSpan.FromSeconds(0.5)).Select(_ => Unit.Default);
         }
-        
+
         public PriceGenerator()
         {
             var priceGenerators = new List<IPriceGenerator>
@@ -40,8 +40,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 CreatePriceGenerator("USDJPY", 100.20m),
                 CreatePriceGenerator("GBPUSD", 1.5200m),
                 CreatePriceGenerator("GBPJPY", 160.200m),
+                CreatePriceGenerator("EURJPY", 130.00m)
             };
-            
+
             foreach (var ccy in priceGenerators)
             {
                 var observable = Observable.Create<SpotPriceDto>(observer =>
