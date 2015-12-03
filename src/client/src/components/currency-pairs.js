@@ -1,7 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 
-import Header from './header';
 import CurrencyPair from './currency-pair';
 import rt from '../services/reactive-trader';
 
@@ -143,17 +142,7 @@ class CurrencyPairs extends React.Component {
 
     const self = this;
 
-    rt.transport
-      .on('open', ()=> self.setState({connected: true}))
-      .on('close', ()=> self.setState({connected: false}))
-      .on('statusUpdate', (services) =>{
-        // update ui indicators
-        self.setState({
-          services
-        });
-        // also update pairs in case pricing has gone down
-        self.updatePairs();
-      });
+    rt.transport.on('statusUpdate', this.updatePairs.bind(this));
   }
 
   componentWillMount(){
@@ -203,23 +192,20 @@ class CurrencyPairs extends React.Component {
       return pair.buy && pair.sell;
     });
 
-    return <div>
-      <Header status={this.state.connected} services={this.state.services}/>
-      <div className='currency-pairs'>
-        {pairsWithPrices.length ? pairsWithPrices.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
-            pair={cp.pair}
-            size="100m"
-            key={cp.id}
-            buy={cp.buy}
-            sell={cp.sell}
-            mid={cp.mid}
-            precision={cp.precision}
-            pip={cp.pip}
-            state={cp.state}
-            response={cp.response}/>) :
-          <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div> }
-        <div className="clearfix"></div>
-      </div>
+    return <div className='currency-pairs'>
+      {pairsWithPrices.length ? pairsWithPrices.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
+          pair={cp.pair}
+          size="100m"
+          key={cp.id}
+          buy={cp.buy}
+          sell={cp.sell}
+          mid={cp.mid}
+          precision={cp.precision}
+          pip={cp.pip}
+          state={cp.state}
+          response={cp.response}/>) :
+        <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div> }
+      <div className="clearfix"></div>
     </div>;
   }
 }

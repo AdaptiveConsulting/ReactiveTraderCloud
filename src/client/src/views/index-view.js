@@ -2,6 +2,7 @@ import React from 'react';
 import CurrencyPairs from '../components/currency-pairs';
 import Blotter from '../components/blotter';
 import Modal from '../components/modal';
+import Header from '../components/header';
 
 import rt from '../services/reactive-trader';
 
@@ -30,8 +31,19 @@ class IndexView extends React.Component {
     super(props, context);
 
     this.state = {
-      trades: []
+      trades: [],
+      connected: false,
+      services: {}
     };
+
+    this.attachEvents();
+  }
+
+  /**
+   * Adds transport subscriptions
+   */
+  attachEvents(){
+    const self = this;
 
     rt.blotter.getTradesStream((blotter) =>{
       blotter.Trades.forEach((trade) => this._processTrade(trade, false));
@@ -40,11 +52,22 @@ class IndexView extends React.Component {
         trades: this.state.trades
       });
     });
+
+    rt.transport
+      .on('open', ()=> self.setState({connected: true}))
+      .on('close', ()=> self.setState({connected: false}))
+      .on('statusUpdate', (services) =>{
+        // update ui indicators for all known services in header
+        self.setState({services});
+      });
   }
 
+  /**
+   * Re-establishes a connection to broker once it times out
+   */
   reconnect(){
     Modal.close();
-    rt.transport.open();
+    rt.transport.isConnected || rt.transport.open();
   }
 
   componentDidMount(){
@@ -119,12 +142,16 @@ class IndexView extends React.Component {
   }
 
   render(){
+    const services = this.state.services;
+
     return <div>
       <Modal/>
-      <CurrencyPairs onExecute={(payload) => this.addTrade(payload)}/>
-      <Blotter trades={this.state.trades}/>
+      <Header status={this.state.connected} services={services} />
+      <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} services={services} />
+      <Blotter trades={this.state.trades} status={services.blotter} />
     </div>;
   }
+
 }
 
 export default IndexView;
