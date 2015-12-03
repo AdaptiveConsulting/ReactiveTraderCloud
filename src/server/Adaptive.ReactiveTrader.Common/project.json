@@ -11,6 +11,7 @@
     "Common.Logging": "3.3.1",
     "Microsoft.Framework.Configuration": "1.0.0-beta8",
     "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+    "Rx-Main": "2.2.5"
   },
 
     "frameworks": {

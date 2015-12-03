@@ -129,6 +129,7 @@ namespace Adaptive.ReactiveTrader.EventStore
                 }
 
                 var sotw = _stateOfTheWorldUpdates.Where(x => x.IsStale).Merge(_stateOfTheWorldUpdates.Where(x => !x.IsStale).Take(1))
+                                                  .TakeUntilInclusive(x => !x.IsStale)
                                                   .Select(CreateResponseFromStateOfTheWorld);
 
                 return sotw.Concat(_events.Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorldContainer.StateOfTheWorld, evt)))

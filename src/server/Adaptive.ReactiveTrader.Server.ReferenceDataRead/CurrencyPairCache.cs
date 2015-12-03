@@ -108,7 +108,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                     CurrencyPair = new CurrencyPairDto(ccyPairToDeactivate.Symbol, ccyPairToDeactivate.RatePrecision, ccyPairToDeactivate.PipsPosition),
                     UpdateType = updateType
                 }
-            }, false, true);
+            }, false, false);
         }
     }
 }
