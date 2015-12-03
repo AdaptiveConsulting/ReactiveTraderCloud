@@ -1,5 +1,11 @@
 #! /bin/bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "populated-eventstore-build: build number required as first parameter"
+  exit 1
+fi
+
 # get config
 . ../../../config
 
@@ -23,11 +29,7 @@ if [[ $vMinor = "" ]];then
   echo "populate-eventstore-build: minor version required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
-if [[ $vBuild = "" ]];then
-  echo "populate-eventstore-build: build number required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 # push
-docker push $populatedEventstoreContainer:$vMajor.$vMinor.$vBuild
+docker push $populatedEventstoreContainer:$vMajor.$vMinor.$build
 docker push $populatedEventstoreContainer:latest

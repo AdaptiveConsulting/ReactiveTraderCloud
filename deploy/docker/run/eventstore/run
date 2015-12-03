@@ -1,17 +1,21 @@
 #! /bin/bash
 
+if [[ $# != 1 ]];then
+  echo "eventstore-run require build number"
+fi
+build=$1
+
 echo "EventStore"
 
 . ../../../config
 
 docker rm eventstore 2&> garbage
 
-docker run -d --net=host                                \
-  --name eventstore                                     \
-  $populatedEventstoreContainer:$vMajor.$vMinor.$vBuild \
+docker run -d --net=host                               \
+  --name eventstore                                    \
+  $populatedEventstoreContainer:$vMajor.$vMinor.$build \
   > container_id
 
 rm garbage
-echo "  started"
 
 echo " "

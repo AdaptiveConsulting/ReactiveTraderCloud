@@ -3,7 +3,6 @@
 
 vMajor="0"
 vMinor="0"
-vBuild="spike"
 
 # crossbar/broker container
 vUbuntu="14.04.2"
