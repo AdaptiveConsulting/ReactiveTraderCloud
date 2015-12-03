@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
+import Popout from 'react-popout';
+
 import numeral from 'numeral';
 import { getConvertedSize } from '../utils';
 
@@ -38,6 +40,7 @@ class CurrencyPair extends React.Component {
       size: 0,
       chart: false,
       info: false,
+      tearoff: false,
       state: 'listening',
       historic: []
     };
@@ -148,9 +151,10 @@ class CurrencyPair extends React.Component {
   execute(direction){
     // attempt to capture price we request against.
     if (this.props.onExecute && this.state.size !== 0){
-      this.props.onExecute({
+      let s = Number(this.state.size);
+      isNaN(s) || this.props.onExecute({
         direction: direction,
-        amount: this.state.size,
+        amount: s,
         rate: this.props[direction].toFixed(this.props.precision),
         pair: this.props.pair,
         valueDate: this.SPOTDATE,
@@ -205,9 +209,17 @@ class CurrencyPair extends React.Component {
         <span className='key'>at</span> {response.rate}<br/>
         <span className='key'>{response.valueDate}</span><br/>
         <span className='key'>Trade ID</span> {response.id}
-        <a href='#' className='pull-right' onClick={(e) => this.onDismissLastResponse(e)}>{response.status}</a>
+        <a href='#' className='pull-right dismiss-message' onClick={(e) => this.onDismissLastResponse(e)}>{response.status}</a>
       </div>
     );
+  }
+
+  /**
+   * @param {DOMEvent=} e
+   */
+  toggleTearoff(e:DOMEvent){
+    e && e.preventDefault();
+    this.setState({tearoff: !this.state.tearoff});
   }
 
   render(){
@@ -215,17 +227,19 @@ class CurrencyPair extends React.Component {
           { buy, sell, pair, response } = this.props;
 
     const parsedBuy  = this.parsePrice(buy),
-          parsedSell = this.parsePrice(sell),
-          execute = this.execute.bind(this),
+          parsedSell = this.parsePrice(sell);
+
+    const execute = this.execute.bind(this),
+          title = pair.substr(0, 3) + ' / ' + pair.substr(3, 3),
           className  = 'currency-pair animated flipInX ' + state;
 
     // any ACK or failed messages will come via state.info / last response
     const message = this.state.info ? (this.lastResponse || this.renderMessage(response)) : false;
 
-    return <div className={className}>
+    const tileInnerContent = <div className={className}>
       <div className='currency-pair-title'>
-        {pair} <i className='fa fa-plug animated infinite fadeIn'></i>
-        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
+        {title} <i className='fa fa-plug animated infinite fadeIn'></i>
+        <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right' onClick={(e) => this.toggleTearoff(e)}/> <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       {message}
       <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
@@ -233,16 +247,20 @@ class CurrencyPair extends React.Component {
         <Direction direction={this.getDirection(buy)} spread={this.getSpread(sell, buy)}/>
         <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
       </div>
-      <div className='clearFix'></div>
+      <div className='clearfix'></div>
       <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})} pair={pair}/>
       <div className="clearfix"></div>
       {chart ?
         <Sparklines data={historic.slice()} width={326} height={24} margin={0}>
           <SparklinesLine />
           <SparklinesSpots />
-          <SparklinesReferenceLine type="avg"/>
+          <SparklinesReferenceLine type='mean'/>
         </Sparklines> : <div className='sparkline-holder'></div>}
     </div>;
+
+    return this.state.tearoff ?
+      <Popout url='/tile' title={title} options={{width: 332, height: 190, resizable: 'no'}} onClosing={() => this.toggleTearoff()}>{tileInnerContent}</Popout> :
+      tileInnerContent;
   }
 }
 

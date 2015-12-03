@@ -1,5 +1,5 @@
 import React from 'react';
-import traders from '../classes/traders';
+import traders from '../utils/traders';
 import { Link } from 'react-router';
 
 class Header extends React.Component {
@@ -27,20 +27,14 @@ class Header extends React.Component {
   render(){
     const { status, services } = this.props;
 
-    return <nav className='navbar navbar-default navbar-fixed-top'>
+    return <nav className='navbar navbar-default'>
       <Link className='navbar-brand' to='/'>Reactive Trader 2</Link>
       <ul className='nav navbar-nav hidden-xs navbar-left'>
-        <li>
-          <Link to='/' className='nav-link' activeClassName='active'>Sales</Link>
-        </li>
-        <li>
-          <Link to='/admin' className='nav-link' activeClassName='active'>Admin tool</Link>
-        </li>
         <li>
           <Link to='/user' className='nav-link' activeClassName='active'><i className='fa fa-user' /> {traders.code} ({traders.name} {traders.surname})</Link>
         </li>
       </ul>
-      <ul className='nav navbar-nav pull-right nav-status'>
+      <ul className='nav navbar-nav pull-right nav-status hidden-xs'>
         <li>{this.getBrokerStatus(status)}</li>
         {this.getServices(services)}
       </ul>
