@@ -11,7 +11,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class ReferenceReadServiceHost : ServiceHostBase
     {
-        private static readonly ILog Log = LogManager.GetLogger<ReferenceReadServiceHost>();
+        private new static readonly ILog Log = LogManager.GetLogger<ReferenceReadServiceHost>();
         private readonly IReferenceService _service;
         private readonly IBroker _broker;
 
@@ -19,6 +19,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         {
             _service = service;
             _broker = broker;
+
+            RegisterCall("getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
+            StartHeartBeat();
         }
 
         private async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
@@ -45,12 +48,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         public override double GetLoad()
         {
             return _clients/100d;
-        }
-
-        public override async Task Start()
-        {
-            RegisterCall("getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
-            await base.Start();
         }
     }
 }

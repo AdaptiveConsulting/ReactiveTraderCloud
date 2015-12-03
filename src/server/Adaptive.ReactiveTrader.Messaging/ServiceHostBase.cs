@@ -1,16 +1,18 @@
 using System;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
     public abstract class ServiceHostBase : IDisposable
     {
+        protected static readonly ILog Log = LogManager.GetLogger<ServiceHostBase>();
+
         private readonly IBroker _broker;
         public readonly string InstanceID;
         private readonly Heartbeat _heartbeat;
         private readonly CompositeDisposable _registedCalls = new CompositeDisposable();
-        private bool _started;
 
         protected ServiceHostBase(IBroker broker, string type)
         {
@@ -26,19 +28,19 @@ namespace Adaptive.ReactiveTrader.Messaging
         {
             var instanceProcedureName = $"{InstanceID}.{procName}";
             _registedCalls.Add(_broker.RegisterCall(instanceProcedureName, procedure));
+            Log.Info($"procedure {procName}() registered");
         }
 
         protected void RegisterCallResponse<T>(string procName, Func<IRequestContext, IMessage, Task<T>> procedure)
         {
             var instanceProcedureName = $"{InstanceID}.{procName}";
             _registedCalls.Add(_broker.RegisterCallResponse(instanceProcedureName, procedure));
+            Log.Info($"procedure {procName}() registered");
         }
 
-        public virtual async Task Start()
+        protected void StartHeartBeat()
         {
-            if (_started) throw new MethodAccessException(this + " has already been started.");
-            _started = true;
-            await _heartbeat.Start();
+            _heartbeat.Start().Wait();
         }
 
         public virtual double GetLoad()
