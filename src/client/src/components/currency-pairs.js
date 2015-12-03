@@ -1,12 +1,9 @@
 import React from 'react';
-import CurrencyPair from './currency-pair';
-import Header from './header';
 import _ from 'lodash';
 
+import Header from './header';
+import CurrencyPair from './currency-pair';
 import rt from '../classes/services/reactive-trader';
-
-//todo: hook up socket stream
-let pairs = [];
 
 const STALE_TIMEOUT = 4000,
       UPDATE_TYPES  = {
@@ -33,8 +30,6 @@ class CurrencyPairs extends React.Component {
       connected: false,
       services: {}
     };
-
-    this.subscribed = [];
   }
 
   /**
@@ -47,9 +42,9 @@ class CurrencyPairs extends React.Component {
 
   /**
    * Updates pairs state and also marks them as stale when services required are down
-   * @param src
+   * @param {Array=} src to use or defaults to state.pairs
    */
-  updatePairs(src){
+  updatePairs(src:array){
     const pairs = src || this.state.pairs;
 
     pairs.forEach((pair) =>{
@@ -165,7 +160,32 @@ class CurrencyPairs extends React.Component {
     this.attachSubs();
   }
 
-  onACK(payload){
+  componentDidUpdate(){
+    // silently remove last response
+    this.state.pairs.forEach((pair)=>{
+      delete pair.response;
+    });
+  }
+
+  /**
+   * @param {Object} payload
+   */
+  onExecute(payload:object){
+    if (this.props.onExecute){
+      const pair = _.findWhere(this.state.pairs, {pair: payload.pair});
+      pair.state = 'executing';
+
+      payload.onACK = (...args) => this.onACK(...args);
+
+      this.props.onExecute(payload, pair);
+    }
+  }
+
+  /**
+   * When acknowledge arrives, mark pair as 'listening' again
+   * @param {Object} payload
+   */
+  onACK(payload:object){
     const pairs = this.state.pairs,
           pair  = _.findWhere(pairs, {pair: payload.pair});
 
@@ -177,46 +197,27 @@ class CurrencyPairs extends React.Component {
     });
   }
 
-  componentDidUpdate(){
-    // silently remove last response
-    this.state.pairs.forEach((pair)=>{
-      delete pair.response;
-    });
-  }
-
-  onExecute(payload){
-    //todo: send to socket.
-    if (this.props.onExecute){
-      const pair = _.findWhere(this.state.pairs, {pair: payload.pair});
-      pair.state = 'executing';
-
-      payload.onACK = (...args) => this.onACK(...args);
-
-      this.props.onExecute(payload, pair);
-    }
-  }
-
   render(){
     // filter cps that have got price data only.
-    const pairsWithPrices = this.state.pairs.filter((a) =>{
-      return a.buy && a.sell;
+    const pairsWithPrices = this.state.pairs.filter((pair) =>{
+      return pair.buy && pair.sell;
     });
 
     return <div>
       <Header status={this.state.connected} services={this.state.services}/>
       <div className='currency-pairs'>
         {pairsWithPrices.length ? pairsWithPrices.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
-                                                pair={cp.pair}
-                                                size="100m"
-                                                key={cp.id}
-                                                buy={cp.buy}
-                                                sell={cp.sell}
-                                                mid={cp.mid}
-                                                precision={cp.precision}
-                                                pip={cp.pip}
-                                                state={cp.state}
-                                                response={cp.response}/>) :
-          <div className="text-center"><i className="fa fa-5x fa-cog fa-spin"></i></div> }
+            pair={cp.pair}
+            size="100m"
+            key={cp.id}
+            buy={cp.buy}
+            sell={cp.sell}
+            mid={cp.mid}
+            precision={cp.precision}
+            pip={cp.pip}
+            state={cp.state}
+            response={cp.response}/>) :
+          <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div> }
       </div>
     </div>;
   }
