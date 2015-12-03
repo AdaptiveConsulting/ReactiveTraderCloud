@@ -1,8 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 using System.Reactive.Linq;
+using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Server.Analytics.Dto;
+using Adaptive.ReactiveTrader.Server.Blotter;
+using Adaptive.ReactiveTrader.Server.Common;
+using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
@@ -10,12 +15,20 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
     {
         private static readonly ILog Log = LogManager.GetLogger<AnalyticsServiceHost>();
         private readonly IAnalyticsService _service;
+        private readonly IEventStoreConnection _eventStoreConnection;
         private readonly IBroker _broker;
+        private readonly TradeCache _tradeCache;
 
-        public AnalyticsServiceHost(IAnalyticsService service, IBroker broker) : base(broker, "Analytics")
+        public AnalyticsServiceHost(
+            IAnalyticsService service,
+            IEventStoreConnection eventStoreConnection,
+            IBroker broker, TradeCache tradeCache)
+            : base(broker, "Analytics")
         {
             _service = service;
+            _eventStoreConnection = eventStoreConnection;
             _broker = broker;
+            _tradeCache = tradeCache;
         }
 
         public override async Task Start()
@@ -23,8 +36,16 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             await base.Start();
 
             // listen to es for done trades
+            _tradeCache.Initialize();
+
+            _tradeCache.GetTrades()
+                .SelectMany(t => t.Trades)
+                .Where(t => t.Status == TradeStatusDto.Done &&
+                            DateUtils.FromSerializationFormat(t.TradeDate) > DateTime.Today)
+                .Subscribe(trade => _service.OnTrade(trade));
 
             // listen for price ticks
+            //_broker.
 
             RegisterCall("getAnalytics", GetAnalyticsStream);
         }
