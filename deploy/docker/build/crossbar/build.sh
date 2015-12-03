@@ -23,4 +23,4 @@ sed "s/__VUBUNTU__/$vUbuntu/g" ./template.Dockerfile > ./build/Dockerfile
 cp ./template.install.sh ./build/install.sh
 
 # build
-docker build -t $crossbarContainer:$vCrossbar ./build/.
+docker build --no-cache -t $crossbarContainer:$vCrossbar ./build/.

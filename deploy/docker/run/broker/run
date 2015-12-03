@@ -1,17 +1,21 @@
 #! /bin/bash
 
+if [[ $# != 1 ]];then
+  echo "broker-run require build number"
+fi
+build=$1
+
 echo "Broker"
 
 . ../../../config
 
 docker rm broker 2&> garbage
 
-docker run -d --net=host                      \
-     --name broker                            \
-     $brokerContainer:$vMajor.$vMinor.$vBuild \
+docker run -d --net=host                     \
+     --name broker                           \
+     $brokerContainer:$vMajor.$vMinor.$build \
      > container_id 
 
 rm garbage
 
-echo "  started"
 echo " "
