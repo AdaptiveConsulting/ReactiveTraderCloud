@@ -1,32 +1,29 @@
+﻿using System;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 using EventStore.ClientAPI;
-using System;
-using System.Threading.Tasks;
 
-namespace Adaptive.ReactiveTrader.Server.Blotter
+namespace Adaptive.ReactiveTrader.Server.Analytics
 {
-    public class BlotterLauncher
+    public class AnalyticsLauncher
     {
-        private static readonly ILog Log = LogManager.GetLogger<BlotterLauncher>();
+        private static readonly ILog Log = LogManager.GetLogger<AnalyticsLauncher>();
 
         public static async Task<IDisposable> Run(IEventStoreConnection es, IBroker broker)
         {
             Log.Info("Blotter Service starting...");
             try
             {
-                var cache = new TradeCache(es);
-                cache.Initialize();
-
-                var service = new BlotterService(cache.GetTrades());
-                var serviceHost = new BlotterServiceHost(service, broker);
+                var service = new AnalyticsService();
+                var serviceHost = new AnalyticsServiceHost(service, broker);
 
                 await serviceHost.Start();
 
                 Log.Info("Service Started.");
 
-                return new CompositeDisposable {cache, serviceHost};
+                return new CompositeDisposable { serviceHost };
             }
             catch (MessagingException e)
             {
