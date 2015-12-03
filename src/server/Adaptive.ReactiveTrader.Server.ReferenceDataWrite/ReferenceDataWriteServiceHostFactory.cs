@@ -1,5 +1,4 @@
 using Adaptive.ReactiveTrader.Common;
-using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Core;
@@ -15,15 +14,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriteServiceHostFactory>();
         private readonly SerialDisposable _cleanup = new SerialDisposable();
 
-
-        private Repository _repository;
-        private ReferenceWriteService _service;
-
-        public void Initialize(IEventStoreConnection es, IConnectionStatusMonitor monitor)
-        {
-            _repository = new Repository(es);
-            _service = new ReferenceWriteService(_repository);
-        }
         public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
         {
             return Disposable.Empty;
