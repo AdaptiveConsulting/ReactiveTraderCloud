@@ -13,6 +13,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
     public class CurrencyPairCache : EventStoreCache<string, CurrencyPair, CurrencyPairUpdatesDto>
     {
         protected static readonly ILog Log = LogManager.GetLogger<CurrencyPairCache>();
+
         private const string CurrencyPairCreatedEventType = "CurrencyPairCreatedEvent";
         private const string CurrencyPairChangedEventType = "CurrencyPairChangedEvent";
         private const string CurrencyPairActivatedEventType = "CurrencyPairActivatedEvent";
@@ -26,7 +27,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             CurrencyPairDeactivatedEventType
         };
 
-        public CurrencyPairCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) : base(eventStoreConnectionStream)
+        public CurrencyPairCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) : base(eventStoreConnectionStream, Log)
         {
         }
 
@@ -40,32 +41,33 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             return GetOutputStream();
         }
 
-        protected override CurrencyPairUpdatesDto BuildStateOfTheWorldDto(IEnumerable<CurrencyPair> currencyPairs)
+        protected override CurrencyPairUpdatesDto CreateResponseFromStateOfTheWorld(StateOfTheWorldContainer<string, CurrencyPair> container)
         {
-            return new CurrencyPairUpdatesDto(currencyPairs.Where(x => x.IsEnabled)
-                                                           .Select(x => new CurrencyPairUpdateDto
+            var enabledCurrencyPairs = container.StateOfTheWorld.Values.Where(x => x.IsEnabled);
+
+            return new CurrencyPairUpdatesDto(enabledCurrencyPairs.Select(x => new CurrencyPairUpdateDto
                                                            {
                                                                CurrencyPair = new CurrencyPairDto(x.Symbol, x.RatePrecision, x.PipsPosition),
                                                                UpdateType = UpdateTypeDto.Added
                                                            })
-                                                           .ToList(), true);
+                                                           .ToList(), true, container.IsStale);
         }
 
-        protected override void UpdateStateOfTheWorld(IDictionary<string, CurrencyPair> currentSow, RecordedEvent evt)
+        protected override void UpdateStateOfTheWorld(IDictionary<string, CurrencyPair> currentSotw, RecordedEvent evt)
         {
             switch (evt.EventType)
             {
                 case CurrencyPairCreatedEventType:
                     var createdEvent = evt.GetEvent<CurrencyPairCreatedEvent>();
-                    currentSow.Add(createdEvent.Symbol, new CurrencyPair(createdEvent.Symbol, createdEvent.PipsPosition, createdEvent.RatePrecision, createdEvent.SampleRate, createdEvent.Comment));
+                    currentSotw.Add(createdEvent.Symbol, new CurrencyPair(createdEvent.Symbol, createdEvent.PipsPosition, createdEvent.RatePrecision, createdEvent.SampleRate, createdEvent.Comment));
                     break;
                 case CurrencyPairActivatedEventType:
                     var activatedEvent = evt.GetEvent<CurrencyPairActivatedEvent>();
-                    currentSow[activatedEvent.Symbol].IsEnabled = true;
+                    currentSotw[activatedEvent.Symbol].IsEnabled = true;
                     break;
                 case CurrencyPairDeactivatedEventType:
                     var deactivatedEvent = evt.GetEvent<CurrencyPairActivatedEvent>();
-                    currentSow[deactivatedEvent.Symbol].IsEnabled = false;
+                    currentSotw[deactivatedEvent.Symbol].IsEnabled = false;
                     break;
                 case CurrencyPairChangedEventType:
                     break;
@@ -74,14 +76,14 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             }
         }
 
-        protected override CurrencyPairUpdatesDto MapSingleEventToUpdateDto(IDictionary<string, CurrencyPair> currentSow, RecordedEvent evt)
+        protected override CurrencyPairUpdatesDto MapSingleEventToUpdateDto(IDictionary<string, CurrencyPair> currentSotw, RecordedEvent evt)
         {
             switch (evt.EventType)
             {
                 case CurrencyPairActivatedEventType:
-                    return CreateSingleEventUpdateDto(currentSow, evt.GetEvent<CurrencyPairActivatedEvent>().Symbol, UpdateTypeDto.Added);
+                    return CreateSingleEventUpdateDto(currentSotw, evt.GetEvent<CurrencyPairActivatedEvent>().Symbol, UpdateTypeDto.Added);
                 case CurrencyPairDeactivatedEventType:
-                    return CreateSingleEventUpdateDto(currentSow, evt.GetEvent<CurrencyPairDeactivatedEvent>().Symbol, UpdateTypeDto.Removed);
+                    return CreateSingleEventUpdateDto(currentSotw, evt.GetEvent<CurrencyPairDeactivatedEvent>().Symbol, UpdateTypeDto.Removed);
                 case CurrencyPairCreatedEventType:
                 case CurrencyPairChangedEventType:
                     return CurrencyPairUpdatesDto.Empty;
@@ -106,7 +108,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                     CurrencyPair = new CurrencyPairDto(ccyPairToDeactivate.Symbol, ccyPairToDeactivate.RatePrecision, ccyPairToDeactivate.PipsPosition),
                     UpdateType = updateType
                 }
-            }, false);
+            }, false, true);
         }
     }
 }

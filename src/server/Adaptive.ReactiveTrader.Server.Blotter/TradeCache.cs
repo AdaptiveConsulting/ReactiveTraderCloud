@@ -6,11 +6,14 @@ using EventStore.ClientAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
     public class TradeCache : EventStoreCache<long, Trade, TradesDto>
     {
+        protected static readonly ILog Log = LogManager.GetLogger<TradeCache>();
+
         private const string TradeCompletedEvent = "TradeCompletedEvent";
         private const string TradeRejectedEvent = "TradeRejectedEvent";
         private const string TradeCreatedEvent = "TradeCreatedEvent";
@@ -22,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             TradeCreatedEvent
         };
 
-        public TradeCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) : base(eventStoreConnectionStream)
+        public TradeCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) : base(eventStoreConnectionStream, Log)
         {
         }
 
@@ -37,9 +40,9 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             return TradeEventTypes.Contains(eventType);
         }
 
-        protected override TradesDto BuildStateOfTheWorldDto(IEnumerable<Trade> trades)
+        protected override TradesDto CreateResponseFromStateOfTheWorld(StateOfTheWorldContainer<long, Trade> container)
         {
-            return new TradesDto(trades.Select(x => x.ToDto()).ToList(), true);
+            return new TradesDto(container.StateOfTheWorld.Values.Select(x => x.ToDto()).ToList(), true);
         }
 
         protected override TradesDto MapSingleEventToUpdateDto(IDictionary<long, Trade> currentSotw, RecordedEvent evt)

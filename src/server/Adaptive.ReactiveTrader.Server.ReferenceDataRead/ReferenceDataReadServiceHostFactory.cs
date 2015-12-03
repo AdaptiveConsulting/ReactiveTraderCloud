@@ -1,11 +1,10 @@
-using System;
-using System.Reactive.Disposables;
-using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Core;
 using Common.Logging;
 using EventStore.ClientAPI;
+using System;
+using System.Reactive.Disposables;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
@@ -31,8 +30,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         {
             _cache = new CurrencyPairCache(eventStoreStream);
             _service = new ReferenceService(_cache.GetCurrencyPairUpdates());
-            var disposable =
-                brokerStream.LaunchOrKill(broker => new ReferenceReadServiceHost(_service, broker)).Subscribe();
+            var disposable = brokerStream.LaunchOrKill(broker => new ReferenceReadServiceHost(_service, broker))
+                                         .Subscribe();
             _cleanup.Add(disposable);
 
             return disposable;
