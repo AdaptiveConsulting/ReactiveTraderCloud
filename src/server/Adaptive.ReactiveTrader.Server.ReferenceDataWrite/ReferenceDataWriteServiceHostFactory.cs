@@ -1,14 +1,12 @@
-using System;
-using System.Reactive.Disposables;
-using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
-using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Core;
 using Common.Logging;
 using EventStore.ClientAPI;
+using System;
+using System.Reactive.Disposables;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
@@ -28,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         }
         public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
         {
-            return null;
+            return Disposable.Empty;
         }
 
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
@@ -37,7 +35,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
             var serviceStream = repositoryStream.LaunchOrKill(engine => new ReferenceWriteService(engine));
             _cleanup.Disposable = serviceStream.LaunchOrKill(brokerStream, (service, broker) => new ReferenceWriteServiceHost(service, broker)).Subscribe();
 
-            return null;
+            return _cleanup;
         }
 
         public void Dispose()
