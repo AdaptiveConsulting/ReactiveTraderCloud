@@ -10,6 +10,12 @@ import {
   createStore
 } from 'redux';
 
+/**
+ * @deprecated
+ * @param initialState
+ * @param debug
+ * @returns {*}
+ */
 export default function configureStore (initialState, debug = false) {
   let createStoreWithMiddleware;
 
