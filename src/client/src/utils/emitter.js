@@ -134,6 +134,7 @@ class emitter {
   static definePseudo(pseudo, fn){
     pseudoEvents[pseudo] = fn;
   }
+
 }
 
 export default emitter;
