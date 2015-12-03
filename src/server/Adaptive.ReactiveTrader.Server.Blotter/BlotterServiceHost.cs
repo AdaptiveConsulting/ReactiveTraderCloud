@@ -8,7 +8,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 {
     public class BlotterServiceHost : ServiceHostBase
     {
-        private static readonly ILog Log = LogManager.GetLogger<BlotterServiceHost>();
+        private new static readonly ILog Log = LogManager.GetLogger<BlotterServiceHost>();
         private readonly IBlotterService _service;
         private readonly IBroker _broker;
 
@@ -16,15 +16,11 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         {
             _service = service;
             _broker = broker;
-        }
-
-        public override async Task Start()
-        {
-            await base.Start();
 
             RegisterCall("getTradesStream", GetTradesStream);
+            StartHeartBeat();
         }
-
+        
         private async Task GetTradesStream(IRequestContext context, IMessage message)
         {
             Log.DebugFormat("Received GetTradesStream from {0}", context.UserSession.Username);
