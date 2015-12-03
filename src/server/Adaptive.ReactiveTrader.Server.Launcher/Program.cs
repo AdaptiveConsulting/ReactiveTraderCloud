@@ -26,15 +26,15 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
     {
         private static readonly Dictionary<string, IDisposable> Servers = new Dictionary<string, IDisposable>();
 
-        private static readonly Dictionary<string, Lazy<IServceHostFactor>> Factories =
-            new Dictionary<string, Lazy<IServceHostFactor>>();
+        private static readonly Dictionary<string, Lazy<IServiceHostFactory>> Factories =
+            new Dictionary<string, Lazy<IServiceHostFactory>>();
 
         private static IObservable<IConnected<IBroker>> _brokerStream;
         private static IObservable<IConnected<IEventStoreConnection>> _esStream;
 
-        public static void StartService(string name, IServceHostFactor factory)
+        public static void StartService(string name, IServiceHostFactory factory)
         {
-            var esConsumer = factory as IServceHostFactoryWithEventStore;
+            var esConsumer = factory as IServiceHostFactoryWithEventStore;
             var d = esConsumer != null ?
                 esConsumer.Initialize(_brokerStream, _esStream)
                 : factory.Initialize(_brokerStream);
@@ -42,7 +42,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             Servers.Add(name, d);
         }
 
-        private static IServceHostFactor GetFactory(string type)
+        private static IServiceHostFactory GetFactory(string type)
         {
             switch (type)
             {
@@ -64,12 +64,12 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
         public static void InitializeFactories()
         {
-            Factories.Add("reference-read", new Lazy<IServceHostFactor>(() => new ReferenceDataReadServiceHostFactory()));
+            Factories.Add("reference-read", new Lazy<IServiceHostFactory>(() => new ReferenceDataReadServiceHostFactory()));
             Factories.Add("reference-write",
-                new Lazy<IServceHostFactor>(() => new ReferenceDataWriteServiceHostFactory()));
-            Factories.Add("pricing", new Lazy<IServceHostFactor>(() => new PriceServiceHostFactory()));
-            Factories.Add("blotter", new Lazy<IServceHostFactor>(() => new BlotterServiceHostFactory()));
-            Factories.Add("execution", new Lazy<IServceHostFactor>(() => new TradeExecutionServiceHostFactory()));
+                new Lazy<IServiceHostFactory>(() => new ReferenceDataWriteServiceHostFactory()));
+            Factories.Add("pricing", new Lazy<IServiceHostFactory>(() => new PriceServiceHostFactory()));
+            Factories.Add("blotter", new Lazy<IServiceHostFactory>(() => new BlotterServiceHostFactory()));
+            Factories.Add("execution", new Lazy<IServiceHostFactory>(() => new TradeExecutionServiceHostFactory()));
         }
 
         public static void Main(string[] args)

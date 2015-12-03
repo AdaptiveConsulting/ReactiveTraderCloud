@@ -7,7 +7,7 @@ using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    public class PriceServiceHostFactory : IServceHostFactor, IDisposable
+    public class PriceServiceHostFactory : IServiceHostFactory, IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<PriceServiceHostFactory>();
 

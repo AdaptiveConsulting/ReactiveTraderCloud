@@ -58,12 +58,12 @@ namespace Adaptive.ReactiveTrader.Server.Core
     }
 
 
-    public interface IServceHostFactor
+    public interface IServiceHostFactory
     {
         IDisposable Initialize(IObservable<IConnected<IBroker>> broker);
     }
 
-    public interface IServceHostFactoryWithEventStore : IServceHostFactor
+    public interface IServiceHostFactoryWithEventStore : IServiceHostFactory
     {
         IDisposable Initialize(IObservable<IConnected<IBroker>> broker,
             IObservable<IConnected<IEventStoreConnection>> eventStore);
@@ -73,7 +73,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
     {
         private static readonly ILog Log = LogManager.GetLogger<App>();
 
-        public static void Run(string[] args, IServceHostFactor factory)
+        public static void Run(string[] args, IServiceHostFactory factory)
         {
             LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
             {
@@ -92,7 +92,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
 
                 factory.Initialize(brokerStream);
 
-                var esFactory = factory as IServceHostFactoryWithEventStore;
+                var esFactory = factory as IServiceHostFactoryWithEventStore;
 
                 if (esFactory != null)
                 {

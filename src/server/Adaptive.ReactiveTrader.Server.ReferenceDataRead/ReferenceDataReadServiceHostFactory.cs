@@ -8,7 +8,7 @@ using System.Reactive.Disposables;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
-    public class ReferenceDataReadServiceHostFactory : IServceHostFactoryWithEventStore, IDisposable
+    public class ReferenceDataReadServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataReadServiceHostFactory>();
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();

@@ -9,7 +9,7 @@ using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
-    public class TradeExecutionServiceHostFactory : IServceHostFactoryWithEventStore, IDisposable
+    public class TradeExecutionServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<TradeExecutionServiceHostFactory>();
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();

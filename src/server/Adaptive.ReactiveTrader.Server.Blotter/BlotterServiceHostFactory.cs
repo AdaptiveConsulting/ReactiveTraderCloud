@@ -9,7 +9,7 @@ using Adaptive.ReactiveTrader.Server.Core;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
-    public class BlotterServiceHostFactory : IServceHostFactoryWithEventStore, IDisposable
+    public class BlotterServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<BlotterServiceHostFactory>();
 

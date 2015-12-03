@@ -12,7 +12,7 @@ using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
-    public class ReferenceDataWriteServiceHostFactory : IServceHostFactoryWithEventStore, IDisposable
+    public class ReferenceDataWriteServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriteServiceHostFactory>();
         private readonly SerialDisposable _cleanup = new SerialDisposable();
