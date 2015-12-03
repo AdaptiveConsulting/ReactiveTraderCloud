@@ -218,6 +218,7 @@ class CurrencyPairs extends React.Component {
             state={cp.state}
             response={cp.response}/>) :
           <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div> }
+        <div className="clearfix"></div>
       </div>
     </div>;
   }
