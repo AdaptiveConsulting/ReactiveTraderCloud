@@ -104,12 +104,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
                     var eventStoreConnection = EventStoreConnectionFactory.Create(EventStoreLocation.External,
                         config.EventStore);
                     var mon = new ConnectionStatusMonitor(eventStoreConnection);
-                    var esStream =
-                        mon.ConnectionInfoChanged.Select(
-                            c =>
-                                c.Status == ConnectionStatus.Connected
-                                    ? Connected.Yes(eventStoreConnection)
-                                    : Connected.No<IEventStoreConnection>());
+                    var esStream = mon.GetEventStoreConnectedStream(eventStoreConnection);
                     eventStoreConnection.ConnectAsync().Wait();
 
                     esFactory.Initialize(brokerStream, esStream);

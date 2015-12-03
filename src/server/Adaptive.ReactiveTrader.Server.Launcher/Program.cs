@@ -92,15 +92,10 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 var embedded = args.Contains("es");
                 var populate = args.Contains("init-is");
 
-                var eventStoreConnection =
-                    GetEventStoreConnection(config.EventStore, embedded);
+                var eventStoreConnection = GetEventStoreConnection(config.EventStore, embedded);
                 var mon = new ConnectionStatusMonitor(eventStoreConnection);
-                _esStream =
-                    mon.ConnectionInfoChanged.Select(
-                        c =>
-                            c.Status == ConnectionStatus.Connected
-                                ? Connected.Yes(eventStoreConnection)
-                                : Connected.No<IEventStoreConnection>());
+
+                _esStream = mon.GetEventStoreConnectedStream(eventStoreConnection);
 
                 eventStoreConnection.ConnectAsync().Wait();
 

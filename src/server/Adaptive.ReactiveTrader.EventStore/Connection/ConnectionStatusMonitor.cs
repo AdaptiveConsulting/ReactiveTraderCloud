@@ -42,14 +42,25 @@ namespace Adaptive.ReactiveTrader.EventStore.Connection
 
         private static ConnectionInfo UpdateConnectionInfo(ConnectionInfo previousConnectionInfo, ConnectionStatus connectionStatus)
         {
-            if ((previousConnectionInfo.Status == ConnectionStatus.Disconnected || 
-                previousConnectionInfo.Status == ConnectionStatus.Connecting) && 
+            ConnectionInfo newConnectionInfo;
+
+            if ((previousConnectionInfo.Status == ConnectionStatus.Disconnected ||
+                 previousConnectionInfo.Status == ConnectionStatus.Connecting) &&
                 connectionStatus == ConnectionStatus.Connected)
             {
-                return new ConnectionInfo(connectionStatus, previousConnectionInfo.ConnectCount + 1);
+                newConnectionInfo = new ConnectionInfo(connectionStatus, previousConnectionInfo.ConnectCount + 1);
+            }
+            else
+            {
+                newConnectionInfo = new ConnectionInfo(connectionStatus, previousConnectionInfo.ConnectCount);
             }
 
-            return new ConnectionInfo(connectionStatus, previousConnectionInfo.ConnectCount);
+            if (Log.IsInfoEnabled)
+            {
+                Log.Info(newConnectionInfo);
+            }
+
+            return newConnectionInfo;
         }
 
         public void Dispose()

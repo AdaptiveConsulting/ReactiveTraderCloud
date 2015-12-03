@@ -29,5 +29,4 @@ namespace Adaptive.ReactiveTrader.Common
             return new Connected<T>();
         }
     }
-
 }
