@@ -26,7 +26,7 @@ cp ./$service/rc.yml $rcFile
 dockerImage=""
 if [[ $service == "web" ]];then dockerImage="$webContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "broker" ]];then dockerImage="$brokerContainer:$vMajor.$vMinor.$build"; fi
-if [[ $service == "eventstore" ]];then dockerImage="$eventstoreContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "eventstore" ]];then dockerImage="$populatedEventstoreContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "blotter" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "pricing" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "referencedataread" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
