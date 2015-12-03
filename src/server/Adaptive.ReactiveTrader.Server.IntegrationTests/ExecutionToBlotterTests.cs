@@ -27,7 +27,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                 Scheme = "tcp",
                 UserName = "admin",
                 Password = "changeit",
-                Host = "192.168.99.100",
+                Host = IntegrationTestAddress.Url,
                 Port = 1113
             };
 

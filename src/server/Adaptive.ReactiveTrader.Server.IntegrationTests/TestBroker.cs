@@ -12,7 +12,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         {
             _channel = new WampChannelFactory()
                 .ConnectToRealm("com.weareadaptive.reactivetrader")
-                .WebSocketTransport("ws://192.168.99.100:8080/ws")
+                .WebSocketTransport($"ws://{IntegrationTestAddress.Url}:8080/ws")
                 .MsgpackSerialization()
                 .Build();
         }
