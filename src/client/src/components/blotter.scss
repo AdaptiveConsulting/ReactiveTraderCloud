@@ -5,6 +5,20 @@
   right: 0;
   height: 20%;
   max-height: 300px;
+
+
+  div.status {
+    position: absolute;
+    right: 0;
+    transform: translate(-8px, 8px);
+  }
+
+  &.offline {
+    table {
+      opacity: .4;
+    }
+  }
+
   table {
     tbody, thead {
       display: block;

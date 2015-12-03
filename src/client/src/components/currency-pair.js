@@ -238,7 +238,7 @@ class CurrencyPair extends React.Component {
 
     const tileInnerContent = <div className={className}>
       <div className='currency-pair-title'>
-        {title} <i className='fa fa-plug animated infinite fadeIn'></i>
+        {title} <i className='fa fa-plug animated infinite fadeIn'/>
         <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right' onClick={(e) => this.toggleTearoff(e)}/> <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       {message}

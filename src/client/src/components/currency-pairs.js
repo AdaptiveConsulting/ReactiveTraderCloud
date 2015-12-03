@@ -25,9 +25,7 @@ class CurrencyPairs extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {
-      pairs: [],
-      connected: false,
-      services: {}
+      pairs: []
     };
   }
 
@@ -36,7 +34,7 @@ class CurrencyPairs extends React.Component {
    * @returns {Boolean}
    */
   canTrade(){
-    return this.state.services.pricing && this.state.services.execution;
+    return this.props.services.pricing && this.props.services.execution;
   }
 
   /**
