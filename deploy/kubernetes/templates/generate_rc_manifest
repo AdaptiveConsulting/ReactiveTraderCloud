@@ -1,5 +1,9 @@
 #! /bin/bash
 
+if [[ $# != 3 ]];then 
+  echo "parameter error: service namespace build"  
+  exit 1 
+fi
 service=$1
 namespace=$2
 build=$3
@@ -16,7 +20,7 @@ fi
 
 
 manifestFolder="../manifests"
-rcFile="$manifestFolder/rc.yml"
+rcFile="$manifestFolder/$service-rc.yml"
 
 mkdir -p $manifestFolder
 
@@ -37,5 +41,4 @@ sed -i  "s/__MAJOR__/$vMajor/g" $rcFile
 sed -i  "s/__MINOR__/$vMinor/g" $rcFile
 sed -i  "s/__BUILD__/$build/g" $rcFile
 sed -i  "s|__DOCKERIMAGE__|$dockerImage|g" $rcFile
-#sed -i  "s/__CONTAINERPORT__/80/g" $rcFile
 sed -i  "s/__NAMESPACE__/$namespace/g" $rcFile

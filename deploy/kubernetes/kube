@@ -74,12 +74,13 @@ manifestsPath="./manifests"
 mkdir -p $manifestsPath
 
 # generate manifests
-pushd templates > garbage
-generate_service_manifest $service $namespace $build
+cd templates
+if listcontains "web eventstore broker" $service ;then
+  generate_svc_manifest $service $namespace
+fi
 generate_rc_manifest $service $namespace $build
 generate_ns_manifest $namespace
-popd > garbage
-rm templates/garbage
+cd ..
 
 
 # EXECUTE COMMANDS
@@ -88,19 +89,26 @@ rm templates/garbage
 # =====
 if [[ $command == "start" ]];then
   ./kubectl create -f $manifestsPath/ns.yml
-  ./kubectl create -f $manifestsPath/svc.yml
-  ./kubectl create -f $manifestsPath/rc.yml
+  
+  if listcontains "web eventstore broker" $service ;then
+    ./kubectl create -f $manifestsPath/$service-svc.yml
+  fi
+  
+  ./kubectl create -f $manifestsPath/$service-rc.yml
 fi
 
 # update
 # =====
 if [[ $command == "update" ]];then
-  ./kubectl rolling-update $service -f $manifestsPath/rc.yml
+  ./kubectl rolling-update $service -f $manifestsPath/rc.yml --namespace=$namespace
 fi
 
 # stop
 # =====
 if [[ $command == "stop" ]];then
-  ./kubectl stop svc $service
-  ./kubectl stop rc  $service
+  if listcontains "web eventstore broker" $service ;then 
+    ./kubectl stop svc $service --namespace=$namespace
+  fi
+
+  ./kubectl stop rc  $service --namespace=$namespace
 fi
