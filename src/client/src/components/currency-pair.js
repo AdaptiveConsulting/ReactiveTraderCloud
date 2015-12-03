@@ -214,7 +214,11 @@ class CurrencyPair extends React.Component {
     );
   }
 
-  tearoff(){
+  /**
+   * @param {DOMEvent=} e
+   */
+  toggleTearoff(e:DOMEvent){
+    e && e.preventDefault();
     this.setState({tearoff: !this.state.tearoff});
   }
 
@@ -223,18 +227,19 @@ class CurrencyPair extends React.Component {
           { buy, sell, pair, response } = this.props;
 
     const parsedBuy  = this.parsePrice(buy),
-          parsedSell = this.parsePrice(sell),
-          execute = this.execute.bind(this),
+          parsedSell = this.parsePrice(sell);
+
+    const execute = this.execute.bind(this),
           title = pair.substr(0, 3) + ' / ' + pair.substr(3, 3),
           className  = 'currency-pair animated flipInX ' + state;
 
     // any ACK or failed messages will come via state.info / last response
     const message = this.state.info ? (this.lastResponse || this.renderMessage(response)) : false;
 
-    const tile = <div className={className}>
+    const tileInnerContent = <div className={className}>
       <div className='currency-pair-title'>
         {title} <i className='fa fa-plug animated infinite fadeIn'></i>
-        <i className='glyphicon glyphicon-new-window pull-right' onClick={() => this.tearoff()}/> <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
+        <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right' onClick={(e) => this.toggleTearoff(e)}/> <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       {message}
       <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
@@ -242,20 +247,20 @@ class CurrencyPair extends React.Component {
         <Direction direction={this.getDirection(buy)} spread={this.getSpread(sell, buy)}/>
         <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
       </div>
-      <div className='clearFix'></div>
+      <div className='clearfix'></div>
       <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})} pair={pair}/>
       <div className="clearfix"></div>
       {chart ?
         <Sparklines data={historic.slice()} width={326} height={24} margin={0}>
           <SparklinesLine />
           <SparklinesSpots />
-          <SparklinesReferenceLine type="avg"/>
+          <SparklinesReferenceLine type='mean'/>
         </Sparklines> : <div className='sparkline-holder'></div>}
     </div>;
 
     return this.state.tearoff ?
-      <Popout url='/tile' title={title} options={{width: 332, height: 190, resizable: 'no'}} onClosing={() => this.tearoff()}>{tile}</Popout> :
-      tile;
+      <Popout url='/tile' title={title} options={{width: 332, height: 190, resizable: 'no'}} onClosing={() => this.toggleTearoff()}>{tileInnerContent}</Popout> :
+      tileInnerContent;
   }
 }
 
