@@ -6,9 +6,10 @@ echo "Web"
 
 docker rm web 2&> garbage
 
-docker run -d --net=host                   \
-     --name web                            \
-     $webContainer:$vMajor.$vMinor.$vBuild \
+docker run -d --net=host                                                 \
+     --name web                                                          \
+     $webContainer:$vMajor.$vMinor.$vBuild                               \
+       bash -c "cp /localhost/nginx.conf /etc/nginx/nginx.conf && nginx -g 'daemon off;'" \
      > container_id 
 
 rm garbage

@@ -34,17 +34,12 @@ fi
 
 # generate container folder
 mkdir -p ./build
-sed "s/__VNGINX__/$vNginx/g"  ./template.Dockerfile > ./build/Dockerfile
-cp ./template.nginx.conf ./build/nginx.conf
+sed "s/__VNGINX__/$vNginx/g"    ./template.Dockerfile > ./build/Dockerfile
 
-# currentDirectory="$(PWD)"
-# use a container to build the dist
-# docker run --rm                                        \
-#   -v /$currentDirectory/../../../../src/client:/client \
-#   -v /$currentDirectory/build/www:/www                 \
-#   $nodeContainer:$vNode                                \
-#     bash -c "cd /client && npm install ; npm run compile ; cp -r /client/dist /dist"
+cp ./dev.nginx.conf  ./build/dev.nginx.conf
+cp ./prod.nginx.conf ./build/prod.nginx.conf
 
+# todo: remove the node dependency !
 pushd ../../../../src/client 
 npm install
 npm run compile
@@ -53,5 +48,5 @@ popd
 cp -r ../../../../src/client/dist ./build/dist
 
 # build
-docker build -t $webContainer:$vMajor.$vMinor.$vBuild ./build/.
+docker build --no-cache -t $webContainer:$vMajor.$vMinor.$vBuild ./build/.
 docker tag -f $webContainer:$vMajor.$vMinor.$vBuild $webContainer:latest
