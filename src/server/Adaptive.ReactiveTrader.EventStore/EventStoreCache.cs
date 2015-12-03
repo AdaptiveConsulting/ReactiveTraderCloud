@@ -30,7 +30,7 @@ namespace Adaptive.ReactiveTrader.EventStore
         private readonly StateOfTheWorldContainer<TKey, TCacheItem> _stateOfTheWorldContainer = new StateOfTheWorldContainer<TKey, TCacheItem>();
         private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
         private readonly BehaviorSubject<StateOfTheWorldContainer<TKey, TCacheItem>> _stateOfTheWorldUpdates = new BehaviorSubject<StateOfTheWorldContainer<TKey, TCacheItem>>(new StateOfTheWorldContainer<TKey, TCacheItem>());
-        private readonly IConnectableObservable<IConnected<IEventStoreConnection>> _connected;
+        private readonly IConnectableObservable<IConnected<IEventStoreConnection>> _connectionChanged;
         private IConnectableObservable<RecordedEvent> _events = Observable.Never<RecordedEvent>().Publish();
         private bool _isCaughtUp;
 
@@ -42,39 +42,36 @@ namespace Adaptive.ReactiveTrader.EventStore
             Log = log;
             Disposables = new CompositeDisposable();
 
-            _connected = eventStoreConnectionStream.ObserveOn(_eventLoopScheduler)
-                               .Where(c => c.IsConnected)
+            _connectionChanged = eventStoreConnectionStream.ObserveOn(_eventLoopScheduler)
                                .Publish();
 
-            Disposables.Add(_connected.Connect());
+            Disposables.Add(_connectionChanged.Connect());
 
-            Disposables.Add(eventStoreConnectionStream
-                  .ObserveOn(_eventLoopScheduler)
-                  .Subscribe(x =>
-                  {
-                      if (x.IsConnected)
-                      {
-                          if (Log.IsInfoEnabled)
-                          {
-                              Log.Info("Connected to Event Store");
-                          }
+            Disposables.Add(_connectionChanged.Subscribe(x =>
+            {
+                if (x.IsConnected)
+                {
+                    if (Log.IsInfoEnabled)
+                    {
+                        Log.Info("Connected to Event Store");
+                    }
 
-                          Initialize(x.Value);
-                      }
-                      else
-                      {
-                          if (Log.IsInfoEnabled)
-                          {
-                              Log.Info("Disconnected from Event Store");
-                          }
+                    Initialize(x.Value);
+                }
+                else
+                {
+                    if (Log.IsInfoEnabled)
+                    {
+                        Log.Info("Disconnected from Event Store");
+                    }
 
-                          if (!_stateOfTheWorldContainer.IsStale)
-                          {
-                              _stateOfTheWorldContainer.IsStale = true;
-                              _stateOfTheWorldUpdates.OnNext(_stateOfTheWorldContainer);
-                          }
-                      }
-                  }));
+                    if (!_stateOfTheWorldContainer.IsStale)
+                    {
+                        _stateOfTheWorldContainer.IsStale = true;
+                        _stateOfTheWorldUpdates.OnNext(_stateOfTheWorldContainer);
+                    }
+                }
+            }));
         }
 
         private CompositeDisposable Disposables { get; }
@@ -84,11 +81,12 @@ namespace Adaptive.ReactiveTrader.EventStore
         protected abstract bool IsValidUpdate(TOutput update);
         protected abstract TOutput CreateResponseFromStateOfTheWorld(StateOfTheWorldContainer<TKey, TCacheItem> container);
         protected abstract TOutput MapSingleEventToUpdateDto(IDictionary<TKey, TCacheItem> currentStateOfTheWorld, RecordedEvent evt);
+        protected abstract TOutput GetDisconnectedStaleUpdate();
 
         protected IObservable<TOutput> GetOutputStream()
         {
             return GetOutputStreamImpl().SubscribeOn(_eventLoopScheduler)
-                                        .TakeUntil(_connected)
+                                        .TakeUntil(_connectionChanged.Where(x => x.IsConnected))
                                         .Repeat();
         }
 
@@ -128,11 +126,11 @@ namespace Adaptive.ReactiveTrader.EventStore
                     Log.Info("Got stream request from client");
                 }
 
-                var sotw = _stateOfTheWorldUpdates.Where(x => x.IsStale).Merge(_stateOfTheWorldUpdates.Where(x => !x.IsStale).Take(1))
-                                                  .TakeUntilInclusive(x => !x.IsStale)
+                var sotw = _stateOfTheWorldUpdates.TakeUntilInclusive(x => !x.IsStale)
                                                   .Select(CreateResponseFromStateOfTheWorld);
 
                 return sotw.Concat(_events.Select(evt => MapSingleEventToUpdateDto(_stateOfTheWorldContainer.StateOfTheWorld, evt)))
+                           .Merge(_connectionChanged.Where(x => !x.IsConnected).Select(_ => GetDisconnectedStaleUpdate()))
                            .Where(IsValidUpdate)
                            .Subscribe(obs);
             });

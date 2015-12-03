@@ -103,5 +103,10 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                     throw new ArgumentOutOfRangeException("Unsupported Trade event type");
             }
         }
+
+        protected override TradesDto GetDisconnectedStaleUpdate()
+        {
+            return new TradesDto(new TradeDto[0], false, true);
+        }
     }
 }

@@ -92,6 +92,11 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             }
         }
 
+        protected override CurrencyPairUpdatesDto GetDisconnectedStaleUpdate()
+        {
+            return new CurrencyPairUpdatesDto(new CurrencyPairUpdateDto[0], false, true);
+        }
+
         protected override bool IsValidUpdate(CurrencyPairUpdatesDto update)
         {
             return update != CurrencyPairUpdatesDto.Empty;
