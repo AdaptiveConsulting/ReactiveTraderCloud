@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
@@ -14,6 +15,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         private static readonly ILog Log = LogManager.GetLogger<ReferenceReadServiceHost>();
         private readonly IReferenceService _service;
         private readonly IBroker _broker;
+        private int _clients;
+        private IDisposable _subscription;
 
         public ReferenceReadServiceHost(IReferenceService service, IBroker broker) : base(broker, "reference")
         {
@@ -33,14 +36,12 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
             Interlocked.Increment(ref _clients);
 
-            _service.GetCurrencyPairUpdatesStream(context, payload)
-                .Do(o => { Log.DebugFormat("Sending currency pair update to {0}", replyTo); })
-                .TakeUntil(endPoint.TerminationSignal).Finally(() => Interlocked.Decrement(ref _clients))
-                .Finally(() => { Log.DebugFormat("Tidying up subscripting.", replyTo); })
-                .Subscribe(endPoint);
+            _subscription = _service.GetCurrencyPairUpdatesStream(context, payload)
+                                    .Do(o => { Log.DebugFormat("Sending currency pair update to {0}", replyTo); })
+                                    .TakeUntil(endPoint.TerminationSignal).Finally(() => Interlocked.Decrement(ref _clients))
+                                    .Finally(() => { Log.DebugFormat("Tidying up subscripting.", replyTo); })
+                                    .Subscribe(endPoint);
         }
-
-        private int _clients;
 
         public override double GetLoad()
         {
@@ -51,6 +52,12 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         {
             RegisterCall("getCurrencyPairUpdatesStream", GetCurrencyPairUpdatesStream);
             await base.Start();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _subscription.Dispose();
         }
     }
 }
