@@ -17,7 +17,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             try
             {
                 var service = new AnalyticsService();
-                var serviceHost = new AnalyticsServiceHost(service, broker);
+                var serviceHost = new AnalyticsServiceHost(service, es, broker);
 
                 await serviceHost.Start();
 

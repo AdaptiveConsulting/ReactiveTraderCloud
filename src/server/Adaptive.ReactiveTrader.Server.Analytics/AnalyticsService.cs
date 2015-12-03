@@ -1,17 +1,18 @@
-﻿namespace Adaptive.ReactiveTrader.Server.Analytics
-{
-    public class AnalyticsService
-    {
-        private readonly IObservable<TradesDto> _tradesRepository;
+﻿using System;
+using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.Server.Analytics.Dto;
 
-        public AnalyticsService(IObservable<TradesDto> tradesRepository)
+namespace Adaptive.ReactiveTrader.Server.Analytics
+{
+    public class AnalyticsService : IAnalyticsService
+    {
+        public AnalyticsService()
         {
-            _tradesRepository = tradesRepository;
         }
 
-        public IObservable<TradesDto> GetTradesStream()
+        public IObservable<PositionUpdatesDto> GetAnalyticsStream()
         {
-            return _tradesRepository;
+            throw new NotImplementedException();
         }
     }
 }
