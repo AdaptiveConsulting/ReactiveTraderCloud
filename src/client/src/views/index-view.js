@@ -3,7 +3,7 @@ import CurrencyPairs from '../components/currency-pairs';
 import Blotter from '../components/blotter';
 import Modal from '../components/modal';
 
-import rt from '../classes/services/reactive-trader';
+import rt from '../services/reactive-trader';
 
 /**
  *

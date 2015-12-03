@@ -1,5 +1,5 @@
 import React from 'react';
-import traders from '../classes/traders';
+import traders from '../utils/traders';
 import { Link } from 'react-router';
 
 class Header extends React.Component {

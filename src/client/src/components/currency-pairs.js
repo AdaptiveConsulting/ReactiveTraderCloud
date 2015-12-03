@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import Header from './header';
 import CurrencyPair from './currency-pair';
-import rt from '../classes/services/reactive-trader';
+import rt from '../services/reactive-trader';
 
 const STALE_TIMEOUT = 4000,
       UPDATE_TYPES  = {

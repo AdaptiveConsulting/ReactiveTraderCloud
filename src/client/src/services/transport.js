@@ -1,9 +1,9 @@
 import autobahn from 'autobahn';
 import _ from 'lodash';
 
-import traders from './traders';
-import emitter from './emitter';
-import ServiceDef from './services/service-def';
+import traders from '../utils/traders';
+import emitter from '../utils/emitter';
+import ServiceDef from './service-def';
 
 const SERVICES = 'pricing,reference,blotter,execution'.split(',');
 /**

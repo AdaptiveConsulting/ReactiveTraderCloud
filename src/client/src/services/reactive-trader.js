@@ -2,8 +2,8 @@ import PricingService from './pricing-service';
 import ReferenceService from './reference-service';
 import BlotterService from './blotter-service';
 import ExecutionService from './execution-service';
-import transport from '../transport';
-import emitter from '../emitter';
+import transport from './transport';
+import emitter from '../utils/emitter';
 
 const DISCONNECT_SESSION_AFTER = 1000 * 60 * 15;
 
