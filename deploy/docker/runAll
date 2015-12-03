@@ -1,0 +1,27 @@
+#! /bin/bash
+
+if [[ $# != 1 ]];then
+  echo " "
+  echo " usage:"
+  echo " "
+  echo "   runAll BUILD_NUMBER"
+  echo " "
+  echo "   ie: ./runAll 187"
+  echo " "
+  exit 1
+fi
+
+build=$1
+
+scream() {
+    echo "error on $1"
+    exit 1
+}
+
+for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter"
+do
+    cd run/$server
+    ./run $build || scream $server
+    ./test $build || scream $server
+    cd ../..
+done

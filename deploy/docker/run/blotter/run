@@ -1,7 +1,11 @@
 #! /bin/bash
 
-echo "Blotter"
+if [[ $# != 1 ]];then
+  echo "blotter-run require build number"
+fi
+build=$1
 
+echo "Blotter"
 . ../../../config
 
 startCommand="dnx -p Adaptive.ReactiveTrader.Server.Launcher run b"
@@ -11,11 +15,9 @@ docker rm blotter 2&> garbage
 
 docker run -d --net=host                       \
      --name blotter                            \
-     $serversContainer:$vMajor.$vMinor.$vBuild \
+     $serversContainer:$vMajor.$vMinor.$build  \
      bash -c "$startCommand && $waitCommand"   \
      > container_id 
 
 rm garbage
-
-echo "  started"
 echo " "

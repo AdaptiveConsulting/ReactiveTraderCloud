@@ -1,5 +1,11 @@
 #! /bin/bash
 
+if [[ $# != 1 ]];then
+  echo "pricing-run require build number"
+fi
+build=$1
+
+
 echo "Pricing"
 
 . ../../../config
@@ -11,11 +17,10 @@ docker rm pricing 2&> garbage
 
 docker run -d --net=host                       \
      --name pricing                            \
-     $serversContainer:$vMajor.$vMinor.$vBuild \
+     $serversContainer:$vMajor.$vMinor.$build \
      bash -c "$startCommand && $waitCommand"   \
      > container_id 
 
 rm garbage
 
-echo "  started"
 echo " "

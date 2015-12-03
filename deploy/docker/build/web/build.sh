@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "web-build: build number required as first parameter"
+  exit 1
+fi
+
 # get and control config
 . ../../../config
 
@@ -27,10 +33,6 @@ if [[ $vMinor = "" ]];then
   echo "web-build: minor version required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
-if [[ $vBuild = "" ]];then
-  echo "web-build: build number required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 # generate container folder
 mkdir -p ./build
@@ -48,5 +50,5 @@ popd
 cp -r ../../../../src/client/dist ./build/dist
 
 # build
-docker build --no-cache -t $webContainer:$vMajor.$vMinor.$vBuild ./build/.
-docker tag -f $webContainer:$vMajor.$vMinor.$vBuild $webContainer:latest
+docker build --no-cache -t $webContainer:$vMajor.$vMinor.$build ./build/.
+docker tag -f $webContainer:$vMajor.$vMinor.$build $webContainer:latest
