@@ -88,14 +88,11 @@ namespace Adaptive.ReactiveTrader.Server.Core
             try
             {
                 var connectionFactory = BrokerConnectionFactory.Create(config.Broker);
-
                 var brokerStream = connectionFactory.GetBrokerStream();
 
                 factory.Initialize(brokerStream);
 
-
                 var esFactory = factory as IServceHostFactoryWithEventStore;
-
 
                 if (esFactory != null)
                 {
@@ -111,7 +108,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
                 }
 
                 connectionFactory.Start();
-                
+
                 while (true)
                     Thread.Sleep(ThreadSleep);
             }

@@ -16,7 +16,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         private BlotterService _service;
         private TradeCache _cache;
 
-        private readonly SerialDisposable _cleanup = new SerialDisposable();
+        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
         public Task<ServiceHostBase> Create(IBroker broker)
         {
@@ -35,12 +35,13 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStore)
         {
-            //_cache = new TradeCache(eventStore);
-            //_cache.Initialize();
-            //_service = new BlotterService(_cache.GetTrades());
-            //_cleanup.Disposable = brokerStream.LaunchOrKill(broker => new BlotterServiceHost(_service, broker)).Subscribe();
+            _cache = new TradeCache(eventStore);
+            _service = new BlotterService(_cache.GetTrades());
+            var disposable = brokerStream.LaunchOrKill(broker => new BlotterServiceHost(_service, broker)).Subscribe();
 
-            return null;
+            _cleanup.Add(disposable);
+
+            return disposable;
         }
     }
 }

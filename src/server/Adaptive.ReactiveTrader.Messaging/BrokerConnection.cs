@@ -42,11 +42,14 @@ namespace Adaptive.ReactiveTrader.Messaging
                 try
                 {
                     await _channel.Open();
+                    Log.Debug("Connection Opened.");
 
                     _subject.OnNext(Connected.Yes(new Broker(_channel)));
                 }
                 catch (Exception)
                 {
+                    Log.Debug("Connection Failed.");
+
                     _subject.OnNext(Connected.No<IBroker>());
                     throw;
                 }
