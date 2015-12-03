@@ -4,15 +4,17 @@ namespace Adaptive.ReactiveTrader.Contract
 {
     public class TradesDto
     {
-        public static readonly TradesDto Empty = new TradesDto(new TradeDto[0], false);
+        public static readonly TradesDto Empty = new TradesDto(new TradeDto[0], false, false);
 
-        public TradesDto(IList<TradeDto> trades, bool isStateOfTheWorld)
+        public TradesDto(IList<TradeDto> trades, bool isStateOfTheWorld, bool isStale)
         {
             Trades = trades;
             IsStateOfTheWorld = isStateOfTheWorld;
+            IsStale = isStale;
         }
 
         public IList<TradeDto> Trades { get; }
         public bool IsStateOfTheWorld { get; }
+        public bool IsStale { get; }
     }
 }

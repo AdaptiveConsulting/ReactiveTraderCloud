@@ -42,7 +42,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 
         protected override TradesDto CreateResponseFromStateOfTheWorld(StateOfTheWorldContainer<long, Trade> container)
         {
-            return new TradesDto(container.StateOfTheWorld.Values.Select(x => x.ToDto()).ToList(), true);
+            return new TradesDto(container.StateOfTheWorld.Values.Select(x => x.ToDto()).ToList(), true, container.IsStale);
         }
 
         protected override TradesDto MapSingleEventToUpdateDto(IDictionary<long, Trade> currentSotw, RecordedEvent evt)
@@ -70,7 +70,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             var trade = currentSotw[tradeId];
             var dto = trade.ToDto();
             dto.Status = status;
-            return new TradesDto(new[] { dto }, false);
+            return new TradesDto(new[] { dto }, false, false);
         }
 
         protected override void UpdateStateOfTheWorld(IDictionary<long, Trade> currentSotw, RecordedEvent evt)
