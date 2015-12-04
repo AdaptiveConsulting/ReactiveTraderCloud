@@ -110,9 +110,9 @@ class CurrencyPairs extends React.Component {
           if (!existingPair){
             localPair.pricingSub = rt.pricing.getPriceUpdates(localPair.id, (priceData) =>{
               // console.info(priceData, localPair);
-              localPair.buy = Number(priceData.bid);
-              localPair.sell = Number(priceData.ask);
-              localPair.mid = Number(priceData.mid);
+              localPair.buy = Number(priceData.Bid);
+              localPair.sell = Number(priceData.Ask);
+              localPair.mid = Number(priceData.Mid);
 
               localPair.lastUpdated = Date.now();
               this.updatePairs();
