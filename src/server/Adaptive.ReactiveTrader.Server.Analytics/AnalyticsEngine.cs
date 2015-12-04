@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Server.Analytics.Dto;
 
@@ -12,13 +14,20 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         private readonly IDictionary<string, SpotPriceDto> _priceCache = new Dictionary<string, SpotPriceDto>();
         private readonly IDictionary<string, CurrencyPairTracker> _ccyPairTracker = new Dictionary<string, CurrencyPairTracker>();
         private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
-        private PositionUpdatesDto _currentPositionUpdatesDto = new PositionUpdatesDto();
+        private PositionUpdatesDto _currentPositionUpdatesDto;
         private readonly object _currentPositionLock = new object();
+
+        private readonly BehaviorSubject<PositionUpdatesDto> _updates;
 
         public AnalyticsEngine()
         {
+            _currentPositionUpdatesDto = new PositionUpdatesDto();
+            _updates = new BehaviorSubject<PositionUpdatesDto>(_currentPositionUpdatesDto);
+
             _eventLoopScheduler.SchedulePeriodic(TimeSpan.FromSeconds(10), PublishPositionReport);
         }
+
+        public IObservable<PositionUpdatesDto> PositionUpdatesStream => _updates.AsObservable();
 
         public PositionUpdatesDto CurrentPositionUpdatesDto
         {
@@ -28,14 +37,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
                 {
                     return _currentPositionUpdatesDto;
                 }
-            }
-        }
-
-        public IObservable<PositionUpdatesDto> PositionUpdatesStream
-        {
-            get
-            {
-                throw new NotImplementedException();
             }
         }
 
@@ -105,7 +106,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
                 _currentPositionUpdatesDto = pud;
             }
 
-            _analyticsPublisher.Publish(pud).Wait(TimeSpan.FromSeconds(10)); todo
+            _updates.OnNext(pud);
         }
 
         private CurrencyPairTracker GetTrackerFor(string currencyPair)
