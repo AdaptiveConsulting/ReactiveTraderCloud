@@ -9,6 +9,8 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsEngine
     {
+        private readonly IObservable<TradeDto> _doneTrades;
+        private readonly PriceTickListener _priceTickListener;
         private readonly IDictionary<string, SpotPriceDto> _priceCache = new Dictionary<string, SpotPriceDto>();
         private readonly IDictionary<string, CurrencyPairTracker> _ccyPairTracker = new Dictionary<string, CurrencyPairTracker>();
         private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
@@ -18,6 +20,12 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         public AnalyticsEngine()
         {
             _eventLoopScheduler.SchedulePeriodic(TimeSpan.FromSeconds(10), PublishPositionReport);
+        }
+
+        public AnalyticsEngine(IObservable<TradeDto> doneTrades, PriceTickListener priceTickListener)
+        {
+            _doneTrades = doneTrades;
+            _priceTickListener = priceTickListener;
         }
 
         public PositionUpdatesDto CurrentPositionUpdatesDto

@@ -1,9 +1,4 @@
-﻿using System;
-using Adaptive.ReactiveTrader.EventStore;
-using Adaptive.ReactiveTrader.Messaging;
-using Adaptive.ReactiveTrader.Server.Core;
-using Common.Logging;
-using Common.Logging.Simple;
+﻿using Adaptive.ReactiveTrader.Server.Core;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {

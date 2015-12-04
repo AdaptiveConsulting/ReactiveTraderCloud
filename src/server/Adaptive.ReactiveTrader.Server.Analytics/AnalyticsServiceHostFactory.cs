@@ -7,30 +7,16 @@ using Adaptive.ReactiveTrader.Server.Blotter;
 using Common.Logging;
 using EventStore.ClientAPI;
 using System.Reactive.Linq;
-using Adaptive.ReactiveTrader.EventStore;
+using Adaptive.ReactiveTrader.Server.Core;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
-    public class AnalyticsServiceHostFactory : IServiceHostFactory, IEventStoreConsumer, IDisposable
+    public class AnalyticsServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<AnalyticsServiceHostFactory>();
 
         private AnalyticsService _service;
         private TradeCache _cache;
-
-        public void Initialize(IEventStoreConnection es)
-        {
-            _cache = new TradeCache(es);
-            _cache.Initialize();
-
-            // todo: decide what trades to keep for analytics
-            // just today's trades? in which case needs to restart svc every day etc
-            var doneTrades = _cache.GetTrades()
-                .SelectMany(t => t.Trades)
-                .Where(t => t.Status == TradeStatusDto.Done);
-
-            _service = new AnalyticsService(doneTrades);
-        }
 
         public Task<ServiceHostBase> Create(IBroker broker)
         {
@@ -40,6 +26,27 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         public void Dispose()
         {
             _cache.Dispose();
+        }
+
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
+        {
+            return null;
+        }
+
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
+        {
+            _cache = new TradeCache(eventStoreStream);
+
+            var doneTrades = _cache.GetTrades()
+                .SelectMany(t => t.Trades)
+                .Where(t => t.Status == TradeStatusDto.Done);
+
+            var engine = new AnalyticsEngine(doneTrades);
+
+            _service = new AnalyticsService(engine);
+
+            return brokerStream.LaunchOrKill(broker => new AnalyticsServiceHost(_service, broker))
+                .Subscribe();
         }
     }
 }
