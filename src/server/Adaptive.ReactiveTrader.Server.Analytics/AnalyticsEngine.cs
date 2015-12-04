@@ -6,11 +6,13 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Server.Analytics.Dto;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsEngine
     {
+        private static readonly ILog Log = LogManager.GetLogger<AnalyticsEngine>();
         private readonly IDictionary<string, SpotPriceDto> _priceCache = new Dictionary<string, SpotPriceDto>();
         private readonly IDictionary<string, CurrencyPairTracker> _ccyPairTracker = new Dictionary<string, CurrencyPairTracker>();
         private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
@@ -80,7 +82,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
                 CurrentPositions = _ccyPairTracker
                     .Values
                     .Where(ccp => ccp.TradeCount > 0)
-                    .Select(ccp => new CurrencyPairPositionDto()
+                    .Select(ccp => new CurrencyPairPositionDto
                     {
                         Symbol = ccp.CurrencyPair,
                         BasePnl = ccp.CurrentPosition.BasePnl,
@@ -98,13 +100,15 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
             pud.History = _currentPositionUpdatesDto.History
                                     .Where(hpu => hpu.Timestamp >= window)
-                                    .Concat(new[] { new HistoricPositionDto() { Timestamp = now, UsdPnl = usdPnl } })
+                                    .Concat(new[] { new HistoricPositionDto { Timestamp = now, UsdPnl = usdPnl } })
                                     .ToArray();
 
             lock (_currentPositionLock)
             {
                 _currentPositionUpdatesDto = pud;
             }
+
+            Log.Info(pud.ToString());
 
             _updates.OnNext(pud);
         }

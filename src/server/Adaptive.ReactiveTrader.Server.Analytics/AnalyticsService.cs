@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Server.Analytics.Dto;
 using Common.Logging;
@@ -17,7 +18,9 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         public IObservable<PositionUpdatesDto> GetAnalyticsStream()
         {
-            return _analyticsEngine.PositionUpdatesStream;
+            return _analyticsEngine.PositionUpdatesStream
+                .Publish()
+                .RefCount();
         }
 
         public void OnTrade(TradeDto trade)
@@ -28,10 +31,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         public void OnPrice(SpotPriceDto price)
         {
-            if (price.Symbol == "EURUSD")
-            {
-                Log.Info("Received EURUSD price tick");
-            }
             _analyticsEngine.OnPrice(price);
         }
     }

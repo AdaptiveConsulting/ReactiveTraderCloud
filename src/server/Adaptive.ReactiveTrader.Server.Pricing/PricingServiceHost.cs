@@ -85,12 +85,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         {
             var endpoint = await _broker.GetPublicEndPoint<SpotPriceDto>("prices");
 
-            _disp = _priceStream.
-                Select(o =>
-                {
-                    return o;
-                })
-                .Subscribe(endpoint);
+            _disp = _priceStream.Subscribe(endpoint);
 
             Log.InfoFormat("Started price publishing to 'prices'");
         }
