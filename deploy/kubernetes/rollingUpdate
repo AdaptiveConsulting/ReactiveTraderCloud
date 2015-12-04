@@ -1,0 +1,37 @@
+#! /bin/bash
+
+# control configuration
+if [[ ! -f ../config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
+    exit 1
+fi
+. ../config
+if [[ $vMajor = "" ]];then
+  echo "kube: major version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vMinor = "" ]];then
+  echo "kube: minor version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+
+if [[  $# != 3 ]];then
+  echo " "
+  echo " usage:"
+  echo "    ./rollingUpdate NAMESPACE SERVICE NEW_BUILD"
+  echo " "
+  exit 1
+fi
+namespace=$1
+service=$2
+build=$3
+
+newImage="adaptivetrader/servers:$vMajor.$vMinor.$build"
+
+kubectl rolling-update   \
+  --namespace=$namespace \
+  --image=$newImage      \
+  --update-period=1s     \
+  $service
