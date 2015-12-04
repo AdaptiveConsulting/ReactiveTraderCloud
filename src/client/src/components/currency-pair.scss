@@ -47,7 +47,7 @@
   .summary-state {
     box-sizing: border-box;
     background: linear-gradient(to bottom,rgba(255,255,255,.1), rgba(255,255,255,0));
-    height: 121px;
+    height: 122px;
     padding: 8px;
     color: white;
     span.key {
@@ -60,6 +60,9 @@
       span.key {
         color: $gray-lighter;
       }
+    }
+    &.blocked {
+      background: linear-gradient(to bottom, darken($brand-danger, 5%), darken($brand-danger, 10%));;
     }
     .dismiss-message {
       transform: translate(0, 24px);
@@ -155,7 +158,6 @@
   }
 
   .sizer {
-    border-bottom: 1px solid transparent;
     clear: both;
     padding: 8px;
     margin-top: 8px;
@@ -164,6 +166,7 @@
 
     input.size {
       border: none;
+      border-bottom: 1px solid transparent;
       background: transparent;
       outline: none !important;
       width: 100px;

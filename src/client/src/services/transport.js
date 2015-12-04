@@ -2,15 +2,17 @@ import autobahn from 'autobahn';
 import _ from 'lodash';
 
 import traders from '../utils/traders';
+import utils from '../utils';
 import emitter from '../utils/emitter';
 import ServiceDef from './service-def';
 
-const SERVICES = 'pricing,reference,blotter,execution'.split(',');
+const SERVICES = 'pricing,reference,blotter,execution,analytics'.split(',');
 /**
  * @class Transport
  * @extends emitter
  */
-class Transport extends emitter {
+@utils.mixin(emitter)
+class Transport {
 
   //todo: move to config for env
   /**
@@ -19,8 +21,6 @@ class Transport extends emitter {
    * @param {String=} realm
    */
   constructor(url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader'){
-    super();
-
     this.username = traders.code;
     this.connection = new autobahn.Connection({
       url,

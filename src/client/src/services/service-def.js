@@ -1,3 +1,4 @@
+import utils from '../utils';
 import emitter from '../utils/emitter';
 
 const HEARTBEAT_TIMEOUT = 3000;
@@ -5,14 +6,13 @@ const HEARTBEAT_TIMEOUT = 3000;
 /**
  * @class ServiceDef
  */
-class ServiceDef extends emitter {
+@utils.mixin(emitter)
+class ServiceDef {
   /**
    * @constructs ServiceDef
    * @param {transport} transport
    */
   constructor(transport:Transport){
-    super();
-
     this.pendingSubscriptions = [];
     this.instances = {};
     this.transport = transport;

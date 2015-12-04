@@ -1,7 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 
-import Header from './header';
 import CurrencyPair from './currency-pair';
 import rt from '../services/reactive-trader';
 
@@ -26,9 +25,7 @@ class CurrencyPairs extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {
-      pairs: [],
-      connected: false,
-      services: {}
+      pairs: []
     };
   }
 
@@ -37,7 +34,7 @@ class CurrencyPairs extends React.Component {
    * @returns {Boolean}
    */
   canTrade(){
-    return this.state.services.pricing && this.state.services.execution;
+    return this.props.services.pricing && this.props.services.execution;
   }
 
   /**
@@ -47,11 +44,14 @@ class CurrencyPairs extends React.Component {
   updatePairs(src:array){
     const pairs = src || this.state.pairs;
 
-    pairs.forEach((pair) =>{
+    _.forEach(pairs, (pair) =>{
       const timeOutState = Date.now() - (pair.lastUpdated || 0) > STALE_TIMEOUT ? 'stale' : 'listening';
       // if either pricing or execution reports down, we cannot trade.
-      if (pair.state !== 'executing'){
+      if (pair.state !== 'executing' && pair.state !== 'blocked'){
         pair.state = this.canTrade() && pair.disabled !== true ? timeOutState : 'stale';
+      }
+      if (!this.props.services.pricing){
+        pair.buy = pair.mid = pair.sell = undefined;
       }
     });
 
@@ -143,17 +143,7 @@ class CurrencyPairs extends React.Component {
 
     const self = this;
 
-    rt.transport
-      .on('open', ()=> self.setState({connected: true}))
-      .on('close', ()=> self.setState({connected: false}))
-      .on('statusUpdate', (services) =>{
-        // update ui indicators
-        self.setState({
-          services
-        });
-        // also update pairs in case pricing has gone down
-        self.updatePairs();
-      });
+    rt.transport.on('statusUpdate', ()=> this.updatePairs());
   }
 
   componentWillMount(){
@@ -171,13 +161,23 @@ class CurrencyPairs extends React.Component {
    * @param {Object} payload
    */
   onExecute(payload:object){
+    const { pairs } = this.state;
+
     if (this.props.onExecute){
-      const pair = _.findWhere(this.state.pairs, {pair: payload.pair});
+      const pair = _.findWhere(pairs, {pair: payload.pair});
       pair.state = 'executing';
+
+      pair.timer = setTimeout(() => {
+        pair.state = 'blocked';
+
+        this.setState({
+          pairs
+        });
+      }, 2000);
 
       payload.onACK = (...args) => this.onACK(...args);
 
-      this.props.onExecute(payload, pair);
+      this.props.onExecute(payload);
     }
   }
 
@@ -189,6 +189,8 @@ class CurrencyPairs extends React.Component {
     const pairs = this.state.pairs,
           pair  = _.findWhere(pairs, {pair: payload.pair});
 
+    clearTimeout(pair.timer);
+
     pair.state = 'listening';
     pair.response = payload;
 
@@ -199,27 +201,22 @@ class CurrencyPairs extends React.Component {
 
   render(){
     // filter cps that have got price data only.
-    const pairsWithPrices = this.state.pairs.filter((pair) =>{
-      return pair.buy && pair.sell;
-    });
+    const pairs = this.state.pairs;
 
-    return <div>
-      <Header status={this.state.connected} services={this.state.services}/>
-      <div className='currency-pairs'>
-        {pairsWithPrices.length ? pairsWithPrices.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
-            pair={cp.pair}
-            size="100m"
-            key={cp.id}
-            buy={cp.buy}
-            sell={cp.sell}
-            mid={cp.mid}
-            precision={cp.precision}
-            pip={cp.pip}
-            state={cp.state}
-            response={cp.response}/>) :
-          <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div> }
-        <div className="clearfix"></div>
-      </div>
+    return <div className='currency-pairs'>
+      {pairs.length ? pairs.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
+          pair={cp.pair}
+          size="100m"
+          key={cp.id}
+          buy={cp.buy}
+          sell={cp.sell}
+          mid={cp.mid}
+          precision={cp.precision}
+          pip={cp.pip}
+          state={cp.state}
+          response={cp.response}/>) :
+        <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div> }
+      <div className="clearfix"></div>
     </div>;
   }
 }
