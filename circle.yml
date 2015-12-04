@@ -36,8 +36,7 @@ test:
       - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
       - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
       - docker ps
-      - . ./deploy/config && docker run --net=host $testtoolsContainer:$vTesttools bash -c "curl -H \"Accept: application/json\" http://127.0.0.1:2113/streams/ccyPair-CADJPY | ./jq '.streamId == \"ccyPair-CADJPY\"'"
-
+      - . ./deploy/config && if ! docker run --net=host weareadaptive/testtools:1.1 bash -c "curl -H \"Accept: application/json\" http://127.0.1:2113/streams/ccyPair-CADJPY | jq '.streamId == \"ccyPair-CADJPY\"'" == true;then exit 1; fi
 deployment:
   hub:
     branch: master
