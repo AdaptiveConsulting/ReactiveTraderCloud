@@ -4,11 +4,14 @@ using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
-    public class TradeExecutionEngine
+    public class TradeExecutionEngine : IDisposable
     {
+        protected static readonly ILog Log = LogManager.GetLogger<TradeExecutionEngine>();
+
         private readonly IRepository _repository;
         private readonly TradeIdProvider _tradeIdProvider;
 
@@ -82,6 +85,11 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             {
                 trade.Complete();
             }
+        }
+
+        public void Dispose()
+        {
+            Log.Warn("Not disposed.");
         }
     }
 }

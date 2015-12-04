@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.EventStore.Domain
 {
-    public class Repository : IRepository
+    public class Repository : IRepository, IDisposable
     {
         private readonly IEventStoreConnection _eventStoreConnection;
         private static readonly ILog Log = LogManager.GetLogger<Repository>();
@@ -233,6 +233,11 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             var typeName = evnt.GetType().Name;
 
             return new EventData(eventId, typeName, true, data, metadata);
+        }
+
+        public void Dispose()
+        {
+            Log.Warn("Not Disposing.");
         }
     }
 }

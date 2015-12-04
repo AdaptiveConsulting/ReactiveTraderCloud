@@ -9,7 +9,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class ReferenceWriteServiceHost : ServiceHostBase
     {
-        private static readonly ILog Log = LogManager.GetLogger<ReferenceWriteServiceHost>();
+        private new static readonly ILog Log = LogManager.GetLogger<ReferenceWriteServiceHost>();
         private const string ActivateCurrencyPairProcedureName = "activateCurrencyPair";
         private const string DeactivateCurrencyPairProcedureName = "deactivateCurrencyPair";
 
@@ -18,14 +18,10 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         public ReferenceWriteServiceHost(ReferenceWriteService service, IBroker broker) : base(broker, "reference")
         {
             _service = service;
-        }
 
-        public override async Task Start()
-        {
             RegisterCall(ActivateCurrencyPairProcedureName, ActivateCurrencyPair);
             RegisterCall(DeactivateCurrencyPairProcedureName, DeactivateCurrencyPair);
-
-            await base.Start();
+            StartHeartBeat();
         }
 
         private Task ActivateCurrencyPair(IRequestContext context, IMessage message)
@@ -41,12 +37,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
             var payload =
                 JsonConvert.DeserializeObject<DeactivateCurrencyPairRequestDto>(Encoding.UTF8.GetString(message.Payload));
             return _service.DeactivateCurrencyPair(context, payload);
-        }
-
-        public override void Dispose()
-        {
-            Log.Info("Dispose()");
-            base.Dispose();
         }
     }
 }

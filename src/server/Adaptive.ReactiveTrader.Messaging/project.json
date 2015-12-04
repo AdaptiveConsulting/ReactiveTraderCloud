@@ -5,10 +5,11 @@
   "tags": [ "" ],
   "projectUrl": "",
   "licenseUrl": "",
-  "dependencies": {
-    "WampSharp.Default": "1.2.3.12-beta",
-    "Adaptive.ReactiveTrader.Common": "1.0.0-*"
-  },
+    "dependencies": {
+        "WampSharp.Default": "1.2.3.12-beta",
+        "protobuf-net": "2.1.0-alpha-1",
+        "Adaptive.ReactiveTrader.Common": "1.0.0-*"
+    },
   "frameworks": {
     "dnx451": {
       "frameworkAssemblies": {
