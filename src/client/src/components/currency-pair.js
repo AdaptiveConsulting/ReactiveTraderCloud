@@ -138,7 +138,7 @@ class CurrencyPair extends React.Component {
    */
   getSpread(sell:number, buy:number){
     const { pip, precision } = this.props;
-    return ((sell - buy) * Math.pow(10, pip)).toFixed(precision - pip);
+    return sell != null ? ((sell - buy) * Math.pow(10, pip)).toFixed(precision - pip) : '';
   }
 
   /**

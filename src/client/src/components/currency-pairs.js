@@ -50,6 +50,9 @@ class CurrencyPairs extends React.Component {
       if (pair.state !== 'executing' && pair.state !== 'blocked'){
         pair.state = this.canTrade() && pair.disabled !== true ? timeOutState : 'stale';
       }
+      if (!this.props.services.pricing){
+        pair.buy = pair.mid = pair.sell = undefined;
+      }
     });
 
     this.setState({
