@@ -1,11 +1,15 @@
-﻿using EventStore.ClientAPI;
+﻿using System;
+using EventStore.ClientAPI;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
-    public class TradeIdProvider
+    public class TradeIdProvider : IDisposable
     {
+        protected static readonly ILog Log = LogManager.GetLogger<TradeIdProvider>();
+
         private readonly Task _gotLatestEvent;
         private long _tradeId;
 
@@ -30,6 +34,11 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
         {
             await _gotLatestEvent;
             return Interlocked.Increment(ref _tradeId);
+        }
+
+        public void Dispose()
+        {
+            Log.Warn("Not disposed.");
         }
     }
 }

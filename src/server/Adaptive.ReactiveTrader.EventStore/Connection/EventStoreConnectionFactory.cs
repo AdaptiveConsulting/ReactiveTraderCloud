@@ -1,7 +1,7 @@
 ﻿using Adaptive.ReactiveTrader.Common.Config;
 using EventStore.ClientAPI;
 
-namespace Adaptive.ReactiveTrader.EventStore
+namespace Adaptive.ReactiveTrader.EventStore.Connection
 {
     public class EventStoreConnectionFactory
     {

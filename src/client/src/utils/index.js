@@ -2,15 +2,29 @@ import React        from 'react';
 import ReactDOM     from 'react-dom';
 import { Provider } from 'react-redux';
 import DevTools     from 'containers/DevToolsWindow';
+const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/;
 
-export function createConstants(...constants){
+/**
+ * Class mixin E7 style decorator
+ * @param source
+ * @returns {Function}
+ */
+function mixin(source){
+  return function (target){
+    Object.getOwnPropertyNames(source.prototype).forEach((prop) => {
+      Object.defineProperty(target.prototype, prop, Object.getOwnPropertyDescriptor(source.prototype, prop));
+    });
+  }
+}
+
+function createConstants(...constants){
   return constants.reduce((acc, constant) =>{
     acc[constant] = constant;
     return acc;
   }, {});
 }
 
-export function createReducer(initialState, reducerMap){
+function createReducer(initialState, reducerMap){
   return (state = initialState, action) =>{
     const reducer = reducerMap[action.type];
 
@@ -18,7 +32,7 @@ export function createReducer(initialState, reducerMap){
   };
 }
 
-export function createDevToolsWindow(store){
+function createDevToolsWindow(store){
   const win = window.open(
     null,
     'redux-devtools', // give it a name so it reuses the same window
@@ -44,14 +58,13 @@ export function createDevToolsWindow(store){
   }, 10);
 }
 
-const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/;
 
-      /**
+/**
  * Returns the expanded price from k/m shorthand.
  * @param {String|Number} size
  * @returns {Number}
  */
-export function getConvertedSize(size){
+function getConvertedSize(size){
   size = String(size).toUpperCase().replace(',', '');
   const matches = size.match(numberConvertRegex);
 
@@ -65,3 +78,11 @@ export function getConvertedSize(size){
 
   return size;
 }
+
+
+export default {
+  mixin,
+  createConstants,
+  getConvertedSize,
+  createDevToolsWindow
+};

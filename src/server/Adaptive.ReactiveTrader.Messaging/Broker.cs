@@ -86,6 +86,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                 Invoke = "single"
             };
 
+            // Todo this operation can cause a deadlock - even with configureawait(False)
             return await realm.RpcCatalog.Register(rpcOperation, registerOptions);
         }
 

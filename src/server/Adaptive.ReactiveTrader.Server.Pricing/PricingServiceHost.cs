@@ -1,3 +1,5 @@
+using System;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,25 +12,21 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public class PricingServiceHost : ServiceHostBase
     {
-        protected static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
+        protected new static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
 
         private readonly IPricingService _service;
         private readonly IBroker _broker;
+        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
         public PricingServiceHost(IPricingService service, IBroker broker) :base( broker, "pricing")
         {
             _service = service;
             _broker = broker;
-        }
 
-        public override async Task Start()
-        {
             RegisterCall("getPriceUpdates", GetCurrencyPairUpdatesStream);
-            Log.Info("procedure getPriceUpdates() registered");
-
-            await base.Start();
+            StartHeartBeat();
         }
-
+        
         public async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
             Log.DebugFormat("{1} Received GetCurrencyPairUpdatesStream from [{0}]",
@@ -40,9 +38,18 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             var endpoint = await _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo);
 
-            _service.GetPriceUpdates(context, spotStreamRequest)
+            var disposable = _service.GetPriceUpdates(context, spotStreamRequest)
                 .TakeUntil(endpoint.TerminationSignal)
                 .Subscribe(endpoint);
+
+            _cleanup.Add(disposable);
+        }
+
+        public override void Dispose()
+        {
+            _cleanup.Dispose();
+
+            base.Dispose();
         }
     }
 }

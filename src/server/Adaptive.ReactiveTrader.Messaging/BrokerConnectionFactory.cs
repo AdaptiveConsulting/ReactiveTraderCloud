@@ -4,7 +4,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     public static class BrokerConnectionFactory
     {
-        public static IBrokerConnection Create(IBrokerConfiguration config)
+        public static BrokerConnection Create(IBrokerConfiguration config)
         {
             return new BrokerConnection(BrokerUri.FromConfig(config), config.Realm);
         }
