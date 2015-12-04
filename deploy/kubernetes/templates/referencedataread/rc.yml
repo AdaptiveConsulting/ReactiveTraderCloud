@@ -26,4 +26,4 @@ spec:
       containers:
       - name: "__SERVICE__"
         image: "__DOCKERIMAGE__"
-        command: [ "dnx", "-p", "Adaptive.ReactiveTrader.Server.ReferenceDataRead", "prod" ]
+        command: [ "dnx", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.ReferenceDataRead", "prod" ]

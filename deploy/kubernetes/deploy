@@ -34,6 +34,7 @@ if [[ $build == "last" ]];then
   cd ../kubernetes
 fi
 
+
 # generate manifest
 cd templates
   # namespace
@@ -68,10 +69,6 @@ cd - > garbage && rm templates/garbage
   ./kubectl create -f manifests/web-rc.yml
   ./kubectl create -f manifests/broker-rc.yml  
   ./kubectl create -f manifests/eventstore-rc.yml
-  
-  echo " waiting for main services to start"
-  sleep 60
-  
   ./kubectl create -f manifests/blotter-rc.yml
   ./kubectl create -f manifests/pricing-rc.yml
   ./kubectl create -f manifests/referencedataread-rc.yml
