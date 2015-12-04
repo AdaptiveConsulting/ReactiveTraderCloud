@@ -101,7 +101,7 @@ class CurrencyPair extends React.Component {
 
   shouldComponentUpdate(props, state){
     //refuse props updates while we have a summary or error message info div shown until this.setState()
-    if ((props.buy != this.props.buy || props.sell != this.props.sell || props.response != this.props.response) || props.state !== this.state.state || props.response && props.response.message){
+    if ((props.buy != this.props.buy || props.sell != this.props.sell) || props.state !== this.state.state){
       return true;
     }
     else {
