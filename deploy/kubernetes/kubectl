@@ -1,5 +1,15 @@
 #! /bin/bash
 
+if [[ ! -e ../cache ]];then
+    echo " "
+    echo "usage:"
+    echo " $(pwd)"
+    echo " $(ls ..)"
+    echo "  you need to init gcloud first."
+    echo "  Move to adaptivetrader/googleCloudEngine and follow readme"
+    exit 1
+fi
+
 cacheFolder=$(pwd)/../cache
 currentFolder=$(pwd)
 

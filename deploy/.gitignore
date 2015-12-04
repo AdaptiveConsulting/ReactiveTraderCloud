@@ -2,3 +2,5 @@ cache
 googleCloudEngine/config/config
 kubernetes/manifests
 garbage
+config
+jq

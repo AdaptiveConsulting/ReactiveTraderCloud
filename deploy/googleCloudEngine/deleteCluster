@@ -1,6 +1,6 @@
 #! /bin/bash
 
-if [[ ! -f ./config/config ]];then
+if [[ ! -f ../config ]];then
     echo " "
     echo "usage:"
     echo "  you need to copy config from sample.config"
@@ -15,5 +15,5 @@ if [[ $1 != "-y" ]];then
     exit 1
 fi
 
-. ./config/config
+. ../config
 ./gcloud container clusters delete --quiet $kube_cluster 

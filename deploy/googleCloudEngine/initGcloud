@@ -1,13 +1,13 @@
 #! /bin/bash
 
-if [[ ! -f ./config/config ]];then
+if [[ ! -f ../config ]];then
     echo " "
     echo "usage:"
     echo "  you need to copy config from sample.config"
     exit 1
 fi
 
-. ./config/config
+. ../config
 
 ./gcloud config set project $kube_project
 ./gcloud config set compute/zone $kube_zone
