@@ -30,7 +30,8 @@ namespace Adaptive.ReactiveTrader.Messaging
             var call = _broker.RegisterCall(instanceProcedureName, procedure);
             _registedCalls.Add(Disposable.Create(() =>
             {
-                call.Result.DisposeAsync().Wait();
+                Log.Info($"unregistering from {procName}");
+                call.Result.DisposeAsync().Wait(TimeSpan.FromSeconds(5));
                 Log.Info($"unregistered from {procName}");
             }));
             Log.Info($"procedure {procName}() registered");
@@ -42,7 +43,8 @@ namespace Adaptive.ReactiveTrader.Messaging
             var call = _broker.RegisterCallResponse(instanceProcedureName, procedure);
             _registedCalls.Add(Disposable.Create(() =>
             {
-                call.Result.DisposeAsync().Wait();
+                Log.Info($"unregistering from {procName}");
+                call.Result.DisposeAsync().Wait(TimeSpan.FromSeconds(5));
                 Log.Info($"unregistered from {procName}");
             }));
             Log.Info($"procedure {procName}() registered");

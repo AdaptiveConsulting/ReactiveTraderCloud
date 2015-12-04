@@ -9,6 +9,8 @@ dependencies:
     - ~/.npm
   override:
     - docker info
+    # get config
+    - cp deploy/sample.config deploy/config
     # pull base containers
     - . ./deploy/config && docker pull $nginxContainer:$vNginx
     - . ./deploy/config && docker pull $crossbarContainer:$vCrossbar
@@ -31,11 +33,12 @@ test:
       - . ./deploy/config && docker run -d --net=host $webContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
       - . ./deploy/config && docker run -d --net=host $populatedEventstoreContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
       - . ./deploy/config && docker run -d --net=host $brokerContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
-      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run ref && while true; do echo ping; sleep 60; done"
-      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
-      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
-      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
+      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run ref && while true; do echo ping; sleep 60; done"
+      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
+      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
+      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
       - docker ps
+      - cd deploy/circleCi && ls && chmod 755 test.sh && ./test.sh
 
 deployment:
   hub:

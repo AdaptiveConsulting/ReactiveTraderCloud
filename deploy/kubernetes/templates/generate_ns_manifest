@@ -1,5 +1,9 @@
 #! /bin/bash
 
+if [[ $# != 1 ]];then 
+  echo "parameter error: namespace"  
+  exit 1 
+fi
 namespace=$1
 
 manifestFolder="../manifests"

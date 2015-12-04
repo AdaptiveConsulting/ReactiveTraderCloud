@@ -1,0 +1,63 @@
+#! /bin/bash
+
+# USAGE
+# =====
+lastMasterSuccessBuild="lastMasterSuccessBuild"
+commands="$lastMasterSuccessBuild"
+
+listcontains() {
+  for word in $1; do
+    [[ $word = $2 ]] && return 0
+  done
+  return 1
+}
+
+usage() {
+  echo " "
+  echo " usage:"
+  echo " "
+  echo "   ./circleCiApi COMMAND [OPTION]"
+  echo " "
+  echo " COMMAND can be:"
+  echo "   $lastMasterSuccessBuild"
+  echo " "
+  echo " ie: ./circleCiApi $lastMasterSuccessBuild"
+  echo " "
+}
+
+if [[ $# < 1 ]];then
+  usage
+  exit 1
+fi
+command=$1
+
+if ! listcontains $commands $command;then
+  usage
+  exit 1
+fi
+
+# CONFIG
+# ======
+if [[ ! -f ../config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
+    exit 1
+fi
+. ../config
+
+# DEPENDENCIES
+# ============
+if [[ ! -f jq ]];then
+  echo "downloading jq to manage json (~2Mb)"
+  curl --silent -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+  chmod 755 jq
+fi
+
+# COMMANDS
+# ========
+if [[ $command == $lastMasterSuccessBuild ]];then
+  curl --silent https://circleci.com/api/v1/projects?circle-token=$circleCiToken  \
+    -H "Accept:application/json" \
+    | jq '.[] | select(.reponame=="AdaptiveTrader") .branches.master.last_success.build_num'
+fi
