@@ -227,8 +227,12 @@ class CurrencyPair extends React.Component {
     );
   }
 
+	/**
+   * When a execution fails to confirm, show a warning.
+   * @returns {HTMLElement}
+   */
   getNoResponseMessage(){
-    return <div className='blocked summary-state animated flipInX'><span className='key'>Error:</span> No response was received from the server, the execution status is unknown. Please contact your sales rep.<a href='#' className='pull-right dismiss-message' onClick={(e) => this.setState({state:'listening'})}>Done</a></div>;
+    return <div className='blocked summary-state animated flipInX'><span className='key'>Error:</span> No response was received from the server, the execution status is unknown. Please contact your sales rep.<a href='#' className='pull-right dismiss-message' onClick={(e) => this.setState({state: 'listening'})}>Done</a></div>;
   }
 
   /**
