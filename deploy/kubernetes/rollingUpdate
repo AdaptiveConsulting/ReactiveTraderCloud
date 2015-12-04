@@ -1,5 +1,13 @@
 #! /bin/bash
 
+services="blotter pricing referencedataread tradeexecution"
+listcontains() {
+  for word in $1; do
+    [[ $word = $2 ]] && return 0
+  done
+  return 1
+}
+
 # control configuration
 if [[ ! -f ../config ]];then
     echo " "
@@ -28,7 +36,12 @@ namespace=$1
 service=$2
 build=$3
 
-newImage="adaptivetrader/servers:$vMajor.$vMinor.$build"
+newImage=""
+if listcontains "$services" $service; then
+  newImage="adaptivetrader/servers:$vMajor.$vMinor.$build"
+else
+  newImage="adaptivetrader/$service:$vMajor.$vMinor.$build"
+fi 
 
 kubectl rolling-update   \
   --namespace=$namespace \
