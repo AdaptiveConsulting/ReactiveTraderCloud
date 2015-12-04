@@ -99,7 +99,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 eventStoreConnection.ConnectAsync().Wait();
 
-                if (populate)
+                if (populate || embedded)
                 {
                     ReferenceDataHelper.PopulateRefData(eventStoreConnection).Wait();
                 }
