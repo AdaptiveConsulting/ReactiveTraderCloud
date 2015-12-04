@@ -39,6 +39,9 @@ class ReactiveTrader {
           this.transport.close();
           this.transport.markEverythingAsDead();
         }, DISCONNECT_SESSION_AFTER);
+      })
+      .on('close', () => {
+        clearTimeout(this.sessionDisconnectTimer);
       });
   }
 
