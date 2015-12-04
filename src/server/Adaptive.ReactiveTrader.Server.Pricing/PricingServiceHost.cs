@@ -1,3 +1,5 @@
+using System;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         private readonly IPricingService _service;
         private readonly IBroker _broker;
+        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
         public PricingServiceHost(IPricingService service, IBroker broker) :base( broker, "pricing")
         {
@@ -35,9 +38,18 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             var endpoint = await _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo);
 
-            _service.GetPriceUpdates(context, spotStreamRequest)
+            var disposable = _service.GetPriceUpdates(context, spotStreamRequest)
                 .TakeUntil(endpoint.TerminationSignal)
                 .Subscribe(endpoint);
+
+            _cleanup.Add(disposable);
+        }
+
+        public override void Dispose()
+        {
+            _cleanup.Dispose();
+
+            base.Dispose();
         }
     }
 }
