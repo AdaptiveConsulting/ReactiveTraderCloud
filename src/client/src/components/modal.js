@@ -58,7 +58,7 @@ Modal.setTitle = (title) => {
   mountedInstance.setState({
     title: title
   });
-  this.trigger('title');
+  mountedInstance.trigger('title');
   return Modal;
 };
 
@@ -71,7 +71,7 @@ Modal.setBody = (body) => {
   mountedInstance.setState({
     body: body
   });
-  this.trigger('body');
+  mountedInstance.trigger('body');
   return Modal;
 };
 
@@ -94,7 +94,7 @@ Modal.open = () => {
   mountedInstance.setState({
     show: true
   });
-  this.trigger('open');
+  mountedInstance.trigger('open');
   return Modal;
 };
 
@@ -106,7 +106,7 @@ Modal.close = () => {
   mountedInstance.setState({
     show: false
   });
-  this.trigger('close');
+  mountedInstance.trigger('close');
   return Modal;
 };
 
