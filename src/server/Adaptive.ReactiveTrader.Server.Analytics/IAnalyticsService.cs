@@ -8,5 +8,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
     {
         IObservable<PositionUpdatesDto> GetAnalyticsStream();
         void OnTrade(TradeDto trade);
+        void OnPrice(SpotPriceDto spotPriceDto);
     }
 }

@@ -11,5 +11,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         Task<IPrivateEndPoint<T>> GetPrivateEndPoint<T>(ITransientDestination replyTo);
         Task<IEndPoint<T>> GetPublicEndPoint<T>(string topic);
+
+        IObservable<T> SubscribeToTopic<T>(string topic);
     }
 }

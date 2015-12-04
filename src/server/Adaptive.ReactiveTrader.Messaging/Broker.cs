@@ -141,11 +141,15 @@ namespace Adaptive.ReactiveTrader.Messaging
             return new PrivateEndPoint<T>(subject, breaker);
         }
 
-        public async Task<IEndPoint<T>> GetPublicEndPoint<T>(string destination)
+        public Task<IEndPoint<T>> GetPublicEndPoint<T>(string destination)
         {
-            await Task.Delay(0);
             var subject = _channel.RealmProxy.Services.GetSubject<T>(destination);
-            return new EndPoint<T>(subject);
+            return Task.FromResult((IEndPoint<T>)new EndPoint<T>(subject));
+        }
+
+        public IObservable<T> SubscribeToTopic<T>(string topic)
+        {
+            return _channel.RealmProxy.Services.GetSubject<T>(topic);
         }
 
         public void Dispose()

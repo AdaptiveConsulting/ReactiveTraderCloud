@@ -4,40 +4,47 @@ using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 using System.Reactive.Linq;
+using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Server.Analytics.Dto;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsServiceHost : ServiceHostBase
     {
-        private static readonly ILog Log = LogManager.GetLogger<AnalyticsServiceHost>();
+        private new static readonly ILog Log = LogManager.GetLogger<AnalyticsServiceHost>();
         private readonly IAnalyticsService _service;
         private readonly IBroker _broker;
-        private CompositeDisposable _subscriptions;
+        private readonly IObservable<TradeDto> _doneTradesStream;
+        private readonly CompositeDisposable _subscriptions;
 
-        public AnalyticsServiceHost(IAnalyticsService service, IBroker broker) : base(broker, "analytics")
+        public AnalyticsServiceHost(IAnalyticsService service, IBroker broker, IObservable<TradeDto> doneTradesStream) : base(broker, "analytics")
         {
             _service = service;
             _broker = broker;
+            _doneTradesStream = doneTradesStream;
             _subscriptions = new CompositeDisposable();
 
             RegisterCall("getAnalytics", GetAnalyticsStream);
             StartHeartBeat();
 
-            ListenForPrices();
+            ListenForPricesAndTrades();
         }
 
-        private void ListenForPrices()
+        private void ListenForPricesAndTrades()
         {
             Log.Info("Subscribing to prices topic...");
 
-            _subscriptions.Add(_broker.SubscribeToTopic<object>("prices")
-                .Subscribe(p =>
-                {
-                    Log.InfoFormat("prices: {0}", p);
-                }));
+            _subscriptions.Add(_broker.SubscribeToTopic<SpotPriceDto>("prices")
+                .Subscribe(p => _service.OnPrice(p)));
 
             Log.Info("Subscribed to prices topic");
+
+            Log.Info("Subscribing to trades...");
+
+            _subscriptions.Add(_doneTradesStream
+                .Subscribe(t => _service.OnTrade(t)));
+
+            Log.Info("Subscribed to trades");
         }
 
         private async Task GetAnalyticsStream(IRequestContext context, IMessage message)

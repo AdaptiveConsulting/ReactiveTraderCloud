@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
@@ -17,11 +16,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         private AnalyticsService _service;
         private TradeCache _cache;
-
-        public Task<ServiceHostBase> Create(IBroker broker)
-        {
-            return Task.FromResult<ServiceHostBase>(new AnalyticsServiceHost(_service, broker));
-        }
 
         public void Dispose()
         {
@@ -41,11 +35,11 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
                 .SelectMany(t => t.Trades)
                 .Where(t => t.Status == TradeStatusDto.Done);
 
-            var engine = new AnalyticsEngine(doneTrades);
+            var analyticsEngine = new AnalyticsEngine();
 
-            _service = new AnalyticsService(engine);
+            _service = new AnalyticsService(analyticsEngine);
 
-            return brokerStream.LaunchOrKill(broker => new AnalyticsServiceHost(_service, broker))
+            return brokerStream.LaunchOrKill(broker => new AnalyticsServiceHost(_service, broker, doneTrades))
                 .Subscribe();
         }
     }

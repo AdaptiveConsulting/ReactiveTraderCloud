@@ -15,12 +15,17 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         public IObservable<PositionUpdatesDto> GetAnalyticsStream()
         {
-            throw new NotImplementedException();
+            return _analyticsEngine.
         }
 
         public void OnTrade(TradeDto trade)
         {
-            throw new NotImplementedException();
+            _analyticsEngine.OnTrade(trade);
+        }
+
+        public void OnPrice(SpotPriceDto spotPriceDto)
+        {
+            _analyticsEngine.OnPrice(spotPriceDto);
         }
     }
 }
