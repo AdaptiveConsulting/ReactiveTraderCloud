@@ -17,7 +17,6 @@ using EventStore.ClientAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Threading;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
@@ -90,7 +89,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 var config = ServiceConfiguration.FromArgs(args.Where(a => a.Contains(".json")).ToArray());
 
                 var embedded = args.Contains("es");
-                var populate = args.Contains("init-is");
+                var populate = args.Contains("init-es");
 
                 var eventStoreConnection = GetEventStoreConnection(config.EventStore, embedded);
                 var mon = new ConnectionStatusMonitor(eventStoreConnection);
