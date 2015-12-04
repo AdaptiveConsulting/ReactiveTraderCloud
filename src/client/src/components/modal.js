@@ -58,7 +58,7 @@ Modal.setTitle = (title) => {
   mountedInstance.setState({
     title: title
   });
-  trigger('title');
+  this.trigger('title');
   return Modal;
 };
 
@@ -71,7 +71,7 @@ Modal.setBody = (body) => {
   mountedInstance.setState({
     body: body
   });
-  trigger('body');
+  this.trigger('body');
   return Modal;
 };
 
