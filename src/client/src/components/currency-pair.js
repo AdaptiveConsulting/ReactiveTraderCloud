@@ -4,12 +4,14 @@ import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } 
 import Popout from 'react-popout';
 
 import numeral from 'numeral';
-import { getConvertedSize } from '../utils';
+import utils from '../utils';
 
 // sub components
 import Direction from './cp-parts/cp-direction';
 import Sizer from './cp-parts/cp-sizer';
 import Pricer from './cp-parts/cp-pricer';
+
+
 /**
  * @class CurrencyPairs
  * @extends {React.Component}
@@ -49,11 +51,12 @@ class CurrencyPair extends React.Component {
   }
 
   componentWillMount(){
-    const size = getConvertedSize(this.props.size);
+    const size     = utils.getConvertedSize(this.props.size),
+          historic = this.props.mid ? [this.props.mid] : [];
 
     this.setState({
       size,
-      historic: [this.props.buy],
+      historic,
       state: this.props.state
     });
   }
@@ -71,7 +74,7 @@ class CurrencyPair extends React.Component {
   componentWillReceiveProps(props, state){
     const historic = this.state.historic;
 
-    historic.push(props.mid);
+    props.mid && historic.push(props.mid);
 
     // 30 max historic prices
     historic.length > 30 && (historic.shift());
@@ -86,13 +89,19 @@ class CurrencyPair extends React.Component {
         info: true
       });
     }
+    else if (props.response && props.response.message === null){
+      delete this.lastResponse;
+      this.setState({
+        info: false
+      });
+    }
 
     this.setState(payload);
   }
 
   shouldComponentUpdate(props, state){
     //refuse props updates while we have a summary or error message info div shown until this.setState()
-    if ((props.buy != this.props.buy || props.sell != this.props.sell) || props.state !== this.state.state){
+    if ((props.buy != this.props.buy || props.sell != this.props.sell || props.response != this.props.response) || props.state !== this.state.state || props.response && props.response.message){
       return true;
     }
     else {
@@ -107,13 +116,17 @@ class CurrencyPair extends React.Component {
    */
   parsePrice(price:number){
     const { precision, pip } = this.props,
-          priceString = price.toFixed(precision),
+          priceString = price ? price.toFixed(precision) : '',
           fractions   = priceString.split('.')[1];
 
-    return {
+    return priceString ? {
       bigFigures: Math.floor(price) + '.' + fractions.substring(0, pip - 2),
       pip: fractions.substring(pip - 2, pip),
       pipFraction: fractions.substring(pip, pip + 1)
+    } : {
+      bigFigures: '',
+      pip: '-',
+      pipFraction: ''
     };
   }
 
@@ -214,6 +227,10 @@ class CurrencyPair extends React.Component {
     );
   }
 
+  getNoResponseMessage(){
+    return <div className='blocked summary-state animated flipInX'><span className='key'>Error:</span> No response was received from the server, the execution status is unknown. Please contact your sales rep.<a href='#' className='pull-right dismiss-message' onClick={(e) => this.onDismissLastResponse(e)}>Done</a></div>;
+  }
+
   /**
    * @param {DOMEvent=} e
    */
@@ -229,17 +246,21 @@ class CurrencyPair extends React.Component {
     const parsedBuy  = this.parsePrice(buy),
           parsedSell = this.parsePrice(sell);
 
-    const execute = this.execute.bind(this),
-          title = pair.substr(0, 3) + ' / ' + pair.substr(3, 3),
-          className  = 'currency-pair animated flipInX ' + state;
+    const execute   = this.execute.bind(this),
+          title     = pair.substr(0, 3) + ' / ' + pair.substr(3, 3),
+          className = 'currency-pair animated flipInX ' + state;
 
     // any ACK or failed messages will come via state.info / last response
-    const message = this.state.info ? (this.lastResponse || this.renderMessage(response)) : false;
+    let message = info ? (this.lastResponse || this.renderMessage(response)) : false;
+
+    // if execution has gone down, state will be `blocked`.
+    state === 'blocked' && (message = this.getNoResponseMessage());
 
     const tileInnerContent = <div className={className}>
       <div className='currency-pair-title'>
         {title} <i className='fa fa-plug animated infinite fadeIn'/>
-        <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right' onClick={(e) => this.toggleTearoff(e)}/> <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
+        <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right' onClick={(e) => this.toggleTearoff(e)}/>
+        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>
       {message}
       <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>

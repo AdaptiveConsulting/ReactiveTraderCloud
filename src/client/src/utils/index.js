@@ -81,8 +81,8 @@ function getConvertedSize(size){
 
 
 export default {
-  mixin: mixin,
-  createConstants: createConstants,
-  getConvertedSize: getConvertedSize,
-  createDevToolsWindow: createDevToolsWindow
+  mixin,
+  createConstants,
+  getConvertedSize,
+  createDevToolsWindow
 };

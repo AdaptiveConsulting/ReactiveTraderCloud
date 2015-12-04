@@ -47,7 +47,7 @@ class CurrencyPairs extends React.Component {
     _.forEach(pairs, (pair) =>{
       const timeOutState = Date.now() - (pair.lastUpdated || 0) > STALE_TIMEOUT ? 'stale' : 'listening';
       // if either pricing or execution reports down, we cannot trade.
-      if (pair.state !== 'executing'){
+      if (pair.state !== 'executing' && pair.state !== 'blocked'){
         pair.state = this.canTrade() && pair.disabled !== true ? timeOutState : 'stale';
       }
     });
@@ -158,13 +158,23 @@ class CurrencyPairs extends React.Component {
    * @param {Object} payload
    */
   onExecute(payload:object){
+    const { pairs } = this.state;
+
     if (this.props.onExecute){
-      const pair = _.findWhere(this.state.pairs, {pair: payload.pair});
+      const pair = _.findWhere(pairs, {pair: payload.pair});
       pair.state = 'executing';
+
+      pair.timer = setTimeout(() => {
+        pair.state = 'blocked';
+
+        this.setState({
+          pairs
+        });
+      }, 2000);
 
       payload.onACK = (...args) => this.onACK(...args);
 
-      this.props.onExecute(payload, pair);
+      this.props.onExecute(payload);
     }
   }
 
@@ -175,6 +185,8 @@ class CurrencyPairs extends React.Component {
   onACK(payload:object){
     const pairs = this.state.pairs,
           pair  = _.findWhere(pairs, {pair: payload.pair});
+
+    clearTimeout(pair.timer);
 
     pair.state = 'listening';
     pair.response = payload;
