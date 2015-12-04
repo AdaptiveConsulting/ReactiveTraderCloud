@@ -1,4 +1,8 @@
-﻿using Adaptive.ReactiveTrader.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Common.Config;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.EventStore.Connection;
@@ -14,10 +18,6 @@ using Adaptive.ReactiveTrader.Server.TradeExecution;
 using Common.Logging;
 using Common.Logging.Simple;
 using EventStore.ClientAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
@@ -34,8 +34,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         public static void StartService(string name, IServiceHostFactory factory)
         {
             var esConsumer = factory as IServiceHostFactoryWithEventStore;
-            var d = esConsumer != null ?
-                esConsumer.Initialize(_brokerStream, _esStream)
+            var d = esConsumer != null
+                ? esConsumer.Initialize(_brokerStream, _esStream)
                 : factory.Initialize(_brokerStream);
 
             Servers.Add(name, d);
@@ -49,12 +49,17 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     return Factories["pricing"].Value;
 
                 case "ref":
+                case "r":
                     return Factories["reference-read"].Value;
                 case "ref-write":
                     return Factories["reference-write"].Value;
 
                 case "exec":
+                case "e":
                     return Factories["execution"].Value;
+
+                case "b":
+                    return Factories["blotter"].Value;
 
                 default:
                     return Factories[type].Value;
@@ -63,7 +68,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
         public static void InitializeFactories()
         {
-            Factories.Add("reference-read", new Lazy<IServiceHostFactory>(() => new ReferenceDataReadServiceHostFactory()));
+            Factories.Add("reference-read",
+                new Lazy<IServiceHostFactory>(() => new ReferenceDataReadServiceHostFactory()));
             Factories.Add("reference-write",
                 new Lazy<IServiceHostFactory>(() => new ReferenceDataWriteServiceHostFactory()));
             Factories.Add("pricing", new Lazy<IServiceHostFactory>(() => new PriceServiceHostFactory()));
