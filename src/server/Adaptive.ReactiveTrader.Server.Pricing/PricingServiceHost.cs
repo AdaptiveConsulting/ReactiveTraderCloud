@@ -10,7 +10,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public class PricingServiceHost : ServiceHostBase
     {
-        protected static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
+        protected new static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
 
         private readonly IPricingService _service;
         private readonly IBroker _broker;
@@ -19,16 +19,11 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         {
             _service = service;
             _broker = broker;
-        }
 
-        public override async Task Start()
-        {
             RegisterCall("getPriceUpdates", GetCurrencyPairUpdatesStream);
-            Log.Info("procedure getPriceUpdates() registered");
-
-            await base.Start();
+            StartHeartBeat();
         }
-
+        
         public async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
             Log.DebugFormat("{1} Received GetCurrencyPairUpdatesStream from [{0}]",

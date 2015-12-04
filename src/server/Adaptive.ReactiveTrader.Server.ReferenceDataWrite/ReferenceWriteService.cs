@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore.Domain;
@@ -7,7 +8,7 @@ using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
-    public class ReferenceWriteService
+    public class ReferenceWriteService : IDisposable
     {
         private static readonly ILog Log = LogManager.GetLogger<ReferenceWriteService>();
         private readonly IRepository _repository;
@@ -51,6 +52,11 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
             {
                 Log.Info($"Currency pair {request.CurrencyPair} deactivated");
             }
+        }
+
+        public void Dispose()
+        {
+            Log.Warn("Should dispose.");
         }
     }
 }

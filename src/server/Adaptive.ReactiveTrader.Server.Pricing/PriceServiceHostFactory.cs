@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Reactive.Disposables;
+using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Server.Core;
 using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
@@ -10,25 +12,32 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         protected static readonly ILog Log = LogManager.GetLogger<PriceServiceHostFactory>();
 
         private readonly PricingService _service;
-        private readonly PriceGenerator _cache;
+
+        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
         public PriceServiceHostFactory()
         {
-            _cache = new PriceGenerator();
+            var cache = new PriceGenerator();
             Log.Info("Started Generator");
 
-            _service = new PricingService(_cache.GetPriceStream);
+            _service = new PricingService(cache.GetPriceStream);
             Log.Info("Started Service");
-        }
 
-        public Task<ServiceHostBase> Create(IBroker broker)
+            _cleanup.Add(cache);
+        }
+        
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream)
         {
-            return Task.FromResult<ServiceHostBase>(new PricingServiceHost(_service, broker));
+            var disposable = brokerStream.LaunchOrKill(broker => new PricingServiceHost(_service, broker)).Subscribe();
+
+            _cleanup.Add(disposable);
+
+            return disposable;
         }
 
         public void Dispose()
         {
-            _cache.Dispose();
+            _cleanup.Dispose();
         }
     }
 }
