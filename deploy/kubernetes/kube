@@ -3,6 +3,7 @@
 # this will deploy :
 #  - new kubernetes `service` 
 #  - new kubernetes `replication controller`
+#  - new kubernetes `namespace`
 
 commands="start update stop"
 services="web eventstore broker referencedataread pricing tradeexecution blotter"
@@ -58,6 +59,12 @@ if ! listcontains "$services" $service; then
 fi 
 
 # control configuration
+if [[ ! -f ../config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
+    exit 1
+fi
 . ../config
 if [[ $vMajor = "" ]];then
   echo "kube: major version required, fill in adaptivetrader/deploy/config"

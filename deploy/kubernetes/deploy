@@ -10,6 +10,7 @@ usage() {
   echo "  It's a string like <test> or <production>"
   echo " "
   echo "- BUILD can be the build number or a string that you have defined at build time"
+  echo "    you can use <last> to start latest master success build"
   echo " "
   echo " "
   echo "  ie: deploy test 192"
@@ -26,6 +27,12 @@ if [[ $# != 2 ]];then
 fi
 namespace=$1
 build=$2
+
+if [[ $build == "last" ]];then
+  cd ../circleCi
+  build=`./circleCiApi lastMasterSuccessBuild`
+  cd ../kubernetes
+fi
 
 # generate manifest
 cd templates

@@ -1,6 +1,13 @@
 #! /bin/bash
 
-. ./config/config
+if [[ ! -f ../config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
+    exit 1
+fi
+
+. ../config
 
 if [[ $kube_cluster == "" ]];then
   echo "error:"
@@ -10,3 +17,4 @@ if [[ $kube_cluster == "" ]];then
 # gcloud container clusters describe $kube_cluster --format yaml | grep -A 1 instanceGroupUrls
 # need this ==> gke-example-b937f2ba-group
 # gcloud compute instance-groups managed resize gke-example-b937f2ba-group --zone us-central1-f --size 4
+

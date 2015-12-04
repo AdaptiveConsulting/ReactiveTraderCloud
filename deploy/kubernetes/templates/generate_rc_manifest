@@ -7,6 +7,13 @@ fi
 service=$1
 namespace=$2
 build=$3
+
+if [[ ! -f ../../config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
+    exit 1
+fi
 . ../../config
 
 if [[ $vMajor = "" ]];then
