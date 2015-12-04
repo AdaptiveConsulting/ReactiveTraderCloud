@@ -73,10 +73,10 @@ class CurrencyPairs extends React.Component {
     rt.reference.getCurrencyPairUpdatesStream((referenceData) =>{
       let shouldStateUpdate = false;
 
-      if (referenceData.IsStateOfTheWorld){
+      if (referenceData.IsStateOfTheWorld && referenceData.Updates.length){
         // compact pairs if it has any instances not in the new state of the world
         const len = this.state.pairs.length,
-              ids = _.pluck(referenceData.Updates, 'id');
+              ids = _.pluck(referenceData.Updates, 'CurrencyPair.Symbol');
 
         this.state.pairs = this.state.pairs.filter((pair) =>{
           const pairShouldRemain = _.indexOf(ids, pair.id) !== -1;
@@ -122,7 +122,7 @@ class CurrencyPairs extends React.Component {
             this.state.pairs.push(localPair);
           }
           else {
-            console.warn('already exists', this.state.pairs, existingPair);
+            console.warn('Trying to add a pair that already exists', pairData, existingPair);
           }
         }
         else if (updatedPair.UpdateType === UPDATE_TYPES.DELETE){
