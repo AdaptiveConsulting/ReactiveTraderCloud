@@ -1,5 +1,11 @@
 #! /bin/bash
 
+if [[ $# != 1 ]];then
+  echo "TradeExecution-run require build number"
+fi
+build=$1
+
+
 echo "TradeExecution"
 
 . ../../../config
@@ -9,13 +15,12 @@ waitCommand="while true; do echo ping; sleep 60; done"
 
 docker rm tradeexecution 2&> garbage
 
-docker run -d --net=host                       \
-     --name tradeexecution                     \
-     $serversContainer:$vMajor.$vMinor.$vBuild \
-     bash -c "$startCommand && $waitCommand"   \
+docker run -d --net=host                      \
+     --name tradeexecution                    \
+     $serversContainer:$vMajor.$vMinor.$build \
+     bash -c "$startCommand && $waitCommand"  \
      > container_id 
 
 rm garbage
 
-echo "  started"
 echo " "

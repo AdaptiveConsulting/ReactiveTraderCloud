@@ -7,7 +7,7 @@ using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    public sealed class PriceGenerator : IDisposable
+    public sealed class PriceSource : IDisposable
     {
         private readonly Dictionary<string, IObservable<SpotPriceDto>> _priceStreams =
             new Dictionary<string, IObservable<SpotPriceDto>>();
@@ -31,8 +31,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             return Observable.Interval(TimeSpan.FromSeconds(0.5)).Select(_ => Unit.Default);
         }
-        
-        public PriceGenerator()
+
+        public PriceSource()
         {
             var priceGenerators = new List<IPriceGenerator>
             {
@@ -40,8 +40,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 CreatePriceGenerator("USDJPY", 100.20m),
                 CreatePriceGenerator("GBPUSD", 1.5200m),
                 CreatePriceGenerator("GBPJPY", 160.200m),
+                CreatePriceGenerator("EURJPY", 130.00m)
             };
-            
+
             foreach (var ccy in priceGenerators)
             {
                 var observable = Observable.Create<SpotPriceDto>(observer =>
@@ -72,6 +73,11 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         {
             return _priceStreams[symbol];
         }
+
+        public IObservable<SpotPriceDto> GetAllPricesStream()
+        {
+            return _priceStreams.Values.Merge();
+        } 
 
         public void Dispose()
         {

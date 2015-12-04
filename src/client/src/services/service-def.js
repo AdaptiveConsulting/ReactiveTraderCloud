@@ -1,4 +1,4 @@
-import emitter from '../emitter';
+import emitter from '../utils/emitter';
 
 const HEARTBEAT_TIMEOUT = 3000;
 
