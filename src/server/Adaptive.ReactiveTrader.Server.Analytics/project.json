@@ -17,7 +17,8 @@
   },
 
   "commands": {
-    "Adaptive.ReactiveTrader.Server.Analytics": "Adaptive.ReactiveTrader.Server.Analytics"
+    "dev": "Adaptive.ReactiveTrader.Server.Analytics config.dev.json",
+    "prod": "Adaptive.ReactiveTrader.Server.Analytics config.prod.json"
   },
 
   "frameworks": {
