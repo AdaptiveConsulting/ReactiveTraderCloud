@@ -38,7 +38,7 @@ class ReactiveTrader {
           this.trigger('timeout');
           this.transport.close();
           this.transport.markEverythingAsDead();
-        }, 5000);
+        }, DISCONNECT_SESSION_AFTER);
       });
   }
 
