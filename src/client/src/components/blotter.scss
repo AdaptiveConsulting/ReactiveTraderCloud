@@ -5,6 +5,24 @@
   right: 0;
   height: 20%;
   max-height: 300px;
+
+
+  div.status {
+    position: absolute;
+    right: 0;
+    transform: translate(-8px, 8px);
+    display: none;
+  }
+
+  &.offline {
+    table {
+      opacity: .4;
+    }
+    div.status {
+      display: block;
+    }
+  }
+
   table {
     tbody, thead {
       display: block;

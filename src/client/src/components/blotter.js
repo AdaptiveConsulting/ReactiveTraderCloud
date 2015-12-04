@@ -8,6 +8,11 @@ import moment from 'moment';
  */
 class CurrencyPairs extends React.Component {
 
+  static propTypes = {
+    trades: React.PropTypes.array,
+    status: React.PropTypes.number
+  }
+
   /**
    * Renders an individual trade in blotter
    * @param {Object} trade
@@ -37,7 +42,12 @@ class CurrencyPairs extends React.Component {
   }
 
   render(){
-    return <div className='blotter'>
+    const className = this.props.status ? 'blotter online' : 'blotter offline';
+
+    return <div className={className}>
+      <div className='status'>
+        <i className='fa fa-plug animated infinite fadeIn'/>
+      </div>
       <table className='table table-compact'>
         <thead>
         <tr>

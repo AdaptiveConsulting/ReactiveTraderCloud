@@ -1,9 +1,12 @@
 import React from 'react';
+import utils from '../utils';
+import emitter from '../utils/emitter';
 
 // import {render} from 'react-dom';
 let mountedInstance,
     defaultClassName = 'absolute-center modal text-center';
 
+@utils.mixin(emitter)
 class Modal extends React.Component {
 
   constructor(props, context){
@@ -46,9 +49,6 @@ class Modal extends React.Component {
   }
 };
 
-// subbed events
-const events = {};
-
 /**
  * Set the title
  * @param title
@@ -58,7 +58,7 @@ Modal.setTitle = (title) => {
   mountedInstance.setState({
     title: title
   });
-  trigger('title');
+  this.trigger('title');
   return Modal;
 };
 
@@ -71,7 +71,7 @@ Modal.setBody = (body) => {
   mountedInstance.setState({
     body: body
   });
-  trigger('body');
+  this.trigger('body');
   return Modal;
 };
 
@@ -94,7 +94,7 @@ Modal.open = () => {
   mountedInstance.setState({
     show: true
   });
-  trigger('open');
+  this.trigger('open');
   return Modal;
 };
 
@@ -106,42 +106,8 @@ Modal.close = () => {
   mountedInstance.setState({
     show: false
   });
-  trigger('close');
+  this.trigger('close');
   return Modal;
-};
-
-/**
- * Subscribe
- * @param {String} event
- * @param {Function} fn
- * @returns {Modal}
- */
-Modal.on = (event, fn) => {
-  events[event] || (events[event] = []);
-  events[event].push(fn);
-  return Modal;
-};
-
-/**
- * Unsubscribe
- * @param {String} event
- * @param {function} fn
- * @returns {Modal}
- */
-Modal.off = (event, fn) => {
-  for (let ev in events){
-    if (event === ev){
-      let index = events[ev].indexOf(fn);
-      index !== -1 && events[ev].splice(index, 1);
-    }
-  }
-  return Modal;
-};
-
-const trigger = (event, ...args) => {
-  events[event] && events[event].forEach((cb) => {
-    cb.apply(mountedInstance, args);
-  });
 };
 
 // ensure it's rendered
