@@ -1,4 +1,4 @@
-﻿namespace Adaptive.ReactiveTrader.Server.Analytics.Dto
+﻿namespace Adaptive.ReactiveTrader.Contract
 {
     public class CurrencyPairPositionDto
     {

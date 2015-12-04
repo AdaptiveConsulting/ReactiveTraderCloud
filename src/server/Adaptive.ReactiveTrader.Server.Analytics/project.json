@@ -12,8 +12,7 @@
     "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
     "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
     "Adaptive.ReactiveTrader.Server.Core": "1.0.0-*",
-    "Adaptive.ReactiveTrader.Common": "1.0.0-*",
-    "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0-*"
+    "Adaptive.ReactiveTrader.Common": "1.0.0-*"
   },
 
   "commands": {

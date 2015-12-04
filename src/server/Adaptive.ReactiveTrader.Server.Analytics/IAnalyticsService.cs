@@ -1,6 +1,5 @@
 ﻿using System;
 using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.Server.Analytics.Dto;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {

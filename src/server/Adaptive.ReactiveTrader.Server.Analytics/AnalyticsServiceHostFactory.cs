@@ -1,12 +1,9 @@
 ﻿using System;
 using Adaptive.ReactiveTrader.Common;
-using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
-using Adaptive.ReactiveTrader.Server.Blotter;
+using Adaptive.ReactiveTrader.Server.Core;
 using Common.Logging;
 using EventStore.ClientAPI;
-using System.Reactive.Linq;
-using Adaptive.ReactiveTrader.Server.Core;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
@@ -31,15 +28,11 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         {
             _cache = new TradeCache(eventStoreStream);
 
-            var doneTrades = _cache.GetTrades()
-                .SelectMany(t => t.Trades)
-                .Where(t => t.Status == TradeStatusDto.Done);
-
             var analyticsEngine = new AnalyticsEngine();
 
             _service = new AnalyticsService(analyticsEngine);
 
-            return brokerStream.LaunchOrKill(broker => new AnalyticsServiceHost(_service, broker, doneTrades))
+            return brokerStream.LaunchOrKill(broker => new AnalyticsServiceHost(_service, broker, _cache))
                 .Subscribe();
         }
     }

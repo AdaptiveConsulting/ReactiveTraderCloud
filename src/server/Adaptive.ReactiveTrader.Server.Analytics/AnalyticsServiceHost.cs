@@ -5,7 +5,7 @@ using Adaptive.ReactiveTrader.Messaging;
 using Common.Logging;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.Server.Analytics.Dto;
+using Adaptive.ReactiveTrader.Server.Core;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
@@ -14,14 +14,14 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         private new static readonly ILog Log = LogManager.GetLogger<AnalyticsServiceHost>();
         private readonly IAnalyticsService _service;
         private readonly IBroker _broker;
-        private readonly IObservable<TradeDto> _doneTradesStream;
+        private readonly TradeCache _tradeCache;
         private readonly CompositeDisposable _subscriptions;
 
-        public AnalyticsServiceHost(IAnalyticsService service, IBroker broker, IObservable<TradeDto> doneTradesStream) : base(broker, "analytics")
+        public AnalyticsServiceHost(IAnalyticsService service, IBroker broker, TradeCache tradeCache) : base(broker, "analytics")
         {
             _service = service;
             _broker = broker;
-            _doneTradesStream = doneTradesStream;
+            _tradeCache = tradeCache;
             _subscriptions = new CompositeDisposable();
 
             RegisterCall("getAnalytics", GetAnalyticsStream);
@@ -41,7 +41,9 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
             Log.Info("Subscribing to trades...");
 
-            _subscriptions.Add(_doneTradesStream
+            _subscriptions.Add(_tradeCache.GetTrades()
+                .SelectMany(t => t.Trades)
+                .Where(t => t.Status == TradeStatusDto.Done)
                 .Subscribe(t => _service.OnTrade(t)));
 
             Log.Info("Subscribed to trades");

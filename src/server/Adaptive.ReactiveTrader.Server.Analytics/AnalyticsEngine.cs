@@ -5,7 +5,6 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.Server.Analytics.Dto;
 using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics

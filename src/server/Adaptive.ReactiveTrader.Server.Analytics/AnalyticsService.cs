@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.Server.Analytics.Dto;
 using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
