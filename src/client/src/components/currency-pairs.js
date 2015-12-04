@@ -44,7 +44,7 @@ class CurrencyPairs extends React.Component {
   updatePairs(src:array){
     const pairs = src || this.state.pairs;
 
-    pairs.forEach((pair) =>{
+    _.forEach(pairs, (pair) =>{
       const timeOutState = Date.now() - (pair.lastUpdated || 0) > STALE_TIMEOUT ? 'stale' : 'listening';
       // if either pricing or execution reports down, we cannot trade.
       if (pair.state !== 'executing'){
@@ -140,7 +140,7 @@ class CurrencyPairs extends React.Component {
 
     const self = this;
 
-    rt.transport.on('statusUpdate', this.updatePairs.bind(this));
+    rt.transport.on('statusUpdate', ()=> this.updatePairs());
   }
 
   componentWillMount(){
@@ -186,12 +186,10 @@ class CurrencyPairs extends React.Component {
 
   render(){
     // filter cps that have got price data only.
-    const pairsWithPrices = this.state.pairs.filter((pair) =>{
-      return pair.buy && pair.sell;
-    });
+    const pairs = this.state.pairs;
 
     return <div className='currency-pairs'>
-      {pairsWithPrices.length ? pairsWithPrices.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
+      {pairs.length ? pairs.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
           pair={cp.pair}
           size="100m"
           key={cp.id}
