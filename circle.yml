@@ -9,6 +9,8 @@ dependencies:
     - ~/.npm
   override:
     - docker info
+    # get config
+    - cp deploy/sample.config deploy/config
     # pull base containers
     - . ./deploy/config && docker pull $nginxContainer:$vNginx
     - . ./deploy/config && docker pull $crossbarContainer:$vCrossbar
