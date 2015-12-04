@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Logging;
 using WampSharp.Core.Serialization;
 using WampSharp.V2.Core;
 using WampSharp.V2.Core.Contracts;
@@ -11,6 +12,8 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 {
     internal class RpcResponseOperation<TResponse> : IWampRpcOperation
     {
+        protected static readonly ILog Log = LogManager.GetLogger<RpcOperation>();
+
         private readonly Func<IRequestContext, IMessage, Task<TResponse>> _serviceMethod;
 
         public RpcResponseOperation(string name, Func<IRequestContext, IMessage, Task<TResponse>> serviceMethod)
@@ -49,25 +52,35 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
             IWampFormatter<T> formatter,
             T[] arguments)
         {
-            var x = formatter.Deserialize<MessageDto>(arguments[0]);
-
-            var message = new Message()
-            {
-                ReplyTo = new WampTransientDestination(x.ReplyTo),
-                Payload = Encoding.UTF8.GetBytes(x.Payload.ToString()) // TODO need to stop this from deserializing
-            };
-
-            var userSession = new UserSession
-            {
-                Username = x.Username
-            };
-
-            var userContext = new RequestContext(message, userSession);
-
-            var response = serviceMethod(userContext, message).Result;
-
             var dummyDetails = new YieldOptions();
-            caller.Result(WampObjectFormatter.Value, dummyDetails, new object[] {response});
+
+            try
+            {
+                var x = formatter.Deserialize<MessageDto>(arguments[0]);
+
+                var message = new Message()
+                {
+                    ReplyTo = new WampTransientDestination(x.ReplyTo),
+                    Payload = Encoding.UTF8.GetBytes(x.Payload.ToString()) // TODO need to stop this from deserializing
+                };
+
+                var userSession = new UserSession
+                {
+                    Username = x.Username
+                };
+
+                var userContext = new RequestContext(message, userSession);
+
+                var response = serviceMethod(userContext, message).Result;
+
+                
+                caller.Result(WampObjectFormatter.Value, dummyDetails, new object[] {response});
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                caller.Error(WampObjectFormatter.Value, dummyDetails, e.Message);
+            }
         }
     }
 }

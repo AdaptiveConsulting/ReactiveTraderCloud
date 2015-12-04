@@ -29,7 +29,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
             _cleanup.Add(disposable);
 
-            return _cleanup;
+            return disposable;
         }
 
         public void Dispose()
