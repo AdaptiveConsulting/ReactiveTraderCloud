@@ -8,7 +8,6 @@
 commands="start update stop"
 services="web eventstore broker referencedataread pricing tradeexecution blotter"
 
-
 # USAGE
 # =====
 listcontains() {

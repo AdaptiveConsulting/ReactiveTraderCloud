@@ -1,0 +1,12 @@
+#! /bin/bash
+
+if [[ $# != 1 ]];then
+  echo " "
+  echo " usage:"
+  echo "   ./delete NAMESPACE"
+  echo ""
+  exit 1
+fi
+namespace=$1
+
+kubectl delete ns $namespace

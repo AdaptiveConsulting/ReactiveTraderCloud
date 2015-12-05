@@ -44,6 +44,10 @@ cp ./prod.nginx.conf ./build/prod.nginx.conf
 # todo: remove the node dependency !
 pushd ../../../../src/client 
 npm install
+
+if [[ $CIRCLECI == true ]];then
+  export NODE_ENV=production
+fi
 npm run compile
 popd
 
