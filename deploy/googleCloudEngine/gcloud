@@ -2,7 +2,26 @@
 
 cacheFolder=$(pwd)/../cache
 
+if [[ ! -f ../config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config and fill informations"
+    echo " "
+    exit 1
+fi
+. ../config
+
+if [[ $vGcloud = "" ]];then
+  echo "gcloud: version required, fill in adaptivetrader/deploy/config => vGcloud"
+  exit 1
+fi
+if [[ $gcloudContainer = "" ]];then
+  echo "gcloud: container name required, fill in adaptivetrader/deploy/config => gcloudContainer"
+  exit 1
+fi
+
+
 docker run --rm -ti                       \
   -v /$cacheFolder/.config://root/.config \
   -v /$cacheFolder/.kube://root/.kube     \
-  weareadaptive/gcloud gcloud $@
+  $gcloudContainer:$vGcloud gcloud $@
