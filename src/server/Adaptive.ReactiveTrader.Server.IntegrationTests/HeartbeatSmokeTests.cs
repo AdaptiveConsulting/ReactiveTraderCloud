@@ -20,6 +20,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         [InlineData(ServiceTypes.Pricing)]
         [InlineData(ServiceTypes.Execution)]
         [InlineData(ServiceTypes.Blotter)]
+        [InlineData(ServiceTypes.Analytics)]
         public async void ShouldReceiveHeartbeatForServices(string serviceType)
         {
             var channel = await _broker.OpenChannel();
