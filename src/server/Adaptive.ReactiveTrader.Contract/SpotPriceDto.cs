@@ -7,21 +7,21 @@ namespace Adaptive.ReactiveTrader.Contract
     public class SpotPriceDto
     {
         [ProtoMember(1)]
-        public string symbol { get; set; }
+        public string Symbol { get; set; }
 
         [ProtoMember(2)]
-        public decimal bid { get; set; }
+        public decimal Bid { get; set; }
 
         [ProtoMember(3)]
-        public decimal ask { get; set; }
+        public decimal Ask { get; set; }
 
         [ProtoMember(4)]
-        public decimal mid { get; set; }
+        public decimal Mid { get; set; }
 
         [ProtoMember(5)]
-        public DateTime valueDate { get; set; }
+        public DateTime ValueDate { get; set; }
 
         [ProtoMember(6)]
-        public long creationTimestamp { get; set; }
+        public long CreationTimestamp { get; set; }
     }
 }

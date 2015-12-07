@@ -15,6 +15,7 @@ using Adaptive.ReactiveTrader.Server.Pricing;
 using Adaptive.ReactiveTrader.Server.ReferenceDataRead;
 using Adaptive.ReactiveTrader.Server.ReferenceDataWrite;
 using Adaptive.ReactiveTrader.Server.TradeExecution;
+using Adaptive.ReactiveTrader.Server.Analytics;
 using Common.Logging;
 using Common.Logging.Simple;
 using EventStore.ClientAPI;
@@ -47,17 +48,14 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             {
                 case "p":
                     return Factories["pricing"].Value;
-
                 case "ref":
                 case "r":
                     return Factories["reference-read"].Value;
                 case "ref-write":
                     return Factories["reference-write"].Value;
-
                 case "exec":
                 case "e":
                     return Factories["execution"].Value;
-
                 case "b":
                     return Factories["blotter"].Value;
 
@@ -75,12 +73,12 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             Factories.Add("pricing", new Lazy<IServiceHostFactory>(() => new PriceServiceHostFactory()));
             Factories.Add("blotter", new Lazy<IServiceHostFactory>(() => new BlotterServiceHostFactory()));
             Factories.Add("execution", new Lazy<IServiceHostFactory>(() => new TradeExecutionServiceHostFactory()));
+            Factories.Add("analytics", new Lazy<IServiceHostFactory>(() => new AnalyticsServiceHostFactory()));
         }
 
         public static void Main(string[] args)
         {
             InitializeFactories();
-
 
             try
             {
@@ -127,6 +125,9 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 if (args.Contains("b"))
                     StartService("b1", GetFactory("blotter"));
+
+                if (args.Contains("a"))
+                    StartService("a1", GetFactory("analytics"));
 
                 var repository = new Repository(eventStoreConnection);
 

@@ -1,0 +1,31 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Adaptive.ReactiveTrader.Server.Analytics Console Application",
+  "authors": [ "qiming" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "Adaptive.ReactiveTrader.EventStore": "",
+    "Common.Logging": "3.3.1",
+    "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.Core": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Common": "1.0.0-*"
+  },
+
+  "commands": {
+    "dev": "Adaptive.ReactiveTrader.Server.Analytics config.dev.json",
+    "prod": "Adaptive.ReactiveTrader.Server.Analytics config.prod.json"
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Collections": ""
+      }
+    }
+  }
+}

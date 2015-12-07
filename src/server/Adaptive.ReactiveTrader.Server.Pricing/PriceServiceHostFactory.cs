@@ -17,13 +17,13 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         public PriceServiceHostFactory()
         {
-            var cache = new PriceGenerator();
+            var priceSource = new PriceSource();
             Log.Info("Started Generator");
 
-            _service = new PricingService(cache.GetPriceStream);
+            _service = new PricingService(priceSource);
             Log.Info("Started Service");
 
-            _cleanup.Add(cache);
+            _cleanup.Add(priceSource);
         }
         
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream)

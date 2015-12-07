@@ -17,6 +17,7 @@
         "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "",
         "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*",
         "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0-*",
+        "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0-*",
         "Common.Logging": "3.3.1"
     },
 
