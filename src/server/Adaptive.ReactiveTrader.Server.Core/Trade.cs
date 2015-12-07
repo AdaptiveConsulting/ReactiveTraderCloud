@@ -1,6 +1,6 @@
 ﻿using Adaptive.ReactiveTrader.Contract;
 
-namespace Adaptive.ReactiveTrader.Server.Blotter
+namespace Adaptive.ReactiveTrader.Server.Core
 {
     public class Trade
     {

@@ -1,14 +1,14 @@
-﻿using Adaptive.ReactiveTrader.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Contract.Events.Trade;
 using Adaptive.ReactiveTrader.EventStore;
-using EventStore.ClientAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Common.Logging;
+using EventStore.ClientAPI;
 
-namespace Adaptive.ReactiveTrader.Server.Blotter
+namespace Adaptive.ReactiveTrader.Server.Core
 {
     public class TradeCache : EventStoreCache<long, Trade, TradesDto>
     {

@@ -31,18 +31,18 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 var pow = (decimal) Math.Pow(10, _precision);
                 var newMid = previousMid + Random.Next(-5, 5)/pow;
 
-                // check that the new mid does not drift too far from sampleRate (3%)
+                // check that the new Mid does not drift too far from sampleRate (3%)
                 if (Math.Abs(newMid - _initial)/_initial > .03m)
                     newMid = _initial;
 
                 yield return new SpotPriceDto
                 {
-                    symbol = Symbol,
-                    valueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday(),
-                    mid = newMid,
-                    ask = newMid + _halfSpread/pow,
-                    bid = newMid - _halfSpread/pow,
-                    creationTimestamp = Stopwatch.GetTimestamp()
+                    Symbol = Symbol,
+                    ValueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday(),
+                    Mid = newMid,
+                    Ask = newMid + _halfSpread/pow,
+                    Bid = newMid - _halfSpread/pow,
+                    CreationTimestamp = Stopwatch.GetTimestamp()
                 };
             }
         }
