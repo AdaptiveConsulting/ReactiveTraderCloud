@@ -1,36 +1,40 @@
 ﻿using Adaptive.ReactiveTrader.Messaging;
-using EventStore.ClientAPI;
 using System;
-using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.EventStore;
+using System.Reactive.Disposables;
+using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.EventStore.Domain;
+using Adaptive.ReactiveTrader.Server.Core;
 using Common.Logging;
+using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
-    public class TradeExecutionServiceHostFactory : IServiceHostFactory, IEventStoreConsumer, IDisposable
+    public class TradeExecutionServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<TradeExecutionServiceHostFactory>();
-
-        private TradeExecutionService _service;
-        private Repository _cache;
-        private TradeExecutionEngine _executionEngine;
-
-        public void Initialize(IEventStoreConnection es)
+        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
+        
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
         {
-            _cache = new Repository(es);
-            _executionEngine = new TradeExecutionEngine(_cache, new TradeIdProvider(es));
-            _service = new TradeExecutionService(_executionEngine);
+            return Disposable.Empty;
         }
 
-        public Task<ServiceHostBase> Create(IBroker broker)
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
-            return Task.FromResult<ServiceHostBase>(new TradeExecutionServiceHost(_service, broker));
+            var repositoryStream = eventStoreStream.LaunchOrKill(conn => new Repository(conn));
+            var idProvider = eventStoreStream.LaunchOrKill(conn => new TradeIdProvider(conn));
+            var engineStream = repositoryStream.LaunchOrKill(idProvider, (repo, id) => new TradeExecutionEngine(repo, id));
+            var serviceStream = engineStream.LaunchOrKill(engine => new TradeExecutionService(engine));
+            var disposable = serviceStream.LaunchOrKill(brokerStream, (service, broker) => new TradeExecutionServiceHost(service, broker)).Subscribe();
+
+            _cleanup.Add(disposable);
+
+            return disposable;
         }
 
         public void Dispose()
         {
-
+            _cleanup.Dispose();
         }
     }
 }

@@ -40,6 +40,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Com
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Core", "Adaptive.ReactiveTrader.Server.Core\Adaptive.ReactiveTrader.Server.Core.xproj", "{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Analytics", "Adaptive.ReactiveTrader.Server.Analytics\Adaptive.ReactiveTrader.Server.Analytics.xproj", "{083C8B90-B535-4EEB-8015-1EC7C664750A}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B6AEC7D9-1F8F-45C0-B0EA-3191CB2AC343}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.IntegrationTests", "Adaptive.ReactiveTrader.Server.IntegrationTests\Adaptive.ReactiveTrader.Server.IntegrationTests.xproj", "{E91BF503-5523-4F11-BD95-544EEE37E115}"
@@ -102,6 +104,10 @@ Global
 		{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{083C8B90-B535-4EEB-8015-1EC7C664750A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{083C8B90-B535-4EEB-8015-1EC7C664750A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{083C8B90-B535-4EEB-8015-1EC7C664750A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{083C8B90-B535-4EEB-8015-1EC7C664750A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E91BF503-5523-4F11-BD95-544EEE37E115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E91BF503-5523-4F11-BD95-544EEE37E115}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E91BF503-5523-4F11-BD95-544EEE37E115}.Release|Any CPU.ActiveCfg = Release|Any CPU

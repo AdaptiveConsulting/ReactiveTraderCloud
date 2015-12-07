@@ -6,16 +6,21 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public class PricingService : IPricingService
     {
-        private readonly Func<string, IObservable<SpotPriceDto>> _getPriceStream;
+        private readonly PriceSource _source;
 
-        public PricingService(Func<string, IObservable<SpotPriceDto>> getPriceStream)
+        public PricingService(PriceSource source)
         {
-            _getPriceStream = getPriceStream;
+            _source = source;
         }
-        
+
         public IObservable<SpotPriceDto> GetPriceUpdates(IRequestContext context, GetSpotStreamRequestDto request)
         {
-            return _getPriceStream(request.symbol);
+            return _source.GetPriceStream(request.symbol);
+        }
+
+        public IObservable<SpotPriceDto> GetAllPriceUpdates()
+        {
+            return _source.GetAllPricesStream();
         }
     }
 }

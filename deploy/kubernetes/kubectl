@@ -1,8 +1,19 @@
 #! /bin/bash
 
+if [[ ! -e ../cache ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to init gcloud first."
+    echo "  Move to adaptivetrader/googleCloudEngine and follow readme"
+    exit 1
+fi
+
 cacheFolder=$(pwd)/../cache
+currentFolder=$(pwd)
 
 docker run --rm -ti                       \
   -v /$cacheFolder/.config://root/.config \
   -v /$cacheFolder/.kube://root/.kube     \
+  -v /$currentFolder:/currentFolder       \
+  -w //currentFolder                      \
   weareadaptive/gcloud kubectl $@

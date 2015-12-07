@@ -1,0 +1,37 @@
+#! /bin/bash
+
+if [[ $# != 2 ]];then 
+  echo "parameter error: service namespace"  
+  exit 1 
+fi
+service=$1
+namespace=$2
+
+if [[ ! -f ../../config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
+    exit 1
+fi
+. ../../config
+
+if [[ $vMajor = "" ]];then
+  echo "DeployNewService: major version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vMinor = "" ]];then
+  echo "DeployNewService: minor version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+
+manifestFolder="../manifests"
+svcFile="$manifestFolder/$service-svc.yml"
+
+mkdir -p $manifestFolder
+
+cp ./$service/svc.yml $svcFile
+
+sed -i  "s/__SERVICE__/$service/g" $svcFile
+sed -i  "s/__MAJOR__/$vMajor/g" $svcFile
+sed -i  "s/__MINOR__/$vMinor/g" $svcFile
+sed -i  "s/__NAMESPACE__/$namespace/g" $svcFile

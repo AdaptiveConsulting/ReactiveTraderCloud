@@ -1,0 +1,51 @@
+#! /bin/bash
+
+if [[ $# != 3 ]];then 
+  echo "parameter error: service namespace build"  
+  exit 1 
+fi
+service=$1
+namespace=$2
+build=$3
+
+if [[ ! -f ../../config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
+    exit 1
+fi
+. ../../config
+
+if [[ $vMajor = "" ]];then
+  echo "generate_rc_manifest: major version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vMinor = "" ]];then
+  echo "generate_rc_manifest: minor version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+
+
+manifestFolder="../manifests"
+rcFile="$manifestFolder/$service-rc.yml"
+
+mkdir -p $manifestFolder
+
+cp ./$service/rc.yml $rcFile
+
+# get good docker image
+dockerImage=""
+if [[ $service == "web" ]];then dockerImage="$webContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "broker" ]];then dockerImage="$brokerContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "eventstore" ]];then dockerImage="$populatedEventstoreContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "blotter" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "pricing" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "referencedataread" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "tradeexecution" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
+
+sed -i  "s/__SERVICE__/$service/g" $rcFile
+sed -i  "s/__MAJOR__/$vMajor/g" $rcFile
+sed -i  "s/__MINOR__/$vMinor/g" $rcFile
+sed -i  "s/__BUILD__/$build/g" $rcFile
+sed -i  "s|__DOCKERIMAGE__|$dockerImage|g" $rcFile
+sed -i  "s/__NAMESPACE__/$namespace/g" $rcFile

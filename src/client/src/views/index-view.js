@@ -1,9 +1,10 @@
 import React from 'react';
 import CurrencyPairs from '../components/currency-pairs';
 import Blotter from '../components/blotter';
+import Modal from '../components/modal';
+import Header from '../components/header';
 
-import moment from 'moment';
-import rt from '../classes/services/reactive-trader';
+import rt from '../services/reactive-trader';
 
 /**
  *
@@ -24,14 +25,25 @@ const formatTradeForDOM = (DTO) =>{
   };
 };
 
-export class IndexView extends React.Component {
+class IndexView extends React.Component {
 
   constructor(props, context){
     super(props, context);
 
     this.state = {
-      trades: []
+      trades: [],
+      connected: false,
+      services: {}
     };
+
+    this.attachEvents();
+  }
+
+  /**
+   * Adds transport subscriptions
+   */
+  attachEvents(){
+    const self = this;
 
     rt.blotter.getTradesStream((blotter) =>{
       blotter.Trades.forEach((trade) => this._processTrade(trade, false));
@@ -39,6 +51,37 @@ export class IndexView extends React.Component {
       this.setState({
         trades: this.state.trades
       });
+    });
+
+    rt.transport
+      .on('open', ()=> self.setState({connected: true}))
+      .on('close', ()=> self.setState({connected: false}))
+      .on('statusUpdate', (services) =>{
+        // update ui indicators for all known services in header
+        self.setState({services});
+      });
+  }
+
+  /**
+   * Re-establishes a connection to broker once it times out
+   */
+  reconnect(){
+    Modal.close();
+    rt.transport.isConnected || rt.transport.open();
+  }
+
+  componentDidMount(){
+    rt.on('timeout', () => {
+      Modal.setTitle('Session expired')
+        .setBody(<div>
+          <div>Your 15 minute session expired, you are now disconnected from the server.</div>
+          <div>Click reconnect to start a new session.</div>
+          <div className='modal-action'>
+            <button className='btn btn-large' onClick={() => this.reconnect()}>Reconnect</button>
+          </div>
+        </div>)
+        .setClass('error-modal')
+        .open();
     });
   }
 
@@ -99,11 +142,16 @@ export class IndexView extends React.Component {
   }
 
   render(){
+    const services = this.state.services;
+
     return <div>
-      <CurrencyPairs onExecute={(payload) => this.addTrade(payload)}/>
-      <Blotter trades={this.state.trades}/>
+      <Modal/>
+      <Header status={this.state.connected} services={services} />
+      <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} services={services} />
+      <Blotter trades={this.state.trades} status={services.blotter} />
     </div>;
   }
+
 }
 
 export default IndexView;

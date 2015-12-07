@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Logging;
 using WampSharp.Core.Serialization;
 using WampSharp.V2.Core;
 using WampSharp.V2.Core.Contracts;
@@ -12,6 +13,8 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 {
     internal class RpcOperation : IWampRpcOperation
     {
+        protected static readonly ILog Log = LogManager.GetLogger<RpcOperation>();
+
         private readonly Func<IRequestContext, IMessage, Task> _serviceMethod;
         private readonly IScheduler _scheduler = TaskPoolScheduler.Default;
 
@@ -51,25 +54,35 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
             IWampFormatter<T> formatter,
             T[] arguments)
         {
-            var x = formatter.Deserialize<MessageDto>(arguments[0]);
-
-            var message = new Message
-            {
-                ReplyTo = new WampTransientDestination(x.ReplyTo),
-                Payload = Encoding.UTF8.GetBytes(x.Payload.ToString()) // TODO need to stop this from deserializing
-            };
-
-            var userSession = new UserSession
-            {
-                Username = x.Username
-            };
-
-            var userContext = new RequestContext(message, userSession);
-
             var dummyDetails = new YieldOptions();
-            caller.Result(WampObjectFormatter.Value, dummyDetails);
+            
+            try
+            {
+                var x = formatter.Deserialize<MessageDto>(arguments[0]);
 
-            _scheduler.Schedule(() => serviceMethod(userContext, message).Wait());
+                var message = new Message
+                {
+                    ReplyTo = new WampTransientDestination(x.ReplyTo),
+                    Payload = Encoding.UTF8.GetBytes(x.Payload.ToString()) // TODO need to stop this from deserializing
+                };
+
+                var userSession = new UserSession
+                {
+                    Username = x.Username
+                };
+
+                var userContext = new RequestContext(message, userSession);
+
+                caller.Result(WampObjectFormatter.Value, dummyDetails);
+
+
+                _scheduler.Schedule(() => serviceMethod(userContext, message).Wait());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                caller.Error(WampObjectFormatter.Value, dummyDetails, e.Message );
+            }
         }
     }
 }

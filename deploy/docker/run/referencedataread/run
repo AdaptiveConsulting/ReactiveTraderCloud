@@ -1,22 +1,25 @@
 #! /bin/bash
 
+if [[ $# != 1 ]];then
+  echo "ReferenceDataRead-run require build number"
+fi
+build=$1
+
 echo "ReferenceDataRead"
 
 . ../../../config
 
-#startCommand="dnx -p Adaptive.ReactiveTrader.Server.ReferenceDataRead run"
 startCommand="dnx -p Adaptive.ReactiveTrader.Server.Launcher run ref"
 waitCommand="while true; do echo ping; sleep 60; done"
 
 docker rm reference 2&> garbage
 
-docker run -d --net=host                       \
-     --name reference                          \
-     $serversContainer:$vMajor.$vMinor.$vBuild \
-     bash -c "$startCommand && $waitCommand"   \
+docker run -d --net=host                      \
+     --name reference                         \
+     $serversContainer:$vMajor.$vMinor.$build \
+     bash -c "$startCommand && $waitCommand"  \
      > container_id 
 
 rm garbage
 
-echo "  started"
 echo " "

@@ -1,18 +1,14 @@
 import React from 'react';
-import CurrencyPair from './currency-pair';
-import Header from './header';
 import _ from 'lodash';
 
-import rt from '../classes/services/reactive-trader';
-
-//todo: hook up socket stream
-let pairs = [];
+import CurrencyPair from './currency-pair';
+import rt from '../services/reactive-trader';
 
 const STALE_TIMEOUT = 4000,
       UPDATE_TYPES  = {
         ADD: 'Added',
         UPDATE: 'Updated',
-        DELETE: 'Deleted'
+        DELETE: 'Removed'
       };
 
 /**
@@ -29,12 +25,8 @@ class CurrencyPairs extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {
-      pairs: [],
-      connected: false,
-      services: {}
+      pairs: []
     };
-
-    this.subscribed = [];
   }
 
   /**
@@ -42,20 +34,25 @@ class CurrencyPairs extends React.Component {
    * @returns {Boolean}
    */
   canTrade(){
-    return this.state.services.pricing && this.state.services.execution;
+    return this.props.services.pricing && this.props.services.execution;
   }
 
   /**
    * Updates pairs state and also marks them as stale when services required are down
-   * @param src
+   * @param {Array=} src to use or defaults to state.pairs
    */
-  updatePairs(src){
+  updatePairs(src:array){
     const pairs = src || this.state.pairs;
 
-    pairs.forEach((pair) =>{
+    _.forEach(pairs, (pair) =>{
       const timeOutState = Date.now() - (pair.lastUpdated || 0) > STALE_TIMEOUT ? 'stale' : 'listening';
       // if either pricing or execution reports down, we cannot trade.
-      pair.state = this.canTrade() && pair.disabled !== true ? timeOutState : 'stale';
+      if (pair.state !== 'executing' && pair.state !== 'blocked'){
+        pair.state = this.canTrade() && pair.disabled !== true ? timeOutState : 'stale';
+      }
+      if (!this.props.services.pricing){
+        pair.buy = pair.mid = pair.sell = undefined;
+      }
     });
 
     this.setState({
@@ -76,10 +73,10 @@ class CurrencyPairs extends React.Component {
     rt.reference.getCurrencyPairUpdatesStream((referenceData) =>{
       let shouldStateUpdate = false;
 
-      if (referenceData.IsStateOfTheWorld){
+      if (referenceData.IsStateOfTheWorld && referenceData.Updates.length){
         // compact pairs if it has any instances not in the new state of the world
         const len = this.state.pairs.length,
-              ids = _.pluck(referenceData.Updates, 'id');
+              ids = _.pluck(referenceData.Updates, 'CurrencyPair.Symbol');
 
         this.state.pairs = this.state.pairs.filter((pair) =>{
           const pairShouldRemain = _.indexOf(ids, pair.id) !== -1;
@@ -98,7 +95,7 @@ class CurrencyPairs extends React.Component {
 
         // added new?
         if (updatedPair.UpdateType === UPDATE_TYPES.ADD){
-          let existingPair = _.findWhere(this.state.pairs, {id: pairData.id}),
+          let existingPair = _.findWhere(this.state.pairs, {id: pairData.Symbol}),
               localPair    = {
                 pip: pairData.PipsPosition,
                 precision: pairData.RatePrecision,
@@ -113,9 +110,9 @@ class CurrencyPairs extends React.Component {
           if (!existingPair){
             localPair.pricingSub = rt.pricing.getPriceUpdates(localPair.id, (priceData) =>{
               // console.info(priceData, localPair);
-              localPair.buy = Number(priceData.bid);
-              localPair.sell = Number(priceData.ask);
-              localPair.mid = Number(priceData.mid);
+              localPair.buy = Number(priceData.Bid);
+              localPair.sell = Number(priceData.Ask);
+              localPair.mid = Number(priceData.Mid);
 
               localPair.lastUpdated = Date.now();
               this.updatePairs();
@@ -125,16 +122,20 @@ class CurrencyPairs extends React.Component {
             this.state.pairs.push(localPair);
           }
           else {
-            console.warn('already exists', this.state.pairs, existingPair);
+            console.warn('Trying to add a pair that already exists', pairData, existingPair);
           }
         }
-        else {
+        else if (updatedPair.UpdateType === UPDATE_TYPES.DELETE){
           // removed existing?
-          rt.pricing.unsubscribe(existingPair.pricingSub);
-          this.state.pairs.splice(_.indexOf(this.state.pairs, existingPair), 1);
-          shouldStateUpdate = true;
+          let existingPair = _.findWhere(this.state.pairs, {id: pairData.Symbol});
+
+          if (existingPair){
+            // rt.pricing.unsubscribe(existingPair.pricingSub);
+            this.state.pairs.splice(_.indexOf(this.state.pairs, existingPair), 1);
+            shouldStateUpdate = true;
+          }
         }
-      });
+      }, this);
 
       // update state if we detected changes
       shouldStateUpdate && this.updatePairs();
@@ -142,33 +143,11 @@ class CurrencyPairs extends React.Component {
 
     const self = this;
 
-    rt.transport
-      .on('open', ()=> self.setState({connected: true}))
-      .on('close', ()=> self.setState({connected: false}))
-      .on('statusUpdate', (services) =>{
-        // update ui indicators
-        self.setState({
-          services
-        });
-        // also update pairs in case pricing has gone down
-        self.updatePairs();
-      });
+    rt.transport.on('statusUpdate', ()=> this.updatePairs());
   }
 
   componentWillMount(){
     this.attachSubs();
-  }
-
-  onACK(payload){
-    const pairs = this.state.pairs,
-          pair  = _.findWhere(pairs, {pair: payload.pair});
-
-    pair.state = 'listening';
-    pair.response = payload;
-
-    this.setState({
-      pairs
-    });
   }
 
   componentDidUpdate(){
@@ -178,11 +157,23 @@ class CurrencyPairs extends React.Component {
     });
   }
 
-  onExecute(payload){
-    //todo: send to socket.
+  /**
+   * @param {Object} payload
+   */
+  onExecute(payload:object){
+    const { pairs } = this.state;
+
     if (this.props.onExecute){
-      const pair = _.findWhere(this.state.pairs, {pair: payload.pair});
+      const pair = _.findWhere(pairs, {pair: payload.pair});
       pair.state = 'executing';
+
+      pair.timer = setTimeout(() => {
+        pair.state = 'blocked';
+
+        this.setState({
+          pairs
+        });
+      }, 2000);
 
       payload.onACK = (...args) => this.onACK(...args);
 
@@ -190,29 +181,42 @@ class CurrencyPairs extends React.Component {
     }
   }
 
+  /**
+   * When acknowledge arrives, mark pair as 'listening' again
+   * @param {Object} payload
+   */
+  onACK(payload:object){
+    const pairs = this.state.pairs,
+          pair  = _.findWhere(pairs, {pair: payload.pair});
+
+    clearTimeout(pair.timer);
+
+    pair.state = 'listening';
+    pair.response = payload;
+
+    this.setState({
+      pairs
+    });
+  }
+
   render(){
     // filter cps that have got price data only.
-    const p = this.state.pairs.filter((a) =>{
-      return a.buy && a.sell;
-    });
+    const pairs = this.state.pairs;
 
-    return <div>
-
-      <Header status={this.state.connected} services={this.state.services}/>
-      <div className='currency-pairs'>
-        {p.length ? p.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
-                                                pair={cp.pair}
-                                                size="100m"
-                                                key={cp.id}
-                                                buy={cp.buy}
-                                                sell={cp.sell}
-                                                mid={cp.mid}
-                                                precision={cp.precision}
-                                                pip={cp.pip}
-                                                state={cp.state}
-                                                response={cp.response}/>) :
-          <div className="text-center"><i className="fa fa-5x fa-cog fa-spin"></i></div> }
-      </div>
+    return <div className='currency-pairs'>
+      {pairs.length ? pairs.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
+          pair={cp.pair}
+          size="100m"
+          key={cp.id}
+          buy={cp.buy}
+          sell={cp.sell}
+          mid={cp.mid}
+          precision={cp.precision}
+          pip={cp.pip}
+          state={cp.state}
+          response={cp.response}/>) :
+        <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div> }
+      <div className="clearfix"></div>
     </div>;
   }
 }

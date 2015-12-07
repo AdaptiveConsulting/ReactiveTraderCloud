@@ -6,6 +6,7 @@ using EventStore.Core.Services.Transport.Http.Controllers;
 using System;
 using System.Net;
 using System.Threading;
+using Adaptive.ReactiveTrader.EventStore.Connection;
 
 namespace Adaptive.ReactiveTrader.EventStore
 {
@@ -18,9 +19,7 @@ namespace Adaptive.ReactiveTrader.EventStore
             _uri = EventStoreUri.Local;
             StartEmbeddedEventStore();
 
-            var connectionSettings = ConnectionSettings.Create().KeepReconnecting();
-            
-            Connection = EventStoreConnection.Create(connectionSettings, _uri);
+            Connection = EventStoreConnection.Create(EventStoreConnectionSettings.Default, _uri);
         }
 
         public IEventStoreConnection Connection { get; }

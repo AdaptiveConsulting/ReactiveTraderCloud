@@ -1,3 +1,4 @@
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,28 +11,32 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public class PricingServiceHost : ServiceHostBase
     {
-        protected static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
+        protected new static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
 
         private readonly IPricingService _service;
         private readonly IBroker _broker;
+        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
         public PricingServiceHost(IPricingService service, IBroker broker) :base( broker, "pricing")
         {
             _service = service;
             _broker = broker;
+
+            RegisterCall("getPriceUpdates", GetPriceUpdates);
+            StartHeartBeat();
+            StartPricePublisher();
         }
 
-        public override async Task Start()
+        private void StartPricePublisher()
         {
-            RegisterCall("getPriceUpdates", GetCurrencyPairUpdatesStream);
-            Log.Info("procedure getPriceUpdates() registered");
-
-            await base.Start();
+            var priceTrunkStream = _service.GetAllPriceUpdates(); // TODO dispose this when service host goes down
+            var priceTrunk = new PricePublisher(priceTrunkStream, _broker);
+            priceTrunk.Start().Wait();
         }
 
-        public async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
+        public async Task GetPriceUpdates(IRequestContext context, IMessage message)
         {
-            Log.DebugFormat("{1} Received GetCurrencyPairUpdatesStream from [{0}]",
+            Log.DebugFormat("{1} Received GetPriceUpdates from [{0}]",
                 context.UserSession.Username ?? "Unknown User", this);
 
             var spotStreamRequest =
@@ -40,9 +45,18 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             var endpoint = await _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo);
 
-            _service.GetPriceUpdates(context, spotStreamRequest)
+            var disposable = _service.GetPriceUpdates(context, spotStreamRequest)
                 .TakeUntil(endpoint.TerminationSignal)
                 .Subscribe(endpoint);
+
+            _cleanup.Add(disposable);
+        }
+
+        public override void Dispose()
+        {
+            _cleanup.Dispose();
+
+            base.Dispose();
         }
     }
 }

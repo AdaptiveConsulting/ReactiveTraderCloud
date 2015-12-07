@@ -4,10 +4,13 @@
 
 if [[ -z $1 ]]
 then
-        namespace="--namespace=default"
+  namespace="--namespace=default"
 else
-        namespace="--namespace=$1"
+  namespace="--namespace=$1"
+  echo -e "\e[92mNAMESPACE\e[39m" && \
+  echo " $1"
 fi
+echo " "                           && \
 echo -e "\e[92mSERVICES\e[39m"     && \
 ./kubectl get services $namespace  && \
 echo " "                           && \

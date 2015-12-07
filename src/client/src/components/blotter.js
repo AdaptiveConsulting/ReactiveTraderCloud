@@ -1,9 +1,6 @@
 import React from 'react';
-import _ from 'lodash';
 import numeral from 'numeral';
 import moment from 'moment';
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /**
  * @class CurrencyPairs
@@ -11,16 +8,21 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
  */
 class CurrencyPairs extends React.Component {
 
+  static propTypes = {
+    trades: React.PropTypes.array,
+    status: React.PropTypes.number
+  }
+
   /**
    * Renders an individual trade in blotter
    * @param {Object} trade
-   * @returns {HTMLElement.TR}
+   * @returns {HTMLElement:TR}
    */
-  renderRow(trade){
+  renderRow(trade:object){
     const notional           = numeral(trade.amount).format('0,000,000[.]00') + ' ' + trade.pair.substr(0, 3),
           dateTime           = moment(trade.dateTime).format('MMM Do, HH:mm:ss'),
-          valueDay           = new Date(trade.valueDate),
-          formattedValueDate = ['SP.', valueDay.getDate(), MONTHS[valueDay.getMonth()]].join(' ');
+          valueDay           = moment(trade.valueDate),
+          formattedValueDate = 'SP. ' + valueDay.format('DD MMM');
 
     return (
       <tr key={trade.id} className={trade.status + ' animated slideInDown'}>
@@ -40,7 +42,12 @@ class CurrencyPairs extends React.Component {
   }
 
   render(){
-    return <div className='blotter'>
+    const className = this.props.status ? 'blotter online' : 'blotter offline';
+
+    return <div className={className}>
+      <div className='status'>
+        <i className='fa fa-plug animated infinite fadeIn'/>
+      </div>
       <table className='table table-compact'>
         <thead>
         <tr>

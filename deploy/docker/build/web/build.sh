@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "web-build: build number required as first parameter"
+  exit 1
+fi
+
 # get and control config
 . ../../../config
 
@@ -27,31 +33,26 @@ if [[ $vMinor = "" ]];then
   echo "web-build: minor version required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
-if [[ $vBuild = "" ]];then
-  echo "web-build: build number required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 # generate container folder
 mkdir -p ./build
-sed "s/__VNGINX__/$vNginx/g"  ./template.Dockerfile > ./build/Dockerfile
-cp ./template.nginx.conf ./build/nginx.conf
+sed "s/__VNGINX__/$vNginx/g"    ./template.Dockerfile > ./build/Dockerfile
 
-# currentDirectory="$(PWD)"
-# use a container to build the dist
-# docker run --rm                                        \
-#   -v /$currentDirectory/../../../../src/client:/client \
-#   -v /$currentDirectory/build/www:/www                 \
-#   $nodeContainer:$vNode                                \
-#     bash -c "cd /client && npm install ; npm run compile ; cp -r /client/dist /dist"
+cp ./dev.nginx.conf  ./build/dev.nginx.conf
+cp ./prod.nginx.conf ./build/prod.nginx.conf
 
+# todo: remove the node dependency !
 pushd ../../../../src/client 
 npm install
+
+if [[ $CIRCLECI == true ]];then
+  export NODE_ENV=production
+fi
 npm run compile
 popd
 
 cp -r ../../../../src/client/dist ./build/dist
 
 # build
-docker build -t $webContainer:$vMajor.$vMinor.$vBuild ./build/.
-docker tag -f $webContainer:$vMajor.$vMinor.$vBuild $webContainer:latest
+docker build --no-cache -t $webContainer:$vMajor.$vMinor.$build ./build/.
+docker tag -f $webContainer:$vMajor.$vMinor.$build $webContainer:latest

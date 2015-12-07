@@ -1,5 +1,12 @@
 #! /bin/bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "broker-build: build number required as first parameter"
+  exit 1
+fi
+
+
 # get and control config
 . ../../../config
 
@@ -23,4 +30,4 @@ fi
 
 # push
 docker push $brokerContainer:latest
-docker push $brokerContainer:$vMajor.$vMinor.$vBuild
+docker push $brokerContainer:$vMajor.$vMinor.$build

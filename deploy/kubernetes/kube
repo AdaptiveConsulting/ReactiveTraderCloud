@@ -1,0 +1,120 @@
+#! /bin/bash
+
+# this will deploy :
+#  - new kubernetes `service` 
+#  - new kubernetes `replication controller`
+#  - new kubernetes `namespace`
+
+commands="start update stop"
+services="web eventstore broker referencedataread pricing tradeexecution blotter"
+
+# USAGE
+# =====
+listcontains() {
+  for word in $1; do
+    [[ $word = $2 ]] && return 0
+  done
+  return 1
+}
+
+if [[ $# != 4 ]];then
+  echo " "
+  echo "usage:"
+  echo "  kube COMMAND SERVICE BUILD NAMESPACE"
+  echo " "
+  echo " "
+  echo " COMMAND can be:"
+  echo "   $commands"
+  echo " "
+  echo " SERVICE can be:"
+  echo "   $services"
+  echo " "
+  echo " BUILD is the build number"
+  echo " "
+  echo " NAMESPACE can be:"
+  echo "   $namespaces"
+  echo " "
+  echo "  ie: ./kube start web test"
+  echo "      ./kube update broker prod"
+  echo "      ./kube stop pricing test"
+  exit 1
+fi
+
+command=$1
+service=$2
+build=$3
+namespace=$4
+
+# control parameters
+if ! listcontains "$commands" $command; then 
+    echo "command $command is not recognised"
+    echo "possible commands are: $commands"
+    exit 1
+fi 
+if ! listcontains "$services" $service; then 
+    echo "service $service is not recognised"
+    echo "possible services are: $services"
+    exit 1
+fi 
+
+# control configuration
+if [[ ! -f ../config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
+    exit 1
+fi
+. ../config
+if [[ $vMajor = "" ]];then
+  echo "kube: major version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vMinor = "" ]];then
+  echo "kube: minor version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+
+manifestsPath="./manifests"
+
+# create or clean folder
+mkdir -p $manifestsPath
+
+# generate manifests
+cd templates
+if listcontains "web eventstore broker" $service ;then
+  generate_svc_manifest $service $namespace
+fi
+generate_rc_manifest $service $namespace $build
+generate_ns_manifest $namespace
+cd ..
+
+
+# EXECUTE COMMANDS
+# ================
+# start
+# =====
+if [[ $command == "start" ]];then
+  ./kubectl create -f $manifestsPath/ns.yml
+  
+  if listcontains "web eventstore broker" $service ;then
+    ./kubectl create -f $manifestsPath/$service-svc.yml
+  fi
+  
+  ./kubectl create -f $manifestsPath/$service-rc.yml
+fi
+
+# update
+# =====
+if [[ $command == "update" ]];then
+  ./kubectl rolling-update $service -f $manifestsPath/rc.yml --namespace=$namespace
+fi
+
+# stop
+# =====
+if [[ $command == "stop" ]];then
+  if listcontains "web eventstore broker" $service ;then 
+    ./kubectl stop svc $service --namespace=$namespace
+  fi
+
+  ./kubectl stop rc  $service --namespace=$namespace
+fi

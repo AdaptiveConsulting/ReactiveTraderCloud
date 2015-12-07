@@ -1,6 +1,6 @@
 #! /bin/bash
 
-if [[ ! -f ./config/config ]];then
+if [[ ! -f ../config ]];then
     echo " "
     echo "usage:"
     echo "  you need to copy config from sample.config"
@@ -8,7 +8,7 @@ if [[ ! -f ./config/config ]];then
 fi
 
 # load config
-. ./config/config
+. ../config
 
 # create cluster
 ./gcloud container clusters create $kube_cluster             \
