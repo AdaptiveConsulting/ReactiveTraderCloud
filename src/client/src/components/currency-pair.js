@@ -145,13 +145,13 @@ class CurrencyPair extends React.Component {
    * Determine the change as up or down on a tick.
    * @returns {string}
    */
-  getDirection(buy){
+  getDirection(mid){
     const historic = this.state.historic,
           len      = historic.length - 2;
 
     return (historic.length > 1) ?
-      historic[len] < buy ? 'up' :
-        historic[len] > buy ?
+      historic[len] < mid ? 'up' :
+        historic[len] > mid ?
           'down' :
           '-'
       : '-';
@@ -227,8 +227,12 @@ class CurrencyPair extends React.Component {
     );
   }
 
+	/**
+   * When a execution fails to confirm, show a warning.
+   * @returns {HTMLElement}
+   */
   getNoResponseMessage(){
-    return <div className='blocked summary-state animated flipInX'><span className='key'>Error:</span> No response was received from the server, the execution status is unknown. Please contact your sales rep.<a href='#' className='pull-right dismiss-message' onClick={(e) => this.onDismissLastResponse(e)}>Done</a></div>;
+    return <div className='blocked summary-state animated flipInX'><span className='key'>Error:</span> No response was received from the server, the execution status is unknown. Please contact your sales rep.<a href='#' className='pull-right dismiss-message' onClick={(e) => this.setState({state: 'listening'})}>Done</a></div>;
   }
 
   /**
@@ -241,7 +245,7 @@ class CurrencyPair extends React.Component {
 
   render(){
     const { historic, size, state, info, chart } = this.state,
-          { buy, sell, pair, response } = this.props;
+          { buy, sell, mid, pair, response } = this.props;
 
     const parsedBuy  = this.parsePrice(buy),
           parsedSell = this.parsePrice(sell);
@@ -265,7 +269,7 @@ class CurrencyPair extends React.Component {
       {message}
       <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
         <Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
-        <Direction direction={this.getDirection(buy)} spread={this.getSpread(sell, buy)}/>
+        <Direction direction={this.getDirection(mid)} spread={this.getSpread(sell, buy)}/>
         <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
       </div>
       <div className='clearfix'></div>
