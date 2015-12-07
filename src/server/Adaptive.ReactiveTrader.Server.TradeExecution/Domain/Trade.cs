@@ -8,7 +8,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
 {
     public class Trade : AggregateBase
     {
-        public override object Identifier => Id;
+        public override object Identifier => $"trade-{Id}";
 
         public long Id { get; private set; }
         public string TraderName { get; private set; }

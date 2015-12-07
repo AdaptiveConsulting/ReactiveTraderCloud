@@ -5,10 +5,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
 {
     public class TradeId : AggregateBase
     {
-        public static readonly string IdentifierString = "TradeIdIdentifier";
+        public static readonly string IdentifierString = "TradeIdentifier";
         public override object Identifier => IdentifierString;
-
-        public int CurrentId { get; private set; }
 
         public void IncrementId()
         {
@@ -17,7 +15,6 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
 
         public void Apply(TradeIdIncrementedEvent evt)
         {
-            CurrentId++;
         }
     }
 }
