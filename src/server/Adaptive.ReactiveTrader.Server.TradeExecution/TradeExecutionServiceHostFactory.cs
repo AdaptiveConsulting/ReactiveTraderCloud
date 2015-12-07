@@ -22,7 +22,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
             var repositoryStream = eventStoreStream.LaunchOrKill(conn => new Repository(conn));
-            var idProvider = eventStoreStream.LaunchOrKill(conn => new TradeIdProvider(conn));
+            var idProvider = repositoryStream.LaunchOrKill(repo => new TradeIdProvider(repo));
             var engineStream = repositoryStream.LaunchOrKill(idProvider, (repo, id) => new TradeExecutionEngine(repo, id));
             var serviceStream = engineStream.LaunchOrKill(engine => new TradeExecutionService(engine));
             var disposable = serviceStream.LaunchOrKill(brokerStream, (service, broker) => new TradeExecutionServiceHost(service, broker)).Subscribe();
