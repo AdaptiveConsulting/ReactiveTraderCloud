@@ -12,4 +12,5 @@ const node = (
         debugExternal={__DEBUG_NW__} />
 );
 
+window.fin && target.classList.add('openfin');
 ReactDOM.render(node, target);

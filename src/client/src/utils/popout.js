@@ -4,18 +4,27 @@ import ReactPopout                    from 'react-popout';
 import Closer from '../components/closer';
 import { assign, reduce, isFunction } from 'lodash';
 
-const divId = 'popout-content-container';
+const CONTAINER_ID         = 'popout-content-container',
+      ROOT_ANCHOR_SELECTOR = '#root .tile';
 
+/**
+ * @class Popout
+ * @extends ReactPopout
+ */
 class Popout extends ReactPopout {
 
-  constructor(props){
-    super(props);
-  }
-
+  /**
+   * Strategy for opening can be via window.open or fin.desktop.Window(), which are not compatible
+   */
   componentDidMount(){
     window.fin && window.fin.desktop ? this.openOpenFinWindow() : this.openWindow();
   }
 
+  /**
+   * Adds load and unload events to handle plumbing
+   * @param {Window|fin.desktop.Window} win
+   * @returns {{update: (function()), close: (function())}}
+   */
   attachEvents(win){
     let container,
         { document } = win,
@@ -26,30 +35,23 @@ class Popout extends ReactPopout {
       close(){}
     };
 
-    win.addEventListener('beforeunload', () =>{
-      container && ReactDOM.unmountComponentAtNode(container);
-      this.windowClosing();
-    });
-
+    /**
+     * callback when load has fired or readyState has fired
+     */
     let onloadhandler = () =>{
-      // Some browsers don't call onload in some cases for popup windows (looking at you firefox).
-      // If anyone wants to make this better, that would be awesome
       if (container){
-        let existing = document.getElementById(divId);
-        if (!existing){
-          ReactDOM.unmountComponentAtNode(container);
-          container = null;
-        } else {
-          return;
-        }
+        if (document.getElementById(CONTAINER_ID)) return;
+
+        ReactDOM.unmountComponentAtNode(container);
+        container = null;
       }
 
       container = document.createElement('div');
-      container.id = divId;
+      container.id = CONTAINER_ID;
 
-      // need to wait for nav to new route to finish, sometimes it is too slow.
-      const routeHasFinishedLoading = () => {
-        let rootNode = win.document.querySelector('#root .tile');
+      // need to wait for nav to new route to finish, sometimes it can be slow.
+      const routeHasFinishedLoading = () =>{
+        let rootNode = win.document.querySelector(ROOT_ANCHOR_SELECTOR);
 
         // retry when possible.
         if (!rootNode) return window.requestAnimationFrame(routeHasFinishedLoading);
@@ -71,6 +73,10 @@ class Popout extends ReactPopout {
     };
 
     win.addEventListener('load', onloadhandler);
+    win.addEventListener('beforeunload', () =>{
+      container && ReactDOM.unmountComponentAtNode(container);
+      this.windowClosing();
+    });
 
     // ensure it runs if already fired
     win.document.readyState == 'complete' && onloadhandler();
@@ -88,16 +94,11 @@ class Popout extends ReactPopout {
 
   openWindow(){
     let effectiveOptions = assign({}, this.defaultOptions, this.props.options),
-      ownerWindow = this.props.window || window;
+        ownerWindow      = this.props.window || window;
 
     let optionsString = reduce(effectiveOptions, (acc, opt, key) =>{
-      let val, part;
-      if (isFunction(opt)){
-        val = opt(effectiveOptions, ownerWindow);
-      } else {
-        val = opt;
-      }
-      part = key + '=' + val;
+      const val = (isFunction(opt)) ? opt(effectiveOptions, ownerWindow) : opt;
+      const part = key + '=' + val;
       return !acc ? part : acc + ',' + part;
     }, '');
 
