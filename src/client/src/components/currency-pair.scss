@@ -70,12 +70,14 @@
   }
 
   .currency-pair-title {
+    -webkit-app-region: drag;
     font-size: 26px;
     font-weight: bold;
     color: white;
     padding-left: 8px;
     border-bottom: 1px solid $gray-dark;
     i {
+      -webkit-app-region: no-drag;
       font-size: 16px;
       color: $gray-light;
       &.glyphicon {
@@ -206,7 +208,14 @@
 
 }
 
+
+.body {
+  overflow: hidden;
+}
+
 #popout-content-container {
+  overflow: hidden;
+
   .glyphicon-new-window {
     display: none;
   }

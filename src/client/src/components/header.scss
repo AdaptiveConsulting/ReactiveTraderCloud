@@ -8,9 +8,14 @@
 
 nav.navbar {
   margin-bottom: 4px;
+  -webkit-app-region: drag;
 }
 .nav {
+  ul, a {
+    -webkit-app-region: no-drag;
+  }
   &.nav-status {
+    -webkit-app-region: no-drag;
     padding-top: 8px;
     padding-right: 8px;
     .service-status {

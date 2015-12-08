@@ -1,0 +1,35 @@
+{
+    "devtools_port": 9090,
+    "startup_app": {
+        "name": "reactivetrader",
+        "url": "http://localhost:3000/",
+        "uuid": "reactivetrader",
+        "applicationIcon": "http://localhost:3000/favicon.ico",
+        "autoShow": true,
+        "defaultWidth": 480,
+        "maxWidth": 1980,
+        "minWidth": 480,
+        "maxHeight": 50,
+        "defaultHeight": 50,
+        "minHeight": 50,
+        "defaultTop": 50,
+        "defaultLeft": 10,
+        "resizable": false,
+        "maximizable": false,
+        "frame": false,
+        "cornerRounding": {
+            "width": 5,
+            "height": 5
+        }
+    },
+    "runtime": {
+        "arguments": "",
+        "version": "stable"
+    },
+    "shortcut": {
+        "company": "Reactive Trader",
+        "description": "",
+        "icon": "http://localhost:3000/favicon.ico",
+        "name": "reactivetrader"
+    }
+}

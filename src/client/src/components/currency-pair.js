@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
-import Popout from 'react-popout';
+import Popout from '../utils/popout';
 
 import numeral from 'numeral';
 import utils from '../utils';
@@ -254,6 +254,30 @@ class CurrencyPair extends React.Component {
           title     = pair.substr(0, 3) + ' / ' + pair.substr(3, 3),
           className = 'currency-pair animated flipInX ' + state;
 
+    const popupAttributes = {
+      url: '/tile',
+      title: title,
+      options: {
+        width: 332,
+        height: 190,
+        resizable: false,
+        scrollable: false
+      },
+      onChange: size => this.setState({size})
+    };
+
+    window.fin && Object.assign(popupAttributes.options, {
+      url: '/tile',
+      title: title,
+      name: pair,
+      defaultWidth: 342,
+      defaultHeight: 191,
+      resizable: false,
+      scrollable: false,
+      frame: false,
+      autoShow: true
+    });
+
     // any ACK or failed messages will come via state.info / last response
     let message = info ? (this.lastResponse || this.renderMessage(response)) : false;
 
@@ -284,7 +308,7 @@ class CurrencyPair extends React.Component {
     </div>;
 
     return this.state.tearoff ?
-      <Popout url='/tile' title={title} options={{width: 332, height: 190, resizable: 'no'}} onClosing={() => this.toggleTearoff()}>{tileInnerContent}</Popout> :
+      <Popout {...popupAttributes}>{tileInnerContent}</Popout> :
       tileInnerContent;
   }
 }
