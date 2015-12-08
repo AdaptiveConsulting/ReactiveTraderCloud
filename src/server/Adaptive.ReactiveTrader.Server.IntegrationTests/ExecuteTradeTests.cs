@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
@@ -16,6 +18,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         private string _blotterServiceInstance;
         private string _analyticsServiceInstance;
         private readonly CancellationTokenSource _timeoutCancellationTokenSource;
+        private readonly IObservable<dynamic> _heartbeatStream;
         private const string BlotterUpdatesReplyTo = "blotterReplyTo";
         private const string AnalyticsUpdatesReplyTo = "analyticsReplyTo";
 
@@ -23,7 +26,18 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         {
             var broker = new TestBroker();
             _channel = broker.OpenChannel().Result;
-            _executionServiceInstance = _channel.GetServiceInstance("execution").Result;
+
+            _heartbeatStream = _channel.RealmProxy.Services.GetSubject<dynamic>("status")
+                .Publish()
+                .RefCount();
+
+            _executionServiceInstance = _heartbeatStream
+                .Where(hb => hb.Type == "execution")
+                .Select(hb => hb.Instance)
+                .Take(1)
+                .ToTask()
+                .Result;
+
             _timeoutCancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -33,7 +47,11 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             var pass = false;
             var testCcyPair = "XXXXXB";
 
-            _blotterServiceInstance = await _channel.GetServiceInstance("blotter");
+            _blotterServiceInstance = await _heartbeatStream
+                .Where(hb => hb.Type == "blotter")
+                .Select(hb => hb.Instance)
+                .Take(1)
+                .ToTask();
 
             // this is the callback when the blotter receives the executed trade notification
             Action<dynamic> blotterCallbackAssertion = d =>
@@ -77,22 +95,35 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             var pass = false;
             var testCcyPair = "XXXXXA";
 
-            _analyticsServiceInstance = await _channel.GetServiceInstance("analytics");
+            _analyticsServiceInstance = await _heartbeatStream
+                .Where(hb => hb.Type == "analytics")
+                .Select(hb => hb.Instance)
+                .Take(1)
+                .ToTask();
 
-            // this is the callback when the blotter receives the executed trade notification
+            // this is the callback when the analytics svc receives the executed trade notification
             Action<dynamic> analyticsCallbackAssertion = d =>
             {
-                            Console.WriteLine(d);
+                foreach (var dto in d)
+                {
+                    foreach (var currentPosition in dto.CurrentPositions)
+                    {
+                        if (currentPosition.Symbol == testCcyPair)
+                        {
+                            Console.WriteLine(currentPosition);
                             // set the assertion
                             pass = true;
                             _timeoutCancellationTokenSource.Cancel(false);
+                        }
+                    }
+                }
             };
 
             await _channel.RealmProxy.TopicContainer
                 .GetTopicByUri(AnalyticsUpdatesReplyTo)
                 .Subscribe(new WampSubscriber(analyticsCallbackAssertion), new SubscribeOptions());
 
-            // subscribe to blotter with the callback
+            // subscribe to analytics with the callback
             _channel.RealmProxy.RpcCatalog.Invoke(
                 new RpcCallback(() => { }),
                 new CallOptions(),
