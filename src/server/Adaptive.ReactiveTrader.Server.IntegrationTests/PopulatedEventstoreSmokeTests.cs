@@ -23,7 +23,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
             es.Connection.SubscribeToAllFrom(Position.Start, false, (_, e) =>
             {
-                if (e.Event.EventType == CurrencyPairActivatedEvent.Type)
+                if (e.Event.EventType == CurrencyPairCreatedEvent.Type)
                 {
                     testPassed = true;
                     timeoutCancellationTokenSource.Cancel(false);
