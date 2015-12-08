@@ -26,19 +26,13 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         {
             var pass = false;
 
-            Log.Info("Starting ShouldContainSomeReferenceData test");
+            var testReplyTo = "referenceDataSmokeTest";
 
             var channel = await _broker.OpenChannel();
 
-            Log.Info("Opened channel to broker");
+            var serviceInstance = await channel.GetServiceInstance("reference");
 
-            var refHeartbeat = await channel.RealmProxy.Services.GetSubject<dynamic>("status")
-                .Where(heartbeat => heartbeat.Type == "reference")
-                .Take(1)
-                .ToTask();
-
-            Log.Info("Got reference svc heartbeat, instance: " + refHeartbeat.Instance);
-            Log.Info("Calling get reference data");
+            Log.Info("Got reference svc heartbeat, instance: " + serviceInstance);
 
             var timeoutCancellationTokenSource = new CancellationTokenSource();
 
@@ -55,26 +49,29 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                 }
 
                 pass = true;
-
-
-                Console.WriteLine("All OK, cancelling timeout");
                 timeoutCancellationTokenSource.Cancel(false);
             };
 
             dynamic dto = new
             {
-                ReplyTo = "refSmokeTest",
+                ReplyTo = testReplyTo,
                 Payload = new NothingDto()
             };
 
-            await channel.RealmProxy.TopicContainer.GetTopicByUri("refSmokeTest").Subscribe(new WampSubscriber(callback), new SubscribeOptions());
+            await channel.RealmProxy.TopicContainer
+                .GetTopicByUri(testReplyTo)
+                .Subscribe(new WampSubscriber(callback), new SubscribeOptions());
 
-            channel.RealmProxy.RpcCatalog.Invoke(new RpcCallback(() => { }), new CallOptions(),
-                $"{refHeartbeat.Instance}.getCurrencyPairUpdatesStream", new[] { dto });
+            channel.RealmProxy.RpcCatalog.Invoke(
+                new RpcCallback(() => { }),
+                new CallOptions(),
+                $"{serviceInstance}.getCurrencyPairUpdatesStream",
+                new object[] {dto});
 
             try
             {
                 await Task.Delay(TimeSpan.FromSeconds(10), timeoutCancellationTokenSource.Token);
+                Console.WriteLine("Test timed out after 10 seconds");
             }
             catch (TaskCanceledException)
             {
