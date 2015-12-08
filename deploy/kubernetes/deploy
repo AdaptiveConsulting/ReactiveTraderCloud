@@ -38,21 +38,21 @@ fi
 # generate manifest
 cd templates
   # namespace
-  generate_ns_manifest $namespace
+  ./generate_ns_manifest $namespace
   
   # services
-  generate_svc_manifest web $namespace
-  generate_svc_manifest broker $namespace
-  generate_svc_manifest eventstore $namespace
+  ./generate_svc_manifest web $namespace
+  ./generate_svc_manifest broker $namespace
+  ./generate_svc_manifest eventstore $namespace
 
   # replication controller
-  generate_rc_manifest blotter           $namespace $build
-  generate_rc_manifest broker            $namespace $build
-  generate_rc_manifest eventstore        $namespace $build
-  generate_rc_manifest pricing           $namespace $build
-  generate_rc_manifest referencedataread $namespace $build
-  generate_rc_manifest tradeexecution    $namespace $build
-  generate_rc_manifest web               $namespace $build
+  ./generate_rc_manifest blotter           $namespace $build
+  ./generate_rc_manifest broker            $namespace $build
+  ./generate_rc_manifest eventstore        $namespace $build
+  ./generate_rc_manifest pricing           $namespace $build
+  ./generate_rc_manifest referencedataread $namespace $build
+  ./generate_rc_manifest tradeexecution    $namespace $build
+  ./generate_rc_manifest web               $namespace $build
   
 cd - > garbage && rm templates/garbage
 
@@ -77,7 +77,7 @@ cd - > garbage && rm templates/garbage
 
 echo " "
 echo " "
-kst $namespace
+./kst $namespace
 echo " "
 echo " "
 echo " Wait a moment and run <kst $namespace> to see the PODS generated on your cluster"
