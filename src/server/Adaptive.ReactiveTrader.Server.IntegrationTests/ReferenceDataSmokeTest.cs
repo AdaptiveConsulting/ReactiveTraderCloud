@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
-using WampSharp.Core.Serialization;
+using Common.Logging;
 using WampSharp.V2.Core.Contracts;
-using WampSharp.V2.PubSub;
 using Xunit;
 
 namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
     public class ReferenceDataSmokeTest
     {
-        private TestBroker _broker;
+        protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataSmokeTest>();
+
+        private readonly TestBroker _broker;
 
         public ReferenceDataSmokeTest()
         {
@@ -26,25 +26,37 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         {
             var pass = false;
 
-            Console.WriteLine("Starting ShouldContainSomeReferenceData test");
+            Log.Info("Starting ShouldContainSomeReferenceData test");
 
             var channel = await _broker.OpenChannel();
 
-            Console.WriteLine("Opened channel to broker");
+            Log.Info("Opened channel to broker");
 
             var refHeartbeat = await channel.RealmProxy.Services.GetSubject<dynamic>("status")
                 .Where(heartbeat => heartbeat.Type == "reference")
                 .Take(1)
                 .ToTask();
 
-            Console.WriteLine("Got reference svc heartbeat, instance: " + refHeartbeat.Instance);
-            Console.WriteLine("Calling get reference data");
+            Log.Info("Got reference svc heartbeat, instance: " + refHeartbeat.Instance);
+            Log.Info("Calling get reference data");
 
             var timeoutCancellationTokenSource = new CancellationTokenSource();
 
-            Action callback = () =>
+            Action<dynamic> callback = d =>
             {
+                var updates = d as dynamic[];
+
+                if (updates == null || updates.Length == 0)
+                    return;
+
+                foreach (var x in updates)
+                {
+                    Console.WriteLine(x);
+                }
+
                 pass = true;
+
+
                 Console.WriteLine("All OK, cancelling timeout");
                 timeoutCancellationTokenSource.Cancel(false);
             };
@@ -54,43 +66,21 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                 ReplyTo = "refSmokeTest",
                 Payload = new NothingDto()
             };
-            
+
+            await channel.RealmProxy.TopicContainer.GetTopicByUri("refSmokeTest").Subscribe(new WampSubscriber(callback), new SubscribeOptions());
+
+            channel.RealmProxy.RpcCatalog.Invoke(new RpcCallback(() => { }), new CallOptions(),
+                $"{refHeartbeat.Instance}.getCurrencyPairUpdatesStream", new[] { dto });
+
             try
             {
-                await channel.RealmProxy.TopicContainer.GetTopicByUri("refSmokeTest").Subscribe(new WampSubscriber(), options: new SubscribeOptions());
-
-                channel.RealmProxy.RpcCatalog.Invoke(new RpcCallback(callback), new CallOptions(),
-                    $"{refHeartbeat.Instance}.getCurrencyPairUpdatesStream", new[]
-                    {
-                        dto
-                    });
-
                 await Task.Delay(TimeSpan.FromSeconds(10), timeoutCancellationTokenSource.Token);
             }
-            catch (Exception e)
+            catch (TaskCanceledException)
             {
-                Console.WriteLine(e);
             }
+
             Assert.True(pass);
-        }
-    }
-
-    public class WampSubscriber : IWampRawTopicClientSubscriber
-    {
-        public void Event<TMessage>(IWampFormatter<TMessage> formatter, long publicationId, EventDetails details)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Event<TMessage>(IWampFormatter<TMessage> formatter, long publicationId, EventDetails details, TMessage[] arguments)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Event<TMessage>(IWampFormatter<TMessage> formatter, long publicationId, EventDetails details, TMessage[] arguments,
-            IDictionary<string, TMessage> argumentsKeywords)
-        {
-            throw new NotImplementedException();
         }
     }
 }
