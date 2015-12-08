@@ -11,12 +11,7 @@ dependencies:
     - docker info
     # get config
     - cp deploy/sample.config deploy/config
-    # pull base containers
-    - . ./deploy/config && docker pull $nginxContainer:$vNginx
-    - . ./deploy/config && docker pull $crossbarContainer:$vCrossbar
-    - . ./deploy/config && docker pull $monoContainer:$vDnx
-    - . ./deploy/config && docker pull $eventstoreContainer:$vEventstore
-    # Insure permissions 
+    # ensure permissions 
     - chmod 755 deploy/docker/prepare
     - chmod 755 deploy/docker/build/servers/build.sh
     - chmod 755 deploy/docker/build/broker/build.sh
