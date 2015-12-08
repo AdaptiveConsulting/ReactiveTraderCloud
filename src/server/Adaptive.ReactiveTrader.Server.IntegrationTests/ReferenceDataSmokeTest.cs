@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
-using Common.Logging;
 using WampSharp.V2.Core.Contracts;
 using Xunit;
 
@@ -12,27 +9,15 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
     public class ReferenceDataSmokeTest
     {
-        protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataSmokeTest>();
-
-        private readonly TestBroker _broker;
-
-        public ReferenceDataSmokeTest()
-        {
-            _broker = new TestBroker();
-        }
-
-        [Fact]
+        //[Fact]
         public async void ShouldContainSomeReferenceData()
         {
             var pass = false;
-
             var testReplyTo = "referenceDataSmokeTest";
 
-            var channel = await _broker.OpenChannel();
+            var channel = await new TestBroker().OpenChannel();
 
             var serviceInstance = await channel.GetServiceInstance("reference");
-
-            Log.Info("Got reference svc heartbeat, instance: " + serviceInstance);
 
             var timeoutCancellationTokenSource = new CancellationTokenSource();
 
@@ -70,8 +55,8 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
             try
             {
-                await Task.Delay(TimeSpan.FromSeconds(10), timeoutCancellationTokenSource.Token);
-                Console.WriteLine("Test timed out after 10 seconds");
+                await Task.Delay(TestHelpers.ResponseTimeout, timeoutCancellationTokenSource.Token);
+                Console.WriteLine($"Test timed out after {TestHelpers.ResponseTimeout.TotalSeconds} seconds");
             }
             catch (TaskCanceledException)
             {
