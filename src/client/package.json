@@ -53,6 +53,7 @@
     "react-popout": "^0.4.0",
     "react-router": "1.0.0-rc4",
     "react-sparklines": "^1.4.2",
+    "rx": "^4.0.7",
     "yargs": "^3.18.0"
   },
   "devDependencies": {
