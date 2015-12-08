@@ -13,7 +13,7 @@ export default class Connection extends system.disposables.DisposableBase {
         this._autobahn = autobahn;
         this._connectionStatusSubject = new Rx.BehaviorSubject(false);
     }
-    get connectionStatus() : rx.Observable<Boolean> {
+    get connectionStatus() : Rx.Observable<Boolean> {
         return this._connectionStatusSubject
             .distinctUntilChanged()
             .asObservable();
@@ -32,19 +32,27 @@ export default class Connection extends system.disposables.DisposableBase {
         this._autobahn.open();
     }
     getTopicStream<T>(topic:string) : Rx.Observable<T> {
-        return rx.Observable.create((o : Rx.Observer<T>) => {
-            var subscription : autobahn.Subscription;
-            this.session.subscribe(topic, response => {
+        let _this = this;
+        return Rx.Observable.create((o : Rx.Observer<T>) => {
+            _log.debug('Requesting topic [{0}]', topic);
+            var subscription;
+            _this._autobahn.session.subscribe(topic, response => {
+                _log.debug('Received response on topic [{0}]', topic);
+                if(_log.isVerboseEnabled) {
+                    _log.verbose('Received response on topic [{0}]. Payload[{1}]', topic, JSON.stringify(response[0]));
+                }
+                _log.debug('Received response on topic [{0}]', topic);
                 o.onNext(response[0]);
             }).then((sub : autobahn.Subscription) =>{
                 // subscription succeeded, subscription is an instance of autobahn.Subscription
+                _log.debug('subscription acked on topic [{0}]', topic);
                 subscription = sub;
             }, (error : autobahn.Error)=> {
                 // subscription failed, error is an instance of autobahn.Error
                 _log.error('Error on topic {0}: {1}', topic, error);
             });
             return () => {
-                this.session.unsubscribe(subscription).then(
+                _this._autobahn.session.unsubscribe(subscription).then(
                     function (gone) {
                         _log.debug('Successfully unsubscribing from topic {0}', topic);
                     },

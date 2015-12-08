@@ -8,7 +8,7 @@ var levels = {
     error:4
 };
 
-var _currentLevel = levels.debug;
+var _currentLevel = levels.verbose;
 
 var _sink = logEvent => {
     console.log('[' + logEvent.logger + '] [' + logEvent.level + ']: ' + logEvent.message);
@@ -18,8 +18,11 @@ class Logger {
     constructor(name) {
         this._name = name;
     }
+    get isVerboseEnabled() {
+        return _currentLevel <= levels.verbose;
+    }
     verbose(format) {
-        if (_currentLevel <= levels.verbose) {
+        if (this.isVerboseEnabled) {
             var args = Array.prototype.slice.call(arguments, 1);
             this._log('VERBOSE', format, args);
         }

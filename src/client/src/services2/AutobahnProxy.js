@@ -14,8 +14,8 @@ export default class AutobahnProxy {
     open() {
         var _this = this;
         this.connection.onopen = session => {
-            if (_this._onopen) _this._onopen(session);
             _this.session = session;
+            if (_this._onopen) _this._onopen(session);
         };
         this.connection.onclose = (reason : string, details : { reason : string, message : string }) => {
             if (_this._onclose) _this._onclose(reason, details);

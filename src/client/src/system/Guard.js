@@ -31,6 +31,16 @@ export default class Guard {
             doThrow(message);
         }
     }
+    static stringIsNotEmpty(value, message) {
+        if (!isString(value) || value === '') {
+            doThrow(message);
+        }
+    }
+    static isString(value, message) {
+        if (!isString(value)) {
+            doThrow(message);
+        }
+    }
     static isTrue(check, message) {
         if (!check) {
             doThrow(message);
