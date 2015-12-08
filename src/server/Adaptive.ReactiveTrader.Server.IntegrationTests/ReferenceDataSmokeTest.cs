@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
@@ -9,7 +10,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
     public class ReferenceDataSmokeTest
     {
-        //[Fact]
+        [Fact]
         public async void ShouldContainSomeReferenceData()
         {
             var pass = false;
@@ -17,7 +18,10 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
             var channel = await new TestBroker().OpenChannel();
 
-            var serviceInstance = await channel.GetServiceInstance("reference");
+            var serviceInstance = await channel.RealmProxy.Services.GetSubject<dynamic>("status")
+                .Where(hb => hb.Type == "reference")
+                .Select(hb => hb.Instance)
+                .Take(1);
 
             var timeoutCancellationTokenSource = new CancellationTokenSource();
 
