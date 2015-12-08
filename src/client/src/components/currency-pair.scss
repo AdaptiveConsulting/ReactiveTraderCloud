@@ -86,6 +86,13 @@
         padding-bottom: 0;
       }
     }
+
+    i.glyphicon-remove {
+      display: none;
+      .tile & {
+        display: inline-block;
+      }
+    }
   }
   .currency-pair-actions {
     position: relative;

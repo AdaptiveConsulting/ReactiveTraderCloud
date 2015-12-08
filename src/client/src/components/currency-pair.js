@@ -11,7 +11,6 @@ import Direction from './cp-parts/cp-direction';
 import Sizer from './cp-parts/cp-sizer';
 import Pricer from './cp-parts/cp-pricer';
 
-
 /**
  * @class CurrencyPairs
  * @extends {React.Component}
@@ -263,7 +262,7 @@ class CurrencyPair extends React.Component {
         resizable: false,
         scrollable: false
       },
-      onChange: size => this.setState({size})
+      onClosing: ()=> this.setState({tearoff:false})
     };
 
     window.fin && Object.assign(popupAttributes.options, {
@@ -287,6 +286,7 @@ class CurrencyPair extends React.Component {
     const tileInnerContent = <div className={className}>
       <div className='currency-pair-title'>
         {title} <i className='fa fa-plug animated infinite fadeIn'/>
+        <i className='glyphicon glyphicon-remove pull-right' onClick={(e) => this.toggleTearoff(e)}/>
         <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right' onClick={(e) => this.toggleTearoff(e)}/>
         <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
       </div>

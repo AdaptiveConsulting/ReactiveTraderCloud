@@ -1,6 +1,7 @@
 import React                          from 'react';
 import ReactDOM                       from 'react-dom';
 import ReactPopout                    from 'react-popout';
+import Closer from '../components/closer';
 import { assign, reduce, isFunction } from 'lodash';
 
 const divId = 'popout-content-container';
@@ -34,7 +35,7 @@ class Popout extends ReactPopout {
       // Some browsers don't call onload in some cases for popup windows (looking at you firefox).
       // If anyone wants to make this better, that would be awesome
       if (container){
-        let existing = document.getElementById();
+        let existing = document.getElementById(divId);
         if (!existing){
           ReactDOM.unmountComponentAtNode(container);
           container = null;
@@ -43,11 +44,26 @@ class Popout extends ReactPopout {
         }
       }
 
-      document.title = title;
       container = document.createElement('div');
       container.id = divId;
-      document.body.appendChild(container);
-      ReactDOM.render(children, container);
+
+      // need to wait for nav to new route to finish, sometimes it is too slow.
+      const routeHasFinishedLoading = () => {
+        let rootNode = win.document.querySelector('#root .tile');
+
+        // retry when possible.
+        if (!rootNode) return window.requestAnimationFrame(routeHasFinishedLoading);
+
+        rootNode.appendChild(container);
+
+        document.body.classList.add('tearoff');
+        window.fin && document.body.classList.add('openfin');
+
+        document.title = title;
+      };
+
+      routeHasFinishedLoading();
+
       api.update = newComponent =>{
         ReactDOM.render(newComponent, container);
       };
@@ -56,13 +72,14 @@ class Popout extends ReactPopout {
 
     win.addEventListener('load', onloadhandler);
 
-    onloadhandler();
+    // ensure it runs if already fired
+    win.document.readyState == 'complete' && onloadhandler();
 
     return api;
   }
 
   openOpenFinWindow(){
-    const win = new window.fin.desktop.Window(Object.assign({}, this.defaultOptions, this.props.options), () =>{
+    const win = new window.fin.desktop.Window(Object.assign({}, this.props.options), () =>{
       this.setState({
         openedWindow: this.attachEvents(win.contentWindow)
       });
