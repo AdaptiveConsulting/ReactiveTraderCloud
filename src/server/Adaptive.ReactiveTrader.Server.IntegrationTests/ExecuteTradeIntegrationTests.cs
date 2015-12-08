@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
-    public class ExecuteTradeTests
+    public class ExecuteTradeIntegrationTests
     {
         private readonly IWampChannel _channel;
         private readonly string _executionServiceInstance;
@@ -22,7 +22,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         private const string BlotterUpdatesReplyTo = "blotterReplyTo";
         private const string AnalyticsUpdatesReplyTo = "analyticsReplyTo";
 
-        public ExecuteTradeTests()
+        public ExecuteTradeIntegrationTests()
         {
             var broker = new TestBroker();
             _channel = broker.OpenChannel().Result;
@@ -32,7 +32,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                 .RefCount();
 
             _executionServiceInstance = _heartbeatStream
-                .Where(hb => hb.Type == "execution")
+                .Where(hb => hb.Type == ServiceTypes.Execution)
                 .Select(hb => hb.Instance)
                 .Take(1)
                 .ToTask()
@@ -48,10 +48,9 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             var testCcyPair = "XXXXXB";
 
             _blotterServiceInstance = await _heartbeatStream
-                .Where(hb => hb.Type == "blotter")
+                .Where(hb => hb.Type == ServiceTypes.Blotter)
                 .Select(hb => hb.Instance)
-                .Take(1)
-                .ToTask();
+                .Take(1);
 
             // this is the callback when the blotter receives the executed trade notification
             Action<dynamic> blotterCallbackAssertion = d =>
@@ -96,10 +95,9 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             var testCcyPair = "XXXXXA";
 
             _analyticsServiceInstance = await _heartbeatStream
-                .Where(hb => hb.Type == "analytics")
+                .Where(hb => hb.Type == ServiceTypes.Analytics)
                 .Select(hb => hb.Instance)
-                .Take(1)
-                .ToTask();
+                .Take(1);
 
             // this is the callback when the analytics svc receives the executed trade notification
             Action<dynamic> analyticsCallbackAssertion = d =>
@@ -163,8 +161,8 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             try
             {
                 // set timeout
-                await Task.Delay(TestHelpers.ResponseTimeout, _timeoutCancellationTokenSource.Token);
-                Console.WriteLine($"Test timed out after {TestHelpers.ResponseTimeout.TotalSeconds} seconds");
+                await Task.Delay(TestConstants.ResponseTimeout, _timeoutCancellationTokenSource.Token);
+                Console.WriteLine($"Test timed out after {TestConstants.ResponseTimeout.TotalSeconds} seconds");
             }
             catch (TaskCanceledException)
             {

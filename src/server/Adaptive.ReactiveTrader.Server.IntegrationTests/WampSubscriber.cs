@@ -17,20 +17,18 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
         public void Event<TMessage>(IWampFormatter<TMessage> formatter, long publicationId, EventDetails details)
         {
-            Console.WriteLine("Callback overload 1");
+            Console.WriteLine("received response with no arguments");
             _callback(null);
         }
 
         public void Event<TMessage>(IWampFormatter<TMessage> formatter, long publicationId, EventDetails details, TMessage[] arguments)
         {
-            Console.WriteLine("Callback overload 2");
             _callback(arguments);
         }
 
         public void Event<TMessage>(IWampFormatter<TMessage> formatter, long publicationId, EventDetails details, TMessage[] arguments,
             IDictionary<string, TMessage> argumentsKeywords)
         {
-            Console.WriteLine("Callback overload 3");
             _callback(arguments);
         }
     }

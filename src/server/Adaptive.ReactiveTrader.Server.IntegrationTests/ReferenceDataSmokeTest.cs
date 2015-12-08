@@ -2,6 +2,7 @@
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using WampSharp.V2.Core.Contracts;
 using Xunit;
@@ -19,7 +20,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             var channel = await new TestBroker().OpenChannel();
 
             var serviceInstance = await channel.RealmProxy.Services.GetSubject<dynamic>("status")
-                .Where(hb => hb.Type == "reference")
+                .Where(hb => hb.Type == ServiceTypes.Reference)
                 .Select(hb => hb.Instance)
                 .Take(1);
 
@@ -59,8 +60,8 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
             try
             {
-                await Task.Delay(TestHelpers.ResponseTimeout, timeoutCancellationTokenSource.Token);
-                Console.WriteLine($"Test timed out after {TestHelpers.ResponseTimeout.TotalSeconds} seconds");
+                await Task.Delay(TestConstants.ResponseTimeout, timeoutCancellationTokenSource.Token);
+                Console.WriteLine($"Test timed out after {TestConstants.ResponseTimeout.TotalSeconds} seconds");
             }
             catch (TaskCanceledException)
             {
