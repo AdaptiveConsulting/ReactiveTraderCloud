@@ -11,13 +11,13 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
     public class PopulatedEventstoreSmokeTests
     {
         [Fact]
-        public async void CcyPairActivatedEventShouldExist()
+        public async void CcyPairEventShouldExist()
         {
+            Console.WriteLine("CcyPairEventShouldExist test started");
+
             var testPassed = false;
 
             var es = new ExternalEventStore(new Uri(TestUrls.EventstoreUrl));
-
-            await es.Connection.ConnectAsync();
 
             var timeoutCancellationTokenSource = new CancellationTokenSource();
 
@@ -25,17 +25,21 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             {
                 if (e.Event.EventType == CurrencyPairCreatedEvent.Type)
                 {
+                    Console.WriteLine("event seen");
                     testPassed = true;
                     timeoutCancellationTokenSource.Cancel(false);
                 }
             });
 
+            await es.Connection.ConnectAsync();
+
             try
             {
-                await Task.Delay(TimeSpan.FromSeconds(5), timeoutCancellationTokenSource.Token);
+                await Task.Delay(TimeSpan.FromSeconds(10), timeoutCancellationTokenSource.Token);
             }
             catch (TaskCanceledException)
             {
+                Console.WriteLine("delay cancelled");
             }
 
             Assert.True(testPassed);
