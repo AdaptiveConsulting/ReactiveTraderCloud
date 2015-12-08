@@ -12,6 +12,8 @@ export default class PricingService {
     getPriceUpdates(symbol : string) {
         return rx.Observable.create(
             observer => {
+
+
                 _log.debug('Requesting price for {0}', symbol);
                 var disposable = rx.Disposable.empty;
                 try {

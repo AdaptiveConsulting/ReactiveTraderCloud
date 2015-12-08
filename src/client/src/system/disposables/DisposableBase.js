@@ -1,9 +1,8 @@
-import rx from 'rx';
-import system from '../system';
+import Rx from 'rx';
 
 class DisposableBase {
     constructor() {
-        this._disposables = new rx.Disposable.CompositeDisposable();
+        this._disposables = new Rx.CompositeDisposable();
     }
     get isDisposed() {
         return this._disposables.isDisposed;

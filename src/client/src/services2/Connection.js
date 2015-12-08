@@ -1,44 +1,36 @@
 import Rx from 'rx';
 import system from 'system';
-import autobahn from 'autobahn';
 import model from './model';
+import AutobahnProxy from './AutobahnProxy';
 
 var _log : system.logger.Logger = system.logger.create('Connection');
 
 export default class Connection extends system.disposables.DisposableBase {
-
-    _url : string;
-    _realm : string;
+    _autobahn : AutobahnProxy;
     _connectionStatusSubject : Rx.BehaviorSubject<Boolean>;
-
-    constructor(url : string, realm : string){
+    constructor(autobahn: AutobahnProxy){
         super();
-        this._url = url;
-        this._realm = realm;
+        this._autobahn = autobahn;
         this._connectionStatusSubject = new Rx.BehaviorSubject(false);
     }
-
     get connectionStatus() : rx.Observable<Boolean> {
-        return this._connectionStatusSubject.asObservable();
+        return this._connectionStatusSubject
+            .distinctUntilChanged()
+            .asObservable();
     }
-
-    connect() {
-        this.connection = new autobahn.Connection({
-            url : this._url,
-            realm : this._realm,
-            use_es6_promises: true,
-            max_retries: -1 // unlimited retries
-        });
-        this.connection.onopen = session =>{
+    open() {
+        _log.info('Opening connection');
+        this._autobahn.onopen(session =>{
+            _log.info('Connected');
             this._connectionStatusSubject.onNext(true);
             this.session = session;
-        };
-        this.connection.onclose = () =>{
+        });
+        this._autobahn.onclose((reason, details) => {
+            _log.error('connection lost, reason [{0}]', reason);
             this._connectionStatusSubject.onNext(false);
-        };
-        this.open();
+        });
+        this._autobahn.open();
     }
-
     getTopicStream<T>(topic:string) : Rx.Observable<T> {
         return rx.Observable.create((o : Rx.Observer<T>) => {
             var subscription : autobahn.Subscription;
