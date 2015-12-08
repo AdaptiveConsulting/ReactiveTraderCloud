@@ -10,7 +10,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
     public class PopulatedEventstoreSmokeTests
     {
-        [Fact]
+//        [Fact]
         public async void CcyPairEventShouldExist()
         {
             Console.WriteLine("CcyPairEventShouldExist test started");
