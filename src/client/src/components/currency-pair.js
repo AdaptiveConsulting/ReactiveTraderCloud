@@ -252,30 +252,6 @@ class CurrencyPair extends React.Component {
     const execute   = this.execute.bind(this),
           title     = pair.substr(0, 3) + ' / ' + pair.substr(3, 3);
 
-    const popupAttributes = {
-      url: '/tile',
-      title: title,
-      options: {
-        width: 332,
-        height: 190,
-        resizable: false,
-        scrollable: false
-      },
-      onClosing: ()=> this.setState({tearoff:false})
-    };
-
-    window.fin && Object.assign(popupAttributes.options, {
-      url: '/tile',
-      title: title,
-      name: pair,
-      defaultWidth: 342,
-      defaultHeight: 191,
-      resizable: false,
-      scrollable: false,
-      frame: false,
-      autoShow: true
-    });
-
     // any ACK or failed messages will come via state.info / last response
     let message = info ? (this.lastResponse || this.renderMessage(response)) : false;
 
