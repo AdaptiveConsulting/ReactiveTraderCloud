@@ -1,12 +1,15 @@
 #! /bin/bash
 
-./warning.sh
+. ../../../config
 
-echo " "
-echo "tag then run:"
-echo "  docker push weareadaptive/gcloud:tag"
-echo "  docker push weareadaptive/gcloud:latest"
-echo "then:"
-echo "  docker push weareadaptive/kubectl:tag"
-echo "  docker push weareadaptive/kubectl:latest"
-echo " "
+if [[ $gcloudContainer = "" ]];then
+  echo "gcloud-build: container name required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vGcloud = "" ]];then
+  echo "gcloud-build: container name required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+
+docker push $gcloudContainer:$vGcloud
+docker push $gcloudContainer:latest

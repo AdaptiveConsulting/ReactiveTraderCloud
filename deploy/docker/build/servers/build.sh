@@ -28,7 +28,7 @@ fi
 
 
 mkdir -p ./build
-rsync -aq ../../../../src/server ./build/
+cp -r ../../../../src/server ./build/
 sed "s/__VDNX__/$vDnx/g" ./template.Dockerfile > ./build/Dockerfile
 
 
