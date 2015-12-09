@@ -203,12 +203,12 @@ class CurrencyPairs extends React.Component {
     });
   }
 
-  tearOff(pair){
-    pair.tearoff = !pair.tearoff;
+  tearOff(pair, state){
+    pair.tearoff = typeof state !== 'undefined' ? state : !pair.tearoff;
 
-    //this.setState({
-    //  pairs: this.state.pairs
-    //});
+    this.setState({
+      pairs: this.state.pairs
+    });
 
     const map = {};
     _.forEach(this.state.pairs, (pair) => {
@@ -227,7 +227,7 @@ class CurrencyPairs extends React.Component {
       {pairs.length ? pairs.map((cp) => {
         const className = 'currency-pair animated flipInX ' + cp.state;
 
-        return <Container key={cp.id} title={cp.pair} onTearoff={() => this.tearOff(cp)} tearoff={cp.tearoff} className={className}>
+        return <Container key={cp.id} title={cp.pair} onTearoff={(state) => this.tearOff(cp, state)} tearoff={cp.tearoff} className={className}>
           <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
             pair={cp.pair}
             size="100m"

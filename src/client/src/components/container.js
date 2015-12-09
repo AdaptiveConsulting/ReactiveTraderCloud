@@ -11,7 +11,7 @@ class Container extends React.Component {
 
   toggleTearoff(e){
     e && e.preventDefault();
-    this.props.onTearoff();
+    this.props.onTearoff(!this.props.tearoff);
   }
 
   render(){
@@ -29,17 +29,20 @@ class Container extends React.Component {
             onClosing: ()=> this.toggleTearoff()
           };
 
-      window.fin && Object.assign(popupAttributes.options, {
-        url: '/tile',
-        title: title,
-        name: title,
-        defaultWidth: 342,
-        defaultHeight: 191,
-        resizable: false,
-        scrollable: false,
-        frame: false,
-        autoShow: true
-      });
+      if (window.fin){
+        Object.assign(popupAttributes.options, {
+          url: '/tile',
+          title: title,
+          name: title,
+          defaultWidth: 332,
+          defaultHeight: 191,
+          resizable: false,
+          scrollable: false,
+          frame: false,
+          autoShow: true
+        });
+        delete popupAttributes.onClosing;
+      }
 
     return !tearoff ?
       <div className={this.props.className}>
@@ -51,7 +54,7 @@ class Container extends React.Component {
       <Popout {...popupAttributes}>
         <div className={this.props.className}>
           <div className='container-control'>
-            <i className='glyphicon glyphicon-remove pull-right' onClick={(e) => this.toggleTearoff(e)}/>
+            <i className='glyphicon glyphicon-remove' onClick={(e) => this.toggleTearoff(e)}/>
           </div>
           {this.props.children}
         </div>

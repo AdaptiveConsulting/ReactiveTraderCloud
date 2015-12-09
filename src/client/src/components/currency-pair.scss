@@ -77,9 +77,12 @@
     font-weight: bold;
     color: white;
     padding-left: 8px;
-    padding-right: 28px;
+    margin-right: 28px;
     border-bottom: 1px solid $gray-dark;
     i {
+      .tearoff & {
+        -webkit-app-region: no-drag;
+      }
       font-size: 16px;
       color: $gray-light;
       &.glyphicon {
