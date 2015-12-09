@@ -35,7 +35,6 @@ test:
       - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run a && while true; do echo ping; sleep 60; done"
       - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
       - docker ps
-      - cd deploy/circleCi && ls && chmod 755 test.sh && ./test.sh
 
 deployment:
   hub:

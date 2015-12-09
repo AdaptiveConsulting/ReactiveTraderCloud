@@ -1,5 +1,11 @@
 #! /bin/bash
 
+# The command does not work on every environment. 
+# Some test need to be added to know the Host OS
+echo "This command is broken for now. Exiting"
+exit 1
+
+
 # USAGE
 # =====
 lastMasterSuccessBuild="lastMasterSuccessBuild"

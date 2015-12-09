@@ -1,7 +1,7 @@
 # docker
 
 You will find here:
-- `build`: the src to generate the containers for the project
+- `a build folder`: the src to generate the containers for the project
   - `base containers` stored on `weareadaptive` at `dockerhub`:
     - `crossbar`: Base OS with crossbar installed
     - `eventstore`: Base OS with eventstore installed
@@ -15,7 +15,7 @@ You will find here:
     - `web`: Auto running container that start the web client.
     - `populatedEventstore`: Auto running container that start the eventstore.
     - `servers`: Ship with the .NET code. Every part are ready to run on a start command.
-- `run`: the code to start ReactiveTrader using containers.
+- `a run folder`: the code to start ReactiveTrader using containers.
   - web
   - broker
   - eventstore
@@ -42,7 +42,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 ```
 
-### Docker Quickstart Terminal tips
+### Docker Quickstart Terminal tips (For windows 7)
 
 - go to `properties` (click on left top corner -> Properties)
 - Check `QuickEdit Mode` and `Insert Mode`, 
@@ -52,7 +52,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 - `.bashrc` file is named `.bash_profile` and need to be placed in your user folder
 - on windows, you can create file starting with dot like this: `.bash_profile.` will create `.bash_profile`
 
-### Some known issues
+### Some known issues (Toolbox on Windows and MacOSX)
 
-The different scripts here will need to share code with the different containers. On linux you don't have anything to do. On windows and linux, the sharing is between the container and the virtual machine. The virtual machine is defined to share your home folder (/c/Users/ for windows). If your git clone folder is a children folder of your home user, it's fine. Else you need to open VirtualBox and share tht specific folder.
+The different scripts here will need to share code with the different containers. On Windows and Mac, the sharing is between the container and the virtual machine. The virtual machine is defined to share your home folder (/c/Users/ for windows or /Users for mac). If your git clone folder is a children folder of your home user, it's fine. Else you need to open VirtualBox and share that specific folder.
 
