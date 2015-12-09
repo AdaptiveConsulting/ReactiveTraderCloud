@@ -5,7 +5,6 @@
 mkdir -p ~/docker
 
 echo "Saving containers"
-docker save ubuntu:$vUbuntu                   > ~/docker/ubuntu.tar
 docker save $monoContainer:$vDnx              > ~/docker/mono.tar
 docker save $crossbarContainer:$vCrossbar     > ~/docker/crossbar.tar
 docker save $eventstoreContainer:$vEventstore > ~/docker/eventstore.tar
