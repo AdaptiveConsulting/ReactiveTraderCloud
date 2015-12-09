@@ -61,9 +61,9 @@ cd - > garbage && rm templates/garbage
   ./kubectl create -f manifests/ns.yml
   
   # service
-  ./kubectl create -f manifests/broker-svc.yml
-  ./kubectl create -f manifests/eventstore-svc.yml
-  ./kubectl create -f manifests/web-svc.yml
+  ./kubectl create -f manifests/broker-svc.yml 
+  ./kubectl create -f manifests/eventstore-svc.yml 
+  ./kubectl create -f manifests/web-svc.yml 
   
   # replication controller
   ./kubectl create -f manifests/web-rc.yml
