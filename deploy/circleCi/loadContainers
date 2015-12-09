@@ -1,8 +1,10 @@
 #! /bin/bash
 
 echo "Loading containers"
-if [[ -e ~/docker/ubuntu.tar ]]; then docker load -i ~/docker/ubuntu.tar; fi
-if [[ -e ~/docker/mono.tar ]]; then docker load -i ~/docker/mono.tar; fi
-if [[ -e ~/docker/crossbar.tar ]]; then docker load -i ~/docker/crossbar.tar; fi
-if [[ -e ~/docker/eventstore.tar ]]; then docker load -i ~/docker/eventstore.tar; fi
-if [[ -e ~/docker/nginx.tar ]]; then docker load -i ~/docker/nginx.tar; fi
+
+for container in "ubuntu mono crossbar eventstore nginx"
+do
+  if [[ -e ~/docker/$container.tar ]]; then 
+    docker load -i ~/docker/$container.tar && echo "$container loaded" 
+  fi
+done
