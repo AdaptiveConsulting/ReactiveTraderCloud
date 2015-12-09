@@ -1,4 +1,4 @@
-FROM        nginx:1.9.7
+FROM        nginx:__VNGINX__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
 RUN         rm /etc/nginx/nginx.conf
