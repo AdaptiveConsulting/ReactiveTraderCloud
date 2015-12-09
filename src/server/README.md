@@ -1,4 +1,4 @@
-Adaptive Server
+Reactive Trader - Server
 ===============
 
 ## Getting Started on Windows
