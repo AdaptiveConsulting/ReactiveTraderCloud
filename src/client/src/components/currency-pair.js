@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
-import Popout from '../utils/popout';
 
 import numeral from 'numeral';
 import utils from '../utils';
