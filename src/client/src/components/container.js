@@ -16,33 +16,35 @@ class Container extends React.Component {
 
   render(){
     const tearoff = this.props.tearoff,
-          title = this.props.title,
-          popupAttributes = {
-            url: '/tile',
-            title: title,
-            options: {
-              width: 332,
-              height: 190,
-              resizable: false,
-              scrollable: false
-            },
-            onClosing: ()=> this.toggleTearoff()
-          };
+          title = this.props.title;
 
-      if (window.fin){
-        Object.assign(popupAttributes.options, {
-          url: '/tile',
-          title: title,
-          name: title,
-          defaultWidth: 332,
-          defaultHeight: 191,
-          resizable: false,
-          scrollable: false,
-          frame: false,
-          autoShow: true
-        });
-        delete popupAttributes.onClosing;
-      }
+    const popupAttributes = {
+      url: '/#/tile',
+      title: title
+    };
+
+    if (window.fin){
+      popupAttributes.options = {
+        url: '/#/tile',
+        title: title,
+        name: title,
+        defaultWidth: 332,
+        defaultHeight: 191,
+        resizable: false,
+        scrollable: false,
+        frame: false,
+        autoShow: true
+      };
+    }
+    else {
+      popupAttributes.options = {
+        width: 332,
+        height: 190,
+        resizable: false,
+        scrollable: false
+      };
+      popupAttributes.onClosing = ()=> this.toggleTearoff();
+    }
 
     return !tearoff ?
       <div className={this.props.className}>

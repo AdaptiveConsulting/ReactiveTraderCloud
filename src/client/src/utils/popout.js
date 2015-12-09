@@ -1,6 +1,6 @@
-import React                          from 'react';
-import ReactDOM                       from 'react-dom';
-import ReactPopout                    from 'react-popout';
+import React              from 'react';
+import ReactDOM           from 'react-dom';
+import ReactPopout        from 'react-popout';
 
 const CONTAINER_ID         = 'popout-content-container',
       ROOT_ANCHOR_SELECTOR = '#root .tile';
@@ -83,6 +83,9 @@ class Popout extends ReactPopout {
     return api;
   }
 
+  /**
+   * Opens a popup box via the OpenFin API
+   */
   openOpenFinWindow(){
     const win = new window.fin.desktop.Window(Object.assign({}, this.props.options), () =>{
       this.setState({
@@ -91,11 +94,19 @@ class Popout extends ReactPopout {
     });
   }
 
+  /**
+   * Opens a popup box via window.open API
+   */
   openWindow(){
     let options     = Object.assign({}, this.defaultOptions, this.props.options),
         ownerWindow = this.props.window || window;
 
-    const createOptions = () =>{
+    /**
+     * creates key=value pairs, joined by , as required by window.open api.
+     * @param {Object} options
+     * @returns {string}
+     */
+    const createOptions = (options:object) =>{
       const ret = [];
       for (let key in options){
         options.hasOwnProperty(key) && ret.push(key + '=' + (
@@ -108,7 +119,7 @@ class Popout extends ReactPopout {
       return ret.join(',');
     };
 
-    const win = ownerWindow.open(this.props.url || 'about:blank', this.props.title, createOptions());
+    const win = ownerWindow.open(this.props.url || 'about:blank', this.props.title, createOptions(options));
     this.setState({
       openedWindow: this.attachEvents(win)
     });

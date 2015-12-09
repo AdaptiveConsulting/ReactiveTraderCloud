@@ -22,7 +22,7 @@
   },
   "runtime": {
     "arguments": "",
-    "version": "4.40.6.2"
+    "version": "stable"
   },
   "shortcut": {
     "company": "Reactive Trader",
