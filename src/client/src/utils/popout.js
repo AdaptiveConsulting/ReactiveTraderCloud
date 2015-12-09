@@ -1,8 +1,6 @@
 import React                          from 'react';
 import ReactDOM                       from 'react-dom';
 import ReactPopout                    from 'react-popout';
-import Closer from '../components/closer';
-import { assign, reduce, isFunction } from 'lodash';
 
 const CONTAINER_ID         = 'popout-content-container',
       ROOT_ANCHOR_SELECTOR = '#root .tile';
@@ -31,8 +29,12 @@ class Popout extends ReactPopout {
         { title, children } = this.props;
 
     const api = {
-      update(){},
-      close(){}
+      update(newComponent){
+        container && ReactDOM.render(newComponent, container);
+      },
+      close(){
+        win.close();
+      }
     };
 
     /**
@@ -62,14 +64,11 @@ class Popout extends ReactPopout {
         window.fin && document.body.classList.add('openfin');
 
         document.title = title;
+
+        ReactDOM.render(children, container);
       };
 
       routeHasFinishedLoading();
-
-      api.update = newComponent =>{
-        ReactDOM.render(newComponent, container);
-      };
-      api.close = () => win.close();
     };
 
     win.addEventListener('load', onloadhandler);
@@ -93,16 +92,23 @@ class Popout extends ReactPopout {
   }
 
   openWindow(){
-    let effectiveOptions = assign({}, this.defaultOptions, this.props.options),
-        ownerWindow      = this.props.window || window;
+    let options     = Object.assign({}, this.defaultOptions, this.props.options),
+        ownerWindow = this.props.window || window;
 
-    let optionsString = reduce(effectiveOptions, (acc, opt, key) =>{
-      const val = (isFunction(opt)) ? opt(effectiveOptions, ownerWindow) : opt;
-      const part = key + '=' + val;
-      return !acc ? part : acc + ',' + part;
-    }, '');
+    const createOptions = () =>{
+      const ret = [];
+      for (let key in options){
+        options.hasOwnProperty(key) && ret.push(key + '=' + (
+            typeof options[key] === 'function' ?
+              options[key].call(this, options, ownerWindow) :
+              options[key]
+          )
+        );
+      }
+      return ret.join(',');
+    };
 
-    const win = ownerWindow.open(this.props.url || 'about:blank', this.props.title, optionsString);
+    const win = ownerWindow.open(this.props.url || 'about:blank', this.props.title, createOptions());
     this.setState({
       openedWindow: this.attachEvents(win)
     });

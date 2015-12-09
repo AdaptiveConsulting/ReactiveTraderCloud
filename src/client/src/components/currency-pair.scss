@@ -70,27 +70,22 @@
   }
 
   .currency-pair-title {
-    -webkit-app-region: drag;
+    .tearoff & {
+      -webkit-app-region: drag;
+    }
     font-size: 26px;
     font-weight: bold;
     color: white;
     padding-left: 8px;
+    padding-right: 28px;
     border-bottom: 1px solid $gray-dark;
     i {
-      -webkit-app-region: no-drag;
       font-size: 16px;
       color: $gray-light;
       &.glyphicon {
         cursor: pointer;
         padding: 8px;
         padding-bottom: 0;
-      }
-    }
-
-    i.glyphicon-remove {
-      display: none;
-      .tile & {
-        display: inline-block;
       }
     }
   }

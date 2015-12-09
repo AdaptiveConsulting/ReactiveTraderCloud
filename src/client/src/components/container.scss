@@ -1,0 +1,21 @@
+.container-control {
+  position: absolute;
+  right: 0;
+  -webkit-app-region: no-drag;
+  i {
+    font-size: 16px;
+    color: $gray-light;
+    &.glyphicon {
+      cursor: pointer;
+      padding: 8px;
+      padding-bottom: 0;
+    }
+  }
+
+  i.glyphicon-remove {
+    display: none;
+    .tile & {
+      display: inline-block;
+    }
+  }
+}
