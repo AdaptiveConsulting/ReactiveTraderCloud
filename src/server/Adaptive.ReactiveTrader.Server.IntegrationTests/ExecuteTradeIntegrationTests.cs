@@ -13,6 +13,8 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
     public class ExecuteTradeIntegrationTests
     {
+        private static readonly TimeSpan ResponseTimeout = TimeSpan.FromSeconds(10);
+
         private readonly IWampChannel _channel;
         private readonly string _executionServiceInstance;
         private string _blotterServiceInstance;
@@ -161,8 +163,8 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             try
             {
                 // set timeout
-                await Task.Delay(TestConstants.ResponseTimeout, _timeoutCancellationTokenSource.Token);
-                Console.WriteLine($"Test timed out after {TestConstants.ResponseTimeout.TotalSeconds} seconds");
+                await Task.Delay(ResponseTimeout, _timeoutCancellationTokenSource.Token);
+                Console.WriteLine($"Test timed out after {ResponseTimeout.TotalSeconds} seconds");
             }
             catch (TaskCanceledException)
             {

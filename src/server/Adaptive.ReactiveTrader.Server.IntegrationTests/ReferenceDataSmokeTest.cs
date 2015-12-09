@@ -11,6 +11,8 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
     public class ReferenceDataSmokeTest
     {
+        private static readonly TimeSpan ResponseTimeout = TimeSpan.FromSeconds(10);
+
         [Fact]
         public async void ShouldContainSomeReferenceData()
         {
@@ -60,8 +62,8 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
             try
             {
-                await Task.Delay(TestConstants.ResponseTimeout, timeoutCancellationTokenSource.Token);
-                Console.WriteLine($"Test timed out after {TestConstants.ResponseTimeout.TotalSeconds} seconds");
+                await Task.Delay(ResponseTimeout, timeoutCancellationTokenSource.Token);
+                Console.WriteLine($"Test timed out after {ResponseTimeout.TotalSeconds} seconds");
             }
             catch (TaskCanceledException)
             {
