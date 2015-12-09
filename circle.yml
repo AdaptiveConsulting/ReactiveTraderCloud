@@ -14,9 +14,10 @@ dependencies:
     - docker info
     - cp deploy/sample.config deploy/config
     - cd deploy/circleCi && chmod 755 ensurePermissions && ./ensurePermissions
+    - cd deploy/circleCi && ./loadContainers
     - cd deploy/circleCi && ./buildContainers
     - cd deploy/circleCi && ./runContainers
-    - cd deploy/circleCi && ./cacheContainers
+    - cd deploy/circleCi && ./saveContainers
 
 test:
   override:
@@ -27,4 +28,4 @@ deployment:
   hub:
     branch: [master, deployment-dev]
     commands:
-      - cd deploy/circleCi && ./pushContainers 
+      - cd deploy/circleCi && ./pushContainers
