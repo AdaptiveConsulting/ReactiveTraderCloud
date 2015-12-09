@@ -78,7 +78,6 @@
     color: white;
     padding-left: 8px;
     margin-right: 28px;
-    border-bottom: 1px solid $gray-dark;
     i {
       .tearoff & {
         -webkit-app-region: no-drag;
@@ -93,6 +92,7 @@
     }
   }
   .currency-pair-actions {
+    border-top: 1px solid $gray-dark;
     position: relative;
     height: 78px;
     > div {
