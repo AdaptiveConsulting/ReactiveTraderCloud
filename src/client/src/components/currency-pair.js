@@ -259,7 +259,8 @@ class CurrencyPair extends React.Component {
 
     return <div>
       <div className='currency-pair-title'>
-        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/> {title} <i className='fa fa-plug animated infinite fadeIn'/>
+        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
+        <span>{title}</span> <i className='fa fa-plug animated infinite fadeIn'/>
       </div>
       {message}
       <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
