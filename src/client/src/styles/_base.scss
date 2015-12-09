@@ -12,3 +12,10 @@
 @import '../components/header';
 @import '../components/blotter';
 @import '../components/modal';
+
+
+body, html {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
