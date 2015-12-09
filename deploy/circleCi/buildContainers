@@ -1,0 +1,7 @@
+#! /bin/bash
+
+cd ../docker
+./prepare build servers $CIRCLE_BUILD_NUM
+./prepare build broker $CIRCLE_BUILD_NUM
+./prepare build populatedEventstore $CIRCLE_BUILD_NUM
+./prepare build web $CIRCLE_BUILD_NUM

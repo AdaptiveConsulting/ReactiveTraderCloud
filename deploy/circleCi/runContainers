@@ -1,0 +1,11 @@
+#! /bin/bash
+
+. ../config
+docker run -d --net=host $webContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
+docker run -d --net=host $populatedEventstoreContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
+docker run -d --net=host $brokerContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
+docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run ref && while true; do echo ping; sleep 60; done"
+docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
+docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
+docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
+docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run a && while true; do echo ping; sleep 60; done"

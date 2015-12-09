@@ -1,0 +1,9 @@
+#! /bin/bash
+
+. ../config
+
+sudo docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+sudo docker push $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
+sudo docker push $populatedEventstoreContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
+sudo docker push $brokerContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
+sudo docker push $webContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM

@@ -1,0 +1,9 @@
+#! /bin/bash
+
+chmod 755 ../docker/prepare
+chmod 755 ../docker/build/servers/build.sh
+chmod 755 ../docker/build/broker/build.sh
+chmod 755 ../docker/build/populatedEventstore/build.sh
+chmod 755 ../docker/build/web/build.sh
+chmod 755 pushContainers
+chmod 755 runContainers
