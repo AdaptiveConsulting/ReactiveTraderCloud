@@ -11,12 +11,7 @@ dependencies:
     - docker info
     # get config
     - cp deploy/sample.config deploy/config
-    # pull base containers
-    - . ./deploy/config && docker pull $nginxContainer:$vNginx
-    - . ./deploy/config && docker pull $crossbarContainer:$vCrossbar
-    - . ./deploy/config && docker pull $monoContainer:$vDnx
-    - . ./deploy/config && docker pull $eventstoreContainer:$vEventstore
-    # Insure permissions 
+    # ensure permissions 
     - chmod 755 deploy/docker/prepare
     - chmod 755 deploy/docker/build/servers/build.sh
     - chmod 755 deploy/docker/build/broker/build.sh
@@ -37,6 +32,8 @@ test:
       - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
       - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
       - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
+      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run a && while true; do echo ping; sleep 60; done"
+      - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
       - docker ps
       - cd deploy/circleCi && ls && chmod 755 test.sh && ./test.sh
 

@@ -18,7 +18,7 @@ scream() {
     exit 1
 }
 
-for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter"
+for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter" "analytics"
 do
     cd run/$server
     ./run $build || scream $server

@@ -1,0 +1,27 @@
+{
+    "version": "1.0.0-*",
+    "description": "Adaptive.ReactiveTrader.Server.IntegrationTests Class Library",
+    "authors": [ "Qiming Liu" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+
+    "dependencies": {
+        "xunit": "2.1.0",
+        "xunit.runner.dnx": "2.1.0-rc1-build204",
+        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
+        "Adaptive.ReactiveTrader.EventStore": "1.0.0-*",
+        "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
+        "Newtonsoft.Json": "7.0.1",
+        "Adaptive.ReactiveTrader.Common": "1.0.0-*",
+        "Common.Logging": "3.3.1"
+    },
+
+    "commands": {
+        "test": "xunit.runner.dnx"
+    },
+
+    "frameworks": {
+        "dnx451": { }
+    }
+}

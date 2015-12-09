@@ -1,6 +1,7 @@
 ﻿using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
@@ -33,7 +34,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             }
 
 
-            var trade = new Trade(id, user, request.CurrencyPair, request.SpotRate, tradeDate, valueDate, request.Direction, request.Notional, request.DealtCurrency);
+            var trade = new Trade(id, user, request.CurrencyPair, request.SpotRate, tradeDate, valueDate.ToUniversalTime(), request.Direction, request.Notional, request.DealtCurrency);
             await _repository.SaveAsync(trade);
 
             await ExecuteImpl(trade);

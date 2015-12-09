@@ -9,4 +9,4 @@ if [[ $# != 1 ]];then
 fi
 namespace=$1
 
-kubectl delete ns $namespace
+./kubectl delete ns $namespace
