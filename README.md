@@ -4,47 +4,46 @@
 
 ## Overview
 
-Reactive Trader is a real-time FX trading platform demo showcasing reactive programming principles applied across the full application stack.
+Reactive Trader 2 is a real-time FX trading platform demo showcasing reactive programming principles applied across the full application stack.
 
-The backend services are written in .NET leveraging the cross-platform capabilities provided by DNX. The services are distributed and can be deployed in Docker containers. This enables the use of tools such as Kubernetes to facilitate cluster management for resiliency purposes, as well as ease of deployment.
+Improvements have been made across the board since the first Reactive Trader. The UI is revamped with a modern Javascript framework (React), and an event sourcing approach is used by the backend services for data resiliency.
+
+All frameworks and libraries used are entirely open source, and each component can be run on either Windows, Linux or Mac OS.
+
+The services are also distributed and are capable of recovery from disconnections. This demonstrates an approach similar to what is put in practice in major financial institutions for trading systems. 
+
+## Architecture
+
+The backend is made up of distributed services written in .NET leveraging the cross-platform capabilities provided by DNX.
+
+Every component can be deployed via Docker containers. This allows the use of tools such as Kubernetes to facilitate cluster management for resiliency purposes, as well as ease of deployment.
 
 Client-side implementations are available for all major platforms, including desktop browser, OpenFin, Android, iOS, Apple Watch and WPF.
 
+![Architecture Overview](/docs/ArchitectureOverview.png)
 
+## Getting Started
 
-## Running with Visual Studio 2015 in Windows
+### Windows
 
-Install Visual Studio 2015 - this will provide the tools required to run DNX.
+If you are familiar with using Visual Studio on Windows.
 
-Grab a clr image by running `dnvm upgrade` from the command line. Running `dnvm list` should then give you something like the following:
+[Getting Started using Visual Studio 2015](/docs/vs-setup.md)
 
-```
-Active Version           Runtime Architecture Location                      Alias
------- -------           ------- ------------ --------                      -----
-  *    1.0.0-rc1-update1 clr     x86          C:\Users\qiming\.dnx\runtimes default
-```
+### Linux
 
-Navigate to the `server` folder and restore the nuget packages by running `dnu restore`
+You can also setup a dev environment on Linux.
 
+[Getting Started on Linux](/docs/linux-setup.md)
 
+### Mac OS
 
-## Run on docker
+And on Mac OS
 
-### Install docker on windows/mac:
-- go to [toolbox download page](https://www.docker.com/docker-toolbox) and click on your OS (version 1.9.1c on writing moment)
-- install
-- select virtualbox/docker, kitematic and git are optional
-- then launch `Docker Quickstart Terminal`
-- run `docker ps` and control that it match the following
-```
-$ docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS
+[Getting Started on Mac OS](/docs/macos-setup.md)
 
-```
-- fine your docker installation is done.
+### Docker
 
-###  Run ReactiveTrader
+The simplest way to run the full application no matter which OS you are running is by using Docker.
 
-- `cp sample.config config`
-- `cd deploy/docker`
-- `./runAll BUILD_NUMBER`(ie: ./runAll 294) 
+[Getting Started using Docker](/docs/docker-setup.md)
