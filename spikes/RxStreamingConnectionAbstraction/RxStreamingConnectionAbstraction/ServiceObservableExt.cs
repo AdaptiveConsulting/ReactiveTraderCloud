@@ -11,7 +11,7 @@ namespace RxStreamingConnectionAbstraction
     {
         /// <summary>
         /// Adds timeout semantics to inner Observables of an Observable of Observables stream
-        /// upon a timeout onTimeoutItemSelector is invoked to pump down the stream
+        /// Upon a timeout onTimeoutItemSelector is invoked to pump down the stream
         /// </summary>
         public static IObservable<IObservable<TValue>> TimeoutInnerObservables<TKey, TValue>(this IObservable<IGroupedObservable<TKey, TValue>> sources, TimeSpan period, Func<TKey, TValue> onTimeoutItemSelector, IScheduler scheduler)
         {
@@ -95,23 +95,75 @@ namespace RxStreamingConnectionAbstraction
             });
         }
 
+        /// <summary>
+        /// Adds retry behaviour to observable streams
+        /// </summary>
         public static IObservable<T> RetryWithPolicy<T>(this IObservable<T> source, IRetryPolicy retryPolicy, string operationDescription)
         {
             return Observable.Create<T>(o =>
             {
                 int retryCount = 0;
-                var stream = source.Catch<T, Exception>(exception =>
+                Action subscribe = null;
+                SerialDisposable disposable = new SerialDisposable();
+                subscribe = () =>
                 {
-                    if(retryPolicy.ShouldRetry(exception, ++retryCount))
-                    {
-                        Console.WriteLine("Retrying [{0}]. This is attempt [{1}]. Exception: [{2}]", operationDescription, retryCount, exception.Message);
-                        return source;
-                    }
-                    Console.WriteLine("Not retrying [{0}]. Retry count [{1}]. Will error. Exception: [{2}]", operationDescription, retryCount, exception.Message);
-                    return Observable.Throw<T>(exception);
-                });
-                return stream.Subscribe(o);
+                    disposable.Disposable = source.Subscribe(
+                        o.OnNext,
+                        ex => {
+                            if (retryPolicy.ShouldRetry(ex, ++retryCount))
+                            {
+                                Console.WriteLine("Retrying [{0}]. This is attempt [{1}]. Exception: [{2}]", operationDescription, retryCount, ex.Message);
+                                subscribe();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Not retrying [{0}]. Retry count [{1}]. Will error. Exception: [{2}]", operationDescription, retryCount, ex.Message);
+                                o.OnError(ex);
+                            }
+                        },
+                        o.OnCompleted
+                    );
+                };
+                subscribe();
+                return disposable;
             });
         }
+
+        /// <summary>
+        /// Exactly like the out-of-the-box TakeUntil but upon terminationSequence yielding it will first pump a final value IF the stream previously procured one, useful when you need to pump a value using some state from the stream
+        /// </summary>
+        public static IObservable<T> TakeUntilEndWith<T, TOther>(this IObservable<T> source, IObservable<TOther> terminationSequence, Func<T, T> endWithItemFactory)
+        {
+            return Observable.Create<T>(o =>
+            {
+                CompositeDisposable disposables = new CompositeDisposable();
+                bool lastItemSet = false;
+                T lastItem = default(T);
+                disposables.Add(
+                    terminationSequence.Take(1).Subscribe(
+                        _ => {
+                            if(lastItemSet) o.OnNext(endWithItemFactory(lastItem));
+                            o.OnCompleted();
+                        }, 
+                        o.OnError, 
+                        o.OnCompleted
+                    )
+                );
+                disposables.Add(
+                    source.Subscribe(
+                        i => {
+                            lastItem = i;
+                            lastItemSet = true;
+                            o.OnNext(i);
+                        }
+                        , o.OnError, 
+                        o.OnCompleted
+                    )
+                );
+                return disposables;
+            });
+        }
+
+
     }
 }

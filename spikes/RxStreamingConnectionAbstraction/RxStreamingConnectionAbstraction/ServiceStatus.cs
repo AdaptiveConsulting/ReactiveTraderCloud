@@ -13,7 +13,7 @@ namespace RxStreamingConnectionAbstraction
             };
         }
 
-        public static ServiceStatus CreateForInstanceDisconnected(string serviceType, string serviceId)
+        public static ServiceStatus CreateForDisconnected(string serviceType, string serviceId)
         {
             return new ServiceStatus
             {
@@ -22,30 +22,6 @@ namespace RxStreamingConnectionAbstraction
                 IsConnected = false
             };
         }
-
-        public static ServiceStatus CreateForConnectionLost(string serviceType)
-        {
-            return new ServiceStatus
-            {
-                ServiceType = serviceType,
-                IsConnected = false
-            };
-        }
-
-        //        private ServiceStatus(string serviceType, string serviceId)
-        //        {
-        //            ServiceType = serviceType;
-        //            ServiceId = serviceId;
-        //            IsConnected = false;
-        //        }
-        //
-        //        public ServiceStatus(string serviceType, string serviceId, int load)
-        //        {
-        //            ServiceType = serviceType;
-        //            ServiceId = serviceId;
-        //            Load = load;
-        //            IsConnected = true;
-        //        }
 
         public ServiceStatus()
         {

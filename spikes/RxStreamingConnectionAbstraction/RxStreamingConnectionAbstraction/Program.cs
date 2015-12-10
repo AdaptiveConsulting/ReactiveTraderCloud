@@ -32,14 +32,16 @@ namespace RxStreamingConnectionAbstraction
             _executionServiceClient = new ServiceClient(_connection, "execution", _scheduler);
 
             SuccessfulPricingResponsesScenario();
-            Console.WriteLine("{0} -----------------------------", GetElapsedSecondsSinceStart());
-            SuccessfulExecutionScenario();
+//            Console.WriteLine("{0} -----------------------------", GetElapsedSecondsSinceStart());
+//            SuccessfulExecutionScenario();
 
             Console.ReadKey();
         }
         
         private void SuccessfulPricingResponsesScenario()
         {
+            _connection.ConnectionStatus.OnNext(true);
+
             ListenToPricingServiceStatus();
             _pricingServiceClient.Connect();
             PushConnectionStatus(new ServiceStatusDto("pricing", "1", 10));
@@ -49,7 +51,7 @@ namespace RxStreamingConnectionAbstraction
             _connection.PushResposne(PRICE_TOPIC, 1.2346m);
 
             // disconnect the only instance available 
-            Console.WriteLine("Disconnecting");
+            Console.WriteLine("Disconnecting instance");
             AdvanceTimeBy(ServiceClient.DISCONNECT_TIMEOUT_IN_SECONDS);
             // push a new instance 
             PushConnectionStatus(new ServiceStatusDto("pricing", "2", 10));
@@ -60,6 +62,13 @@ namespace RxStreamingConnectionAbstraction
             // reconnect instance 2
             PushConnectionStatus(new ServiceStatusDto("pricing", "2", 10));
             _connection.PushResposne(PRICE_TOPIC, 1.2348m);
+
+            // disconnect the underlying connection 
+            Console.WriteLine("Disconnecting underlying");
+            _connection.ConnectionStatus.OnNext(false);
+            _connection.ConnectionStatus.OnNext(true);
+            PushConnectionStatus(new ServiceStatusDto("pricing", "2", 10));
+            _connection.PushResposne(PRICE_TOPIC, 1.2347m);
         }
 
         private void SuccessfulExecutionScenario()
@@ -73,7 +82,7 @@ namespace RxStreamingConnectionAbstraction
 
         private void ListenToPricingServiceStatus()
         {
-            _pricingServiceClient.ServiceStatus.Subscribe(statusSummary =>
+            _pricingServiceClient.ServiceStatusStream.Subscribe(statusSummary =>
             {
                 Console.WriteLine("{0} - Pricing Service Status Summary {1}", GetElapsedSecondsSinceStart(), statusSummary);
             });
@@ -96,7 +105,7 @@ namespace RxStreamingConnectionAbstraction
 
         private void ListenToExecutionServiceStatus()
         {
-            _executionServiceClient.ServiceStatus.Subscribe(statusSummary =>
+            _executionServiceClient.ServiceStatusStream.Subscribe(statusSummary =>
             {
                 Console.WriteLine("{0} - Execution Service Status Summary {1}", GetElapsedSecondsSinceStart(), statusSummary);
             });
@@ -127,7 +136,6 @@ namespace RxStreamingConnectionAbstraction
         private void PushConnectionStatus(ServiceStatusDto status)
         {
             Console.WriteLine("{0} - Pushing service status{1}", GetElapsedSecondsSinceStart(), status);
-            _connection.ConnectionStatus.OnNext(true);
             _connection.PushResposne("status", status);
         }
     }

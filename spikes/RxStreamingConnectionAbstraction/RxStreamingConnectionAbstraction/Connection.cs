@@ -10,10 +10,10 @@ namespace RxStreamingConnectionAbstraction
 
         public Connection()
         {
-            ConnectionStatus = new Subject<bool>();
+            ConnectionStatus = new BehaviorSubject<bool>(false);
         }
 
-        public Subject<bool> ConnectionStatus { get; set; }
+        public BehaviorSubject<bool> ConnectionStatus { get; set; }
 
         public IObservable<TResponse> SubscribeToTopic<TResponse>(string topicName)
         {
