@@ -4,5 +4,15 @@ import routes from './routes';
 
 const target = document.getElementById('root');
 
-window.fin && target.classList.add('openfin');
+if (window.fin) {
+  target.classList.add('openfin');
+  //fin.desktop.main(() => {
+    //new window.fin.desktop.Notification({
+    //  url: '/#/growl',
+    //  message: 'hi'
+    //});
+  //});
+}
+
 ReactDOM.render(routes, target);
+

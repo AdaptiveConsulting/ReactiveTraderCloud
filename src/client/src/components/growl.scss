@@ -1,0 +1,32 @@
+.growl {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  height: 100%;
+  .summary-state {
+    position: relative;
+    height: 100%;
+    font-size: 12px;
+    line-height: 1.4em;
+    border-radius: 5px;
+    .dismiss-message {
+      position: absolute;
+      display: block;
+      right: 0;
+      top: 0;
+      z-index: 1000;
+      float: none;
+      padding: 5px;
+      border-bottom-left-radius: 5px;
+      transform: translate(0px, 0px);
+      background: $gray-dark;
+      text-decoration: none;
+      color: $gray-light;
+      &:hover {
+        color: $gray-lighter;
+      }
+    }
+  }
+}

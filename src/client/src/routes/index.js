@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
 import CoreLayout from 'layouts/core-layout';
 import IndexView from 'views/index-view';
-import UserView from 'views/user-view';
+import GrowlView from 'views/growl-view';
 import TileView from 'views/tile-view';
 
 /**
@@ -19,6 +19,9 @@ const routes = (
     </Route>
     <Route path='/tile'>
       <IndexRoute component={TileView}/>
+    </Route>
+    <Route path='/growl'>
+      <IndexRoute component={GrowlView}/>
     </Route>
   </Router>
 );

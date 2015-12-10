@@ -1,33 +1,33 @@
 {
-  "devtools_port": 9090,
-  "startup_app": {
-    "name": "reactivetrader",
-    "url": "http://localhost:3000/",
-    "uuid": "reactive-trader-js",
-    "applicationIcon": "http://localhost:3000/images/favicon.ico",
-    "autoShow": true,
-    "defaultWidth": 1280,
-    "defaultHeight": 900,
-    "maxWidth": 1980,
-    "minWidth": 800,
-    "maxHeight": 1080,
-    "minHeight": 600,
-    "resizable": true,
-    "maximizable": false,
-    "frame": false,
-    "cornerRounding": {
-      "width": 5,
-      "height": 5
+    "devtools_port": 9090,
+    "startup_app": {
+        "name": "reactivetrader",
+        "url": "http://localhost:3000/",
+        "uuid": "reactive-trader-js",
+        "applicationIcon": "http://localhost:3000/images/favicon.ico",
+        "autoShow": true,
+        "defaultWidth": 1280,
+        "defaultHeight": 900,
+        "maxWidth": 1980,
+        "minWidth": 800,
+        "maxHeight": 1080,
+        "minHeight": 600,
+        "resizable": true,
+        "maximizable": false,
+        "frame": false,
+        "cornerRounding": {
+            "width": 0,
+            "height": 0
+        }
+    },
+    "runtime": {
+        "arguments": "",
+        "version": "stable"
+    },
+    "shortcut": {
+        "company": "Reactive Trader",
+        "description": "Desktop Reactive Trader",
+        "icon": "http://localhost:3000/images/icon.ico",
+        "name": "reactive-trader"
     }
-  },
-  "runtime": {
-    "arguments": "",
-    "version": "stable"
-  },
-  "shortcut": {
-    "company": "Reactive Trader",
-    "description": "Desktop Reactive Trader",
-    "icon": "http://localhost:3000/images/icon.ico",
-    "name": "reactive-trader"
-  }
 }
