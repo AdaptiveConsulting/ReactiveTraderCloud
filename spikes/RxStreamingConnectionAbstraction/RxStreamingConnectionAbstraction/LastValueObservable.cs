@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RxGroupBy
+namespace RxStreamingConnectionAbstraction
 {
     public class LastValueObservable<TValue> : ILastValueObservable<TValue>
     {

@@ -5,7 +5,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-namespace RxGroupBy
+namespace RxStreamingConnectionAbstraction
 {
     public static class ServiceObservableExt
     {

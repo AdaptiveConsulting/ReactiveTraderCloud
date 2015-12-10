@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Reactive.Testing;
 
-namespace RxGroupBy
+namespace RxStreamingConnectionAbstraction
 {
     internal class Program
     {
@@ -10,6 +10,8 @@ namespace RxGroupBy
         private readonly Connection _connection;
         private ServiceClient _pricingServiceClient;
         private ServiceClient _executionServiceClient;
+        private const string TRADE_EXECUTION_TOPIC = "TRADE_EXECUTION_TOPIC";
+        private const string PRICE_TOPIC = "TRADE_TOPIC";
 
         private static void Main(string[] args)
         {
@@ -40,33 +42,33 @@ namespace RxGroupBy
         {
             ListenToPricingServiceStatus();
             _pricingServiceClient.Connect();
-            PushConnectionStatus(new ServiceStatus("pricing", "1", 10));
+            PushConnectionStatus(new ServiceStatusDto("pricing", "1", 10));
             SubscribeToPriceStream();
             Console.WriteLine("Pushing price");
-            _connection.PushResposne(1.2345m);
-            _connection.PushResposne(1.2346m);
+            _connection.PushResposne(PRICE_TOPIC, 1.2345m);
+            _connection.PushResposne(PRICE_TOPIC, 1.2346m);
 
             // disconnect the only instance available 
             Console.WriteLine("Disconnecting");
             AdvanceTimeBy(ServiceClient.DISCONNECT_TIMEOUT_IN_SECONDS);
             // push a new instance 
-            PushConnectionStatus(new ServiceStatus("pricing", "2", 10));
-            _connection.PushResposne(1.2347m);
+            PushConnectionStatus(new ServiceStatusDto("pricing", "2", 10));
+            _connection.PushResposne(PRICE_TOPIC, 1.2347m);
 
             // disconnect all instance available 
             AdvanceTimeBy(ServiceClient.DISCONNECT_TIMEOUT_IN_SECONDS);
             // reconnect instance 2
-            PushConnectionStatus(new ServiceStatus("pricing", "2", 10));
-            _connection.PushResposne(1.2348m);
+            PushConnectionStatus(new ServiceStatusDto("pricing", "2", 10));
+            _connection.PushResposne(PRICE_TOPIC, 1.2348m);
         }
 
         private void SuccessfulExecutionScenario()
         {
             ListenToExecutionServiceStatus();
             _executionServiceClient.Connect();
-            PushConnectionStatus(new ServiceStatus("execution", "1", 10));
+            PushConnectionStatus(new ServiceStatusDto("execution", "1", 10));
             ExecuteTrade();
-            _connection.PushResposne("Trade Booked");
+            _connection.PushResposne(TRADE_EXECUTION_TOPIC, "Trade Booked");
         }
 
         private void ListenToPricingServiceStatus()
@@ -80,7 +82,7 @@ namespace RxGroupBy
         private void SubscribeToPriceStream()
         {
             _pricingServiceClient
-                .CreateStreamOperation<decimal>()
+                .CreateStreamOperation<decimal>(PRICE_TOPIC)
                 .RetryWithPolicy(RetryPolicy.Forever(), "GetPGetPriceStream")
                 .Subscribe(
                     response =>
@@ -102,7 +104,7 @@ namespace RxGroupBy
 
         private void ExecuteTrade()
         {
-            _executionServiceClient.CreateRequestResponseOperation<string, string>("ExecuteTrade").Subscribe(
+            _executionServiceClient.CreateRequestResponseOperation<string, string>(TRADE_EXECUTION_TOPIC, "ExecuteTradeRequestPayload").Subscribe(
                 response =>
                 {
                     Console.WriteLine("{0} - ExecuteTrade Response received {1}", GetElapsedSecondsSinceStart(), response);
@@ -110,11 +112,6 @@ namespace RxGroupBy
                 ex => Console.WriteLine("{0} - ExecuteTrade error: {1}", GetElapsedSecondsSinceStart(), ex),
                 () => Console.WriteLine("{0} - ExecuteTrade completed", GetElapsedSecondsSinceStart())
             );
-        }
-
-        private void ServiceTimeoutBeforeResponse()
-        {
-            _scheduler.AdvanceBy(TimeSpan.FromSeconds(11).Ticks);
         }
 
         private int GetElapsedSecondsSinceStart()
@@ -127,10 +124,11 @@ namespace RxGroupBy
             _scheduler.AdvanceBy(TimeSpan.FromSeconds(seconds).Ticks);
         }
 
-        private void PushConnectionStatus(ServiceStatus status)
+        private void PushConnectionStatus(ServiceStatusDto status)
         {
             Console.WriteLine("{0} - Pushing service status{1}", GetElapsedSecondsSinceStart(), status);
-            _connection.ServiceStatus.OnNext(status);
+            _connection.ConnectionStatus.OnNext(true);
+            _connection.PushResposne("status", status);
         }
     }
 }

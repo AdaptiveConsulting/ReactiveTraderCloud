@@ -1,4 +1,4 @@
-namespace RxGroupBy
+namespace RxStreamingConnectionAbstraction
 {
     public class ServiceStatusSummary
     {

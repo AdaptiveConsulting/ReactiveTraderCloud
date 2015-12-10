@@ -6,27 +6,20 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace RxGroupBy
+namespace RxStreamingConnectionAbstraction
 {
     public class ServiceClient : IDisposable
     {
         public const int DISCONNECT_TIMEOUT_IN_SECONDS = 10;
 
         private readonly Connection _connection;
-        private readonly string _serviceType;
         private readonly CompositeDisposable _displsables = new CompositeDisposable();
         private readonly IConnectableObservable<IDictionary<string, ILastValueObservable<ServiceStatus>>> _serviceInstanceStreamCache;
 
         public ServiceClient(Connection connection, string serviceType, IScheduler scheduler)
         {
             _connection = connection;
-            _serviceType = serviceType;
-            _serviceInstanceStreamCache = _connection.ServiceStatus
-                .Where(status => status.ServiceType == _serviceType)
-                .GroupBy(serviceStatus => serviceStatus.ServiceId)
-                .TimeoutInnerObservables(TimeSpan.FromSeconds(DISCONNECT_TIMEOUT_IN_SECONDS), serviceId => new ServiceStatus(_serviceType, serviceId), scheduler)
-                .ToLastValueObservableDictionary(serviceStatus => serviceStatus.ServiceId)
-                .Replay(1);
+            _serviceInstanceStreamCache = CreateServiceStatusObservableDictionaryStream(serviceType, scheduler);
         }
 
         public void Connect()
@@ -42,7 +35,25 @@ namespace RxGroupBy
             }
         }
 
-        public IObservable<TResponse> CreateRequestResponseOperation<TRequest, TResponse>(TRequest request)
+        private IConnectableObservable<IDictionary<string, ILastValueObservable<ServiceStatus>>> CreateServiceStatusObservableDictionaryStream(string serviceType, IScheduler scheduler)
+        {
+            return _connection.ConnectionStatus
+                .Select(isConnected => {
+                    return isConnected
+                        ? _connection.SubscribeToTopic<ServiceStatusDto>("status")
+                            .Where(s => s.ServiceType == serviceType)
+                            .Select(dto => RxStreamingConnectionAbstraction.ServiceStatus.CreateForConnected(dto.ServiceType, dto.ServiceId, dto.Load))
+                        : Observable.Return(RxStreamingConnectionAbstraction.ServiceStatus.CreateForConnectionLost(serviceType)).Concat(Observable.Never<ServiceStatus>());
+                })
+                .Switch()
+                .Where(status => status.ServiceType == serviceType)
+                .GroupBy(serviceStatus => serviceStatus.ServiceId)
+                .TimeoutInnerObservables(TimeSpan.FromSeconds(DISCONNECT_TIMEOUT_IN_SECONDS), serviceId => RxStreamingConnectionAbstraction.ServiceStatus.CreateForInstanceDisconnected(serviceType, serviceId), scheduler)
+                .ToLastValueObservableDictionary(serviceStatus => serviceStatus.ServiceId)
+                .Replay(1);
+        }
+
+        public IObservable<TResponse> CreateRequestResponseOperation<TRequest, TResponse>(string topicName, TRequest request)
         {
             return Observable.Create<TResponse>(o =>
             {
@@ -56,7 +67,7 @@ namespace RxGroupBy
                         Console.WriteLine("Will use service instance [{0}] for request response operation", statusStream.LatestValue);
                         disposables.Add(
                             _connection
-                                .CreateRequestResponseOperation<TRequest, TResponse>(statusStream.LatestValue, request)
+                                .ExecuteRemoteCall<TRequest, TResponse>(topicName, statusStream.LatestValue, request)
                                 .Take(1)
                                 .Subscribe(o)
                         );
@@ -75,7 +86,7 @@ namespace RxGroupBy
             });
         }
 
-        public IObservable<TResponse> CreateStreamOperation<TResponse>()
+        public IObservable<TResponse> CreateStreamOperation<TResponse>(string topicName)
         {
             return Observable.Create<TResponse>(o =>
             {
@@ -87,7 +98,7 @@ namespace RxGroupBy
                         Console.WriteLine("Will use service instance [{0}] for stream operation", statusStream.LatestValue);
                         disposables.Add(
                             _connection
-                                .CreateStreamOperation<TResponse>(statusStream.LatestValue)
+                                .SubscribeToTopic<TResponse>(topicName, statusStream.LatestValue)
                                 .Subscribe(o)
                         );
                         disposables.Add(

@@ -7,8 +7,8 @@
     <ProjectGuid>{183BF177-FC1D-4D62-9E0D-A33EDF443F62}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RxGroupBy</RootNamespace>
-    <AssemblyName>RxGroupBy</AssemblyName>
+    <RootNamespace>RxStreamingConnectionAbstraction</RootNamespace>
+    <AssemblyName>RxStreamingConnectionAbstraction</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -73,6 +73,7 @@
     <Compile Include="ServiceClient.cs" />
     <Compile Include="ServiceObservableExt.cs" />
     <Compile Include="ServiceStatus.cs" />
+    <Compile Include="ServiceStatusDto.cs" />
     <Compile Include="ServiceStatusSummary.cs" />
   </ItemGroup>
   <ItemGroup>

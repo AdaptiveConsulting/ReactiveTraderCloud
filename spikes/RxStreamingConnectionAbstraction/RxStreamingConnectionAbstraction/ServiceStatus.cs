@@ -1,26 +1,61 @@
-namespace RxGroupBy
+namespace RxStreamingConnectionAbstraction
 {
     public class ServiceStatus
     {
-        public ServiceStatus(string serviceType, string serviceId)
+        public static ServiceStatus CreateForConnected(string serviceType, string serviceId, int load)
         {
-            ServiceType = serviceType;
-            ServiceId = serviceId;
-            IsConnected = false;
+            return new ServiceStatus
+            {
+                ServiceType = serviceType,
+                ServiceId = serviceId,
+                Load = load,
+                IsConnected = true
+            };
         }
 
-        public ServiceStatus(string serviceType, string serviceId, int load)
+        public static ServiceStatus CreateForInstanceDisconnected(string serviceType, string serviceId)
         {
-            ServiceType = serviceType;
-            ServiceId = serviceId;
-            Load = load;
-            IsConnected = true;
+            return new ServiceStatus
+            {
+                ServiceType = serviceType,
+                ServiceId = serviceId,
+                IsConnected = false
+            };
         }
 
-        public string ServiceType { get; set; }
-        public string ServiceId { get; set; }
-        public int? Load { get; set; }
-        public bool IsConnected { get; set; }
+        public static ServiceStatus CreateForConnectionLost(string serviceType)
+        {
+            return new ServiceStatus
+            {
+                ServiceType = serviceType,
+                IsConnected = false
+            };
+        }
+
+        //        private ServiceStatus(string serviceType, string serviceId)
+        //        {
+        //            ServiceType = serviceType;
+        //            ServiceId = serviceId;
+        //            IsConnected = false;
+        //        }
+        //
+        //        public ServiceStatus(string serviceType, string serviceId, int load)
+        //        {
+        //            ServiceType = serviceType;
+        //            ServiceId = serviceId;
+        //            Load = load;
+        //            IsConnected = true;
+        //        }
+
+        public ServiceStatus()
+        {
+            
+        }
+
+        public string ServiceType { get; private set; }
+        public string ServiceId { get; private set; }
+        public int? Load { get; private set; }
+        public bool IsConnected { get; private set; }
 
         public override string ToString()
         {
