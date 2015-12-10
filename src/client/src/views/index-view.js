@@ -1,10 +1,10 @@
 import React from 'react';
-import CurrencyPairs from '../components/currency-pairs';
-import Blotter from '../components/blotter';
-import Modal from '../components/modal';
-import Header from '../components/header';
+import CurrencyPairs from 'components/currency-pairs';
+import Blotter from 'components/blotter';
+import Modal from 'components/modal';
+import Header from 'components/header';
 
-import rt from '../services/reactive-trader';
+import rt from 'services/reactive-trader';
 
 /**
  *

@@ -42,7 +42,12 @@ class Header extends React.Component {
     const { status, services } = this.props;
 
     return <nav className='navbar navbar-default'>
-      <Link className='navbar-brand' to='/'>Reactive Trader 2</Link>
+      <Link className='navbar-brand navbar-adaptive' to='http://weareadaptive.com/' target='_blank' title='Adaptive Home Page'>
+        <img src="images/adaptive-logo-statusbar.png" alt="Adaptive Logo" />
+      </Link>
+      <Link className='navbar-brand' to='/' title='Home'>
+        Reactive Trader 2
+      </Link>
       <ul className='nav navbar-nav hidden-xs navbar-left'>
         <li>
           <Link to='/user' className='nav-link' activeClassName='active'><i className='fa fa-user' /> {traders.code} ({traders.name} {traders.surname})</Link>

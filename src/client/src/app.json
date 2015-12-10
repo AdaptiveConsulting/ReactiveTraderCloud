@@ -4,7 +4,7 @@
     "name": "reactivetrader",
     "url": "http://localhost:3000/",
     "uuid": "reactive-trader-js",
-    "applicationIcon": "http://localhost:3000/favicon.ico",
+    "applicationIcon": "http://localhost:3000/images/favicon.ico",
     "autoShow": true,
     "defaultWidth": 1280,
     "defaultHeight": 800,
@@ -27,7 +27,7 @@
   "shortcut": {
     "company": "Reactive Trader",
     "description": "Desktop Reactive Trader",
-    "icon": "http://localhost:3000/favicon.ico",
+    "icon": "http://localhost:3000/images/icon.ico",
     "name": "reactive-trader"
   }
 }
