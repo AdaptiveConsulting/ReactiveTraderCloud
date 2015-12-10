@@ -36,11 +36,27 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         {
             var priceGenerators = new List<IPriceGenerator>
             {
-                CreatePriceGenerator("EURUSD", 1.3629m),
-                CreatePriceGenerator("USDJPY", 100.20m),
-                CreatePriceGenerator("GBPUSD", 1.5200m),
-                CreatePriceGenerator("GBPJPY", 160.200m),
-                CreatePriceGenerator("EURJPY", 130.00m)
+                CreatePriceGenerator("EURUSD", 1.09443m),
+                CreatePriceGenerator("USDJPY", 121.656m),
+                CreatePriceGenerator("GBPUSD", 1.51746m),
+                CreatePriceGenerator("GBPJPY", 184.608m),
+                CreatePriceGenerator("EURGBP", 0.72123m),
+                CreatePriceGenerator("USDCHF", 0.98962m),
+                CreatePriceGenerator("EURJPY", 133.144m),
+                CreatePriceGenerator("EURCHF", 1.08318m),
+                CreatePriceGenerator("AUDUSD", 0.72881m),
+                CreatePriceGenerator("NZDUSD", 0.6729m),
+                CreatePriceGenerator("EURCAD", 1.48363m),
+                CreatePriceGenerator("EURAUD", 1.50157m),
+                CreatePriceGenerator("AUDCAD", 0.98805m),
+                CreatePriceGenerator("GBPCHF", 1.50193m),
+                CreatePriceGenerator("CHFJPY", 122.914m),
+                CreatePriceGenerator("AUDJPY", 88.666m),
+                CreatePriceGenerator("AUDNZD", 1.08334m),
+                CreatePriceGenerator("CADJPY", 89.7685m),
+                CreatePriceGenerator("CHFUSD", 1.01027m),
+                CreatePriceGenerator("EURNOK", 9.44156m),
+                CreatePriceGenerator("EURSEK", 9.26876m)
             };
 
             foreach (var ccy in priceGenerators)
