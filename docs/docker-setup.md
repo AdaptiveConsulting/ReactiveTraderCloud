@@ -30,6 +30,8 @@ $ ./prepare build services BUILD_NUMBER
 
 You can then run the built containers
 
+TODO: populate ES
+
 ```bash
 $ ./runAll BUILD_NUMBER
 ```
