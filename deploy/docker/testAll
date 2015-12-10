@@ -28,15 +28,19 @@ if [[ $vMinor = "" ]];then
   exit 1
 fi
 
+echo " "
 echo "Starting ReactiveTrader ..."
 ./killAll > garbage
 ./runAll $build > garbage
+docker ps
 
+
+echo " "
 echo "Starting local tests ..."
 docker run -a STDOUT \
   --net=host $serversContainer:$vMajor.$vMinor.$build \
   bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
 
-echo "Stoping ReactiveTrader"
+echo " "
 ./killAll > garbage
 rm garbage
