@@ -7,7 +7,15 @@
 @import '../../node_modules/font-awesome/scss/font-awesome';
 @import '../../node_modules/animate.css/animate.css';
 
+@import '../components/container';
 @import '../components/currency-pair';
 @import '../components/header';
 @import '../components/blotter';
 @import '../components/modal';
+
+
+body, html {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}

@@ -4,15 +4,13 @@ import CoreLayout from 'layouts/core-layout';
 import IndexView from 'views/index-view';
 import TileView from 'views/tile-view';
 
-export default (
+/**
+ * Routes supported
+ * @type {XML}
+ */
+const routes = (
   <Router>
     <Route path='/' component={CoreLayout}>
-      <IndexRoute component={IndexView}/>
-    </Route>
-    <Route path='/user' component={CoreLayout}>
-      <IndexRoute component={IndexView}/>
-    </Route>
-    <Route path='/admin' component={CoreLayout}>
       <IndexRoute component={IndexView}/>
     </Route>
     <Route path='/tile'>
@@ -20,3 +18,5 @@ export default (
     </Route>
   </Router>
 );
+
+export default routes;

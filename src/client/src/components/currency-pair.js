@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
-import Popout from 'react-popout';
 
 import numeral from 'numeral';
 import utils from '../utils';
@@ -10,7 +9,6 @@ import utils from '../utils';
 import Direction from './cp-parts/cp-direction';
 import Sizer from './cp-parts/cp-sizer';
 import Pricer from './cp-parts/cp-pricer';
-
 
 /**
  * @class CurrencyPairs
@@ -251,8 +249,7 @@ class CurrencyPair extends React.Component {
           parsedSell = this.parsePrice(sell);
 
     const execute   = this.execute.bind(this),
-          title     = pair.substr(0, 3) + ' / ' + pair.substr(3, 3),
-          className = 'currency-pair animated flipInX ' + state;
+          title     = pair.substr(0, 3) + ' / ' + pair.substr(3, 3);
 
     // any ACK or failed messages will come via state.info / last response
     let message = info ? (this.lastResponse || this.renderMessage(response)) : false;
@@ -260,11 +257,10 @@ class CurrencyPair extends React.Component {
     // if execution has gone down, state will be `blocked`.
     state === 'blocked' && (message = this.getNoResponseMessage());
 
-    const tileInnerContent = <div className={className}>
+    return <div>
       <div className='currency-pair-title'>
-        {title} <i className='fa fa-plug animated infinite fadeIn'/>
-        <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right' onClick={(e) => this.toggleTearoff(e)}/>
         <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
+        <span>{title}</span> <i className='fa fa-plug animated infinite fadeIn'/>
       </div>
       {message}
       <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
@@ -282,10 +278,6 @@ class CurrencyPair extends React.Component {
           <SparklinesReferenceLine type='mean'/>
         </Sparklines> : <div className='sparkline-holder'></div>}
     </div>;
-
-    return this.state.tearoff ?
-      <Popout url='/tile' title={title} options={{width: 332, height: 190, resizable: 'no'}} onClosing={() => this.toggleTearoff()}>{tileInnerContent}</Popout> :
-      tileInnerContent;
   }
 }
 

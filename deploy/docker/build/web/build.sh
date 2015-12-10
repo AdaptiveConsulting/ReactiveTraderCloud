@@ -42,14 +42,10 @@ cp ./dev.nginx.conf  ./build/dev.nginx.conf
 cp ./prod.nginx.conf ./build/prod.nginx.conf
 
 # todo: remove the node dependency !
-pushd ../../../../src/client 
+cd ../../../../src/client
 npm install
-
-if [[ $CIRCLECI == true ]];then
-  export NODE_ENV=production
-fi
 npm run compile
-popd
+cd ../../deploy/docker/build/web
 
 cp -r ../../../../src/client/dist ./build/dist
 

@@ -24,6 +24,20 @@ class Header extends React.Component {
     return resp;
   }
 
+  close(){
+    window.fin && window.fin.desktop.Window.getCurrent().close();
+  }
+
+  minimise(e){
+    e && e.preventDefault();
+    window.fin && window.fin.desktop.Window.getCurrent().minimize();
+  }
+
+  maximise(e){
+    e && e.preventDefault();
+    window.fin && window.fin.desktop.Window.getCurrent().maximize();
+  }
+
   render(){
     const { status, services } = this.props;
 
@@ -34,6 +48,11 @@ class Header extends React.Component {
           <Link to='/user' className='nav-link' activeClassName='active'><i className='fa fa-user' /> {traders.code} ({traders.name} {traders.surname})</Link>
         </li>
       </ul>
+      <nav className="nav navbar-nav chrome-controls pull-right">
+        <a title='Minimise' onClick={(e) => this.minimise(e)} href='#'><i className='fa fa-minus-square' /></a>
+        <a title='Maximise' onClick={(e) => this.maximise(e)} href='#'><i className='fa fa-plus-square' /></a>
+        <a title='Close' onClick={() => this.close()} href='#'><i className="fa fa-times" /></a>
+      </nav>
       <ul className='nav navbar-nav pull-right nav-status hidden-xs'>
         <li>{this.getBrokerStatus(status)}</li>
         {this.getServices(services)}

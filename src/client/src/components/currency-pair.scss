@@ -70,12 +70,18 @@
   }
 
   .currency-pair-title {
+    .tearoff & {
+      -webkit-app-region: drag;
+    }
     font-size: 26px;
     font-weight: bold;
     color: white;
     padding-left: 8px;
-    border-bottom: 1px solid $gray-dark;
+    margin-right: 28px;
     i {
+      .tearoff & {
+        -webkit-app-region: no-drag;
+      }
       font-size: 16px;
       color: $gray-light;
       &.glyphicon {
@@ -86,6 +92,7 @@
     }
   }
   .currency-pair-actions {
+    border-top: 1px solid $gray-dark;
     position: relative;
     height: 78px;
     > div {
@@ -206,7 +213,10 @@
 
 }
 
+
 #popout-content-container {
+  overflow: hidden;
+
   .glyphicon-new-window {
     display: none;
   }

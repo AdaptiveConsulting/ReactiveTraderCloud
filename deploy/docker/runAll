@@ -22,6 +22,5 @@ for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeex
 do
     cd run/$server
     ./run $build || scream $server
-    ./test $build || scream $server
     cd ../..
 done

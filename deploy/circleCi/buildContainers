@@ -1,0 +1,4 @@
+#! /bin/bash
+
+cd ../docker
+./prepare build services $CIRCLE_BUILD_NUM

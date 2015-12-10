@@ -8,9 +8,26 @@
 
 nav.navbar {
   margin-bottom: 4px;
+  -webkit-app-region: drag;
 }
 .nav {
+  ul, li, a {
+    -webkit-app-region: no-drag;
+  }
+  &.chrome-controls {
+    display: none;
+    .openfin & {
+      display: block;
+    }
+    padding: 14px;
+    padding-bottom: 0;
+    a {
+      display: inline-block;
+      padding-left: 4px;
+    }
+  }
   &.nav-status {
+    -webkit-app-region: no-drag;
     padding-top: 8px;
     padding-right: 8px;
     .service-status {

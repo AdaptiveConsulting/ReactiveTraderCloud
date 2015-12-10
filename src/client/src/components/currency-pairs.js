@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 
 import CurrencyPair from './currency-pair';
+import Container from './container';
 import rt from '../services/reactive-trader';
 
 const STALE_TIMEOUT = 4000,
@@ -70,6 +71,8 @@ class CurrencyPairs extends React.Component {
       services: rt.transport.getStatus()
     });
 
+    const tearoffStates = JSON.parse(localStorage.getItem('pairs')) || {};
+
     rt.reference.getCurrencyPairUpdatesStream((referenceData) =>{
       let shouldStateUpdate = false;
 
@@ -103,7 +106,8 @@ class CurrencyPairs extends React.Component {
                 id: pairData.Symbol,
                 buy: undefined,
                 sell: undefined,
-                disabled: false
+                disabled: false,
+                tearoff: Boolean(tearoffStates[pairData.Symbol])
               };
 
           // only subscribe if we don't already listen for prices
@@ -199,23 +203,44 @@ class CurrencyPairs extends React.Component {
     });
   }
 
+  tearOff(pair, state){
+    pair.tearoff = typeof state !== 'undefined' ? state : !pair.tearoff;
+
+    this.setState({
+      pairs: this.state.pairs
+    });
+
+    const map = {};
+    _.forEach(this.state.pairs, (pair) => {
+      const { id, tearoff } = pair;
+      map[id] = Boolean(tearoff);
+    });
+
+    localStorage.setItem('pairs', JSON.stringify(map));
+  }
+
   render(){
     // filter cps that have got price data only.
     const pairs = this.state.pairs;
 
     return <div className='currency-pairs'>
-      {pairs.length ? pairs.map((cp) => <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
-          pair={cp.pair}
-          size="100m"
-          key={cp.id}
-          buy={cp.buy}
-          sell={cp.sell}
-          mid={cp.mid}
-          precision={cp.precision}
-          pip={cp.pip}
-          state={cp.state}
-          response={cp.response}/>) :
-        <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div> }
+      {pairs.length ? pairs.map((cp) => {
+        const className = 'currency-pair animated flipInX ' + cp.state;
+
+        return <Container key={cp.id} title={cp.pair} onTearoff={(state) => this.tearOff(cp, state)} tearoff={cp.tearoff} className={className}>
+          <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
+            pair={cp.pair}
+            size="100m"
+            key={cp.id}
+            buy={cp.buy}
+            sell={cp.sell}
+            mid={cp.mid}
+            precision={cp.precision}
+            pip={cp.pip}
+            state={cp.state}
+            response={cp.response}/>
+        </Container>;
+      }) : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div> }
       <div className="clearfix"></div>
     </div>;
   }

@@ -31,10 +31,7 @@ config.set('webpack_port',  process.env.PORT || 3000);
 config.set('vendor_dependencies', [
   'history',
   'react',
-  'react-redux',
-  'react-router',
-  'redux',
-  'redux-router'
+  'react-router'
 ].filter(dep => {
   if (pkg.dependencies[dep]) return true;
 
