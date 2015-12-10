@@ -3,7 +3,7 @@ import React from 'react';
 import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 
 import numeral from 'numeral';
-import utils from '../utils';
+import utils from 'utils';
 
 // sub components
 import Direction from './cp-parts/cp-direction';

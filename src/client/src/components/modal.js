@@ -1,6 +1,6 @@
 import React from 'react';
-import utils from '../utils';
-import emitter from '../utils/emitter';
+import utils from 'utils';
+import emitter from 'utils/emitter';
 
 // import {render} from 'react-dom';
 let mountedInstance,

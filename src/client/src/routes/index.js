@@ -15,7 +15,7 @@ const routes = (
       <IndexRoute component={IndexView}/>
     </Route>
     <Route path='/user' component={CoreLayout}>
-      <IndexRoute component={UserView}/>
+      <IndexRoute component={IndexView}/>
     </Route>
     <Route path='/tile'>
       <IndexRoute component={TileView}/>
