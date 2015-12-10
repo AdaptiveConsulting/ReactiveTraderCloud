@@ -48,6 +48,9 @@ nav.navbar {
   }
 }
 
-a.navbar-adaptive.navbar-brand {
-  background: $gray-lighter;
+a.navbar-brand {
+  -webkit-app-region: no-drag;
+  &.navbar-adaptive {
+    background: $gray-lighter;
+  }
 }

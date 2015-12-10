@@ -7,7 +7,7 @@
     "applicationIcon": "http://localhost:3000/images/favicon.ico",
     "autoShow": true,
     "defaultWidth": 1280,
-    "defaultHeight": 800,
+    "defaultHeight": 900,
     "maxWidth": 1980,
     "minWidth": 800,
     "maxHeight": 1080,
