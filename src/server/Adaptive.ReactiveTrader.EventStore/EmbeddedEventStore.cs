@@ -46,6 +46,7 @@ namespace Adaptive.ReactiveTrader.EventStore
                 .WithExternalHttpOn(new IPEndPoint(IPAddress.Loopback, externalHttpPort))
                 .AddExternalHttpPrefix($"http://localhost:{externalHttpPort}/")
                 .AddExternalHttpPrefix($"http://127.0.0.1:{externalHttpPort}/")
+                .WithExternalHeartbeatTimeout(TimeSpan.FromMinutes(5))
                 .RunInMemory();
 
             var clusterVNode = builder.Build();
