@@ -1,8 +1,10 @@
 ## Running on Docker
 
+The following instructions have been tested on Windows
+
 Install Docker from their [toolbox download page](https://www.docker.com/docker-toolbox) for your OS 
 
-Launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. On Windows you'll see something like
+On Windows, launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
 
 ```bash
                         ##         .
@@ -19,6 +21,8 @@ For help getting started, check out the docs at https://docs.docker.com
 ``` 
 
 Note the IP address as we'll use it to load the client later.
+
+First you'll need to set a config file - for simplicity copy `sample.config` to a new file named `config` in the same directory (`deploy`).
 
 To run the app you'll need to first build the docker containers and provide a `BUILD_NUMBER`, e.g. 1
 
@@ -38,8 +42,8 @@ $ ./runAll BUILD_NUMBER
 
 Inspect the running containers
 
-```
-docker ps
+```bash
+$ docker ps
 ```
 
 Should give you something like the following:
@@ -57,4 +61,4 @@ fa50bfc6a88a        adaptivetrader/servers:0.0.1      "bash -c 'dnx -p Adap"   3
 05c18462d3c5        adaptivetrader/web:0.0.1          "bash -c 'cp /localho"   35 seconds ago      Up 30 seconds                           web
 ```
 
-Then open a browser, navigate to the docker virtual machine address in the example above and the web client should load.
+Then open a browser, navigate to the docker virtual machine address (192.168.99.100 in the example above) and the web client should load.

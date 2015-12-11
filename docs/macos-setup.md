@@ -1,5 +1,7 @@
 ## Getting Started on Mac OS X
 
+TODO: check
+
 ### Get DNX
 
 Instructions [here](https://docs.asp.net/en/latest/getting-started/installing-on-mac.html)

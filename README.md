@@ -1,4 +1,4 @@
-# Reactive Trader
+# Reactive Trader 2
 
 [![Circle CI](https://circleci.com/gh/AdaptiveConsulting/AdaptiveTrader.svg?style=svg&circle-token=801547883329d22e505634493b58b26fbb742e46)](https://circleci.com/gh/AdaptiveConsulting/AdaptiveTrader)
 
@@ -6,11 +6,11 @@
 
 Reactive Trader 2 is a real-time FX trading platform demo showcasing reactive programming principles applied across the full application stack.
 
-Improvements have been made across the board since the first Reactive Trader. The UI is revamped with a modern Javascript framework (React), and an event sourcing approach is used by the backend services for data resiliency.
+Improvements have been made across the board since [Reactive Trader v1](https://github.com/AdaptiveConsulting/ReactiveTrader). The UI is revamped with a modern Javascript framework (React), and an event sourcing approach is used by the backend services for data resiliency.
 
 All frameworks and libraries used are entirely open source, and each component can be run on either Windows, Linux or Mac OS.
 
-The services are also distributed and are capable of recovery from disconnections. This demonstrates an approach similar to what is put in practice in major financial institutions for trading systems. 
+The services are also distributed and are capable of recovery from disconnections. This demonstrates an approach similar to what is put into practice in major financial institutions for trading systems. 
 
 ## Architecture
 
@@ -24,13 +24,23 @@ Client-side implementations are available for all major platforms, including des
 
 ## Getting Started
 
-### Windows
+### Front-End
+
+The front-end is written in Javascript with React, The details of how to set up the client to run on your machine are [here](src/client/README.md).
+
+Alternatively a live demo can be found at [TODO](reactivetrader.com)
+
+### Back-End
+
+The back-end services are cross-platform. For details of how to set up the services on your on machine see below. 
+
+#### Windows
 
 If you are familiar with using Visual Studio on Windows.
 
 [Getting Started using Visual Studio 2015](/docs/vs-setup.md)
 
-### Linux
+#### Linux
 
 You can also setup a dev environment on Linux.
 
@@ -42,7 +52,7 @@ And on Mac OS
 
 [Getting Started on Mac OS](/docs/macos-setup.md)
 
-### Docker
+#### Docker
 
 The simplest way to run the full application no matter which OS you are running is by using Docker.
 

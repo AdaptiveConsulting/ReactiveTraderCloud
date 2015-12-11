@@ -2,7 +2,7 @@
 
 Tested on Ubuntu 14.04.
 
-Also tested on a Raspberry Pi 2 running Raspbian Wheezy, though you may need these additional packages to run crossbar.io: `python-dev` `libffi-dev`
+Also tested on a Raspberry Pi 2 running Raspbian Wheezy, though you will need these additional apt packages to run crossbar.io: `python-dev` `libffi-dev`
 
 ### Install DNVM/DNX and Mono
 
@@ -33,7 +33,7 @@ Run `dnvm list` to check that the framework version in use is mono.
 ```
 Active Version              Runtime Architecture OperatingSystem Alias
 ------ -------              ------- ------------ --------------- -----
-  *    1.0.0-rc1-final      mono                 linux/osx       default
+  *    1.0.0-rc1-update1    mono                 linux/osx       default
 ```
 
 ### Install EventStore
@@ -74,4 +74,3 @@ $ dnx -p Adaptive.ReactiveTrader.Server.Launcher a b exec p ref
 The services should now run and connect to the Crossbar and EventStore
 
 Run the client app by following the instructions [here](../src/client/README.md)
-
