@@ -6,43 +6,26 @@ machine:
 
 dependencies:
   cache_directories:
-    - ~/.npm
+    - "~/docker"
+  pre:
+    - npm install -g npm@3.5
+    - sudo apt-get install gcc-4.8 g++-4.8
   override:
     - docker info
-    # get config
     - cp deploy/sample.config deploy/config
-    # ensure permissions 
-    - chmod 755 deploy/docker/prepare
-    - chmod 755 deploy/docker/build/servers/build.sh
-    - chmod 755 deploy/docker/build/broker/build.sh
-    - chmod 755 deploy/docker/build/populatedEventstore/build.sh
-    - chmod 755 deploy/docker/build/web/build.sh
-    # build AdaptiveTrader containers
-    - cd deploy/docker && ./prepare build servers $CIRCLE_BUILD_NUM
-    - cd deploy/docker && ./prepare build broker $CIRCLE_BUILD_NUM
-    - cd deploy/docker && ./prepare build populatedEventstore $CIRCLE_BUILD_NUM
-    - cd deploy/docker && ./prepare build web $CIRCLE_BUILD_NUM
+    - cd deploy/circleCi && chmod 755 ensurePermissions && ./ensurePermissions
+    - cd deploy/circleCi && ./loadContainers
+    - cd deploy/circleCi && ./buildContainers
+    - cd deploy/circleCi && ./runContainers
+    - cd deploy/circleCi && ./saveContainers
 
 test:
   override:
-      - . ./deploy/config && docker run -d --net=host $webContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
-      - . ./deploy/config && docker run -d --net=host $populatedEventstoreContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
-      - . ./deploy/config && docker run -d --net=host $brokerContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
-      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run ref && while true; do echo ping; sleep 60; done"
-      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
-      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
-      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
-      - . ./deploy/config && docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run a && while true; do echo ping; sleep 60; done"
-      - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
-      - docker ps
-      - cd deploy/circleCi && ls && chmod 755 test.sh && ./test.sh
+    - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
+    - docker ps
 
 deployment:
   hub:
     branch: [master, deployment-dev]
     commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - . ./deploy/config && docker push $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
-      - . ./deploy/config && docker push $populatedEventstoreContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
-      - . ./deploy/config && docker push $brokerContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
-      - . ./deploy/config && docker push $webContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
+      - cd deploy/circleCi && ./pushContainers

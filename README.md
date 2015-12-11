@@ -19,5 +19,6 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 ###  Run ReactiveTrader
 
+- `cp sample.config config`
 - `cd deploy/docker`
 - `./runAll BUILD_NUMBER`(ie: ./runAll 294) 

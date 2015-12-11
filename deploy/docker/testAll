@@ -1,0 +1,46 @@
+#! /bin/bash
+
+if [[ $# != 1 ]];then
+  echo " "
+  echo " usage:"
+  echo " "
+  echo "   testAll BUILD_NUMBER"
+  echo " "
+  echo "   ie: ./testAll 294"
+  echo " "
+  exit 1
+fi
+build=$1
+
+# get and control config
+. ../config
+
+if [[ $serversContainer = "" ]];then
+  echo "test: container name required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vMajor = "" ]];then
+  echo "test: major version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+if [[ $vMinor = "" ]];then
+  echo "test: minor version required, fill in adaptivetrader/deploy/config"
+  exit 1
+fi
+
+echo " "
+echo "Starting ReactiveTrader ..."
+./killAll > garbage
+./runAll $build > garbage
+docker ps
+
+
+echo " "
+echo "Starting local tests ..."
+docker run -a STDOUT \
+  --net=host $serversContainer:$vMajor.$vMinor.$build \
+  bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
+
+echo " "
+./killAll > garbage
+rm garbage
