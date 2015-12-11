@@ -1,5 +1,5 @@
 import React from 'react';
-import traders from '../utils/traders';
+import traders from 'utils/traders';
 import { Link } from 'react-router';
 
 class Header extends React.Component {
@@ -7,6 +7,12 @@ class Header extends React.Component {
   static propTypes = {
     status: React.PropTypes.bool,
     services: React.PropTypes.object
+  }
+
+  componentWillMount(){
+    if (window.fin){
+      window.fin.desktop.main(() => this.fin = window.fin.desktop.Window.getCurrent());
+    }
   }
 
   getBrokerStatus(status:boolean){
@@ -25,24 +31,49 @@ class Header extends React.Component {
   }
 
   close(){
-    window.fin && window.fin.desktop.Window.getCurrent().close();
+    this.fin && this.fin.close();
   }
 
   minimise(e){
     e && e.preventDefault();
-    window.fin && window.fin.desktop.Window.getCurrent().minimize();
+    this.fin && this.fin.minimize();
   }
 
   maximise(e){
     e && e.preventDefault();
-    window.fin && window.fin.desktop.Window.getCurrent().maximize();
+    if (this.fin){
+      this.fin.getState(state => {
+        switch(state){
+          case 'maximized':
+          case 'restored':
+          case 'minimized':
+                this.fin.restore(() => this.fin.bringToFront());
+                break;
+          default:
+                this.fin.maximize();
+        }
+      });
+    }
+  }
+
+  handleExternalClick(e){
+    if (window.fin){
+      e.preventDefault();
+      window.fin.desktop.System.openUrlWithBrowser(e.currentTarget.href);
+    }
   }
 
   render(){
     const { status, services } = this.props;
 
     return <nav className='navbar navbar-default'>
-      <Link className='navbar-brand' to='/'>Reactive Trader 2</Link>
+      <a className='navbar-brand navbar-adaptive' href='http://weareadaptive.com/' target='_blank' title='Adaptive Home Page' onClick={(e) => this.handleExternalClick(e)}>
+        <img src="images/adaptive-logo-statusbar.png" alt="Adaptive Logo" /></a>
+      <a className='navbar-brand navbar-adaptive navbar-openfin' href='http://openfin.co/' target='_blank' title='Open Fin' onClick={(e) => this.handleExternalClick(e)}>
+        <img src="images/openfin-logo.png" alt="OpenFin Logo" /></a>
+      <Link className='navbar-brand' to='/' title='Home'>
+        Reactive Trader 2
+      </Link>
       <ul className='nav navbar-nav hidden-xs navbar-left'>
         <li>
           <Link to='/user' className='nav-link' activeClassName='active'><i className='fa fa-user' /> {traders.code} ({traders.name} {traders.surname})</Link>

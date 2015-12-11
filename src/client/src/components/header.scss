@@ -47,3 +47,23 @@ nav.navbar {
     }
   }
 }
+
+a.navbar-brand {
+  -webkit-app-region: no-drag;
+  &.navbar-adaptive {
+    background: $gray-lighter;
+    &:hover {
+      background: linear-gradient($gray-lighter, $gray-light);
+      box-shadow: inset 0 0 1px 1px rgba(255,255,255,.5);
+      img {
+        transform: translate(1px, 1px);
+      }
+    }
+    &.navbar-openfin {
+      display: none;
+      .openfin & {
+        display: inline-block;
+      }
+    }
+  }
+}

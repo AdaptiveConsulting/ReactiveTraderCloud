@@ -116,6 +116,10 @@ class Traders {
     this.surname = trader.lastName;
     this.code = trader.shortCode;
   }
+
+  get list(){
+    return Traders.list;
+  }
 }
 
 export default new Traders;
