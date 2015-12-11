@@ -1,4 +1,4 @@
-import system from 'system';
+import Guard from '../guard';
 
 export default class ServiceInstanceStatus {
     static createForDisconnected(serviceType : string) {
@@ -9,7 +9,7 @@ export default class ServiceInstanceStatus {
     }
 
     constructor(serviceType : string, id : string, timestamp : number, serviceLoad : Number, isConnected : Boolean) {
-        system.Guard.stringIsNotEmpty(serviceType, 'serviceType must be as string and not empty');
+        Guard.stringIsNotEmpty(serviceType, 'serviceType must be as string and not empty');
         this.serviceType = serviceType;
         this.id = id;
         this.serviceLoad = serviceLoad;
