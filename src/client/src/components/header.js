@@ -9,6 +9,12 @@ class Header extends React.Component {
     services: React.PropTypes.object
   }
 
+  componentWillMount(){
+    if (window.fin){
+      window.fin.desktop.main(() => this.fin = window.fin.desktop.Window.getCurrent());
+    }
+  }
+
   getBrokerStatus(status:boolean){
     return status ? <span className='fa-stack text-success animated fadeIn' title='Online'><i className='fa fa-signal fa-stack-1x'/></span> : <span className='fa-stack' title='Connection offline'><i className='fa fa-signal fa-stack-1x' /><i className='fa fa-ban fa-stack-2x text-danger'/></span>;
   }
@@ -25,17 +31,29 @@ class Header extends React.Component {
   }
 
   close(){
-    window.fin && window.fin.desktop.Window.getCurrent().close();
+    this.fin && this.fin.close();
   }
 
   minimise(e){
     e && e.preventDefault();
-    window.fin && window.fin.desktop.Window.getCurrent().minimize();
+    this.fin && this.fin.minimize();
   }
 
   maximise(e){
     e && e.preventDefault();
-    window.fin && window.fin.desktop.Window.getCurrent().maximize();
+    if (this.fin){
+      this.fin.getState(state => {
+        switch(state){
+          case 'maximized':
+          case 'restored':
+          case 'minimized':
+                this.fin.restore(() => this.fin.bringToFront());
+                break;
+          default:
+                this.fin.maximize();
+        }
+      });
+    }
   }
 
   render(){
