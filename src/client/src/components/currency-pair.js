@@ -73,7 +73,7 @@ class CurrencyPair extends React.Component {
   componentWillReceiveProps(props, state){
     const historic = this.state.historic;
 
-    // props.mid && props.mid != historic[historic.length-1] && historic.push(props.mid);
+    //props.mid && props.mid != historic[historic.length-1] && historic.push(props.mid);
     props.mid && historic.push(props.mid);
 
     // 30 max historic prices
@@ -244,7 +244,7 @@ class CurrencyPair extends React.Component {
         <Sparklines data={historic.slice()} width={326} height={22} margin={0}>
           <SparklinesLine />
           <SparklinesSpots />
-          <SparklinesReferenceLine type='median' />
+          <SparklinesReferenceLine type='avg' />
         </Sparklines> : <div className='sparkline-holder'></div>}
     </div>;
   }

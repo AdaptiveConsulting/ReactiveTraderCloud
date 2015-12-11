@@ -53,7 +53,7 @@ class CurrencyPairs extends React.Component {
           formattedValueDate = 'SP. ' + valueDay.format('DD MMM'),
           flagged            = this.state.flagged;
 
-    flagged && flagged === trade.id && (trade.className = 'rubberBand');
+    flagged && flagged === trade.id && (trade.className = 'flash');
 
     return (
       <tr key={trade.id} className={trade.status + ' animated ' + (trade.className || 'slideInDown')}>
