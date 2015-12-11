@@ -136,7 +136,18 @@ class IndexView extends React.Component {
 
         new window.fin.desktop.Notification({
           url: '/#/growl',
-          message
+          message,
+          onClick: () => {
+            const win = window.fin.desktop.Window.getCurrent();
+            win.getState(state =>{
+              switch (state){
+                case 'minimized':
+                  win.restore();
+                default:
+                  win.bringToFront();
+              }
+            });
+          }
         });
 
         payload.onACK(message);

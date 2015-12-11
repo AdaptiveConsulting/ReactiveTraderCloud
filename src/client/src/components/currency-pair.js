@@ -39,7 +39,7 @@ class CurrencyPair extends React.Component {
     super(props, context);
     this.state = {
       size: 0,
-      chart: false,
+      chart: true,
       info: false,
       tearoff: false,
       state: 'listening',
@@ -76,7 +76,7 @@ class CurrencyPair extends React.Component {
     props.mid && historic.push(props.mid);
 
     // 30 max historic prices
-    historic.length > 30 && (historic.shift());
+    historic.length > 120 && (historic.shift());
 
     const payload = {
       historic,
@@ -243,7 +243,7 @@ class CurrencyPair extends React.Component {
         <Sparklines data={historic.slice()} width={326} height={24} margin={0}>
           <SparklinesLine />
           <SparklinesSpots />
-          <SparklinesReferenceLine type='mean'/>
+          <SparklinesReferenceLine type='avg'/>
         </Sparklines> : <div className='sparkline-holder'></div>}
     </div>;
   }

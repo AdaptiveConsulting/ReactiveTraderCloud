@@ -1,6 +1,7 @@
 import React from 'react';
 import numeral from 'numeral';
 import moment from 'moment';
+import Container from './container';
 
 /**
  * @class CurrencyPairs
@@ -11,6 +12,13 @@ class CurrencyPairs extends React.Component {
   static propTypes = {
     trades: React.PropTypes.array,
     status: React.PropTypes.number
+  }
+
+  constructor(props, context){
+    super(props, context);
+    this.state = {
+      tearoff: false
+    };
   }
 
   /**
@@ -41,10 +49,16 @@ class CurrencyPairs extends React.Component {
     );
   }
 
+  tearOff(state){
+    this.setState({
+      tearoff: state
+    });
+  }
+
   render(){
     const className = this.props.status ? 'blotter online' : 'blotter offline';
 
-    return <div className={className}>
+    return <Container title='blotter' className={className} onTearoff={(state) => this.tearOff(state)} tearoff={this.state.tearoff} width={window.outerWidth} height={400}>
       <div className='status'>
         <i className='fa fa-plug animated infinite fadeIn'/>
       </div>
@@ -66,7 +80,7 @@ class CurrencyPairs extends React.Component {
         {this.props.trades.map(this.renderRow)}
         </tbody>
       </table>
-    </div>;
+    </Container>;
   }
 }
 
