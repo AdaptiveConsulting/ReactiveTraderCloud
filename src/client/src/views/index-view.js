@@ -134,7 +134,7 @@ class IndexView extends React.Component {
                 rate: trade.SpotRate
               };
 
-        new window.fin.desktop.Notification({
+        window.fin && new window.fin.desktop.Notification({
           url: '/#/growl',
           message,
           onClick: function(){
