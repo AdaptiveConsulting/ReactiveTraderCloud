@@ -166,7 +166,6 @@ class Transport {
     for (let service in this.services){
       this.services[service].markEverythingAsDead();
     }
-
     return this;
   }
 

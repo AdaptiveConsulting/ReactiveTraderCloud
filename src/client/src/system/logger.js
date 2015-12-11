@@ -1,4 +1,4 @@
-import Guard from './Guard';
+import Guard from './guard';
 
 var levels = {
     verbose:0,

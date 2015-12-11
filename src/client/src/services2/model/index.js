@@ -1,5 +1,4 @@
-import Price from './Price';
-import GetSpotStreamRequest from './GetSpotStreamRequest';
-import ServiceInstanceStatus from './ServiceInstanceStatus';
+import Price from './price';
+import GetSpotStreamRequest from './getSpotStreamRequest';
 
-export default { Price, GetSpotStreamRequest, ServiceInstanceStatus };
+export default { Price, GetSpotStreamRequest };

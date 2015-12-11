@@ -1,6 +1,3 @@
-import Connection from './Connection';
-import AutobahnProxy from './AutobahnProxy';
-import PricingService from './PricingService';
-import ServiceClient from './ServiceClient';
+import PricingService from './pricingService';
 
-export default { Connection, AutobahnProxy, PricingService, ServiceClient };
+export default { PricingService };

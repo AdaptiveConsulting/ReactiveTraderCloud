@@ -1,17 +1,19 @@
 import Rx from 'rx';
 import system from 'system';
 import model from './model';
-import AutobahnProxy from './AutobahnProxy';
+import AutobahnProxy from './autobahnProxy';
 
 var _log : system.logger.Logger = system.logger.create('Connection');
 
 export default class Connection extends system.disposables.DisposableBase {
     _autobahn : AutobahnProxy;
     _connectionStatusSubject : Rx.BehaviorSubject<Boolean>;
+    _serviceStatusSubject : Rx.BehaviorSubject<model.ServiceInstanceStatus>;
     constructor(autobahn: AutobahnProxy){
         super();
         this._autobahn = autobahn;
         this._connectionStatusSubject = new Rx.BehaviorSubject(false);
+        this._serviceStatusSubject = new Rx.Subject(false);
     }
     get connectionStatus() : Rx.Observable<Boolean> {
         return this._connectionStatusSubject
@@ -53,10 +55,10 @@ export default class Connection extends system.disposables.DisposableBase {
             });
             return () => {
                 _this._autobahn.session.unsubscribe(subscription).then(
-                    function (gone) {
+                    gone => {
                         _log.debug('Successfully unsubscribing from topic {0}', topic);
                     },
-                    function (error) {
+                    error => {
                         _log.error('Error unsubscribing from topic {0}: {1}', topic, error);
                     }
                 );
