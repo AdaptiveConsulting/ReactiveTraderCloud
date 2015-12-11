@@ -26,11 +26,11 @@ export default class Analytics extends React.Component {
 
   render(){
     return <Container title='analytics' className='analytics-container animated slideInRight' onTearoff={(state) => this.tearOff(state)}
-               tearoff={this.state.tearoff} width={400} height={400} options={{maximizable:true}}>
+               tearoff={this.state.tearoff} width={400} height={800} options={{maximizable:true}}>
 
       <LineChart data={lineData}
                  legend={!true}
-                 width={400}
+                 width={380}
                  height={400}
                  viewBoxObject={{
                     x: 0,
