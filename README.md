@@ -1,24 +1,59 @@
-# Reactive-Trader
+# Reactive Trader 2
 
 [![Circle CI](https://circleci.com/gh/AdaptiveConsulting/AdaptiveTrader.svg?style=svg&circle-token=801547883329d22e505634493b58b26fbb742e46)](https://circleci.com/gh/AdaptiveConsulting/AdaptiveTrader)
 
-# Run on docker
+## Overview
 
-### Install docker on windows/mac:
-- go to [toolbox download page](https://www.docker.com/docker-toolbox) and click on your OS (version 1.9.1c on writing moment)
-- install
-- select virtualbox/docker, kitematic and git are optional
-- then launch `Docker Quickstart Terminal`
-- run `docker ps` and control that it match the following
-```
-$ docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS
+Reactive Trader 2 is a real-time FX trading platform demo showcasing reactive programming principles applied across the full application stack.
 
-```
-- fine your docker installation is done.
+Improvements have been made across the board since [Reactive Trader v1](https://github.com/AdaptiveConsulting/ReactiveTrader). The UI is revamped with a modern Javascript framework (React), and an event sourcing approach is used by the backend services for data resiliency.
 
-###  Run ReactiveTrader
+All frameworks and libraries used are entirely open source, and each component can be run on either Windows, Linux or Mac OS.
 
-- `cp sample.config config`
-- `cd deploy/docker`
-- `./runAll BUILD_NUMBER`(ie: ./runAll 294) 
+The services are also distributed and are capable of recovery from disconnections. This demonstrates an approach similar to what is put into practice in major financial institutions for trading systems. 
+
+## Architecture
+
+The backend is made up of distributed services written in .NET leveraging the cross-platform capabilities provided by DNX.
+
+Every component can be deployed via Docker containers. This allows the use of tools such as Kubernetes to facilitate cluster management for resiliency purposes, as well as ease of deployment.
+
+Client-side implementations are available for all major platforms, including desktop browser, OpenFin, Android, iOS, Apple Watch and WPF.
+
+![Architecture Overview](/docs/ArchitectureOverview.png)
+
+## Getting Started
+
+### Front-End
+
+The front-end is written in Javascript with React, The details of how to set up the client to run on your machine are [here](src/client/README.md).
+
+Alternatively a live demo can be found at [TODO](reactivetrader.com)
+
+### Back-End
+
+The back-end services are cross-platform. For details of how to set up the services on your on machine see below. 
+
+#### Windows
+
+If you are familiar with using Visual Studio on Windows.
+
+[Getting Started using Visual Studio 2015](/docs/vs-setup.md)
+
+#### Linux
+
+You can also setup a dev environment on Linux.
+
+[Getting Started on Linux](/docs/linux-setup.md)
+
+### Mac OS
+
+And on Mac OS
+
+[Getting Started on Mac OS](/docs/macos-setup.md)
+
+#### Docker
+
+The simplest way to run the full application no matter which OS you are running is by using Docker.
+
+[Getting Started using Docker](/docs/docker-setup.md)
