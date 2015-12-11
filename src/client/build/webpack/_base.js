@@ -1,6 +1,7 @@
 import webpack           from 'webpack';
 import config            from '../../config';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 const paths = config.get('utils_paths');
 
@@ -27,7 +28,13 @@ const webpackConfig = {
       hash     : true,
       filename : 'index.html',
       inject   : 'body'
-    })
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: paths.project(config.get('dir_src')) + '/images',
+        to: 'images'
+      }
+    ])
   ],
   resolve : {
     extensions : ['', '.js', '.jsx'],

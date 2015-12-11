@@ -1,10 +1,10 @@
 import React from 'react';
-import CurrencyPairs from '../components/currency-pairs';
-import Blotter from '../components/blotter';
-import Modal from '../components/modal';
-import Header from '../components/header';
+import CurrencyPairs from 'components/currency-pairs';
+import Blotter from 'components/blotter';
+import Modal from 'components/modal';
+import Header from 'components/header';
 
-import rt from '../services/reactive-trader';
+import rt from 'services/reactive-trader';
 
 /**
  *
@@ -71,7 +71,7 @@ class IndexView extends React.Component {
   }
 
   componentDidMount(){
-    rt.on('timeout', () => {
+    rt.on('timeout', () =>{
       Modal.setTitle('Session expired')
         .setBody(<div>
           <div>Your 15 minute session expired, you are now disconnected from the server.</div>
@@ -121,19 +121,26 @@ class IndexView extends React.Component {
       Notional: payload.amount,
       DealtCurrency: payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
     }).then((response) =>{
-        const trade = response.Trade,
-              dt    = new Date(trade.ValueDate);
+        const trade   = response.Trade,
+              dt      = new Date(trade.ValueDate),
+              message = {
+                pair: trade.CurrencyPair,
+                id: trade.TradeId,
+                status: trade.Status,
+                direction: trade.Direction.toLowerCase(),
+                amount: trade.Notional,
+                trader: trade.TraderName,
+                valueDate: trade.ValueDate, // todo get this from DTO
+                rate: trade.SpotRate
+              };
 
-        payload.onACK({
-          pair: trade.CurrencyPair,
-          id: trade.TradeId,
-          status: trade.Status,
-          direction: trade.Direction.toLowerCase(),
-          amount: trade.Notional,
-          trader: trade.TraderName,
-          valueDate: trade.ValueDate, // todo get this from DTO
-          rate: trade.SpotRate
+        new window.fin.desktop.Notification({
+          url: '/#/growl',
+          message
         });
+
+        payload.onACK(message);
+
       }, (error) =>{
         console.error(error);
         console.trace();
@@ -146,9 +153,9 @@ class IndexView extends React.Component {
 
     return <div>
       <Modal/>
-      <Header status={this.state.connected} services={services} />
-      <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} services={services} />
-      <Blotter trades={this.state.trades} status={services.blotter} />
+      <Header status={this.state.connected} services={services}/>
+      <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} services={services}/>
+      <Blotter trades={this.state.trades} status={services.blotter}/>
     </div>;
   }
 
