@@ -36,7 +36,7 @@ class Container extends React.Component {
     };
 
     if (window.fin){
-      popupAttributes.options = {
+      popupAttributes.options = Object.assign({}, {
         url: '/#/tile',
         title: title,
         name: title,
@@ -47,7 +47,7 @@ class Container extends React.Component {
         maximizable: false,
         frame: false,
         autoShow: true
-      };
+      }, this.props.options);
     }
     else {
       popupAttributes.options = {

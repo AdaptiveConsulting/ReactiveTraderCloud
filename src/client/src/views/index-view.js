@@ -137,7 +137,7 @@ class IndexView extends React.Component {
         new window.fin.desktop.Notification({
           url: '/#/growl',
           message,
-          onClick: () => {
+          onClick: function(){
             const win = window.fin.desktop.Window.getCurrent();
             win.getState(state =>{
               switch (state){
@@ -147,6 +147,8 @@ class IndexView extends React.Component {
                   win.bringToFront();
               }
             });
+
+            window.fin.desktop.InterApplicationBus.publish('acknowledgeTrade', message.id);
           }
         });
 

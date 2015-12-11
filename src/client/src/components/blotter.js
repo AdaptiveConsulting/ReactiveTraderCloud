@@ -2,6 +2,7 @@ import React from 'react';
 import numeral from 'numeral';
 import moment from 'moment';
 import Container from './container';
+import _ from 'lodash';
 
 /**
  * @class CurrencyPairs
@@ -17,8 +18,26 @@ class CurrencyPairs extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {
-      tearoff: false
+      tearoff: false,
+      flagged: null
     };
+  }
+
+  componentDidMount(){
+    if (window.fin){
+      // listen to messages about highlighting the relevant trade
+      window.fin.desktop.main(() =>{
+        window.fin.desktop.InterApplicationBus.subscribe('*', 'acknowledgeTrade', (id) => {
+          const trade = _.findWhere(this.props.trades, {
+            id
+          });
+
+          trade && (this.setState({
+            flagged: id
+          }));
+        });
+      })
+    }
   }
 
   /**
@@ -30,10 +49,13 @@ class CurrencyPairs extends React.Component {
     const notional           = numeral(trade.amount).format('0,000,000[.]00') + ' ' + trade.pair.substr(0, 3),
           dateTime           = moment(trade.dateTime).format('MMM Do, HH:mm:ss'),
           valueDay           = moment(trade.valueDate),
-          formattedValueDate = 'SP. ' + valueDay.format('DD MMM');
+          formattedValueDate = 'SP. ' + valueDay.format('DD MMM'),
+          flagged = this.state.flagged;
+
+    flagged && flagged === trade.id && (trade.className = 'rubberBand');
 
     return (
-      <tr key={trade.id} className={trade.status + ' animated slideInDown'}>
+      <tr key={trade.id} className={trade.status + ' animated ' + (trade.className || 'slideInDown')}>
         <td>{trade.id}</td>
         <td className='large'>
           <div>{dateTime}</div>
@@ -55,10 +77,16 @@ class CurrencyPairs extends React.Component {
     });
   }
 
+  componentDidUpdate(){
+    this.setState({
+      flagged: null
+    });
+  }
+
   render(){
     const className = this.props.status ? 'blotter online' : 'blotter offline';
 
-    return <Container title='blotter' className={className} onTearoff={(state) => this.tearOff(state)} tearoff={this.state.tearoff} width={window.outerWidth} height={400}>
+    return <Container title='blotter' className={className} onTearoff={(state) => this.tearOff(state)} tearoff={this.state.tearoff} width={window.outerWidth} height={400} options={{maximizable:true}} >
       <div className='status'>
         <i className='fa fa-plug animated infinite fadeIn'/>
       </div>
@@ -77,7 +105,7 @@ class CurrencyPairs extends React.Component {
         </tr>
         </thead>
         <tbody>
-        {this.props.trades.map(this.renderRow)}
+        {this.props.trades.map(this.renderRow, this)}
         </tbody>
       </table>
     </Container>;
