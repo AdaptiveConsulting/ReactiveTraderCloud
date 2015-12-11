@@ -29,6 +29,7 @@
     "numeral": "^1.5.3",
     "react": "^0.14.0",
     "react-bootstrap": "^0.27.3",
+    "react-d3": "^0.4.0",
     "react-dom": "^0.14.0",
     "react-popout": "^0.4.0",
     "react-router": "1.0.0-rc4",

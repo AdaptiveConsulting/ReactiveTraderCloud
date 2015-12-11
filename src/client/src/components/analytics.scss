@@ -1,0 +1,19 @@
+.analytics-container {
+  margin-left: 4px;
+  position: absolute;
+  top: 52px;
+  bottom: 20%;
+  //margin-bottom: 25%;
+  overflow: auto;
+  right: 0px;
+  width: 400px;
+  background: linear-gradient(rgba(0,0,0,0), $gray-dark, rgba(0,0,0,0));
+  box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
+  .tile & {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: auto;
+  }
+}

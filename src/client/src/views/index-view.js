@@ -3,6 +3,7 @@ import CurrencyPairs from 'components/currency-pairs';
 import Blotter from 'components/blotter';
 import Modal from 'components/modal';
 import Header from 'components/header';
+import Analytics from 'components/analytics';
 
 import rt from 'services/reactive-trader';
 
@@ -168,6 +169,7 @@ class IndexView extends React.Component {
       <Modal/>
       <Header status={this.state.connected} services={services}/>
       <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} services={services}/>
+      <Analytics />
       <Blotter trades={this.state.trades} status={services.blotter}/>
     </div>;
   }
