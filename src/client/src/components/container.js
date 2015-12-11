@@ -32,6 +32,7 @@ class Container extends React.Component {
         defaultHeight: 191,
         resizable: false,
         scrollable: false,
+        maximizable: false,
         frame: false,
         autoShow: true
       };
