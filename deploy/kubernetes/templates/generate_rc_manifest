@@ -42,6 +42,7 @@ if [[ $service == "blotter" ]];then dockerImage="$serversContainer:$vMajor.$vMin
 if [[ $service == "pricing" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "referencedataread" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "tradeexecution" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "analysis" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
 
 sed -i  "s/__SERVICE__/$service/g" $rcFile
 sed -i  "s/__MAJOR__/$vMajor/g" $rcFile

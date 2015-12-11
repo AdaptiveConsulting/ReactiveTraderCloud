@@ -3,13 +3,14 @@ machine:
     version: 5.1.0
   services:
     - docker
-  pre:
-    - npm install -g npm@3.5
-    - sudo apt-get install gcc-4.8 g++-4.8
 
 dependencies:
   cache_directories:
     - "~/docker"
+    - deploy/docker/build/servers/dnxcache
+  pre:
+    - npm install -g npm@3.5
+    - sudo apt-get install gcc-4.8 g++-4.8
   override:
     - docker info
     - cp deploy/sample.config deploy/config

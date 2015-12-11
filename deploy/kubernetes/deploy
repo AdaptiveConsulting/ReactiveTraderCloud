@@ -53,6 +53,7 @@ cd templates
   ./generate_rc_manifest referencedataread $namespace $build
   ./generate_rc_manifest tradeexecution    $namespace $build
   ./generate_rc_manifest web               $namespace $build
+  ./generate_rc_manifest analysis          $namespace $build
   
 cd - > garbage && rm templates/garbage
 
@@ -73,6 +74,7 @@ cd - > garbage && rm templates/garbage
   ./kubectl create -f manifests/pricing-rc.yml
   ./kubectl create -f manifests/referencedataread-rc.yml
   ./kubectl create -f manifests/tradeexecution-rc.yml
+  ./kubectl create -f manifests/analysis-rc.yml
   
 
 echo " "
