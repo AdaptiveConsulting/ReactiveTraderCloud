@@ -56,12 +56,21 @@ class Header extends React.Component {
     }
   }
 
+  handleExternalClick(e){
+    if (window.fin){
+      e.preventDefault();
+      window.fin.desktop.System.openUrlWithBrowser(e.currentTarget.href);
+    }
+  }
+
   render(){
     const { status, services } = this.props;
 
     return <nav className='navbar navbar-default'>
-      <a className='navbar-brand navbar-adaptive' href='http://weareadaptive.com/' target='_blank' title='Adaptive Home Page'>
+      <a className='navbar-brand navbar-adaptive' href='http://weareadaptive.com/' target='_blank' title='Adaptive Home Page' onClick={(e) => this.handleExternalClick(e)}>
         <img src="images/adaptive-logo-statusbar.png" alt="Adaptive Logo" /></a>
+      <a className='navbar-brand navbar-adaptive navbar-openfin' href='http://openfin.co/' target='_blank' title='Open Fin' onClick={(e) => this.handleExternalClick(e)}>
+        <img src="images/openfin-logo.png" alt="OpenFin Logo" /></a>
       <Link className='navbar-brand' to='/' title='Home'>
         Reactive Trader 2
       </Link>
