@@ -1,7 +1,8 @@
+import Guard from '../guard';
 import Rx from 'rx';
 import logger from '../logger';
 import disposables from '../disposables';
-import AutobahnProxy from './autobahnProxy';
+import AutobahnConnectionProxy from './autobahnConnectionProxy';
 import ServiceInstanceStatus from './serviceInstanceStatus';
 
 var _log : logger.Logger = logger.create('Connection');
@@ -11,9 +12,9 @@ export default class Connection extends disposables.DisposableBase {
     _connectionStatusSubject : Rx.BehaviorSubject<Boolean>;
     _serviceStatusSubject : Rx.BehaviorSubject<ServiceInstanceStatus>;
     _openCalled : Boolean;
-
     constructor(autobahn: AutobahnProxy){
         super();
+        Guard.isDefined(autobahn, 'autobahn required');
         this._autobahn = autobahn;
         this._connectionStatusSubject = new Rx.BehaviorSubject(false);
         this._serviceStatusSubject = new Rx.Subject(false);
@@ -46,19 +47,18 @@ export default class Connection extends disposables.DisposableBase {
             this._autobahn.open();
         }
     }
-    getTopicStream<T>(topic:string) : Rx.Observable<T> {
+    // get an observable subscription to a well known stream, e.g. 'status'
+    getWellKnownStream<TResponse>(topic:string) : Rx.Observable<TResponse> {
         let _this = this;
-        return Rx.Observable.create((o : Rx.Observer<T>) => {
+        return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
             let disposables = new Rx.CompositeDisposable();
-            _log.debug('Requesting topic [{0}]. Is connected [{1}]', topic, this._isConnected);
-            if(this.isConnected) {
+            _log.debug('Wiring up to topic [{0}]. Is connected [{1}]', topic, _this._isConnected);
+            if(_this.isConnected) {
                 var subscription;
                 _this._autobahn.session.subscribe(topic, response => {
-                    _log.debug('Received response on topic [{0}]', topic);
                     if(_log.isVerboseEnabled) {
                         _log.verbose('Received response on topic [{0}]. Payload[{1}]', topic, JSON.stringify(response[0]));
                     }
-                    _log.debug('Received response on topic [{0}]', topic);
                     o.onNext(response[0]);
                 }).then((sub : autobahn.Subscription) =>{
                     // subscription succeeded, subscription is an instance of autobahn.Subscription
@@ -80,7 +80,49 @@ export default class Connection extends disposables.DisposableBase {
                 }));
             }
             else {
-                o.onError(new Error('Session not connected'));
+                o.onError(new Error('Session not connected, can\'t subscribe to topic [' + topic + ']'));
+            }
+            return disposables;
+        });
+    }
+    // creates an topic unique to the operation, wraps it up as an observable stream, then does an RPC to instruct the server to publish to said stream
+    getUniqueStream<TResponse>(operationName:string) : Rx.Observable<TResponse> {
+        let _this = this;
+        return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
+            let disposables = new Rx.CompositeDisposable();
+
+            return disposables;
+        });
+    }
+    // wraps a RPC up as an observable stream
+    requestResponse<TRequest, TResponse>(operationName: String, payload : TResponse) : Rx.Observable<TResponse> {
+        let _this = this;
+        return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
+            _log.debug('Requesting a response for operation [{0}]. Is connected [{1}]', operationName, _this._isConnected);
+            if (_this.isConnected) {
+                var isDisposed:Boolean
+                _this._autobahn.call(operationName, payload).then(
+                    result => {
+                        if (!isDisposed) {
+                            o.onNext(result);
+                        } else {
+                            _log.warn('Ignoring response for operation [{0}] as stream disposed', operationName);
+                        }
+                    },
+                    error => {
+                        if (!isDisposed) {
+                            o.onError(error);
+                        } else {
+                            _log.error('Ignoring error for operation [{0}] as stream disposed.. Error was: [{1}]', operationName, error);
+                        }
+                    }
+                );
+                disposables.add(Rx.Disposable.create(() => {
+                    isDisposed = true;
+                }));
+            }
+            else {
+                o.onError(new Error('Session not connected, can\'t perform operation ' + operationName));
             }
             return disposables;
         });

@@ -8,7 +8,7 @@ var levels = {
     error:4
 };
 
-var _currentLevel = levels.verbose;
+var _currentLevel = levels.debug;
 
 var _sink = logEvent => {
     console.log('[' + logEvent.logger + '] [' + logEvent.level + ']: ' + logEvent.message);

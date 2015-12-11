@@ -23,7 +23,7 @@ describe('Connection', () => {
         expect(_stubAutobahnProxy.onCloseCallbacks.length).toEqual(1);
     });
 
-    it('only opens once', () => {
+    it('only opens underlying once when you call .open()', () => {
         _connection.open();
         _connection.open();
         _connection.open();
@@ -50,17 +50,17 @@ describe('Connection', () => {
         expect(_receivedStatusUpdates).toEqual([false, true, false]);
     });
 
-    describe('getTopicStream', () => {
-        fit('errors if called before session is set', () => {
+    describe('getWellKnownStream', () => {
+        it('errors if called before session is set', () => {
             var streamYieldCount = 0, receivedError;
-            _connection.getTopicStream('status').subscribe(_ =>{
+            _connection.getWellKnownStream('status').subscribe(_ =>{
                 streamYieldCount++;
             }, ex => {
                 receivedError = ex;
             });
             expect(streamYieldCount).toEqual(0);
             expect(receivedError).toBeDefined();
-            expect(receivedError).toEqual(new Error('Session not connected'));
+            expect(receivedError).toEqual(new Error('Session not connected, can\'t subscribe to topic [status]'));
         });
     });
 });

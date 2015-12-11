@@ -1,5 +1,6 @@
 var Rx = require('rx');
-class SchedulerService {
+
+export default class SchedulerService {
     constructor() {
         this._immediate = Rx.Scheduler.immediate;
         this._timeout = Rx.Scheduler.timeout;
@@ -11,4 +12,3 @@ class SchedulerService {
         return this._timeout;
     }
 }
-export default new SchedulerService();
