@@ -7,13 +7,13 @@ import Connection from './connection';
 import _ from 'lodash';
 import ServiceInstanceStatus from './serviceInstanceStatus';
 import ServiceStatusSummary from './serviceStatusSummary';
-import ServiceInstanceCache from './serviceInstanceCache';
+import LastValueObservableDictionary from './lastValueObservableDictionary';
 
 const HEARTBEAT_TIMEOUT = 3000;
 
 export default class ServiceClient extends disposables.DisposableBase {
     _log : logger.Logger;
-    _serviceInstanceDictionaryStream : Rx.Observable<ServiceInstanceCache>;
+    _serviceInstanceDictionaryStream : Rx.Observable<LastValueObservableDictionary>;
     constructor(serviceType : string, connection : Connection, schedulerService : SchedulerService){
         super();
         Guard.stringIsNotEmpty(serviceType, 'serviceType required and should not be empty');
@@ -24,26 +24,17 @@ export default class ServiceClient extends disposables.DisposableBase {
         this._serviceInstanceDictionaryStream = this._createServiceInstanceDictionaryStream(serviceType);
         this._log = logger.create('ServiceClient:' + serviceType);
     }
-
-    get serviceStatusStream() : Rx.Observable<ServiceStatusSummary> {
+    get serviceStatusSummaryStream() : Rx.Observable<ServiceStatusSummary> {
+        var _this = this;
         return this._serviceInstanceDictionaryStream
-            .select(cache => new ServiceStatusSummary(cache.serviceInstanceCount, cache.isConnected))
+            .select(cache => _this._createServiceStatusSummary(cache))
             .publish()
             .refCount();
     }
-/*
- Example status
-[{"Type":"execution","Instance":"execution.1b27","Timestamp":"2015-12-11T16:38:41.028972+00:00","Load":0}]
-[{"Type":"pricing","Instance":"pricing.12b6","Timestamp":"2015-12-11T16:38:40.987076+00:00","Load":0}]
-[{"Type":"reference","Instance":"reference.aa3e","Timestamp":"2015-12-11T16:38:40.028915+00:00","Load":0}]
-[{"Type":"blotter","Instance":"blotter.92ec","Timestamp":"2015-12-11T16:38:41.029013+00:00","Load":0}]
-* */
-
     connect() {
         this.addDisposable(this._serviceInstanceDictionaryStream.connect());
     }
-
-    _createServiceInstanceDictionaryStream(serviceType:string) : Rx.Observable<ServiceInstanceCache> {
+    _createServiceInstanceDictionaryStream(serviceType:string) : Rx.Observable<LastValueObservableDictionary> {
         var _this = this;
         var connectionStatus = this._connection.connectionStatusStream.publish().refCount();
         var isConnectedStream = connectionStatus.where(isConnected => isConnected);
@@ -67,11 +58,17 @@ export default class ServiceClient extends disposables.DisposableBase {
             // keep the last copy of the dictionary around for new subscribers
             .replay(1);
     }
-
     createRequestResponseOperation<TRequest, TResponse>(request : TRequest, response : TResponse) : Rx.Observable<TResponse> {
         return Rx.Observable.empty();
     }
     createStreamOperation<TRequest, TResponse>(request : TRequest, response : TResponse) : Rx.Observable<TResponse> {
         return Rx.Observable.empty();
+    }
+    _createServiceStatusSummary(cache : LastValueObservableDictionary) {
+        var instanceSummaries = _.map(cache.values, v=> new ServiceInstanceSummary(v.latestValue.serviceId, v.latestValue.isConnected));
+        var isConnected = _.some(cache.values, (item : LastValueObservable) => {
+            return item.latestValue.isConnected;
+        });
+        return new ServiceStatusSummary(instanceSummaries, isConnected);
     }
 }

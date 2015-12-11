@@ -1,6 +1,6 @@
 import Rx from 'rx';
 import LastValueObservable from './lastValueObservable';
-import ServiceInstanceCache from './serviceInstanceCache';
+import LastValueObservableDictionary from './lastValueObservableDictionary';
 
 function takeUntilAndEndWith<TValue, TOther>(terminationSequence : Rx.Observable<TOther>, endWithItemFactory : (lastItem: TValue) => TValue) {
     var source = this;
@@ -58,7 +58,7 @@ Rx.Observable.prototype.timeoutInnerObservables = timeoutInnerObservables;
 function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TValue) => TKey) : Rx.Observable<ServiceInstanceCache> {
     var sources = this;
     return Rx.Observable.create(o => {
-        var cache = new ServiceInstanceCache();
+        var dictionary = new LastValueObservableDictionary();
         var disposables = new Rx.CompositeDisposable();
         disposables.add(
             sources.subscribe(
@@ -67,13 +67,13 @@ function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TV
                     disposables.add(
                         innerSourcePublished.subscribe(value => {
                             var key = keySelector(value);
-                            if (!cache.hasOwnProperty(key))                             {
-                                cache.add(key, new LastValueObservable(innerSourcePublished, value));
+                            if (!dictionary.hasKey(key))                             {
+                                dictionary.add(key, new LastValueObservable(innerSourcePublished, value));
                             }
                             else {
-                                cache.updateWithLastestValue(key, value);
+                                dictionary.updateWithLastestValue(key, value);
                             }
-                            o.onNext(cache); // note: not creating a copy of local state
+                            o.onNext(dictionary); // note: not creating a copy of local state
                         })
                     );
                 },
