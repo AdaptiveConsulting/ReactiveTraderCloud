@@ -230,7 +230,7 @@ class CurrencyPairs extends React.Component {
         return <Container key={cp.id} title={cp.pair} onTearoff={(state) => this.tearOff(cp, state)} tearoff={cp.tearoff} className={className}>
           <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
             pair={cp.pair}
-            size="100m"
+            size="1m"
             key={cp.id}
             buy={cp.buy}
             sell={cp.sell}

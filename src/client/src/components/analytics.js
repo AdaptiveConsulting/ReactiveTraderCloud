@@ -1,12 +1,15 @@
 import React from 'react';
 import Container from 'components/container';
+import moment from 'moment';
 import { LineChart } from 'react-d3';
 
+const USDPNL = {
+  name: 'USD PnL',
+  values: [
+  ]
+};
 const lineData = [
-  {
-    name: "series1",
-    values: [ { x: 0, y: 1.75 }, { x: 1, y: 1.783 },  { x: 2, y: 1.76 }, { x: 5, y: 1.81 } ]
-  }
+  USDPNL
 ];
 
 export default class Analytics extends React.Component {
@@ -24,10 +27,22 @@ export default class Analytics extends React.Component {
     });
   }
 
+  formatHistoricData(data){
+    return data.map((item) => {
+      return {
+        x: moment(item.Timestamp),
+        y: item.UsdPnl + Math.random()
+      };
+    });
+  }
+
   render(){
+    USDPNL.values = this.formatHistoricData(this.props.history);
+
     return <Container title='analytics' className='analytics-container animated slideInRight' onTearoff={(state) => this.tearOff(state)}
                tearoff={this.state.tearoff} width={400} height={800} options={{maximizable:true}}>
 
+      {(USDPNL.values && USDPNL.values.length) ?
       <LineChart data={lineData}
                  legend={!true}
                  width={380}
@@ -38,8 +53,8 @@ export default class Analytics extends React.Component {
                     width: 600,
                     height: 400
                   }}
-                  title="PNL - EURGBP"
-                  gridHorizontal={true}/>
+                  title="Profit & Loss - USD"
+                  gridHorizontal={true}/> : <div className='alert-warning'>No PNL data yet</div>}
     </Container>;
   }
 }

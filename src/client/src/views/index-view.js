@@ -33,6 +33,7 @@ class IndexView extends React.Component {
 
     this.state = {
       trades: [],
+      history: [],
       connected: false,
       services: {}
     };
@@ -51,6 +52,13 @@ class IndexView extends React.Component {
 
       this.setState({
         trades: this.state.trades
+      });
+    });
+
+    rt.analytics.getAnalyticsStream((data) => {
+      console.log(data);
+      this.setState({
+        history: data.History
       });
     });
 
@@ -169,7 +177,7 @@ class IndexView extends React.Component {
       <Modal/>
       <Header status={this.state.connected} services={services}/>
       <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} services={services}/>
-      <Analytics />
+      <Analytics status={services.analytics} history={this.state.history} />
       <Blotter trades={this.state.trades} status={services.blotter}/>
     </div>;
   }
