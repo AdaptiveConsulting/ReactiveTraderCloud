@@ -74,7 +74,7 @@ cd - > garbage && rm templates/garbage
   ./kubectl create -f manifests/pricing-rc.yml
   ./kubectl create -f manifests/referencedataread-rc.yml
   ./kubectl create -f manifests/tradeexecution-rc.yml
-  ./kubectl create -f manifests/analysis-rc.yml
+  ./kubectl create -f manifests/analytics-rc.yml
   
 
 echo " "
