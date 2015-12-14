@@ -1,7 +1,11 @@
 import React from 'react';
 import Container from 'components/container';
 import moment from 'moment';
-import { LineChart } from 'react-d3';
+import numeral from 'numeral';
+import _ from 'lodash';
+
+import NVD3Chart from 'react-nvd3';
+import d3 from 'd3';
 
 const USDPNL = {
   name: 'USD PnL',
@@ -17,7 +21,14 @@ export default class Analytics extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {
-      tearoff: false
+      tearoff: false,
+      lastPos: 'unknown',
+      series: [{
+        series: 'PNL',
+        label: 'PNL',
+        area: true,
+        values: []
+      }]
     };
   }
 
@@ -27,34 +38,62 @@ export default class Analytics extends React.Component {
     });
   }
 
-  formatHistoricData(data){
-    return data.map((item) => {
+  formatHistoricData(data = []){
+    let lastPos;
+    const formatted = _(data).filter(item => item && item.UsdPnl != null).map((item, i) => {
+      lastPos = item.UsdPnl.toFixed(2);
       return {
-        x: moment(item.Timestamp),
-        y: item.UsdPnl + Math.random()
+        x: new Date(item.Timestamp),
+        y: item.UsdPnl.toFixed(2)
       };
+    }).value();
+
+    this.setState({
+      lastPos
     });
+
+    return formatted;
+  }
+
+  componentWillReceiveProps(props){
+    this.state.series[0].values = this.formatHistoricData(props.history);
   }
 
   render(){
-    USDPNL.values = this.formatHistoricData(this.props.history);
+    const values = this.state.series[0].values;
+
+    this.state.series[0].values = values;
+
+    const options = {
+      xAxis: {
+        axisLabel: 'Time',
+        tickFormat: (d) => moment(d).format('hh:mm:ss'),
+      },
+      yAxis: {
+        axisLabel: 'PnL',
+        tickFormat: d3.format(',.1')
+      },
+      showYAxis: true,
+      showXAxis: false,
+      showLegend: false,
+      useInteractiveGuideline: false,
+      color: d3.scale.category10().range(),
+      margin: {
+        left: 70,
+        bottom: 50
+      }
+    }
 
     return <Container title='analytics' className='analytics-container animated slideInRight' onTearoff={(state) => this.tearOff(state)}
-               tearoff={this.state.tearoff} width={400} height={800} options={{maximizable:true}}>
+                      tearoff={this.state.tearoff} width={400} height={800} options={{maximizable:true}}>
 
-      {(USDPNL.values && USDPNL.values.length) ?
-      <LineChart data={lineData}
-                 legend={!true}
-                 width={380}
-                 height={400}
-                 viewBoxObject={{
-                    x: 0,
-                    y: 0,
-                    width: 600,
-                    height: 400
-                  }}
-                  title="Profit & Loss - USD"
-                  gridHorizontal={true}/> : <div className='alert-warning'>No PNL data yet</div>}
+      <span>Profit & Loss <small className="text-small">USD {this.state.lastPos}</small></span>
+
+      <div className="nv-container" ref="container">
+        {(values && values.length) ?
+          <NVD3Chart type='lineChart' datum={this.state.series} options={options} height="200" /> :
+          <div>No PNL data yet</div>}
+      </div>
     </Container>;
   }
 }

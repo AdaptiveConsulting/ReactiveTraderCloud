@@ -15,5 +15,30 @@
     right: 0;
     left: 0;
     width: auto;
+    margin: 0;
   }
+
+  > span {
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+    padding-left: 8px;
+    margin-right: 28px;
+    small {
+      color: $gray-light;
+      font-size: .5em;
+    }
+  }
+
+  .nv-container {
+    position: relative;
+    padding: 10px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
+    background: $gray-dark;
+  }
+  @import 'nvd3';
 }
+
+

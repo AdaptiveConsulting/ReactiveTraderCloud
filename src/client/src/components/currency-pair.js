@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Sparklines, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 
-import numeral from 'numeral';
 import utils from 'utils';
 
 // sub components
