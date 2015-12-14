@@ -8,4 +8,4 @@ import ServiceInstanceSummary from './serviceInstanceSummary';
 // serviceObservableExtensions has no exports, it adds functionality to rx
 import './serviceObservableExtensions';
 
-export default { Connection, AutobahnConnectionProxy, ServiceClient, ServiceInstanceStatus, ServiceStatusSummary };
+export default { Connection, AutobahnConnectionProxy, ServiceClient, ServiceInstanceStatus, ServiceStatusSummary, ServiceInstanceSummary };

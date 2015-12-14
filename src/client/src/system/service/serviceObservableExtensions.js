@@ -71,7 +71,7 @@ function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TV
                                 dictionary.add(key, new LastValueObservable(innerSourcePublished, value));
                             }
                             else {
-                                dictionary.updateWithLastestValue(key, value);
+                                dictionary.updateWithLatestValue(key, value);
                             }
                             o.onNext(dictionary); // note: not creating a copy of local state
                         })

@@ -13,20 +13,20 @@ describe('Connection', () => {
         });
     });
 
-    it('subscribes to autobahn open on open()', () => {
-        _connection.open();
+    it('subscribes to autobahn open on connect()', () => {
+        _connection.connect();
         expect(_stubAutobahnProxy.onOpenCallbacks.length).toEqual(1);
     });
 
-    it('subscribes to autobahn close on open()', () => {
-        _connection.open();
+    it('subscribes to autobahn close on connect()', () => {
+        _connection.connect();
         expect(_stubAutobahnProxy.onCloseCallbacks.length).toEqual(1);
     });
 
-    it('only opens underlying once when you call .open()', () => {
-        _connection.open();
-        _connection.open();
-        _connection.open();
+    it('only opens underlying once when you call .connect()', () => {
+        _connection.connect();
+        _connection.connect();
+        _connection.connect();
         expect(_stubAutobahnProxy.onOpenCallbacks.length).toEqual(1);
     });
 
@@ -36,14 +36,14 @@ describe('Connection', () => {
     });
 
     it('pumps connection status of true when connection comes up', () => {
-        _connection.open();
+        _connection.connect();
         _stubAutobahnProxy.setIsConnected(true);
         expect(_receivedStatusUpdates.length).toEqual(2);
         expect(_receivedStatusUpdates).toEqual([false, true]);
     });
 
     it('pumps connection status of false when connection goes down', () => {
-        _connection.open();
+        _connection.connect();
         _stubAutobahnProxy.setIsConnected(true);
         _stubAutobahnProxy.setIsConnected(false);
         expect(_receivedStatusUpdates.length).toEqual(3);

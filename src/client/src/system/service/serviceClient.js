@@ -6,14 +6,18 @@ import schedulerService from '../schedulerService';
 import Connection from './connection';
 import _ from 'lodash';
 import ServiceInstanceStatus from './serviceInstanceStatus';
+import ServiceInstanceSummary from './serviceInstanceSummary';
 import ServiceStatusSummary from './serviceStatusSummary';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
-
-const HEARTBEAT_TIMEOUT = 3000;
 
 export default class ServiceClient extends disposables.DisposableBase {
     _log : logger.Logger;
     _serviceInstanceDictionaryStream : Rx.Observable<LastValueObservableDictionary>;
+
+    static get HEARTBEAT_TIMEOUT() {
+        return 3000;
+    }
+
     constructor(serviceType : string, connection : Connection, schedulerService : SchedulerService){
         super();
         Guard.stringIsNotEmpty(serviceType, 'serviceType required and should not be empty');
@@ -50,11 +54,14 @@ export default class ServiceClient extends disposables.DisposableBase {
             // we repeat our underlying status stream on disconnects
             .repeat()
             // group by service instance id
-            .groupBy(serviceStatus => serviceStatus.serviceId)
+            .groupBy(serviceStatus => {
+                console.log("foo");
+                return serviceStatus.serviceId;
+            })
             // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
-            .timeoutInnerObservables(HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.timeout)
+            .timeoutInnerObservables(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.timeout)
             // wrap all our service instances up in a hot observable dictionary so we query the service with the least load on a per-subscribe basis
-            .toLastValueObservableDictionary(serviceStatus => serviceStatus.ServiceId)
+            .toLastValueObservableDictionary(serviceStatus => serviceStatus.serviceId)
             // keep the last copy of the dictionary around for new subscribers
             .replay(1);
     }
@@ -65,10 +72,11 @@ export default class ServiceClient extends disposables.DisposableBase {
         return Rx.Observable.empty();
     }
     _createServiceStatusSummary(cache : LastValueObservableDictionary) {
-        var instanceSummaries = _.map(cache.values, v=> new ServiceInstanceSummary(v.latestValue.serviceId, v.latestValue.isConnected));
-        var isConnected = _.some(cache.values, (item : LastValueObservable) => {
-            return item.latestValue.isConnected;
-        });
+        var instanceSummaries = _(cache.values)
+            .map((item : LastValueObservable) => new ServiceInstanceSummary(item.latestValue.serviceId, item.latestValue.isConnected))
+            .value();
+        var isConnected = _(instanceSummaries)
+            .some((item : ServiceInstanceSummary) => item.isConnected);
         return new ServiceStatusSummary(instanceSummaries, isConnected);
     }
 }

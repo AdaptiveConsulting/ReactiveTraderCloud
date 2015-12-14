@@ -29,7 +29,7 @@ export default class Connection extends disposables.DisposableBase {
     get isConnected() : Boolean {
         return this._isConnected;
     }
-    open() {
+    connect() {
         if(!this._openCalled) {
             this._openCalled = true;
             _log.info('Opening connection');

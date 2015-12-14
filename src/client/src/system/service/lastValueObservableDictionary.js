@@ -3,16 +3,19 @@ import LastValueObservable from './lastValueObservable';
 
 // poor mans dictionary
 export default class LastValueObservableDictionary {
+    constructor() {
+        this._values = {};
+    }
     hasKey(key : String) {
-        return this.hasOwnProperty(key);
+        return this._values.hasOwnProperty(key);
     }
     add(key : String, value : LastValueObservable) {
-        this[key] = value;
+        this._values[key] = value;
     }
     updateWithLatestValue(key : String, latestValue: Object) {
-        this[key].latestValue = latestValue;
+        this._values[key].latestValue = latestValue;
     }
-    values() {
-        return _.forOwn(this);
+    get values() {
+        return this._values;
     }
 }
