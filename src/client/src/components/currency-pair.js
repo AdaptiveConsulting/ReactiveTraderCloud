@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Sparklines, SparklinesLine, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
+import { Sparklines, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 
 import numeral from 'numeral';
 import utils from 'utils';
@@ -39,7 +39,7 @@ class CurrencyPair extends React.Component {
     super(props, context);
     this.state = {
       size: 0,
-      chart: false,
+      chart: true,
       info: false,
       tearoff: false,
       state: 'listening',
@@ -73,10 +73,11 @@ class CurrencyPair extends React.Component {
   componentWillReceiveProps(props, state){
     const historic = this.state.historic;
 
+    //props.mid && props.mid != historic[historic.length-1] && historic.push(props.mid);
     props.mid && historic.push(props.mid);
 
     // 30 max historic prices
-    historic.length > 30 && (historic.shift());
+    historic.length > 150 && (historic.shift());
 
     const payload = {
       historic,
@@ -240,10 +241,10 @@ class CurrencyPair extends React.Component {
       <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})} pair={pair}/>
       <div className="clearfix"></div>
       {chart ?
-        <Sparklines data={historic.slice()} width={326} height={24} margin={0}>
+        <Sparklines data={historic.slice()} width={326} height={22} margin={0}>
           <SparklinesLine />
           <SparklinesSpots />
-          <SparklinesReferenceLine type='mean'/>
+          <SparklinesReferenceLine type='avg' />
         </Sparklines> : <div className='sparkline-holder'></div>}
     </div>;
   }

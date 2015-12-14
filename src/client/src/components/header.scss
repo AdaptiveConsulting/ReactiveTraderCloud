@@ -59,5 +59,11 @@ a.navbar-brand {
         transform: translate(1px, 1px);
       }
     }
+    &.navbar-openfin {
+      display: none;
+      .openfin & {
+        display: inline-block;
+      }
+    }
   }
 }

@@ -6,12 +6,24 @@ class Container extends React.Component {
   static propTypes = {
     onTearoff: React.PropTypes.func,
     onClose: React.PropTypes.func,
-    tearoff: React.PropTypes.bool
+    tearoff: React.PropTypes.bool,
+    title: React.PropTypes.string,
+    width: React.PropTypes.number,
+    height: React.PropTypes.number
+  }
+
+  openTearoff(e){
+    e && e.preventDefault();
+    this.props.onTearoff(true);
+  }
+
+  closeTearoff(e){
+    e && e.preventDefault();
+    this.props.onTearoff(false);
   }
 
   toggleTearoff(e){
-    e && e.preventDefault();
-    this.props.onTearoff(!this.props.tearoff);
+
   }
 
   render(){
@@ -24,39 +36,40 @@ class Container extends React.Component {
     };
 
     if (window.fin){
-      popupAttributes.options = {
+      popupAttributes.options = Object.assign({}, {
         url: '/#/tile',
         title: title,
         name: title,
-        defaultWidth: 332,
-        defaultHeight: 191,
+        defaultWidth: this.props.width || 332,
+        defaultHeight: this.props.height || 191,
         resizable: false,
         scrollable: false,
+        maximizable: false,
         frame: false,
         autoShow: true
-      };
+      }, this.props.options);
     }
     else {
       popupAttributes.options = {
-        width: 332,
-        height: 190,
+        width: this.props.width || 332,
+        height: this.props.height || 190,
         resizable: false,
         scrollable: false
       };
-      popupAttributes.onClosing = ()=> this.toggleTearoff();
+      popupAttributes.onClosing = ()=> this.closeTearoff();
     }
 
     return !tearoff ?
       <div className={this.props.className}>
         <div className='container-control'>
-          <i className='tearoff-trigger glyphicon glyphicon-new-window' onClick={(e) => this.toggleTearoff(e)}/>
+          <i className='tearoff-trigger glyphicon glyphicon-new-window' onClick={(e) => this.openTearoff(e)}/>
         </div>
         {this.props.children}
       </div> :
       <Popout {...popupAttributes}>
         <div className={this.props.className}>
           <div className='container-control'>
-            <i className='glyphicon glyphicon-remove' onClick={(e) => this.toggleTearoff(e)}/>
+            <i className='glyphicon glyphicon-remove' onClick={(e) => this.closeTearoff(e)}/>
           </div>
           {this.props.children}
         </div>
