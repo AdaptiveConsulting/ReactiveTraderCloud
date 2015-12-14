@@ -53,7 +53,7 @@ cd templates
   ./generate_rc_manifest referencedataread $namespace $build
   ./generate_rc_manifest tradeexecution    $namespace $build
   ./generate_rc_manifest web               $namespace $build
-  ./generate_rc_manifest analysis          $namespace $build
+  ./generate_rc_manifest analytics         $namespace $build
   
 cd - > garbage && rm templates/garbage
 
