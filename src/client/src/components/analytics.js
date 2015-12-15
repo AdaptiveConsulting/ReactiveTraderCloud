@@ -7,24 +7,16 @@ import _ from 'lodash';
 import NVD3Chart from 'react-nvd3';
 import d3 from 'd3';
 
+// chart type for PnL chart - focus can break due to range. todo: fix
 //const LINECHART = 'lineWithFocusChart';
 const LINECHART = 'lineChart';
 
-const USDPNL = {
-  name: 'USD PnL',
-  values: [
-  ]
-};
-const lineData = [
-  USDPNL
-];
 
 export default class Analytics extends React.Component {
 
   static propTypes = {
     history: React.PropTypes.array,
-    positions: React.PropTypes.array,
-    status: React.PropTypes.bool
+    positions: React.PropTypes.array
   }
 
   constructor(props, context){
@@ -41,9 +33,8 @@ export default class Analytics extends React.Component {
       }]
     };
 
-    this.chartOptions = {
+    this.chartPnlOptions = {
       xAxis: {
-        //axisLabel: 'Time',
         tickFormat: (d) => d3.time.format('%X')(new Date(d))
       },
       x2Axis: {
@@ -64,6 +55,19 @@ export default class Analytics extends React.Component {
         bottom: 30
       }
     };
+
+    this.chartPositionsOptions = {
+      showYAxis: true,
+      showXAxis: true,
+      showLegend: false,
+      useInteractiveGuideline: true,
+      margins: {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0
+      }
+    }
   }
 
   tearOff(state){
@@ -111,12 +115,22 @@ export default class Analytics extends React.Component {
 
     const configure = (chart) => {
       chart.yDomain([domainMin, domainMax]).yRange([200, 0]);
+      chart.interactiveLayer.tooltip.contentGenerator((d) =>{
+        const { value, series } = d;
+
+        return `<p><strong>${value}:</strong> ${series[0].value}</p>`;
+      });
     };
 
-    const positionsSeries = [{
-      key: 'Positions',
-      values: this.props.positions
-    }];
+    const positionsSeries = this.props.positions.map((pos) => {
+      return {
+        name: pos.Symbol,
+        label: pos.Symbol,
+        values: [pos]
+      }
+    });
+
+    console.log(positionsSeries);
 
     return <Container title='analytics' className='analytics-container animated slideInRight' onTearoff={(state) => this.tearOff(state)}
                       tearoff={this.state.tearoff} width={400} height={800} options={{maximizable:true}}>
@@ -125,7 +139,7 @@ export default class Analytics extends React.Component {
 
       <div className="nv-container" ref="container">
         {(PNLValues && PNLValues.length) ?
-          <NVD3Chart type={LINECHART} datum={this.state.series} options={this.chartOptions} height={220} configure={configure} /> :
+          <NVD3Chart type={LINECHART} datum={this.state.series} options={this.chartPnlOptions} height={220} configure={configure} /> :
           <div>No PNL data yet</div>}
       </div>
 
@@ -133,7 +147,7 @@ export default class Analytics extends React.Component {
       <button className="pull-right btn btn-small btn-default" onClick={() => this.setState({positionType: 'BaseTradedAmount'})}>Positions</button>
       <button className="pull-right btn btn-small btn-default" onClick={() => this.setState({positionType: 'BasePnl'})}>PnL</button>
       <div className="nv-container clearfix">
-        <NVD3Chart id='position-chart' type='multiBarHorizontalChart' datum={positionsSeries} height={400} x="Symbol" y={this.state.positionType} />
+        <NVD3Chart id='position-chart' type='multiBarHorizontalChart' datum={positionsSeries} options={this.chartPositionsOptions} height={400} x="Symbol" y={this.state.positionType} />
       </div>
     </Container>;
 
