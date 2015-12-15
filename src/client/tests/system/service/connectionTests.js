@@ -6,7 +6,7 @@ describe('Connection', () => {
 
     beforeEach(() => {
         _stubAutobahnProxy = new StubAutobahnProxy();
-        _connection = new system.service.Connection(_stubAutobahnProxy);
+        _connection = new system.service.Connection('user', _stubAutobahnProxy);
         _receivedStatusUpdates = [];
         _connection.connectionStatusStream.subscribe(isConnected => {
             _receivedStatusUpdates.push(isConnected);

@@ -72,14 +72,18 @@ export default class Connection extends disposables.DisposableBase {
                 });
                 disposables.add(Rx.Disposable.create(() => {
                     if(subscription) {
-                        _this._autobahn.session.unsubscribe(subscription).then(
-                            gone => {
-                                _log.debug('Successfully unsubscribing from topic {0}', topic);
-                            },
-                            error => {
-                                _log.error('Error unsubscribing from topic {0}: {1}', topic, error);
-                            }
-                        );
+                        try {
+                            _this._autobahn.session.unsubscribe(subscription).then(
+                                gone => {
+                                    _log.debug('Successfully unsubscribing from topic {0}', topic);
+                                },
+                                error => {
+                                    _log.error('Error unsubscribing from topic {0}: {1}', topic, error);
+                                }
+                            );
+                        } catch (err) {
+                            _log.error('Error thrown unsubscribing from topic {0}: {1}', topic, err);
+                        }
                     }
                 }));
             }
@@ -115,7 +119,7 @@ export default class Connection extends disposables.DisposableBase {
                         if (!isDisposed) {
                             o.onError(error);
                         } else {
-                            _log.error('Ignoring error for remoteProcedure [{0}] as stream disposed.. Error was: [{1}]', remoteProcedure, error);
+                            _log.error('Ignoring error for remoteProcedure [{0}] as stream disposed.. Error was: [{1}]', remoteProcedure, error.error);
                         }
                     }
                 );

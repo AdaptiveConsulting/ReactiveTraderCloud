@@ -31,9 +31,6 @@ class StubAutobahnSession {
     }
     subscribe<TRequest, TResults>(topic:String, onResults:(r:TResults) => void): Promise {
         var stubPromise = new StubSubscribeResult(onResults);
-        if (!this._stubPromises[topic]) {
-            this._stubPromises[topic] = [];
-        }
         // we only support one request for the given topic,
         // if there is anything there we just blow it away
         this._stubPromises[topic] = stubPromise;
@@ -44,12 +41,11 @@ class StubAutobahnSession {
             // noop for now
         })
     }
-    call<TRequest, TResults>(operationName:String):Promise {
-        var stubPromise = new StubPromiseResult();
-        if (!this._stubPromises[operationName]) {
-            this._stubPromises[operationName] = [];
-        }
-        this._stubPromises[operationName].push(stubPromise)
+    call<TRequest, TResults>(operationName:String, dto:Object):Promise {
+        var stubPromise = new StubCallResult(dto);
+        // we only support one request for the given topic,
+        // if there is anything there we just blow it away
+        this._stubPromises[operationName] = stubPromise;
         return stubPromise.underlyingPromise;
     }
     getTopic(name : String) {
@@ -75,6 +71,16 @@ class StubPromiseResult {
     }
     get onReject() {
         return this._onReject;
+    }
+}
+
+class StubCallResult extends StubPromiseResult {
+    constructor(dto: Object) {
+        super()
+        this._dto = dto;
+    }
+    get dto () {
+        return this._dto[0];
     }
 }
 

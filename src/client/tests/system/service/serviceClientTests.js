@@ -13,9 +13,9 @@ describe('ServiceClient', () => {
         _scheduler = new Rx.HistoricalScheduler();
         _stubAutobahnProxy = new StubAutobahnProxy();
         var stubSchedulerService = {
-            timeout: _scheduler
+            async: _scheduler
         }
-        _connection = new system.service.Connection(_stubAutobahnProxy);
+        _connection = new system.service.Connection('user', _stubAutobahnProxy);
         _serviceClient = new system.service.ServiceClient('pricing', _connection, stubSchedulerService);
         _receivedServiceStatusSummaryStream = [];
         _serviceClient.serviceStatusSummaryStream.subscribe(statusSummary => {
@@ -62,8 +62,8 @@ describe('ServiceClient', () => {
     it('marks service instances as disconnected on heartbeat timeout', () => {
         connect();
         pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
         assertServiceInstanceStatus(0, 'pricing.1', true);
+        _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
         assertExpectedStatusUpdate(2, false);
         assertServiceInstanceStatus(1, 'pricing.1', false);
     });
@@ -141,6 +141,72 @@ describe('ServiceClient', () => {
         pushServiceHeartbeat('pricing', 'pricing.4', 0);
         assertExpectedStatusUpdate(4, true);
         assertServiceInstanceStatus(3, 'pricing.4', true);
+    });
+
+    describe('createStreamOperation()', () => {
+        let receivedPrices,
+            receivedErrors,
+            onCompleteCount,
+            priceSubscriptionDisposable;
+
+        beforeEach(() => {
+            receivedPrices = [];
+            receivedErrors = [];
+            onCompleteCount = 0;
+            priceSubscriptionDisposable = new Rx.SerialDisposable();
+            subscribeToPriceStream();
+        });
+
+        it('publishes price when underlying session receives price', () => {
+            connectAndPublishPrice();
+            expect(receivedPrices.length).toEqual(1);
+            expect(receivedPrices[0]).toEqual(1);
+        });
+
+        it('errors when price service goes down', () => {
+            connectAndPublishPrice();
+            expect(receivedErrors.length).toEqual(0);
+            _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
+            expect(receivedErrors.length).toEqual(1);
+        });
+
+        it('publishes after service comes back up', () => {
+            connectAndPublishPrice();
+            _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
+            subscribeToPriceStream();
+            pushServiceHeartbeat('pricing', 'pricing.1', 0);
+            pushPrice('pricing.1', 2);
+            expect(receivedPrices.length).toEqual(2);
+            expect(receivedPrices[0]).toEqual(1);
+            expect(receivedPrices[1]).toEqual(2);
+        });
+
+        function subscribeToPriceStream() {
+            var existing = priceSubscriptionDisposable.getDisposable();
+            if(existing) {
+                existing.dispose();
+            }
+            priceSubscriptionDisposable.setDisposable(
+                _serviceClient.createStreamOperation('getPriceStream', 'EURUSD')
+                    .subscribe(price => {
+                            receivedPrices.push(price);
+                        },
+                        ex => receivedErrors.push(receivedErrors),
+                        () => onCompleteCount++
+                    )
+            );
+        }
+
+        function connectAndPublishPrice() {
+            connect();
+            pushServiceHeartbeat('pricing', 'pricing.1', 0);
+            pushPrice('pricing.1', 1);
+        }
+
+        function pushPrice(serviceId :String,  price : Number) {
+            var replyToTopic = _stubAutobahnProxy.session.getTopic(serviceId + '.getPriceStream').dto.replyTo;
+            _stubAutobahnProxy.session.getTopic(replyToTopic).onResults(price);
+        }
     });
 
     function connect() {

@@ -13,7 +13,7 @@ import LastValueObservableDictionary from './lastValueObservableDictionary';
 export default class ServiceClient extends disposables.DisposableBase {
     _log : logger.Logger;
     _serviceType : String;
-    _serviceInstanceDictionaryStream : Rx.Observable<LastValueObservableDictionary>;
+    F_serviceInstanceDictionaryStream : Rx.Observable<LastValueObservableDictionary>;
     static get HEARTBEAT_TIMEOUT() : Number {
         return 3000;
     }
@@ -87,7 +87,7 @@ export default class ServiceClient extends disposables.DisposableBase {
     createStreamOperation<TRequest, TResponse>(operationName : String, request : TRequest) : Rx.Observable<TResponse> {
         let _this = this;
         return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
-            this._log = logger.create('Creating stream operation');
+            _this._log.debug('Creating stream operation');
             let disposables = new Rx.CompositeDisposable();
             // Client creates a temp topic, we then tell the backend to push to this topic.
             // TBH this is a bit odd as the server needs to handle fanout and we don't have any
@@ -98,13 +98,17 @@ export default class ServiceClient extends disposables.DisposableBase {
                 .getServiceWithMinLoad()
                 .take(1)
                 .subscribe(statusStream => {
-                    this._log = logger.create('Will use service instance [{0}] for stream operation', statusStream.latestValue);
+                    _this._log.debug('Will use service instance [{0}] for stream operation', statusStream.latestValue);
                     disposables.add(_this._connection
                         .subscribeToTopic(topicName)
                         .subscribe(
                             i => o.onNext(i),
-                            err => o.onError(err),
-                            () => o.onCompleted()
+                            err => {
+                                o.onError(err);
+                            },
+                            () => {
+                                o.onCompleted();
+                            }
                         )
                     );
                     // to an service-instance-specific rpc address
@@ -113,10 +117,14 @@ export default class ServiceClient extends disposables.DisposableBase {
                         _this._connection.requestResponse(remoteProcedure, request, topicName).subscribe(
                             _ => {
                                 // response is just an ACK here
-                                this._log = logger.create('Ack received for stream operation [{0}]', operationName);
+                                _this._log.debug('Ack received for stream operation [{0}]', operationName);
                             },
-                            err => o.onError(err),
-                            () => o.onCompleted()
+                            err => {
+                                o.onError(err);
+                            },
+                            () => {
+                                o.onCompleted();
+                            }
                         )
                     );
                     disposables.add(
@@ -126,8 +134,12 @@ export default class ServiceClient extends disposables.DisposableBase {
                                     o.onError(new Error("Disconnected"));
                                 }
                             },
-                            err => o.onError(err),
-                            () => o.onCompleted()
+                            err => {
+                                o.onError(err);
+                            },
+                            () => {
+                                o.onCompleted();
+                            }
                         )
                     );
                 })

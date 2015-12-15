@@ -1,8 +1,11 @@
 import Rx from 'rx';
 import _ from 'lodash'
+import logger from '../logger';
 import LastValueObservable from './lastValueObservable';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
 import ServiceInstanceStatus from './serviceInstanceStatus';
+
+var _log : logger.Logger = logger.create('serviceObservableExtensions');
 
 // Adds time out semantics to the inner observable streams, calls onTimeoutItemSelector to seed a single value on timeout
 function timeoutInnerObservables<TKey, TValue>(dueTime : Number, onTimeoutItemSelector : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
@@ -27,7 +30,7 @@ function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TV
         disposables.add(
             sources.subscribe(
                 innerSource => {
-                    var innerSourcePublished = innerSource.replay(1).refCount();
+                    var innerSourcePublished = innerSource.publish().refCount();
                     disposables.add(
                         innerSourcePublished.subscribe(value => {
                             var key = keySelector(value);
