@@ -12,6 +12,7 @@ import LastValueObservableDictionary from './lastValueObservableDictionary';
 
 export default class ServiceClient extends disposables.DisposableBase {
     _log : logger.Logger;
+    _serviceType : String;
     _serviceInstanceDictionaryStream : Rx.Observable<LastValueObservableDictionary>;
     static get HEARTBEAT_TIMEOUT() : Number {
         return 3000;
@@ -22,6 +23,7 @@ export default class ServiceClient extends disposables.DisposableBase {
         Guard.isDefined(connection, 'connection required');
         Guard.isDefined(schedulerService, 'schedulerService required');
         this._log = logger.create('ServiceClient:' + serviceType);
+        this._serviceType = serviceType;
         this._connection = connection;
         this._schedulerService = schedulerService;
         // create a connectible observable that yields a dictionary of connection status for
@@ -53,7 +55,7 @@ export default class ServiceClient extends disposables.DisposableBase {
         let _this = this;
         return Rx.Observable.create(o => {
             let serviceStatusStream = this._connection
-                .getWellKnownStream('status')
+                .subscribeToTopic('status')
                 .where(s => s.Type === serviceType)
                 .select(status => ServiceInstanceStatus.createForConnected(status.Type, status.Instance, status.TimeStamp, status.Load))
                 .groupBy(serviceStatus => serviceStatus.serviceId)
@@ -75,11 +77,59 @@ export default class ServiceClient extends disposables.DisposableBase {
                 .subscribe(o)
         });
     }
-    createRequestResponseOperation<TRequest, TResponse>(request : TRequest, response : TResponse) : Rx.Observable<TResponse> {
-        return Rx.Observable.empty();
+    createRequestResponseOperation<TRequest, TResponse>(operationName : String, request : TRequest, response : TResponse) : Rx.Observable<TResponse> {
+        let _this = this;
+        return Rx.Observable.create<TResponse>((o : Rx.Observer<TResponse>) => {
+                // TODO
+              return () => {};
+        });
     }
-    createStreamOperation<TRequest, TResponse>(request : TRequest, response : TResponse) : Rx.Observable<TResponse> {
-        return Rx.Observable.empty();
+    createStreamOperation<TRequest, TResponse>(operationName : String, request : TRequest) : Rx.Observable<TResponse> {
+        let _this = this;
+        return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
+            this._log = logger.create('Creating stream operation');
+            let disposables = new Rx.CompositeDisposable();
+            // Client creates a temp topic, we then tell the backend to push to this topic.
+            // TBH this is a bit odd as the server needs to handle fanout and we don't have any
+            // really control over the attributes of the topic, however for v1 demoland this is currently sufficient,
+            // what's important here is we can bury this logic deep in the client, expose a consistent API and swap it out later.
+            let topicName = 'topic_' + _this._serviceType + '_' + (Math.random() * Math.pow(36, 8) << 0).toString(36);
+            disposables.add(_this._serviceInstanceDictionaryStream
+                .getServiceWithMinLoad()
+                .take(1)
+                .subscribe(statusStream => {
+                    this._log = logger.create('Will use service instance [{0}] for stream operation', statusStream.latestValue);
+                    disposables.add(_this._connection
+                        .subscribeToTopic(topicName)
+                        .subscribe(o)
+                    );
+                    // to an service-instance-specific rpc address
+                    let remoteProcedure : String = statusStream.latestValue.serviceId + '.' + operationName;
+                    disposables.add(
+                        _this._connection.requestResponse(remoteProcedure, request).subscribe(
+                            _ => {
+                                // response is just an ACK here
+                                this._log = logger.create('Ack received for stream operation [{0}]', operationName);
+                            },
+                            err => observer.onError(err),
+                            () => observer.onCompleted()
+                        )
+                    );
+                    disposables.add(
+                        statusStream.subscribe(
+                            status => {
+                                if (!status.isConnected) {
+                                    o.onError(new Error("Disconnected"));
+                                }
+                            },
+                            err => observer.onError(err),
+                            () => observer.onCompleted()
+                        )
+                    );
+                })
+            );
+            return disposables;
+        });
     }
     _createServiceStatusSummary(cache : LastValueObservableDictionary) : ServiceStatusSummary {
         var instanceSummaries = _(cache.values)

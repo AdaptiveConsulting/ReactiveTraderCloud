@@ -29,6 +29,8 @@ var schedulerService = new system.SchedulerService();
 var pricingServiceClient = new system.service.ServiceClient('pricing', connection, schedulerService);
 var executionServiceClient = new system.service.ServiceClient('execution', connection, schedulerService);
 
+var pricingService = new services2.PricingService(pricingServiceClient, schedulerService);
+
 connection.connectionStatusStream.subscribe(status => {
   _log.info('Connection status changed to [{0}]', status);
 },
@@ -44,6 +46,10 @@ executionServiceClient.serviceStatusSummaryStream.subscribe(status => {
 },
 ex => _log.error("executionServiceClient ERROR:" + ex)
 );
+
+pricingService.getPriceUpdates(new services2.model.GetSpotStreamRequest('EURUSD')).subscribe(price => {
+  _log.info('Price received for EURUSD [{0}]', JSON.stringify(price));
+});
 
 pricingServiceClient.connect();
 executionServiceClient.connect();

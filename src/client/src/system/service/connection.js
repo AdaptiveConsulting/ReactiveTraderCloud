@@ -48,7 +48,7 @@ export default class Connection extends disposables.DisposableBase {
         }
     }
     // get an observable subscription to a well known stream, e.g. 'status'
-    getWellKnownStream<TResponse>(topic:string) : Rx.Observable<TResponse> {
+    subscribeToTopic<TResponse>(topic:string) : Rx.Observable<TResponse> {
         let _this = this;
         return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
             let disposables = new Rx.CompositeDisposable();
@@ -85,35 +85,28 @@ export default class Connection extends disposables.DisposableBase {
             return disposables;
         });
     }
-    // creates an topic unique to the operation, wraps it up as an observable stream, then does an RPC to instruct the server to publish to said stream
-    getUniqueStream<TResponse>(operationName:string) : Rx.Observable<TResponse> {
-        let _this = this;
-        return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
-            let disposables = new Rx.CompositeDisposable();
 
-            return disposables;
-        });
-    }
     // wraps a RPC up as an observable stream
-    requestResponse<TRequest, TResponse>(operationName: String, payload : TResponse) : Rx.Observable<TResponse> {
+    requestResponse<TRequest, TResponse>(remoteProcedure: String, payload : TRequest) : Rx.Observable<TResponse> {
         let _this = this;
         return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
-            _log.debug('Requesting a response for operation [{0}]. Is connected [{1}]', operationName, _this._isConnected);
+            _log.debug('Requesting a response for remoteProcedure [{0}]. Is connected [{1}]', remoteProcedure, _this._isConnected);
+            let disposables = new Rx.CompositeDisposable();
             if (_this.isConnected) {
                 var isDisposed:Boolean
-                _this._autobahn.call(operationName, payload).then(
+                _this._autobahn.session.call(remoteProcedure, [payload]).then(
                     result => {
                         if (!isDisposed) {
                             o.onNext(result);
                         } else {
-                            _log.warn('Ignoring response for operation [{0}] as stream disposed', operationName);
+                            _log.warn('Ignoring response for remoteProcedure [{0}] as stream disposed', remoteProcedure);
                         }
                     },
                     error => {
                         if (!isDisposed) {
                             o.onError(error);
                         } else {
-                            _log.error('Ignoring error for operation [{0}] as stream disposed.. Error was: [{1}]', operationName, error);
+                            _log.error('Ignoring error for remoteProcedure [{0}] as stream disposed.. Error was: [{1}]', remoteProcedure, error);
                         }
                     }
                 );
@@ -122,7 +115,7 @@ export default class Connection extends disposables.DisposableBase {
                 }));
             }
             else {
-                o.onError(new Error('Session not connected, can\'t perform operation ' + operationName));
+                o.onError(new Error('Session not connected, can\'t perform remoteProcedure ' + remoteProcedure));
             }
             return disposables;
         });

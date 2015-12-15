@@ -1,25 +1,24 @@
 import system from 'system';
 import rx from 'rx';
 import * as model from './model';
-import ServiceClient from './../system/service/serviceClient';
 
 var _log : system.logger.Logger = system.logger.create('PricingService');
 
 export default class PricingService {
-    constructor(pricingServiceClient : system.service.ServiceClient){
+    _pricingServiceClient:system.service.ServiceClient;
+    constructor(pricingServiceClient:system.service.ServiceClient, schedulerService : SchedulerService) {
         this._pricingServiceClient = pricingServiceClient;
+        this._schedulerService = schedulerService;
     }
-    getPriceUpdates(symbol : string) {
-        return rx.Observable.create(
-            observer => {
-                _log.debug('Requesting price for {0}', symbol);
-                var disposable = rx.Disposable.empty;
-                try {
-
-                } catch (err) {
-                    observer.onError(err);
-                }
-                return disposable;
+    getPriceUpdates(request:model.GetSpotStreamRequest) {
+        let _this = this;
+        return Rx.Observable.create(
+            o => {
+                _log.info('Subscribing to pricestream for [{0}]', request.symbol);
+                return _this._pricingServiceClient
+                    .createStreamOperation('getPriceUpdates', request)
+                    .retryWithPolicy(system.RetryPolicy.forever(), 'getPriceUpdates', _this._schedulerService.timeout)
+                    .subscribe(o)
             }
         );
     }

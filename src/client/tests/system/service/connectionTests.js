@@ -50,10 +50,10 @@ describe('Connection', () => {
         expect(_receivedStatusUpdates).toEqual([false, true, false]);
     });
 
-    describe('getWellKnownStream', () => {
+    describe('subscribeToTopic', () => {
         it('errors if called before session is set', () => {
             var streamYieldCount = 0, receivedError;
-            _connection.getWellKnownStream('status').subscribe(_ =>{
+            _connection.subscribeToTopic('status').subscribe(_ =>{
                 streamYieldCount++;
             }, ex => {
                 receivedError = ex;

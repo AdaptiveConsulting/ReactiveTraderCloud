@@ -1,6 +1,8 @@
 import Rx from 'rx';
+import _ from 'lodash'
 import LastValueObservable from './lastValueObservable';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
+import ServiceInstanceStatus from './serviceInstanceStatus';
 
 // Adds time out semantics to the inner observable streams, calls onTimeoutItemSelector to seed a single value on timeout
 function timeoutInnerObservables<TKey, TValue>(dueTime : Number, onTimeoutItemSelector : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
@@ -47,3 +49,27 @@ function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TV
     });
 }
 Rx.Observable.prototype.toLastValueObservableDictionary = toLastValueObservableDictionary;
+
+// Gets the Observable status stream for the service currently having the minimum load
+function getServiceWithMinLoad() : Rx.Observable<LastValueObservable<ServiceInstanceStatus>> {
+    var source : Rx.Observable<LastValueObservableDictionary<ServiceInstanceStatus>> = this;
+    return Rx.Observable.create(o => {
+        var disposables = new Rx.CompositeDisposable();
+        disposables.add(
+            source.subscribe(
+                dictionary => {
+                    var serviceWithLeastLoad : LastValueObservable<ServiceInstanceStatus> = _(dictionary.values)
+                        .sortBy(i => i.latestValue.serviceLoad)
+                        .find(i => i.latestValue.isConnected);
+                    if (serviceWithLeastLoad) {
+                        o.onNext(serviceWithLeastLoad);
+                    }
+                },
+                ex => o.onError(ex),
+                () => o.onCompleted()
+            )
+        );
+        return disposables;
+    });
+}
+Rx.Observable.prototype.getServiceWithMinLoad = getServiceWithMinLoad;
