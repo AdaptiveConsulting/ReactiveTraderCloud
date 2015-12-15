@@ -99,7 +99,7 @@ export default class Connection extends disposables.DisposableBase {
             if (_this.isConnected) {
                 var isDisposed:Boolean
                 var dto = [{
-                    responseTopic,
+                    replyTo: responseTopic,
                     Username: _this._username,
                     payload: payload
                 }];

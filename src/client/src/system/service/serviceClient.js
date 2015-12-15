@@ -101,7 +101,11 @@ export default class ServiceClient extends disposables.DisposableBase {
                     this._log = logger.create('Will use service instance [{0}] for stream operation', statusStream.latestValue);
                     disposables.add(_this._connection
                         .subscribeToTopic(topicName)
-                        .subscribe(o)
+                        .subscribe(
+                            i => o.onNext(i),
+                            err => o.onError(err),
+                            () => o.onCompleted()
+                        )
                     );
                     // to an service-instance-specific rpc address
                     let remoteProcedure : String = statusStream.latestValue.serviceId + '.' + operationName;
