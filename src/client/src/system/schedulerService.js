@@ -3,12 +3,12 @@ var Rx = require('rx');
 export default class SchedulerService {
     constructor() {
         this._immediate = Rx.Scheduler.immediate;
-        this._timeout = Rx.Scheduler.timeout;
+        this._async = Rx.Scheduler.default;
     }
     get immediate() {
         return this._immediate;
     }
-    get timeout() {
-        return this._timeout;
+    get async() {
+        return this._async;
     }
 }

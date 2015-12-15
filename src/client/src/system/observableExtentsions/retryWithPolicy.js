@@ -20,12 +20,13 @@ function retryWithPolicy(retryPolicy : RetryPolicy,  operationDescription : Stri
                     }
                 },
                 ex => {
-                    let retryAfter = retryPolicy.getRetryAfterMilliseconds(ex, ++retryCount);
+                    retryCount++;
+                    let retryAfter = retryPolicy.getRetryAfterMilliseconds(ex, retryCount);
                     if(retryAfter === 0) {
-                        _log.warn("Retrying [{0}]. This is attempt [{1}]. Exception: [{2}]", operationDescription, retryCount, ex);
+                        _log.warn("Retrying [{0}]. This is attempt [{1}]. Exception: [{2}]", operationDescription, retryCount, ex.message);
                         subscribe();
                     } else if (retryAfter > 0) {
-                        _log.warn("Retrying [{0}] after [{1}]. This is attempt [{2}]. Exception: [{3}]", operationDescription, retryAfter, retryCount, ex);
+                        _log.warn("Retrying [{0}] after [{1}]. This is attempt [{2}]. Exception: [{3}]", operationDescription, retryAfter, retryCount, ex.message);
                         scheduler.scheduleFuture(
                             '',
                             retryAfter,
@@ -33,11 +34,11 @@ function retryWithPolicy(retryPolicy : RetryPolicy,  operationDescription : Stri
                         );
                     } else {
                         // don't retry
-                        _log.error("Not retrying [{0}]. Retry count [{1}]. Will error. Exception: [{2}]", operationDescription, retryCount, ex);
+                        _log.error("Not retrying [{0}]. Retry count [{1}]. Will error. Exception: [{2}]", operationDescription, retryCount, ex.message);
                         o.onError(ex);
                     }
                 },
-                () => observer.onCompleted()
+                () => o.onCompleted()
             ));
         };
         subscribe();

@@ -60,7 +60,7 @@ export default class ServiceClient extends disposables.DisposableBase {
                 .select(status => ServiceInstanceStatus.createForConnected(status.Type, status.Instance, status.TimeStamp, status.Load))
                 .groupBy(serviceStatus => serviceStatus.serviceId)
                 // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
-                .timeoutInnerObservables(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.timeout)
+                .timeoutInnerObservables(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.async)
                 // wrap all our service instances up in a hot observable dictionary so we query the service with the least load on a per-subscribe basis
                 .toLastValueObservableDictionary(serviceStatus => serviceStatus.serviceId);
             let connectionStatus = this._connection.connectionStatusStream.publish().refCount();
@@ -106,13 +106,13 @@ export default class ServiceClient extends disposables.DisposableBase {
                     // to an service-instance-specific rpc address
                     let remoteProcedure : String = statusStream.latestValue.serviceId + '.' + operationName;
                     disposables.add(
-                        _this._connection.requestResponse(remoteProcedure, request).subscribe(
+                        _this._connection.requestResponse(remoteProcedure, request, topicName).subscribe(
                             _ => {
                                 // response is just an ACK here
                                 this._log = logger.create('Ack received for stream operation [{0}]', operationName);
                             },
-                            err => observer.onError(err),
-                            () => observer.onCompleted()
+                            err => o.onError(err),
+                            () => o.onCompleted()
                         )
                     );
                     disposables.add(
@@ -122,8 +122,8 @@ export default class ServiceClient extends disposables.DisposableBase {
                                     o.onError(new Error("Disconnected"));
                                 }
                             },
-                            err => observer.onError(err),
-                            () => observer.onCompleted()
+                            err => o.onError(err),
+                            () => o.onCompleted()
                         )
                     );
                 })

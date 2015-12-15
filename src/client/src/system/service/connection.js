@@ -12,9 +12,11 @@ export default class Connection extends disposables.DisposableBase {
     _connectionStatusSubject : Rx.BehaviorSubject<Boolean>;
     _serviceStatusSubject : Rx.BehaviorSubject<ServiceInstanceStatus>;
     _openCalled : Boolean;
-    constructor(autobahn: AutobahnProxy){
+    constructor(userName : string, autobahn: AutobahnProxy){
         super();
         Guard.isDefined(autobahn, 'autobahn required');
+        Guard.isString(userName, 'userName required');
+        this._userName = userName;
         this._autobahn = autobahn;
         this._connectionStatusSubject = new Rx.BehaviorSubject(false);
         this._serviceStatusSubject = new Rx.Subject(false);
@@ -69,14 +71,16 @@ export default class Connection extends disposables.DisposableBase {
                     _log.error('Error on topic {0}: {1}', topic, error);
                 });
                 disposables.add(Rx.Disposable.create(() => {
-                    _this._autobahn.session.unsubscribe(subscription).then(
-                        gone => {
-                            _log.debug('Successfully unsubscribing from topic {0}', topic);
-                        },
-                        error => {
-                            _log.error('Error unsubscribing from topic {0}: {1}', topic, error);
-                        }
-                    );
+                    if(subscription) {
+                        _this._autobahn.session.unsubscribe(subscription).then(
+                            gone => {
+                                _log.debug('Successfully unsubscribing from topic {0}', topic);
+                            },
+                            error => {
+                                _log.error('Error unsubscribing from topic {0}: {1}', topic, error);
+                            }
+                        );
+                    }
                 }));
             }
             else {
@@ -87,14 +91,19 @@ export default class Connection extends disposables.DisposableBase {
     }
 
     // wraps a RPC up as an observable stream
-    requestResponse<TRequest, TResponse>(remoteProcedure: String, payload : TRequest) : Rx.Observable<TResponse> {
+    requestResponse<TRequest, TResponse>(remoteProcedure: String, payload : TRequest, responseTopic : String) : Rx.Observable<TResponse> {
         let _this = this;
         return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
             _log.debug('Requesting a response for remoteProcedure [{0}]. Is connected [{1}]', remoteProcedure, _this._isConnected);
             let disposables = new Rx.CompositeDisposable();
             if (_this.isConnected) {
                 var isDisposed:Boolean
-                _this._autobahn.session.call(remoteProcedure, [payload]).then(
+                var dto = [{
+                    responseTopic,
+                    Username: _this._username,
+                    payload: payload
+                }];
+                _this._autobahn.session.call(remoteProcedure, dto).then(
                     result => {
                         if (!isDisposed) {
                             o.onNext(result);

@@ -23,7 +23,7 @@ var _log : system.logger.Logger = system.logger.create('App');
 
 var url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
 var autobahnProxy = new system.service.AutobahnConnectionProxy(url, realm);
-var connection = new system.service.Connection(autobahnProxy);
+var connection = new system.service.Connection('LMO', autobahnProxy);
 
 var schedulerService = new system.SchedulerService();
 var pricingServiceClient = new system.service.ServiceClient('pricing', connection, schedulerService);

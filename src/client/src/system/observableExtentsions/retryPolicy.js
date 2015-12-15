@@ -3,8 +3,19 @@ class IndefiniteRetryPolicy {
         return 0; // retry right away
     }
 }
+class BackoffTo10SecondsMax {
+    getRetryAfterMilliseconds(error : Error, retryCount : Number) : Number {
+        var retryAfter = retryCount * 1000;
+        return retryAfter < 10000
+            ? retryAfter
+            : 10000 ; // retry right away
+    }
+}
 export default class RetryPolicy {
     static forever() : RetryPolicy {
         return new IndefiniteRetryPolicy ();
+    }
+    static backoffTo10SecondsMax() : RetryPolicy {
+        return new BackoffTo10SecondsMax ();
     }
 }
