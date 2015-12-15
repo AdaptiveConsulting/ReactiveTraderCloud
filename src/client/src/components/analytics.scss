@@ -37,6 +37,13 @@
     border-bottom: 1px solid black;
     box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
     background: $gray-dark;
+    .nv-axisMaxMin {
+      display: none;
+    }
+  }
+
+  button {
+    border-left: 1px solid black;
   }
   @import 'nvd3';
 }
