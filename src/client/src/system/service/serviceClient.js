@@ -45,21 +45,25 @@ export default class ServiceClient extends disposables.DisposableBase {
             .getWellKnownStream('status')
             .where(s => s.Type === serviceType)
             .select(status => ServiceInstanceStatus.createForConnected(status.Type, status.Instance, status.TimeStamp, status.Load))
-            .takeUntilAndEndWith(isDisconnectedStream, lastServiceStatus => ServiceInstanceStatus.createForDisconnected(serviceType, lastServiceStatus.serviceId));
-        return isConnectedStream
-            .take(1)
-            .selectMany(serviceStatusStream)
-            // we repeat our underlying status stream on disconnects
-            .repeat()
+            // .completeWith(lastServiceStatus => ServiceInstanceStatus.createForDisconnected(serviceType, lastServiceStatus.serviceId))
             // group by service instance id
             .groupBy(serviceStatus => {
                 console.log("foo");
                 return serviceStatus.serviceId;
             })
-            // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
             .timeoutInnerObservables(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.timeout)
+            .toLastValueObservableDictionary(serviceStatus => serviceStatus.serviceId);
+        return isConnectedStream
+            .take(1)
+            .selectMany(serviceStatusStream)
+            .takeUntil(isDisconnectedStream)
+            .concat(Rx.Observable.return(/* return an empty dictionary on disconnect */ new LastValueObservableDictionary()))
+            // we repeat our underlying status stream on disconnects
+            .repeat()
+            // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
+
             // wrap all our service instances up in a hot observable dictionary so we query the service with the least load on a per-subscribe basis
-            .toLastValueObservableDictionary(serviceStatus => serviceStatus.serviceId)
+
             // keep the last copy of the dictionary around for new subscribers
             .replay(1);
     }

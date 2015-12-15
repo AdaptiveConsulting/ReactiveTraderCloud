@@ -2,42 +2,7 @@ import Rx from 'rx';
 import LastValueObservable from './lastValueObservable';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
 
-function takeUntilAndEndWith<TValue, TOther>(terminationSequence : Rx.Observable<TOther>, endWithItemFactory : (lastItem: TValue) => TValue) {
-    var source = this;
-    return Rx.Observable.create(o => {
-        var disposables = new Rx.CompositeDisposable();
-        var  lastItemSet : Boolean = false;
-        var lastItem : TValue;
-        disposables.add(
-            terminationSequence.take(1).subscribe(
-                _ => {
-                    if(lastItemSet) {
-                        var finalItem = endWithItemFactory(lastItem);
-                        o.onNext(finalItem);
-                    }
-                    o.onCompleted();
-                },
-                ex => o.onError(ex),
-                () => o.onCompleted()
-            )
-        );
-        disposables.add(
-            source.subscribe(
-                i => {
-                    lastItem = i;
-                    lastItemSet = true;
-                    o.onNext(i);
-                },
-                ex => o.onError(ex),
-                () => o.onCompleted()
-            )
-        );
-        return disposables;
-    });
-}
-Rx.Observable.prototype.takeUntilAndEndWith = takeUntilAndEndWith;
-
-
+// Adds time out semantics to the inner observable streams, calls onTimeoutItemSelector to seed a single value on timeout
 function timeoutInnerObservables<TKey, TValue>(dueTime : Number, onTimeoutItemSelector : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
     var sources = this;
     return Rx.Observable.create(o => {
@@ -50,7 +15,6 @@ function timeoutInnerObservables<TKey, TValue>(dueTime : Number, onTimeoutItemSe
     });
 }
 Rx.Observable.prototype.timeoutInnerObservables = timeoutInnerObservables;
-
 
 /// <summary>
 /// Converts an Observable of Observables into an Observable of IDictionary<TKey, ILastValueObservable<TValue>> whereby ILastValueObservable items are hot observable streams exposing their last values
