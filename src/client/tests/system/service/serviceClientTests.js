@@ -24,56 +24,51 @@ describe('ServiceClient', () => {
     });
 
     it('doesn\'t yield a status before being opened', () => {
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(0);
+        assertExpectedStatusUpdateCount(0);
     });
 
     it('yields a connection status when matching service heartbeat is received', () => {
         connect();
         pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(1);
+        assertExpectedStatusUpdateCount(1);
     });
 
     it('ignores heartbeats for unrelated services', () => {
         connect();
         pushServiceHeartbeat('booking', 'booking.1', 0);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(0);
+        assertExpectedStatusUpdateCount(0);
         pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(1);
+        assertExpectedStatusUpdateCount(1);
         pushServiceHeartbeat('execution', 'booking.1', 0);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(1);
+        assertExpectedStatusUpdateCount(1);
     });
 
     it('groups heartbeats for service instances by service type', () => {
         connect();
         pushServiceHeartbeat('pricing', 'pricing.1', 0);
         pushServiceHeartbeat('pricing', 'pricing.2', 0);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(2);
-        var serviceInstances : Array<system.service.ServiceInstanceSummary> = _receivedServiceStatusSummaryStream[1].instances;
-        expect(serviceInstances.length).toEqual(2);
-        expect(serviceInstances[0].instanceId).toEqual('pricing.1');
-        expect(serviceInstances[1].instanceId).toEqual('pricing.2');
+        assertExpectedStatusUpdateCount(2);
+        assertServiceInstanceStatus(1, 'pricing.1', true);
+        assertServiceInstanceStatus(1, 'pricing.2', true);
     });
 
     it('marks service instances as connected on heartbeat', () => {
         connect();
         pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(1);
-        var serviceInstance : system.service.ServiceInstanceSummary = _receivedServiceStatusSummaryStream[0].instances[0];
-        expect(serviceInstance.instanceId).toEqual('pricing.1');
-        expect(serviceInstance.isConnected).toEqual(true);
+        assertExpectedStatusUpdateCount(1);
+        assertServiceInstanceStatus(0, 'pricing.1', true);
     });
 
     it('marks service instances as disconnected on heartbeat timeout', () => {
         connect();
         pushServiceHeartbeat('pricing', 'pricing.1', 0);
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(2);
-        var serviceInstance : system.service.ServiceInstanceSummary = _receivedServiceStatusSummaryStream[1].instances[0];
-        expect(serviceInstance.instanceId).toEqual('pricing.1');
-        expect(serviceInstance.isConnected).toEqual(false);
+        assertExpectedStatusUpdateCount(2);
+        assertServiceInstanceStatus(0, 'pricing.1', true);
+        assertServiceInstanceStatus(1, 'pricing.1', false);
     });
 
-    fit('manages and disconnects heartbeats for each service instances separately', () => {
+    it('manages and disconnects heartbeats for each service instances separately', () => {
         connect();
         pushServiceHeartbeat('pricing', 'pricing.1', 0);
         pushServiceHeartbeat('pricing', 'pricing.2', 0);
@@ -81,27 +76,65 @@ describe('ServiceClient', () => {
 
         // keep pricing.2 alive
         pushServiceHeartbeat('pricing', 'pricing.2', 0);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(3);
+        assertExpectedStatusUpdateCount(3);
 
-        // timeout pricing.1 by moving the schedule past the time out interval
+        // disconnect pricing.1 by moving the schedule past the time out interval
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT / 2);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(4);
+        assertExpectedStatusUpdateCount(4);
+        assertServiceInstanceStatus(3, 'pricing.1', false);
+        assertServiceInstanceStatus(3, 'pricing.2', true);
 
-        // again move the schedule forward, since now heartbeat from pricing.2 that'll now timeout
+        // again move the schedule forward, since now heartbeat from pricing.2 has been missed that'll disconnect
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT / 2);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(5);
+        assertExpectedStatusUpdateCount(5);
+        assertServiceInstanceStatus(4, 'pricing.1', false);
+        assertServiceInstanceStatus(4, 'pricing.2', false);
 
         // reconnect pricing 2
         pushServiceHeartbeat('pricing', 'pricing.2', 0);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(6);
+        assertExpectedStatusUpdateCount(6);
+        assertServiceInstanceStatus(5, 'pricing.1', false);
+        assertServiceInstanceStatus(5, 'pricing.2', true);
 
         // reconnect pricing 1
         pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(7);
+        assertExpectedStatusUpdateCount(7);
+        assertServiceInstanceStatus(6, 'pricing.1', true);
+        assertServiceInstanceStatus(6, 'pricing.2', true);
 
-        // disconnect both, each will cause a seperate yield
+        // disconnect both, each will cause a separate yield as each service instance get processed independently (thus the count of 9)
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
-        expect(_receivedServiceStatusSummaryStream.length).toEqual(10);
+        assertExpectedStatusUpdateCount(9);
+        assertServiceInstanceStatus(8, 'pricing.1', false);
+        assertServiceInstanceStatus(8, 'pricing.2', false);
+    });
+
+    fit('disconnects service instance when underlying connection goes down', () => {
+        connect();
+
+        //pushServiceHeartbeat('pricing', 'pricing.1', 0);
+        //_stubAutobahnProxy.setIsConnected(false);
+
+        pushServiceHeartbeat('pricing', 'pricing.1', 0);
+        pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        assertExpectedStatusUpdateCount(2);
+        _stubAutobahnProxy.setIsConnected(false);
+        assertExpectedStatusUpdateCount(4);
+
+    });
+
+    it('handles underlying connection bouncing before any heartbeats are received', () => {
+        connect();
+
+        pushServiceHeartbeat('pricing', 'pricing.1', 0);
+        _stubAutobahnProxy.setIsConnected(false);
+
+        //pushServiceHeartbeat('pricing', 'pricing.1', 0);
+        //pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        //assertExpectedStatusUpdateCount(2);
+        //_stubAutobahnProxy.setIsConnected(false);
+        //assertExpectedStatusUpdateCount(4);
+
     });
 
     function connect() {
@@ -117,5 +150,16 @@ describe('ServiceClient', () => {
             TimeStamp: '',
             Load : instanceLoad
         });
+    }
+
+    function assertExpectedStatusUpdateCount(expectedCount : Number) {
+        expect(_receivedServiceStatusSummaryStream.length).toEqual(expectedCount);
+    }
+    function assertServiceInstanceStatus(statusUpdateIndex : Number, serviceId : String, expectedIsConnectedStatus : Boolean) {
+        var serviceStatusSummary = _receivedServiceStatusSummaryStream[statusUpdateIndex];
+        expect(serviceStatusSummary).toBeDefined('Can\'t find service status summary at index ' + statusUpdateIndex);
+        var instanceStatusSummary = serviceStatusSummary.getInstanceSummary(serviceId);
+        expect(instanceStatusSummary).toBeDefined();
+        expect(instanceStatusSummary.isConnected).toEqual(expectedIsConnectedStatus);
     }
 });

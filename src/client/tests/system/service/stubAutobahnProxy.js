@@ -37,8 +37,10 @@ class StubAutobahnSession {
         this._stubPromises[topic].push(stubPromise)
         return stubPromise.underlyingPromise;
     }
-    unsubscribe() {
-        return new Promise();
+    unsubscribe(subscription) {
+        return new Promise((onSuccess, onReject) => {
+            // noop for now
+        })
     }
     call<TRequest, TResults>(operationName:String):Promise {
         var stubPromise = new StubPromiseResult();

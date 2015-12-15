@@ -13,11 +13,9 @@ import LastValueObservableDictionary from './lastValueObservableDictionary';
 export default class ServiceClient extends disposables.DisposableBase {
     _log : logger.Logger;
     _serviceInstanceDictionaryStream : Rx.Observable<LastValueObservableDictionary>;
-
     static get HEARTBEAT_TIMEOUT() {
         return 3000;
     }
-
     constructor(serviceType : string, connection : Connection, schedulerService : SchedulerService){
         super();
         Guard.stringIsNotEmpty(serviceType, 'serviceType required and should not be empty');
@@ -47,7 +45,7 @@ export default class ServiceClient extends disposables.DisposableBase {
             .getWellKnownStream('status')
             .where(s => s.Type === serviceType)
             .select(status => ServiceInstanceStatus.createForConnected(status.Type, status.Instance, status.TimeStamp, status.Load))
-            .takeUntilAndEndWith(isDisconnectedStream, lastServiceStatus => ServiceInstanceStatus.createForDisconnected(serviceType, lastServiceStatus.ServiceId));
+            .takeUntilAndEndWith(isDisconnectedStream, lastServiceStatus => ServiceInstanceStatus.createForDisconnected(serviceType, lastServiceStatus.serviceId));
         return isConnectedStream
             .take(1)
             .selectMany(serviceStatusStream)
