@@ -19,6 +19,7 @@ using Adaptive.ReactiveTrader.Server.TradeExecution;
 using Common.Logging;
 using Common.Logging.Simple;
 using EventStore.ClientAPI;
+using Mono.Unix;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
@@ -29,7 +30,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         private static readonly Dictionary<string, Lazy<IServiceHostFactory>> Factories =
             new Dictionary<string, Lazy<IServiceHostFactory>>();
 
-        private static readonly ManualResetEvent _blocker = new ManualResetEvent(false);
+        private static readonly ManualResetEvent CtrlC = new ManualResetEvent(false);
 
         public static void StartService(string name, IServiceHostFactory factory)
         {
@@ -79,10 +80,20 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
             try
             {
+                var signals = new WaitHandle[]
+                {
+#if __MonoCS__
+                    new UnixSignal(Mono.Unix.Native.Signum.SIGTERM),
+                    new UnixSignal(Mono.Unix.Native.Signum.SIGKILL),
+#endif
+                    CtrlC
+                };
+
+
                 Console.CancelKeyPress += (s, e) =>
                 {
                     e.Cancel = true;
-                    _blocker.Set();
+                    CtrlC.Set();
                 };
 
                 LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
@@ -107,7 +118,6 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 if (args.Contains("dev"))
                 {
-                    
                     StartService("p1", GetFactory("pricing"));
                     StartService("r1", GetFactory("reference-read"));
                     StartService("e1", GetFactory("exec"));
@@ -129,9 +139,9 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     interactive = true;
                 }
 
-                if (!args.Contains("--interactive") || interactive)
+                if (!args.Contains("--interactive") && !interactive)
                     while (true)
-                        _blocker.WaitOne();
+                        WaitHandle.WaitAny(signals);
 
                 while (true)
                 {
