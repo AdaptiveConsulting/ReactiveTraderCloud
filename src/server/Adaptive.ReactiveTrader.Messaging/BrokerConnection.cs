@@ -10,7 +10,7 @@ using WampSharp.V2.Fluent;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
-    public class BrokerConnection
+    public class BrokerConnection : IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<BrokerConnection>();
 
