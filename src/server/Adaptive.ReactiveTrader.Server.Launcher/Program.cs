@@ -105,15 +105,16 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 // We should only be using the launcher during development, so hard code this to use the dev config
                 var config = ServiceConfiguration.FromArgs(args.Where(a => a.Contains(".json")).ToArray());
-
-                var eventStoreConnection = GetEventStoreConnection(config.EventStore);
-                eventStoreConnection.ConnectAsync().Wait();
-
+                
                 var populate = args.Contains("init-es");
 
-                if (populate || config.EventStore.Embedded)
-                    ReferenceDataHelper.PopulateRefData(eventStoreConnection).Wait();
+                if (populate || args.Contains("dev") || args.Contains("dev:with-broker"))
+                {
+                    var eventStoreConnection = GetEventStoreConnection(config.EventStore, args.Contains("dev") || args.Contains("dev:with-broker"));
+                    eventStoreConnection.ConnectAsync().Wait();
 
+                    ReferenceDataHelper.PopulateRefData(eventStoreConnection).Wait();
+                }
                 var interactive = false;
 
                 if (args.Contains("dev"))
@@ -183,7 +184,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                             continue;
                         }
-
+                        /*
                         if (x.StartsWith("switch"))
                         {
                             var repository = new Repository(eventStoreConnection);
@@ -209,7 +210,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                             repository.SaveAsync(currencyPair).Wait();
                             continue;
                         }
-
+                        */
 
                         if (x.StartsWith("kill"))
                         {
@@ -264,11 +265,11 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
         public static ILog Log { get; set; }
 
-        private static IEventStoreConnection GetEventStoreConnection(IEventStoreConfiguration configuration)
+        private static IEventStoreConnection GetEventStoreConnection(IEventStoreConfiguration configuration, bool embedded)
         {
             var eventStoreConnection =
                 EventStoreConnectionFactory.Create(
-                    configuration.Embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
+                    embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
 
 
             return eventStoreConnection;
