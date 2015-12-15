@@ -82,9 +82,6 @@ namespace Adaptive.ReactiveTrader.Server.Core
 
             var config = ServiceConfiguration.FromArgs(args);
 
-
-            // broker connection
-
             try
             {
                 var connectionFactory = BrokerConnectionFactory.Create(config.Broker);
@@ -98,8 +95,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
                 {
                     // TODO TIDY
 
-                    var eventStoreConnection = EventStoreConnectionFactory.Create(EventStoreLocation.External,
-                        config.EventStore);
+                    var eventStoreConnection = GetEventStoreConnection(config.EventStore);
                     var mon = new ConnectionStatusMonitor(eventStoreConnection);
                     var esStream = mon.GetEventStoreConnectedStream(eventStoreConnection);
                     eventStoreConnection.ConnectAsync().Wait();
@@ -116,6 +112,16 @@ namespace Adaptive.ReactiveTrader.Server.Core
             {
                 Log.Error(e);
             }
+        }
+
+        private static IEventStoreConnection GetEventStoreConnection(IEventStoreConfiguration configuration)
+        {
+            var eventStoreConnection =
+                EventStoreConnectionFactory.Create(
+                     EventStoreLocation.External, configuration);
+
+
+            return eventStoreConnection;
         }
 
         public const int ThreadSleep = 5000;
