@@ -1,74 +1,21 @@
-Adaptive Server
+Reactive Trader 2 - Server
 ===============
 
-## Getting Started on Windows
+[Getting Started on Windows](../../docs/vs-setup.md)
 
-### Get DNX
-Instructions [here](http://blogs.msdn.com/b/sujitdmello/archive/2015/04/23/step-by-step-installation-instructions-for-getting-dnx-on-your-laptop.aspx)
+[Getting Started on Linux](../../docs/linux-setup.md)
 
-#### Get External Dependencies 
-Run 'Get Dependencies.bat' once to grab external dependencies (this runs `dnu restore`)
-
-#### Set up a local Event Store and populate with sample data
-Currently we require a local event store to be created if you want to write and read events
-* [Download Event Store]( https://geteventstore.com/downloads)
-* Follow the [getting started instructions](http://docs.geteventstore.com/introduction/)
-* Run `Populate Event Store.bat`
-
-#### Start Services
-* Run `Message Broker Instance.bat` first
-* Run `Pricing Instance.bat`
-* Run `Reference Instance.bat`
+[Getting Started on Mac OS](../../docs/macos-setup.md)
 
 
-## Getting Started on Mac OS X
+## Overview
 
-### Get DNX
+The server is made up of separate distributed services. They communicate with the client via a broker and can each be run in its own Docker container.
 
-TODO
+They are written in .NET running cross-platform with DNX. Specifically with the full clr on Windows and mono on Linux/OSX. A migration to [.NET Platform Standard](https://github.com/dotnet/corefx/blob/master/Documentation/project-docs/standard-platform.md) is planned when support from dependent libraries become available.
 
-Instructions [here](http://blogs.msdn.com/b/sujitdmello/archive/2015/04/23/step-by-step-installation-instructions-for-getting-dnx-on-your-laptop.aspx)
+The cross-platform capability opens the door to a wide range of deployment tools and techniques such as Docker and Kubernetes. These in turn allow for consistent deployment environments and ease of management for deployed containers. 
 
-#### Get External Dependencies 
+An event sourcing approach is used for persistence, with [Event Store](https://geteventstore.com/) as the backing implementation. This provides many advantages, including data resiliency and facilitates rehydration of state.
 
-```bash
-$ cd server
-$ dnu restore
-```
-
-#### Set up a local Event Store and populate with sample data
-Currently we require a local event store to be created if you want to write and read events
-* [Download Event Store (Get Event Store 3.x for OS X)]( https://geteventstore.com/downloads)
-* Follow the [Running the event store section for OS X](http://docs.geteventstore.com/server/3.3.0/) (Event Store is 3.3 at the time of writting, look at the latest version 'Running the event store section')
-* Populate the Event store with some initial data
-
-```bash
-$ dnx -p Adaptive.ReactiveTrader.Server.ReferenceDataWrite refDataWritePopulate
-```
-
-#### Start Services
-
-Each service needs to be started in a separate shell window
-
-TODO create a shell script which starts everything
-
-* Start the messaging broker
-
-```bash
-$ cd server
-$ dnx -p Adaptive.ReactiveTrader.MessageBroker run
-```
-
-* Run the reference data service
-
-```bash
-$ cd server
-$ dnx -p Adaptive.ReactiveTrader.Server.ReferenceDataRead run
-```
-
-* Run the pricing service
-
-```bash
-$ cd server
-$ dnx -p Adaptive.ReactiveTrader.Server.Pricing run
-```
+Multiple instances of each service run concurrently for fail-over purposes. Each service instance broadcasts heartbeats, and the client is able to switch to a different instance if the connected instance is no longer reachable. Using this mechanism, load balancing strategies can also be implemented.

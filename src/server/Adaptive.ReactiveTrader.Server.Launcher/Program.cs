@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Threading;
-using Adaptive.ReactiveTrader.Common;
+using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common.Config;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.MessageBroker;
-using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Server.Analytics;
 using Adaptive.ReactiveTrader.Server.Blotter;
 using Adaptive.ReactiveTrader.Server.Core;
 using Adaptive.ReactiveTrader.Server.Pricing;
 using Adaptive.ReactiveTrader.Server.ReferenceDataRead;
 using Adaptive.ReactiveTrader.Server.ReferenceDataWrite;
 using Adaptive.ReactiveTrader.Server.TradeExecution;
-using Adaptive.ReactiveTrader.Server.Analytics;
 using Common.Logging;
 using Common.Logging.Simple;
 using EventStore.ClientAPI;
@@ -29,17 +29,14 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         private static readonly Dictionary<string, Lazy<IServiceHostFactory>> Factories =
             new Dictionary<string, Lazy<IServiceHostFactory>>();
 
-        private static IObservable<IConnected<IBroker>> _brokerStream;
-        private static IObservable<IConnected<IEventStoreConnection>> _esStream;
+        private static readonly ManualResetEvent _blocker = new ManualResetEvent(false);
 
         public static void StartService(string name, IServiceHostFactory factory)
         {
-            var esConsumer = factory as IServiceHostFactoryWithEventStore;
-            var d = esConsumer != null
-                ? esConsumer.Initialize(_brokerStream, _esStream)
-                : factory.Initialize(_brokerStream);
+            var a = new App(new string[] {}, factory);
 
-            Servers.Add(name, d);
+            Task.Run(() => a.Start());
+            Servers.Add(name, Disposable.Create(() => a.Kill()));
         }
 
         private static IServiceHostFactory GetFactory(string type)
@@ -82,6 +79,12 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
             try
             {
+                Console.CancelKeyPress += (s, e) =>
+                {
+                    e.Cancel = true;
+                    _blocker.Set();
+                };
+
                 LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
                 {
                     ShowLogName = true,
@@ -92,50 +95,43 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 // We should only be using the launcher during development, so hard code this to use the dev config
                 var config = ServiceConfiguration.FromArgs(args.Where(a => a.Contains(".json")).ToArray());
 
-                var embedded = args.Contains("es");
-                var populate = args.Contains("init-es");
-
-                var eventStoreConnection = GetEventStoreConnection(config.EventStore, embedded);
-                var mon = new ConnectionStatusMonitor(eventStoreConnection);
-
-                _esStream = mon.GetEventStoreConnectedStream(eventStoreConnection);
-
+                var eventStoreConnection = GetEventStoreConnection(config.EventStore);
                 eventStoreConnection.ConnectAsync().Wait();
 
-                if (populate || embedded)
-                {
+                var populate = args.Contains("init-es");
+
+                if (populate || config.EventStore.Embedded)
                     ReferenceDataHelper.PopulateRefData(eventStoreConnection).Wait();
-                }
 
-                var conn = BrokerConnectionFactory.Create(config.Broker);
-                _brokerStream = conn.GetBrokerStream();
+                var interactive = false;
 
-
-                if (args.Contains("mb"))
-                    Servers.Add("mb1", MessageBrokerLauncher.Run());
-
-                if (args.Contains("p"))
-                    StartService("p1", GetFactory("p"));
-
-                if (args.Contains("ref"))
-                    StartService("r1", GetFactory("ref"));
-
-                if (args.Contains("exec"))
+                if (args.Contains("dev"))
+                {
+                    
+                    StartService("p1", GetFactory("pricing"));
+                    StartService("r1", GetFactory("reference-read"));
                     StartService("e1", GetFactory("exec"));
-
-                if (args.Contains("b"))
                     StartService("b1", GetFactory("blotter"));
-
-                if (args.Contains("a"))
                     StartService("a1", GetFactory("analytics"));
 
-                var repository = new Repository(eventStoreConnection);
+                    interactive = true;
+                }
 
-                conn.Start();
+                if (args.Contains("dev:with-broker"))
+                {
+                    Servers.Add("mb1", MessageBrokerLauncher.Run());
+                    StartService("p1", GetFactory("pricing"));
+                    StartService("r1", GetFactory("reference-read"));
+                    StartService("e1", GetFactory("exec"));
+                    StartService("b1", GetFactory("blotter"));
+                    StartService("a1", GetFactory("analytics"));
 
-                if (!args.Contains("--interactive"))
+                    interactive = true;
+                }
+
+                if (!args.Contains("--interactive") || interactive)
                     while (true)
-                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                        _blocker.WaitOne();
 
                 while (true)
                 {
@@ -167,6 +163,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                         if (x.StartsWith("switch"))
                         {
+                            var repository = new Repository(eventStoreConnection);
+
                             var a = x.Split(' ');
 
                             var ccyPair = a[1];
@@ -243,12 +241,11 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
         public static ILog Log { get; set; }
 
-        private static IEventStoreConnection GetEventStoreConnection(IEventStoreConfiguration configuration,
-            bool embedded)
+        private static IEventStoreConnection GetEventStoreConnection(IEventStoreConfiguration configuration)
         {
             var eventStoreConnection =
                 EventStoreConnectionFactory.Create(
-                    embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
+                    configuration.Embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
 
 
             return eventStoreConnection;
