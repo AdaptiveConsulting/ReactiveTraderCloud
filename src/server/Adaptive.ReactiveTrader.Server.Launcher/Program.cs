@@ -126,8 +126,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                     interactive = true;
                 }
-
-                if (args.Contains("dev:with-broker"))
+                
+                else if (args.Contains("dev:with-broker"))
                 {
                     Servers.Add("mb1", MessageBrokerLauncher.Run());
                     StartService("p1", GetFactory("pricing"));
@@ -137,6 +137,19 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     StartService("a1", GetFactory("analytics"));
 
                     interactive = true;
+                }
+                else
+                {
+                    if (args.Contains("exec") || args.Contains("e"))
+                        StartService("e1", GetFactory("execution"));
+                    if (args.Contains("p"))
+                        StartService("p1", GetFactory("pricing"));
+                    if (args.Contains("b"))
+                        StartService("b1", GetFactory("blotter"));
+                    if (args.Contains("a"))
+                        StartService("a1", GetFactory("analytics"));
+                    if (args.Contains("ref") || args.Contains("r"))
+                        StartService("r1", GetFactory("reference-read"));
                 }
 
                 if (!args.Contains("--interactive") && !interactive)
