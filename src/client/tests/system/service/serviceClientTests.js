@@ -116,16 +116,31 @@ describe('ServiceClient', () => {
         assertExpectedStatusUpdate(2, true);
         _stubAutobahnProxy.setIsConnected(false);
         assertExpectedStatusUpdate(3, false);
-        var serviceStatusSummary = _receivedServiceStatusSummaryStream[2];
-        expect(serviceStatusSummary.isConnected).toEqual(false);
     });
 
-    fit('handles underlying connection bouncing before any heartbeats are received', () => {
+    it('handles underlying connection bouncing before any heartbeats are received', () => {
         connect();
         _stubAutobahnProxy.setIsConnected(false);
         _stubAutobahnProxy.setIsConnected(true);
         pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        assertExpectedStatusUpdate(1, true);
+        assertExpectedStatusUpdate(2, true);
+        pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        assertExpectedStatusUpdate(3, true);
+    });
+
+    it('disconnects then reconnect new service instance after underlying connection is bounced', () => {
+        connect();
+        pushServiceHeartbeat('pricing', 'pricing.1', 0);
+        pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        assertExpectedStatusUpdate(2, true);
+        assertServiceInstanceStatus(0, 'pricing.1', true);
+        assertServiceInstanceStatus(1, 'pricing.1', true);
+        _stubAutobahnProxy.setIsConnected(false);
+        assertExpectedStatusUpdate(3, false);
+        _stubAutobahnProxy.setIsConnected(true);
+        pushServiceHeartbeat('pricing', 'pricing.4', 0);
+        assertExpectedStatusUpdate(4, true);
+        assertServiceInstanceStatus(3, 'pricing.4', true);
     });
 
     function connect() {

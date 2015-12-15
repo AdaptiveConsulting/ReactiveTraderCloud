@@ -34,7 +34,9 @@ class StubAutobahnSession {
         if (!this._stubPromises[topic]) {
             this._stubPromises[topic] = [];
         }
-        this._stubPromises[topic].push(stubPromise)
+        // we only support one request for the given topic,
+        // if there is anything there we just blow it away
+        this._stubPromises[topic] = stubPromise;
         return stubPromise.underlyingPromise;
     }
     unsubscribe(subscription) {
@@ -50,12 +52,11 @@ class StubAutobahnSession {
         this._stubPromises[operationName].push(stubPromise)
         return stubPromise.underlyingPromise;
     }
-    getTopic(name : String, requestIndex : Number = 0) {
+    getTopic(name : String) {
         if(!this._stubPromises[name]) {
             throw new Error('Nothing has subscribed to topic/operation [' + name +']');
         }
-        // if there are multiple request to the same topic, this stub will the response StubPromiseResult into an array against the queue name, hence the index
-        return this._stubPromises[name][requestIndex];
+        return this._stubPromises[name];
     }
 }
 

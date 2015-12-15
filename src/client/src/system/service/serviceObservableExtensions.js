@@ -16,9 +16,7 @@ function timeoutInnerObservables<TKey, TValue>(dueTime : Number, onTimeoutItemSe
 }
 Rx.Observable.prototype.timeoutInnerObservables = timeoutInnerObservables;
 
-/// <summary>
-/// Converts an Observable of Observables into an Observable of IDictionary<TKey, ILastValueObservable<TValue>> whereby ILastValueObservable items are hot observable streams exposing their last values
-/// </summary>
+// Converts an Observable of Observables into an Observable of IDictionary<TKey, ILastValueObservable<TValue>> whereby ILastValueObservable items are hot observable streams exposing their last values
 function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TValue) => TKey) : Rx.Observable<ServiceInstanceCache> {
     var sources = this;
     return Rx.Observable.create(o => {
