@@ -169,9 +169,9 @@ export default class Analytics extends React.Component {
       pos: this.state.positionType !== 'BasePnl' ? 'selected': ''
     }
     return <Container title='analytics' className='analytics-container animated slideInRight' onTearoff={(state) => this.tearOff(state)}
-                      tearoff={this.state.tearoff} width={400} height={800} options={{maximizable:true}}>
+                      tearoff={this.state.tearoff} width={400} height={600} options={{maximizable:true}}>
 
-      <span>Profit & Loss <small className="text-small">USD {this.state.lastPos}</small></span>
+      <span className="header">Profit & Loss <small className="text-small">USD {this.state.lastPos}</small></span>
 
       <div className="nv-container" ref="container">
         {(PNLValues && PNLValues.length) ?

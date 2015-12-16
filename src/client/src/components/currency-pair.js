@@ -209,6 +209,34 @@ class CurrencyPair extends React.Component {
     this.setState({tearoff: !this.state.tearoff});
   }
 
+  /**
+   * Changes sparkline ticker on/off or launches IQ chart openfin app.
+   */
+  setChart(){
+    if (!window.fin)
+      this.setState({chart: !this.state.chart});
+    else
+      this.openChartIQ(this.props.pair);
+  }
+
+  openChartIQ(symbol){
+    this.app = new window.fin.desktop.Application({
+      uuid: 'ChartIQ' + Date.now(),
+      url: 'http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=' + symbol + '&period=5',
+      name: 'chartiq',
+      applicationIcon: 'http://openfin.chartiq.com/0.5/img/openfin-logo.png',
+      mainWindowOptions:{
+        autoShow: false
+      }
+    }, () => {
+      this.app.run();
+      this.app.addEventListener('beforeunload', () => {
+        alert('bye');
+        delete this.app;
+      })
+    });
+  }
+
   render(){
     const { historic, size, state, info, chart } = this.state,
           { buy, sell, mid, pair, response } = this.props;
@@ -227,7 +255,7 @@ class CurrencyPair extends React.Component {
 
     return <div>
       <div className='currency-pair-title'>
-        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setState({chart: !this.state.chart})}/>
+        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setChart()}/>
         <span>{title}</span> <i className='fa fa-plug animated infinite fadeIn'/>
       </div>
       {message}

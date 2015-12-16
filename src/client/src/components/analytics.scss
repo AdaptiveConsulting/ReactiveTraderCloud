@@ -7,7 +7,8 @@
   overflow-x: hidden;
   overflow-y: auto;
   right: 0px;
-  width: 400px;
+  max-width: 400px;
+  min-width: 350px;
   background: linear-gradient(rgba(0, 0, 0, 0), $gray-dark, rgba(0, 0, 0, 0));
   box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
   .tile & {
@@ -25,6 +26,9 @@
     color: white;
     padding-left: 8px;
     margin-right: 28px;
+    .tearoff &.header {
+      -webkit-app-region: drag;
+    }
     small {
       color: $gray-light;
       font-size: .5em;
@@ -109,3 +113,15 @@
 }
 
 
+@media (max-width: $screen-sm-max) {
+  .analytics-container {
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    display: block;
+    position: static;
+    max-width: none;
+    width: 100%;
+  }
+}

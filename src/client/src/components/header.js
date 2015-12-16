@@ -74,7 +74,7 @@ class Header extends React.Component {
       <Link className='navbar-brand' to='/' title='Home'>
         Reactive Trader Cloud
       </Link>
-      <ul className='nav navbar-nav hidden-xs navbar-left'>
+      <ul className='nav navbar-nav hidden-xs hidden-sm navbar-left'>
         <li>
           <Link to='/user' className='nav-link' activeClassName='active'><i className='fa fa-user' /> {traders.code} ({traders.name} {traders.surname})</Link>
         </li>
