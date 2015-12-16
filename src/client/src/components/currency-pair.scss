@@ -4,10 +4,11 @@
   position: absolute;
   top: 51px;
   bottom: 20%;
+  right: 20%;
   //margin-bottom: 25%;
   overflow: auto;
-  right: 400px;
 }
+
 
 .currency-pair {
   box-sizing: border-box;
@@ -207,6 +208,13 @@
   .currency-pairs {
     margin: 0;
     margin-bottom: 150px;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    display: block;
+    position: static;
+
     .currency-pair {
       width: 100%;
       margin-right: 0;
@@ -216,7 +224,18 @@
       }
     }
   }
+}
 
+@media (max-width: $screen-sm-max) {
+  .currency-pairs {
+    margin: 0;
+    right: 0;
+    top: auto;
+    left: auto;
+    display: block;
+    position: static;
+    height: 300px;
+  }
 }
 
 
