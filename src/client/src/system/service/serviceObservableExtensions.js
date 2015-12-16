@@ -7,16 +7,6 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
 
 var _log : logger.Logger = logger.create('serviceObservableExtensions');
 
-//function timeoutInnerObservables1<TKey, TValue>(dueTime : Number, onTimeoutItemSelector : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
-//    var sources : Rx.GroupedObservable = this;
-//    return Rx.Observable.create(o => {
-//        return sources.select(innerSource => {
-//            var key : TKey = innerSource.key;
-//            return innerSource.debounceWithSelector(dueTime, () => onTimeoutItemSelector(key), scheduler);
-//        }).subscribe(o);
-//    });
-//}
-
 // Adds time out semantics to the inner observable streams, calls onTimeoutItemSelector to seed a single value on timeout
 function timeoutInnerObservables<TKey, TValue>(dueTime : Number, onTimeoutItemSelector : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
     var sources : Rx.GroupedObservable = this;
@@ -37,7 +27,7 @@ Rx.Observable.prototype.timeoutInnerObservables = timeoutInnerObservables;
 function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TValue) => TKey) : Rx.Observable<ServiceInstanceCache> {
     var sources = this;
     return Rx.Observable.create(o => {
-        var dictionary = new LastValueObservableDictionary();
+        var dictionary = new LastValueObservableDictionary('liveStream');
         var disposables = new Rx.CompositeDisposable();
         disposables.add(
             sources.subscribe(
@@ -100,6 +90,9 @@ function getServiceWithMinLoad() : Rx.Observable<LastValueObservable<ServiceInst
                 } catch (err1) {
                     debugger;
                 }
+            },
+            () => {
+                debugger;
             }
         );
         return disposables;

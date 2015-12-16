@@ -17,7 +17,7 @@ export default class PricingService {
                 _log.info('Subscribing to pricestream for [{0}]', request.symbol);
                 return _this._pricingServiceClient
                     .createStreamOperation('getPriceUpdates', request, _this._schedulerService.async)
-                    .retryWithPolicy(system.RetryPolicy.backoffTo10SecondsMax(), 'getPriceUpdates', _this._schedulerService.async)
+                    .retryWithPolicy(system.RetryPolicy.indefiniteEvery2Seconds(), 'getPriceUpdates', _this._schedulerService.async)
                     .subscribe(o)
             }
         );

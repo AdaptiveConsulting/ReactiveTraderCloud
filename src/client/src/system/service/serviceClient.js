@@ -29,9 +29,9 @@ export default class ServiceClient extends disposables.DisposableBase {
         // create a connectible observable that yields a dictionary of connection status for
         // each service we're exposed.
         // The dictionary support querying by service load, handy when we kick off new operations.
-        // note we replay the last value as we don't want to hang around as we kick off new wire operations.
-        this._serviceInstanceDictionaryStream = this._createServiceInstanceDictionaryStream(serviceType).replay(1);
+        this._serviceInstanceDictionaryStream = this._createServiceInstanceDictionaryStream(serviceType).publish();
     }
+
     // Sits on top of our underlying dictionary stream exposing a summary of the connection and services instance
     // for this service client
     get serviceStatusSummaryStream() : Rx.Observable<ServiceStatusSummary> {
@@ -70,7 +70,7 @@ export default class ServiceClient extends disposables.DisposableBase {
                 // wrap all our service instances up in a hot observable dictionary so we query the service with the least load on a per-subscribe basis
                 .toLastValueObservableDictionary(serviceStatus => serviceStatus.serviceId)
                 // catch the disconnect error and start again with a new dictionary
-                .catch(Rx.Observable.return( new LastValueObservableDictionary()));
+                .catch(Rx.Observable.return( new LastValueObservableDictionary('disconnected')));
             return isConnectedStream
                 .take(1)
                 .selectMany(serviceInstanceDictionaryStream)
@@ -104,7 +104,7 @@ export default class ServiceClient extends disposables.DisposableBase {
                         o.onError(new Error("Disconnected"));
                     } else if(!hasSubscribed) {
                         hasSubscribed = true;
-                        _this._log.debug('Will use service instance [{0}] for stream operation', serviceInstanceStatus);
+                        _this._log.debug('Will use service instance [{0}] for stream operation. IsConnected: [{1}]', serviceInstanceStatus.serviceId, serviceInstanceStatus.isConnected);
                         disposables.add(_this._connection
                             .subscribeToTopic(topicName)
                             .subscribe(

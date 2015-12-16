@@ -190,6 +190,19 @@ describe('ServiceClient', () => {
             expect(receivedPrices[1]).toEqual(2);
         });
 
+        it('still publishes payload to new subscribers after underlying connection goes down and comes back', () => {
+            connectAndPublishPrice();
+            _stubAutobahnProxy.setIsConnected(false);
+            expect(receivedErrors.length).toEqual(1);
+            subscribeToPriceStream();
+            _stubAutobahnProxy.setIsConnected(true);
+            pushServiceHeartbeat('pricing', 'pricing.1', 0);
+            pushPrice('pricing.1', 2);
+            expect(receivedPrices.length).toEqual(2);
+            expect(receivedPrices[0]).toEqual(1);
+            expect(receivedPrices[1]).toEqual(2);
+        });
+
         function subscribeToPriceStream() {
             var existing = priceSubscriptionDisposable.getDisposable();
             if(existing) {

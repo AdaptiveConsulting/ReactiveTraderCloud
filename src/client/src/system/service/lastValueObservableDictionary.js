@@ -3,9 +3,10 @@ import LastValueObservable from './lastValueObservable';
 
 // poor mans dictionary
 export default class LastValueObservableDictionary {
-    constructor() {
+    constructor(description : String) {
         this._values = {};
         this._version = 0;
+        this._description = description;
     }
     hasKey(key : String) {
         return this._values.hasOwnProperty(key);
@@ -23,5 +24,8 @@ export default class LastValueObservableDictionary {
     }
     get version() {
         return this._version;
+    }
+    get description() {
+        return this._description;
     }
 }
