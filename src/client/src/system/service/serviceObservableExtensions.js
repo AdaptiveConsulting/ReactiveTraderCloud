@@ -42,19 +42,25 @@ function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TV
         disposables.add(
             sources.subscribe(
                 innerSource => {
-                    var innerSourcePublished = innerSource.publish().refCount();
-                    disposables.add(innerSourcePublished.subscribe(
+                   // var innerSourcePublished = innerSource.publish().refCount();
+                    disposables.add(innerSource.subscribe(
                         value => {
                             var key = keySelector(value);
                             if (!dictionary.hasKey(key))                             {
-                                dictionary.add(key, new LastValueObservable(innerSourcePublished, value));
+                                dictionary.add(key, new LastValueObservable(innerSource, value));
                             }
                             else {
                                 dictionary.updateWithLatestValue(key, value);
                             }
                             o.onNext(dictionary); // note: not creating a copy of local state
                         },
-                        ex => o.onError(ex),// if any of the inner streams error or complete, we error the outer
+                        ex => {
+                            try {
+                                o.onError(ex);
+                            } catch (err1) {
+                                debugger;
+                            }
+                        },// if any of the inner streams error or complete, we error the outer
                         () => o.onCompleted()
                     ));
                 },
@@ -82,7 +88,13 @@ function getServiceWithMinLoad() : Rx.Observable<LastValueObservable<ServiceInst
                         o.onNext(serviceWithLeastLoad);
                     }
                 },
-                ex => o.onError(ex),
+                ex => {
+                    try {
+                        o.onError(ex);
+                    } catch (err1) {
+                        debugger;
+                    }
+                },
                 () => o.onCompleted()
             )
         );
@@ -117,7 +129,13 @@ function debounceWithSelector(dueTime : Number, itemSelector : () => TValue, sch
                     debounce();
                     o.onNext(item)
                 },
-                ex => o.onError(ex),
+                ex => {
+                    try {
+                        o.onError(ex);
+                    } catch (err1) {
+                        debugger;
+                    }
+                },
                 () => o.onCompleted()
             )
         );
