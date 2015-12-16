@@ -222,18 +222,14 @@ class CurrencyPair extends React.Component {
   openChartIQ(symbol){
     this.app = new window.fin.desktop.Application({
       uuid: 'ChartIQ' + Date.now(),
-      url: 'http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=' + symbol + '&period=5',
-      name: 'chartiq',
+      url: `http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=${symbol}&period=5`,
+      name: 'chartiq_' + symbol,
       applicationIcon: 'http://openfin.chartiq.com/0.5/img/openfin-logo.png',
-      mainWindowOptions:{
+      mainWindowOptions: {
         autoShow: false
       }
     }, () => {
       this.app.run();
-      this.app.addEventListener('beforeunload', () => {
-        alert('bye');
-        delete this.app;
-      })
     });
   }
 
