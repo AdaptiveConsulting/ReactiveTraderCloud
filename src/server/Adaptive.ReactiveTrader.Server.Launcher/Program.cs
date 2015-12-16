@@ -42,7 +42,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             return eventStoreConnection;
         }
 
-        public void Run(string[] arguments)
+        public void Run(IEnumerable<string> arguments)
         {
             var args = ExpandArgs(arguments);
 
@@ -66,30 +66,14 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
             try
             {
-#if __MonoCS__
-                Console.WriteLine("Runing in Mono");
-
-                var signals = new WaitHandle[]
-                {
-
-                    new UnixSignal(Mono.Unix.Native.Signum.SIGTERM),
-                    new UnixSignal(Mono.Unix.Native.Signum.SIGKILL),
-                    CtrlC
-                };
-#else
-                var signals = new WaitHandle[]
-                {
-                    CtrlC
-                };
-#endif
-
                 Console.CancelKeyPress += (s, e) =>
                 {
+                    Console.WriteLine("Termination signal sent.");
+
                     e.Cancel = true;
                     CtrlC.Set();
                 };
-
-
+                
                 var interactive = args.Remove("--interactive");
 
                 LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
@@ -141,7 +125,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 if (!interactive)
                 {
-                    WaitHandle.WaitAny(signals);
+                    CtrlC.WaitOne();
                     return;
                 }
 
