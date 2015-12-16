@@ -9,6 +9,8 @@
 nav.navbar {
   margin-bottom: 4px;
   -webkit-app-region: drag;
+  box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
+  background: linear-gradient(lighten($gray-dark, 2%) 80%, $gray-dark);
 }
 .nav {
   ul, li, a {
