@@ -83,7 +83,7 @@ class CurrencyPairs extends React.Component {
   }
 
   componentDidUpdate(){
-    this.refs.tbody.scrollTop = 0;
+    this.refs.tbody && (this.refs.tbody.scrollTop = 0);
   }
 
   render(){

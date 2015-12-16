@@ -4,11 +4,12 @@
   top: 52px;
   bottom: 20%;
   //margin-bottom: 25%;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   right: 0px;
   width: 400px;
-  background: linear-gradient(rgba(0,0,0,0), $gray-dark, rgba(0,0,0,0));
-  box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
+  background: linear-gradient(rgba(0, 0, 0, 0), $gray-dark, rgba(0, 0, 0, 0));
+  box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
   .tile & {
     top: 0;
     bottom: 0;
@@ -31,19 +32,78 @@
   }
 
   .nv-container {
-    position: relative;
     padding: 10px;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-    box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
+    box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
     background: $gray-dark;
     .nv-axisMaxMin {
       display: none;
     }
+    .nvd3 g.nv-groups  {
+      path.nv-line {
+        stroke: slategray;
+        stroke-width: .8
+      }
+      path.nv-area {
+        opacity: .15
+      }
+      .nv-bar {
+        rect {
+          fill-opacity: .1;
+          stroke: slategray;
+          stroke-width: .8;
+          stroke-opacity: .4;
+        }
+        &.positive {
+          text {
+            fill: $gray-light;
+          }
+        }
+        &:hover rect {
+          stroke-opacity: .5;
+          fill-opacity: .4;
+        }
+      }
+    }
+
+    .nv-controlsWrap.nvd3-svg {
+      display: none;
+    }
   }
 
-  button {
-    border-left: 1px solid black;
+  .buttons {
+    float: right;
+    height: 38px;
+    overflow: hidden;
+    $shadow-width: 14px;
+    button.btn {
+      border-left: 1px solid black;
+      color: $gray-light;
+      box-sizing: border-box;
+      outline: none !important;
+      &.selected {
+        position: relative;
+        z-index: 100;
+        color: $gray-lighter;
+        background: linear-gradient(rgba(0, 0, 0, 0), $gray-darker) !important;
+        box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
+      }
+      &.selected:before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: $shadow-width;
+        height: 6px;
+        transition: transform 1s;
+        border-radius: 50%;
+        left: 50%;
+        transform: translate(-($shadow-width / 2), 0);
+        top: -8px;
+        box-shadow: 0 0 6px 4px rgba(255, 255, 255, .5);
+      }
+    }
+
   }
   @import 'nvd3';
 }

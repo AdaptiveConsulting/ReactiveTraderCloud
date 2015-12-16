@@ -11,6 +11,11 @@ import d3 from 'd3';
 //const LINECHART = 'lineWithFocusChart';
 const LINECHART = 'lineChart';
 
+const tooltip = (d) =>{
+  const { value, series } = d;
+
+  return `<p><strong>${value}:</strong> ${series[0].value}</p>`;
+};
 
 export default class Analytics extends React.Component {
 
@@ -29,6 +34,7 @@ export default class Analytics extends React.Component {
         series: 'PNL',
         label: 'PNL',
         area: true,
+        color: 'slategray',
         values: []
       }]
     };
@@ -45,14 +51,15 @@ export default class Analytics extends React.Component {
         tickFormat: d3.format(',.1'),
       },
       showYAxis: !true,
-      showXAxis: true,
+      showXAxis: !true,
       showLegend: false,
       useInteractiveGuideline: true,
+      duration: 0,
       margin: {
         left: 0,
         top: 0,
         right: 0,
-        bottom: 30
+        bottom: 0
       }
     };
 
@@ -61,8 +68,14 @@ export default class Analytics extends React.Component {
       showXAxis: true,
       showLegend: false,
       useInteractiveGuideline: true,
-      margins: {
-        left: 0,
+      // barColor: d3.scale.category20().range(),
+      duration: 250,
+      showValues: true,
+      //stacked: true,
+      tooltip: {
+        enabled: false
+      },
+      margin: {
         top: 0,
         right: 0,
         bottom: 0
@@ -106,32 +119,55 @@ export default class Analytics extends React.Component {
     this.state.series[0].values = this.formatHistoricData(props.history);
   }
 
-  render(){
-    if (!this.props.status)
-      return <span></span>;
-
-    const PNLValues = this.state.series[0].values,
-          { domainMin, domainMax } = this.state;
-
-    const configure = (chart) => {
-      chart.yDomain([domainMin, domainMax]).yRange([200, 0]);
-      chart.interactiveLayer.tooltip.contentGenerator((d) =>{
-        const { value, series } = d;
-
-        return `<p><strong>${value}:</strong> ${series[0].value}</p>`;
-      });
-    };
-
-    const positionsSeries = this.props.positions.map((pos) => {
+  /**
+   *
+   * @param {boolean} asSeries
+   * @returns {array}
+   */
+  getPositionData(asSeries:boolean = false){
+    return asSeries ? this.props.positions.map((pos) => {
       return {
         name: pos.Symbol,
         label: pos.Symbol,
         values: [pos]
       }
-    });
+    }) : [{
+      name: 'Pos/PnL',
+      values: this.props.positions.map((pos) => {
+        //pos.Symbol += '\n' + pos[this.state.positionType];
+        return pos;
+      }),
+      color: 'slategray'
+    }];
+  }
 
-    console.log(positionsSeries);
+  render(){
+    if (!this.props.status)
+      return <span></span>;
 
+    let pnl;
+
+    const PNLValues = this.state.series[0].values,
+          { domainMin, domainMax } = this.state,
+          configure = (chart) => {
+            chart.yDomain([domainMin, domainMax]).yRange([150, 0]);
+            chart.interactiveLayer.tooltip.contentGenerator(tooltip);
+          };
+
+    const c = (chart) => {
+      chart.tooltip.enabled(false);
+      //chart.tooltip.contentGenerator(tooltip);
+      //chart.tooltip.chartContainer(this.refs.pnlcontainer);
+    };
+
+    const positionsSeries = this.getPositionData();
+
+    // this.chartPositionsOptions.interactiveLayer.tooltip.chartContainer = this.refs.pnlcontainer;
+
+    const classMap = {
+      pnl: this.state.positionType === 'BasePnl' ? 'selected': '',
+      pos: this.state.positionType !== 'BasePnl' ? 'selected': ''
+    }
     return <Container title='analytics' className='analytics-container animated slideInRight' onTearoff={(state) => this.tearOff(state)}
                       tearoff={this.state.tearoff} width={400} height={800} options={{maximizable:true}}>
 
@@ -139,15 +175,32 @@ export default class Analytics extends React.Component {
 
       <div className="nv-container" ref="container">
         {(PNLValues && PNLValues.length) ?
-          <NVD3Chart type={LINECHART} datum={this.state.series} options={this.chartPnlOptions} height={220} configure={configure} /> :
+          <NVD3Chart
+            type={LINECHART}
+            datum={this.state.series}
+            options={this.chartPnlOptions}
+            height={150}
+            configure={configure}
+          /> :
           <div>No PNL data yet</div>}
       </div>
 
       <span>Positions / PNL</span>
-      <button className="pull-right btn btn-small btn-default" onClick={() => this.setState({positionType: 'BaseTradedAmount'})}>Positions</button>
-      <button className="pull-right btn btn-small btn-default" onClick={() => this.setState({positionType: 'BasePnl'})}>PnL</button>
-      <div className="nv-container clearfix">
-        <NVD3Chart id='position-chart' type='multiBarHorizontalChart' datum={positionsSeries} options={this.chartPositionsOptions} height={400} x="Symbol" y={this.state.positionType} />
+      <div className="buttons">
+        <button className={classMap.pnl + ' pull-right btn btn-small btn-default'} onClick={() => this.setState({positionType: 'BasePnl'})}>PnL</button>
+        <button className={classMap.pos + ' pull-right btn btn-small btn-default'} onClick={() => this.setState({positionType: 'BaseTradedAmount'})}>Positions</button>
+      </div>
+
+      <div className="nv-container clearfix pnlchart" ref="pnlcontainer">
+        <NVD3Chart
+           type='multiBarHorizontalChart'
+           datum={positionsSeries}
+           options={this.chartPositionsOptions}
+           height={300}
+           x='Symbol'
+           configure={c}
+           y={this.state.positionType}
+        />
       </div>
     </Container>;
 
