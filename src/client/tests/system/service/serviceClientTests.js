@@ -16,7 +16,7 @@ describe('ServiceClient', () => {
             async: _scheduler
         }
         _connection = new system.service.Connection('user', _stubAutobahnProxy);
-        _serviceClient = new system.service.ServiceClient('pricing', _connection, stubSchedulerService);
+        _serviceClient = new system.service.ServiceClient('myServiceType', _connection, stubSchedulerService);
         _receivedServiceStatusSummaryStream = [];
         _serviceClient.serviceStatusSummaryStream.subscribe(statusSummary => {
             _receivedServiceStatusSummaryStream.push(statusSummary);
@@ -29,7 +29,7 @@ describe('ServiceClient', () => {
 
     it('yields a connection status when matching service heartbeat is received', () => {
         connect();
-        pushServiceHeartbeat('pricing', 'pricing.1', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
         assertExpectedStatusUpdate(1, true);
     });
 
@@ -37,7 +37,7 @@ describe('ServiceClient', () => {
         connect();
         pushServiceHeartbeat('booking', 'booking.1', 0);
         assertExpectedStatusUpdate(0);
-        pushServiceHeartbeat('pricing', 'pricing.1', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
         assertExpectedStatusUpdate(1, true);
         pushServiceHeartbeat('execution', 'booking.1', 0);
         assertExpectedStatusUpdate(1, true);
@@ -45,74 +45,74 @@ describe('ServiceClient', () => {
 
     it('groups heartbeats for service instances by service type', () => {
         connect();
-        pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
         assertExpectedStatusUpdate(2, true);
-        assertServiceInstanceStatus(1, 'pricing.1', true);
-        assertServiceInstanceStatus(1, 'pricing.2', true);
+        assertServiceInstanceStatus(1, 'myServiceType.1', true);
+        assertServiceInstanceStatus(1, 'myServiceType.2', true);
     });
 
     it('marks service instances as connected on heartbeat', () => {
         connect();
-        pushServiceHeartbeat('pricing', 'pricing.1', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
         assertExpectedStatusUpdate(1, true);
-        assertServiceInstanceStatus(0, 'pricing.1', true);
+        assertServiceInstanceStatus(0, 'myServiceType.1', true);
     });
 
     it('marks service instances as disconnected on heartbeat timeout', () => {
         connect();
-        pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        assertServiceInstanceStatus(0, 'pricing.1', true);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+        assertServiceInstanceStatus(0, 'myServiceType.1', true);
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
         assertExpectedStatusUpdate(2, false);
-        assertServiceInstanceStatus(1, 'pricing.1', false);
+        assertServiceInstanceStatus(1, 'myServiceType.1', false);
     });
 
     it('manages and disconnects heartbeats for each service instances separately', () => {
         connect();
-        pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT / 2);
 
-        // keep pricing.2 alive
-        pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        // keep myServiceType.2 alive
+        pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
         assertExpectedStatusUpdate(3, true);
 
-        // disconnect pricing.1 by moving the schedule past the time out interval
+        // disconnect myServiceType.1 by moving the schedule past the time out interval
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT / 2);
         assertExpectedStatusUpdate(4, true);
-        assertServiceInstanceStatus(3, 'pricing.1', false);
-        assertServiceInstanceStatus(3, 'pricing.2', true);
+        assertServiceInstanceStatus(3, 'myServiceType.1', false);
+        assertServiceInstanceStatus(3, 'myServiceType.2', true);
 
-        // again move the schedule forward, since now heartbeat from pricing.2 has been missed that'll disconnect
+        // again move the schedule forward, since now heartbeat from myServiceType.2 has been missed that'll disconnect
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT / 2);
         assertExpectedStatusUpdate(5, false);
-        assertServiceInstanceStatus(4, 'pricing.1', false);
-        assertServiceInstanceStatus(4, 'pricing.2', false);
+        assertServiceInstanceStatus(4, 'myServiceType.1', false);
+        assertServiceInstanceStatus(4, 'myServiceType.2', false);
 
-        // reconnect pricing 2
-        pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        // reconnect myServiceType 2
+        pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
         assertExpectedStatusUpdate(6, true);
-        assertServiceInstanceStatus(5, 'pricing.1', false);
-        assertServiceInstanceStatus(5, 'pricing.2', true);
+        assertServiceInstanceStatus(5, 'myServiceType.1', false);
+        assertServiceInstanceStatus(5, 'myServiceType.2', true);
 
-        // reconnect pricing 1
-        pushServiceHeartbeat('pricing', 'pricing.1', 0);
+        // reconnect myServiceType 1
+        pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
         assertExpectedStatusUpdate(7, true);
-        assertServiceInstanceStatus(6, 'pricing.1', true);
-        assertServiceInstanceStatus(6, 'pricing.2', true);
+        assertServiceInstanceStatus(6, 'myServiceType.1', true);
+        assertServiceInstanceStatus(6, 'myServiceType.2', true);
 
         // disconnect both, each will cause a separate yield as each service instance get processed independently (thus the count of 9)
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
         assertExpectedStatusUpdate(9, false);
-        assertServiceInstanceStatus(8, 'pricing.1', false);
-        assertServiceInstanceStatus(8, 'pricing.2', false);
+        assertServiceInstanceStatus(8, 'myServiceType.1', false);
+        assertServiceInstanceStatus(8, 'myServiceType.2', false);
     });
 
     it('disconnects service instance when underlying connection goes down', () => {
         connect();
-        pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
         assertExpectedStatusUpdate(2, true);
         _stubAutobahnProxy.setIsConnected(false);
         assertExpectedStatusUpdate(3, false);
@@ -122,25 +122,25 @@ describe('ServiceClient', () => {
         connect();
         _stubAutobahnProxy.setIsConnected(false);
         _stubAutobahnProxy.setIsConnected(true);
-        pushServiceHeartbeat('pricing', 'pricing.1', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
         assertExpectedStatusUpdate(2, true);
-        pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
         assertExpectedStatusUpdate(3, true);
     });
 
     it('disconnects then reconnect new service instance after underlying connection is bounced', () => {
         connect();
-        pushServiceHeartbeat('pricing', 'pricing.1', 0);
-        pushServiceHeartbeat('pricing', 'pricing.2', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
         assertExpectedStatusUpdate(2, true);
-        assertServiceInstanceStatus(0, 'pricing.1', true);
-        assertServiceInstanceStatus(1, 'pricing.1', true);
+        assertServiceInstanceStatus(0, 'myServiceType.1', true);
+        assertServiceInstanceStatus(1, 'myServiceType.1', true);
         _stubAutobahnProxy.setIsConnected(false);
         assertExpectedStatusUpdate(3, false);
         _stubAutobahnProxy.setIsConnected(true);
-        pushServiceHeartbeat('pricing', 'pricing.4', 0);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.4', 0);
         assertExpectedStatusUpdate(4, true);
-        assertServiceInstanceStatus(3, 'pricing.4', true);
+        assertServiceInstanceStatus(3, 'myServiceType.4', true);
     });
 
     describe('createStreamOperation()', () => {
@@ -183,8 +183,8 @@ describe('ServiceClient', () => {
             connectAndPublishPrice();
             _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
             subscribeToPriceStream();
-            pushServiceHeartbeat('pricing', 'pricing.1', 0);
-            pushPrice('pricing.1', 2);
+            pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+            pushPrice('myServiceType.1', 2);
             expect(receivedPrices.length).toEqual(2);
             expect(receivedPrices[0]).toEqual(1);
             expect(receivedPrices[1]).toEqual(2);
@@ -194,13 +194,18 @@ describe('ServiceClient', () => {
             connectAndPublishPrice();
             _stubAutobahnProxy.setIsConnected(false);
             expect(receivedErrors.length).toEqual(1);
-            subscribeToPriceStream();
-            _stubAutobahnProxy.setIsConnected(true);
-            pushServiceHeartbeat('pricing', 'pricing.1', 0);
-            pushPrice('pricing.1', 2);
-            expect(receivedPrices.length).toEqual(2);
-            expect(receivedPrices[0]).toEqual(1);
-            expect(receivedPrices[1]).toEqual(2);
+
+            //setTimeout(() => {
+                subscribeToPriceStream();
+                _stubAutobahnProxy.setIsConnected(true);
+                pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+                pushPrice('myServiceType.1', 2);
+                expect(receivedPrices.length).toEqual(2);
+                expect(receivedPrices[0]).toEqual(1);
+                expect(receivedPrices[1]).toEqual(2);
+          //  });
+
+
         });
 
         function subscribeToPriceStream() {
@@ -221,13 +226,51 @@ describe('ServiceClient', () => {
 
         function connectAndPublishPrice() {
             connect();
-            pushServiceHeartbeat('pricing', 'pricing.1', 0);
-            pushPrice('pricing.1', 1);
+            pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+            pushPrice('myServiceType.1', 1);
         }
 
         function pushPrice(serviceId :String,  price : Number) {
             var replyToTopic = _stubAutobahnProxy.session.getTopic(serviceId + '.getPriceStream').dto.replyTo;
             _stubAutobahnProxy.session.getTopic(replyToTopic).onResults(price);
+        }
+    });
+
+    describe('createRequestResponseOperation()', () => {
+        let responses,
+            receivedErrors,
+            onCompleteCount,
+            requestSubscriptionDisposable;
+
+        beforeEach(() => {
+            responses = [];
+            receivedErrors = [];
+            onCompleteCount = 0;
+            requestSubscriptionDisposable = new Rx.SerialDisposable();
+        });
+
+        it('sends response over wire when scribed to', () => {
+            connect();
+            pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+            sendRequest('RequestPayload', false);
+            pushResponse('myServiceType.1', 'ResponsePayload')
+        });
+        
+        function sendRequest(request, waitForSuitableService) {
+            requestSubscriptionDisposable.setDisposable(
+                _serviceClient.createRequestResponseOperation('executeTrade', request, waitForSuitableService)
+                    .subscribe(response => {
+                            responses.push(response);
+                        },
+                        ex => receivedErrors.push(receivedErrors),
+                        () => onCompleteCount++
+                    )
+            );            
+        }
+
+        function pushResponse(serviceId :String,  response : Number) {
+            var stubCallResult = _stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade');
+            stubCallResult.onSuccess(response);
         }
     });
 

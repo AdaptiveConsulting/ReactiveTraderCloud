@@ -95,7 +95,7 @@ export default class Connection extends disposables.DisposableBase {
     }
 
     // wraps a RPC up as an observable stream
-    requestResponse<TRequest, TResponse>(remoteProcedure: String, payload : TRequest, responseTopic : String) : Rx.Observable<TResponse> {
+    requestResponse<TRequest, TResponse>(remoteProcedure: String, payload : TRequest, responseTopic : String = '') : Rx.Observable<TResponse> {
         let _this = this;
         return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
             _log.debug('Requesting a response for remoteProcedure [{0}]. Is connected [{1}]', remoteProcedure, _this._isConnected);

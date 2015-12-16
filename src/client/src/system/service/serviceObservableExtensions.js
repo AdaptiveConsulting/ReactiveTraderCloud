@@ -8,7 +8,7 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
 var _log : logger.Logger = logger.create('serviceObservableExtensions');
 
 // Adds time out semantics to the inner observable streams, calls onTimeoutItemSelector to seed a single value on timeout
-function timeoutInnerObservables<TKey, TValue>(dueTime : Number, onTimeoutItemSelector : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
+function trackServiceStatusHeartbeats<TKey, TValue>(dueTime : Number, onTimeoutItemSelector : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
     var sources : Rx.GroupedObservable = this;
     return Rx.Observable.create(o => {
         return sources.subscribe(innerSource => {
@@ -21,10 +21,10 @@ function timeoutInnerObservables<TKey, TValue>(dueTime : Number, onTimeoutItemSe
         );
     });
 }
-Rx.Observable.prototype.timeoutInnerObservables = timeoutInnerObservables;
+Rx.Observable.prototype.trackServiceStatusHeartbeats = trackServiceStatusHeartbeats;
 
 // Converts an Observable of Observables into an Observable of IDictionary<TKey, ILastValueObservable<TValue>> whereby ILastValueObservable items are hot observable streams exposing their last values
-function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TValue) => TKey) : Rx.Observable<ServiceInstanceCache> {
+function toServiceStatusObservableDictionary<TKey, TValue>(keySelector : (value : TValue) => TKey) : Rx.Observable<ServiceInstanceCache> {
     var sources = this;
     return Rx.Observable.create(o => {
         var dictionary = new LastValueObservableDictionary('liveStream');
@@ -61,10 +61,10 @@ function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TV
         return disposables;
     });
 }
-Rx.Observable.prototype.toLastValueObservableDictionary = toLastValueObservableDictionary;
+Rx.Observable.prototype.toServiceStatusObservableDictionary = toServiceStatusObservableDictionary;
 
 // Gets the first status stream for the service currently having the minimum load and subscribes to it, yields into the target stream
-function getServiceWithMinLoad() : Rx.Observable<LastValueObservable<ServiceInstanceStatus>> {
+function getServiceWithMinLoad(waitForServiceIfNoneAvailable:Boolean = true) : Rx.Observable<LastValueObservable<ServiceInstanceStatus>> {
     var source : Rx.Observable<LastValueObservableDictionary<ServiceInstanceStatus>> = this;
     return Rx.Observable.create(o => {
         let disposables = new Rx.CompositeDisposable();
@@ -82,6 +82,8 @@ function getServiceWithMinLoad() : Rx.Observable<LastValueObservable<ServiceInst
                         .concat(serviceWithLeastLoad.stream)
                         .subscribe(o);
                     disposables.add(serviceStatusStream);
+                } else if(!waitForServiceIfNoneAvailable){
+                    o.onError(new Error('No service available'));
                 }
             },
             ex => {

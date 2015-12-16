@@ -29,7 +29,8 @@ export default class ServiceClient extends disposables.DisposableBase {
         // create a connectible observable that yields a dictionary of connection status for
         // each service we're exposed.
         // The dictionary support querying by service load, handy when we kick off new operations.
-        this._serviceInstanceDictionaryStream = this._createServiceInstanceDictionaryStream(serviceType).publish();
+        this._serviceInstanceDictionaryStream = this._createServiceInstanceDictionaryStream(serviceType)
+            .multicast(new Rx.BehaviorSubject(new LastValueObservableDictionary('initial')));
     }
 
     // Sits on top of our underlying dictionary stream exposing a summary of the connection and services instance
@@ -37,6 +38,7 @@ export default class ServiceClient extends disposables.DisposableBase {
     get serviceStatusSummaryStream() : Rx.Observable<ServiceStatusSummary> {
         var _this = this;
         return this._serviceInstanceDictionaryStream
+            // .where(d => d.description !== 'initial')
             .select(cache => _this._createServiceStatusSummary(cache))
             .publish()
             .refCount();
@@ -66,9 +68,9 @@ export default class ServiceClient extends disposables.DisposableBase {
                 .merge(errorOnDisconnectStream)
                 .groupBy(serviceStatus => serviceStatus.serviceId)
                 // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
-                .timeoutInnerObservables(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.async)
+                .trackServiceStatusHeartbeats(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.async)
                 // wrap all our service instances up in a hot observable dictionary so we query the service with the least load on a per-subscribe basis
-                .toLastValueObservableDictionary(serviceStatus => serviceStatus.serviceId)
+                .toServiceStatusObservableDictionary(serviceStatus => serviceStatus.serviceId)
                 // catch the disconnect error and start again with a new dictionary
                 .catch(Rx.Observable.return( new LastValueObservableDictionary('disconnected')));
             return isConnectedStream
@@ -79,11 +81,45 @@ export default class ServiceClient extends disposables.DisposableBase {
                 .subscribe(o)
         });
     }
-    createRequestResponseOperation<TRequest, TResponse>(operationName : String, request : TRequest, response : TResponse) : Rx.Observable<TResponse> {
+    createRequestResponseOperation<TRequest, TResponse>(operationName : String, request : TRequest, waitForSuitableService:Boolean = false) : Rx.Observable<TResponse> {
         let _this = this;
-        return Rx.Observable.create<TResponse>((o : Rx.Observer<TResponse>) => {
-                // TODO
-              return () => {};
+        return Rx.Observable.create((o : Rx.Observer<TResponse>) => {
+            _this._log.debug('Creating request response operation');
+            let disposables = new Rx.CompositeDisposable();
+            var hasSubscribed = false;
+            disposables.add(_this._serviceInstanceDictionaryStream
+                .getServiceWithMinLoad(waitForSuitableService)
+                .subscribe(serviceInstanceStatus => {
+                        if (!serviceInstanceStatus.isConnected) {
+                            o.onError(new Error("Disconnected"));
+                        } else if(!hasSubscribed) {
+                            hasSubscribed = true;
+                            _this._log.debug('Will use service instance [{0}] for request/response operation. IsConnected: [{1}]', serviceInstanceStatus.serviceId, serviceInstanceStatus.isConnected);
+                            let remoteProcedure : String = serviceInstanceStatus.serviceId + '.' + operationName;
+                            disposables.add(
+                                _this._connection.requestResponse(remoteProcedure, request).subscribe(
+                                    _ => {
+                                        // response is just an ACK here
+                                        _this._log.debug('Ack received for stream operation [{0}]', operationName);
+                                    },
+                                    err => {
+                                        o.onError(err);
+                                    },
+                                    () => {
+                                        o.onCompleted();
+                                    }
+                                )
+                            );
+                        }
+                    },
+                    err => {
+                        o.onError(err);
+                    },
+                    () => {
+                        o.onCompleted();
+                    }
+                ));
+            return disposables;
         });
     }
     createStreamOperation<TRequest, TResponse>(operationName : String, request : TRequest) : Rx.Observable<TResponse> {
@@ -96,7 +132,7 @@ export default class ServiceClient extends disposables.DisposableBase {
             // really control over the attributes of the topic, however for v1 demoland this is currently sufficient,
             // what's important here is we can bury this logic deep in the client, expose a consistent API and swap it out later.
             let topicName = 'topic_' + _this._serviceType + '_' + (Math.random() * Math.pow(36, 8) << 0).toString(36);
-           var hasSubscribed = false;
+            var hasSubscribed = false;
             disposables.add(_this._serviceInstanceDictionaryStream
                 .getServiceWithMinLoad()
                 .subscribe(serviceInstanceStatus => {
@@ -141,8 +177,7 @@ export default class ServiceClient extends disposables.DisposableBase {
                 () => {
                     o.onCompleted();
                 }
-                )
-            );
+            ));
             return disposables;
         });
     }
