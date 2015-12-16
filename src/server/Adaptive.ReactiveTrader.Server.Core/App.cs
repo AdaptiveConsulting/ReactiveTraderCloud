@@ -58,7 +58,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
     }
 
 
-    public interface IServiceHostFactory
+    public interface IServiceHostFactory : IDisposable
     {
         IDisposable Initialize(IObservable<IConnected<IBroker>> broker);
     }
@@ -71,51 +71,92 @@ namespace Adaptive.ReactiveTrader.Server.Core
 
     public class App
     {
+        private readonly string[] _args;
+        private readonly IServiceHostFactory _factory;
         private static readonly ILog Log = LogManager.GetLogger<App>();
+        private ManualResetEvent reset = new ManualResetEvent(false);
 
         public static void Run(string[] args, IServiceHostFactory factory)
         {
+            var a = new App(args, factory);
+            a.Start();
+        }
+
+        public void Kill()
+        {
+            reset.Set();
+        }
+
+        public void Start()
+        {
+            Console.CancelKeyPress += (sender, eventArgs) =>
+            {
+                eventArgs.Cancel = true;
+                reset.Set();
+            };
+
             LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
             {
                 ShowLogName = true
             };
 
-            var config = ServiceConfiguration.FromArgs(args);
-
-
-            // broker connection
+            var config = ServiceConfiguration.FromArgs(_args);
 
             try
             {
-                var connectionFactory = BrokerConnectionFactory.Create(config.Broker);
-                var brokerStream = connectionFactory.GetBrokerStream();
-
-                factory.Initialize(brokerStream);
-
-                var esFactory = factory as IServiceHostFactoryWithEventStore;
-
-                if (esFactory != null)
+                using (var connectionFactory = BrokerConnectionFactory.Create(config.Broker))
                 {
-                    // TODO TIDY
+                    var brokerStream = connectionFactory.GetBrokerStream();
 
-                    var eventStoreConnection = EventStoreConnectionFactory.Create(EventStoreLocation.External,
-                        config.EventStore);
-                    var mon = new ConnectionStatusMonitor(eventStoreConnection);
-                    var esStream = mon.GetEventStoreConnectedStream(eventStoreConnection);
-                    eventStoreConnection.ConnectAsync().Wait();
 
-                    esFactory.Initialize(brokerStream, esStream);
+                    var esFactory = _factory as IServiceHostFactoryWithEventStore;
+
+                    if (esFactory != null)
+                    {
+                        // TODO TIDY
+
+                        var eventStoreConnection = GetEventStoreConnection(config.EventStore);
+                        var mon = new ConnectionStatusMonitor(eventStoreConnection);
+                        var esStream = mon.GetEventStoreConnectedStream(eventStoreConnection);
+                        eventStoreConnection.ConnectAsync().Wait();
+
+                        using (esFactory.Initialize(brokerStream, esStream))
+                        {
+                            connectionFactory.Start();
+
+                            reset.WaitOne();
+                        }
+                    }
+                    else
+                    {
+                        using (_factory.Initialize(brokerStream))
+                        {
+                            connectionFactory.Start();
+                            reset.WaitOne();
+                        }
+                    }
                 }
-
-                connectionFactory.Start();
-
-                while (true)
-                    Thread.Sleep(ThreadSleep);
             }
             catch (Exception e)
             {
                 Log.Error(e);
             }
+        }
+
+        public App(string[] args, IServiceHostFactory factory)
+        {
+            _args = args;
+            _factory = factory;
+        }
+
+        private static IEventStoreConnection GetEventStoreConnection(IEventStoreConfiguration configuration)
+        {
+            var eventStoreConnection =
+                EventStoreConnectionFactory.Create(
+                    EventStoreLocation.External, configuration);
+
+
+            return eventStoreConnection;
         }
 
         public const int ThreadSleep = 5000;

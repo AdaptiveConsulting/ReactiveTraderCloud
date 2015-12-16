@@ -15,6 +15,8 @@ export default class AnalyticsService {
    * @param {function} callback
    */
   getAnalyticsStream(callback){
-    this.transport.requestStream('analytics', 'getAnalyticsStream', {}, callback);
+    this.transport.requestStream('analytics', 'getAnalytics', {
+      Symbol: 'USD'
+    }, callback);
   }
 }

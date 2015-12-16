@@ -3,6 +3,7 @@ import CurrencyPairs from 'components/currency-pairs';
 import Blotter from 'components/blotter';
 import Modal from 'components/modal';
 import Header from 'components/header';
+import Analytics from 'components/analytics';
 
 import rt from 'services/reactive-trader';
 
@@ -32,6 +33,8 @@ class IndexView extends React.Component {
 
     this.state = {
       trades: [],
+      history: [],
+      positions: [],
       connected: false,
       services: {}
     };
@@ -50,6 +53,13 @@ class IndexView extends React.Component {
 
       this.setState({
         trades: this.state.trades
+      });
+    });
+
+    rt.analytics.getAnalyticsStream((data) => {
+      this.setState({
+        history: data.History,
+        positions: data.CurrentPositions
       });
     });
 
@@ -168,6 +178,7 @@ class IndexView extends React.Component {
       <Modal/>
       <Header status={this.state.connected} services={services}/>
       <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} services={services}/>
+      <Analytics status={services.analytics} history={this.state.history} positions={this.state.positions} />
       <Blotter trades={this.state.trades} status={services.blotter}/>
     </div>;
   }

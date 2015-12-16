@@ -1,6 +1,12 @@
 .currency-pairs {
   //margin-top: 54px;
-  margin-left: 4px;
+  left: 4px;
+  position: absolute;
+  top: 51px;
+  bottom: 20%;
+  //margin-bottom: 25%;
+  overflow: auto;
+  right: 400px;
 }
 
 .currency-pair {
@@ -129,7 +135,7 @@
     }
 
     span {
-      font-family: "Courier New";
+      font-family: "Courier New", Courier;
       font-size: 18px;
     }
     .pip {
