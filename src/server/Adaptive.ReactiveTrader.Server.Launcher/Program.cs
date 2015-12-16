@@ -101,11 +101,11 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 args.RemoveAll(a => a.Contains(".json"));
 
                 var populate = args.Remove("--init-es") || args.Remove("--populate-eventstore");
-                var embededded = args.Remove("--eventstore");
+                var embedded = args.Remove("--eventstore");
 
-                if (populate || embededded)
+                if (populate || embedded)
                 {
-                    var eventStoreConnection = GetEventStoreConnection(_config.EventStore, embededded);
+                    var eventStoreConnection = GetEventStoreConnection(_config.EventStore, embedded);
                     eventStoreConnection.ConnectAsync().Wait();
 
                     if (populate)
@@ -131,9 +131,9 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 }
 
                 using (Colour(ConsoleColor.Red))
-                    foreach (var undhandledCommand in args)
+                    foreach (var unhandledCommand in args)
                     {
-                        Console.WriteLine("Unrecognised Command:  {0}", undhandledCommand);
+                        Console.WriteLine("Unrecognised Command:  {0}", unhandledCommand);
                     }
 
                 if (!interactive && !_launcher.GetRunningServers().Any())
@@ -381,7 +381,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             Console.WriteLine("  r|reference - launch a reference service.");
             Console.WriteLine("  b|blotter - launch a blotter service.");
             Console.WriteLine("  e|execution - launch a trade execution service.");
-            Console.WriteLine("  a|analystics - launch an analytics service.");
+            Console.WriteLine("  a|analytics - launch an analytics service.");
             Console.WriteLine();
             Console.WriteLine("  dev - launches all of the above with eventstore in interactive mode .");
             Console.WriteLine("  dev:with-broker - as above with message-broker.");
