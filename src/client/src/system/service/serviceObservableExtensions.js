@@ -73,30 +73,34 @@ function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TV
 }
 Rx.Observable.prototype.toLastValueObservableDictionary = toLastValueObservableDictionary;
 
-// Gets the Observable status stream for the service currently having the minimum load
+// Gets the first status stream for the service currently having the minimum load and subscribes to it, yields into the target stream
 function getServiceWithMinLoad() : Rx.Observable<LastValueObservable<ServiceInstanceStatus>> {
     var source : Rx.Observable<LastValueObservableDictionary<ServiceInstanceStatus>> = this;
     return Rx.Observable.create(o => {
-        var disposables = new Rx.CompositeDisposable();
-        disposables.add(
-            source.subscribe(
-                dictionary => {
-                    var serviceWithLeastLoad : LastValueObservable<ServiceInstanceStatus> = _(dictionary.values)
-                        .sortBy(i => i.latestValue.serviceLoad)
-                        .find(i => i.latestValue.isConnected);
-                    if (serviceWithLeastLoad) {
-                        o.onNext(serviceWithLeastLoad);
-                    }
-                },
-                ex => {
-                    try {
-                        o.onError(ex);
-                    } catch (err1) {
-                        debugger;
-                    }
-                },
-                () => o.onCompleted()
-            )
+        let disposables = new Rx.CompositeDisposable();
+        let findServiceInstanceDisposable = new Rx.SingleAssignmentDisposable();
+        disposables.add(findServiceInstanceDisposable);
+        findServiceInstanceDisposable = source.subscribe(
+            dictionary => {
+                var serviceWithLeastLoad : LastValueObservable<ServiceInstanceStatus> = _(dictionary.values)
+                    .sortBy(i => i.latestValue.serviceLoad)
+                    .find(i => i.latestValue.isConnected);
+                if (serviceWithLeastLoad) {
+                    findServiceInstanceDisposable.dispose();
+                    var serviceStatusStream = Rx.Observable
+                        .return(serviceWithLeastLoad.latestValue)
+                        .concat(serviceWithLeastLoad.stream)
+                        .subscribe(o);
+                    disposables.add(serviceStatusStream);
+                }
+            },
+            ex => {
+                try {
+                    o.onError(ex);
+                } catch (err1) {
+                    debugger;
+                }
+            }
         );
         return disposables;
     });

@@ -96,59 +96,51 @@ export default class ServiceClient extends disposables.DisposableBase {
             // really control over the attributes of the topic, however for v1 demoland this is currently sufficient,
             // what's important here is we can bury this logic deep in the client, expose a consistent API and swap it out later.
             let topicName = 'topic_' + _this._serviceType + '_' + (Math.random() * Math.pow(36, 8) << 0).toString(36);
+           var hasSubscribed = false;
             disposables.add(_this._serviceInstanceDictionaryStream
                 .getServiceWithMinLoad()
-                .take(1)
-                .subscribe(statusStream => {
-                    _this._log.debug('Will use service instance [{0}] for stream operation', statusStream.latestValue);
-                    disposables.add(_this._connection
-                        .subscribeToTopic(topicName)
-                        .subscribe(
-                            i => o.onNext(i),
-                            err => {
-                                o.onError(err);
-                            },
-                            () => {
-                                o.onCompleted();
-                            }
-                        )
-                    );
-                    // to an service-instance-specific rpc address
-                    let remoteProcedure : String = statusStream.latestValue.serviceId + '.' + operationName;
-                    disposables.add(
-                        _this._connection.requestResponse(remoteProcedure, request, topicName).subscribe(
-                            _ => {
-                                // response is just an ACK here
-                                _this._log.debug('Ack received for stream operation [{0}]', operationName);
-                            },
-                            err => {
-                                o.onError(err);
-                            },
-                            () => {
-                                o.onCompleted();
-                            }
-                        )
-                    );
-                    disposables.add(
-                        statusStream.subscribe(
-                            status => {
-                                if (!status.isConnected) {
-                                    o.onError(new Error("Disconnected"));
+                .subscribe(serviceInstanceStatus => {
+                    if (!serviceInstanceStatus.isConnected) {
+                        o.onError(new Error("Disconnected"));
+                    } else if(!hasSubscribed) {
+                        hasSubscribed = true;
+                        _this._log.debug('Will use service instance [{0}] for stream operation', serviceInstanceStatus);
+                        disposables.add(_this._connection
+                            .subscribeToTopic(topicName)
+                            .subscribe(
+                                i => o.onNext(i),
+                                err => {
+                                    o.onError(err);
+                                },
+                                () => {
+                                    o.onCompleted();
                                 }
-                            },
-                            err => {
-                                o.onError(err);
-                            },
-                            () => {
-                                o.onCompleted();
-                            }
-                        )
-                    );
+                            )
+                        );
+                        // to an service-instance-specific rpc address
+                        let remoteProcedure : String = serviceInstanceStatus.serviceId + '.' + operationName;
+                        disposables.add(
+                            _this._connection.requestResponse(remoteProcedure, request, topicName).subscribe(
+                                _ => {
+                                    // response is just an ACK here
+                                    _this._log.debug('Ack received for stream operation [{0}]', operationName);
+                                },
+                                err => {
+                                    o.onError(err);
+                                },
+                                () => {
+                                    o.onCompleted();
+                                }
+                            )
+                        );
+                    }
                 },
                 err => {
                     o.onError(err);
+                },
+                () => {
+                    o.onCompleted();
                 }
-                // note don't pass on the onCompleted as we're only taking 1, thus it'd kill the stream immediately
                 )
             );
             return disposables;

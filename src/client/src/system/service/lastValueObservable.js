@@ -10,7 +10,10 @@ export default class LastValueObservable<TLastValue> {
     set latestValue(value) {
         this._latestValue = value;
     }
-    subscribe(observer, onError, onCompleted) {
-        return this._underlyingStream.subscribe(observer, onError, onCompleted);
+    get stream() {
+        return this._underlyingStream;
     }
+    //subscribe(observer, onError, onCompleted) {
+    //    return this._underlyingStream.subscribe(observer, onError, onCompleted);
+    //}
 }
