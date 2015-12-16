@@ -2,7 +2,7 @@
   "profiles": {
     "default": {
       "commandName": "default",
-      "commandLineArgs": "dev:with-broker"
+      "commandLineArgs": "all"
     }
   }
 }

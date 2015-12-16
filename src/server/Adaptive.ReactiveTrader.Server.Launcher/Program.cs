@@ -142,7 +142,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                     try
                     {
-                        if (x == null || x == "exit")
+                        if (x == null || x == "exit" || x == "quit")
                             break;
 
 
@@ -168,9 +168,10 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                             Console.WriteLine("  b|blotter - launch a blotter service.");
                             Console.WriteLine("  e|execution - launch a trade execution service.");
                             Console.WriteLine("  a|analytics - launch an analytics service.");
-                            Console.WriteLine("kill [name]");
-                            Console.WriteLine("status");
-                            Console.WriteLine("help");
+                            Console.WriteLine("kill [name] - kills a service (use status to find names).");
+                            Console.WriteLine("status - returns a list of running services.");
+                            Console.WriteLine("help - show this page.");
+                            Console.WriteLine("exit - close the launcher.");
                             Console.WriteLine();
                         }
                     }
@@ -193,24 +194,22 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             string[] devArgs =
             {
                 "pricing", "reference-read", "execution", "blotter", "analytics", "--interactive",
-                "--eventstore"
+                "--eventstore", "--message-broker"
             };
 
-            string[] devWithBroker =
+            string[] allArgs =
             {
-                "pricing", "reference-read", "execution", "blotter", "analytics", "--interactive",
-                "--message-broker", "--eventstore"
+                "pricing", "reference-read", "execution", "blotter", "analytics"
             };
-
-
+            
             var ret = new List<string>();
 
             foreach (var a in args)
             {
                 if (a == "dev")
                     ret.AddRange(devArgs);
-                else if (a == "dev:with-broker")
-                    ret.AddRange(devWithBroker);
+                if (a == "all")
+                    ret.AddRange(allArgs);
                 else
                     ret.Add(a);
             }
@@ -367,9 +366,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             Console.WriteLine("  e|execution - launch a trade execution service.");
             Console.WriteLine("  a|analytics - launch an analytics service.");
             Console.WriteLine();
-            Console.WriteLine("  dev - launches all of the above with eventstore in interactive mode .");
-            Console.WriteLine("  dev:with-broker - as above with message-broker.");
-
+            Console.WriteLine("  all - launches all of the above.");
+            Console.WriteLine("  dev - launches all of the above with an embedded eventstore & message broker in interactive mode.");
 
             Console.WriteLine();
             Console.WriteLine("options:");
