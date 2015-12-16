@@ -7,16 +7,28 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
 
 var _log : logger.Logger = logger.create('serviceObservableExtensions');
 
+//function timeoutInnerObservables1<TKey, TValue>(dueTime : Number, onTimeoutItemSelector : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
+//    var sources : Rx.GroupedObservable = this;
+//    return Rx.Observable.create(o => {
+//        return sources.select(innerSource => {
+//            var key : TKey = innerSource.key;
+//            return innerSource.debounceWithSelector(dueTime, () => onTimeoutItemSelector(key), scheduler);
+//        }).subscribe(o);
+//    });
+//}
+
 // Adds time out semantics to the inner observable streams, calls onTimeoutItemSelector to seed a single value on timeout
 function timeoutInnerObservables<TKey, TValue>(dueTime : Number, onTimeoutItemSelector : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
-    var sources = this;
+    var sources : Rx.GroupedObservable = this;
     return Rx.Observable.create(o => {
-        return sources.select(innerSource => {
-            var key : TKey = innerSource.key;
-            return innerSource
-                .timeout(dueTime, Rx.Observable.return(onTimeoutItemSelector(key)), scheduler)
-                .repeat();
-        }).subscribe(o);
+        return sources.subscribe(innerSource => {
+                var key : TKey = innerSource.key;
+                var debouncedStream = innerSource.debounceWithSelector(dueTime, () => onTimeoutItemSelector(key), scheduler);
+                o.onNext(debouncedStream);
+            },
+            ex => o.onError(ex),
+            () => o.onCompleted()
+        );
     });
 }
 Rx.Observable.prototype.timeoutInnerObservables = timeoutInnerObservables;
@@ -31,8 +43,8 @@ function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TV
             sources.subscribe(
                 innerSource => {
                     var innerSourcePublished = innerSource.publish().refCount();
-                    disposables.add(
-                        innerSourcePublished.subscribe(value => {
+                    disposables.add(innerSourcePublished.subscribe(
+                        value => {
                             var key = keySelector(value);
                             if (!dictionary.hasKey(key))                             {
                                 dictionary.add(key, new LastValueObservable(innerSourcePublished, value));
@@ -41,8 +53,10 @@ function toLastValueObservableDictionary<TKey, TValue>(keySelector : (value : TV
                                 dictionary.updateWithLatestValue(key, value);
                             }
                             o.onNext(dictionary); // note: not creating a copy of local state
-                        })
-                    );
+                        },
+                        ex => o.onError(ex),// if any of the inner streams error or complete, we error the outer
+                        () => o.onCompleted()
+                    ));
                 },
                 ex => o.onError(ex),
                 () => o.onCompleted()
@@ -76,3 +90,39 @@ function getServiceWithMinLoad() : Rx.Observable<LastValueObservable<ServiceInst
     });
 }
 Rx.Observable.prototype.getServiceWithMinLoad = getServiceWithMinLoad;
+
+// Emits an item from the source Observable after a particular timespan has passed without the Observable omitting any other items.
+// The onTimeoutItemSelector selector is used to select the item to procure.
+function debounceWithSelector(dueTime : Number, itemSelector : () => TValue, scheduler : Rx.Scheduler) {
+    var source = this;
+    return Rx.Observable.create(o => {
+        var disposables = new Rx.CompositeDisposable();
+        var debounceDisposable = new Rx.SerialDisposable();
+        disposables.add(debounceDisposable);
+        var debounce = () => {
+            debounceDisposable.setDisposable(
+                scheduler.scheduleFuture(
+                    '',
+                    dueTime,
+                    () => {
+                        let debouncedItem = itemSelector();
+                        o.onNext(debouncedItem)
+                    }
+                )
+            );
+        };
+        disposables.add(
+            source.subscribe(
+                item => {
+                    debounce();
+                    o.onNext(item)
+                },
+                ex => o.onError(ex),
+                () => o.onCompleted()
+            )
+        );
+        debounce();
+        return disposables;
+    });
+}
+Rx.Observable.prototype.debounceWithSelector = debounceWithSelector;

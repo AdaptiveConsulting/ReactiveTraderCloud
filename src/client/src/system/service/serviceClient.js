@@ -54,25 +54,27 @@ export default class ServiceClient extends disposables.DisposableBase {
     _createServiceInstanceDictionaryStream(serviceType:string) : Rx.Observable<LastValueObservableDictionary> {
         let _this = this;
         return Rx.Observable.create(o => {
-            let serviceStatusStream = this._connection
+            let connectionStatus = this._connection.connectionStatusStream.publish().refCount();
+            let isConnectedStream = connectionStatus.where(isConnected => isConnected);
+            let errorOnDisconnectStream = connectionStatus.where(isConnected => !isConnected).take(1).selectMany(Rx.Observable.throw(new Error("Disconnected")));
+            let serviceInstanceDictionaryStream = this._connection
                 .subscribeToTopic('status')
                 .where(s => s.Type === serviceType)
                 .select(status => ServiceInstanceStatus.createForConnected(status.Type, status.Instance, status.TimeStamp, status.Load))
+                // if the underlying connection goes down we error the stream,
+                // do this before the grouping so all grouped streams error
+                .merge(errorOnDisconnectStream)
                 .groupBy(serviceStatus => serviceStatus.serviceId)
                 // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
                 .timeoutInnerObservables(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.async)
                 // wrap all our service instances up in a hot observable dictionary so we query the service with the least load on a per-subscribe basis
-                .toLastValueObservableDictionary(serviceStatus => serviceStatus.serviceId);
-            let connectionStatus = this._connection.connectionStatusStream.publish().refCount();
-            let isConnectedStream = connectionStatus.where(isConnected => isConnected);
-            let isDisconnectedStream = connectionStatus.where(isConnected => !isConnected);
+                .toLastValueObservableDictionary(serviceStatus => serviceStatus.serviceId)
+                // catch the disconnect error and start again with a new dictionary
+                .catch(Rx.Observable.return( new LastValueObservableDictionary()));
             return isConnectedStream
                 .take(1)
-                .selectMany(serviceStatusStream)
-                .takeUntil(isDisconnectedStream)
-                // return an empty LastValueObservableDictionary on disconnect
-                .concat(Rx.Observable.return( new LastValueObservableDictionary()))
-                // on disconnects we repeat our underlying status stream indefinitely
+                .selectMany(serviceInstanceDictionaryStream)
+                // repeat after disconnects
                 .repeat()
                 .subscribe(o)
         });
@@ -142,7 +144,12 @@ export default class ServiceClient extends disposables.DisposableBase {
                             }
                         )
                     );
-                })
+                },
+                err => {
+                    o.onError(err);
+                }
+                // note don't pass on the onCompleted as we're only taking 1, thus it'd kill the stream immediately
+                )
             );
             return disposables;
         });

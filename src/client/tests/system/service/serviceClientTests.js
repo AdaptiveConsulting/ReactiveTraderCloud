@@ -157,20 +157,29 @@ describe('ServiceClient', () => {
             subscribeToPriceStream();
         });
 
-        it('publishes price when underlying session receives price', () => {
+        it('publishes payload when underlying session receives payload', () => {
             connectAndPublishPrice();
             expect(receivedPrices.length).toEqual(1);
             expect(receivedPrices[0]).toEqual(1);
         });
 
-        it('errors when price service goes down', () => {
+        it('errors when service instance goes down (misses heartbeats)', () => {
             connectAndPublishPrice();
             expect(receivedErrors.length).toEqual(0);
             _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
             expect(receivedErrors.length).toEqual(1);
         });
 
-        it('publishes after service comes back up', () => {
+        it('errors when underlying connection goes down', () => {
+            connectAndPublishPrice();
+            expect(receivedErrors.length).toEqual(0);
+            _stubAutobahnProxy.setIsConnected(false);
+            expect(receivedErrors.length).toEqual(1);
+            _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT); // should have no effect, stream is dead
+            expect(receivedErrors.length).toEqual(1);
+        });
+
+        it('still publishes payload to new subscribers after service instance comes back up', () => {
             connectAndPublishPrice();
             _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
             subscribeToPriceStream();
