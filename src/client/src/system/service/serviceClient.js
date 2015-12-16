@@ -38,7 +38,7 @@ export default class ServiceClient extends disposables.DisposableBase {
     get serviceStatusSummaryStream() : Rx.Observable<ServiceStatusSummary> {
         var _this = this;
         return this._serviceInstanceDictionaryStream
-            // .where(d => d.description !== 'initial')
+            .where(d => d.description !== 'initial') // HACK
             .select(cache => _this._createServiceStatusSummary(cache))
             .publish()
             .refCount();
