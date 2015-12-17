@@ -17,7 +17,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 {
     public class ServiceLauncher : IServiceLauncher
     {
-        private readonly Dictionary<string, IDisposable> _servers = new Dictionary<string, IDisposable>();
+        private readonly Dictionary<string, IDisposable> _services = new Dictionary<string, IDisposable>();
 
         private readonly Dictionary<ServiceType, Lazy<IServiceHostFactory>> _factories =
             new Dictionary<ServiceType, Lazy<IServiceHostFactory>>();
@@ -46,7 +46,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             var factory = _factories[type].Value;
 
             var a = new App(new string[] {}, factory);
-            _servers.Add(name, Disposable.Create(() => a.Kill()));
+            _services.Add(name, Disposable.Create(() => a.Kill()));
             Task.Run(() => a.Start());
 
             return name;
@@ -61,24 +61,24 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             {
                 counter++;
                 proposedName = type.ToString().Substring(0, 1).ToLower() + counter;
-            } while (_servers.ContainsKey(proposedName));
+            } while (_services.ContainsKey(proposedName));
 
             return proposedName;
         }
 
         public bool KillService(string serviceName)
         {
-            if (!_servers.ContainsKey(serviceName)) return false;
+            if (!_services.ContainsKey(serviceName)) return false;
 
-            var server = _servers[serviceName];
-            _servers.Remove(serviceName);
+            var server = _services[serviceName];
+            _services.Remove(serviceName);
             server.Dispose();
             return true;
         }
 
         public IEnumerable<string> GetRunningServices()
         {
-            return _servers.Keys;
+            return _services.Keys;
         }
 
         public void InitializeEventStore(IEventStoreConfiguration configuration, bool runEmbeddedEventStore)
