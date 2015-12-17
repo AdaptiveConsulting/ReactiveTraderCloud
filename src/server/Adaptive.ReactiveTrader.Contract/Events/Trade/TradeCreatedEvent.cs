@@ -23,7 +23,6 @@
             DealtCurrency = dealtCurrency;
         }
 
-        public static string Type { get; } = "Trade Crreated";
         public long TradeId { get; }
         public string TraderName { get; }
         public string CurrencyPair { get; }

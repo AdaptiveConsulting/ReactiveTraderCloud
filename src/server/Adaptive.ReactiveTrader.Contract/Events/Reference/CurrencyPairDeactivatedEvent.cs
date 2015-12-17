@@ -7,7 +7,6 @@
             Symbol = symbol;
         }
 
-        public static string Type { get; } = "Currency Pair Deactivated";
         public string Symbol { get; }
     }
 }

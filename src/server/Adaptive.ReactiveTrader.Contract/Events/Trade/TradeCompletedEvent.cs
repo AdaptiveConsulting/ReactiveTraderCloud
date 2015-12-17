@@ -7,7 +7,6 @@
             TradeId = tradeId;
         }
 
-        public static string Type { get; } = "Trade Completed";
         public long TradeId { get; }
     }
 }
