@@ -4,6 +4,5 @@ namespace Adaptive.ReactiveTrader.Common.Config
     {
         string Host { get; }
         int Port { get; }
-        bool Embedded { get; }
     }
 }
