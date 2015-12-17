@@ -144,39 +144,39 @@ describe('ServiceClient', () => {
     });
 
     describe('createStreamOperation()', () => {
-        let receivedPrices,
-            receivedErrors,
-            onCompleteCount,
-            priceSubscriptionDisposable;
+        let _receivedPrices,
+            _receivedErrors,
+            _onCompleteCount,
+            _priceSubscriptionDisposable;
 
         beforeEach(() => {
-            receivedPrices = [];
-            receivedErrors = [];
-            onCompleteCount = 0;
-            priceSubscriptionDisposable = new Rx.SerialDisposable();
+            _receivedPrices = [];
+            _receivedErrors = [];
+            _onCompleteCount = 0;
+            _priceSubscriptionDisposable = new Rx.SerialDisposable();
             subscribeToPriceStream();
         });
 
         it('publishes payload when underlying session receives payload', () => {
             connectAndPublishPrice();
-            expect(receivedPrices.length).toEqual(1);
-            expect(receivedPrices[0]).toEqual(1);
+            expect(_receivedPrices.length).toEqual(1);
+            expect(_receivedPrices[0]).toEqual(1);
         });
 
         it('errors when service instance goes down (misses heartbeats)', () => {
             connectAndPublishPrice();
-            expect(receivedErrors.length).toEqual(0);
+            expect(_receivedErrors.length).toEqual(0);
             _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
-            expect(receivedErrors.length).toEqual(1);
+            expect(_receivedErrors.length).toEqual(1);
         });
 
         it('errors when underlying connection goes down', () => {
             connectAndPublishPrice();
-            expect(receivedErrors.length).toEqual(0);
+            expect(_receivedErrors.length).toEqual(0);
             _stubAutobahnProxy.setIsConnected(false);
-            expect(receivedErrors.length).toEqual(1);
+            expect(_receivedErrors.length).toEqual(1);
             _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT); // should have no effect, stream is dead
-            expect(receivedErrors.length).toEqual(1);
+            expect(_receivedErrors.length).toEqual(1);
         });
 
         it('still publishes payload to new subscribers after service instance comes back up', () => {
@@ -185,41 +185,37 @@ describe('ServiceClient', () => {
             subscribeToPriceStream();
             pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
             pushPrice('myServiceType.1', 2);
-            expect(receivedPrices.length).toEqual(2);
-            expect(receivedPrices[0]).toEqual(1);
-            expect(receivedPrices[1]).toEqual(2);
+            expect(_receivedPrices.length).toEqual(2);
+            expect(_receivedPrices[0]).toEqual(1);
+            expect(_receivedPrices[1]).toEqual(2);
         });
 
         it('still publishes payload to new subscribers after underlying connection goes down and comes back', () => {
             connectAndPublishPrice();
             _stubAutobahnProxy.setIsConnected(false);
-            expect(receivedErrors.length).toEqual(1);
+            expect(_receivedErrors.length).toEqual(1);
 
-            //setTimeout(() => {
-                subscribeToPriceStream();
-                _stubAutobahnProxy.setIsConnected(true);
-                pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-                pushPrice('myServiceType.1', 2);
-                expect(receivedPrices.length).toEqual(2);
-                expect(receivedPrices[0]).toEqual(1);
-                expect(receivedPrices[1]).toEqual(2);
-          //  });
-
-
+            subscribeToPriceStream();
+            _stubAutobahnProxy.setIsConnected(true);
+            pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+            pushPrice('myServiceType.1', 2);
+            expect(_receivedPrices.length).toEqual(2);
+            expect(_receivedPrices[0]).toEqual(1);
+            expect(_receivedPrices[1]).toEqual(2);
         });
 
         function subscribeToPriceStream() {
-            var existing = priceSubscriptionDisposable.getDisposable();
+            var existing = _priceSubscriptionDisposable.getDisposable();
             if(existing) {
                 existing.dispose();
             }
-            priceSubscriptionDisposable.setDisposable(
+            _priceSubscriptionDisposable.setDisposable(
                 _serviceClient.createStreamOperation('getPriceStream', 'EURUSD')
                     .subscribe(price => {
-                            receivedPrices.push(price);
+                            _receivedPrices.push(price);
                         },
-                        ex => receivedErrors.push(receivedErrors),
-                        () => onCompleteCount++
+                        err => _receivedErrors.push(err),
+                        () => _onCompleteCount++
                     )
             );
         }
@@ -237,40 +233,103 @@ describe('ServiceClient', () => {
     });
 
     describe('createRequestResponseOperation()', () => {
-        let responses,
-            receivedErrors,
-            onCompleteCount,
-            requestSubscriptionDisposable;
+        let _responses,
+            _receivedErrors,
+            _onCompleteCount,
+            _requestSubscriptionDisposable;
 
         beforeEach(() => {
-            responses = [];
-            receivedErrors = [];
-            onCompleteCount = 0;
-            requestSubscriptionDisposable = new Rx.SerialDisposable();
+            _responses = [];
+            _receivedErrors = [];
+            _onCompleteCount = 0;
+            _requestSubscriptionDisposable = new Rx.SerialDisposable();
         });
 
-        it('sends response over wire when scribed to', () => {
+        it('successfully sends request and receives response when connection is up', () => {
             connect();
             pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
             sendRequest('RequestPayload', false);
-            pushResponse('myServiceType.1', 'ResponsePayload')
+            pushSuccessfulResponse('myServiceType.1', 'ResponsePayload');
+            expect(_responses.length).toEqual(1);
+            expect(_responses[0]).toEqual('ResponsePayload');
         });
-        
+
+        it('successfully completes after response received', () => {
+            connect();
+            pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+            sendRequest('RequestPayload', false);
+            pushSuccessfulResponse('myServiceType.1', 'ResponsePayload');
+            expect(_onCompleteCount).toEqual(1);
+        });
+
+
+        it('errors when underlying connection receives error', () => {
+            const error = new Error("FakeRPCError");
+            connect();
+            pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+            sendRequest('RequestPayload', false);
+            pushErrorResponse('myServiceType.1', error);
+            expect(_receivedErrors.length).toEqual(1);
+            expect(_receivedErrors[0]).toEqual(error);
+        });
+
+        describe('waitForSuitableService is true', () => {
+            it('waits for service before sending request when connection is down', () => {
+                sendRequest('RequestPayload', true);
+                expect(_receivedErrors.length).toEqual(0);
+                connect();
+                pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+                pushSuccessfulResponse('myServiceType.1', 'ResponsePayload')
+                expect(_responses.length).toEqual(1);
+                expect(_responses[0]).toEqual('ResponsePayload');
+            });
+
+            it('waits for service before sending request when connection is up but services are down', () => {
+                connect();
+                sendRequest('RequestPayload', true);
+                expect(_receivedErrors.length).toEqual(0);
+                pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+                pushSuccessfulResponse('myServiceType.1', 'ResponsePayload')
+                expect(_responses.length).toEqual(1);
+                expect(_responses[0]).toEqual('ResponsePayload');
+            });
+        });
+
+        describe('waitForSuitableService is false', () => {
+            it('errors when connection is down', () => {
+                sendRequest('RequestPayload', false);
+                expect(_receivedErrors.length).toEqual(1);
+                expect(_receivedErrors[0]).toEqual(new Error('No service available'));
+            });
+
+            it('errors when connection is up but service status is down', () => {
+                sendRequest('RequestPayload', false);
+                connect();
+                expect(_receivedErrors.length).toEqual(1);
+                expect(_receivedErrors[0]).toEqual(new Error('No service available'));
+            });
+        });
+
         function sendRequest(request, waitForSuitableService) {
-            requestSubscriptionDisposable.setDisposable(
+            _requestSubscriptionDisposable.setDisposable(
                 _serviceClient.createRequestResponseOperation('executeTrade', request, waitForSuitableService)
                     .subscribe(response => {
-                            responses.push(response);
+                            _responses.push(response);
                         },
-                        ex => receivedErrors.push(receivedErrors),
-                        () => onCompleteCount++
+                        err => _receivedErrors.push(err),
+                        () => _onCompleteCount++
                     )
             );            
         }
 
-        function pushResponse(serviceId :String,  response : Number) {
+        function pushSuccessfulResponse(serviceId :String,  response : Number) {
             var stubCallResult = _stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade');
             stubCallResult.onSuccess(response);
+        }
+
+        function pushErrorResponse(serviceId :String,  err : Error) {
+            var stubCallResult = _stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade');
+            stubCallResult.onReject(err);
         }
     });
 

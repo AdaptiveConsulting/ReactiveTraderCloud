@@ -34,19 +34,19 @@ class StubAutobahnSession {
         // we only support one request for the given topic,
         // if there is anything there we just blow it away
         this._stubPromises[topic] = stubPromise;
-        return stubPromise.underlyingPromise;
+        return stubPromise;
     }
     unsubscribe(subscription) {
         return new Promise((onSuccess, onReject) => {
             // noop for now
         })
     }
-    call<TRequest, TResults>(operationName:String, dto:Object):Promise {
+    call<TRequest, TResults>(operationName:String, dto:TRequest):DummyPromise {
         var stubPromise = new StubCallResult(dto);
         // we only support one request for the given topic,
         // if there is anything there we just blow it away
         this._stubPromises[operationName] = stubPromise;
-        return stubPromise.underlyingPromise;
+        return stubPromise;
     }
     getTopic(name : String) {
         if(!this._stubPromises[name]) {
@@ -56,27 +56,34 @@ class StubAutobahnSession {
     }
 }
 
-class StubPromiseResult {
-    constructor() {
-        this._underlyingPromise = new Promise((onSuccess, onReject) => {
-            this._onSuccess = onSuccess;
-            this._onReject = onReject;
-        })
-    }
-    get underlyingPromise() {
-        return this._underlyingPromise;
-    }
-    get onSuccess() {
-        return this._onSuccess;
-    }
-    get onReject() {
-        return this._onReject;
+//class StubPromiseResult {
+//    constructor() {
+//        this._underlyingPromise = new Promise((onSuccess, onReject) => {
+//            this._onSuccess = onSuccess;
+//            this._onReject = onReject;
+//        });
+//    }
+//    get underlyingPromise() {
+//        return this._underlyingPromise;
+//    }
+//    get onSuccess() {
+//        return this._onSuccess;
+//    }
+//    get onReject() {
+//        return this._onReject;
+//    }
+//}
+
+class DummyPromise{
+    then(onSuccess, onReject) {
+        this.onSuccess = onSuccess;
+        this.onReject = onReject;
     }
 }
 
-class StubCallResult extends StubPromiseResult {
+class StubCallResult extends DummyPromise {
     constructor(dto: Object) {
-        super()
+        super();
         this._dto = dto;
     }
     get dto () {
@@ -84,9 +91,9 @@ class StubCallResult extends StubPromiseResult {
     }
 }
 
-class StubSubscribeResult extends StubPromiseResult {
+class StubSubscribeResult extends DummyPromise {
     constructor(onResults : (r: TResults) => void) {
-        super()
+        super();
         this._onResults = onResults;
     }
     onResults(payload : Object) {
@@ -94,4 +101,5 @@ class StubSubscribeResult extends StubPromiseResult {
         return this._onResults([payload]);
     }
 }
+
 

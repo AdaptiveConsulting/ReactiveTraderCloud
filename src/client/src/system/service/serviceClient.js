@@ -97,9 +97,9 @@ export default class ServiceClient extends disposables.DisposableBase {
                             let remoteProcedure : String = serviceInstanceStatus.serviceId + '.' + operationName;
                             disposables.add(
                                 _this._connection.requestResponse(remoteProcedure, request).subscribe(
-                                    _ => {
-                                        // response is just an ACK here
-                                        _this._log.debug('Ack received for stream operation [{0}]', operationName);
+                                    response => {
+                                        _this._log.debug('Response received for stream operation [{0}]', operationName);
+                                        o.onNext(response);
                                     },
                                     err => {
                                         o.onError(err);

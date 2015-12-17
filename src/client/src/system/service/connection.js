@@ -69,6 +69,7 @@ export default class Connection extends disposables.DisposableBase {
                 }, (error : autobahn.Error)=> {
                     // subscription failed, error is an instance of autobahn.Error
                     _log.error('Error on topic {0}: {1}', topic, error);
+                    o.onError(error);
                 });
                 disposables.add(Rx.Disposable.create(() => {
                     if(subscription) {
@@ -111,6 +112,7 @@ export default class Connection extends disposables.DisposableBase {
                     result => {
                         if (!isDisposed) {
                             o.onNext(result);
+                            o.onCompleted();
                         } else {
                             _log.warn('Ignoring response for remoteProcedure [{0}] as stream disposed', remoteProcedure);
                         }
