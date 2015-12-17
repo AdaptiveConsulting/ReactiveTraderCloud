@@ -4,10 +4,10 @@ import Popout from '../utils/popout';
 class Container extends React.Component {
 
   static propTypes = {
-    onTearoff: React.PropTypes.func,
+    onTearoff: React.PropTypes.func.isRequired,
     onClose: React.PropTypes.func,
-    tearoff: React.PropTypes.bool,
-    title: React.PropTypes.string,
+    tearoff: React.PropTypes.bool.isRequired,
+    title: React.PropTypes.string.isRequired,
     width: React.PropTypes.number,
     height: React.PropTypes.number,
     options: React.PropTypes.object,
@@ -24,13 +24,8 @@ class Container extends React.Component {
     this.props.onTearoff(false);
   }
 
-  toggleTearoff(e){
-
-  }
-
   render(){
-    const tearoff = this.props.tearoff,
-          title   = this.props.title;
+    const { tearoff, title, children}  = this.props;
 
     const popupAttributes = {
       url: '/#/tile',
@@ -60,8 +55,6 @@ class Container extends React.Component {
       };
       popupAttributes.onClosing = ()=> this.closeTearoff();
     }
-
-    const { children } = this.props; //eslint-disable-line
 
     return !tearoff ?
       <div className={this.props.className}>
