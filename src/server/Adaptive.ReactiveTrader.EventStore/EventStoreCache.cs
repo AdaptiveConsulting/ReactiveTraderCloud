@@ -28,7 +28,6 @@ namespace Adaptive.ReactiveTrader.EventStore
         private readonly IConnectableObservable<IConnected<IEventStoreConnection>> _connectionChanged;
         private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
         private readonly SerialDisposable _eventsConnection = new SerialDisposable();
-
         private readonly SerialDisposable _eventsSubscription = new SerialDisposable();
 
         private readonly StateOfTheWorldContainer<TKey, TCacheItem> _stateOfTheWorldContainer = new StateOfTheWorldContainer<TKey, TCacheItem>();

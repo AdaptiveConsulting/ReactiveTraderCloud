@@ -1,6 +1,5 @@
 {
   "eventStore": {
-    "embedded": "true",
     "host": "localhost",
     "port": 1113
   },

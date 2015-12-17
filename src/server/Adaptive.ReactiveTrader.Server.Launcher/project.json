@@ -13,8 +13,7 @@
     "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0",
     "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0",
     "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0",
-    "Mono.Posix-4.5": "4.5.0"
+    "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0"
   },
 
   "commands": {

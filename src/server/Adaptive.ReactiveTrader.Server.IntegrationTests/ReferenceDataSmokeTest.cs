@@ -24,7 +24,8 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             var serviceInstance = await channel.RealmProxy.Services.GetSubject<dynamic>("status")
                                                .Where(hb => hb.Type == ServiceTypes.Reference)
                                                .Select(hb => hb.Instance)
-                                               .Take(1);
+                                               .Take(1)
+                                               .Timeout(ResponseTimeout);
 
             var timeoutCancellationTokenSource = new CancellationTokenSource();
 
