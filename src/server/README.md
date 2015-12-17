@@ -1,4 +1,4 @@
-Reactive Trader 2 - Server
+Reactive Trader Cloud - Server
 ===============
 
 [Getting Started on Windows](../../docs/vs-setup.md)
@@ -14,7 +14,7 @@ The server is made up of separate distributed services. They communicate with th
 
 They are written in .NET running cross-platform with DNX. Specifically with the full clr on Windows and mono on Linux/OSX. A migration to [.NET Platform Standard](https://github.com/dotnet/corefx/blob/master/Documentation/project-docs/standard-platform.md) is planned when support from dependent libraries become available.
 
-The cross-platform capability opens the door to a wide range of deployment tools and techniques such as Docker and Kubernetes. These in turn allow for consistent deployment environments and ease of management for deployed containers. 
+The cross-platform capability opens the door to a wide range of deployment tools and techniques such as Docker and Kubernetes. These in turn allow for consistent deployment environments and ease of management for deployed containers.
 
 An event sourcing approach is used for persistence, with [Event Store](https://geteventstore.com/) as the backing implementation. This provides many advantages, including data resiliency and facilitates rehydration of state.
 

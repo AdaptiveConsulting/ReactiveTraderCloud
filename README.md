@@ -1,16 +1,16 @@
-# Reactive Trader 2
+# Reactive Trader Cloud
 
-[![Circle CI](https://circleci.com/gh/AdaptiveConsulting/AdaptiveTrader.svg?style=svg&circle-token=801547883329d22e505634493b58b26fbb742e46)](https://circleci.com/gh/AdaptiveConsulting/AdaptiveTrader)
+[![Circle CI](https://circleci.com/gh/AdaptiveConsulting/ReactiveTraderCloud.svg?style=svg&circle-token=801547883329d22e505634493b58b26fbb742e46)](https://circleci.com/gh/AdaptiveConsulting/ReactiveTraderCloud)
 
 ## Overview
 
-Reactive Trader 2 is a real-time FX trading platform demo showcasing reactive programming principles applied across the full application stack.
+Reactive Trader Cloud is a real-time FX trading platform demo showcasing reactive programming principles applied across the full application stack.
 
 Improvements have been made across the board since [Reactive Trader v1](https://github.com/AdaptiveConsulting/ReactiveTrader). The UI is revamped with a modern Javascript framework (React), and an event sourcing approach is used by the backend services for data resiliency.
 
 All frameworks and libraries used are entirely open source, and each component can be run on either Windows, Linux or Mac OS.
 
-The services are also distributed and are capable of recovery from disconnections. This demonstrates an approach similar to what is put into practice in major financial institutions for trading systems. 
+The services are also distributed and are capable of recovery from disconnections. This demonstrates an approach similar to what is put into practice in major financial institutions for trading systems.
 
 ## Architecture
 
@@ -32,7 +32,7 @@ Alternatively a live demo can be found at [TODO](reactivetrader.com)
 
 ### Back-End
 
-The back-end services are cross-platform. For details of how to set up the services on your on machine see below. 
+The back-end services are cross-platform. For details of how to set up the services on your on machine see below.
 
 #### Windows
 
