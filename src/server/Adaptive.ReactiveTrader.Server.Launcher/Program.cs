@@ -19,7 +19,7 @@ using Adaptive.ReactiveTrader.Server.TradeExecution;
 using Common.Logging;
 using Common.Logging.Simple;
 using EventStore.ClientAPI;
-using Mono.Unix;
+using CurrencyPair = Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Domain.CurrencyPair;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
@@ -31,6 +31,8 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             new Dictionary<string, Lazy<IServiceHostFactory>>();
 
         private static readonly ManualResetEvent CtrlC = new ManualResetEvent(false);
+
+        public static ILog Log { get; set; }
 
         public static void StartService(string name, IServiceHostFactory factory)
         {
@@ -65,9 +67,9 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         public static void InitializeFactories()
         {
             Factories.Add("reference-read",
-                new Lazy<IServiceHostFactory>(() => new ReferenceDataReadServiceHostFactory()));
+                          new Lazy<IServiceHostFactory>(() => new ReferenceDataReadServiceHostFactory()));
             Factories.Add("reference-write",
-                new Lazy<IServiceHostFactory>(() => new ReferenceDataWriteServiceHostFactory()));
+                          new Lazy<IServiceHostFactory>(() => new ReferenceDataWriteServiceHostFactory()));
             Factories.Add("pricing", new Lazy<IServiceHostFactory>(() => new PriceServiceHostFactory()));
             Factories.Add("blotter", new Lazy<IServiceHostFactory>(() => new BlotterServiceHostFactory()));
             Factories.Add("execution", new Lazy<IServiceHostFactory>(() => new TradeExecutionServiceHostFactory()));
@@ -98,7 +100,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
                 {
-                    ShowLogName = true,
+                    ShowLogName = true
                 };
 
                 Log = LogManager.GetLogger<Program>();
@@ -180,7 +182,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                             var ccyPair = a[1];
 
                             var currencyPair =
-                                repository.GetById<ReferenceDataWrite.Domain.CurrencyPair>(ccyPair).Result;
+                                repository.GetById<CurrencyPair>(ccyPair).Result;
 
                             if (currencyPair.IsActive)
                             {
@@ -249,13 +251,12 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             }
         }
 
-        public static ILog Log { get; set; }
-
         private static IEventStoreConnection GetEventStoreConnection(IEventStoreConfiguration configuration)
         {
             var eventStoreConnection =
                 EventStoreConnectionFactory.Create(
-                    configuration.Embedded ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
+                    configuration.Embedded ? EventStoreLocation.Embedded : EventStoreLocation.External,
+                    configuration);
 
 
             return eventStoreConnection;

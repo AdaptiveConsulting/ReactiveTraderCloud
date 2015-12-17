@@ -1,5 +1,4 @@
-﻿using Adaptive.ReactiveTrader.EventStore.Domain;
-using Xunit;
+﻿using Xunit;
 
 namespace Adaptive.ReactiveTrader.Server.Tests.EventStore
 {
@@ -9,9 +8,9 @@ namespace Adaptive.ReactiveTrader.Server.Tests.EventStore
         public void WhenCommandIsIssuedThenPendingEventIsCreated()
         {
             var aggregate = new TestAggregate();
-            
+
             Assert.Equal(0, aggregate.GetPendingEvents().Count);
-            
+
             aggregate.ChangeName("New Name");
 
             Assert.Equal(1, aggregate.GetPendingEvents().Count);

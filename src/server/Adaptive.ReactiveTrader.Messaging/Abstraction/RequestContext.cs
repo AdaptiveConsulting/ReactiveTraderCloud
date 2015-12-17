@@ -1,14 +1,14 @@
-namespace Adaptive.ReactiveTrader.Messaging
+namespace Adaptive.ReactiveTrader.Messaging.Abstraction
 {
     public class RequestContext : IRequestContext
     {
-        public IMessage RequestMessage { get; }
-        public IUserSession UserSession { get; }
-
         public RequestContext(IMessage requestMessage, IUserSession userSession)
         {
             RequestMessage = requestMessage;
             UserSession = userSession;
         }
+
+        public IMessage RequestMessage { get; }
+        public IUserSession UserSession { get; }
     }
 }

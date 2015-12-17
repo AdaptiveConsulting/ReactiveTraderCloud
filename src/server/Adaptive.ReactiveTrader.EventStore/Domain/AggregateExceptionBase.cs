@@ -25,6 +25,16 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             Type = type;
         }
 
+        protected AggregateExceptionBase(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+            Id = info.GetValue(nameof(Id), typeof (object));
+            Type = (Type) info.GetValue(nameof(Type), typeof (Type));
+        }
+
+        public object Id { get; }
+
+        public Type Type { get; }
+
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -37,15 +47,5 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
             base.GetObjectData(info, context);
         }
-
-        protected AggregateExceptionBase(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-            Id = info.GetValue(nameof(Id), typeof(object));
-            Type = (Type)info.GetValue(nameof(Type), typeof(Type));
-        }
-
-        public object Id { get; }
-
-        public Type Type { get; }
     }
 }

@@ -1,21 +1,21 @@
 using System;
 
-namespace Adaptive.ReactiveTrader.Messaging
+namespace Adaptive.ReactiveTrader.Messaging.Abstraction
 {
     internal class AnonymousUserSessionHandler : IUserSessionHandler
     {
-        private readonly Action<IUserSession> _onEstabilished;
         private readonly Action<IUserSession> _onDestroyed;
+        private readonly Action<IUserSession> _onEstablished;
 
-        public AnonymousUserSessionHandler(Action<IUserSession> onEstabilished, Action<IUserSession> onDestroyed)
+        public AnonymousUserSessionHandler(Action<IUserSession> onEstablished, Action<IUserSession> onDestroyed)
         {
-            _onEstabilished = onEstabilished;
+            _onEstablished = onEstablished;
             _onDestroyed = onDestroyed;
         }
 
         public void OnEstablished(IUserSession userSession)
         {
-            _onEstabilished(userSession);
+            _onEstablished(userSession);
         }
 
         public void OnDestroyed(IUserSession userSession)

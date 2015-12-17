@@ -22,11 +22,6 @@ namespace Adaptive.ReactiveTrader.Messaging
         private readonly BehaviorSubject<IConnected<IBroker>> _subject =
             new BehaviorSubject<IConnected<IBroker>>(Connected.No<IBroker>());
 
-        public IObservable<IConnected<IBroker>> GetBrokerStream()
-        {
-            return _subject;
-        }
-
         public BrokerConnection(string uri, string realm)
         {
             _channel = new WampChannelFactory()
@@ -58,15 +53,20 @@ namespace Adaptive.ReactiveTrader.Messaging
             _reconnector = new WampChannelReconnector(_channel, connect);
         }
 
-        public void Start()
-        {
-            _reconnector.Start();
-        }
-
         public void Dispose()
         {
             _sessionDispose.Dispose();
             _reconnector.Dispose();
+        }
+
+        public IObservable<IConnected<IBroker>> GetBrokerStream()
+        {
+            return _subject;
+        }
+
+        public void Start()
+        {
+            _reconnector.Start();
         }
     }
 }

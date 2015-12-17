@@ -13,16 +13,16 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
     public class ExecuteTradeIntegrationTests
     {
+        private const string BlotterUpdatesReplyTo = "blotterReplyTo";
+        private const string AnalyticsUpdatesReplyTo = "analyticsReplyTo";
         private static readonly TimeSpan ResponseTimeout = TimeSpan.FromSeconds(10);
 
         private readonly IWampChannel _channel;
         private readonly string _executionServiceInstance;
-        private string _blotterServiceInstance;
-        private string _analyticsServiceInstance;
-        private readonly CancellationTokenSource _timeoutCancellationTokenSource;
         private readonly IObservable<dynamic> _heartbeatStream;
-        private const string BlotterUpdatesReplyTo = "blotterReplyTo";
-        private const string AnalyticsUpdatesReplyTo = "analyticsReplyTo";
+        private readonly CancellationTokenSource _timeoutCancellationTokenSource;
+        private string _analyticsServiceInstance;
+        private string _blotterServiceInstance;
 
         public ExecuteTradeIntegrationTests()
         {
@@ -30,8 +30,8 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             _channel = broker.OpenChannel().Result;
 
             _heartbeatStream = _channel.RealmProxy.Services.GetSubject<dynamic>("status")
-                .Publish()
-                .RefCount();
+                                       .Publish()
+                                       .RefCount();
 
             _executionServiceInstance = _heartbeatStream
                 .Where(hb => hb.Type == ServiceTypes.Execution)
@@ -74,15 +74,15 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             };
 
             await _channel.RealmProxy.TopicContainer
-                .GetTopicByUri(BlotterUpdatesReplyTo)
-                .Subscribe(new WampSubscriber(blotterCallbackAssertion), new SubscribeOptions());
+                          .GetTopicByUri(BlotterUpdatesReplyTo)
+                          .Subscribe(new WampSubscriber(blotterCallbackAssertion), new SubscribeOptions());
 
             // subscribe to blotter with the callback
             _channel.RealmProxy.RpcCatalog.Invoke(
                 new RpcCallback(() => { }),
                 new CallOptions(),
                 $"{_blotterServiceInstance}.getTradesStream",
-                new object[] { new { ReplyTo = BlotterUpdatesReplyTo, Payload = new NothingDto() } });
+                new object[] {new {ReplyTo = BlotterUpdatesReplyTo, Payload = new NothingDto()}});
 
             // call execute trade
             await CallExecuteTrade(testCcyPair);
@@ -120,15 +120,15 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             };
 
             await _channel.RealmProxy.TopicContainer
-                .GetTopicByUri(AnalyticsUpdatesReplyTo)
-                .Subscribe(new WampSubscriber(analyticsCallbackAssertion), new SubscribeOptions());
+                          .GetTopicByUri(AnalyticsUpdatesReplyTo)
+                          .Subscribe(new WampSubscriber(analyticsCallbackAssertion), new SubscribeOptions());
 
             // subscribe to analytics with the callback
             _channel.RealmProxy.RpcCatalog.Invoke(
                 new RpcCallback(() => { }),
                 new CallOptions(),
                 $"{_analyticsServiceInstance}.getAnalytics",
-                new object[] { new { ReplyTo = AnalyticsUpdatesReplyTo, Payload = new NothingDto() } });
+                new object[] {new {ReplyTo = AnalyticsUpdatesReplyTo, Payload = new NothingDto()}});
 
             // call execute trade
             await CallExecuteTrade(testCcyPair);

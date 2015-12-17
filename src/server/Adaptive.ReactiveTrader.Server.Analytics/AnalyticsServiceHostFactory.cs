@@ -10,9 +10,9 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
     public class AnalyticsServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger<AnalyticsServiceHostFactory>();
+        private TradeCache _cache;
 
         private AnalyticsService _service;
-        private TradeCache _cache;
 
         public void Dispose()
         {
@@ -33,7 +33,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             _service = new AnalyticsService(analyticsEngine);
 
             return brokerStream.LaunchOrKill(broker => new AnalyticsServiceHost(_service, broker, _cache))
-                .Subscribe();
+                               .Subscribe();
         }
     }
 }

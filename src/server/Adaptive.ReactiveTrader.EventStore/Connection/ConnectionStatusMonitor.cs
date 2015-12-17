@@ -14,9 +14,9 @@ namespace Adaptive.ReactiveTrader.EventStore.Connection
 
     public class ConnectionStatusMonitor : IConnectionStatusMonitor
     {
-        private readonly IDisposable _subscription;
-        private readonly BehaviorSubject<ConnectionInfo> _connectionInfoSubject = new BehaviorSubject<ConnectionInfo>(ConnectionInfo.Initial);
         protected static readonly ILog Log = LogManager.GetLogger<ConnectionStatusMonitor>();
+        private readonly BehaviorSubject<ConnectionInfo> _connectionInfoSubject = new BehaviorSubject<ConnectionInfo>(ConnectionInfo.Initial);
+        private readonly IDisposable _subscription;
 
         public ConnectionStatusMonitor(IEventStoreConnection connection)
         {
@@ -33,12 +33,18 @@ namespace Adaptive.ReactiveTrader.EventStore.Connection
                                                 .Select(_ => ConnectionStatus.Connecting);
 
             _subscription = Observable.Merge(connectedChanged, disconnectedChanged, reconnectingChanged)
-                                        .Scan(ConnectionInfo.Initial, UpdateConnectionInfo)
-                                        .Subscribe(_connectionInfoSubject);
+                                      .Scan(ConnectionInfo.Initial, UpdateConnectionInfo)
+                                      .Subscribe(_connectionInfoSubject);
         }
 
         public IObservable<ConnectionInfo> ConnectionInfoChanged => _connectionInfoSubject.AsObservable();
         public ConnectionInfo ConnectionInfo => _connectionInfoSubject.Value;
+
+        public void Dispose()
+        {
+            _subscription.Dispose();
+            _connectionInfoSubject.Dispose();
+        }
 
         private static ConnectionInfo UpdateConnectionInfo(ConnectionInfo previousConnectionInfo, ConnectionStatus connectionStatus)
         {
@@ -61,12 +67,6 @@ namespace Adaptive.ReactiveTrader.EventStore.Connection
             }
 
             return newConnectionInfo;
-        }
-
-        public void Dispose()
-        {
-            _subscription.Dispose();
-            _connectionInfoSubject.Dispose();
         }
     }
 }

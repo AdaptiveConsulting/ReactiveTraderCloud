@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 
-namespace Adaptive.ReactiveTrader.Messaging
+namespace Adaptive.ReactiveTrader.Messaging.Abstraction
 {
     public interface IMessageProperties
     {
+        IEnumerable<string> Keys { get; }
         void Set(string key, string value);
         void Set(string key, int value);
         void Set(string key, long value);
@@ -14,6 +15,5 @@ namespace Adaptive.ReactiveTrader.Messaging
         long GetLong(string key);
         double GetDouble(string key);
         bool GetBool(string key);
-        IEnumerable<string> Keys { get; }
     }
 }

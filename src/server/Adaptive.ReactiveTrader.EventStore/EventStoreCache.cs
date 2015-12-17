@@ -1,12 +1,12 @@
-﻿using Adaptive.ReactiveTrader.Common;
-using Common.Logging;
-using EventStore.ClientAPI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Adaptive.ReactiveTrader.Common;
+using Common.Logging;
+using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.EventStore
 {
@@ -25,17 +25,20 @@ namespace Adaptive.ReactiveTrader.EventStore
 
     public abstract class EventStoreCache<TKey, TCacheItem, TOutput> : IDisposable
     {
-        private readonly ILog Log;
-
-        private readonly StateOfTheWorldContainer<TKey, TCacheItem> _stateOfTheWorldContainer = new StateOfTheWorldContainer<TKey, TCacheItem>();
-        private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
-        private readonly BehaviorSubject<StateOfTheWorldContainer<TKey, TCacheItem>> _stateOfTheWorldUpdates = new BehaviorSubject<StateOfTheWorldContainer<TKey, TCacheItem>>(new StateOfTheWorldContainer<TKey, TCacheItem>());
         private readonly IConnectableObservable<IConnected<IEventStoreConnection>> _connectionChanged;
-        private IConnectableObservable<RecordedEvent> _events = Observable.Never<RecordedEvent>().Publish();
-        private bool _isCaughtUp;
+        private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
+        private readonly SerialDisposable _eventsConnection = new SerialDisposable();
 
         private readonly SerialDisposable _eventsSubscription = new SerialDisposable();
-        private readonly SerialDisposable _eventsConnection = new SerialDisposable();
+
+        private readonly StateOfTheWorldContainer<TKey, TCacheItem> _stateOfTheWorldContainer = new StateOfTheWorldContainer<TKey, TCacheItem>();
+
+        private readonly BehaviorSubject<StateOfTheWorldContainer<TKey, TCacheItem>> _stateOfTheWorldUpdates =
+            new BehaviorSubject<StateOfTheWorldContainer<TKey, TCacheItem>>(new StateOfTheWorldContainer<TKey, TCacheItem>());
+
+        private readonly ILog Log;
+        private IConnectableObservable<RecordedEvent> _events = Observable.Never<RecordedEvent>().Publish();
+        private bool _isCaughtUp;
 
         protected EventStoreCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream, ILog log)
         {
@@ -43,7 +46,7 @@ namespace Adaptive.ReactiveTrader.EventStore
             Disposables = new CompositeDisposable();
 
             _connectionChanged = eventStoreConnectionStream.ObserveOn(_eventLoopScheduler)
-                               .Publish();
+                                                           .Publish();
 
             Disposables.Add(_connectionChanged.Connect());
 
@@ -75,6 +78,13 @@ namespace Adaptive.ReactiveTrader.EventStore
         }
 
         private CompositeDisposable Disposables { get; }
+
+        public virtual void Dispose()
+        {
+            _eventsSubscription.Dispose();
+            _eventsConnection.Dispose();
+            Disposables.Dispose();
+        }
 
         protected abstract bool IsMatchingEventType(string eventType);
         protected abstract void UpdateStateOfTheWorld(IDictionary<TKey, TCacheItem> currentStateOfTheWorld, RecordedEvent evt);
@@ -142,16 +152,11 @@ namespace Adaptive.ReactiveTrader.EventStore
             {
                 if (Log.IsInfoEnabled)
                 {
-                    Log.Info("Getting events from Event Store");    
+                    Log.Info("Getting events from Event Store");
                 }
 
-                Action<EventStoreCatchUpSubscription, ResolvedEvent> onEvent = (_, e) =>
-                {
-                    _eventLoopScheduler.Schedule(() =>
-                    {
-                        o.OnNext(e.Event);
-                    });
-                };
+                Action<EventStoreCatchUpSubscription, ResolvedEvent> onEvent =
+                    (_, e) => { _eventLoopScheduler.Schedule(() => { o.OnNext(e.Event); }); };
 
                 Action<EventStoreCatchUpSubscription> onCaughtUp = evt =>
                 {
@@ -187,13 +192,6 @@ namespace Adaptive.ReactiveTrader.EventStore
                     subscription.Stop();
                 });
             });
-        }
-
-        public virtual void Dispose()
-        {
-            _eventsSubscription.Dispose();
-            _eventsConnection.Dispose();
-            Disposables.Dispose();
         }
     }
 }

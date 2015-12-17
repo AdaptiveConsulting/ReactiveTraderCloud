@@ -7,6 +7,6 @@
             Symbol = symbol;
         }
 
-        public string Symbol { get; } 
+        public string Symbol { get; }
     }
 }

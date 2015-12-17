@@ -5,11 +5,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Domain
 {
     public class Currency : AggregateBase
     {
-        public override object Identifier => $"ccy-{Symbol}";
-        public string Symbol { get; private set; }
-        public bool IsDealable { get; private set; }
-        private bool IsCreated { get; set; }
-
         public Currency()
         {
         }
@@ -23,6 +18,11 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Domain
 
             RaiseEvent(new CurrencyCreatedEvent(symbol));
         }
+
+        public override object Identifier => $"ccy-{Symbol}";
+        public string Symbol { get; private set; }
+        public bool IsDealable { get; private set; }
+        private bool IsCreated { get; set; }
 
         public void SetDealability(bool targetIsDealable)
         {

@@ -5,15 +5,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Domain
 {
     public class CurrencyPair : AggregateBase
     {
-        public override object Identifier => $"ccyPair-{Symbol}";
-        private string Symbol { get; set; }
-        private int PipsPosition { get; set; }
-        private int RatePrecision { get; set; }
-        private decimal SampleRate { get; set; }
-        private string Comment { get; set; }
-        public bool IsActive { get; private set; }
-        private bool IsCreated { get; set; }
-
         public CurrencyPair()
         {
         }
@@ -27,6 +18,15 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Domain
 
             RaiseEvent(new CurrencyPairCreatedEvent(symbol, pipsPosition, ratePrecision, sampleRate, comment));
         }
+
+        public override object Identifier => $"ccyPair-{Symbol}";
+        private string Symbol { get; set; }
+        private int PipsPosition { get; set; }
+        private int RatePrecision { get; set; }
+        private decimal SampleRate { get; set; }
+        private string Comment { get; set; }
+        public bool IsActive { get; private set; }
+        private bool IsCreated { get; set; }
 
         public void Activate()
         {

@@ -13,68 +13,19 @@ using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.Core
 {
-    public static class OptionExtensions
-    {
-        public static IConnected<TResult> Select<TSource, TResult>(this IConnected<TSource> source,
-            Func<TSource, TResult> selector)
-        {
-            if (source.IsConnected)
-                return new Connected<TResult>(selector(source.Value));
-
-            return new Connected<TResult>();
-        }
-
-        public static IObservable<IConnected<TResult>> LaunchOrKill<TSource, TResult>(
-            this IObservable<IConnected<TSource>> source,
-            Func<TSource, TResult> selector) where TResult : IDisposable
-        {
-            return source.Select(s => GetInstanceStream(() => s.Select(selector)))
-                .Switch();
-        }
-
-        private static IObservable<IConnected<T>> GetInstanceStream<T>(Func<IConnected<T>> factory)
-            where T : IDisposable
-        {
-            return Observable.Create<IConnected<T>>(obs =>
-            {
-                var instance = factory();
-                obs.OnNext(instance);
-                return instance.IsConnected ? Disposable.Create(() => instance.Value.Dispose()) : Disposable.Empty;
-            });
-        }
-
-        public static IObservable<IConnected<TResult>> LaunchOrKill<TSource, TSource2, TResult>(
-            this IObservable<IConnected<TSource>> first, IObservable<IConnected<TSource2>> second,
-            Func<TSource, TSource2, TResult> selector) where TResult : IDisposable
-        {
-            return first.CombineLatest(second,
-                (a, b) =>
-                    GetInstanceStream(() =>
-                        a.IsConnected && b.IsConnected
-                            ? new Connected<TResult>(selector(a.Value, b.Value))
-                            : new Connected<TResult>()))
-                .Switch();
-        }
-    }
-
-
-    public interface IServiceHostFactory : IDisposable
-    {
-        IDisposable Initialize(IObservable<IConnected<IBroker>> broker);
-    }
-
-    public interface IServiceHostFactoryWithEventStore : IServiceHostFactory
-    {
-        IDisposable Initialize(IObservable<IConnected<IBroker>> broker,
-            IObservable<IConnected<IEventStoreConnection>> eventStore);
-    }
-
     public class App
     {
+        public const int ThreadSleep = 5000;
+        private static readonly ILog Log = LogManager.GetLogger<App>();
         private readonly string[] _args;
         private readonly IServiceHostFactory _factory;
-        private static readonly ILog Log = LogManager.GetLogger<App>();
-        private ManualResetEvent reset = new ManualResetEvent(false);
+        private readonly ManualResetEvent _reset = new ManualResetEvent(false);
+
+        public App(string[] args, IServiceHostFactory factory)
+        {
+            _args = args;
+            _factory = factory;
+        }
 
         public static void Run(string[] args, IServiceHostFactory factory)
         {
@@ -84,7 +35,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
 
         public void Kill()
         {
-            reset.Set();
+            _reset.Set();
         }
 
         public void Start()
@@ -92,7 +43,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
             Console.CancelKeyPress += (sender, eventArgs) =>
             {
                 eventArgs.Cancel = true;
-                reset.Set();
+                _reset.Set();
             };
 
             LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
@@ -124,7 +75,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
                         {
                             connectionFactory.Start();
 
-                            reset.WaitOne();
+                            _reset.WaitOne();
                         }
                     }
                     else
@@ -132,7 +83,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
                         using (_factory.Initialize(brokerStream))
                         {
                             connectionFactory.Start();
-                            reset.WaitOne();
+                            _reset.WaitOne();
                         }
                     }
                 }
@@ -143,22 +94,15 @@ namespace Adaptive.ReactiveTrader.Server.Core
             }
         }
 
-        public App(string[] args, IServiceHostFactory factory)
-        {
-            _args = args;
-            _factory = factory;
-        }
-
         private static IEventStoreConnection GetEventStoreConnection(IEventStoreConfiguration configuration)
         {
             var eventStoreConnection =
                 EventStoreConnectionFactory.Create(
-                    EventStoreLocation.External, configuration);
+                    EventStoreLocation.External,
+                    configuration);
 
 
             return eventStoreConnection;
         }
-
-        public const int ThreadSleep = 5000;
     }
 }

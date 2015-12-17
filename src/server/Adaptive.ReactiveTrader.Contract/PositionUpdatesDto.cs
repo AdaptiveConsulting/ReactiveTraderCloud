@@ -10,6 +10,7 @@ namespace Adaptive.ReactiveTrader.Contract
             CurrentPositions = Enumerable.Empty<CurrencyPairPositionDto>();
             History = Enumerable.Empty<HistoricPositionDto>();
         }
+
         public IEnumerable<CurrencyPairPositionDto> CurrentPositions { get; set; }
         public IEnumerable<HistoricPositionDto> History { get; set; }
 

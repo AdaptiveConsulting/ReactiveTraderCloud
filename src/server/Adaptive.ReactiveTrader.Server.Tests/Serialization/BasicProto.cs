@@ -105,7 +105,7 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Serialization
             Console.WriteLine(aggregate2.creationTimestamp.ToString());
 
             File.WriteAllText(@"c:\temp\example.proto", Serializer.GetProto<SpotPriceDto>());
-            
+
 
             Console.WriteLine();
             Console.WriteLine("Serializers");
@@ -165,15 +165,14 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Serialization
 
             using (var mem = new FileStream(@"c:\temp\spot.mp", FileMode.Create))
             {
-
                 var context = new SerializationContext
                 {
                     SerializationMethod = SerializationMethod.Map,
-                    EnumSerializationMethod = EnumSerializationMethod.ByName,
+                    EnumSerializationMethod = EnumSerializationMethod.ByName
                 };
-                
+
                 var mp = context.GetSerializer<SpotPriceDto>();
-                
+
                 mp.Pack(mem, aggregate);
 
                 mem.Position = 0;
@@ -181,7 +180,7 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Serialization
                 Console.WriteLine("MsgPack Length Normal Name\t\t{0} bytes", mem.Length);
 
                 var spotPrice = mp.Unpack(mem);
-                
+
                 Assert.Equal(aggregate.ask, spotPrice.ask);
             }
 

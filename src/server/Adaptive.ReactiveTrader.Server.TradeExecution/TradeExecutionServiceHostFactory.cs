@@ -1,8 +1,8 @@
-﻿using Adaptive.ReactiveTrader.Messaging;
-using System;
+﻿using System;
 using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.EventStore.Domain;
+using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Core;
 using Common.Logging;
 using EventStore.ClientAPI;
@@ -13,7 +13,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
     {
         protected static readonly ILog Log = LogManager.GetLogger<TradeExecutionServiceHostFactory>();
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
-        
+
         public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
         {
             return Disposable.Empty;

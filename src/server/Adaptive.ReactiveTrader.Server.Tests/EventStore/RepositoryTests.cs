@@ -1,10 +1,10 @@
-﻿using Adaptive.ReactiveTrader.EventStore.Domain;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Adaptive.ReactiveTrader.EventStore.Domain;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 using FakeItEasy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace Adaptive.ReactiveTrader.Server.Tests.EventStore
@@ -28,9 +28,9 @@ namespace Adaptive.ReactiveTrader.Server.Tests.EventStore
             A.CallTo(
                 () =>
                     connection.AppendToStreamAsync(A<string>.That.IsEqualTo(testAggregate.Identifier.ToString()),
-                        A<int>._, A<IEnumerable<EventData>>.That.Matches(expectedEventData, "EventData Is Correct"), 
-                        A<UserCredentials>._)).MustHaveHappened(Repeated.Exactly.Once);
-
+                                                   A<int>._,
+                                                   A<IEnumerable<EventData>>.That.Matches(expectedEventData, "EventData Is Correct"),
+                                                   A<UserCredentials>._)).MustHaveHappened(Repeated.Exactly.Once);
         }
 
         [Fact]
