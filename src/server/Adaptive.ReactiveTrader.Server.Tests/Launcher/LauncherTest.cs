@@ -10,14 +10,14 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Launcher
     {
         private readonly IServiceLauncher _testServiceLauncher;
         private readonly Program _program;
-        private readonly TextWriter _tmp;
-        private readonly StringWriter _strWrite;
+        private readonly TextWriter _consoleOutput;
+        private readonly StringWriter _writer;
 
         public LauncherTest()
         {
-            _tmp = Console.Out;
-            _strWrite = new StringWriter();
-            Console.SetOut(_strWrite);
+            _consoleOutput = Console.Out;
+            _writer = new StringWriter();
+            Console.SetOut(_writer);
 
             _testServiceLauncher = A.Fake<IServiceLauncher>();
             _program = new Program(_testServiceLauncher);
@@ -35,7 +35,7 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Launcher
 
             call.MustHaveHappened(Repeated.Exactly.Once);
 
-            var output = _strWrite.ToString();
+            var output = _writer.ToString();
             Assert.Contains("Started Pricing Service: p1", output);
         }
 
@@ -49,7 +49,7 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Launcher
 
             call.MustHaveHappened(Repeated.Exactly.Once);
 
-            var output = _strWrite.ToString();
+            var output = _writer.ToString();
             Assert.Contains("Started Analytics Service: a1", output);
         }
 
@@ -61,7 +61,7 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Launcher
 
             _program.Run(new LauncherConfig() {ServicesToStart = new[] {ServiceType.Analytics}, IsInteractive = true});
 
-            var output = _strWrite.ToString();
+            var output = _writer.ToString();
 
             call.MustHaveHappened(Repeated.Exactly.Once);
             Assert.Contains("Started Analytics Service: a1", output);
@@ -70,7 +70,7 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Launcher
 
         public void Dispose()
         {
-            Console.SetOut(_tmp);
+            Console.SetOut(_consoleOutput);
         }
     }
 }
