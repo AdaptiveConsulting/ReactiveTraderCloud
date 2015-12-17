@@ -224,33 +224,36 @@ class CurrencyPairs extends React.Component {
     localStorage.setItem('pairs', JSON.stringify(map));
   }
 
+  renderPairs(pairs){
+    return pairs.map((cp) => {
+      const className = 'currency-pair animated flipInX ' + cp.state;
+
+      return (
+        <Container key={cp.id} title={cp.pair} onTearoff={(state) => this.tearOff(cp, state)} tearoff={cp.tearoff} className={className}>
+          <CurrencyPair
+            onExecute={(payload) => this.onExecute(payload)}
+            pair={cp.pair}
+            size="1m"
+            key={cp.id}
+            buy={cp.buy}
+            sell={cp.sell}
+            mid={cp.mid}
+            precision={cp.precision}
+            pip={cp.pip}
+            state={cp.state}
+            response={cp.response}/>
+        </Container>
+      );
+    });
+  }
+
   render(){
     // filter cps that have got price data only.
     const pairs = this.state.pairs;
 
     return (
       <div className='currency-pairs'>
-        {pairs.length ? pairs.map((cp) => {
-          const className = 'currency-pair animated flipInX ' + cp.state;
-
-          return (
-            <Container key={cp.id} title={cp.pair} onTearoff={(state) => this.tearOff(cp, state)} tearoff={cp.tearoff} className={className}>
-              <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
-                pair={cp.pair}
-                size="1m"
-                key={cp.id}
-                buy={cp.buy}
-                sell={cp.sell}
-                mid={cp.mid}
-                precision={cp.precision}
-                pip={cp.pip}
-                state={cp.state}
-                response={cp.response}/>
-            </Container>
-          );
-        }) : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div>
-        }
-
+        {pairs.length ? this.renderPairs(pairs) : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div>}
         <div className="clearfix"></div>
       </div>
     );
