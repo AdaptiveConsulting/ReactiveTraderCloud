@@ -24,7 +24,6 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
         public Repository(IEventStoreConnection eventStoreConnection)
         {
             _eventStoreConnection = eventStoreConnection;
-            LogConnectionEvents();
         }
 
         public void Dispose()
@@ -160,45 +159,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             var json = Encoding.UTF8.GetString(evt.Data);
             return JsonConvert.DeserializeObject(json, targetType);
         }
-
-        private void LogConnectionEvents()
-        {
-            _eventStoreConnection.Connected += (sender, args) =>
-            {
-                if (Log.IsInfoEnabled)
-                {
-                    Log.Info($"Connected to EventStore - {args.RemoteEndPoint}");
-                }
-            };
-
-            _eventStoreConnection.Closed += (sender, args) =>
-            {
-                if (Log.IsInfoEnabled)
-                {
-                    Log.Info($"Connection to EventStore closed - {args.Reason}");
-                }
-            };
-
-            _eventStoreConnection.Reconnecting += (sender, args) =>
-            {
-                if (Log.IsInfoEnabled)
-                {
-                    Log.Info("Reconnecting to EventStore");
-                }
-            };
-            _eventStoreConnection.Disconnected += (sender, args) =>
-            {
-                if (Log.IsWarnEnabled)
-                {
-                    Log.Warn($"Disconnected from EventStore - {args.RemoteEndPoint}");
-                }
-            };
-
-            _eventStoreConnection.AuthenticationFailed +=
-                (sender, args) => Log.Error($"Authentication Failed when connecting to EventStore - {args.Reason}");
-            _eventStoreConnection.ErrorOccurred += (sender, args) => Log.Error("Error occurred in EventStore", args.Exception);
-        }
-
+        
         private IList<IList<EventData>> GetEventBatches(IEnumerable<EventData> events)
         {
             return events.Batch(WritePageSize).Select(x => (IList<EventData>) x.ToList()).ToList();
