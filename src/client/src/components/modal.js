@@ -40,7 +40,7 @@ class Modal extends React.Component {
   }
 
   render(){
-    const show = 'show' in this.props ? this.props.show : this.state.show;
+    const { show } = this.state;
 
     return (
         <div>
