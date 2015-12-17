@@ -1,5 +1,3 @@
-/* @flow */
-
 import Rx from 'rx';
 import _ from 'lodash'
 import logger from '../logger';
@@ -7,7 +5,7 @@ import LastValueObservable from './lastValueObservable';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
 import ServiceInstanceStatus from './serviceInstanceStatus';
 
-var _log : logger.Logger = logger.create('serviceObservableExtensions');
+var _log:logger.Logger = logger.create('serviceObservableExtensions');
 
 /**
  * Adds timeout semantics to the inner observable streams, on timout calls onDebounceItemFactory to get the item to pump down the stream
@@ -16,11 +14,11 @@ var _log : logger.Logger = logger.create('serviceObservableExtensions');
  * @param scheduler
  * @returns {Logger|Object}
  */
-function debounceOnMissedHeartbeat<TKey, TValue>(dueTime : Number, onDebounceItemFactory : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
-    var sources : Rx.GroupedObservable = this;
+function debounceOnMissedHeartbeat<TKey, TValue>(dueTime:Number, onDebounceItemFactory:(key:TKey) => TValue, scheduler:Rx.Scheduler) {
+    var sources:Rx.GroupedObservable = this;
     return Rx.Observable.create(o => {
         return sources.subscribe(innerSource => {
-                var key : TKey = innerSource.key;
+                var key:TKey = innerSource.key;
                 var debouncedStream = innerSource.debounceWithSelector(dueTime, () => onDebounceItemFactory(key), scheduler);
                 o.onNext(debouncedStream);
             },
@@ -39,19 +37,19 @@ Rx.Observable.prototype.debounceOnMissedHeartbeat = debounceOnMissedHeartbeat;
  * @param keySelector
  * @returns {Logger|Object}
  */
-function toServiceStatusObservableDictionary<TKey, TValue>(keySelector : (value : TValue) => TKey) : Rx.Observable<ServiceInstanceCache> {
+function toServiceStatusObservableDictionary<TKey, TValue>(keySelector:(value:TValue) => TKey):Rx.Observable<ServiceInstanceCache> {
     var sources = this;
     return Rx.Observable.create(o => {
-        var dictionary = new LastValueObservableDictionary('liveStream');
+        var dictionary = new LastValueObservableDictionary();
         var disposables = new Rx.CompositeDisposable();
         disposables.add(
             sources.subscribe(
                 innerSource => {
-                   // var innerSourcePublished = innerSource.publish().refCount();
+                    // var innerSourcePublished = innerSource.publish().refCount();
                     disposables.add(innerSource.subscribe(
                         value => {
                             var key = keySelector(value);
-                            if (!dictionary.hasKey(key))                             {
+                            if (!dictionary.hasKey(key)) {
                                 dictionary.add(key, new LastValueObservable(innerSource, value));
                             }
                             else {
@@ -78,16 +76,20 @@ function toServiceStatusObservableDictionary<TKey, TValue>(keySelector : (value 
 }
 Rx.Observable.prototype.toServiceStatusObservableDictionary = toServiceStatusObservableDictionary;
 
-// Gets the first status stream for the service currently having the minimum load and subscribes to it, yields into the target stream
-function getServiceWithMinLoad(waitForServiceIfNoneAvailable:Boolean = true) : Rx.Observable<LastValueObservable<ServiceInstanceStatus>> {
-    var source : Rx.Observable<LastValueObservableDictionary<ServiceInstanceStatus>> = this;
+/**
+ * Gets the first status stream for the service currently having the minimum load, then subscribes to it yielding updates into the target observer
+ * @param waitForServiceIfNoneAvailable
+ * @returns {Observable}
+ */
+function getServiceWithMinLoad(waitForServiceIfNoneAvailable:Boolean = true):Rx.Observable<LastValueObservable<ServiceInstanceStatus>> {
+    var source:Rx.Observable<LastValueObservableDictionary<ServiceInstanceStatus>> = this;
     return Rx.Observable.create(o => {
         let disposables = new Rx.CompositeDisposable();
         let findServiceInstanceDisposable = new Rx.SingleAssignmentDisposable();
         disposables.add(findServiceInstanceDisposable);
         findServiceInstanceDisposable = source.subscribe(
             dictionary => {
-                var serviceWithLeastLoad : LastValueObservable<ServiceInstanceStatus> = _(dictionary.values)
+                var serviceWithLeastLoad:LastValueObservable<ServiceInstanceStatus> = _(dictionary.values)
                     .sortBy(i => i.latestValue.serviceLoad)
                     .find(i => i.latestValue.isConnected);
                 if (serviceWithLeastLoad) {
@@ -97,7 +99,7 @@ function getServiceWithMinLoad(waitForServiceIfNoneAvailable:Boolean = true) : R
                         .concat(serviceWithLeastLoad.stream)
                         .subscribe(o);
                     disposables.add(serviceStatusStream);
-                } else if(!waitForServiceIfNoneAvailable){
+                } else if (!waitForServiceIfNoneAvailable) {
                     o.onError(new Error('No service available'));
                 }
             },
@@ -117,9 +119,15 @@ function getServiceWithMinLoad(waitForServiceIfNoneAvailable:Boolean = true) : R
 }
 Rx.Observable.prototype.getServiceWithMinLoad = getServiceWithMinLoad;
 
-// Emits an item from the source Observable after a particular timespan has passed without the Observable omitting any other items.
-// The onTimeoutItemSelector selector is used to select the item to procure.
-function debounceWithSelector(dueTime : Number, itemSelector : () => TValue, scheduler : Rx.Scheduler) {
+/**
+ * Emits an item from the source Observable after a particular timespan has passed without the Observable omitting any other items.
+ * The onTimeoutItemSelector selector is used to select the item to procure.
+ * @param dueTime
+ * @param itemSelector
+ * @param scheduler
+ * @returns {Observable}
+ */
+function debounceWithSelector(dueTime:Number, itemSelector:() => TValue, scheduler:Rx.Scheduler) {
     var source = this;
     return Rx.Observable.create(o => {
         var disposables = new Rx.CompositeDisposable();

@@ -3,26 +3,26 @@ import _ from 'lodash'
 import RetryPolicy from './retryPolicy';
 import logger from '../logger';
 
-var _log : logger.Logger = logger.create('RetryPolicy');
+var _log:logger.Logger = logger.create('RetryPolicy');
 
-function retryWithPolicy(retryPolicy : RetryPolicy,  operationDescription : String, scheduler : Rx.Scheduler) {
+function retryWithPolicy(retryPolicy:RetryPolicy, operationDescription:String, scheduler:Rx.Scheduler) {
     var source = this;
     return Rx.Observable.create(o => {
-        let retryCount : Number = 0;
-        let subscribe : () => void = null;
+        let retryCount:Number = 0;
+        let subscribe:() => void = null;
         let isDisposed = false;
         let currentSubscriptionDisposable = new Rx.SerialDisposable();
         subscribe = () => {
             currentSubscriptionDisposable.setDisposable(source.subscribe(
                 i => {
-                    if(!isDisposed) {
+                    if (!isDisposed) {
                         o.onNext(i);
                     }
                 },
                 ex => {
                     retryCount++;
                     let retryAfter = retryPolicy.getRetryAfterMilliseconds(ex, retryCount);
-                    if(retryAfter === 0) {
+                    if (retryAfter === 0) {
                         _log.warn("Retrying [{0}]. This is attempt [{1}]. Exception: [{2}]", operationDescription, retryCount, ex.message);
                         subscribe();
                     } else if (retryAfter > 0) {
