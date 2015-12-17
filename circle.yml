@@ -13,7 +13,6 @@ dependencies:
     - sudo apt-get install gcc-4.8 g++-4.8
   override:
     - docker info
-    - cp deploy/sample.config deploy/config
     - cd deploy/circleCi && chmod 755 ensurePermissions && ./ensurePermissions
     - cd deploy/circleCi && ./loadContainers
     - cd deploy/circleCi && ./buildContainers
