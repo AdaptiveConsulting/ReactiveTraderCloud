@@ -69,7 +69,8 @@ $ dnu restore
 And then run the services
 
 ```bash
-$ dnx -p Adaptive.ReactiveTrader.Server.Launcher a b exec p ref
+$ cd Adaptive.ReactiveTrader.Server.Launcher
+$ dnx run all
 ```
 The services should now run and connect to the Crossbar and EventStore
 

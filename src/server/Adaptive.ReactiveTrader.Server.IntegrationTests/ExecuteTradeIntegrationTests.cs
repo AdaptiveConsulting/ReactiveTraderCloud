@@ -37,6 +37,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                 .Where(hb => hb.Type == ServiceTypes.Execution)
                 .Select(hb => hb.Instance)
                 .Take(1)
+                .Timeout(ResponseTimeout)
                 .ToTask()
                 .Result;
 

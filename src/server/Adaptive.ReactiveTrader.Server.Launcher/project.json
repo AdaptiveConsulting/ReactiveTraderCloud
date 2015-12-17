@@ -18,12 +18,11 @@
         "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*",
         "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0-*",
         "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0-*",
-        "Common.Logging": "3.3.1",
-        "Mono.Posix-4.5": "4.5.0"
+        "Common.Logging": "3.3.1"
     },
 
     "commands": {
-      "default": "Adaptive.ReactiveTrader.Server.Launcher p ref --interactive"
+      "default": "Adaptive.ReactiveTrader.Server.Launcher"
     },
 
     "frameworks": {
