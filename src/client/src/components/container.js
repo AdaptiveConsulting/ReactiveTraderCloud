@@ -9,7 +9,9 @@ class Container extends React.Component {
     tearoff: React.PropTypes.bool,
     title: React.PropTypes.string,
     width: React.PropTypes.number,
-    height: React.PropTypes.number
+    height: React.PropTypes.number,
+    options: React.PropTypes.object,
+    className: React.PropTypes.string
   }
 
   openTearoff(e){
@@ -28,7 +30,7 @@ class Container extends React.Component {
 
   render(){
     const tearoff = this.props.tearoff,
-          title = this.props.title;
+          title   = this.props.title;
 
     const popupAttributes = {
       url: '/#/tile',
@@ -59,19 +61,23 @@ class Container extends React.Component {
       popupAttributes.onClosing = ()=> this.closeTearoff();
     }
 
+    const { children } = this.props; //eslint-disable-line
+
     return !tearoff ?
       <div className={this.props.className}>
         <div className='container-control'>
-          <i className='tearoff-trigger glyphicon glyphicon-new-window' onClick={(e) => this.openTearoff(e)}/>
+          <i className='tearoff-trigger glyphicon glyphicon-new-window'
+            onClick={(e) => this.openTearoff(e)} />
         </div>
-        {this.props.children}
+        {children}
       </div> :
       <Popout {...popupAttributes}>
         <div className={this.props.className}>
           <div className='container-control'>
-            <i className='glyphicon glyphicon-remove' onClick={(e) => this.closeTearoff(e)}/>
+            <i className='glyphicon glyphicon-remove'
+              onClick={(e) => this.closeTearoff(e)} />
           </div>
-          {this.props.children}
+          {children}
         </div>
       </Popout>;
   }

@@ -18,6 +18,11 @@ const STALE_TIMEOUT = 4000,
  */
 class CurrencyPairs extends React.Component {
 
+  static propTypes = {
+    services: React.PropTypes.object,
+    onExecute: React.PropTypes.func
+  }
+
   /**
    * @constructs CurrencyPair
    * @param {Object=} props
@@ -223,26 +228,32 @@ class CurrencyPairs extends React.Component {
     // filter cps that have got price data only.
     const pairs = this.state.pairs;
 
-    return <div className='currency-pairs'>
-      {pairs.length ? pairs.map((cp) => {
-        const className = 'currency-pair animated flipInX ' + cp.state;
+    return (
+      <div className='currency-pairs'>
+        {pairs.length ? pairs.map((cp) => {
+          const className = 'currency-pair animated flipInX ' + cp.state;
 
-        return <Container key={cp.id} title={cp.pair} onTearoff={(state) => this.tearOff(cp, state)} tearoff={cp.tearoff} className={className}>
-          <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
-            pair={cp.pair}
-            size="1m"
-            key={cp.id}
-            buy={cp.buy}
-            sell={cp.sell}
-            mid={cp.mid}
-            precision={cp.precision}
-            pip={cp.pip}
-            state={cp.state}
-            response={cp.response}/>
-        </Container>;
-      }) : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div> }
-      <div className="clearfix"></div>
-    </div>;
+          return (
+            <Container key={cp.id} title={cp.pair} onTearoff={(state) => this.tearOff(cp, state)} tearoff={cp.tearoff} className={className}>
+              <CurrencyPair onExecute={(payload) => this.onExecute(payload)}
+                pair={cp.pair}
+                size="1m"
+                key={cp.id}
+                buy={cp.buy}
+                sell={cp.sell}
+                mid={cp.mid}
+                precision={cp.precision}
+                pip={cp.pip}
+                state={cp.state}
+                response={cp.response}/>
+            </Container>
+          );
+        }) : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div>
+        }
+
+        <div className="clearfix"></div>
+      </div>
+    );
   }
 }
 

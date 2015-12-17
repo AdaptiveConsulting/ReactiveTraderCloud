@@ -12,7 +12,7 @@ function mixin(source){
     Object.getOwnPropertyNames(source.prototype).forEach((prop) => {
       Object.defineProperty(target.prototype, prop, Object.getOwnPropertyDescriptor(source.prototype, prop));
     });
-  }
+  };
 }
 
 
