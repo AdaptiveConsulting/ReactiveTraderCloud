@@ -264,9 +264,9 @@ class CurrencyPair extends React.Component {
         </div>
         {message}
         <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
-          <Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
-          <Direction direction={this.getDirection(mid)} spread={this.getSpread(sell, buy)}/>
           <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
+          <Direction direction={this.getDirection(mid)} spread={this.getSpread(buy, sell)}/>
+          <Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
         </div>
         <div className='clearfix'></div>
         <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})}
