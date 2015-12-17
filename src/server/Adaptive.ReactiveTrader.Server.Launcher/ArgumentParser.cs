@@ -16,7 +16,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 arguments.Select(ServiceTypeHelper.GetServiceTypeFromString)
                     .Where(type => type != ServiceType.Unknown)
                     .ToList();
-            
+
             var config = new LauncherConfig
             {
                 Help = !arguments.Any() || arguments.Any(a => a.IsIn("--help", "/?", "-h", "-help")),
@@ -49,12 +49,14 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
             foreach (var a in args)
             {
-                if (a == "dev")
+                var argument = a.ToLower();
+
+                if (argument == "dev")
                     ret.AddRange(devArgs);
-                if (a == "all")
+                if (argument == "all")
                     ret.AddRange(allArgs);
                 else
-                    ret.Add(a);
+                    ret.Add(argument);
             }
             return ret;
         }
