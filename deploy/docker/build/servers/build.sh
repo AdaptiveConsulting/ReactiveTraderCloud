@@ -6,26 +6,10 @@ if [[ $build = "" ]];then
   exit 1
 fi
 
+set -euo pipefail
+
 # get and control config
 . ../../../config
-
-if [[ $vDnx = "" ]];then
-  echo "servers-build: dnx version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $serversContainer = "" ]];then
-  echo "servers-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMajor = "" ]];then
-  echo "servers-build: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "servers-build: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-
 
 mkdir -p ./build
 cp -r ../../../../src/server ./build/
