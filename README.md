@@ -1,6 +1,6 @@
 # Reactive Trader 2
 
-[![Circle CI](https://circleci.com/gh/AdaptiveConsulting/AdaptiveTrader.svg?style=svg&circle-token=801547883329d22e505634493b58b26fbb742e46)](https://circleci.com/gh/AdaptiveConsulting/AdaptiveTrader)
+[![Circle CI](https://circleci.com/gh/AdaptiveConsulting/ReactiveTraderCloud.svg?style=svg&circle-token=801547883329d22e505634493b58b26fbb742e46)](https://circleci.com/gh/AdaptiveConsulting/ReactiveTraderCloud)
 
 ## Overview
 
@@ -28,7 +28,7 @@ Client-side implementations are available for all major platforms, including des
 
 The front-end is written in Javascript with React, The details of how to set up the client to run on your machine are [here](src/client/README.md).
 
-Alternatively a live demo can be found at [TODO](reactivetrader.com)
+Alternatively a live demo can be found at [demo.shiftcluster.com](http://demo.shiftcluster.com/) [TODO](move to demo.kubernetes.weareadaptive.com)
 
 ### Back-End
 

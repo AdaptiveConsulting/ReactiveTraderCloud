@@ -9,21 +9,21 @@ domainName="shiftcluster.com"
 # ======
 vMajor="0"
 vMinor="0"
+
 vUbuntu="14.04.2"
 vCrossbar="0.11.1"
 vEventstore="3.3.0"
 vDnx="1.0.0-rc1-final"
 vNode="5.1.0"
 vDebian="8.2"
-vTesttools="1.0"
 vNginx="1.9.7"
+vKubernetes="1.1.3"
+
+vTesttools="1.0"
 vGcloud="1.0"
-vKubeGateway="0.0"
 vFluentd="0.0"
 vNsGateMajor="0"
-vNsGateMinor="0"
-vKubernetes="1.1.3"
-vConfd="0.11.0"
+vNsGateMinor="1"
 vJq="1.5"
 
 # here is written the name of all containers
