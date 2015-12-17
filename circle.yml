@@ -8,6 +8,7 @@ dependencies:
   cache_directories:
     - "~/docker"
     - deploy/docker/build/servers/dnxcache
+    - deploy/docker/build/web/.npm
   pre:
     - npm install -g npm@3.5
     - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
