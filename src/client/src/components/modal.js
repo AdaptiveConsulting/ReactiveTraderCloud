@@ -51,7 +51,6 @@ class Modal extends React.Component {
           </div>
           {typeof this.state.body === 'object' ? this.state.body :
             <div className='modal-body' dangerouslySetInnerHTML={{__html: this.state.body}}></div>}
-            <div className='modal-body' dangerouslySetInnerHTML={{__html: this.state.body}}></div>}
         </div>
         <label className='blocker help-blocker' htmlFor='modal'/>
       </div>

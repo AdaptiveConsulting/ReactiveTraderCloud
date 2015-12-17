@@ -66,16 +66,14 @@ class Container extends React.Component {
     return !tearoff ?
       <div className={this.props.className}>
         <div className='container-control'>
-          <i className='tearoff-trigger glyphicon glyphicon-new-window'
-            onClick={(e) => this.openTearoff(e)} />
+          <i className='tearoff-trigger glyphicon glyphicon-new-window' onClick={(e) => this.openTearoff(e)} />
         </div>
         {children}
       </div> :
       <Popout {...popupAttributes}>
         <div className={this.props.className}>
           <div className='container-control'>
-            <i className='glyphicon glyphicon-remove'
-              onClick={(e) => this.closeTearoff(e)} />
+            <i className='glyphicon glyphicon-remove' onClick={(e) => this.closeTearoff(e)} />
           </div>
           {children}
         </div>
