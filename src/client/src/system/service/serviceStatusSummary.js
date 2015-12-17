@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import ServiceInstanceSummary from './serviceInstanceSummary';
 
+/**
+ * Provides a summary of the current connection status as well as statuses for connected service instances
+ */
 export default class ServiceStatusSummary {
     constructor(instances : Array<ServiceInstanceSummary>, isConnected : Boolean) {
         this._instances = instances;

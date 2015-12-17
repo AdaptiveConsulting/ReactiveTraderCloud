@@ -1,3 +1,5 @@
+/* @flow */
+
 import Rx from 'rx';
 import _ from 'lodash'
 import logger from '../logger';
@@ -7,13 +9,19 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
 
 var _log : logger.Logger = logger.create('serviceObservableExtensions');
 
-// Adds time out semantics to the inner observable streams, calls onTimeoutItemSelector to seed a single value on timeout
-function trackServiceStatusHeartbeats<TKey, TValue>(dueTime : Number, onTimeoutItemSelector : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
+/**
+ * Adds timeout semantics to the inner observable streams, on timout calls onDebounceItemFactory to get the item to pump down the stream
+ * @param dueTime
+ * @param onDebounceItemFactory
+ * @param scheduler
+ * @returns {Logger|Object}
+ */
+function debounceOnMissedHeartbeat<TKey, TValue>(dueTime : Number, onDebounceItemFactory : (key: TKey) => TValue, scheduler : Rx.Scheduler) {
     var sources : Rx.GroupedObservable = this;
     return Rx.Observable.create(o => {
         return sources.subscribe(innerSource => {
                 var key : TKey = innerSource.key;
-                var debouncedStream = innerSource.debounceWithSelector(dueTime, () => onTimeoutItemSelector(key), scheduler);
+                var debouncedStream = innerSource.debounceWithSelector(dueTime, () => onDebounceItemFactory(key), scheduler);
                 o.onNext(debouncedStream);
             },
             ex => o.onError(ex),
@@ -21,9 +29,16 @@ function trackServiceStatusHeartbeats<TKey, TValue>(dueTime : Number, onTimeoutI
         );
     });
 }
-Rx.Observable.prototype.trackServiceStatusHeartbeats = trackServiceStatusHeartbeats;
+Rx.Observable.prototype.debounceOnMissedHeartbeat = debounceOnMissedHeartbeat;
 
-// Converts an Observable of Observables into an Observable of IDictionary<TKey, ILastValueObservable<TValue>> whereby ILastValueObservable items are hot observable streams exposing their last values
+/**
+ * Flattens an Observable of Observables into an Observable of LastValueObservableDictionary.
+ *
+ * LastValueObservableDictionary is a object containing the inner observable streams, it's suitable for querying based
+ * on an inner streams latest value. For example: get stream for service with min load
+ * @param keySelector
+ * @returns {Logger|Object}
+ */
 function toServiceStatusObservableDictionary<TKey, TValue>(keySelector : (value : TValue) => TKey) : Rx.Observable<ServiceInstanceCache> {
     var sources = this;
     return Rx.Observable.create(o => {

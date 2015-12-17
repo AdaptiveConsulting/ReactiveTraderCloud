@@ -1,5 +1,8 @@
 var Rx = require('rx');
 
+/**
+ * Abstracts scheduling concerns to enable testing
+ */
 export default class SchedulerService {
     constructor() {
         this._immediate = Rx.Scheduler.immediate;
