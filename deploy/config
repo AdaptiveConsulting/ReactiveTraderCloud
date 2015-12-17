@@ -1,6 +1,10 @@
 #! /bin/bash
 # Here are the list of version for every part of the deployment
 
+# SSL Domain
+# ==========
+domainName="shiftcluster.com"
+
 # DOCKER
 # ======
 vMajor="0"
@@ -16,6 +20,11 @@ vNginx="1.9.7"
 vGcloud="1.0"
 vKubeGateway="0.0"
 vFluentd="0.0"
+vNsGateMajor="0"
+vNsGateMinor="0"
+vKubernetes="1.1.3"
+vConfd="0.11.0"
+vJq="1.5"
 
 # here is written the name of all containers
 # Bases
@@ -27,6 +36,8 @@ eventstoreContainer="weareadaptive/eventstore"
 gcloudContainer="weareadaptive/gcloud"
 nginxContainer="weareadaptive/nginx"
 fluentdContainer="weareadaptive/fluentd"
+kubernetesContainer="weareadaptive/kubernetes"
+nsGateContainer="weareadaptive/nsgate"
 
 # Adaptive Trader
 brokerContainer="adaptivetrader/broker"
@@ -69,7 +80,3 @@ kube_zone="europe-west1-c"
 # kube_zone="us-central1-b"
 # kube_zone="us-central1-c"
 # kube_zone="us-central1-f"
-
-# CircleCI
-# ========
-circleCiToken=""

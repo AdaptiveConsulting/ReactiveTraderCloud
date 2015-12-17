@@ -10,6 +10,7 @@ build/servers/build
 build/servers/dnxcache
 build/testtools/build
 build/web/build
+build/nsgate/build
 
 jq
 container_id

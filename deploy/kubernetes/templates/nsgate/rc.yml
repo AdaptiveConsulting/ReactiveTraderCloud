@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: "nsgate"
+  namespace: "nsgate"
+  labels:
+    name: "nsgate__MAJOR__"
+    minor: "__MINOR__"
+    build: "__BUILD__" 
+spec:
+  replicas: 1
+  selector:
+    name: "nsgate__MAJOR__"
+    minor: "__MINOR__"
+    build: "__BUILD__"
+  template:
+    metadata:
+      labels:
+        name: "nsgate__MAJOR__"
+        minor: "__MINOR__"
+        build: "__BUILD__"
+    spec:
+      containers:
+      - name: "nsgate__MAJOR__"
+        image: "__DOCKERIMAGE__"
+        ports:
+          - containerPort: 80
+            name: "http"
+          - containerPort: 443
+            name: "https"
+          - containerPort: 8000
+            name: "app1"
+          - containerPort: 8080
+            name: "app2"
+          - containerPort: 1113
+            name: "app3"
+          - containerPort: 2113
+            name: "app4"
