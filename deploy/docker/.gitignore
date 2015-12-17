@@ -6,8 +6,11 @@ build/gcloud/build
 build/mono/build
 build/node/build
 build/servers/build
+build/servers/dnxcache
 build/testtools/build
-build/web/build
+build/web/npminstall/build
+build/web/nginx/build
+build/web/.npm
 
 jq
 container_id

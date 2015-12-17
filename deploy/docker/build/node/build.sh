@@ -1,21 +1,9 @@
 #! /bin/bash
 
+set -euo pipefail
+
 # get and control config
 . ../../../config
-
-if [[ $vUbuntu = "" ]];then
-  echo "node:build: ubuntu version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vNode = "" ]];then
-  echo "node:build: node version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $nodeContainer = "" ]];then
-  echo "node:build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-
 
 mkdir -p ./build
 sed "s/__VUBUNTU__/$vUbuntu/g" ./template.Dockerfile > ./build/Dockerfile

@@ -6,49 +6,42 @@ if [[ $build = "" ]];then
   exit 1
 fi
 
+
+# fail fast
+set -euo pipefail
+
 # get and control config
 . ../../../config
 
-if [[ $vNode = "" ]];then
-  echo "web-build: node version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vNginx = "" ]];then
-  echo "web-build: nginx version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $webContainer = "" ]];then
-  echo "web-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $nodeContainer = "" ]];then
-  echo "web-build: node container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMajor = "" ]];then
-  echo "web-build: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "web-build: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
+# Build the dist folder
+mkdir -p ./npminstall/build
+rm -rf ./npminstall/build/*
+cp npminstall/npminstall.sh        ./npminstall/build/npminstall.sh
+cp npminstall/template.Dockerfile  ./npminstall/build/Dockerfile
+cp -r ../../../../src/client/      ./npminstall/build/client
 
-# generate container folder
-mkdir -p ./build
-sed "s/__VNGINX__/$vNginx/g"    ./template.Dockerfile > ./build/Dockerfile
+sed -i "s/__VNODE__/$vNode/g" ./npminstall/build/Dockerfile
 
-cp ./dev.nginx.conf  ./build/dev.nginx.conf
-cp ./prod.nginx.conf ./build/prod.nginx.conf
+docker build --no-cache -t weareadaptive/websrc:latest  ./npminstall/build/.
 
-# todo: remove the node dependency !
-cd ../../../../src/client
-npm install
-npm run compile
-cd ../../deploy/docker/build/web
+# run the build container sharing the cache folder
+# the src are not directly shared as their is an error of synchronisation 
+#   when node_modules tryied to be synced between container/VM and Host on windows
+docker run              \
+  -v /$(pwd)/.npm:/.npm \
+  -v /$(pwd)/dist:/dist \
+  weareadaptive/websrc:latest
 
-cp -r ../../../../src/client/dist ./build/dist
 
-# build
-docker build --no-cache -t $webContainer:$vMajor.$vMinor.$build ./build/.
+# build nginx container
+mkdir -p ./nginx/build
+
+cp ./nginx/template.Dockerfile   ./nginx/build/Dockerfile
+cp ./nginx/dev.nginx.conf        ./nginx/build/dev.nginx.conf
+cp ./nginx/prod.nginx.conf       ./nginx/build/prod.nginx.conf
+cp -r ./dist                     ./nginx/build/dist
+
+sed -i "s/__VNGINX__/$vNginx/g" ./nginx/build/Dockerfile
+
+docker build --no-cache -t $webContainer:$vMajor.$vMinor.$build  ./nginx/build/.
 docker tag -f $webContainer:$vMajor.$vMinor.$build $webContainer:latest
