@@ -21,8 +21,7 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Launcher
 
             _testServiceLauncher = A.Fake<IServiceLauncher>();
             _program = new Program(_testServiceLauncher);
-            _program.CtrlC.Set();
-            _program.Running = false;
+            _program.Stop();
         }
 
         [Fact]
@@ -31,7 +30,8 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Launcher
             var call = A.CallTo(() => _testServiceLauncher.StartService(ServiceType.Pricing));
             call.Returns("p1");
 
-            _program.Run(new[] {"p"});
+            _program.Run(new LauncherConfig() {ServicesToStart = new[] {ServiceType.Pricing}});
+
 
             call.MustHaveHappened(Repeated.Exactly.Once);
 
@@ -45,8 +45,8 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Launcher
             var call = A.CallTo(() => _testServiceLauncher.StartService(ServiceType.Analytics));
             call.Returns("a1");
 
-            _program.Run(new[] {"a"});
-            
+            _program.Run(new LauncherConfig() {ServicesToStart = new[] {ServiceType.Analytics}});
+
             call.MustHaveHappened(Repeated.Exactly.Once);
 
             var output = _strWrite.ToString();
@@ -59,7 +59,7 @@ namespace Adaptive.ReactiveTrader.Server.Tests.Launcher
             var call = A.CallTo(() => _testServiceLauncher.StartService(ServiceType.Analytics));
             call.Returns("a1");
 
-            _program.Run(new[] { "a", "--interactive" });
+            _program.Run(new LauncherConfig() {ServicesToStart = new[] {ServiceType.Analytics}, IsInteractive = true});
 
             var output = _strWrite.ToString();
 
