@@ -1,4 +1,4 @@
-Reactive Trader - UI
+Reactive Trader Cloud - UI
 =======================
 
 Table of Contents

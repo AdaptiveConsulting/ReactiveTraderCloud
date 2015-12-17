@@ -1,7 +1,24 @@
 {
-  "name": "reactive-trader",
+  "name": "reactive-trader-cloud",
   "version": "2.0.0",
-  "description": "Fun with currency pairs",
+  "description": "Reactive Trader - Cloud edition. Example reactive currency pair trading app",
+  "keywords": [
+    "react",
+    "fx",
+    "spot",
+    "cloud",
+    "rxjs"
+  ],
+  "authors": [
+    {
+      "name": "Adaptive Consulting",
+      "email": "@AdaptiveLimited"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
+  },
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf dist",
@@ -21,15 +38,18 @@
     "babel": "^5.8.23",
     "babel-core": "^5.8.33",
     "bootstrap-sass": "^3.3.5",
+    "d3": "^3.5.10",
     "dotenv": "^1.2.0",
     "font-awesome": "^4.4.0",
     "history": "^1.9.0",
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "numeral": "^1.5.3",
+    "nvd3": "^1.8.1",
     "react": "^0.14.0",
     "react-bootstrap": "^0.27.3",
-    "react-dom": "^0.14.0",
+    "react-dom": "^0.14.3",
+    "react-nvd3": "^0.3.0",
     "react-popout": "^0.4.0",
     "react-router": "1.0.0-rc4",
     "react-sparklines": "^1.4.2",

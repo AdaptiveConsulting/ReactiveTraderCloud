@@ -72,9 +72,9 @@ class Header extends React.Component {
       <a className='navbar-brand navbar-adaptive navbar-openfin' href='http://openfin.co/' target='_blank' title='Open Fin' onClick={(e) => this.handleExternalClick(e)}>
         <img src="images/openfin-logo.png" alt="OpenFin Logo" /></a>
       <Link className='navbar-brand' to='/' title='Home'>
-        Reactive Trader 2
+        Reactive Trader Cloud
       </Link>
-      <ul className='nav navbar-nav hidden-xs navbar-left'>
+      <ul className='nav navbar-nav hidden-xs hidden-sm navbar-left'>
         <li>
           <Link to='/user' className='nav-link' activeClassName='active'><i className='fa fa-user' /> {traders.code} ({traders.name} {traders.surname})</Link>
         </li>

@@ -1,7 +1,14 @@
 .currency-pairs {
   //margin-top: 54px;
-  margin-left: 4px;
+  left: 4px;
+  position: absolute;
+  top: 51px;
+  bottom: 20%;
+  right: 20%;
+  //margin-bottom: 25%;
+  overflow: auto;
 }
+
 
 .currency-pair {
   box-sizing: border-box;
@@ -129,7 +136,7 @@
     }
 
     span {
-      font-family: "Courier New";
+      font-family: "Courier New", Courier;
       font-size: 18px;
     }
     .pip {
@@ -201,6 +208,13 @@
   .currency-pairs {
     margin: 0;
     margin-bottom: 150px;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    display: block;
+    position: static;
+
     .currency-pair {
       width: 100%;
       margin-right: 0;
@@ -210,7 +224,18 @@
       }
     }
   }
+}
 
+@media (max-width: $screen-sm-max) {
+  .currency-pairs {
+    margin: 0;
+    right: 0;
+    top: auto;
+    left: auto;
+    display: block;
+    position: static;
+    height: 300px;
+  }
 }
 
 
