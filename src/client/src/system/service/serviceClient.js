@@ -13,7 +13,7 @@ import LastValueObservableDictionary from './lastValueObservableDictionary';
 export default class ServiceClient extends disposables.DisposableBase {
     _log : logger.Logger;
     _serviceType : String;
-    F_serviceInstanceDictionaryStream : Rx.Observable<LastValueObservableDictionary>;
+    _serviceInstanceDictionaryStream : Rx.Observable<LastValueObservableDictionary>;
     static get HEARTBEAT_TIMEOUT() : Number {
         return 3000;
     }
@@ -38,7 +38,6 @@ export default class ServiceClient extends disposables.DisposableBase {
     get serviceStatusSummaryStream() : Rx.Observable<ServiceStatusSummary> {
         var _this = this;
         return this._serviceInstanceDictionaryStream
-            .where(d => d.description !== 'initial') // HACK
             .select(cache => _this._createServiceStatusSummary(cache))
             .publish()
             .refCount();

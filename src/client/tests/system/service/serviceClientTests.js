@@ -23,49 +23,49 @@ describe('ServiceClient', () => {
         });
     });
 
-    it('doesn\'t yield a status before being opened', () => {
-        assertExpectedStatusUpdate(0);
+    it('yield a disconnect status before being opened', () => {
+        assertExpectedStatusUpdate(1, false);
     });
 
     it('yields a connection status when matching service heartbeat is received', () => {
         connect();
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-        assertExpectedStatusUpdate(1, true);
+        assertExpectedStatusUpdate(2, true);
     });
 
     it('ignores heartbeats for unrelated services', () => {
         connect();
         pushServiceHeartbeat('booking', 'booking.1', 0);
-        assertExpectedStatusUpdate(0);
+        assertExpectedStatusUpdate(1, false);
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-        assertExpectedStatusUpdate(1, true);
+        assertExpectedStatusUpdate(2, true);
         pushServiceHeartbeat('execution', 'booking.1', 0);
-        assertExpectedStatusUpdate(1, true);
+        assertExpectedStatusUpdate(2, true);
     });
 
     it('groups heartbeats for service instances by service type', () => {
         connect();
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
         pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
-        assertExpectedStatusUpdate(2, true);
-        assertServiceInstanceStatus(1, 'myServiceType.1', true);
-        assertServiceInstanceStatus(1, 'myServiceType.2', true);
+        assertExpectedStatusUpdate(3, true);
+        assertServiceInstanceStatus(2, 'myServiceType.1', true);
+        assertServiceInstanceStatus(2, 'myServiceType.2', true);
     });
 
     it('marks service instances as connected on heartbeat', () => {
         connect();
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-        assertExpectedStatusUpdate(1, true);
-        assertServiceInstanceStatus(0, 'myServiceType.1', true);
+        assertExpectedStatusUpdate(2, true);
+        assertServiceInstanceStatus(1, 'myServiceType.1', true);
     });
 
     it('marks service instances as disconnected on heartbeat timeout', () => {
         connect();
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-        assertServiceInstanceStatus(0, 'myServiceType.1', true);
+        assertServiceInstanceStatus(1, 'myServiceType.1', true);
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
-        assertExpectedStatusUpdate(2, false);
-        assertServiceInstanceStatus(1, 'myServiceType.1', false);
+        assertExpectedStatusUpdate(3, false);
+        assertServiceInstanceStatus(2, 'myServiceType.1', false);
     });
 
     it('manages and disconnects heartbeats for each service instances separately', () => {
@@ -76,46 +76,46 @@ describe('ServiceClient', () => {
 
         // keep myServiceType.2 alive
         pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
-        assertExpectedStatusUpdate(3, true);
+        assertExpectedStatusUpdate(4, true);
 
         // disconnect myServiceType.1 by moving the schedule past the time out interval
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT / 2);
-        assertExpectedStatusUpdate(4, true);
-        assertServiceInstanceStatus(3, 'myServiceType.1', false);
-        assertServiceInstanceStatus(3, 'myServiceType.2', true);
+        assertExpectedStatusUpdate(5, true);
+        assertServiceInstanceStatus(4, 'myServiceType.1', false);
+        assertServiceInstanceStatus(4, 'myServiceType.2', true);
 
         // again move the schedule forward, since now heartbeat from myServiceType.2 has been missed that'll disconnect
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT / 2);
-        assertExpectedStatusUpdate(5, false);
-        assertServiceInstanceStatus(4, 'myServiceType.1', false);
-        assertServiceInstanceStatus(4, 'myServiceType.2', false);
+        assertExpectedStatusUpdate(6, false);
+        assertServiceInstanceStatus(5, 'myServiceType.1', false);
+        assertServiceInstanceStatus(5, 'myServiceType.2', false);
 
         // reconnect myServiceType 2
         pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
-        assertExpectedStatusUpdate(6, true);
-        assertServiceInstanceStatus(5, 'myServiceType.1', false);
-        assertServiceInstanceStatus(5, 'myServiceType.2', true);
+        assertExpectedStatusUpdate(7, true);
+        assertServiceInstanceStatus(6, 'myServiceType.1', false);
+        assertServiceInstanceStatus(6, 'myServiceType.2', true);
 
         // reconnect myServiceType 1
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-        assertExpectedStatusUpdate(7, true);
-        assertServiceInstanceStatus(6, 'myServiceType.1', true);
-        assertServiceInstanceStatus(6, 'myServiceType.2', true);
+        assertExpectedStatusUpdate(8, true);
+        assertServiceInstanceStatus(7, 'myServiceType.1', true);
+        assertServiceInstanceStatus(7, 'myServiceType.2', true);
 
         // disconnect both, each will cause a separate yield as each service instance get processed independently (thus the count of 9)
         _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
-        assertExpectedStatusUpdate(9, false);
-        assertServiceInstanceStatus(8, 'myServiceType.1', false);
-        assertServiceInstanceStatus(8, 'myServiceType.2', false);
+        assertExpectedStatusUpdate(10, false);
+        assertServiceInstanceStatus(9, 'myServiceType.1', false);
+        assertServiceInstanceStatus(9, 'myServiceType.2', false);
     });
 
     it('disconnects service instance when underlying connection goes down', () => {
         connect();
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
         pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
-        assertExpectedStatusUpdate(2, true);
+        assertExpectedStatusUpdate(3, true);
         _stubAutobahnProxy.setIsConnected(false);
-        assertExpectedStatusUpdate(3, false);
+        assertExpectedStatusUpdate(4, false);
     });
 
     it('handles underlying connection bouncing before any heartbeats are received', () => {
@@ -123,24 +123,24 @@ describe('ServiceClient', () => {
         _stubAutobahnProxy.setIsConnected(false);
         _stubAutobahnProxy.setIsConnected(true);
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-        assertExpectedStatusUpdate(2, true);
-        pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
         assertExpectedStatusUpdate(3, true);
+        pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
+        assertExpectedStatusUpdate(4, true);
     });
 
     it('disconnects then reconnect new service instance after underlying connection is bounced', () => {
         connect();
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
         pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
-        assertExpectedStatusUpdate(2, true);
-        assertServiceInstanceStatus(0, 'myServiceType.1', true);
+        assertExpectedStatusUpdate(3, true);
         assertServiceInstanceStatus(1, 'myServiceType.1', true);
+        assertServiceInstanceStatus(2, 'myServiceType.1', true);
         _stubAutobahnProxy.setIsConnected(false);
-        assertExpectedStatusUpdate(3, false);
+        assertExpectedStatusUpdate(4, false);
         _stubAutobahnProxy.setIsConnected(true);
         pushServiceHeartbeat('myServiceType', 'myServiceType.4', 0);
-        assertExpectedStatusUpdate(4, true);
-        assertServiceInstanceStatus(3, 'myServiceType.4', true);
+        assertExpectedStatusUpdate(5, true);
+        assertServiceInstanceStatus(4, 'myServiceType.4', true);
     });
 
     describe('createStreamOperation()', () => {
