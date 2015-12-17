@@ -1,42 +1,34 @@
 {
-    "version": "1.0.0-*",
-    "description": "Service Launcher",
-    "authors": [ "james.watson" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.0",
+  "description": "Allows user to launch all services interactively",
+  "authors": [ "Adaptive Financial Consulting Ltd." ],
+  "tags": [ "Adaptive", "Reactive Trader" ],
+  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
-    "dependencies": {
-        "Newtonsoft.Json": "7.0.1",
-        "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
-        "Adaptive.ReactiveTrader.MessageBroker": "",
-        "Adaptive.ReactiveTrader.EventStore": "",
-        "Adaptive.ReactiveTrader.Server.Pricing": "",
-        "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "",
-        "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "",
-        "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0-*",
-        "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0-*",
-        "Common.Logging": "3.3.1",
-        "Mono.Posix-4.5": "4.5.0"
-    },
+  "dependencies": {
+    "Adaptive.ReactiveTrader.MessageBroker": "1.0.0",
+    "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0",
+    "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "1.0.0",
+    "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0",
+    "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0",
+    "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0",
+    "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0",
+    "Mono.Posix-4.5": "4.5.0"
+  },
 
-    "commands": {
+  "commands": {
       "default": "Adaptive.ReactiveTrader.Server.Launcher p ref --interactive"
-    },
+  },
 
-    "frameworks": {
-        "dnx451": {
-            "frameworkAssemblies": {
-                "System.Runtime": "",
-                "System.Collections": ""
-            },
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Collections": ""
+      },
 
-            "dependencies": {
-
-            }
-        }
-
+      "dependencies": { }
     }
+  }
 }

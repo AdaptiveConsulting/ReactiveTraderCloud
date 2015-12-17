@@ -1,13 +1,13 @@
 {
-  "version": "1.0.0-*",
-  "description": "Adaptive.ReactiveTrader.Server.TradeExecution Console Application",
-  "authors": [ "jon.clare" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
+  "version": "1.0.0",
+  "description": "Trade Execution Service",
+  "authors": [ "Adaptive Financial Consulting Ltd." ],
+  "tags": [ "Adaptive", "Reactive Trader" ],
+  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
   "dependencies": {
-    "Adaptive.ReactiveTrader.Server.Core": "1.0.0-*"
+    "Adaptive.ReactiveTrader.Server.Core": "1.0.0"
   },
 
   "commands": {
