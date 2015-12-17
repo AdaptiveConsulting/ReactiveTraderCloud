@@ -185,9 +185,9 @@ class CurrencyPair extends React.Component {
 
   /**
    * Click handler for the 'Done'
-   * @param {HTMLEvent} e
+   * @param {DOMEvent} e
    */
-  onDismissLastResponse(e){
+  onDismissLastResponse(e:DOMEvent){
     e && e.preventDefault();
     this.setState({
       info: false
