@@ -24,7 +24,7 @@
     "clean": "rm -rf dist",
     "lint": "eslint ./src/**/*.js",
     "lint:tests": "eslint ./tests/**/*.spec.js",
-    "compile": "webpack",
+    "compile": "npm run lint && webpack",
     "start": "npm run dev",
     "dev": "node --harmony bin/webpack-dev-server",
     "test": "node ./node_modules/karma/bin/karma start",
