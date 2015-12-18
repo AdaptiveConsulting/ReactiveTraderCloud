@@ -1,28 +1,6 @@
 import autobahn from 'autobahn';
 import Rx from 'rx';
-
-/**
- * AutobahnSessionProxy: makes the authbahn api more explicit, aids testing
- */
-class AutobahnSessionProxy {
-    _session:autobahn.Session;
-
-    constructor(session:autobahn.Session) {
-        this._session = session;
-    }
-
-    subscribe<TRequest, TResults>(topic:String, onResults:(r:TResults) => void):Promise {
-        return this._session.subscribe(topic, onResults);
-    }
-
-    unsubscribe<TRequest, TResults>(subscription:autobahn.Subscription):Promise {
-        return this._session.unsubscribe(subscription);
-    }
-
-    call<TRequest, TResults>(operationName:String, payload:TRequest):Promise {
-        return this._session.call(operationName, payload);
-    }
-}
+import AutobahnSessionProxy from './autobahnSessionProxy';
 
 /**
  * AutobahnProxy: makes the authbahn api more explicit, aids testing

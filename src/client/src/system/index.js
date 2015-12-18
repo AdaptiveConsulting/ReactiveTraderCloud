@@ -3,10 +3,10 @@ import * as logger from './logger';
 import * as disposables from './disposables';
 import SchedulerService from './schedulerService';
 import * as service from './service';
-import RetryPolicy from './observableExtentsions/retryPolicy';
+import RetryPolicy from './observableExtentsions/policy';
 
 // observableExtensions has no exports, it adds functionality to rx
-import './observableExtentsions/retryWithPolicy';
+import './observableExtentsions/retryPolicyExt';
 
 export default {
     Guard,

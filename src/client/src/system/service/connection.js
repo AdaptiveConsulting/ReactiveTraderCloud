@@ -11,10 +11,12 @@ var _log:logger.Logger = logger.create('Connection');
  * Represents a Connection to autobahn
  */
 export default class Connection extends disposables.DisposableBase {
+    _userName:String;
     _autobahn:AutobahnConnectionProxy;
     _connectionStatusSubject:Rx.BehaviorSubject<Boolean>;
     _serviceStatusSubject:Rx.BehaviorSubject<ServiceInstanceStatus>;
     _openCalled:Boolean;
+    _isConnected:Boolean;
 
     constructor(userName:string, autobahn:AutobahnConnectionProxy) {
         super();
@@ -28,6 +30,10 @@ export default class Connection extends disposables.DisposableBase {
         this._isConnected = false;
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get connectionStatusStream():Rx.Observable<Boolean> {
         return this._connectionStatusSubject
             .distinctUntilChanged()
@@ -38,7 +44,7 @@ export default class Connection extends disposables.DisposableBase {
         return this._isConnected;
     }
 
-    connect() {
+    connect():void {
         if (!this._openCalled) {
             this._openCalled = true;
             _log.info('Opening connection');
@@ -49,7 +55,7 @@ export default class Connection extends disposables.DisposableBase {
                 this.session = session;
             });
             this._autobahn.onclose((reason, details) => {
-                _log.error('connection lost, reason [{0}]', reason);
+                _log.error(`connection lost, reason [${reason}]`);
                 this._isConnected = false;
                 this._connectionStatusSubject.onNext(false);
             });
@@ -66,21 +72,22 @@ export default class Connection extends disposables.DisposableBase {
         let _this = this;
         return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
             let disposables = new Rx.CompositeDisposable();
-            _log.debug('Wiring up to topic [{0}]. Is connected [{1}]', topic, _this._isConnected);
+            _log.debug(`Wiring up to topic [${topic}]. Is connected [${_this._isConnected}]`);
             if (_this.isConnected) {
-                var subscription;
-                _this._autobahn.session.subscribe(topic, response => {
+                let subscription;
+                _this._autobahn.session.subscribe(topic, (response : Array<TResponse>) => {
                     if (_log.isVerboseEnabled) {
-                        _log.verbose('Received response on topic [{0}]. Payload[{1}]', topic, JSON.stringify(response[0]));
+                        var payloadString = JSON.stringify(response[0]);
+                        _log.verbose(`Received response on topic [${topic}]. Payload[${payloadString}]`);
                     }
                     o.onNext(response[0]);
                 }).then((sub:autobahn.Subscription) => {
                     // subscription succeeded, subscription is an instance of autobahn.Subscription
-                    _log.debug('subscription acked on topic [{0}]', topic);
+                    _log.debug(`subscription acked on topic [${topic}]`);
                     subscription = sub;
                 }, (error:autobahn.Error) => {
                     // subscription failed, error is an instance of autobahn.Error
-                    _log.error('Error on topic {0}: {1}', topic, error);
+                    _log.error(`Error on topic ${topic}: ${error}`);
                     o.onError(error);
                 });
                 disposables.add(Rx.Disposable.create(() => {
@@ -88,20 +95,20 @@ export default class Connection extends disposables.DisposableBase {
                         try {
                             _this._autobahn.session.unsubscribe(subscription).then(
                                 gone => {
-                                    _log.debug('Successfully unsubscribing from topic {0}', topic);
+                                    _log.debug(`Successfully unsubscribing from topic ${topic}`);
                                 },
-                                error => {
-                                    _log.error('Error unsubscribing from topic {0}: {1}', topic, error);
+                                err => {
+                                    _log.error(`Error unsubscribing from topic ${topic}: ${err.message}`);
                                 }
                             );
                         } catch (err) {
-                            _log.error('Error thrown unsubscribing from topic {0}: {1}', topic, err);
+                            _log.error(`Error thrown unsubscribing from topic ${topic}: ${err.message}`);
                         }
                     }
                 }));
             }
             else {
-                o.onError(new Error('Session not connected, can\'t subscribe to topic [' + topic + ']'));
+                o.onError(new Error(`Session not connected, can\'t subscribe to topic [${topic}]`));
             }
             return disposables;
         });
@@ -117,11 +124,11 @@ export default class Connection extends disposables.DisposableBase {
     requestResponse<TRequest, TResponse>(remoteProcedure:String, payload:TRequest, responseTopic:String = ''):Rx.Observable<TResponse> {
         let _this = this;
         return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
-            _log.debug('Requesting a response for remoteProcedure [{0}]. Is connected [{1}]', remoteProcedure, _this._isConnected);
+            _log.debug(`Requesting a response for remoteProcedure [${remoteProcedure}]. Is connected [${_this._isConnected}]`);
             let disposables = new Rx.CompositeDisposable();
             if (_this.isConnected) {
-                var isDisposed:Boolean
-                var dto = [{
+                let isDisposed:Boolean;
+                let dto = [{
                     replyTo: responseTopic,
                     Username: _this._username,
                     payload: payload
@@ -132,14 +139,14 @@ export default class Connection extends disposables.DisposableBase {
                             o.onNext(result);
                             o.onCompleted();
                         } else {
-                            _log.warn('Ignoring response for remoteProcedure [{0}] as stream disposed', remoteProcedure);
+                            _log.warn(`Ignoring response for remoteProcedure [${remoteProcedure}] as stream disposed`);
                         }
                     },
                     error => {
                         if (!isDisposed) {
                             o.onError(error);
                         } else {
-                            _log.error('Ignoring error for remoteProcedure [{0}] as stream disposed.. Error was: [{1}]', remoteProcedure, error.error);
+                            _log.error(`Ignoring error for remoteProcedure [${remoteProcedure}] as stream disposed.. Error was: [${error.message}]`);
                         }
                     }
                 );
@@ -148,7 +155,7 @@ export default class Connection extends disposables.DisposableBase {
                 }));
             }
             else {
-                o.onError(new Error('Session not connected, can\'t perform remoteProcedure ' + remoteProcedure));
+                o.onError(new Error(`Session not connected, can\'t perform remoteProcedure ${remoteProcedure}`));
             }
             return disposables;
         });

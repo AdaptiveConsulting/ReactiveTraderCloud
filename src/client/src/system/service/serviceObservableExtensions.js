@@ -5,8 +5,6 @@ import LastValueObservable from './lastValueObservable';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
 import ServiceInstanceStatus from './serviceInstanceStatus';
 
-var _log:logger.Logger = logger.create('serviceObservableExtensions');
-
 /**
  * Adds timeout semantics to the inner observable streams, on timout calls onDebounceItemFactory to get the item to pump down the stream
  * @param dueTime
@@ -15,11 +13,11 @@ var _log:logger.Logger = logger.create('serviceObservableExtensions');
  * @returns {Logger|Object}
  */
 function debounceOnMissedHeartbeat<TKey, TValue>(dueTime:Number, onDebounceItemFactory:(key:TKey) => TValue, scheduler:Rx.Scheduler) {
-    var sources:Rx.GroupedObservable = this;
+    let sources:Rx.GroupedObservable = this;
     return Rx.Observable.create(o => {
         return sources.subscribe(innerSource => {
-                var key:TKey = innerSource.key;
-                var debouncedStream = innerSource.debounceWithSelector(dueTime, () => onDebounceItemFactory(key), scheduler);
+                let key:TKey = innerSource.key;
+                let debouncedStream = innerSource.debounceWithSelector(dueTime, () => onDebounceItemFactory(key), scheduler);
                 o.onNext(debouncedStream);
             },
             ex => o.onError(ex),
@@ -38,17 +36,17 @@ Rx.Observable.prototype.debounceOnMissedHeartbeat = debounceOnMissedHeartbeat;
  * @returns {Logger|Object}
  */
 function toServiceStatusObservableDictionary<TKey, TValue>(keySelector:(value:TValue) => TKey):Rx.Observable<ServiceInstanceCache> {
-    var sources = this;
+    let sources = this;
     return Rx.Observable.create(o => {
-        var dictionary = new LastValueObservableDictionary();
-        var disposables = new Rx.CompositeDisposable();
+        let dictionary = new LastValueObservableDictionary();
+        let disposables = new Rx.CompositeDisposable();
         disposables.add(
             sources.subscribe(
                 innerSource => {
-                    // var innerSourcePublished = innerSource.publish().refCount();
+                    // let innerSourcePublished = innerSource.publish().refCount();
                     disposables.add(innerSource.subscribe(
                         value => {
-                            var key = keySelector(value);
+                            let key = keySelector(value);
                             if (!dictionary.hasKey(key)) {
                                 dictionary.add(key, new LastValueObservable(innerSource, value));
                             }
@@ -82,19 +80,19 @@ Rx.Observable.prototype.toServiceStatusObservableDictionary = toServiceStatusObs
  * @returns {Observable}
  */
 function getServiceWithMinLoad(waitForServiceIfNoneAvailable:Boolean = true):Rx.Observable<LastValueObservable<ServiceInstanceStatus>> {
-    var source:Rx.Observable<LastValueObservableDictionary<ServiceInstanceStatus>> = this;
+    let source:Rx.Observable<LastValueObservableDictionary<ServiceInstanceStatus>> = this;
     return Rx.Observable.create(o => {
         let disposables = new Rx.CompositeDisposable();
         let findServiceInstanceDisposable = new Rx.SingleAssignmentDisposable();
         disposables.add(findServiceInstanceDisposable);
         findServiceInstanceDisposable = source.subscribe(
             dictionary => {
-                var serviceWithLeastLoad:LastValueObservable<ServiceInstanceStatus> = _(dictionary.values)
+                let serviceWithLeastLoad:LastValueObservable<ServiceInstanceStatus> = _(dictionary.values)
                     .sortBy(i => i.latestValue.serviceLoad)
                     .find(i => i.latestValue.isConnected);
                 if (serviceWithLeastLoad) {
                     findServiceInstanceDisposable.dispose();
-                    var serviceStatusStream = Rx.Observable
+                    let serviceStatusStream = Rx.Observable
                         .return(serviceWithLeastLoad.latestValue)
                         .concat(serviceWithLeastLoad.stream)
                         .subscribe(o);
@@ -128,12 +126,12 @@ Rx.Observable.prototype.getServiceWithMinLoad = getServiceWithMinLoad;
  * @returns {Observable}
  */
 function debounceWithSelector(dueTime:Number, itemSelector:() => TValue, scheduler:Rx.Scheduler) {
-    var source = this;
+    let source = this;
     return Rx.Observable.create(o => {
-        var disposables = new Rx.CompositeDisposable();
-        var debounceDisposable = new Rx.SerialDisposable();
+        let disposables = new Rx.CompositeDisposable();
+        let debounceDisposable = new Rx.SerialDisposable();
         disposables.add(debounceDisposable);
-        var debounce = () => {
+        let debounce = () => {
             debounceDisposable.setDisposable(
                 scheduler.scheduleFuture(
                     '',

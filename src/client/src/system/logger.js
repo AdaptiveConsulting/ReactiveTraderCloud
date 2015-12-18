@@ -21,43 +21,34 @@ class Logger {
     get isVerboseEnabled() {
         return _currentLevel <= levels.verbose;
     }
-    verbose(format) {
+    verbose(message) {
         if (this.isVerboseEnabled) {
-            var args = Array.prototype.slice.call(arguments, 1);
-            this._log('VERBOSE', format, args);
+            this._log('VERBOSE', message);
         }
     }
-    debug(format) {
+    debug(message) {
         if (_currentLevel <= levels.debug) {
-            var args = Array.prototype.slice.call(arguments, 1);
-            this._log('DEBUG', format, args);
+            this._log('DEBUG', message);
         }
     }
-    info(format) {
+    info(message) {
         if (_currentLevel <= levels.info) {
-            var args = Array.prototype.slice.call(arguments, 1);
-            this._log('INFO', format, args);
+            this._log('INFO', message);
         }
     }
-    warn(format) {
+    warn(message) {
         if (_currentLevel <= levels.warn) {
-            var args = Array.prototype.slice.call(arguments, 1);
-            this._log('WARN', format, args);
+            this._log('WARN', message);
         }
     }
-    error(format) {
+    error(message) {
         if (_currentLevel <= levels.error) {
-            var args = Array.prototype.slice.call(arguments, 1);
-            this._log('ERROR', format, args);
+            this._log('ERROR', message);
         }
     }
-    _log(level, format, args) {
-        Guard.isString(format, 'First argument to a log function should be a string, but got [' + format + ']');
-        var message = format.replace(/{(\d+)}/g, function (match, number) {
-            return typeof args[number] != 'undefined'
-                ? args[number]
-                : match;
-        });
+    _log(level, message) {
+        Guard.isString(level, 'level isn\'t a string');
+        Guard.isString(message, 'message isn\'t a string');
         _sink({
             logger: this._name,
             level: level,

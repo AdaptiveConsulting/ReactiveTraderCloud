@@ -24,6 +24,6 @@ export default class ServiceStatusSummary {
     }
 
     toString() {
-        return 'ServiceInstanceCount:' + this._instances.length + ', IsConnected:' + this.isConnected;
+        return `ServiceInstanceCount:${this._instances.length}, IsConnected:${this.isConnected}`;
     }
 }
