@@ -233,7 +233,7 @@ class CurrencyPairs extends React.Component {
           <CurrencyPair
             onExecute={(payload) => this.onExecute(payload)}
             pair={cp.pair}
-            size="1m"
+            size='1m'
             key={cp.id}
             buy={cp.buy}
             sell={cp.sell}
@@ -254,7 +254,7 @@ class CurrencyPairs extends React.Component {
     return (
       <div className='currency-pairs'>
         {pairs.length ? this.renderPairs(pairs) : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div>}
-        <div className="clearfix"></div>
+        <div className='clearfix'></div>
       </div>
     );
   }
