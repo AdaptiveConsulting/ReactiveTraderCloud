@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -euo pipefail
+
 . ../config
 sudo docker run -d --net=host $webContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
 sudo docker run -d --net=host $populatedEventstoreContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM

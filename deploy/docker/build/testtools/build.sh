@@ -1,20 +1,8 @@
 #! /bin/bash
 
-# get and control config
-. ../../../config
+set -euo pipefail
 
-if [[ $vUbuntu = "" ]];then
-  echo "testtools-build: ubuntu version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $testtoolsContainer = "" ]];then
-  echo "testtools-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vTesttools = "" ]];then
-  echo "testtools-build: testtools version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
+. ../../../config
 
 # generate container folder
 mkdir -p ./build

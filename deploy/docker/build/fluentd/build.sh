@@ -1,19 +1,8 @@
 #! /bin/bash
 
-. ../../../config
+set -euo pipefail
 
-if [[ $vUbuntu = "" ]];then
-  echo "fluentd-build: ubuntu version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $fluentdContainer = "" ]];then
-  echo "fluentd-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vFluentd = "" ]];then
-  echo "fluentd-build: fluentd version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
+. ../../../config
 
 mkdir -p build
 

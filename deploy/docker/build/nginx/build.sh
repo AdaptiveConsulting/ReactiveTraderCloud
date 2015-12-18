@@ -1,16 +1,9 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # get and control config
 . ../../../config
-
-if [[ $vNginx = "" ]];then
-  echo "nginx-build: nginx version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $nginxContainer = "" ]];then
-  echo "nginx-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 # generate container folder
 mkdir -p ./build

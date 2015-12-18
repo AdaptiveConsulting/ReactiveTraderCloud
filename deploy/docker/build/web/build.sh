@@ -6,33 +6,10 @@ if [[ $build = "" ]];then
   exit 1
 fi
 
+set -euo pipefail
+
 # get and control config
 . ../../../config
-
-if [[ $vNode = "" ]];then
-  echo "web-build: node version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vNginx = "" ]];then
-  echo "web-build: nginx version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $webContainer = "" ]];then
-  echo "web-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $nodeContainer = "" ]];then
-  echo "web-build: node container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMajor = "" ]];then
-  echo "web-build: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "web-build: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 # generate container folder
 mkdir -p ./build

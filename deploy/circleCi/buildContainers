@@ -1,4 +1,5 @@
 #! /bin/bash
+set -euo pipefail
 
 cd ../docker
 ./prepare build services $CIRCLE_BUILD_NUM
