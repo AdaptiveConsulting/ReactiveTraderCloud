@@ -4,14 +4,13 @@ metadata:
   name: "__SERVICE__"
   namespace: "__NAMESPACE__"
   labels:
-    name: "__SERVICE__"
-    major: "__MAJOR__"
-    minor: "__MINOR__"
+    name:   "__SERVICE__"
+    major:  "__MAJOR__"
+    public: "true"
 spec:
   selector:
-    name: "__SERVICE__"
+    name:  "__SERVICE__"
     major: "__MAJOR__"
-    minor: "__MINOR__"
   ports:
   - port: 80
     targetPort: 80
@@ -19,4 +18,3 @@ spec:
   - port: 8080
     targetPort: 8080
     name: "ws"
-  type: "LoadBalancer"

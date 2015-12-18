@@ -46,8 +46,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 Console.CancelKeyPress += (s, e) =>
                 {
                     Log.Info("Termination signal sent.");
-
-                    e.Cancel = true;
+                    
                     Stop();
                 };
 
