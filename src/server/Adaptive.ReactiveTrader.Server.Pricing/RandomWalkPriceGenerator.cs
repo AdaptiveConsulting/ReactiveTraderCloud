@@ -7,10 +7,10 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public sealed class RandomWalkPriceGenerator : IPriceGenerator
     {
-        private readonly decimal _initial;
-        private readonly int _precision;
         private static readonly Random Random = new Random();
         private readonly int _halfSpread;
+        private readonly decimal _initial;
+        private readonly int _precision;
 
         public RandomWalkPriceGenerator(string symbol, decimal initial, int precision)
         {

@@ -1,13 +1,13 @@
 ﻿{
-  "version": "1.0.0-*",
-  "description": "Adaptive.ReactiveTrader.Server.Blotter Console Application",
-  "authors": [ "Qiming Liu" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
+  "version": "1.0.0",
+  "description": "Blotter Service",
+  "authors": [ "Adaptive Financial Consulting Ltd." ],
+  "tags": [ "Adaptive", "Reactive Trader" ],
+  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
   "dependencies": {
-     "Adaptive.ReactiveTrader.Server.Core": "1.0.0-*"
+    "Adaptive.ReactiveTrader.Server.Core": "1.0.0"
   },
 
   "commands": {

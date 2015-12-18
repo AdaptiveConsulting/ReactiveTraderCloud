@@ -52,7 +52,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
                 LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
                 {
-                    ShowLogName = true,
+                    ShowLogName = true
                 };
 
                 if (_config.PopulateEventStore)
@@ -202,10 +202,10 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             _terminationSignal.Set();
             _running = false;
         }
-        
+
         private static void Usage()
         {
-            Console.WriteLine("Reactive Trader launcher v{0}", Assembly.GetAssembly(typeof (Program)).GetName().Version);
+            Console.WriteLine("Reactive Trader launcher v{0}", Assembly.GetAssembly(typeof(Program)).GetName().Version);
             Console.WriteLine();
             Console.WriteLine("usage dnx run [service] [options]");
 

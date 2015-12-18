@@ -15,8 +15,7 @@ namespace Adaptive.ReactiveTrader.Contract
 
         public override string ToString()
         {
-            return string.Format("Symbol: {0}, RatePrecision: {1}, PipsPosition: {2}", Symbol, RatePrecision,
-                PipsPosition);
+            return $"Symbol: {Symbol}, RatePrecision: {RatePrecision}, PipsPosition: {PipsPosition}";
         }
     }
 }

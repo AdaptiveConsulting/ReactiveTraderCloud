@@ -1,8 +1,8 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Common.Logging;
 using Newtonsoft.Json;
 
@@ -19,7 +19,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             RegisterCallResponse("executeTrade", ExecuteTrade);
             StartHeartBeat();
         }
-        
+
         public Task<ExecuteTradeResponseDto> ExecuteTrade(IRequestContext context, IMessage message)
         {
             if (Log.IsDebugEnabled)

@@ -1,9 +1,8 @@
-﻿using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.EventStore.Domain;
-using System;
-using System.Globalization;
+﻿using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
+using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
 using Common.Logging;
 
@@ -22,23 +21,36 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             _tradeIdProvider = tradeIdProvider;
         }
 
+        public void Dispose()
+        {
+            Log.Warn("Not disposed.");
+        }
+
         public async Task<ExecuteTradeResponseDto> ExecuteAsync(ExecuteTradeRequestDto request, string user)
         {
             var id = await _tradeIdProvider.GetNextId();
             var tradeDate = DateTime.UtcNow;
 
             DateTime valueDate;
-            if( !DateTime.TryParse(request.ValueDate, out valueDate) )
+            if (!DateTime.TryParse(request.ValueDate, out valueDate))
             {
                 valueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday();
             }
 
 
-            var trade = new Trade(id, user, request.CurrencyPair, request.SpotRate, tradeDate, valueDate.ToUniversalTime(), request.Direction, request.Notional, request.DealtCurrency);
+            var trade = new Trade(id,
+                                  user,
+                                  request.CurrencyPair,
+                                  request.SpotRate,
+                                  tradeDate,
+                                  valueDate.ToUniversalTime(),
+                                  request.Direction,
+                                  request.Notional,
+                                  request.DealtCurrency);
             await _repository.SaveAsync(trade);
 
             await ExecuteImpl(trade);
-            
+
             // We do the saving in two phases here as this gives us the created event emitted when the first save happens, then
             // the completed/rejected event emitted after the actual execution happens, which will be after a slight delay.
             // This gives us a sequence of events that is more like a real world application
@@ -86,11 +98,6 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             {
                 trade.Complete();
             }
-        }
-
-        public void Dispose()
-        {
-            Log.Warn("Not disposed.");
         }
     }
 }

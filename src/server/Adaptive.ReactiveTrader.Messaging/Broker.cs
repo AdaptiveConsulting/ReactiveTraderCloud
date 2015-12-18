@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using SystemEx;
+using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Adaptive.ReactiveTrader.Messaging.WAMP;
 using Common.Logging;
 using WampSharp.V2;
@@ -17,13 +18,12 @@ namespace Adaptive.ReactiveTrader.Messaging
     internal class Broker : IBroker, IDisposable
     {
         private static readonly ILog Log = LogManager.GetLogger<Broker>();
+        private readonly Subject<Unit> _brokerTeardown;
 
         private readonly IWampChannel _channel;
         private readonly WampMetaApiServiceProxy _meta;
         private readonly IObservable<long> _sessionTeardowns;
         private readonly IObservable<long> _subscriptionTeardowns;
-        private readonly Subject<Unit> _brokerTeardown;
-
 
 
         public Broker(IWampChannel channel)
@@ -55,7 +55,8 @@ namespace Adaptive.ReactiveTrader.Messaging
                     {
                         var r = await _meta.SubscribeTo.Subscription.OnUnsubscribe(
                             (sessionID, subscriptionId) => { observer.OnNext(subscriptionId); });
-                        return Disposable.Create(async () => {
+                        return Disposable.Create(async () =>
+                        {
                             try
                             {
                                 await r.DisposeAsync();
@@ -71,7 +72,7 @@ namespace Adaptive.ReactiveTrader.Messaging
         }
 
         public async Task<IAsyncDisposable> RegisterCall(string procName,
-            Func<IRequestContext, IMessage, Task> onMessage)
+                                                         Func<IRequestContext, IMessage, Task> onMessage)
         {
             if (Log.IsInfoEnabled)
             {
@@ -91,7 +92,7 @@ namespace Adaptive.ReactiveTrader.Messaging
         }
 
         public async Task<IAsyncDisposable> RegisterCallResponse<TResponse>(string procName,
-            Func<IRequestContext, IMessage, Task<TResponse>> onMessage)
+                                                                            Func<IRequestContext, IMessage, Task<TResponse>> onMessage)
         {
             if (Log.IsInfoEnabled)
             {
@@ -103,7 +104,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
             var registerOptions = new RegisterOptions
             {
-                Invoke = "roundrobin",
+                Invoke = "roundrobin"
             };
 
             return await realm.RpcCatalog.Register(rpcOperation, registerOptions);
@@ -132,10 +133,10 @@ namespace Adaptive.ReactiveTrader.Messaging
 
             var breaker =
                 _sessionTeardowns.Where(s => s == sessionID).Select(_ => Unit.Default)
-                    .Merge(_subscriptionTeardowns.Where(s => s == subID.Value).Select(_ => Unit.Default))
-                        .Merge(_brokerTeardown)
-                    .Take(1)
-                    .Do(o => Log.DebugFormat("Remove subscription for {0} ({1})", subID, dest));
+                                 .Merge(_subscriptionTeardowns.Where(s => s == subID.Value).Select(_ => Unit.Default))
+                                 .Merge(_brokerTeardown)
+                                 .Take(1)
+                                 .Do(o => Log.DebugFormat("Remove subscription for {0} ({1})", subID, dest));
 
             var subject = _channel.RealmProxy.Services.GetSubject<T>(dest.Topic);
 
@@ -145,7 +146,7 @@ namespace Adaptive.ReactiveTrader.Messaging
         public Task<IEndPoint<T>> GetPublicEndPoint<T>(string destination)
         {
             var subject = _channel.RealmProxy.Services.GetSubject<T>(destination);
-            return Task.FromResult((IEndPoint<T>)new EndPoint<T>(subject));
+            return Task.FromResult((IEndPoint<T>) new EndPoint<T>(subject));
         }
 
         public IObservable<T> SubscribeToTopic<T>(string topic)
@@ -155,7 +156,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public void Dispose()
         {
-          _brokerTeardown.OnNext(Unit.Default);
+            _brokerTeardown.OnNext(Unit.Default);
         }
     }
 }

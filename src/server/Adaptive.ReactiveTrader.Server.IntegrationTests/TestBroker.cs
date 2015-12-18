@@ -8,6 +8,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
     public class TestBroker
     {
         private readonly IWampChannel _channel;
+
         public TestBroker()
         {
             _channel = new WampChannelFactory()

@@ -1,18 +1,13 @@
 ﻿{
-  "version": "1.0.0-*",
-  "description": "Adaptive.ReactiveTrader.Server.Analytics Console Application",
-  "authors": [ "qiming" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
+  "version": "1.0.0",
+  "description": "Analytics Service",
+  "authors": [ "Adaptive Financial Consulting Ltd." ],
+  "tags": [ "Adaptive", "Reactive Trader" ],
+  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
   "dependencies": {
-    "Adaptive.ReactiveTrader.EventStore": "",
-    "Common.Logging": "3.3.1",
-    "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
-    "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
-    "Adaptive.ReactiveTrader.Server.Core": "1.0.0-*",
-    "Adaptive.ReactiveTrader.Common": "1.0.0-*"
+    "Adaptive.ReactiveTrader.Server.Core": "1.0.0"
   },
 
   "commands": {

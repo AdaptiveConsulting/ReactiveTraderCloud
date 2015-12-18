@@ -1,11 +1,11 @@
+using System;
+using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Core;
 using Common.Logging;
 using EventStore.ClientAPI;
-using System;
-using System.Reactive.Disposables;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
@@ -23,7 +23,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         {
             var repositoryStream = eventStoreStream.LaunchOrKill(conn => new Repository(conn));
             var serviceStream = repositoryStream.LaunchOrKill(engine => new ReferenceWriteService(engine));
-            _cleanup.Disposable = serviceStream.LaunchOrKill(brokerStream, (service, broker) => new ReferenceWriteServiceHost(service, broker)).Subscribe();
+            _cleanup.Disposable =
+                serviceStream.LaunchOrKill(brokerStream, (service, broker) => new ReferenceWriteServiceHost(service, broker)).Subscribe();
 
             return _cleanup;
         }
