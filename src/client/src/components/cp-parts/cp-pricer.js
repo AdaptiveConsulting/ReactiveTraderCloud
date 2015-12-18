@@ -6,9 +6,9 @@ import React from 'react';
 export default class Pricer extends React.Component {
 
   static propTypes = {
-    price: React.PropTypes.object,
-    direction: React.PropTypes.string,
-    onExecute: React.PropTypes.func
+    price: React.PropTypes.object.isRequired,
+    direction: React.PropTypes.string.isRequired,
+    onExecute: React.PropTypes.func.isRequired
   }
 
   render(){
@@ -19,4 +19,5 @@ export default class Pricer extends React.Component {
       <span className='big'>{price.bigFigures}</span><span className='pip'>{price.pip}</span><span className='tenth'>{price.pipFraction}</span>
     </div>;
   }
+
 }
