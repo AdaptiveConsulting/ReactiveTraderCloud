@@ -12,25 +12,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         private readonly Dictionary<string, IObservable<SpotPriceDto>> _priceStreams =
             new Dictionary<string, IObservable<SpotPriceDto>>();
 
-        private CompositeDisposable _disposable = new CompositeDisposable();
-
-        private static IPriceGenerator CreatePriceGenerator(string symbol, decimal initial, int precision = 4)
-        {
-            return new RandomWalkPriceGenerator(symbol, initial, precision);
-        }
-
-        private static IObservable<Unit> CreatePriceTrigger(bool delayPeriods)
-        {
-            if (delayPeriods)
-                return
-                    Observable.Interval(TimeSpan.FromSeconds(0.5))
-                        .Take(TimeSpan.FromSeconds(30))
-                        .Concat(Observable.Interval(TimeSpan.FromSeconds(10)).Take(1))
-                        .Repeat()
-                        .Select(_ => Unit.Default);
-
-            return Observable.Interval(TimeSpan.FromSeconds(0.5)).Select(_ => Unit.Default);
-        }
+        private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
         public PriceSource()
         {
@@ -78,11 +60,34 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
                     return disp;
                 })
-                    .Replay(1)
-                    .RefCount();
+                                           .Replay(1)
+                                           .RefCount();
 
                 _priceStreams.Add(ccy.Symbol, observable);
             }
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+        }
+
+        private static IPriceGenerator CreatePriceGenerator(string symbol, decimal initial, int precision = 4)
+        {
+            return new RandomWalkPriceGenerator(symbol, initial, precision);
+        }
+
+        private static IObservable<Unit> CreatePriceTrigger(bool delayPeriods)
+        {
+            if (delayPeriods)
+                return
+                    Observable.Interval(TimeSpan.FromSeconds(0.5))
+                              .Take(TimeSpan.FromSeconds(30))
+                              .Concat(Observable.Interval(TimeSpan.FromSeconds(10)).Take(1))
+                              .Repeat()
+                              .Select(_ => Unit.Default);
+
+            return Observable.Interval(TimeSpan.FromSeconds(0.5)).Select(_ => Unit.Default);
         }
 
         public IObservable<SpotPriceDto> GetPriceStream(string symbol)
@@ -93,11 +98,6 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         public IObservable<SpotPriceDto> GetAllPricesStream()
         {
             return _priceStreams.Values.Merge();
-        } 
-
-        public void Dispose()
-        {
-            _disposable.Dispose();
         }
     }
 }

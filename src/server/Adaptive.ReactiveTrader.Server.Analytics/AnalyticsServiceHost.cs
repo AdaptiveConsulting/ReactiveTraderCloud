@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Reactive.Disposables;
-using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Messaging;
-using Common.Logging;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Adaptive.ReactiveTrader.Server.Core;
+using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsServiceHost : ServiceHostBase
     {
         private new static readonly ILog Log = LogManager.GetLogger<AnalyticsServiceHost>();
-        private readonly IAnalyticsService _service;
         private readonly IBroker _broker;
-        private readonly TradeCache _tradeCache;
+        private readonly IAnalyticsService _service;
         private readonly CompositeDisposable _subscriptions;
+        private readonly TradeCache _tradeCache;
 
         public AnalyticsServiceHost(IAnalyticsService service, IBroker broker, TradeCache tradeCache) : base(broker, "analytics")
         {
@@ -35,16 +36,16 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             Log.Info("Subscribing to prices topic...");
 
             _subscriptions.Add(_broker.SubscribeToTopic<SpotPriceDto>("prices")
-                .Subscribe(p => _service.OnPrice(p)));
+                                      .Subscribe(p => _service.OnPrice(p)));
 
             Log.Info("Subscribed to prices topic");
 
             Log.Info("Subscribing to trades...");
 
             _subscriptions.Add(_tradeCache.GetTrades()
-                .SelectMany(t => t.Trades)
-                .Where(t => t.Status == TradeStatusDto.Done)
-                .Subscribe(t => _service.OnTrade(t)));
+                                          .SelectMany(t => t.Trades)
+                                          .Where(t => t.Status == TradeStatusDto.Done)
+                                          .Subscribe(t => _service.OnTrade(t)));
 
             Log.Info("Subscribed to trades");
         }
@@ -56,8 +57,8 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             var endPoint = await _broker.GetPrivateEndPoint<PositionUpdatesDto>(message.ReplyTo);
 
             _subscriptions.Add(_service.GetAnalyticsStream()
-                .TakeUntil(endPoint.TerminationSignal)
-                .Subscribe(endPoint));
+                                       .TakeUntil(endPoint.TerminationSignal)
+                                       .Subscribe(endPoint));
         }
 
         public override void Dispose()

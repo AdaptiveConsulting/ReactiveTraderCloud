@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: "__SERVICE__"
+  namespace: "__NAMESPACE__"
+  labels:
+    name: "__SERVICE__"
+    major: "__MAJOR__" 
+    minor: "__MINOR__"
+    build: "__BUILD__" 
+spec:
+  replicas: 1
+  selector:
+    name: "__SERVICE__"
+    major: "__MAJOR__" 
+    minor: "__MINOR__"
+    build: "__BUILD__"
+  template:
+    metadata:
+      labels:
+        name: "__SERVICE__"
+        major: "__MAJOR__" 
+        minor: "__MINOR__"
+        build: "__BUILD__"
+    spec:
+      containers:
+      - name: "__SERVICE__"
+        image: "__DOCKERIMAGE__"
+        command: [ "dnx", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.Analytics", "prod"]

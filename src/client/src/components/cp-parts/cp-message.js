@@ -2,6 +2,12 @@ import React from 'react';
 import numeral from 'numeral';
 
 export default class Message extends React.Component {
+
+  static propTypes ={
+    message: React.PropTypes.object.isRequired,
+    onClick: React.PropTypes.func
+  }
+
   /**
    * Parses an ACK response string, saves element into instance until user action
    * @param {Object} response
@@ -38,4 +44,5 @@ export default class Message extends React.Component {
   render(){
     return this.renderMessage(this.props.message);
   }
+
 }

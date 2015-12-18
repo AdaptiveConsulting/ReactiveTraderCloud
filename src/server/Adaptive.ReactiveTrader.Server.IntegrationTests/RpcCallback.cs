@@ -37,15 +37,20 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             throw new Exception("Execute Trade error: " + error);
         }
 
-        public void Error<TMessage>(IWampFormatter<TMessage> formatter, TMessage details, string error, TMessage[] arguments,
-            TMessage argumentsKeywords)
+        public void Error<TMessage>(IWampFormatter<TMessage> formatter,
+                                    TMessage details,
+                                    string error,
+                                    TMessage[] arguments,
+                                    TMessage argumentsKeywords)
         {
             Console.WriteLine("response 5");
             throw new Exception("Execute Trade error: " + error);
         }
 
-        public void Result<TMessage>(IWampFormatter<TMessage> formatter, ResultDetails details, TMessage[] arguments,
-            IDictionary<string, TMessage> argumentsKeywords)
+        public void Result<TMessage>(IWampFormatter<TMessage> formatter,
+                                     ResultDetails details,
+                                     TMessage[] arguments,
+                                     IDictionary<string, TMessage> argumentsKeywords)
         {
             _successCallback();
         }

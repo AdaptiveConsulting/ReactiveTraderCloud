@@ -34,3 +34,4 @@ build=$2
 ./rollingUpdate $namespace pricing           $build
 ./rollingUpdate $namespace referencedataread $build
 ./rollingUpdate $namespace tradeexecution    $build
+./rollingUpdate $namespace analytics         $build

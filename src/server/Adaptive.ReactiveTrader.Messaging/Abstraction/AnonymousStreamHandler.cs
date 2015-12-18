@@ -1,12 +1,12 @@
 using System;
 
-namespace Adaptive.ReactiveTrader.Messaging
+namespace Adaptive.ReactiveTrader.Messaging.Abstraction
 {
     public class AnonymousStreamHandler<TUpdate> : IStreamHandler<TUpdate>
     {
-        private readonly Action<TUpdate> _onUpdated;
-        private readonly Action<Exception> _onFailed;
         private readonly Action _onCompleted;
+        private readonly Action<Exception> _onFailed;
+        private readonly Action<TUpdate> _onUpdated;
 
         public AnonymousStreamHandler(Action<TUpdate> onUpdated, Action<Exception> onFailed, Action onCompleted)
         {

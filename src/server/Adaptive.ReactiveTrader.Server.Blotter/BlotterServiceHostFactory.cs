@@ -1,11 +1,11 @@
-using Adaptive.ReactiveTrader.Messaging;
-using Common.Logging;
-using EventStore.ClientAPI;
 using System;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
+using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Core;
+using Common.Logging;
+using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
@@ -13,15 +13,10 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
     {
         protected static readonly ILog Log = LogManager.GetLogger<BlotterServiceHostFactory>();
 
-        private BlotterService _service;
+        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
         private TradeCache _cache;
 
-        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
-
-        public Task<ServiceHostBase> Create(IBroker broker)
-        {
-            return Task.FromResult<ServiceHostBase>(new BlotterServiceHost(_service, broker));
-        }
+        private BlotterService _service;
 
         public void Dispose()
         {
@@ -42,6 +37,11 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             _cleanup.Add(disposable);
 
             return disposable;
+        }
+
+        public Task<ServiceHostBase> Create(IBroker broker)
+        {
+            return Task.FromResult<ServiceHostBase>(new BlotterServiceHost(_service, broker));
         }
     }
 }

@@ -10,9 +10,36 @@ namespace Adaptive.ReactiveTrader.Common.Config
 {
     public class ServiceConfiguration : IServiceConfiguration
     {
+        private const string ConfigFolderName = "configs";
         private static readonly ILog Log = LogManager.GetLogger<ServiceConfiguration>();
 
-        private const string ConfigFolderName = "configs";
+        private readonly IConfigurationRoot _config;
+
+        private readonly string[] searchPaths =
+        {
+            Path.Combine(Environment.CurrentDirectory, ConfigFolderName),
+            Path.Combine(Environment.CurrentDirectory, "..", ConfigFolderName)
+        };
+
+        private ServiceConfiguration(string[] args) : this(args.Any() ? args.First() : "config.dev.json")
+        {
+        }
+
+        private ServiceConfiguration(string configFile)
+        {
+            var physicalLocation = searchPaths.Select(p => Path.Combine(p, configFile))
+                                              .FirstOrDefault(File.Exists);
+
+            if (physicalLocation == null) throw new FileNotFoundException("Cannon file config", configFile);
+
+            _config = new ConfigurationBuilder(new JsonConfigurationProvider(physicalLocation)).Build();
+
+            Broker = new BrokerConfiguration(_config.GetSection("broker"));
+            EventStore = new EventStoreConfiguration(_config.GetSection("eventStore"));
+        }
+
+        public IEventStoreConfiguration EventStore { get; }
+        public IBrokerConfiguration Broker { get; }
 
         public static IServiceConfiguration FromArgs(string[] args)
         {
@@ -31,37 +58,10 @@ namespace Adaptive.ReactiveTrader.Common.Config
 
             return config;
         }
-        
-        private readonly IConfigurationRoot _config;
-
-        private ServiceConfiguration(string[] args) : this(args.Any() ? args.First() : "config.dev.json")
-        {
-        }
-
-        private ServiceConfiguration(string configFile)
-        {
-            var physicalLocation = searchPaths.Select(p => Path.Combine(p, configFile))
-                                              .FirstOrDefault(File.Exists);
-
-            if( physicalLocation == null ) throw new FileNotFoundException("Cannon file config",configFile);
-
-            _config = new ConfigurationBuilder(new JsonConfigurationProvider(physicalLocation)).Build();
-
-            Broker = new BrokerConfiguration(_config.GetSection("broker"));
-            EventStore = new EventStoreConfiguration(_config.GetSection("eventStore"));
-        }
-
-        public IEventStoreConfiguration EventStore { get; }
-        public IBrokerConfiguration Broker { get; }
 
         public IEnumerable<KeyValuePair<string, string>> GetEntries()
         {
             return _config.EnumerateEntries();
         }
-
-        private readonly string[] searchPaths = {
-            Path.Combine(Environment.CurrentDirectory, ConfigFolderName),
-            Path.Combine(Environment.CurrentDirectory, "..", ConfigFolderName)
-        };
     }
 }

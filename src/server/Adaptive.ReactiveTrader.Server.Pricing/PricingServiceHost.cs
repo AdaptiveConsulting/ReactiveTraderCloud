@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Common.Logging;
 using Newtonsoft.Json;
 
@@ -12,12 +13,12 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     public class PricingServiceHost : ServiceHostBase
     {
         protected new static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
-
-        private readonly IPricingService _service;
         private readonly IBroker _broker;
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
-        public PricingServiceHost(IPricingService service, IBroker broker) :base( broker, "pricing")
+        private readonly IPricingService _service;
+
+        public PricingServiceHost(IPricingService service, IBroker broker) : base(broker, "pricing")
         {
             _service = service;
             _broker = broker;
@@ -37,7 +38,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         public async Task GetPriceUpdates(IRequestContext context, IMessage message)
         {
             Log.DebugFormat("{1} Received GetPriceUpdates from [{0}]",
-                context.UserSession.Username ?? "Unknown User", this);
+                            context.UserSession.Username ?? "Unknown User",
+                            this);
 
             var spotStreamRequest =
                 JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
@@ -46,8 +48,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             var endpoint = await _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo);
 
             var disposable = _service.GetPriceUpdates(context, spotStreamRequest)
-                .TakeUntil(endpoint.TerminationSignal)
-                .Subscribe(endpoint);
+                                     .TakeUntil(endpoint.TerminationSignal)
+                                     .Subscribe(endpoint);
 
             _cleanup.Add(disposable);
         }

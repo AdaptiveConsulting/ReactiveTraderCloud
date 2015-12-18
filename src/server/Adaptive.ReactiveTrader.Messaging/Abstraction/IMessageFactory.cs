@@ -1,6 +1,6 @@
 using System;
 
-namespace Adaptive.ReactiveTrader.Messaging
+namespace Adaptive.ReactiveTrader.Messaging.Abstraction
 {
     public interface IMessageFactory
     {
