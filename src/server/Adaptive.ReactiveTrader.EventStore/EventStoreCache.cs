@@ -42,7 +42,7 @@ namespace Adaptive.ReactiveTrader.EventStore
         protected EventStoreCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream, ILog log)
         {
             Log = log;
-            Disposables = new CompositeDisposable();
+            Disposables = new CompositeDisposable(_eventsConnection, _eventsSubscription);
 
             _connectionChanged = eventStoreConnectionStream.ObserveOn(_eventLoopScheduler)
                                                            .Publish();
@@ -80,8 +80,6 @@ namespace Adaptive.ReactiveTrader.EventStore
 
         public virtual void Dispose()
         {
-            _eventsSubscription.Dispose();
-            _eventsConnection.Dispose();
             Disposables.Dispose();
         }
 
