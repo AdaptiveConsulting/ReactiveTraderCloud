@@ -14,10 +14,12 @@ export default class Pricer extends React.Component {
   render(){
     const { direction, price } = this.props;
 
-    return <div className={direction + ' action'} onClick={() => this.props.onExecute(direction)}>
-      <div>{direction}</div>
-      <span className='big'>{price.bigFigures}</span><span className='pip'>{price.pip}</span><span className='tenth'>{price.pipFraction}</span>
-    </div>;
+    return (
+      <div className={direction + ' action'} onClick={() => this.props.onExecute(direction)}>
+        <div>{direction}</div>
+        <span className='big'>{price.bigFigures}</span><span className='pip'>{price.pip}</span><span className='tenth'>{price.pipFraction}</span>
+      </div>
+    );
   }
 
 }
