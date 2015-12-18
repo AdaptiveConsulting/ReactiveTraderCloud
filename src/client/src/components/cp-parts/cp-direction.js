@@ -4,7 +4,7 @@ export default class Direction extends React.Component {
 
   static propTypes ={
     direction: React.PropTypes.string.isRequired,
-    spread: React.PropTypes.isRequired
+    spread: React.PropTypes.string.isRequired
   }
 
   render(){
