@@ -272,7 +272,7 @@ class CurrencyPair extends React.Component {
         <div className='clearfix'></div>
         <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})}
                pair={pair} />
-        <div className="clearfix"></div>
+        <div className='clearfix'></div>
         {chart ?
           <Sparklines
             data={historic.slice()}

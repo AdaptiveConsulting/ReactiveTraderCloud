@@ -50,7 +50,7 @@
     "react/jsx-no-literals": 0,
     "react/jsx-no-undef": 1,
     "react/jsx-pascal-case": 1,
-    "react/jsx-quotes": 1,
+    "jsx-quotes": [1, "prefer-single"],
     "react/jsx-sort-prop-types": 0,
     "react/jsx-sort-props": 0,
     "react/jsx-uses-react": 1,
