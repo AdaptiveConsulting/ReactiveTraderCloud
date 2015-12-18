@@ -57,3 +57,6 @@ And on Mac OS
 The simplest way to run the full application no matter which OS you are running is by using Docker.
 
 [Getting Started using Docker](/docs/docker-setup.md)
+
+
+{{>src/client/README.md}}

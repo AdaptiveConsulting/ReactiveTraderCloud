@@ -1,26 +1,23 @@
-Reactive Trader Cloud - UI
-=======================
+## Reactive Trader Cloud - UI
 
-Table of Contents
------------------
-1. [Requirements](#requirements)
-1. [Features](#features)
-1. [Getting Started](#getting-started)
-1. [Usage](#usage)
-1. [Structure](#structure)
-1. [Webpack](#webpack)
-1. [Styles](#styles)
-1. [Testing](#testing)
-1. [Utilities](#utilities)
-1. [Troubleshooting](#troubleshooting)
+### Table of Contents
 
-Requirements
-------------
+- [Requirements](#requirements)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Structure](#structure)
+- [Webpack](#webpack)
+- [Styles](#styles)
+- [Testing](#testing)
+- [Utilities](#utilities)
+- [Troubleshooting](#troubleshooting)
 
-Node `^4.0.0` or `^5.0.0` ([npm3](https://www.npmjs.com/package/npm3) recommended), `npm@3.x.x`
+> _Requirements_
+>
+> Node `^4.0.0` or `^5.1.0` ([npm3](https://www.npmjs.com/package/npm3) recommended), `npm@3.x.x`
 
-Features
---------
+### Features
 
 * [React](https://github.com/facebook/react) (`^0.14.0`)
   * Includes react-addons-test-utils (`^0.14.0`)
@@ -42,8 +39,7 @@ Features
   * Uses [Airbnb's ESLint config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb) (with some softened rules)
   * Includes separate test-specific `.eslintrc` to work with Mocha and Chai
 
-Getting Started
----------------
+### Getting Started
 
 Just clone the repo and install the necessary node modules:
 
@@ -53,47 +49,63 @@ $ npm i                         # Install Node modules listed in ./package.json 
 $ npm start                     # Compile and launch
 ```
 
-Usage
------
+### Usage
 
-#### `npm start`
+```sh
+npm start
+```
 Runs the webpack build system with webpack-dev-server (by default found at `localhost:3000`).
 
-#### `npm run dev`
+```sh
+npm run dev
+```
 Same as `npm run start` but opens the debug tools in a new window.
 
-#### `npm run compile`
+```sh
+npm run compile
+```
 Runs the webpack build system with your current NODE_ENV and compiles the application to disk (`~/dist`).
 
-#### `npm run test`
+```sh
+npm run test
+```
 Runs unit tests with Karma and generates coverage reports.
 
-#### `npm run test:dev`
+```sh
+npm run test:dev
+```
 Similar to `npm run test`, but will watch for changes and re-run tests; does not generate coverage reports.
 
-#### `npm run lint`
+```sh
+npm run lint
+```
 Run ESLint against all `.js` files in `~/src`. This used to be a webpack preloader, but the browser console output could get fairly ugly. If you want development-time linting, consider using an `eslint` plugin for your text editor.
 
-#### `npm run lint:tests`
+```sh
+npm run lint:tests
+```
 Lint all `.spec.js` files in of `~/tests`.
 
-#### `npm run deploy`
+```sh
+npm run deploy
+```
 Helper script to run linter, tests, and then, on success, compile your application to disk.
 
-### `npm run dist`
+```sh
+npm run dist
+```
 Runs build and starts the backend server, mounting `dist` as root with port configured as `8888`
 
 ### Configuration
 
 Basic project configuration can be found in `~/config/index.js`. Here you'll be able to redefine your src and dist directories, add/remove aliases, tweak your vendor dependencies, and more. For the most part, you should be able to make your changes in here without ever having to touch the webpack build configuration.
 
-Webpack
--------
+### Webpack
 
-### Configuration
+#### Configuration
 The webpack compiler configuration is located in `~/build/webpack`. Here you'll find configurations for each environment; `development`, `production`, and `development_hot` exist out of the box. These configurations are selected based on your current `NODE_ENV`, with the exception of `development_hot` which will _always_ be used by webpack dev server.
 
-### Vendor Bundle
+#### Vendor Bundle
 You can redefine which packages to treat as vendor dependencies by editing `vendor_dependencies` in `~/config/index.js`. These default to:
 
 ```js
@@ -107,7 +119,7 @@ You can redefine which packages to treat as vendor dependencies by editing `vend
 ]
 ```
 
-### Aliases
+#### Aliases
 As mentioned in features, the default webpack configuration provides some globals and aliases to make your life easier. These can be used as such:
 
 ```js
@@ -129,8 +141,7 @@ utils       => '~/src/utils'
 views       => '~/src/views'
 ```
 
-Styles
-------
+### Styles
 
 All `.scss` imports will be run through the sass-loader and extracted during production builds. If you're requiring styles from a base styles directory (useful for generic, app-wide styles), you can make use of the `styles` alias, e.g.:
 
@@ -154,15 +165,13 @@ Here's an example:
 @import 'base';
 ```
 
-Testing
--------
+### Testing
 
 To add a unit test, simply create `.spec.js` file anywhere in `~/tests`. Karma will pick up on these files automatically, and Mocha and Chai will be available within your test without the need to import them.
 
 Coverage reports will be compiled to `~/coverage` by default. If you wish to change what reporters are used and where reports are compiled, you can do so by modifying `coverage_reporters` in `~/config/index.js`.
 
-OpenFin
--------
+### OpenFin
 
 Currently, this is only available for Windows clients but likely will change Q1 of 2017 when OpenFin runtime moves to Electron.
 
