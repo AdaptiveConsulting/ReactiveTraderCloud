@@ -4,12 +4,14 @@ import Popout from '../utils/popout';
 class Container extends React.Component {
 
   static propTypes = {
-    onTearoff: React.PropTypes.func,
+    onTearoff: React.PropTypes.func.isRequired,
     onClose: React.PropTypes.func,
-    tearoff: React.PropTypes.bool,
-    title: React.PropTypes.string,
+    tearoff: React.PropTypes.bool.isRequired,
+    title: React.PropTypes.string.isRequired,
     width: React.PropTypes.number,
-    height: React.PropTypes.number
+    height: React.PropTypes.number,
+    options: React.PropTypes.object,
+    className: React.PropTypes.string
   }
 
   openTearoff(e){
@@ -22,13 +24,8 @@ class Container extends React.Component {
     this.props.onTearoff(false);
   }
 
-  toggleTearoff(e){
-
-  }
-
   render(){
-    const tearoff = this.props.tearoff,
-          title = this.props.title;
+    const { tearoff, title, children}  = this.props;
 
     const popupAttributes = {
       url: '/#/tile',
@@ -62,16 +59,16 @@ class Container extends React.Component {
     return !tearoff ?
       <div className={this.props.className}>
         <div className='container-control'>
-          <i className='tearoff-trigger glyphicon glyphicon-new-window' onClick={(e) => this.openTearoff(e)}/>
+          <i className='tearoff-trigger glyphicon glyphicon-new-window' onClick={(e) => this.openTearoff(e)} />
         </div>
-        {this.props.children}
+        {children}
       </div> :
       <Popout {...popupAttributes}>
         <div className={this.props.className}>
           <div className='container-control'>
-            <i className='glyphicon glyphicon-remove' onClick={(e) => this.closeTearoff(e)}/>
+            <i className='glyphicon glyphicon-remove' onClick={(e) => this.closeTearoff(e)} />
           </div>
-          {this.props.children}
+          {children}
         </div>
       </Popout>;
   }

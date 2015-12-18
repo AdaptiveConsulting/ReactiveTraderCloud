@@ -19,9 +19,12 @@ const tooltip = (d) =>{
 
 export default class Analytics extends React.Component {
 
+  displayName = 'Analytics'
+
   static propTypes = {
     history: React.PropTypes.array,
-    positions: React.PropTypes.array
+    positions: React.PropTypes.array,
+    status: React.PropTypes.any
   }
 
   constructor(props, context){
@@ -80,7 +83,7 @@ export default class Analytics extends React.Component {
         right: 0,
         bottom: 0
       }
-    }
+    };
   }
 
   tearOff(state){
@@ -130,7 +133,7 @@ export default class Analytics extends React.Component {
         name: pos.Symbol,
         label: pos.Symbol,
         values: [pos]
-      }
+      };
     }) : [{
       name: 'Pos/PnL',
       values: this.props.positions.map((pos) => {
@@ -143,66 +146,73 @@ export default class Analytics extends React.Component {
 
   render(){
     if (!this.props.status)
-      return <span></span>;
+      return <span />;
 
     let pnl;
 
     const PNLValues = this.state.series[0].values,
-          { domainMin, domainMax } = this.state,
-          configure = (chart) => {
-            chart.yDomain([domainMin, domainMax]).yRange([150, 0]);
-            chart.interactiveLayer.tooltip.contentGenerator(tooltip);
-          };
+          { domainMin, domainMax } = this.state;
 
-    const c = (chart) => {
+    const configurePnLChart = (chart) => {
+      chart.yDomain([domainMin, domainMax]).yRange([150, 0]);
+      chart.interactiveLayer.tooltip.contentGenerator(tooltip);
+    };
+
+    const configurePositionsChart = (chart) => {
       chart.tooltip.enabled(false);
-      //chart.tooltip.contentGenerator(tooltip);
-      //chart.tooltip.chartContainer(this.refs.pnlcontainer);
     };
 
     const positionsSeries = this.getPositionData();
 
-    // this.chartPositionsOptions.interactiveLayer.tooltip.chartContainer = this.refs.pnlcontainer;
-
     const classMap = {
       pnl: this.state.positionType === 'BasePnl' ? 'selected': '',
       pos: this.state.positionType !== 'BasePnl' ? 'selected': ''
-    }
-    return <Container title='analytics' className='analytics-container animated slideInRight' onTearoff={(state) => this.tearOff(state)}
-                      tearoff={this.state.tearoff} width={400} height={600} options={{maximizable:true}}>
+    };
 
-      <span className="header">Profit & Loss <small className="text-small">USD {this.state.lastPos}</small></span>
+    return (
+      <Container
+        title='analytics'
+        className='analytics-container animated slideInRight'
+        onTearoff={(state) => this.tearOff(state)}
+        tearoff={this.state.tearoff}
+        width={400}
+        height={600}
+        options={{maximizable:true}}>
 
-      <div className="nv-container" ref="container">
-        {(PNLValues && PNLValues.length) ?
+        <span className='header'>Profit & Loss <small className='text-small'>USD {this.state.lastPos}</small></span>
+
+        <div className='nv-container'>
+          {(PNLValues && PNLValues.length) ?
+            <NVD3Chart
+              type={LINECHART}
+              datum={this.state.series}
+              options={this.chartPnlOptions}
+              height={150}
+              configure={configurePnLChart}/> :
+            <div>No PNL data yet</div>}
+        </div>
+
+        <span>Positions / PNL</span>
+        <div className='buttons'>
+          <button
+            className={classMap.pnl + ' pull-right btn btn-small btn-default'}
+            onClick={() => this.setState({positionType: 'BasePnl'})}>PnL</button>
+          <button
+            className={classMap.pos + ' pull-right btn btn-small btn-default'}
+            onClick={() => this.setState({positionType: 'BaseTradedAmount'})}>Positions</button>
+        </div>
+
+        <div className='nv-container clearfix pnlchart' >
           <NVD3Chart
-            type={LINECHART}
-            datum={this.state.series}
-            options={this.chartPnlOptions}
-            height={150}
-            configure={configure}
-          /> :
-          <div>No PNL data yet</div>}
-      </div>
-
-      <span>Positions / PNL</span>
-      <div className="buttons">
-        <button className={classMap.pnl + ' pull-right btn btn-small btn-default'} onClick={() => this.setState({positionType: 'BasePnl'})}>PnL</button>
-        <button className={classMap.pos + ' pull-right btn btn-small btn-default'} onClick={() => this.setState({positionType: 'BaseTradedAmount'})}>Positions</button>
-      </div>
-
-      <div className="nv-container clearfix pnlchart" ref="pnlcontainer">
-        <NVD3Chart
-           type='multiBarHorizontalChart'
-           datum={positionsSeries}
-           options={this.chartPositionsOptions}
-           height={300}
-           x='Symbol'
-           configure={c}
-           y={this.state.positionType}
-        />
-      </div>
-    </Container>;
-
+            type='multiBarHorizontalChart'
+            datum={positionsSeries}
+            options={this.chartPositionsOptions}
+            height={300}
+            x='Symbol'
+            configure={configurePositionsChart}
+            y={this.state.positionType}/>
+        </div>
+    </Container>
+    );
   }
 }

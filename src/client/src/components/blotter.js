@@ -33,11 +33,9 @@ class CurrencyPairs extends React.Component {
             id
           });
 
-          trade && (this.setState({
-            flagged: id
-          }));
+          trade && (this.setState({flagged: id})); // eslint-disable-line
         });
-      })
+      });
     }
   }
 
@@ -56,7 +54,8 @@ class CurrencyPairs extends React.Component {
     flagged && flagged === trade.id && (trade.className = 'flash');
 
     return (
-      <tr key={trade.id} className={trade.status + ' animated ' + (trade.className || 'slideInDown')}>
+      <tr key={trade.id}
+        className={trade.status + ' animated ' + (trade.className || 'slideInDown')}>
         <td>{trade.id}</td>
         <td className='large'>
           <div>{dateTime}</div>
@@ -89,35 +88,43 @@ class CurrencyPairs extends React.Component {
   render(){
     const className = this.props.status ? 'blotter online' : 'blotter offline';
 
-    return <Container title='blotter' className={className} onTearoff={(state) => this.tearOff(state)}
-                      tearoff={this.state.tearoff} width={window.outerWidth} height={400} options={{maximizable:true}}>
-      <div className="blotter-wrapper">
-        <div className='status'>
-          <i className='fa fa-plug animated infinite fadeIn'/>
-        </div>
-        <table className='table table-compact table-heading'>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th className='large'>Date</th>
-              <th>Dir.</th>
-              <th>CCY</th>
-              <th className='large text-right'>Notional</th>
-              <th className='text-right'>Rate</th>
-              <th>Status</th>
-              <th>Value date</th>
-              <th className='large'>Trader</th>
-            </tr>
-          </thead>
-        </table>
-        <table className='table table-compact table-blotter'>
-          <tbody ref='tbody'>
-            {this.props.trades.map(this.renderRow, this)}
-          </tbody>
-        </table>
+    return (
+        <Container
+          title='blotter'
+          className={className}
+          onTearoff={(state) => this.tearOff(state)}
+          tearoff={this.state.tearoff}
+          width={window.outerWidth}
+          height={400}
+          options={{maximizable:true}}>
+        <div className="blotter-wrapper">
+          <div className='status'>
+            <i className='fa fa-plug animated infinite fadeIn'/>
+          </div>
+          <table className='table table-compact table-heading'>
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th className='large'>Date</th>
+                <th>Dir.</th>
+                <th>CCY</th>
+                <th className='large text-right'>Notional</th>
+                <th className='text-right'>Rate</th>
+                <th>Status</th>
+                <th>Value date</th>
+                <th className='large'>Trader</th>
+              </tr>
+            </thead>
+          </table>
+          <table className='table table-compact table-blotter'>
+            <tbody ref='tbody'>
+              {this.props.trades.map(this.renderRow, this)}
+            </tbody>
+          </table>
 
-      </div>
-    </Container>;
+        </div>
+      </Container>
+    );
   }
 }
 
