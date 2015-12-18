@@ -21,6 +21,8 @@ class CurrencyPair extends React.Component {
     pair: React.PropTypes.string,
     buy: React.PropTypes.number,
     sell: React.PropTypes.number,
+    size: React.PropTypes.any,
+    mid: React.PropTypes.number,
     // spread: React.PropTypes.string,
     precision: React.PropTypes.number,
     pip: React.PropTypes.number,
@@ -183,9 +185,9 @@ class CurrencyPair extends React.Component {
 
   /**
    * Click handler for the 'Done'
-   * @param {HTMLEvent} e
+   * @param {DOMEvent} e
    */
-  onDismissLastResponse(e){
+  onDismissLastResponse(e:DOMEvent){
     e && e.preventDefault();
     this.setState({
       info: false
@@ -198,7 +200,12 @@ class CurrencyPair extends React.Component {
    * @returns {HTMLElement}
    */
   getNoResponseMessage(){
-    return <div className='blocked summary-state animated flipInX'><span className='key'>Error:</span> No response was received from the server, the execution status is unknown. Please contact your sales rep.<a href='#' className='pull-right dismiss-message' onClick={(e) => this.setState({state: 'listening'})}>Done</a></div>;
+    return (
+      <div className='blocked summary-state animated flipInX'>
+        <span className='key'>Error:</span> No response was received from the server, the execution status is unknown. Please contact your sales rep.
+        <a href='#' className='pull-right dismiss-message' onClick={(e) => this.setState({state: 'listening'})}>Done</a>
+      </div>
+    );
   }
 
   /**
@@ -249,27 +256,34 @@ class CurrencyPair extends React.Component {
     // if execution has gone down, state will be `blocked`.
     state === 'blocked' && (message = this.getNoResponseMessage());
 
-    return <div>
-      <div className='currency-pair-title'>
-        <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setChart()}/>
-        <span>{title}</span> <i className='fa fa-plug animated infinite fadeIn'/>
+    return (
+      <div>
+        <div className='currency-pair-title'>
+          <i className='glyphicon glyphicon-stats pull-right' onClick={() => this.setChart()}/>
+          <span>{title}</span> <i className='fa fa-plug animated infinite fadeIn'/>
+        </div>
+        {message}
+        <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
+          <Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
+          <Direction direction={this.getDirection(mid)} spread={this.getSpread(sell, buy)}/>
+          <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
+        </div>
+        <div className='clearfix'></div>
+        <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})}
+               pair={pair} />
+        <div className="clearfix"></div>
+        {chart ?
+          <Sparklines
+            data={historic.slice()}
+            width={326}
+            height={22}
+            margin={0}>
+            <SparklinesLine />
+            <SparklinesSpots />
+            <SparklinesReferenceLine type='avg' />
+          </Sparklines> : <div className='sparkline-holder'></div>}
       </div>
-      {message}
-      <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
-        <Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
-        <Direction direction={this.getDirection(mid)} spread={this.getSpread(sell, buy)}/>
-        <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
-      </div>
-      <div className='clearfix'></div>
-      <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})} pair={pair}/>
-      <div className="clearfix"></div>
-      {chart ?
-        <Sparklines data={historic.slice()} width={326} height={22} margin={0}>
-          <SparklinesLine />
-          <SparklinesSpots />
-          <SparklinesReferenceLine type='avg' />
-        </Sparklines> : <div className='sparkline-holder'></div>}
-    </div>;
+    );
   }
 }
 

@@ -174,13 +174,15 @@ class IndexView extends React.Component {
   render(){
     const services = this.state.services;
 
-    return <div>
-      <Modal/>
-      <Header status={this.state.connected} services={services}/>
-      <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} services={services}/>
-      <Analytics status={services.analytics} history={this.state.history} positions={this.state.positions} />
-      <Blotter trades={this.state.trades} status={services.blotter}/>
-    </div>;
+    return (
+      <div>
+        <Modal/>
+        <Header status={this.state.connected} services={services}/>
+        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} services={services}/>
+        <Analytics status={services.analytics} history={this.state.history} positions={this.state.positions} />
+        <Blotter trades={this.state.trades} status={services.blotter}/>
+      </div>
+    );
   }
 
 }
