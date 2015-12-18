@@ -1,3 +1,4 @@
+/* flow */
 import React from 'react';
 
 import { Sparklines, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
@@ -146,7 +147,7 @@ class CurrencyPair extends React.Component {
    * Determine the change as up or down on a tick.
    * @returns {string}
    */
-  getDirection(mid){
+  getDirection(mid:number){
     const historic = this.state.historic,
           len      = historic.length - 2;
 
@@ -162,7 +163,7 @@ class CurrencyPair extends React.Component {
    * Calls back the passed fn with the direction and size
    * @param {String} direction
    */
-  execute(direction){
+  execute(direction:string){
     // attempt to capture price we request against.
     if (this.props.onExecute && this.state.size !== 0){
       let s = Number(this.state.size);
@@ -226,7 +227,7 @@ class CurrencyPair extends React.Component {
       this.openChartIQ(this.props.pair);
   }
 
-  openChartIQ(symbol){
+  openChartIQ(symbol:string){
     this.app = new window.fin.desktop.Application({
       uuid: 'ChartIQ' + Date.now(),
       url: `http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=${symbol}&period=5`,
@@ -264,9 +265,9 @@ class CurrencyPair extends React.Component {
         </div>
         {message}
         <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
-          <Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
-          <Direction direction={this.getDirection(mid)} spread={this.getSpread(sell, buy)}/>
           <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
+          <Direction direction={this.getDirection(mid)} spread={this.getSpread(buy, sell)}/>
+          <Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
         </div>
         <div className='clearfix'></div>
         <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})}
