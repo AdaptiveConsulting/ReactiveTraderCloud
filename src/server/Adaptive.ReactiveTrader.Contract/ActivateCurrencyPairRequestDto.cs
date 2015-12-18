@@ -2,6 +2,6 @@
 {
     public class ActivateCurrencyPairRequestDto
     {
-         public string CurrencyPair { get; set; }
+        public string CurrencyPair { get; set; }
     }
 }

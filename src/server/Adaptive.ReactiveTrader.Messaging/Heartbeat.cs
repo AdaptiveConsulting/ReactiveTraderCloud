@@ -11,9 +11,8 @@ namespace Adaptive.ReactiveTrader.Messaging
         protected static readonly ILog Log = LogManager.GetLogger<Heartbeat>();
 
         private readonly IBroker _broker;
-        private readonly ServiceHostBase _host;
         private readonly IObservable<long> _heartbeatStream;
-        public TimeSpan HeartbeatInterval { get; }
+        private readonly ServiceHostBase _host;
         private IDisposable _disp = Disposable.Empty;
 
         public Heartbeat(ServiceHostBase host, IBroker broker)
@@ -23,6 +22,8 @@ namespace Adaptive.ReactiveTrader.Messaging
             HeartbeatInterval = TimeSpan.FromSeconds(1);
             _heartbeatStream = Observable.Timer(TimeSpan.Zero, HeartbeatInterval);
         }
+
+        public TimeSpan HeartbeatInterval { get; }
 
         public void Dispose()
         {
@@ -43,7 +44,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                         Type = _host.ServiceType,
                         Load = _host.GetLoad()
                     })
-                .Subscribe(endpoint);
+                                    .Subscribe(endpoint);
 
             Log.InfoFormat("Started heartbeat for {0}", _host);
         }

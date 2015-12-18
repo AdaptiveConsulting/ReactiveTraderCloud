@@ -3,9 +3,9 @@
     "host": "eventstore",
     "port": 1113
   },
-  "broker":  {
+  "broker": {
     "host": "broker",
     "port": 8080,
-    "realm":  "com.weareadaptive.reactivetrader"
+    "realm": "com.weareadaptive.reactivetrader"
   }
 }

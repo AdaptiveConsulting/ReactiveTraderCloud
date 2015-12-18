@@ -1,17 +1,18 @@
-using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.Messaging;
-using Common.Logging;
-using Newtonsoft.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Messaging.Abstraction;
+using Common.Logging;
+using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class ReferenceWriteServiceHost : ServiceHostBase
     {
-        private new static readonly ILog Log = LogManager.GetLogger<ReferenceWriteServiceHost>();
         private const string ActivateCurrencyPairProcedureName = "activateCurrencyPair";
         private const string DeactivateCurrencyPairProcedureName = "deactivateCurrencyPair";
+        private new static readonly ILog Log = LogManager.GetLogger<ReferenceWriteServiceHost>();
 
         private readonly ReferenceWriteService _service;
 

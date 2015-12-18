@@ -9,7 +9,7 @@ namespace Adaptive.ReactiveTrader.MessageBroker
 
         public static IDisposable Run()
         {
-           Log.Info("Message Broker Starting...");
+            Log.Info("Message Broker Starting...");
 
             var broker = new MessageBroker();
             broker.Start();

@@ -6,24 +6,29 @@ using System.Runtime.Serialization;
 using System.Threading;
 using Common.Logging;
 
-namespace Adaptive.ReactiveTrader.Messaging
+namespace Adaptive.ReactiveTrader.Messaging.Abstraction
 {
     internal class RequestStreamServer<TRequest, TUpdate> : RequestOperationServerBase,
         IRequestStreamServer<TRequest, TUpdate>
     {
         protected new static readonly ILog Log = LogManager.GetLogger<RequestStreamServer<TRequest, TUpdate>>();
-        private readonly ISubscriber _subscriber;
-        private readonly IPublisher _publisher;
-        private readonly ISerializer _serializer;
-        private readonly IScheduler _scheduler;
         private readonly IMessageFactory _messageFactory;
-        private readonly TimeSpan _updateToLiveTime;
-        private readonly Dictionary<string, IDisposable> _subscriptions = new Dictionary<string, IDisposable>();
+        private readonly IPublisher _publisher;
+        private readonly IScheduler _scheduler;
+        private readonly ISerializer _serializer;
         private readonly string _serverId = Guid.NewGuid().ToString(); // TODO: pass in identifier generator?
+        private readonly ISubscriber _subscriber;
+        private readonly Dictionary<string, IDisposable> _subscriptions = new Dictionary<string, IDisposable>();
+        private readonly TimeSpan _updateToLiveTime;
 
-        public RequestStreamServer(ISubscriber subscriber, IPublisher publisher, IUserSessionCache userSessionCache,
-            ISerializer serializer, IScheduler scheduler, IMessageFactory messageFactory, TimeSpan updateToLiveTime,
-            bool isSessionRequired)
+        public RequestStreamServer(ISubscriber subscriber,
+                                   IPublisher publisher,
+                                   IUserSessionCache userSessionCache,
+                                   ISerializer serializer,
+                                   IScheduler scheduler,
+                                   IMessageFactory messageFactory,
+                                   TimeSpan updateToLiveTime,
+                                   bool isSessionRequired)
             : base(userSessionCache, isSessionRequired)
         {
             _subscriber = subscriber;
@@ -56,8 +61,9 @@ namespace Adaptive.ReactiveTrader.Messaging
                 }));
         }
 
-        private void ProcessSubscription(string subscriptionId, IMessage message,
-            RequestStreamHandler<TRequest, TUpdate> requestStreamHandler)
+        private void ProcessSubscription(string subscriptionId,
+                                         IMessage message,
+                                         RequestStreamHandler<TRequest, TUpdate> requestStreamHandler)
         {
             // In order to prevent races/resource-leaks here we must:
             //  * Monitor session diconnections before attempting to create a request context.
@@ -82,18 +88,17 @@ namespace Adaptive.ReactiveTrader.Messaging
                 return;
             }
 
-            var sessionDestroyedHandler = new AnonymousUserSessionHandler(
-                onEstabilished: _ => { },
-                onDestroyed: _ =>
-                {
-                    lock (_subscriptions)
-                    {
-                        // TODO: Make the Java version clean all resources hooked up here.
-                        // ReSharper disable once AccessToDisposedClosure
-                        subscription.Dispose();
-                        _subscriptions.Remove(subscriptionId);
-                    }
-                });
+            var sessionDestroyedHandler = new AnonymousUserSessionHandler(_ => { },
+                                                                          _ =>
+                                                                          {
+                                                                              lock (_subscriptions)
+                                                                              {
+                                                                                  // TODO: Make the Java version clean all resources hooked up here.
+                                                                                  // ReSharper disable once AccessToDisposedClosure
+                                                                                  subscription.Dispose();
+                                                                                  _subscriptions.Remove(subscriptionId);
+                                                                              }
+                                                                          });
 
             lock (_subscriptions)
             {
@@ -120,26 +125,29 @@ namespace Adaptive.ReactiveTrader.Messaging
                     const int notFinished = 0;
                     const int finished = 1;
                     var subscriptionState = notFinished;
-                    var notificationSubscription = requestStreamHandler(context, request,
-                        new AnonymousStreamHandler<TUpdate>(
-                            // TODO: I remove the session from the lookup AND ALSO dipose subscription here.
-                            //       This is analagous to the AutoDetachObserver<T> in Rx. Should we do the same in the Java version?
-                            //       Review with John. -ZB
-                            onUpdated: update => OnUpdated(subscriptionId, replyDestination, update),
-                            onFailed: error =>
-                            {
-                                if (Interlocked.Exchange(ref subscriptionState, finished) == notFinished)
-                                {
-                                    OnFailed(subscriptionId, replyDestination, error);
-                                }
-                            },
-                            onCompleted: () =>
-                            {
-                                if (Interlocked.Exchange(ref subscriptionState, finished) == notFinished)
-                                {
-                                    OnCompleted(subscriptionId, replyDestination);
-                                }
-                            }));
+                    var notificationSubscription = requestStreamHandler(context,
+                                                                        request,
+                                                                        new AnonymousStreamHandler<TUpdate>(
+                                                                            // TODO: I remove the session from the lookup AND ALSO dipose subscription here.
+                                                                            //       This is analagous to the AutoDetachObserver<T> in Rx. Should we do the same in the Java version?
+                                                                            //       Review with John. -ZB
+                                                                            update => OnUpdated(subscriptionId, replyDestination, update),
+                                                                            error =>
+                                                                            {
+                                                                                if (Interlocked.Exchange(ref subscriptionState, finished) ==
+                                                                                    notFinished)
+                                                                                {
+                                                                                    OnFailed(subscriptionId, replyDestination, error);
+                                                                                }
+                                                                            },
+                                                                            () =>
+                                                                            {
+                                                                                if (Interlocked.Exchange(ref subscriptionState, finished) ==
+                                                                                    notFinished)
+                                                                                {
+                                                                                    OnCompleted(subscriptionId, replyDestination);
+                                                                                }
+                                                                            }));
                     subscription.Add(Disposable.Create(() =>
                     {
                         var hasAlreadyFinished = Interlocked.Exchange(ref subscriptionState, finished) == finished;
@@ -241,8 +249,9 @@ namespace Adaptive.ReactiveTrader.Messaging
             }
             catch (SerializationException e)
             {
-                OnFailed(subscriptionId, subscriberReplyDestination,
-                    new MessagingException("Failed to serialize update", e));
+                OnFailed(subscriptionId,
+                         subscriberReplyDestination,
+                         new MessagingException("Failed to serialize update", e));
             }
         }
 
@@ -271,8 +280,9 @@ namespace Adaptive.ReactiveTrader.Messaging
             }
         }
 
-        private void SendMessage(string subscriptionId, ITransientDestination subscriberReplyDestination,
-            IMessage message)
+        private void SendMessage(string subscriptionId,
+                                 ITransientDestination subscriberReplyDestination,
+                                 IMessage message)
         {
             try
             {

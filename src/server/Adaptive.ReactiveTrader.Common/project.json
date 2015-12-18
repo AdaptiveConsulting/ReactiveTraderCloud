@@ -1,11 +1,10 @@
 {
-    "version": "1.0.0-*",
-    "description": "Adaptive.ReactiveTrader.Common Class Library",
-    "authors": [ "jon.clare" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
-
+  "version": "1.0.0",
+  "description": "Common code that is used across multiple services",
+  "authors": [ "Adaptive Financial Consulting Ltd." ],
+  "tags": [ "Adaptive", "Reactive Trader" ],
+  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
   "dependencies": {
     "Common.Logging": "3.3.1",
@@ -14,7 +13,7 @@
     "rx-main": "2.2.5"
   },
 
-    "frameworks": {
-        "dnx451": { }
-    }
+  "frameworks": {
+    "dnx451": { }
+  }
 }

@@ -17,7 +17,6 @@ namespace Adaptive.ReactiveTrader.EventStore
             _typeMap = ourAssemblies.SelectMany(x => x.GetExportedTypes())
                                     .Where(x => x.Name.EndsWith("Event", StringComparison.InvariantCulture))
                                     .ToDictionary(x => x.Name);
-
         }
 
         public Type GetTypeForEventName(string name)

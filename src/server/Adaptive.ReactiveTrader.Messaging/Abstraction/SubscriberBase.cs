@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Adaptive.ReactiveTrader.Messaging
+namespace Adaptive.ReactiveTrader.Messaging.Abstraction
 {
     public abstract class SubscriberBase : ISubscriber
     {
-        private IDisposable _underlying;
         private readonly ISet<MessageHandler> _handlers = new HashSet<MessageHandler>();
         private MessageHandler[] _handlersSnapshot;
+        private IDisposable _underlying;
 
         public IDisposable Subscribe(MessageHandler messageHandler)
         {
@@ -57,6 +57,6 @@ namespace Adaptive.ReactiveTrader.Messaging
         protected abstract IDisposable OnRegister(MessageHandler messageHandler);
 
         protected abstract IDisposable OnRegister(ISelectionExpression selectionExpression,
-            MessageHandler messageHandler);
+                                                  MessageHandler messageHandler);
     }
 }

@@ -5,7 +5,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public interface IPriceGenerator
     {
-        IEnumerable<SpotPriceDto> Sequence();
         string Symbol { get; }
+        IEnumerable<SpotPriceDto> Sequence();
     }
 }

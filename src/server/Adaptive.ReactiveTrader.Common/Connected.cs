@@ -2,8 +2,6 @@ namespace Adaptive.ReactiveTrader.Common
 {
     public class Connected<T> : IConnected<T>
     {
-        public T Value { get; }
-
         public Connected(T value)
         {
             Value = value;
@@ -13,6 +11,8 @@ namespace Adaptive.ReactiveTrader.Common
         public Connected()
         {
         }
+
+        public T Value { get; }
 
         public bool IsConnected { get; }
     }

@@ -12,7 +12,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         protected static readonly ILog Log = LogManager.GetLogger<PricePublisher>();
 
         private readonly IBroker _broker;
-        private readonly IObservable<SpotPriceDto> _priceStream; 
+        private readonly IObservable<SpotPriceDto> _priceStream;
         private IDisposable _disp = Disposable.Empty;
 
         public PricePublisher(IObservable<SpotPriceDto> priceStream, IBroker broker)

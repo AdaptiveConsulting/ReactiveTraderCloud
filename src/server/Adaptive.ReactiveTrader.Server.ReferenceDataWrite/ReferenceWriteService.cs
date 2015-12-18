@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore.Domain;
-using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Domain;
 using Common.Logging;
 
@@ -16,6 +16,11 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         public ReferenceWriteService(IRepository repository)
         {
             _repository = repository;
+        }
+
+        public void Dispose()
+        {
+            Log.Warn("Should dispose.");
         }
 
         public async Task ActivateCurrencyPair(IRequestContext context, ActivateCurrencyPairRequestDto request)
@@ -52,11 +57,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
             {
                 Log.Info($"Currency pair {request.CurrencyPair} deactivated");
             }
-        }
-
-        public void Dispose()
-        {
-            Log.Warn("Should dispose.");
         }
     }
 }

@@ -1,17 +1,17 @@
 {
-  "version": "1.0.0-*",
-  "description": "Adaptive.ReactiveTrader.Server.Tests Class Library",
-  "authors": [ "Qiming Liu" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
+  "version": "1.0.0",
+  "description": "Service Tests",
+  "authors": [ "Adaptive Financial Consulting Ltd." ],
+  "tags": [ "Adaptive", "Reactive Trader" ],
+  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
-    "dependencies": {
-        "xunit": "2.1.0",
-        "xunit.runner.dnx": "2.1.0-rc1-build204",
-        "FakeItEasy": "1.25.3",
-        "Adaptive.ReactiveTrader.Server.Launcher": "1.0.0-*"
-    },
+  "dependencies": {
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204",
+    "FakeItEasy": "1.25.3",
+    "Adaptive.ReactiveTrader.Server.Launcher": "1.0.0",
+  },
 
   "commands": {
     "test": "xunit.runner.dnx"
@@ -19,9 +19,9 @@
 
   "frameworks": {
     "dnx451": {
-        "frameworkAssemblies": {
-            "System.Runtime.Serialization": "4.0.0.0"
-        }
+      "frameworkAssemblies": {
+        "System.Runtime.Serialization": "4.0.0.0"
+      }
     }
   }
 }

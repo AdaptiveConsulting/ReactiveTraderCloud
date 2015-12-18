@@ -1,29 +1,24 @@
 {
-    "version": "1.0.0-*",
-    "description": "Reactive Trader Contracts",
-    "authors": [ "james.watson" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.0",
+  "description": "Contracts and DTOs",
+  "authors": [ "Adaptive Financial Consulting Ltd." ],
+  "tags": [ "Adaptive", "Reactive Trader" ],
+  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
+  "dependencies": {
+    "Newtonsoft.Json": "7.0.1",
+    "protobuf-net": "2.1.0-alpha-1"
+  },
 
-    "dependencies": {
-        "Newtonsoft.Json": "7.0.1",
-        "protobuf-net": "2.1.0-alpha-1"
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Collections": ""
+      },
 
-    },
-
-    "frameworks": {
-        "dnx451": {
-            "frameworkAssemblies": {
-                "System.Runtime": "",
-                "System.Collections": ""
-            },
-
-            "dependencies": {
-
-            }
-        }
-
+      "dependencies": { }
     }
+  }
 }
