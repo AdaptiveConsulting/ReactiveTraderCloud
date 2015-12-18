@@ -35,13 +35,14 @@ cp ./$service/rc.yml $rcFile
 
 # get good docker image
 dockerImage=""
-if [[ $service == "web" ]];then dockerImage="$webContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "analytics" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "blotter" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "broker" ]];then dockerImage="$brokerContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "eventstore" ]];then dockerImage="$populatedEventstoreContainer:$vMajor.$vMinor.$build"; fi
-if [[ $service == "blotter" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "pricing" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "referencedataread" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
 if [[ $service == "tradeexecution" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "web" ]];then dockerImage="$webContainer:$vMajor.$vMinor.$build"; fi
 
 sed -i  "s/__SERVICE__/$service/g" $rcFile
 sed -i  "s/__MAJOR__/$vMajor/g" $rcFile

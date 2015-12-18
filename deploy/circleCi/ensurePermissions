@@ -5,6 +5,10 @@ chmod 755 ../docker/build/servers/build.sh
 chmod 755 ../docker/build/broker/build.sh
 chmod 755 ../docker/build/populatedEventstore/build.sh
 chmod 755 ../docker/build/web/build.sh
+chmod 755 ../docker/build/servers/push.sh
+chmod 755 ../docker/build/broker/push.sh
+chmod 755 ../docker/build/populatedEventstore/push.sh
+chmod 755 ../docker/build/web/push.sh
 chmod 755 buildContainers
 chmod 755 loadContainers
 chmod 755 saveContainers

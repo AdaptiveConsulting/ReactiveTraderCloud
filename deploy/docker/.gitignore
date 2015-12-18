@@ -2,6 +2,7 @@ container
 build/broker/build
 build/crossbar/build
 build/eventstore/build
+build/fluentd/build
 build/gcloud/build
 build/mono/build
 build/node/build

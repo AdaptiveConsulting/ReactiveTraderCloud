@@ -22,10 +22,6 @@ if [[ $vMinor = "" ]];then
   echo "broker-build: minor version required, fill in adaptivetrader/deploy/config"
   exit 1
 fi
-if [[ $vBuild = "" ]];then
-  echo "broker-build: build number required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 
 # push
