@@ -9,14 +9,13 @@ namespace Adaptive.ReactiveTrader.EventStore.Connection
     public interface IConnectionStatusMonitor : IDisposable
     {
         IObservable<ConnectionInfo> ConnectionInfoChanged { get; }
-        ConnectionInfo ConnectionInfo { get; }
     }
 
     public class ConnectionStatusMonitor : IConnectionStatusMonitor
     {
-        private readonly IDisposable _subscription;
-        private readonly BehaviorSubject<ConnectionInfo> _connectionInfoSubject = new BehaviorSubject<ConnectionInfo>(ConnectionInfo.Initial);
         protected static readonly ILog Log = LogManager.GetLogger<ConnectionStatusMonitor>();
+        private readonly IConnectableObservable<ConnectionInfo> _connectionInfoChanged;
+        private readonly IDisposable _connection;
 
         public ConnectionStatusMonitor(IEventStoreConnection connection)
         {
@@ -32,13 +31,20 @@ namespace Adaptive.ReactiveTrader.EventStore.Connection
                                                                                                h => connection.Reconnecting -= h)
                                                 .Select(_ => ConnectionStatus.Connecting);
 
-            _subscription = Observable.Merge(connectedChanged, disconnectedChanged, reconnectingChanged)
-                                        .Scan(ConnectionInfo.Initial, UpdateConnectionInfo)
-                                        .Subscribe(_connectionInfoSubject);
+            _connectionInfoChanged = Observable.Merge(connectedChanged, disconnectedChanged, reconnectingChanged)
+                                               .Scan(ConnectionInfo.Initial, UpdateConnectionInfo)
+                                               .StartWith(ConnectionInfo.Initial)
+                                               .Replay(1);
+
+            _connection = _connectionInfoChanged.Connect();
         }
 
-        public IObservable<ConnectionInfo> ConnectionInfoChanged => _connectionInfoSubject.AsObservable();
-        public ConnectionInfo ConnectionInfo => _connectionInfoSubject.Value;
+        public IObservable<ConnectionInfo> ConnectionInfoChanged => _connectionInfoChanged;
+
+        public void Dispose()
+        {
+            _connection.Dispose();
+        }
 
         private static ConnectionInfo UpdateConnectionInfo(ConnectionInfo previousConnectionInfo, ConnectionStatus connectionStatus)
         {
@@ -61,12 +67,6 @@ namespace Adaptive.ReactiveTrader.EventStore.Connection
             }
 
             return newConnectionInfo;
-        }
-
-        public void Dispose()
-        {
-            _subscription.Dispose();
-            _connectionInfoSubject.Dispose();
         }
     }
 }

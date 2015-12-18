@@ -12,13 +12,13 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
     public class AnalyticsEngine
     {
         private static readonly ILog Log = LogManager.GetLogger<AnalyticsEngine>();
-        private readonly IDictionary<string, SpotPriceDto> _priceCache = new Dictionary<string, SpotPriceDto>();
         private readonly IDictionary<string, CurrencyPairTracker> _ccyPairTracker = new Dictionary<string, CurrencyPairTracker>();
-        private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
-        private PositionUpdatesDto _currentPositionUpdatesDto;
         private readonly object _currentPositionLock = new object();
+        private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
+        private readonly IDictionary<string, SpotPriceDto> _priceCache = new Dictionary<string, SpotPriceDto>();
 
         private readonly BehaviorSubject<PositionUpdatesDto> _updates;
+        private PositionUpdatesDto _currentPositionUpdatesDto;
 
         public AnalyticsEngine()
         {
@@ -91,16 +91,16 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             };
 
             var usdPnl = _ccyPairTracker.Values
-                         .Where(ccp => ccp.TradeCount > 0)
-                         .Sum(ccp => ccp.CurrentPosition.UsdPnl);
+                                        .Where(ccp => ccp.TradeCount > 0)
+                                        .Sum(ccp => ccp.CurrentPosition.UsdPnl);
 
             var now = DateTimeOffset.UtcNow;
             var window = now.AddMinutes(-15);
 
             pud.History = _currentPositionUpdatesDto.History
-                                    .Where(hpu => hpu.Timestamp >= window)
-                                    .Concat(new[] { new HistoricPositionDto { Timestamp = now, UsdPnl = usdPnl } })
-                                    .ToArray();
+                                                    .Where(hpu => hpu.Timestamp >= window)
+                                                    .Concat(new[] {new HistoricPositionDto {Timestamp = now, UsdPnl = usdPnl}})
+                                                    .ToArray();
 
             lock (_currentPositionLock)
             {

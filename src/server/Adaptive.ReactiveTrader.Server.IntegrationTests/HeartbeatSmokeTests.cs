@@ -18,9 +18,9 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             var channel = await new TestBroker().OpenChannel();
 
             var heartbeat = await channel.RealmProxy.Services.GetSubject<dynamic>("status")
-                .Where(hb => hb.Type == serviceType)
-                .Timeout(TimeSpan.FromSeconds(2))
-                .Take(1);
+                                         .Where(hb => hb.Type == serviceType)
+                                         .Timeout(TimeSpan.FromSeconds(2))
+                                         .Take(1);
 
             Assert.NotNull(heartbeat.Instance);
         }

@@ -18,8 +18,8 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         public IObservable<PositionUpdatesDto> GetAnalyticsStream()
         {
             return _analyticsEngine.PositionUpdatesStream
-                .Publish()
-                .RefCount();
+                                   .Publish()
+                                   .RefCount();
         }
 
         public void OnTrade(TradeDto trade)

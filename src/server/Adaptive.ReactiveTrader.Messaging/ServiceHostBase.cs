@@ -1,6 +1,7 @@
 using System;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Messaging
@@ -10,9 +11,11 @@ namespace Adaptive.ReactiveTrader.Messaging
         protected static readonly ILog Log = LogManager.GetLogger<ServiceHostBase>();
 
         private readonly IBroker _broker;
-        public readonly string InstanceID;
         private readonly Heartbeat _heartbeat;
         private readonly CompositeDisposable _registedCalls = new CompositeDisposable();
+        public readonly string InstanceID;
+
+        public readonly string ServiceType;
 
         protected ServiceHostBase(IBroker broker, string type)
         {
@@ -22,7 +25,11 @@ namespace Adaptive.ReactiveTrader.Messaging
             _heartbeat = new Heartbeat(this, broker);
         }
 
-        public readonly string ServiceType;
+        public virtual void Dispose()
+        {
+            _registedCalls.Dispose();
+            _heartbeat.Dispose();
+        }
 
         protected void RegisterCall(string procName, Func<IRequestContext, IMessage, Task> procedure)
         {
@@ -58,12 +65,6 @@ namespace Adaptive.ReactiveTrader.Messaging
         public virtual double GetLoad()
         {
             return 0;
-        }
-
-        public virtual void Dispose()
-        {
-            _registedCalls.Dispose();
-            _heartbeat.Dispose();
         }
 
         public override string ToString()

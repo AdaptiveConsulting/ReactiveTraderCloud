@@ -1,7 +1,4 @@
-﻿using Common.Logging;
-using EventStore.ClientAPI;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,23 +6,29 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Logging;
+using EventStore.ClientAPI;
+using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.EventStore.Domain
 {
     public class Repository : IRepository, IDisposable
     {
-        private readonly IEventStoreConnection _eventStoreConnection;
-        private static readonly ILog Log = LogManager.GetLogger<Repository>();
-        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None };
-        private readonly EventTypeResolver _eventTypeResolver = new EventTypeResolver();
-
         private const int WritePageSize = 500;
         private const int ReadPageSize = 500;
+        private static readonly ILog Log = LogManager.GetLogger<Repository>();
+        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.None};
+        private readonly IEventStoreConnection _eventStoreConnection;
+        private readonly EventTypeResolver _eventTypeResolver = new EventTypeResolver();
 
         public Repository(IEventStoreConnection eventStoreConnection)
         {
             _eventStoreConnection = eventStoreConnection;
-            LogConnectionEvents();
+        }
+
+        public void Dispose()
+        {
+            Log.Warn("Not Disposing.");
         }
 
         public async Task<TAggregate> GetById<TAggregate>(object id) where TAggregate : IAggregate, new()
@@ -38,7 +41,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             {
                 Log.Info($"Loading aggregate {streamName} from Event Store");
             }
-            
+
             var eventNumber = 0;
             StreamEventsSlice currentSlice;
             do
@@ -47,12 +50,12 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
                 if (currentSlice.Status == SliceReadStatus.StreamNotFound)
                 {
-                    throw new AggregateNotFoundException(id, typeof(TAggregate));
+                    throw new AggregateNotFoundException(id, typeof (TAggregate));
                 }
 
                 if (currentSlice.Status == SliceReadStatus.StreamDeleted)
                 {
-                    throw new AggregateDeletedException(id, typeof(TAggregate));
+                    throw new AggregateDeletedException(id, typeof (TAggregate));
                 }
 
                 eventNumber = currentSlice.NextEventNumber;
@@ -65,50 +68,6 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             } while (!currentSlice.IsEndOfStream);
 
             return aggregate;
-        }
-        
-        private object DeserializeEvent(RecordedEvent evt)
-        {
-            var targetType = _eventTypeResolver.GetTypeForEventName(evt.EventType);
-            var json = Encoding.UTF8.GetString(evt.Data);
-            return JsonConvert.DeserializeObject(json, targetType);
-        }
-
-        private void LogConnectionEvents()
-        {
-            _eventStoreConnection.Connected += (sender, args) =>
-            {
-                if (Log.IsInfoEnabled)
-                {
-                    Log.Info($"Connected to EventStore - {args.RemoteEndPoint}");
-                }
-            };
-            
-            _eventStoreConnection.Closed += (sender, args) =>
-            {
-                if (Log.IsInfoEnabled)
-                {
-                    Log.Info($"Connection to EventStore closed - {args.Reason}");
-                }
-            };
-
-            _eventStoreConnection.Reconnecting += (sender, args) =>
-            {
-                if (Log.IsInfoEnabled)
-                {
-                    Log.Info("Reconnecting to EventStore");
-                }
-            };
-            _eventStoreConnection.Disconnected += (sender, args) =>
-            {
-                if (Log.IsWarnEnabled)
-                {
-                    Log.Warn($"Disconnected from EventStore - {args.RemoteEndPoint}");
-                }
-            };
-
-            _eventStoreConnection.AuthenticationFailed += (sender, args) => Log.Error($"Authentication Failed when connecting to EventStore - {args.Reason}");
-            _eventStoreConnection.ErrorOccurred += (sender, args) => Log.Error("Error occurred in EventStore", args.Exception);
         }
 
         public async Task<int> SaveAsync(AggregateBase aggregate, params KeyValuePair<string, string>[] extraHeaders)
@@ -184,7 +143,6 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
                 }
 
                 return result.NextExpectedVersion;
-
             }
             catch (Exception ex)
             {
@@ -195,9 +153,16 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             return originalVersion + 1;
         }
 
+        private object DeserializeEvent(RecordedEvent evt)
+        {
+            var targetType = _eventTypeResolver.GetTypeForEventName(evt.EventType);
+            var json = Encoding.UTF8.GetString(evt.Data);
+            return JsonConvert.DeserializeObject(json, targetType);
+        }
+        
         private IList<IList<EventData>> GetEventBatches(IEnumerable<EventData> events)
         {
-            return events.Batch(WritePageSize).Select(x => (IList<EventData>)x.ToList()).ToList();
+            return events.Batch(WritePageSize).Select(x => (IList<EventData>) x.ToList()).ToList();
         }
 
         private static IDictionary<string, string> CreateCommitHeaders(AggregateBase aggregate, KeyValuePair<string, string>[] extraHeaders)
@@ -210,7 +175,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
                 {MetadataKeys.AggregateClrTypeHeader, aggregate.GetType().AssemblyQualifiedName},
                 {MetadataKeys.UserIdentityHeader, Thread.CurrentPrincipal?.Identity?.Name},
                 {MetadataKeys.ServerNameHeader, Environment.MachineName},
-                {MetadataKeys.ServerClockHeader, DateTime.UtcNow.ToString("o")},
+                {MetadataKeys.ServerClockHeader, DateTime.UtcNow.ToString("o")}
             };
 
             foreach (var extraHeader in extraHeaders)
@@ -227,17 +192,12 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
             var eventHeaders = new Dictionary<string, string>(headers)
             {
-                { MetadataKeys.EventClrTypeHeader, evnt.GetType().AssemblyQualifiedName },
+                {MetadataKeys.EventClrTypeHeader, evnt.GetType().AssemblyQualifiedName}
             };
             var metadata = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(eventHeaders, SerializerSettings));
             var typeName = evnt.GetType().Name;
 
             return new EventData(eventId, typeName, true, data, metadata);
-        }
-
-        public void Dispose()
-        {
-            Log.Warn("Not Disposing.");
         }
     }
 }

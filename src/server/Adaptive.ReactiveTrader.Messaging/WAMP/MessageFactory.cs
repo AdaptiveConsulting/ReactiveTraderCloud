@@ -1,6 +1,7 @@
 using System;
+using Adaptive.ReactiveTrader.Messaging.Abstraction;
 
-namespace Adaptive.ReactiveTrader.Messaging
+namespace Adaptive.ReactiveTrader.Messaging.WAMP
 {
     internal class MessageFactory : IMessageFactory
     {

@@ -1,35 +1,38 @@
-﻿using Adaptive.ReactiveTrader.EventStore.Domain;
-using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
-using Common.Logging;
-using EventStore.ClientAPI.Exceptions;
-using System;
+﻿using System;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.EventStore.Domain;
+using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
+using Common.Logging;
+using EventStore.ClientAPI.Exceptions;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     /// <summary>
-    /// Uses a Hi/Lo algorithm to generate TradeIds
-    /// <see cref="http://stackoverflow.com/questions/282099/whats-the-hi-lo-algorithm"/>
+    ///     Uses a Hi/Lo algorithm to generate TradeIds
+    ///     <see cref="http://stackoverflow.com/questions/282099/whats-the-hi-lo-algorithm" />
     /// </summary>
     public class TradeIdProvider : IDisposable
     {
+        private const int HiValueTryCount = 3;
+        private const int Multiplier = 100;
         protected static readonly ILog Log = LogManager.GetLogger<TradeIdProvider>();
         private readonly IRepository _repository;
         private readonly EventLoopScheduler _scheduler = new EventLoopScheduler();
-
-        private int _loValue;
         private int _hiValue;
         private bool _initialized;
 
-        private const int HiValueTryCount = 3;
-        private const int Multiplier = 100;
+        private int _loValue;
 
         public TradeIdProvider(IRepository repository)
         {
             _repository = repository;
+        }
+
+        public void Dispose()
+        {
         }
 
         public async Task<long> GetNextId()
@@ -37,21 +40,21 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             // Push the actual generation of the ID through the event loop scheduler to serialize things.
             // For what we're trying to demonstrate here we will be fine running everything on a single thread.
             return await Observable.Create<long>(async obs =>
-                                                {
-                                                    if (!_initialized || _loValue >= Multiplier)
-                                                    {
-                                                        _hiValue = await GetNextHiValue();
-                                                        _loValue = 0;
-                                                        _initialized = true;
-                                                    }
+            {
+                if (!_initialized || _loValue >= Multiplier)
+                {
+                    _hiValue = await GetNextHiValue();
+                    _loValue = 0;
+                    _initialized = true;
+                }
 
-                                                    _loValue++;
+                _loValue++;
 
-                                                    obs.OnNext(_hiValue*Multiplier + _loValue);
-                                                    obs.OnCompleted();
+                obs.OnNext(_hiValue*Multiplier + _loValue);
+                obs.OnCompleted();
 
-                                                    return Disposable.Empty;
-                                                })
+                return Disposable.Empty;
+            })
                                    .SubscribeOn(_scheduler);
         }
 
@@ -88,16 +91,12 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             {
                 tradeId = new TradeId();
             }
-            
+
             tradeId.IncrementId();
 
             await _repository.SaveAsync(tradeId);
 
             return tradeId.Version;
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

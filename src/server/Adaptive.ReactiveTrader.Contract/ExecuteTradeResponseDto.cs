@@ -2,6 +2,6 @@
 {
     public class ExecuteTradeResponseDto
     {
-         public TradeDto Trade { get; set; }
+        public TradeDto Trade { get; set; }
     }
 }

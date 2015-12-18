@@ -1,18 +1,19 @@
 using Common.Logging;
 
-namespace Adaptive.ReactiveTrader.Messaging
+namespace Adaptive.ReactiveTrader.Messaging.Abstraction
 {
     public abstract class RequestOperationServerBase
     {
         protected static readonly ILog Log = LogManager.GetLogger<RequestOperationServerBase>();
-        protected IUserSessionCache UserSessionCache { get; private set; }
-        protected bool IsSessionRequired { get; private set; }
 
         protected RequestOperationServerBase(IUserSessionCache userSessionCache, bool isSessionRequired)
         {
             UserSessionCache = userSessionCache;
             IsSessionRequired = isSessionRequired;
         }
+
+        protected IUserSessionCache UserSessionCache { get; }
+        protected bool IsSessionRequired { get; }
 
         protected IRequestContext CreateRequestContext(IMessage requestMessage)
         {

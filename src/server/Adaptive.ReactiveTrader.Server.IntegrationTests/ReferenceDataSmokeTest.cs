@@ -22,10 +22,10 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             var channel = await new TestBroker().OpenChannel();
 
             var serviceInstance = await channel.RealmProxy.Services.GetSubject<dynamic>("status")
-                .Where(hb => hb.Type == ServiceTypes.Reference)
-                .Select(hb => hb.Instance)
-                .Take(1)
-                .Timeout(ResponseTimeout);
+                                               .Where(hb => hb.Type == ServiceTypes.Reference)
+                                               .Select(hb => hb.Instance)
+                                               .Take(1)
+                                               .Timeout(ResponseTimeout);
 
             var timeoutCancellationTokenSource = new CancellationTokenSource();
 
@@ -52,8 +52,8 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             };
 
             await channel.RealmProxy.TopicContainer
-                .GetTopicByUri(testReplyTo)
-                .Subscribe(new WampSubscriber(callback), new SubscribeOptions());
+                         .GetTopicByUri(testReplyTo)
+                         .Subscribe(new WampSubscriber(callback), new SubscribeOptions());
 
             channel.RealmProxy.RpcCatalog.Invoke(
                 new RpcCallback(() => { }),
