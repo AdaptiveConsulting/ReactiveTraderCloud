@@ -25,7 +25,7 @@ class Container extends React.Component {
   }
 
   render(){
-    const { tearoff, title, children}  = this.props;
+    const { tearoff, title, children}  = this.props; //eslint-disable-line
 
     const popupAttributes = {
       url: '/#/tile',
