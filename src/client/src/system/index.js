@@ -9,10 +9,10 @@ import RetryPolicy from './observableExtentsions/policy';
 import './observableExtentsions/retryPolicyExt';
 
 export default {
-    Guard,
-    logger,
-    disposables,
-    SchedulerService,
-    service,
-    RetryPolicy
+  Guard,
+  logger,
+  disposables,
+  SchedulerService,
+  service,
+  RetryPolicy
 };
