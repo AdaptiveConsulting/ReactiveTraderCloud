@@ -22,7 +22,7 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "lint": "eslint ./src/**/*.js",
+    "lint": "eslint ./src/**/*.js ./src/components/**/*.js",
     "lint:tests": "eslint ./tests/**/*.spec.js",
     "compile": "npm run lint && webpack",
     "start": "npm run dev",
