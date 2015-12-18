@@ -201,7 +201,7 @@ export default class ServiceClient extends disposables.DisposableBase {
                     o.onError(err);
                   },
                   () => {
-                    o.onCompleted();
+                    // noop, nothing to do here, we don't complete the outter observer on ack
                   }
                 )
               );
@@ -224,6 +224,6 @@ export default class ServiceClient extends disposables.DisposableBase {
       .value();
     let isConnected = _(instanceSummaries)
       .some((item:ServiceInstanceSummary) => item.isConnected);
-    return new ServiceStatusSummary(instanceSummaries, isConnected);
+    return new ServiceStatusSummary(this._serviceType, instanceSummaries, isConnected);
   }
 }

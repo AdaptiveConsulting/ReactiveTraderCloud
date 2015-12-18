@@ -1,4 +1,4 @@
-import autobahn from 'autobahn';
+// import autobahn from 'autobahn';
 import _ from 'lodash';
 
 import traders from '../utils/traders';
@@ -22,13 +22,13 @@ class Transport {
    */
   constructor(url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader'){
     this.username = traders.code;
-    this.connection = new autobahn.Connection({
-      url,
-      realm,
-      use_es6_promises: true,
-      // unlimited retries
-      max_retries: -1
-    });
+    //this.connection = new autobahn.Connection({
+    //  url,
+    //  realm,
+    //  use_es6_promises: true,
+    //  // unlimited retries
+    //  max_retries: -1
+    //});
 
     this.queues = [];
     this.services = {};
@@ -45,19 +45,19 @@ class Transport {
 
     this.subscribeToStatusUpdates();
 
-    this.connection.onopen = (ws) =>{
-      this.session = ws;
-      this.subscribeToQueues();
-      this.trigger('open');
-    };
-
-    this.connection.onclose = () =>{
-      this.markEverythingAsDead();
-      this.trigger('close');
-      this.trigger('statusUpdate', this.getStatus());
-    };
-
-    this.open();
+    //this.connection.onopen = (ws) =>{
+    //  this.session = ws;
+    //  this.subscribeToQueues();
+    //  this.trigger('open');
+    //};
+    //
+    //this.connection.onclose = () =>{
+    //  this.markEverythingAsDead();
+    //  this.trigger('close');
+    //  this.trigger('statusUpdate', this.getStatus());
+    //};
+    //
+    //this.open();
   }
 
   /**
@@ -210,37 +210,43 @@ class Transport {
   }
 
   open(){
-    return this.connection.open();
+    //return this.connection.open();
   }
 
   close(){
-    return this.connection.close();
+    //return this.connection.close();
   }
 
   // connection getters
   get isConnected(){
-    return this.connection.isConnected;
+    return false;
+   // return this.connection.isConnected;
   }
 
   get isOpen(){
-    return this.connection.isOpen;
+    return false;
+  //  return this.connection.isOpen;
   }
 
   get isRetrying(){
-    return this.connection.isRetrying;
+    return false;
+    //return this.connection.isRetrying;
   }
 
   get info(){
-    return this.connection.info;
+    return 'info stuff';
+    //return this.connection.info;
   }
 
   // session getters
   get subscriptions(){
-    return this.session.subscriptions;
+    return undefined;
+    //return this.session.subscriptions;
   }
 
   get features(){
-    return this.session.features;
+    return undefined;
+  //  return this.session.features;
   }
 
   log(...args){

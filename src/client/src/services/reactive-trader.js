@@ -22,7 +22,7 @@ class ReactiveTrader {
    * @param {transport} transport
    */
   constructor(transport){
-    transport.isConnected || transport.open();
+   // transport.isConnected || transport.open();
     this.pricing = new PricingService(transport);
     this.reference = new ReferenceService(transport);
     this.blotter = new BlotterService(transport);
@@ -31,18 +31,18 @@ class ReactiveTrader {
 
     this.transport = transport;
 
-    this.transport
-      .on('timeout', () => this.trigger('timeout'))
-      .on('open', () =>{
-        this.sessionDisconnectTimer = setTimeout(() =>{
-          this.trigger('timeout');
-          this.transport.close();
-          this.transport.markEverythingAsDead();
-        }, DISCONNECT_SESSION_AFTER);
-      })
-      .on('close', () => {
-        clearTimeout(this.sessionDisconnectTimer);
-      });
+    //this.transport
+    //  .on('timeout', () => this.trigger('timeout'))
+    //  .on('open', () =>{
+    //    this.sessionDisconnectTimer = setTimeout(() =>{
+    //      this.trigger('timeout');
+    //      this.transport.close();
+    //      this.transport.markEverythingAsDead();
+    //    }, DISCONNECT_SESSION_AFTER);
+    //  })
+    //  .on('close', () => {
+    //    clearTimeout(this.sessionDisconnectTimer);
+    //  });
   }
 
 }

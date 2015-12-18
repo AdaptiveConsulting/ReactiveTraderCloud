@@ -21,7 +21,7 @@ class BackoffTo10SecondsMax {
   }
 }
 
-export default class Policy {
+export default class RetryPolicy {
 
   static get forever() {
     return new IndefiniteRetryPolicy();
