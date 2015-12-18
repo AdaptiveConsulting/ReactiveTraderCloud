@@ -15,4 +15,3 @@ if (window.fin) {
 }
 
 ReactDOM.render(routes, target);
-
