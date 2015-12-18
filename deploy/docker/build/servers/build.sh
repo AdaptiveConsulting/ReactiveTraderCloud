@@ -18,7 +18,7 @@ sed "s/__VDNX__/$vDnx/g" ./template.Dockerfile > ./build/Dockerfile
 # build
 docker build --no-cache -t weareadaptive/serverssrc:latest ./build/.
 
-docker rm dnurestored
+docker rm dnurestored || true
 buildCommand="mkdir -p /packages"
 buildCommand="$buildCommand && cp -r /packages /root/.dnx/"
 buildCommand="$buildCommand && dnu restore"
