@@ -2,9 +2,10 @@
 
 The following instructions have been tested on Windows
 
-Install Docker from their [toolbox download page](https://www.docker.com/docker-toolbox) for your OS 
+Install docker for your OS: [Mac](https://docs.docker.com/mac/step_one/), [Linux](https://docs.docker.com/linux/step_one/) and [Windows](https://docs.docker.com/windows/step_one/)
 
-On Windows, launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
+#### Start toolbox for Windows/Mac user:
+launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
 
 ```bash
                         ##         .
@@ -22,22 +23,24 @@ For help getting started, check out the docs at https://docs.docker.com
 
 Note the IP address as we'll use it to load the client later.
 
-First you'll need to set a config file - for simplicity copy `sample.config` to a new file named `config` in the same directory (`deploy`).
+Some help can be found in our documentation [here](/../docs/deploy/docker/readme.md)
 
-To run the app you'll need to first build the docker containers and provide a `BUILD_NUMBER`, e.g. 1
+#### Build Reactive Trader
+
+To run the app you'll need to first build the docker containers and provide a `BUILD_ID`, e.g. 1 or localtest
 
 Change your working directory to `cd deploy/docker`, then run the following. This pulls base containers and builds the app containers so may take a while. 
 
 ```bash
-$ ./prepare build services BUILD_NUMBER
+$ ./prepare build services BUILD_ID
 ```
 
 You can then run the built containers
 
-TODO: populate ES
+#### Run Reactive Trader
 
 ```bash
-$ ./runAll BUILD_NUMBER
+$ ./runAll BUILD_ID
 ```
 
 Inspect the running containers

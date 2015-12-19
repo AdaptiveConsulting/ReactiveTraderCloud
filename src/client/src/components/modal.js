@@ -9,6 +9,13 @@ let mountedInstance,
 @utils.mixin(emitter)
 class Modal extends React.Component {
 
+  static propTypes = {
+    show: React.PropTypes.bool,
+    title: React.PropTypes.string,
+    body: React.PropTypes.any,
+    className: React.PropTypes.string
+  }
+
   constructor(props, context){
     super(props, context);
     this.state = {
@@ -33,19 +40,21 @@ class Modal extends React.Component {
   }
 
   render(){
-    const show = 'show' in this.props ? this.props.show : this.state.show;
+    const { show } = this.state;
 
-    return <div>
-      <input ref='modal' type='checkbox' id='modal' className='hide' autoComplete='off' checked={show} onChange={() => this.close()}/>
-      <div className={this.state.className}>
-        <div className='modal-heading'>{this.state.title}
-          <label htmlFor='modal'><i className='fa fa-times close' title='Close' /></label>
+    return (
+        <div>
+        <input ref='modal' type='checkbox' id='modal' className='hide' autoComplete='off' checked={show} onChange={() => this.close()}/>
+        <div className={this.state.className}>
+          <div className='modal-heading'>{this.state.title}
+            <label htmlFor='modal'><i className='fa fa-times close' title='Close' /></label>
+          </div>
+          {typeof this.state.body === 'object' ? this.state.body :
+            <div className='modal-body' dangerouslySetInnerHTML={{__html: this.state.body}}></div>}
         </div>
-        {typeof this.state.body === 'object' ? this.state.body :
-          <div className='modal-body' dangerouslySetInnerHTML={{__html: this.state.body}}></div>}
+        <label className='blocker help-blocker' htmlFor='modal'/>
       </div>
-      <label className='blocker help-blocker' htmlFor='modal'/>
-    </div>;
+    );
   }
 };
 

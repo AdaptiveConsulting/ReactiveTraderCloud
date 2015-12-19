@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Text;
 using System.Reactive.Linq;
+using System.Text;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.EventStore.Connection;
 using EventStore.ClientAPI;
@@ -18,7 +18,8 @@ namespace Adaptive.ReactiveTrader.EventStore
             }
         }
 
-        public static IObservable<IConnected<IEventStoreConnection>> GetEventStoreConnectedStream(this ConnectionStatusMonitor monitor, IEventStoreConnection connection)
+        public static IObservable<IConnected<IEventStoreConnection>> GetEventStoreConnectedStream(this ConnectionStatusMonitor monitor,
+                                                                                                  IEventStoreConnection connection)
         {
             return monitor.ConnectionInfoChanged.Where(x => x.Status == ConnectionStatus.Connected ||
                                                             x.Status == ConnectionStatus.Disconnected)

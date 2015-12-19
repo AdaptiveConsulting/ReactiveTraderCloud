@@ -12,11 +12,10 @@ namespace Adaptive.ReactiveTrader.Server.Core
 {
     public class TradeCache : EventStoreCache<long, Trade, TradesDto>
     {
-        protected static readonly ILog Log = LogManager.GetLogger<TradeCache>();
-
         private const string TradeCompletedEvent = "TradeCompletedEvent";
         private const string TradeRejectedEvent = "TradeRejectedEvent";
         private const string TradeCreatedEvent = "TradeCreatedEvent";
+        protected static readonly ILog Log = LogManager.GetLogger<TradeCache>();
 
         private static readonly ISet<string> TradeEventTypes = new HashSet<string>
         {
@@ -70,7 +69,7 @@ namespace Adaptive.ReactiveTrader.Server.Core
             var trade = currentSotw[tradeId];
             var dto = trade.ToDto();
             dto.Status = status;
-            return new TradesDto(new[] { dto }, false, false);
+            return new TradesDto(new[] {dto}, false, false);
         }
 
         protected override void UpdateStateOfTheWorld(IDictionary<long, Trade> currentSotw, RecordedEvent evt)
@@ -79,17 +78,18 @@ namespace Adaptive.ReactiveTrader.Server.Core
             {
                 case TradeCreatedEvent:
                     var createdEvent = evt.GetEvent<TradeCreatedEvent>();
-                    currentSotw.Add(createdEvent.TradeId, new Trade(
-                        createdEvent.TradeId,
-                        createdEvent.TraderName,
-                        createdEvent.CurrencyPair,
-                        createdEvent.Notional,
-                        createdEvent.DealtCurrency,
-                        (DirectionDto) Enum.Parse(typeof (DirectionDto), createdEvent.Direction),
-                        createdEvent.SpotRate,
-                        createdEvent.TradeDate,
-                        createdEvent.ValueDate,
-                        TradeStatusDto.Pending));
+                    currentSotw.Add(createdEvent.TradeId,
+                                    new Trade(
+                                        createdEvent.TradeId,
+                                        createdEvent.TraderName,
+                                        createdEvent.CurrencyPair,
+                                        createdEvent.Notional,
+                                        createdEvent.DealtCurrency,
+                                        (DirectionDto) Enum.Parse(typeof (DirectionDto), createdEvent.Direction),
+                                        createdEvent.SpotRate,
+                                        createdEvent.TradeDate,
+                                        createdEvent.ValueDate,
+                                        TradeStatusDto.Pending));
                     break;
                 case TradeCompletedEvent:
                     var activatedEvent = evt.GetEvent<TradeCompletedEvent>();

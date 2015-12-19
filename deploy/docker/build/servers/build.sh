@@ -20,9 +20,9 @@ docker build --no-cache -t weareadaptive/serverssrc:latest ./build/.
 
 docker rm dnurestored
 buildCommand="mkdir -p /packages"
-buildCommand="$buildCommand && cp -r /packages /root/.dnx/packages"
+buildCommand="$buildCommand && cp -r /packages /root/.dnx/"
 buildCommand="$buildCommand && dnu restore"
-buildCommand="$buildCommand && cp -r /root/.dnx/packages /packages"
+buildCommand="$buildCommand && cp -r /root/.dnx/packages /"
 docker run --name dnurestored -v /$(pwd)/dnxcache:/packages weareadaptive/serverssrc:latest bash -c "$buildCommand" 
 
 containerTaggedName="$serversContainer:$vMajor.$vMinor.$build"

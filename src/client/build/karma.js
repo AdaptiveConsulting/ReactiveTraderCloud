@@ -5,20 +5,17 @@ import webpackConfig from '../webpack.config';
 const KARMA_ENTRY_FILE = 'karma.entry.js';
 
 function makeDefaultConfig () {
-  const karma = {
-    files : [
-      './node_modules/phantomjs-polyfill/bind-polyfill.js',
-      './tests/**/*.js',
-      './' + KARMA_ENTRY_FILE
+    const karma = {
+    files: [
+      'tests/testIndex.js'
     ],
     singleRun  : !argv.watch,
-    frameworks : ['mocha', 'sinon-chai', 'chai-as-promised', 'chai'],
-    preprocessors : {
-      [KARMA_ENTRY_FILE] : ['webpack'],
-      [`${config.get('dir_test')}/**/*.js`] : ['webpack']
+    frameworks : ['jasmine'],
+    preprocessors: {
+      'tests/testIndex.js': ['webpack']
     },
     reporters : ['spec'],
-    browsers : ['PhantomJS'],
+    browsers: ['Chrome'],
     webpack : {
       devtool : 'inline-source-map',
       resolve : webpackConfig.resolve,
@@ -37,12 +34,9 @@ function makeDefaultConfig () {
     },
     plugins : [
       require('karma-webpack'),
-      require('karma-mocha'),
-      require('karma-chai'),
-      require('karma-chai-as-promised'),
-      require('karma-sinon-chai'),
+      require("karma-jasmine"),
       require('karma-coverage'),
-      require('karma-phantomjs-launcher'),
+      require("karma-chrome-launcher"),
       require('karma-spec-reporter')
     ]
   };

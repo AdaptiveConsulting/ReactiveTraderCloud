@@ -1,4 +1,5 @@
 src/client/node_modules
+src/client/coverage
 .idea/
 npm-debug.log
 dist/

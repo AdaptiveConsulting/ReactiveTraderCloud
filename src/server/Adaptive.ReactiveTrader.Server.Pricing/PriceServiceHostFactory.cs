@@ -11,9 +11,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     {
         protected static readonly ILog Log = LogManager.GetLogger<PriceServiceHostFactory>();
 
-        private readonly PricingService _service;
-
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
+
+        private readonly PricingService _service;
 
         public PriceServiceHostFactory()
         {
@@ -25,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             _cleanup.Add(priceSource);
         }
-        
+
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream)
         {
             var disposable = brokerStream.LaunchOrKill(broker => new PricingServiceHost(_service, broker)).Subscribe();

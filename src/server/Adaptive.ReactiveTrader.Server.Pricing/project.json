@@ -1,13 +1,13 @@
 {
-    "version": "1.0.0-*",
-    "description": "Pricing Service",
-    "authors": [ "james.watson" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.0",
+  "description": "Pricing Service",
+  "authors": [ "Adaptive Financial Consulting Ltd." ],
+  "tags": [ "Adaptive", "Reactive Trader" ],
+  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
   "dependencies": {
-    "Adaptive.ReactiveTrader.Server.Core": "1.0.0-*"
+    "Adaptive.ReactiveTrader.Server.Core": "1.0.0"
   },
 
   "commands": {
@@ -15,17 +15,14 @@
     "prod": "Adaptive.ReactiveTrader.Server.Pricing config.prod.json"
   },
 
-   "frameworks": {
+  "frameworks": {
     "dnx451": {
       "frameworkAssemblies": {
         "System.Runtime": "",
         "System.Collections": ""
       },
 
-      "dependencies": {
-
-      }
+      "dependencies": { }
     }
-
   }
 }

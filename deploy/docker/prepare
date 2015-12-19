@@ -18,7 +18,7 @@ listcontains() {
 usage() {
     echo " "
     echo " usage:"
-    echo "   prepare COMMAND GROUP BUILD"
+    echo "   prepare COMMAND GROUP BUILD_ID"
     echo " "
     echo " COMMAND can be:"
     echo "   $possibleCommands"
@@ -27,7 +27,7 @@ usage() {
     echo "   $possibleGroup"
     echo "   use services as [$services]"
     echo " "
-    echo " BUILD can be:"
+    echo " BUILD_ID can be:"
     echo "   - a string"
     echo "   - a number"
     echo " "

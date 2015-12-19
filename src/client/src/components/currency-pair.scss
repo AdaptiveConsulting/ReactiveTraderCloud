@@ -91,7 +91,7 @@
     .action {
       box-sizing: border-box;
     }
-    .buy {
+    .sell {
       left: 0;
       &:hover {
         background: linear-gradient(to left, rgba(0,0,0,0), $gray-dark);
@@ -126,7 +126,7 @@
         }
       }
     }
-    .sell {
+    .buy {
       right: 0;
       text-align: right;
       &:hover {

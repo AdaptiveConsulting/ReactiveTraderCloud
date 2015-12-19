@@ -110,7 +110,7 @@ class Transport {
     return sub;
   }
 
-  registerSubscription(serviceType, serviceProcName, responseQueue, request){
+  registerSubscription(serviceType, serviceProcName /* is 'callName' */, responseQueue, request){
     this.services[serviceType].addSubscription({
       proc: serviceProcName,
       replyTo: responseQueue,
@@ -166,7 +166,6 @@ class Transport {
     for (let service in this.services){
       this.services[service].markEverythingAsDead();
     }
-
     return this;
   }
 
@@ -190,7 +189,7 @@ class Transport {
    * @returns {{log: Transport.session.log}|*}
    */
   remoteCall(subscription:object, instanceID:string){
-    const ins     = instanceID + '.' + subscription.proc,
+    const ins     = instanceID + '.' + subscription.proc, /* proc is serviceProcName/callName */
           replyTo = subscription.replyTo && subscription.replyTo.replyToAddress ? subscription.replyTo.replyToAddress : undefined;
 
     // console.log(ins);

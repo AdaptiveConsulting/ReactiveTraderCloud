@@ -3,8 +3,7 @@ import React from 'react';
 class TileView extends React.Component {
 
   render(){
-    return <div className='tile'>
-    </div>;
+    return <div className='tile' />;
   }
 }
 

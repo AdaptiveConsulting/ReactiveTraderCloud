@@ -1,1 +1,1 @@
-dnx -p Adaptive.ReactiveTrader.Server.Launcher run init-es
+dnx -p Adaptive.ReactiveTrader.Server.Launcher run --populate-eventstore

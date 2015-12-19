@@ -9,8 +9,13 @@ class GrowlView extends React.Component {
       message: ''
     };
   }
+
   componentDidMount(){
     window.onNotificationMessage = (message) => this.handleMessage(message);
+  }
+
+  handleClick(){
+    this.dismissMessage();
   }
 
   dismissMessage(){
@@ -24,9 +29,11 @@ class GrowlView extends React.Component {
   }
 
   render(){
-    return <div className='growl'>
-      <Message message={this.state.message} onClick={this.dismissMessage} />
-    </div>;
+    return (
+      <div className='growl'>
+        <Message message={this.state.message} onClick={this.handleClick}/>
+      </div>
+    );
   }
 }
 

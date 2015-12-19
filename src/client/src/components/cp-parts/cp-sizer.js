@@ -1,6 +1,6 @@
 import React from 'react';
 import numeral from 'numeral';
-import { getConvertedSize } from '../../utils'
+import { getConvertedSize } from '../../utils';
 
 const MONTHS         = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       NUMERAL_FORMAT = '0,000,000[.]00',
@@ -66,4 +66,5 @@ export default class Sizer extends React.Component {
       </div>
     );
   }
+
 }

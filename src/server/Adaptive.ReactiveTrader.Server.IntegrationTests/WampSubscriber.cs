@@ -26,8 +26,11 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             _callback(arguments);
         }
 
-        public void Event<TMessage>(IWampFormatter<TMessage> formatter, long publicationId, EventDetails details, TMessage[] arguments,
-            IDictionary<string, TMessage> argumentsKeywords)
+        public void Event<TMessage>(IWampFormatter<TMessage> formatter,
+                                    long publicationId,
+                                    EventDetails details,
+                                    TMessage[] arguments,
+                                    IDictionary<string, TMessage> argumentsKeywords)
         {
             _callback(arguments);
         }

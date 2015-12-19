@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using SystemEx;
+using Adaptive.ReactiveTrader.Messaging.Abstraction;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
