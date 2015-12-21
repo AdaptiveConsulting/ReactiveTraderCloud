@@ -31,6 +31,6 @@ test:
 
 deployment:
   hub:
-    branch: [master]
+    branch: [master, SimpleTest-UI]
     commands:
       - cd deploy/circleCi && ./pushContainers
