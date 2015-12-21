@@ -14,14 +14,14 @@ set -euo pipefail
 
 # run eventstore
 docker run -d --net=host $eventstoreContainer:$vEventstore > eventstore_id
+echo "container $eventstore_id started"
 
 # populate it
 populateCommand=`cat "../../../../src/server/Populate Event Store.bat"`
 docker run -d --net=host                      \
      $serversContainer:$vMajor.$vMinor.$build \
      $populateCommand > populate_id
-
-sleep 7 && docker kill `cat populate_id` 
+echo "container $populate_id started"
 
 echo "============="
 echo "logs:"
@@ -31,6 +31,9 @@ docker logs `cat eventstore_id`
 echo " "
 echo "logs end"
 echo "============="
+
+sleep 7 && docker kill `cat populate_id` 
+
 # commit container
 docker commit `cat eventstore_id` $populatedEventstoreContainer:$vMajor.$vMinor.$build
 docker tag -f $populatedEventstoreContainer:$vMajor.$vMinor.$build $populatedEventstoreContainer:latest
