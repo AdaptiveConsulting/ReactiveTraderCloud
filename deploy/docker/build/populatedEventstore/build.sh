@@ -14,14 +14,14 @@ set -euo pipefail
 
 # run eventstore
 docker run -d --net=host $eventstoreContainer:$vEventstore > eventstore_id
-echo "container $eventstore_id started"
+echo "container $(cat eventstore_id) started"
 
 # populate it
 populateCommand=`cat "../../../../src/server/Populate Event Store.bat"`
 docker run -d --net=host                      \
      $serversContainer:$vMajor.$vMinor.$build \
      $populateCommand > populate_id
-echo "container $populate_id started"
+echo "container $(cat populate_id) started"
 
 echo "============="
 echo "logs:"
