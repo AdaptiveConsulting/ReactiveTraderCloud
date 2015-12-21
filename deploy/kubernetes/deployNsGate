@@ -1,20 +1,22 @@
 #! /bin/bash
 set -euo pipefail
 
-echo "script outdated"
-exit 1
-
 namespace="nsgate"
+
+# generate certificates
+./generateNewCertificates
 
 # generate manifest
 cd templates
 cp nsgate/ns.yml ../manifests/ns.yml
+./generate_secret_manifest web-ssl $namespace
 ./generate_svc_manifest nsgate $namespace
 ./generate_rc_manifest  nsgate $namespace ""
-cd - > garbage && rm templates/garbage
+cd ..
 
 # deploy on kubernetes
 ./kubectl create -f manifests/ns.yml
+./kubectl create -f manifests/web-ssl.yml
 ./kubectl create -f manifests/nsgate-svc.yml 
 ./kubectl create -f manifests/nsgate-rc.yml
 
