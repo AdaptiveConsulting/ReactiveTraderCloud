@@ -26,8 +26,8 @@ sleep 7 && docker kill `cat populate_id`
 echo "============="
 echo "logs:"
 echo " "
-docker log `cat populate_id`
-docker log `cat eventstore_id`
+docker logs `cat populate_id`
+docker logs `cat eventstore_id`
 echo " "
 echo "logs end"
 echo "============="
