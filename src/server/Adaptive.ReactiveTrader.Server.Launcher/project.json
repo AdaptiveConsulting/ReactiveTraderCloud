@@ -6,15 +6,15 @@
   "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
   "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
-  "dependencies": {
-    "Adaptive.ReactiveTrader.MessageBroker": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0"
-  },
+    "dependencies": {
+        "Adaptive.ReactiveTrader.MessageBroker": "1.0.0",
+        "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0",
+        "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "1.0.0",
+        "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0",
+        "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0",
+        "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0",
+        "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0"
+    },
 
   "commands": {
       "default": "Adaptive.ReactiveTrader.Server.Launcher p ref --interactive"

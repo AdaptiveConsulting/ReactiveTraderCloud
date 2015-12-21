@@ -7,7 +7,7 @@ using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.Server.Analytics;
 using Adaptive.ReactiveTrader.Server.Blotter;
-using Adaptive.ReactiveTrader.Server.Core;
+using Adaptive.ReactiveTrader.Server.Host;
 using Adaptive.ReactiveTrader.Server.Pricing;
 using Adaptive.ReactiveTrader.Server.ReferenceDataRead;
 using Adaptive.ReactiveTrader.Server.ReferenceDataWrite;

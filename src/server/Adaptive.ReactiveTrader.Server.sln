@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Pricing", "Adaptive.ReactiveTrader.Server.Pricing\Adaptive.ReactiveTrader.Server.Pricing.xproj", "{D5CB4C60-0AD5-4AF7-8325-51B6D268E32B}"
 EndProject
@@ -38,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{9EB7
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Common", "Adaptive.ReactiveTrader.Common\Adaptive.ReactiveTrader.Common.xproj", "{3FE78B9D-BE39-434F-81A4-C92633D07D4C}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Core", "Adaptive.ReactiveTrader.Server.Core\Adaptive.ReactiveTrader.Server.Core.xproj", "{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Host", "Adaptive.ReactiveTrader.Server.Host\Adaptive.ReactiveTrader.Server.Host.xproj", "{7F33413F-0DD4-4B94-ACED-2321D98D4F4B}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Analytics", "Adaptive.ReactiveTrader.Server.Analytics\Adaptive.ReactiveTrader.Server.Analytics.xproj", "{083C8B90-B535-4EEB-8015-1EC7C664750A}"
 EndProject

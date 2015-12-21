@@ -3,7 +3,7 @@ using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
 using EventStore.ClientAPI;
 
-namespace Adaptive.ReactiveTrader.Server.Core
+namespace Adaptive.ReactiveTrader.Server.Host
 {
     public interface IServiceHostFactory : IDisposable
     {
