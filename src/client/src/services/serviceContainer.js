@@ -4,7 +4,7 @@ import ReferenceDataService from './referenceDataService';
 import BlotterService from './blotterService';
 import ExecutionService from './executionService';
 import AnalyticsService from './analyticsService';
-import FakeUserFactory from './fakeUserFactory';
+import FakeUserRepository from './fakeUserRepository';
 import * as model from './model';
 
 var _log:system.logger.Logger = system.logger.create('ServiceContainer');
@@ -24,7 +24,7 @@ export default class ServiceContainer {
   _isStarted: Boolean;
 
   constructor() {
-    var user : model.User = FakeUserFactory.getRandomUser();
+    var user : model.User = FakeUserRepository.currentUser;
     var url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
     var schedulerService = new system.SchedulerService();
     var autobahnProxy = new system.service.AutobahnConnectionProxy(url, realm);

@@ -5,6 +5,7 @@ import ExecutionService from './executionService';
 import AnalyticsService from './analyticsService';
 import serviceContainer from './serviceContainer';
 import ServiceStatusLookup from './model/serviceStatusLookup';
+import FakeUserRepository from './fakeUserRepository';
 import * as model from './model';
 
 export default {
@@ -14,5 +15,6 @@ export default {
   ExecutionService,
   AnalyticsService,
   model,
-  serviceContainer
+  serviceContainer,
+  FakeUserRepository
 };

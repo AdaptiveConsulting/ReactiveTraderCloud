@@ -1,8 +1,7 @@
 import React from 'react';
-import traders from 'utils/traders';
 import { Link } from 'react-router';
 import system from 'system';
-import { model as serviceModel } from 'services';
+import { model as serviceModel, FakeUserRepository } from 'services';
 
 class Header extends React.Component {
 
@@ -34,13 +33,6 @@ class Header extends React.Component {
         resp.push(<li key={serviceType} className='service-status text-danger animated infinite fadeIn'><i className='fa fa-circle-o' title={serviceType + ' offline'} /></li>);
       }
     }
-    //
-    //for (let k in services){
-    //  resp.push(services[k] ?
-    //    <li key={k} className='service-status'><i className='fa fa-circle ' title={k + ' ' + services[k] + ' nodes online'} /><i className='node-badge'>{services[k]}</i></li> :
-    //    <li key={k} className='service-status text-danger animated infinite fadeIn'><i className='fa fa-circle-o' title={k + ' offline'} /></li>);
-    //}
-
     return resp;
   }
 
@@ -79,7 +71,7 @@ class Header extends React.Component {
 
   render(){
     const { status, services } = this.props;
-
+    var currentUser = FakeUserRepository.currentUser;
     return (
         <nav className='navbar navbar-default'>
         <a className='navbar-brand navbar-adaptive' href='http://weareadaptive.com/' target='_blank' title='Adaptive Home Page' onClick={(e) => this.handleExternalClick(e)}>
@@ -91,7 +83,7 @@ class Header extends React.Component {
         </Link>
         <ul className='nav navbar-nav hidden-xs hidden-sm navbar-left'>
           <li>
-            <Link to='/user' className='nav-link' activeClassName='active'><i className='fa fa-user' /> {traders.code} ({traders.name} {traders.surname})</Link>
+            <Link to='/user' className='nav-link' activeClassName='active'><i className='fa fa-user' /> {currentUser.code} ({currentUser.name} {currentUser.surname})</Link>
           </li>
         </ul>
         <nav className='nav navbar-nav chrome-controls pull-right'>
