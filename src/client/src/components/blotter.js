@@ -73,38 +73,6 @@ class Blotter extends React.Component {
     }
   }
 
-  /**
-   * Renders an individual trade in blotter
-   * @param {Object} trade
-   * @returns {HTMLElement:TR}
-   */
-  renderRow(trade:object){
-    const notional           = numeral(trade.amount).format('0,000,000[.]00') + ' ' + trade.pair.substr(0, 3),
-          dateTime           = moment(trade.dateTime).format('MMM Do, HH:mm:ss'),
-          valueDay           = moment(trade.valueDate),
-          formattedValueDate = 'SP. ' + valueDay.format('DD MMM'),
-          flagged            = this.state.flagged;
-
-    flagged && flagged === trade.id && (trade.className = 'flash');
-
-    return (
-      <tr key={trade.id}
-        className={trade.status + ' animated ' + (trade.className || 'slideInDown')}>
-        <td>{trade.id}</td>
-        <td className='large'>
-          <div>{dateTime}</div>
-        </td>
-        <td className={'direction ' + trade.direction}>{trade.direction}</td>
-        <td>{trade.pair}</td>
-        <td className='large text-right'>{notional}</td>
-        <td className='text-right'>{trade.rate}</td>
-        <td className='status'>{trade.status}</td>
-        <td>{formattedValueDate}</td>
-        <td className='large'>{trade.trader}</td>
-      </tr>
-    );
-  }
-
   tearOff(state){
     this.setState({
       tearoff: state
