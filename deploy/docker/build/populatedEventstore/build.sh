@@ -23,6 +23,14 @@ docker run -d --net=host                      \
 
 sleep 7 && docker kill `cat populate_id` 
 
+echo "============="
+echo "logs:"
+echo " "
+docker log `cat populate_id`
+docker log `cat eventstore_id`
+echo " "
+echo "logs end"
+echo "============="
 # commit container
 docker commit `cat eventstore_id` $populatedEventstoreContainer:$vMajor.$vMinor.$build
 docker tag -f $populatedEventstoreContainer:$vMajor.$vMinor.$build $populatedEventstoreContainer:latest

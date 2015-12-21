@@ -23,7 +23,7 @@ buildCommand="mkdir -p /packages"
 buildCommand="$buildCommand && cp -r /packages /root/.dnx/"
 buildCommand="$buildCommand && dnu restore"
 buildCommand="$buildCommand && cp -r /root/.dnx/packages /"
-docker run --name dnurestored -v /$(pwd)/dnxcache:/packages weareadaptive/serverssrc:latest bash -c "$buildCommand" 
+docker run -t --name dnurestored -v /$(pwd)/dnxcache:/packages weareadaptive/serverssrc:latest bash -c "$buildCommand" 
 
 containerTaggedName="$serversContainer:$vMajor.$vMinor.$build"
 docker commit dnurestored $containerTaggedName 
