@@ -7,7 +7,7 @@
   "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
   "dependencies": {
-    "Adaptive.ReactiveTrader.Server.Core": "1.0.0"
+    "Adaptive.ReactiveTrader.Server.Host": "1.0.0"
   },
 
   "commands": {

@@ -1,8 +1,5 @@
 using System;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Threading;
-using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Common.Config;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.EventStore.Connection;
@@ -11,7 +8,7 @@ using Common.Logging;
 using Common.Logging.Simple;
 using EventStore.ClientAPI;
 
-namespace Adaptive.ReactiveTrader.Server.Core
+namespace Adaptive.ReactiveTrader.Server.Host
 {
     public class App
     {
