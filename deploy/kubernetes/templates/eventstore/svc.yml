@@ -6,7 +6,6 @@ metadata:
   labels:
     name: "__SERVICE__"
     major: "__MAJOR__"
-    public: "true"
 spec:
   selector:
     name: "__SERVICE__"
