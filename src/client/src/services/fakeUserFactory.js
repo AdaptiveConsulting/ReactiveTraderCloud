@@ -1,11 +1,12 @@
-import _ from 'lodash';
+import * as model from './model';
 
-/**
- * @class Traders
- * @description quick way to assign a random username
- */
-class Traders {
-  static list = [{
+export default class FakeUserFactory {
+  static getRandomUser() {
+    var details = _.sample(FakeUserFactory._fakeUserDetails);
+    return new User(details.firstName, details.lastName, details.shortCode);
+  }
+
+  static _fakeUserDetails = [{
     shortCode: 'LMO',
     firstName: 'Lorretta',
     lastName: 'Moe'
@@ -85,41 +86,5 @@ class Traders {
     shortCode: 'AGE',
     firstName: 'Ambrose',
     lastName: 'Gerdts'
-  }]
-
-  /**
-   * @constructs Trader
-   * @param trader
-   */
-  constructor(trader){
-    this.setTrader(trader);
-  }
-
-  /**
-   * Sets the current trader to their short code or picks a random one.
-   * @param {String=} traderCode
-   */
-  setTrader(traderCode:string){
-    let trader;
-
-    if (traderCode){
-      trader = _.findWhere(Traders.list, {
-        shortCode: traderCode
-      });
-    }
-
-    if (!trader){
-      trader = _.sample(Traders.list);
-    }
-
-    this.name = trader.firstName;
-    this.surname = trader.lastName;
-    this.code = trader.shortCode;
-  }
-
-  get list(){
-    return Traders.list;
-  }
+  }];
 }
-
-export default new Traders;

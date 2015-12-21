@@ -2,24 +2,24 @@ import system from 'system';
 import rx from 'rx';
 import * as model from './model';
 
-var _log:system.logger.Logger = system.logger.create('ExecutionService');
+var _log:system.logger.Logger = system.logger.create('BlotterService');
 
-export default class ExecutionService {
-  _pricingServiceClient:system.service.ServiceClient;
+export default class BlotterService {
+  _serviceClient:system.service.ServiceClient;
 
   constructor(serviceClient:system.service.ServiceClient, schedulerService:SchedulerService) {
     this._serviceClient = serviceClient;
     this._schedulerService = schedulerService;
   }
 
-  executeTrade(executeTradeRequest:model.ExecuteTradeRequest) {
+  getTradesStream() {
     let _this = this;
     return Rx.Observable.create(
       o => {
         _log.info('Subscribing to trade stream');
-        var waitForSuitableService = false;
         return _this._serviceClient
-          .createRequestResponseOperation('executeTrade', executeTradeRequest, waitForSuitableService)
+          .createStreamOperation('getTradesStream', {/* noop request */ })
+          .retryWithPolicy(system.RetryPolicy.backoffTo10SecondsMax, 'getTradesStream', _this._schedulerService.async)
           .select(data => data) // TODO mappers
           .subscribe(o);
       }

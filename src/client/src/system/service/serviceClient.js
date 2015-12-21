@@ -6,8 +6,7 @@ import disposables from '../disposables';
 import schedulerService from '../schedulerService';
 import Connection from './connection';
 import ServiceInstanceStatus from './serviceInstanceStatus';
-import ServiceInstanceSummary from './serviceInstanceSummary';
-import ServiceStatusSummary from './serviceStatusSummary';
+import ServiceStatus from './serviceStatus';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
 
 /**
@@ -45,10 +44,10 @@ export default class ServiceClient extends disposables.DisposableBase {
    *
    * @returns {Observable<T>}
    */
-  get serviceStatusSummaryStream():Rx.Observable<ServiceStatusSummary> {
+  get serviceStatusStream():Rx.Observable<ServiceStatus> {
     let _this = this;
     return this._serviceInstanceDictionaryStream
-      .select(cache => _this._createServiceStatusSummary(cache))
+      .select(cache => _this._createServiceStatus(cache))
       .publish()
       .refCount();
   }
@@ -218,13 +217,9 @@ export default class ServiceClient extends disposables.DisposableBase {
     });
   }
 
-  _createServiceStatusSummary(cache:LastValueObservableDictionary):ServiceStatusSummary {
-    let instanceSummaries = _(cache.values)
-      .filter(item => item.latestValue.isConnected)
-      .map((item:LastValueObservable) => new ServiceInstanceSummary(item.latestValue.serviceId, item.latestValue.isConnected))
-      .value();
-    let isConnected = _(instanceSummaries)
-      .some((item:ServiceInstanceSummary) => item.isConnected);
-    return new ServiceStatusSummary(this._serviceType, instanceSummaries, isConnected);
+  _createServiceStatus(cache:LastValueObservableDictionary):ServiceStatus {
+    let serviceInstanceStatuses : Array<ServiceInstanceStatus> = _.values(cache.values).map((item:LastValueObservable<ServiceInstanceStatus>) => item.latestValue);
+    let isConnected : Boolean = _(cache.values).some((item:LastValueObservable<ServiceInstanceStatus>) => item.latestValue.isConnected);
+    return new ServiceStatus(this._serviceType, serviceInstanceStatuses, isConnected);
   }
 }

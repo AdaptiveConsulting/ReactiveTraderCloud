@@ -2,7 +2,7 @@ import React from 'react';
 import traders from 'utils/traders';
 import { Link } from 'react-router';
 import system from 'system';
-import { model as serviceModel } from 'services2';
+import { model as serviceModel } from 'services';
 
 class Header extends React.Component {
 
@@ -23,11 +23,11 @@ class Header extends React.Component {
       : <span className='fa-stack' title='Connection offline'><i className='fa fa-signal fa-stack-1x' /><i className='fa fa-ban fa-stack-2x text-danger'/></span>;
   }
 
-  getServices(serviceLookup:serviceModel.ServiceStatusSummaryLookup){
+  getServices(serviceLookup:serviceModel.ServiceStatusLookup){
     const resp = [];
 
     for (let serviceType in serviceLookup.services){
-      var statusSummary : system.service.ServiceStatusSummary = serviceLookup.services[serviceType];
+      var statusSummary : system.service.ServiceStatus = serviceLookup.services[serviceType];
       if(statusSummary.isConnected) {
         resp.push(<li key={serviceType} className='service-status'><i className='fa fa-circle ' title={serviceType + ' ' + statusSummary.instanceCount + ' nodes online'} /><i className='node-badge'>{statusSummary.instanceCount}</i></li>);
       } else {

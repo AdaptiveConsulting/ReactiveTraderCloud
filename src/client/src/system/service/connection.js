@@ -31,7 +31,7 @@ export default class Connection extends disposables.DisposableBase {
   }
 
   /**
-   *
+   * A Boolean stream of the current connection status
    * @returns {*}
    */
   get connectionStatusStream():Rx.Observable<Boolean> {
@@ -40,10 +40,17 @@ export default class Connection extends disposables.DisposableBase {
       .asObservable();
   }
 
+  /**
+   * The last/current connection status
+   * @returns {Boolean}
+   */
   get isConnected():Boolean {
     return this._isConnected;
   }
 
+  /**
+   * Connects the underlying transport
+   */
   connect():void {
     if (!this._openCalled) {
       this._openCalled = true;
@@ -64,7 +71,7 @@ export default class Connection extends disposables.DisposableBase {
   }
 
   /**
-   * Get an observable subscription to a well known stream, e.g. 'status'
+   * Get an observable subscription to a well known topic stream, e.g. 'status'
    * @param topic
    * @returns {Observable}
    */

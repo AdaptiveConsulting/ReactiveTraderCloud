@@ -4,7 +4,7 @@ import BlotterService from './blotterService';
 import ExecutionService from './executionService';
 import AnalyticsService from './analyticsService';
 import serviceContainer from './serviceContainer';
-import ServiceStatusSummaryLookup from './model/serviceStatusSummaryLookup';
+import ServiceStatusLookup from './model/serviceStatusLookup';
 import * as model from './model';
 
 export default {

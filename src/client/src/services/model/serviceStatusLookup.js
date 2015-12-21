@@ -1,13 +1,16 @@
 import system from 'system';
 import ServiceConst from './serviceConst';
 
-export default class ServiceStatusSummaryLookup {
+/**
+ * A data structure that can be used to look up the current statuses of well known services.
+ */
+export default class ServiceStatusLookup {
   _services:Object;
   constructor() {
     this._services = {};
   }
-  update(serviceStatusSummary:system.service.ServiceStatusSummary) {
-    this._services[serviceStatusSummary.serviceType] = serviceStatusSummary;
+  updateServiceStatus(serviceStatus:system.service.ServiceStatus) {
+    this._services[serviceStatus.serviceType] = serviceStatus;
     return this;
   }
 

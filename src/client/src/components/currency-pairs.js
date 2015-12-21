@@ -1,10 +1,10 @@
 import React from 'react';
+import Rx from 'rx';
 import _ from 'lodash';
 import CurrencyPair from './currency-pair';
 import Container from './container';
 import system from 'system';
-import { serviceContainer, model as serviceModel } from 'services2';
-import Rx from 'rx';
+import { serviceContainer, model as serviceModel } from 'services';
 
 var _log:system.logger.Logger = system.logger.create('CurrencyPairs');
 
@@ -162,7 +162,7 @@ class CurrencyPairs extends React.Component {
     );
 
     this._disposables.add(
-      serviceContainer.pricingService.serviceStatusSummaryStream.subscribe(_ => {
+      serviceContainer.pricingService.serviceStatusStream.subscribe(_ => {
         this.updatePairs();
       })
     );

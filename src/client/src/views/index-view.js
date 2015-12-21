@@ -6,7 +6,7 @@ import Header from 'components/header';
 import Analytics from 'components/analytics';
 import system from 'system';
 import Rx from 'rx';
-import { serviceContainer, model as serviceModel } from 'services2';
+import { serviceContainer, model as serviceModel } from 'services';
 
 var _log:system.logger.Logger = system.logger.create('index-view');
 
@@ -91,7 +91,7 @@ class IndexView extends React.Component {
     );
 
     this._disposables.add(
-      serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusSummaryLookup) => {
+      serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusLookup) => {
           _log.info(`services:${services}`);
           self.setState({services});
         },

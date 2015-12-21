@@ -12,8 +12,8 @@ export default class PricingService {
     this._schedulerService = schedulerService;
   }
 
-  get serviceStatusSummaryStream(): Rx.Observable<system.service.ServiceStatusSummary> {
-    return this._serviceClient.serviceStatusSummaryStream;
+  get serviceStatusStream(): Rx.Observable<system.service.ServiceStatus> {
+    return this._serviceClient.serviceStatusStream;
   }
 
   getSpotPriceStream(request:model.GetSpotStreamRequest) : Rx.Observable<model.SpotPrice> {

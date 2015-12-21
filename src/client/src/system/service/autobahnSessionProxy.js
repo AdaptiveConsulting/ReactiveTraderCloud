@@ -1,7 +1,7 @@
 import autobahn from 'autobahn';
 
 /**
- * AutobahnSessionProxy: makes the authbahn api more explicit, aids testing
+ * AutobahnSessionProxy: makes the authbahn session api more explicit, aids testing
  */
 export default class AutobahnSessionProxy {
   _session:autobahn.Session;

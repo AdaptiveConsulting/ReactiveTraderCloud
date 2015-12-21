@@ -5,7 +5,7 @@ import * as model from './model';
 var _log:system.logger.Logger = system.logger.create('ReferenceDataService');
 
 export default class ReferenceDataService {
-  _pricingServiceClient:system.service.ServiceClient;
+  _serviceClient:system.service.ServiceClient;
 
   constructor(serviceClient:system.service.ServiceClient, schedulerService:SchedulerService) {
     this._serviceClient = serviceClient;

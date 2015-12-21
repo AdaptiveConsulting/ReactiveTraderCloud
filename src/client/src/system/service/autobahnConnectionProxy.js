@@ -3,7 +3,7 @@ import Rx from 'rx';
 import AutobahnSessionProxy from './autobahnSessionProxy';
 
 /**
- * AutobahnProxy: makes the authbahn api more explicit, aids testing
+ * AutobahnProxy: makes the authbahn connection api more explicit, aids testing
  */
 export default class AutobahnConnectionProxy {
   session:AutobahnSessionProxy;
