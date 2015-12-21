@@ -1,5 +1,6 @@
 #! /bin/bash
 
+# fail fast
 set -euo pipefail
 
 . ../../../config

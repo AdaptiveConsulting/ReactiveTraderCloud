@@ -12,21 +12,11 @@ if [[ $# != 1 ]];then
 fi
 build=$1
 
+# fail fast
+set euo -pipefail
+
 # get and control config
 . ../config
-
-if [[ $serversContainer = "" ]];then
-  echo "test: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMajor = "" ]];then
-  echo "test: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "test: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 echo " "
 echo "Starting ReactiveTrader ..."

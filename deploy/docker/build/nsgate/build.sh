@@ -8,6 +8,7 @@ if [[ $1 == "" ]];then
 fi
 build=$1
 
+# fail fast
 set -euo pipefail
 
 # get and control config

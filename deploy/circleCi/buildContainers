@@ -1,4 +1,6 @@
 #! /bin/bash
+
+# fail fast
 set -euo pipefail
 
 cd ../docker

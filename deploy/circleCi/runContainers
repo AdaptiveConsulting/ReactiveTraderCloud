@@ -1,6 +1,7 @@
 #! /bin/bash
 
-# set -euo pipefail
+# fail fast
+set -euo pipefail
 
 . ../config
 
