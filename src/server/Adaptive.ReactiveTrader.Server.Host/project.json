@@ -6,11 +6,12 @@
   "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
   "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
-  "dependencies": {
-    "Adaptive.ReactiveTrader.Contract": "1.0.0",
-    "Adaptive.ReactiveTrader.Messaging": "1.0.0",
-    "Adaptive.ReactiveTrader.EventStore": "1.0.0"
-  },
+    "dependencies": {
+        "Adaptive.ReactiveTrader.Contract": "1.0.0",
+        "Adaptive.ReactiveTrader.Messaging": "1.0.0",
+        "Adaptive.ReactiveTrader.EventStore": "1.0.0",
+        "Autofac": "3.5.2"
+    },
 
   "frameworks": {
     "dnx451": { }

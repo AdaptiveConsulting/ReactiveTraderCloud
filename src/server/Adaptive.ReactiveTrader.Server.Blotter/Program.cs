@@ -1,4 +1,4 @@
-﻿using Adaptive.ReactiveTrader.Server.Core;
+﻿using Adaptive.ReactiveTrader.Server.Host;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {

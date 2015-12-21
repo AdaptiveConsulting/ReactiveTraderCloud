@@ -26,6 +26,6 @@ test:
 
 deployment:
   hub:
-    branch: [master, deployment-dev]
+    branch: [master, add-nsgate-ssl]
     commands:
       - cd deploy/circleCi && ./pushContainers

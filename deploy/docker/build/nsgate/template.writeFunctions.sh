@@ -13,8 +13,8 @@ server {
     server_name $service-$namespace.__DOMAIN__;
 
     location / {
-        proxy_pass http://$service.$namespace;
-    }
+        proxy_pass http://$service.$namespace:$portNumber;
+  }
 }
 EOF
 }
