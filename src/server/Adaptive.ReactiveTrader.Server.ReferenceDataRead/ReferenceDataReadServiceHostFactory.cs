@@ -2,7 +2,7 @@ using System;
 using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
-using Adaptive.ReactiveTrader.Server.Core;
+using Adaptive.ReactiveTrader.Server.Host;
 using Common.Logging;
 using EventStore.ClientAPI;
 

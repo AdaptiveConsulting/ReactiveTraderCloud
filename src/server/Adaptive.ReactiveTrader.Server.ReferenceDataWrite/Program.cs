@@ -1,4 +1,4 @@
-using Adaptive.ReactiveTrader.Server.Core;
+using Adaptive.ReactiveTrader.Server.Host;
 using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite

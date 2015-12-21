@@ -8,7 +8,7 @@ using Adaptive.ReactiveTrader.EventStore;
 using Common.Logging;
 using EventStore.ClientAPI;
 
-namespace Adaptive.ReactiveTrader.Server.Core
+namespace Adaptive.ReactiveTrader.Server.Host
 {
     public class TradeCache : EventStoreCache<long, Trade, TradesDto>
     {
