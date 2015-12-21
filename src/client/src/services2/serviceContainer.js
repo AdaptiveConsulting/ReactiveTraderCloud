@@ -16,6 +16,7 @@ export default class ServiceContainer {
   _executionService:ExecutionService;
   _analyticsService:AnalyticsService;
   _serviceStatusStream: Rx.Observable<model.ServiceStatusSummaryLookup>;
+  _currentServiceStatusSummaryLookup : model.ServiceStatusSummaryLookup;
 
   constructor() {
     var url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
@@ -23,11 +24,11 @@ export default class ServiceContainer {
     var autobahnProxy = new system.service.AutobahnConnectionProxy(url, realm);
     this._connection = new system.service.Connection('LMO', autobahnProxy);
 
-    this._pricingServiceClient = new system.service.ServiceClient('pricing', this._connection, schedulerService);
-    this._referenceDataServiceClient = new system.service.ServiceClient('reference', this._connection, schedulerService);
-    this._blotterServiceClient = new system.service.ServiceClient('blotter', this._connection, schedulerService);
-    this._executionServiceClient = new system.service.ServiceClient('execution', this._connection, schedulerService);
-    this._analyticsServiceClient = new system.service.ServiceClient('analytics', this._connection, schedulerService);
+    this._pricingServiceClient = new system.service.ServiceClient(model.ServiceConst.PricingServiceKey, this._connection, schedulerService);
+    this._referenceDataServiceClient = new system.service.ServiceClient(model.ServiceConst.ReferenceServiceKey, this._connection, schedulerService);
+    this._blotterServiceClient = new system.service.ServiceClient(model.ServiceConst.BlotterServiceKey, this._connection, schedulerService);
+    this._executionServiceClient = new system.service.ServiceClient(model.ServiceConst.ExecutionServiceKey, this._connection, schedulerService);
+    this._analyticsServiceClient = new system.service.ServiceClient(model.ServiceConst.AnalyticsServiceKey, this._connection, schedulerService);
 
     this._pricingService = new PricingService(this._pricingServiceClient, schedulerService);
     this._referenceDataService = new ReferenceDataService(this._referenceDataServiceClient, schedulerService);
@@ -36,18 +37,39 @@ export default class ServiceContainer {
     this._analyticsService = new AnalyticsService(this._analyticsServiceClient, schedulerService);
 
     this._serviceStatusStream = this._createServiceStatusStream();
+    this._currentServiceStatusSummaryLookup = new model.ServiceStatusSummaryLookup();
   }
 
+  /**
+   * A true/false stream indicating if we're connected on the wire
+   * @returns {*}
+   */
   get connectionStatusStream():Rx.Observable<Boolean> {
     return this._connection.connectionStatusStream;
   }
 
-  get serviceStatusStream() {
+  /**
+   * The current isConnected status
+   * @returns {*}
+   */
+  get isConnected():Boolean {
+    return this._connection.isConnected;
+  }
+
+  /**
+   * A stream of ServiceStatusSummaryLookup which can be queried for individual service connection status
+   * @returns {Rx.Observable.<model.ServiceStatusSummaryLookup>}
+   */
+  get serviceStatusStream() : Rx.Observable<model.ServiceStatusSummaryLookup> {
     return this._serviceStatusStream;
   }
 
-  get isConnected():Boolean {
-    return this._connection.isConnected;
+  /**
+   * THe current ServiceStatusSummaryLookup
+   * @returns {model.ServiceStatusSummaryLookup}
+   */
+  get currentServiceStatus() : model.ServiceStatusSummaryLookup {
+    return this._currentServiceStatusSummaryLookup;
   }
 
   get pricingService() {
@@ -77,6 +99,9 @@ export default class ServiceContainer {
     this._blotterServiceClient.connect();
     this._executionServiceClient.connect();
     this._analyticsServiceClient.connect();
+    this._serviceStatusStream.subscribe(update => {
+      this._currentServiceStatusSummaryLookup = update;
+    });
     this._connection.connect();
   }
 

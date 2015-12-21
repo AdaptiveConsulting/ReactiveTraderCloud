@@ -1,9 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
-
 import CurrencyPair from './currency-pair';
 import Container from './container';
-import rt from 'services/reactive-trader';
+import system from 'system';
+import { serviceContainer, model as serviceModel } from 'services2';
+import Rx from 'rx';
+
+var _log:system.logger.Logger = system.logger.create('CurrencyPairs');
 
 const STALE_TIMEOUT = 4000,
       UPDATE_TYPES  = {
@@ -19,7 +22,6 @@ const STALE_TIMEOUT = 4000,
 class CurrencyPairs extends React.Component {
 
   static propTypes = {
-    services: React.PropTypes.object,
     onExecute: React.PropTypes.func
   }
 
@@ -33,6 +35,7 @@ class CurrencyPairs extends React.Component {
     this.state = {
       pairs: []
     };
+    this._disposables = new Rx.CompositeDisposable();
   }
 
   /**
@@ -40,7 +43,7 @@ class CurrencyPairs extends React.Component {
    * @returns {Boolean}
    */
   canTrade(){
-    return this.props.services.pricing && this.props.services.execution;
+    return serviceContainer.currentServiceStatus.pricingStatus.isConnected && serviceContainer.currentServiceStatus.executionStatus.isConnected;
   }
 
   /**
@@ -56,7 +59,7 @@ class CurrencyPairs extends React.Component {
       if (pair.state !== 'executing' && pair.state !== 'blocked'){
         pair.state = this.canTrade() && pair.disabled !== true ? timeOutState : 'stale';
       }
-      if (!this.props.services.pricing){
+      if (!serviceContainer.currentServiceStatus.pricingStatus.isConnected){
         pair.buy = pair.mid = pair.sell = undefined;
       }
     });
@@ -72,87 +75,97 @@ class CurrencyPairs extends React.Component {
   attachSubs(){
 
     this.setState({
-      connected: rt.transport.isOpen,
-      services: rt.transport.getStatus()
+      connected: serviceContainer.isConnected
     });
 
     const tearoffStates = JSON.parse(localStorage.getItem('pairs')) || {};
 
-    rt.reference.getCurrencyPairUpdatesStream((referenceData) =>{
-      let shouldStateUpdate = false;
+    this._disposables.add(
+      serviceContainer.referenceDataService.getCurrencyPairUpdatesStream().subscribe(referenceData => {
+          let shouldStateUpdate = false;
 
-      if (referenceData.IsStateOfTheWorld && referenceData.Updates.length){
-        // compact pairs if it has any instances not in the new state of the world
-        const len = this.state.pairs.length,
-              ids = _.pluck(referenceData.Updates, 'CurrencyPair.Symbol');
+          if (referenceData.IsStateOfTheWorld && referenceData.Updates.length){
+            // compact pairs if it has any instances not in the new state of the world
+            const len = this.state.pairs.length,
+                  ids = _.pluck(referenceData.Updates, 'CurrencyPair.Symbol');
 
-        this.state.pairs = this.state.pairs.filter((pair) =>{
-          const pairShouldRemain = _.indexOf(ids, pair.id) !== -1;
+            this.state.pairs = this.state.pairs.filter((pair) =>{
+              const pairShouldRemain = _.indexOf(ids, pair.id) !== -1;
 
-          pairShouldRemain || rt.pricing.unsubscribe(pair.pricingSub);
+              pairShouldRemain || pair.pricingSub.dispose();
 
-          return pairShouldRemain;
-        });
-
-        shouldStateUpdate = len !== this.state.pairs.length;
-      }
-
-      // loop through updates
-      _.forEach(referenceData.Updates, (updatedPair) =>{
-        const pairData = updatedPair.CurrencyPair;
-
-        // added new?
-        if (updatedPair.UpdateType === UPDATE_TYPES.ADD){
-          let existingPair = _.findWhere(this.state.pairs, {id: pairData.Symbol}),
-              localPair    = {
-                pip: pairData.PipsPosition,
-                precision: pairData.RatePrecision,
-                pair: pairData.Symbol,
-                id: pairData.Symbol,
-                buy: undefined,
-                sell: undefined,
-                disabled: false,
-                tearoff: Boolean(tearoffStates[pairData.Symbol])
-              };
-
-          // only subscribe if we don't already listen for prices
-          if (!existingPair){
-            localPair.pricingSub = rt.pricing.getPriceUpdates(localPair.id, (priceData) =>{
-              // console.info(priceData, localPair);
-              localPair.sell = Number(priceData.Bid);
-              localPair.buy = Number(priceData.Ask);
-              localPair.mid = Number(priceData.Mid);
-
-              localPair.lastUpdated = Date.now();
-              this.updatePairs();
+              return pairShouldRemain;
             });
 
-            shouldStateUpdate = true;
-            this.state.pairs.push(localPair);
+            shouldStateUpdate = len !== this.state.pairs.length;
           }
-          else {
-            console.warn('Trying to add a pair that already exists', pairData, existingPair);
-          }
-        }
-        else if (updatedPair.UpdateType === UPDATE_TYPES.DELETE){
-          // removed existing?
-          let existingPair = _.findWhere(this.state.pairs, {id: pairData.Symbol});
 
-          if (existingPair){
-            // rt.pricing.unsubscribe(existingPair.pricingSub);
-            this.state.pairs.splice(_.indexOf(this.state.pairs, existingPair), 1);
-            shouldStateUpdate = true;
-          }
-        }
-      }, this);
+          // loop through updates
+          _.forEach(referenceData.Updates, (updatedPair) =>{
+            const pairData = updatedPair.CurrencyPair;
 
-      // update state if we detected changes
-      shouldStateUpdate && this.updatePairs();
-    });
+            // added new?
+            if (updatedPair.UpdateType === UPDATE_TYPES.ADD){
+              let existingPair = _.findWhere(this.state.pairs, {id: pairData.Symbol}),
+                  localPair    = {
+                    pip: pairData.PipsPosition,
+                    precision: pairData.RatePrecision,
+                    pair: pairData.Symbol,
+                    id: pairData.Symbol,
+                    buy: undefined,
+                    sell: undefined,
+                    disabled: false,
+                    tearoff: Boolean(tearoffStates[pairData.Symbol])
+                  };
 
-    const self = this;
+              // only subscribe if we don't already listen for prices
+              if (!existingPair){
+                localPair.pricingSub = serviceContainer.pricingService.getSpotPriceStream(new serviceModel.GetSpotStreamRequest(localPair.id))
+                  .subscribe(
+                    (priceData : serviceModel.SpotPrice) =>{
+                      // console.info(priceData, localPair);
+                      localPair.sell = priceData.bid;
+                      localPair.buy = priceData.ask;
+                      localPair.mid = priceData.mid;
 
-    rt.transport.on('statusUpdate', ()=> this.updatePairs());
+                      localPair.lastUpdated = Date.now();
+                      this.updatePairs();
+                    },
+                    err => {
+                      _log.error(`Error on getSpotPriceStream stream stream ${err.message}`);
+                    }
+                  );
+                shouldStateUpdate = true;
+                this.state.pairs.push(localPair);
+              }
+              else {
+                console.warn('Trying to add a pair that already exists', pairData, existingPair);
+              }
+            }
+            else if (updatedPair.UpdateType === UPDATE_TYPES.DELETE){
+              // removed existing?
+              let existingPair = _.findWhere(this.state.pairs, {id: pairData.Symbol});
+
+              if (existingPair){
+                this.state.pairs.splice(_.indexOf(this.state.pairs, existingPair), 1);
+                shouldStateUpdate = true;
+              }
+            }
+          }, this);
+
+        // update state if we detected changes
+        shouldStateUpdate && this.updatePairs();
+      },
+      err => {
+        _log.error(`Error on getCurrencyPairUpdatesStream stream stream ${err.message}`);
+      })
+    );
+
+    this._disposables.add(
+      serviceContainer.pricingService.serviceStatusSummaryStream.subscribe(_ => {
+        this.updatePairs();
+      })
+    );
   }
 
   componentWillMount(){

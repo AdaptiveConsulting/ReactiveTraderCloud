@@ -220,6 +220,7 @@ export default class ServiceClient extends disposables.DisposableBase {
 
   _createServiceStatusSummary(cache:LastValueObservableDictionary):ServiceStatusSummary {
     let instanceSummaries = _(cache.values)
+      .filter(item => item.latestValue.isConnected)
       .map((item:LastValueObservable) => new ServiceInstanceSummary(item.latestValue.serviceId, item.latestValue.isConnected))
       .value();
     let isConnected = _(instanceSummaries)

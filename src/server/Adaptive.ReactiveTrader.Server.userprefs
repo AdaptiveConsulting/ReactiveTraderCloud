@@ -1,0 +1,8 @@
+﻿<Properties StartupItem="Adaptive.ReactiveTrader.Server.Pricing/Adaptive.ReactiveTrader.Server.Pricing.xproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

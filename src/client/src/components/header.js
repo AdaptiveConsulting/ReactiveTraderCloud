@@ -1,6 +1,8 @@
 import React from 'react';
 import traders from 'utils/traders';
 import { Link } from 'react-router';
+import system from 'system';
+import { model as serviceModel } from 'services2';
 
 class Header extends React.Component {
 
@@ -21,13 +23,23 @@ class Header extends React.Component {
       : <span className='fa-stack' title='Connection offline'><i className='fa fa-signal fa-stack-1x' /><i className='fa fa-ban fa-stack-2x text-danger'/></span>;
   }
 
-  getServices(services:object){
+  getServices(serviceLookup:serviceModel.ServiceStatusSummaryLookup){
     const resp = [];
-    for (let k in services){
-      resp.push(services[k] ?
-        <li key={k} className='service-status'><i className='fa fa-circle ' title={k + ' ' + services[k] + ' nodes online'} /><i className='node-badge'>{services[k]}</i></li> :
-        <li key={k} className='service-status text-danger animated infinite fadeIn'><i className='fa fa-circle-o' title={k + ' offline'} /></li>);
+
+    for (let serviceType in serviceLookup.services){
+      var statusSummary : system.service.ServiceStatusSummary = serviceLookup.services[serviceType];
+      if(statusSummary.isConnected) {
+        resp.push(<li key={serviceType} className='service-status'><i className='fa fa-circle ' title={serviceType + ' ' + statusSummary.instanceCount + ' nodes online'} /><i className='node-badge'>{statusSummary.instanceCount}</i></li>);
+      } else {
+        resp.push(<li key={serviceType} className='service-status text-danger animated infinite fadeIn'><i className='fa fa-circle-o' title={serviceType + ' offline'} /></li>);
+      }
     }
+    //
+    //for (let k in services){
+    //  resp.push(services[k] ?
+    //    <li key={k} className='service-status'><i className='fa fa-circle ' title={k + ' ' + services[k] + ' nodes online'} /><i className='node-badge'>{services[k]}</i></li> :
+    //    <li key={k} className='service-status text-danger animated infinite fadeIn'><i className='fa fa-circle-o' title={k + ' offline'} /></li>);
+    //}
 
     return resp;
   }

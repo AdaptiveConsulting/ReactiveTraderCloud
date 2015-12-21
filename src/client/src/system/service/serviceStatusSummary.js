@@ -19,6 +19,10 @@ export default class ServiceStatusSummary {
     return this._instances;
   }
 
+  get instanceCount():Number {
+    return this._instances.length;
+  }
+
   get isConnected():Boolean {
     return this._isConnected;
   }

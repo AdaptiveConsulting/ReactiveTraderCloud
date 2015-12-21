@@ -5,7 +5,7 @@ import Modal from 'components/modal';
 import Header from 'components/header';
 import Analytics from 'components/analytics';
 import system from 'system';
-
+import Rx from 'rx';
 import { serviceContainer, model as serviceModel } from 'services2';
 
 var _log:system.logger.Logger = system.logger.create('index-view');
@@ -41,8 +41,7 @@ class IndexView extends React.Component {
       connected: false,
       services: {}
     };
-
-    this.attachEvents();
+    this._disposables = new Rx.CompositeDisposable();
   }
 
   /**
@@ -50,66 +49,57 @@ class IndexView extends React.Component {
    */
   attachEvents() {
     const self = this;
-
-    serviceContainer.blotterService.getTradesStream().subscribe(blotter => {
-        blotter.Trades.forEach((trade) => this._processTrade(trade, false));
-        this.setState({
-          trades: this.state.trades
-        });
-      },
-      err => {
-        _log.error(err.message);
-      },
-      ()=> {
-
-      }
+    this._disposables.add(
+      serviceContainer.blotterService.getTradesStream().subscribe(blotter => {
+          blotter.Trades.forEach((trade) => this._processTrade(trade, false));
+          this.setState({
+            trades: this.state.trades
+          });
+        },
+        err => {
+          _log.error(`Error on blotterService stream stream ${err.message}`);
+        }
+      )
     );
 
-    serviceContainer.analyticsService.getAnalyticsStream(new serviceModel.AnalyticsRequest('USD')).subscribe(data => {
-        this.setState({
-          history: data.History,
-          positions: data.CurrentPositions
-        });
-      },
-      err => {
-        _log.error(err.message);
-      },
-      ()=> {
-
-      }
-    );
-
-    serviceContainer.connectionStatusStream.subscribe((isConnected:Boolean) => {
-      _log.info(`IsConnected:${isConnected}`);
-        //self.setState({connected: isConnected});
-      },
-      err => {
-        _log.error(err.message);
-      },
-      ()=> {
-
-      }
-    );
-
-    serviceContainer.serviceStatusStream.subscribe((services:serviceModel.serviceStatusSummaryLookup) => {
-        _log.info(`services:${services}`);
-        console.log('services-1', services)
-        // self.setState({services});
-      },
-      err => {
-        _log.error(err.message);
-      },
-      ()=> {
-
-      }
-    );
+    //// TODO move
+    //this._disposables.add(
+    //  serviceContainer.analyticsService.getAnalyticsStream(new serviceModel.AnalyticsRequest('USD')).subscribe(data => {
+    //      this.setState({
+    //        history: data.History,
+    //        positions: data.CurrentPositions
+    //      });
+    //    },
+    //    err => {
+    //      _log.error(`Error on analyticsService stream stream ${err.message}`);
+    //    },
+    //    ()=> {
     //
-    //on('open', ()=> self.setState({connected: true}))
-    //  .on('close', ()=> self.setState({connected: false}))
-    //  .on('statusUpdate', (services) => {
-    //    // update ui indicators for all known services in header
-    //    self.setState({services});
-    //  });
+    //    }
+    //  )
+    //);
+
+    this._disposables.add(
+      serviceContainer.connectionStatusStream.subscribe((isConnected:Boolean) => {
+          _log.info(`IsConnected:${isConnected}`);
+          self.setState({connected: isConnected});
+        },
+        err => {
+          _log.error(`Error on connection status stream ${err.message}`);
+        }
+      )
+    );
+
+    this._disposables.add(
+      serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusSummaryLookup) => {
+          _log.info(`services:${services}`);
+          self.setState({services});
+        },
+        err => {
+          _log.error(`Error on service status stream ${err.message}`);
+        }
+      )
+    );
   }
 
   /**
@@ -122,8 +112,8 @@ class IndexView extends React.Component {
     //rt.transport.isConnected || rt.transport.open();
   }
 
-
   componentDidMount() {
+    this.attachEvents();
 
     // TODO KEITH
     //rt.on('timeout', () => {
@@ -138,6 +128,10 @@ class IndexView extends React.Component {
     //    .setClass('error-modal')
     //    .open();
     //});
+  }
+
+  componentWillUnmount() {
+    this._disposables.dispose();
   }
 
   /**
@@ -222,7 +216,7 @@ class IndexView extends React.Component {
       <div>
         <Modal/>
         <Header status={this.state.connected} services={services}/>
-        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} services={services}/>
+        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} />
         <Analytics status={services.analytics} history={this.state.history} positions={this.state.positions}/>
         <Blotter trades={this.state.trades} status={services.blotter}/>
       </div>
