@@ -71,6 +71,9 @@ if [[ $command = "build" ]];then
   for service in $group
   do
     pushd build/$service > garbage
+      echo "======================"
+      echo "= Build $service"
+      echo "======================"
       ./build.sh $build
     popd > garbage
     rm garbage build/$service/garbage
@@ -85,6 +88,9 @@ if [[ $command = "push" ]];then
   for service in $group
   do
     pushd build/$service > garbage
+      echo "======================"
+      echo "= Push $service"
+      echo "======================"
       ./push.sh $build
     popd > garbage
     rm garbage build/$service/garbage
