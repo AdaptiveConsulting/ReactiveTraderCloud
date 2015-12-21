@@ -24,13 +24,15 @@ docker run -d --net=host                      \
 echo "container $(cat populate_id) started"
 
 echo "============="
-echo "logs:"
+echo "logs from $(cat eventstore_id):"
 echo " "
-docker logs `cat populate_id`
 docker logs `cat eventstore_id`
 echo " "
-echo "logs end"
 echo "============="
+echo "logs from $(cat populate_id)"
+echo " "
+docker logs `cat populate_id`
+echo " "
 
 sleep 7 && docker kill `cat populate_id` 
 
