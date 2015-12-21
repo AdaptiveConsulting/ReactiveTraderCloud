@@ -1,15 +1,49 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import FixedDataTable from 'fixed-data-table';
+const {Table, Column, Cell} = FixedDataTable;
+
+
+import Dimensions from 'react-dimensions';
 import numeral from 'numeral';
 import moment from 'moment';
 import Container from './container';
 import _ from 'lodash';
 
+class DateCell extends React.Component {
+  render(){
+    const { rowIndex, field, data, format = 'MMM Do, HH:mm:ss', prefix = '', ...props } = this.props;
+    const formatted = moment(data[rowIndex][field]).format(format);
+
+    return (
+      <Cell {...props}>
+        {prefix}{formatted}
+      </Cell>
+    );
+  }
+}
+
+class MoneyCell extends React.Component {
+  render(){
+    const { rowIndex, field, data, ...props } = this.props;
+    const formatted = numeral(data[rowIndex][field]).format('0,000,000[.]00') + ' ' + data[rowIndex].pair.substr(0, 3);
+
+    return (
+      <Cell {...props}>
+        {formatted}
+      </Cell>
+    );
+  }
+}
+
+
 /**
- * @class CurrencyPairs
+ * @class Blotter
  * @extends {React.Component}
  */
-class CurrencyPairs extends React.Component {
+@Dimensions()
+class Blotter extends React.Component {
 
   static propTypes = {
     trades: React.PropTypes.array,
@@ -81,12 +115,14 @@ class CurrencyPairs extends React.Component {
     this.state.flagged = false;
   }
 
-  componentDidUpdate(){
-    this.refs.tbody && (this.refs.tbody.scrollTop = 0);
-  }
-
   render(){
     const className = this.props.status ? 'blotter online' : 'blotter offline';
+    const { flagged } = this.state;
+
+    function getClass(item){
+      const flash = flagged && flagged === item.id;
+      return item.status + ' animated ' + (flash ? 'flash' : 'slideInDown');
+    }
 
     return (
         <Container
@@ -94,38 +130,83 @@ class CurrencyPairs extends React.Component {
           className={className}
           onTearoff={(state) => this.tearOff(state)}
           tearoff={this.state.tearoff}
-          width={window.outerWidth}
+          width={this.props.containerWidth}
           height={400}
           options={{maximizable:true}}>
-        <div className='blotter-wrapper'>
+        <div className='blotter-wrapper' ref='wrapper'>
           <div className='status'>
             <i className='fa fa-plug animated infinite fadeIn'/>
           </div>
-          <table className='table table-compact table-heading'>
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th className='large'>Date</th>
-                <th>Dir.</th>
-                <th>CCY</th>
-                <th className='large text-right'>Notional</th>
-                <th className='text-right'>Rate</th>
-                <th>Status</th>
-                <th>Value date</th>
-                <th className='large'>Trader</th>
-              </tr>
-            </thead>
-          </table>
-          <table className='table table-compact table-blotter'>
-            <tbody ref='tbody'>
-              {this.props.trades.map(this.renderRow, this)}
-            </tbody>
-          </table>
-
+          <Table
+            rowHeight={24}
+            headerHeight={30}
+            rowsCount={this.props.trades.length}
+            width={this.props.containerWidth}
+            height={300}
+            rowClassNameGetter={(index) => getClass(this.props.trades[index])}
+            {...this.props}>
+            <Column
+              header={<Cell>Id</Cell>}
+              cell={props => <Cell {...props}>
+                {this.props.trades[props.rowIndex].id}
+              </Cell>}
+              width={50}
+            />
+            <Column
+              header={<Cell>Date</Cell>}
+              cell={props => <DateCell field='dateTime' data={this.props.trades} {...props} />}
+              width={150}
+            />
+            <Column
+              header={<Cell>Dir</Cell>}
+              cell={props => <Cell {...props}>
+                {this.props.trades[props.rowIndex].direction}
+              </Cell>}
+              width={50}
+            />
+            <Column
+              header={<Cell>CCY</Cell>}
+              cell={props => <Cell {...props}>
+                {this.props.trades[props.rowIndex].pair}
+              </Cell>}
+              width={70}
+            />
+            <Column
+              header={<Cell className='text-right'>Notional</Cell>}
+              cell={props => <MoneyCell className='text-right' data={this.props.trades} field='amount' {...props} />}
+              width={120}
+            />
+            <Column
+              header={<Cell className='text-right'>Rate</Cell>}
+              cell={props => <Cell className='text-right' {...props}>
+                {this.props.trades[props.rowIndex].rate}
+              </Cell>}
+              width={80}
+            />
+            <Column
+              header={<Cell>Status</Cell>}
+              cell={props => <Cell className='trade-status' {...props}>
+                {this.props.trades[props.rowIndex].status}
+              </Cell>}
+              width={80}
+            />
+            <Column
+              header={<Cell>Value date</Cell>}
+              cell={props => <DateCell field='valueDate' prefix='SP. ' format='DD MMM' data={this.props.trades} {...props} />}
+              width={100}
+            />
+            <Column
+              header={<Cell>Trader</Cell>}
+              cell={props => <Cell {...props}>
+                {this.props.trades[props.rowIndex].trader}
+              </Cell>}
+              width={80}
+            />
+          </Table>
         </div>
       </Container>
     );
   }
 }
 
-export default CurrencyPairs;
+export default Blotter;
