@@ -10,7 +10,7 @@ dependencies:
     - deploy/docker/build/servers/dnxcache
   pre:
     - npm install -g npm@3.5
-    - sudo apt-get install gcc-4.8 g++-4.8
+    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
   override:
     - docker info
     - cd deploy/circleCi && chmod 755 ensurePermissions && ./ensurePermissions
