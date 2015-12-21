@@ -6,7 +6,7 @@ if [[ $build = "" ]];then
   exit 1
 fi
 
-set -euo pipefail
+# set -euo pipefail
 
 # get config
 . ../../../config
