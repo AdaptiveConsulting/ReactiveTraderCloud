@@ -137,7 +137,7 @@ class Blotter extends React.Component {
           width={this.props.containerWidth}
           height={400}
           options={{maximizable:true}}>
-        <div className='blotter-wrapper' ref='wrapper'>
+        <div className='blotter-wrapper'>
           <div className='status'>
             <i className='fa fa-plug animated infinite fadeIn'/>
           </div>
