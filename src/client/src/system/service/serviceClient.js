@@ -5,6 +5,7 @@ import Guard from '../guard';
 import disposables from '../disposables';
 import schedulerService from '../schedulerService';
 import Connection from './connection';
+import ConnectionStatus from './connectionStatus';
 import ServiceInstanceStatus from './serviceInstanceStatus';
 import ServiceStatus from './serviceStatus';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
@@ -71,7 +72,10 @@ export default class ServiceClient extends disposables.DisposableBase {
   _createServiceInstanceDictionaryStream(serviceType:string):Rx.Observable<LastValueObservableDictionary> {
     let _this = this;
     return Rx.Observable.create(o => {
-      let connectionStatus = this._connection.connectionStatusStream.publish().refCount();
+      let connectionStatus = this._connection.connectionStatusStream
+        .select(status => status === ConnectionStatus.connected)
+        .publish()
+        .refCount();
       let isConnectedStream = connectionStatus.where(isConnected => isConnected);
       let errorOnDisconnectStream = connectionStatus.where(isConnected => !isConnected).take(1).selectMany(Rx.Observable.throw(new Error('Disconnected')));
       let serviceInstanceDictionaryStream = this._connection

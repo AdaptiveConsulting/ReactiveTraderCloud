@@ -21,6 +21,7 @@ export default class ServiceContainer {
   _analyticsService:AnalyticsService;
   _serviceStatusStream: Rx.Observable<model.ServiceStatusLookup>;
   _currentServiceStatusLookup : model.ServiceStatusLookup;
+  _isStarted: Boolean;
 
   constructor() {
     var user : model.User = FakeUserFactory.getRandomUser();
@@ -43,6 +44,7 @@ export default class ServiceContainer {
 
     this._serviceStatusStream = this._createServiceStatusStream();
     this._currentServiceStatusLookup = new model.ServiceStatusLookup();
+    this._isStarted = false;
   }
 
   /**
@@ -97,16 +99,24 @@ export default class ServiceContainer {
     return this._analyticsService;
   }
 
-  connect() {
-    _log.info('Connect called');
-    this._pricingServiceClient.connect();
-    this._referenceDataServiceClient.connect();
-    this._blotterServiceClient.connect();
-    this._executionServiceClient.connect();
-    this._analyticsServiceClient.connect();
-    this._serviceStatusStream.subscribe(update => {
-      this._currentServiceStatusLookup = update;
-    });
+  start() {
+    if(!this._isStarted) {
+      this._isStarted = true;
+
+      _log.info('Start called');
+      this._pricingServiceClient.connect();
+      this._referenceDataServiceClient.connect();
+      this._blotterServiceClient.connect();
+      this._executionServiceClient.connect();
+      this._analyticsServiceClient.connect();
+      this._serviceStatusStream.subscribe(update => {
+        this._currentServiceStatusLookup = update;
+      });
+      this._connection.connect();
+    }
+  }
+
+  reConnect() {
     this._connection.connect();
   }
 
@@ -132,6 +142,6 @@ export default class ServiceContainer {
 // Not a massive fan of using the 'require' statement for instance construction and resolution, however since
 // we don't have any IoC setup up for this app so we just new up our poor-mans container here.
 var serviceContainer = new ServiceContainer();
-serviceContainer.connect();
+serviceContainer.start();
 
 export default serviceContainer;

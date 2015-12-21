@@ -44,11 +44,7 @@ class IndexView extends React.Component {
     this._disposables = new Rx.CompositeDisposable();
   }
 
-  /**
-   * Adds transport subscriptions
-   */
-  attachEvents() {
-    const self = this;
+  componentDidMount() {
     this._disposables.add(
       serviceContainer.blotterService.getTradesStream().subscribe(blotter => {
           blotter.Trades.forEach((trade) => this._processTrade(trade, false));
@@ -62,32 +58,41 @@ class IndexView extends React.Component {
       )
     );
 
-    //// TODO move
-    //this._disposables.add(
-    //  serviceContainer.analyticsService.getAnalyticsStream(new serviceModel.AnalyticsRequest('USD')).subscribe(data => {
-    //      this.setState({
-    //        history: data.History,
-    //        positions: data.CurrentPositions
-    //      });
-    //    },
-    //    err => {
-    //      _log.error(`Error on analyticsService stream stream ${err.message}`);
-    //    },
-    //    ()=> {
-    //
-    //    }
-    //  )
-    //);
-
     this._disposables.add(
-      serviceContainer.connectionStatusStream.subscribe((isConnected:Boolean) => {
-          _log.info(`IsConnected:${isConnected}`);
-          self.setState({connected: isConnected});
+      serviceContainer.analyticsService.getAnalyticsStream(new serviceModel.AnalyticsRequest('USD')).subscribe(data => {
+          this.setState({
+            history: data.History,
+            positions: data.CurrentPositions
+          });
         },
         err => {
-          _log.error(`Error on connection status stream ${err.message}`);
+          _log.error(`Error on analyticsService stream stream ${err.message}`);
         }
       )
+    );
+
+    this._disposables.add(
+      serviceContainer.connectionStatusStream
+        .subscribe((status:String) => {
+            var isConnected = status === serviceModel.service.ConnectionStatus.connected;
+            self.setState({connected: isConnected});
+            if (status === serviceModel.service.ConnectionStatus.sessionExpired) {
+              Modal.setTitle('Session expired')
+                .setBody(<div>
+                  <div>Your 15 minute session expired, you are now disconnected from the server.</div>
+                  <div>Click reconnect to start a new session.</div>
+                  <div className='modal-action'>
+                    <button className='btn btn-large' onClick={() => this.reconnect()}>Reconnect</button>
+                  </div>
+                </div>)
+                .setClass('error-modal')
+                .open();
+            }
+          },
+          err => {
+            _log.error(`Error on connection status stream ${err.message}`);
+          }
+        )
     );
 
     this._disposables.add(
@@ -102,36 +107,16 @@ class IndexView extends React.Component {
     );
   }
 
-  /**
-   * Re-establishes a connection to broker once it times out
-   */
-  reconnect() {
-
-    // TODO KEITH
-    //Modal.close();
-    //rt.transport.isConnected || rt.transport.open();
-  }
-
-  componentDidMount() {
-    this.attachEvents();
-
-    // TODO KEITH
-    //rt.on('timeout', () => {
-    //  Modal.setTitle('Session expired')
-    //    .setBody(<div>
-    //      <div>Your 15 minute session expired, you are now disconnected from the server.</div>
-    //      <div>Click reconnect to start a new session.</div>
-    //      <div className='modal-action'>
-    //        <button className='btn btn-large' onClick={() => this.reconnect()}>Reconnect</button>
-    //      </div>
-    //    </div>)
-    //    .setClass('error-modal')
-    //    .open();
-    //});
-  }
-
   componentWillUnmount() {
     this._disposables.dispose();
+  }
+
+  /**
+   * Re-establishes a connection to broker once the session expires
+   */
+  reconnect() {
+    Modal.close();
+    serviceContainer.reConnect();
   }
 
   /**

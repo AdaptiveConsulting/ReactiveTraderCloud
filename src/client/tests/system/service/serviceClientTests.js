@@ -15,7 +15,7 @@ describe('ServiceClient', () => {
         var stubSchedulerService = {
             async: _scheduler
         }
-        _connection = new system.service.Connection('user', _stubAutobahnProxy);
+        _connection = new system.service.Connection('user', _stubAutobahnProxy, stubSchedulerService);
         _serviceClient = new system.service.ServiceClient('myServiceType', _connection, stubSchedulerService);
         _receivedServiceStatusStream = [];
         _serviceClient.serviceStatusStream.subscribe(statusSummary => {

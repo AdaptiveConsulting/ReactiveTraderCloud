@@ -30,9 +30,12 @@ export default class AutobahnConnectionProxy {
       if (_this._onclose) {
         _this._onclose(reason, details);
       }
-      ;
     };
     this.connection.open();
+  }
+
+  close() {
+    this.connection.close();
   }
 
   onopen(callback:(session:autobahn.Session) => void) {
