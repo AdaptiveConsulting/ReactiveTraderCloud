@@ -6,9 +6,10 @@
   "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
   "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
 
-  "dependencies": {
-    "Adaptive.ReactiveTrader.Server.Host": "1.0.0"
-  },
+    "dependencies": {
+        "Adaptive.ReactiveTrader.Server.Host": "1.0.0",
+        "Adaptive.ReactiveTrader.Server.Common": "1.0.0"
+    },
 
   "commands": {
     "dev": "Adaptive.ReactiveTrader.Server.Blotter config.dev.json",

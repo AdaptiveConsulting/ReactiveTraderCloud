@@ -46,6 +46,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Ser
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2F7266E2-E44D-4F24-92E6-FD1DD57E3D39}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Common", "Adaptive.ReactiveTrader.Server.Common\Adaptive.ReactiveTrader.Server.Common.xproj", "{03F78A0C-36A1-4171-BB62-F22C9C2172A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +114,10 @@ Global
 		{E91BF503-5523-4F11-BD95-544EEE37E115}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E91BF503-5523-4F11-BD95-544EEE37E115}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E91BF503-5523-4F11-BD95-544EEE37E115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03F78A0C-36A1-4171-BB62-F22C9C2172A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F78A0C-36A1-4171-BB62-F22C9C2172A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F78A0C-36A1-4171-BB62-F22C9C2172A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F78A0C-36A1-4171-BB62-F22C9C2172A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
