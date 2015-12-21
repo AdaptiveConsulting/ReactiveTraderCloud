@@ -43,29 +43,6 @@
 
 
   /**
- * FixedDataTable v0.6.0
- *
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-  /**
-   * Copyright (c) 2015, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the BSD-style license found in the
-   * LICENSE file in the root directory of this source tree. An additional grant
-   * of patent rights can be found in the PATENTS file in the same directory.
-   *
-   * @providesModule Scrollbar
-   *
-   */
-
-  /**
    * Scrollbars.
    */
 
@@ -111,6 +88,7 @@
 
   .public_fixedDataTable_header,
   .public_fixedDataTable_hasBottomBorder {
+    background: linear-gradient(lighten($gray-dark, 2%) 80%, $gray-dark);
     //border-color: #d3d3d3;
   }
 
@@ -120,7 +98,7 @@
 
   .public_fixedDataTable_header,
   .public_fixedDataTable_header .public_fixedDataTableCell_main {
-    background: linear-gradient(lighten($gray-dark, 2%) 80%, $gray-dark);
+    //background: linear-gradient(lighten($gray-dark, 2%) 80%, $gray-dark);
     //background-image: -webkit-linear-gradient(#fff, #efefef);
     //background-image: linear-gradient(#fff, #efefef);
   }
@@ -368,7 +346,6 @@
 
   .fixedDataTableCellLayout_main {
     border-right-style: solid;
-    border-right-width: 1px;
     border-color: $gray-dark;
     border-width: 0 1px 0 0;
     box-sizing: border-box;
@@ -564,9 +541,18 @@
     background: darken($gray-dark, 1%);
   }
 
+  .public_fixedDataTable_bodyRow:hover {
+    div {
+      color: $gray-light;
+      border-color: $gray-darker;
+    }
+  }
 
   .Rejected {
     text-transform: uppercase;
+    box-shadow: inset 0 0 2px rgba(0,0,0,.7);
+    background: rgba(0,0,0,.1);
+    color: $gray-light;
     div {
       text-decoration: line-through !important;
     }
@@ -574,7 +560,6 @@
       text-decoration: line-through;
       color: $brand-danger;
     }
-    background: rgba(0,0,0,.1);
   }
   .Processing {
     color: $brand-warning;
