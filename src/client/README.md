@@ -1,7 +1,6 @@
 ## Reactive Trader Cloud - UI
 
-Requirements
-------------
+### Requirements
 
 > Node `^4.0.0` or `^5.3.0` ([npm3](https://www.npmjs.com/package/npm3) recommended), `npm@3.x.x`
 
