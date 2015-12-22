@@ -15,7 +15,7 @@ var _log:system.logger.Logger = system.logger.create('index-view');
  * @param DTO
  * @returns {{id: *, trader: (*|string), status: *, direction: *, pair: *, rate: *, dateTime: *, valueDate: *, amount: *}}
  */
-const formatTradeForDOM = (DTO) => {
+const formatTradeForDOM = (DTO) =>{
   return {
     id: DTO.TradeId,
     trader: DTO.TraderName,
@@ -31,7 +31,7 @@ const formatTradeForDOM = (DTO) => {
 
 class IndexView extends React.Component {
 
-  constructor(props, context) {
+  constructor(props, context){
     super(props, context);
 
     this.state = {
@@ -44,28 +44,32 @@ class IndexView extends React.Component {
     this._disposables = new Rx.CompositeDisposable();
   }
 
-  componentDidMount() {
+  componentDidMount(){
+    this.addDisposableEvents();
+  }
+
+  addDisposableEvents(){
     this._disposables.add(
-      serviceContainer.blotterService.getTradesStream().subscribe(blotter => {
+      serviceContainer.blotterService.getTradesStream().subscribe(blotter =>{
           blotter.Trades.forEach((trade) => this._processTrade(trade, false));
           this.setState({
             trades: this.state.trades
           });
         },
-        err => {
+        err =>{
           _log.error(`Error on blotterService stream stream ${err.message}`);
         }
       )
     );
 
     this._disposables.add(
-      serviceContainer.analyticsService.getAnalyticsStream(new serviceModel.AnalyticsRequest('USD')).subscribe(data => {
+      serviceContainer.analyticsService.getAnalyticsStream(new serviceModel.AnalyticsRequest('USD')).subscribe(data =>{
           this.setState({
             history: data.History,
             positions: data.CurrentPositions
           });
         },
-        err => {
+        err =>{
           _log.error(`Error on analyticsService stream stream ${err.message}`);
         }
       )
@@ -73,10 +77,10 @@ class IndexView extends React.Component {
 
     this._disposables.add(
       serviceContainer.connectionStatusStream
-        .subscribe((status:String) => {
+        .subscribe((status:String) =>{
             var isConnected = status === system.service.ConnectionStatus.connected;
             this.setState({connected: isConnected});
-            if (status === system.service.ConnectionStatus.sessionExpired) {
+            if (status === system.service.ConnectionStatus.sessionExpired){
               Modal.setTitle('Session expired')
                 .setBody(<div>
                   <div>Your 15 minute session expired, you are now disconnected from the server.</div>
@@ -89,32 +93,32 @@ class IndexView extends React.Component {
                 .open();
             }
           },
-          err => {
+          err =>{
             _log.error(`Error on connection status stream ${err.message}`);
           }
         )
     );
 
     this._disposables.add(
-      serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusLookup) => {
+      serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusLookup) =>{
           _log.info(`services:${services}`);
           this.setState({services});
         },
-        err => {
+        err =>{
           _log.error(`Error on service status stream ${err.message}`);
         }
       )
     );
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(){
     this._disposables.dispose();
   }
 
   /**
    * Re-establishes a connection to broker once the session expires
    */
-  reconnect() {
+  reconnect(){
     Modal.close();
     serviceContainer.reConnect();
   }
@@ -125,11 +129,11 @@ class IndexView extends React.Component {
    * @param {Boolean=} update immediately, defaults to false
    * @private
    */
-  _processTrade(trade, update) {
+  _processTrade(trade, update){
     trade = formatTradeForDOM(trade);
     const exists = _.findWhere(this.state.trades, {id: trade.id});
 
-    if (!exists) {
+    if (!exists){
       this.state.trades.unshift(trade);
     }
     else {
@@ -145,7 +149,7 @@ class IndexView extends React.Component {
    * Sends a trade to execution service, preps response back for show in CP tile
    * @param {Object} payload
    */
-  addTrade(payload) {
+  addTrade(payload){
     var request = {
       CurrencyPair: payload.pair,
       SpotRate: payload.rate,
@@ -156,27 +160,27 @@ class IndexView extends React.Component {
       DealtCurrency: payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
     };
     // TODO proper handling of trade execution flow errors and disposal
-    serviceContainer.executionService.executeTrade(request).subscribe(response => {
-        const trade = response.Trade,
-          dt = new Date(trade.ValueDate),
-          message = {
-            pair: trade.CurrencyPair,
-            id: trade.TradeId,
-            status: trade.Status,
-            direction: trade.Direction.toLowerCase(),
-            amount: trade.Notional,
-            trader: trade.TraderName,
-            valueDate: trade.ValueDate, // todo get this from DTO
-            rate: trade.SpotRate
-          };
+    serviceContainer.executionService.executeTrade(request).subscribe(response =>{
+        const trade   = response.Trade,
+              dt      = new Date(trade.ValueDate),
+              message = {
+                pair: trade.CurrencyPair,
+                id: trade.TradeId,
+                status: trade.Status,
+                direction: trade.Direction.toLowerCase(),
+                amount: trade.Notional,
+                trader: trade.TraderName,
+                valueDate: trade.ValueDate, // todo get this from DTO
+                rate: trade.SpotRate
+              };
 
         window.fin && new window.fin.desktop.Notification({
           url: '/#/growl',
           message,
-          onClick: function () {
+          onClick: function(){
             const win = window.fin.desktop.Window.getCurrent();
-            win.getState(state => {
-              switch (state) {
+            win.getState(state =>{
+              switch (state){
                 case 'minimized':
                   win.restore();
                 default:
@@ -189,21 +193,21 @@ class IndexView extends React.Component {
         });
         payload.onACK(message);
       },
-      (error) => {
+      (error) =>{
         _log.error(error.message);
       }
     );
   }
 
-  render() {
+  render(){
     const services = this.state.services;
     return (
       <div>
         <Modal/>
         <Header status={this.state.connected} services={services}/>
-        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} />
+        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)}/>
         <Analytics history={this.state.history} positions={this.state.positions}/>
-        <Blotter trades={this.state.trades} />
+        <Blotter trades={this.state.trades}/>
       </div>
     );
   }
