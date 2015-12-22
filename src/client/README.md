@@ -1,19 +1,6 @@
 Reactive Trader Cloud - UI
 =======================
 
-Table of Contents
------------------
-1. [Requirements](#requirements)
-1. [Features](#features)
-1. [Getting Started](#getting-started)
-1. [Usage](#usage)
-1. [Structure](#structure)
-1. [Webpack](#webpack)
-1. [Styles](#styles)
-1. [Testing](#testing)
-1. [Utilities](#utilities)
-1. [Troubleshooting](#troubleshooting)
-
 Requirements
 ------------
 
