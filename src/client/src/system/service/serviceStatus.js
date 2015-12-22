@@ -9,6 +9,10 @@ export default class ServiceStatus {
     this._serviceType = serviceType;
     this._intanceStatuses = instanceStatuses;
     this._isConnected = isConnected;
+    this._connectedInstanceCount = _(this._intanceStatuses)
+      .filter((instance:ServiceInstanceStatus) => instance.isConnected)
+      .value()
+      .length;
   }
 
   get serviceType():String {
@@ -19,8 +23,8 @@ export default class ServiceStatus {
     return this._intanceStatuses;
   }
 
-  get instanceCount():Number {
-    return this._intanceStatuses.length;
+  get connectedInstanceCount():Number {
+    return this._connectedInstanceCount;
   }
 
   get isConnected():Boolean {
@@ -33,6 +37,6 @@ export default class ServiceStatus {
   }
 
   toString():String {
-    return `ServiceInstanceCount:${this._intanceStatuses.length}, IsConnected:${this.isConnected}`;
+    return `ConnectedInstanceCount:${this._connectedInstanceCount}, IsConnected:${this.isConnected}`;
   }
 }

@@ -28,7 +28,7 @@ export default class ServiceContainer {
     var url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
     var schedulerService = new system.SchedulerService();
     var autobahnProxy = new system.service.AutobahnConnectionProxy(url, realm);
-    this._connection = new system.service.Connection(user.code, autobahnProxy);
+    this._connection = new system.service.Connection(user.code, autobahnProxy, schedulerService);
 
     this._pricingServiceClient = new system.service.ServiceClient(model.ServiceConst.PricingServiceKey, this._connection, schedulerService);
     this._referenceDataServiceClient = new system.service.ServiceClient(model.ServiceConst.ReferenceServiceKey, this._connection, schedulerService);

@@ -26,6 +26,7 @@ export default class Connection extends disposables.DisposableBase {
     super();
     Guard.isDefined(autobahn, 'autobahn required');
     Guard.isString(userName, 'userName required');
+    Guard.isDefined(schedulerService, 'schedulerService required');
     this._userName = userName;
     this._autobahn = autobahn;
     this._connectionStatusSubject = new Rx.BehaviorSubject(ConnectionStatus.idle);

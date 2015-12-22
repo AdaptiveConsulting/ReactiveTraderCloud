@@ -83,7 +83,7 @@ var fakeUserDetails = [{
 }];
 
 var userDetails = _.sample(fakeUserDetails);
-var currentUser = new User(userDetails.firstName, userDetails.lastName, userDetails.shortCode);
+var currentUser = new model.User(userDetails.firstName, userDetails.lastName, userDetails.shortCode);
 
 export default class FakeUserRepository {
   /**

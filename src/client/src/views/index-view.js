@@ -74,9 +74,9 @@ class IndexView extends React.Component {
     this._disposables.add(
       serviceContainer.connectionStatusStream
         .subscribe((status:String) => {
-            var isConnected = status === serviceModel.service.ConnectionStatus.connected;
-            self.setState({connected: isConnected});
-            if (status === serviceModel.service.ConnectionStatus.sessionExpired) {
+            var isConnected = status === system.service.ConnectionStatus.connected;
+            this.setState({connected: isConnected});
+            if (status === system.service.ConnectionStatus.sessionExpired) {
               Modal.setTitle('Session expired')
                 .setBody(<div>
                   <div>Your 15 minute session expired, you are now disconnected from the server.</div>
@@ -98,7 +98,7 @@ class IndexView extends React.Component {
     this._disposables.add(
       serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusLookup) => {
           _log.info(`services:${services}`);
-          self.setState({services});
+          this.setState({services});
         },
         err => {
           _log.error(`Error on service status stream ${err.message}`);
@@ -196,7 +196,6 @@ class IndexView extends React.Component {
 
   render() {
     const services = this.state.services;
-
     return (
       <div>
         <Modal/>
