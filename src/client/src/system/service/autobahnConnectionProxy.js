@@ -3,7 +3,7 @@ import Rx from 'rx';
 import AutobahnSessionProxy from './autobahnSessionProxy';
 
 /**
- * AutobahnProxy: makes the authbahn api more explicit, aids testing
+ * AutobahnProxy: makes the authbahn connection api more explicit, aids testing
  */
 export default class AutobahnConnectionProxy {
   session:AutobahnSessionProxy;
@@ -30,9 +30,12 @@ export default class AutobahnConnectionProxy {
       if (_this._onclose) {
         _this._onclose(reason, details);
       }
-      ;
     };
     this.connection.open();
+  }
+
+  close() {
+    this.connection.close();
   }
 
   onopen(callback:(session:autobahn.Session) => void) {

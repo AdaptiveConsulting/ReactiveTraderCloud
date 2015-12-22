@@ -4,6 +4,7 @@ import numeral from 'numeral';
 import moment from 'moment';
 import Container from './container';
 import _ from 'lodash';
+import { serviceContainer } from 'services';
 
 /**
  * @class CurrencyPairs
@@ -12,8 +13,7 @@ import _ from 'lodash';
 class CurrencyPairs extends React.Component {
 
   static propTypes = {
-    trades: React.PropTypes.array,
-    status: React.PropTypes.number
+    trades: React.PropTypes.array
   }
 
   constructor(props, context){
@@ -86,7 +86,9 @@ class CurrencyPairs extends React.Component {
   }
 
   render(){
-    const className = this.props.status ? 'blotter online' : 'blotter offline';
+    const className = serviceContainer.serviceStatus.blotter.isConnected
+      ? 'blotter online'
+      : 'blotter offline';
 
     return (
         <Container
