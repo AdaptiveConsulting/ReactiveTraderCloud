@@ -6,9 +6,9 @@ if [[ $build = "" ]];then
   exit 1
 fi
 
+# fail fast
 set -euo pipefail
 
-# get and control config
 . ../../../config
 
 # build

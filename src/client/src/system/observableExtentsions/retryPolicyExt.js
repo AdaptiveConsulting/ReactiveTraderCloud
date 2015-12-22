@@ -1,6 +1,6 @@
 import Rx from 'rx';
 import _ from 'lodash';
-import RetryPolicy from './policy';
+import RetryPolicy from './retryPolicy';
 import logger from '../logger';
 import ShouldRetryResult from './shouldRetryResult';
 
@@ -22,13 +22,16 @@ function retryWithPolicy<TValue>(retryPolicy, operationDescription:String, sched
         },
         ex => {
           retryCount++;
+          let errorMessage = _.isError(ex)
+            ? ex.message
+            : ex;
           let shouldRetryResult:ShouldRetryResult = retryPolicy.shouldRetry(ex, retryCount);
           if (shouldRetryResult.shouldRetry) {
             if (shouldRetryResult.retryAfterMilliseconds === 0) {
-              _log.warn(`Retrying [${operationDescription}]. This is attempt [${operationDescription}]. Exception: [${ex.message}]`);
+              _log.warn(`Retrying [${operationDescription}]. This is attempt [${operationDescription}]. Exception: [${errorMessage}]`);
               subscribe();
             } else {
-              _log.warn(`Retrying [${operationDescription}] after [${shouldRetryResult.retryAfterMilliseconds}]. This is attempt [${retryCount}]. Exception: [${ex.message}]`);
+              _log.warn(`Retrying [${operationDescription}] after [${shouldRetryResult.retryAfterMilliseconds}]. This is attempt [${retryCount}]. Exception: [${errorMessage}]`);
               // throwing away the disposable as we do a dispose check before we onNext
               scheduler.scheduleFuture(
                 '',
@@ -39,7 +42,7 @@ function retryWithPolicy<TValue>(retryPolicy, operationDescription:String, sched
           }
           else {
             // don't retry
-            _log.error(`Not retrying [${operationDescription}]. Retry count [${retryCount}]. Will error. Exception: [${ex.message}]`);
+            _log.error(`Not retrying [${operationDescription}]. Retry count [${retryCount}]. Will error. Exception: [${errorMessage}]`);
             o.onError(ex);
           }
         },

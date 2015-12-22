@@ -1,6 +1,8 @@
 import Guard from '../guard';
 
-var id = 1;
+/**
+ * The status of a given back end service instance
+ */
 export default class ServiceInstanceStatus {
   static createForDisconnected(serviceType:string, serviceId:string) {
     return new ServiceInstanceStatus(serviceType, serviceId, NaN, NaN, false);
@@ -13,7 +15,6 @@ export default class ServiceInstanceStatus {
   constructor(serviceType:string, serviceId:string, timestamp:number, serviceLoad:Number, isConnected:Boolean) {
     Guard.stringIsNotEmpty(serviceType, 'serviceType must be as string and not empty');
     Guard.stringIsNotEmpty(serviceId, 'serviceId must be as string and not empty');
-    this.id = id++;
     this._serviceType = serviceType;
     this._serviceId = serviceId;
     this._serviceLoad = serviceLoad;

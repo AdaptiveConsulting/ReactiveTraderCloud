@@ -6,7 +6,6 @@ if [[ $build = "" ]];then
   exit 1
 fi
 
-
 # fail fast
 set -euo pipefail
 
@@ -31,7 +30,6 @@ docker run              \
   -v /$(pwd)/.npm:/.npm \
   -v /$(pwd)/dist:/dist \
   weareadaptive/websrc:latest
-
 
 # build nginx container
 mkdir -p ./nginx/build

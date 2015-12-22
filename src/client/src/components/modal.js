@@ -1,12 +1,10 @@
 import React from 'react';
 import utils from 'utils';
-import emitter from 'utils/emitter';
 
 // import {render} from 'react-dom';
 let mountedInstance,
     defaultClassName = 'absolute-center modal text-center';
 
-@utils.mixin(emitter)
 class Modal extends React.Component {
 
   static propTypes = {
@@ -67,7 +65,6 @@ Modal.setTitle = (title) => {
   mountedInstance.setState({
     title: title
   });
-  mountedInstance.trigger('title');
   return Modal;
 };
 
@@ -80,7 +77,6 @@ Modal.setBody = (body) => {
   mountedInstance.setState({
     body: body
   });
-  mountedInstance.trigger('body');
   return Modal;
 };
 
@@ -103,7 +99,6 @@ Modal.open = () => {
   mountedInstance.setState({
     show: true
   });
-  mountedInstance.trigger('open');
   return Modal;
 };
 
@@ -115,7 +110,6 @@ Modal.close = () => {
   mountedInstance.setState({
     show: false
   });
-  mountedInstance.trigger('close');
   return Modal;
 };
 

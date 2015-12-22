@@ -5,9 +5,9 @@ import Guard from '../guard';
 import disposables from '../disposables';
 import schedulerService from '../schedulerService';
 import Connection from './connection';
+import ConnectionStatus from './connectionStatus';
 import ServiceInstanceStatus from './serviceInstanceStatus';
-import ServiceInstanceSummary from './serviceInstanceSummary';
-import ServiceStatusSummary from './serviceStatusSummary';
+import ServiceStatus from './serviceStatus';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
 
 /**
@@ -45,10 +45,10 @@ export default class ServiceClient extends disposables.DisposableBase {
    *
    * @returns {Observable<T>}
    */
-  get serviceStatusSummaryStream():Rx.Observable<ServiceStatusSummary> {
+  get serviceStatusStream():Rx.Observable<ServiceStatus> {
     let _this = this;
     return this._serviceInstanceDictionaryStream
-      .select(cache => _this._createServiceStatusSummary(cache))
+      .select(cache => _this._createServiceStatus(cache))
       .publish()
       .refCount();
   }
@@ -72,7 +72,10 @@ export default class ServiceClient extends disposables.DisposableBase {
   _createServiceInstanceDictionaryStream(serviceType:string):Rx.Observable<LastValueObservableDictionary> {
     let _this = this;
     return Rx.Observable.create(o => {
-      let connectionStatus = this._connection.connectionStatusStream.publish().refCount();
+      let connectionStatus = this._connection.connectionStatusStream
+        .select(status => status === ConnectionStatus.connected)
+        .publish()
+        .refCount();
       let isConnectedStream = connectionStatus.where(isConnected => isConnected);
       let errorOnDisconnectStream = connectionStatus.where(isConnected => !isConnected).take(1).selectMany(Rx.Observable.throw(new Error('Disconnected')));
       let serviceInstanceDictionaryStream = this._connection
@@ -201,7 +204,7 @@ export default class ServiceClient extends disposables.DisposableBase {
                     o.onError(err);
                   },
                   () => {
-                    o.onCompleted();
+                    // noop, nothing to do here, we don't complete the outter observer on ack
                   }
                 )
               );
@@ -218,12 +221,9 @@ export default class ServiceClient extends disposables.DisposableBase {
     });
   }
 
-  _createServiceStatusSummary(cache:LastValueObservableDictionary):ServiceStatusSummary {
-    let instanceSummaries = _(cache.values)
-      .map((item:LastValueObservable) => new ServiceInstanceSummary(item.latestValue.serviceId, item.latestValue.isConnected))
-      .value();
-    let isConnected = _(instanceSummaries)
-      .some((item:ServiceInstanceSummary) => item.isConnected);
-    return new ServiceStatusSummary(instanceSummaries, isConnected);
+  _createServiceStatus(cache:LastValueObservableDictionary):ServiceStatus {
+    let serviceInstanceStatuses : Array<ServiceInstanceStatus> = _.values(cache.values).map((item:LastValueObservable<ServiceInstanceStatus>) => item.latestValue);
+    let isConnected : Boolean = _(cache.values).some((item:LastValueObservable<ServiceInstanceStatus>) => item.latestValue.isConnected);
+    return new ServiceStatus(this._serviceType, serviceInstanceStatuses, isConnected);
   }
 }
