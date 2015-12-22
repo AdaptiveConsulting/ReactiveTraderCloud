@@ -126,7 +126,6 @@ class CurrencyPairs extends React.Component {
                 localPair.pricingSub = serviceContainer.pricingService.getSpotPriceStream(new serviceModel.GetSpotStreamRequest(localPair.id))
                   .subscribe(
                     (priceData : serviceModel.SpotPrice) =>{
-                      // console.info(priceData, localPair);
                       localPair.sell = priceData.bid;
                       localPair.buy = priceData.ask;
                       localPair.mid = priceData.mid;

@@ -7,9 +7,9 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
 export default class ServiceStatus {
   constructor(serviceType:String, instanceStatuses:Array<ServiceInstanceStatus>, isConnected:Boolean) {
     this._serviceType = serviceType;
-    this._intanceStatuses = instanceStatuses;
+    this._instanceStatuses = instanceStatuses;
     this._isConnected = isConnected;
-    this._connectedInstanceCount = _(this._intanceStatuses)
+    this._connectedInstanceCount = _(this._instanceStatuses)
       .filter((instance:ServiceInstanceStatus) => instance.isConnected)
       .value()
       .length;
@@ -20,7 +20,7 @@ export default class ServiceStatus {
   }
 
   get intanceStatuses():Array<ServiceInstanceStatus> {
-    return this._intanceStatuses;
+    return this._instanceStatuses;
   }
 
   get connectedInstanceCount():Number {
@@ -32,7 +32,7 @@ export default class ServiceStatus {
   }
 
   getInstanceStatus(serviceId:String):ServiceInstanceStatus {
-    var instanceStatus = _(this._intanceStatuses).find((instance:ServiceInstanceStatus) => instance.serviceId === serviceId);
+    var instanceStatus = _(this._instanceStatuses).find((instance:ServiceInstanceStatus) => instance.serviceId === serviceId);
     return instanceStatus;
   }
 

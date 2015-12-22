@@ -28,12 +28,12 @@ class Header extends React.Component {
   }
 
   getServices(serviceLookup:serviceModel.ServiceStatusLookup) {
-    const resp = [];
+    const serviceIndicators = [];
 
     for (let serviceType in serviceLookup.services) {
       var statusSummary:system.service.ServiceStatus = serviceLookup.services[serviceType];
       if (statusSummary.isConnected) {
-        resp.push(
+        serviceIndicators.push(
           <li
             key={serviceType}
             className='service-status'>
@@ -45,7 +45,7 @@ class Header extends React.Component {
           </li>
         );
       } else {
-        resp.push(
+        serviceIndicators.push(
           <li
             key={serviceType}
             className='service-status text-danger animated infinite fadeIn'>
@@ -54,7 +54,7 @@ class Header extends React.Component {
         );
       }
     }
-    return resp;
+    return serviceIndicators;
   }
 
   close() {
