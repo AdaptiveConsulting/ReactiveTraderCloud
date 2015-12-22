@@ -6,26 +6,11 @@ if [[ $build = "" ]];then
   exit 1
 fi
 
+# fail fast
+set -euo pipefail
+
 # get and control config
 . ../../../config
-
-if [[ $vCrossbar = "" ]];then
-  echo "broker-build: crossbar version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $brokerContainer = "" ]];then
-  echo "broker-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMajor = "" ]];then
-  echo "broker-build: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "broker-build: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-
 
 # generate container folder
 mkdir -p ./build

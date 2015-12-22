@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# fail fast
+set -euo pipefail
+
 chmod 755 ../docker/prepare
 chmod 755 ../docker/build/servers/build.sh
 chmod 755 ../docker/build/broker/build.sh

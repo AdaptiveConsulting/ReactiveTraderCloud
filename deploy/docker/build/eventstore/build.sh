@@ -1,20 +1,10 @@
 #! /bin/bash
 
+# fail fast
+set -euo pipefail
+
 # get and control config
 . ../../../config
-
-if [[ $vUbuntu = "" ]];then
-  echo "eventstore-build: ubuntu version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vEventstore = "" ]];then
-  echo "eventstore-build: eventstore version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $eventstoreContainer = "" ]];then
-  echo "eventstore-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 # generate container folder
 mkdir -p ./build

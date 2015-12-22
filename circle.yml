@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 5.1.0
+    version: 5.3.0
   services:
     - docker
 
@@ -10,7 +10,7 @@ dependencies:
     - deploy/docker/build/servers/dnxcache
   pre:
     - npm install -g npm@3.5
-    - sudo apt-get install gcc-4.8 g++-4.8
+    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
   override:
     - docker info
     - cd deploy/circleCi && chmod 755 ensurePermissions && ./ensurePermissions
@@ -21,11 +21,14 @@ dependencies:
 
 test:
   override:
-    - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
     - docker ps
+    # ping Eventstore
+    - curl http://localhost:2113/web/index.html
+    # test servers
+    - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
 
 deployment:
   hub:
-    branch: [master, deployment-dev]
+    branch: [master, SimpleTest-UI]
     commands:
       - cd deploy/circleCi && ./pushContainers

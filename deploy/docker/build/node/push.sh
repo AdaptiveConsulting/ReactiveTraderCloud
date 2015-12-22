@@ -1,15 +1,8 @@
 #! /bin/bash
 
-# get and control config
-. ../../../config
+# fail fast
+set -euo pipefail
 
-if [[ $vNode = "" ]];then
-  echo "node:build: node version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $nodeContainer = "" ]];then
-  echo "node:build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
+. ../../../config
 
 docker push $nodeContainer:$vNode

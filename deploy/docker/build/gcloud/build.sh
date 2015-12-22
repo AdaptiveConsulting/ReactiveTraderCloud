@@ -1,20 +1,10 @@
 #! /bin/bash
 
+# fail fast
+set -euo pipefail
+
 # get and control config
 . ../../../config
-
-if [[ $vDebian = "" ]];then
-  echo "gcloud-build: debian version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $gcloudContainer = "" ]];then
-  echo "gcloud-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vGcloud = "" ]];then
-  echo "gcloud-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 mkdir -p ./build
 
