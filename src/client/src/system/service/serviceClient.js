@@ -19,6 +19,7 @@ export default class ServiceClient extends disposables.DisposableBase {
   _log:logger.Logger;
   _serviceType:String;
   _serviceInstanceDictionaryStream:Rx.Observable<LastValueObservableDictionary>;
+  _isConnectCalled:Boolean;
 
   static get HEARTBEAT_TIMEOUT():Number {
     return 3000;
@@ -55,7 +56,10 @@ export default class ServiceClient extends disposables.DisposableBase {
 
   // connects the underlying status observable
   connect():void {
-    this.addDisposable(this._serviceInstanceDictionaryStream.connect());
+    if(!this._isConnectCalled) {
+      this._isConnectCalled = true;
+      this.addDisposable(this._serviceInstanceDictionaryStream.connect());
+    }
   }
 
   /**
@@ -113,7 +117,7 @@ export default class ServiceClient extends disposables.DisposableBase {
   createRequestResponseOperation<TRequest, TResponse>(operationName:String, request:TRequest, waitForSuitableService:Boolean = false):Rx.Observable<TResponse> {
     let _this = this;
     return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
-      _this._log.debug('Creating request response operation');
+      _this._log.debug(`Creating request response operation for [${operationName}]`);
       let disposables = new Rx.CompositeDisposable();
       let hasSubscribed = false;
       disposables.add(_this._serviceInstanceDictionaryStream
@@ -123,7 +127,7 @@ export default class ServiceClient extends disposables.DisposableBase {
               o.onError(new Error('Disconnected'));
             } else if (!hasSubscribed) {
               hasSubscribed = true;
-              _this._log.debug(`Will use service instance [${serviceInstanceStatus.serviceId}] for request/response operation. IsConnected: [${serviceInstanceStatus.isConnected}]`);
+              _this._log.debug(`Will use service instance [${serviceInstanceStatus.serviceId}] for request/response operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`);
               let remoteProcedure:String = serviceInstanceStatus.serviceId + '.' + operationName;
               disposables.add(
                 _this._connection.requestResponse(remoteProcedure, request).subscribe(
@@ -162,7 +166,7 @@ export default class ServiceClient extends disposables.DisposableBase {
   createStreamOperation<TRequest, TResponse>(operationName:String, request:TRequest):Rx.Observable<TResponse> {
     let _this = this;
     return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
-      _this._log.debug('Creating stream operation');
+      _this._log.debug(`Creating stream operation for [${operationName}]`);
       let disposables = new Rx.CompositeDisposable();
       // The backend has a different contract for streams (i.e. request-> n responscse) as it does with request-response (request->single response) thus the differet method here to support this.
       // It works like this: client creates a temp topic, we perform a RPC to then tell the backend to push to this topic.
@@ -181,7 +185,7 @@ export default class ServiceClient extends disposables.DisposableBase {
               o.onError(new Error('Disconnected'));
             } else if (!hasSubscribed) {
               hasSubscribed = true;
-              _this._log.debug(`Will use service instance [${serviceInstanceStatus.serviceId}] for stream operation. IsConnected: [${serviceInstanceStatus.isConnected}]`);
+              _this._log.debug(`Will use service instance [${serviceInstanceStatus.serviceId}] for stream operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`);
               disposables.add(_this._connection
                 .subscribeToTopic(topicName)
                 .subscribe(
@@ -198,7 +202,7 @@ export default class ServiceClient extends disposables.DisposableBase {
               disposables.add(
                 _this._connection.requestResponse(remoteProcedure, request, topicName).subscribe(
                   _ => {
-                    _this._log.debug(`Ack received for stream operation [${operationName}]`);
+                    _this._log.debug(`Ack received for RPC hookup as part of stream operation [${operationName}]`);
                   },
                   err => {
                     o.onError(err);

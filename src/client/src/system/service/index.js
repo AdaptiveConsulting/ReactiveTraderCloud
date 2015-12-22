@@ -4,6 +4,7 @@ import ServiceClient from './serviceClient';
 import ConnectionStatus from './connectionStatus';
 import ServiceInstanceStatus from './serviceInstanceStatus';
 import ServiceStatus from './serviceStatus';
+import ServiceBase from './serviceBase';
 
 // serviceObservableExtensions has no exports, it adds functionality to rx
 import './serviceObservableExtensions';
@@ -15,4 +16,5 @@ export default {
   ConnectionStatus,
   ServiceInstanceStatus,
   ServiceStatus,
+  ServiceBase
 };

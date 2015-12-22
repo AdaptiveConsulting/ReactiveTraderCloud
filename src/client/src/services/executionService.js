@@ -4,13 +4,7 @@ import * as model from './model';
 
 var _log:system.logger.Logger = system.logger.create('ExecutionService');
 
-export default class ExecutionService {
-  _serviceClient:system.service.ServiceClient;
-
-  constructor(serviceClient:system.service.ServiceClient, schedulerService:SchedulerService) {
-    this._serviceClient = serviceClient;
-    this._schedulerService = schedulerService;
-  }
+export default class ExecutionService extends system.service.ServiceBase  {
 
   executeTrade(executeTradeRequest:model.ExecuteTradeRequest) {
     let _this = this;

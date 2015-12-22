@@ -97,7 +97,6 @@ class IndexView extends React.Component {
 
     this._disposables.add(
       serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusLookup) => {
-          _log.info(`services:${services}`);
           this.setState({services});
         },
         err => {
