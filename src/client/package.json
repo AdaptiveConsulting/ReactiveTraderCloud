@@ -35,8 +35,6 @@
   "dependencies": {
     "animate.css": "3.4.0",
     "autobahn": "0.9.9",
-    "babel": "5.8.23",
-    "babel-core": "5.8.33",
     "bootstrap-sass": "3.3.6",
     "d3": "3.5.12",
     "fixed-data-table": "0.6.0",
@@ -58,6 +56,8 @@
   "devDependencies": {
     "autoprefixer": "6.2.1",
     "autoprefixer-loader": "3.1.0",
+    "babel": "5.8.23",
+    "babel-core": "5.8.33",
     "babel-eslint": "4.1.1",
     "babel-loader": "5.0.0",
     "babel-plugin-react-transform": "1.1.1",

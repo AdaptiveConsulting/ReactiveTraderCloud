@@ -9,14 +9,13 @@ Requirements
 
 ### Features
 
-* [React](https://github.com/facebook/react) (`^0.14.0`)
-  * Includes react-addons-test-utils (`^0.14.0`)
-* [React-Router](https://github.com/rackt/react-router) (`1.0.0-rc1`)
+* [React](https://github.com/facebook/react) (`^0.14.3`)
+  * Includes react-addons-test-utils (`^0.14.3`)
+* [React-Router](https://github.com/rackt/react-router) (`1.0.2`)
 * [Karma](https://github.com/karma-runner/karma)
-  * Mocha w/ Chai, Sinon-Chai, and Chai-as-Promised
   * PhantomJS
   * Code coverage reports
-* [Babel](https://github.com/babel/babel)
+* [Babel](https://github.com/babel/babel) (`5.8.23`)
   * `react-transform-hmr` for hot reloading
   * `react-transform-catch-errors` with `redbox-react` for more visible error reporting
   * Uses babel runtime rather than inline transformations
