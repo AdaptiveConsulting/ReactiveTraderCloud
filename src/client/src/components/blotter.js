@@ -152,8 +152,7 @@ class Blotter extends React.Component {
   render(){
     const outerClassName = serviceContainer.serviceStatus.blotter.isConnected ? 'blotter online' : 'blotter offline';
 
-    const { flagged } = this.state,
-          { trades } = this.props,
+    const { trades } = this.props,
           schema = this.getSchema(trades);
 
     return (
