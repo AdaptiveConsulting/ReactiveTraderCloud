@@ -3,9 +3,7 @@
 Requirements
 ------------
 
-> _Requirements_
->
-> Node `^4.0.0` or `^5.1.0` ([npm3](https://www.npmjs.com/package/npm3) recommended), `npm@3.x.x`
+> Node `^4.0.0` or `^5.3.0` ([npm3](https://www.npmjs.com/package/npm3) recommended), `npm@3.x.x`
 
 ### Features
 
