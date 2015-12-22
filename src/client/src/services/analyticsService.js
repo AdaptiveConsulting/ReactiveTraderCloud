@@ -13,7 +13,7 @@ export default class AnalyticsService {
   }
 
   getAnalyticsStream(analyticsRequest:model.AnalyticsRequest) {
-    system.Guard.isDefined(analyticsRequest, "analyticsRequest required");
+    system.Guard.isDefined(analyticsRequest, 'analyticsRequest required');
     let _this = this;
     return Rx.Observable.create(
       o => {
