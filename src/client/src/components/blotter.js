@@ -2,12 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // data grid
-import FixedDataTable from 'fixed-data-table';
-const {Table, Column, Cell} = FixedDataTable;
-
-// utils for date and money
-import numeral from 'numeral';
-import moment from 'moment';
+import { Table, Column, Cell } from 'fixed-data-table';
+import NotionalCell from './blotter-parts/money-cell';
+import DateCell from './blotter-parts/date-cell';
 
 // containers and layout
 import Dimensions from 'react-dimensions';
@@ -15,59 +12,6 @@ import Container from './container';
 
 import { findWhere } from 'lodash';
 
-/**
- * Formatter for cells of type date/time via moment.js
- * @class DateCell
- * @extends {React.Component}
- */
-class DateCell extends React.Component {
-
-  static propTypes = {
-    format: React.PropTypes.string,
-    prefix: React.PropTypes.string,
-    field: React.PropTypes.string.isRequired,
-    data: React.PropTypes.array.isRequired,
-    rowIndex: React.PropTypes.number.isRequired
-  }
-
-  render(){
-    const { rowIndex, field, data, format = 'MMM Do, HH:mm:ss', prefix = '', ...props } = this.props;
-    const formatted = moment(data[rowIndex][field]).format(format);
-
-    return (
-      <Cell {...props}>
-        {prefix}{formatted}
-      </Cell>
-    );
-  }
-}
-
-/**
- * Formatter for cells of type notional/currency
- * @class NotionalCell
- * @extends {React.Component}
- */
-class NotionalCell extends React.Component {
-
-  static propTypes = {
-    format: React.PropTypes.string,
-    suffix: React.PropTypes.string,
-    field: React.PropTypes.string.isRequired,
-    data: React.PropTypes.array.isRequired,
-    rowIndex: React.PropTypes.number.isRequired
-  }
-
-  render(){
-    const { rowIndex, field, data, format = '0,000,000[.]00', suffix = '', ...props } = this.props;
-    const formatted = numeral(data[rowIndex][field]).format(format) + suffix;
-
-    return (
-      <Cell {...props}>
-        {formatted}
-      </Cell>
-    );
-  }
-}
 
 /**
  * @class Blotter
@@ -78,7 +22,8 @@ class Blotter extends React.Component {
 
   static propTypes = {
     trades: React.PropTypes.array,
-    status: React.PropTypes.number
+    status: React.PropTypes.number,
+    containerWidth: React.PropTypes.number
   }
 
   constructor(props, context){
@@ -129,7 +74,8 @@ class Blotter extends React.Component {
    * @returns {Array:Column}
    */
   getSchema(trades:array):Array<Column> {
-    const cellConstructor = (field, extraCellOptions = {}) => props => <Cell {...props} {...extraCellOptions}>{trades[props.rowIndex][field]}</Cell>;
+    const cellConstructor = (field, extraCellOptions = {}) =>
+      props => <Cell {...props} {...extraCellOptions}>{trades[props.rowIndex][field]}</Cell>; // eslint-disable-line
 
     const schema = [{
       name: 'Id',
@@ -139,7 +85,7 @@ class Blotter extends React.Component {
     }, {
       name: 'Date',
       field: 'dateTime',
-      cellConstructor: () => props => <DateCell field='dateTime' data={trades} {...props} />,
+      cellConstructor: () => props => <DateCell field='dateTime' data={trades} {...props} />, // eslint-disable-line
       width: 150
     }, {
       name: 'Dir',
@@ -154,7 +100,7 @@ class Blotter extends React.Component {
     }, {
       name: 'Notional',
       field: 'amount',
-      cellConstructor: () => props => <NotionalCell className='text-right' data={trades} field='amount' suffix={' ' + trades[props.rowIndex].pair.substr(0, 3)} {...props} />,
+      cellConstructor: () => props => <NotionalCell className='text-right' data={trades} field='amount' suffix={' ' + trades[props.rowIndex].pair.substr(0, 3)} {...props} />, // eslint-disable-line
       width: 120,
       headerOptions: {
         className: 'text-right'
@@ -177,7 +123,7 @@ class Blotter extends React.Component {
     }, {
       name: 'Value date',
       field: 'valueDate',
-      cellConstructor: () => props => <DateCell field='valueDate' prefix='SP. ' format='DD MMM' data={trades} {...props} />,
+      cellConstructor: () => props => <DateCell field='valueDate' prefix='SP. ' format='DD MMM' data={trades} {...props} />, // eslint-disable-line
       width: 100
     }, {
       name: 'Trader',
@@ -192,6 +138,7 @@ class Blotter extends React.Component {
       column.className && (cellOptions.className = column.className);
 
       const columnOptions = {
+        key: id,
         width: column.width || 100,
         field: column.field,
         cell: column.cellConstructor(column.field, cellOptions),
