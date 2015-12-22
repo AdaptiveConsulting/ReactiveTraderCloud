@@ -26,7 +26,7 @@ cp bootstrap.sh ./build/
 cp template.updateServers.sh         ./build/updateServers.sh
 
 cp template.writeFunctions.sh        ./build/writeFunctions.sh
-sed -i "s/__DOMAIN__/$domainName/g"  ./build/writeFunctions.sh
+sed -i "s/__DOMAINNAME__/$domainName/g"  ./build/writeFunctions.sh
 
 # build
 docker build --no-cache -t $nsGateContainer:$vNsGateMajor.$vNsGateMinor.$build ./build/.

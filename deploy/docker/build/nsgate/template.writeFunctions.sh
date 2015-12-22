@@ -9,8 +9,8 @@ file="/servers/http.$service.$namespace"
 
 cat <<EOF > $file 
 server {
-    listen $portNumber;
-    server_name $service-$namespace.__DOMAIN__;
+    listen 80;
+    server_name $service-$namespace.__DOMAINNAME__;
 
     location / {
         proxy_pass http://$service.$namespace:$portNumber;
@@ -28,7 +28,7 @@ file="/servers/ws.$service.$namespace"
 cat <<EOF > $file
 server {
     listen      $portNumber;
-    server_name $service-$namespace.__DOMAIN__;
+    server_name $service-$namespace.__DOMAINNAME__;
 
     location / {
         proxy_pass http://$service.$namespace:$portNumber;
@@ -54,15 +54,15 @@ file="/servers/https.$service.$namespace"
 
 cat <<EOF > $file 
 server {
-    listen      $portNumber;
-    server_name $service-$namespace.__DOMAIN__;
+    listen      443;
+    server_name $service-$namespace.__DOMAINNAME__;
     
     ssl                    on;
     ssl_certificate        /etc/ssl/__DOMAINNAME__.pem;
     ssl_certificate_key    /etc/ssl/__DOMAINNAME__.key;
 
     location / {
-        proxy_pass http://$service.$namespace;
+        proxy_pass http://$service.$namespace:$portNumber;
     }
 }
 EOF
@@ -77,7 +77,7 @@ file="/servers/ws.$service.$namespace"
 cat <<EOF > $file
 server {
     listen      $portNumber;
-    server_name $service-$namespace.__DOMAIN__;
+    server_name $service-$namespace.__DOMAINNAME__;
 
     ssl                    on;
     ssl_certificate        /etc/ssl/__DOMAINNAME__.pem;

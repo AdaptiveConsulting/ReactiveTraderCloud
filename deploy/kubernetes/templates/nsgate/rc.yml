@@ -8,7 +8,7 @@ metadata:
     minor: "__MINOR__"
     build: "__BUILD__" 
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     name: "nsgate__MAJOR__"
     minor: "__MINOR__"
