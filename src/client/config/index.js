@@ -103,7 +103,6 @@ config.set('utils_aliases', [
   'reducers',
   'routes',
   'services',
-  'services2',
   'store',
   'styles',
   'utils',

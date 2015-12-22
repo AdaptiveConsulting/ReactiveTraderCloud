@@ -4,6 +4,8 @@ import logger from '../logger';
 import disposables from '../disposables';
 import AutobahnConnectionProxy from './autobahnConnectionProxy';
 import ServiceInstanceStatus from './serviceInstanceStatus';
+import SchedulerService from '../schedulerService';
+import ConnectionStatus from './connectionStatus';
 
 var _log:logger.Logger = logger.create('Connection');
 
@@ -15,56 +17,95 @@ export default class Connection extends disposables.DisposableBase {
   _autobahn:AutobahnConnectionProxy;
   _connectionStatusSubject:Rx.BehaviorSubject<Boolean>;
   _serviceStatusSubject:Rx.BehaviorSubject<ServiceInstanceStatus>;
-  _openCalled:Boolean;
+  _connectCalled:Boolean;
   _isConnected:Boolean;
+  _schedulerService:SchedulerService;
+  _autoDisconnectDisposable:Rx.SerialDisposable;
 
-  constructor(userName:string, autobahn:AutobahnConnectionProxy) {
+  constructor(userName:string, autobahn:AutobahnConnectionProxy, schedulerService:SchedulerService) {
     super();
     Guard.isDefined(autobahn, 'autobahn required');
     Guard.isString(userName, 'userName required');
+    Guard.isDefined(schedulerService, 'schedulerService required');
     this._userName = userName;
     this._autobahn = autobahn;
-    this._connectionStatusSubject = new Rx.BehaviorSubject(false);
+    this._connectionStatusSubject = new Rx.BehaviorSubject(ConnectionStatus.idle);
     this._serviceStatusSubject = new Rx.BehaviorSubject(false);
-    this._openCalled = false;
+    this._connectCalled = false;
     this._isConnected = false;
+    this._schedulerService = schedulerService;
+    this._autoDisconnectDisposable = new Rx.SerialDisposable();
+    this.addDisposable(this._autoDisconnectDisposable);
+  }
+
+  static get DISCONNECT_SESSION_AFTER() {
+    // hardcode a disconnect so we don't stream needlessly when ppl leave the app open for an extended time (i.e. over weekends, etc)
+    return 1000 * 60 * 15; // 15 mins
   }
 
   /**
-   *
+   * A stream of the current connection status (see ConnectionStatus for possible values)
    * @returns {*}
    */
-  get connectionStatusStream():Rx.Observable<Boolean> {
+  get connectionStatusStream():Rx.Observable<String> {
     return this._connectionStatusSubject
       .distinctUntilChanged()
       .asObservable();
   }
 
+  /**
+   * The last/current connection status
+   * @returns {Boolean}
+   */
   get isConnected():Boolean {
     return this._isConnected;
   }
 
+  /**
+   * Connects the underlying transport
+   */
   connect():void {
-    if (!this._openCalled) {
-      this._openCalled = true;
+    if (!this._connectCalled) {
+      this._connectCalled = true;
       _log.info('Opening connection');
       this._autobahn.onopen(session => {
         _log.info('Connected');
         this._isConnected = true;
-        this._connectionStatusSubject.onNext(true);
         this.session = session;
+        this._startAutoDisconnectTimer();
+        this._connectionStatusSubject.onNext(ConnectionStatus.connected);
       });
       this._autobahn.onclose((reason, details) => {
         _log.error(`connection lost, reason [${reason}]`);
         this._isConnected = false;
-        this._connectionStatusSubject.onNext(false);
+        var disconnectTimerDisposable = this._autoDisconnectDisposable.getDisposable();
+        if (disconnectTimerDisposable) {
+          disconnectTimerDisposable.dispose();
+        }
+        // if we explicitly called close then we move to ConnectionStatus.idle status
+        if(reason === 'closed') {
+          this._connectionStatusSubject.onNext(ConnectionStatus.sessionExpired);
+        } else {
+          this._connectionStatusSubject.onNext(ConnectionStatus.disconnected);
+        }
       });
       this._autobahn.open();
     }
   }
 
   /**
-   * Get an observable subscription to a well known stream, e.g. 'status'
+   * Disconnects the underlying transport
+   */
+  disconnect() {
+    if (this._connectCalled) {
+      _log.info('Disconnecting connection');
+      this._connectCalled = false;
+      this._autobahn.close();
+    }
+  }
+
+  /**
+   * Get an observable subscription to a well known topic stream, e.g. 'status'
    * @param topic
    * @returns {Observable}
    */
@@ -159,5 +200,18 @@ export default class Connection extends disposables.DisposableBase {
       }
       return disposables;
     });
+  }
+
+  _startAutoDisconnectTimer() {
+    this._autoDisconnectDisposable.setDisposable(
+      this._schedulerService.async.scheduleFuture(
+        '',
+        Connection.DISCONNECT_SESSION_AFTER,
+        () => {
+          _log.debug('Auto disconnect timeout elapsed');
+          this.disconnect();
+        }
+      )
+    );
   }
 }

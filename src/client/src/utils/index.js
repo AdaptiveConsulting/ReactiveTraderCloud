@@ -1,5 +1,6 @@
 import React        from 'react';
 import ReactDOM     from 'react-dom';
+
 const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/;
 
 /**
@@ -35,7 +36,6 @@ function getConvertedSize(size){
 
   return size;
 }
-
 
 export default {
   mixin,

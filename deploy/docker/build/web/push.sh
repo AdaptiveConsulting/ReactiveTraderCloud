@@ -6,21 +6,10 @@ if [[ $build = "" ]];then
   exit 1
 fi
 
-# get and control config
-. ../../../config
+# fail fast
+set -euo pipefail
 
-if [[ $webContainer = "" ]];then
-  echo "web-build: container name required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMajor = "" ]];then
-  echo "web-build: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "web-build: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
+. ../../../config
 
 docker push $webContainer:$vMajor.$vMinor.$build
 docker push $webContainer:latest

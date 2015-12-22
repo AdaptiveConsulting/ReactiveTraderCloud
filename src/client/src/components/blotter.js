@@ -11,7 +11,7 @@ import Dimensions from 'react-dimensions';
 import Container from './container';
 
 import { findWhere } from 'lodash';
-
+import { serviceContainer } from 'services';
 
 /**
  * @class Blotter
@@ -150,7 +150,7 @@ class Blotter extends React.Component {
   }
 
   render(){
-    const outerClassName = this.props.status ? 'blotter online' : 'blotter offline';
+    const outerClassName = serviceContainer.serviceStatus.blotter.isConnected ? 'blotter online' : 'blotter offline';
 
     const { flagged } = this.state,
           { trades } = this.props,
