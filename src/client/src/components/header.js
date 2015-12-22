@@ -29,7 +29,6 @@ class Header extends React.Component {
 
   getServices(serviceLookup:serviceModel.ServiceStatusLookup) {
     const serviceIndicators = [];
-
     for (let serviceType in serviceLookup.services) {
       var statusSummary:system.service.ServiceStatus = serviceLookup.services[serviceType];
       if (statusSummary.isConnected) {
