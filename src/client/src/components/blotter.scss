@@ -18,13 +18,15 @@
   }
 
   div.status {
+    position: absolute;
+    right: 0;
+    transform: translate3d(-38px, 8px, 10px);
     display: none;
+    z-index: 1000;
   }
 
   &.offline {
-    table {
-      opacity: .4;
-    }
+    opacity: .5;
     div.status {
       display: block;
     }
