@@ -6,9 +6,11 @@ import ServiceConst from './serviceConst';
  */
 export default class ServiceStatusLookup {
   _services:Object;
+
   constructor() {
     this._services = {};
   }
+
   updateServiceStatus(serviceStatus:system.service.ServiceStatus) {
     this._services[serviceStatus.serviceType] = serviceStatus;
     return this;
@@ -18,23 +20,23 @@ export default class ServiceStatusLookup {
     return this._services;
   }
 
-  get pricingStatus() {
+  get pricing():system.service.ServiceStatus {
     return this._services[ServiceConst.PricingServiceKey];
   }
 
-  get referenceStatus() {
+  get reference():system.service.ServiceStatus {
     return this._services[ServiceConst.ReferenceServiceKey];
   }
 
-  get blotterStatus() {
+  get blotter():system.service.ServiceStatus {
     return this._services[ServiceConst.BlotterServiceKey];
   }
 
-  get executionStatus() {
+  get execution():system.service.ServiceStatus {
     return this._services[ServiceConst.ExecutionServiceKey];
   }
 
-  get analyticspricingStatus() {
+  get analytics():system.service.ServiceStatus {
     return this._services[ServiceConst.AnalyticsServiceKey];
   }
 }

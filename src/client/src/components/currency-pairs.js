@@ -43,7 +43,10 @@ class CurrencyPairs extends React.Component {
    * @returns {Boolean}
    */
   canTrade(){
-    return serviceContainer.currentServiceStatus.pricingStatus.isConnected && serviceContainer.currentServiceStatus.executionStatus.isConnected;
+   var canTrade =
+      serviceContainer.serviceStatus.pricing.isConnected &&
+      serviceContainer.serviceStatus.execution.isConnected;
+    return canTrade;
   }
 
   /**
@@ -59,7 +62,7 @@ class CurrencyPairs extends React.Component {
       if (pair.state !== 'executing' && pair.state !== 'blocked'){
         pair.state = this.canTrade() && pair.disabled !== true ? timeOutState : 'stale';
       }
-      if (!serviceContainer.currentServiceStatus.pricingStatus.isConnected){
+      if (!serviceContainer.serviceStatus.pricing.isConnected){
         pair.buy = pair.mid = pair.sell = undefined;
       }
     });

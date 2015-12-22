@@ -201,8 +201,8 @@ class IndexView extends React.Component {
         <Modal/>
         <Header status={this.state.connected} services={services}/>
         <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} />
-        <Analytics status={services.analytics} history={this.state.history} positions={this.state.positions}/>
-        <Blotter trades={this.state.trades} status={services.blotter}/>
+        <Analytics history={this.state.history} positions={this.state.positions}/>
+        <Blotter trades={this.state.trades} />
       </div>
     );
   }

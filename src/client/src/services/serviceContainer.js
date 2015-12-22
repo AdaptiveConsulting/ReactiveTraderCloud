@@ -75,7 +75,7 @@ export default class ServiceContainer {
    * THe current ServiceStatusLookup
    * @returns {model.ServiceStatusLookup}
    */
-  get currentServiceStatus() : model.ServiceStatusLookup {
+  get serviceStatus() : model.ServiceStatusLookup {
     return this._currentServiceStatusLookup;
   }
 

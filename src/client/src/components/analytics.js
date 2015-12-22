@@ -3,6 +3,7 @@ import Container from 'components/container';
 import moment from 'moment';
 import numeral from 'numeral';
 import _ from 'lodash';
+import { serviceContainer } from 'services';
 
 import NVD3Chart from 'react-nvd3';
 import d3 from 'd3';
@@ -23,8 +24,7 @@ export default class Analytics extends React.Component {
 
   static propTypes = {
     history: React.PropTypes.array,
-    positions: React.PropTypes.array,
-    status: React.PropTypes.any
+    positions: React.PropTypes.array
   }
 
   constructor(props, context){
@@ -145,7 +145,7 @@ export default class Analytics extends React.Component {
   }
 
   render(){
-    if (!this.props.status)
+    if (!serviceContainer.serviceStatus.analytics.isConnected)
       return <span />;
 
     let pnl;
