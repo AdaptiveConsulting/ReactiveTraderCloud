@@ -69,7 +69,6 @@ class NotionalCell extends React.Component {
   }
 }
 
-
 /**
  * @class Blotter
  * @extends {React.Component}
@@ -92,15 +91,12 @@ class Blotter extends React.Component {
 
   componentDidMount(){
     if (window.fin){
+      const OFD = window.fin.desktop;
       // listen to messages about highlighting the relevant trade
-      window.fin.desktop.main(() =>{
-        window.fin.desktop.InterApplicationBus.subscribe('*', 'acknowledgeTrade', (id) =>{
-          const trade = findWhere(this.props.trades, {
-            id
-          });
-
-          trade && (this.setState({flagged: id})); // eslint-disable-line
-        });
+      OFD.main(() =>{
+        OFD.InterApplicationBus.subscribe(
+          '*', 'acknowledgeTrade', (id) => findWhere(this.props.trades, {id}) && this.setState({flagged: id}) // eslint-disable-line
+        );
       });
     }
   }
@@ -115,28 +111,113 @@ class Blotter extends React.Component {
     this.state.flagged = false;
   }
 
-  getRowClass(rowItem){
+  /**
+   * Returns the class to apply to a row - flashing if required for OpenFin attention
+   * @param rowItem
+   * @returns {string}
+   */
+  getRowClass(rowItem:object){
     const flagged = this.state.flagged,
-          flash = flagged && flagged === rowItem.id;
+          flash   = flagged && flagged === rowItem.id;
 
     return rowItem.status + ' animated ' + (flash ? 'flash' : 'slideInDown');
+  }
+
+  /**
+   * Returns the column and cell definition for the table rendering, binds cells to data
+   * @param {Array} trades
+   * @returns {Array:Column}
+   */
+  getSchema(trades:array):Array<Column> {
+    const cellConstructor = (field, extraCellOptions = {}) => props => <Cell {...props} {...extraCellOptions}>{trades[props.rowIndex][field]}</Cell>;
+
+    const schema = [{
+      name: 'Id',
+      field: 'id',
+      cellConstructor,
+      width: 80
+    }, {
+      name: 'Date',
+      field: 'dateTime',
+      cellConstructor: () => props => <DateCell field='dateTime' data={trades} {...props} />,
+      width: 150
+    }, {
+      name: 'Dir',
+      field: 'direction',
+      cellConstructor,
+      width: 50
+    }, {
+      name: 'CCY',
+      field: 'pair',
+      cellConstructor,
+      width: 70
+    }, {
+      name: 'Notional',
+      field: 'amount',
+      cellConstructor: () => props => <NotionalCell className='text-right' data={trades} field='amount' suffix={' ' + trades[props.rowIndex].pair.substr(0, 3)} {...props} />,
+      width: 120,
+      headerOptions: {
+        className: 'text-right'
+      }
+    }, {
+      name: 'Rate',
+      field: 'rate',
+      cellConstructor,
+      width: 80,
+      className: 'text-right',
+      headerOptions: {
+        className: 'text-right'
+      }
+    }, {
+      name: 'Status',
+      field: 'status',
+      cellConstructor,
+      width: 80,
+      className: 'trade-status'
+    }, {
+      name: 'Value date',
+      field: 'valueDate',
+      cellConstructor: () => props => <DateCell field='valueDate' prefix='SP. ' format='DD MMM' data={trades} {...props} />,
+      width: 100
+    }, {
+      name: 'Trader',
+      field: 'trader',
+      cellConstructor,
+      width: 80
+    }];
+
+    return schema.map((column, id) =>{
+      const cellOptions = {};
+
+      column.className && (cellOptions.className = column.className);
+
+      const columnOptions = {
+        width: column.width || 100,
+        field: column.field,
+        cell: column.cellConstructor(column.field, cellOptions),
+        header: <Cell field={column.field} {...column.headerOptions}>{column.name}</Cell>
+      };
+
+      return <Column {...columnOptions} />;
+    });
   }
 
   render(){
     const outerClassName = this.props.status ? 'blotter online' : 'blotter offline';
 
     const { flagged } = this.state,
-          { trades } = this.props;
+          { trades } = this.props,
+          schema = this.getSchema(trades);
 
     return (
-        <Container
-          title='blotter'
-          className={outerClassName}
-          onTearoff={(state) => this.tearOff(state)}
-          tearoff={this.state.tearoff}
-          width={this.props.containerWidth}
-          height={400}
-          options={{maximizable:true}}>
+      <Container
+        title='blotter'
+        className={outerClassName}
+        onTearoff={(state) => this.tearOff(state)}
+        tearoff={this.state.tearoff}
+        width={this.props.containerWidth}
+        height={400}
+        options={{maximizable:true}}>
         <div className='blotter-wrapper'>
           <div className='status'>
             <i className='fa fa-plug animated infinite fadeIn'/>
@@ -149,63 +230,7 @@ class Blotter extends React.Component {
             height={300}
             rowClassNameGetter={(index) => this.getRowClass(trades[index])}
             {...this.props}>
-            <Column
-              header={<Cell>Id</Cell>}
-              cell={props => <Cell {...props}>
-                {trades[props.rowIndex].id}
-              </Cell>}
-              width={50}
-            />
-            <Column
-              header={<Cell>Date</Cell>}
-              cell={props => <DateCell field='dateTime' data={trades} {...props} />}
-              width={150}
-            />
-            <Column
-              header={<Cell>Dir</Cell>}
-              cell={props => <Cell {...props}>
-                {trades[props.rowIndex].direction}
-              </Cell>}
-              width={50}
-            />
-            <Column
-              header={<Cell>CCY</Cell>}
-              cell={props => <Cell {...props}>
-                {trades[props.rowIndex].pair}
-              </Cell>}
-              width={70}
-            />
-            <Column
-              header={<Cell className='text-right'>Notional</Cell>}
-              cell={props => <NotionalCell className='text-right' data={trades} field='amount' suffix={' ' + trades[props.rowIndex].pair.substr(0, 3)} {...props} />}
-              width={120}
-            />
-            <Column
-              header={<Cell className='text-right'>Rate</Cell>}
-              cell={props => <Cell className='text-right' {...props}>
-                {trades[props.rowIndex].rate}
-              </Cell>}
-              width={80}
-            />
-            <Column
-              header={<Cell>Status</Cell>}
-              cell={props => <Cell className='trade-status' {...props}>
-                {trades[props.rowIndex].status}
-              </Cell>}
-              width={80}
-            />
-            <Column
-              header={<Cell>Value date</Cell>}
-              cell={props => <DateCell field='valueDate' prefix='SP. ' format='DD MMM' data={trades} {...props} />}
-              width={100}
-            />
-            <Column
-              header={<Cell>Trader</Cell>}
-              cell={props => <Cell {...props}>
-                {trades[props.rowIndex].trader}
-              </Cell>}
-              width={80}
-            />
+            {schema}
           </Table>
         </div>
       </Container>
