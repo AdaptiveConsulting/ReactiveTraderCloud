@@ -5,12 +5,18 @@ import IndexView from 'views/index-view';
 import GrowlView from 'views/growl-view';
 import TileView from 'views/tile-view';
 
+import { createHashHistory } from 'history';
+
+const history = createHashHistory({
+  queryKey: false
+});
+
 /**
  * Routes supported
  * @type {XML}
  */
 const routes = (
-  <Router>
+  <Router history={history}>
     <Route path='/' component={CoreLayout}>
       <IndexRoute component={IndexView}/>
     </Route>
