@@ -53,7 +53,7 @@ class IndexView extends React.Component {
           });
         },
         err => {
-          _log.error(`Error on blotterService stream stream ${err.message}`);
+          _log.error('Error on blotterService stream stream', err);
         }
       )
     );
@@ -66,7 +66,7 @@ class IndexView extends React.Component {
           });
         },
         err => {
-          _log.error(`Error on analyticsService stream stream ${err.message}`);
+          _log.error('Error on analyticsService stream stream', err);
         }
       )
     );
@@ -90,7 +90,7 @@ class IndexView extends React.Component {
             }
           },
           err => {
-            _log.error(`Error on connection status stream ${err.message}`);
+            _log.error('Error on connection status stream', err);
           }
         )
     );
@@ -178,8 +178,8 @@ class IndexView extends React.Component {
         });
         payload.onACK(message);
       },
-      (error) => {
-        _log.error(error.message);
+      (err) => {
+        _log.error('Error on executeTrade stream', err);
       }
     );
   }
