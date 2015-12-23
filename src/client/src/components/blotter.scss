@@ -78,10 +78,13 @@
     border-color: $gray-darker;
   }
 
-  .public_fixedDataTable_header,
-  .public_fixedDataTable_hasBottomBorder {
+  .public_fixedDataTable_header {
     background: linear-gradient(lighten($gray-dark, 2%) 80%, $gray-dark);
     //border-color: #d3d3d3;
+  }
+
+  div.public_fixedDataTable_hasBottomBorder {
+    border-bottom: 1px solid $gray;
   }
 
   .public_fixedDataTable_header .public_fixedDataTableCell_main {
@@ -136,7 +139,7 @@
   }
 
   .public_fixedDataTableCell_highlighted {
-    //background-color: #f4f4f4;
+    background-color: $gray-light;
   }
 
   .public_fixedDataTableCell_cellContent {
