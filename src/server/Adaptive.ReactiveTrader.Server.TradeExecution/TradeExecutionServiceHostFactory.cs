@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Reflection;
 using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Common;
+using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Host;
 using Common.Logging;
 using EventStore.ClientAPI;
+using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
@@ -21,7 +24,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
-            var repositoryStream = eventStoreStream.LaunchOrKill(conn => new Repository(conn));
+            var repositoryStream = eventStoreStream.LaunchOrKill(conn => new Repository(conn, new EventTypeResolver(ReflectionHelper.ContractsAssembly)));
             var idProvider = repositoryStream.LaunchOrKill(repo => new TradeIdProvider(repo));
             var engineStream = repositoryStream.LaunchOrKill(idProvider, (repo, id) => new TradeExecutionEngine(repo, id));
             var serviceStream = engineStream.LaunchOrKill(engine => new TradeExecutionService(engine));

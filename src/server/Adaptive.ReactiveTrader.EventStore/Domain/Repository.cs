@@ -19,11 +19,12 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
         private static readonly ILog Log = LogManager.GetLogger<Repository>();
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.None};
         private readonly IEventStoreConnection _eventStoreConnection;
-        private readonly EventTypeResolver _eventTypeResolver = new EventTypeResolver();
+        private readonly EventTypeResolver _eventTypeResolver;
 
-        public Repository(IEventStoreConnection eventStoreConnection)
+        public Repository(IEventStoreConnection eventStoreConnection, EventTypeResolver eventTypeResolver)
         {
             _eventStoreConnection = eventStoreConnection;
+            _eventTypeResolver = eventTypeResolver;
         }
 
         public void Dispose()

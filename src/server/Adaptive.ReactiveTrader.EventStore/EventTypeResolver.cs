@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Adaptive.ReactiveTrader.EventStore
 {
@@ -8,15 +9,12 @@ namespace Adaptive.ReactiveTrader.EventStore
     {
         private readonly IDictionary<string, Type> _typeMap;
 
-        public EventTypeResolver()
+        public EventTypeResolver(Assembly assembly)
         {
-            var ourAssemblies = AppDomain.CurrentDomain
-                                         .GetAssemblies()
-                                         .Where(x => x.FullName.StartsWith("Adaptive."));
-
-            _typeMap = ourAssemblies.SelectMany(x => x.GetExportedTypes())
-                                    .Where(x => x.Name.EndsWith("Event", StringComparison.InvariantCulture))
-                                    .ToDictionary(x => x.Name);
+            _typeMap = assembly
+                .GetExportedTypes()
+                .Where(x => x.Name.EndsWith("Event", StringComparison.InvariantCulture))
+                .ToDictionary(x => x.Name);
         }
 
         public Type GetTypeForEventName(string name)
