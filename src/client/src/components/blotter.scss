@@ -5,6 +5,7 @@
   right: 0;
   height: 20%;
   max-height: 300px;
+  background: #fff;
 
   .blotter-wrapper {
     position: relative;
@@ -532,9 +533,13 @@
   }
 
   .public_fixedDataTableRow_odd {
-    background: darken($gray-dark, 1%);
+    background: darken($gray-lighter, 1%);
   }
 
+  .public_fixedDataTable_bodyRow {
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.4);
+    color: $gray-darker;
+  }
   .public_fixedDataTable_bodyRow:hover {
     div {
       color: $gray-light;
@@ -545,14 +550,14 @@
   .Rejected {
     text-transform: uppercase;
     box-shadow: inset 0 0 2px rgba(0,0,0,.7);
-    background: rgba(0,0,0,.1);
-    color: $gray-light;
+    background: $brand-danger;
+    color: $gray-lighter;
     div {
       text-decoration: line-through !important;
     }
     .trade-status {
       text-decoration: line-through;
-      color: $brand-danger;
+      color: $gray-light;
     }
   }
   .Processing {
