@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 // data grid
 import { Table, Column, Cell } from 'fixed-data-table';
-import NotionalCell from './blotter-parts/money-cell';
+import NotionalCell from './blotter-parts/notional-cell';
 import DateCell from './blotter-parts/date-cell';
 
 // containers and layout

@@ -1,6 +1,6 @@
 import Guard from './guard';
 
-var levels = {
+const levels = {
   verbose: 0,
   debug: 1,
   info: 2,
@@ -8,73 +8,76 @@ var levels = {
   error: 4
 };
 
-var _currentLevel = levels.debug;
+let _currentLevel = levels.debug;
 
-var _sink = logEvent => {
-  console.log('[' + logEvent.logger + '] [' + logEvent.level + ']: ' + logEvent.message);
+let _sink = logEvent =>{
+  return;
+  const toLog = ['[' + logEvent.level + '][' + logEvent.logger + ']'];
+  toLog.push.apply(toLog, logEvent.message);
+  console.log.apply(console, toLog);
 };
 
 class Logger {
-  constructor(name) {
+  constructor(name){
     this._name = name;
   }
 
-  get isVerboseEnabled() {
+  get isVerboseEnabled(){
     return _currentLevel <= levels.verbose;
   }
 
-  verbose(message) {
-    if (this.isVerboseEnabled) {
-      this._log('VERBOSE', message);
+  verbose(){
+    if (this.isVerboseEnabled){
+      this._log('VERBOSE', arguments);
     }
   }
 
-  debug(message) {
-    if (_currentLevel <= levels.debug) {
-      this._log('DEBUG', message);
+  debug(){
+    if (_currentLevel <= levels.debug){
+      this._log('DEBUG', arguments);
     }
   }
 
-  info(message) {
-    if (_currentLevel <= levels.info) {
-      this._log('INFO', message);
+  info(){
+    if (_currentLevel <= levels.info){
+      this._log('INFO', arguments);
     }
   }
 
-  warn(message) {
-    if (_currentLevel <= levels.warn) {
-      this._log('WARN', message);
+  warn(){
+    if (_currentLevel <= levels.warn){
+      this._log('WARN', arguments);
     }
   }
 
-  error(message) {
-    if (_currentLevel <= levels.error) {
-      this._log('ERROR', message);
+  error(){
+    if (_currentLevel <= levels.error){
+      this._log('ERROR', arguments);
     }
   }
 
-  _log(level, message) {
+  _log(level, message){
     Guard.isString(level, 'level isn\'t a string');
-    Guard.isString(message, 'message isn\'t a string');
+    //Guard.isString(message, 'message isn\'t a string');
     _sink({
       logger: this._name,
       level: level,
-      message: message
+      message
     });
   }
 }
 
-function create(name):Logger {
+function create(name):Logger{
   Guard.isDefined(name, 'The name argument should be defined');
   Guard.isString(name, 'The name argument should be a string');
   return new Logger(name);
 }
 
-function setLevel(level) {
+function setLevel(level){
   _currentLevel = level;
 }
 
-function setSink(sink) {
+function setSink(sink){
   Guard.isFunction(sink, 'Logging sink argument must be a function');
   _sink = sink;
 }

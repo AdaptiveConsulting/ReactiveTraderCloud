@@ -45,10 +45,14 @@ class IndexView extends React.Component {
   }
 
   componentDidMount(){
-    this.addDisposableEvents();
+    this.setupDataStreams();
   }
 
-  addDisposableEvents(){
+  /**
+   * Sets up all connection subscriptions
+   * todo: move elsewhere
+   */
+  setupDataStreams(){
     this._disposables.add(
       serviceContainer.blotterService.getTradesStream().subscribe(blotter =>{
           blotter.Trades.forEach((trade) => this._processTrade(trade, false));
@@ -101,7 +105,7 @@ class IndexView extends React.Component {
 
     this._disposables.add(
       serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusLookup) =>{
-          _log.info(`services:${services}`);
+          _log.info('services', services);
           this.setState({services});
         },
         err =>{
