@@ -3,13 +3,11 @@
   position: absolute;
   top: 52px;
   bottom: 20%;
-  //margin-bottom: 25%;
   overflow-x: hidden;
   overflow-y: auto;
   right: 0px;
   max-width: 400px;
   min-width: 350px;
-  //background: linear-gradient(rgba(0, 0, 0, 0), $gray-dark, rgba(0, 0, 0, 0));
   background: $gray-dark;
   box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
   .tile & {
@@ -47,9 +45,6 @@
         fill: red !important;
         fill-opacity: .9;
       }
-    }
-    .nv-axisMaxMin {
-      //display: none;
     }
     .nvd3 g.nv-groups  {
       path.nv-line {
