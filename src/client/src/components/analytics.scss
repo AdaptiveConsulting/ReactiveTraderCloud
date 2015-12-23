@@ -54,19 +54,28 @@
       }
       .nv-bar {
         rect {
-          fill-opacity: .1;
+          fill-opacity: .3;
           stroke: slategray;
           stroke-width: .8;
           stroke-opacity: .4;
         }
         &.positive {
+          fill: green;
           text {
             fill: $gray-light;
           }
         }
+        text {
+          font-size: 8px;
+          fill: white;
+          font-weight: normal;
+        }
+        &.negative {
+          fill: red;
+        }
         &:hover rect {
           stroke-opacity: .5;
-          fill-opacity: .4;
+          fill-opacity: .7;
         }
       }
     }
