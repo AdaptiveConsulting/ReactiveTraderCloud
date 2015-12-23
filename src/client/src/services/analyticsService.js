@@ -4,13 +4,7 @@ import * as model from './model';
 
 var _log:system.logger.Logger = system.logger.create('AnalyticsService');
 
-export default class AnalyticsService {
-  _serviceClient:system.service.ServiceClient;
-
-  constructor(serviceClient:system.service.ServiceClient, schedulerService:SchedulerService) {
-    this._serviceClient = serviceClient;
-    this._schedulerService = schedulerService;
-  }
+export default class AnalyticsService extends system.service.ServiceBase {
 
   getAnalyticsStream(analyticsRequest:model.AnalyticsRequest) {
     system.Guard.isDefined(analyticsRequest, 'analyticsRequest required');

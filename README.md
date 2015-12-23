@@ -8,15 +8,15 @@ Reactive Trader Cloud is a real-time FX trading platform demo showcasing reactiv
 
 Improvements have been made across the board since [Reactive Trader v1](https://github.com/AdaptiveConsulting/ReactiveTrader). The UI is revamped with a modern Javascript framework (React), and an event sourcing approach is used by the backend services for data resiliency.
 
-All frameworks and libraries used are entirely open source, and each component can be run on either Windows, Linux or Mac OS.
+All frameworks and libraries used are entirely open source, and each component can be run on either Windows, Linux or Mac OS X.
 
-The services are also distributed and are capable of recovery from disconnections. This demonstrates an approach similar to what is put into practice in major financial institutions for trading systems.
+The services are distributed and are capable of recovery from disconnections. This demonstrates a similar approach to what is put into practice in major financial institutions for trading systems.
 
 ## Architecture
 
-The backend is made up of distributed services written in .NET leveraging the cross-platform capabilities provided by DNX.
+The backend is made up of distributed services written in .NET leveraging the cross-platform capabilities provided by [DNX](https://github.com/aspnet/dnx).
 
-Every component can be deployed via Docker containers. This allows the use of tools such as Kubernetes to facilitate cluster management for resiliency purposes, as well as ease of deployment.
+Every server component can be deployed via Docker containers. This allows the use of tools such as [Kubernetes](http://kubernetes.io/) to facilitate cluster management for resiliency purposes as well as ease of deployment.
 
 Client-side implementations are available for all major platforms, including desktop browser, OpenFin, Android, iOS, Apple Watch and WPF.
 
@@ -26,7 +26,7 @@ Client-side implementations are available for all major platforms, including des
 
 ### Front-End
 
-The front-end is written in Javascript with React, The details of how to set up the client to run on your machine are [here](src/client/README.md).
+The front-end is written in Javascript with React. The details of how to set up the client to run on your machine are [here](src/client/README.md).
 
 Alternatively a live demo can be found at [demo.shiftcluster.com](http://demo.shiftcluster.com/) [TODO](move to demo.kubernetes.weareadaptive.com)
 
@@ -46,11 +46,11 @@ You can also setup a dev environment on Linux.
 
 [Getting Started on Linux](/docs/linux-setup.md)
 
-### Mac OS
+### Mac OSX
 
-And on Mac OS
+And on Mac OSX
 
-[Getting Started on Mac OS](/docs/macos-setup.md)
+[Getting Started on Mac OSX](/docs/macos-setup.md)
 
 #### Docker
 

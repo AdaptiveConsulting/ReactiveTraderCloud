@@ -1,13 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router';
 import system from 'system';
-import { model as serviceModel, FakeUserRepository } from 'services';
+import { serviceContainer, model as serviceModel, FakeUserRepository } from 'services';
 
 class Header extends React.Component {
 
   static propTypes = {
-    status: React.PropTypes.bool,
-    services: React.PropTypes.object
+    status: React.PropTypes.bool
+  }
+
+  constructor() {
+    super();
+    this._disposables = new Rx.CompositeDisposable();
+    this.state = {
+
+    };
   }
 
   componentWillMount(){
@@ -16,7 +23,27 @@ class Header extends React.Component {
     }
   }
 
-  getBrokerStatus(status:boolean){
+  componentDidMount(){
+    this._observeStatusStream();
+  }
+
+  componentWillUnmount() {
+    this._disposables.dispose();
+  }
+
+  _observeStatusStream() {
+    this._disposables.add(
+      serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusLookup) => {
+          this.setState({serviceLookup:services});
+        },
+        err => {
+          _log.error(`Error on service status stream ${err.message}`);
+        }
+      )
+    );
+  }
+
+  getBrokerStatus(status:boolean) {
     return status
       ? <span className='fa-stack text-success animated fadeIn' title='Online'>
           <i className='fa fa-signal fa-stack-1x'/>
@@ -27,10 +54,13 @@ class Header extends React.Component {
         </span>;
   }
 
-  getServices(serviceLookup:serviceModel.ServiceStatusLookup){
+  getServices() {
+    var serviceLookup:serviceModel.ServiceStatusLookup = this.state.serviceLookup;
+    if (!serviceLookup) {
+      return [];
+    }
     const serviceIndicators = [];
-
-    for (let serviceType in serviceLookup.services){
+    for (let serviceType in serviceLookup.services) {
       var statusSummary:system.service.ServiceStatus = serviceLookup.services[serviceType];
       if (statusSummary.isConnected){
         serviceIndicators.push(
@@ -85,8 +115,8 @@ class Header extends React.Component {
     }
   }
 
-  render(){
-    const { status, services } = this.props;
+  render() {
+    const { status } = this.props;
     var currentUser = FakeUserRepository.currentUser;
     return (
       <nav className='navbar navbar-default'>
@@ -121,7 +151,7 @@ class Header extends React.Component {
         </nav>
         <ul className='nav navbar-nav pull-right nav-status hidden-xs'>
           <li>{this.getBrokerStatus(status)}</li>
-          {this.getServices(services)}
+          {this.getServices()}
         </ul>
       </nav>
     );

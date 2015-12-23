@@ -102,17 +102,6 @@ class IndexView extends React.Component {
           }
         )
     );
-
-    this._disposables.add(
-      serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusLookup) =>{
-          _log.info('services', services);
-          this.setState({services});
-        },
-        err =>{
-          _log.error(`Error on service status stream ${err.message}`);
-        }
-      )
-    );
   }
 
   componentWillUnmount(){
@@ -208,10 +197,10 @@ class IndexView extends React.Component {
     return (
       <div>
         <Modal/>
-        <Header status={this.state.connected} services={services}/>
-        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)}/>
+        <Header status={this.state.connected} />
+        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} />
         <Analytics history={this.state.history} positions={this.state.positions}/>
-        <Blotter trades={this.state.trades}/>
+        <Blotter trades={this.state.trades} />
       </div>
     );
   }

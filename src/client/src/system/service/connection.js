@@ -113,7 +113,7 @@ export default class Connection extends disposables.DisposableBase {
     let _this = this;
     return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
       let disposables = new Rx.CompositeDisposable();
-      _log.debug(`Wiring up to topic [${topic}]. Is connected [${_this._isConnected}]`);
+      _log.debug(`Subscribing to topic [${topic}]. Is connected [${_this._isConnected}]`);
       if (_this.isConnected) {
         let subscription;
         _this._autobahn.session.subscribe(topic, (response:Array<TResponse>) => {
@@ -124,7 +124,7 @@ export default class Connection extends disposables.DisposableBase {
           o.onNext(response[0]);
         }).then((sub:autobahn.Subscription) => {
           // subscription succeeded, subscription is an instance of autobahn.Subscription
-          _log.debug(`subscription acked on topic [${topic}]`);
+          _log.verbose(`subscription acked on topic [${topic}]`);
           subscription = sub;
         }, (error:autobahn.Error) => {
           // subscription failed, error is an instance of autobahn.Error
@@ -136,7 +136,7 @@ export default class Connection extends disposables.DisposableBase {
             try {
               _this._autobahn.session.unsubscribe(subscription).then(
                 gone => {
-                  _log.debug(`Successfully unsubscribing from topic ${topic}`);
+                  _log.verbose(`Successfully unsubscribing from topic ${topic}`);
                 },
                 err => {
                   _log.error(`Error unsubscribing from topic ${topic}: ${err.message}`);
@@ -165,7 +165,7 @@ export default class Connection extends disposables.DisposableBase {
   requestResponse<TRequest, TResponse>(remoteProcedure:String, payload:TRequest, responseTopic:String = ''):Rx.Observable<TResponse> {
     let _this = this;
     return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
-      _log.debug(`Requesting a response for remoteProcedure [${remoteProcedure}]. Is connected [${_this._isConnected}]`);
+      _log.debug(`Doing a RPC to [${remoteProcedure}]. Is connected [${_this._isConnected}]`);
       let disposables = new Rx.CompositeDisposable();
       if (_this.isConnected) {
         let isDisposed:Boolean;
@@ -180,7 +180,7 @@ export default class Connection extends disposables.DisposableBase {
               o.onNext(result);
               o.onCompleted();
             } else {
-              _log.warn(`Ignoring response for remoteProcedure [${remoteProcedure}] as stream disposed`);
+              _log.verbose(`Ignoring response for remoteProcedure [${remoteProcedure}] as stream disposed`);
             }
           },
           error => {

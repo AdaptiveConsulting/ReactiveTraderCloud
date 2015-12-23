@@ -4,13 +4,7 @@ import * as model from './model';
 
 var _log:system.logger.Logger = system.logger.create('ReferenceDataService');
 
-export default class ReferenceDataService {
-  _serviceClient:system.service.ServiceClient;
-
-  constructor(serviceClient:system.service.ServiceClient, schedulerService:SchedulerService) {
-    this._serviceClient = serviceClient;
-    this._schedulerService = schedulerService;
-  }
+export default class ReferenceDataService extends system.service.ServiceBase {
 
   getCurrencyPairUpdatesStream() {
     let _this = this;
