@@ -81,7 +81,7 @@ export default class ServiceClient extends disposables.DisposableBase {
         .publish()
         .refCount();
       let isConnectedStream = connectionStatus.where(isConnected => isConnected);
-      let errorOnDisconnectStream = connectionStatus.where(isConnected => !isConnected).take(1).selectMany(Rx.Observable.throw(new Error('Disconnected')));
+      let errorOnDisconnectStream = connectionStatus.where(isConnected => !isConnected).take(1).selectMany(Rx.Observable.throw(new Error('Underlying connection disconnected')));
       let serviceInstanceDictionaryStream = this._connection
         .subscribeToTopic('status')
         .where(s => s.Type === serviceType)
@@ -124,7 +124,7 @@ export default class ServiceClient extends disposables.DisposableBase {
         .getServiceWithMinLoad(waitForSuitableService)
         .subscribe(serviceInstanceStatus => {
             if (!serviceInstanceStatus.isConnected) {
-              o.onError(new Error('Disconnected'));
+              o.onError(new Error('Service instance is disconnected for request response operation'));
             } else if (!hasSubscribed) {
               hasSubscribed = true;
               _this._log.debug(`Will use service instance [${serviceInstanceStatus.serviceId}] for request/response operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`);
@@ -182,7 +182,7 @@ export default class ServiceClient extends disposables.DisposableBase {
         .getServiceWithMinLoad()
         .subscribe(serviceInstanceStatus => {
             if (!serviceInstanceStatus.isConnected) {
-              o.onError(new Error('Disconnected'));
+              o.onError(new Error('Service instance is disconnected for stream operation'));
             } else if (!hasSubscribed) {
               hasSubscribed = true;
               _this._log.debug(`Will use service instance [${serviceInstanceStatus.serviceId}] for stream operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`);

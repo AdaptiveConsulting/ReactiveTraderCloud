@@ -4,6 +4,8 @@
 
 ## Overview
 
+-- BRANDING HERE --
+
 Reactive Trader Cloud is a real-time FX trading platform demo showcasing reactive programming principles applied across the full application stack.
 
 Improvements have been made across the board since [Reactive Trader v1](https://github.com/AdaptiveConsulting/ReactiveTrader). The UI is revamped with a modern Javascript framework (React), and an event sourcing approach is used by the backend services for data resiliency.
@@ -11,6 +13,11 @@ Improvements have been made across the board since [Reactive Trader v1](https://
 All frameworks and libraries used are entirely open source, and each component can be run on either Windows, Linux or Mac OS X.
 
 The services are distributed and are capable of recovery from disconnections. This demonstrates a similar approach to what is put into practice in major financial institutions for trading systems.
+
+-- SCREENSHOTS-HERE --
+
+### Live Demo
+A live demo can be found at [web-576.adaptivecluster.com/](http://web-576.adaptivecluster.com/)
 
 ## Architecture
 
@@ -20,43 +27,39 @@ Every server component can be deployed via Docker containers. This allows the us
 
 Client-side implementations are available for all major platforms, including desktop browser, OpenFin, Android, iOS, Apple Watch and WPF.
 
-![Architecture Overview](/docs/ArchitectureOverview.png)
-
-## Getting Started
+![Architecture Overview](docs/ArchitectureOverview.png)
 
 ### Front-End
 
-The front-end is written in Javascript with React. The details of how to set up the client to run on your machine are [here](src/client/README.md).
-
-Alternatively a live demo can be found at [demo.shiftcluster.com](http://demo.shiftcluster.com/) [TODO](move to demo.kubernetes.weareadaptive.com)
+The front-end is written in Javascript with React. 
 
 ### Back-End
 
 The back-end services are cross-platform. For details of how to set up the services on your on machine see below.
 
-#### Windows
+## Getting Started
 
-If you are familiar with using Visual Studio on Windows.
+Get your environment setup and start up the various component parts running on your environment of choice. 
 
-[Getting Started using Visual Studio 2015](/docs/vs-setup.md)
++ [Windows](docs/setup/windows-setup.md)
++ [Mac](docs/setup/macos-setup.md)
++ [Linux](docs/setup/linux-setup.md)
++ [Docker](docs/setup/docker-setup.md)
 
-#### Linux
+## Concepts
 
-You can also setup a dev environment on Linux.
++ [vNext Client Architecture with ES.next, React, Webpack, RxJs](docs/articles/vNextClientArchitecture.md)
++ [DNX (.NET Execution Environment): Cross Platform .Net Development](docs/articles/dnx.md)
++ [Event Sourcing](docs/articles/eventSourcing.md)
++ [Web Messaging with WAMP & Crossbar](docs/articles/webMessaging.md)
++ [Always Connected Apps in a Microservice Environment](docs/articles/alwaysConnectedApps.md)
++ [Desktop Client Support with OpenFin](docs/articles/desktopClientWithOpenFin.md)
++ [Failover and Resiliency in a Microservice Environment](docs/articles/failOverAndResiliency.md)
++ [Deployment with Docker](docs/articles/deploymentWithDocker.md)
 
-[Getting Started on Linux](/docs/linux-setup.md)
+## Who Are We?
+-- MORE BRANDING HERE --
 
-### Mac OSX
+## Links 
+[Further Inspiration](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 
-And on Mac OSX
-
-[Getting Started on Mac OSX](/docs/macos-setup.md)
-
-#### Docker
-
-The simplest way to run the full application no matter which OS you are running is by using Docker.
-
-[Getting Started using Docker](/docs/docker-setup.md)
-
-
-{{>src/client/README.md}}
