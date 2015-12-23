@@ -134,7 +134,7 @@ class CurrencyPairs extends React.Component {
                       this.updatePairs();
                     },
                     err => {
-                      _log.error(`Error on getSpotPriceStream stream stream ${err.message}`);
+                      _log.error('Error on getSpotPriceStream stream stream', err);
                     }
                   );
                 shouldStateUpdate = true;
@@ -159,7 +159,7 @@ class CurrencyPairs extends React.Component {
         shouldStateUpdate && this.updatePairs();
       },
       err => {
-        _log.error(`Error on getCurrencyPairUpdatesStream stream stream ${err.message}`);
+        _log.error('Error on getCurrencyPairUpdatesStream stream stream', err);
       })
     );
 
