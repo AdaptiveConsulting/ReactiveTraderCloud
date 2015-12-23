@@ -1,3 +1,6 @@
+$positive-color: green;
+$negative-color: $brand-danger;
+
 .analytics-container {
   margin-left: 4px;
   position: absolute;
@@ -42,7 +45,7 @@
     background: $gray-dark;
     &.negative {
       .nvd3 g.nv-groups g.nv-group .nv-area {
-        fill: red !important;
+        fill: $negative-color !important;
         fill-opacity: .9;
       }
     }
@@ -62,7 +65,7 @@
           stroke-opacity: .4;
         }
         &.positive {
-          fill: green;
+          fill: $positive-color;
           text {
             fill: $gray-light;
           }
@@ -73,7 +76,7 @@
           font-weight: normal;
         }
         &.negative {
-          fill: red;
+          fill: $negative-color;
         }
         &:hover rect {
           stroke-opacity: .5;
