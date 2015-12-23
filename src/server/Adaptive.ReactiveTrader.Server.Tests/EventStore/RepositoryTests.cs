@@ -6,6 +6,7 @@ using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 using FakeItEasy;
 using Xunit;
+using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.Tests.EventStore
 {
@@ -15,7 +16,7 @@ namespace Adaptive.ReactiveTrader.Server.Tests.EventStore
         public async void WhenAggregateIsSavedThenPendingEventsAreWritten()
         {
             var connection = A.Fake<IEventStoreConnection>();
-            var repository = new Repository(connection);
+            var repository = new Repository(connection, new EventTypeResolver(ReflectionHelper.ContractsAssembly));
 
             var testAggregate = new TestAggregate();
             testAggregate.ChangeName("First Name");
@@ -40,7 +41,7 @@ namespace Adaptive.ReactiveTrader.Server.Tests.EventStore
             aggregate.ChangeName("New Name");
 
             var connection = A.Fake<IEventStoreConnection>();
-            var repository = new Repository(connection);
+            var repository = new Repository(connection, new EventTypeResolver(ReflectionHelper.ContractsAssembly));
 
             await repository.SaveAsync(aggregate);
 
