@@ -1,19 +1,46 @@
 import React from 'react';
 import { Link } from 'react-router';
 import system from 'system';
-import { model as serviceModel, FakeUserRepository } from 'services';
+import { serviceContainer, model as serviceModel, FakeUserRepository } from 'services';
 
 class Header extends React.Component {
 
   static propTypes = {
-    status: React.PropTypes.bool,
-    services: React.PropTypes.object
+    status: React.PropTypes.bool
+  }
+
+  constructor() {
+    super();
+    this._disposables = new Rx.CompositeDisposable();
+    this.state = {
+
+    };
   }
 
   componentWillMount() {
     if (window.fin) {
       window.fin.desktop.main(() => this.fin = window.fin.desktop.Window.getCurrent());
     }
+  }
+
+  componentDidMount(){
+    this._observeStatusStream();
+  }
+
+  componentWillUnmount() {
+    this._disposables.dispose();
+  }
+
+  _observeStatusStream() {
+    this._disposables.add(
+      serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusLookup) => {
+          this.setState({serviceLookup:services});
+        },
+        err => {
+          _log.error(`Error on service status stream ${err.message}`);
+        }
+      )
+    );
   }
 
   getBrokerStatus(status:boolean) {
@@ -27,7 +54,11 @@ class Header extends React.Component {
     </span>;
   }
 
-  getServices(serviceLookup:serviceModel.ServiceStatusLookup) {
+  getServices() {
+    var serviceLookup:serviceModel.ServiceStatusLookup = this.state.serviceLookup;
+    if (!serviceLookup) {
+      return [];
+    }
     const serviceIndicators = [];
     for (let serviceType in serviceLookup.services) {
       var statusSummary:system.service.ServiceStatus = serviceLookup.services[serviceType];
@@ -90,7 +121,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { status, services } = this.props;
+    const { status } = this.props;
     var currentUser = FakeUserRepository.currentUser;
     return (
       <nav className='navbar navbar-default'>
@@ -126,7 +157,7 @@ class Header extends React.Component {
         </nav>
         <ul className='nav navbar-nav pull-right nav-status hidden-xs'>
           <li>{this.getBrokerStatus(status)}</li>
-          {this.getServices(services)}
+          {this.getServices()}
         </ul>
       </nav>
     );

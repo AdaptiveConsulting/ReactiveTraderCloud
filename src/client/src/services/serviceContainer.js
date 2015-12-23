@@ -120,7 +120,7 @@ export default class ServiceContainer {
 
   _createServiceStatusStream() : Rx.Observable<model.ServiceStatusLookup>{
     // merge then scan all our underlying service status streams into a single
-    // data structure (ServiceStatusLookup) we canquery for the current status.
+    // data structure (ServiceStatusLookup) we can query for the current status.
     return Rx.Observable
       .merge(
         this._pricingService.serviceStatusStream,
