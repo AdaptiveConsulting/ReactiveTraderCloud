@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Guard from './guard';
 
 var levels = {
@@ -41,16 +42,23 @@ class Logger {
     }
   }
 
-  warn(message) {
+  warn(message, err) {
     if (_currentLevel <= levels.warn) {
-      this._log('WARN', message);
+      this._logError('WARN', message, err);
     }
   }
 
-  error(message) {
+  error(message, err) {
     if (_currentLevel <= levels.error) {
-      this._log('ERROR', message);
+      this._logError('ERROR', message, err);
     }
+  }
+
+  _logError(level, message, err) {
+    let errorMessage = _.isError(err)
+      ? err.message
+      : err;
+    this._log(level, `${message}. Error:${errorMessage}`);
   }
 
   _log(level, message) {

@@ -37,7 +37,7 @@ class Header extends React.Component {
           this.setState({serviceLookup:services});
         },
         err => {
-          _log.error(`Error on service status stream ${err.message}`);
+          _log.error('Error on service status stream', err);
         }
       )
     );

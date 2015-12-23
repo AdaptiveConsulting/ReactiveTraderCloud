@@ -20,18 +20,15 @@ function retryWithPolicy<TValue>(retryPolicy, operationDescription:String, sched
             o.onNext(i);
           }
         },
-        ex => {
+        err => {
           retryCount++;
-          let errorMessage = _.isError(ex)
-            ? ex.message
-            : ex;
-          let shouldRetryResult:ShouldRetryResult = retryPolicy.shouldRetry(ex, retryCount);
+          let shouldRetryResult:ShouldRetryResult = retryPolicy.shouldRetry(err, retryCount);
           if (shouldRetryResult.shouldRetry) {
             if (shouldRetryResult.retryAfterMilliseconds === 0) {
-              _log.warn(`Retrying [${operationDescription}]. This is attempt [${operationDescription}]. Exception: [${errorMessage}]`);
+              _log.warn(`Retrying [${operationDescription}]. This is attempt [${operationDescription}]`, err);
               subscribe();
             } else {
-              _log.warn(`Retrying [${operationDescription}] after [${shouldRetryResult.retryAfterMilliseconds}]. This is attempt [${retryCount}]. Exception: [${errorMessage}]`);
+              _log.warn(`Retrying [${operationDescription}] after [${shouldRetryResult.retryAfterMilliseconds}]. This is attempt [${retryCount}]`, err);
               // throwing away the disposable as we do a dispose check before we onNext
               scheduler.scheduleFuture(
                 '',
@@ -42,8 +39,8 @@ function retryWithPolicy<TValue>(retryPolicy, operationDescription:String, sched
           }
           else {
             // don't retry
-            _log.error(`Not retrying [${operationDescription}]. Retry count [${retryCount}]. Will error. Exception: [${errorMessage}]`);
-            o.onError(ex);
+            _log.error(`Not retrying [${operationDescription}]. Retry count [${retryCount}]. Will error`, err);
+            o.onError(err);
           }
         },
         () => o.onCompleted()
