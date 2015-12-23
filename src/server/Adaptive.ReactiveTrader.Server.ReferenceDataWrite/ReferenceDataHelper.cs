@@ -3,6 +3,7 @@ using Adaptive.ReactiveTrader.EventStore.Domain;
 using Common.Logging;
 using EventStore.ClientAPI;
 using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.EventStore;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {

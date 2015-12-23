@@ -7,6 +7,7 @@ using EventStore.ClientAPI.SystemData;
 using FakeItEasy;
 using Xunit;
 using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.EventStore;
 
 namespace Adaptive.ReactiveTrader.Server.Tests.EventStore
 {

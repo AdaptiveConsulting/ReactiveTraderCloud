@@ -7,6 +7,7 @@ using Adaptive.ReactiveTrader.Server.Host;
 using Common.Logging;
 using EventStore.ClientAPI;
 using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.EventStore;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
