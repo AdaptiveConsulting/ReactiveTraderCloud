@@ -104,8 +104,7 @@ class Header extends React.Component {
         <ul className='nav navbar-nav hidden-xs hidden-sm navbar-left'>
           <li>
             <Link to='/user' className='nav-link' activeClassName='active'>
-              <i className='fa fa-user'/>
-              {currentUser.code} ({currentUser.name} {currentUser.surname})
+              <i className='fa fa-user'/> {currentUser.code} ({currentUser.name} {currentUser.surname})
             </Link>
           </li>
         </ul>

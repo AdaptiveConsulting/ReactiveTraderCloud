@@ -4,10 +4,10 @@ import { Cell } from 'fixed-data-table';
 
 /**
  * Formatter for cells of type notional/currency
- * @class MoneyCell
+ * @class NotionalCell
  * @extends {React.Component}
  */
-class MoneyCell extends React.Component {
+class NotionalCell extends React.Component {
 
   static propTypes = {
     format: React.PropTypes.string,
@@ -29,4 +29,4 @@ class MoneyCell extends React.Component {
   }
 }
 
-export default MoneyCell;
+export default NotionalCell;
