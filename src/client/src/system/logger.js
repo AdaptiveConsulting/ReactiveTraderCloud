@@ -1,7 +1,6 @@
-import _ from 'lodash';
 import Guard from './guard';
 
-var levels = {
+const levels = {
   verbose: 0,
   debug: 1,
   info: 2,
@@ -9,10 +8,12 @@ var levels = {
   error: 4
 };
 
-var _currentLevel = levels.debug;
+let _currentLevel = levels.debug;
 
-var _sink = logEvent => {
-  console.log('[' + logEvent.logger + '] [' + logEvent.level + ']: ' + logEvent.message);
+let _sink = logEvent =>{
+  const toLog = ['[' + logEvent.level + '][' + logEvent.logger + ']'];
+  toLog.push.apply(toLog, logEvent.args);
+  console.log.apply(console, toLog);
 };
 
 class Logger {
@@ -24,33 +25,48 @@ class Logger {
     return _currentLevel <= levels.verbose;
   }
 
-  verbose(message) {
-    if (this.isVerboseEnabled) {
-      this._log('VERBOSE', message);
+  /**
+   * verbose(message [, ...args]): expects a string log message and optional additional arguments
+   */
+  verbose(){
+    if (this.isVerboseEnabled){
+      this._log('VERBOSE', arguments);
     }
   }
 
-  debug(message) {
-    if (_currentLevel <= levels.debug) {
-      this._log('DEBUG', message);
+  /**
+   * debug(message [, ...args]): expects a string log message and optional additional arguments
+   */
+  debug(){
+    if (_currentLevel <= levels.debug){
+      this._log('DEBUG', arguments);
     }
   }
 
-  info(message) {
-    if (_currentLevel <= levels.info) {
-      this._log('INFO', message);
+  /**
+   * info(message [, ...args]): expects a string log message and optional additional arguments
+   */
+  info(){
+    if (_currentLevel <= levels.info){
+      this._log('INFO', arguments);
     }
   }
 
-  warn(message, err) {
-    if (_currentLevel <= levels.warn) {
-      this._logError('WARN', message, err);
+  /**
+   * warn(message [, ...args]): expects a string log message and optional additional arguments
+   */
+  warn(){
+    if (_currentLevel <= levels.warn){
+      this._log('WARN', arguments);
     }
   }
 
-  error(message, err) {
-    if (_currentLevel <= levels.error) {
-      this._logError('ERROR', message, err);
+  /**
+   * error(message [, ...args]): expects a string log message and optional additional arguments
+   */
+  error(){
+    if (_currentLevel <= levels.error){
+      this._log('ERROR', arguments);
     }
   }
 
@@ -61,13 +77,12 @@ class Logger {
     this._log(level, `${message}. Error:${errorMessage}`);
   }
 
-  _log(level, message) {
+  _log(level, args) {
     Guard.isString(level, 'level isn\'t a string');
-    Guard.isString(message, 'message isn\'t a string');
     _sink({
       logger: this._name,
       level: level,
-      message: message
+      args: args
     });
   }
 }
