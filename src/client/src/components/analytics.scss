@@ -1,15 +1,18 @@
+$positive-color: green;
+$negative-color: $brand-danger;
+$stroke-color: slategray;
+
 .analytics-container {
   margin-left: 4px;
   position: absolute;
   top: 52px;
   bottom: 20%;
-  //margin-bottom: 25%;
   overflow-x: hidden;
   overflow-y: auto;
   right: 0px;
   max-width: 400px;
   min-width: 350px;
-  background: linear-gradient(rgba(0, 0, 0, 0), $gray-dark, rgba(0, 0, 0, 0));
+  background: $gray-dark;
   box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
   .tile & {
     top: 0;
@@ -41,12 +44,15 @@
     border-bottom: 1px solid black;
     box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
     background: $gray-dark;
-    .nv-axisMaxMin {
-      display: none;
+    &.negative {
+      .nvd3 g.nv-groups g.nv-group .nv-area {
+        fill: $negative-color !important;
+        fill-opacity: .9;
+      }
     }
     .nvd3 g.nv-groups  {
       path.nv-line {
-        stroke: slategray;
+        stroke: $stroke-color;
         stroke-width: .8
       }
       path.nv-area {
@@ -54,19 +60,28 @@
       }
       .nv-bar {
         rect {
-          fill-opacity: .1;
-          stroke: slategray;
+          fill-opacity: .3;
+          stroke: $stroke-color;
           stroke-width: .8;
           stroke-opacity: .4;
         }
         &.positive {
+          fill: $positive-color;
           text {
             fill: $gray-light;
           }
         }
+        text {
+          font-size: 8px;
+          fill: $gray-lighter;
+          font-weight: normal;
+        }
+        &.negative {
+          fill: $negative-color;
+        }
         &:hover rect {
           stroke-opacity: .5;
-          fill-opacity: .4;
+          fill-opacity: .7;
         }
       }
     }

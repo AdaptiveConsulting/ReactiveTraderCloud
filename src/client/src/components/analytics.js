@@ -53,8 +53,8 @@ export default class Analytics extends React.Component {
         axisLabel: 'PnL',
         tickFormat: d3.format(',.1'),
       },
-      showYAxis: !true,
-      showXAxis: !true,
+      showYAxis: false,
+      showXAxis: true,
       showLegend: false,
       useInteractiveGuideline: true,
       duration: 0,
@@ -62,7 +62,7 @@ export default class Analytics extends React.Component {
         left: 0,
         top: 0,
         right: 0,
-        bottom: 0
+        bottom: 30
       }
     };
 
@@ -74,6 +74,7 @@ export default class Analytics extends React.Component {
       // barColor: d3.scale.category20().range(),
       duration: 250,
       showValues: true,
+      showControls: false,
       //stacked: true,
       tooltip: {
         enabled: false
@@ -169,6 +170,10 @@ export default class Analytics extends React.Component {
       pos: this.state.positionType !== 'BasePnl' ? 'selected': ''
     };
 
+    const className = this.state.lastPos > 0 ? 'nv-container' : 'nv-container negative';
+
+    const pnlHeight = Math.min(positionsSeries[0].values.length * 30, 200);
+
     return (
       <Container
         title='analytics'
@@ -181,13 +186,13 @@ export default class Analytics extends React.Component {
 
         <span className='header'>Profit & Loss <small className='text-small'>USD {this.state.lastPos}</small></span>
 
-        <div className='nv-container'>
+        <div className={className}>
           {(PNLValues && PNLValues.length) ?
             <NVD3Chart
               type={LINECHART}
               datum={this.state.series}
               options={this.chartPnlOptions}
-              height={150}
+              height={170}
               configure={configurePnLChart}/> :
             <div>No PNL data yet</div>}
         </div>
@@ -207,7 +212,7 @@ export default class Analytics extends React.Component {
             type='multiBarHorizontalChart'
             datum={positionsSeries}
             options={this.chartPositionsOptions}
-            height={300}
+            height={pnlHeight}
             x='Symbol'
             configure={configurePositionsChart}
             y={this.state.positionType}/>
