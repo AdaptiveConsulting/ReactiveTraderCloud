@@ -1,19 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import numeral from 'numeral';
-import moment from 'moment';
+
+// data grid
+import { Table, Column, Cell } from 'fixed-data-table';
+import NotionalCell from './blotter-parts/notional-cell';
+import DateCell from './blotter-parts/date-cell';
+
+// containers and layout
+import Dimensions from 'react-dimensions';
 import Container from './container';
-import _ from 'lodash';
+
+import { findWhere } from 'lodash';
 import { serviceContainer } from 'services';
 
 /**
- * @class CurrencyPairs
+ * @class Blotter
  * @extends {React.Component}
  */
-class CurrencyPairs extends React.Component {
+@Dimensions()
+class Blotter extends React.Component {
 
   static propTypes = {
-    trades: React.PropTypes.array
+    trades: React.PropTypes.array,
+    status: React.PropTypes.number,
+    containerWidth: React.PropTypes.number
   }
 
   constructor(props, context){
@@ -26,49 +36,14 @@ class CurrencyPairs extends React.Component {
 
   componentDidMount(){
     if (window.fin){
+      const OFD = window.fin.desktop;
       // listen to messages about highlighting the relevant trade
-      window.fin.desktop.main(() =>{
-        window.fin.desktop.InterApplicationBus.subscribe('*', 'acknowledgeTrade', (id) =>{
-          const trade = _.findWhere(this.props.trades, {
-            id
-          });
-
-          trade && (this.setState({flagged: id})); // eslint-disable-line
-        });
+      OFD.main(() =>{
+        OFD.InterApplicationBus.subscribe(
+          '*', 'acknowledgeTrade', (id) => findWhere(this.props.trades, {id}) && this.setState({flagged: id}) // eslint-disable-line
+        );
       });
     }
-  }
-
-  /**
-   * Renders an individual trade in blotter
-   * @param {Object} trade
-   * @returns {HTMLElement:TR}
-   */
-  renderRow(trade:object){
-    const notional           = numeral(trade.amount).format('0,000,000[.]00') + ' ' + trade.pair.substr(0, 3),
-          dateTime           = moment(trade.dateTime).format('MMM Do, HH:mm:ss'),
-          valueDay           = moment(trade.valueDate),
-          formattedValueDate = 'SP. ' + valueDay.format('DD MMM'),
-          flagged            = this.state.flagged;
-
-    flagged && flagged === trade.id && (trade.className = 'flash');
-
-    return (
-      <tr key={trade.id}
-        className={trade.status + ' animated ' + (trade.className || 'slideInDown')}>
-        <td>{trade.id}</td>
-        <td className='large'>
-          <div>{dateTime}</div>
-        </td>
-        <td className={'direction ' + trade.direction}>{trade.direction}</td>
-        <td>{trade.pair}</td>
-        <td className='large text-right'>{notional}</td>
-        <td className='text-right'>{trade.rate}</td>
-        <td className='status'>{trade.status}</td>
-        <td>{formattedValueDate}</td>
-        <td className='large'>{trade.trader}</td>
-      </tr>
-    );
   }
 
   tearOff(state){
@@ -81,53 +56,132 @@ class CurrencyPairs extends React.Component {
     this.state.flagged = false;
   }
 
-  componentDidUpdate(){
-    this.refs.tbody && (this.refs.tbody.scrollTop = 0);
+  /**
+   * Returns the class to apply to a row - flashing if required for OpenFin attention
+   * @param rowItem
+   * @returns {string}
+   */
+  getRowClass(rowItem:object){
+    const flagged = this.state.flagged,
+          flash   = flagged && flagged === rowItem.id;
+
+    return rowItem.status + ' animated ' + (flash ? 'flash' : 'slideInDown');
+  }
+
+  /**
+   * Returns the column and cell definition for the table rendering, binds cells to data
+   * @param {Array} trades
+   * @returns {Array:Column}
+   */
+  getSchema(trades:array):Array<Column> {
+    const cellConstructor = (field, extraCellOptions = {}) =>
+      props => <Cell {...props} {...extraCellOptions}>{trades[props.rowIndex][field]}</Cell>; // eslint-disable-line
+
+    const schema = [{
+      name: 'Id',
+      field: 'id',
+      cellConstructor,
+      width: 80
+    }, {
+      name: 'Date',
+      field: 'dateTime',
+      cellConstructor: () => props => <DateCell field='dateTime' data={trades} {...props} />, // eslint-disable-line
+      width: 150
+    }, {
+      name: 'Dir',
+      field: 'direction',
+      cellConstructor,
+      width: 50
+    }, {
+      name: 'CCY',
+      field: 'pair',
+      cellConstructor,
+      width: 70
+    }, {
+      name: 'Notional',
+      field: 'amount',
+      cellConstructor: () => props => <NotionalCell className='text-right' data={trades} field='amount' suffix={' ' + trades[props.rowIndex].pair.substr(0, 3)} {...props} />, // eslint-disable-line
+      width: 120,
+      headerOptions: {
+        className: 'text-right'
+      }
+    }, {
+      name: 'Rate',
+      field: 'rate',
+      cellConstructor,
+      width: 80,
+      className: 'text-right',
+      headerOptions: {
+        className: 'text-right'
+      }
+    }, {
+      name: 'Status',
+      field: 'status',
+      cellConstructor,
+      width: 80,
+      className: 'trade-status'
+    }, {
+      name: 'Value date',
+      field: 'valueDate',
+      cellConstructor: () => props => <DateCell field='valueDate' prefix='SP. ' format='DD MMM' data={trades} {...props} />, // eslint-disable-line
+      width: 100
+    }, {
+      name: 'Trader',
+      field: 'trader',
+      cellConstructor,
+      width: 80
+    }];
+
+    return schema.map((column, id) =>{
+      const cellOptions = {};
+
+      column.className && (cellOptions.className = column.className);
+
+      const columnOptions = {
+        key: id,
+        width: column.width || 100,
+        field: column.field,
+        cell: column.cellConstructor(column.field, cellOptions),
+        header: <Cell field={column.field} {...column.headerOptions}>{column.name}</Cell>
+      };
+
+      return <Column {...columnOptions} />;
+    });
   }
 
   render(){
-    const className = serviceContainer.serviceStatus.blotter.isConnected
-      ? 'blotter online'
-      : 'blotter offline';
+    const outerClassName = serviceContainer.serviceStatus.blotter.isConnected ? 'blotter online' : 'blotter offline';
+
+    const { trades } = this.props,
+          schema = this.getSchema(trades);
 
     return (
-        <Container
-          title='blotter'
-          className={className}
-          onTearoff={(state) => this.tearOff(state)}
-          tearoff={this.state.tearoff}
-          width={window.outerWidth}
-          height={400}
-          options={{maximizable:true}}>
+      <Container
+        title='blotter'
+        className={outerClassName}
+        onTearoff={(state) => this.tearOff(state)}
+        tearoff={this.state.tearoff}
+        width={this.props.containerWidth}
+        height={400}
+        options={{maximizable:true}}>
         <div className='blotter-wrapper'>
           <div className='status'>
             <i className='fa fa-plug animated infinite fadeIn'/>
           </div>
-          <table className='table table-compact table-heading'>
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th className='large'>Date</th>
-                <th>Dir.</th>
-                <th>CCY</th>
-                <th className='large text-right'>Notional</th>
-                <th className='text-right'>Rate</th>
-                <th>Status</th>
-                <th>Value date</th>
-                <th className='large'>Trader</th>
-              </tr>
-            </thead>
-          </table>
-          <table className='table table-compact table-blotter'>
-            <tbody ref='tbody'>
-              {this.props.trades.map(this.renderRow, this)}
-            </tbody>
-          </table>
-
+          <Table
+            rowHeight={24}
+            headerHeight={30}
+            rowsCount={trades.length}
+            width={this.props.containerWidth}
+            height={300}
+            rowClassNameGetter={(index) => this.getRowClass(trades[index])}
+            {...this.props}>
+            {schema}
+          </Table>
         </div>
       </Container>
     );
   }
 }
 
-export default CurrencyPairs;
+export default Blotter;

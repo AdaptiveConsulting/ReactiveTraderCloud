@@ -17,8 +17,8 @@ class Header extends React.Component {
     };
   }
 
-  componentWillMount() {
-    if (window.fin) {
+  componentWillMount(){
+    if (window.fin){
       window.fin.desktop.main(() => this.fin = window.fin.desktop.Window.getCurrent());
     }
   }
@@ -46,12 +46,12 @@ class Header extends React.Component {
   getBrokerStatus(status:boolean) {
     return status
       ? <span className='fa-stack text-success animated fadeIn' title='Online'>
-      <i className='fa fa-signal fa-stack-1x'/>
-    </span>
+          <i className='fa fa-signal fa-stack-1x'/>
+        </span>
       : <span className='fa-stack' title='Connection offline'>
-      <i className='fa fa-signal fa-stack-1x'/>
-      <i className='fa fa-ban fa-stack-2x text-danger'/>
-    </span>;
+          <i className='fa fa-signal fa-stack-1x'/>
+          <i className='fa fa-ban fa-stack-2x text-danger'/>
+        </span>;
   }
 
   getServices() {
@@ -62,23 +62,18 @@ class Header extends React.Component {
     const serviceIndicators = [];
     for (let serviceType in serviceLookup.services) {
       var statusSummary:system.service.ServiceStatus = serviceLookup.services[serviceType];
-      if (statusSummary.isConnected) {
+      if (statusSummary.isConnected){
         serviceIndicators.push(
-          <li
-            key={serviceType}
-            className='service-status'>
+          <li key={serviceType} className='service-status'>
             <i
               className='fa fa-circle '
-              title={serviceType + ' ' + statusSummary.connectedInstanceCount + ': nodes online'}
-            />
+              title={serviceType + ' ' + statusSummary.connectedInstanceCount + ': nodes online'}/>
             <i className='node-badge'>{statusSummary.connectedInstanceCount}</i>
           </li>
         );
       } else {
         serviceIndicators.push(
-          <li
-            key={serviceType}
-            className='service-status text-danger animated infinite fadeIn'>
+          <li key={serviceType} className='service-status text-danger animated infinite fadeIn'>
             <i className='fa fa-circle-o' title={serviceType + ' offline'}/>
           </li>
         );
@@ -87,20 +82,20 @@ class Header extends React.Component {
     return serviceIndicators;
   }
 
-  close() {
+  close(){
     this.fin && this.fin.close();
   }
 
-  minimise(e) {
+  minimise(e){
     e && e.preventDefault();
     this.fin && this.fin.minimize();
   }
 
-  maximise(e) {
+  maximise(e){
     e && e.preventDefault();
-    if (this.fin) {
-      this.fin.getState(state => {
-        switch (state) {
+    if (this.fin){
+      this.fin.getState(state =>{
+        switch (state){
           case 'maximized':
           case 'restored':
           case 'minimized':
@@ -113,8 +108,8 @@ class Header extends React.Component {
     }
   }
 
-  handleExternalClick(e) {
-    if (window.fin) {
+  handleExternalClick(e){
+    if (window.fin){
       e.preventDefault();
       window.fin.desktop.System.openUrlWithBrowser(e.currentTarget.href);
     }
@@ -139,8 +134,7 @@ class Header extends React.Component {
         <ul className='nav navbar-nav hidden-xs hidden-sm navbar-left'>
           <li>
             <Link to='/user' className='nav-link' activeClassName='active'>
-              <i className='fa fa-user'/>
-              {currentUser.code} ({currentUser.name} {currentUser.surname})
+              <i className='fa fa-user'/> {currentUser.code} ({currentUser.name} {currentUser.surname})
             </Link>
           </li>
         </ul>
