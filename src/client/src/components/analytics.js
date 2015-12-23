@@ -74,6 +74,7 @@ export default class Analytics extends React.Component {
       // barColor: d3.scale.category20().range(),
       duration: 250,
       showValues: true,
+      showControls: false,
       //stacked: true,
       tooltip: {
         enabled: false
@@ -171,6 +172,8 @@ export default class Analytics extends React.Component {
 
     const className = this.state.lastPos > 0 ? 'nv-container' : 'nv-container negative';
 
+    const pnlHeight = Math.min(positionsSeries[0].values.length * 30, 200);
+
     return (
       <Container
         title='analytics'
@@ -209,7 +212,7 @@ export default class Analytics extends React.Component {
             type='multiBarHorizontalChart'
             datum={positionsSeries}
             options={this.chartPositionsOptions}
-            height={300}
+            height={pnlHeight}
             x='Symbol'
             configure={configurePositionsChart}
             y={this.state.positionType}/>
