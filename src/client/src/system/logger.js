@@ -25,30 +25,45 @@ class Logger {
     return _currentLevel <= levels.verbose;
   }
 
+  /**
+   * verbose(message [, ...args]): expects a string log message and optional additional arguments
+   */
   verbose(){
     if (this.isVerboseEnabled){
       this._log('VERBOSE', arguments);
     }
   }
 
+  /**
+   * debug(message [, ...args]): expects a string log message and optional additional arguments
+   */
   debug(){
     if (_currentLevel <= levels.debug){
       this._log('DEBUG', arguments);
     }
   }
 
+  /**
+   * info(message [, ...args]): expects a string log message and optional additional arguments
+   */
   info(){
     if (_currentLevel <= levels.info){
       this._log('INFO', arguments);
     }
   }
 
+  /**
+   * warn(message [, ...args]): expects a string log message and optional additional arguments
+   */
   warn(){
     if (_currentLevel <= levels.warn){
       this._log('WARN', arguments);
     }
   }
 
+  /**
+   * error(message [, ...args]): expects a string log message and optional additional arguments
+   */
   error(){
     if (_currentLevel <= levels.error){
       this._log('ERROR', arguments);
