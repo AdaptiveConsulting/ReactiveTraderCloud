@@ -9,7 +9,8 @@
   right: 0px;
   max-width: 400px;
   min-width: 350px;
-  background: linear-gradient(rgba(0, 0, 0, 0), $gray-dark, rgba(0, 0, 0, 0));
+  //background: linear-gradient(rgba(0, 0, 0, 0), $gray-dark, rgba(0, 0, 0, 0));
+  background: $gray-dark;
   box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
   .tile & {
     top: 0;
@@ -41,8 +42,14 @@
     border-bottom: 1px solid black;
     box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
     background: $gray-dark;
+    &.negative {
+      .nvd3 g.nv-groups g.nv-group .nv-area {
+        fill: red !important;
+        fill-opacity: .9;
+      }
+    }
     .nv-axisMaxMin {
-      display: none;
+      //display: none;
     }
     .nvd3 g.nv-groups  {
       path.nv-line {

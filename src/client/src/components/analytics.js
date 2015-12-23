@@ -54,7 +54,7 @@ export default class Analytics extends React.Component {
         tickFormat: d3.format(',.1'),
       },
       showYAxis: !true,
-      showXAxis: !true,
+      showXAxis: true,
       showLegend: false,
       useInteractiveGuideline: true,
       duration: 0,
@@ -62,7 +62,7 @@ export default class Analytics extends React.Component {
         left: 0,
         top: 0,
         right: 0,
-        bottom: 0
+        bottom: 30
       }
     };
 
@@ -181,13 +181,13 @@ export default class Analytics extends React.Component {
 
         <span className='header'>Profit & Loss <small className='text-small'>USD {this.state.lastPos}</small></span>
 
-        <div className='nv-container'>
+        <div className={this.state.lastPos > 0 ? 'nv-container' : 'nv-container negative'}>
           {(PNLValues && PNLValues.length) ?
             <NVD3Chart
               type={LINECHART}
               datum={this.state.series}
               options={this.chartPnlOptions}
-              height={150}
+              height={170}
               configure={configurePnLChart}/> :
             <div>No PNL data yet</div>}
         </div>
