@@ -1,5 +1,6 @@
 $positive-color: green;
 $negative-color: $brand-danger;
+$stroke-color: slategray;
 
 .analytics-container {
   margin-left: 4px;
@@ -51,7 +52,7 @@ $negative-color: $brand-danger;
     }
     .nvd3 g.nv-groups  {
       path.nv-line {
-        stroke: slategray;
+        stroke: $stroke-color;
         stroke-width: .8
       }
       path.nv-area {
@@ -60,7 +61,7 @@ $negative-color: $brand-danger;
       .nv-bar {
         rect {
           fill-opacity: .3;
-          stroke: slategray;
+          stroke: $stroke-color;
           stroke-width: .8;
           stroke-opacity: .4;
         }
