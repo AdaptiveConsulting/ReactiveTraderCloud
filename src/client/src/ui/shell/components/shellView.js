@@ -1,15 +1,20 @@
 import React from 'react';
 import WorkspaceView from './workspaceView';
-import Blotter from '../../blotter/components';
-import Header from '../../header/components';
-import Analytics from '../../analytics/components';
-import { Modal } from '../../common/components';
+import Blotter from '../../blotter/components/blotter';
+import Header from '../../header/components/headerView';
+import Analytics from '../../analytics/components/analytics';
+import common from '../../common';
 import system from 'system';
 import Rx from 'rx';
 import { serviceContainer, model as serviceModel } from 'services';
 
 var _log:system.logger.Logger = system.logger.create('ShellView');
 
+//var x = common;
+//var x1 = x.components;
+//var x2 = x1.Modal;
+// var x3 = common.components.Modal;
+var x4 = common.components.Modal;
 /**
  *
  * @param DTO
@@ -170,10 +175,10 @@ class ShellView extends React.Component {
   }
 
   render() {
-    const services = this.state.services;
+
     return (
       <div>
-        <Modal/>
+        <common.components.Modal />
         <Header status={this.state.connected} />
         <WorkspaceView onExecute={(payload) => this.addTrade(payload)} />
         <Analytics />

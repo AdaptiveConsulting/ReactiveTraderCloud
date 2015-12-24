@@ -15,19 +15,24 @@ if (window.fin) {
   target.classList.add('openfin');
 }
 
+var coreLayout = ui.shell.components.CoreLayout;
+var shellView = ui.shell.components.ShellView;
+var tileView = ui.shell.components.TileView;
+var growlView = ui.growl.components.GrowlView;
+
 const routes = (
   <Router history={history}>
-    <Route path='/' component={ui.shell.components.CoreLayout}>
-      <IndexRoute component={ui.shell.components.ShellView}/>
+    <Route path='/' component={coreLayout}>
+      <IndexRoute component={shellView}/>
     </Route>
-    <Route path='/user' component={ui.shell.components.CoreLayout}>
-      <IndexRoute component={ui.shell.components.ShellView}/>
+    <Route path='/user' component={coreLayout}>
+      <IndexRoute component={shellView}/>
     </Route>
     <Route path='/tile'>
-      <IndexRoute component={ui.shell.components.TileView}/>
+      <IndexRoute component={tileView}/>
     </Route>
     <Route path='/growl'>
-      <IndexRoute component={ui.growl.components.GrowlView}/>
+      <IndexRoute component={growlView}/>
     </Route>
   </Router>
 );
