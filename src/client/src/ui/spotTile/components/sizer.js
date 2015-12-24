@@ -1,6 +1,6 @@
 import React from 'react';
 import numeral from 'numeral';
-import { getConvertedSize } from '../../utils';
+import { utils } from 'system';
 
 const MONTHS         = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       NUMERAL_FORMAT = '0,000,000[.]00',
@@ -34,7 +34,7 @@ export default class Sizer extends React.Component {
     const val    = (this.refs.size.value || e.target.value).trim(),
           hasdot = val.indexOf(DOT) !== -1;
 
-    let size = getConvertedSize(val);
+    let size = utils.getConvertedSize(val);
 
     hasdot && (size += DOT);
 

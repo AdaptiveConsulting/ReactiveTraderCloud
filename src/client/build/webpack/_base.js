@@ -87,7 +87,7 @@ const webpackConfig = {
     ]
   },
   sassLoader : {
-    includePaths : paths.src('styles')
+    includePaths : paths.src('src/**/*.scss')
   }
 };
 

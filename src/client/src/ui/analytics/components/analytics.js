@@ -1,5 +1,5 @@
 import React from 'react';
-import Container from 'components/container';
+import { Container } from '../../common/components';
 import moment from 'moment';
 import numeral from 'numeral';
 import _ from 'lodash';

@@ -1,5 +1,5 @@
 import React from 'react';
-import Popout from '../utils/popout';
+import { Popout } from '../popout/popout';
 
 class Container extends React.Component {
 

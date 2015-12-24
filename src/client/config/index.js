@@ -95,18 +95,7 @@ const paths = (() => {
 
 config.set('utils_paths', paths);
 config.set('utils_aliases', [
-  'actions',
-  'components',
-  'constants',
-  'containers',
-  'layouts',
-  'reducers',
-  'routes',
   'services',
-  'store',
-  'styles',
-  'utils',
-  'views',
   'system'
 ].reduce((acc, dir) => ((acc[dir] = paths.src(dir)) && acc), {}));
 

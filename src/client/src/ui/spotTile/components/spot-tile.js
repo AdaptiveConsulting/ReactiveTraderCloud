@@ -1,21 +1,20 @@
-/* flow */
 import React from 'react';
 
 import { Sparklines, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 
-import utils from 'utils';
+import { utils } from 'system';
 
 // sub components
-import Direction from './cp-parts/cp-direction';
-import Sizer from './cp-parts/cp-sizer';
-import Pricer from './cp-parts/cp-pricer';
-import Message from './cp-parts/cp-message';
+import Direction from './direction';
+import Sizer from './sizer';
+import Pricer from './pricer';
+import { Message } from '../../common/components';
 
 /**
- * @class CurrencyPairs
+ * @class SpotTile
  * @extends {React.Component}
  */
-class CurrencyPair extends React.Component {
+class SpotTile extends React.Component {
 
   static propTypes = {
     id: React.PropTypes.number,
@@ -288,4 +287,4 @@ class CurrencyPair extends React.Component {
   }
 }
 
-export default CurrencyPair;
+export default SpotTile;

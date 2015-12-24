@@ -1,14 +1,14 @@
 import React from 'react';
-import CurrencyPairs from 'components/currency-pairs';
-import Blotter from 'components/blotter';
-import Modal from 'components/modal';
-import Header from 'components/header';
-import Analytics from 'components/analytics';
+import WorkspaceView from './workspaceView';
+import Blotter from '../../blotter/components';
+import Header from '../../header/components';
+import Analytics from '../../analytics/components';
+import { Modal } from '../../common/components';
 import system from 'system';
 import Rx from 'rx';
 import { serviceContainer, model as serviceModel } from 'services';
 
-var _log:system.logger.Logger = system.logger.create('index-view');
+var _log:system.logger.Logger = system.logger.create('ShellView');
 
 /**
  *
@@ -29,7 +29,7 @@ const formatTradeForDOM = (DTO) => {
   };
 };
 
-class IndexView extends React.Component {
+class ShellView extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -175,7 +175,7 @@ class IndexView extends React.Component {
       <div>
         <Modal/>
         <Header status={this.state.connected} />
-        <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} />
+        <WorkspaceView onExecute={(payload) => this.addTrade(payload)} />
         <Analytics />
         <Blotter trades={this.state.trades} />
       </div>
@@ -183,4 +183,4 @@ class IndexView extends React.Component {
   }
 }
 
-export default IndexView;
+export default ShellView;

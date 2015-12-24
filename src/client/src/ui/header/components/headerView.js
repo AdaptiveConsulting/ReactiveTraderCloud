@@ -3,9 +3,9 @@ import { Link } from 'react-router';
 import system from 'system';
 import { serviceContainer, model as serviceModel, FakeUserRepository } from 'services';
 
-var _log:system.logger.Logger = system.logger.create('Header');
+var _log:system.logger.Logger = system.logger.create('HeaderView');
 
-export default class Header extends React.Component {
+export default class HeaderView extends React.Component {
 
   static propTypes = {
     status: React.PropTypes.bool

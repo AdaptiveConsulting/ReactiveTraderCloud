@@ -1,12 +1,12 @@
 import React from 'react';
 import Rx from 'rx';
 import _ from 'lodash';
-import CurrencyPair from './currency-pair';
-import Container from './container';
+import { SpotTile } from '../../spotTile/components';
+import { Container } from '../../common/components';
 import system from 'system';
 import { serviceContainer, model as serviceModel } from 'services';
 
-var _log:system.logger.Logger = system.logger.create('CurrencyPairs');
+var _log:system.logger.Logger = system.logger.create('WorkspaceView');
 
 const STALE_TIMEOUT = 4000,
       UPDATE_TYPES  = {
@@ -16,17 +16,17 @@ const STALE_TIMEOUT = 4000,
       };
 
 /**
- * @class CurrencyPairs
+ * @class WorkspaceView
  * @extends {React.Component}
  */
-class CurrencyPairs extends React.Component {
+class WorkspaceView extends React.Component {
 
   static propTypes = {
     onExecute: React.PropTypes.func
   }
 
   /**
-   * @constructs CurrencyPair
+   * @constructs
    * @param {Object=} props
    * @param {Object=} context
    */
@@ -245,7 +245,7 @@ class CurrencyPairs extends React.Component {
 
       return (
         <Container key={cp.id} title={cp.pair} onTearoff={(state) => this.tearOff(cp, state)} tearoff={cp.tearoff} className={className}>
-          <CurrencyPair
+          <SpotTile
             onExecute={(payload) => this.onExecute(payload)}
             pair={cp.pair}
             size='1m'
@@ -275,4 +275,4 @@ class CurrencyPairs extends React.Component {
   }
 }
 
-export default CurrencyPairs;
+export default WorkspaceView;

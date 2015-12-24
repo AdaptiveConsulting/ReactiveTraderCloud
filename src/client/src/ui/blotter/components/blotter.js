@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 
 // data grid
 import { Table, Column, Cell } from 'fixed-data-table';
-import NotionalCell from './blotter-parts/notional-cell';
-import DateCell from './blotter-parts/date-cell';
+import NotionalCell from './notional-cell';
+import DateCell from './date-cell';
 
 // containers and layout
 import Dimensions from 'react-dimensions';
-import Container from './container';
+import { Container } from '../../common/components';
 
 import { findWhere } from 'lodash';
 import { serviceContainer } from 'services';
