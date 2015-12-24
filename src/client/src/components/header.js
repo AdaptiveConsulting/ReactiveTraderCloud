@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import system from 'system';
 import { serviceContainer, model as serviceModel, FakeUserRepository } from 'services';
 
+var _log:system.logger.Logger = system.logger.create('Header');
+
 export default class Header extends React.Component {
 
   static propTypes = {
@@ -37,7 +39,9 @@ export default class Header extends React.Component {
             serviceLookup:services
           });
         },
-        err => _log.error('Error on service status stream', err)));
+        err => {
+          _log.error('Error on service status stream', err)
+        }));
   }
 
   renderBrokerStatus() {
