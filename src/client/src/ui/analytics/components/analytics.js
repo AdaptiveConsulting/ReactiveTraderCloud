@@ -12,9 +12,8 @@ import { serviceContainer, model as serviceModel } from 'services';
 //const LINECHART = 'lineWithFocusChart';
 const LINECHART = 'lineChart';
 
-const tooltip = (d) =>{
+const tooltip = d =>{
   const { value, series } = d;
-
   return `<p><strong>${value}:</strong> ${series[0].value}</p>`;
 };
 
@@ -115,9 +114,7 @@ export default class Analytics extends React.Component {
             positions: data.CurrentPositions
           });
         },
-        err => {
-          _log.error('Error on analyticsService stream stream', err);
-        }
+        err => { _log.error('Error on analyticsService stream stream', err); }
       )
     );
   }
@@ -160,27 +157,26 @@ export default class Analytics extends React.Component {
    * @returns {array}
    */
   getPositionData(asSeries:boolean = false){
-    return asSeries ? this.state.positions.map((pos) => {
-      return {
-        name: pos.Symbol,
-        label: pos.Symbol,
-        values: [pos]
-      };
-    }) : [{
-      name: 'Pos/PnL',
-      values: this.state.positions.map((pos) => {
-        //pos.Symbol += '\n' + pos[this.state.positionType];
-        return pos;
-      }),
-      color: 'slategray'
-    }];
+    if(asSeries) {
+      return this.state.positions.map(pos => {
+        return {
+          name: pos.Symbol,
+          label: pos.Symbol,
+          values: [pos]
+        };
+      })
+    } else {
+     return [{
+       name: 'Pos/PnL',
+       values: this.state.positions,
+       color: 'slategray'
+     }];
+    }
   }
 
   render(){
     if (!this.state.isAnalyticsServiceConnected)
       return <span />;
-
-    let pnl;
 
     const PNLValues = this.state.series[0].values,
           { domainMin, domainMax } = this.state;
@@ -202,7 +198,6 @@ export default class Analytics extends React.Component {
     };
 
     const className = this.state.lastPos > 0 ? 'nv-container' : 'nv-container negative';
-
     const pnlHeight = Math.min(positionsSeries[0].values.length * 30, 200);
 
     return (
