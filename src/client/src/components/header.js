@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import system from 'system';
 import { serviceContainer, model as serviceModel, FakeUserRepository } from 'services';
 
-class Header extends React.Component {
+export default class Header extends React.Component {
 
   static propTypes = {
     status: React.PropTypes.bool
@@ -13,7 +13,6 @@ class Header extends React.Component {
     super();
     this._disposables = new Rx.CompositeDisposable();
     this.state = {
-
     };
   }
 
@@ -33,53 +32,69 @@ class Header extends React.Component {
 
   _observeStatusStream() {
     this._disposables.add(
-      serviceContainer.serviceStatusStream.subscribe((services:serviceModel.ServiceStatusLookup) => {
-          this.setState({serviceLookup:services});
+      serviceContainer.serviceStatusStream.subscribe((services: serviceModel.ServiceStatusLookup) => {
+          this.setState({
+            serviceLookup:services
+          });
         },
-        err => {
-          _log.error('Error on service status stream', err);
-        }
-      )
-    );
+        err => _log.error('Error on service status stream', err)));
   }
 
-  getBrokerStatus(status:boolean) {
-    return status
-      ? <span className='fa-stack text-success animated fadeIn' title='Online'>
+  renderBrokerStatus() {
+    const { status } = this.props;
+
+    let statusSpan;
+    if (status) {
+      statusSpan = (
+        <span className='fa-stack text-success animated fadeIn' title='Online'>
           <i className='fa fa-signal fa-stack-1x'/>
-        </span>
-      : <span className='fa-stack' title='Connection offline'>
+        </span>);
+    } else {
+      statusSpan = (
+        <span className='fa-stack' title='Connection offline'>
           <i className='fa fa-signal fa-stack-1x'/>
           <i className='fa fa-ban fa-stack-2x text-danger'/>
-        </span>;
+        </span>);
+    }
+
+    return <li key='broker'>{statusSpan}</li>;
   }
 
-  getServices() {
-    var serviceLookup:serviceModel.ServiceStatusLookup = this.state.serviceLookup;
+  _renderService(serviceType) {
+    let serviceLookup:serviceModel.ServiceStatusLookup = this.state.serviceLookup;
+    let statusSummary:system.service.ServiceStatus = serviceLookup.services[serviceType];
+
+    if (statusSummary.isConnected) {
+      let title = serviceType + ' ' + statusSummary.connectedInstanceCount + ': nodes online';
+
+      return (
+        <li key={serviceType} className='service-status'>
+          <i className='fa fa-circle ' title={title} />
+          <i className='node-badge'>{statusSummary.connectedInstanceCount}</i>
+        </li>
+      );
+    } else {
+      let title = serviceType + ' offline';
+      return (
+        <li key={serviceType} className='service-status text-danger animated infinite fadeIn'>
+          <i className='fa fa-circle-o' title={title}/>
+        </li>
+      );
+    }
+  }
+
+  renderServices() {
+    let items = [];
+    items.push(this.renderBrokerStatus());
+
+    let serviceLookup:serviceModel.ServiceStatusLookup = this.state.serviceLookup;
     if (!serviceLookup) {
-      return [];
+      return items;
     }
-    const serviceIndicators = [];
     for (let serviceType in serviceLookup.services) {
-      var statusSummary:system.service.ServiceStatus = serviceLookup.services[serviceType];
-      if (statusSummary.isConnected){
-        serviceIndicators.push(
-          <li key={serviceType} className='service-status'>
-            <i
-              className='fa fa-circle '
-              title={serviceType + ' ' + statusSummary.connectedInstanceCount + ': nodes online'}/>
-            <i className='node-badge'>{statusSummary.connectedInstanceCount}</i>
-          </li>
-        );
-      } else {
-        serviceIndicators.push(
-          <li key={serviceType} className='service-status text-danger animated infinite fadeIn'>
-            <i className='fa fa-circle-o' title={serviceType + ' offline'}/>
-          </li>
-        );
-      }
+      items.push(this._renderService(serviceType));
     }
-    return serviceIndicators;
+    return items;
   }
 
   close(){
@@ -92,9 +107,12 @@ class Header extends React.Component {
   }
 
   maximise(e){
-    e && e.preventDefault();
+    if(e) {
+      e.preventDefault();
+    }
+
     if (this.fin){
-      this.fin.getState(state =>{
+      this.fin.getState(state => {
         switch (state){
           case 'maximized':
           case 'restored':
@@ -116,8 +134,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { status } = this.props;
-    var currentUser = FakeUserRepository.currentUser;
+    let currentUser = FakeUserRepository.currentUser;
     return (
       <nav className='navbar navbar-default'>
         <a className='navbar-brand navbar-adaptive' href='http://weareadaptive.com/' target='_blank'
@@ -150,12 +167,9 @@ class Header extends React.Component {
           </a>
         </nav>
         <ul className='nav navbar-nav pull-right nav-status hidden-xs'>
-          <li>{this.getBrokerStatus(status)}</li>
-          {this.getServices()}
+          {this.renderServices()}
         </ul>
       </nav>
     );
   }
 }
-
-export default Header;
