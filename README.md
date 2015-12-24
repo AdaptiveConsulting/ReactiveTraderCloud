@@ -17,7 +17,7 @@ The services are distributed and are capable of recovery from disconnections. Th
 -- SCREENSHOTS-HERE --
 
 ### Live Demo
-A live demo can be found at [web-576.adaptivecluster.com/](http://web-576.adaptivecluster.com/)
+A live demo can be found at [web-demo.adaptivecluster.com/](http://web-demo.adaptivecluster.com/)
 
 ## Architecture
 
