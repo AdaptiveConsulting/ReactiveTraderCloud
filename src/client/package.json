@@ -49,8 +49,8 @@
     "react-dom": "0.14.3",
     "react-nvd3": "0.4.0",
     "react-popout": "0.4.0",
-    "react-router": "~1.0.2",
-    "react-sparklines": "~1.4.2",
+    "react-router": "1.0.3",
+    "react-sparklines": "1.4.2",
     "rx": "4.0.7"
   },
   "devDependencies": {
