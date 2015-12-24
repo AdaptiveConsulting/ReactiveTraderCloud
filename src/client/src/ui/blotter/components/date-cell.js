@@ -7,7 +7,7 @@ import { Cell } from 'fixed-data-table';
  * @class DateCell
  * @extends {React.Component}
  */
-class DateCell extends React.Component {
+export default class DateCell extends React.Component {
 
   static propTypes = {
     format: React.PropTypes.string,
@@ -19,7 +19,9 @@ class DateCell extends React.Component {
 
   render(){
     const { rowIndex, field, data, format = 'MMM Do, HH:mm:ss', prefix = '', ...props } = this.props;
-    const formatted = moment(data[rowIndex][field]).format(format);
+    const row = data[rowIndex];
+    const fieldValue = row[field];
+    const formatted = moment(fieldValue).format(format);
 
     return (
       <Cell {...props}>
@@ -28,5 +30,3 @@ class DateCell extends React.Component {
     );
   }
 }
-
-export default DateCell;

@@ -164,7 +164,7 @@ export default class Analytics extends React.Component {
           label: pos.Symbol,
           values: [pos]
         };
-      })
+      });
     } else {
      return [{
        name: 'Pos/PnL',
