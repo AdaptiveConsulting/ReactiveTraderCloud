@@ -66,7 +66,6 @@ export default class Header extends React.Component {
 
     if (statusSummary.isConnected) {
       let title = serviceType + ' ' + statusSummary.connectedInstanceCount + ': nodes online';
-
       return (
         <li key={serviceType} className='service-status'>
           <i className='fa fa-circle ' title={title} />
