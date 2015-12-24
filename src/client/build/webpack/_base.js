@@ -31,7 +31,7 @@ const webpackConfig = {
     }),
     new CopyWebpackPlugin([
       {
-        from: paths.project(config.get('dir_src')) + '/images',
+        from: paths.project(config.get('dir_src')) + '/ui/common/images',
         to: 'images'
       }
     ])

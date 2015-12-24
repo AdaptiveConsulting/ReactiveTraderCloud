@@ -1,5 +1,5 @@
 import React from 'react';
-import { Message } from '../common';
+import { Message } from '../../common/components';
 
 class GrowlView extends React.Component {
 

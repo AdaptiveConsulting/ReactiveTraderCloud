@@ -1,5 +1,5 @@
-import GrowlView from './growl-view';
+import components from './components';
 
 export default {
-  GrowlView
+  components
 };
