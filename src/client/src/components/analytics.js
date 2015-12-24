@@ -3,10 +3,10 @@ import Container from 'components/container';
 import moment from 'moment';
 import numeral from 'numeral';
 import _ from 'lodash';
-import { serviceContainer } from 'services';
 
 import NVD3Chart from 'react-nvd3';
 import d3 from 'd3';
+import { serviceContainer, model as serviceModel } from 'services';
 
 // chart type for PnL chart - focus can break due to range. todo: fix
 //const LINECHART = 'lineWithFocusChart';
@@ -33,13 +33,16 @@ export default class Analytics extends React.Component {
       tearoff: false,
       lastPos: 'unknown',
       positionType: 'BaseTradedAmount',
+      isAnalyticsServiceConnected:false,
       series: [{
         series: 'PNL',
         label: 'PNL',
         area: true,
         color: 'slategray',
         values: []
-      }]
+      }],
+      history: [],
+      positions: []
     };
 
     this.chartPnlOptions = {
@@ -85,6 +88,38 @@ export default class Analytics extends React.Component {
         bottom: 0
       }
     };
+    this._disposables = new Rx.CompositeDisposable();
+  }
+
+  componentDidMount() {
+    this._observeDataStreams();
+  }
+
+  componentWillUnmount() {
+    this._disposables.dispose();
+  }
+
+  _observeDataStreams() {
+    this._disposables.add(
+      serviceContainer.analyticsService.serviceStatusStream.subscribe(status => {
+        this.setState({
+          isAnalyticsServiceConnected: status.isConnected
+        });
+      })
+    );
+    this._disposables.add(
+      serviceContainer.analyticsService.getAnalyticsStream(new serviceModel.AnalyticsRequest('USD')).subscribe(data => {
+          this.state.series[0].values = this.formatHistoricData(data.History);
+          this.setState({
+            history: data.History,
+            positions: data.CurrentPositions
+          });
+        },
+        err => {
+          _log.error('Error on analyticsService stream stream', err);
+        }
+      )
+    );
   }
 
   tearOff(state){
@@ -119,17 +154,13 @@ export default class Analytics extends React.Component {
     return formatted;
   }
 
-  componentWillReceiveProps(props){
-    this.state.series[0].values = this.formatHistoricData(props.history);
-  }
-
   /**
    *
    * @param {boolean} asSeries
    * @returns {array}
    */
   getPositionData(asSeries:boolean = false){
-    return asSeries ? this.props.positions.map((pos) => {
+    return asSeries ? this.state.positions.map((pos) => {
       return {
         name: pos.Symbol,
         label: pos.Symbol,
@@ -137,7 +168,7 @@ export default class Analytics extends React.Component {
       };
     }) : [{
       name: 'Pos/PnL',
-      values: this.props.positions.map((pos) => {
+      values: this.state.positions.map((pos) => {
         //pos.Symbol += '\n' + pos[this.state.positionType];
         return pos;
       }),
@@ -146,7 +177,7 @@ export default class Analytics extends React.Component {
   }
 
   render(){
-    if (!serviceContainer.serviceStatus.analytics.isConnected)
+    if (!this.state.isAnalyticsServiceConnected)
       return <span />;
 
     let pnl;
