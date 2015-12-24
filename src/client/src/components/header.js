@@ -40,7 +40,7 @@ export default class Header extends React.Component {
           });
         },
         err => {
-          _log.error('Error on service status stream', err)
+          _log.error('Error on service status stream', err);
         }));
   }
 
