@@ -12,7 +12,7 @@ export default class ExecutionService extends system.service.ServiceBase  {
     return Rx.Observable.create(
       o => {
         // HACK: this demo app doesn't maintain a concept of session, each app runs as a random users.
-        // We set that suers her for booking.
+        // We set that user here for booking.
         executeTradeRequest.TraderName = fakeUserRepository.currentUser;
         _log.info('Subscribing to trade stream');
         var waitForSuitableService = false;
