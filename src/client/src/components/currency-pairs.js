@@ -164,7 +164,7 @@ class CurrencyPairs extends React.Component {
     );
 
     this._disposables.add(
-      serviceContainer.pricingService.serviceStatusStream.subscribe(_ => {
+      serviceContainer.pricingService.serviceStatusStream.subscribe(() => {
         this.updatePairs();
       })
     );

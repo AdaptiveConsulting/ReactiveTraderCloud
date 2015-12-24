@@ -118,6 +118,23 @@ function getServiceWithMinLoad(waitForServiceIfNoneAvailable:Boolean = true):Rx.
 Rx.Observable.prototype.getServiceWithMinLoad = getServiceWithMinLoad;
 
 /**
+ * Adds distinctUntilChanged semantics to inner streams of a grouped observable
+ */
+function distinctUntilChangedGroup<TKey, TValue>(keySelector:(value:TValue) => Object) : Rx.Observable<Rx.Observable<TValue>> {
+  let sources:Rx.Observable<Rx.Observable<TValue>> = this;
+  return Rx.Observable.create(o => {
+    return sources.subscribe(innerSource => {
+        var distinctStream = innerSource.distinctUntilChanged(value => keySelector(value));
+        o.onNext(distinctStream);
+      },
+      ex => o.onError(ex),
+      () => o.onCompleted()
+    );
+  });
+}
+Rx.Observable.prototype.distinctUntilChangedGroup = distinctUntilChangedGroup;
+
+/**
  * Emits an item from the source Observable after a particular timespan has passed without the Observable omitting any other items.
  * The onTimeoutItemSelector selector is used to select the item to procure.
  * @param dueTime

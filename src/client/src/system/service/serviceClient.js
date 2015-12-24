@@ -92,13 +92,15 @@ export default class ServiceClient extends disposables.DisposableBase {
         .groupBy(serviceStatus => serviceStatus.serviceId)
         // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
         .debounceOnMissedHeartbeat(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.async)
+        // create a hash of properties which represent significant change in a status, we'll use this to filter out duplicates
+        .distinctUntilChangedGroup(status => { return `${status.serviceType}.${status.serviceId}.${status.isConnected}.${status.serviceLoad}`;})
         // flattens all our service instances stream into an observable dictionary so we query the service with the least load on a per-subscribe basis
         .toServiceStatusObservableDictionary(serviceStatus => serviceStatus.serviceId)
         // catch the disconnect error of the outter stream and continue with an empty (thus disconencted) dictionary
         .catch(Rx.Observable.return(new LastValueObservableDictionary()));
       return isConnectedStream
         .take(1)
-        // selectMany: since we're just taking one, this effictively just continues the stream by subscribing to serviceInstanceDictionaryStream
+        // selectMany: since we're just taking one, this effectively just continues the stream by subscribing to serviceInstanceDictionaryStream
         .selectMany(serviceInstanceDictionaryStream)
         // repeat after disconnects
         .repeat()

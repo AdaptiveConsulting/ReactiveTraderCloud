@@ -36,8 +36,6 @@ class IndexView extends React.Component {
 
     this.state = {
       trades: [],
-      history: [],
-      positions: [],
       connected: false,
       services: {}
     };
@@ -54,19 +52,6 @@ class IndexView extends React.Component {
         },
         err => {
           _log.error('Error on blotterService stream stream', err);
-        }
-      )
-    );
-
-    this._disposables.add(
-      serviceContainer.analyticsService.getAnalyticsStream(new serviceModel.AnalyticsRequest('USD')).subscribe(data => {
-          this.setState({
-            history: data.History,
-            positions: data.CurrentPositions
-          });
-        },
-        err => {
-          _log.error('Error on analyticsService stream stream', err);
         }
       )
     );
@@ -145,7 +130,7 @@ class IndexView extends React.Component {
       DealtCurrency: payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
     };
     // TODO proper handling of trade execution flow errors and disposal
-    serviceContainer.executionService.executeTrade(request).subscribe(response => {
+    var disposable = serviceContainer.executionService.executeTrade(request).subscribe(response => {
         const trade = response.Trade,
           dt = new Date(trade.ValueDate),
           message = {
@@ -191,12 +176,11 @@ class IndexView extends React.Component {
         <Modal/>
         <Header status={this.state.connected} />
         <CurrencyPairs onExecute={(payload) => this.addTrade(payload)} />
-        <Analytics history={this.state.history} positions={this.state.positions}/>
+        <Analytics />
         <Blotter trades={this.state.trades} />
       </div>
     );
   }
-
 }
 
 export default IndexView;
