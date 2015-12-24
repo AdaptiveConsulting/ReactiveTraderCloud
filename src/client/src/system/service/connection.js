@@ -49,8 +49,7 @@ export default class Connection extends disposables.DisposableBase {
    */
   get connectionStatusStream():Rx.Observable<String> {
     return this._connectionStatusSubject
-      .distinctUntilChanged()
-      .asObservable();
+      .distinctUntilChanged();
   }
 
   /**
@@ -104,53 +103,57 @@ export default class Connection extends disposables.DisposableBase {
     }
   }
 
+  _logResponse<T>(topic : string, response : Array<TResponse>) : void {
+    if (_log.isVerboseEnabled) {
+      var payloadString = JSON.stringify(response[0]);
+      _log.verbose(`Received response on topic [${topic}]. Payload[${payloadString}]`);
+    }
+  }
+
   /**
    * Get an observable subscription to a well known topic stream, e.g. 'status'
    * @param topic
    * @returns {Observable}
    */
   subscribeToTopic<TResponse>(topic:string):Rx.Observable<TResponse> {
-    let _this = this;
-    return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
+    let _this : Connection = this;
+    return Rx.Observable.create((o: Rx.Observer<TResponse>) => {
       let disposables = new Rx.CompositeDisposable();
       _log.debug(`Subscribing to topic [${topic}]. Is connected [${_this._isConnected}]`);
-      if (_this.isConnected) {
-        let subscription;
-        _this._autobahn.session.subscribe(topic, (response:Array<TResponse>) => {
-          if (_log.isVerboseEnabled) {
-            var payloadString = JSON.stringify(response[0]);
-            _log.verbose(`Received response on topic [${topic}]. Payload[${payloadString}]`);
-          }
-          o.onNext(response[0]);
-        }).then((sub:autobahn.Subscription) => {
-          // subscription succeeded, subscription is an instance of autobahn.Subscription
-          _log.verbose(`subscription acked on topic [${topic}]`);
-          subscription = sub;
-        }, (error:autobahn.Error) => {
-          // subscription failed, error is an instance of autobahn.Error
-          _log.error(`Error on topic ${topic}`, error);
-          o.onError(error);
-        });
-        disposables.add(Rx.Disposable.create(() => {
-          if (subscription) {
-            try {
-              _this._autobahn.session.unsubscribe(subscription).then(
-                gone => {
-                  _log.verbose(`Successfully unsubscribing from topic ${topic}`);
-                },
-                err => {
-                  _log.error(`Error unsubscribing from topic ${topic}`, err);
-                }
-              );
-            } catch (err) {
-              _log.error(`Error thrown unsubscribing from topic ${topic}`, err);
-            }
-          }
-        }));
-      }
-      else {
+
+      if (!_this.isConnected) {
         o.onError(new Error(`Session not connected, can\'t subscribe to topic [${topic}]`));
+        return disposables;
       }
+
+      let subscription;
+      _this._autobahn.session.subscribe(topic, (response:Array<TResponse>) => {
+        this._logResponse(topic, response);
+        o.onNext(response[0]);
+      }).then((sub:autobahn.Subscription) => {
+        // subscription succeeded, subscription is an instance of autobahn.Subscription
+        _log.verbose(`subscription acked on topic [${topic}]`);
+        subscription = sub;
+      }, (error: autobahn.Error) => {
+        // subscription failed, error is an instance of autobahn.Error
+        _log.error(`Error on topic ${topic}`, error);
+        o.onError(error);
+      });
+
+      disposables.add(Rx.Disposable.create(() => {
+        if (!subscription) {
+          return;
+        }
+
+        try {
+          _this._autobahn.session.unsubscribe(subscription).then(
+            gone => { _log.verbose(`Successfully unsubscribing from topic ${topic}`); },
+            err => { _log.error(`Error unsubscribing from topic ${topic}`, err); }
+          );
+        } catch (err) {
+          _log.error(`Error thrown unsubscribing from topic ${topic}`, err);
+        }
+      }));
       return disposables;
     });
   }
@@ -163,41 +166,44 @@ export default class Connection extends disposables.DisposableBase {
    * @returns {Observable}
    */
   requestResponse<TRequest, TResponse>(remoteProcedure:String, payload:TRequest, responseTopic:String = ''):Rx.Observable<TResponse> {
-    let _this = this;
+    let _this : Connection = this;
     return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
       _log.debug(`Doing a RPC to [${remoteProcedure}]. Is connected [${_this._isConnected}]`);
+
       let disposables = new Rx.CompositeDisposable();
-      if (_this.isConnected) {
-        let isDisposed:Boolean;
-        let dto = [{
-          replyTo: responseTopic,
-          Username: _this._username,
-          payload: payload
-        }];
-        _this._autobahn.session.call(remoteProcedure, dto).then(
-          result => {
-            if (!isDisposed) {
-              o.onNext(result);
-              o.onCompleted();
-            } else {
-              _log.verbose(`Ignoring response for remoteProcedure [${remoteProcedure}] as stream disposed`);
-            }
-          },
-          error => {
-            if (!isDisposed) {
-              o.onError(error);
-            } else {
-              _log.error(`Ignoring error for remoteProcedure [${remoteProcedure}] as stream disposed.`, error);
-            }
-          }
-        );
-        disposables.add(Rx.Disposable.create(() => {
-          isDisposed = true;
-        }));
-      }
-      else {
+      if (!_this.isConnected) {
         o.onError(new Error(`Session not connected, can\'t perform remoteProcedure ${remoteProcedure}`));
+        return disposables;
       }
+      let isDisposed:Boolean;
+      let dto = [{
+        replyTo: responseTopic,
+        Username: _this._username,
+        payload: payload
+      }];
+
+      _this._autobahn.session.call(remoteProcedure, dto).then(
+        result => {
+          if (!isDisposed) {
+            o.onNext(result);
+            o.onCompleted();
+          } else {
+            _log.verbose(`Ignoring response for remoteProcedure [${remoteProcedure}] as stream disposed`);
+          }
+        },
+        error => {
+          if (!isDisposed) {
+            o.onError(error);
+          } else {
+            _log.error(`Ignoring error for remoteProcedure [${remoteProcedure}] as stream disposed.`, error);
+          }
+        }
+      );
+
+      disposables.add(Rx.Disposable.create(() => {
+        isDisposed = true;
+      }));
+
       return disposables;
     });
   }

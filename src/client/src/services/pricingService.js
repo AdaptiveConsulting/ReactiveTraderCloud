@@ -21,7 +21,7 @@ export default class PricingService extends system.service.ServiceBase {
     );
   }
 
-  _mapSpotPrice(dto) {
+  _mapSpotPrice(dto) : model.SpotPrice {
     return new model.SpotPrice(
       dto.Symbol,
       Number(dto.Bid),
