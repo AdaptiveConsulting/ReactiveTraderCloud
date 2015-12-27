@@ -4,6 +4,18 @@
 
 > Node `^4.0.0` or `^5.3.0` ([npm3](https://www.npmjs.com/package/npm3) recommended), `npm@3.x.x`
 
+### Getting Started
+
+Just clone the repo and install the necessary node modules:
+
+```sh
+$ cd src/client
+$ npm i                         # Install Node modules listed in ./package.json (may take a while the first time)
+$ npm start                     # Compile and launch
+```
+
+You can then browse the app at http://localhost:3000
+
 ### Features
 
 * [React](https://github.com/facebook/react) (`^0.14.3`)
@@ -25,15 +37,6 @@
   * Uses [Airbnb's ESLint config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb) (with some softened rules)
   * Includes separate test-specific `.eslintrc` to work with Mocha and Chai
 
-### Getting Started
-
-Just clone the repo and install the necessary node modules:
-
-```sh
-$ cd src/client
-$ npm i                         # Install Node modules listed in ./package.json (may take a while the first time)
-$ npm start                     # Compile and launch
-```
 
 ### Usage
 
@@ -159,7 +162,7 @@ Coverage reports will be compiled to `~/coverage` by default. If you wish to cha
 
 ### OpenFin
 
-Currently, this is only available for Windows clients but likely will change Q1 of 2017 when OpenFin runtime moves to Electron.
+Currently, this is only available for Windows clients but likely will change Q1 of 2016 when OpenFin runtime moves to Electron.
 
 To run the app in OpenFin, you need to:
 
