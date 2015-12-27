@@ -16,9 +16,14 @@ Run `GetDependencies.bat` once to grab external dependencies (this runs `dnu res
 #### Run Services
 To run all the services as well as an in-memory broker and Eventstore, run `StartAll.bat`
 
-This calls the Launcher console application and each service to run is passed as a command line argument.
+This calls the Launcher console application and will starts all the services, the messaging broker and EventStore.
 
 The services can also be debugged from Visual Studio like any another console app.
+
+#### Client
+For the web client follow these [instructions](../../src/client/README.md)
+
+### Advanced
 
 #### Set up stand-alone Eventstore and Broker (Crossbar)
 If you want to persist data across sessions then you should run a local Eventstore. 
@@ -34,7 +39,6 @@ For Crossbar,
 
 Once the stand-alone Eventstore and Crossbar are running, you can fire up the services by running `StartServices.bat` 
 
-#### Client
-For the web client follow the instructions [here](../src/client/README.md)
+### Problem running the app?
 
-TODO: WPF client?
+If you find any issue running the app or anything is missing the docs, please create [an issue on github](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/issues)

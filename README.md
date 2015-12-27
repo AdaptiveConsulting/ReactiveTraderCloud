@@ -4,7 +4,7 @@
 
 ## Overview
 
--- BRANDING HERE --
+[![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/adaptive-logo.png)](http://weareadaptive.com/)
 
 Reactive Trader Cloud is a real-time FX trading platform demo showcasing reactive programming principles applied across the full application stack.
 
@@ -58,7 +58,8 @@ Get your environment setup and start up the various component parts running on y
 + [Deployment with Docker](docs/articles/deploymentWithDocker.md)
 
 ## Who Are We?
--- MORE BRANDING HERE --
+
+Reactive Trader was written by the team at [Adaptive](http://weareadaptive.com/), a consultancy that specialises in building real time trading systems. We have many years of experience in building trading systems for clients with highly demanding latency and reliability requirements. Over the years we have learnt quite a few lessons, and wanted to talk about and point to examples of how we solve technical problems related to real time delivery of messages.
 
 ## Links 
 [Further Inspiration](https://www.youtube.com/watch?v=dQw4w9WgXcQ)

@@ -1,5 +1,8 @@
 ## Installation
 
+**TODO**: review and make sure this is the simplest setup, do we really need to install crossbar and eventstore on Linux to get running? 
+Ideally we should just run the Launcher in 'dev' mode, which starts embedded Crossbar and EventStore.
+
 Tested on Ubuntu 14.04.
 
 Also tested on a Raspberry Pi 2 running Raspbian Wheezy, though you will need these additional apt packages to run crossbar.io: `python-dev` `libffi-dev`
@@ -75,3 +78,7 @@ $ dnx run all
 The services should now run and connect to the Crossbar and EventStore
 
 Run the client app by following the instructions [here](../src/client/README.md)
+
+### Problem running the app?
+
+If you find any issue running the app or anything is missing the docs, please create [an issue on github](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/issues)
