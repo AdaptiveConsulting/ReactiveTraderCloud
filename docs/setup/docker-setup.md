@@ -23,7 +23,7 @@ For help getting started, check out the docs at https://docs.docker.com
 
 Note the IP address as we'll use it to load the client later.
 
-Some help can be found in our documentation [here](/../docs/deploy/docker/readme.md)
+Some help can be found in our documentation [here](../../deploy/docker/readme.md)
 
 #### Build Reactive Trader
 
