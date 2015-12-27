@@ -14,7 +14,7 @@ All frameworks and libraries used are entirely open source, and each component c
 
 The services are distributed and are capable of recovery from disconnections. This demonstrates a similar approach to what is put into practice in major financial institutions for trading systems.
 
--- SCREENSHOTS-HERE --
+![image](docs/reactive-trader-design.jpg)
 
 ### Live Demo
 A live demo can be found at [web-demo.adaptivecluster.com/](http://web-demo.adaptivecluster.com/)
@@ -48,6 +48,8 @@ Get your environment setup and start up the various component parts running on y
 
 ## Concepts
 
+Those topics will be covered in the upcoming weeks.
+
 + [vNext Client Architecture with ES.next, React, Webpack, RxJs](docs/articles/vNextClientArchitecture.md)
 + [DNX (.NET Execution Environment): Cross Platform .Net Development](docs/articles/dnx.md)
 + [Event Sourcing](docs/articles/eventSourcing.md)
@@ -56,6 +58,21 @@ Get your environment setup and start up the various component parts running on y
 + [Desktop Client Support with OpenFin](docs/articles/desktopClientWithOpenFin.md)
 + [Failover and Resiliency in a Microservice Environment](docs/articles/failOverAndResiliency.md)
 + [Deployment with Docker](docs/articles/deploymentWithDocker.md)
+
+## Talks and Podcasts
+
++ [Reactive, Event Driven User Interfaces](https://vimeo.com/113716036) by Ray Booysen at NDC London 2014
++ [Event Driven User Interfaces](https://youtu.be/Tp5mRlHwZ7M) by Lee Campbell & Matt Barrett at React London 2014
++ [It's all messages now; where are my absractions?](http://www.codesleuth.co.uk/notes/ndcoslo2015/Its-all-messages-now;-where-are-my-absractions.html) by Matt Barrett at NDC Oslo 2015
++ [The Hanselminutes: Creating Reactive User Interfaces](http://hanselminutes.com/428/creating-reactive-user-interfaces-with-adaptive-consultings-reactive-trader) with Matt Barrett
+
+## Blog posts
+
+We have written a number of blog posts in which we dive deeper into certain aspects of Reactive Trader.
++ [Asynchrony and concurrency](http://weareadaptive.com/blog/2014/04/18/asynchrony-concurrency/) in which we discuss embracing asynchrony and concurrency at all levels of your application.
++ [Everything is a stream](http://weareadaptive.com/blog/2014/05/05/everything-is-a-stream/), in which we point out that all service calls from Reactive Trader result in streams of responses, not just a single response - and why this is so powerful.
++ [System health & failures](http://weareadaptive.com/blog/2014/06/16/system-health-failures/), in which we dig more into models of system health so you can easily respond to failures in your application, and how to use heart beating to detect component failure.
++ [John's serie of blog posts on web messaging and abstractions](http://weareadaptive.com/blog/2015/06/15/series-of-blog-posts/)
 
 ## Who Are We?
 
