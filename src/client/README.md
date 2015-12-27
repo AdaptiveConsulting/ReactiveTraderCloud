@@ -162,7 +162,7 @@ Coverage reports will be compiled to `~/coverage` by default. If you wish to cha
 
 ### OpenFin
 
-Currently, this is only available for Windows clients but likely will change Q1 of 2016 when OpenFin runtime moves to Electron.
+Currently, this is only available for Windows clients but likely will change Q1 of 2016 when the OpenFin runtime moves to Electron.
 
 To run the app in OpenFin, you need to:
 

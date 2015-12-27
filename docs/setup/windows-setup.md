@@ -16,7 +16,7 @@ Run `GetDependencies.bat` once to grab external dependencies (this runs `dnu res
 #### Run Services
 To run all the services as well as an in-memory broker and Eventstore, run `StartAll.bat`
 
-This calls the Launcher console application and start all the service, the messaging broker and EventStore.
+This calls the Launcher console application and will starts all the services, the messaging broker and EventStore.
 
 The services can also be debugged from Visual Studio like any another console app.
 
