@@ -1,7 +1,11 @@
 ## Installation
 
-**TODO**: review and make sure this is the simplest setup, do we really need to install crossbar and eventstore on Linux to get running? 
-Ideally we should just run the Launcher in 'dev' mode, which starts embedded Crossbar and EventStore.
+### docker
+
+The priviledge way to run ReactiveTrader is by using docker.  
+You can find the tutorial [here](docker-setup.md).
+
+### traditional installation 
 
 Tested on Ubuntu 14.04.
 
