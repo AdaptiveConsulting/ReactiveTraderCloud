@@ -11,6 +11,12 @@ Alternatively a live demo can be found at [web-demo.adaptivecluster.com/](http:/
 
 The back-end services are cross-platform. For details of how to set up the services on your on machine see below.
 
+#### Docker
+
+The simplest way to run the full application no matter which OS you are running is by using Docker.
+
+[Getting Started using Docker](docker-setup.md)
+
 #### Windows
 
 If you are familiar with using Visual Studio on Windows.
@@ -28,9 +34,3 @@ You can also setup a dev environment on Linux.
 And on Mac OSX
 
 [Getting Started on Mac OSX](macos-setup.md)
-
-#### Docker
-
-The simplest way to run the full application no matter which OS you are running is by using Docker.
-
-[Getting Started using Docker](docker-setup.md)

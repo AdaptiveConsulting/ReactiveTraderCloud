@@ -20,7 +20,7 @@ https://docs.asp.net/en/latest/getting-started/installing-on-linux.html
 Running `mono --version` should give something like below:
 
 ```
-qooroo@qooroo-VirtualBox:~/dev$ mono --version
+$ mono --version
 Mono JIT compiler version 4.2.1 (Stable 4.2.1.102/6dd2d0d Thu Nov 12 09:52:44 UTC 2015)
 Copyright (C) 2002-2014 Novell, Inc, Xamarin Inc and Contributors. www.mono-project.com
 	TLS:           __thread
