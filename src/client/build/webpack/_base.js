@@ -31,7 +31,7 @@ const webpackConfig = {
     }),
     new CopyWebpackPlugin([
       {
-        from: paths.project(config.get('dir_src')) + '/images',
+        from: paths.project(config.get('dir_src')) + '/ui/common/images',
         to: 'images'
       }
     ])
@@ -87,7 +87,7 @@ const webpackConfig = {
     ]
   },
   sassLoader : {
-    includePaths : paths.src('styles')
+    includePaths : paths.src('src/**/*.scss')
   }
 };
 
