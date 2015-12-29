@@ -1,7 +1,11 @@
 ## Installation
 
-**TODO**: review and make sure this is the simplest setup, do we really need to install crossbar and eventstore on Linux to get running? 
-Ideally we should just run the Launcher in 'dev' mode, which starts embedded Crossbar and EventStore.
+### docker
+
+The priviledge way to run ReactiveTrader is by using docker.  
+You can find the tutorial [here](docker-setup.md).
+
+### traditional installation 
 
 Tested on Ubuntu 14.04.
 
@@ -16,7 +20,7 @@ https://docs.asp.net/en/latest/getting-started/installing-on-linux.html
 Running `mono --version` should give something like below:
 
 ```
-qooroo@qooroo-VirtualBox:~/dev$ mono --version
+$ mono --version
 Mono JIT compiler version 4.2.1 (Stable 4.2.1.102/6dd2d0d Thu Nov 12 09:52:44 UTC 2015)
 Copyright (C) 2002-2014 Novell, Inc, Xamarin Inc and Contributors. www.mono-project.com
 	TLS:           __thread
