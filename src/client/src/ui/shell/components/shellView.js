@@ -10,11 +10,6 @@ import { serviceContainer, model as serviceModel } from 'services';
 
 var _log:system.logger.Logger = system.logger.create('ShellView');
 
-//var x = common;
-//var x1 = x.components;
-//var x2 = x1.Modal;
-// var x3 = common.components.Modal;
-var x4 = common.components.Modal;
 /**
  *
  * @param DTO
