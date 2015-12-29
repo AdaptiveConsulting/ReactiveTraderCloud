@@ -11,9 +11,9 @@ import ServiceStatus from './serviceStatus';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
 
 /**
- * Abstracts a back end service for which there ban be multiple instnaces.
+ * Abstracts a back end service for which there can be multiple instances.
  * Offers functionality to perform request-response and stream operations against a service instance.
- * Exposes a connection status stream.
+ * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
 export default class ServiceClient extends disposables.DisposableBase {
   _log:logger.Logger;
@@ -42,7 +42,7 @@ export default class ServiceClient extends disposables.DisposableBase {
   }
 
   /**
-   * Sits on top of our underlying dictionary stream exposing a summary of the connection and services instancefor this service client
+   * Sits on top of our underlying dictionary stream exposing a summary of the connection and services instance for this service client
    *
    * @returns {Observable<T>}
    */
@@ -96,7 +96,7 @@ export default class ServiceClient extends disposables.DisposableBase {
         .distinctUntilChangedGroup(status => { return `${status.serviceType}.${status.serviceId}.${status.isConnected}.${status.serviceLoad}`;})
         // flattens all our service instances stream into an observable dictionary so we query the service with the least load on a per-subscribe basis
         .toServiceStatusObservableDictionary(serviceStatus => serviceStatus.serviceId)
-        // catch the disconnect error of the outter stream and continue with an empty (thus disconencted) dictionary
+        // catch the disconnect error of the outer stream and continue with an empty (thus disconnected) dictionary
         .catch(Rx.Observable.return(new LastValueObservableDictionary()));
       return isConnectedStream
         .take(1)
@@ -109,7 +109,7 @@ export default class ServiceClient extends disposables.DisposableBase {
   }
 
   /**
-   * Gets a request-response observable that will act against a service with the min load
+   * Gets a request-response observable that will act against a service which currently has the min load
    *
    * @param operationName
    * @param request
@@ -159,7 +159,7 @@ export default class ServiceClient extends disposables.DisposableBase {
   }
 
   /**
-   * Gets a request-responses observable that will act against a service with the min load
+   * Gets a request-responses observable that will act against a service which currently has the min load
    *
    * @param operationName
    * @param request
@@ -170,14 +170,16 @@ export default class ServiceClient extends disposables.DisposableBase {
     return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
       _this._log.debug(`Creating stream operation for [${operationName}]`);
       let disposables = new Rx.CompositeDisposable();
-      // The backend has a different contract for streams (i.e. request-> n responscse) as it does with request-response (request->single response) thus the differet method here to support this.
+      // The backend has a different contract for streams (i.e. request-> n responses) as it does with request-response (request->single response) thus
+      // the different method here to support this.
       // It works like this: client creates a temp topic, we perform a RPC to then tell the backend to push to this topic.
-      // TBH this is a bit odd as the server needs to handle fanout and we don't have any really control over the attributes of the topic, however for v1 demoland this is currently sufficient,
+      // TBH this is a bit odd as the server needs to handle fanout and we don't have any really control over the attributes of the topic, however it's sufficient for our needs now.
       // What's important here for now is we can bury this logic deep in the client, expose a consistent API which could be swapped out later.
-      // An alternative could be achieved by having well known endpoints for pub sub, and request reploy, let the server manage them.
-      // Server could push to these with a filter, or routing key allowing the infrastructure to handle fanout, persistance, all the usual messaging middleware concerns.
-      // We could also wrap all messages in a wrapper envelope.
-      // Such an envelope could denote if the message stream should terminate, for request respone this would be after the first message, for stream it would be when ever the server says so.
+      // An alternative could be achieved by having well known endpoints for pub-sub, and request-response, let the server manage them.
+      // Server could push to these with a filter, or routing key allowing the infrastructure to handle fanout, persistence, all the usual messaging middleware concerns.
+      // Another approach we can incorporate would be to wrap all messages in a wrapper envelope.
+      // Such an envelope could denote if the message stream should terminate, this would negate the need to distinguish between
+      // request-response and stream operations as is currently the case.
       let topicName = 'topic_' + _this._serviceType + '_' + (Math.random() * Math.pow(36, 8) << 0).toString(36);
       let hasSubscribed = false;
       disposables.add(_this._serviceInstanceDictionaryStream
@@ -210,7 +212,7 @@ export default class ServiceClient extends disposables.DisposableBase {
                     o.onError(err);
                   },
                   () => {
-                    // noop, nothing to do here, we don't complete the outter observer on ack
+                    // noop, nothing to do here, we don't complete the outer observer on ack
                   }
                 )
               );
