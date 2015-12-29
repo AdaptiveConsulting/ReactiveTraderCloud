@@ -4,9 +4,13 @@ The following instructions have been tested on:
 - Windows 7
 - Ubuntu 14.04.3
 
-Install docker for your OS: [Mac](https://docs.docker.com/mac/step_one/), [Linux](https://docs.docker.com/linux/step_one/) and [Windows](https://docs.docker.com/windows/step_one/)
-Look [here](https://docs.docker.com/engine/installation/) for instructions for your specific OS/distribution.
+#### Install docker for your OS
 
+- [Mac](https://docs.docker.com/mac/step_one/), 
+- [Linux](https://docs.docker.com/linux/step_one/) 
+- [Windows](https://docs.docker.com/windows/step_one/)
+
+After installation, follow the steps [here](https://docs.docker.com/engine/installation/) for instructions for your specific OS/distribution.
 
 
 #### Start toolbox for Windows/Mac user:
@@ -36,7 +40,11 @@ Docker toolbox run an ubuntu VM. That virtual machine automatically share your u
 Just control that docker is running with:
 
 ```bash
-$ docker ps
+docker ps
+```
+Should output
+
+```bash
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 
 ```
