@@ -6,7 +6,7 @@ import LastValueObservableDictionary from './lastValueObservableDictionary';
 import ServiceInstanceStatus from './serviceInstanceStatus';
 
 /**
- * Adds timeout semantics to the inner observable streams, on timout calls onDebounceItemFactory to get the item to pump down the stream
+ * Adds timeout semantics to the inner observable streams, on timeout calls onDebounceItemFactory to get the item to pump down the stream
  * @param dueTime
  * @param onDebounceItemFactory
  * @param scheduler
@@ -43,7 +43,6 @@ function toServiceStatusObservableDictionary<TKey, TValue>(keySelector:(value:TV
     disposables.add(
       sources.subscribe(
         innerSource => {
-          // let innerSourcePublished = innerSource.publish().refCount();
           disposables.add(innerSource.subscribe(
             value => {
               let key = keySelector(value);
@@ -53,7 +52,7 @@ function toServiceStatusObservableDictionary<TKey, TValue>(keySelector:(value:TV
               else {
                 dictionary.updateWithLatestValue(key, value);
               }
-              o.onNext(dictionary); // note: not creating a copy of local state
+              o.onNext(dictionary); // note: not creating a copy of local state, something we could do
             },
             ex => {
               try {
@@ -102,14 +101,7 @@ function getServiceWithMinLoad(waitForServiceIfNoneAvailable:Boolean = true):Rx.
         }
       },
       ex => {
-        try {
-          o.onError(ex);
-        } catch (err1) {
-          debugger;
-        }
-      },
-      () => {
-        debugger;
+        o.onError(ex);
       }
     );
     return disposables;

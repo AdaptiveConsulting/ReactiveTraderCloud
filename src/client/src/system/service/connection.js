@@ -53,7 +53,7 @@ export default class Connection extends disposables.DisposableBase {
   }
 
   /**
-   * The last/current connection status
+   * A boolean indicating if we're currently connected.
    * @returns {Boolean}
    */
   get isConnected():Boolean {
@@ -111,7 +111,7 @@ export default class Connection extends disposables.DisposableBase {
   }
 
   /**
-   * Get an observable subscription to a well known topic stream, e.g. 'status'
+   * Get an observable subscription to a well known topic/stream
    * @param topic
    * @returns {Observable}
    */

@@ -14,5 +14,4 @@ export default class ConnectionStatus {
   static get sessionExpired() : String {
     return 'sessionExpired';
   }
-
 }
