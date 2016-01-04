@@ -87,7 +87,7 @@ Then open a browser, navigate to the docker address (localhost for linux users a
 
 If you prefer to run your own containers, you can build them easily.
 
-First, define a BUILD_ID. It's a string that will tag your containers. mytest or 1 will are good choice. Here we will use localtest. 
+First, define a `BUILD_ID`. It's a string that will tag your containers. `mytest` or `1` are good choices. Here we will use `localtest`. 
 
 Change your working directory to `cd deploy/docker`, then run the following. This pulls base containers and builds the app containers so may take a while. 
 
