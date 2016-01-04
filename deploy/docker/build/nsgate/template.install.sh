@@ -14,8 +14,5 @@ apt-get install -y curl
 # get jq
 apt-get install -y jq
 
-# create servers folder
-mkdir -p servers
-
-# prepare updateServers.sh
+# ensure updateServers.sh is executable
 chmod 755 /opt/updateServers.sh
