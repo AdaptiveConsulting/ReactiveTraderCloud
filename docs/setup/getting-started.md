@@ -1,12 +1,12 @@
 ## Getting Started
 
-#### Docker
+### Docker
 
 The simplest way to build and run the full application no matter which OS you are running is by using Docker.
 
 [Getting Started using Docker](docker-setup.md)
 
-#### Front-End
+### Front-End
 
 The front-end is written in Javascript with React. The details of how to set up the client to run on your machine are [here](../../src/client/README.md).
 
