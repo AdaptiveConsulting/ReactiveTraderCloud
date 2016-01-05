@@ -4,4 +4,4 @@
 set -euo pipefail
 
 cd ../docker
-./prepare build services $CIRCLE_BUILD_NUM
+./prepare build services $TRAVIS_BUILD_NUMBER
