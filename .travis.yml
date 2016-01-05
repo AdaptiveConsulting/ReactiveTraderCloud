@@ -5,7 +5,7 @@ services:
 
 cache:
   directories:
-    - $HOME/docker
+    #- $HOME/docker
     - deploy/docker/build/servers/dnxcache
     - deploy/docker/build/web/.npm
 
@@ -14,10 +14,10 @@ before_script:
   - cd deploy/travisCi 
   - chmod 755 ensurePermissions
   - ./ensurePermissions
-  - ./loadContainers
+  #- ./loadContainers
   - ./buildContainers
   - ./runContainers
-  - ./saveContainers
+  #- ./saveContainers
   - cd ../..
 
 script:
