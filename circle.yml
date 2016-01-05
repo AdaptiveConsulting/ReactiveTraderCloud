@@ -1,6 +1,4 @@
 machine:
-  node:
-    version: 5.3.0
   services:
     - docker
 
@@ -8,9 +6,7 @@ dependencies:
   cache_directories:
     - "~/docker"
     - deploy/docker/build/servers/dnxcache
-  pre:
-    - npm install -g npm@3.5
-    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
+    - deploy/docker/build/web/.npm
   override:
     - docker info
     - cd deploy/circleCi && chmod 755 ensurePermissions && ./ensurePermissions

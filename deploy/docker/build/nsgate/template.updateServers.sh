@@ -1,7 +1,7 @@
 #! /bin/bash
 
-# We explore the kubernetes api and get the services 
-#   that ask to be public
+# We explore the kubernetes api and get the services in each namespace 
+# Only service marked with label public=true are managed by that script
 
 # Fail fast
 set -euo pipefail
@@ -10,7 +10,7 @@ set -euo pipefail
 . /opt/writeFunctions.sh
 
 # get namespaces
-# -sS: do not print download iformations
+# -sS: do not print download informations
 # certs: the kubernetes certificate are put in 
 #        the container when kubernetes start them
 # jq: tool to manage json with bash
@@ -22,6 +22,7 @@ namespaces=$(curl -sS \
 
 
 # clean files
+mkdir -p /servers 
 rm -rf /servers/*
 
 # var to catch all services

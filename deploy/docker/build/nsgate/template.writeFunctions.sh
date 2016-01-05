@@ -8,7 +8,7 @@ portNumber=$1
 service=$2
 namespace=$3
 file="/servers/http.$service.$namespace"
-
+mkdir -p /servers
 cat <<EOF > $file 
 server {
     listen $portNumber;

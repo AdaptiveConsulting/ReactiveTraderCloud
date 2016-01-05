@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -euo pipefail
+
 cacheFolder=$(pwd)/../cache
 
 if [[ ! -f ../config ]];then
@@ -10,16 +12,6 @@ if [[ ! -f ../config ]];then
     exit 1
 fi
 . ../config
-
-if [[ $vGcloud = "" ]];then
-  echo "gcloud: version required, fill in adaptivetrader/deploy/config => vGcloud"
-  exit 1
-fi
-if [[ $gcloudContainer = "" ]];then
-  echo "gcloud: container name required, fill in adaptivetrader/deploy/config => gcloudContainer"
-  exit 1
-fi
-
 
 docker run --rm -ti                       \
   -v /$cacheFolder/.config://root/.config \
