@@ -1,0 +1,30 @@
+#! /bin/bash
+
+# fail fast
+set -euo pipefail
+
+. ../config
+
+echo "Start web"
+sudo docker run -d --net=host $webContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
+
+echo "Start Eventstore"
+sudo docker run -d --net=host $populatedEventstoreContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
+
+echo "Start Broker"
+sudo docker run -d --net=host $brokerContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM
+
+echo "Start ReferenceDataRead"
+sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run ref && while true; do echo ping; sleep 60; done"
+
+echo "Start Pricing"
+sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
+
+echo "Start Trade Execution"
+sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
+
+echo "Start Blotter"
+sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
+
+echo "Start Analytics"
+sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run a && while true; do echo ping; sleep 60; done"
