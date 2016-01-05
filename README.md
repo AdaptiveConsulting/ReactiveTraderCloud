@@ -52,7 +52,7 @@ Those topics will be covered in the upcoming weeks.
 + [Always Connected Apps in a Microservice Environment](docs/articles/alwaysConnectedApps.md)
 + [Desktop Client Support with OpenFin](docs/articles/desktopClientWithOpenFin.md)
 + [Failover and Resiliency in a Microservice Environment](docs/articles/failOverAndResiliency.md)
-+ [Deployment with Docker](docs/articles/deploymentWithDocker.md)
++ [Deployment with Containers](docs/articles/deploymentWithContainers.md)
 
 ## Talks and Podcasts
 
