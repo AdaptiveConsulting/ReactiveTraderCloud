@@ -1,0 +1,28 @@
+sudo: required
+
+services:
+  - docker
+
+# cache
+# - "~/docker"
+# - deploy/docker/build/servers/dnxcache
+# - deploy/docker/build/web/.npm
+
+before_script:
+  - docker info
+  - cd deploy/circleCi && chmod 755 ensurePermissions && ./ensurePermissions
+  - cd deploy/circleCi && ./loadContainers
+  - cd deploy/circleCi && ./buildContainers
+  - cd deploy/circleCi && ./runContainers
+  - cd deploy/circleCi && ./saveContainers
+
+script:
+  - docker ps
+  - curl http://localhost:2113/web/index.html
+  - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
+
+# deploy:
+# hub:
+# branch: [master, SimpleTest-UI]
+# commands:
+#     - cd deploy/circleCi && ./pushContainers
