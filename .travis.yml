@@ -18,6 +18,7 @@ before_script:
   - ./buildContainers
   - ./runContainers
   #- ./saveContainers
+  - sleep 5
   - cd ../..
 
 script:
