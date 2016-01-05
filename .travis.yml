@@ -23,4 +23,4 @@ before_script:
 script:
   - docker ps
   - curl http://localhost:2113/web/index.html
-  - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
+  - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer:$vMajor.$vMinor.$TRAVIS_BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
