@@ -5,28 +5,26 @@ set -euo pipefail
 
 . ../config
 
-BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
-
 echo "Start web"
-sudo docker run -d --net=host $webContainer:$vMajor.$vMinor.$BUILD_NUMBER
+sudo docker run -d --net=host $webContainer:$vMajor.$vMinor.$TRAVIS_BUILD_NUMBER
 
 echo "Start Eventstore"
-sudo docker run -d --net=host $populatedEventstoreContainer:$vMajor.$vMinor.$BUILD_NUMBER
+sudo docker run -d --net=host $populatedEventstoreContainer:$vMajor.$vMinor.$TRAVIS_BUILD_NUMBER
 
 echo "Start Broker"
-sudo docker run -d --net=host $brokerContainer:$vMajor.$vMinor.$BUILD_NUMBER
+sudo docker run -d --net=host $brokerContainer:$vMajor.$vMinor.$TRAVIS_BUILD_NUMBER
 
 echo "Start ReferenceDataRead"
-sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run ref && while true; do echo ping; sleep 60; done"
+sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$TRAVIS_BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run ref && while true; do echo ping; sleep 60; done"
 
 echo "Start Pricing"
-sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
+sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$TRAVIS_BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
 
 echo "Start Trade Execution"
-sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
+sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$TRAVIS_BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
 
 echo "Start Blotter"
-sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
+sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$TRAVIS_BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
 
 echo "Start Analytics"
-sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run a && while true; do echo ping; sleep 60; done"
+sudo docker run -d --net=host $serversContainer:$vMajor.$vMinor.$TRAVIS_BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run a && while true; do echo ping; sleep 60; done"
