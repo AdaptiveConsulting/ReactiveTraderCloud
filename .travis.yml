@@ -3,10 +3,10 @@ sudo: required
 services:
   - docker
 
-# cache
-# - "~/docker"
-# - deploy/docker/build/servers/dnxcache
-# - deploy/docker/build/web/.npm
+cache:
+  directories:
+    - deploy/docker/build/servers/dnxcache
+    - deploy/docker/build/web/.npm
 
 before_script:
   - docker info
