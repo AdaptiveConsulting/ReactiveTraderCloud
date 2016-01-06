@@ -10,12 +10,14 @@ import { serviceContainer, model as serviceModel } from 'services';
 
 var _log:system.logger.Logger = system.logger.create('ShellView');
 
+const Modal = common.components.Modal;
+
 /**
  *
  * @param DTO
  * @returns {{id: *, trader: (*|string), status: *, direction: *, pair: *, rate: *, dateTime: *, valueDate: *, amount: *}}
  */
-const formatTradeForDOM = (DTO) => {
+const formatTradeForDOM = (DTO) =>{
   return {
     id: DTO.TradeId,
     trader: DTO.TraderName,
@@ -31,7 +33,7 @@ const formatTradeForDOM = (DTO) => {
 
 class ShellView extends React.Component {
 
-  constructor(props, context) {
+  constructor(props, context){
     super(props, context);
 
     this.state = {
@@ -42,53 +44,61 @@ class ShellView extends React.Component {
     this._disposables = new Rx.CompositeDisposable();
   }
 
-  componentDidMount() {
+  componentDidMount(){
+    this._addEvents();
+  }
+
+  _addEvents(){
     this._disposables.add(
-      serviceContainer.blotterService.getTradesStream().subscribe(blotter => {
+      serviceContainer.blotterService.getTradesStream().subscribe(blotter =>{
           blotter.Trades.forEach((trade) => this._processTrade(trade, false));
           this.setState({
             trades: this.state.trades
           });
         },
-        err => {
+        err =>{
           _log.error('Error on blotterService stream stream', err);
         }
       )
     );
 
     this._disposables.add(
-      serviceContainer.connectionStatusStream
-        .subscribe((status:String) => {
-            var isConnected = status === system.service.ConnectionStatus.connected;
-            this.setState({connected: isConnected});
-            if (status === system.service.ConnectionStatus.sessionExpired) {
-              Modal.setTitle('Session expired')
-                .setBody(<div>
-                  <div>Your 15 minute session expired, you are now disconnected from the server.</div>
-                  <div>Click reconnect to start a new session.</div>
-                  <div className='modal-action'>
-                    <button className='btn btn-large' onClick={() => this.reconnect()}>Reconnect</button>
-                  </div>
-                </div>)
-                .setClass('error-modal')
-                .open();
-            }
-          },
-          err => {
-            _log.error('Error on connection status stream', err);
+      serviceContainer.connectionStatusStream.subscribe((status:String) =>{
+        const connected = status === system.service.ConnectionStatus.connected;
+
+        this.setState({
+          connected
+        });
+
+        debugger;
+        if (status === system.service.ConnectionStatus.sessionExpired){
+          Modal.setTitle('Session expired')
+            .setBody(<div>
+              <div>Your 15 minute session expired, you are now disconnected from the server.</div>
+                <div>Click reconnect to start a new session.</div>
+                <div className='modal-action'>
+                  <button className='btn btn-large' onClick={() => this.reconnect()}>Reconnect</button>
+                </div>
+              </div>)
+            .setClass('error-modal')
+            .open();
           }
-        )
+        },
+        err =>{
+          _log.error('Error on connection status stream', err);
+        }
+      )
     );
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(){
     this._disposables.dispose();
   }
 
   /**
    * Re-establishes a connection to broker once the session expires
    */
-  reconnect() {
+  reconnect(){
     Modal.close();
     serviceContainer.reConnect();
   }
@@ -99,11 +109,11 @@ class ShellView extends React.Component {
    * @param {Boolean=} update immediately, defaults to false
    * @private
    */
-  _processTrade(trade, update) {
+  _processTrade(trade, update){
     trade = formatTradeForDOM(trade);
     const exists = _.findWhere(this.state.trades, {id: trade.id});
 
-    if (!exists) {
+    if (!exists){
       this.state.trades.unshift(trade);
     }
     else {
@@ -119,7 +129,7 @@ class ShellView extends React.Component {
    * Sends a trade to execution service, preps response back for show in CP tile
    * @param {Object} payload
    */
-  addTrade(payload) {
+  addTrade(payload){
     var request = {
       CurrencyPair: payload.pair,
       SpotRate: payload.rate,
@@ -130,27 +140,27 @@ class ShellView extends React.Component {
       DealtCurrency: payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
     };
     // TODO proper handling of trade execution flow errors and disposal
-    var disposable = serviceContainer.executionService.executeTrade(request).subscribe(response => {
-        const trade = response.Trade,
-          dt = new Date(trade.ValueDate),
-          message = {
-            pair: trade.CurrencyPair,
-            id: trade.TradeId,
-            status: trade.Status,
-            direction: trade.Direction.toLowerCase(),
-            amount: trade.Notional,
-            trader: trade.TraderName,
-            valueDate: trade.ValueDate, // todo get this from DTO
-            rate: trade.SpotRate
-          };
+    var disposable = serviceContainer.executionService.executeTrade(request).subscribe(response =>{
+        const trade   = response.Trade,
+              dt      = new Date(trade.ValueDate),
+              message = {
+                pair: trade.CurrencyPair,
+                id: trade.TradeId,
+                status: trade.Status,
+                direction: trade.Direction.toLowerCase(),
+                amount: trade.Notional,
+                trader: trade.TraderName,
+                valueDate: trade.ValueDate, // todo get this from DTO
+                rate: trade.SpotRate
+              };
 
         window.fin && new window.fin.desktop.Notification({
           url: '/#/growl',
           message,
-          onClick: function () {
+          onClick: function(){
             const win = window.fin.desktop.Window.getCurrent();
-            win.getState(state => {
-              switch (state) {
+            win.getState(state =>{
+              switch (state){
                 case 'minimized':
                   win.restore();
                 default:
@@ -163,21 +173,21 @@ class ShellView extends React.Component {
         });
         payload.onACK(message);
       },
-      (err) => {
+      (err) =>{
         _log.error('Error on executeTrade stream', err);
       }
     );
   }
 
-  render() {
+  render(){
 
     return (
       <div>
         <common.components.Modal />
-        <Header status={this.state.connected} />
-        <WorkspaceView onExecute={(payload) => this.addTrade(payload)} />
+        <Header status={this.state.connected}/>
+        <WorkspaceView onExecute={(payload) => this.addTrade(payload)}/>
         <Analytics />
-        <Blotter trades={this.state.trades} />
+        <Blotter trades={this.state.trades}/>
       </div>
     );
   }
