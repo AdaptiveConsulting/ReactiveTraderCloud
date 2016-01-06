@@ -20,4 +20,4 @@ docker run --rm -ti                       \
   -v /$cacheFolder/.kube://root/.kube     \
   -v /$currentFolder:/currentFolder       \
   -w //currentFolder                      \
-  $gcloudContainer:$vGcloud kubectl $@
+  $gcloudContainer kubectl $@
