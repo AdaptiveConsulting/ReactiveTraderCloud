@@ -51,15 +51,14 @@ class ShellView extends React.Component {
   _addEvents(){
     this._disposables.add(
       serviceContainer.blotterService.getTradesStream().subscribe(blotter =>{
-          blotter.Trades.forEach((trade) => this._processTrade(trade, false));
-          this.setState({
-            trades: this.state.trades
-          });
-        },
-        err =>{
-          _log.error('Error on blotterService stream stream', err);
-        }
-      )
+        blotter.Trades.forEach((trade) => this._processTrade(trade, false));
+        this.setState({
+          trades: this.state.trades
+        });
+      },
+      err =>{
+        _log.error('Error on blotterService stream stream', err);
+      })
     );
 
     this._disposables.add(
@@ -81,12 +80,11 @@ class ShellView extends React.Component {
               </div>)
             .setClass('error-modal')
             .open();
-          }
-        },
-        err =>{
-          _log.error('Error on connection status stream', err);
         }
-      )
+      },
+      err =>{
+        _log.error('Error on connection status stream', err);
+      })
     );
   }
 
