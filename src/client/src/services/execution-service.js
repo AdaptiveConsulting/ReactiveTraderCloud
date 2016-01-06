@@ -11,10 +11,9 @@ export default class ExecutionService extends system.service.ServiceBase  {
     return Rx.Observable.create(
       o => {
         _log.info('Subscribing to trade stream');
-        const waitForSuitableService = false;
 
         return this._serviceClient
-          .createRequestResponseOperation('executeTrade', executeTradeRequest, waitForSuitableService)
+          .createRequestResponseOperation('executeTrade', executeTradeRequest)
           .select(data => data) // TODO mappers
           .subscribe(o);
       }
