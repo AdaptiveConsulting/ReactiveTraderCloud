@@ -36,11 +36,16 @@ const webpackConfig = {
       }
     ])
   ],
+  node: {
+    fs: 'empty',
+    tls: 'empty'
+  },
   resolve : {
     extensions : ['', '.js', '.jsx'],
     alias      : config.get('utils_aliases')
   },
   module : {
+    noParse: /\/bindings\//,
     loaders : [
       {
         test : /\.(js|jsx)$/,
