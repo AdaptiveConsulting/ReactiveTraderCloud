@@ -10,14 +10,22 @@ domainName="adaptivecluster.com"
 vMajor="0"
 vMinor="0"
 
+# Reactive Trader 
 brokerContainer_major="0"
 brokerContainer_minor="0"
 brokerContainer="reactivetrader/broker:$brokerContainer_major.$brokerContainer_minor"
 
-serversContainer="reactivetrader/servers"
-webContainer="reactivetrader/web"
-populatedEventstoreContainer="reactivetrader/eventstore"
+populatedEventstoreContainer_major="0"
+populatedEventstoreContainer_minor="0"
+populatedEventstoreContainer="reactivetrader/eventstore:$populatedEventstoreContainer_major.$populatedEventstoreContainer_minor"
 
+serversContainer_major="0"
+serversContainer_minor="0"
+serversContainer="reactivetrader/servers:$serversContainer_major.$serversContainer_minor"
+
+webContainer="reactivetrader/web"
+
+# Other containers
 # OS
 ubuntuContainer="ubuntu:14.04.2"
 vDebian="8.2"
@@ -30,7 +38,9 @@ crossbarContainer="weareadaptive/crossbar:$crossbarContainer_major.$crossbarCont
 
 # eventstore
 vEventstore="3.3.0"
-eventstoreContainer="weareadaptive/eventstore"
+eventstoreContainer_major="0"
+eventstoreContainer_minor="0"
+eventstoreContainer="weareadaptive/eventstore:$eventstoreContainer_major.$eventstoreContainer_minor"
 
 # node
 vNode="5.3.0"
@@ -46,7 +56,9 @@ kubernetesContainer="weareadaptive/kubernetes"
 
 # mono
 vDnx="1.0.0-rc1-final"
-monoContainer="weareadaptive/mono"
+monoContainer_major="0"
+monoContainer_minor="0"
+monoContainer="weareadaptive/mono:$monoContainer_major.$monoContainer_minor"
 
 # TestTool
 testtools_major="1"
