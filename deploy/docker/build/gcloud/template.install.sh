@@ -1,6 +1,6 @@
-#! /bin/sh
+#! /bin/bash
 
-set -eu
+set -euo pipefail
 
 apt-get update
 apt-get install -y curl tar python
