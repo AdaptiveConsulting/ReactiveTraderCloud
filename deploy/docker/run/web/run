@@ -1,9 +1,9 @@
 #! /bin/bash
 
-if [[ $# != 1 ]];then
-  echo "Web-run require build number"
+build=""
+if [[ $1 != "" ]];then
+  build=".$1"
 fi
-build=$1
 
 echo "Web"
 
@@ -12,10 +12,10 @@ echo "Web"
 docker rm web 2&> garbage
 
 command="cp /localhost/nginx.conf /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
-docker run -d --net=host                  \
-     --name web                           \
-     $webContainer:$vMajor.$vMinor.$build \
-     bash -c "$command"                   \
+docker run -d --net=host \
+     --name web          \
+     $webContainer$build \
+     bash -c "$command"  \
      > container_id 
 
 rm garbage

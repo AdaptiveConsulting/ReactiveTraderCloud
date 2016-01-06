@@ -1,6 +1,6 @@
-#! /bin/sh
+#! /bin/bash
 
-set -eu
+set -euo pipefail
 
 # prerequisite
 apt-get update

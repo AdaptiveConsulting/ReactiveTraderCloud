@@ -11,4 +11,5 @@ set -euo pipefail
 
 . ../../../config
 
-docker push $webContainer:$vMajor.$vMinor.$build
+docker push $webContainer
+docker push $webContainer.$build
