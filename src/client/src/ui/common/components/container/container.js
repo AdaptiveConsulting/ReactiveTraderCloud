@@ -1,5 +1,8 @@
 import React from 'react';
-import { Popout } from '../popout/popout';
+import Popout from '../popout/popout';
+
+// for tearoff render view, go here:
+const url = '/#/tile';
 
 class Container extends React.Component {
 
@@ -25,17 +28,17 @@ class Container extends React.Component {
   }
 
   render(){
-    const { tearoff, title, children}  = this.props; //eslint-disable-line
+    const { tearoff, title, children }  = this.props; //eslint-disable-line
 
     const popupAttributes = {
-      url: '/#/tile',
-      title: title
+      url,
+      title
     };
 
     if (window.fin){
       popupAttributes.options = Object.assign({}, {
-        url: '/#/tile',
-        title: title,
+        url,
+        title,
         name: title,
         defaultWidth: this.props.width || 332,
         defaultHeight: this.props.height || 191,
@@ -59,14 +62,14 @@ class Container extends React.Component {
     return !tearoff ?
       <div className={this.props.className}>
         <div className='container-control'>
-          <i className='tearoff-trigger glyphicon glyphicon-new-window' onClick={(e) => this.openTearoff(e)} />
+          <i className='tearoff-trigger glyphicon glyphicon-new-window' onClick={(e) => this.openTearoff(e)}/>
         </div>
         {children}
       </div> :
       <Popout {...popupAttributes}>
         <div className={this.props.className}>
           <div className='container-control'>
-            <i className='glyphicon glyphicon-remove' onClick={(e) => this.closeTearoff(e)} />
+            <i className='glyphicon glyphicon-remove' onClick={(e) => this.closeTearoff(e)}/>
           </div>
           {children}
         </div>

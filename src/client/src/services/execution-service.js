@@ -1,7 +1,7 @@
 import system from 'system';
 import rx from 'rx';
 import * as model from './model';
-import fakeUserRepository from './fakeUserRepository';
+import fakeUserRepository from './fake-user-repository';
 
 var _log:system.logger.Logger = system.logger.create('ExecutionService');
 

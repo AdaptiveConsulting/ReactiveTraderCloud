@@ -1,5 +1,5 @@
 import system from 'system';
-import ServiceConst from './serviceConst';
+import ServiceConst from './service-const';
 
 /**
  * A data structure that can be used to look up the current statuses of well known services.
