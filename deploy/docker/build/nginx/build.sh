@@ -1,14 +1,22 @@
 #!/usr/bin/env bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "web-build: build number required as first parameter"
+  exit 1
+fi
+
 # fail fast
 set -euo pipefail
 
-# get and control config
 . ../../../config
 
-# generate container folder
 mkdir -p ./build
-sed "s/__VNGINX__/$vNginx/g" ./template.Dockerfile > ./build/Dockerfile
+
+cp ./template.Dockerfile ./build/Dockerfile
+
+sed -i "s|__OFFICIAL_NGINX_CONTAINER__|$officialNginxContainer|g" ./build/Dockerfile
 
 # build
-docker build --no-cache -t $nginxContainer:$vNginx ./build/.
+docker build --no-cache -t $nginxContainer ./build/.
+docker tag $nginxContainer $nginxContainer.$build

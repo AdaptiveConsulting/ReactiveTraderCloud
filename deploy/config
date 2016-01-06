@@ -23,7 +23,9 @@ serversContainer_major="0"
 serversContainer_minor="0"
 serversContainer="reactivetrader/servers:$serversContainer_major.$serversContainer_minor"
 
-webContainer="reactivetrader/web"
+webContainer_major="0"
+webContainer_minor="0"
+webContainer="reactivetrader/web:$webContainer_major.$webContainer_minor"
 
 # Other containers
 # OS
@@ -44,11 +46,16 @@ eventstoreContainer="weareadaptive/eventstore:$eventstoreContainer_major.$events
 
 # node
 vNode="5.3.0"
-nodeContainer="weareadaptive/node"
+nodeContainer_major="0"
+nodeContainer_minor="0"
+nodeContainer="weareadaptive/node:$nodeContainer_major.$nodeContainer_minor"
 
 # nginx
 vNginx="1.9.7"
-nginxContainer="weareadaptive/nginx"
+officialNginxContainer="nginx:$vNginx"
+nginxContainer_major="0"
+nginxContainer_minor="0"
+nginxContainer="weareadaptive/nginx:$nginxContainer_major.$nginxContainer_minor"
 
 # mono
 vDnx="1.0.0-rc1-final"
