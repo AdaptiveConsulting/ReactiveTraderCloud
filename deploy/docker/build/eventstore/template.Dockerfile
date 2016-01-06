@@ -1,10 +1,10 @@
-FROM       ubuntu:__VUBUNTU__
+FROM       __UBUNTU_CONTAINER__
 MAINTAINER weareadaptive <thibault@weareadaptive.com>
 
 COPY       install.sh   /install/install.sh
 RUN        /install/install.sh
 
-WORKDIR    /opt/EventStore-OSS-Ubuntu-v3.3.0
+WORKDIR    /opt/EventStore-OSS-Ubuntu-v__VEVENTSTORE__
 
 CMD        ./run-node.sh            \
              --db /eventstore/db    \

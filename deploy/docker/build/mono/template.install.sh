@@ -1,13 +1,15 @@
 #! /bin/bash
 
+set -euo pipefail
+
 # install mono
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF || exit 1
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 echo "deb http://download.mono-project.com/repo/debian wheezy main" \
-| sudo tee /etc/apt/sources.list.d/mono-xamarin.list  || exit 1
-apt-get update  || exit 1
+| sudo tee /etc/apt/sources.list.d/mono-xamarin.list
+apt-get update
 echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat main" \
-| sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list  || exit 1
-sudo apt-get install -y mono-complete ca-certificates-mono || exit 1
+| sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
+sudo apt-get install -y mono-complete ca-certificates-mono
 
 # install dependencies
 sudo apt-get install -y unzip                \
@@ -15,14 +17,13 @@ sudo apt-get install -y unzip                \
                         libssl-dev           \
                         curl                 \
                         libcurl4-openssl-dev \
-                        libcurl3-gnutls      \
-  || exit 1
+                        libcurl3-gnutls
 
 # install DNVM
 curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh \
-| DNX_BRANCH=dev sh  || exit 1
-mozroots --import --sync  || exit 1
-bash -c "source /root/.dnx/dnvm/dnvm.sh && dnvm upgrade -r mono && dnvm install __VDNX__ -p"  || exit 1
+| DNX_BRANCH=dev sh
+mozroots --import --sync
+bash -c "source /root/.dnx/dnvm/dnvm.sh && dnvm upgrade -r mono && dnvm install __VDNX__ -p"
 
 # Clean
-apt-get autoremove -y  || exit 1
+apt-get autoremove -y

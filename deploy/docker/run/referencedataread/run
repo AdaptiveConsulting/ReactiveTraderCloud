@@ -1,9 +1,9 @@
 #! /bin/bash
 
-if [[ $# != 1 ]];then
-  echo "ReferenceDataRead-run require build number"
+build=""
+if [[ $1 != "" ]];then
+  build=".$1"
 fi
-build=$1
 
 echo "ReferenceDataRead"
 
@@ -16,7 +16,7 @@ docker rm reference 2&> garbage
 
 docker run -d --net=host                      \
      --name reference                         \
-     $serversContainer:$vMajor.$vMinor.$build \
+     $serversContainer$build                  \
      bash -c "$startCommand && $waitCommand"  \
      > container_id 
 

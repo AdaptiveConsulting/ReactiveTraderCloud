@@ -1,4 +1,4 @@
-FROM        weareadaptive/mono:__VDNX__
+FROM        __MONO_CONTAINER__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
 COPY        server    /server
