@@ -16,4 +16,4 @@ fi
 docker run --rm -ti                       \
   -v /$cacheFolder/.config://root/.config \
   -v /$cacheFolder/.kube://root/.kube     \
-  $gcloudContainer:$vGcloud gcloud $@
+  $gcloudContainer gcloud $@

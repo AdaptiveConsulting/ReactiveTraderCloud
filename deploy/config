@@ -28,7 +28,7 @@ webContainer="reactivetrader/web"
 # Other containers
 # OS
 ubuntuContainer="ubuntu:14.04.2"
-vDebian="8.2"
+debianContainer="debian:8.2"
 
 # crossbar
 vCrossbar="0.11.1"
@@ -50,10 +50,6 @@ nodeContainer="weareadaptive/node"
 vNginx="1.9.7"
 nginxContainer="weareadaptive/nginx"
 
-# kubernetes
-vKubernetes="1.1.3"
-kubernetesContainer="weareadaptive/kubernetes"
-
 # mono
 vDnx="1.0.0-rc1-final"
 monoContainer_major="0"
@@ -66,14 +62,9 @@ testtools_minor="0"
 testtoolsContainer="weareadaptive/testtools"
 
 # gcloud
-gcloud_major="1"
-gcloud_minor="0"
-gcloudContainer="weareadaptive/gcloud"
-
-# fluentd
-fluentd_major="0"
-fluentd_minor="0"
-fluentdContainer="weareadaptive/fluentd"
+gcloudContainer_major="1"
+gcloudContainer_minor="0"
+gcloudContainer="weareadaptive/gcloud:$gcloudContainer_major.$gcloudContainer_minor"
 
 # nsgate
 nsGate_major="0"
