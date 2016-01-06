@@ -11,4 +11,3 @@ sed "s/__VUBUNTU__/$vUbuntu/g" template.Dockerfile > ./build/Dockerfile
 cp template.install.sh ./build/install.sh
 
 docker build -t $fluentdContainer:$vFluend ./build/.
-docker tag -f $fluentdContainer:$vFluend $fluentdContainer:latest

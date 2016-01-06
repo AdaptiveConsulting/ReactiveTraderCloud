@@ -42,4 +42,3 @@ cp -r ./dist                     ./nginx/build/dist
 sed -i "s/__VNGINX__/$vNginx/g" ./nginx/build/Dockerfile
 
 docker build --no-cache -t $webContainer:$vMajor.$vMinor.$build  ./nginx/build/.
-docker tag -f $webContainer:$vMajor.$vMinor.$build $webContainer:latest

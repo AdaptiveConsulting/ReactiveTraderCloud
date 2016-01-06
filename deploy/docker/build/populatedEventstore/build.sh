@@ -36,7 +36,6 @@ sleep 7 && docker kill `cat populate_id`
 
 # commit container
 docker commit `cat eventstore_id` $populatedEventstoreContainer:$vMajor.$vMinor.$build
-docker tag -f $populatedEventstoreContainer:$vMajor.$vMinor.$build $populatedEventstoreContainer:latest
 
 # stop eventstore
 docker kill `cat eventstore_id`

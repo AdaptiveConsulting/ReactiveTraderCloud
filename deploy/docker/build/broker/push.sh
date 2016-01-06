@@ -14,5 +14,4 @@ set -euo pipefail
 
 
 # push
-docker push $brokerContainer:latest
 docker push $brokerContainer:$vMajor.$vMinor.$build

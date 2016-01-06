@@ -12,5 +12,4 @@ set -euo pipefail
 . ../../../config
 
 # build
-docker push $serversContainer:latest
 docker push $serversContainer:$vMajor.$vMinor.$build

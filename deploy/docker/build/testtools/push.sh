@@ -7,4 +7,3 @@ set -euo pipefail
 
 # push
 docker push $testtoolsContainer:$vTesttools
-docker push $testtoolsContainer:latest
