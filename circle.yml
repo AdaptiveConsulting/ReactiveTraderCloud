@@ -4,19 +4,23 @@ machine:
 
 dependencies:
   cache_directories:
+    - "~/docker"
     - deploy/docker/build/servers/dnxcache
     - deploy/docker/build/web/.npm
   override:
     - docker info
     - cd deploy/circleCi && chmod 755 ensurePermissions && ./ensurePermissions
+    - cd deploy/circleCi && ./loadContainers
     - cd deploy/circleCi && ./buildContainers
     - cd deploy/circleCi && ./runContainers
-    - sleep 5
+    - cd deploy/circleCi && ./saveContainers
 
 test:
   override:
     - docker ps
+    # ping Eventstore
     - curl http://localhost:2113/web/index.html
+    # test servers
     - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer:$vMajor.$vMinor.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
 
 deployment:
