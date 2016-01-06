@@ -1,4 +1,4 @@
-import DisposableBase from './disposableBase';
+import DisposableBase from './disposable-base';
 
 export default {
   DisposableBase

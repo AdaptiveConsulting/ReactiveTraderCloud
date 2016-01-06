@@ -1,6 +1,6 @@
 import Rx from 'rx';
 import system from 'system';
-import StubAutobahnProxy from './stubAutobahnProxy';
+import StubAutobahnProxy from './stub-autobahn-proxy';
 
 describe('ServiceClient', () => {
   let _stubAutobahnProxy:StubAutobahnProxy,

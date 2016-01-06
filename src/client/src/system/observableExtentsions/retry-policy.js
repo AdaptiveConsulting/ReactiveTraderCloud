@@ -1,4 +1,4 @@
-import ShouldRetryResult from './shouldRetryResult';
+import ShouldRetryResult from './should-retry-result';
 
 class IndefiniteRetryPolicy {
   shouldRetry(error:Error, retryCount:Number):ShouldRetryResult {

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import ServiceInstanceStatus from './serviceInstanceStatus';
+import ServiceInstanceStatus from './service-instance-status';
 
 /**
  * Provides a status of the instances for a given service type

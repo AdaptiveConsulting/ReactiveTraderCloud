@@ -5,10 +5,10 @@ import Guard from '../guard';
 import disposables from '../disposables';
 import schedulerService from '../schedulerService';
 import Connection from './connection';
-import ConnectionStatus from './connectionStatus';
-import ServiceInstanceStatus from './serviceInstanceStatus';
-import ServiceStatus from './serviceStatus';
-import LastValueObservableDictionary from './lastValueObservableDictionary';
+import ConnectionStatus from './connection-status';
+import ServiceInstanceStatus from './service-instance-status';
+import ServiceStatus from './service-status';
+import LastValueObservableDictionary from './last-value-observable-dictionary';
 
 /**
  * Abstracts a back end service for which there can be multiple instances.

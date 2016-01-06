@@ -137,7 +137,7 @@ class ShellView extends React.Component {
       DealtCurrency: payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
     };
     // TODO proper handling of trade execution flow errors and disposal
-    var disposable = serviceContainer.executionService.executeTrade(request).subscribe(response =>{
+    const disposable = serviceContainer.executionService.executeTrade(request).subscribe(response =>{
         const trade   = response.Trade,
               dt      = new Date(trade.ValueDate),
               message = {

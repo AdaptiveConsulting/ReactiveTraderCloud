@@ -1,8 +1,8 @@
 import Rx from 'rx';
 import _ from 'lodash';
-import RetryPolicy from './retryPolicy';
+import RetryPolicy from './retry-policy';
 import logger from '../logger';
-import ShouldRetryResult from './shouldRetryResult';
+import ShouldRetryResult from './should-retry-result';
 
 var _log:logger.Logger = logger.create('RetryPolicy');
 
