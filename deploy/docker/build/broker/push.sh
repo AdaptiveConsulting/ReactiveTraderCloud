@@ -9,9 +9,7 @@ fi
 # fail fast
 set -euo pipefail
 
-# get and control config
 . ../../../config
 
-
-# push
-docker push $brokerContainer:$vMajor.$vMinor.$build
+docker push $brokerContainer
+docker push $brokerContainer.$build

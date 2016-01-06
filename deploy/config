@@ -5,45 +5,72 @@
 # ==========
 domainName="adaptivecluster.com"
 
-# DOCKER
-# ======
+# VERSIONING
+# ==========
 vMajor="0"
 vMinor="0"
 
-vUbuntu="14.04.2"
-vCrossbar="0.11.1"
-vEventstore="3.3.0"
-vDnx="1.0.0-rc1-final"
-vNode="5.3.0"
+brokerContainer_major="0"
+brokerContainer_minor="0"
+brokerContainer="reactivetrader/broker:$brokerContainer_major.$brokerContainer_minor"
+
+serversContainer="reactivetrader/servers"
+webContainer="reactivetrader/web"
+populatedEventstoreContainer="reactivetrader/eventstore"
+
+# OS
+ubuntuContainer="ubuntu:14.04.2"
 vDebian="8.2"
-vNginx="1.9.7"
-vKubernetes="1.1.3"
 
-vTesttools="1.0"
-vGcloud="1.0"
-vFluentd="0.0"
-vNsGateMajor="0"
-vNsGateMinor="1"
-vJq="1.5"
+# crossbar
+vCrossbar="0.11.1"
+crossbarContainer_major="0"
+crossbarContainer_minor="0"
+crossbarContainer="weareadaptive/crossbar:$crossbarContainer_major.$crossbarContainer_minor"
 
-# here is written the name of all containers
-# Bases
-monoContainer="weareadaptive/mono"
-crossbarContainer="weareadaptive/crossbar"
-testtoolsContainer="weareadaptive/testtools"
-nodeContainer="weareadaptive/node"
+# eventstore
+vEventstore="3.3.0"
 eventstoreContainer="weareadaptive/eventstore"
-gcloudContainer="weareadaptive/gcloud"
+
+# node
+vNode="5.3.0"
+nodeContainer="weareadaptive/node"
+
+# nginx
+vNginx="1.9.7"
 nginxContainer="weareadaptive/nginx"
-fluentdContainer="weareadaptive/fluentd"
+
+# kubernetes
+vKubernetes="1.1.3"
 kubernetesContainer="weareadaptive/kubernetes"
+
+# mono
+vDnx="1.0.0-rc1-final"
+monoContainer="weareadaptive/mono"
+
+# TestTool
+testtools_major="1"
+testtools_minor="0"
+testtoolsContainer="weareadaptive/testtools"
+
+# gcloud
+gcloud_major="1"
+gcloud_minor="0"
+gcloudContainer="weareadaptive/gcloud"
+
+# fluentd
+fluentd_major="0"
+fluentd_minor="0"
+fluentdContainer="weareadaptive/fluentd"
+
+# nsgate
+nsGate_major="0"
+nsGate_minor="1"
 nsGateContainer="weareadaptive/nsgate"
 
-# Adaptive Trader
-brokerContainer="adaptivetrader/broker"
-serversContainer="adaptivetrader/servers"
-webContainer="adaptivetrader/web"
-populatedEventstoreContainer="adaptivetrader/eventstore"
+# jq
+vJq="1.5"
+
 
 # GCLOUD
 # ======
