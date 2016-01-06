@@ -9,6 +9,7 @@ cache:
     - deploy/docker/build/web/.npm
 
 before_script:
+  - TRAVIS_BUILD_NUMBER=$(($TRAVIS_BUILD_NUMBER+650)) # adjust build number to match CircleCi
   - docker info
   - cd deploy/travisCi 
   - chmod 755 ensurePermissions
