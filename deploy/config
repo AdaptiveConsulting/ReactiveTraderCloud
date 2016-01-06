@@ -64,9 +64,10 @@ monoContainer_minor="0"
 monoContainer="weareadaptive/mono:$monoContainer_major.$monoContainer_minor"
 
 # TestTool
+vJq="1.5"
 testtools_major="1"
 testtools_minor="0"
-testtoolsContainer="weareadaptive/testtools"
+testtoolsContainer="weareadaptive/testtools:$testtools_major.$testtools_minor"
 
 # gcloud
 gcloudContainer_major="1"
@@ -77,9 +78,6 @@ gcloudContainer="weareadaptive/gcloud:$gcloudContainer_major.$gcloudContainer_mi
 nsGate_major="0"
 nsGate_minor="1"
 nsGateContainer="weareadaptive/nsgate"
-
-# jq
-vJq="1.5"
 
 
 # GCLOUD
