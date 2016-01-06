@@ -13,4 +13,3 @@ set -euo pipefail
 
 # push
 docker push $populatedEventstoreContainer:$vMajor.$vMinor.$build
-docker push $populatedEventstoreContainer:latest

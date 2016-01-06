@@ -26,7 +26,6 @@ echo "container $(cat populate_id) started"
 # commit container
 echo -e "\ncommit"
 docker commit `cat eventstore_id` $populatedEventstoreContainer:$vMajor.$vMinor.$build
-docker tag -f $populatedEventstoreContainer:$vMajor.$vMinor.$build $populatedEventstoreContainer:latest
 
 # stop eventstore
 echo -e "\nstop"
