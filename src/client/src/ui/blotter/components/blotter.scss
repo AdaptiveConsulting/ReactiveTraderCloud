@@ -464,8 +464,7 @@ $hover-color: #7DE3FC;
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-color: $gray-dark;
-    box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
-
+    box-shadow: -1px 1px 1px rgba(0,0,0,.2)
   }
 
   .fixedDataTableLayout_footer .public_fixedDataTableCell_main {
@@ -558,14 +557,11 @@ $hover-color: #7DE3FC;
 
   .Rejected {
     text-transform: uppercase;
-    //box-shadow: inset 0 0 2px rgba(0,0,0,.7);
-    //background: $brand-danger;
-    // color: $gray;
-    div {
-      text-decoration: line-through !important;
-    }
-    .trade-status {
+    div.public_fixedDataTableCell_cellContent {
       text-decoration: line-through;
+    }
+    div.trade-status div.public_fixedDataTableCell_cellContent {
+      text-decoration: none !important;
       color: $brand-danger;
     }
   }
