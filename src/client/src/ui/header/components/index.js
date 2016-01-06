@@ -1,4 +1,4 @@
-import HeaderView from './headerView';
+import HeaderView from './header-view';
 
 export default {
   HeaderView

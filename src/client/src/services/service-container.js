@@ -1,10 +1,10 @@
 import system from 'system';
-import PricingService from './pricingService';
-import ReferenceDataService from './referenceDataService';
-import BlotterService from './blotterService';
-import ExecutionService from './executionService';
-import AnalyticsService from './analyticsService';
-import FakeUserRepository from './fakeUserRepository';
+import PricingService from './pricing-service';
+import ReferenceDataService from './reference-data-service';
+import BlotterService from './blotter-service';
+import ExecutionService from './execution-service';
+import AnalyticsService from './analytics-service';
+import FakeUserRepository from './fake-user-repository';
 import model from './model';
 
 var _log:system.logger.Logger = system.logger.create('ServiceContainer');

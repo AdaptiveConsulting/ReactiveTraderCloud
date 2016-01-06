@@ -1,7 +1,7 @@
 import React from 'react';
 import Rx from 'rx';
 import _ from 'lodash';
-import { SpotTile } from '../../spotTile/components';
+import { SpotTile } from '../../spot-tile/components';
 import { Container } from '../../common/components';
 import system from 'system';
 import { serviceContainer, model as serviceModel } from 'services';
