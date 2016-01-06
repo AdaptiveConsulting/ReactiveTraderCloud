@@ -1,6 +1,5 @@
 $hover-color: #7DE3FC;
 
-
 .blotter {
   position: fixed;
   bottom: 0px;
@@ -44,7 +43,7 @@ $hover-color: #7DE3FC;
   /* Touching the scroll-track directly makes the scroll-track bolder */
   .public_Scrollbar_main.public_Scrollbar_mainActive,
   .public_Scrollbar_main:hover {
-    //background-color: rgba(255, 255, 255, 0.8);
+
   }
 
   .public_Scrollbar_mainOpaque,
@@ -102,14 +101,11 @@ $hover-color: #7DE3FC;
 
   .public_fixedDataTable_header,
   .public_fixedDataTable_header .public_fixedDataTableCell_main {
-    //background: linear-gradient(lighten($gray-dark, 2%) 80%, $gray-dark);
-    //background-image: -webkit-linear-gradient(#fff, #efefef);
-    //background-image: linear-gradient(#fff, #efefef);
+
   }
 
   .public_fixedDataTable_footer .public_fixedDataTableCell_main {
-    //background-color: #f6f7f8;
-    //border-color: #d3d3d3;
+
   }
 
   .public_fixedDataTable_topShadow {
@@ -121,7 +117,7 @@ $hover-color: #7DE3FC;
   }
 
   .public_fixedDataTable_horizontalScrollbar .public_Scrollbar_mainHorizontal {
-    //background-color: #fff;
+
   }
   /**
    * Copyright (c) 2015, Facebook, Inc.
@@ -138,8 +134,6 @@ $hover-color: #7DE3FC;
    * Table cell.
    */
   .public_fixedDataTableCell_main {
-    //background-color: #fff;
-    //border-color: #d3d3d3;
     border-color: $gray;
     box-sizing: border-box;
   }
@@ -467,7 +461,6 @@ $hover-color: #7DE3FC;
     border-bottom-width: 1px;
     border-color: $gray-light;
     background: linear-gradient(#fff, #fafafa);
-    //box-shadow: -1px 1px 1px rgba(0,0,0,.2)
   }
 
   .fixedDataTableLayout_footer .public_fixedDataTableCell_main {
@@ -542,11 +535,10 @@ $hover-color: #7DE3FC;
   }
 
   .public_fixedDataTableRow_odd {
-    // background: darken($gray-lighter, 1%);
+
   }
 
   .public_fixedDataTable_bodyRow {
-    // box-shadow: inset 0 1px 1px rgba(0,0,0,.4);
     color: $gray-darker;
     border-bottom: 1px dashed $gray-lighter;
   }
