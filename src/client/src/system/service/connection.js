@@ -7,7 +7,7 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
 import SchedulerService from '../schedulerService';
 import ConnectionStatus from './connectionStatus';
 
-var _log:logger.Logger = logger.create('Connection');
+const _log:logger.Logger = logger.create('Connection');
 
 /**
  * Represents a Connection to autobahn

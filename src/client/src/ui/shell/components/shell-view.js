@@ -70,7 +70,6 @@ class ShellView extends React.Component {
           connected
         });
 
-        debugger;
         if (status === system.service.ConnectionStatus.sessionExpired){
           Modal.setTitle('Session expired')
             .setBody(<div>
