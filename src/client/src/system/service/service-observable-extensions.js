@@ -1,9 +1,9 @@
 import Rx from 'rx';
 import _ from 'lodash';
 import logger from '../logger';
-import LastValueObservable from './lastValueObservable';
-import LastValueObservableDictionary from './lastValueObservableDictionary';
-import ServiceInstanceStatus from './serviceInstanceStatus';
+import LastValueObservable from './last-value-observable';
+import LastValueObservableDictionary from './last-value-observable-dictionary';
+import ServiceInstanceStatus from './service-instance-status';
 
 /**
  * Adds timeout semantics to the inner observable streams, on timeout calls onDebounceItemFactory to get the item to pump down the stream

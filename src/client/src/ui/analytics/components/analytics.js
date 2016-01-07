@@ -203,7 +203,7 @@ export default class Analytics extends React.Component {
     return (
       <Container
         title='analytics'
-        className='analytics-container animated slideInRight'
+        className='analytics-container animated fadeIn'
         onTearoff={(state) => this.tearOff(state)}
         tearoff={this.state.tearoff}
         width={400}

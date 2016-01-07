@@ -23,7 +23,6 @@
   "scripts": {
     "clean": "rm -rf dist",
     "lint": "eslint src",
-    "lint:tests": "eslint ./tests/**/*.spec.js",
     "compile": "npm run lint && webpack",
     "start": "npm run dev",
     "dev": "node --harmony bin/webpack-dev-server",

@@ -1,13 +1,13 @@
 import Connection from './connection';
-import AutobahnConnectionProxy from './autobahnConnectionProxy';
-import ServiceClient from './serviceClient';
-import ConnectionStatus from './connectionStatus';
-import ServiceInstanceStatus from './serviceInstanceStatus';
-import ServiceStatus from './serviceStatus';
-import ServiceBase from './serviceBase';
+import AutobahnConnectionProxy from './autobahn-connection-proxy';
+import ServiceClient from './service-client';
+import ConnectionStatus from './connection-status';
+import ServiceInstanceStatus from './service-instance-status';
+import ServiceStatus from './service-status';
+import ServiceBase from './service-base';
 
 // serviceObservableExtensions has no exports, it adds functionality to rx
-import './serviceObservableExtensions';
+import './service-observable-extensions';
 
 export default {
   Connection,

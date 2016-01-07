@@ -13,6 +13,11 @@ import { Container } from '../../common/components';
 import { findWhere } from 'lodash';
 import { serviceContainer } from 'services';
 
+const headerHeight = 30,
+      rowHeight = 24,
+      // adjust for borders, header and shadow
+      blotterHeight = 300 - rowHeight;
+
 /**
  * @class Blotter
  * @extends {React.Component}
@@ -23,7 +28,8 @@ class Blotter extends React.Component {
   static propTypes = {
     trades: React.PropTypes.array,
     status: React.PropTypes.number,
-    containerWidth: React.PropTypes.number
+    containerWidth: React.PropTypes.number,
+    containerHeight: React.PropTypes.number
   }
 
   constructor(props, context){
@@ -153,7 +159,8 @@ class Blotter extends React.Component {
     const outerClassName = serviceContainer.serviceStatus.blotter.isConnected ? 'blotter online' : 'blotter offline';
 
     const { trades } = this.props,
-          schema = this.getSchema(trades);
+          schema = this.getSchema(trades),
+          height = this.state.tearoff ? 400 : blotterHeight;
 
     return (
       <Container
@@ -169,11 +176,11 @@ class Blotter extends React.Component {
             <i className='fa fa-plug animated infinite fadeIn'/>
           </div>
           <Table
-            rowHeight={24}
-            headerHeight={30}
+            rowHeight={rowHeight}
+            headerHeight={headerHeight}
             rowsCount={trades.length}
             width={this.props.containerWidth}
-            height={300}
+            height={height}
             rowClassNameGetter={(index) => this.getRowClass(trades[index])}
             {...this.props}>
             {schema}

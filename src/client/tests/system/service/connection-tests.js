@@ -1,5 +1,5 @@
 import system from 'system';
-import StubAutobahnProxy from './stubAutobahnProxy';
+import StubAutobahnProxy from './stub-autobahn-proxy';
 
 describe('Connection', () => {
   let _stubAutobahnProxy:StubAutobahnProxy,

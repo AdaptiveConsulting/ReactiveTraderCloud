@@ -2,12 +2,12 @@ import Guard from '../guard';
 import Rx from 'rx';
 import logger from '../logger';
 import disposables from '../disposables';
-import AutobahnConnectionProxy from './autobahnConnectionProxy';
-import ServiceInstanceStatus from './serviceInstanceStatus';
+import AutobahnConnectionProxy from './autobahn-connection-proxy';
+import ServiceInstanceStatus from './service-instance-status';
 import SchedulerService from '../schedulerService';
-import ConnectionStatus from './connectionStatus';
+import ConnectionStatus from './connection-status';
 
-var _log:logger.Logger = logger.create('Connection');
+const _log:logger.Logger = logger.create('Connection');
 
 /**
  * Represents a Connection to autobahn
@@ -178,7 +178,7 @@ export default class Connection extends disposables.DisposableBase {
       let isDisposed:Boolean;
       let dto = [{
         replyTo: responseTopic,
-        Username: _this._username,
+        Username: _this._userName,
         payload: payload
       }];
 

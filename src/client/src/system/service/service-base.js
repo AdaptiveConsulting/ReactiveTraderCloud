@@ -1,5 +1,5 @@
 import Connection from './connection';
-import ServiceClient from './serviceClient';
+import ServiceClient from './service-client';
 import SchedulerService from '../schedulerService';
 
 export default class ServiceBase {

@@ -1,3 +1,5 @@
+$hover-color: #7DE3FC;
+
 .blotter {
   position: fixed;
   bottom: 0px;
@@ -41,7 +43,7 @@
   /* Touching the scroll-track directly makes the scroll-track bolder */
   .public_Scrollbar_main.public_Scrollbar_mainActive,
   .public_Scrollbar_main:hover {
-    //background-color: rgba(255, 255, 255, 0.8);
+
   }
 
   .public_Scrollbar_mainOpaque,
@@ -75,16 +77,19 @@
    * Table.
    */
   .public_fixedDataTable_main {
-    border-color: $gray-darker;
+    border: none;
   }
 
   .public_fixedDataTable_header {
-    background: linear-gradient(lighten($gray-dark, 2%) 80%, $gray-dark);
-    //border-color: #d3d3d3;
+    //background: linear-gradient(lighten($gray-dark, 2%) 80%, $gray-dark);
+    border-color: $gray-light;
+    div.public_fixedDataTableCell_cellContent {
+      color: $gray-darker;
+    }
   }
 
   div.public_fixedDataTable_hasBottomBorder {
-    border-bottom: 1px solid $gray;
+    border-bottom: 1px solid $gray-light;
   }
 
   .public_fixedDataTable_header .public_fixedDataTableCell_main {
@@ -96,14 +101,11 @@
 
   .public_fixedDataTable_header,
   .public_fixedDataTable_header .public_fixedDataTableCell_main {
-    //background: linear-gradient(lighten($gray-dark, 2%) 80%, $gray-dark);
-    //background-image: -webkit-linear-gradient(#fff, #efefef);
-    //background-image: linear-gradient(#fff, #efefef);
+
   }
 
   .public_fixedDataTable_footer .public_fixedDataTableCell_main {
-    //background-color: #f6f7f8;
-    //border-color: #d3d3d3;
+
   }
 
   .public_fixedDataTable_topShadow {
@@ -115,7 +117,7 @@
   }
 
   .public_fixedDataTable_horizontalScrollbar .public_Scrollbar_mainHorizontal {
-    //background-color: #fff;
+
   }
   /**
    * Copyright (c) 2015, Facebook, Inc.
@@ -132,9 +134,7 @@
    * Table cell.
    */
   .public_fixedDataTableCell_main {
-    //background-color: #fff;
-    //border-color: #d3d3d3;
-    border-color: black;
+    border-color: $gray;
     box-sizing: border-box;
   }
 
@@ -344,7 +344,7 @@
 
   .fixedDataTableCellLayout_main {
     border-right-style: solid;
-    border-color: $gray-dark;
+    border-color: transparent;
     border-width: 0 1px 0 0;
     box-sizing: border-box;
     display: block;
@@ -458,14 +458,13 @@
   .fixedDataTableLayout_header,
   .fixedDataTableLayout_hasBottomBorder {
     border-bottom-style: solid;
-    border-bottom-width: 0;
-    border-color: $gray-darker;
-    box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
-
+    border-bottom-width: 1px;
+    border-color: $gray-light;
+    background: linear-gradient(#fff, #fafafa);
   }
 
   .fixedDataTableLayout_footer .public_fixedDataTableCell_main {
-    border-top-style: solid;
+    border-top-style: dashed;
     border-top-width: 1px;
   }
 
@@ -536,31 +535,29 @@
   }
 
   .public_fixedDataTableRow_odd {
-    background: darken($gray-lighter, 1%);
+
   }
 
   .public_fixedDataTable_bodyRow {
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.4);
     color: $gray-darker;
+    border-bottom: 1px dashed $gray-lighter;
   }
   .public_fixedDataTable_bodyRow:hover {
     div {
-      color: $gray-light;
-      border-color: $gray-darker;
+      color: $gray-darker;
+      //border-color: $gray-darker;
     }
+    background: $hover-color;
   }
 
   .Rejected {
     text-transform: uppercase;
-    box-shadow: inset 0 0 2px rgba(0,0,0,.7);
-    background: $brand-danger;
-    color: $gray-lighter;
-    div {
-      text-decoration: line-through !important;
-    }
-    .trade-status {
+    div.public_fixedDataTableCell_cellContent {
       text-decoration: line-through;
-      color: $gray-light;
+    }
+    div.trade-status div.public_fixedDataTableCell_cellContent {
+      text-decoration: none !important;
+      color: $brand-danger;
     }
   }
   .Processing {

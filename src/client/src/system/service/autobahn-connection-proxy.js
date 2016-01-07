@@ -1,6 +1,6 @@
 import autobahn from 'autobahn';
 import Rx from 'rx';
-import AutobahnSessionProxy from './autobahnSessionProxy';
+import AutobahnSessionProxy from './autobahn-session-proxy';
 
 /**
  * AutobahnProxy: makes the autobahn connection api more explicit, aids testing
