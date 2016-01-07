@@ -52,19 +52,18 @@ export default class Analytics extends React.Component {
         tickFormat: (d) => d3.time.format('%X')(new Date(d))
       },
       yAxis: {
-        axisLabel: 'PnL',
-        tickFormat: d3.format(',.1'),
+        tickFormat: d3.format('s'),
       },
-      showYAxis: false,
+      showYAxis: true,
       showXAxis: true,
       showLegend: false,
       useInteractiveGuideline: true,
       duration: 0,
       margin: {
-        left: 0,
+        left: 24,
         top: 0,
         right: 0,
-        bottom: 30
+        bottom: 24
       }
     };
 
@@ -215,6 +214,7 @@ export default class Analytics extends React.Component {
         <div className={className}>
           {(PNLValues && PNLValues.length) ?
             <NVD3Chart
+              className='foo'
               type={LINECHART}
               datum={this.state.series}
               options={this.chartPnlOptions}
