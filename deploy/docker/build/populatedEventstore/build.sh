@@ -12,7 +12,7 @@ set -euo pipefail
 . ../../../config
 
 # run eventstore
-docker run -d --net=host $eventstoreContainer.$build > eventstore_id
+docker run -d --net=host $eventstoreContainer > eventstore_id
 
 # populate it
 populateCommand=`cat "../../../../src/server/Populate Event Store.bat"`
