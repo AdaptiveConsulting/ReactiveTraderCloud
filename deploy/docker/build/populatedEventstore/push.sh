@@ -12,4 +12,4 @@ set -euo pipefail
 . ../../../config
 
 docker push $populatedEventstoreContainer
-docker push $populatedEventstoreContainer:$build
+docker push $populatedEventstoreContainer.$build

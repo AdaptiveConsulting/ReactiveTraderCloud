@@ -12,4 +12,4 @@ set -euo pipefail
 . ../../../config
 
 docker push $serversContainer
-docker push $serversContainer:$build
+docker push $serversContainer.$build
