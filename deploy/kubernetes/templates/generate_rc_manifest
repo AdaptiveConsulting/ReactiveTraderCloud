@@ -1,30 +1,26 @@
 #! /bin/bash
 
-if [[ $# != 3 ]];then 
-  echo "parameter error: service namespace build"  
-  exit 1 
+if [[ $# < 2 ]];then 
+  echo "parameter error: "
+  echo "  usage:"
+  echo "  $0 SERVICE NAMESPACE [BUILD_ID]"  
+  exit 1
 fi
 service=$1
 namespace=$2
-build=$3
-
-if [[ ! -f ../../config ]];then
-    echo " "
-    echo "usage:"
-    echo "  you need to copy config from sample.config"
-    exit 1
+if [[ $3 == "" ]];then
+  build="latest"
+  buildTag=""
+else
+  build=$3
+  buildTag=".$3"
 fi
+
+# fail fast
+set -euo pipefail
+
 . ../../config
-
-if [[ $vMajor = "" ]];then
-  echo "generate_rc_manifest: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "generate_rc_manifest: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-
+. ../helpers/functions.sh
 
 manifestFolder="../manifests"
 rcFile="$manifestFolder/$service-rc.yml"
@@ -35,14 +31,28 @@ cp ./$service/rc.yml $rcFile
 
 # get good docker image
 dockerImage=""
-if [[ $service == "analytics" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
-if [[ $service == "blotter" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
-if [[ $service == "broker" ]];then dockerImage="$brokerContainer:$vMajor.$vMinor.$build"; fi
-if [[ $service == "eventstore" ]];then dockerImage="$populatedEventstoreContainer:$vMajor.$vMinor.$build"; fi
-if [[ $service == "pricing" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
-if [[ $service == "referencedataread" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
-if [[ $service == "tradeexecution" ]];then dockerImage="$serversContainer:$vMajor.$vMinor.$build"; fi
-if [[ $service == "web" ]];then dockerImage="$webContainer:$vMajor.$vMinor.$build"; fi
+if [[ $service == "broker" ]];then 
+  dockerImage="$brokerContainer$buildTag";
+  vMajor=$brokerContainer_major
+  vMinor=$brokerContainer_minor 
+fi
+if [[ $service == "web" ]];then 
+  dockerImage="$webContainer$buildTag";
+  vMajor=$webContainer_major
+  vMinor=$webContainer_minor  
+fi
+if [[ $service == "eventstore" ]];then 
+  dockerImage="$populatedEventstoreContainer$buildTag";
+  vMajor=$populatedEventstoreContainer_major
+  vMinor=$populatedEventstoreContainer_minor
+fi
+
+dotnetServices="analytics blotter pricing referencedataread tradeexecution"
+if listcontains "$dotnetServices" $service; then 
+  dockerImage="$serversContainer$buildTag";
+  vMajor=$serversContainer_major
+  vMinor=$serversContainer_minor
+fi 
 
 sed -i  "s/__SERVICE__/$service/g" $rcFile
 sed -i  "s/__MAJOR__/$vMajor/g" $rcFile

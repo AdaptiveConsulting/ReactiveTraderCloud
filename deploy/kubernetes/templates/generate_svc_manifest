@@ -1,28 +1,16 @@
 #! /bin/bash
 
-if [[ $# != 2 ]];then 
-  echo "parameter error: service namespace"  
-  exit 1 
+if [[ $# < 2 ]];then 
+  echo "parameter error: "
+  echo "  usage:"
+  echo "  $0 SERVICE NAMESPACE [BUILD_ID]"  
+  exit 1
 fi
 service=$1
 namespace=$2
 
-if [[ ! -f ../../config ]];then
-    echo " "
-    echo "usage:"
-    echo "  you need to copy config from sample.config"
-    exit 1
-fi
 . ../../config
-
-if [[ $vMajor = "" ]];then
-  echo "DeployNewService: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "DeployNewService: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
+. ../helpers/functions.sh
 
 manifestFolder="../manifests"
 svcFile="$manifestFolder/$service-svc.yml"
@@ -31,7 +19,26 @@ mkdir -p $manifestFolder
 
 cp ./$service/svc.yml $svcFile
 
-sed -i  "s/__SERVICE__/$service/g" $svcFile
-sed -i  "s/__MAJOR__/$vMajor/g" $svcFile
-sed -i  "s/__MINOR__/$vMinor/g" $svcFile
+if [[ $service == "broker" ]];then 
+  vMajor=$brokerContainer_major
+  vMinor=$brokerContainer_minor 
+fi
+if [[ $service == "web" ]];then 
+  vMajor=$webContainer_major
+  vMinor=$webContainer_minor  
+fi
+if [[ $service == "eventstore" ]];then 
+  vMajor=$populatedEventstoreContainer_major
+  vMinor=$populatedEventstoreContainer_minor
+fi
+
+dotnetServices="analytics blotter pricing referencedataread tradeexecution"
+if listcontains "$dotnetServices" $service; then 
+  vMajor=$serversContainer_major
+  vMinor=$serversContainer_minor
+fi 
+
+sed -i  "s/__SERVICE__/$service/g"     $svcFile
+sed -i  "s/__MAJOR__/$vMajor/g"        $svcFile
+sed -i  "s/__MINOR__/$vMinor/g"        $svcFile
 sed -i  "s/__NAMESPACE__/$namespace/g" $svcFile
