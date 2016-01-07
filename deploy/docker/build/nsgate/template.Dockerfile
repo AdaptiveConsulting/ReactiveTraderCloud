@@ -1,4 +1,4 @@
-FROM        weareadaptive/nginx:__VNGINX__
+FROM        __NGINX_CONTAINER__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
 COPY        updateServers.sh   /opt/updateServers.sh

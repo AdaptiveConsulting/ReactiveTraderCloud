@@ -75,10 +75,9 @@ gcloudContainer_minor="0"
 gcloudContainer="weareadaptive/gcloud:$gcloudContainer_major.$gcloudContainer_minor"
 
 # nsgate
-nsGate_major="0"
-nsGate_minor="1"
-nsGateContainer="weareadaptive/nsgate"
-
+nsGateContainer_major="0"
+nsGateContainer_minor="1"
+nsGateContainer="weareadaptive/nsgate:$nsGateContainer_major.$nsGateContainer_minor"
 
 # GCLOUD
 # ======
