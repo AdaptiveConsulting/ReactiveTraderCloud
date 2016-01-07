@@ -9,10 +9,10 @@ module.exports = function (config) {
     singleRun  : !argv.watch,
     frameworks: [ 'jasmine' ],
     files: [
-      './tests/testIndex.js'
+      './tests/test-index.js'
     ],
     preprocessors: {
-      './tests/testIndex.js': [ 'webpack' ]
+      './tests/test-index.js': [ 'webpack' ]
     },
     reporters: [ 'spec' ],
     browsers: [ 'Chrome' ],

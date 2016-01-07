@@ -34,10 +34,7 @@ const webpackConfig = {
         from: './src/ui/common/images',
         to: 'images'
       }
-    ]),
-    new webpack.optimize.CommonsChunkPlugin(
-      '[name].js'
-    )
+    ])
   ],
   node: {
     fs: 'empty',
