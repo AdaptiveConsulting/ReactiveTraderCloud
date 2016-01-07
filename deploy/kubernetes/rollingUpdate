@@ -43,7 +43,7 @@ else
   newImage="adaptivetrader/$service:$vMajor.$vMinor.$build"
 fi 
 
-./kubectl rolling-update   \
+./kubectl rolling-update \
   --namespace=$namespace \
   --image=$newImage      \
   --update-period=1s     \
