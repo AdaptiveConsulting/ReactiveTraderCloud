@@ -11,7 +11,7 @@ build=$1
 # fail fast
 set -euo pipefail
 
-# get and control config
 . ../../../config
 
-docker push $nsGateContainer:$vNsGateMajor.$vNsGateMinor.$build
+docker push $nsGateContainer
+docker push $nsGateContainer.$build
