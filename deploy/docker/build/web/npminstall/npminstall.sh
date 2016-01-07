@@ -15,17 +15,19 @@
 # fail fast 
 set -euo pipefail
 
-# get the cache
+echo "getting the cache ..."
 cp -r /.npm /root/
 
-# get/update dependencies
+echo "npm install ..."
 cd /client
 rm -rf node_modules
 npm install
 npm run compile 
 
-# save the dependencies
+echo "saving cache ..."
+# caching _git-remotes result in an error of copy, I don't cache it
+rm -rf /root/.npm/_git-remotes
 cp -r /root/.npm /
 
-# give the dist folder
+echo "copying dist ..."
 cp -r /client/dist /
