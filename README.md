@@ -78,6 +78,3 @@ We have written a number of blog posts in which we dive deeper into certain aspe
 
 Reactive Trader was written by the team at [Adaptive](http://weareadaptive.com/), a consultancy that specialises in building real time trading systems. We have many years of experience in building trading systems for clients with highly demanding latency and reliability requirements. Over the years we have learnt quite a few lessons, and wanted to talk about and point to examples of how we solve technical problems related to real time delivery of messages.
 
-## Links 
-[Further Inspiration](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
-
