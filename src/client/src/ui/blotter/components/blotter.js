@@ -15,8 +15,8 @@ import { serviceContainer } from 'services';
 
 const headerHeight = 30,
       rowHeight = 24,
-      // adjust for borders, header and shadow
-      blotterHeight = 300 - rowHeight;
+      // adjust for borders, header and shadow?
+      blotterHeight = 280;
 
 /**
  * @class Blotter
