@@ -13,4 +13,4 @@ set -euo pipefail
 . ../../../config
 
 docker push $monoContainer
-docker push $monoContainer:$build
+docker push $monoContainer.$build
