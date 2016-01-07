@@ -111,8 +111,8 @@ const webpackConfig = {
 if(isProductionMode) {
   webpackConfig.module.loaders = webpackConfig.module.loaders.map(function(loader) {
     if (/css/.test(loader.test)) {
-      var first = loader.loader[0];
-      var rest = loader.loader.slice(1, loader.loaders.length);
+      var first = loader.loaders[0];
+      var rest = loader.loaders.slice(1, loader.loaders.length);
       loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
       delete loader.loaders;
     }
