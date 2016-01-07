@@ -86,8 +86,22 @@ $stroke-color: slategray;
       }
     }
 
-    .nv-controlsWrap.nvd3-svg {
+    .nv-controlsWrap.nvd3-svg, .nv-axisMin-y {
       display: none;
+    }
+
+    .nv-lineChart {
+      .nv-axis.nv-y {
+        text {
+          font-size: 8px;
+        }
+      }
+
+      .nv-axis.nv-x {
+        text {
+          font-size: 8px;
+        }
+      }
     }
   }
 
