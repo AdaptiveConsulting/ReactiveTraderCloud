@@ -23,11 +23,12 @@
   "scripts": {
     "clean": "rm -rf dist",
     "start": "npm run dev",
+    "lint": "eslint src",
     "dev": "webpack-dev-server --progress --colors --hot --debug --config webpack.config.js",
-    "test": "node ./node_modules/.bin/karma start ./karma.conf.js",
-    "test:dev": "npm run test -- --watch",
-    "deploy": "npm run test && webpack",
-    "deploy:prod": "NODE_ENV=production npm run test && webpack"
+    "test": "karma start ./karma.conf.js",
+    "test:dev": "npm test -- --watch",
+    "deploy": "npm test && webpack",
+    "deploy:prod": "NODE_ENV=production npm test && webpack"
   },
   "license": "MIT",
   "dependencies": {
