@@ -1,41 +1,18 @@
 #! /bin/bash
 
-# control configuration
-if [[ ! -f ../config ]];then
-    echo " "
-    echo "usage:"
-    echo "  you need to copy config from sample.config"
-    exit 1
-fi
-. ../config
-if [[ $vMajor = "" ]];then
-  echo "kube: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "kube: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
+# fail fast
+set -euo pipefail
 
-if [[  $# != 4 ]];then
-  echo " "
-  echo " usage:"
-  echo "    ./resize NAMESPACE SERVICE BUILD NEW_COUNT"
-  echo " "
+. ../config
+
+if [[ $# < 3 ]];then
+  echo "parameter error: "
+  echo "  usage:"
+  echo "  $0 NAMESPACE SERVICE NEW_COUNT"  
   exit 1
 fi
 namespace=$1
 service=$2
-build=$3
-count=$4
+count=$3
 
-
-# create or clean folder
-mkdir -p manifests
-
-# generate manifests
-cd templates
-generate_rc_manifest $service $namespace $build
-cd ..
-
-./kubectl scale --namespace=$namespace --replicas=$count -f manifests/$service-rc.yml 
+./kubectl scale --namespace=$namespace --replicas=$count rc $service 
