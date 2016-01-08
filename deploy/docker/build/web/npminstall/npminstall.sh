@@ -22,7 +22,7 @@ echo "npm install ..."
 cd /client
 rm -rf node_modules
 npm install
-npm run compile 
+npm run deploy 
 
 echo "saving cache ..."
 # caching _git-remotes result in an error of copy, I don't cache it
