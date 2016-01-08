@@ -1,0 +1,9 @@
+#! /bin/bash
+
+# fail fast
+set -euo pipefail
+
+docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+
+cd ../docker
+./prepare push services $TRAVIS_BUILD_NUMBER
