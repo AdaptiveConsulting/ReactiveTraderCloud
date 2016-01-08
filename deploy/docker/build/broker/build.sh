@@ -20,4 +20,4 @@ sed -i "s|__CROSSBAR_CONTAINER__|$crossbarContainer|g" ./build/Dockerfile
 cp -r ../../../../src/server/.crossbar  ./build/.crossbar
 
 docker build --no-cache -t $brokerContainer ./build/.
-docker tag $brokerContainer $brokerContainer.$build
+docker tag -f $brokerContainer $brokerContainer.$build

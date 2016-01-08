@@ -41,4 +41,4 @@ cp -r ./dist                     ./nginx/build/dist
 sed -i "s|__NGINX_CONTAINER__|$nginxContainer|g" ./nginx/build/Dockerfile
 
 docker build --no-cache -t $webContainer  ./nginx/build/.
-docker tag $webContainer $webContainer.$build
+docker tag -f $webContainer $webContainer.$build

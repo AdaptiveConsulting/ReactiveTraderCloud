@@ -20,4 +20,4 @@ cp     ./template.install.sh ./build/install.sh
 sed -i "s/__VDNX__/$vDnx/g"  ./build/install.sh
 
 docker build --no-cache -t $monoContainer ./build/.
-docker tag $monoContainer $monoContainer.$build
+docker tag -f $monoContainer $monoContainer.$build

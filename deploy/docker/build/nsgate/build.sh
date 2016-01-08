@@ -28,4 +28,4 @@ sed -i "s|__NGINX_CONTAINER__|$nginxContainer|g" ./build/Dockerfile
 sed -i "s/__DOMAIN__/$domainName/g" ./build/writeFunctions.sh
 
 docker build --no-cache -t $nsGateContainer ./build/.
-docker tag $nsGateContainer $nsGateContainer.$build
+docker tag -f $nsGateContainer $nsGateContainer.$build

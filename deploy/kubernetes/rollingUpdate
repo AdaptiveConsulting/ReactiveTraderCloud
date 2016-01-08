@@ -1,50 +1,40 @@
 #! /bin/bash
 
-services="blotter pricing referencedataread tradeexecution"
-listcontains() {
-  for word in $1; do
-    [[ $word = $2 ]] && return 0
-  done
-  return 1
-}
-
-# control configuration
-if [[ ! -f ../config ]];then
-    echo " "
-    echo "usage:"
-    echo "  you need to copy config from sample.config"
-    exit 1
-fi
-. ../config
-if [[ $vMajor = "" ]];then
-  echo "kube: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "kube: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-
-if [[  $# != 3 ]];then
+if [[ $# != 3 ]];then 
   echo " "
-  echo " usage:"
-  echo "    ./rollingUpdate NAMESPACE SERVICE NEW_BUILD"
-  echo " "
+  echo "  usage:"
+  echo "  $0 NAMESPACE SERVICE NEW_BUILD_ID"
+  echo " "  
   exit 1
 fi
-namespace=$1
-service=$2
+service=$1
+namespace=$2
 build=$3
 
-newImage=""
-if listcontains "$services" $service; then
-  newImage="adaptivetrader/servers:$vMajor.$vMinor.$build"
-else
-  newImage="adaptivetrader/$service:$vMajor.$vMinor.$build"
+# fail fast
+set -euo pipefail
+
+. ../config
+. ./helpers/functions.sh
+
+dockerImage=""
+if [[ $service == "broker" ]];then 
+  dockerImage="$brokerContainer$build";
+fi
+if [[ $service == "web" ]];then 
+  dockerImage="$webContainer$build";
+fi
+if [[ $service == "eventstore" ]];then 
+  dockerImage="$populatedEventstoreContainer$build";
+fi
+
+dotnetServices="analytics blotter pricing referencedataread tradeexecution"
+if listcontains "$dotnetServices" $service; then 
+  dockerImage="$serversContainer$build";
 fi 
 
 ./kubectl rolling-update \
   --namespace=$namespace \
-  --image=$newImage      \
+  --image=$dockerImage   \
   --update-period=1s     \
   $service
