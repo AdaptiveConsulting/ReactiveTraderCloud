@@ -144,7 +144,6 @@ export default class Connection extends disposables.DisposableBase {
         if (!subscription) {
           return;
         }
-
         try {
           _this._autobahn.session.unsubscribe(subscription).then(
             gone => { _log.verbose(`Successfully unsubscribing from topic ${topic}`); },
