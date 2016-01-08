@@ -5,6 +5,6 @@ const Direction = props => <div className={props.direction + ' direction'}>{prop
 Direction.propTypes ={
   direction: React.PropTypes.string.isRequired,
   spread: React.PropTypes.string.isRequired
-}
+};
 
 export default Direction;
