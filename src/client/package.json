@@ -19,7 +19,6 @@
     "type": "git",
     "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
   },
-  "main": "index.js",
   "scripts": {
     "clean": "rm -rf dist",
     "start": "npm run dev",
