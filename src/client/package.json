@@ -50,7 +50,7 @@
     "react-router": "1.0.3",
     "react-sparklines": "1.4.2",
     "rx": "4.0.7",
-    "ws": "~0.8.1"
+    "ws": "0.8.1"
   },
   "devDependencies": {
     "autoprefixer": "6.2.3",
