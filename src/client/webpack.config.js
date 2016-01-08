@@ -4,30 +4,30 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var isProductionMode = process.env.NODE_ENV == "production";
+var isProductionMode = process.env.NODE_ENV == 'production';
 
 const webpackConfig = {
-  name    : 'client',
-  target  : 'web',
-  entry   : {
-    app : [
+  name: 'client',
+  target: 'web',
+  entry: {
+    app: [
       './src/app.js'
     ]
   },
-  output : {
-    filename   : '[name].js',
-    path       : 'dist',
-    publicPath : '/'
+  output: {
+    filename: '[name].js',
+    path: 'dist',
+    publicPath: '/'
   },
-  plugins : [
+  plugins: [
     // new webpack.DefinePlugin(config.get('globals')),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new HtmlWebpackPlugin({
-      template : './src/index.html',
-      hash     : true,
-      filename : 'index.html',
-      inject   : 'body'
+      template: './src/index.html',
+      hash: true,
+      filename: 'index.html',
+      inject: 'body'
     }),
     new CopyWebpackPlugin([
       {
@@ -36,13 +36,14 @@ const webpackConfig = {
       }
     ])
   ],
+  // these break for node 5.3+ when building WS stuff
   node: {
     fs: 'empty',
     tls: 'empty'
   },
-  resolve : {
-    extensions : ['', '.js', '.jsx'],
-    alias      : {
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+    alias: {
       system: __dirname + '/src/system',
       services: __dirname + '/src/services'
     }
@@ -50,27 +51,28 @@ const webpackConfig = {
   eslint: {
     configFile: './.eslintrc'
   },
-  module : {
+  module: {
+    // this breaks in node 5.3+ as it tries to parse the README.md for node-bindings
     noParse: /\/bindings\//,
     preLoaders: [
-      {test: /\.js$/, loader: "eslint-loader", exclude: /node_modules/}
+      {test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/}
     ],
-    loaders : [
+    loaders: [
       {
-        test : /\.(js|jsx)$/,
-        exclude : /node_modules/,
-        loader  : 'babel',
-        query   : {
-          stage    : 0,
-          optional : ['runtime'],
-          env      : {
-            development : {
-              plugins : ['react-transform'],
-              extra   : {
-                'react-transform' : {
-                  transforms : [{
-                    transform : 'react-transform-catch-errors',
-                    imports   : ['react', 'redbox-react']
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+        query: {
+          stage: 0,
+          optional: ['runtime'],
+          env: {
+            development: {
+              plugins: ['react-transform'],
+              extra: {
+                'react-transform': {
+                  transforms: [{
+                    transform: 'react-transform-catch-errors',
+                    imports: ['react', 'redbox-react']
                   }]
                 }
               }
@@ -79,8 +81,8 @@ const webpackConfig = {
         }
       },
       {
-        test    : /\.scss$/,
-        loaders : [
+        test: /\.scss$/,
+        loaders: [
           'style-loader',
           'css-loader',
           'autoprefixer?browsers=last 2 version',
@@ -91,23 +93,35 @@ const webpackConfig = {
         test: /\.json$/,
         loader: 'json-loader'
       },
-      /* eslint-disable */
-      { test: /\.woff(\?.*)?$/,  loader: "url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=application/font-woff" },
-      { test: /\.woff2(\?.*)?$/, loader: "url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=application/font-woff2" },
-      { test: /\.ttf(\?.*)?$/,   loader: "url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=application/octet-stream" },
-      { test: /\.eot(\?.*)?$/,   loader: "file-loader?prefix=fonts/&name=fonts/[name].[ext]" },
-      { test: /\.svg(\?.*)?$/,   loader: "url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=image/svg+xml" }
-      /* eslint-enable */
+      {
+        test: /\.woff(\?.*)?$/,
+        loader: 'url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=application/font-woff'
+      },
+      {
+        test: /\.woff2(\?.*)?$/,
+        loader: 'url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=application/font-woff2'
+      },
+      {
+        test: /\.ttf(\?.*)?$/,
+        loader: 'url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=application/octet-stream'
+      },
+      {
+        test: /\.eot(\?.*)?$/, loader: 'file-loader?prefix=fonts/&name=fonts/[name].[ext]'
+      },
+      {
+        test: /\.svg(\?.*)?$/,
+        loader: 'url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=image/svg+xml'
+      }
     ]
   },
-  sassLoader : {
-    includePaths : './src/**/*.scss'
+  sassLoader: {
+    includePaths: './src/**/*.scss'
   }
 };
 
-if(isProductionMode) {
-  webpackConfig.module.loaders = webpackConfig.module.loaders.map(function(loader) {
-    if (/css/.test(loader.test)) {
+if (isProductionMode){
+  webpackConfig.module.loaders = webpackConfig.module.loaders.map(function(loader){
+    if (/css/.test(loader.test)){
       var first = loader.loaders[0];
       var rest = loader.loaders.slice(1, loader.loaders.length);
       loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
@@ -118,9 +132,9 @@ if(isProductionMode) {
   webpackConfig.plugins.push(
     new ExtractTextPlugin('[name].[contenthash].css'),
     new webpack.optimize.UglifyJsPlugin({
-      compress : {
-        'unused'    : true,
-        'dead_code' : true
+      compress: {
+        'unused': true,
+        'dead_code': true
       }
     })
   );
@@ -141,12 +155,12 @@ if(isProductionMode) {
   // but _only_ when ModuleReplacement is enabled. Putting this in the default development
   // configuration will break other tasks such as test:unit because Webpack
   // HMR is not enabled there, and these transforms require it.
-  webpackConfig.module.loaders = webpackConfig.module.loaders.map(loader => {
-    if (/js(?!on)/.test(loader.test)) {
+  webpackConfig.module.loaders = webpackConfig.module.loaders.map(loader =>{
+    if (/js(?!on)/.test(loader.test)){
       loader.query.env.development.extra['react-transform'].transforms.push({
-        transform : 'react-transform-hmr',
-        imports   : ['react'],
-        locals    : ['module']
+        transform: 'react-transform-hmr',
+        imports: ['react'],
+        locals: ['module']
       });
     }
     return loader;

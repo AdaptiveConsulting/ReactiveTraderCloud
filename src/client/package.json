@@ -1,6 +1,6 @@
 {
   "name": "reactive-trader-cloud",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Reactive Trader - Cloud edition. Example reactive currency pair trading app",
   "keywords": [
     "react",
@@ -19,15 +19,15 @@
     "type": "git",
     "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
   },
-  "main": "index.js",
   "scripts": {
     "clean": "rm -rf dist",
     "start": "npm run dev",
+    "lint": "eslint src",
     "dev": "webpack-dev-server --progress --colors --hot --debug --config webpack.config.js",
-    "test": "node ./node_modules/.bin/karma start ./karma.conf.js",
-    "test:dev": "npm run test -- --watch",
-    "deploy": "npm run test && webpack",
-    "deploy:prod": "NODE_ENV=production npm run test && webpack"
+    "test": "karma start ./karma.conf.js",
+    "test:dev": "npm test -- --watch",
+    "deploy": "webpack",
+    "deploy:prod": "NODE_ENV=production npm test && webpack"
   },
   "license": "MIT",
   "dependencies": {
@@ -49,7 +49,8 @@
     "react-popout": "0.4.0",
     "react-router": "1.0.3",
     "react-sparklines": "1.4.2",
-    "rx": "4.0.7"
+    "rx": "4.0.7",
+    "ws": "0.8.1"
   },
   "devDependencies": {
     "autoprefixer": "6.2.3",
