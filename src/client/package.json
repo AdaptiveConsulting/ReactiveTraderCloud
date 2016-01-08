@@ -26,7 +26,7 @@
     "dev": "webpack-dev-server --progress --colors --hot --debug --config webpack.config.js",
     "test": "karma start ./karma.conf.js",
     "test:dev": "npm test -- --watch",
-    "deploy": "npm test && webpack",
+    "deploy": "webpack",
     "deploy:prod": "NODE_ENV=production npm test && webpack"
   },
   "license": "MIT",
