@@ -19,4 +19,4 @@ sed -i "s/__UBUNTU_CONTAINER__/$ubuntuContainer/g" ./build/Dockerfile
 cp ./template.install.sh ./build/install.sh
 
 docker build --no-cache -t $crossbarContainer ./build/.
-docker tag $crossbarContainer $crossbarContainer.$build
+docker tag -f $crossbarContainer $crossbarContainer.$build

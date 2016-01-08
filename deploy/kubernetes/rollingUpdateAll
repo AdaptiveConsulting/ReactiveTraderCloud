@@ -1,21 +1,9 @@
 #! /bin/bash
 
-# control configuration
-if [[ ! -f ../config ]];then
-  echo " "
-  echo "usage:"
-  echo "  you need to copy config from sample.config"
-  exit 1
-fi
+# fail fast
+set -euo pipefail
+
 . ../config
-if [[ $vMajor = "" ]];then
-  echo "kube: major version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
-if [[ $vMinor = "" ]];then
-  echo "kube: minor version required, fill in adaptivetrader/deploy/config"
-  exit 1
-fi
 
 if [[  $# != 2 ]];then
   echo " "

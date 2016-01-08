@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# fail fast
+set -euo pipefail
+
 # CONFIGURATION
 # =============
 possibleCommands="build push"

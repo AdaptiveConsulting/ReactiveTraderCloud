@@ -5,6 +5,7 @@ if [[ $# != 1 ]];then
   echo " usage:"
   echo "   ./delete NAMESPACE"
   echo ""
+  echo " Will delete an environment"
   exit 1
 fi
 namespace=$1

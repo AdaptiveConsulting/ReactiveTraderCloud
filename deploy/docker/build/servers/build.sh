@@ -33,4 +33,4 @@ docker run -t --name dnurestored -v /$(pwd)/dnxcache:/packages weareadaptive/ser
 
 # commit
 docker commit dnurestored $serversContainer
-docker tag $serversContainer $serversContainer.$build
+docker tag -f $serversContainer $serversContainer.$build

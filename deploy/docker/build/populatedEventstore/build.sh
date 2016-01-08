@@ -22,6 +22,6 @@ docker run -t --net=host      \
 
 # commit container
 docker commit `cat eventstore_id` $populatedEventstoreContainer
-docker tag $populatedEventstoreContainer $populatedEventstoreContainer.$build
+docker tag -f $populatedEventstoreContainer $populatedEventstoreContainer.$build
 
 docker kill `cat eventstore_id`
