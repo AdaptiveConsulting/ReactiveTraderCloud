@@ -66,8 +66,10 @@ monoContainer="weareadaptive/mono:$monoContainer_major.$monoContainer_minor"
 # TestTool
 vJq="1.5"
 testtools_major="1"
-testtools_minor="0"
-testtoolsContainer="weareadaptive/testtools:$testtools_major.$testtools_minor"
+testtools_minor="1"
+testtoolsContainer_base="weareadaptive/testtools"
+testtoolsContainer="$testtoolsContainer_base:$testtools_major.$testtools_minor"
+testtoolsContainer_latest="$testtoolsContainer_base:latest"
 
 # gcloud
 gcloudContainer_major="1"

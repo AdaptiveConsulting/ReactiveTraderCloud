@@ -13,3 +13,4 @@ set -euo pipefail
 
 docker push $testtoolsContainer
 docker push $testtoolsContainer.$build
+docker push $testtoolsContainer_latest
