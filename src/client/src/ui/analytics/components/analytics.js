@@ -212,7 +212,6 @@ export default class Analytics extends React.Component {
         <div className={className}>
           {(PNLValues && PNLValues.length) ?
             <NVD3Chart
-              className='foo'
               type={LINECHART}
               datum={this.state.series}
               options={this.chartPnlOptions}
