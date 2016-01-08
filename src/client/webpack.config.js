@@ -1,10 +1,12 @@
 'use strict';
 
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var isProductionMode = process.env.NODE_ENV == 'production';
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const isProductionMode = process.env.NODE_ENV == 'production';
+
+const path = require('path');
 
 const webpackConfig = {
   name: 'client',
@@ -140,7 +142,15 @@ if (isProductionMode){
   );
 } else {
   webpackConfig.devServer = {
-    port: 3000
+    port: 3000,
+    contentBase: path.join(process.cwd(), 'src'),
+    historyApiFallback: true,
+    stats: {
+      colors: true
+    },
+    noInfo: false,
+    quiet: false,
+    hot: true
   };
   webpackConfig.devtool = 'source-map';
   webpackConfig.entry.app.push(

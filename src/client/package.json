@@ -23,7 +23,7 @@
     "clean": "rm -rf dist",
     "start": "npm run dev",
     "lint": "eslint src",
-    "dev": "webpack-dev-server --progress --colors --hot --debug --config webpack.config.js",
+    "dev": "webpack-dev-server --progress --debug --config webpack.config.js",
     "test": "karma start ./karma.conf.js",
     "test:dev": "npm test -- --watch",
     "deploy": "webpack",
