@@ -209,14 +209,6 @@ class SpotTile extends React.Component {
   }
 
   /**
-   * @param {DOMEvent=} e
-   */
-  toggleTearoff(e:DOMEvent){
-    e && e.preventDefault();
-    this.setState({tearoff: !this.state.tearoff});
-  }
-
-  /**
    * Changes sparkline ticker on/off or launches IQ chart openfin app.
    */
   setChart(){
@@ -243,9 +235,6 @@ class SpotTile extends React.Component {
   render(){
     const { historic, size, state, info, chart } = this.state,
           { buy, sell, mid, pair, response } = this.props;
-
-    const parsedBuy  = this.parsePrice(buy),
-          parsedSell = this.parsePrice(sell);
 
     const execute   = this.execute.bind(this),
           title     = pair.substr(0, 3) + ' / ' + pair.substr(3, 3);

@@ -1,14 +1,10 @@
 import React from 'react';
 
-export default class Direction extends React.Component {
+const Direction = props => <div className={props.direction + ' direction'}>{props.spread}</div>;
 
-  static propTypes ={
-    direction: React.PropTypes.string.isRequired,
-    spread: React.PropTypes.string.isRequired
-  }
-
-  render(){
-    return <div className={this.props.direction + ' direction'}>{this.props.spread}</div>;
-  }
-
+Direction.propTypes ={
+  direction: React.PropTypes.string.isRequired,
+  spread: React.PropTypes.string.isRequired
 }
+
+export default Direction;

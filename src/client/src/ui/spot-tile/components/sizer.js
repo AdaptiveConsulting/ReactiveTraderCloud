@@ -30,7 +30,7 @@ export default class Sizer extends React.Component {
    * Sets trade amount. Supports k/m modifiers for 1000s or millions.
    * @param {DOMEvent=} e
    */
-  setNotionalFromDOMInput(e){
+  _setNotionalFromDOMInput(e){
     const val    = (this.refs.size.value || e.target.value).trim(),
           hasdot = val.indexOf(DOT) !== -1;
 
@@ -59,12 +59,11 @@ export default class Sizer extends React.Component {
     return (
       <div className={this.props.className}>
         <label>{baseCurrency}
-          <input className='size' type='text' ref='size' defaultValue={formattedSize} onChange={(e) => this.setNotionalFromDOMInput(e)}/></label>
+          <input className='size' type='text' ref='size' defaultValue={formattedSize} onChange={(e) => this._setNotionalFromDOMInput(e)}/></label>
         <div className='pull-right'>
           {this.SPOTDATE}
         </div>
       </div>
     );
   }
-
 }
