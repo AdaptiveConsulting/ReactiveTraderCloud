@@ -20,3 +20,4 @@ sed -i "s/__VJQ__/$vJq/g"                          ./build/Dockerfile
 
 docker build --no-cache -t $testtoolsContainer ./build/.
 docker tag $testtoolsContainer $testtoolsContainer.$build
+docker tag $testtoolsContainer $testtoolsContainer_latest
