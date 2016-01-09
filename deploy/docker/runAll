@@ -1,17 +1,9 @@
 #! /bin/bash
 
-if [[ $# != 1 ]];then
-  echo " "
-  echo " usage:"
-  echo " "
-  echo "   runAll BUILD_NUMBER"
-  echo " "
-  echo "   ie: ./runAll 187"
-  echo " "
-  exit 1
-fi
-
 build=$1
+
+# fail fast
+set -euo pipefail
 
 scream() {
     echo "error on $1"

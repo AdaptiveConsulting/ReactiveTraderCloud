@@ -1,0 +1,8 @@
+#! /bin/bash
+
+#fail fast
+set -euo pipefail
+
+cd ../docker
+./testAll
+cd ../e2e
