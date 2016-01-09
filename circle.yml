@@ -9,11 +9,11 @@ dependencies:
     - deploy/docker/build/web/.npm
   override:
     - docker info
-    - cd deploy/circleCi && chmod 755 ensurePermissions && ./ensurePermissions
-    - cd deploy/circleCi && ./loadContainers
-    - cd deploy/circleCi && ./buildContainers
-    - cd deploy/circleCi && ./runContainers
-    - cd deploy/circleCi && ./saveContainers
+    - cd deploy/CI && chmod 755 ensurePermissions && ./ensurePermissions
+    - cd deploy/CI && ./loadContainers
+    - cd deploy/CI && ./buildContainers $CIRCLE_BUILD_NUM
+    - cd deploy/CI && ./runContainers $CIRCLE_BUILD_NUM
+    - cd deploy/CI && ./saveContainers
 
 test:
   override:
@@ -25,4 +25,4 @@ deployment:
   hub:
     branch: [master, Clean-Deploy]
     commands:
-      - cd deploy/circleCi && ./pushContainers
+      - cd deploy/CI && ./pushContainers $CIRCLE_BUILD_NUM
