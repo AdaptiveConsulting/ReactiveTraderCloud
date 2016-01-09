@@ -26,6 +26,7 @@ spec:
       containers:
       - name: "__SERVICE__"
         image: "__DOCKERIMAGE__"
+        imagePullPolicy: Always
         ports:
           - containerPort: 80
             name: "http"

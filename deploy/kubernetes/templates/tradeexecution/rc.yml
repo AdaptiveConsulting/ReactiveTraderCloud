@@ -27,3 +27,4 @@ spec:
       - name: "__SERVICE__"
         image: "__DOCKERIMAGE__"
         command: [ "dnx", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.TradeExecution", "prod" ]
+        imagePullPolicy: Always
