@@ -1,6 +1,14 @@
 #! /bin/bash
 
 build=$1
+release=$2
+if [[ $1 == "release" ]];then
+  release="release"
+  build=""
+fi
+if [[ $2 == "release" ]];then
+  release="release"
+fi
 
 # fail fast
 set -euo pipefail
@@ -13,6 +21,6 @@ scream() {
 for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter" "analytics"
 do
     cd run/$server
-    ./run $build || scream $server
+    ./run $build $release || scream $server
     cd ../..
 done

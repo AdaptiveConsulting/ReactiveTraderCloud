@@ -9,28 +9,11 @@ build=$1
 # fail fast
 set -euo pipefail
 
-. ../config
+echo ""
+echo "============================="
+echo "Run ReactiveTrader containers"
+echo ""
 
-echo "Start web"
-docker run -d --net=host $webContainer.$build
-
-echo "Start Eventstore"
-docker run -d --net=host $populatedEventstoreContainer.$build
-
-echo "Start Broker"
-docker run -d --net=host $brokerContainer.$build
-
-echo "Start ReferenceDataRead"
-docker run -d --net=host $serversContainer.$build bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run ref && while true; do echo ping; sleep 60; done"
-
-echo "Start Pricing"
-docker run -d --net=host $serversContainer.$build bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run p && while true; do echo ping; sleep 60; done"
-
-echo "Start Trade Execution"
-docker run -d --net=host $serversContainer.$build bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run exec && while true; do echo ping; sleep 60; done"
-
-echo "Start Blotter"
-docker run -d --net=host $serversContainer.$build bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run b && while true; do echo ping; sleep 60; done"
-
-echo "Start Analytics"
-docker run -d --net=host $serversContainer.$build bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.Launcher run a && while true; do echo ping; sleep 60; done"
+cd ../docker
+./runAll $build release
+cd ../e2e

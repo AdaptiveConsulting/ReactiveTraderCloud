@@ -1,15 +1,18 @@
 #! /bin/bash
 
 build=""
-if [[ $1 != "" ]];then
+if [[ $1 != "" && $1 != "release" ]];then
   build=".$1"
 fi
+
+#fail fast
+set euo -pipefail
 
 echo "Web"
 
 . ../../../config
 
-docker rm web 2&> garbage
+docker rm web 2&> garbage || true
 
 command="cp /localhost/nginx.conf /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
 docker run -d --net=host \

@@ -1,18 +1,29 @@
 #! /bin/bash
 
-build=""
 if [[ $1 != "" ]];then
   build=".$1"
 fi
+releaseMode=""
+
+if [[ $1 == "release" ]];then
+  releaseMode="--configuration Release"
+  build=""
+fi
+if [[ $2 == "release" ]];then
+  releaseMode="--configuration Release"
+fi
+
+#fail fast
+set euo -pipefail
 
 echo "ReferenceDataRead"
 
 . ../../../config
 
-startCommand="dnx -p Adaptive.ReactiveTrader.Server.Launcher run ref"
+startCommand="dnx $releaseMode -p Adaptive.ReactiveTrader.Server.Launcher run ref"
 waitCommand="while true; do echo ping; sleep 60; done"
 
-docker rm reference 2&> garbage
+docker rm reference 2&> garbage || true
 
 docker run -d --net=host                      \
      --name reference                         \
