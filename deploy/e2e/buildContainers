@@ -9,5 +9,10 @@ build=$1
 # fail fast
 set -euo pipefail
 
+echo ""
+echo "==============================="
+echo "Build ReactiveTrader containers"
+echo ""
+
 cd ../docker
 ./prepare build services $build
