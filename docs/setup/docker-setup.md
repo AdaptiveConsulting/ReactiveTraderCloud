@@ -6,17 +6,12 @@ The following instructions have been tested on:
 
 #### Install docker for your OS
 
-- [Mac](https://docs.docker.com/mac/step_one/), 
-- [Linux](https://docs.docker.com/linux/step_one/) 
-- [Windows](https://docs.docker.com/windows/step_one/)
-
-After installation, follow the steps [here](https://docs.docker.com/engine/installation/) for instructions for your specific OS/distribution.
-
+Follow the steps [here](https://docs.docker.com/engine/installation/) for instructions for your specific OS/distribution.
 
 #### Start toolbox for Windows/Mac user:
 launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
 
-```bash
+```
                         ##         .
                   ## ## ##        ==
                ## ## ## ## ##    ===
@@ -57,6 +52,7 @@ The containers are hosted on docker hub for each successfull [master build](http
 Here, we will deploy the build 628.
 
 ```bash
+$ cd deploy/docker
 $ ./runAll 628
 ```
 
@@ -83,13 +79,18 @@ fa50bfc6a88a        adaptivetrader/servers:0.0.628    "bash -c 'dnx -p Adap"   3
 
 Then open a browser, navigate to the docker address (localhost for linux users and something like 192.168.99.100 for windows/mac users) and the web client should load.
 
+You can then stop all the containers with:
+```bash
+$ ./killAll
+```
+
 #### Build Reactive Trader
 
 If you prefer to run your own containers, you can build them easily.
 
 First, define a `BUILD_ID`. It's a string that will tag your containers. `mytest` or `1` are good choices. Here we will use `localtest`. 
 
-Change your working directory to `cd deploy/docker`, then run the following. This pulls base containers and builds the app containers so may take a while. 
+Change your working directory to `cd deploy/docker`, and stop any reactiveTrader container running with `./killAll`. This pulls base containers and builds the app containers so may take a while. 
 
 ```bash
 $ BUILD_ID="localtest"
@@ -100,4 +101,10 @@ You can then run the built containers with
 
 ```bash
 $ ./runAll $BUILD_ID
+```
+
+Finally stop all ReactiveTrader containers with:
+
+```bash
+$ ./killAll
 ```
