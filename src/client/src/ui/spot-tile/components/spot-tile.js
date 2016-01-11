@@ -117,7 +117,7 @@ class SpotTile extends React.Component {
    */
   parsePrice(price:number){
     const { precision, pip } = this.props,
-          priceString = price ? price.toFixed(precision) : '',
+          priceString = price ? this.toFixed(price, precision) : '',
           fractions   = priceString.split('.')[1];
 
     return priceString ? {
@@ -159,6 +159,16 @@ class SpotTile extends React.Component {
   }
 
   /**
+   * Does not actually do toFixed, truncates value to precision w/o rounding.
+   * @param {number} val
+   * @param {number} precision
+   * @returns {string}
+   */
+  toFixed(val, precision, factor = Math.pow(10, precision)){
+    return (Math.floor(val * factor) / factor).toFixed(precision);
+  }
+
+  /**
    * Calls back the passed fn with the direction and size
    * @param {String} direction
    */
@@ -169,7 +179,7 @@ class SpotTile extends React.Component {
       isNaN(s) || this.props.onExecute({
         direction: direction,
         amount: s,
-        rate: this.props[direction].toFixed(this.props.precision),
+        rate: this.toFixed(this.props[direction], this.props.precision),
         pair: this.props.pair,
         valueDate: this.SPOTDATE,
         trader: 'SJP'
