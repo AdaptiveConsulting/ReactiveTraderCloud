@@ -9,25 +9,19 @@ fi
 # fail fast
 set -euo pipefail
 
-# get config
 . ../../../config
 
 # run eventstore
-docker run -d --net=host $eventstoreContainer:$vEventstore > eventstore_id
-echo "container $(cat eventstore_id) started"
+docker run -d --net=host $eventstoreContainer > eventstore_id
 
 # populate it
 populateCommand=`cat "../../../../src/server/Populate Event Store.bat"`
-docker run -t --net=host                      \
-     $serversContainer:$vMajor.$vMinor.$build \
+docker run -t --net=host      \
+     $serversContainer.$build \
      $populateCommand > populate_id
-echo "container $(cat populate_id) started"
 
 # commit container
-echo -e "\ncommit"
-docker commit `cat eventstore_id` $populatedEventstoreContainer:$vMajor.$vMinor.$build
-docker tag -f $populatedEventstoreContainer:$vMajor.$vMinor.$build $populatedEventstoreContainer:latest
+docker commit `cat eventstore_id` $populatedEventstoreContainer
+docker tag -f $populatedEventstoreContainer $populatedEventstoreContainer.$build
 
-# stop eventstore
-echo -e "\nstop"
 docker kill `cat eventstore_id`

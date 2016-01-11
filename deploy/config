@@ -5,45 +5,81 @@
 # ==========
 domainName="adaptivecluster.com"
 
-# DOCKER
-# ======
+# VERSIONING
+# ==========
 vMajor="0"
 vMinor="0"
 
-vUbuntu="14.04.2"
+# Reactive Trader 
+brokerContainer_major="0"
+brokerContainer_minor="0"
+brokerContainer="reactivetrader/broker:$brokerContainer_major.$brokerContainer_minor"
+
+populatedEventstoreContainer_major="0"
+populatedEventstoreContainer_minor="0"
+populatedEventstoreContainer="reactivetrader/eventstore:$populatedEventstoreContainer_major.$populatedEventstoreContainer_minor"
+
+serversContainer_major="0"
+serversContainer_minor="0"
+serversContainer="reactivetrader/servers:$serversContainer_major.$serversContainer_minor"
+
+webContainer_major="0"
+webContainer_minor="0"
+webContainer="reactivetrader/web:$webContainer_major.$webContainer_minor"
+
+# Other containers
+# OS
+ubuntuContainer="ubuntu:14.04.2"
+debianContainer="debian:8.2"
+
+# crossbar
 vCrossbar="0.11.1"
+crossbarContainer_major="0"
+crossbarContainer_minor="0"
+crossbarContainer="weareadaptive/crossbar:$crossbarContainer_major.$crossbarContainer_minor"
+
+# eventstore
 vEventstore="3.3.0"
-vDnx="1.0.0-rc1-final"
-vNode="5.3"
-vDebian="8.2"
+eventstoreContainer_major="0"
+eventstoreContainer_minor="0"
+eventstoreContainer="weareadaptive/eventstore:$eventstoreContainer_major.$eventstoreContainer_minor"
+
+# node
+vNode="5.3.0"
+nodeContainer_major="0"
+nodeContainer_minor="0"
+nodeContainer="weareadaptive/node:$nodeContainer_major.$nodeContainer_minor"
+
+# nginx
 vNginx="1.9.7"
-vKubernetes="1.1.3"
+officialNginxContainer="nginx:$vNginx"
+nginxContainer_major="0"
+nginxContainer_minor="0"
+nginxContainer="weareadaptive/nginx:$nginxContainer_major.$nginxContainer_minor"
 
-vTesttools="1.0"
-vGcloud="1.0"
-vFluentd="0.0"
-vNsGateMajor="0"
-vNsGateMinor="1"
+# mono
+vDnx="1.0.0-rc1-final"
+monoContainer_major="0"
+monoContainer_minor="0"
+monoContainer="weareadaptive/mono:$monoContainer_major.$monoContainer_minor"
+
+# TestTool
 vJq="1.5"
+testtools_major="1"
+testtools_minor="1"
+testtoolsContainer_base="weareadaptive/testtools"
+testtoolsContainer="$testtoolsContainer_base:$testtools_major.$testtools_minor"
+testtoolsContainer_latest="$testtoolsContainer_base:latest"
 
-# here is written the name of all containers
-# Bases
-monoContainer="weareadaptive/mono"
-crossbarContainer="weareadaptive/crossbar"
-testtoolsContainer="weareadaptive/testtools"
-nodeContainer="weareadaptive/node"
-eventstoreContainer="weareadaptive/eventstore"
-gcloudContainer="weareadaptive/gcloud"
-nginxContainer="weareadaptive/nginx"
-fluentdContainer="weareadaptive/fluentd"
-kubernetesContainer="weareadaptive/kubernetes"
-nsGateContainer="weareadaptive/nsgate"
+# gcloud
+gcloudContainer_major="1"
+gcloudContainer_minor="0"
+gcloudContainer="weareadaptive/gcloud:$gcloudContainer_major.$gcloudContainer_minor"
 
-# Adaptive Trader
-brokerContainer="adaptivetrader/broker"
-serversContainer="adaptivetrader/servers"
-webContainer="adaptivetrader/web"
-populatedEventstoreContainer="adaptivetrader/eventstore"
+# nsgate
+nsGateContainer_major="0"
+nsGateContainer_minor="1"
+nsGateContainer="weareadaptive/nsgate:$nsGateContainer_major.$nsGateContainer_minor"
 
 # GCLOUD
 # ======

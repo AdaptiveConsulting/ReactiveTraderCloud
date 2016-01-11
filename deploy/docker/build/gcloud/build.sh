@@ -1,18 +1,22 @@
 #! /bin/bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "populate-eventstore-build: build number required as first parameter"
+  exit 1
+fi
+
 # fail fast
 set -euo pipefail
 
-# get and control config
 . ../../../config
 
 mkdir -p ./build
 
-# generate container folder
-mkdir -p ./build
+cp ./template.Dockerfile                           ./build/Dockerfile
+sed -i "s|__DEBIAN_CONTAINER__|$debianContainer|g" ./build/Dockerfile
 
-sed "s/__VDEBIAN__/$vDebian/g" ./template.Dockerfile > ./build/Dockerfile
 cp ./template.install.sh ./build/install.sh
 
-docker build --no-cache -t $gcloudContainer:$vGcloud ./build/.
-docker tag -f $gcloudContainer:$vGcloud $gcloudContainer:lastest
+docker build --no-cache -t $gcloudContainer ./build/.
+docker tag -f $gcloudContainer $gcloudContainer.$build

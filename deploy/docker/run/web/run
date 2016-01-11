@@ -1,21 +1,24 @@
 #! /bin/bash
 
-if [[ $# != 1 ]];then
-  echo "Web-run require build number"
+build=""
+if [[ $1 != "" && $1 != "release" ]];then
+  build=".$1"
 fi
-build=$1
+
+#fail fast
+set euo -pipefail
 
 echo "Web"
 
 . ../../../config
 
-docker rm web 2&> garbage
+docker rm web 2&> garbage || true
 
 command="cp /localhost/nginx.conf /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
-docker run -d --net=host                  \
-     --name web                           \
-     $webContainer:$vMajor.$vMinor.$build \
-     bash -c "$command"                   \
+docker run -d --net=host \
+     --name web          \
+     $webContainer$build \
+     bash -c "$command"  \
      > container_id 
 
 rm garbage

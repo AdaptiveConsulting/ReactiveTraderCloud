@@ -1,14 +1,23 @@
 #! /bin/bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "servers-build: build number required as first parameter"
+  exit 1
+fi
+
 # fail fast
 set -euo pipefail
 
 . ../../../config
 
-# generate container folder
 mkdir -p ./build
-sed "s/__VUBUNTU__/$vUbuntu/g"  ./template.Dockerfile > ./build/Dockerfile
 
-# build
-docker build --no-cache -t $testtoolsContainer:$vTesttools ./build/.
-docker tag -f $testtoolsContainer:$vTesttools $testtoolsContainer:latest
+cp ./template.Dockerfile ./build/Dockerfile
+
+sed -i "s/__UBUNTU_CONTAINER__/$ubuntuContainer/g" ./build/Dockerfile
+sed -i "s/__VJQ__/$vJq/g"                          ./build/Dockerfile
+
+docker build --no-cache -t $testtoolsContainer ./build/.
+docker tag -f $testtoolsContainer $testtoolsContainer.$build
+docker tag -f $testtoolsContainer $testtoolsContainer_latest

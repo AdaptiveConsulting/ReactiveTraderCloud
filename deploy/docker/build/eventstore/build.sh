@@ -1,20 +1,24 @@
 #! /bin/bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "populate-eventstore-build: build number required as first parameter"
+  exit 1
+fi
+
 # fail fast
 set -euo pipefail
 
-# get and control config
 . ../../../config
 
-# generate container folder
 mkdir -p ./build
 
-cp ./template.Dockerfile ./build/Dockerfile
-sed -i "s/__VUBUNTU__/$vUbuntu/g"         ./build/Dockerfile
-sed -i "s/__VEVENTSTORE__/$vEventstore/g" ./build/Dockerfile
+cp ./template.Dockerfile                           ./build/Dockerfile
+sed -i "s/__UBUNTU_CONTAINER__/$ubuntuContainer/g" ./build/Dockerfile
+sed -i "s/__VEVENTSTORE__/$vEventstore/g"          ./build/Dockerfile
 
-cp ./template.install.sh ./build/install.sh
+cp ./template.install.sh                  ./build/install.sh
 sed -i "s/__VEVENTSTORE__/$vEventstore/g" ./build/install.sh 
 
-# build
-docker build --no-cache -t $eventstoreContainer:$vEventstore ./build/.
+docker build --no-cache -t $eventstoreContainer ./build/.
+docker tag -f $eventstoreContainer $eventstoreContainer.$build

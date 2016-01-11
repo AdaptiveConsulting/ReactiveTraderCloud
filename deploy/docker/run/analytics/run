@@ -1,22 +1,31 @@
 #! /bin/bash
 
-if [[ $# != 1 ]];then
-  echo "blotter-run require build number"
+releaseMode=""
+if [[ $1 == "release" ]];then
+  releaseMode="--configuration Release"
+  build=""
+elif [[ $1 != "" ]];then
+  build=".$1"
 fi
-build=$1
+if [[ $2 == "release" ]];then
+  releaseMode="--configuration Release"
+fi
+
+#fail fast
+set euo -pipefail
 
 echo "Analytics"
 . ../../../config
 
-startCommand="dnx -p Adaptive.ReactiveTrader.Server.Launcher run a"
+startCommand="dnx $releaseMode -p Adaptive.ReactiveTrader.Server.Launcher run a"
 waitCommand="while true; do echo ping; sleep 60; done"
 
-docker rm analytics 2&> garbage
+docker rm analytics 2&> garbage || true
 
-docker run -d --net=host                       \
-     --name analytics                          \
-     $serversContainer:$vMajor.$vMinor.$build  \
-     bash -c "$startCommand && $waitCommand"   \
+docker run -d --net=host                     \
+     --name analytics                        \
+     $serversContainer$build                 \
+     bash -c "$startCommand && $waitCommand" \
      > container_id 
 
 rm garbage

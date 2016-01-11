@@ -9,18 +9,15 @@ fi
 # fail fast
 set -euo pipefail
 
-# get and control config
 . ../../../config
 
-# generate container folder
 mkdir -p ./build
-sed "s/__VCROSSBAR__/$vCrossbar/g" ./template.Dockerfile > ./build/Dockerfile
+
+cp  ./template.Dockerfile                              ./build/Dockerfile
+sed -i "s|__CROSSBAR_CONTAINER__|$crossbarContainer|g" ./build/Dockerfile
 
 # get files from project
 cp -r ../../../../src/server/.crossbar  ./build/.crossbar
 
-
-# build
-containerTaggedName="$brokerContainer:$vMajor.$vMinor.$build"
-docker build --no-cache -t $containerTaggedName ./build/.
-docker tag -f $containerTaggedName $brokerContainer:latest
+docker build --no-cache -t $brokerContainer ./build/.
+docker tag -f $brokerContainer $brokerContainer.$build

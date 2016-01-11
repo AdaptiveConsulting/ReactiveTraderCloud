@@ -16,18 +16,16 @@ set -euo pipefail
 
 # generate container folder
 mkdir -p ./build
-cp  ./template.Dockerfile       ./build/Dockerfile
-sed -i "s/__VNGINX__/$vNginx/g" ./build/Dockerfile
 
-cp  ./template.install.sh  ./build/install.sh
-sed -i "s/__VJQ__/$vJq/g"  ./build/install.sh
+cp nginx.conf                 ./build/
+cp bootstrap.sh               ./build/
+cp install.sh                 ./build/
+cp template.Dockerfile        ./build/Dockerfile
+cp template.updateServers.sh  ./build/updateServers.sh
+cp template.writeFunctions.sh ./build/writeFunctions.sh
 
-cp nginx.conf   ./build/
-cp bootstrap.sh ./build/
-cp template.updateServers.sh         ./build/updateServers.sh
+sed -i "s|__NGINX_CONTAINER__|$nginxContainer|g" ./build/Dockerfile
+sed -i "s/__DOMAIN__/$domainName/g" ./build/writeFunctions.sh
 
-cp template.writeFunctions.sh        ./build/writeFunctions.sh
-sed -i "s/__DOMAIN__/$domainName/g"  ./build/writeFunctions.sh
-
-# build
-docker build --no-cache -t $nsGateContainer:$vNsGateMajor.$vNsGateMinor.$build ./build/.
+docker build --no-cache -t $nsGateContainer ./build/.
+docker tag -f $nsGateContainer $nsGateContainer.$build

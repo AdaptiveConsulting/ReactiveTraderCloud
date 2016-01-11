@@ -1,36 +1,30 @@
 #! /bin/bash
 
-if [[ $# != 1 ]];then
-  echo " "
-  echo " usage:"
-  echo " "
-  echo "   testAll BUILD_NUMBER"
-  echo " "
-  echo "   ie: ./testAll 294"
-  echo " "
-  exit 1
+build=""
+if [[ $1 != "" ]];then
+  build=".$1"
 fi
-build=$1
 
 # fail fast
 set euo -pipefail
 
-# get and control config
 . ../config
 
-echo " "
-echo "Starting ReactiveTrader ..."
-./killAll > garbage
-./runAll $build > garbage
-docker ps
+# Test eventstore
+testCommand="for i in {1..10}; do curl -S http://localhost:2113/web/index.html && break; sleep 1; if [[ \$i == 10 ]];then false;fi; done"
+docker run -t         \
+  --net=host          \
+  $testtoolsContainer \
+  bash -c "$testCommand"
 
+if [[ $? != 0 ]];then
+  echo "Eventstore test as fail"
+  exit 1
+fi
 
+# smoke tests
 echo " "
 echo "Starting local tests ..."
-docker run -a STDOUT \
-  --net=host $serversContainer:$vMajor.$vMinor.$build \
+docker run                           \
+  --net=host $serversContainer$build \
   bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
-
-echo " "
-./killAll > garbage
-rm garbage

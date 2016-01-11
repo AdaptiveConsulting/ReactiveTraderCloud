@@ -1,17 +1,17 @@
 #! /bin/bash
 
-if [[ $# != 1 ]];then
-  echo " "
-  echo " usage:"
-  echo " "
-  echo "   runAll BUILD_NUMBER"
-  echo " "
-  echo "   ie: ./runAll 187"
-  echo " "
-  exit 1
+build=$1
+release=$2
+if [[ $1 == "release" ]];then
+  release="release"
+  build=""
+fi
+if [[ $2 == "release" ]];then
+  release="release"
 fi
 
-build=$1
+# fail fast
+set -euo pipefail
 
 scream() {
     echo "error on $1"
@@ -21,6 +21,6 @@ scream() {
 for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter" "analytics"
 do
     cd run/$server
-    ./run $build || scream $server
+    ./run $build $release || scream $server
     cd ../..
 done

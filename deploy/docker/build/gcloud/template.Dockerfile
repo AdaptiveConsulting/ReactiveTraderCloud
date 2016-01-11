@@ -1,4 +1,4 @@
-FROM            debian:__VDEBIAN__
+FROM            __DEBIAN_CONTAINER__
 MAINTAINER 	    weareadaptive <thibault@weareadaptive.com>
 
 COPY    install.sh    /opt/install.sh
