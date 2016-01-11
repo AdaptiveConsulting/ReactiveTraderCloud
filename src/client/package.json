@@ -27,7 +27,8 @@
     "test": "karma start ./karma.conf.js",
     "test:dev": "npm test -- --watch",
     "deploy": "webpack",
-    "deploy:prod": "NODE_ENV=production npm test && webpack"
+    "deploy:prod": "NODE_ENV=production npm test && webpack",
+    "openfin": "openfin -c src/app.json -l"
   },
   "license": "MIT",
   "dependencies": {
@@ -82,6 +83,7 @@
     "karma-spec-reporter": "0.0.23",
     "karma-webpack": "1.7.0",
     "node-sass": "3.4.2",
+    "openfin-cli": "1.0.1",
     "react-addons-test-utils": "0.14.5",
     "react-transform-catch-errors": "1.0.1",
     "react-transform-hmr": "1.0.1",
