@@ -171,6 +171,12 @@ $ [.../src/client] master ± npm i -g openfin-cli
 $ [.../src/client] master ± openfin -l -c src/app.json
 ```
 
+Now also supported as a built-in npm task:
+
+```sh
+$ [.../src/client] master ± npm run openfin
+```
+
 By default, OpenFin will connect to your local development server on port 3000 (`http://localhost:3000/`) but you can override that by passing an extra argument to the launcher:
 
 ```sh
