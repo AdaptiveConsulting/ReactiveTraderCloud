@@ -36,7 +36,10 @@ const webpackConfig = {
         from: './src/ui/common/images',
         to: 'images'
       }
-    ])
+    ]),
+    new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function (module, count) {
+      return module.resource && module.resource.indexOf('node_modules') !== -1;
+    })
   ],
   // these break for node 5.3+ when building WS stuff
   node: {
