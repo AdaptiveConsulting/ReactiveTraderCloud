@@ -37,7 +37,7 @@ const webpackConfig = {
         to: 'images'
       }
     ]),
-    new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function (module, count) {
+    new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function(module){
       return module.resource && module.resource.indexOf('node_modules') !== -1;
     })
   ],
