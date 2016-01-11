@@ -14,7 +14,7 @@ All frameworks and libraries used are entirely open source, and each component c
 
 The services are distributed and are capable of recovery from disconnections. This demonstrates a similar approach to what is put into practice in major financial institutions for trading systems.
 
-![image](docs/reactive-trader-design.jpg)
+![image](docs/reactive-rader-screencapture.gif)
 
 ### Live Demo
 A live demo can be found at [web-demo.adaptivecluster.com/](http://web-demo.adaptivecluster.com/)
@@ -31,7 +31,7 @@ Client-side implementations are available for all major platforms, including des
 
 ### Front-End
 
-The front-end is written in Javascript with React. 
+The front-end is written in Javascript with React.
 
 ### Back-End
 
@@ -39,7 +39,7 @@ The back-end services are cross-platform. For details of how to set up the servi
 
 ## Getting Started
 
-Get your environment setup and start up the various component parts running on your environment of choice. 
+Get your environment setup and start up the various component parts running on your environment of choice.
 
 + [Windows](docs/setup/windows-setup.md)
 + [Mac](docs/setup/macos-setup.md)
