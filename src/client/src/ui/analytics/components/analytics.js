@@ -13,8 +13,9 @@ import { serviceContainer, model as serviceModel } from 'services';
 const LINECHART = 'lineChart';
 
 const tooltip = d =>{
-  const { value, series } = d;
-  return `<p><strong>${value}:</strong> ${series[0].value}</p>`;
+  const { value, series } = d,
+        formatted = numeral(series[0].value).format('0.0a');
+  return `<p><strong>${value}:</strong> ${formatted}</p>`;
 };
 
 export default class Analytics extends React.Component {
@@ -48,23 +49,19 @@ export default class Analytics extends React.Component {
       xAxis: {
         tickFormat: (d) => d3.time.format('%X')(new Date(d))
       },
-      x2Axis: {
-        tickFormat: (d) => d3.time.format('%X')(new Date(d))
-      },
       yAxis: {
-        axisLabel: 'PnL',
-        tickFormat: d3.format(',.1'),
+        tickFormat: d3.format('s'),
       },
-      showYAxis: false,
+      showYAxis: true,
       showXAxis: true,
       showLegend: false,
       useInteractiveGuideline: true,
       duration: 0,
       margin: {
-        left: 0,
+        left: 24,
         top: 0,
         right: 0,
-        bottom: 30
+        bottom: 24
       }
     };
 
