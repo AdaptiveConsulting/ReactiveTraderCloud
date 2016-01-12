@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const isProductionMode = process.env.NODE_ENV == 'production';
+const chalk = require('chalk');
 
 const path = require('path');
 
@@ -125,6 +126,7 @@ const webpackConfig = {
 };
 
 if (isProductionMode){
+  console.log('Starting a ' + chalk.red('production') + ' build...');
   webpackConfig.module.loaders = webpackConfig.module.loaders.map(function(loader){
     if (/css/.test(loader.test)){
       var first = loader.loaders[0];
@@ -140,6 +142,9 @@ if (isProductionMode){
       compress: {
         'unused': true,
         'dead_code': true
+      },
+      output: {
+       comments: false
       }
     })
   );
