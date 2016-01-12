@@ -129,7 +129,7 @@ class Blotter extends React.Component {
     }, {
       name: 'Value date',
       field: 'valueDate',
-      cellConstructor: () => props => <DateCell field='valueDate' prefix='SP. ' format='DD MMM' data={trades} {...props} />, // eslint-disable-line
+      cellConstructor: () => props => <DateCell field='valueDate' prefix='SP. ' format='%d %b' data={trades} {...props} />, // eslint-disable-line
       width: 100
     }, {
       name: 'Trader',
