@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const isProductionMode = process.env.NODE_ENV == 'production';
+const chalk = require('chalk');
 
 const path = require('path');
 
@@ -36,7 +37,10 @@ const webpackConfig = {
         from: './src/ui/common/images',
         to: 'images'
       }
-    ])
+    ]),
+    new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function(module){
+      return module.resource && module.resource.indexOf('node_modules') !== -1;
+    })
   ],
   // these break for node 5.3+ when building WS stuff
   node: {
@@ -122,6 +126,7 @@ const webpackConfig = {
 };
 
 if (isProductionMode){
+  console.log('Starting a ' + chalk.red('production') + ' build...');
   webpackConfig.module.loaders = webpackConfig.module.loaders.map(function(loader){
     if (/css/.test(loader.test)){
       var first = loader.loaders[0];
@@ -137,6 +142,9 @@ if (isProductionMode){
       compress: {
         'unused': true,
         'dead_code': true
+      },
+      output: {
+       comments: false
       }
     })
   );
