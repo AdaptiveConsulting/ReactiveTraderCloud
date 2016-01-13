@@ -23,7 +23,8 @@ export default class Analytics extends React.Component {
 
   static propTypes = {
     history: React.PropTypes.array,
-    positions: React.PropTypes.array
+    positions: React.PropTypes.array,
+    onTearoff: React.PropTypes.func
   }
 
   constructor(props, context){
@@ -119,6 +120,8 @@ export default class Analytics extends React.Component {
     this.setState({
       tearoff: state
     });
+
+    this.props.onTearoff && this.props.onTearoff(state);
   }
 
   formatHistoricData(data = []){

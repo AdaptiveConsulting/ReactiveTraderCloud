@@ -3,10 +3,18 @@
   left: 4px;
   position: absolute;
   top: 51px;
-  bottom: 20%;
-  right: 350px;
+  bottom: $blotter-height;
+  right: $analytics-width;
   //margin-bottom: 25%;
   overflow: auto;
+
+  .blotter-out & {
+    bottom: 0;
+  }
+
+  .analytics-out & {
+    right: 0;
+  }
 }
 
 

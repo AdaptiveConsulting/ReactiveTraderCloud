@@ -6,7 +6,10 @@ $stroke-color: slategray;
   margin-left: 4px;
   position: absolute;
   top: 52px;
-  bottom: 20%;
+  bottom: $blotter-height;
+  .blotter-out & {
+    bottom: 0;
+  }
   overflow-x: hidden;
   overflow-y: auto;
   right: 0px;

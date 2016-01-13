@@ -29,7 +29,8 @@ class Blotter extends React.Component {
     trades: React.PropTypes.array,
     status: React.PropTypes.number,
     containerWidth: React.PropTypes.number,
-    containerHeight: React.PropTypes.number
+    containerHeight: React.PropTypes.number,
+    onTearoff: React.PropTypes.func
   }
 
   constructor(props, context){
@@ -56,6 +57,8 @@ class Blotter extends React.Component {
     this.setState({
       tearoff: state
     });
+
+    this.props.onTearoff && this.props.onTearoff(state);
   }
 
   componentWillReceiveProps(){
