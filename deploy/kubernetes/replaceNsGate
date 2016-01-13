@@ -23,11 +23,11 @@ mkdir -p $manifestFolder
 
 cp ./$service/rc.yml $rcFile
 
-sed -i  "s/__MAJOR__/$nsGateContainer_major/g" $rcFile
-sed -i  "s/__MINOR__/$nsGateContainer_minor/g" $rcFile
-sed -i  "s/__BUILD__/$build/g" $rcFile
-sed -i  "s|__DOCKERIMAGE__|$nsGateContainer$build|g" $rcFile
-sed -i  "s/__NAMESPACE__/$namespace/g" $rcFile
+sed -ie "s/__MAJOR__/$nsGateContainer_major/g" $rcFile
+sed -ie "s/__MINOR__/$nsGateContainer_minor/g" $rcFile
+sed -ie "s/__BUILD__/$build/g" $rcFile
+sed -ie "s|__DOCKERIMAGE__|$nsGateContainer$build|g" $rcFile
+sed -ie "s/__NAMESPACE__/$namespace/g" $rcFile
 cd ..
 
 

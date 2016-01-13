@@ -1,9 +1,9 @@
 #! /bin/bash
 
-if [[ $# < 2 ]];then 
+if [[ $# < 2 ]];then
   echo "parameter error: "
   echo "  usage:"
-  echo "  $0 SERVICE NAMESPACE [BUILD_ID]"  
+  echo "  $0 SERVICE NAMESPACE [BUILD_ID]"
   exit 1
 fi
 service=$1
@@ -31,32 +31,32 @@ cp ./$service/rc.yml $rcFile
 
 # get good docker image
 dockerImage=""
-if [[ $service == "broker" ]];then 
+if [[ $service == "broker" ]];then
   dockerImage="$brokerContainer$buildTag";
   vMajor=$brokerContainer_major
-  vMinor=$brokerContainer_minor 
+  vMinor=$brokerContainer_minor
 fi
-if [[ $service == "web" ]];then 
+if [[ $service == "web" ]];then
   dockerImage="$webContainer$buildTag";
   vMajor=$webContainer_major
-  vMinor=$webContainer_minor  
+  vMinor=$webContainer_minor
 fi
-if [[ $service == "eventstore" ]];then 
+if [[ $service == "eventstore" ]];then
   dockerImage="$populatedEventstoreContainer$buildTag";
   vMajor=$populatedEventstoreContainer_major
   vMinor=$populatedEventstoreContainer_minor
 fi
 
 dotnetServices="analytics blotter pricing referencedataread tradeexecution"
-if listcontains "$dotnetServices" $service; then 
+if listcontains "$dotnetServices" $service; then
   dockerImage="$serversContainer$buildTag";
   vMajor=$serversContainer_major
   vMinor=$serversContainer_minor
-fi 
+fi
 
-sed -i  "s/__SERVICE__/$service/g" $rcFile
-sed -i  "s/__MAJOR__/$vMajor/g" $rcFile
-sed -i  "s/__MINOR__/$vMinor/g" $rcFile
-sed -i  "s/__BUILD__/$build/g" $rcFile
-sed -i  "s|__DOCKERIMAGE__|$dockerImage|g" $rcFile
-sed -i  "s/__NAMESPACE__/$namespace/g" $rcFile
+sed -ie  "s/__SERVICE__/$service/g" $rcFile
+sed -ie  "s/__MAJOR__/$vMajor/g" $rcFile
+sed -ie  "s/__MINOR__/$vMinor/g" $rcFile
+sed -ie  "s/__BUILD__/$build/g" $rcFile
+sed -ie  "s|__DOCKERIMAGE__|$dockerImage|g" $rcFile
+sed -ie  "s/__NAMESPACE__/$namespace/g" $rcFile

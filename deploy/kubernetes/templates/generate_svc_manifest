@@ -1,9 +1,9 @@
 #! /bin/bash
 
-if [[ $# < 2 ]];then 
+if [[ $# < 2 ]];then
   echo "parameter error: "
   echo "  usage:"
-  echo "  $0 SERVICE NAMESPACE [BUILD_ID]"  
+  echo "  $0 SERVICE NAMESPACE [BUILD_ID]"
   exit 1
 fi
 service=$1
@@ -19,26 +19,26 @@ mkdir -p $manifestFolder
 
 cp ./$service/svc.yml $svcFile
 
-if [[ $service == "broker" ]];then 
+if [[ $service == "broker" ]];then
   vMajor=$brokerContainer_major
-  vMinor=$brokerContainer_minor 
+  vMinor=$brokerContainer_minor
 fi
-if [[ $service == "web" ]];then 
+if [[ $service == "web" ]];then
   vMajor=$webContainer_major
-  vMinor=$webContainer_minor  
+  vMinor=$webContainer_minor
 fi
-if [[ $service == "eventstore" ]];then 
+if [[ $service == "eventstore" ]];then
   vMajor=$populatedEventstoreContainer_major
   vMinor=$populatedEventstoreContainer_minor
 fi
 
 dotnetServices="analytics blotter pricing referencedataread tradeexecution"
-if listcontains "$dotnetServices" $service; then 
+if listcontains "$dotnetServices" $service; then
   vMajor=$serversContainer_major
   vMinor=$serversContainer_minor
-fi 
+fi
 
-sed -i  "s/__SERVICE__/$service/g"     $svcFile
-sed -i  "s/__MAJOR__/$vMajor/g"        $svcFile
-sed -i  "s/__MINOR__/$vMinor/g"        $svcFile
-sed -i  "s/__NAMESPACE__/$namespace/g" $svcFile
+sed -ie "s/__SERVICE__/$service/g"     $svcFile
+sed -ie "s/__MAJOR__/$vMajor/g"        $svcFile
+sed -ie "s/__MINOR__/$vMinor/g"        $svcFile
+sed -ie "s/__NAMESPACE__/$namespace/g" $svcFile
