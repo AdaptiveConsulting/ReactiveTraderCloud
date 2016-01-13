@@ -1,8 +1,8 @@
 #! /bin/bash
 
-if [[ $# != 1 ]];then 
-  echo "parameter error: namespace"  
-  exit 1 
+if [[ $# != 1 ]];then
+  echo "parameter error: namespace"
+  exit 1
 fi
 namespace=$1
 
@@ -13,4 +13,4 @@ mkdir -p $manifestFolder
 
 cp ./ns.yml $nsFile
 
-sed -i  "s/__NAMESPACE__/$namespace/g" $nsFile
+sed -ie "s/__NAMESPACE__/$namespace/g" $nsFile

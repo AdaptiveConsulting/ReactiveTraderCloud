@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 build=$1
 if [[ $build = "" ]];then
@@ -14,7 +14,7 @@ set -euo pipefail
 mkdir -p ./build
 
 cp  ./template.Dockerfile                              ./build/Dockerfile
-sed -i "s|__CROSSBAR_CONTAINER__|$crossbarContainer|g" ./build/Dockerfile
+sed -ie "s|__CROSSBAR_CONTAINER__|$crossbarContainer|g" ./build/Dockerfile
 
 # get files from project
 cp -r ../../../../src/server/.crossbar  ./build/.crossbar

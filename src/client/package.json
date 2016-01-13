@@ -27,7 +27,7 @@
     "test": "karma start ./karma.conf.js",
     "test:dev": "npm test -- --watch",
     "deploy": "webpack",
-    "deploy:prod": "export NODE_ENV=production && npm test && webpack"
+    "deploy:prod": "export NODE_ENV=production && webpack"
   },
   "license": "MIT",
   "dependencies": {

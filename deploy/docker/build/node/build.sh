@@ -16,8 +16,8 @@ mkdir -p ./build
 cp ./template.Dockerfile ./build/Dockerfile
 cp ./template.install.sh ./build/install.sh
 
-sed -i "s|__UBUNTU_CONTAINER__|$ubuntuContainer|g" ./build/Dockerfile
-sed -i "s/__VNODE__/$vNode/g" ./build/install.sh
+sed -ie "s|__UBUNTU_CONTAINER__|$ubuntuContainer|g" ./build/Dockerfile
+sed -ie "s/__VNODE__/$vNode/g" ./build/install.sh
 
 docker build --no-cache -t $nodeContainer ./build/.
 docker tag -f $nodeContainer $nodeContainer.$build

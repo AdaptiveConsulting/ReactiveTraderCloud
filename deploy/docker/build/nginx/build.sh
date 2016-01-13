@@ -15,7 +15,7 @@ mkdir -p ./build
 
 cp ./template.Dockerfile ./build/Dockerfile
 
-sed -i "s|__OFFICIAL_NGINX_CONTAINER__|$officialNginxContainer|g" ./build/Dockerfile
+sed -ie "s|__OFFICIAL_NGINX_CONTAINER__|$officialNginxContainer|g" ./build/Dockerfile
 
 # build
 docker build --no-cache -t $nginxContainer ./build/.

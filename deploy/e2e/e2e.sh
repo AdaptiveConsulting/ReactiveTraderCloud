@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 build_id=$1
 if [[ $1 == "" ]];then
@@ -10,14 +10,18 @@ set -euo pipefail
 
 startTime=$(date)
 
-./buildContainers $build_id
-./runContainers   $build_id
+for file in ./{build,run}Containers; do
+  [ -r "$file" ] && exec "$file" $build_id;
+done
+unset file
 
 echo "Giving some time for services to start"
 sleep 10
 
-./testContainers  $build_id
-./stopContainers
+for file in ./{test,stop}Containers; do
+  [ -r "$file" ] && exec "$file" $build_id
+done
+unset file
 
 echo " "
 echo "============="

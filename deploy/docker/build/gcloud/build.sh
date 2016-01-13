@@ -14,7 +14,7 @@ set -euo pipefail
 mkdir -p ./build
 
 cp ./template.Dockerfile                           ./build/Dockerfile
-sed -i "s|__DEBIAN_CONTAINER__|$debianContainer|g" ./build/Dockerfile
+sed -ie "s|__DEBIAN_CONTAINER__|$debianContainer|g" ./build/Dockerfile
 
 cp ./template.install.sh ./build/install.sh
 

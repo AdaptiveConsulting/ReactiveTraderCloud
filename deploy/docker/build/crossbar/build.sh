@@ -14,7 +14,7 @@ set -euo pipefail
 mkdir -p ./build
 
 cp ./template.Dockerfile                           ./build/Dockerfile
-sed -i "s/__UBUNTU_CONTAINER__/$ubuntuContainer/g" ./build/Dockerfile 
+sed -ie "s/__UBUNTU_CONTAINER__/$ubuntuContainer/g" ./build/Dockerfile
 
 cp ./template.install.sh ./build/install.sh
 

@@ -18,12 +18,12 @@ cp npminstall/npminstall.sh        ./npminstall/build/npminstall.sh
 cp npminstall/template.Dockerfile  ./npminstall/build/Dockerfile
 cp -r ../../../../src/client/      ./npminstall/build/client
 
-sed -i "s|__NODE_CONTAINER__|$nodeContainer|g" ./npminstall/build/Dockerfile
+sed -ie "s|__NODE_CONTAINER__|$nodeContainer|g" ./npminstall/build/Dockerfile
 
 docker build --no-cache -t weareadaptive/websrc:$build  ./npminstall/build/.
 
 # run the build container sharing the cache folder
-# the src are not directly shared as their is an error of synchronisation 
+# the src are not directly shared as their is an error of synchronisation
 #   when node_modules tryied to be synced between container/VM and Host on windows
 docker run              \
   -v /$(pwd)/.npm:/.npm \
@@ -38,7 +38,7 @@ cp ./nginx/dev.nginx.conf        ./nginx/build/dev.nginx.conf
 cp ./nginx/prod.nginx.conf       ./nginx/build/prod.nginx.conf
 cp -r ./dist                     ./nginx/build/dist
 
-sed -i "s|__NGINX_CONTAINER__|$nginxContainer|g" ./nginx/build/Dockerfile
+sed -ie "s|__NGINX_CONTAINER__|$nginxContainer|g" ./nginx/build/Dockerfile
 
 docker build --no-cache -t $webContainer  ./nginx/build/.
 docker tag -f $webContainer $webContainer.$build

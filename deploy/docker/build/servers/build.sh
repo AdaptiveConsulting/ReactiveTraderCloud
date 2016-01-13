@@ -17,8 +17,8 @@ mkdir -p ./build
 cp -r ../../../../src/server ./build/
 
 cp  ./template.Dockerfile                      ./build/Dockerfile
-sed -i "s|__MONO_CONTAINER__|$monoContainer|g" ./build/Dockerfile
-sed -i "s/__VDNX__/$vDnx/g"                    ./build/Dockerfile
+sed -ie "s|__MONO_CONTAINER__|$monoContainer|g" ./build/Dockerfile
+sed -ie "s/__VDNX__/$vDnx/g"                    ./build/Dockerfile
 
 # build
 docker build --no-cache -t weareadaptive/serverssrc:$build ./build/.
@@ -29,7 +29,7 @@ buildCommand="mkdir -p /packages"
 buildCommand="$buildCommand && cp -r /packages /root/.dnx/"
 buildCommand="$buildCommand && dnu restore"
 buildCommand="$buildCommand && cp -r /root/.dnx/packages /"
-docker run -t --name dnurestored -v /$(pwd)/dnxcache:/packages weareadaptive/serverssrc:$build bash -c "$buildCommand" 
+docker run -t --name dnurestored -v /$(pwd)/dnxcache:/packages weareadaptive/serverssrc:$build bash -c "$buildCommand"
 
 # commit
 docker commit dnurestored $serversContainer
