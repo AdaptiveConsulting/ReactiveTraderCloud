@@ -6,7 +6,15 @@ notifications, browser chrome, users and much more.
 
 ## Installing
 
-You need to get [node](https://nodejs.org/en/) working first. To install the OpenFin configurator, do the following:
+By default, doing an `npm install` in the client folder will also get a small OpenFin cli binary.
+
+You can then run the built-in npm task:
+
+```sh
+$ [.../src/client] master ± npm run openfin
+```
+
+You can also do this separately to the npm workflow. Get [node](https://nodejs.org/en/) working first, then do the following:
 
 ```sh
 [:~/projects/reactive-trader-cloud/src] master(+23/-0)+ ± npm install -g openfin-cli
@@ -16,10 +24,10 @@ You can now run it against the `app.json`, which will fetch the required runtime
 
 ```sh
 [:~/projects/reactive-trader-cloud/src] master(+23/-0)+ ± cd client
-[:~/projects/reactive-trader-cloud/src/client] master(+23/-0)+ ± $ openfin -c src/app.json
+[:~/projects/reactive-trader-cloud/src/client] master(+23/-0)+ ± $ openfin -c src/app.json -l
 ```
 
-Optionally, you can also launch it via adding `-l` to the above line.
+The `-l` argument launches OpenFin in addition to updating `app.json` and creating a shortcut (one-off).
 
 > NB: Prior to Electron release, OpenFin is only available for windows
 
