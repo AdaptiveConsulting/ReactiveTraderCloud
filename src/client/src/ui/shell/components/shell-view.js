@@ -41,6 +41,7 @@ class ShellView extends React.Component {
       connected: false,
       services: {}
     };
+
     this._disposables = new Rx.CompositeDisposable();
   }
 
@@ -177,14 +178,15 @@ class ShellView extends React.Component {
   }
 
   render(){
-
     return (
-      <div>
+      <div className='flex-container'>
         <common.components.Modal />
         <Header status={this.state.connected}/>
-        <WorkspaceView onExecute={(payload) => this.addTrade(payload)}/>
-        <Analytics />
-        <Blotter trades={this.state.trades}/>
+        <div className='horizontal-wrap'>
+          <WorkspaceView onExecute={(payload) => this.addTrade(payload)}/>
+          <Analytics />
+        </div>
+        <Blotter trades={this.state.trades}   />
       </div>
     );
   }

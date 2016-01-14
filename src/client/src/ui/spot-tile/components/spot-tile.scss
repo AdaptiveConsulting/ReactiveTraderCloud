@@ -1,14 +1,8 @@
 .currency-pairs {
-  //margin-top: 54px;
-  left: 4px;
-  position: absolute;
-  top: 51px;
-  bottom: 20%;
-  right: 350px;
-  //margin-bottom: 25%;
+  flex: 1;
+  align-self: stretch;
   overflow: auto;
 }
-
 
 .currency-pair {
   box-sizing: border-box;
@@ -204,39 +198,6 @@
 }
 
 // iphone.
-@media (max-width: $screen-xs-max) {
-  .currency-pairs {
-    margin: 0;
-    margin-bottom: 150px;
-    top: auto;
-    bottom: auto;
-    left: auto;
-    right: auto;
-    display: block;
-    position: static;
-
-    .currency-pair {
-      width: 100%;
-      margin-right: 0;
-      margin-left: 0;
-      .glyphicon-new-window {
-        display: none;
-      }
-    }
-  }
-}
-
-@media (max-width: $screen-sm-max) {
-  .currency-pairs {
-    margin: 0;
-    right: 0;
-    top: auto;
-    left: auto;
-    display: block;
-    position: static;
-    height: 300px;
-  }
-}
 
 
 #popout-content-container {

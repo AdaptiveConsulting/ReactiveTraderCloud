@@ -4,9 +4,7 @@ $stroke-color: slategray;
 
 .analytics-container {
   margin-left: 4px;
-  position: absolute;
-  top: 52px;
-  bottom: 20%;
+  align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
   right: 0px;
@@ -140,18 +138,4 @@ $stroke-color: slategray;
 
   }
   @import 'nvd3';
-}
-
-
-@media (max-width: $screen-sm-max) {
-  .analytics-container {
-    top: auto;
-    bottom: auto;
-    left: auto;
-    right: auto;
-    display: block;
-    position: static;
-    max-width: none;
-    width: 100%;
-  }
 }
