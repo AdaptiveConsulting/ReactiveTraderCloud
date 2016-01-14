@@ -1,0 +1,56 @@
+//tweaks for flexbox and responsive design
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 100vh;
+}
+
+.main-wrap {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+
+@media (max-width: $screen-sm-max) {
+  .container {
+    display: block;
+    flex-grow: 0;
+    min-height: 0;
+  }
+  .main-wrap {
+    display: block;
+    overflow: auto;
+    position: absolute;
+    top: 53px;
+    bottom: $blotter-height;
+    right: 0;
+    .analytics-container {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+    }
+    .currency-pairs {
+      overflow: visible;
+      display: block;
+      .currency-pair {
+        width: 100%;
+        margin-left: 0;
+        .currency-pair-title {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+  .blotter {
+    display: block;
+    position: absolute;
+    bottom: 0;
+  }
+
+  .container-control {
+    display: none;
+  }
+}

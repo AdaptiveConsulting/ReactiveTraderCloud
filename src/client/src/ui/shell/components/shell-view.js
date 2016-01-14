@@ -199,15 +199,17 @@ class ShellView extends React.Component {
   }
 
   render(){
-    const className = this.state.tearoffs.join(' ');
+    const className = 'container ' + this.state.tearoffs.join(' ');
 
     return (
       <div className={className}>
         <common.components.Modal />
         <Header status={this.state.connected}/>
-        <WorkspaceView onExecute={(payload) => this.addTrade(payload)}/>
-        <Analytics onTearoff={(out) => this.updateTearoffState('analytics-out', out)} />
-        <Blotter trades={this.state.trades} onTearoff={(out) => this.updateTearoffState('blotter-out', out)} />
+        <div className="main-wrap">
+          <WorkspaceView onExecute={(payload) => this.addTrade(payload)}/>
+          <Analytics />
+        </div>
+        <Blotter trades={this.state.trades}   />
       </div>
     );
   }

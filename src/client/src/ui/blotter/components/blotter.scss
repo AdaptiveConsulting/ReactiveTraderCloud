@@ -1,10 +1,8 @@
 $hover-color: #7DE3FC;
+$blotter-height: 280px;
+
 
 .blotter {
-  position: fixed;
-  bottom: 0px;
-  left: 0;
-  right: 0;
   height: $blotter-height;
   background: #fff;
 
@@ -562,12 +560,5 @@ $hover-color: #7DE3FC;
   .Processing {
     color: $brand-warning;
     background: rgba(255,255,255,.1);
-  }
-}
-
-// iphone.
-@media (max-width: $screen-sm-max) {
-  .blotter {
-    display: none;
   }
 }
