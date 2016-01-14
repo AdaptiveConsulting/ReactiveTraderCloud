@@ -1,13 +1,13 @@
 //tweaks for flexbox and responsive design
 
-.container {
+.flex-container {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   min-height: 100vh;
 }
 
-.main-wrap {
+.horizontal-wrap {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
@@ -15,12 +15,12 @@
 
 
 @media (max-width: $screen-sm-max) {
-  .container {
+  .flex-container {
     display: block;
     flex-grow: 0;
     min-height: 0;
   }
-  .main-wrap {
+  .horizontal-wrap {
     display: block;
     overflow: auto;
     position: absolute;
