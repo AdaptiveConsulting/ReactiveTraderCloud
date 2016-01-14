@@ -177,27 +177,6 @@ class ShellView extends React.Component {
     );
   }
 
-  /**
-   * Sets state of tearoffs to add a class that adjusts height and width of workspace view.
-   * @param {String} component
-   * @param {Boolean} isOut
-   */
-  updateTearoffState(component:string, isOut:boolean){
-    let current = this.state.tearoffs,
-        isTornOff = current.indexOf(current);
-
-    if (isOut){
-      current.push(component);
-    }
-    else {
-      current.splice(isTornOff, 1);
-    }
-
-    this.setState({
-      tearoffs: current
-    });
-  }
-
   render(){
     const className = 'container ' + this.state.tearoffs.join(' ');
 
