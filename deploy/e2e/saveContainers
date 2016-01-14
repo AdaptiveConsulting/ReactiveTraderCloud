@@ -1,0 +1,11 @@
+#! /bin/bash
+
+. ../config
+
+mkdir -p ~/docker
+
+echo "Saving containers"
+docker save $monoContainer       > ~/docker/mono.tar
+docker save $crossbarContainer   > ~/docker/crossbar.tar
+docker save $eventstoreContainer > ~/docker/eventstore.tar
+docker save $nginxContainer      > ~/docker/nginx.tar

@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import { time } from 'd3';
 import { Cell } from 'fixed-data-table';
 
 /**
@@ -18,10 +18,10 @@ export default class DateCell extends React.Component {
   }
 
   render(){
-    const { rowIndex, field, data, format = 'MMM Do, HH:mm:ss', prefix = '', ...props } = this.props;
+    const { rowIndex, field, data, format = '%b %e, %H:%M:%S', prefix = '', ...props } = this.props;
     const row = data[rowIndex];
     const fieldValue = row[field];
-    const formatted = moment(fieldValue).format(format);
+    const formatted = time.format(format)(new Date(fieldValue));
 
     return (
       <Cell {...props}>

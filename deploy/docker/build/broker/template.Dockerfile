@@ -1,4 +1,4 @@
-FROM        weareadaptive/crossbar:__VCROSSBAR__
+FROM        __CROSSBAR_CONTAINER__
 MAINTAINER 	weareadaptive <thibault@weareadaptive.com>
 
 COPY        .crossbar  /server/.crossbar

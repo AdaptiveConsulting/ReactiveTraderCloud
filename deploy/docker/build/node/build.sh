@@ -1,12 +1,23 @@
 #! /bin/bash
 
+build=$1
+if [[ $build = "" ]];then
+  echo "web-build: build number required as first parameter"
+  exit 1
+fi
+
 # fail fast
 set -euo pipefail
 
 . ../../../config
 
 mkdir -p ./build
-sed "s/__VUBUNTU__/$vUbuntu/g" ./template.Dockerfile > ./build/Dockerfile
-sed "s/__VNODE__/$vNode/g" ./template.install.sh > ./build/install.sh
 
-docker build --no-cache -t $nodeContainer:$vNode ./build/.
+cp ./template.Dockerfile ./build/Dockerfile
+cp ./template.install.sh ./build/install.sh
+
+sed -ie "s|__UBUNTU_CONTAINER__|$ubuntuContainer|g" ./build/Dockerfile
+sed -ie "s/__VNODE__/$vNode/g" ./build/install.sh
+
+docker build --no-cache -t $nodeContainer ./build/.
+docker tag -f $nodeContainer $nodeContainer.$build

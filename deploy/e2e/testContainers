@@ -1,0 +1,13 @@
+#! /bin/bash
+
+#fail fast
+set -euo pipefail
+
+echo ""
+echo "=============================="
+echo "Test ReactiveTrader containers"
+echo ""
+
+cd ../docker
+./testAll
+cd ../e2e

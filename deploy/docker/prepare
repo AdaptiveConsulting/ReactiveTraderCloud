@@ -1,10 +1,13 @@
 #! /bin/bash
 
+# fail fast
+set -euo pipefail
+
 # CONFIGURATION
 # =============
 possibleCommands="build push"
 services="servers broker web populatedEventstore"
-possibleGroup="services gcloud mono node testtools crossbar eventstore nsgate $services"
+possibleGroup="services gcloud mono nginx node testtools crossbar eventstore nsgate $services"
 
 # USAGE
 # =====

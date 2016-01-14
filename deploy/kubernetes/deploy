@@ -4,17 +4,21 @@ usage() {
   echo " "
   echo " usage:"
   echo " "
-  echo "    deploy NAMESPACE BUILD"
+  echo "    deploy NAMESPACE [BUILD_ID]"
   echo " "
   echo "- NAMESPACE is the environment that you define for kubernetes."
   echo "  It's a string like <test> or <production>"
   echo " "
-  echo "- BUILD can be the build number or a string that you have defined at build time"
-  echo "    you can use <last> to start latest master success build"
+  echo "- BUILD_ID is optional."
+  echo "  It can be the build number or a string that you have defined at build time"
   echo " "
   echo " "
-  echo "  ie: deploy test 192"
-  echo "  ie: deploy mypersonalenv personnalbuild"
+  echo "  ie: "
+  echo "      $0 test"
+  echo "      will start the environment test and deploy last version"
+  echo " "
+  echo "      $0 mypersonalenv 628"
+  echo "      will start the environment mypersonalenv and deploy version 628"
   echo " "
   echo " Just ensure that your build is stored on dockerhub by looking at one of the image"
   echo "   https://hub.docker.com/u/adaptivetrader/dashboard/"
@@ -22,18 +26,13 @@ usage() {
   exit 1
 }
 
-if [[ $# != 2 ]];then
+if [[ $# < 1 ]];then
   usage
 fi
 namespace=$1
 build=$2
 
-if [[ $build == "last" ]];then
-  cd ../circleCi
-  build=`./circleCiApi lastMasterSuccessBuild`
-  cd ../kubernetes
-fi
-
+set -euo pipefail
 
 # generate manifest
 cd templates
@@ -54,8 +53,8 @@ cd templates
   ./generate_rc_manifest tradeexecution    $namespace $build
   ./generate_rc_manifest web               $namespace $build
   ./generate_rc_manifest analytics         $namespace $build
-  
-cd - > garbage && rm templates/garbage
+
+cd ..
 
 # deploy on kubernetes
   # namespace
@@ -76,6 +75,7 @@ cd - > garbage && rm templates/garbage
   ./kubectl create -f manifests/tradeexecution-rc.yml
   ./kubectl create -f manifests/analytics-rc.yml
   
+sleep 2
 
 echo " "
 echo " "

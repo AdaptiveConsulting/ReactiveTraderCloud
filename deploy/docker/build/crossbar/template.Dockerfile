@@ -1,4 +1,4 @@
-FROM        ubuntu:__VUBUNTU__
+FROM        __UBUNTU_CONTAINER__
 MAINTAINER 	weareadaptive <thibault@weareadaptive.com>
 
 COPY        install.sh /install/install.sh

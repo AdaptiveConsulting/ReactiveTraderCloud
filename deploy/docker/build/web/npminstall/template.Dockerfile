@@ -1,4 +1,4 @@
-FROM        weareadaptive/node:__VNODE__
+FROM        __NODE_CONTAINER__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
 COPY        client /client

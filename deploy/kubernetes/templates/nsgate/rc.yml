@@ -23,6 +23,7 @@ spec:
       containers:
       - name: "nsgate__MAJOR__"
         image: "__DOCKERIMAGE__"
+        imagePullPolicy: Always
         ports:
           - containerPort: 80
             name: "http"

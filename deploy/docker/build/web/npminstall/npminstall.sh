@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # This script work as a fix to get node cache.
 # Sometime, when running npm install inside docker container
@@ -22,7 +22,7 @@ echo "npm install ..."
 cd /client
 rm -rf node_modules
 npm install
-npm run deploy
+npm run deploy:prod
 
 echo "saving cache ..."
 # caching _git-remotes result in an error of copy, I don't cache it

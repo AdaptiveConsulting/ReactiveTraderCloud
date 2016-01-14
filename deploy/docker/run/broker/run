@@ -1,19 +1,22 @@
 #! /bin/bash
 
-if [[ $# != 1 ]];then
-  echo "broker-run require build number"
+build=""
+if [[ $1 != "" && $1 != "release" ]];then
+  build=".$1"
 fi
-build=$1
+
+# fail fast
+set -euo pipefail
 
 echo "Broker"
 
 . ../../../config
 
-docker rm broker 2&> garbage
+docker rm broker 2&> garbage || true
 
-docker run -d --net=host                     \
-     --name broker                           \
-     $brokerContainer:$vMajor.$vMinor.$build \
+docker run -d --net=host    \
+     --name broker          \
+     $brokerContainer$build \
      > container_id 
 
 rm garbage

@@ -9,23 +9,28 @@ fi
 # fail fast
 set -euo pipefail
 
-# get and control config
 . ../../../config
 
 mkdir -p ./build
+
+# get source code
 cp -r ../../../../src/server ./build/
-sed "s/__VDNX__/$vDnx/g" ./template.Dockerfile > ./build/Dockerfile
+
+cp  ./template.Dockerfile                      ./build/Dockerfile
+sed -ie "s|__MONO_CONTAINER__|$monoContainer|g" ./build/Dockerfile
+sed -ie "s/__VDNX__/$vDnx/g"                    ./build/Dockerfile
 
 # build
-docker build --no-cache -t weareadaptive/serverssrc:latest ./build/.
+docker build --no-cache -t weareadaptive/serverssrc:$build ./build/.
 
+# restore package
 docker rm dnurestored || true
 buildCommand="mkdir -p /packages"
 buildCommand="$buildCommand && cp -r /packages /root/.dnx/"
 buildCommand="$buildCommand && dnu restore"
 buildCommand="$buildCommand && cp -r /root/.dnx/packages /"
-docker run -t --name dnurestored -v /$(pwd)/dnxcache:/packages weareadaptive/serverssrc:latest bash -c "$buildCommand" 
+docker run -t --name dnurestored -v /$(pwd)/dnxcache:/packages weareadaptive/serverssrc:$build bash -c "$buildCommand"
 
-containerTaggedName="$serversContainer:$vMajor.$vMinor.$build"
-docker commit dnurestored $containerTaggedName 
-docker tag -f $containerTaggedName $serversContainer:latest
+# commit
+docker commit dnurestored $serversContainer
+docker tag -f $serversContainer $serversContainer.$build

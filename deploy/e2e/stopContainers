@@ -1,0 +1,10 @@
+#! /bin/bash
+
+echo ""
+echo "=============================="
+echo "Stop ReactiveTrader containers"
+echo ""
+
+cd ../docker
+./killAll
+cd ../e2e
