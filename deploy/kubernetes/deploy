@@ -1,7 +1,5 @@
 #! /bin/bash
 
-set -euo pipefail
-
 usage() {
   echo " "
   echo " usage:"
@@ -33,6 +31,8 @@ if [[ $# < 1 ]];then
 fi
 namespace=$1
 build=$2
+
+set -euo pipefail
 
 # generate manifest
 cd templates
