@@ -2,7 +2,29 @@
 
 ### Requirements
 
-> Node `^4.0.0` or `^5.3.0` ([npm3](https://www.npmjs.com/package/npm3) recommended), `npm@3.x.x`
+#### Initial Machine Setup
+1. **Install [Node](https://nodejs.org)**.
+2. **Install [Git](https://git-scm.com/downloads)**.
+3. On a Mac? You're all set. If you're on Linux or Windows, complete the steps for your OS below.
+
+**On Linux:**
+Run this to [increase the limit](http://stackoverflow.com/questions/16748737/grunt-watch-error-waiting-fatal-error-watch-enospc) on the number of files Linux will watch. [Here's why](https://github.com/coryhouse/react-slingshot/issues/6).
+`echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
+
+**On Windows:**
+1. **Install [Python 2.7](https://www.python.org/downloads/)**. Browser-sync (and various other Node modules) rely on node-gyp, which requires Python on Windows.
+2. **Install C++ Compiler**. [Visual Studio Express](https://www.visualstudio.com/en-US/products/visual-studio-express-vs) comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
+
+#### Versions
+
+Tested at time of writing with:
+
+- nodejs `^5.4.0` (on older versions you need o pass `--harmony` flag to a lot of the build/dev scripts)
+- npm `^3.3.12`
+
+> *NB* Although we have adopted _exact_ versioning for all _level 0_ dependencies in node, a lot of them don't adhere to the same
+standards and are happy to accept either `patch` or `minor` versions of their own dependencies. Dependent libraries get updated and
+released all the time, which could potentially result in a incompatible / broken dev workflow. 
 
 ### Getting Started
 
