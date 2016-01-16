@@ -10,18 +10,17 @@ set -euo pipefail
 
 startTime=$(date)
 
-for file in ./{build,run}Containers; do
-  [ -r "$file" ] && exec "$file" $build_id;
-done
-unset file
+chmod 755 ./ensurePermissions
+./ensurePermissions
+
+./buildContainers $build_id
+./runContainers $build_id
 
 echo "Giving some time for services to start"
 sleep 10
 
-for file in ./{test,stop}Containers; do
-  [ -r "$file" ] && exec "$file" $build_id
-done
-unset file
+./testContainers $build_id
+./stopContainers $build_id
 
 echo " "
 echo "============="
