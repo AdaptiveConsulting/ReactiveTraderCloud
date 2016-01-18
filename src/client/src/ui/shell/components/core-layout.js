@@ -1,12 +1,12 @@
 import React from 'react';
-import '../../common/styles/core.scss';
+import '../../common/styles/reactive-trader.scss';
 
 export default class CoreLayout extends React.Component {
   static propTypes = {
-    children : React.PropTypes.element
+    children: React.PropTypes.element
   }
 
-  render () {
+  render(){
     return (
       <div className='page-container'>
         <div className='view-container'>
