@@ -3,17 +3,18 @@
 ### Requirements
 
 #### Initial Machine Setup
-1. **Install [Node](https://nodejs.org)**.
-2. **Install [Git](https://git-scm.com/downloads)**.
-3. On a Mac? You're all set. If you're on Linux or Windows, complete the steps for your OS below.
+1. Install [Node](https://nodejs.org)
+2. Install [Git](https://git-scm.com/downloads)
+3. On a Mac? You're all set. If you're on Linux or Windows, complete the steps for your OS below
 
 **On Linux:**
 Run this to [increase the limit](http://stackoverflow.com/questions/16748737/grunt-watch-error-waiting-fatal-error-watch-enospc) on the number of files Linux will watch. [Here's why](https://github.com/coryhouse/react-slingshot/issues/6).
-`echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
+```echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p```
 
 **On Windows:**
-1. **Install [Python 2.7](https://www.python.org/downloads/)**. Browser-sync (and various other Node modules) rely on node-gyp, which requires Python on Windows.
-2. **Install C++ Compiler**. [Visual Studio Express](https://www.visualstudio.com/en-US/products/visual-studio-express-vs) comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
+
+1. Install [Python 2.7](https://www.python.org/downloads/). Browser-sync (and various other Node modules) rely on node-gyp, which requires Python on Windows
+2. Install Cthe ++ Compiler. [Visual Studio Express](https://www.visualstudio.com/en-US/products/visual-studio-express-vs) comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
 
 #### Versions
 
@@ -95,7 +96,7 @@ Run ESLint against all `.js` files in `~/src`. This used to be a webpack preload
 ```sh
 npm run lint:tests
 ```
-Lint all `.spec.js` files in of `~/tests`.
+Lint all `.spec.js` files in `~/tests`.
 
 ```sh
 npm run deploy
@@ -131,7 +132,7 @@ You can redefine which packages to treat as vendor dependencies by editing `vend
 ```
 
 #### Aliases
-As mentioned in features, the default webpack configuration provides some globals and aliases to make your life easier. These can be used as such:
+As mentioned in features, the default webpack configuration provides some globals and aliases to make your life easier when importing from deep folder depths. These can be used as such:
 
 ```js
 // current file: ~/src/views/some/nested/View.js
