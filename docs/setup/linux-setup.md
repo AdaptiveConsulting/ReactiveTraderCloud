@@ -1,23 +1,21 @@
 ## Installation
 
-### docker
+### Docker
 
-The priviledge way to run ReactiveTrader is by using docker.  
+The way to run ReactiveTrader on Linux is by using Docker.  
 You can find the tutorial [here](docker-setup.md).
 
-### traditional installation 
+### Traditional installation 
 
 Tested on Ubuntu 14.04.
 
-Also tested on a Raspberry Pi 2 running Raspbian Wheezy, though you will need these additional apt packages to run crossbar.io: `python-dev` `libffi-dev`
+This has also tested on a Raspberry Pi 2 running Raspbian Wheezy, although you will need these additional apt packages to run crossbar.io: `python-dev` `libffi-dev`
 
 ### Install DNVM/DNX and Mono
 
-Follow the instructions provided here:
+Follow the instructions provided [here](https://docs.asp.net/en/latest/getting-started/installing-on-linux.html).
 
-https://docs.asp.net/en/latest/getting-started/installing-on-linux.html
-
-Running `mono --version` should give something like below:
+Running `mono --version` should output:
 
 ```
 $ mono --version
@@ -49,12 +47,9 @@ Follow the instructions provided here:
 
 http://docs.geteventstore.com/server/3.3.0/installing-from-debian-repositories//
 
-
 ### Install Crossbar.io
 
-Follow the instructions provided here:
-
-http://crossbar.io/docs/Installation-on-Ubuntu/
+Follow the instructions provided [here](http://crossbar.io/docs/Installation-on-Ubuntu/)
 
 ## Running Reactive Trader
 
@@ -63,23 +58,23 @@ Start EventStore by running
 ```bash
 $ sudo service eventstore start
 ```
-In a separate terminal, start Crossbar from the `/src/server` folder by running
+In a separate terminal, start Crossbar from the `/src/server` folder by running:
 
 ```bash
 $ crossbar start
 ```
-Also from the `/src/server` working directory, install the packages required by running
+Also from the `/src/server` working directory, install the packages required by running:
 
 ```bash
 $ dnu restore
 ```
-And then run the services
+Then run the services:
 
 ```bash
 $ cd Adaptive.ReactiveTrader.Server.Launcher
 $ dnx run all
 ```
-The services should now run and connect to the Crossbar and EventStore
+The services should now run and connect to Crossbar and EventStore.
 
 Run the client app by following the instructions [here](../src/client/README.md)
 
