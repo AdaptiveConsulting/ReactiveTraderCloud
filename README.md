@@ -39,12 +39,7 @@ The back-end services are cross-platform. For details of how to set up the servi
 
 ## Getting Started
 
-Get your environment setup and start up the various component parts running on your environment of choice.
-
-+ [Windows](docs/setup/windows-setup.md)
-+ [Mac](docs/setup/macos-setup.md)
-+ [Linux](docs/setup/linux-setup.md)
-+ [Docker](docs/setup/docker-setup.md)
+You will find a guide to setup ReactiveTraderCloud for your plateform [here](docs/setup/getting-started.md).
 
 ## Concepts
 
