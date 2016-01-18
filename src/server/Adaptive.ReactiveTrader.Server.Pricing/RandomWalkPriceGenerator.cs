@@ -35,6 +35,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 if (Math.Abs(newMid - _initial)/_initial > .03m)
                     newMid = _initial;
 
+                previousMid = newMid;
+
                 yield return new SpotPriceDto
                 {
                     Symbol = Symbol,
