@@ -15,11 +15,10 @@ fi
 namespace=$1
 build=$2
 
-./rollingUpdate $namespace web               $build
-./rollingUpdate $namespace broker            $build
-./rollingUpdate $namespace eventstore        $build
-./rollingUpdate $namespace blotter           $build
-./rollingUpdate $namespace pricing           $build
-./rollingUpdate $namespace referencedataread $build
-./rollingUpdate $namespace tradeexecution    $build
-./rollingUpdate $namespace analytics         $build
+for service in "web" "broker" "eventstore" "blotter" "pricing" "referencedataread" "tradeexecution" "analytics"; do
+  echo " "
+  echo "==========="
+  echo $service
+  echo "==========="
+  ./rollingUpdate $namespace $service $build
+done
