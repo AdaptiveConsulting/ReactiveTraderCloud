@@ -7,8 +7,8 @@ if [[ $# != 3 ]];then
   echo " "  
   exit 1
 fi
-service=$1
-namespace=$2
+namespace=$1
+service=$2
 build=$3
 
 # fail fast
@@ -19,18 +19,18 @@ set -euo pipefail
 
 dockerImage=""
 if [[ $service == "broker" ]];then 
-  dockerImage="$brokerContainer$build";
+  dockerImage="$brokerContainer.$build";
 fi
 if [[ $service == "web" ]];then 
-  dockerImage="$webContainer$build";
+  dockerImage="$webContainer.$build";
 fi
 if [[ $service == "eventstore" ]];then 
-  dockerImage="$populatedEventstoreContainer$build";
+  dockerImage="$populatedEventstoreContainer.$build";
 fi
 
 dotnetServices="analytics blotter pricing referencedataread tradeexecution"
 if listcontains "$dotnetServices" $service; then 
-  dockerImage="$serversContainer$build";
+  dockerImage="$serversContainer.$build";
 fi 
 
 ./kubectl rolling-update \
