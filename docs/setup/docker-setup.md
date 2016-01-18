@@ -8,7 +8,7 @@ The following instructions have been tested on:
 #### Install docker for your OS
 
 Follow the steps [here](https://docs.docker.com/engine/installation/) for instructions for your specific OS/distribution.
-If you have some issues with the docker installation, look to this [page](docker-issues.md), we list some of the known one.
+If you have any issues with the docker installation, please have a look [here](docker-issues.md). We have list some of the known problems that may occur with the installation..
 
 #### Start toolbox for Windows/Mac user:
 launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
@@ -31,15 +31,15 @@ Note the IP address as we'll use it to load the client later.
 
 Some help can be found in our documentation [here](../../deploy/docker/readme.md)
 
-Docker toolbox run an ubuntu VM. That virtual machine automatically share your users folders. Building ReactiveTrader need to share some code with the containers inside the VM. So make sure that your cloned project is under your user folder. ie: `c:\Users\myname\repository\reactivetradercloud` is perfect. 
+Docker toolbox runs an Ubuntu virtual machine. This VM automatically shares your user folders. Building ReactiveTrader needs to share some code with the containers inside the VM. Please make sure that your cloned project is under your user folder. E.g.: `c:\Users\myname\repository\reactivetradercloud` is perfect. 
 
 ### Linux users
-Just control that docker is running with:
+Just check that docker is running with:
 
 ```bash
 docker ps
 ```
-Should output
+This should output:
 
 ```bash
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
@@ -48,20 +48,20 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 #### Run Reactive Trader
 
-You can run the app by using our prebuilt containers.
-In order to run the last one:
+You can run the app by using our pre-built containers.
+In order to run the latest one, execute:
 ```bash
 $ cd deploy/docker
 $ ./runAll
 ```
 
-Inspect the running containers
+Inspect the running containers:
 
 ```bash
 $ docker ps
 ```
 
-Should give you something like the following:
+Should give you something similar to:
 
 ```bash
 $ docker ps
@@ -76,7 +76,7 @@ fa50bfc6a88a        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   3
 05c18462d3c5        reactivetrader/web:0.0.769        "bash -c 'cp /localho"   35 seconds ago      Up 30 seconds                           web
 ```
 
-Then open a browser, navigate to the docker address (localhost for linux users and something like 192.168.99.100 for windows/mac users) and the web client should load.
+Open a browser, navigate to the docker address (localhost for linux users and something like 192.168.99.100 for windows/mac users) and the web client will load.
 
 You can then stop all the containers with:
 ```bash
@@ -89,16 +89,17 @@ If you prefer to run your own containers, you can build them easily.
 
 First, define a `BUILD_ID`. It's a string that will tag your containers. `mytest` or `1` are good choices. Here we will use `localtest`. 
 
-Change your working directory to `cd deploy/docker`, and stop any reactiveTrader container running with `./killAll`.  
+Change your working directory to `cd deploy/docker`, and stop any reactiveTrader containers that are running by executing:
+`./killAll`.  
  
-
+After this execute the following to prepare and build the containers: 
 ```bash
 $ BUILD_ID="localtest"
 $ ./prepare build services $BUILD_ID
 ```
-This pulls base containers and builds the app containers so may take a while.
+This pulls base containers and builds the app containers so will take a while.
 
-You can then run the built containers with 
+You can then run the built containers with: 
 
 ```bash
 $ ./runAll $BUILD_ID
