@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Direction = props => <div key className={props.direction + ' direction'}>{props.spread}</div>;
+const Direction = props => <div className={props.direction + ' direction'}>{props.spread}</div>;
 
 Direction.propTypes ={
   direction: React.PropTypes.string.isRequired,

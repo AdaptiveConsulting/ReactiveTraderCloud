@@ -144,13 +144,14 @@ class Blotter extends React.Component {
       column.className && (cellOptions.className = column.className);
 
       const columnOptions = {
+        key: id,
         width: column.width || 100,
         field: column.field,
         cell: column.cellConstructor(column.field, cellOptions),
         header: <Cell field={column.field} {...column.headerOptions}>{column.name}</Cell>
       };
 
-      return <Column key={id} {...columnOptions} />;
+      return <Column {...columnOptions} />;
     });
   }
 

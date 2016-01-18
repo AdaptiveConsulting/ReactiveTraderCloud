@@ -1,27 +1,19 @@
-// main file being imported and built, entry point for all SCSS
-
-// theme
+// Settings go here
 @import 'theme';
-// boostrap version compiler
 @import 'bootstrap-build';
 
-// icons and helpers
 @import '../../../../node_modules/font-awesome/scss/font-awesome';
 @import '../../../../node_modules/animate.css/animate.css';
 
-// app specific components and bits
 @import '../components/container/container';
-@import '../components/modal/modal';
 @import '../../spot-tile/components/spot-tile';
 @import '../../header/components/header';
 @import '../../blotter/components/blotter';
 @import '../../analytics/components/analytics';
+@import '../components/modal/modal';
 @import '../../growl/components/growl';
-
-// helpers - layout, responsive strategy
 @import 'layout';
 
-// globals
 body, html {
   overflow: hidden;
   height: 100%;
