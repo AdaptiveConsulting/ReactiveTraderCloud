@@ -29,10 +29,18 @@ no space left on device
 ```
 
 try to stop and restart the docker virtual machine:
-```
+```bash
 docker-machine stop default
 docker-machine start default
 ```
+Then close the `Docker Quick Start Terminal` and open a new once.
+
+If the issue persist, try to remove the virtual machine and generate a new one:  
+- open virtualbox Gui
+- right click on the `default` machine and remove it with all its files
+- close virtualbox Gui
+- open a new docker Quick Start Terminal
+- wait for the new VirtualMachine to be generated
 
 # WINDOWS
 
