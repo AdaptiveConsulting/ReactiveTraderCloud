@@ -8,10 +8,10 @@ The following instructions have been tested on:
 #### Install docker for your OS
 
 Follow the steps [here](https://docs.docker.com/engine/installation/) for instructions for your specific OS/distribution.
-If you have any issues with the docker installation, please have a look [here](docker-issues.md). We have list some of the known problems that may occur with the installation..
+If you have any issues with the docker installation, please have a look [here](docker-issues.md). We have list some of the known problems that may occur with the installation.
 
 #### Start toolbox for Windows/Mac user:
-launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
+Launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
 
 ```
                         ##         .
