@@ -7,12 +7,13 @@ The following instructions have been tested on:
 
 If you have any issues with this process, please have a look [here](docker-issues.md). We have list some of the known problems that may occur.
 
-#### Install docker for your OS
+## Install docker for your OS
 
 Follow the steps [here](https://docs.docker.com/engine/installation/) for instructions for your specific OS/distribution.
 
 We also propose a [complete guide for Ubuntu 14.04.3](ubuntu-complete-guide.md).
 
+## check your docker
 #### Start toolbox for Windows/Mac user:
 Launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
 
@@ -47,7 +48,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 ```
 
-#### clone the repository
+## clone the repository
 
 For windows user, note that the line ending on your OS is `CRLF`. All script are written in bash and most of them will run inside Linux containers. The expected line ending are `LF` and `CRLF` will break some of the script.
 This can be easily fixed by asking git to not update `LF` to `CRLF` when clone the repository. 
@@ -57,7 +58,7 @@ Before cloning :
 git config --global core.autocrlf false
 ```
 
-#### e2e
+## e2e
 
 If all you want is to quickly run ReactiveTrader, you can move to the [Run Reactive Trader part](#run-reactive-trader).
 
@@ -109,7 +110,7 @@ should output something like that:
 TO ADD
 ```
 
-#### Run Reactive Trader
+## Run Reactive Trader
 
 if you have followed the `build` step before, use the `build_id` you have defined:
 ```bash
@@ -147,7 +148,7 @@ fa50bfc6a88a        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   3
 
 Open a browser, navigate to the docker address (localhost for linux users and something like 192.168.99.100 for windows/mac users) and the web client will load.
 
-#### Test ReactiveTrader
+## Test ReactiveTrader
 After having started ReactiveTrader, you can run the test script to controll that everything is fine.
 
 If you build/run with a `build_id` (ie: `localtest`): 
@@ -165,7 +166,7 @@ This should output something like this:
 TO ADD
 ```
 
-#### Stop all the containers
+## Stop all the containers
 You can then stop all the containers with:
 ```bash
 $ ./killAll
