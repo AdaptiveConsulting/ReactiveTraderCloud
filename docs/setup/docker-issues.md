@@ -49,7 +49,7 @@ The different scripts here will need to share code with the different containers
 
 ### docker toolbox version
 
-The version `1.9.1h` have an issue and does not work with this project.
+The version `1.9.1h` has an issue and does not work with this project.
 You should [install](https://github.com/docker/toolbox/releases) version `1.9.1g`
 
-Version from `1.9.1i` have not been tested.
+Version from `1.9.1i` has not been tested.

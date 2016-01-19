@@ -1,13 +1,6 @@
-# Build and Run Reactive Trader CLoud on Ubuntu 
+# Build and Run Reactive Trader Cloud on Ubuntu 
 
 ## dependencies
-
-#### get Ubuntu up to date
-
-```bash
-sudo apt-get update 
-sudo apt-get upgrade -y 
-```
 
 #### docker
 
