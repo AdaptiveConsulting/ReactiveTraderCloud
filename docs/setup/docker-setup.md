@@ -76,8 +76,29 @@ cd deploy/e2e
 
 If everything is fine, you should see something like that at the end of the script:
 ```bash
-TO ADD
+  Finished:    Adaptive.ReactiveTrader.Server.IntegrationTests
+=== TEST EXECUTION SUMMARY ===
+   Adaptive.ReactiveTrader.Server.IntegrationTests  Total: 8, Errors: 0, Failed: 0, Skipped: 0, Time: 9.818s
+
+==============================
+Stop ReactiveTrader containers
+
+e34c506a599c555c91987923aa46752db106ea829c24db13cc3c998b14109317
+93d6c3027f19540fedb197c0767d9f45fa730b9a86df25489a5840c97c21af3b
+83640cd4e0e3537999fa5d42a9d26a3167ddd75ee54634956f12e8bffc82156d
+105d166f2b85300a6563b9a8b79409270693fc28eb6b7713bcac8a98bd1f2e1b
+8f00e46caf8b811593cc2b61f11ea214f2e524fc2b51e22a7dbc4dc0f1491e21
+5e954aec1ec2872bb530b270c2bfb20cfcd885b2c466e4124487e0e42f5c9751
+267be6d366486d63601678db8e94d363df4967fc8be50c2cd1bac11c1978c471
+2b37c25a5876615bffbf23cdf5f2b85ffd08d68f89b3562501715059466df13c
+ 
+=============
+Time details:
+Tue Jan 19 11:19:32 GMT 2016
+Tue Jan 19 11:33:23 GMT 2016
 ```
+
+Note that the time for all this process is mostly defined by your internet bandwidth.
 
 ## Build
  
