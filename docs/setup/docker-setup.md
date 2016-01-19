@@ -10,6 +10,7 @@ If you have any issues with this process, please have a look [here](docker-issue
 #### Install docker for your OS
 
 Follow the steps [here](https://docs.docker.com/engine/installation/) for instructions for your specific OS/distribution.
+
 We also propose a [complete guide for Ubuntu 14.04.3](ubuntu-complete-guide.md).
 
 #### Start toolbox for Windows/Mac user:
@@ -101,6 +102,15 @@ Then build all the ReactiveTrader services.
 ./prepare build services localtest
 ```
 
+you can look to your generated docker images:
+```bash
+docker images
+```
+should output something like that:
+```bash
+TO ADD
+```
+
 #### Run Reactive Trader
 
 if you have followed the `build` step before, use the `build_id` you have defined:
@@ -139,10 +149,10 @@ fa50bfc6a88a        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   3
 
 Open a browser, navigate to the docker address (localhost for linux users and something like 192.168.99.100 for windows/mac users) and the web client will load.
 
-#### test ReactiveTrader
+#### Test ReactiveTrader
 After having started ReactiveTrader, you can run the test script to controll that everything is fine.
 
-If you build/run with a build_id (here localtest): 
+If you build/run with a `build_id` (ie: `localtest`): 
 ```bash
 ./testAll localtest
 ```
@@ -152,8 +162,15 @@ else
 ./testAll
 ```
 
-#### stop all the containers
+This should output something like this:
+```bash
+TO ADD
+```
+
+#### Stop all the containers
 You can then stop all the containers with:
 ```bash
 $ ./killAll
 ```
+
+that should list the containers ids.
