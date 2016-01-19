@@ -32,8 +32,6 @@ For help getting started, check out the docs at https://docs.docker.com
 
 Note the IP address as we'll use it to load the client later.
 
-Some help can be found in our documentation [here](../../deploy/docker/readme.md)
-
 Docker toolbox runs an Ubuntu virtual machine. This VM automatically shares your user folders. Building ReactiveTrader needs to share some code with the containers inside the VM. Please make sure that your cloned project is under your user folder. E.g.: `c:\Users\myname\repository\reactivetradercloud` is perfect. 
 
 #### Linux users
