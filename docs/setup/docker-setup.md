@@ -155,7 +155,7 @@ weareadaptive/mono          0.0                 7e5be450434d        12 days ago 
 weareadaptive/crossbar      0.0                 dda530e30ef9        12 days ago         379.7 MB
 ```
 
-Note that only the containers are used to run ReactiveTrader with the `localtest` version:
+Note that only these containers are used to run ReactiveTrader with the `localtest` version:
 ```bash
 reactivetrader/eventstore   0.0.localtest       0df22c060d23        8 seconds ago       562 MB
 reactivetrader/web          0.0.localtest       d0412eae6ff5        15 seconds ago      137.4 MB
@@ -177,7 +177,9 @@ $ cd deploy/docker
 $ ./runAll
 ```
 
-Inspect the running containers:
+Note that if you run pre-built containers, some download will occure now.
+
+Then inspect the running containers:
 
 ```bash
 $ docker ps
@@ -198,7 +200,7 @@ fa50bfc6a88a        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   3
 05c18462d3c5        reactivetrader/web:0.0.769        "bash -c 'cp /localho"   35 seconds ago      Up 30 seconds                           web
 ```
 
-Open a browser, navigate to the docker address (localhost for linux users and something like 192.168.99.100 for windows/mac users) and the web client will load.
+Open a browser, navigate to the docker address (`localhost` for linux users and something like `192.168.99.100` for windows/mac users) and the web client will load.
 
 ## Test ReactiveTrader
 After having started ReactiveTrader, you can run the test script to controll that everything is fine.
@@ -215,7 +217,120 @@ else
 
 This should output something like this:
 ```bash
-TO ADD
+<!DOCTYPE html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=1024"><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><title>Event Store - {{ $state.current.data.title }}</title><link rel=stylesheet href=css/main.min.css><link rel=apple-touch-icon href=apple-touch-icon.png><link rel=icon type=image/png href=favicon.png><meta name=msapplication-TileImage content=es-tile.png><meta name=msapplication-TileColor content=#6BA300></head><body><div ui-view></div><script data-main=js/app.min.js src=js/requirejs.min.js></script></body></html> 
+Starting local tests ...
+xUnit.net DNX Runner (64-bit DNX 4.5.1)
+  Discovering: Adaptive.ReactiveTrader.Server.IntegrationTests
+  Discovered:  Adaptive.ReactiveTrader.Server.IntegrationTests
+  Starting:    Adaptive.ReactiveTrader.Server.IntegrationTests
+{
+  "Updates": [
+    {
+      "UpdateType": "Added",
+      "CurrencyPair": {
+        "Symbol": "EURUSD",
+        "RatePrecision": 5,
+        "PipsPosition": 4
+      }
+    },
+    {
+      "UpdateType": "Added",
+      "CurrencyPair": {
+        "Symbol": "USDJPY",
+        "RatePrecision": 3,
+        "PipsPosition": 2
+      }
+    },
+    {
+      "UpdateType": "Added",
+      "CurrencyPair": {
+        "Symbol": "GBPUSD",
+        "RatePrecision": 5,
+        "PipsPosition": 4
+      }
+    },
+    {
+      "UpdateType": "Added",
+      "CurrencyPair": {
+        "Symbol": "GBPJPY",
+        "RatePrecision": 3,
+        "PipsPosition": 2
+      }
+    },
+    {
+      "UpdateType": "Added",
+      "CurrencyPair": {
+        "Symbol": "EURJPY",
+        "RatePrecision": 3,
+        "PipsPosition": 2
+      }
+    },
+    {
+      "UpdateType": "Added",
+      "CurrencyPair": {
+        "Symbol": "AUDUSD",
+        "RatePrecision": 5,
+        "PipsPosition": 4
+      }
+    },
+    {
+      "UpdateType": "Added",
+      "CurrencyPair": {
+        "Symbol": "NZDUSD",
+        "RatePrecision": 5,
+        "PipsPosition": 4
+      }
+    },
+    {
+      "UpdateType": "Added",
+      "CurrencyPair": {
+        "Symbol": "EURCAD",
+        "RatePrecision": 5,
+        "PipsPosition": 4
+      }
+    },
+    {
+      "UpdateType": "Added",
+      "CurrencyPair": {
+        "Symbol": "EURAUD",
+        "RatePrecision": 5,
+        "PipsPosition": 4
+      }
+    }
+  ],
+  "IsStateOfTheWorld": true,
+  "IsStale": false
+}
+{
+  "Symbol": "XXXXXA",
+  "BasePnl": 0.0,
+  "BaseTradedAmount": 0.0
+}
+{
+  "Symbol": "XXXXXA",
+  "BasePnl": 0.0,
+  "BaseTradedAmount": 0.0
+}
+{
+  "Trades": [
+    {
+      "TradeId": 2,
+      "CurrencyPair": "XXXXXB",
+      "Notional": 1000000,
+      "DealtCurrency": "XXX",
+      "Direction": "Buy",
+      "SpotRate": 1.0,
+      "TradeDate": "2016-01-19 11:50:28Z",
+      "ValueDate": "2016-01-21 11:50:28Z",
+      "Status": "Done"
+    }
+  ],
+  "IsStateOfTheWorld": false,
+  "IsStale": false
+}
+  Finished:    Adaptive.ReactiveTrader.Server.IntegrationTests
+=== TEST EXECUTION SUMMARY ===
+   Adaptive.ReactiveTrader.Server.IntegrationTests  Total: 8, Errors: 0, Failed: 0, Skipped: 0, Time: 9.464s
 ```
 
 ## Stop all the containers
@@ -224,4 +339,14 @@ You can then stop all the containers with:
 $ ./killAll
 ```
 
-that should list the containers ids.
+that should list the containers ids:
+```
+9e1812087905a03708c508b3106ad22969e9a7592e24970e1e8c55b83d2c902e
+4b4c4d3bf90c0a7be273719c94678a3b855670bb7e1c342e113ea9c7983edb0e
+af624defb197981fc09ed2a7dbb5697192f512d80205ff738a57f17b2b19ba3e
+57778f96ae00e9183def627306f4cc626884401e5018ef6bb0c30bcb38de3070
+530314a5051e8d105111f0d70600c82f110dfb13ef12694718ffb41a22b4a228
+58207df4f31c4a0af69ea08959dd5543250d3998780b03599b1f471b61716d1b
+f1c6dca14da91f590b27ee435dc8014335b7a04a7055c66450123430d8403512
+0f6f572c7ded93427ff7e942cad3fa6389faf5a3298a28023217540b2254aa66
+```
