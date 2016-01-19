@@ -1,4 +1,4 @@
-## Running on Docker
+# Running on Docker
 
 The following instructions have been tested on: 
 - Windows 7 / 10
@@ -13,7 +13,7 @@ Follow the steps [here](https://docs.docker.com/engine/installation/) for instru
 
 We also propose a [complete guide for Ubuntu 14.04.3](ubuntu-complete-guide.md).
 
-## check your docker
+## Check your docker
 #### Start toolbox for Windows/Mac user:
 Launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
 
@@ -48,7 +48,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 ```
 
-## clone the repository
+## Clone the repository
 
 For windows user, note that the line ending on your OS is `CRLF`. All script are written in bash and most of them will run inside Linux containers. The expected line ending are `LF` and `CRLF` will break some of the script.
 This can be easily fixed by asking git to not update `LF` to `CRLF` when clone the repository. 
@@ -58,7 +58,7 @@ Before cloning :
 git config --global core.autocrlf false
 ```
 
-## e2e
+## End to end
 
 If all you want is to quickly run ReactiveTrader, you can move to the [Run Reactive Trader part](#run-reactive-trader).
 
@@ -79,7 +79,7 @@ If everything is fine, you should see something like that at the end of the scri
 TO ADD
 ```
 
-## build
+## Build
  
 If the e2e step have passed, you are now confident that the setup is fine.  
 We can look at how to manually build `Reactive Trader`.
