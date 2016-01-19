@@ -13,7 +13,18 @@ sudo apt-get upgrade -y
 
 ```bash
 # install docker
-sudo apt-get install docker-engine
+sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+packageFile=/etc/apt/sources.list.d/docker.list
+if [[ -f packageFile ]];then
+  cp $packageFile /tmp/packageFile
+fi
+
+echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" >> /tmp/packageFile
+sudo cp /tmp/packageFile /etc/apt/sources.list.d/docker.list 
+sudo apt-get update
+sudo apt-get install docker-engine -y
+sudo apt-get install linux-image-extra-$(uname -r)
 
 # add user to docker group
 sudo gpasswd -a ${USER} docker
@@ -22,9 +33,7 @@ sudo gpasswd -a ${USER} docker
 sudo service docker start
 
 # logout
-sudo reboot
 gnome-session-quit
-pkill -u $USER
 ```
 
 #### git
