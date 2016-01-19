@@ -55,4 +55,5 @@ cd reactivetradercloud
 
 ## then
 
-You can now go back to the [main docker guide](docker-setup.md#e2e) and follow from the e2e chapter.
+You can now go back to the [main docker guide](docker-setup.md#end-to-end) and follow from the e2e chapter.
+
