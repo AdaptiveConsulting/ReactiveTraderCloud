@@ -14,7 +14,7 @@ Run this to [increase the limit](http://stackoverflow.com/questions/16748737/gru
 **On Windows:**
 
 1. Install [Python 2.7](https://www.python.org/downloads/). Browser-sync (and various other Node modules) rely on node-gyp, which requires Python on Windows
-2. Install Cthe ++ Compiler. [Visual Studio Express](https://www.visualstudio.com/en-US/products/visual-studio-express-vs) comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
+2. Install the C++ Compiler. [Visual Studio Express](https://www.visualstudio.com/en-US/products/visual-studio-express-vs) comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
 
 #### Versions
 
