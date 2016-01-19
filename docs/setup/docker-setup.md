@@ -107,7 +107,7 @@ We can look at how to manually build `Reactive Trader`.
 
 Move to the docker folder
 ```bash
-cd deploy/docker
+cd ../docker
 ```
 
 You will find here these scripts:
@@ -122,20 +122,51 @@ Then build all the ReactiveTrader services.
 ./prepare build services localtest
 ```
 
+Only the `npm install` part of the services build should now take a little time.
+
 you can look to your generated docker images:
 ```bash
 docker images
 ```
 should output something like that:
 ```bash
-TO ADD
+REPOSITORY                  TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+reactivetrader/eventstore   0.0                 0df22c060d23        8 seconds ago       562 MB
+reactivetrader/eventstore   0.0.localtest       0df22c060d23        8 seconds ago       562 MB
+reactivetrader/web          0.0.localtest       d0412eae6ff5        15 seconds ago      137.4 MB
+reactivetrader/web          0.0                 d0412eae6ff5        15 seconds ago      137.4 MB
+weareadaptive/websrc        localtest           2617473c8e0a        4 minutes ago       416.2 MB
+reactivetrader/broker       0.0.localtest       addab85a78aa        4 minutes ago       379.7 MB
+reactivetrader/broker       0.0                 addab85a78aa        4 minutes ago       379.7 MB
+reactivetrader/servers      0.0                 cbc536864104        4 minutes ago       922.6 MB
+reactivetrader/servers      0.0.localtest       cbc536864104        4 minutes ago       922.6 MB
+weareadaptive/serverssrc    localtest           f087cc2f13b9        4 minutes ago       796.6 MB
+reactivetrader/eventstore   0.0.e2e             292529cdbf08        9 minutes ago       562 MB
+reactivetrader/web          0.0.e2e             9c2baae50848        10 minutes ago      135.1 MB
+weareadaptive/websrc        e2e                 8d1667ee1b31        19 minutes ago      416.2 MB
+reactivetrader/broker       0.0.e2e             eaf678a92116        20 minutes ago      379.7 MB
+reactivetrader/servers      0.0.e2e             662a6b27781f        20 minutes ago      947 MB
+weareadaptive/serverssrc    e2e                 d69f307fc29d        21 minutes ago      796.6 MB
+weareadaptive/node          0.0                 67d6845f9120        9 days ago          414.9 MB
+weareadaptive/testtools     1.1                 ab6e2b210d47        11 days ago         227.3 MB
+weareadaptive/nginx         0.0                 ae19d8b9954e        12 days ago         132.8 MB
+weareadaptive/eventstore    0.0                 9e4aeaff3d81        12 days ago         293.6 MB
+weareadaptive/mono          0.0                 7e5be450434d        12 days ago         796.3 MB
+weareadaptive/crossbar      0.0                 dda530e30ef9        12 days ago         379.7 MB
+```
+
+Note that only the containers are used to run ReactiveTrader with the `localtest` version:
+```bash
+reactivetrader/eventstore   0.0.localtest       0df22c060d23        8 seconds ago       562 MB
+reactivetrader/web          0.0.localtest       d0412eae6ff5        15 seconds ago      137.4 MB
+reactivetrader/broker       0.0.localtest       addab85a78aa        4 minutes ago       379.7 MB
+reactivetrader/servers      0.0.localtest       cbc536864104        4 minutes ago       922.6 MB
 ```
 
 ## Run Reactive Trader
 
 if you have followed the `build` step before, use the `build_id` you have defined:
 ```bash
-$ cd deploy/docker
 $ ./runAll localtest
 ```
 
