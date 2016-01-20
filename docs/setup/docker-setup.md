@@ -5,7 +5,7 @@ The following instructions have been tested on:
 - Ubuntu 14.04.3 / 15.10
 - OS X 10.11.2 (15C50) / kernel 15.2.0
 
-If you have any issues with this process, please have a look [here](docker-issues.md). We have list some of the known problems that may occur.
+If you have any issues with this process, please have a look [here](docker-issues.md). We have listed some of the known problems that may occur.
 
 ## Install docker for your OS
 
@@ -48,8 +48,8 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 ## Clone the repository
 
-For windows user, note that the line ending on your OS is `CRLF`. All script are written in bash and most of them will run inside Linux containers. The expected line ending are `LF` and `CRLF` will break some of the script.
-This can be easily fixed by asking git to not update `LF` to `CRLF` when clone the repository. 
+For windows user, note that the line ending on your OS is `CRLF`. All scripts are written in bash and most of them will run inside Linux containers. The expected line ending are `LF` and `CRLF` will break some of the script.
+This can be easily fixed by asking git to not update `LF` to `CRLF` when cloning the repository. 
 
 Before cloning :
 ```bash
@@ -100,7 +100,7 @@ Note that the time for all this process is mostly defined by your internet bandw
 
 ## Build
  
-If the e2e step have passed, you are now confident that the setup is fine.  
+If the e2e step has passed, you are now confident that the setup is fine.  
 We can look at how to manually build `Reactive Trader`.
 
 Move to the docker folder
@@ -108,7 +108,7 @@ Move to the docker folder
 cd ../docker
 ```
 
-You will find here these scripts:
+You will find these scripts:
 - prepare (to build and push)
 - runAll
 - testAll
@@ -120,13 +120,13 @@ Then build all the ReactiveTrader services.
 ./prepare build services localtest
 ```
 
-Only the `npm install` part of the services build should now take a little time.
+After this, the only part of the process that will take time is the installation of the front-end npm packages.
 
-you can look to your generated docker images:
+You can look to your generated docker images:
 ```bash
 docker images
 ```
-should output something like that:
+Will output something like that:
 ```bash
 REPOSITORY                  TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
 reactivetrader/eventstore   0.0                 0df22c060d23        8 seconds ago       562 MB
@@ -163,19 +163,19 @@ reactivetrader/servers      0.0.localtest       cbc536864104        4 minutes ag
 
 ## Run Reactive Trader
 
-if you have followed the `build` step before, use the `build_id` you have defined:
+If you have followed the `build` step before, use the `build_id` you have defined:
 ```bash
 $ ./runAll localtest
 ```
 
-else, you can run the app by using our pre-built containers.
+Otherwise, you can run the app by using our pre-built containers.
 In order to run the latest one, execute:
 ```bash
 $ cd deploy/docker
 $ ./runAll
 ```
 
-Note that if you run pre-built containers, some download will occure now.
+Note that if you run pre-built containers, some downloads will occur at this point.
 
 Then inspect the running containers:
 
