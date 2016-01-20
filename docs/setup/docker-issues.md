@@ -46,3 +46,10 @@ If the issue persists, try to remove the virtual machine and generate a new one:
 ### The repository must be in user's home folder
 
 The different scripts here will need to share code with the different containers. On Windows and Mac, the sharing is between the container and the virtual machine. The virtual machine is defined to share your home folder (c:\Users\ for windows or /Users for mac). If your git clone folder is a child folder of your home user, this is fine. Otherwise you need to open VirtualBox and share that specific folder.
+
+### docker toolbox version
+
+The version `1.9.1h` has an issue and does not work with this project.
+You should [install](https://github.com/docker/toolbox/releases) version `1.9.1g`
+
+Version from `1.9.1i` has not been tested.
