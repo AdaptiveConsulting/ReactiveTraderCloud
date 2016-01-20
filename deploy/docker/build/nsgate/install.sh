@@ -16,3 +16,10 @@ apt-get install -y jq
 
 # ensure updateServers.sh is executable
 chmod 755 /opt/updateServers.sh
+
+# add 404 error page
+mkdir /www
+cat <<EOF > /www/404.html
+Error 404
+Service does not exist
+EOF
