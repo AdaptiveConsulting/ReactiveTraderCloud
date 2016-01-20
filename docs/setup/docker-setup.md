@@ -11,8 +11,6 @@ If you have any issues with this process, please have a look [here](docker-issue
 
 Follow the steps [here](https://docs.docker.com/engine/installation/) for instructions for your specific OS/distribution.
 
-We also propose a [complete guide for Ubuntu 14.04.3](ubuntu-complete-guide.md).
-
 ## Check your docker
 #### Start toolbox for Windows/Mac user:
 Launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
