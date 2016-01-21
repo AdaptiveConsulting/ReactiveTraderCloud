@@ -4,6 +4,7 @@ build/crossbar/build
 build/eventstore/build
 build/fluentd/build
 build/gcloud/build
+build/jenkins/build
 build/mono/build
 build/node/build
 build/servers/build

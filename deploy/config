@@ -81,6 +81,15 @@ nsGateContainer_major="0"
 nsGateContainer_minor="1"
 nsGateContainer="weareadaptive/nsgate:$nsGateContainer_major.$nsGateContainer_minor"
 
+# jenkins
+jenkinsContainer_major="0"
+jenkinsContainer_minor="0"
+jenkinsContainer="weareadaptive/jenkins:$jenkinsContainer_major.$jenkinsContainer_minor"
+
+# cache containers
+dnupackageContainer="dnupackage"
+nodemodulesContainer="nodemodules"
+
 # GCLOUD
 # ======
 # You need to change this ones

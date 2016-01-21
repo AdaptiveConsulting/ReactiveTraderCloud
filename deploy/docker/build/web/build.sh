@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 build=$1
 if [[ $build = "" ]];then
   echo "web-build: build number required as first parameter"
@@ -11,26 +10,39 @@ set -euo pipefail
 
 . ../../../config
 
-# Build the dist folder
+echo "Build the dist folder ..."
 mkdir -p ./npminstall/build
 rm -rf ./npminstall/build/*
-cp npminstall/npminstall.sh        ./npminstall/build/npminstall.sh
 cp npminstall/template.Dockerfile  ./npminstall/build/Dockerfile
 cp -r ../../../../src/client/      ./npminstall/build/client
 
 sed -ie "s|__NODE_CONTAINER__|$nodeContainer|g" ./npminstall/build/Dockerfile
 
-docker build --no-cache -t weareadaptive/websrc:$build  ./npminstall/build/.
+echo "build the container that will generate the dist folder ..."
+tempContainer="weareadaptive/websrc:$build"
+docker build --no-cache -t $tempContainer ./npminstall/build/.
 
-# run the build container sharing the cache folder
-# the src are not directly shared as their is an error of synchronisation
-#   when node_modules tryied to be synced between container/VM and Host on windows
-docker run              \
-  -v /$(pwd)/.npm:/.npm \
-  -v /$(pwd)/dist:/dist \
-  weareadaptive/websrc:$build
+echo "create the data container that will store node_modules ..."
+docker run                                \
+  -v //client/node_modules                \
+  --name=$nodemodulesContainer            \
+  $ubuntuContainer                        \
+  echo "persistence for the node_modules" \
+  || true
 
-# build nginx container
+echo "generate the dist folder ..."
+websrc="websrc"
+docker rm $websrc || true
+docker run                             \
+  --name $websrc                       \
+  --volumes-from $nodemodulesContainer \
+  $tempContainer
+
+echo "copy the dist ..."
+if [[ -f dist ]];then rm -r ./dist; fi
+docker cp $websrc:/client/dist .
+
+echo "build nginx container to host the dist ..."
 mkdir -p ./nginx/build
 
 cp ./nginx/template.Dockerfile   ./nginx/build/Dockerfile

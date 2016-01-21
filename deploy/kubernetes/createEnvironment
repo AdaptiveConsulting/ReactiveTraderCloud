@@ -12,4 +12,4 @@ cd templates
   ./generate_ns_manifest $namespace
 cd ..
 
-kubectl create -f manifests/ns.yml
+./kubectl create -f manifests/ns.yml

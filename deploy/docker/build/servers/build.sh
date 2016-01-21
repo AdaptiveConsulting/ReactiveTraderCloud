@@ -13,10 +13,17 @@ set -euo pipefail
 
 mkdir -p ./build
 
-# get source code
+#docker volume create --name=$dnupackage
+docker run                                \
+  -v //packages                           \
+  --name=$dnupackageContainer             \
+  $ubuntuContainer                        \
+  echo "persistence for the dnx packages" \
+  || true
+
 cp -r ../../../../src/server ./build/
 
-cp  ./template.Dockerfile                      ./build/Dockerfile
+cp  ./template.Dockerfile                       ./build/Dockerfile
 sed -ie "s|__MONO_CONTAINER__|$monoContainer|g" ./build/Dockerfile
 sed -ie "s/__VDNX__/$vDnx/g"                    ./build/Dockerfile
 
@@ -24,13 +31,18 @@ sed -ie "s/__VDNX__/$vDnx/g"                    ./build/Dockerfile
 docker build --no-cache -t weareadaptive/serverssrc:$build ./build/.
 
 # restore package
-docker rm dnurestored || true
-buildCommand="mkdir -p /packages"
-buildCommand="$buildCommand && cp -r /packages /root/.dnx/"
-buildCommand="$buildCommand && dnu restore"
-buildCommand="$buildCommand && cp -r /root/.dnx/packages /"
-docker run -t --name dnurestored -v /$(pwd)/dnxcache:/packages weareadaptive/serverssrc:$build bash -c "$buildCommand"
+dnurestored="dnurestored"
+command="mkdir -p /packages"
+command="$command && cp -r /packages /root/.dnx/"
+command="$command && dnu restore"
+command="$command && cp -r /root/.dnx/packages /"
+docker rm $dnurestored || true
+docker run -t                         \
+  --name $dnurestored                 \
+  --volumes-from $dnupackageContainer \
+  weareadaptive/serverssrc:$build     \
+  bash -c "$command"
 
 # commit
-docker commit dnurestored $serversContainer
+docker commit $dnurestored $serversContainer
 docker tag -f $serversContainer $serversContainer.$build
