@@ -18,7 +18,8 @@ spec:
       # https://hub.docker.com/_/jenkins/
       # https://github.com/carlossg/jenkins-for-volumes-docker/blob/master/Dockerfile
       - name: "jenkins"
-        image: "csanchez/jenkins-swarm:1.625.1-for-volumes"
+        #image: "csanchez/jenkins-swarm:1.625.1-for-volumes"
+        image: "weareadaptive/jenkins:0.0.0"
         imagePullPolicy: Always
         ports:
           - containerPort: 8080
@@ -28,8 +29,18 @@ spec:
         volumeMounts: 
           - name: "jenkins-data"
             mountPath: "/var/jenkins_home"
-      volumes: 
+          - name: "docker-socket"
+            mountPath: "/var/run/docker.sock"
+          - name: "docker-binary"
+            mountPath: "/usr/bin/docker"
+      volumes:
       - name: "jenkins-data"
         gcePersistentDisk:
           pdName: jenkins-data-disk
           fsType: ext4
+      - name: "docker-socket"
+        hostPath:
+          path: "/var/run/docker.sock"
+      - name: "docker-binary"
+        hostPath:
+          path: "/usr/bin/docker"
