@@ -74,7 +74,7 @@ createWssFile() {
 portNumber=$1
 service=$2
 namespace=$3
-file="/servers/ws.$service.$namespace"
+file="/servers/wss.$service.$namespace"
 
 cat <<EOF > $file
 server {

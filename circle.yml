@@ -23,6 +23,6 @@ test:
 
 deployment:
   hub:
-    branch: [master, Clean-Deploy]
+    branch: [master]
     commands:
       - cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
