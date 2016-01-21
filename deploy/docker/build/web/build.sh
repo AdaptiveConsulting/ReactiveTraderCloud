@@ -39,6 +39,7 @@ docker run                             \
   $tempContainer
 
 # copy the dist
+mkdir -p ./dist
 rm -r ./dist
 docker cp $websrc:/client/dist .
 
