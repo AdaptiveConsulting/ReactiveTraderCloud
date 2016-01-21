@@ -38,8 +38,8 @@ docker run                             \
   --volumes-from $nodemodulesContainer \
   $tempContainer
 
-rm -r ./dist || true
 echo "copy the dist ..."
+if [[ -f dist ]];then rm -r ./dist; fi
 docker cp $websrc:/client/dist .
 
 echo "build nginx container to host the dist ..."
