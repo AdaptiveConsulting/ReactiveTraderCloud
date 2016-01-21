@@ -5,9 +5,9 @@
 mkdir -p ~/docker
 
 echo "Saving containers"
-docker save $monoContainer       > ~/docker/mono.tar
-docker save $crossbarContainer   > ~/docker/crossbar.tar
-docker save $eventstoreContainer > ~/docker/eventstore.tar
-docker save $nginxContainer      > ~/docker/nginx.tar
-docker save dnupackage           > ~/docker/dnupackage.tar
-docker save nodemodules          > ~/docker/nodemodules.tar
+docker save $monoContainer        > ~/docker/mono.tar
+docker save $crossbarContainer    > ~/docker/crossbar.tar
+docker save $eventstoreContainer  > ~/docker/eventstore.tar
+docker save $nginxContainer       > ~/docker/nginx.tar
+docker save $dnupackageContainer  > ~/docker/dnupackage.tar
+docker save $nodemodulesContainer > ~/docker/nodemodules.tar

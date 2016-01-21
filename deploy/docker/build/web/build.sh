@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 build=$1
 if [[ $build = "" ]];then
   echo "web-build: build number required as first parameter"
@@ -19,23 +18,31 @@ cp -r ../../../../src/client/      ./npminstall/build/client
 
 sed -ie "s|__NODE_CONTAINER__|$nodeContainer|g" ./npminstall/build/Dockerfile
 
+# build the container that will generate the dist folder
 tempContainer="weareadaptive/websrc:$build"
 docker build --no-cache -t $tempContainer ./npminstall/build/.
 
-nodemodules="nodemodules"
-docker volume create --name=$nodemodules
+# create the data container that will store node_modules
+docker run                                \
+  -v //client/node_modules                \
+  --name=$nodemodulesContainer            \
+  $ubuntuContainer                        \
+  echo "persistence for the node_modules" \
+  || true
 
+# generate the dist folder
 websrc="websrc"
 docker rm $websrc || true
-docker run                            \
-  --name $websrc                      \
-  -v nodemodules:/client/node_modules \
+docker run                             \
+  --name $websrc                       \
+  --volumes-from $nodemodulesContainer \
   $tempContainer
 
+# copy the dist
 rm -r ./dist
 docker cp $websrc:/client/dist .
 
-# build nginx container
+# build nginx container to host the dist
 mkdir -p ./nginx/build
 
 cp ./nginx/template.Dockerfile   ./nginx/build/Dockerfile

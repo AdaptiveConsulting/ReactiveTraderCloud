@@ -86,6 +86,10 @@ jenkinsContainer_major="0"
 jenkinsContainer_minor="0"
 jenkinsContainer="weareadaptive/jenkins:$jenkinsContainer_major.$jenkinsContainer_minor"
 
+# cache containers
+dnupackageContainer="dnupackage"
+nodemodulesContainer="nodemodules"
+
 # GCLOUD
 # ======
 # You need to change this ones
