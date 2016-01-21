@@ -15,6 +15,11 @@ server {
     server_name $service-$namespace.__DOMAINNAME__;
 
     location / {
+        proxy_set_header        Host \$host;
+        proxy_set_header        X-Real-IP \$remote_addr;
+        proxy_set_header        X-Forwarded-Proto \$scheme;
+        proxy_set_header        X-Forwarded-For \$proxy_add_x_forwarded_for;
+        
         proxy_pass http://$service.$namespace;
     }
 }
@@ -33,10 +38,11 @@ server {
     server_name $service-$namespace.__DOMAINNAME__;
 
     location / {
+        proxy_set_header      Host \$host;
+        proxy_set_header      X-Real-IP \$remote_addr;
+        proxy_set_header      X-Forwarded-For \$proxy_add_x_forwarded_for;
+        
         proxy_pass http://$service.$namespace:$portNumber;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         
         # ws support
         proxy_http_version 1.1;
@@ -64,6 +70,11 @@ server {
     ssl_certificate_key    /etc/ssl/__DOMAINNAME__.key;
 
     location / {
+        proxy_set_header        Host \$host;
+        proxy_set_header        X-Real-IP \$remote_addr;
+        proxy_set_header        X-Forwarded-Proto \$scheme;
+        proxy_set_header        X-Forwarded-For \$proxy_add_x_forwarded_for;
+
         proxy_pass http://$service.$namespace:$portNumber;
     }
 }
