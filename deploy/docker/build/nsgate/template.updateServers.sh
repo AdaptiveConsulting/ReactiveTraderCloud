@@ -52,15 +52,23 @@ do
             portNumber=$(echo $portsData | jq "$selector" | jq -r '.port')
             echo "processing port $port - $portNumber"
             
-            # HTTP proxy
             if [[ $port == "http" ]];then
             createHttpFile $portNumber $service $namespace
             allServices="$allServices -- $service-$namespace"
             fi
             
-            # WS proxy
             if [[ $port == "ws" ]];then
             createWsFile $portNumber $service $namespace
+            allServices="$allServices -- $service-$namespace"
+            fi
+            
+            if [[ $port == "https" ]];then
+            createHttpsFile $portNumber $service $namespace
+            allServices="$allServices -- $service-$namespace"
+            fi
+            
+            if [[ $port == "wss" ]];then
+            createWssFile $portNumber $service $namespace
             allServices="$allServices -- $service-$namespace"
             fi
         done
