@@ -10,7 +10,7 @@ set -euo pipefail
 
 . ../../../config
 
-# Build the dist folder
+echo "Build the dist folder ..."
 mkdir -p ./npminstall/build
 rm -rf ./npminstall/build/*
 cp npminstall/template.Dockerfile  ./npminstall/build/Dockerfile
@@ -18,11 +18,11 @@ cp -r ../../../../src/client/      ./npminstall/build/client
 
 sed -ie "s|__NODE_CONTAINER__|$nodeContainer|g" ./npminstall/build/Dockerfile
 
-# build the container that will generate the dist folder
+echo "build the container that will generate the dist folder ..."
 tempContainer="weareadaptive/websrc:$build"
 docker build --no-cache -t $tempContainer ./npminstall/build/.
 
-# create the data container that will store node_modules
+echo "create the data container that will store node_modules ..."
 docker run                                \
   -v //client/node_modules                \
   --name=$nodemodulesContainer            \
@@ -30,7 +30,7 @@ docker run                                \
   echo "persistence for the node_modules" \
   || true
 
-# generate the dist folder
+echo "generate the dist folder ..."
 websrc="websrc"
 docker rm $websrc || true
 docker run                             \
@@ -38,12 +38,12 @@ docker run                             \
   --volumes-from $nodemodulesContainer \
   $tempContainer
 
-# copy the dist
+echo "copy the dist ..."
 mkdir -p ./dist
 rm -r ./dist
 docker cp $websrc:/client/dist .
 
-# build nginx container to host the dist
+echo "build nginx container to host the dist ..."
 mkdir -p ./nginx/build
 
 cp ./nginx/template.Dockerfile   ./nginx/build/Dockerfile
