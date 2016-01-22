@@ -37,3 +37,11 @@ spec:
             name: "app3"
           - containerPort: 2113
             name: "app4"
+        volumeMounts:
+        - name: web-ssl
+          readOnly: true
+          mountPath: /etc/ssl
+      volumes:
+      - name: web-ssl
+        secret:
+          secretName: web-ssl

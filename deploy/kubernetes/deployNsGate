@@ -11,15 +11,20 @@ build=$1
 service="nsgate"
 namespace="nsgate"
 
+# generate certificates
+./generateNewCertificates
+
 # generate manifest
 cd templates
 cp nsgate/ns.yml ../manifests/ns.yml
+./generate_secret_manifest web-ssl $namespace
 ./generate_svc_manifest $service $namespace
 ./generate_rc_manifest $service $namespace $build
-cd - > garbage && rm templates/garbage
+cd ..
 
 # deploy on kubernetes
 ./kubectl create -f manifests/ns.yml
+./kubectl create -f manifests/web-ssl.yml
 ./kubectl create -f manifests/$service-svc.yml 
 ./kubectl create -f manifests/$service-rc.yml
 
