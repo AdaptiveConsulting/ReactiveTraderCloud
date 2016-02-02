@@ -1,7 +1,6 @@
 import system from 'system';
-import rx from 'rx';
+import Rx from 'rx';
 import * as model from './model';
-import fakeUserRepository from './fake-user-repository';
 
 const _log:system.logger.Logger = system.logger.create('ExecutionService');
 

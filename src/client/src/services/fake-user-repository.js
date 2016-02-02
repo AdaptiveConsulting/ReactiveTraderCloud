@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import * as model from './model';
 
 var fakeUserDetails = [{

@@ -1,5 +1,5 @@
 import system from 'system';
-import rx from 'rx';
+import Rx from 'rx';
 import * as model from './model';
 
 var _log:system.logger.Logger = system.logger.create('BlotterService');
