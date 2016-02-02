@@ -225,6 +225,19 @@ class SpotTile extends React.Component {
     state === 'blocked' && (message = this.getNoResponseMessage());
 
     let actionsClass = message ? 'currency-pair-actions hide' : 'currency-pair-actions';
+    let sizerClass = message ? 'sizer disabled' : 'sizer';
+
+    let chartElement = chart
+        ? (<Sparklines
+          data={historic.slice()}
+          width={326}
+          height={22}
+          margin={0}>
+          <SparklinesLine />
+          <SparklinesSpots />
+          <SparklinesReferenceLine type='avg' />
+        </Sparklines>)
+      : <div className='sparkline-holder'></div>;
 
     return (
       <div>
@@ -239,19 +252,9 @@ class SpotTile extends React.Component {
           <Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
         </div>
         <div className='clearfix'></div>
-        <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})}
-               pair={pair} />
+        <Sizer className={sizerClass} size={size} onChange={(size) => this.setState({size})} pair={pair} />
         <div className='clearfix'></div>
-        {chart ?
-          <Sparklines
-            data={historic.slice()}
-            width={326}
-            height={22}
-            margin={0}>
-            <SparklinesLine />
-            <SparklinesSpots />
-            <SparklinesReferenceLine type='avg' />
-          </Sparklines> : <div className='sparkline-holder'></div>}
+        {chartElement}
       </div>
     );
   }
