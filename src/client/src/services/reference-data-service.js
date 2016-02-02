@@ -1,6 +1,5 @@
 import system from 'system';
-import rx from 'rx';
-import * as model from './model';
+import Rx from 'rx';
 
 var _log:system.logger.Logger = system.logger.create('ReferenceDataService');
 
