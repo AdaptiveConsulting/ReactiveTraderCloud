@@ -14,6 +14,10 @@ set -euo pipefail
 
 . ../config
 
+if [[ ! -f ~/packages ]];then
+  exit 0
+fi
+
 echo "start a backup container ..."
 alwaysCommand="while true; do echo ping; sleep 60; done"
 restoreContainer="loadpackagecontainer"
