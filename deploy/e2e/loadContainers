@@ -14,7 +14,8 @@ set -euo pipefail
 
 . ../config
 
-if [[ ! -f ~/packages ]];then
+if [[ ! -e ~/packages/${dnupackageContainer}.tar || ! -e ~/packages/${nodemodulesContainer}.tar ]];then
+  echo "no packages found"
   exit 0
 fi
 
