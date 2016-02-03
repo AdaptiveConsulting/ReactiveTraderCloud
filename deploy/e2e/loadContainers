@@ -36,12 +36,13 @@ docker cp ~/packages/${dnupackageContainer}.tar \
 docker cp ~/packages/${nodemodulesContainer}.tar \
           ${restoreContainer}:/tmp/${nodemodulesContainer}.tar
 
-echo "untar into the container"
 
 command1="cd /tmp && tar xvf /tmp/${dnupackageContainer}.tar && cp -r data/* /package"
 command2="cd /tmp && tar xvf /tmp/${nodemodulesContainer}.tar  && cp -r data/* /nodemodules"
 
+echo "untar into the container ..."
 if [[ ${CI} == true ]];then
+  echo "circleci detected"
   sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ${restoreContainer})" -- bash -c ${command1}
   sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ${restoreContainer})" -- bash -c ${command2}
 else
