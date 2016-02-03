@@ -43,8 +43,8 @@ command2="cd /tmp && tar xvf /tmp/${nodemodulesContainer}.tar  && cp -r data/* /
 echo "untar into the container ..."
 if [[ ${CI} == true ]];then
   echo "circleci detected"
-  sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ${restoreContainer})" -- bash -c ${command1}
-  sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ${restoreContainer})" -- bash -c ${command2}
+  sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ${restoreContainer})" -- bash -c "${command1}"
+  sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ${restoreContainer})" -- bash -c "${command2}"
 else
   docker exec -t ${restoreContainer} bash -c "${command1}"
   docker exec -t ${restoreContainer} bash -c "${command2}"
