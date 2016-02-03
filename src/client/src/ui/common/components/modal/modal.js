@@ -1,9 +1,8 @@
 import React from 'react';
 import { utils } from 'system';
 
-// import {render} from 'react-dom';
-let mountedInstance,
-    defaultClassName = 'absolute-center modal text-center';
+let mountedInstance;
+let defaultClassName = 'absolute-center modal text-center';
 
 class Modal extends React.Component {
 
@@ -12,7 +11,7 @@ class Modal extends React.Component {
     title: React.PropTypes.string,
     body: React.PropTypes.any,
     className: React.PropTypes.string
-  }
+  };
 
   constructor(props, context){
     super(props, context);

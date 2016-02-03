@@ -8,12 +8,8 @@ export default class Message extends React.Component {
     onClick: React.PropTypes.func
   }
 
-  /**
-   * Parses an ACK response string, saves element into instance until user action
-   * @param {Object} response
-   * @returns {ReactDOM.Element}
-   */
-  renderMessage(response){
+  render(){
+    let response  = this.props.message;
     if (!response)
       return false;
 
@@ -25,8 +21,8 @@ export default class Message extends React.Component {
       );
     }
 
-    const action = response.direction === 'sell' ? 'Sold' : 'Bought',
-          amount = numeral(response.amount).format('0,000,000[.]00');
+    const action = response.direction === 'sell' ? 'Sold' : 'Bought';
+    const amount = numeral(response.amount).format('0,000,000[.]00');
 
     // we will cache last response to diverge from state until user dismisses it.
     return (
@@ -39,10 +35,6 @@ export default class Message extends React.Component {
         <a href='#' className='pull-right dismiss-message' onClick={this.props.onClick}>{response.status}</a>
       </div>
     );
-  }
-
-  render(){
-    return this.renderMessage(this.props.message);
   }
 
 }

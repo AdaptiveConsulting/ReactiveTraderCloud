@@ -16,7 +16,7 @@ export default class Sizer extends React.Component {
     size: React.PropTypes.number,
     pair: React.PropTypes.string,
     onChange: React.PropTypes.func
-  }
+  };
 
   /**
    * When we mount, get latest date and construct spot date
@@ -31,8 +31,8 @@ export default class Sizer extends React.Component {
    * @param {DOMEvent=} e
    */
   _setNotionalFromDOMInput(e){
-    const val    = (this.refs.size.value || e.target.value).trim(),
-          hasdot = val.indexOf(DOT) !== -1;
+    const val    = (this.refs.size.value || e.target.value).trim();
+    const hasdot = val.indexOf(DOT) !== -1;
 
     let size = utils.getConvertedSize(val);
 
@@ -53,13 +53,14 @@ export default class Sizer extends React.Component {
   }
 
   render(){
-    const formattedSize = numeral(this.props.size).format(NUMERAL_FORMAT),
-          baseCurrency  = this.props.pair.substr(0, 3);
+    const formattedSize = numeral(this.props.size).format(NUMERAL_FORMAT);
+    const baseCurrency  = this.props.pair.substr(0, 3);
 
     return (
       <div className={this.props.className}>
         <label>{baseCurrency}
-          <input className='size' type='text' ref='size' defaultValue={formattedSize} onChange={(e) => this._setNotionalFromDOMInput(e)}/></label>
+          <input className='size' type='text' ref='size' defaultValue={formattedSize} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
+        </label>
         <div className='pull-right'>
           {this.SPOTDATE}
         </div>

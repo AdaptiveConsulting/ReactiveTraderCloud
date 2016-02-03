@@ -1,5 +1,5 @@
 import system from 'system';
-import rx from 'rx';
+import Rx from 'rx';
 import * as model from './model';
 
 var _log:system.logger.Logger = system.logger.create('AnalyticsService');
@@ -8,6 +8,7 @@ export default class AnalyticsService extends system.service.ServiceBase {
 
   getAnalyticsStream(analyticsRequest:model.AnalyticsRequest) {
     system.Guard.isDefined(analyticsRequest, 'analyticsRequest required');
+
     let _this = this;
     return Rx.Observable.create(
       o => {

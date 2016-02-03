@@ -1,10 +1,6 @@
 import React from 'react';
-
 import { Sparklines, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
-
 import { utils } from 'system';
-
-// sub components
 import Direction from './direction';
 import Sizer from './sizer';
 import Pricer from './pricer';
@@ -23,7 +19,6 @@ class SpotTile extends React.Component {
     sell: React.PropTypes.number,
     size: React.PropTypes.any,
     mid: React.PropTypes.number,
-    // spread: React.PropTypes.string,
     precision: React.PropTypes.number,
     pip: React.PropTypes.number,
     onExecute: React.PropTypes.func,
@@ -31,11 +26,6 @@ class SpotTile extends React.Component {
     response: React.PropTypes.object
   }
 
-  /**
-   * @constructs CurrencyPair
-   * @param {Object=} props
-   * @param {Object=} context
-   */
   constructor(props, context){
     super(props, context);
     this.state = {
@@ -71,26 +61,25 @@ class SpotTile extends React.Component {
     }
   }
 
-  componentWillReceiveProps(props, state){
+  componentWillReceiveProps(nextProps, nextState){
     const historic = this.state.historic;
 
-    //props.mid && props.mid != historic[historic.length-1] && historic.push(props.mid);
-    props.mid && historic.push(props.mid);
+    nextProps.mid && historic.push(nextProps.mid);
 
     // 30 max historic prices
     historic.length > 150 && (historic.shift());
 
     const payload = {
       historic,
-      state: state.state ? state.state : props.state || 'listening'
+      state: nextState.state ? nextState.state : nextProps.state || 'listening'
     };
 
-    if (!this.state.info && props.response != null){
+    if (!this.state.info && nextProps.response != null){
       this.setState({
         info: true
       });
     }
-    else if (props.response && props.response.message === null){
+    else if (nextProps.response && nextProps.response.message === null){
       delete this.lastResponse;
       this.setState({
         info: false
@@ -100,13 +89,13 @@ class SpotTile extends React.Component {
     this.setState(payload);
   }
 
-  shouldComponentUpdate(props, state){
+  shouldComponentUpdate(nextProps, nextState){
     //refuse props updates while we have a summary or error message info div shown until this.setState()
-    if ((props.buy != this.props.buy || props.sell != this.props.sell) || props.state !== this.state.state){
+    if ((nextProps.buy != this.props.buy || nextProps.sell != this.props.sell) || nextProps.state !== this.state.state){
       return true;
     }
     else {
-      return state.chart !== this.state.chart || state.state !== this.state.state || this.state.info != state.info;
+      return nextState.chart !== this.state.chart || nextState.state !== this.state.state || this.state.info != nextState.info;
     }
   }
 
@@ -116,9 +105,9 @@ class SpotTile extends React.Component {
    * @returns {{bigFigures: string, pip: string, pipFraction: string}}
    */
   parsePrice(price:number){
-    const { precision, pip } = this.props,
-          priceString = price ? price.toFixed(precision) : '',
-          fractions   = priceString.split('.')[1];
+    const { precision, pip } = this.props;
+    const priceString = price ? price.toFixed(precision) : '';
+    const fractions = priceString.split('.')[1];
 
     return priceString ? {
       bigFigures: Math.floor(price) + '.' + fractions.substring(0, pip - 2),
@@ -131,12 +120,6 @@ class SpotTile extends React.Component {
     };
   }
 
-  /**
-   * Formats spread
-   * @param sell
-   * @param buy
-   * @returns {string}
-   */
   getSpread(sell:number, buy:number){
     const { pip, precision } = this.props;
     return sell != null ? ((sell - buy) * Math.pow(10, pip)).toFixed(precision - pip) : '';
@@ -146,9 +129,9 @@ class SpotTile extends React.Component {
    * Determine the change as up or down on a tick.
    * @returns {string}
    */
-  getDirection(mid:number){
-    const historic = this.state.historic,
-          len      = historic.length - 2;
+  getDirection(mid:number) : String {
+    const historic = this.state.historic;
+    const len = historic.length - 2;
 
     return (historic.length > 1) ?
       historic[len] < mid ? 'up' :
@@ -158,22 +141,20 @@ class SpotTile extends React.Component {
       : '-';
   }
 
-  /**
-   * Calls back the passed fn with the direction and size
-   * @param {String} direction
-   */
   execute(direction:string){
     // attempt to capture price we request against.
     if (this.props.onExecute && this.state.size !== 0){
-      let s = Number(this.state.size);
-      isNaN(s) || this.props.onExecute({
+      let size = Number(this.state.size);
+
+      isNaN(size) || this.props.onExecute({
         direction: direction,
-        amount: s,
+        amount: size,
         rate: this.props[direction].toFixed(this.props.precision),
         pair: this.props.pair,
         valueDate: this.SPOTDATE,
         trader: 'SJP'
       });
+
       this.setState({
         state: 'executing'
       });
@@ -183,10 +164,6 @@ class SpotTile extends React.Component {
     }
   }
 
-  /**
-   * Click handler for the 'Done'
-   * @param {DOMEvent} e
-   */
   onDismissLastResponse(e:DOMEvent){
     e && e.preventDefault();
     this.setState({
@@ -199,7 +176,7 @@ class SpotTile extends React.Component {
    * When a execution fails to confirm, show a warning.
    * @returns {HTMLElement}
    */
-  getNoResponseMessage(){
+  getNoResponseMessage() : React.Element {
     return (
       <div className='blocked summary-state animated flipInX'>
         <span className='key'>Error:</span> No response was received from the server, the execution status is unknown. Please contact your sales rep.
@@ -211,14 +188,14 @@ class SpotTile extends React.Component {
   /**
    * Changes sparkline ticker on/off or launches IQ chart openfin app.
    */
-  setChart(){
+  setChart() : void {
     if (!window.fin)
       this.setState({chart: !this.state.chart});
     else
       this.openChartIQ(this.props.pair);
   }
 
-  openChartIQ(symbol:string){
+  openChartIQ(symbol:string) : void {
     this.app = new window.fin.desktop.Application({
       uuid: 'ChartIQ' + Date.now(),
       url: `http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=${symbol}&period=5`,
@@ -240,10 +217,27 @@ class SpotTile extends React.Component {
           title     = pair.substr(0, 3) + ' / ' + pair.substr(3, 3);
 
     // any ACK or failed messages will come via state.info / last response
-    let message = info ? (this.lastResponse || (this.lastResponse = <Message message={response} onClick={(e) => this.onDismissLastResponse(e)} />)) : false;
+    let message = info
+      ? (this.lastResponse || (this.lastResponse = <Message message={response} onClick={(e) => this.onDismissLastResponse(e)} />))
+      : false;
 
     // if execution has gone down, state will be `blocked`.
     state === 'blocked' && (message = this.getNoResponseMessage());
+
+    let actionsClass = message ? 'currency-pair-actions hide' : 'currency-pair-actions';
+    let sizerClass = message ? 'sizer disabled' : 'sizer';
+
+    let chartElement = chart
+        ? (<Sparklines
+          data={historic.slice()}
+          width={326}
+          height={22}
+          margin={0}>
+          <SparklinesLine />
+          <SparklinesSpots />
+          <SparklinesReferenceLine type='avg' />
+        </Sparklines>)
+      : <div className='sparkline-holder'></div>;
 
     return (
       <div>
@@ -252,25 +246,15 @@ class SpotTile extends React.Component {
           <span>{title}</span> <i className='fa fa-plug animated infinite fadeIn'/>
         </div>
         {message}
-        <div className={message ? 'currency-pair-actions hide' : 'currency-pair-actions'}>
+        <div className={actionsClass}>
           <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
           <Direction direction={this.getDirection(mid)} spread={this.getSpread(buy, sell)}/>
           <Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
         </div>
         <div className='clearfix'></div>
-        <Sizer className={message ? 'sizer disabled' : 'sizer'} size={size} onChange={(size) => this.setState({size})}
-               pair={pair} />
+        <Sizer className={sizerClass} size={size} onChange={(size) => this.setState({size})} pair={pair} />
         <div className='clearfix'></div>
-        {chart ?
-          <Sparklines
-            data={historic.slice()}
-            width={326}
-            height={22}
-            margin={0}>
-            <SparklinesLine />
-            <SparklinesSpots />
-            <SparklinesReferenceLine type='avg' />
-          </Sparklines> : <div className='sparkline-holder'></div>}
+        {chartElement}
       </div>
     );
   }
