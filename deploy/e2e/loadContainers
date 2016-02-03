@@ -37,8 +37,14 @@ docker cp ~/packages/${nodemodulesContainer}.tar \
           ${restoreContainer}:/tmp/${nodemodulesContainer}.tar
 
 echo "untar into the container"
-docker exec -t ${restoreContainer} \
-  bash -c "cd /tmp && tar xvf /tmp/${dnupackageContainer}.tar && cp -r data/* /package"
-docker exec -t ${restoreContainer} \
-  bash -c "cd /tmp && tar xvf /tmp/${nodemodulesContainer}.tar  && cp -r data/* /nodemodules"
 
+command1="cd /tmp && tar xvf /tmp/${dnupackageContainer}.tar && cp -r data/* /package"
+command2="cd /tmp && tar xvf /tmp/${nodemodulesContainer}.tar  && cp -r data/* /nodemodules"
+
+if [[ $CIRCLCI ]];then
+  sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ${restoreContainer})" -- bash -c ${command1}
+  sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ${restoreContainer})" -- bash -c ${command2}
+else
+  docker exec -t ${restoreContainer} bash -c "${command1}"
+  docker exec -t ${restoreContainer} bash -c "${command2}"
+fi
