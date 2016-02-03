@@ -1,13 +1,39 @@
 #! /bin/bash
 
+# fail fast
+set -euo pipefail
+
 . ../config
 
 mkdir -p ~/docker
+mkdir -p ~/packages
 
 echo "Saving containers"
-docker save $monoContainer        > ~/docker/mono.tar
-docker save $crossbarContainer    > ~/docker/crossbar.tar
-docker save $eventstoreContainer  > ~/docker/eventstore.tar
-docker save $nginxContainer       > ~/docker/nginx.tar
-docker save $dnupackageContainer  > ~/docker/dnupackage.tar
-docker save $nodemodulesContainer > ~/docker/nodemodules.tar
+# docker save $monoContainer        > ~/docker/mono.tar
+# docker save $crossbarContainer    > ~/docker/crossbar.tar
+# docker save $eventstoreContainer  > ~/docker/eventstore.tar
+# docker save $nginxContainer       > ~/docker/nginx.tar
+
+saveCommand="tar cvf /tmp/backup.tar /data"
+
+echo "dnu packages"
+docker rm ${dnupackageContainer} || true
+docker run -t                     \
+  --name ${dnupackageContainer}   \
+  -v ${dnupackageContainer}:/data \
+  ${ubuntuContainer}              \
+  bash -c "$saveCommand"
+
+docker cp ${dnupackageContainer}:/tmp/backup.tar \
+          ~/packages/${dnupackageContainer}.tar
+
+echo "node_modules"
+docker rm ${nodemodulesContainer} || true
+docker run -t                      \
+  --name ${nodemodulesContainer}   \
+  -v ${nodemodulesContainer}:/data \
+  ${ubuntuContainer}               \
+  bash -c "$saveCommand"
+
+docker cp ${nodemodulesContainer}:/tmp/backup.tar \
+          ~/packages/${nodemodulesContainer}.tar

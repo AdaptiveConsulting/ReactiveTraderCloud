@@ -9,6 +9,7 @@ machine:
 dependencies:
   cache_directories:
     - "~/docker"
+    - "~/packages"
   override:
     - docker info
     - cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions

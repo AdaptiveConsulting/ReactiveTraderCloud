@@ -29,10 +29,10 @@ command="$command && cp -r /packages /root/.dnx/"
 command="$command && dnu restore"
 command="$command && cp -r /root/.dnx/packages /"
 docker rm $dnurestored || true
-docker run -t                      \
-  --name $dnurestored              \
-  -v $dnupackageContainer:/package \
-  weareadaptive/serverssrc:$build  \
+docker run -t                       \
+  --name $dnurestored               \
+  -v $dnupackageContainer:/packages \
+  weareadaptive/serverssrc:$build   \
   bash -c "$command"
 
 # commit

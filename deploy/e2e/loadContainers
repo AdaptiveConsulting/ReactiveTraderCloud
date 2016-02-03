@@ -1,10 +1,39 @@
 #! /bin/bash
 
-echo "Loading containers"
+# fail fast
+set -euo pipefail
 
-for container in "mono" "crossbar" "eventstore" "nginx" "dnupackage" "nodemodules"
-do
-  if [[ -e ~/docker/$container.tar ]]; then 
-    docker load -i ~/docker/$container.tar && echo "$container loaded" 
-  fi
-done
+# echo "Loading containers"
+
+# for container in "mono" "crossbar" "eventstore" "nginx" "dnupackage" "nodemodules"
+# do
+#   if [[ -e ~/docker/$container.tar ]]; then 
+#     docker load -i ~/docker/$container.tar && echo "$container loaded" 
+#   fi
+# done
+
+. ../config
+
+echo "start a backup container ..."
+alwaysCommand="while true; do echo ping; sleep 60; done"
+restoreContainer="loadpackagecontainer"
+
+docker rm ${restoreContainer} || true 
+docker run -d                                   \
+  --name ${restoreContainer}                    \
+  -v ${dnupackageContainer}:/package            \
+  -v ${nodemodulesContainer}:/nodemodules       \
+  ${ubuntuContainer} bash -c "${alwaysCommand}"
+
+echo "copy packages to the container ..."
+docker cp ~/packages/${dnupackageContainer}.tar \
+          ${restoreContainer}:/tmp/${dnupackageContainer}.tar 
+docker cp ~/packages/${nodemodulesContainer}.tar \
+          ${restoreContainer}:/tmp/${nodemodulesContainer}.tar
+
+echo "untar into the container"
+docker exec -t ${restoreContainer} \
+  bash -c "cd /tmp && tar xvf /tmp/${dnupackageContainer}.tar && cp -r data/* /package"
+docker exec -t ${restoreContainer} \
+  bash -c "cd /tmp && tar xvf /tmp/${nodemodulesContainer}.tar  && cp -r data/* /nodemodules"
+
