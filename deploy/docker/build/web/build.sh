@@ -22,20 +22,12 @@ echo "build the container that will generate the dist folder ..."
 tempContainer="weareadaptive/websrc:$build"
 docker build --no-cache -t $tempContainer ./npminstall/build/.
 
-echo "create the data container that will store node_modules ..."
-docker run                                \
-  -v //client/node_modules                \
-  --name=$nodemodulesContainer            \
-  $ubuntuContainer                        \
-  echo "persistence for the node_modules" \
-  || true
-
 echo "generate the dist folder ..."
 websrc="websrc"
 docker rm $websrc || true
-docker run                             \
-  --name $websrc                       \
-  --volumes-from $nodemodulesContainer \
+docker run                                       \
+  --name $websrc                                 \
+  -v $nodemodulesContainer://client/node_modules \
   $tempContainer
 
 echo "copy the dist ..."

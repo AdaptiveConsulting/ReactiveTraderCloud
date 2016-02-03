@@ -13,14 +13,6 @@ set -euo pipefail
 
 mkdir -p ./build
 
-#docker volume create --name=$dnupackage
-docker run                                \
-  -v //packages                           \
-  --name=$dnupackageContainer             \
-  $ubuntuContainer                        \
-  echo "persistence for the dnx packages" \
-  || true
-
 cp -r ../../../../src/server ./build/
 
 cp  ./template.Dockerfile                       ./build/Dockerfile
@@ -37,10 +29,10 @@ command="$command && cp -r /packages /root/.dnx/"
 command="$command && dnu restore"
 command="$command && cp -r /root/.dnx/packages /"
 docker rm $dnurestored || true
-docker run -t                         \
-  --name $dnurestored                 \
-  --volumes-from $dnupackageContainer \
-  weareadaptive/serverssrc:$build     \
+docker run -t                      \
+  --name $dnurestored              \
+  -v $dnupackageContainer:/package \
+  weareadaptive/serverssrc:$build  \
   bash -c "$command"
 
 # commit

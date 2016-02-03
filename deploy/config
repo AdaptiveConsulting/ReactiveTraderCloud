@@ -87,8 +87,8 @@ jenkinsContainer_minor="0"
 jenkinsContainer="weareadaptive/jenkins:$jenkinsContainer_major.$jenkinsContainer_minor"
 
 # cache containers
-dnupackageContainer="dnupackage"
-nodemodulesContainer="nodemodules"
+dnupackageContainer="reactivetrader_dnupackage"
+nodemodulesContainer="reactivetrader_nodemodules"
 
 # GCLOUD
 # ======
