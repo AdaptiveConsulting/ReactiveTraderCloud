@@ -37,3 +37,14 @@ docker run -t                      \
 
 docker cp ${nodemodulesContainer}:/tmp/backup.tar \
           ~/packages/${nodemodulesContainer}.tar
+
+echo "npm_cache"
+docker rm ${npmCacheContainer} || true
+docker run -t                   \
+  --name ${npmCacheContainer}   \
+  -v ${npmCacheContainer}:/data \
+  ${ubuntuContainer}            \
+  bash -c "$saveCommand"
+
+docker cp ${npmCacheContainer}:/tmp/backup.tar \
+          ~/packages/${npmCacheContainer}.tar
