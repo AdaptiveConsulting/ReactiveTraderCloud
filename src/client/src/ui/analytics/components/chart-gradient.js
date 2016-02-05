@@ -3,6 +3,10 @@ import React from 'react';
 /**
  * ChartGradient - a utility to draw linear gradients on area and stroke elements of a line chart
  *
+ * Note: This code manipulate the DOM elements directly. We are adding extra functionality (gradients) to the SVG elements
+ * of the chart component. An option to add gradients to the chart is not available in the component itself, so we have to
+ * manipulate the DOM structure once the chart is already rendered.
+ *
  * Creates two linear gradients and appends them the to the defs element of the chart.
  * read about the SVG defs:
  * https://developer.mozilla.org/en-US/docs/Web/SVG/Element/defs
@@ -17,29 +21,19 @@ export default class ChartGradient {
 
   constructor(){
     this.createGradients();
-    this.parentChart;
-    this.domainMin;
-    this.domainMax;
-    this.chartHeight;
   }
 
-
-  update(parentChart, domainMin, domainMax, chartHeight){
-    this.parentChart = parentChart;
-    this.domainMin = domainMin;
-    this.domainMax = domainMax;
-    this.chartHeight = chartHeight;
-
-    this.appendLinearGradients();
-    this.updateStops();
+  update(parentChart, domainMin, domainMax){
+    this.appendLinearGradients(parentChart, domainMin, domainMax);
+    this.updateStops(domainMin, domainMax);
   }
 
-  appendLinearGradients(){
-    if (!this.parentChart){
+  appendLinearGradients(parentChart, domainMin, domainMax){
+    if (!parentChart){
       throw new Error('No parent chart element exists');
     }
 
-    let nvGroups = this.parentChart.querySelector('.nv-groups');
+    let nvGroups = parentChart.querySelector('.nv-groups');
     let nvArea;
     let nvStroke;
     let svgNS = 'http://www.w3.org/2000/svg';
@@ -51,8 +45,8 @@ export default class ChartGradient {
     } else {
 
       setTimeout(() => {
-        this.update(this.parentChart, this.domainMin, this.domainMax, this.chartHeight);
-      }, 10);
+        this.update(parentChart, domainMin, domainMax);
+      }, 10); //the timeout is used here because after the initial render() call, the chart elements are not setup/added to DOM yet
     }
 
     if (!defs && nvGroups) {
@@ -156,12 +150,12 @@ export default class ChartGradient {
 
   }
 
-  updateStops(){
+  updateStops(domainMin, domainMax){
     //update colour stops
     //need to modify stop1End and stop2
-    let fullRange = Math.abs(this.domainMin) + Math.abs(this.domainMax);
+    let fullRange = Math.abs(domainMin) + Math.abs(domainMax);
     if (isNaN(fullRange)) return;
-    let zeroAt = (this.domainMax/fullRange) * 100 + '%';
+    let zeroAt = (domainMax/fullRange) * 100 + '%';
 
     var stopGreenStart = this.linearGradient.querySelector('#stop1');
     var stopGreenEnd = this.linearGradient.querySelector('#stop1End');

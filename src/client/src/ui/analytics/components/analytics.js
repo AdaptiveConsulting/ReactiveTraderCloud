@@ -104,7 +104,7 @@ export default class Analytics extends React.Component {
       }
       var chartDomElement = ReactDOM.findDOMNode(this.refs.lineChart);
       if (chartDomElement){
-        this.chartGradient.update(chartDomElement, this.state.domainMin, this.state.domainMax, 150);
+        this.chartGradient.update(chartDomElement, this.state.domainMin, this.state.domainMax);
       }
     }
   }
