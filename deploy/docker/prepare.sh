@@ -89,15 +89,17 @@ fi
 # PUSH
 # ====
 if [[ ${command} = "push" ]];then
+  cd ../..
   for service in ${group}
   do
-    pushd build/${service} > garbage
-      echo "======================"
-      echo "= Push ${service}"
-      echo "======================"
-      ./push.sh ${build}
-    popd > garbage
-    rm garbage build/${service}/garbage
+    echo "======================"
+    echo "= Push ${service}"
+    echo "======================"
+    ./hive script hive_run             \
+        --config deploy/config.yml     \
+        deploy/docker/build/${service} \
+        push.sh                        \
+        build ${build}
   done
   exit 0
 fi
