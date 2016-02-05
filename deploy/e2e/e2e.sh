@@ -10,17 +10,17 @@ set -euo pipefail
 
 startTime=$(date)
 
-chmod 755 ./ensurePermissions
-./ensurePermissions
+chmod 755 ./ensurePermissions.sh
+./ensurePermissions.sh
 
-./buildContainers $build_id
-./runContainers $build_id
+./buildContainers.sh $build_id
+./runContainers.sh $build_id
 
 echo "Giving some time for services to start"
 sleep 10
 
-./testContainers $build_id
-./stopContainers $build_id
+./testContainers.sh $build_id
+./stopContainers.sh $build_id
 
 echo " "
 echo "============="

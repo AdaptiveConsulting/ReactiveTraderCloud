@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
-
-build="<% args.build %>"
-container="<% container.tooling.nsgate %>"
+#! /bin/bash
 
 # fail fast
 set -euo pipefail
+
+build="<% args.build %>"
+container="<% container.reactivetrader.broker %>"
 
 docker push ${container}
 docker push ${container}.${build}

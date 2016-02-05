@@ -1,0 +1,79 @@
+#!/bin/bash
+
+if [[ $# != 2 ]];then
+  echo "Usage:"
+  echo "  $0 NAMESPACE BUILD_ID"
+  echo " "
+  exit 1
+fi
+namespace=$1
+build=$2
+
+# fail fast
+set -euo pipefail
+
+. ./config
+cd ..
+
+# environment
+./hive kubernetes create_environment ${namespace}
+
+manifests="deploy/kubernetes/templates"
+# service
+./hive kubernetes create        \
+    ${manifests}/broker/svc.yml \
+    __NAMESPACE__ ${namespace}  \
+    __SERVICE__   broker        \
+    __MAJOR__     ${brokerContainer_major}
+
+./hive kubernetes create          \
+  ${manifests}/eventstore/svc.yml \
+    __NAMESPACE__ ${namespace}    \
+    __SERVICE__   eventstore      \
+    __MAJOR__     ${eventstoreContainer_major}
+
+./hive kubernetes create        \
+    ${manifests}/web/svc.yml    \
+    __NAMESPACE__ ${namespace}  \
+    __SERVICE__   web           \
+    __MAJOR__     ${webContainer_major}
+
+# replication controller
+./hive kubernetes create ${manifests}/web/rc.yml \
+    __NAMESPACE__   ${namespace}                 \
+    __SERVICE__     web                          \
+    __MAJOR__       ${webContainer_major}        \
+    __MINOR__       ${webContainer_minor}        \
+    __BUILD__       ${build}                     \
+    __DOCKERIMAGE__ ${webContainer}.${build}
+
+./hive kubernetes create ${manifests}/broker/rc.yml \
+    __NAMESPACE__   ${namespace}                    \
+    __SERVICE__     broker                          \
+    __MAJOR__       ${brokerContainer_major}        \
+    __MINOR__       ${brokerContainer_minor}        \
+    __BUILD__       ${build}                        \
+    __DOCKERIMAGE__ ${brokerContainer}.${build}
+  
+./hive kubernetes create ${manifests}/eventstore/rc.yml \
+    __NAMESPACE__   ${namespace}                        \
+    __SERVICE__     eventstore                          \
+    __MAJOR__       ${eventstoreContainer_major}        \
+    __MINOR__       ${eventstoreContainer_minor}        \
+    __BUILD__       ${build}                            \
+    __DOCKERIMAGE__ ${populatedEventstoreContainer}.${build}
+
+for service in "blotter" "pricing" "referencedataread" "tradeexecution" "analytics"
+do
+    ./hive kubernetes create ${manifests}/${service}/rc.yml \
+        __NAMESPACE__   ${namespace}                \
+        __SERVICE__     ${service}                  \
+        __MAJOR__       ${serversContainer_major}   \
+        __MINOR__       ${serversContainer_minor}   \
+        __BUILD__       ${build}                    \
+        __DOCKERIMAGE__ ${serversContainer}.${build}
+done
+
+sleep 2
+
+./hive kubernetes status ${namespace}

@@ -1,19 +1,22 @@
 machine:
+  pre:
+    - echo 'DOCKER_OPTS="-s btrfs -e lxc -D --userland-proxy=false"' | sudo tee -a /etc/default/docker
+    - sudo curl -L -o /usr/bin/docker 'https://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.1-circleci-cp-workaround'
+    - sudo chmod 0755 /usr/bin/docker
   services:
     - docker
 
 dependencies:
   cache_directories:
-    - "~/docker"
-    - deploy/docker/build/servers/dnxcache
-    - deploy/docker/build/web/.npm
+    - "deploy/e2e/docker"
+    - "deploy/e2e/packages"
   override:
     - docker info
-    - cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions
-    - cd deploy/e2e && ./loadContainers
-    - cd deploy/e2e && ./buildContainers $CIRCLE_BUILD_NUM
-    - cd deploy/e2e && ./runContainers $CIRCLE_BUILD_NUM
-    - cd deploy/e2e && ./saveContainers
+    - cd deploy/e2e && chmod 755 ensurePermissions.sh && ./ensurePermissions.sh
+    - cd deploy/e2e && ./loadContainers.sh
+    - cd deploy/e2e && ./buildContainers.sh $CIRCLE_BUILD_NUM
+    - cd deploy/e2e && ./runContainers.sh $CIRCLE_BUILD_NUM
+    - cd deploy/e2e && ./saveContainers.sh
 
 test:
   override:
@@ -25,4 +28,4 @@ deployment:
   hub:
     branch: [master]
     commands:
-      - cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
+      - cd deploy/e2e && ./pushContainers.sh $CIRCLE_BUILD_NUM

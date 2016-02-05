@@ -1,0 +1,15 @@
+#!/bin/bash
+
+dockerBinary="/usr/bin/docker"
+if [[ ${DOCKER_MACHINE_NAME} == "default" ]];then
+  dockerBinary="//usr/local/bin/docker"
+fi
+
+docker run -ti                                  \
+  -v hive_docker:/root/.docker                  \
+  -v hive_log:/hive_log                         \
+  -v hive_share:/hive_share                     \
+  -v //var/run/docker.sock:/var/run/docker.sock \
+  -v ${dockerBinary}:/usr/bin/docker            \
+  -v /$(pwd):/currentFolder                     \
+  tdeheurles/hive:0.0 $@
