@@ -83,7 +83,7 @@ export default class ChartGradient {
 
     //the area linear gradient
     this.linearGradient = document.createElementNS(svgNS, 'linearGradient');
-    this.linearGradient.setAttribute('id', 'myLGID');
+    this.linearGradient.setAttribute('id', 'areaGradient');
     this.linearGradient.setAttribute('x1', '0%');
     this.linearGradient.setAttribute('x2', '0%');
     this.linearGradient.setAttribute('y1', '0%');
@@ -151,7 +151,6 @@ export default class ChartGradient {
   updateStops(){
     //update colour stops
     //need to modify stop1End and stop2
-    if (!this.domainMax || !this.domainMin) return;
     let fullRange = Math.abs(this.domainMin) + Math.abs(this.domainMax);
     let zeroAt = (this.domainMax/fullRange) * 100 + '%';
 

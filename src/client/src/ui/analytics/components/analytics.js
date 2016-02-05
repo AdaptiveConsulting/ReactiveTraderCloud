@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Container } from '../../common/components';
 import numeral from 'numeral';
 import _ from 'lodash';
@@ -91,7 +90,6 @@ export default class Analytics extends React.Component {
 
   componentDidMount() {
     this._observeDataStreams();
-
   }
 
   componentWillUnmount() {
@@ -182,13 +180,11 @@ export default class Analytics extends React.Component {
     if (!this.state.isAnalyticsServiceConnected)
       return <span />;
 
-    const chartHeight = 150;
-
     const PNLValues = this.state.series[0].values,
           { domainMin, domainMax } = this.state;
 
     const configurePnLChart = (chart) => {
-      chart.yDomain([domainMin, domainMax]).yRange([chartHeight, 0]);
+      chart.yDomain([domainMin, domainMax]).yRange([150, 0]);
       chart.interactiveLayer.tooltip.contentGenerator(tooltip);
     };
 
