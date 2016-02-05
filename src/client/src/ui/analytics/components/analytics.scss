@@ -138,7 +138,9 @@ $stroke-color: slategray;
 }
 
 .new-chart-area{
-  stroke-width: 8px !important;
+  stroke-width: 2px !important;
   fill: url('#myLGID');
-  opacity: 0.4;
+}
+.new-chart-stroke{
+  stroke: url('#chartStrokeLinearGradient');
 }
