@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Container } from '../../common/components';
 import numeral from 'numeral';
 import _ from 'lodash';
@@ -6,6 +7,7 @@ import _ from 'lodash';
 import NVD3Chart from 'react-nvd3';
 import d3 from 'd3';
 import { serviceContainer, model as serviceModel } from 'services';
+import ChartGradient from './chart-gradient';
 
 // chart type for PnL chart - focus can break due to range. todo: fix
 //const LINECHART = 'lineWithFocusChart';
@@ -24,7 +26,7 @@ export default class Analytics extends React.Component {
   static propTypes = {
     history: React.PropTypes.array,
     positions: React.PropTypes.array
-  }
+  };
 
   constructor(props, context){
     super(props, context);
@@ -84,6 +86,7 @@ export default class Analytics extends React.Component {
       }
     };
     this._disposables = new Rx.CompositeDisposable();
+    this.chartGradient;
   }
 
   componentDidMount() {
@@ -92,6 +95,18 @@ export default class Analytics extends React.Component {
 
   componentWillUnmount() {
     this._disposables.dispose();
+  }
+
+  componentDidUpdate(){
+    if (this.refs.lineChart){
+      if (!this.chartGradient) {
+        this.chartGradient = new ChartGradient();
+      }
+      var chartDomElement = ReactDOM.findDOMNode(this.refs.lineChart);
+      if (chartDomElement){
+        this.chartGradient.update(chartDomElement, this.state.domainMin, this.state.domainMax);
+      }
+    }
   }
 
   _observeDataStreams() {
@@ -211,6 +226,7 @@ export default class Analytics extends React.Component {
         <div className={className}>
           {(PNLValues && PNLValues.length) ?
             <NVD3Chart
+              ref='lineChart'
               type={LINECHART}
               datum={this.state.series}
               options={this.chartPnlOptions}
