@@ -100,11 +100,3 @@ spec:
         jenkins:
             - major: 0
             - minor: 0
-
-    command:
-        launcher:
-            analytics: a
-            blotter: b
-            pricing: p
-            referencedataread: ref
-            tradeexecution: exec
