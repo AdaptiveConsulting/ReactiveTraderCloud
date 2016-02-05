@@ -45,17 +45,14 @@ $stroke-color: slategray;
     background: $gray-dark;
     &.negative {
       .nvd3 g.nv-groups g.nv-group .nv-area {
-        fill: $negative-color !important;
-        fill-opacity: .9;
+
       }
     }
     .nvd3 g.nv-groups  {
       path.nv-line {
-        stroke: $stroke-color;
-        stroke-width: .8
       }
       path.nv-area {
-        opacity: .15
+
       }
       .nv-bar {
         rect {
@@ -138,4 +135,10 @@ $stroke-color: slategray;
 
   }
   @import 'nvd3';
+}
+
+.new-chart-area{
+  stroke-width: 8px !important;
+  fill: url('#myLGID');
+  opacity: 0.4;
 }

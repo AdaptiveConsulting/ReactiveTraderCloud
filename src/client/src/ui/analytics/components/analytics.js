@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Container } from '../../common/components';
 import numeral from 'numeral';
 import _ from 'lodash';
@@ -84,10 +85,36 @@ export default class Analytics extends React.Component {
       }
     };
     this._disposables = new Rx.CompositeDisposable();
+    this.linearGradient = null;
   }
 
   componentDidMount() {
     this._observeDataStreams();
+
+    //add a linea gradient to the chart
+    var svgNS = 'http://www.w3.org/2000/svg';
+
+    console.log('****\n *** svgNS : ' + svgNS);
+    this.linearGradient = document.createElementNS(svgNS, 'linearGradient');
+    this.linearGradient.setAttribute('id', 'myLGID');
+    this.linearGradient.setAttribute('x1', '0%');
+    this.linearGradient.setAttribute('x2', '0%');
+    this.linearGradient.setAttribute('y1', '0%');
+    this.linearGradient.setAttribute('y2', '100%');
+
+    let stop1 = document.createElementNS(svgNS, 'stop');
+    stop1.setAttribute('id', 'myStop1');
+    stop1.setAttribute('offset', '10%');
+    stop1.setAttribute('stop-color:', 'blue');
+    this.linearGradient.appendChild(stop1);
+
+    var stop2 = document.createElementNS(svgNS, 'stop');
+    stop2.setAttribute('id', 'myStop2');
+    stop2.setAttribute('offset', '90%');
+    stop2.setAttribute('stop-color', 'red');
+    this.linearGradient.appendChild(stop2);
+
+
   }
 
   componentWillUnmount() {
@@ -196,6 +223,44 @@ export default class Analytics extends React.Component {
     const className = this.state.lastPos > 0 ? 'nv-container' : 'nv-container negative';
     const pnlHeight = Math.min(positionsSeries[0].values.length * 30, 200);
 
+    let domEl = ReactDOM.findDOMNode(this.refs.lineChart);
+    if (domEl){
+      //console.log(domEl.querySelectorAll('.nv-line'));
+
+      let nvGroups = domEl.querySelector('.nv-groups');
+      let nvArea;
+      let defs;
+      let svgNS = 'http://www.w3.org/2000/svg';
+      if (nvGroups){
+        nvArea = nvGroups.querySelector('.nv-area');
+        defs = nvGroups.querySelector('defs');
+      }
+
+
+      if (!defs && nvGroups){
+        //add the defs element here
+        let defs = document.createElementNS(svgNS, 'defs');
+        nvGroups.appendChild(defs);
+      }
+
+      if (defs && !(this.linearGradient && this.linearGradient.parentNode == defs)){
+        console.log('::: defs');
+        console.log(defs);
+        console.log(this.linearGradient);
+        defs.appendChild(this.linearGradient);
+
+        if (nvArea ){
+          if (nvArea.classList.contains('new-chart-area')){
+            console.log('-- ALREADY HAS a class newChartArea ');
+          }else{
+            nvArea.classList.add('new-chart-area');
+            console.log('====================== should be adding a new class');
+          }
+        }
+      }
+    }
+
+
     return (
       <Container
         title='analytics'
@@ -211,6 +276,7 @@ export default class Analytics extends React.Component {
         <div className={className}>
           {(PNLValues && PNLValues.length) ?
             <NVD3Chart
+              ref='lineChart'
               type={LINECHART}
               datum={this.state.series}
               options={this.chartPnlOptions}
