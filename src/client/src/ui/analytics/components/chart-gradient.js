@@ -1,5 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
+/**
+ * ChartGradient - a utility to draw linear gradients on area and stroke elements of a line chart
+ *
+ * Creates two linear gradients and appends them the to the defs element of the chart.
+ * read about the SVG defs:
+ * https://developer.mozilla.org/en-US/docs/Web/SVG/Element/defs
+ *
+ * There are four colour stops: top, bottom, and the two in the middle that have the same offset value
+ * (this is a relative value that matches 0 on the PnL scale)
+ * On each update call it recalculates the zero position and reapplies the value to the offset attributes of the colour stops
+ *
+ */
 
 export default class ChartGradient {
 
@@ -9,7 +21,6 @@ export default class ChartGradient {
     this.domainMin;
     this.domainMax;
     this.chartHeight;
-    this.parentChartDomElement;
   }
 
 
@@ -19,58 +30,55 @@ export default class ChartGradient {
     this.domainMax = domainMax;
     this.chartHeight = chartHeight;
 
-    this.verifyDomStructure();
+    this.appendLinearGradients();
     this.updateStops();
   }
 
-  verifyDomStructure(){
-    if (!this.parentChartDomElement){
-      this.parentChartDomElement = ReactDOM.findDOMNode(this.parentChart);
+  appendLinearGradients(){
+    if (!this.parentChart){
+      throw new Error('No parent chart element exists');
     }
 
-    if (this.parentChartDomElement) {
+    let nvGroups = this.parentChart.querySelector('.nv-groups');
+    let nvArea;
+    let nvStroke;
+    let svgNS = 'http://www.w3.org/2000/svg';
+    let defs;
+    if (nvGroups) {
+      nvArea = nvGroups.querySelector('.nv-area');
+      nvStroke = nvGroups.querySelector('.nv-line');
+      defs = nvGroups.querySelector('defs');
+    } else {
 
-      let nvGroups = this.parentChartDomElement.querySelector('.nv-groups');
-      let nvArea;
-      let nvStroke;
-      let svgNS = 'http://www.w3.org/2000/svg';
-      let defs;
-      if (nvGroups) {
-        nvArea = nvGroups.querySelector('.nv-area');
-        nvStroke = nvGroups.querySelector('.nv-line');
-        defs = nvGroups.querySelector('defs');
-      } else {
+      setTimeout(() => {
+        this.update(this.parentChart, this.domainMin, this.domainMax, this.chartHeight);
+      }, 10);
+    }
 
-        setTimeout(() => {
-          this.update(this.parentChart, this.domainMin, this.domainMax, this.chartHeight);
-        }, 10);
-      }
+    if (!defs && nvGroups) {
+      //add the defs element here
+      defs = document.createElementNS(svgNS, 'defs');
+      nvGroups.appendChild(defs);
+    }
 
-      if (!defs && nvGroups) {
-        //add the defs element here
-        defs = document.createElementNS(svgNS, 'defs');
-        nvGroups.appendChild(defs);
-      }
-
-      if (defs && !(this.linearGradient && this.linearGradient.parentNode == defs)) {
-        defs.appendChild(this.linearGradient);
-        if (nvArea) {
-          if (nvArea.classList.contains('new-chart-area')) {
-          } else {
-            nvArea.classList.add('new-chart-area');
-          }
+    if (defs && !(this.linearGradient && this.linearGradient.parentNode == defs)) {
+      defs.appendChild(this.linearGradient);
+      if (nvArea) {
+        if (nvArea.classList.contains('new-chart-area')) {
+        } else {
+          nvArea.classList.add('new-chart-area');
         }
       }
+    }
 
-      if (defs && !(this.strokeGradient.parentNode == defs)){
-        defs.appendChild(this.strokeGradient);
+    if (defs && !(this.strokeGradient.parentNode == defs)){
+      defs.appendChild(this.strokeGradient);
 
-        if (nvStroke){
-          if (nvStroke.classList.contains('new-chart-stroke')){
+      if (nvStroke){
+        if (nvStroke.classList.contains('new-chart-stroke')){
 
-          }else{
-            nvStroke.classList.add('new-chart-stroke');
-          }
+        }else{
+          nvStroke.classList.add('new-chart-stroke');
         }
       }
     }

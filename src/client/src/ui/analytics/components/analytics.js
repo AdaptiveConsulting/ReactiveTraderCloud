@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Container } from '../../common/components';
 import numeral from 'numeral';
 import _ from 'lodash';
@@ -85,7 +86,7 @@ export default class Analytics extends React.Component {
       }
     };
     this._disposables = new Rx.CompositeDisposable();
-    this.chartGradient = new ChartGradient();
+    this.chartGradient;
   }
 
   componentDidMount() {
@@ -97,7 +98,15 @@ export default class Analytics extends React.Component {
   }
 
   componentDidUpdate(){
-    this.chartGradient.update(this.refs.lineChart, this.state.domainMin, this.state.domainMax, 150);
+    if (this.refs.lineChart){
+      if (!this.chartGradient) {
+        this.chartGradient = new ChartGradient();
+      }
+      var chartDomElement = ReactDOM.findDOMNode(this.refs.lineChart);
+      if (chartDomElement){
+        this.chartGradient.update(chartDomElement, this.state.domainMin, this.state.domainMax, 150);
+      }
+    }
   }
 
   _observeDataStreams() {
