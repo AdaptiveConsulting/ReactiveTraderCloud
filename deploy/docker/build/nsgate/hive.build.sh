@@ -6,5 +6,5 @@ container="<% container.tooling.nsgate %>"
 # fail fast
 set -euo pipefail
 
-docker push ${container}
-docker push ${container}.${build}
+docker build --no-cache -t ${container} .
+docker tag ${container} ${container}.${build}

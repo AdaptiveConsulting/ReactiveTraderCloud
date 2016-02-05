@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 build="<% args.build %>"
-container="<% container.tooling.nsgate %>"
+container="<% container.tooling.jenkins %>"
 
 # fail fast
 set -euo pipefail

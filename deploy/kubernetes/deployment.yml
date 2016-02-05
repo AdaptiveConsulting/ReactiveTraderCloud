@@ -1,0 +1,38 @@
+apiVersion: v0
+kind: HiveDeployment
+spec:
+  project: ReactiveTrader
+  
+  deploymentStrategy: Recreate
+  # Recreate/RollingUpdate
+  
+  services:
+    - name: broker
+    - name: eventstore
+    - name: web
+
+  replicationController:
+    - web:
+        major: 0
+        minor: 0
+    - broker: 
+        major: 0
+        minor: 0
+    - eventstore: 
+        major: 0
+        minor: 0
+    - blotter:
+        major: 0
+        minor: 0
+    - pricing:
+        major: 0
+        minor: 0
+    - referencedataread: 
+        major: 0
+        minor: 0
+    - tradeexecution: 
+        major: 0
+        minor: 0
+    - analytics:
+        major: 0
+        minor: 0

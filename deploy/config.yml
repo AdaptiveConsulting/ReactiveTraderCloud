@@ -1,0 +1,110 @@
+apiVersion: v0
+kind: HiveConfig
+spec:
+    domain: adaptivecluster.com
+
+    volume:
+        cache:
+            dnu:         reactivetrader_cache_dnupackage
+            nodemodules: reactivetrader_cache_nodemodules
+            npm:         reactivetrader_cache_npmcache
+
+    gcloud:
+        project: adaptive-trader
+        cluster: cluster
+        machine:
+            quantity: 1
+            type:     n1-standard-1
+            zone:     europe-west1-c 
+    
+    # /!\ version and container tag need to be updated together
+    container:
+        official:
+            ubuntu:  ubuntu:14.04.2
+            debian:  debian:8.2
+            jenkins: jenkins:1.625.3
+            nginx:   nginx:1.9.7
+        
+        reactivetrader:
+            eventstore: reactivetrader/eventstore:0.0
+            broker:     reactivetrader/broker:0.0
+            servers:    reactivetrader/servers:0.0
+            web:        reactivetrader/web:0.0
+
+        base:
+            crossbar:   weareadaptive/crossbar:0.0
+            eventstore: weareadaptive/eventstore:0.0
+            node:       weareadaptive/node:0.0
+            nginx:      weareadaptive/nginx:0.0
+            mono:       weareadaptive/mono:0.0
+            
+        tooling:
+            jenkins:    weareadaptive/jenkins:0.0
+            testtools:  weareadaptive/testtools:1.1
+            gcloud:     weareadaptive/gcloud:1.0
+            nsgate:     weareadaptive/nsgate:0.1
+    # /!\ version and container tag need to be updated together 
+    version:
+        official:
+            crossbar:   "0.11.1"
+            eventstore: "3.3.0"
+            node:       "5.3.0"
+            nginx:      "1.9.7"
+            dnx:        "1.0.0-rc1-final"
+            jq:         "1.5"
+
+        # reactive trader    
+        populatedEventstore: 
+            - major: 0
+            - minor: 0
+        broker: 
+            - major: 0
+            - minor: 0
+        servers:
+            - major: 0
+            - minor: 0
+        web:
+            - major: 0
+            - minor: 0
+        crossbar:
+            - major: 0
+            - minor: 0
+
+        # base
+        eventstore:
+            - major: 0
+            - minor: 0
+        officialNginx:
+            - major: 0
+            - minor: 0
+        node:
+            - major: 0
+            - minor: 0
+        nginx:
+            - major: 0
+            - minor: 0
+        mono:
+            - major: 0
+            - minor: 0
+        
+        # others
+        testtools:
+            - major: 1
+            - minor: 1
+        gcloud:
+            - major: 1
+            - minor: 0
+        nsgate:
+            - major: 0
+            - minor: 1
+        jenkins:
+            - major: 0
+            - minor: 0
+
+    command:
+        launcher:
+            analytics: a
+            blotter: b
+            pricing: p
+            referencedataread: ref
+            tradeexecution: exec

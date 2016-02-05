@@ -1,19 +1,8 @@
 container
-build/broker/build
-build/crossbar/build
-build/eventstore/build
-build/fluentd/build
-build/gcloud/build
-build/jenkins/build
-build/mono/build
-build/node/build
-build/servers/build
-build/servers/dnxcache
-build/testtools/build
-build/nsgate/build
-build/web/npminstall/build
-build/web/nginx/build
-build/web/.npm
+build/crossbar/.crossbar
+build/servers/server
+build/web/client
+build/web/Dockerfile
 
 jq
 container_id

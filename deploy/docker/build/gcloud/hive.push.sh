@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#! /bin/bash
 
 build="<% args.build %>"
-container="<% container.tooling.nsgate %>"
+container="<% container.tooling.gcloud %>"
 
 # fail fast
 set -euo pipefail

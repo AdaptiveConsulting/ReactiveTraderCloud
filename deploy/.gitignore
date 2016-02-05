@@ -3,3 +3,4 @@ kubernetes/manifests
 garbage
 jq
 certificates
+e2e/save

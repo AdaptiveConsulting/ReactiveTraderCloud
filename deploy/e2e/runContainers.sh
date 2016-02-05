@@ -1,0 +1,19 @@
+#! /bin/bash
+
+if [[ $1 == "" ]];then
+  echo "The build number is required for this step"
+  exit 1
+fi
+build=$1
+
+# fail fast
+set -euo pipefail
+
+echo ""
+echo "============================="
+echo "Run ReactiveTrader containers"
+echo ""
+
+cd ../docker
+./runAll.sh $build Release
+cd ../e2e

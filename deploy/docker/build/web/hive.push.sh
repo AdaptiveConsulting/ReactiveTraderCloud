@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 build="<% args.build %>"
-container="<% container.tooling.nsgate %>"
+container="<% container.reactivetrader.web %>"
+
 
 # fail fast
 set -euo pipefail

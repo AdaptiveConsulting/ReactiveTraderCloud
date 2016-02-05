@@ -8,15 +8,15 @@ machine:
 
 dependencies:
   cache_directories:
-    - "~/docker"
-    - "~/packages"
+    - "deploy/e2e/docker"
+    - "deploy/e2e/packages"
   override:
     - docker info
-    - cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions
-    - cd deploy/e2e && ./loadContainers
-    - cd deploy/e2e && ./buildContainers $CIRCLE_BUILD_NUM
-    - cd deploy/e2e && ./runContainers $CIRCLE_BUILD_NUM
-    - cd deploy/e2e && ./saveContainers
+    - cd deploy/e2e && chmod 755 ensurePermissions.sh && ./ensurePermissions.sh
+    - cd deploy/e2e && ./loadContainers.sh
+    - cd deploy/e2e && ./buildContainers.sh $CIRCLE_BUILD_NUM
+    - cd deploy/e2e && ./runContainers.sh $CIRCLE_BUILD_NUM
+    - cd deploy/e2e && ./saveContainers.sh
 
 test:
   override:
@@ -28,4 +28,4 @@ deployment:
   hub:
     branch: [master]
     commands:
-      - cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
+      - cd deploy/e2e && ./pushContainers.sh $CIRCLE_BUILD_NUM
