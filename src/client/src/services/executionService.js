@@ -1,23 +1,21 @@
 import system from 'system';
 import Rx from 'rx';
 import { OpenFin } from '../system/openFin';
-import model from './model';
+import { Trade, ExecuteTradeRequest } from './model';
 
 const _log:system.logger.Logger = system.logger.create('ExecutionService');
 
 export default class ExecutionService extends system.service.ServiceBase {
 
-  constructor(
-    serviceType:String,
-    connection:Connection,
-    schedulerService:SchedulerService,
-    openFin:OpenFin
-  ) {
+  constructor(serviceType:String,
+              connection:Connection,
+              schedulerService:SchedulerService,
+              openFin:OpenFin) {
     super(serviceType, connection, schedulerService);
     this._openFin = openFin;
   }
 
-  executeTrade(executeTradeRequest) {
+  executeTrade(executeTradeRequest:ExecuteTradeRequest):Rx.Observable<Trade> {
     let _this = this;
     return Rx.Observable.create(
       o => {
@@ -37,12 +35,13 @@ export default class ExecutionService extends system.service.ServiceBase {
                 );
               }
               else {
-                var tradeDto = new model.TradeDto();
-                tradeDto.CurrencyPair = executeTradeRequest.pair;
-                tradeDto.Status = 'NotionalOvershot';
-                tradeDto.Notional = executeTradeRequest.amount;
-                tradeDto.SpotRate = executeTradeRequest.rate;
-                o.onNext(tradeDto);
+                var trade = Trade.createForFailure(
+                  executeTradeRequest.pair,
+                  'NotionalOvershot',
+                  executeTradeRequest.amount,
+                  executeTradeRequest.rate
+                );
+                o.onNext(trade);
                 o.onCompleted();
               }
             })
@@ -53,7 +52,7 @@ export default class ExecutionService extends system.service.ServiceBase {
   }
 
   _mapFromDto(dto:Object) {
-    return new model.Trade(
+    return new Trade(
       dto.TradeId,
       dto.TraderName,
       dto.CurrencyPair,

@@ -87,7 +87,7 @@ class WorkspaceView extends React.Component {
       serviceContainer.referenceDataService.getCurrencyPairUpdatesStream().subscribe(referenceData => {
           let shouldStateUpdate = false;
 
-          if (referenceData.IsStateOfTheWorld && referenceData.Updates.length){
+          if (referenceData.isStateOfTheWorld && referenceData.Updates.length){
             // compact pairs if it has any instances not in the new state of the world
             const len = this.state.pairs.length,
                   ids = _.pluck(referenceData.Updates, 'CurrencyPair.Symbol');

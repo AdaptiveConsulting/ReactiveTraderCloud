@@ -1,12 +1,12 @@
 import system from 'system';
 import Rx from 'rx';
-import * as model from './model';
+import { SpotPrice, GetSpotStreamRequest } from './model';
 
 var _log:system.logger.Logger = system.logger.create('PricingService');
 
 export default class PricingService extends system.service.ServiceBase {
 
-  getSpotPriceStream(request:model.GetSpotStreamRequest) : Rx.Observable<model.SpotPrice> {
+  getSpotPriceStream(request:GetSpotStreamRequest) : Rx.Observable<SpotPrice> {
     let _this = this;
     const getPriceUpdatesOperationName = 'getPriceUpdates';
     return Rx.Observable.create(
@@ -21,8 +21,8 @@ export default class PricingService extends system.service.ServiceBase {
     );
   }
 
-  _mapSpotPrice(dto) : model.SpotPrice {
-    return new model.SpotPrice(
+  _mapSpotPrice(dto:Object) : SpotPrice {
+    return new SpotPrice(
       dto.Symbol,
       Number(dto.Bid),
       Number(dto.Ask),

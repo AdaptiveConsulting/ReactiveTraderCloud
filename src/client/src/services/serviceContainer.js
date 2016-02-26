@@ -1,11 +1,7 @@
 import system from 'system';
-import PricingService from './pricing-service';
-import ReferenceDataService from './reference-data-service';
-import BlotterService from './blotter-service';
-import ExecutionService from './execution-service';
-import AnalyticsService from './analytics-service';
-import FakeUserRepository from './fake-user-repository';
-import model from './model';
+import Rx from 'rx';
+import { PricingService ReferenceDataService, BlotterService, ExecutionService, AnalyticsService, FakeUserRepository } from './';
+import { User, ServiceConst, ServiceStatusLookup } from './model';
 
 var _log:system.logger.Logger = system.logger.create('ServiceContainer');
 
@@ -20,8 +16,8 @@ export default class ServiceContainer {
   _executionService:ExecutionService;
   _analyticsService:AnalyticsService;
   _openFin:system.OpenFin;
-  _serviceStatusStream: Rx.Observable<model.ServiceStatusLookup>;
-  _currentServiceStatusLookup : model.ServiceStatusLookup;
+  _serviceStatusStream: Rx.Observable<ServiceStatusLookup>;
+  _currentServiceStatusLookup : ServiceStatusLookup;
   _isStarted: Boolean;
 
   constructor() {
@@ -30,21 +26,21 @@ export default class ServiceContainer {
     // Not a great pattern having a singelton container that all services hang off, I would expect to see a more explicit bootstrapper
     // that orchestrates app startup and provides services to objects that need it.
 
-    var user : model.User = FakeUserRepository.currentUser;
+    var user : User = FakeUserRepository.currentUser;
     var url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
     var schedulerService = new system.SchedulerService();
     var autobahnProxy = new system.service.AutobahnConnectionProxy(url, realm);
     this._connection = new system.service.Connection(user.code, autobahnProxy, schedulerService);
 
     this._openFin = new system.OpenFin();
-    this._pricingService = new PricingService(model.ServiceConst.PricingServiceKey, this._connection, schedulerService);
-    this._referenceDataService = new ReferenceDataService(model.ServiceConst.ReferenceServiceKey, this._connection, schedulerService);
-    this._blotterService = new BlotterService(model.ServiceConst.BlotterServiceKey, this._connection, schedulerService);
-    this._executionService = new ExecutionService(model.ServiceConst.ExecutionServiceKey, this._connection, schedulerService, this._openFin);
-    this._analyticsService = new AnalyticsService(model.ServiceConst.AnalyticsServiceKey, this._connection, schedulerService);
+    this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, schedulerService);
+    this._referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this._connection, schedulerService);
+    this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, schedulerService);
+    this._executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, this._connection, schedulerService, this._openFin);
+    this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, schedulerService);
 
     this._serviceStatusStream = this._createServiceStatusStream();
-    this._currentServiceStatusLookup = new model.ServiceStatusLookup();
+    this._currentServiceStatusLookup = new ServiceStatusLookup();
     this._isStarted = false;
   }
 
@@ -68,7 +64,7 @@ export default class ServiceContainer {
    * A stream of ServiceStatusLookup which can be queried for individual service connection status
    * @returns {Rx.Observable.<model.ServiceStatusLookup>}
    */
-  get serviceStatusStream() : Rx.Observable<model.ServiceStatusLookup> {
+  get serviceStatusStream() : Rx.Observable<ServiceStatusLookup> {
     return this._serviceStatusStream;
   }
 
@@ -76,7 +72,7 @@ export default class ServiceContainer {
    * THe current ServiceStatusLookup
    * @returns {model.ServiceStatusLookup}
    */
-  get serviceStatus() : model.ServiceStatusLookup {
+  get serviceStatus() : ServiceStatusLookup {
     return this._currentServiceStatusLookup;
   }
 
@@ -124,7 +120,7 @@ export default class ServiceContainer {
     this._connection.connect();
   }
 
-  _createServiceStatusStream() : Rx.Observable<model.ServiceStatusLookup>{
+  _createServiceStatusStream() : Rx.Observable<ServiceStatusLookup>{
     // merge then scan all our underlying service status streams into a single
     // data structure (ServiceStatusLookup) we can query for the current status.
     return Rx.Observable
@@ -135,9 +131,9 @@ export default class ServiceContainer {
         this._executionService.serviceStatusStream,
         this._analyticsService.serviceStatusStream)
       .scan(
-        (statusLookup:model.ServiceStatusLookup, serviceStatus:system.service.ServiceStatus) => statusLookup.updateServiceStatus(serviceStatus),
+        (statusLookup:ServiceStatusLookup, serviceStatus:system.service.ServiceStatus) => statusLookup.updateServiceStatus(serviceStatus),
         // seed the stream with the initial, empty 'status' data structure
-        new model.ServiceStatusLookup())
+        new ServiceStatusLookup())
       .publish()
       .refCount();
   }

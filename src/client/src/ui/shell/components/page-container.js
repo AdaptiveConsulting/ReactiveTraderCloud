@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../common/styles/reactive-trader.scss';
 
-export default class CoreLayout extends React.Component {
+export default class PageContainer extends React.Component {
   static propTypes = {
     children: React.PropTypes.element
   }

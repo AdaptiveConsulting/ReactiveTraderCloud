@@ -1,17 +1,16 @@
-import SpotPrice from './spot-price';
-import GetSpotStreamRequest from './get-spot-stream-request';
-import ServiceStatusLookup from './service-status-lookup';
-import AnalyticsRequest from './analytics-request';
-import ServiceConst from './service-const';
-import User from './user';
-import Trade from './trade';
-
-export default {
-  SpotPrice,
-  GetSpotStreamRequest,
-  ServiceStatusLookup,
-  AnalyticsRequest,
-  ServiceConst,
-  User,
-  Trade
-};
+export { default as AnalyticsRequest } from './analyticsRequest';
+export { default as CurrencyPair } from './currencyPair';
+export { default as CurrencyPairPosition } from './currencyPairPosition';
+export { default as CurrencyPairUpdate } from './currencyPairUpdate';
+export { default as CurrencyPairUpdates } from './currencyPairUpdates';
+export { default as Direction } from './direction';
+export { default as ExecuteTradeRequest } from './executeTradeRequest';
+export { default as GetSpotStreamRequest } from './getSpotStreamRequest';
+export { default as HistoricPosition } from './historicPosition';
+export { default as PositionUpdates } from './positionUpdates';
+export { default as ServiceConst } from './serviceConst';
+export { default as ServiceStatusLookup } from './serviceStatusLookup';
+export { default as SpotPrice } from './spotPrice';
+export { default as Trade } from './trade';
+export { default as UpdateType } from './updateType';
+export { default as User } from './user';

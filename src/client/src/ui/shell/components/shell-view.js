@@ -71,6 +71,7 @@ class ShellView extends React.Component {
         });
 
         if (status === system.service.ConnectionStatus.sessionExpired){
+          // TODO Lift
           Modal.setTitle('Session expired')
             .setBody(<div>
               <div>Your 15 minute session expired, you are now disconnected from the server.</div>
