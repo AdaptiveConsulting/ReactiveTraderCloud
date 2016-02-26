@@ -1,6 +1,6 @@
 import system from 'system';
 import Rx from 'rx';
-import { Trade } from './model'
+import { Trade } from './model';
 
 var _log:system.logger.Logger = system.logger.create('BlotterService');
 

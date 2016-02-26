@@ -1,6 +1,6 @@
 import system from 'system';
 import Rx from 'rx';
-import { PricingService ReferenceDataService, BlotterService, ExecutionService, AnalyticsService, FakeUserRepository } from './';
+import { PricingService, ReferenceDataService, BlotterService, ExecutionService, AnalyticsService, FakeUserRepository } from './';
 import { User, ServiceConst, ServiceStatusLookup } from './model';
 
 var _log:system.logger.Logger = system.logger.create('ServiceContainer');

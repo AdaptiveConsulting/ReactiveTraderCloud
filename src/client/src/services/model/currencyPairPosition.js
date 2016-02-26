@@ -1,7 +1,7 @@
 export default class CurrencyPairPosition {
-  private _symbol:string;
-  private _basePnl:Number;
-  private _baseTradedAmount:Number;
+  _symbol:string;
+  _basePnl:Number;
+  _baseTradedAmount:Number;
 
   constructor(symbol:string, basePnl:Number, baseTradedAmount:Number) {
     this._symbol = symbol;

@@ -23,23 +23,23 @@ export default class ExecutionService extends system.service.ServiceBase {
         let disposables = new Rx.CompositeDisposable();
         disposables.add(
           _this._openFin
-            .checkLimit(executeTradeRequest.rate, executeTradeRequest.amount, executeTradeRequest.pair)
+            .checkLimit(executeTradeRequest.spotRate, executeTradeRequest.notional, executeTradeRequest.currencyPair)
             .take(1)
             .subscribe(limitCheckResult => {
               if (limitCheckResult) {
                 disposables.add(
                   _this._serviceClient
                     .createRequestResponseOperation('executeTrade', executeTradeRequest)
-                    .select(dto => _this._mapFromDto(dto)) // TODO mappers
+                    .select(dto => _this._mapFromDto(dto))
                     .subscribe(o)
                 );
               }
               else {
                 var trade = Trade.createForFailure(
-                  executeTradeRequest.pair,
+                  executeTradeRequest.currencyPair,
                   'NotionalOvershot',
-                  executeTradeRequest.amount,
-                  executeTradeRequest.rate
+                  executeTradeRequest.notional,
+                  executeTradeRequest.spotRate
                 );
                 o.onNext(trade);
                 o.onCompleted();

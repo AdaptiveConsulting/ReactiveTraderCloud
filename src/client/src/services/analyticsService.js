@@ -35,12 +35,12 @@ export default class AnalyticsService extends system.service.ServiceBase {
         dto.Symbol,
         dto.BasePnl,
         dto.BaseTradedAmount))
-      .value()
+      .value();
   }
 
   _mapHistoricPositionFromDto(dtos:Array<Object>) {
     return _(dtos)
       .map(dto => new HistoricPosition(new Date(dto.Timestamp), dto.UsdPnl))
-      .value()
+      .value();
   }
 }
