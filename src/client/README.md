@@ -187,23 +187,23 @@ Coverage reports will be compiled to `~/coverage` by default. If you wish to cha
 
 Currently, this is only available for Windows clients but likely will change Q1 of 2016 when the OpenFin runtime moves to Electron.
 
-To run the app in OpenFin, you need to:
+To run the app in OpenFin, you need to run the following from the `src/client` directory:
 
 ```sh
-$ [.../src/client] master ± npm i -g openfin-cli
-$ [.../src/client] master ± openfin -l -c src/app.json
+npm i -g openfin-cli
+openfin -l -c src/app.json
 ```
 
 Now also supported as a built-in npm task:
 
 ```sh
-$ [.../src/client] master ± npm run openfin
+npm run openfin
 ```
 
 By default, OpenFin will connect to your local development server on port 3000 (`http://localhost:3000/`) but you can override that by passing an extra argument to the launcher:
 
 ```sh
-$ [.../src/client] master ± openfin -l -c src/app.json -u http://somedomain.com
+openfin -l -c src/app.json -u http://somedomain.com
 ```
 
 Once this completes and resources are fetched, OpenFin will create an app icon on your desktop with the last configuration setting that you can relaunch.
