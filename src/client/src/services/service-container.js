@@ -19,6 +19,7 @@ export default class ServiceContainer {
   _blotterService:BlotterService;
   _executionService:ExecutionService;
   _analyticsService:AnalyticsService;
+  _openFin:system.OpenFin;
   _serviceStatusStream: Rx.Observable<model.ServiceStatusLookup>;
   _currentServiceStatusLookup : model.ServiceStatusLookup;
   _isStarted: Boolean;
@@ -35,10 +36,11 @@ export default class ServiceContainer {
     var autobahnProxy = new system.service.AutobahnConnectionProxy(url, realm);
     this._connection = new system.service.Connection(user.code, autobahnProxy, schedulerService);
 
+    this._openFin = new system.OpenFin();
     this._pricingService = new PricingService(model.ServiceConst.PricingServiceKey, this._connection, schedulerService);
     this._referenceDataService = new ReferenceDataService(model.ServiceConst.ReferenceServiceKey, this._connection, schedulerService);
     this._blotterService = new BlotterService(model.ServiceConst.BlotterServiceKey, this._connection, schedulerService);
-    this._executionService = new ExecutionService(model.ServiceConst.ExecutionServiceKey, this._connection, schedulerService);
+    this._executionService = new ExecutionService(model.ServiceConst.ExecutionServiceKey, this._connection, schedulerService, this._openFin);
     this._analyticsService = new AnalyticsService(model.ServiceConst.AnalyticsServiceKey, this._connection, schedulerService);
 
     this._serviceStatusStream = this._createServiceStatusStream();
@@ -96,6 +98,10 @@ export default class ServiceContainer {
 
   get analyticsService() {
     return this._analyticsService;
+  }
+
+  get openFin() {
+    return this._openFin;
   }
 
   start() : void {

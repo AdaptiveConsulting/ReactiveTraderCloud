@@ -12,24 +12,24 @@ var _log:system.logger.Logger = system.logger.create('ShellView');
 
 const Modal = common.components.Modal;
 
-/**
- *
- * @param DTO
- * @returns {{id: *, trader: (*|string), status: *, direction: *, pair: *, rate: *, dateTime: *, valueDate: *, amount: *}}
- */
-const formatTradeForDOM = (DTO) =>{
-  return {
-    id: DTO.TradeId,
-    trader: DTO.TraderName,
-    status: DTO.Status,
-    direction: DTO.Direction,
-    pair: DTO.CurrencyPair,
-    rate: DTO.SpotRate,
-    dateTime: DTO.TradeDate,
-    valueDate: DTO.ValueDate,
-    amount: DTO.Notional
-  };
-};
+///**
+// *
+// * @param DTO
+// * @returns {{id: *, trader: (*|string), status: *, direction: *, pair: *, rate: *, dateTime: *, valueDate: *, amount: *}}
+// */
+//const formatTradeForDOM = (DTO) =>{
+//  return {
+//    id: DTO.TradeId,
+//    trader: DTO.TraderName,
+//    status: DTO.Status,
+//    direction: DTO.Direction,
+//    pair: DTO.CurrencyPair,
+//    rate: DTO.SpotRate,
+//    dateTime: DTO.TradeDate,
+//    valueDate: DTO.ValueDate,
+//    amount: DTO.Notional
+//  };
+//};
 
 class ShellView extends React.Component {
 
@@ -108,8 +108,7 @@ class ShellView extends React.Component {
    * @private
    */
   _processTrade(trade, update){
-    trade = formatTradeForDOM(trade);
-    const exists = _.findWhere(this.state.trades, {id: trade.id});
+    const exists = _.findWhere(this.state.trades, {id: trade.tradeId});
 
     if (!exists){
       this.state.trades.unshift(trade);

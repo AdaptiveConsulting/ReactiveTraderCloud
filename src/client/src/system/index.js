@@ -5,6 +5,7 @@ import SchedulerService from './schedulerService';
 import * as service from './service';
 import RetryPolicy from './observableExtentsions/retry-policy';
 import utils from './utils';
+import { OpenFin } from './openFin';
 
 // observableExtensions has no exports, it adds functionality to rx
 import './observableExtentsions/retry-policy-ext';
@@ -16,5 +17,6 @@ export default {
   SchedulerService,
   service,
   RetryPolicy,
-  utils
+  utils,
+  OpenFin
 };
