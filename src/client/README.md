@@ -27,6 +27,8 @@ Tested at time of writing with:
 standards and are happy to accept either `patch` or `minor` versions of their own dependencies. Dependent libraries get updated and
 released all the time, which could potentially result in a incompatible / broken dev workflow. 
 
+NB: The default version of Node installed on Mac OS X is not recent enough, and you need to specifically install a new version.
+
 ### Getting Started
 
 Just clone the repo and install the necessary node modules:
