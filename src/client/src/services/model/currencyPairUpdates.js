@@ -19,7 +19,7 @@ export default class CurrencyPairUpdates {
       return this._isStale;
     }
 
-  get currencyPairUpdateDto():Array<CurrencyPairUpdate>{
+  get currencyPairUpdate():Array<CurrencyPairUpdate>{
       return this._currencyPairUpdateDto;
   }
 }

@@ -37,14 +37,8 @@ export default class ExecutionService extends system.service.ServiceBase {
                 );
               }
               else {
-                var trade = Trade.createForFailure(
-                  executeTradeRequest.currencyPair,
-                  'NotionalOvershot',
-                  executeTradeRequest.notional,
-                  executeTradeRequest.spotRate
-                );
-                o.onNext(trade);
-                o.onCompleted();
+                //TODO
+                o.onError(new Error('open fin integration not finished'));
               }
             })
         );

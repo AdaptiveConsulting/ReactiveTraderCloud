@@ -23,13 +23,6 @@ export default class Trade {
     this._status = status;
   }
 
-  static createForFailure(currencyPair:String, status:String, notional:Number, spotRate:Number) : Trade {
-    this._currencyPair = currencyPair;
-    this._status = status;
-    this._notional = notional;
-    this._spotRate = spotRate;
-  }
-
   get tradeId():Number {
     return this._tradeId;
   }

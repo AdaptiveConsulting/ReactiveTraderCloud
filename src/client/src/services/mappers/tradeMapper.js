@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { Trade } from '../model';
 
 export default class TradeMapper {
-  mapFromDtoArray(dtos:Array<Object>) : Trade {
+  mapFromDtoArray(dtos:Array<Object>) : Array<Trade> {
     let trades = _(dtos)
       .map(dto => this.mapFromDto(dto))
       .value();

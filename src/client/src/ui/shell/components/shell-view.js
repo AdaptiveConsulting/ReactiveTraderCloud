@@ -13,25 +13,6 @@ var _log:system.logger.Logger = system.logger.create('ShellView');
 
 const Modal = common.components.Modal;
 
-///**
-// *
-// * @param DTO
-// * @returns {{id: *, trader: (*|string), status: *, direction: *, pair: *, rate: *, dateTime: *, formattedValueDate: *, amount: *}}
-// */
-//const formatTradeForDOM = (DTO) =>{
-//  return {
-//    id: DTO.TradeId,
-//    trader: DTO.TraderName,
-//    status: DTO.Status,
-//    direction: DTO.Direction,
-//    pair: DTO.CurrencyPair,
-//    rate: DTO.SpotRate,
-//    dateTime: DTO.TradeDate,
-//    formattedValueDate: DTO.ValueDate,
-//    amount: DTO.Notional
-//  };
-//};
-
 class ShellView extends React.Component {
 
   constructor(props, context){

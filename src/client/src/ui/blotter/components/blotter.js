@@ -42,7 +42,6 @@ class Blotter extends React.Component {
 
   componentDidMount(){
     // TODO
-    // there are so many wrongs in this method
     // 1) no open fin abstraction, all code has to do this dance
     // 2) disabling the ES6 warning about setting state in componentDidMount, and hopefully the component is still around if and when that fires
     // 3) server things happening on a single line including calling setstate in a comparison statement.
