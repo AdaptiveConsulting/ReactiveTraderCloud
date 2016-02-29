@@ -7,8 +7,8 @@ import _ from 'lodash';
 import NVD3Chart from 'react-nvd3';
 import d3 from 'd3';
 import { serviceContainer } from 'services';
-import * as serviceModel from '../../../services/model';
 import ChartGradient from './chart-gradient';
+import { AnalyticsRequest, PositionUpdates, CurrencyPairPosition, HistoricPosition } from './../../../services/model';
 
 // chart type for PnL chart - focus can break due to range. todo: fix
 //const LINECHART = 'lineWithFocusChart';
@@ -34,7 +34,8 @@ export default class Analytics extends React.Component {
     this.state = {
       tearoff: false,
       lastPos: 'unknown',
-      positionType: 'BaseTradedAmount',
+      // TODO this should not correspond to some random property on CurrencyPairPosition, it needs to be a first class citizen
+      positionType: 'baseTradedAmount',
       isAnalyticsServiceConnected:false,
       series: [{
         series: 'PNL',
@@ -87,7 +88,6 @@ export default class Analytics extends React.Component {
       }
     };
     this._disposables = new Rx.CompositeDisposable();
-    this.chartGradient;
   }
 
   componentDidMount() {
@@ -111,19 +111,20 @@ export default class Analytics extends React.Component {
   }
 
   _observeDataStreams() {
+    let _this = this;
     this._disposables.add(
       serviceContainer.analyticsService.serviceStatusStream.subscribe(status => {
-        this.setState({
+        _this.setState({
           isAnalyticsServiceConnected: status.isConnected
         });
       })
     );
     this._disposables.add(
-      serviceContainer.analyticsService.getAnalyticsStream(new serviceModel.AnalyticsRequest('USD')).subscribe(data => {
-          this.state.series[0].values = this.formatHistoricData(data.History);
-          this.setState({
-            history: data.History,
-            positions: data.CurrentPositions
+      serviceContainer.analyticsService.getAnalyticsStream(new AnalyticsRequest('USD')).subscribe((analyticsUpdate:PositionUpdates) => {
+          _this.state.series[0].values = this.formatHistoricData(analyticsUpdate.history);
+          _this.setState({
+            history: analyticsUpdate.history,
+            positions: analyticsUpdate.currentPositions
           });
         },
         err => { _log.error('Error on analyticsService stream stream', err); }
@@ -137,21 +138,23 @@ export default class Analytics extends React.Component {
     });
   }
 
-  formatHistoricData(data = []){
+  formatHistoricData(positions : Array<HistoricPosition> = []){
     let lastPos,
       domainMin = 0,
       domainMax = 0;
 
-    const formatted = _(data).filter(item => item && item.UsdPnl != null).map((item, i) => {
-      lastPos = item.UsdPnl.toFixed(2);
+    const formatted = _(positions)
+      .filter((item:HistoricPosition) => item && item.usdPnl != null)
+      .map((item:HistoricPosition) => {
+        lastPos = item.usdPnl.toFixed(2);
 
-      domainMin = Math.min(domainMin, item.UsdPnl);
-      domainMax = Math.max(domainMax, item.UsdPnl);
+        domainMin = Math.min(domainMin, item.usdPnl);
+        domainMax = Math.max(domainMax, item.usdPnl);
 
-      return {
-        x: new Date(item.Timestamp),
-        y: item.UsdPnl.toFixed(2)
-      };
+        return {
+          x: new Date(item.timestamp),
+          y: item.usdPnl.toFixed(2)
+        };
     }).value();
 
     this.setState({
@@ -170,11 +173,11 @@ export default class Analytics extends React.Component {
    */
   getPositionData(asSeries:boolean = false){
     if(asSeries) {
-      return this.state.positions.map(pos => {
+      return this.state.positions.map((currencyPairPosition:CurrencyPairPosition) => {
         return {
-          name: pos.Symbol,
-          label: pos.Symbol,
-          values: [pos]
+          name: currencyPairPosition.symbol,
+          label: currencyPairPosition.symbol,
+          values: [currencyPairPosition]
         };
       });
     } else {
@@ -205,26 +208,12 @@ export default class Analytics extends React.Component {
     const positionsSeries = this.getPositionData();
 
     const classMap = {
-      pnl: this.state.positionType === 'BasePnl' ? 'selected': '',
-      pos: this.state.positionType !== 'BasePnl' ? 'selected': ''
+      pnl: this.state.positionType === 'basePnl' ? 'selected': '',
+      pos: this.state.positionType !== 'basePnl' ? 'selected': ''
     };
 
     const className = this.state.lastPos > 0 ? 'nv-container' : 'nv-container negative';
-
-    let pnlChart = null;
-    if(positionsSeries.length > 0 && positionsSeries[0].values) {
-      let pnlHeight = Math.min(positionsSeries[0].values.length * 30, 200);
-      pnlChart = (
-        <NVD3Chart
-          type='multiBarHorizontalChart'
-          datum={positionsSeries}
-          options={this.chartPositionsOptions}
-          height={pnlHeight}
-          x='Symbol'
-          configure={configurePositionsChart}
-          y={this.state.positionType}/>
-      );
-    }
+    const pnlHeight = Math.min(positionsSeries[0].values.length * 30, 200);
 
     return (
       <Container
@@ -254,14 +243,22 @@ export default class Analytics extends React.Component {
         <div className='buttons'>
           <button
             className={classMap.pnl + ' pull-right btn btn-small btn-default'}
-            onClick={() => this.setState({positionType: 'BasePnl'})}>PnL</button>
+            onClick={() => this.setState({positionType: 'basePnl'})}>PnL</button>
           <button
             className={classMap.pos + ' pull-right btn btn-small btn-default'}
-            onClick={() => this.setState({positionType: 'BaseTradedAmount'})}>Positions</button>
+            onClick={() => this.setState({positionType: 'baseTradedAmount'})}>Positions</button>
         </div>
 
         <div className='nv-container clearfix pnlchart' >
-          {pnlChart}
+          {/* TODO: again the text 'symbol' below shouldn't corrospond to a property on CurrencyPairPosition, should be a well defined const or a min a const on that object */}
+          <NVD3Chart
+            type='multiBarHorizontalChart'
+            datum={positionsSeries}
+            options={this.chartPositionsOptions}
+            height={pnlHeight}
+            x='symbol'
+            configure={configurePositionsChart}
+            y={this.state.positionType}/>
         </div>
     </Container>
     );

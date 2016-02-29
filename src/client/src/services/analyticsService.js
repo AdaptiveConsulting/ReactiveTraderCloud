@@ -7,7 +7,7 @@ var _log:system.logger.Logger = system.logger.create('AnalyticsService');
 
 export default class AnalyticsService extends system.service.ServiceBase {
 
-  getAnalyticsStream(analyticsRequest:AnalyticsRequest) {
+  getAnalyticsStream(analyticsRequest:AnalyticsRequest):Rx.Observable<PositionUpdates> {
     system.Guard.isDefined(analyticsRequest, 'analyticsRequest required');
 
     let _this = this;
@@ -29,7 +29,7 @@ export default class AnalyticsService extends system.service.ServiceBase {
     return new PositionUpdates(positions, history);
   }
 
-  _mapPositionsFromDto(dtos:Array<Object>) {
+  _mapPositionsFromDto(dtos:Array<Object>) : Array<CurrencyPairPosition>{
     return _(dtos).map(
       dto => new CurrencyPairPosition(
         dto.Symbol,
@@ -38,7 +38,7 @@ export default class AnalyticsService extends system.service.ServiceBase {
       .value();
   }
 
-  _mapHistoricPositionFromDto(dtos:Array<Object>) {
+  _mapHistoricPositionFromDto(dtos:Array<Object>) : Array<HistoricPosition> {
     return _(dtos)
       .map(dto => new HistoricPosition(new Date(dto.Timestamp), dto.UsdPnl))
       .value();
