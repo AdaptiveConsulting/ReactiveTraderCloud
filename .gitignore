@@ -11,3 +11,4 @@ AdaptiveTrader.iml
 src/server/.vs/config/applicationhost.config
 .vscode
 node.pid
+**/.crossbar/node.key

@@ -114,8 +114,8 @@ class Blotter extends React.Component {
     }, {
       name: 'Notional',
       field: 'notional',
-      // wtf is going on here. write code for the reader!!!
-      cellConstructor: () => props => <NotionalCell className='text-right' data={trades} field='amount' suffix={' ' + trades[props.rowIndex].pair.substr(0, 3)} {...props} />,
+      // TODO pull this out, very very hard to read
+      cellConstructor: () => props => <NotionalCell className='text-right' data={trades} field='amount' suffix={' ' + trades[props.rowIndex].currencyPair.substr(0, 3)} {...props} />,
       width: 120,
       headerOptions: {
         className: 'text-right'
@@ -137,7 +137,7 @@ class Blotter extends React.Component {
       className: 'trade-status'
     }, {
       name: 'Value date',
-      field: 'valueDate',
+      field: 'formattedValueDate',
       cellConstructor: () => props => <DateCell field='valueDate' prefix='SP. ' format='%d %b' data={trades} {...props} />, // eslint-disable-line
       width: 100
     }, {

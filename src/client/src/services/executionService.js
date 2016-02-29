@@ -2,6 +2,7 @@ import system from 'system';
 import Rx from 'rx';
 import { OpenFin } from '../system/openFin';
 import { Trade, ExecuteTradeRequest } from './model';
+import { TradeMapper } from './mappers';
 
 const _log:system.logger.Logger = system.logger.create('ExecutionService');
 
@@ -13,6 +14,7 @@ export default class ExecutionService extends system.service.ServiceBase {
               openFin:OpenFin) {
     super(serviceType, connection, schedulerService);
     this._openFin = openFin;
+    this._tradeMapper = new TradeMapper();
   }
 
   executeTrade(executeTradeRequest:ExecuteTradeRequest):Rx.Observable<Trade> {
@@ -30,7 +32,7 @@ export default class ExecutionService extends system.service.ServiceBase {
                 disposables.add(
                   _this._serviceClient
                     .createRequestResponseOperation('executeTrade', executeTradeRequest)
-                    .select(dto => _this._mapFromDto(dto))
+                    .map(dto => _this._tradeMapper.mapFromDto(dto.Trade))
                     .subscribe(o)
                 );
               }
@@ -48,21 +50,6 @@ export default class ExecutionService extends system.service.ServiceBase {
         );
         return disposables;
       }
-    );
-  }
-
-  _mapFromDto(dto:Object) {
-    return new Trade(
-      dto.TradeId,
-      dto.TraderName,
-      dto.CurrencyPair,
-      dto.Notional,
-      dto.DealtCurrency,
-      dto.Direction,
-      dto.SpotRate,
-      dto.TradeDate,
-      dto.ValueDate,
-      dto.Status
     );
   }
 }

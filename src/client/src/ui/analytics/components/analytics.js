@@ -6,7 +6,8 @@ import _ from 'lodash';
 
 import NVD3Chart from 'react-nvd3';
 import d3 from 'd3';
-import { serviceContainer, model as serviceModel } from 'services';
+import { serviceContainer } from 'services';
+import * as serviceModel from '../../../services/model';
 import ChartGradient from './chart-gradient';
 
 // chart type for PnL chart - focus can break due to range. todo: fix
@@ -209,7 +210,21 @@ export default class Analytics extends React.Component {
     };
 
     const className = this.state.lastPos > 0 ? 'nv-container' : 'nv-container negative';
-    const pnlHeight = Math.min(positionsSeries[0].values.length * 30, 200);
+
+    let pnlChart = null;
+    if(positionsSeries.length > 0 && positionsSeries[0].values) {
+      let pnlHeight = Math.min(positionsSeries[0].values.length * 30, 200);
+      pnlChart = (
+        <NVD3Chart
+          type='multiBarHorizontalChart'
+          datum={positionsSeries}
+          options={this.chartPositionsOptions}
+          height={pnlHeight}
+          x='Symbol'
+          configure={configurePositionsChart}
+          y={this.state.positionType}/>
+      );
+    }
 
     return (
       <Container
@@ -246,14 +261,7 @@ export default class Analytics extends React.Component {
         </div>
 
         <div className='nv-container clearfix pnlchart' >
-          <NVD3Chart
-            type='multiBarHorizontalChart'
-            datum={positionsSeries}
-            options={this.chartPositionsOptions}
-            height={pnlHeight}
-            x='Symbol'
-            configure={configurePositionsChart}
-            y={this.state.positionType}/>
+          {pnlChart}
         </div>
     </Container>
     );

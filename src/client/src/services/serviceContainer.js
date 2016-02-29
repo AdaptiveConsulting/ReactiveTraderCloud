@@ -2,6 +2,7 @@ import system from 'system';
 import Rx from 'rx';
 import { PricingService, ReferenceDataService, BlotterService, ExecutionService, AnalyticsService, FakeUserRepository } from './';
 import { User, ServiceConst, ServiceStatusLookup } from './model';
+import { OpenFin } from '../system/openFin';
 
 var _log:system.logger.Logger = system.logger.create('ServiceContainer');
 
@@ -15,7 +16,7 @@ export default class ServiceContainer {
   _blotterService:BlotterService;
   _executionService:ExecutionService;
   _analyticsService:AnalyticsService;
-  _openFin:system.OpenFin;
+  _openFin:OpenFin;
   _serviceStatusStream: Rx.Observable<ServiceStatusLookup>;
   _currentServiceStatusLookup : ServiceStatusLookup;
   _isStarted: Boolean;
@@ -32,7 +33,7 @@ export default class ServiceContainer {
     var autobahnProxy = new system.service.AutobahnConnectionProxy(url, realm);
     this._connection = new system.service.Connection(user.code, autobahnProxy, schedulerService);
 
-    this._openFin = new system.OpenFin();
+    this._openFin = new OpenFin();
     this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, schedulerService);
     this._referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this._connection, schedulerService);
     this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, schedulerService);

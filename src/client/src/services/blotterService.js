@@ -1,10 +1,16 @@
 import system from 'system';
 import Rx from 'rx';
 import { Trade } from './model';
+import { TradeMapper } from './mappers';
 
 var _log:system.logger.Logger = system.logger.create('BlotterService');
 
 export default class BlotterService extends system.service.ServiceBase {
+
+  constructor(serviceType:String, connection:Connection, schedulerService:SchedulerService) {
+    super(serviceType, connection, schedulerService);
+    this._tradeMapper = new TradeMapper();
+  }
 
   getTradesStream() : Rx.Observable<Trade> {
     let _this = this;
@@ -14,24 +20,9 @@ export default class BlotterService extends system.service.ServiceBase {
         return _this._serviceClient
           .createStreamOperation('getTradesStream', {/* noop request */ })
           .retryWithPolicy(system.RetryPolicy.backoffTo10SecondsMax, 'getTradesStream', _this._schedulerService.async)
-          .select(dto => this._mapFromDto(dto))
+          .map(dto => _this._tradeMapper.mapFromDtoArray(dto.Trades))
           .subscribe(o);
       }
-    );
-  }
-
-  _mapFromDto(dto:Object) : Trade {
-    return new Trade(
-      dto.TradeId,
-      dto.TraderName,
-      dto.CurrencyPair,
-      dto.Notional,
-      dto.DealtCurrency,
-      dto.Direction,
-      dto.SpotRate,
-      dto.TradeDate,
-      dto.ValueDate,
-      dto.Status
     );
   }
 }

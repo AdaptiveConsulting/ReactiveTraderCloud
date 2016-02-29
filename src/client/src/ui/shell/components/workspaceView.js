@@ -4,7 +4,8 @@ import _ from 'lodash';
 import { SpotTile } from '../../spot-tile/components';
 import { Container } from '../../common/components';
 import system from 'system';
-import { serviceContainer, model as serviceModel } from 'services';
+import { serviceContainer } from '../../../services';
+import * as serviceModel from '../../../services/model';
 
 var _log:system.logger.Logger = system.logger.create('WorkspaceView');
 
