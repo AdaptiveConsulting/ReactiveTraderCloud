@@ -20,8 +20,9 @@ export default class PositionsMapper {
   }
 
   _mapHistoricPositionFromDto(dtos:Array<Object>):Array<HistoricPosition> {
-    return _(dtos)
-      .map(dto => new HistoricPosition(new Date(dto.Timestamp), dto.UsdPnl))
-      .value();
+    return _.map(
+      dtos,
+      dto => new HistoricPosition(new Date(dto.Timestamp), dto.UsdPnl)
+    );
   }
 }
