@@ -2,6 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute } from 'react-router';
 import { createHashHistory } from 'history';
+import { default as Bootstrapper } from './bootstrapper';
+
+// TODO Bootstrapper will replace app.js
+let bootstrapper = new Bootstrapper();
+bootstrapper.run();
 
 import ui from './ui';
 

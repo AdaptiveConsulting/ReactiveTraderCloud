@@ -51,7 +51,9 @@ const webpackConfig = {
     extensions: ['', '.js', '.jsx'],
     alias: {
       system: __dirname + '/src/system',
-      services: __dirname + '/src/services'
+      services: __dirname + '/src/services',
+      // reverse alias so we can use ES6 from node modules and get IDE support but not actually transpile it
+      "esp-js/src" : __dirname + '/node_modules/esp-js'
     }
   },
   eslint: {

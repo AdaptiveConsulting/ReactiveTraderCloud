@@ -1,6 +1,7 @@
 import system from 'system';
 import Rx from 'rx';
 import { ReferenceDataMapper } from './mappers';
+import { CurrencyPairUpdates } from './model';
 
 var _log:system.logger.Logger = system.logger.create('ReferenceDataService');
 
@@ -11,7 +12,7 @@ export default class ReferenceDataService extends system.service.ServiceBase {
     this._referenceDataMapper = new ReferenceDataMapper();
   }
 
-  getCurrencyPairUpdatesStream() {
+  getCurrencyPairUpdatesStream() : Rx.Observable<CurrencyPairUpdates> {
     let _this = this;
     return Rx.Observable.create(
       o => {

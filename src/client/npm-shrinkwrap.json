@@ -2,6 +2,11 @@
   "name": "reactive-trader-cloud",
   "version": "2.1.0",
   "dependencies": {
+    "Base64": {
+      "version": "0.2.1",
+      "from": "Base64@>=0.2.0 <0.3.0",
+      "resolved": "https://registry.npmjs.org/Base64/-/Base64-0.2.1.tgz"
+    },
     "abbrev": {
       "version": "1.0.7",
       "from": "abbrev@>=1.0.0 <1.1.0",
@@ -323,6 +328,11 @@
       "from": "babel-plugin-runtime@>=1.0.7 <2.0.0",
       "resolved": "https://registry.npmjs.org/babel-plugin-runtime/-/babel-plugin-runtime-1.0.7.tgz"
     },
+    "babel-plugin-transform-runtime": {
+      "version": "6.6.0",
+      "from": "babel-plugin-transform-runtime@>=6.4.3 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.6.0.tgz"
+    },
     "babel-plugin-undeclared-variables-check": {
       "version": "1.0.2",
       "from": "babel-plugin-undeclared-variables-check@>=1.0.2 <2.0.0",
@@ -403,11 +413,6 @@
       "version": "0.3.0",
       "from": "balanced-match@>=0.3.0 <0.4.0",
       "resolved": "https://registry.npmjs.org/balanced-match/-/balanced-match-0.3.0.tgz"
-    },
-    "Base64": {
-      "version": "0.2.1",
-      "from": "Base64@>=0.2.0 <0.3.0",
-      "resolved": "https://registry.npmjs.org/Base64/-/Base64-0.2.1.tgz"
     },
     "base64-arraybuffer": {
       "version": "0.1.2",
@@ -1196,6 +1201,10 @@
       "version": "3.4.0",
       "from": "escope@>=3.3.0 <4.0.0",
       "resolved": "https://registry.npmjs.org/escope/-/escope-3.4.0.tgz"
+    },
+    "esp-js": {
+      "version": "0.7.0",
+      "from": "esp-js@latest"
     },
     "esprima-fb": {
       "version": "15001.1001.0-dev-harmony-fb",
@@ -3317,7 +3326,14 @@
     "react-nvd3": {
       "version": "0.4.1",
       "from": "react-nvd3@0.4.1",
-      "resolved": "https://registry.npmjs.org/react-nvd3/-/react-nvd3-0.4.1.tgz"
+      "resolved": "https://registry.npmjs.org/react-nvd3/-/react-nvd3-0.4.1.tgz",
+      "dependencies": {
+        "nvd3": {
+          "version": "1.8.1-dev",
+          "from": "git://github.com/novus/nvd3.git#5992b889c6ce8e108d42b73c6382c8863980e34a",
+          "resolved": "git://github.com/novus/nvd3.git#5992b889c6ce8e108d42b73c6382c8863980e34a"
+        }
+      }
     },
     "react-popout": {
       "version": "0.4.0",
@@ -3871,15 +3887,15 @@
       "from": "strict-uri-encode@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz"
     },
-    "string_decoder": {
-      "version": "0.10.31",
-      "from": "string_decoder@>=0.10.0 <0.11.0",
-      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
-    },
     "string-width": {
       "version": "1.0.1",
       "from": "string-width@>=1.0.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/string-width/-/string-width-1.0.1.tgz"
+    },
+    "string_decoder": {
+      "version": "0.10.31",
+      "from": "string_decoder@>=0.10.0 <0.11.0",
+      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
     },
     "stringmap": {
       "version": "0.2.2",
