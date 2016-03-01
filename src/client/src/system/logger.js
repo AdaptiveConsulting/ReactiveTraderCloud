@@ -48,7 +48,7 @@ class Logger {
    */
   info(){
     if (_currentLevel <= levels.info){
-      this._log('INFO', arguments);
+      this._log('INFO', arguments, 'blue');
     }
   }
 
@@ -66,7 +66,7 @@ class Logger {
    */
   error(){
     if (_currentLevel <= levels.error){
-      this._log('ERROR', 'red', arguments);
+      this._log('ERROR', arguments, 'red');
     }
   }
 
@@ -77,13 +77,13 @@ class Logger {
     this._log(level, `${message}. Error:${errorMessage}`);
   }
 
-  _log(level, color, args) {
+  _log(level, args, color) {
     Guard.isString(level, 'level isn\'t a string');
     _sink({
       logger: this._name,
       level: level,
+      args: args,
       color:color || 'black',
-      args: args
     });
   }
 }

@@ -3,12 +3,12 @@ import CurrencyPairUpdate from './currencyPairUpdate';
 export default class CurrencyPairUpdates {
   _isStateOfTheWorld:Boolean;
   _isStale:Boolean;
-  _currencyPairUpdateDto:Array<CurrencyPairUpdate>;
+  _currencyPairUpdates:Array<CurrencyPairUpdate>;
 
-  constructor(isStateOfTheWorld:Boolean, isStale:Boolean, currencyPairUpdateDto:Array<CurrencyPairUpdate>) {
+  constructor(isStateOfTheWorld:Boolean, isStale:Boolean, currencyPairUpdates:Array<CurrencyPairUpdate>) {
       this._isStateOfTheWorld = isStateOfTheWorld;
       this._isStale = isStale;
-      this._currencyPairUpdateDto = currencyPairUpdateDto;
+      this._currencyPairUpdates = currencyPairUpdates;
   }
 
   get isStateOfTheWorld():Boolean{
@@ -19,7 +19,7 @@ export default class CurrencyPairUpdates {
       return this._isStale;
     }
 
-  get currencyPairUpdate():Array<CurrencyPairUpdate>{
-      return this._currencyPairUpdateDto;
+  get currencyPairUpdates():Array<CurrencyPairUpdate>{
+      return this._currencyPairUpdates;
   }
 }

@@ -21,7 +21,7 @@ export default class ExecutionService extends system.service.ServiceBase {
     let _this = this;
     return Rx.Observable.create(
       o => {
-        _log.info('Subscribing to trade stream');
+        _log.info(`executing: ${executeTradeRequest.toString()}`, executeTradeRequest);
         let disposables = new Rx.CompositeDisposable();
         disposables.add(
           _this._openFin
@@ -32,7 +32,11 @@ export default class ExecutionService extends system.service.ServiceBase {
                 disposables.add(
                   _this._serviceClient
                     .createRequestResponseOperation('executeTrade', executeTradeRequest)
-                    .map(dto => _this._tradeMapper.mapFromDto(dto.Trade))
+                    .map(dto => {
+                      var trade = _this._tradeMapper.mapFromDto(dto.Trade);
+                      _log.info(`execute response received for: ${executeTradeRequest.toString()}. Status: ${trade.status}`, dto);
+                      return trade;
+                    })
                     .subscribe(o)
                 );
               }

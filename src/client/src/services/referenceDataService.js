@@ -15,11 +15,11 @@ export default class ReferenceDataService extends system.service.ServiceBase {
     let _this = this;
     return Rx.Observable.create(
       o => {
-        _log.info('Subscribing reference data stream');
+        _log.debug('Subscribing reference data stream');
         return _this._serviceClient
           .createStreamOperation('getCurrencyPairUpdatesStream', {/* noop request */ })
           .retryWithPolicy(system.RetryPolicy.backoffTo10SecondsMax, 'getCurrencyPairUpdatesStream', _this._schedulerService.async)
-          .select(data => _this._referenceDataMapper.mapFromDto(data)) // TODO mappers
+          .select(data => _this._referenceDataMapper.mapCurrencyPairsFromDto(data))
           .subscribe(o);
       }
     );

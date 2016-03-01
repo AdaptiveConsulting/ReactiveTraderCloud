@@ -3,10 +3,10 @@ import { Trade } from '../model';
 
 export default class TradeMapper {
   mapFromDtoArray(dtos:Array<Object>) : Array<Trade> {
-    let trades = _(dtos)
-      .map(dto => this.mapFromDto(dto))
-      .value();
-    return trades;
+    return _.map(
+      dtos,
+      dto => this.mapFromDto(dto)
+    );
   }
   mapFromDto(tradeDto:Object) : Trade {
     return new Trade(

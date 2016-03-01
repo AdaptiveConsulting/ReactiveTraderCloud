@@ -104,7 +104,7 @@ export default class ServiceContainer {
   start() : void {
     if(!this._isStarted) {
       this._isStarted = true;
-      _log.info('Start called');
+      _log.debug('Start called');
       this._pricingService.connect();
       this._referenceDataService.connect();
       this._blotterService.connect();

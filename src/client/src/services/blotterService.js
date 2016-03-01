@@ -16,7 +16,7 @@ export default class BlotterService extends system.service.ServiceBase {
     let _this = this;
     return Rx.Observable.create(
       o => {
-        _log.info('Subscribing to trade stream');
+        _log.debug('Subscribing to trade stream');
         return _this._serviceClient
           .createStreamOperation('getTradesStream', {/* noop request */ })
           .retryWithPolicy(system.RetryPolicy.backoffTo10SecondsMax, 'getTradesStream', _this._schedulerService.async)

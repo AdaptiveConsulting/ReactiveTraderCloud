@@ -7,7 +7,7 @@ import common from '../../common';
 import system from 'system';
 import Rx from 'rx';
 import { serviceContainer } from '../../../services';
-import { Trade } from '../../../services/model';
+import { Trade, ExecuteTradeRequest } from '../../../services/model';
 
 var _log:system.logger.Logger = system.logger.create('ShellView');
 
@@ -110,15 +110,13 @@ class ShellView extends React.Component {
    * @param {Object} payload
    */
   addTrade(payload){
-    var request = {
-      CurrencyPair: payload.pair,
-      SpotRate: payload.rate,
-      //todo: support formattedValueDate and non spot
-      // ValueDate: (new Date()).toISOString(),
-      Direction: payload.direction,
-      Notional: payload.amount,
-      DealtCurrency: payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
-    };
+    var request = new ExecuteTradeRequest(
+      payload.pair,
+      payload.rate,
+      payload.direction,
+      payload.amount,
+      payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
+    );
     // TODO proper handling of trade execution flow errors and disposal
     let disposable = serviceContainer.executionService.executeTrade(request).subscribe((trade:Trade) =>{
         let message = {
