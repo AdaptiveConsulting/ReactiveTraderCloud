@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 import system from 'system';
-import { serviceContainer, model as serviceModel, FakeUserRepository } from 'services';
+import { serviceContainer, FakeUserRepository } from '../../../services';
+import * as serviceModel from '../../../services/model';
 
 var _log:system.logger.Logger = system.logger.create('HeaderView');
 

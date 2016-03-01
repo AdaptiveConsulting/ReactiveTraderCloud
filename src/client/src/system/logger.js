@@ -10,8 +10,8 @@ const levels = {
 
 let _currentLevel = levels.debug;
 
-let _sink = logEvent =>{
-  const toLog = ['[' + logEvent.level + '][' + logEvent.logger + ']'];
+let _sink = (logEvent)  =>{
+  const toLog = [`%c [${logEvent.level}][${logEvent.logger}]`, `color:${logEvent.color}`];
   toLog.push.apply(toLog, logEvent.args);
   console.log.apply(console, toLog);
 };
@@ -48,7 +48,7 @@ class Logger {
    */
   info(){
     if (_currentLevel <= levels.info){
-      this._log('INFO', arguments);
+      this._log('INFO', arguments, 'blue');
     }
   }
 
@@ -66,7 +66,7 @@ class Logger {
    */
   error(){
     if (_currentLevel <= levels.error){
-      this._log('ERROR', arguments);
+      this._log('ERROR', arguments, 'red');
     }
   }
 
@@ -77,12 +77,13 @@ class Logger {
     this._log(level, `${message}. Error:${errorMessage}`);
   }
 
-  _log(level, args) {
+  _log(level, args, color) {
     Guard.isString(level, 'level isn\'t a string');
     _sink({
       logger: this._name,
       level: level,
-      args: args
+      args: args,
+      color:color || 'black',
     });
   }
 }

@@ -1,5 +1,6 @@
 import React        from 'react';
 import ReactDOM     from 'react-dom';
+import d3 from 'd3';
 
 const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/;
 
@@ -37,7 +38,12 @@ function getConvertedSize(size){
   return size;
 }
 
+function formatDate(date, format:string = '%b %e, %H:%M:%S') {
+  return d3.format(format)(date);
+}
+
 export default {
   mixin,
-  getConvertedSize
+  getConvertedSize,
+  formatDate
 };

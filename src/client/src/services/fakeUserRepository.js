@@ -1,5 +1,8 @@
 import _ from 'lodash';
-import * as model from './model';
+import logger from '../system/logger';
+import { User } from './model';
+
+var _log:logger.Logger = logger.create('FakeUserRepository');
 
 var fakeUserDetails = [{
   shortCode: 'LMO',
@@ -83,12 +86,13 @@ var fakeUserDetails = [{
   lastName: 'Gerdts'
 }];
 
-var userDetails = _.sample(fakeUserDetails);
-var currentUser = new model.User(userDetails.firstName, userDetails.lastName, userDetails.shortCode);
+let userDetails = _.sample(fakeUserDetails);
+let currentUser : User = new User(userDetails.firstName, userDetails.lastName, userDetails.shortCode);
+_log.info(`Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`);
 
 export default class FakeUserRepository {
   /**
-   * A hardcoded current users that gets set on app start up.
+   * A hardcoded current users that gets set on app start up. There is no concept of sessions or users on the backend.
    */
   static get currentUser() {
     return currentUser;

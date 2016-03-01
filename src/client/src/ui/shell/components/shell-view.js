@@ -6,30 +6,12 @@ import Analytics from '../../analytics/components/analytics';
 import common from '../../common';
 import system from 'system';
 import Rx from 'rx';
-import { serviceContainer, model as serviceModel } from 'services';
+import { serviceContainer } from '../../../services';
+import { Trade, ExecuteTradeRequest } from '../../../services/model';
 
 var _log:system.logger.Logger = system.logger.create('ShellView');
 
 const Modal = common.components.Modal;
-
-/**
- *
- * @param DTO
- * @returns {{id: *, trader: (*|string), status: *, direction: *, pair: *, rate: *, dateTime: *, valueDate: *, amount: *}}
- */
-const formatTradeForDOM = (DTO) =>{
-  return {
-    id: DTO.TradeId,
-    trader: DTO.TraderName,
-    status: DTO.Status,
-    direction: DTO.Direction,
-    pair: DTO.CurrencyPair,
-    rate: DTO.SpotRate,
-    dateTime: DTO.TradeDate,
-    valueDate: DTO.ValueDate,
-    amount: DTO.Notional
-  };
-};
 
 class ShellView extends React.Component {
 
@@ -51,8 +33,8 @@ class ShellView extends React.Component {
 
   _addEvents(){
     this._disposables.add(
-      serviceContainer.blotterService.getTradesStream().subscribe(blotter =>{
-        blotter.Trades.forEach((trade) => this._processTrade(trade, false));
+      serviceContainer.blotterService.getTradesStream().subscribe(trades =>{
+          trades.forEach((trade) => this._processTrade(trade, false));
         this.setState({
           trades: this.state.trades
         });
@@ -71,6 +53,7 @@ class ShellView extends React.Component {
         });
 
         if (status === system.service.ConnectionStatus.sessionExpired){
+          // TODO Lift
           Modal.setTitle('Session expired')
             .setBody(<div>
               <div>Your 15 minute session expired, you are now disconnected from the server.</div>
@@ -108,8 +91,7 @@ class ShellView extends React.Component {
    * @private
    */
   _processTrade(trade, update){
-    trade = formatTradeForDOM(trade);
-    const exists = _.findWhere(this.state.trades, {id: trade.id});
+    const exists = _.findWhere(this.state.trades, {id: trade.tradeId});
 
     if (!exists){
       this.state.trades.unshift(trade);
@@ -128,30 +110,26 @@ class ShellView extends React.Component {
    * @param {Object} payload
    */
   addTrade(payload){
-    var request = {
-      CurrencyPair: payload.pair,
-      SpotRate: payload.rate,
-      //todo: support valueDate and non spot
-      // ValueDate: (new Date()).toISOString(),
-      Direction: payload.direction,
-      Notional: payload.amount,
-      DealtCurrency: payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
-    };
+    var request = new ExecuteTradeRequest(
+      payload.pair,
+      payload.rate,
+      payload.direction,
+      payload.amount,
+      payload.pair.substr(payload.direction === 'buy' ? 0 : 3, 3)
+    );
     // TODO proper handling of trade execution flow errors and disposal
-    const disposable = serviceContainer.executionService.executeTrade(request).subscribe(response =>{
-        const trade   = response.Trade,
-              dt      = new Date(trade.ValueDate),
-              message = {
-                pair: trade.CurrencyPair,
-                id: trade.TradeId,
-                status: trade.Status,
-                direction: trade.Direction.toLowerCase(),
-                amount: trade.Notional,
-                trader: trade.TraderName,
-                valueDate: trade.ValueDate, // todo get this from DTO
-                rate: trade.SpotRate
+    let disposable = serviceContainer.executionService.executeTrade(request).subscribe((trade:Trade) =>{
+        let message = {
+                pair: trade.currencyPair,
+                id: trade.tradeId,
+                status: trade.status,
+                direction: trade.direction.toLowerCase(),
+                amount: trade.notional,
+                trader: trade.traderName,
+                formattedValueDate: trade.formattedValueDate,
+                rate: trade.spotRate
               };
-
+        // TODO lift open fin
         window.fin && new window.fin.desktop.Notification({
           url: '/#/growl',
           message,
@@ -169,6 +147,8 @@ class ShellView extends React.Component {
             window.fin.desktop.InterApplicationBus.publish('acknowledgeTrade', message.id);
           }
         });
+        // massive antipattern, we need to have tiles act on their own accord as smart components
+        // not every layer between the top most container and the tile having knowledge of the tiles inner workings
         payload.onACK(message);
       },
       (err) =>{

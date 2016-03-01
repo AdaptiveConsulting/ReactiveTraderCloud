@@ -154,7 +154,7 @@ export default class ChartGradient {
     //update colour stops
     //need to modify stop1End and stop2
     let fullRange = Math.abs(domainMin) + Math.abs(domainMax);
-    if (isNaN(fullRange)) return;
+    if (isNaN(fullRange) || fullRange === 0) return;
     let zeroAt = (domainMax/fullRange) * 100 + '%';
 
     var stopGreenStart = this.linearGradient.querySelector('#stop1');

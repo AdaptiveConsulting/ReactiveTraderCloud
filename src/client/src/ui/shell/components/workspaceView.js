@@ -4,16 +4,12 @@ import _ from 'lodash';
 import { SpotTile } from '../../spot-tile/components';
 import { Container } from '../../common/components';
 import system from 'system';
-import { serviceContainer, model as serviceModel } from 'services';
+import { serviceContainer } from '../../../services';
+import { GetSpotStreamRequest, SpotPrice, UpdateType } from '../../../services/model';
 
 var _log:system.logger.Logger = system.logger.create('WorkspaceView');
 
-const STALE_TIMEOUT = 4000,
-      UPDATE_TYPES  = {
-        ADD: 'Added',
-        UPDATE: 'Updated',
-        DELETE: 'Removed'
-      };
+const STALE_TIMEOUT = 4000;
 
 /**
  * @class WorkspaceView
@@ -87,10 +83,10 @@ class WorkspaceView extends React.Component {
       serviceContainer.referenceDataService.getCurrencyPairUpdatesStream().subscribe(referenceData => {
           let shouldStateUpdate = false;
 
-          if (referenceData.IsStateOfTheWorld && referenceData.Updates.length){
+          if (referenceData.isStateOfTheWorld && referenceData.currencyPairUpdates.length){
             // compact pairs if it has any instances not in the new state of the world
             const len = this.state.pairs.length,
-                  ids = _.pluck(referenceData.Updates, 'CurrencyPair.Symbol');
+                  ids = _.pluck(referenceData.updates, 'currencyPair.symbol');
 
             this.state.pairs = this.state.pairs.filter((pair) =>{
               const pairShouldRemain = _.indexOf(ids, pair.id) !== -1;
@@ -104,28 +100,28 @@ class WorkspaceView extends React.Component {
           }
 
           // loop through updates
-          _.forEach(referenceData.Updates, (updatedPair) =>{
-            const pairData = updatedPair.CurrencyPair;
+          _.forEach(referenceData.currencyPairUpdates, (updatedPair) =>{
+            const pairData = updatedPair.currencyPair;
 
             // added new?
-            if (updatedPair.UpdateType === UPDATE_TYPES.ADD){
-              let existingPair = _.findWhere(this.state.pairs, {id: pairData.Symbol}),
+            if (updatedPair.updateType === UpdateType.Added){
+              let existingPair = _.findWhere(this.state.pairs, {id: pairData.symbol}),
                   localPair    = {
-                    pip: pairData.PipsPosition,
-                    precision: pairData.RatePrecision,
-                    pair: pairData.Symbol,
-                    id: pairData.Symbol,
+                    pip: pairData.pipsPosition,
+                    precision: pairData.ratePrecision,
+                    pair: pairData.symbol,
+                    id: pairData.symbol,
                     buy: undefined,
                     sell: undefined,
                     disabled: false,
-                    tearoff: Boolean(tearoffStates[pairData.Symbol])
+                    tearoff: Boolean(tearoffStates[pairData.symbol])
                   };
 
               // only subscribe if we don't already listen for prices
               if (!existingPair){
-                localPair.pricingSub = serviceContainer.pricingService.getSpotPriceStream(new serviceModel.GetSpotStreamRequest(localPair.id))
+                localPair.pricingSub = serviceContainer.pricingService.getSpotPriceStream(new GetSpotStreamRequest(localPair.id))
                   .subscribe(
-                    (priceData : serviceModel.SpotPrice) =>{
+                    (priceData : SpotPrice) =>{
                       localPair.sell = priceData.bid;
                       localPair.buy = priceData.ask;
                       localPair.mid = priceData.mid;
@@ -144,9 +140,9 @@ class WorkspaceView extends React.Component {
                 console.warn('Trying to add a pair that already exists', pairData, existingPair);
               }
             }
-            else if (updatedPair.UpdateType === UPDATE_TYPES.DELETE){
+            else if (updatedPair.updateType === UpdateType.Removed){
               // removed existing?
-              let existingPair = _.findWhere(this.state.pairs, {id: pairData.Symbol});
+              let existingPair = _.findWhere(this.state.pairs, {id: pairData.symbol});
 
               if (existingPair){
                 this.state.pairs.splice(_.indexOf(this.state.pairs, existingPair), 1);
