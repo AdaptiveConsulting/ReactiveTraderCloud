@@ -1,30 +1,32 @@
 import _ from 'lodash';
-import { Router, model, observeEvent, DictionaryDisposable } from 'esp-js/src';
+import { Router, model, observeEvent } from 'esp-js/src';
 import { ReferenceDataService } from '../../../services';
 import { CurrencyPairUpdates, CurrencyPairUpdate, UpdateType } from '../../../services/model';
 import { logger } from '../../../system';
 import { SpotTileFactory } from '../../spotTile';
 import { ModelBase } from '../../common';
+import { WorkspaceItem } from './';
 
 var _log:logger.Logger = logger.create('WorkspaceModel');
 
 export default class WorkspaceModel extends ModelBase {
   _referenceDataService:ReferenceDataService;
   _spotTileFactory:SpotTileFactory;
-  _spotTilesByCurrencyPair:DictionaryDisposable;
+  _workspaceItemsById:Object;
   _isInitialised:Boolean;
+  workspaceItems:Array<WorkspaceItem>;
 
   constructor(router, referenceDataService:ReferenceDataService, spotTileFactory:SpotTileFactory) {
     super('workspaceModelId', router);
     this._referenceDataService = referenceDataService;
     this._spotTileFactory = spotTileFactory;
-    this._spotTilesByCurrencyPair = new DictionaryDisposable();
-    this.addDisposable(this._spotTilesByCurrencyPair);
+    this._workspaceItemsById = {};
     this._isInitialised = false;
+    this.workspaceItems = [];
   }
 
   @observeEvent('init')
-  onInit() {
+  _onInit() {
     let _this = this;
     if (!_this._isInitialised) {
       _this._isInitialised = true;
@@ -39,22 +41,41 @@ export default class WorkspaceModel extends ModelBase {
     }
   }
 
+  /**
+   * Creates spot tiles for each currencyPair
+   *
+   * It's not really a normal use case to load spot tiles in a trading app based on static data for pairs.
+   * In a real app this component wouldn't know much of the children it hosts, it would just get told to display something.
+   * For this demo it seems sensible as all the workspace hosts is spot tiles.
+   */
   _processCurrencyPairUpdate(currencyPairUpdates:Array<CurrencyPairUpdate>) {
     _log.debug(`Received [${currencyPairUpdates.length}] currency pairs.`);
     let _this = this;
+
     _.forEach(currencyPairUpdates, (currencyPairUpdate:CurrencyPairUpdate) => {
-      let symbol = currencyPairUpdate.currencyPair.symbol;
-      if (currencyPairUpdate.updateType === UpdateType.Added && !_this._spotTilesByCurrencyPair.containsKey(symbol)) {
+      let key = currencyPairUpdate.currencyPair.symbol;
+      if (currencyPairUpdate.updateType === UpdateType.Added && !_this._workspaceItemsById.hasOwnProperty(key)) {
         let spotTileModel = _this._spotTileFactory.createTileModel(currencyPairUpdate.currencyPair);
-        _this._spotTilesByCurrencyPair.add(
-          symbol,
-          spotTileModel
-        );
-      } else if (currencyPairUpdate.updateType === UpdateType.Removed && _this._spotTilesByCurrencyPair.containsKey(symbol)) {
-        let spotTileModel = _this._spotTilesByCurrencyPair[symbol];
-        spotTileModel.dispose();
-        _this._spotTilesByCurrencyPair.remove(symbol);
+        let spotTileView =  _this._spotTileFactory.createTileView(spotTileModel.modelId);
+        let workspaceItem : WorkspaceItem = new WorkspaceItem(key, spotTileModel.modelId,spotTileView);
+        _this._workspaceItemsById[workspaceItem.key] = workspaceItem;
+        _this.workspaceItems.push(workspaceItem);
+      } else if (currencyPairUpdate.updateType === UpdateType.Removed && _this._workspaceItemsById.hasOwnProperty(key)) {
+        let workspaceItem = _this._workspaceItemsById[key];
+        delete _this._workspaceItemsById[key];
+        let removeAtIndex = this.workspaceItems.indexOf(workspaceItem);
+        if (removeAtIndex > -1) {
+          this.workspaceItems.splice(removeAtIndex, 1);
+        }
+        // fire an event at the spot tile model telling it that it's been closed
+        _this.router.publishEvent(workspaceItem.modelId, 'tileClosed', {});
       }
     });
+  }
+
+  @observeEvent('tearoff')
+  _onTearoff(e:{itemId:string}) {
+    _log.debug(`Tearing off workspace item with id [${e.itemId}].`);
+
   }
 }

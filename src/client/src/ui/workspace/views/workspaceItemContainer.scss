@@ -1,0 +1,27 @@
+@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables';
+
+.container-control {
+  position: absolute;
+  right: 0;
+  transform: translate3d(0, 0, 10px);
+  z-index: 100;
+  -webkit-app-region: no-drag !important;
+  i {
+    -webkit-app-region: no-drag !important;
+    font-size: 16px;
+    color: $gray-light;
+    &.glyphicon {
+      cursor: pointer;
+      padding: 8px;
+      padding-bottom: 0;
+    }
+  }
+
+  i.glyphicon-remove {
+    -webkit-app-region: no-drag !important;
+    display: none;
+    .tile & {
+      display: inline-block;
+    }
+  }
+}

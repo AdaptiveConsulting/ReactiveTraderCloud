@@ -37,6 +37,7 @@
     "bootstrap-sass": "3.3.6",
     "d3": "3.5.12",
     "esp-js": "0.7.0",
+    "esp-js-devtools": "0.0.14",
     "fixed-data-table": "0.6.0",
     "font-awesome": "4.5.0",
     "history": "1.17.0",

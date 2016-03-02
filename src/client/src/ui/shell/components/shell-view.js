@@ -1,5 +1,6 @@
 import React from 'react';
-import WorkspaceView from './workspaceView';
+// import WorkspaceView from './workspaceView';
+import { WorkspaceView } from '../../workspace/views';
 import Blotter from '../../blotter/components/blotter';
 import Header from '../../header/components/header-view';
 import Analytics from '../../analytics/components/analytics';
@@ -163,7 +164,9 @@ class ShellView extends React.Component {
         <common.components.Modal />
         <Header status={this.state.connected}/>
         <div className='horizontal-wrap'>
-          <WorkspaceView onExecute={(payload) => this.addTrade(payload)}/>
+          {/*onExecute={(payload) => this.addTrade(payload)}*/}
+          {/* HACK: workspaceModelId needs to come from the shells model once this view gets updated, not hard coded */}
+          <WorkspaceView modelId='workspaceModelId' />
           <Analytics />
         </div>
         <Blotter trades={this.state.trades}   />

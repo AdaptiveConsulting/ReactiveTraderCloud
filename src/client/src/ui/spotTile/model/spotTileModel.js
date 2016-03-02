@@ -24,7 +24,12 @@ export default class SpotTileModel extends ModelBase {
   }
 
   @observeEvent('init')
-  onInit() {
+  _onInit() {
     _log.info(`Cash tile starting for pair ${this._currencyPair.symbol}`);
+  }
+
+  @observeEvent('tileClosed')
+  _onTileClosed() {
+    _log.info(`Cash tile closing`);
   }
 }
