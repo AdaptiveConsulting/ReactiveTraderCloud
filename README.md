@@ -39,7 +39,7 @@ The back-end services are cross-platform. For details of how to set up the servi
 
 ## Getting Started
 
-You will find a guide to setup ReactiveTraderCloud for your plateform [here](docs/setup/getting-started.md).
+You will find a guide to setup ReactiveTraderCloud for your platform [here](docs/setup/getting-started.md).
 
 ## Concepts
 
@@ -67,7 +67,7 @@ We have written a number of blog posts in which we dive deeper into certain aspe
 + [Asynchrony and concurrency](http://weareadaptive.com/blog/2014/04/18/asynchrony-concurrency/) in which we discuss embracing asynchrony and concurrency at all levels of your application.
 + [Everything is a stream](http://weareadaptive.com/blog/2014/05/05/everything-is-a-stream/), in which we point out that all service calls from Reactive Trader result in streams of responses, not just a single response - and why this is so powerful.
 + [System health & failures](http://weareadaptive.com/blog/2014/06/16/system-health-failures/), in which we dig more into models of system health so you can easily respond to failures in your application, and how to use heart beating to detect component failure.
-+ [John's serie of blog posts on web messaging and abstractions](http://weareadaptive.com/blog/2015/06/15/series-of-blog-posts/)
++ [John's series of blog posts on web messaging and abstractions](http://weareadaptive.com/blog/2015/06/15/series-of-blog-posts/)
 
 ## Who Are We?
 
