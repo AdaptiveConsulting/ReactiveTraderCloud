@@ -6,6 +6,7 @@ import { ServiceStatus } from '../../../system/service';
 import { CurrencyPair } from '../../../services/model';
 import { ModelBase } from '../../common';
 import { GetSpotStreamRequest, SpotPrice } from '../../../services/model';
+import { TileStatus } from './';
 
 var _log:logger.Logger = logger.create('SpotTileModel');
 
@@ -18,6 +19,8 @@ export default class SpotTileModel extends ModelBase {
   _currencyPair:CurrencyPair;
 
   currentSpotPrice:SpotPrice;
+  canTrade:Boolean;
+  status:TileStatus;
 
   constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state as we do here
               router,
@@ -29,6 +32,8 @@ export default class SpotTileModel extends ModelBase {
     this._pricingService = pricingService;
     this._executionService = executionService;
     this._currencyPair = currencyPair;
+
+    this.status = TileStatus.Listening;
   }
 
   @observeEvent('init')
