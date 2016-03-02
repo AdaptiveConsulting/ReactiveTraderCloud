@@ -21,6 +21,9 @@ export default class SpotTileModel extends ModelBase {
   currentSpotPrice:SpotPrice;
   canTrade:Boolean;
   status:TileStatus;
+  historicMidSportRates:Array<Number>;
+  notificationMessage:String;
+  shouldShowChart:Boolean;
 
   constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state as we do here
               router,
@@ -34,6 +37,8 @@ export default class SpotTileModel extends ModelBase {
     this._currencyPair = currencyPair;
 
     this.status = TileStatus.Listening;
+    this.historicMidSportRates = [];
+    this.shouldShowChart = true;
   }
 
   @observeEvent('init')
@@ -48,6 +53,21 @@ export default class SpotTileModel extends ModelBase {
     _log.info(`Cash tile closing`);
   }
 
+  @observeEvent('toggleSparkLineChart')
+  _onToggleSparkLineChart() {
+    _log.debug(`toggling spark line chart`);
+  }
+
+  @observeEvent('notificationMessageDismissed')
+  _onNotificationMessageDismissed() {
+    _log.debug(`message dismissed`);
+    this.notificationMessage = null;
+  }
+
+  get hasNotificationMessage() {
+    return this.notificationMessage !== null;
+  }
+
   _subscribeToPriceStream() {
     this.addDisposable(
       this._pricingService
@@ -57,6 +77,7 @@ export default class SpotTileModel extends ModelBase {
           this._modelId,
           (price:SpotPrice) => {
             this.currentSpotPrice = price;
+            this.historicMidSportRates.push(price.mid);
           },
           err => {
             _log.error('Error on getSpotPriceStream stream stream', err);

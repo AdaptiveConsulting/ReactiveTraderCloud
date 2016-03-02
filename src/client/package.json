@@ -35,6 +35,7 @@
     "animate.css": "3.4.0",
     "autobahn": "0.9.9",
     "bootstrap-sass": "3.3.6",
+    "classnames": "2.2.3",
     "d3": "3.5.12",
     "esp-js": "0.7.0",
     "esp-js-devtools": "0.0.14",
