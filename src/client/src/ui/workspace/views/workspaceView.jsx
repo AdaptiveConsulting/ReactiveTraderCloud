@@ -32,13 +32,12 @@ class WorkspaceView extends ViewBase {
   }
 
   _renderWorkspaceItems(workspaceItems) {
-    let _this = this;
     return workspaceItems.map((item:WorkspaceItem) => {
       const className = 'currency-pair animated flipInX '; // + spotTile.state;
       return (
         <WorkspaceItemContainer
           key={item.key}
-          onTearOff={() => router.publishEvent(this.props.modelId, 'tearoff', {itemId:item.key})}
+          onTearOff={() => router.publishEvent(this.props.modelId, 'tearOffWorkspaceItem', {itemId:item.key})}
           className={className}>
           {item.view}
         </WorkspaceItemContainer>

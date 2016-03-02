@@ -10,8 +10,9 @@ export { default as utils } from './utils';
 export { default as router } from './router';
 export { default as logger } from './logger';
 
-// observableExtensions has no exports, it adds functionality to rx
+// these imports add functionality to rx
 import './observableExtentsions/retry-policy-ext';
+import './observableExtentsions/subscribeWithRouter';
 
 export default {
   Guard,

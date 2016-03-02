@@ -31,12 +31,13 @@ export default class WorkspaceModel extends ModelBase {
     if (!_this._isInitialised) {
       _this._isInitialised = true;
       _this.addDisposable(
-        _this._referenceDataService.getCurrencyPairUpdatesStream().subscribe((referenceData:CurrencyPairUpdates) => {
-          // In here we've received some async results.
-          // We need to get back on the routers dispatch loop so we can modify our model (i.e. local state) allowing the router to dispatch state updates.
-          // For more on the dispatch loop see http://esp.readthedocs.org/en/latest/router-api/dispatch-loop.html
-          _this.router.runAction(_this.modelId, () => _this._processCurrencyPairUpdate(referenceData.currencyPairUpdates));
-        })
+        _this._referenceDataService.getCurrencyPairUpdatesStream().subscribeWithRouter(
+          _this.router,
+          _this.modelId,
+          (referenceData:CurrencyPairUpdates) => {
+            _this._processCurrencyPairUpdate(referenceData.currencyPairUpdates);
+          }
+        )
       );
     }
   }
@@ -56,8 +57,8 @@ export default class WorkspaceModel extends ModelBase {
       let key = currencyPairUpdate.currencyPair.symbol;
       if (currencyPairUpdate.updateType === UpdateType.Added && !_this._workspaceItemsById.hasOwnProperty(key)) {
         let spotTileModel = _this._spotTileFactory.createTileModel(currencyPairUpdate.currencyPair);
-        let spotTileView =  _this._spotTileFactory.createTileView(spotTileModel.modelId);
-        let workspaceItem : WorkspaceItem = new WorkspaceItem(key, spotTileModel.modelId,spotTileView);
+        let spotTileView = _this._spotTileFactory.createTileView(spotTileModel.modelId);
+        let workspaceItem:WorkspaceItem = new WorkspaceItem(key, spotTileModel.modelId, spotTileView);
         _this._workspaceItemsById[workspaceItem.key] = workspaceItem;
         _this.workspaceItems.push(workspaceItem);
       } else if (currencyPairUpdate.updateType === UpdateType.Removed && _this._workspaceItemsById.hasOwnProperty(key)) {
@@ -73,7 +74,7 @@ export default class WorkspaceModel extends ModelBase {
     });
   }
 
-  @observeEvent('tearoff')
+  @observeEvent('tearOffWorkspaceItem')
   _onTearoff(e:{itemId:string}) {
     _log.debug(`Tearing off workspace item with id [${e.itemId}].`);
 
