@@ -15,15 +15,17 @@ import { default as router } from './system/router';
 
 export default class Bootstrapper {
   run() {
-    // create services
+    // create services // TODO delete serviceContainer and create all service here
     let referenceDataService = serviceContainer.referenceDataService;
+    let pricingService = serviceContainer.pricingService;
+    let executionService = serviceContainer.executionService;
 
     // create shell model
     // create root ui with shell view
     // start shell model
 
     // create other models
-    let spotTileFactory = new SpotTileFactory(router, referenceDataService);
+    let spotTileFactory = new SpotTileFactory(router, referenceDataService, pricingService, executionService);
 
     let workspaceModel = new WorkspaceModel(
       router,

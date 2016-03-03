@@ -24,7 +24,6 @@ class SpotTileView extends ViewBase {
     if (!model) {
       return null;
     }
-
     let sparklineChart = this._createSparkLineChart();
     let actionsClass = classnames('currency-pair-actions', { 'hide' : model.hasNotificationMessage });
     let sizerClass = classnames('sizer', { 'hide' : model.hasNotificationMessage });
@@ -33,12 +32,12 @@ class SpotTileView extends ViewBase {
       <div>
         <div className='currency-pair-title'>
           <i className='glyphicon glyphicon-stats pull-right' onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
-          <span>{title}</span> <i className='fa fa-plug animated infinite fadeIn'/>
+          <span>{model.titleTitle}</span> <i className='fa fa-plug animated infinite fadeIn'/>
         </div>
         {message}
         <div className={actionsClass}>
           {
-            // TODO finish porting 
+            // TODO finish porting
           //  <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
           //  < Direction direction={this.getDirection(mid)} spread={this.getSpread(buy, sell)}/>
           //<Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
@@ -69,7 +68,10 @@ class SpotTileView extends ViewBase {
   }
 
   _createMessage() {
-      return <Message message={this.state.model.notificationMessage} onClick={(e) => router.publishEvent(this.props.modelId, 'notificationMessageDismissed', {})} />;
+      return <Message
+        message={this.state.model.notificationMessage}
+        onClick={(e) => router.publishEvent(this.props.modelId, 'notificationMessageDismissed', {})}
+      />;
   }
 }
 

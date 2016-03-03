@@ -24,6 +24,7 @@ export default class SpotTileModel extends ModelBase {
   historicMidSportRates:Array<Number>;
   notificationMessage:String;
   shouldShowChart:Boolean;
+  titleTitle:String;
 
   constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state as we do here
               router,
@@ -39,6 +40,7 @@ export default class SpotTileModel extends ModelBase {
     this.status = TileStatus.Listening;
     this.historicMidSportRates = [];
     this.shouldShowChart = true;
+    this.titleTitle = currencyPair.symbol;
   }
 
   @observeEvent('init')
@@ -89,7 +91,7 @@ export default class SpotTileModel extends ModelBase {
   _subscribeToConnectionStatus() {
     let serviceStatusStream = Rx.Observable.combineLatest(
       this._pricingService.serviceStatusStream,
-      this._pricingService.executionService,
+      this._executionService.serviceStatusStream,
       (pricingStatus, executionStatus) => {
         return {
           pricingStatus: pricingStatus,
