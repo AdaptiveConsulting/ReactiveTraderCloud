@@ -21,6 +21,7 @@ export default class PricingService extends system.service.ServiceBase {
         return _this._serviceClient
           .createStreamOperation(getPriceUpdatesOperationName, request)
           .retryWithPolicy(system.RetryPolicy.indefiniteEvery2Seconds, getPriceUpdatesOperationName, _this._schedulerService.async)
+          .scan((lastPrice, nextPrice) => { return { lastPrice:lastPrice, nextPrice:nextPrice } }, SpotPrice.empty)
           .select(dto => _this._priceMapper.mapFromSpotPriceDto(dto))
           .subscribe(o);
       }

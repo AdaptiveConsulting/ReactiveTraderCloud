@@ -1,10 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Sparklines, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
-import { router } from '../../../system';
 import { ViewBase } from '../../common';
-import { logger } from '../../../system';
+import { router, logger } from '../../../system';
 import { Message } from '../../common/components';
+import { PriceMovementIndicator, PriceButton } from './';
+import { Direction, PriceMovementType } from '../../../services/model';
 
 import './spotTileView.scss';
 
@@ -36,12 +37,9 @@ class SpotTileView extends ViewBase {
         </div>
         {message}
         <div className={actionsClass}>
-          {
-            // TODO finish porting
-          //  <Pricer direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
-          //  < Direction direction={this.getDirection(mid)} spread={this.getSpread(buy, sell)}/>
-          //<Pricer direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
-          }
+          <PriceButton direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
+          <PriceMovementIndicator direction={this.getDirection(mid)} spread={this.getSpread(buy, sell)}/>
+          <PriceButton direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
         </div>
         <div className='clearfix'></div>
         {
