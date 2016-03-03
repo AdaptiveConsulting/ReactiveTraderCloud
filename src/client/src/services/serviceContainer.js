@@ -34,8 +34,8 @@ export default class ServiceContainer {
     this._connection = new system.service.Connection(user.code, autobahnProxy, schedulerService);
 
     this._openFin = new OpenFin();
-    this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, schedulerService);
     this._referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this._connection, schedulerService);
+    this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, schedulerService, this._referenceDataService);
     this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, schedulerService);
     this._executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, this._connection, schedulerService, this._openFin);
     this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, schedulerService);

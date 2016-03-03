@@ -1,11 +1,15 @@
+
 import Connection from './connection';
 import ServiceClient from './service-client';
 import SchedulerService from '../schedulerService';
+import { DisposableBase } from '../disposables';
 
-export default class ServiceBase {
+export default class ServiceBase extends DisposableBase {
   _serviceClient:ServiceClient;
 
   constructor(serviceType:String, connection:Connection, schedulerService:SchedulerService) {
+    super();
+
     this._serviceClient = new ServiceClient(
       serviceType,
       connection,

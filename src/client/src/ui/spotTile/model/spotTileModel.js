@@ -41,6 +41,7 @@ export default class SpotTileModel extends ModelBase {
     this.historicMidSportRates = [];
     this.shouldShowChart = true;
     this.titleTitle = currencyPair.symbol;
+    this.notificationMessage = null;
   }
 
   @observeEvent('init')
@@ -79,7 +80,7 @@ export default class SpotTileModel extends ModelBase {
           this._modelId,
           (price:SpotPrice) => {
             this.currentSpotPrice = price;
-            this.historicMidSportRates.push(price.mid);
+            this.historicMidSportRates.push(price.mid.rawRate);
           },
           err => {
             _log.error('Error on getSpotPriceStream stream stream', err);

@@ -22,29 +22,42 @@ class SpotTileView extends ViewBase {
 
   render() {
     let model = this.state.model;
-    if (!model) {
+    if (!model || !model.currentSpotPrice) {
       return null;
     }
     let sparklineChart = this._createSparkLineChart();
-    let actionsClass = classnames('currency-pair-actions', { 'hide' : model.hasNotificationMessage });
-    let sizerClass = classnames('sizer', { 'hide' : model.hasNotificationMessage });
+    let actionsClass = classnames('currency-pair-actions', {'hide': model.hasNotificationMessage});
+    let sizerClass = classnames('sizer', {'hide': model.hasNotificationMessage});
     let message = model.hasNotificationMessage ? this._createMessage() : null;
     return (
       <div>
         <div className='currency-pair-title'>
-          <i className='glyphicon glyphicon-stats pull-right' onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
-          <span>{model.titleTitle}</span> <i className='fa fa-plug animated infinite fadeIn'/>
+          <i className='glyphicon glyphicon-stats pull-right'
+             onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
+          <span>{model.titleTitle}</span>
+          <i className='fa fa-plug animated infinite fadeIn'/>
         </div>
         {message}
         <div className={actionsClass}>
-          <PriceButton direction='sell' onExecute={execute} price={this.parsePrice(sell)}/>
-          <PriceMovementIndicator direction={this.getDirection(mid)} spread={this.getSpread(buy, sell)}/>
-          <PriceButton direction='buy' onExecute={execute} price={this.parsePrice(buy)}/>
+          <PriceButton
+            direction={Direction.Sell}
+            onExecute={() => router.publishEvent(this.props.modelId, 'sellClicked', {})}
+            rate={model.currentSpotPrice.bid}
+          />
+          <PriceMovementIndicator
+            priceMovementType={model.currentSpotPrice.priceMovementType}
+            spread={model.currentSpotPrice.spread}
+          />
+          <PriceButton
+            direction={Direction.Buy}
+            onExecute={() => router.publishEvent(this.props.modelId, 'buyClicked', {})}
+            rate={model.currentSpotPrice.ask}
+          />
         </div>
         <div className='clearfix'></div>
         {
           // TODO finish porting
-         //  <Sizer className={sizerClass} size={size} onChange={(size) => this.setState({size})} pair={pair}/>
+          //  <Sizer className={sizerClass} size={size} onChange={(size) => this.setState({size})} pair={pair}/>
         }
         <div className='clearfix'></div>
         {sparklineChart}
@@ -55,21 +68,26 @@ class SpotTileView extends ViewBase {
   _createSparkLineChart() {
     let model = this.state.model;
     if (model.shouldShowChart) {
-      return (<Sparklines data={model.historicMidSportRates.slice()} width={326} height={22} margin={0}>
-        <SparklinesLine />
-        <SparklinesSpots />
-        <SparklinesReferenceLine type='avg'/>
-      </Sparklines>)
+      return (
+        <Sparklines
+          data={model.historicMidSportRates.slice()}
+          width={326}
+          height={22}
+          margin={0}>
+          <SparklinesLine />
+          <SparklinesSpots />
+          <SparklinesReferenceLine type='avg'/>
+        </Sparklines>)
     } else {
       return <div className='sparkline-holder'></div>;
     }
   }
 
   _createMessage() {
-      return <Message
-        message={this.state.model.notificationMessage}
-        onClick={(e) => router.publishEvent(this.props.modelId, 'notificationMessageDismissed', {})}
-      />;
+    return <Message
+      message={this.state.model.notificationMessage}
+      onClick={(e) => router.publishEvent(this.props.modelId, 'notificationMessageDismissed', {})}
+    />;
   }
 }
 

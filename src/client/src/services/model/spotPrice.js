@@ -8,6 +8,7 @@ export default class SpotPrice {
   _valueDate:Date;
   _creationTimestamp:Number;
   _priceMovementType:PriceMovementType;
+  _spread:Number;
 
   constructor(
     symbol:Number,
@@ -16,7 +17,8 @@ export default class SpotPrice {
     mid:Rate,
     valueDate:Date,
     creationTimestamp:Number,
-    priceMovementType:PriceMovementType
+    priceMovementType:PriceMovementType,
+    spread:Number
   ) {
     this._symbol = symbol;
     this._bid = bid;
@@ -25,12 +27,7 @@ export default class SpotPrice {
     this._valueDate = valueDate;
     this._creationTimestamp = creationTimestamp;
     this._priceMovementType = priceMovementType;
-  }
-
-  static get empty() : SpotPrice {
-    var spotPrice = new SpotPrice();
-    spotPrice._priceMovementType = PriceMovementType.None;
-    return spotPrice
+    this._spread = spread;
   }
 
   get symbol() : string {
@@ -47,6 +44,10 @@ export default class SpotPrice {
 
   get mid() : Rate {
     return this._mid;
+  }
+
+  get spread() : Number {
+    return this._spread;
   }
 
   get valueDate() : Date {

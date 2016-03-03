@@ -9,6 +9,14 @@ import ServiceBase from './service-base';
 // serviceObservableExtensions has no exports, it adds functionality to rx
 import './service-observable-extensions';
 
+export { Connection } ;
+export { AutobahnConnectionProxy } ;
+export { ServiceClient } ;
+export { ConnectionStatus } ;
+export { ServiceInstanceStatus } ;
+export { ServiceStatus } ;
+export { ServiceBase } ;
+
 export default {
   Connection,
   AutobahnConnectionProxy,

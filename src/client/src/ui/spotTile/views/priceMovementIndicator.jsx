@@ -1,20 +1,21 @@
 import React from 'react';
 import classnames from 'classnames';
+import { PriceMovementType } from '../../../services/model';
 
 const PriceMovementIndicator = props => {
-  let classnames = classnames(
+  let className = classnames(
     {
-      'up': props.direction === 'up',
-      'down': props.direction === 'down'
+      'up': props.priceMovementType === PriceMovementType.Up,
+      'down': props.priceMovementType ===  PriceMovementType.Down
     },
-    'direction'
+    'direction' // TODO rename styles to price-movement
   );
-  return <div className={classnames}>{props.spread}</div>;
+  return <div className={className}>{props.spread}</div>;
 }
 
 PriceMovementIndicator.propTypes ={
-  priceChangeDirection: React.PropTypes.object.isRequired,
-  spread: React.PropTypes.string.isRequired
+  priceMovementType: React.PropTypes.object.isRequired,
+  spread: React.PropTypes.number.isRequired
 };
 
 export default PriceMovementIndicator;

@@ -34,7 +34,16 @@ export default class Bootstrapper {
     );
     workspaceModel.observeEvents();
 
-    // start other models
-    router.publishEvent(workspaceModel.modelId, 'init', {});
+    // Bring up ref data first.
+    // The ref data API allows for both synchronous and asynchronous data access however in most cases you'll be using the synchronous API.
+    // Given this we wait for it to build it's cache now.
+    // Note there are lots of bells and whistles you can put around this, for example spin up the models, but wait for them to receive a ref data loaded event, etc.
+    // Such functionality give a better load experience, for now we'll just wait.
+    referenceDataService.hasLoadedStream.subscribe(() => {
+
+      // start other models
+      router.publishEvent(workspaceModel.modelId, 'init', {});
+    });
+    referenceDataService.load();
   }
 }

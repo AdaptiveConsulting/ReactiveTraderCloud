@@ -1,3 +1,4 @@
+// TODO this should be called Side
 export default class Direction {
 
   static _buy = new Direction('Buy');
