@@ -1215,19 +1215,13 @@
       "resolved": "https://registry.npmjs.org/esp-js/-/esp-js-0.7.0.tgz"
     },
     "esp-js-devtools": {
-      "version": "0.0.14",
+      "version": "0.0.15",
       "from": "esp-js-devtools@latest",
-      "resolved": "https://registry.npmjs.org/esp-js-devtools/-/esp-js-devtools-0.0.14.tgz",
       "dependencies": {
-        "esp-js": {
-          "version": "0.5.16",
-          "from": "esp-js@>=0.5.16 <0.6.0",
-          "resolved": "https://registry.npmjs.org/esp-js/-/esp-js-0.5.16.tgz"
-        },
         "lodash": {
-          "version": "4.6.0",
+          "version": "4.6.1",
           "from": "lodash@>=4.2.1 <5.0.0",
-          "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.6.0.tgz"
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.6.1.tgz"
         }
       }
     },
