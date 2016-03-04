@@ -100,13 +100,7 @@ export default class SpotTileModel extends ModelBase {
       this.status = TileStatus.Executing;
       // stop the price stream so the users can see what the traded
       this._priceSubscriptionDisposable.getDisposable().dispose();
-      let request = new ExecuteTradeRequest(
-        this.currencyPair.symbol,
-        direction == Direction.Buy ? this.currentSpotPrice.ask : this.currentSpotPrice.bid,
-        direction,
-        this.notional,
-        direction == Direction.Buy ? this.currencyPair.base : this.currencyPair.terms
-      );
+      let request = this._craeteTradeRequest(direction);
       _log.info(`Will execute ${request.toString()}`);
       this._executionDisposable.setDisposable(
         this._executionService.executeTrade(request).subscribeWithRouter(
@@ -115,8 +109,8 @@ export default class SpotTileModel extends ModelBase {
           (response:ExecuteTradeResponse) => {
             this.status = TileStatus.DisplayingNotification;
             this.tradeExecutionNotification = response.hasError
-              ? new TradeExecutionNotification(response.trade)
-              : new TradeExecutionNotification(null, response.error);
+              ? new TradeExecutionNotification(null, response.error)
+              : new TradeExecutionNotification(response.trade);
             this._subscribeToPriceStream();
           },
           err => {
@@ -129,6 +123,20 @@ export default class SpotTileModel extends ModelBase {
     } else {
       _log.warn(`Ignoring execute request as we can't trade at tile status ${this.status.name}`);
     }
+  }
+
+  _craeteTradeRequest(direction:Direction) {
+    var spotRate = direction == Direction.Buy
+      ? this.currentSpotPrice.ask.rawRate
+      : this.currentSpotPrice.bid.rawRate;
+    var dealtCurrency = direction == Direction.Buy ? this.currencyPair.base : this.currencyPair.terms;
+    return new ExecuteTradeRequest(
+      this.currencyPair.symbol,
+      spotRate,
+      direction.name,
+      this.notional,
+      dealtCurrency
+    );
   }
 
   _subscribeToPriceStream() {

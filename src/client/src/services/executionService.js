@@ -14,10 +14,11 @@ export default class ExecutionService extends ServiceBase {
   constructor(serviceType:String,
               connection:Connection,
               schedulerService:SchedulerService,
+              referenceDataService:ReferenceDataService,
               openFin:OpenFin) {
     super(serviceType, connection, schedulerService);
     this._openFin = openFin;
-    this._tradeMapper = new TradeMapper();
+    this._tradeMapper = new TradeMapper(referenceDataService);
   }
 
   executeTrade(executeTradeRequest:ExecuteTradeRequest):Rx.Observable<ExecuteTradeResponse> {
@@ -35,12 +36,12 @@ export default class ExecutionService extends ServiceBase {
                 disposables.add(
                   _this._serviceClient
                     .createRequestResponseOperation('executeTrade', executeTradeRequest)
-                    .timeout(ExecutionService.EXECUTION_TIMEOUT_MS, Rx.Observable.return(ExecuteTradeResponse.createForError('Trade execution timeout exceeded')))
                     .map(dto => {
                       var trade = _this._tradeMapper.mapFromDto(dto.Trade);
                       _log.info(`execute response received for: ${executeTradeRequest.toString()}. Status: ${trade.status}`, dto);
                       return ExecuteTradeResponse.create(trade);
                     })
+                    .timeout(ExecutionService.EXECUTION_TIMEOUT_MS, Rx.Observable.return(ExecuteTradeResponse.createForError('Trade execution timeout exceeded')))
                     .subscribe(o)
                 );
               }

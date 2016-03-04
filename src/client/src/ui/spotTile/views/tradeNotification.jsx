@@ -14,7 +14,7 @@ export default class TradeNotification extends React.Component {
   render(){
     if(this.props.tradeExecutionNotification.hasError) {
       return (<div className='blocked summary-state animated flipInX'>
-        <span className='key'>Error:</span> ${this.props.tradeExecutionNotification.error}. The execution status is unknown. Please contact your sales rep.
+        <span className='key'>Error:</span> {this.props.tradeExecutionNotification.error}. The execution status is unknown. Please contact your sales rep.
         <a href='#' className='pull-right dismiss-message' onClick={this.props.onDismissedClicked}>Done</a>
       </div>);
     } else {

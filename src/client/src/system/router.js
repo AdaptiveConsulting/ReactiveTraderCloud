@@ -1,6 +1,6 @@
 import logger from './logger';
-import espDevTools from 'esp-js-devtools';
-espDevTools.registerDevTools();
+//import espDevTools from 'esp-js-devtools';
+//espDevTools.registerDevTools();
 
 var _log:logger.Logger = logger.create('UnhandledModelError');
 
