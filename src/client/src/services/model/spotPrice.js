@@ -9,6 +9,7 @@ export default class SpotPrice {
   _creationTimestamp:Number;
   _priceMovementType:PriceMovementType;
   _spread:Number;
+  _isTradable:Boolean;
 
   constructor(
     symbol:Number,
@@ -18,7 +19,8 @@ export default class SpotPrice {
     valueDate:Date,
     creationTimestamp:Number,
     priceMovementType:PriceMovementType,
-    spread:Number
+    spread:Number,
+    isTradable:Boolean
   ) {
     this._symbol = symbol;
     this._bid = bid;
@@ -28,6 +30,7 @@ export default class SpotPrice {
     this._creationTimestamp = creationTimestamp;
     this._priceMovementType = priceMovementType;
     this._spread = spread;
+    this._isTradable = isTradable;
   }
 
   // in the real world there'd be a price id on here somewhere!!
@@ -62,5 +65,9 @@ export default class SpotPrice {
 
   get priceMovementType() : PriceMovementType {
     return this._priceMovementType;
+  }
+
+  get isTradable() : Boolean {
+    return this._isTradable;
   }
 }

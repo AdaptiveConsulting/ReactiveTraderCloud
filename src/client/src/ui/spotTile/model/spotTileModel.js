@@ -1,12 +1,20 @@
+import Rx from 'rx';
 import { Router, model, observeEvent } from 'esp-js/src';
 import { ReferenceDataService, PricingService, ExecutionService } from '../../../services';
-import { CurrencyPairUpdates } from '../../../services/model';
 import { logger } from '../../../system';
 import { ServiceStatus } from '../../../system/service';
-import { CurrencyPair } from '../../../services/model';
 import { ModelBase } from '../../common';
-import { GetSpotStreamRequest, SpotPrice, Direction, ExecuteTradeRequest } from '../../../services/model';
-import { TileStatus } from './';
+import { TileStatus, TradeExecutionNotification } from './';
+import {
+  GetSpotStreamRequest,
+  SpotPrice,
+  Direction,
+  ExecuteTradeRequest,
+  Trade,
+  CurrencyPair,
+  ExecuteTradeResponse,
+  CurrencyPairUpdates
+} from '../../../services/model';
 
 var _log:logger.Logger = logger.create('SpotTileModel');
 
@@ -16,18 +24,21 @@ export default class SpotTileModel extends ModelBase {
   _referenceDataService:ReferenceDataService;
   _pricingService:PricingService;
   _executionService:ExecutionService;
-  _currencyPair:CurrencyPair;
+  _executionDisposable:Rx.SerialDisposable;
+  _priceSubscriptionDisposable:Rx.SerialDisposable;
 
+  // React doesn't seem to pickup ES6 properties (last time I looked it seemed to be because Babel doesn't spit them out as enumerable)
+  // So we're just exposing the state as fields.
+  currencyPair:CurrencyPair;
   currentSpotPrice:SpotPrice;
-  canTrade:Boolean;
   status:TileStatus;
   historicMidSportRates:Array<Number>;
-  notificationMessage:String;
+  tradeExecutionNotification:TradeExecutionNotification;
   shouldShowChart:Boolean;
-  titleTitle:String;
+  tileTitle:String;
   notional:Number;
 
-  constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state as we do here
+  constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
               router,
               referenceDataService:ReferenceDataService,
               pricingService:PricingService,
@@ -36,19 +47,27 @@ export default class SpotTileModel extends ModelBase {
     this._referenceDataService = referenceDataService;
     this._pricingService = pricingService;
     this._executionService = executionService;
-    this._currencyPair = currencyPair;
+    this.currencyPair = currencyPair;
+    this._executionDisposable = new Rx.SerialDisposable();
+    this.addDisposable(this._executionDisposable);
+    this._priceSubscriptionDisposable = new Rx.SerialDisposable();
+    this.addDisposable(this._priceSubscriptionDisposable);
 
-    this.status = TileStatus.Listening;
+    this.status = TileStatus.Idle;
     this.historicMidSportRates = [];
     this.shouldShowChart = true;
-    this.titleTitle = currencyPair.symbol;
-    this.notificationMessage = null;
-    this.notional = null;
+    this.tileTitle = currencyPair.symbol;
+    this.tradeExecutionNotification = null;
+    this.notional = 0;
+  }
+
+  get hasTradeExecutionNotification() {
+    return this.tradeExecutionNotification !== null;
   }
 
   @observeEvent('init')
   _onInit() {
-    _log.info(`Cash tile starting for pair ${this._currencyPair.symbol}`);
+    _log.info(`Cash tile starting for pair ${this.currencyPair.symbol}`);
     this._subscribeToPriceStream();
     this._subscribeToConnectionStatus();
   }
@@ -63,36 +82,66 @@ export default class SpotTileModel extends ModelBase {
     _log.debug(`toggling spark line chart`);
   }
 
-  @observeEvent('notificationMessageDismissed')
-  _onNotificationMessageDismissed() {
+  @observeEvent('tradeNotificationDismissed')
+  _onTradeNotificationDismissed() {
     _log.debug(`message dismissed`);
-    this.notificationMessage = null;
+    this.tradeExecutionNotification = null;
+  }
+
+  @observeEvent('notionalChanged')
+  _onNotionalChanged(e:{notional:Number}) {
+    _log.info(`Updating notional to ${e.notional}`);
+    this.notional = e.notional;
   }
 
   @observeEvent('executeTrade')
   _onExecuteTrade(direction:Direction) {
-    let request = new ExecuteTradeRequest(
-      this._currencyPair.symbol,
-      direction == Direction.Buy ? this.currentSpotPrice.ask : this.currentSpotPrice.bid,
-      direction,
-      this.notional,
-      direction == Direction.Buy ? this._currencyPair.base : this._currencyPair.terms
-    );
-    _log.info(`Will execute ${request.toString()}`);
-  }
-
-  get hasNotificationMessage() {
-    return this.notificationMessage !== null;
+    if (this.status == TileStatus.Streaming) {
+      this.status = TileStatus.Executing;
+      // stop the price stream so the users can see what the traded
+      this._priceSubscriptionDisposable.getDisposable().dispose();
+      let request = new ExecuteTradeRequest(
+        this.currencyPair.symbol,
+        direction == Direction.Buy ? this.currentSpotPrice.ask : this.currentSpotPrice.bid,
+        direction,
+        this.notional,
+        direction == Direction.Buy ? this.currencyPair.base : this.currencyPair.terms
+      );
+      _log.info(`Will execute ${request.toString()}`);
+      this._executionDisposable.setDisposable(
+        this._executionService.executeTrade(request).subscribeWithRouter(
+          this.router,
+          this._modelId,
+          (response:ExecuteTradeResponse) => {
+            this.status = TileStatus.DisplayingNotification;
+            this.tradeExecutionNotification = response.hasError
+              ? new TradeExecutionNotification(response.trade)
+              : new TradeExecutionNotification(null, response.error);
+            this._subscribeToPriceStream();
+          },
+          err => {
+            _log.error(`Error executing ${request.toString()}. ${err}`, err);
+            this.status = TileStatus.DisplayingNotification;
+            this.tradeExecutionNotification = new TradeExecutionNotification(null, `Unknown stream error`);
+            this._subscribeToPriceStream();
+          })
+      );
+    } else {
+      _log.warn(`Ignoring execute request as we can't trade at tile status ${this.status.name}`);
+    }
   }
 
   _subscribeToPriceStream() {
-    this.addDisposable(
+    this._priceSubscriptionDisposable.setDisposable(
       this._pricingService
-        .getSpotPriceStream(new GetSpotStreamRequest(this._currencyPair.symbol))
+        .getSpotPriceStream(new GetSpotStreamRequest(this.currencyPair.symbol))
         .subscribeWithRouter(
           this.router,
           this._modelId,
           (price:SpotPrice) => {
+            if(this.status === TileStatus.Idle) {
+              this.status = TileStatus.Streaming;
+            }
             this.currentSpotPrice = price;
             this.historicMidSportRates.push(price.mid.rawRate);
           },
@@ -118,9 +167,10 @@ export default class SpotTileModel extends ModelBase {
         this.router,
         this._modelId,
         (statusTuple:{pricingStatus:ServiceStatus, executionStatus:ServiceStatus}) => {
-            this.canTrade =
-              statusTuple.executionStatus == ServiceStatus.isConnected &&
-              executionStatus.executionStatus == ServiceStatus.isConnected;
+          let dependenciesUp =
+            statusTuple.executionStatus == ServiceStatus.isConnected &&
+            executionStatus.executionStatus == ServiceStatus.isConnected;
+
         })
     );
   }

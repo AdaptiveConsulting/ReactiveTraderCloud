@@ -20,22 +20,22 @@ function mixin(source){
 
 /**
  * Returns the expanded price from k/m shorthand.
- * @param {String|Number} size
+ * @param {String|Number} notionalShorthand
  * @returns {Number}
  */
-function getConvertedSize(size){
-  size = String(size).toUpperCase().replace(',', '');
-  const matches = size.match(numberConvertRegex);
+function convertNotionalShorthandToNumericValue(notionalShorthand){
+  notionalShorthand = String(notionalShorthand).toUpperCase().replace(',', '');
+  let matches = notionalShorthand.match(numberConvertRegex);
 
-  if (!size.length || !matches || !matches.length){
-    size = 0;
+  if (!notionalShorthand.length || !matches || !matches.length){
+    notionalShorthand = 0;
   }
   else {
-    size = Number(matches[1]);
-    matches[2] && (size = size * (matches[2] === 'K' ? 1000 : 1000000));
+    notionalShorthand = Number(matches[1]);
+    matches[2] && (notionalShorthand = notionalShorthand * (matches[2] === 'K' ? 1000 : 1000000));
   }
 
-  return size;
+  return notionalShorthand;
 }
 
 function formatDate(date, format:string = '%b %e, %H:%M:%S') {
@@ -44,6 +44,6 @@ function formatDate(date, format:string = '%b %e, %H:%M:%S') {
 
 export default {
   mixin,
-  getConvertedSize,
+  convertNotionalShorthandToNumericValue,
   formatDate
 };

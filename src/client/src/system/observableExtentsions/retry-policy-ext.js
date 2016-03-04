@@ -6,7 +6,12 @@ import ShouldRetryResult from './should-retry-result';
 
 var _log:logger.Logger = logger.create('RetryPolicy');
 
-function retryWithPolicy<TValue>(retryPolicy, operationDescription:String, scheduler:Rx.Scheduler):Rx.Observable<TValue> {
+function retryWithPolicy<TValue>(
+  retryPolicy,
+  operationDescription:String,
+  scheduler:Rx.Scheduler,
+  onErrorCallback:(err:Error, willRetry:Boolean) => void
+):Rx.Observable<TValue> {
   var source:Rx.Observable<TValue> = this;
   return Rx.Observable.create(o => {
     let retryCount:Number = 0;
@@ -23,6 +28,10 @@ function retryWithPolicy<TValue>(retryPolicy, operationDescription:String, sched
         err => {
           retryCount++;
           let shouldRetryResult:ShouldRetryResult = retryPolicy.shouldRetry(err, retryCount);
+          if(onErrorCallback) {
+            // give the caller a chance to react to the error
+            onErrorCallback(err, shouldRetryResult);
+          }
           if (shouldRetryResult.shouldRetry) {
             if (shouldRetryResult.retryAfterMilliseconds === 0) {
               _log.warn(`Retrying [${operationDescription}]. This is attempt [${operationDescription}]`, err);
@@ -36,8 +45,7 @@ function retryWithPolicy<TValue>(retryPolicy, operationDescription:String, sched
                 () => subscribe()
               );
             }
-          }
-          else {
+          } else {
             // don't retry
             _log.error(`Not retrying [${operationDescription}]. Retry count [${retryCount}]. Will error`, err);
             o.onError(err);

@@ -1,26 +1,38 @@
 export default class TileStatus {
 
-  static _listening = new TileStatus('listening');
-  static _stale = new TileStatus('stale');
+  static _idle = new TileStatus('idle');
+  static _streaming = new TileStatus('streaming');
   static _executing = new TileStatus('executing');
-  static _blocked = new TileStatus('blocked');
+  static _displayingNotification = new TileStatus('displayingNotification');
 
   name:string;
 
-  static get Listening() {
-    return this._listening;
+  /**
+   * Waiting for dependencies to become available or the price stream to start streaming
+   */
+  static get Idle() {
+    return this._idle;
   }
 
-  static get Stale() {
-    return this._stale;
+  /**
+   * Streaming prices
+   */
+  static get Streaming() {
+    return this._streaming;
   }
 
+  /**
+   * Trade request in flight
+   */
   static get Executing() {
     return this._executing;
   }
 
-  static get Blocked() {
-    return this._blocked;
+  /**
+   * Displaying a message to the user
+   */
+  static get DisplayingNotification() {
+    return this._displayingNotification;
   }
 
   constructor(name:string) {

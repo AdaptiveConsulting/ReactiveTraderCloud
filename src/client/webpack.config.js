@@ -49,6 +49,9 @@ const webpackConfig = {
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
+    // You might notice that though out the app we don't really make use of alisa and instead have relative paths.
+    // This is purely for ide object/type discoverability.
+    // Until our ide (intellij/webstorm) understands import aliass we feel the benefits of object discoverability outweigh the relative path cost.
     alias: {
       system: __dirname + '/src/system',
       services: __dirname + '/src/services',

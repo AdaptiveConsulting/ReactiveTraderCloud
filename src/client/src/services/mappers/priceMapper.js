@@ -23,7 +23,8 @@ export default class PriceMapper {
       nextPriceDto.ValueDate,
       nextPriceDto.CreationTimestamp,
       priceMovementType,
-      spread
+      spread,
+      true // is tradable
     );
   }
 
@@ -42,6 +43,7 @@ export default class PriceMapper {
 
   _getSpread(bid:Number, ask:Number, currencyPair:CurrencyPair) {
     let spread = (bid - ask) * Math.pow(10, currencyPair.pipsPosition);
-    return spread.toFixed(currencyPair.ratePrecision - currencyPair.pipsPosition);
+    var toFixedPrecision = spread.toFixed(currencyPair.ratePrecision - currencyPair.pipsPosition);
+    return Number(toFixedPrecision);
   }
 }

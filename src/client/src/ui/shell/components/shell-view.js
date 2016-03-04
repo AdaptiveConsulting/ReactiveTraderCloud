@@ -29,7 +29,11 @@ class ShellView extends React.Component {
   }
 
   componentDidMount(){
-    this._addEvents();
+    // TODO all this service code will be lifted out of here to the bootstrapper once proper models
+    // are introduced for blotter and analytics
+    serviceContainer.referenceDataService.hasLoadedStream.subscribe(() => {
+      this._addEvents();
+    });
   }
 
   _addEvents(){

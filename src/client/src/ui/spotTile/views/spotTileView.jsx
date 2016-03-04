@@ -4,7 +4,7 @@ import { Sparklines, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLi
 import { ViewBase } from '../../common';
 import { router, logger } from '../../../system';
 import { Message } from '../../common/components';
-import { PriceMovementIndicator, PriceButton } from './';
+import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification } from './';
 import { Direction, PriceMovementType } from '../../../services/model';
 
 import './spotTileView.scss';
@@ -26,18 +26,20 @@ class SpotTileView extends ViewBase {
       return null;
     }
     let sparklineChart = this._createSparkLineChart();
-    let actionsClass = classnames('currency-pair-actions', {'hide': model.hasNotificationMessage});
-    let sizerClass = classnames('sizer', {'hide': model.hasNotificationMessage});
-    let message = model.hasNotificationMessage ? this._createMessage() : null;
+    let actionsClass = classnames('currency-pair-actions', {'hide': model.hasTradeExecutionNotification});
+    let sizerClass = classnames('sizer', {'hide': model.hasTradeExecutionNotification});
+    let tradeExecutionNotificationView = model.hasTradeExecutionNotification
+      ? this._createTradeNotification()
+      : null;
     return (
       <div>
         <div className='currency-pair-title'>
           <i className='glyphicon glyphicon-stats pull-right'
              onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
-          <span>{model.titleTitle}</span>
+          <span>{model.tileTitle}</span>
           <i className='fa fa-plug animated infinite fadeIn'/>
         </div>
-        {message}
+        {tradeExecutionNotificationView}
         <div className={actionsClass}>
           <PriceButton
             direction={Direction.Sell}
@@ -55,10 +57,12 @@ class SpotTileView extends ViewBase {
           />
         </div>
         <div className='clearfix'></div>
-        {
-          // TODO finish porting
-          //  <Sizer className={sizerClass} size={size} onChange={(size) => this.setState({size})} pair={pair}/>
-        }
+        <NotionalInput
+          className={sizerClass}
+          notional={model.notional}
+          onChange={(notional) => router.publishEvent(this.props.modelId, 'notionalChanged', { notional:notional })}
+          currencyPair={model.currencyPair}
+        />
         <div className='clearfix'></div>
         {sparklineChart}
       </div>
@@ -83,11 +87,13 @@ class SpotTileView extends ViewBase {
     }
   }
 
-  _createMessage() {
-    return <Message
-      message={this.state.model.notificationMessage}
-      onClick={(e) => router.publishEvent(this.props.modelId, 'notificationMessageDismissed', {})}
-    />;
+  _createTradeNotification() {
+    return (
+      <TradeNotification
+        tradeExecutionNotification={this.state.model.tradeExecutionNotification}
+        onDismissedClicked={(e) => router.publishEvent(this.props.modelId, 'tradeNotificationDismissed', {})}
+      />
+    );
   }
 }
 

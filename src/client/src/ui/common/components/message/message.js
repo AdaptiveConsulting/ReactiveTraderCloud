@@ -3,6 +3,7 @@ import numeral from 'numeral';
 import { time } from 'd3';
 
 // TODO lift this, it's not a 'common' message it's a trade notification and expect an object of shape 'Trade'
+//
 export default class Message extends React.Component {
 
   static propTypes ={

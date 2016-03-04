@@ -14,7 +14,7 @@ const PriceMovementIndicator = props => {
 }
 
 PriceMovementIndicator.propTypes ={
-  priceMovementType: React.PropTypes.object.isRequired,
+  priceMovementType: React.PropTypes.instanceOf(PriceMovementType).isRequired,
   spread: React.PropTypes.number.isRequired
 };
 

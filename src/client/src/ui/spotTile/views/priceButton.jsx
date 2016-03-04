@@ -23,7 +23,7 @@ const PriceButton = props =>  {
 
 PriceButton.propTypes = {
   rate: React.PropTypes.object.isRequired,
-  direction: React.PropTypes.object.isRequired,
+  direction: React.PropTypes.instanceOf(Direction).isRequired,
   onExecute: React.PropTypes.func.isRequired
 };
 

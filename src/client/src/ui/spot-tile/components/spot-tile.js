@@ -41,7 +41,7 @@ class SpotTile extends React.Component {
   }
 
   componentWillMount(){
-    const size     = utils.getConvertedSize(this.props.size),
+    const size     = utils.convertNotionalShorthandToNumericValue(this.props.size),
           historic = this.props.mid ? [this.props.mid] : [];
 
     this.setState({

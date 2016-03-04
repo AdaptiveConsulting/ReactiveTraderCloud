@@ -34,7 +34,7 @@ export default class Sizer extends React.Component {
     const val    = (this.refs.size.value || e.target.value).trim();
     const hasdot = val.indexOf(DOT) !== -1;
 
-    let size = utils.getConvertedSize(val);
+    let size = utils.convertNotionalShorthandToNumericValue(val);
 
     hasdot && (size += DOT);
 

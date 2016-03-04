@@ -20,22 +20,50 @@ export default class PricingService extends ServiceBase {
     return Rx.Observable.create(
       o => {
         _log.debug(`Subscribing to spot price stream for [${request.symbol}]`);
-        let accumulatorSeed = {
-          lastPriceDto: null,
-          nextPriceDto: null
-        };
+        let lastPrice = null;
         return _this._serviceClient
           .createStreamOperation(getPriceUpdatesOperationName, request)
-          .retryWithPolicy(RetryPolicy.indefiniteEvery2Seconds, getPriceUpdatesOperationName, _this._schedulerService.async)
+          // we retry the price stream forever, if it errors (likely connection down) we pump a non tradable price
+          .retryWithPolicy(
+            RetryPolicy.indefiniteEvery2Seconds,
+            getPriceUpdatesOperationName,
+            _this._schedulerService.async,
+            (err:Error, willRetry:Boolean) => {
+              if(willRetry && lastPrice !== null) {
+                // if we have any error on the price stream we pump a stale price
+                let stalePrice = new SpotPrice(
+                  lastPrice.symbol,
+                  lastPrice.bid,
+                  lastPrice.ask,
+                  lastPrice.mid,
+                  lastPrice.valueDate,
+                  lastPrice.creationTimestamp,
+                  lastPrice.priceMovementType,
+                  lastPrice.spread,
+                  false
+                );
+                o.onNext(stalePrice);
+              }
+            }
+          )
+          // scan the price stream (i.e. build a previous-next tuple) so we can determine the PriceMovementType in the mapper
           .scan((accumulator, nextPriceDto) => {
               return {
                 lastPriceDto: accumulator.nextPriceDto,
                 nextPriceDto: nextPriceDto
               };
             },
-            accumulatorSeed)
+            { lastPriceDto: null, nextPriceDto: null } // the accumulator seed for the scan function
+          )
           .select(tuple => _this._priceMapper.mapFromSpotPriceDto(tuple.lastPriceDto, tuple.nextPriceDto))
-          .subscribe(o);
+          .subscribe(
+            price => {
+              lastPrice = price;
+              o.onNext(price);
+            },
+            err => { o.onError(err); },
+            () => { o.onCompleted(); }
+          );
       }
     );
   }

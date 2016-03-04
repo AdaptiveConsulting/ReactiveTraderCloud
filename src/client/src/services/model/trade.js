@@ -1,16 +1,29 @@
+import { Direction, TradeStatus, CurrencyPair } from './';
+
 export default class Trade {
   _tradeId:Number;
   _traderName:String;
-  _currencyPair:String;
+  _currencyPair:CurrencyPair;
   _notional:Number;
   _dealtCurrency:String;
   _direction:String;
   _spotRate:Number;
   _tradeDate:Date;
   _formattedValueDate:Date;
-  _status:String;
+  _status:TradeStatus;
 
-  constructor(tradeId:Number, traderName:String, currencyPair:String, notional:Number, dealtCurrency:String, direction:String, spotRate:Number, tradeDate:Date, formattedValueDate:String, status:String) {
+  constructor(
+    tradeId:Number,
+    traderName:String,
+    currencyPair:CurrencyPair,
+    notional:Number,
+    dealtCurrency:String,
+    direction:Direction,
+    spotRate:Number,
+    tradeDate:Date,
+    formattedValueDate:String,
+    status:TradeStatus
+  ) {
     this._tradeId = tradeId;
     this._traderName = traderName;
     this._currencyPair = currencyPair;
@@ -31,7 +44,7 @@ export default class Trade {
     return this._traderName;
   }
 
-  get currencyPair():String {
+  get currencyPair():CurrencyPair {
     return this._currencyPair;
   }
 
@@ -43,7 +56,7 @@ export default class Trade {
     return this._dealtCurrency;
   }
 
-  get direction():String {
+  get direction():Direction {
     return this._direction;
   }
 
@@ -59,7 +72,7 @@ export default class Trade {
     return this._formattedValueDate;
   }
 
-  get status():String {
+  get status():TradeStatus {
     return this._status;
   }
 }
