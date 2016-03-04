@@ -41,7 +41,7 @@ class SpotTileView extends ViewBase {
         <div className={actionsClass}>
           <PriceButton
             direction={Direction.Sell}
-            onExecute={() => router.publishEvent(this.props.modelId, 'sellClicked', {})}
+            onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Sell })}
             rate={model.currentSpotPrice.bid}
           />
           <PriceMovementIndicator
@@ -50,7 +50,7 @@ class SpotTileView extends ViewBase {
           />
           <PriceButton
             direction={Direction.Buy}
-            onExecute={() => router.publishEvent(this.props.modelId, 'buyClicked', {})}
+            onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Sell })}
             rate={model.currentSpotPrice.ask}
           />
         </div>

@@ -30,6 +30,8 @@ export default class SpotPrice {
     this._spread = spread;
   }
 
+  // in the real world there'd be a price id on here somewhere!!
+
   get symbol() : string {
     return this._symbol;
   }

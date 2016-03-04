@@ -20,4 +20,12 @@ export default class CurrencyPair {
   get pipsPosition():Number {
     return this._pipsPosition;
   }
+
+  get base():String {
+    return this._symbol.substr(0 , 3);
+  }
+
+  get terms():String {
+    return this._symbol.substr(3 , 3);
+  }
 }

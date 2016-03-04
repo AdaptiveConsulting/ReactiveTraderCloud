@@ -5,7 +5,7 @@ import { logger } from '../../../system';
 import { ServiceStatus } from '../../../system/service';
 import { CurrencyPair } from '../../../services/model';
 import { ModelBase } from '../../common';
-import { GetSpotStreamRequest, SpotPrice } from '../../../services/model';
+import { GetSpotStreamRequest, SpotPrice, Direction, ExecuteTradeRequest } from '../../../services/model';
 import { TileStatus } from './';
 
 var _log:logger.Logger = logger.create('SpotTileModel');
@@ -25,6 +25,7 @@ export default class SpotTileModel extends ModelBase {
   notificationMessage:String;
   shouldShowChart:Boolean;
   titleTitle:String;
+  notional:Number;
 
   constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state as we do here
               router,
@@ -42,6 +43,7 @@ export default class SpotTileModel extends ModelBase {
     this.shouldShowChart = true;
     this.titleTitle = currencyPair.symbol;
     this.notificationMessage = null;
+    this.notional = null;
   }
 
   @observeEvent('init')
@@ -65,6 +67,18 @@ export default class SpotTileModel extends ModelBase {
   _onNotificationMessageDismissed() {
     _log.debug(`message dismissed`);
     this.notificationMessage = null;
+  }
+
+  @observeEvent('executeTrade')
+  _onExecuteTrade(direction:Direction) {
+    let request = new ExecuteTradeRequest(
+      this._currencyPair.symbol,
+      direction == Direction.Buy ? this.currentSpotPrice.ask : this.currentSpotPrice.bid,
+      direction,
+      this.notional,
+      direction == Direction.Buy ? this._currencyPair.base : this._currencyPair.terms
+    );
+    _log.info(`Will execute ${request.toString()}`);
   }
 
   get hasNotificationMessage() {
@@ -103,8 +117,10 @@ export default class SpotTileModel extends ModelBase {
       serviceStatusStream.subscribeWithRouter(
         this.router,
         this._modelId,
-        (status:ServiceStatus) => {
-
+        (statusTuple:{pricingStatus:ServiceStatus, executionStatus:ServiceStatus}) => {
+            this.canTrade =
+              statusTuple.executionStatus == ServiceStatus.isConnected &&
+              executionStatus.executionStatus == ServiceStatus.isConnected;
         })
     );
   }
