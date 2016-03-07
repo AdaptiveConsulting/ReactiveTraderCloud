@@ -28,14 +28,11 @@ class SpotTileView extends ViewBase {
     let sparklineChart = this._createSparkLineChart();
     let actionsClass = classnames('currency-pair-actions', {'hide': model.hasTradeExecutionNotification});
     let sizerClass = classnames('sizer', {'hide': model.hasTradeExecutionNotification});
-    let tradeExecutionNotificationView = model.hasTradeExecutionNotification
-      ? this._createTradeNotification()
-      : null;
+    let tradeExecutionNotificationView = this._createTradeNotification();
     return (
       <div>
         <div className='currency-pair-title'>
-          <i className='glyphicon glyphicon-stats pull-right'
-             onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
+          <i className='glyphicon glyphicon-stats pull-right' onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
           <span>{model.tileTitle}</span>
           <i className='fa fa-plug animated infinite fadeIn'/>
         </div>
@@ -88,12 +85,16 @@ class SpotTileView extends ViewBase {
   }
 
   _createTradeNotification() {
-    return (
-      <TradeNotification
-        tradeExecutionNotification={this.state.model.tradeExecutionNotification}
-        onDismissedClicked={(e) => router.publishEvent(this.props.modelId, 'tradeNotificationDismissed', {})}
-      />
-    );
+    let model = this.state.model;
+    if(model.hasTradeExecutionNotification) {
+      return (
+        <TradeNotification
+          tradeExecutionNotification={this.state.model.tradeExecutionNotification}
+          onDismissedClicked={(e) => router.publishEvent(this.props.modelId, 'tradeNotificationDismissed', {})}
+        />
+      );
+    }
+    return null;
   }
 }
 

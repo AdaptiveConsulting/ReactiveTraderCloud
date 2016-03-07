@@ -58,7 +58,7 @@ export default class SpotTileModel extends ModelBase {
     this.shouldShowChart = true;
     this.tileTitle = currencyPair.symbol;
     this.tradeExecutionNotification = null;
-    this.notional = 0;
+    this.notional = 1000000;
   }
 
   get hasTradeExecutionNotification() {
@@ -80,12 +80,14 @@ export default class SpotTileModel extends ModelBase {
   @observeEvent('toggleSparkLineChart')
   _onToggleSparkLineChart() {
     _log.debug(`toggling spark line chart`);
+    this.shouldShowChart = !this.shouldShowChart;
   }
 
   @observeEvent('tradeNotificationDismissed')
   _onTradeNotificationDismissed() {
     _log.debug(`message dismissed`);
     this.tradeExecutionNotification = null;
+    this._subscribeToPriceStream();
   }
 
   @observeEvent('notionalChanged')
@@ -111,13 +113,11 @@ export default class SpotTileModel extends ModelBase {
             this.tradeExecutionNotification = response.hasError
               ? new TradeExecutionNotification(null, response.error)
               : new TradeExecutionNotification(response.trade);
-            this._subscribeToPriceStream();
           },
           err => {
             _log.error(`Error executing ${request.toString()}. ${err}`, err);
             this.status = TileStatus.DisplayingNotification;
             this.tradeExecutionNotification = new TradeExecutionNotification(null, `Unknown stream error`);
-            this._subscribeToPriceStream();
           })
       );
     } else {
@@ -140,6 +140,7 @@ export default class SpotTileModel extends ModelBase {
   }
 
   _subscribeToPriceStream() {
+    this.status = TileStatus.Streaming;
     this._priceSubscriptionDisposable.setDisposable(
       this._pricingService
         .getSpotPriceStream(new GetSpotStreamRequest(this.currencyPair.symbol))
@@ -151,13 +152,21 @@ export default class SpotTileModel extends ModelBase {
               this.status = TileStatus.Streaming;
             }
             this.currentSpotPrice = price;
-            this.historicMidSportRates.push(price.mid.rawRate);
+            this._updateHistoricalPrices(price);
           },
           err => {
             _log.error('Error on getSpotPriceStream stream stream', err);
           }
         )
     );
+  }
+
+  _updateHistoricalPrices(price:SpotPrice) {
+    this.historicMidSportRates.push(price.mid.rawRate);
+    // we only keep a limited amount of historical prices
+    if(this.historicMidSportRates.length > 150) {
+      this.historicMidSportRates.shift(); // pop the first element
+    }
   }
 
   //_subscribeToConnectionStatus() {
