@@ -1,4 +1,4 @@
-import { PriceMovementType, Rate } from './';
+import { PriceMovementType, Rate, Spread } from './';
 
 export default class SpotPrice {
   _symbol:string;
@@ -19,7 +19,7 @@ export default class SpotPrice {
     valueDate:Date,
     creationTimestamp:Number,
     priceMovementType:PriceMovementType,
-    spread:Number,
+    spread:Spread,
     isTradable:Boolean
   ) {
     this._symbol = symbol;
@@ -51,7 +51,7 @@ export default class SpotPrice {
     return this._mid;
   }
 
-  get spread() : Number {
+  get spread() : Spread {
     return this._spread;
   }
 

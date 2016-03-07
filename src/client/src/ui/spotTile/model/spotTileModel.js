@@ -69,7 +69,7 @@ export default class SpotTileModel extends ModelBase {
   _onInit() {
     _log.info(`Cash tile starting for pair ${this.currencyPair.symbol}`);
     this._subscribeToPriceStream();
-    this._subscribeToConnectionStatus();
+   // this._subscribeToConnectionStatus();
   }
 
   @observeEvent('tileClosed')
@@ -160,26 +160,26 @@ export default class SpotTileModel extends ModelBase {
     );
   }
 
-  _subscribeToConnectionStatus() {
-    let serviceStatusStream = Rx.Observable.combineLatest(
-      this._pricingService.serviceStatusStream,
-      this._executionService.serviceStatusStream,
-      (pricingStatus, executionStatus) => {
-        return {
-          pricingStatus: pricingStatus,
-          executionStatus: executionStatus
-        };
-      });
-    this.addDisposable(
-      serviceStatusStream.subscribeWithRouter(
-        this.router,
-        this._modelId,
-        (statusTuple:{pricingStatus:ServiceStatus, executionStatus:ServiceStatus}) => {
-          let dependenciesUp =
-            statusTuple.executionStatus == ServiceStatus.isConnected &&
-            executionStatus.executionStatus == ServiceStatus.isConnected;
-
-        })
-    );
-  }
+  //_subscribeToConnectionStatus() {
+  //  let serviceStatusStream = Rx.Observable.combineLatest(
+  //    this._pricingService.serviceStatusStream,
+  //    this._executionService.serviceStatusStream,
+  //    (pricingStatus, executionStatus) => {
+  //      return {
+  //        pricingStatus: pricingStatus,
+  //        executionStatus: executionStatus
+  //      };
+  //    });
+  //  this.addDisposable(
+  //    serviceStatusStream.subscribeWithRouter(
+  //      this.router,
+  //      this._modelId,
+  //      (statusTuple:{pricingStatus:ServiceStatus, executionStatus:ServiceStatus}) => {
+  //        let dependenciesUp =
+  //          statusTuple.executionStatus == ServiceStatus.isConnected &&
+  //          executionStatus.executionStatus == ServiceStatus.isConnected;
+  //
+  //      })
+  //  );
+  //}
 }

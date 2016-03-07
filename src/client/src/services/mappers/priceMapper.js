@@ -1,5 +1,8 @@
-import { SpotPrice, Rate, CurrencyPair, PriceMovementType } from '../model';
+import { logger } from '../../system';
+import { SpotPrice, Rate, CurrencyPair, PriceMovementType, Spread } from '../model';
 import { ReferenceDataService } from '../';
+
+var _log:logger.Logger = logger.create('PriceMapper');
 
 export default class PriceMapper {
   _referenceDataService:ReferenceDataService;
@@ -35,15 +38,15 @@ export default class PriceMapper {
     if(lastPriceDto.Mid < nextPriceDto.Mid) {
       return PriceMovementType.Up;
     }
-    if(lastPriceDto.Mid.rawRate > nextPriceDto.Mid) {
+    if(lastPriceDto.Mid > nextPriceDto.Mid) {
       return PriceMovementType.Down;
     }
     return PriceMovementType.None;
   }
 
   _getSpread(bid:Number, ask:Number, currencyPair:CurrencyPair) {
-    let spread = (bid - ask) * Math.pow(10, currencyPair.pipsPosition);
-    var toFixedPrecision = spread.toFixed(currencyPair.ratePrecision - currencyPair.pipsPosition);
-    return Number(toFixedPrecision);
+    let spread = (ask - bid) * Math.pow(10, currencyPair.pipsPosition);
+    let toFixedPrecision = spread.toFixed(currencyPair.ratePrecision - currencyPair.pipsPosition);
+    return new Spread(Number(toFixedPrecision), toFixedPrecision);
   }
 }
