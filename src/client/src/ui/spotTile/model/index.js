@@ -1,3 +1,4 @@
 export { default as SpotTileModel } from './spotTileModel';
 export { default as TileStatus } from './tileStatus';
-export { default as TradeExecutionNotification } from './tradeExecutionNotification';
+export { TradeExecutionNotification, TextNotification, NotificationBase } from './notifications';
+export { default as NotificationType } from './notificationType';

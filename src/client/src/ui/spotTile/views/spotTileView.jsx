@@ -5,9 +5,11 @@ import { ViewBase } from '../../common';
 import { router, logger } from '../../../system';
 import { Message } from '../../common/components';
 import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification } from './';
+import { SpotTileModel, NotificationType } from '../model';
 import { Direction, PriceMovementType } from '../../../services/model';
 
-import './spotTileView.scss';
+// TODO this should come back once the scss is cleaned up so it lives with it's components
+// import './spotTileView.scss';
 
 var _log:logger.Logger = logger.create('SpotTileView');
 
@@ -21,23 +23,24 @@ class SpotTileView extends ViewBase {
   }
 
   render() {
-    let model = this.state.model;
+    let model:SpotTileModel = this.state.model;
     if (!model || !model.currentSpotPrice) {
       return null;
     }
     let sparklineChart = this._createSparkLineChart();
-    let actionsClass = classnames('currency-pair-actions', {'hide': model.hasTradeExecutionNotification});
-    let sizerClass = classnames('sizer', {'hide': model.hasTradeExecutionNotification});
-    let tradeExecutionNotificationView = this._createTradeNotification();
+    let pricingContainerClass = classnames('currency-pair-actions', {'hide': model.hasNotification});
+    let notionalInputClass = classnames('sizer', {'hide': model.hasNotification});
+    let notification = this._tryCreateNotification();
     return (
       <div>
         <div className='currency-pair-title'>
-          <i className='glyphicon glyphicon-stats pull-right' onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
+          <i className='glyphicon glyphicon-stats pull-right'
+             onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
           <span>{model.tileTitle}</span>
           <i className='fa fa-plug animated infinite fadeIn'/>
         </div>
-        {tradeExecutionNotificationView}
-        <div className={actionsClass}>
+        {notification}
+        <div className={pricingContainerClass}>
           <PriceButton
             direction={Direction.Sell}
             onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Sell })}
@@ -49,13 +52,13 @@ class SpotTileView extends ViewBase {
           />
           <PriceButton
             direction={Direction.Buy}
-            onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Sell })}
+            onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Buy })}
             rate={model.currentSpotPrice.ask}
           />
         </div>
         <div className='clearfix'></div>
         <NotionalInput
-          className={sizerClass}
+          className={notionalInputClass}
           notional={model.notional}
           onChange={(notional) => router.publishEvent(this.props.modelId, 'notionalChanged', { notional:notional })}
           currencyPair={model.currencyPair}
@@ -84,15 +87,23 @@ class SpotTileView extends ViewBase {
     }
   }
 
-  _createTradeNotification() {
-    let model = this.state.model;
-    if(model.hasTradeExecutionNotification) {
-      return (
-        <TradeNotification
-          tradeExecutionNotification={this.state.model.tradeExecutionNotification}
-          onDismissedClicked={(e) => router.publishEvent(this.props.modelId, 'tradeNotificationDismissed', {})}
-        />
-      );
+  _tryCreateNotification() {
+    let model : SpotTileModel = this.state.model;
+    if (model.hasNotification) {
+      if (model.notification.notificationType === NotificationType.Trade) {
+        return (
+          <TradeNotification
+            tradeExecutionNotification={model.notification}
+            onDismissedClicked={(e) => router.publishEvent(this.props.modelId, 'tradeNotificationDismissed', {})}
+          />
+        );
+      } else if (model.notification.notificationType === NotificationType.Text) {
+        return (
+          <div className='summary-state animated flipInX'>{model.notification.message}</div>
+        );
+      } else {
+        throw new Error(`Unknown notification type ${model.notification.notificationType}`);
+      }
     }
     return null;
   }

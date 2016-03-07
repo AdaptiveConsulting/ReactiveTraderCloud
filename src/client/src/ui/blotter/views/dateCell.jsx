@@ -1,11 +1,7 @@
 import React from 'react';
 import { time } from 'd3';
 import { Cell } from 'fixed-data-table';
-/**
- * Formatter for cells of type date/time via moment.js
- * @class DateCell
- * @extends {React.Component}
- */
+
 export default class DateCell extends React.Component {
 
   static propTypes = {

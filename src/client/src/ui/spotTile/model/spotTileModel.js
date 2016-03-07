@@ -1,10 +1,10 @@
 import Rx from 'rx';
-import { Router, model, observeEvent } from 'esp-js/src';
+import { Router, observeEvent } from 'esp-js/src';
 import { ReferenceDataService, PricingService, ExecutionService } from '../../../services';
 import { logger } from '../../../system';
 import { ServiceStatus } from '../../../system/service';
 import { ModelBase } from '../../common';
-import { TileStatus, TradeExecutionNotification } from './';
+import { TileStatus, TradeExecutionNotification, TextNotification, NotificationBase } from './';
 import {
   GetSpotStreamRequest,
   SpotPrice,
@@ -21,7 +21,6 @@ var _log:logger.Logger = logger.create('SpotTileModel');
 let modelIdKey = 1;
 
 export default class SpotTileModel extends ModelBase {
-  _referenceDataService:ReferenceDataService;
   _pricingService:PricingService;
   _executionService:ExecutionService;
   _executionDisposable:Rx.SerialDisposable;
@@ -33,18 +32,18 @@ export default class SpotTileModel extends ModelBase {
   currentSpotPrice:SpotPrice;
   status:TileStatus;
   historicMidSportRates:Array<Number>;
-  tradeExecutionNotification:TradeExecutionNotification;
+  notification:NotificationBase;
   shouldShowChart:Boolean;
   tileTitle:String;
   notional:Number;
+  pricingConnected:Boolean;
+  executionConnected:Boolean;
 
   constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
               router,
-              referenceDataService:ReferenceDataService,
               pricingService:PricingService,
               executionService:ExecutionService) {
     super((`spotTileModel` + modelIdKey++), router);
-    this._referenceDataService = referenceDataService;
     this._pricingService = pricingService;
     this._executionService = executionService;
     this.currencyPair = currencyPair;
@@ -57,19 +56,21 @@ export default class SpotTileModel extends ModelBase {
     this.historicMidSportRates = [];
     this.shouldShowChart = true;
     this.tileTitle = currencyPair.symbol;
-    this.tradeExecutionNotification = null;
+    this.notification = null;
     this.notional = 1000000;
+    this.pricingConnected = false;
+    this.executionConnected = false;
   }
 
-  get hasTradeExecutionNotification() {
-    return this.tradeExecutionNotification !== null;
+  get hasNotification() {
+    return this.notification !== null;
   }
 
   @observeEvent('init')
   _onInit() {
     _log.info(`Cash tile starting for pair ${this.currencyPair.symbol}`);
     this._subscribeToPriceStream();
-   // this._subscribeToConnectionStatus();
+    this._subscribeToConnectionStatus();
   }
 
   @observeEvent('tileClosed')
@@ -86,8 +87,8 @@ export default class SpotTileModel extends ModelBase {
   @observeEvent('tradeNotificationDismissed')
   _onTradeNotificationDismissed() {
     _log.debug(`message dismissed`);
-    this.tradeExecutionNotification = null;
-    this._subscribeToPriceStream();
+    this.notification = null;
+    this.status = TileStatus.Streaming;
   }
 
   @observeEvent('notionalChanged')
@@ -101,23 +102,22 @@ export default class SpotTileModel extends ModelBase {
     if (this.status == TileStatus.Streaming) {
       this.status = TileStatus.Executing;
       // stop the price stream so the users can see what the traded
-      this._priceSubscriptionDisposable.getDisposable().dispose();
-      let request = this._craeteTradeRequest(e.direction);
+      let request = this._createTradeRequest(e.direction);
       _log.info(`Will execute ${request.toString()}`);
       this._executionDisposable.setDisposable(
         this._executionService.executeTrade(request).subscribeWithRouter(
           this.router,
-          this._modelId,
+          this.modelId,
           (response:ExecuteTradeResponse) => {
             this.status = TileStatus.DisplayingNotification;
-            this.tradeExecutionNotification = response.hasError
+            this.notification = response.hasError
               ? TradeExecutionNotification.createForError(response.error)
               : TradeExecutionNotification.createForSuccess(response.trade);
           },
           err => {
             _log.error(`Error executing ${request.toString()}. ${err}`, err);
             this.status = TileStatus.DisplayingNotification;
-            this.tradeExecutionNotification = TradeExecutionNotification.createForError(`Unknown stream error`);
+            this.notification = TradeExecutionNotification.createForError(`Unknown stream error`);
           })
       );
     } else {
@@ -125,7 +125,7 @@ export default class SpotTileModel extends ModelBase {
     }
   }
 
-  _craeteTradeRequest(direction:Direction) {
+  _createTradeRequest(direction:Direction) {
     var spotRate = direction == Direction.Buy
       ? this.currentSpotPrice.ask.rawRate
       : this.currentSpotPrice.bid.rawRate;
@@ -140,18 +140,20 @@ export default class SpotTileModel extends ModelBase {
   }
 
   _subscribeToPriceStream() {
-    this.status = TileStatus.Streaming;
     this._priceSubscriptionDisposable.setDisposable(
       this._pricingService
         .getSpotPriceStream(new GetSpotStreamRequest(this.currencyPair.symbol))
         .subscribeWithRouter(
           this.router,
-          this._modelId,
+          this.modelId,
           (price:SpotPrice) => {
             if(this.status === TileStatus.Idle) {
               this.status = TileStatus.Streaming;
             }
-            this.currentSpotPrice = price;
+            // we don't update the price if executing, the users will want to see what they are buying
+            if(this.status !== TileStatus.Executing) {
+              this.currentSpotPrice = price;
+            }
             this._updateHistoricalPrices(price);
           },
           err => {
@@ -169,26 +171,25 @@ export default class SpotTileModel extends ModelBase {
     }
   }
 
-  //_subscribeToConnectionStatus() {
-  //  let serviceStatusStream = Rx.Observable.combineLatest(
-  //    this._pricingService.serviceStatusStream,
-  //    this._executionService.serviceStatusStream,
-  //    (pricingStatus, executionStatus) => {
-  //      return {
-  //        pricingStatus: pricingStatus,
-  //        executionStatus: executionStatus
-  //      };
-  //    });
-  //  this.addDisposable(
-  //    serviceStatusStream.subscribeWithRouter(
-  //      this.router,
-  //      this._modelId,
-  //      (statusTuple:{pricingStatus:ServiceStatus, executionStatus:ServiceStatus}) => {
-  //        let dependenciesUp =
-  //          statusTuple.executionStatus == ServiceStatus.isConnected &&
-  //          executionStatus.executionStatus == ServiceStatus.isConnected;
-  //
-  //      })
-  //  );
-  //}
+  _subscribeToConnectionStatus() {
+    let serviceStatusStream = Rx.Observable.combineLatest(
+      this._pricingService.serviceStatusStream,
+      this._executionService.serviceStatusStream,
+      (pricingStatus, executionStatus) => {
+        return {
+          pricingConnected: pricingStatus.isConnected,
+          executionConnected: executionStatus.isConnected
+        };
+      }
+    );
+    this.addDisposable(
+      serviceStatusStream.subscribeWithRouter(
+        this.router,
+        this._modelId,
+        (tuple:{pricingConnected:Boolean, executionConnected:Boolean}) => {
+          this.pricingConnected = tuple.pricingConnected;
+          this.executionConnected = tuple.executionConnected;
+        })
+    );
+  }
 }

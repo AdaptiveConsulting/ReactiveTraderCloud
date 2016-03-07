@@ -2,11 +2,6 @@ import React from 'react';
 import numeral from 'numeral';
 import { Cell } from 'fixed-data-table';
 
-/**
- * Formatter for cells of type notional/currency
- * @class NotionalCell
- * @extends {React.Component}
- */
 class NotionalCell extends React.Component {
 
   static propTypes = {

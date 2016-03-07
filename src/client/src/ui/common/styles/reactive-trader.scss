@@ -1,5 +1,7 @@
 // main file being imported and built, entry point for all SCSS
 
+// TODO most of these should all be loaded in via the components that own them, not here
+
 // theme
 @import 'theme';
 // boostrap version compiler
@@ -12,9 +14,9 @@
 // app specific components and bits
 @import '../components/container/container';
 @import '../components/modal/modal';
-@import '../../spot-tile/components/spot-tile';
+@import '../../spotTile/views/spotTileView';
 @import '../../header/components/header';
-@import '../../blotter/components/blotter';
+@import '../../blotter/views/blotter';
 @import '../../analytics/components/analytics';
 @import '../../growl/components/growl';
 

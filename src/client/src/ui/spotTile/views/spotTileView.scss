@@ -1,0 +1,215 @@
+.currency-pairs {
+  flex: 1;
+  align-self: stretch;
+  overflow: auto;
+}
+
+.currency-pair {
+  box-sizing: border-box;
+  float: left;
+  width: 328px;
+  border: 1px solid $gray-darker;
+  background: $gray-dark;
+  color: $gray-light;
+  margin: 4px;
+  overflow: hidden;
+  &:hover {
+    background: $gray;
+  }
+
+  .fa-plug {
+    display: none;
+  }
+  // states
+  &.executing {
+    opacity: .5;
+    .currency-pair-actions, .sizer {
+      pointer-events: none;
+    }
+  }
+
+  &.stale {
+    opacity: .5;
+    background: $gray-darker;
+    .currency-pair-actions, .sizer {
+      pointer-events: none;
+    }
+    &:hover {
+      opacity: 1;
+    }
+    .fa-plug {
+      display: inline-block;
+    }
+    .glyphicon {
+      display: none;
+    }
+  }
+
+  .currency-pair-title {
+    .tearoff & {
+      -webkit-app-region: drag;
+    }
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+    padding-left: 8px;
+    margin-right: 28px;
+    i {
+      .tearoff & {
+        -webkit-app-region: no-drag;
+      }
+      font-size: 16px;
+      color: $gray-light;
+      &.glyphicon {
+        cursor: pointer;
+        padding: 8px;
+        padding-bottom: 0;
+      }
+    }
+  }
+  .currency-pair-actions {
+    border-top: 1px solid $gray-dark;
+    position: relative;
+    height: 78px;
+    > div {
+      text-transform: uppercase;
+      position: absolute;
+      width: 45%;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+    .big, .tenth {
+      transform: translate(0px, -8px);
+      display: inline-block;
+    }
+    .action {
+      box-sizing: border-box;
+    }
+    .sell {
+      left: 0;
+      &:hover {
+        background: linear-gradient(to left, rgba(0,0,0,0), $gray-dark);
+        cursor: pointer;
+      }
+    }
+    .direction {
+      margin-left: calc(50% - 20px);
+      transform: translate3d(0, 30px, 0);
+      width: 40px;
+      height: 26px;
+      text-align: center;
+      &:before {
+        height: 16px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        @extend .fa;
+      }
+      &.up {
+        &:before {
+          @extend .fa-caret-up;
+          color: $brand-success;
+          transform: translate(0, -10px);
+        }
+      }
+      &.down {
+        &:before {
+          transform: translate(0, 14px);
+          @extend .fa-caret-down;
+          color: $brand-warning;
+        }
+      }
+    }
+    .buy {
+      right: 0;
+      text-align: right;
+      &:hover {
+        background: linear-gradient(to right, rgba(0,0,0,0), $gray-dark);
+        cursor: pointer;
+      }
+    }
+
+    span {
+      font-family: "Courier New", Courier;
+      font-size: 18px;
+    }
+    .pip {
+      font-weight: bold;
+      font-size: 48px;
+      color: $gray-lighter;
+    }
+  }
+
+  .sizer {
+    clear: both;
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-top: 1px solid $gray-dark;
+
+    input.size {
+      border: none;
+      border-bottom: 1px solid transparent;
+      background: transparent;
+      outline: none !important;
+      width: 100px;
+      margin-left: 8px;
+      &:hover, &:focus {
+        border-bottom: 1px solid lighten($gray-dark, 10%);
+      }
+    }
+    label {
+      @extend .pull-left;
+    }
+    &.disabled {
+      display: none;
+    }
+  }
+
+  .sparkline-holder {
+    height: 27px;
+  }
+
+}
+
+.summary-state {
+  box-sizing: border-box;
+  background: linear-gradient(to bottom,rgba(255,255,255,.1), rgba(255,255,255,0));
+  height: 122px;
+  padding: 8px;
+  color: white;
+  span.key {
+    color: $gray-light;
+  }
+  &.Rejected {
+    background: linear-gradient(to bottom, darken($brand-danger, 5%), darken($brand-danger, 10%));;
+    border: 1px solid rgba(0,0,0,.7);
+    box-shadow: 0 1px 0px rgba(255,255,255,.1), inset 0 -1px 1px rgba(0,0,0,.3);
+    span.key {
+      color: $gray-lighter;
+    }
+  }
+  &.blocked {
+    background: linear-gradient(to bottom, darken($brand-danger, 5%), darken($brand-danger, 10%));;
+  }
+  .dismiss-message {
+    transform: translate(0, 24px);
+  }
+}
+
+// iphone.
+
+
+#popout-content-container {
+  overflow: hidden;
+
+  .glyphicon-new-window {
+    display: none;
+  }
+  .currency-pair {
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid $gray-darker;
+    margin: 0;
+  }
+}

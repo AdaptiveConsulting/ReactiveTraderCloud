@@ -14,7 +14,7 @@ export default class BlotterService extends ServiceBase {
     this._tradeMapper = new TradeMapper(referenceDataService);
   }
 
-  getTradesStream() : Rx.Observable<Trade> {
+  getTradesStream() : Rx.Observable<Array<Trade>> {
     let _this = this;
     return Rx.Observable.create(
       o => {

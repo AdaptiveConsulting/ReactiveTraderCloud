@@ -4,18 +4,17 @@ import { Router } from 'esp-js/src';
 /**
  * Helper method to ease integration between Rx and Esp.
  *
- * When receiving results from an async operation (for example when results yield on an rx stream) you need to notify the esp router that a state change is about to occur.
+ * When receiving results from an async operation (for example when results yield on an rx stream) you need to notify the esp router that a state change is about to occur for a given model.
  * There are a few ways to do this:
- * 1) publish an esp event in your subscription handler, handle the esp event as normal
- * 2) call router.runAction() in your subscription handler and deal with the results inline
- * 3) use subscribeWithRouter which effectively wraps up method 2.
+ * 1) publish an esp event in your rx subscription handler, handle the esp event as normal (the publish will have kicked off the the routers dispatch loop).
+ * 2) call router.runAction() in your subscription handler and deal with the results inline, again this kicks off the the routers dispatch loop.
+ * 3) use subscribeWithRouter which effectively wraps up method 2 for for all functions of subscribe (onNext, onError, onCompleted).
  *
  * @param router
- * @param modelId
+ * @param modelId : the model id you want to update
  * @param onNext
  * @param onError
  * @param onCompleted
- * @returns {Promise}
  */
 Rx.Observable.prototype.subscribeWithRouter = function<T, TModel>(
   router : Router,

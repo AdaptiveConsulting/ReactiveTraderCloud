@@ -12,24 +12,21 @@ import { SpotTileView } from './views';
  */
 export default class SpotTileFactory {
   _router:Router;
-  _referenceDataService:ReferenceDataService;
   _pricingService:PricingService;
   _executionService:ExecutionService;
 
   constructor(
     router:Router,
-    referenceDataService:ReferenceDataService,
     pricingService:PricingService,
     executionService:ExecutionService
   ) {
     this._router = router;
-    this._referenceDataService = referenceDataService;
     this._pricingService = pricingService;
     this._executionService =executionService;
   }
 
   createTileModel(currencyPair:CurrencyPair) {
-    let spotTileModel = new SpotTileModel(currencyPair, this._router, this._referenceDataService, this._pricingService, this._executionService);
+    let spotTileModel = new SpotTileModel(currencyPair, this._router, this._pricingService, this._executionService);
     spotTileModel.observeEvents();
     this._router.publishEvent(spotTileModel.modelId, 'init', {});
     return spotTileModel;
