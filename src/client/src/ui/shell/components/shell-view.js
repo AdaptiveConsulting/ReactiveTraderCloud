@@ -131,7 +131,7 @@ class ShellView extends React.Component {
                 direction: trade.direction.toLowerCase(),
                 amount: trade.notional,
                 trader: trade.traderName,
-                formattedValueDate: trade.formattedValueDate,
+                formattedValueDate: trade.valueDate,
                 rate: trade.spotRate
               };
         // TODO lift open fin

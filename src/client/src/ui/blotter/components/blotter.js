@@ -79,94 +79,68 @@ class Blotter extends React.Component {
     return rowItem.status + ' animated ' + (flash ? 'flash' : 'slideInDown');
   }
 
-  /**
-   * Returns the column and cell definition for the table rendering, binds cells to data
-   * @param {Array} trades
-   * @returns {Array:Column}
-   */
-  getSchema(trades:array):Array<Column> {
-    // TODO more cramming of as much code into a single line as possible, ugh
-    const cellConstructor = (field, extraCellOptions = {}) =>
-      props => <Cell {...props} {...extraCellOptions}>{trades[props.rowIndex][field]}</Cell>;
-
-
-    const schema = [{
-      name: 'Id',
-      field: 'tradeId',
-      cellConstructor,
-      width: 80
-    }, {
-      name: 'Date',
-      field: 'tradeDate',
-      cellConstructor: () => props => <DateCell field='dateTime' data={trades} {...props} />,
-      width: 150
-    }, {
-      name: 'Dir',
-      field: 'direction',
-      cellConstructor,
-      width: 50
-    }, {
-      name: 'CCY',
-      field: 'currencyPair',
-      cellConstructor,
-      width: 70
-    }, {
-      name: 'Notional',
-      field: 'notional',
-      // TODO pull this out, very very hard to read
-      cellConstructor: () => props => <NotionalCell className='text-right' data={trades} field='amount' suffix={' ' + trades[props.rowIndex].currencyPair.substr(0, 3)} {...props} />,
-      width: 120,
-      headerOptions: {
-        className: 'text-right'
-      }
-    }, {
-      name: 'Rate',
-      field: 'spotRate',
-      cellConstructor,
-      width: 80,
-      className: 'text-right',
-      headerOptions: {
-        className: 'text-right'
-      }
-    }, {
-      name: 'Status',
-      field: 'status',
-      cellConstructor,
-      width: 80,
-      className: 'trade-status'
-    }, {
-      name: 'Value date',
-      field: 'formattedValueDate',
-      cellConstructor: () => props => <DateCell field='valueDate' prefix='SP. ' format='%d %b' data={trades} {...props} />, // eslint-disable-line
-      width: 100
-    }, {
-      name: 'Trader',
-      field: 'traderName',
-      cellConstructor,
-      width: 80
-    }];
-
-    return schema.map((column, id) =>{
-      const cellOptions = {};
-
-      column.className && (cellOptions.className = column.className);
-
-      const columnOptions = {
-        width: column.width || 100,
-        field: column.field,
-        cell: column.cellConstructor(column.field, cellOptions),
-        header: <Cell field={column.field} {...column.headerOptions}>{column.name}</Cell>
-      };
-
-      return <Column key={id} {...columnOptions} />;
-    });
+  getGridColumns():Array<Column> {
+    return [
+      <Column
+        key='Id'
+        header={<Cell>Id</Cell>}
+        cell={props => (<Cell width={80}>{this.props.trades[props.rowIndex].tradeId}</Cell>)}
+        width={80} />,
+      <Column
+        key='Date'
+        header={<Cell>Date</Cell>}
+        cell={props => (<DateCell width={150} dateValue={this.props.trades[props.rowIndex].tradeDate} />)}
+        width={150} />,
+      <Column
+        key='Dir'
+        header={<Cell>Dir</Cell>}
+        cell={props => (<Cell width={50}>{this.props.trades[props.rowIndex].direction.name}</Cell>)}
+        width={50} />,
+      <Column
+        key='CCY'
+        header={<Cell>CCY</Cell>}
+        cell={props => (<Cell width={70}>{this.props.trades[props.rowIndex].currencyPair.symbol}</Cell>)}
+        width={70} />,
+      <Column
+        key='Notional'
+        header={<Cell className='text-right'>Notional</Cell>}
+        cell={props => {
+          let trade = this.props.trades[props.rowIndex];
+          return (<NotionalCell
+            className='text-right'
+            width={120}
+            notionalValue={trade.notional}
+            suffix={' ' + trade.currencyPair.base} />);
+        }}
+        width={120} />,
+      <Column
+        key='Rate'
+        header={<Cell className='text-right'>Rate</Cell>}
+        cell={props => (<Cell width={80} className='text-right'>{this.props.trades[props.rowIndex].spotRate}</Cell>)}
+        width={80} />,
+      <Column
+        key='Status'
+        header={<Cell>Status</Cell>}
+        cell={props => (<Cell className='trade-status' width={80}>{this.props.trades[props.rowIndex].status.name}</Cell>)}
+        width={80} />,
+      <Column
+        key='Value date'
+        header={<Cell>Value date</Cell>}
+        cell={props => (<DateCell width={100} prefix='SP. ' format='%d %b' dateValue={this.props.trades[props.rowIndex].valueDate} />)}
+        width={100} />,
+      <Column
+        key='Trader'
+        header={<Cell>Trader</Cell>}
+        cell={props => (<Cell width={80}>{this.props.trades[props.rowIndex].traderName}</Cell>)}
+        width={80} />
+    ];
   }
 
   render(){
     const outerClassName = serviceContainer.serviceStatus.blotter.isConnected ? 'blotter online' : 'blotter offline';
 
     const { trades } = this.props,
-          schema = this.getSchema(trades),
+          schema = this.getGridColumns(trades),
           height = this.state.tearoff ? 400 : blotterHeight;
 
     return (

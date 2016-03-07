@@ -29,7 +29,7 @@ export default class TradeMapper {
       direction,
       tradeDto.SpotRate,
       new Date(tradeDto.TradeDate),
-      tradeDto.ValueDate,
+      new Date(tradeDto.ValueDate),
       status
     );
   }

@@ -9,7 +9,7 @@ export default class Trade {
   _direction:String;
   _spotRate:Number;
   _tradeDate:Date;
-  _formattedValueDate:Date;
+  _valueDate:Date;
   _status:TradeStatus;
 
   constructor(
@@ -21,7 +21,7 @@ export default class Trade {
     direction:Direction,
     spotRate:Number,
     tradeDate:Date,
-    formattedValueDate:String,
+    valueDate:String,
     status:TradeStatus
   ) {
     this._tradeId = tradeId;
@@ -32,7 +32,7 @@ export default class Trade {
     this._direction = direction;
     this._spotRate = spotRate;
     this._tradeDate = tradeDate;
-    this._formattedValueDate = formattedValueDate;
+    this._valueDate = valueDate;
     this._status = status;
   }
 
@@ -68,8 +68,8 @@ export default class Trade {
     return this._tradeDate;
   }
 
-  get formattedValueDate():Date {
-    return this._formattedValueDate;
+  get valueDate():Date {
+    return this._valueDate;
   }
 
   get status():TradeStatus {

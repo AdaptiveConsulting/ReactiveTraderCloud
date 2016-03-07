@@ -97,12 +97,12 @@ export default class SpotTileModel extends ModelBase {
   }
 
   @observeEvent('executeTrade')
-  _onExecuteTrade(direction:Direction) {
+  _onExecuteTrade(e:{direction:Direction}) {
     if (this.status == TileStatus.Streaming) {
       this.status = TileStatus.Executing;
       // stop the price stream so the users can see what the traded
       this._priceSubscriptionDisposable.getDisposable().dispose();
-      let request = this._craeteTradeRequest(direction);
+      let request = this._craeteTradeRequest(e.direction);
       _log.info(`Will execute ${request.toString()}`);
       this._executionDisposable.setDisposable(
         this._executionService.executeTrade(request).subscribeWithRouter(
@@ -111,13 +111,13 @@ export default class SpotTileModel extends ModelBase {
           (response:ExecuteTradeResponse) => {
             this.status = TileStatus.DisplayingNotification;
             this.tradeExecutionNotification = response.hasError
-              ? new TradeExecutionNotification(null, response.error)
-              : new TradeExecutionNotification(response.trade);
+              ? TradeExecutionNotification.createForError(response.error)
+              : TradeExecutionNotification.createForSuccess(response.trade);
           },
           err => {
             _log.error(`Error executing ${request.toString()}. ${err}`, err);
             this.status = TileStatus.DisplayingNotification;
-            this.tradeExecutionNotification = new TradeExecutionNotification(null, `Unknown stream error`);
+            this.tradeExecutionNotification = TradeExecutionNotification.createForError(`Unknown stream error`);
           })
       );
     } else {

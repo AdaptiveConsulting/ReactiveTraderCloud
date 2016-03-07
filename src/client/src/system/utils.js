@@ -9,8 +9,8 @@ const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/;
  * @param source
  * @returns {Function}
  */
-function mixin(source){
-  return function (target){
+function mixin(source) {
+  return function (target) {
     Object.getOwnPropertyNames(source.prototype).forEach((prop) => {
       Object.defineProperty(target.prototype, prop, Object.getOwnPropertyDescriptor(source.prototype, prop));
     });
@@ -23,11 +23,11 @@ function mixin(source){
  * @param {String|Number} notionalShorthand
  * @returns {Number}
  */
-function convertNotionalShorthandToNumericValue(notionalShorthand){
+function convertNotionalShorthandToNumericValue(notionalShorthand) {
   notionalShorthand = String(notionalShorthand).toUpperCase().replace(',', '');
   let matches = notionalShorthand.match(numberConvertRegex);
 
-  if (!notionalShorthand.length || !matches || !matches.length){
+  if (!notionalShorthand.length || !matches || !matches.length) {
     notionalShorthand = 0;
   }
   else {
@@ -39,7 +39,8 @@ function convertNotionalShorthandToNumericValue(notionalShorthand){
 }
 
 function formatDate(date, format:string = '%b %e, %H:%M:%S') {
-  return d3.format(format)(date);
+  let formatter = d3.time.format(format);
+  return formatter(date);
 }
 
 export default {
