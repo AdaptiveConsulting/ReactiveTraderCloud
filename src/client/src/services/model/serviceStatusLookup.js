@@ -1,4 +1,4 @@
-import system from 'system';
+import { ServiceStatus } from '../../system/service';
 import ServiceConst from './serviceConst';
 
 /**
@@ -11,7 +11,7 @@ export default class ServiceStatusLookup {
     this._services = {};
   }
 
-  updateServiceStatus(serviceStatus:system.service.ServiceStatus) {
+  updateServiceStatus(serviceStatus:ServiceStatus) {
     this._services[serviceStatus.serviceType] = serviceStatus;
     return this;
   }
@@ -20,23 +20,23 @@ export default class ServiceStatusLookup {
     return this._services;
   }
 
-  get pricing():system.service.ServiceStatus {
+  get pricing():ServiceStatus {
     return this._services[ServiceConst.PricingServiceKey];
   }
 
-  get reference():system.service.ServiceStatus {
+  get reference():ServiceStatus {
     return this._services[ServiceConst.ReferenceServiceKey];
   }
 
-  get blotter():system.service.ServiceStatus {
+  get blotter():ServiceStatus {
     return this._services[ServiceConst.BlotterServiceKey];
   }
 
-  get execution():system.service.ServiceStatus {
+  get execution():ServiceStatus {
     return this._services[ServiceConst.ExecutionServiceKey];
   }
 
-  get analytics():system.service.ServiceStatus {
+  get analytics():ServiceStatus {
     return this._services[ServiceConst.AnalyticsServiceKey];
   }
 }

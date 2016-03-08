@@ -1,12 +1,13 @@
 import _ from 'lodash';
-import system from 'system';
 import Rx from 'rx';
 import { ReferenceDataMapper } from './mappers';
 import { CurrencyPairUpdates, CurrencyPairUpdate, CurrencyPair, UpdateType } from './model';
+import { logger, SchedulerService, RetryPolicy } from '../system';
+import { Connection, ServiceBase } from '../system/service';
 
-var _log:system.logger.Logger = system.logger.create('ReferenceDataService');
+var _log:system.logger.Logger = logger.create('ReferenceDataService');
 
-export default class ReferenceDataService extends system.service.ServiceBase {
+export default class ReferenceDataService extends ServiceBase {
   _hasLoadedSubject:Rx.Subject<Boolean>;
   _referenceDataMapper:ReferenceDataMapper;
   _referenceDataStreamConnectable:Rx.ConnectableObservable;
@@ -53,7 +54,7 @@ export default class ReferenceDataService extends system.service.ServiceBase {
         _log.debug('Subscribing reference data stream');
         return _this._serviceClient
           .createStreamOperation('getCurrencyPairUpdatesStream', {/* noop request */})
-          .retryWithPolicy(system.RetryPolicy.backoffTo10SecondsMax, 'getCurrencyPairUpdatesStream', _this._schedulerService.async)
+          .retryWithPolicy(RetryPolicy.backoffTo10SecondsMax, 'getCurrencyPairUpdatesStream', _this._schedulerService.async)
           .select(data => _this._referenceDataMapper.mapCurrencyPairsFromDto(data))
           .subscribe(o);
       }
@@ -67,7 +68,7 @@ export default class ReferenceDataService extends system.service.ServiceBase {
         _log.debug('Subscribing reference data stream');
         return _this._serviceClient
           .createStreamOperation('getCurrencyPairUpdatesStream', {/* noop request */})
-          .retryWithPolicy(system.RetryPolicy.backoffTo10SecondsMax, 'getCurrencyPairUpdatesStream', _this._schedulerService.async)
+          .retryWithPolicy(RetryPolicy.backoffTo10SecondsMax, 'getCurrencyPairUpdatesStream', _this._schedulerService.async)
           .select(data => _this._referenceDataMapper.mapCurrencyPairsFromDto(data))
           .subscribe(
             (updates:CurrencyPairUpdates) => {
