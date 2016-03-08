@@ -7,7 +7,7 @@ import WorkspaceItemContainer from './workspaceItemContainer.jsx';
 
 var _log:logger.Logger = logger.create('WorkspaceView');
 
-class WorkspaceView extends ViewBase {
+export default class WorkspaceView extends ViewBase {
   constructor() {
     super();
     this.state = {
@@ -43,5 +43,3 @@ class WorkspaceView extends ViewBase {
     });
   }
 }
-
-export default WorkspaceView;

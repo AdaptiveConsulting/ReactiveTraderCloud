@@ -9,6 +9,14 @@ export default class CurrencyPairPosition {
     this._baseTradedAmount = baseTradedAmount;
   }
 
+  static get basePnlName() {
+    return 'basePnl'; // matches basePnl prop name
+  }
+
+  static get baseTradedAmountName() {
+    return 'baseTradedAmount'; // matches baseTradedAmount prop name
+  }
+
   get symbol():string {
     return this._symbol;
   }

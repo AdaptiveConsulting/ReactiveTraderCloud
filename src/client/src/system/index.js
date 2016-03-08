@@ -11,6 +11,7 @@ export { default as router } from './router';
 export { default as logger } from './logger';
 export { SchedulerService };
 export { RetryPolicy };
+export { Guard };
 
 // these imports add functionality to rx
 import './observableExtentsions/retry-policy-ext';

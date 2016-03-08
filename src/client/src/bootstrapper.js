@@ -1,5 +1,6 @@
 import { WorkspaceModel } from './ui/workspace/model';
 import { BlotterModel } from './ui/blotter/model';
+import { AnalyticsModel } from './ui/analytics/model';
 import { SpotTileFactory } from './ui/spotTile';
 import {
   AnalyticsService,
@@ -21,6 +22,7 @@ export default class Bootstrapper {
     let pricingService = serviceContainer.pricingService;
     let executionService = serviceContainer.executionService;
     let blotterService = serviceContainer.blotterService;
+    let analyticsService = serviceContainer.analyticsService;
 
     // create shell model
     // create root ui with shell view
@@ -44,6 +46,13 @@ export default class Bootstrapper {
     );
     blotterModel.observeEvents();
 
+    // wire-up analytics
+    let analyticsModel = new AnalyticsModel(
+      router,
+      analyticsService
+    );
+    analyticsModel.observeEvents();
+
     // Bring up ref data first.
     // The ref data API allows for both synchronous and asynchronous data access however in most cases you'll be using the synchronous API.
     // Given this we wait for it to build it's cache now.
@@ -54,6 +63,7 @@ export default class Bootstrapper {
       // start other models
       router.publishEvent(workspaceModel.modelId, 'init', {});
       router.publishEvent(blotterModel.modelId, 'init', {});
+      router.publishEvent(analyticsModel.modelId, 'init', {});
     });
     referenceDataService.load();
   }

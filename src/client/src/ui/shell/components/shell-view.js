@@ -3,7 +3,7 @@ import React from 'react';
 import { WorkspaceView } from '../../workspace/views';
 import { BlotterView } from '../../blotter/views';
 import Header from '../../header/components/header-view';
-import Analytics from '../../analytics/components/analytics';
+import { AnalyticsView } from '../../analytics/views';
 import common from '../../common';
 import system from 'system';
 import Rx from 'rx';
@@ -78,27 +78,6 @@ class ShellView extends React.Component {
     serviceContainer.reConnect();
   }
 
-  /**
-   * Processor for data coming from the blotter service that converts DTO object to DOM
-   * @param {Object} trade
-   * @param {Boolean=} update immediately, defaults to false
-   * @private
-   */
-  _processTrade(trade, update){
-    const exists = _.findWhere(this.state.trades, {id: trade.tradeId});
-
-    if (!exists){
-      this.state.trades.unshift(trade);
-    }
-    else {
-      this.state.trades[_.indexOf(this.state.trades, exists)] = trade;
-    }
-
-    update && this.setState({
-      trades: this.state.trades
-    });
-  }
-
   render(){
     return (
       <div className='flex-container'>
@@ -108,7 +87,7 @@ class ShellView extends React.Component {
           {/*onExecute={(payload) => this.addTrade(payload)}*/}
           {/* HACK: workspaceModelId needs to come from the shells model once this view gets updated, not hard coded */}
           <WorkspaceView modelId='workspaceModelId' />
-          <Analytics />
+          <AnalyticsView modelId='analyticsModelId' />
         </div>
         {/* HACK: blotterModelId needs to come from the shells model once this view gets updated, not hard coded */}
         <BlotterView modelId='blotterModelId'  />
