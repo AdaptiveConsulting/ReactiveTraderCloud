@@ -12,16 +12,8 @@ $stroke-color: slategray;
   min-width: 350px;
   background: $gray-dark;
   box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
-  .tile & {
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    width: auto;
-    margin: 0;
-  }
 
-  > span {
+  .header {
     font-size: 26px;
     font-weight: bold;
     color: white;

@@ -48,10 +48,8 @@ export default class AnalyticsView extends ViewBase {
              onClick={() => router.publishEvent(this.props.modelId, 'tearOffAnalytics', {})}
           />
         </div>
-        <div>
-          {pnlComponents}
-          {positionsComponents}
-        </div>
+        {pnlComponents}
+        {positionsComponents}
       </div>);
   }
 
@@ -114,7 +112,7 @@ export default class AnalyticsView extends ViewBase {
     );
     return (
       <div>
-        <span>Positions / PNL</span>
+        <span className='header'>Positions / PNL</span>
         <div className='buttons'>
           <button
             className={pnlButtonClassName}
