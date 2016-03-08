@@ -24,15 +24,24 @@ class SpotTileView extends ViewBase {
 
   render() {
     let model:SpotTileModel = this.state.model;
-    if (!model || !model.currentSpotPrice) {
+    if(model === null) {
       return null;
     }
     let sparklineChart = this._createSparkLineChart();
-    let pricingContainerClass = classnames('currency-pair-actions', {'hide': model.hasNotification});
     let notionalInputClass = classnames('sizer', {'hide': model.hasNotification});
     let notification = this._tryCreateNotification();
+    let priceComponents = this._createPriceComponents();
+    const className = classnames(
+      'currency-pair',
+      'animated',
+      'flipInX',
+      {
+        'stale' : !model.pricingConnected || !model.executionConnected,
+        'executing' : model.isTradeExecutionInFlight
+      }
+    );
     return (
-      <div>
+      <div className={className}>
         <div className='currency-pair-title'>
           <i className='glyphicon glyphicon-stats pull-right'
              onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
@@ -40,22 +49,7 @@ class SpotTileView extends ViewBase {
           <i className='fa fa-plug animated infinite fadeIn'/>
         </div>
         {notification}
-        <div className={pricingContainerClass}>
-          <PriceButton
-            direction={Direction.Sell}
-            onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Sell })}
-            rate={model.currentSpotPrice.bid}
-          />
-          <PriceMovementIndicator
-            priceMovementType={model.currentSpotPrice.priceMovementType}
-            spread={model.currentSpotPrice.spread}
-          />
-          <PriceButton
-            direction={Direction.Buy}
-            onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Buy })}
-            rate={model.currentSpotPrice.ask}
-          />
-        </div>
+        {priceComponents}
         <div className='clearfix'></div>
         <NotionalInput
           className={notionalInputClass}
@@ -69,9 +63,35 @@ class SpotTileView extends ViewBase {
     );
   }
 
+  _createPriceComponents() {
+    let model:SpotTileModel = this.state.model;
+    let pricingContainerClass = classnames('currency-pair-actions', {'hide': model.hasNotification});
+    if(model.currentSpotPrice === null) {
+      return null;
+    }
+    return(
+      <div className={pricingContainerClass}>
+        <PriceButton
+          direction={Direction.Sell}
+          onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Sell })}
+          rate={model.currentSpotPrice.bid}
+        />
+        <PriceMovementIndicator
+          priceMovementType={model.currentSpotPrice.priceMovementType}
+          spread={model.currentSpotPrice.spread}
+        />
+        <PriceButton
+          direction={Direction.Buy}
+          onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Buy })}
+          rate={model.currentSpotPrice.ask}
+        />
+      </div>
+    );
+  }
+
   _createSparkLineChart() {
     let model = this.state.model;
-    if (model.shouldShowChart) {
+    if (model.shouldShowChart && model.historicMidSportRates.length) {
       return (
         <Sparklines
           data={model.historicMidSportRates.slice()}
@@ -99,7 +119,7 @@ class SpotTileView extends ViewBase {
         );
       } else if (model.notification.notificationType === NotificationType.Text) {
         return (
-          <div className='summary-state animated flipInX'>{model.notification.message}</div>
+          <div className='summary-state text-notification animated flipInX'>{model.notification.message}</div>
         );
       } else {
         throw new Error(`Unknown notification type ${model.notification.notificationType}`);

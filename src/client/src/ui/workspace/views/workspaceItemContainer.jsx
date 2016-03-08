@@ -7,13 +7,12 @@ const url = '/#/tile';
 class WorkspaceItemContainer extends React.Component {
 
   static propTypes = {
-    onTearOff: React.PropTypes.func.isRequired,
-    className: React.PropTypes.string
+    onTearOff: React.PropTypes.func.isRequired
   };
 
   render(){
     return (
-      <div className={this.props.className}>
+      <div>
         <div className='container-control'>
           <i className='tearoff-trigger glyphicon glyphicon-new-window' onClick={(e) => this._onTearOff(e)}/>
         </div>

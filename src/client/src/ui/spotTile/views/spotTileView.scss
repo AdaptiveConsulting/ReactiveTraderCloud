@@ -195,10 +195,13 @@
   .dismiss-message {
     transform: translate(0, 24px);
   }
+
+  &.text-notification {
+    text-align: center;
+  }
 }
 
 // iphone.
-
 
 #popout-content-container {
   overflow: hidden;

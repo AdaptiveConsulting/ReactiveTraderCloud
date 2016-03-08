@@ -4,7 +4,7 @@ import { ReferenceDataService, PricingService, ExecutionService } from '../../..
 import { logger } from '../../../system';
 import { ServiceStatus } from '../../../system/service';
 import { ModelBase } from '../../common';
-import { TileStatus, TradeExecutionNotification, TextNotification, NotificationBase } from './';
+import { TileStatus, TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
 import {
   GetSpotStreamRequest,
   SpotPrice,
@@ -16,21 +16,20 @@ import {
   CurrencyPairUpdates
 } from '../../../services/model';
 
-var _log:logger.Logger = logger.create('SpotTileModel');
-
 let modelIdKey = 1;
 
 export default class SpotTileModel extends ModelBase {
+  // non view state
   _pricingService:PricingService;
   _executionService:ExecutionService;
   _executionDisposable:Rx.SerialDisposable;
   _priceSubscriptionDisposable:Rx.SerialDisposable;
+  _log:logger.Logger;
 
   // React doesn't seem to pickup ES6 properties (last time I looked it seemed to be because Babel doesn't spit them out as enumerable)
   // So we're just exposing the state as fields.
   currencyPair:CurrencyPair;
   currentSpotPrice:SpotPrice;
-  status:TileStatus;
   historicMidSportRates:Array<Number>;
   notification:NotificationBase;
   shouldShowChart:Boolean;
@@ -38,12 +37,13 @@ export default class SpotTileModel extends ModelBase {
   notional:Number;
   pricingConnected:Boolean;
   executionConnected:Boolean;
-
+  isTradeExecutionInFlight:Boolean;
   constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
               router,
               pricingService:PricingService,
               executionService:ExecutionService) {
-    super((`spotTileModel` + modelIdKey++), router);
+    super((`spotTile` + modelIdKey++), router);
+    this._log = logger.create(`${this.modelId}:${currencyPair.symbol}`);// can't change ccy pair in this demo app, so reasonable to use the symbol in the logger name
     this._pricingService = pricingService;
     this._executionService = executionService;
     this.currencyPair = currencyPair;
@@ -52,14 +52,17 @@ export default class SpotTileModel extends ModelBase {
     this._priceSubscriptionDisposable = new Rx.SerialDisposable();
     this.addDisposable(this._priceSubscriptionDisposable);
 
-    this.status = TileStatus.Idle;
     this.historicMidSportRates = [];
     this.shouldShowChart = true;
     this.tileTitle = currencyPair.symbol;
     this.notification = null;
     this.notional = 1000000;
+    this.currentSpotPrice = null;
+
+    // If things get much messier we could look at introducing a state machine, but for now we really only have these 3 conditions to worry about
     this.pricingConnected = false;
     this.executionConnected = false;
+    this.isTradeExecutionInFlight = false;
   }
 
   get hasNotification() {
@@ -68,60 +71,60 @@ export default class SpotTileModel extends ModelBase {
 
   @observeEvent('init')
   _onInit() {
-    _log.info(`Cash tile starting for pair ${this.currencyPair.symbol}`);
+    this._log.info(`Cash tile starting for pair ${this.currencyPair.symbol}`);
     this._subscribeToPriceStream();
     this._subscribeToConnectionStatus();
   }
 
   @observeEvent('tileClosed')
   _onTileClosed() {
-    _log.info(`Cash tile closing`);
+    this._log.info(`Cash tile closing`);
   }
 
   @observeEvent('toggleSparkLineChart')
   _onToggleSparkLineChart() {
-    _log.debug(`toggling spark line chart`);
+    this._log.debug(`toggling spark line chart`);
     this.shouldShowChart = !this.shouldShowChart;
   }
 
   @observeEvent('tradeNotificationDismissed')
   _onTradeNotificationDismissed() {
-    _log.debug(`message dismissed`);
+    this._log.debug(`message dismissed`);
     this.notification = null;
-    this.status = TileStatus.Streaming;
+    this._updatePricingDownStatusNotification();
   }
 
   @observeEvent('notionalChanged')
   _onNotionalChanged(e:{notional:Number}) {
-    _log.info(`Updating notional to ${e.notional}`);
+    this._log.info(`Updating notional to ${e.notional}`);
     this.notional = e.notional;
   }
 
   @observeEvent('executeTrade')
   _onExecuteTrade(e:{direction:Direction}) {
-    if (this.status == TileStatus.Streaming) {
-      this.status = TileStatus.Executing;
+    if (this.pricingConnected && this.executionConnected) {
       // stop the price stream so the users can see what the traded
       let request = this._createTradeRequest(e.direction);
-      _log.info(`Will execute ${request.toString()}`);
+      this._log.info(`Will execute ${request.toString()}`);
+      this.isTradeExecutionInFlight = true;
       this._executionDisposable.setDisposable(
         this._executionService.executeTrade(request).subscribeWithRouter(
           this.router,
           this.modelId,
           (response:ExecuteTradeResponse) => {
-            this.status = TileStatus.DisplayingNotification;
+            this.isTradeExecutionInFlight = false;
             this.notification = response.hasError
               ? TradeExecutionNotification.createForError(response.error)
               : TradeExecutionNotification.createForSuccess(response.trade);
           },
           err => {
-            _log.error(`Error executing ${request.toString()}. ${err}`, err);
-            this.status = TileStatus.DisplayingNotification;
+            this.isTradeExecutionInFlight = false;
+            this._log.error(`Error executing ${request.toString()}. ${err}`, err);
             this.notification = TradeExecutionNotification.createForError(`Unknown stream error`);
           })
       );
     } else {
-      _log.warn(`Ignoring execute request as we can't trade at tile status ${this.status.name}`);
+      this._log.warn(`Ignoring execute request as we can't trade with pricing and execution down`);
     }
   }
 
@@ -147,17 +150,14 @@ export default class SpotTileModel extends ModelBase {
           this.router,
           this.modelId,
           (price:SpotPrice) => {
-            if(this.status === TileStatus.Idle) {
-              this.status = TileStatus.Streaming;
-            }
-            // we don't update the price if executing, the users will want to see what they are buying
-            if(this.status !== TileStatus.Executing) {
+            // we don't update the price if we have an inflight trade, the users will want to see what they are buying
+            if(!this.isTradeExecutionInFlight) {
               this.currentSpotPrice = price;
             }
             this._updateHistoricalPrices(price);
           },
           err => {
-            _log.error('Error on getSpotPriceStream stream stream', err);
+            this._log.error('Error on getSpotPriceStream stream stream', err);
           }
         )
     );
@@ -187,9 +187,23 @@ export default class SpotTileModel extends ModelBase {
         this.router,
         this._modelId,
         (tuple:{pricingConnected:Boolean, executionConnected:Boolean}) => {
+          if(this.pricingConnected && !tuple.pricingConnected) {
+            this.historicMidSportRates.length = 0; // clear out the charts prices
+          }
           this.pricingConnected = tuple.pricingConnected;
           this.executionConnected = tuple.executionConnected;
+          this._updatePricingDownStatusNotification();
         })
     );
+  }
+
+  _updatePricingDownStatusNotification() {
+    if(this.notification === null || this.notification.notificationType === NotificationType.Text) {
+        if (this.pricingConnected) {
+          this.notification = null;
+        } else {
+          this.notification = new TextNotification('Pricing is unavailable');
+        }
+    }
   }
 }
