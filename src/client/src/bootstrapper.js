@@ -13,7 +13,6 @@ import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
 import { default as espRouter } from './system/router';
 import { PageContainer, ShellView } from './ui/shell/views';
-import { GrowlView } from './ui/growl/views';
 import { SpotTileView } from './ui/spotTile/views';
 import {
   AnalyticsService,
@@ -137,9 +136,6 @@ class Bootstrapper {
         </Route>
         <Route path='/tile'>
           <IndexRoute component={SpotTileView}/>
-        </Route>
-        <Route path='/growl'>
-          <IndexRoute component={GrowlView}/>
         </Route>
       </Router>
     );

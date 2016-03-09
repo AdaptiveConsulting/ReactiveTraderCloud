@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { Sparklines, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 import { ViewBase } from '../../common';
 import { router, logger } from '../../../system';
-import { Message } from '../../common/components';
 import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification } from './';
 import { SpotTileModel, NotificationType } from '../model';
 import { Direction, PriceMovementType } from '../../../services/model';

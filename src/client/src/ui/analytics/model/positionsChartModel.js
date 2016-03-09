@@ -19,11 +19,9 @@ export default class PositionsChartModel {
       showXAxis: true,
       showLegend: false,
       useInteractiveGuideline: true,
-      // barColor: d3.scale.category20().range(),
       duration: 250,
       showValues: true,
       showControls: false,
-      //stacked: true,
       tooltip: {
         enabled: false
       },
@@ -54,18 +52,6 @@ export default class PositionsChartModel {
       values: this._seriesData,
       color: 'slategray'
     }];
-    //return [{
-    //  name: 'Pos/PnL',
-    //  values: this._seriesData,
-    //  color: 'slategray'
-    //}];
-    //return this._seriesData.map((currencyPairPosition:CurrencyPairPosition) => {
-    //  return {
-    //    name: currencyPairPosition.symbol,
-    //    label: currencyPairPosition.symbol,
-    //    values: [currencyPairPosition]
-    //  };
-    //});
   }
 
   update(positions:Array<CurrencyPairPosition>) {
