@@ -1,5 +1,6 @@
 import logger from './logger';
 //import espDevTools from 'esp-js-devtools';
+// esp dev tools is in beta ATM, bit heavy on the performance side of things. But feel free to check out, ctrl+alt+d brings up the tool window
 //espDevTools.registerDevTools();
 
 var _log:logger.Logger = logger.create('UnhandledModelError');
