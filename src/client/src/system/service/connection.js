@@ -1,18 +1,18 @@
 import Guard from '../guard';
 import Rx from 'rx';
 import logger from '../logger';
-import disposables from '../disposables';
-import AutobahnConnectionProxy from './autobahn-connection-proxy';
-import ServiceInstanceStatus from './service-instance-status';
+import { DisposableBase } from '../disposables';
+import AutobahnConnectionProxy from './autobahnConnectionProxy';
+import ServiceInstanceStatus from './serviceInstanceStatus';
 import SchedulerService from '../schedulerService';
-import ConnectionStatus from './connection-status';
+import ConnectionStatus from './connectionStatus';
 
 const _log:logger.Logger = logger.create('Connection');
 
 /**
  * Represents a Connection to autobahn
  */
-export default class Connection extends disposables.DisposableBase {
+export default class Connection extends DisposableBase {
   _userName:String;
   _autobahn:AutobahnConnectionProxy;
   _connectionStatusSubject:Rx.BehaviorSubject<Boolean>;

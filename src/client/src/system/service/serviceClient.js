@@ -2,20 +2,20 @@ import Rx from 'rx';
 import _ from 'lodash';
 import logger from '../logger';
 import Guard from '../guard';
-import disposables from '../disposables';
-import schedulerService from '../schedulerService';
+import { DisposableBase } from '../disposables';
+import SchedulerService from '../schedulerService';
 import Connection from './connection';
-import ConnectionStatus from './connection-status';
-import ServiceInstanceStatus from './service-instance-status';
-import ServiceStatus from './service-status';
-import LastValueObservableDictionary from './last-value-observable-dictionary';
+import ConnectionStatus from './connectionStatus';
+import ServiceInstanceStatus from './serviceInstanceStatus';
+import ServiceStatus from './serviceStatus';
+import LastValueObservableDictionary from './lastValueObservableDictionary';
 
 /**
  * Abstracts a back end service for which there can be multiple instances.
  * Offers functionality to perform request-response and stream operations against a service instance.
  * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
-export default class ServiceClient extends disposables.DisposableBase {
+export default class ServiceClient extends DisposableBase {
   _log:logger.Logger;
   _serviceType:String;
   _serviceInstanceDictionaryStream:Rx.Observable<LastValueObservableDictionary>;

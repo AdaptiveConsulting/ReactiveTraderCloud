@@ -1073,8 +1073,7 @@
       "dependencies": {
         "ws": {
           "version": "1.0.1",
-          "from": "ws@1.0.1",
-          "resolved": "https://registry.npmjs.org/ws/-/ws-1.0.1.tgz"
+          "from": "ws@1.0.1"
         }
       }
     },
@@ -1169,8 +1168,7 @@
       "dependencies": {
         "esprima": {
           "version": "2.7.2",
-          "from": "esprima@2.7.2",
-          "resolved": "https://registry.npmjs.org/esprima/-/esprima-2.7.2.tgz"
+          "from": "esprima@>=2.7.1 <3.0.0"
         },
         "estraverse": {
           "version": "1.9.3",
@@ -1210,13 +1208,13 @@
       "resolved": "https://registry.npmjs.org/escope/-/escope-3.4.0.tgz"
     },
     "esp-js": {
-      "version": "0.7.0",
-      "from": "esp-js@0.7.0",
-      "resolved": "https://registry.npmjs.org/esp-js/-/esp-js-0.7.0.tgz"
+      "version": "0.7.1",
+      "from": "esp-js@latest"
     },
     "esp-js-devtools": {
       "version": "0.0.15",
-      "from": "esp-js-devtools@latest",
+      "from": "esp-js-devtools@0.0.15",
+      "resolved": "https://registry.npmjs.org/esp-js-devtools/-/esp-js-devtools-0.0.15.tgz",
       "dependencies": {
         "lodash": {
           "version": "4.6.1",
@@ -2025,8 +2023,7 @@
         },
         "esprima": {
           "version": "2.7.2",
-          "from": "esprima@2.7.2",
-          "resolved": "https://registry.npmjs.org/esprima/-/esprima-2.7.2.tgz"
+          "from": "esprima@>=2.1.0 <3.0.0"
         }
       }
     },
@@ -2599,8 +2596,7 @@
           "dependencies": {
             "minimatch": {
               "version": "2.0.10",
-              "from": "minimatch@2.0.10",
-              "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-2.0.10.tgz"
+              "from": "minimatch@>=2.0.1 <3.0.0"
             }
           }
         },
@@ -4023,6 +4019,57 @@
       "version": "1.1.0",
       "from": "onetime@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/onetime/-/onetime-1.1.0.tgz"
+    },
+    "openfin-config-builder": {
+      "version": "1.0.8",
+      "from": "openfin-config-builder@latest",
+      "resolved": "https://registry.npmjs.org/openfin-config-builder/-/openfin-config-builder-1.0.8.tgz",
+      "dependencies": {
+        "lodash": {
+          "version": "2.4.2",
+          "from": "lodash@>=2.4.1 <3.0.0",
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-2.4.2.tgz"
+        }
+      }
+    },
+    "openfin-installer": {
+      "version": "0.1.1",
+      "from": "openfin-installer@latest",
+      "resolved": "https://registry.npmjs.org/openfin-installer/-/openfin-installer-0.1.1.tgz",
+      "dependencies": {
+        "camelcase-keys": {
+          "version": "1.0.0",
+          "from": "camelcase-keys@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/camelcase-keys/-/camelcase-keys-1.0.0.tgz"
+        },
+        "indent-string": {
+          "version": "1.2.2",
+          "from": "indent-string@>=1.1.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/indent-string/-/indent-string-1.2.2.tgz"
+        },
+        "meow": {
+          "version": "2.1.0",
+          "from": "meow@>=2.0.0 <3.0.0",
+          "resolved": "https://registry.npmjs.org/meow/-/meow-2.1.0.tgz"
+        },
+        "object-assign": {
+          "version": "2.1.1",
+          "from": "object-assign@>=2.0.0 <3.0.0",
+          "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-2.1.1.tgz"
+        }
+      }
+    },
+    "openfin-launcher": {
+      "version": "0.1.8",
+      "from": "openfin-launcher@latest",
+      "resolved": "https://registry.npmjs.org/openfin-launcher/-/openfin-launcher-0.1.8.tgz",
+      "dependencies": {
+        "lodash": {
+          "version": "2.4.2",
+          "from": "lodash@>=2.4.1 <3.0.0",
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-2.4.2.tgz"
+        }
+      }
     },
     "optimist": {
       "version": "0.6.1",

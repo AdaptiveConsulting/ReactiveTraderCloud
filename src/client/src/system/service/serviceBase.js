@@ -1,6 +1,6 @@
 
 import Connection from './connection';
-import ServiceClient from './service-client';
+import ServiceClient from './serviceClient';
 import SchedulerService from '../schedulerService';
 import { DisposableBase } from '../disposables';
 
