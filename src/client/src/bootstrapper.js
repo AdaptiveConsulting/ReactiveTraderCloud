@@ -3,6 +3,11 @@ import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { HeaderModel } from './ui/header/model';
 import { SpotTileFactory } from './ui/spotTile';
+import { User, ServiceConst, ServiceStatusLookup } from './services/model';
+import { SchedulerService, } from './system';
+import { AutobahnConnectionProxy, Connection } from './system/service';
+import { OpenFin } from './system/openFin';
+import { default as router } from './system/router';
 import {
   AnalyticsService,
   BlotterService,
@@ -12,10 +17,6 @@ import {
   ReferenceDataService,
   CompositeStatusService
 } from './services';
-import { User, ServiceConst, ServiceStatusLookup } from './services/model';
-import { SchedulerService, AutobahnConnectionProxy, Connection } from './system';
-import { OpenFin } from './system/openFin';
-import { default as router } from './system/router';
 
 export default class Bootstrapper {
   run() {
@@ -70,7 +71,15 @@ export default class Bootstrapper {
     );
     headerModel.observeEvents();
 
-    // Bring up ref data first.
+   // bring up all the services
+    pricingService.connect();
+    referenceDataService.connect();
+    blotterService.connect();
+    executionService.connect();
+    analyticsService.connect();
+
+
+    // Bring up ref data first and wait fo rit to load.
     // The ref data API allows for both synchronous and asynchronous data access however in most cases you'll be using the synchronous API.
     // Given this we wait for it to build it's cache now.
     // Note there are lots of bells and whistles you can put around this, for example spin up the models, but wait for them to receive a ref data loaded event, etc.
@@ -84,5 +93,7 @@ export default class Bootstrapper {
       router.publishEvent(headerModel.modelId, 'init', {});
     });
     referenceDataService.load();
+
+    connection.connect();
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
 import { HeaderModel } from '../model';
