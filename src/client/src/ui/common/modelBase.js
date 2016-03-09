@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Router, DisposableBase } from 'esp-js/src';
-import { logger } from '../../system';
+import { logger, Guard } from '../../system';
 
 var _log:logger.Logger = logger.create('ModelBase');
 
@@ -10,6 +10,8 @@ export default class ModelBase extends DisposableBase {
 
   constructor(modelId, router) {
     super();
+    Guard.isString(modelId, 'modelId required and must be a string');
+    Guard.isDefined(router, 'router required');
     this._modelId = modelId;
     this.router = router;
   }

@@ -15,7 +15,7 @@ $failure-primary: $brand-danger;
   right: 0;
 }
 
-input:checked + .modal {
+.modal {
   opacity: 1;
   visibility: visible;
   transform: translate3d(0, 0, 0);
@@ -85,12 +85,12 @@ input:checked + .modal {
   background-image: radial-gradient(circle , #FFFFFF, $failure-primary);
   display: none;
   opacity: .7;
-  input:checked + .modal & {
+  .modal & {
     display: block;
   }
 }
 
-.modal.error-modal {
+.modal, .error-modal {
   width: 600px;
   height: 140px;
   min-height: 100px;
