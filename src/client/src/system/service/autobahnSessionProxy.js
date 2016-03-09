@@ -10,7 +10,7 @@ export default class AutobahnSessionProxy {
     this._session = session;
   }
 
-  subscribe<TRequest, TResults>(topic:String, onResults:(r:TResults) => void):Promise {
+  subscribe<TRequest, TResults>(topic:string, onResults:(r:TResults) => void):Promise {
     return this._session.subscribe(topic, onResults);
   }
 
@@ -18,7 +18,7 @@ export default class AutobahnSessionProxy {
     return this._session.unsubscribe(subscription);
   }
 
-  call<TRequest, TResults>(operationName:String, payload:TRequest):Promise {
+  call<TRequest, TResults>(operationName:string, payload:TRequest):Promise {
     return this._session.call(operationName, payload);
   }
 }

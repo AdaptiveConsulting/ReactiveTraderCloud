@@ -9,7 +9,7 @@ var _log:logger.Logger = logger.create('AnalyticsService');
 
 export default class AnalyticsService extends ServiceBase {
 
-  constructor(serviceType:String, connection:Connection, schedulerService:SchedulerService) {
+  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService) {
     super(serviceType, connection, schedulerService);
     this._positionsMapper = new PositionsMapper();
   }

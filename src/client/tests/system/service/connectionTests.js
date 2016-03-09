@@ -4,7 +4,7 @@ import StubAutobahnProxy from './stub-autobahn-proxy';
 describe('Connection', () => {
   let _stubAutobahnProxy:StubAutobahnProxy,
     _connection:system.service.Connection,
-    _receivedStatusUpdates:Array<Boolean>,
+    _receivedStatusUpdates:Array<boolean>,
     _scheduler:system.SchedulerService;
 
   beforeEach(() => {

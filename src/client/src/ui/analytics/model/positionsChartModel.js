@@ -10,7 +10,7 @@ export default class PositionsChartModel {
   options:Object;
   _seriesData:Array<CurrencyPairPosition>;
 
-  yAxisValuePropertyName:String;
+  yAxisValuePropertyName:string;
 
   constructor() {
     this._seriesData = [];

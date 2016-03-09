@@ -10,24 +10,24 @@ export class NotificationBase {
 }
 
 export class TextNotification extends NotificationBase {
-  constructor(message:String) {
+  constructor(message:string) {
     super(NotificationType.Text);
     this.message = message;
   }
 }
 
 export class TradeExecutionNotification extends NotificationBase {
-  direction:String;
-  notional:String;
-  status:String;
-  dealtCurrency:String;
-  termsCurrency:String;
-  spotRate:String;
-  formattedValueDate:String;
-  tradeId:String;
-  error:String;
+  direction:string;
+  notional:string;
+  status:string;
+  dealtCurrency:string;
+  termsCurrency:string;
+  spotRate:string;
+  formattedValueDate:string;
+  tradeId:string;
+  error:string;
 
-  constructor(trade:Trade, error:String) {
+  constructor(trade:Trade, error:string) {
     super(NotificationType.Trade);
     this.error = error;
     if (trade) {

@@ -2,18 +2,18 @@ import { Direction } from './';
 
 export default class ExecuteTradeRequest {
   // note odd casing here as server expects upper camel casing
-  CurrencyPair:String;
-  SpotRate:Number;
+  CurrencyPair:string;
+  SpotRate:number;
   Direction:Direction;
-  Notional:Number;
-  DealtCurrency:String;
+  Notional:number;
+  DealtCurrency:string;
 
   constructor(
-    currencyPair:String,
-    spotRate:Number,
+    currencyPair:string,
+    spotRate:number,
     direction:Direction,
-    notional:Number,
-    dealtCurrency:String
+    notional:number,
+    dealtCurrency:string
   ) {
     this.CurrencyPair = currencyPair;
     this.SpotRate = spotRate;

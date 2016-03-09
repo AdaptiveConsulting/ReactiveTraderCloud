@@ -10,7 +10,7 @@ var _log:logger.Logger = logger.create('HeaderModel');
 export default class HeaderModel extends ModelBase {
   _compositeStatusService:CompositeStatusService;
 
-  isConnectedToBroker:Boolean;
+  isConnectedToBroker:boolean;
   serviceLookup:ServiceStatusLookup;
 
   constructor(
@@ -68,7 +68,7 @@ export default class HeaderModel extends ModelBase {
       this._compositeStatusService.connectionStatusStream.subscribeWithRouter(
         this.router,
         this.modelId,
-        (isConnected:Boolean) => {
+        (isConnected:boolean) => {
           this.isConnectedToBroker = isConnected;
         })
     );

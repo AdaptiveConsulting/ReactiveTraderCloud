@@ -5,7 +5,7 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
  * Provides a status of the instances for a given service type
  */
 export default class ServiceStatus {
-  constructor(serviceType:String, instanceStatuses:Array<ServiceInstanceStatus>, isConnected:Boolean) {
+  constructor(serviceType:string, instanceStatuses:Array<ServiceInstanceStatus>, isConnected:boolean) {
     this._serviceType = serviceType;
     this._instanceStatuses = instanceStatuses;
     this._isConnected = isConnected;
@@ -15,7 +15,7 @@ export default class ServiceStatus {
       .length;
   }
 
-  get serviceType():String {
+  get serviceType():string {
     return this._serviceType;
   }
 
@@ -23,20 +23,20 @@ export default class ServiceStatus {
     return this._instanceStatuses;
   }
 
-  get connectedInstanceCount():Number {
+  get connectedInstanceCount():number {
     return this._connectedInstanceCount;
   }
 
-  get isConnected():Boolean {
+  get isConnected():boolean {
     return this._isConnected;
   }
 
-  getInstanceStatus(serviceId:String):ServiceInstanceStatus {
+  getInstanceStatus(serviceId:string):ServiceInstanceStatus {
     var instanceStatus = _(this._instanceStatuses).find((instance:ServiceInstanceStatus) => instance.serviceId === serviceId);
     return instanceStatus;
   }
 
-  toString():String {
+  toString():string {
     return `ConnectedInstanceCount:${this._connectedInstanceCount}, IsConnected:${this.isConnected}`;
   }
 }

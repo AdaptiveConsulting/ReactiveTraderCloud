@@ -32,12 +32,12 @@ export default class SpotTileModel extends ModelBase {
   currentSpotPrice:SpotPrice;
   historicMidSportRates:Array<Number>;
   notification:NotificationBase;
-  shouldShowChart:Boolean;
-  tileTitle:String;
-  notional:Number;
-  pricingConnected:Boolean;
-  executionConnected:Boolean;
-  isTradeExecutionInFlight:Boolean;
+  shouldShowChart:boolean;
+  tileTitle:string;
+  notional:number;
+  pricingConnected:boolean;
+  executionConnected:boolean;
+  isTradeExecutionInFlight:boolean;
 
   constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
               router,
@@ -84,7 +84,7 @@ export default class SpotTileModel extends ModelBase {
   }
 
   @observeEvent('popOutTile')
-  _onPopOutTile(e:{notional:Number}) {
+  _onPopOutTile(e:{notional:number}) {
     this._log.info(`Popping out tile`);
     // TODO
   }
@@ -103,7 +103,7 @@ export default class SpotTileModel extends ModelBase {
   }
 
   @observeEvent('notionalChanged')
-  _onNotionalChanged(e:{notional:Number}) {
+  _onNotionalChanged(e:{notional:number}) {
     this._log.info(`Updating notional to ${e.notional}`);
     this.notional = e.notional;
   }
@@ -194,7 +194,7 @@ export default class SpotTileModel extends ModelBase {
       serviceStatusStream.subscribeWithRouter(
         this.router,
         this._modelId,
-        (tuple:{pricingConnected:Boolean, executionConnected:Boolean}) => {
+        (tuple:{pricingConnected:boolean, executionConnected:boolean}) => {
           if(this.pricingConnected && !tuple.pricingConnected) {
             this.historicMidSportRates.length = 0; // clear out the charts prices
           }

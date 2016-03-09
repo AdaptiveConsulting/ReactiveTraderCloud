@@ -11,7 +11,7 @@ export default class ExecutionService extends ServiceBase {
 
   static EXECUTION_TIMEOUT_MS = 2000;
 
-  constructor(serviceType:String,
+  constructor(serviceType:string,
               connection:Connection,
               schedulerService:SchedulerService,
               referenceDataService:ReferenceDataService,

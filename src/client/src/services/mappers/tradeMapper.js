@@ -34,7 +34,7 @@ export default class TradeMapper {
     );
   }
 
-  _mapDirectionFromDto(directionDto:String) {
+  _mapDirectionFromDto(directionDto:string) {
     switch (directionDto) {
       case Direction.Buy.name:
         return Direction.Buy;
@@ -45,7 +45,7 @@ export default class TradeMapper {
     }
   }
 
-  _mapTradeStatusFromDto(statusDto:String) {
+  _mapTradeStatusFromDto(statusDto:string) {
     switch (statusDto) {
       case TradeStatus.Pending.name:
             return TradeStatus.Pending;

@@ -1,27 +1,27 @@
 import { Direction, TradeStatus, CurrencyPair } from './';
 
 export default class Trade {
-  _tradeId:Number;
-  _traderName:String;
+  _tradeId:number;
+  _traderName:string;
   _currencyPair:CurrencyPair;
-  _notional:Number;
-  _dealtCurrency:String;
-  _direction:String;
-  _spotRate:Number;
+  _notional:number;
+  _dealtCurrency:string;
+  _direction:string;
+  _spotRate:number;
   _tradeDate:Date;
   _valueDate:Date;
   _status:TradeStatus;
 
   constructor(
-    tradeId:Number,
-    traderName:String,
+    tradeId:number,
+    traderName:string,
     currencyPair:CurrencyPair,
-    notional:Number,
-    dealtCurrency:String,
+    notional:number,
+    dealtCurrency:string,
     direction:Direction,
-    spotRate:Number,
+    spotRate:number,
     tradeDate:Date,
-    valueDate:String,
+    valueDate:string,
     status:TradeStatus
   ) {
     this._tradeId = tradeId;
@@ -36,11 +36,11 @@ export default class Trade {
     this._status = status;
   }
 
-  get tradeId():Number {
+  get tradeId():number {
     return this._tradeId;
   }
 
-  get traderName():String {
+  get traderName():string {
     return this._traderName;
   }
 
@@ -48,11 +48,11 @@ export default class Trade {
     return this._currencyPair;
   }
 
-  get notional():Number {
+  get notional():number {
     return this._notional;
   }
 
-  get dealtCurrency():String {
+  get dealtCurrency():string {
     return this._dealtCurrency;
   }
 
@@ -60,7 +60,7 @@ export default class Trade {
     return this._direction;
   }
 
-  get spotRate():Number {
+  get spotRate():number {
     return this._spotRate;
   }
 

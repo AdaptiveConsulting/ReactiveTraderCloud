@@ -4,7 +4,7 @@ import { router } from '../../system';
 
 export default class ViewBase extends React.Component {
   _disposables:CompositeDisposable;
-  _isObservingModel:Boolean;
+  _isObservingModel:boolean;
 
   static propTypes = {
     modelId: React.PropTypes.string

@@ -6,21 +6,21 @@ export default class SpotPrice {
   _ask:Rate;
   _mid:Rate;
   _valueDate:Date;
-  _creationTimestamp:Number;
+  _creationTimestamp:number;
   _priceMovementType:PriceMovementType;
-  _spread:Number;
-  _isTradable:Boolean;
+  _spread:number;
+  _isTradable:boolean;
 
   constructor(
-    symbol:Number,
+    symbol:number,
     bid:Rate,
     ask:Rate,
     mid:Rate,
     valueDate:Date,
-    creationTimestamp:Number,
+    creationTimestamp:number,
     priceMovementType:PriceMovementType,
     spread:Spread,
-    isTradable:Boolean
+    isTradable:boolean
   ) {
     this._symbol = symbol;
     this._bid = bid;

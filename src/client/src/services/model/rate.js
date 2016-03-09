@@ -4,7 +4,7 @@ export default class Rate {
   _pips:number;
   _pipFraction:number;
 
-  constructor(rawRate:number, ratePrecision, pipPrecision) {
+  constructor(rawRate:number, ratePrecision:number, pipPrecision:number) {
     this._rawRate = rawRate;
 
     let rateString = rawRate.toFixed(ratePrecision);

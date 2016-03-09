@@ -13,7 +13,7 @@ export default class WorkspaceModel extends ModelBase {
   _referenceDataService:ReferenceDataService;
   _spotTileFactory:SpotTileFactory;
   _workspaceItemsById:Object;
-  _isInitialised:Boolean;
+  _isInitialised:boolean;
   workspaceItems:Array<WorkspaceItem>;
 
   constructor(router, referenceDataService:ReferenceDataService, spotTileFactory:SpotTileFactory) {

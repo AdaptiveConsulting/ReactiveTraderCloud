@@ -32,7 +32,7 @@ export default class CompositeStatusService extends DisposableBase {
    * A true/false stream indicating if we're connected on the wire
    * @returns {*}
    */
-  get connectionStatusStream():Rx.Observable<Boolean> {
+  get connectionStatusStream():Rx.Observable<boolean> {
     return this._connection.connectionStatusStream;
   }
 
@@ -40,7 +40,7 @@ export default class CompositeStatusService extends DisposableBase {
    * The current isConnected status
    * @returns {*}
    */
-  get isConnected():Boolean {
+  get isConnected():boolean {
     return this._connection.isConnected;
   }
 

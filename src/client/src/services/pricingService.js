@@ -9,7 +9,7 @@ var _log:logger.Logger = logger.create('PricingService');
 
 export default class PricingService extends ServiceBase {
 
-  constructor(serviceType:String, connection:Connection, schedulerService:SchedulerService, referenceDataService:ReferenceDataService) {
+  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService, referenceDataService:ReferenceDataService) {
     super(serviceType, connection, schedulerService);
     this._priceMapper = new PriceMapper(referenceDataService);
   }
@@ -28,7 +28,7 @@ export default class PricingService extends ServiceBase {
             RetryPolicy.indefiniteEvery2Seconds,
             getPriceUpdatesOperationName,
             _this._schedulerService.async,
-            (err:Error, willRetry:Boolean) => {
+            (err:Error, willRetry:boolean) => {
               if(willRetry && lastPrice !== null) {
                 // if we have any error on the price stream we pump a stale price
                 let stalePrice = new SpotPrice(

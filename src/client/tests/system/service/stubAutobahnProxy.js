@@ -40,7 +40,7 @@ class StubAutobahnSession {
     this._stubPromises = {};
   }
 
-  subscribe<TRequest, TResults>(topic:String, onResults:(r:TResults) => void):Promise {
+  subscribe<TRequest, TResults>(topic:string, onResults:(r:TResults) => void):Promise {
     var stubPromise = new StubSubscribeResult(onResults);
     // we only support one request for the given topic,
     // if there is anything there we just blow it away
@@ -54,7 +54,7 @@ class StubAutobahnSession {
     })
   }
 
-  call<TRequest, TResults>(operationName:String, dto:TRequest):DummyPromise {
+  call<TRequest, TResults>(operationName:string, dto:TRequest):DummyPromise {
     var stubPromise = new StubCallResult(dto);
     // we only support one request for the given topic,
     // if there is anything there we just blow it away
@@ -62,7 +62,7 @@ class StubAutobahnSession {
     return stubPromise;
   }
 
-  getTopic(name:String) {
+  getTopic(name:string) {
     if (!this._stubPromises[name]) {
       throw new Error('Nothing has subscribed to topic/operation [' + name + ']');
     }

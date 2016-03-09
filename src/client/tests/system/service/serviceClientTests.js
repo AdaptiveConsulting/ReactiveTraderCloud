@@ -245,7 +245,7 @@ describe('ServiceClient', () => {
       pushPrice('myServiceType.1', 1);
     }
 
-    function pushPrice(serviceId:String, price:Number) {
+    function pushPrice(serviceId:string, price:number) {
       var replyToTopic = _stubAutobahnProxy.session.getTopic(serviceId + '.getPriceStream').dto.replyTo;
       _stubAutobahnProxy.session.getTopic(replyToTopic).onResults(price);
     }
@@ -341,12 +341,12 @@ describe('ServiceClient', () => {
       );
     }
 
-    function pushSuccessfulResponse(serviceId:String, response:Number) {
+    function pushSuccessfulResponse(serviceId:string, response:number) {
       var stubCallResult = _stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade');
       stubCallResult.onSuccess(response);
     }
 
-    function pushErrorResponse(serviceId:String, err:Error) {
+    function pushErrorResponse(serviceId:string, err:Error) {
       var stubCallResult = _stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade');
       stubCallResult.onReject(err);
     }
@@ -358,7 +358,7 @@ describe('ServiceClient', () => {
     _stubAutobahnProxy.setIsConnected(true);
   }
 
-  function pushServiceHeartbeat(serviceType:String, serviceId:String, instanceLoad:Number = 0) {
+  function pushServiceHeartbeat(serviceType:string, serviceId:string, instanceLoad:number = 0) {
     _stubAutobahnProxy.session.getTopic('status').onResults({
       Type: serviceType,
       Instance: serviceId,
@@ -367,14 +367,14 @@ describe('ServiceClient', () => {
     });
   }
 
-  function assertExpectedStatusUpdate(expectedCount:Number, lastStatusExpectedIsConnectedStatus:Boolean) {
+  function assertExpectedStatusUpdate(expectedCount:number, lastStatusExpectedIsConnectedStatus:boolean) {
     expect(_receivedServiceStatusStream.length).toEqual(expectedCount);
     if (expectedCount > 0) {
       expect(_receivedServiceStatusStream[expectedCount - 1].isConnected).toEqual(lastStatusExpectedIsConnectedStatus);
     }
   }
 
-  function assertServiceInstanceStatus(statusUpdateIndex:Number, serviceId:String, expectedIsConnectedStatus:Boolean) {
+  function assertServiceInstanceStatus(statusUpdateIndex:number, serviceId:string, expectedIsConnectedStatus:boolean) {
     var serviceStatus = _receivedServiceStatusStream[statusUpdateIndex];
     expect(serviceStatus).toBeDefined('Can\'t find service status summary at index ' + statusUpdateIndex);
     var instanceStatus = serviceStatus.getInstanceStatus(serviceId);

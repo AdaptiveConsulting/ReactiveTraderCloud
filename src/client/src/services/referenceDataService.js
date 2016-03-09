@@ -8,13 +8,13 @@ import { Connection, ServiceBase } from '../system/service';
 var _log:system.logger.Logger = logger.create('ReferenceDataService');
 
 export default class ReferenceDataService extends ServiceBase {
-  _hasLoadedSubject:Rx.Subject<Boolean>;
+  _hasLoadedSubject:Rx.Subject<boolean>;
   _referenceDataMapper:ReferenceDataMapper;
   _referenceDataStreamConnectable:Rx.ConnectableObservable;
   _currencyPairCache:Object;
-  _loadCalled:Boolean;
+  _loadCalled:boolean;
 
-  constructor(serviceType:String, connection:Connection, schedulerService:SchedulerService) {
+  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService) {
     super(serviceType, connection, schedulerService);
     this._referenceDataMapper = new ReferenceDataMapper();
     this._referenceDataStreamConnectable = this._referenceDataStream().publish();

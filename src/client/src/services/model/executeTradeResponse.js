@@ -2,10 +2,10 @@ import { Trade } from './';
 
 export default class ExecuteTradeResponse {
   _trade:Trade;
-  _error:String;
-  _hasError:Boolean;
+  _error:string;
+  _hasError:boolean;
 
-  static createForError(error:String) {
+  static createForError(error:string) {
     return new ExecuteTradeResponse(null, error, true);
   }
 
@@ -13,7 +13,7 @@ export default class ExecuteTradeResponse {
     return new ExecuteTradeResponse(trade, '', false);
   }
 
-  constructor(trade:Trade, error:String, hasError:Boolean) {
+  constructor(trade:Trade, error:string, hasError:boolean) {
     this._trade = trade;
     this._error = error;
     this._hasError = hasError;
@@ -23,11 +23,11 @@ export default class ExecuteTradeResponse {
     return this._trade;
   }
 
-  get error():String {
+  get error():string {
     return this._error;
   }
 
-  get hasError():Boolean {
+  get hasError():boolean {
     return this._hasError;
   }
 }

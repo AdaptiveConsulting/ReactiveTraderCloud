@@ -1,18 +1,18 @@
 import ShouldRetryResult from './shouldRetryResult';
 
 class IndefiniteRetryPolicy {
-  shouldRetry(error:Error, retryCount:Number):ShouldRetryResult {
+  shouldRetry(error:Error, retryCount:number):ShouldRetryResult {
     return new ShouldRetryResult(true, 0); // retry right away
   }
 }
 
 class IndefiniteEvery2SecondsRetryPolicy {
-  shouldRetry(error:Error, retryCount:Number):ShouldRetryResult {
+  shouldRetry(error:Error, retryCount:number):ShouldRetryResult {
     return new ShouldRetryResult(true, 2000);
   }
 }
 class BackoffTo10SecondsMax {
-  shouldRetry(error:Error, retryCount:Number):ShouldRetryResult {
+  shouldRetry(error:Error, retryCount:number):ShouldRetryResult {
     let retryAfter = retryCount * 1000;
     retryAfter = retryAfter < 10000
       ? retryAfter

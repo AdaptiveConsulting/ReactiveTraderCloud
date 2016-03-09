@@ -9,7 +9,7 @@ var _log:logger.Logger = logger.create('BlotterService');
 
 export default class BlotterService extends ServiceBase {
 
-  constructor(serviceType:String, connection:Connection, schedulerService:SchedulerService, referenceDataService:ReferenceDataService) {
+  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService, referenceDataService:ReferenceDataService) {
     super(serviceType, connection, schedulerService);
     this._tradeMapper = new TradeMapper(referenceDataService);
   }

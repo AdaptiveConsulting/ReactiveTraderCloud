@@ -44,7 +44,7 @@ export default class PriceMapper {
     return PriceMovementType.None;
   }
 
-  _getSpread(bid:Number, ask:Number, currencyPair:CurrencyPair) {
+  _getSpread(bid:number, ask:number, currencyPair:CurrencyPair) {
     let spread = (ask - bid) * Math.pow(10, currencyPair.pipsPosition);
     let toFixedPrecision = spread.toFixed(currencyPair.ratePrecision - currencyPair.pipsPosition);
     return new Spread(Number(toFixedPrecision), toFixedPrecision);

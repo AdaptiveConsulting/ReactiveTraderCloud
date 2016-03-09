@@ -4,9 +4,9 @@ import { HistoricPosition } from '../../../services/model';
 
 export default class PnlChartModel  {
   options:Object;
-  lastPos:String;
-  minPnl:Number;
-  maxPnl:Number;
+  lastPos:string;
+  minPnl:number;
+  maxPnl:number;
   _seriesData:Array<PricePoint>;
 
   constructor() {
@@ -54,10 +54,10 @@ export default class PnlChartModel  {
     this._seriesData = series;
   }
 
-  _processUpdate(positions:Array<HistoricPosition> = []):{ lastPos:String, domainMin:Number,domainMax:Number, series:Array<PricePoint>  } {
-    let lastPos:String,
-      minPnl:Number = 0,
-      maxPnl:Number = 0;
+  _processUpdate(positions:Array<HistoricPosition> = []):{ lastPos:string, domainMin:number,domainMax:number, series:Array<PricePoint>  } {
+    let lastPos:string,
+      minPnl:number = 0,
+      maxPnl:number = 0;
     let series:Array<PricePoint> = _(positions)
       .filter((item:HistoricPosition) => item && item.usdPnl != null)
       .map((item:HistoricPosition) => {

@@ -8,16 +8,16 @@ export default class LastValueObservableDictionary {
     this._version = 0;
   }
 
-  hasKey(key:String) {
+  hasKey(key:string) {
     return this._values.hasOwnProperty(key);
   }
 
-  add(key:String, value:LastValueObservable) {
+  add(key:string, value:LastValueObservable) {
     this._values[key] = value;
     this._version++;
   }
 
-  updateWithLatestValue(key:String, latestValue:Object) {
+  updateWithLatestValue(key:string, latestValue:Object) {
     this._values[key].latestValue = latestValue;
     this._version++;
   }

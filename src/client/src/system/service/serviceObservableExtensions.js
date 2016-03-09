@@ -12,7 +12,7 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
  * @param scheduler
  * @returns {Logger|Object}
  */
-function debounceOnMissedHeartbeat<TKey, TValue>(dueTime:Number, onDebounceItemFactory:(key:TKey) => TValue, scheduler:Rx.Scheduler) {
+function debounceOnMissedHeartbeat<TKey, TValue>(dueTime:number, onDebounceItemFactory:(key:TKey) => TValue, scheduler:Rx.Scheduler) {
   let sources:Rx.GroupedObservable = this;
   return Rx.Observable.create(o => {
     return sources.subscribe(innerSource => {
@@ -78,7 +78,7 @@ Rx.Observable.prototype.toServiceStatusObservableDictionary = toServiceStatusObs
  * @param waitForServiceIfNoneAvailable
  * @returns {Observable}
  */
-function getServiceWithMinLoad(waitForServiceIfNoneAvailable:Boolean = true):Rx.Observable<LastValueObservable<ServiceInstanceStatus>> {
+function getServiceWithMinLoad(waitForServiceIfNoneAvailable:boolean = true):Rx.Observable<LastValueObservable<ServiceInstanceStatus>> {
   let source:Rx.Observable<LastValueObservableDictionary<ServiceInstanceStatus>> = this;
   return Rx.Observable.create(o => {
     let disposables = new Rx.CompositeDisposable();
@@ -134,7 +134,7 @@ Rx.Observable.prototype.distinctUntilChangedGroup = distinctUntilChangedGroup;
  * @param scheduler
  * @returns {Observable}
  */
-function debounceWithSelector(dueTime:Number, itemSelector:() => TValue, scheduler:Rx.Scheduler) {
+function debounceWithSelector(dueTime:number, itemSelector:() => TValue, scheduler:Rx.Scheduler) {
   let source = this;
   return Rx.Observable.create(o => {
     let disposables = new Rx.CompositeDisposable();

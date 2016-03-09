@@ -1,23 +1,23 @@
 export default class User {
-  _firstName:String;
-  _lastName:String;
-  _code:String;
+  _firstName:string;
+  _lastName:string;
+  _code:string;
 
-  constructor(firstName:String, lastName:String, code:String) {
+  constructor(firstName:string, lastName:string, code:string) {
     this._firstName = firstName;
     this._lastName = lastName;
     this._code = code;
   }
 
-  get firstName():String {
+  get firstName():string {
     return this._firstName;
   }
 
-  get lastName():String {
+  get lastName():string {
     return this._lastName;
   }
 
-  get code():String {
+  get code():string {
     return this._code;
   }
 }

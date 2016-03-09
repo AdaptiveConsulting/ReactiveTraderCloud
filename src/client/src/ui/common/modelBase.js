@@ -5,7 +5,7 @@ import { logger } from '../../system';
 var _log:logger.Logger = logger.create('ModelBase');
 
 export default class ModelBase extends DisposableBase {
-  _modelId:String;
+  _modelId:string;
   router:Router;
 
   constructor(modelId, router) {
@@ -24,7 +24,7 @@ export default class ModelBase extends DisposableBase {
     this.addDisposable(this.router.observeEventsOn(this._modelId, this));
   }
 
-  get modelId():String {
+  get modelId():string {
     return this._modelId;
   }
 }

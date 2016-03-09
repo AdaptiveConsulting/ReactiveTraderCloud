@@ -1,5 +1,5 @@
 export default class AnalyticsRequest {
-  constructor(ccyPairSymbol:String) {
+  constructor(ccyPairSymbol:string) {
     this.Symbol = ccyPairSymbol;
   }
 }

@@ -1,21 +1,21 @@
 import CurrencyPairUpdate from './currencyPairUpdate';
 
 export default class CurrencyPairUpdates {
-  _isStateOfTheWorld:Boolean;
-  _isStale:Boolean;
+  _isStateOfTheWorld:boolean;
+  _isStale:boolean;
   _currencyPairUpdates:Array<CurrencyPairUpdate>;
 
-  constructor(isStateOfTheWorld:Boolean, isStale:Boolean, currencyPairUpdates:Array<CurrencyPairUpdate>) {
+  constructor(isStateOfTheWorld:boolean, isStale:boolean, currencyPairUpdates:Array<CurrencyPairUpdate>) {
       this._isStateOfTheWorld = isStateOfTheWorld;
       this._isStale = isStale;
       this._currencyPairUpdates = currencyPairUpdates;
   }
 
-  get isStateOfTheWorld():Boolean{
+  get isStateOfTheWorld():boolean{
       return this._isStateOfTheWorld;
     }
 
-  get isStale():Boolean{
+  get isStale():boolean{
       return this._isStale;
     }
 

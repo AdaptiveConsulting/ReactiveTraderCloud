@@ -8,13 +8,13 @@ var _log:logger.Logger = logger.create('RetryPolicy');
 
 function retryWithPolicy<TValue>(
   retryPolicy,
-  operationDescription:String,
+  operationDescription:string,
   scheduler:Rx.Scheduler,
-  onErrorCallback:(err:Error, willRetry:Boolean) => void
+  onErrorCallback:(err:Error, willRetry:boolean) => void
 ):Rx.Observable<TValue> {
   var source:Rx.Observable<TValue> = this;
   return Rx.Observable.create(o => {
-    let retryCount:Number = 0;
+    let retryCount:number = 0;
     let subscribe:() => void = null;
     let isDisposed = false;
     let currentSubscriptionDisposable = new Rx.SerialDisposable();
