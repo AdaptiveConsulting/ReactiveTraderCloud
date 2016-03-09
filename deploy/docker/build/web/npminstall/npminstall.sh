@@ -15,8 +15,8 @@
 # fail fast
 set -euo pipefail
 
-echo "getting the cache ..."
-cp -r /.npm /root/
+# echo "getting the cache ..."
+# cp -r /.npm /root/
 
 echo "npm install ..."
 cd /client
@@ -26,8 +26,8 @@ npm run deploy:prod
 
 echo "saving cache ..."
 # caching _git-remotes result in an error of copy, I don't cache it
-rm -rf /root/.npm/_git-remotes
-cp -r /root/.npm /
+# rm -rf /root/.npm/_git-remotes
+# cp -r /root/.npm /
 
 echo "copying dist ..."
 cp -r /client/dist /
