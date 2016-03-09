@@ -43,6 +43,8 @@ class SpotTileView extends ViewBase {
     return (
       <div className={className}>
         <div className='currency-pair-title'>
+          <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right'
+             onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', e)}/>
           <i className='glyphicon glyphicon-stats pull-right'
              onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
           <span>{model.tileTitle}</span>

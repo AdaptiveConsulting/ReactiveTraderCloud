@@ -4,7 +4,7 @@ import { ReferenceDataService, PricingService, ExecutionService } from '../../..
 import { logger } from '../../../system';
 import { ServiceStatus } from '../../../system/service';
 import { ModelBase } from '../../common';
-import { TileStatus, TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
+import { TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
 import {
   GetSpotStreamRequest,
   SpotPrice,
@@ -38,6 +38,7 @@ export default class SpotTileModel extends ModelBase {
   pricingConnected:Boolean;
   executionConnected:Boolean;
   isTradeExecutionInFlight:Boolean;
+
   constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
               router,
               pricingService:PricingService,
@@ -79,6 +80,13 @@ export default class SpotTileModel extends ModelBase {
   @observeEvent('tileClosed')
   _onTileClosed() {
     this._log.info(`Cash tile closing`);
+    // TODO
+  }
+
+  @observeEvent('popOutTile')
+  _onPopOutTile(e:{notional:Number}) {
+    this._log.info(`Popping out tile`);
+    // TODO
   }
 
   @observeEvent('toggleSparkLineChart')
@@ -166,7 +174,7 @@ export default class SpotTileModel extends ModelBase {
   _updateHistoricalPrices(price:SpotPrice) {
     this.historicMidSportRates.push(price.mid.rawRate);
     // we only keep a limited amount of historical prices
-    if(this.historicMidSportRates.length > 150) {
+    if(this.historicMidSportRates.length > 30) {
       this.historicMidSportRates.shift(); // pop the first element
     }
   }

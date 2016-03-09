@@ -1,7 +1,7 @@
 import React from 'react';
 import { Message } from '../../common/components';
 
-class GrowlView extends React.Component {
+export default class GrowlView extends React.Component {
 
   constructor(props, context){
     super(props, context);
@@ -36,5 +36,3 @@ class GrowlView extends React.Component {
     );
   }
 }
-
-export default GrowlView;

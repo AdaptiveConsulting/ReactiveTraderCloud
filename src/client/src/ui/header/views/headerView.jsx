@@ -80,7 +80,7 @@ export default class HeaderView extends ViewBase {
       return items;
     }
     for (let serviceType in serviceLookup.services) {
-      items.push(this._renderService(serviceType));
+      items.push(this._renderService(model, serviceType));
     }
     return items;
   }

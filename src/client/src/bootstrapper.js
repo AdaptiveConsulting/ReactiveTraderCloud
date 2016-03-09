@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Router, Route, IndexRoute } from 'react-router';
+import { createHashHistory } from 'history';
 import { WorkspaceModel } from './ui/workspace/model';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
@@ -7,7 +11,10 @@ import { User, ServiceConst, ServiceStatusLookup } from './services/model';
 import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
-import { default as router } from './system/router';
+import { default as espRouter } from './system/router';
+import { PageContainer, ShellView } from './ui/shell/views';
+import { GrowlView } from './ui/growl/views';
+import { SpotTileView } from './ui/spotTile/views';
 import {
   AnalyticsService,
   BlotterService,
@@ -18,82 +25,126 @@ import {
   CompositeStatusService
 } from './services';
 
-export default class Bootstrapper {
+class Bootstrapper {
+  _connection:Connection;
+  _referenceDataService:ReferenceDataService;
+  _pricingService:PricingService;
+  _blotterService:BlotterService;
+  _executionService:ExecutionService;
+  _analyticsService:AnalyticsService;
+  _compositeStatusService:CompositeStatusService;
+  _schedulerService:SchedulerService;
+
   run() {
+    this.startServices();
+    this.startModels();
+    this.displayUi();
+  }
+
+  startServices() {
 
     let user:User = FakeUserRepository.currentUser;
     let url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
-    let schedulerService = new SchedulerService();
-    let autobahnProxy = new AutobahnConnectionProxy(url, realm);
-    let connection = new Connection(user.code, autobahnProxy, schedulerService);
+    this._schedulerService = new SchedulerService();
+    this._connection = new Connection(
+      user.code,
+      new AutobahnConnectionProxy(url, realm),
+      this._schedulerService
+    );
 
-    let openFin = new OpenFin();
-    let referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, connection, schedulerService);
-    let pricingService = new PricingService(ServiceConst.PricingServiceKey, connection, schedulerService, referenceDataService);
-    let blotterService = new BlotterService(ServiceConst.BlotterServiceKey, connection, schedulerService, referenceDataService);
-    let executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, connection, schedulerService, referenceDataService, openFin);
-    let analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, connection, schedulerService);
-    let compositeStatusService = new CompositeStatusService(connection, pricingService, referenceDataService, blotterService, executionService, analyticsService);
+    this._openFin = new OpenFin();
+    this._referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this._connection, this._schedulerService);
+    this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, this._schedulerService, this._referenceDataService);
+    this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, this._schedulerService, this._referenceDataService);
+    this._executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, this._connection, this._schedulerService, this._referenceDataService, this._openFin);
+    this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, this._schedulerService);
+    this._compositeStatusService = new CompositeStatusService(this._connection, this._pricingService, this._referenceDataService, this._blotterService, this._executionService, this._analyticsService);
 
     // create shell model
     // create root ui with shell view
     // start shell model
 
+    // bring up all the services
+    this._pricingService.connect();
+    this._blotterService.connect();
+    this._executionService.connect();
+    this._analyticsService.connect();
+    this._compositeStatusService.start();
+    this._referenceDataService.connect();
+    this._referenceDataService.load();
+    this._connection.connect();
+  }
+
+  startModels() {
     // create other models
-    let spotTileFactory = new SpotTileFactory(router, pricingService, executionService);
+    let spotTileFactory = new SpotTileFactory(espRouter, this._pricingService, this._executionService);
 
     // wire-up the workspace
     let workspaceModel = new WorkspaceModel(
-      router,
-      referenceDataService,
+      espRouter,
+      this._referenceDataService,
       spotTileFactory
     );
     workspaceModel.observeEvents();
 
     // wire-up the blotter
     let blotterModel = new BlotterModel(
-      router,
-      blotterService
+      espRouter,
+      this._blotterService
     );
     blotterModel.observeEvents();
 
     // wire-up analytics
     let analyticsModel = new AnalyticsModel(
-      router,
-      analyticsService
+      espRouter,
+      this._analyticsService
     );
     analyticsModel.observeEvents();
 
     // wire-up the header
     let headerModel = new HeaderModel(
-      router,
-      compositeStatusService
+      espRouter,
+      this._compositeStatusService
     );
     headerModel.observeEvents();
-
-   // bring up all the services
-    pricingService.connect();
-    referenceDataService.connect();
-    blotterService.connect();
-    executionService.connect();
-    analyticsService.connect();
-
 
     // Bring up ref data first and wait fo rit to load.
     // The ref data API allows for both synchronous and asynchronous data access however in most cases you'll be using the synchronous API.
     // Given this we wait for it to build it's cache now.
     // Note there are lots of bells and whistles you can put around this, for example spin up the models, but wait for them to receive a ref data loaded event, etc.
     // Such functionality give a better load experience, for now we'll just wait.
-    referenceDataService.hasLoadedStream.subscribe(() => {
-
+    this._referenceDataService.hasLoadedStream.subscribe(() => {
       // start other models
-      router.publishEvent(workspaceModel.modelId, 'init', {});
-      router.publishEvent(blotterModel.modelId, 'init', {});
-      router.publishEvent(analyticsModel.modelId, 'init', {});
-      router.publishEvent(headerModel.modelId, 'init', {});
+      espRouter.publishEvent(workspaceModel.modelId, 'init', {});
+      espRouter.publishEvent(blotterModel.modelId, 'init', {});
+      espRouter.publishEvent(analyticsModel.modelId, 'init', {});
+      espRouter.publishEvent(headerModel.modelId, 'init', {});
     });
-    referenceDataService.load();
+  }
 
-    connection.connect();
+  displayUi() {
+    let history = createHashHistory({
+      queryKey: false
+    });
+    let root = document.getElementById('root');
+    let routes = (
+      <Router history={history}>
+        <Route path='/' component={PageContainer}>
+          <IndexRoute component={ShellView}/>
+        </Route>
+        <Route path='/user' component={PageContainer}>
+          <IndexRoute component={ShellView}/>
+        </Route>
+        <Route path='/tile'>
+          <IndexRoute component={SpotTileView}/>
+        </Route>
+        <Route path='/growl'>
+          <IndexRoute component={GrowlView}/>
+        </Route>
+      </Router>
+    );
+    ReactDOM.render(routes, root);
   }
 }
+
+new Bootstrapper().run();

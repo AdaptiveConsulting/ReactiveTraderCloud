@@ -14,7 +14,7 @@ const webpackConfig = {
   target: 'web',
   entry: {
     app: [
-      './src/app.js'
+      './src/bootstrapper.js'
     ]
   },
   output: {

@@ -4,7 +4,7 @@ import { utils } from 'system';
 let mountedInstance;
 let defaultClassName = 'absolute-center modal text-center';
 
-class Modal extends React.Component {
+export default class Modal extends React.Component {
 
   static propTypes = {
     show: React.PropTypes.bool,
@@ -111,8 +111,3 @@ Modal.close = () => {
   });
   return Modal;
 };
-
-// ensure it's rendered
-//render(<Modal />, document.body);
-
-export default Modal;

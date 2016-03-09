@@ -4,7 +4,7 @@ import Popout from '../popout/popout';
 // for tearoff render view, go here:
 const url = '/#/tile';
 
-class Container extends React.Component {
+export default class Container extends React.Component {
 
   static propTypes = {
     onTearoff: React.PropTypes.func.isRequired,
@@ -75,7 +75,4 @@ class Container extends React.Component {
         </div>
       </Popout>;
   }
-
 }
-
-export default Container;

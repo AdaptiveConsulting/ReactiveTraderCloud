@@ -51,7 +51,7 @@ export default class BlotterView extends ViewBase {
             rowsCount={model.trades.length}
             width={containerWidth}
             height={280}
-            rowClassNameGetter={(index) => 'animated'}>
+            rowClassNameGetter={(index) => this._getRowClass(model.trades[index])}>
             {columns}
           </Table>
         </div>
@@ -114,5 +114,15 @@ export default class BlotterView extends ViewBase {
         cell={props => (<Cell width={80}>{this.state.model.trades[props.rowIndex].traderName}</Cell>)}
         width={80}/>
     ];
+  }
+
+  /**
+   * Returns the class to apply to a row
+   * @param rowItem
+   * @returns {string}
+   */
+  _getRowClass(rowItem:Trade){
+    var className = classNames(rowItem.status.name, ' animated ', 'slideInDown');
+      return className;
   }
 }

@@ -60,6 +60,8 @@ export default class CompositeStatusService extends DisposableBase {
     return this._serviceStatusStream.asObservable();
   }
 
+  // since we expose some synchronous state state that's derived from
+  // async streams we need an explicit start to ensure the streams are always hot
   start() {
     this.addDisposable(
       this._serviceStatusStream.subscribe(update => {

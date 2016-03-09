@@ -3,14 +3,14 @@ import { WorkspaceView } from '../../workspace/views';
 import { BlotterView } from '../../blotter/views';
 import { HeaderView } from '../../header/views';
 import { AnalyticsView } from '../../analytics/views';
-import common from '../../common';
+import { Modal } from '../../common/components';
 
 export default class ShellView extends React.Component {
 
   render(){
     return (
       <div className='flex-container'>
-        <common.components.Modal />
+        <Modal />
         <HeaderView modelId='headerModelId' />
         <div className='horizontal-wrap'>
           <WorkspaceView modelId='workspaceModelId' />

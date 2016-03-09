@@ -8,7 +8,7 @@ const levels = {
   error: 4
 };
 
-let _currentLevel = levels.verbose;
+let _currentLevel = levels.debug;
 
 let _sink = (logEvent)  =>{
   const toLog = [`%c [${logEvent.level}][${logEvent.logger}]`, `color:${logEvent.color}`];
