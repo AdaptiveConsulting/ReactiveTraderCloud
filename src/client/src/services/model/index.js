@@ -14,3 +14,8 @@ export { default as SpotPrice } from './spotPrice';
 export { default as Trade } from './trade';
 export { default as UpdateType } from './updateType';
 export { default as User } from './user';
+export { default as PriceMovementType } from './priceMovementType';
+export { default as Rate } from './rate';
+export { default as TradeStatus } from './tradeStatus';
+export { default as ExecuteTradeResponse } from './executeTradeResponse';
+export { default as Spread } from './spread';

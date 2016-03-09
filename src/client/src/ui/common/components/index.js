@@ -1,11 +1,3 @@
-import Container from './container/container';
-import Modal from './modal/modal';
-import Popout from './popout/popout';
-import Message from './message/message';
-
-export default {
-  Container,
-  Modal,
-  Popout,
-  Message
-};
+export { default as Container } from './container/container';
+export { default as Modal } from './modal/modal';
+export { default as Popout } from './popout/popout';

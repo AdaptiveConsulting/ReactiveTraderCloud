@@ -1,16 +1,29 @@
-export default class Trade {
-  _tradeId:Number;
-  _traderName:String;
-  _currencyPair:String;
-  _notional:Number;
-  _dealtCurrency:String;
-  _direction:String;
-  _spotRate:Number;
-  _tradeDate:Date;
-  _formattedValueDate:Date;
-  _status:String;
+import { Direction, TradeStatus, CurrencyPair } from './';
 
-  constructor(tradeId:Number, traderName:String, currencyPair:String, notional:Number, dealtCurrency:String, direction:String, spotRate:Number, tradeDate:Date, formattedValueDate:String, status:String) {
+export default class Trade {
+  _tradeId:number;
+  _traderName:string;
+  _currencyPair:CurrencyPair;
+  _notional:number;
+  _dealtCurrency:string;
+  _direction:string;
+  _spotRate:number;
+  _tradeDate:Date;
+  _valueDate:Date;
+  _status:TradeStatus;
+
+  constructor(
+    tradeId:number,
+    traderName:string,
+    currencyPair:CurrencyPair,
+    notional:number,
+    dealtCurrency:string,
+    direction:Direction,
+    spotRate:number,
+    tradeDate:Date,
+    valueDate:string,
+    status:TradeStatus
+  ) {
     this._tradeId = tradeId;
     this._traderName = traderName;
     this._currencyPair = currencyPair;
@@ -19,35 +32,35 @@ export default class Trade {
     this._direction = direction;
     this._spotRate = spotRate;
     this._tradeDate = tradeDate;
-    this._formattedValueDate = formattedValueDate;
+    this._valueDate = valueDate;
     this._status = status;
   }
 
-  get tradeId():Number {
+  get tradeId():number {
     return this._tradeId;
   }
 
-  get traderName():String {
+  get traderName():string {
     return this._traderName;
   }
 
-  get currencyPair():String {
+  get currencyPair():CurrencyPair {
     return this._currencyPair;
   }
 
-  get notional():Number {
+  get notional():number {
     return this._notional;
   }
 
-  get dealtCurrency():String {
+  get dealtCurrency():string {
     return this._dealtCurrency;
   }
 
-  get direction():String {
+  get direction():Direction {
     return this._direction;
   }
 
-  get spotRate():Number {
+  get spotRate():number {
     return this._spotRate;
   }
 
@@ -55,11 +68,11 @@ export default class Trade {
     return this._tradeDate;
   }
 
-  get formattedValueDate():Date {
-    return this._formattedValueDate;
+  get valueDate():Date {
+    return this._valueDate;
   }
 
-  get status():String {
+  get status():TradeStatus {
     return this._status;
   }
 }

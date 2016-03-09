@@ -9,7 +9,7 @@ const CONTAINER_ID         = 'popout-content-container',
  * @class Popout
  * @extends ReactPopout
  */
-class Popout extends ReactPopout {
+export default class Popout extends ReactPopout {
 
   /**
    * Strategy for opening can be via window.open or fin.desktop.Window(), which are not compatible
@@ -125,5 +125,3 @@ class Popout extends ReactPopout {
     });
   }
 }
-
-export default Popout;

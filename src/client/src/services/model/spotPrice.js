@@ -1,41 +1,73 @@
+import { PriceMovementType, Rate, Spread } from './';
+
 export default class SpotPrice {
   _symbol:string;
-  _bid:Number;
-  _ask:Number;
-  _mid:Number;
+  _bid:Rate;
+  _ask:Rate;
+  _mid:Rate;
   _valueDate:Date;
-  _creationTimestamp:Number;
+  _creationTimestamp:number;
+  _priceMovementType:PriceMovementType;
+  _spread:number;
+  _isTradable:boolean;
 
-  constructor(symbol:Number, bid:Number, ask:Number, mid:Number, valueDate:Date, creationTimestamp:Number) {
+  constructor(
+    symbol:number,
+    bid:Rate,
+    ask:Rate,
+    mid:Rate,
+    valueDate:Date,
+    creationTimestamp:number,
+    priceMovementType:PriceMovementType,
+    spread:Spread,
+    isTradable:boolean
+  ) {
     this._symbol = symbol;
     this._bid = bid;
     this._ask = ask;
     this._mid = mid;
     this._valueDate = valueDate;
     this._creationTimestamp = creationTimestamp;
+    this._priceMovementType = priceMovementType;
+    this._spread = spread;
+    this._isTradable = isTradable;
   }
 
-  get symbol() {
+  // in the real world there'd be a price id on here somewhere!!
+
+  get symbol() : string {
     return this._symbol;
   }
 
-  get bid() {
+  get bid() : Rate {
     return this._bid;
   }
 
-  get ask() {
+  get ask() : Rate {
     return this._ask;
   }
 
-  get mid() {
+  get mid() : Rate {
     return this._mid;
   }
 
-  get valueDate() {
+  get spread() : Spread {
+    return this._spread;
+  }
+
+  get valueDate() : Date {
     return this._valueDate;
   }
 
-  get creationTimestamp() {
+  get creationTimestamp() : Date {
     return this._creationTimestamp;
+  }
+
+  get priceMovementType() : PriceMovementType {
+    return this._priceMovementType;
+  }
+
+  get isTradable() : Boolean {
+    return this._isTradable;
   }
 }

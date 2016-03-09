@@ -1,5 +1,1 @@
-import DisposableBase from './disposable-base';
-
-export default {
-  DisposableBase
-};
+export { default as DisposableBase } from './disposableBase';

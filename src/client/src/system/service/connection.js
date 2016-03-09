@@ -1,24 +1,24 @@
 import Guard from '../guard';
 import Rx from 'rx';
 import logger from '../logger';
-import disposables from '../disposables';
-import AutobahnConnectionProxy from './autobahn-connection-proxy';
-import ServiceInstanceStatus from './service-instance-status';
+import { DisposableBase } from '../disposables';
+import AutobahnConnectionProxy from './autobahnConnectionProxy';
+import ServiceInstanceStatus from './serviceInstanceStatus';
 import SchedulerService from '../schedulerService';
-import ConnectionStatus from './connection-status';
+import ConnectionStatus from './connectionStatus';
 
 const _log:logger.Logger = logger.create('Connection');
 
 /**
  * Represents a Connection to autobahn
  */
-export default class Connection extends disposables.DisposableBase {
-  _userName:String;
+export default class Connection extends DisposableBase {
+  _userName:string;
   _autobahn:AutobahnConnectionProxy;
-  _connectionStatusSubject:Rx.BehaviorSubject<Boolean>;
+  _connectionStatusSubject:Rx.BehaviorSubject<boolean>;
   _serviceStatusSubject:Rx.BehaviorSubject<ServiceInstanceStatus>;
-  _connectCalled:Boolean;
-  _isConnected:Boolean;
+  _connectCalled:boolean;
+  _isConnected:boolean;
   _schedulerService:SchedulerService;
   _autoDisconnectDisposable:Rx.SerialDisposable;
 
@@ -47,7 +47,7 @@ export default class Connection extends disposables.DisposableBase {
    * A stream of the current connection status (see ConnectionStatus for possible values)
    * @returns {*}
    */
-  get connectionStatusStream():Rx.Observable<String> {
+  get connectionStatusStream():Rx.Observable<string> {
     return this._connectionStatusSubject
       .distinctUntilChanged();
   }
@@ -56,7 +56,7 @@ export default class Connection extends disposables.DisposableBase {
    * A boolean indicating if we're currently connected.
    * @returns {Boolean}
    */
-  get isConnected():Boolean {
+  get isConnected():boolean {
     return this._isConnected;
   }
 
@@ -164,7 +164,7 @@ export default class Connection extends disposables.DisposableBase {
    * @param responseTopic
    * @returns {Observable}
    */
-  requestResponse<TRequest, TResponse>(remoteProcedure:String, payload:TRequest, responseTopic:String = ''):Rx.Observable<TResponse> {
+  requestResponse<TRequest, TResponse>(remoteProcedure:string, payload:TRequest, responseTopic:string = ''):Rx.Observable<TResponse> {
     let _this : Connection = this;
     return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
       _log.debug(`Doing a RPC to [${remoteProcedure}]. Is connected [${_this._isConnected}]`);
@@ -174,7 +174,7 @@ export default class Connection extends disposables.DisposableBase {
         o.onError(new Error(`Session not connected, can\'t perform remoteProcedure ${remoteProcedure}`));
         return disposables;
       }
-      let isDisposed:Boolean;
+      let isDisposed:boolean;
       let dto = [{
         replyTo: responseTopic,
         Username: _this._userName,

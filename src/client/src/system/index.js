@@ -1,20 +1,12 @@
-import Guard from './guard';
-import * as logger from './logger';
-import * as disposables from './disposables';
-import SchedulerService from './schedulerService';
-import * as service from './service';
-import RetryPolicy from './observableExtentsions/retry-policy';
-import utils from './utils';
+import * as utils from './utils';
 
-// observableExtensions has no exports, it adds functionality to rx
-import './observableExtentsions/retry-policy-ext';
+export { utils };
+export { default as router } from './router';
+export { default as logger } from './logger';
+export { default as SchedulerService } from './schedulerService';
+export { default as RetryPolicy } from './observableExtentsions/retryPolicy';
+export { default as Guard } from './guard';
 
-export default {
-  Guard,
-  logger,
-  disposables,
-  SchedulerService,
-  service,
-  RetryPolicy,
-  utils
-};
+// these imports add functionality to rx
+import './observableExtentsions/retryPolicyExt';
+import './observableExtentsions/subscribeWithRouter';
