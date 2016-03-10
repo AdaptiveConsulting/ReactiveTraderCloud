@@ -11,20 +11,20 @@ By default, doing an `npm install` in the client folder will also get a small Op
 You can then run the built-in npm task:
 
 ```sh
-$ [.../src/client] master ± npm run openfin
+$ [.../src/client] $ npm run openfin
 ```
 
 You can also do this separately to the npm workflow. Get [node](https://nodejs.org/en/) working first, then do the following:
 
 ```sh
-[:~/projects/reactive-trader-cloud/src] master(+23/-0)+ ± npm install -g openfin-cli
+[:~/projects/reactive-trader-cloud/src] $ npm install -g openfin-cli
 ```
 
 You can now run it against the `app.json`, which will fetch the required runtime and create a desktop shortcut for you.
 
 ```sh
-[:~/projects/reactive-trader-cloud/src] master(+23/-0)+ ± cd client
-[:~/projects/reactive-trader-cloud/src/client] master(+23/-0)+ ± $ openfin -c src/app.json -l
+[:~/projects/reactive-trader-cloud/src] $ cd client
+[:~/projects/reactive-trader-cloud/src/client] $ openfin -c src/app.json -l
 ```
 
 The `-l` argument launches OpenFin in addition to updating `app.json` and creating a shortcut (one-off).
@@ -33,7 +33,7 @@ The `-l` argument launches OpenFin in addition to updating `app.json` and creati
 
 ## Resetting OpenFin
 
-You may find you need to clear up the OpenFin cache, which includes localStorage and app window sizes and positions of tearoffs.
+You may find you need to clear up the OpenFin cache, which includes localStorage and app window sizes and positions of tear-offs.
 Cache can be deleted manually by removing files from these folders:
 
  - For Windows Vista, 7, or 8: `%LOCALAPPDATA%\OpenFin\cache`

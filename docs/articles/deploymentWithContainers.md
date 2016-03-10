@@ -17,7 +17,7 @@ We build every services as a [LXC container](https://linuxcontainers.org/). Thes
 ie:
 - docker: [rkt](https://coreos.com/rkt/docs/latest/)
 - Kubernetes: [EC2 container service](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html) / [Docker swarm](https://docs.docker.com/swarm/)
-- Google Cloud Engine: Baremetal / [AWS](https://aws.amazon.com/fr/) 
+- Google Cloud Engine: Baremetal / [AWS](https://aws.amazon.com/) 
 
 ##### why
 
@@ -43,13 +43,13 @@ A container manager can od all this work for you.
 Kubernetes is a tool to manage LXC Containers (like docker) on a cluster.
 
 Here are some of the Kubernetes main features:
-- Start/Stop `containers` on one node is the same as on a cluster of 100 nodes.
-- Communication between your `containers` is done by a `Kubernetes service` abstraction. This abstraction gives a DNS to each service running in the cluster. ie, I can define a `backend` service and reach it easily on http://backend.
-- You can horizontally scale your `containers` and benefit of the `Kubernetes service` load balancer system. Just say `I want 5 of these` and it's done.
-- Resiliency is automatically done if your service is resilient by nature. If the node where your `container` is running stop for any reason, Kubernetes will automatically schedule the restart of that service on a different node.
-- To easily start and stop new environments, Kubernetes comes with the `namespace` abstraction. A Kubernetes service `frontend` can talk to a Kubernetes service `backend` on http://backend only if the `frontend` and `backend` services are on the same namespace. A `backend` on another namespace can't be accessed the same way.
+- Start/Stop containers on one node is the same as on a cluster of 100 nodes.
+- Communication between your containers is done by a Kubernetes service abstraction. This abstraction gives a DNS to each service running in the cluster. ie, I can define a `backend` service and reach it easily on, for example: `http://backend`.
+- You can horizontally scale your containers and benefit of the Kubernetes service load balancer system. Just say: `I want 5 of these` and it's done.
+- Resiliency is automatically done if your service is resilient by nature. If the node where your container is running stop for any reason, Kubernetes will automatically schedule the restart of that service on a different node.
+- To easily start and stop new environments, Kubernetes comes with the namespace abstraction. A Kubernetes service `frontend` can talk to a Kubernetes service `backend` on http://backend only if the `frontend` and `backend` services are on the same namespace. A `backend` on another namespace can't be accessed the same way.
 - Cross Environments capabilities. ie: Kubernetes service `monitoring` on namespace `admin` can talk to a Kubernetes service `frontend` defined on namespace `development` with http://frontend.development. If the `monitoring` service try to reach http://frontend, it will implicitly resolve to http://frontend.admin. 
-- Kubernetes does not manage directly a repository for your images. There are private and public solutions (like [dockerhub](http://hub.docker.com), [Quay](http://quay.io), etc). You can define it directly on your kubernetes cluster but it's not the default.
+- Kubernetes does not manage directly a repository for your images. There are private and public solutions (like [dockerhub](http://hub.docker.com), [Quay](http://quay.io), etc). You can define it directly on your Kubernetes cluster but it's not the default.
 
 #### What is Google Cloud
 

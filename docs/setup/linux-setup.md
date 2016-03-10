@@ -2,12 +2,11 @@
 
 ### Docker
 
-The way to run ReactiveTrader on Linux is by using Docker.  
-You can find the tutorial [here](docker-setup.md).
+The way to run ReactiveTrader on Linux is by using Docker. You can find the tutorial [here](docker-setup.md).
 
 ### Traditional installation 
 
-Tested on Ubuntu 14.04.
+These instructions have been tested on Ubuntu 14.04.
 
 This has also tested on a Raspberry Pi 2 running Raspbian Wheezy, although you will need these additional apt packages to run crossbar.io: `python-dev` `libffi-dev`
 
@@ -41,11 +40,10 @@ Active Version              Runtime Architecture OperatingSystem Alias
   *    1.0.0-rc1-update1    mono                 linux/osx       default
 ```
 
-### Install EventStore
+### Install Event Store
 
-Follow the instructions provided here:
+Follow the instructions provided [here](http://docs.geteventstore.com/server/3.3.0/installing-from-debian-repositories/)
 
-http://docs.geteventstore.com/server/3.3.0/installing-from-debian-repositories//
 
 ### Install Crossbar.io
 
@@ -53,7 +51,7 @@ Follow the instructions provided [here](http://crossbar.io/docs/Installation-on-
 
 ## Running Reactive Trader
 
-Start EventStore by running
+Start Event Store by running
 
 ```bash
 $ sudo service eventstore start
@@ -63,7 +61,7 @@ In a separate terminal, start Crossbar from the `/src/server` folder by running:
 ```bash
 $ crossbar start
 ```
-Also from the `/src/server` working directory, install the packages required by running:
+From the `/src/server` working directory, install the packages required by running:
 
 ```bash
 $ dnu restore
@@ -74,9 +72,9 @@ Then run the services:
 $ cd Adaptive.ReactiveTrader.Server.Launcher
 $ dnx run all
 ```
-The services should now run and connect to Crossbar and EventStore.
+The services should now run and connect to Crossbar and Event Store.
 
-Run the client app by following the instructions [here](../src/client/README.md)
+Run the client app by following the instructions [here](../client.md)
 
 ### Problem running the app?
 

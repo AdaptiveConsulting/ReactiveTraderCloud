@@ -5,7 +5,7 @@ The following instructions have been tested on:
 - Ubuntu 14.04.3 / 15.10
 - OS X 10.11.2 (15C50) / kernel 15.2.0
 
-If you have any issues with this process, please have a look [here](docker-issues.md). We have listed some of the known problems that may occur.
+If you have any issues with this process, please have a look [here](docker-issues.md) where we have listed some of the known problems that may occur.
 
 ## Install docker for your OS
 
@@ -42,7 +42,7 @@ docker ps
 This should output:
 
 ```bash
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+CONTAINER ID     IMAGE            COMMAND          CREATED          STATUS           PORTS            NAMES
 
 ```
 
@@ -58,15 +58,16 @@ git config --global core.autocrlf false
 
 ## End to end
 
-If all you want is to quickly run ReactiveTrader, you can move to the [Run Reactive Trader part](#run-reactive-trader).
+If all you want is to quickly run ReactiveTrader, you can move to the [Run Reactive Trader document](#run-reactive-trader).
 
-This step will control that everything is working:  
- - download all the base containers to build the project
- - build all services
- - run ReactiveTrader
- - test ReactiveTrader
- - stop ReactiveTrader
+Otherwise, this step will control that everything is working:  
+ - Download all the base containers to build the project
+ - Build all services
+ - Run ReactiveTrader
+ - Test ReactiveTrader
+ - Stop ReactiveTrader
  
+Run: 
 ```bash
 cd deploy/e2e
 ./e2e.sh
@@ -100,7 +101,6 @@ Note that the time for all this process is mostly defined by your internet bandw
 
 ## Build
  
-If the e2e step has passed, you are now confident that the setup is fine.  
 We can look at how to manually build `Reactive Trader`.
 
 Move to the docker folder
@@ -187,15 +187,15 @@ Should give you something similar to:
 
 ```bash
 $ docker ps
-CONTAINER ID        IMAGE                             COMMAND                  CREATED             STATUS              PORTS               NAMES
-ba36323ecc73        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   29 seconds ago      Up 23 seconds                           analytics
-e116fa85abdb        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   30 seconds ago      Up 24 seconds                           blotter
-b69e619c1059        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   31 seconds ago      Up 25 seconds                           tradeexecution
-fa50bfc6a88a        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   32 seconds ago      Up 26 seconds                           pricing
-93f19b26ee0f        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   33 seconds ago      Up 27 seconds                           reference
-86d3f0ce7e9e        reactivetrader/broker:0.0.769     "/bin/sh -c 'crossbar"   34 seconds ago      Up 28 seconds                           broker
-8cea2e5eceec        reactivetrader/eventstore:0.0.769 "/bin/sh -c './run-no"   35 seconds ago      Up 29 seconds                           eventstore
-05c18462d3c5        reactivetrader/web:0.0.769        "bash -c 'cp /localho"   35 seconds ago      Up 30 seconds                           web
+CONTAINER ID        IMAGE                             COMMAND                  CREATED             STATUS           PORTS  NAMES
+ba36323ecc73        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   29 seconds ago      Up 23 seconds           analytics
+e116fa85abdb        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   30 seconds ago      Up 24 seconds           blotter
+b69e619c1059        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   31 seconds ago      Up 25 seconds           tradeexecution
+fa50bfc6a88a        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   32 seconds ago      Up 26 seconds           pricing
+93f19b26ee0f        reactivetrader/servers:0.0.769    "bash -c 'dnx -p Adap"   33 seconds ago      Up 27 seconds           reference
+86d3f0ce7e9e        reactivetrader/broker:0.0.769     "/bin/sh -c 'crossbar"   34 seconds ago      Up 28 seconds           broker
+8cea2e5eceec        reactivetrader/eventstore:0.0.769 "/bin/sh -c './run-no"   35 seconds ago      Up 29 seconds           eventstore
+05c18462d3c5        reactivetrader/web:0.0.769        "bash -c 'cp /localho"   35 seconds ago      Up 30 seconds           web
 ```
 
 Open a browser, navigate to the docker address (`localhost` for linux users and something like `192.168.99.100` for windows/mac users) and the web client will load.
