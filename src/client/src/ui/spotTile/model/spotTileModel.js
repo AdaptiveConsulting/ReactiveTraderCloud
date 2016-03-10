@@ -81,7 +81,7 @@ export default class SpotTileModel extends ModelBase {
   }
 
   @observeEvent('popOutTile')
-  _onPopOutTile(e:{notional:number}) {
+  _onPopOutTile() {
     this._log.info(`Popping out tile`);
     // TODO
   }
