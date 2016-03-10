@@ -34,7 +34,7 @@ const webpackConfig = {
     }),
     new CopyWebpackPlugin([
       {
-        from: './src/ui/common/images',
+        from: './src/components/common/images',
         to: 'images'
       }
     ]),

@@ -2,19 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute } from 'react-router';
 import { createHashHistory } from 'history';
-import { WorkspaceModel } from './ui/workspace/model';
-import { BlotterModel } from './ui/blotter/model';
-import { AnalyticsModel } from './ui/analytics/model';
-import { HeaderModel } from './ui/header/model';
-import { ShellModel } from './ui/shell/model';
-import { SpotTileFactory } from './ui/spotTile';
-import { User, ServiceConst, ServiceStatusLookup } from './services/model';
+import { WorkspaceModel } from './components/workspace/model';
+import { BlotterModel } from './components/blotter/model';
+import { AnalyticsModel } from './components/analytics/model';
+import { HeaderModel } from './components/header/model';
+import { ShellModel } from './components/shell/model';
+import { SpotTileFactory } from './components/spotTile';
+import { User, ServiceConst } from './services/model';
 import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
 import { default as espRouter } from './system/router';
-import { PageContainer, ShellView } from './ui/shell/views';
-import { SpotTileView } from './ui/spotTile/views';
+import { PageContainer, ShellView } from './components/shell/views';
+import { SpotTileView } from './components/spotTile/views';
 import {
   AnalyticsService,
   BlotterService,
