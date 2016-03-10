@@ -31,11 +31,11 @@ Client-side implementations are available for all major platforms, including des
 
 ### Front-End
 
-The front-end is written in Javascript with React.
+The front-end is written in Javascript with React.  More details on the client-side infrastructure are available [here](docs/client.md).
 
 ### Back-End
 
-The back-end services are cross-platform. For details of how to set up the services on your on machine see below.
+The back-end services are cross-platform. More details on the back-end infrastructure are available [here](docs/server.md).
 
 ## Getting Started
 
@@ -58,7 +58,7 @@ Those topics will be covered in the upcoming weeks.
 
 + [Reactive, Event Driven User Interfaces](https://vimeo.com/113716036) by Ray Booysen at NDC London 2014
 + [Event Driven User Interfaces](https://youtu.be/Tp5mRlHwZ7M) by Lee Campbell & Matt Barrett at React London 2014
-+ [It's all messages now; where are my absractions?](http://www.codesleuth.co.uk/notes/ndcoslo2015/Its-all-messages-now;-where-are-my-absractions.html) by Matt Barrett at NDC Oslo 2015
++ [It's all messages now; where are my abstractions?](http://www.codesleuth.co.uk/notes/ndcoslo2015/Its-all-messages-now;-where-are-my-absractions.html) by Matt Barrett at NDC Oslo 2015
 + [The Hanselminutes: Creating Reactive User Interfaces](http://hanselminutes.com/428/creating-reactive-user-interfaces-with-adaptive-consultings-reactive-trader) with Matt Barrett
 
 ## Blog posts

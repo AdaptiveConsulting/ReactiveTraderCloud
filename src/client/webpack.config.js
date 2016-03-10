@@ -63,7 +63,7 @@ const webpackConfig = {
     configFile: './.eslintrc'
   },
   module: {
-    // this breaks in node 5.3+ as it tries to parse the README.md for node-bindings
+    // this breaks in node 5.3+ as it tries to parse the client.md for node-bindings
     noParse: /\/bindings\//,
     preLoaders: [
       {test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/}

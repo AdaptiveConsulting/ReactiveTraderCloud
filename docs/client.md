@@ -4,9 +4,7 @@
 Please ensure you have [Node](https://nodejs.org) and [Git](https://git-scm.com/downloads) installed on your machine and on your path.
 
 ### Mac
-You're good to go.
-
-NB: The default version of Node installed on Mac OS X is not recent enough, and you need to specifically install a new version.
+There are no additional packages to install other than Git and a recent build of Node.
 
 ### Linux
 You might want to [increase the limit](http://stackoverflow.com/questions/16748737/grunt-watch-error-waiting-fatal-error-watch-enospc) on the number of files Linux will watch. [Here's why](https://github.com/coryhouse/react-slingshot/issues/6).
@@ -16,19 +14,18 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 
 ### Windows
 
-1. Install [Python 2.7](https://www.python.org/downloads/). Browser-sync (and various other Node modules) rely on node-gyp, which requires Python on Windows
-2. Install the C++ Compiler. [Visual Studio Express](https://www.visualstudio.com/en-US/products/visual-studio-express-vs) comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
+1. Install the C++ Compiler. [Visual Studio Express](https://www.visualstudio.com/en-US/products/visual-studio-express-vs) comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
 
 ## Starting the GUI
 
 Clone the repo and install the necessary node modules:
 
 ```sh
-npm i                         # Install Node modules listed in ./package.json (may take a while the first time)
-npm start                     # Compile and launchs the webpack dev server
+npm install  # Install Node modules listed in ./package.json
+npm start    # Compile and launches the webpack dev server
 ```
 
-You can then browse the app at http://localhost:3000
+You can then browse the app at [http://localhost:3000](http://localhost:3000)
 
 ### Additional command line options
 
@@ -36,7 +33,7 @@ You can then browse the app at http://localhost:3000
 npm run dev
 ```
 
-Same as `npm run start`, runs the webpack build system with webpack-dev-server (by default found at [localhost:3000](http://]localhost:3000).
+Same as `npm run start`, runs the webpack build system with webpack-dev-server (by default found at [http://localhost:3000](http://localhost:3000)).
 
 ```sh
 npm run test

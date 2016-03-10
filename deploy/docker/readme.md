@@ -13,7 +13,7 @@ You will find here:
   - `ReactiveTrader` containers:
     - `broker`: Auto running container that start the broker
     - `web`: Auto running container that start the web client.
-    - `populatedEventstore`: Auto running container that start the eventstore.
+    - `populatedEventstore`: Auto running container that start the Event Store.
     - `servers`: Ship with the .NET code. Every part are ready to run on a start command.
 - `a run folder`: the code to start ReactiveTrader using containers.
   - web

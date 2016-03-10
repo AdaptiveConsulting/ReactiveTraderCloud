@@ -8,7 +8,7 @@ The simplest way to build and run the full application no matter which OS you ar
 
 ### Front-End
 
-The front-end is written in Javascript with React. The details of how to set up the client to run on your machine are [here](../../src/client/README.md).
+The front-end is written in Javascript with React. The details of how to set up the client to run on your machine are [here](../client.md).
 
 Alternatively a live demo can be found at [web-demo.adaptivecluster.com/](http://web-demo.adaptivecluster.com/)
 
@@ -16,20 +16,6 @@ Alternatively a live demo can be found at [web-demo.adaptivecluster.com/](http:/
 
 The back-end services are cross-platform. For details of how to set up the services on your on machine see below.
 
-#### Windows
-
-If you are familiar with using Visual Studio on Windows.
-
-[Getting Started using Visual Studio 2015](vs-setup.md)
-
-#### Linux
-
-You can also setup a dev environment on Linux.
-
-[Getting Started on Linux](linux-setup.md)
-
-#### Mac OSX
-
-And on Mac OSX
-
-[Getting Started on Mac OSX](macos-setup.md)
+* [Getting Started using Windows and Visual Studio 2015](windows-setup.md)
+* [Getting Started on Linux](linux-setup.md)
+* [Getting Started on Mac OSX](macos-setup.md)

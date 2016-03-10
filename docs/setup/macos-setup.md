@@ -33,20 +33,20 @@ $ dnu restore
 
 #### Start Services
 
-All the services including the broker and an embedded EventStore can be started using the Launcher
+All the services including the broker and an embedded Event Store can be started using the Launcher
 
 ```bash
 $ cd Adaptive.ReactiveTrader.Server.Launcher
 $ dnx run dev
 ```
-You can run 'dnx run' to see a list of other commands that can be run.
+You can run `dnx run` to see a list of other commands that can be run.
 
 #### Interactive Mode
 
 The console process started via `dnx run dev` is interactive, and can be used to bring various services up and down. This lets you investigate how the application responds to component failures. Simply type 'help' within the Launcher process.
 
 ### Client
-For the web client follow these [instructions](../../src/client/README.md)
+For the web client follow these [instructions](../client.md)
 
 ### Problem running the app?
 
