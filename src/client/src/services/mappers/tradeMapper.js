@@ -12,8 +12,7 @@ export default class TradeMapper {
   mapFromDtoArray(dtos:Array<Object>) : Array<Trade> {
     return _.map(
       dtos,
-      dto => this.mapFromDto(dto)
-    );
+      dto => this.mapFromDto(dto));
   }
 
   mapFromDto(tradeDto:Object) : Trade {
@@ -48,7 +47,7 @@ export default class TradeMapper {
   _mapTradeStatusFromDto(statusDto:string) {
     switch (statusDto) {
       case TradeStatus.Pending.name:
-            return TradeStatus.Pending;
+        return TradeStatus.Pending;
       case TradeStatus.Done.name:
         return TradeStatus.Done;
       case TradeStatus.Rejected.name:

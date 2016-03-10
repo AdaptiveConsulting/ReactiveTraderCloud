@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { Router, observeEvent } from 'esp-js/src';
 import { logger } from '../../../system';
 import { Connection } from '../../../system/service';

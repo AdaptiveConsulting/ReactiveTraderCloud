@@ -1,4 +1,3 @@
-import { Guard } from '../../../system';
 import { PricePoint } from './';
 import { HistoricPosition } from '../../../services/model';
 

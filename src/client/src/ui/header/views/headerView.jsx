@@ -3,11 +3,8 @@ import { Link } from 'react-router';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
 import { HeaderModel } from '../model';
-import { logger } from '../../../system';
 import {  ServiceStatusLookup } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';
-
-var _log:logger.Logger = logger.create('HeaderView');
 
 export default class HeaderView extends ViewBase {
   constructor() {

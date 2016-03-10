@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, CompositeDisposable } from 'esp-js/src';
+import { CompositeDisposable } from 'esp-js/src';
 import { router } from '../../system';
 
 export default class ViewBase extends React.Component {

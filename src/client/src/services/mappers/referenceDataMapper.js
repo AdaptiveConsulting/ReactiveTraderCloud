@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { CurrencyPairUpdates, CurrencyPairUpdate, CurrencyPair, UpdateType } from '../model';
 
 export default class ReferenceDataMapper {
-  mapCurrencyPairsFromDto(dto) : CurrencyPairUpdates {
+  mapCurrencyPairsFromDto(dto:Object) : CurrencyPairUpdates {
     let updates = this._mapUpdatesFromDto(dto.Updates);
     return new CurrencyPairUpdates(
       dto.IsStateOfTheWorld,

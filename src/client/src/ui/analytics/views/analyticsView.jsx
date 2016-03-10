@@ -4,12 +4,9 @@ import classnames from 'classnames';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
 import { AnalyticsModel, ChartModelBase, PositionsChartModel, PnlChartModel } from '../model';
-import { logger } from '../../../system';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
 import numeral from 'numeral';
-
-var _log:logger.Logger = logger.create('AnalyticsView');
 
 export default class AnalyticsView extends ViewBase {
   constructor() {

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import LastValueObservable from './lastValueObservable';
 
 export default class LastValueObservableDictionary {

@@ -1,5 +1,5 @@
 import React from 'react';
-import Popout from '../popout/popout';
+import Popout from '../popout/popout.jsx';
 
 // for tearoff render view, go here:
 const url = '/#/tile';

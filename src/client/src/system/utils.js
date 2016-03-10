@@ -1,5 +1,4 @@
 import React        from 'react';
-import ReactDOM     from 'react-dom';
 import d3 from 'd3';
 
 const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/;

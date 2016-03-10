@@ -48,8 +48,7 @@ export default class Connection extends DisposableBase {
    * @returns {*}
    */
   get connectionStatusStream():Rx.Observable<string> {
-    return this._connectionStatusSubject
-      .distinctUntilChanged();
+    return this._connectionStatusSubject.distinctUntilChanged();
   }
 
   /**

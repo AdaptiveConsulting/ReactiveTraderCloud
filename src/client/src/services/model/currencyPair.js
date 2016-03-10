@@ -1,5 +1,7 @@
 export default class CurrencyPair {
   _symbol:string;
+  _base:string;
+  _terms:string;
   _ratePrecision:number;
   _pipsPosition:number;
 
@@ -7,6 +9,9 @@ export default class CurrencyPair {
     this._symbol = symbol;
     this._ratePrecision = ratePrecision;
     this._pipsPosition = pipsPosition;
+
+    this._base = symbol.substr(0 , 3);
+    this._terms = symbol.substr(3 , 3);
   }
 
   get symbol():string {
@@ -22,10 +27,10 @@ export default class CurrencyPair {
   }
 
   get base():string {
-    return this._symbol.substr(0 , 3);
+    return this._base;
   }
 
   get terms():string {
-    return this._symbol.substr(3 , 3);
+    return this._terms;
   }
 }

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { AnalyticsRequest, PositionUpdates, CurrencyPairPosition, HistoricPosition } from '../model';
+import { PositionUpdates, CurrencyPairPosition, HistoricPosition } from '../model';
 
 export default class PositionsMapper {
 

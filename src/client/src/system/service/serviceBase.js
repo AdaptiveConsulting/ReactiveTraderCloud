@@ -1,4 +1,3 @@
-
 import Connection from './connection';
 import ServiceClient from './serviceClient';
 import SchedulerService from '../schedulerService';

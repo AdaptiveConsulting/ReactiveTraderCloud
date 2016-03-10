@@ -2,8 +2,6 @@ import { logger } from '../../system';
 import { SpotPrice, Rate, CurrencyPair, PriceMovementType, Spread } from '../model';
 import { ReferenceDataService } from '../';
 
-var _log:logger.Logger = logger.create('PriceMapper');
-
 export default class PriceMapper {
   _referenceDataService:ReferenceDataService;
 

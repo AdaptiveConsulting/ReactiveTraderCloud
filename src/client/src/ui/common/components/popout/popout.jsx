@@ -1,9 +1,9 @@
-import React              from 'react';
-import ReactDOM           from 'react-dom';
-import ReactPopout        from 'react-popout';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactPopout from 'react-popout';
 
-const CONTAINER_ID         = 'popout-content-container',
-      ROOT_ANCHOR_SELECTOR = '#root .tile';
+const CONTAINER_ID = 'popout-content-container';
+const ROOT_ANCHOR_SELECTOR = '#root .tile';
 
 /**
  * @class Popout
@@ -40,7 +40,7 @@ export default class Popout extends ReactPopout {
     /**
      * callback when load has fired or readyState has fired
      */
-    let onloadhandler = () =>{
+    let onloadhandler = () => {
       if (container){
         if (document.getElementById(CONTAINER_ID)) return;
 
@@ -98,15 +98,15 @@ export default class Popout extends ReactPopout {
    * Opens a popup box via window.open API
    */
   openWindow(){
-    let options     = Object.assign({}, this.defaultOptions, this.props.options),
-        ownerWindow = this.props.window || window;
+    let options = Object.assign({}, this.defaultOptions, this.props.options);
+    let ownerWindow = this.props.window || window;
 
     /**
      * creates key=value pairs, joined by , as required by window.open api.
      * @param {Object} options
      * @returns {string}
      */
-    const createOptions = (options:object) =>{
+    const createOptions = (options:Object) =>{
       const ret = [];
       for (let key in options){
         options.hasOwnProperty(key) && ret.push(key + '=' + (
