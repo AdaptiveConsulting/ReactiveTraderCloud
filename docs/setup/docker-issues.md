@@ -14,7 +14,7 @@ To achieve that, just run
 
 ### The repository must be in user's home folder
 
-The different scripts here will need to share code with the different containers. On Windows and Mac, the sharing is between the container and the virtual machine. The virtual machine is defined to share your home folder (c:\Users\ for windows or /Users for mac). If your git clone folder is a child folder of your home user, this is fine. Otherwise you need to open VirtualBox and share that specific folder.
+The different scripts here will need to share code with the different containers. On Windows and Mac, the sharing is between the container and the virtual machine. The virtual machine is defined to share your home folder (c:\Users\ for windows or /Users for mac). If your git clone folder is a child folder of your home user, this is fine. Otherwise you need to open Virtual Box and share that specific folder.
 
 ### No space left on device
 ```
@@ -35,9 +35,9 @@ docker-machine start default
 Then close the `Docker Quick Start Terminal` and open a new once.
 
 If the issue persists, try to remove the virtual machine and generate a new one:  
-- open Virtualbox Gui
+- open Virtual Box Gui
 - right click on the `default` machine and remove it with all its files
-- close Virtualbox Gui
+- close Virtual Box Gui
 - open a new docker Quick Start Terminal
 - wait for the new VirtualMachine to be generated
 
@@ -45,7 +45,7 @@ If the issue persists, try to remove the virtual machine and generate a new one:
 
 ### The repository must be in user's home folder
 
-The different scripts here will need to share code with the different containers. On Windows and Mac, the sharing is between the container and the virtual machine. The virtual machine is defined to share your home folder (c:\Users\ for windows or /Users for mac). If your git clone folder is a child folder of your home user, this is fine. Otherwise you need to open VirtualBox and share that specific folder.
+The different scripts here will need to share code with the different containers. On Windows and Mac, the sharing is between the container and the virtual machine. The virtual machine is defined to share your home folder (c:\Users\ for windows or /Users for mac). If your git clone folder is a child folder of your home user, this is fine. Otherwise you need to open Virtual Box and share that specific folder.
 
 ### docker toolbox version
 

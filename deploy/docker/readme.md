@@ -33,7 +33,7 @@ You will find here:
 
 - go to [toolbox download page](https://www.docker.com/docker-toolbox) and click on your OS (version 1.9.1c on writing moment)
 - install
-- select virtualbox/docker, kitematic and git are optional
+- select Virtual Box/docker, Kitematic and git are optional
 - then launch `Docker Quickstart Terminal`
 - run `docker ps` and control that it match the following
 ```
@@ -54,5 +54,5 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 ### Some known issues (Toolbox on Windows and MacOSX)
 
-The different scripts here will need to share code with the different containers. On Windows and Mac, the sharing is between the container and the virtual machine. The virtual machine is defined to share your home folder (/c/Users/ for windows or /Users for mac). If your git clone folder is a children folder of your home user, it's fine. Else you need to open VirtualBox and share that specific folder.
+The different scripts here will need to share code with the different containers. On Windows and Mac, the sharing is between the container and the virtual machine. The virtual machine is defined to share your home folder (/c/Users/ for windows or /Users for mac). If your git clone folder is a children folder of your home user, it's fine. Else you need to open Virtual Box and share that specific folder.
 
