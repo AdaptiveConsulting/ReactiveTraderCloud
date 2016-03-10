@@ -27,13 +27,13 @@ export default class HeaderView extends ViewBase {
            title='Adaptive Home Page'
            onClick={(e) => router.publishEvent(this.props.modelId, 'externalLinkClicked', e)}
         >
-          <img src='ui/common/images/adaptive-logo-statusbar.png' alt='Adaptive Logo'/>
+          <img src='images/adaptive-logo-statusbar.png' alt='Adaptive Logo'/>
         </a>
         <a className='navbar-brand navbar-adaptive navbar-openfin' href='http://openfin.co/' target='_blank'
            title='Open Fin'
            onClick={(e) => router.publishEvent(this.props.modelId, 'externalLinkClicked', e)}
         >
-          <img src='ui/common/images/openfin-logo.png' alt='OpenFin Logo'/>
+          <img src='images/openfin-logo.png' alt='OpenFin Logo'/>
         </a>
         <Link className='navbar-brand' to='/' title='Home'>
           Reactive Trader Cloud
