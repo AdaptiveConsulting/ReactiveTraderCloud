@@ -1,7 +1,7 @@
+@import '../../common/styles/_theme';
+@import '../../common/styles/_layout';
 
 $hover-color: #7DE3FC;
-$blotter-height: 280px;
-
 
 .blotter {
   height: $blotter-height;
@@ -32,7 +32,6 @@ $blotter-height: 280px;
       display: block;
     }
   }
-
 
   /**
    * Scrollbars.

@@ -23,10 +23,10 @@
     "clean": "rm -rf dist",
     "start": "npm run dev",
     "lint": "eslint src",
-    "dev": "webpack-dev-server --progress --debug --config webpack.config.js",
+    "dev": "webpack-dev-server --progress --debug --config webpack.config.js --display-error-details",
     "test": "karma start ./karma.conf.js",
     "test:dev": "npm test -- --watch",
-    "deploy": "webpack",
+    "deploy": "webpack --display-error-details",
     "deploy:prod": "export NODE_ENV=production && webpack",
     "openfin": "openfin -c src/app.json -l"
   },
