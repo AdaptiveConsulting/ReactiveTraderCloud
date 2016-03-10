@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
-import { AnalyticsModel, ChartModelBase, PositionsChartModel, PnlChartModel } from '../model';
+import { AnalyticsModel, PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
 import numeral from 'numeral';
@@ -18,13 +18,14 @@ export default class AnalyticsView extends ViewBase {
   }
 
   componentDidUpdate() {
-    if (this.refs.lineChart) {
+    if (this.refs.pnlChart) {
       if (!this.chartGradient) {
         this.chartGradient = new ChartGradient();
       }
-      var chartDomElement = ReactDOM.findDOMNode(this.refs.lineChart);
+      var chartDomElement = ReactDOM.findDOMNode(this.refs.pnlChart);
       if (chartDomElement) {
-        this.chartGradient.update(chartDomElement, this.state.domainMin, this.state.domainMax);
+        var pnlChartModel = this.state.model.pnlChartModel;
+        this.chartGradient.update(chartDomElement, pnlChartModel.minPnl, pnlChartModel.maxPnl);
       }
     }
   }
@@ -67,7 +68,7 @@ export default class AnalyticsView extends ViewBase {
       };
       pnlChart = (
         <NVD3Chart
-          ref='lineChart'
+          ref='pnlChart'
           type='lineChart'
           datum={pnlChartModel.getSeries()}
           options={pnlChartModel.options}
