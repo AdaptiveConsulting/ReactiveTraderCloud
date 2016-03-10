@@ -12,6 +12,8 @@
 // helpers - layout, responsive strategy
 @import 'layout';
 
+@import '../../spotTile/views/spotTileView';
+
 // globals
 body, html {
   overflow: hidden;
