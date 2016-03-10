@@ -24,7 +24,7 @@ export default class ShellView extends ViewBase {
     }
     return (
       <div className='flex-container'>
-        <Modal shouldShow={model.sessionExpired}l title='Session expired' additionalClassNames='error-modal'>
+        <Modal shouldShow={model.sessionExpired}l title='Session expired'>
           <div>
             <div>Your 15 minute session expired, you are now disconnected from the server.</div>
             <div>Click reconnect to start a new session.</div>

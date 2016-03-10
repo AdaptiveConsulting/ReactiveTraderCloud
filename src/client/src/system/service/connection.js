@@ -40,8 +40,7 @@ export default class Connection extends DisposableBase {
 
   static get DISCONNECT_SESSION_AFTER() {
     // hardcode a disconnect so we don't stream needlessly when ppl leave the app open for an extended time (i.e. over weekends, etc)
-    return 1000 * 5; // 15 sec
-    // return 1000 * 60 * 15; // 15 mins
+    return 1000 * 60 * 15; // 15 mins
   }
 
   /**

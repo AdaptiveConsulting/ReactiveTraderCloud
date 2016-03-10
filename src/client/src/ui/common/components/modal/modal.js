@@ -2,12 +2,12 @@ import React from 'react';
 import { utils } from 'system';
 import classnames from 'classnames';
 
+// TODO disable tabbing outside of the modal
 export default class Modal extends React.Component {
 
   static propTypes = {
     shouldShow: React.PropTypes.bool,
     title: React.PropTypes.string,
-    additionalClassNames: React.PropTypes.string,
     children: React.PropTypes.element.isRequired
   };
 
@@ -15,27 +15,13 @@ export default class Modal extends React.Component {
     if (!this.props.shouldShow) {
       return null;
     }
-    let className = classnames(this.props.additionalClassNames, 'absolute-center', 'modal', 'text-center');
-
-    //<input ref='modal'
-    //       type='checkbox'
-    //       id='modal'
-    //       className='hide'
-    //       autoComplete='off'
-    //       checked={this.props.shouldShow}
-    //       onChange={() => this.props.onDismissed()}/>
-    //
     return (
       <div>
-        <div className={className}>
-          <div className='modal-heading'>{this.props.title}
-            <label htmlFor='modal'>
-              <i className='fa fa-times close' title='Close'/>
-            </label>
-          </div>
+        <div className='modal-overlay'></div>
+        <div className='absolute-center modal text-center'>
+          <div className='modal-heading'>{this.props.title}</div>
           {this.props.children}
         </div>
-        <label className='blocker help-blocker' htmlFor='modal'/>
       </div>
     );
   }
