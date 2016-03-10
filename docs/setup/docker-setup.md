@@ -101,7 +101,6 @@ Note that the time for all this process is mostly defined by your internet bandw
 
 ## Build
  
-If the end to end step has passed, you are now confident that your setup is fine.  
 We can look at how to manually build `Reactive Trader`.
 
 Move to the docker folder
