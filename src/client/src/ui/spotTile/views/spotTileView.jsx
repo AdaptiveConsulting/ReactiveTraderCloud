@@ -7,8 +7,7 @@ import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification }
 import { SpotTileModel, NotificationType } from '../model';
 import { Direction } from '../../../services/model';
 
-// TODO this should come back once the scss is cleaned up so it lives with it's components
-// import './spotTileView.scss';
+import './spotTileView.scss';
 
 export default class SpotTileView extends ViewBase {
 

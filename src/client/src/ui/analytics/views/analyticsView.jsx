@@ -7,6 +7,7 @@ import { AnalyticsModel, ChartModelBase, PositionsChartModel, PnlChartModel } fr
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
 import numeral from 'numeral';
+import './analytics.scss';
 
 export default class AnalyticsView extends ViewBase {
   constructor() {

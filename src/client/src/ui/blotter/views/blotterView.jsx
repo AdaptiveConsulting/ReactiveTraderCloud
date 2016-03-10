@@ -8,8 +8,7 @@ import { router, logger } from '../../../system';
 import classNames from 'classnames';
 import { BlotterModel } from '../model';
 
-// TODO this should come back once the scss is cleaned up so it lives with it's components
-// import './blotter.scss';
+import './blotter.scss';
 
 @Dimensions()
 export default class BlotterView extends ViewBase {

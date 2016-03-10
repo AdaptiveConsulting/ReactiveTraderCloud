@@ -1,4 +1,7 @@
 //tweaks for flexbox and responsive design
+@import './theme';
+
+$blotter-height: 280px;
 
 .flex-container {
   display: flex;

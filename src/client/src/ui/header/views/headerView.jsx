@@ -5,6 +5,7 @@ import { ViewBase } from '../../common';
 import { HeaderModel } from '../model';
 import {  ServiceStatusLookup } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';
+import './header.scss';
 
 export default class HeaderView extends ViewBase {
   constructor() {
