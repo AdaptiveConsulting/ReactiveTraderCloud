@@ -1,11 +1,8 @@
 import React from 'react';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
-import { WorkspaceModel, WorkspaceItem } from '../model';
-import { logger } from '../../../system';
+import { WorkspaceItem } from '../model';
 import WorkspaceItemContainer from './workspaceItemContainer.jsx';
-
-var _log:logger.Logger = logger.create('WorkspaceView');
 
 export default class WorkspaceView extends ViewBase {
   constructor() {

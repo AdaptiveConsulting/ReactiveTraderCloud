@@ -5,7 +5,7 @@ import { CurrencyPairUpdates, CurrencyPairUpdate, CurrencyPair, UpdateType } fro
 import { logger, SchedulerService, RetryPolicy } from '../system';
 import { Connection, ServiceBase } from '../system/service';
 
-var _log:system.logger.Logger = logger.create('ReferenceDataService');
+var _log:logger.Logger = logger.create('ReferenceDataService');
 
 export default class ReferenceDataService extends ServiceBase {
   _hasLoadedSubject:Rx.Subject<boolean>;

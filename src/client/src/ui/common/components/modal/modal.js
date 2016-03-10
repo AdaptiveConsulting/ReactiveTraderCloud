@@ -1,6 +1,5 @@
 import React from 'react';
-import { utils } from 'system';
-import classnames from 'classnames';
+import { utils } from '../../../../system';
 
 // TODO disable tabbing outside of the modal
 export default class Modal extends React.Component {

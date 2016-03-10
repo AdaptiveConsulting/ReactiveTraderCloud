@@ -1,8 +1,7 @@
 import Rx from 'rx';
 import { Router, observeEvent } from 'esp-js/src';
-import { ReferenceDataService, PricingService, ExecutionService } from '../../../services';
+import { PricingService, ExecutionService } from '../../../services';
 import { logger } from '../../../system';
-import { ServiceStatus } from '../../../system/service';
 import { ModelBase } from '../../common';
 import { TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
 import {
@@ -10,10 +9,8 @@ import {
   SpotPrice,
   Direction,
   ExecuteTradeRequest,
-  Trade,
   CurrencyPair,
-  ExecuteTradeResponse,
-  CurrencyPairUpdates
+  ExecuteTradeResponse
 } from '../../../services/model';
 
 let modelIdKey = 1;

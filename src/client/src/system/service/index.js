@@ -8,5 +8,6 @@ export { default as ServiceBase } from './serviceBase';
 export { default as ServiceClient } from './serviceClient';
 export { default as ServiceInstanceStatus } from './serviceInstanceStatus';
 export { default as ServiceStatus } from './serviceStatus';
+
 // serviceObservableExtensions has no exports, it adds functionality to rx
 import './serviceObservableExtensions';

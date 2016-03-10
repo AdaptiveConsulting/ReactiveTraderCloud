@@ -1,4 +1,3 @@
-import Rx from 'rx';
 import { Router,  observeEvent } from 'esp-js/src';
 import { CompositeStatusService, FakeUserRepository } from '../../../services';
 import { logger } from '../../../system';

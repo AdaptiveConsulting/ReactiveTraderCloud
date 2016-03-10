@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router }from 'esp-js/src';
 import { SpotTileModel } from './model';
-import { ReferenceDataService, PricingService, ExecutionService } from '../../services';
+import { PricingService, ExecutionService } from '../../services';
 import { CurrencyPair } from '../../services/model';
 import { SpotTileView } from './views';
 

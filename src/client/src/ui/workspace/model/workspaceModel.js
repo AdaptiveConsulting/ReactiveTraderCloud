@@ -56,14 +56,18 @@ export default class WorkspaceModel extends ModelBase {
     _.forEach(currencyPairUpdates, (currencyPairUpdate:CurrencyPairUpdate) => {
       let key = currencyPairUpdate.currencyPair.symbol;
       if (currencyPairUpdate.updateType === UpdateType.Added && !_this._workspaceItemsById.hasOwnProperty(key)) {
+        
         let spotTileModel = _this._spotTileFactory.createTileModel(currencyPairUpdate.currencyPair);
         let spotTileView = _this._spotTileFactory.createTileView(spotTileModel.modelId);
+        
         let workspaceItem:WorkspaceItem = new WorkspaceItem(key, spotTileModel.modelId, spotTileView);
         _this._workspaceItemsById[workspaceItem.key] = workspaceItem;
         _this.workspaceItems.push(workspaceItem);
+        
       } else if (currencyPairUpdate.updateType === UpdateType.Removed && _this._workspaceItemsById.hasOwnProperty(key)) {
         let workspaceItem = _this._workspaceItemsById[key];
         delete _this._workspaceItemsById[key];
+        
         let removeAtIndex = this.workspaceItems.indexOf(workspaceItem);
         if (removeAtIndex > -1) {
           this.workspaceItems.splice(removeAtIndex, 1);

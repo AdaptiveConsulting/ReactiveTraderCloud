@@ -1,6 +1,4 @@
 import React from 'react';
-import { time } from 'd3';
-import { Trade, Direction } from '../../../services/model';
 import { TradeExecutionNotification } from '../model';
 
 export default class TradeNotification extends React.Component {

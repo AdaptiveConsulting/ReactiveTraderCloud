@@ -2,17 +2,15 @@ import React from 'react';
 import classnames from 'classnames';
 import { Sparklines, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from 'react-sparklines';
 import { ViewBase } from '../../common';
-import { router, logger } from '../../../system';
+import { router } from '../../../system';
 import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification } from './';
 import { SpotTileModel, NotificationType } from '../model';
-import { Direction, PriceMovementType } from '../../../services/model';
+import { Direction } from '../../../services/model';
 
 // TODO this should come back once the scss is cleaned up so it lives with it's components
 // import './spotTileView.scss';
 
-var _log:logger.Logger = logger.create('SpotTileView');
-
-class SpotTileView extends ViewBase {
+export default class SpotTileView extends ViewBase {
 
   constructor() {
     super();
@@ -129,5 +127,3 @@ class SpotTileView extends ViewBase {
     return null;
   }
 }
-
-export default SpotTileView;

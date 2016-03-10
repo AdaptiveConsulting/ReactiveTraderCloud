@@ -1,5 +1,6 @@
 export default class AnalyticsRequest {
-  constructor(ccyPairSymbol:string) {
-    this.Symbol = ccyPairSymbol;
+  constructor(currencyPairSymbol:string) {
+    // note odd casing here as server expects upper camel casing
+    this.Symbol = currencyPairSymbol;
   }
 }

@@ -1,6 +1,5 @@
 import Rx from 'rx';
 import _ from 'lodash';
-import logger from '../logger';
 import LastValueObservable from './lastValueObservable';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
 import ServiceInstanceStatus from './serviceInstanceStatus';

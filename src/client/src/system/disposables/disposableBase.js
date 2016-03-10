@@ -1,6 +1,6 @@
 import Rx from 'rx';
 
-class DisposableBase {
+export default class DisposableBase {
   constructor() {
     this._disposables = new Rx.CompositeDisposable();
   }
@@ -17,4 +17,3 @@ class DisposableBase {
     this._disposables.dispose();
   }
 }
-export default DisposableBase;

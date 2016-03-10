@@ -1,5 +1,4 @@
 import autobahn from 'autobahn';
-import Rx from 'rx';
 import AutobahnSessionProxy from './autobahnSessionProxy';
 
 /**

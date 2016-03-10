@@ -1,9 +1,10 @@
 import Rx from 'rx';
 import { OpenFin } from '../system/openFin';
-import { Trade, ExecuteTradeRequest, ExecuteTradeResponse } from './model';
+import { ExecuteTradeRequest, ExecuteTradeResponse } from './model';
 import { TradeMapper } from './mappers';
 import { logger, SchedulerService } from '../system';
 import { Connection, ServiceBase } from '../system/service';
+import { ReferenceDataService } from './';
 
 const _log:logger.Logger = logger.create('ExecutionService');
 
@@ -27,9 +28,10 @@ export default class ExecutionService extends ServiceBase {
       o => {
         _log.info(`executing: ${executeTradeRequest.toString()}`, executeTradeRequest);
         let disposables = new Rx.CompositeDisposable();
+
         disposables.add(
           _this._openFin
-            .checkLimit(executeTradeRequest.spotRate, executeTradeRequest.notional, executeTradeRequest.currencyPair)
+            .checkLimit(executeTradeRequest.SpotRate, executeTradeRequest.Notional, executeTradeRequest.CurrencyPair)
             .take(1)
             .subscribe(limitCheckResult => {
               if (limitCheckResult) {
