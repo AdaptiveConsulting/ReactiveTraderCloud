@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Router, model, observeEvent } from 'esp-js/src';
+import { Router, observeEvent } from 'esp-js/src';
 import { ReferenceDataService } from '../../../services';
 import { CurrencyPairUpdates, CurrencyPairUpdate, UpdateType } from '../../../services/model';
 import { logger } from '../../../system';
@@ -16,7 +16,7 @@ export default class WorkspaceModel extends ModelBase {
   _isInitialised:boolean;
   workspaceItems:Array<WorkspaceItem>;
 
-  constructor(router, referenceDataService:ReferenceDataService, spotTileFactory:SpotTileFactory) {
+  constructor(router:Router, referenceDataService:ReferenceDataService, spotTileFactory:SpotTileFactory) {
     super('workspaceModelId', router);
     this._referenceDataService = referenceDataService;
     this._spotTileFactory = spotTileFactory;

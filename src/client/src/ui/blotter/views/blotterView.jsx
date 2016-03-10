@@ -122,7 +122,6 @@ export default class BlotterView extends ViewBase {
    * @returns {string}
    */
   _getRowClass(rowItem:Trade){
-    var className = classNames(rowItem.status.name, ' animated ', 'slideInDown');
-      return className;
+    return classNames(rowItem.status.name, ' animated ');
   }
 }

@@ -6,6 +6,7 @@ import { WorkspaceModel } from './ui/workspace/model';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { HeaderModel } from './ui/header/model';
+import { ShellModel } from './ui/shell/model';
 import { SpotTileFactory } from './ui/spotTile';
 import { User, ServiceConst, ServiceStatusLookup } from './services/model';
 import { SchedulerService, } from './system';
@@ -75,45 +76,41 @@ class Bootstrapper {
   }
 
   startModels() {
-    // create other models
-    let spotTileFactory = new SpotTileFactory(espRouter, this._pricingService, this._executionService);
+
+    let shellModel = new ShellModel(espRouter, this._connection);
+    shellModel.observeEvents();
 
     // wire-up the workspace
     let workspaceModel = new WorkspaceModel(
       espRouter,
       this._referenceDataService,
-      spotTileFactory
+      new SpotTileFactory(espRouter, this._pricingService, this._executionService)
     );
     workspaceModel.observeEvents();
 
     // wire-up the blotter
-    let blotterModel = new BlotterModel(
-      espRouter,
-      this._blotterService
-    );
+    let blotterModel = new BlotterModel(espRouter, this._blotterService);
     blotterModel.observeEvents();
 
     // wire-up analytics
-    let analyticsModel = new AnalyticsModel(
-      espRouter,
-      this._analyticsService
-    );
+    let analyticsModel = new AnalyticsModel(espRouter, this._analyticsService);
     analyticsModel.observeEvents();
 
     // wire-up the header
-    let headerModel = new HeaderModel(
-      espRouter,
-      this._compositeStatusService
-    );
+    let headerModel = new HeaderModel(espRouter, this._compositeStatusService);
     headerModel.observeEvents();
 
-    // Bring up ref data first and wait fo rit to load.
+    // Bring up ref data first and wait for it to load.
     // The ref data API allows for both synchronous and asynchronous data access however in most cases you'll be using the synchronous API.
     // Given this we wait for it to build it's cache now.
     // Note there are lots of bells and whistles you can put around this, for example spin up the models, but wait for them to receive a ref data loaded event, etc.
     // Such functionality give a better load experience, for now we'll just wait.
     this._referenceDataService.hasLoadedStream.subscribe(() => {
-      // start other models
+      // start other models by kicking off an initial event
+
+      //       espRouter.broadcastEvent('init', {});
+
+      espRouter.publishEvent(shellModel.modelId, 'init', {});
       espRouter.publishEvent(workspaceModel.modelId, 'init', {});
       espRouter.publishEvent(blotterModel.modelId, 'init', {});
       espRouter.publishEvent(analyticsModel.modelId, 'init', {});

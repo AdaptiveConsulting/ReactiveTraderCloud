@@ -29,10 +29,11 @@ export default class ViewBase extends React.Component {
   }
 
   _tryObserveModel() {
-    if (!this._isObservingModel && this.props.modelId) {
+    let modelId = this.props.modelId || this.state.modelId;
+    if (!this._isObservingModel && modelId) {
       this._isObservingModel = true;
       this._disposables.add(
-        router.getModelObservable(this.props.modelId).observe(model => {
+        router.getModelObservable(modelId).observe(model => {
           this.setState({model: model});
         })
       );

@@ -40,7 +40,7 @@ export default class SpotTileModel extends ModelBase {
   isTradeExecutionInFlight:boolean;
 
   constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
-              router,
+              router:Router,
               pricingService:PricingService,
               executionService:ExecutionService) {
     super((`spotTile` + modelIdKey++), router);
