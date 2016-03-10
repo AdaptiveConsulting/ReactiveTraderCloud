@@ -52,7 +52,7 @@ export default class SpotTileModel extends ModelBase {
 
     this.historicMidSportRates = [];
     this.shouldShowChart = true;
-    this.tileTitle = currencyPair.symbol;
+    this.tileTitle = `${currencyPair.base} / ${currencyPair.terms}`;
     this.notification = null;
     this.notional = 1000000;
     this.currentSpotPrice = null;

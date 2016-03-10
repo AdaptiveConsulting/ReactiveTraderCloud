@@ -4,6 +4,7 @@ export default class CurrencyPair {
   _terms:string;
   _ratePrecision:number;
   _pipsPosition:number;
+  _displayString:string;
 
   constructor(symbol:string, ratePrecision:number, pipsPosition:number) {
     this._symbol = symbol;
@@ -12,6 +13,7 @@ export default class CurrencyPair {
 
     this._base = symbol.substr(0 , 3);
     this._terms = symbol.substr(3 , 3);
+    this._displayString = `${this._base}/${this._terms}`;
   }
 
   get symbol():string {
@@ -32,5 +34,9 @@ export default class CurrencyPair {
 
   get terms():string {
     return this._terms;
+  }
+
+  get displayString() {
+    return this._displayString;
   }
 }

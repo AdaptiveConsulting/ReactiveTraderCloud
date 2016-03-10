@@ -27,6 +27,13 @@ export default class NotionalInput extends React.Component {
     this.SPOTDATE = ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' ');
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+    return this.props.className !== nextProps.className ||
+      this.props.notional !== nextProps.notional ||
+      this.props.currencyPair.symbol !== nextProps.currencyPair.symbol || // note currencyPair always here
+      this.props.onChange !== nextProps.onChange;
+  }
+
   render(){
     const formattedSize = numeral(this.props.notional).format(NUMERAL_FORMAT);
 

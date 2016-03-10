@@ -57,7 +57,7 @@ export default class PricingService extends ServiceBase {
           )
           .select(tuple => _this._priceMapper.mapFromSpotPriceDto(tuple.lastPriceDto, tuple.nextPriceDto))
           .subscribe(
-            price => {
+            (price:SpotPrice) => {
               lastPrice = price;
               o.onNext(price);
             },

@@ -12,11 +12,13 @@ const PriceButton = props =>  {
     },
     'action'
   );
-
+  let paddedPips =  rate.pips.toString().length  === 1
+    ? `0${rate.pips}`
+    : rate.pips;
   return (
     <div className={directionClassName} onClick={() => props.onExecute()}>
       <div>{direction.name}</div>
-      <span className='big'>{rate.bigFigure}</span><span className='pip'>{rate.pips}</span><span className='tenth'>{rate.pipFraction}</span>
+      <span className='big'>{rate.bigFigure}</span><span className='pip'>{paddedPips}</span><span className='tenth'>{rate.pipFraction}</span>
     </div>
   );
 };
