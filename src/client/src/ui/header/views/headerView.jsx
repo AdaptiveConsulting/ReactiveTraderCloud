@@ -5,7 +5,11 @@ import { ViewBase } from '../../common';
 import { HeaderModel } from '../model';
 import {  ServiceStatusLookup } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';
-import './header.scss';
+
+// TODO : fix below import:
+// Styles in the below import extend some font awesome styles, however if we use webpack here then the fontawesome styles are not currently available due to some load ordering issue.
+// The below method is the correct approach, however we're going to have to park it for now. The styles in general are rathermessyy and need to be cleaned up.
+// import './header.scss';
 
 export default class HeaderView extends ViewBase {
   constructor() {
@@ -89,8 +93,8 @@ export default class HeaderView extends ViewBase {
     if (statusSummary.isConnected) {
       let title = serviceType + ' ' + statusSummary.connectedInstanceCount + ': nodes online';
       return (
-        <li key={serviceType} className='service-status'>
-          <i className='fa fa-circle ' title={title} />
+        <li key={serviceType} className='service-status' title={title}>
+          <i className='fa fa-circle ' />
           <i className='node-badge'>{statusSummary.connectedInstanceCount}</i>
         </li>
       );
@@ -108,12 +112,12 @@ export default class HeaderView extends ViewBase {
     let statusSpan;
     if (model.isConnectedToBroker) {
       statusSpan = (
-        <span className='fa-stack text-success animated fadeIn' title='Online'>
+        <span className='fa-stack text-success animated fadeIn' title='Broker Online'>
           <i className='fa fa-signal fa-stack-1x'/>
         </span>);
     } else {
       statusSpan = (
-        <span className='fa-stack' title='Connection offline'>
+        <span className='fa-stack' title='Broker offline'>
           <i className='fa fa-signal fa-stack-1x'/>
           <i className='fa fa-ban fa-stack-2x text-danger'/>
         </span>);

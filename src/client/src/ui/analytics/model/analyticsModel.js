@@ -50,8 +50,13 @@ export default class AnalyticsModel extends ModelBase {
   @observeEvent('init')
   _onInit() {
     _log.info(`Analytics model starting`);
+        this._subscribeToConnectionStatus();
+  }
+
+  @observeEvent('referenceDataLoaded')
+  _onReferenceDataLoaded() {
+    _log.info(`Ref data loaded, subscribing to analytics stream`);
     this._subscribeToAnalyticsStream();
-    this._subscribeToConnectionStatus();
   }
 
   _subscribeToAnalyticsStream() {

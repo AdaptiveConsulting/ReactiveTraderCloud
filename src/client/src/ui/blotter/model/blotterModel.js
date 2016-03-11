@@ -27,8 +27,13 @@ export default class BlotterModel extends ModelBase {
   @observeEvent('init')
   _onInit() {
     _log.info(`Blotter starting`);
-    this._subscribeToTradeStream();
     this._subscribeToConnectionStatus();
+  }
+
+  @observeEvent('referenceDataLoaded')
+  _onReferenceDataLoaded() {
+    _log.info(`Ref data loaded, subscribing to trade stream`);
+    this._subscribeToTradeStream();
   }
 
   @observeEvent('tearOffBlotter')

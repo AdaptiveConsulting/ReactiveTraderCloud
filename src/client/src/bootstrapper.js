@@ -42,7 +42,6 @@ class Bootstrapper {
   }
 
   startServices() {
-
     let user:User = FakeUserRepository.currentUser;
     let url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
     this._schedulerService = new SchedulerService();
@@ -52,6 +51,7 @@ class Bootstrapper {
       this._schedulerService
     );
 
+    // in a larger app you'd put a container in here (shameless plug: https://github.com/KeithWoods/microdi-js, but there are many offerings in this space).
     this._openFin = new OpenFin();
     this._referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this._connection, this._schedulerService);
     this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, this._schedulerService, this._referenceDataService);
@@ -60,11 +60,7 @@ class Bootstrapper {
     this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, this._schedulerService);
     this._compositeStatusService = new CompositeStatusService(this._connection, this._pricingService, this._referenceDataService, this._blotterService, this._executionService, this._analyticsService);
 
-    // create shell model
-    // create root ui with shell view
-    // start shell model
-
-    // bring up all the services
+    // connect/load all the services
     this._pricingService.connect();
     this._blotterService.connect();
     this._executionService.connect();
@@ -72,6 +68,7 @@ class Bootstrapper {
     this._compositeStatusService.start();
     this._referenceDataService.connect();
     this._referenceDataService.load();
+    // and finally the underlying connection
     this._connection.connect();
   }
 
@@ -100,22 +97,20 @@ class Bootstrapper {
     let headerModel = new HeaderModel(espRouter, this._compositeStatusService);
     headerModel.observeEvents();
 
-    // Bring up ref data first and wait for it to load.
-    // The ref data API allows for both synchronous and asynchronous data access however in most cases you'll be using the synchronous API.
-    // Given this we wait for it to build it's cache now.
-    // Note there are lots of bells and whistles you can put around this, for example spin up the models, but wait for them to receive a ref data loaded event, etc.
-    // Such functionality give a better load experience, for now we'll just wait.
     this._referenceDataService.hasLoadedStream.subscribe(() => {
-      // start other models by kicking off an initial event
-
-      //       espRouter.broadcastEvent('init', {});
-
-      espRouter.publishEvent(shellModel.modelId, 'init', {});
-      espRouter.publishEvent(workspaceModel.modelId, 'init', {});
-      espRouter.publishEvent(blotterModel.modelId, 'init', {});
-      espRouter.publishEvent(analyticsModel.modelId, 'init', {});
-      espRouter.publishEvent(headerModel.modelId, 'init', {});
+      // Some models require the ref data to be loaded before they subscribe to their streams.
+      // You could make all ref data access on top of an observable API, but in most instances this make it difficult to use.
+      // Synchronous APIs for data that's effectively static make for much nicer code paths, the trade off is you need to bootstrap the loading
+      // so the reference data cache is ready for consumption.
+      // Note the ref service still exposes a push based api, it's just in most instances you don't want to use it.
+      espRouter.broadcastEvent('referenceDataLoaded', {});
     });
+
+    espRouter.publishEvent(shellModel.modelId, 'init', {});
+    espRouter.publishEvent(workspaceModel.modelId, 'init', {});
+    espRouter.publishEvent(blotterModel.modelId, 'init', {});
+    espRouter.publishEvent(analyticsModel.modelId, 'init', {});
+    espRouter.publishEvent(headerModel.modelId, 'init', {});
   }
 
   displayUi() {
