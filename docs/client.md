@@ -12,7 +12,7 @@ The trading client GUI is a single page app (SPA) build using JavaScript vNext (
 * Styles build using [Sass](http://sass-lang.com/).
 
 ## Machine Setup
-Please ensure you have [Node](https://nodejs.org)(>=v4), [npm](https://github.com/npm/npm)(>=v3.5) and [Git](https://git-scm.com/downloads) installed on your machine and on your path.
+Please ensure you have [Node](https://nodejs.org)(>=v5), [npm](https://github.com/npm/npm)(>=v3.5) and [Git](https://git-scm.com/downloads) installed on your machine and on your path.
 
 ### Mac
 There are no additional packages to install other than Git and a recent build of Node.
