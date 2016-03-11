@@ -48,17 +48,7 @@ export default class ReferenceDataService extends ServiceBase {
   }
 
   getCurrencyPairUpdatesStream():Rx.Observable<CurrencyPairUpdates> {
-    let _this = this;
-    return Rx.Observable.create(
-      o => {
-        _log.debug('Subscribing reference data stream');
-        return _this._serviceClient
-          .createStreamOperation('getCurrencyPairUpdatesStream', {/* noop request */})
-          .retryWithPolicy(RetryPolicy.backoffTo10SecondsMax, 'getCurrencyPairUpdatesStream', _this._schedulerService.async)
-          .select(data => _this._referenceDataMapper.mapCurrencyPairsFromDto(data))
-          .subscribe(o);
-      }
-    );
+    return this._referenceDataStreamConnectable.asObservable();
   }
 
   _referenceDataStream():Rx.Observable<CurrencyPairUpdates> {
