@@ -1,7 +1,18 @@
 # Reactive Trader Cloud - UI
 
+The trading client GUI is a single page app (SPA) build using JavaScript vNext (i.e. Ecmascript 6 transpiled with [babeljs.io](http://babeljs.io)).
+
+## High level technologies
+
+* Html, javascript, css etc is built (i.e. transpiled and bundled) with [webpack](https://webpack.github.io). Script targets in `package.json` kick off webpack, tests etc.
+* Tests use [Karma](https://karma-runner.github.io) & [Jasmine](http://jasmine.github.io).
+* Streaming data abstractions are build with [RxJs](https://github.com/Reactive-Extensions/RxJS).
+* GUI state management is done with [esp-js](http://esp.readthedocs.org), a scalable state management library that puts your model at the forefront of the design. It works well with uni directional data flow architecture.
+* Connectivity to the backend is done via [AutobahnJs](http://autobahn.ws/js/).
+* Styles build using [Sass](http://sass-lang.com/).
+
 ## Machine Setup
-Please ensure you have [Node](https://nodejs.org) and [Git](https://git-scm.com/downloads) installed on your machine and on your path.
+Please ensure you have [Node](https://nodejs.org)(>=v4), [npm](https://github.com/npm/npm)(>=v3.5) and [Git](https://git-scm.com/downloads) installed on your machine and on your path.
 
 ### Mac
 There are no additional packages to install other than Git and a recent build of Node.
@@ -55,27 +66,3 @@ Note the linter also runs by default during normal dev watch build (`npm run dev
 npm run deploy
 ```
 Run webpack using the webpack config.
-
-### Starting the GUI in [OpenFin](https://openfin.co/)
-Currently, this is only available for Windows clients but likely will change Q1 of 2016 when the OpenFin runtime moves to Electron.
-
-To run the app in OpenFin, you need to:
-
-```sh
-npm i -g openfin-cli
-openfin -l -c src/app.json
-```
-
-Now also supported as a built-in npm task:
-
-```sh
-npm run openfin
-```
-
-By default, OpenFin will connect to your local development server on port 3000 (`http://localhost:3000/`) but you can override that by passing an extra argument to the launcher:
-
-```sh
-openfin -l -c src/app.json -u http://somedomain.com
-```
-
-Once this completes and resources are fetched, OpenFin will create an app icon on your desktop with the last configuration setting that you can relaunch.
