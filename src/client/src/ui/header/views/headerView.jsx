@@ -91,7 +91,11 @@ export default class HeaderView extends ViewBase {
     let statusSummary:ServiceStatus = model.serviceLookup.services[serviceType];
 
     if (statusSummary.isConnected) {
-      let title = serviceType + ' ' + statusSummary.connectedInstanceCount + ': nodes online';
+      let connectedNodesText = statusSummary.connectedInstanceCount === 1
+        ? 'node'
+        : 'nodes';
+
+      let title = `${serviceType} ${statusSummary.connectedInstanceCount} ${connectedNodesText} online`;
       return (
         <li key={serviceType} className='service-status' title={title}>
           <i className='fa fa-circle ' />
