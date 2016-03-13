@@ -44,13 +44,9 @@ export default class HeaderView extends ViewBase {
         <Link className='navbar-brand' to='/' title='Home'>
           Reactive Trader Cloud
         </Link>
-        <ul className='nav navbar-nav hidden-xs hidden-sm navbar-left'>
-          <li>
-            <Link to='/user' className='nav-link' activeClassName='active'>
-              <i className='fa fa-user'/> {model.currentUser.code} ({model.currentUser.firstName} {model.currentUser.lastName})
-            </Link>
-          </li>
-        </ul>
+        <div className='nav navbar-brand hidden-xs hidden-sm navbar-left nav-link'>
+          <i className='fa fa-user'/> {model.currentUser.code} ({model.currentUser.firstName} {model.currentUser.lastName})
+        </div>
         <nav className='nav navbar-nav chrome-controls pull-right'>
           <a title='Minimise'
              onClick={(e) => router.publishEvent(this.props.modelId, 'minimiseClicked', e)}
