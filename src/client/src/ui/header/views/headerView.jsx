@@ -7,8 +7,10 @@ import {  ServiceStatusLookup } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';
 
 // TODO : fix below import:
-// Styles in the below import extend some font awesome styles, however if we use webpack here then the fontawesome styles are not currently available due to some load ordering issue.
-// The below method is the correct approach, however we're going to have to park it for now. The styles in general are rathermessyy and need to be cleaned up.
+// Styles in the below import extend some font awesome styles, however if we use webpack here then the
+// fontawesome styles are not currently available due to some load ordering issue.
+// The below method is the correct approach, however we're going to have to park it for now.
+// The styles in general are rather messy and need to be cleaned up.
 // import './header.scss';
 
 export default class HeaderView extends ViewBase {
@@ -45,7 +47,7 @@ export default class HeaderView extends ViewBase {
         <ul className='nav navbar-nav hidden-xs hidden-sm navbar-left'>
           <li>
             <Link to='/user' className='nav-link' activeClassName='active'>
-              <i className='fa fa-user'/> {model.currentUser.code} ({model.currentUser.name} {model.currentUser.surname})
+              <i className='fa fa-user'/> {model.currentUser.code} ({model.currentUser.firstName} {model.currentUser.lastName})
             </Link>
           </li>
         </ul>
