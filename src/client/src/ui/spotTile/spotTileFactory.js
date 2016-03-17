@@ -4,6 +4,7 @@ import { SpotTileModel } from './model';
 import { PricingService, ExecutionService } from '../../services';
 import { CurrencyPair } from '../../services/model';
 import { SpotTileView } from './views';
+import { PopoutRegionModel } from '../regions/popout/model';
 
 /**
  * Responsible for creating components for a spot tile.
@@ -14,19 +15,28 @@ export default class SpotTileFactory {
   _router:Router;
   _pricingService:PricingService;
   _executionService:ExecutionService;
+  _popoutRegionModel:PopoutRegionModel;
 
   constructor(
     router:Router,
     pricingService:PricingService,
-    executionService:ExecutionService
+    executionService:ExecutionService,
+    popoutRegionModel:PopoutRegionModel
   ) {
     this._router = router;
     this._pricingService = pricingService;
     this._executionService =executionService;
+    this._popoutRegionModel = popoutRegionModel;
   }
 
   createTileModel(currencyPair:CurrencyPair) {
-    let spotTileModel = new SpotTileModel(currencyPair, this._router, this._pricingService, this._executionService);
+    let spotTileModel = new SpotTileModel(
+      currencyPair,
+      this._router,
+      this._pricingService,
+      this._executionService,
+      this._popoutRegionModel
+    );
     spotTileModel.observeEvents();
     this._router.publishEvent(spotTileModel.modelId, 'init', {});
     return spotTileModel;

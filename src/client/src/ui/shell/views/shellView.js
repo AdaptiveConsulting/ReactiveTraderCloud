@@ -7,6 +7,7 @@ import { Modal } from '../../common/components';
 import { ViewBase } from '../../common';
 import { ShellModel } from '../model';
 import { router } from '../../../system';
+import { PopoutRegionView } from '../../regions/popout/views';
 
 export default class ShellView extends ViewBase {
   constructor() {
@@ -39,6 +40,7 @@ export default class ShellView extends ViewBase {
           <AnalyticsView modelId='analyticsModelId' />
         </div>
         <BlotterView modelId='blotterModelId'  />
+        <PopoutRegionView modelId='popoutRegionModelId' />
       </div>
     );
   }

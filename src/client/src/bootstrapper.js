@@ -15,6 +15,7 @@ import { OpenFin } from './system/openFin';
 import { default as espRouter } from './system/router';
 import { PageContainer, ShellView } from './ui/shell/views';
 import { SpotTileView } from './ui/spotTile/views';
+import { PopoutRegionModel } from './ui/regions/popout/model';
 import {
   AnalyticsService,
   BlotterService,
@@ -74,6 +75,11 @@ class Bootstrapper {
 
   startModels() {
 
+    // wire up the popout region
+    let popoutRegionModel = new PopoutRegionModel(espRouter);
+    popoutRegionModel.observeEvents();
+
+    // wire up the shell
     let shellModel = new ShellModel(espRouter, this._connection);
     shellModel.observeEvents();
 
@@ -81,7 +87,7 @@ class Bootstrapper {
     let workspaceModel = new WorkspaceModel(
       espRouter,
       this._referenceDataService,
-      new SpotTileFactory(espRouter, this._pricingService, this._executionService)
+      new SpotTileFactory(espRouter, this._pricingService, this._executionService, popoutRegionModel)
     );
     workspaceModel.observeEvents();
 
@@ -106,6 +112,7 @@ class Bootstrapper {
       espRouter.broadcastEvent('referenceDataLoaded', {});
     });
 
+    espRouter.publishEvent(popoutRegionModel.modelId, 'init', {});
     espRouter.publishEvent(shellModel.modelId, 'init', {});
     espRouter.publishEvent(workspaceModel.modelId, 'init', {});
     espRouter.publishEvent(blotterModel.modelId, 'init', {});
