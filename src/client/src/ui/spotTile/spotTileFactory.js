@@ -3,8 +3,7 @@ import { Router }from 'esp-js/src';
 import { SpotTileModel } from './model';
 import { PricingService, ExecutionService } from '../../services';
 import { CurrencyPair } from '../../services/model';
-import { SpotTileView } from './views';
-import { PopoutRegionModel } from '../regions/popout/model';
+import { RegionManager, RegionNames } from '../regions';
 
 /**
  * Responsible for creating components for a spot tile.
@@ -15,18 +14,18 @@ export default class SpotTileFactory {
   _router:Router;
   _pricingService:PricingService;
   _executionService:ExecutionService;
-  _popoutRegionModel:PopoutRegionModel;
+  _regionManager:RegionManager;
 
   constructor(
     router:Router,
     pricingService:PricingService,
     executionService:ExecutionService,
-    popoutRegionModel:PopoutRegionModel
+    regionManager:RegionManager
   ) {
     this._router = router;
     this._pricingService = pricingService;
     this._executionService =executionService;
-    this._popoutRegionModel = popoutRegionModel;
+    this._regionManager = regionManager;
   }
 
   createTileModel(currencyPair:CurrencyPair) {
@@ -35,14 +34,10 @@ export default class SpotTileFactory {
       this._router,
       this._pricingService,
       this._executionService,
-      this._popoutRegionModel
+      this._regionManager
     );
     spotTileModel.observeEvents();
     this._router.publishEvent(spotTileModel.modelId, 'init', {});
     return spotTileModel;
-  }
-
-  createTileView(modelId) {
-    return React.createElement(SpotTileView, { modelId: modelId });
   }
 }

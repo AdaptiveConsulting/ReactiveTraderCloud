@@ -4,7 +4,7 @@ import { PricingService, ExecutionService } from '../../../services';
 import { logger } from '../../../system';
 import { ModelBase } from '../../common';
 import { TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
-import { PopoutRegionModel } from '../../regions/popout/model';
+import { RegionManager, RegionNames } from '../../regions';
 import {
   GetSpotStreamRequest,
   SpotPrice,
@@ -18,12 +18,12 @@ import { SpotTileView } from '../views';
 
 let modelIdKey = 1;
 
-@view(SpotTileView);
+@view(SpotTileView)
 export default class SpotTileModel extends ModelBase {
   // non view state
   _pricingService:PricingService;
   _executionService:ExecutionService;
-  _popoutRegionModel:PopoutRegionModel;
+  _regionManager:RegionManager;
   _executionDisposable:Rx.SerialDisposable;
   _priceSubscriptionDisposable:Rx.SerialDisposable;
   _log:logger.Logger;
@@ -45,12 +45,12 @@ export default class SpotTileModel extends ModelBase {
               router:Router,
               pricingService:PricingService,
               executionService:ExecutionService,
-              popoutRegionModel:PopoutRegionModel) {
+              regionManager:RegionManager) {
     super((`spotTile` + modelIdKey++), router);
     this._log = logger.create(`${this.modelId}:${currencyPair.symbol}`);// can't change ccy pair in this demo app, so reasonable to use the symbol in the logger name
     this._pricingService = pricingService;
     this._executionService = executionService;
-    this._popoutRegionModel = popoutRegionModel;
+    this._regionManager = regionManager;
     this.currencyPair = currencyPair;
     this._executionDisposable = new Rx.SerialDisposable();
     this.addDisposable(this._executionDisposable);
@@ -79,21 +79,20 @@ export default class SpotTileModel extends ModelBase {
     this._log.info(`Cash tile starting for pair ${this.currencyPair.symbol}`);
     this._subscribeToPriceStream();
     this._subscribeToConnectionStatus();
+    this._regionManager.addToRegion(RegionNames.workspace, this);
   }
 
   @observeEvent('tileClosed')
   _onTileClosed() {
     this._log.info(`Cash tile closing`);
-    // TODO
+    this._regionManager.removeFromRegion(RegionNames.workspace, this);
   }
 
   @observeEvent('popOutTile')
   _onPopOutTile() {
     this._log.info(`Popping out tile`);
-    // we really only have one region at the moment we just passing it around
-    // If you end up with multiple, you'd just put a proxy inbetween, i.e. a RegionManager
-    // and have all components talk to that, and that talk to the regions
-    this._popoutRegionModel.addToRegion(this);
+    this._regionManager.removeFromRegion(RegionNames.workspace, this);
+    this._regionManager.addToRegion(RegionNames.popout, this);
   }
 
   @observeEvent('toggleSparkLineChart')

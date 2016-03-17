@@ -1,5 +1,4 @@
 import React from 'react';
-import { WorkspaceView } from '../../workspace/views';
 import { BlotterView } from '../../blotter/views';
 import { HeaderView } from '../../header/views';
 import { AnalyticsView } from '../../analytics/views';
@@ -7,7 +6,8 @@ import { Modal } from '../../common/components';
 import { ViewBase } from '../../common';
 import { ShellModel } from '../model';
 import { router } from '../../../system';
-import { PopoutRegionView } from '../../regions/popout/views';
+import { PopoutRegionView } from '../../regions/views/popout';
+import { WorkspaceRegionView } from '../../regions/views/workspace';
 
 export default class ShellView extends ViewBase {
   constructor() {
@@ -23,6 +23,7 @@ export default class ShellView extends ViewBase {
     if(model === null) {
       return null;
     }
+    // TODO lift the modelId's below to a well known model id const file.
     return (
       <div className='flex-container'>
         <Modal shouldShow={model.sessionExpired}l title='Session expired'>
@@ -34,13 +35,13 @@ export default class ShellView extends ViewBase {
             </div>
           </div>
         </Modal>
-        <HeaderView modelId='headerModelId' />
+        <HeaderView modelId={model.modelIds.headerModelId} />
         <div className='horizontal-wrap'>
-          <WorkspaceView modelId='workspaceModelId' />
-          <AnalyticsView modelId='analyticsModelId' />
+          <WorkspaceRegionView modelId={model.modelIds.workspaceRegionModelId} />
+          <AnalyticsView modelId={model.modelIds.analyticsModelId} />
         </div>
-        <BlotterView modelId='blotterModelId'  />
-        <PopoutRegionView modelId='popoutRegionModelId' />
+        <BlotterView modelId={model.modelIds.blotterModelId}  />
+        <PopoutRegionView modelId={model.modelIds.popoutRegionModelId} />
       </div>
     );
   }

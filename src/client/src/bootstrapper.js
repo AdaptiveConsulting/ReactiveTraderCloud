@@ -15,7 +15,8 @@ import { OpenFin } from './system/openFin';
 import { default as espRouter } from './system/router';
 import { PageContainer, ShellView } from './ui/shell/views';
 import { SpotTileView } from './ui/spotTile/views';
-import { PopoutRegionModel } from './ui/regions/popout/model';
+import { RegionModel } from './ui/regions/model';
+import { RegionManager, RegionNames } from './ui/regions';
 import {
   AnalyticsService,
   BlotterService,
@@ -25,6 +26,7 @@ import {
   ReferenceDataService,
   CompositeStatusService
 } from './services';
+import { WellKnownModelIds } from './';
 
 class Bootstrapper {
   _connection:Connection;
@@ -75,9 +77,12 @@ class Bootstrapper {
 
   startModels() {
 
-    // wire up the popout region
-    let popoutRegionModel = new PopoutRegionModel(espRouter);
+    // wire up the region management infrastructure
+    let workspaceRegionModel = new RegionModel(RegionNames.workspace, WellKnownModelIds.workspaceRegionModelId, espRouter);
+    workspaceRegionModel.observeEvents();
+    let popoutRegionModel = new RegionModel(RegionNames.popout, WellKnownModelIds.popoutRegionModelId, espRouter);
     popoutRegionModel.observeEvents();
+    let regionManager = new RegionManager([workspaceRegionModel, popoutRegionModel]);
 
     // wire up the shell
     let shellModel = new ShellModel(espRouter, this._connection);
@@ -87,7 +92,7 @@ class Bootstrapper {
     let workspaceModel = new WorkspaceModel(
       espRouter,
       this._referenceDataService,
-      new SpotTileFactory(espRouter, this._pricingService, this._executionService, popoutRegionModel)
+      new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager)
     );
     workspaceModel.observeEvents();
 

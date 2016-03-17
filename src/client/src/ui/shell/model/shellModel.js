@@ -3,6 +3,7 @@ import { logger } from '../../../system';
 import { Connection } from '../../../system/service';
 import { ConnectionStatus } from '../../../system/service';
 import { ModelBase } from '../../common';
+import { WellKnownModelIds } from '../../../';
 
 var _log:logger.Logger = logger.create('ShellModel');
 
@@ -10,11 +11,13 @@ export default class ShellModel extends ModelBase {
   _connection:Connection;
 
   sessionExpired:boolean;
+  modelIds:WellKnownModelIds;
 
   constructor(router:Router, connection:Connection) {
     super('shellModelId', router);
     this._connection = connection;
     this.sessionExpired = false;
+    this.modelIds = WellKnownModelIds;
   }
 
   @observeEvent('init')
