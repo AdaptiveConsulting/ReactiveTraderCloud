@@ -12,10 +12,10 @@ export default class RegionManager {
     });
   }
 
-  addToRegion(regionName:string, model:ModelBase, context:?string) {
+  addToRegion(regionName:string, model:ModelBase, onExternallyRemovedCallback:?() => void, context:?string) {
     var region : RegionModel = this._regionsByName[regionName];
     Guard.isDefined(region, `region with name ${regionName} not registered`);
-    region.addToRegion(model, context);
+    region.addToRegion(model, onExternallyRemovedCallback, context);
   }
 
   removeFromRegion(regionName:string, model:ModelBase, context:?string) {

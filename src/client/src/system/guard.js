@@ -56,7 +56,7 @@ export default class Guard {
   }
 
   static isFunction(item, message) {
-    if (typeof(item) != 'function') {
+    if (typeof item !== 'function') {
       doThrow(message);
     }
   }

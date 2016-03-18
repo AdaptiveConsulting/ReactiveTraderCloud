@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { ModelBase } from '../../common';
 import { Router, observeEvent } from 'esp-js/src';
 import { RegionModelRegistration } from './';
@@ -21,20 +22,42 @@ export default class RegionModel extends ModelBase {
     this._log.info('Region initialised');
   }
 
+  @observeEvent('registrationRemoved')
+  _onRegistrationRemoved(e:{ model:ModelBase }) {
+    this._log.info('Region closed');
+    this._removeFromRegion(e.model, true);
+  }
+
   get regionName() {
     return this._regionName;
   }
 
-  addToRegion(model:ModelBase, context:?string) {
-    this.router.runAction(this.modelId, ()=>{
+  addToRegion(model:ModelBase, onExternallyRemovedCallback:?() => void, context:?string) {
+    this.ensureOnDispatchLoop(()=> {
       this.modelRegistrations.push(new RegionModelRegistration(
         model,
+        onExternallyRemovedCallback,
         context
       ));
     });
   }
 
-  removeFromRegion(modelId:string) {
+  removeFromRegion(model:ModelBase) {
+    this.ensureOnDispatchLoop(()=> {
+      this._removeFromRegion(model, false);
+    });
+  }
 
+  _removeFromRegion(model:ModelBase, wasExternallyRemoved:boolean) {
+    let removedItems = _.remove(this.modelRegistrations, (regionModelRegistration:RegionModelRegistration) => {
+      return regionModelRegistration.model === model;
+    });
+    _.forEach(removedItems, regionModelRegistration=> {
+      if(wasExternallyRemoved) {
+        if (regionModelRegistration.onExternallyRemovedCallback) {
+          regionModelRegistration.onExternallyRemovedCallback();
+        }
+      }
+    });
   }
 }

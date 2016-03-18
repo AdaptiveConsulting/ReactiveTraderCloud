@@ -91,7 +91,14 @@ export default class SpotTileModel extends ModelBase {
   _onPopOutTile() {
     this._log.info(`Popping out tile`);
     this._regionManager.removeFromRegion(RegionNames.workspace, this);
-    this._regionManager.addToRegion(RegionNames.popout, this);
+    this._regionManager.addToRegion(
+      RegionNames.popout,
+      this,
+      () => {
+        // if the popout is closed, we add it back into the workspace
+        this._regionManager.addToRegion(RegionNames.workspace, this);
+      }
+    );
   }
 
   @observeEvent('toggleSparkLineChart')
