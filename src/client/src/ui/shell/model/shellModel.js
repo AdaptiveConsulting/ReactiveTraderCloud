@@ -11,13 +11,13 @@ export default class ShellModel extends ModelBase {
   _connection:Connection;
 
   sessionExpired:boolean;
-  modelIds:WellKnownModelIds;
+  wellKnownModelIds:WellKnownModelIds;
 
-  constructor(router:Router, connection:Connection) {
-    super('shellModelId', router);
+  constructor(modelId:string, router:Router, connection:Connection) {
+    super(modelId, router);
     this._connection = connection;
     this.sessionExpired = false;
-    this.modelIds = WellKnownModelIds;
+    this.wellKnownModelIds = WellKnownModelIds;
   }
 
   @observeEvent('init')

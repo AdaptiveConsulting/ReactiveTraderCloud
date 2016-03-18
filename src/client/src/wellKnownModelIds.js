@@ -1,4 +1,8 @@
 export default class WellKnownModelIds {
+  static get shellModelId() {
+    return 'shellModelId';
+  }
+
   static get workspaceRegionModelId() {
     return 'workspaceRegionModelId';
   }

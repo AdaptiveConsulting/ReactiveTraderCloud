@@ -17,8 +17,8 @@ export default class BlotterModel extends ModelBase {
   trades:Array<Trade>;
   isConnected:boolean;
 
-  constructor(router:Router, blotterService:BlotterService) {
-    super('blotterModelId', router);
+  constructor(modelId:string, router:Router, blotterService:BlotterService) {
+    super(modelId, router);
     this._blotterService = blotterService;
     this.trades = [];
     this.isConnected = false;

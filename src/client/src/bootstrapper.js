@@ -2,12 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute } from 'react-router';
 import { createHashHistory } from 'history';
-import { WorkspaceModel } from './ui/workspace/model';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { HeaderModel } from './ui/header/model';
 import { ShellModel } from './ui/shell/model';
-import { SpotTileFactory } from './ui/spotTile';
+import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
 import { User, ServiceConst, ServiceStatusLookup } from './services/model';
 import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
@@ -78,34 +77,34 @@ class Bootstrapper {
   startModels() {
 
     // wire up the region management infrastructure
-    let workspaceRegionModel = new RegionModel(RegionNames.workspace, WellKnownModelIds.workspaceRegionModelId, espRouter);
+    let workspaceRegionModel = new RegionModel(WellKnownModelIds.workspaceRegionModelId, RegionNames.workspace, espRouter);
     workspaceRegionModel.observeEvents();
-    let popoutRegionModel = new RegionModel(RegionNames.popout, WellKnownModelIds.popoutRegionModelId, espRouter);
+    let popoutRegionModel = new RegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter);
     popoutRegionModel.observeEvents();
     let regionManager = new RegionManager([workspaceRegionModel, popoutRegionModel]);
 
     // wire up the shell
-    let shellModel = new ShellModel(espRouter, this._connection);
+    let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection);
     shellModel.observeEvents();
 
     // wire-up the workspace
-    let workspaceModel = new WorkspaceModel(
+    let spotTileLoader = new SpotTileLoader(
       espRouter,
       this._referenceDataService,
       new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager)
     );
-    workspaceModel.observeEvents();
+    spotTileLoader.beginLoadTiles();
 
     // wire-up the blotter
-    let blotterModel = new BlotterModel(espRouter, this._blotterService);
+    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService);
     blotterModel.observeEvents();
 
     // wire-up analytics
-    let analyticsModel = new AnalyticsModel(espRouter, this._analyticsService);
+    let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService);
     analyticsModel.observeEvents();
 
     // wire-up the header
-    let headerModel = new HeaderModel(espRouter, this._compositeStatusService);
+    let headerModel = new HeaderModel(WellKnownModelIds.headerModelId, espRouter, this._compositeStatusService);
     headerModel.observeEvents();
 
     this._referenceDataService.hasLoadedStream.subscribe(() => {
@@ -117,12 +116,7 @@ class Bootstrapper {
       espRouter.broadcastEvent('referenceDataLoaded', {});
     });
 
-    espRouter.publishEvent(popoutRegionModel.modelId, 'init', {});
-    espRouter.publishEvent(shellModel.modelId, 'init', {});
-    espRouter.publishEvent(workspaceModel.modelId, 'init', {});
-    espRouter.publishEvent(blotterModel.modelId, 'init', {});
-    espRouter.publishEvent(analyticsModel.modelId, 'init', {});
-    espRouter.publishEvent(headerModel.modelId, 'init', {});
+    espRouter.broadcastEvent('init', {});
   }
 
   displayUi() {

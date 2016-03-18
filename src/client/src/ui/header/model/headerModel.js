@@ -13,10 +13,11 @@ export default class HeaderModel extends ModelBase {
   serviceLookup:ServiceStatusLookup;
 
   constructor(
+    modelId:string,
     router:Router,
     compositeStatusService:CompositeStatusService
   ) {
-    super('headerModelId', router);
+    super(modelId, router);
     this._compositeStatusService = compositeStatusService;
 
     this.serviceLookup = new ServiceStatusLookup();

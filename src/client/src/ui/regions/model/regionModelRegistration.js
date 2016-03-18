@@ -1,4 +1,4 @@
-import { ModelBase } from '../common';
+import { ModelBase } from '../../common';
 
 export default class RegionModelRegistration {
   _model:ModelBase;

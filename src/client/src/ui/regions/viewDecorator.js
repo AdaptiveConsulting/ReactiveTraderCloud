@@ -1,5 +1,5 @@
 import React from 'react';
-import { Guard } from '../../services';
+import { Guard } from '../../system';
 import { ModelBase } from '../common';
 
 let DEFAULT_CONTEXT = 'default';

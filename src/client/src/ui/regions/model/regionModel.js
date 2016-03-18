@@ -9,7 +9,7 @@ export default class RegionModel extends ModelBase {
 
   views:Array<RegionModelRegistration>
 
-  constructor(regionName:string, modelId:string, router:Router) {
+  constructor(modelId:string, regionName:string, router:Router) {
     super(modelId, router);
     this._regionName = regionName;
     this._log = logger.create(`Region-${this._regionName}`);

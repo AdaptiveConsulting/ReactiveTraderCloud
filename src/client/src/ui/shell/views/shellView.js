@@ -14,34 +14,37 @@ export default class ShellView extends ViewBase {
     super();
     this.state = {
       model: null,
-      modelId:'shellModelId'
+      modelId: 'shellModelId'
     };
   }
 
-  render(){
+  render() {
     let model:ShellModel = this.state.model;
-    if(model === null) {
+    if (model === null) {
       return null;
     }
     // TODO lift the modelId's below to a well known model id const file.
+    var wellKnownModelIds = model.wellKnownModelIds;
     return (
       <div className='flex-container'>
-        <Modal shouldShow={model.sessionExpired}l title='Session expired'>
+        <Modal shouldShow={model.sessionExpired} l title='Session expired'>
           <div>
             <div>Your 15 minute session expired, you are now disconnected from the server.</div>
             <div>Click reconnect to start a new session.</div>
             <div className='modal-action'>
-              <button className='btn btn-large' onClick={() => router.publishEvent(model.modelId, 'reconnectClicked', {})}>Reconnect</button>
+              <button className='btn btn-large'
+                      onClick={() => router.publishEvent(model.modelId, 'reconnectClicked', {})}>Reconnect
+              </button>
             </div>
           </div>
         </Modal>
-        <HeaderView modelId={model.modelIds.headerModelId} />
+        <HeaderView modelId={wellKnownModelIds.headerModelId}/>
         <div className='horizontal-wrap'>
-          <WorkspaceRegionView modelId={model.modelIds.workspaceRegionModelId} />
-          <AnalyticsView modelId={model.modelIds.analyticsModelId} />
+          <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
+          <AnalyticsView modelId={wellKnownModelIds.analyticsModelId}/>
         </div>
-        <BlotterView modelId={model.modelIds.blotterModelId}  />
-        <PopoutRegionView modelId={model.modelIds.popoutRegionModelId} />
+        <BlotterView modelId={wellKnownModelIds.blotterModelId}/>
+        <PopoutRegionView modelId={wellKnownModelIds.popoutRegionModelId}/>
       </div>
     );
   }

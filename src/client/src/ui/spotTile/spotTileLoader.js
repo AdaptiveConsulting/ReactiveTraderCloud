@@ -1,10 +1,10 @@
-import { Router } from 'esp/src';
+import { Router, DisposableBase } from 'esp-js/src';
 import { ReferenceDataService } from '../../services';
 import { CurrencyPairUpdates, CurrencyPairUpdate, UpdateType } from '../../services/model';
 import { SpotTileFactory } from './';
 import { SpotTileModel } from './model';
 
-export default class TileLoader {
+export default class SpotTileLoader extends DisposableBase{
 
   _router:Router;
   _referenceDataService:ReferenceDataService;
@@ -14,17 +14,16 @@ export default class TileLoader {
   constructor(router:Router,
               referenceDataService:ReferenceDataService,
               spotTileFactory:SpotTileFactory) {
+    super();
     this._router = router;
     this._referenceDataService = referenceDataService;
     this._spotTileFactory = spotTileFactory;
     this._spotTilesByCurrencyPairSymbol = {};
   }
 
-  loadTiles() {
+  beginLoadTiles() {
     this.addDisposable(
-      this._referenceDataService.getCurrencyPairUpdatesStream().subscribeWithRouter(
-        this.router,
-        this.modelId,
+      this._referenceDataService.getCurrencyPairUpdatesStream().subscribe(
         (referenceData:CurrencyPairUpdates) => {
           this._processCurrencyPairUpdate(referenceData.currencyPairUpdates);
         }

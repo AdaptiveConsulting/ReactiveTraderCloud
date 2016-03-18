@@ -25,8 +25,8 @@ export default class AnalyticsModel extends ModelBase {
 
   isAnalyticsServiceConnected: Boolean;
 
-  constructor(router:Router, analyticsService:AnalyticsService) {
-    super('analyticsModelId', router);
+  constructor(modelId:string, router:Router, analyticsService:AnalyticsService) {
+    super(modelId, router);
     this._analyticsService = analyticsService;
 
     this.isAnalyticsServiceConnected = false;
