@@ -8,6 +8,7 @@ import { ShellModel } from '../model';
 import { router } from '../../../system';
 import { PopoutRegionView } from '../../regions/views/popout';
 import { WorkspaceRegionView } from '../../regions/views/workspace';
+import '../../common/styles/reactive-trader.scss';
 
 export default class ShellView extends ViewBase {
   constructor() {
@@ -26,25 +27,29 @@ export default class ShellView extends ViewBase {
     // TODO lift the modelId's below to a well known model id const file.
     var wellKnownModelIds = model.wellKnownModelIds;
     return (
-      <div className='flex-container'>
-        <Modal shouldShow={model.sessionExpired} l title='Session expired'>
-          <div>
-            <div>Your 15 minute session expired, you are now disconnected from the server.</div>
-            <div>Click reconnect to start a new session.</div>
-            <div className='modal-action'>
-              <button className='btn btn-large'
-                      onClick={() => router.publishEvent(model.modelId, 'reconnectClicked', {})}>Reconnect
-              </button>
+      <div className='page-container'>
+        <div className='view-container'>
+          <div className='flex-container'>
+            <Modal shouldShow={model.sessionExpired} l title='Session expired'>
+              <div>
+                <div>Your 15 minute session expired, you are now disconnected from the server.</div>
+                <div>Click reconnect to start a new session.</div>
+                <div className='modal-action'>
+                  <button className='btn btn-large'
+                          onClick={() => router.publishEvent(model.modelId, 'reconnectClicked', {})}>Reconnect
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            <HeaderView modelId={wellKnownModelIds.headerModelId}/>
+            <div className='horizontal-wrap'>
+              <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
+              <AnalyticsView modelId={wellKnownModelIds.analyticsModelId}/>
             </div>
+            <BlotterView modelId={wellKnownModelIds.blotterModelId}/>
+            <PopoutRegionView modelId={wellKnownModelIds.popoutRegionModelId}/>
           </div>
-        </Modal>
-        <HeaderView modelId={wellKnownModelIds.headerModelId}/>
-        <div className='horizontal-wrap'>
-          <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
-          <AnalyticsView modelId={wellKnownModelIds.analyticsModelId}/>
         </div>
-        <BlotterView modelId={wellKnownModelIds.blotterModelId}/>
-        <PopoutRegionView modelId={wellKnownModelIds.popoutRegionModelId}/>
       </div>
     );
   }

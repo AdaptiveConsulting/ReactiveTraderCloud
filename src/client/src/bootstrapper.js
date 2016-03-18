@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute } from 'react-router';
-import { createHashHistory } from 'history';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { HeaderModel } from './ui/header/model';
@@ -12,7 +10,7 @@ import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
 import { default as espRouter } from './system/router';
-import { PageContainer, ShellView } from './ui/shell/views';
+import { ShellView } from './ui/shell/views';
 import { SpotTileView } from './ui/spotTile/views';
 import { RegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
@@ -120,24 +118,10 @@ class Bootstrapper {
   }
 
   displayUi() {
-    let history = createHashHistory({
-      queryKey: false
-    });
-    let root = document.getElementById('root');
-    let routes = (
-      <Router history={history}>
-        <Route path='/' component={PageContainer}>
-          <IndexRoute component={ShellView}/>
-        </Route>
-        <Route path='/user' component={PageContainer}>
-          <IndexRoute component={ShellView}/>
-        </Route>
-        <Route path='/tile'>
-          <IndexRoute component={SpotTileView}/>
-        </Route>
-      </Router>
+    ReactDOM.render(
+      <ShellView />,
+      document.getElementById('root')
     );
-    ReactDOM.render(routes, root);
   }
 }
 
