@@ -16,8 +16,6 @@ import {
 import { view } from '../../regions';
 import { SpotTileView } from '../views';
 
-let modelIdKey = 1;
-
 @view(SpotTileView)
 export default class SpotTileModel extends ModelBase {
   // non view state
@@ -41,12 +39,13 @@ export default class SpotTileModel extends ModelBase {
   executionConnected:boolean;
   isTradeExecutionInFlight:boolean;
 
-  constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
+  constructor(modelId:string,
+              currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
               router:Router,
               pricingService:PricingService,
               executionService:ExecutionService,
               regionManager:RegionManager) {
-    super((`spotTile` + modelIdKey++), router);
+    super(modelId, router);
     this._log = logger.create(`${this.modelId}:${currencyPair.symbol}`);// can't change ccy pair in this demo app, so reasonable to use the symbol in the logger name
     this._pricingService = pricingService;
     this._executionService = executionService;

@@ -1,8 +1,12 @@
+import _ from 'lodash';
 import { Router, DisposableBase } from 'esp-js/src';
 import { ReferenceDataService } from '../../services';
 import { CurrencyPairUpdates, CurrencyPairUpdate, UpdateType } from '../../services/model';
 import { SpotTileFactory } from './';
 import { SpotTileModel } from './model';
+import { logger } from '../../system';
+
+var _log:logger.Logger = logger.create('SpotTileLoader');
 
 export default class SpotTileLoader extends DisposableBase{
 
@@ -22,11 +26,13 @@ export default class SpotTileLoader extends DisposableBase{
   }
 
   beginLoadTiles() {
-    this.addDisposable(
-      this._referenceDataService.getCurrencyPairUpdatesStream().subscribe(
+    let _this = this;
+    _this.addDisposable(
+      _this._referenceDataService.getCurrencyPairUpdatesStream().subscribe(
         (referenceData:CurrencyPairUpdates) => {
-          this._processCurrencyPairUpdate(referenceData.currencyPairUpdates);
-        }
+          _this._processCurrencyPairUpdate(referenceData.currencyPairUpdates);
+        },
+        err => _log.error(`'error getting ccy pairs ${err}`, err)
       )
     );
   }
@@ -47,11 +53,11 @@ export default class SpotTileLoader extends DisposableBase{
       if (currencyPairUpdate.updateType === UpdateType.Added && !_this._spotTilesByCurrencyPairSymbol.hasOwnProperty(currencyPairSymbol)) {
         let spotTileModel = _this._spotTileFactory.createTileModel(currencyPairUpdate.currencyPair);
         _this._spotTilesByCurrencyPairSymbol[currencyPairSymbol] = spotTileModel;
-        _this.router.publishEvent(spotTileModel.modelId, 'init', {});
+        _this._router.publishEvent(spotTileModel.modelId, 'init', {});
       } else if (currencyPairUpdate.updateType === UpdateType.Removed && _this._spotTilesByCurrencyPairSymbol.hasOwnProperty(currencyPairSymbol)) {
         let spotTileModel = _this._spotTilesByCurrencyPairSymbol[currencyPairSymbol];
         delete _this._spotTilesByCurrencyPairSymbol[currencyPairSymbol];
-        _this.router.publishEvent(spotTileModel.modelId, 'tileClosed', {});
+        _this._router.publishEvent(spotTileModel.modelId, 'tileClosed', {});
       }
     });
   }

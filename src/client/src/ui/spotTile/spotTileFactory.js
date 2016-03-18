@@ -5,6 +5,8 @@ import { PricingService, ExecutionService } from '../../services';
 import { CurrencyPair } from '../../services/model';
 import { RegionManager, RegionNames } from '../regions';
 
+let modelIdKey = 1;
+
 /**
  * Responsible for creating components for a spot tile.
  *
@@ -30,6 +32,7 @@ export default class SpotTileFactory {
 
   createTileModel(currencyPair:CurrencyPair) {
     let spotTileModel = new SpotTileModel(
+      this._createSpotTileModelId(),
       currencyPair,
       this._router,
       this._pricingService,
@@ -37,7 +40,9 @@ export default class SpotTileFactory {
       this._regionManager
     );
     spotTileModel.observeEvents();
-    this._router.publishEvent(spotTileModel.modelId, 'init', {});
     return spotTileModel;
+  }
+  _createSpotTileModelId() {
+    return `spotTile` + modelIdKey++;
   }
 }

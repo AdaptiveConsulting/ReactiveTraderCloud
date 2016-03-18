@@ -7,13 +7,13 @@ export default class RegionModel extends ModelBase {
   _regionName:string;
   _log:logger.Logger;
 
-  views:Array<RegionModelRegistration>
+  modelRegistrations:Array<RegionModelRegistration>
 
   constructor(modelId:string, regionName:string, router:Router) {
     super(modelId, router);
     this._regionName = regionName;
     this._log = logger.create(`Region-${this._regionName}`);
-    this.views = [];
+    this.modelRegistrations = [];
   }
 
   @observeEvent('init')
@@ -27,7 +27,7 @@ export default class RegionModel extends ModelBase {
 
   addToRegion(model:ModelBase, context:?string) {
     this.router.runAction(this.modelId, ()=>{
-      this.views.push(new RegionModelRegistration(
+      this.modelRegistrations.push(new RegionModelRegistration(
         model,
         context
       ));

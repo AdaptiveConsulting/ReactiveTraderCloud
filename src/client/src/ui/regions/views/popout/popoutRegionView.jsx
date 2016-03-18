@@ -18,16 +18,16 @@ export default class PopoutRegionView extends ViewBase {
     if(model === null) {
       return null;
     }
-    let popouts = this._createPopouts(model.views);
+    let popouts = this._createPopouts(model.modelRegistrations);
     return (
       <div>
         {popouts}
       </div>
     );
   }
-  _createPopouts(popoutRegistrations:Array<RegionModelRegistration>) {
-    return _.map(popoutRegistrations, (regionModelRegistration:RegionModelRegistration) => {
-      let view =createViewForModel(regionModelRegistration.model, regionModelRegistration.context);
+  _createPopouts(modelRegistrations:Array<RegionModelRegistration>) {
+    return _.map(modelRegistrations, (modelRegistration:RegionModelRegistration) => {
+      let view =createViewForModel(modelRegistration.model, modelRegistration.context);
       return (<Popout>
         {view}
       </Popout>);

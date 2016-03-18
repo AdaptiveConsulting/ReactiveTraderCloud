@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { router } from '../../../../system';
 import { ViewBase } from '../../../common';
@@ -21,21 +22,21 @@ export default class WorkspaceRegionView extends ViewBase {
     return (
       <div className='currency-pairs'>
         {
-          model.views.length
-            ? this._renderWorkspaceItems(model.views)
+          model.modelRegistrations.length > 0
+            ? this._renderWorkspaceItems(model.modelRegistrations)
             : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div>
         }
         <div className='clearfix'></div>
       </div>);
   }
 
-  _renderWorkspaceItems(registrations:Array<RegionModelRegistration>) {
-    return registrations.map((registration:RegionModelRegistration) => {
-      let view = createViewForModel(registration.model, registration.context);
+  _renderWorkspaceItems(modelRegistrations:Array<RegionModelRegistration>) {
+    return _.map(modelRegistrations, (modelRegistration:RegionModelRegistration) => {
+      let View = createViewForModel(modelRegistration.model, modelRegistration.context);
       return (
         <WorkspaceItemContainer
-          key={registration.model.modelId}>
-          {view}
+          key={modelRegistration.model.modelId}>
+          {View}
         </WorkspaceItemContainer>
       );
     });
