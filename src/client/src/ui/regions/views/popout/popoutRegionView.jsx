@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { ViewBase } from '../../../common';
+import { PageContainer } from '../../../common/components';
 import { RegionModel, RegionModelRegistration } from '../../model';
 import { createViewForModel } from '../../';
 import { router } from '../../../../system';
@@ -13,9 +14,10 @@ export default class PopoutRegionView extends ViewBase {
       model: null
     };
   }
-  render(){
+
+  render() {
     let model:RegionModel = this.state.model;
-    if(model === null) {
+    if (model === null) {
       return null;
     }
     let popouts = this._createPopouts(model.modelRegistrations);
@@ -25,16 +27,33 @@ export default class PopoutRegionView extends ViewBase {
       </div>
     );
   }
+
   _createPopouts(modelRegistrations:Array<RegionModelRegistration>) {
     return _.map(modelRegistrations, (modelRegistration:RegionModelRegistration) => {
-      let view =createViewForModel(modelRegistration.model, modelRegistration.context);
-      return (<Popout key={modelRegistration.key} title='Popout' onClosing={() => this._popoutClosed(this.props.modelId, modelRegistration.model)}>
-        {view}
-      </Popout>);
+      let view = createViewForModel(modelRegistration.model, modelRegistration.context);
+      let popupAttributes = {
+        key: modelRegistration.key,
+        url:'/tile',
+        title:'',
+        onClosing: () => this._popoutClosed(this.props.modelId, modelRegistration.model),
+        options: {
+          width: 332,
+          height: 190,
+          resizable: 'no',
+          scrollable: 'no'
+        }
+      };
+      return (
+        <Popout {...popupAttributes}>
+          <PageContainer>
+            {view}
+          </PageContainer>
+        </Popout>
+      );
     });
   }
 
   _popoutClosed(regionModelId, model) {
-    router.publishEvent(regionModelId, 'registrationRemoved', { model:model})
+    router.publishEvent(regionModelId, 'registrationRemoved', {model: model})
   }
 }

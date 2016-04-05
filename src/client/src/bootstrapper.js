@@ -125,4 +125,8 @@ class Bootstrapper {
   }
 }
 
-new Bootstrapper().run();
+let runBootstrapper = location.pathname === '/';
+// if we're not the root we (perhaps a popup) we never re-run the bootstrap logic
+if(runBootstrapper) {
+  new Bootstrapper().run();
+}
