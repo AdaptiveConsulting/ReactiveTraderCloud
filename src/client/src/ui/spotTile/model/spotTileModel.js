@@ -4,7 +4,7 @@ import { PricingService, ExecutionService } from '../../../services';
 import { logger } from '../../../system';
 import { ModelBase } from '../../common';
 import { TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
-import { RegionManager, RegionNames } from '../../regions';
+import { RegionManager, RegionNames, view  } from '../../regions';
 import {
   GetSpotStreamRequest,
   SpotPrice,
@@ -13,7 +13,6 @@ import {
   CurrencyPair,
   ExecuteTradeResponse
 } from '../../../services/model';
-import { view } from '../../regions';
 import { SpotTileView } from '../views';
 
 @view(SpotTileView)
@@ -95,7 +94,7 @@ export default class SpotTileModel extends ModelBase {
       RegionNames.popout,
       this,
       () => {
-        // if the popout is closed, we add it back into the workspace
+        // if the popout is closed, we add it back into the workspace region
         this._regionManager.addToRegion(RegionNames.workspace, this);
       }
     );

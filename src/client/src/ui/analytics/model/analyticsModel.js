@@ -7,6 +7,7 @@ import { AnalyticsService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
 import { logger } from '../../../system';
 import { ModelBase } from '../../common';
+import { RegionManager, RegionNames, view  } from '../../regions';
 import { PricePoint, PnlChartModel, PositionsChartModel, ChartModelBase } from './';
 import {
   AnalyticsRequest,
@@ -14,20 +15,29 @@ import {
   HistoricPosition,
   CurrencyPairPosition
 } from '../../../services/model';
+import { AnalyticsView } from '../views';
 
 var _log:logger.Logger = logger.create('AnalyticsModel');
 
+@view(AnalyticsView)
 export default class AnalyticsModel extends ModelBase {
   _analyticsService:AnalyticsService;
+  _regionManager:RegionManager;
 
   _positionsChartModel:PositionsChartModel;
   _pnlChartModel:PnlChartModel;
 
   isAnalyticsServiceConnected: Boolean;
 
-  constructor(modelId:string, router:Router, analyticsService:AnalyticsService) {
+  constructor(
+    modelId:string,
+    router:Router,
+    analyticsService:AnalyticsService,
+    regionManager:RegionManager
+  ) {
     super(modelId, router);
     this._analyticsService = analyticsService;
+    this._regionManager = regionManager;
 
     this.isAnalyticsServiceConnected = false;
     this._pnlChartModel = new PnlChartModel();
@@ -50,13 +60,28 @@ export default class AnalyticsModel extends ModelBase {
   @observeEvent('init')
   _onInit() {
     _log.info(`Analytics model starting`);
-        this._subscribeToConnectionStatus();
+    this._subscribeToConnectionStatus();
+    this._regionManager.addToRegion(RegionNames.quickAccess, this);
   }
 
   @observeEvent('referenceDataLoaded')
   _onReferenceDataLoaded() {
     _log.info(`Ref data loaded, subscribing to analytics stream`);
     this._subscribeToAnalyticsStream();
+  }
+
+  @observeEvent('popOutAnalytics')
+  _onPopOutAnalytics() {
+    _log.info(`Popping out tile`);
+    this._regionManager.removeFromRegion(RegionNames.quickAccess, this);
+    this._regionManager.addToRegion(
+      RegionNames.popout,
+      this,
+      () => {
+        // if the popout is closed, we add it back into the quickAccess region
+        this._regionManager.addToRegion(RegionNames.quickAccess, this);
+      }
+    );
   }
 
   _subscribeToAnalyticsStream() {

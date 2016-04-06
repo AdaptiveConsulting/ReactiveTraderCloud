@@ -1,7 +1,4 @@
 export default class WellKnownModelIds {
-  static get shellModelId() {
-    return 'shellModelId';
-  }
 
   static get workspaceRegionModelId() {
     return 'workspaceRegionModelId';
@@ -9,6 +6,18 @@ export default class WellKnownModelIds {
 
   static get popoutRegionModelId() {
     return 'popoutRegionModelId';
+  }
+
+  static get quickAccessRegionModelId() {
+    return 'quickAccessRegionModelId';
+  }
+
+  static get blotterRegionModelId() {
+    return 'blotterRegionModelId';
+  }
+
+  static get shellModelId() {
+    return 'shellModelId';
   }
 
   static get headerModelId() {

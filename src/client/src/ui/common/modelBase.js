@@ -30,6 +30,7 @@ export default class ModelBase extends DisposableBase {
    * @param action
      */
   ensureOnDispatchLoop(action:() => void) {
+    // TODO update when https://github.com/esp/esp-js/issues/86 is implemented
     this.router.runAction(this.modelId, ()=>{
       action();
     });

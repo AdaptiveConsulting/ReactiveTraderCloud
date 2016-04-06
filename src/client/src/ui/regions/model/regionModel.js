@@ -22,9 +22,9 @@ export default class RegionModel extends ModelBase {
     this._log.info('Region initialised');
   }
 
-  @observeEvent('registrationRemoved')
-  _onRegistrationRemoved(e:{ model:ModelBase }) {
-    this._log.info('Region closed');
+  @observeEvent('removeFromRegion')
+  _onRemoveFromRegion(e:{ model:ModelBase }) {
+    this._log.info('Item removed from region');
     this._removeFromRegion(e.model, true);
   }
 

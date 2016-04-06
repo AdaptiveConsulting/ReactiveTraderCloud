@@ -12,7 +12,7 @@ import { OpenFin } from './system/openFin';
 import { default as espRouter } from './system/router';
 import { ShellView } from './ui/shell/views';
 import { SpotTileView } from './ui/spotTile/views';
-import { RegionModel } from './ui/regions/model';
+import { RegionModel, SingleItemRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
 import {
   AnalyticsService,
@@ -74,18 +74,24 @@ class Bootstrapper {
 
   startModels() {
 
-    // wire up the region management infrastructure
+    // Wire up the region management infrastructure:
+    // This infrastructure allows for differing views to be put into the shell without the shell having to be coupled to all these views.
     let workspaceRegionModel = new RegionModel(WellKnownModelIds.workspaceRegionModelId, RegionNames.workspace, espRouter);
     workspaceRegionModel.observeEvents();
     let popoutRegionModel = new RegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter);
     popoutRegionModel.observeEvents();
-    let regionManager = new RegionManager([workspaceRegionModel, popoutRegionModel]);
+    let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, RegionNames.blotter, espRouter);
+    blotterRegionModel.observeEvents();
+    let quickAccessRegionModel = new SingleItemRegionModel(WellKnownModelIds.quickAccessRegionModelId, RegionNames.quickAccess, espRouter);
+    quickAccessRegionModel.observeEvents();
+    let regionManager = new RegionManager([workspaceRegionModel, popoutRegionModel, blotterRegionModel, quickAccessRegionModel]);
 
     // wire up the shell
     let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection);
     shellModel.observeEvents();
 
-    // wire-up the workspace
+    // wire-up the loader that populats the workspace with spot tiles.
+    // In a more suffocated app you'd have some 'add product' functionality allowing the users to add workspace views/products manually.
     let spotTileLoader = new SpotTileLoader(
       espRouter,
       this._referenceDataService,
@@ -94,11 +100,11 @@ class Bootstrapper {
     spotTileLoader.beginLoadTiles();
 
     // wire-up the blotter
-    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService);
+    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager);
     blotterModel.observeEvents();
 
     // wire-up analytics
-    let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService);
+    let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService, regionManager);
     analyticsModel.observeEvents();
 
     // wire-up the header

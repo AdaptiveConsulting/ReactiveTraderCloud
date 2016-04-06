@@ -8,6 +8,7 @@ import { ShellModel } from '../model';
 import { router } from '../../../system';
 import { PopoutRegionView } from '../../regions/views/popout';
 import { WorkspaceRegionView } from '../../regions/views/workspace';
+import { SingleItemRegionView } from '../../regions/views/singleItem';
 
 export default class ShellView extends ViewBase {
   constructor() {
@@ -41,9 +42,9 @@ export default class ShellView extends ViewBase {
           <HeaderView modelId={wellKnownModelIds.headerModelId}/>
           <div className='horizontal-wrap'>
             <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
-            <AnalyticsView modelId={wellKnownModelIds.analyticsModelId}/>
+            <SingleItemRegionView modelId={wellKnownModelIds.quickAccessRegionModelId}/>
           </div>
-          <BlotterView modelId={wellKnownModelIds.blotterModelId}/>
+          <SingleItemRegionView modelId={wellKnownModelIds.blotterRegionModelId}/>
           <PopoutRegionView modelId={wellKnownModelIds.popoutRegionModelId}/>
         </div>
       </PageContainer>

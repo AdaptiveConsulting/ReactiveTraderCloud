@@ -5,21 +5,31 @@ import { BlotterService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
 import { logger } from '../../../system';
 import { ModelBase } from '../../common';
+import { RegionManager, RegionNames, view  } from '../../regions';
 import {
   Trade,
 } from '../../../services/model';
+import { BlotterView } from '../views';
 
 var _log:logger.Logger = logger.create('BlotterModel');
 
+@view(BlotterView)
 export default class BlotterModel extends ModelBase {
   _blotterService:BlotterService;
+  _regionManager:RegionManager;
 
   trades:Array<Trade>;
   isConnected:boolean;
 
-  constructor(modelId:string, router:Router, blotterService:BlotterService) {
+  constructor(
+    modelId:string,
+    router:Router,
+    blotterService:BlotterService,
+    regionManager:RegionManager
+  ) {
     super(modelId, router);
     this._blotterService = blotterService;
+    this._regionManager = regionManager;
     this.trades = [];
     this.isConnected = false;
   }
@@ -28,6 +38,7 @@ export default class BlotterModel extends ModelBase {
   _onInit() {
     _log.info(`Blotter starting`);
     this._subscribeToConnectionStatus();
+    this._regionManager.addToRegion(RegionNames.blotter, this);
   }
 
   @observeEvent('referenceDataLoaded')

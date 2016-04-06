@@ -44,8 +44,7 @@ export default class AnalyticsView extends ViewBase {
       <div className='analytics-container animated fadeIn'>
         <div className='container-control'>
           <i className='tearoff-trigger glyphicon glyphicon-new-window'
-             onClick={() => router.publishEvent(this.props.modelId, 'tearOffAnalytics', {})}
-          />
+             onClick={() => router.publishEvent(this.props.modelId, 'popOutAnalytics', {})}/>
         </div>
         {pnlComponents}
         {positionsComponents}
