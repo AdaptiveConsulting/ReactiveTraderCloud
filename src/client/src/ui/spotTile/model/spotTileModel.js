@@ -2,7 +2,7 @@ import Rx from 'rx';
 import { Router, observeEvent } from 'esp-js/src';
 import { PricingService, ExecutionService } from '../../../services';
 import { logger } from '../../../system';
-import { ModelBase } from '../../common';
+import { ModelBase, RegionManagerHelper } from '../../common';
 import { TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import {
@@ -20,10 +20,10 @@ export default class SpotTileModel extends ModelBase {
   // non view state
   _pricingService:PricingService;
   _executionService:ExecutionService;
-  _regionManager:RegionManager;
   _executionDisposable:Rx.SerialDisposable;
   _priceSubscriptionDisposable:Rx.SerialDisposable;
   _log:logger.Logger;
+  _regionManagerHelper:RegionManagerHelper;
 
   // React doesn't seem to pickup ES6 properties (last time I looked it seemed to be because Babel doesn't spit them out as enumerable)
   // So we're just exposing the state as fields.
@@ -66,6 +66,7 @@ export default class SpotTileModel extends ModelBase {
     this.pricingConnected = false;
     this.executionConnected = false;
     this.isTradeExecutionInFlight = false;
+    this._regionManagerHelper = new RegionManagerHelper(RegionNames.workspace, regionManager, this);
   }
 
   get hasNotification() {
@@ -77,7 +78,7 @@ export default class SpotTileModel extends ModelBase {
     this._log.info(`Cash tile starting for pair ${this.currencyPair.symbol}`);
     this._subscribeToPriceStream();
     this._subscribeToConnectionStatus();
-    this._regionManager.addToRegion(RegionNames.workspace, this);
+    this._regionManagerHelper.addToRegion();
   }
 
   @observeEvent('tileClosed')
@@ -89,17 +90,7 @@ export default class SpotTileModel extends ModelBase {
   @observeEvent('popOutTile')
   _onPopOutTile() {
     this._log.info(`Popping out tile`);
-    this._regionManager.removeFromRegion(RegionNames.workspace, this);
-    this._regionManager.addToRegion(
-      RegionNames.popout,
-      this,
-      {
-        onExternallyRemovedCallback: () => {
-          // if the popout is closed, we add it back into the workspace region
-          this._regionManager.addToRegion(RegionNames.workspace, this);
-        }
-      }
-    );
+    this._regionManagerHelper.popout(332, 190);
   }
 
   @observeEvent('toggleSparkLineChart')

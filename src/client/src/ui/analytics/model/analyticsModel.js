@@ -6,7 +6,7 @@ import { Router,  observeEvent } from 'esp-js/src';
 import { AnalyticsService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
 import { logger } from '../../../system';
-import { ModelBase } from '../../common';
+import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { PricePoint, PnlChartModel, PositionsChartModel, ChartModelBase } from './';
 import {
@@ -22,10 +22,10 @@ var _log:logger.Logger = logger.create('AnalyticsModel');
 @view(AnalyticsView)
 export default class AnalyticsModel extends ModelBase {
   _analyticsService:AnalyticsService;
-  _regionManager:RegionManager;
 
   _positionsChartModel:PositionsChartModel;
   _pnlChartModel:PnlChartModel;
+  _regionManagerHelper:RegionManagerHelper;
 
   isAnalyticsServiceConnected: Boolean;
 
@@ -37,11 +37,11 @@ export default class AnalyticsModel extends ModelBase {
   ) {
     super(modelId, router);
     this._analyticsService = analyticsService;
-    this._regionManager = regionManager;
 
     this.isAnalyticsServiceConnected = false;
     this._pnlChartModel = new PnlChartModel();
     this._positionsChartModel = new PositionsChartModel();
+    this._regionManagerHelper = new RegionManagerHelper(RegionNames.quickAccess, regionManager, this);
   }
 
   get positionsChartModel() {
@@ -61,7 +61,7 @@ export default class AnalyticsModel extends ModelBase {
   _onInit() {
     _log.info(`Analytics model starting`);
     this._subscribeToConnectionStatus();
-    this._regionManager.addToRegion(RegionNames.quickAccess, this);
+    this._regionManagerHelper.addToRegion();
   }
 
   @observeEvent('referenceDataLoaded')
@@ -73,21 +73,7 @@ export default class AnalyticsModel extends ModelBase {
   @observeEvent('popOutAnalytics')
   _onPopOutAnalytics() {
     _log.info(`Popping out analytics`);
-    this._regionManager.removeFromRegion(RegionNames.quickAccess, this);
-    this._regionManager.addToRegion(
-      RegionNames.popout,
-      this,
-      {
-        onExternallyRemovedCallback: () => {
-          // if the popout is closed, we add it back into the quickAccess region
-          this._regionManager.addToRegion(RegionNames.quickAccess, this);
-        },
-        regionSettings: {
-          width:400,
-          height:500
-        }
-      }
-    );
+    this._regionManagerHelper.popout(400, 500);
   }
 
   _subscribeToAnalyticsStream() {

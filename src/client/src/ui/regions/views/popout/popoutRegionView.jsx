@@ -33,10 +33,10 @@ export default class PopoutRegionView extends ViewBase {
       let view = createViewForModel(modelRegistration.model, modelRegistration.displayContext);
       let width = modelRegistration.regionSettings && modelRegistration.regionSettings.width
         ? modelRegistration.regionSettings.width
-        : 332;
+        : 400;
       let height = modelRegistration.regionSettings && modelRegistration.regionSettings.height
         ? modelRegistration.regionSettings.height
-        : 190;
+        : 400;
       let popupAttributes = {
         key: modelRegistration.key,
         url:'/popout',
