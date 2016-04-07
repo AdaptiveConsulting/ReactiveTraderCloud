@@ -12,15 +12,23 @@ export default class RegionManager {
     });
   }
 
-  addToRegion(regionName:string, model:ModelBase, onExternallyRemovedCallback:?() => void, context:?string) {
+  addToRegion(
+    regionName:string,
+    model:ModelBase,
+    options?: {
+      displayContext?:string,
+      onExternallyRemovedCallback:?() => void,
+      regionSettings:any
+    }
+  ) {
     var region : RegionModel = this._regionsByName[regionName];
     Guard.isDefined(region, `region with name ${regionName} not registered`);
-    region.addToRegion(model, onExternallyRemovedCallback, context);
+    region.addToRegion(model, options);
   }
 
-  removeFromRegion(regionName:string, model:ModelBase, context:?string) {
+  removeFromRegion(regionName:string, model:ModelBase, displayContext:?string) {
     var region : RegionModel = this._regionsByName[regionName];
     Guard.isDefined(region, `region with name ${regionName} not registered`);
-    region.removeFromRegion(model, context);
+    region.removeFromRegion(model, displayContext);
   }
 }

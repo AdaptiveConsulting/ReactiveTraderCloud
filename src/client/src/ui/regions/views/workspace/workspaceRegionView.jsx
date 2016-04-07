@@ -32,7 +32,7 @@ export default class WorkspaceRegionView extends ViewBase {
 
   _renderWorkspaceItems(modelRegistrations:Array<RegionModelRegistration>) {
     return _.map(modelRegistrations, (modelRegistration:RegionModelRegistration) => {
-      let View = createViewForModel(modelRegistration.model, modelRegistration.context);
+      let View = createViewForModel(modelRegistration.model, modelRegistration.displayContext);
       return (
         <WorkspaceItemContainer
           key={modelRegistration.model.modelId}>

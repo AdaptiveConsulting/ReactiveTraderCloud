@@ -77,9 +77,15 @@ export default class AnalyticsModel extends ModelBase {
     this._regionManager.addToRegion(
       RegionNames.popout,
       this,
-      () => {
-        // if the popout is closed, we add it back into the quickAccess region
-        this._regionManager.addToRegion(RegionNames.quickAccess, this);
+      {
+        onExternallyRemovedCallback: () => {
+          // if the popout is closed, we add it back into the quickAccess region
+          this._regionManager.addToRegion(RegionNames.quickAccess, this);
+        },
+        regionSettings: {
+          width:400,
+          height:500
+        }
       }
     );
   }

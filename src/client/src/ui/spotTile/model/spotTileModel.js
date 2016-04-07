@@ -93,9 +93,11 @@ export default class SpotTileModel extends ModelBase {
     this._regionManager.addToRegion(
       RegionNames.popout,
       this,
-      () => {
-        // if the popout is closed, we add it back into the workspace region
-        this._regionManager.addToRegion(RegionNames.workspace, this);
+      {
+        onExternallyRemovedCallback: () => {
+          // if the popout is closed, we add it back into the workspace region
+          this._regionManager.addToRegion(RegionNames.workspace, this);
+        }
       }
     );
   }

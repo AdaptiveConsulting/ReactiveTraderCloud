@@ -5,7 +5,7 @@ import { PageContainer } from '../../../common/components';
 import { RegionModel, RegionModelRegistration } from '../../model';
 import { createViewForModel } from '../../';
 import { router } from '../../../../system';
-import Popout from './popout.jsx';
+import Popout from './popoutWindow.jsx';
 
 export default class PopoutRegionView extends ViewBase {
   constructor() {
@@ -30,15 +30,21 @@ export default class PopoutRegionView extends ViewBase {
 
   _createPopouts(modelRegistrations:Array<RegionModelRegistration>) {
     return _.map(modelRegistrations, (modelRegistration:RegionModelRegistration) => {
-      let view = createViewForModel(modelRegistration.model, modelRegistration.context);
+      let view = createViewForModel(modelRegistration.model, modelRegistration.displayContext);
+      let width = modelRegistration.regionSettings && modelRegistration.regionSettings.width
+        ? modelRegistration.regionSettings.width
+        : 332;
+      let height = modelRegistration.regionSettings && modelRegistration.regionSettings.height
+        ? modelRegistration.regionSettings.height
+        : 190;
       let popupAttributes = {
         key: modelRegistration.key,
         url:'/popout',
         title:'',
         onClosing: () => this._popoutClosed(this.props.modelId, modelRegistration.model),
         options: {
-          width: 332,
-          height: 190,
+          width: width,
+          height: height,
           resizable: 'no',
           scrollable: 'no'
         }

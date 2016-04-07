@@ -32,25 +32,34 @@ export default class RegionModel extends ModelBase {
     return this._regionName;
   }
 
-  addToRegion(model:ModelBase, onExternallyRemovedCallback:?() => void, context:?string) {
+  addToRegion(
+    model:ModelBase,
+    options?: {
+      displayContext?:string,
+      onExternallyRemovedCallback:?() => void,
+      regionSettings:any
+    }
+  ) {
+    options = options || { };
     this.ensureOnDispatchLoop(()=> {
       this.modelRegistrations.push(new RegionModelRegistration(
         model,
-        onExternallyRemovedCallback,
-        context
+        options.onExternallyRemovedCallback,
+        options.displayContext,
+        options.regionSettings
       ));
     });
   }
 
-  removeFromRegion(model:ModelBase) {
+  removeFromRegion(model:ModelBase, displayContext?:string) {
     this.ensureOnDispatchLoop(()=> {
-      this._removeFromRegion(model, false);
+      this._removeFromRegion(model, false, displayContext);
     });
   }
 
-  _removeFromRegion(model:ModelBase, wasExternallyRemoved:boolean) {
+  _removeFromRegion(model:ModelBase, wasExternallyRemoved:boolean, displayContext?:string) {
     let removedItems = _.remove(this.modelRegistrations, (regionModelRegistration:RegionModelRegistration) => {
-      return regionModelRegistration.model === model;
+      return regionModelRegistration.model === model && regionModelRegistration.displayContext === displayContext;
     });
     _.forEach(removedItems, regionModelRegistration=> {
       if(wasExternallyRemoved) {

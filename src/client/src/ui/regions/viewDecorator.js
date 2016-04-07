@@ -2,7 +2,7 @@ import React from 'react';
 import { Guard } from '../../system';
 import { ModelBase, ViewBase } from '../common';
 
-let DEFAULT_CONTEXT = 'default';
+let DEFAULT_VIEW_KEY = 'default-view-key';
 
 function getMetadata(target) : ViewMetadata {
   if (!target._viewMetadata) {
@@ -11,34 +11,34 @@ function getMetadata(target) : ViewMetadata {
   return target._viewMetadata;
 }
 
-export function createViewForModel(model:ModelBase, context:string = DEFAULT_CONTEXT) : React.Component {
+export function createViewForModel(model:ModelBase, displayContext:string = DEFAULT_VIEW_KEY) : React.Component {
   // the view decorator isn't on the instance, it's on the constructor function that created that instance
   var constructorFunction = model.constructor;
   if (constructorFunction._viewMetadata) {
     let viewMetadata:ViewMetadata = constructorFunction._viewMetadata;
-    if(viewMetadata.hasRegisteredViewContext(context)) {
-      let viewRegistration : ViewMetadataRegistration = viewMetadata.viewRegistrations[context];
+    if(viewMetadata.hasRegisteredViewContext(displayContext)) {
+      let viewRegistration : ViewMetadataRegistration = viewMetadata.viewRegistrations[displayContext];
       return React.createElement(viewRegistration.view, {modelId: model.modelId});
     }
   }
-  throw new Error(`No suitable view found for model using '${context}' context `);
+  throw new Error(`No suitable view found for model using '${displayContext}' context `);
 }
 
 /**
  * An ES7 style decorator that associates a model with a view
  * @param view the react component that will be used to display this model
- * @param context an optional context allowing for different views to display the same model
+ * @param displayContext an optional context allowing for different views to display the same model
  * @returns {Function}
  */
-export function view(view:ViewBase, context:string = DEFAULT_CONTEXT) {
+export function view(view:ViewBase, displayContext:string = DEFAULT_VIEW_KEY) {
   Guard.isDefined(view, 'view must be defined');
-  Guard.isString(context, 'context must be a string');
+  Guard.isString(displayContext, 'displayContext must be a string');
   return function (target, name, descriptor) {
     let metadata : ViewMetadata = getMetadata(target);
-    if (metadata.hasRegisteredViewContext(context)) {
-      throw new Error(`Context ${context} already registered for view`);
+    if (metadata.hasRegisteredViewContext(displayContext)) {
+      throw new Error(`Context ${displayContext} already registered for view`);
     }
-    metadata.viewRegistrations[context] = new ViewMetadataRegistration(view, context);
+    metadata.viewRegistrations[displayContext] = new ViewMetadataRegistration(view, displayContext);
     return descriptor;
   };
 }
@@ -54,26 +54,26 @@ class ViewMetadata {
     return this._viewRegistrations;
   }
 
-  hasRegisteredViewContext(context:string) {
-    return typeof this._viewRegistrations[context] !== 'undefined';
+  hasRegisteredViewContext(displayContext:string) {
+    return typeof this._viewRegistrations[displayContext] !== 'undefined';
   }
 }
 
 class ViewMetadataRegistration {
   _view:ViewBase;
-  _context:string;
+  _displayContext:string;
 
   constructor(view:ViewBase, context:string) {
     this._view = view;
-    this._context = context;
+    this._displayContext = context;
   }
 
   get view():ViewBase {
     return this._view;
   }
 
-  get context():string {
-    return this._context;
+  get displayContext():string {
+    return this._displayContext;
   }
 }
 
