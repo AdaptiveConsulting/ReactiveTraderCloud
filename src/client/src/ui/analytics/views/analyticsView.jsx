@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
-import { router } from '../../../system';
+import { router, logger } from '../../../system';
 import { ViewBase } from '../../common';
 import { AnalyticsModel, PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
@@ -9,12 +9,14 @@ import NVD3Chart from 'react-nvd3';
 import numeral from 'numeral';
 import './analytics.scss';
 
+var _log:logger.Logger = logger.create('AnalyticsView');
+
 export default class AnalyticsView extends ViewBase {
   constructor() {
     super();
     this.state = {
       model: null
-    }
+    };
   }
 
   componentDidUpdate() {

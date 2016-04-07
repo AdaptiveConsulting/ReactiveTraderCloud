@@ -5,7 +5,7 @@ import { PageContainer } from '../../../common/components';
 import { RegionModel, RegionModelRegistration } from '../../model';
 import { createViewForModel } from '../../';
 import { router } from '../../../../system';
-import Popout from 'react-popout';
+import Popout from './popout.jsx';
 
 export default class PopoutRegionView extends ViewBase {
   constructor() {
@@ -33,7 +33,7 @@ export default class PopoutRegionView extends ViewBase {
       let view = createViewForModel(modelRegistration.model, modelRegistration.context);
       let popupAttributes = {
         key: modelRegistration.key,
-        url:'/tile',
+        url:'/popout',
         title:'',
         onClosing: () => this._popoutClosed(this.props.modelId, modelRegistration.model),
         options: {
