@@ -49,8 +49,21 @@ export default class BlotterModel extends ModelBase {
 
   @observeEvent('tearOffBlotter')
   _onTearOffBlotter() {
-    _log.info(`Tearing off botter`);
-
+    _log.info(`Popping out blotter`);
+    this._regionManager.removeFromRegion(RegionNames.blotter, this);
+    this._regionManager.addToRegion(
+      RegionNames.popout,
+      this,
+      {
+        onExternallyRemovedCallback: () => {
+          this._regionManager.addToRegion(RegionNames.blotter, this);
+        },
+        regionSettings: {
+          width:850,
+          height:280
+        }
+      }
+    );
   }
 
   _subscribeToTradeStream() {

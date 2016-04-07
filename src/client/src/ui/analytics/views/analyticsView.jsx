@@ -44,8 +44,8 @@ export default class AnalyticsView extends ViewBase {
     let positionsComponents = this._createPositionsComponents();
     return (
       <div className='analytics-container animated fadeIn'>
-        <div className='container-control'>
-          <i className='tearoff-trigger glyphicon glyphicon-new-window'
+        <div className='container-controls'>
+          <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right'
              onClick={() => router.publishEvent(this.props.modelId, 'popOutAnalytics', {})}/>
         </div>
         {pnlComponents}

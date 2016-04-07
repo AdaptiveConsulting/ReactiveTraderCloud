@@ -23,7 +23,7 @@ export default class SpotTileView extends ViewBase {
 
   render() {
     let model:SpotTileModel = this.state.model;
-    if(model === null) {
+    if (model === null) {
       return null;
     }
     let sparklineChart = this._createSparkLineChart();
@@ -35,17 +35,19 @@ export default class SpotTileView extends ViewBase {
       'animated',
       'flipInX',
       {
-        'stale' : !model.pricingConnected || !model.executionConnected,
-        'executing' : model.isTradeExecutionInFlight
+        'stale': !model.pricingConnected || !model.executionConnected,
+        'executing': model.isTradeExecutionInFlight
       }
     );
     return (
       <div className={className}>
         <div className='currency-pair-title'>
-          <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right'
-             onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
-          <i className='glyphicon glyphicon-stats pull-right'
-             onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
+          <div className='container-controls'>
+            <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right'
+               onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
+            <i className='glyphicon glyphicon-stats pull-right'
+               onClick={() => router.publishEvent(this.props.modelId, 'toggleSparkLineChart', {})}/>
+          </div>
           <span>{model.tileTitle}</span>
           <i className='fa fa-plug animated infinite fadeIn'/>
         </div>
@@ -67,10 +69,10 @@ export default class SpotTileView extends ViewBase {
   _createPriceComponents() {
     let model:SpotTileModel = this.state.model;
     let pricingContainerClass = classnames('currency-pair-actions', {'hide': model.hasNotification});
-    if(model.currentSpotPrice === null) {
+    if (model.currentSpotPrice === null) {
       return null;
     }
-    return(
+    return (
       <div className={pricingContainerClass}>
         <PriceButton
           direction={Direction.Sell}
@@ -109,7 +111,7 @@ export default class SpotTileView extends ViewBase {
   }
 
   _tryCreateNotification() {
-    let model : SpotTileModel = this.state.model;
+    let model:SpotTileModel = this.state.model;
     if (model.hasNotification) {
       if (model.notification.notificationType === NotificationType.Trade) {
         return (

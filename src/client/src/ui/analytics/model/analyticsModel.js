@@ -72,7 +72,7 @@ export default class AnalyticsModel extends ModelBase {
 
   @observeEvent('popOutAnalytics')
   _onPopOutAnalytics() {
-    _log.info(`Popping out tile`);
+    _log.info(`Popping out analytics`);
     this._regionManager.removeFromRegion(RegionNames.quickAccess, this);
     this._regionManager.addToRegion(
       RegionNames.popout,

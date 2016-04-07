@@ -1,3 +1,8 @@
+/**
+ * These esp model Ids are well known and never change, i.e. the models are singleton.
+ *
+ * Other models, like the spot tiles are created dynamically.
+ */
 export default class WellKnownModelIds {
 
   static get workspaceRegionModelId() {
