@@ -4,30 +4,41 @@ import { Router,  observeEvent } from 'esp-js/src';
 import { BlotterService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
 import { logger } from '../../../system';
-import { ModelBase } from '../../common';
+import { ModelBase, RegionManagerHelper } from '../../common';
+import { RegionManager, RegionNames, view  } from '../../regions';
 import {
   Trade,
 } from '../../../services/model';
+import { BlotterView } from '../views';
 
 var _log:logger.Logger = logger.create('BlotterModel');
 
+@view(BlotterView)
 export default class BlotterModel extends ModelBase {
   _blotterService:BlotterService;
+  _regionManagerHelper:RegionManagerHelper;
 
   trades:Array<Trade>;
   isConnected:boolean;
 
-  constructor(router:Router, blotterService:BlotterService) {
-    super('blotterModelId', router);
+  constructor(
+    modelId:string,
+    router:Router,
+    blotterService:BlotterService,
+    regionManager:RegionManager
+  ) {
+    super(modelId, router);
     this._blotterService = blotterService;
     this.trades = [];
     this.isConnected = false;
+    this._regionManagerHelper = new RegionManagerHelper(RegionNames.blotter, regionManager, this);
   }
 
   @observeEvent('init')
   _onInit() {
     _log.info(`Blotter starting`);
     this._subscribeToConnectionStatus();
+    this._regionManagerHelper.addToRegion();
   }
 
   @observeEvent('referenceDataLoaded')
@@ -38,8 +49,8 @@ export default class BlotterModel extends ModelBase {
 
   @observeEvent('tearOffBlotter')
   _onTearOffBlotter() {
-    _log.info(`Tearing off botter`);
-
+    _log.info(`Popping out blotter`);
+    this._regionManagerHelper.popout(850, 280);
   }
 
   _subscribeToTradeStream() {

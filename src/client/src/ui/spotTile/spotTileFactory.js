@@ -3,7 +3,9 @@ import { Router }from 'esp-js/src';
 import { SpotTileModel } from './model';
 import { PricingService, ExecutionService } from '../../services';
 import { CurrencyPair } from '../../services/model';
-import { SpotTileView } from './views';
+import { RegionManager, RegionNames } from '../regions';
+
+let modelIdKey = 1;
 
 /**
  * Responsible for creating components for a spot tile.
@@ -14,25 +16,33 @@ export default class SpotTileFactory {
   _router:Router;
   _pricingService:PricingService;
   _executionService:ExecutionService;
+  _regionManager:RegionManager;
 
   constructor(
     router:Router,
     pricingService:PricingService,
-    executionService:ExecutionService
+    executionService:ExecutionService,
+    regionManager:RegionManager
   ) {
     this._router = router;
     this._pricingService = pricingService;
     this._executionService =executionService;
+    this._regionManager = regionManager;
   }
 
   createTileModel(currencyPair:CurrencyPair) {
-    let spotTileModel = new SpotTileModel(currencyPair, this._router, this._pricingService, this._executionService);
+    let spotTileModel = new SpotTileModel(
+      this._createSpotTileModelId(),
+      currencyPair,
+      this._router,
+      this._pricingService,
+      this._executionService,
+      this._regionManager
+    );
     spotTileModel.observeEvents();
-    this._router.publishEvent(spotTileModel.modelId, 'init', {});
     return spotTileModel;
   }
-
-  createTileView(modelId) {
-    return React.createElement(SpotTileView, { modelId: modelId });
+  _createSpotTileModelId() {
+    return `spotTile` + modelIdKey++;
   }
 }

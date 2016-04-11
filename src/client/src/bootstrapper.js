@@ -1,20 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute } from 'react-router';
-import { createHashHistory } from 'history';
-import { WorkspaceModel } from './ui/workspace/model';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { HeaderModel } from './ui/header/model';
 import { ShellModel } from './ui/shell/model';
-import { SpotTileFactory } from './ui/spotTile';
+import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
 import { User, ServiceConst, ServiceStatusLookup } from './services/model';
 import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
 import { default as espRouter } from './system/router';
-import { PageContainer, ShellView } from './ui/shell/views';
+import { ShellView } from './ui/shell/views';
 import { SpotTileView } from './ui/spotTile/views';
+import { RegionModel, SingleItemRegionModel } from './ui/regions/model';
+import { RegionManager, RegionNames } from './ui/regions';
 import {
   AnalyticsService,
   BlotterService,
@@ -24,6 +23,7 @@ import {
   ReferenceDataService,
   CompositeStatusService
 } from './services';
+import { WellKnownModelIds } from './';
 
 class Bootstrapper {
   _connection:Connection;
@@ -74,27 +74,41 @@ class Bootstrapper {
 
   startModels() {
 
-    let shellModel = new ShellModel(espRouter, this._connection);
+    // Wire up the region management infrastructure:
+    // This infrastructure allows for differing views to be put into the shell without the shell having to be coupled to all these views.
+    let workspaceRegionModel = new RegionModel(WellKnownModelIds.workspaceRegionModelId, RegionNames.workspace, espRouter);
+    workspaceRegionModel.observeEvents();
+    let popoutRegionModel = new RegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter);
+    popoutRegionModel.observeEvents();
+    let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, RegionNames.blotter, espRouter);
+    blotterRegionModel.observeEvents();
+    let quickAccessRegionModel = new SingleItemRegionModel(WellKnownModelIds.quickAccessRegionModelId, RegionNames.quickAccess, espRouter);
+    quickAccessRegionModel.observeEvents();
+    let regionManager = new RegionManager([workspaceRegionModel, popoutRegionModel, blotterRegionModel, quickAccessRegionModel]);
+
+    // wire up the shell
+    let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection);
     shellModel.observeEvents();
 
-    // wire-up the workspace
-    let workspaceModel = new WorkspaceModel(
+    // wire-up the loader that populats the workspace with spot tiles.
+    // In a more suffocated app you'd have some 'add product' functionality allowing the users to add workspace views/products manually.
+    let spotTileLoader = new SpotTileLoader(
       espRouter,
       this._referenceDataService,
-      new SpotTileFactory(espRouter, this._pricingService, this._executionService)
+      new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager)
     );
-    workspaceModel.observeEvents();
+    spotTileLoader.beginLoadTiles();
 
     // wire-up the blotter
-    let blotterModel = new BlotterModel(espRouter, this._blotterService);
+    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager);
     blotterModel.observeEvents();
 
     // wire-up analytics
-    let analyticsModel = new AnalyticsModel(espRouter, this._analyticsService);
+    let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService, regionManager);
     analyticsModel.observeEvents();
 
     // wire-up the header
-    let headerModel = new HeaderModel(espRouter, this._compositeStatusService);
+    let headerModel = new HeaderModel(WellKnownModelIds.headerModelId, espRouter, this._compositeStatusService);
     headerModel.observeEvents();
 
     this._referenceDataService.hasLoadedStream.subscribe(() => {
@@ -106,33 +120,19 @@ class Bootstrapper {
       espRouter.broadcastEvent('referenceDataLoaded', {});
     });
 
-    espRouter.publishEvent(shellModel.modelId, 'init', {});
-    espRouter.publishEvent(workspaceModel.modelId, 'init', {});
-    espRouter.publishEvent(blotterModel.modelId, 'init', {});
-    espRouter.publishEvent(analyticsModel.modelId, 'init', {});
-    espRouter.publishEvent(headerModel.modelId, 'init', {});
+    espRouter.broadcastEvent('init', {});
   }
 
   displayUi() {
-    let history = createHashHistory({
-      queryKey: false
-    });
-    let root = document.getElementById('root');
-    let routes = (
-      <Router history={history}>
-        <Route path='/' component={PageContainer}>
-          <IndexRoute component={ShellView}/>
-        </Route>
-        <Route path='/user' component={PageContainer}>
-          <IndexRoute component={ShellView}/>
-        </Route>
-        <Route path='/tile'>
-          <IndexRoute component={SpotTileView}/>
-        </Route>
-      </Router>
+    ReactDOM.render(
+      <ShellView />,
+      document.getElementById('root')
     );
-    ReactDOM.render(routes, root);
   }
 }
 
-new Bootstrapper().run();
+let runBootstrapper = location.pathname === '/';
+// if we're not the root we (perhaps a popup) we never re-run the bootstrap logic
+if(runBootstrapper) {
+  new Bootstrapper().run();
+}

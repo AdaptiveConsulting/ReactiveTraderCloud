@@ -1,5 +1,6 @@
 import Rx from 'rx';
 import { Router } from 'esp-js/src';
+import { Guard } from '../';
 
 /**
  * Helper method to ease integration between Rx and Esp.
@@ -23,6 +24,8 @@ Rx.Observable.prototype.subscribeWithRouter = function<T, TModel>(
   onError?: (exception: any, model : TModel) => void,
   onCompleted?: (model : TModel) => void) : Rx.Disposable {
 
+  Guard.isDefined(router, 'router should be defined');
+  Guard.isString(modelId, 'modelId should be defined and a string');
   let source = this;
 
   return source.materialize().subscribe(i =>

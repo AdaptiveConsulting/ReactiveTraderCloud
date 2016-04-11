@@ -2,8 +2,9 @@ import Rx from 'rx';
 import { Router, observeEvent } from 'esp-js/src';
 import { PricingService, ExecutionService } from '../../../services';
 import { logger } from '../../../system';
-import { ModelBase } from '../../common';
+import { ModelBase, RegionManagerHelper } from '../../common';
 import { TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
+import { RegionManager, RegionNames, view  } from '../../regions';
 import {
   GetSpotStreamRequest,
   SpotPrice,
@@ -12,9 +13,9 @@ import {
   CurrencyPair,
   ExecuteTradeResponse
 } from '../../../services/model';
+import { SpotTileView } from '../views';
 
-let modelIdKey = 1;
-
+@view(SpotTileView)
 export default class SpotTileModel extends ModelBase {
   // non view state
   _pricingService:PricingService;
@@ -22,6 +23,7 @@ export default class SpotTileModel extends ModelBase {
   _executionDisposable:Rx.SerialDisposable;
   _priceSubscriptionDisposable:Rx.SerialDisposable;
   _log:logger.Logger;
+  _regionManagerHelper:RegionManagerHelper;
 
   // React doesn't seem to pickup ES6 properties (last time I looked it seemed to be because Babel doesn't spit them out as enumerable)
   // So we're just exposing the state as fields.
@@ -36,14 +38,17 @@ export default class SpotTileModel extends ModelBase {
   executionConnected:boolean;
   isTradeExecutionInFlight:boolean;
 
-  constructor(currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
+  constructor(modelId:string,
+              currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
               router:Router,
               pricingService:PricingService,
-              executionService:ExecutionService) {
-    super((`spotTile` + modelIdKey++), router);
+              executionService:ExecutionService,
+              regionManager:RegionManager) {
+    super(modelId, router);
     this._log = logger.create(`${this.modelId}:${currencyPair.symbol}`);// can't change ccy pair in this demo app, so reasonable to use the symbol in the logger name
     this._pricingService = pricingService;
     this._executionService = executionService;
+    this._regionManager = regionManager;
     this.currencyPair = currencyPair;
     this._executionDisposable = new Rx.SerialDisposable();
     this.addDisposable(this._executionDisposable);
@@ -61,6 +66,7 @@ export default class SpotTileModel extends ModelBase {
     this.pricingConnected = false;
     this.executionConnected = false;
     this.isTradeExecutionInFlight = false;
+    this._regionManagerHelper = new RegionManagerHelper(RegionNames.workspace, regionManager, this);
   }
 
   get hasNotification() {
@@ -72,18 +78,19 @@ export default class SpotTileModel extends ModelBase {
     this._log.info(`Cash tile starting for pair ${this.currencyPair.symbol}`);
     this._subscribeToPriceStream();
     this._subscribeToConnectionStatus();
+    this._regionManagerHelper.addToRegion();
   }
 
   @observeEvent('tileClosed')
   _onTileClosed() {
     this._log.info(`Cash tile closing`);
-    // TODO
+    this._regionManager.removeFromRegion(RegionNames.workspace, this);
   }
 
   @observeEvent('popOutTile')
   _onPopOutTile() {
     this._log.info(`Popping out tile`);
-    // TODO
+    this._regionManagerHelper.popout(332, 190);
   }
 
   @observeEvent('toggleSparkLineChart')

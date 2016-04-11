@@ -41,7 +41,6 @@
     "esp-js-devtools": "0.0.15",
     "fixed-data-table": "0.6.0",
     "font-awesome": "4.5.0",
-    "history": "1.17.0",
     "lodash": "3.10.1",
     "numeral": "1.5.3",
     "nvd3": "1.8.1",
@@ -50,7 +49,6 @@
     "react-dom": "0.14.6",
     "react-nvd3": "0.4.1",
     "react-popout": "0.4.0",
-    "react-router": "1.0.3",
     "react-sparklines": "1.4.2",
     "rx": "4.0.7",
     "ws": "0.8.1"

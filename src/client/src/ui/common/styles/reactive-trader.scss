@@ -21,3 +21,26 @@ body, html {
   height: 100%;
   width: 100%;
 }
+
+
+.container-controls {
+  .tearoff & {
+    -webkit-app-region: drag;
+  }
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+  padding-left: 8px;
+  i {
+    .tearoff & {
+      -webkit-app-region: no-drag;
+    }
+    font-size: 16px;
+    color: $gray-light;
+    &.glyphicon {
+      cursor: pointer;
+      padding: 8px;
+      padding-bottom: 0;
+    }
+  }
+}

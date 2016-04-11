@@ -35,12 +35,10 @@ export default class BlotterView extends ViewBase {
     let containerWidth = this.props.containerWidth; // comes from the the @Dimensions annotation
     return (
       <div className={className}>
-        <div className='container-control'>
-          <i className='tearoff-trigger glyphicon glyphicon-new-window' onClick={() => router.publishEvent(this.props.modelId, 'tearOffBlotter')}/>
-        </div>
         <div className='blotter-wrapper'>
-          <div className='status'>
-            <i className='fa fa-plug animated infinite fadeIn'/>
+          <div className='container-controls'>
+            <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right'
+               onClick={() => router.publishEvent(this.props.modelId, 'tearOffBlotter', {})} />
           </div>
           <Table
             rowHeight={24}
@@ -118,7 +116,7 @@ export default class BlotterView extends ViewBase {
    * @param rowItem
    * @returns {string}
    */
-  _getRowClass(rowItem:Trade){
+  _getRowClass(rowItem:Trade) {
     return classNames(rowItem.status.name, ' animated ');
   }
 }

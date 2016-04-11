@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
 import { HeaderModel } from '../model';
@@ -41,10 +40,10 @@ export default class HeaderView extends ViewBase {
         >
           <img src='images/openfin-logo.png' alt='OpenFin Logo'/>
         </a>
-        <Link className='navbar-brand' to='/' title='Home'>
+        <span className='navbar-brand'>
           Reactive Trader Cloud
-        </Link>
-        <div className='nav navbar-brand hidden-xs hidden-sm navbar-left nav-link'>
+        </span>
+        <div className='nav navbar-brand hidden-xs hidden-sm navbar-left'>
           <i className='fa fa-user'/> {model.currentUser.code} ({model.currentUser.firstName} {model.currentUser.lastName})
         </div>
         <nav className='nav navbar-nav chrome-controls pull-right'>
