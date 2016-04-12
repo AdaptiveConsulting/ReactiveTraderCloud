@@ -1,14 +1,18 @@
 import React from 'react';
 import { BlotterView } from '../../blotter/views';
-import { HeaderView } from '../../header/views';
 import { AnalyticsView } from '../../analytics/views';
-import { Modal, PageContainer } from '../../common/components';
+import { Modal } from '../../common/components';
 import { ViewBase } from '../../common';
 import { ShellModel } from '../model';
 import { router } from '../../../system';
 import { PopoutRegionView } from '../../regions/views/popout';
 import { WorkspaceRegionView } from '../../regions/views/workspace';
 import { SingleItemRegionView } from '../../regions/views/singleItem';
+// import '../../styles/reactive-trader.scss';
+
+import 'font-awesome/scss/font-awesome.scss';
+import './shell.scss';
+
 
 export default class ShellView extends ViewBase {
   constructor() {
@@ -26,8 +30,8 @@ export default class ShellView extends ViewBase {
     }
     var wellKnownModelIds = model.wellKnownModelIds;
     return (
-      <PageContainer>
-        <div className='flex-container'>
+      // <PageContainer>
+        <div className='shell__container'>
           <Modal shouldShow={model.sessionExpired} title='Session expired'>
             <div>
               <div>Your 15 minute session expired, you are now disconnected from the server.</div>
@@ -39,15 +43,14 @@ export default class ShellView extends ViewBase {
               </div>
             </div>
           </Modal>
-          <HeaderView modelId={wellKnownModelIds.headerModelId}/>
-          <div className='horizontal-wrap'>
-            <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
-            <SingleItemRegionView modelId={wellKnownModelIds.quickAccessRegionModelId}/>
-          </div>
-          <SingleItemRegionView modelId={wellKnownModelIds.blotterRegionModelId}/>
+          <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
+          <SingleItemRegionView modelId={wellKnownModelIds.quickAccessRegionModelId}/>
+
+
           <PopoutRegionView modelId={wellKnownModelIds.popoutRegionModelId}/>
         </div>
-      </PageContainer>
+      // </PageContainer>
     );
   }
 }
+//<SingleItemRegionView modelId={wellKnownModelIds.blotterRegionModelId}/>

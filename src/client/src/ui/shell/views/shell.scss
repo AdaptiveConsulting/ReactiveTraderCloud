@@ -1,14 +1,25 @@
-////tweaks for flexbox and responsive design
-//@import './theme';
+$shell-background-color: #212A35;
+$blotter-height: 280px;
+
+.shell__container {
+  background-color: $shell-background-color;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.workspace-region {
+  flex: 3 1 80%;
+}
+
+.analytics {
+  flex: 1 1 20%;
+}
+
+
 //
-//$blotter-height: 280px;
-//
-//.flex-container {
-//  display: flex;
-//  flex-direction: column;
-//  flex-grow: 1;
-//  min-height: 100vh;
-//}
 //
 //.horizontal-wrap {
 //  display: flex;
@@ -16,8 +27,8 @@
 //  flex-grow: 1;
 //}
 //
-//@media (max-width: $screen-sm-max) {
-//  .flex-container {
+//@media (max-width: 768px) {
+//  .shell__container {
 //    display: block;
 //    flex-grow: 0;
 //    min-height: 0;

@@ -20,7 +20,7 @@ export default class WorkspaceRegionView extends ViewBase {
     }
     let model : RegionModel = this.state.model;
     return (
-      <div className='currency-pairs'>
+      <div className='workspace-region'>
         {
           model.modelRegistrations.length > 0
             ? this._renderWorkspaceItems(model.modelRegistrations)

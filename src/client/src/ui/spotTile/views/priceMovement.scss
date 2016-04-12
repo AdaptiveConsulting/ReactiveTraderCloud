@@ -1,0 +1,30 @@
+@import "variables.scss";
+
+.price-movement {
+  position: relative;
+  height: 50px;
+}
+
+.price-movement__value,
+.price-movement__icon--up,
+.price-movement__icon--down {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.price-movement__value {
+  top: 17px;
+  color: $spot-tile-primary-color;
+}
+
+.price-movement__icon--up {
+  top: 0;
+  color: #3fd01e;
+}
+
+.price-movement__icon--down {
+  color: #cd3350;
+  bottom: 0;
+}

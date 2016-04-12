@@ -1,0 +1,23 @@
+.notional__currency-pair {
+  float: left;
+  padding-right: 10px;
+  padding-bottom: 1px;
+}
+.notional__size-input {
+  float: left;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: inherit;
+  font-size: inherit;
+  &:focus {
+    border-bottom: 1px solid white;
+    outline: none;
+    background-color: #2f5078;
+  }
+}
+
+.notional__date {
+  float: right;
+}

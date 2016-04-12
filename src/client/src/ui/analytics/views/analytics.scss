@@ -5,14 +5,15 @@ $positive-color: green;
 $negative-color: $brand-danger;
 $stroke-color: slategray;
 
+
 .analytics-container {
   margin-left: 4px;
   align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
-  right: 0px;
-  max-width: 400px;
-  min-width: 350px;
+  //right: 0px;
+  //max-width: 400px;
+  //min-width: 350px;
   background: $gray-dark;
   box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
 

@@ -1,1 +1,14 @@
-@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables';
+.workspace-region {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.workspace-region__item {
+  order: 0;
+  flex: 0 1 360px;
+  align-self: auto;
+  margin: 2px;
+}
