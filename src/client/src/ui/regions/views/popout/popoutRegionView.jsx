@@ -39,7 +39,7 @@ export default class PopoutRegionView extends ViewBase {
         : 400;
       let popupAttributes = {
         key: modelRegistration.key,
-        url:'/popout',
+        url:'/#/popout',
         title:'',
         onClosing: () => this._popoutClosed(this.props.modelId, modelRegistration.model),
         options: {
