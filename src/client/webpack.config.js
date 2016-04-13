@@ -6,8 +6,17 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const isProductionMode = process.env.NODE_ENV == 'production';
 const chalk = require('chalk');
+let parseArgs = require('minimist');
 
 const path = require('path');
+
+let args = parseArgs(process.argv.slice(2));
+let serverEndPoint = (args.endpoint || 'cloud').trim();
+let serverEndPointUrl = serverEndPoint === 'local' ? 'localhost' : 'web-demo.adaptivecluster.com';
+
+if(isProductionMode) {
+  serverEndPointUrl = ''; // needs to be empty string so that location.hostname is used
+}
 
 const webpackConfig = {
   name: 'client',
@@ -40,6 +49,9 @@ const webpackConfig = {
     ]),
     new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function(module){
       return module.resource && module.resource.indexOf('node_modules') !== -1;
+    }),
+    new webpack.DefinePlugin({
+      'SERVER_ENDPOINT': '"' + serverEndPointUrl + '"'
     })
   ],
   // these break for node 5.3+ when building WS stuff
@@ -172,7 +184,10 @@ if (isProductionMode){
   );
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'SERVER_ENDPOINT': '"' + serverEndPointUrl + '"'
+    })
   );
   // We need to apply the react-transform HMR plugin to the Babel configuration,
   // but _only_ when ModuleReplacement is enabled. Putting this in the default development

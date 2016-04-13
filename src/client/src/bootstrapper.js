@@ -42,8 +42,16 @@ class Bootstrapper {
   }
 
   startServices() {
+    let serverEndPointUrl = null;
+    // checking for SERVER_ENDPOINT which is injected as a literal string by webpack using DefinePlugin
+    if(SERVER_ENDPOINT === undefined){
+      serverEndPointUrl = location.hostname;
+    } else {
+      serverEndPointUrl = SERVER_ENDPOINT;
+    }
+
     let user:User = FakeUserRepository.currentUser;
-    let url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
+    let url = 'ws://' + serverEndPointUrl + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
     this._schedulerService = new SchedulerService();
     this._connection = new Connection(
       user.code,
