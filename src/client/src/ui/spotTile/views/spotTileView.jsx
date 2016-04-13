@@ -67,7 +67,7 @@ export default class SpotTileView extends ViewBase {
           onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Sell })}
           rate={model.currentSpotPrice.bid}
         />
-        <div  className='spot-tile__price-movement'>
+        <div className='spot-tile__price-movement'>
           <PriceMovementIndicator
             priceMovementType={model.currentSpotPrice.priceMovementType}
             spread={model.currentSpotPrice.spread}
