@@ -10,12 +10,12 @@ $gray:                   #294464;
 
 .blotter {
   background: #fff;
-
+  height: 100%;
+  width: 100%;
   .blotter-wrapper {
     position: relative;
-    width: 100%;
     height: 100%;
-
+    width: 100%;
     .container-controls {
       position: absolute;
       z-index: 101;

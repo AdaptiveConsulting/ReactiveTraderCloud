@@ -29,6 +29,10 @@ export default class WellKnownModelIds {
     return 'headerModelId';
   }
 
+  static get footerModelId() {
+    return 'footerModelId';
+  }
+
   static get analyticsModelId() {
     return 'analyticsModelId';
   }

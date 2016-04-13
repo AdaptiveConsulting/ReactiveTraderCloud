@@ -1,5 +1,7 @@
 import React from 'react';
 import { Modal } from '../../common/components';
+import { HeaderView } from '../../header/views';
+import { FooterView } from '../../footer/views';
 import { ViewBase } from '../../common';
 import { ShellModel } from '../model';
 import { router } from '../../../system';
@@ -41,6 +43,7 @@ export default class ShellView extends ViewBase {
             <SingleItemRegionView modelId={wellKnownModelIds.blotterRegionModelId}/>
           </div>
           <PopoutRegionView modelId={wellKnownModelIds.popoutRegionModelId}/>
+          <FooterView modelId={wellKnownModelIds.footerModelId}/>
         </div>
     );
   }
