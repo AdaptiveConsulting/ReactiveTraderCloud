@@ -4,62 +4,45 @@ $blotter-height: 280px;
 .shell__container {
   background-color: $shell-background-color;
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
+  justify-content: space-around;
   height: 100vh;
   width: 100vw;
   font-family: 'Segoe UI', sans-serif;
 }
 
 .workspace-region {
-  flex: 3 1 80%;
+  flex: 1;
+  order: 1;
+  height: 80vh;
+  overflow-y: scroll;
 }
 
 .analytics {
-  flex: 1 1 20%;
+  flex: 0 0 400px;
+  order: 2;
 }
 
+.shell__blotter {
+  flex: 1 100%;
+  heigth: 100%;
+  order: 3;
+  height: 20vh;
+}
 
-//
-//
-//.horizontal-wrap {
-//  display: flex;
-//  flex-direction: row;
-//  flex-grow: 1;
-//}
-//
-//@media (max-width: 768px) {
-//  .shell__container {
-//    display: block;
-//    flex-grow: 0;
-//    min-height: 0;
-//  }
-//  .horizontal-wrap {
-//    display: block;
-//    overflow: auto;
-//    position: absolute;
-//    top: 53px;
-//    bottom: $blotter-height;
-//    right: 0;
-//    .analytics-container {
-//      width: 100%;
-//      max-width: 100%;
-//      margin: 0;
-//    }
-//    .currency-pairs {
-//      overflow: visible;
-//      display: block;
-//      .currency-pair {
-//        width: 100%;
-//        margin-left: 0;
-//        .currency-pair-title {
-//          margin-right: 0;
-//        }
-//      }
-//    }
-//  }
-//  .blotter {
-//    display: block;
-//    position: absolute;
-//    bottom: 0;
-//  }
-//}
+@media all and (max-width: 700px) {
+  .shell__container {
+    overflow-y: scroll;
+  }
+  .workspace-region,
+  .analytics,
+  .shell__blotter {
+    flex: 1 100%;
+  }
+
+  .workspace-region {
+    height: 100%;
+    overflow: inherit;
+  }
+}
+

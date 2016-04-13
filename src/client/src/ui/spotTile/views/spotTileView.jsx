@@ -6,10 +6,6 @@ import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification }
 import { SpotTileModel, NotificationType } from '../model';
 import { Direction } from '../../../services/model';
 import './spotTile.scss';
-// TODO : fix below import:
-// Styles in the below import extend some font awesome styles, however if we use webpack here then the fontawesome styles are not currently available due to some load ordering issue.
-// The below method is the correct approach, however we're going to have to park it for now. The styles in general are rathermessyy and need to be cleaned up.
-// import './spotTileView.scss';
 
 export default class SpotTileView extends ViewBase {
 
@@ -40,7 +36,7 @@ export default class SpotTileView extends ViewBase {
     return (
       <div className={className}>
         <div className='spot-tile__container'>
-          <span className='spot-tile__symbol'>{model.tileTitle} <i className='fa fa-plug animated infinite fadeIn'/></span>
+          <span className='spot-tile__symbol'>{model.tileTitle} <i className='spot-tile__icon--disconnected fa fa-plug animated infinite fadeIn'/></span>
           <span className='spot-tile__execution-label'>Executing</span>
           <i className='spot-tile__icon--tearoff fa fa-square-o'
              onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>

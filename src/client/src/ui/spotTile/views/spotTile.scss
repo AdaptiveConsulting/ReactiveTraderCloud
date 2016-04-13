@@ -13,11 +13,16 @@
     box-sizing: border-box;
   }
 
-  .spot-tile__execution-label {
+  .spot-tile__execution-label,
+  .spot-tile__icon--disconnected {
     display: none;
   }
   &.spot-tile--stale {
     background-color: $spot-tile-error-color;
+
+    .spot-tile__icon--disconnected {
+      display: block;
+    }
   }
 
   &.spot-tile--executing {

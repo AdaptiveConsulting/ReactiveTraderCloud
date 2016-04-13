@@ -21,6 +21,6 @@ export default class SingleItemRegionView extends ViewBase {
     }
     let modelRegistration:RegionModelRegistration = model.modelRegistrations[0];
     let view = createViewForModel(modelRegistration.model, modelRegistration.displayContext);
-    return ( <div>{view}</div>)
+    return view;
   }
 }
