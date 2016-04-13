@@ -21,21 +21,21 @@ export default class HeaderView extends ViewBase {
     return (
       <nav className='header chrome-controls'>
         <ul className='header__controls'>
-          <li className='header__control_item'>
+          <li className='header__control'>
             <a title='Minimise'
                onClick={(e) => router.publishEvent(this.props.modelId, 'minimiseClicked', e)}
                href='#'>
               <i className='header__icon--minimise fa fa-minus-square'/>
             </a>
           </li>
-          <li className='header__control_item'>
+          <li className='header__control'>
             <a title='Maximise'
                onClick={(e) => router.publishEvent(this.props.modelId, 'maximiseClicked', e)}
                href='#'>
               <i className='header__icon--maximise fa fa-plus-square'/>
             </a>
           </li>
-          <li className='header__control_item'>
+          <li className='header__control'>
             <a title='Close'
                onClick={(e) => router.publishEvent(this.props.modelId, 'closeClicked', e)}
                href='#'>
