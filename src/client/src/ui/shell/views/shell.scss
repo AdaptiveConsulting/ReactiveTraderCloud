@@ -14,44 +14,45 @@ $workspace-width:             calc(100vw - #{$analytics-width});
   justify-content: space-around;
   height: 100vh;
   width: 100vw;
-  font-family: 'Segoe UI', sans-serif;
   & * {
     box-sizing: border-box;
   }
-}
 
-// TODO - show when running in OpenFin
-//.header {
-//  flex: 1 100%;
-//  height: $header-height;
-//  order: 1;
-//}
 
-.workspace-region {
-  flex: 1 $workspace-width;
-  order: 2;
-  height: $workspace-height;
-  overflow-y: scroll;
-}
+  // TODO - show when running in OpenFin
+  //.header {
+  //  flex: 1 100%;
+  //  height: $header-height;
+  //  order: 1;
+  //}
 
-.analytics {
-  flex: 0 0 $analytics-width;
-  order: 3;
-  height: $analytics-height;
-  overflow-y: scroll;
-}
+  .workspace-region {
+    flex: 1 $workspace-width;
+    order: 2;
+    height: $workspace-height;
+    overflow-y: scroll;
+  }
 
-.shell__blotter {
-  flex: 1 100%;
-  heigth: 100%;
-  order: 4;
-  height: $blotter-height;
-}
+  .analytics {
+    flex: 0 0 $analytics-width;
+    order: 3;
+    height: $analytics-height;
+    overflow-y: scroll;
+  }
 
-.footer {
-  flex: 1 100%;
-  height: $footer-height;
-  order: 5;
+  .shell__blotter {
+    flex: 1 100%;
+    heigth: 100%;
+    order: 4;
+    height: $blotter-height;
+  }
+
+  .footer {
+    flex: 1 100%;
+    height: $footer-height;
+    order: 5;
+  }
+
 }
 
 @media all and (max-width: 700px) {

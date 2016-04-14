@@ -37,8 +37,8 @@ export default class BlotterView extends ViewBase {
     return (
       <div className={className}>
         <div className='blotter-wrapper'>
-          <div className='container-controls'>
-            <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right'
+          <div className='blotter__controls popout__controls'>
+            <i className='glyphicon glyphicon-new-window'
                onClick={() => router.publishEvent(this.props.modelId, 'tearOffBlotter', {})} />
           </div>
           <Table

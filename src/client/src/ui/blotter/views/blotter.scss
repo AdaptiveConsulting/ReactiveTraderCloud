@@ -8,6 +8,13 @@ $brand-danger:           #ee5f5b;
 $brand-warning:          #f89406;
 $gray:                   #294464;
 
+.blotter__controls {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  z-index: 2;
+}
+
 .blotter {
   background: #fff;
   height: 100%;

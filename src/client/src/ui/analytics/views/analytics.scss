@@ -9,6 +9,13 @@ $gray-lighter:    #eee;
 $gray-darker:     #212a35;
 $gray:            #294464;
 
+.analytics__controls {
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+  color: white;
+}
+
 .analytics-container {
   align-self: stretch;
   overflow-x: hidden;

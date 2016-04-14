@@ -6,6 +6,7 @@ import { RegionModel, RegionModelRegistration } from '../../model';
 import { createViewForModel } from '../../';
 import { router } from '../../../../system';
 import Popout from './popoutWindow.jsx';
+import './popoutRegion.scss';
 
 export default class PopoutRegionView extends ViewBase {
   constructor() {
@@ -51,9 +52,7 @@ export default class PopoutRegionView extends ViewBase {
       };
       return (
         <Popout {...popupAttributes}>
-          <PageContainer>
             {view}
-          </PageContainer>
         </Popout>
       );
     });
