@@ -1,0 +1,24 @@
+$glyphicons-font-path: '../fonts/bootstrap/glyphicons-halflings-regular';
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('#{$glyphicons-font-path}.eot');
+  src: url('#{$glyphicons-font-path}.eot?#iefix') format('embedded-opentype'),
+  url('#{$glyphicons-font-path}.woff2') format('woff2'),
+  url('#{$glyphicons-font-path}.woff') format('woff'),
+  url('#{$glyphicons-font-path}.ttf') format('truetype');
+}
+
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-new-window { &:before { content: "\e164"; } }

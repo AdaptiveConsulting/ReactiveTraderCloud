@@ -14,6 +14,7 @@ $workspace-width:             calc(100vw - #{$analytics-width});
   justify-content: space-around;
   height: 100vh;
   width: 100vw;
+  font-family: 'Rubik', sans-serif;
   & * {
     box-sizing: border-box;
   }
