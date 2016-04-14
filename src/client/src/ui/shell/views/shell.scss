@@ -18,7 +18,6 @@ $workspace-width:             calc(100vw - #{$analytics-width});
     box-sizing: border-box;
   }
 
-
   // TODO - show when running in OpenFin
   //.header {
   //  flex: 1 100%;
@@ -41,14 +40,14 @@ $workspace-width:             calc(100vw - #{$analytics-width});
   }
 
   .shell__blotter {
-    flex: 1 100%;
+    flex: 1 100vw;
     heigth: 100%;
     order: 4;
     height: $blotter-height;
   }
 
   .footer {
-    flex: 1 100%;
+    flex: 1 100vw;
     height: $footer-height;
     order: 5;
   }
@@ -58,17 +57,19 @@ $workspace-width:             calc(100vw - #{$analytics-width});
 @media all and (max-width: 700px) {
   .shell__container {
     overflow-y: scroll;
-  }
-  .workspace-region,
-  .analytics,
-  .shell__blotter,
-  .footer {
-    flex: 1 100%;
+
+    .workspace-region,
+    .analytics,
+    .shell__blotter,
+    .footer {
+      flex: 1 100vw;
+    }
+
+    .workspace-region {
+      height: 100%;
+      overflow: inherit;
+    }
   }
 
-  .workspace-region {
-    height: 100%;
-    overflow: inherit;
-  }
 }
 
