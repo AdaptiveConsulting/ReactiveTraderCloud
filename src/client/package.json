@@ -83,6 +83,7 @@
     "karma-sourcemap-loader": "0.3.7",
     "karma-spec-reporter": "0.0.23",
     "karma-webpack": "1.7.0",
+    "minimist": "1.2.0",
     "node-sass": "3.4.2",
     "openfin-cli": "1.0.1",
     "react-addons-test-utils": "0.14.6",
