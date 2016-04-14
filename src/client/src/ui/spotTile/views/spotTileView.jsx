@@ -38,8 +38,10 @@ export default class SpotTileView extends ViewBase {
         <div className='spot-tile__container'>
           <span className='spot-tile__symbol'>{model.tileTitle} <i className='spot-tile__icon--disconnected fa fa-plug animated infinite fadeIn'/></span>
           <span className='spot-tile__execution-label'>Executing</span>
-          <i className='spot-tile__icon--tearoff fa fa-square-o'
-             onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
+          <div className='popout__controls'>
+            <i className='spot-tile__icon--tearoff glyphicon glyphicon-new-window'
+               onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
+          </div>
           {notification}
           {priceComponents}
             <NotionalInput

@@ -3,6 +3,7 @@ $blotter-height:              20vh;
 $header-height:               0px;
 $footer-height:               30px;
 $workspace-height:            calc(100vh - #{$header-height} - #{$blotter-height} - #{$footer-height});
+$analytics-height:            $workspace-height;
 $analytics-width:             400px;
 $workspace-width:             calc(100vw - #{$analytics-width});
 
@@ -13,59 +14,63 @@ $workspace-width:             calc(100vw - #{$analytics-width});
   justify-content: space-around;
   height: 100vh;
   width: 100vw;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Rubik', sans-serif;
   & * {
     box-sizing: border-box;
   }
-}
 
-// TODO - show when running in OpenFin
-//.header {
-//  flex: 1 100%;
-//  height: $header-height;
-//  order: 1;
-//}
+  // TODO - show when running in OpenFin
+  //.header {
+  //  flex: 1 100%;
+  //  height: $header-height;
+  //  order: 1;
+  //}
 
-.workspace-region {
-  flex: 1 $workspace-width;
-  order: 2;
-  height: $workspace-height;
-  overflow-y: scroll;
-}
+  .workspace-region {
+    flex: 1 $workspace-width;
+    order: 2;
+    height: $workspace-height;
+    overflow-y: scroll;
+  }
 
-.analytics {
-  flex: 0 0 $analytics-width;
-  order: 3;
-}
+  .analytics {
+    flex: 0 0 $analytics-width;
+    order: 3;
+    height: $analytics-height;
+    overflow-y: scroll;
+  }
 
-.shell__blotter {
-  flex: 1 100%;
-  heigth: 100%;
-  order: 4;
-  height: $blotter-height;
-}
+  .shell__blotter {
+    flex: 1 100vw;
+    heigth: 100%;
+    order: 4;
+    height: $blotter-height;
+  }
 
-.footer {
-  flex: 1 100%;
-  height: $footer-height;
-  order: 5;
-  z-index: 1; //TODO - remove once the blotter height issue is fixed
+  .footer {
+    flex: 1 100vw;
+    height: $footer-height;
+    order: 5;
+  }
+
 }
 
 @media all and (max-width: 700px) {
   .shell__container {
     overflow-y: scroll;
-  }
-  .workspace-region,
-  .analytics,
-  .shell__blotter,
-  .footer {
-    flex: 1 100%;
+
+    .workspace-region,
+    .analytics,
+    .shell__blotter,
+    .footer {
+      flex: 1 100vw;
+    }
+
+    .workspace-region {
+      height: 100%;
+      overflow: inherit;
+    }
   }
 
-  .workspace-region {
-    height: 100%;
-    overflow: inherit;
-  }
 }
 

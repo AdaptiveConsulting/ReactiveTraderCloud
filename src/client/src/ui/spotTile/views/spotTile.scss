@@ -6,7 +6,6 @@
   height: 155px;
   color: $spot-tile-secondary-color;
   background-color: #293543;
-  font-family: 'Rubik', sans-serif;
   &:hover {
     background-color: #294464;
   }
@@ -91,9 +90,7 @@
 }
 
 .spot-tile__icon--tearoff {
-  position: absolute;
-  top: 0;
-  right: 0;
+  float: right;
   cursor: pointer;
 }
 

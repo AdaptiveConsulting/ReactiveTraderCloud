@@ -7,7 +7,7 @@ import { ViewBase } from '../../common';
 import { router, logger } from '../../../system';
 import classNames from 'classnames';
 import { BlotterModel } from '../model';
-
+import 'fixed-data-table/dist/fixed-data-table.css';
 import './blotter.scss';
 
 @Dimensions()
@@ -29,15 +29,16 @@ export default class BlotterView extends ViewBase {
     let columns = this._createGridColumns(model.trades);
     let className = classNames(
       'blotter', {
-        'online': model.isConnected,
-        'offline': !model.isConnected
+        'blotter--online': model.isConnected,
+        'blotter--offline': !model.isConnected
       });
     let containerWidth = this.props.containerWidth; // comes from the the @Dimensions annotation
+    let containerHeight = this.props.containerHeight; // comes from the the @Dimensions annotation
     return (
       <div className={className}>
         <div className='blotter-wrapper'>
-          <div className='container-controls'>
-            <i className='tearoff-trigger glyphicon glyphicon-new-window pull-right'
+          <div className='blotter__controls popout__controls'>
+            <i className='glyphicon glyphicon-new-window'
                onClick={() => router.publishEvent(this.props.modelId, 'tearOffBlotter', {})} />
           </div>
           <Table
@@ -45,7 +46,7 @@ export default class BlotterView extends ViewBase {
             headerHeight={30}
             rowsCount={model.trades.length}
             width={containerWidth}
-            height={280}
+            height={containerHeight}
             rowClassNameGetter={(index) => this._getRowClass(model.trades[index])}>
             {columns}
           </Table>
@@ -60,21 +61,25 @@ export default class BlotterView extends ViewBase {
         key='Id'
         header={<Cell>Id</Cell>}
         cell={props => (<Cell width={80}>{this.state.model.trades[props.rowIndex].tradeId}</Cell>)}
+        flexGrow={1}
         width={80}/>,
       <Column
         key='Date'
         header={<Cell>Date</Cell>}
         cell={props => (<DateCell width={150} dateValue={this.state.model.trades[props.rowIndex].tradeDate} />)}
+        flexGrow={1}
         width={150}/>,
       <Column
         key='Dir'
         header={<Cell>Dir</Cell>}
         cell={props => (<Cell width={50}>{this.state.model.trades[props.rowIndex].direction.name}</Cell>)}
+        flexGrow={1}
         width={50}/>,
       <Column
         key='CCY'
         header={<Cell>CCY</Cell>}
         cell={props => (<Cell width={70}>{this.state.model.trades[props.rowIndex].currencyPair.symbol}</Cell>)}
+        flexGrow={1}
         width={70}/>,
       <Column
         key='Notional'
@@ -87,26 +92,31 @@ export default class BlotterView extends ViewBase {
             notionalValue={trade.notional}
             suffix={' ' + trade.currencyPair.base} />);
         }}
+        flexGrow={1}
         width={120}/>,
       <Column
         key='Rate'
         header={<Cell className='text-right'>Rate</Cell>}
         cell={props => (<Cell width={80} className='text-right'>{this.state.model.trades[props.rowIndex].spotRate}</Cell>)}
+        flexGrow={1}
         width={80}/>,
       <Column
         key='Status'
         header={<Cell>Status</Cell>}
-        cell={props => (<Cell className='trade-status' width={80}>{this.state.model.trades[props.rowIndex].status.name}</Cell>)}
+        cell={props => (<Cell className='blotter__trade-status' width={80}>{this.state.model.trades[props.rowIndex].status.name}</Cell>)}
+        flexGrow={1}
         width={80}/>,
       <Column
         key='Value date'
         header={<Cell>Value date</Cell>}
         cell={props => (<DateCell width={100} prefix='SP. ' format='%d %b' dateValue={this.state.model.trades[props.rowIndex].valueDate} />)}
+        flexGrow={1}
         width={100}/>,
       <Column
         key='Trader'
         header={<Cell>Trader</Cell>}
         cell={props => (<Cell width={80}>{this.state.model.trades[props.rowIndex].traderName}</Cell>)}
+        flexGrow={1}
         width={80}/>
     ];
   }
@@ -117,6 +127,13 @@ export default class BlotterView extends ViewBase {
    * @returns {string}
    */
   _getRowClass(rowItem:Trade) {
-    return classNames(rowItem.status.name, ' animated ');
+    return classNames(
+      'animated',
+      'blotter__trade',
+      {
+        'blotter__trade--rejected': rowItem.status.name.toLowerCase() === 'rejected',
+        'blotter__trade--processing': rowItem.status.name.toLowerCase() === 'processing'
+      }
+    );
   }
 }
