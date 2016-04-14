@@ -1,4 +1,4 @@
 {
-  "useEndPoint": true,
-  "endPointUrl": "web-demo.adaptivecluster.com"
+  "overwriteServerEndpoint": true,
+  "serverEndPointUrl": "web-demo.adaptivecluster.com"
 }

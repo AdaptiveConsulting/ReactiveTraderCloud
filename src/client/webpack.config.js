@@ -56,11 +56,11 @@ const webpackConfig = {
     // This is purely for ide object/type discoverability.
     // Until our ide (intellij/webstorm) understands import aliass we feel the benefits of object discoverability outweigh the relative path cost.
     alias: {
-      config: path.join(__dirname, 'config', config),
+      'config.json': path.join(__dirname, 'config', config),
       system: path.join(__dirname, 'src/system'),
       services: path.join(__dirname, 'src/services'),
       // reverse alias so we can use ES6 from node modules and get IDE support but not actually transpile it
-      "esp-js/src" : path.join(__dirname, 'node_modules/esp-js')
+      'esp-js/src' : path.join(__dirname, 'node_modules/esp-js')
     }
   },
   eslint: {

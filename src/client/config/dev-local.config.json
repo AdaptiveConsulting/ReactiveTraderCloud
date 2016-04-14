@@ -1,4 +1,4 @@
 {
-  "useEndPoint": true,
-  "endPointUrl": "localhost"
+  "overwriteServerEndpoint": true,
+  "serverEndPointUrl": "localhost"
 }
