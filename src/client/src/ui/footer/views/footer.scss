@@ -1,0 +1,27 @@
+.footer {
+  height: 100%;
+  width: 100vw;
+  background-color: #dee3e8;
+}
+
+.footer__services {
+  list-style: none;
+  margin: 0;
+  float: right;
+}
+
+.footer__service {
+  display: inline-block;
+}
+
+.footer__icon--online {
+  color: green;
+}
+
+.footer__icon--offline {
+  color: red;
+}
+
+.footer__service-label {
+  padding-left: -10px;
+}
