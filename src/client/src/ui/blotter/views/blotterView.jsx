@@ -7,7 +7,7 @@ import { ViewBase } from '../../common';
 import { router, logger } from '../../../system';
 import classNames from 'classnames';
 import { BlotterModel } from '../model';
-
+import 'fixed-data-table/dist/fixed-data-table.css';
 import './blotter.scss';
 
 @Dimensions()
@@ -29,8 +29,8 @@ export default class BlotterView extends ViewBase {
     let columns = this._createGridColumns(model.trades);
     let className = classNames(
       'blotter', {
-        'online': model.isConnected,
-        'offline': !model.isConnected
+        'blotter--online': model.isConnected,
+        'blotter--offline': !model.isConnected
       });
     let containerWidth = this.props.containerWidth; // comes from the the @Dimensions annotation
     let containerHeight = this.props.containerHeight; // comes from the the @Dimensions annotation
@@ -103,7 +103,7 @@ export default class BlotterView extends ViewBase {
       <Column
         key='Status'
         header={<Cell>Status</Cell>}
-        cell={props => (<Cell className='trade-status' width={80}>{this.state.model.trades[props.rowIndex].status.name}</Cell>)}
+        cell={props => (<Cell className='blotter__trade-status' width={80}>{this.state.model.trades[props.rowIndex].status.name}</Cell>)}
         flexGrow={1}
         width={80}/>,
       <Column
@@ -127,6 +127,13 @@ export default class BlotterView extends ViewBase {
    * @returns {string}
    */
   _getRowClass(rowItem:Trade) {
-    return classNames(rowItem.status.name, ' animated ');
+    return classNames(
+      'animated',
+      'blotter__trade',
+      {
+        'blotter__trade--rejected': rowItem.status.name.toLowerCase() === 'rejected',
+        'blotter__trade--processing': rowItem.status.name.toLowerCase() === 'processing'
+      }
+    );
   }
 }
