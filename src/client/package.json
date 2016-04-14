@@ -21,7 +21,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "start": "npm run dev",
+    "start": "npm run dev:cloud",
     "lint": "eslint src",
     "dev:local": "npm run dev -- --endpoint local",
     "dev:cloud": "npm run dev -- --endpoint cloud",
