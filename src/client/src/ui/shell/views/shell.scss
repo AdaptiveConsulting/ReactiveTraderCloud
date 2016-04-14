@@ -3,6 +3,7 @@ $blotter-height:              20vh;
 $header-height:               0px;
 $footer-height:               30px;
 $workspace-height:            calc(100vh - #{$header-height} - #{$blotter-height} - #{$footer-height});
+$analytics-height:            $workspace-height;
 $analytics-width:             400px;
 $workspace-width:             calc(100vw - #{$analytics-width});
 
@@ -36,6 +37,8 @@ $workspace-width:             calc(100vw - #{$analytics-width});
 .analytics {
   flex: 0 0 $analytics-width;
   order: 3;
+  height: $analytics-height;
+  overflow-y: scroll;
 }
 
 .shell__blotter {
@@ -49,7 +52,6 @@ $workspace-width:             calc(100vw - #{$analytics-width});
   flex: 1 100%;
   height: $footer-height;
   order: 5;
-  z-index: 1; //TODO - remove once the blotter height issue is fixed
 }
 
 @media all and (max-width: 700px) {
