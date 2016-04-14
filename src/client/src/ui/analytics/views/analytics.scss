@@ -9,6 +9,13 @@ $gray-lighter:    #eee;
 $gray-darker:     #212a35;
 $gray:            #294464;
 
+@mixin box-shadow($hasInset, $args...) {
+  $inset: null;
+  @if $hasInset {
+    $inset: inset 0 0 1px;;
+  }
+  box-shadow: $args rgba(0, 0, 0, .5), $inset rgba(255, 255, 255, .2);
+}
 .analytics__controls {
   float: right;
   margin-top: 5px;
@@ -16,12 +23,13 @@ $gray:            #294464;
   color: white;
 }
 
+
 .analytics-container {
   align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
   background: $gray-dark;
-  box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
+  @include box-shadow(true, -1px 0 1px);
 
   .header {
     font-size: 26px;
@@ -43,7 +51,7 @@ $gray:            #294464;
     padding: 10px;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-    box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
+    @include box-shadow(true, -1px 0 1px);
     background: $gray-dark;
     &.negative {
       .nvd3 g.nv-groups g.nv-group .nv-area {
@@ -118,7 +126,7 @@ $gray:            #294464;
         z-index: 100;
         color: $gray-lighter;
         background: linear-gradient(rgba(0, 0, 0, 0), $gray-darker) !important;
-        box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
+        @include box-shadow(true, -1px 0 1px);
       }
       &.selected:before {
         content: "";
@@ -131,7 +139,7 @@ $gray:            #294464;
         left: 50%;
         transform: translate(-($shadow-width / 2), 0);
         top: -8px;
-        box-shadow: 0 0 6px 4px rgba(255, 255, 255, .5);
+        @include box-shadow(false, 0 0 6px 4px);
       }
     }
 
