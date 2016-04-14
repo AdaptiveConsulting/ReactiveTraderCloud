@@ -7,11 +7,6 @@ $analytics-height:            $workspace-height;
 $analytics-width:             400px;
 $workspace-width:             calc(100vw - #{$analytics-width});
 
-@font-face {
-  font-family: 'Rubik Light';
-  src: url('../../../resources/fonts/RubikLight.woff2');
-}
-
 .shell__container {
   background-color: $shell-background-color;
   display: flex;
