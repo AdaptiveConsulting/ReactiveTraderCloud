@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { HeaderModel } from './ui/header/model';
+import { FooterModel } from './ui/footer/model';
 import { ShellModel } from './ui/shell/model';
 import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
 import { User, ServiceConst, ServiceStatusLookup } from './services/model';
@@ -108,8 +109,12 @@ class Bootstrapper {
     analyticsModel.observeEvents();
 
     // wire-up the header
-    let headerModel = new HeaderModel(WellKnownModelIds.headerModelId, espRouter, this._compositeStatusService);
+    let headerModel = new HeaderModel(WellKnownModelIds.headerModelId, espRouter);
     headerModel.observeEvents();
+
+    // wire-up the footer
+    let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService);
+    footerModel.observeEvents();
 
     this._referenceDataService.hasLoadedStream.subscribe(() => {
       // Some models require the ref data to be loaded before they subscribe to their streams.

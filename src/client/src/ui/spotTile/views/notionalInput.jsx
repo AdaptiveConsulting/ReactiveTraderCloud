@@ -1,7 +1,9 @@
 import React from 'react';
 import numeral from 'numeral';
 import { utils } from '../../../system';
+import classnames from 'classnames';
 import { CurrencyPair } from '../../../services/model';
+import './notionalInput.scss';
 
 const MONTHS         = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       NUMERAL_FORMAT = '0,000,000[.]00',
@@ -36,15 +38,15 @@ export default class NotionalInput extends React.Component {
 
   render(){
     const formattedSize = numeral(this.props.notional).format(NUMERAL_FORMAT);
-
+    let classes = classnames(
+      'notional',
+      this.props.className
+    );
     return (
-      <div className={this.props.className}>
-        <label>{this.props.currencyPair.base}
-          <input className='size' type='text' ref='notionalInput' defaultValue={formattedSize} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
-        </label>
-        <div className='pull-right'>
-          {this.SPOTDATE}
-        </div>
+      <div className={classes}>
+        <label className='notional__currency-pair' >{this.props.currencyPair.base}</label>
+        <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
+        <span className='notional__date'>{this.SPOTDATE}</span>
       </div>
     );
   }

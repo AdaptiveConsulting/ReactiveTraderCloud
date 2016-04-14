@@ -1,6 +1,7 @@
 import React from 'react';
 import { CompositeDisposable } from 'esp-js/src';
 import { router } from '../../system';
+import './styles/_base.scss';
 
 export default class ViewBase extends React.Component {
   _disposables:CompositeDisposable;

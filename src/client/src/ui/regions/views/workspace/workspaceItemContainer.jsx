@@ -5,7 +5,7 @@ export default class WorkspaceItemContainer extends React.Component {
 
   render(){
     return (
-      <div>
+      <div className='workspace-region__item'>
         {this.props.children}
       </div>);
   }

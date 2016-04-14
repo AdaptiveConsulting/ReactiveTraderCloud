@@ -1,0 +1,22 @@
+@import "variables.scss";
+
+.trade-notification--error {
+  background-color: $spot-tile-error-color;
+  color: white;
+  padding: 5px;
+}
+
+.trade-notification__label {
+  color: $spot-tile-secondary-color;
+}
+
+.trade-notification__value {
+  color: $spot-tile-primary-color;
+}
+
+.trade-notification__button--dismiss {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  color: inherit;
+}

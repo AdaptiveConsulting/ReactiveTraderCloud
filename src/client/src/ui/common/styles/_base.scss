@@ -1,0 +1,13 @@
+.hide {
+  display: none;
+}
+
+.btn {
+  border: none;
+  background-color: gray;
+  color: white;
+
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,27 +1,15 @@
-// main file being imported and built, entry point for all SCSS
-
-// theme
-@import 'theme';
-// bootstrap version compiler
-@import 'bootstrap-build';
-
 // icons and helpers
 @import '../../../../node_modules/font-awesome/scss/font-awesome';
 @import '../../../../node_modules/animate.css/animate.css';
-
-// helpers - layout, responsive strategy
-@import 'layout';
-
-@import '../../spotTile/views/spotTileView';
-@import '../../header/views/header';
+$gray-light:             #90afc1;
 
 // globals
 body, html {
   overflow: hidden;
   height: 100%;
   width: 100%;
+  margin: 0;
 }
-
 
 .container-controls {
   .tearoff & {

@@ -1,14 +1,15 @@
 import React from 'react';
-import { BlotterView } from '../../blotter/views';
+import { Modal } from '../../common/components';
 import { HeaderView } from '../../header/views';
-import { AnalyticsView } from '../../analytics/views';
-import { Modal, PageContainer } from '../../common/components';
+import { FooterView } from '../../footer/views';
 import { ViewBase } from '../../common';
 import { ShellModel } from '../model';
 import { router } from '../../../system';
 import { PopoutRegionView } from '../../regions/views/popout';
 import { WorkspaceRegionView } from '../../regions/views/workspace';
 import { SingleItemRegionView } from '../../regions/views/singleItem';
+import './shell.scss';
+
 
 export default class ShellView extends ViewBase {
   constructor() {
@@ -26,28 +27,25 @@ export default class ShellView extends ViewBase {
     }
     var wellKnownModelIds = model.wellKnownModelIds;
     return (
-      <PageContainer>
-        <div className='flex-container'>
+        <div className='shell__container'>
           <Modal shouldShow={model.sessionExpired} title='Session expired'>
             <div>
               <div>Your 15 minute session expired, you are now disconnected from the server.</div>
               <div>Click reconnect to start a new session.</div>
-              <div className='modal-action'>
-                <button className='btn btn-large'
+                <button className='btn'
                         onClick={() => router.publishEvent(model.modelId, 'reconnectClicked', {})}>Reconnect
                 </button>
-              </div>
             </div>
           </Modal>
-          <HeaderView modelId={wellKnownModelIds.headerModelId}/>
-          <div className='horizontal-wrap'>
-            <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
-            <SingleItemRegionView modelId={wellKnownModelIds.quickAccessRegionModelId}/>
+          <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
+          <SingleItemRegionView modelId={wellKnownModelIds.quickAccessRegionModelId}/>
+          <div className='shell__blotter'>
+            <SingleItemRegionView modelId={wellKnownModelIds.blotterRegionModelId}/>
           </div>
-          <SingleItemRegionView modelId={wellKnownModelIds.blotterRegionModelId}/>
           <PopoutRegionView modelId={wellKnownModelIds.popoutRegionModelId}/>
+          <FooterView modelId={wellKnownModelIds.footerModelId}/>
         </div>
-      </PageContainer>
     );
   }
 }
+
