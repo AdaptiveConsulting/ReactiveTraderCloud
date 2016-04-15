@@ -1,5 +1,6 @@
 @import "variables.scss";
 
+.trade-notification--rejected,
 .trade-notification--error {
   background-color: $spot-tile-error-color;
   color: white;
