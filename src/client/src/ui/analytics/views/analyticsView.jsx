@@ -56,7 +56,7 @@ export default class AnalyticsView extends ViewBase {
   _createPnlComponents() {
     let pnlChartModel:PnlChartModel = this.state.model.pnlChartModel;
     let pnlChart = null;
-    let className = classnames('analytics__nv-container', {'negative': pnlChartModel.lastPos > 0});
+    let className = classnames('analytics__chart-container', {'negative': pnlChartModel.lastPos > 0});
     if (pnlChartModel.hasData) {
       let configurePnLChart = (chart) => {
         let pnlTooltip = d => {

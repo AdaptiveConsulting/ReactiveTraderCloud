@@ -16,21 +16,21 @@ $default-padding: 10px;
   overflow-x: hidden;
   overflow-y: auto;
   background: $gray-dark;
+  padding: 11px;
   @import 'nvd3';
 }
 
 .analytics__controls {
   float: right;
-  margin-top: 10px;
-  margin-right: 10px;
+  padding: 10px;
   color: white;
 }
 
 .analytics__header {
   font-size: 16px;
   color: $analytics-header-colour;
-  margin-right: 28px;
-  padding: $default-padding;
+  background: #293543;
+  padding: 10px;
 }
 
 .analytics__chart-container {
@@ -46,7 +46,7 @@ $default-padding: 10px;
         stroke-width: .8;
         stroke-opacity: .4;
       }
-      &.positive {
+      &.analytics__chart-container--positive {
         fill: $positive-color;
         text {
           fill: $gray-light;
@@ -57,7 +57,7 @@ $default-padding: 10px;
         fill: $gray-lighter;
         font-weight: normal;
       }
-      &.negative {
+      &.analytics__chart-container--negative {
         fill: $negative-color;
       }
       &:hover rect {

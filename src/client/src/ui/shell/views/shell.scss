@@ -38,6 +38,8 @@ $workspace-width:             calc(100vw - #{$analytics-width});
     order: 3;
     height: $analytics-height;
     overflow-y: scroll;
+    background: #212A35;
+    padding: 0px;
   }
 
   .shell__blotter {
