@@ -120,7 +120,7 @@ export default class AnalyticsView extends ViewBase {
             onClick={() => router.publishEvent(this.props.modelId, 'togglePnlDisplayMode', {})}>Positions
           </button>
         </div>
-        <div className='analytics__nv-container clearfix pnlchart'>
+        <div className='analytics__chart-container clearfix pnlchart'>
           <NVD3Chart
             type='multiBarHorizontalChart'
             datum={positionsChartModel.getSeries()}
