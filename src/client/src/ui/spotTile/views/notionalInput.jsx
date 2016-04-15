@@ -26,7 +26,7 @@ export default class NotionalInput extends React.Component {
    */
   componentWillMount(){
     const today = new Date;
-    this.SPOTDATE = ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' ');
+    this.SPOTDATE = [today.getDate(), MONTHS[today.getMonth()]].join(' ');
   }
 
   shouldComponentUpdate(nextProps, nextState){
@@ -46,7 +46,10 @@ export default class NotionalInput extends React.Component {
       <div className={classes}>
         <label className='notional__currency-pair' >{this.props.currencyPair.base}</label>
         <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
-        <span className='notional__date'>{this.SPOTDATE}</span>
+        <div className='notional__delivery'>
+          <span className='notional__tenor'>SP</span>
+          <span className='notional__delivery-date'>. {this.SPOTDATE}</span>
+        </div>
       </div>
     );
   }

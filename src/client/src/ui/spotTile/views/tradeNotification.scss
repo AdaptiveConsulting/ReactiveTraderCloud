@@ -2,9 +2,16 @@
 
 .trade-notification--rejected,
 .trade-notification--error {
-  background-color: $spot-tile-error-color;
-  color: white;
+  .trade-notification__trade-status {
+    color: $spot-tile-error-color;
+  }
   padding: 5px;
+}
+
+.trade-notification--rejected {
+  .trade-notification__trade-status {
+    display: block;
+  }
 }
 
 .trade-notification__label {
@@ -16,8 +23,18 @@
 }
 
 .trade-notification__button--dismiss {
+  text-decoration: none;
   position: absolute;
   bottom: 5px;
   right: 5px;
   color: inherit;
 }
+
+.trade-notification__trade-status {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 5px;
+  color: inherit;
+}
+

@@ -13,13 +13,14 @@
   color: inherit;
   font-size: inherit;
   font-family: inherit;
-  &:focus {
+  &:focus,
+  &:hover {
     border-bottom: 1px solid white;
     outline: none;
     background-color: #2f5078;
   }
 }
 
-.notional__date {
+.notional__delivery {
   float: right;
 }
