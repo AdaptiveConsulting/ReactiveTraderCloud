@@ -22,3 +22,8 @@ $glyphicons-font-path: '../fonts/bootstrap/glyphicons-halflings-regular';
 }
 
 .glyphicon-new-window { &:before { content: "\e164"; } }
+
+@font-face {
+  font-family: 'Rubik Light';
+  src: url('..//fonts/RubikLight.woff2');
+}
