@@ -30,13 +30,15 @@ export default class SpotTileView extends ViewBase {
       'flipInX',
       {
         'spot-tile--stale': !model.pricingConnected || !model.executionConnected,
-        'spot-tile--executing': model.isTradeExecutionInFlight
+        'spot-tile--executing': model.isTradeExecutionInFlight,
+        'spot-tile--error': model.hasNotification && model.notification.error
       }
     );
     return (
       <div className={className}>
         <div className='spot-tile__container'>
-          <span className='spot-tile__symbol'>{model.tileTitle} <i className='spot-tile__icon--disconnected fa fa-plug animated infinite fadeIn'/></span>
+          <span className='spot-tile__stale-label'>Stale</span>
+          <span className='spot-tile__symbol'>{model.tileTitle}</span>
           <span className='spot-tile__execution-label'>Executing</span>
           <div className='popout__controls'>
             <i className='spot-tile__icon--tearoff glyphicon glyphicon-new-window'
@@ -98,7 +100,7 @@ export default class SpotTileView extends ViewBase {
         );
       } else if (model.notification.notificationType === NotificationType.Text) {
         return (
-          <div className='spot-tile__trade-summary animated flipInX'>{model.notification.message}</div>
+          <div className='spot-tile__trade-summary'>{model.notification.message}</div>
         );
       } else {
         throw new Error(`Unknown notification type ${model.notification.notificationType}`);

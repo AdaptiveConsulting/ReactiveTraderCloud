@@ -1,4 +1,5 @@
 @import "variables.scss";
+$price-width: calc(45% + 10px);
 
 .spot-tile {
   position: relative;
@@ -8,25 +9,41 @@
   background-color: #293543;
   &:hover {
     background-color: #294464;
+    .spot-tile__icon--tearoff,
+    .notional__delivery-date {
+      display: inline;
+    }
   }
   & * {
     box-sizing: border-box;
   }
 
   .spot-tile__execution-label,
-  .spot-tile__icon--disconnected {
+  .spot-tile__icon--disconnected,
+  .spot-tile__stale-label,
+  .notional__delivery-date {
     display: none;
   }
   &.spot-tile--stale {
-    background-color: $spot-tile-error-color;
 
+    .spot-tile__stale-label,
     .spot-tile__icon--disconnected {
       display: inline-block;
     }
+    .spot-tile__price--bid,
+    .spot-tile__price--ask,
+    .spot-tile__price-movement,
+    .spot-tile__notional {
+      display: none;
+    }
   }
-
+  &.spot-tile--error {
+    background-color: $spot-tile-error-color;
+    color: $spot-tile-primary-color;
+  }
   &.spot-tile--executing {
     .spot-tile__execution-label {
+      color: $spot-tile-primary-color;
       display: inline-block;
       position: absolute;
       right: 20px;
@@ -45,6 +62,12 @@
   right: 10px;
 }
 
+.spot-tile__stale-label {
+  position: absolute;
+  top: 25px;
+  color: $spot-tile-secondary-color;
+}
+
 .spot-tile__symbol {
   font-size: 16px;
   color: $spot-tile-primary-color;
@@ -55,9 +78,9 @@
 
 .spot-tile__price--bid,
 .spot-tile__price--ask {
-  cursor: default;
+  cursor: pointer;
   position: absolute;
-  width: 40%;
+  width: $price-width;
   top: 30px;
 
   &:hover {
@@ -66,19 +89,19 @@
 }
 
 .spot-tile__price--bid {
-  left: 0;
+  left: -10px;
 }
 
 .spot-tile__price--ask {
-  right: 0;
+  right: -10px;
 }
 
 .spot-tile__price-movement {
   position: absolute;
-  left: 40%;
+  left: 45%;
   text-align: center;
   top: 45px;
-  width: 20%;
+  width: 10%;
 }
 
 .spot-tile__notional {
@@ -89,7 +112,8 @@
   width: 100%;
 }
 
-.spot-tile__icon--tearoff {
+.spot-tile__icon--tearoff.glyphicon {
+  display: none;
   float: right;
   cursor: pointer;
 }
