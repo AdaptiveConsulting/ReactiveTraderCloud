@@ -1,4 +1,3 @@
-// TODO - refactor this file
 $positive-color:  green;
 $brand-danger:    #ee5f5b;
 $negative-color:  $brand-danger;
@@ -9,134 +8,113 @@ $gray-lighter:    #eee;
 $gray-darker:     #212a35;
 $gray:            #294464;
 
-.analytics__controls {
-  float: right;
-  margin-top: 5px;
-  margin-right: 5px;
-  color: white;
-}
+$analytics-header-colour: #ffffff;
+$default-padding: 10px;
 
-.analytics-container {
+.analytics__container {
   align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
   background: $gray-dark;
-  box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
-
-  .header {
-    font-size: 26px;
-    font-weight: bold;
-    color: white;
-    padding-left: 8px;
-    margin-right: 28px;
-    .tearoff &.header {
-      -webkit-app-region: drag;
-    }
-    small {
-      color: $gray-light;
-      font-size: .5em;
-    }
-  }
-
-  .nv-container {
-    position: relative;
-    padding: 10px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
-    background: $gray-dark;
-    &.negative {
-      .nvd3 g.nv-groups g.nv-group .nv-area {
-
-      }
-    }
-    .nvd3 g.nv-groups  {
-      path.nv-line {
-      }
-      path.nv-area {
-
-      }
-      .nv-bar {
-        rect {
-          fill-opacity: .3;
-          stroke: $stroke-color;
-          stroke-width: .8;
-          stroke-opacity: .4;
-        }
-        &.positive {
-          fill: $positive-color;
-          text {
-            fill: $gray-light;
-          }
-        }
-        text {
-          font-size: 8px;
-          fill: $gray-lighter;
-          font-weight: normal;
-        }
-        &.negative {
-          fill: $negative-color;
-        }
-        &:hover rect {
-          stroke-opacity: .5;
-          fill-opacity: .7;
-        }
-      }
-    }
-
-    .nv-controlsWrap.nvd3-svg, .nv-axisMin-y {
-      display: none;
-    }
-
-    .nv-lineChart {
-      .nv-axis.nv-y {
-        text {
-          font-size: 8px;
-        }
-      }
-
-      .nv-axis.nv-x {
-        text {
-          font-size: 8px;
-        }
-      }
-    }
-  }
-
-  .buttons {
-    float: right;
-    height: 38px;
-    overflow: hidden;
-    $shadow-width: 14px;
-    button.btn {
-      border-left: 1px solid black;
-      color: $gray-light;
-      box-sizing: border-box;
-      outline: none !important;
-      &.selected {
-        position: relative;
-        z-index: 100;
-        color: $gray-lighter;
-        background: linear-gradient(rgba(0, 0, 0, 0), $gray-darker) !important;
-        box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
-      }
-      &.selected:before {
-        content: "";
-        display: block;
-        position: absolute;
-        width: $shadow-width;
-        height: 6px;
-        transition: transform 1s;
-        border-radius: 50%;
-        left: 50%;
-        transform: translate(-($shadow-width / 2), 0);
-        top: -8px;
-        box-shadow: 0 0 6px 4px rgba(255, 255, 255, .5);
-      }
-    }
-
-  }
+  padding: 11px;
   @import 'nvd3';
+}
+
+.analytics__controls {
+  float: right;
+  padding: 10px;
+  color: white;
+}
+
+.analytics__header {
+  font-size: 16px;
+  color: $analytics-header-colour;
+  background: #293543;
+  padding: 10px;
+}
+
+.analytics__chart-container {
+  position: relative;
+  padding: $default-padding;
+  background: $gray-dark;
+
+  .nvd3 g.nv-groups  {
+    .nv-bar {
+      rect {
+        fill-opacity: .3;
+        stroke: $stroke-color;
+        stroke-width: .8;
+        stroke-opacity: .4;
+      }
+      &.analytics__chart-container--positive {
+        fill: $positive-color;
+        text {
+          fill: $gray-light;
+        }
+      }
+      text {
+        font-size: 8px;
+        fill: $gray-lighter;
+        font-weight: normal;
+      }
+      &.analytics__chart-container--negative {
+        fill: $negative-color;
+      }
+      &:hover rect {
+        stroke-opacity: .5;
+        fill-opacity: .7;
+      }
+    }
+  }
+
+  .nv-controlsWrap.nvd3-svg, .nv-axisMin-y {
+    display: none;
+  }
+
+  .nv-lineChart {
+    .nv-axis.nv-y {
+      text {
+        font-size: 8px;
+      }
+    }
+
+    .nv-axis.nv-x {
+      text {
+        font-size: 8px;
+      }
+    }
+  }
+}
+
+.analytics__buttons {
+  float: right;
+  height: 38px;
+  overflow: hidden;
+  $shadow-width: 14px;
+  button.btn {
+    border-left: 1px solid black;
+    color: $gray-light;
+    box-sizing: border-box;
+    outline: none !important;
+    &.selected {
+      position: relative;
+      z-index: 100;
+      color: $gray-lighter;
+      background: linear-gradient(rgba(0, 0, 0, 0), $gray-darker) !important;
+    }
+    &.selected:before {
+      content: "";
+      display: block;
+      position: absolute;
+      width: $shadow-width;
+      height: 6px;
+      transition: transform 1s;
+      border-radius: 50%;
+      left: 50%;
+      transform: translate(-($shadow-width / 2), 0);
+      top: -8px;
+    }
+  }
 }
 
 .new-chart-area{
