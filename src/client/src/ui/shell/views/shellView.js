@@ -37,7 +37,9 @@ export default class ShellView extends ViewBase {
                 </button>
             </div>
           </Modal>
-          <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
+          <div className='shell__workspace'>
+            <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
+          </div>
           <SingleItemRegionView modelId={wellKnownModelIds.quickAccessRegionModelId}/>
           <div className='shell__blotter'>
             <SingleItemRegionView modelId={wellKnownModelIds.blotterRegionModelId}/>

@@ -32,7 +32,9 @@ export default class TradeNotification extends React.Component {
         'animated',
         'flipInX',
         className,
-        tradeExecutionNotification.status
+        {
+          'trade-notification--rejected': tradeExecutionNotification.status.toLowerCase() === 'rejected'
+        }
       );
       return (
         <div className={classNames}>

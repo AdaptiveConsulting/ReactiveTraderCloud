@@ -38,6 +38,6 @@ export default class WorkspaceRegionView extends ViewBase {
           {View}
         </WorkspaceItemContainer>
       );
-    });
+    }).concat(_.times(3, () => <div className='workspace-region__spacer'></div>)); // add empty items at the end so tiles lay out nicely
   }
 }
