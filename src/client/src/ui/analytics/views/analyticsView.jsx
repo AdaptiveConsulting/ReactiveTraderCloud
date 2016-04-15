@@ -43,7 +43,7 @@ export default class AnalyticsView extends ViewBase {
     let pnlComponents = this._createPnlComponents();
     let positionsComponents = this._createPositionsComponents();
     return (
-      <div className='analytics analytics-container animated fadeIn'>
+      <div className='analytics analytics__container animated fadeIn'>
         <div className='analytics__controls popout__controls'>
           <i className='glyphicon glyphicon-new-window'
              onClick={() => router.publishEvent(this.props.modelId, 'popOutAnalytics', {})}/>
@@ -56,7 +56,7 @@ export default class AnalyticsView extends ViewBase {
   _createPnlComponents() {
     let pnlChartModel:PnlChartModel = this.state.model.pnlChartModel;
     let pnlChart = null;
-    let className = classnames('nv-container', {'negative': pnlChartModel.lastPos > 0});
+    let className = classnames('analytics__nv-container', {'negative': pnlChartModel.lastPos > 0});
     if (pnlChartModel.hasData) {
       let configurePnLChart = (chart) => {
         let pnlTooltip = d => {
@@ -81,9 +81,7 @@ export default class AnalyticsView extends ViewBase {
     }
     return (
       <div>
-        <span className='header'>Profit & Loss&nbsp;
-          <small className='text-small'>USD {pnlChartModel.lastPos}</small>
-        </span>
+        <div className='analytics__header'>USD at {pnlChartModel.lastPos}</div>
         <div className={className}>
           {pnlChart}
         </div>
@@ -112,8 +110,7 @@ export default class AnalyticsView extends ViewBase {
     );
     return (
       <div>
-        <span className='header'>Positions / PNL</span>
-        <div className='buttons'>
+        <div className='analytics__buttons'>
           <button
             className={pnlButtonClassName}
             onClick={() => router.publishEvent(this.props.modelId, 'togglePnlDisplayMode', {})}>PnL
@@ -123,7 +120,7 @@ export default class AnalyticsView extends ViewBase {
             onClick={() => router.publishEvent(this.props.modelId, 'togglePnlDisplayMode', {})}>Positions
           </button>
         </div>
-        <div className='nv-container clearfix pnlchart'>
+        <div className='analytics__nv-container clearfix pnlchart'>
           <NVD3Chart
             type='multiBarHorizontalChart'
             datum={positionsChartModel.getSeries()}

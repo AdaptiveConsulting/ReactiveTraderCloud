@@ -13,3 +13,4 @@ src/server/.vs/config/applicationhost.config
 node.pid
 **/.crossbar/node.key
 *.iml
+*.orig
