@@ -47,7 +47,7 @@ $workspace-width:             calc(100vw - #{$analytics-width});
     heigth: 100%;
     order: 4;
     height: $blotter-height;
-    overflow-x: scroll;
+    overflow: hidden;
   }
 
   .footer {
