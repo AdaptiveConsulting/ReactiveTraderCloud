@@ -26,7 +26,7 @@ $workspace-width:             calc(100vw - #{$analytics-width});
   //  order: 1;
   //}
 
-  .workspace-region {
+  .shell__workspace {
     flex: 1 $workspace-width;
     order: 2;
     height: $workspace-height;
