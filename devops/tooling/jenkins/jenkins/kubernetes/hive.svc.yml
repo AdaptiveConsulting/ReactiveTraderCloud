@@ -1,14 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "jenkins"
-  namespace: "ci"
+  name: "<% name %>"
   labels:
-    name: "jenkins"
+    name: "<% name %>"
     public: "true"
 spec:
   selector:
-    name: "jenkins"
+    name: "<% name %>"
   ports:
   - port: 443
     targetPort: 8080

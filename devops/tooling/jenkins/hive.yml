@@ -13,6 +13,8 @@ spec:
         size: "20GB"
 
   configuration:
-    major: 0
-    minor: 0
-    image: weareadaptive/jenkins
+    project: ci
+    name:    jenkins
+    major:   0
+    minor:   0
+    image:   weareadaptive/jenkins

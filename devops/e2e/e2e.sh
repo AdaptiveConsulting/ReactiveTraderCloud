@@ -8,7 +8,7 @@ usage() {
     echo " OPTIONS can be:"
     echo "  -t|--no-tty:  to disable tty (needed by jenkins build)"
     echo "  -r|--release: to run in production mode"
-    echo "  -b=|--build=: build id"
+    echo "  -i=|--id=: build_id"
     echo "  -h=|--help:   print help and exit"
 }
 
