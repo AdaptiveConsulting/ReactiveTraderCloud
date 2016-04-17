@@ -14,7 +14,7 @@ usage() {
 
 TTY=""
 RELEASE="dev"
-BUILD="e2e"
+ID="e2e"
 DOCKER_VERSION=""
 
 for i in "${@}"; do
@@ -39,7 +39,7 @@ cd ../..
 # BUILD
 echo ""
 echo "==============================="
-./hive ${DOCKER_VERSION} ${TTY} do build devops/reactivetrader all id e2e
+./hive ${DOCKER_VERSION} ${TTY} do build devops/reactivetrader all id ${ID}
 
 # RUN
 echo ""
