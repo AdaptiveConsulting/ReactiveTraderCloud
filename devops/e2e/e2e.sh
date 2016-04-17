@@ -30,8 +30,6 @@ startTime=$(date)
 
 cd ../..
 
-./hive --rm-hive-directory
-
 # STOP EVERYTHING
 ./hive ${TTY} do kill devops/reactivetrader all
 
