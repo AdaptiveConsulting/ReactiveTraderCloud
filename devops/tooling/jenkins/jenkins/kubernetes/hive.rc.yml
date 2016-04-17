@@ -15,8 +15,7 @@ spec:
     spec:
       containers:
         - name: "<% name %>"
-          #image: "<% image %>:<% major %>.<% minor %>"
-          image: "tdeheurles/jenkins"
+          image: "<% image %>:<% major %>.<% minor %>"
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
