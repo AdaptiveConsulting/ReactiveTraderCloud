@@ -1,0 +1,5 @@
+scm-api:latest
+git-client:latest
+github:latest
+git:latest
+postbuildscript:latest

@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: "web-<% reactivetrader.web.major %>-<% reactivetrader.web.minor %>-<% cli.id %>"
+  labels:
+    name: "web"
+    major: "<% reactivetrader.web.major %>"
+    minor: "<% reactivetrader.web.minor %>"
+    build: "<% cli.id %>"
+spec:
+  replicas: 1
+  selector:
+    name: "web"
+    major: "<% reactivetrader.web.major %>"
+    minor: "<% reactivetrader.web.minor %>"
+    build: "<% cli.id %>"
+  template:
+    metadata:
+      labels:
+        name: "web"
+        major: "<% reactivetrader.web.major %>"
+        minor: "<% reactivetrader.web.minor %>"
+        build: "<% cli.id %>"
+    spec:
+      containers:
+      - name: "web"
+        image: "<% reactivetrader.web.image %>:<% reactivetrader.web.major %>.<% reactivetrader.web.minor %>.<% cli.id %>"
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+            name: "http"
+          - containerPort: 8080
+            name: "ws"

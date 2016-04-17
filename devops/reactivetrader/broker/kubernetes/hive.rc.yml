@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: "broker-<% reactivetrader.broker.major %>-<% reactivetrader.broker.minor %>-<% cli.id %>"
+  labels:
+    name: "broker"
+    major: "<% reactivetrader.broker.major %>"
+    minor: "<% reactivetrader.broker.minor %>"
+    build: "<% cli.id %>"
+spec:
+  replicas: 1
+  selector:
+    name: "broker"
+    major: "<% reactivetrader.broker.major %>"
+    minor: "<% reactivetrader.broker.minor %>"
+    build: "<% cli.id %>"
+  template:
+    metadata:
+      labels:
+        name: "broker"
+        major: "<% reactivetrader.broker.major %>"
+        minor: "<% reactivetrader.broker.minor %>"
+        build: "<% cli.id %>"
+    spec:
+      containers:
+      - name: "broker"
+        image: "<% reactivetrader.broker.image %>:<% reactivetrader.broker.major %>.<% reactivetrader.broker.minor %>.<% cli.id %>"
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+            name: "ws"

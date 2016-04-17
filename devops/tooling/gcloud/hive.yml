@@ -1,0 +1,7 @@
+apiVersion: v0
+kind: HiveConfig
+spec:
+  configuration:
+    major: 1
+    minor: 0
+    image: weareadaptive/gcloud

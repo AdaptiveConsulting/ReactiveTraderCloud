@@ -1,0 +1,25 @@
+#!/bin/bash
+
+REQUESTED_VERSION="0.5"
+
+CURL=$(which curl)
+if [[ ${CURL} == "" ]];then 
+    echo "curl is a dependency to hive"
+    exit 1
+fi
+
+if [[ ! -d ./.hive 
+   || ! -d ./.hive/${REQUESTED_VERSION} 
+   || ! -f ./.hive/${REQUESTED_VERSION}/helpers.sh 
+   || $1 == "-u" 
+   || $1 == "--update" ]];
+then
+    mkdir -p .hive/${REQUESTED_VERSION}
+    
+    ${CURL} -L -o ./.hive/${REQUESTED_VERSION}/helpers.sh \
+      https://github.com/tdeheurles/hive/releases/download/${REQUESTED_VERSION}/helpers.sh
+fi
+
+. ./.hive/${REQUESTED_VERSION}/helpers.sh
+
+main $@

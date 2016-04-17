@@ -1,0 +1,95 @@
+apiVersion: v0
+kind: HiveConfig
+spec:
+  executionLists:
+    - name: all
+      actions:
+        - build
+      services:
+        - servers
+        - broker
+        - populatedEventstore
+        - web
+
+    - name: all
+      actions:
+        - run
+        - kill
+        - kubernetes
+      services:
+        - web
+        - broker
+        - populatedEventstore
+        - pricing
+        - analytics
+        - referencedataread
+        - tradeexecution
+        - blotter
+
+    - name: test
+      actions:
+        - test
+      services:
+        - smoketest
+        - populatedEventstore
+
+  configuration:
+    project: reactivetrader
+    maintainer: weareadaptive <thibault@weareadaptive.com>
+
+    os: ubuntu:14.04.2
+
+    volume:
+      dnu_cache:         reactivetrader_cache_dnupackage
+      nodemodules_cache: reactivetrader_cache_nodemodules
+      npm_cache:         reactivetrader_cache_npmcache
+
+    reactivetrader:
+      eventstore:
+        major: 0
+        minor: 0
+        image: reactivetrader/eventstore
+      broker:
+        major: 0
+        minor: 0
+        image: reactivetrader/broker
+      servers:
+        major: 0
+        minor: 0
+        image: reactivetrader/servers
+      web:
+        major: 0
+        minor: 0
+        image: reactivetrader/web
+
+    base:
+      crossbar:
+        major: 0
+        minor: 0
+        image: weareadaptive/crossbar
+      eventstore:
+        major: 0
+        minor: 0
+        image: weareadaptive/eventstore
+        official_version: 3.3.0
+      node:
+        major: 0
+        minor: 0
+        image: weareadaptive/node
+        official_version: 5.3.0
+      nginx:
+        major: 0
+        minor: 0
+        image: weareadaptive/nginx
+        official_image: nginx:1.9.7
+      mono:
+        major: 0
+        minor: 0
+        image: weareadaptive/mono
+        dnx_version: 1.0.0-rc1-final
+
+    local_proxy:
+      name: local_proxy
+      image: reactivetrader/local_proxy
+      major: 0
+      minor: 0

@@ -1,0 +1,7 @@
+apiVersion: v0
+kind: HiveConfig
+spec:
+  configuration:
+    major: 1
+    minor: 1
+    image: weareadaptive/testtools
