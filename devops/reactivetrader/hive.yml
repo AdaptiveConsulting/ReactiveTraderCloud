@@ -28,10 +28,9 @@ spec:
 
     - name: test
       actions:
-        - test
+        - run
       services:
-        - smoketest
-        - populatedEventstore
+        - test
 
   configuration:
     project: reactivetrader
