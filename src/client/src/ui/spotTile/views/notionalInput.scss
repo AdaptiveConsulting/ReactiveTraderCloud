@@ -13,11 +13,16 @@
   color: inherit;
   font-size: inherit;
   font-family: inherit;
-  &:focus,
-  &:hover {
+  &:hover,
+  &:focus {
     border-bottom: 1px solid white;
+  }
+  &:focus {
     outline: none;
     background-color: #2f5078;
+  }
+  &::selection {
+    background-color: transparent;
   }
 }
 
