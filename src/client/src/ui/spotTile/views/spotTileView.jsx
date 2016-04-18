@@ -100,7 +100,7 @@ export default class SpotTileView extends ViewBase {
         );
       } else if (model.notification.notificationType === NotificationType.Text) {
         return (
-          <div className='spot-tile__trade-summary'>{model.notification.message}</div>
+          <div className='spot-tile__notification-message'>{model.notification.message}</div>
         );
       } else {
         throw new Error(`Unknown notification type ${model.notification.notificationType}`);

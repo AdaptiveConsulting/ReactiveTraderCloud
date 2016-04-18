@@ -125,3 +125,8 @@ $price-width: calc(45% + 10px);
   left: 0;
   right: 0;
 }
+
+.spot-tile__notification-message {
+  position: absolute;
+  top: 50px;
+}
