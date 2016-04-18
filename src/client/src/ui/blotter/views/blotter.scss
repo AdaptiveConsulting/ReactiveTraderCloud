@@ -5,7 +5,9 @@
   width: 100%;
   overflow: hidden;
   font-family: 'Segoe UI', sans-serif;
-
+  .fixedDataTableCellLayout_wrap1 {
+    width: 100%;
+  }
   .fixedDataTableCellLayout_main {
     border: none;
   }
@@ -15,7 +17,28 @@
     background-color: transparent;
   }
   .public_fixedDataTableCell_cellContent {
-    padding: 4px;
+    padding: 4px 10px;
+    font-weight: 100;
+    color: #9e9e9e;
+  }
+
+  .public_fixedDataTable_header .public_fixedDataTableCell_main,
+  .public_fixedDataTable_header .public_fixedDataTableCell_cellContent {
+    background-color: white;
+    color: #7e7e7e;
+    font-weight: 400;
+  }
+}
+
+.blotter__trade-field--emphasized {
+  .public_fixedDataTableCell_cellContent {
+    font-weight: 400;
+    color: black;
+  }
+}
+.blotter__trade-field--align-right {
+  .public_fixedDataTableCell_cellContent {
+    text-align: right;
   }
 }
 

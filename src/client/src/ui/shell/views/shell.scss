@@ -30,14 +30,14 @@ $workspace-width:             calc(100vw - #{$analytics-width});
     flex: 1 $workspace-width;
     order: 2;
     height: $workspace-height;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .analytics {
     flex: 0 0 $analytics-width;
     order: 3;
     height: $analytics-height;
-    overflow-y: scroll;
+    overflow-y: auto;
     background: #212A35;
     padding: 0px;
   }
@@ -54,6 +54,25 @@ $workspace-width:             calc(100vw - #{$analytics-width});
     flex: 1 100vw;
     height: $footer-height;
     order: 5;
+  }
+
+  // scrollbar
+  ::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background: #293543;
+    border: 4px solid $shell-background-color;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background-color: transparent;
   }
 
 }
