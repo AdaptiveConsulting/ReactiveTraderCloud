@@ -95,7 +95,7 @@ export default class AnalyticsView extends ViewBase {
     let configurePositionsChart = (chart) => {
       chart.tooltip.enabled(false);
     };
-    let sharedClassNames = ['pull-right', 'btn', 'btn-small', 'btn-default'];
+    let sharedClassNames = ['btn'];
     let pnlButtonClassName = classnames(
       sharedClassNames,
       {

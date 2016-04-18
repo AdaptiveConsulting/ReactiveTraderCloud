@@ -96,13 +96,13 @@ $default-padding: 10px;
     color: $gray-light;
     box-sizing: border-box;
     outline: none !important;
+    position: relative;
+    z-index: 100;
+    background: linear-gradient(rgba(0, 0, 0, 0), $gray-darker) !important;
     &.selected {
-      position: relative;
-      z-index: 100;
       color: $gray-lighter;
-      background: linear-gradient(rgba(0, 0, 0, 0), $gray-darker) !important;
     }
-    &.selected:before {
+    &:before {
       content: "";
       display: block;
       position: absolute;

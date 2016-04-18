@@ -43,7 +43,7 @@ export default class PositionsChartModel {
   }
 
   get basePnlDisplayModelSelected() {
-    return this.yAxisValuePropertyName === CurrencyPairPosition.basePnl;
+    return this.yAxisValuePropertyName === CurrencyPairPosition.basePnlName;
   }
 
   getSeries() {
