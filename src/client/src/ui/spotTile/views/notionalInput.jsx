@@ -4,7 +4,7 @@ import { utils } from '../../../system';
 import classnames from 'classnames';
 import { CurrencyPair } from '../../../services/model';
 import './notionalInput.scss';
-
+import $ from 'jquery';
 const MONTHS         = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       NUMERAL_FORMAT = '0,000,000[.]00',
       DOT            = '.';
@@ -45,7 +45,7 @@ export default class NotionalInput extends React.Component {
     return (
       <div className={classes}>
         <label className='notional__currency-pair' >{this.props.currencyPair.base}</label>
-        <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
+        <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onClick={(e) => this._select()} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
         <div className='notional__delivery'>
           <span className='notional__tenor'>SP</span>
           <span className='notional__delivery-date'>. {this.SPOTDATE}</span>
@@ -53,6 +53,15 @@ export default class NotionalInput extends React.Component {
       </div>
     );
   }
+
+  /**
+   * Select notional input text
+   * @param {DOMEvent=} e
+   * @private
+   */
+  _select(e) {
+    $(this.refs.notionalInput).select();
+  };
 
   /**
    * Sets trade amount. Supports k/m modifiers for 1000s or millions.
