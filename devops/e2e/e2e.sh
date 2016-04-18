@@ -51,7 +51,7 @@ echo ""
 # TEST
 echo "Giving some time for services to start"
 sleep 10
-echo "NO TESTS !!!!"
+./hive ${DOCKER_VERSION} ${TTY} do run devops/reactivetrader test id ${ID} configuration ${RELEASE}
 
 # STOP
 ./hive ${DOCKER_VERSION} ${TTY} do kill devops/reactivetrader all
