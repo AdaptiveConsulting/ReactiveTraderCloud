@@ -11,7 +11,7 @@ export default class FooterView extends ViewBase {
     super();
     this.state = {
       model: null
-    }
+    };
   }
 
   render() {

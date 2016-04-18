@@ -30,6 +30,11 @@ import _ from 'lodash';
 
 const divId = 'popout-content-container';
 export default class PopoutWindow extends React.Component {
+
+  static propTypes = {
+    children: React.PropTypes.element.isRequired
+  };
+
   constructor(props) {
     super(props);
 

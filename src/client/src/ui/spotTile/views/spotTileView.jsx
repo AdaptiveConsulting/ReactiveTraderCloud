@@ -50,8 +50,7 @@ export default class SpotTileView extends ViewBase {
               className={notionalInputClass}
               notional={model.notional}
               onChange={(notional) => router.publishEvent(this.props.modelId, 'notionalChanged', { notional:notional })}
-              currencyPair={model.currencyPair}
-            />
+              currencyPair={model.currencyPair} />
         </div>
       </div>
     );
@@ -69,20 +68,17 @@ export default class SpotTileView extends ViewBase {
           className='spot-tile__price--bid'
           direction={Direction.Sell}
           onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Sell })}
-          rate={model.currentSpotPrice.bid}
-        />
+          rate={model.currentSpotPrice.bid} />
         <div className='spot-tile__price-movement'>
           <PriceMovementIndicator
             priceMovementType={model.currentSpotPrice.priceMovementType}
-            spread={model.currentSpotPrice.spread}
-          />
+            spread={model.currentSpotPrice.spread} />
         </div>
         <PriceButton
           className='spot-tile__price--ask'
           direction={Direction.Buy}
           onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Buy })}
-          rate={model.currentSpotPrice.ask}
-        />
+          rate={model.currentSpotPrice.ask} />
       </div>
     );
   }
@@ -95,8 +91,7 @@ export default class SpotTileView extends ViewBase {
           <TradeNotification
             className='spot-tile__trade-summary'
             tradeExecutionNotification={model.notification}
-            onDismissedClicked={(e) => router.publishEvent(this.props.modelId, 'tradeNotificationDismissed', {})}
-          />
+            onDismissedClicked={(e) => router.publishEvent(this.props.modelId, 'tradeNotificationDismissed', {})} />
         );
       } else if (model.notification.notificationType === NotificationType.Text) {
         return (

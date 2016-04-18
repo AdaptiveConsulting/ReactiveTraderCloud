@@ -11,7 +11,7 @@ export default class WorkspaceRegionView extends ViewBase {
     super();
     this.state = {
       model: null
-    }
+    };
   }
 
   render() {
