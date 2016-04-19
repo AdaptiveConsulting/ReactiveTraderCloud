@@ -1,3 +1,8 @@
+@keyframes blotterHighlightNewTrade {
+  0% { background-color: #7DE3FC; }
+  100% { background-color: white; }
+}
+
 .blotter {
   background: white;
   position: relative;
@@ -36,6 +41,7 @@
     color: black;
   }
 }
+
 .blotter__trade-field--align-right {
   .public_fixedDataTableCell_cellContent {
     text-align: right;
@@ -56,6 +62,11 @@
   &:hover {
     background-color: #fffed7;
   }
+}
+
+.blotter__trade--new {
+  //background-color: #7DE3FC;
+  animation: blotterHighlightNewTrade 0.5s ease-in;
 }
 
 .blotter__trade--rejected {

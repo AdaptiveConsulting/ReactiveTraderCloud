@@ -32,8 +32,8 @@ export default class BlotterView extends ViewBase {
         'blotter--online': model.isConnected,
         'blotter--offline': !model.isConnected
       });
-    let containerWidth = this.props.containerWidth; // comes from the the @Dimensions annotation
-    let containerHeight = this.props.containerHeight; // comes from the the @Dimensions annotation
+    let containerWidth = this.props.containerWidth; // comes from the @Dimensions annotation
+    let containerHeight = this.props.containerHeight; // comes from the @Dimensions annotation
     return (
       <div className={className}>
         <div className='blotter-wrapper'>
@@ -57,7 +57,6 @@ export default class BlotterView extends ViewBase {
 
   _createGridColumns():Array<Column> {
     return [
-
       <Column
         key='Date'
         header={<Cell>Date</Cell>}
@@ -128,9 +127,9 @@ export default class BlotterView extends ViewBase {
    */
   _getRowClass(rowItem:Trade) {
     return classNames(
-      'animated',
       'blotter__trade',
       {
+        'blotter__trade--new': rowItem.isNew,
         'blotter__trade--rejected': rowItem.status.name.toLowerCase() === 'rejected',
         'blotter__trade--processing': rowItem.status.name.toLowerCase() === 'processing'
       }

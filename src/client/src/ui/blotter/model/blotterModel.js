@@ -60,12 +60,16 @@ export default class BlotterModel extends ModelBase {
           this.router,
           this.modelId,
           (trades:Array<Trade>) => {
+            _.forEach(this.trades, (trade:Trade) => {
+              trade.isNew = false;
+            });
           _.forEach(trades, (trade:Trade) => {
             let exists = _.findWhere(this.trades, {tradeId: trade.tradeId});
             if (exists) {
               this.trades[_.indexOf(this.trades, exists)] = trade;
             }
             else {
+              trade.isNew = true;
               this.trades.unshift(trade);
             }
           });
