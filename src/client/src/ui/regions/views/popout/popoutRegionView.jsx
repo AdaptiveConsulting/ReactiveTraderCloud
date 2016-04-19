@@ -59,6 +59,6 @@ export default class PopoutRegionView extends ViewBase {
   }
 
   _popoutClosed(regionModelId, model) {
-    router.publishEvent(regionModelId, 'removeFromRegion', {model: model})
+    router.publishEvent(regionModelId, 'removeFromRegion', {model: model});
   }
 }

@@ -128,8 +128,7 @@ export default class AnalyticsView extends ViewBase {
             height={pnlHeight}
             x='symbol'
             y={positionsChartModel.yAxisValuePropertyName}
-            configure={configurePositionsChart}
-          />
+            configure={configurePositionsChart} />
         </div>
       </div>
     );

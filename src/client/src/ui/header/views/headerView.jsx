@@ -9,7 +9,7 @@ export default class HeaderView extends ViewBase {
     super();
     this.state = {
       model: null
-    }
+    };
   }
 
   render() {

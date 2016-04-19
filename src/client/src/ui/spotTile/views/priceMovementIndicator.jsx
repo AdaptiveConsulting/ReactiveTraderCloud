@@ -11,7 +11,7 @@ const PriceMovementIndicator = props => {
     }
   );
   return <div className='price-movement'><span className='price-movement__value'>{props.spread.formattedValue}</span><i className={className}></i></div>;
-}
+};
 
 PriceMovementIndicator.propTypes = {
   priceMovementType: React.PropTypes.instanceOf(PriceMovementType).isRequired,
