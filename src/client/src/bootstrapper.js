@@ -15,7 +15,6 @@ import { ShellView } from './ui/shell/views';
 import { SpotTileView } from './ui/spotTile/views';
 import { RegionModel, SingleItemRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
-import config from 'config.json';
 
 import {
   AnalyticsService,
@@ -46,7 +45,7 @@ class Bootstrapper {
 
   startServices() {
     let user:User = FakeUserRepository.currentUser;
-    let serverEndPointUrl = config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
+    let serverEndPointUrl = __CONFIG__.overwriteServerEndpoint ? __CONFIG__.serverEndPointUrl : location.hostname;
     let url = 'ws://' + serverEndPointUrl + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
     this._schedulerService = new SchedulerService();
     this._connection = new Connection(

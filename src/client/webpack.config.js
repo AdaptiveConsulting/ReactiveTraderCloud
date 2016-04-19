@@ -10,7 +10,6 @@ const path = require('path');
 const parseArgs = require('minimist');
 
 let args = parseArgs(process.argv.slice(2));
-let config = 'dev-' + args.endpoint + '.config.json';
 
 const webpackConfig = {
   name: 'client',
@@ -43,7 +42,12 @@ const webpackConfig = {
     ]),
     new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function(module){
       return module.resource && module.resource.indexOf('node_modules') !== -1;
-    })
+    }),
+    new webpack.DefinePlugin({
+     __CONFIG__: args.endpoint
+      ? JSON.stringify(require(path.resolve(__dirname, 'config/' + args.endpoint + '.config.json')))
+      : {"overwriteServerEndpoint": false},
+   }),
   ],
   // these break for node 5.3+ when building WS stuff
   node: {
@@ -56,7 +60,6 @@ const webpackConfig = {
     // This is purely for ide object/type discoverability.
     // Until our ide (intellij/webstorm) understands import aliass we feel the benefits of object discoverability outweigh the relative path cost.
     alias: {
-      'config.json': path.join(__dirname, 'config', config),
       system: path.join(__dirname, 'src/system'),
       services: path.join(__dirname, 'src/services'),
       // reverse alias so we can use ES6 from node modules and get IDE support but not actually transpile it
