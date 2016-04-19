@@ -80,7 +80,7 @@ $workspace-width:             calc(100vw - #{$analytics-width});
 .shell__button--reconnect {
   min-width: 100px;
   height: 28px;
-  margin: 10px;
+  margin: 20px 10px;
 }
 
 @media all and (max-width: 700px) {
