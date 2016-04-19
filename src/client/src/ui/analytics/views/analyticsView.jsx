@@ -6,6 +6,7 @@ import { ViewBase } from '../../common';
 import { AnalyticsModel, PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
+import PNLChart from './pnlChart.jsx';
 import numeral from 'numeral';
 import './analytics.scss';
 
@@ -121,15 +122,7 @@ export default class AnalyticsView extends ViewBase {
           </button>
         </div>
         <div className='analytics__chart-container clearfix pnlchart'>
-          <NVD3Chart
-            type='multiBarHorizontalChart'
-            datum={positionsChartModel.getSeries()}
-            options={positionsChartModel.options}
-            height={pnlHeight}
-            x='symbol'
-            y={positionsChartModel.yAxisValuePropertyName}
-            configure={configurePositionsChart}
-          />
+          <PNLChart series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
         </div>
       </div>
     );

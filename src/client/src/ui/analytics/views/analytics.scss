@@ -12,6 +12,7 @@ $analytics-header-colour: #ffffff;
 $default-padding: 10px;
 
 .analytics__container {
+  max-width: 350px;
   align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
@@ -86,11 +87,68 @@ $default-padding: 10px;
   }
 }
 
-.analytics__buttons {
+.analytics__barchart-background{
+  fill: #414D5C;
+}
+
+.analytics__barchart-indicator-green{
+  stroke: $gray-darker;
+  stroke-width: 1px;
+  fill: #3FCF1E;
+}
+
+.analytics__barchart-indicator-red{
+  stroke: $gray-darker;
+  stroke-width: 1px;
+  fill: #CC3350;
+}
+
+.analytics__barchart-label{
+  font-size: 18px;
+  display: block;
+  display: inline
+}
+
+.analytics__barchart-container{
+  color:$gray-light;
+  vertical-align: middle;
+  padding-top: 2px;
+  padding-bottom: 12px;
+
+  &:hover{
+    color:$gray-lighter
+  }
+}
+
+.analytics__barchart-bar{
+  padding-top: 4px;
+}
+
+.analytics__barchart-container .barchart-tradedamount{
+  visibility: hidden;
+  font-size: 18px;
+
+  display: inline;
   float: right;
+}
+
+.analytics__barchart-container:hover .barchart-tradedamount{
+  visibility: visible;
+  color: $gray-light;
+  font-size: 18px;
+  display: inline;
+  float: right;
+}
+
+
+.analytics__buttons {
   height: 38px;
   overflow: hidden;
+  display: block;
+  padding-bottom: 6px;
   $shadow-width: 14px;
+  width: 100%;
+  text-align: center;
   button.btn {
     border-left: 1px solid black;
     color: $gray-light;
@@ -116,6 +174,7 @@ $default-padding: 10px;
     }
   }
 }
+
 
 .new-chart-area{
   stroke-width: 2px !important;
