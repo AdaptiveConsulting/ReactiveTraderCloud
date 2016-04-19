@@ -22,6 +22,7 @@ export default class FooterView extends ViewBase {
 
     return (
         <footer className='footer'>
+          <span className='footer__connection-url'>{model.isConnectedToBroker ? `Connected to ${model.connectionUrl}` : 'Disconnected'} </span>
           <ul className='footer__services'>
             {this._renderServices(model)}
           </ul>

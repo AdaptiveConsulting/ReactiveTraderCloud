@@ -35,6 +35,7 @@ export default class Connection extends DisposableBase {
     this._isConnected = false;
     this._schedulerService = schedulerService;
     this._autoDisconnectDisposable = new Rx.SerialDisposable();
+    this._connectionUrl = '';
     this.addDisposable(this._autoDisconnectDisposable);
   }
 
@@ -60,6 +61,14 @@ export default class Connection extends DisposableBase {
   }
 
   /**
+   * Connection url
+   * @returns {string}
+   */
+  get url():string {
+    return this._connectionUrl;
+  }
+
+  /**
    * Connects the underlying transport
    */
   connect():void {
@@ -70,6 +79,7 @@ export default class Connection extends DisposableBase {
         _log.info('Connected');
         this._isConnected = true;
         this.session = session;
+        this._connectionUrl = this._autobahn.connection.transport.info.url;
         this._startAutoDisconnectTimer();
         this._connectionStatusSubject.onNext(ConnectionStatus.connected);
       });

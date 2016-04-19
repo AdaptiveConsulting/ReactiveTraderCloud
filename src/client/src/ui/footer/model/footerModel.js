@@ -3,6 +3,7 @@ import { CompositeStatusService } from '../../../services';
 import { logger } from '../../../system';
 import { ModelBase } from '../../common';
 import { ServiceStatusLookup } from '../../../services/model';
+import { ConnectionStatus } from '../../../system/service';
 
 var _log:logger.Logger = logger.create('FooterModel');
 
@@ -43,8 +44,9 @@ export default class FooterModel extends ModelBase {
       this._compositeStatusService.connectionStatusStream.subscribeWithRouter(
         this.router,
         this.modelId,
-        (isConnected:boolean) => {
-          this.isConnectedToBroker = isConnected;
+        (connectionStatus:String) => {
+          this.isConnectedToBroker = connectionStatus === ConnectionStatus.connected;
+          this.connectionUrl = this._compositeStatusService.connectionUrl;
         })
     );
   }
