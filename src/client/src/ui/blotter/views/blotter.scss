@@ -1,4 +1,4 @@
-@keyframes blotterHighlightNewTrade {
+@keyframes hightlightNewTradeInBlotter {
   0% { background-color: #7DE3FC; }
   100% { background-color: white; }
 }
@@ -65,8 +65,7 @@
 }
 
 .blotter__trade--new {
-  //background-color: #7DE3FC;
-  animation: blotterHighlightNewTrade 0.5s ease-in;
+  animation: hightlightNewTradeInBlotter 0.5s ease-in;
 }
 
 .blotter__trade--rejected {
