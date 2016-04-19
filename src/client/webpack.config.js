@@ -10,7 +10,7 @@ const path = require('path');
 const parseArgs = require('minimist');
 
 let args = parseArgs(process.argv.slice(2));
-let config = 'dev-' + args.endpoint + '.config.json';
+let config = args.endpoint ? args.endpoint + '.config.json' : 'default.config.json';
 
 const webpackConfig = {
   name: 'client',
