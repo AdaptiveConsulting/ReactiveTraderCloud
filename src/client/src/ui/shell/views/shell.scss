@@ -1,4 +1,5 @@
 $shell-background-color:      #212A35;
+$gray-dark:                   #293543;
 $blotter-height:              20vh;
 $header-height:               0px;
 $footer-height:               30px;
@@ -38,7 +39,7 @@ $workspace-width:             calc(100vw - #{$analytics-width});
     order: 3;
     height: $analytics-height;
     overflow-y: auto;
-    background: #212A35;
+    background: $gray-dark;
     padding: 0px;
   }
 
