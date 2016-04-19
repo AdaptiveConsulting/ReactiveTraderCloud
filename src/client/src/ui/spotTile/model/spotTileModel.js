@@ -93,12 +93,6 @@ export default class SpotTileModel extends ModelBase {
     this._regionManagerHelper.popout(332, 190);
   }
 
-  @observeEvent('toggleSparkLineChart')
-  _onToggleSparkLineChart() {
-    this._log.debug(`toggling spark line chart`);
-    this.shouldShowChart = !this.shouldShowChart;
-  }
-
   @observeEvent('tradeNotificationDismissed')
   _onTradeNotificationDismissed() {
     this._log.debug(`message dismissed`);

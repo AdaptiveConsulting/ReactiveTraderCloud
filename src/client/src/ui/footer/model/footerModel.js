@@ -23,6 +23,7 @@ export default class FooterModel extends ModelBase {
 
     this.serviceLookup = new ServiceStatusLookup();
     this.isConnectedToBroker = false;
+    this.shouldShowServiceStatus = false;
   }
 
   @observeEvent('init')
@@ -30,6 +31,13 @@ export default class FooterModel extends ModelBase {
     _log.info(`Footer model starting`);
     this._subscribeToConnectionStatus();
   }
+
+  @observeEvent('toggleServiceStatus')
+  _onToggleServiceStatus() {
+    _log.debug(`toggling service status`);
+    this.shouldShowServiceStatus = !this.shouldShowServiceStatus;
+  }
+
 
   _subscribeToConnectionStatus() {
     this.addDisposable(
