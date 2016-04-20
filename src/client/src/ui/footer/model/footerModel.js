@@ -4,10 +4,18 @@ import { logger } from '../../../system';
 import { ModelBase } from '../../common';
 import { ServiceStatusLookup } from '../../../services/model';
 import { ConnectionStatus } from '../../../system/service';
+import _ from 'lodash';
 
 var _log:logger.Logger = logger.create('FooterModel');
 
-export default class FooterModel extends ModelBase {
+export const FooterConnectionStatus = {
+  Unknown: 'Unknown',gi
+  Healthy: 'Healthy',
+  Warning: 'Warning',
+  Down: 'Down'
+};
+
+export class FooterModel extends ModelBase {
   _compositeStatusService:CompositeStatusService;
 
   isConnectedToBroker:boolean;
@@ -24,6 +32,7 @@ export default class FooterModel extends ModelBase {
     this.serviceLookup = new ServiceStatusLookup();
     this.isConnectedToBroker = false;
     this.shouldShowServiceStatus = false;
+    this.connectionStatus = FooterConnectionStatus.Unknown;
   }
 
   @observeEvent('init')
@@ -45,7 +54,16 @@ export default class FooterModel extends ModelBase {
         this.router,
         this.modelId,
         (serviceStatusLookup:ServiceStatusLookup) => {
+          const services = Object.keys(serviceStatusLookup.services)
+                                 .map(key => serviceStatusLookup.services[key]);
           this.serviceLookup = serviceStatusLookup;
+          if (_.every(services, service => service.isConnected)) {
+            this.connectionStatus = FooterConnectionStatus.Healthy;
+          } else if (_.some(services, service => service.isConnected)) {
+            this.connectionStatus = FooterConnectionStatus.Warning;
+          } else {
+            this.connectionStatus = FooterConnectionStatus.Down;
+          }
         })
     );
     this.addDisposable(

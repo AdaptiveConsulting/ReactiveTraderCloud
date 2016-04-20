@@ -1,13 +1,11 @@
 import React from 'react';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
-import { FooterModel } from '../model';
+import { FooterModel, FooterConnectionStatus } from '../model';
 import {  ServiceStatusLookup } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';
 import classnames from 'classnames';
 import './footer.scss';
-import _ from 'lodash';
-
 export default class FooterView extends ViewBase {
   constructor() {
     super();
@@ -18,23 +16,27 @@ export default class FooterView extends ViewBase {
 
   render() {
     let model:FooterModel = this.state.model;
+    if (!model) {
+      return null;
+    }
+    let connectionStatusCssLookup = {
+      [FooterConnectionStatus.Healthy]: 'footer__general-status-icon--healthy',
+      [FooterConnectionStatus.Warning]: 'footer__general-status-icon--warning',
+      [FooterConnectionStatus.Down]:    'footer__general-status-icon--down',
+      [FooterConnectionStatus.Unknown]: ''
+    };
     let panelClasses = classnames(
       'footer__service-status-panel',
       {
         'hide': !model.shouldShowServiceStatus
-    });
-    if (!model) {
-      return null;
-    }
-    let healthy = model.isConnectedToBroker && _.every(model.serviceLookup.services, service => service.isConnected);
-    let down = !model.isConnectedToBroker || _.every(model.serviceLookup.services, service => !service.isConnected);
+      });
+
     return (
         <footer className='footer'>
           <span className='footer__connection-url'>{model.isConnectedToBroker ? `Connected to ${model.connectionUrl}` : 'Disconnected'} </span>
          <i onMouseEnter={(e) => this._toggleServiceStatus()}
             onMouseLeave={(e) => this._toggleServiceStatus()}
-            className={'footer__general-status-icon fa fa-circle ' + (healthy ? 'footer__general-status-icon--healthy' : down ? 'footer__general-status-icon--down' : 'footer__general-status-icon--warning')} >
-
+            className={'footer__general-status-icon fa fa-circle ' + connectionStatusCssLookup[model.connectionStatus]} >
          </i>
           <div className={panelClasses}>
             <ul className='footer__services'>
