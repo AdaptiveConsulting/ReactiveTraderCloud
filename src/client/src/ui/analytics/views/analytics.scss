@@ -97,10 +97,8 @@ $default-padding: 10px;
 
 .analytics__barchart-label{
   font-size: 18px;
-  display: block;
   display: inline;
 }
-
 
 .analytics__barchart-container .analytics__barchart-amount{
   visibility: hidden;
@@ -114,11 +112,14 @@ $default-padding: 10px;
   color: $highlight-color;
 }
 
-.analytics__buttons {
-  display: block;
+.analytics__buttons{
   width: 100%;
   text-align: center;
-  padding-bottom: 10px;
+}
+
+.analytics__buttons-bar {
+  display: inline-block;
+  border: 1px solid black;
 }
 
 .analytics__buttons-tab-btn{
@@ -127,14 +128,14 @@ $default-padding: 10px;
   position: relative;
   padding: 10px 10px 6px 10px;
   background: #293543;
-  border: 1px solid black;
-  &.selected {
-    color: $highlight-color;
-    background: #212A35;
-  }
   &:hover{
     background: #294464;
   }
+}
+
+.analytics__buttons-tab-btn--selected{
+  color: $highlight-color;
+  background: #212A35;
 }
 
 .new-chart-area{

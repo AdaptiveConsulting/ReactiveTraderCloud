@@ -93,33 +93,28 @@ export default class AnalyticsView extends ViewBase {
       </div>
     );
   }
-  
+
   _createPositionsComponents() {
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
-    let sharedClassName = 'btn analytics__buttons-tab-btn';
-    let pnlButtonClassName = classnames(
-      sharedClassName,
-      {
-        'selected': positionsChartModel.basePnlDisplayModelSelected
-      }
-    );
-    let positionButtonClassName = classnames(
-      sharedClassName,
-      {
-        'selected': !positionsChartModel.basePnlDisplayModelSelected
-      }
-    );
+    let isPnL = positionsChartModel.basePnlDisplayModelSelected;
+    let baseClassName = 'btn analytics__buttons-tab-btn ';
+    let selectedClassName = `${baseClassName} analytics__buttons-tab-btn--selected`;
+    let pnlButtonClassName = isPnL ? selectedClassName : baseClassName;
+    let positionButtonClassName = isPnL ? baseClassName : selectedClassName;
+
     return (
       <div>
         <div className='analytics__buttons'>
-          <button
-            className={pnlButtonClassName}
-            onClick={() => router.publishEvent(this.props.modelId, 'togglePnlDisplayMode', {})}>PnL
-          </button>
-          <button
-            className={positionButtonClassName}
-            onClick={() => router.publishEvent(this.props.modelId, 'togglePnlDisplayMode', {})}>Positions
-          </button>
+          <div className='analytics__buttons-bar'>
+            <button
+              className={pnlButtonClassName}
+              onClick={() => router.publishEvent(this.props.modelId, 'togglePnlDisplayMode', {})}>PnL
+            </button>
+            <button
+              className={positionButtonClassName}
+              onClick={() => router.publishEvent(this.props.modelId, 'togglePnlDisplayMode', {})}>Positions
+            </button>
+          </div>
         </div>
         <div className='analytics__chart-container clearfix pnlchart'>
           <PNLChart series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
