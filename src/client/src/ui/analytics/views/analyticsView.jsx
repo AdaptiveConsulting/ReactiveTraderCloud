@@ -10,6 +10,7 @@ import PNLChart from './pnlChart.jsx';
 import numeral from 'numeral';
 import './analytics.scss';
 
+const NUMERAL_FORMAT = '0,000,000';
 var _log:logger.Logger = logger.create('AnalyticsView');
 
 export default class AnalyticsView extends ViewBase {
@@ -58,6 +59,7 @@ export default class AnalyticsView extends ViewBase {
     let pnlChartModel:PnlChartModel = this.state.model.pnlChartModel;
     let pnlChart = null;
     let className = classnames('analytics__chart-container', {'negative': pnlChartModel.lastPos > 0});
+    let formattedLastPos = numeral(pnlChartModel.lastPos).format(NUMERAL_FORMAT);
     if (pnlChartModel.hasData) {
       let configurePnLChart = (chart) => {
         let pnlTooltip = d => {
@@ -84,7 +86,7 @@ export default class AnalyticsView extends ViewBase {
       <div>
         <div className='analytics__header'>
           <span className='header-bold block'>Profit & Loss</span>
-          <span>USD </span><span className='header-bold'>{pnlChartModel.lastPos}</span>
+          <span>USD </span><span className='header-bold'>{formattedLastPos}</span>
         </div>
         <div className={className}>
           {pnlChart}

@@ -1,5 +1,8 @@
 import React from 'react';
 import './analytics.scss';
+import numeral from 'numeral';
+
+const NUMERAL_FORMAT = '0,000,000';
 
 export default class PNLBar extends React.Component{
 
@@ -11,7 +14,7 @@ export default class PNLBar extends React.Component{
     ratio: React.PropTypes.ratio,
     containerWidth: React.PropTypes.number
   }
-
+  
   render(){
     let baseValue = this.props.isPnL ? this.props.model.basePnl : this.props.model.baseTradedAmount;
     let isPositive = baseValue > 0;
@@ -19,6 +22,7 @@ export default class PNLBar extends React.Component{
     let xPos = isPositive ? this.props.containerWidth/2 : (this.props.containerWidth/2 - displayValue);
     let clName = isPositive ? 'indicator green' : 'indicator red';
     let amountStr = this.props.isPnL ? this.props.model.basePnl : this.props.model.baseTradedAmount;
+    amountStr = numeral(amountStr).format(NUMERAL_FORMAT);
 
     return(
       <div className='analytics__barchart-container'>
