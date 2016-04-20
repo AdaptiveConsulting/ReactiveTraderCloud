@@ -10,7 +10,6 @@ import PNLChart from './pnlChart.jsx';
 import numeral from 'numeral';
 import './analytics.scss';
 
-const NUMERAL_FORMAT = '0,000,000';
 var _log:logger.Logger = logger.create('AnalyticsView');
 
 export default class AnalyticsView extends ViewBase {
@@ -59,7 +58,7 @@ export default class AnalyticsView extends ViewBase {
     let pnlChartModel:PnlChartModel = this.state.model.pnlChartModel;
     let pnlChart = null;
     let className = classnames('analytics__chart-container', {'negative': pnlChartModel.lastPos > 0});
-    let formattedLastPos = numeral(pnlChartModel.lastPos).format(NUMERAL_FORMAT);
+    let formattedLastPos = numeral(pnlChartModel.lastPos).format();
     if (pnlChartModel.hasData) {
       let configurePnLChart = (chart) => {
         let pnlTooltip = d => {
@@ -94,22 +93,22 @@ export default class AnalyticsView extends ViewBase {
       </div>
     );
   }
-
+  
   _createPositionsComponents() {
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
     let pnlHeight = Math.min(positionsChartModel.itemCount * 30, 200);
     let configurePositionsChart = (chart) => {
       chart.tooltip.enabled(false);
     };
-    let sharedClassNames = ['btn'];
+    let sharedClassName = 'btn';
     let pnlButtonClassName = classnames(
-      sharedClassNames,
+      sharedClassName,
       {
         'selected': positionsChartModel.basePnlDisplayModelSelected
       }
     );
     let positionButtonClassName = classnames(
-      sharedClassNames,
+      sharedClassName,
       {
         'selected': !positionsChartModel.basePnlDisplayModelSelected
       }
