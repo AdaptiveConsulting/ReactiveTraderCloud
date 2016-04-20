@@ -28,6 +28,9 @@ export default class ShellView extends ViewBase {
     var wellKnownModelIds = model.wellKnownModelIds;
     return (
         <div className='shell__container'>
+          <div className='shell__splash'>
+            <span className='shell__splash-message'>Loading...</span>
+          </div>
           <Modal shouldShow={model.sessionExpired} title='Session expired'>
             <div>
               <div>Your 15 minute session expired, you are now disconnected from the server.</div>
