@@ -17,7 +17,7 @@ export default class PNLBar extends React.Component{
     let isPositive = baseValue > 0;
     let displayValue = Math.abs(baseValue * this.props.ratio);
     let xPos = isPositive ? this.props.containerWidth/2 : (this.props.containerWidth/2 - displayValue);
-    let clName = isPositive ? 'analytics__barchart-indicator-green' : 'analytics__barchart-indicator-red';
+    let clName = isPositive ? 'indicator green' : 'indicator red';
     let amountStr = this.props.isPnL ? this.props.model.basePnl : this.props.model.baseTradedAmount;
 
     return(
@@ -28,7 +28,7 @@ export default class PNLBar extends React.Component{
           <span>
             <svg id='container' className='analytics__barchart-bar' width={this.props.containerWidth}>
               <g>
-                <rect width={this.props.containerWidth} className='analytics__barchart-background'></rect>
+                <rect width={this.props.containerWidth} className='background'></rect>
                 <rect width={displayValue} className={clName} x={xPos}></rect>
                 </g>
             </svg>

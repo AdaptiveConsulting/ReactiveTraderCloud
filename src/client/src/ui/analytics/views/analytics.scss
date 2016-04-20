@@ -74,22 +74,26 @@ $default-padding: 10px;
   }
 }
 
-.analytics__barchart-background{
+.analytics__barchart-bar{
+  height: $bar-height;
+}
+
+.analytics__barchart-bar .background{
   fill: #414D5C;
   height: $bar-height;
 }
 
-.analytics__barchart-indicator-green{
+.analytics__barchart-bar .indicator{
   stroke: $gray-darker;
   stroke-width: 1px;
   height: $bar-height;
+}
+
+.analytics__barchart-bar .green{
   fill: #3FCF1E;
 }
 
-.analytics__barchart-indicator-red{
-  stroke: $gray-darker;
-  stroke-width: 1px;
-  height: $bar-height;
+.analytics__barchart-bar .red{
   fill: #CC3350;
 }
 
@@ -99,9 +103,6 @@ $default-padding: 10px;
   display: inline;
 }
 
-.analytics__barchart-bar{
-  height: $bar-height;
-}
 
 .analytics__barchart-container .barchart-amount{
   visibility: hidden;
