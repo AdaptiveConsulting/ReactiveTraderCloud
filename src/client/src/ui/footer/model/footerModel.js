@@ -2,20 +2,13 @@ import { Router,  observeEvent } from 'esp-js/src';
 import { CompositeStatusService } from '../../../services';
 import { logger } from '../../../system';
 import { ModelBase } from '../../common';
-import { ServiceStatusLookup } from '../../../services/model';
+import { ServiceStatusLookup, ApplicationStatusConst } from '../../../services/model';
 import { ConnectionStatus } from '../../../system/service';
 import _ from 'lodash';
 
 var _log:logger.Logger = logger.create('FooterModel');
 
-export const FooterConnectionStatus = {
-  Unknown: 'Unknown',
-  Healthy: 'Healthy',
-  Warning: 'Warning',
-  Down: 'Down'
-};
-
-export class FooterModel extends ModelBase {
+export default class FooterModel extends ModelBase {
   _compositeStatusService:CompositeStatusService;
 
   isConnectedToBroker:boolean;
@@ -32,7 +25,7 @@ export class FooterModel extends ModelBase {
     this.serviceLookup = new ServiceStatusLookup();
     this.isConnectedToBroker = false;
     this.shouldShowServiceStatus = false;
-    this.connectionStatus = FooterConnectionStatus.Unknown;
+    this.applicationStatus = ApplicationStatusConst.Unknown;
   }
 
   @observeEvent('init')
@@ -58,11 +51,11 @@ export class FooterModel extends ModelBase {
                                  .map(key => serviceStatusLookup.services[key]);
           this.serviceLookup = serviceStatusLookup;
           if (_.every(services, service => service.isConnected)) {
-            this.connectionStatus = FooterConnectionStatus.Healthy;
+            this.applicationStatus = ApplicationStatusConst.Healthy;
           } else if (_.some(services, service => service.isConnected)) {
-            this.connectionStatus = FooterConnectionStatus.Warning;
+            this.applicationStatus = ApplicationStatusConst.Warning;
           } else {
-            this.connectionStatus = FooterConnectionStatus.Down;
+            this.applicationStatus = ApplicationStatusConst.Down;
           }
         })
     );

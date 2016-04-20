@@ -1,1 +1,1 @@
-export * from './footerModel';
+export { default as FooterModel } from './footerModel';

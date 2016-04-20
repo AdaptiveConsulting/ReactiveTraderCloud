@@ -1,8 +1,8 @@
 import React from 'react';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
-import { FooterModel, FooterConnectionStatus } from '../model';
-import {  ServiceStatusLookup } from '../../../services/model';
+import { FooterModel } from '../model';
+import {  ServiceStatusLookup, ApplicationStatusConst } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';
 import classnames from 'classnames';
 import './footer.scss';
@@ -19,11 +19,11 @@ export default class FooterView extends ViewBase {
     if (!model) {
       return null;
     }
-    let connectionStatusCssLookup = {
-      [FooterConnectionStatus.Healthy]: 'footer__general-status-icon--healthy',
-      [FooterConnectionStatus.Warning]: 'footer__general-status-icon--warning',
-      [FooterConnectionStatus.Down]:    'footer__general-status-icon--down',
-      [FooterConnectionStatus.Unknown]: ''
+    let applicationStatusCssLookup = {
+      [ApplicationStatusConst.Healthy]: 'footer__general-status-icon--healthy',
+      [ApplicationStatusConst.Warning]: 'footer__general-status-icon--warning',
+      [ApplicationStatusConst.Down]:    'footer__general-status-icon--down',
+      [ApplicationStatusConst.Unknown]: ''
     };
     let panelClasses = classnames(
       'footer__service-status-panel',
@@ -36,7 +36,7 @@ export default class FooterView extends ViewBase {
           <span className='footer__connection-url'>{model.isConnectedToBroker ? `Connected to ${model.connectionUrl}` : 'Disconnected'} </span>
          <i onMouseEnter={(e) => this._toggleServiceStatus()}
             onMouseLeave={(e) => this._toggleServiceStatus()}
-            className={'footer__general-status-icon fa fa-circle ' + connectionStatusCssLookup[model.connectionStatus]} >
+            className={'footer__general-status-icon fa fa-circle ' + applicationStatusCssLookup[model.applicationStatus]} >
          </i>
           <div className={panelClasses}>
             <ul className='footer__services'>
