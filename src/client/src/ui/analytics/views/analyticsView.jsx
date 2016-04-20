@@ -84,7 +84,7 @@ export default class AnalyticsView extends ViewBase {
     return (
       <div>
         <div className='analytics__header'>
-          <span className='analytics__header--bold analytics__header--block'>Profit & Loss</span>
+          <span className='analytics__header--bold analytics__header-block'>Profit & Loss</span>
           <span>USD </span><span className='analytics__header--bold'>{formattedLastPos}</span>
         </div>
         <div className={className}>
@@ -93,13 +93,7 @@ export default class AnalyticsView extends ViewBase {
       </div>
     );
   }
-
-
-
-
-
   
-
   _createPositionsComponents() {
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
     let sharedClassName = 'btn analytics__buttons-tab-btn';
