@@ -22,9 +22,9 @@
   "scripts": {
     "clean": "rm -rf dist",
     "start": "npm run dev:cloud",
-    "lint": "eslint src",
+    "lint": "eslint --ext .js --ext .jsx src",
     "dev:local": "npm run dev -- --endpoint local",
-    "dev:cloud": "npm run dev -- --endpoint cloud",
+    "dev:cloud": "npm run dev -- --endpoint demo",
     "dev": "webpack-dev-server --progress --debug --config webpack.config.js --display-error-details",
     "test": "karma start ./karma.conf.js",
     "test:dev": "npm test -- --watch",
