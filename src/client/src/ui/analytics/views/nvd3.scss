@@ -21,7 +21,7 @@
 
 .nvd3 .nv-axis line {
   fill: none;
-  stroke: $gray-darker;
+  stroke: $stroke-color;
   shape-rendering: crispEdges;
 }
 
@@ -273,7 +273,7 @@ svg.nvd3-svg {
 
 .nvd3 text {
   font: normal 12px Arial;
-  fill: $gray-light;
+  fill: $bar-bg-color;
 }
 
 .nvd3 .title {
@@ -527,7 +527,7 @@ svg.nvd3-svg {
 }
 
 .nvtooltip {
-  background: linear-gradient(rgba(0,0,0,0), $gray-dark, rgba(0,0,0,0));
+  background: linear-gradient(rgba(0,0,0,0), $container-bg-color, rgba(0,0,0,0));
   box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
   border: 1px solid rgba(0,0,0,0.5);
   border-radius: 2px;
@@ -535,9 +535,9 @@ svg.nvd3-svg {
 
   transition-delay: 200ms;
   strong {
-    color: $gray-light;
+    color: $bar-bg-color;
   }
-  color: $gray-lighter;
+  color: $highlight-color;
 }
 
 /*Give tooltips that old fade in transition by
@@ -634,5 +634,5 @@ Interactive Layer
   pointer-events:none;
 }
 .nvd3 line.nv-guideline {
-  stroke: $gray-darker;
+  stroke: $stroke-color;
 }

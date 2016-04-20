@@ -1,13 +1,11 @@
-$positive-color:  green;
-$brand-danger:    #ee5f5b;
-$negative-color:  $brand-danger;
-$stroke-color:    slategray;
-$gray-light:      gray;
-$gray-dark:       #293543;
-$gray-lighter:    #eee;
-$gray-darker:     #212a35;
-$gray:            #294464;
-$bar-height:      12px;
+$positive-color:    #3FCF1E;
+$negative-color:    #CC3350;
+$bar-bg-color:      gray;
+$container-bg-color:#293543;
+$highlight-color:   #eee;
+$stroke-color:      #212a35;
+$gray:              #294464;
+$bar-height:        12px;
 
 $analytics-header-colour: #ffffff;
 $default-padding: 10px;
@@ -17,7 +15,7 @@ $default-padding: 10px;
   align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
-  background: $gray-dark;
+  background: $container-bg-color;
   padding: 11px;
   @import 'nvd3';
 }
@@ -35,11 +33,11 @@ $default-padding: 10px;
   padding: 10px;
 }
 
-.analytics__header .header-bold{
+.analytics__header--bold{
   font-weight: bold;
 }
 
-.analytics__header .block{
+.analytics__header--block{
   display: block;
   padding-bottom: 2px;
 }
@@ -47,7 +45,7 @@ $default-padding: 10px;
 .analytics__chart-container {
   position: relative;
   padding: $default-padding;
-  background: $gray-dark;
+  background: $container-bg-color;
 
   .nv-lineChart {
     .nv-axis.nv-y {
@@ -65,12 +63,12 @@ $default-padding: 10px;
 }
 
 .analytics__barchart-container{
-  color:$gray-light;
+  color:$bar-bg-color;
   vertical-align: middle;
   padding-top: 2px;
   padding-bottom: 12px;
   &:hover{
-    color:$gray-lighter
+    color:$highlight-color
   }
 }
 
@@ -78,23 +76,23 @@ $default-padding: 10px;
   height: $bar-height;
 }
 
-.analytics__barchart-bar .background{
+.analytics__barchart-bar-background{
   fill: #414D5C;
   height: $bar-height;
 }
 
-.analytics__barchart-bar .indicator{
-  stroke: $gray-darker;
+.analytics__barchart-indicator{
+  stroke: $stroke-color;
   stroke-width: 1px;
   height: $bar-height;
 }
 
-.analytics__barchart-bar .green{
-  fill: #3FCF1E;
+.analytics__barchart-indicator--positive{
+  fill: $positive-color;
 }
 
-.analytics__barchart-bar .red{
-  fill: #CC3350;
+.analytics__barchart-indicator--negative{
+  fill: $negative-color;
 }
 
 .analytics__barchart-label{
@@ -104,19 +102,16 @@ $default-padding: 10px;
 }
 
 
-.analytics__barchart-container .barchart-amount{
+.analytics__barchart-container .analytics__barchart-amount{
   visibility: hidden;
   font-size: 18px;
   display: inline;
   float: right;
 }
 
-.analytics__barchart-container:hover .barchart-amount{
+.analytics__barchart-container:hover .analytics__barchart-amount{
   visibility: visible;
-  color: $gray-lighter;
-  font-size: 18px;
-  display: inline;
-  float: right;
+  color: $highlight-color;
 }
 
 .analytics__buttons {
@@ -124,23 +119,23 @@ $default-padding: 10px;
   width: 100%;
   text-align: center;
   padding-bottom: 10px;
-  button.btn {
-    color: $gray-light;
-    font-size: 16px;
-    position: relative;
-    padding: 10px 10px 6px 10px;
-    background: #293543;
-    border: 1px solid black;
-    &.selected {
-      color: $gray-lighter;
-      background: #212A35;
-    }
-    &:hover{
-      background: #294464;
-    }
-  }
 }
 
+.analytics__buttons-tab-btn{
+  color: $bar-bg-color;
+  font-size: 16px;
+  position: relative;
+  padding: 10px 10px 6px 10px;
+  background: #293543;
+  border: 1px solid black;
+  &.selected {
+    color: $highlight-color;
+    background: #212A35;
+  }
+  &:hover{
+    background: #294464;
+  }
+}
 
 .new-chart-area{
   stroke-width: 2px !important;

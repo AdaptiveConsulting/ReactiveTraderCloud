@@ -84,8 +84,8 @@ export default class AnalyticsView extends ViewBase {
     return (
       <div>
         <div className='analytics__header'>
-          <span className='header-bold block'>Profit & Loss</span>
-          <span>USD </span><span className='header-bold'>{formattedLastPos}</span>
+          <span className='analytics__header--bold analytics__header--block'>Profit & Loss</span>
+          <span>USD </span><span className='analytics__header--bold'>{formattedLastPos}</span>
         </div>
         <div className={className}>
           {pnlChart}
@@ -93,14 +93,16 @@ export default class AnalyticsView extends ViewBase {
       </div>
     );
   }
+
+
+
+
+
   
+
   _createPositionsComponents() {
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
-    let pnlHeight = Math.min(positionsChartModel.itemCount * 30, 200);
-    let configurePositionsChart = (chart) => {
-      chart.tooltip.enabled(false);
-    };
-    let sharedClassName = 'btn';
+    let sharedClassName = 'btn analytics__buttons-tab-btn';
     let pnlButtonClassName = classnames(
       sharedClassName,
       {
