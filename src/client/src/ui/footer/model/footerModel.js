@@ -9,7 +9,7 @@ import _ from 'lodash';
 var _log:logger.Logger = logger.create('FooterModel');
 
 export const FooterConnectionStatus = {
-  Unknown: 'Unknown',gi
+  Unknown: 'Unknown',
   Healthy: 'Healthy',
   Warning: 'Warning',
   Down: 'Down'
