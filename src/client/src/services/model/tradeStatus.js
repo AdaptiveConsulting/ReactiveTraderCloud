@@ -21,5 +21,9 @@ export default class TradeStatus {
   constructor(name:string) {
     this.name = name;
   }
+
+  toString() {
+    return this.name;
+  }
 }
 

@@ -5,6 +5,9 @@ import { logger } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
 import { RegionManager, RegionNames, view  } from '../../regions';
+import { TradeStatus } from '../../../services/model';
+const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 4000;
+
 import {
   GetSpotStreamRequest,
   SpotPrice,
@@ -14,6 +17,7 @@ import {
   ExecuteTradeResponse
 } from '../../../services/model';
 import { SpotTileView } from '../views';
+
 
 @view(SpotTileView)
 export default class SpotTileModel extends ModelBase {
@@ -29,9 +33,7 @@ export default class SpotTileModel extends ModelBase {
   // So we're just exposing the state as fields.
   currencyPair:CurrencyPair;
   currentSpotPrice:SpotPrice;
-  historicMidSportRates:Array<Number>;
   notification:NotificationBase;
-  shouldShowChart:boolean;
   tileTitle:string;
   notional:number;
   pricingConnected:boolean;
@@ -55,12 +57,11 @@ export default class SpotTileModel extends ModelBase {
     this._priceSubscriptionDisposable = new Rx.SerialDisposable();
     this.addDisposable(this._priceSubscriptionDisposable);
 
-    this.historicMidSportRates = [];
-    this.shouldShowChart = true;
     this.tileTitle = `${currencyPair.base} / ${currencyPair.terms}`;
     this.notification = null;
     this.notional = 1000000;
     this.currentSpotPrice = null;
+    this.notificationTimer = null;
 
     // If things get much messier we could look at introducing a state machine, but for now we really only have these 3 conditions to worry about
     this.pricingConnected = false;
@@ -113,22 +114,29 @@ export default class SpotTileModel extends ModelBase {
       let request = this._createTradeRequest(e.direction);
       this._log.info(`Will execute ${request.toString()}`);
       this.isTradeExecutionInFlight = true;
+      window.clearTimeout(this.notificationTimer);
       this._executionDisposable.setDisposable(
-        this._executionService.executeTrade(request).subscribeWithRouter(
-          this.router,
-          this.modelId,
-          (response:ExecuteTradeResponse) => {
-            this.isTradeExecutionInFlight = false;
-            this.notification = response.hasError
-              ? TradeExecutionNotification.createForError(response.error)
-              : TradeExecutionNotification.createForSuccess(response.trade);
-          },
-          err => {
-            this.isTradeExecutionInFlight = false;
-            this._log.error(`Error executing ${request.toString()}. ${err}`, err);
-            this.notification = TradeExecutionNotification.createForError(`Unknown stream error`);
+        this._executionService.executeTrade(request)
+          .do(response => {
+            if (!response.hasError && response.trade.status === TradeStatus.Done) {
+              this.notificationTimer = setTimeout(() => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {}), DISMISS_NOTIFICATION_AFTER_X_IN_MS);
+            }
           })
-      );
+          .subscribeWithRouter(
+            this.router,
+            this.modelId,
+            (response:ExecuteTradeResponse) => {
+              this.isTradeExecutionInFlight = false;
+              this.notification = response.hasError
+                ? TradeExecutionNotification.createForError(response.error)
+                : TradeExecutionNotification.createForSuccess(response.trade);
+            },
+            err => {
+              this.isTradeExecutionInFlight = false;
+              this._log.error(`Error executing ${request.toString()}. ${err}`, err);
+              this.notification = TradeExecutionNotification.createForError(`Unknown stream error`);
+            })
+        );
     } else {
       this._log.warn(`Ignoring execute request as we can't trade with pricing and execution down`);
     }
@@ -160,21 +168,12 @@ export default class SpotTileModel extends ModelBase {
             if(!this.isTradeExecutionInFlight) {
               this.currentSpotPrice = price;
             }
-            this._updateHistoricalPrices(price);
           },
           err => {
             this._log.error('Error on getSpotPriceStream stream stream', err);
           }
         )
     );
-  }
-
-  _updateHistoricalPrices(price:SpotPrice) {
-    this.historicMidSportRates.push(price.mid.rawRate);
-    // we only keep a limited amount of historical prices
-    if(this.historicMidSportRates.length > 30) {
-      this.historicMidSportRates.shift(); // pop the first element
-    }
   }
 
   _subscribeToConnectionStatus() {
@@ -193,9 +192,6 @@ export default class SpotTileModel extends ModelBase {
         this.router,
         this._modelId,
         (tuple:{pricingConnected:boolean, executionConnected:boolean}) => {
-          if(this.pricingConnected && !tuple.pricingConnected) {
-            this.historicMidSportRates.length = 0; // clear out the charts prices
-          }
           this.pricingConnected = tuple.pricingConnected;
           this.executionConnected = tuple.executionConnected;
           this._updatePricingDownStatusNotification();
