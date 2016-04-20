@@ -91,7 +91,6 @@
     "karma-webpack": "1.7.0",
     "minimist": "1.2.0",
     "node-sass": "3.4.2",
-    "npm": "3.8.6",
     "openfin-cli": "1.0.2",
     "react-addons-test-utils": "0.14.6",
     "react-transform-catch-errors": "1.0.1",
