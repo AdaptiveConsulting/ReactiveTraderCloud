@@ -47,7 +47,7 @@ class Bootstrapper {
   startServices() {
     let user:User = FakeUserRepository.currentUser;
     let serverEndPointUrl = config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
-    let url = 'ws://' + serverEndPointUrl + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
+    let url = 'ws' + (location.protocol === 'https:' ? 's:' : ':') + '//' + serverEndPointUrl + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
     this._schedulerService = new SchedulerService();
     this._connection = new Connection(
       user.code,

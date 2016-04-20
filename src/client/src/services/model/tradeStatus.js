@@ -1,8 +1,4 @@
-export default class TradeStatus {
-
-  static _pending = new TradeStatus('Pending');
-  static _done = new TradeStatus('Done');
-  static _rejected = new TradeStatus('Rejected');
+class TradeStatus {
 
   name:string;
 
@@ -23,3 +19,8 @@ export default class TradeStatus {
   }
 }
 
+TradeStatus._pending = new TradeStatus('Pending');
+TradeStatus._done = new TradeStatus('Done');
+TradeStatus._rejected = new TradeStatus('Rejected');
+
+export default TradeStatus;
