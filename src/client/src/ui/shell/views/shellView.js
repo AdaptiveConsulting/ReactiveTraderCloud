@@ -29,7 +29,7 @@ export default class ShellView extends ViewBase {
     return (
         <div className='shell__container'>
           <div className='shell__splash'>
-            <span className='shell__splash-message'>Loading...</span>
+            <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
           </div>
           <Modal shouldShow={model.sessionExpired} title='Session expired'>
             <div>
