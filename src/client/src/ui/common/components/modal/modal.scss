@@ -1,80 +1,37 @@
-$failure-primary: #da4d2e;
-
-.text-center {
-  text-align: center;
-}
-
-.absolute-center {
-  margin: auto;
-  position: absolute;
+.modal__overlay {
+  position: fixed;
   top: 0;
   left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-.modal-overlay {
-  display: block;
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-  position: absolute;
-  top: 0;
-  left: 0;
+  width: 100vw;
+  height: 100vh;
   opacity: .7;
+  z-index: 100;
   background: rgba(0, 0, 0, 0.8);
 }
 
 .modal {
-  opacity: 1;
-  visibility: visible;
-  transform: translate3d(0, 0, 0);
-  display: block;
-  transition: all 0.4s ease-out;
-  transform-style: preserve-3d;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   width: 600px;
-  height: 140px;
-  border: 1px solid #808080;
-  color: rgba(0, 0, 0, .7);
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, .7);
-  z-index: 200;
-  background-color: #f5f5f5;
-  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-  background-repeat: repeat-x;
-
-  .modal-heading {
-    background-color: #f5f5f5;
-    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-    background-repeat: repeat-x;
-    box-shadow: none;
-    font-size: 20px;
-    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.9);
-    color: rgba(0, 0, 0, 0.6);
-    text-transform: uppercase;
-    font-weight: bolder;
-    border-bottom: 2px solid $failure-primary;
-  }
-  .modal-body {
-    text-align: left;
-    padding: 8px;
-  }
+  height: 150px;
+  margin: auto;
+  background-color: white;
+  text-align: center;
+  z-index: 101;
 }
 
-.modal-action {
-  margin: 16px;
+.modal__header {
+  border-bottom: 1px solid #da4d2e;
 }
 
-@media (max-width: 1024px) {
-  div.modal, div.modal.error-modal, div.modal.help-modal {
-    min-width: inherit;
-    max-width: inherit;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-  }
+.modal__header-title {
+  display: inline-block;
+  padding: 5px;
 }
 
+.modal__body {
+  padding: 5px;
+}

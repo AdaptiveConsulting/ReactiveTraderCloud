@@ -32,7 +32,7 @@ export default class ShellView extends ViewBase {
             <div>
               <div>Your 15 minute session expired, you are now disconnected from the server.</div>
               <div>Click reconnect to start a new session.</div>
-                <button className='btn'
+                <button className='btn shell__button--reconnect'
                         onClick={() => router.publishEvent(model.modelId, 'reconnectClicked', {})}>Reconnect
                 </button>
             </div>
