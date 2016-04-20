@@ -36,7 +36,7 @@ export default class ShellModel extends ModelBase {
       this._connection.connectionStatusStream.subscribeWithRouter(
         this.router,
         this.modelId,
-        (status:String) =>{
+        (status:String) => {
           this.sessionExpired = status === ConnectionStatus.sessionExpired;
         },
         err =>{

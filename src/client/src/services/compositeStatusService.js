@@ -45,6 +45,14 @@ export default class CompositeStatusService extends DisposableBase {
   }
 
   /**
+   * Connection url
+   * @returns {string}
+   */
+  get connectionUrl():string {
+    return this._connection.url;
+  }
+
+  /**
    * THe current ServiceStatusLookup
    * @returns {model.ServiceStatusLookup}
    */
