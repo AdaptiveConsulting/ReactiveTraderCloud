@@ -50,9 +50,9 @@ export default class FooterModel extends ModelBase {
           const services = Object.keys(serviceStatusLookup.services)
                                  .map(key => serviceStatusLookup.services[key]);
           this.serviceLookup = serviceStatusLookup;
-          if (_.every(services, service => service.isConnected)) {
+          if (_.every(services, 'isConnected')) {
             this.applicationStatus = ApplicationStatusConst.Healthy;
-          } else if (_.some(services, service => service.isConnected)) {
+          } else if (_.some(services, 'isConnected')) {
             this.applicationStatus = ApplicationStatusConst.Warning;
           } else {
             this.applicationStatus = ApplicationStatusConst.Down;
