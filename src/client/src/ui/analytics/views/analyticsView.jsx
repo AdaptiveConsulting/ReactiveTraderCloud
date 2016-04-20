@@ -82,7 +82,10 @@ export default class AnalyticsView extends ViewBase {
     }
     return (
       <div>
-        <div className='analytics__header'>USD at {pnlChartModel.lastPos}</div>
+        <div className='analytics__header'>
+          <span className='header-bold block'>Profit & Loss</span>
+          <span>USD </span><span className='header-bold'>{pnlChartModel.lastPos}</span>
+        </div>
         <div className={className}>
           {pnlChart}
         </div>
