@@ -145,3 +145,7 @@ $default-padding: 10px;
 .new-chart-stroke{
   stroke: url('#chartStrokeLinearGradient');
 }
+
+.analytics__icon--tearoff {
+  cursor: pointer;
+}
