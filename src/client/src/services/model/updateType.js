@@ -1,7 +1,4 @@
-export default class UpdateType {
-
-  static _added = new UpdateType('Added');
-  static _removed = new UpdateType('Removed');
+class UpdateType {
 
   name:string;
 
@@ -18,3 +15,7 @@ export default class UpdateType {
   }
 }
 
+UpdateType._added = new UpdateType('Added');
+UpdateType._removed = new UpdateType('Removed');
+
+export default UpdateType;
