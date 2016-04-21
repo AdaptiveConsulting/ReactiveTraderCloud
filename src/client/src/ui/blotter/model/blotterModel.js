@@ -67,7 +67,6 @@ export default class BlotterModel extends ModelBase {
                 this.trades[_.indexOf(this.trades, exists)] = trade;
               }
               else {
-                trade.isNew &= true; // dont flag trades as new if there are coming from the state of the world
                 this.trades.unshift(trade);
               }
             });
