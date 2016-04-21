@@ -22,7 +22,7 @@ export default class BlotterService extends ServiceBase {
         return _this._serviceClient
           .createStreamOperation('getTradesStream', {/* noop request */ })
           .retryWithPolicy(RetryPolicy.backoffTo10SecondsMax, 'getTradesStream', _this._schedulerService.async)
-          .map(dto => _this._tradeMapper.mapFromDtoArray(dto.Trades))
+          .map(dto => _this._tradeMapper.mapFromDto(dto))
           .subscribe(o);
       }
     );

@@ -22,7 +22,8 @@ export default class Trade {
     spotRate:number,
     tradeDate:Date,
     valueDate:string,
-    status:TradeStatus
+    status:TradeStatus,
+    isNew:boolean
   ) {
     this._tradeId = tradeId;
     this._traderName = traderName;
@@ -34,6 +35,7 @@ export default class Trade {
     this._tradeDate = tradeDate;
     this._valueDate = valueDate;
     this._status = status;
+    this._isNew = isNew;
   }
 
   get tradeId():number {
