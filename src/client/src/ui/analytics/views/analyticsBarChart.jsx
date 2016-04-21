@@ -46,15 +46,16 @@ export default class PNLChart extends React.Component{
     return bars;
   };
 
-  _getPositionsDataFromSeries(propName){
-    let positionsPerCcyObj = this.props.series.reduce((resultObj, element) => {
-      let ccy = element.symbol.substr(0,3);
-      resultObj[ccy] = resultObj[ccy] ? resultObj[ccy] + element[propName] : element[propName];
+  _getPositionsDataFromSeries(baseAmtPropName){
+    let positionsPerCcyObj = this.props.series.reduce((resultObj, el) => {
+
+      //aggregate amount per ccy;
+      resultObj[el.ccy] = resultObj[el.ccy] ? resultObj[el.ccy] + el[baseAmtPropName] : el[baseAmtPropName];
       return resultObj;
     }, {});
 
     let positionsPerCcyArr = _.map(positionsPerCcyObj, function(val, key){
-      return {symbol: key, [propName]: val};
+      return {symbol: key, [baseAmtPropName]: val};
     });
     return positionsPerCcyArr;
   }
