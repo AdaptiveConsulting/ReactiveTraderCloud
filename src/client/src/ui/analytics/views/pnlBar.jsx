@@ -9,7 +9,6 @@ export default class PNLBar extends React.Component{
     index : React.PropTypes.number,
     model: React.PropTypes.object,
     isPnL: React.PropTypes.bool,
-    maxMinValues: React.PropTypes.object,
     ratio: React.PropTypes.number,
     containerWidth: React.PropTypes.number
   }
