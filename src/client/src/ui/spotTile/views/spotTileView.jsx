@@ -55,7 +55,6 @@ export default class SpotTileView extends ViewBase {
               className={notionalInputClass}
               notional={model.notional}
               onChange={(notional) => router.publishEvent(this.props.modelId, 'notionalChanged', { notional:notional })}
-              valueDate={model.valueDate}
               currencyPair={model.currencyPair} />
             <div className={spotDateClass}>
               <span className='spot-tile__tenor'>SP</span>
