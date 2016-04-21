@@ -1,21 +1,21 @@
-$positive-color:  green;
-$brand-danger:    #ee5f5b;
-$negative-color:  $brand-danger;
-$stroke-color:    slategray;
-$gray-light:      gray;
-$gray-dark:       #293543;
-$gray-lighter:    #eee;
-$gray-darker:     #212a35;
-$gray:            #294464;
+$positive-color:    #3FCF1E;
+$negative-color:    #CC3350;
+$bar-bg-color:      gray;
+$container-bg-color:#293543;
+$highlight-color:   #eee;
+$stroke-color:      #212a35;
+$gray:              #294464;
+$bar-height:        12px;
 
 $analytics-header-colour: #ffffff;
 $default-padding: 10px;
 
 .analytics__container {
+  max-width: 350px;
   align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
-  background: $gray-dark;
+  background: $container-bg-color;
   padding: 11px;
   @import 'nvd3';
 }
@@ -33,88 +33,109 @@ $default-padding: 10px;
   padding: 10px;
 }
 
+.analytics__header--bold{
+  font-weight: bold;
+}
+
+.analytics__header-block{
+  display: block;
+  padding-bottom: 2px;
+}
+
 .analytics__chart-container {
   position: relative;
   padding: $default-padding;
-  background: $gray-dark;
-
-  .nvd3 g.nv-groups  {
-    .nv-bar {
-      rect {
-        fill-opacity: .3;
-        stroke: $stroke-color;
-        stroke-width: .8;
-        stroke-opacity: .4;
-      }
-      &.analytics__chart-container--positive {
-        fill: $positive-color;
-        text {
-          fill: $gray-light;
-        }
-      }
-      text {
-        font-size: 8px;
-        fill: $gray-lighter;
-        font-weight: normal;
-      }
-      &.analytics__chart-container--negative {
-        fill: $negative-color;
-      }
-      &:hover rect {
-        stroke-opacity: .5;
-        fill-opacity: .7;
-      }
-    }
-  }
-
-  .nv-controlsWrap.nvd3-svg, .nv-axisMin-y {
-    display: none;
-  }
+  background: $container-bg-color;
 
   .nv-lineChart {
     .nv-axis.nv-y {
       text {
-        font-size: 8px;
+        font-size:10px;
       }
     }
 
     .nv-axis.nv-x {
       text {
-        font-size: 8px;
+        font-size: 10px;
       }
     }
   }
 }
 
-.analytics__buttons {
-  float: right;
-  height: 38px;
-  overflow: hidden;
-  $shadow-width: 14px;
-  button.btn {
-    border-left: 1px solid black;
-    color: $gray-light;
-    box-sizing: border-box;
-    outline: none !important;
-    &.selected {
-      position: relative;
-      z-index: 100;
-      color: $gray-lighter;
-      background: linear-gradient(rgba(0, 0, 0, 0), $gray-darker) !important;
-    }
-    &.selected:before {
-      content: "";
-      display: block;
-      position: absolute;
-      width: $shadow-width;
-      height: 6px;
-      transition: transform 1s;
-      border-radius: 50%;
-      left: 50%;
-      transform: translate(-($shadow-width / 2), 0);
-      top: -8px;
-    }
+.analytics__barchart-container{
+  color:$bar-bg-color;
+  vertical-align: middle;
+  padding-top: 2px;
+  padding-bottom: 12px;
+  &:hover{
+    color:$highlight-color
   }
+}
+
+.analytics__barchart-bar{
+  height: $bar-height;
+}
+
+.analytics__barchart-bar-background{
+  fill: #414D5C;
+  height: $bar-height;
+}
+
+.analytics__barchart-indicator{
+  stroke: $stroke-color;
+  stroke-width: 1px;
+  height: $bar-height;
+}
+
+.analytics__barchart-indicator--positive{
+  fill: $positive-color;
+}
+
+.analytics__barchart-indicator--negative{
+  fill: $negative-color;
+}
+
+.analytics__barchart-label{
+  font-size: 18px;
+  display: inline;
+}
+
+.analytics__barchart-container .analytics__barchart-amount{
+  visibility: hidden;
+  font-size: 18px;
+  display: inline;
+  float: right;
+}
+
+.analytics__barchart-container:hover .analytics__barchart-amount{
+  visibility: visible;
+  color: $highlight-color;
+}
+
+.analytics__buttons{
+  width: 100%;
+  text-align: center;
+}
+
+.analytics__buttons-bar {
+  display: inline-block;
+  border: 1px solid black;
+}
+
+.analytics__buttons-tab-btn{
+  color: $bar-bg-color;
+  font-size: 16px;
+  position: relative;
+  padding: 10px 10px 6px 10px;
+  background: #293543;
+  &:hover{
+    background: #294464;
+  }
+}
+
+.analytics__buttons-tab-btn--selected{
+  color: $highlight-color;
+  background: #212A35;
 }
 
 .new-chart-area{

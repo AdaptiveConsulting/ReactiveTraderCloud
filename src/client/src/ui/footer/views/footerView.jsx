@@ -2,10 +2,10 @@ import React from 'react';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
 import { FooterModel } from '../model';
-import {  ServiceStatusLookup } from '../../../services/model';
+import {  ServiceStatusLookup, ApplicationStatusConst } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';
+import classnames from 'classnames';
 import './footer.scss';
-
 export default class FooterView extends ViewBase {
   constructor() {
     super();
@@ -19,16 +19,37 @@ export default class FooterView extends ViewBase {
     if (!model) {
       return null;
     }
+    let applicationStatusCssLookup = {
+      [ApplicationStatusConst.Healthy]: 'footer__general-status-icon--healthy',
+      [ApplicationStatusConst.Warning]: 'footer__general-status-icon--warning',
+      [ApplicationStatusConst.Down]:    'footer__general-status-icon--down',
+      [ApplicationStatusConst.Unknown]: ''
+    };
+    let panelClasses = classnames(
+      'footer__service-status-panel',
+      {
+        'hide': !model.shouldShowServiceStatus
+      });
 
     return (
         <footer className='footer'>
           <span className='footer__connection-url'>{model.isConnectedToBroker ? `Connected to ${model.connectionUrl}` : 'Disconnected'} </span>
-          <ul className='footer__services'>
-            {this._renderServices(model)}
-          </ul>
+         <i onMouseEnter={(e) => this._toggleServiceStatus()}
+            onMouseLeave={(e) => this._toggleServiceStatus()}
+            className={'footer__general-status-icon fa fa-circle ' + applicationStatusCssLookup[model.applicationStatus]} >
+         </i>
+          <div className={panelClasses}>
+            <ul className='footer__services'>
+              {this._renderServices(model)}
+            </ul>
+          </div>
         </footer>
     );
   }
+
+  _toggleServiceStatus() {
+    router.publishEvent(this.props.modelId, 'toggleServiceStatus', {});
+  };
 
   _renderServices(model:FooterModel) {
     let items = [];
@@ -46,41 +67,33 @@ export default class FooterView extends ViewBase {
 
   _renderService(model:FooterModel, serviceType) {
     let statusSummary:ServiceStatus = model.serviceLookup.services[serviceType];
-
+    let statusSpan;
     if (statusSummary.isConnected) {
       let connectedNodesText = statusSummary.connectedInstanceCount === 1
         ? 'node'
         : 'nodes';
-
-      let title = `${serviceType} ${statusSummary.connectedInstanceCount} ${connectedNodesText} online`;
-      return (
-        <li key={serviceType} className='footer__service' title={title}>
-          <span className='footer__service-label'><i className='footer__icon--online fa fa-circle ' />{statusSummary.connectedInstanceCount}</span>
-        </li>
+      let title = `${serviceType} (${statusSummary.connectedInstanceCount} ${connectedNodesText})`;
+      statusSpan = (
+          <span className='footer__service-label'><i className='footer__icon--online fa fa-circle ' />{title}</span>
       );
     } else {
-      let title = serviceType + ' offline';
-      return (
-        <li key={serviceType} className='footer__service animated infinite fadeIn'>
-          <i className='footer__icon--offline fa fa-circle-o' title={title}/>
-        </li>
-      );
+      statusSpan = (<span className='footer__service-label'><i className='footer__icon--offline fa fa-circle-o'/>{serviceType}</span>);
     }
+    return (
+      <li className='footer__service' key={serviceType}>{statusSpan}</li>
+    );
   }
 
   _renderBrokerStatus(model:FooterModel) {
     let statusSpan;
     if (model.isConnectedToBroker) {
       statusSpan = (
-        <span className='fa-stack animated fadeIn' title='Broker Online'>
-          <i className='fa fa-signal fa-stack-1x'/>
-        </span>);
+        <span className='footer__service-label'><i className='footer__icon--online fa fa-circle ' />broker</span>
+      );
     } else {
       statusSpan = (
-        <span className='fa-stack' title='Broker offline'>
-          <i className='fa fa-signal fa-stack-1x'/>
-          <i className='fa fa-ban fa-stack-2x'/>
-        </span>);
+        <span className='footer__service-label'><i className='footer__icon--offline fa fa-circle-o' />broker</span>
+      );
     }
     return <li className='footer__service' key='broker'>{statusSpan}</li>;
   }

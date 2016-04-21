@@ -1,4 +1,5 @@
 $shell-background-color:      #212A35;
+$analytics-background-color:  #293543;
 $blotter-height:              20vh;
 $header-height:               0px;
 $footer-height:               30px;
@@ -6,6 +7,49 @@ $workspace-height:            calc(100vh - #{$header-height} - #{$blotter-height
 $analytics-height:            $workspace-height;
 $analytics-width:             400px;
 $workspace-width:             calc(100vw - #{$analytics-width});
+$splash-logo-height:          400px;
+$splash-logo-margin-top:      20vh;
+
+@keyframes hideSplashScreen {
+  0% {
+    opacity: 1;
+    width: 100vw;
+    height: 100vh;
+  }
+  99% {
+    opacity: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+  100% {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+}
+
+.shell__splash {
+  background: url('../../common/images/logo-transparent.png'), #1f2a36;
+  background-size: 400px $splash-logo-height;
+  background-position: 50% $splash-logo-margin-top;
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  position: fixed;
+  z-index: 100;
+  animation: hideSplashScreen 1s ease-out 2s forwards;
+}
+
+.shell__splash-message {
+  color: white;
+  position: absolute;
+  bottom: calc(100vh - #{$splash-logo-margin-top} - #{$splash-logo-height} - 50px);
+  left: 0;
+  right: 0;
+  width: 100px;
+  margin: auto;
+  font-size: 18px;
+}
 
 .shell__container {
   background-color: $shell-background-color;
@@ -38,7 +82,7 @@ $workspace-width:             calc(100vw - #{$analytics-width});
     order: 3;
     height: $analytics-height;
     overflow-y: auto;
-    background: #212A35;
+    background: $analytics-background-color;
     padding: 0px;
   }
 

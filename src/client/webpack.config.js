@@ -139,6 +139,10 @@ const webpackConfig = {
       {
         test: /\.svg(\?.*)?$/,
         loader: 'url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=image/svg+xml'
+      },
+      {
+        test: /\.(jpg|jpeg|gif|png)$/,
+        loader: 'file'
       }
     ]
   },
