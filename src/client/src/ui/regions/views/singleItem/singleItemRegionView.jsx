@@ -1,10 +1,7 @@
-import _ from 'lodash';
 import React from 'react';
 import { ViewBase } from '../../../common';
-import { PageContainer } from '../../../common/components';
 import { RegionModel, RegionModelRegistration } from '../../model';
 import { createViewForModel } from '../../';
-import { router } from '../../../../system';
 
 export default class SingleItemRegionView extends ViewBase {
   constructor() {
