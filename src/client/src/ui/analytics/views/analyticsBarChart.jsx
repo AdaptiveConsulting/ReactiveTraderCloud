@@ -21,7 +21,7 @@ export default class PNLChart extends React.Component{
     const containerWidth = 330;
 
     let propName = this.props.isPnL ? CurrencyPairPosition.basePnlName : CurrencyPairPosition.baseTradedAmountName;
-    let chartData = this.props.isPnL ? this.props.series : this._getPositionsDataFromSeries();
+    let chartData = this.props.isPnL ? this.props.series : this._getPositionsDataFromSeries(propName);
 
     let maxMinValues = chartData.reduce( (resultObj, element) => {
       resultObj.max = element[propName] > resultObj.max ? element[propName] : resultObj.max;
@@ -46,8 +46,7 @@ export default class PNLChart extends React.Component{
     return bars;
   };
 
-  _getPositionsDataFromSeries(){
-    let propName = CurrencyPairPosition.baseTradedAmountName;
+  _getPositionsDataFromSeries(propName){
     let positionsPerCcyObj = this.props.series.reduce((resultObj, element) => {
       let ccy = element.symbol.substr(0,3);
       resultObj[ccy] = resultObj[ccy] ? resultObj[ccy] + element[propName] : element[propName];
