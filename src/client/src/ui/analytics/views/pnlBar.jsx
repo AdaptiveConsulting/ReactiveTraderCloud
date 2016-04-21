@@ -22,7 +22,7 @@ export default class PNLBar extends React.Component{
     let indicatorClass = 'analytics__barchart-indicator ';
     indicatorClass += isPositive ? 'analytics__barchart-indicator--positive' : 'analytics__barchart-indicator--negative';
     let amountStr = numeral(baseValue).format();
-    let ccyPrefix = this.props.isPnL ? this.props.model.symbol.substr(0, 3) : '';
+    let ccyPrefix = this.props.isPnL ? this.props.model.ccy : '';
 
     return(
       <div className='analytics__barchart-container'>
