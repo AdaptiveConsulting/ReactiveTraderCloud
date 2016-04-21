@@ -16,7 +16,6 @@ export default class TradeMapper {
   }
 
   mapFromTradeDto(tradeDto:Object, isStateOfTheWorld:boolean) : Trade {
-    debugger;
     let direction = this._mapDirectionFromDto(tradeDto.Direction);
     let status = this._mapTradeStatusFromDto(tradeDto.Status);
     let currencyPair = this._referenceDataService.getCurrencyPair(tradeDto.CurrencyPair);
