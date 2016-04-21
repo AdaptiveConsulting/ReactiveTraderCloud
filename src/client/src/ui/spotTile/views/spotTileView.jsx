@@ -5,7 +5,10 @@ import { router } from '../../../system';
 import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification } from './';
 import { SpotTileModel, NotificationType } from '../model';
 import { Direction } from '../../../services/model';
+import moment from 'moment';
 import './spotTile.scss';
+
+const SPOT_DATE_FORMAT  = 'DD MMM';
 
 export default class SpotTileView extends ViewBase {
 
@@ -22,8 +25,10 @@ export default class SpotTileView extends ViewBase {
       return null;
     }
     let notionalInputClass = classnames('spot-tile__notional', {'hide': model.hasNotification});
+    let spotDateClass = classnames('spot-tile__delivery', {'hide': model.hasNotification});
     let notification = this._tryCreateNotification();
     let priceComponents = this._createPriceComponents();
+    const formattedDate = moment(this.props.valueDate).format(SPOT_DATE_FORMAT);
     const className = classnames(
       'spot-tile',
       'animated',
@@ -51,6 +56,10 @@ export default class SpotTileView extends ViewBase {
               notional={model.notional}
               onChange={(notional) => router.publishEvent(this.props.modelId, 'notionalChanged', { notional:notional })}
               currencyPair={model.currencyPair} />
+            <div className={spotDateClass}>
+              <span className='spot-tile__tenor'>SP</span>
+              <span className='spot-tile__delivery-date'>. {formattedDate}</span>
+            </div>
         </div>
       </div>
     );
