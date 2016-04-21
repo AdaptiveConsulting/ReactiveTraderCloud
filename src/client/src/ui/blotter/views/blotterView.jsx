@@ -60,19 +60,19 @@ export default class BlotterView extends ViewBase {
       <Column
         key='Date'
         header={<Cell>Date</Cell>}
-        cell={props => (<DateCell dateValue={this.state.model.trades[props.rowIndex].tradeDate} />)}
+        cell={props => <DateCell width={props.width} dateValue={this.state.model.trades[props.rowIndex].tradeDate} />}
         flexGrow={1}
         width={150}/>,
       <Column
         key='Dir'
         header={<Cell>Dir</Cell>}
-        cell={props => (<Cell className='blotter__trade-field--emphasized'>{this.state.model.trades[props.rowIndex].direction.name}</Cell>)}
+        cell={props => <Cell className='blotter__trade-field--emphasized'>{this.state.model.trades[props.rowIndex].direction.name}</Cell>}
         flexGrow={1}
         width={50}/>,
       <Column
         key='CCY'
         header={<Cell>CCY</Cell>}
-        cell={props => (<Cell className='blotter__trade-field--emphasized'>{this.state.model.trades[props.rowIndex].currencyPair.symbol}</Cell>)}
+        cell={props => <Cell className='blotter__trade-field--emphasized'>{this.state.model.trades[props.rowIndex].currencyPair.symbol}</Cell>}
         flexGrow={1}
         width={70}/>,
       <Column
@@ -80,41 +80,44 @@ export default class BlotterView extends ViewBase {
         header={<Cell className='blotter__trade-field--align-right'>Notional</Cell>}
         cell={props => {
           let trade = this.state.model.trades[props.rowIndex];
-          return (<NotionalCell
-            className='blotter__trade-field--emphasized blotter__trade-field--align-right'
-            notionalValue={trade.notional}
-            suffix={' ' + trade.currencyPair.base} />);
+          return (
+            <NotionalCell
+              width={props.width}
+              className='blotter__trade-field--emphasized blotter__trade-field--align-right'
+              notionalValue={trade.notional}
+              suffix={' ' + trade.currencyPair.base} />
+          );
         }}
         flexGrow={1}
         width={120}/>,
       <Column
         key='Rate'
         header={<Cell className='blotter__trade-field--align-right'>Rate</Cell>}
-        cell={props => (<Cell className='blotter__trade-field--emphasized blotter__trade-field--align-right'>{this.state.model.trades[props.rowIndex].spotRate}</Cell>)}
+        cell={props => <Cell className='blotter__trade-field--emphasized blotter__trade-field--align-right'>{this.state.model.trades[props.rowIndex].spotRate}</Cell>}
         flexGrow={1}
         width={80}/>,
       <Column
         key='Status'
         header={<Cell>Status</Cell>}
-        cell={props => (<Cell className='blotter__trade-status'>{this.state.model.trades[props.rowIndex].status.name}</Cell>)}
+        cell={props => <Cell className='blotter__trade-status'>{this.state.model.trades[props.rowIndex].status.name}</Cell>}
         flexGrow={1}
         width={80}/>,
       <Column
         key='Value date'
         header={<Cell>Value date</Cell>}
-        cell={props => (<DateCell prefix='SP. ' format='%d %b' dateValue={this.state.model.trades[props.rowIndex].valueDate} />)}
+        cell={props => <DateCell width={props.width} prefix='SP. ' format='%d %b' dateValue={this.state.model.trades[props.rowIndex].valueDate} />}
         flexGrow={1}
         width={100}/>,
       <Column
         key='Trader'
         header={<Cell>Trader</Cell>}
-        cell={props => (<Cell>{this.state.model.trades[props.rowIndex].traderName}</Cell>)}
+        cell={props => <Cell>{this.state.model.trades[props.rowIndex].traderName}</Cell>}
         flexGrow={1}
         width={80}/>,
       <Column
         key='Id'
         header={<Cell>Trade #</Cell>}
-        cell={props => (<Cell>{this.state.model.trades[props.rowIndex].tradeId}</Cell>)}
+        cell={props => <Cell>{this.state.model.trades[props.rowIndex].tradeId}</Cell>}
         flexGrow={1}
         width={80}/>
     ];
