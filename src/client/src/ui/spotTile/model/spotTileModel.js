@@ -132,7 +132,7 @@ export default class SpotTileModel extends ModelBase {
                 : TradeExecutionNotification.createForSuccess(response.trade);
               if (!response.hasError && response.trade.status === TradeStatus.Done) {
                 this._toastNotificationTimerDisposable.setDisposable(
-                  this._schedulerService.async(DISMISS_NOTIFICATION_AFTER_X_IN_MS, () => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {}))
+                  this._schedulerService.async.scheduleFuture('', DISMISS_NOTIFICATION_AFTER_X_IN_MS, () => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {}))
                 );
               }
             },
