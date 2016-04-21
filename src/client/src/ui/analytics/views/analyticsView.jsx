@@ -6,7 +6,7 @@ import { ViewBase } from '../../common';
 import { AnalyticsModel, PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
-import PNLChart from './pnlChart.jsx';
+import PNLChart from './analyticsBarChart.jsx';
 import numeral from 'numeral';
 import './analytics.scss';
 

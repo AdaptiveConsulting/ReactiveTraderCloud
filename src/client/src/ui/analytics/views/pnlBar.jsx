@@ -10,7 +10,7 @@ export default class PNLBar extends React.Component{
     model: React.PropTypes.object,
     isPnL: React.PropTypes.bool,
     maxMinValues: React.PropTypes.object,
-    ratio: React.PropTypes.ratio,
+    ratio: React.PropTypes.number,
     containerWidth: React.PropTypes.number
   }
 
@@ -22,12 +22,13 @@ export default class PNLBar extends React.Component{
     let indicatorClass = 'analytics__barchart-indicator ';
     indicatorClass += isPositive ? 'analytics__barchart-indicator--positive' : 'analytics__barchart-indicator--negative';
     let amountStr = numeral(baseValue).format();
+    let ccyPrefix = this.props.isPnL ? this.props.model.symbol.substr(0, 3) : '';
 
     return(
       <div className='analytics__barchart-container'>
         <div>
           <label className='analytics__barchart-label'>{this.props.model.symbol}</label>
-          <label className='analytics__barchart-amount'>{amountStr}</label>
+          <label className='analytics__barchart-amount'>{ccyPrefix} {amountStr}</label>
           <span>
             <svg id='container' className='analytics__barchart-bar' width={this.props.containerWidth}>
               <g>
