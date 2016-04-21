@@ -53,7 +53,7 @@ export default class PNLChart extends React.Component{
       resultObj[el.ccy] = resultObj[el.ccy] ? resultObj[el.ccy] + el[baseAmtPropName] : el[baseAmtPropName];
       return resultObj;
     }, {});
-
+    
     let positionsPerCcyArr = _.map(positionsPerCcyObj, (val, key) => {
       return {symbol: key, [baseAmtPropName]: val};
     });
