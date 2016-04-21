@@ -99,7 +99,7 @@ class Bootstrapper {
     let spotTileLoader = new SpotTileLoader(
       espRouter,
       this._referenceDataService,
-      new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager)
+      new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager, this._schedulerService)
     );
     spotTileLoader.beginLoadTiles();
 

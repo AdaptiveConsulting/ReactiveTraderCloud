@@ -6,6 +6,7 @@ import { ModelBase, RegionManagerHelper } from '../../common';
 import { TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { TradeStatus } from '../../../services/model';
+import { SchedulerService, } from '../../../system';
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 4000;
 
 import {
@@ -26,6 +27,7 @@ export default class SpotTileModel extends ModelBase {
   _executionService:ExecutionService;
   _executionDisposable:Rx.SerialDisposable;
   _priceSubscriptionDisposable:Rx.SerialDisposable;
+  _toastNotificationTimerDisposable:Rx.SerialDisposable;
   _log:logger.Logger;
   _regionManagerHelper:RegionManagerHelper;
 
@@ -45,23 +47,26 @@ export default class SpotTileModel extends ModelBase {
               router:Router,
               pricingService:PricingService,
               executionService:ExecutionService,
-              regionManager:RegionManager) {
+              regionManager:RegionManager,
+              schedulerService:SchedulerService) {
     super(modelId, router);
     this._log = logger.create(`${this.modelId}:${currencyPair.symbol}`);// can't change ccy pair in this demo app, so reasonable to use the symbol in the logger name
     this._pricingService = pricingService;
     this._executionService = executionService;
     this._regionManager = regionManager;
+    this._schedulerService = schedulerService;
     this.currencyPair = currencyPair;
     this._executionDisposable = new Rx.SerialDisposable();
     this.addDisposable(this._executionDisposable);
     this._priceSubscriptionDisposable = new Rx.SerialDisposable();
+    this._toastNotificationTimerDisposable = new Rx.SerialDisposable();
     this.addDisposable(this._priceSubscriptionDisposable);
+    this.addDisposable(this._toastNotificationTimerDisposable);
 
     this.tileTitle = `${currencyPair.base} / ${currencyPair.terms}`;
     this.notification = null;
     this.notional = 1000000;
     this.currentSpotPrice = null;
-    this.notificationTimer = null;
 
     // If things get much messier we could look at introducing a state machine, but for now we really only have these 3 conditions to worry about
     this.pricingConnected = false;
@@ -114,15 +119,10 @@ export default class SpotTileModel extends ModelBase {
       let request = this._createTradeRequest(e.direction);
       this._log.info(`Will execute ${request.toString()}`);
       this.isTradeExecutionInFlight = true;
-      window.clearTimeout(this.notificationTimer);
+
       this._executionDisposable.setDisposable(
         this._executionService.executeTrade(request)
-          .do(response => {
-            if (!response.hasError && response.trade.status === TradeStatus.Done) {
-              this.notificationTimer = setTimeout(() => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {}), DISMISS_NOTIFICATION_AFTER_X_IN_MS);
-            }
-          })
-          .subscribeWithRouter(
+         .subscribeWithRouter(
             this.router,
             this.modelId,
             (response:ExecuteTradeResponse) => {
@@ -130,6 +130,11 @@ export default class SpotTileModel extends ModelBase {
               this.notification = response.hasError
                 ? TradeExecutionNotification.createForError(response.error)
                 : TradeExecutionNotification.createForSuccess(response.trade);
+              if (!response.hasError && response.trade.status === TradeStatus.Done) {
+                this._toastNotificationTimerDisposable.setDisposable(
+                  this._schedulerService.async(DISMISS_NOTIFICATION_AFTER_X_IN_MS, () => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {}))
+                );
+              }
             },
             err => {
               this.isTradeExecutionInFlight = false;
