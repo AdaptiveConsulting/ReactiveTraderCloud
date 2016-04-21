@@ -1,4 +1,5 @@
 $shell-background-color:      #212A35;
+$analytics-background-color:  #293543;
 $blotter-height:              20vh;
 $header-height:               0px;
 $footer-height:               30px;
@@ -81,7 +82,7 @@ $splash-logo-margin-top:      20vh;
     order: 3;
     height: $analytics-height;
     overflow-y: auto;
-    background: #212A35;
+    background: $analytics-background-color;
     padding: 0px;
   }
 
