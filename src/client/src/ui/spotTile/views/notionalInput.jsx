@@ -5,9 +5,8 @@ import classnames from 'classnames';
 import { CurrencyPair } from '../../../services/model';
 import './notionalInput.scss';
 import $ from 'jquery';
-const MONTHS         = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      NUMERAL_FORMAT = '0,000,000[.]00',
-      DOT            = '.';
+const NUMERAL_FORMAT    = '0,000,000[.]00',
+      DOT               = '.';
 
 /**
  * @Class Sizer
@@ -18,16 +17,9 @@ export default class NotionalInput extends React.Component {
     className: React.PropTypes.string,
     notional: React.PropTypes.number,
     currencyPair: React.PropTypes.instanceOf(CurrencyPair),
+    valueDate: React.PropTypes.date,
     onChange: React.PropTypes.func
   };
-
-  /**
-   * When we mount, get latest date and construct spot date
-   */
-  componentWillMount(){
-    const today = new Date;
-    this.SPOTDATE = [today.getDate(), MONTHS[today.getMonth()]].join(' ');
-  }
 
   shouldComponentUpdate(nextProps, nextState){
     return this.props.className !== nextProps.className ||
@@ -46,10 +38,6 @@ export default class NotionalInput extends React.Component {
       <div className={classes}>
         <label className='notional__currency-pair' >{this.props.currencyPair.base}</label>
         <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onClick={(e) => this._select()} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
-        <div className='notional__delivery'>
-          <span className='notional__tenor'>SP</span>
-          <span className='notional__delivery-date'>. {this.SPOTDATE}</span>
-        </div>
       </div>
     );
   }
