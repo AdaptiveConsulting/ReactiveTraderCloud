@@ -53,12 +53,6 @@ export default class BlotterModel extends ModelBase {
     this._regionManagerHelper.popout(850, 280);
   }
 
-  preProcess() {
-    this.trades.forEach((trade:Trade) => {
-      trade.isNew = false;
-    });
-  }
-
   _subscribeToTradeStream() {
     this._disposables.add(
       this._blotterService.getTradesStream()
@@ -69,10 +63,11 @@ export default class BlotterModel extends ModelBase {
             _.forEach(trades, (trade:Trade) => {
               let exists = _.findWhere(this.trades, {tradeId: trade.tradeId});
               if (exists) {
+                trade.isNew = false;
                 this.trades[_.indexOf(this.trades, exists)] = trade;
               }
               else {
-                trade.isNew = true;
+                trade.isNew &= true; // dont flag trades as new if there are coming from the state of the world
                 this.trades.unshift(trade);
               }
             });

@@ -39,7 +39,7 @@ export default class ExecutionService extends ServiceBase {
                   _this._serviceClient
                     .createRequestResponseOperation('executeTrade', executeTradeRequest)
                     .map(dto => {
-                      var trade = _this._tradeMapper.mapFromDto(dto.Trade);
+                      var trade = _this._tradeMapper.mapFromTradeDto(dto.Trade);
                       _log.info(`execute response received for: ${executeTradeRequest.toString()}. Status: ${trade.status}`, dto);
                       return ExecuteTradeResponse.create(trade);
                     })
