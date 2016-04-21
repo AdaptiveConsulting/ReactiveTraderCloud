@@ -1,5 +1,6 @@
 import React from 'react';
 import { TradeExecutionNotification } from '../model';
+import { TradeStatus } from '../../../services/model';
 import classnames from 'classnames';
 import './tradeNotification.scss';
 
@@ -29,7 +30,7 @@ export default class TradeNotification extends React.Component {
         'trade-notification',
         className,
         {
-          'trade-notification--rejected': tradeExecutionNotification.status.toLowerCase() === 'rejected'
+          'trade-notification--rejected': tradeExecutionNotification.status === TradeStatus.Rejected
         }
       );
       return (

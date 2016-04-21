@@ -9,13 +9,13 @@ export default class TradeMapper {
     this._referenceDataService = referenceDataService;
   }
 
-  mapFromDtoArray(dtos:Array<Object>) : Array<Trade> {
+  mapFromDto(dto:Object) : Array<Trade> {
     return _.map(
-      dtos,
-      dto => this.mapFromDto(dto));
+      dto.Trades,
+      trade => this.mapFromTradeDto(trade, dto.IsStateOfTheWorld));
   }
 
-  mapFromDto(tradeDto:Object) : Trade {
+  mapFromTradeDto(tradeDto:Object, isStateOfTheWorld:boolean) : Trade {
     let direction = this._mapDirectionFromDto(tradeDto.Direction);
     let status = this._mapTradeStatusFromDto(tradeDto.Status);
     let currencyPair = this._referenceDataService.getCurrencyPair(tradeDto.CurrencyPair);
@@ -29,7 +29,8 @@ export default class TradeMapper {
       tradeDto.SpotRate,
       new Date(tradeDto.TradeDate),
       new Date(tradeDto.ValueDate),
-      status
+      status,
+      !isStateOfTheWorld
     );
   }
 

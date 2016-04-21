@@ -44,10 +44,18 @@ class Bootstrapper {
     this.displayUi();
   }
 
+  get endpointURL() {
+    const protocol = (location.protocol === 'https:') ? 'wss' : 'ws';
+    const url = config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
+
+    return `${protocol}://${url}:8080/ws`;
+  }
+
   startServices() {
-    let user:User = FakeUserRepository.currentUser;
-    let serverEndPointUrl = config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
-    let url = 'ws://' + serverEndPointUrl + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
+    const user:User = FakeUserRepository.currentUser;
+    const realm = 'com.weareadaptive.reactivetrader';
+    const url = this.endpointURL;
+
     this._schedulerService = new SchedulerService();
     this._connection = new Connection(
       user.code,
@@ -99,7 +107,7 @@ class Bootstrapper {
     let spotTileLoader = new SpotTileLoader(
       espRouter,
       this._referenceDataService,
-      new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager)
+      new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager, this._schedulerService)
     );
     spotTileLoader.beginLoadTiles();
 
