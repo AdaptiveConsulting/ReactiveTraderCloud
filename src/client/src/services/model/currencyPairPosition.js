@@ -2,13 +2,13 @@ import CurrencyPair from './currencyPair';
 
 export default class CurrencyPairPosition {
   _symbol:string;
-  _currencyPair:string;
+  _currencyPair:CurrencyPair;
   _basePnl:number;
   _baseTradedAmount:number;
 
-  constructor(symbol:string, basePnl:number, baseTradedAmount:number) {
+  constructor(symbol:string, basePnl:number, baseTradedAmount:number, currencyPair:CurrencyPair) {
     this._symbol = symbol;
-    this._currencyPair = new CurrencyPair(symbol);
+    this._currencyPair = currencyPair;
     this._basePnl = basePnl;
     this._baseTradedAmount = baseTradedAmount;
   }

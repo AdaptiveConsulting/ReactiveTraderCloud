@@ -28,11 +28,11 @@ export default class PNLChart extends React.Component{
     let minVal = _.min(baseVals);
 
     let ratio = (containerWidth/2) / Math.max(Math.abs(maxVal), Math.abs(minVal));
-    let bars = chartData.map((element, index) => {
+    let bars = chartData.map((ccyPairPosition, index) => {
       return (
         <PNLBar key={index}
                 index={index}
-                model={element}
+                model={ccyPairPosition}
                 isPnL={this.props.isPnL}
                 ratio={ratio}
                 containerWidth={containerWidth}/>
@@ -41,7 +41,7 @@ export default class PNLChart extends React.Component{
     return bars;
   };
 
-  _getPositionsDataFromSeries(baseAmtPropName){
+  _getPositionsDataFromSeries(baseAmtPropName):Array<{symbol:string, baseAmount:number}>{
     let positionsPerCcyObj = this.props.series.reduce((resultObj, el) => {
 
       //aggregate amount per ccy;

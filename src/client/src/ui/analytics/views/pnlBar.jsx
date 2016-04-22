@@ -18,8 +18,8 @@ export default class PNLBar extends React.Component{
     let isPositive = baseValue > 0;
     let displayValue = Math.abs(baseValue * this.props.ratio);
     let xPos = isPositive ? this.props.containerWidth/2 : (this.props.containerWidth/2 - displayValue);
-    let indicatorClass = 'analytics__barchart-indicator ';
-    indicatorClass += isPositive ? 'analytics__barchart-indicator--positive' : 'analytics__barchart-indicator--negative';
+    let indicatorClassName = 'analytics__barchart-indicator ';
+    indicatorClassName += isPositive ? 'analytics__barchart-indicator--positive' : 'analytics__barchart-indicator--negative';
     let amountStr = numeral(baseValue).format();
     let ccyPrefix = this.props.isPnL ? this.props.model.ccy : '';
 
@@ -32,7 +32,7 @@ export default class PNLBar extends React.Component{
             <svg id='container' className='analytics__barchart-bar' width={this.props.containerWidth}>
               <g>
                 <rect width={this.props.containerWidth} className='analytics__barchart-bar-background'></rect>
-                <rect width={displayValue} className={indicatorClass} x={xPos}></rect>
+                <rect width={displayValue} className={indicatorClassName} x={xPos}></rect>
                 </g>
             </svg>
             <label className='analytics__barchart-label'></label>
