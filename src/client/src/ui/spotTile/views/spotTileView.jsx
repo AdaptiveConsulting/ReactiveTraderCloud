@@ -34,7 +34,8 @@ export default class SpotTileView extends ViewBase {
       'animated',
       'flipInX',
       {
-        'spot-tile--stale': !model.pricingConnected || !model.executionConnected,
+        'spot-tile--stale': !model.pricingConnected,
+        'spot-tile--readonly': !model.executionConnected,
         'spot-tile--executing': model.isTradeExecutionInFlight,
         'spot-tile--error': model.hasNotification && model.notification.error
       }
@@ -74,9 +75,9 @@ export default class SpotTileView extends ViewBase {
     return (
       <div className={pricingContainerClass}>
         <PriceButton
-          className='spot-tile__price--bid'
+          className='spot-tile__price spot-tile__price--bid'
           direction={Direction.Sell}
-          onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Sell })}
+          onExecute={() => this._tryExecuteTrade(Direction.Sell)}
           rate={model.currentSpotPrice.bid} />
         <div className='spot-tile__price-movement'>
           <PriceMovementIndicator
@@ -84,12 +85,18 @@ export default class SpotTileView extends ViewBase {
             spread={model.currentSpotPrice.spread} />
         </div>
         <PriceButton
-          className='spot-tile__price--ask'
+          className='spot-tile__price spot-tile__price--ask'
           direction={Direction.Buy}
-          onExecute={() => router.publishEvent(this.props.modelId, 'executeTrade', { direction:Direction.Buy })}
+          onExecute={() => this._tryExecuteTrade(Direction.Buy)}
           rate={model.currentSpotPrice.ask} />
       </div>
     );
+  }
+
+  _tryExecuteTrade(direction: Direction) {
+    if (this.state.model.executionConnected) {
+      router.publishEvent(this.props.modelId, 'executeTrade', { direction });
+    }
   }
 
   _tryCreateNotification() {
