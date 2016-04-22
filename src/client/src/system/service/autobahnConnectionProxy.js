@@ -10,6 +10,8 @@ export default class AutobahnConnectionProxy {
 
   constructor(url:string, realm:string) {
     const useSecure = location.protocol === 'https:';
+    const securePort = 443;
+    const defaultPort = 8080;
     this.connection = new autobahn.Connection({
       realm: realm,
       use_es6_promises: true,
@@ -17,11 +19,11 @@ export default class AutobahnConnectionProxy {
       transports: [
         {
           type: 'websocket',
-          url: `${useSecure ? 'wss' : 'ws'}://${url}/ws`
+          url: useSecure ? `wss://${url}:${securePort}/ws` : `ws://${url}:${defaultPort}/ws`
         },
         {
           type: 'longpoll',
-          url: `${useSecure ? 'https' : 'http'}://${url}/lp`
+          url: useSecure ? `https://${url}:${securePort}/lp` : `http://${url}:${defaultPort}/lp`
         }
       ]
     });

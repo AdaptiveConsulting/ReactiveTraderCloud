@@ -45,8 +45,7 @@ class Bootstrapper {
   }
 
   get endpointURL() {
-    const url = config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
-    return `${url}:8080`;
+    return config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
   }
 
   startServices() {
