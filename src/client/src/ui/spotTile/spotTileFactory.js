@@ -4,6 +4,7 @@ import { SpotTileModel } from './model';
 import { PricingService, ExecutionService } from '../../services';
 import { CurrencyPair } from '../../services/model';
 import { RegionManager, RegionNames } from '../regions';
+import { SchedulerService, } from '../../system';
 
 let modelIdKey = 1;
 
@@ -17,17 +18,20 @@ export default class SpotTileFactory {
   _pricingService:PricingService;
   _executionService:ExecutionService;
   _regionManager:RegionManager;
+  _schedulerService:SchedulerService;
 
   constructor(
     router:Router,
     pricingService:PricingService,
     executionService:ExecutionService,
-    regionManager:RegionManager
+    regionManager:RegionManager,
+    schedulerService: SchedulerService
   ) {
     this._router = router;
     this._pricingService = pricingService;
-    this._executionService =executionService;
+    this._executionService = executionService;
     this._regionManager = regionManager;
+    this._schedulerService = schedulerService;
   }
 
   createTileModel(currencyPair:CurrencyPair) {
@@ -37,7 +41,8 @@ export default class SpotTileFactory {
       this._router,
       this._pricingService,
       this._executionService,
-      this._regionManager
+      this._regionManager,
+      this._schedulerService
     );
     spotTileModel.observeEvents();
     return spotTileModel;

@@ -58,7 +58,6 @@ $splash-logo-margin-top:      20vh;
   justify-content: space-around;
   height: 100vh;
   width: 100vw;
-  font-family: 'Rubik Light', sans-serif;
   & * {
     box-sizing: border-box;
   }
@@ -75,6 +74,7 @@ $splash-logo-margin-top:      20vh;
     order: 2;
     height: $workspace-height;
     overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .analytics {

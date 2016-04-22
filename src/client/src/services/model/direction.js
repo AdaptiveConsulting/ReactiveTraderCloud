@@ -1,8 +1,5 @@
 // TODO this should be called Side
-export default class Direction {
-
-  static _buy = new Direction('Buy');
-  static _sell = new Direction('Sell');
+class Direction {
 
   name:string;
 
@@ -18,3 +15,8 @@ export default class Direction {
     this.name = name;
   }
 }
+
+Direction._buy = new Direction('Buy');
+Direction._sell = new Direction('Sell');
+
+export default Direction;

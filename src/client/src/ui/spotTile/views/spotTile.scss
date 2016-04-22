@@ -10,7 +10,7 @@ $price-width: calc(45% + 10px);
   &:hover {
     background-color: #294464;
     .spot-tile__icon--tearoff,
-    .notional__delivery-date {
+    .spot-tile__delivery-date {
       display: inline;
     }
   }
@@ -21,7 +21,7 @@ $price-width: calc(45% + 10px);
   .spot-tile__execution-label,
   .spot-tile__icon--disconnected,
   .spot-tile__stale-label,
-  .notional__delivery-date {
+  .spot-tile__delivery-date {
     display: none;
   }
   &.spot-tile--stale {
@@ -130,3 +130,11 @@ $price-width: calc(45% + 10px);
   position: absolute;
   top: 50px;
 }
+
+
+.spot-tile__delivery {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
