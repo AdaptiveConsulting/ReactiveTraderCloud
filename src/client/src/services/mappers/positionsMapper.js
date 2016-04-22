@@ -1,7 +1,13 @@
 import _ from 'lodash';
 import { PositionUpdates, CurrencyPairPosition, HistoricPosition } from '../model';
+import { ReferenceDataService } from '../';
 
 export default class PositionsMapper {
+  _referenceDataService:ReferenceDataService;
+
+  constructor(referenceDataService:ReferenceDataService){
+    this._referenceDataService = referenceDataService;
+  }
 
   mapFromDto(dto:Object):PositionUpdates {
     let positions = this._mapPositionsFromDto(dto.CurrentPositions);
@@ -15,7 +21,8 @@ export default class PositionsMapper {
       dto => new CurrencyPairPosition(
         dto.Symbol,
         dto.BasePnl,
-        dto.BaseTradedAmount)
+        dto.BaseTradedAmount,
+        this._referenceDataService.getCurrencyPair(dto.Symbol))
     );
   }
 

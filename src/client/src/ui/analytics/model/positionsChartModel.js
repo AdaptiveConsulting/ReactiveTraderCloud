@@ -1,6 +1,4 @@
 import { observeEvent } from 'esp-js/src';
-import { Guard } from '../../../system';
-import { PricePoint } from './';
 import {  CurrencyPairPosition } from '../../../services/model';
 import { logger } from '../../../system';
 

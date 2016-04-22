@@ -1,6 +1,7 @@
 $positive-color:    #3FCF1E;
 $negative-color:    #CC3350;
-$bar-bg-color:      gray;
+$barchar-text-color:gray;
+$bar-bg-color:      #414D5C;
 $container-bg-color:#293543;
 $highlight-color:   #eee;
 $stroke-color:      #212a35;
@@ -29,7 +30,7 @@ $default-padding: 10px;
 .analytics__header {
   font-size: 16px;
   color: $analytics-header-colour;
-  background: #293543;
+  background: $container-bg-color;
   padding: 10px;
 }
 
@@ -63,12 +64,12 @@ $default-padding: 10px;
 }
 
 .analytics__barchart-container{
-  color:$bar-bg-color;
   vertical-align: middle;
   padding-top: 2px;
   padding-bottom: 12px;
+  color: $barchar-text-color;
   &:hover{
-    color:$highlight-color
+    color:$highlight-color;
   }
 }
 
@@ -77,7 +78,7 @@ $default-padding: 10px;
 }
 
 .analytics__barchart-bar-background{
-  fill: #414D5C;
+  fill: $bar-bg-color;
   height: $bar-height;
 }
 
@@ -123,11 +124,11 @@ $default-padding: 10px;
 }
 
 .analytics__buttons-tab-btn{
-  color: $bar-bg-color;
+  color: $barchar-text-color;
   font-size: 16px;
   position: relative;
   padding: 10px 10px 6px 10px;
-  background: #293543;
+  background: $container-bg-color;
   &:hover{
     background: #294464;
   }
@@ -135,7 +136,7 @@ $default-padding: 10px;
 
 .analytics__buttons-tab-btn--selected{
   color: $highlight-color;
-  background: #212A35;
+  background: $stroke-color;
 }
 
 .new-chart-area{

@@ -1,17 +1,17 @@
-import _ from 'lodash';
 import Rx from 'rx';
 import { Connection, ServiceBase } from '../system/service';
-import { AnalyticsRequest, PositionUpdates, CurrencyPairPosition, HistoricPosition } from './model';
+import { AnalyticsRequest, PositionUpdates } from './model';
 import { PositionsMapper } from './mappers';
 import { Guard, logger, SchedulerService, RetryPolicy } from '../system';
+import { ReferenceDataService } from './';
 
 var _log:logger.Logger = logger.create('AnalyticsService');
 
 export default class AnalyticsService extends ServiceBase {
 
-  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService) {
+  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService, referenceDataService:ReferenceDataService) {
     super(serviceType, connection, schedulerService);
-    this._positionsMapper = new PositionsMapper();
+    this._positionsMapper = new PositionsMapper(referenceDataService);
   }
 
   getAnalyticsStream(analyticsRequest:AnalyticsRequest):Rx.Observable<PositionUpdates> {
