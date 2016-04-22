@@ -30,7 +30,7 @@ export default class TradeNotification extends React.Component {
         'trade-notification',
         className,
         {
-          'trade-notification--rejected': tradeExecutionNotification.status === TradeStatus.Rejected
+          'trade-notification--rejected': tradeExecutionNotification.status === TradeStatus.Rejected.name
         }
       );
       return (
