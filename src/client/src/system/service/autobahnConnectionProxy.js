@@ -9,11 +9,21 @@ export default class AutobahnConnectionProxy {
   connection:autobahn.Connection;
 
   constructor(url:string, realm:string) {
+    const useSecure = location.protocol === 'https:';
     this.connection = new autobahn.Connection({
-      url: url,
       realm: realm,
       use_es6_promises: true,
-      max_retries: -1 // unlimited retries
+      max_retries: -1, // unlimited retries,
+      transports: [
+        {
+          type: 'websocket',
+          url: `${useSecure ? 'wss' : 'ws'}://${url}/ws`
+        },
+        {
+          type: 'longpoll',
+          url: `${useSecure ? 'https' : 'http'}://${url}/lp`
+        }
+      ]
     });
   }
 
