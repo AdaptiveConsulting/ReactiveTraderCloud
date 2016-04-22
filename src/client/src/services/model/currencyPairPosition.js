@@ -25,7 +25,7 @@ export default class CurrencyPairPosition {
     return this._symbol;
   }
 
-  get currencyPair():string {
+  get currencyPair():CurrencyPair {
     return this._currencyPair;
   }
 

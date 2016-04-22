@@ -42,17 +42,19 @@ export default class PNLChart extends React.Component{
   };
 
   _getPositionsDataFromSeries(baseAmtPropName):Array<{symbol:string, baseAmount:number}>{
-    let positionsPerCcyObj = this.props.series.reduce((resultObj, el) => {
+    let positionsPerCcyObj = this.props.series.reduce((aggregatedPositionsObj, ccyPairPosition) => {
 
       //aggregate amount per ccy;
-      let baseCurrency = el.currencyPair.base;
-      resultObj[baseCurrency] = resultObj[baseCurrency] ? resultObj[baseCurrency] + el[baseAmtPropName] : el[baseAmtPropName];
-      return resultObj;
+      let baseCurrency = ccyPairPosition.currencyPair.base;
+      aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
+        ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmtPropName] : ccyPairPosition[baseAmtPropName];
+
+      return aggregatedPositionsObj;
     }, {});
 
     //map the object to the array of ccy-amount pairs and exclude 0 base amount
     return _.map(positionsPerCcyObj, (val, key) => {
       return {symbol: key, [baseAmtPropName]: val};
-    }).filter((el, index) => el[baseAmtPropName] !== 0);
+    }).filter((positionPerCcy, index) => positionPerCcy[baseAmtPropName] !== 0);
   }
 }
