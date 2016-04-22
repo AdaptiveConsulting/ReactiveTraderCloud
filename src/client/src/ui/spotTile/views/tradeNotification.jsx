@@ -30,12 +30,12 @@ export default class TradeNotification extends React.Component {
         'trade-notification',
         className,
         {
-          'trade-notification--rejected': tradeExecutionNotification.status === TradeStatus.Rejected.name
+          'trade-notification--rejected': tradeExecutionNotification.status === TradeStatus.Rejected
         }
       );
       return (
         <div className={classNames}>
-          <span className='trade-notification__trade-status'>{tradeExecutionNotification.status}</span>
+          <span className='trade-notification__trade-status'>{tradeExecutionNotification.status.name}</span>
           <span className='trade-notification__label'>{tradeExecutionNotification.direction} </span><span className='trade-notification__value'>{tradeExecutionNotification.dealtCurrency} {tradeExecutionNotification.notional}</span><br/>
           <span className='trade-notification__label'> vs </span><span className='trade-notification__value'>{tradeExecutionNotification.termsCurrency}</span>
           <span className='trade-notification__label'> at </span><span className='trade-notification__value'>{tradeExecutionNotification.spotRate}</span><br/>
