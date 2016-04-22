@@ -28,7 +28,7 @@ export default class SpotTileView extends ViewBase {
     let spotDateClass = classnames('spot-tile__delivery', {'hide': model.hasNotification});
     let notification = this._tryCreateNotification();
     let priceComponents = this._createPriceComponents();
-    const formattedDate = moment(this.props.valueDate).format(SPOT_DATE_FORMAT);
+    const formattedDate = model.currentSpotPrice ? moment(model.currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT) : '';
     const className = classnames(
       'spot-tile',
       'animated',
