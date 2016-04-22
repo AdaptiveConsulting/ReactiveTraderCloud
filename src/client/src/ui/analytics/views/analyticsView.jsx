@@ -6,7 +6,7 @@ import { ViewBase } from '../../common';
 import { AnalyticsModel, PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
-import PNLChart from './analyticsBarChart.jsx';
+import AnalyticsBarChart from './analyticsBarChart.jsx';
 import numeral from 'numeral';
 import './analytics.scss';
 
@@ -117,7 +117,7 @@ export default class AnalyticsView extends ViewBase {
           </div>
         </div>
         <div className='analytics__chart-container clearfix pnlchart'>
-          <PNLChart series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
+          <AnalyticsBarChart series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
         </div>
       </div>
     );

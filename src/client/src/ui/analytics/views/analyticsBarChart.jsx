@@ -3,7 +3,7 @@ import PNLBar from './pnlBar.jsx';
 import {  CurrencyPairPosition } from '../../../services/model';
 import _ from 'lodash';
 
-export default class PNLChart extends React.Component{
+export default class AnalyticsBarChart extends React.Component{
 
   static propTypes = {
     series: React.PropTypes.array,
