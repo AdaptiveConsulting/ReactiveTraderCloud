@@ -45,7 +45,8 @@ export default class PNLChart extends React.Component{
     let positionsPerCcyObj = this.props.series.reduce((resultObj, el) => {
 
       //aggregate amount per ccy;
-      resultObj[el.ccy] = resultObj[el.ccy] ? resultObj[el.ccy] + el[baseAmtPropName] : el[baseAmtPropName];
+      let baseCurrency = el.currencyPair.base;
+      resultObj[baseCurrency] = resultObj[baseCurrency] ? resultObj[baseCurrency] + el[baseAmtPropName] : el[baseAmtPropName];
       return resultObj;
     }, {});
 
