@@ -116,7 +116,7 @@ $splash-logo-margin-top:      20vh;
 
 .shell__footer {
   flex: 1 100vw;
-  height: $footer-height;
+  min-height: $footer-height;
   order: 5;
 }
 
@@ -138,16 +138,18 @@ $splash-logo-margin-top:      20vh;
 
   .shell__analytics,
   .shell__workspace {
-    flex: 1;
     height: auto;
   }
 
-  .shell__blotter {
+  .shell__analytics,
+  .shell__workspace,
+  .shell__blotter,
+  .shell__footer {
     flex: 1;
   }
 
-  .shell__footer {
-    flex: 1;
+  .shell__blotter {
+    min-height: 400px
   }
 }
 
