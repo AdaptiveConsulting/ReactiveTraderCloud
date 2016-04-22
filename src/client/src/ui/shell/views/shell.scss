@@ -41,6 +41,7 @@ $splash-logo-margin-top:      20vh;
 }
 
 .shell__splash-message {
+  text-align: center;
   color: white;
   position: absolute;
   bottom: calc(100vh - #{$splash-logo-margin-top} - #{$splash-logo-height} - 50px);

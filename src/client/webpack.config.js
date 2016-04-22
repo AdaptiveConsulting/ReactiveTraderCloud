@@ -60,6 +60,9 @@ const webpackConfig = {
     ]),
     new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function(module){
       return module.resource && module.resource.indexOf('node_modules') !== -1;
+    }),
+    new webpack.DefinePlugin({
+      __VERSION__: JSON.stringify(require(path.resolve(__dirname, './package.json')).version)
     })
   ],
   // these break for node 5.3+ when building WS stuff
