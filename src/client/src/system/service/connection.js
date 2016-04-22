@@ -6,6 +6,8 @@ import AutobahnConnectionProxy from './autobahnConnectionProxy';
 import ServiceInstanceStatus from './serviceInstanceStatus';
 import SchedulerService from '../schedulerService';
 import ConnectionStatus from './connectionStatus';
+import {ConnectionType} from '../../services/model';
+import {ConnectionTypeMapper} from '../../services/mappers';
 
 const _log:logger.Logger = logger.create('Connection');
 
@@ -21,6 +23,9 @@ export default class Connection extends DisposableBase {
   _isConnected:boolean;
   _schedulerService:SchedulerService;
   _autoDisconnectDisposable:Rx.SerialDisposable;
+  _connectionType:ConnectionType;
+  _connectionUrl:string;
+  _connectionTypeMapper:ConnectionTypeMapper;
 
   constructor(userName:string, autobahn:AutobahnConnectionProxy, schedulerService:SchedulerService) {
     super();
@@ -31,11 +36,13 @@ export default class Connection extends DisposableBase {
     this._autobahn = autobahn;
     this._connectionStatusSubject = new Rx.BehaviorSubject(ConnectionStatus.idle);
     this._serviceStatusSubject = new Rx.BehaviorSubject(false);
+    this._connectionTypeMapper = new ConnectionTypeMapper();
     this._connectCalled = false;
     this._isConnected = false;
     this._schedulerService = schedulerService;
     this._autoDisconnectDisposable = new Rx.SerialDisposable();
     this._connectionUrl = '';
+    this._connectionType = ConnectionType.Unknown;
     this.addDisposable(this._autoDisconnectDisposable);
   }
 
@@ -69,6 +76,14 @@ export default class Connection extends DisposableBase {
   }
 
   /**
+   * Connection type
+   * @returns {string}
+   */
+  get type():ConnectionType {
+    return this._connectionType;
+  }
+
+  /**
    * Connects the underlying transport
    */
   connect():void {
@@ -80,6 +95,7 @@ export default class Connection extends DisposableBase {
         this._isConnected = true;
         this.session = session;
         this._connectionUrl = this._autobahn.connection.transport.info.url;
+        this._connectionType = this._connectionTypeMapper.map(this._autobahn.connection.transport.info.type);
         this._startAutoDisconnectTimer();
         this._connectionStatusSubject.onNext(ConnectionStatus.connected);
       });

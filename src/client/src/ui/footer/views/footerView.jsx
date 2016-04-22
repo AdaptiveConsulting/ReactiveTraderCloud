@@ -33,7 +33,7 @@ export default class FooterView extends ViewBase {
 
     return (
         <footer className='footer'>
-          <span className='footer__connection-url'>{model.isConnectedToBroker ? `Connected to ${model.connectionUrl}` : 'Disconnected'} </span>
+          <span className='footer__connection-url'>{model.isConnectedToBroker ? `Connected to ${model.connectionUrl} (${model.connectionType})` : 'Disconnected'} </span>
          <i onMouseEnter={(e) => this._toggleServiceStatus()}
             onMouseLeave={(e) => this._toggleServiceStatus()}
             className={'footer__general-status-icon fa fa-circle ' + applicationStatusCssLookup[model.applicationStatus]} >
