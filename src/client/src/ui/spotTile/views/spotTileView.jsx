@@ -77,7 +77,7 @@ export default class SpotTileView extends ViewBase {
         <PriceButton
           className='spot-tile__price spot-tile__price--bid'
           direction={Direction.Sell}
-          onExecute={() => this._tryExecuteTrade(Direction.Sell)}
+          onExecute={() => this._onExecuteTrade(Direction.Sell)}
           rate={model.currentSpotPrice.bid} />
         <div className='spot-tile__price-movement'>
           <PriceMovementIndicator
@@ -87,13 +87,13 @@ export default class SpotTileView extends ViewBase {
         <PriceButton
           className='spot-tile__price spot-tile__price--ask'
           direction={Direction.Buy}
-          onExecute={() => this._tryExecuteTrade(Direction.Buy)}
+          onExecute={() => this._onExecuteTrade(Direction.Buy)}
           rate={model.currentSpotPrice.ask} />
       </div>
     );
   }
 
-  _tryExecuteTrade(direction: Direction) {
+  _onExecuteTrade(direction: Direction) {
     if (this.state.model.executionConnected) {
       router.publishEvent(this.props.modelId, 'executeTrade', { direction });
     }
