@@ -6,6 +6,7 @@ import _ from 'lodash';
 export default class AnalyticsBarChart extends React.Component{
 
   static propTypes = {
+    containerWidth: React.PropTypes.number,
     series: React.PropTypes.array,
     isPnL: React.PropTypes.bool
   };
@@ -18,7 +19,7 @@ export default class AnalyticsBarChart extends React.Component{
   }
 
   _createBars(){
-    const containerWidth = 330;
+    const containerWidth = this.props.containerWidth;
 
     let propName = this.props.isPnL ? CurrencyPairPosition.basePnlName : CurrencyPairPosition.baseTradedAmountName;
     let chartData = this.props.isPnL ? this.props.series : this._getPositionsDataFromSeries(propName);
