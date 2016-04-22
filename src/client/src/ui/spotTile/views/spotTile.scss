@@ -25,7 +25,6 @@ $price-width: calc(45% + 10px);
     display: none;
   }
   &.spot-tile--stale {
-
     .spot-tile__stale-label,
     .spot-tile__icon--disconnected {
       display: inline-block;
@@ -52,6 +51,11 @@ $price-width: calc(45% + 10px);
       text-align: right;
     }
   }
+  &.spot-tile--readonly {
+    .spot-tile__price {
+      cursor: default;
+    }
+  }
 }
 
 .spot-tile__container {
@@ -76,8 +80,7 @@ $price-width: calc(45% + 10px);
   left: 0;
 }
 
-.spot-tile__price--bid,
-.spot-tile__price--ask {
+.spot-tile__price {
   cursor: pointer;
   position: absolute;
   width: $price-width;
