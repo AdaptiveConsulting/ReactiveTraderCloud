@@ -9,6 +9,7 @@ import NVD3Chart from 'react-nvd3';
 import AnalyticsBarChart from './analyticsBarChart.jsx';
 import numeral from 'numeral';
 import './analytics.scss';
+import { OpenFin } from '../../../system/openFin';
 
 var _log:logger.Logger = logger.create('AnalyticsView');
 
@@ -103,7 +104,7 @@ export default class AnalyticsView extends ViewBase {
     let positionButtonClassName = isPnL ? baseClassName : selectedClassName;
 
     return (
-      <div>
+      <div  onClick={() => this.testOnClick()}>
         <div className='analytics__buttons'>
           <div className='analytics__buttons-bar'>
             <button
@@ -117,9 +118,19 @@ export default class AnalyticsView extends ViewBase {
           </div>
         </div>
         <div className='analytics__chart-container clearfix pnlchart'>
-          <AnalyticsBarChart series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
+          <AnalyticsBarChart series={positionsChartModel.seriesData}
+                             isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
         </div>
       </div>
     );
+  }
+
+  testOnClick(){
+    console.log('this.state.model : ');
+    console.log(this.state.model);
+    let openFin:OpenFin = this.state.model._analyticsService._openFin;
+
+    openFin.openNotification('blah blah');
+    console.log(' should open notification , openFin :', openFin);
   }
 }

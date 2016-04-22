@@ -3,12 +3,7 @@ import Rx from 'rx';
 export default class OpenFin {
 
   available:boolean = false;
-  //currentWindow:OpenFinWindow;
-
-  //windows:Array<TearoutWindowInfo> = [];
   tradeClickedSubject:Rx.Subject<string>;
-  //analyticsSubscription:Rx.IDisposable;
-  // pricesSubscription:Rx.IDisposable;
   limitCheckSubscriber:string;
   requestLimitCheckTopic:string;
   limitCheckId:number = 1;
@@ -56,5 +51,71 @@ export default class OpenFin {
         }
         return disposables;
       });
+  }
+
+  openNotification(type:string): void{
+
+    console.log(' -- OPEN FIN --  should open notification , available : ', this.available);
+    if (!this.available) return;
+
+    let winShowHandler = () => {
+      console.log(' notification from the winShowHandler : ');
+      console.log(notification);
+    };
+
+    let notification = new fin.desktop.Notification({
+      url: 'system/openFin/notification.html',
+      message: 'new_message',
+      onClick: () => {
+        console.log('clicked');
+      },
+      onClose: () => {
+        console.log('closed');
+      },
+      onDismiss: () => {
+        console.log('dismissed');
+      },
+      onError: (error) => {
+        let win = fin.desktop.Window.getCurrent();
+        console.log(win);
+        console.error(error);
+
+      },
+      onMessage: (msg:string) => {
+        let win = fin.desktop.Window.getCurrent();
+        console.log('--- let win ---');
+        console.log(win);
+        win.getState(state => {
+          switch(state){
+
+            case 'minimized':
+              console.log('switched state, minimized');
+                  win.restore(() => win.bringToFront());
+                  break;
+            case 'maximized':
+            case 'restored':
+                console.log(' on message switch state win : ', win);
+                  win.bringToFront();
+                  break;
+          }
+        });
+      },
+      onShow: (e) => {
+
+        winShowHandler();
+        console.log('shown');
+        let notif = fin.desktop.Notification.getCurrent();
+        console.log(notif.width, notif.height);
+        console.log(notif);
+        console.log('e : ', e);
+        console.log(notif.resizeTo);
+        console.log('this', this);
+
+        
+      }
+    });
+    console.log(' open fin, new notification : ');
+    console.log(notification);
+    console.log(fin.desktop.Notification);
   }
 }
