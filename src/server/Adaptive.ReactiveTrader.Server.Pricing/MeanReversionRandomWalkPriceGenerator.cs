@@ -14,7 +14,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         private readonly decimal _reversion;
         private readonly decimal _vol;
 
-        public MeanReversionRandomWalkPriceGenerator(string symbol, decimal initial, int precision, decimal reversionCoefficient = 0.005m, decimal volatility = 5m)
+        public MeanReversionRandomWalkPriceGenerator(string symbol, decimal initial, int precision, decimal reversionCoefficient = 0.001m, decimal volatility = 5m)
         {
             _initial = initial;
             _precision = precision;
@@ -22,7 +22,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             var power = (decimal) Math.Pow(10, precision);
             _vol = volatility*1m/power;
             Symbol = symbol; 
-            _halfSpreadPercentage = Random.Next(2, 11)/power/_initial;
+            _halfSpreadPercentage = Random.Next(2, 16)/power/_initial;
         }
 
         public string Symbol { get; }
