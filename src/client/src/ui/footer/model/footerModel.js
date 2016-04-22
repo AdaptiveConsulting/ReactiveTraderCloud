@@ -50,7 +50,6 @@ export default class FooterModel extends ModelBase {
         this.modelId,
         (serviceStatusLookup:ServiceStatusLookup) => {
           this.serviceLookup = serviceStatusLookup;
-          this._updateApplicationStatus();
         })
     );
     this.addDisposable(
@@ -61,9 +60,12 @@ export default class FooterModel extends ModelBase {
           this.isConnectedToBroker = connectionStatus === ConnectionStatus.connected;
           this.connectionUrl = this._compositeStatusService.connectionUrl;
           this.connectionType = this._compositeStatusService.connectionType;
-          this._updateApplicationStatus();
         })
     );
+  }
+
+  postProcess() {
+    this._updateApplicationStatus();
   }
 
   _updateApplicationStatus() {

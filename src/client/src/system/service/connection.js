@@ -77,7 +77,7 @@ export default class Connection extends DisposableBase {
 
   /**
    * Connection type
-   * @returns {string}
+   * @returns {ConnectionType}
    */
   get type():ConnectionType {
     return this._connectionType;
