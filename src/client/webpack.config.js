@@ -102,7 +102,7 @@ const webpackConfig = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-          cacheDirectory: true,
+          cacheDirectory: false,
           presets: [
             'react',
             'es2015',

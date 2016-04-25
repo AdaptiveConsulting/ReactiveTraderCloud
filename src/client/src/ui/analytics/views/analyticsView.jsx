@@ -36,6 +36,7 @@ export default class AnalyticsView extends ViewBase {
     }
   }
 
+
   render() {
     let model:AnalyticsModel = this.state.model;
     if (!model) {
@@ -97,6 +98,8 @@ export default class AnalyticsView extends ViewBase {
     );
   }
 
+
+
   _createPositionsComponents() {
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
     let isPnL = positionsChartModel.basePnlDisplayModelSelected;
@@ -132,7 +135,6 @@ export default class AnalyticsView extends ViewBase {
     console.log(this.state.model);
     let openFin:OpenFin = this.state.model._analyticsService._openFin;
 
-    openFin.openNotification('blah blah');
-    console.log(' should open notification , openFin :', openFin);
+    openFin.openTradeNotification({obj: 'obj'});
   }
 }

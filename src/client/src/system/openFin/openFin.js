@@ -1,4 +1,5 @@
 import Rx from 'rx';
+import { Trade } from '../../services/model';
 
 export default class OpenFin {
 
@@ -53,21 +54,23 @@ export default class OpenFin {
       });
   }
 
-  openNotification(type:string): void{
+  openTradeNotification(trade:Trade): void{
 
-    console.log(' -- OPEN FIN --  should open notification , available : ', this.available);
     if (!this.available) return;
 
-    let winShowHandler = () => {
-      console.log(' notification from the winShowHandler : ');
-      console.log(notification);
+    console.log('trade : ', trade);
+
+    let sendMessageCb = () => {
+      console.log( ' RECEVIED MESSAGE  - CALLBACK ');
     };
 
     let notification = new fin.desktop.Notification({
-      url: 'system/openFin/notification.html',
-      message: 'new_message',
+      url: '/#notification',
+      message: {msg: 'new_message', data: 'new data'},
       onClick: () => {
         console.log('clicked');
+        console.trace();
+        notification.sendMessage({msg: 'click message', data: 'click data'}, sendMessageCb);
       },
       onClose: () => {
         console.log('closed');
@@ -79,12 +82,11 @@ export default class OpenFin {
         let win = fin.desktop.Window.getCurrent();
         console.log(win);
         console.error(error);
-
       },
       onMessage: (msg:string) => {
         let win = fin.desktop.Window.getCurrent();
-        console.log('--- let win ---');
-        console.log(win);
+
+        console.log('--- openFin, onMessage, msg  : ' + msg);
         win.getState(state => {
           switch(state){
 
@@ -100,22 +102,11 @@ export default class OpenFin {
           }
         });
       },
-      onShow: (e) => {
-
-        winShowHandler();
-        console.log('shown');
-        let notif = fin.desktop.Notification.getCurrent();
-        console.log(notif.width, notif.height);
-        console.log(notif);
-        console.log('e : ', e);
-        console.log(notif.resizeTo);
-        console.log('this', this);
-
-        
-      }
+      onShow: () => {
+        notification.sendMessage({msg: ' initial message ', data: 'initial data'}, sendMessageCb);
+      },
+      timeout: 'never'
     });
-    console.log(' open fin, new notification : ');
-    console.log(notification);
-    console.log(fin.desktop.Notification);
   }
 }
+
