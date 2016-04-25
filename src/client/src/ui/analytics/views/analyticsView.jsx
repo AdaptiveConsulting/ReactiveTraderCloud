@@ -6,13 +6,15 @@ import { ViewBase } from '../../common';
 import { AnalyticsModel, PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
-import AnalyticsBarChart from './analyticsBarChart.jsx';
+import AnalyticsBarChart from './analyticsBarChart';
 import numeral from 'numeral';
+import Dimensions from '../../common/components/react-dimensions/dimensions';
 import './analytics.scss';
 import { OpenFin } from '../../../system/openFin';
 
 var _log:logger.Logger = logger.create('AnalyticsView');
 
+@Dimensions()
 export default class AnalyticsView extends ViewBase {
   constructor() {
     super();
@@ -102,6 +104,7 @@ export default class AnalyticsView extends ViewBase {
     let selectedClassName = `${baseClassName} analytics__buttons-tab-btn--selected`;
     let pnlButtonClassName = isPnL ? selectedClassName : baseClassName;
     let positionButtonClassName = isPnL ? baseClassName : selectedClassName;
+    let containerWidth = this.props.containerWidth; // comes from the @Dimensions annotation
 
     return (
       <div  onClick={() => this.testOnClick()}>
@@ -118,8 +121,7 @@ export default class AnalyticsView extends ViewBase {
           </div>
         </div>
         <div className='analytics__chart-container clearfix pnlchart'>
-          <AnalyticsBarChart series={positionsChartModel.seriesData}
-                             isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
+          <AnalyticsBarChart containerWidth={containerWidth} series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
         </div>
       </div>
     );

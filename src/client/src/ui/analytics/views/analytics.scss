@@ -12,14 +12,18 @@ $analytics-header-colour: #ffffff;
 $default-padding: 10px;
 
 .analytics__container {
-  max-width: 350px;
   align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
   background: $container-bg-color;
   padding: 11px;
   @import 'nvd3';
+  #popout-content-container & {
+    max-width: none;
+    height: 100%;
+  }
 }
+
 
 .analytics__controls {
   float: right;

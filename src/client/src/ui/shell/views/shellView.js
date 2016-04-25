@@ -29,7 +29,7 @@ export default class ShellView extends ViewBase {
     return (
         <div className='shell__container'>
           <div className='shell__splash'>
-            <span className='shell__splash-message'>Loading...</span>
+            <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
           </div>
           <Modal shouldShow={model.sessionExpired} title='Session expired'>
             <div>
@@ -43,12 +43,16 @@ export default class ShellView extends ViewBase {
           <div className='shell__workspace'>
             <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
           </div>
-          <SingleItemRegionView modelId={wellKnownModelIds.quickAccessRegionModelId}/>
+          <div className='shell__analytics'>
+            <SingleItemRegionView modelId={wellKnownModelIds.quickAccessRegionModelId}/>
+          </div>
           <div className='shell__blotter'>
             <SingleItemRegionView modelId={wellKnownModelIds.blotterRegionModelId}/>
           </div>
           <PopoutRegionView modelId={wellKnownModelIds.popoutRegionModelId}/>
-          <FooterView modelId={wellKnownModelIds.footerModelId}/>
+          <div className='shell__footer'>
+            <FooterView modelId={wellKnownModelIds.footerModelId}/>
+          </div>
         </div>
     );
   }
