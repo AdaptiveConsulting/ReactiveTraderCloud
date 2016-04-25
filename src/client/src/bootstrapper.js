@@ -45,10 +45,7 @@ class Bootstrapper {
   }
 
   get endpointURL() {
-    const protocol = (location.protocol === 'https:') ? 'wss' : 'ws';
-    const url = config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
-
-    return `${protocol}://${url}:8080/ws`;
+    return config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
   }
 
   startServices() {
