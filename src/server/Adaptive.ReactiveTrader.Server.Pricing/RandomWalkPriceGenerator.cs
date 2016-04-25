@@ -29,7 +29,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             while (true)
             {
                 var pow = (decimal) Math.Pow(10, _precision);
-                var newMid = previousMid + Random.Next(-5, 6)/pow;
+                var newMid = previousMid + Random.Next(-5, 5)/pow;
 
                 // check that the new Mid does not drift too far from sampleRate (3%)
                 if (Math.Abs(newMid - _initial)/_initial > .03m)

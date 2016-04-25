@@ -9,8 +9,6 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public sealed class PriceSource : IDisposable
     {
-        private static readonly Random Random = new Random();
-
         private readonly Dictionary<string, IObservable<SpotPriceDto>> _priceStreams =
             new Dictionary<string, IObservable<SpotPriceDto>>();
 
@@ -62,8 +60,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
                     return disp;
                 })
-                    .Replay(1)
-                    .RefCount();
+                                           .Replay(1)
+                                           .RefCount();
 
                 _priceStreams.Add(ccy.Symbol, observable);
             }
@@ -76,7 +74,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         private static IPriceGenerator CreatePriceGenerator(string symbol, decimal initial, int precision)
         {
-            return new MeanReversionRandomWalkPriceGenerator(symbol, initial, precision);
+            return new RandomWalkPriceGenerator(symbol, initial, precision);
         }
 
         private static IObservable<Unit> CreatePriceTrigger(bool delayPeriods)
@@ -88,9 +86,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                               .Concat(Observable.Interval(TimeSpan.FromSeconds(10)).Take(1))
                               .Repeat()
                               .Select(_ => Unit.Default);
-            
-            // delay start of timer or repeat random interval?
-            return Observable.Interval(TimeSpan.FromSeconds(0.5)).Delay(TimeSpan.FromMilliseconds(Random.Next(101))).Select(_ => Unit.Default);
+
+            return Observable.Interval(TimeSpan.FromSeconds(0.5)).Select(_ => Unit.Default);
         }
 
         public IObservable<SpotPriceDto> GetPriceStream(string symbol)
