@@ -6,9 +6,9 @@ import { ViewBase } from '../../common';
 import { AnalyticsModel, PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
-import AnalyticsBarChart from './analyticsBarChart.jsx';
+import AnalyticsBarChart from './analyticsBarChart';
 import numeral from 'numeral';
-import Dimensions from 'react-dimensions';
+import Dimensions from '../../common/components/react-dimensions/dimensions';
 import './analytics.scss';
 
 var _log:logger.Logger = logger.create('AnalyticsView');
