@@ -1,19 +1,13 @@
-import Rx from 'rx';
-import _ from 'lodash';
-import NVD3Chart from 'react-nvd3';
-import d3 from 'd3';
 import { Router,  observeEvent } from 'esp-js/src';
 import { AnalyticsService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
 import { logger } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
-import { PricePoint, PnlChartModel, PositionsChartModel, ChartModelBase } from './';
+import { PnlChartModel, PositionsChartModel, ChartModelBase } from './';
 import {
   AnalyticsRequest,
   PositionUpdates,
-  HistoricPosition,
-  CurrencyPairPosition
 } from '../../../services/model';
 import { AnalyticsView } from '../views';
 

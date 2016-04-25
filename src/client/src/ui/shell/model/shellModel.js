@@ -18,6 +18,7 @@ export default class ShellModel extends ModelBase {
     this._connection = connection;
     this.sessionExpired = false;
     this.wellKnownModelIds = WellKnownModelIds;
+    this.appVersion = `v${__VERSION__}`;
   }
 
   @observeEvent('init')

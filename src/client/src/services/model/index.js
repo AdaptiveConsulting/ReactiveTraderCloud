@@ -20,3 +20,4 @@ export { default as TradeStatus } from './tradeStatus';
 export { default as ExecuteTradeResponse } from './executeTradeResponse';
 export { default as Spread } from './spread';
 export { default as ApplicationStatusConst } from './applicationStatusConst';
+export { default as ConnectionType } from './connectionType';

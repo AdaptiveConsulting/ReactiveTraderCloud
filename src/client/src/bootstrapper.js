@@ -45,10 +45,7 @@ class Bootstrapper {
   }
 
   get endpointURL() {
-    const protocol = (location.protocol === 'https:') ? 'wss' : 'ws';
-    const url = config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
-
-    return `${protocol}://${url}:8080/ws`;
+    return config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
   }
 
   startServices() {
@@ -69,7 +66,7 @@ class Bootstrapper {
     this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, this._schedulerService, this._referenceDataService);
     this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, this._schedulerService, this._referenceDataService);
     this._executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, this._connection, this._schedulerService, this._referenceDataService, this._openFin);
-    this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, this._schedulerService);
+    this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, this._schedulerService, this._referenceDataService);
     this._compositeStatusService = new CompositeStatusService(this._connection, this._pricingService, this._referenceDataService, this._blotterService, this._executionService, this._analyticsService);
 
     // connect/load all the services
