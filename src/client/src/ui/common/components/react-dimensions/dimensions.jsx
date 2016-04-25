@@ -1,4 +1,8 @@
 /*eslint-disable */
+/*
+forked from https://github.com/digidem/react-dimensions (MIT) to fix a bug with weindow reference in a popout window.
+todo: deprecate once pull request goes in upstream and new react-dimensions is released
+ */
 import React from 'react'
 
 const style = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
 import { DateCell, NotionalCell } from './';
-import Dimensions from './../../../system/dimensions';
+import Dimensions from './../../common/components/react-dimensions/dimensions';
 import { Trade } from '../../../services/model';
 import { ViewBase } from '../../common';
 import { router, logger } from '../../../system';
