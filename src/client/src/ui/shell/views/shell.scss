@@ -62,44 +62,12 @@ $splash-logo-margin-top:      20vh;
   & * {
     box-sizing: border-box;
   }
-
   // TODO - show when running in OpenFin
   //.header {
   //  flex: 1 100%;
   //  height: $header-height;
   //  order: 1;
   //}
-
-  .shell__workspace {
-    flex: 1 $workspace-width;
-    order: 2;
-    height: $workspace-height;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-
-  .analytics {
-    flex: 0 0 $analytics-width;
-    order: 3;
-    height: $analytics-height;
-    overflow-y: auto;
-    background: $analytics-background-color;
-    padding: 0px;
-  }
-
-  .shell__blotter {
-    flex: 1 100vw;
-    heigth: 100%;
-    order: 4;
-    height: $blotter-height;
-    overflow: hidden;
-  }
-
-  .footer {
-    flex: 1 100vw;
-    height: $footer-height;
-    order: 5;
-  }
 
   // scrollbar
   ::-webkit-scrollbar {
@@ -122,6 +90,38 @@ $splash-logo-margin-top:      20vh;
 
 }
 
+.shell__workspace {
+  flex: 1 $workspace-width;
+  order: 2;
+  height: $workspace-height;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.shell__analytics {
+  flex: 0 0 $analytics-width;
+  order: 3;
+  height: $analytics-height;
+  overflow-y: auto;
+  background: $analytics-background-color;
+  padding: 0px;
+}
+
+.shell__blotter {
+  flex: 1 100vw;
+  heigth: 100%;
+  order: 4;
+  height: $blotter-height;
+  overflow: hidden;
+}
+
+.shell__footer {
+  flex: 1 100vw;
+  min-height: $footer-height;
+  order: 5;
+}
+
+
 .shell__button--reconnect {
   min-width: 100px;
   height: 28px;
@@ -129,21 +129,28 @@ $splash-logo-margin-top:      20vh;
 }
 
 @media all and (max-width: 700px) {
+  body {
+    overflow-y: auto;
+  }
   .shell__container {
-    overflow-y: scroll;
-
-    .workspace-region,
-    .analytics,
-    .shell__blotter,
-    .footer {
-      flex: 1 100vw;
-    }
-
-    .workspace-region {
-      height: 100%;
-      overflow: inherit;
-    }
+    height: 100%;
+    flex-direction: column;
   }
 
+  .shell__analytics,
+  .shell__workspace {
+    height: auto;
+  }
+
+  .shell__analytics,
+  .shell__workspace,
+  .shell__blotter,
+  .shell__footer {
+    flex: 1;
+  }
+
+  .shell__blotter {
+    min-height: 400px
+  }
 }
 
