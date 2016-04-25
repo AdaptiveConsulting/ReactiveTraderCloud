@@ -18,7 +18,12 @@ $default-padding: 10px;
   background: $container-bg-color;
   padding: 11px;
   @import 'nvd3';
+  #popout-content-container & {
+    max-width: none;
+    height: 100%;
+  }
 }
+
 
 .analytics__controls {
   float: right;
