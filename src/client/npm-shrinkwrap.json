@@ -6328,11 +6328,6 @@
         }
       }
     },
-    "react-popout": {
-      "version": "0.4.0",
-      "from": "react-popout@0.4.0",
-      "resolved": "https://registry.npmjs.org/react-popout/-/react-popout-0.4.0.tgz"
-    },
     "react-proxy": {
       "version": "1.1.8",
       "from": "react-proxy@>=1.1.1 <2.0.0",

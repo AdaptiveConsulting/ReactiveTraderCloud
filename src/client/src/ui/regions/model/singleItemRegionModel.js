@@ -1,6 +1,6 @@
 import { Router } from 'esp-js/src';
-import { RegionModelRegistration } from './';
-import RegionModel from './regionModel';
+import { RegionModel, RegionOptions, RegionModelRegistration } from './';
+import { ModelBase } from '../../common';
 
 export default class SingleItemRegionModel extends RegionModel {
 
@@ -9,14 +9,12 @@ export default class SingleItemRegionModel extends RegionModel {
   }
 
   // override
-  addToRegion(model:ModelBase, onExternallyRemovedCallback:?() => void, context:?string) {
-    this.ensureOnDispatchLoop(()=> {
-      if (this.modelRegistrations.length === 1) {
-        let regionModelRegistration : RegionModelRegistration = this.modelRegistrations[0];
-        this._removeFromRegion(regionModelRegistration.model, true);
-      }
-      this.modelRegistrations.length = 0;
-      super.addToRegion(model, onExternallyRemovedCallback);
-    });
+  _addToRegion(model:ModelBase, options?:RegionOptions) : RegionModelRegistration {
+    if (this.modelRegistrations.length === 1) {
+      let regionModelRegistration : RegionModelRegistration = this.modelRegistrations[0];
+      this._removeFromRegion(regionModelRegistration.model, true);
+    }
+    this.modelRegistrations.length = 0;
+    return super._addToRegion(model, options);
   }
 }

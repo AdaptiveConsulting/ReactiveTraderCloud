@@ -4,16 +4,14 @@ import { AnalyticsRequest, PositionUpdates } from './model';
 import { PositionsMapper } from './mappers';
 import { Guard, logger, SchedulerService, RetryPolicy } from '../system';
 import { ReferenceDataService } from './';
-import { OpenFin } from '../system/openFin';
 
 var _log:logger.Logger = logger.create('AnalyticsService');
 
 export default class AnalyticsService extends ServiceBase {
 
-  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService, referenceDataService:ReferenceDataService, openFin:OpenFin) {
+  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService, referenceDataService:ReferenceDataService) {
     super(serviceType, connection, schedulerService);
     this._positionsMapper = new PositionsMapper(referenceDataService);
-    this._openFin = openFin;
   }
 
   getAnalyticsStream(analyticsRequest:AnalyticsRequest):Rx.Observable<PositionUpdates> {

@@ -10,7 +10,6 @@ import AnalyticsBarChart from './analyticsBarChart';
 import numeral from 'numeral';
 import Dimensions from '../../common/components/react-dimensions/dimensions';
 import './analytics.scss';
-import { OpenFin } from '../../../system/openFin';
 
 var _log:logger.Logger = logger.create('AnalyticsView');
 
@@ -110,7 +109,7 @@ export default class AnalyticsView extends ViewBase {
     let containerWidth = this.props.containerWidth; // comes from the @Dimensions annotation
 
     return (
-      <div  onClick={() => this.testOnClick()}>
+      <div>
         <div className='analytics__buttons'>
           <div className='analytics__buttons-bar'>
             <button
@@ -128,13 +127,5 @@ export default class AnalyticsView extends ViewBase {
         </div>
       </div>
     );
-  }
-
-  testOnClick(){
-    console.log('this.state.model : ');
-    console.log(this.state.model);
-    let openFin:OpenFin = this.state.model._analyticsService._openFin;
-
-    openFin.openTradeNotification({obj: 'obj'});
   }
 }

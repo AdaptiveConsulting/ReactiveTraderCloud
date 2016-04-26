@@ -96,7 +96,7 @@ export default class SpotTileModel extends ModelBase {
   @observeEvent('popOutTile')
   _onPopOutTile() {
     this._log.info(`Popping out tile`);
-    this._regionManagerHelper.popout(332, 190);
+    this._regionManagerHelper.popout(`${this.currencyPair.symbol} Spot`, 332, 155);
   }
 
   @observeEvent('tradeNotificationDismissed')
