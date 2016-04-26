@@ -50,7 +50,7 @@ export default class BlotterModel extends ModelBase {
   @observeEvent('tearOffBlotter')
   _onTearOffBlotter() {
     _log.info(`Popping out blotter`);
-    this._regionManagerHelper.popout(850, 280);
+    this._regionManagerHelper.popout('Blotter', 850, 280);
   }
 
   _subscribeToTradeStream() {

@@ -48,7 +48,6 @@
     "react": "0.14.6",
     "react-dom": "0.14.6",
     "react-nvd3": "0.4.1",
-    "react-popout": "0.4.0",
     "react-sparklines": "1.4.2",
     "rx": "4.0.7",
     "ws": "0.8.1"

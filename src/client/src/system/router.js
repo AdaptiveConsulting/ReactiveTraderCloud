@@ -16,5 +16,7 @@ var _log:logger.Logger = logger.create('UnhandledModelError');
 // Typically you don't test the jsx/view and you don't really have any other options to get them the router.
 // This is because they are created on a very different code path (i.e. via React `render`) and it's a bit over kill to pass the router via props (using the React context could be an alternative).
 let router = new Router();
-router.addOnErrorHandler(err => _log.error('Unhandled error in model', err));
+router.addOnErrorHandler(err => {
+  _log.error('Unhandled error in model', err);
+});
 export default router;

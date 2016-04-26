@@ -67,7 +67,7 @@ export default class AnalyticsModel extends ModelBase {
   @observeEvent('popOutAnalytics')
   _onPopOutAnalytics() {
     _log.info(`Popping out analytics`);
-    this._regionManagerHelper.popout(400, 500);
+    this._regionManagerHelper.popout('Analytics', 400, 800);
   }
 
   _subscribeToAnalyticsStream() {

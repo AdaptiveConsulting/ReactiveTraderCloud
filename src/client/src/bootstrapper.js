@@ -6,14 +6,13 @@ import { HeaderModel } from './ui/header/model';
 import { FooterModel } from './ui/footer/model';
 import { ShellModel } from './ui/shell/model';
 import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
-import { User, ServiceConst, ServiceStatusLookup } from './services/model';
+import { User, ServiceConst } from './services/model';
 import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
 import { default as espRouter } from './system/router';
 import { ShellView } from './ui/shell/views';
-import { SpotTileView } from './ui/spotTile/views';
-import { RegionModel, SingleItemRegionModel } from './ui/regions/model';
+import { RegionModel, SingleItemRegionModel, PopoutRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
 import config from 'config.json';
 
@@ -87,7 +86,7 @@ class Bootstrapper {
     // This infrastructure allows for differing views to be put into the shell without the shell having to be coupled to all these views.
     let workspaceRegionModel = new RegionModel(WellKnownModelIds.workspaceRegionModelId, RegionNames.workspace, espRouter);
     workspaceRegionModel.observeEvents();
-    let popoutRegionModel = new RegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter);
+    let popoutRegionModel = new PopoutRegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter);
     popoutRegionModel.observeEvents();
     let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, RegionNames.blotter, espRouter);
     blotterRegionModel.observeEvents();

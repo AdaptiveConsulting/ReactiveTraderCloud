@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ModelBase } from '../../common';
 import { Router, observeEvent } from 'esp-js/src';
-import { RegionModelRegistration } from './';
+import { RegionModelRegistration, RegionOptions } from './';
 import { logger } from '../../../system';
 
 export default class RegionModel extends ModelBase {
@@ -32,22 +32,9 @@ export default class RegionModel extends ModelBase {
     return this._regionName;
   }
 
-  addToRegion(
-    model:ModelBase,
-    options?: {
-      displayContext?:string,
-      onExternallyRemovedCallback:?() => void,
-      regionSettings:any
-    }
-  ) {
-    options = options || { };
+  addToRegion(model:ModelBase, options?: RegionOptions) {
     this.ensureOnDispatchLoop(()=> {
-      this.modelRegistrations.push(new RegionModelRegistration(
-        model,
-        options.onExternallyRemovedCallback,
-        options.displayContext,
-        options.regionSettings
-      ));
+      this._addToRegion(model, options);
     });
   }
 
@@ -55,6 +42,18 @@ export default class RegionModel extends ModelBase {
     this.ensureOnDispatchLoop(()=> {
       this._removeFromRegion(model, false, displayContext);
     });
+  }
+
+  _addToRegion(model:ModelBase, options?:RegionOptions) : RegionModelRegistration{
+    options = options || { };
+    var regionModelRegistration = new RegionModelRegistration(
+      model,
+      options.onExternallyRemovedCallback,
+      options.displayContext,
+      options.regionSettings
+    );
+    this.modelRegistrations.push(regionModelRegistration);
+    return regionModelRegistration;
   }
 
   _removeFromRegion(model:ModelBase, wasExternallyRemoved:boolean, displayContext?:string) {
