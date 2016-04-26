@@ -9,6 +9,13 @@ $glyphicons-font-path: '../fonts/bootstrap/glyphicons-halflings-regular';
   url('#{$glyphicons-font-path}.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Aurelent Mono';
+  src: url('../fonts/aurelent-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .glyphicon {
   position: relative;
   top: 1px;
