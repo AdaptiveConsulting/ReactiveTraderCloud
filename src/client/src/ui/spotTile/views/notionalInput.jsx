@@ -36,7 +36,7 @@ export default class NotionalInput extends React.Component {
     return (
       <div className={classes}>
         <label className='notional__currency-pair' >{this.props.currencyPair.base}</label>
-        <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onClick={this._select} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
+        <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onClick={this.handleSelect} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
       </div>
     );
   }
@@ -44,9 +44,8 @@ export default class NotionalInput extends React.Component {
   /**
    * Select notional input text
    * @param {DOMEvent=} e
-   * @private
    */
-  _select(e) {
+  handleSelect(e) {
     const el = e.target;
     el.setSelectionRange(0, el.value.length);
   }
