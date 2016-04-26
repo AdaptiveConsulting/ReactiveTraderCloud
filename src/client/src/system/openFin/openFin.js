@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import { Trade } from '../../services/model';
+import { Trade, TradeNotification } from '../../services/model';
 
 export default class OpenFin {
 
@@ -53,24 +53,17 @@ export default class OpenFin {
         return disposables;
       });
   }
-
+  
   openTradeNotification(trade:Trade): void{
-
     if (!this.available) return;
 
-    console.log('trade : ', trade);
-
-    let sendMessageCb = () => {
-      console.log( ' RECEVIED MESSAGE  - CALLBACK ');
-    };
+    let tradeNotification = new TradeNotification(trade);
 
     let notification = new fin.desktop.Notification({
       url: '/#notification',
-      message: {msg: 'new_message', data: 'new data'},
+      message: tradeNotification,
       onClick: () => {
         console.log('clicked');
-        console.trace();
-        notification.sendMessage({msg: 'click message', data: 'click data'}, sendMessageCb);
       },
       onClose: () => {
         console.log('closed');
@@ -79,31 +72,27 @@ export default class OpenFin {
         console.log('dismissed');
       },
       onError: (error) => {
-        let win = fin.desktop.Window.getCurrent();
-        console.log(win);
         console.error(error);
       },
-      onMessage: (msg:string) => {
+      onMessage: (msg:any) => {
         let win = fin.desktop.Window.getCurrent();
-
-        console.log('--- openFin, onMessage, msg  : ' + msg);
         win.getState(state => {
           switch(state){
 
             case 'minimized':
-              console.log('switched state, minimized');
+                  console.log('switched state, minimized');
                   win.restore(() => win.bringToFront());
                   break;
             case 'maximized':
             case 'restored':
-                console.log(' on message switch state win : ', win);
+                  console.log(' on message switch state win : ', win);
                   win.bringToFront();
                   break;
           }
         });
       },
       onShow: () => {
-        notification.sendMessage({msg: ' initial message ', data: 'initial data'}, sendMessageCb);
+        console.log('on show');
       },
       timeout: 'never'
     });

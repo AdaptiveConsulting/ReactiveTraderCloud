@@ -15,7 +15,7 @@ import { ShellView } from './ui/shell/views';
 import { SpotTileView } from './ui/spotTile/views';
 import { RegionModel, SingleItemRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
-import Growl from './ui/notification/notificationView';
+import NotificationView from './ui/notification/notificationView';
 import config from 'config.json';
 
 import {
@@ -151,11 +151,6 @@ if(runBootstrapper) {
   new Bootstrapper().run();
 }
 else if (location.hash == '#notification'){
-  ReactDOM.render(<Growl />, document.getElementById('root'));
+  ReactDOM.render(<NotificationView/>, document.getElementById('root'));
 }
-else {
-  window.location.hash = '';
-  window.location.reload();
-}
-
 

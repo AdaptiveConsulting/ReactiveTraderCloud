@@ -1,5 +1,7 @@
 import React from 'react';
-import Message from './notification';
+import Notification from './notification';
+import { TradeNotification } from '../../services/model';
+import './notification.scss';
 
 export default class NotificationView extends React.Component {
 
@@ -10,29 +12,18 @@ export default class NotificationView extends React.Component {
   componentDidMount(){
     window.onNotificationMessage = (message) => this.handleMessage(message);
   }
-
-  handleClick(){
-    this.dismissMessage();
-  }
-
-  dismissMessage(){
-    window.fin.desktop.Notification.getCurrent().close();
-  }
-
+  
   handleMessage(message){
     this.setState({
-      message
+      message: message
     });
   }
 
   render(){
     return (
-      <div className='notification'>
-        {this.state.message ?
-          <Message message={this.state.message} onClick={this.handleClick}/> :
-          <div>Nothing</div>}
+      <div className='notification__container'>
+        <Notification message={this.state.message}/>
       </div>
     );
   }
 }
-

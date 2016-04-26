@@ -1,56 +1,48 @@
 import React from 'react';
-import numeral from 'numeral';
+import { TradeNotification } from '../../services/model';
 
 export default class Message extends React.Component {
 
   static propTypes ={
-    message: React.PropTypes.object.isRequired,
-    onClick: React.PropTypes.func
+    message: React.PropTypes.object.isRequired
   };
 
-  /**
-   * Parses an ACK response string, saves element into instance until user action
-   * @param {Object} response
-   * @returns {ReactDOM.Element}
-   */
-  renderExecutionMessage(response){
-    if (!response)
-      return false;
-
-    if (response.message){
-      return this.lastResponse = (
-        <div className='summary-state animated flipInX'>
-          {response.message}
-        </div>
-      );
-    }
-
-    const action = response.direction === 'sell' ? 'Sold' : 'Bought',
-          amount = numeral(response.amount).format('0,000,000[.]00');
-
-    // we will cache last response to diverge from state until user dismisses it.
-    return (
-      <div className={response.status + ' summary-state animated flipInX'}>
-        <span className='key'>{action}</span> {response.pair.substr(0, 3)} {amount}<br/>
-        <span className='key'>vs</span> {response.pair.substr(3, 3)}
-        <span className='key'>at</span> {response.rate}<br/>
-        <span className='key'>{response.valueDate}</span><br/>
-        <span className='key'>Trade ID</span> {response.id}
-        <a href='#' className='pull-right dismiss-message' onClick={this.props.onClick}>{response.status}</a>
-      </div>
-    );
-  }
-
-  renderOld(){
-    return this.renderExecutionMessage(this.props.message);
+  dismissNotification(){
+      window.fin.desktop.Notification.getCurrent().close();
   }
 
   render(){
+    let trade:TradeNotification = this.props.message;
+    let statusClassName = trade.tradeStatus == 'Done' ? 'notification__status-done' : 'notification__status-rejected';
+    let tradeDescriptionClassName = trade.tradeStatus === 'REJECTED' ? 'notification__description-rejected' : '';
+    let secondCurrency = trade.dealtCurrency === trade.baseCurrency ? trade.termsCurrency : trade.baseCurrency;
     return (
       <div>
-        {this.props.message.data}
+        <div className='notification__title'>
+          <span>{this.props.message.baseCurrency} / {this.props.message.termsCurrency}</span>
+          <span className={statusClassName}>{this.props.message.tradeStatus}</span>
+        </div>
+        <div className={tradeDescriptionClassName}>
+          <span className='notification__row-secondary'>{trade.direction} </span>
+          <span className='notification__row-primary'>{trade.dealtCurrency} </span>
+          <span className='notification__row-primary'>{trade.notional}</span>
+          <span className='notification__row-secondary'> vs </span>
+          <span className='notification__row-primary'>{secondCurrency}</span>
+          <span className='notification__row-secondary'> at </span>
+          <span className='notification__row-primary'>{trade.spotRate}</span>
+        </div>
+        <div>
+          <span className='notification__row-secondary'>Spot </span>
+          <span className='notification__row-primary'>{trade.valueDate}</span>
+        </div>
+        <div>
+          <span className='notification__row-secondary'>Trade ID </span>
+          <span className='notification__row-primary'>{trade.tradeId}</span>
+          <span className='notification__action-dismiss' onClick={() => this.dismissNotification()}>Done</span>
+        </div>
       </div>
     );
   }
-
 }
+
+
