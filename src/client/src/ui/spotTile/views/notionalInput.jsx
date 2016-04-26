@@ -4,12 +4,11 @@ import { utils } from '../../../system';
 import classnames from 'classnames';
 import { CurrencyPair } from '../../../services/model';
 import './notionalInput.scss';
-import $ from 'jquery';
 const NUMERAL_FORMAT    = '0,000,000[.]00',
       DOT               = '.';
 
 /**
- * @Class Sizer
+ * @Class NotionalInput
  */
 export default class NotionalInput extends React.Component {
 
@@ -37,7 +36,7 @@ export default class NotionalInput extends React.Component {
     return (
       <div className={classes}>
         <label className='notional__currency-pair' >{this.props.currencyPair.base}</label>
-        <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onClick={(e) => this._select()} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
+        <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onClick={this._select} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
       </div>
     );
   }
@@ -48,8 +47,9 @@ export default class NotionalInput extends React.Component {
    * @private
    */
   _select(e) {
-    $(this.refs.notionalInput).select();
-  };
+    const el = e.target;
+    el.setSelectionRange(0, el.value.length);
+  }
 
   /**
    * Sets trade amount. Supports k/m modifiers for 1000s or millions.
