@@ -17,7 +17,6 @@ export default class NotionalInput extends React.Component {
     className: React.PropTypes.string,
     notional: React.PropTypes.number,
     currencyPair: React.PropTypes.instanceOf(CurrencyPair),
-    valueDate: React.PropTypes.date,
     onChange: React.PropTypes.func
   };
 

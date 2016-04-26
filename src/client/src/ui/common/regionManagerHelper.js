@@ -22,19 +22,21 @@ export default class RegionManagerHelper {
     this._regionManager.addToRegion(this._regionName, this._model);
   }
 
-  popout(width:number, height:number) {
+  // TODO remove width and height and let the view figure it out
+  popout(title, width:number, height:number) {
     this._regionManager.removeFromRegion(this._regionName, this._model);
     this._regionManager.addToRegion(
       RegionNames.popout,
       this._model,
       {
         onExternallyRemovedCallback: () => {
-          // if the popout is closed, we add it back into the quickAccess region
+          // if the popout is closed, we add it back into the initial region
           this._regionManager.addToRegion(this._regionName, this._model);
         },
         regionSettings: {
           width:width,
-          height:height
+          height:height,
+          title:title
         }
       }
     );
