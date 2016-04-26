@@ -34,8 +34,7 @@ export default class AnalyticsView extends ViewBase {
       }
     }
   }
-
-
+  
   render() {
     let model:AnalyticsModel = this.state.model;
     if (!model) {
@@ -96,8 +95,6 @@ export default class AnalyticsView extends ViewBase {
       </div>
     );
   }
-
-
 
   _createPositionsComponents() {
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
