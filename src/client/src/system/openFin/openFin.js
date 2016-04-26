@@ -53,7 +53,7 @@ export default class OpenFin {
         return disposables;
       });
   }
-  
+
   openTradeNotification(trade:Trade): void{
     if (!this.available) return;
 
@@ -93,8 +93,7 @@ export default class OpenFin {
       },
       onShow: () => {
         console.log('on show');
-      },
-      timeout: 'never'
+      }
     });
   }
 }

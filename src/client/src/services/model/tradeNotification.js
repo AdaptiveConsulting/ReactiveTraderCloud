@@ -23,7 +23,7 @@ export default class TradeNotification{
   constructor(trade: Trade){
     this.spotRate = trade.spotRate;
     this.notional = numeral(trade.notional).format('0,000,000[.]00');
-    this.direction = trade.direction === Direction.Buy ? BOUGHT : SOLD;
+    this.direction = trade.direction == Direction.Buy ? BOUGHT : SOLD;
     this.baseCurrency = trade.currencyPair.base;
     this.tradeId = trade.tradeId;
     this.termsCurrency = trade.currencyPair.terms;

@@ -34,7 +34,7 @@ export default class AnalyticsView extends ViewBase {
       }
     }
   }
-  
+
   render() {
     let model:AnalyticsModel = this.state.model;
     if (!model) {
