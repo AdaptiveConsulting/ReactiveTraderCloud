@@ -1,7 +1,8 @@
 import React from 'react';
-import { TradeNotification } from '../../services/model';
 import './notification.scss';
-import { REJECTED, DONE} from '../../services/model/tradeNotification';
+
+const DONE = 'Done';
+const REJECTED = 'REJECTED';
 
 export default class TradeNotificationView extends React.Component {
 
@@ -9,9 +10,9 @@ export default class TradeNotificationView extends React.Component {
     message: React.PropTypes.object.isRequired,
     dismissNotification: React.PropTypes.func.isRequired
   };
-  
+
   render() {
-    let trade:TradeNotification = this.props.message;
+    let trade = this.props.message;
     let statusClassName = trade.tradeStatus == DONE ? 'notification__status-done' : 'notification__status-rejected';
     let tradeDescriptionClassName = trade.tradeStatus === REJECTED ? 'notification__description-rejected' : '';
     let secondCurrency = trade.dealtCurrency === trade.baseCurrency ? trade.termsCurrency : trade.baseCurrency;

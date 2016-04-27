@@ -27,7 +27,7 @@ if (!isProductionMode) babelPlugins.push(['react-transform', {
       imports: ['react', 'redbox-react'],
     },
   ]
-}]);
+}]);CopyWebpackPlugin()
 
 const webpackConfig = {
   name: 'client',
@@ -35,7 +35,9 @@ const webpackConfig = {
   entry: {
     app: [
       './src/bootstrapper.js'
-    ]
+    ],
+    notification: [
+      './src/webpack-bundles/bootstrapperTests.js']
   },
   output: {
     filename: '[name].js',
@@ -50,8 +52,17 @@ const webpackConfig = {
       template: './src/index.html',
       hash: true,
       filename: 'index.html',
-      inject: 'body'
+      inject: 'body',
+      excludeChunks: ['notification']
     }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      hash: true,
+      filename: 'notification.html',
+      inject: 'body',
+      excludeChunks: ['app']
+    }),
+
     new CopyWebpackPlugin([
       {
         from: './src/ui/common/images',
@@ -200,6 +211,11 @@ if (isProductionMode){
   webpackConfig.devtool = 'source-map';
 
   webpackConfig.entry.app.push(
+    'webpack-dev-server/client?http://0.0.0.0:3000/',
+    'webpack/hot/dev-server'
+  );
+
+  webpackConfig.entry.notification.push(
     'webpack-dev-server/client?http://0.0.0.0:3000/',
     'webpack/hot/dev-server'
   );
