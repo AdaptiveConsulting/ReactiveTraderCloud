@@ -3,28 +3,15 @@ import { TradeNotification } from '../../services/model';
 import './notification.scss';
 import { REJECTED, DONE} from '../../services/model/tradeNotification';
 
-export default class NotificationView extends React.Component {
+export default class TradeNotificationView extends React.Component {
 
-  state = {
-    message: ''
+  static propTypes ={
+    message: React.PropTypes.object.isRequired,
+    dismissNotification: React.PropTypes.func.isRequired
   };
 
-  componentDidMount(){
-    window.onNotificationMessage = (message) => this.handleMessage(message);
-  }
-
-  handleMessage(message){
-    this.setState({
-      message: message
-    });
-  }
-
-  dismissNotification(){
-    window.fin.desktop.Notification.getCurrent().close();
-  }
-
   render() {
-    let trade:TradeNotification = this.state.message;
+    let trade:TradeNotification = this.props.message;
     let statusClassName = trade.tradeStatus == DONE ? 'notification__status-done' : 'notification__status-rejected';
     let tradeDescriptionClassName = trade.tradeStatus === REJECTED ? 'notification__description-rejected' : '';
     let secondCurrency = trade.dealtCurrency === trade.baseCurrency ? trade.termsCurrency : trade.baseCurrency;
@@ -50,7 +37,7 @@ export default class NotificationView extends React.Component {
         <div>
           <span className='notification__row-secondary'>Trade ID </span>
           <span className='notification__row-primary'>{trade.tradeId}</span>
-          <span className='notification__action-dismiss' onClick={() => this.dismissNotification()}>Done</span>
+          <span className='notification__action-dismiss' onClick={() => this.props.dismissNotification()}>Done</span>
         </div>
       </div>
     );

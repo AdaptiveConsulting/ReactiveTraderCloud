@@ -1,5 +1,8 @@
 import Rx from 'rx';
 import { Trade, TradeNotification } from '../../services/model';
+import { logger } from '../';
+
+const _log:logger.Logger = logger.create('OpenFin');
 
 export default class OpenFin {
 
@@ -16,22 +19,21 @@ export default class OpenFin {
     this.available = true;
     this.limitCheckId = 1;
     this.requestLimitCheckTopic = 'request-limit-check';
-    console.log('Application is running in OpenFin container');
-    // this.setToolbarAsDraggable();
+    _log.debug('Application is running in OpenFin container');
   }
 
   checkLimit(executablePrice, notional:number, tradedCurrencyPair:string):Rx.Observable<boolean> {
     return Rx.Observable.create(observer => {
         let disposables = new Rx.CompositeDisposable();
         if (!this.available || this.limitCheckSubscriber == null) {
-          console.log('client side limit check not up, will delegate to to server');
+          _log.debug('client side limit check not up, will delegate to to server');
           observer.onNext(true);
           observer.onCompleted();
         } else {
-          console.log('checking if limit is ok with ' + this.limitCheckSubscriber);
+          _log.debug('checking if limit is ok with ' + this.limitCheckSubscriber);
           var topic = 'limit-check-response' + (this.limitCheckId++);
           var limitCheckResponse:(msg:any) => void = (msg) => {
-            console.log(this.limitCheckSubscriber + ' limit check response was ' + msg);
+            _log.debug(this.limitCheckSubscriber + ' limit check response was ' + msg);
             observer.onNext(msg.result);
             observer.onCompleted();
           };
@@ -58,41 +60,24 @@ export default class OpenFin {
     if (!this.available) return;
 
     let tradeNotification = new TradeNotification(trade);
-
     let notification = new fin.desktop.Notification({
       url: '/#notification',
       message: tradeNotification,
-      onClick: () => {
-        console.log('clicked');
-      },
-      onClose: () => {
-        console.log('closed');
-      },
-      onDismiss: () => {
-        console.log('dismissed');
-      },
-      onError: (error) => {
-        console.error(error);
-      },
-      onMessage: (msg:any) => {
+      onMessage: () => {
         let win = fin.desktop.Window.getCurrent();
         win.getState(state => {
           switch(state){
-
             case 'minimized':
-                  console.log('switched state, minimized');
+                  _log.debug('switched state, minimized');
                   win.restore(() => win.bringToFront());
                   break;
             case 'maximized':
             case 'restored':
-                  console.log(' on message switch state win : ', win);
+                  _log.debug(' on message switch state win : ', win);
                   win.bringToFront();
                   break;
           }
         });
-      },
-      onShow: () => {
-        console.log('on show');
       }
     });
   }
