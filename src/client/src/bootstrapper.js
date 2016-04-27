@@ -10,7 +10,7 @@ import { User, ServiceConst } from './services/model';
 import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
-import { default as espRouter } from './system/router';
+import { default as espRouter } from 'system/router';
 import { ShellView } from './ui/shell/views';
 import { RegionModel, SingleItemRegionModel, PopoutRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
@@ -27,7 +27,7 @@ import {
 } from './services';
 import { WellKnownModelIds } from './';
 
-class Bootstrapper {
+export default class Bootstrapper {
   _connection:Connection;
   _referenceDataService:ReferenceDataService;
   _pricingService:PricingService;
@@ -141,10 +141,4 @@ class Bootstrapper {
       document.getElementById('root')
     );
   }
-}
-
-let runBootstrapper = location.pathname === '/' && location.hash.length === 0;
-// if we're not the root we (perhaps a popup) we never re-run the bootstrap logic
-if(runBootstrapper) {
-  new Bootstrapper().run();
 }
