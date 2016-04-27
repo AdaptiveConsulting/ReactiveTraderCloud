@@ -9,7 +9,7 @@ export default class TradeNotificationView extends React.Component {
     message: React.PropTypes.object.isRequired,
     dismissNotification: React.PropTypes.func.isRequired
   };
-
+  
   render() {
     let trade:TradeNotification = this.props.message;
     let statusClassName = trade.tradeStatus == DONE ? 'notification__status-done' : 'notification__status-rejected';
