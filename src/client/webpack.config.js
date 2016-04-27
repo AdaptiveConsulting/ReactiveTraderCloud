@@ -34,7 +34,7 @@ const webpackConfig = {
   target: 'web',
   entry: {
     app: [
-      './src/mainBootstrapper.js'
+      './src/bootstrapper.js'
     ]
   },
   output: {
