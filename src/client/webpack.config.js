@@ -34,7 +34,7 @@ const webpackConfig = {
   target: 'web',
   entry: {
     app: [
-      './src/bootstrapper.js'
+      './src/appBootstrapper.js'
     ],
     notification:
       ['./src/notificationBootstrapper.js'],

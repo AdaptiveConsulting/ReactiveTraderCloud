@@ -27,7 +27,7 @@ import {
 } from './services';
 import { WellKnownModelIds } from './';
 
-class Bootstrapper {
+class AppBootstrapper {
   _connection:Connection;
   _referenceDataService:ReferenceDataService;
   _pricingService:PricingService;
@@ -146,5 +146,5 @@ class Bootstrapper {
 let runBootstrapper = location.pathname === '/' && location.hash.length === 0;
 // if we're not the root we (perhaps a popup) we never re-run the bootstrap logic
 if(runBootstrapper) {
-  new Bootstrapper().run();
+  new AppBootstrapper().run();
 }
