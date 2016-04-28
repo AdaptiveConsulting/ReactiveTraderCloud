@@ -41,7 +41,6 @@ export default class ExecutionService extends ServiceBase {
                     .map(dto => {
                       const trade = _this._tradeMapper.mapFromTradeDto(dto.Trade);
                       _log.info(`execute response received for: ${executeTradeRequest.toString()}. Status: ${trade.status}`, dto);
-                      _this._openFin.openTradeNotification(trade);
                       return ExecuteTradeResponse.create(trade);
                     })
                     .timeout(ExecutionService.EXECUTION_TIMEOUT_MS, Rx.Observable.return(ExecuteTradeResponse.createForError('Trade execution timeout exceeded')))

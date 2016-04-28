@@ -213,12 +213,7 @@ if (isProductionMode){
     'webpack-dev-server/client?http://0.0.0.0:3000/',
     'webpack/hot/dev-server'
   );
-
-  webpackConfig.entry.notification.push(
-    'webpack-dev-server/client?http://0.0.0.0:3000/',
-    'webpack/hot/dev-server'
-  );
-
+  
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()

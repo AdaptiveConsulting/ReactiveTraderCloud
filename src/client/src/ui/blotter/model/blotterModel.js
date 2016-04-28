@@ -32,6 +32,7 @@ export default class BlotterModel extends ModelBase {
     this.trades = [];
     this.isConnected = false;
     this._regionManagerHelper = new RegionManagerHelper(RegionNames.blotter, regionManager, this);
+    this._isStateOfTheWorld = true;
   }
 
   @observeEvent('init')
@@ -68,8 +69,12 @@ export default class BlotterModel extends ModelBase {
               }
               else {
                 this.trades.unshift(trade);
+                if (!this._isStateOfTheWorld){
+                  this._blotterService.openFin.openTradeNotification(trade);
+                }
               }
             });
+            this._isStateOfTheWorld = false;
           },
           err => {
             _log.error('Error on blotterService stream stream', err);
