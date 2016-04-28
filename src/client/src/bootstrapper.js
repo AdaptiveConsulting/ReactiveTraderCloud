@@ -10,7 +10,7 @@ import { User, ServiceConst } from './services/model';
 import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
-import { default as espRouter } from 'system/router';
+import { default as espRouter } from './system/router';
 import { ShellView } from './ui/shell/views';
 import { RegionModel, SingleItemRegionModel, PopoutRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
@@ -27,7 +27,7 @@ import {
 } from './services';
 import { WellKnownModelIds } from './';
 
-export default class Bootstrapper {
+class Bootstrapper {
   _connection:Connection;
   _referenceDataService:ReferenceDataService;
   _pricingService:PricingService;
