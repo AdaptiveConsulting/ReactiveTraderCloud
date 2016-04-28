@@ -19,7 +19,7 @@ export default class AnalyticsBarChart extends React.Component{
   }
 
   _createBars(){
-    let containerWidth = this.props.containerWidth;
+    let containerWidth = this.props.containerWidth - 40;
 
     let propName = this.props.isPnL ? CurrencyPairPosition.basePnlName : CurrencyPairPosition.baseTradedAmountName;
     let chartData = this.props.isPnL ? this.props.series : this._getPositionsDataFromSeries(propName);
