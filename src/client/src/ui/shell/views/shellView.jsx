@@ -26,39 +26,42 @@ export default class ShellView extends ViewBase {
 
     let openFinChrome = null;
     if (model.isRunningInOpenFin) {
-      openFinChrome = (<OpenFinChrome
+      openFinChrome = (<OpenFinChrome className='shell__header'
         minimize={() => router.publishEvent(model.modelId, 'minimizeClicked', {})}
         maximize={() => router.publishEvent(model.modelId, 'maximizeClicked', {})}
         close={() => router.publishEvent(model.modelId, 'closeClicked', {})}/>);
     }
 
-    var wellKnownModelIds = model.wellKnownModelIds;
+    let chromeContainerClassName = model.isRunningInOpenFin ? 'chrome__container-openFin' : 'chrome__container';
+    let wellKnownModelIds = model.wellKnownModelIds;
     return (
-      <div className='shell__container'>
+      <div className={chromeContainerClassName}>
         {openFinChrome}
-        <div className='shell__splash'>
-          <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
-        </div>
-        <Modal shouldShow={model.sessionExpired} title='Session expired'>
-          <div>
-            <div>Your 15 minute session expired, you are now disconnected from the server.</div>
-            <div>Click reconnect to start a new session.</div>
-            <button className='btn shell__button--reconnect'
-                    onClick={() => router.publishEvent(model.modelId, 'reconnectClicked', {})}>Reconnect
-            </button>
+        <div className='shell__container'>
+          <div className='shell__splash'>
+            <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
           </div>
-        </Modal>
-        <div className='shell__workspace'>
-          <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
-        </div>
-        <div className='shell__analytics'>
-          <SingleItemRegionView modelId={wellKnownModelIds.quickAccessRegionModelId}/>
-        </div>
-        <div className='shell__blotter'>
-          <SingleItemRegionView modelId={wellKnownModelIds.blotterRegionModelId}/>
-        </div>
-        <div className='shell__footer'>
-          <FooterView modelId={wellKnownModelIds.footerModelId}/>
+          <Modal shouldShow={model.sessionExpired} title='Session expired'>
+            <div>
+              <div>Your 15 minute session expired, you are now disconnected from the server.</div>
+              <div>Click reconnect to start a new session.</div>
+              <button className='btn shell__button--reconnect'
+                      onClick={() => router.publishEvent(model.modelId, 'reconnectClicked', {})}>Reconnect
+              </button>
+            </div>
+          </Modal>
+          <div className='shell__workspace'>
+            <WorkspaceRegionView modelId={wellKnownModelIds.workspaceRegionModelId}/>
+          </div>
+          <div className='shell__analytics'>
+            <SingleItemRegionView modelId={wellKnownModelIds.quickAccessRegionModelId}/>
+          </div>
+          <div className='shell__blotter'>
+            <SingleItemRegionView modelId={wellKnownModelIds.blotterRegionModelId}/>
+          </div>
+          <div className='shell__footer'>
+            <FooterView modelId={wellKnownModelIds.footerModelId}/>
+          </div>
         </div>
       </div>
     );

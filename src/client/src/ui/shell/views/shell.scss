@@ -1,9 +1,9 @@
 $shell-background-color:      #212A35;
 $analytics-background-color:  #293543;
 $blotter-height:              20vh;
-$header-height:               0px;
+$header-height:               30px;
 $footer-height:               30px;
-$workspace-height:            calc(100vh - #{$header-height} - #{$blotter-height} - #{$footer-height});
+$workspace-height:            calc(100% - #{$blotter-height} - #{$footer-height});
 $analytics-height:            $workspace-height;
 $analytics-width:             400px;
 $workspace-width:             calc(100vw - #{$analytics-width});
@@ -26,6 +26,15 @@ $splash-logo-margin-top:      20vh;
     width: 0;
     height: 0;
   }
+}
+
+
+.chrome__container{
+  height: 100vh;
+}
+
+.chrome__container-openFin{
+  height: calc(100vh - #{$header-height});
 }
 
 .shell__splash {
@@ -57,17 +66,11 @@ $splash-logo-margin-top:      20vh;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   & * {
     box-sizing: border-box;
   }
-  // TODO - show when running in OpenFin
-  //.header {
-  //  flex: 1 100%;
-  //  height: $header-height;
-  //  order: 1;
-  //}
 
   // scrollbar
   ::-webkit-scrollbar {
