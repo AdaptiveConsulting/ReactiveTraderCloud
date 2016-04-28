@@ -61,9 +61,8 @@ export default class OpenFin {
 
     let tradeNotification = new TradeNotification(trade);
 
-    console.log('tradeNotification : ', tradeNotification);
     let notification = new fin.desktop.Notification({
-      url: '/notification.html',//'/#notification',
+      url: '/notification.html',
       message: tradeNotification,
       onMessage: () => {
         let win = fin.desktop.Window.getCurrent();
@@ -80,8 +79,7 @@ export default class OpenFin {
               break;
           }
         });
-      },
-      timeout: 'never'
+      }
     });
   }
 }

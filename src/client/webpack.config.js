@@ -36,8 +36,8 @@ const webpackConfig = {
     app: [
       './src/bootstrapper.js'
     ],
-    notification: [
-      './src/webpack-bundles/bootstrapperTests.js']
+    notification:
+      ['./src/notificationBootstrapper.js'],
   },
   output: {
     filename: '[name].js',
@@ -45,8 +45,7 @@ const webpackConfig = {
     publicPath: '/'
   },
   plugins: [
-    // new webpack.DefinePlugin(config.get('globals')),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(true),
     new webpack.optimize.DedupePlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
@@ -91,7 +90,7 @@ const webpackConfig = {
       system: path.join(__dirname, 'src/system'),
       services: path.join(__dirname, 'src/services'),
       // reverse alias so we can use ES6 from node modules and get IDE support but not actually transpile it
-      'esp-js/src' : path.join(__dirname, 'node_modules/esp-js')
+      'esp-js/src' : path.join(__dirname, 'node_modules/esp-js'),
     }
   },
   eslint: {
