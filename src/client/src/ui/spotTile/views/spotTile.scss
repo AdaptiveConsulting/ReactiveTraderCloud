@@ -45,7 +45,7 @@ $price-width: calc(45% + 10px);
       color: $spot-tile-primary-color;
       display: inline-block;
       position: absolute;
-      right: 20px;
+      right: 40px;
       top: 0;
       text-transform: uppercase;
       text-align: right;
@@ -115,10 +115,34 @@ $price-width: calc(45% + 10px);
   width: 100%;
 }
 
+.spot-tile__popout-controls{
+  float: right;
+}
+
 .spot-tile__icon--tearoff.glyphicon {
   display: none;
-  float: right;
   cursor: pointer;
+  margin-left: 6px;
+}
+
+.spot-tile__icon--rotate{
+  margin-left: 6px;
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    } to {
+        transform: rotate(360deg);
+      }
+  }
+}
+
+.spot-tile__icon--hidden {
+  visibility: hidden;
 }
 
 .spot-tile__trade-summary {

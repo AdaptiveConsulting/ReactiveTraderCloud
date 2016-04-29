@@ -7,6 +7,8 @@ import { TradeExecutionNotification, TextNotification, NotificationBase, Notific
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { TradeStatus } from '../../../services/model';
 import { SchedulerService, } from '../../../system';
+import { OpenFin } from '../../../system/openFin';
+
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 4000;
 
 import {
@@ -30,6 +32,7 @@ export default class SpotTileModel extends ModelBase {
   _toastNotificationTimerDisposable:Rx.SerialDisposable;
   _log:logger.Logger;
   _regionManagerHelper:RegionManagerHelper;
+  _openFin:OpenFin;
 
   // React doesn't seem to pickup ES6 properties (last time I looked it seemed to be because Babel doesn't spit them out as enumerable)
   // So we're just exposing the state as fields.
@@ -41,6 +44,7 @@ export default class SpotTileModel extends ModelBase {
   pricingConnected:boolean;
   executionConnected:boolean;
   isTradeExecutionInFlight:boolean;
+  isRunningInOpenFin:boolean;
 
   constructor(modelId:string,
               currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
@@ -48,13 +52,15 @@ export default class SpotTileModel extends ModelBase {
               pricingService:PricingService,
               executionService:ExecutionService,
               regionManager:RegionManager,
-              schedulerService:SchedulerService) {
+              schedulerService:SchedulerService,
+              openFin:OpenFin) {
     super(modelId, router);
     this._log = logger.create(`${this.modelId}:${currencyPair.symbol}`);// can't change ccy pair in this demo app, so reasonable to use the symbol in the logger name
     this._pricingService = pricingService;
     this._executionService = executionService;
     this._regionManager = regionManager;
     this._schedulerService = schedulerService;
+    this._openFin = openFin;
     this.currencyPair = currencyPair;
     this._executionDisposable = new Rx.SerialDisposable();
     this.addDisposable(this._executionDisposable);
@@ -73,6 +79,7 @@ export default class SpotTileModel extends ModelBase {
     this.executionConnected = false;
     this.isTradeExecutionInFlight = false;
     this._regionManagerHelper = new RegionManagerHelper(RegionNames.workspace, regionManager, this);
+    this.isRunningInOpenFin = openFin.isRunningInOpenFin;
   }
 
   get hasNotification() {
@@ -97,6 +104,12 @@ export default class SpotTileModel extends ModelBase {
   _onPopOutTile() {
     this._log.info(`Popping out tile`);
     this._regionManagerHelper.popout(`${this.currencyPair.symbol} Spot`, 332, 155);
+  }
+
+  @observeEvent('displayCurrencyChart')
+  _onDisplayCurrencyChart(){
+    this._log.info(`Display currency chart - ChartIQ`);
+    this._openFin.displayCurrencyChart(this.currencyPair.symbol);
   }
 
   @observeEvent('tradeNotificationDismissed')

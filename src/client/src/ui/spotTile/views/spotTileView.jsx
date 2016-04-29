@@ -15,8 +15,17 @@ export default class SpotTileView extends ViewBase {
   constructor() {
     super();
     this.state = {
-      model: null
+      model: null,
+      currencyChartIsOpening: false,
+      currencyChartTimeoutId: -1
     };
+  }
+
+  componentWillUnmount(){
+    super.componentWillMount();
+    if (this.state.currencyChartIsOpening){
+      window.clearTimeout(this.state.currencyChartTimeoutId);
+    }
   }
 
   render() {
@@ -28,6 +37,16 @@ export default class SpotTileView extends ViewBase {
     let spotDateClass = classnames('spot-tile__delivery', {'hide': model.hasNotification});
     let notification = this._tryCreateNotification();
     let priceComponents = this._createPriceComponents();
+    let showChartIQIcon = model.isRunningInOpenFin;
+
+    const chartIQIconClassName = classnames(
+      {
+        'spot-tile__icon--hidden': !showChartIQIcon,
+        'glyphicon glyphicon-refresh spot-tile__icon--rotate': this.state.currencyChartIsOpening,
+        'spot-tile__icon--tearoff glyphicon glyphicon-stats': !this.state.currencyChartIsOpening
+      }
+    );
+
     const formattedDate = model.currentSpotPrice ? moment(model.currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT) : '';
     const className = classnames(
       'spot-tile',
@@ -46,7 +65,9 @@ export default class SpotTileView extends ViewBase {
           <span className='spot-tile__stale-label'>Stale</span>
           <span className='spot-tile__symbol'>{model.tileTitle}</span>
           <span className='spot-tile__execution-label'>Executing</span>
-          <div className='popout__controls'>
+          <div className='spot-tile__popout-controls'>
+            <i className={chartIQIconClassName}
+              onClick={() => this._displayCurrencyChart()}/>
             <i className='spot-tile__icon--tearoff glyphicon glyphicon-new-window'
                onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
           </div>
@@ -64,6 +85,12 @@ export default class SpotTileView extends ViewBase {
         </div>
       </div>
     );
+  }
+
+  _displayCurrencyChart(){
+    let timeoutId = setTimeout(()=> this.setState({currencyChartIsOpening: false}), 2000);
+    this.setState({currencyChartTimeoutId: timeoutId, currencyChartIsOpening: true});
+    router.publishEvent(this.props.modelId, 'displayCurrencyChart', {});
   }
 
   _createPriceComponents() {
