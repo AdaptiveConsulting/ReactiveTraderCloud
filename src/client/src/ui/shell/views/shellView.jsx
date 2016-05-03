@@ -6,6 +6,7 @@ import {ShellModel} from '../model';
 import {router} from '../../../system';
 import {WorkspaceRegionView} from '../../regions/views/workspace';
 import {SingleItemRegionView} from '../../regions/views/singleItem';
+import classnames from 'classnames';
 import './shell.scss';
 
 
@@ -17,7 +18,7 @@ export default class ShellView extends ViewBase {
       modelId: 'shellModelId'
     };
   }
-
+  
   render() {
     let model:ShellModel = this.state.model;
     if (model === null) {
@@ -32,7 +33,13 @@ export default class ShellView extends ViewBase {
         close={() => router.publishEvent(model.modelId, 'closeClicked', {})}/>);
     }
 
-    let chromeContainerClassName = model.isRunningInOpenFin ? 'chrome__container-openFin' : 'chrome__container';
+    let chromeContainerClassName = classnames(
+      {
+        'chrome__container-openFin': model.isRunningInOpenFin,
+        'chrome__container': !model.isRunningInOpenFin
+      }
+    );
+
     let wellKnownModelIds = model.wellKnownModelIds;
     return (
       <div className={chromeContainerClassName}>

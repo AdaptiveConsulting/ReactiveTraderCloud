@@ -28,7 +28,7 @@ export default class PNLBar extends React.Component{
           <label className='analytics__barchart-label'>{this.props.model.symbol}</label>
           <label className='analytics__barchart-amount'>{ccyPrefix} {amountStr}</label>
           <span>
-            <svg id='container' className='analytics__barchart-bar' width={this.props.containerWidth}>
+            <svg id='container' className='analytics__barchart-bar'>
               <g>
                 <rect width={this.props.containerWidth} className='analytics__barchart-bar-background'></rect>
                 <rect width={displayValue} className={indicatorClassName} x={xPos}></rect>
