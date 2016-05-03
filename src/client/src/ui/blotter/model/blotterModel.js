@@ -69,6 +69,9 @@ export default class BlotterModel extends ModelBase {
               else {
                 this.trades.unshift(trade);
               }
+              if (!trade.isStateOfTheWorld){
+                this._blotterService.createNotification(trade);
+              }
             });
           },
           err => {

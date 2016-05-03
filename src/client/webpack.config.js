@@ -34,8 +34,10 @@ const webpackConfig = {
   target: 'web',
   entry: {
     app: [
-      './src/bootstrapper.js'
-    ]
+      './src/appBootstrapper.js'
+    ],
+    notification:
+      ['./src/notificationBootstrapper.js'],
   },
   output: {
     filename: '[name].js',
@@ -43,15 +45,23 @@ const webpackConfig = {
     publicPath: '/'
   },
   plugins: [
-    // new webpack.DefinePlugin(config.get('globals')),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       hash: true,
       filename: 'index.html',
-      inject: 'body'
+      inject: 'body',
+      excludeChunks: ['notification']
     }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      hash: true,
+      filename: 'notification.html',
+      inject: 'body',
+      excludeChunks: ['app']
+    }),
+
     new CopyWebpackPlugin([
       {
         from: './src/ui/common/images',
@@ -177,7 +187,7 @@ if (isProductionMode){
         'dead_code': true
       },
       output: {
-       comments: false
+        comments: false
       }
     })
   );

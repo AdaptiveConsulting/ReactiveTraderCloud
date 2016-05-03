@@ -1,5 +1,6 @@
 import Rx from 'rx';
 import _ from 'lodash';
+import { Trade, TradeNotification } from '../../services/model';
 import { logger } from '../';
 
 const _log:logger.Logger = logger.create('OpenFin');
@@ -24,7 +25,7 @@ export default class OpenFin {
   close(){
     this._currentWindow.close();
   }
-
+  
   minimise(e){
     this._currentWindow.minimize();
   }
@@ -118,6 +119,20 @@ export default class OpenFin {
       }
     }, function(){
       app.run();
+    });
+  }
+
+  openTradeNotification(trade:Trade): void {
+    if (!this.isRunningInOpenFin) return;
+
+    let tradeNotification = new TradeNotification(trade);
+
+    let notification = new fin.desktop.Notification({
+      url: '/notification.html',
+      message: tradeNotification,
+      onMessage: () => {
+        this.maximise();
+      }
     });
   }
 }

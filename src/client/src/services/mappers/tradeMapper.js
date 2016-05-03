@@ -30,7 +30,7 @@ export default class TradeMapper {
       new Date(tradeDto.TradeDate),
       new Date(tradeDto.ValueDate),
       status,
-      !isStateOfTheWorld
+      isStateOfTheWorld
     );
   }
 

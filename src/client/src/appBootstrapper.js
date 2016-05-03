@@ -27,7 +27,7 @@ import {
 } from './services';
 import { WellKnownModelIds } from './';
 
-class Bootstrapper {
+class AppBootstrapper {
   _connection:Connection;
   _referenceDataService:ReferenceDataService;
   _pricingService:PricingService;
@@ -63,7 +63,7 @@ class Bootstrapper {
     this._openFin = new OpenFin();
     this._referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this._connection, this._schedulerService);
     this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, this._schedulerService, this._referenceDataService);
-    this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, this._schedulerService, this._referenceDataService);
+    this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, this._schedulerService, this._referenceDataService, this._openFin);
     this._executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, this._connection, this._schedulerService, this._referenceDataService, this._openFin);
     this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, this._schedulerService, this._referenceDataService);
     this._compositeStatusService = new CompositeStatusService(this._connection, this._pricingService, this._referenceDataService, this._blotterService, this._executionService, this._analyticsService);
@@ -146,5 +146,5 @@ class Bootstrapper {
 let runBootstrapper = location.pathname === '/' && location.hash.length === 0;
 // if we're not the root we (perhaps a popup) we never re-run the bootstrap logic
 if(runBootstrapper) {
-  new Bootstrapper().run();
+  new AppBootstrapper().run();
 }

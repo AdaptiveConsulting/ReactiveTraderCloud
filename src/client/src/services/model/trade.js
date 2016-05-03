@@ -12,6 +12,7 @@ export default class Trade {
   _valueDate:Date;
   _status:TradeStatus;
   _isNew: boolean;
+  _isStateOfTheWorld: boolean;
   constructor(
     tradeId:number,
     traderName:string,
@@ -23,7 +24,7 @@ export default class Trade {
     tradeDate:Date,
     valueDate:string,
     status:TradeStatus,
-    isNew:boolean
+    isStateOfTheWorld:boolean
   ) {
     this._tradeId = tradeId;
     this._traderName = traderName;
@@ -35,7 +36,8 @@ export default class Trade {
     this._tradeDate = tradeDate;
     this._valueDate = valueDate;
     this._status = status;
-    this._isNew = isNew;
+    this._isNew = !isStateOfTheWorld;
+    this._isStateOfTheWorld = isStateOfTheWorld;
   }
 
   get tradeId():number {
@@ -76,6 +78,10 @@ export default class Trade {
 
   get status():TradeStatus {
     return this._status;
+  }
+
+  get isStateOfTheWorld():boolean {
+    return this._isStateOfTheWorld;
   }
 
   get isNew():boolean {
