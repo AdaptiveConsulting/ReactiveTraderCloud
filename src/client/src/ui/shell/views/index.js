@@ -1,1 +1,1 @@
-export { default as ShellView } from './shellView';
+export { default as ShellView } from './shellView.jsx';

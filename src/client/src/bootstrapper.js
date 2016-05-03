@@ -95,7 +95,7 @@ class Bootstrapper {
     let regionManager = new RegionManager([workspaceRegionModel, popoutRegionModel, blotterRegionModel, quickAccessRegionModel]);
 
     // wire up the shell
-    let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection);
+    let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection, this._openFin);
     shellModel.observeEvents();
 
     // wire-up the loader that populats the workspace with spot tiles.

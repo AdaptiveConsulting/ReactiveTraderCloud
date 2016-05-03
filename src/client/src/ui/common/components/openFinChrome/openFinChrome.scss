@@ -1,0 +1,34 @@
+#open-fin-chrome {
+  width: 100%;
+  height: 30px;
+  background: url('../../images/adaptive-logo-statusbar.png') no-repeat, #DEE3E8;
+  background-position: 6px 6px;
+  display: flex;
+  align-content: center;
+  vertical-align: middle;
+}
+
+#open-fin-chrome a {
+  width: 15px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.open-fin-chrome__title {
+  width: 100%;
+  padding-top: 5px;
+  margin-right: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.open-fin-chrome__controls{
+  padding-top: 5px;
+  width: 80px;
+  text-align: center;
+}
+
+.open-fin-chrome__controls-btn{
+  padding-left: 3px;
+  padding-right: 3px;
+}

@@ -24,6 +24,33 @@ export default class OpenFin {
     // this.setToolbarAsDraggable();
   }
 
+  get isRunningInOpenFin() {
+    return typeof fin !== 'undefined';
+  }
+
+  close(){
+    this._currentWindow.close();
+  }
+
+  minimise(e){
+    this._currentWindow.minimize();
+  }
+
+  maximise(e){
+    let window = this._currentWindow;
+    window.getState(state => {
+        switch (state){
+          case 'maximized':
+          case 'restored':
+          case 'minimized':
+            window.restore(() => window.bringToFront());
+            break;
+          default:
+            window.maximize();
+        }
+      });
+  }
+
   checkLimit(executablePrice, notional:number, tradedCurrencyPair:string):Rx.Observable<boolean> {
     return Rx.Observable.create(observer => {
         let disposables = new Rx.CompositeDisposable();
@@ -56,5 +83,9 @@ export default class OpenFin {
         }
         return disposables;
       });
+  }
+
+  get _currentWindow() {
+    return fin.desktop.Window.getCurrent();
   }
 }
