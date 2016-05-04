@@ -1,27 +1,20 @@
 import Rx from 'rx';
+import _ from 'lodash';
+import { logger } from '../';
+
+const _log:logger.Logger = logger.create('OpenFin');
 
 export default class OpenFin {
 
-  available:boolean = false;
-  //currentWindow:OpenFinWindow;
-
-  //windows:Array<TearoutWindowInfo> = [];
   tradeClickedSubject:Rx.Subject<string>;
-  //analyticsSubscription:Rx.IDisposable;
-  // pricesSubscription:Rx.IDisposable;
   limitCheckSubscriber:string;
   requestLimitCheckTopic:string;
-  limitCheckId:number = 1;
+  limitCheckId:number;
 
   constructor() {
     this.tradeClickedSubject = new Rx.Subject();
-    if (typeof fin === 'undefined') return;
-
-    this.available = true;
     this.limitCheckId = 1;
     this.requestLimitCheckTopic = 'request-limit-check';
-    console.log('Application is running in OpenFin container');
-    // this.setToolbarAsDraggable();
   }
 
   get isRunningInOpenFin() {
@@ -55,14 +48,14 @@ export default class OpenFin {
     return Rx.Observable.create(observer => {
         let disposables = new Rx.CompositeDisposable();
         if (!this.available || this.limitCheckSubscriber == null) {
-          console.log('client side limit check not up, will delegate to to server');
+          _log.debug('client side limit check not up, will delegate to to server');
           observer.onNext(true);
           observer.onCompleted();
         } else {
-          console.log('checking if limit is ok with ' + this.limitCheckSubscriber);
+          _log.debug(`checking if limit is ok with ${this.limitCheckSubscriber}`);
           var topic = 'limit-check-response' + (this.limitCheckId++);
           var limitCheckResponse:(msg:any) => void = (msg) => {
-            console.log(this.limitCheckSubscriber + ' limit check response was ' + msg);
+            _log.debug(`${this.limitCheckSubscriber} limit check response was ${msg}`);
             observer.onNext(msg.result);
             observer.onCompleted();
           };
@@ -87,5 +80,44 @@ export default class OpenFin {
 
   get _currentWindow() {
     return fin.desktop.Window.getCurrent();
+  }
+
+  displayCurrencyChart(symbol){
+    let chartIqAppId = 'ChartIQ';
+    fin.desktop.System.getAllApplications((apps) => {
+      let chartIqApp = _.find(apps, ((app) => {
+        return app.isRunning && app.uuid === chartIqAppId;
+      }));
+      if(chartIqApp) {
+        this._refreshCurrencyChart(symbol);
+      } else {
+        this._launchCurrencyChart(symbol);
+      }
+    });
+  }
+
+  _refreshCurrencyChart(symbol){
+    let interval = 5;
+    let chartIqAppId = 'ChartIQ';
+    fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', { symbol: symbol, interval: interval });
+  }
+
+  _launchCurrencyChart(symbol){
+    let interval = 5;
+    let chartIqAppId = 'ChartIQ';
+    let url = `http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=${symbol}&period=${interval}`;
+    let name = `chartiq_${(new Date()).getTime()}`;
+    const applicationIcon = 'http://openfin.chartiq.com/0.5/img/openfin-logo.png';
+    let app = new fin.desktop.Application({
+      uuid: chartIqAppId,
+      url: url,
+      name: name,
+      applicationIcon: applicationIcon,
+      mainWindowOptions:{
+        autoShow: false
+      }
+    }, function(){
+      app.run();
+    });
   }
 }

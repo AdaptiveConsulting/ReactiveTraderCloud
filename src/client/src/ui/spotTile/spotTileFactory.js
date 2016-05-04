@@ -5,6 +5,7 @@ import { PricingService, ExecutionService } from '../../services';
 import { CurrencyPair } from '../../services/model';
 import { RegionManager, RegionNames } from '../regions';
 import { SchedulerService, } from '../../system';
+import { OpenFin } from '../../system/openFin';
 
 let modelIdKey = 1;
 
@@ -19,19 +20,22 @@ export default class SpotTileFactory {
   _executionService:ExecutionService;
   _regionManager:RegionManager;
   _schedulerService:SchedulerService;
+  _openFin:OpenFin;
 
   constructor(
     router:Router,
     pricingService:PricingService,
     executionService:ExecutionService,
     regionManager:RegionManager,
-    schedulerService: SchedulerService
+    schedulerService: SchedulerService,
+    openFin: OpenFin
   ) {
     this._router = router;
     this._pricingService = pricingService;
     this._executionService = executionService;
     this._regionManager = regionManager;
     this._schedulerService = schedulerService;
+    this._openFin = openFin;
   }
 
   createTileModel(currencyPair:CurrencyPair) {
@@ -42,7 +46,8 @@ export default class SpotTileFactory {
       this._pricingService,
       this._executionService,
       this._regionManager,
-      this._schedulerService
+      this._schedulerService,
+      this._openFin
     );
     spotTileModel.observeEvents();
     return spotTileModel;
