@@ -64,8 +64,9 @@ spec:
     base:
       crossbar:
         major: 0
-        minor: 0
+        minor: 1
         image: weareadaptive/crossbar
+        official_version: 0.13.2-trusty
       eventstore:
         major: 0
         minor: 0
