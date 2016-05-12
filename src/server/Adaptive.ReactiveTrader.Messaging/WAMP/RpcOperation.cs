@@ -82,8 +82,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
                 caller.Result(WampObjectFormatter.Value, dummyDetails);
 
-
-                _scheduler.Schedule(() => serviceMethod(userContext, message).Wait());
+                _scheduler.Schedule(() => serviceMethod(userContext, message));
             }
             catch (Exception e)
             {
