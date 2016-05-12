@@ -82,12 +82,22 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
                 caller.Result(WampObjectFormatter.Value, dummyDetails);
 
-                _scheduler.Schedule(() => serviceMethod(userContext, message));
+                _scheduler.Schedule(async () =>
+                {
+                    try
+                    {
+                        await serviceMethod(userContext, message);
+                    }
+                    catch (Exception e1)
+                    {
+                        Log.Error(e1);
+                    }
+                });
             }
-            catch (Exception e)
+            catch (Exception e2)
             {
-                Log.Error(e);
-                caller.Error(WampObjectFormatter.Value, dummyDetails, e.Message);
+                Log.Error(e2);
+                caller.Error(WampObjectFormatter.Value, dummyDetails, e2.Message);
             }
         }
     }
