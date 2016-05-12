@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
@@ -15,6 +16,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
     {
         protected static readonly ILog Log = LogManager.GetLogger<RpcOperation>();
 
+        private readonly IScheduler _scheduler = TaskPoolScheduler.Default;
         private readonly Func<IRequestContext, IMessage, Task<TResponse>> _serviceMethod;
 
         public RpcResponseOperation(string name, Func<IRequestContext, IMessage, Task<TResponse>> serviceMethod)
@@ -34,7 +36,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
             caller.Error(WampObjectFormatter.Value,
                          dummyDetails,
                          "wamp.error.runtime_error",
-                         new object[] {"Expected parameters"});
+                         new object[] { "Expected parameters" });
         }
 
         public void Invoke<TMessage>(IWampRawRpcOperationRouterCallback caller,
@@ -54,7 +56,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
             InnerInvoke(_serviceMethod, caller, formatter, arguments);
         }
 
-        private static void InnerInvoke<T>(Func<IRequestContext, IMessage, Task<TResponse>> serviceMethod,
+        private void InnerInvoke<T>(Func<IRequestContext, IMessage, Task<TResponse>> serviceMethod,
                                            IWampRawRpcOperationRouterCallback caller,
                                            IWampFormatter<T> formatter,
                                            T[] arguments)
@@ -78,10 +80,11 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
                 var userContext = new RequestContext(message, userSession);
 
-                var response = serviceMethod(userContext, message).Result;
-
-
-                caller.Result(WampObjectFormatter.Value, dummyDetails, new object[] {response});
+                _scheduler.Schedule(async () =>
+                {
+                    var response = await serviceMethod(userContext, message);
+                    caller.Result(WampObjectFormatter.Value, dummyDetails, new object[] { response });
+                });
             }
             catch (Exception e)
             {

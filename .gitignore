@@ -14,3 +14,5 @@ node.pid
 **/.crossbar/node.key
 *.iml
 *.orig
+key.priv
+key.pub
