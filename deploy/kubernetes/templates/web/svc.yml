@@ -18,3 +18,9 @@ spec:
   - port: 8080
     targetPort: 8080
     name: "ws"
+  - port: 443
+    targetPort: 80
+    name: "https"
+  - port: 8000
+    targetPort: 8080
+    name: "wss"
