@@ -10,7 +10,7 @@ export default class AutobahnConnectionProxy {
 
   constructor(url:string, realm:string) {
     const useSecure = location.protocol === 'https:';
-    const securePort = 443;
+    const securePort = 8000;
     const defaultPort = 8080;
     this.connection = new autobahn.Connection({
       realm: realm,
