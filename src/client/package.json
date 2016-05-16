@@ -46,6 +46,7 @@
     "numeral": "1.5.3",
     "nvd3": "1.8.1",
     "react": "0.14.6",
+    "react-dimensions": "1.1.1",
     "react-dom": "0.14.6",
     "react-nvd3": "0.4.1",
     "react-sparklines": "1.4.2",
