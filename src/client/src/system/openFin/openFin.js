@@ -22,16 +22,15 @@ export default class OpenFin {
     return typeof fin !== 'undefined';
   }
 
-  close(){
-    this._currentWindow.close();
-  }
-  
-  minimise(e){
-    this._currentWindow.minimize();
+  close(window = this._currentWindow){
+    window.close();
   }
 
-  maximise(e){
-    let window = this._currentWindow;
+  minimise(window = this._currentWindow){
+   window.minimize();
+  }
+
+  maximise(window = this._currentWindow){
     window.getState(state => {
         switch (state){
           case 'maximized':

@@ -86,7 +86,7 @@ class AppBootstrapper {
     // This infrastructure allows for differing views to be put into the shell without the shell having to be coupled to all these views.
     let workspaceRegionModel = new RegionModel(WellKnownModelIds.workspaceRegionModelId, RegionNames.workspace, espRouter);
     workspaceRegionModel.observeEvents();
-    let popoutRegionModel = new PopoutRegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter);
+    let popoutRegionModel = new PopoutRegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter, this._openFin);
     popoutRegionModel.observeEvents();
     let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, RegionNames.blotter, espRouter);
     blotterRegionModel.observeEvents();

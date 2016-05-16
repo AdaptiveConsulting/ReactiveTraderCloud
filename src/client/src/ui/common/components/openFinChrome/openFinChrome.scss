@@ -3,9 +3,9 @@
   height: 30px;
   background: url('../../images/adaptive-logo-statusbar.png') no-repeat, #DEE3E8;
   background-position: 6px 6px;
-  display: flex;
   align-content: center;
   vertical-align: middle;
+  position: relative;
 }
 
 #open-fin-chrome a {
@@ -15,17 +15,29 @@
 }
 
 .open-fin-chrome__title {
-  width: 100%;
-  padding-top: 5px;
-  margin-right: 5px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 5px;
+  width: 200px;
+  margin: auto;
   text-align: center;
   font-weight: bold;
 }
 
+@media (max-width: 400px) {
+  .open-fin-chrome__title {
+    display: none;
+  }
+}
+
+
+
 .open-fin-chrome__controls{
-  padding-top: 5px;
+  position: absolute;
+  right: 0;
+  top: 5px;
   width: 80px;
-  text-align: center;
 }
 
 .open-fin-chrome__controls-btn{

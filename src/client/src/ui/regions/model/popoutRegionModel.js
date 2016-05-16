@@ -1,15 +1,14 @@
 import { Router } from 'esp-js/src';
 import { RegionModel, RegionOptions, RegionModelRegistration } from './';
-import { ReactPopoutService, PopoutOptions } from '../../common/popout';
+import { PopoutServiceFactory, PopoutOptions } from '../../common/popout';
 import { ModelBase } from '../../common';
 import { createViewForModel } from '../';
 
 export default class PopoutRegionModel extends RegionModel {
-  _reactPopoutService:ReactPopoutService;
 
-  constructor(modelId:string, regionName:string, router:Router) {
+  constructor(modelId:string, regionName:string, router:Router, openfin) {
     super(modelId, regionName, router);
-    this._reactPopoutService = new ReactPopoutService();
+    this._reactPopoutService = new PopoutServiceFactory(openfin).getService();
   }
 
   // override
