@@ -72,6 +72,7 @@ export default class SpotTileModel extends ModelBase {
     this.tileTitle = `${currencyPair.base} / ${currencyPair.terms}`;
     this.notification = null;
     this.notional = 1000000;
+    this.maxNotional = 1000000000;
     this.currentSpotPrice = null;
 
     // If things get much messier we could look at introducing a state machine, but for now we really only have these 3 conditions to worry about
