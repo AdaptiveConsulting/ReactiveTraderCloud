@@ -10,6 +10,7 @@ import { SchedulerService, } from '../../../system';
 import { OpenFin } from '../../../system/openFin';
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 4000;
+const MAX_NOTIONAL_VALUE = 1000000000;
 
 import {
   GetSpotStreamRequest,
@@ -72,6 +73,7 @@ export default class SpotTileModel extends ModelBase {
     this.tileTitle = `${currencyPair.base} / ${currencyPair.terms}`;
     this.notification = null;
     this.notional = 1000000;
+    this.maxNotional = MAX_NOTIONAL_VALUE;
     this.currentSpotPrice = null;
 
     // If things get much messier we could look at introducing a state machine, but for now we really only have these 3 conditions to worry about

@@ -16,7 +16,8 @@ export default class NotionalInput extends React.Component {
     className: React.PropTypes.string,
     notional: React.PropTypes.number,
     currencyPair: React.PropTypes.instanceOf(CurrencyPair),
-    onChange: React.PropTypes.func
+    onChange: React.PropTypes.func,
+    maxValue: React.PropTypes.number
   };
 
   shouldComponentUpdate(nextProps, nextState){
@@ -58,7 +59,9 @@ export default class NotionalInput extends React.Component {
     const hasdot = rawValue.indexOf(DOT) !== -1;
 
     let notional = utils.convertNotionalShorthandToNumericValue(rawValue);
-
+    if (notional >= this.props.maxValue) {
+      notional = 0;
+    }
     hasdot && (notional += DOT);
 
     if (!isNaN(notional)){
