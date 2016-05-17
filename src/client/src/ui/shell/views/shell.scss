@@ -31,10 +31,18 @@ $splash-logo-margin-top:      20vh;
 
 .chrome__container{
   height: 100vh;
+
+  > div {
+    height: 100%;
+  }
 }
 
-.chrome__container-openFin{
+.chrome__container-openfin {
   height: calc(100vh - #{$header-height});
+
+  > div {
+    height: 100%;
+  }
 }
 
 .shell__splash {

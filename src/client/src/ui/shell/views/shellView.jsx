@@ -18,32 +18,31 @@ export default class ShellView extends ViewBase {
       modelId: 'shellModelId'
     };
   }
-  
+
   render() {
     let model:ShellModel = this.state.model;
     if (model === null) {
       return null;
     }
 
-    let openFinChrome = null;
-    if (model.isRunningInOpenFin) {
-      openFinChrome = (<OpenFinChrome className='shell__header'
-        minimize={() => router.publishEvent(model.modelId, 'minimizeClicked', {})}
-        maximize={() => router.publishEvent(model.modelId, 'maximizeClicked', {})}
-        close={() => router.publishEvent(model.modelId, 'closeClicked', {})}/>);
-    }
-
-    let chromeContainerClassName = classnames(
-      {
-        'chrome__container-openFin': model.isRunningInOpenFin,
-        'chrome__container': !model.isRunningInOpenFin
-      }
-    );
+    //let openFinChrome = null;
+    // if (model.isRunningInOpenFin) {
+    //   openFinChrome = (<OpenFinChrome className='shell__header'
+    //     minimize={() => router.publishEvent(model.modelId, 'minimizeClicked', {})}
+    //     maximize={() => router.publishEvent(model.modelId, 'maximizeClicked', {})}
+    //     close={() => router.publishEvent(model.modelId, 'closeClicked', {})}>);
+    // }
+    //
+    // let chromeContainerClassName = classnames(
+    //   {
+    //     'chrome__container-openFin': model.isRunningInOpenFin,
+    //     'chrome__container': !model.isRunningInOpenFin
+    //   }
+    // );
 
     let wellKnownModelIds = model.wellKnownModelIds;
-    return (
-      <div className={chromeContainerClassName}>
-        {openFinChrome}
+    return this._wrap(
+      <div>
         <div className='shell__container'>
           <div className='shell__splash'>
             <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
@@ -73,5 +72,23 @@ export default class ShellView extends ViewBase {
       </div>
     );
   }
+
+  _wrap(element) {
+    const isOpenFin = this.state.model.isRunningInOpenFin;
+    if (isOpenFin) {
+      return (<OpenFinChrome className='shell__header'
+                             minimize={() => router.publishEvent(model.modelId, 'minimizeClicked', {})}
+                             maximize={() => router.publishEvent(model.modelId, 'maximizeClicked', {})}
+                             close={() => router.publishEvent(model.modelId, 'closeClicked', {})}>
+        <div className='chrome__container-openfin'>{element}</div>
+        </OpenFinChrome>);
+    } else {
+      return (
+        <div className='chrome__container'>
+          {element}
+        </div>);
+    }
+  }
+
 }
 

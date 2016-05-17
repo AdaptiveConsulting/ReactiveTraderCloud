@@ -7,7 +7,6 @@ import PopoutServiceBase from './popoutServiceBase';
 import _ from 'lodash';
 
 let _log:logger.Logger = logger.create('OpenfinPopoutService');
-const OPENFIN_CHROME_TOOLBAR_HEIGHT = 30;
 
 export default class OpenfinPopoutService extends PopoutServiceBase {
 
@@ -21,8 +20,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div');
       popoutContainer.id = this._popoutContainerId;
       tearoutWindow.contentWindow.document.body.appendChild(popoutContainer);
-      ReactDOM.render(<div>
-          <OpenFinChrome minimize={() => this._openFin.minimize(tearoutWindow)}
+      ReactDOM.render(<OpenFinChrome minimize={() => this._openFin.minimize(tearoutWindow)}
                          maximize={() => this._openFin.maximize(tearoutWindow)}
                          close={() => {
                           this._openFin.close(tearoutWindow);
@@ -32,13 +30,13 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
                           if (_.isFunction(onClosing)) {
                             onClosing();
                           }
-                        }}/>
+                        }}>
           {view}
-        </div>
+      </OpenFinChrome>
         , popoutContainer);
-      const toolbar = tearoutWindow.contentWindow.document.getElementById('open-fin-chrome');
+      const toolbar = tearoutWindow.contentWindow.document.getElementsByClassName('openfin-chrome__header')[0];
       tearoutWindow.defineDraggableArea(toolbar);
-      tearoutWindow.resizeTo(windowOptions.width, windowOptions.height + OPENFIN_CHROME_TOOLBAR_HEIGHT);
+      tearoutWindow.resizeTo(windowOptions.width, windowOptions.height);
       tearoutWindow.updateOptions({opacity: 0, alwaysOnTop: true});
       tearoutWindow.show();
       tearoutWindow.animate({
