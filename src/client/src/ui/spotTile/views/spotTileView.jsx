@@ -22,7 +22,7 @@ export default class SpotTileView extends ViewBase {
   }
 
   componentWillUnmount(){
-    super.componentWillMount();
+    super.componentWillUnmount();
     if (this.state.currencyChartIsOpening){
       window.clearTimeout(this.state.currencyChartTimeoutId);
     }
