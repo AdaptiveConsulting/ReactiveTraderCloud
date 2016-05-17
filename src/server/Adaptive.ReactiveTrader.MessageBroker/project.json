@@ -12,8 +12,8 @@
     "Adaptive.ReactiveTrader.Messaging": "1.0.0"
   },
 
-  "commands": {
-    "Adaptive.ReactiveTrader.MessageBroker": "Adaptive.ReactiveTrader.MessageBroker"
+  "buildOptions": {
+    "emitEntryPoint": true
   },
 
   "frameworks": {

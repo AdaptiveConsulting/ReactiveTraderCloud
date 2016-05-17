@@ -12,9 +12,8 @@
     "Adaptive.ReactiveTrader.Server.Host": "1.0.0"
   },
 
-  "commands": {
-    "dev": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite config.dev.json",
-    "prod": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite config.prod.json"
+  "buildOptions": {
+    "emitEntryPoint": true
   },
 
   "frameworks": {

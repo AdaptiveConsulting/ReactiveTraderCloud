@@ -13,9 +13,8 @@
     "Newtonsoft.Json": "6.0.6"
   },
 
-  "commands": {
-    "dev": "Adaptive.ReactiveTrader.Server.Pricing config.dev.json",
-    "prod": "Adaptive.ReactiveTrader.Server.Pricing config.prod.json"
+  "buildOptions": {
+    "emitEntryPoint": true
   },
 
   "frameworks": {

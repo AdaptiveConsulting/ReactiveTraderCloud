@@ -12,9 +12,8 @@
     "Adaptive.ReactiveTrader.Server.Host": "1.0.0"
   },
 
-  "commands": {
-    "dev": "Adaptive.ReactiveTrader.Server.TradeExecution config.dev.json",
-    "prod": "Adaptive.ReactiveTrader.Server.TradeExecution config.prod.json"
+  "buildOptions": {
+    "emitEntryPoint": true
   },
 
   "frameworks": {

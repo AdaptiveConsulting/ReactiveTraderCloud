@@ -12,10 +12,10 @@
     "Adaptive.ReactiveTrader.Server.Host": "1.0.0"
   },
 
-  "commands": {
-    "dev": "Adaptive.ReactiveTrader.Server.ReferenceDataRead config.dev.json",
-    "prod": "Adaptive.ReactiveTrader.Server.ReferenceDataRead config.prod.json"
+  "buildOptions": {
+    "emitEntryPoint": true
   },
+
   "frameworks": {
     "net452": {
       "frameworkAssemblies": {

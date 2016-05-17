@@ -13,9 +13,8 @@
     "Adaptive.ReactiveTrader.Server.Common": "1.0.0"
   },
 
-  "commands": {
-    "dev": "Adaptive.ReactiveTrader.Server.Analytics config.dev.json",
-    "prod": "Adaptive.ReactiveTrader.Server.Analytics config.prod.json"
+  "buildOptions": {
+    "emitEntryPoint": true
   },
 
   "frameworks": {

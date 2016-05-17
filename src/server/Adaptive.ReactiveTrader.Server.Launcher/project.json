@@ -8,6 +8,10 @@
     "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
   },
 
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
   "dependencies": {
     "Adaptive.ReactiveTrader.MessageBroker": "1.0.0",
     "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0",

@@ -13,9 +13,8 @@
     "Adaptive.ReactiveTrader.Server.Common": "1.0.0"
   },
 
-  "commands": {
-    "dev": "Adaptive.ReactiveTrader.Server.Blotter config.dev.json",
-    "prod": "Adaptive.ReactiveTrader.Server.Blotter config.prod.json"
+  "buildOptions": {
+    "emitEntryPoint": true
   },
 
   "frameworks": {
