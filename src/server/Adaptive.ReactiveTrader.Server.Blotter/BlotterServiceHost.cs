@@ -39,7 +39,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                                                 $"Sending trades update to {replyTo}. Count: {o.Trades.Count}. IsStateOfTheWorld: {o.IsStateOfTheWorld}. IsStale: {o.IsStale}");
                                         })
                                     .TakeUntil(endPoint.TerminationSignal)
-                                    .Finally(() => { Log.DebugFormat("Tidying up subscripting.", replyTo); })
+                                    .Finally(() => { Log.DebugFormat("Tidying up subscription.", replyTo); })
                                     .Subscribe(endPoint);
         }
 
