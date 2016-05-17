@@ -39,12 +39,12 @@ export default class ShellModel extends ModelBase {
 
   @observeEvent('minimizeClicked')
   _onMinimizeClicked() {
-    this._openFin.minimise();
+    this._openFin.minimize();
   }
 
   @observeEvent('maximizeClicked')
   _onMaximizeClicked() {
-    this._openFin.maximise();
+    this._openFin.maximize();
   }
 
   @observeEvent('closeClicked')

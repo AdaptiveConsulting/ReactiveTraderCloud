@@ -2,14 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {PopoutOptions} from './';
 import {logger} from '../../../system';
-
+import PopoutServiceBase from './popoutServiceBase';
+import _ from 'lodash';
 import './popoutRegion.scss';
 
 let POPOUT_CONTAINER_ID = 'popout-content-container';
 
 let _log:logger.Logger = logger.create('BrowserPopoutService');
 
-export default class BrowserPopoutService {
+export default class BrowserPopoutService extends PopoutServiceBase {
+  constructor() {
+    super();
+  }
+
   openPopout(options:PopoutOptions, view:React.Component) {
     let popoutContainer;
     let windowOptionsString = this._getWindowOptionsString(options.windowOptions);
@@ -24,9 +29,8 @@ export default class BrowserPopoutService {
       ReactDOM.render(view, popoutContainer);
     };
     childWindow.onbeforeunload = () => {
-      if (popoutContainer) {
-        ReactDOM.unmountComponentAtNode(popoutContainer);
-      }
+      ReactDOM.unmountComponentAtNode(popoutContainer);
+
       if (options.onClosing) {
         options.onClosing();
       }
@@ -34,7 +38,7 @@ export default class BrowserPopoutService {
     childWindow.onload = onloadHandler;
   }
 
-  _getWindowOptionsString(options = { height: 400, width: 400}) {
+  _getWindowOptionsString(options = {height: 400, width: 400}) {
     const top = ((window.innerHeight - options.height) / 2) + window.screenY;
     const left = ((window.innerWidth - options.width) / 2) + window.screenX;
     let windowOptions = Object.assign({
@@ -48,7 +52,7 @@ export default class BrowserPopoutService {
   }
 
   _mapWindowOptionValue(value) {
-    if (typeof (value) === 'boolean') {
+    if (_.isBoolean(value)) {
       return value ? 'yes' : 'no';
     }
     return value;

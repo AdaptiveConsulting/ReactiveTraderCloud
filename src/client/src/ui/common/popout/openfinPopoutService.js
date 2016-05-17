@@ -3,12 +3,16 @@ import ReactDOM from 'react-dom';
 import {PopoutOptions} from './';
 import {logger} from '../../../system';
 import {OpenFinChrome} from '../components/';
+import PopoutServiceBase from './popoutServiceBase';
+import _ from 'lodash';
 
 let _log:logger.Logger = logger.create('OpenfinPopoutService');
+const OPENFIN_CHROME_TOOLBAR_HEIGHT = 30;
 
-export default class OpenfinPopoutService {
+export default class OpenfinPopoutService extends PopoutServiceBase {
 
   constructor(openFin) {
+    super();
     this._openFin = openFin;
   }
 
@@ -17,14 +21,14 @@ export default class OpenfinPopoutService {
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div');
       tearoutWindow.contentWindow.document.body.appendChild(popoutContainer);
       ReactDOM.render(<div>
-          <OpenFinChrome minimize={() => this._openFin.minimise(tearoutWindow)}
-                         maximize={() => this._openFin.maximise(tearoutWindow)}
+          <OpenFinChrome minimize={() => this._openFin.minimize(tearoutWindow)}
+                         maximize={() => this._openFin.maximize(tearoutWindow)}
                          close={() => {
                           this._openFin.close(tearoutWindow);
                           if (popoutContainer) {
                             ReactDOM.unmountComponentAtNode(popoutContainer);
                           }
-                          if (onClosing) {
+                          if (_.isFunction(onClosing)) {
                             onClosing();
                           }
                         }}/>
@@ -33,7 +37,7 @@ export default class OpenfinPopoutService {
         , popoutContainer);
       const toolbar = tearoutWindow.contentWindow.document.getElementById('open-fin-chrome');
       tearoutWindow.defineDraggableArea(toolbar);
-      tearoutWindow.resizeTo(windowOptions.width, windowOptions.height + 30);
+      tearoutWindow.resizeTo(windowOptions.width, windowOptions.height + OPENFIN_CHROME_TOOLBAR_HEIGHT);
       tearoutWindow.updateOptions({opacity: 0, alwaysOnTop: true});
       tearoutWindow.show();
       tearoutWindow.animate({
@@ -53,7 +57,8 @@ export default class OpenfinPopoutService {
         frame: false,
         resizable: windowOptions.resizable,
         maximizable: false,
-        showTaskbarIcon: false,
+        minimizable: true,
+        showTaskbarIcon: true,
         alwaysOnTop: true
       },
       () => onSuccessCallback(tearoutWindow),
