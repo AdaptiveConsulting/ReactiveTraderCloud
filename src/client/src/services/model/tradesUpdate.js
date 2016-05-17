@@ -1,8 +1,11 @@
+import { Trade } from './';
+
 export default class TradesUpdate{
 
-  constructor(isStateOfTheWorld:boolean, isStale:boolean){
+  constructor(isStateOfTheWorld:boolean, isStale:boolean, trades:Array<Trade>){
     this._isStateOfTheWorld = isStateOfTheWorld;
     this._isStale = isStale;
+    this._trades = trades;
   }
 
   get isStateOfTheWorld():boolean{
@@ -14,9 +17,5 @@ export default class TradesUpdate{
 
   get trades():Array<Trade>{
     return this._trades;
-  }
-
-  set trades(trades:Array<Trade>){
-    this._trades = trades;
   }
 }

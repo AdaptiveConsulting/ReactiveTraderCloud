@@ -10,15 +10,9 @@ export default class TradeMapper {
   }
 
   mapFromDto(dto:Object) : Array<Trade> {
-    let tradesUpdate = new TradesUpdate(dto.IsStateOfTheWorld, dto.IsStale);
-    let trades =  _.map(
-      dto.Trades,
-      trade => {
-        return this.mapFromTradeDto(trade);
-      });
+    let trades =  _.map(dto.Trades, trade => this.mapFromTradeDto(trade));
 
-    tradesUpdate.trades = trades;
-    return tradesUpdate;
+    return new TradesUpdate(dto.IsStateOfTheWorld, dto.IsStale, trades);
   }
 
   mapFromTradeDto(tradeDto:Object) : Trade {

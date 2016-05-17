@@ -3,6 +3,7 @@ import { TradeMapper } from './mappers';
 import { Connection, ServiceBase } from '../system/service';
 import { logger, SchedulerService, RetryPolicy } from '../system';
 import { ReferenceDataService } from './';
+import { TradesUpdate } from '../services/model';
 
 var _log:logger.Logger = logger.create('BlotterService');
 
@@ -11,8 +12,7 @@ export default class BlotterService extends ServiceBase {
   constructor(serviceType:string,
               connection:Connection,
               schedulerService:SchedulerService,
-              referenceDataService:ReferenceDataService,
-              openFin:OpenFin) {
+              referenceDataService:ReferenceDataService) {
     super(serviceType, connection, schedulerService);
     this._tradeMapper = new TradeMapper(referenceDataService);
   }
