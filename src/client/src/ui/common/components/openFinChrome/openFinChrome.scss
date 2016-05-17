@@ -1,5 +1,9 @@
 $header-height: 30px;
 
+.openfin-chrome {
+  height: 100vh;
+}
+
 .openfin-chrome__header {
   width: 100%;
   height: $header-height;
@@ -50,5 +54,9 @@ $header-height: 30px;
 
 .openfin-chrome__content {
   height: calc(100% - #{$header-height});
+
+  > div {
+    height: 100%;
+  }
 }
 

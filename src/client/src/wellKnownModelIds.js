@@ -40,4 +40,8 @@ export default class WellKnownModelIds {
   static get blotterModelId() {
     return 'blotterModelId';
   }
+
+  static get chromeModelId() {
+    return 'chromeModelId';
+  }
 }

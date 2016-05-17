@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {PopoutOptions} from './';
 import {logger} from '../../../system';
-import {OpenFinChrome} from '../components/';
+import OpenFinChrome from '../../common/components/openFinChrome/openFinChrome';
 import PopoutServiceBase from './popoutServiceBase';
 import _ from 'lodash';
 
@@ -20,18 +20,19 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div');
       popoutContainer.id = this._popoutContainerId;
       tearoutWindow.contentWindow.document.body.appendChild(popoutContainer);
-      ReactDOM.render(<OpenFinChrome minimize={() => this._openFin.minimize(tearoutWindow)}
-                         maximize={() => this._openFin.maximize(tearoutWindow)}
-                         close={() => {
-                          this._openFin.close(tearoutWindow);
-                          if (popoutContainer) {
-                            ReactDOM.unmountComponentAtNode(popoutContainer);
-                          }
-                          if (_.isFunction(onClosing)) {
-                            onClosing();
-                          }
-                        }}>
-          {view}
+      ReactDOM.render(<OpenFinChrome
+        minimize={() => this._openFin.minimize(tearoutWindow)}
+        maximize={() => this._openFin.maximize(tearoutWindow)}
+        close={() => {
+          this._openFin.close(tearoutWindow);
+          if (popoutContainer) {
+            ReactDOM.unmountComponentAtNode(popoutContainer);
+          }
+          if (_.isFunction(onClosing)) {
+            onClosing();
+          }
+        }}>
+        {view}
       </OpenFinChrome>
         , popoutContainer);
       const toolbar = tearoutWindow.contentWindow.document.getElementsByClassName('openfin-chrome__header')[0];
