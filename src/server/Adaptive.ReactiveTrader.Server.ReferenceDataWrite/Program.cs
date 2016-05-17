@@ -7,7 +7,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
     {
         protected static readonly ILog Log = LogManager.GetLogger<Program>();
 
-        public void Main(string[] args)
+        public static void Main(string[] args)
         {
             App.Run(args, new ReferenceDataWriteServiceHostFactory());
         }

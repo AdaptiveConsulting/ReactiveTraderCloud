@@ -8,7 +8,7 @@
     "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
   },
 
-  "compilationOptions": {
+  "buildOptions": {
     "emitEntryPoint": true
   },
 
