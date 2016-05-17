@@ -8,8 +8,6 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>e91bf503-5523-4f11-bd95-544eee37e115</ProjectGuid>
     <RootNamespace>Adaptive.ReactiveTrader.Server.IntegrationTests</RootNamespace>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>

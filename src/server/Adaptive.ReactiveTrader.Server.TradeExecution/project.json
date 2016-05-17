@@ -2,9 +2,11 @@
   "version": "1.0.0",
   "description": "Trade Execution Service",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "tags": [ "Adaptive", "Reactive Trader" ],
-  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Adaptive", "Reactive Trader" ],
+    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
+  },
 
   "dependencies": {
     "Adaptive.ReactiveTrader.Server.Host": "1.0.0"
@@ -16,6 +18,6 @@
   },
 
   "frameworks": {
-    "dnx451": { }
+    "net452": { }
   }
 }

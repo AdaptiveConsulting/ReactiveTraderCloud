@@ -2,12 +2,15 @@
   "version": "1.0.0",
   "description": "Pricing Service",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "tags": [ "Adaptive", "Reactive Trader" ],
-  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Adaptive", "Reactive Trader" ],
+    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
+  },
 
   "dependencies": {
-    "Adaptive.ReactiveTrader.Server.Host": "1.0.0"
+    "Adaptive.ReactiveTrader.Server.Host": "1.0.0",
+    "Newtonsoft.Json": "6.0.6"
   },
 
   "commands": {
@@ -16,7 +19,7 @@
   },
 
   "frameworks": {
-    "dnx451": {
+    "net452": {
       "frameworkAssemblies": {
         "System.Runtime": "",
         "System.Collections": ""

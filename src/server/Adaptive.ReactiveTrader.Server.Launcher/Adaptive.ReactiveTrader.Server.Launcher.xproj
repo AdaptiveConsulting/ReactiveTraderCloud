@@ -8,7 +8,6 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>ef987bec-380a-45bb-bdfe-70303e5bfb4f</ProjectGuid>
     <RootNamespace>Adaptive.ReactiveTrader.Server.Launcher</RootNamespace>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
 

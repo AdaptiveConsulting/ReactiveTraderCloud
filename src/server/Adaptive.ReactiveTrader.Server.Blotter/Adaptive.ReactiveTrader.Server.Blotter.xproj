@@ -9,8 +9,6 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>acb76d7b-8275-4bbe-b07a-e3d75d52b6cc</ProjectGuid>
     <RootNamespace>Adaptive.ReactiveTrader.Server.Blotter</RootNamespace>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup>

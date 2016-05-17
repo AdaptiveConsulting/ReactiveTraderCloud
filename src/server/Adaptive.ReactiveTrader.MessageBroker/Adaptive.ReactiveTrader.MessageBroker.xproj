@@ -8,8 +8,6 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>14446215-b974-4161-984a-d69396ac89bf</ProjectGuid>
     <RootNamespace>Adaptive.ReactiveTrader.MessageBroker</RootNamespace>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>

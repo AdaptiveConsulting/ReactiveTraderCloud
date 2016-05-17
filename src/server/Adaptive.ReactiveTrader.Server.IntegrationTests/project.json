@@ -2,26 +2,26 @@
   "version": "1.0.0",
   "description": "Service Integration Tests",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "tags": [ "Adaptive", "Reactive Trader" ],
-  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Adaptive", "Reactive Trader" ],
+    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
+  },
 
   "dependencies": {
-    "xunit": "2.1.0",
-    "xunit.runner.dnx": "2.1.0-rc1-build204",
     "Adaptive.ReactiveTrader.Messaging": "1.0.0",
     "Adaptive.ReactiveTrader.EventStore": "1.0.0",
     "Adaptive.ReactiveTrader.Contract": "1.0.0",
     "Newtonsoft.Json": "7.0.1",
     "Adaptive.ReactiveTrader.Common": "1.0.0",
-    "Common.Logging": "3.3.1"
+    "Common.Logging": "3.3.1",
+    "xunit": "2.2.0-beta1-build3239",
+    "dotnet-test-xunit": "1.0.0-rc2-build10015"
   },
 
-  "commands": {
-    "test": "xunit.runner.dnx"
-  },
+  "testRunner": "xunit",
 
   "frameworks": {
-    "dnx451": { }
+    "net452": { }
   }
 }

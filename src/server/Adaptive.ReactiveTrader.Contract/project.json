@@ -9,12 +9,12 @@
   },
 
   "dependencies": {
-    "Newtonsoft.Json": "7.0.1",
+    "Newtonsoft.Json": "6.0.6",
     "protobuf-net": "2.1.0-alpha-1"
   },
 
   "frameworks": {
-    "net451": {
+    "net452": {
       "frameworkAssemblies": {
         "System.Runtime": "",
         "System.Collections": ""

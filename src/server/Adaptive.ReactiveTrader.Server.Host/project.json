@@ -2,18 +2,20 @@
   "version": "1.0.0",
   "description": "",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "tags": [ "Adaptive", "Reactive Trader" ],
-  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Adaptive", "Reactive Trader" ],
+    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
+  },
 
-    "dependencies": {
-        "Adaptive.ReactiveTrader.Contract": "1.0.0",
-        "Adaptive.ReactiveTrader.Messaging": "1.0.0",
-        "Adaptive.ReactiveTrader.EventStore": "1.0.0",
-        "Autofac": "3.5.2"
-    },
+  "dependencies": {
+    "Adaptive.ReactiveTrader.Contract": "1.0.0",
+    "Adaptive.ReactiveTrader.Messaging": "1.0.0",
+    "Adaptive.ReactiveTrader.EventStore": "1.0.0",
+    "Autofac": "3.5.2"
+  },
 
   "frameworks": {
-    "dnx451": { }
+    "net452": { }
   }
 }

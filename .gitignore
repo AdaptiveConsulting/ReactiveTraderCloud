@@ -17,3 +17,5 @@ node.pid
 *.orig
 key.priv
 key.pub
+bin/
+obj/

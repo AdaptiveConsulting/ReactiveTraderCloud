@@ -9,8 +9,6 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>c003f91b-7a1d-4429-ae63-3abc67b2d4ad</ProjectGuid>
     <RootNamespace>Adaptive.ReactiveTrader.Server.ReferenceDataWrite</RootNamespace>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
