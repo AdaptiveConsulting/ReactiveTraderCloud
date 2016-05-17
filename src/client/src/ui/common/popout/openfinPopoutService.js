@@ -43,7 +43,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
       tearoutWindow.animate({
         opacity: {
           opacity: 1,
-          duration: 400
+          duration: 300
         }
       }, () => tearoutWindow.bringToFront());
     }, err => _log.error(`An error occured while tearing out window: ${err}`));

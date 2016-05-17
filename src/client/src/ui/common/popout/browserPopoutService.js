@@ -29,9 +29,11 @@ export default class BrowserPopoutService extends PopoutServiceBase {
       ReactDOM.render(view, popoutContainer);
     };
     childWindow.onbeforeunload = () => {
-      ReactDOM.unmountComponentAtNode(popoutContainer);
+      if (popoutContainer) {
+        ReactDOM.unmountComponentAtNode(popoutContainer);
+      }
 
-      if (options.onClosing) {
+      if (_.isFunction(options.onClosing)) {
         options.onClosing();
       }
     };
