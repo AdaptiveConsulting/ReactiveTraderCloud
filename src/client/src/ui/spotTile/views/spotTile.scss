@@ -9,6 +9,7 @@ $price-width: calc(45% + 10px);
   background-color: #293543;
   &:hover {
     background-color: #294464;
+    .spot-tile__icon--chart,
     .spot-tile__icon--tearoff,
     .spot-tile__delivery-date {
       display: inline;
@@ -119,6 +120,7 @@ $price-width: calc(45% + 10px);
   float: right;
 }
 
+.spot-tile__icon--chart.glyphicon,
 .spot-tile__icon--tearoff.glyphicon {
   display: none;
   cursor: pointer;

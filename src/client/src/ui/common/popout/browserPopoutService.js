@@ -4,9 +4,6 @@ import {PopoutOptions} from './';
 import {logger} from '../../../system';
 import PopoutServiceBase from './popoutServiceBase';
 import _ from 'lodash';
-import './popoutRegion.scss';
-
-let POPOUT_CONTAINER_ID = 'popout-content-container';
 
 let _log:logger.Logger = logger.create('BrowserPopoutService');
 
@@ -24,7 +21,7 @@ export default class BrowserPopoutService extends PopoutServiceBase {
       _log.debug(`Popout window loading`);
       childWindow.document.title = options.title;
       popoutContainer = childWindow.document.createElement('div');
-      popoutContainer.id = POPOUT_CONTAINER_ID;
+      popoutContainer.id = this._popoutContainerId;
       childWindow.document.body.appendChild(popoutContainer);
       ReactDOM.render(view, popoutContainer);
     };

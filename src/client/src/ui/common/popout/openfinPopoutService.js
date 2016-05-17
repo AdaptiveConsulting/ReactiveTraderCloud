@@ -19,6 +19,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
   openPopout({url, title, onClosing, windowOptions = { height: 400, width: 400 }}:PopoutOptions, view:React.Component) {
     this._createWindow({url, title, windowOptions}, tearoutWindow => {
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div');
+      popoutContainer.id = this._popoutContainerId;
       tearoutWindow.contentWindow.document.body.appendChild(popoutContainer);
       ReactDOM.render(<div>
           <OpenFinChrome minimize={() => this._openFin.minimize(tearoutWindow)}
