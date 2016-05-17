@@ -1,6 +1,7 @@
 src/client/node_modules
 src/client/coverage
 .idea/
+.vs/
 npm-debug.log
 dist/
 *.suo
