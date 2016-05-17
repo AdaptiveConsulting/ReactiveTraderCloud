@@ -1,6 +1,8 @@
 import React from 'react';
 import './notification.scss';
 import classnames from 'classnames';
+import Direction from '../../services/model/direction';
+import TradeStatus from '../../services/model/tradeStatus';
 
 const DONE = 'Done';
 const REJECTED = 'REJECTED';
@@ -28,8 +30,8 @@ export default class TradeNotificationView extends React.Component {
       }
     );
     let secondCurrency = trade.dealtCurrency === trade.baseCurrency ? trade.termsCurrency : trade.baseCurrency;
-    let tradeStatus = trade.tradeStatus === 'Done' ? trade.tradeStatus : REJECTED;
-    let direction = trade.direction === 'Buy' ? BOUGHT : SOLD;
+    let tradeStatus = trade.tradeStatus === TradeStatus.Done? trade.tradeStatus : REJECTED;
+    let direction = trade.direction === Direction.Buy ? BOUGHT : SOLD;
 
     return (
       <div className='notification__container'>

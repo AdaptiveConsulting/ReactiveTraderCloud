@@ -6,9 +6,9 @@ import { ServiceStatus } from '../../../system/service';
 import { logger } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
-import {
-  Trade,
-} from '../../../services/model';
+import { OpenFin } from '../../../system/openFin';
+import { Trade, TradesUpdate, TradeStatus } from '../../../services/model';
+
 import { BlotterView } from '../views';
 
 var _log:logger.Logger = logger.create('BlotterModel');
@@ -25,13 +25,15 @@ export default class BlotterModel extends ModelBase {
     modelId:string,
     router:Router,
     blotterService:BlotterService,
-    regionManager:RegionManager
+    regionManager:RegionManager,
+    openFin: OpenFin
   ) {
     super(modelId, router);
     this._blotterService = blotterService;
     this.trades = [];
     this.isConnected = false;
     this._regionManagerHelper = new RegionManagerHelper(RegionNames.blotter, regionManager, this);
+    this._openFin = openFin;
   }
 
   @observeEvent('init')
@@ -59,20 +61,29 @@ export default class BlotterModel extends ModelBase {
         .subscribeWithRouter(
           this.router,
           this.modelId,
-          (trades:Array<Trade>) => {
-            _.forEach(trades, (trade:Trade) => {
-              let exists = _.findWhere(this.trades, {tradeId: trade.tradeId});
-              if (exists) {
-                trade.isNew = false;
-                this.trades[_.indexOf(this.trades, exists)] = trade;
-              }
-              else {
-                this.trades.unshift(trade);
-              }
-              if (!trade.isStateOfTheWorld){
-                this._blotterService.createNotification(trade);
-              }
-            });
+          (tradesUpdate:TradesUpdate) => {
+            let trades = tradesUpdate.trades;
+
+            if (tradesUpdate.isStateOfTheWorld){
+              this.trades = this.trades.concat(tradesUpdate.trades);
+            }else{
+              _.forEach(trades, (trade:Trade) => {
+                let existingTradeIndex = _.findIndex(this.trades, (t) => t.tradeId === trade.tradeId );
+                if (existingTradeIndex !== -1){
+                  //update the existing trade
+                  this.trades[existingTradeIndex] = trade;
+                }else{
+                  //add the existing trade and mark it as new
+                  this.trades.unshift(trade);
+                  trade.isNew = true;
+                }
+
+                //display a notification if the trade has a final status (Done or Rejected);
+                if ((trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected)){
+                  this._openFin.openTradeNotification(trade);
+                }
+              });
+            }
           },
           err => {
             _log.error('Error on blotterService stream stream', err);
@@ -87,6 +98,9 @@ export default class BlotterModel extends ModelBase {
         this.modelId,
         (status:ServiceStatus) => {
           this.isConnected = status.isConnected;
+          if (!this.isConnected){
+            this.trades = [];
+          }
         })
     );
   }

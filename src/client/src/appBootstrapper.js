@@ -108,7 +108,7 @@ class AppBootstrapper {
     spotTileLoader.beginLoadTiles();
 
     // wire-up the blotter
-    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager);
+    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager, this._openFin);
     blotterModel.observeEvents();
 
     // wire-up analytics

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Trade, Direction, TradeStatus } from '../model';
+import { Trade, Direction, TradeStatus, TradesUpdate } from '../model';
 import { ReferenceDataService } from '../';
 
 export default class TradeMapper {
@@ -10,12 +10,18 @@ export default class TradeMapper {
   }
 
   mapFromDto(dto:Object) : Array<Trade> {
-    return _.map(
+    let tradesUpdate = new TradesUpdate(dto.IsStateOfTheWorld, dto.IsStale);
+    let trades =  _.map(
       dto.Trades,
-      trade => this.mapFromTradeDto(trade, dto.IsStateOfTheWorld));
+      trade => {
+        return this.mapFromTradeDto(trade);
+      });
+
+    tradesUpdate.trades = trades;
+    return tradesUpdate;
   }
 
-  mapFromTradeDto(tradeDto:Object, isStateOfTheWorld:boolean) : Trade {
+  mapFromTradeDto(tradeDto:Object) : Trade {
     let direction = this._mapDirectionFromDto(tradeDto.Direction);
     let status = this._mapTradeStatusFromDto(tradeDto.Status);
     let currencyPair = this._referenceDataService.getCurrencyPair(tradeDto.CurrencyPair);
@@ -30,7 +36,6 @@ export default class TradeMapper {
       new Date(tradeDto.TradeDate),
       new Date(tradeDto.ValueDate),
       status,
-      isStateOfTheWorld
     );
   }
 
