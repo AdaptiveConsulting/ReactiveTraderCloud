@@ -8,7 +8,7 @@ export default class RegionModel extends ModelBase {
   _regionName:string;
   _log:logger.Logger;
 
-  modelRegistrations:Array<RegionModelRegistration>
+  modelRegistrations:Array<RegionModelRegistration>;
 
   constructor(modelId:string, regionName:string, router:Router) {
     super(modelId, router);

@@ -5,6 +5,8 @@
   background-position: 6px 6px;
   align-content: center;
   vertical-align: middle;
+  display: flex;
+  -webkit-app-region: drag;
 }
 
 #open-fin-chrome a {
@@ -13,10 +15,6 @@
   margin-left: 5px;
 }
 
-.open-fin-chrome__bar {
-  display: flex;
-  -webkit-app-region: drag;
-}
 .open-fin-chrome__title {
   flex: 10;
   margin: 5px auto;

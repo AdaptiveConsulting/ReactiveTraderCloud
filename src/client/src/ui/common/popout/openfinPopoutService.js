@@ -31,8 +31,7 @@ export default class OpenfinPopoutService {
           {view}
         </div>
         , popoutContainer);
-
-      const toolbar = tearoutWindow.contentWindow.document.getElementsByClassName('open-fin-chrome__bar')[0];
+      const toolbar = tearoutWindow.contentWindow.document.getElementById('open-fin-chrome');
       tearoutWindow.defineDraggableArea(toolbar);
       tearoutWindow.resizeTo(windowOptions.width, windowOptions.height + 30);
       tearoutWindow.updateOptions({opacity: 0, alwaysOnTop: true});
@@ -61,5 +60,4 @@ export default class OpenfinPopoutService {
       err => onErrorCallback(err)
     );
   }
-
 }
