@@ -7,9 +7,9 @@ import './popoutRegion.scss';
 
 let POPOUT_CONTAINER_ID = 'popout-content-container';
 
-let _log:logger.Logger = logger.create('ReactPopoutService');
+let _log:logger.Logger = logger.create('BrowserPopoutService');
 
-export default class ReactPopoutService {
+export default class BrowserPopoutService {
   openPopout(options:PopoutOptions, view:React.Component) {
     let popoutContainer;
     let windowOptionsString = this._getWindowOptionsString(options.windowOptions);
@@ -34,21 +34,23 @@ export default class ReactPopoutService {
     childWindow.onload = onloadHandler;
   }
 
-  _getWindowOptionsString(windowOptions:any) {
-    windowOptions = Object.assign({}, windowOptions);
-    if (!windowOptions.height) {
-      windowOptions.height = 400;
-    }
-    if (!windowOptions.width) {
-      windowOptions.width = 400;
-    }
-    windowOptions.top = ((window.innerHeight - windowOptions.height) / 2) + window.screenY;
-    windowOptions.left = ((window.innerWidth - windowOptions.width) / 2) + window.screenX;
+  _getWindowOptionsString(options = { height: 400, width: 400}) {
+    const top = ((window.innerHeight - options.height) / 2) + window.screenY;
+    const left = ((window.innerWidth - options.width) / 2) + window.screenX;
+    let windowOptions = Object.assign({
+      top,
+      left
+    }, options);
 
-    let optionsArray = [];
-    for (let key in windowOptions) {
-      windowOptions.hasOwnProperty(key) && optionsArray.push(key + '=' + windowOptions[key]);
+    return Object.keys(windowOptions)
+                .map(key => `${key}=${this._mapWindowOptionValue(windowOptions[key])}`)
+                .join(',');
+  }
+
+  _mapWindowOptionValue(value) {
+    if (typeof (value) === 'boolean') {
+      return value ? 'yes' : 'no';
     }
-    return optionsArray.join(',');
+    return value;
   }
 }

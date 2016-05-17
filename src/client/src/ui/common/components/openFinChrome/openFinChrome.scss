@@ -5,7 +5,6 @@
   background-position: 6px 6px;
   align-content: center;
   vertical-align: middle;
-  position: relative;
 }
 
 #open-fin-chrome a {
@@ -14,33 +13,37 @@
   margin-left: 5px;
 }
 
+.open-fin-chrome__bar {
+  display: flex;
+  -webkit-app-region: drag;
+}
 .open-fin-chrome__title {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 5px;
-  width: 200px;
-  margin: auto;
+  flex: 10;
+  margin: 5px auto;
   text-align: center;
   font-weight: bold;
 }
 
 @media (max-width: 400px) {
-  .open-fin-chrome__title {
+  .open-fin-chrome__title--brand {
     display: none;
   }
 }
 
-
-
-.open-fin-chrome__controls{
-  position: absolute;
-  right: 0;
-  top: 5px;
-  width: 80px;
+.open-fin-chrome__controls-container {
+  flex: 1;
+  position: relative;
+  min-width: 120px;
 }
 
-.open-fin-chrome__controls-btn{
-  padding-left: 3px;
-  padding-right: 3px;
+.open-fin-chrome__controls {
+  list-style: none;
+  position: absolute;
+  left: 0;
+  margin: 7px 0
+}
+
+.open-fin-chrome__control {
+  display: inline-block;
+  margin-left: 5px;
 }

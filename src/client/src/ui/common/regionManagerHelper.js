@@ -34,9 +34,9 @@ export default class RegionManagerHelper {
           this._regionManager.addToRegion(this._regionName, this._model);
         },
         regionSettings: {
-          width:width,
-          height:height,
-          title:title
+          width,
+          height,
+          title
         }
       }
     );

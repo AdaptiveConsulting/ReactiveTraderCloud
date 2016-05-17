@@ -21,7 +21,7 @@ export default class PopoutRegionModel extends RegionModel {
     let height = modelRegistration.regionSettings && modelRegistration.regionSettings.height
       ? modelRegistration.regionSettings.height
       : 400;
-    var title = options.regionSettings && options.regionSettings.title ? options.regionSettings.title : '';
+    const title = options.regionSettings && options.regionSettings.title ? options.regionSettings.title : '';
     let popoutOptions = new PopoutOptions(
       modelRegistration.key,
       '/#/popout',
@@ -30,8 +30,8 @@ export default class PopoutRegionModel extends RegionModel {
       {
         width: width,
         height: height,
-        resizable: 'no',
-        scrollable: 'no'
+        resizable: false,
+        scrollable: false
       }
     );
     this._reactPopoutService.openPopout(popoutOptions, view);

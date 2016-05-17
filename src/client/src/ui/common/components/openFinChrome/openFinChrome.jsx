@@ -12,7 +12,7 @@ export default class OpenFinChrome extends React.Component {
   componentDidMount() {
     fin.desktop.main(() => {
       this.currentWindow = fin.desktop.Window.getCurrent();
-      var toolbar = this.currentWindow.contentWindow.document.getElementById('open-fin-chrome');
+      const toolbar = this.currentWindow.contentWindow.document.getElementsByClassName('open-fin-chrome__bar')[0];
       this.currentWindow.defineDraggableArea(toolbar);
     });
   }
@@ -20,11 +20,15 @@ export default class OpenFinChrome extends React.Component {
   render() {
     return (
       <div id='open-fin-chrome'>
-        <div className='open-fin-chrome__title'>Adaptive&#39;s Reactive Trader</div>
-        <div className='open-fin-chrome__controls'>
-          <a className='open-fin-chrome__controls-btn' onClick={() => this.props.minimize()}><i className='fa fa-minus fa-set-position'></i></a>
-          <a className='open-fin-chrome__controls-btn' onClick={() => this.props.maximize()}><i className='fa fa-square-o'></i></a>
-          <a className='open-fin-chrome__controls-btn' onClick={() => this.props.close()}><i className='fa fa-close'></i></a>
+        <div className='open-fin-chrome__bar'>
+          <div className='open-fin-chrome__title'><span className='open-fin-chrome__title--brand'>Adaptive&#39;s Reactive Trader</span></div>
+          <div className='open-fin-chrome__controls-container'>
+            <ul className='open-fin-chrome__controls'>
+              <li className='open-fin-chrome__control'><a onClick={() => this.props.minimize()}><i className='fa fa-minus fa-set-position'></i></a></li>
+              <li className='open-fin-chrome__control'><a onClick={() => this.props.maximize()}><i className='fa fa-square-o'></i></a></li>
+              <li className='open-fin-chrome__control'><a onClick={() => this.props.close()}><i className='fa fa-close'></i></a></li>
+            </ul>
+          </div>
         </div>
       </div>
     );

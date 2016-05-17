@@ -4,8 +4,6 @@ import {PopoutOptions} from './';
 import {logger} from '../../../system';
 import {OpenFinChrome} from '../components/';
 
-let POPOUT_CONTAINER_ID = 'popout-content-container';
-
 let _log:logger.Logger = logger.create('OpenfinPopoutService');
 
 export default class OpenfinPopoutService {
@@ -14,8 +12,8 @@ export default class OpenfinPopoutService {
     this._openFin = openFin;
   }
 
-  openPopout({title, onClosing, windowOptions = { height: 400, width: 400 }}:PopoutOptions = {}, view:React.Component) {
-    this._createWindow(title, tearoutWindow => {
+  openPopout({url, title, onClosing, windowOptions = { height: 400, width: 400 }}:PopoutOptions, view:React.Component) {
+    this._createWindow({url, title, windowOptions}, tearoutWindow => {
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div');
       tearoutWindow.contentWindow.document.body.appendChild(popoutContainer);
       ReactDOM.render(<div>
@@ -34,40 +32,33 @@ export default class OpenfinPopoutService {
         </div>
         , popoutContainer);
 
+      const toolbar = tearoutWindow.contentWindow.document.getElementsByClassName('open-fin-chrome__bar')[0];
+      tearoutWindow.defineDraggableArea(toolbar);
       tearoutWindow.resizeTo(windowOptions.width, windowOptions.height + 30);
-
-      //tearoutWindow.updateOptions({opacity: 0, alwaysOnTop: true});
+      tearoutWindow.updateOptions({opacity: 0, alwaysOnTop: true});
       tearoutWindow.show();
       tearoutWindow.animate({
         opacity: {
           opacity: 1,
           duration: 400
         }
-      }, () => {
-        tearoutWindow.bringToFront();
-      });
-    }, err => {
-      alert('error:' + err);
-    });
+      }, () => tearoutWindow.bringToFront());
+    }, err => _log.error(`An error occured while tearing out window: ${err}`));
   }
 
-  _createWindow(name, onSuccessCallback, onErrorCallback) {
+  _createWindow({url, title, windowOptions}, onSuccessCallback, onErrorCallback) {
     const tearoutWindow = new fin.desktop.Window({
-        name,
+        name: title,
         autoShow: false,
-        url: '/popout.html',
+        url,
         frame: false,
-        resizable: false,
+        resizable: windowOptions.resizable,
         maximizable: false,
         showTaskbarIcon: false,
         alwaysOnTop: true
       },
-      () => {
-        onSuccessCallback(tearoutWindow);
-      },
-      err => {
-        onErrorCallback(err);
-      }
+      () => onSuccessCallback(tearoutWindow),
+      err => onErrorCallback(err)
     );
   }
 
