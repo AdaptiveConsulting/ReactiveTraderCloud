@@ -1,7 +1,8 @@
 import Rx from 'rx';
 import _ from 'lodash';
-import { Trade, TradeNotification } from '../../services/model';
+import { Trade, TradeNotification, CurrencyPairPosition } from '../../services/model';
 import { logger } from '../';
+import { PriceMapper, PositionsMapper } from '../../services/mappers';
 
 const _log:logger.Logger = logger.create('OpenFin');
 
@@ -29,7 +30,7 @@ export default class OpenFin {
   close(window = this._currentWindow){
     window.close(true, () => _log.info('Window closed with success.'), err => _log.error('Failed to close window.', err));
   }
-
+  
   minimize(window = this._currentWindow){
     window.minimize(() => _log.info('Window minimized with success.'), err => _log.error('Failed to minimize window.', err));
   }
@@ -46,6 +47,21 @@ export default class OpenFin {
             window.maximize(() => _log.info('Window maximized with success.'), err => _log.error('Failed to maximize window.', err));
         }
       });
+  }
+
+  addSubscription(name:string, callback){
+    if (!this.isRunningInOpenFin) return;
+    if (!fin.desktop.InterApplicationBus){
+      fin.desktop.main(() => {
+        fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
+          callback.call(null, msg, uuid);
+        });
+      });
+    }else{
+      fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
+        callback.call(null, msg, uuid);
+      });
+    }
   }
 
   checkLimit(executablePrice, notional:number, tradedCurrencyPair:string):Rx.Observable<boolean> {
@@ -152,7 +168,6 @@ export default class OpenFin {
     if (!this.isRunningInOpenFin) return;
 
     let tradeNotification = new TradeNotification(trade);
-
     let notification = new fin.desktop.Notification({
       url: '/notification.html',
       message: tradeNotification,
@@ -160,5 +175,25 @@ export default class OpenFin {
         this.maximise();
       }
     });
+    fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification);
+  }
+
+  publishCurrentPositions(ccyPairPositions:Array<CurrencyPairPosition>){
+    if (!this.isRunningInOpenFin ) return;
+    let serialisePositions = ccyPairPositions.map( p => PositionsMapper.mapToDto(p));
+    fin.desktop.InterApplicationBus.publish('position-update', serialisePositions);
+  }
+
+  publishPrice(price){
+    if (!this.isRunningInOpenFin) return;
+    fin.desktop.InterApplicationBus.publish('price-update', PriceMapper.mapToSpotPriceDto(price));
+  }
+
+  sendAllBlotterData(uuid:string, blotterData:Array){
+    fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', blotterData);
+  }
+
+  sendPositionClosedNotification(uuid:string, correlationId:string){
+    fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId);
   }
 }

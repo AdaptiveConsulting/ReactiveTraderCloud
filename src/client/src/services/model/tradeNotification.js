@@ -3,10 +3,10 @@ import numeral from 'numeral';
 import moment from 'moment';
 
 export default class TradeNotification{
-
   spotRate: number;
   notional: string;
   direction: string;
+  currencyPair: string;
   baseCurrency: string;
   termsCurrency: string;
   tradeId: string;
@@ -22,7 +22,8 @@ export default class TradeNotification{
     this.baseCurrency = trade.currencyPair.base;
     this.tradeId = trade.tradeId;
     this.termsCurrency = trade.currencyPair.terms;
-    this.tradeDate = trade.tradeDate;
+    this.currencyPair = `${this.baseCurrency} / ${this.termsCurrency}`;
+    this.tradeDate = moment(trade.tradeDate).format();
     this.tradeStatus = trade.status.name;
     this.dealtCurrency = trade.dealtCurrency;
     this.valueDate = moment(trade.valueDate).format('DD MMM');

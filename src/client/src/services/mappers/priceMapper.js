@@ -18,6 +18,7 @@ export default class PriceMapper {
     let priceMovementType = this._getPriceMovementType(lastPriceDto, nextPriceDto);
     return new SpotPrice(
       nextPriceDto.Symbol,
+      currencyPair.ratePrecision,
       bid,
       ask,
       mid,
@@ -27,6 +28,15 @@ export default class PriceMapper {
       spread,
       true // is tradable
     );
+  }
+
+  static mapToSpotPriceDto(spotPrice:SpotPrice):Object{
+    return {
+      bid: spotPrice.bid.rawRate,
+      ask: spotPrice.ask.rawRate,
+      symbol: spotPrice.symbol,
+      ratePrecision: spotPrice.ratePrecision
+    };
   }
 
   _getPriceMovementType(lastPriceDto:Object, nextPriceDto:Object) {

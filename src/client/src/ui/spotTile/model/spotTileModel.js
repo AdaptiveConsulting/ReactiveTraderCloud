@@ -3,7 +3,7 @@ import { Router, observeEvent } from 'esp-js/src';
 import { PricingService, ExecutionService } from '../../../services';
 import { logger } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
-import { TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
+import { TradeExecutionNotification, NotificationBase } from './';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { TradeStatus } from '../../../services/model';
 import { SchedulerService, } from '../../../system';
@@ -93,6 +93,7 @@ export default class SpotTileModel extends ModelBase {
     this._log.info(`Cash tile starting for pair ${this.currencyPair.symbol}`);
     this._subscribeToPriceStream();
     this._subscribeToConnectionStatus();
+    this._subscribeToClosePositionRequests();
     this._regionManagerHelper.addToRegion();
   }
 
@@ -131,7 +132,7 @@ export default class SpotTileModel extends ModelBase {
   _onExecuteTrade(e:{direction:Direction}) {
     if (this.pricingConnected && this.executionConnected && !this.isTradeExecutionInFlight) {
       // stop the price stream so the users can see what the traded
-      let request = this._createTradeRequest(e.direction);
+      let request = this._createTradeRequest(e.direction, this.notional);
       this._log.info(`Will execute ${request.toString()}`);
       this.isTradeExecutionInFlight = true;
 
@@ -161,8 +162,32 @@ export default class SpotTileModel extends ModelBase {
       this._log.warn(`Ignoring execute request as we can't trade with pricing and execution down`);
     }
   }
+  
+  _subscribeToClosePositionRequests(){
+    this._openFin.addSubscription('close-position', (msg, uuid) => this._closePositionRequestCallback( msg, uuid));
+  }
 
-  _createTradeRequest(direction:Direction) {
+  _closePositionRequestCallback(msg, uuid){
+    if (msg.symbol !== this.currencyPair.symbol) return;
+    let direction = msg.amount > 0 ? Direction.Sell : Direction.Buy;
+    let request = this._createTradeRequest(direction, Math.abs(msg.amount));
+
+    this._executionDisposable.setDisposable(
+      this._executionService.executeTrade(request)
+        .subscribeWithRouter(
+          this.router,
+          this.modelId,
+          (response:ExecuteTradeResponse) => {
+            this._openFin.sendPositionClosedNotification(uuid, msg.correlationId);
+          },
+          err => {
+            this._log.error(`failed to close position ${err}`, err);
+            fin.desktop.InterApplicationBus.send(uuid, msg.correlationId);
+          })
+    );
+  }
+
+  _createTradeRequest(direction:Direction, notional:number) {
     var spotRate = direction == Direction.Buy
       ? this.currentSpotPrice.ask.rawRate
       : this.currentSpotPrice.bid.rawRate;
@@ -171,7 +196,7 @@ export default class SpotTileModel extends ModelBase {
       this.currencyPair.symbol,
       spotRate,
       direction.name,
-      this.notional,
+      notional,
       dealtCurrency
     );
   }
@@ -184,6 +209,7 @@ export default class SpotTileModel extends ModelBase {
           this.router,
           this.modelId,
           (price:SpotPrice) => {
+            this._openFin.publishPrice(price);
             // we don't update the price if we have an inflight trade, the users will want to see what they are buying
             if(!this.isTradeExecutionInFlight) {
               this.currentSpotPrice = price;
