@@ -28,7 +28,7 @@ export default class OpenFin {
   }
 
   minimize(window = this._currentWindow){
-   window.minimize(() => _log.info('Window minimized with success.'), err => _log.error('Failed to minimize window.', err));
+    window.minimize(() => _log.info('Window minimized with success.'), err => _log.error('Failed to minimize window.', err));
   }
 
   maximize(window = this._currentWindow){
@@ -49,13 +49,13 @@ export default class OpenFin {
     let _this = this;
     return Rx.Observable.create(observer => {
         let disposables = new Rx.CompositeDisposable();
-        if (_this.limitCheckSubscriber == null) {
+        if (_this.limitCheckSubscriber === null) {
           _log.debug('client side limit check not up, will delegate to to server');
           observer.onNext(true);
           observer.onCompleted();
         } else {
           _log.debug(`checking if limit is ok with ${_this.limitCheckSubscriber}`);
-          let topic = 'limit-check-response' + (_this.limitCheckId++);
+          const topic = `limit-check-response (${_this.limitCheckId++})`;
           let limitCheckResponse:(msg:any) => void = (msg) => {
             _log.debug(`${_this.limitCheckSubscriber} limit check response was ${msg}`);
             observer.onNext(msg.result);
