@@ -40,7 +40,7 @@ export default class BrowserPopoutService extends PopoutServiceBase {
   _getWindowOptionsString(options = {height: 400, width: 400}) {
     const top = ((window.innerHeight - options.height) / 2) + window.screenY;
     const left = ((window.innerWidth - options.width) / 2) + window.screenX;
-    let windowOptions = Object.assign({
+    const windowOptions = Object.assign({
       top,
       left
     }, options);

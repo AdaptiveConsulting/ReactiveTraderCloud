@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {PopoutOptions} from './';
-import {logger} from '../../../system';
+import { PopoutOptions } from './';
+import { logger } from '../../../system';
 import OpenFinChrome from '../../common/components/openFinChrome/openFinChrome';
 import PopoutServiceBase from './popoutServiceBase';
 import _ from 'lodash';
@@ -33,8 +33,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
           }
         }}>
         {view}
-      </OpenFinChrome>
-        , popoutContainer);
+      </OpenFinChrome>, popoutContainer);
       const toolbar = tearoutWindow.contentWindow.document.getElementsByClassName('openfin-chrome__header')[0];
       tearoutWindow.defineDraggableArea(toolbar);
       tearoutWindow.resizeTo(windowOptions.width, windowOptions.height);

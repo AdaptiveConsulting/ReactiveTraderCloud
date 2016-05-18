@@ -3,13 +3,13 @@ import { logger } from '../../../../../system/';
 import { OpenFin } from '../../../../../system/openFin/';
 import { ModelBase } from '../../../';
 
-var _log:logger.Logger = logger.create('ChromeModel');
+const _log:logger.Logger = logger.create('ChromeModel');
 
 export default class ChromeModel extends ModelBase {
   _openFin:OpenFin;
   isRunningInOpenFin:boolean;
 
-  constructor(modelId:string, router:Router, openFin) {
+  constructor(modelId:string, router:Router, openFin:OpenFin) {
     super(modelId, router);
     this._openFin = openFin;
   }

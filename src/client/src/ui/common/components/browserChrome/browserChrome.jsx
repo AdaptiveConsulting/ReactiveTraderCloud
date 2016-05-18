@@ -9,8 +9,10 @@ export default class BrowserChrome extends React.Component {
 
   render() {
     return (
-      <div className='browser-chrome__container'>
-        {this.props.children}
+      <div className='browser-chrome'>
+        <div className='browser-chrome__content'>
+          {this.props.children}
+        </div>
       </div>
     );
   }
