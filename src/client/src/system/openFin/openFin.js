@@ -23,11 +23,11 @@ export default class OpenFin {
   }
 
   close(window = this._currentWindow){
-    window.close(true, () => _log.info('Window closed with success.'), err => _log.error(`Failed to close window. Error: ${err}`));
+    window.close(true, () => _log.info('Window closed with success.'), err => _log.error('Failed to close window.', err));
   }
 
   minimize(window = this._currentWindow){
-   window.minimize(() => _log.info('Window minimized with success.'), err => _log.error(`Failed to minimize window. Error: ${err}`));
+   window.minimize(() => _log.info('Window minimized with success.'), err => _log.error('Failed to minimize window.', err));
   }
 
   maximize(window = this._currentWindow){
@@ -39,7 +39,7 @@ export default class OpenFin {
             window.restore(() => window.bringToFront());
             break;
           default:
-            window.maximize(() => _log.info('Window maximized with success.'), err => _log.error(`Failed to maximize window. Error: ${err}`));
+            window.maximize(() => _log.info('Window maximized with success.'), err => _log.error('Failed to maximize window.', err));
         }
       });
   }

@@ -1,5 +1,5 @@
 export { default as PopoutOptions } from './popoutOptions';
-export { default as PopoutServiceFactory } from './popoutServiceFactory';
+export { default as getPopoutService } from './getPopoutService';
 
 
 
