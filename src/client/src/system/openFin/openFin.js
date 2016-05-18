@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Trade, TradeNotification, CurrencyPairPosition } from '../../services/model';
 import { logger } from '../';
 import { PriceMapper, PositionsMapper } from '../../services/mappers';
-
+const DockingManager = require('exports?DockingManager!./dockingManager.js');
 const _log:logger.Logger = logger.create('OpenFin');
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check';
@@ -20,6 +20,7 @@ export default class OpenFin {
     this.limitCheckSubscriber = null;
     if (this.isRunningInOpenFin) {
       this._initializeLimitChecker();
+      this._initializeDockingManager();
     }
   }
 
@@ -30,7 +31,7 @@ export default class OpenFin {
   close(window = this._currentWindow){
     window.close(true, () => _log.info('Window closed with success.'), err => _log.error('Failed to close window.', err));
   }
-  
+
   minimize(window = this._currentWindow){
     window.minimize(() => _log.info('Window minimized with success.'), err => _log.error('Failed to minimize window.', err));
   }
@@ -97,6 +98,12 @@ export default class OpenFin {
         }
         return disposables;
       });
+  }
+
+  registerWindow(window) {
+    if (this._dockingManager) {
+      this._dockingManager.register(window);
+    }
   }
 
   get _currentWindow() {
@@ -179,6 +186,12 @@ export default class OpenFin {
           autoShow: false
         }
       }, () => app.run(() => setTimeout(() => resolve(), 1000), err => reject(err)), err => reject(err));
+    });
+  }
+
+  _initializeDockingManager() {
+    fin.desktop.main(() => {
+      this._dockingManager = new DockingManager();
     });
   }
 

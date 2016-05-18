@@ -45,6 +45,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
           duration: 300
         }
       }, () => tearoutWindow.bringToFront());
+      this._openFin.registerWindow(tearoutWindow);
     }, err => _log.error(`An error occured while tearing out window: ${err}`));
   }
 
