@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: nsgate
-data:
-  <% domain %>.pem: <% certificates.pem.__b64__ %>
-  <% domain %>.key: <% certificates.key.__b64__ %>
