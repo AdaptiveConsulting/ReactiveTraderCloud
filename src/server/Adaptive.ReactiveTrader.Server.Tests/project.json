@@ -18,7 +18,7 @@
   "testRunner": "xunit",
 
   "frameworks": {
-    "net452": {
+    "net451": {
       "frameworkAssemblies": {
         "System.Runtime.Serialization": "4.0.0.0"
       }

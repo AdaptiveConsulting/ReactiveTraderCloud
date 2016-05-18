@@ -14,7 +14,7 @@
   },
 
   "frameworks": {
-    "net452": {
+    "net451": {
       "frameworkAssemblies": {
         "System.Runtime": "",
         "System.Collections": ""

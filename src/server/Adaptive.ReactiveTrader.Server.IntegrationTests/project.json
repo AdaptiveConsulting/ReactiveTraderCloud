@@ -22,6 +22,6 @@
   "testRunner": "xunit",
 
   "frameworks": {
-    "net452": { }
+    "net451": { }
   }
 }
