@@ -65,26 +65,27 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
             try
             {
-                var x = formatter.Deserialize<MessageDto>(arguments[0]);
-
-                var message = new Message
-                {
-                    ReplyTo = new WampTransientDestination(x.ReplyTo),
-                    Payload = Encoding.UTF8.GetBytes(x.Payload.ToString()) // TODO need to stop this from deserializing
-                };
-
-                var userSession = new UserSession
-                {
-                    Username = x.Username
-                };
-
-                var userContext = new RequestContext(message, userSession);
-
                 _scheduler.Schedule(async () =>
                 {
                     try
                     {
+                        var x = formatter.Deserialize<MessageDto>(arguments[0]);
+
+                        var message = new Message
+                        {
+                            ReplyTo = new WampTransientDestination(x.ReplyTo),
+                            Payload = Encoding.UTF8.GetBytes(x.Payload.ToString()) // TODO need to stop this from deserializing
+                        };
+
+                        var userSession = new UserSession
+                        {
+                            Username = x.Username
+                        };
+
+                        var userContext = new RequestContext(message, userSession);
+
                         var response = await serviceMethod(userContext, message);
+
                         caller.Result(WampObjectFormatter.Value, dummyDetails, new object[] { response });
                     }
                     catch (Exception e1)

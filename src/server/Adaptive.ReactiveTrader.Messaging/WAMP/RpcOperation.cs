@@ -36,7 +36,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
             caller.Error(WampObjectFormatter.Value,
                          dummyDetails,
                          "wamp.error.runtime_error",
-                         new object[] {"Expected parameters"});
+                         new object[] { "Expected parameters" });
         }
 
         public void Invoke<TMessage>(IWampRawRpcOperationRouterCallback caller,
@@ -65,34 +65,44 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
             try
             {
-                var x = formatter.Deserialize<MessageDto>(arguments[0]);
-
-                var message = new Message
-                {
-                    ReplyTo = new WampTransientDestination(x.ReplyTo),
-                    Payload = Encoding.UTF8.GetBytes(x.Payload.ToString()) // TODO need to stop this from deserializing
-                };
-
-                var userSession = new UserSession
-                {
-                    Username = x.Username
-                };
-
-                var userContext = new RequestContext(message, userSession);
-
-                caller.Result(WampObjectFormatter.Value, dummyDetails);
-
                 _scheduler.Schedule(async () =>
                 {
                     try
                     {
+                        var guid = Guid.NewGuid();
+
+                        Log.Debug($"[{guid}] RPC operation inner invoke");
+
+                        var x = formatter.Deserialize<MessageDto>(arguments[0]);
+
+                        var payload = x.Payload.ToString();
+
+                        var message = new Message
+                        {
+                            ReplyTo = new WampTransientDestination(x.ReplyTo),
+                            Payload = Encoding.UTF8.GetBytes(payload)
+                        };
+
+                        var userSession = new UserSession
+                        {
+                            Username = x.Username
+                        };
+
+                        var userContext = new RequestContext(message, userSession);
+
+                        Log.Debug($"[{guid}] Calling service method from Username: {userSession.Username}, ReplyTo: {message.ReplyTo}, Payload: {payload}");
+
                         await serviceMethod(userContext, message);
+
+                        Log.Debug($"[{guid}] Service method called with no exceptions");
                     }
                     catch (Exception e1)
                     {
                         Log.Error(e1);
                     }
                 });
+
+                caller.Result(WampObjectFormatter.Value, dummyDetails);
             }
             catch (Exception e2)
             {

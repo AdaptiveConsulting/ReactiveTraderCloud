@@ -37,12 +37,13 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         public async Task GetPriceUpdates(IRequestContext context, IMessage message)
         {
-            Log.DebugFormat("{1} Received GetPriceUpdates from [{0}]",
+            Log.DebugFormat("{0} Received GetPriceUpdates from [{1}] for replyTo {2}",
+                            this,
                             context.UserSession.Username ?? "Unknown User",
-                            this);
+                            message.ReplyTo);
 
-            var spotStreamRequest =
-                JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
+            var spotStreamRequest = JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
+
             var replyTo = message.ReplyTo;
 
             var endpoint = await _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo);
