@@ -5,17 +5,18 @@ import { logger } from '../';
 
 const _log:logger.Logger = logger.create('OpenFin');
 
+const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check';
+
 export default class OpenFin {
 
   tradeClickedSubject:Rx.Subject<string>;
   limitCheckSubscriber:string;
-  requestLimitCheckTopic:string;
   limitCheckId:number;
 
   constructor() {
     this.tradeClickedSubject = new Rx.Subject();
     this.limitCheckId = 1;
-    this.requestLimitCheckTopic = 'request-limit-check';
+    this._initializeLimitChecker();
   }
 
   get isRunningInOpenFin() {
@@ -45,33 +46,34 @@ export default class OpenFin {
   }
 
   checkLimit(executablePrice, notional:number, tradedCurrencyPair:string):Rx.Observable<boolean> {
+    let _this = this;
     return Rx.Observable.create(observer => {
         let disposables = new Rx.CompositeDisposable();
-        if (!this.available || this.limitCheckSubscriber == null) {
+        if (_this.limitCheckSubscriber == null) {
           _log.debug('client side limit check not up, will delegate to to server');
           observer.onNext(true);
           observer.onCompleted();
         } else {
-          _log.debug(`checking if limit is ok with ${this.limitCheckSubscriber}`);
-          var topic = 'limit-check-response' + (this.limitCheckId++);
-          var limitCheckResponse:(msg:any) => void = (msg) => {
-            _log.debug(`${this.limitCheckSubscriber} limit check response was ${msg}`);
+          _log.debug(`checking if limit is ok with ${_this.limitCheckSubscriber}`);
+          let topic = 'limit-check-response' + (_this.limitCheckId++);
+          let limitCheckResponse:(msg:any) => void = (msg) => {
+            _log.debug(`${_this.limitCheckSubscriber} limit check response was ${msg}`);
             observer.onNext(msg.result);
             observer.onCompleted();
           };
 
-          fin.desktop.InterApplicationBus.subscribe(this.limitCheckSubscriber, topic, limitCheckResponse);
+          fin.desktop.InterApplicationBus.subscribe(_this.limitCheckSubscriber, topic, limitCheckResponse);
 
-          fin.desktop.InterApplicationBus.send(this.limitCheckSubscriber, this.requestLimitCheckTopic, {
-            id: this.limitCheckId,
+          fin.desktop.InterApplicationBus.send(_this.limitCheckSubscriber, REQUEST_LIMIT_CHECK_TOPIC, {
+            id: _this.limitCheckId,
             responseTopic: topic,
             tradedCurrencyPair: tradedCurrencyPair,
             notional: notional,
-            rate: executablePrice.rate
+            rate: executablePrice
           });
 
           disposables.add(Rx.Disposable.create(() => {
-            fin.desktop.InterApplicationBus.unsubscribe(this.limitCheckSubscriber, topic, limitCheckResponse);
+            fin.desktop.InterApplicationBus.unsubscribe(_this.limitCheckSubscriber, topic, limitCheckResponse);
           }));
         }
         return disposables;
@@ -93,6 +95,28 @@ export default class OpenFin {
       } else {
         this._launchCurrencyChart(symbol);
       }
+    });
+  }
+
+  /**
+   * Initialize limit checker
+   * @private
+   */
+  _initializeLimitChecker() {
+    fin.desktop.main(() => {
+      fin.desktop.InterApplicationBus.addSubscribeListener(function(uuid, topic) {
+        if (topic === REQUEST_LIMIT_CHECK_TOPIC) {
+          _log.info(`${uuid} has subscribed as a limit checker`);
+          // There will only be one. If there are more, last subscriber will be used
+          this.limitCheckSubscriber = uuid;
+        }
+      }.bind(this));
+      fin.desktop.InterApplicationBus.addUnsubscribeListener(function(uuid, topic) {
+        if (topic === REQUEST_LIMIT_CHECK_TOPIC) {
+          _log.info(`${uuid} has unsubscribed as a limit checker`);
+          this.limitCheckSubscriber = null;
+        }
+      }.bind(this));
     });
   }
 
