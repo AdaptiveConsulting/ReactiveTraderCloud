@@ -27,4 +27,4 @@ echo " "
 echo "Starting local tests ..."
 docker run                           \
   --net=host $serversContainer$build \
-  bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
+  bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none" # TODO UPDATE

@@ -18,7 +18,7 @@ echo "Pricing"
 
 . ../../../config
 
-startCommand="dnx $releaseMode -p Adaptive.ReactiveTrader.Server.Launcher run p"
+startCommand="dotnet run $releaseMode -p Adaptive.ReactiveTrader.Server.Launcher p"
 waitCommand="while true; do echo ping; sleep 60; done"
 
 docker rm pricing 2&> garbage || true
