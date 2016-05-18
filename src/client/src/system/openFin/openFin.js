@@ -16,7 +16,10 @@ export default class OpenFin {
   constructor() {
     this.tradeClickedSubject = new Rx.Subject();
     this.limitCheckId = 1;
-    this._initializeLimitChecker();
+    this.limitCheckSubscriber = null;
+    if (this.isRunningInOpenFin) {
+      this._initializeLimitChecker();
+    }
   }
 
   get isRunningInOpenFin() {
