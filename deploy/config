@@ -58,10 +58,10 @@ nginxContainer_minor="0"
 nginxContainer="weareadaptive/nginx:$nginxContainer_major.$nginxContainer_minor"
 
 # mono
-vDnx="1.0.0-rc1-final"
+vDotnet="dotnet-dev-1.0.0-preview1-002702"
 monoContainer_major="0"
 monoContainer_minor="0"
-monoContainer="weareadaptive/mono:$monoContainer_major.$monoContainer_minor"
+monoContainer="weareadaptive/mono-rc2:$monoContainer_major.$monoContainer_minor"
 
 # TestTool
 vJq="1.5"

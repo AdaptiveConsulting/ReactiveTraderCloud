@@ -27,4 +27,4 @@ spec:
       - name: "__SERVICE__"
         image: "__DOCKERIMAGE__"
         imagePullPolicy: Always
-        command: [ "dnx", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.Blotter", "prod"]
+        command: [ "dotnet", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.Blotter", "config.prod.json"]
