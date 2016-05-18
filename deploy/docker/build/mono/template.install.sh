@@ -11,19 +11,12 @@ echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat ma
 | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
 sudo apt-get install -y mono-complete ca-certificates-mono
 
-# install dependencies
-sudo apt-get install -y unzip                \
-                        libunwind8           \
-                        libssl-dev           \
-                        curl                 \
-                        libcurl4-openssl-dev \
-                        libcurl3-gnutls
-
-# install DNVM
-curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh \
-| DNX_BRANCH=dev sh
-mozroots --import --sync
-bash -c "source /root/.dnx/dnvm/dnvm.sh && dnvm upgrade -r mono && dnvm install __VDNX__ -p"
+# install dotnet cli
+sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet/ trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
+sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
+sudo apt-get -y install apt-transport-https
+sudo apt-get update
+sudo apt-get -y install dotnet-dev-1.0.0-preview1-002702
 
 # Clean
 apt-get autoremove -y
