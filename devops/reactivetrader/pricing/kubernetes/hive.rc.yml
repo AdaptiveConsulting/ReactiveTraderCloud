@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: "pricing-<% reactivetrader.servers.major %>-<% reactivetrader.servers.minor %>-<% cli.id %>"
+  labels:
+    name: "pricing"
+    major: "<% reactivetrader.servers.major %>"
+    minor: "<% reactivetrader.servers.minor %>"
+    build: "<% cli.id %>"
+spec:
+  replicas: 1
+  selector:
+    name: "pricing"
+    major: "<% reactivetrader.servers.major %>"
+    minor: "<% reactivetrader.servers.minor %>"
+    build: "<% cli.id %>"
+  template:
+    metadata:
+      labels:
+        name: "pricing"
+        major: "<% reactivetrader.servers.major %>"
+        minor: "<% reactivetrader.servers.minor %>"
+        build: "<% cli.id %>"
+    spec:
+      containers:
+      - name: "pricing"
+        image: "<% reactivetrader.servers.image %>:<% reactivetrader.servers.major %>.<% reactivetrader.servers.minor %>.<% cli.id %>"
+        command: [ "dnx", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.Pricing", "prod" ]
+        imagePullPolicy: IfNotPresent

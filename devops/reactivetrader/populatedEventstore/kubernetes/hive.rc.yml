@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: "eventstore-<% reactivetrader.eventstore.major %>-<% reactivetrader.eventstore.minor %>-<% cli.id %>"
+  labels:
+    name: "eventstore"
+    major: "<% reactivetrader.eventstore.major %>"
+    minor: "<% reactivetrader.eventstore.minor %>"
+    build: "<% cli.id %>"
+spec:
+  replicas: 1
+  selector:
+    name: "eventstore"
+    major: "<% reactivetrader.eventstore.major %>"
+    minor: "<% reactivetrader.eventstore.minor %>"
+    build: "<% cli.id %>"
+  template:
+    metadata:
+      labels:
+        name: "eventstore"
+        major: "<% reactivetrader.eventstore.major %>"
+        minor: "<% reactivetrader.eventstore.minor %>"
+        build: "<% cli.id %>"
+    spec:
+      containers:
+      - name: "eventstore"
+        image: "<% reactivetrader.eventstore.image %>:<% reactivetrader.eventstore.major %>.<% reactivetrader.eventstore.minor %>.<% cli.id %>"
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 2113
+            name: "http"
+          - containerPort: 1113
+            name: "stream"

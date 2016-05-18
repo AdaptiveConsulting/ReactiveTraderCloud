@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: "blotter-<% reactivetrader.servers.major %>-<% reactivetrader.servers.minor %>-<% cli.id %>"
+  labels:
+    name: "blotter"
+    major: "<% reactivetrader.servers.major %>"
+    minor: "<% reactivetrader.servers.minor %>"
+    build: "<% cli.id %>"
+spec:
+  replicas: 1
+  selector:
+    name: "blotter"
+    major: "<% reactivetrader.servers.major %>"
+    minor: "<% reactivetrader.servers.minor %>"
+    build: "<% cli.id %>"
+  template:
+    metadata:
+      labels:
+        name: "blotter"
+        major: "<% reactivetrader.servers.major %>"
+        minor: "<% reactivetrader.servers.minor %>"
+        build: "<% cli.id %>"
+    spec:
+      containers:
+      - name: "blotter"
+        image: "<% reactivetrader.servers.image %>:<% reactivetrader.servers.major %>.<% reactivetrader.servers.minor %>.<% cli.id %>"
+        imagePullPolicy: IfNotPresent
+        command: [ "dnx", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.Blotter", "prod"]
