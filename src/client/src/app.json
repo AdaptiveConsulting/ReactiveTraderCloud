@@ -8,12 +8,10 @@
         "autoShow": true,
         "defaultWidth": 1280,
         "defaultHeight": 900,
-        "maxWidth": 1980,
         "minWidth": 800,
-        "maxHeight": 1080,
         "minHeight": 600,
         "resizable": true,
-        "maximizable": false,
+        "maximizable": true,
         "frame": false,
         "cornerRounding": {
             "width": 0,

@@ -8,7 +8,7 @@ export default class RegionModel extends ModelBase {
   _regionName:string;
   _log:logger.Logger;
 
-  modelRegistrations:Array<RegionModelRegistration>
+  modelRegistrations:Array<RegionModelRegistration>;
 
   constructor(modelId:string, regionName:string, router:Router) {
     super(modelId, router);
@@ -46,7 +46,7 @@ export default class RegionModel extends ModelBase {
 
   _addToRegion(model:ModelBase, options?:RegionOptions) : RegionModelRegistration{
     options = options || { };
-    var regionModelRegistration = new RegionModelRegistration(
+    let regionModelRegistration = new RegionModelRegistration(
       model,
       options.onExternallyRemovedCallback,
       options.displayContext,
@@ -60,7 +60,7 @@ export default class RegionModel extends ModelBase {
     let removedItems = _.remove(this.modelRegistrations, (regionModelRegistration:RegionModelRegistration) => {
       return regionModelRegistration.model === model && regionModelRegistration.displayContext === displayContext;
     });
-    _.forEach(removedItems, regionModelRegistration=> {
+    _.forEach(removedItems, regionModelRegistration => {
       if(wasExternallyRemoved) {
         if (regionModelRegistration.onExternallyRemovedCallback) {
           regionModelRegistration.onExternallyRemovedCallback();

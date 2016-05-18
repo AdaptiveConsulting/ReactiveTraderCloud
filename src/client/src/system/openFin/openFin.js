@@ -22,16 +22,15 @@ export default class OpenFin {
     return typeof fin !== 'undefined';
   }
 
-  close(){
-    this._currentWindow.close();
-  }
-  
-  minimise(e){
-    this._currentWindow.minimize();
+  close(window = this._currentWindow){
+    window.close(true, () => _log.info('Window closed with success.'), err => _log.error('Failed to close window.', err));
   }
 
-  maximise(e){
-    let window = this._currentWindow;
+  minimize(window = this._currentWindow){
+   window.minimize(() => _log.info('Window minimized with success.'), err => _log.error('Failed to minimize window.', err));
+  }
+
+  maximize(window = this._currentWindow){
     window.getState(state => {
         switch (state){
           case 'maximized':
@@ -40,7 +39,7 @@ export default class OpenFin {
             window.restore(() => window.bringToFront());
             break;
           default:
-            window.maximize();
+            window.maximize(() => _log.info('Window maximized with success.'), err => _log.error('Failed to maximize window.', err));
         }
       });
   }

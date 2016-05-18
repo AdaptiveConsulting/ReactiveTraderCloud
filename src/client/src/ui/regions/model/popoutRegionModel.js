@@ -1,15 +1,14 @@
 import { Router } from 'esp-js/src';
 import { RegionModel, RegionOptions, RegionModelRegistration } from './';
-import { ReactPopoutService, PopoutOptions } from '../../common/popout';
+import { getPopoutService, PopoutOptions } from '../../common/popout';
 import { ModelBase } from '../../common';
 import { createViewForModel } from '../';
 
 export default class PopoutRegionModel extends RegionModel {
-  _reactPopoutService:ReactPopoutService;
 
-  constructor(modelId:string, regionName:string, router:Router) {
+  constructor(modelId:string, regionName:string, router:Router, openfin) {
     super(modelId, regionName, router);
-    this._reactPopoutService = new ReactPopoutService();
+    this._popoutService = getPopoutService(openfin);
   }
 
   // override
@@ -22,7 +21,7 @@ export default class PopoutRegionModel extends RegionModel {
     let height = modelRegistration.regionSettings && modelRegistration.regionSettings.height
       ? modelRegistration.regionSettings.height
       : 400;
-    var title = options.regionSettings && options.regionSettings.title ? options.regionSettings.title : '';
+    const title = options.regionSettings && options.regionSettings.title ? options.regionSettings.title : '';
     let popoutOptions = new PopoutOptions(
       modelRegistration.key,
       '/#/popout',
@@ -31,11 +30,11 @@ export default class PopoutRegionModel extends RegionModel {
       {
         width: width,
         height: height,
-        resizable: 'no',
-        scrollable: 'no'
+        resizable: false,
+        scrollable: false
       }
     );
-    this._reactPopoutService.openPopout(popoutOptions, view);
+    this._popoutService.openPopout(popoutOptions, view);
     return modelRegistration;
   }
 

@@ -28,15 +28,6 @@ $splash-logo-margin-top:      20vh;
   }
 }
 
-
-.chrome__container{
-  height: 100vh;
-}
-
-.chrome__container-openFin{
-  height: calc(100vh - #{$header-height});
-}
-
 .shell__splash {
   background: url('../../common/images/logo-transparent.png'), #1f2a36;
   background-size: 400px $splash-logo-height;

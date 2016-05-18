@@ -21,13 +21,13 @@ export default class RegionManager {
       regionSettings:any
     }
   ) {
-    var region : RegionModel = this._regionsByName[regionName];
+    const region : RegionModel = this._regionsByName[regionName];
     Guard.isDefined(region, `region with name ${regionName} not registered`);
     region.addToRegion(model, options);
   }
 
   removeFromRegion(regionName:string, model:ModelBase, displayContext:?string) {
-    var region : RegionModel = this._regionsByName[regionName];
+    const region : RegionModel = this._regionsByName[regionName];
     Guard.isDefined(region, `region with name ${regionName} not registered`);
     region.removeFromRegion(model, displayContext);
   }

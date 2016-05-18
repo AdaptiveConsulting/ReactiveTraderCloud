@@ -43,15 +43,13 @@ export default class SpotTileView extends ViewBase {
       {
         'spot-tile__icon--hidden': !showChartIQIcon,
         'glyphicon glyphicon-refresh spot-tile__icon--rotate': this.state.currencyChartIsOpening,
-        'spot-tile__icon--tearoff glyphicon glyphicon-stats': !this.state.currencyChartIsOpening
+        'spot-tile__icon--chart glyphicon glyphicon-stats': !this.state.currencyChartIsOpening
       }
     );
 
     const formattedDate = model.currentSpotPrice ? moment(model.currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT) : '';
     const className = classnames(
       'spot-tile',
-      'animated',
-      'flipInX',
       {
         'spot-tile--stale': !model.pricingConnected,
         'spot-tile--readonly': !model.executionConnected,
@@ -65,10 +63,10 @@ export default class SpotTileView extends ViewBase {
           <span className='spot-tile__stale-label'>Stale</span>
           <span className='spot-tile__symbol'>{model.tileTitle}</span>
           <span className='spot-tile__execution-label'>Executing</span>
-          <div className='spot-tile__popout-controls'>
+          <div className='spot-tile__controls'>
             <i className={chartIQIconClassName}
               onClick={() => this._displayCurrencyChart()}/>
-            <i className='spot-tile__icon--tearoff glyphicon glyphicon-new-window'
+            <i className='popout__controls spot-tile__icon--tearoff glyphicon glyphicon-new-window'
                onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
           </div>
           {notification}

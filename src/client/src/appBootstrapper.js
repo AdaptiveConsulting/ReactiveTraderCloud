@@ -5,6 +5,7 @@ import { AnalyticsModel } from './ui/analytics/model';
 import { HeaderModel } from './ui/header/model';
 import { FooterModel } from './ui/footer/model';
 import { ShellModel } from './ui/shell/model';
+import { ChromeModel } from './ui/common/components/chrome/model';
 import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
 import { User, ServiceConst } from './services/model';
 import { SchedulerService, } from './system';
@@ -86,7 +87,7 @@ class AppBootstrapper {
     // This infrastructure allows for differing views to be put into the shell without the shell having to be coupled to all these views.
     let workspaceRegionModel = new RegionModel(WellKnownModelIds.workspaceRegionModelId, RegionNames.workspace, espRouter);
     workspaceRegionModel.observeEvents();
-    let popoutRegionModel = new PopoutRegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter);
+    let popoutRegionModel = new PopoutRegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter, this._openFin);
     popoutRegionModel.observeEvents();
     let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, RegionNames.blotter, espRouter);
     blotterRegionModel.observeEvents();
@@ -97,6 +98,10 @@ class AppBootstrapper {
     // wire up the shell
     let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection, this._openFin);
     shellModel.observeEvents();
+
+    // wire up the application chrome
+    let chromeModel = new ChromeModel(WellKnownModelIds.chromeModelId, espRouter, this._openFin);
+    chromeModel.observeEvents();
 
     // wire-up the loader that populats the workspace with spot tiles.
     // In a more suffocated app you'd have some 'add product' functionality allowing the users to add workspace views/products manually.
