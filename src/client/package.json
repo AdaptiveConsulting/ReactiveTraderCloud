@@ -25,14 +25,15 @@
     "lint": "eslint --ext .js --ext .jsx src",
     "dev:local": "npm run dev -- --endpoint local",
     "dev:cloud": "npm run dev -- --endpoint demo",
-    "dev:openfin:local": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin dev:local",
-    "dev:openfin:cloud": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin dev:cloud",
+    "dev:openfin:local": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin:local dev:local",
+    "dev:openfin:cloud": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin:cloud dev:cloud",
     "dev": "webpack-dev-server --progress --debug --config webpack.config.js --display-error-details",
     "test": "karma start ./karma.conf.js",
     "test:dev": "npm test -- --watch",
     "deploy": "webpack --display-error-details",
     "deploy:prod": "export NODE_ENV=production && webpack",
-    "openfin": "openfin -c src/app.json -l"
+    "openfin:local": "openfin -c config/openfin/local.app.json -l",
+    "openfin:cloud": "openfin -c config/openfin/demo.app.json -l"
   },
   "license": "MIT",
   "dependencies": {
@@ -55,7 +56,6 @@
     "ws": "0.8.1"
   },
   "devDependencies": {
-    "esp-js-devtools": "0.0.15",
     "autoprefixer": "6.3.1",
     "autoprefixer-loader": "3.1.0",
     "babel": "6.5.2",
@@ -77,6 +77,7 @@
     "eslint-config-airbnb": "3.1.0",
     "eslint-loader": "1.2.0",
     "eslint-plugin-react": "3.15.0",
+    "esp-js-devtools": "0.0.15",
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.8.5",
     "html-webpack-plugin": "1.7.0",

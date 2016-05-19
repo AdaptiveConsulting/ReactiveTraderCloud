@@ -66,6 +66,10 @@ const webpackConfig = {
       {
         from: './src/ui/common/images',
         to: 'images'
+      },
+      {
+        from: './config/openfin/' + (args.endpoint || 'default') + '.app.json',
+        to: 'app.json'
       }
     ]),
     new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function(module){
