@@ -77,7 +77,7 @@ export default class AnalyticsView extends ViewBase {
           type='lineChart'
           datum={pnlChartModel.getSeries()}
           options={pnlChartModel.options}
-          height={170}
+          height={180}
           configure={configurePnLChart}/>
       );
     } else {
