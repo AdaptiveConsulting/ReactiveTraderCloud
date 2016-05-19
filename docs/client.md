@@ -66,3 +66,16 @@ Note the linter also runs by default during normal dev watch build (`npm run dev
 npm run deploy
 ```
 Run webpack using the webpack config.
+
+### Openfin
+
+```sh
+npm run dev:openfin:cloud
+```
+Starts the app in Openfin pointing to the demo environment
+
+```sh
+npm run dev:openfin:local
+```
+
+Starts the app in Openfin pointing to your local server
