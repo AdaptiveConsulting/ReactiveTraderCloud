@@ -25,15 +25,14 @@
     "lint": "eslint --ext .js --ext .jsx src",
     "dev:local": "npm run dev -- --endpoint local",
     "dev:cloud": "npm run dev -- --endpoint demo",
-    "dev:openfin:local": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin:local dev:local",
-    "dev:openfin:cloud": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin:cloud dev:cloud",
+    "dev:openfin:local": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin dev:local",
+    "dev:openfin:cloud": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin dev:cloud",
     "dev": "webpack-dev-server --progress --debug --config webpack.config.js --display-error-details",
     "test": "karma start ./karma.conf.js",
     "test:dev": "npm test -- --watch",
     "deploy": "webpack --display-error-details",
     "deploy:prod": "export NODE_ENV=production && webpack",
-    "openfin:local": "openfin -c config/openfin/local.app.json -l",
-    "openfin:cloud": "openfin -c config/openfin/local-demo.app.json -l"
+    "openfin": "openfin -c config/openfin/local.app.json -l"
   },
   "license": "MIT",
   "dependencies": {
