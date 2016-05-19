@@ -68,7 +68,7 @@ const webpackConfig = {
         to: 'images'
       },
       {
-        from: './config/openfin/' + (args.endpoint || 'demo') + '.app.json',
+        from: './config/openfin/demo.app.json',
         to: 'app.json'
       }
     ]),
