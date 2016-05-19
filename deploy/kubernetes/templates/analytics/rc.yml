@@ -27,4 +27,4 @@ spec:
       - name: "__SERVICE__"
         image: "__DOCKERIMAGE__"
         imagePullPolicy: Always
-        command: [ "dotnet", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.Analytics", "config.prod.json"]
+        command: [ "dotnet", "run", --configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.Analytics", "config.prod.json"]

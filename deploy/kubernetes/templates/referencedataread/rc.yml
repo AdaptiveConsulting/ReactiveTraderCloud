@@ -26,5 +26,5 @@ spec:
       containers:
       - name: "__SERVICE__"
         image: "__DOCKERIMAGE__"
-        command: [ "dotnet", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.ReferenceDataRead", "config.prod.json" ]
+        command: [ "dotnet", "run", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.ReferenceDataRead", "config.prod.json" ]
         imagePullPolicy: Always
