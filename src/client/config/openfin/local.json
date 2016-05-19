@@ -4,7 +4,7 @@
         "name": "reactive-trader-cloud",
         "url": "http://localhost:3000/",
         "uuid": "reactive-trader-cloud-local",
-        "applicationIcon": "http://localhost:3000/images/favicon.ico",
+        "applicationIcon": "http://localhost:3000/images/adaptive-mark-large.png",
         "autoShow": true,
         "defaultWidth": 1280,
         "defaultHeight": 900,

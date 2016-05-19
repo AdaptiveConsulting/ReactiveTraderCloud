@@ -4,7 +4,7 @@
         "name": "reactive-trader-cloud",
         "url": "https://web-demo.adaptivecluster.com",
         "uuid": "reactive-trader-cloud-web-demo",
-        "applicationIcon": "https://web-demo.adaptivecluster.com/images/favicon.ico",
+        "applicationIcon": "https://web-demo.adaptivecluster.com/images/adaptive-mark-large.png",
         "autoShow": true,
         "defaultWidth": 1280,
         "defaultHeight": 900,
