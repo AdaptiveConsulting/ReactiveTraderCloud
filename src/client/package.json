@@ -33,7 +33,7 @@
     "deploy": "webpack --display-error-details",
     "deploy:prod": "export NODE_ENV=production && webpack",
     "openfin:local": "openfin -c config/openfin/local.app.json -l",
-    "openfin:cloud": "openfin -c config/openfin/demo.app.json -l"
+    "openfin:cloud": "openfin -c config/openfin/local-demo.app.json -l"
   },
   "license": "MIT",
   "dependencies": {
