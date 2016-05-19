@@ -86,7 +86,7 @@ export default class SpotTileModel extends ModelBase {
     this.executionConnected = false;
     this.isTradeExecutionInFlight = false;
     this._regionName = RegionNames.workspace;
-    this._regionSettings = new RegionSettings(`${this.currencyPair.symbol} Spot`, 370, 190);
+    this._regionSettings = new RegionSettings(`${this.currencyPair.symbol} Spot`, 370, 190, true);
     this._regionManagerHelper = new RegionManagerHelper(this._regionName, regionManager, this, this._regionSettings);
     this.isRunningInOpenFin = openFin.isRunningInOpenFin;
   }
