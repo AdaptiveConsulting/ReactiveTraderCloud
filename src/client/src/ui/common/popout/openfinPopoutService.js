@@ -81,29 +81,29 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
     fin.desktop.main(() => {
       this._dockingManager = new DockingManager();
       fin.desktop.InterApplicationBus.subscribe('*', 'window-docked', ({windowName}) => {
-        const window = _this._popouts[windowName];
-        if (window) {
-          let container = window.contentWindow.document.getElementsByClassName('openfin-chrome__content')[0];
+        const tearoutWindow = _this._popouts[windowName];
+        if (tearoutWindow) {
+          let container = tearoutWindow.contentWindow.document.getElementsByClassName('openfin-chrome__content')[0];
           container.className += ` ${DOCKED_CLASS_NAME}`;
-          _log.info(`Docking ${window.name}`);
+          _log.info(`Docking ${tearoutWindow.name}`);
         }
       });
       fin.desktop.InterApplicationBus.subscribe('*', 'window-undocked', ({windowName}) => {
-        const window = _this._popouts[windowName];
-        if (window) {
-          let container = window.contentWindow.document.getElementsByClassName('openfin-chrome__content')[0];
+        const tearoutWindow = _this._popouts[windowName];
+        if (tearoutWindow) {
+          let container = tearoutWindow.contentWindow.document.getElementsByClassName('openfin-chrome__content')[0];
           container.className = container.className.replace(new RegExp(DOCKED_CLASS_NAME, 'g'), '');
-          _log.info(`Undocking ${window.name}`);
+          _log.info(`Undocking ${tearoutWindow.name}`);
         }
       });
     });
   }
 
 
-  _registerWindow(window, dockable) {
+  _registerWindow(tearoutWindow, dockable) {
     if (this._dockingManager) {
-      this._dockingManager.register(window, dockable);
-      this._popouts[window.name] = window;
+      this._dockingManager.register(tearoutWindow, dockable);
+      this._popouts[tearoutWindow.name] = tearoutWindow;
     }
   }
 
