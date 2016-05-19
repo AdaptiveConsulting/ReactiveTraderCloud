@@ -125,8 +125,10 @@ $price-width: calc(45% + 10px);
   float: right;
 }
 
+
 .spot-tile__icon--chart.glyphicon,
-.spot-tile__icon--tearoff.glyphicon {
+.spot-tile__icon--tearoff.glyphicon,
+.spot-tile__icon--undock.glyphicon {
   display: none;
   cursor: pointer;
   margin-left: 6px;

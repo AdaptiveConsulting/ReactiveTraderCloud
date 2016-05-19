@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { Trade, TradeNotification, CurrencyPairPosition } from '../../services/model';
 import { logger } from '../';
 import { PriceMapper, PositionsMapper } from '../../services/mappers';
-const DockingManager = require('exports?DockingManager!./dockingManager.js');
 const _log:logger.Logger = logger.create('OpenFin');
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check';
@@ -20,7 +19,6 @@ export default class OpenFin {
     this.limitCheckSubscriber = null;
     if (this.isRunningInOpenFin) {
       this._initializeLimitChecker();
-      this._initializeDockingManager();
     }
   }
 
@@ -98,12 +96,6 @@ export default class OpenFin {
         }
         return disposables;
       });
-  }
-
-  registerWindow(window) {
-    if (this._dockingManager) {
-      this._dockingManager.register(window);
-    }
   }
 
   get _currentWindow() {
@@ -186,12 +178,6 @@ export default class OpenFin {
           autoShow: false
         }
       }, () => app.run(() => setTimeout(() => resolve(), 1000), err => reject(err)), err => reject(err));
-    });
-  }
-
-  _initializeDockingManager() {
-    fin.desktop.main(() => {
-      this._dockingManager = new DockingManager();
     });
   }
 
