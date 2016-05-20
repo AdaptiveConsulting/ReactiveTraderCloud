@@ -4,12 +4,10 @@ import { utils } from '../../../system';
 import classnames from 'classnames';
 import { CurrencyPair } from '../../../services/model';
 import './notionalInput.scss';
+import _ from 'lodash';
 const NUMERAL_FORMAT    = '0,000,000[.]00',
       DOT               = '.';
 
-/**
- * @Class NotionalInput
- */
 export default class NotionalInput extends React.Component {
 
   static propTypes = {
@@ -36,45 +34,74 @@ export default class NotionalInput extends React.Component {
     return (
       <div className={classes}>
         <label className='notional__currency-pair' >{this.props.currencyPair.base}</label>
-        <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onClick={this.handleSelect} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
+        <input className='notional__size-input'
+               type='text'
+               ref='notionalInput'
+               defaultValue={formattedSize}
+               onClick={this._handleSelect}
+               onChange={(e) => this._handleInputChange(e)}
+               onBlur={(e) => this._handleExitNotionalInput(e)}
+               onKeyPress={(e) => this._handleKeyPressNotionalInput(e)}/>
       </div>
     );
   }
 
-  /**
-   * Select notional input text
-   * @param {DOMEvent=} e
-   */
-  handleSelect(e) {
-    const el = e.target;
-    el.setSelectionRange(0, el.value.length);
+  _handleExitNotionalInput(e){
+    this._processNotional(e.target.value);
   }
 
-  /**
-   * Sets trade amount. Supports k/m modifiers for 1000s or millions.
-   * @param {DOMEvent=} e
-   */
-  _setNotionalFromDOMInput(e){
-    const rawValue    = (this.refs.notionalInput.value || e.target.value).trim();
-    const hasdot = rawValue.indexOf(DOT) !== -1;
+  _handleKeyPressNotionalInput(e){
+    let charCode = e.charCode;
+    if (e.key === 'Enter') {
+      this._processNotional(e.target.value);
+    }
+    else if (charCode === 46){
+      //only allow one dot
+      let numDots = _.filter(e.target.value.split(''), (char) => char === '.').length;
+      if ( numDots >= 1){
+        e.nativeEvent.stopImmediatePropagation();
+        e.preventDefault();
+      }
+    }else if (charCode > 31 && (charCode != 46 &&(charCode < 48 || charCode > 57))){
+      if (utils.hasShorthandInput( rawValue)){ //first process input for shortcuts
+        this._processNotional(rawValue);
+      }else{  //do not allow non-numeric inpuut
+        e.nativeEvent.stopImmediatePropagation();
+        e.preventDefault();
+      }
+    }
+  }
 
-    let notional = utils.convertNotionalShorthandToNumericValue(rawValue);
+  _processNotional(inputValue){
+    inputValue.trim();
+    let notional = utils.convertNotionalShorthandToNumericValue(inputValue);
     if (notional >= this.props.maxValue) {
       notional = 0;
     }
-    hasdot && (notional += DOT);
-
     if (!isNaN(notional)){
       // send temp notional back to parent
       this.props.onChange(notional);
 
       // user may be trying to enter decimals. restore BACK into input
-      if (rawValue.indexOf(DOT) === rawValue.length - 1){
+      if (inputValue.indexOf(DOT) === inputValue.length - 1){
         notional = notional + DOT;
       }
-
+      let formattedValue = numeral(notional).format(NUMERAL_FORMAT);
       // propagate change back to dom node's value
-      this.refs.notionalInput.value = numeral(notional).format(NUMERAL_FORMAT);
+      this.refs.notionalInput.value = formattedValue;
+    }
+  }
+  
+  _handleSelect(e) {
+    const el = e.target;
+    el.setSelectionRange(0, el.value.length);
+  }
+
+  _handleInputChange(e){
+    const rawValue    = (this.refs.notionalInput.value || e.target.value).trim();
+    //check for a shortcut input
+    if (utils.hasShorthandInput( rawValue)){
+      this._processNotional(rawValue);
     }
   }
 }
