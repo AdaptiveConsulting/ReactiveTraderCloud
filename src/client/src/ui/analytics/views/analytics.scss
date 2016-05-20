@@ -55,13 +55,15 @@ $default-padding: 10px;
   .nv-lineChart {
     .nv-axis.nv-y {
       text {
-        font-size:10px;
+        font-size: 10px;
+        fill: $barchar-text-color;
       }
     }
 
     .nv-axis.nv-x {
       text {
         font-size: 10px;
+        fill: $barchar-text-color;
       }
     }
   }
