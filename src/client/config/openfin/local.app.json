@@ -1,7 +1,7 @@
 {
     "devtools_port": 9090,
     "startup_app": {
-        "name": "reactive-trader-cloud",
+        "name": "Reactive Trader Cloud (LOCAL)",
         "url": "http://localhost:3000/",
         "uuid": "reactive-trader-cloud-local",
         "applicationIcon": "http://localhost:3000/images/adaptive-mark-large.png",
@@ -26,6 +26,6 @@
         "company": "Adaptive Consulting",
         "description": "Desktop Reactive Trader Cloud",
         "icon": "http://localhost:3000/images/icon.ico",
-        "name": "reactive-trader-cloud"
+        "name": "Reactive Trader Cloud (LOCAL)"
     }
 }
