@@ -46,7 +46,7 @@ You will find a guide to setup ReactiveTraderCloud for your platform [here](docs
 Those topics will be covered in the upcoming weeks.
 
 + [vNext Client Architecture with ES.next, React, Webpack, RxJs](docs/articles/vNextClientArchitecture.md)
-+ [DNX (.NET Execution Environment): Cross Platform .Net Development](docs/articles/dnx.md)
++ [Cross Platform .Net Development with the dotnet CLI tool](docs/articles/dotnet.md)
 + [Event Sourcing](docs/articles/eventSourcing.md)
 + [Web Messaging with WAMP & Crossbar](docs/articles/webMessaging.md)
 + [Always Connected Apps in a Microservice Environment](docs/articles/alwaysConnectedApps.md)
