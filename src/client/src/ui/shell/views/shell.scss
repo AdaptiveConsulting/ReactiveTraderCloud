@@ -85,7 +85,8 @@ $splash-logo-margin-top:      20vh;
 }
 
 .shell__workspace {
-  flex: 1 $workspace-width;
+  flex-grow: 1;
+  flex-basis: $workspace-width;
   order: 2;
   height: $workspace-height;
   overflow-y: auto;
@@ -93,7 +94,9 @@ $splash-logo-margin-top:      20vh;
 }
 
 .shell__analytics {
-  flex: 0 0 $analytics-width;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: $analytics-width;
   order: 3;
   height: $analytics-height;
   overflow-y: auto;
