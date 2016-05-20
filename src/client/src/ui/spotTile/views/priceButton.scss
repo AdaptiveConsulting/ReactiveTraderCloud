@@ -12,6 +12,10 @@ $price-side-width: calc((100% - #{$price-pip-width})/2);
   font-size: 16px;
 }
 
+.price-button__wrapper {
+  white-space:nowrap;
+}
+
 .price-button__big-figure,
 .price-button__tenth,
 .price-button__pip {

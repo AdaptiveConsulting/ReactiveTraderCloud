@@ -25,20 +25,26 @@ export default class BlotterView extends ViewBase {
     if (!model) {
       return null;
     }
-
     let columns = this._createGridColumns(model.trades);
     let className = classNames(
       'blotter', {
         'blotter--online': model.isConnected,
         'blotter--offline': !model.isConnected
       });
+    let newWindowClassName = classNames(
+      'glyphicon glyphicon-new-window',
+      {
+        'blotter__controls--hidden': model.isIE()
+      }
+    );
+
     let containerWidth = this.props.containerWidth; // comes from the @Dimensions annotation
     let containerHeight = this.props.containerHeight; // comes from the @Dimensions annotation
     return (
       <div className={className}>
         <div className='blotter-wrapper'>
           <div className='blotter__controls popout__controls'>
-            <i className='glyphicon glyphicon-new-window'
+            <i className={newWindowClassName}
                onClick={() => router.publishEvent(this.props.modelId, 'tearOffBlotter', {})} />
           </div>
           <Table

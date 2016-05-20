@@ -1,12 +1,13 @@
 import { Router, DisposableBase } from 'esp-js/src';
 import { logger, Guard } from '../../system';
+import userAgentParser from 'ua-parser-js';
 
 var _log:logger.Logger = logger.create('ModelBase');
 
 export default class ModelBase extends DisposableBase {
   _modelId:string;
   router:Router;
-  
+
   constructor(modelId, router) {
     super();
     Guard.isString(modelId, 'modelId required and must be a string');
@@ -34,6 +35,11 @@ export default class ModelBase extends DisposableBase {
     this.router.runAction(this.modelId, ()=>{
       action();
     });
+  }
+
+  isIE(){
+    let browser = new userAgentParser().getBrowser().name;
+    return browser.indexOf('IE') !== -1;
   }
 
   get modelId():string {

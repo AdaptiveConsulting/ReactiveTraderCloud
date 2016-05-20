@@ -59,6 +59,10 @@ $price-width: calc(45% + 10px);
   }
 }
 
+.spot-tile__icon--hidden{
+  display: none;
+}
+
 .spot-tile__container {
   position: absolute;
   top: 10px;

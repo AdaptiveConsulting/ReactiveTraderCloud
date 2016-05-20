@@ -44,11 +44,20 @@ export default class AnalyticsView extends ViewBase {
       return <span />;
 
     let pnlComponents = this._createPnlComponents();
-    let positionsComponents = this._createPositionsComponents();
+    let positionsComponents = model.isIE() ? <div></div> : this._createPositionsComponents();
+    
+    let newWindowBtnClassName = classnames(
+      'glyphicon glyphicon-new-window',
+      {
+        'analytics__icon--tearoff' : !model.isIE(),
+        'analytics__icon--tearoff--hidden' : model.isIE()
+      }
+    );
+
     return (
       <div className='analytics analytics__container animated fadeIn'>
         <div className='analytics__controls popout__controls'>
-          <i className='analytics__icon--tearoff glyphicon glyphicon-new-window'
+          <i className={newWindowBtnClassName}
              onClick={() => router.publishEvent(this.props.modelId, 'popOutAnalytics', {})}/>
         </div>
         {pnlComponents}
@@ -97,6 +106,7 @@ export default class AnalyticsView extends ViewBase {
   }
 
   _createPositionsComponents() {
+
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
     let isPnL = positionsChartModel.basePnlDisplayModelSelected;
     let baseClassName = 'btn analytics__buttons-tab-btn ';
