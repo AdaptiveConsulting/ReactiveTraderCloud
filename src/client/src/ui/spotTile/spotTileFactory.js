@@ -7,8 +7,6 @@ import { RegionManager, RegionNames } from '../regions';
 import { SchedulerService, } from '../../system';
 import { OpenFin } from '../../system/openFin';
 
-let modelIdKey = 1;
-
 /**
  * Responsible for creating components for a spot tile.
  *
@@ -40,7 +38,7 @@ export default class SpotTileFactory {
 
   createTileModel(currencyPair:CurrencyPair) {
     let spotTileModel = new SpotTileModel(
-      this._createSpotTileModelId(),
+      this._createSpotTileModelId(currencyPair.symbol),
       currencyPair,
       this._router,
       this._pricingService,
@@ -52,7 +50,7 @@ export default class SpotTileFactory {
     spotTileModel.observeEvents();
     return spotTileModel;
   }
-  _createSpotTileModelId() {
-    return `spotTile` + modelIdKey++;
+  _createSpotTileModelId(currencyPair) {
+    return `spotTile-${currencyPair}`;
   }
 }
