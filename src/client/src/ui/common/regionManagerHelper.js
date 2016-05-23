@@ -31,14 +31,16 @@ export default class RegionManagerHelper {
       {
         onExternallyRemovedCallback: () => {
           // if the popout is closed, we add it back into the initial region
-          this._regionManager.addToRegion(this._regionName, this._model);
+          this._regionManager.addToRegion(this._regionName, this._model, null, true);
         },
         regionSettings: {
           width,
           height,
           title
         }
-      }
+      },
+      true
     );
   }
+
 }

@@ -34,7 +34,7 @@ export default class SpotTileModel extends ModelBase {
   _log:logger.Logger;
   _regionManagerHelper:RegionManagerHelper;
   _openFin:OpenFin;
-
+  _regionName:string;
   // React doesn't seem to pickup ES6 properties (last time I looked it seemed to be because Babel doesn't spit them out as enumerable)
   // So we're just exposing the state as fields.
   currencyPair:CurrencyPair;
@@ -80,7 +80,8 @@ export default class SpotTileModel extends ModelBase {
     this.pricingConnected = false;
     this.executionConnected = false;
     this.isTradeExecutionInFlight = false;
-    this._regionManagerHelper = new RegionManagerHelper(RegionNames.workspace, regionManager, this);
+    this._regionName = RegionNames.workspace;
+    this._regionManagerHelper = new RegionManagerHelper(this._regionName, regionManager, this);
     this.isRunningInOpenFin = openFin.isRunningInOpenFin;
   }
 
@@ -94,6 +95,10 @@ export default class SpotTileModel extends ModelBase {
     this._subscribeToPriceStream();
     this._subscribeToConnectionStatus();
     this._regionManagerHelper.addToRegion();
+
+    if (this._regionManager.shouldPopoutFromRegion(this._regionName, this._modelId)) {
+      this.router.publishEvent(this._modelId, 'popOutTile', {});
+    }
   }
 
   @observeEvent('tileClosed')
