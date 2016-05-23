@@ -64,8 +64,8 @@ export default class BlotterModel extends ModelBase {
           (tradesUpdate:TradesUpdate) => {
             let trades = tradesUpdate.trades;
 
-            if (tradesUpdate.isStateOfTheWorld){
-              this.trades = this.trades.concat(tradesUpdate.trades);
+            if (tradesUpdate.isStateOfTheWorld) {
+              this.trades = this.trades.concat(_.sortBy(tradesUpdate.trades, 'tradeId').reverse());
             }else{
               _.forEach(trades, (trade:Trade) => {
                 let existingTradeIndex = _.findIndex(this.trades, (t) => t.tradeId === trade.tradeId );
