@@ -46,6 +46,7 @@ export default class SpotTileModel extends ModelBase {
   executionConnected:boolean;
   isTradeExecutionInFlight:boolean;
   isRunningInOpenFin:boolean;
+  currencyChartIsOpening:boolean;
 
   constructor(modelId:string,
               currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
@@ -75,6 +76,7 @@ export default class SpotTileModel extends ModelBase {
     this.notional = 1000000;
     this.maxNotional = MAX_NOTIONAL_VALUE;
     this.currentSpotPrice = null;
+    this.currencyChartIsOpening = false;
 
     // If things get much messier we could look at introducing a state machine, but for now we really only have these 3 conditions to worry about
     this.pricingConnected = false;
@@ -111,7 +113,9 @@ export default class SpotTileModel extends ModelBase {
   @observeEvent('displayCurrencyChart')
   _onDisplayCurrencyChart(){
     this._log.info(`Display currency chart - ChartIQ`);
-    this._openFin.displayCurrencyChart(this.currencyPair.symbol);
+    this.currencyChartIsOpening = true;
+    this._openFin.displayCurrencyChart(this.currencyPair.symbol)
+      .then(() => this.currencyChartIsOpening = false, () => this.currencyChartIsOpening = false);
   }
 
   @observeEvent('tradeNotificationDismissed')
