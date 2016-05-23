@@ -34,7 +34,7 @@ export default class BlotterView extends ViewBase {
     let newWindowClassName = classNames(
       'glyphicon glyphicon-new-window',
       {
-        'blotter__controls--hidden': model.isIE()
+        'blotter__controls--hidden': model.canPopout()
       }
     );
 

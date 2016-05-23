@@ -37,7 +37,7 @@ export default class ModelBase extends DisposableBase {
     });
   }
 
-  isIE(){
+  canPopout(){
     let browser = new userAgentParser().getBrowser().name;
     return browser.indexOf('IE') !== -1;
   }

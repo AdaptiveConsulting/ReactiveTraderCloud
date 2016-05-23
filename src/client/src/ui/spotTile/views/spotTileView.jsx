@@ -62,8 +62,8 @@ export default class SpotTileView extends ViewBase {
     const newWindowClassName = classnames(
       'popout__controls  glyphicon glyphicon-new-window',
       {
-        'spot-tile__icon--tearoff' : !model.isIE(),
-        'spot-tile__icon--hidden' : model.isIE()
+        'spot-tile__icon--tearoff' : !model.canPopout(),
+        'spot-tile__icon--hidden' : model.canPopout()
       }
     );
     return (
