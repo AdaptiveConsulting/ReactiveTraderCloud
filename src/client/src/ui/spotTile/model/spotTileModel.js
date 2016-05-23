@@ -129,7 +129,7 @@ export default class SpotTileModel extends ModelBase {
 
   @observeEvent('executeTrade')
   _onExecuteTrade(e:{direction:Direction}) {
-    if (this.pricingConnected && this.executionConnected) {
+    if (this.pricingConnected && this.executionConnected && !this.isTradeExecutionInFlight) {
       // stop the price stream so the users can see what the traded
       let request = this._createTradeRequest(e.direction);
       this._log.info(`Will execute ${request.toString()}`);

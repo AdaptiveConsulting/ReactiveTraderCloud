@@ -52,6 +52,7 @@ $price-width: calc(45% + 10px);
       text-align: right;
     }
   }
+  &.spot-tile--executing,
   &.spot-tile--readonly {
     .spot-tile__price {
       cursor: default;
