@@ -33,7 +33,7 @@ Clone the repo and install the necessary node modules:
 
 ```sh
 npm install  # Install Node modules listed in ./package.json
-npm start    # Compile and launches the webpack dev server
+npm start    # Compile and launches the webpack dev server. By default, the client connects to a demo environment.
 ```
 
 You can then browse the app at [http://localhost:3000](http://localhost:3000)
@@ -41,10 +41,10 @@ You can then browse the app at [http://localhost:3000](http://localhost:3000)
 ### Additional command line options
 
 ```sh
-npm run dev
+npm run dev:local
 ```
 
-Same as `npm run start`, runs the webpack build system with webpack-dev-server (by default found at [http://localhost:3000](http://localhost:3000)).
+Similar to `npm run start`, but configures the client to point to your local backend server. You can then browse the app at [http://localhost:3000](http://localhost:3000)).
 
 ```sh
 npm run test
@@ -66,3 +66,16 @@ Note the linter also runs by default during normal dev watch build (`npm run dev
 npm run deploy
 ```
 Run webpack using the webpack config.
+
+### Openfin
+
+```sh
+npm run dev:openfin:cloud
+```
+Starts the app in Openfin pointing to the demo environment
+
+```sh
+npm run dev:openfin:local
+```
+
+Starts the app in Openfin pointing to your local server

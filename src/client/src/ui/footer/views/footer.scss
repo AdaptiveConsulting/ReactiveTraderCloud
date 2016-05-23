@@ -1,0 +1,64 @@
+$footer-background-color: #dee3e8;
+
+.footer {
+  height: 100%;
+  width: 100vw;
+  background-color: $footer-background-color;
+  position: relative;
+}
+
+.footer__services {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+}
+
+.footer__service {
+}
+
+.footer__service-label {
+  font-size: 14px;
+}
+
+.footer__general-status-icon {
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+  margin: 7px;
+}
+
+.footer__icon--online,
+.footer__icon--offline {
+  margin-right: 5px;
+}
+
+.footer__icon--online,
+.footer__general-status-icon--healthy {
+  color: green;
+}
+
+.footer__general-status-icon--down,
+.footer__icon--offline {
+  color: red;
+}
+
+.footer__general-status-icon--warning {
+  color: orange;
+}
+
+.footer__service-status-panel {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  height: 130px;
+  width: 200px;
+  background-color: $footer-background-color;
+  z-index: 100;
+  border-bottom: 1px solid white;
+}
+
+.footer__connection-url {
+  display: inline-block;
+  font-size: 14px;
+  padding: 7px 10px;
+}

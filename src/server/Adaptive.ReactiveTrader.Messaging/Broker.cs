@@ -71,7 +71,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             _brokerTeardown = new Subject<Unit>();
         }
 
-        public async Task<IAsyncDisposable> RegisterCall(string procName,
+        public Task<IAsyncDisposable> RegisterCall(string procName,
                                                          Func<IRequestContext, IMessage, Task> onMessage)
         {
             if (Log.IsInfoEnabled)
@@ -88,7 +88,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             };
 
             // Todo this operation can cause a deadlock - even with configureawait(False)
-            return await realm.RpcCatalog.Register(rpcOperation, registerOptions);
+            return realm.RpcCatalog.Register(rpcOperation, registerOptions);
         }
 
         public async Task<IAsyncDisposable> RegisterCallResponse<TResponse>(string procName,

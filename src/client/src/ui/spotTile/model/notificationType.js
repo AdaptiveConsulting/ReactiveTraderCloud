@@ -1,7 +1,4 @@
-export default class NotificationType {
-
-  static _trade = new NotificationType('Trade');
-  static _text = new NotificationType('Text');
+class NotificationType {
 
   name:string;
 
@@ -18,3 +15,7 @@ export default class NotificationType {
   }
 }
 
+NotificationType._trade = new NotificationType('Trade');
+NotificationType._text = new NotificationType('Text');
+
+export default NotificationType;

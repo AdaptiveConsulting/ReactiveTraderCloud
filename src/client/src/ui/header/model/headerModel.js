@@ -1,34 +1,21 @@
 import { Router,  observeEvent } from 'esp-js/src';
-import { CompositeStatusService, FakeUserRepository } from '../../../services';
 import { logger } from '../../../system';
 import { ModelBase } from '../../common';
-import { ServiceStatusLookup } from '../../../services/model';
 
 var _log:logger.Logger = logger.create('HeaderModel');
 
 export default class HeaderModel extends ModelBase {
-  _compositeStatusService:CompositeStatusService;
-
-  isConnectedToBroker:boolean;
-  serviceLookup:ServiceStatusLookup;
 
   constructor(
     modelId:string,
-    router:Router,
-    compositeStatusService:CompositeStatusService
+    router:Router
   ) {
     super(modelId, router);
-    this._compositeStatusService = compositeStatusService;
-
-    this.serviceLookup = new ServiceStatusLookup();
-    this.isConnectedToBroker = false;
-    this.currentUser = FakeUserRepository.currentUser;
   }
 
   @observeEvent('init')
   _onInit() {
     _log.info(`Header model starting`);
-    this._subscribeToConnectionStatus();
   }
 
   @observeEvent('externalLinkClicked')
@@ -53,24 +40,5 @@ export default class HeaderModel extends ModelBase {
   _onCloseClicked() {
     _log.info(`closed clicked`);
     // TODO , if in open fin deal with launching the link
-  }
-
-  _subscribeToConnectionStatus() {
-    this.addDisposable(
-      this._compositeStatusService.serviceStatusStream.subscribeWithRouter(
-        this.router,
-        this.modelId,
-        (serviceStatusLookup:ServiceStatusLookup) => {
-          this.serviceLookup = serviceStatusLookup;
-        })
-    );
-    this.addDisposable(
-      this._compositeStatusService.connectionStatusStream.subscribeWithRouter(
-        this.router,
-        this.modelId,
-        (isConnected:boolean) => {
-          this.isConnectedToBroker = isConnected;
-        })
-    );
   }
 }

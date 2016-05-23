@@ -3,17 +3,20 @@ import ReactDOM from 'react-dom';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { HeaderModel } from './ui/header/model';
+import { FooterModel } from './ui/footer/model';
 import { ShellModel } from './ui/shell/model';
+import { ChromeModel } from './ui/common/components/chrome/model';
 import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
-import { User, ServiceConst, ServiceStatusLookup } from './services/model';
+import { User, ServiceConst } from './services/model';
 import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
 import { default as espRouter } from './system/router';
 import { ShellView } from './ui/shell/views';
-import { SpotTileView } from './ui/spotTile/views';
-import { RegionModel, SingleItemRegionModel } from './ui/regions/model';
+import { RegionModel, SingleItemRegionModel, PopoutRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
+import config from 'config.json';
+
 import {
   AnalyticsService,
   BlotterService,
@@ -25,7 +28,7 @@ import {
 } from './services';
 import { WellKnownModelIds } from './';
 
-class Bootstrapper {
+class AppBootstrapper {
   _connection:Connection;
   _referenceDataService:ReferenceDataService;
   _pricingService:PricingService;
@@ -41,9 +44,15 @@ class Bootstrapper {
     this.displayUi();
   }
 
+  get endpointURL() {
+    return config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
+  }
+
   startServices() {
-    let user:User = FakeUserRepository.currentUser;
-    let url = 'ws://' + location.hostname + ':8080/ws', realm = 'com.weareadaptive.reactivetrader';
+    const user:User = FakeUserRepository.currentUser;
+    const realm = 'com.weareadaptive.reactivetrader';
+    const url = this.endpointURL;
+
     this._schedulerService = new SchedulerService();
     this._connection = new Connection(
       user.code,
@@ -55,9 +64,9 @@ class Bootstrapper {
     this._openFin = new OpenFin();
     this._referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this._connection, this._schedulerService);
     this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, this._schedulerService, this._referenceDataService);
-    this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, this._schedulerService, this._referenceDataService);
+    this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, this._schedulerService, this._referenceDataService, this._openFin);
     this._executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, this._connection, this._schedulerService, this._referenceDataService, this._openFin);
-    this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, this._schedulerService);
+    this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, this._schedulerService, this._referenceDataService);
     this._compositeStatusService = new CompositeStatusService(this._connection, this._pricingService, this._referenceDataService, this._blotterService, this._executionService, this._analyticsService);
 
     // connect/load all the services
@@ -78,7 +87,7 @@ class Bootstrapper {
     // This infrastructure allows for differing views to be put into the shell without the shell having to be coupled to all these views.
     let workspaceRegionModel = new RegionModel(WellKnownModelIds.workspaceRegionModelId, RegionNames.workspace, espRouter);
     workspaceRegionModel.observeEvents();
-    let popoutRegionModel = new RegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter);
+    let popoutRegionModel = new PopoutRegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter, this._openFin);
     popoutRegionModel.observeEvents();
     let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, RegionNames.blotter, espRouter);
     blotterRegionModel.observeEvents();
@@ -87,20 +96,24 @@ class Bootstrapper {
     let regionManager = new RegionManager([workspaceRegionModel, popoutRegionModel, blotterRegionModel, quickAccessRegionModel]);
 
     // wire up the shell
-    let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection);
+    let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection, this._openFin);
     shellModel.observeEvents();
+
+    // wire up the application chrome
+    let chromeModel = new ChromeModel(WellKnownModelIds.chromeModelId, espRouter, this._openFin);
+    chromeModel.observeEvents();
 
     // wire-up the loader that populats the workspace with spot tiles.
     // In a more suffocated app you'd have some 'add product' functionality allowing the users to add workspace views/products manually.
     let spotTileLoader = new SpotTileLoader(
       espRouter,
       this._referenceDataService,
-      new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager)
+      new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager, this._schedulerService, this._openFin)
     );
     spotTileLoader.beginLoadTiles();
 
     // wire-up the blotter
-    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager);
+    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager, this._openFin);
     blotterModel.observeEvents();
 
     // wire-up analytics
@@ -108,8 +121,12 @@ class Bootstrapper {
     analyticsModel.observeEvents();
 
     // wire-up the header
-    let headerModel = new HeaderModel(WellKnownModelIds.headerModelId, espRouter, this._compositeStatusService);
+    let headerModel = new HeaderModel(WellKnownModelIds.headerModelId, espRouter);
     headerModel.observeEvents();
+
+    // wire-up the footer
+    let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService);
+    footerModel.observeEvents();
 
     this._referenceDataService.hasLoadedStream.subscribe(() => {
       // Some models require the ref data to be loaded before they subscribe to their streams.
@@ -134,5 +151,5 @@ class Bootstrapper {
 let runBootstrapper = location.pathname === '/' && location.hash.length === 0;
 // if we're not the root we (perhaps a popup) we never re-run the bootstrap logic
 if(runBootstrapper) {
-  new Bootstrapper().run();
+  new AppBootstrapper().run();
 }

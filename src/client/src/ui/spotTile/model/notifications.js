@@ -35,7 +35,7 @@ export class TradeExecutionNotification extends NotificationBase {
         ? 'Sold'
         : 'Bought';
       this.notional = numeral(trade.notional).format('0,000,000[.]00');
-      this.status = trade.status.name;
+      this.status = trade.status;
       this.dealtCurrency = trade.currencyPair.base;
       this.termsCurrency = trade.currencyPair.terms;
       this.spotRate = trade.spotRate;

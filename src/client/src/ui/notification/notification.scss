@@ -1,0 +1,50 @@
+$primary-color:   #ffffff;
+$secondary-color: #90AFC1;
+
+body{
+  padding: 0;
+  background-color: #293543;
+  user-select: none;
+  font-family: 'Rubik Light', sans-serif;
+}
+
+.notification__container{
+  color: #ffffff;
+  padding: 0;
+  font-size: 12px;
+}
+
+.notification__title{
+  margin-bottom: 4px;
+}
+
+.notification__status--done{
+  display: none;
+}
+
+.notification__status--rejected{
+  font-weight: bold;
+  text-align: right;
+  float: right;
+}
+
+.notification__row-primary{
+  color: $primary-color;
+}
+
+.notification__row-secondary{
+  color: $secondary-color;
+}
+
+.notification__description-rejected{
+  text-decoration: line-through;
+}
+
+.notification__action-dismiss{
+  float: right;
+  color: $secondary-color;
+  &:hover{
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

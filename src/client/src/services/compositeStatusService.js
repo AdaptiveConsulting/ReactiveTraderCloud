@@ -2,6 +2,7 @@ import { DisposableBase } from 'esp-js/src';
 import { ServiceStatusLookup } from './model';
 import { PricingService, ReferenceDataService, BlotterService, ExecutionService, AnalyticsService } from './';
 import { Connection, ServiceStatus } from './../system/service';
+import { ConnectionType } from './../services/model';
 
 export default class CompositeStatusService extends DisposableBase {
   _connection:Connection;
@@ -42,6 +43,22 @@ export default class CompositeStatusService extends DisposableBase {
    */
   get isConnected():boolean {
     return this._connection.isConnected;
+  }
+
+  /**
+   * Connection url
+   * @returns {string}
+   */
+  get connectionUrl():string {
+    return this._connection.url;
+  }
+
+  /**
+   * Connection type
+   * @returns {ConnectionType}
+   */
+  get connectionType():ConnectionType {
+    return this._connection.type;
   }
 
   /**

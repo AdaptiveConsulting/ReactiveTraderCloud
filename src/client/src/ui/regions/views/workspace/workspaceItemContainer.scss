@@ -1,1 +1,23 @@
-@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables';
+.workspace-region {
+  width: calc(100% - 10px);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.workspace-region__spacer,
+.workspace-region__item {
+  flex: 1 340px;
+  align-self: auto;
+  margin: 2px;
+}
+
+.workspace-region__item {
+  @media all and (max-width: 700px) {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+}
