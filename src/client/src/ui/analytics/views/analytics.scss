@@ -17,7 +17,8 @@ $default-padding: 10px;
   overflow-y: auto;
   height: 100%;
   background: $container-bg-color;
-  padding: 11px;
+  padding: 20px;
+
   @import 'nvd3';
   #popout-content-container & {
     max-width: none;
@@ -50,8 +51,8 @@ $default-padding: 10px;
 
 .analytics__chart-container {
   position: relative;
-  padding: $default-padding;
   background: $container-bg-color;
+  width: 100%;
   height: 200px;
 
   .nv-lineChart {
@@ -83,7 +84,6 @@ $default-padding: 10px;
 
 .analytics__barchart-bar{
   height: $bar-height;
-  width: 100%;
   overflow: hidden;
 }
 
@@ -92,11 +92,29 @@ $default-padding: 10px;
   width: 100%;
   background-color: $bar-bg-color;
   position: absolute;
+  left: 0;
+}
+
+.analytics__barchart-indicator-wrapper {
+  width: 50%;
+  height: $bar-height;
+  position: absolute;
+}
+
+
+.analytics__barchart-indicator-wrapper--positive{
+  float: right;
+  right: 0;
+
+}
+
+.analytics__barchart-indicator-wrapper--negative{
+  left: 0;
 }
 
 .analytics__barchart-indicator{
   height: $bar-height;
-  position: absolute;
+  width: 50%;
 }
 
 
@@ -106,6 +124,7 @@ $default-padding: 10px;
 
 .analytics__barchart-indicator--negative{
   background-color: $negative-color;
+  float: right
 }
 
 .analytics__barchart-label{

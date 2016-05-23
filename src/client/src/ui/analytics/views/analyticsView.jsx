@@ -129,8 +129,8 @@ export default class AnalyticsView extends ViewBase {
             </button>
           </div>
         </div>
-        <div className='analytics__chart-container clearfix pnlchart'>
-          <AnalyticsBarChart containerWidth={containerWidth} series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
+        <div className='analytics__chart-container'>
+          <AnalyticsBarChart series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
         </div>
       </div>
     );
