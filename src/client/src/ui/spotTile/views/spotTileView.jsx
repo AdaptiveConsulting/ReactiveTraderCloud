@@ -33,6 +33,7 @@ export default class SpotTileView extends ViewBase {
     if (model === null) {
       return null;
     }
+
     let notionalInputClass = classnames('spot-tile__notional', {'hide': model.hasNotification});
     let spotDateClass = classnames('spot-tile__delivery', {'hide': model.hasNotification});
     let notification = this._tryCreateNotification();
@@ -57,6 +58,14 @@ export default class SpotTileView extends ViewBase {
         'spot-tile--error': model.hasNotification && model.notification.error
       }
     );
+
+    const newWindowClassName = classnames(
+      'popout__controls  glyphicon glyphicon-new-window',
+      {
+        'spot-tile__icon--tearoff' : !model.canPopout(),
+        'spot-tile__icon--hidden' : model.canPopout()
+      }
+    );
     return (
       <div className={className}>
         <div className='spot-tile__container'>
@@ -66,7 +75,7 @@ export default class SpotTileView extends ViewBase {
           <div className='spot-tile__controls'>
             <i className={chartIQIconClassName}
               onClick={() => this._displayCurrencyChart()}/>
-            <i className='popout__controls spot-tile__icon--tearoff glyphicon glyphicon-new-window'
+            <i className={newWindowClassName}
                onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
           </div>
           {notification}

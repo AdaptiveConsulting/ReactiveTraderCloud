@@ -6,7 +6,6 @@ import _ from 'lodash';
 export default class AnalyticsBarChart extends React.Component{
 
   static propTypes = {
-    containerWidth: React.PropTypes.number,
     series: React.PropTypes.array,
     isPnL: React.PropTypes.bool
   };
@@ -14,13 +13,11 @@ export default class AnalyticsBarChart extends React.Component{
   render(){
     let bars = this._createBars();
     return (
-      <div>{bars}</div>
+      <div style={{width: '100%'}}>{bars}</div>
     );
   }
 
   _createBars(){
-    let containerWidth = this.props.containerWidth;
-
     let propName = this.props.isPnL ? CurrencyPairPosition.basePnlName : CurrencyPairPosition.baseTradedAmountName;
     let chartData = this.props.isPnL ? this.props.series : this._getPositionsDataFromSeries(propName);
 
@@ -28,15 +25,15 @@ export default class AnalyticsBarChart extends React.Component{
     let maxVal = _.max(baseVals);
     let minVal = _.min(baseVals);
 
-    let ratio = (containerWidth/2) / Math.max(Math.abs(maxVal), Math.abs(minVal));
+    let maxWidth =  Math.max(Math.abs(maxVal), Math.abs(minVal));
+
     let bars = chartData.map((ccyPairPosition, index) => {
       return (
         <PNLBar key={index}
                 index={index}
                 model={ccyPairPosition}
                 isPnL={this.props.isPnL}
-                ratio={ratio}
-                containerWidth={containerWidth}/>
+                maxVal={maxWidth}/>
       );
     });
     return bars;

@@ -45,10 +45,19 @@ export default class AnalyticsView extends ViewBase {
 
     let pnlComponents = this._createPnlComponents();
     let positionsComponents = this._createPositionsComponents();
+
+    let newWindowBtnClassName = classnames(
+      'glyphicon glyphicon-new-window',
+      {
+        'analytics__icon--tearoff' : !model.canPopout(),
+        'analytics__icon--tearoff--hidden' : model.canPopout()
+      }
+    );
+
     return (
       <div className='analytics analytics__container animated fadeIn'>
         <div className='analytics__controls popout__controls'>
-          <i className='analytics__icon--tearoff glyphicon glyphicon-new-window'
+          <i className={newWindowBtnClassName}
              onClick={() => router.publishEvent(this.props.modelId, 'popOutAnalytics', {})}/>
         </div>
         {pnlComponents}
@@ -97,6 +106,7 @@ export default class AnalyticsView extends ViewBase {
   }
 
   _createPositionsComponents() {
+
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
     let isPnL = positionsChartModel.basePnlDisplayModelSelected;
     let baseClassName = 'btn analytics__buttons-tab-btn ';
@@ -119,8 +129,8 @@ export default class AnalyticsView extends ViewBase {
             </button>
           </div>
         </div>
-        <div className='analytics__chart-container clearfix pnlchart'>
-          <AnalyticsBarChart containerWidth={containerWidth} series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
+        <div className='analytics__chart-container'>
+          <AnalyticsBarChart series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
         </div>
       </div>
     );
