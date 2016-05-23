@@ -5,8 +5,14 @@ import classnames from 'classnames';
 import { CurrencyPair } from '../../../services/model';
 import './notionalInput.scss';
 import _ from 'lodash';
-const NUMERAL_FORMAT    = '0,000,000[.]00',
-      DOT               = '.';
+const NUMERAL_FORMAT      = '0,000,000[.]00',
+      DOT                 = '.',
+      ENTER               = 'Enter',
+      CHAR_CODE_DOT       = 46,
+      CHAR_CODE_0         = 48,
+      CHAR_CODE_9         = 57,
+      CHAR_CODE_UNIT_SEP  = 31;
+
 
 export default class NotionalInput extends React.Component {
 
@@ -52,26 +58,26 @@ export default class NotionalInput extends React.Component {
 
   _handleKeyPressNotionalInput(e){
     let charCode = e.charCode;
-    if (e.key === 'Enter') {
+    if (e.key === ENTER) {
       this._processNotional(e.target.value);
     }
-    else if (charCode === 46){
+    else if (charCode === CHAR_CODE_DOT){
       //only allow one dot
       let numDots = _.filter(e.target.value.split(''), (char) => char === '.').length;
       if ( numDots >= 1){
         e.nativeEvent.stopImmediatePropagation();
         e.preventDefault();
       }
-    }else if (charCode > 31 && (charCode != 46 &&(charCode < 48 || charCode > 57))){
-      if (utils.hasShorthandInput( rawValue)){ //first process input for shortcuts
+    }else if (charCode > CHAR_CODE_UNIT_SEP && (charCode != CHAR_CODE_DOT &&(charCode < CHAR_CODE_0 || charCode > CHAR_CODE_9))){
+      if (utils.hasShorthandInput( rawValue)){ //first process input for shortcuts (k/K or m/M)
         this._processNotional(rawValue);
-      }else{  //do not allow non-numeric inpuut
+      }else{  //do not allow non-numeric input
         e.nativeEvent.stopImmediatePropagation();
         e.preventDefault();
       }
     }
   }
-
+  
   _processNotional(inputValue){
     inputValue.trim();
     let notional = utils.convertNotionalShorthandToNumericValue(inputValue);
@@ -91,7 +97,7 @@ export default class NotionalInput extends React.Component {
       this.refs.notionalInput.value = formattedValue;
     }
   }
-  
+
   _handleSelect(e) {
     const el = e.target;
     el.setSelectionRange(0, el.value.length);
