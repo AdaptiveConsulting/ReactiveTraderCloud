@@ -1,10 +1,14 @@
+import CurrencyPair from './currencyPair';
+
 export default class CurrencyPairPosition {
   _symbol:string;
+  _currencyPair:CurrencyPair;
   _basePnl:number;
   _baseTradedAmount:number;
 
-  constructor(symbol:string, basePnl:number, baseTradedAmount:number) {
+  constructor(symbol:string, basePnl:number, baseTradedAmount:number, currencyPair:CurrencyPair) {
     this._symbol = symbol;
+    this._currencyPair = currencyPair;
     this._basePnl = basePnl;
     this._baseTradedAmount = baseTradedAmount;
   }
@@ -19,6 +23,10 @@ export default class CurrencyPairPosition {
 
   get symbol():string {
     return this._symbol;
+  }
+
+  get currencyPair():CurrencyPair {
+    return this._currencyPair;
   }
 
   get basePnl():number {

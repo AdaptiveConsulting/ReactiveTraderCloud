@@ -1,0 +1,169 @@
+@import "variables.scss";
+$price-width: calc(45% + 10px);
+
+.spot-tile {
+  position: relative;
+  width: 100%;
+  height: 155px;
+  color: $spot-tile-secondary-color;
+  background-color: #293543;
+  &:hover {
+    background-color: #294464;
+    .spot-tile__icon--chart,
+    .spot-tile__icon--tearoff,
+    .spot-tile__delivery-date {
+      display: inline;
+    }
+  }
+  & * {
+    box-sizing: border-box;
+  }
+
+  .spot-tile__execution-label,
+  .spot-tile__icon--disconnected,
+  .spot-tile__stale-label,
+  .spot-tile__delivery-date {
+    display: none;
+  }
+  &.spot-tile--stale {
+    .spot-tile__stale-label,
+    .spot-tile__icon--disconnected {
+      display: inline-block;
+    }
+    .spot-tile__price--bid,
+    .spot-tile__price--ask,
+    .spot-tile__price-movement,
+    .spot-tile__notional {
+      display: none;
+    }
+  }
+  &.spot-tile--error {
+    background-color: $spot-tile-error-color;
+    color: $spot-tile-primary-color;
+  }
+  &.spot-tile--executing {
+    .spot-tile__execution-label {
+      color: $spot-tile-primary-color;
+      display: inline-block;
+      position: absolute;
+      right: 40px;
+      top: 0;
+      text-transform: uppercase;
+      text-align: right;
+    }
+  }
+  &.spot-tile--readonly {
+    .spot-tile__price {
+      cursor: default;
+    }
+  }
+}
+
+.spot-tile__container {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+}
+
+.spot-tile__stale-label {
+  position: absolute;
+  top: 25px;
+  color: $spot-tile-secondary-color;
+}
+
+.spot-tile__symbol {
+  font-size: 16px;
+  color: $spot-tile-primary-color;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.spot-tile__price {
+  cursor: pointer;
+  position: absolute;
+  width: $price-width;
+  top: 30px;
+
+  &:hover {
+    background-color: #345c8b;
+  }
+}
+
+.spot-tile__price--bid {
+  left: -10px;
+}
+
+.spot-tile__price--ask {
+  right: -10px;
+}
+
+.spot-tile__price-movement {
+  position: absolute;
+  left: 45%;
+  text-align: center;
+  top: 45px;
+  width: 10%;
+}
+
+.spot-tile__notional {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.spot-tile__controls {
+  float: right;
+}
+
+.spot-tile__icon--chart.glyphicon,
+.spot-tile__icon--tearoff.glyphicon {
+  display: none;
+  cursor: pointer;
+  margin-left: 6px;
+}
+
+.spot-tile__icon--rotate{
+  margin-left: 6px;
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    } to {
+        transform: rotate(360deg);
+      }
+  }
+}
+
+.spot-tile__icon--hidden {
+  visibility: hidden;
+}
+
+.spot-tile__trade-summary {
+  position: absolute;
+  top: 30px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.spot-tile__notification-message {
+  position: absolute;
+  top: 50px;
+}
+
+
+.spot-tile__delivery {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+

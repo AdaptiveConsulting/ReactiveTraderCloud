@@ -11,7 +11,7 @@ export default class WorkspaceRegionView extends ViewBase {
     super();
     this.state = {
       model: null
-    }
+    };
   }
 
   render() {
@@ -20,13 +20,12 @@ export default class WorkspaceRegionView extends ViewBase {
     }
     let model : RegionModel = this.state.model;
     return (
-      <div className='currency-pairs'>
+      <div className='workspace-region'>
         {
           model.modelRegistrations.length > 0
             ? this._renderWorkspaceItems(model.modelRegistrations)
             : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div>
         }
-        <div className='clearfix'></div>
       </div>);
   }
 
@@ -39,6 +38,6 @@ export default class WorkspaceRegionView extends ViewBase {
           {View}
         </WorkspaceItemContainer>
       );
-    });
+    }).concat(_.times(3, i => <div key={i} className='workspace-region__spacer'/>)); // add empty items at the end so tiles lay out nicely
   }
 }

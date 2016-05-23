@@ -1,8 +1,4 @@
-export default class PriceMovementType {
-
-  static _none = new PriceMovementType('None');
-  static _up = new PriceMovementType('Up');
-  static _down = new PriceMovementType('Down');
+class PriceMovementType {
 
   name:string;
 
@@ -22,3 +18,9 @@ export default class PriceMovementType {
     this.name = name;
   }
 }
+
+PriceMovementType._none = new PriceMovementType('None');
+PriceMovementType._up = new PriceMovementType('Up');
+PriceMovementType._down = new PriceMovementType('Down');
+
+export default PriceMovementType;

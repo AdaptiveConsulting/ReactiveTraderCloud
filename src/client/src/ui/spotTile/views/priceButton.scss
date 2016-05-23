@@ -1,0 +1,42 @@
+$price-pip-width: 64px;
+$price-side-width: calc((100% - #{$price-pip-width})/2);
+
+.price-button {
+  text-align: center;
+  box-sizing: border-box;
+  padding: 5px;
+}
+
+.price-button__direction {
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+.price-button__big-figure,
+.price-button__tenth,
+.price-button__pip {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.price-button__big-figure,
+.price-button__tenth {
+  font-size: 18px;
+  width: $price-side-width;
+}
+
+.price-button__big-figure{
+  text-align: right;
+}
+
+.price-button__tenth{
+  text-align: left;
+}
+
+.price-button__pip {
+  font-size: 44px;
+  width: $price-pip-width;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: white;
+}

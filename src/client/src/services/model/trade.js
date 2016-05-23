@@ -11,7 +11,7 @@ export default class Trade {
   _tradeDate:Date;
   _valueDate:Date;
   _status:TradeStatus;
-
+  _isNew: boolean;
   constructor(
     tradeId:number,
     traderName:string,
@@ -22,7 +22,7 @@ export default class Trade {
     spotRate:number,
     tradeDate:Date,
     valueDate:string,
-    status:TradeStatus
+    status:TradeStatus,
   ) {
     this._tradeId = tradeId;
     this._traderName = traderName;
@@ -74,5 +74,13 @@ export default class Trade {
 
   get status():TradeStatus {
     return this._status;
+  }
+
+  get isNew():boolean {
+    return this._isNew;
+  }
+
+  set isNew(val: boolean) {
+    this._isNew = val;
   }
 }

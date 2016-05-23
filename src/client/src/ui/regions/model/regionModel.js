@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import { ModelBase } from '../../common';
 import { Router, observeEvent } from 'esp-js/src';
-import { RegionModelRegistration } from './';
+import { RegionModelRegistration, RegionOptions } from './';
 import { logger } from '../../../system';
 
 export default class RegionModel extends ModelBase {
   _regionName:string;
   _log:logger.Logger;
 
-  modelRegistrations:Array<RegionModelRegistration>
+  modelRegistrations:Array<RegionModelRegistration>;
 
   constructor(modelId:string, regionName:string, router:Router) {
     super(modelId, router);
@@ -32,22 +32,9 @@ export default class RegionModel extends ModelBase {
     return this._regionName;
   }
 
-  addToRegion(
-    model:ModelBase,
-    options?: {
-      displayContext?:string,
-      onExternallyRemovedCallback:?() => void,
-      regionSettings:any
-    }
-  ) {
-    options = options || { };
+  addToRegion(model:ModelBase, options?: RegionOptions) {
     this.ensureOnDispatchLoop(()=> {
-      this.modelRegistrations.push(new RegionModelRegistration(
-        model,
-        options.onExternallyRemovedCallback,
-        options.displayContext,
-        options.regionSettings
-      ));
+      this._addToRegion(model, options);
     });
   }
 
@@ -57,11 +44,23 @@ export default class RegionModel extends ModelBase {
     });
   }
 
+  _addToRegion(model:ModelBase, options?:RegionOptions) : RegionModelRegistration{
+    options = options || { };
+    let regionModelRegistration = new RegionModelRegistration(
+      model,
+      options.onExternallyRemovedCallback,
+      options.displayContext,
+      options.regionSettings
+    );
+    this.modelRegistrations.push(regionModelRegistration);
+    return regionModelRegistration;
+  }
+
   _removeFromRegion(model:ModelBase, wasExternallyRemoved:boolean, displayContext?:string) {
     let removedItems = _.remove(this.modelRegistrations, (regionModelRegistration:RegionModelRegistration) => {
       return regionModelRegistration.model === model && regionModelRegistration.displayContext === displayContext;
     });
-    _.forEach(removedItems, regionModelRegistration=> {
+    _.forEach(removedItems, regionModelRegistration => {
       if(wasExternallyRemoved) {
         if (regionModelRegistration.onExternallyRemovedCallback) {
           regionModelRegistration.onExternallyRemovedCallback();

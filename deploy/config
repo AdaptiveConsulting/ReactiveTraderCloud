@@ -33,9 +33,9 @@ ubuntuContainer="ubuntu:14.04.2"
 debianContainer="debian:8.2"
 
 # crossbar
-vCrossbar="0.11.1"
+vCrossbar="0.13.2-trusty"
 crossbarContainer_major="0"
-crossbarContainer_minor="0"
+crossbarContainer_minor="1"
 crossbarContainer="weareadaptive/crossbar:$crossbarContainer_major.$crossbarContainer_minor"
 
 # eventstore

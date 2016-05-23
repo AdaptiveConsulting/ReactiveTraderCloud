@@ -9,4 +9,4 @@ sh -c "echo 'deb http://package.crossbar.io/ubuntu trusty main' \
     > /etc/apt/sources.list.d/crossbar.list"
 
 apt-get update
-apt-get install crossbar -y
+apt-get install crossbar=__CROSSBAR_VERSION__ -y

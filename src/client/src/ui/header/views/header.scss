@@ -1,73 +1,22 @@
-@import '../../common/styles/_theme';
-
-.text-danger {
-  color: $brand-danger;
+.header {
+  width: 100vw;
+  height: 100%;
 }
 
-.text-success {
-  color: $brand-success;
+.header__controls {
+  float: right;
+  list-style: none;
+  margin: auto;
 }
 
-nav.navbar {
-  margin-bottom: 4px;
-  -webkit-app-region: drag;
-  box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
-  background: linear-gradient(lighten($gray-dark, 2%) 80%, $gray-dark);
-}
-.nav {
-  ul, li, a {
-    -webkit-app-region: no-drag;
-  }
-  &.chrome-controls {
-    display: none;
-    .openfin & {
-      display: block;
-    }
-    padding: 14px;
-    padding-bottom: 0;
-    a {
-      display: inline-block;
-      padding-left: 4px;
-    }
-  }
-  &.nav-status {
-    -webkit-app-region: no-drag;
-    padding-top: 8px;
-    padding-right: 8px;
-    .service-status {
-      padding-top: 6px;
-      padding-left: 4px;
-      .node-badge {
-        position: absolute;
-        color: $gray-darker;
-        font-style: normal;
-        font-weight: bold;
-        text-shadow: 0px 0px 2px white;
-        font-size: 8px;
-        transform: translate(-8.5px, 3px);
-        user-select: none;
-        cursor: default;
-      }
-    }
+.header__control {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  color: white;
+
+  > a {
+    color: inherit;
   }
 }
 
-a.navbar-brand {
-  -webkit-app-region: no-drag;
-  &.navbar-adaptive {
-    background: $gray-lighter;
-    &:hover {
-      background: linear-gradient($gray-lighter, $gray-light);
-      box-shadow: inset 0 0 1px 1px rgba(255,255,255,.5);
-      img {
-        transform: translate(1px, 1px);
-      }
-    }
-    &.navbar-openfin {
-      display: none;
-      .openfin & {
-        display: inline-block;
-      }
-    }
-  }
-}

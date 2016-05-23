@@ -1,135 +1,149 @@
-@import '../../common/styles/_theme';
-@import '../../common/styles/_layout';
+$positive-color:    #3FCF1E;
+$negative-color:    #CC3350;
+$barchar-text-color:gray;
+$bar-bg-color:      #414D5C;
+$container-bg-color:#293543;
+$highlight-color:   #eee;
+$stroke-color:      #212a35;
+$gray:              #294464;
+$bar-height:        12px;
 
-$positive-color: green;
-$negative-color: $brand-danger;
-$stroke-color: slategray;
+$analytics-header-colour: #ffffff;
+$default-padding: 10px;
 
-.analytics-container {
-  margin-left: 4px;
+.analytics__container {
   align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
-  right: 0px;
-  max-width: 400px;
-  min-width: 350px;
-  background: $gray-dark;
-  box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
-
-  .header {
-    font-size: 26px;
-    font-weight: bold;
-    color: white;
-    padding-left: 8px;
-    margin-right: 28px;
-    .tearoff &.header {
-      -webkit-app-region: drag;
-    }
-    small {
-      color: $gray-light;
-      font-size: .5em;
-    }
-  }
-
-  .nv-container {
-    position: relative;
-    padding: 10px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
-    background: $gray-dark;
-    &.negative {
-      .nvd3 g.nv-groups g.nv-group .nv-area {
-
-      }
-    }
-    .nvd3 g.nv-groups  {
-      path.nv-line {
-      }
-      path.nv-area {
-
-      }
-      .nv-bar {
-        rect {
-          fill-opacity: .3;
-          stroke: $stroke-color;
-          stroke-width: .8;
-          stroke-opacity: .4;
-        }
-        &.positive {
-          fill: $positive-color;
-          text {
-            fill: $gray-light;
-          }
-        }
-        text {
-          font-size: 8px;
-          fill: $gray-lighter;
-          font-weight: normal;
-        }
-        &.negative {
-          fill: $negative-color;
-        }
-        &:hover rect {
-          stroke-opacity: .5;
-          fill-opacity: .7;
-        }
-      }
-    }
-
-    .nv-controlsWrap.nvd3-svg, .nv-axisMin-y {
-      display: none;
-    }
-
-    .nv-lineChart {
-      .nv-axis.nv-y {
-        text {
-          font-size: 8px;
-        }
-      }
-
-      .nv-axis.nv-x {
-        text {
-          font-size: 8px;
-        }
-      }
-    }
-  }
-
-  .buttons {
-    float: right;
-    height: 38px;
-    overflow: hidden;
-    $shadow-width: 14px;
-    button.btn {
-      border-left: 1px solid black;
-      color: $gray-light;
-      box-sizing: border-box;
-      outline: none !important;
-      &.selected {
-        position: relative;
-        z-index: 100;
-        color: $gray-lighter;
-        background: linear-gradient(rgba(0, 0, 0, 0), $gray-darker) !important;
-        box-shadow: -1px 0 1px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .2);
-      }
-      &.selected:before {
-        content: "";
-        display: block;
-        position: absolute;
-        width: $shadow-width;
-        height: 6px;
-        transition: transform 1s;
-        border-radius: 50%;
-        left: 50%;
-        transform: translate(-($shadow-width / 2), 0);
-        top: -8px;
-        box-shadow: 0 0 6px 4px rgba(255, 255, 255, .5);
-      }
-    }
-
-  }
+  background: $container-bg-color;
+  padding: 11px;
   @import 'nvd3';
+  #popout-content-container & {
+    max-width: none;
+    height: 100%;
+  }
+}
+
+
+.analytics__controls {
+  float: right;
+  padding: 10px;
+  color: white;
+}
+
+.analytics__header {
+  font-size: 16px;
+  color: $analytics-header-colour;
+  background: $container-bg-color;
+  padding: 10px;
+}
+
+.analytics__header--bold{
+  font-weight: bold;
+}
+
+.analytics__header-block{
+  display: block;
+  padding-bottom: 2px;
+}
+
+.analytics__chart-container {
+  position: relative;
+  padding: $default-padding;
+  background: $container-bg-color;
+
+  .nv-lineChart {
+    .nv-axis.nv-y {
+      text {
+        font-size: 10px;
+        fill: $barchar-text-color;
+      }
+    }
+
+    .nv-axis.nv-x {
+      text {
+        font-size: 10px;
+        fill: $barchar-text-color;
+      }
+    }
+  }
+}
+
+.analytics__barchart-container{
+  vertical-align: middle;
+  padding-top: 2px;
+  padding-bottom: 12px;
+  color: $barchar-text-color;
+  &:hover{
+    color:$highlight-color;
+  }
+}
+
+.analytics__barchart-bar{
+  height: $bar-height;
+  width: 100%;
+}
+
+.analytics__barchart-bar-background{
+  fill: $bar-bg-color;
+  height: $bar-height;
+}
+
+.analytics__barchart-indicator{
+  stroke: $stroke-color;
+  stroke-width: 1px;
+  height: $bar-height;
+}
+
+.analytics__barchart-indicator--positive{
+  fill: $positive-color;
+}
+
+.analytics__barchart-indicator--negative{
+  fill: $negative-color;
+}
+
+.analytics__barchart-label{
+  font-size: 18px;
+  display: inline;
+}
+
+.analytics__barchart-container .analytics__barchart-amount{
+  visibility: hidden;
+  font-size: 18px;
+  display: inline;
+  float: right;
+}
+
+.analytics__barchart-container:hover .analytics__barchart-amount{
+  visibility: visible;
+  color: $highlight-color;
+}
+
+.analytics__buttons{
+  width: 100%;
+  text-align: center;
+}
+
+.analytics__buttons-bar {
+  display: inline-block;
+  border: 1px solid black;
+}
+
+.analytics__buttons-tab-btn{
+  color: $barchar-text-color;
+  font-size: 16px;
+  position: relative;
+  padding: 10px 10px 6px 10px;
+  background: $container-bg-color;
+  &:hover{
+    background: #294464;
+  }
+}
+
+.analytics__buttons-tab-btn--selected{
+  color: $highlight-color;
+  background: $stroke-color;
 }
 
 .new-chart-area{
@@ -138,4 +152,8 @@ $stroke-color: slategray;
 }
 .new-chart-stroke{
   stroke: url('#chartStrokeLinearGradient');
+}
+
+.analytics__icon--tearoff {
+  cursor: pointer;
 }

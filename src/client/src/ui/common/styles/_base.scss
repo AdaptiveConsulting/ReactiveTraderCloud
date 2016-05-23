@@ -1,0 +1,26 @@
+@import '../../../../node_modules/font-awesome/scss/font-awesome';
+@import '../../../../node_modules/animate.css/animate.css';
+
+body, html {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: 'Rubik Light', sans-serif;
+}
+
+
+.hide {
+  display: none;
+}
+
+.btn {
+  border: none;
+  background-color: gray;
+  color: white;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+}

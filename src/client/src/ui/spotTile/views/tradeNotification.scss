@@ -1,0 +1,40 @@
+@import "variables.scss";
+
+.trade-notification--rejected,
+.trade-notification--error {
+  .trade-notification__trade-status {
+    color: $spot-tile-error-color;
+  }
+  padding: 5px;
+}
+
+.trade-notification--rejected {
+  .trade-notification__trade-status {
+    display: block;
+  }
+}
+
+.trade-notification__label {
+  color: $spot-tile-secondary-color;
+}
+
+.trade-notification__value {
+  color: $spot-tile-primary-color;
+}
+
+.trade-notification__button--dismiss {
+  text-decoration: none;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  color: inherit;
+}
+
+.trade-notification__trade-status {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 5px;
+  color: inherit;
+}
+

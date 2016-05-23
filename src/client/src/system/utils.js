@@ -23,7 +23,7 @@ export function mixin(source) {
  * @returns {Number}
  */
 export function convertNotionalShorthandToNumericValue(notionalShorthand) {
-  notionalShorthand = String(notionalShorthand).toUpperCase().replace(',', '');
+  notionalShorthand = String(notionalShorthand).toUpperCase().replace(/,/g, '');
   let matches = notionalShorthand.match(numberConvertRegex);
 
   if (!notionalShorthand.length || !matches || !matches.length) {

@@ -1,5 +1,6 @@
 import { PricePoint } from './';
 import { HistoricPosition } from '../../../services/model';
+import numeral from 'numeral';
 
 export default class PnlChartModel  {
   options:Object;
@@ -15,7 +16,7 @@ export default class PnlChartModel  {
         tickFormat: (d) => d3.time.format('%X')(new Date(d))
       },
       yAxis: {
-        tickFormat: d3.format('s')
+        tickFormat: (d) => numeral(d).format('0a')
       },
       showYAxis: true,
       showXAxis: true,
@@ -23,8 +24,8 @@ export default class PnlChartModel  {
       useInteractiveGuideline: true,
       duration: 0,
       margin: {
-        left: 24,
-        top: 0,
+        left: 30,
+        top: 10,
         right: 0,
         bottom: 24
       }

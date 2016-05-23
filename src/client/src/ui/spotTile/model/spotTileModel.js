@@ -5,6 +5,13 @@ import { logger } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { TradeExecutionNotification, TextNotification, NotificationBase, NotificationType } from './';
 import { RegionManager, RegionNames, view  } from '../../regions';
+import { TradeStatus } from '../../../services/model';
+import { SchedulerService, } from '../../../system';
+import { OpenFin } from '../../../system/openFin';
+
+const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 4000;
+const MAX_NOTIONAL_VALUE = 1000000000;
+
 import {
   GetSpotStreamRequest,
   SpotPrice,
@@ -15,6 +22,7 @@ import {
 } from '../../../services/model';
 import { SpotTileView } from '../views';
 
+
 @view(SpotTileView)
 export default class SpotTileModel extends ModelBase {
   // non view state
@@ -22,44 +30,50 @@ export default class SpotTileModel extends ModelBase {
   _executionService:ExecutionService;
   _executionDisposable:Rx.SerialDisposable;
   _priceSubscriptionDisposable:Rx.SerialDisposable;
+  _toastNotificationTimerDisposable:Rx.SerialDisposable;
   _log:logger.Logger;
   _regionManagerHelper:RegionManagerHelper;
+  _openFin:OpenFin;
 
   // React doesn't seem to pickup ES6 properties (last time I looked it seemed to be because Babel doesn't spit them out as enumerable)
   // So we're just exposing the state as fields.
   currencyPair:CurrencyPair;
   currentSpotPrice:SpotPrice;
-  historicMidSportRates:Array<Number>;
   notification:NotificationBase;
-  shouldShowChart:boolean;
   tileTitle:string;
   notional:number;
   pricingConnected:boolean;
   executionConnected:boolean;
   isTradeExecutionInFlight:boolean;
+  isRunningInOpenFin:boolean;
 
   constructor(modelId:string,
               currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
               router:Router,
               pricingService:PricingService,
               executionService:ExecutionService,
-              regionManager:RegionManager) {
+              regionManager:RegionManager,
+              schedulerService:SchedulerService,
+              openFin:OpenFin) {
     super(modelId, router);
     this._log = logger.create(`${this.modelId}:${currencyPair.symbol}`);// can't change ccy pair in this demo app, so reasonable to use the symbol in the logger name
     this._pricingService = pricingService;
     this._executionService = executionService;
     this._regionManager = regionManager;
+    this._schedulerService = schedulerService;
+    this._openFin = openFin;
     this.currencyPair = currencyPair;
     this._executionDisposable = new Rx.SerialDisposable();
     this.addDisposable(this._executionDisposable);
     this._priceSubscriptionDisposable = new Rx.SerialDisposable();
+    this._toastNotificationTimerDisposable = new Rx.SerialDisposable();
     this.addDisposable(this._priceSubscriptionDisposable);
+    this.addDisposable(this._toastNotificationTimerDisposable);
 
-    this.historicMidSportRates = [];
-    this.shouldShowChart = true;
     this.tileTitle = `${currencyPair.base} / ${currencyPair.terms}`;
     this.notification = null;
     this.notional = 1000000;
+    this.maxNotional = MAX_NOTIONAL_VALUE;
     this.currentSpotPrice = null;
 
     // If things get much messier we could look at introducing a state machine, but for now we really only have these 3 conditions to worry about
@@ -67,6 +81,7 @@ export default class SpotTileModel extends ModelBase {
     this.executionConnected = false;
     this.isTradeExecutionInFlight = false;
     this._regionManagerHelper = new RegionManagerHelper(RegionNames.workspace, regionManager, this);
+    this.isRunningInOpenFin = openFin.isRunningInOpenFin;
   }
 
   get hasNotification() {
@@ -90,13 +105,13 @@ export default class SpotTileModel extends ModelBase {
   @observeEvent('popOutTile')
   _onPopOutTile() {
     this._log.info(`Popping out tile`);
-    this._regionManagerHelper.popout(332, 190);
+    this._regionManagerHelper.popout(`${this.currencyPair.symbol} Spot`, 370, 190);
   }
 
-  @observeEvent('toggleSparkLineChart')
-  _onToggleSparkLineChart() {
-    this._log.debug(`toggling spark line chart`);
-    this.shouldShowChart = !this.shouldShowChart;
+  @observeEvent('displayCurrencyChart')
+  _onDisplayCurrencyChart(){
+    this._log.info(`Display currency chart - ChartIQ`);
+    this._openFin.displayCurrencyChart(this.currencyPair.symbol);
   }
 
   @observeEvent('tradeNotificationDismissed')
@@ -119,22 +134,29 @@ export default class SpotTileModel extends ModelBase {
       let request = this._createTradeRequest(e.direction);
       this._log.info(`Will execute ${request.toString()}`);
       this.isTradeExecutionInFlight = true;
+
       this._executionDisposable.setDisposable(
-        this._executionService.executeTrade(request).subscribeWithRouter(
-          this.router,
-          this.modelId,
-          (response:ExecuteTradeResponse) => {
-            this.isTradeExecutionInFlight = false;
-            this.notification = response.hasError
-              ? TradeExecutionNotification.createForError(response.error)
-              : TradeExecutionNotification.createForSuccess(response.trade);
-          },
-          err => {
-            this.isTradeExecutionInFlight = false;
-            this._log.error(`Error executing ${request.toString()}. ${err}`, err);
-            this.notification = TradeExecutionNotification.createForError(`Unknown stream error`);
-          })
-      );
+        this._executionService.executeTrade(request)
+         .subscribeWithRouter(
+            this.router,
+            this.modelId,
+            (response:ExecuteTradeResponse) => {
+              this.isTradeExecutionInFlight = false;
+              this.notification = response.hasError
+                ? TradeExecutionNotification.createForError(response.error)
+                : TradeExecutionNotification.createForSuccess(response.trade);
+              if (!response.hasError && response.trade.status === TradeStatus.Done) {
+                this._toastNotificationTimerDisposable.setDisposable(
+                  this._schedulerService.async.scheduleFuture('', DISMISS_NOTIFICATION_AFTER_X_IN_MS, () => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {}))
+                );
+              }
+            },
+            err => {
+              this.isTradeExecutionInFlight = false;
+              this._log.error(`Error executing ${request.toString()}. ${err}`, err);
+              this.notification = TradeExecutionNotification.createForError(`Unknown stream error`);
+            })
+        );
     } else {
       this._log.warn(`Ignoring execute request as we can't trade with pricing and execution down`);
     }
@@ -166,21 +188,12 @@ export default class SpotTileModel extends ModelBase {
             if(!this.isTradeExecutionInFlight) {
               this.currentSpotPrice = price;
             }
-            this._updateHistoricalPrices(price);
           },
           err => {
             this._log.error('Error on getSpotPriceStream stream stream', err);
           }
         )
     );
-  }
-
-  _updateHistoricalPrices(price:SpotPrice) {
-    this.historicMidSportRates.push(price.mid.rawRate);
-    // we only keep a limited amount of historical prices
-    if(this.historicMidSportRates.length > 30) {
-      this.historicMidSportRates.shift(); // pop the first element
-    }
   }
 
   _subscribeToConnectionStatus() {
@@ -199,9 +212,6 @@ export default class SpotTileModel extends ModelBase {
         this.router,
         this._modelId,
         (tuple:{pricingConnected:boolean, executionConnected:boolean}) => {
-          if(this.pricingConnected && !tuple.pricingConnected) {
-            this.historicMidSportRates.length = 0; // clear out the charts prices
-          }
           this.pricingConnected = tuple.pricingConnected;
           this.executionConnected = tuple.executionConnected;
           this._updatePricingDownStatusNotification();

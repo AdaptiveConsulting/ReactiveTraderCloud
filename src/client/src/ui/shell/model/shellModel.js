@@ -9,7 +9,6 @@ var _log:logger.Logger = logger.create('ShellModel');
 
 export default class ShellModel extends ModelBase {
   _connection:Connection;
-
   sessionExpired:boolean;
   wellKnownModelIds:WellKnownModelIds;
 
@@ -18,11 +17,12 @@ export default class ShellModel extends ModelBase {
     this._connection = connection;
     this.sessionExpired = false;
     this.wellKnownModelIds = WellKnownModelIds;
+    this.appVersion = `v${__VERSION__}`;
   }
 
   @observeEvent('init')
   _onInit() {
-    _log.info(`Shell model starting`);
+    _log.info('Shell model starting');
     this._observeForSessionExpired();
   }
 
@@ -36,7 +36,7 @@ export default class ShellModel extends ModelBase {
       this._connection.connectionStatusStream.subscribeWithRouter(
         this.router,
         this.modelId,
-        (status:String) =>{
+        (status:String) => {
           this.sessionExpired = status === ConnectionStatus.sessionExpired;
         },
         err =>{

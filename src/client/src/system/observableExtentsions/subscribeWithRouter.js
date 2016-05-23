@@ -49,7 +49,7 @@ Rx.Observable.prototype.subscribeWithRouter = function<T, TModel>(
         }
         break;
       default:
-        throw new Error(`Unknown Notification Type. Type was {i.kind}`);
+        throw new Error(`Unknown Notification Type. Type was ${i.kind}`);
     }
   });
 };

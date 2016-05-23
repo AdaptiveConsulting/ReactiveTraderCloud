@@ -1,6 +1,4 @@
 import { observeEvent } from 'esp-js/src';
-import { Guard } from '../../../system';
-import { PricePoint } from './';
 import {  CurrencyPairPosition } from '../../../services/model';
 import { logger } from '../../../system';
 
@@ -38,12 +36,16 @@ export default class PositionsChartModel {
     return this._seriesData.length > 0;
   }
 
+  get seriesData():Array{
+    return this._seriesData;
+  }
+  
   get itemCount() : Number {
     return this._seriesData.length;
   }
 
   get basePnlDisplayModelSelected() {
-    return this.yAxisValuePropertyName === CurrencyPairPosition.basePnl;
+    return this.yAxisValuePropertyName === CurrencyPairPosition.basePnlName;
   }
 
   getSeries() {

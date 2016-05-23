@@ -1,14 +1,14 @@
 import React from 'react';
 import numeral from 'numeral';
 import { utils } from '../../../system';
+import classnames from 'classnames';
 import { CurrencyPair } from '../../../services/model';
-
-const MONTHS         = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      NUMERAL_FORMAT = '0,000,000[.]00',
-      DOT            = '.';
+import './notionalInput.scss';
+const NUMERAL_FORMAT    = '0,000,000[.]00',
+      DOT               = '.';
 
 /**
- * @Class Sizer
+ * @Class NotionalInput
  */
 export default class NotionalInput extends React.Component {
 
@@ -16,16 +16,9 @@ export default class NotionalInput extends React.Component {
     className: React.PropTypes.string,
     notional: React.PropTypes.number,
     currencyPair: React.PropTypes.instanceOf(CurrencyPair),
-    onChange: React.PropTypes.func
+    onChange: React.PropTypes.func,
+    maxValue: React.PropTypes.number
   };
-
-  /**
-   * When we mount, get latest date and construct spot date
-   */
-  componentWillMount(){
-    const today = new Date;
-    this.SPOTDATE = ['SP.', today.getDate(), MONTHS[today.getMonth()]].join(' ');
-  }
 
   shouldComponentUpdate(nextProps, nextState){
     return this.props.className !== nextProps.className ||
@@ -36,17 +29,25 @@ export default class NotionalInput extends React.Component {
 
   render(){
     const formattedSize = numeral(this.props.notional).format(NUMERAL_FORMAT);
-
+    let classes = classnames(
+      'notional',
+      this.props.className
+    );
     return (
-      <div className={this.props.className}>
-        <label>{this.props.currencyPair.base}
-          <input className='size' type='text' ref='notionalInput' defaultValue={formattedSize} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
-        </label>
-        <div className='pull-right'>
-          {this.SPOTDATE}
-        </div>
+      <div className={classes}>
+        <label className='notional__currency-pair' >{this.props.currencyPair.base}</label>
+        <input className='notional__size-input' type='text' ref='notionalInput' defaultValue={formattedSize} onClick={this.handleSelect} onChange={(e) => this._setNotionalFromDOMInput(e)}/>
       </div>
     );
+  }
+
+  /**
+   * Select notional input text
+   * @param {DOMEvent=} e
+   */
+  handleSelect(e) {
+    const el = e.target;
+    el.setSelectionRange(0, el.value.length);
   }
 
   /**
@@ -58,7 +59,9 @@ export default class NotionalInput extends React.Component {
     const hasdot = rawValue.indexOf(DOT) !== -1;
 
     let notional = utils.convertNotionalShorthandToNumericValue(rawValue);
-
+    if (notional >= this.props.maxValue) {
+      notional = 0;
+    }
     hasdot && (notional += DOT);
 
     if (!isNaN(notional)){

@@ -1,21 +1,43 @@
 'use strict';
 
-const webpack = require('webpack');
+const webpack           = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const isProductionMode = process.env.NODE_ENV == 'production';
-const chalk = require('chalk');
+const chalk             = require('chalk');
+const path              = require('path');
+const parseArgs         = require('minimist');
 
-const path = require('path');
+const isProductionMode  = process.env.NODE_ENV == 'production';
+const args              = parseArgs(process.argv.slice(2));
+const config            = args.endpoint ? args.endpoint + '.config.json' : 'default.config.json';
+const babelPlugins      = [
+  'transform-decorators-legacy'
+];
+
+// in production you should not have hot reloader etc
+if (!isProductionMode) babelPlugins.push(['react-transform', {
+  transforms: [
+    {
+      transform: 'react-transform-hmr',
+      imports: ['react'],
+      locals: ['module'],
+    }, {
+      transform: 'react-transform-catch-errors',
+      imports: ['react', 'redbox-react'],
+    },
+  ]
+}]);
 
 const webpackConfig = {
   name: 'client',
   target: 'web',
   entry: {
     app: [
-      './src/bootstrapper.js'
-    ]
+      './src/appBootstrapper.js'
+    ],
+    notification:
+      ['./src/notificationBootstrapper.js'],
   },
   output: {
     filename: '[name].js',
@@ -23,15 +45,23 @@ const webpackConfig = {
     publicPath: '/'
   },
   plugins: [
-    // new webpack.DefinePlugin(config.get('globals')),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       hash: true,
       filename: 'index.html',
-      inject: 'body'
+      inject: 'body',
+      excludeChunks: ['notification']
     }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      hash: true,
+      filename: 'notification.html',
+      inject: 'body',
+      excludeChunks: ['app']
+    }),
+
     new CopyWebpackPlugin([
       {
         from: './src/ui/common/images',
@@ -40,6 +70,9 @@ const webpackConfig = {
     ]),
     new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function(module){
       return module.resource && module.resource.indexOf('node_modules') !== -1;
+    }),
+    new webpack.DefinePlugin({
+      __VERSION__: JSON.stringify(require(path.resolve(__dirname, './package.json')).version)
     })
   ],
   // these break for node 5.3+ when building WS stuff
@@ -53,10 +86,11 @@ const webpackConfig = {
     // This is purely for ide object/type discoverability.
     // Until our ide (intellij/webstorm) understands import aliass we feel the benefits of object discoverability outweigh the relative path cost.
     alias: {
-      system: __dirname + '/src/system',
-      services: __dirname + '/src/services',
+      'config.json': path.join(__dirname, 'config', config),
+      system: path.join(__dirname, 'src/system'),
+      services: path.join(__dirname, 'src/services'),
       // reverse alias so we can use ES6 from node modules and get IDE support but not actually transpile it
-      "esp-js/src" : __dirname + '/node_modules/esp-js'
+      'esp-js/src' : path.join(__dirname, 'node_modules/esp-js')
     }
   },
   eslint: {
@@ -66,33 +100,29 @@ const webpackConfig = {
     // this breaks in node 5.3+ as it tries to parse the client.md for node-bindings
     noParse: /\/bindings\//,
     preLoaders: [
-      {test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/}
+      {
+        test: /\.j(s|sx)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      }
     ],
     loaders: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.j(s|sx)$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
-          stage: 0,
-          optional: ['runtime'],
-          env: {
-            development: {
-              plugins: ['react-transform'],
-              extra: {
-                'react-transform': {
-                  transforms: [{
-                    transform: 'react-transform-catch-errors',
-                    imports: ['react', 'redbox-react']
-                  }]
-                }
-              }
-            }
-          }
+          cacheDirectory: true,
+          presets: [
+            'react',
+            'es2015',
+            'stage-0',
+          ],
+          plugins: babelPlugins
         }
       },
       {
-        test: /\.scss$/,
+        test: /\.(css|scss)$/,
         loaders: [
           'style-loader',
           'css-loader',
@@ -122,6 +152,10 @@ const webpackConfig = {
       {
         test: /\.svg(\?.*)?$/,
         loader: 'url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=image/svg+xml'
+      },
+      {
+        test: /\.(jpg|jpeg|gif|png)$/,
+        loader: 'file'
       }
     ]
   },
@@ -130,8 +164,11 @@ const webpackConfig = {
   }
 };
 
+
+
 if (isProductionMode){
   console.log('Starting a ' + chalk.red('production') + ' build...');
+
   webpackConfig.module.loaders = webpackConfig.module.loaders.map(function(loader){
     if (/css/.test(loader.test)){
       var first = loader.loaders[0];
@@ -141,18 +178,22 @@ if (isProductionMode){
     }
     return loader;
   });
+
   webpackConfig.plugins.push(
-    new ExtractTextPlugin('[name].[contenthash].css'),
+    new ExtractTextPlugin('[name].css?[contenthash]'),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         'unused': true,
         'dead_code': true
       },
       output: {
-       comments: false
+        comments: false
       }
     })
   );
+  // can work in any sub-folder
+  webpackConfig.output.publicPath = './';
+  webpackConfig.devtool = 'source-map';
 } else {
   webpackConfig.devServer = {
     port: 3000,
@@ -165,29 +206,18 @@ if (isProductionMode){
     quiet: false,
     hot: true
   };
+
   webpackConfig.devtool = 'source-map';
+
   webpackConfig.entry.app.push(
     'webpack-dev-server/client?http://0.0.0.0:3000/',
     'webpack/hot/dev-server'
   );
+
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   );
-  // We need to apply the react-transform HMR plugin to the Babel configuration,
-  // but _only_ when ModuleReplacement is enabled. Putting this in the default development
-  // configuration will break other tasks such as test:unit because Webpack
-  // HMR is not enabled there, and these transforms require it.
-  webpackConfig.module.loaders = webpackConfig.module.loaders.map(loader =>{
-    if (/js(?!on)/.test(loader.test)){
-      loader.query.env.development.extra['react-transform'].transforms.push({
-        transform: 'react-transform-hmr',
-        imports: ['react'],
-        locals: ['module']
-      });
-    }
-    return loader;
-  });
 }
 
 module.exports = webpackConfig;

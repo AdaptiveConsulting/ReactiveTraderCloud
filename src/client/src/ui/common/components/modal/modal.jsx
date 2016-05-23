@@ -17,10 +17,12 @@ export default class Modal extends React.Component {
     }
     return (
       <div>
-        <div className='modal-overlay'></div>
-        <div className='absolute-center modal text-center'>
-          <div className='modal-heading'>{this.props.title}</div>
-          {this.props.children}
+        <div className='modal__overlay'></div>
+        <div className='modal'>
+          <div className='modal__header'><span className='modal__header-title'>{this.props.title}</span></div>
+          <div className='modal__body'>
+            {this.props.children}
+          </div>
         </div>
       </div>
     );
