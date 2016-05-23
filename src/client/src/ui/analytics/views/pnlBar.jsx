@@ -22,18 +22,15 @@ export default class PNLBar extends React.Component{
     indicatorClassName += isPositive ? 'analytics__barchart-indicator--positive' : 'analytics__barchart-indicator--negative';
     let amountStr = numeral(baseValue).format();
     let ccyPrefix = this.props.isPnL ? this.props.model.currencyPair.base : '';
+    let indicatorStyle = {left: xPos + 'px', width: displayValue};
     return(
       <div className='analytics__barchart-container'>
         <div>
           <label className='analytics__barchart-label'>{this.props.model.symbol}</label>
           <label className='analytics__barchart-amount'>{ccyPrefix} {amountStr}</label>
-          <span>
-            <svg id='container' className='analytics__barchart-bar'>
-              <g>
-                <rect width={this.props.containerWidth} className='analytics__barchart-bar-background'></rect>
-                <rect width={displayValue} className={indicatorClassName} x={xPos}></rect>
-                </g>
-            </svg>
+          <span className='analytics__barchart-container'>
+            <div className='analytics__barchart-bar-background'></div>
+            <div className={indicatorClassName} style={indicatorStyle}></div>
             <label className='analytics__barchart-label'></label>
           </span>
         </div>

@@ -44,8 +44,8 @@ export default class AnalyticsView extends ViewBase {
       return <span />;
 
     let pnlComponents = this._createPnlComponents();
-    let positionsComponents = model.isIE() ? <div></div> : this._createPositionsComponents();
-    
+    let positionsComponents = this._createPositionsComponents();
+
     let newWindowBtnClassName = classnames(
       'glyphicon glyphicon-new-window',
       {
