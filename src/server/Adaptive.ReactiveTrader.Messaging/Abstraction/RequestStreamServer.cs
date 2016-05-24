@@ -4,14 +4,14 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Runtime.Serialization;
 using System.Threading;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Messaging.Abstraction
 {
     internal class RequestStreamServer<TRequest, TUpdate> : RequestOperationServerBase,
         IRequestStreamServer<TRequest, TUpdate>
     {
-        protected new static readonly ILog Log = LogManager.GetLogger<RequestStreamServer<TRequest, TUpdate>>();
+        protected new static readonly ILogger Log = Log.ForContext<RequestStreamServer<TRequest, TUpdate>>();
         private readonly IMessageFactory _messageFactory;
         private readonly IPublisher _publisher;
         private readonly IScheduler _scheduler;
@@ -56,7 +56,7 @@ namespace Adaptive.ReactiveTrader.Messaging.Abstraction
                     }
                     else
                     {
-                        Log.WarnFormat("Unknown RequestStream RequestKind: '{0}'", kind);
+                        Log.Warning("Unknown RequestStream RequestKind: '{requestKind}'", kind);
                     }
                 }));
         }
@@ -84,7 +84,7 @@ namespace Adaptive.ReactiveTrader.Messaging.Abstraction
             var clientId = message.Properties.GetString(OperationKeys.ClientId);
             if (clientId == null)
             {
-                Log.Warn("No ClientId found. Ignoring.");
+                Log.Warning("No ClientId found. Ignoring.");
                 return;
             }
 
@@ -111,7 +111,7 @@ namespace Adaptive.ReactiveTrader.Messaging.Abstraction
                 var context = CreateRequestContext(message);
                 if (context == null)
                 {
-                    Log.Warn("Failed to create request context. Ignoring.");
+                    Log.Warning("Failed to create request context. Ignoring.");
                     subscription.Dispose(); // Don't listen for session destruction if it doesn't exist.
                     return;
                 }
