@@ -93,7 +93,7 @@ class AppBootstrapper {
     blotterRegionModel.observeEvents();
     let quickAccessRegionModel = new SingleItemRegionModel(WellKnownModelIds.quickAccessRegionModelId, RegionNames.quickAccess, espRouter);
     quickAccessRegionModel.observeEvents();
-    let regionManager = new RegionManager([workspaceRegionModel, popoutRegionModel, blotterRegionModel, quickAccessRegionModel]);
+    let regionManager = new RegionManager([workspaceRegionModel, popoutRegionModel, blotterRegionModel, quickAccessRegionModel], this._openFin.isRunningInOpenFin);
 
     // wire up the shell
     let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection, this._openFin);
@@ -137,7 +137,12 @@ class AppBootstrapper {
       espRouter.broadcastEvent('referenceDataLoaded', {});
     });
 
-    espRouter.broadcastEvent('init', {});
+    if (this._openFin.isRunningInOpenFin) {
+      fin.desktop.main(() => espRouter.broadcastEvent('init', {}));
+    } else {
+      espRouter.broadcastEvent('init', {});
+    }
+
   }
 
   displayUi() {

@@ -17,7 +17,9 @@ var _log:logger.Logger = logger.create('BlotterModel');
 export default class BlotterModel extends ModelBase {
   _blotterService:BlotterService;
   _regionManagerHelper:RegionManagerHelper;
-
+  _regionManager:RegionManager;
+  _regionName:string;
+  _regionSettings:RegionSettings;
   trades:Array<Trade>;
   isConnected:boolean;
 
@@ -32,7 +34,10 @@ export default class BlotterModel extends ModelBase {
     this._blotterService = blotterService;
     this.trades = [];
     this.isConnected = false;
-    this._regionManagerHelper = new RegionManagerHelper(RegionNames.blotter, regionManager, this);
+    this._regionManager = regionManager;
+    this._regionName = RegionNames.blotter;
+    this._regionSettings = new RegionSettings('Blotter', 850, 280);
+    this._regionManagerHelper = new RegionManagerHelper(this._regionName, regionManager, this, this._regionSettings);
     this._openFin = openFin;
   }
 
@@ -40,7 +45,7 @@ export default class BlotterModel extends ModelBase {
   _onInit() {
     _log.info(`Blotter starting`);
     this._subscribeToConnectionStatus();
-    this._regionManagerHelper.addToRegion();
+    this._regionManagerHelper.init();
     this.subscribeToOpenFinEvents();
   }
 
@@ -53,7 +58,7 @@ export default class BlotterModel extends ModelBase {
   @observeEvent('tearOffBlotter')
   _onTearOffBlotter() {
     _log.info(`Popping out blotter`);
-    this._regionManagerHelper.popout('Blotter', 850, 280);
+    this._regionManagerHelper.popout();
   }
 
   subscribeToOpenFinEvents(){
