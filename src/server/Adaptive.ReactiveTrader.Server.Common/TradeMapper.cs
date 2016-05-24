@@ -16,7 +16,7 @@ namespace Adaptive.ReactiveTrader.Server.Host
                 Direction = t.Direction,
                 SpotRate = t.SpotRate,
                 TradeDate = t.TradeDate,
-                ValueDate = "SP. " + t.ValueDate.Day + " " + t.ValueDate.ToString("MMM"),
+                ValueDate = t.ValueDate,
                 Status = t.Status
             };
         }

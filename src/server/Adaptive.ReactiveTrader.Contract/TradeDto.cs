@@ -17,7 +17,7 @@ namespace Adaptive.ReactiveTrader.Contract
 
         public decimal SpotRate { get; set; }
         public DateTime TradeDate { get; set; }
-        public string ValueDate { get; set; }
+        public DateTime ValueDate { get; set; }
 
         [JsonConverter(typeof (StringEnumConverter))]
         public TradeStatusDto Status { get; set; }
