@@ -66,7 +66,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                     Notional = trade.Notional,
                     SpotRate = trade.SpotRate,
                     Status = trade.State,
-                    TradeDate = tradeDate.ToShortDateString(),
+                    TradeDate = tradeDate,
                     ValueDate = "SP. " + valueDate.Day + " " + valueDate.ToString("MMM"),
                     TradeId = id,
                     TraderName = user,
