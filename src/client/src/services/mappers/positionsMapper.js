@@ -15,6 +15,14 @@ export default class PositionsMapper {
     return new PositionUpdates(positions, history);
   }
 
+  static mapToDto(ccyPairPosition:CurrencyPairPosition):Object{
+    return{
+      symbol: ccyPairPosition._symbol,
+      basePnl: ccyPairPosition._basePnl,
+      baseTradedAmount: ccyPairPosition._baseTradedAmount
+    };
+  }
+
   _mapPositionsFromDto(dtos:Array<Object>):Array<CurrencyPairPosition> {
     return _.map(
       dtos,

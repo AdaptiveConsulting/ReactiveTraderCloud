@@ -41,7 +41,10 @@ export default class AnalyticsView extends ViewBase {
       return null;
     }
     if (!model.isAnalyticsServiceConnected)
-      return <span />;
+      return (
+        <div className='analytics__container'>
+          <div ref='analyticsInnerContainer'></div>
+        </div>);
 
     let pnlComponents = this._createPnlComponents();
     let positionsComponents = this._createPositionsComponents();
@@ -104,7 +107,7 @@ export default class AnalyticsView extends ViewBase {
       </div>
     );
   }
-
+  
   _createPositionsComponents() {
 
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
@@ -113,7 +116,6 @@ export default class AnalyticsView extends ViewBase {
     let selectedClassName = `${baseClassName} analytics__buttons-tab-btn--selected`;
     let pnlButtonClassName = isPnL ? selectedClassName : baseClassName;
     let positionButtonClassName = isPnL ? baseClassName : selectedClassName;
-    let containerWidth = this.props.containerWidth; // comes from the @Dimensions annotation
 
     return (
       <div>

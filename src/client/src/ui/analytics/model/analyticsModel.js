@@ -10,16 +10,17 @@ import {
   PositionUpdates,
 } from '../../../services/model';
 import { AnalyticsView } from '../views';
+import { OpenFin } from '../../../system/openFin';
 
 var _log:logger.Logger = logger.create('AnalyticsModel');
 
 @view(AnalyticsView)
 export default class AnalyticsModel extends ModelBase {
   _analyticsService:AnalyticsService;
-
   _positionsChartModel:PositionsChartModel;
   _pnlChartModel:PnlChartModel;
   _regionManagerHelper:RegionManagerHelper;
+  _openFin:OpenFin;
 
   isAnalyticsServiceConnected: Boolean;
 
@@ -27,7 +28,8 @@ export default class AnalyticsModel extends ModelBase {
     modelId:string,
     router:Router,
     analyticsService:AnalyticsService,
-    regionManager:RegionManager
+    regionManager:RegionManager,
+    openFin:OpenFin
   ) {
     super(modelId, router);
     this._analyticsService = analyticsService;
@@ -36,6 +38,7 @@ export default class AnalyticsModel extends ModelBase {
     this._pnlChartModel = new PnlChartModel();
     this._positionsChartModel = new PositionsChartModel();
     this._regionManagerHelper = new RegionManagerHelper(RegionNames.quickAccess, regionManager, this);
+    this._openFin = openFin;
   }
 
   get positionsChartModel() {
@@ -78,6 +81,7 @@ export default class AnalyticsModel extends ModelBase {
         (analyticsUpdate:PositionUpdates) => {
           this._pnlChartModel.update(analyticsUpdate.history);
           this._positionsChartModel.update(analyticsUpdate.currentPositions);
+          this._openFin.publishCurrentPositions(analyticsUpdate.currentPositions);
         },
         err => {
           _log.error('Error on analyticsService stream stream', err);

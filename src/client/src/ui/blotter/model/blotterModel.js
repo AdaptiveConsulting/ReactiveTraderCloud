@@ -7,7 +7,7 @@ import { logger } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { OpenFin } from '../../../system/openFin';
-import { Trade, TradesUpdate, TradeStatus } from '../../../services/model';
+import { Trade, TradesUpdate, TradeStatus, TradeNotification } from '../../../services/model';
 
 import { BlotterView } from '../views';
 
@@ -41,6 +41,7 @@ export default class BlotterModel extends ModelBase {
     _log.info(`Blotter starting`);
     this._subscribeToConnectionStatus();
     this._regionManagerHelper.addToRegion();
+    this.subscribeToOpenFinEvents();
   }
 
   @observeEvent('referenceDataLoaded')
@@ -53,6 +54,13 @@ export default class BlotterModel extends ModelBase {
   _onTearOffBlotter() {
     _log.info(`Popping out blotter`);
     this._regionManagerHelper.popout('Blotter', 850, 280);
+  }
+
+  subscribeToOpenFinEvents(){
+    this._openFin.addSubscription('fetch-blotter', (msg, uuid) => {
+      let serialisedTrades = this.trades.map((t) => new TradeNotification(t));
+      this._openFin.sendAllBlotterData(uuid, serialisedTrades);
+    });
   }
 
   _subscribeToTradeStream() {

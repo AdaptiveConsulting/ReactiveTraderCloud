@@ -117,7 +117,7 @@ class AppBootstrapper {
     blotterModel.observeEvents();
 
     // wire-up analytics
-    let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService, regionManager);
+    let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService, regionManager, this._openFin);
     analyticsModel.observeEvents();
 
     // wire-up the header

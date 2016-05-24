@@ -33,6 +33,7 @@ export default class PricingService extends ServiceBase {
                 // if we have any error on the price stream we pump a stale price
                 let stalePrice = new SpotPrice(
                   lastPrice.symbol,
+                  lastPrice.ratePrecision,
                   lastPrice.bid,
                   lastPrice.ask,
                   lastPrice.mid,
