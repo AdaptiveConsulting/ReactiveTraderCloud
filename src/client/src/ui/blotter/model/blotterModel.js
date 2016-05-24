@@ -7,7 +7,7 @@ import { logger } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { OpenFin } from '../../../system/openFin';
-import { Trade, TradesUpdate, TradeStatus, TradeNotification } from '../../../services/model';
+import { Trade, TradesUpdate, TradeStatus, TradeNotification, RegionSettings } from '../../../services/model';
 
 import { BlotterView } from '../views';
 
