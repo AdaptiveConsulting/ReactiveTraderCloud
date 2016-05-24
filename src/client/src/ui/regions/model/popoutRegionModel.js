@@ -14,13 +14,11 @@ export default class PopoutRegionModel extends RegionModel {
   // override
   _addToRegion(model:ModelBase, options:?RegionOptions) : RegionModelRegistration {
     let modelRegistration = super._addToRegion(model, options);
+    let regionSettings = modelRegistration.regionSettings || {};
     let view = createViewForModel(modelRegistration.model, modelRegistration.displayContext);
-    let width = modelRegistration.regionSettings && modelRegistration.regionSettings.width
-      ? modelRegistration.regionSettings.width
-      : 400;
-    let height = modelRegistration.regionSettings && modelRegistration.regionSettings.height
-      ? modelRegistration.regionSettings.height
-      : 400;
+    let width = regionSettings.width || 400;
+    let height = regionSettings.height || 400;
+    let dockable = regionSettings.dockable || false;
     const title = options.regionSettings && options.regionSettings.title ? options.regionSettings.title : '';
     let popoutOptions = new PopoutOptions(
       modelRegistration.key,
@@ -28,10 +26,11 @@ export default class PopoutRegionModel extends RegionModel {
       title,
       () => this._popoutClosed(modelRegistration.model),
       {
-        width: width,
-        height: height,
+        width,
+        height,
         resizable: false,
-        scrollable: false
+        scrollable: false,
+        dockable
       }
     );
     this._popoutService.openPopout(popoutOptions, view);

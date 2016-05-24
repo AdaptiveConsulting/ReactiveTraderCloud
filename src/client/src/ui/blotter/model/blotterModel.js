@@ -36,7 +36,7 @@ export default class BlotterModel extends ModelBase {
     this.isConnected = false;
     this._regionManager = regionManager;
     this._regionName = RegionNames.blotter;
-    this._regionSettings = new RegionSettings('Blotter', 850, 280);
+    this._regionSettings = new RegionSettings('Blotter', 850, 280, false);
     this._regionManagerHelper = new RegionManagerHelper(this._regionName, regionManager, this, this._regionSettings);
     this._openFin = openFin;
   }

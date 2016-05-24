@@ -80,6 +80,7 @@
     "eslint-loader": "1.2.0",
     "eslint-plugin-react": "3.15.0",
     "esp-js-devtools": "0.0.15",
+    "exports-loader": "0.6.3",
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.8.5",
     "html-webpack-plugin": "1.7.0",

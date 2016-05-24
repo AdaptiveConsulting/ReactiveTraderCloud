@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { Trade, TradeNotification, CurrencyPairPosition } from '../../services/model';
 import { logger } from '../';
 import { PriceMapper, PositionsMapper } from '../../services/mappers';
-
 const _log:logger.Logger = logger.create('OpenFin');
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check';
@@ -30,7 +29,7 @@ export default class OpenFin {
   close(window = this._currentWindow){
     window.close(true, () => _log.info('Window closed with success.'), err => _log.error('Failed to close window.', err));
   }
-  
+
   minimize(window = this._currentWindow){
     window.minimize(() => _log.info('Window minimized with success.'), err => _log.error('Failed to minimize window.', err));
   }

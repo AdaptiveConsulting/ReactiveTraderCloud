@@ -72,6 +72,8 @@ export default class SpotTileView extends ViewBase {
               onClick={() => this._displayCurrencyChart()}/>
             <i className={newWindowClassName}
                onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
+            <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
+               onClick={() => router.publishEvent(this.props.modelId, 'undockTile', {})}/>
           </div>
           {notification}
           {priceComponents}
