@@ -4,6 +4,6 @@ using System.Reflection;
 namespace Adaptive.ReactiveTrader.Contract
 {
 	public class ReflectionHelper {
-		public static Assembly ContractsAssembly = typeof(ReflectionHelper).Assembly; 
+		public static Assembly ContractsAssembly = typeof(ReflectionHelper).GetTypeInfo().Assembly; 
 	}
 }

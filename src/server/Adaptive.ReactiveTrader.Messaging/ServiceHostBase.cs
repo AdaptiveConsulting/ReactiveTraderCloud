@@ -2,13 +2,13 @@ using System;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
     public abstract class ServiceHostBase : IDisposable
     {
-        protected static readonly ILog Log = LogManager.GetLogger<ServiceHostBase>();
+        protected static readonly ILogger Log = Log.ForContext<ServiceHostBase>();
 
         private readonly IBroker _broker;
         private readonly Heartbeat _heartbeat;
@@ -37,11 +37,11 @@ namespace Adaptive.ReactiveTrader.Messaging
             var call = _broker.RegisterCall(instanceProcedureName, procedure);
             _registedCalls.Add(Disposable.Create(() =>
             {
-                Log.Info($"unregistering from {procName}");
+                Log.Information("unregistering from {procName}", procName);
                 call.Result.DisposeAsync().Wait(TimeSpan.FromSeconds(5));
-                Log.Info($"unregistered from {procName}");
+                Log.Information("unregistered from {procName}", procName);
             }));
-            Log.Info($"procedure {procName}() registered");
+            Log.Information("procedure {procName}() registered", procName);
         }
 
         protected void RegisterCallResponse<T>(string procName, Func<IRequestContext, IMessage, Task<T>> procedure)
@@ -50,11 +50,11 @@ namespace Adaptive.ReactiveTrader.Messaging
             var call = _broker.RegisterCallResponse(instanceProcedureName, procedure);
             _registedCalls.Add(Disposable.Create(() =>
             {
-                Log.Info($"unregistering from {procName}");
+                Log.Information("unregistering from {procName}", procName);
                 call.Result.DisposeAsync().Wait(TimeSpan.FromSeconds(5));
-                Log.Info($"unregistered from {procName}");
+                Log.Information("unregistered from {procName}", procName);
             }));
-            Log.Info($"procedure {procName}() registered");
+            Log.Information("procedure {procName}() registered", procName);
         }
 
         protected void StartHeartBeat()
