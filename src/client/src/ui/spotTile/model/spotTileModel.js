@@ -3,7 +3,7 @@ import { Router, observeEvent } from 'esp-js/src';
 import { PricingService, ExecutionService } from '../../../services';
 import { logger } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
-import { TradeExecutionNotification, NotificationBase } from './';
+import { TradeExecutionNotification, TextNotification,  NotificationBase, NotificationType } from './';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { TradeStatus } from '../../../services/model';
 import { SchedulerService, } from '../../../system';
@@ -162,7 +162,7 @@ export default class SpotTileModel extends ModelBase {
       this._log.warn(`Ignoring execute request as we can't trade with pricing and execution down`);
     }
   }
-  
+
   _subscribeToClosePositionRequests(){
     this._openFin.addSubscription('close-position', (msg, uuid) => this._closePositionRequestCallback( msg, uuid));
   }
