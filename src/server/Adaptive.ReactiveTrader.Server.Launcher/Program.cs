@@ -207,7 +207,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         {
             Console.WriteLine("Reactive Trader launcher v{0}", Assembly.GetAssembly(typeof(Program)).GetName().Version);
             Console.WriteLine();
-            Console.WriteLine("usage dnx run [service] [options]");
+            Console.WriteLine("usage dotnet run [service] [options]");
 
             Console.WriteLine();
             Console.WriteLine("service:");

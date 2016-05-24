@@ -2,20 +2,22 @@
   "version": "1.0.0",
   "description": "WAMP Message Broker that can be used in place of Crossbar",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "tags": [ "Adaptive", "Reactive Trader" ],
-  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Adaptive", "Reactive Trader" ],
+    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
+  },
 
   "dependencies": {
     "Adaptive.ReactiveTrader.Messaging": "1.0.0"
   },
 
-  "commands": {
-    "Adaptive.ReactiveTrader.MessageBroker": "Adaptive.ReactiveTrader.MessageBroker"
+  "buildOptions": {
+    "emitEntryPoint": true
   },
 
   "frameworks": {
-    "dnx451": {
+    "net451": {
       "frameworkAssemblies": {
         "System.Runtime": "",
         "System.Collections": ""

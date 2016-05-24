@@ -1,6 +1,7 @@
 src/client/node_modules
 src/client/coverage
 .idea/
+.vs/
 npm-debug.log
 dist/
 *.suo
@@ -16,3 +17,5 @@ node.pid
 *.orig
 key.priv
 key.pub
+bin/
+obj/
