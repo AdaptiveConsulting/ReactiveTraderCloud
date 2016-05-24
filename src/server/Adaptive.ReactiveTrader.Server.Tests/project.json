@@ -9,10 +9,10 @@
   },
 
   "dependencies": {
+    "NETStandard.Library": "1.5.0-rc2-24027",
     "FakeItEasy": "1.25.3",
     "Adaptive.ReactiveTrader.Server.Launcher": "1.0.0",
     "xunit": "2.1.0",
-    "xunit.runner.visualstudio": "2.1.0",
     "dotnet-test-xunit": "1.0.0-*",
     "System.Collections.Immutable": "1.2.0-rc2-24027"
   },
@@ -20,13 +20,8 @@
   "testRunner": "xunit",
 
   "frameworks": {
-    "net451": {
-      "dependencies": {
-        "Microsoft.NETCore.Platforms": "1.0.1-rc2-24027"
-      },
-      "frameworkAssemblies": {
-        "System.Runtime.Serialization": "4.0.0.0"
-      }
+    "netstandard1.3": {
+      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81" ]
     }
   }
 }

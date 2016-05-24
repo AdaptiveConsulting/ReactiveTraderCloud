@@ -17,11 +17,8 @@
   },
 
   "frameworks": {
-    "net451": {
-      "frameworkAssemblies": {
-        "System.Runtime": "",
-        "System.Collections": ""
-      }
+    "netstandard1.3": {
+      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81" ]
     }
   }
 }

@@ -9,6 +9,7 @@
   },
 
   "dependencies": {
+    "Microsoft.NETCore.Platforms": "1.0.1-rc2-24027",
     "Adaptive.ReactiveTrader.Messaging": "1.0.0",
     "Adaptive.ReactiveTrader.EventStore": "1.0.0",
     "Adaptive.ReactiveTrader.Contract": "1.0.0",
@@ -23,13 +24,8 @@
   "testRunner": "xunit",
 
   "frameworks": {
-    "net451": {
-      "dependencies": {
-        "Microsoft.NETCore.Platforms": "1.0.1-rc2-24027"
-      },
-      "frameworkAssemblies": {
-        "System.Runtime.Serialization": "4.0.0.0"
-      }
+    "netstandard1.3": {
+      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81" ]
     }
   }
 }

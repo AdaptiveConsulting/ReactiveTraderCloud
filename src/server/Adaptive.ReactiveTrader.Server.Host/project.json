@@ -9,13 +9,16 @@
   },
 
   "dependencies": {
+    "NETStandard.Library": "1.5.0-rc2-24027",
     "Adaptive.ReactiveTrader.Contract": "1.0.0",
     "Adaptive.ReactiveTrader.Messaging": "1.0.0",
     "Adaptive.ReactiveTrader.EventStore": "1.0.0",
-    "Autofac": "3.5.2"
+    "Autofac": "4.0.0-rc2-240"
   },
 
   "frameworks": {
-    "net451": { }
+    "netstandard1.3": {
+      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81" ]
+    }
   }
 }

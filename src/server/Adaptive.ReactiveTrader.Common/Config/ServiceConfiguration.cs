@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Common.Logging;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.Configuration.Json;
+using Serilog;
+using Serilog.Events;
 
 namespace Adaptive.ReactiveTrader.Common.Config
 {
     public class ServiceConfiguration : IServiceConfiguration
     {
         private const string ConfigFolderName = "configs";
-        private static readonly ILog Log = LogManager.GetLogger<ServiceConfiguration>();
+        private static readonly ILogger Log = Log.ForContext<ServiceConfiguration>();
 
         private readonly IConfigurationRoot _config;
 
         private readonly string[] searchPaths =
         {
-            Path.Combine(Environment.CurrentDirectory, ConfigFolderName),
-            Path.Combine(Environment.CurrentDirectory, "..", ConfigFolderName)
+            Path.Combine(Directory.GetCurrentDirectory(), ConfigFolderName),
+            Path.Combine(Directory.GetCurrentDirectory(), "..", ConfigFolderName)
         };
 
         private ServiceConfiguration(string[] args) : this(args.Any() ? args.First() : "config.dev.json")
@@ -45,14 +46,14 @@ namespace Adaptive.ReactiveTrader.Common.Config
         {
             var config = new ServiceConfiguration(args);
 
-            if (Log.IsInfoEnabled)
+            if (Log.IsEnabled(LogEventLevel.Information))
             {
-                Log.Info("Config build from command line args");
-                Log.Info("Config Entries...");
+                Log.Information("Config build from command line args");
+                Log.Information("Config Entries...");
 
                 foreach (var entry in config.GetEntries())
                 {
-                    Log.Info(entry);
+                    Log.Information(entry.ToString()); // TODO
                 }
             }
 
