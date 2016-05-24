@@ -4,7 +4,7 @@ using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using Common.Logging;
+using Serilog;
 using WampSharp.Core.Serialization;
 using WampSharp.V2.Core;
 using WampSharp.V2.Core.Contracts;
@@ -14,7 +14,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 {
     internal class RpcOperation : IWampRpcOperation
     {
-        protected static readonly ILog Log = LogManager.GetLogger<RpcOperation>();
+        protected static readonly ILogger Log = Log.ForContext<RpcOperation>();
         private readonly IScheduler _scheduler = TaskPoolScheduler.Default;
 
         private readonly Func<IRequestContext, IMessage, Task> _serviceMethod;

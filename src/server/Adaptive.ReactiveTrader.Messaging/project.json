@@ -10,7 +10,6 @@
 
   "dependencies": {
     "NETStandard.Library": "1.5.0-rc2-24027",
-    "WampSharp.Default": "1.2.3.12-beta",
     "protobuf-net": "2.1.0-alpha-1",
     "Adaptive.ReactiveTrader.Common": "1.0.0",
     "Newtonsoft.Json": "8.0.4-beta1",
@@ -19,7 +18,12 @@
 
   "frameworks": {
     "netstandard1.3": {
-      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81" ]
+      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81", "portable-net45+netcore45" ],
+      "dependencies": {
+        "WampSharp.Default.Client": {
+          "target": "project"
+        }
+      }
     }
   }
 }
