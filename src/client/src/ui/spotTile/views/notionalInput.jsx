@@ -110,7 +110,6 @@ export default class NotionalInput extends React.Component {
   }
 
   _inputIsAllowed(charCode) {
-    console.log('charCode : ', charCode);
     if (charCode <= CHAR_CODE_UNIT_SEP) return true; //allow charcter codes before the Unit Separator to catch Shift, Backspace, etc
 
     //allow shortcut values
