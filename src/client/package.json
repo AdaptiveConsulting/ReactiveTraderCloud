@@ -32,7 +32,7 @@
     "test:dev": "npm test -- --watch",
     "deploy": "webpack --display-error-details",
     "deploy:prod": "export NODE_ENV=production && webpack",
-    "openfin": "openfin -c src/app.json -l"
+    "openfin": "openfin -c config/openfin/local.app.json -l"
   },
   "license": "MIT",
   "dependencies": {
