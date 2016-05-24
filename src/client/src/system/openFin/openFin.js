@@ -103,17 +103,24 @@ export default class OpenFin {
     return fin.desktop.Window.getCurrent();
   }
 
+  /**
+   * Display External Chart
+   * @param symbol
+   * @returns {Promise|Promise<T>}
+   */
   displayCurrencyChart(symbol){
-    let chartIqAppId = 'ChartIQ';
-    fin.desktop.System.getAllApplications((apps) => {
-      let chartIqApp = _.find(apps, ((app) => {
-        return app.isRunning && app.uuid === chartIqAppId;
-      }));
-      if(chartIqApp) {
-        this._refreshCurrencyChart(symbol);
-      } else {
-        this._launchCurrencyChart(symbol);
-      }
+    return new Promise((resolve, reject) => {
+      let chartIqAppId = 'ChartIQ';
+      fin.desktop.System.getAllApplications((apps) => {
+        let chartIqApp = _.find(apps, ((app) => {
+          return app.isRunning && app.uuid === chartIqAppId;
+        }));
+        if(chartIqApp) {
+          resolve(this._refreshCurrencyChart(symbol));
+        } else {
+          resolve(this._launchCurrencyChart(symbol));
+        }
+      });
     });
   }
 
@@ -139,28 +146,39 @@ export default class OpenFin {
     });
   }
 
+  /**
+   *
+   * @param symbol
+   * @returns {Promise<void>|Promise.<T>|Promise<T>}
+   * @private
+   */
   _refreshCurrencyChart(symbol){
     let interval = 5;
-    let chartIqAppId = 'ChartIQ';
     fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', { symbol: symbol, interval: interval });
+    return Promise.resolve();
   }
 
-  _launchCurrencyChart(symbol){
-    let interval = 5;
-    let chartIqAppId = 'ChartIQ';
-    let url = `http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=${symbol}&period=${interval}`;
-    let name = `chartiq_${(new Date()).getTime()}`;
-    const applicationIcon = 'http://openfin.chartiq.com/0.5/img/openfin-logo.png';
-    let app = new fin.desktop.Application({
-      uuid: chartIqAppId,
-      url: url,
-      name: name,
-      applicationIcon: applicationIcon,
-      mainWindowOptions:{
-        autoShow: false
-      }
-    }, function(){
-      app.run();
+  /**
+   * @param symbol
+   * @returns {Promise<T>|Promise}
+   * @private
+   */
+  _launchCurrencyChart(symbol) {
+    return new Promise((resolve, reject) => {
+      let interval = 5;
+      let chartIqAppId = 'ChartIQ';
+      let url = `http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=${symbol}&period=${interval}`;
+      let name = `chartiq_${(new Date()).getTime()}`;
+      const applicationIcon = 'http://openfin.chartiq.com/0.5/img/openfin-logo.png';
+      let app = new fin.desktop.Application({
+        uuid: chartIqAppId,
+        url: url,
+        name: name,
+        applicationIcon: applicationIcon,
+        mainWindowOptions:{
+          autoShow: false
+        }
+      }, () => app.run(() => setTimeout(() => resolve(), 1000), err => reject(err)), err => reject(err));
     });
   }
 

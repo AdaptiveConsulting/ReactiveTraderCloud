@@ -15,17 +15,12 @@ export default class SpotTileView extends ViewBase {
   constructor() {
     super();
     this.state = {
-      model: null,
-      currencyChartIsOpening: false,
-      currencyChartTimeoutId: -1
+      model: null
     };
   }
 
   componentWillUnmount(){
     super.componentWillUnmount();
-    if (this.state.currencyChartIsOpening){
-      window.clearTimeout(this.state.currencyChartTimeoutId);
-    }
   }
 
   render() {
@@ -43,8 +38,8 @@ export default class SpotTileView extends ViewBase {
     const chartIQIconClassName = classnames(
       {
         'spot-tile__icon--hidden': !showChartIQIcon,
-        'glyphicon glyphicon-refresh spot-tile__icon--rotate': this.state.currencyChartIsOpening,
-        'spot-tile__icon--chart glyphicon glyphicon-stats': !this.state.currencyChartIsOpening
+        'glyphicon glyphicon-refresh spot-tile__icon--rotate': model.currencyChartIsOpening,
+        'spot-tile__icon--chart glyphicon glyphicon-stats': !model.currencyChartIsOpening
       }
     );
 
@@ -95,9 +90,7 @@ export default class SpotTileView extends ViewBase {
     );
   }
 
-  _displayCurrencyChart(){
-    let timeoutId = setTimeout(()=> this.setState({currencyChartIsOpening: false}), 2000);
-    this.setState({currencyChartTimeoutId: timeoutId, currencyChartIsOpening: true});
+  _displayCurrencyChart(){ 
     router.publishEvent(this.props.modelId, 'displayCurrencyChart', {});
   }
 
