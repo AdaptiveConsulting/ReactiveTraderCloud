@@ -16,4 +16,11 @@ export default class PopoutServiceBase {
   openPopout() {
     _log.error(new Error('NotImplementedException'));
   }
+  
+  /**
+   * Should be overwritten
+   */
+  undockPopout() {
+    _log.error(new Error('NotImplementedException'));
+  }
 }

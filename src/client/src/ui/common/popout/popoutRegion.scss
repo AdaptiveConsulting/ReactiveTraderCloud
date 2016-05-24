@@ -8,7 +8,16 @@
   }
 
 
-  .popout__controls {
+  .popout__controls,
+  .popout__undock {
     display: none;
   }
+
+  &:hover .docked {
+    .popout__undock {
+      display: inline;
+    }
+  }
+
+
 }

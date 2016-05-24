@@ -52,11 +52,16 @@ $price-width: calc(45% + 10px);
       text-align: right;
     }
   }
+  &.spot-tile--executing,
   &.spot-tile--readonly {
     .spot-tile__price {
       cursor: default;
     }
   }
+}
+
+.spot-tile__icon--hidden{
+  display: none;
 }
 
 .spot-tile__container {
@@ -120,8 +125,10 @@ $price-width: calc(45% + 10px);
   float: right;
 }
 
+
 .spot-tile__icon--chart.glyphicon,
-.spot-tile__icon--tearoff.glyphicon {
+.spot-tile__icon--tearoff.glyphicon,
+.spot-tile__icon--undock.glyphicon {
   display: none;
   cursor: pointer;
   margin-left: 6px;

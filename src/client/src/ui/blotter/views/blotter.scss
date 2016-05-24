@@ -55,6 +55,10 @@
   cursor: pointer;
 }
 
+.blotter__controls--hidden{
+  display:none;
+}
+
 .blotter__trade {
   border: none;
   border-bottom: 1px dashed rgb(232, 233, 234);

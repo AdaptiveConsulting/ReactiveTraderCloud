@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import React from 'react';
-import { router } from '../../../../system';
 import { ViewBase } from '../../../common';
 import { RegionModel, RegionModelRegistration } from '../../model';
 import { createViewForModel} from '../../';
@@ -14,18 +13,24 @@ export default class WorkspaceRegionView extends ViewBase {
     };
   }
 
+  static propTypes = {
+    className: React.PropTypes.string
+  };
+
   render() {
     if(!this.state.model) {
       return null;
     }
     let model : RegionModel = this.state.model;
     return (
-      <div className='workspace-region'>
-        {
-          model.modelRegistrations.length > 0
-            ? this._renderWorkspaceItems(model.modelRegistrations)
-            : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div>
-        }
+      <div className={this.props.className}>
+        <div className='workspace-region'>
+          {
+            model.modelRegistrations.length > 0
+              ? this._renderWorkspaceItems(model.modelRegistrations)
+              : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div>
+          }
+        </div>
       </div>);
   }
 

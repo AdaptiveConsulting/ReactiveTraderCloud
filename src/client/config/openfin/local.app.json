@@ -1,10 +1,10 @@
 {
     "devtools_port": 9090,
     "startup_app": {
-        "name": "reactivetrader",
+        "name": "Reactive Trader Cloud (LOCAL)",
         "url": "http://localhost:3000/",
-        "uuid": "reactive-trader-js",
-        "applicationIcon": "http://localhost:3000/images/favicon.ico",
+        "uuid": "reactive-trader-cloud-local",
+        "applicationIcon": "http://localhost:3000/images/adaptive-mark-large.png",
         "autoShow": true,
         "defaultWidth": 1280,
         "defaultHeight": 900,
@@ -23,9 +23,9 @@
         "version": "5.44.11.10"
     },
     "shortcut": {
-        "company": "Reactive Trader",
-        "description": "Desktop Reactive Trader",
+        "company": "Adaptive Consulting",
+        "description": "Desktop Reactive Trader Cloud",
         "icon": "http://localhost:3000/images/icon.ico",
-        "name": "reactive-trader"
+        "name": "Reactive Trader Cloud (LOCAL)"
     }
 }

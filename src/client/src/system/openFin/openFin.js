@@ -1,8 +1,8 @@
 import Rx from 'rx';
 import _ from 'lodash';
-import { Trade, TradeNotification } from '../../services/model';
+import { Trade, TradeNotification, CurrencyPairPosition } from '../../services/model';
 import { logger } from '../';
-
+import { PriceMapper, PositionsMapper } from '../../services/mappers';
 const _log:logger.Logger = logger.create('OpenFin');
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check';
@@ -48,6 +48,21 @@ export default class OpenFin {
       });
   }
 
+  addSubscription(name:string, callback){
+    if (!this.isRunningInOpenFin) return;
+    if (!fin.desktop.InterApplicationBus){
+      fin.desktop.main(() => {
+        fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
+          callback.call(null, msg, uuid);
+        });
+      });
+    }else{
+      fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
+        callback.call(null, msg, uuid);
+      });
+    }
+  }
+
   checkLimit(executablePrice, notional:number, tradedCurrencyPair:string):Rx.Observable<boolean> {
     let _this = this;
     return Rx.Observable.create(observer => {
@@ -87,17 +102,24 @@ export default class OpenFin {
     return fin.desktop.Window.getCurrent();
   }
 
+  /**
+   * Display External Chart
+   * @param symbol
+   * @returns {Promise|Promise<T>}
+   */
   displayCurrencyChart(symbol){
-    let chartIqAppId = 'ChartIQ';
-    fin.desktop.System.getAllApplications((apps) => {
-      let chartIqApp = _.find(apps, ((app) => {
-        return app.isRunning && app.uuid === chartIqAppId;
-      }));
-      if(chartIqApp) {
-        this._refreshCurrencyChart(symbol);
-      } else {
-        this._launchCurrencyChart(symbol);
-      }
+    return new Promise((resolve, reject) => {
+      let chartIqAppId = 'ChartIQ';
+      fin.desktop.System.getAllApplications((apps) => {
+        let chartIqApp = _.find(apps, ((app) => {
+          return app.isRunning && app.uuid === chartIqAppId;
+        }));
+        if(chartIqApp) {
+          resolve(this._refreshCurrencyChart(symbol));
+        } else {
+          resolve(this._launchCurrencyChart(symbol));
+        }
+      });
     });
   }
 
@@ -123,28 +145,39 @@ export default class OpenFin {
     });
   }
 
+  /**
+   *
+   * @param symbol
+   * @returns {Promise<void>|Promise.<T>|Promise<T>}
+   * @private
+   */
   _refreshCurrencyChart(symbol){
     let interval = 5;
-    let chartIqAppId = 'ChartIQ';
     fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', { symbol: symbol, interval: interval });
+    return Promise.resolve();
   }
 
-  _launchCurrencyChart(symbol){
-    let interval = 5;
-    let chartIqAppId = 'ChartIQ';
-    let url = `http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=${symbol}&period=${interval}`;
-    let name = `chartiq_${(new Date()).getTime()}`;
-    const applicationIcon = 'http://openfin.chartiq.com/0.5/img/openfin-logo.png';
-    let app = new fin.desktop.Application({
-      uuid: chartIqAppId,
-      url: url,
-      name: name,
-      applicationIcon: applicationIcon,
-      mainWindowOptions:{
-        autoShow: false
-      }
-    }, function(){
-      app.run();
+  /**
+   * @param symbol
+   * @returns {Promise<T>|Promise}
+   * @private
+   */
+  _launchCurrencyChart(symbol) {
+    return new Promise((resolve, reject) => {
+      let interval = 5;
+      let chartIqAppId = 'ChartIQ';
+      let url = `http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=${symbol}&period=${interval}`;
+      let name = `chartiq_${(new Date()).getTime()}`;
+      const applicationIcon = 'http://openfin.chartiq.com/0.5/img/openfin-logo.png';
+      let app = new fin.desktop.Application({
+        uuid: chartIqAppId,
+        url: url,
+        name: name,
+        applicationIcon: applicationIcon,
+        mainWindowOptions:{
+          autoShow: false
+        }
+      }, () => app.run(() => setTimeout(() => resolve(), 1000), err => reject(err)), err => reject(err));
     });
   }
 
@@ -152,7 +185,6 @@ export default class OpenFin {
     if (!this.isRunningInOpenFin) return;
 
     let tradeNotification = new TradeNotification(trade);
-
     let notification = new fin.desktop.Notification({
       url: '/notification.html',
       message: tradeNotification,
@@ -160,5 +192,25 @@ export default class OpenFin {
         this.maximise();
       }
     });
+    fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification);
+  }
+
+  publishCurrentPositions(ccyPairPositions:Array<CurrencyPairPosition>){
+    if (!this.isRunningInOpenFin ) return;
+    let serialisePositions = ccyPairPositions.map( p => PositionsMapper.mapToDto(p));
+    fin.desktop.InterApplicationBus.publish('position-update', serialisePositions);
+  }
+
+  publishPrice(price){
+    if (!this.isRunningInOpenFin) return;
+    fin.desktop.InterApplicationBus.publish('price-update', PriceMapper.mapToSpotPriceDto(price));
+  }
+
+  sendAllBlotterData(uuid:string, blotterData:Array){
+    fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', blotterData);
+  }
+
+  sendPositionClosedNotification(uuid:string, correlationId:string){
+    fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId);
   }
 }

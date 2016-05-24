@@ -2,6 +2,7 @@ import { PriceMovementType, Rate, Spread } from './';
 
 export default class SpotPrice {
   _symbol:string;
+  _ratePrecision:number;
   _bid:Rate;
   _ask:Rate;
   _mid:Rate;
@@ -13,6 +14,7 @@ export default class SpotPrice {
 
   constructor(
     symbol:number,
+    ratePrecision:number,
     bid:Rate,
     ask:Rate,
     mid:Rate,
@@ -23,6 +25,7 @@ export default class SpotPrice {
     isTradable:boolean
   ) {
     this._symbol = symbol;
+    this._ratePrecision = ratePrecision,
     this._bid = bid;
     this._ask = ask;
     this._mid = mid;
@@ -37,6 +40,10 @@ export default class SpotPrice {
 
   get symbol() : string {
     return this._symbol;
+  }
+
+  get ratePrecision() : number {
+    return this._ratePrecision;
   }
 
   get bid() : Rate {
