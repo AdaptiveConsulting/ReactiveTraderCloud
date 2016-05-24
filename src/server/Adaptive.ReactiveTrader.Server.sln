@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Pricing", "Adaptive.ReactiveTrader.Server.Pricing\Adaptive.ReactiveTrader.Server.Pricing.xproj", "{D5CB4C60-0AD5-4AF7-8325-51B6D268E32B}"
 EndProject
@@ -47,6 +47,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2F7266E2-E44D-4F24-92E6-FD1DD57E3D39}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adaptive.ReactiveTrader.Server.Common", "Adaptive.ReactiveTrader.Server.Common\Adaptive.ReactiveTrader.Server.Common.xproj", "{03F78A0C-36A1-4171-BB62-F22C9C2172A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventStore", "EventStore", "{2F0E558E-0DDE-49AE-A870-6B52C32B859C}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EventStore.ClientAPI", "Adaptive.ReactiveTrader.Server.EventStoreClientAPI\EventStore.ClientAPI.xproj", "{B48CBD7C-C863-4419-B0A8-EE882C1C5811}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -118,6 +122,10 @@ Global
 		{03F78A0C-36A1-4171-BB62-F22C9C2172A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03F78A0C-36A1-4171-BB62-F22C9C2172A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03F78A0C-36A1-4171-BB62-F22C9C2172A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B48CBD7C-C863-4419-B0A8-EE882C1C5811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B48CBD7C-C863-4419-B0A8-EE882C1C5811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B48CBD7C-C863-4419-B0A8-EE882C1C5811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B48CBD7C-C863-4419-B0A8-EE882C1C5811}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,5 +134,6 @@ Global
 		{797A2A7F-639E-4E47-A218-11B65AE88931} = {2F7266E2-E44D-4F24-92E6-FD1DD57E3D39}
 		{9EB7F80F-1D5A-4BB2-B9B5-646541354706} = {08F51E3B-21F1-441B-A381-E03B99FE7728}
 		{E91BF503-5523-4F11-BD95-544EEE37E115} = {2F7266E2-E44D-4F24-92E6-FD1DD57E3D39}
+		{B48CBD7C-C863-4419-B0A8-EE882C1C5811} = {2F0E558E-0DDE-49AE-A870-6B52C32B859C}
 	EndGlobalSection
 EndGlobal
