@@ -13,12 +13,17 @@
     "Adaptive.ReactiveTrader.Contract": "1.0.0",
     "Adaptive.ReactiveTrader.Messaging": "1.0.0",
     "Adaptive.ReactiveTrader.EventStore": "1.0.0",
-    "Autofac": "4.0.0-rc2-240"
+    "Autofac": "4.0.0-rc2-240",
+    "Rx-Main": "2.2.5"
   },
 
   "frameworks": {
     "netstandard1.3": {
-      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81" ]
+      "imports": [
+        "dnxcore50",
+        "portable-windows8+net45+wp8",
+        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
+      ]
     }
   }
 }

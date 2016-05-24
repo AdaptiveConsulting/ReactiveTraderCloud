@@ -11,7 +11,7 @@
   "dependencies": {
     "Microsoft.Framework.Configuration": "1.0.0-beta8",
     "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
-    "rx-main": "2.2.5",
+    "Rx-Main": "2.2.5",
     "Newtonsoft.Json": "8.0.4-beta1",
     "Serilog": "2.0.0-rc-563"
   },

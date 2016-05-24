@@ -12,8 +12,5 @@
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\WampSharp\src\pcl\WampSharp.Default.Client\WampSharp.Default.Client.csproj" />
-  </ItemGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

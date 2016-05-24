@@ -13,17 +13,18 @@
     "protobuf-net": "2.1.0-alpha-1",
     "Adaptive.ReactiveTrader.Common": "1.0.0",
     "Newtonsoft.Json": "8.0.4-beta1",
-    "System.Collections.Immutable": "1.2.0-rc2-24027"
+    "System.Collections.Immutable": "1.2.0-rc2-24027",
+    "Rx-Main": "2.2.5",
+    "Adaptive.WampSharp.Default.Client": "1.0.0"
   },
 
   "frameworks": {
     "netstandard1.3": {
-      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81", "portable-net45+netcore45" ],
-      "dependencies": {
-        "WampSharp.Default.Client": {
-          "target": "project"
-        }
-      }
+      "imports": [
+        "dnxcore50",
+        "portable-windows8+net45+wp8",
+        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
+      ]
     }
   }
 }
