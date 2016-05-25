@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Adaptive.ReactiveTrader.EventStore.Domain
 {
-    [Serializable]
+    [DataContract]
     public class AggregateDeletedException : AggregateExceptionBase
     {
         public AggregateDeletedException(object id, Type type) : base(id, type)
@@ -15,10 +15,6 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
         }
 
         public AggregateDeletedException(object id, Type type, string message, Exception innerException) : base(id, type, message, innerException)
-        {
-        }
-
-        public AggregateDeletedException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

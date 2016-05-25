@@ -9,6 +9,9 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>083c8b90-b535-4eeb-8015-1ec7c664750a</ProjectGuid>
     <RootNamespace>Adaptive.ReactiveTrader.Server.Analytics</RootNamespace>
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
+    <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
 
   <PropertyGroup>

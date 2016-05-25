@@ -15,7 +15,6 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
     internal class RpcOperation : IWampRpcOperation
     {
         protected static readonly ILogger Log = Log.ForContext<RpcOperation>();
-        private readonly IScheduler _scheduler = TaskPoolScheduler.Default;
 
         private readonly Func<IRequestContext, IMessage, Task> _serviceMethod;
 
@@ -65,7 +64,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
             try
             {
-                _scheduler.Schedule(async () =>
+                Task.Run(async () =>
                 {
                     try
                     {
@@ -98,7 +97,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
                     }
                     catch (Exception e1)
                     {
-                        Log.Error(e1);
+                        Log.Error(e1, "Error processing RPC operation");
                     }
                 });
 
@@ -106,7 +105,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
             }
             catch (Exception e2)
             {
-                Log.Error(e2);
+                Log.Error(e2, "Error processing RPC operation");
                 caller.Error(WampObjectFormatter.Value, dummyDetails, e2.Message);
             }
         }

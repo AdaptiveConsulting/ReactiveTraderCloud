@@ -5,8 +5,9 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Common;
-using Common.Logging;
 using EventStore.ClientAPI;
+using Serilog.Events;
+using ILogger = Serilog.ILogger;
 
 namespace Adaptive.ReactiveTrader.EventStore
 {
@@ -23,6 +24,27 @@ namespace Adaptive.ReactiveTrader.EventStore
         public Dictionary<TKey, TCacheItem> StateOfTheWorld { get; }
     }
 
+    // TODO
+    public class EventLoopScheduler : IScheduler
+    {
+        public IDisposable Schedule<TState>(TState state, Func<IScheduler, TState, IDisposable> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDisposable Schedule<TState>(TState state, TimeSpan dueTime, Func<IScheduler, TState, IDisposable> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDisposable Schedule<TState>(TState state, DateTimeOffset dueTime, Func<IScheduler, TState, IDisposable> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTimeOffset Now { get; }
+    }
+
     public abstract class EventStoreCache<TKey, TCacheItem, TOutput> : IDisposable
     {
         private readonly IConnectableObservable<IConnected<IEventStoreConnection>> _connectionChanged;
@@ -35,13 +57,13 @@ namespace Adaptive.ReactiveTrader.EventStore
         private readonly BehaviorSubject<StateOfTheWorldContainer<TKey, TCacheItem>> _stateOfTheWorldUpdates =
             new BehaviorSubject<StateOfTheWorldContainer<TKey, TCacheItem>>(new StateOfTheWorldContainer<TKey, TCacheItem>());
 
-        private readonly ILog Log;
+        private readonly ILogger _log;
         private IConnectableObservable<RecordedEvent> _events = Observable.Never<RecordedEvent>().Publish();
         private bool _isCaughtUp;
 
-        protected EventStoreCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream, ILog log)
+        protected EventStoreCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream, ILogger log)
         {
-            Log = log;
+            _log = log;
             Disposables = new CompositeDisposable(_eventsConnection, _eventsSubscription);
 
             _connectionChanged = eventStoreConnectionStream.ObserveOn(_eventLoopScheduler)
@@ -53,18 +75,18 @@ namespace Adaptive.ReactiveTrader.EventStore
             {
                 if (x.IsConnected)
                 {
-                    if (Log.IsInfoEnabled)
+                    if (_log.IsEnabled(LogEventLevel.Information))
                     {
-                        Log.Info("Connected to Event Store");
+                        _log.Information("Connected to Event Store");
                     }
 
                     Initialize(x.Value);
                 }
                 else
                 {
-                    if (Log.IsInfoEnabled)
+                    if (_log.IsEnabled(LogEventLevel.Information))
                     {
-                        Log.Info("Disconnected from Event Store");
+                        _log.Information("Disconnected from Event Store");
                     }
 
                     if (!_stateOfTheWorldContainer.IsStale)
@@ -99,9 +121,9 @@ namespace Adaptive.ReactiveTrader.EventStore
 
         private void Initialize(IEventStoreConnection connection)
         {
-            if (Log.IsInfoEnabled)
+            if (_log.IsEnabled(LogEventLevel.Information))
             {
-                Log.Info("Initializing Cache");
+                _log.Information("Initializing Cache");
             }
 
             _stateOfTheWorldContainer.IsStale = true;
@@ -128,9 +150,9 @@ namespace Adaptive.ReactiveTrader.EventStore
         {
             return Observable.Create<TOutput>(obs =>
             {
-                if (Log.IsInfoEnabled)
+                if (_log.IsEnabled(LogEventLevel.Information))
                 {
-                    Log.Info("Got stream request from client");
+                    _log.Information("Got stream request from client");
                 }
 
                 var sotw = _stateOfTheWorldUpdates.TakeUntilInclusive(x => !x.IsStale)
@@ -147,9 +169,9 @@ namespace Adaptive.ReactiveTrader.EventStore
         {
             return Observable.Create<RecordedEvent>(o =>
             {
-                if (Log.IsInfoEnabled)
+                if (_log.IsEnabled(LogEventLevel.Information))
                 {
-                    Log.Info("Getting events from Event Store");
+                    _log.Information("Getting events from Event Store");
                 }
 
                 Action<EventStoreCatchUpSubscription, ResolvedEvent> onEvent =
@@ -159,9 +181,9 @@ namespace Adaptive.ReactiveTrader.EventStore
                 {
                     _eventLoopScheduler.Schedule(() =>
                     {
-                        if (Log.IsInfoEnabled)
+                        if (_log.IsEnabled(LogEventLevel.Information))
                         {
-                            Log.Info("Caught up to live events. Publishing State of The World");
+                            _log.Information("Caught up to live events. Publishing State of The World");
                         }
 
                         _isCaughtUp = true;
@@ -173,17 +195,17 @@ namespace Adaptive.ReactiveTrader.EventStore
                 var subscription = connection.SubscribeToAllFrom(Position.Start, false, onEvent, onCaughtUp);
                 var guid = Guid.Empty;
 
-                if (Log.IsInfoEnabled)
+                if (_log.IsEnabled(LogEventLevel.Information))
                 {
                     guid = Guid.NewGuid();
-                    Log.Info($"Subscribed to Event Store. Subscription ID {guid}");
+                    _log.Information("Subscribed to Event Store. Subscription ID {subscriptionId}", guid);
                 }
 
                 return Disposable.Create(() =>
                 {
-                    if (Log.IsInfoEnabled)
+                    if (_log.IsEnabled(LogEventLevel.Information))
                     {
-                        Log.Info($"Stopping Event Store subscription {guid}");
+                        _log.Information("Stopping Event Store subscription {subscriptionId}", guid);
                     }
 
                     subscription.Stop();

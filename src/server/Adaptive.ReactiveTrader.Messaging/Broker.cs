@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using SystemEx;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Adaptive.ReactiveTrader.Messaging.WAMP;
 using Serilog;
@@ -122,7 +124,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                 Log.Error("Subscription not found for topic {topic}", dest.Topic);
                 throw new Exception("No subscribers found for private subscription.");
             }
-            var sessionID = (await _meta.GetSubscribersAsync(subID.Value)).FirstOrDefault();
+            var sessionID = (await _meta.GetSubscribersAsync(subID.Value)).ToList().FirstOrDefault();
 
             if (sessionID == 0)
             {

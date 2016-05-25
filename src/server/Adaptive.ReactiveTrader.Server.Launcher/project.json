@@ -13,7 +13,10 @@
   },
 
   "dependencies": {
-    "NETStandard.Library": "1.5.0-rc2-24027",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.0-rc2-3002702"
+    },
     "Adaptive.ReactiveTrader.MessageBroker": "1.0.0",
     "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0",
     "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "1.0.0",
@@ -25,7 +28,11 @@
 
   "frameworks": {
     "netstandard1.3": {
-      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81" ]
+      "imports": [
+        "dnxcore50",
+        "portable-windows8+net45+wp8",
+        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
+      ]
     }
   }
 }

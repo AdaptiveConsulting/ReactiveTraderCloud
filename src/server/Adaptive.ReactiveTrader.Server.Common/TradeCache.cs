@@ -5,8 +5,8 @@ using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Contract.Events.Trade;
 using Adaptive.ReactiveTrader.EventStore;
-using Common.Logging;
 using EventStore.ClientAPI;
+using ILogger = Serilog.ILogger;
 
 namespace Adaptive.ReactiveTrader.Server.Host
 {
@@ -15,7 +15,7 @@ namespace Adaptive.ReactiveTrader.Server.Host
         private const string TradeCompletedEvent = "TradeCompletedEvent";
         private const string TradeRejectedEvent = "TradeRejectedEvent";
         private const string TradeCreatedEvent = "TradeCreatedEvent";
-        protected static readonly ILog Log = LogManager.GetLogger<TradeCache>();
+        protected static readonly ILogger Log = Log.ForContext<TradeCache>();
 
         private static readonly ISet<string> TradeEventTypes = new HashSet<string>
         {
@@ -32,7 +32,6 @@ namespace Adaptive.ReactiveTrader.Server.Host
         {
             return GetOutputStream();
         }
-
 
         protected override bool IsMatchingEventType(string eventType)
         {
