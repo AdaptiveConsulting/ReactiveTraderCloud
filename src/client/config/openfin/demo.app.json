@@ -13,11 +13,7 @@
         "minHeight": 600,
         "resizable": true,
         "maximizable": true,
-        "frame": false,
-        "cornerRounding": {
-            "width": 0,
-            "height": 0
-        }
+        "frame": false
     },
     "runtime": {
         "arguments": "",
