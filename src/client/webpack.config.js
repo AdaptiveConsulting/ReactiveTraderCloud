@@ -64,8 +64,16 @@ const webpackConfig = {
 
     new CopyWebpackPlugin([
       {
-        from: './src/ui/common/images',
-        to: 'images'
+        from: './src/ui/common/images/splash-screen.jpg',
+        to: 'images/splash-screen.jpg'
+      },
+      {
+        from: './src/ui/common/images/adaptive-mark-large.png',
+        to: 'images/adaptive-mark-large.png'
+      },
+      {
+        from: './src/ui/common/images/icon.ico',
+        to: 'images/icon.ico'
       }
     ]),
     new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function(module){

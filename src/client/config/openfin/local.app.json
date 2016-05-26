@@ -1,5 +1,6 @@
 {
     "devtools_port": 9090,
+    "splashScreenImage": "http://localhost:3000/images/splash-screen.jpg",
     "startup_app": {
         "name": "Reactive Trader Cloud (LOCAL)",
         "url": "http://localhost:3000/",

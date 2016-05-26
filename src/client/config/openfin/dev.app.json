@@ -1,5 +1,6 @@
 {
     "devtools_port": 9090,
+    "splashScreenImage": "https://web-dev.adaptivecluster.com/images/splash-screen.jpg",
     "startup_app": {
         "name": "Reactive Trader Cloud (DEV)",
         "url": "https://web-dev.adaptivecluster.com",
