@@ -6,6 +6,7 @@ import {ShellModel} from '../model';
 import {router} from '../../../system';
 import {WorkspaceRegionView} from '../../regions/views/workspace';
 import {SingleItemRegionView} from '../../regions/views/singleItem';
+import classnames from 'classnames';
 import './shell.scss';
 
 
@@ -23,7 +24,12 @@ export default class ShellView extends ViewBase {
     if (model === null) {
       return null;
     }
-
+    let workspaceClasses = classnames('shell__workspace', {
+      'shell__workspace--expanded': model.canExpandMainArea
+    });
+    let analyticsClasses = classnames('shell__analytics', {
+      'shell__analytics--expanded': model.canExpandMainArea
+    });
     let wellKnownModelIds = model.wellKnownModelIds;
     return (
       <Chrome>
@@ -40,8 +46,8 @@ export default class ShellView extends ViewBase {
               </button>
             </div>
           </Modal>
-          <WorkspaceRegionView className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId}/>
-          <SingleItemRegionView className='shell__analytics' modelId={wellKnownModelIds.quickAccessRegionModelId}/>
+          <WorkspaceRegionView className={workspaceClasses} modelId={wellKnownModelIds.workspaceRegionModelId}/>
+          <SingleItemRegionView className={analyticsClasses} modelId={wellKnownModelIds.quickAccessRegionModelId}/>
           <SingleItemRegionView className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId}/>
           <div className='shell__footer'>
             <FooterView modelId={wellKnownModelIds.footerModelId}/>
