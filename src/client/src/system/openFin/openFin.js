@@ -40,7 +40,7 @@ export default class OpenFin {
           case 'maximized':
           case 'restored':
           case 'minimized':
-            window.restore(() => window.bringToFront());
+            window.restore(() => window.bringToFront(), err => _log.error(err));
             break;
           default:
             window.maximize(() => _log.info('Window maximized with success.'), err => _log.error('Failed to maximize window.', err));
@@ -189,7 +189,7 @@ export default class OpenFin {
       url: '/notification.html',
       message: tradeNotification,
       onMessage: () => {
-        this.maximise();
+        this.maximize();
       }
     });
     fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification);
