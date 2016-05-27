@@ -42,17 +42,13 @@ export default class ShellModel extends ModelBase {
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.blotterModelId, 'tearOffBlotter')
-        .observe(() => {
-          _this.router.runAction(_this.modelId, () =>_this.canExpandMainArea = true);
-        })
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.canExpandMainArea = true))
     );
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
         .where(({model}) => model.modelId === WellKnownModelIds.blotterModelId)
-        .observe(() => {
-          _this.router.runAction(_this.modelId, () =>_this.canExpandMainArea = false);
-        })
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.canExpandMainArea = false))
     );
   }
 
