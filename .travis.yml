@@ -21,5 +21,4 @@ before_script:
 script:
   - docker ps
   - for i in {1..10}; do curl http://localhost:2113/web/index.html && break; sleep 1; if [[ $i == 10 ]];then false;fi; done
-  # TODO Reenable when test runner is fixed: https://github.com/xunit/xunit/issues/848
-  #- . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$TRAVIS_BUILD_NUMBER bash -c "dotnet test --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests -parallel none"
+  - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$TRAVIS_BUILD_NUMBER bash -c "dotnet test --configuration Release Adaptive.ReactiveTrader.Server.IntegrationTests"

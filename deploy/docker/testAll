@@ -25,9 +25,9 @@ fi
 # smoke tests
 echo " "
 
-# TODO Reenable when test runner is fixed: https://github.com/xunit/xunit/issues/848
+
 echo "Skipping tests - current xunit test runner does not work"
-# echo "Starting local tests ..."
-# docker run                           \
-#   --net=host $serversContainer$build \
-#   bash -c "dotnet test --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests -parallel none" # TODO UPDATE
+echo "Starting local tests ..."
+docker run                           \
+  --net=host $serversContainer$build \
+  bash -c "dotnet test --configuration Release Adaptive.ReactiveTrader.Server.IntegrationTests" # TODO UPDATE
