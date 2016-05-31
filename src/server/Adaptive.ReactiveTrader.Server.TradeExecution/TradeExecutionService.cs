@@ -2,13 +2,13 @@
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     public class TradeExecutionService : ITradeExecutionService, IDisposable
     {
-        private static readonly ILog Log = LogManager.GetLogger<TradeExecutionService>();
+        //private static readonly ILogger Log = Log.ForContext<TradeExecutionService>();
         private readonly TradeExecutionEngine _executionEngine;
 
         public TradeExecutionService(TradeExecutionEngine executionEngine)
@@ -22,7 +22,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         public Task<ExecuteTradeResponseDto> ExecuteTrade(IRequestContext context, ExecuteTradeRequestDto request)
         {
-            Log.DebugFormat("[REQ. RESPONSE] Executing Trade: ({0})", context.UserSession.Username);
+            Log.Debug("[REQ. RESPONSE] Executing Trade: ({username})", context.UserSession.Username);
             return _executionEngine.ExecuteAsync(request, context.UserSession.Username);
         }
     }

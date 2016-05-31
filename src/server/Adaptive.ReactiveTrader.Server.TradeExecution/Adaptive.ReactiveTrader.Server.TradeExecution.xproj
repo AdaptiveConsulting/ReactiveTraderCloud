@@ -7,8 +7,11 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>ba647ef9-8cdb-4c40-9ae8-1546dacdfaec</ProjectGuid>
+    <ProjectGuid>eed95b91-d1c2-4f78-9a37-61bc13ded46e</ProjectGuid>
     <RootNamespace>Adaptive.ReactiveTrader.Server.TradeExecution</RootNamespace>
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
+    <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
 
   <PropertyGroup>

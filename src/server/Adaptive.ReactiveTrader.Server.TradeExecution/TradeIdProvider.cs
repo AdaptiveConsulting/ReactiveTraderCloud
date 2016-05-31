@@ -5,8 +5,8 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
-using Common.Logging;
 using EventStore.ClientAPI.Exceptions;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
@@ -18,7 +18,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
     {
         private const int HiValueTryCount = 3;
         private const int Multiplier = 100;
-        protected static readonly ILog Log = LogManager.GetLogger<TradeIdProvider>();
+        //protected static readonly ILogger Log = Log.FoContext<TradeIdProvider>();
         private readonly IRepository _repository;
         private readonly EventLoopScheduler _scheduler = new EventLoopScheduler();
         private int _hiValue;
@@ -72,7 +72,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                 {
                     wrongVersionException = ex;
                     triesLeft--;
-                    Log.Warn($"Got wrong version when trying to increment TradeId. {triesLeft} tries left");
+                    Log.Warning("Got wrong version when trying to increment TradeId. {triesLeft} tries left", triesLeft);
                 }
             }
 
