@@ -1,31 +1,29 @@
-{
-  "version": "1.0.0",
-  "description": "Service Integration Tests",
-  "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "packOptions": {
-    "tags": [ "Adaptive", "Reactive Trader" ],
-    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
-  },
+﻿{
+  "version": "1.0.0-*",
 
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.1-rc2-24027",
-    "Adaptive.ReactiveTrader.Messaging": "1.0.0",
-    "Adaptive.ReactiveTrader.EventStore": "1.0.0",
-    "Adaptive.ReactiveTrader.Contract": "1.0.0",
-    "Adaptive.ReactiveTrader.Common": "1.0.0",
-    "Newtonsoft.Json": "6.0.6",
-    "xunit": "2.1.0",
-    "xunit.runner.visualstudio": "2.1.0",
     "dotnet-test-xunit": "1.0.0-*",
-    "System.Collections.Immutable": "1.2.0-rc2-24027"
+    "NETStandard.Library": "1.5.0-*",
+    "Adaptive.ReactiveTrader.Server.Launcher": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Common": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
+    "xunit": "2.2.0-*",
+    "Adaptive.WampSharp.Default.Client": "1.0.0-*"
   },
 
   "testRunner": "xunit",
 
   "frameworks": {
-    "netstandard1.3": {
-      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81" ]
+    "netcoreapp1.0": {
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8+wp8",
+        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
+      ]
     }
-  }
+  },
+  "runtimes": {
+    "win10-x64":  {}
+  }  
 }
