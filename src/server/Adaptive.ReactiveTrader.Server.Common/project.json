@@ -1,6 +1,6 @@
-{
-  "version": "1.0.0",
-  "description": "",
+﻿{
+  "version": "1.0.0-*",
+  "description": "Server Common",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
   "packOptions": {
     "tags": [ "Adaptive", "Reactive Trader" ],
@@ -9,16 +9,17 @@
   },
 
   "dependencies": {
-    "Adaptive.ReactiveTrader.Contract": "1.0.0",
-    "Adaptive.ReactiveTrader.EventStore": "1.0.0",
-    "Newtonsoft.Json": "8.0.4-beta1"
+    "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
+    "Adaptive.ReactiveTrader.EventStore": "1.0.0-*",
+    "NETStandard.Library": "1.5.0-*",
+    "Newtonsoft.Json": "8.0.4-*"
   },
 
   "frameworks": {
     "netstandard1.3": {
       "imports": [
         "dnxcore50",
-        "portable-windows8+net45+wp8",
+        "portable-net45+win8+wp8",
         "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
       ]
     }

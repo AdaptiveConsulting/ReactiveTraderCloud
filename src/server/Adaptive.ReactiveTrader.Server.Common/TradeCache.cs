@@ -6,6 +6,7 @@ using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Contract.Events.Trade;
 using Adaptive.ReactiveTrader.EventStore;
 using EventStore.ClientAPI;
+using Serilog;
 using ILogger = Serilog.ILogger;
 
 namespace Adaptive.ReactiveTrader.Server.Host
@@ -15,7 +16,7 @@ namespace Adaptive.ReactiveTrader.Server.Host
         private const string TradeCompletedEvent = "TradeCompletedEvent";
         private const string TradeRejectedEvent = "TradeRejectedEvent";
         private const string TradeCreatedEvent = "TradeCreatedEvent";
-        protected static readonly ILogger Log = Log.ForContext<TradeCache>();
+        //protected static readonly ILogger Log = Log.ForContext<TradeCache>();
 
         private static readonly ISet<string> TradeEventTypes = new HashSet<string>
         {
@@ -24,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Server.Host
             TradeCreatedEvent
         };
 
-        public TradeCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) : base(eventStoreConnectionStream, Log)
+        public TradeCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) : base(eventStoreConnectionStream, Log.Logger)
         {
         }
 
