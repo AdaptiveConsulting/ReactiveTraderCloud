@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Framework.Configuration;
@@ -12,7 +11,7 @@ namespace Adaptive.ReactiveTrader.Common.Config
     public class ServiceConfiguration : IServiceConfiguration
     {
         private const string ConfigFolderName = "configs";
-        private static readonly ILogger Log = Log.ForContext<ServiceConfiguration>();
+        //private static readonly ILogger Log = Log.ForContext<ServiceConfiguration>();
 
         private readonly IConfigurationRoot _config;
 
@@ -31,7 +30,7 @@ namespace Adaptive.ReactiveTrader.Common.Config
             var physicalLocation = searchPaths.Select(p => Path.Combine(p, configFile))
                                               .FirstOrDefault(File.Exists);
 
-            if (physicalLocation == null) throw new FileNotFoundException("Cannon file config", configFile);
+            if (physicalLocation == null) throw new FileNotFoundException("Cannot find file config", configFile);
 
             _config = new ConfigurationBuilder(new JsonConfigurationProvider(physicalLocation)).Build();
 

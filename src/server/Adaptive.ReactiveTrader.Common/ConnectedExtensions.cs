@@ -40,12 +40,12 @@ namespace Adaptive.ReactiveTrader.Common
             Func<TSource, TSource2, TResult> selector) where TResult : IDisposable
         {
             return first.CombineLatest(second,
-                                       (a, b) =>
-                                           GetInstanceStream(() =>
-                                                                 a.IsConnected && b.IsConnected
-                                                                     ? new Connected<TResult>(selector(a.Value, b.Value))
-                                                                     : new Connected<TResult>()))
-                        .Switch();
+                (a, b) =>
+                    GetInstanceStream(() =>
+                        a.IsConnected && b.IsConnected
+                            ? new Connected<TResult>(selector(a.Value, b.Value))
+                            : new Connected<TResult>()))
+                .Switch();
         }
     }
 }

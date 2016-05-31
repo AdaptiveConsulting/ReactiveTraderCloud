@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "description": "Common code that is used across multiple services",
+  "version": "1.0.0-*",
+  "description": "Common",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
   "packOptions": {
     "tags": [ "Adaptive", "Reactive Trader" ],
@@ -9,16 +9,21 @@
   },
 
   "dependencies": {
-    "Microsoft.Framework.Configuration": "1.0.0-beta8",
-    "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+    "NETStandard.Library": "1.5.0-*",
+    "Microsoft.Framework.Configuration": "1.0.0-*",
+    "Microsoft.Framework.Configuration.Json": "1.0.0-*",
     "Rx-Main": "2.2.5",
-    "Newtonsoft.Json": "8.0.4-beta1",
-    "Serilog": "2.0.0-rc-563"
+    "Newtonsoft.Json": "8.0.4-*",
+    "Serilog": "2.0.0-*",
+    "System.Linq": "4.1.0-*"
   },
 
   "frameworks": {
     "netstandard1.3": {
-      "imports": [ "dnxcore50", "portable-net45+winrt45+wp8+wpa81" ]
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8+wp8"
+      ]
     }
   }
 }
