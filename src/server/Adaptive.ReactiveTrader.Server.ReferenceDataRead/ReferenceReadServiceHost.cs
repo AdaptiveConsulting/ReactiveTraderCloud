@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using Common.Logging;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class ReferenceReadServiceHost : ServiceHostBase
     {
-        private new static readonly ILog Log = LogManager.GetLogger<ReferenceReadServiceHost>();
+        //private new static readonly ILogger Log = Log.ForContext<ReferenceReadServiceHost>();
         private readonly IBroker _broker;
         private readonly IReferenceService _service;
         private int _clients;
@@ -30,7 +30,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
         private async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
-            Log.DebugFormat("Received GetCurrencyPairUpdatesStream from {0}",
+            Log.Debug("Received GetCurrencyPairUpdatesStream from {}",
                             context.UserSession.Username ?? "<UNKNOWN USER>");
 
             var payload = JsonConvert.DeserializeObject<NothingDto>(Encoding.UTF8.GetString(message.Payload));
@@ -48,7 +48,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                                                 $"Sending currency pair update to {replyTo}. Count: {o.Updates.Count}. IsStateOfTheWorld: {o.IsStateOfTheWorld}. IsStale: {o.IsStale}");
                                         })
                                     .TakeUntil(endPoint.TerminationSignal).Finally(() => Interlocked.Decrement(ref _clients))
-                                    .Finally(() => { Log.DebugFormat("Tidying up subscripting.", replyTo); })
+                                    .Finally(() => { Log.Debug("Tidying up subscription from {replyTo}.", replyTo); })
                                     .Subscribe(endPoint);
         }
 

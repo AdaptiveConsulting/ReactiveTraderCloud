@@ -1,5 +1,5 @@
-{
-  "version": "1.0.0",
+﻿{
+  "version": "1.0.0-*",
   "description": "Reference Data Read Service",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
   "packOptions": {
@@ -8,23 +8,23 @@
     "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
   },
 
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
   "dependencies": {
     "Microsoft.NETCore.App": {
       "type": "platform",
-      "version": "1.0.0-rc2-3002702"
+      "version": "1.0.0-*"
     },
-    "Adaptive.ReactiveTrader.Server.Host": "1.0.0"
-  },
-
-  "buildOptions": {
-    "emitEntryPoint": true
+    "Adaptive.ReactiveTrader.Server.Host": "1.0.0-*"
   },
 
   "frameworks": {
     "netstandard1.3": {
       "imports": [
         "dnxcore50",
-        "portable-windows8+net45+wp8",
+        "portable-net45+win8+wp8",
         "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
       ]
     }

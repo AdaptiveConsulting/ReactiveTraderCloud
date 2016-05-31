@@ -3,14 +3,12 @@ using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Host;
-using Common.Logging;
 using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
-    public class ReferenceDataReadServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
+    public class ReferenceDataReadServiceHostFactory : IServiceHostFactoryWithEventStore
     {
-        protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataReadServiceHostFactory>();
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
         private CurrencyPairCache _cache;
         private ReferenceService _service;
