@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
     public class BlotterServiceHost : ServiceHostBase
     {
-        private new static readonly ILog Log = LogManager.GetLogger<BlotterServiceHost>();
+        //private new static readonly ILogger Log = Log.ForContext<BlotterServiceHost>();
         private readonly IBroker _broker;
         private readonly IBlotterService _service;
         private IDisposable _subscription;
@@ -26,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 
         private async Task GetTradesStream(IRequestContext context, IMessage message)
         {
-            Log.DebugFormat("Received GetTradesStream from {0}", context.UserSession.Username ?? "<UNKNOWN USER>");
+            Log.Debug("Received GetTradesStream from {username}", context.UserSession.Username ?? "<UNKNOWN USER>");
             var replyTo = message.ReplyTo;
 
             var endPoint = await _broker.GetPrivateEndPoint<TradesDto>(replyTo);
@@ -39,7 +39,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                                                 $"Sending trades update to {replyTo}. Count: {o.Trades.Count}. IsStateOfTheWorld: {o.IsStateOfTheWorld}. IsStale: {o.IsStale}");
                                         })
                                     .TakeUntil(endPoint.TerminationSignal)
-                                    .Finally(() => { Log.DebugFormat("Tidying up subscription.", replyTo); })
+                                    .Finally(() => { Log.Debug("Tidying up subscription from {replyTo}.", replyTo); })
                                     .Subscribe(endPoint);
         }
 
