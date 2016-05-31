@@ -6,13 +6,13 @@ using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Adaptive.ReactiveTrader.Server.Host;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsServiceHost : ServiceHostBase
     {
-        private new static readonly ILog Log = LogManager.GetLogger<AnalyticsServiceHost>();
+        //private new static readonly ILogger Log = Log.ForContext<AnalyticsServiceHost>();
         private readonly IBroker _broker;
         private readonly IAnalyticsService _service;
         private readonly CompositeDisposable _subscriptions;
@@ -33,26 +33,26 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         private void ListenForPricesAndTrades()
         {
-            Log.Info("Subscribing to prices topic...");
+            Log.Information("Subscribing to prices topic...");
 
             _subscriptions.Add(_broker.SubscribeToTopic<SpotPriceDto>("prices")
                                       .Subscribe(p => _service.OnPrice(p)));
 
-            Log.Info("Subscribed to prices topic");
+            Log.Information("Subscribed to prices topic");
 
-            Log.Info("Subscribing to trades...");
+            Log.Information("Subscribing to trades...");
 
             _subscriptions.Add(_tradeCache.GetTrades()
                                           .SelectMany(t => t.Trades)
                                           .Where(t => t.Status == TradeStatusDto.Done)
                                           .Subscribe(t => _service.OnTrade(t)));
 
-            Log.Info("Subscribed to trades");
+            Log.Information("Subscribed to trades");
         }
 
         private async Task GetAnalyticsStream(IRequestContext context, IMessage message)
         {
-            Log.DebugFormat("Received GetAnalyticsStream from {0}", context.UserSession.Username);
+            Log.Debug("Received GetAnalyticsStream from {username}", context.UserSession.Username);
 
             var endPoint = await _broker.GetPrivateEndPoint<PositionUpdatesDto>(message.ReplyTo);
 

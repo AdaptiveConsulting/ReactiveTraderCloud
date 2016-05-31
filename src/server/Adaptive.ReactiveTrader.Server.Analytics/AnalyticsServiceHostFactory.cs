@@ -2,14 +2,12 @@
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Host;
-using Common.Logging;
 using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
     {
-        protected static readonly ILog Log = LogManager.GetLogger<AnalyticsServiceHostFactory>();
         private TradeCache _cache;
 
         private AnalyticsService _service;

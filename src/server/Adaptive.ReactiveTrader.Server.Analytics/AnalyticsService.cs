@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Contract;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsService : IAnalyticsService
     {
-        private static readonly ILog Log = LogManager.GetLogger<AnalyticsService>();
+        //private static readonly ILogger Log = Log.ForContext<AnalyticsService>();
         private readonly AnalyticsEngine _analyticsEngine;
 
         public AnalyticsService(AnalyticsEngine analyticsEngine)
@@ -24,7 +24,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         public void OnTrade(TradeDto trade)
         {
-            Log.Info("Received done trade");
+            Log.Information("Received done trade");
             _analyticsEngine.OnTrade(trade);
         }
 

@@ -5,13 +5,13 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Contract;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsEngine
     {
-        private static readonly ILog Log = LogManager.GetLogger<AnalyticsEngine>();
+        //private static readonly ILogger Log = Log.ForContext<AnalyticsEngine>();
         private readonly IDictionary<string, CurrencyPairTracker> _ccyPairTracker = new Dictionary<string, CurrencyPairTracker>();
         private readonly object _currentPositionLock = new object();
         private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
@@ -107,7 +107,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
                 _currentPositionUpdatesDto = pud;
             }
 
-            Log.Info(pud.ToString());
+            Log.Information(pud.ToString());
 
             _updates.OnNext(pud);
         }
