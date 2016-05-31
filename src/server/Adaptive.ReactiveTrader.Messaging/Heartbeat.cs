@@ -8,7 +8,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class Heartbeat : IDisposable
     {
-        protected static readonly ILogger Log = Log.ForContext<Heartbeat>();
+        //protected static readonly ILogger Log = Log.ForContext<Heartbeat>();
 
         private readonly IBroker _broker;
         private readonly IObservable<long> _heartbeatStream;

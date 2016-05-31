@@ -7,7 +7,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class EndPoint<T> : IEndPoint<T>
     {
-        protected static readonly ILogger Log = Log.ForContext<EndPoint>();
+        //protected static readonly ILogger Log = Log.ForContext<EndPoint>();
 
         private readonly ISubject<T> _subject;
 

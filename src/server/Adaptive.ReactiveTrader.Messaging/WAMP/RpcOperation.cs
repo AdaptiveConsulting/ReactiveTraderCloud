@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
@@ -14,7 +13,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 {
     internal class RpcOperation : IWampRpcOperation
     {
-        protected static readonly ILogger Log = Log.ForContext<RpcOperation>();
+        //protected static readonly ILogger Log = Log.ForContext<RpcOperation>();
 
         private readonly Func<IRequestContext, IMessage, Task> _serviceMethod;
 

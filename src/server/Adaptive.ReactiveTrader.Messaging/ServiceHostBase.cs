@@ -8,7 +8,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     public abstract class ServiceHostBase : IDisposable
     {
-        protected static readonly ILogger Log = Log.ForContext<ServiceHostBase>();
+        //protected static readonly ILogger Log = Log.ForContext<ServiceHostBase>();
 
         private readonly IBroker _broker;
         private readonly Heartbeat _heartbeat;

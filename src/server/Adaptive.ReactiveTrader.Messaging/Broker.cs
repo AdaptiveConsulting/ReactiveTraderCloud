@@ -18,7 +18,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class Broker : IBroker, IDisposable
     {
-        private static readonly ILogger Log = Log.ForContext<Broker>();
+        //private static readonly ILogger Log = Log.ForContext<Broker>();
         private readonly Subject<Unit> _brokerTeardown;
 
         private readonly IWampChannel _channel;

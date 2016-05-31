@@ -4,7 +4,7 @@ namespace Adaptive.ReactiveTrader.Messaging.Abstraction
 {
     public abstract class RequestOperationServerBase
     {
-        protected static readonly ILogger Log = Log.ForContext<RequestOperationServerBase>();
+        //protected static readonly ILogger Log = Log.ForContext<RequestOperationServerBase>();
 
         protected RequestOperationServerBase(IUserSessionCache userSessionCache, bool isSessionRequired)
         {

@@ -11,7 +11,7 @@ namespace Adaptive.ReactiveTrader.Messaging.Abstraction
     internal class RequestStreamServer<TRequest, TUpdate> : RequestOperationServerBase,
         IRequestStreamServer<TRequest, TUpdate>
     {
-        protected new static readonly ILogger Log = Log.ForContext<RequestStreamServer<TRequest, TUpdate>>();
+        //protected new static readonly ILogger Log = Log.ForContext<RequestStreamServer<TRequest, TUpdate>>();
         private readonly IMessageFactory _messageFactory;
         private readonly IPublisher _publisher;
         private readonly IScheduler _scheduler;
