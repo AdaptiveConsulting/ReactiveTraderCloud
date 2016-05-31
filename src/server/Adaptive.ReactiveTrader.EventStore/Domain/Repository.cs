@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
+using Serilog;
 using Serilog.Events;
 using ILogger = Serilog.ILogger;
 
@@ -17,7 +18,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
     {
         private const int WritePageSize = 500;
         private const int ReadPageSize = 500;
-        private static readonly ILogger Log = Log.ForContext<Repository>();
+        //private static readonly ILogger Log = Log.ForContext<Repository>();
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.None};
         private readonly IEventStoreConnection _eventStoreConnection;
         private readonly EventTypeResolver _eventTypeResolver;

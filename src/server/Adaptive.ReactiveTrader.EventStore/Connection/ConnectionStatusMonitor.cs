@@ -2,6 +2,7 @@
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using EventStore.ClientAPI;
+using Serilog;
 using Serilog.Events;
 
 namespace Adaptive.ReactiveTrader.EventStore.Connection
@@ -13,7 +14,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Connection
 
     public class ConnectionStatusMonitor : IConnectionStatusMonitor
     {
-        protected static readonly Serilog.ILogger Log = Log.ForContext<ConnectionStatusMonitor>();
+        //protected static readonly Serilog.ILogger Log = Log.ForContext<ConnectionStatusMonitor>();
         private readonly IConnectableObservable<ConnectionInfo> _connectionInfoChanged;
         private readonly IDisposable _connection;
 

@@ -24,27 +24,6 @@ namespace Adaptive.ReactiveTrader.EventStore
         public Dictionary<TKey, TCacheItem> StateOfTheWorld { get; }
     }
 
-    // TODO
-    public class EventLoopScheduler : IScheduler
-    {
-        public IDisposable Schedule<TState>(TState state, Func<IScheduler, TState, IDisposable> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDisposable Schedule<TState>(TState state, TimeSpan dueTime, Func<IScheduler, TState, IDisposable> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDisposable Schedule<TState>(TState state, DateTimeOffset dueTime, Func<IScheduler, TState, IDisposable> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DateTimeOffset Now { get; }
-    }
-
     public abstract class EventStoreCache<TKey, TCacheItem, TOutput> : IDisposable
     {
         private readonly IConnectableObservable<IConnected<IEventStoreConnection>> _connectionChanged;
