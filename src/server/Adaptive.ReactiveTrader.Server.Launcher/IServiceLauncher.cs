@@ -8,6 +8,6 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         string StartService(ServiceType serviceType);
         bool KillService(string serviceName);
         IEnumerable<string> GetRunningServices();
-        void InitializeEventStore(IEventStoreConfiguration config, bool runEmbeddedEventStore);
+        void InitializeEventStore(IEventStoreConfiguration config);
     }
 }

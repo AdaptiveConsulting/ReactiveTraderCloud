@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Adaptive.ReactiveTrader.MessageBroker;
-using Common.Logging;
-using Common.Logging.Simple;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Launcher
 {
@@ -46,31 +44,22 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                 Console.CancelKeyPress += (s, e) =>
                 {
                     Log.Info("Termination signal sent.");
-                    
                     Stop();
                 };
 
-                LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
-                {
-                    ShowLogName = true
-                };
+                Serilog.Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Information()
+                    .WriteTo.ColoredConsole()
+                    .CreateLogger();
 
                 if (_config.PopulateEventStore)
-                    _launcher.InitializeEventStore(_config.EventStoreParameters, _config.RunEmbeddedEventStore);
-
-                if (_config.RunMessageBroker)
-                {
-                    MessageBrokerLauncher.Run();
-                    Log.Info("Started Message Broker");
-                }
+                    _launcher.InitializeEventStore(_config.EventStoreParameters);
 
                 foreach (var service in _config.ServicesToStart)
                     ParseCommand($"start {service}");
 
-
                 foreach (var unhandledCommand in _config.InvalidArguments)
                     Log.Error("Unrecognised Command:  {0}", unhandledCommand);
-
 
                 if (!_config.IsInteractive)
                 {
@@ -205,9 +194,9 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
 
         private static void Usage()
         {
-            Console.WriteLine("Reactive Trader launcher v{0}", Assembly.GetAssembly(typeof(Program)).GetName().Version);
+            Console.WriteLine("Reactive Trader launcher v{0}", typeof(Program).GetTypeInfo().Assembly.GetName().Version);
             Console.WriteLine();
-            Console.WriteLine("usage dotnet run [service] [options]");
+            Console.WriteLine("usage dnx run [service] [options]");
 
             Console.WriteLine();
             Console.WriteLine("service:");
@@ -218,14 +207,12 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             Console.WriteLine("  a|analytics - launch an analytics service.");
             Console.WriteLine();
             Console.WriteLine("  all - launches all of the above.");
-            Console.WriteLine("  dev - launches all of the above with an embedded eventstore & message broker in interactive mode.");
+            Console.WriteLine("  dev - launches all of the above in interactive mode and populate eventstore with data.");
 
             Console.WriteLine();
             Console.WriteLine("options:");
             Console.WriteLine("  --interactive - launch in interactive mode");
-            Console.WriteLine("  --message-broker - launch with message broker (use when crossbar.io isn't running)");
-            Console.WriteLine("  --eventstore - launch with embedded event store");
-            Console.WriteLine("  --populate-eventstore|--init-es - populate external event store");
+            Console.WriteLine("  --populate-eventstore - populate external event store");
             Console.WriteLine();
         }
     }

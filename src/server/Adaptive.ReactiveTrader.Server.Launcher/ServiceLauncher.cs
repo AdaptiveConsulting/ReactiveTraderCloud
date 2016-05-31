@@ -81,11 +81,9 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             return _services.Keys;
         }
 
-        public void InitializeEventStore(IEventStoreConfiguration configuration, bool runEmbeddedEventStore)
+        public void InitializeEventStore(IEventStoreConfiguration configuration)
         {
-            var eventStoreConnection =
-                EventStoreConnectionFactory.Create(
-                    runEmbeddedEventStore ? EventStoreLocation.Embedded : EventStoreLocation.External, configuration);
+            var eventStoreConnection = EventStoreConnectionFactory.Create(EventStoreLocation.External, configuration);
 
             eventStoreConnection.ConnectAsync().Wait();
 

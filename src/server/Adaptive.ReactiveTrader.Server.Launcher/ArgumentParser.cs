@@ -21,12 +21,10 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             {
                 Help = !arguments.Any() || arguments.Any(a => a.IsIn("--help", "/?", "-h", "-help")),
                 IsInteractive = arguments.Any(a => a == "--interactive"),
-                PopulateEventStore = arguments.Any(a => a.IsIn("--eventstore", "--populate-eventstore", "--init-es")),
-                RunEmbeddedEventStore = arguments.Any(a => a == "--eventstore"),
+                PopulateEventStore = arguments.Any(a => a == "--populate-eventstore"),
                 EventStoreParameters = configFile.EventStore,
-                RunMessageBroker = arguments.Any(a => a == "--message-broker"),
                 InvalidArguments = new List<string>(),
-                ServicesToStart = servicesToStart,
+                ServicesToStart = servicesToStart
             };
 
             return config;
@@ -36,8 +34,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         {
             string[] devArgs =
             {
-                "pricing", "reference-read", "execution", "blotter", "analytics", "--interactive",
-                "--eventstore", "--message-broker"
+                "pricing", "reference-read", "execution", "blotter", "analytics", "--interactive"
             };
 
             string[] allArgs =

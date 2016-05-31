@@ -1,6 +1,6 @@
-{
-  "version": "1.0.0",
-  "description": "Allows user to launch all services interactively",
+﻿{
+  "version": "1.0.0-*",
+  "description": "Service Launcher",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
   "packOptions": {
     "tags": [ "Adaptive", "Reactive Trader" ],
@@ -15,22 +15,21 @@
   "dependencies": {
     "Microsoft.NETCore.App": {
       "type": "platform",
-      "version": "1.0.0-rc2-3002702"
+      "version": "1.0.0-*"
     },
-    "Adaptive.ReactiveTrader.MessageBroker": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0",
-    "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0"
+    "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*"
   },
 
   "frameworks": {
     "netstandard1.3": {
       "imports": [
         "dnxcore50",
-        "portable-windows8+net45+wp8",
+        "portable-net45+win8+wp8",
         "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
       ]
     }
