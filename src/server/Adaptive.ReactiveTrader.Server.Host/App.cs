@@ -5,14 +5,14 @@ using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.Messaging;
 using EventStore.ClientAPI;
-using ILogger = Serilog.ILogger;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Host
 {
     public class App
     {
         public const int ThreadSleep = 5000;
-        private static readonly ILogger Log = Log.ForContext<App>();
+        //private static readonly ILogger Log = Log.ForContext<App>();
         private readonly string[] _args;
         private readonly IServiceHostFactory _factory;
         private readonly ManualResetEvent _reset = new ManualResetEvent(false);
@@ -42,7 +42,10 @@ namespace Adaptive.ReactiveTrader.Server.Host
                 _reset.Set();
             };
 
-           // TODO setup serilog
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.ColoredConsole()
+                .CreateLogger();
 
             var config = ServiceConfiguration.FromArgs(_args);
 
