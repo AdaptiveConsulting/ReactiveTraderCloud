@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>ff8a9f16-6cd3-494a-9ad1-4c2ca69d7b31</ProjectGuid>
+    <ProjectGuid>3fe78b9d-be39-434f-81a4-c92633d07d4c</ProjectGuid>
     <RootNamespace>Adaptive.ReactiveTrader.Common</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
