@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using Common.Logging;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public class PricingServiceHost : ServiceHostBase
     {
-        protected new static readonly ILog Log = LogManager.GetLogger<PricingServiceHost>();
+        // protected new static readonly ILogger Log = Log.ForContext<PricingServiceHost>();
         private readonly IBroker _broker;
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
@@ -37,7 +37,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         public async Task GetPriceUpdates(IRequestContext context, IMessage message)
         {
-            Log.DebugFormat("{0} Received GetPriceUpdates from [{1}] for replyTo {2}",
+            Log.Debug("{host} Received GetPriceUpdates from [{user}] for replyTo {replyTo}",
                             this,
                             context.UserSession.Username ?? "Unknown User",
                             message.ReplyTo);
