@@ -6,7 +6,7 @@ You will find here:
     - `crossbar`: Base OS with crossbar installed
     - `eventstore`: Base OS with eventstore installed
     - `gcloud`: Base OS used to manage creation of googleCloudEngine cluster
-    - `mono`: Base OS with mono, DNVM and some dependency libraries.
+    - `dotnet`: Base OS with dotnet CLI.
     - `nginx`: Base OS with nginx insalled
     - `node`: Base OS with node insalled. This container is not used for now
     - `testtools`: Base OS with some dependencies used to test other ones.

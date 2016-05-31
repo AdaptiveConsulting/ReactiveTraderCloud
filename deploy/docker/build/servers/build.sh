@@ -16,10 +16,8 @@ mkdir -p ./build
 # get source code
 cp -r ../../../../src/server ./build/
 
-cp  ./template.Dockerfile                      ./build/Dockerfile
-sed -ie "s|__MONO_CONTAINER__|$monoContainer|g" ./build/Dockerfile
-
-# sed -ie "s/__VDNX__/$vDnx/g"                    ./build/Dockerfile
+cp  ./template.Dockerfile                           ./build/Dockerfile
+sed -ie "s|__DOTNET_CONTAINER__|$dotnetContainer|g" ./build/Dockerfile
 
 # build
 docker build --no-cache -t weareadaptive/serverssrc:$build ./build/.

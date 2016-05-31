@@ -149,7 +149,7 @@ weareadaptive/node          0.0                 67d6845f9120        9 days ago  
 weareadaptive/testtools     1.1                 ab6e2b210d47        11 days ago         227.3 MB
 weareadaptive/nginx         0.0                 ae19d8b9954e        12 days ago         132.8 MB
 weareadaptive/eventstore    0.0                 9e4aeaff3d81        12 days ago         293.6 MB
-weareadaptive/mono          0.0                 7e5be450434d        12 days ago         796.3 MB
+weareadaptive/dotnet        0.0                 7e5be450434d        12 days ago         796.3 MB
 weareadaptive/crossbar      0.0                 dda530e30ef9        12 days ago         379.7 MB
 ```
 

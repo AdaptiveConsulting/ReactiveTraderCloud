@@ -1,4 +1,4 @@
-FROM        __MONO_CONTAINER__
+FROM        __DOTNET_CONTAINER__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
 COPY        server    /server
