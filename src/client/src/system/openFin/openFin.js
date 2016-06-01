@@ -51,6 +51,13 @@ export default class OpenFin {
       });
   }
 
+  restore(currentWindow = this._currentWindow){
+    currentWindow.restore(() => currentWindow.bringToFront(
+      () => _Log.info(' Window restored and brought to front.'),
+      err => _Log.error(err)),
+      err => _Log.error(err));
+  }
+
   addSubscription(name:string, callback){
     if (!this.isRunningInOpenFin) return;
     if (!fin.desktop.InterApplicationBus){
@@ -192,7 +199,7 @@ export default class OpenFin {
       url: '/notification.html',
       message: tradeNotification,
       onMessage: () => {
-        this.maximize();
+        this.restore();
       }
     });
     fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification);
