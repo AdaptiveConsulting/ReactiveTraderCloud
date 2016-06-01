@@ -3,6 +3,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Raven.Client.Platform;
 
 namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 {
@@ -11,7 +12,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
         private const int ReceiveChunkSize = 1024;
         private const int SendChunkSize = 1024;
 
-        private readonly ClientWebSocket _ws;
+        private readonly RavenClientWebSocket _ws;
         private readonly Uri _uri;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
@@ -22,9 +23,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 
         protected ClientWebSocketWrapper(string uri)
         {
-            _ws = new ClientWebSocket();
-            _ws.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
-            _ws.Options.AddSubProtocol("wamp.2.json");
+            _ws = new RavenClientWebSocket();
             _uri = new Uri(uri);
             _cancellationToken = _cancellationTokenSource.Token;
         }
@@ -142,24 +141,19 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
         private void CallOnMessage(StringBuilder stringResult)
         {
             if (_onMessage != null)
-                RunInTask(() => _onMessage(stringResult.ToString(), this));
+                Task.Run(() => _onMessage(stringResult.ToString(), this));
         }
 
         private void CallOnDisconnected()
         {
             if (_onDisconnected != null)
-                RunInTask(() => _onDisconnected(this));
+                Task.Run(() => _onDisconnected(this));
         }
 
         private void CallOnConnected()
         {
             if (_onConnected != null)
-                RunInTask(() => _onConnected(this));
-        }
-
-        private static void RunInTask(Action action)
-        {
-            Task.Run(action);
+                Task.Run(() => _onConnected(this));
         }
     }
 }
