@@ -1,5 +1,5 @@
 $shell-background-color:      #212A35;
-$analytics-background-color:  #293543;
+$panel-background-color:      #293543;
 $blotter-height:              20vh;
 $header-height:               30px;
 $footer-height:               30px;
@@ -84,6 +84,11 @@ $splash-logo-margin-top:      20vh;
     background-color: transparent;
   }
 
+  //ie
+  -ms-scrollbar-arrow-color: lightgrey;
+  -ms-scrollbar-base-color: $panel-background-color;
+  -ms-scrollbar-track-color: $shell-background-color;
+
 }
 
 .shell__workspace {
@@ -106,7 +111,7 @@ $splash-logo-margin-top:      20vh;
   order: 3;
   height: $analytics-height;
   overflow-y: auto;
-  background: $analytics-background-color;
+  background: $panel-background-color;
   padding: 0px;
 
   &.shell__analytics--expanded {
