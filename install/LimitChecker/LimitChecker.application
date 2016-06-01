@@ -8,7 +8,7 @@
         <beforeApplicationStartup />
       </update>
     </subscription>
-    <deploymentProvider codebase="http://adaptiveconsulting.github.io/ReactiveTraderJS/install/LimitChecker/LimitChecker.application" />
+    <deploymentProvider codebase="http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application" />
   </deployment>
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
     <framework targetVersion="4.0" profile="Client" supportedRuntime="4.0.30319" />
@@ -22,7 +22,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>oJ7d2yGz8AXKFeVkOZXYQElpLeY=</dsig:DigestValue>
+        <dsig:DigestValue>K080BahGVeMSjFjL+hw8KW2emUw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
