@@ -223,4 +223,8 @@ export default class OpenFin {
   sendPositionClosedNotification(uuid:string, correlationId:string){
     fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId);
   }
+
+  openLink(url): void {
+    fin.desktop.System.openUrlWithBrowser(url);
+  }
 }

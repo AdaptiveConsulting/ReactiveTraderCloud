@@ -5,7 +5,7 @@ import Direction from '../../services/model/direction';
 import TradeStatus from '../../services/model/tradeStatus';
 
 const DONE = 'Done';
-const REJECTED = 'REJECTED';
+const REJECTED = 'Rejected';
 const BOUGHT = 'Bought';
 const SOLD = 'Sold';
 
@@ -15,7 +15,7 @@ export default class TradeNotificationView extends React.Component {
     message: React.PropTypes.object.isRequired,
     dismissNotification: React.PropTypes.func.isRequired
   };
-  
+
   render() {
     let trade = this.props.message;
     let statusClassName = classnames(
@@ -30,7 +30,7 @@ export default class TradeNotificationView extends React.Component {
       }
     );
     let secondCurrency = trade.dealtCurrency === trade.baseCurrency ? trade.termsCurrency : trade.baseCurrency;
-    let tradeStatus = trade.tradeStatus === TradeStatus.Done? trade.tradeStatus : REJECTED;
+    let tradeStatus = trade.tradeStatus === TradeStatus.Done? trade.tradeStatus : REJECTED.toUpperCase();
     let direction = trade.direction === Direction.Buy ? BOUGHT : SOLD;
 
     return (

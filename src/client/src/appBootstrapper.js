@@ -125,7 +125,7 @@ class AppBootstrapper {
     headerModel.observeEvents();
 
     // wire-up the footer
-    let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService);
+    let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService, this._openFin);
     footerModel.observeEvents();
 
     this._referenceDataService.hasLoadedStream.subscribe(() => {
