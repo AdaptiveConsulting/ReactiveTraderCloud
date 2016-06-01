@@ -62,3 +62,35 @@ $footer-background-color: #dee3e8;
   font-size: 14px;
   padding: 7px 10px;
 }
+
+.footer__logo-container{
+  height: 30px;
+  float: right;
+  padding-top: 2px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 40px;
+}
+
+.footer__logo{
+  display: inline-block;
+  height: 24px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.footer__logo-openfin{
+  background: url('../../common/images/openfin-logo.png') no-repeat;
+  width: 84px;
+  float: right;
+  margin-top: 3px;
+}
+
+.footer__logo-openfin--hidden{
+  display: none;
+}
+
+.footer__logo-adaptive{
+  background: url('../../common/images/adaptive-logo.png') no-repeat;
+  width: 110px;
+}

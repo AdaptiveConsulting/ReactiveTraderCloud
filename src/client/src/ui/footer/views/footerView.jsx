@@ -1,7 +1,7 @@
 import React from 'react';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
-import { FooterModel } from '../model';
+import { FooterModel, ExternalURL } from '../model';
 import {  ServiceStatusLookup, ApplicationStatusConst } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';
 import classnames from 'classnames';
@@ -31,10 +31,23 @@ export default class FooterView extends ViewBase {
         'hide': !model.shouldShowServiceStatus
       });
 
+    let openfinLogoClassName = classnames(
+      'footer__logo',
+      {
+        'footer__logo-openfin': model.isRunningInOpenFin,
+        'footer__logo-openfin--hidden': !model.isRunningInOpenFin
+      }
+    );
+
     return (
         <footer className='footer'>
           <span className='footer__connection-url'>{model.isConnectedToBroker ? `Connected to ${model.connectionUrl} (${model.connectionType})` : 'Disconnected'} </span>
-         <i onMouseEnter={(e) => this._toggleServiceStatus()}
+          <span className='footer__logo-container '>
+            <span className='footer__logo footer__logo-adaptive' onClick={() => model.openLink(ExternalURL.adaptiveURL)}></span>
+            <span className={openfinLogoClassName} onClick={() => model.openLink(ExternalURL.openfinURL)}></span>
+          </span>
+
+          <i onMouseEnter={(e) => this._toggleServiceStatus()}
             onMouseLeave={(e) => this._toggleServiceStatus()}
             className={'footer__general-status-icon fa fa-circle ' + applicationStatusCssLookup[model.applicationStatus]} >
          </i>
