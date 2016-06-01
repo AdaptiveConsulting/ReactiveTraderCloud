@@ -1,5 +1,11 @@
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .workspace-region{
+    width: calc(100% - 10px) !important;
+  }
+}
+
 .workspace-region {
-  width: calc(100% - 10px);
+  width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
