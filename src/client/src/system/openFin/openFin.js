@@ -26,24 +26,27 @@ export default class OpenFin {
     return typeof fin !== 'undefined';
   }
 
-  close(window = this._currentWindow){
-    window.close(true, () => _log.info('Window closed with success.'), err => _log.error('Failed to close window.', err));
+  close(currentWindow = this._currentWindow){
+    currentWindow.close(true, () => _log.info('Window closed with success.'), err => _log.error('Failed to close window.', err));
   }
 
-  minimize(window = this._currentWindow){
-    window.minimize(() => _log.info('Window minimized with success.'), err => _log.error('Failed to minimize window.', err));
+  minimize(currentWindow = this._currentWindow){
+    currentWindow.minimize(() => _log.info('Window minimized with success.'), err => _log.error('Failed to minimize window.', err));
   }
 
-  maximize(window = this._currentWindow){
-    window.getState(state => {
+  maximize(currentWindow = this._currentWindow){
+    currentWindow.getState(state => {
         switch (state){
           case 'maximized':
           case 'restored':
           case 'minimized':
-            window.restore(() => window.bringToFront());
+            currentWindow.restore(() => currentWindow.bringToFront(
+              () => _log.info('Window brought to front.'),
+              err => _log.error(err)
+            ), err => _log.error(err));
             break;
           default:
-            window.maximize(() => _log.info('Window maximized with success.'), err => _log.error('Failed to maximize window.', err));
+            currentWindow.maximize(() => _log.info('Window maximized with success.'), err => _log.error('Failed to maximize window.', err));
         }
       });
   }
@@ -189,7 +192,7 @@ export default class OpenFin {
       url: '/notification.html',
       message: tradeNotification,
       onMessage: () => {
-        this.maximise();
+        this.maximize();
       }
     });
     fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification);
