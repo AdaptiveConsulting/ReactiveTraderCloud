@@ -4,7 +4,9 @@ $blotter-height:              20vh;
 $header-height:               30px;
 $footer-height:               30px;
 $workspace-height:            calc(100% - #{$blotter-height} - #{$footer-height});
+$workspace-height-expanded:   calc(100% - #{$footer-height});
 $analytics-height:            $workspace-height;
+$analytics-height-expanded:   $workspace-height-expanded;
 $analytics-width:             400px;
 $workspace-width:             calc(100vw - #{$analytics-width});
 $splash-logo-height:          400px;
@@ -91,6 +93,10 @@ $splash-logo-margin-top:      20vh;
   height: $workspace-height;
   overflow-y: auto;
   overflow-x: hidden;
+
+  &.shell__workspace--expanded {
+    height: $workspace-height-expanded;
+  }
 }
 
 .shell__analytics {
@@ -102,6 +108,10 @@ $splash-logo-margin-top:      20vh;
   overflow-y: auto;
   background: $analytics-background-color;
   padding: 0px;
+
+  &.shell__analytics--expanded {
+    height: $analytics-height-expanded;
+  }
 }
 
 .shell__blotter {
