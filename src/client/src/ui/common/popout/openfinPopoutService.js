@@ -8,6 +8,7 @@ import _ from 'lodash';
 const DockingManager = require('exports?DockingManager!../../../../lib/dockingManager.js');
 
 const DOCKED_CLASS_NAME = 'docked';
+const BOUNDS_CHANGING_EVENT = 'bounds-changing';
 
 let _log:logger.Logger = logger.create('OpenfinPopoutService');
 
@@ -22,6 +23,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
 
   openPopout({url, title, onClosing, windowOptions = { height: 400, width: 400, dockable: false }}:PopoutOptions, view:React.Component) {
     this._createWindow({url, title, windowOptions}, tearoutWindow => {
+      const onBoundsChanging = _.throttle(() => tearoutWindow.setAsForeground(), 300);
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div');
       popoutContainer.id = this._popoutContainerId;
       tearoutWindow.contentWindow.document.body.appendChild(popoutContainer);
@@ -31,6 +33,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
         close={() => {
           this._openFin.close(tearoutWindow);
           this._unregisterWindow(tearoutWindow);
+          tearoutWindow.removeEventListener(BOUNDS_CHANGING_EVENT, onBoundsChanging);
           if (popoutContainer) {
             ReactDOM.unmountComponentAtNode(popoutContainer);
           }
@@ -52,6 +55,8 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
         }
       }, () => tearoutWindow.bringToFront());
       this._registerWindow(tearoutWindow, windowOptions.dockable);
+
+      tearoutWindow.addEventListener(BOUNDS_CHANGING_EVENT, onBoundsChanging);
     }, err => _log.error(`An error occured while tearing out window: ${err}`));
   }
 

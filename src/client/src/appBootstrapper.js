@@ -4,6 +4,7 @@ import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { HeaderModel } from './ui/header/model';
 import { FooterModel } from './ui/footer/model';
+import { SidebarModel } from './ui/sidebar/model';
 import { ShellModel } from './ui/shell/model';
 import { ChromeModel } from './ui/common/components/chrome/model';
 import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
@@ -93,7 +94,10 @@ class AppBootstrapper {
     blotterRegionModel.observeEvents();
     let quickAccessRegionModel = new SingleItemRegionModel(WellKnownModelIds.quickAccessRegionModelId, RegionNames.quickAccess, espRouter);
     quickAccessRegionModel.observeEvents();
-    let regionManager = new RegionManager([workspaceRegionModel, popoutRegionModel, blotterRegionModel, quickAccessRegionModel], this._openFin.isRunningInOpenFin);
+    let sidebarRegionModel = new SingleItemRegionModel(WellKnownModelIds.sidebarRegionModelId, RegionNames.sidebar, espRouter);
+    sidebarRegionModel.observeEvents();
+    let regionManager = new RegionManager(
+      [workspaceRegionModel, popoutRegionModel, blotterRegionModel, quickAccessRegionModel, sidebarRegionModel], this._openFin.isRunningInOpenFin);
 
     // wire up the shell
     let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection, this._openFin);
@@ -111,6 +115,10 @@ class AppBootstrapper {
       new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager, this._schedulerService, this._openFin)
     );
     spotTileLoader.beginLoadTiles();
+
+    // wire-up the sidebar
+    let sidebarModel = new SidebarModel(WellKnownModelIds.sidebarModelId, espRouter, regionManager);
+    sidebarModel.observeEvents();
 
     // wire-up the blotter
     let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager, this._openFin);
