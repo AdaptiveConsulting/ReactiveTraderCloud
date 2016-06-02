@@ -11,6 +11,8 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
     {
         private const int ReceiveChunkSize = 1024;
         private const int SendChunkSize = 1024;
+        private const string SubProtocol = "wamp.2.json";
+        private readonly TimeSpan _keepAliveInterval = TimeSpan.FromSeconds(20);
 
         private readonly CommonWebSocket _ws;
         private readonly Uri _uri;
@@ -23,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 
         protected ClientWebSocketWrapper(string uri)
         {
-            _ws = CommonWebSocket.CreateClientWebSocket("wamp.2.json", TimeSpan.FromSeconds(20), 1024, false);
+            _ws = CommonWebSocket.CreateClientWebSocket(SubProtocol, _keepAliveInterval, ReceiveChunkSize, false);
             _uri = new Uri(uri);
             _cancellationToken = _cancellationTokenSource.Token;
         }

@@ -1,7 +1,4 @@
-﻿// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -16,12 +13,14 @@ using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.WebSockets.Protocol
 {
+    // This is a modified version of https://github.com/aspnet/WebSockets/blob/dev/src/Microsoft.AspNetCore.WebSockets.Protocol/CommonWebSocket.cs
+    // To get running on .NET Core (netstandard1.3) this class uses a TcpClient to connect to a WebSocket endpoint and uses the response stream to send/receive WebSocket messages
+    // This class should be replaced by System.Net.WebSockets.ClientWebSocket when https://github.com/dotnet/corefx/issues/2486 is resolved
     // https://tools.ietf.org/html/rfc6455
     public class CommonWebSocket : WebSocket
     {
-        private readonly static byte[] PingBuffer = Encoding.ASCII.GetBytes("abcdefghijklmnopqrstuvwxyz");
-        private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
-
+        private static readonly byte[] PingBuffer = Encoding.ASCII.GetBytes("abcdefghijklmnopqrstuvwxyz");
+        private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
         private NetworkStream _stream;
         private readonly string _subProtocol;
         private readonly TimeSpan _keepAliveInterval;
@@ -32,13 +31,12 @@ namespace Microsoft.AspNetCore.WebSockets.Protocol
         private Timer _keepAliveTimer;
 
         private WebSocketState _state;
-
         private WebSocketCloseStatus? _closeStatus;
         private string _closeStatusDescription;
 
         private bool _isOutgoingMessageInProgress;
 
-        private byte[] _receiveBuffer;
+        private readonly byte[] _receiveBuffer;
         private int _receiveBufferOffset;
         private int _receiveBufferBytes;
 
@@ -46,10 +44,10 @@ namespace Microsoft.AspNetCore.WebSockets.Protocol
         private long _frameBytesRemaining;
         private int? _firstDataOpCode;
         private int _dataUnmaskOffset;
-        private Utilities.Utf8MessageState _incomingUtf8MessageState = new Utilities.Utf8MessageState();
-        private TcpClient _connection;
+        private readonly Utilities.Utf8MessageState _incomingUtf8MessageState = new Utilities.Utf8MessageState();
+        private readonly TcpClient _connection;
 
-        public CommonWebSocket(string subProtocol, TimeSpan keepAliveInterval, int receiveBufferSize, bool maskOutput, bool useZeroMask, bool unmaskInput)
+        protected CommonWebSocket(string subProtocol, TimeSpan keepAliveInterval, int receiveBufferSize, bool maskOutput, bool useZeroMask, bool unmaskInput)
         {
             _connection = new TcpClient
             {
@@ -80,7 +78,7 @@ namespace Microsoft.AspNetCore.WebSockets.Protocol
             _stream = _connection.GetStream();
 
             var secKey = Convert.ToBase64String(Encoding.ASCII.GetBytes(Guid.NewGuid().ToString().Substring(0, 16)));
-            string expectedAccept = HandshakeHelpers.CreateResponseKey(secKey);
+            var expectedAccept = HandshakeHelpers.CreateResponseKey(secKey);
 
             var headerString =
                 $"GET {uri.PathAndQuery} HTTP/1.1\r\n" +
@@ -88,7 +86,7 @@ namespace Microsoft.AspNetCore.WebSockets.Protocol
                 "Connection: Upgrade\r\n" +
                 "Upgrade: websocket\r\n" +
                 "Sec-WebSocket-Version: 13\r\n" +
-                "Sec-WebSocket-Protocol: wamp.2.json\r\n" +
+                $"Sec-WebSocket-Protocol: {_subProtocol}\r\n" +
                 $"Sec-WebSocket-Key: {secKey}\r\n\r\n";
 
             var bytes = Encoding.UTF8.GetBytes(headerString);
@@ -116,13 +114,17 @@ namespace Microsoft.AspNetCore.WebSockets.Protocol
                 line = resultString.ReadLine();
             }
 
-            if (respCode != (int)HttpStatusCode.SwitchingProtocols)
-                throw new WebSocketException("The server returned status code '" + (int)respCode +
-                                             "' when status code '101' was expected");
+            if (respCode != (int) HttpStatusCode.SwitchingProtocols)
+            {
+                throw new WebSocketException($"The server returned status code '{respCode}' when status code '101' was expected");
+            }
+
             if (!string.Equals(headers["Upgrade"], "WebSocket", StringComparison.OrdinalIgnoreCase)
                 || !string.Equals(headers["Connection"], "Upgrade", StringComparison.OrdinalIgnoreCase)
                 || !string.Equals(headers["Sec-WebSocket-Accept"], expectedAccept))
+            {
                 throw new WebSocketException("HTTP header error during handshake");
+            }
 
             _state = WebSocketState.Open;
 
@@ -161,7 +163,7 @@ namespace Microsoft.AspNetCore.WebSockets.Protocol
 
             // Get 32-bits of randomness and convert it to an int
             var buffer = new byte[sizeof(int)];
-            _rng.GetBytes(buffer);
+            Rng.GetBytes(buffer);
             return BitConverter.ToInt32(buffer, 0);
         }
 
