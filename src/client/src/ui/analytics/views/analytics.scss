@@ -7,6 +7,7 @@ $highlight-color:   #eee;
 $stroke-color:      #212a35;
 $gray:              #294464;
 $bar-height:        12px;
+$analytics-width:   400px;
 
 $analytics-header-colour: #ffffff;
 $default-padding: 10px;
@@ -16,6 +17,7 @@ $default-padding: 10px;
   overflow-x: hidden;
   overflow-y: auto;
   height: 100%;
+  width: $analytics-width;
   background: $container-bg-color;
   padding: 20px;
 
