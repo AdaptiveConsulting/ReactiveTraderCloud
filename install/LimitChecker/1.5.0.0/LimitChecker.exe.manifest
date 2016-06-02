@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>YzcYJo6NFpJd3NbyNHIo1nDM7t4=</dsig:DigestValue>
+        <dsig:DigestValue>zY/mHExIs5xVdFqkxcNiZmNq97A=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -96,7 +96,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>2JQz/jUDVHYA3s16jSOS3Eukxlg=</dsig:DigestValue>
+      <dsig:DigestValue>cFjW2TZ4HsK5JC73UdExel9gepk=</dsig:DigestValue>
     </hash>
   </file>
   <file name="OpenfinDesktop.xml" size="200530">
