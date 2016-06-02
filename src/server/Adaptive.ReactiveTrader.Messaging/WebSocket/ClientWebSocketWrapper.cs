@@ -126,8 +126,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 
                     } while (!result.EndOfMessage);
 
-                    CallOnMessage(stringResult);
-
+                    CallOnMessage(stringResult.ToString());
                 }
             }
             catch (Exception)
@@ -140,10 +139,10 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
             }
         }
 
-        private void CallOnMessage(StringBuilder stringResult)
+        private void CallOnMessage(string message)
         {
-            if (_onMessage != null)
-                Task.Run(() => _onMessage(stringResult.ToString(), this));
+            if (_onMessage != null && !string.IsNullOrWhiteSpace(message))
+                Task.Run(() => _onMessage(message, this));
         }
 
         private void CallOnDisconnected()
