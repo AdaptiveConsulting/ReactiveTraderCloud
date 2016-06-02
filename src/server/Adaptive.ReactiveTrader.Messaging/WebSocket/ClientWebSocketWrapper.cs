@@ -3,7 +3,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Raven.Client.Platform;
+using Microsoft.AspNetCore.WebSockets.Protocol;
 
 namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 {
@@ -12,7 +12,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
         private const int ReceiveChunkSize = 1024;
         private const int SendChunkSize = 1024;
 
-        private readonly RavenClientWebSocket _ws;
+        private readonly CommonWebSocket _ws;
         private readonly Uri _uri;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
@@ -23,7 +23,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 
         protected ClientWebSocketWrapper(string uri)
         {
-            _ws = new RavenClientWebSocket();
+            _ws = CommonWebSocket.CreateClientWebSocket("wamp.2.json", TimeSpan.FromSeconds(20), 1024, false);
             _uri = new Uri(uri);
             _cancellationToken = _cancellationTokenSource.Token;
         }
