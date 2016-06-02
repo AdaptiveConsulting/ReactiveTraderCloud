@@ -22,6 +22,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
 
   openPopout({url, title, onClosing, windowOptions = { height: 400, width: 400, dockable: false }}:PopoutOptions, view:React.Component) {
     this._createWindow({url, title, windowOptions}, tearoutWindow => {
+      const onBoundsChanging = _.throttle(() => tearoutWindow.setAsForeground(), 300);
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div');
       popoutContainer.id = this._popoutContainerId;
       tearoutWindow.contentWindow.document.body.appendChild(popoutContainer);
@@ -31,6 +32,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
         close={() => {
           this._openFin.close(tearoutWindow);
           this._unregisterWindow(tearoutWindow);
+          tearoutWindow.removeEventListener('bounds-changing', onBoundsChanging);
           if (popoutContainer) {
             ReactDOM.unmountComponentAtNode(popoutContainer);
           }
@@ -52,6 +54,8 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
         }
       }, () => tearoutWindow.bringToFront());
       this._registerWindow(tearoutWindow, windowOptions.dockable);
+
+      tearoutWindow.addEventListener('bounds-changing', onBoundsChanging);
     }, err => _log.error(`An error occured while tearing out window: ${err}`));
   }
 
