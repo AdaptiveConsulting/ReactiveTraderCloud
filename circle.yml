@@ -23,6 +23,6 @@ test:
 
 deployment:
   hub:
-    branch: [master, dev]
+    branch: [master, dev, dotnetcore]
     commands:
       - cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
