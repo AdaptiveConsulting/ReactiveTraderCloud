@@ -103,9 +103,7 @@ $default-padding: 10px;
 
 
 .analytics__barchart-indicator-wrapper--positive{
-  float: right;
   right: 0;
-
 }
 
 .analytics__barchart-indicator-wrapper--negative{
@@ -115,8 +113,8 @@ $default-padding: 10px;
 .analytics__barchart-indicator{
   height: $bar-height;
   width: 50%;
+  transition: width .4s ease;
 }
-
 
 .analytics__barchart-indicator--positive{
   background-color: $positive-color;
