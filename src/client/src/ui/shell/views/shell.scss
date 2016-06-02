@@ -109,15 +109,25 @@ $splash-logo-margin-top:      20vh;
   height: 100%;
   display: inline-block;
   padding-left: 10px;
-  order: 2;
+  order: 3;
   flex-grow: 2;
+}
+
+.shell__side-bar{
+  overflow: hidden;
+  height: 100%;
+  width: 40px;
+  display: inline-block;
+  order: 1;
+  flex-grow: 0;
+  float: left;
 }
 
 .shell__analytics {
   display: inline-block;
   height: 100%;
   float: left;
-  order: 1;
+  order: 2;
   flex-grow: 0;
 }
 

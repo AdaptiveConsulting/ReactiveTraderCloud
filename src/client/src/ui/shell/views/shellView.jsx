@@ -48,6 +48,7 @@ export default class ShellView extends ViewBase {
           <div className={mainAreaClasses}>
             <WorkspaceRegionView className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId}/>
             <SingleItemRegionView className='shell__analytics' modelId={wellKnownModelIds.quickAccessRegionModelId}/>
+            <SingleItemRegionView className='shell__side-bar'/>
           </div>
           <SingleItemRegionView className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId}/>
           <div className='shell__footer'>

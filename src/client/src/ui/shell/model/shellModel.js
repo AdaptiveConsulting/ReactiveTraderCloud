@@ -12,11 +12,13 @@ export default class ShellModel extends ModelBase {
   sessionExpired:boolean;
   canExpandMainArea:boolean;
   wellKnownModelIds:WellKnownModelIds;
+  showSideBar:boolean;
 
   constructor(modelId:string, router:Router, connection:Connection) {
     super(modelId, router);
     this._connection = connection;
     this.sessionExpired = false;
+    this.showSideBar = true;
     this.wellKnownModelIds = WellKnownModelIds;
     this.appVersion = `v${__VERSION__}`;
   }
@@ -49,6 +51,25 @@ export default class ShellModel extends ModelBase {
         .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
         .where(({model}) => model.modelId === WellKnownModelIds.blotterModelId)
         .observe(() => _this.router.runAction(_this.modelId, () => _this.canExpandMainArea = false))
+    );
+
+    //observe analytic spanel tearOff event to hide/display the side panel
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.analyticsModelId, 'popOutAnalytics')
+        .observe(() => _this.router.runAction(_this.modelId, ()=> {
+          console.log(' ---- shold hide the side bar');
+          _this.showSideBar = false;
+        }))
+    );
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
+        .where(({model}) => model.modelId === WellKnownModelIds.analyticsModelId)
+        .observe(() => _this.router.runAction(_this.modelId, () => {
+          _this.showSideBar = true;
+          console.log(' --- shold show the side bar ');
+        }))
     );
   }
 
