@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Contract;
@@ -15,6 +16,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             new Dictionary<string, IObservable<SpotPriceDto>>();
 
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
+        private static readonly IScheduler Scheduler = new EventLoopScheduler();
 
         public PriceSource()
         {
@@ -83,14 +85,14 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         {
             if (delayPeriods)
                 return
-                    Observable.Interval(TimeSpan.FromSeconds(0.5))
-                              .Take(TimeSpan.FromSeconds(30))
-                              .Concat(Observable.Interval(TimeSpan.FromSeconds(10)).Take(1))
+                    Observable.Interval(TimeSpan.FromSeconds(0.75), Scheduler)
+                              .Take(TimeSpan.FromSeconds(30), Scheduler)
+                              .Concat(Observable.Interval(TimeSpan.FromSeconds(10), Scheduler).Take(1))
                               .Repeat()
                               .Select(_ => Unit.Default);
             
             // delay start of timer or repeat random interval?
-            return Observable.Interval(TimeSpan.FromSeconds(0.5)).Delay(TimeSpan.FromMilliseconds(Random.Next(101))).Select(_ => Unit.Default);
+            return Observable.Interval(TimeSpan.FromSeconds(0.75), Scheduler).Delay(TimeSpan.FromMilliseconds(Random.Next(501)), Scheduler).Select(_ => Unit.Default);
         }
 
         public IObservable<SpotPriceDto> GetPriceStream(string symbol)

@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public sealed class MeanReversionRandomWalkPriceGenerator : IPriceGenerator
     {
-        private static readonly Random Random = new Random();
+        private static readonly ThreadLocal<Random> Random = new ThreadLocal<Random>(() => new Random());
         private readonly decimal _halfSpreadPercentage;
         private readonly decimal _initial;
         private readonly int _precision;
@@ -22,7 +23,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             var power = (decimal) Math.Pow(10, precision);
             _vol = volatility*1m/power;
             Symbol = symbol; 
-            _halfSpreadPercentage = Random.Next(2, 16)/power/_initial;
+            _halfSpreadPercentage = Random.Value.Next(2, 16)/power/_initial;
         }
 
         public string Symbol { get; }
@@ -33,7 +34,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             while (true)
             {
-                var random = (decimal) Random.NextNormal();
+                var random = (decimal) Random.Value.NextNormal();
                 previousMid += _reversion*(_initial - previousMid) + random*_vol;
 
                 yield return new SpotPriceDto

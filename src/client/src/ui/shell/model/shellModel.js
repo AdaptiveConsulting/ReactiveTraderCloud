@@ -10,12 +10,15 @@ var _log:logger.Logger = logger.create('ShellModel');
 export default class ShellModel extends ModelBase {
   _connection:Connection;
   sessionExpired:boolean;
+  canExpandMainArea:boolean;
   wellKnownModelIds:WellKnownModelIds;
+  showSideBar:boolean;
 
   constructor(modelId:string, router:Router, connection:Connection) {
     super(modelId, router);
     this._connection = connection;
     this.sessionExpired = false;
+    this.showSideBar = true;
     this.wellKnownModelIds = WellKnownModelIds;
     this.appVersion = `v${__VERSION__}`;
   }
@@ -24,11 +27,31 @@ export default class ShellModel extends ModelBase {
   _onInit() {
     _log.info('Shell model starting');
     this._observeForSessionExpired();
+    this._observeForBlotterTearOut();
   }
 
   @observeEvent('reconnectClicked')
   _onReconnect() {
     this._connection.connect();
+  }
+
+  /**
+   * Observe blotter tear out events, so we can resize the workspace/analytics area
+   * @private
+   */
+  _observeForBlotterTearOut() {
+    let _this = this;
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.blotterModelId, 'tearOffBlotter')
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.canExpandMainArea = true))
+    );
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
+        .where(({model}) => model.modelId === WellKnownModelIds.blotterModelId)
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.canExpandMainArea = false))
+    );
   }
 
   _observeForSessionExpired() {
@@ -39,7 +62,7 @@ export default class ShellModel extends ModelBase {
         (status:String) => {
           this.sessionExpired = status === ConnectionStatus.sessionExpired;
         },
-        err =>{
+        err => {
           _log.error('Error on connection status stream', err);
         })
     );

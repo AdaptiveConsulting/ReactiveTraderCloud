@@ -22,7 +22,15 @@ export default class AnalyticsView extends ViewBase {
     };
   }
 
+  componentDidMount(){
+    this.updateGradient();
+  }
+
   componentDidUpdate() {
+    this.updateGradient();
+  }
+
+  updateGradient(){
     if (this.refs.pnlChart) {
       if (!this.chartGradient) {
         this.chartGradient = new ChartGradient();
@@ -41,14 +49,26 @@ export default class AnalyticsView extends ViewBase {
       return null;
     }
     if (!model.isAnalyticsServiceConnected)
-      return <span />;
+      return (
+        <div className='analytics__container'>
+          <div ref='analyticsInnerContainer'></div>
+        </div>);
 
     let pnlComponents = this._createPnlComponents();
     let positionsComponents = this._createPositionsComponents();
+
+    let newWindowBtnClassName = classnames(
+      'glyphicon glyphicon-new-window',
+      {
+        'analytics__icon--tearoff' : !model.canPopout(),
+        'analytics__icon--tearoff--hidden' : model.canPopout()
+      }
+    );
+
     return (
       <div className='analytics analytics__container animated fadeIn'>
         <div className='analytics__controls popout__controls'>
-          <i className='analytics__icon--tearoff glyphicon glyphicon-new-window'
+          <i className={newWindowBtnClassName}
              onClick={() => router.publishEvent(this.props.modelId, 'popOutAnalytics', {})}/>
         </div>
         {pnlComponents}
@@ -97,13 +117,13 @@ export default class AnalyticsView extends ViewBase {
   }
 
   _createPositionsComponents() {
+
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
     let isPnL = positionsChartModel.basePnlDisplayModelSelected;
     let baseClassName = 'btn analytics__buttons-tab-btn ';
     let selectedClassName = `${baseClassName} analytics__buttons-tab-btn--selected`;
     let pnlButtonClassName = isPnL ? selectedClassName : baseClassName;
     let positionButtonClassName = isPnL ? baseClassName : selectedClassName;
-    let containerWidth = this.props.containerWidth; // comes from the @Dimensions annotation
 
     return (
       <div>
@@ -119,8 +139,8 @@ export default class AnalyticsView extends ViewBase {
             </button>
           </div>
         </div>
-        <div className='analytics__chart-container clearfix pnlchart'>
-          <AnalyticsBarChart containerWidth={containerWidth} series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
+        <div className='analytics__chart-container'>
+          <AnalyticsBarChart series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
         </div>
       </div>
     );

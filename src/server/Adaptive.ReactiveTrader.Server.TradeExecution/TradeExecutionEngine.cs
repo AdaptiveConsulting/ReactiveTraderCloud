@@ -43,7 +43,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                                   request.CurrencyPair,
                                   request.SpotRate,
                                   tradeDate,
-                                  valueDate.ToUniversalTime(),
+                                  valueDate,
                                   request.Direction,
                                   request.Notional,
                                   request.DealtCurrency);
@@ -66,8 +66,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                     Notional = trade.Notional,
                     SpotRate = trade.SpotRate,
                     Status = trade.State,
-                    TradeDate = tradeDate.ToString("dd/MM/yyyy"), // TODO check this is ok
-                    ValueDate = $"SP. {valueDate.Day} {valueDate.ToString("MMM")}",
+                    TradeDate = tradeDate,
+                    ValueDate = valueDate,
                     TradeId = id,
                     TraderName = user,
                     DealtCurrency = trade.DealtCurrency

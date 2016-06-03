@@ -30,11 +30,17 @@ export function convertNotionalShorthandToNumericValue(notionalShorthand) {
     notionalShorthand = 0;
   }
   else {
-    notionalShorthand = Number(matches[1]);
+    notionalShorthand = Number(matches[1]) ? Number(matches[1]) : 1;
     matches[2] && (notionalShorthand = notionalShorthand * (matches[2] === 'K' ? 1000 : 1000000));
   }
 
   return notionalShorthand;
+}
+
+export function hasShorthandInput(notionalShorthand){
+  notionalShorthand = String(notionalShorthand).toUpperCase().replace(/,/g, '');
+  let matches = notionalShorthand.match(numberConvertRegex);
+  return matches && matches[2] !== undefined; //found K or M
 }
 
 export function formatDate(date, format:string = '%b %e, %H:%M:%S') {

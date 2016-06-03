@@ -26,8 +26,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
                                              userName,
                                              currencyPair,
                                              spotRate,
-                                             DateUtils.ToSerializationFormat(tradeDate),
-                                             DateUtils.ToSerializationFormat(valueDate),
+                                             tradeDate,
+                                             valueDate,
                                              direction.ToString(),
                                              notional,
                                              dealtCurrency));
@@ -63,8 +63,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
             TraderName = evt.TraderName;
             CurrencyPair = evt.CurrencyPair;
             SpotRate = evt.SpotRate;
-            TradeDate = DateUtils.FromSerializationFormat(evt.TradeDate);
-            ValueDate = DateUtils.FromSerializationFormat(evt.ValueDate);
+            TradeDate = evt.TradeDate;
+            ValueDate = evt.ValueDate;
             Direction = (DirectionDto) Enum.Parse(typeof (DirectionDto), evt.Direction);
             Notional = evt.Notional;
             DealtCurrency = evt.DealtCurrency;

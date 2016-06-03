@@ -1,4 +1,5 @@
 import React from 'react';
+import classlist from 'classlist-polyfill';
 
 /**
  * ChartGradient - a utility to draw linear gradients on area and stroke elements of a line chart

@@ -30,13 +30,13 @@
   .public_fixedDataTable_header .public_fixedDataTableCell_cellContent {
     background-color: white;
     color: #7e7e7e;
-    font-weight: 400;
+    font-weight: 900;
   }
 }
 
 .blotter__trade-field--emphasized {
   .public_fixedDataTableCell_cellContent {
-    font-weight: 400;
+    font-weight: 900;
     color: black;
   }
 }
@@ -53,6 +53,10 @@
   top: 5px;
   z-index: 2;
   cursor: pointer;
+}
+
+.blotter__controls--hidden{
+  display:none;
 }
 
 .blotter__trade {

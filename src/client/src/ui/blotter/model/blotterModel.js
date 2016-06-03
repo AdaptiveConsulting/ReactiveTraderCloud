@@ -7,7 +7,7 @@ import { logger } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { OpenFin } from '../../../system/openFin';
-import { Trade, TradesUpdate, TradeStatus } from '../../../services/model';
+import { Trade, TradesUpdate, TradeStatus, TradeNotification, RegionSettings } from '../../../services/model';
 
 import { BlotterView } from '../views';
 
@@ -17,7 +17,9 @@ var _log:logger.Logger = logger.create('BlotterModel');
 export default class BlotterModel extends ModelBase {
   _blotterService:BlotterService;
   _regionManagerHelper:RegionManagerHelper;
-
+  _regionManager:RegionManager;
+  _regionName:string;
+  _regionSettings:RegionSettings;
   trades:Array<Trade>;
   isConnected:boolean;
 
@@ -32,7 +34,10 @@ export default class BlotterModel extends ModelBase {
     this._blotterService = blotterService;
     this.trades = [];
     this.isConnected = false;
-    this._regionManagerHelper = new RegionManagerHelper(RegionNames.blotter, regionManager, this);
+    this._regionManager = regionManager;
+    this._regionName = RegionNames.blotter;
+    this._regionSettings = new RegionSettings('Blotter', 850, 280, false);
+    this._regionManagerHelper = new RegionManagerHelper(this._regionName, regionManager, this, this._regionSettings);
     this._openFin = openFin;
   }
 
@@ -40,7 +45,8 @@ export default class BlotterModel extends ModelBase {
   _onInit() {
     _log.info(`Blotter starting`);
     this._subscribeToConnectionStatus();
-    this._regionManagerHelper.addToRegion();
+    this._regionManagerHelper.init();
+    this.subscribeToOpenFinEvents();
   }
 
   @observeEvent('referenceDataLoaded')
@@ -52,7 +58,14 @@ export default class BlotterModel extends ModelBase {
   @observeEvent('tearOffBlotter')
   _onTearOffBlotter() {
     _log.info(`Popping out blotter`);
-    this._regionManagerHelper.popout('Blotter', 850, 280);
+    this._regionManagerHelper.popout();
+  }
+
+  subscribeToOpenFinEvents(){
+    this._openFin.addSubscription('fetch-blotter', (msg, uuid) => {
+      let serialisedTrades = this.trades.map((t) => new TradeNotification(t));
+      this._openFin.sendAllBlotterData(uuid, serialisedTrades);
+    });
   }
 
   _subscribeToTradeStream() {
@@ -64,8 +77,8 @@ export default class BlotterModel extends ModelBase {
           (tradesUpdate:TradesUpdate) => {
             let trades = tradesUpdate.trades;
 
-            if (tradesUpdate.isStateOfTheWorld){
-              this.trades = this.trades.concat(tradesUpdate.trades);
+            if (tradesUpdate.isStateOfTheWorld) {
+              this.trades = this.trades.concat(_.sortBy(tradesUpdate.trades, 'tradeId').reverse());
             }else{
               _.forEach(trades, (trade:Trade) => {
                 let existingTradeIndex = _.findIndex(this.trades, (t) => t.tradeId === trade.tradeId );

@@ -1,6 +1,11 @@
 import BrowserPopoutService from './browserPopoutService';
 import OpenfinPopoutService from './openfinPopoutService';
 
+let popoutService = null;
+
 export default function getPopoutService(openfin) {
-    return openfin.isRunningInOpenFin ? new OpenfinPopoutService(openfin) : new BrowserPopoutService();
+  if (popoutService === null) {
+    popoutService = openfin.isRunningInOpenFin ? new OpenfinPopoutService(openfin) : new BrowserPopoutService();
+  }
+  return popoutService;
 }

@@ -4,25 +4,30 @@ import { logger } from '../../../system';
 import { ModelBase } from '../../common';
 import { ServiceStatusLookup, ApplicationStatusConst, ConnectionType } from '../../../services/model';
 import { ConnectionStatus } from '../../../system/service';
+import { OpenFin } from '../../../system/openFin';
 import _ from 'lodash';
 
 var _log:logger.Logger = logger.create('FooterModel');
 
 export default class FooterModel extends ModelBase {
   _compositeStatusService:CompositeStatusService;
+  _openFin:OpenFin;
 
   isConnectedToBroker:boolean;
   connectionUrl:string;
   connectionType:ConnectionType;
   serviceLookup:ServiceStatusLookup;
+  isRunningInOpenFin:boolean;
 
   constructor(
     modelId:string,
     router:Router,
-    compositeStatusService:CompositeStatusService
+    compositeStatusService:CompositeStatusService,
+    openFin:OpenFin
   ) {
     super(modelId, router);
     this._compositeStatusService = compositeStatusService;
+    this._openFin = openFin;
 
     this.serviceLookup = new ServiceStatusLookup();
     this.isConnectedToBroker = false;
@@ -34,6 +39,7 @@ export default class FooterModel extends ModelBase {
   _onInit() {
     _log.info(`Footer model starting`);
     this._subscribeToConnectionStatus();
+    this.isRunningInOpenFin = this._openFin && this._openFin.isRunningInOpenFin;
   }
 
   @observeEvent('toggleServiceStatus')
@@ -66,6 +72,14 @@ export default class FooterModel extends ModelBase {
 
   postProcess() {
     this._updateApplicationStatus();
+  }
+
+  openLink(url): void {
+    if(this.isRunningInOpenFin){
+      this._openFin.openLink(url);
+    } else {
+      window.open(url, '_blank');
+    }
   }
 
   _updateApplicationStatus() {

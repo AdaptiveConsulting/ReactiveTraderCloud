@@ -27,6 +27,8 @@ $glyphicons-font-path: '../fonts/bootstrap/glyphicons-halflings-regular';
 
 .glyphicon-refresh { &:before { content: "\e031"; }}
 
+.glyphicon-log-out { &:before { content: "\e163"; } }
+
 @font-face {
   font-family: 'Rubik Light';
   src: url('../fonts/RubikLight.woff2') format('woff2');

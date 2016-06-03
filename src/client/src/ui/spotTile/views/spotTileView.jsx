@@ -15,17 +15,12 @@ export default class SpotTileView extends ViewBase {
   constructor() {
     super();
     this.state = {
-      model: null,
-      currencyChartIsOpening: false,
-      currencyChartTimeoutId: -1
+      model: null
     };
   }
 
   componentWillUnmount(){
     super.componentWillUnmount();
-    if (this.state.currencyChartIsOpening){
-      window.clearTimeout(this.state.currencyChartTimeoutId);
-    }
   }
 
   render() {
@@ -33,6 +28,7 @@ export default class SpotTileView extends ViewBase {
     if (model === null) {
       return null;
     }
+
     let notionalInputClass = classnames('spot-tile__notional', {'hide': model.hasNotification});
     let spotDateClass = classnames('spot-tile__delivery', {'hide': model.hasNotification});
     let notification = this._tryCreateNotification();
@@ -42,8 +38,8 @@ export default class SpotTileView extends ViewBase {
     const chartIQIconClassName = classnames(
       {
         'spot-tile__icon--hidden': !showChartIQIcon,
-        'glyphicon glyphicon-refresh spot-tile__icon--rotate': this.state.currencyChartIsOpening,
-        'spot-tile__icon--chart glyphicon glyphicon-stats': !this.state.currencyChartIsOpening
+        'glyphicon glyphicon-refresh spot-tile__icon--rotate': model.currencyChartIsOpening,
+        'spot-tile__icon--chart glyphicon glyphicon-stats': !model.currencyChartIsOpening
       }
     );
 
@@ -57,6 +53,14 @@ export default class SpotTileView extends ViewBase {
         'spot-tile--error': model.hasNotification && model.notification.error
       }
     );
+
+    const newWindowClassName = classnames(
+      'popout__controls  glyphicon glyphicon-new-window',
+      {
+        'spot-tile__icon--tearoff' : !model.canPopout(),
+        'spot-tile__icon--hidden' : model.canPopout()
+      }
+    );
     return (
       <div className={className}>
         <div className='spot-tile__container'>
@@ -66,8 +70,10 @@ export default class SpotTileView extends ViewBase {
           <div className='spot-tile__controls'>
             <i className={chartIQIconClassName}
               onClick={() => this._displayCurrencyChart()}/>
-            <i className='popout__controls spot-tile__icon--tearoff glyphicon glyphicon-new-window'
+            <i className={newWindowClassName}
                onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
+            <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
+               onClick={() => router.publishEvent(this.props.modelId, 'undockTile', {})}/>
           </div>
           {notification}
           {priceComponents}
@@ -86,9 +92,7 @@ export default class SpotTileView extends ViewBase {
     );
   }
 
-  _displayCurrencyChart(){
-    let timeoutId = setTimeout(()=> this.setState({currencyChartIsOpening: false}), 2000);
-    this.setState({currencyChartTimeoutId: timeoutId, currencyChartIsOpening: true});
+  _displayCurrencyChart(){ 
     router.publishEvent(this.props.modelId, 'displayCurrencyChart', {});
   }
 

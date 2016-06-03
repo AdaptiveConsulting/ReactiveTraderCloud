@@ -1,0 +1,49 @@
+$container-bg-color:#212A35;
+$active-color:      #283442;
+$border-color:      #414444;
+$width:             40px;
+$button-height:     50px;
+
+.sidebar__container{
+  background-color: $container-bg-color;
+  height: 100%;
+  width: $width;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar__element{
+  border-right: 1px solid $border-color;
+  width: 100%;
+  flex: 1;
+}
+
+.sidebar__element--active{
+  background-color: $active-color;
+  border: 1px solid $border-color;
+  border-right-color: $active-color;
+  &:hover{
+    background-color: $container-bg-color;
+    border-right-color: $border-color;
+  }
+}
+
+.sidebar__element--inactive{
+  border: 1px solid $container-bg-color;
+  border-right-color: $border-color;
+  background-color: $container-bg-color;
+  &:hover{
+    background-color: $active-color;
+    border-bottom-color: $border-color;
+    border-top-color: $border-color;
+  }
+}
+
+.sidebar__element-button{
+  height: $button-height;
+  color: white;
+  text-align: center;
+  padding: 20px 10px;
+  cursor: pointer;
+}
