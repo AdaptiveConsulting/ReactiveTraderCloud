@@ -22,7 +22,8 @@ export default class OpenFinChrome extends React.Component {
 
   render() {
     let headerClasses = classnames('openfin-chrome__header', {
-      'openfin-chrome__header--no-bar' : this.props.showHeaderBar === false
+      'openfin-chrome__header--no-bar' : this.props.showHeaderBar === false,
+      'openfin-chrome__header--with-bar' : this.props.showHeaderBar !== false
     });
     let contentClasses = classnames('openfin-chrome__content', {
       'openfin-chrome__content--no-header-bar' : this.props.showHeaderBar === false
@@ -35,7 +36,7 @@ export default class OpenFinChrome extends React.Component {
             <ul className='openfin-chrome__header-controls'>
               {this.props.minimize ? <li className='openfin-chrome__header-control'><a onClick={() => this.props.minimize()}><i className='fa fa-minus fa-set-position'></i></a></li> : null}
               {this.props.maximize ? <li className='openfin-chrome__header-control'><a onClick={() => this.props.maximize()}><i className='fa fa-square-o'></i></a></li> : null}
-              <li className='openfin-chrome__header-control'><a onClick={() => this.props.close()}><i className='fa fa-close'></i></a></li>
+              <li className='openfin-chrome__header-control openfin-chrome__header-control--close'><a onClick={() => this.props.close()}><i className='fa fa-close'></i></a></li>
             </ul>
           </div>
         </div>

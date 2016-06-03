@@ -17,12 +17,26 @@ $header-height: 30px;
 .openfin-chrome__header {
   width: 100%;
   height: $header-height;
+  display: flex;
+  -webkit-app-region: drag;
+}
+
+.openfin-chrome__header--with-bar {
   background: url('../../images/adaptive-logo-statusbar.png') no-repeat, #DEE3E8;
   background-position: 6px 6px;
   align-content: center;
   vertical-align: middle;
-  display: flex;
-  -webkit-app-region: drag;
+
+  .openfin-chrome__header-control {
+    &:hover {
+      background-color: darkgrey;
+    }
+  }
+
+  .openfin-chrome__header-control--close:hover {
+    background-color: #800000;
+  }
+
 }
 
 .openfin-chrome__header--no-bar {
@@ -38,8 +52,8 @@ $header-height: 30px;
   }
   .openfin-chrome__header-controls {
     display: none;
-    right: 60px;
-    top: 2px;
+    right: 55px;
+    top: 5px;
   }
   .openfin-chrome__header-title-label {
     display: none;
@@ -70,15 +84,16 @@ $header-height: 30px;
   position: absolute;
   right: 10px;
   padding-left: 0;
-  margin: 7px 0;
+  margin: 3px 0;
 }
 
 .openfin-chrome__header-control {
   display: inline-block;
   cursor: pointer;
   > a {
-    padding-left: 10px;
+    padding: 7px;
   }
+  line-height: 25px;
 }
 
 .openfin-chrome__content {
