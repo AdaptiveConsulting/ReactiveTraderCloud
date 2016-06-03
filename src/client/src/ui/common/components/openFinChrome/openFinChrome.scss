@@ -2,9 +2,15 @@ $header-height: 30px;
 
 .openfin-chrome {
   height: 100vh;
-
+  position: relative;
   .shell__splash {
     display: none;
+  }
+  &:hover {
+    .openfin-chrome__header-controls {
+      display: block;
+    }
+
   }
 }
 
@@ -19,6 +25,26 @@ $header-height: 30px;
   -webkit-app-region: drag;
 }
 
+.openfin-chrome__header--no-bar {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  background: transparent;
+  width: calc(100% - 70px);
+  cursor: move;
+  .openfin-chrome__header-controls-container {
+    position: absolute;
+    color: #90AFC1;
+  }
+  .openfin-chrome__header-controls {
+    display: none;
+    right: 60px;
+    top: 2px;
+  }
+  .openfin-chrome__header-title-label {
+    display: none;
+  }
+}
 
 .openfin-chrome__header-title {
   flex: 10;
@@ -49,7 +75,6 @@ $header-height: 30px;
 
 .openfin-chrome__header-control {
   display: inline-block;
-  margin-left: 5px;
   cursor: pointer;
   > a {
     padding-left: 10px;
@@ -58,6 +83,15 @@ $header-height: 30px;
 
 .openfin-chrome__content {
   height: calc(100% - #{$header-height});
+
+  &.openfin-chrome__content--no-header-bar {
+    height: 100%;
+    border: 1px solid #90AFC1;
+    box-sizing: border-box;
+    .spot-tile__controls {
+      margin-right: 20px;
+    }
+  }
 
   > div {
     height: 100%;
