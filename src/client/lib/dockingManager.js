@@ -537,11 +537,11 @@ var DockingManager = (function() {
     }
   };
 
-  DockingManager.prototype._getWindowByOpenfinWindow = function(opefinWindow){
+  DockingManager.prototype._getWindowByOpenfinWindow = function(openfinWindow){
 
     for(var i = 0; i < windows.length; i++){
 
-      if(windows[i].opefinWindow == opefinWindow) return windows[i];
+      if(windows[i].openfinWindow == openfinWindow) return windows[i];
     }
 
     return null;
