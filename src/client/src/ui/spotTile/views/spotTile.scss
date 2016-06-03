@@ -7,6 +7,7 @@ $price-width: calc(45% + 10px);
   height: 155px;
   color: $spot-tile-secondary-color;
   background-color: #293543;
+  border: 1px solid #414444;
   &:hover {
     background-color: #294464;
     .spot-tile__icon--chart,
@@ -173,4 +174,3 @@ $price-width: calc(45% + 10px);
   bottom: 0;
   right: 0;
 }
-

@@ -7,6 +7,7 @@ $highlight-color:   #eee;
 $stroke-color:      #212a35;
 $gray:              #294464;
 $bar-height:        12px;
+$analytics-width:   360px;
 
 $analytics-header-colour: #ffffff;
 $default-padding: 10px;
@@ -16,12 +17,14 @@ $default-padding: 10px;
   overflow-x: hidden;
   overflow-y: auto;
   height: 100%;
+  max-width: $analytics-width;
+  width: $analytics-width;
   background: $container-bg-color;
+  border-right: 1px solid #414444;
   padding: 20px;
 
   @import 'nvd3';
   #popout-content-container & {
-    max-width: none;
     height: 100%;
   }
 }
@@ -29,7 +32,6 @@ $default-padding: 10px;
 
 .analytics__controls {
   float: right;
-  padding: 10px;
   color: white;
 }
 
@@ -37,7 +39,7 @@ $default-padding: 10px;
   font-size: 16px;
   color: $analytics-header-colour;
   background: $container-bg-color;
-  padding: 10px;
+  padding-bottom: 10px;
 }
 
 .analytics__header--bold{

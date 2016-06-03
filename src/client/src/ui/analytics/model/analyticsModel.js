@@ -12,6 +12,7 @@ import {
 } from '../../../services/model';
 import { AnalyticsView } from '../views';
 import { OpenFin } from '../../../system/openFin';
+import { WellKnownModelIds } from '../../../';
 
 var _log:logger.Logger = logger.create('AnalyticsModel');
 
@@ -65,6 +66,7 @@ export default class AnalyticsModel extends ModelBase {
     _log.info(`Analytics model starting`);
     this._subscribeToConnectionStatus();
     this._regionManagerHelper.init();
+    this._observeSidebarEvents();
   }
 
   @observeEvent('referenceDataLoaded')
@@ -104,6 +106,23 @@ export default class AnalyticsModel extends ModelBase {
         (status:ServiceStatus) => {
           this.isAnalyticsServiceConnected = status.isConnected;
         })
+    );
+  }
+
+  _observeSidebarEvents(){
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.sidebarModelId, 'hideAnalytics')
+        .observe(() => this.router.runAction(this.modelId, ()=> {
+          this._regionManagerHelper.removeFromRegion();
+        }))
+    );
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.sidebarModelId, 'showAnalytics')
+        .observe(() => this.router.runAction(this.modelId, () => {
+          this._regionManagerHelper.addToRegion();
+        }))
     );
   }
 }

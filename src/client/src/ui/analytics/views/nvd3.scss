@@ -527,7 +527,7 @@ svg.nvd3-svg {
 }
 
 .nvtooltip {
-  background: linear-gradient(rgba(0,0,0,0), $container-bg-color, rgba(0,0,0,0));
+  background: linear-gradient(rgba(41,53,43,0.3), $container-bg-color, $container-bg-color, rgba(41,53,43,0.3));
   box-shadow: -1px 0 1px rgba(0,0,0,.5), inset 0 0 1px rgba(255,255,255,.2);
   border: 1px solid rgba(0,0,0,0.5);
   border-radius: 2px;
@@ -535,7 +535,7 @@ svg.nvd3-svg {
 
   transition-delay: 200ms;
   strong {
-    color: $bar-bg-color;
+    color: #999;
   }
   color: $highlight-color;
 }
