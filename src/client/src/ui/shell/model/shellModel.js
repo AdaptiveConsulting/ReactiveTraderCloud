@@ -12,11 +12,13 @@ export default class ShellModel extends ModelBase {
   sessionExpired:boolean;
   canExpandMainArea:boolean;
   wellKnownModelIds:WellKnownModelIds;
+  showSideBar:boolean;
 
   constructor(modelId:string, router:Router, connection:Connection) {
     super(modelId, router);
     this._connection = connection;
     this.sessionExpired = false;
+    this.showSideBar = true;
     this.wellKnownModelIds = WellKnownModelIds;
     this.appVersion = `v${__VERSION__}`;
   }

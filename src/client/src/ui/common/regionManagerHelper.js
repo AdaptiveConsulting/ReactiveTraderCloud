@@ -31,6 +31,10 @@ export default class RegionManagerHelper {
     this._regionManager.addToRegion(this._regionName, this._model);
   }
 
+  removeFromRegion(){
+    this._regionManager.removeFromRegion(this._regionName, this._model);
+  }
+
   popout() {
     this._regionManager.removeFromRegion(this._regionName, this._model);
     this._regionManager.addToRegion(

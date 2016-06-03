@@ -6,8 +6,8 @@ import './priceMovement.scss';
 const PriceMovementIndicator = props => {
   let className = classnames(
     {
-      'price-movement__icon--up fa fa-caret-up': props.priceMovementType === PriceMovementType.Up,
-      'price-movement__icon--down fa fa-caret-down': props.priceMovementType ===  PriceMovementType.Down
+      'price-movement__icon--up fa fa-caret-up fa-lg': props.priceMovementType === PriceMovementType.Up,
+      'price-movement__icon--down fa fa-caret-down fa-lg': props.priceMovementType ===  PriceMovementType.Down
     }
   );
   return <div className='price-movement'><span className='price-movement__value'>{props.spread.formattedValue}</span><i className={className}></i></div>;

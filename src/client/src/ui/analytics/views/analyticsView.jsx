@@ -22,7 +22,15 @@ export default class AnalyticsView extends ViewBase {
     };
   }
 
+  componentDidMount(){
+    this.updateGradient();
+  }
+
   componentDidUpdate() {
+    this.updateGradient();
+  }
+
+  updateGradient(){
     if (this.refs.pnlChart) {
       if (!this.chartGradient) {
         this.chartGradient = new ChartGradient();
@@ -107,7 +115,7 @@ export default class AnalyticsView extends ViewBase {
       </div>
     );
   }
-  
+
   _createPositionsComponents() {
 
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
