@@ -1,5 +1,5 @@
 ﻿using System;
-using WampSharp.WebsocketsPcl.Websockets;
+using Websockets;
 
 namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 {

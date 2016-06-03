@@ -18,6 +18,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         public Program(IServiceLauncher serviceLauncher)
         {
             _launcher = serviceLauncher;
+            
         }
 
         public void Run(LauncherConfig config)
@@ -196,7 +197,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         {
             Console.WriteLine("Reactive Trader launcher v{0}", typeof(Program).GetTypeInfo().Assembly.GetName().Version);
             Console.WriteLine();
-            Console.WriteLine("usage dnx run [service] [options]");
+            Console.WriteLine("usage dotnet run [service] [options]");
 
             Console.WriteLine();
             Console.WriteLine("service:");

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebSockets.Protocol;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 {
@@ -126,7 +127,16 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 
                     } while (!result.EndOfMessage);
 
-                    CallOnMessage(stringResult.ToString());
+                    var message = stringResult.ToString();
+
+                    if (string.IsNullOrWhiteSpace(message))
+                    {
+                        Log.Warning("Received empty message of type {msgType}", result.MessageType.ToString());
+                    }
+                    else
+                    {
+                        CallOnMessage(message);
+                    }
                 }
             }
             catch (Exception)
@@ -141,7 +151,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 
         private void CallOnMessage(string message)
         {
-            if (_onMessage != null && !string.IsNullOrWhiteSpace(message))
+            if (_onMessage != null)
                 Task.Run(() => _onMessage(message, this));
         }
 

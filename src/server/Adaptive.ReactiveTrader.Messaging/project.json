@@ -10,7 +10,7 @@
 
   "dependencies": {
     "Adaptive.ReactiveTrader.Common": "1.0.0-*",
-    "Adaptive.WampSharp.Default.Client": "1.0.0-*",
+    "Adaptive.WampSharp.Default.Client": "1.0.0.1",
     "EventStore.ClientAPI.DotNetCore": "1.0.0",
     "NETStandard.Library": "1.5.0-*",
     "Newtonsoft.Json": "8.0.4-*",
@@ -19,7 +19,8 @@
     "System.Diagnostics.Contracts": "4.0.1-*",
     "System.Net.WebSockets": "4.0.0-*",
     "System.Net.WebSockets.Client": "4.0.0-*",
-    "System.Security.Cryptography.Algorithms": "4.1.0-*"
+    "System.Security.Cryptography.Algorithms": "4.1.0-*",
+    "Websockets.Pcl": "1.1.9"
   },
 
   "frameworks": {

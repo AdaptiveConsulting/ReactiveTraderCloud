@@ -9,7 +9,7 @@ using WampSharp.V2;
 using WampSharp.V2.Client;
 using WampSharp.V2.Fluent;
 using WampSharp.WebsocketsPcl;
-using WampSharp.WebsocketsPcl.Websockets;
+using Websockets;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {

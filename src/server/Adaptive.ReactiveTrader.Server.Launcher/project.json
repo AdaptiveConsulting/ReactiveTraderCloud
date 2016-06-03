@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "Service Launcher",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
@@ -22,7 +22,8 @@
     "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0-*",
     "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "1.0.0-*",
     "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0-*",
-    "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*"
+    "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*",
+    "EventStore.ClientAPI.DotNetCore": "1.0.0"
   },
 
   "frameworks": {
