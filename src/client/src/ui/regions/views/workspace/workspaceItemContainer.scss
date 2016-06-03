@@ -1,9 +1,3 @@
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  .workspace-region{
-    width: calc(100% - 10px) !important;
-  }
-}
-
 .workspace-region {
   width: 100%;
   display: flex;
@@ -17,7 +11,7 @@
 .workspace-region__item {
   flex: 1 340px;
   align-self: auto;
-  margin: 2px;
+  margin: 5px;
 }
 
 .workspace-region__item {
