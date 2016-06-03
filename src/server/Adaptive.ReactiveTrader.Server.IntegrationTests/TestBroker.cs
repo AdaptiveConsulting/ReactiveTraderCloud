@@ -3,8 +3,8 @@ using WampSharp.V2;
 using WampSharp.V2.Client;
 using WampSharp.V2.Fluent;
 using WampSharp.WebsocketsPcl;
-using WampSharp.WebsocketsPcl.Websockets;
 using Adaptive.ReactiveTrader.Messaging.WebSocket;
+using Websockets;
 
 namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {

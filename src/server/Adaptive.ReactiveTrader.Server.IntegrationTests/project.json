@@ -9,7 +9,7 @@
     "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
     "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
     "xunit": "2.2.0-*",
-    "Adaptive.WampSharp.Default.Client": "1.0.0-*"
+    "Adaptive.WampSharp.Default.Client": "1.0.0.1"
   },
 
   "testRunner": "xunit",
