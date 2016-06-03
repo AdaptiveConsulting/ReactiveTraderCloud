@@ -53,9 +53,8 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
           opacity: 1,
           duration: 300
         }
-      }, () => tearoutWindow.bringToFront());
+      }, null, () => tearoutWindow.bringToFront());
       this._registerWindow(tearoutWindow, windowOptions.dockable);
-
       tearoutWindow.addEventListener(BOUNDS_CHANGING_EVENT, onBoundsChanging);
     }, err => _log.error(`An error occured while tearing out window: ${err}`));
   }
@@ -84,7 +83,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
   _initializeDockingManager() {
     let _this = this;
     fin.desktop.main(() => {
-      this._dockingManager = new DockingManager();
+      this._dockingManager = DockingManager.getInstance();
       fin.desktop.InterApplicationBus.subscribe('*', 'window-docked', ({windowName}) => {
         const tearoutWindow = _this._popouts[windowName];
         if (tearoutWindow) {
@@ -109,6 +108,12 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
     if (this._dockingManager) {
       this._dockingManager.register(tearoutWindow, dockable);
       this._popouts[tearoutWindow.name] = tearoutWindow;
+      setTimeout(() => {
+        fin.desktop.InterApplicationBus.publish('window-load', {
+          windowName: tearoutWindow.name
+        });
+      });
+
     }
   }
 
