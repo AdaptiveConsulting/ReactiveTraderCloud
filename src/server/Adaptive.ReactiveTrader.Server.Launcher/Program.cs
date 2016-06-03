@@ -18,7 +18,6 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         public Program(IServiceLauncher serviceLauncher)
         {
             _launcher = serviceLauncher;
-            
         }
 
         public void Run(LauncherConfig config)
