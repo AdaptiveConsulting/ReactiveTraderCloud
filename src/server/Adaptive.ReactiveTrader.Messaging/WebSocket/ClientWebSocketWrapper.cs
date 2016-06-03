@@ -115,8 +115,11 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 
                         if (result.MessageType == WebSocketMessageType.Close)
                         {
-                            await
-                                _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                            Log.Warning(
+                                "Close websocket message received. Close Status: {closeStatus} Close Description: {closeDescription}",
+                                result.CloseStatus?.ToString(), result.CloseStatusDescription);
+
+                            await _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
                             CallOnDisconnected();
                         }
                         else

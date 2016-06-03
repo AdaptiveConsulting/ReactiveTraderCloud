@@ -46,7 +46,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         public override void Dispose()
         {
             base.Dispose();
-            _subscription.Dispose();
+            _subscription?.Dispose();
         }
     }
 }

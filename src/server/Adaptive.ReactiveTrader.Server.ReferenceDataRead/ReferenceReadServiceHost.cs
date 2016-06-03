@@ -60,7 +60,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         public override void Dispose()
         {
             base.Dispose();
-            _subscription.Dispose();
+            _subscription?.Dispose();
         }
     }
 }
