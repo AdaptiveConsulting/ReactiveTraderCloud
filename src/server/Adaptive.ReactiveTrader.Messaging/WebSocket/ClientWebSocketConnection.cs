@@ -30,9 +30,9 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
             _clientWebSocketConnection.Disconnect();
         }
 
-        public void Send(string message)
+        public async void Send(string message)
         {
-            _clientWebSocketConnection.SendMessage(message);
+            await _clientWebSocketConnection.SendMessage(message);
         }
 
         public void Dispose()

@@ -23,6 +23,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
         private Action<ClientWebSocketWrapper> _onConnected;
         private Action<string, ClientWebSocketWrapper> _onMessage;
         private Action<ClientWebSocketWrapper> _onDisconnected;
+        private readonly AsyncLock _lock = new AsyncLock();
 
         protected ClientWebSocketWrapper(string uri)
         {
@@ -68,9 +69,12 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
             _onMessage = onMessage;
         }
 
-        public Task SendMessage(string message)
+        public async Task SendMessage(string message)
         {
-            return SendMessageAsync(message);
+            using (await _lock.LockAsync())
+            {
+                await SendMessageAsync(message);
+            }
         }
 
         private async Task SendMessageAsync(string message)
