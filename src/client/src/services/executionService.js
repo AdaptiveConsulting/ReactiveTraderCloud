@@ -47,13 +47,13 @@ export default class ExecutionService extends ServiceBase {
                         const trade = _this._tradeMapper.mapFromTradeDto(dto.Trade);
                         _log.info(`execute response received for: ${executeTradeRequest.toString()}. Status: ${trade.status}`, dto);
                         return ExecuteTradeResponse.create(trade);
-                      }),
+                      })
+                      // if we never receive a response, mark request as complete
+                      .timeout(ExecutionService.EXECUTION_REQUEST_TIMEOUT_MS, Rx.Observable.return(ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))),
                     // show timeout error if request is taking longer than expected
                     Rx.Observable.timer(ExecutionService.EXECUTION_CLIENT_TIMEOUT_MS)
                       .map(() => ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))
                       .takeUntil(request))
-                    // if we never receive a response, mark request as complete
-                    .timeout(ExecutionService.EXECUTION_REQUEST_TIMEOUT_MS, Rx.Observable.return(ExecuteTradeResponse.createForError('Trade execution timeout exceeded')))
                     .subscribe(o)
                 );
               }
