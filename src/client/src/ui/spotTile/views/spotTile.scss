@@ -174,3 +174,9 @@ $price-width: calc(45% + 10px);
   bottom: 0;
   right: 0;
 }
+
+#popout-content-container {
+  .spot-tile {
+    border: none;
+  }
+}
