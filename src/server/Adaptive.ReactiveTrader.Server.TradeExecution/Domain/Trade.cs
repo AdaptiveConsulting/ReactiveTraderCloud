@@ -19,7 +19,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
                      DateTime tradeDate,
                      DateTime valueDate,
                      DirectionDto direction,
-                     int notional,
+                     decimal notional,
                      string dealtCurrency)
         {
             RaiseEvent(new TradeCreatedEvent(id,
@@ -42,7 +42,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
         public DateTime TradeDate { get; private set; }
         public DateTime ValueDate { get; private set; }
         public DirectionDto Direction { get; private set; }
-        public int Notional { get; private set; }
+        public decimal Notional { get; private set; }
         public string DealtCurrency { get; private set; }
         public string RejectReason { get; private set; }
         public TradeStatusDto State { get; private set; }

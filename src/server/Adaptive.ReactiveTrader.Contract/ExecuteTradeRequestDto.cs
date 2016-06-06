@@ -6,7 +6,7 @@
         public decimal SpotRate { get; set; }
         public string ValueDate { get; set; }
         public DirectionDto Direction { get; set; }
-        public int Notional { get; set; }
+        public decimal Notional { get; set; }
         public string DealtCurrency { get; set; }
     }
 }
