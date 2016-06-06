@@ -9,7 +9,7 @@ namespace Adaptive.ReactiveTrader.Contract
         public long TradeId { get; set; }
         public string TraderName { get; set; }
         public string CurrencyPair { get; set; }
-        public long Notional { get; set; }
+        public decimal Notional { get; set; }
         public string DealtCurrency { get; set; }
 
         [JsonConverter(typeof (StringEnumConverter))]

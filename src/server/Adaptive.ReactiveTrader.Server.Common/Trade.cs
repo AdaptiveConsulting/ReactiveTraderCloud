@@ -9,7 +9,7 @@ namespace Adaptive.ReactiveTrader.Server.Host
             long tradeId,
             string traderName,
             string currencyPair,
-            long notional,
+            decimal notional,
             string dealtCurrency,
             DirectionDto direction,
             decimal spotRate,
@@ -32,7 +32,7 @@ namespace Adaptive.ReactiveTrader.Server.Host
         public long TradeId { get; }
         public string TraderName { get; }
         public string CurrencyPair { get; }
-        public long Notional { get; }
+        public decimal Notional { get; }
         public string DealtCurrency { get; }
         public DirectionDto Direction { get; }
         public decimal SpotRate { get; }
