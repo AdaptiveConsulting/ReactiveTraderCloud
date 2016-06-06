@@ -27,9 +27,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div');
       popoutContainer.id = this._popoutContainerId;
       tearoutWindow.contentWindow.document.body.appendChild(popoutContainer);
-      ReactDOM.render(<OpenFinChrome
-        minimize={() => this._openFin.minimize(tearoutWindow)}
-        maximize={() => this._openFin.maximize(tearoutWindow)}
+      ReactDOM.render(<OpenFinChrome showHeaderBar={false}
         close={() => {
           this._openFin.close(tearoutWindow);
           this._unregisterWindow(tearoutWindow);
@@ -43,8 +41,6 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
         }}>
         {view}
       </OpenFinChrome>, popoutContainer);
-      const toolbar = tearoutWindow.contentWindow.document.getElementsByClassName('openfin-chrome__header')[0];
-      tearoutWindow.defineDraggableArea(toolbar);
       tearoutWindow.resizeTo(windowOptions.width, windowOptions.height);
       tearoutWindow.updateOptions({opacity: 0, alwaysOnTop: true});
       tearoutWindow.show();
@@ -71,8 +67,8 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
         frame: false,
         resizable: windowOptions.resizable,
         maximizable: false,
-        minimizable: true,
-        showTaskbarIcon: true,
+        minimizable: false,
+        showTaskbarIcon: false,
         alwaysOnTop: true
       },
       () => onSuccessCallback(tearoutWindow),

@@ -47,7 +47,7 @@ $price-width: calc(45% + 10px);
       color: $spot-tile-primary-color;
       display: inline-block;
       position: absolute;
-      right: 40px;
+      right: 60px;
       top: 0;
       text-transform: uppercase;
       text-align: right;
@@ -173,4 +173,10 @@ $price-width: calc(45% + 10px);
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+#popout-content-container {
+  .spot-tile {
+    border: none;
+  }
 }
