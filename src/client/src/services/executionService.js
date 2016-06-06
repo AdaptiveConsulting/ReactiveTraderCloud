@@ -10,7 +10,8 @@ const _log:logger.Logger = logger.create('ExecutionService');
 
 export default class ExecutionService extends ServiceBase {
 
-  static EXECUTION_TIMEOUT_MS = 2000;
+  static EXECUTION_CLIENT_TIMEOUT_MS  =  2000;
+  static EXECUTION_REQUEST_TIMEOUT_MS = 30000;
 
   constructor(serviceType:string,
               connection:Connection,
@@ -35,15 +36,24 @@ export default class ExecutionService extends ServiceBase {
             .take(1)
             .subscribe(limitCheckResult => {
               if (limitCheckResult) {
+                let request = _this._serviceClient
+                  .createRequestResponseOperation('executeTrade', executeTradeRequest)
+                  .publish()
+                  .refCount();
                 disposables.add(
-                  _this._serviceClient
-                    .createRequestResponseOperation('executeTrade', executeTradeRequest)
-                    .map(dto => {
-                      const trade = _this._tradeMapper.mapFromTradeDto(dto.Trade);
-                      _log.info(`execute response received for: ${executeTradeRequest.toString()}. Status: ${trade.status}`, dto);
-                      return ExecuteTradeResponse.create(trade);
-                    })
-                    .timeout(ExecutionService.EXECUTION_TIMEOUT_MS, Rx.Observable.return(ExecuteTradeResponse.createForError('Trade execution timeout exceeded')))
+                  Rx.Observable.merge(
+                    request
+                      .map(dto => {
+                        const trade = _this._tradeMapper.mapFromTradeDto(dto.Trade);
+                        _log.info(`execute response received for: ${executeTradeRequest.toString()}. Status: ${trade.status}`, dto);
+                        return ExecuteTradeResponse.create(trade);
+                      }),
+                    // show timeout error if request is taking longer than expected
+                    Rx.Observable.timer(ExecutionService.EXECUTION_CLIENT_TIMEOUT_MS)
+                      .map(() => ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))
+                      .takeUntil(request))
+                    // if we never receive a response, mark request as complete
+                    .timeout(ExecutionService.EXECUTION_REQUEST_TIMEOUT_MS, Rx.Observable.return(ExecuteTradeResponse.createForError('Trade execution timeout exceeded')))
                     .subscribe(o)
                 );
               }
