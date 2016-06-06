@@ -48,8 +48,7 @@ export default class ExecutionService extends ServiceBase {
                 );
               }
               else {
-                //TODO
-                o.onError(new Error('Openfin integration not finished'));
+                o.onNext(ExecuteTradeResponse.createForError('Credit limit exceeded'));
               }
             })
         );

@@ -11,7 +11,7 @@ namespace Adaptive.ReactiveTrader.Contract.Events.Trade
                                  DateTime tradeDate,
                                  DateTime valueDate,
                                  string direction,
-                                 int notional,
+                                 decimal notional,
                                  string dealtCurrency)
         {
             TradeId = tradeId;
@@ -32,7 +32,7 @@ namespace Adaptive.ReactiveTrader.Contract.Events.Trade
         public DateTime TradeDate { get; }
         public DateTime ValueDate { get; }
         public string Direction { get; }
-        public int Notional { get; }
+        public decimal Notional { get; }
         public string DealtCurrency { get; }
     }
 }

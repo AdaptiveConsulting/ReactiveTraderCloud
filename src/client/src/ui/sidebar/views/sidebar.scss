@@ -1,13 +1,11 @@
 $container-bg-color:#212A35;
 $active-color:      #283442;
 $border-color:      #414444;
-$width:             40px;
 $button-height:     50px;
 
 .sidebar__container{
   background-color: $container-bg-color;
   height: 100%;
-  width: $width;
   display: flex;
   flex-direction: column;
   overflow: hidden;

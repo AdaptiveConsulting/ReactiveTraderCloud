@@ -1,3 +1,4 @@
+$sidebar-width:               40px;
 $shell-background-color:      #212A35;
 $panel-background-color:      #293543;
 $blotter-height:              20vh;
@@ -8,9 +9,10 @@ $workspace-height-expanded:   calc(100% - #{$footer-height});
 $analytics-height:            $workspace-height;
 $analytics-height-expanded:   $workspace-height-expanded;
 $analytics-width:             400px;
-$workspace-width:             calc(100vw - #{$analytics-width});
+$workspace-width:             calc(100vw - #{$sidebar-width} - #{$analytics-width});
 $splash-logo-height:          400px;
 $splash-logo-margin-top:      20vh;
+$sidebar-height:              $workspace-height;
 
 @keyframes hideSplashScreen {
   0% {
@@ -90,48 +92,45 @@ $splash-logo-margin-top:      20vh;
   -ms-scrollbar-track-color: $shell-background-color;
 }
 
-.shell__main-area{
-  flex: 1 100vw;
-  order: 2;
-  height: $workspace-height;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  display: flex;
 
-  &.shell__main-area--expanded{
+.shell__side-bar {
+  order: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.shell__analytics {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: $analytics-width;
+  order: 2;
+  height: $analytics-height;
+  overflow-y: auto;
+  background: $panel-background-color;
+  padding: 0px;
+
+  &.shell__analytics--expanded {
+    height: $analytics-height-expanded;
+  }
+}
+
+
+.shell__workspace {
+  flex-grow: 1;
+  flex-basis: $workspace-width;
+  order: 3;
+  height: $workspace-height;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &.shell__workspace--expanded {
     height: $workspace-height-expanded;
   }
 }
 
-.shell__workspace {
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 100%;
-  display: inline-block;
-  padding-left: 5px;
-  order: 3;
-  flex-grow: 2;
-}
-
-.shell__side-bar{
-  height: 100%;
-  display: inline-block;
-  overflow: hidden;
-  order: 1;
-  flex-grow: 0;
-  float: left;
-}
-
-.shell__analytics {
-  display: inline-block;
-  height: 100%;
-  float: left;
-  order: 2;
-  flex-grow: 0;
-}
-
 .shell__blotter {
   flex: 1 100vw;
+  heigth: 100%;
   order: 4;
   height: $blotter-height;
   overflow: hidden;
