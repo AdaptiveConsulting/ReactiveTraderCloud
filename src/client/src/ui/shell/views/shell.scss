@@ -97,6 +97,11 @@ $sidebar-height:              $workspace-height;
   order: 3;
   flex-grow: 0;
   flex-shrink: 0;
+  height: $analytics-height;
+
+  &.shell__sidebar-bar--expanded {
+    height: $analytics-height-expanded;
+  }
 }
 
 .shell__analytics {
