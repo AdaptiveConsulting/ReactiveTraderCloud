@@ -4,7 +4,6 @@ using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Host;
-using Common.Logging;
 using EventStore.ClientAPI;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore;
@@ -13,7 +12,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class ReferenceDataWriteServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
     {
-        protected static readonly ILog Log = LogManager.GetLogger<ReferenceDataWriteServiceHostFactory>();
         private readonly SerialDisposable _cleanup = new SerialDisposable();
 
         public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)

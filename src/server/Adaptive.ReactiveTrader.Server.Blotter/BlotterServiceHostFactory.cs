@@ -4,15 +4,12 @@ using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Host;
-using Common.Logging;
 using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
     public class BlotterServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
     {
-        protected static readonly ILog Log = LogManager.GetLogger<BlotterServiceHostFactory>();
-
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
         private TradeCache _cache;
 

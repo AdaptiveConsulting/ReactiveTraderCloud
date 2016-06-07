@@ -2,13 +2,13 @@ using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class Heartbeat : IDisposable
     {
-        protected static readonly ILog Log = LogManager.GetLogger<Heartbeat>();
+        //protected static readonly ILogger Log = Log.ForContext<Heartbeat>();
 
         private readonly IBroker _broker;
         private readonly IObservable<long> _heartbeatStream;
@@ -28,7 +28,7 @@ namespace Adaptive.ReactiveTrader.Messaging
         public void Dispose()
         {
             _disp.Dispose();
-            Log.InfoFormat("Stopped heartbeat for {0}", _host);
+            Log.Information("Stopped heartbeat for {host}", _host);
         }
 
         public async Task Start()
@@ -46,7 +46,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                     })
                                     .Subscribe(endpoint);
 
-            Log.InfoFormat("Started heartbeat for {0}", _host);
+            Log.Information("Started heartbeat for {host}", _host);
         }
     }
 }

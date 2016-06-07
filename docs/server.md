@@ -10,7 +10,7 @@ Reactive Trader Cloud - Server
 
 The server is made up of separate distributed services. They communicate with the client via a broker and can each be run in its own Docker container.
 
-They are written in .NET running cross-platform with DNX, specifically with the full CLR on Windows and Mono on Linux and OSX. A migration to [.NET Platform Standard](https://github.com/dotnet/corefx/blob/master/Documentation/architecture/net-platform-standard.md) is planned when support from dependent libraries become available.
+They are written in .NET running cross-platform with .NET Core with [.NET Platform Standard](https://github.com/dotnet/corefx/blob/master/Documentation/architecture/net-platform-standard.md) 1.3.
 
 The cross-platform capability opens the door to a wide range of deployment tools and techniques such as Docker and Kubernetes. These in turn allow for consistent deployment environments and ease of management for deployed containers.
 

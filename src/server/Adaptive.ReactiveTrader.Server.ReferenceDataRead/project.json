@@ -1,25 +1,32 @@
-{
-  "version": "1.0.0",
+﻿{
+  "version": "1.0.0-*",
   "description": "Reference Data Read Service",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "tags": [ "Adaptive", "Reactive Trader" ],
-  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Adaptive", "Reactive Trader" ],
+    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
+  },
+
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
 
   "dependencies": {
-    "Adaptive.ReactiveTrader.Server.Host": "1.0.0"
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.0-*"
+    },
+    "Adaptive.ReactiveTrader.Server.Host": "1.0.0-*"
   },
 
-  "commands": {
-    "dev": "Adaptive.ReactiveTrader.Server.ReferenceDataRead config.dev.json",
-    "prod": "Adaptive.ReactiveTrader.Server.ReferenceDataRead config.prod.json"
-  },
   "frameworks": {
-    "dnx451": {
-      "frameworkAssemblies": {
-        "System.Runtime": "",
-        "System.Collections": ""
-      }
+    "netstandard1.3": {
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8+wp8",
+        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
+      ]
     }
   }
 }

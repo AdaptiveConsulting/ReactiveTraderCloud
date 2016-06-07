@@ -5,7 +5,7 @@ machine:
 dependencies:
   cache_directories:
     - "~/docker"
-    - deploy/docker/build/servers/dnxcache
+    - deploy/docker/build/servers/dotnetcache
     - deploy/docker/build/web/.npm
   override:
     - docker info
@@ -19,10 +19,10 @@ test:
   override:
     - docker ps
     - for i in {1..10}; do curl http://localhost:2113/web/index.html && break; sleep 1; if [[ $i == 10 ]];then false;fi; done
-    - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$CIRCLE_BUILD_NUM bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
+    - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$CIRCLE_BUILD_NUM bash -c "dotnet test --configuration Release Adaptive.ReactiveTrader.Server.IntegrationTests"
 
 deployment:
   hub:
-    branch: [master, dev]
+    branch: [master, dev, dotnetcore]
     commands:
       - cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM

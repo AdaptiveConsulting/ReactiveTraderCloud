@@ -4,7 +4,7 @@ using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using Common.Logging;
+using Serilog;
 using WampSharp.Core.Serialization;
 using WampSharp.V2.Core;
 using WampSharp.V2.Core.Contracts;
@@ -14,9 +14,8 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 {
     internal class RpcResponseOperation<TResponse> : IWampRpcOperation
     {
-        protected static readonly ILog Log = LogManager.GetLogger<RpcOperation>();
+        //protected static readonly ILogger Log = Log.ForContext<RpcOperation>();
 
-        private readonly IScheduler _scheduler = TaskPoolScheduler.Default;
         private readonly Func<IRequestContext, IMessage, Task<TResponse>> _serviceMethod;
 
         public RpcResponseOperation(string name, Func<IRequestContext, IMessage, Task<TResponse>> serviceMethod)
@@ -65,7 +64,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
             try
             {
-                _scheduler.Schedule(async () =>
+                Task.Run(async () =>
                 {
                     try
                     {
@@ -102,7 +101,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
         private static void OnError(IWampRawRpcOperationRouterCallback caller, Exception exception, YieldOptions dummyDetails)
         {
-            Log.Error(exception);
+            Log.Error(exception, "Error processing RPC request response");
             caller.Error(WampObjectFormatter.Value, dummyDetails, exception.Message);
         }
     }

@@ -15,11 +15,11 @@ The services are distributed and are capable of recovery from disconnections. Th
 ![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/docs/reactive-rader-screencapture.gif)
 
 ### Live Demo
-A live demo can be found at [web-demo.adaptivecluster.com/](http://web-demo.adaptivecluster.com/)
+A live demo can be found at [web-demo.adaptivecluster.com/](https://web-demo.adaptivecluster.com/)
 
 ## Architecture
 
-The backend is made up of distributed services written in .NET leveraging the cross-platform capabilities provided by [DNX](https://github.com/aspnet/dnx).
+The backend is made up of distributed services written in .NET leveraging the cross-platform capabilities provided by [.NET Core](https://dotnet.github.io).
 
 Every server component can be deployed via Docker containers. This allows the use of tools such as [Kubernetes](http://kubernetes.io/) to facilitate cluster management for resiliency purposes as well as ease of deployment.
 
@@ -44,7 +44,7 @@ You will find a guide to setup ReactiveTraderCloud for your platform [here](http
 Those topics will be covered in the upcoming weeks.
 
 + [vNext Client Architecture with ES.next, React, Webpack, RxJs](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/articles/vNextClientArchitecture.md)
-+ [DNX (.NET Execution Environment): Cross Platform .Net Development](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/articles/dnx.md)
++ [Cross Platform .Net Development](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/articles/dotnet.md)
 + [Event Sourcing](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/articles/eventSourcing.md)
 + [Web Messaging with WAMP & Crossbar](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/articles/webMessaging.md)
 + [Always Connected Apps in a Microservice Environment](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/articles/alwaysConnectedApps.md)

@@ -1,13 +1,13 @@
 using System;
 using System.Net;
 using System.Reactive.Subjects;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class EndPoint<T> : IEndPoint<T>
     {
-        protected static readonly ILog Log = LogManager.GetLogger<EndPoint>();
+        //protected static readonly ILogger Log = Log.ForContext<EndPoint>();
 
         private readonly ISubject<T> _subject;
 
@@ -24,7 +24,7 @@ namespace Adaptive.ReactiveTrader.Messaging
             }
             catch (Exception e)
             {
-                Log.Error("Could not send message" + e.Message);
+                Log.Error("Could not send message {message}", e.Message);
             }
         }
 

@@ -5,9 +5,10 @@ build/eventstore/build
 build/fluentd/build
 build/gcloud/build
 build/mono/build
+build/dotnet/build
 build/node/build
 build/servers/build
-build/servers/dnxcache
+build/servers/dotnetcache
 build/testtools/build
 build/nsgate/build
 build/web/npminstall/build

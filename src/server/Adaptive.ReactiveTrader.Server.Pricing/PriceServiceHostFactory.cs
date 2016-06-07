@@ -3,13 +3,13 @@ using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Host;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    public class PriceServiceHostFactory : IServiceHostFactory, IDisposable
+    public class PriceServiceHostFactory : IServiceHostFactory
     {
-        protected static readonly ILog Log = LogManager.GetLogger<PriceServiceHostFactory>();
+        //protected static readonly ILogger Log = Log.ForContext<PriceServiceHostFactory>();
 
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
@@ -18,10 +18,10 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         public PriceServiceHostFactory()
         {
             var priceSource = new PriceSource();
-            Log.Info("Started Generator");
+            Log.Information("Started Generator");
 
             _service = new PricingService(priceSource);
-            Log.Info("Started Service");
+            Log.Information("Started Service");
 
             _cleanup.Add(priceSource);
         }

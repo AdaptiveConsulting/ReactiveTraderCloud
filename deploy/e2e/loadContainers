@@ -2,7 +2,7 @@
 
 echo "Loading containers"
 
-for container in "mono" "crossbar" "eventstore" "nginx"
+for container in "dotnet" "crossbar" "eventstore" "nginx"
 do
   if [[ -e ~/docker/$container.tar ]]; then 
     docker load -i ~/docker/$container.tar && echo "$container loaded" 

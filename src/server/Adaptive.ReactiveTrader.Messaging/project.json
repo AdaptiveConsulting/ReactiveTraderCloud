@@ -1,23 +1,35 @@
 {
-  "version": "1.0.0",
-  "description": "Code for interacting with the WampSharp library",
+  "version": "1.0.0-*",
+  "description": "Messaging",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "tags": [ "Adaptive", "Reactive Trader" ],
-  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Adaptive", "Reactive Trader" ],
+    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
+  },
 
   "dependencies": {
-    "WampSharp.Default": "1.2.3.12-beta",
-    "protobuf-net": "2.1.0-alpha-1",
-    "Adaptive.ReactiveTrader.Common": "1.0.0"
+    "Adaptive.ReactiveTrader.Common": "1.0.0-*",
+    "Adaptive.WampSharp.Default.Client": "1.0.0.1",
+    "EventStore.ClientAPI.DotNetCore": "1.0.0",
+    "NETStandard.Library": "1.5.0-*",
+    "Newtonsoft.Json": "8.0.4-*",
+    "protobuf-net": "2.1.0-*",
+    "System.Collections.Immutable": "1.2.0-*",
+    "System.Diagnostics.Contracts": "4.0.1-*",
+    "System.Net.WebSockets": "4.0.0-*",
+    "System.Net.WebSockets.Client": "4.0.0-*",
+    "System.Security.Cryptography.Algorithms": "4.1.0-*",
+    "Websockets.Pcl": "1.1.9"
   },
 
   "frameworks": {
-    "dnx451": {
-      "frameworkAssemblies": {
-        "System.Runtime": "",
-        "System.Collections": ""
-      }
+    "netstandard1.3": {
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8+wp8",
+        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
+      ]
     }
   }
 }

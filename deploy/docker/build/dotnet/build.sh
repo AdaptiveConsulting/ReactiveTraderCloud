@@ -2,7 +2,7 @@
 
 build=$1
 if [[ $build = "" ]];then
-  echo "populate-eventstore-build: build number required as first parameter"
+  echo "dotnet-build: build number required as first parameter"
   exit 1
 fi
 
@@ -17,7 +17,7 @@ cp     ./template.Dockerfile                       ./build/Dockerfile
 sed -ie "s|__UBUNTU_CONTAINER__|$ubuntuContainer|g" ./build/Dockerfile
 
 cp     ./template.install.sh ./build/install.sh
-sed -ie "s/__VDNX__/$vDnx/g"  ./build/install.sh
+sed -ie "s/__DOTNET_VERSION__/$dotnetversion/g"  ./build/install.sh
 
-docker build --no-cache -t $monoContainer ./build/.
-docker tag -f $monoContainer $monoContainer.$build
+docker build --no-cache -t $dotnetContainer ./build/.
+docker tag -f $dotnetContainer $dotnetContainer.$build

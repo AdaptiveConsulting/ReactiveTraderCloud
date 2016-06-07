@@ -3,13 +3,13 @@ using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     internal class PricePublisher : IDisposable
     {
-        protected static readonly ILog Log = LogManager.GetLogger<PricePublisher>();
+        //protected static readonly ILogger Log = Log.ForContext<PricePublisher>();
 
         private readonly IBroker _broker;
         private readonly IObservable<SpotPriceDto> _priceStream;
@@ -24,7 +24,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         public void Dispose()
         {
             _disp.Dispose();
-            Log.InfoFormat("Stopped price publishing to 'prices'");
+            Log.Information("Stopped price publishing to 'prices'");
         }
 
         public async Task Start()
@@ -33,7 +33,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             _disp = _priceStream.Subscribe(endpoint);
 
-            Log.InfoFormat("Started price publishing to 'prices'");
+            Log.Information("Started price publishing to 'prices'");
         }
     }
 }

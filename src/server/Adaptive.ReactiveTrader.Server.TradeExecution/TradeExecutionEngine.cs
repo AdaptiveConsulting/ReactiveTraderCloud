@@ -4,13 +4,13 @@ using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
-using Common.Logging;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     public class TradeExecutionEngine : IDisposable
     {
-        protected static readonly ILog Log = LogManager.GetLogger<TradeExecutionEngine>();
+        //protected static readonly ILogger Log = Log.ForContext<TradeExecutionEngine>();
 
         private readonly IRepository _repository;
         private readonly TradeIdProvider _tradeIdProvider;
@@ -23,7 +23,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         public void Dispose()
         {
-            Log.Warn("Not disposed.");
+            Log.Warning("Not disposed.");
         }
 
         public async Task<ExecuteTradeResponseDto> ExecuteAsync(ExecuteTradeRequestDto request, string user)

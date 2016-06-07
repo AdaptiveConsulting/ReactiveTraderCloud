@@ -1,21 +1,32 @@
-{
-  "version": "1.0.0",
+﻿{
+  "version": "1.0.0-*",
   "description": "Reference Data Write Service",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "tags": [ "Adaptive", "Reactive Trader" ],
-  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
-
-  "dependencies": {
-    "Adaptive.ReactiveTrader.Server.Host": "1.0.0"
+  "packOptions": {
+    "tags": [ "Adaptive", "Reactive Trader" ],
+    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
   },
 
-  "commands": {
-    "dev": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite config.dev.json",
-    "prod": "Adaptive.ReactiveTrader.Server.ReferenceDataWrite config.prod.json"
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.0-*"
+    },
+    "Adaptive.ReactiveTrader.Server.Host": "1.0.0-*"
   },
 
   "frameworks": {
-    "dnx451": { }
+    "netstandard1.3": {
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8+wp8",
+        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
+      ]
+    }
   }
 }

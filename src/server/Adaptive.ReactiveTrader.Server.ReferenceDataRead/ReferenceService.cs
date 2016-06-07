@@ -1,13 +1,11 @@
 using System;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using Common.Logging;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class ReferenceService : IReferenceService
     {
-        protected static readonly ILog Log = LogManager.GetLogger<ReferenceService>();
         private readonly IObservable<CurrencyPairUpdatesDto> _repository;
 
         public ReferenceService(IObservable<CurrencyPairUpdatesDto> repository)

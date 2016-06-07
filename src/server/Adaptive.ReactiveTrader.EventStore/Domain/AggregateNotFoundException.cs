@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Adaptive.ReactiveTrader.EventStore.Domain
 {
-    [Serializable]
+    [DataContract]
     public class AggregateNotFoundException : AggregateExceptionBase
     {
         public AggregateNotFoundException(object id, Type type) : base(id, type)
@@ -16,10 +16,6 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
         public AggregateNotFoundException(object id, Type type, string message, Exception innerException)
             : base(id, type, message, innerException)
-        {
-        }
-
-        public AggregateNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

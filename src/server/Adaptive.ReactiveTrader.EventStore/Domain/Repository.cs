@@ -6,9 +6,11 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Common.Logging;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
+using Serilog;
+using Serilog.Events;
+using ILogger = Serilog.ILogger;
 
 namespace Adaptive.ReactiveTrader.EventStore.Domain
 {
@@ -16,7 +18,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
     {
         private const int WritePageSize = 500;
         private const int ReadPageSize = 500;
-        private static readonly ILog Log = LogManager.GetLogger<Repository>();
+        //private static readonly ILogger Log = Log.ForContext<Repository>();
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.None};
         private readonly IEventStoreConnection _eventStoreConnection;
         private readonly EventTypeResolver _eventTypeResolver;
@@ -29,7 +31,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
         public void Dispose()
         {
-            Log.Warn("Not Disposing.");
+            Log.Warning("Not Disposing.");
         }
 
         public async Task<TAggregate> GetById<TAggregate>(object id) where TAggregate : IAggregate, new()
@@ -38,9 +40,9 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
             var streamName = $"{aggregate.Identifier}{id}";
 
-            if (Log.IsInfoEnabled)
+            if (Log.IsEnabled(LogEventLevel.Information))
             {
-                Log.Info($"Loading aggregate {streamName} from Event Store");
+                Log.Information("Loading aggregate {streamName} from Event Store", streamName);
             }
 
             var eventNumber = 0;
@@ -75,9 +77,9 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
         {
             var streamName = aggregate.Identifier.ToString();
 
-            if (Log.IsInfoEnabled)
+            if (Log.IsEnabled(LogEventLevel.Information))
             {
-                Log.Info($"Saving aggregate {streamName}");
+                Log.Information("Saving aggregate {streamName}", streamName);
             }
 
             var pendingEvents = aggregate.GetPendingEvents();
@@ -90,17 +92,17 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
                 var commitHeaders = CreateCommitHeaders(aggregate, extraHeaders);
                 var eventsToSave = pendingEvents.Select(x => ToEventData(Guid.NewGuid(), x, commitHeaders));
 
-                if (Log.IsInfoEnabled)
+                if (Log.IsEnabled(LogEventLevel.Information))
                 {
-                    Log.Info($"{pendingEvents.Count} events to write to stream {streamName}...");
+                    Log.Information("{pendingEventsCount} events to write to stream {streamName}...", pendingEvents.Count, streamName);
                 }
 
-                if (Log.IsDebugEnabled)
+                if (Log.IsEnabled(LogEventLevel.Debug))
                 {
                     foreach (var evt in pendingEvents)
                     {
                         // Take the hit of serializing twice here as debug logging should only be on in exceptional circumstances
-                        Log.Debug($"Event Type: {evt.GetType().Name}. Payload: {JsonConvert.SerializeObject(evt)}");
+                        Log.Debug("Event Type: {eventType}. Payload: {payload}", evt.GetType().Name, JsonConvert.SerializeObject(evt));
                     }
                 }
 
@@ -117,9 +119,9 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
                     // If we have more events to save than can be done in one batch according to the WritePageSize, then we need to save them in a transaction to ensure atomicity
                     using (var transaction = await _eventStoreConnection.StartTransactionAsync(streamName, originalVersion))
                     {
-                        if (Log.IsInfoEnabled)
+                        if (Log.IsEnabled(LogEventLevel.Information))
                         {
-                            Log.Info($"Started transaction {transaction.TransactionId} for stream {streamName}");
+                            Log.Information("Started transaction {transactionId} for stream {streamName}", transaction.TransactionId, streamName);
                         }
 
                         foreach (var batch in eventBatches)
@@ -129,18 +131,18 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
                         result = await transaction.CommitAsync();
 
-                        if (Log.IsInfoEnabled)
+                        if (Log.IsEnabled(LogEventLevel.Information))
                         {
-                            Log.Info($"Transaction {transaction.TransactionId} committed");
+                            Log.Information("Transaction {transactionId} committed", transaction.TransactionId);
                         }
                     }
                 }
 
                 aggregate.ClearPendingEvents();
 
-                if (Log.IsInfoEnabled)
+                if (Log.IsEnabled(LogEventLevel.Information))
                 {
-                    Log.Info($"Aggregate {streamName} pending events cleaned up");
+                    Log.Information("Aggregate {streamName} pending events cleaned up", streamName);
                 }
 
                 return result.NextExpectedVersion;
@@ -174,8 +176,8 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             {
                 {MetadataKeys.CommitIdHeader, commitId.ToString()},
                 {MetadataKeys.AggregateClrTypeHeader, aggregate.GetType().AssemblyQualifiedName},
-                {MetadataKeys.UserIdentityHeader, Thread.CurrentPrincipal?.Identity?.Name},
-                {MetadataKeys.ServerNameHeader, Environment.MachineName},
+                {MetadataKeys.UserIdentityHeader, Thread.CurrentThread.Name}, // TODO - was Thread.CurrentPrincipal?.Identity?.Name
+                {MetadataKeys.ServerNameHeader, "DefaultServerNameHEader"}, // TODO - was Environment.MachineName
                 {MetadataKeys.ServerClockHeader, DateTime.UtcNow.ToString("o")}
             };
 

@@ -12,5 +12,5 @@ set -euo pipefail
 # get and control config
 . ../../../config
 
-docker push $monoContainer
-docker push $monoContainer.$build
+docker push $dotnetContainer
+docker push $dotnetContainer.$build

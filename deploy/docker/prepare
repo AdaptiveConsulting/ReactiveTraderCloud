@@ -7,7 +7,7 @@ set -euo pipefail
 # =============
 possibleCommands="build push"
 services="servers broker web populatedEventstore"
-possibleGroup="services gcloud mono nginx node testtools crossbar eventstore nsgate $services"
+possibleGroup="services gcloud dotnet nginx node testtools crossbar eventstore nsgate $services"
 
 # USAGE
 # =====
@@ -35,7 +35,7 @@ usage() {
     echo "   - a number"
     echo " "
     echo " ie: prepare build services 125"
-    echo "     prepare build mono localtest"
+    echo "     prepare build dotnet localtest"
     echo "     prepare push node 178"
     echo " "
 }

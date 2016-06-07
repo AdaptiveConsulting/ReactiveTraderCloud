@@ -4,50 +4,43 @@
 
 The way to run ReactiveTrader on Linux is by using Docker. You can find the tutorial [here](docker-setup.md).
 
-### Traditional installation 
 
-These instructions have been tested on Ubuntu 14.04.
+### Linux 
 
-This has also tested on a Raspberry Pi 2 running Raspbian Wheezy, although you will need these additional apt packages to run crossbar.io: `python-dev` `libffi-dev`
+These instructions have been tested on Ubuntu 14.04
 
-### Install DNVM/DNX and Mono
 
-Follow the instructions provided [here](https://docs.asp.net/en/latest/getting-started/installing-on-linux.html).
+#### Install .NET Core
 
-Running `mono --version` should output:
+Follow the instructions provided [here](https://www.microsoft.com/net).
 
-```
-$ mono --version
-Mono JIT compiler version 4.2.1 (Stable 4.2.1.102/6dd2d0d Thu Nov 12 09:52:44 UTC 2015)
-Copyright (C) 2002-2014 Novell, Inc, Xamarin Inc and Contributors. www.mono-project.com
-	TLS:           __thread
-	SIGSEGV:       altstack
-	Notifications: epoll
-	Architecture:  amd64
-	Disabled:      none
-	Misc:          softdebug 
-	LLVM:          supported, not enabled.
-	GC:            sgen
-```
+Running `dotnet --info` should give something like:
 
-Ensure that DNX for mono is installed by running `dnvm upgrade -r mono`
+```sh
+$ dotnet --info
+.NET Command Line Tools (1.0.0-preview1-002702)
 
-Run `dnvm list` to check that the framework version in use is mono.
+Product Information:
+ Version:     1.0.0-preview1-002702
+ Commit Sha:  6cde21225e
 
-```
-Active Version              Runtime Architecture OperatingSystem Alias
------- -------              ------- ------------ --------------- -----
-  *    1.0.0-rc1-update1    mono                 linux/osx       default
+Runtime Environment:
+ OS Name:     ubuntu
+ OS Version:  14.04
+ OS Platform: Linux
+ RID:         ubuntu.14.04-x64
 ```
 
-### Install Event Store
 
-Follow the instructions provided [here](http://docs.geteventstore.com/server/3.3.0/installing-from-debian-repositories/)
+#### Install Event Store
+
+Follow the instructions provided [here](http://docs.geteventstore.com/server/3.6.0/installing-from-debian-repositories/)
 
 
-### Install Crossbar.io
+#### Install Crossbar.io
 
 Follow the instructions provided [here](http://crossbar.io/docs/Installation-on-Ubuntu/)
+
 
 ## Running Reactive Trader
 
@@ -56,23 +49,34 @@ Start Event Store by running
 ```bash
 $ sudo service eventstore start
 ```
+
 In a separate terminal, start Crossbar from the `/src/server` folder by running:
 
 ```bash
 $ crossbar start
 ```
+
 From the `/src/server` working directory, install the packages required by running:
 
 ```bash
-$ dnu restore
+$ dotnet restore
 ```
+
+Populate eventstore with the following command:
+
+```bash
+$ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher --populate-eventstore
+```
+
 Then run the services:
 
 ```bash
-$ cd Adaptive.ReactiveTrader.Server.Launcher
-$ dnx run all
+$ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher all
 ```
+
 The services should now run and connect to Crossbar and Event Store.
+
+To run each service individually, cd into each of the services (analytics, blotter, pricing, referenceDataRead, tradeExecution) and run `dotnet run`
 
 Run the client app by following the instructions [here](../client.md)
 

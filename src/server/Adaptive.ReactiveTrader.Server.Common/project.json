@@ -1,17 +1,27 @@
-{
-  "version": "1.0.0",
-  "description": "",
+﻿{
+  "version": "1.0.0-*",
+  "description": "Server Common",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "tags": [ "Adaptive", "Reactive Trader" ],
-  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Adaptive", "Reactive Trader" ],
+    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
+  },
 
   "dependencies": {
-    "Adaptive.ReactiveTrader.Contract": "1.0.0",
-    "Adaptive.ReactiveTrader.EventStore": "1.0.0"
+    "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
+    "Adaptive.ReactiveTrader.EventStore": "1.0.0-*",
+    "NETStandard.Library": "1.5.0-*",
+    "Newtonsoft.Json": "8.0.4-*"
   },
 
   "frameworks": {
-    "dnx451": { }
+    "netstandard1.3": {
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8+wp8",
+        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
+      ]
+    }
   }
 }

@@ -3,16 +3,19 @@ using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
-using Common.Logging;
+using Adaptive.ReactiveTrader.Messaging.WebSocket;
+using Serilog;
 using WampSharp.V2;
 using WampSharp.V2.Client;
 using WampSharp.V2.Fluent;
+using WampSharp.WebsocketsPcl;
+using Websockets;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
     public class BrokerConnection : IDisposable
     {
-        protected static readonly ILog Log = LogManager.GetLogger<BrokerConnection>();
+        //protected static readonly ILogger Log = Log.ForContext<BrokerConnection>();
 
         private readonly IWampChannel _channel;
 
@@ -24,6 +27,8 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public BrokerConnection(string uri, string realm)
         {
+            WebSocketFactory.Init(() => new ClientWebSocketConnection());
+
             _channel = new WampChannelFactory()
                 .ConnectToRealm(realm)
                 .WebSocketTransport(uri)
@@ -32,7 +37,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
             Func<Task> connect = async () =>
             {
-                Log.InfoFormat("Trying to connect to broker {0}", uri);
+                Log.Information("Trying to connect to broker {brokerUri}", uri);
 
                 try
                 {
@@ -41,12 +46,12 @@ namespace Adaptive.ReactiveTrader.Messaging
 
                     _subject.OnNext(Connected.Yes(new Broker(_channel)));
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    Log.Debug("Connection Failed.");
+                    Log.Error(exception, "Connection Failed.");
 
                     _subject.OnNext(Connected.No<IBroker>());
-                    throw;
+                    throw exception;
                 }
             };
 

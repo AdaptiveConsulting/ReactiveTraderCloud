@@ -2,6 +2,9 @@
 using WampSharp.V2;
 using WampSharp.V2.Client;
 using WampSharp.V2.Fluent;
+using WampSharp.WebsocketsPcl;
+using Adaptive.ReactiveTrader.Messaging.WebSocket;
+using Websockets;
 
 namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
@@ -11,10 +14,11 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
         public TestBroker()
         {
+            WebSocketFactory.Init(() => new ClientWebSocketConnection());
             _channel = new WampChannelFactory()
                 .ConnectToRealm("com.weareadaptive.reactivetrader")
                 .WebSocketTransport(TestAddress.Broker)
-                .MsgpackSerialization()
+                .JsonSerialization()
                 .Build();
         }
 

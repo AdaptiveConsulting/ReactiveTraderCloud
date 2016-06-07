@@ -1,33 +1,38 @@
 {
-  "version": "1.0.0",
-  "description": "Allows user to launch all services interactively",
+  "version": "1.0.0-*",
+  "description": "Service Launcher",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
-  "tags": [ "Adaptive", "Reactive Trader" ],
-  "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
-  "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Adaptive", "Reactive Trader" ],
+    "projectUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud",
+    "licenseUrl": "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE"
+  },
 
-    "dependencies": {
-        "Adaptive.ReactiveTrader.MessageBroker": "1.0.0",
-        "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0",
-        "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "1.0.0",
-        "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0",
-        "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0",
-        "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0",
-        "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0"
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.0-*"
     },
-
-  "commands": {
-      "default": "Adaptive.ReactiveTrader.Server.Launcher"
+    "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0-*",
+    "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*",
+    "EventStore.ClientAPI.DotNetCore": "1.0.0"
   },
 
   "frameworks": {
-    "dnx451": {
-      "frameworkAssemblies": {
-        "System.Runtime": "",
-        "System.Collections": ""
-      },
-
-      "dependencies": { }
+    "netstandard1.3": {
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8+wp8",
+        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
+      ]
     }
   }
 }

@@ -5,7 +5,6 @@ using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Contract.Events.Reference;
 using Adaptive.ReactiveTrader.EventStore;
-using Common.Logging;
 using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
@@ -16,7 +15,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         private const string CurrencyPairChangedEventType = "CurrencyPairChangedEvent";
         private const string CurrencyPairActivatedEventType = "CurrencyPairActivatedEvent";
         private const string CurrencyPairDeactivatedEventType = "CurrencyPairDeactivatedEvent";
-        protected static readonly ILog Log = LogManager.GetLogger<CurrencyPairCache>();
+        //protected static readonly Serilog.ILogger Log = Serilog.Log.ForContext<CurrencyPairCache>();
 
         private static readonly ISet<string> CurrencyPairEventTypes = new HashSet<string>
         {
@@ -26,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             CurrencyPairDeactivatedEventType
         };
 
-        public CurrencyPairCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) : base(eventStoreConnectionStream, Log)
+        public CurrencyPairCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) : base(eventStoreConnectionStream, Serilog.Log.Logger)
         {
         }
 
@@ -49,9 +48,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                 CurrencyPair = new CurrencyPairDto(x.Symbol, x.RatePrecision, x.PipsPosition),
                 UpdateType = UpdateTypeDto.Added
             })
-                                                                  .ToList(),
-                                              true,
-                                              container.IsStale);
+                .ToList(),
+                true,
+                container.IsStale);
         }
 
         protected override void UpdateStateOfTheWorld(IDictionary<string, CurrencyPair> currentSotw, RecordedEvent evt)
@@ -108,7 +107,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             return update != CurrencyPairUpdatesDto.Empty;
         }
 
-
         private static CurrencyPairUpdatesDto CreateSingleEventUpdateDto(IDictionary<string, CurrencyPair> currentSow,
                                                                          string symbol,
                                                                          UpdateTypeDto updateType)
@@ -119,12 +117,13 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                 new CurrencyPairUpdateDto
                 {
                     CurrencyPair =
-                        new CurrencyPairDto(ccyPairToDeactivate.Symbol, ccyPairToDeactivate.RatePrecision, ccyPairToDeactivate.PipsPosition),
+                        new CurrencyPairDto(ccyPairToDeactivate.Symbol, ccyPairToDeactivate.RatePrecision,
+                            ccyPairToDeactivate.PipsPosition),
                     UpdateType = updateType
                 }
             },
-                                              false,
-                                              false);
+                false,
+                false);
         }
     }
 }

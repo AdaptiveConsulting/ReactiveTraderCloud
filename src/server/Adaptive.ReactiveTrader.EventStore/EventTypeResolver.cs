@@ -13,7 +13,7 @@ namespace Adaptive.ReactiveTrader.EventStore
         {
             _typeMap = assembly
                 .GetExportedTypes()
-                .Where(x => x.Name.EndsWith("Event", StringComparison.InvariantCulture))
+                .Where(x => x.Name.EndsWith("Event", StringComparison.OrdinalIgnoreCase))
                 .ToDictionary(x => x.Name);
         }
 

@@ -1,8 +1,5 @@
-@echo off
-call "GetDependencies.bat"
-echo
-START CMD /C "dnx -p Adaptive.ReactiveTrader.Server.ReferenceDataRead dev"
-START CMD /C "dnx -p Adaptive.ReactiveTrader.Server.Pricing dev"
-START CMD /C "dnx -p Adaptive.ReactiveTrader.Server.TradeExecution dev"
-START CMD /C "dnx -p Adaptive.ReactiveTrader.Server.Blotter dev"
-START CMD /C "dnx -p Adaptive.ReactiveTrader.Server.Analytics dev"
+START CMD /C "dotnet run -p Adaptive.ReactiveTrader.Server.ReferenceDataRead config.dev.json"
+START CMD /C "dotnet run -p Adaptive.ReactiveTrader.Server.Pricing config.dev.json"
+START CMD /C "dotnet run -p Adaptive.ReactiveTrader.Server.TradeExecution config.dev.json"
+START CMD /C "dotnet run -p Adaptive.ReactiveTrader.Server.Blotter config.dev.json"
+START CMD /C "dotnet run -p Adaptive.ReactiveTrader.Server.Analytics config.dev.json"

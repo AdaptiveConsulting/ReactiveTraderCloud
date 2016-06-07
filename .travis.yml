@@ -5,7 +5,7 @@ services:
 
 cache:
   directories:
-    - deploy/docker/build/servers/dnxcache
+    - deploy/docker/build/servers/dotnetcache
     - deploy/docker/build/web/.npm
 
 before_script:
@@ -21,4 +21,4 @@ before_script:
 script:
   - docker ps
   - for i in {1..10}; do curl http://localhost:2113/web/index.html && break; sleep 1; if [[ $i == 10 ]];then false;fi; done
-  - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$TRAVIS_BUILD_NUMBER bash -c "dnx --configuration Release -p Adaptive.ReactiveTrader.Server.IntegrationTests test -parallel none"
+  - . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$TRAVIS_BUILD_NUMBER bash -c "dotnet test --configuration Release Adaptive.ReactiveTrader.Server.IntegrationTests"

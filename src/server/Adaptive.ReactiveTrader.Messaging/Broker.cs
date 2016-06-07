@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 using SystemEx;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Adaptive.ReactiveTrader.Messaging.WAMP;
-using Common.Logging;
+using Serilog;
+using Serilog.Events;
 using WampSharp.V2;
 using WampSharp.V2.Core.Contracts;
 using WampSharp.V2.MetaApi;
@@ -17,7 +18,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class Broker : IBroker, IDisposable
     {
-        private static readonly ILog Log = LogManager.GetLogger<Broker>();
+        //private static readonly ILogger Log = Log.ForContext<Broker>();
         private readonly Subject<Unit> _brokerTeardown;
 
         private readonly IWampChannel _channel;
@@ -74,9 +75,9 @@ namespace Adaptive.ReactiveTrader.Messaging
         public Task<IAsyncDisposable> RegisterCall(string procName,
                                                          Func<IRequestContext, IMessage, Task> onMessage)
         {
-            if (Log.IsInfoEnabled)
+            if (Log.IsEnabled(LogEventLevel.Information))
             {
-                Log.Info($"Registering call: [{procName}]");
+                Log.Information($"Registering call: [{procName}]");
             }
 
             var rpcOperation = new RpcOperation(procName, onMessage);
@@ -94,9 +95,9 @@ namespace Adaptive.ReactiveTrader.Messaging
         public async Task<IAsyncDisposable> RegisterCallResponse<TResponse>(string procName,
                                                                             Func<IRequestContext, IMessage, Task<TResponse>> onMessage)
         {
-            if (Log.IsInfoEnabled)
+            if (Log.IsEnabled(LogEventLevel.Information))
             {
-                Log.Info($"Registering call with response: [{procName}]");
+                Log.Information($"Registering call with response: [{procName}]");
             }
 
             var rpcOperation = new RpcResponseOperation<TResponse>(procName, onMessage);
@@ -115,19 +116,19 @@ namespace Adaptive.ReactiveTrader.Messaging
             var dest = (WampTransientDestination) destination;
             var subID = await _meta.LookupSubscriptionIdAsync(dest.Topic, new SubscribeOptions {Match = "exact"});
 
-            Log.DebugFormat("Create subscription {0} ({1})", subID, dest);
+            Log.Debug("Create subscription {subscriptionId} ({destination})", subID, dest);
 
             if (!subID.HasValue)
             {
                 // subscription is already disposed 
-                Log.ErrorFormat("Subscription not found for topic {0}", dest.Topic);
+                Log.Error("Subscription not found for topic {topic}", dest.Topic);
                 throw new Exception("No subscribers found for private subscription.");
             }
-            var sessionID = (await _meta.GetSubscribersAsync(subID.Value)).FirstOrDefault();
+            var sessionID = (await _meta.GetSubscribersAsync(subID.Value)).ToList().FirstOrDefault();
 
             if (sessionID == 0)
             {
-                Log.ErrorFormat("Subscription found but there are no subscriptions for topic {0}", dest.Topic);
+                Log.Error("Subscription found but there are no subscriptions for topic {topic}", dest.Topic);
                 throw new Exception("No subscribers found for private subscription.");
             }
 
@@ -136,7 +137,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                                  .Merge(_subscriptionTeardowns.Where(s => s == subID.Value).Select(_ => Unit.Default))
                                  .Merge(_brokerTeardown)
                                  .Take(1)
-                                 .Do(o => Log.DebugFormat("Remove subscription for {0} ({1})", subID, dest));
+                                 .Do(o => Log.Debug("Remove subscription for {subscriptionId} ({destination})", subID, dest));
 
             var subject = _channel.RealmProxy.Services.GetSubject<T>(dest.Topic);
 

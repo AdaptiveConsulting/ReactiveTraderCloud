@@ -4,16 +4,15 @@ using Adaptive.ReactiveTrader.Common.Config;
 using Adaptive.ReactiveTrader.EventStore;
 using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.Messaging;
-using Common.Logging;
-using Common.Logging.Simple;
 using EventStore.ClientAPI;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Host
 {
     public class App
     {
         public const int ThreadSleep = 5000;
-        private static readonly ILog Log = LogManager.GetLogger<App>();
+        //private static readonly ILogger Log = Log.ForContext<App>();
         private readonly string[] _args;
         private readonly IServiceHostFactory _factory;
         private readonly ManualResetEvent _reset = new ManualResetEvent(false);
@@ -43,10 +42,10 @@ namespace Adaptive.ReactiveTrader.Server.Host
                 _reset.Set();
             };
 
-            LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter
-            {
-                ShowLogName = true
-            };
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.ColoredConsole()
+                .CreateLogger();
 
             var config = ServiceConfiguration.FromArgs(_args);
 
@@ -87,7 +86,7 @@ namespace Adaptive.ReactiveTrader.Server.Host
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                Log.Error(e, "Error connecting to broker");
             }
         }
 

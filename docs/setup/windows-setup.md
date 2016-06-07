@@ -1,24 +1,26 @@
 ## Running with Visual Studio 2015 on Windows
 
-Install Visual Studio 2015 - this will provide the tools required to run DNX.
+Install Visual Studio 2015 - a free community edition is available. Also ensure that the NuGet package manager extension is up to date.
 
-Install a CLR image:
- 
- ```sh
- dnvm upgrade  # Upgrade CNVM
- dnvm list     # Output the current set of versions
- ```
- 
- `dnvm list` should give you an update similar to:
+That's it! You should be all set to go. Open a cmd prompt and type `dotnet --info` and you should see something like this:
 
-```
-Active Version           Runtime Architecture Location                      Alias
------- -------           ------- ------------ --------                      -----
-  *    1.0.0-rc1-update1 clr     x86          C:\Users\qiming\.dnx\runtimes default
+```sh
+C:\> dotnet --info
+.NET Command Line Tools (1.0.0-preview1-002702)
+
+Product Information:
+ Version:     1.0.0-preview1-002702
+ Commit Sha:  6cde21225e
+
+Runtime Environment:
+ OS Name:     Windows
+ OS Version:  10.0.10586
+ OS Platform: Windows
+ RID:         win10-x64
 ```
 
 #### Get External Dependencies 
-Run `GetDependencies.bat` once to grab external dependencies (this runs `dnu restore`)
+Run `GetDependencies.bat` once to grab external dependencies (this runs `dotnet restore` and downloads the relevant NuGet packages to your machine)
 
 #### Run Services
 To run all the services as well as an in-memory broker and Event Store, run `StartAll.bat`

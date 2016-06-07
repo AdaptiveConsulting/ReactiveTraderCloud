@@ -17,7 +17,7 @@ set euo -pipefail
 echo "Analytics"
 . ../../../config
 
-startCommand="dnx $releaseMode -p Adaptive.ReactiveTrader.Server.Launcher run a"
+startCommand="dotnet run $releaseMode -p Adaptive.ReactiveTrader.Server.Launcher a"
 waitCommand="while true; do echo ping; sleep 60; done"
 
 docker rm analytics 2&> garbage || true
