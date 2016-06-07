@@ -94,7 +94,7 @@ $sidebar-height:              $workspace-height;
 
 
 .shell__side-bar {
-  order: 1;
+  order: 3;
   flex-grow: 0;
   flex-shrink: 0;
 }
@@ -118,7 +118,7 @@ $sidebar-height:              $workspace-height;
 .shell__workspace {
   flex-grow: 1;
   flex-basis: $workspace-width;
-  order: 3;
+  order: 1;
   height: $workspace-height;
   overflow-y: auto;
   overflow-x: hidden;
