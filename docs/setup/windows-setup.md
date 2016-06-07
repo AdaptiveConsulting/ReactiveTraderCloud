@@ -5,7 +5,7 @@ Install Visual Studio 2015 - a free community edition is available. Also ensure 
 That's it! You should be all set to go. Open a cmd prompt and type `dotnet --info` and you should see something like this:
 
 ```sh
-C:\Users\qiming> dotnet --info
+C:\> dotnet --info
 .NET Command Line Tools (1.0.0-preview1-002702)
 
 Product Information:
