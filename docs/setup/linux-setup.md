@@ -5,30 +5,9 @@
 The way to run ReactiveTrader on Linux is by using Docker. You can find the tutorial [here](docker-setup.md).
 
 
-### Traditional installation 
+### Linux 
 
 These instructions have been tested on Ubuntu 14.04
-
-
-#### Install mono
-
-Install mono by following the instructions [here](http://www.mono-project.com/docs/getting-started/install/linux/)
-
-The `mono-complete` package should be installed.
-
-Running `mono --version` should output something like:
-
-
-```
-$ mono --version
-Mono JIT compiler version 4.2.3 (Stable 4.2.3.4/832de4b Wed Mar 16 13:19:08 UTC 2016)
-Copyright (C) 2002-2014 Novell, Inc, Xamarin Inc and Contributors. www.mono-project.com
-        SIGSEGV:       altstack
-        Architecture:  amd64
-        Misc:          softdebug
-        LLVM:          supported, not enabled.
-        GC:            sgen
-```
 
 
 #### Install .NET Core
@@ -70,22 +49,31 @@ Start Event Store by running
 ```bash
 $ sudo service eventstore start
 ```
+
 In a separate terminal, start Crossbar from the `/src/server` folder by running:
 
 ```bash
 $ crossbar start
 ```
+
 From the `/src/server` working directory, install the packages required by running:
 
 ```bash
 $ dotnet restore
 ```
+
+Populate eventstore with the following command:
+
+```bash
+$ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher --populate-eventstore
+```
+
 Then run the services:
 
 ```bash
-$ cd Adaptive.ReactiveTrader.Server.Launcher
-$ dotnet run all
+$ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher all
 ```
+
 The services should now run and connect to Crossbar and Event Store.
 
 To run each service individually, cd into each of the services (analytics, blotter, pricing, referenceDataRead, tradeExecution) and run `dotnet run`

@@ -2,7 +2,6 @@
 
 Install Visual Studio 2015 - a free community edition is available. Also ensure that the NuGet package manager extension is up to date.
 
-
 That's it! You should be all set to go. Open a cmd prompt and type `dotnet --info` and you should see something like this:
 
 ```sh

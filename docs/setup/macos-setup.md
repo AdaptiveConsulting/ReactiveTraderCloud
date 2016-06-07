@@ -4,18 +4,14 @@
 
 #### Get DNX
 
-First you need to install mono by following the instructions [here](http://www.mono-project.com/docs/getting-started/install/mac/)
-
-TODO: test `mono --version`
-
 Install .NET Core, following instructions [here](https://www.microsoft.com/net)
 
-TODO: test `dotnet --info`
+Run `dotnet --info` to test that the install has been successful.
 
 
 #### Get External Dependencies 
 
-Then you need to restore the packages used by the application
+Grab the source, then restore the packages used by the application
 
 ```bash
 $ cd ./src/server
@@ -23,13 +19,29 @@ $ dotnet restore
 ```
 
 
+#### Install Event Store
+
+Follow the instructions provided [here](https://geteventstore.com/downloads/)
+
+
+#### Install Crossbar.io
+
+Follow the instructions provided [here](http://crossbar.io/docs/Installation-on-Mac-OS-X/)
+
+
 #### Start Services
 
-All the services including the broker and an embedded Event Store can be started using the Launcher
+Start eventstore, and run `crossbar start` from the `/src/server` directory.
+
+Populate eventstore with the following command from the`/src/server` directory:
 
 ```bash
-$ cd Adaptive.ReactiveTrader.Server.Launcher
-$ dotnet run all
+$ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher --populate-eventstore
+```
+Then to start the backaend services, run the following command from the`/src/server` directory: 
+
+```bash
+$ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher all
 ```
 
 
