@@ -12,7 +12,7 @@ $button-height:     50px;
 }
 
 .sidebar__element{
-  border-right: 1px solid $border-color;
+  border-left: 1px solid $border-color;
   width: 100%;
   flex: 1;
 }
@@ -20,7 +20,7 @@ $button-height:     50px;
 .sidebar__element--active{
   background-color: $active-color;
   border: 1px solid $border-color;
-  border-right-color: $active-color;
+  border-left-color: $active-color;
   &:hover{
     background-color: $container-bg-color;
     border-right-color: $border-color;
@@ -29,7 +29,7 @@ $button-height:     50px;
 
 .sidebar__element--inactive{
   border: 1px solid $container-bg-color;
-  border-right-color: $border-color;
+  border-left-color: $border-color;
   background-color: $container-bg-color;
   &:hover{
     background-color: $active-color;
