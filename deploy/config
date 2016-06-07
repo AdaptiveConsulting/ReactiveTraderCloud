@@ -45,9 +45,9 @@ eventstoreContainer_minor="0"
 eventstoreContainer="weareadaptive/eventstore:$eventstoreContainer_major.$eventstoreContainer_minor"
 
 # node
-vNode="5.3.0"
-nodeContainer_major="0"
-nodeContainer_minor="0"
+vNode="6.2.1"
+nodeContainer_major="6"
+nodeContainer_minor="2"
 nodeContainer="weareadaptive/node:$nodeContainer_major.$nodeContainer_minor"
 
 # nginx
