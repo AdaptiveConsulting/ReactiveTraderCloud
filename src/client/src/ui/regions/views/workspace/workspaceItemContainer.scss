@@ -1,10 +1,12 @@
 .workspace-region {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
   align-content: flex-start;
+  position: relative;
 }
 
 .workspace-region__spacer,
@@ -20,4 +22,16 @@
     margin-right: auto;
     width: 100%;
   }
+}
+
+
+.workspace-region__icon--loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 75px;
+  height: 75px;
 }
