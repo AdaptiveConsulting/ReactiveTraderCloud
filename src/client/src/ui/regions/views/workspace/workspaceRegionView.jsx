@@ -28,7 +28,7 @@ export default class WorkspaceRegionView extends ViewBase {
           {
             model.modelRegistrations.length > 0
               ? this._renderWorkspaceItems(model.modelRegistrations)
-              : <div className='text-center'><i className='fa fa-5x fa-cog fa-spin'/></div>
+              : <div className='workspace-region__icon--loading'><i className='fa fa-5x fa-cog fa-spin'/></div>
           }
         </div>
       </div>);
@@ -43,6 +43,6 @@ export default class WorkspaceRegionView extends ViewBase {
           {View}
         </WorkspaceItemContainer>
       );
-    }).concat(_.times(6, i => <div key={i} className='workspace-region__spacer'/>)); // add empty items at the end so tiles lay out nicely
+    }).concat(_.times(3, i => <div key={i} className='workspace-region__spacer'/>)); // add empty items at the end so tiles lay out nicely
   }
 }
