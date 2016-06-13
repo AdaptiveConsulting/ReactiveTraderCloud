@@ -3,12 +3,11 @@ import _ from 'lodash';
 import { Router,  observeEvent } from 'esp-js/src';
 import { BlotterService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
-import { logger } from '../../../system';
+import { logger, Environment } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { OpenFin } from '../../../system/openFin';
 import { Trade, TradesUpdate, TradeStatus, TradeNotification, RegionSettings } from '../../../services/model';
-
 import { BlotterView } from '../views';
 
 var _log:logger.Logger = logger.create('BlotterModel');
@@ -59,6 +58,10 @@ export default class BlotterModel extends ModelBase {
   _onTearOffBlotter() {
     _log.info(`Popping out blotter`);
     this._regionManagerHelper.popout();
+  }
+
+  get canPopout() {
+    return Environment.isRunningInIE;
   }
 
   subscribeToOpenFinEvents(){

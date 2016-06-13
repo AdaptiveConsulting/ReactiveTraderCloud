@@ -57,8 +57,8 @@ export default class SpotTileView extends ViewBase {
     const newWindowClassName = classnames(
       'popout__controls  glyphicon glyphicon-new-window',
       {
-        'spot-tile__icon--tearoff' : !model.canPopout(),
-        'spot-tile__icon--hidden' : model.canPopout()
+        'spot-tile__icon--tearoff' : !model.canPopout,
+        'spot-tile__icon--hidden' : model.canPopout
       }
     );
     return (
@@ -92,7 +92,7 @@ export default class SpotTileView extends ViewBase {
     );
   }
 
-  _displayCurrencyChart(){ 
+  _displayCurrencyChart(){
     router.publishEvent(this.props.modelId, 'displayCurrencyChart', {});
   }
 

@@ -1,7 +1,7 @@
 import { Router,  observeEvent } from 'esp-js/src';
 import { AnalyticsService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
-import { logger } from '../../../system';
+import { logger, Environment } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { PnlChartModel, PositionsChartModel, ChartModelBase } from './';
@@ -54,6 +54,10 @@ export default class AnalyticsModel extends ModelBase {
 
   get pnlChartModel() {
     return this._pnlChartModel;
+  }
+
+  get canPopout() {
+    return Environment.isRunningInIE;
   }
 
   observeEvents() {
