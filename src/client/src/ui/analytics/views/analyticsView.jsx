@@ -60,8 +60,8 @@ export default class AnalyticsView extends ViewBase {
     let newWindowBtnClassName = classnames(
       'glyphicon glyphicon-new-window',
       {
-        'analytics__icon--tearoff' : !model.canPopout(),
-        'analytics__icon--tearoff--hidden' : model.canPopout()
+        'analytics__icon--tearoff' : !model.canPopout,
+        'analytics__icon--tearoff--hidden' : model.canPopout
       }
     );
 

@@ -1,6 +1,5 @@
 import { Router, DisposableBase } from 'esp-js/src';
 import { logger, Guard } from '../../system';
-import userAgentParser from 'ua-parser-js';
 
 var _log:logger.Logger = logger.create('ModelBase');
 
@@ -35,11 +34,6 @@ export default class ModelBase extends DisposableBase {
     this.router.runAction(this.modelId, ()=>{
       action();
     });
-  }
-
-  canPopout(){
-    let browser = new userAgentParser().getBrowser().name;
-    return browser.indexOf('IE') !== -1;
   }
 
   get modelId():string {

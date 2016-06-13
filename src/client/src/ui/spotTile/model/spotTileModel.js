@@ -1,7 +1,7 @@
 import Rx from 'rx';
 import { Router, observeEvent } from 'esp-js/src';
 import { PricingService, ExecutionService } from '../../../services';
-import { logger } from '../../../system';
+import { logger, Environment } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { TradeExecutionNotification, TextNotification,  NotificationBase, NotificationType } from './';
 import { RegionManager, RegionNames, view  } from '../../regions';
@@ -93,6 +93,10 @@ export default class SpotTileModel extends ModelBase {
 
   get hasNotification() {
     return this.notification !== null;
+  }
+
+  get canPopout() {
+    return Environment.isRunningInIE;
   }
 
   @observeEvent('init')
