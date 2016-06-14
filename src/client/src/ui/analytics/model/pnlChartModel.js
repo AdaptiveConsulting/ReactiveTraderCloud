@@ -16,7 +16,7 @@ export default class PnlChartModel  {
         tickFormat: (d) => d3.time.format('%X')(new Date(d))
       },
       yAxis: {
-        tickFormat: (d) => numeral(d).format('0a')
+        tickFormat: (d) => numeral(d).format('0.0a')
       },
       showYAxis: true,
       showXAxis: true,
