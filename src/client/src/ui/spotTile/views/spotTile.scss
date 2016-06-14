@@ -27,6 +27,8 @@ $price-width: calc(45% + 10px);
     display: none;
   }
   &.spot-tile--stale {
+    background-color: $spot-tile-error-color;
+    color: $spot-tile-primary-color;
     .spot-tile__stale-label,
     .spot-tile__icon--disconnected {
       display: inline-block;
@@ -76,7 +78,6 @@ $price-width: calc(45% + 10px);
 .spot-tile__stale-label {
   position: absolute;
   top: 20px;
-  color: $spot-tile-secondary-color;
 }
 
 .spot-tile__symbol {
