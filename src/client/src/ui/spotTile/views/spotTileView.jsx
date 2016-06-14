@@ -47,7 +47,7 @@ export default class SpotTileView extends ViewBase {
     const className = classnames(
       'spot-tile',
       {
-        'spot-tile--stale': !model.pricingConnected || model.priceStale,
+        'spot-tile--stale': (!model.pricingConnected || model.priceStale) && !(model.hasNotification && model.notification.notificationType === NotificationType.Trade),
         'spot-tile--readonly': !model.executionConnected,
         'spot-tile--executing': model.isTradeExecutionInFlight,
         'spot-tile--error': model.hasNotification && model.notification.error
@@ -64,7 +64,7 @@ export default class SpotTileView extends ViewBase {
     return (
       <div className={className}>
         <div className='spot-tile__container'>
-          <span className='spot-tile__stale-label'>Stale</span>
+          { !model.hasNotification ? <span className='spot-tile__stale-label'>Pricing is unavailable</span> : null }
           <span className='spot-tile__symbol'>{model.tileTitle}</span>
           <span className='spot-tile__execution-label'>Executing</span>
           <div className='spot-tile__controls'>

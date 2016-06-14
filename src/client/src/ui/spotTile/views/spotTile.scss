@@ -75,9 +75,12 @@ $price-width: calc(45% + 10px);
   right: 10px;
 }
 
+.spot-tile__notification-message,
 .spot-tile__stale-label {
   position: absolute;
-  top: 20px;
+  top: 50px;
+  width: 100%;
+  text-align: center;
 }
 
 .spot-tile__symbol {
@@ -163,12 +166,6 @@ $price-width: calc(45% + 10px);
   left: 0;
   right: 0;
 }
-
-.spot-tile__notification-message {
-  position: absolute;
-  top: 50px;
-}
-
 
 .spot-tile__delivery {
   position: absolute;
