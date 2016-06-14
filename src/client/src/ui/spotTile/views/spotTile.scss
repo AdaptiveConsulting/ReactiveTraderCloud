@@ -33,6 +33,7 @@ $price-width: calc(45% + 10px);
     .spot-tile__icon--disconnected {
       display: inline-block;
     }
+    .spot-tile__delivery,
     .spot-tile__price--bid,
     .spot-tile__price--ask,
     .spot-tile__price-movement,
