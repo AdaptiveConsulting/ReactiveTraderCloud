@@ -44,11 +44,10 @@ export default class SpotTileView extends ViewBase {
     );
 
     const formattedDate = model.currentSpotPrice ? moment(model.currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT) : '';
-    let isStale = !model.pricingConnected || model.priceStale;
     const className = classnames(
       'spot-tile',
       {
-        'spot-tile--stale': isStale,
+        'spot-tile--stale': (!model.pricingConnected || model.priceStale) && !(model.hasNotification && model.notification.notificationType === NotificationType.Trade),
         'spot-tile--readonly': !model.executionConnected,
         'spot-tile--executing': model.isTradeExecutionInFlight,
         'spot-tile--error': model.hasNotification && model.notification.error
