@@ -26,9 +26,11 @@ docker build --no-cache -t weareadaptive/serverssrc:$build ./build/.
 docker rm dotnetrestored || true
 
 buildCommand="mkdir -p /packages"
-buildCommand="$buildCommand && cp -r /packages /root/.nuget/"
+### TODO: this doesn't work when running on windows due to file permission issues
+### Also even in a Linux host it doesn't seem to stop package downloads, thus need investigating 
+# buildCommand="$buildCommand && cp -r /packages /root/.nuget/"
 buildCommand="$buildCommand && dotnet restore"
-buildCommand="$buildCommand && cp -r /root/.nuget/packages /"
+# buildCommand="$buildCommand && cp -r /root/.nuget/packages /"
 buildCommand="$buildCommand && dotnet build */project.json --configuration Release"
 
 docker run -t --name dotnetrestored -v /$(pwd)/dotnetcache:/packages weareadaptive/serverssrc:$build bash -c "$buildCommand"

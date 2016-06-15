@@ -23,11 +23,7 @@ if [[ $? != 0 ]];then
 fi
 
 # smoke tests
-echo " "
-
-
-echo "Skipping tests - current xunit test runner does not work"
 echo "Starting local tests ..."
 docker run                           \
   --net=host $serversContainer$build \
-  bash -c "dotnet test --configuration Release Adaptive.ReactiveTrader.Server.IntegrationTests" # TODO UPDATE
+  bash -c "dotnet test --configuration Release Adaptive.ReactiveTrader.Server.IntegrationTests"
