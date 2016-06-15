@@ -1,14 +1,7 @@
 #! /bin/bash
 
 build=$1
-release=$2
-if [[ $1 == "release" ]];then
-  release="release"
-  build=""
-fi
-if [[ $2 == "release" ]];then
-  release="release"
-fi
+release="release"
 
 # fail fast
 set -euo pipefail
