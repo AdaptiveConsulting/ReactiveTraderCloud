@@ -238,7 +238,10 @@ export default class SpotTileModel extends ModelBase {
           .subscribeWithRouter(
             this.router,
             this.modelId,
-            (price:SpotPrice) => this.priceStale = true),
+            (price:SpotPrice) => {
+              this.priceStale = true;
+              this._updatePricingDownStatusNotification();
+            }),
         priceStream
         .subscribeWithRouter(
           this.router,
@@ -249,7 +252,10 @@ export default class SpotTileModel extends ModelBase {
             if(!this.isTradeExecutionInFlight) {
               this.currentSpotPrice = price;
             }
-            this.priceStale = false;
+            if (this.priceStale) {
+              this.priceStale = false;
+              this._updatePricingDownStatusNotification();
+            }
           },
           err => {
             this._log.error('Error on getSpotPriceStream stream stream', err);
@@ -284,7 +290,7 @@ export default class SpotTileModel extends ModelBase {
 
   _updatePricingDownStatusNotification() {
     if(this.notification === null || this.notification.notificationType === NotificationType.Text) {
-        if (this.pricingConnected) {
+        if (this.pricingConnected && !this.priceStale) {
           this.notification = null;
         } else {
           this.notification = new TextNotification('Pricing is unavailable');

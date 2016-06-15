@@ -127,7 +127,7 @@ $sidebar-height:              $workspace-height;
   height: $workspace-height;
   overflow-y: auto;
   overflow-x: hidden;
-
+  padding-right: 10px;
   &.shell__workspace--expanded {
     height: $workspace-height-expanded;
   }
