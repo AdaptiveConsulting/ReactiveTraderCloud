@@ -1,18 +1,4 @@
-$sidebar-width:               40px;
-$shell-background-color:      #212A35;
-$panel-background-color:      #293543;
-$blotter-height:              20vh;
-$header-height:               30px;
-$footer-height:               30px;
-$workspace-height:            calc(100% - #{$blotter-height} - #{$footer-height});
-$workspace-height-expanded:   calc(100% - #{$footer-height});
-$analytics-height:            $workspace-height;
-$analytics-height-expanded:   $workspace-height-expanded;
-$analytics-width:             400px;
-$workspace-width:             calc(100vw - #{$sidebar-width} - #{$analytics-width});
-$splash-logo-height:          400px;
-$splash-logo-margin-top:      20vh;
-$sidebar-height:              $workspace-height;
+@import "./variables.scss";
 
 @keyframes hideSplashScreen {
   0% {
@@ -61,7 +47,7 @@ $sidebar-height:              $workspace-height;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
-  height: 100%;
+  height: calc(100% - #{$footer-height});
   width: 100vw;
   & * {
     box-sizing: border-box;
@@ -134,7 +120,8 @@ $sidebar-height:              $workspace-height;
 }
 
 .shell__blotter {
-  flex: 1 100vw;
+  flex-grow: 1;
+  flex-basis: 100vw;
   heigth: 100%;
   order: 4;
   height: $blotter-height;
@@ -142,9 +129,10 @@ $sidebar-height:              $workspace-height;
 }
 
 .shell__footer {
-  flex: 1 100vw;
-  min-height: $footer-height;
-  order: 5;
+  position: fixed;
+  height: $footer-height;
+  left: 0;
+  bottom: 0;
   margin-top: auto;
 }
 

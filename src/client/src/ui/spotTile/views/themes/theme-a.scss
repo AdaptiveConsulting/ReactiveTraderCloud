@@ -1,3 +1,47 @@
-.themeA .spot-tile {
-  background-color: gray;
+$primary-color: #00a8cc;
+
+.themeA {
+  .spot-tile {
+    color: #aeb2b5;
+    background-color: #262a33;
+    &:hover {
+      background-color: #183540;
+      border: 1px solid $primary-color;
+    }
+  }
+  .spot-tile__symbol {
+    color: white;
+  }
+  .spot-tile__price {
+    height: 80px;
+    padding-top: 20px;
+    &:hover {
+      background-color: $primary-color;
+      color: white;
+
+      .price-button__pip {
+        color: inherit;
+      }
+    }
+  }
+  .price-button__pip {
+    color: $primary-color;
+  }
+  .price-button__tenth, .price-button__pip {
+    vertical-align: baseline;
+  }
+  .price-button__direction {
+    color: white;
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    font-size: 12px;
+  }
+  .spot-tile__price--ask {
+    margin-right: 5px;
+    margin-left: 10px;
+  }
+  .spot-tile__price--bid {
+    margin-left: 5px;
+  }
 }
