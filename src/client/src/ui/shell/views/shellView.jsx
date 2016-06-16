@@ -39,7 +39,7 @@ export default class ShellView extends ViewBase {
     let wellKnownModelIds = model.wellKnownModelIds;
     return (
       <Chrome>
-        <div className='shell__container'>
+        <div className={'shell__container ' + model.theme.name}>
           <div className='shell__splash'>
             <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
           </div>

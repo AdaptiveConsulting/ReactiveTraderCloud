@@ -3,7 +3,7 @@ import { Router,  observeEvent } from 'esp-js/src';
 import { SidebarView } from '../views';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
-import { RegionSettings } from '../../../services/model';
+import { RegionSettings, Theme } from '../../../services/model';
 import { WellKnownModelIds } from '../../../';
 
 const _log:logger.Logger = logger.create('SidebarModel');
@@ -16,6 +16,7 @@ export default class SidebarModel extends ModelBase {
   _regionName:string;
   showSidebar:boolean;
   showAnalytics:boolean;
+  useMainTheme:boolean;
 
   constructor(modelId:string,
               router:Router,
@@ -28,6 +29,7 @@ export default class SidebarModel extends ModelBase {
     this._regionManagerHelper = new RegionManagerHelper(this._regionName, regionManager, this, this._regionSettings);
     this.showSidebar = true;
     this.showAnalytics = true;
+    this.useMainTheme = true;
   }
 
   @observeEvent('init')
@@ -39,13 +41,22 @@ export default class SidebarModel extends ModelBase {
     this._observeAnalyticsWindowEvents();
   }
 
-  toggleAnalyticsPanel(){
-    if (this.showAnalytics){
+  toggleAnalyticsPanel() {
+    if (this.showAnalytics) {
       this.router.publishEvent(this.modelId, 'hideAnalytics', {});
-    }else{
+    } else {
       this.router.publishEvent(this.modelId, 'showAnalytics', {});
     }
     this.showAnalytics = !this.showAnalytics;
+  }
+
+  toggleTheme() {
+    if (this.useMainTheme) {
+      this.router.publishEvent(this.modelId, 'changeTheme', {theme: new Theme('themeB')});
+    } else {
+      this.router.publishEvent(this.modelId, 'changeTheme', {theme: new Theme('themeA')});
+    }
+    this.useMainTheme = !this.useMainTheme;
   }
 
   _observeAnalyticsWindowEvents(){

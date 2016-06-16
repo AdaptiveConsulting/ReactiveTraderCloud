@@ -7,6 +7,8 @@ import { SpotTileModel, NotificationType } from '../model';
 import { Direction } from '../../../services/model';
 import moment from 'moment';
 import './spotTile.scss';
+import './themes/theme-a.scss';
+import './themes/theme-b.scss';
 
 const SPOT_DATE_FORMAT  = 'DD MMM';
 
