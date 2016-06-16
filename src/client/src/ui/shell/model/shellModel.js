@@ -4,6 +4,7 @@ import { Connection } from '../../../system/service';
 import { ConnectionStatus } from '../../../system/service';
 import { ModelBase } from '../../common';
 import { WellKnownModelIds } from '../../../';
+import { Theme } from '../../../services/model/';
 
 var _log:logger.Logger = logger.create('ShellModel');
 
@@ -13,6 +14,7 @@ export default class ShellModel extends ModelBase {
   canExpandMainArea:boolean;
   wellKnownModelIds:WellKnownModelIds;
   showSideBar:boolean;
+  theme:Theme;
 
   constructor(modelId:string, router:Router, connection:Connection) {
     super(modelId, router);
@@ -21,6 +23,7 @@ export default class ShellModel extends ModelBase {
     this.showSideBar = true;
     this.wellKnownModelIds = WellKnownModelIds;
     this.appVersion = `v${__VERSION__}`;
+    this.theme = new Theme();
   }
 
   @observeEvent('init')
@@ -28,6 +31,7 @@ export default class ShellModel extends ModelBase {
     _log.info('Shell model starting');
     this._observeForSessionExpired();
     this._observeForBlotterTearOut();
+    this._observeForThemeChange();
   }
 
   @observeEvent('reconnectClicked')
@@ -64,6 +68,16 @@ export default class ShellModel extends ModelBase {
         },
         err => {
           _log.error('Error on connection status stream', err);
+        })
+    );
+  }
+
+  _observeForThemeChange() {
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.sidebarModelId, 'changeTheme')
+        .observe(({theme}) => {
+          this.router.runAction(this.modelId, () => this.theme = theme);
         })
     );
   }

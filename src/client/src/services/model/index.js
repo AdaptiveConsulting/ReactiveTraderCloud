@@ -24,3 +24,4 @@ export { default as ApplicationStatusConst } from './applicationStatusConst';
 export { default as ConnectionType } from './connectionType';
 export { default as TradesUpdate } from './tradesUpdate';
 export { default as RegionSettings } from './regionSettings';
+export { default as Theme } from './theme';
