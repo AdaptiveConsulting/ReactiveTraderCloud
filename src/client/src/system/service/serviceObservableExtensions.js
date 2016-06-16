@@ -57,7 +57,6 @@ function toServiceStatusObservableDictionary<TKey, TValue>(keySelector:(value:TV
               try {
                 o.onError(ex);
               } catch (err1) {
-                debugger;
               }
             },// if any of the inner streams error or complete, we error the outer
             () => o.onCompleted()
@@ -161,7 +160,6 @@ function debounceWithSelector(dueTime:number, itemSelector:() => TValue, schedul
           try {
             o.onError(ex);
           } catch (err1) {
-            debugger;
           }
         },
         () => o.onCompleted()
