@@ -1,0 +1,36 @@
+@import "../variables.scss";
+
+.themeA {
+  &.shell__container {
+    flex-flow: column wrap;
+  }
+  .shell__workspace {
+    width: $workspace-width;
+    flex-basis: $workspace-height;
+    order: 2;
+  }
+
+  .shell__blotter {
+    width: $workspace-width;
+    flex-basis: $blotter-height;
+    order: 3;
+  }
+  .shell__analytics {
+    flex-basis: 100%;
+    width: $analytics-width;
+    order: 5;
+  }
+  .shell__side-bar {
+    order: 6;
+    flex-basis: 100%;
+    width: $sidebar-width;
+  }
+  .shell__footer {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: $footer-width;
+  }
+
+}

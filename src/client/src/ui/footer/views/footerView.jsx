@@ -6,6 +6,8 @@ import {  ServiceStatusLookup, ApplicationStatusConst } from '../../../services/
 import { ServiceStatus } from '../../../system/service';
 import classnames from 'classnames';
 import './footer.scss';
+import './themes/theme-a.scss';
+
 export default class FooterView extends ViewBase {
   constructor() {
     super();

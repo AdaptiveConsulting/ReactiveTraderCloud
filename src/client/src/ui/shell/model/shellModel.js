@@ -23,7 +23,7 @@ export default class ShellModel extends ModelBase {
     this.showSideBar = true;
     this.wellKnownModelIds = WellKnownModelIds;
     this.appVersion = `v${__VERSION__}`;
-    this.theme = new Theme();
+    this.theme = new Theme('themeA');
   }
 
   @observeEvent('init')

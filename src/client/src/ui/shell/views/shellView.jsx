@@ -8,7 +8,7 @@ import {WorkspaceRegionView} from '../../regions/views/workspace';
 import {SingleItemRegionView} from '../../regions/views/singleItem';
 import classnames from 'classnames';
 import './shell.scss';
-
+import './themes/theme-a.scss';
 
 export default class ShellView extends ViewBase {
   constructor() {
@@ -60,6 +60,7 @@ export default class ShellView extends ViewBase {
             <FooterView modelId={wellKnownModelIds.footerModelId}/>
           </div>
         </div>
+        
       </Chrome>
     );
   }

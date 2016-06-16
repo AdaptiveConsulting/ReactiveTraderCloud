@@ -1,0 +1,13 @@
+$primary-color: #00a8cc;
+
+.themeA {
+  .footer {
+    background-color: $primary-color;
+    color: white;
+  }
+
+  .footer__service-label {
+    font-size: 9px;
+  }
+
+}
