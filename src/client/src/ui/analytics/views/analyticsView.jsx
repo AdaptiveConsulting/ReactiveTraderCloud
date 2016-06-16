@@ -10,6 +10,7 @@ import AnalyticsBarChart from './analyticsBarChart';
 import numeral from 'numeral';
 import Dimensions from 'react-dimensions';
 import './analytics.scss';
+import './themes/theme-a.scss';
 
 var _log:logger.Logger = logger.create('AnalyticsView');
 
