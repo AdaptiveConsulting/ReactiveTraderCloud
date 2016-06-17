@@ -2,19 +2,19 @@ $primary-color: #00a8cc;
 
 .themeA {
   .spot-tile {
-    color: #aeb2b5;
+    color: #c2c5c9;
     background-color: #262a33;
     &:hover {
-      background-color: #183540;
+      background-color: rgba(0, 167, 204, 0.16);
       border: 1px solid $primary-color;
     }
   }
   .spot-tile__symbol {
     color: white;
+    font-family: BrandonRegular;
   }
   .spot-tile__price {
     height: 80px;
-    padding-top: 20px;
     &:hover {
       background-color: $primary-color;
       color: white;
@@ -24,8 +24,18 @@ $primary-color: #00a8cc;
       }
     }
   }
+
+  // price button
+  .price-button__tenth,
+  .price-button__big-figure {
+    font-family: BrandonLight;
+    vertical-align: baseline;
+  }
+
   .price-button__pip {
     color: $primary-color;
+    font-size: 52px;
+    font-family: BrandonMedium;
   }
   .price-button__tenth, .price-button__pip {
     vertical-align: baseline;
@@ -33,9 +43,11 @@ $primary-color: #00a8cc;
   .price-button__direction {
     color: white;
     position: absolute;
-    top: 30px;
-    left: 20px;
-    font-size: 12px;
+    top: 20px;
+    width: calc((100% - 82px)/2);
+    text-align: right;
+    font-size: 14px;
+    font-family: BrandonRegular;
   }
   .spot-tile__price--ask {
     margin-right: 5px;
@@ -43,5 +55,45 @@ $primary-color: #00a8cc;
   }
   .spot-tile__price--bid {
     margin-left: 5px;
+  }
+
+  //notional
+  .spot-tile__notional {
+    font-size: 14px;
+    font-family: BrandonRegular;
+  }
+
+  .notional__size-input {
+    &:focus {
+      background-color: #1d2027;
+    }
+    &:hover,
+    &:focus {
+      border-bottom: 1px solid $primary-color;
+    }
+  }
+
+
+  //delivery
+  .spot-tile__delivery {
+    font-size: 14px;
+    font-family: BrandonRegular;
+    text-transform: uppercase;
+  }
+
+  // price movement
+  .price-movement__value {
+    font-size: 14px;
+  }
+  .price-movement__icon--up {
+    color: #81d31c;
+    font-size: 12px;
+    top: 7px;
+  }
+
+  .price-movement__icon--down {
+    color: #d90a0a;
+    font-size: 12px;
+    bottom: 7px;
   }
 }

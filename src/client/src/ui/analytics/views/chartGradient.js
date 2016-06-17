@@ -94,28 +94,27 @@ export default class ChartGradient {
 
     let stop1 = document.createElementNS(svgNS, 'stop');
     stop1.setAttribute('id', 'stop1');
+    stop1.setAttribute('class', 'stop1');
     stop1.setAttribute('offset', '0%');
-    stop1.setAttribute('stop-color', '#31a354');
     this.linearGradient.appendChild(stop1);
 
     let stop1End = document.createElementNS(svgNS, 'stop');
     stop1End.setAttribute('id', 'stop1End');
+    stop1End.setAttribute('class', 'stop1End');
     stop1End.setAttribute('offset', '50%');
-    stop1End.setAttribute('stop-color', '#31a354');
     stop1End.setAttribute('stop-opacity', '.06');
     this.linearGradient.appendChild(stop1End);
 
 
     var stop2 = document.createElementNS(svgNS, 'stop');
     stop2.setAttribute('id', 'stop2');
+    stop2.setAttribute('class', 'stop2');
     stop2.setAttribute('offset', '50%');
-    stop2.setAttribute('stop-color', '#cb181d');
     stop2.setAttribute('stop-opacity', '.1');
     this.linearGradient.appendChild(stop2);
     var stop2End = document.createElementNS(svgNS, 'stop');
     stop2End.setAttribute('id', 'stop2End');
     stop2End.setAttribute('offset', '100%');
-    stop2End.setAttribute('stop-color', '#cb181d');
     this.linearGradient.appendChild(stop2End);
 
     //the stroke linear gradient
@@ -128,25 +127,25 @@ export default class ChartGradient {
 
     let lineStop1 = document.createElementNS(svgNS, 'stop');
     lineStop1.setAttribute('id', 'lineStop1');
+    lineStop1.setAttribute('class', 'lineStop1');
     lineStop1.setAttribute('offset', '0%');
-    lineStop1.setAttribute('stop-color', '#31a354');
     this.strokeGradient.appendChild(lineStop1);
 
     let lineStop1End = document.createElementNS(svgNS, 'stop');
     lineStop1End.setAttribute('id', 'lineStop1End');
+    lineStop1End.setAttribute('class', 'lineStop1End');
     lineStop1End.setAttribute('offset', '50%');
-    lineStop1End.setAttribute('stop-color', '#31a354');
     this.strokeGradient.appendChild(lineStop1End);
 
     var lineStop2 = document.createElementNS(svgNS, 'stop');
     lineStop2.setAttribute('id', 'lineStop2');
+    lineStop2.setAttribute('class', 'lineStop2');
     lineStop2.setAttribute('offset', '50%');
-    lineStop2.setAttribute('stop-color', '#cb181d');
     this.strokeGradient.appendChild(lineStop2);
     var lineStop2End = document.createElementNS(svgNS, 'stop');
     lineStop2End.setAttribute('id', 'lineStop2End');
+    lineStop2End.setAttribute('class', 'lineStop2End');
     lineStop2End.setAttribute('offset', '100%');
-    lineStop2End.setAttribute('stop-color', '#cb181d');
     this.strokeGradient.appendChild(lineStop2End);
 
   }
