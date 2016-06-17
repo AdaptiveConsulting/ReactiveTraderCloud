@@ -53,6 +53,18 @@
     box-sizing: border-box;
   }
 
+  &.shell__container--no-blotter {
+    .shell__workspace {
+      height: $workspace-height-expanded;
+    }
+    .shell__analytics {
+      height: $analytics-height-expanded;
+    }
+    .shell__side-bar {
+      height: $analytics-height-expanded;
+    }
+  }
+
   // scrollbar
   ::-webkit-scrollbar {
     width: 14px;
@@ -84,10 +96,6 @@
   flex-grow: 0;
   flex-shrink: 0;
   height: $analytics-height;
-
-  &.shell__sidebar-bar--expanded {
-    height: $analytics-height-expanded;
-  }
 }
 
 .shell__analytics {
@@ -99,10 +107,6 @@
   overflow-y: auto;
   background: $panel-background-color;
   padding: 0px;
-
-  &.shell__analytics--expanded {
-    height: $analytics-height-expanded;
-  }
 }
 
 
@@ -113,10 +117,6 @@
   height: $workspace-height;
   overflow-y: auto;
   overflow-x: hidden;
-
-  &.shell__workspace--expanded {
-    height: $workspace-height-expanded;
-  }
 }
 
 .shell__blotter {

@@ -110,7 +110,7 @@ export default class AnalyticsView extends ViewBase {
     return (
       <div>
         <div className='analytics__header'>
-          <span className='analytics__header-title'>Profit & Loss</span>
+          <span className='analytics__header-title'><i className='analytics__header-title-icon glyphicon glyphicon-stats'></i>Profit & Loss</span>
           <span className={analyticsHeaderClassName}>USD {formattedLastPos}</span>
         </div>
         <div className='analytics__chart-container'>

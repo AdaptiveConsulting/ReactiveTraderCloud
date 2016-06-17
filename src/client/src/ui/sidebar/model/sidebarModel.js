@@ -51,6 +51,7 @@ export default class SidebarModel extends ModelBase {
   }
 
   toggleTheme() {
+    // TODO - add theme repository
     if (this.useMainTheme) {
       this.router.publishEvent(this.modelId, 'changeTheme', {theme: new Theme('themeB')});
     } else {
