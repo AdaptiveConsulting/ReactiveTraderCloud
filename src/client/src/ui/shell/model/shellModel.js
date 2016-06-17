@@ -11,7 +11,8 @@ var _log:logger.Logger = logger.create('ShellModel');
 export default class ShellModel extends ModelBase {
   _connection:Connection;
   sessionExpired:boolean;
-  canExpandMainArea:boolean;
+  isBlotterOut:boolean;
+  isAnalyticsOut:boolean;
   wellKnownModelIds:WellKnownModelIds;
   showSideBar:boolean;
   theme:Theme;
@@ -31,6 +32,7 @@ export default class ShellModel extends ModelBase {
     _log.info('Shell model starting');
     this._observeForSessionExpired();
     this._observeForBlotterTearOut();
+    this._observeForAnalyticsTearOut();
     this._observeForThemeChange();
   }
 
@@ -48,15 +50,35 @@ export default class ShellModel extends ModelBase {
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.blotterModelId, 'tearOffBlotter')
-        .observe(() => _this.router.runAction(_this.modelId, () => _this.canExpandMainArea = true))
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.isBlotterOut = true))
     );
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
         .where(({model}) => model.modelId === WellKnownModelIds.blotterModelId)
-        .observe(() => _this.router.runAction(_this.modelId, () => _this.canExpandMainArea = false))
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.isBlotterOut = false))
     );
   }
+
+  /**
+   * Observe blotter tear out events, so we can resize the workspace/analytics area
+   * @private
+   */
+  _observeForAnalyticsTearOut() {
+    let _this = this;
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.analyticsModelId, 'popOutAnalytics')
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = true))
+    );
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
+        .where(({model}) => model.modelId === WellKnownModelIds.analyticsModelId)
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = false))
+    );
+  }
+
 
   _observeForSessionExpired() {
     this.addDisposable(

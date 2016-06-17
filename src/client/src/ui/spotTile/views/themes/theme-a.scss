@@ -1,9 +1,11 @@
+@import "../variables.scss";
 $primary-color: #00a8cc;
 
 .themeA {
   .spot-tile {
     color: #c2c5c9;
     background-color: #262a33;
+    border: solid 1px #424545;
     &:hover {
       background-color: rgba(0, 167, 204, 0.16);
       border: 1px solid $primary-color;
@@ -14,7 +16,6 @@ $primary-color: #00a8cc;
     font-family: BrandonRegular;
   }
   .spot-tile__price {
-    height: 80px;
     &:hover {
       background-color: $primary-color;
       color: white;
@@ -35,6 +36,7 @@ $primary-color: #00a8cc;
   .price-button__pip {
     color: $primary-color;
     font-size: 52px;
+    line-height: 65px;
     font-family: BrandonMedium;
   }
   .price-button__tenth, .price-button__pip {
@@ -43,8 +45,8 @@ $primary-color: #00a8cc;
   .price-button__direction {
     color: white;
     position: absolute;
-    top: 20px;
-    width: calc((100% - 82px)/2);
+    top: 15px;
+    width: calc(#{$price-big-figure-width} - 10px);
     text-align: right;
     font-size: 14px;
     font-family: BrandonRegular;
@@ -72,7 +74,6 @@ $primary-color: #00a8cc;
       border-bottom: 1px solid $primary-color;
     }
   }
-
 
   //delivery
   .spot-tile__delivery {

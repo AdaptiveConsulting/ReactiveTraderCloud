@@ -51,4 +51,20 @@ $themeA-negative-color: #d62728;
   .lineStop2End {
     stop-color: #f20808;
   }
+
+  // axis
+  .analytics__container .nvd3 .nv-axis path,
+  .analytics__container .nvd3 .nv-axis .tick.zero line {
+    stroke: #c2c5c9;
+  }
+  // axis labels
+  .analytics__chart-container .nv-lineChart .nv-axis.nv-x text,
+  .analytics__chart-container .nv-lineChart .nv-axis.nv-y text {
+    fill: #c2c5c9;
+    font-family: BrandonLight;
+  }
+  // grid
+  .analytics__container .nvd3 .nv-axis line {
+    stroke: #424545;
+  }
 }

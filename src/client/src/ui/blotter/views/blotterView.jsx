@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import { BlotterModel } from '../model';
 import 'fixed-data-table/dist/fixed-data-table.css';
 import './blotter.scss';
+import './themes/theme-a.scss';
 
 @Dimensions()
 export default class BlotterView extends ViewBase {
@@ -48,7 +49,7 @@ export default class BlotterView extends ViewBase {
                onClick={() => router.publishEvent(this.props.modelId, 'tearOffBlotter', {})} />
           </div>
           <Table
-            rowHeight={24}
+            rowHeight={30}
             headerHeight={30}
             rowsCount={model.trades.length}
             width={containerWidth}
