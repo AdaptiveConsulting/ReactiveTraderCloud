@@ -80,7 +80,10 @@ export default class AnalyticsView extends ViewBase {
   _createPnlComponents() {
     let pnlChartModel:PnlChartModel = this.state.model.pnlChartModel;
     let pnlChart = null;
-    let className = classnames('analytics__chart-container', {'negative': pnlChartModel.lastPos > 0});
+    let analyticsHeaderClassName = classnames('analytics__header-value', {
+      'analytics__header-value--negative': pnlChartModel.lastPos < 0,
+      'analytics__header-value--positive': pnlChartModel.lastPos > 0
+    });
     let formattedLastPos = numeral(pnlChartModel.lastPos).format();
     if (pnlChartModel.hasData) {
       let configurePnLChart = (chart) => {
@@ -107,10 +110,10 @@ export default class AnalyticsView extends ViewBase {
     return (
       <div>
         <div className='analytics__header'>
-          <span className='analytics__header--bold analytics__header-block'>Profit & Loss</span>
-          <span>USD </span><span className='analytics__header--bold'>{formattedLastPos}</span>
+          <span className='analytics__header-title'>Profit & Loss</span>
+          <span className={analyticsHeaderClassName}>USD {formattedLastPos}</span>
         </div>
-        <div className={className}>
+        <div className='analytics__chart-container'>
           {pnlChart}
         </div>
       </div>

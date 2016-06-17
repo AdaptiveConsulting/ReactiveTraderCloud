@@ -3,6 +3,7 @@
 .themeA {
   &.shell__container {
     flex-flow: column wrap;
+    background-color: #1d2027;
   }
   .shell__workspace {
     width: $workspace-width;

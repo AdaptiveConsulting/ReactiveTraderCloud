@@ -35,15 +35,14 @@ $default-padding: 10px;
 .analytics__header {
   font-size: 16px;
   color: $analytics-header-colour;
-  background: $container-bg-color;
   padding-bottom: 10px;
 }
 
-.analytics__header--bold{
+.analytics__header-value {
   font-weight: bold;
 }
 
-.analytics__header-block{
+.analytics__header-title {
   display: block;
   padding-bottom: 2px;
 }
@@ -115,11 +114,11 @@ $default-padding: 10px;
   transition: width .4s ease;
 }
 
-.analytics__barchart-indicator--positive{
+.analytics__barchart-indicator--positive {
   background-color: $positive-color;
 }
 
-.analytics__barchart-indicator--negative{
+.analytics__barchart-indicator--negative {
   background-color: $negative-color;
   float: right;
 }
@@ -181,4 +180,24 @@ $default-padding: 10px;
 
 .analytics__icon--tearoff--hidden {
   display: none;
+}
+
+.stop1,
+.lineStop1 {
+  stop-color: #31a354;
+}
+
+.stop1End,
+.lineStop1End {
+  stop-color: #31a354;
+}
+
+.stop2,
+.lineStop2 {
+  stop-color: #cb181d;
+}
+
+.stop2End,
+.lineStop2End {
+  stop-color: #cb181d;
 }
