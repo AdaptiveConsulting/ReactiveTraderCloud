@@ -1,5 +1,54 @@
+$themeA-positive-color: #6db910;
+$themeA-negative-color: #d62728;
+
 .themeA {
   .analytics__container {
     background-color: #262a33;
+  }
+
+  .analytics__barchart-indicator--negative {
+    background-color: $themeA-negative-color;
+  }
+
+  .analytics__barchart-indicator--positive {
+    background-color: $themeA-positive-color;
+  }
+
+  .analytics__header-title {
+    font-family: BrandonRegular;
+    font-size: 24px;
+  }
+
+  .analytics__header-value {
+    font-family: BrandonRegular;
+  }
+
+  .analytics__header-value--negative {
+    color: $themeA-negative-color
+  }
+
+  .analytics__header-value--positive {
+    color: $themeA-positive-color;
+  }
+
+  // nvd3
+  .stop1,
+  .lineStop1 {
+    stop-color: #81d31c;
+  }
+
+  .stop1End,
+  .lineStop1End {
+    stop-color: #81d31c;
+  }
+
+  .stop2,
+  .lineStop2 {
+    stop-color: #f20808;
+  }
+
+  .stop2End,
+  .lineStop2End {
+    stop-color: #f20808;
   }
 }
