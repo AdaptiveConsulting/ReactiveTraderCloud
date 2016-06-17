@@ -25,21 +25,15 @@ export default class ShellView extends ViewBase {
       return null;
     }
 
-    let workspaceClasses = classnames('shell__workspace', {
-      'shell__workspace--expanded': model.canExpandMainArea
-    });
-    let analyticsClasses = classnames('shell__analytics', {
-      'shell__analytics--expanded': model.canExpandMainArea
-    });
-
-    let sidebarClasses = classnames('shell__side-bar', {
-      'shell__side-bar--expanded': model.canExpandMainArea
+    let shellClasses = classnames('shell__container', model.theme.name, {
+      'shell__container--no-blotter': model.isBlotterOut,
+      'shell__container--no-analytics': model.isAnalyticsOut
     });
 
     let wellKnownModelIds = model.wellKnownModelIds;
     return (
       <Chrome>
-        <div className={'shell__container ' + model.theme.name}>
+        <div className={shellClasses}>
           <div className='shell__splash'>
             <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
           </div>
@@ -52,15 +46,15 @@ export default class ShellView extends ViewBase {
               </button>
             </div>
           </Modal>
-          <WorkspaceRegionView className={workspaceClasses} modelId={wellKnownModelIds.workspaceRegionModelId}/>
-          <SingleItemRegionView className={analyticsClasses} modelId={wellKnownModelIds.quickAccessRegionModelId}/>
-          <SingleItemRegionView className={sidebarClasses} modelId={wellKnownModelIds.sidebarRegionModelId}/>
+          <WorkspaceRegionView className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId}/>
+          <SingleItemRegionView className='shell__analytics' modelId={wellKnownModelIds.quickAccessRegionModelId}/>
+          <SingleItemRegionView className='shell__side-bar' modelId={wellKnownModelIds.sidebarRegionModelId}/>
           <SingleItemRegionView className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId}/>
           <div className='shell__footer'>
             <FooterView modelId={wellKnownModelIds.footerModelId}/>
           </div>
         </div>
-        
+
       </Chrome>
     );
   }

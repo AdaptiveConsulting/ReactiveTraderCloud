@@ -1,5 +1,4 @@
-$price-pip-width: 70px;
-$price-side-width: calc((100% - #{$price-pip-width})/2);
+@import "variables.scss";
 
 .price-button {
   text-align: center;
@@ -26,15 +25,16 @@ $price-side-width: calc((100% - #{$price-pip-width})/2);
 .price-button__big-figure,
 .price-button__tenth {
   font-size: 18px;
-  width: $price-side-width;
 }
 
-.price-button__big-figure{
+.price-button__big-figure {
   text-align: right;
+  width: $price-big-figure-width;
 }
 
-.price-button__tenth{
+.price-button__tenth {
   text-align: left;
+  width: $price-tenth-width;
 }
 
 .price-button__pip {
