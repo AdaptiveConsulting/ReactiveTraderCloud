@@ -19,6 +19,10 @@
   color: $spot-tile-primary-color;
 }
 
+.price-movement__icon--inactive{
+  display: none;
+}
+
 .price-movement__icon--up {
   top: 0;
   color: #3fd01e;

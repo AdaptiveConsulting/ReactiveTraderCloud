@@ -14,6 +14,8 @@ $primary-color: #00a8cc;
   .spot-tile__symbol {
     color: white;
     font-family: BrandonRegular;
+    font-weight: 700;
+    font-size: 18px;
   }
   .spot-tile__price {
     &:hover {
@@ -46,11 +48,14 @@ $primary-color: #00a8cc;
     color: white;
     position: absolute;
     top: 15px;
-    width: calc(#{$price-big-figure-width} - 10px);
+    width: $price-big-figure-width;
     text-align: right;
     font-size: 14px;
+    font-weight: bolder;
+    padding-right: 10px;
     font-family: BrandonRegular;
   }
+
   .spot-tile__price--ask {
     margin-right: 5px;
     margin-left: 10px;
@@ -85,6 +90,13 @@ $primary-color: #00a8cc;
   // price movement
   .price-movement__value {
     font-size: 14px;
+  }
+
+
+
+  .price-movement__icon--inactive{
+    display: inherit;
+    color: rgba(255, 255, 255, .1) !important;
   }
   .price-movement__icon--up {
     color: #81d31c;
