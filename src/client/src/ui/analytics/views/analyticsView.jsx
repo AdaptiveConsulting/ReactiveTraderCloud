@@ -6,9 +6,10 @@ import { ViewBase } from '../../common';
 import { AnalyticsModel, PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
-import AnalyticsBarChart from './analyticsBarChart';
+import AnalyticsBarChart from './chart/analyticsBarChart';
 import numeral from 'numeral';
 import Dimensions from 'react-dimensions';
+import PositionsBubbleChart from './positions-chart/positionsBubbleChart';
 import './analytics.scss';
 import './themes/theme-a.scss';
 
@@ -46,6 +47,8 @@ export default class AnalyticsView extends ViewBase {
 
   render() {
     let model:AnalyticsModel = this.state.model;
+    let positionsCharData = model.positionsChartModel.seriesData;
+
     if (!model) {
       return null;
     }
@@ -73,6 +76,7 @@ export default class AnalyticsView extends ViewBase {
              onClick={() => router.publishEvent(this.props.modelId, 'popOutAnalytics', {})}/>
         </div>
         {pnlComponents}
+        <PositionsBubbleChart data={positionsCharData}/>
         {positionsComponents}
       </div>);
   }
@@ -121,30 +125,12 @@ export default class AnalyticsView extends ViewBase {
   }
 
   _createPositionsComponents() {
-
+    //console.log(' ****  this.state.model : ',  this.state.model);
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
-    let isPnL = positionsChartModel.basePnlDisplayModelSelected;
-    let baseClassName = 'btn analytics__buttons-tab-btn ';
-    let selectedClassName = `${baseClassName} analytics__buttons-tab-btn--selected`;
-    let pnlButtonClassName = isPnL ? selectedClassName : baseClassName;
-    let positionButtonClassName = isPnL ? baseClassName : selectedClassName;
-
     return (
       <div>
-        <div className='analytics__buttons'>
-          <div className='analytics__buttons-bar'>
-            <button
-              className={pnlButtonClassName}
-              onClick={() => router.publishEvent(this.props.modelId, 'togglePnlDisplayMode', {})}>PnL
-            </button>
-            <button
-              className={positionButtonClassName}
-              onClick={() => router.publishEvent(this.props.modelId, 'togglePnlDisplayMode', {})}>Positions
-            </button>
-          </div>
-        </div>
         <div className='analytics__chart-container'>
-          <AnalyticsBarChart series={positionsChartModel.seriesData} isPnL={positionsChartModel.basePnlDisplayModelSelected}/>
+          <AnalyticsBarChart series={positionsChartModel.seriesData}/>
         </div>
       </div>
     );

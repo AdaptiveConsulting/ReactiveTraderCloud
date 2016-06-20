@@ -1,6 +1,6 @@
 import React from 'react';
 import PNLBar from './pnlBar.jsx';
-import {  CurrencyPairPosition } from '../../../services/model';
+import {  CurrencyPairPosition } from '../../../../services/model';
 import _ from 'lodash';
 
 export default class AnalyticsBarChart extends React.Component{
@@ -18,13 +18,13 @@ export default class AnalyticsBarChart extends React.Component{
   }
 
   _createBars(){
-    let propName = this.props.isPnL ? CurrencyPairPosition.basePnlName : CurrencyPairPosition.baseTradedAmountName;
-    let chartData = this.props.isPnL ? this.props.series : this._getPositionsDataFromSeries(propName);
+    let propName = CurrencyPairPosition.basePnlName;
+    let chartData = this.props.series;
 
     let baseVals = _.map(chartData, propName);
     let maxVal = _.max(baseVals);
     let minVal = _.min(baseVals);
-
+    
     let maxWidth =  Math.max(Math.abs(maxVal), Math.abs(minVal));
 
     let bars = chartData.map((ccyPairPosition, index) => {
@@ -38,6 +38,7 @@ export default class AnalyticsBarChart extends React.Component{
     });
     return bars;
   };
+
 
   _getPositionsDataFromSeries(baseAmtPropName):Array<{symbol:string, baseAmount:number}>{
     let positionsPerCcyObj = this.props.series.reduce((aggregatedPositionsObj, ccyPairPosition) => {

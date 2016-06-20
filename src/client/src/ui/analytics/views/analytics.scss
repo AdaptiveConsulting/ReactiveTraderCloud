@@ -6,7 +6,8 @@ $container-bg-color:#293543;
 $highlight-color:   #eee;
 $stroke-color:      #212a35;
 $gray:              #294464;
-$bar-height:        12px;
+$bar-height:        4px;
+$transition-duration: .4s;
 
 $analytics-header-colour: #ffffff;
 $default-padding: 10px;
@@ -51,11 +52,15 @@ $default-padding: 10px;
   margin-right: 17px;
 }
 
+
+
 .analytics__chart-container {
   position: relative;
   background: inherit;
   width: 100%;
   height: 200px;
+  font-family: BrandonMedium;
+  font-size: 14px;
 
   .nv-lineChart {
     .nv-axis.nv-y {
@@ -77,8 +82,9 @@ $default-padding: 10px;
 .analytics__barchart-container{
   vertical-align: middle;
   padding-top: 2px;
-  padding-bottom: 28px;
+  padding-bottom: 14px;
   color: $barchart-text-color;
+  height: 50px;
   &:hover{
     color:$highlight-color;
   }
@@ -94,42 +100,128 @@ $default-padding: 10px;
   width: 100%;
   background-color: $bar-bg-color;
   position: absolute;
-  left: 0;
+  margin-top: 3px;
 }
 
-.analytics__barchart-indicator-wrapper {
-  width: 50%;
-  height: $bar-height;
+.analytics__barchart-bar-wrapper{
+  vertical-align: middle;
+  height: 10px;
+  position: absolute;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.analytics__barchart-border{
+  height: 10px;
+  width: 3px;
+  background-color: #484f5f;
+}
+
+.analytics__barchart-border--center{
+  position: absolute;
+  left: calc(50% - 2px);
+}
+
+.analytics__barchart-border--left{
+  float: left;
+  display: inline;
+}
+
+.analytics__barchart-border--right{
+  right: 0;
   position: absolute;
 }
 
+.analytics__barchart-title-wrapper{
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  color: white;
 
-.analytics__barchart-indicator-wrapper--positive{
-  right: 0;
+  &:hover{
+    color: #00a8cc;
+
+    .analytics__barchart-pointer-container{
+      transform: scale(1.5);
+    }
+
+    .analytics__barchart-label{
+      font-size: 14px;
+    }
+
+    .analytics__barchart-label-amount{
+      color: #00a8cc;
+    }
+  }
 }
 
-.analytics__barchart-indicator-wrapper--negative{
-  left: 0;
+.analytics__barchart-pointer-container{
+  position: absolute;
+  margin-top: 25px;
+  transition: left linear $transition-duration;
+  z-index: 99;
 }
 
-.analytics__barchart-indicator{
-  height: $bar-height;
-  width: 50%;
-  transition: width .4s ease;
+
+
+.analytics__barchart-pointer{
+  width: 0;
+  height: 0;
+  border-width: 8px 5px 0 5px;
+  border-color: #007D92 transparent transparent transparent;
+  border-style: inset;
+  -webkit-transform: rotate(360deg);
+  position: absolute;
+  z-index: 100;
+  left: -6px;
+  margin-top: 2px;
 }
 
-.analytics__barchart-indicator--positive {
-  background-color: $positive-color;
+
+.analytics__barchart-pointer-icon{
+  color: #46477a;
+  text-shadow:
+  0px 0px 0 #00d2ff,
+  -1px -1px 0 #00d2ff,
+  1px -1px 0 #00d2ff,
+  -1px 1px 0 #00d2ff,
+  1px 1px 0 #00d2ff;
+  rotation: 90deg;
+
 }
 
-.analytics__barchart-indicator--negative {
-  background-color: $negative-color;
-  float: right;
+.analytics__barchart-pointer--outline {
+  position: absolute;
+  width: 0;
+  height: 0;
+  z-index: 99;
+  left: -10px;
+  border-width: 14px 9px 0 9px;
+  border-color: #00d2ff transparent transparent transparent;
+  border-style: inset;
+  -webkit-transform: rotate(360deg);
 }
 
 .analytics__barchart-label{
-  font-size: 18px;
-  display: inline;
+  font-size: 13px;
+  margin-top: 3px;
+  white-space: nowrap;
+}
+
+.analytics__barchart-label-amount{
+  color: #aaa;
+}
+
+.analytics__barchart-label-pusher{
+  height: 10px;
+  display: inline-block;
+  transition: all linear $transition-duration;
+}
+.analytics__barchart-label-wrapper{
+  transition: left linear $transition-duration;
+  position: absolute;
+  width: 100%;
+  white-space: nowrap;
 }
 
 .analytics__barchart-container .analytics__barchart-amount{
