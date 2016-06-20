@@ -4,13 +4,30 @@ import { PriceMovementType, Spread } from '../../../services/model';
 import './priceMovement.scss';
 
 const PriceMovementIndicator = props => {
-  let className = classnames(
+
+  let upDirectionClassName = classnames(
+    'price-movement__icon--up fa fa-caret-up fa-lg',
     {
-      'price-movement__icon--up fa fa-caret-up fa-lg': props.priceMovementType === PriceMovementType.Up,
-      'price-movement__icon--down fa fa-caret-down fa-lg': props.priceMovementType ===  PriceMovementType.Down
+      'price-movement__icon--inactive': props.priceMovementType ===  PriceMovementType.Down
     }
   );
-  return <div className='price-movement'><span className='price-movement__value'>{props.spread.formattedValue}</span><i className={className}></i></div>;
+
+  let downDirectionClassName = classnames(
+    'price-movement__icon--down fa fa-caret-down fa-lg',
+    {
+      'price-movement__icon--inactive': props.priceMovementType ===  PriceMovementType.Up
+    }
+  );
+  
+  return (
+    <div>
+      <div className='price-movement'>
+        <i className={upDirectionClassName}></i>
+        <span className='price-movement__value'>{props.spread.formattedValue}</span>
+        <i className={downDirectionClassName}></i>
+      </div>
+    </div>
+    );
 };
 
 PriceMovementIndicator.propTypes = {
