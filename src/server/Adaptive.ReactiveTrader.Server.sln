@@ -27,6 +27,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{9EB7F80F-1D5A-4BB2-B9B5-646541354706}"
 	ProjectSection(SolutionItems) = preProject
 		configs\config.dev.json = configs\config.dev.json
+		configs\config.docker.json = configs\config.docker.json
 		configs\config.prod.json = configs\config.prod.json
 	EndProjectSection
 EndProject
