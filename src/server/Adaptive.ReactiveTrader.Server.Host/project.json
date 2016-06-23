@@ -21,8 +21,7 @@
     "netstandard1.3": {
       "imports": [
         "dnxcore50",
-        "portable-net45+win8+wp8",
-        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
+        "portable-net45"
       ]
     }
   }
