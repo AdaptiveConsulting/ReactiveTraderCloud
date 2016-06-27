@@ -242,6 +242,7 @@ $default-padding: 10px;
 
 .analytics__chart-title{
   display: block;
+  position: relative;
   padding-bottom: 2px;
   color: $analytics-header-colour;
   font-family: BrandonMedium;
