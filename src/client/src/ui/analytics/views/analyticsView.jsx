@@ -130,9 +130,9 @@ export default class AnalyticsView extends ViewBase {
     let positionsCharData = model.positionsChartModel.seriesData;
 
     return (
-        <div>
-          <span className='analytics__chart-title analytics__bubblechart-title'>PnL</span>
-          <PositionsBubbleChart data={positionsCharData}/>;
+        <div className='analytics__chart-title'>
+          <span className='analytics__bubblechart-title'>PnL</span>
+          <PositionsBubbleChart data={positionsCharData}/>
         </div>
       );
   }
