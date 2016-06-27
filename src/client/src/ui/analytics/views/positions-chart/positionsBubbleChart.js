@@ -31,10 +31,19 @@ export default class PositionsBubbleChart extends React.Component{
   }
 
 
+  _shouldRedrawChart(){
+    let positionsData = getPositionsDataFromSeries(this.props);
+    let existingPositionsData = this.state.prevPositionsData;
+    let nodesChanged = positionsData.length !== existingPositionsData.length;
+
+    return nodesChanged;
+  }
+
   _isUpdateRequired(){
     let positionsData = getPositionsDataFromSeries(this.props);
     let existingPositionsData = this.state.prevPositionsData;
 
+    //positions data has changed on the existing nodes
     let diffData = _.reduce(positionsData, function(result, value, key) {
       return _.isEqual(value, existingPositionsData[key]) ?
         result : result.concat(key);
@@ -82,7 +91,16 @@ export default class PositionsBubbleChart extends React.Component{
     return this.state.nodes;
   }
 
+  redrawChart(){
+    let dom = ReactDOM.findDOMNode(this);
+    let svg = d3.select(dom).select('svg');
+    svg.remove();
+    this.createChartForce();
+  }
+
+
   createChartForce(){
+    this.setState({nodes: []});
     let dom = ReactDOM.findDOMNode(this);
     this.scales = createScales(this.props);
 
@@ -108,13 +126,11 @@ export default class PositionsBubbleChart extends React.Component{
         .on('tick', tick);
 
 
+
     this._update(this.state.nodes);
   }
 
   _update(nodes){
-
-
-    console.log(' _update, update required : ', this.state.updateRequired);
     if (!nodes) return;
     if (!this.state.updateRequired) return;
     this.setState({updateRequired: false});
@@ -148,8 +164,9 @@ export default class PositionsBubbleChart extends React.Component{
         updateNodes(nodeGroup, this.state.nodes, this.scales);
         this.force.start();
       }, 200);
-      nodeGroup.exit().remove();
+
     }
+    nodeGroup.exit().remove();
   };
 
   _getRadius(dataObj, scales){
@@ -159,11 +176,15 @@ export default class PositionsBubbleChart extends React.Component{
 
 
   componentDidMount() {
-    setTimeout(this.createChartForce.bind(this), 1000);
+    setTimeout(this.redrawChart.bind(this), 1000);
   };
 
   componentWillReceiveProps(nextProps){
     if (this.state.nodes){
+
+      if (this._shouldRedrawChart()){
+        this.redrawChart();
+      }
       this._isUpdateRequired();
     }
   }
