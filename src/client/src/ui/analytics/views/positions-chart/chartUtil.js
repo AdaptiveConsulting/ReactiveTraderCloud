@@ -34,7 +34,6 @@ export function createScales(props){
   let positionData = getPositionsDataFromSeries(props);
 
   let baseVals = _.map(positionData, (val) => {
-    console.log('val : ', val);
     return Math.abs(val[CurrencyPairPosition.baseTradedAmountName]);
   });
 
@@ -68,8 +67,14 @@ export function updateNodes(nodeGroup, nodes, scales){
   nodeGroup.each(collide(.1, nodes, scales.r))
     .attr({
       transform: function(d, i) {
-        nodeMap[d.id] = {x: d.x, y: d.y};
-        return 'translate(' + d.x + ',' + d.y + ')';
+        if ( d.x !== undefined && d.y !== undefined){
+          nodeMap[d.id] = {x: d.x, y: d.y};
+          return 'translate(' + d.x + ',' + d.y + ')';
+        }else{
+          nodeMap[d.id] = {x: 0, y: 0};
+          return 'translate(0, 0)';
+        }
+
       },
       id: function(d, i) {
         return d.id;
@@ -82,6 +87,7 @@ export function updateNodes(nodeGroup, nodes, scales){
     node.x = newSettings.x;
     node.y = newSettings.y;
   }
+
 }
 
 
