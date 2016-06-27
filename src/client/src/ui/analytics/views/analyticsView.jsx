@@ -59,7 +59,8 @@ export default class AnalyticsView extends ViewBase {
         </div>);
 
     let pnlComponents = this._createPnlComponents();
-    let positionsComponents = this._createPositionsComponents();
+    let pnlSliders = this._createPnlSliders();
+    let positionsBubbleChart = this._createPositionsChart();
 
     let newWindowBtnClassName = classnames(
       'glyphicon glyphicon-new-window',
@@ -76,8 +77,8 @@ export default class AnalyticsView extends ViewBase {
              onClick={() => router.publishEvent(this.props.modelId, 'popOutAnalytics', {})}/>
         </div>
         {pnlComponents}
-        <PositionsBubbleChart data={positionsCharData}/>
-        {positionsComponents}
+        {positionsBubbleChart}
+        {pnlSliders}
       </div>);
   }
 
@@ -124,12 +125,24 @@ export default class AnalyticsView extends ViewBase {
     );
   }
 
-  _createPositionsComponents() {
-    //console.log(' ****  this.state.model : ',  this.state.model);
+  _createPositionsChart(){
+    let model:AnalyticsModel = this.state.model;
+    let positionsCharData = model.positionsChartModel.seriesData;
+
+    return (
+        <div>
+          <span className='analytics__chart-title analytics__bubblechart-title'>PnL</span>
+          <PositionsBubbleChart data={positionsCharData}/>;
+        </div>
+      );
+  }
+
+  _createPnlSliders() {
     let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
     return (
       <div>
         <div className='analytics__chart-container'>
+          <span className='analytics__chart-title'>Positions</span>
           <AnalyticsBarChart series={positionsChartModel.seriesData}/>
         </div>
       </div>
