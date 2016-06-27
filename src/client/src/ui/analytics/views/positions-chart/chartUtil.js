@@ -2,20 +2,45 @@ import _ from 'lodash';
 import d3 from 'd3';
 import {  CurrencyPairPosition } from '../../../../services/model';
 
+export function getPositionsDataFromSeries(props):Array<{symbol:string, baseAmount:number}>{
+  let baseAmtPropName = CurrencyPairPosition.baseTradedAmountName;
+  let positionsPerCcyObj = props.data.reduce((aggregatedPositionsObj, ccyPairPosition) => {
+
+    //aggregate amount per ccy;
+    let baseCurrency = ccyPairPosition.currencyPair.base;
+    aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
+      ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmtPropName] : ccyPairPosition[baseAmtPropName];
+
+    return aggregatedPositionsObj;
+  }, {});
+
+  //map the object to the array of ccy-amount pairs and exclude 0 base amount
+  return _.map(positionsPerCcyObj, (val, key) => {
+    return {symbol: key, [baseAmtPropName]: val};
+  }).filter((positionPerCcy, index) => positionPerCcy[baseAmtPropName] !== 0);
+}
+
+
 export function createScales(props){
   let ratio = 12.5;
   let width = props.width;
   let height = props.height;
   let numNodes = props.numNodes;
-  let minR = 14;
-  let maxR = 100;
+  let minR = 15;
+  let maxR = 60;
   let offset = maxR / 2;
   let horK = 1;
 
-  let baseVals = _.map(props.data, (val) => Math.abs(val[CurrencyPairPosition.baseTradedAmountName]));
+  let positionData = getPositionsDataFromSeries(props);
+
+  let baseVals = _.map(positionData, (val) => {
+    console.log('val : ', val);
+    return Math.abs(val[CurrencyPairPosition.baseTradedAmountName]);
+  });
 
   let maxVal = _.max(baseVals);
-  let minVal = 0;//_.min(baseVals);
+  let minVal = _.min(baseVals);
+
   let scales = {
     x: d3.scale.linear()
       .domain([0, numNodes])
@@ -37,23 +62,60 @@ export function createScales(props){
 }
 
 
-export function getPositionsDataFromSeries(props):Array<{symbol:string, baseAmount:number}>{
-  let baseAmtPropName = CurrencyPairPosition.baseTradedAmountName;
-  let positionsPerCcyObj = props.data.reduce((aggregatedPositionsObj, ccyPairPosition) => {
+export function updateNodes(nodeGroup, nodes, scales){
+  let nodeMap = {};
 
-    //aggregate amount per ccy;
-    let baseCurrency = ccyPairPosition.currencyPair.base;
-    aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
-      ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmtPropName] : ccyPairPosition[baseAmtPropName];
+  nodeGroup.each(collide(.1, nodes, scales.r))
+    .attr({
+      transform: function(d, i) {
+        nodeMap[d.id] = {x: d.x, y: d.y};
+        return 'translate(' + d.x + ',' + d.y + ')';
+      },
+      id: function(d, i) {
+        return d.id;
+      }
+    });
 
-    return aggregatedPositionsObj;
-  }, {});
-
-//map the object to the array of ccy-amount pairs and exclude 0 base amount
-return _.map(positionsPerCcyObj, (val, key) => {
-  return {symbol: key, [baseAmtPropName]: val};
-}).filter((positionPerCcy, index) => positionPerCcy[baseAmtPropName] !== 0);
+  for (let i = 0; i < nodes.length; i++){
+    let node = nodes[i];
+    let newSettings = nodeMap[node.id];
+    node.x = newSettings.x;
+    node.y = newSettings.y;
+  }
 }
+
+
+export function drawCircles(nodeGroup, duration = 800){
+    nodeGroup.transition()
+      .duration(duration)
+      .attr({
+      r: function(d) {
+        return d.r;
+      }
+    })
+    .style({
+      fill: function(d) {
+        return d.color;
+      }
+    });
+
+}
+
+export function drawLabels(nodeGroup){
+    nodeGroup.attr({
+      x: 0,
+      y: 3,
+    })
+    .text(function(d) {
+      return d.id;
+    })
+    .style({
+      fill: 'white',
+      'font-weight': 'bold',
+      'font-size': '12px'
+    });
+}
+
 
 export function collide(alpha, nodes, scale) {
   let quadtree = d3.geom.quadtree(nodes);
