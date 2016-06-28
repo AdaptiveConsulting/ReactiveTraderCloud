@@ -22,23 +22,10 @@ $price-width: calc(43% + 10px);
   }
 
   .spot-tile__execution-label,
-  .spot-tile__icon--disconnected,
-  .spot-tile__stale-label,
   .spot-tile__delivery-date {
     display: none;
   }
-  &.spot-tile--stale {
-    .spot-tile__stale-label,
-    .spot-tile__icon--disconnected {
-      display: inline-block;
-    }
-    .spot-tile__price--bid,
-    .spot-tile__price--ask,
-    .spot-tile__price-movement,
-    .spot-tile__notional {
-      display: none;
-    }
-  }
+
   &.spot-tile--error {
     background-color: $spot-tile-error-color;
     color: $spot-tile-primary-color;
@@ -72,12 +59,6 @@ $price-width: calc(43% + 10px);
   bottom: 10px;
   left: 10px;
   right: 10px;
-}
-
-.spot-tile__stale-label {
-  position: absolute;
-  top: 20px;
-  color: $spot-tile-secondary-color;
 }
 
 .spot-tile__symbol {
@@ -171,6 +152,8 @@ $price-width: calc(43% + 10px);
 .spot-tile__notification-message {
   position: absolute;
   top: 50px;
+  width: 100%;
+  text-align: center;
 }
 
 
