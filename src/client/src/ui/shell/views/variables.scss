@@ -1,16 +1,19 @@
+$scrollbar-width:             8px;
 $sidebar-width:               40px;
-$shell-background-color:      #212A35;
+$shell-background-color:      #1d2027;
 $panel-background-color:      #293543;
 $blotter-height:              20vh;
 $header-height:               30px;
 $footer-height:               40px;
 $footer-width:                100%;
 $workspace-height:            calc(100% - #{$blotter-height});
-$workspace-height-expanded:   calc(100% - #{$footer-height});
+$workspace-height-expanded:   100%;
 $analytics-height:            $workspace-height;
 $analytics-height-expanded:   $workspace-height-expanded;
 $analytics-width:             400px;
-$workspace-width:             calc(100vw - #{$sidebar-width} - #{$analytics-width});
+$workspace-width:             calc(100vw - #{$sidebar-width} - #{$analytics-width} - #{$scrollbar-width});
+$blotter-width:               calc(100vw - #{$sidebar-width} - #{$analytics-width});
 $splash-logo-height:          400px;
 $splash-logo-margin-top:      20vh;
 $sidebar-height:              $workspace-height;
+

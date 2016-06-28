@@ -1,8 +1,9 @@
 .browser-chrome__content {
   height: 100vh;
-
+  width: 100vw;
   > div {
     height: 100%;
+    width: 100%;
   }
 }
 
