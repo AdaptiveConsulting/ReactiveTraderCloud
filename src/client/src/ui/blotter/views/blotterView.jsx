@@ -10,7 +10,9 @@ import { BlotterModel } from '../model';
 import 'fixed-data-table/dist/fixed-data-table.css';
 import './blotter.scss';
 
-@Dimensions()
+@Dimensions({
+  elementResize: true
+})
 export default class BlotterView extends ViewBase {
 
   constructor(props, context) {
@@ -72,7 +74,7 @@ export default class BlotterView extends ViewBase {
       <Column
         key='Dir'
         header={<Cell>Dir</Cell>}
-        cell={props => <Cell className='blotter__trade-field--emphasized'>{this.state.model.trades[props.rowIndex].direction.name}</Cell>}
+        cell={props => <Cell className='blotter__trade-field--emphasized'>{this.state.model.trades[props.rowIndex].direction.name.toUpperCase()}</Cell>}
         flexGrow={1}
         width={50}/>,
       <Column
