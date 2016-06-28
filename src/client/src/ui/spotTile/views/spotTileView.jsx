@@ -65,7 +65,6 @@ export default class SpotTileView extends ViewBase {
       <div className={className}>
         <div className='spot-tile__container'>
           <span className='spot-tile__stale-label'>Stale</span>
-          <span className='spot-tile__symbol'>{model.tileTitle}</span>
           <span className='spot-tile__execution-label'>Executing</span>
           <div className='spot-tile__controls'>
             <i className={chartIQIconClassName}
@@ -104,6 +103,7 @@ export default class SpotTileView extends ViewBase {
     }
     return (
       <div className={pricingContainerClass}>
+        <span className='spot-tile__symbol'>{model.tileTitle}</span>
         <PriceButton
           className='spot-tile__price spot-tile__price--bid'
           direction={Direction.Sell}
