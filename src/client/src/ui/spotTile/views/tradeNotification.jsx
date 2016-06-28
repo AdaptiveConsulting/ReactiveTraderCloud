@@ -36,12 +36,30 @@ export default class TradeNotification extends React.Component {
       return (
         <div className={classNames}>
           <span className='trade-notification__trade-status'>{tradeExecutionNotification.status.name}</span>
-          <span className='trade-notification__label'>{tradeExecutionNotification.direction} </span><span className='trade-notification__value'>{tradeExecutionNotification.dealtCurrency} {tradeExecutionNotification.notional}</span><br/>
-          <span className='trade-notification__label'> vs </span><span className='trade-notification__value'>{tradeExecutionNotification.termsCurrency}</span>
-          <span className='trade-notification__label'> at </span><span className='trade-notification__value'>{tradeExecutionNotification.spotRate}</span><br/>
-          <span className='trade-notification__value'>{tradeExecutionNotification.formattedValueDate}</span><br/>
-          <span className='trade-notification__label'>Trade ID </span><span className='trade-notification__value'>{tradeExecutionNotification.tradeId}</span>
-          <a href='#' className='trade-notification__button--dismiss' onClick={onDismissedClicked}>Done</a>
+          <span className='trade-notification__label'>{tradeExecutionNotification.direction} </span><br />
+          <span className='trade-notification__value trade-notification__value--notional'>{tradeExecutionNotification.dealtCurrency} {tradeExecutionNotification.notional}</span><br/>
+          <span className='trade-notification__label trade-notification__label--versus'> vs </span><span className='trade-notification__value trade-notification__value--currency'>{tradeExecutionNotification.termsCurrency}</span>
+
+
+          <div className='trade-notification__details-items'>
+            <div className='trade-notification__details-item'>
+              <span className='trade-notification__label'>Rate</span><br />
+              <span className='trade-notification__value'>{tradeExecutionNotification.spotRate}</span>
+            </div>
+            <div className='trade-notification__details-item'>
+              <span className='trade-notification__label'>Date</span><br />
+              <span className='trade-notification__value'>{tradeExecutionNotification.formattedValueDate}</span>
+            </div>
+            <div className='trade-notification__details-item'>
+              <span className='trade-notification__label'>Trade ID </span><br />
+              <span className='trade-notification__value'>{tradeExecutionNotification.tradeId}</span>
+            </div>
+          </div>
+
+
+
+
+          <a href='#' className='trade-notification__button--dismiss' onClick={onDismissedClicked}><i className='trade-notification__button--dismiss-icon fa fa-share' ></i></a>
         </div>
       );
     }
