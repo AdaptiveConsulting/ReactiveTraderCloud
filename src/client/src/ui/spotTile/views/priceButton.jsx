@@ -21,9 +21,8 @@ const PriceButton = props =>  {
   }
   return (
     <div className={classes} onClick={() => props.onExecute()}>
-      <div className='price-button__direction'>{direction.name}</div>
       <span className='price-button__wrapper'>
-        <span className='price-button__big-figure'>{bigFigureDisplay}</span>
+        <span className='price-button__big-figure'><span className='price-button__direction'>{direction.name}</span><br />{bigFigureDisplay}</span>
         <span className='price-button__pip'>{paddedPips}</span>
         <span className='price-button__tenth'>{rate.pipFraction}</span>
       </span>
