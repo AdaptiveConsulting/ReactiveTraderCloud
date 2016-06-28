@@ -93,19 +93,25 @@ export function updateNodes(nodeGroup, nodes, scales){
 
 
 export function drawCircles(nodeGroup, duration = 800){
-    nodeGroup.transition()
+    nodeGroup
+      .on('mouseover', function(d){
+        d3.select(this).style('fill', '#00A8CC');
+      })
+      .on('mouseout', function(d){
+        d3.select(this).style('fill', d.color);
+      })
+      .transition()
       .duration(duration)
       .attr({
-      r: function(d) {
-        return d.r;
-      }
-    })
-    .style({
-      fill: function(d) {
-        return d.color;
-      }
-    });
-
+        r: function(d) {
+          return d.r;
+        }
+      })
+      .style({
+        fill: function(d) {
+          return d.color;
+        }
+      });
 }
 
 export function drawLabels(nodeGroup){

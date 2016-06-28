@@ -114,8 +114,6 @@ export default class PositionsBubbleChart extends React.Component{
         .on('mouseover', (d) => { console.log('mouse over d, ', d); this._mouseOverHandler(d);} )
         .on('mousemove', (d) => { console.log('mouse MOVE d, ', d); this._mouseOverHandler(d);} )
         .on('mouseout', (d) => this._mouseOutHandler(d));
-        /*.on('mouseover', this.tooltipGroup.show)
-        .on('mouseout', this.tooltipGroup.hide);*/
       updateNodes(nodeGroup, this.state.nodes, this.scales);
     };
 
@@ -137,9 +135,9 @@ export default class PositionsBubbleChart extends React.Component{
         .links([])
         .size([this.props.width, this.props.height])
         .charge(function(d) {
-          return -1 ;//return -1 * (Math.pow(d.r * 5.0, 2.0) / 8);
+          return -1 ;
         })
-        .gravity(0.1)//(2.75)
+        .gravity(0.1)
         .on('tick', tick);
 
     this._update(this.state.nodes);
@@ -157,10 +155,10 @@ export default class PositionsBubbleChart extends React.Component{
       .data(nodes, function(d, i) {
         return d.id;
       })
-      .on('mouseover', (d) => { console.log('mouse over d, ', d); this._mouseOverHandler(d);} )
-      .on('mousemove', (d) => { console.log('mouse MOVE d, ', d); this._mouseOverHandler(d);} )
+      .on('mouseover', (d) => { this._mouseOverHandler(d);} )
+      .on('mousemove', (d) => { this._mouseOverHandler(d);} )
       .on('mouseout', (d) => this._mouseOutHandler(d));
-    
+
     nodeGroup.enter().append('g')
       .attr({
         'class': 'node'
@@ -188,7 +186,6 @@ export default class PositionsBubbleChart extends React.Component{
   };
 
   _mouseOverHandler(node){
-    console.log('node : ', node);
     this.tooltipGroup.show();
   };
 
