@@ -16,7 +16,6 @@ export default class SidebarModel extends ModelBase {
   _regionName:string;
   showSidebar:boolean;
   showAnalytics:boolean;
-  useMainTheme:boolean;
 
   constructor(modelId:string,
               router:Router,
@@ -29,7 +28,6 @@ export default class SidebarModel extends ModelBase {
     this._regionManagerHelper = new RegionManagerHelper(this._regionName, regionManager, this, this._regionSettings);
     this.showSidebar = true;
     this.showAnalytics = true;
-    this.useMainTheme = true;
   }
 
   @observeEvent('init')
@@ -48,16 +46,6 @@ export default class SidebarModel extends ModelBase {
       this.router.publishEvent(this.modelId, 'showAnalytics', {});
     }
     this.showAnalytics = !this.showAnalytics;
-  }
-
-  toggleTheme() {
-    // TODO - add theme repository
-    if (this.useMainTheme) {
-      this.router.publishEvent(this.modelId, 'changeTheme', {theme: new Theme('themeB')});
-    } else {
-      this.router.publishEvent(this.modelId, 'changeTheme', {theme: new Theme('themeA')});
-    }
-    this.useMainTheme = !this.useMainTheme;
   }
 
   _observeAnalyticsWindowEvents(){
