@@ -47,7 +47,7 @@ export default class SpotTileView extends ViewBase {
     const className = classnames(
       'spot-tile',
       {
-        'spot-tile--stale': !model.pricingConnected,
+        'spot-tile--stale': (!model.pricingConnected || model.priceStale) && !(model.hasNotification && model.notification.notificationType === NotificationType.Trade),
         'spot-tile--readonly': !model.executionConnected,
         'spot-tile--executing': model.isTradeExecutionInFlight,
         'spot-tile--error': model.hasNotification && model.notification.error
@@ -61,32 +61,35 @@ export default class SpotTileView extends ViewBase {
         'spot-tile__icon--hidden' : model.canPopout
       }
     );
+    let spotTileContent = (
+      <div>
+        <span className='spot-tile__execution-label'>Executing</span>
+        {priceComponents}
+        <NotionalInput
+          className={notionalInputClass}
+          notional={model.notional}
+          onChange={(notional) => router.publishEvent(this.props.modelId, 'notionalChanged', { notional:notional })}
+          maxValue={model.maxNotional}
+          currencyPair={model.currencyPair} />
+        <div className={spotDateClass}>
+          <span className='spot-tile__tenor'>SP</span>
+          <span className='spot-tile__delivery-date'>. {formattedDate}</span>
+        </div>
+      </div>
+    );
     return (
       <div className={className}>
         <div className='spot-tile__container'>
-          <span className='spot-tile__stale-label'>Stale</span>
           <span className='spot-tile__symbol'>{model.tileTitle}</span>
-          <span className='spot-tile__execution-label'>Executing</span>
           <div className='spot-tile__controls'>
             <i className={chartIQIconClassName}
-              onClick={() => this._displayCurrencyChart()}/>
+               onClick={() => this._displayCurrencyChart()}/>
             <i className={newWindowClassName}
                onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
             <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
                onClick={() => router.publishEvent(this.props.modelId, 'undockTile', {})}/>
           </div>
-          {notification}
-          {priceComponents}
-          <NotionalInput
-              className={notionalInputClass}
-              notional={model.notional}
-              onChange={(notional) => router.publishEvent(this.props.modelId, 'notionalChanged', { notional:notional })}
-              maxValue={model.maxNotional}
-              currencyPair={model.currencyPair} />
-            <div className={spotDateClass}>
-              <span className='spot-tile__tenor'>SP</span>
-              <span className='spot-tile__delivery-date'>. {formattedDate}</span>
-            </div>
+          {!model.hasNotification ? spotTileContent : notification}
         </div>
       </div>
     );
