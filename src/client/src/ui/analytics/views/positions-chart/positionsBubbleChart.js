@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import d3 from 'd3';
 import d3tip from 'd3-tip';
 import _ from 'lodash';
+import numeral from 'numeral';
 import { createScales, getPositionsDataFromSeries, updateNodes, drawCircles, drawLabels } from './chartUtil';
 
 export default class PositionsBubbleChart extends React.Component{
@@ -129,7 +130,7 @@ export default class PositionsBubbleChart extends React.Component{
     let tooltipGroup = d3tip().html((d)=>{
       return `${d.id} ${this._getPositionValue(d.id)}` ;
     })
-      .attr('class', 'analytics__positions-tooltip').direction('s').offset([0, 0]);
+      .attr('class', 'analytics__positions-tooltip').direction('s').offset([-5, 0]);
 
     svg.call(tooltipGroup);
 
@@ -149,12 +150,11 @@ export default class PositionsBubbleChart extends React.Component{
   _getPositionValue(id){
     let index = _.findIndex(this.state.prevPositionsData, (pos) => pos.symbol === id);
     if (index >= 0){
-      return this.state.prevPositionsData[index].baseTradedAmount;
+      return numeral(this.state.prevPositionsData[index].baseTradedAmount).format('0,0');
     }
     return '';
   }
-
-
+  
   _update(nodes){
     if (!nodes) return;
     if (!this.state.updateRequired) return;
@@ -194,7 +194,7 @@ export default class PositionsBubbleChart extends React.Component{
     }
     nodeGroup.exit().remove();
   };
-  
+
 
   _getRadius(dataObj, scales){
     return scales.r(Math.abs(dataObj.baseTradedAmount));
