@@ -13,17 +13,17 @@
   },
 
   "dependencies": {
-    "Microsoft.NETCore.App": {
-      "type": "platform",
-      "version": "1.0.0-rc2-3002702"
-    },
     "Adaptive.ReactiveTrader.Server.Analytics": "1.0.0-*",
     "Adaptive.ReactiveTrader.Server.Blotter": "1.0.0-*",
     "Adaptive.ReactiveTrader.Server.Pricing": "1.0.0-*",
     "Adaptive.ReactiveTrader.Server.ReferenceDataRead": "1.0.0-*",
     "Adaptive.ReactiveTrader.Server.ReferenceDataWrite": "1.0.0-*",
     "Adaptive.ReactiveTrader.Server.TradeExecution": "1.0.0-*",
-    "EventStore.ClientAPI.DotNetCore": "1.0.0"
+    "EventStore.ClientAPI.DotNetCore": "1.0.0",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.0"
+    }
   },
 
   "frameworks": {

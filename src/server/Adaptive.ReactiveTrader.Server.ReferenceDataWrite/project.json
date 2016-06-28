@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "Reference Data Write Service",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
@@ -13,11 +13,11 @@
   },
 
   "dependencies": {
+    "Adaptive.ReactiveTrader.Server.Host": "1.0.0-*",
     "Microsoft.NETCore.App": {
       "type": "platform",
-      "version": "1.0.0-rc2-3002702"
-    },
-    "Adaptive.ReactiveTrader.Server.Host": "1.0.0-*"
+      "version": "1.0.0"
+    }
   },
 
   "frameworks": {

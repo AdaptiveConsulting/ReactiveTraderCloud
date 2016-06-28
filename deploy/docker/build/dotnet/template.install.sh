@@ -11,3 +11,9 @@ sudo apt-get -y install __DOTNET_VERSION__
 
 # Clean
 apt-get autoremove -y
+
+# Pre-populate packages
+cd ~ && mkdir init && cd init
+dotnet new
+dotnet restore
+cd ~ && rm -rf init
