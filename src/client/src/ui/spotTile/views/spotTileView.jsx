@@ -1,10 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
-import {ViewBase} from '../../common';
-import {router} from '../../../system';
-import {PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification} from './';
-import {SpotTileModel, NotificationType} from '../model';
-import {Direction} from '../../../services/model';
+import { ViewBase } from '../../common';
+import { router } from '../../../system';
+import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification } from './';
+import { SpotTileModel, NotificationType } from '../model';
+import { Direction } from '../../../services/model';
 import moment from 'moment';
 import './spotTile.scss';
 
