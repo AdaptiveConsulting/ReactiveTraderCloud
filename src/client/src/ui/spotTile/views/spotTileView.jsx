@@ -1,14 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
-import { ViewBase } from '../../common';
-import { router } from '../../../system';
-import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification } from './';
-import { SpotTileModel, NotificationType } from '../model';
-import { Direction } from '../../../services/model';
+import {ViewBase} from '../../common';
+import {router} from '../../../system';
+import {PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification} from './';
+import {SpotTileModel, NotificationType} from '../model';
+import {Direction} from '../../../services/model';
 import moment from 'moment';
 import './spotTile.scss';
 
-const SPOT_DATE_FORMAT  = 'DD MMM';
+const SPOT_DATE_FORMAT = 'DD MMM';
 
 export default class SpotTileView extends ViewBase {
 
@@ -19,7 +19,7 @@ export default class SpotTileView extends ViewBase {
     };
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     super.componentWillUnmount();
   }
 
@@ -47,7 +47,7 @@ export default class SpotTileView extends ViewBase {
     const className = classnames(
       'spot-tile',
       {
-        'spot-tile--stale': !model.pricingConnected,
+        'spot-tile--stale': !model.pricingConnected && !(model.hasNotification && model.notification.notificationType === NotificationType.Trade),
         'spot-tile--readonly': !model.executionConnected,
         'spot-tile--executing': model.isTradeExecutionInFlight,
         'spot-tile--error': model.hasNotification && model.notification.error
@@ -57,41 +57,44 @@ export default class SpotTileView extends ViewBase {
     const newWindowClassName = classnames(
       'popout__controls  glyphicon glyphicon-new-window',
       {
-        'spot-tile__icon--tearoff' : !model.canPopout,
-        'spot-tile__icon--hidden' : model.canPopout
+        'spot-tile__icon--tearoff': !model.canPopout,
+        'spot-tile__icon--hidden': model.canPopout
       }
+    );
+    let spotTileContent = (
+      <div>
+        <span className='spot-tile__execution-label'>Executing</span>
+        {priceComponents}
+        <NotionalInput
+          className={notionalInputClass}
+          notional={model.notional}
+          onChange={(notional) => router.publishEvent(this.props.modelId, 'notionalChanged', { notional:notional })}
+          maxValue={model.maxNotional}
+          currencyPair={model.currencyPair}/>
+        <div className={spotDateClass}>
+          <span className='spot-tile__tenor'>SP</span>
+          <span className='spot-tile__delivery-date'>. {formattedDate}</span>
+        </div>
+      </div>
     );
     return (
       <div className={className}>
         <div className='spot-tile__container'>
-          <span className='spot-tile__stale-label'>Stale</span>
-          <span className='spot-tile__execution-label'>Executing</span>
           <div className='spot-tile__controls'>
             <i className={chartIQIconClassName}
-              onClick={() => this._displayCurrencyChart()}/>
+               onClick={() => this._displayCurrencyChart()}/>
             <i className={newWindowClassName}
                onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
             <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
                onClick={() => router.publishEvent(this.props.modelId, 'undockTile', {})}/>
           </div>
-          {notification}
-          {priceComponents}
-          <NotionalInput
-              className={notionalInputClass}
-              notional={model.notional}
-              onChange={(notional) => router.publishEvent(this.props.modelId, 'notionalChanged', { notional:notional })}
-              maxValue={model.maxNotional}
-              currencyPair={model.currencyPair} />
-            <div className={spotDateClass}>
-              <span className='spot-tile__tenor'>SP</span>
-              <span className='spot-tile__delivery-date'>. {formattedDate}</span>
-            </div>
+          {!model.hasNotification ? spotTileContent : notification}
         </div>
       </div>
     );
   }
 
-  _displayCurrencyChart(){
+  _displayCurrencyChart() {
     router.publishEvent(this.props.modelId, 'displayCurrencyChart', {});
   }
 
@@ -108,24 +111,24 @@ export default class SpotTileView extends ViewBase {
           className='spot-tile__price spot-tile__price--bid'
           direction={Direction.Sell}
           onExecute={() => this._onExecuteTrade(Direction.Sell)}
-          rate={model.currentSpotPrice.bid} />
+          rate={model.currentSpotPrice.bid}/>
         <div className='spot-tile__price-movement'>
           <PriceMovementIndicator
             priceMovementType={model.currentSpotPrice.priceMovementType}
-            spread={model.currentSpotPrice.spread} />
+            spread={model.currentSpotPrice.spread}/>
         </div>
         <PriceButton
           className='spot-tile__price spot-tile__price--ask'
           direction={Direction.Buy}
           onExecute={() => this._onExecuteTrade(Direction.Buy)}
-          rate={model.currentSpotPrice.ask} />
+          rate={model.currentSpotPrice.ask}/>
       </div>
     );
   }
 
-  _onExecuteTrade(direction: Direction) {
+  _onExecuteTrade(direction:Direction) {
     if (this.state.model.executionConnected) {
-      router.publishEvent(this.props.modelId, 'executeTrade', { direction });
+      router.publishEvent(this.props.modelId, 'executeTrade', {direction});
     }
   }
 
@@ -137,7 +140,7 @@ export default class SpotTileView extends ViewBase {
           <TradeNotification
             className='spot-tile__trade-summary'
             tradeExecutionNotification={model.notification}
-            onDismissedClicked={(e) => router.publishEvent(this.props.modelId, 'tradeNotificationDismissed', {})} />
+            onDismissedClicked={(e) => router.publishEvent(this.props.modelId, 'tradeNotificationDismissed', {})}/>
         );
       } else if (model.notification.notificationType === NotificationType.Text) {
         return (
