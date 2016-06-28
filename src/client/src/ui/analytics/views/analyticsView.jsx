@@ -131,7 +131,7 @@ export default class AnalyticsView extends ViewBase {
 
     return (
         <div className='analytics__chart-title'>
-          <span className='analytics__bubblechart-title'>PnL</span>
+          <span className='analytics__bubblechart-title'>Positions</span>
           <PositionsBubbleChart data={positionsCharData}/>
         </div>
       );
@@ -142,7 +142,7 @@ export default class AnalyticsView extends ViewBase {
     return (
       <div>
         <div className='analytics__chart-container'>
-          <span className='analytics__chart-title'>Positions</span>
+          <span className='analytics__chart-title'>PnL</span>
           <AnalyticsBarChart series={positionsChartModel.seriesData}/>
         </div>
       </div>

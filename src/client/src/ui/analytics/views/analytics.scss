@@ -236,6 +236,11 @@ $default-padding: 10px;
   color: $highlight-color;
 }
 
+.analytics__bubblechart-container{
+  text-anchor: middle;
+  color: white;
+}
+
 .analytics__bubblechart-title {
   position: absolute;
 }
@@ -248,6 +253,36 @@ $default-padding: 10px;
   font-family: BrandonMedium;
   font-size: 18px;
 }
+
+.analytics__positions-label{
+  fill: white;
+  font-weight: bold;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.analytics__positions-tooltip{
+  text-anchor: middle;
+  background-color: white;
+  border: 1px solid gray;
+}
+
+.analytics__positions-tooltip {
+  position: absolute;
+  width: auto;
+  height: auto;
+  padding: 4px 10px;
+  background-color: #E1E3E8;
+  opacity:1.0;
+  border:1px solid black;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.analytics__positions-tooltip--hidden {
+  display: none;
+}
+
 
 .analytics__buttons{
   width: 100%;
