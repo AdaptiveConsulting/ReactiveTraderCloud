@@ -1,4 +1,8 @@
-@import "variables.scss";
+@import "./variables.scss";
+
+$price-pip-width: 70px;
+$price-tenth-width: 20px;
+$price-big-figure-width: 50px;
 
 .price-button {
   text-align: center;
@@ -9,18 +13,13 @@
 .price-button__direction {
   text-transform: uppercase;
   color: white;
-  position: absolute;
-  top: 15px;
-  width: $price-big-figure-width;
-  text-align: right;
   font-size: 14px;
   font-weight: bolder;
-  padding-right: 10px;
   font-family: BrandonRegular;
 }
 
 .price-button__wrapper {
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
 .price-button__big-figure,
