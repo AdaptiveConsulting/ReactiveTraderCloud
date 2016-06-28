@@ -5,7 +5,6 @@
   .trade-notification__trade-status {
     color: $spot-tile-error-color;
   }
-  padding-top: 10px;
 }
 
 .trade-notification--rejected {
@@ -15,11 +14,33 @@
 }
 
 .trade-notification__label {
-  color: $spot-tile-secondary-color;
+  color: #c2c5c9;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-family: BrandonMedium;
 }
 
 .trade-notification__value {
-  color: $spot-tile-primary-color;
+  color: white;
+  font-size: 16px;
+  font-family: BrandonRegular;
+}
+
+.trade-notification__label--versus {
+  font-size: 10px;
+}
+
+.trade-notification__value--currency {
+  color: #c2c5c9;
+  font-size: 14px;
+}
+
+.trade-notification__value--notional {
+  color: #f8ab02;
+  font-size: 24px;
+  font-family: BrandonRegular;
+  display: inline-block;
+  margin: -5px -2px -5px 0;
 }
 
 .trade-notification__button--dismiss {
@@ -30,11 +51,26 @@
   color: inherit;
 }
 
+.trade-notification__button--dismiss-icon {
+  transform: rotate(45deg);
+}
+
 .trade-notification__trade-status {
   display: none;
   position: absolute;
   top: 0;
-  right: 5px;
+  right: 40px;
   color: inherit;
+}
+
+.trade-notification__details-items {
+  display: flex;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.trade-notification__details-item {
+  flex: 1;
 }
 
