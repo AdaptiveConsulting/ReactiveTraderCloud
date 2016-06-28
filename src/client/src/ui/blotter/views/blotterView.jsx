@@ -9,7 +9,6 @@ import classNames from 'classnames';
 import { BlotterModel } from '../model';
 import 'fixed-data-table/dist/fixed-data-table.css';
 import './blotter.scss';
-import './themes/theme-a.scss';
 
 @Dimensions()
 export default class BlotterView extends ViewBase {

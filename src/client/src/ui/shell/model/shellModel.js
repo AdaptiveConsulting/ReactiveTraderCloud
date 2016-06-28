@@ -13,6 +13,7 @@ export default class ShellModel extends ModelBase {
   sessionExpired:boolean;
   isBlotterOut:boolean;
   isAnalyticsOut:boolean;
+  isSidebarOut:boolean;
   wellKnownModelIds:WellKnownModelIds;
   showSideBar:boolean;
   theme:Theme;
@@ -34,6 +35,7 @@ export default class ShellModel extends ModelBase {
     this._observeForBlotterTearOut();
     this._observeForAnalyticsTearOut();
     this._observeForThemeChange();
+    this._observeSidebarEvents();
   }
 
   @observeEvent('reconnectClicked')
@@ -69,16 +71,34 @@ export default class ShellModel extends ModelBase {
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.analyticsModelId, 'popOutAnalytics')
-        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = true))
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = _this.isSidebarOut = true))
     );
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
         .where(({model}) => model.modelId === WellKnownModelIds.analyticsModelId)
-        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = false))
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = _this.isSidebarOut = false))
     );
   }
 
+
+  /**
+   * Observe sidebar hide analytics event, so we can resize the workspace/analytics area
+   * @private
+   */
+  _observeSidebarEvents() {
+    let _this = this;
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.sidebarModelId, 'hideAnalytics')
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = true))
+    );
+    this.addDisposable(
+      this.router
+        .getEventObservable(WellKnownModelIds.sidebarModelId, 'showAnalytics')
+        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = false))
+    );
+  }
 
   _observeForSessionExpired() {
     this.addDisposable(
