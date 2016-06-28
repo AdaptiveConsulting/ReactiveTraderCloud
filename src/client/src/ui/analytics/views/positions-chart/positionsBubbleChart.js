@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
+import d3tip from 'd3-tip';
 import _ from 'lodash';
 import { createScales, getPositionsDataFromSeries, updateNodes, drawCircles, drawLabels } from './chartUtil';
 
@@ -36,6 +37,9 @@ export default class PositionsBubbleChart extends React.Component{
     let existingPositionsData = this.state.prevPositionsData;
     let nodesChanged = positionsData.length !== existingPositionsData.length;
 
+    if (nodesChanged){
+      this.setState({updateRequired: true});
+    }
     return nodesChanged;
   }
 
@@ -62,7 +66,7 @@ export default class PositionsBubbleChart extends React.Component{
   _updateNodes(){
     let nodes = this.state.nodes;
 
-    let colours = ['green', 'gray', 'red'];
+    let colours = ['#6db910', 'gray', '#d90a0a'];
 
     let positionsData = getPositionsDataFromSeries(this.props);
 
@@ -96,6 +100,7 @@ export default class PositionsBubbleChart extends React.Component{
     let svg = d3.select(dom).select('svg');
     svg.remove();
     this.createChartForce();
+    this.setState({updateRequired: true});
   }
 
 
@@ -105,7 +110,12 @@ export default class PositionsBubbleChart extends React.Component{
     this.scales = createScales(this.props);
 
     const tick = (e)=> {
-      let nodeGroup = svg.selectAll('g.node');
+      let nodeGroup = svg.selectAll('g.node')
+        .on('mouseover', (d) => { console.log('mouse over d, ', d); this._mouseOverHandler(d);} )
+        .on('mousemove', (d) => { console.log('mouse MOVE d, ', d); this._mouseOverHandler(d);} )
+        .on('mouseout', (d) => this._mouseOutHandler(d));
+        /*.on('mouseover', this.tooltipGroup.show)
+        .on('mouseout', this.tooltipGroup.hide);*/
       updateNodes(nodeGroup, this.state.nodes, this.scales);
     };
 
@@ -114,6 +124,13 @@ export default class PositionsBubbleChart extends React.Component{
         width: this.props.width,
         height: this.props.height
       });
+
+
+    this.tooltipGroup = d3tip().attr('class', 'analytics__positions-tooltip').direction('s').offset([0, 0]).html(function(d){
+      return 'some string';
+    });
+
+    svg.call(this.tooltipGroup);
 
     this.force = d3.layout.force()
         .nodes(this.state.nodes)
@@ -124,8 +141,6 @@ export default class PositionsBubbleChart extends React.Component{
         })
         .gravity(0.1)//(2.75)
         .on('tick', tick);
-
-
 
     this._update(this.state.nodes);
   }
@@ -141,8 +156,11 @@ export default class PositionsBubbleChart extends React.Component{
     let nodeGroup = svg.selectAll('g.node')
       .data(nodes, function(d, i) {
         return d.id;
-      });
-
+      })
+      .on('mouseover', (d) => { console.log('mouse over d, ', d); this._mouseOverHandler(d);} )
+      .on('mousemove', (d) => { console.log('mouse MOVE d, ', d); this._mouseOverHandler(d);} )
+      .on('mouseout', (d) => this._mouseOutHandler(d));
+    
     nodeGroup.enter().append('g')
       .attr({
         'class': 'node'
@@ -169,8 +187,16 @@ export default class PositionsBubbleChart extends React.Component{
     nodeGroup.exit().remove();
   };
 
-  _getRadius(dataObj, scales){
+  _mouseOverHandler(node){
+    console.log('node : ', node);
+    this.tooltipGroup.show();
+  };
 
+  _mouseOutHandler(node){
+    this.tooltipGroup.hide();
+  };
+
+  _getRadius(dataObj, scales){
     return scales.r(Math.abs(dataObj.baseTradedAmount));
   }
 
@@ -189,6 +215,7 @@ export default class PositionsBubbleChart extends React.Component{
     }
   }
 
+
   componentDidUpdate(){
     console.log(' COMPONENT DID UPDATE');
     if ( !this.state.nodes || !this.force) return;
@@ -199,8 +226,9 @@ export default class PositionsBubbleChart extends React.Component{
   }
 
   render(){
+    console.log(' *** render called -- ');
     return (
-      <div style={{'textAnchor': 'middle', 'color': 'white'}}>
+      <div className='analytics__bubblechart-container'>
       </div>
     );
   }

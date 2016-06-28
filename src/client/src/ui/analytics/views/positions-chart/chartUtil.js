@@ -67,7 +67,7 @@ export function updateNodes(nodeGroup, nodes, scales){
   nodeGroup.each(collide(.1, nodes, scales.r))
     .attr({
       transform: function(d, i) {
-        if ( d.x !== undefined && d.y !== undefined){
+        if ( d.x !== undefined && d.y !== undefined && !isNaN(d.x) && !isNaN(d.y)){
           nodeMap[d.id] = {x: d.x, y: d.y};
           return 'translate(' + d.x + ',' + d.y + ')';
         }else{
@@ -84,10 +84,11 @@ export function updateNodes(nodeGroup, nodes, scales){
   for (let i = 0; i < nodes.length; i++){
     let node = nodes[i];
     let newSettings = nodeMap[node.id];
-    node.x = newSettings.x;
-    node.y = newSettings.y;
+    if (newSettings){
+      node.x = newSettings.x;
+      node.y = newSettings.y;
+    }
   }
-
 }
 
 
@@ -111,14 +112,10 @@ export function drawLabels(nodeGroup){
     nodeGroup.attr({
       x: 0,
       y: 3,
+      class: 'analytics__positions-label'
     })
     .text(function(d) {
       return d.id;
-    })
-    .style({
-      fill: 'white',
-      'font-weight': 'bold',
-      'font-size': '12px'
     });
 }
 
