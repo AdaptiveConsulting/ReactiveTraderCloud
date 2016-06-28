@@ -23,14 +23,19 @@
   .public_fixedDataTableCell_cellContent {
     padding: 4px 10px;
     font-weight: 100;
-    color: #9e9e9e;
+    font-size: 14px;
+    font-family: BrandonMedium;
+    color: #1d2027;
   }
 
   .public_fixedDataTable_header .public_fixedDataTableCell_main,
   .public_fixedDataTable_header .public_fixedDataTableCell_cellContent {
-    background-color: white;
-    color: #7e7e7e;
     font-weight: 900;
+    background-color: #e1e3e8;
+    color: #1d2027;
+    font-family: BrandonMedium;
+    font-size: 12px;
+    text-transform: uppercase;
   }
 }
 
@@ -61,7 +66,7 @@
 
 .blotter__trade {
   border: none;
-  border-bottom: 1px dashed rgb(232, 233, 234);
+  border-bottom: 1px solid #e1e3e8;
   &:hover {
     background-color: #fffed7;
   }
