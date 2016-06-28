@@ -25,17 +25,9 @@ export default class SidebarView extends ViewBase {
         'sidebar__element--inactive' :  !model.showAnalytics
       }
     );
-    let themeClassName = classnames (
-      'sidebar__element-button fa fa-paint-brush',
-      {
-        'sidebar__element--active': model.useMainTheme,
-        'sidebar__element--inactive' : !model.useMainTheme
-      }
-    );
     return (
       <div className='sidebar__container'>
         <i className={analyticsClassName} onClick={() => model.toggleAnalyticsPanel()}/>
-        <i className={themeClassName} onClick={() => model.toggleTheme()}/>
         <div className='sidebar__element'></div>
       </div>
     );
