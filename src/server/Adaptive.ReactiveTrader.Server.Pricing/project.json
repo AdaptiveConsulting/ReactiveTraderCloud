@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "Pricing Service",
   "authors": [ "Adaptive Financial Consulting Ltd." ],
@@ -15,10 +15,10 @@
   "dependencies": {
     "Microsoft.NETCore.App": {
       "type": "platform",
-      "version": "1.0.0-rc2-3002702"
+      "version": "1.0.0"
     },
-    "Newtonsoft.Json": "8.0.4-beta1",
-    "Adaptive.ReactiveTrader.Server.Host": "1.0.0-*"
+    "Adaptive.ReactiveTrader.Server.Host": "1.0.0-*",
+    "Newtonsoft.Json": "9.0.1"
   },
 
   "frameworks": {
