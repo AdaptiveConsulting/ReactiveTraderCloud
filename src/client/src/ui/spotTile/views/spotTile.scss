@@ -5,11 +5,12 @@ $price-width: calc(43% + 10px);
   position: relative;
   width: 100%;
   height: 155px;
-  color: $spot-tile-secondary-color;
-  background-color: #293543;
-  border: 1px solid #414444;
+  color: #c2c5c9;
+  background-color: #262a33;
+  border: solid 1px #424545;
   &:hover {
-    background-color: #294464;
+    background-color: rgba(0, 167, 204, 0.16);
+    border: 1px solid $primary-color;
     .spot-tile__icon--chart,
     .spot-tile__icon--tearoff,
     .spot-tile__delivery-date {
@@ -80,8 +81,10 @@ $price-width: calc(43% + 10px);
 }
 
 .spot-tile__symbol {
-  font-size: 16px;
-  color: $spot-tile-primary-color;
+  color: white;
+  font-family: BrandonRegular;
+  font-weight: 700;
+  font-size: 18px;
   position: absolute;
   top: 0;
   left: 0;
@@ -94,16 +97,24 @@ $price-width: calc(43% + 10px);
   top: 30px;
 
   &:hover {
-    background-color: #345c8b;
+    background-color: $primary-color;
+    color: white;
+
+    .price-button__pip {
+      color: inherit;
+    }
   }
 }
 
 .spot-tile__price--bid {
   left: -10px;
+  margin-left: 5px;
 }
 
 .spot-tile__price--ask {
   right: -10px;
+  margin-right: 5px;
+  margin-left: 10px;
 }
 
 .spot-tile__price-movement {
@@ -120,6 +131,8 @@ $price-width: calc(43% + 10px);
   left: 0;
   box-sizing: border-box;
   width: 100%;
+  font-size: 14px;
+  font-family: BrandonRegular;
 }
 
 .spot-tile__controls {
@@ -173,6 +186,9 @@ $price-width: calc(43% + 10px);
   position: absolute;
   bottom: 0;
   right: 0;
+  font-size: 14px;
+  font-family: BrandonRegular;
+  text-transform: uppercase;
 }
 
 #popout-content-container {

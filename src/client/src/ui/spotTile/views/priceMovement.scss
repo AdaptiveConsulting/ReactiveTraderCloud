@@ -17,18 +17,23 @@
 .price-movement__value {
   top: 17px;
   color: $spot-tile-primary-color;
+  font-size: 14px;
 }
 
 .price-movement__icon--inactive{
-  display: none;
+  display: inherit;
+  color: rgba(255, 255, 255, .1) !important;
 }
 
 .price-movement__icon--up {
-  top: 0;
-  color: #3fd01e;
+  color: #81d31c;
+  font-size: 12px;
+  top: 7px;
 }
 
 .price-movement__icon--down {
-  color: #cd3350;
-  bottom: 0;
+  color: #d90a0a;
+  font-size: 12px;
+  bottom: 7px;
 }
+
