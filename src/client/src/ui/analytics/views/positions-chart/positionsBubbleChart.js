@@ -4,7 +4,10 @@ import d3 from 'd3';
 import d3tip from 'd3-tip';
 import _ from 'lodash';
 import numeral from 'numeral';
+import { logger } from '../../../../system';
 import { createScales, getPositionsDataFromSeries, updateNodes, drawCircles, drawLabels } from './chartUtil';
+
+const _log:logger.Logger = logger.create('PositionsBubbleChart');
 
 export default class PositionsBubbleChart extends React.Component{
 
@@ -31,6 +34,7 @@ export default class PositionsBubbleChart extends React.Component{
       prevPositionsData: {}
     };
   }
+
 
 
   _shouldRedrawChart(){
@@ -66,9 +70,7 @@ export default class PositionsBubbleChart extends React.Component{
 
   _updateNodes(){
     let nodes = this.state.nodes;
-
     let colours = ['#6db910', 'gray', '#d90a0a'];
-
     let positionsData = getPositionsDataFromSeries(this.props);
 
     for (let i = 0; i <positionsData.length; i++) {
@@ -85,28 +87,29 @@ export default class PositionsBubbleChart extends React.Component{
       }else{
         nodes.push({
           id: dataObj.symbol,
-          r: colorIndex === 1 ? 20 : this._getRadius(dataObj, this.scales),
+          r: this._getRadius(dataObj, this.scales),
           cx: this.scales.x(i),
           color: color
         });
       }
     };
 
-    this.setState({nodes: nodes, prevPositionsData: positionsData});
-    return this.state.nodes;
+    let updatedNodes = _.filter(this.state.nodes, (node) => _.findIndex(positionsData, (pos) => pos.symbol === node.id) !== -1);
+    this.setState({nodes: updatedNodes, prevPositionsData: positionsData});
   }
 
   redrawChart(){
     let dom = ReactDOM.findDOMNode(this);
     let svg = d3.select(dom).select('svg');
-    svg.remove();
-    this.createChartForce();
+    svg.remove(); //clear all child nodes
     this.setState({updateRequired: true});
+    this.createChartForce();
+
   }
 
 
   createChartForce(){
-    this.setState({nodes: []});
+    //this.setState({nodes: []});
     let dom = ReactDOM.findDOMNode(this);
     this.scales = createScales(this.props);
 
@@ -154,9 +157,9 @@ export default class PositionsBubbleChart extends React.Component{
     }
     return '';
   }
-  
+
   _update(nodes){
-    if (!nodes) return;
+    if (!nodes || !this.force) return;
     if (!this.state.updateRequired) return;
     this.setState({updateRequired: false});
 
@@ -206,23 +209,15 @@ export default class PositionsBubbleChart extends React.Component{
   };
 
   componentWillReceiveProps(nextProps){
-    if (this.state.nodes){
-
       if (this._shouldRedrawChart()){
         this.redrawChart();
       }
       this._isUpdateRequired();
-    }
   }
 
 
   componentDidUpdate(){
-    console.log(' COMPONENT DID UPDATE');
-    if ( !this.state.nodes || !this.force) return;
-
-    if (this.state.nodes){
-      this._update(this.state.nodes);
-    }
+    this._update(this.state.nodes);
   }
 
   render(){
