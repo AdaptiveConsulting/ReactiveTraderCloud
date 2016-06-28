@@ -39,19 +39,21 @@ export default class FooterView extends ViewBase {
         'footer__logo-openfin--hidden': !model.isRunningInOpenFin
       }
     );
-
+    let footerClasses = classnames('footer', {
+      'footer--disconnected': !model.isConnectedToBroker
+    });
     return (
-        <footer className='footer'>
+        <footer className={footerClasses}>
           <span className='footer__connection-url'>{model.isConnectedToBroker ? `Connected to ${model.connectionUrl} (${model.connectionType})` : 'Disconnected'} </span>
           <span className='footer__logo-container '>
             <span className='footer__logo footer__logo-adaptive' onClick={() => model.openLink(ExternalURL.adaptiveURL)}></span>
             <span className={openfinLogoClassName} onClick={() => model.openLink(ExternalURL.openfinURL)}></span>
           </span>
-
           <i onMouseEnter={(e) => this._toggleServiceStatus()}
             onMouseLeave={(e) => this._toggleServiceStatus()}
             className={'footer__general-status-icon fa fa-circle ' + applicationStatusCssLookup[model.applicationStatus]} >
          </i>
+          {model.applicationStatus === ApplicationStatusConst.Healthy ? <i className='footer__general-status-icon--tick fa fa-check'></i> : null}
           <div className={panelClasses}>
             <ul className='footer__services'>
               {this._renderServices(model)}
