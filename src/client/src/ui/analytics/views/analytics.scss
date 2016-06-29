@@ -238,20 +238,25 @@ $default-padding: 10px;
 
 .analytics__bubblechart-container{
   text-anchor: middle;
+  height: 300px;
+}
+
+.analytics__chart-title{
   color: white;
+  color: $analytics-header-colour;
+  font-family: BrandonMedium;
+  font-size: 18px;
 }
 
 .analytics__bubblechart-title {
   position: absolute;
 }
 
-.analytics__chart-title{
+.analytics__bubblechart-container{
   display: block;
   position: relative;
   padding-bottom: 2px;
-  color: $analytics-header-colour;
-  font-family: BrandonMedium;
-  font-size: 18px;
+
 }
 
 .analytics__positions-label{

@@ -23,8 +23,8 @@ export function getPositionsDataFromSeries(props):Array<{symbol:string, baseAmou
 
 export function createScales(props){
   let ratio = 12.5;
-  let width = props.width;
-  let height = props.height;
+  let width = props.containerWidth;
+  let height = props.containerHeight;
   let numNodes = props.numNodes;
   let minR = 15;
   let maxR = 60;

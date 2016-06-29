@@ -47,7 +47,6 @@ export default class AnalyticsView extends ViewBase {
 
   render() {
     let model:AnalyticsModel = this.state.model;
-    let positionsCharData = model.positionsChartModel.seriesData;
 
     if (!model) {
       return null;
@@ -115,7 +114,10 @@ export default class AnalyticsView extends ViewBase {
     return (
       <div>
         <div className='analytics__header'>
-          <span className='analytics__header-title'><i className='analytics__header-title-icon glyphicon glyphicon-stats'></i>Profit & Loss</span>
+          <span className='analytics__header-title'>
+            <i className='analytics__header-title-icon glyphicon glyphicon-stats'></i>
+            Profit & Loss
+          </span>
           <span className={analyticsHeaderClassName}>USD {formattedLastPos}</span>
         </div>
         <div className='analytics__chart-container'>
@@ -130,8 +132,8 @@ export default class AnalyticsView extends ViewBase {
     let positionsCharData = model.positionsChartModel.seriesData;
 
     return (
-        <div className='analytics__chart-title'>
-          <span className='analytics__bubblechart-title'>Positions</span>
+        <div className='analytics__bubblechart-container'>
+          <span className='analytics__chart-title analytics__bubblechart-title'>Positions</span>
           <PositionsBubbleChart data={positionsCharData}/>
         </div>
       );

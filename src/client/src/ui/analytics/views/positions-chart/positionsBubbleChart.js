@@ -4,28 +4,24 @@ import d3 from 'd3';
 import d3tip from 'd3-tip';
 import _ from 'lodash';
 import numeral from 'numeral';
+import Dimensions from 'react-dimensions';
 import { logger } from '../../../../system';
 import { createScales, getPositionsDataFromSeries, updateNodes, drawCircles, drawLabels } from './chartUtil';
 
 const _log:logger.Logger = logger.create('PositionsBubbleChart');
 
+@Dimensions()
 export default class PositionsBubbleChart extends React.Component{
 
   static propTypes = {
-    width: React.PropTypes.number,
-    height: React.PropTypes.number,
-    numNodes: React.PropTypes.number,
-    data: React.PropTypes.array
+    data: React.PropTypes.array,
+    containerWidth: React.PropTypes.number,
+    containerHeight: React.PropTypes.number
   };
 
   static defaultProps = {
-    width: 350,
-    height: 300,
-    title: '',
-    numNodes: 9,
     data: []
   };
-
 
   constructor(props){
     super(props);
@@ -61,31 +57,30 @@ export default class PositionsBubbleChart extends React.Component{
     if (modifiedData.length > 0 || stalePositions.length > 0){
       this.setState({prevPositionsData: positionsData, updateRequired: true});
       this.scales = createScales(nextProps);
-      
+
       if (this.state.nodes.length === 0){
         this._updateNodes();//(nextProps);
       }else{
         this._updateNodes(nextProps);
       }
     }
-    return modifiedData.length > 0;
-  }
 
+    return modifiedData.length > 0 || stalePositions.length > 0;
+  }
 
   _updateNodes(nextProps = this.props){
     let nodes = this.state.nodes;
-    let colours = ['#6db910', 'gray', '#d90a0a'];
+    let colours = ['#6db910', '#d90a0a'];
     let positionsData = getPositionsDataFromSeries(nextProps);
 
     for (let i = 0; i <positionsData.length; i++) {
       let dataObj = positionsData[i];
-      let colorIndex = dataObj.baseTradedAmount > 0 ? 0 : dataObj.baseTradedAmount < 0 ? 2 : 1;
-      let color =  dataObj.baseTradedAmount > 0 ? colours[0] : dataObj.baseTradedAmount < 0 ? colours[2] : colours[1];
+      let color =  dataObj.baseTradedAmount > 0 ? colours[0] : colours[1];
 
       //update an existing node:
       let existingNode = _.find(nodes, (node) => node.id === dataObj.symbol);
       if (existingNode){
-        existingNode.r = colorIndex === 1 ? 20 : this._getRadius(dataObj, this.scales);
+        existingNode.r = this._getRadius(dataObj, this.scales);
         existingNode.cx = this.scales.x(i);
         existingNode.color = color;
       }else{
@@ -112,7 +107,6 @@ export default class PositionsBubbleChart extends React.Component{
 
 
   createChartForce(nextProps = this.props){
-    //this.setState({nodes: []});
     let dom = ReactDOM.findDOMNode(this);
     this.scales = createScales(nextProps);
 
@@ -128,8 +122,8 @@ export default class PositionsBubbleChart extends React.Component{
 
     let svg = d3.select(dom).append('svg')
       .attr({
-        width: this.props.width,
-        height: this.props.height
+        width: this.props.containerWidth,
+        height: this.props.containerHeight
       });
 
 
@@ -143,7 +137,7 @@ export default class PositionsBubbleChart extends React.Component{
     this.force = d3.layout.force()
         .nodes(this.state.nodes)
         .links([])
-        .size([this.props.width, this.props.height])
+        .size([this.props.containerWidth, this.props.containerHeight])
         .charge(function(d) {
           return -1 ;
         })
@@ -201,14 +195,12 @@ export default class PositionsBubbleChart extends React.Component{
     nodeGroup.exit().remove();
   };
 
-
   _getRadius(dataObj, scales){
     return scales.r(Math.abs(dataObj.baseTradedAmount));
   }
 
-
   componentDidMount() {
-    setTimeout(this.redrawChart.bind(this), 1000);
+    this.redrawChart();
   };
 
   componentWillReceiveProps(nextProps){
@@ -217,7 +209,6 @@ export default class PositionsBubbleChart extends React.Component{
       }
       this._isUpdateRequired(nextProps);
   }
-
 
   componentDidUpdate(){
     this._update(this.state.nodes);
