@@ -66,6 +66,12 @@ export default class BlotterView extends ViewBase {
   _createGridColumns():Array<Column> {
     return [
       <Column
+        key='Id'
+        header={<Cell>Id</Cell>}
+        cell={props => <Cell>{this.state.model.trades[props.rowIndex].tradeId}</Cell>}
+        flexGrow={1}
+        width={50}/>,
+      <Column
         key='Date'
         header={<Cell>Date</Cell>}
         cell={props => <DateCell width={props.width} dateValue={this.state.model.trades[props.rowIndex].tradeDate} />}
@@ -73,13 +79,13 @@ export default class BlotterView extends ViewBase {
         width={150}/>,
       <Column
         key='Dir'
-        header={<Cell>Dir</Cell>}
+        header={<Cell>Direction</Cell>}
         cell={props => <Cell className='blotter__trade-field--emphasized'>{this.state.model.trades[props.rowIndex].direction.name.toUpperCase()}</Cell>}
         flexGrow={1}
-        width={50}/>,
+        width={80}/>,
       <Column
         key='CCY'
-        header={<Cell>CCY</Cell>}
+        header={<Cell>CCYCCY</Cell>}
         cell={props => <Cell className='blotter__trade-field--emphasized'>{this.state.model.trades[props.rowIndex].currencyPair.symbol}</Cell>}
         flexGrow={1}
         width={70}/>,
@@ -120,12 +126,6 @@ export default class BlotterView extends ViewBase {
         key='Trader'
         header={<Cell>Trader</Cell>}
         cell={props => <Cell>{this.state.model.trades[props.rowIndex].traderName}</Cell>}
-        flexGrow={1}
-        width={80}/>,
-      <Column
-        key='Id'
-        header={<Cell>Trade #</Cell>}
-        cell={props => <Cell>{this.state.model.trades[props.rowIndex].tradeId}</Cell>}
         flexGrow={1}
         width={80}/>
     ];
