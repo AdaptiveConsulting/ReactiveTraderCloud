@@ -32,7 +32,7 @@ export default class PositionsBubbleChart extends React.Component{
   }
 
   _shouldRedrawChart(nextProps = this.props){
-    let positionsData = getPositionsDataFromSeries(nextProps);
+    let positionsData = getPositionsDataFromSeries(nextProps.data);
     let existingPositionsData = this.state.prevPositionsData;
     let nodesChanged = positionsData.length !== existingPositionsData.length;
 
@@ -41,9 +41,9 @@ export default class PositionsBubbleChart extends React.Component{
     }
     return nodesChanged;
   }
-
+  
   _isUpdateRequired(nextProps = this.props){
-    let positionsData = getPositionsDataFromSeries(nextProps);
+    let positionsData = getPositionsDataFromSeries(nextProps.data);
     let existingPositionsData = this.state.prevPositionsData;
 
     //positions data has changed on the existing nodes
@@ -59,19 +59,19 @@ export default class PositionsBubbleChart extends React.Component{
       this.scales = createScales(nextProps);
 
       if (this.state.nodes.length === 0){
-        this._updateNodes();//(nextProps);
+        this._updateNodes(this.props.data);
       }else{
-        this._updateNodes(nextProps);
+        this._updateNodes(nextProps.data);
       }
     }
 
     return modifiedData.length > 0 || stalePositions.length > 0;
   }
 
-  _updateNodes(nextProps = this.props){
+  _updateNodes(data){
     let nodes = this.state.nodes;
     let colours = ['#6db910', '#d90a0a'];
-    let positionsData = getPositionsDataFromSeries(nextProps);
+    let positionsData = getPositionsDataFromSeries(data);
 
     for (let i = 0; i <positionsData.length; i++) {
       let dataObj = positionsData[i];
