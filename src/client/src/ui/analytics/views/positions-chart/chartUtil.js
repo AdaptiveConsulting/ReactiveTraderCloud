@@ -2,9 +2,9 @@ import _ from 'lodash';
 import d3 from 'd3';
 import {  CurrencyPairPosition } from '../../../../services/model';
 
-export function getPositionsDataFromSeries(props):Array<{symbol:string, baseAmount:number}>{
+export function getPositionsDataFromSeries(series):Array<{symbol:string, baseAmount:number}>{
   let baseAmtPropName = CurrencyPairPosition.baseTradedAmountName;
-  let positionsPerCcyObj = props.data.reduce((aggregatedPositionsObj, ccyPairPosition) => {
+  let positionsPerCcyObj = series.reduce((aggregatedPositionsObj, ccyPairPosition) => {
 
     //aggregate amount per ccy;
     let baseCurrency = ccyPairPosition.currencyPair.base;
@@ -25,13 +25,12 @@ export function createScales(props){
   let ratio = 12.5;
   let width = props.containerWidth;
   let height = props.containerHeight;
-  let numNodes = props.numNodes;
   let minR = 15;
   let maxR = 60;
   let offset = maxR / 2;
   let horK = 1;
 
-  let positionData = getPositionsDataFromSeries(props);
+  let positionData = getPositionsDataFromSeries(props.data);
 
   let baseVals = _.map(positionData, (val) => {
     return Math.abs(val[CurrencyPairPosition.baseTradedAmountName]);
@@ -42,7 +41,7 @@ export function createScales(props){
 
   let scales = {
     x: d3.scale.linear()
-      .domain([0, numNodes])
+      .domain([0, props.data.length])
       .range([((width/ratio - 20))*-1, (width-offset)/ratio]),
     colorX: d3.scale.linear()
       .domain([0, 3])
@@ -51,7 +50,7 @@ export function createScales(props){
       .domain([0, 3])
       .range([height/(ratio * horK*2)*-1, height/(ratio * horK)]),
     y: d3.scale.linear()
-      .domain([0, numNodes])
+      .domain([0, props.data.length])
       .range([(height/(ratio * horK*2) )*-1, height/(ratio * horK) ]),
     r: d3.scale.sqrt()
       .domain([minVal, maxVal])
