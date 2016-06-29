@@ -3,7 +3,7 @@ import { Router,  observeEvent } from 'esp-js/src';
 import { SidebarView } from '../views';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
-import { RegionSettings, Theme } from '../../../services/model';
+import { RegionSettings } from '../../../services/model';
 import { WellKnownModelIds } from '../../../';
 
 const _log:logger.Logger = logger.create('SidebarModel');

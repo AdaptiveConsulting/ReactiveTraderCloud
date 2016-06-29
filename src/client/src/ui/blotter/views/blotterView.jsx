@@ -10,9 +10,7 @@ import { BlotterModel } from '../model';
 import 'fixed-data-table/dist/fixed-data-table.css';
 import './blotter.scss';
 
-@Dimensions({
-  elementResize: true
-})
+@Dimensions()
 export default class BlotterView extends ViewBase {
 
   constructor(props, context) {
