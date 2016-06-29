@@ -151,6 +151,11 @@ $default-padding: 10px;
 
     .analytics__barchart-label-amount{
       color: #00a8cc;
+      display: none;
+    }
+    .analytics__barchart-label-amount--hover{
+      display: inline;
+      color: #00a8cc;
     }
   }
 }
@@ -210,6 +215,10 @@ $default-padding: 10px;
 
 .analytics__barchart-label-amount{
   color: #aaa;
+}
+
+.analytics__barchart-label-amount--hover{
+  display: none;
 }
 
 .analytics__barchart-label-pusher{

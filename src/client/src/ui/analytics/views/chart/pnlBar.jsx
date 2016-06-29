@@ -54,6 +54,7 @@ export default class PNLBar extends React.Component{
 
   _getRenderedLabel(){
     let amount = numeral(this.props.model.basePnl).format('0a').toUpperCase();
+    let amountHover = numeral(this.props.model.basePnl).format('0,0');
     let labelText = `(${amount}) ${this.props.model.symbol}`;
 
     let approxLabelWidth = labelText.length * 8;
@@ -65,6 +66,7 @@ export default class PNLBar extends React.Component{
       <span ref='lbl' className='analytics__barchart-label' style={posStyle}>
         <span className='analytics__barchart-label-amount'>({amount}) </span>
         <span>{this.props.model.symbol}</span>
+        <span className='analytics__barchart-label-amount--hover'> {amountHover}</span>
       </span>
     );
   }

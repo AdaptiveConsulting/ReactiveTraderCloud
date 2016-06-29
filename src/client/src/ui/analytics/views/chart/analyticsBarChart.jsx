@@ -24,9 +24,8 @@ export default class AnalyticsBarChart extends React.Component{
     let baseVals = _.map(chartData, propName);
     let maxVal = _.max(baseVals);
     let minVal = _.min(baseVals);
-    
-    let maxWidth =  Math.max(Math.abs(maxVal), Math.abs(minVal));
 
+    let maxWidth =  Math.max(Math.abs(maxVal), Math.abs(minVal));
     let bars = chartData.map((ccyPairPosition, index) => {
       return (
         <PNLBar key={index}
@@ -38,22 +37,4 @@ export default class AnalyticsBarChart extends React.Component{
     });
     return bars;
   };
-
-
-  _getPositionsDataFromSeries(baseAmtPropName):Array<{symbol:string, baseAmount:number}>{
-    let positionsPerCcyObj = this.props.series.reduce((aggregatedPositionsObj, ccyPairPosition) => {
-
-      //aggregate amount per ccy;
-      let baseCurrency = ccyPairPosition.currencyPair.base;
-      aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
-        ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmtPropName] : ccyPairPosition[baseAmtPropName];
-
-      return aggregatedPositionsObj;
-    }, {});
-
-    //map the object to the array of ccy-amount pairs and exclude 0 base amount
-    return _.map(positionsPerCcyObj, (val, key) => {
-      return {symbol: key, [baseAmtPropName]: val};
-    }).filter((positionPerCcy, index) => positionPerCcy[baseAmtPropName] !== 0);
-  }
 }
