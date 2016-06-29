@@ -1,10 +1,12 @@
 @import "variables.scss";
-$price-width: calc(43% + 10px);
+$price-movement-width: 7.5%;
+$price-width: calc(50% - #{$price-movement-width} / 2);
+
 
 .spot-tile {
   position: relative;
   width: 100%;
-  height: 155px;
+  height: 165px;
   color: #c2c5c9;
   background-color: #262a33;
   border: solid 1px #424545;
@@ -56,9 +58,9 @@ $price-width: calc(43% + 10px);
 .spot-tile__container {
   position: absolute;
   top: 10px;
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
 }
 
 .spot-tile__symbol {
@@ -75,7 +77,7 @@ $price-width: calc(43% + 10px);
   cursor: pointer;
   position: absolute;
   width: $price-width;
-  top: 30px;
+  top: 35px;
 
   &:hover {
     background-color: $primary-color;
@@ -89,19 +91,19 @@ $price-width: calc(43% + 10px);
 
 .spot-tile__price--bid {
   left: -10px;
-  margin-left: 5px;
+  margin-left: 1px;
 }
 
 .spot-tile__price--ask {
   right: -10px;
-  margin-right: 5px;
+  margin-right: 1px;
 }
 
 .spot-tile__price-movement {
   position: absolute;
   left: 45%;
   text-align: center;
-  top: 45px;
+  top: 41px;
   width: 10%;
 }
 
