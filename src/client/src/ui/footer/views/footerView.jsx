@@ -2,9 +2,11 @@ import React from 'react';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
 import { FooterModel, ExternalURL } from '../model';
-import {  ServiceStatusLookup, ApplicationStatusConst } from '../../../services/model';
+import {  ServiceStatusLookup } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';
 import classnames from 'classnames';
+import StatusIndicator from './statusIndicator.jsx';
+
 import './footer.scss';
 
 export default class FooterView extends ViewBase {
@@ -20,12 +22,6 @@ export default class FooterView extends ViewBase {
     if (!model) {
       return null;
     }
-    let applicationStatusCssLookup = {
-      [ApplicationStatusConst.Healthy]: 'footer__general-status-icon--healthy',
-      [ApplicationStatusConst.Warning]: 'footer__general-status-icon--warning',
-      [ApplicationStatusConst.Down]:    'footer__general-status-icon--down',
-      [ApplicationStatusConst.Unknown]: ''
-    };
     let panelClasses = classnames(
       'footer__service-status-panel',
       {
@@ -49,11 +45,11 @@ export default class FooterView extends ViewBase {
             <span className='footer__logo footer__logo-adaptive' onClick={() => model.openLink(ExternalURL.adaptiveURL)}></span>
             <span className={openfinLogoClassName} onClick={() => model.openLink(ExternalURL.openfinURL)}></span>
           </span>
-          <i onMouseEnter={(e) => this._toggleServiceStatus()}
-            onMouseLeave={(e) => this._toggleServiceStatus()}
-            className={'footer__general-status-icon fa fa-circle ' + applicationStatusCssLookup[model.applicationStatus]} >
-         </i>
-          {model.applicationStatus === ApplicationStatusConst.Healthy ? <i className='footer__general-status-icon--tick fa fa-check'></i> : null}
+          <div className='footer__status-indicator-wrapper'
+            onMouseEnter={(e) => this._toggleServiceStatus()}
+            onMouseLeave={(e) => this._toggleServiceStatus()}>
+            <StatusIndicator className='footer__status-indicator' status={model.applicationStatus} />
+         </div>
           <div className={panelClasses}>
             <ul className='footer__services'>
               {this._renderServices(model)}

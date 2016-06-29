@@ -42,15 +42,15 @@ export default class TradeNotification extends React.Component {
 
 
           <div className='trade-notification__details-items'>
-            <div className='trade-notification__details-item'>
+            <div className='trade-notification__details-item trade-notification__details-item--rate'>
               <span className='trade-notification__label'>Rate</span><br />
               <span className='trade-notification__value'>{tradeExecutionNotification.spotRate}</span>
             </div>
-            <div className='trade-notification__details-item'>
+            <div className='trade-notification__details-item trade-notification__details-item--date'>
               <span className='trade-notification__label'>Date</span><br />
               <span className='trade-notification__value'>{tradeExecutionNotification.formattedValueDate}</span>
             </div>
-            <div className='trade-notification__details-item'>
+            <div className='trade-notification__details-item trade-notification__details-item--trade-id'>
               <span className='trade-notification__label'>Trade ID </span><br />
               <span className='trade-notification__value'>{tradeExecutionNotification.tradeId}</span>
             </div>

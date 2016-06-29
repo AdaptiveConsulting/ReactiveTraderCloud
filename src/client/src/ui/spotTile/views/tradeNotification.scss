@@ -46,8 +46,8 @@
 .trade-notification__button--dismiss {
   text-decoration: none;
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  bottom: -5px;
+  right: 0;
   color: inherit;
 }
 
@@ -67,11 +67,20 @@
 .trade-notification__details-items {
   display: flex;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  margin-top: 10px;
   padding-top: 10px;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
 }
 
-.trade-notification__details-item {
+.trade-notification__details-item--rate {
+  flex: 0.8;
+}
+
+.trade-notification__details-item--date {
   flex: 1;
 }
 
+.trade-notification__details-item--trade-id {
+  flex: 0.9
+}
