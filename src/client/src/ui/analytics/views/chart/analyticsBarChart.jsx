@@ -13,7 +13,7 @@ export default class AnalyticsBarChart extends React.Component{
   render(){
     let bars = this._createBars();
     return (
-      <div style={{width: '100%'}}>{bars}</div>
+      <div>{bars}</div>
     );
   }
 
