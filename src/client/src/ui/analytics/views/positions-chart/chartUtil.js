@@ -28,7 +28,6 @@ export function createScales(props){
   let minR = 15;
   let maxR = 60;
   let offset = maxR / 2;
-  let horK = 1;
 
   let positionData = getPositionsDataFromSeries(props.data);
 
@@ -39,19 +38,15 @@ export function createScales(props){
   let maxVal = _.max(baseVals);
   let minVal = _.min(baseVals);
 
+  if (minVal === maxVal) minVal = 0;
+
   let scales = {
     x: d3.scale.linear()
       .domain([0, props.data.length])
-      .range([((width/ratio - 20))*-1, (width-offset)/ratio]),
-    colorX: d3.scale.linear()
-      .domain([0, 3])
-      .range([0, (width-offset)]),
-    colorY: d3.scale.linear()
-      .domain([0, 3])
-      .range([height/(ratio * horK*2)*-1, height/(ratio * horK)]),
+      .range([(-(width/ratio)), (width/ratio)-offset]),
     y: d3.scale.linear()
       .domain([0, props.data.length])
-      .range([(height/(ratio * horK*2) )*-1, height/(ratio * horK) ]),
+      .range([-(height/(ratio) ), height/ratio ]),
     r: d3.scale.sqrt()
       .domain([minVal, maxVal])
       .range([minR, maxR])

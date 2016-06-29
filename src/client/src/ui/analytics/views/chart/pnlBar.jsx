@@ -67,11 +67,11 @@ export default class PNLBar extends React.Component{
     let offset = this._calculateOffset() || -(approxLabelWidth/2);
     let posStyle = {'left': offset};
 
-
     return (
       <span ref='lbl' className='analytics__barchart-label' style={posStyle}>
         <span className='analytics__barchart-label-amount'>({amount}) </span>
-        <span>{this.props.model.symbol}</span>
+        <span>{this.props.model.currencyPair.base}</span>
+        <span className='analytics__barchart-label-currency-terms'>{this.props.model.currencyPair.terms}</span>
         <span className='analytics__barchart-label-amount--hover'> {amountHover}</span>
       </span>
     );
