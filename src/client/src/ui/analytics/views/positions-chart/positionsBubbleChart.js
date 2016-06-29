@@ -46,7 +46,7 @@ export default class PositionsBubbleChart extends React.Component{
     }
     return nodesChanged;
   }
-  
+
   _isUpdateRequired(nextProps = this.props){
     let positionsData = getPositionsDataFromSeries(nextProps.data);
     let existingPositionsData = this.state.prevPositionsData;
@@ -106,6 +106,7 @@ export default class PositionsBubbleChart extends React.Component{
     let dom = ReactDOM.findDOMNode(this);
     let svg = d3.select(dom).select('svg');
     svg.remove(); //clear all child nodes
+    if (this.tooltipGroup) this.tooltipGroup.hide();
     this.setState({updateRequired: true});
     this.createChartForce(nextProps);
   }
@@ -117,9 +118,9 @@ export default class PositionsBubbleChart extends React.Component{
 
     const tick = (e)=> {
       let nodeGroup = svg.selectAll('g.node')
-        .on('mouseover', tooltipGroup.show )
-        .on('mousemove', tooltipGroup.show )
-        .on('mouseout',  tooltipGroup.hide );
+        .on('mouseover', this.tooltipGroup.show )
+        .on('mousemove', this.tooltipGroup.show )
+        .on('mouseout',  this.tooltipGroup.hide );
 
       updateNodes(nodeGroup, this.state.nodes, this.scales);
     };
@@ -132,12 +133,12 @@ export default class PositionsBubbleChart extends React.Component{
       });
 
 
-    let tooltipGroup = d3tip().html((d)=>{
+    this.tooltipGroup = d3tip().html((d)=>{
       return `${d.id} ${this._getPositionValue(d.id)}` ;
     })
       .attr('class', 'analytics__positions-tooltip').direction('s').offset([-5, 0]);
 
-    svg.call(tooltipGroup);
+    svg.call(this.tooltipGroup);
 
     this.force = d3.layout.force()
         .nodes(this.state.nodes)

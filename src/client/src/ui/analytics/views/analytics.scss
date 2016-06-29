@@ -8,6 +8,8 @@ $stroke-color:      #212a35;
 $gray:              #294464;
 $bar-height:        4px;
 $transition-duration: .4s;
+$pointer-color:     #00d2ff;
+$slider-lbl-color:  #00a8cc;
 
 $analytics-header-colour: #ffffff;
 $default-padding: 10px;
@@ -26,7 +28,6 @@ $default-padding: 10px;
     height: 100%;
   }
 }
-
 
 .analytics__controls {
   float: right;
@@ -51,8 +52,6 @@ $default-padding: 10px;
 .analytics__header-title-icon {
   margin-right: 17px;
 }
-
-
 
 .analytics__chart-container {
   position: relative;
@@ -139,7 +138,7 @@ $default-padding: 10px;
   color: white;
 
   &:hover{
-    color: #00a8cc;
+    color: $slider-lbl-color;
 
     .analytics__barchart-pointer-container{
       transform: scale(1.5);
@@ -150,12 +149,16 @@ $default-padding: 10px;
     }
 
     .analytics__barchart-label-amount{
-      color: #00a8cc;
+      color: $slider-lbl-color;
       display: none;
     }
     .analytics__barchart-label-amount--hover{
       display: inline;
-      color: #00a8cc;
+      color: $slider-lbl-color;
+    }
+
+    .analytics__barchart-label-currency-terms{
+      display: none;
     }
   }
 }
@@ -166,8 +169,6 @@ $default-padding: 10px;
   transition: left linear $transition-duration;
   z-index: 99;
 }
-
-
 
 .analytics__barchart-pointer{
   width: 0;
@@ -182,17 +183,15 @@ $default-padding: 10px;
   margin-top: 2px;
 }
 
-
 .analytics__barchart-pointer-icon{
   color: #46477a;
   text-shadow:
-  0px 0px 0 #00d2ff,
-  -1px -1px 0 #00d2ff,
-  1px -1px 0 #00d2ff,
-  -1px 1px 0 #00d2ff,
-  1px 1px 0 #00d2ff;
+  0px 0px 0 $pointer-color,
+  -1px -1px 0 $pointer-color,
+  1px -1px 0 $pointer-color,
+  -1px 1px 0 $pointer-color,
+  1px 1px 0 $pointer-color;
   rotation: 90deg;
-
 }
 
 .analytics__barchart-pointer--outline {
@@ -202,7 +201,7 @@ $default-padding: 10px;
   z-index: 99;
   left: -10px;
   border-width: 14px 9px 0 9px;
-  border-color: #00d2ff transparent transparent transparent;
+  border-color: $pointer-color transparent transparent transparent;
   border-style: inset;
   -webkit-transform: rotate(360deg);
 }
@@ -293,32 +292,6 @@ $default-padding: 10px;
   border:1px solid black;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
   pointer-events: none;
-}
-
-.analytics__buttons{
-  width: 100%;
-  text-align: center;
-}
-
-.analytics__buttons-bar {
-  display: inline-block;
-  border: 1px solid black;
-}
-
-.analytics__buttons-tab-btn {
-  color: $barchart-text-color;
-  font-size: 16px;
-  position: relative;
-  padding: 10px 10px 6px 10px;
-  background: inherit;
-  &:hover{
-    background: #294464;
-  }
-}
-
-.analytics__buttons-tab-btn--selected{
-  color: $highlight-color;
-  background: $stroke-color;
 }
 
 .new-chart-area{
