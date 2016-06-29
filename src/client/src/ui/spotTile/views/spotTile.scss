@@ -28,6 +28,7 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
     display: none;
   }
 
+  &.spot-tile--stale,
   &.spot-tile--error {
     background-color: $spot-tile-error-color;
     color: $spot-tile-primary-color;
