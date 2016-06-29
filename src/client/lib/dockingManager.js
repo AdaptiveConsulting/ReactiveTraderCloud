@@ -368,7 +368,7 @@ var DockableWindow = (function(_super) {
 
     if(!this.isInView()) this.moveTo(0, 0, this.width, this.height);
 
-    if(group.children.length && !this.isGroupInView(group)){
+    if(group && group.children.length && !this.isGroupInView(group)){
 
       group.children[0].moveTo(0, 0);
     }
