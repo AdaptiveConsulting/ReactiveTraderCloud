@@ -1,4 +1,7 @@
 $footer-background-color: #00a8cc;
+$error-color: #d32121;
+$success-color: #7ed321;
+$warning-color: #f8ab02;
 
 .footer {
   height: 100%;
@@ -6,6 +9,10 @@ $footer-background-color: #00a8cc;
   background-color: $footer-background-color;
   color: white;
   position: relative;
+
+  &.footer--disconnected {
+    background-color: $error-color;
+  }
 }
 
 .footer__services {
@@ -21,6 +28,7 @@ $footer-background-color: #00a8cc;
   font-size: 14px;
 }
 
+.footer__general-status-icon--tick,
 .footer__general-status-icon {
   position: absolute;
   right: 7px;
@@ -31,6 +39,23 @@ $footer-background-color: #00a8cc;
   cursor: pointer;
 }
 
+.footer__general-status-icon {
+  font-size: 25px;
+  line-height: 19px;
+}
+
+.footer__general-status-icon--tick {
+  border: 2px solid #1d2027;
+  border-radius: 12px;
+  width: 20px;
+  height: 20px;
+  color: #1d2027;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  pointer-events: none;
+}
+
 .footer__icon--online,
 .footer__icon--offline {
   margin-right: 5px;
@@ -38,16 +63,16 @@ $footer-background-color: #00a8cc;
 
 .footer__icon--online,
 .footer__general-status-icon--healthy {
-  color: green;
+  color: $success-color;
 }
 
 .footer__general-status-icon--down,
 .footer__icon--offline {
-  color: red;
+  color: $error-color;
 }
 
 .footer__general-status-icon--warning {
-  color: orange;
+  color: $warning-color;
 }
 
 .footer__service-status-panel {
@@ -58,7 +83,6 @@ $footer-background-color: #00a8cc;
   width: 200px;
   background-color: $footer-background-color;
   z-index: 100;
-  border-bottom: 1px solid white;
 }
 
 .footer__connection-url {
