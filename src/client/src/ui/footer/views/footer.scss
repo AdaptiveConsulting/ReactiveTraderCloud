@@ -1,7 +1,5 @@
+@import "./variables";
 $footer-background-color: #00a8cc;
-$error-color: #d32121;
-$success-color: #7ed321;
-$warning-color: #f8ab02;
 
 .footer {
   height: 100%;
@@ -21,15 +19,11 @@ $warning-color: #f8ab02;
   padding: 10px;
 }
 
-.footer__service {
-}
-
 .footer__service-label {
   font-size: 14px;
 }
 
-.footer__general-status-icon--tick,
-.footer__general-status-icon {
+.footer__status-indicator-wrapper {
   position: absolute;
   right: 7px;
   height: 20px;
@@ -39,40 +33,17 @@ $warning-color: #f8ab02;
   cursor: pointer;
 }
 
-.footer__general-status-icon {
-  font-size: 25px;
-  line-height: 19px;
-}
-
-.footer__general-status-icon--tick {
-  border: 2px solid #1d2027;
-  border-radius: 12px;
-  width: 20px;
-  height: 20px;
-  color: #1d2027;
-  font-size: 14px;
-  line-height: 20px;
-  text-align: center;
-  pointer-events: none;
-}
-
 .footer__icon--online,
 .footer__icon--offline {
   margin-right: 5px;
 }
 
-.footer__icon--online,
-.footer__general-status-icon--healthy {
+.footer__icon--online {
   color: $success-color;
 }
 
-.footer__general-status-icon--down,
 .footer__icon--offline {
   color: $error-color;
-}
-
-.footer__general-status-icon--warning {
-  color: $warning-color;
 }
 
 .footer__service-status-panel {
@@ -112,14 +83,14 @@ $warning-color: #f8ab02;
   cursor: pointer;
 }
 
-.footer__logo-openfin{
+.footer__logo-openfin {
   background: url('../../common/images/openfin-logo.png') no-repeat;
   width: 84px;
   float: right;
   margin-top: 3px;
 }
 
-.footer__logo-openfin--hidden{
+.footer__logo-openfin--hidden {
   display: none;
 }
 
