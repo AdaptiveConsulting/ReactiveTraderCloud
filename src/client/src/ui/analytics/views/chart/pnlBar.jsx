@@ -15,10 +15,16 @@ export default class PNLBar extends React.Component{
 
   };
 
+  componentDidMount(){
+    this._refreshState();
+  }
+
+  _refreshState(){
+    this.setState({updateRequired: true});
+  }
+
   _calculateOffset(){
-
     if (!this.refs.barChartContainer || !this.refs.lbl) return 0;
-
     let containerBounds = this.refs.barChartContainer.getBoundingClientRect();
     let labelBounds = this.refs.lbl.getBoundingClientRect();
 
@@ -74,8 +80,9 @@ export default class PNLBar extends React.Component{
   render(){
     let label = this._getRenderedLabel();
     let xPosRelative = this._getRelativePointerPosition();
+    let xPosRelativePusher = this._getPusherRelativePosition();
     let pointerPosition = {'left': xPosRelative + '%'};
-    let pusherStyle = {'width': this._getPusherRelativePosition() + '%'};
+    let pusherStyle = {'width': xPosRelativePusher + '%'};
 
     return(
       <div ref='barChartContainer' className='analytics__barchart-container'>

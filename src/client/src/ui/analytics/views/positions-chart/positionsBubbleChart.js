@@ -32,6 +32,11 @@ export default class PositionsBubbleChart extends React.Component{
   }
 
   _shouldRedrawChart(nextProps = this.props){
+
+    if (this.state.nodes.length === 0 && nextProps.data.length > 0){
+      this._updateNodes(nextProps.data);
+    }
+
     let positionsData = getPositionsDataFromSeries(nextProps.data);
     let existingPositionsData = this.state.prevPositionsData;
     let nodesChanged = positionsData.length !== existingPositionsData.length;
@@ -94,7 +99,7 @@ export default class PositionsBubbleChart extends React.Component{
     };
 
     let updatedNodes = _.filter(this.state.nodes, (node) => _.findIndex(positionsData, (pos) => pos.symbol === node.id) !== -1);
-    this.setState({nodes: updatedNodes, prevPositionsData: positionsData});
+    this.setState({nodes: updatedNodes, prevPositionsData: positionsData, updateRequired: true});
   }
 
   redrawChart(nextProps = this.props){
