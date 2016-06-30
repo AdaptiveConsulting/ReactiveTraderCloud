@@ -47,7 +47,7 @@ export default class SpotTileView extends ViewBase {
     const className = classnames(
       'spot-tile',
       {
-        'spot-tile--stale': !model.pricingConnected && !(model.hasNotification && model.notification.notificationType === NotificationType.Trade),
+        'spot-tile--stale': (!model.pricingConnected || model.priceStale) && !(model.hasNotification && model.notification.notificationType === NotificationType.Trade),
         'spot-tile--readonly': !model.executionConnected,
         'spot-tile--executing': model.isTradeExecutionInFlight,
         'spot-tile--error': model.hasNotification && model.notification.error
