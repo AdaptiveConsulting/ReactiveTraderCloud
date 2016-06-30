@@ -42,9 +42,10 @@ export default class PositionsBubbleChart extends React.Component{
 
   componentWillReceiveProps(nextProps){
     if (this._shouldRedrawChart(nextProps)){
+      this.setState({updateRequired: true});
       this._redrawChart(nextProps);
     }
-    this._isUpdateRequired(nextProps);
+    this._isPropsDataModified(nextProps);
   }
 
   componentDidUpdate(){
@@ -61,18 +62,15 @@ export default class PositionsBubbleChart extends React.Component{
     let existingPositionsData = this.state.prevPositionsData;
     let nodesChanged = positionsData.length !== existingPositionsData.length;
 
-    if (nodesChanged){
-      this.setState({updateRequired: true});
-    }
     return nodesChanged;
   }
 
-  _isUpdateRequired(nextProps = this.props){
+  _isPropsDataModified(nextProps = this.props){
     let positionsData = getPositionsDataFromSeries(nextProps.data);
     let existingPositionsData = this.state.prevPositionsData;
 
     //positions data has changed on the existing nodes
-    let modifiedData = _.reduce(positionsData, function(result, value, key) {
+    let modifiedData = _.reduce(positionsData, (result, value, key) => {
       return _.isEqual(value, existingPositionsData[key]) ?
         result : result.concat(key);
     }, []);
@@ -98,25 +96,27 @@ export default class PositionsBubbleChart extends React.Component{
     let colours = ['#6db910', '#d90a0a'];
     let positionsData = getPositionsDataFromSeries(data);
 
-    for (let i = 0; i <positionsData.length; i++) {
-      let dataObj = positionsData[i];
+    nodes = _.map(positionsData, (dataObj, index) => {
       let color =  dataObj.baseTradedAmount > 0 ? colours[0] : colours[1];
 
       //update an existing node:
       let existingNode = _.find(nodes, (node) => node.id === dataObj.symbol);
       if (existingNode){
         existingNode.r = getRadius(dataObj, this.scales);
-        existingNode.cx = this.scales.x(i);
+        existingNode.cx = this.scales.x(index);
         existingNode.color = color;
+        return existingNode;
       }else{
-        nodes.push({
+        let newNode = {
           id: dataObj.symbol,
           r: getRadius(dataObj, this.scales),
-          cx: this.scales.x(i),
+          cx: this.scales.x(index),
           color: color
-        });
+        };
+        nodes.push(newNode);
+        return newNode;
       }
-    };
+    });
 
     let updatedNodes = _.filter(this.state.nodes, (node) => _.findIndex(positionsData, (pos) => pos.symbol === node.id) !== -1);
     this.setState({nodes: updatedNodes, prevPositionsData: positionsData, updateRequired: true});
@@ -135,7 +135,7 @@ export default class PositionsBubbleChart extends React.Component{
     let dom = ReactDOM.findDOMNode(this);
     this.scales = createScales(nextProps);
 
-    const tick = (e)=> {
+    const tick = (e) => {
       let nodeGroup = svg.selectAll('g.node')
         .on('mouseover', this.tooltipGroup.show )
         .on('mousemove', this.tooltipGroup.show )
@@ -161,7 +161,7 @@ export default class PositionsBubbleChart extends React.Component{
         .nodes(this.state.nodes)
         .links([])
         .size([this.props.containerWidth, this.props.containerHeight])
-        .charge(function(d) {
+        .charge((d) => {
           return -1 ;
         })
         .gravity(0.1)
@@ -179,7 +179,7 @@ export default class PositionsBubbleChart extends React.Component{
     let svg = d3.select(dom).select('svg');
 
     let nodeGroup = svg.selectAll('g.node')
-      .data(nodes, function(d, i) {
+      .data(nodes, (d, i) => {
         return d.id;
       });
 

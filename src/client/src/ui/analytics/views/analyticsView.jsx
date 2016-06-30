@@ -128,12 +128,12 @@ export default class AnalyticsView extends ViewBase {
 
   _createPositionsChart(){
     let model:AnalyticsModel = this.state.model;
-    let positionsCharData = model.positionsChartModel.seriesData;
+    let positionsChartData = model.positionsChartModel.seriesData;
 
     return (
         <div className='analytics__bubblechart-container'>
           <span className='analytics__chart-title analytics__bubblechart-title'>Positions</span>
-          <PositionsBubbleChart data={positionsCharData}/>
+          <PositionsBubbleChart data={positionsChartData}/>
         </div>
       );
   }
