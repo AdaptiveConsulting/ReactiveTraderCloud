@@ -74,6 +74,10 @@ const webpackConfig = {
       {
         from: './src/ui/common/images/icon.ico',
         to: 'images/icon.ico'
+      },
+      {
+        from: './src/ui/common/images/favicon.ico',
+        to: 'images/favicon.ico'
       }
     ]),
     new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js', function(module){
