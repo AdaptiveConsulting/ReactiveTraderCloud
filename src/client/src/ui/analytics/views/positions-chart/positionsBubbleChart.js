@@ -3,10 +3,15 @@ import ReactDOM from 'react-dom';
 import d3 from 'd3';
 import d3tip from 'd3-tip';
 import _ from 'lodash';
-import numeral from 'numeral';
 import Dimensions from 'react-dimensions';
 import { logger } from '../../../../system';
-import { createScales, getPositionsDataFromSeries, updateNodes, drawCircles, drawLabels } from './chartUtil';
+import {  createScales,
+          getPositionsDataFromSeries,
+          updateNodes,
+          drawCircles,
+          drawLabels,
+          getRadius,
+          getPositionValue} from './chartUtil';
 
 const _log:logger.Logger = logger.create('PositionsBubbleChart');
 
@@ -29,6 +34,21 @@ export default class PositionsBubbleChart extends React.Component{
       nodes: [],
       prevPositionsData: {}
     };
+  }
+
+  componentDidMount() {
+    this._redrawChart();
+  };
+
+  componentWillReceiveProps(nextProps){
+    if (this._shouldRedrawChart(nextProps)){
+      this._redrawChart(nextProps);
+    }
+    this._isUpdateRequired(nextProps);
+  }
+
+  componentDidUpdate(){
+    this._update(this.state.nodes);
   }
 
   _shouldRedrawChart(nextProps = this.props){
@@ -85,13 +105,13 @@ export default class PositionsBubbleChart extends React.Component{
       //update an existing node:
       let existingNode = _.find(nodes, (node) => node.id === dataObj.symbol);
       if (existingNode){
-        existingNode.r = this._getRadius(dataObj, this.scales);
+        existingNode.r = getRadius(dataObj, this.scales);
         existingNode.cx = this.scales.x(i);
         existingNode.color = color;
       }else{
         nodes.push({
           id: dataObj.symbol,
-          r: this._getRadius(dataObj, this.scales),
+          r: getRadius(dataObj, this.scales),
           cx: this.scales.x(i),
           color: color
         });
@@ -102,17 +122,16 @@ export default class PositionsBubbleChart extends React.Component{
     this.setState({nodes: updatedNodes, prevPositionsData: positionsData, updateRequired: true});
   }
 
-  redrawChart(nextProps = this.props){
+  _redrawChart(nextProps = this.props){
     let dom = ReactDOM.findDOMNode(this);
     let svg = d3.select(dom).select('svg');
     svg.remove(); //clear all child nodes
     if (this.tooltipGroup) this.tooltipGroup.hide();
     this.setState({updateRequired: true});
-    this.createChartForce(nextProps);
+    this._createChartForce(nextProps);
   }
 
-
-  createChartForce(nextProps = this.props){
+  _createChartForce(nextProps = this.props){
     let dom = ReactDOM.findDOMNode(this);
     this.scales = createScales(nextProps);
 
@@ -125,16 +144,14 @@ export default class PositionsBubbleChart extends React.Component{
       updateNodes(nodeGroup, this.state.nodes, this.scales);
     };
 
-
     let svg = d3.select(dom).append('svg')
       .attr({
         width: this.props.containerWidth,
         height: this.props.containerHeight
       });
 
-
     this.tooltipGroup = d3tip().html((d)=>{
-      return `${d.id} ${this._getPositionValue(d.id)}` ;
+      return `${d.id} ${getPositionValue(d.id, this.state.prevPositionsData)}` ;
     })
       .attr('class', 'analytics__positions-tooltip').direction('s').offset([-5, 0]);
 
@@ -153,14 +170,6 @@ export default class PositionsBubbleChart extends React.Component{
     this._update(this.state.nodes);
   }
 
-  _getPositionValue(id){
-    let index = _.findIndex(this.state.prevPositionsData, (pos) => pos.symbol === id);
-    if (index >= 0){
-      return numeral(this.state.prevPositionsData[index].baseTradedAmount).format('0,0');
-    }
-    return '';
-  }
-
   _update(nodes){
     if (!nodes || !this.force) return;
     if (!this.state.updateRequired) return;
@@ -173,7 +182,6 @@ export default class PositionsBubbleChart extends React.Component{
       .data(nodes, function(d, i) {
         return d.id;
       });
-
 
     nodeGroup.enter().append('g')
       .attr({
@@ -200,25 +208,6 @@ export default class PositionsBubbleChart extends React.Component{
     }
     nodeGroup.exit().remove();
   };
-
-  _getRadius(dataObj, scales){
-    return scales.r(Math.abs(dataObj.baseTradedAmount));
-  }
-
-  componentDidMount() {
-    this.redrawChart();
-  };
-
-  componentWillReceiveProps(nextProps){
-      if (this._shouldRedrawChart(nextProps)){
-        this.redrawChart(nextProps);
-      }
-      this._isUpdateRequired(nextProps);
-  }
-
-  componentDidUpdate(){
-    this._update(this.state.nodes);
-  }
 
   render(){
     return (

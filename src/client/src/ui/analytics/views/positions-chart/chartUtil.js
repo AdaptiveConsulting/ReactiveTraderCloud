@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import d3 from 'd3';
+import numeral from 'numeral';
 import {  CurrencyPairPosition } from '../../../../services/model';
 
 export function getPositionsDataFromSeries(series):Array<{symbol:string, baseAmount:number}>{
@@ -119,6 +120,17 @@ export function drawLabels(nodeGroup){
     });
 }
 
+export function getRadius(dataObj, scales){
+  return scales.r(Math.abs(dataObj.baseTradedAmount));
+}
+
+export function getPositionValue(id, positionsData){
+  let index = _.findIndex(positionsData, (pos) => pos.symbol === id);
+  if (index >= 0){
+    return numeral(positionsData[index].baseTradedAmount).format('0,0');
+  }
+  return '';
+}
 
 export function collide(alpha, nodes, scale) {
   let quadtree = d3.geom.quadtree(nodes);
@@ -133,7 +145,7 @@ export function collide(alpha, nodes, scale) {
     let ny2 = d.y + r;
 
     return quadtree.visit(function(quad, x1, y1, x2, y2) {
-      var l, x, y;
+      let l, x, y;
       if (quad.point && quad.point !== d) {
         x = d.x - quad.point.x;
         y = d.y - quad.point.y;
