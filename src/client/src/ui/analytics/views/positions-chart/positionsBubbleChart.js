@@ -79,7 +79,7 @@ export default class PositionsBubbleChart extends React.Component{
       this.setState({prevPositionsData: positionsData, updateRequired: true});
       this.scales = createScales(nextProps);
 
-      if (this.state.nodes.length === 0){
+      if (this.state.nodes.length === 0 && this.props.data > 0){
         this._updateNodes(this.props.data);
       }else{
         this._updateNodes(nextProps.data);
