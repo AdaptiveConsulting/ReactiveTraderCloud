@@ -111,12 +111,11 @@ export default class PositionsBubbleChart extends React.Component{
           cx: this.scales.x(index),
           color: color
         };
-        nodes.push(newNode);
         return newNode;
       }
     });
 
-    let updatedNodes = _.filter(this.state.nodes, (node) => _.findIndex(positionsData, (pos) => pos.symbol === node.id) !== -1);
+    let updatedNodes = _.filter(nodes, (node) => _.findIndex(positionsData, (pos) => pos.symbol === node.id) !== -1);
     this.setState({nodes: updatedNodes, prevPositionsData: positionsData, updateRequired: true});
   }
 
