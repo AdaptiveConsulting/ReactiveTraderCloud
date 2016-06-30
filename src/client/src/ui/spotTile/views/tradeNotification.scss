@@ -4,6 +4,7 @@
 .trade-notification--error {
   .trade-notification__trade-status {
     color: $spot-tile-error-color;
+    text-transform: uppercase;
   }
 }
 
