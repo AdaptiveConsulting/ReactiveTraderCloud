@@ -41,11 +41,12 @@ export default class PositionsBubbleChart extends React.Component{
   };
 
   componentWillReceiveProps(nextProps){
+    this._updateNodesFromPropsData(nextProps);
+
     if (this._shouldRedrawChart(nextProps)){
       this.setState({updateRequired: true});
       this._redrawChart(nextProps);
     }
-    this._isPropsDataModified(nextProps);
   }
 
   componentDidUpdate(){
@@ -53,19 +54,16 @@ export default class PositionsBubbleChart extends React.Component{
   }
 
   _shouldRedrawChart(nextProps = this.props){
-
-    if (this.state.nodes.length === 0 && nextProps.data.length > 0){
-      this._updateNodes(nextProps.data);
-    }
-
     let positionsData = getPositionsDataFromSeries(nextProps.data);
     let existingPositionsData = this.state.prevPositionsData;
     let nodesChanged = positionsData.length !== existingPositionsData.length;
-
     return nodesChanged;
   }
 
-  _isPropsDataModified(nextProps = this.props){
+  _updateNodesFromPropsData(nextProps = this.props){
+    if (this.state.nodes.length === 0 && nextProps.data.length > 0){
+      this._updateNodes(nextProps.data);
+    }
     let positionsData = getPositionsDataFromSeries(nextProps.data);
     let existingPositionsData = this.state.prevPositionsData;
 
