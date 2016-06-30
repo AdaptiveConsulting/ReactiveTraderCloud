@@ -24,7 +24,7 @@ export default class ShellView extends ViewBase {
       return null;
     }
 
-    let shellClasses = classnames('shell__container', 'themeA', { // TODO remove themeA when themes is retired
+    let shellClasses = classnames('shell__container', { 
       'shell__container--no-blotter': model.isBlotterOut,
       'shell__container--no-analytics': model.isAnalyticsOut,
       'shell__container--no-side-bar': model.isSidebarOut

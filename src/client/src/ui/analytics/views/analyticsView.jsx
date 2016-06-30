@@ -11,7 +11,6 @@ import numeral from 'numeral';
 import Dimensions from 'react-dimensions';
 import PositionsBubbleChart from './positions-chart/positionsBubbleChart';
 import './analytics.scss';
-import './themes/theme-a.scss';
 
 var _log:logger.Logger = logger.create('AnalyticsView');
 
