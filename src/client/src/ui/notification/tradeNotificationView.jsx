@@ -3,7 +3,8 @@ import './notification.scss';
 import classnames from 'classnames';
 import Direction from '../../services/model/direction';
 import TradeStatus from '../../services/model/tradeStatus';
-
+import '../common/styles/_base.scss';
+import '../common/styles/_fonts.scss';
 const DONE = 'Done';
 const REJECTED = 'Rejected';
 const BOUGHT = 'Bought';
@@ -49,7 +50,7 @@ export default class TradeNotificationView extends React.Component {
             </ul>
             <ul className='notification__details-items'>
               <li className='notification__details-item notification__details-item--label'>Date</li>
-              <li className='notification__details-item notification__details-item--value'>{trade.spotRate}</li>
+              <li className='notification__details-item notification__details-item--value'>{trade.valueDate}</li>
             </ul>
             <ul className='notification__details-items'>
               <li className='notification__details-item notification__details-item--label'>Trade Id</li>
