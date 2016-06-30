@@ -1,15 +1,18 @@
 @import "variables.scss";
-$price-width: calc(45% + 10px);
+$price-movement-width: 7.5%;
+$price-width: calc(50% - #{$price-movement-width} / 2);
+
 
 .spot-tile {
   position: relative;
   width: 100%;
-  height: 155px;
-  color: $spot-tile-secondary-color;
-  background-color: #293543;
-  border: 1px solid #414444;
+  height: 165px;
+  color: #c2c5c9;
+  background-color: #262a33;
+  border: solid 1px #424545;
   &:hover {
-    background-color: #294464;
+    background-color: rgba(0, 167, 204, 0.16);
+    border: 1px solid $primary-color;
     .spot-tile__icon--chart,
     .spot-tile__icon--tearoff,
     .spot-tile__delivery-date {
@@ -21,23 +24,11 @@ $price-width: calc(45% + 10px);
   }
 
   .spot-tile__execution-label,
-  .spot-tile__icon--disconnected,
-  .spot-tile__stale-label,
   .spot-tile__delivery-date {
     display: none;
   }
-  &.spot-tile--stale {
-    .spot-tile__stale-label,
-    .spot-tile__icon--disconnected {
-      display: inline-block;
-    }
-    .spot-tile__price--bid,
-    .spot-tile__price--ask,
-    .spot-tile__price-movement,
-    .spot-tile__notional {
-      display: none;
-    }
-  }
+
+  &.spot-tile--stale,
   &.spot-tile--error {
     background-color: $spot-tile-error-color;
     color: $spot-tile-primary-color;
@@ -68,20 +59,16 @@ $price-width: calc(45% + 10px);
 .spot-tile__container {
   position: absolute;
   top: 10px;
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
-}
-
-.spot-tile__stale-label {
-  position: absolute;
-  top: 20px;
-  color: $spot-tile-secondary-color;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
 }
 
 .spot-tile__symbol {
-  font-size: 16px;
-  color: $spot-tile-primary-color;
+  color: white;
+  font-family: BrandonRegular;
+  font-weight: 700;
+  font-size: 18px;
   position: absolute;
   top: 0;
   left: 0;
@@ -91,26 +78,33 @@ $price-width: calc(45% + 10px);
   cursor: pointer;
   position: absolute;
   width: $price-width;
-  top: 30px;
+  top: 35px;
 
   &:hover {
-    background-color: #345c8b;
+    background-color: $primary-color;
+    color: white;
+
+    .price-button__pip {
+      color: inherit;
+    }
   }
 }
 
 .spot-tile__price--bid {
   left: -10px;
+  margin-left: 1px;
 }
 
 .spot-tile__price--ask {
   right: -10px;
+  margin-right: 1px;
 }
 
 .spot-tile__price-movement {
   position: absolute;
   left: 45%;
   text-align: center;
-  top: 45px;
+  top: 41px;
   width: 10%;
 }
 
@@ -120,6 +114,8 @@ $price-width: calc(45% + 10px);
   left: 0;
   box-sizing: border-box;
   width: 100%;
+  font-size: 14px;
+  font-family: BrandonRegular;
 }
 
 .spot-tile__controls {
@@ -155,17 +151,11 @@ $price-width: calc(45% + 10px);
   visibility: hidden;
 }
 
-.spot-tile__trade-summary {
-  position: absolute;
-  top: 30px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
 .spot-tile__notification-message {
   position: absolute;
   top: 50px;
+  width: 100%;
+  text-align: center;
 }
 
 
@@ -173,6 +163,9 @@ $price-width: calc(45% + 10px);
   position: absolute;
   bottom: 0;
   right: 0;
+  font-size: 14px;
+  font-family: BrandonRegular;
+  text-transform: uppercase;
 }
 
 #popout-content-container {

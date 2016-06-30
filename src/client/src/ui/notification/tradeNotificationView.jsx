@@ -3,7 +3,8 @@ import './notification.scss';
 import classnames from 'classnames';
 import Direction from '../../services/model/direction';
 import TradeStatus from '../../services/model/tradeStatus';
-
+import '../common/styles/_base.scss';
+import '../common/styles/_fonts.scss';
 const DONE = 'Done';
 const REJECTED = 'Rejected';
 const BOUGHT = 'Bought';
@@ -18,15 +19,15 @@ export default class TradeNotificationView extends React.Component {
 
   render() {
     let trade = this.props.message;
-    let statusClassName = classnames(
+    let statusClassName = classnames('notification__status',
       {
         'notification__status--done': trade.tradeStatus === DONE,
         'notification__status--rejected' : trade.tradeStatus !== DONE
       }
     );
-    let tradeDescriptionClassName = classnames(
+    let tradeSummaryClasses = classnames('notification__summary-items',
       {
-        'notification__description-rejected': trade.tradeStatus === REJECTED
+        'notification__summary-items--rejected': trade.tradeStatus === REJECTED
       }
     );
     let secondCurrency = trade.dealtCurrency === trade.baseCurrency ? trade.termsCurrency : trade.baseCurrency;
@@ -34,28 +35,29 @@ export default class TradeNotificationView extends React.Component {
     let direction = trade.direction === Direction.Buy ? BOUGHT : SOLD;
 
     return (
-      <div className='notification__container'>
-        <div className='notification__title'>
-          <span>{trade.baseCurrency} / {trade.termsCurrency}</span>
+      <div className='notification'>
+        <div className='notification__content'>
           <span className={statusClassName}>{tradeStatus}</span>
-        </div>
-        <div className={tradeDescriptionClassName}>
-          <span className='notification__row-secondary'>{direction} </span>
-          <span className='notification__row-primary'>{trade.dealtCurrency} </span>
-          <span className='notification__row-primary'>{trade.notional}</span>
-          <span className='notification__row-secondary'> vs </span>
-          <span className='notification__row-primary'>{secondCurrency}</span>
-          <span className='notification__row-secondary'> at </span>
-          <span className='notification__row-primary'>{trade.spotRate}</span>
-        </div>
-        <div>
-          <span className='notification__row-secondary'>Spot </span>
-          <span className='notification__row-primary'>{trade.valueDate}</span>
-        </div>
-        <div>
-          <span className='notification__row-secondary'>Trade ID </span>
-          <span className='notification__row-primary'>{trade.tradeId}</span>
-          <span className='notification__action-dismiss' onClick={() => this.props.dismissNotification()}>Done</span>
+          <ul className={tradeSummaryClasses}>
+            <li className='notification__summary-item notification__summary-item--direction'>{direction}</li>
+            <li className='notification__summary-item notification__summary-item--notional'>{trade.dealtCurrency} {trade.notional}</li>
+            <li className='notification__summary-item notification__summary-item--currency'>vs {secondCurrency}</li>
+          </ul>
+          <div className='notification__details-items-container'>
+            <ul className='notification__details-items'>
+              <li className='notification__details-item notification__details-item--label'>Rate</li>
+              <li className='notification__details-item notification__details-item--value'>{trade.spotRate}</li>
+            </ul>
+            <ul className='notification__details-items'>
+              <li className='notification__details-item notification__details-item--label'>Date</li>
+              <li className='notification__details-item notification__details-item--value'>{trade.valueDate}</li>
+            </ul>
+            <ul className='notification__details-items'>
+              <li className='notification__details-item notification__details-item--label'>Trade Id</li>
+              <li className='notification__details-item notification__details-item--value'>{trade.tradeId}</li>
+            </ul>
+          </div>
+          <a href='#' className='notification__button--dismiss' onClick={() => this.props.dismissNotification()}><i className='notification__button--dismiss-icon fa fa-share' ></i></a>
         </div>
       </div>
     );

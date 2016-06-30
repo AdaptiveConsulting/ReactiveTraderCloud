@@ -39,10 +39,10 @@ export default class SidebarModel extends ModelBase {
     this._observeAnalyticsWindowEvents();
   }
 
-  toggleAnalyticsPanel(){
-    if (this.showAnalytics){
+  toggleAnalyticsPanel() {
+    if (this.showAnalytics) {
       this.router.publishEvent(this.modelId, 'hideAnalytics', {});
-    }else{
+    } else {
       this.router.publishEvent(this.modelId, 'showAnalytics', {});
     }
     this.showAnalytics = !this.showAnalytics;

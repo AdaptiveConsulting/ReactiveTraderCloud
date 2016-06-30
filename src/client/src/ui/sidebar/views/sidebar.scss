@@ -17,7 +17,7 @@ $button-height:     50px;
   flex: 1;
 }
 
-.sidebar__element--active{
+.sidebar__element--active {
   background-color: $active-color;
   border: 1px solid $border-color;
   border-left-color: $active-color;
@@ -27,7 +27,7 @@ $button-height:     50px;
   }
 }
 
-.sidebar__element--inactive{
+.sidebar__element--inactive {
   border: 1px solid $container-bg-color;
   border-left-color: $border-color;
   background-color: $container-bg-color;
@@ -38,7 +38,7 @@ $button-height:     50px;
   }
 }
 
-.sidebar__element-button{
+.sidebar__element-button {
   height: $button-height;
   color: white;
   text-align: center;

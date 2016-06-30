@@ -12,7 +12,7 @@ export default class DateCell extends React.Component {
   }
 
   render(){
-    const { dateValue, format = '%b %e, %H:%M:%S', prefix = '', width } = this.props;
+    const { dateValue, format = '%e-%b %H:%M:%S', prefix = '', width } = this.props;
     const formatted = time.format(format)(dateValue);
     return (<Cell width={width}>{prefix}{formatted}</Cell>);
   }

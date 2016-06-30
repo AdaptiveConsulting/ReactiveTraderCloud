@@ -1,18 +1,4 @@
-$sidebar-width:               40px;
-$shell-background-color:      #212A35;
-$panel-background-color:      #293543;
-$blotter-height:              20vh;
-$header-height:               30px;
-$footer-height:               30px;
-$workspace-height:            calc(100% - #{$blotter-height} - #{$footer-height});
-$workspace-height-expanded:   calc(100% - #{$footer-height});
-$analytics-height:            $workspace-height;
-$analytics-height-expanded:   $workspace-height-expanded;
-$analytics-width:             400px;
-$workspace-width:             calc(100vw - #{$sidebar-width} - #{$analytics-width});
-$splash-logo-height:          400px;
-$splash-logo-margin-top:      20vh;
-$sidebar-height:              $workspace-height;
+@import "./variables.scss";
 
 @keyframes hideSplashScreen {
   0% {
@@ -59,17 +45,34 @@ $sidebar-height:              $workspace-height;
 .shell__container {
   background-color: $shell-background-color;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
   justify-content: space-around;
-  height: 100%;
-  width: 100vw;
+  height: calc(100% - #{$footer-height});
+  width: 100%;
   & * {
     box-sizing: border-box;
+  }
+  &.shell__container--no-analytics {
+    .shell__workspace,
+    .shell__blotter {
+      width: calc(100% - #{$sidebar-width});
+    }
+  }
+  &.shell__container--no-analytics.shell__container--no-side-bar {
+    .shell__workspace,
+    .shell__blotter {
+      width: 100%;
+    }
+  }
+  &.shell__container--no-blotter {
+    .shell__workspace {
+      height: $workspace-height-expanded;
+    }
   }
 
   // scrollbar
   ::-webkit-scrollbar {
-    width: 14px;
+    width: $scrollbar-width;
   }
 
   ::-webkit-scrollbar-track {
@@ -77,9 +80,9 @@ $sidebar-height:              $workspace-height;
   }
 
   ::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background: #293543;
-    border: 4px solid $shell-background-color;
+    border-radius: 4px;
+    background-color: #262a33;
+    border: solid 1px #424545;
   }
 
   ::-webkit-scrollbar-corner {
@@ -94,60 +97,49 @@ $sidebar-height:              $workspace-height;
 
 
 .shell__side-bar {
-  order: 3;
   flex-grow: 0;
   flex-shrink: 0;
   height: $analytics-height;
-
-  &.shell__sidebar-bar--expanded {
-    height: $analytics-height-expanded;
-  }
+  order: 6;
+  flex-basis: 100%;
+  width: $sidebar-width;
 }
 
 .shell__analytics {
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: $analytics-width;
-  order: 2;
   height: $analytics-height;
   overflow-y: auto;
   background: $panel-background-color;
   padding: 0px;
-
-  &.shell__analytics--expanded {
-    height: $analytics-height-expanded;
-  }
+  flex-basis: 100%;
+  width: $analytics-width;
+  order: 5;
 }
 
 
 .shell__workspace {
   flex-grow: 1;
-  flex-basis: $workspace-width;
-  order: 1;
   height: $workspace-height;
   overflow-y: auto;
   overflow-x: hidden;
-
-  &.shell__workspace--expanded {
-    height: $workspace-height-expanded;
-  }
+  width: $workspace-width;
+  flex-basis: $workspace-height;
+  order: 2;
 }
 
 .shell__blotter {
-  flex: 1 100vw;
-  heigth: 100%;
-  order: 4;
+  flex-grow: 1;
   height: $blotter-height;
   overflow: hidden;
+  width: $blotter-width;
+  flex-basis: $blotter-height;
+  order: 3;
 }
 
 .shell__footer {
-  flex: 1 100vw;
-  min-height: $footer-height;
-  order: 5;
-  margin-top: auto;
+  height: $footer-height;
 }
-
 
 .shell__button--reconnect {
   min-width: 100px;
@@ -167,16 +159,25 @@ $sidebar-height:              $workspace-height;
   .shell__analytics,
   .shell__workspace {
     height: auto;
+    width: 100%;
   }
 
   .shell__analytics,
   .shell__workspace,
-  .shell__blotter,
-  .shell__footer {
+  .shell__blotter {
     flex: 1;
   }
 
-  .shell__blotter {
-    min-height: 400px
+  .shell__analytics {
+    order: 2;
   }
+  .shell__blotter {
+    min-height: 400px;
+    width: 100%;
+    order: 3;
+  }
+  .shell__side-bar {
+    display: none;
+  }
+
 }

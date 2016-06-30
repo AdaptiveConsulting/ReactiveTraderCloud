@@ -2,10 +2,13 @@ import React from 'react';
 import { router } from '../../../system';
 import { ViewBase } from '../../common';
 import { FooterModel, ExternalURL } from '../model';
-import {  ServiceStatusLookup, ApplicationStatusConst } from '../../../services/model';
+import {  ServiceStatusLookup } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';
 import classnames from 'classnames';
+import StatusIndicator from './statusIndicator.jsx';
+
 import './footer.scss';
+
 export default class FooterView extends ViewBase {
   constructor() {
     super();
@@ -19,12 +22,6 @@ export default class FooterView extends ViewBase {
     if (!model) {
       return null;
     }
-    let applicationStatusCssLookup = {
-      [ApplicationStatusConst.Healthy]: 'footer__general-status-icon--healthy',
-      [ApplicationStatusConst.Warning]: 'footer__general-status-icon--warning',
-      [ApplicationStatusConst.Down]:    'footer__general-status-icon--down',
-      [ApplicationStatusConst.Unknown]: ''
-    };
     let panelClasses = classnames(
       'footer__service-status-panel',
       {
@@ -38,19 +35,21 @@ export default class FooterView extends ViewBase {
         'footer__logo-openfin--hidden': !model.isRunningInOpenFin
       }
     );
-
+    let footerClasses = classnames('footer', {
+      'footer--disconnected': !model.isConnectedToBroker
+    });
     return (
-        <footer className='footer'>
+        <footer className={footerClasses}>
           <span className='footer__connection-url'>{model.isConnectedToBroker ? `Connected to ${model.connectionUrl} (${model.connectionType})` : 'Disconnected'} </span>
           <span className='footer__logo-container '>
             <span className='footer__logo footer__logo-adaptive' onClick={() => model.openLink(ExternalURL.adaptiveURL)}></span>
             <span className={openfinLogoClassName} onClick={() => model.openLink(ExternalURL.openfinURL)}></span>
           </span>
-
-          <i onMouseEnter={(e) => this._toggleServiceStatus()}
-            onMouseLeave={(e) => this._toggleServiceStatus()}
-            className={'footer__general-status-icon fa fa-circle ' + applicationStatusCssLookup[model.applicationStatus]} >
-         </i>
+          <div className='footer__status-indicator-wrapper'
+            onMouseEnter={(e) => this._toggleServiceStatus()}
+            onMouseLeave={(e) => this._toggleServiceStatus()}>
+            <StatusIndicator className='footer__status-indicator' status={model.applicationStatus} />
+         </div>
           <div className={panelClasses}>
             <ul className='footer__services'>
               {this._renderServices(model)}

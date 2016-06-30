@@ -1,10 +1,16 @@
-$footer-background-color: #dee3e8;
+@import "./variables";
+$footer-background-color: #00a8cc;
 
 .footer {
   height: 100%;
   width: 100vw;
   background-color: $footer-background-color;
+  color: white;
   position: relative;
+
+  &.footer--disconnected {
+    background-color: $error-color;
+  }
 }
 
 .footer__services {
@@ -13,18 +19,18 @@ $footer-background-color: #dee3e8;
   padding: 10px;
 }
 
-.footer__service {
-}
-
 .footer__service-label {
   font-size: 14px;
 }
 
-.footer__general-status-icon {
+.footer__status-indicator-wrapper {
   position: absolute;
-  right: 0;
+  right: 16px;
+  height: 24px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
   cursor: pointer;
-  margin: 7px;
 }
 
 .footer__icon--online,
@@ -32,18 +38,12 @@ $footer-background-color: #dee3e8;
   margin-right: 5px;
 }
 
-.footer__icon--online,
-.footer__general-status-icon--healthy {
-  color: green;
+.footer__icon--online {
+  color: $success-color;
 }
 
-.footer__general-status-icon--down,
 .footer__icon--offline {
-  color: red;
-}
-
-.footer__general-status-icon--warning {
-  color: orange;
+  color: $error-color;
 }
 
 .footer__service-status-panel {
@@ -54,39 +54,43 @@ $footer-background-color: #dee3e8;
   width: 200px;
   background-color: $footer-background-color;
   z-index: 100;
-  border-bottom: 1px solid white;
 }
 
 .footer__connection-url {
-  display: inline-block;
-  font-size: 14px;
-  padding: 7px 10px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10px;
+  margin: auto;
+  height: 20px;
+  font-size: 16px;
+  font-family: BrandonLight;
 }
 
-.footer__logo-container{
-  height: 30px;
-  float: right;
-  padding-top: 2px;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 40px;
+.footer__logo-container {
+  height: 25px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  right: 40px;
 }
 
-.footer__logo{
+.footer__logo {
   display: inline-block;
   height: 24px;
   margin-right: 15px;
   cursor: pointer;
 }
 
-.footer__logo-openfin{
+.footer__logo-openfin {
   background: url('../../common/images/openfin-logo.png') no-repeat;
   width: 84px;
   float: right;
   margin-top: 3px;
 }
 
-.footer__logo-openfin--hidden{
+.footer__logo-openfin--hidden {
   display: none;
 }
 

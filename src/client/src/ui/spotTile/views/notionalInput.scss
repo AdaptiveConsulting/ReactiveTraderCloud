@@ -1,3 +1,5 @@
+@import "variables.scss";
+
 .notional__currency-pair {
   float: left;
   padding-right: 10px;
@@ -16,11 +18,11 @@
   width: 100px;
   &:hover,
   &:focus {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid $primary-color;
   }
   &:focus {
     outline: none;
-    background-color: #2f5078;
+    background-color: #1d2027;
     color: white;
   }
   &::selection {

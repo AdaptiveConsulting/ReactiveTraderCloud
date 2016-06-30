@@ -1,12 +1,15 @@
-$positive-color:    #3FCF1E;
-$negative-color:    #CC3350;
-$barchart-text-color:gray;
-$bar-bg-color:      #414D5C;
-$container-bg-color:#293543;
-$highlight-color:   #eee;
-$stroke-color:      #212a35;
-$gray:              #294464;
-$bar-height:        12px;
+$positive-color:      #6db910;
+$negative-color:      #d62728;
+$barchart-text-color: gray;
+$bar-bg-color:        #414D5C;
+$container-bg-color:  #262a33;
+$highlight-color:     #eee;
+$stroke-color:        #212a35;
+$gray:                #294464;
+$bar-height:          4px;
+$transition-duration: .4s;
+$pointer-color:       #00d2ff;
+$slider-lbl-color:    #00a8cc;
 
 $analytics-header-colour: #ffffff;
 $default-padding: 10px;
@@ -26,6 +29,13 @@ $default-padding: 10px;
   }
 }
 
+.analytics__barchart-indicator--negative {
+  background-color: $negative-color;
+}
+
+.analytics__barchart-indicator--positive {
+  background-color: $positive-color;
+}
 
 .analytics__controls {
   float: right;
@@ -35,24 +45,40 @@ $default-padding: 10px;
 .analytics__header {
   font-size: 16px;
   color: $analytics-header-colour;
-  background: $container-bg-color;
   padding-bottom: 10px;
 }
 
-.analytics__header--bold{
+.analytics__header-value {
   font-weight: bold;
+  font-family: BrandonRegular;
 }
 
-.analytics__header-block{
+.analytics__header-title {
   display: block;
   padding-bottom: 2px;
+  font-family: BrandonRegular;
+  font-size: 24px;
+}
+
+.analytics__header-value--negative {
+  color: $negative-color
+}
+
+.analytics__header-value--positive {
+  color: $positive-color;
+}
+
+.analytics__header-title-icon {
+  margin-right: 17px;
 }
 
 .analytics__chart-container {
   position: relative;
-  background: $container-bg-color;
+  background: inherit;
   width: 100%;
   height: 200px;
+  font-family: BrandonMedium;
+  font-size: 14px;
 
   .nv-lineChart {
     .nv-axis.nv-y {
@@ -71,107 +97,228 @@ $default-padding: 10px;
   }
 }
 
-.analytics__barchart-container{
+.analytics__barchart-container {
   vertical-align: middle;
   padding-top: 2px;
-  padding-bottom: 28px;
+  padding-bottom: 14px;
   color: $barchart-text-color;
+  height: 50px;
   &:hover{
     color:$highlight-color;
   }
 }
 
-.analytics__barchart-bar{
+.analytics__barchart-bar {
   height: $bar-height;
   overflow: hidden;
 }
 
-.analytics__barchart-bar-background{
+.analytics__barchart-bar-background {
   height: $bar-height;
   width: 100%;
   background-color: $bar-bg-color;
   position: absolute;
-  left: 0;
+  margin-top: 3px;
 }
 
-.analytics__barchart-indicator-wrapper {
-  width: 50%;
-  height: $bar-height;
+.analytics__barchart-bar-wrapper {
+  vertical-align: middle;
+  height: 10px;
   position: absolute;
+  width: 100%;
+  margin-top: 30px;
 }
 
-
-.analytics__barchart-indicator-wrapper--positive{
-  right: 0;
+.analytics__barchart-border{
+  height: 9px;
+  width: 2px;
+  background-color: #484f5f;
 }
 
-.analytics__barchart-indicator-wrapper--negative{
-  left: 0;
+.analytics__barchart-border--center {
+  position: absolute;
+  left: calc(50% - 2px);
 }
 
-.analytics__barchart-indicator{
-  height: $bar-height;
-  width: 50%;
-  transition: width .4s ease;
-}
-
-.analytics__barchart-indicator--positive{
-  background-color: $positive-color;
-}
-
-.analytics__barchart-indicator--negative{
-  background-color: $negative-color;
-  float: right;
-}
-
-.analytics__barchart-label{
-  font-size: 18px;
+.analytics__barchart-border--left {
+  float: left;
   display: inline;
 }
 
-.analytics__barchart-container .analytics__barchart-amount{
+.analytics__barchart-border--right {
+  right: 0;
+  position: absolute;
+}
+
+.analytics__barchart-title-wrapper {
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  color: white;
+
+  &:hover{
+    color: $slider-lbl-color;
+
+    .analytics__barchart-pointer-container {
+      transform: scale(1.5);
+    }
+
+    .analytics__barchart-label{
+      font-size: 14px;
+    }
+
+    .analytics__barchart-label-amount{
+      color: $slider-lbl-color;
+      display: none;
+    }
+    .analytics__barchart-label-amount--hover {
+      display: inline;
+      color: $slider-lbl-color;
+    }
+
+    .analytics__barchart-label-currency-terms {
+      display: none;
+    }
+  }
+}
+
+.analytics__barchart-pointer-container {
+  position: absolute;
+  margin-top: 25px;
+  transition: left linear $transition-duration;
+  z-index: 99;
+}
+
+.analytics__barchart-pointer {
+  width: 0;
+  height: 0;
+  border-width: 8px 5px 0 5px;
+  border-color: #007D92 transparent transparent transparent;
+  border-style: inset;
+  -webkit-transform: rotate(360deg);
+  position: absolute;
+  z-index: 100;
+  left: -6px;
+  margin-top: 2px;
+}
+
+.analytics__barchart-pointer-icon {
+  color: #46477a;
+  text-shadow:
+  0px 0px 0 $pointer-color,
+  -1px -1px 0 $pointer-color,
+  1px -1px 0 $pointer-color,
+  -1px 1px 0 $pointer-color,
+  1px 1px 0 $pointer-color;
+  rotation: 90deg;
+}
+
+.analytics__barchart-pointer--outline {
+  position: absolute;
+  width: 0;
+  height: 0;
+  z-index: 99;
+  left: -10px;
+  border-width: 14px 9px 0 9px;
+  border-color: $pointer-color transparent transparent transparent;
+  border-style: inset;
+  -webkit-transform: rotate(360deg);
+}
+
+.analytics__barchart-label {
+  font-size: 13px;
+  margin-top: 3px;
+  white-space: nowrap;
+}
+
+.analytics__barchart-label-amount {
+  color: #aaa;
+}
+
+.analytics__barchart-label-amount--hover {
+  display: none;
+}
+
+.analytics__barchart-label-pusher {
+  height: 10px;
+  display: inline-block;
+  transition: all linear $transition-duration;
+}
+.analytics__barchart-label-wrapper {
+  transition: left linear $transition-duration;
+  position: absolute;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.analytics__barchart-container .analytics__barchart-amount {
   visibility: hidden;
   font-size: 18px;
   display: inline;
   float: right;
 }
 
-.analytics__barchart-container:hover .analytics__barchart-amount{
+.analytics__barchart-container:hover .analytics__barchart-amount {
   visibility: visible;
   color: $highlight-color;
 }
 
-.analytics__buttons{
-  width: 100%;
-  text-align: center;
+.analytics__bubblechart-container {
+  text-anchor: middle;
+  height: 300px;
 }
 
-.analytics__buttons-bar {
-  display: inline-block;
-  border: 1px solid black;
+.analytics__chart-title {
+  color: white;
+  color: $analytics-header-colour;
+  font-family: BrandonMedium;
+  font-size: 18px;
 }
 
-.analytics__buttons-tab-btn{
-  color: $barchart-text-color;
-  font-size: 16px;
+.analytics__bubblechart-title {
+  position: absolute;
+}
+
+.analytics__bubblechart-container {
+  display: block;
   position: relative;
-  padding: 10px 10px 6px 10px;
-  background: $container-bg-color;
-  &:hover{
-    background: #294464;
-  }
+  padding-bottom: 2px;
+
 }
 
-.analytics__buttons-tab-btn--selected{
-  color: $highlight-color;
-  background: $stroke-color;
+.analytics__positions-label {
+  fill: white;
+  font-weight: bold;
+  font-size: 12px;
+  pointer-events: none;
+  select: none;
 }
 
-.new-chart-area{
+.analytics__positions-tooltip {
+  font-family: BrandonMedium;
+  text-anchor: middle;
+  background-color: white;
+  border: 1px solid gray;
+}
+
+.analytics__positions-tooltip {
+  position: absolute;
+  width: auto;
+  height: auto;
+  padding: 2px 10px;
+  font-size: 14px;
+  background-color: #E1E3E8;
+  opacity:1.0;
+  border:1px solid black;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.new-chart-area {
   stroke-width: 2px !important;
   fill: url('#areaGradient');
 }
-.new-chart-stroke{
+.new-chart-stroke {
   stroke: url('#chartStrokeLinearGradient');
 }
 
@@ -181,4 +328,40 @@ $default-padding: 10px;
 
 .analytics__icon--tearoff--hidden {
   display: none;
+}
+
+.stop1,
+.lineStop1 {
+  stop-color: #81d31c;
+}
+
+.stop1End,
+.lineStop1End {
+  stop-color: #81d31c;
+}
+
+.stop2,
+.lineStop2 {
+  stop-color: #f20808;
+}
+
+.stop2End,
+.lineStop2End {
+  stop-color: #f20808;
+}
+
+// axis
+.analytics__container .nvd3 .nv-axis path,
+.analytics__container .nvd3 .nv-axis .tick.zero line {
+  stroke: #c2c5c9;
+}
+// axis labels
+.analytics__chart-container .nv-lineChart .nv-axis.nv-x text,
+.analytics__chart-container .nv-lineChart .nv-axis.nv-y text {
+  fill: #c2c5c9;
+  font-family: BrandonLight;
+}
+// grid
+.analytics__container .nvd3 .nv-axis line {
+  stroke: #424545;
 }

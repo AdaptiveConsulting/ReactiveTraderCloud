@@ -36,12 +36,26 @@ export default class TradeNotification extends React.Component {
       return (
         <div className={classNames}>
           <span className='trade-notification__trade-status'>{tradeExecutionNotification.status.name}</span>
-          <span className='trade-notification__label'>{tradeExecutionNotification.direction} </span><span className='trade-notification__value'>{tradeExecutionNotification.dealtCurrency} {tradeExecutionNotification.notional}</span><br/>
-          <span className='trade-notification__label'> vs </span><span className='trade-notification__value'>{tradeExecutionNotification.termsCurrency}</span>
-          <span className='trade-notification__label'> at </span><span className='trade-notification__value'>{tradeExecutionNotification.spotRate}</span><br/>
-          <span className='trade-notification__value'>{tradeExecutionNotification.formattedValueDate}</span><br/>
-          <span className='trade-notification__label'>Trade ID </span><span className='trade-notification__value'>{tradeExecutionNotification.tradeId}</span>
-          <a href='#' className='trade-notification__button--dismiss' onClick={onDismissedClicked}>Done</a>
+          <ul className='trade-notification__summary-items'>
+            <li className='trade-notification__summary-item trade-notification__summary-item--direction'>{tradeExecutionNotification.direction} </li>
+            <li className='trade-notification__summary-item trade-notification__summary-item--notional'>{tradeExecutionNotification.dealtCurrency} {tradeExecutionNotification.notional}</li>
+            <li className='trade-notification__summary-item trade-notification__summary-item--currency'><span className='trade-notification__label--versus'>vs </span>{tradeExecutionNotification.termsCurrency}</li>
+          </ul>
+          <div className='trade-notification__details-items-container'>
+            <ul className='trade-notification__details-items trade-notification__details-items--rate'>
+              <li className='trade-notification__details-item trade-notification__details-item--label'>Rate</li>
+              <li className='trade-notification__details-item trade-notification__details-item--value'>{tradeExecutionNotification.spotRate}</li>
+            </ul>
+            <ul className='trade-notification__details-items trade-notification__details-items--date'>
+              <li className='trade-notification__details-item trade-notification__details-item--label'>Date</li>
+              <li className='trade-notification__details-item trade-notification__details-item--value'>{tradeExecutionNotification.formattedValueDate}</li>
+            </ul>
+            <ul className='trade-notification__details-items trade-notification__details-items--trade-id'>
+              <li className='trade-notification__details-item trade-notification__details-item--label'>Trade ID </li>
+              <li className='trade-notification__details-item trade-notification__details-item--value'>{tradeExecutionNotification.tradeId}</li>
+            </ul>
+          </div>
+          <a href='#' className='trade-notification__button--dismiss' onClick={onDismissedClicked}><i className='trade-notification__button--dismiss-icon fa fa-share' ></i></a>
         </div>
       );
     }

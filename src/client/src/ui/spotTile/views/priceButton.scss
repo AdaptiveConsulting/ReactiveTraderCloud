@@ -1,19 +1,25 @@
-$price-pip-width: 64px;
-$price-side-width: calc((100% - #{$price-pip-width})/2);
+@import "./variables.scss";
+
+$price-pip-width: 70px;
+$price-tenth-width: 20px;
+$price-big-figure-width: 50px;
 
 .price-button {
   text-align: center;
   box-sizing: border-box;
-  padding: 5px;
+  padding: 1.5px;
 }
 
 .price-button__direction {
   text-transform: uppercase;
-  font-size: 16px;
+  color: white;
+  font-size: 14px;
+  font-weight: bolder;
+  font-family: BrandonRegular;
 }
 
 .price-button__wrapper {
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
 .price-button__big-figure,
@@ -26,21 +32,31 @@ $price-side-width: calc((100% - #{$price-pip-width})/2);
 .price-button__big-figure,
 .price-button__tenth {
   font-size: 18px;
-  width: $price-side-width;
+  font-family: BrandonLight;
+  vertical-align: baseline;
 }
 
-.price-button__big-figure{
+.price-button__big-figure {
   text-align: right;
+  width: $price-big-figure-width;
 }
 
-.price-button__tenth{
+.price-button__tenth {
   text-align: left;
+  width: $price-tenth-width;
 }
 
 .price-button__pip {
-  font-size: 44px;
   width: $price-pip-width;
   padding-left: 5px;
   padding-right: 5px;
-  color: white;
+  color: $primary-color;
+  font-size: 52px;
+  line-height: 65px;
+  font-family: BrandonMedium;
+}
+
+.price-button__tenth,
+.price-button__pip {
+  vertical-align: baseline;
 }

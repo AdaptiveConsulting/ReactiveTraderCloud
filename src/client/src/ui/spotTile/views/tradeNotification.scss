@@ -4,37 +4,111 @@
 .trade-notification--error {
   .trade-notification__trade-status {
     color: $spot-tile-error-color;
+    text-transform: uppercase;
   }
-  padding-top: 10px;
 }
 
 .trade-notification--rejected {
   .trade-notification__trade-status {
     display: block;
   }
+  .trade-notification__summary-item {
+    text-decoration: line-through;
+  }
 }
 
-.trade-notification__label {
-  color: $spot-tile-secondary-color;
+.trade-notification__summary-item {
+  line-height: 16px;
 }
 
-.trade-notification__value {
-  color: $spot-tile-primary-color;
+.trade-notification__summary-item--direction {
+  color: #c2c5c9;
+  font-family: BrandonMedium;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.trade-notification__label--versus {
+  font-size: 12px;
+}
+
+.trade-notification__summary-item--currency {
+  color: #c2c5c9;
+  font-size: 14px;
+}
+
+.trade-notification__summary-item--notional {
+  color: #f8ab02;
+  font-size: 24px;
+  line-height: 24px;
+  font-family: BrandonRegular;
+  display: inline-block;
+}
+
+.trade-notification__summary-items {
+  list-style: none;
+  margin: 0;
+  margin-top: 3px;
+  padding: 0;
 }
 
 .trade-notification__button--dismiss {
   text-decoration: none;
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  bottom: -5px;
+  right: 0;
   color: inherit;
+}
+
+.trade-notification__button--dismiss-icon {
+  transform: rotate(45deg);
 }
 
 .trade-notification__trade-status {
   display: none;
   position: absolute;
   top: 0;
-  right: 5px;
+  right: 40px;
   color: inherit;
+  font-family: BrandonRegular;
 }
 
+.trade-notification__details-items-container {
+  display: flex;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 10px;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
+}
+
+.trade-notification__details-items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trade-notification__details-item--label {
+  color: #c2c5c9;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-family: BrandonMedium;
+}
+
+.trade-notification__details-item--value {
+  color: white;
+  font-size: 16px;
+  font-family: BrandonRegular;
+}
+
+.trade-notification__details-items--rate {
+  flex: 0.8;
+}
+
+.trade-notification__details-items--date {
+  flex: 1;
+}
+
+.trade-notification__details-items--trade-id {
+  flex: 0.9
+}
