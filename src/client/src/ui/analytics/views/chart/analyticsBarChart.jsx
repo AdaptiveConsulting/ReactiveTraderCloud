@@ -21,11 +21,11 @@ export default class AnalyticsBarChart extends React.Component{
     let propName = CurrencyPairPosition.basePnlName;
     let chartData = this.props.series;
 
-    let baseVals = _.map(chartData, propName);
-    let maxVal = _.max(baseVals);
-    let minVal = _.min(baseVals);
+    let baseValues = _.map(chartData, propName);
+    let maxValue = _.max(baseValues);
+    let minValue = _.min(baseValues);
 
-    let maxWidth =  Math.max(Math.abs(maxVal), Math.abs(minVal));
+    let maxWidth =  Math.max(Math.abs(maxValue), Math.abs(minValue));
     let bars = chartData.map((ccyPairPosition, index) => {
       return (
         <PNLBar key={index}

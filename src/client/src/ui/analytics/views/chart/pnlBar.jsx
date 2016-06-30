@@ -24,9 +24,9 @@ export default class PNLBar extends React.Component{
   }
 
   _calculateOffset(){
-    if (!this.refs.barChartContainer || !this.refs.lbl) return 0;
+    if (!this.refs.barChartContainer || !this.refs.label) return 0;
     let containerBounds = this.refs.barChartContainer.getBoundingClientRect();
-    let labelBounds = this.refs.lbl.getBoundingClientRect();
+    let labelBounds = this.refs.label.getBoundingClientRect();
 
     let leftPoint = labelBounds.left - containerBounds.left;
     let rightPoint = containerBounds.right - labelBounds.right;
@@ -36,10 +36,10 @@ export default class PNLBar extends React.Component{
   }
 
   _getPusherRelativePosition(){
-    if (!this.refs.barChartContainer || !this.refs.lbl) return 0;
+    if (!this.refs.barChartContainer || !this.refs.label) return 0;
 
     let containerBounds = this.refs.barChartContainer.getBoundingClientRect().width;
-    let labelBounds = this.refs.lbl.getBoundingClientRect().width;
+    let labelBounds = this.refs.label.getBoundingClientRect().width;
 
     let availableSpace = (1 - labelBounds/containerBounds) * 100;
     let relativePointerPosition = this._getRelativePointerPosition() - (labelBounds/containerBounds * 50 - 1);
@@ -68,7 +68,7 @@ export default class PNLBar extends React.Component{
     let posStyle = {'left': offset};
 
     return (
-      <span ref='lbl' className='analytics__barchart-label' style={posStyle}>
+      <span ref='label' className='analytics__barchart-label' style={posStyle}>
         <span className='analytics__barchart-label-amount'>({amount}) </span>
         <span>{this.props.model.currencyPair.base}</span>
         <span className='analytics__barchart-label-currency-terms'>{this.props.model.currencyPair.terms}</span>

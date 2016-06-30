@@ -4,21 +4,21 @@ import numeral from 'numeral';
 import {  CurrencyPairPosition } from '../../../../services/model';
 
 export function getPositionsDataFromSeries(series):Array<{symbol:string, baseAmount:number}>{
-  let baseAmtPropName = CurrencyPairPosition.baseTradedAmountName;
+  let baseAmountPropertyName = CurrencyPairPosition.baseTradedAmountName;
   let positionsPerCcyObj = series.reduce((aggregatedPositionsObj, ccyPairPosition) => {
 
     //aggregate amount per ccy;
     let baseCurrency = ccyPairPosition.currencyPair.base;
     aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
-      ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmtPropName] : ccyPairPosition[baseAmtPropName];
+      ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmountPropertyName] : ccyPairPosition[baseAmountPropertyName];
 
     return aggregatedPositionsObj;
   }, {});
 
   //map the object to the array of ccy-amount pairs and exclude 0 base amount
   return _.map(positionsPerCcyObj, (val, key) => {
-    return {symbol: key, [baseAmtPropName]: val};
-  }).filter((positionPerCcy, index) => positionPerCcy[baseAmtPropName] !== 0);
+    return {symbol: key, [baseAmountPropertyName]: val};
+  }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0);
 }
 
 
@@ -32,14 +32,14 @@ export function createScales(props){
 
   let positionData = getPositionsDataFromSeries(props.data);
 
-  let baseVals = _.map(positionData, (val) => {
+  let baseValues = _.map(positionData, (val) => {
     return Math.abs(val[CurrencyPairPosition.baseTradedAmountName]);
   });
 
-  let maxVal = _.max(baseVals);
-  let minVal = _.min(baseVals);
+  let maxValue = _.max(baseValues);
+  let minValue = _.min(baseValues);
 
-  if (minVal === maxVal) minVal = 0;
+  if (minValue === maxValue) minValue = 0;
 
   let scales = {
     x: d3.scale.linear()
@@ -49,7 +49,7 @@ export function createScales(props){
       .domain([0, props.data.length])
       .range([-(height/(ratio) ), height/ratio ]),
     r: d3.scale.sqrt()
-      .domain([minVal, maxVal])
+      .domain([minValue, maxValue])
       .range([minR, maxR])
   };
   return scales;
@@ -61,7 +61,7 @@ export function updateNodes(nodeGroup, nodes, scales){
 
   nodeGroup.each(collide(.1, nodes, scales.r))
     .attr({
-      transform: function(d, i) {
+      transform: (d, i) => {
         if ( d.x !== undefined && d.y !== undefined && !isNaN(d.x) && !isNaN(d.y)){
           nodeMap[d.id] = {x: d.x, y: d.y};
           return 'translate(' + d.x + ',' + d.y + ')';
@@ -71,39 +71,38 @@ export function updateNodes(nodeGroup, nodes, scales){
         }
 
       },
-      id: function(d, i) {
+      id: (d, i) => {
         return d.id;
       }
     });
 
-  for (let i = 0; i < nodes.length; i++){
-    let node = nodes[i];
+  nodes.forEach((node) =>{
     let newSettings = nodeMap[node.id];
     if (newSettings){
       node.x = newSettings.x;
       node.y = newSettings.y;
     }
-  }
+  });
 }
 
 
 export function drawCircles(nodeGroup, duration = 800){
     nodeGroup
-      .on('mouseover', function(d){
+      .on('mouseover', (d) => {
         d3.select(this).style('fill', '#00A8CC');
       })
-      .on('mouseout', function(d){
+      .on('mouseout', (d) => {
         d3.select(this).style('fill', d.color);
       })
       .transition()
       .duration(duration)
       .attr({
-        r: function(d) {
+        r: (d) => {
           return d.r;
         }
       })
       .style({
-        fill: function(d) {
+        fill: (d) => {
           return d.color;
         }
       });
@@ -115,7 +114,7 @@ export function drawLabels(nodeGroup){
       y: 3,
       class: 'analytics__positions-label'
     })
-    .text(function(d) {
+    .text((d) => {
       return d.id;
     });
 }
@@ -136,7 +135,7 @@ export function collide(alpha, nodes, scale) {
   let quadtree = d3.geom.quadtree(nodes);
   let padding = 10;
 
-  return function(d) {
+  return (d) => {
     let r = d.r + 10 + padding;
 
     let nx1 = d.x - r;
@@ -144,7 +143,7 @@ export function collide(alpha, nodes, scale) {
     let ny1 = d.y - r;
     let ny2 = d.y + r;
 
-    return quadtree.visit(function(quad, x1, y1, x2, y2) {
+    return quadtree.visit((quad, x1, y1, x2, y2) => {
       let l, x, y;
       if (quad.point && quad.point !== d) {
         x = d.x - quad.point.x;
