@@ -55,10 +55,6 @@ export default class TradeNotification extends React.Component {
               <span className='trade-notification__value'>{tradeExecutionNotification.tradeId}</span>
             </div>
           </div>
-
-
-
-
           <a href='#' className='trade-notification__button--dismiss' onClick={onDismissedClicked}><i className='trade-notification__button--dismiss-icon fa fa-share' ></i></a>
         </div>
       );
