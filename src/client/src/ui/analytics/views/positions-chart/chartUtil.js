@@ -137,7 +137,7 @@ export function collide(alpha, nodes, scale) {
   let padding = 10;
 
   return function(d) {
-    let r = d.r + 10 + padding;//d.r + scale.domain()[1] + padding;
+    let r = d.r + 10 + padding;
 
     let nx1 = d.x - r;
     let nx2 = d.x + r;
