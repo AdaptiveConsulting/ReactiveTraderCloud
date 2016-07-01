@@ -81,13 +81,13 @@ export default class BlotterView extends ViewBase {
       <Column
         key='Dir'
         header={<Cell>Direction</Cell>}
-        cell={props => <Cell className='blotter__trade-field--emphasized'>{this.state.model.trades[props.rowIndex].direction.name.toUpperCase()}</Cell>}
+        cell={props => <Cell>{this.state.model.trades[props.rowIndex].direction.name.toUpperCase()}</Cell>}
         flexGrow={1}
         width={80}/>,
       <Column
         key='CCY'
         header={<Cell>CCYCCY</Cell>}
-        cell={props => <Cell className='blotter__trade-field--emphasized'>{this.state.model.trades[props.rowIndex].currencyPair.symbol}</Cell>}
+        cell={props => <Cell>{this.state.model.trades[props.rowIndex].currencyPair.symbol}</Cell>}
         flexGrow={1}
         width={70}/>,
       <Column
@@ -98,7 +98,7 @@ export default class BlotterView extends ViewBase {
           return (
             <NotionalCell
               width={props.width}
-              className='blotter__trade-field--emphasized blotter__trade-field--align-right'
+              className='blotter__trade-field--align-right'
               notionalValue={trade.notional}
               suffix={' ' + trade.currencyPair.base} />
           );
@@ -108,7 +108,7 @@ export default class BlotterView extends ViewBase {
       <Column
         key='Rate'
         header={<Cell className='blotter__trade-field--align-right'>Rate</Cell>}
-        cell={props => <Cell className='blotter__trade-field--emphasized blotter__trade-field--align-right'>{this.state.model.trades[props.rowIndex].spotRate}</Cell>}
+        cell={props => <Cell className='blotter__trade-field--align-right'>{this.state.model.trades[props.rowIndex].spotRate}</Cell>}
         flexGrow={1}
         width={80}/>,
       <Column
