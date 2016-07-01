@@ -20,14 +20,16 @@ export default class BlotterView extends ViewBase {
     };
   }
 
+  componentWillReceiveProps() {
+    this.props.updateDimensions();
+  }
+
   render() {
     let model:BlotterModel = this.state.model;
     if (!model) {
       return null;
     }
     let columns = this._createGridColumns(model.trades);
-    let containerWidth;
-    let containerHeight;
     let className = classNames(
       'blotter', {
         'blotter--online': model.isConnected,
@@ -39,10 +41,8 @@ export default class BlotterView extends ViewBase {
         'blotter__controls--hidden': model.canPopout
       }
     );
-    
-    this.props.updateDimensions();
-    containerWidth = this.props.containerWidth; // comes from the @Dimensions annotation
-    containerHeight = this.props.containerHeight; // comes from the @Dimensions annotation
+    let containerWidth = this.props.containerWidth; // comes from the @Dimensions annotation
+    let containerHeight = this.props.containerHeight; // comes from the @Dimensions annotation
     return (
       <div className={className}>
         <div className='blotter-wrapper'>
