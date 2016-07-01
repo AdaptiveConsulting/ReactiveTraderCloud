@@ -92,12 +92,12 @@ class AppBootstrapper {
     popoutRegionModel.observeEvents();
     let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, RegionNames.blotter, espRouter);
     blotterRegionModel.observeEvents();
-    let quickAccessRegionModel = new SingleItemRegionModel(WellKnownModelIds.quickAccessRegionModelId, RegionNames.quickAccess, espRouter);
-    quickAccessRegionModel.observeEvents();
+    let analyticsRegionModel = new SingleItemRegionModel(WellKnownModelIds.analyticsRegionModelId, RegionNames.analytics, espRouter);
+    analyticsRegionModel.observeEvents();
     let sidebarRegionModel = new SingleItemRegionModel(WellKnownModelIds.sidebarRegionModelId, RegionNames.sidebar, espRouter);
     sidebarRegionModel.observeEvents();
     let regionManager = new RegionManager(
-      [workspaceRegionModel, popoutRegionModel, blotterRegionModel, quickAccessRegionModel, sidebarRegionModel], this._openFin.isRunningInOpenFin);
+      [workspaceRegionModel, popoutRegionModel, blotterRegionModel, analyticsRegionModel, sidebarRegionModel], this._openFin.isRunningInOpenFin);
 
     // wire up the shell
     let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection, this._openFin);

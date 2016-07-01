@@ -24,7 +24,7 @@ export default class ShellView extends ViewBase {
       return null;
     }
 
-    let shellClasses = classnames('shell__container', { 
+    let shellClasses = classnames('shell__container', {
       'shell__container--no-blotter': model.isBlotterOut,
       'shell__container--no-analytics': model.isAnalyticsOut,
       'shell__container--no-side-bar': model.isSidebarOut
@@ -48,7 +48,7 @@ export default class ShellView extends ViewBase {
               </div>
             </Modal>
             <WorkspaceRegionView className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId}/>
-            <SingleItemRegionView className='shell__analytics' modelId={wellKnownModelIds.quickAccessRegionModelId}/>
+            <SingleItemRegionView className='shell__analytics' modelId={wellKnownModelIds.analyticsRegionModelId}/>
             <SingleItemRegionView className='shell__side-bar' modelId={wellKnownModelIds.sidebarRegionModelId}/>
             <SingleItemRegionView className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId}/>
           </div>
