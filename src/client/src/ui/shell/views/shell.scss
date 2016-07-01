@@ -69,30 +69,6 @@
       height: $workspace-height-expanded;
     }
   }
-
-  // scrollbar
-  ::-webkit-scrollbar {
-    width: $scrollbar-width;
-  }
-
-  ::-webkit-scrollbar-track {
-    border-radius: 0;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: #262a33;
-    border: solid 1px #424545;
-  }
-
-  ::-webkit-scrollbar-corner {
-    background-color: transparent;
-  }
-
-  //ie
-  -ms-scrollbar-arrow-color: lightgrey;
-  -ms-scrollbar-base-color: $panel-background-color;
-  -ms-scrollbar-track-color: $shell-background-color;
 }
 
 

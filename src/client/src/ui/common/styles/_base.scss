@@ -8,6 +8,29 @@ body, html {
   margin: 0;
   user-select: none;
   font-family: BrandonRegular;
+
+  // scrollbar
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #262a33;
+    border: solid 1px #424545;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+
+  -ms-scrollbar-arrow-color: lightgrey;
+  -ms-scrollbar-base-color: #293543;
+  -ms-scrollbar-track-color: #1d2027;
 }
 
 .hide {
