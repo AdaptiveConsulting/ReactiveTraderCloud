@@ -1430,11 +1430,6 @@
       "from": "d3@3.5.12",
       "resolved": "https://registry.npmjs.org/d3/-/d3-3.5.12.tgz"
     },
-    "d3-tip": {
-      "version": "0.6.7",
-      "from": "d3-tip@*",
-      "resolved": "https://registry.npmjs.org/d3-tip/-/d3-tip-0.6.7.tgz"
-    },
     "dashdash": {
       "version": "1.13.1",
       "from": "dashdash@>=1.12.0 <2.0.0",
