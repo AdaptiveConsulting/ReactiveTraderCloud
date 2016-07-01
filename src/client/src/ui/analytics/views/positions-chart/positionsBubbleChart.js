@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
-import d3tip from 'd3-tip';
 import _ from 'lodash';
 import Dimensions from 'react-dimensions';
 import { logger } from '../../../../system';
@@ -145,7 +144,7 @@ export default class PositionsBubbleChart extends React.Component{
     const tick = (e) => {
       let nodeGroup = svg.selectAll('g.node')
         .on('mouseover', (dataObj) => { this.tooltip.style('visibility', 'visible'); this._positionTooltip(dataObj); })
-        .on('mousemove', (dataObj) => this._positionTooltip(dataObj) )
+        .on('mousemove', this._positionTooltip.bind(this))
         .on('mouseout',  () => this.tooltip.style('visibility', 'hidden'));
 
       updateNodes(nodeGroup, this.state.nodes, this.scales);
@@ -176,7 +175,7 @@ export default class PositionsBubbleChart extends React.Component{
     this.tooltip.style('top', (posY + 15)+'px').style('left', posX + 'px');
     this.tooltip.text(`${dataObj.id} ${getPositionValue(dataObj.id, this.state.prevPositionsData)}`);
   }
-  
+
   _update(nodes){
     if (!nodes || !this.force) return;
     if (!this.state.updateRequired) return;
