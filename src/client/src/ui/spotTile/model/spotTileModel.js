@@ -12,6 +12,7 @@ import { getPopoutService } from '../../common/popout/';
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 4000;
 const MAX_NOTIONAL_VALUE = 1000000000;
+const PRICE_STALE_AFTER_X_IN_MS = 4000;
 
 import {
   GetSpotStreamRequest,
@@ -47,6 +48,7 @@ export default class SpotTileModel extends ModelBase {
   notional:number;
   pricingConnected:boolean;
   executionConnected:boolean;
+  priceStale:boolean;
   isTradeExecutionInFlight:boolean;
   isRunningInOpenFin:boolean;
   currencyChartIsOpening:boolean;
@@ -84,6 +86,7 @@ export default class SpotTileModel extends ModelBase {
     // If things get much messier we could look at introducing a state machine, but for now we really only have these 3 conditions to worry about
     this.pricingConnected = false;
     this.executionConnected = false;
+    this.priceStale = false;
     this.isTradeExecutionInFlight = false;
     this._regionName = RegionNames.workspace;
     this._regionSettings = new RegionSettings(`${this.currencyPair.symbol} Spot`, 370, 155, true);
@@ -223,9 +226,22 @@ export default class SpotTileModel extends ModelBase {
   }
 
   _subscribeToPriceStream() {
+    let priceStream = this._pricingService
+      .getSpotPriceStream(new GetSpotStreamRequest(this.currencyPair.symbol))
+      .publish()
+      .refCount();
     this._priceSubscriptionDisposable.setDisposable(
-      this._pricingService
-        .getSpotPriceStream(new GetSpotStreamRequest(this.currencyPair.symbol))
+      priceStream
+        .debounce(PRICE_STALE_AFTER_X_IN_MS, this._schedulerService)
+        .do(() => this._log.warn(`Price stale for ${this.currencyPair.symbol}`))
+        .subscribeWithRouter(
+          this.router,
+          this.modelId,
+          (price:SpotPrice) => {
+            this.priceStale = true;
+            this._updatePricingDownStatusNotification();
+          }),
+      priceStream
         .subscribeWithRouter(
           this.router,
           this.modelId,
@@ -234,6 +250,10 @@ export default class SpotTileModel extends ModelBase {
             // we don't update the price if we have an inflight trade, the users will want to see what they are buying
             if(!this.isTradeExecutionInFlight) {
               this.currentSpotPrice = price;
+            }
+            if (this.priceStale) {
+              this.priceStale = false;
+              this._updatePricingDownStatusNotification();
             }
           },
           err => {
@@ -268,7 +288,7 @@ export default class SpotTileModel extends ModelBase {
 
   _updatePricingDownStatusNotification() {
     if(this.notification === null || this.notification.notificationType === NotificationType.Text) {
-        if (this.pricingConnected) {
+        if (this.pricingConnected && !this.priceStale) {
           this.notification = null;
         } else {
           this.notification = new TextNotification('Pricing is unavailable');
