@@ -296,13 +296,6 @@ $default-padding: 10px;
 }
 
 .analytics__positions-tooltip {
-  font-family: BrandonMedium;
-  text-anchor: middle;
-  background-color: white;
-  border: 1px solid gray;
-}
-
-.analytics__positions-tooltip {
   position: absolute;
   width: auto;
   height: auto;
@@ -313,6 +306,7 @@ $default-padding: 10px;
   border:1px solid black;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
   pointer-events: none;
+  z-index: 100;
 }
 
 .new-chart-area {
