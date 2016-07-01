@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
-import d3tip from 'd3-tip';
 import _ from 'lodash';
 import Dimensions from 'react-dimensions';
 import { logger } from '../../../../system';
@@ -123,9 +122,19 @@ export default class PositionsBubbleChart extends React.Component{
     let dom = ReactDOM.findDOMNode(this);
     let svg = d3.select(dom).select('svg');
     svg.remove(); //clear all child nodes
-    if (this.tooltipGroup) this.tooltipGroup.hide();
     this.setState({updateRequired: true});
+
+    this._createTooltip();
     this._createChartForce(nextProps);
+  }
+
+  _createTooltip(){
+    if (this.tooltip) return;
+    let dom = ReactDOM.findDOMNode(this);
+    this.tooltip = d3.select(dom)
+      .append('div')
+      .style('visibility', 'hidden')
+      .attr('class', 'analytics__positions-tooltip');
   }
 
   _createChartForce(nextProps = this.props){
@@ -134,9 +143,9 @@ export default class PositionsBubbleChart extends React.Component{
 
     const tick = (e) => {
       let nodeGroup = svg.selectAll('g.node')
-        .on('mouseover', this.tooltipGroup.show )
-        .on('mousemove', this.tooltipGroup.show )
-        .on('mouseout',  this.tooltipGroup.hide );
+        .on('mouseover', (dataObj) => { this.tooltip.style('visibility', 'visible'); this._positionTooltip(dataObj); })
+        .on('mousemove', this._positionTooltip.bind(this))
+        .on('mouseout',  () => this.tooltip.style('visibility', 'hidden'));
 
       updateNodes(nodeGroup, this.state.nodes, this.scales);
     };
@@ -146,13 +155,6 @@ export default class PositionsBubbleChart extends React.Component{
         width: this.props.containerWidth,
         height: this.props.containerHeight
       });
-
-    this.tooltipGroup = d3tip().html((d)=>{
-      return `${d.id} ${getPositionValue(d.id, this.state.prevPositionsData)}` ;
-    })
-      .attr('class', 'analytics__positions-tooltip').direction('s').offset([-5, 0]);
-
-    svg.call(this.tooltipGroup);
 
     this.force = d3.layout.force()
         .nodes(this.state.nodes)
@@ -165,6 +167,13 @@ export default class PositionsBubbleChart extends React.Component{
         .on('tick', tick);
 
     this._update(this.state.nodes);
+  }
+
+  _positionTooltip(dataObj){
+    let posX = ( event ? event.layerX : dataObj.x) - this.tooltip[0][0].clientWidth/2;
+    let posY = event ? event.layerY : dataObj.y;
+    this.tooltip.style('top', (posY + 15)+'px').style('left', posX + 'px');
+    this.tooltip.text(`${dataObj.id} ${getPositionValue(dataObj.id, this.state.prevPositionsData)}`);
   }
 
   _update(nodes){
