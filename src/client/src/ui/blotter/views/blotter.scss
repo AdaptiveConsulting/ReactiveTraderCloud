@@ -9,6 +9,12 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
+  .fixedDataTableLayout_main {
+    border-width: 0;
+  }
+  .fixedDataTableLayout_bottomShadow {
+    margin-top: 0;
+  }
   .fixedDataTableCellLayout_wrap1 {
     width: 100%;
   }
@@ -21,7 +27,7 @@
     background-color: transparent;
   }
   .public_fixedDataTableCell_cellContent {
-    padding: 4px 10px;
+    padding: 6px 10px;
     font-weight: 100;
     font-size: 14px;
     font-family: BrandonMedium;
@@ -30,19 +36,11 @@
 
   .public_fixedDataTable_header .public_fixedDataTableCell_main,
   .public_fixedDataTable_header .public_fixedDataTableCell_cellContent {
-    font-weight: 900;
     background-color: #e1e3e8;
     color: #1d2027;
     font-family: BrandonMedium;
     font-size: 12px;
     text-transform: uppercase;
-  }
-}
-
-.blotter__trade-field--emphasized {
-  .public_fixedDataTableCell_cellContent {
-    font-weight: 900;
-    color: black;
   }
 }
 
@@ -55,7 +53,7 @@
 .blotter__controls {
   position: absolute;
   right: 5px;
-  top: 7px;
+  top: 4px;
   z-index: 2;
   cursor: pointer;
   color: #c2c5c9;
