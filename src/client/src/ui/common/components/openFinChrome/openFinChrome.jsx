@@ -9,7 +9,7 @@ export default class OpenFinChrome extends React.Component {
     minimize: React.PropTypes.func,
     maximize: React.PropTypes.func,
     close: React.PropTypes.func.isRequired,
-    showHeaderBar: React.PropTypes.boolean
+    showHeaderBar: React.PropTypes.bool
   };
 
   componentDidMount() {

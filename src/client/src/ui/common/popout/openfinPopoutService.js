@@ -9,7 +9,7 @@ const DockingManager = require('exports?DockingManager!../../../../lib/dockingMa
 
 const DOCKED_CLASS_NAME = 'docked';
 const BOUNDS_CHANGING_EVENT = 'bounds-changing';
-
+const CLOSE_REQUESTED_EVENT = 'close-requested';
 let _log:logger.Logger = logger.create('OpenfinPopoutService');
 
 export default class OpenfinPopoutService extends PopoutServiceBase {
@@ -23,22 +23,24 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
 
   openPopout({url, title, onClosing, windowOptions = { height: 400, width: 400, dockable: false }}:PopoutOptions, view:React.Component) {
     this._createWindow({url, title, windowOptions}, tearoutWindow => {
-      const onBoundsChanging = _.throttle(() => tearoutWindow.setAsForeground(), 300);
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div');
+      const onBoundsChanging = _.throttle(() => tearoutWindow.setAsForeground(), 300);
+      const onCloseRequested = () => {
+        this._unregisterWindow(tearoutWindow);
+        if (popoutContainer) {
+          ReactDOM.unmountComponentAtNode(popoutContainer);
+        }
+        if (_.isFunction(onClosing)) {
+          onClosing();
+        }
+        tearoutWindow.removeEventListener(BOUNDS_CHANGING_EVENT, onBoundsChanging);
+        tearoutWindow.removeEventListener(CLOSE_REQUESTED_EVENT, onCloseRequested);
+        this._openFin.close(tearoutWindow);
+      };
       popoutContainer.id = this._popoutContainerId;
       tearoutWindow.contentWindow.document.body.appendChild(popoutContainer);
       ReactDOM.render(<OpenFinChrome showHeaderBar={false}
-        close={() => {
-          this._openFin.close(tearoutWindow);
-          this._unregisterWindow(tearoutWindow);
-          tearoutWindow.removeEventListener(BOUNDS_CHANGING_EVENT, onBoundsChanging);
-          if (popoutContainer) {
-            ReactDOM.unmountComponentAtNode(popoutContainer);
-          }
-          if (_.isFunction(onClosing)) {
-            onClosing();
-          }
-        }}>
+        close={onCloseRequested}>
         {view}
       </OpenFinChrome>, popoutContainer);
       tearoutWindow.resizeTo(windowOptions.width, windowOptions.height);
@@ -52,6 +54,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
       }, null, () => tearoutWindow.bringToFront());
       this._registerWindow(tearoutWindow, windowOptions.dockable);
       tearoutWindow.addEventListener(BOUNDS_CHANGING_EVENT, onBoundsChanging);
+      tearoutWindow.addEventListener(CLOSE_REQUESTED_EVENT, onCloseRequested);
     }, err => _log.error(`An error occured while tearing out window: ${err}`));
   }
 
