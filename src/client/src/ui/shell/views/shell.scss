@@ -55,7 +55,7 @@
   &.shell__container--no-analytics {
     .shell__workspace,
     .shell__blotter {
-      width: calc(100% - #{$sidebar-width});
+      width: calc(100% - #{$sidebar-width} - #{$scrollbar-width});
     }
   }
   &.shell__container--no-analytics.shell__container--no-side-bar {
@@ -155,5 +155,4 @@
   .shell__side-bar {
     display: none;
   }
-
 }
