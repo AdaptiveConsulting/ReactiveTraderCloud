@@ -88,10 +88,11 @@ export function updateNodes(nodeGroup, nodes, scales){
 
 export function drawCircles(nodeGroup, duration = 800){
     nodeGroup
-      .on('mouseover', (d) => {
+      .on('mouseover', function(d) {
+        //using standard callback function to capture 'this'
         d3.select(this).style('fill', '#00A8CC');
       })
-      .on('mouseout', (d) => {
+      .on('mouseout', function(d) {
         d3.select(this).style('fill', d.color);
       })
       .transition()
