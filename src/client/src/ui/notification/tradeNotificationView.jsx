@@ -31,7 +31,7 @@ export default class TradeNotificationView extends React.Component {
       }
     );
     let tradeStatus = trade.tradeStatus === TradeStatus.Done ? trade.tradeStatus : REJECTED.toUpperCase();
-    let direction = trade.direction == Direction.Buy.name ? BOUGHT : SOLD;
+    let direction = trade.direction === Direction.Buy.name ? BOUGHT : SOLD;
 
     return (
       <div className='notification'>
