@@ -8,7 +8,7 @@
 
 .notional__size-input {
   float: left;
-  padding: 0;
+  padding: 0 0 0 3px;
   background: transparent;
   border: none;
   border-bottom: 1px solid transparent;
@@ -26,6 +26,6 @@
     color: white;
   }
   &::selection {
-    background-color: transparent;
+    background-color: #00A8CC;
   }
 }

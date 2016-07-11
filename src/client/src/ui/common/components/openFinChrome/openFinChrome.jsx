@@ -16,7 +16,6 @@ export default class OpenFinChrome extends React.Component {
     fin.desktop.main(() => {
       this.currentWindow = fin.desktop.Window.getCurrent();
       const toolbar = this.currentWindow.contentWindow.document.getElementsByClassName('openfin-chrome__header')[0];
-      this.currentWindow.defineDraggableArea(toolbar);
     });
   }
 

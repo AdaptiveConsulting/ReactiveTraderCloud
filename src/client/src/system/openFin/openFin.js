@@ -51,11 +51,19 @@ export default class OpenFin {
       });
   }
 
-  restore(currentWindow = this._currentWindow){
-    currentWindow.restore(() => currentWindow.bringToFront(
-      () => _Log.info(' Window restored and brought to front.'),
-      err => _Log.error(err)),
-      err => _Log.error(err));
+  bringToFront(currentWindow = this._currentWindow){
+    currentWindow.getState(state => {
+      if (state === 'minimized'){
+        currentWindow.restore(() => currentWindow.bringToFront(
+          () => _log.info('Window brought to front.'),
+          err => _log.error(err)
+        ), err => _log.error(err));
+      }else{
+        currentWindow.bringToFront(
+          () => _log.info('Window brought to front.'),
+          err => _log.error(err));
+      }
+    });
   }
 
   addSubscription(name:string, callback){
@@ -199,7 +207,7 @@ export default class OpenFin {
       url: '/notification.html',
       message: tradeNotification,
       onMessage: () => {
-        this.restore();
+        this.bringToFront();
       }
     });
     fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification);
