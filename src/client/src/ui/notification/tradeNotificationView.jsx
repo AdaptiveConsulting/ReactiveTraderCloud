@@ -30,9 +30,8 @@ export default class TradeNotificationView extends React.Component {
         'notification__summary-items--rejected': trade.tradeStatus === REJECTED
       }
     );
-    let secondCurrency = trade.dealtCurrency === trade.baseCurrency ? trade.termsCurrency : trade.baseCurrency;
-    let tradeStatus = trade.tradeStatus === TradeStatus.Done? trade.tradeStatus : REJECTED.toUpperCase();
-    let direction = trade.direction === Direction.Buy ? BOUGHT : SOLD;
+    let tradeStatus = trade.tradeStatus === TradeStatus.Done ? trade.tradeStatus : REJECTED.toUpperCase();
+    let direction = trade.direction == Direction.Buy.name ? BOUGHT : SOLD;
 
     return (
       <div className='notification'>
@@ -40,8 +39,8 @@ export default class TradeNotificationView extends React.Component {
           <span className={statusClassName}>{tradeStatus}</span>
           <ul className={tradeSummaryClasses}>
             <li className='notification__summary-item notification__summary-item--direction'>{direction}</li>
-            <li className='notification__summary-item notification__summary-item--notional'>{trade.dealtCurrency} {trade.notional}</li>
-            <li className='notification__summary-item notification__summary-item--currency'>vs {secondCurrency}</li>
+            <li className='notification__summary-item notification__summary-item--notional'>{trade.baseCurrency} {trade.notional}</li>
+            <li className='notification__summary-item notification__summary-item--currency'>vs {trade.termsCurrency}</li>
           </ul>
           <div className='notification__details-items-container'>
             <ul className='notification__details-items'>
