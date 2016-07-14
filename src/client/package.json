@@ -33,7 +33,8 @@
     "test:dev": "npm test -- --watch",
     "deploy": "webpack --display-error-details",
     "deploy:prod": "export NODE_ENV=production && webpack",
-    "openfin": "openfin -c config/openfin/local.app.json -l"
+    "openfin": "openfin -c config/openfin/local.app.json -l",
+    "workbench": "start-storybook -p 9001"
   },
   "license": "MIT",
   "dependencies": {
@@ -58,6 +59,7 @@
     "ws": "0.8.1"
   },
   "devDependencies": {
+    "@kadira/storybook": "1.33.0",
     "autoprefixer": "6.3.1",
     "autoprefixer-loader": "3.1.0",
     "babel": "6.5.2",
