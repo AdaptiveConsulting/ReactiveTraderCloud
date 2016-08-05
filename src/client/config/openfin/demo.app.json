@@ -16,7 +16,7 @@
         "frame": false
     },
     "runtime": {
-        "arguments": "",
+        "arguments": "--force-device-scale-factor=1",
         "version": "5.44.11.10"
     },
     "shortcut": {
