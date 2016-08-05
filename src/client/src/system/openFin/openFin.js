@@ -206,7 +206,7 @@ export default class OpenFin {
     let notification = new fin.desktop.Notification({
       url: '/notification.html',
       message: tradeNotification,
-      onMessage: () => {
+      onClick: () => {
         this.bringToFront();
       }
     });
