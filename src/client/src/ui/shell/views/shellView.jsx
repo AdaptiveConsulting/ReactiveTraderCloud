@@ -34,10 +34,10 @@ export default class ShellView extends ViewBase {
     return (
       <Chrome>
         <div>
+          <div className='shell__splash'>
+            <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
+          </div>
           <div className={shellClasses}>
-            <div className='shell__splash'>
-              <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
-            </div>
             <Modal shouldShow={model.sessionExpired} title='Session expired'>
               <div>
                 <div>Your 15 minute session expired, you are now disconnected from the server.</div>
