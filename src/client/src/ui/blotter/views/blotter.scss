@@ -1,4 +1,4 @@
-@keyframes hightlightNewTradeInBlotter {
+@keyframes highlightTradeInBlotter {
   0% { background-color: #7DE3FC; }
   100% { background-color: white; }
 }
@@ -71,8 +71,12 @@
   }
 }
 
-.blotter__trade--new {
-  animation: hightlightNewTradeInBlotter 0.5s ease-in;
+.public_fixedDataTableRow_main.blotter__trade--new {
+  animation: highlightTradeInBlotter 0.5s ease-in;
+}
+
+.public_fixedDataTableRow_main.blotter__trade--highlighted {
+  background-color: #7DE3FC;
 }
 
 .blotter__trade--rejected {

@@ -3,6 +3,9 @@ import _ from 'lodash';
 import { Trade, TradeNotification, CurrencyPairPosition } from '../../services/model';
 import { logger } from '../';
 import { PriceMapper, PositionsMapper } from '../../services/mappers';
+import { Router } from 'esp-js/src';
+import { WellKnownModelIds } from '../../';
+
 const _log:logger.Logger = logger.create('OpenFin');
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check';
@@ -12,11 +15,13 @@ export default class OpenFin {
   tradeClickedSubject:Rx.Subject<string>;
   limitCheckSubscriber:string;
   limitCheckId:number;
-
-  constructor() {
+  _router:Router;
+  
+  constructor(router: Router) {
     this.tradeClickedSubject = new Rx.Subject();
     this.limitCheckId = 1;
     this.limitCheckSubscriber = null;
+    this._router = router;
     if (this.isRunningInOpenFin) {
       this._initializeLimitChecker();
     }
@@ -208,6 +213,7 @@ export default class OpenFin {
       message: tradeNotification,
       onClick: () => {
         this.bringToFront();
+        this._router.publishEvent(WellKnownModelIds.blotterModelId, 'highlightTradeRow', {trade});
       }
     });
     fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification);

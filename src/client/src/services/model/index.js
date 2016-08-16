@@ -12,6 +12,7 @@ export { default as ServiceConst } from './serviceConst';
 export { default as ServiceStatusLookup } from './serviceStatusLookup';
 export { default as SpotPrice } from './spotPrice';
 export { default as Trade } from './trade';
+export { default as TradeRow } from './tradeRow';
 export { default as TradeNotification } from './tradeNotification';
 export { default as UpdateType } from './updateType';
 export { default as User } from './user';

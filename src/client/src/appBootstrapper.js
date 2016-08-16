@@ -62,7 +62,7 @@ class AppBootstrapper {
     );
 
     // in a larger app you'd put a container in here (shameless plug: https://github.com/KeithWoods/microdi-js, but there are many offerings in this space).
-    this._openFin = new OpenFin();
+    this._openFin = new OpenFin(espRouter);
     this._referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this._connection, this._schedulerService);
     this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, this._schedulerService, this._referenceDataService);
     this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, this._schedulerService, this._referenceDataService, this._openFin);
@@ -121,7 +121,7 @@ class AppBootstrapper {
     sidebarModel.observeEvents();
 
     // wire-up the blotter
-    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager, this._openFin);
+    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager, this._openFin, this._schedulerService);
     blotterModel.observeEvents();
 
     // wire-up analytics

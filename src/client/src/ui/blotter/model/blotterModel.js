@@ -7,10 +7,13 @@ import { logger, Environment } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';
 import { OpenFin } from '../../../system/openFin';
-import { Trade, TradesUpdate, TradeStatus, TradeNotification, RegionSettings } from '../../../services/model';
+import { TradeRow, Trade, TradesUpdate, TradeStatus, TradeNotification, RegionSettings } from '../../../services/model';
 import { BlotterView } from '../views';
+import { SchedulerService, } from '../../../system';
 
 var _log:logger.Logger = logger.create('BlotterModel');
+
+const HIGHLIGHT_TRADE_FOR_IN_MS = 200;
 
 @view(BlotterView)
 export default class BlotterModel extends ModelBase {
@@ -19,7 +22,8 @@ export default class BlotterModel extends ModelBase {
   _regionManager:RegionManager;
   _regionName:string;
   _regionSettings:RegionSettings;
-  trades:Array<Trade>;
+  _schedulerService:SchedulerService;
+  trades:Array<TradeRow>;
   isConnected:boolean;
 
   constructor(
@@ -27,7 +31,8 @@ export default class BlotterModel extends ModelBase {
     router:Router,
     blotterService:BlotterService,
     regionManager:RegionManager,
-    openFin: OpenFin
+    openFin: OpenFin,
+    schedulerService:SchedulerService,
   ) {
     super(modelId, router);
     this._blotterService = blotterService;
@@ -38,6 +43,7 @@ export default class BlotterModel extends ModelBase {
     this._regionSettings = new RegionSettings('Blotter', 850, 280, false);
     this._regionManagerHelper = new RegionManagerHelper(this._regionName, regionManager, this, this._regionSettings);
     this._openFin = openFin;
+    this._schedulerService = schedulerService;
   }
 
   @observeEvent('init')
@@ -60,13 +66,32 @@ export default class BlotterModel extends ModelBase {
     this._regionManagerHelper.popout();
   }
 
+  @observeEvent('highlightTradeRow')
+  _highlightTradeRow(e:{trade: Trade}) {
+    let index = _.findIndex(this.trades, traderRow => traderRow.trade.tradeId === e.trade.tradeId);
+    if (index >= 0) {
+      _log.debug(`Highlight trade ${e.trade.tradeId}`);
+      this.trades[index].isInFocus = true;
+      this._schedulerService.async.scheduleFuture('', HIGHLIGHT_TRADE_FOR_IN_MS, () => this.router.publishEvent(this.modelId, 'endHighlightTradeRow', {trade: e.trade}));
+    }
+  }
+
+  @observeEvent('endHighlightTradeRow')
+  _endHighlightTradeRow(e: {trade: Trade}) {
+    let index = _.findIndex(this.trades, traderRow => traderRow.trade.tradeId === e.trade.tradeId);
+    if (index >= 0) {
+      _log.debug(`Stop highlighting trade ${e.trade.tradeId}`);
+      this.trades[index].isInFocus = false;
+    }
+  }
+
   get canPopout() {
     return Environment.isRunningInIE;
   }
 
   subscribeToOpenFinEvents(){
     this._openFin.addSubscription('fetch-blotter', (msg, uuid) => {
-      let serialisedTrades = this.trades.map((t) => new TradeNotification(t));
+      let serialisedTrades = this.trades.map((t) => new TradeNotification(t.trade));
       this._openFin.sendAllBlotterData(uuid, serialisedTrades);
     });
   }
@@ -81,17 +106,18 @@ export default class BlotterModel extends ModelBase {
             let trades = tradesUpdate.trades;
 
             if (tradesUpdate.isStateOfTheWorld) {
-              this.trades = this.trades.concat(_.sortBy(tradesUpdate.trades, 'tradeId').reverse());
+              this.trades = this.trades.concat(_.sortBy(tradesUpdate.trades, 'tradeId').reverse()).map(trade => new TradeRow(trade));
             }else{
               _.forEach(trades, (trade:Trade) => {
-                let existingTradeIndex = _.findIndex(this.trades, (t) => t.tradeId === trade.tradeId );
+                let existingTradeIndex = _.findIndex(this.trades, (t) => t.trade.tradeId === trade.tradeId);
                 if (existingTradeIndex !== -1){
                   //update the existing trade
-                  this.trades[existingTradeIndex] = trade;
+                  this.trades[existingTradeIndex] = new TradeRow(trade);
                 }else{
                   //add the existing trade and mark it as new
-                  this.trades.unshift(trade);
-                  trade.isNew = true;
+                  const tradeRow = new TradeRow(trade);
+                  this.trades.unshift(tradeRow);
+                  tradeRow.isNew = true;
                 }
 
                 //display a notification if the trade has a final status (Done or Rejected);
