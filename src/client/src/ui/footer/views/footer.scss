@@ -71,7 +71,7 @@ $footer-background-color: #00a8cc;
   margin: auto;
   top: 0;
   bottom: 0;
-  right: 40px;
+  right: 50px;
   display: flex;
   width: 250px;
   height: 100%;
@@ -85,12 +85,8 @@ $footer-background-color: #00a8cc;
 
 .footer__logo-openfin {
   background: url('../../common/images/openfin-logo.svg') no-repeat;
-  height: 80%;
-  margin-top: 3px;
-}
-
-.footer__logo-openfin--hidden {
-  display: none;
+  height: 70%;
+  margin-top: 5px;
 }
 
 .footer__logo-adaptive {

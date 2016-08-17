@@ -31,8 +31,7 @@ export default class FooterView extends ViewBase {
     let openfinLogoClassName = classnames(
       'footer__logo',
       {
-        'footer__logo-openfin': model.isRunningInOpenFin,
-        'footer__logo-openfin--hidden': !model.isRunningInOpenFin
+        'footer__logo-openfin': model.isRunningInOpenFin
       }
     );
     let footerClasses = classnames('footer', {
