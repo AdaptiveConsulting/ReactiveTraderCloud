@@ -117,14 +117,14 @@ export default class AnalyticsModel extends ModelBase {
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.sidebarModelId, 'hideAnalytics')
-        .observe(() => this.router.runAction(this.modelId, ()=> {
+        .subscribe(() => this.router.runAction(this.modelId, ()=> {
           this._regionManagerHelper.removeFromRegion();
         }))
     );
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.sidebarModelId, 'showAnalytics')
-        .observe(() => this.router.runAction(this.modelId, () => {
+        .subscribe(() => this.router.runAction(this.modelId, () => {
           this._regionManagerHelper.addToRegion();
         }))
     );

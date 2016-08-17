@@ -35,7 +35,7 @@ export default class ViewBase extends React.Component {
     if (!this._isObservingModel && modelId) {
       this._isObservingModel = true;
       this._disposables.add(
-        router.getModelObservable(modelId).observe(model => {
+        router.getModelObservable(modelId).subscribe(model => {
           this.setState({model: model});
         })
       );
