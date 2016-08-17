@@ -52,7 +52,7 @@ export default class SidebarModel extends ModelBase {
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.analyticsModelId, 'popOutAnalytics')
-        .observe(() => this.router.runAction(this.modelId, ()=> {
+        .subscribe(() => this.router.runAction(this.modelId, ()=> {
           this.showSidebar = false;
         }))
     );
@@ -60,7 +60,7 @@ export default class SidebarModel extends ModelBase {
       this.router
         .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
         .where(({model}) => model.modelId === WellKnownModelIds.analyticsModelId)
-        .observe(() => this.router.runAction(this.modelId, () => {
+        .subscribe(() => this.router.runAction(this.modelId, () => {
           this.showSidebar = true;
         }))
     );

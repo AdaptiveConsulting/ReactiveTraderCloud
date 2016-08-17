@@ -48,13 +48,13 @@ export default class ShellModel extends ModelBase {
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.blotterModelId, 'tearOffBlotter')
-        .observe(() => _this.router.runAction(_this.modelId, () => _this.isBlotterOut = true))
+        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isBlotterOut = true))
     );
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
         .where(({model}) => model.modelId === WellKnownModelIds.blotterModelId)
-        .observe(() => _this.router.runAction(_this.modelId, () => _this.isBlotterOut = false))
+        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isBlotterOut = false))
     );
   }
 
@@ -67,13 +67,13 @@ export default class ShellModel extends ModelBase {
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.analyticsModelId, 'popOutAnalytics')
-        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = _this.isSidebarOut = true))
+        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = _this.isSidebarOut = true))
     );
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
         .where(({model}) => model.modelId === WellKnownModelIds.analyticsModelId)
-        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = _this.isSidebarOut = false))
+        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = _this.isSidebarOut = false))
     );
   }
 
@@ -87,12 +87,12 @@ export default class ShellModel extends ModelBase {
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.sidebarModelId, 'hideAnalytics')
-        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = true))
+        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = true))
     );
     this.addDisposable(
       this.router
         .getEventObservable(WellKnownModelIds.sidebarModelId, 'showAnalytics')
-        .observe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = false))
+        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = false))
     );
   }
 
