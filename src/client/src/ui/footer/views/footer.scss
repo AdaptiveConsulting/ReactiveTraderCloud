@@ -84,8 +84,9 @@ $footer-background-color: #00a8cc;
 }
 
 .footer__logo-openfin {
-  background: url('../../common/images/openfin-logo.png') no-repeat;
-  margin-top: 9px;
+  background: url('../../common/images/openfin-logo.svg') no-repeat;
+  height: 80%;
+  margin-top: 3px;
 }
 
 .footer__logo-openfin--hidden {

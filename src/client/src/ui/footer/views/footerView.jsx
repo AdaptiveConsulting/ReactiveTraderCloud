@@ -42,8 +42,8 @@ export default class FooterView extends ViewBase {
         <footer className={footerClasses}>
           <span className='footer__connection-url'>{model.isConnectedToBroker ? `Connected to ${model.connectionUrl} (${model.connectionType})` : 'Disconnected'} </span>
           <span className='footer__logo-container '>
-            <span className='footer__logo footer__logo-adaptive' onClick={() => model.openLink(ExternalURL.adaptiveURL)}></span>
             <span className={openfinLogoClassName} onClick={() => model.openLink(ExternalURL.openfinURL)}></span>
+            <span className='footer__logo footer__logo-adaptive' onClick={() => model.openLink(ExternalURL.adaptiveURL)}></span>
           </span>
           <div className='footer__status-indicator-wrapper'
             onMouseEnter={(e) => this._toggleServiceStatus()}
