@@ -6,7 +6,7 @@ import {  ApplicationStatusConst } from '../../../services/model';
 export default class StatusIndicator extends React.Component {
   static propTypes = {
     className: React.PropTypes.string,
-    status: React.PropTypes.instanceOf(ApplicationStatusConst).isRequired
+    status: React.PropTypes.string.isRequired
   };
 
   render() {

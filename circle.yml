@@ -11,7 +11,8 @@ dependencies:
     - docker info
     - cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions
     - cd deploy/e2e && ./loadContainers
-    - cd deploy/e2e && ./buildContainers $CIRCLE_BUILD_NUM
+    - cd deploy/e2e && ./buildContainers $CIRCLE_BUILD_NUM:
+        timeout: 1200
     - cd deploy/e2e && ./runContainers $CIRCLE_BUILD_NUM
     - cd deploy/e2e && ./saveContainers
 
