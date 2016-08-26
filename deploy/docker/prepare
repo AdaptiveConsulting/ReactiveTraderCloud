@@ -40,14 +40,14 @@ usage() {
     echo " "
 }
 
-command=$1
-group=$2
-build=$3
-
 if [[ $# != 3 ]];then
   usage
   exit 1
 fi
+
+command=$1
+group=$2
+build=$3
 
 # control build/push
 if ! listcontains "$possibleCommands" $command; then 
