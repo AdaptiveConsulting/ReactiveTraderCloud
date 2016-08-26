@@ -19,4 +19,4 @@ sed -ie "s|__DEBIAN_CONTAINER__|$debianContainer|g" ./build/Dockerfile
 cp ./template.install.sh ./build/install.sh
 
 docker build --no-cache -t $gcloudContainer ./build/.
-docker tag -f $gcloudContainer $gcloudContainer.$build
+docker tag $gcloudContainer $gcloudContainer.$build

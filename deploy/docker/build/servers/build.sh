@@ -37,4 +37,4 @@ docker run -t --name dotnetrestored -v /$(pwd)/dotnetcache:/packages weareadapti
 
 # commit
 docker commit dotnetrestored $serversContainer
-docker tag -f $serversContainer $serversContainer.$build
+docker tag $serversContainer $serversContainer.$build

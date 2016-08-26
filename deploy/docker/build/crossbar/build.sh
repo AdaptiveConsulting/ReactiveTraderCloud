@@ -20,4 +20,4 @@ cp ./template.install.sh ./build/install.sh
 sed -ie "s/__CROSSBAR_VERSION__/$vCrossbar/g" ./build/install.sh
 
 docker build --no-cache -t $crossbarContainer ./build/.
-docker tag -f $crossbarContainer $crossbarContainer.$build
+docker tag $crossbarContainer $crossbarContainer.$build

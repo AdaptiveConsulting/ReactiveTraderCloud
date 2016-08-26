@@ -19,5 +19,5 @@ sed -ie "s/__UBUNTU_CONTAINER__/$ubuntuContainer/g" ./build/Dockerfile
 sed -ie "s/__VJQ__/$vJq/g"                          ./build/Dockerfile
 
 docker build --no-cache -t $testtoolsContainer ./build/.
-docker tag -f $testtoolsContainer $testtoolsContainer.$build
-docker tag -f $testtoolsContainer $testtoolsContainer_latest
+docker tag $testtoolsContainer $testtoolsContainer.$build
+docker tag $testtoolsContainer $testtoolsContainer_latest

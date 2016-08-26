@@ -19,4 +19,4 @@ sed -ie "s|__OFFICIAL_NGINX_CONTAINER__|$officialNginxContainer|g" ./build/Docke
 
 # build
 docker build --no-cache -t $nginxContainer ./build/.
-docker tag -f $nginxContainer $nginxContainer.$build
+docker tag $nginxContainer $nginxContainer.$build
