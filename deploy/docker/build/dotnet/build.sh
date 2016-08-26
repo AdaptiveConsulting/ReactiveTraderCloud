@@ -20,4 +20,4 @@ cp     ./template.install.sh ./build/install.sh
 sed -ie "s/__DOTNET_VERSION__/$dotnetversion/g"  ./build/install.sh
 
 docker build --no-cache -t $dotnetContainer ./build/.
-docker tag -f $dotnetContainer $dotnetContainer.$build
+docker tag $dotnetContainer $dotnetContainer.$build

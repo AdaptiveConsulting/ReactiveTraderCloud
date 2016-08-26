@@ -20,4 +20,4 @@ sed -ie "s|__UBUNTU_CONTAINER__|$ubuntuContainer|g" ./build/Dockerfile
 sed -ie "s/__VNODE__/$vNode/g" ./build/install.sh
 
 docker build --no-cache -t $nodeContainer ./build/.
-docker tag -f $nodeContainer $nodeContainer.$build
+docker tag $nodeContainer $nodeContainer.$build
