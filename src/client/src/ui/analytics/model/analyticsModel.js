@@ -1,4 +1,4 @@
-import { Router,  observeEvent } from 'esp-js/src';
+import { Router,  observeEvent } from 'esp-js';
 import { AnalyticsService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
 import { logger, Environment } from '../../../system';

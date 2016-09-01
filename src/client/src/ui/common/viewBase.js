@@ -1,5 +1,5 @@
 import React from 'react';
-import { CompositeDisposable } from 'esp-js/src';
+import { CompositeDisposable } from 'esp-js';
 import { router } from '../../system';
 import './styles/_base.scss';
 import './styles/_fonts.scss';

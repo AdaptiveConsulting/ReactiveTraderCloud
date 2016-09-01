@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Trade, TradeNotification, CurrencyPairPosition } from '../../services/model';
 import { logger } from '../';
 import { PriceMapper, PositionsMapper } from '../../services/mappers';
-import { Router } from 'esp-js/src';
+import { Router } from 'esp-js';
 import { WellKnownModelIds } from '../../';
 
 const _log:logger.Logger = logger.create('OpenFin');
@@ -16,7 +16,7 @@ export default class OpenFin {
   limitCheckSubscriber:string;
   limitCheckId:number;
   _router:Router;
-  
+
   constructor(router: Router) {
     this.tradeClickedSubject = new Rx.Subject();
     this.limitCheckId = 1;

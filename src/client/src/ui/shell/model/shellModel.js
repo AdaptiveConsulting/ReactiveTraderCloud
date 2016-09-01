@@ -1,12 +1,18 @@
-import { Router, observeEvent } from 'esp-js/src';
+import { Router, observeEvent } from 'esp-js';
+import { viewBinding } from 'esp-js-react';
 import { logger } from '../../../system';
 import { Connection } from '../../../system/service';
 import { ConnectionStatus } from '../../../system/service';
 import { ModelBase } from '../../common';
 import { WellKnownModelIds } from '../../../';
+import ShellView from '../views/shellView';
+import BlotterModel from '../../blotter/model/blotterModel';
+import AnalyticsModel from '../../analytics/model/analyticsModel';
+import SidebarModel from '../../sidebar/model/sidebarModel';
 
 var _log:logger.Logger = logger.create('ShellModel');
 
+@viewBinding(ShellView)
 export default class ShellModel extends ModelBase {
   _connection:Connection;
   sessionExpired:boolean;
@@ -16,13 +22,28 @@ export default class ShellModel extends ModelBase {
   wellKnownModelIds:WellKnownModelIds;
   showSideBar:boolean;
 
-  constructor(modelId:string, router:Router, connection:Connection) {
+  _blotter:BlotterModel;
+  _analyticsModel:AnalyticsModel;
+  _sidebarModel:SidebarModel;
+
+  constructor(
+    modelId:string,
+    router:Router,
+    connection:Connection,
+    blotter:BlotterModel,
+    analyticsModel:AnalyticsModel,
+    sidebarModel:SidebarModel
+  ) {
     super(modelId, router);
     this._connection = connection;
     this.sessionExpired = false;
     this.showSideBar = true;
     this.wellKnownModelIds = WellKnownModelIds;
     this.appVersion = `v${__VERSION__}`;
+
+    this._blotter = blotter;
+    this._analyticsModel = analyticsModel;
+    this._sidebarModel = sidebarModel;
   }
 
   @observeEvent('init')
@@ -38,6 +59,8 @@ export default class ShellModel extends ModelBase {
   _onReconnect() {
     this._connection.connect();
   }
+
+
 
   /**
    * Observe blotter tear out events, so we can resize the workspace/analytics area

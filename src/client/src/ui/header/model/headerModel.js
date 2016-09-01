@@ -1,4 +1,4 @@
-import { Router,  observeEvent } from 'esp-js/src';
+import { Router,  observeEvent } from 'esp-js';
 import { logger } from '../../../system';
 import { ModelBase } from '../../common';
 

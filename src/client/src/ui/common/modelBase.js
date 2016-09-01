@@ -1,4 +1,4 @@
-import { Router, DisposableBase } from 'esp-js/src';
+import { Router, DisposableBase } from 'esp-js';
 import { logger, Guard } from '../../system';
 
 var _log:logger.Logger = logger.create('ModelBase');

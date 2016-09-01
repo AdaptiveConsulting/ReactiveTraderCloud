@@ -2140,9 +2140,14 @@
       "resolved": "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-3.15.0.tgz"
     },
     "esp-js": {
-      "version": "1.0.3",
-      "from": "esp-js@1.0.3",
-      "resolved": "https://registry.npmjs.org/esp-js/-/esp-js-1.0.3.tgz"
+      "version": "1.1.2",
+      "from": "esp-js@latest",
+      "resolved": "https://registry.npmjs.org/esp-js/-/esp-js-1.1.2.tgz"
+    },
+    "esp-js-react": {
+      "version": "0.1.0",
+      "from": "esp-js-react@latest",
+      "resolved": "https://registry.npmjs.org/esp-js-react/-/esp-js-react-0.1.0.tgz"
     },
     "esprima-fb": {
       "version": "15001.1001.0-dev-harmony-fb",

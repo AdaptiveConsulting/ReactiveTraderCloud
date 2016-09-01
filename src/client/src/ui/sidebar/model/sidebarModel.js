@@ -1,5 +1,5 @@
 import { logger } from '../../../system';
-import { Router,  observeEvent } from 'esp-js/src';
+import { Router,  observeEvent } from 'esp-js';
 import { SidebarView } from '../views';
 import { ModelBase, RegionManagerHelper } from '../../common';
 import { RegionManager, RegionNames, view  } from '../../regions';

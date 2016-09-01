@@ -1,5 +1,5 @@
 import logger from './logger';
-import { Router } from 'esp-js/src';
+import { Router } from 'esp-js';
 
 // esp dev tools is in beta ATM, bit heavy on the performance side of things.
 // However feel free to uncomment these 2 lines and check it out.

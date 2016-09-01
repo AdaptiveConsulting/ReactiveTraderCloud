@@ -2,24 +2,24 @@ import React from 'react';
 import {Modal, Chrome} from '../../common/components';
 import {FooterView} from '../../footer/views';
 import {ViewBase} from '../../common';
-import {ShellModel} from '../model';
 import {router} from '../../../system';
 import {WorkspaceRegionView} from '../../regions/views/workspace';
 import {SingleItemRegionView} from '../../regions/views/singleItem';
 import classnames from 'classnames';
 import './shell.scss';
 
-export default class ShellView extends ViewBase {
+export default class ShellView extends React.Component {
+
+  static propTypes = {
+    model: React.PropTypes.object.isRequired
+  }
+
   constructor() {
     super();
-    this.state = {
-      model: null,
-      modelId: 'shellModelId'
-    };
   }
 
   render() {
-    let model:ShellModel = this.state.model;
+    let model = this.props.model;
     if (model === null) {
       return null;
     }

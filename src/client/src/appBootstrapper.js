@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { RouterProvider, SmartComponent } from 'esp-js-react';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { HeaderModel } from './ui/header/model';
@@ -13,7 +14,6 @@ import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
 import { default as espRouter } from './system/router';
-import { ShellView } from './ui/shell/views';
 import { RegionModel, SingleItemRegionModel, PopoutRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
 import config from 'config.json';
@@ -155,7 +155,9 @@ class AppBootstrapper {
 
   displayUi() {
     ReactDOM.render(
-      <ShellView />,
+      <RouterProvider router={espRouter} >
+        <SmartComponent modelId={WellKnownModelIds.shellModelId} />
+      </RouterProvider>,
       document.getElementById('root')
     );
   }

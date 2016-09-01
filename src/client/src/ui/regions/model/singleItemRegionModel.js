@@ -1,4 +1,4 @@
-import { Router } from 'esp-js/src';
+import { Router } from 'esp-js';
 import { RegionModel, RegionOptions, RegionModelRegistration } from './';
 import { ModelBase } from '../../common';
 

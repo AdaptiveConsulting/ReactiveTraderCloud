@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { ModelBase } from '../../common';
-import { Router, observeEvent } from 'esp-js/src';
+import { Router, observeEvent } from 'esp-js';
 import { RegionModelRegistration, RegionOptions } from './';
 import { logger } from '../../../system';
 

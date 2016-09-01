@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import { Router, observeEvent } from 'esp-js/src';
+import { Router, observeEvent } from 'esp-js';
 import { PricingService, ExecutionService } from '../../../services';
 import { logger, Environment } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';

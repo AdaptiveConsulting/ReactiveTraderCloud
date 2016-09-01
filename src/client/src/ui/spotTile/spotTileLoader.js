@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Router, DisposableBase } from 'esp-js/src';
+import { Router, DisposableBase } from 'esp-js';
 import { ReferenceDataService } from '../../services';
 import { CurrencyPairUpdates, CurrencyPairUpdate, UpdateType } from '../../services/model';
 import { SpotTileFactory } from './';

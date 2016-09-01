@@ -1,4 +1,4 @@
-import { observeEvent } from 'esp-js/src';
+import { observeEvent } from 'esp-js';
 import {  CurrencyPairPosition } from '../../../services/model';
 import { logger } from '../../../system';
 
@@ -39,7 +39,7 @@ export default class PositionsChartModel {
   get seriesData():Array{
     return this._seriesData;
   }
-  
+
   get itemCount() : Number {
     return this._seriesData.length;
   }
