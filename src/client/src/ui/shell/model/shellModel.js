@@ -6,9 +6,6 @@ import { ConnectionStatus } from '../../../system/service';
 import { ModelBase } from '../../common';
 import { WellKnownModelIds } from '../../../';
 import ShellView from '../views/shellView';
-import BlotterModel from '../../blotter/model/blotterModel';
-import AnalyticsModel from '../../analytics/model/analyticsModel';
-import SidebarModel from '../../sidebar/model/sidebarModel';
 
 var _log:logger.Logger = logger.create('ShellModel');
 
@@ -18,21 +15,18 @@ export default class ShellModel extends ModelBase {
   sessionExpired:boolean;
   isBlotterOut:boolean;
   isAnalyticsOut:boolean;
-  isSidebarOut:boolean;
   wellKnownModelIds:WellKnownModelIds;
   showSideBar:boolean;
 
-  _blotter:BlotterModel;
-  _analyticsModel:AnalyticsModel;
-  _sidebarModel:SidebarModel;
+  _blotterRegionModel:SingleItemRegionModel;
+  _analyticsRegionModel:SingleItemRegionModel;
 
   constructor(
     modelId:string,
     router:Router,
     connection:Connection,
-    blotter:BlotterModel,
-    analyticsModel:AnalyticsModel,
-    sidebarModel:SidebarModel
+    blotterRegionModel:SingleItemRegionModel,
+    analyticsRegionModel:SingleItemRegionModel
   ) {
     super(modelId, router);
     this._connection = connection;
@@ -41,9 +35,8 @@ export default class ShellModel extends ModelBase {
     this.wellKnownModelIds = WellKnownModelIds;
     this.appVersion = `v${__VERSION__}`;
 
-    this._blotter = blotter;
-    this._analyticsModel = analyticsModel;
-    this._sidebarModel = sidebarModel;
+    this._blotterRegionModel = blotterRegionModel;
+    this._analyticsRegionModel = analyticsRegionModel;
   }
 
   @observeEvent('init')
@@ -52,7 +45,6 @@ export default class ShellModel extends ModelBase {
     this._observeForSessionExpired();
     this._observeForBlotterTearOut();
     this._observeForAnalyticsTearOut();
-    this._observeSidebarEvents();
   }
 
   @observeEvent('reconnectClicked')
@@ -60,24 +52,15 @@ export default class ShellModel extends ModelBase {
     this._connection.connect();
   }
 
-
-
   /**
    * Observe blotter tear out events, so we can resize the workspace/analytics area
    * @private
    */
   _observeForBlotterTearOut() {
-    let _this = this;
     this.addDisposable(
-      this.router
-        .getEventObservable(WellKnownModelIds.blotterModelId, 'tearOffBlotter')
-        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isBlotterOut = true))
-    );
-    this.addDisposable(
-      this.router
-        .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
-        .where(({model}) => model.modelId === WellKnownModelIds.blotterModelId)
-        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isBlotterOut = false))
+      this._blotterRegionModel.hasContentSubject.streamFor(this.modelId).subscribe(hasContent => {
+        this.isBlotterOut = !hasContent;
+      })
     );
   }
 
@@ -86,36 +69,10 @@ export default class ShellModel extends ModelBase {
    * @private
    */
   _observeForAnalyticsTearOut() {
-    let _this = this;
     this.addDisposable(
-      this.router
-        .getEventObservable(WellKnownModelIds.analyticsModelId, 'popOutAnalytics')
-        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = _this.isSidebarOut = true))
-    );
-    this.addDisposable(
-      this.router
-        .getEventObservable(WellKnownModelIds.popoutRegionModelId, 'removeFromRegion')
-        .where(({model}) => model.modelId === WellKnownModelIds.analyticsModelId)
-        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = _this.isSidebarOut = false))
-    );
-  }
-
-
-  /**
-   * Observe sidebar hide analytics event, so we can resize the workspace/analytics area
-   * @private
-   */
-  _observeSidebarEvents() {
-    let _this = this;
-    this.addDisposable(
-      this.router
-        .getEventObservable(WellKnownModelIds.sidebarModelId, 'hideAnalytics')
-        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = true))
-    );
-    this.addDisposable(
-      this.router
-        .getEventObservable(WellKnownModelIds.sidebarModelId, 'showAnalytics')
-        .subscribe(() => _this.router.runAction(_this.modelId, () => _this.isAnalyticsOut = false))
+      this._analyticsRegionModel.hasContentSubject.streamFor(this.modelId).subscribe(hasContent => {
+        this.isAnalyticsOut = !hasContent;
+      })
     );
   }
 

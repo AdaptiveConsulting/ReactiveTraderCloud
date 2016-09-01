@@ -1,6 +1,7 @@
 import Rx from 'rx';
 import _ from 'lodash';
 import { Router,  observeEvent, RouterSubject } from 'esp-js';
+import { viewBinding } from 'esp-js-react';
 import { BlotterService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
 import { logger, Environment } from '../../../system';
@@ -15,7 +16,7 @@ var _log:logger.Logger = logger.create('BlotterModel');
 
 const HIGHLIGHT_TRADE_FOR_IN_MS = 200;
 
-@view(BlotterView)
+@viewBinding(BlotterView)
 export default class BlotterModel extends ModelBase {
   _blotterService:BlotterService;
   _regionManagerHelper:RegionManagerHelper;
@@ -23,7 +24,6 @@ export default class BlotterModel extends ModelBase {
   _regionName:string;
   _regionSettings:RegionSettings;
   _schedulerService:SchedulerService;
-  _blotterTornOutSubject:RouterSubject;
   trades:Array<TradeRow>;
   isConnected:boolean;
 
@@ -45,15 +45,10 @@ export default class BlotterModel extends ModelBase {
     this._regionManagerHelper = new RegionManagerHelper(this._regionName, regionManager, this, this._regionSettings);
     this._openFin = openFin;
     this._schedulerService = schedulerService;
-    this._blotterTornOutSubject = router.createSubject();
   }
 
   get canPopout() {
     return Environment.isRunningInIE;
-  }
-
-  get blotterTornOutStream() {
-    return this._blotterTornOutSubject.asObservable();
   }
 
   @observeEvent('init')
@@ -74,7 +69,6 @@ export default class BlotterModel extends ModelBase {
   _onTearOffBlotter() {
     _log.info(`Popping out blotter`);
     this._regionManagerHelper.popout();
-    this._blotterTornOutSubject.onNext(true);
   }
 
   @observeEvent('highlightTradeRow')

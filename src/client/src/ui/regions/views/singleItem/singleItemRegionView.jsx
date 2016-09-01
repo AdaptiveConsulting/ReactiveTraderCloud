@@ -1,32 +1,28 @@
+import { SmartComponent } from 'esp-js-react';
 import React from 'react';
-import { ViewBase } from '../../../common';
 import { RegionModel, RegionModelRegistration } from '../../model';
-import { createViewForModel } from '../../';
 import classnames from 'classnames';
 
-export default class SingleItemRegionView extends ViewBase {
+export default class SingleItemRegionView extends React.Component {
   constructor() {
     super();
-    this.state = {
-      model: null
-    };
   }
 
   static propTypes = {
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    model:React.PropTypes.object.isRequired
   };
 
   render() {
-    let model:RegionModel = this.state.model;
-    if (model === null || model.modelRegistrations.length !== 1) {
+    let model:RegionModel = this.props.model;
+    if (model.modelRegistrations.length !== 1) {
       let classNames = classnames(this.props.className, 'hide');
       return <div className={classNames}></div>;
     } else {
       let modelRegistration:RegionModelRegistration = model.modelRegistrations[0];
-      let view = createViewForModel(modelRegistration.model, modelRegistration.displayContext);
       return (
         <div className={this.props.className}>
-          {view}
+          <SmartComponent modelId={modelRegistration.model.modelId} viewContext={modelRegistration.displayContext} />
         </div>
       );
     }

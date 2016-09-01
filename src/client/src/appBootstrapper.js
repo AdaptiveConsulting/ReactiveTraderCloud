@@ -94,14 +94,8 @@ class AppBootstrapper {
     blotterRegionModel.observeEvents();
     let analyticsRegionModel = new SingleItemRegionModel(WellKnownModelIds.analyticsRegionModelId, RegionNames.analytics, espRouter);
     analyticsRegionModel.observeEvents();
-    let sidebarRegionModel = new SingleItemRegionModel(WellKnownModelIds.sidebarRegionModelId, RegionNames.sidebar, espRouter);
-    sidebarRegionModel.observeEvents();
-    let regionManager = new RegionManager(
-      [workspaceRegionModel, popoutRegionModel, blotterRegionModel, analyticsRegionModel, sidebarRegionModel], this._openFin.isRunningInOpenFin);
-
-    // wire up the shell
-    let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection, this._openFin);
-    shellModel.observeEvents();
+    var allRegionModels = [workspaceRegionModel, popoutRegionModel, blotterRegionModel, analyticsRegionModel];
+    let regionManager = new RegionManager(allRegionModels, this._openFin.isRunningInOpenFin);
 
     // wire up the application chrome
     let chromeModel = new ChromeModel(WellKnownModelIds.chromeModelId, espRouter, this._openFin);
@@ -115,10 +109,6 @@ class AppBootstrapper {
       new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager, this._schedulerService, this._openFin)
     );
     spotTileLoader.beginLoadTiles();
-
-    // wire-up the sidebar
-    let sidebarModel = new SidebarModel(WellKnownModelIds.sidebarModelId, espRouter, regionManager);
-    sidebarModel.observeEvents();
 
     // wire-up the blotter
     let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager, this._openFin, this._schedulerService);
@@ -135,6 +125,16 @@ class AppBootstrapper {
     // wire-up the footer
     let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService, this._openFin);
     footerModel.observeEvents();
+
+    // wire up the shell
+    let shellModel = new ShellModel(
+      WellKnownModelIds.shellModelId,
+      espRouter,
+      this._connection,
+      blotterRegionModel,
+      analyticsRegionModel
+    );
+    shellModel.observeEvents();
 
     this._referenceDataService.hasLoadedStream.subscribe(() => {
       // Some models require the ref data to be loaded before they subscribe to their streams.

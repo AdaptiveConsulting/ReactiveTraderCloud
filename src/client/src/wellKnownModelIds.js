@@ -21,10 +21,6 @@ export default class WellKnownModelIds {
     return 'blotterRegionModelId';
   }
 
-  static get sidebarRegionModelId() {
-    return 'sidebarRegionModelId';
-  }
-
   static get shellModelId() {
     return 'shellModelId';
   }

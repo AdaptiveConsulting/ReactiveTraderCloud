@@ -1,8 +1,9 @@
+import React from 'react';
 import { Router } from 'esp-js';
+import { ViewBinder } from 'esp-js-react';
 import { RegionModel, RegionOptions, RegionModelRegistration } from './';
 import { getPopoutService, PopoutOptions } from '../../common/popout';
 import { ModelBase } from '../../common';
-import { createViewForModel } from '../';
 
 export default class PopoutRegionModel extends RegionModel {
 
@@ -15,7 +16,7 @@ export default class PopoutRegionModel extends RegionModel {
   _addToRegion(model:ModelBase, options:?RegionOptions) : RegionModelRegistration {
     let modelRegistration = super._addToRegion(model, options);
     let regionSettings = modelRegistration.regionSettings || {};
-    let view = createViewForModel(modelRegistration.model, modelRegistration.displayContext);
+    let view = React.createElement(ViewBinder, { model: modelRegistration.model, displayContext:modelRegistration.displayContext});
     let width = regionSettings.width || 400;
     let height = regionSettings.height || 400;
     let dockable = regionSettings.dockable || false;

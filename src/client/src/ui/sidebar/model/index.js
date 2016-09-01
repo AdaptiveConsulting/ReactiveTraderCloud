@@ -1,1 +1,1 @@
-export { default as SidebarModel } from './sidebarModel';
+// export { default as SidebarModel } from './sidebarModel';

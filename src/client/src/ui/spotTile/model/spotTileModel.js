@@ -1,5 +1,6 @@
 import Rx from 'rx';
 import { Router, observeEvent } from 'esp-js';
+import { viewBinding } from 'esp-js-react';
 import { PricingService, ExecutionService } from '../../../services';
 import { logger, Environment } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
@@ -26,7 +27,7 @@ import {
 import { SpotTileView } from '../views';
 
 
-@view(SpotTileView)
+@viewBinding(SpotTileView)
 export default class SpotTileModel extends ModelBase {
   // non view state
   _pricingService:PricingService;

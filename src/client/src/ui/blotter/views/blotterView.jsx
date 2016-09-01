@@ -10,22 +10,19 @@ import { BlotterModel } from '../model';
 import 'fixed-data-table/dist/fixed-data-table.css';
 import './blotter.scss';
 
-@Dimensions()
-export default class BlotterView extends ViewBase {
+// @Dimensions()
+export default class BlotterView extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      model: null
-    };
   }
 
   componentWillReceiveProps() {
-    this.props.updateDimensions();
+    // this.props.updateDimensions();
   }
 
   render() {
-    let model:BlotterModel = this.state.model;
+    let model:BlotterModel = this.props.model;
     if (!model) {
       return null;
     }

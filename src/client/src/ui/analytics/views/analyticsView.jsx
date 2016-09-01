@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import { router, logger } from '../../../system';
 import { ViewBase } from '../../common';
-import { AnalyticsModel, PositionsChartModel, PnlChartModel } from '../model';
+import { PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
 import AnalyticsBarChart from './chart/analyticsBarChart';
@@ -14,13 +14,10 @@ import './analytics.scss';
 
 var _log:logger.Logger = logger.create('AnalyticsView');
 
-@Dimensions()
-export default class AnalyticsView extends ViewBase {
+// @Dimensions()
+export default class AnalyticsView extends React.Component {
   constructor() {
     super();
-    this.state = {
-      model: null
-    };
   }
 
   componentDidMount(){
@@ -45,11 +42,7 @@ export default class AnalyticsView extends ViewBase {
   }
 
   render() {
-    let model:AnalyticsModel = this.state.model;
-
-    if (!model) {
-      return null;
-    }
+    let model = this.props.model;
     if (!model.isAnalyticsServiceConnected)
       return (
         <div className='analytics__container'>
@@ -127,7 +120,7 @@ export default class AnalyticsView extends ViewBase {
   }
 
   _createPositionsChart(){
-    let model:AnalyticsModel = this.state.model;
+    let model = this.state.model;
     let positionsChartData = model.positionsChartModel.seriesData;
 
     return (

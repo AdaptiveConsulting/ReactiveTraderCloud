@@ -10,13 +10,10 @@ import './spotTile.scss';
 
 const SPOT_DATE_FORMAT = 'DD MMM';
 
-export default class SpotTileView extends ViewBase {
+export default class SpotTileView extends React.Component {
 
   constructor() {
     super();
-    this.state = {
-      model: null
-    };
   }
 
   componentWillUnmount() {
@@ -24,10 +21,7 @@ export default class SpotTileView extends ViewBase {
   }
 
   render() {
-    let model:SpotTileModel = this.state.model;
-    if (model === null) {
-      return null;
-    }
+    let model:SpotTileModel = this.props.model;
 
     let notionalInputClass = classnames('spot-tile__notional', {'hide': model.hasNotification});
     let spotDateClass = classnames('spot-tile__delivery', {'hide': model.hasNotification});

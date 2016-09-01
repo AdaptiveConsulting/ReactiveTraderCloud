@@ -1,10 +1,11 @@
 import React from 'react';
+import { SmartComponent } from 'esp-js-react';
 import {Modal, Chrome} from '../../common/components';
 import {FooterView} from '../../footer/views';
-import {ViewBase} from '../../common';
 import {router} from '../../../system';
 import {WorkspaceRegionView} from '../../regions/views/workspace';
 import {SingleItemRegionView} from '../../regions/views/singleItem';
+import {AnalyticsRegionView} from '../../regions/views/analytics';
 import classnames from 'classnames';
 import './shell.scss';
 
@@ -26,8 +27,7 @@ export default class ShellView extends React.Component {
 
     let shellClasses = classnames('shell__container', {
       'shell__container--no-blotter': model.isBlotterOut,
-      'shell__container--no-analytics': model.isAnalyticsOut,
-      'shell__container--no-side-bar': model.isSidebarOut
+      'shell__container--no-analytics': model.isAnalyticsOut
     });
 
     let wellKnownModelIds = model.wellKnownModelIds;
@@ -47,10 +47,9 @@ export default class ShellView extends React.Component {
                 </button>
               </div>
             </Modal>
-            <WorkspaceRegionView className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId}/>
-            <SingleItemRegionView className='shell__analytics' modelId={wellKnownModelIds.analyticsRegionModelId}/>
-            <SingleItemRegionView className='shell__side-bar' modelId={wellKnownModelIds.sidebarRegionModelId}/>
-            <SingleItemRegionView className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId}/>
+            <SmartComponent className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId} view={WorkspaceRegionView} />>
+            <SmartComponent className='shell__analytics' modelId={wellKnownModelIds.analyticsRegionModelId} view={AnalyticsRegionView} />>
+            <SmartComponent className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId} view={SingleItemRegionView} />>
           </div>
           <div className='shell__footer'>
             <FooterView modelId={wellKnownModelIds.footerModelId}/>
