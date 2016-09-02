@@ -55,7 +55,7 @@
   &.shell__container--no-analytics {
     .shell__workspace,
     .shell__blotter {
-      width: 100%;
+      width: calc(100% - #{$sidebar-width});;
     }
   }
   &.shell__container--no-blotter {
@@ -64,16 +64,6 @@
     }
   }
 }
-
-//
-//.shell__side-bar {
-//  flex-grow: 0;
-//  flex-shrink: 0;
-//  height: $analytics-height;
-//  order: 6;
-//  flex-basis: 100%;
-//  width: $sidebar-width;
-//}
 
 .shell__analytics {
   flex-grow: 0;
