@@ -3,7 +3,7 @@ import { Table, Column, Cell } from 'fixed-data-table';
 import { DateCell, NotionalCell } from './';
 import Dimensions from 'react-dimensions';
 import { TradeRow } from '../../../services/model';
-import { router, logger } from '../../../system';
+import { logger } from '../../../system';
 import classNames from 'classnames';
 import 'fixed-data-table/dist/fixed-data-table.css';
 import './blotter.scss';
@@ -13,6 +13,7 @@ export default class BlotterView extends React.Component {
 
   static propTypes = {
     model: React.PropTypes.object.isRequired,
+    router: React.PropTypes.object.isRequired,
     updateDimensions: React.PropTypes.func.isRequired,
     containerWidth: React.PropTypes.number.isRequired,
     containerHeight: React.PropTypes.number.isRequired
@@ -28,9 +29,6 @@ export default class BlotterView extends React.Component {
 
   render() {
     let model = this.props.model;
-    if (!model) {
-      return null;
-    }
     let columns = this._createGridColumns(model.trades);
     let className = classNames(
       'blotter', {
@@ -50,7 +48,7 @@ export default class BlotterView extends React.Component {
         <div className='blotter-wrapper'>
           <div className='blotter__controls popout__controls'>
             <i className={newWindowClassName}
-               onClick={() => router.publishEvent(this.props.model.modelId, 'tearOffBlotter', {})} />
+               onClick={() => this.props.router.publishEvent(this.props.model.modelId, 'tearOffBlotter', {})} />
           </div>
           <Table
             rowHeight={30}

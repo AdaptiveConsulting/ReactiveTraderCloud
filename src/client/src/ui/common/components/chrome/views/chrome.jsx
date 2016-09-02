@@ -2,7 +2,6 @@ import React from 'react';
 import OpenFinChrome from '../../openFinChrome/openFinChrome.jsx';
 import BrowserChrome from '../../browserChrome/browserChrome.jsx';
 import { ChromeModel } from '../model';
-import { router } from '../../../../../system';
 
 export default class Chrome extends React.Component {
   constructor() {

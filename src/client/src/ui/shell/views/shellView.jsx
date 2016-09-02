@@ -2,7 +2,6 @@ import React from 'react';
 import { SmartComponent } from 'esp-js-react';
 import {Modal, Chrome} from '../../common/components';
 import {FooterView} from '../../footer/views';
-import {router} from '../../../system';
 import {WorkspaceRegionView} from '../../regions/views/workspace';
 import {SingleItemRegionView} from '../../regions/views/singleItem';
 import {AnalyticsRegionView} from '../../regions/views/analytics';
@@ -14,7 +13,8 @@ import '../../common/styles/_fonts.scss';
 export default class ShellView extends React.Component {
 
   static propTypes = {
-    model: React.PropTypes.object.isRequired
+    model: React.PropTypes.object.isRequired,
+    router: React.PropTypes.object.isRequired
   };
 
   constructor() {
@@ -41,7 +41,7 @@ export default class ShellView extends React.Component {
                 <div>Your 15 minute session expired, you are now disconnected from the server.</div>
                 <div>Click reconnect to start a new session.</div>
                 <button className='btn shell__button--reconnect'
-                        onClick={() => router.publishEvent(model.modelId, 'reconnectClicked', {})}>Reconnect
+                        onClick={() => this.props.router.publishEvent(model.modelId, 'reconnectClicked', {})}>Reconnect
                 </button>
               </div>
             </Modal>

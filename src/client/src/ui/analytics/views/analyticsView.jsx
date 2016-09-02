@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
-import { router, logger } from '../../../system';
+import { logger } from '../../../system';
 import { PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
@@ -17,7 +17,8 @@ var _log:logger.Logger = logger.create('AnalyticsView');
 export default class AnalyticsView extends React.Component {
 
   static propTypes = {
-    model: React.PropTypes.object.isRequired
+    model: React.PropTypes.object.isRequired,
+    router: React.PropTypes.object.isRequired
   };
 
   constructor() {
@@ -47,6 +48,7 @@ export default class AnalyticsView extends React.Component {
 
   render() {
     let model = this.props.model;
+    let router = this.props.router;
     if (!model.isAnalyticsServiceConnected)
       return (
         <div className='analytics__container'>

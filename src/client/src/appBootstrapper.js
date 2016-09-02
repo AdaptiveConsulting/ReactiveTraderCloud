@@ -1,3 +1,4 @@
+import { Router } from 'esp-js';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { RouterProvider, SmartComponent } from 'esp-js-react';
@@ -11,7 +12,6 @@ import { User, ServiceConst } from './services/model';
 import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
-import { default as espRouter } from './system/router';
 import { RegionModel, SingleItemRegionModel, PopoutRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
 import config from 'config.json';
@@ -38,16 +38,25 @@ class AppBootstrapper {
   _schedulerService:SchedulerService;
 
   run() {
-    this.startServices();
-    this.startModels();
-    this.displayUi();
+    let espRouter = this.createRouter();
+    this.startServices(espRouter);
+    this.startModels(espRouter);
+    this.displayUi(espRouter);
   }
 
   get endpointURL() {
     return config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
   }
 
-  startServices() {
+  createRouter() {
+    let espRouter = new Router();
+    espRouter.addOnErrorHandler(err => {
+      _log.error('Unhandled error in model', err);
+    });
+    return espRouter;
+  }
+
+  startServices(espRouter) {
     const user:User = FakeUserRepository.currentUser;
     const realm = 'com.weareadaptive.reactivetrader';
     const url = this.endpointURL;
@@ -80,7 +89,7 @@ class AppBootstrapper {
     this._connection.connect();
   }
 
-  startModels() {
+  startModels(espRouter) {
 
     // Wire up the region management infrastructure:
     // This infrastructure allows for differing views to be put into the shell without the shell having to be coupled to all these views.
@@ -146,7 +155,7 @@ class AppBootstrapper {
     }
   }
 
-  displayUi() {
+  displayUi(espRouter) {
     ReactDOM.render(
       <RouterProvider router={espRouter} >
         <SmartComponent modelId={WellKnownModelIds.shellModelId} />
