@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { RouterProvider, SmartComponent } from 'esp-js-react';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
-import { HeaderModel } from './ui/header/model';
 import { FooterModel } from './ui/footer/model';
 import { SidebarModel } from './ui/sidebar/model';
 import { ShellModel } from './ui/shell/model';
@@ -117,10 +116,6 @@ class AppBootstrapper {
     // wire-up analytics
     let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService, regionManager, this._openFin);
     analyticsModel.observeEvents();
-
-    // wire-up the header
-    let headerModel = new HeaderModel(WellKnownModelIds.headerModelId, espRouter);
-    headerModel.observeEvents();
 
     // wire-up the footer
     let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService, this._openFin);

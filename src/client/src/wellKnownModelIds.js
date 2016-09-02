@@ -25,10 +25,6 @@ export default class WellKnownModelIds {
     return 'shellModelId';
   }
 
-  static get headerModelId() {
-    return 'headerModelId';
-  }
-
   static get footerModelId() {
     return 'footerModelId';
   }
