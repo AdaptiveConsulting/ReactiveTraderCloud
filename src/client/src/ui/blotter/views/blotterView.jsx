@@ -6,23 +6,29 @@ import { TradeRow } from '../../../services/model';
 import { ViewBase } from '../../common';
 import { router, logger } from '../../../system';
 import classNames from 'classnames';
-import { BlotterModel } from '../model';
 import 'fixed-data-table/dist/fixed-data-table.css';
 import './blotter.scss';
 
-// @Dimensions()
+@Dimensions()
 export default class BlotterView extends React.Component {
+
+  static propTypes = {
+    model: React.PropTypes.object.isRequired,
+    updateDimensions: React.PropTypes.func.isRequired,
+    containerWidth: React.PropTypes.number.isRequired,
+    containerHeight: React.PropTypes.number.isRequired
+  };
 
   constructor(props, context) {
     super(props, context);
   }
 
   componentWillReceiveProps() {
-    // this.props.updateDimensions();
+    this.props.updateDimensions();
   }
 
   render() {
-    let model:BlotterModel = this.props.model;
+    let model = this.props.model;
     if (!model) {
       return null;
     }
@@ -45,7 +51,7 @@ export default class BlotterView extends React.Component {
         <div className='blotter-wrapper'>
           <div className='blotter__controls popout__controls'>
             <i className={newWindowClassName}
-               onClick={() => router.publishEvent(this.props.modelId, 'tearOffBlotter', {})} />
+               onClick={() => router.publishEvent(this.props.model.modelId, 'tearOffBlotter', {})} />
           </div>
           <Table
             rowHeight={30}
@@ -66,32 +72,32 @@ export default class BlotterView extends React.Component {
       <Column
         key='Id'
         header={<Cell>Id</Cell>}
-        cell={props => <Cell>{this.state.model.trades[props.rowIndex].trade.tradeId}</Cell>}
+        cell={props => <Cell>{this.props.model.trades[props.rowIndex].trade.tradeId}</Cell>}
         flexGrow={1}
         width={50}/>,
       <Column
         key='Date'
         header={<Cell>Date</Cell>}
-        cell={props => <DateCell width={props.width} dateValue={this.state.model.trades[props.rowIndex].trade.tradeDate} />}
+        cell={props => <DateCell width={props.width} dateValue={this.props.model.trades[props.rowIndex].trade.tradeDate} />}
         flexGrow={1}
         width={150}/>,
       <Column
         key='Dir'
         header={<Cell>Direction</Cell>}
-        cell={props => <Cell>{this.state.model.trades[props.rowIndex].trade.direction.name.toUpperCase()}</Cell>}
+        cell={props => <Cell>{this.props.model.trades[props.rowIndex].trade.direction.name.toUpperCase()}</Cell>}
         flexGrow={1}
         width={80}/>,
       <Column
         key='CCY'
         header={<Cell>CCYCCY</Cell>}
-        cell={props => <Cell>{this.state.model.trades[props.rowIndex].trade.currencyPair.symbol}</Cell>}
+        cell={props => <Cell>{this.props.model.trades[props.rowIndex].trade.currencyPair.symbol}</Cell>}
         flexGrow={1}
         width={70}/>,
       <Column
         key='Notional'
         header={<Cell className='blotter__trade-field--align-right'>Notional</Cell>}
         cell={props => {
-          let trade = this.state.model.trades[props.rowIndex].trade;
+          let trade = this.props.model.trades[props.rowIndex].trade;
           return (
             <NotionalCell
               width={props.width}
@@ -105,25 +111,25 @@ export default class BlotterView extends React.Component {
       <Column
         key='Rate'
         header={<Cell className='blotter__trade-field--align-right'>Rate</Cell>}
-        cell={props => <Cell className='blotter__trade-field--align-right'>{this.state.model.trades[props.rowIndex].trade.spotRate}</Cell>}
+        cell={props => <Cell className='blotter__trade-field--align-right'>{this.props.model.trades[props.rowIndex].trade.spotRate}</Cell>}
         flexGrow={1}
         width={80}/>,
       <Column
         key='Status'
         header={<Cell>Status</Cell>}
-        cell={props => <Cell className='blotter__trade-status'>{this.state.model.trades[props.rowIndex].trade.status.name}</Cell>}
+        cell={props => <Cell className='blotter__trade-status'>{this.props.model.trades[props.rowIndex].trade.status.name}</Cell>}
         flexGrow={1}
         width={80}/>,
       <Column
         key='Value date'
         header={<Cell>Value date</Cell>}
-        cell={props => <DateCell width={props.width} prefix='SP. ' format='%d %b' dateValue={this.state.model.trades[props.rowIndex].trade.valueDate} />}
+        cell={props => <DateCell width={props.width} prefix='SP. ' format='%d %b' dateValue={this.props.model.trades[props.rowIndex].trade.valueDate} />}
         flexGrow={1}
         width={100}/>,
       <Column
         key='Trader'
         header={<Cell>Trader</Cell>}
-        cell={props => <Cell>{this.state.model.trades[props.rowIndex].trade.traderName}</Cell>}
+        cell={props => <Cell>{this.props.model.trades[props.rowIndex].trade.traderName}</Cell>}
         flexGrow={1}
         width={80}/>
     ];

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { ViewBase } from '../../common';
 import { router } from '../../../system';
 import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification } from './';
-import { SpotTileModel, NotificationType } from '../model';
+import { NotificationType } from '../model';
 import { Direction } from '../../../services/model';
 import moment from 'moment';
 import './spotTile.scss';
@@ -11,6 +11,10 @@ import './spotTile.scss';
 const SPOT_DATE_FORMAT = 'DD MMM';
 
 export default class SpotTileView extends React.Component {
+
+  static propTypes = {
+    model: React.PropTypes.object.isRequired
+  };
 
   constructor() {
     super();
@@ -21,7 +25,7 @@ export default class SpotTileView extends React.Component {
   }
 
   render() {
-    let model:SpotTileModel = this.props.model;
+    let model = this.props.model;
 
     let notionalInputClass = classnames('spot-tile__notional', {'hide': model.hasNotification});
     let spotDateClass = classnames('spot-tile__delivery', {'hide': model.hasNotification});
@@ -62,7 +66,7 @@ export default class SpotTileView extends React.Component {
         <NotionalInput
           className={notionalInputClass}
           notional={model.notional}
-          onChange={(notional) => router.publishEvent(this.props.modelId, 'notionalChanged', { notional:notional })}
+          onChange={(notional) => router.publishEvent(this.props.model.modelId, 'notionalChanged', { notional:notional })}
           maxValue={model.maxNotional}
           currencyPair={model.currencyPair}/>
         <div className={spotDateClass}>
@@ -78,9 +82,9 @@ export default class SpotTileView extends React.Component {
             <i className={chartIQIconClassName}
                onClick={() => this._displayCurrencyChart()}/>
             <i className={newWindowClassName}
-               onClick={() => router.publishEvent(this.props.modelId, 'popOutTile', {})}/>
+               onClick={() => router.publishEvent(this.props.model.modelId, 'popOutTile', {})}/>
             <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
-               onClick={() => router.publishEvent(this.props.modelId, 'undockTile', {})}/>
+               onClick={() => router.publishEvent(this.props.model.modelId, 'undockTile', {})}/>
           </div>
           {!model.hasNotification ? spotTileContent : notification}
         </div>
@@ -89,11 +93,11 @@ export default class SpotTileView extends React.Component {
   }
 
   _displayCurrencyChart() {
-    router.publishEvent(this.props.modelId, 'displayCurrencyChart', {});
+    router.publishEvent(this.props.model.modelId, 'displayCurrencyChart', {});
   }
 
   _createPriceComponents() {
-    let model:SpotTileModel = this.state.model;
+    let model = this.props.model;
     let pricingContainerClass = classnames({'hide': model.hasNotification});
     if (model.currentSpotPrice === null) {
       return null;
@@ -121,20 +125,20 @@ export default class SpotTileView extends React.Component {
   }
 
   _onExecuteTrade(direction:Direction) {
-    if (this.state.model.executionConnected) {
-      router.publishEvent(this.props.modelId, 'executeTrade', {direction});
+    if (this.props.model.executionConnected) {
+      router.publishEvent(this.props.model.modelId, 'executeTrade', {direction});
     }
   }
 
   _tryCreateNotification() {
-    let model:SpotTileModel = this.state.model;
+    let model = this.props.model;
     if (model.hasNotification) {
       if (model.notification.notificationType === NotificationType.Trade) {
         return (
           <TradeNotification
             className='spot-tile__trade-summary'
             tradeExecutionNotification={model.notification}
-            onDismissedClicked={(e) => router.publishEvent(this.props.modelId, 'tradeNotificationDismissed', {})}/>
+            onDismissedClicked={(e) => router.publishEvent(this.props.model.modelId, 'tradeNotificationDismissed', {})}/>
         );
       } else if (model.notification.notificationType === NotificationType.Text) {
         return (
