@@ -45,9 +45,9 @@ export default class ShellView extends React.Component {
                 </button>
               </div>
             </Modal>
-            <SmartComponent className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId} view={WorkspaceRegionView} />>
-            <SmartComponent className='shell__analytics' modelId={wellKnownModelIds.analyticsRegionModelId} view={AnalyticsRegionView} />>
-            <SmartComponent className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId} view={SingleItemRegionView} />>
+            <SmartComponent className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId} view={WorkspaceRegionView} />
+            <SmartComponent className='shell__analytics' modelId={wellKnownModelIds.analyticsRegionModelId} view={AnalyticsRegionView} />
+            <SmartComponent className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId} view={SingleItemRegionView} />
           </div>
           <div className='shell__footer'>
             <SmartComponent modelId={wellKnownModelIds.footerModelId} view={FooterView} />
