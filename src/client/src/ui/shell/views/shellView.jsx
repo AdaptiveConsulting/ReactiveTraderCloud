@@ -21,10 +21,6 @@ export default class ShellView extends React.Component {
 
   render() {
     let model = this.props.model;
-    if (model === null) {
-      return null;
-    }
-
     let shellClasses = classnames('shell__container', {
       'shell__container--no-blotter': model.isBlotterOut,
       'shell__container--no-analytics': model.isAnalyticsOut
@@ -32,7 +28,7 @@ export default class ShellView extends React.Component {
 
     let wellKnownModelIds = model.wellKnownModelIds;
     return (
-      <Chrome>
+      <SmartComponent modelId={wellKnownModelIds.chromeModelId} view={Chrome}>
         <div>
           <div className='shell__splash'>
             <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
@@ -52,10 +48,10 @@ export default class ShellView extends React.Component {
             <SmartComponent className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId} view={SingleItemRegionView} />>
           </div>
           <div className='shell__footer'>
-            <FooterView modelId={wellKnownModelIds.footerModelId}/>
+            <SmartComponent modelId={wellKnownModelIds.footerModelId} view={FooterView} />
           </div>
         </div>
-      </Chrome>
+      </SmartComponent>
     );
   }
 }

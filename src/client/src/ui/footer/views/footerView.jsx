@@ -1,5 +1,4 @@
 import React from 'react';
-import { router } from '../../../system';
 import { ViewBase } from '../../common';
 import { FooterModel, ExternalURL } from '../model';
 import {  ServiceStatusLookup } from '../../../services/model';
@@ -9,19 +8,18 @@ import StatusIndicator from './statusIndicator.jsx';
 
 import './footer.scss';
 
-export default class FooterView extends ViewBase {
+export default class FooterView extends React.Component {
   constructor() {
     super();
-    this.state = {
-      model: null
-    };
   }
 
+  static propTypes = {
+    model: React.PropTypes.object.isRequired,
+    router: React.PropTypes.object.isRequired
+  };
+
   render() {
-    let model:FooterModel = this.state.model;
-    if (!model) {
-      return null;
-    }
+    let model:FooterModel = this.props.model;
     let panelClasses = classnames(
       'footer__service-status-panel',
       {
@@ -59,7 +57,7 @@ export default class FooterView extends ViewBase {
   }
 
   _toggleServiceStatus() {
-    router.publishEvent(this.props.modelId, 'toggleServiceStatus', {});
+    this.props.router.publishEvent(this.props.model.modelId, 'toggleServiceStatus', {});
   };
 
   _renderServices(model:FooterModel) {
