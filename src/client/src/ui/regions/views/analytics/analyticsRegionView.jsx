@@ -18,7 +18,7 @@ export default class AnalyticsRegionView extends SingleItemRegionView {
     let model:RegionModel = this.props.model;
 
     if (model.modelRegistrations.length === 1) {
-      innerContent = super.render();
+      innerContent = this._createRootElement(model, 'sidebar__content');
     }
 
     let analyticsClassName = classnames (
@@ -29,9 +29,9 @@ export default class AnalyticsRegionView extends SingleItemRegionView {
       }
     );
     return (
-      <div className='sidebar__container'>
+      <div className={this.props.className}>
         {innerContent}
-        <div>
+        <div className='sidebar__container'>
           <i className={analyticsClassName} onClick={() => this.props.router.publishEvent(this.props.model.modelId, 'toggleShowContent', {})} />
           <div className='sidebar__element'></div>
         </div>

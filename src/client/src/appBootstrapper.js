@@ -4,7 +4,6 @@ import { RouterProvider, SmartComponent } from 'esp-js-react';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { FooterModel } from './ui/footer/model';
-import { SidebarModel } from './ui/sidebar/model';
 import { ShellModel } from './ui/shell/model';
 import { ChromeModel } from './ui/common/components/chrome/model';
 import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';

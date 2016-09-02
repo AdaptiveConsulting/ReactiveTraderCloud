@@ -83,8 +83,10 @@
   background: $panel-background-color;
   padding: 0px;
   flex-basis: 100%;
-  width: $analytics-width;
+  width: 100%;
   order: 5;
+  display: flex;
+  flex-direction: row;
 }
 
 .shell__workspace {

@@ -14,14 +14,17 @@ export default class SingleItemRegionView extends React.Component {
   };
 
   render() {
-    let model:RegionModel = this.props.model;
+    return this._createRootElement(this.props.model, this.props.className);
+  }
+
+  _createRootElement(model, containerClassName) {
     if (model.modelRegistrations.length !== 1) {
-      let classNames = classnames(this.props.className, 'hide');
+      let classNames = classnames(containerClassName, 'hide');
       return <div className={classNames}></div>;
     } else {
       let modelRegistration:RegionModelRegistration = model.modelRegistrations[0];
       return (
-        <div className={this.props.className}>
+        <div className={containerClassName}>
           <SmartComponent modelId={modelRegistration.model.modelId} viewContext={modelRegistration.displayContext} />
         </div>
       );
