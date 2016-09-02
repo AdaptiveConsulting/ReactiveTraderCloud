@@ -1,5 +1,4 @@
 import React from 'react';
-import { ViewBase } from '../../common';
 import { FooterModel, ExternalURL } from '../model';
 import {  ServiceStatusLookup } from '../../../services/model';
 import { ServiceStatus } from '../../../system/service';

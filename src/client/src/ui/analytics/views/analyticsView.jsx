@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import { router, logger } from '../../../system';
-import { ViewBase } from '../../common';
 import { PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';

@@ -1,6 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-import { ViewBase } from '../../common';
 import { router } from '../../../system';
 import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification } from './';
 import { NotificationType } from '../model';
@@ -18,10 +17,6 @@ export default class SpotTileView extends React.Component {
 
   constructor() {
     super();
-  }
-
-  componentWillUnmount() {
-    super.componentWillUnmount();
   }
 
   render() {

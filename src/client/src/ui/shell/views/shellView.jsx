@@ -8,12 +8,14 @@ import {SingleItemRegionView} from '../../regions/views/singleItem';
 import {AnalyticsRegionView} from '../../regions/views/analytics';
 import classnames from 'classnames';
 import './shell.scss';
+import '../../common/styles/_base.scss';
+import '../../common/styles/_fonts.scss';
 
 export default class ShellView extends React.Component {
 
   static propTypes = {
     model: React.PropTypes.object.isRequired
-  }
+  };
 
   constructor() {
     super();

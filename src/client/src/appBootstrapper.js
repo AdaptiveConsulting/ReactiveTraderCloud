@@ -145,7 +145,6 @@ class AppBootstrapper {
     } else {
       espRouter.broadcastEvent('init', {});
     }
-
   }
 
   displayUi() {
