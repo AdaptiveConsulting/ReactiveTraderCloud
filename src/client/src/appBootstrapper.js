@@ -108,8 +108,8 @@ class AppBootstrapper {
     let chromeModel = new ChromeModel(WellKnownModelIds.chromeModelId, espRouter, this._openFin);
     chromeModel.observeEvents();
 
-    // wire-up the loader that populats the workspace with spot tiles.
-    // In a more suffocated app you'd have some 'add product' functionality allowing the users to add workspace views/products manually.
+    // wire-up the loader that populates the workspace with spot tiles.
+    // In a more sophisticated app you'd have some 'add product' functionality allowing the users to add workspace views/products manually.
     let spotTileLoader = new SpotTileLoader(
       espRouter,
       this._referenceDataService,
@@ -129,7 +129,7 @@ class AppBootstrapper {
     let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService, this._openFin);
     footerModel.observeEvents();
 
-    // wire up the shell
+    // wire up the apps main shell
     let shellModel = new ShellModel(
       WellKnownModelIds.shellModelId,
       espRouter,
