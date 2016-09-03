@@ -39,9 +39,9 @@ export default class AnalyticsModel extends ModelBase {
   ) {
     super(modelId, router);
     this._analyticsService = analyticsService;
-    this._regionName = RegionNames.analytics;
+    this._regionName = RegionNames.sidebar;
     this.isAnalyticsServiceConnected = false;
-    this._regionSettings = new RegionSettings(RegionNames.analytics, 400, 800, false);
+    this._regionSettings = new RegionSettings(RegionNames.sidebar, 400, 800, false);
     this._pnlChartModel = new PnlChartModel();
     this._positionsChartModel = new PositionsChartModel();
     this._regionManager = regionManager;

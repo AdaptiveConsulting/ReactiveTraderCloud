@@ -4,7 +4,7 @@ import {Modal, Chrome} from '../../common/components';
 import {FooterView} from '../../footer/views';
 import {WorkspaceRegionView} from '../../regions/views/workspace';
 import {SingleItemRegionView} from '../../regions/views/singleItem';
-import {AnalyticsRegionView} from '../../regions/views/analytics';
+import {SidebarRegionView} from '../../regions/views/sidebar';
 import classnames from 'classnames';
 import './shell.scss';
 import '../../common/styles/_base.scss';
@@ -24,8 +24,8 @@ export default class ShellView extends React.Component {
   render() {
     let model = this.props.model;
     let shellClasses = classnames('shell__container', {
-      'shell__container--no-blotter': model.isBlotterOut,
-      'shell__container--no-analytics': model.isAnalyticsOut
+      'shell__container--no-blotter': !model.blotterRegionHasContent,
+      'shell__container--no-sidebar': !model.sidebarRegionHasContent
     });
 
     let wellKnownModelIds = model.wellKnownModelIds;
@@ -46,7 +46,7 @@ export default class ShellView extends React.Component {
               </div>
             </Modal>
             <SmartComponent className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId} view={WorkspaceRegionView} />
-            <SmartComponent className='shell__analytics' modelId={wellKnownModelIds.analyticsRegionModelId} view={AnalyticsRegionView} />
+            <SmartComponent className='shell__sidebar' modelId={wellKnownModelIds.sidebarRegionModelId} view={SidebarRegionView} />
             <SmartComponent className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId} view={SingleItemRegionView} />
           </div>
           <div className='shell__footer'>

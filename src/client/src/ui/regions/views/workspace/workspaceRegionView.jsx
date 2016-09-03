@@ -5,10 +5,6 @@ import { RegionModel, RegionModelRegistration } from '../../model';
 import WorkspaceItemContainer from './workspaceItemContainer.jsx';
 
 export default class WorkspaceRegionView extends React.Component {
-  constructor() {
-    super();
-  }
-
   static propTypes = {
     className: React.PropTypes.string,
     model: React.PropTypes.object

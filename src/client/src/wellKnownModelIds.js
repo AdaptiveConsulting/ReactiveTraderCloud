@@ -13,8 +13,8 @@ export default class WellKnownModelIds {
     return 'popoutRegionModelId';
   }
 
-  static get analyticsRegionModelId() {
-    return 'analyticsRegionModelId';
+  static get sidebarRegionModelId() {
+    return 'sidebarRegionModelId';
   }
 
   static get blotterRegionModelId() {

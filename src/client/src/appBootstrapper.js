@@ -99,9 +99,9 @@ class AppBootstrapper {
     popoutRegionModel.observeEvents();
     let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, RegionNames.blotter, espRouter);
     blotterRegionModel.observeEvents();
-    let analyticsRegionModel = new SingleItemRegionModel(WellKnownModelIds.analyticsRegionModelId, RegionNames.analytics, espRouter);
-    analyticsRegionModel.observeEvents();
-    var allRegionModels = [workspaceRegionModel, popoutRegionModel, blotterRegionModel, analyticsRegionModel];
+    let sidebarRegionModel = new SingleItemRegionModel(WellKnownModelIds.sidebarRegionModelId, RegionNames.sidebar, espRouter);
+    sidebarRegionModel.observeEvents();
+    let allRegionModels = [workspaceRegionModel, popoutRegionModel, blotterRegionModel, sidebarRegionModel];
     let regionManager = new RegionManager(allRegionModels, this._openFin.isRunningInOpenFin);
 
     // wire up the application chrome
@@ -135,7 +135,7 @@ class AppBootstrapper {
       espRouter,
       this._connection,
       blotterRegionModel,
-      analyticsRegionModel
+      sidebarRegionModel
     );
     shellModel.observeEvents();
 

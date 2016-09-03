@@ -3,28 +3,28 @@ $active-color:        #262a33;
 $border-color:        #424545;
 $button-height:       50px;
 
-.analyticsRegion__content {
+.sidebarRegion__content {
   width: 440px;
 }
 
-.analyticsRegion__container{
+.sidebarRegion__container{
   background-color: $container-bg-color;
   height: 100%;
   display: flex;
   overflow: hidden;
 }
 
-.analyticsRegion__container--no-content{
+.sidebarRegion__container--no-content{
   display: none;
 }
 
-.analyticsRegion__element{
+.sidebarRegion__element{
   border-left: 1px solid $border-color;
   width: 100%;
   flex: 1;
 }
 
-.analyticsRegion__element--active {
+.sidebarRegion__element--active {
   background-color: $active-color;
   border: 1px solid $border-color;
   border-left-color: $active-color;
@@ -34,7 +34,7 @@ $button-height:       50px;
   }
 }
 
-.analyticsRegion__element--inactive {
+.sidebarRegion__element--inactive {
   border: 1px solid $container-bg-color;
   border-left-color: $border-color;
   background-color: $container-bg-color;
@@ -45,7 +45,7 @@ $button-height:       50px;
   }
 }
 
-.analyticsRegion__element-button {
+.sidebarRegion__element-button {
   height: $button-height;
   color: white;
   text-align: center;

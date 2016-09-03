@@ -13,30 +13,31 @@ var _log:logger.Logger = logger.create('ShellModel');
 export default class ShellModel extends ModelBase {
   _connection:Connection;
   sessionExpired:boolean;
-  isBlotterOut:boolean;
-  isAnalyticsOut:boolean;
+  blotterRegionHasContent:boolean;
+  sidebarRegionHasContent:boolean;
   wellKnownModelIds:WellKnownModelIds;
   showSideBar:boolean;
 
   _blotterRegionModel:SingleItemRegionModel;
-  _analyticsRegionModel:SingleItemRegionModel;
+  _sidebarRegionModel:SingleItemRegionModel;
 
   constructor(
     modelId:string,
     router:Router,
     connection:Connection,
     blotterRegionModel:SingleItemRegionModel,
-    analyticsRegionModel:SingleItemRegionModel
+    sidebarRegionModel:SingleItemRegionModel
   ) {
     super(modelId, router);
     this._connection = connection;
     this.sessionExpired = false;
-    this.showSideBar = true;
     this.wellKnownModelIds = WellKnownModelIds;
     this.appVersion = `v${__VERSION__}`;
+    this.blotterRegionHasContent = true;
+    this.sidebarRegionHasContent = true;
 
     this._blotterRegionModel = blotterRegionModel;
-    this._analyticsRegionModel = analyticsRegionModel;
+    this._sidebarRegionModel = sidebarRegionModel;
   }
 
   @observeEvent('init')
@@ -44,7 +45,7 @@ export default class ShellModel extends ModelBase {
     _log.info('Shell model starting');
     this._observeForSessionExpired();
     this._observeForBlotterTearOut();
-    this._observeForAnalyticsTearOut();
+    this._observeForSidebarTearOut();
   }
 
   @observeEvent('reconnectClicked')
@@ -59,19 +60,19 @@ export default class ShellModel extends ModelBase {
   _observeForBlotterTearOut() {
     this.addDisposable(
       this._blotterRegionModel.hasContentSubject.streamFor(this.modelId).subscribe(hasContent => {
-        this.isBlotterOut = !hasContent;
+        this.blotterRegionHasContent = hasContent;
       })
     );
   }
 
   /**
-   * Observe blotter tear out events, so we can resize the workspace/analytics area
+   * Observe blotter tear out events, so we can resize the workspace/sidebar area
    * @private
    */
-  _observeForAnalyticsTearOut() {
+  _observeForSidebarTearOut() {
     this.addDisposable(
-      this._analyticsRegionModel.hasContentSubject.streamFor(this.modelId).subscribe(hasContent => {
-        this.isAnalyticsOut = !hasContent;
+      this._sidebarRegionModel.hasContentSubject.streamFor(this.modelId).subscribe(hasContent => {
+        this.sidebarRegionHasContent = hasContent;
       })
     );
   }

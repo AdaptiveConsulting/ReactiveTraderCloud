@@ -52,7 +52,7 @@
   & * {
     box-sizing: border-box;
   }
-  &.shell__container--no-analytics {
+  &.shell__container--no-sidebar {
     .shell__workspace,
     .shell__blotter {
       width: calc(100% - #{$sidebar-width});;
@@ -65,7 +65,7 @@
   }
 }
 
-.shell__analytics {
+.shell__sidebar {
   flex-grow: 0;
   flex-shrink: 0;
   height: $analytics-height;
@@ -117,19 +117,19 @@
     flex-direction: column;
   }
 
-  .shell__analytics,
+  .shell__sidebar,
   .shell__workspace {
     height: auto;
     width: 100%;
   }
 
-  .shell__analytics,
+  .shell__sidebar,
   .shell__workspace,
   .shell__blotter {
     flex: 1;
   }
 
-  .shell__analytics {
+  .shell__sidebar {
     order: 2;
   }
   .shell__blotter {
