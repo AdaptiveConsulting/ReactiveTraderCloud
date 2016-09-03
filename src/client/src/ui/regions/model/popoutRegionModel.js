@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router } from 'esp-js';
-import { SmartComponent } from 'esp-js-react';
+import { RouterProvider, SmartComponent } from 'esp-js-react';
 import { RegionModel, RegionOptions, RegionModelRegistration } from './';
 import { getPopoutService, PopoutOptions } from '../../common/popout';
 import { ModelBase } from '../../common';
@@ -17,7 +17,7 @@ export default class PopoutRegionModel extends RegionModel {
     let modelRegistration = super._addToRegion(model, options);
     let regionSettings = modelRegistration.regionSettings || {};
     let width = regionSettings.width || 400;
-    let view = this._createSmartComponent(modelRegistration);
+    let view = this._createViewElement(modelRegistration);
     let height = regionSettings.height || 400;
     let dockable = regionSettings.dockable || false;
     const title = options.regionSettings && options.regionSettings.title ? options.regionSettings.title : '';
@@ -42,27 +42,17 @@ export default class PopoutRegionModel extends RegionModel {
     this.router.publishEvent(this.modelId, 'removeFromRegion', {model: model});
   }
 
-  _createSmartComponent(modelRegistration) {
-    /*eslint-disable */
-    // as we're creating a <SmartComponent /> dynamically it's not going to have
-    // access to the context that <RouterProvider /> would provided.
-    // Given this we wrap it and provide the context here.
-    let router = this.router;
-    const wrapperWithContext = React.createClass({
-      childContextTypes: { router: React.PropTypes.instanceOf(Router) },
-      getChildContext() {
-        return { router:router };
-      },
-      render() {
-        return React.createElement(
-          SmartComponent, {
-            modelId: modelRegistration.model.modelId,
-            displayContext:modelRegistration.displayContext
-          }
-        );
-      },
-    });
-    /*eslint-enable */
-    return React.createElement(wrapperWithContext);
+  _createViewElement(modelRegistration) {
+    let child =  React.createElement(
+      SmartComponent, {
+        modelId: modelRegistration.model.modelId,
+        displayContext:modelRegistration.displayContext
+      }
+    );
+    // Wrap the SmartComponent in a RouterProvider so the SmartComponent
+    // can access the router from it's context as expected.
+    // We need to do this as the popout doesn't exist within the main VDOM thus won't have
+    // context from the RouterProvider wrapping the main VDOM.
+    return React.createElement(RouterProvider, {router:this.router}, child);
   }
 }
