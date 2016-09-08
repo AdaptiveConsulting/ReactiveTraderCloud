@@ -17,8 +17,8 @@ export default class SidebarRegionView extends React.Component {
 
     if (model.modelRegistrations.length === 1) {
       let className = classnames(
-        'sidebarRegion__content',
-        { 'sidebarRegion__container--no-content' : !model.showContent }
+        'sidebar-region__content',
+        { 'sidebar-region__container--no-content' : !model.showContent }
       );
       let modelRegistration:RegionModelRegistration = this.props.model.modelRegistrations[0];
       innerContent = (
@@ -29,18 +29,18 @@ export default class SidebarRegionView extends React.Component {
     }
 
     let analyticsClassName = classnames (
-      'sidebarRegion__element-button glyphicon glyphicon-stats',
+      'sidebar-region__element-button glyphicon glyphicon-stats',
       {
-        'sidebarRegion__element--active': innerContent !== null && model.showContent,
-        'sidebarRegion__element--inactive' :  innerContent === null || !model.showContent
+        'sidebar-region__element--active': innerContent !== null && model.showContent,
+        'sidebar-region__element--inactive' :  innerContent === null || !model.showContent
       }
     );
     return (
       <div className={this.props.className}>
         {innerContent}
-        <div className='sidebarRegion__container'>
+        <div className='sidebar-region__container'>
           <i className={analyticsClassName} onClick={() => this.props.router.publishEvent(this.props.model.modelId, 'toggleShowContent', {})} />
-          <div className='sidebarRegion__element'></div>
+          <div className='sidebar-region__element'></div>
         </div>
       </div>
     );
