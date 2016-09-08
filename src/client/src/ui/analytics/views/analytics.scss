@@ -359,3 +359,13 @@ $default-padding: 10px;
 .analytics__container .nvd3 .nv-axis line {
   stroke: #424545;
 }
+
+.analytics__chart-tooltip {
+  font-size: 10px;
+  color: white;
+  font-family: BrandonLight;
+}
+
+.analytics__chart-tooltip-date {
+  color: #c2c5c9;
+}
