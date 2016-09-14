@@ -3,24 +3,28 @@ import { RegionModel, RegionOptions, RegionModelRegistration } from './';
 import { ModelBase } from '../../common';
 
 export default class SingleItemRegionModel extends RegionModel {
-  _hasContentSubject:RouterSubject;
+  _contentStatusSubject:RouterSubject;
 
   showContent:boolean;
 
   constructor(modelId:string, regionName:string, router:Router) {
     super(modelId, regionName, router);
-    this._hasContentSubject = router.createSubject();
-    this.showContent = false;
+    this._contentStatusSubject = router.createSubject();
+    this.isCollapsed = false;
   }
 
-  get hasContentSubject() {
-    return this._hasContentSubject.asRouterObservable();
+  get contentStatus() {
+    return this._contentStatusSubject.asRouterObservable();
   }
 
-  @observeEvent('toggleShowContent')
-  _onToggleShowContent() {
-    this.showContent = !this.showContent;
-    this._hasContentSubject.onNext(this.showContent);
+  get hasContent() {
+    return this.modelRegistrations.length === 1;
+  }
+
+  @observeEvent('toggleIsCollapsed')
+  _onToggleIsCollapsed() {
+    this.isCollapsed = !this.isCollapsed;
+    this._publishState();
   }
 
   // override
@@ -30,15 +34,23 @@ export default class SingleItemRegionModel extends RegionModel {
       this._removeFromRegion(regionModelRegistration.model, true);
     }
     this.modelRegistrations.length = 0;
-    this._hasContentSubject.onNext(true);
-    this.showContent = true;
-    return super._addToRegion(model, options);
+    this.isCollapsed = false;
+    let registration = super._addToRegion(model, options);
+    this._publishState();
+    return registration;
   }
 
   // override
   _removeFromRegion(model:ModelBase, wasExternallyRemoved:boolean, displayContext?:string) {
-    this._hasContentSubject.onNext(false);
-    this.showContent = false;
+    this.isCollapsed = true;
+    this._publishState();
     return super._removeFromRegion(model, wasExternallyRemoved, displayContext);
+  }
+
+  _publishState() {
+    // this._contentStatusSubject.onNext({
+    //   hasContent: this.hasContent,
+    //   isCollapsed: this.isCollapsed
+    // });
   }
 }

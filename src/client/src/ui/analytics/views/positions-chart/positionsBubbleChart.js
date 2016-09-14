@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
 import _ from 'lodash';
-import Dimensions from 'react-dimensions';
 import { logger } from '../../../../system';
+import SizeMe from 'react-sizeme';
 import {  createScales,
           getPositionsDataFromSeries,
           updateNodes,
@@ -14,13 +14,15 @@ import {  createScales,
 
 const _log:logger.Logger = logger.create('PositionsBubbleChart');
 
-@Dimensions()
-export default class PositionsBubbleChart extends React.Component{
+class PositionsBubbleChart extends React.Component{
 
   static propTypes = {
     data: React.PropTypes.array,
-    containerWidth: React.PropTypes.number,
-    containerHeight: React.PropTypes.number
+    // passed by SizeMe :
+    size: React.PropTypes.shape({
+      width: React.PropTypes.number.isRequired,
+      height: React.PropTypes.number.isRequired,
+    })
   };
 
   static defaultProps = {
@@ -152,14 +154,14 @@ export default class PositionsBubbleChart extends React.Component{
 
     let svg = d3.select(dom).append('svg')
       .attr({
-        width: this.props.containerWidth,
-        height: this.props.containerHeight
+        width: this.props.size.width,
+        height: this.props.size.height
       });
 
     this.force = d3.layout.force()
         .nodes(this.state.nodes)
         .links([])
-        .size([this.props.containerWidth, this.props.containerHeight])
+        .size([this.props.size.width, this.props.size.height])
         .charge((d) => {
           return -1 ;
         })
@@ -223,3 +225,4 @@ export default class PositionsBubbleChart extends React.Component{
   }
 }
 
+export default SizeMe({monitorHeight: true})(PositionsBubbleChart);

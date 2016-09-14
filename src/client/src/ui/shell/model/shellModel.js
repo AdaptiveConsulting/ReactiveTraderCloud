@@ -15,6 +15,7 @@ export default class ShellModel extends ModelBase {
   sessionExpired:boolean;
   blotterRegionHasContent:boolean;
   sidebarRegionHasContent:boolean;
+  sidebarRegionIsCollapsed:boolean;
   wellKnownModelIds:WellKnownModelIds;
   showSideBar:boolean;
 
@@ -35,6 +36,7 @@ export default class ShellModel extends ModelBase {
     this.appVersion = `v${__VERSION__}`;
     this.blotterRegionHasContent = true;
     this.sidebarRegionHasContent = true;
+    this.sidebarRegionIsCollapsed = false;
 
     this._blotterRegionModel = blotterRegionModel;
     this._sidebarRegionModel = sidebarRegionModel;
@@ -59,8 +61,8 @@ export default class ShellModel extends ModelBase {
    */
   _observeForBlotterTearOut() {
     this.addDisposable(
-      this._blotterRegionModel.hasContentSubject.streamFor(this.modelId).subscribe(hasContent => {
-        this.blotterRegionHasContent = hasContent;
+      this._blotterRegionModel.contentStatus.streamFor(this.modelId).subscribe(status => {
+        this.blotterRegionHasContent = status.hasContent;
       })
     );
   }
@@ -71,8 +73,9 @@ export default class ShellModel extends ModelBase {
    */
   _observeForSidebarTearOut() {
     this.addDisposable(
-      this._sidebarRegionModel.hasContentSubject.streamFor(this.modelId).subscribe(hasContent => {
-        this.sidebarRegionHasContent = hasContent;
+      this._sidebarRegionModel.contentStatus.streamFor(this.modelId).subscribe(status => {
+        this.sidebarRegionHasContent = status.hasContent;
+        this.sidebarRegionIsCollapsed = status.isCollapsed;
       })
     );
   }

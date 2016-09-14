@@ -45,23 +45,25 @@
 .shell__container {
   background-color: $shell-background-color;
   display: flex;
-  flex-flow: column wrap;
-  justify-content: space-around;
+  flex-flow: row;
+  justify-content: flex-end;
   height: calc(100% - #{$footer-height});
   width: 100%;
   & * {
     box-sizing: border-box;
   }
-  &.shell__container--no-sidebar {
-    .shell__workspace,
-    .shell__blotter {
-      width: calc(100% - #{$sidebar-width});;
-    }
-  }
-  &.shell__container--no-blotter {
-    .shell__workspace {
-      height: $workspace-height-expanded;
-    }
+}
+
+.shell_workspace_blotter {
+  background-color: $shell-background-color;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+  & * {
+    box-sizing: border-box;
   }
 }
 
@@ -72,9 +74,6 @@
   overflow-y: auto;
   background: $panel-background-color;
   padding: 0px;
-  flex-basis: 100%;
-  width: 100%;
-  order: 5;
   display: flex;
   flex-direction: row;
 }
@@ -85,17 +84,14 @@
   overflow-y: auto;
   overflow-x: hidden;
   width: $workspace-width;
-  flex-basis: $workspace-height;
-  order: 2;
+  order: 1;
 }
 
 .shell__blotter {
   flex-grow: 1;
   height: $blotter-height;
   overflow: hidden;
-  width: $blotter-width;
-  flex-basis: $blotter-height;
-  order: 3;
+  order: 2;
 }
 
 .shell__footer {

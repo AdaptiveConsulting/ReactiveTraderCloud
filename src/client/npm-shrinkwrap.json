@@ -1140,6 +1140,11 @@
       "from": "batch@>=0.5.3 <0.6.0",
       "resolved": "https://registry.npmjs.org/batch/-/batch-0.5.3.tgz"
     },
+    "batch-processor": {
+      "version": "1.0.0",
+      "from": "batch-processor@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/batch-processor/-/batch-processor-1.0.0.tgz"
+    },
     "bcrypt-pbkdf": {
       "version": "1.0.0",
       "from": "bcrypt-pbkdf@>=1.0.0 <2.0.0",
@@ -1872,10 +1877,10 @@
       "from": "element-class@>=0.2.0 <0.3.0",
       "resolved": "https://registry.npmjs.org/element-class/-/element-class-0.2.2.tgz"
     },
-    "element-resize-event": {
-      "version": "2.0.5",
-      "from": "element-resize-event@>=2.0.4 <3.0.0",
-      "resolved": "https://registry.npmjs.org/element-resize-event/-/element-resize-event-2.0.5.tgz"
+    "element-resize-detector": {
+      "version": "1.1.8",
+      "from": "element-resize-detector@1.1.8",
+      "resolved": "https://registry.npmjs.org/element-resize-detector/-/element-resize-detector-1.1.8.tgz"
     },
     "emojis-list": {
       "version": "2.0.1",
@@ -2052,7 +2057,8 @@
       "dependencies": {
         "esprima": {
           "version": "2.7.3",
-          "from": "esprima@>=2.7.1 <3.0.0"
+          "from": "esprima@2.7.3",
+          "resolved": "https://registry.npmjs.org/esprima/-/esprima-2.7.3.tgz"
         },
         "estraverse": {
           "version": "1.9.3",
@@ -3041,7 +3047,8 @@
       "dependencies": {
         "esprima": {
           "version": "2.7.3",
-          "from": "esprima@>=2.1.0 <3.0.0"
+          "from": "esprima@2.7.3",
+          "resolved": "https://registry.npmjs.org/esprima/-/esprima-2.7.3.tgz"
         }
       }
     },
@@ -3916,6 +3923,11 @@
           "from": "indent-string@>=1.1.0 <2.0.0",
           "resolved": "https://registry.npmjs.org/indent-string/-/indent-string-1.2.2.tgz"
         },
+        "lodash": {
+          "version": "2.4.2",
+          "from": "lodash@>=2.4.1 <3.0.0",
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-2.4.2.tgz"
+        },
         "meow": {
           "version": "2.1.0",
           "from": "meow@>=2.0.0 <3.0.0",
@@ -3925,6 +3937,21 @@
           "version": "2.1.1",
           "from": "object-assign@>=2.0.0 <3.0.0",
           "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-2.1.1.tgz"
+        },
+        "openfin-config-builder": {
+          "version": "1.0.8",
+          "from": "openfin-config-builder@latest",
+          "resolved": "https://registry.npmjs.org/openfin-config-builder/-/openfin-config-builder-1.0.8.tgz"
+        },
+        "openfin-installer": {
+          "version": "0.1.1",
+          "from": "openfin-installer@latest",
+          "resolved": "https://registry.npmjs.org/openfin-installer/-/openfin-installer-0.1.1.tgz"
+        },
+        "openfin-launcher": {
+          "version": "1.3.4",
+          "from": "openfin-launcher@latest",
+          "resolved": "https://registry.npmjs.org/openfin-launcher/-/openfin-launcher-1.3.4.tgz"
         }
       }
     },
@@ -4511,11 +4538,6 @@
       "from": "react-deep-force-update@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz"
     },
-    "react-dimensions": {
-      "version": "1.1.1",
-      "from": "react-dimensions@1.1.1",
-      "resolved": "https://registry.npmjs.org/react-dimensions/-/react-dimensions-1.1.1.tgz"
-    },
     "react-dom": {
       "version": "15.3.0",
       "from": "react-dom@15.3.0",
@@ -4574,6 +4596,18 @@
       "version": "1.2.0",
       "from": "react-simple-di@>=1.2.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/react-simple-di/-/react-simple-di-1.2.0.tgz"
+    },
+    "react-sizeme": {
+      "version": "2.2.0",
+      "from": "react-sizeme@latest",
+      "resolved": "https://registry.npmjs.org/react-sizeme/-/react-sizeme-2.2.0.tgz",
+      "dependencies": {
+        "lodash": {
+          "version": "4.15.0",
+          "from": "lodash@4.15.0",
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.15.0.tgz"
+        }
+      }
     },
     "react-sparklines": {
       "version": "1.4.2",

@@ -7,13 +7,11 @@ import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
 import AnalyticsBarChart from './chart/analyticsBarChart';
 import numeral from 'numeral';
-import Dimensions from 'react-dimensions';
 import PositionsBubbleChart from './positions-chart/positionsBubbleChart';
 import './analytics.scss';
 
 var _log:logger.Logger = logger.create('AnalyticsView');
 
-@Dimensions()
 export default class AnalyticsView extends React.Component {
 
   static propTypes = {

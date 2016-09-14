@@ -1,30 +1,27 @@
 import React from 'react';
-import { Table, Column, Cell } from 'fixed-data-table';
-import { DateCell, NotionalCell } from './';
-import Dimensions from 'react-dimensions';
-import { TradeRow } from '../../../services/model';
-import { logger } from '../../../system';
+import {Table, Column, Cell} from 'fixed-data-table';
+import {DateCell, NotionalCell} from './';
+import {TradeRow} from '../../../services/model';
+import {logger} from '../../../system';
 import classNames from 'classnames';
+import SizeMe from 'react-sizeme';
 import 'fixed-data-table/dist/fixed-data-table.css';
 import './blotter.scss';
 
-@Dimensions()
-export default class BlotterView extends React.Component {
+class BlotterView extends React.Component {
 
   static propTypes = {
     model: React.PropTypes.object.isRequired,
     router: React.PropTypes.object.isRequired,
-    updateDimensions: React.PropTypes.func.isRequired,
-    containerWidth: React.PropTypes.number.isRequired,
-    containerHeight: React.PropTypes.number.isRequired
+    // passed by SizeMe :
+    size: React.PropTypes.shape({
+      width: React.PropTypes.number.isRequired,
+      height: React.PropTypes.number.isRequired,
+    })
   };
 
   constructor(props, context) {
     super(props, context);
-  }
-
-  componentWillReceiveProps() {
-    this.props.updateDimensions();
   }
 
   render() {
@@ -41,8 +38,7 @@ export default class BlotterView extends React.Component {
         'blotter__controls--hidden': model.canPopout
       }
     );
-    let containerWidth = this.props.containerWidth; // comes from the @Dimensions annotation
-    let containerHeight = this.props.containerHeight; // comes from the @Dimensions annotation
+    let { width, height } = this.props.size; // comes from SizeMe
     return (
       <div className={className}>
         <div className='blotter-wrapper'>
@@ -54,8 +50,8 @@ export default class BlotterView extends React.Component {
             rowHeight={30}
             headerHeight={30}
             rowsCount={model.trades.length}
-            width={containerWidth}
-            height={containerHeight}
+            width={width}
+            height={height}
             rowClassNameGetter={(index) => this._getRowClass(model.trades[index])}>
             {columns}
           </Table>
@@ -149,3 +145,5 @@ export default class BlotterView extends React.Component {
     );
   }
 }
+
+export default SizeMe({monitorHeight: true})(BlotterView);

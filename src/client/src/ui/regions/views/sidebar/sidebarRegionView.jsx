@@ -13,33 +13,31 @@ export default class SidebarRegionView extends React.Component {
 
   render() {
     let model:SingleItemRegionModel = this.props.model;
-    let innerContent = null;
-
-    if (model.modelRegistrations.length === 1) {
-      let className = classnames(
-        'sidebar-region__content',
-        { 'sidebar-region__container--no-content' : !model.showContent }
-      );
-      let modelRegistration:RegionModelRegistration = this.props.model.modelRegistrations[0];
-      innerContent = (
-        <div className={className}>
-          <SmartComponent modelId={modelRegistration.model.modelId} viewContext={modelRegistration.displayContext} />
-        </div>
-      );
+    if(!model.hasContent) {
+      return null;
     }
-
-    let analyticsClassName = classnames (
+    let className = classnames(
+      'sidebar-region__content',
+      { 'sidebar-region__container--no-content' : model.isCollapsed }
+    );
+    let modelRegistration:RegionModelRegistration = this.props.model.modelRegistrations[0];
+    let innerContent = (
+      <div className={className}>
+        <SmartComponent modelId={modelRegistration.model.modelId} viewContext={modelRegistration.displayContext} />
+      </div>
+    );
+    let buttonClassName = classnames (
       'sidebar-region__element-button glyphicon glyphicon-stats',
       {
-        'sidebar-region__element--active': innerContent !== null && model.showContent,
-        'sidebar-region__element--inactive' :  innerContent === null || !model.showContent
+        'sidebar-region__element--active': innerContent !== null && !model.isCollapsed,
+        'sidebar-region__element--inactive' :  innerContent === null || model.isCollapsed
       }
     );
     return (
       <div className={this.props.className}>
         {innerContent}
         <div className='sidebar-region__container'>
-          <i className={analyticsClassName} onClick={() => this.props.router.publishEvent(this.props.model.modelId, 'toggleShowContent', {})} />
+          <i className={buttonClassName} onClick={() => this.props.router.publishEvent(this.props.model.modelId, 'toggleIsCollapsed', {})} />
           <div className='sidebar-region__element'></div>
         </div>
       </div>
