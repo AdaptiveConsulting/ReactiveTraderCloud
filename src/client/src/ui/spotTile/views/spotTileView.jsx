@@ -61,7 +61,7 @@ export default class SpotTileView extends React.Component {
         <NotionalInput
           className={notionalInputClass}
           notional={model.notional}
-          onChange={(notional) => this.props.router.publishEvent(this.props.model.modelId, 'notionalChanged', { notional:notional })}
+          onChange={(notional) => this.props.router.publishEvent(model.modelId, 'notionalChanged', { notional:notional })}
           maxValue={model.maxNotional}
           currencyPair={model.currencyPair}/>
         <div className={spotDateClass}>
@@ -77,9 +77,9 @@ export default class SpotTileView extends React.Component {
             <i className={chartIQIconClassName}
                onClick={() => this._displayCurrencyChart()}/>
             <i className={newWindowClassName}
-               onClick={() => this.props.router.publishEvent(this.props.model.modelId, 'popOutTile', {})}/>
+               onClick={() => this.props.router.publishEvent(model.modelId, 'popOutTile', {})}/>
             <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
-               onClick={() => this.props.router.publishEvent(this.props.model.modelId, 'undockTile', {})}/>
+               onClick={() => this.props.router.publishEvent(model.modelId, 'undockTile', {})}/>
           </div>
           {!model.hasNotification ? spotTileContent : notification}
         </div>
@@ -133,7 +133,7 @@ export default class SpotTileView extends React.Component {
           <TradeNotification
             className='spot-tile__trade-summary'
             tradeExecutionNotification={model.notification}
-            onDismissedClicked={(e) => this.props.router.publishEvent(this.props.model.modelId, 'tradeNotificationDismissed', {})}/>
+            onDismissedClicked={(e) => this.props.router.publishEvent(model.modelId, 'tradeNotificationDismissed', {})}/>
         );
       } else if (model.notification.notificationType === NotificationType.Text) {
         return (

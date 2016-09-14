@@ -20,7 +20,7 @@ export default class SidebarRegionView extends React.Component {
       'sidebar-region__content',
       { 'sidebar-region__container--no-content' : model.isCollapsed }
     );
-    let modelRegistration:RegionModelRegistration = this.props.model.modelRegistrations[0];
+    let modelRegistration:RegionModelRegistration = model.modelRegistrations[0];
     let innerContent = (
       <div className={className}>
         <SmartComponent modelId={modelRegistration.model.modelId} viewContext={modelRegistration.displayContext} />
@@ -37,7 +37,7 @@ export default class SidebarRegionView extends React.Component {
       <div className={this.props.className}>
         {innerContent}
         <div className='sidebar-region__container'>
-          <i className={buttonClassName} onClick={() => this.props.router.publishEvent(this.props.model.modelId, 'toggleIsCollapsed', {})} />
+          <i className={buttonClassName} onClick={() => this.props.router.publishEvent(model.modelId, 'toggleIsCollapsed', {})} />
           <div className='sidebar-region__element'></div>
         </div>
       </div>

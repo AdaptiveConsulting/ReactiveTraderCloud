@@ -13,9 +13,6 @@ var _log:logger.Logger = logger.create('ShellModel');
 export default class ShellModel extends ModelBase {
   _connection:Connection;
   sessionExpired:boolean;
-  blotterRegionHasContent:boolean;
-  sidebarRegionHasContent:boolean;
-  sidebarRegionIsCollapsed:boolean;
   wellKnownModelIds:WellKnownModelIds;
 
   _blotterRegionModel:SingleItemRegionModel;
@@ -33,9 +30,6 @@ export default class ShellModel extends ModelBase {
     this.sessionExpired = false;
     this.wellKnownModelIds = WellKnownModelIds;
     this.appVersion = `v${__VERSION__}`;
-    this.blotterRegionHasContent = true;
-    this.sidebarRegionHasContent = true;
-    this.sidebarRegionIsCollapsed = false;
 
     this._blotterRegionModel = blotterRegionModel;
     this._sidebarRegionModel = sidebarRegionModel;

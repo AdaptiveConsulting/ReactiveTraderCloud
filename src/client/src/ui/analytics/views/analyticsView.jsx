@@ -69,7 +69,7 @@ export default class AnalyticsView extends React.Component {
       <div className='analytics analytics__container animated fadeIn'>
         <div className='analytics__controls popout__controls'>
           <i className={newWindowBtnClassName}
-             onClick={() => router.publishEvent(this.props.model.modelId, 'popOutAnalytics', {})}/>
+             onClick={() => router.publishEvent(model.modelId, 'popOutAnalytics', {})}/>
         </div>
         {pnlComponents}
         {positionsBubbleChart}

@@ -3,18 +3,10 @@ import { RegionModel, RegionOptions, RegionModelRegistration } from './';
 import { ModelBase } from '../../common';
 
 export default class SingleItemRegionModel extends RegionModel {
-  _contentStatusSubject:RouterSubject;
-
-  showContent:boolean;
 
   constructor(modelId:string, regionName:string, router:Router) {
     super(modelId, regionName, router);
-    this._contentStatusSubject = router.createSubject();
     this.isCollapsed = false;
-  }
-
-  get contentStatus() {
-    return this._contentStatusSubject.asRouterObservable();
   }
 
   get hasContent() {
