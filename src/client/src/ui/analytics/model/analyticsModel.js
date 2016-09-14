@@ -71,7 +71,6 @@ export default class AnalyticsModel extends ModelBase {
     _log.info(`Analytics model starting`);
     this._subscribeToConnectionStatus();
     this._regionManagerHelper.init();
-    this._observeSidebarEvents();
   }
 
   @observeEvent('referenceDataLoaded')
@@ -111,23 +110,6 @@ export default class AnalyticsModel extends ModelBase {
         (status:ServiceStatus) => {
           this.isAnalyticsServiceConnected = status.isConnected;
         })
-    );
-  }
-
-  _observeSidebarEvents(){
-    this.addDisposable(
-      this.router
-        .getEventObservable(WellKnownModelIds.sidebarModelId, 'hideAnalytics')
-        .subscribe(() => this.router.runAction(this.modelId, ()=> {
-          this._regionManagerHelper.removeFromRegion();
-        }))
-    );
-    this.addDisposable(
-      this.router
-        .getEventObservable(WellKnownModelIds.sidebarModelId, 'showAnalytics')
-        .subscribe(() => this.router.runAction(this.modelId, () => {
-          this._regionManagerHelper.addToRegion();
-        }))
     );
   }
 }

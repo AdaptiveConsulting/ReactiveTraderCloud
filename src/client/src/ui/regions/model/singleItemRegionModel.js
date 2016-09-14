@@ -24,7 +24,6 @@ export default class SingleItemRegionModel extends RegionModel {
   @observeEvent('toggleIsCollapsed')
   _onToggleIsCollapsed() {
     this.isCollapsed = !this.isCollapsed;
-    this._publishState();
   }
 
   // override
@@ -36,21 +35,12 @@ export default class SingleItemRegionModel extends RegionModel {
     this.modelRegistrations.length = 0;
     this.isCollapsed = false;
     let registration = super._addToRegion(model, options);
-    this._publishState();
     return registration;
   }
 
   // override
   _removeFromRegion(model:ModelBase, wasExternallyRemoved:boolean, displayContext?:string) {
     this.isCollapsed = true;
-    this._publishState();
     return super._removeFromRegion(model, wasExternallyRemoved, displayContext);
-  }
-
-  _publishState() {
-    // this._contentStatusSubject.onNext({
-    //   hasContent: this.hasContent,
-    //   isCollapsed: this.isCollapsed
-    // });
   }
 }

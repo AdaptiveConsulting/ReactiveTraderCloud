@@ -17,7 +17,6 @@ export default class ShellModel extends ModelBase {
   sidebarRegionHasContent:boolean;
   sidebarRegionIsCollapsed:boolean;
   wellKnownModelIds:WellKnownModelIds;
-  showSideBar:boolean;
 
   _blotterRegionModel:SingleItemRegionModel;
   _sidebarRegionModel:SingleItemRegionModel;
@@ -46,38 +45,11 @@ export default class ShellModel extends ModelBase {
   _onInit() {
     _log.info('Shell model starting');
     this._observeForSessionExpired();
-    this._observeForBlotterTearOut();
-    this._observeForSidebarTearOut();
   }
 
   @observeEvent('reconnectClicked')
   _onReconnect() {
     this._connection.connect();
-  }
-
-  /**
-   * Observe blotter tear out events, so we can resize the workspace/analytics area
-   * @private
-   */
-  _observeForBlotterTearOut() {
-    this.addDisposable(
-      this._blotterRegionModel.contentStatus.streamFor(this.modelId).subscribe(status => {
-        this.blotterRegionHasContent = status.hasContent;
-      })
-    );
-  }
-
-  /**
-   * Observe blotter tear out events, so we can resize the workspace/sidebar area
-   * @private
-   */
-  _observeForSidebarTearOut() {
-    this.addDisposable(
-      this._sidebarRegionModel.contentStatus.streamFor(this.modelId).subscribe(status => {
-        this.sidebarRegionHasContent = status.hasContent;
-        this.sidebarRegionIsCollapsed = status.isCollapsed;
-      })
-    );
   }
 
   _observeForSessionExpired() {
