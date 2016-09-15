@@ -1,27 +1,17 @@
 import _ from 'lodash';
 import React from 'react';
-import { ViewBase } from '../../../common';
+import { SmartComponent } from 'esp-js-react';
 import { RegionModel, RegionModelRegistration } from '../../model';
-import { createViewForModel} from '../../';
 import WorkspaceItemContainer from './workspaceItemContainer.jsx';
 
-export default class WorkspaceRegionView extends ViewBase {
-  constructor() {
-    super();
-    this.state = {
-      model: null
-    };
-  }
-
+export default class WorkspaceRegionView extends React.Component {
   static propTypes = {
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    model: React.PropTypes.object
   };
 
   render() {
-    if(!this.state.model) {
-      return null;
-    }
-    let model : RegionModel = this.state.model;
+    let model : RegionModel = this.props.model;
     return (
       <div className={this.props.className}>
         <div className='workspace-region'>
@@ -36,11 +26,10 @@ export default class WorkspaceRegionView extends ViewBase {
 
   _renderWorkspaceItems(modelRegistrations:Array<RegionModelRegistration>) {
     return _.map(modelRegistrations, (modelRegistration:RegionModelRegistration) => {
-      let View = createViewForModel(modelRegistration.model, modelRegistration.displayContext);
       return (
         <WorkspaceItemContainer
           key={modelRegistration.model.modelId}>
-          {View}
+          <SmartComponent modelId={modelRegistration.model.modelId} viewContext={modelRegistration.displayContext} />
         </WorkspaceItemContainer>
       );
     }).concat(_.times(6, i => <div key={i} className='workspace-region__spacer'/>)); // add empty items at the end so tiles lay out nicely

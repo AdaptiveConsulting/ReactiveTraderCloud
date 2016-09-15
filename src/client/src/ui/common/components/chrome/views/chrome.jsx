@@ -2,30 +2,21 @@ import React from 'react';
 import OpenFinChrome from '../../openFinChrome/openFinChrome.jsx';
 import BrowserChrome from '../../browserChrome/browserChrome.jsx';
 import { ChromeModel } from '../model';
-import { router } from '../../../../../system';
-import { WellKnownModelIds } from '../../../../../';
-import { ViewBase } from '../../../../common/';
 
-export default class Chrome extends ViewBase {
+export default class Chrome extends React.Component {
   constructor() {
     super();
-    this.state = {
-      model: null,
-      modelId: WellKnownModelIds.chromeModelId
-    };
   }
+
   static propTypes = {
+    model: React.PropTypes.object.isRequired,
+    router: React.PropTypes.object.isRequired,
     children: React.PropTypes.element.isRequired
   };
 
   render() {
-    let model:ChromeModel = this.state.model;
-
-    if (model === null) {
-      return (
-        <div>{this.props.children}</div>
-      );
-    }
+    let model:ChromeModel = this.props.model;
+    let router = this.props.router;
 
     if (model.isRunningInOpenFin) {
       return (<OpenFinChrome minimize={() => router.publishEvent(model.modelId, 'minimizeClicked', {})}

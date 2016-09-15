@@ -1,26 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
-import { router, logger } from '../../../system';
-import { ViewBase } from '../../common';
-import { AnalyticsModel, PositionsChartModel, PnlChartModel } from '../model';
+import { logger } from '../../../system';
+import { PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
 import AnalyticsBarChart from './chart/analyticsBarChart';
 import numeral from 'numeral';
-import Dimensions from 'react-dimensions';
 import PositionsBubbleChart from './positions-chart/positionsBubbleChart';
 import './analytics.scss';
 
 var _log:logger.Logger = logger.create('AnalyticsView');
 
-@Dimensions()
-export default class AnalyticsView extends ViewBase {
+export default class AnalyticsView extends React.Component {
+
+  static propTypes = {
+    model: React.PropTypes.object.isRequired,
+    router: React.PropTypes.object.isRequired
+  };
+
   constructor() {
     super();
-    this.state = {
-      model: null
-    };
   }
 
   componentDidMount(){
@@ -38,18 +38,15 @@ export default class AnalyticsView extends ViewBase {
       }
       var chartDomElement = ReactDOM.findDOMNode(this.refs.pnlChart);
       if (chartDomElement) {
-        var pnlChartModel = this.state.model.pnlChartModel;
+        var pnlChartModel = this.props.model.pnlChartModel;
         this.chartGradient.update(chartDomElement, pnlChartModel.minPnl, pnlChartModel.maxPnl);
       }
     }
   }
 
   render() {
-    let model:AnalyticsModel = this.state.model;
-
-    if (!model) {
-      return null;
-    }
+    let model = this.props.model;
+    let router = this.props.router;
     if (!model.isAnalyticsServiceConnected)
       return (
         <div className='analytics__container'>
@@ -72,7 +69,7 @@ export default class AnalyticsView extends ViewBase {
       <div className='analytics analytics__container animated fadeIn'>
         <div className='analytics__controls popout__controls'>
           <i className={newWindowBtnClassName}
-             onClick={() => router.publishEvent(this.props.modelId, 'popOutAnalytics', {})}/>
+             onClick={() => router.publishEvent(model.modelId, 'popOutAnalytics', {})}/>
         </div>
         {pnlComponents}
         {positionsBubbleChart}
@@ -81,7 +78,7 @@ export default class AnalyticsView extends ViewBase {
   }
 
   _createPnlComponents() {
-    let pnlChartModel:PnlChartModel = this.state.model.pnlChartModel;
+    let pnlChartModel:PnlChartModel = this.props.model.pnlChartModel;
     let pnlChart = null;
     let analyticsHeaderClassName = classnames('analytics__header-value', {
       'analytics__header-value--negative': pnlChartModel.lastPos < 0,
@@ -127,7 +124,7 @@ export default class AnalyticsView extends ViewBase {
   }
 
   _createPositionsChart(){
-    let model:AnalyticsModel = this.state.model;
+    let model = this.props.model;
     let positionsChartData = model.positionsChartModel.seriesData;
 
     return (
@@ -139,7 +136,7 @@ export default class AnalyticsView extends ViewBase {
   }
 
   _createPnlSliders() {
-    let positionsChartModel:PositionsChartModel = this.state.model.positionsChartModel;
+    let positionsChartModel:PositionsChartModel = this.props.model.positionsChartModel;
     return (
       <div>
         <div className='analytics__chart-container'>

@@ -3,7 +3,11 @@ $active-color:        #262a33;
 $border-color:        #424545;
 $button-height:       50px;
 
-.sidebar__container{
+.sidebar-region__content {
+  width: 440px;
+}
+
+.sidebar-region__container{
   background-color: $container-bg-color;
   height: 100%;
   display: flex;
@@ -11,13 +15,17 @@ $button-height:       50px;
   overflow: hidden;
 }
 
-.sidebar__element{
+.sidebar-region__container--no-content{
+  display: none;
+}
+
+.sidebar-region__element{
   border-left: 1px solid $border-color;
   width: 100%;
   flex: 1;
 }
 
-.sidebar__element--active {
+.sidebar-region__element--active {
   background-color: $active-color;
   border: 1px solid $border-color;
   border-left-color: $active-color;
@@ -27,7 +35,7 @@ $button-height:       50px;
   }
 }
 
-.sidebar__element--inactive {
+.sidebar-region__element--inactive {
   border: 1px solid $container-bg-color;
   border-left-color: $border-color;
   background-color: $container-bg-color;
@@ -38,7 +46,7 @@ $button-height:       50px;
   }
 }
 
-.sidebar__element-button {
+.sidebar-region__element-button {
   height: $button-height;
   color: white;
   text-align: center;

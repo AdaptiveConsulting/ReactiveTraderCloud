@@ -1,10 +1,10 @@
+import { Router } from 'esp-js';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { RouterProvider, SmartComponent } from 'esp-js-react';
 import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
-import { HeaderModel } from './ui/header/model';
 import { FooterModel } from './ui/footer/model';
-import { SidebarModel } from './ui/sidebar/model';
 import { ShellModel } from './ui/shell/model';
 import { ChromeModel } from './ui/common/components/chrome/model';
 import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
@@ -12,8 +12,6 @@ import { User, ServiceConst } from './services/model';
 import { SchedulerService, } from './system';
 import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
-import { default as espRouter } from './system/router';
-import { ShellView } from './ui/shell/views';
 import { RegionModel, SingleItemRegionModel, PopoutRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
 import config from 'config.json';
@@ -40,16 +38,25 @@ class AppBootstrapper {
   _schedulerService:SchedulerService;
 
   run() {
-    this.startServices();
-    this.startModels();
-    this.displayUi();
+    let espRouter = this.createRouter();
+    this.startServices(espRouter);
+    this.startModels(espRouter);
+    this.displayUi(espRouter);
   }
 
   get endpointURL() {
     return config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
   }
 
-  startServices() {
+  createRouter() {
+    let espRouter = new Router();
+    espRouter.addOnErrorHandler(err => {
+      _log.error('Unhandled error in model', err);
+    });
+    return espRouter;
+  }
+
+  startServices(espRouter) {
     const user:User = FakeUserRepository.currentUser;
     const realm = 'com.weareadaptive.reactivetrader';
     const url = this.endpointURL;
@@ -82,7 +89,7 @@ class AppBootstrapper {
     this._connection.connect();
   }
 
-  startModels() {
+  startModels(espRouter) {
 
     // Wire up the region management infrastructure:
     // This infrastructure allows for differing views to be put into the shell without the shell having to be coupled to all these views.
@@ -92,33 +99,23 @@ class AppBootstrapper {
     popoutRegionModel.observeEvents();
     let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, RegionNames.blotter, espRouter);
     blotterRegionModel.observeEvents();
-    let analyticsRegionModel = new SingleItemRegionModel(WellKnownModelIds.analyticsRegionModelId, RegionNames.analytics, espRouter);
-    analyticsRegionModel.observeEvents();
     let sidebarRegionModel = new SingleItemRegionModel(WellKnownModelIds.sidebarRegionModelId, RegionNames.sidebar, espRouter);
     sidebarRegionModel.observeEvents();
-    let regionManager = new RegionManager(
-      [workspaceRegionModel, popoutRegionModel, blotterRegionModel, analyticsRegionModel, sidebarRegionModel], this._openFin.isRunningInOpenFin);
-
-    // wire up the shell
-    let shellModel = new ShellModel(WellKnownModelIds.shellModelId, espRouter, this._connection, this._openFin);
-    shellModel.observeEvents();
+    let allRegionModels = [workspaceRegionModel, popoutRegionModel, blotterRegionModel, sidebarRegionModel];
+    let regionManager = new RegionManager(allRegionModels, this._openFin.isRunningInOpenFin);
 
     // wire up the application chrome
     let chromeModel = new ChromeModel(WellKnownModelIds.chromeModelId, espRouter, this._openFin);
     chromeModel.observeEvents();
 
-    // wire-up the loader that populats the workspace with spot tiles.
-    // In a more suffocated app you'd have some 'add product' functionality allowing the users to add workspace views/products manually.
+    // wire-up the loader that populates the workspace with spot tiles.
+    // In a more sophisticated app you'd have some 'add product' functionality allowing the users to add workspace views/products manually.
     let spotTileLoader = new SpotTileLoader(
       espRouter,
       this._referenceDataService,
       new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager, this._schedulerService, this._openFin)
     );
     spotTileLoader.beginLoadTiles();
-
-    // wire-up the sidebar
-    let sidebarModel = new SidebarModel(WellKnownModelIds.sidebarModelId, espRouter, regionManager);
-    sidebarModel.observeEvents();
 
     // wire-up the blotter
     let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager, this._openFin, this._schedulerService);
@@ -128,13 +125,19 @@ class AppBootstrapper {
     let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService, regionManager, this._openFin);
     analyticsModel.observeEvents();
 
-    // wire-up the header
-    let headerModel = new HeaderModel(WellKnownModelIds.headerModelId, espRouter);
-    headerModel.observeEvents();
-
     // wire-up the footer
     let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService, this._openFin);
     footerModel.observeEvents();
+
+    // wire up the apps main shell
+    let shellModel = new ShellModel(
+      WellKnownModelIds.shellModelId,
+      espRouter,
+      this._connection,
+      blotterRegionModel,
+      sidebarRegionModel
+    );
+    shellModel.observeEvents();
 
     this._referenceDataService.hasLoadedStream.subscribe(() => {
       // Some models require the ref data to be loaded before they subscribe to their streams.
@@ -150,12 +153,13 @@ class AppBootstrapper {
     } else {
       espRouter.broadcastEvent('init', {});
     }
-
   }
 
-  displayUi() {
+  displayUi(espRouter) {
     ReactDOM.render(
-      <ShellView />,
+      <RouterProvider router={espRouter} >
+        <SmartComponent modelId={WellKnownModelIds.shellModelId} />
+      </RouterProvider>,
       document.getElementById('root')
     );
   }

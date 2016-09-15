@@ -8,7 +8,7 @@ export default class TradeNotification extends React.Component {
 
   static propTypes = {
     className: React.PropTypes.string,
-    tradeExecutionNotification: React.PropTypes.instanceOf(TradeExecutionNotification).isRequired,
+    tradeExecutionNotification: React.PropTypes.object.isRequired,
     onDismissedClicked: React.PropTypes.func
   };
 

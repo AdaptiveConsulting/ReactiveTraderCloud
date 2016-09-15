@@ -1,22 +1,23 @@
-import { Router,  observeEvent } from 'esp-js/src';
+import { Router,  observeEvent, RouterSubject } from 'esp-js';
+import { viewBinding } from 'esp-js-react';
 import { AnalyticsService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
 import { logger, Environment } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
-import { RegionManager, RegionNames, view  } from '../../regions';
+import { RegionManager, RegionNames, } from '../../regions';
 import { PnlChartModel, PositionsChartModel, ChartModelBase } from './';
 import {
   AnalyticsRequest,
   PositionUpdates,
   RegionSettings
 } from '../../../services/model';
-import { AnalyticsView } from '../views';
+import AnalyticsView from '../views/analyticsView.jsx';
 import { OpenFin } from '../../../system/openFin';
 import { WellKnownModelIds } from '../../../';
 
 var _log:logger.Logger = logger.create('AnalyticsModel');
 
-@view(AnalyticsView)
+@viewBinding(AnalyticsView)
 export default class AnalyticsModel extends ModelBase {
   _analyticsService:AnalyticsService;
   _positionsChartModel:PositionsChartModel;
@@ -38,9 +39,9 @@ export default class AnalyticsModel extends ModelBase {
   ) {
     super(modelId, router);
     this._analyticsService = analyticsService;
-    this._regionName = RegionNames.analytics;
+    this._regionName = RegionNames.sidebar;
     this.isAnalyticsServiceConnected = false;
-    this._regionSettings = new RegionSettings('Analytics', 400, 800, false);
+    this._regionSettings = new RegionSettings(RegionNames.sidebar, 400, 800, false);
     this._pnlChartModel = new PnlChartModel();
     this._positionsChartModel = new PositionsChartModel();
     this._regionManager = regionManager;
@@ -70,7 +71,6 @@ export default class AnalyticsModel extends ModelBase {
     _log.info(`Analytics model starting`);
     this._subscribeToConnectionStatus();
     this._regionManagerHelper.init();
-    this._observeSidebarEvents();
   }
 
   @observeEvent('referenceDataLoaded')
@@ -110,23 +110,6 @@ export default class AnalyticsModel extends ModelBase {
         (status:ServiceStatus) => {
           this.isAnalyticsServiceConnected = status.isConnected;
         })
-    );
-  }
-
-  _observeSidebarEvents(){
-    this.addDisposable(
-      this.router
-        .getEventObservable(WellKnownModelIds.sidebarModelId, 'hideAnalytics')
-        .subscribe(() => this.router.runAction(this.modelId, ()=> {
-          this._regionManagerHelper.removeFromRegion();
-        }))
-    );
-    this.addDisposable(
-      this.router
-        .getEventObservable(WellKnownModelIds.sidebarModelId, 'showAnalytics')
-        .subscribe(() => this.router.runAction(this.modelId, () => {
-          this._regionManagerHelper.addToRegion();
-        }))
     );
   }
 }

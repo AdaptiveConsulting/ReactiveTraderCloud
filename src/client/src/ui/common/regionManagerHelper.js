@@ -35,7 +35,7 @@ export default class RegionManagerHelper {
     this._regionManager.removeFromRegion(this._regionName, this._model);
   }
 
-  popout() {
+  popout(onExternallyRemovedCallback) {
     this._regionManager.removeFromRegion(this._regionName, this._model);
     this._regionManager.addToRegion(
       RegionNames.popout,
@@ -44,6 +44,9 @@ export default class RegionManagerHelper {
         onExternallyRemovedCallback: () => {
           // if the popout is closed, we add it back into the initial region
           this._regionManager.addToRegion(this._regionName, this._model, null, true);
+          if(onExternallyRemovedCallback) {
+            onExternallyRemovedCallback();
+          }
         },
         regionSettings: this._regionSettings
       },

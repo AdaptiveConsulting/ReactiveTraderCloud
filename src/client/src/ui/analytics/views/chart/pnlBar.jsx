@@ -5,25 +5,25 @@ import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 
 
-export default class PNLBar extends React.Component{
+export default class PNLBar extends React.Component {
 
   static propTypes = {
-    index : React.PropTypes.number,
+    index: React.PropTypes.number,
     model: React.PropTypes.object,
     isPnL: React.PropTypes.bool,
     maxVal: React.PropTypes.number,
 
   };
 
-  componentDidMount(){
+  componentDidMount() {
     this._refreshState();
   }
 
-  _refreshState(){
+  _refreshState() {
     this.setState({updateRequired: true});
   }
 
-  _calculateOffset(){
+  _calculateOffset() {
     if (!this.refs.barChartContainer || !this.refs.label) return 0;
     let containerBounds = this.refs.barChartContainer.getBoundingClientRect();
     let labelBounds = this.refs.label.getBoundingClientRect();
@@ -35,56 +35,58 @@ export default class PNLBar extends React.Component{
     return offset;
   }
 
-  _getPusherRelativePosition(){
+  _getPusherRelativePosition() {
     if (!this.refs.barChartContainer || !this.refs.label) return 0;
 
     let containerBounds = this.refs.barChartContainer.getBoundingClientRect().width;
     let labelBounds = this.refs.label.getBoundingClientRect().width;
 
-    let availableSpace = (1 - labelBounds/containerBounds) * 100;
-    let relativePointerPosition = this._getRelativePointerPosition() - (labelBounds/containerBounds * 50 - 1);
-    if (relativePointerPosition < 0){
+    let availableSpace = (1 - labelBounds / containerBounds) * 100;
+    let relativePointerPosition = this._getRelativePointerPosition() - (labelBounds / containerBounds * 50 - 1);
+    if (relativePointerPosition < 0) {
       relativePointerPosition = 0;
     }
 
     return relativePointerPosition <= availableSpace ? relativePointerPosition : availableSpace;
   }
 
-  _getRelativePointerPosition(){
+  _getRelativePointerPosition() {
     let baseValue = this.props.model.basePnl;
     let isPositive = baseValue > 0;
     let displayValue = Math.abs(baseValue) / this.props.maxVal * 100;
-    let xPosRelative = isPositive ? 50 + displayValue /2 : (50 - displayValue /2);
+    let xPosRelative = isPositive ? 50 + displayValue / 2 : (50 - displayValue / 2);
     return xPosRelative;
   }
 
-  _getRenderedLabel(){
-    let amount = numeral(this.props.model.basePnl).format('0a').toUpperCase();
-    let amountHover = numeral(this.props.model.basePnl).format('0,0');
-    let labelText = `(${amount}) ${this.props.model.symbol}`;
+  _getRenderedLabel() {
+    var model = this.props.model;
+
+    let amount = numeral(model.basePnl).format('0a').toUpperCase();
+    let amountHover = numeral(model.basePnl).format('0,0');
+    let labelText = `(${amount}) ${model.symbol}`;
 
     let approxLabelWidth = labelText.length * 8;
-    let offset = this._calculateOffset() || -(approxLabelWidth/2);
+    let offset = this._calculateOffset() || -(approxLabelWidth / 2);
     let posStyle = {'left': offset};
 
     return (
       <span ref='label' className='analytics__barchart-label' style={posStyle}>
         <span className='analytics__barchart-label-amount'>({amount}) </span>
-        <span>{this.props.model.currencyPair.base}</span>
-        <span className='analytics__barchart-label-currency-terms'>{this.props.model.currencyPair.terms}</span>
+        <span>{model.currencyPair.base}</span>
+        <span className='analytics__barchart-label-currency-terms'>{model.currencyPair.terms}</span>
         <span className='analytics__barchart-label-amount--hover'> {amountHover}</span>
       </span>
     );
   }
 
-  render(){
+  render() {
     let label = this._getRenderedLabel();
     let xPosRelative = this._getRelativePointerPosition();
     let xPosRelativePusher = this._getPusherRelativePosition();
     let pointerPosition = {'left': xPosRelative + '%'};
     let pusherStyle = {'width': xPosRelativePusher + '%'};
 
-    return(
+    return (
       <div ref='barChartContainer' className='analytics__barchart-container'>
         <div>
           <div className='analytics__barchart-title-wrapper'>

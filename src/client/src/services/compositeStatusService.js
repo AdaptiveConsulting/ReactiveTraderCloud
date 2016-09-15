@@ -1,4 +1,4 @@
-import { DisposableBase } from 'esp-js/src';
+import { DisposableBase } from 'esp-js';
 import { ServiceStatusLookup } from './model';
 import { PricingService, ReferenceDataService, BlotterService, ExecutionService, AnalyticsService } from './';
 import { Connection, ServiceStatus } from './../system/service';

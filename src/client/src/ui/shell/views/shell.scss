@@ -45,54 +45,38 @@
 .shell__container {
   background-color: $shell-background-color;
   display: flex;
-  flex-flow: column wrap;
-  justify-content: space-around;
+  flex-flow: row;
+  justify-content: flex-end;
   height: calc(100% - #{$footer-height});
   width: 100%;
   & * {
     box-sizing: border-box;
   }
-  &.shell__container--no-analytics {
-    .shell__workspace,
-    .shell__blotter {
-      width: calc(100% - #{$sidebar-width} - #{$scrollbar-width});
-    }
-  }
-  &.shell__container--no-analytics.shell__container--no-side-bar {
-    .shell__workspace,
-    .shell__blotter {
-      width: 100%;
-    }
-  }
-  &.shell__container--no-blotter {
-    .shell__workspace {
-      height: $workspace-height-expanded;
-    }
+}
+
+.shell_workspace_blotter {
+  background-color: $shell-background-color;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+  & * {
+    box-sizing: border-box;
   }
 }
 
-
-.shell__side-bar {
-  flex-grow: 0;
-  flex-shrink: 0;
-  height: $analytics-height;
-  order: 6;
-  flex-basis: 100%;
-  width: $sidebar-width;
-}
-
-.shell__analytics {
+.shell__sidebar {
   flex-grow: 0;
   flex-shrink: 0;
   height: $analytics-height;
   overflow-y: auto;
   background: $panel-background-color;
   padding: 0px;
-  flex-basis: 100%;
-  width: $analytics-width;
-  order: 5;
+  display: flex;
+  flex-direction: row;
 }
-
 
 .shell__workspace {
   flex-grow: 1;
@@ -100,17 +84,14 @@
   overflow-y: auto;
   overflow-x: hidden;
   width: $workspace-width;
-  flex-basis: $workspace-height;
-  order: 2;
+  order: 1;
 }
 
 .shell__blotter {
   flex-grow: 1;
   height: $blotter-height;
   overflow: hidden;
-  width: $blotter-width;
-  flex-basis: $blotter-height;
-  order: 3;
+  order: 2;
 }
 
 .shell__footer {
@@ -132,19 +113,19 @@
     flex-direction: column;
   }
 
-  .shell__analytics,
+  .shell__sidebar,
   .shell__workspace {
     height: auto;
     width: 100%;
   }
 
-  .shell__analytics,
+  .shell__sidebar,
   .shell__workspace,
   .shell__blotter {
     flex: 1;
   }
 
-  .shell__analytics {
+  .shell__sidebar {
     order: 2;
   }
   .shell__blotter {

@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import { Router } from 'esp-js/src';
+import { Router } from 'esp-js';
 import { Guard } from '../';
 
 /**

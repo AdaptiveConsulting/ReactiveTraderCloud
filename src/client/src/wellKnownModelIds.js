@@ -13,24 +13,16 @@ export default class WellKnownModelIds {
     return 'popoutRegionModelId';
   }
 
-  static get analyticsRegionModelId() {
-    return 'analyticsRegionModelId';
+  static get sidebarRegionModelId() {
+    return 'sidebarRegionModelId';
   }
 
   static get blotterRegionModelId() {
     return 'blotterRegionModelId';
   }
 
-  static get sidebarRegionModelId() {
-    return 'sidebarRegionModelId';
-  }
-
   static get shellModelId() {
     return 'shellModelId';
-  }
-
-  static get headerModelId() {
-    return 'headerModelId';
   }
 
   static get footerModelId() {

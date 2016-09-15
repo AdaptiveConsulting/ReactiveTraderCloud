@@ -1,6 +1,7 @@
 import Rx from 'rx';
 import _ from 'lodash';
-import { Router,  observeEvent } from 'esp-js/src';
+import { Router,  observeEvent, RouterSubject } from 'esp-js';
+import { viewBinding } from 'esp-js-react';
 import { BlotterService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
 import { logger, Environment } from '../../../system';
@@ -15,7 +16,7 @@ var _log:logger.Logger = logger.create('BlotterModel');
 
 const HIGHLIGHT_TRADE_FOR_IN_MS = 200;
 
-@view(BlotterView)
+@viewBinding(BlotterView)
 export default class BlotterModel extends ModelBase {
   _blotterService:BlotterService;
   _regionManagerHelper:RegionManagerHelper;
@@ -44,6 +45,10 @@ export default class BlotterModel extends ModelBase {
     this._regionManagerHelper = new RegionManagerHelper(this._regionName, regionManager, this, this._regionSettings);
     this._openFin = openFin;
     this._schedulerService = schedulerService;
+  }
+
+  get canPopout() {
+    return Environment.isRunningInIE;
   }
 
   @observeEvent('init')
@@ -83,10 +88,6 @@ export default class BlotterModel extends ModelBase {
       _log.debug(`Stop highlighting trade ${e.trade.tradeId}`);
       this.trades[index].isInFocus = false;
     }
-  }
-
-  get canPopout() {
-    return Environment.isRunningInIE;
   }
 
   subscribeToOpenFinEvents(){

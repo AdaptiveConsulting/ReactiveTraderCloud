@@ -100,9 +100,7 @@ const webpackConfig = {
     alias: {
       'config.json': path.join(__dirname, 'config', config),
       system: path.join(__dirname, 'src/system'),
-      services: path.join(__dirname, 'src/services'),
-      // reverse alias so we can use ES6 from node modules and get IDE support but not actually transpile it
-      'esp-js/src' : path.join(__dirname, 'node_modules/esp-js')
+      services: path.join(__dirname, 'src/services')
     }
   },
   eslint: {
