@@ -73,7 +73,7 @@ testtoolsContainer_latest="$testtoolsContainer_base:latest"
 
 # gcloud
 gcloudContainer_major="1"
-gcloudContainer_minor="0"
+gcloudContainer_minor="1"
 gcloudContainer="weareadaptive/gcloud:$gcloudContainer_major.$gcloudContainer_minor"
 
 # nsgate
