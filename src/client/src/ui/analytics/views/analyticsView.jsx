@@ -5,6 +5,7 @@ import { logger } from '../../../system';
 import { PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
+import d3 from 'd3';
 import AnalyticsBarChart from './chart/analyticsBarChart';
 import numeral from 'numeral';
 import PositionsBubbleChart from './positions-chart/positionsBubbleChart';
@@ -87,10 +88,10 @@ export default class AnalyticsView extends React.Component {
     let formattedLastPos = numeral(pnlChartModel.lastPos).format();
     if (pnlChartModel.hasData) {
       let configurePnLChart = (chart) => {
-        let pnlTooltip = d => {
-          let { value, series } = d,
-            formatted = numeral(series[0].value).format('0.0a');
-          return `<p><strong>${value}:</strong> ${formatted}</p>`;
+        let pnlTooltip = ({value, series}) => {
+          let date = d3.time.format('%X')(new Date(value));
+          let formatted = numeral(series[0].value).format('0.0a');
+          return `<p class="analytics__chart-tooltip"><strong class="analytics__chart-tooltip-date">${date}:</strong> ${formatted}</p>`;
         };
         chart.yDomain([pnlChartModel.minPnl, pnlChartModel.maxPnl]).yRange([150, 0]);
         chart.interactiveLayer.tooltip.contentGenerator(pnlTooltip);
@@ -101,7 +102,7 @@ export default class AnalyticsView extends React.Component {
           type='lineChart'
           datum={pnlChartModel.getSeries()}
           options={pnlChartModel.options}
-          height={180}
+          height={240}
           configure={configurePnLChart}/>
       );
     } else {
