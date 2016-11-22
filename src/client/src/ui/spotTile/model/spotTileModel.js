@@ -13,7 +13,7 @@ import { getPopoutService } from '../../common/popout/';
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 4000;
 const MAX_NOTIONAL_VALUE = 1000000000;
-const PRICE_STALE_AFTER_X_IN_MS = 4000;
+const PRICE_STALE_AFTER_X_IN_MS = 6000;
 
 import {
   GetSpotStreamRequest,

@@ -18,7 +18,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         public PriceSource()
         {
-            _timer = Observable.Interval(TimeSpan.FromMilliseconds(75));
+            _timer = Observable.Interval(TimeSpan.FromMilliseconds(50));
 
             _priceGenerators = new List<IPriceGenerator>
             {
