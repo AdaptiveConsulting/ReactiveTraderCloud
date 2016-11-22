@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
@@ -14,6 +16,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         private readonly IBroker _broker;
         private readonly IBlotterService _service;
         private IDisposable _subscription;
+        private const int MaxSotwTrades = 50;
 
         public BlotterServiceHost(IBlotterService service, IBroker broker) : base(broker, "blotter")
         {
@@ -32,15 +35,22 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             var endPoint = await _broker.GetPrivateEndPoint<TradesDto>(replyTo);
 
             _subscription = _service.GetTradesStream()
-                                    .Do(
-                                        o =>
-                                        {
-                                            Log.Debug(
-                                                $"Sending trades update to {replyTo}. Count: {o.Trades.Count}. IsStateOfTheWorld: {o.IsStateOfTheWorld}. IsStale: {o.IsStale}");
-                                        })
-                                    .TakeUntil(endPoint.TerminationSignal)
-                                    .Finally(() => { Log.Debug("Tidying up subscription from {replyTo}.", replyTo); })
-                                    .Subscribe(endPoint);
+                .Select(x =>
+                {
+                    if (x.IsStateOfTheWorld && x.Trades.Count > MaxSotwTrades)
+                    {
+                        return new TradesDto(new List<TradeDto>(x.Trades.Skip(x.Trades.Count - MaxSotwTrades)), true, false);
+                    }
+                    return x;
+                })
+                .Do(o =>
+                {
+                    Log.Debug(
+                        $"Sending trades update to {replyTo}. Count: {o.Trades.Count}. IsStateOfTheWorld: {o.IsStateOfTheWorld}. IsStale: {o.IsStale}");
+                })
+                .TakeUntil(endPoint.TerminationSignal)
+                .Finally(() => Log.Debug("Tidying up subscription from {replyTo}.", replyTo))
+                .Subscribe(endPoint);
         }
 
         public override void Dispose()
