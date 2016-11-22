@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive;
-using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Contract;
@@ -12,14 +11,16 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     {
         private static readonly Random Random = new Random();
 
-        private readonly Dictionary<string, IObservable<SpotPriceDto>> _priceStreams =
-            new Dictionary<string, IObservable<SpotPriceDto>>();
-
+        private readonly Dictionary<string, IObservable<SpotPriceDto>> _priceStreams = new Dictionary<string, IObservable<SpotPriceDto>>();
+        private readonly List<IPriceGenerator> _priceGenerators;
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
+        private readonly IObservable<long> _timer;
 
         public PriceSource()
         {
-            var priceGenerators = new List<IPriceGenerator>
+            _timer = Observable.Interval(TimeSpan.FromMilliseconds(75));
+
+            _priceGenerators = new List<IPriceGenerator>
             {
                 CreatePriceGenerator("EURUSD", 1.09443m, 5),
                 CreatePriceGenerator("USDJPY", 121.656m, 3),
@@ -44,30 +45,32 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 CreatePriceGenerator("EURSEK", 9.26876m, 4)
             };
 
-            foreach (var ccy in priceGenerators)
+            foreach (var ccy in _priceGenerators)
             {
                 var observable = Observable.Create<SpotPriceDto>(observer =>
-                {
-                    var prices = ccy.Sequence().GetEnumerator();
-
-                    prices.MoveNext();
-                    observer.OnNext(prices.Current);
-
-                    var disp = CreatePriceTrigger(ccy.Symbol == "GBPJPY").Subscribe(o =>
                     {
+                        var prices = ccy.Sequence().GetEnumerator();
+
                         prices.MoveNext();
                         observer.OnNext(prices.Current);
-                    });
 
-                    _disposable.Add(disp);
+                        var disp = RegisterPriceTrigger(ccy.Symbol).Subscribe(o =>
+                        {
+                            prices.MoveNext();
+                            observer.OnNext(prices.Current);
+                        });
 
-                    return disp;
-                })
+                        _disposable.Add(disp);
+
+                        return disp;
+                    })
                     .Replay(1)
                     .RefCount();
 
                 _priceStreams.Add(ccy.Symbol, observable);
             }
+
+            _timer.Publish().Connect();
         }
 
         public void Dispose()
@@ -80,20 +83,10 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             return new MeanReversionRandomWalkPriceGenerator(symbol, initial, precision);
         }
 
-        private static IObservable<Unit> CreatePriceTrigger(bool delayPeriods)
+        private IObservable<Unit> RegisterPriceTrigger(string symbol)
         {
-            if (delayPeriods)
-            {
-                return Observable.Interval(TimeSpan.FromSeconds(0.75))
-                    .Take(TimeSpan.FromSeconds(30))
-                    .Concat(Observable.Interval(TimeSpan.FromSeconds(10)).Take(1))
-                    .Repeat()
-                    .Select(_ => Unit.Default);
-            }
-
-            // delay start of timer or repeat random interval?
-            return Observable.Interval(TimeSpan.FromSeconds(0.75))
-                .Delay(TimeSpan.FromMilliseconds(Random.Next(501)))
+            return _timer
+                .Where(_ => _priceGenerators[Random.Next(_priceGenerators.Count)].Symbol == symbol)
                 .Select(_ => Unit.Default);
         }
 
