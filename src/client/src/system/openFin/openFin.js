@@ -102,12 +102,13 @@ export default class OpenFin {
             observer.onNext(msg.result);
             observer.onCompleted();
           };
+          const limitCheckerSuccessHandler = () =>  _log.debug(`${_this.limitCheckSubscriber} subscribed successfully`);
           const limitCheckerErrorHandler = error => {
             _log.error(`${_this.limitCheckSubscriber} limit check failed.`, error);
             observer.onError(error);
           };
 
-          fin.desktop.InterApplicationBus.subscribe(_this.limitCheckSubscriber, topic, limitCheckerCallback, limitCheckerErrorHandler);
+          fin.desktop.InterApplicationBus.subscribe(_this.limitCheckSubscriber, topic, limitCheckerCallback, limitCheckerSuccessHandler, limitCheckerErrorHandler);
 
           fin.desktop.InterApplicationBus.send(_this.limitCheckSubscriber, REQUEST_LIMIT_CHECK_TOPIC, {
             id: _this.limitCheckId,
