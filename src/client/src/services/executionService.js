@@ -60,7 +60,7 @@ export default class ExecutionService extends ServiceBase {
               else {
                 o.onNext(ExecuteTradeResponse.createForError('Credit limit exceeded'));
               }
-            })
+            }, () => o.onNext(ExecuteTradeResponse.createForError('Credit limit check failed')))
         );
         return disposables;
       }
