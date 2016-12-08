@@ -14,7 +14,7 @@
     "Adaptive.ReactiveTrader.EventStore": "1.0.0-*",
     "Rx-Main": "2.2.5",
     "Serilog.Sinks.ColoredConsole": "2.0.0-rc-704",
-    "NETStandard.Library": "1.6.0"
+    "NETStandard.Library": "1.6.1"
   },
 
   "frameworks": {

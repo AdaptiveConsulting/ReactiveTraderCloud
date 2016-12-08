@@ -3,7 +3,6 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.WebSockets.Protocol;
 using Serilog;
 
 namespace Adaptive.ReactiveTrader.Messaging.WebSocket
@@ -15,7 +14,7 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
         private const string SubProtocol = "wamp.2.json";
         private readonly TimeSpan _keepAliveInterval = TimeSpan.FromSeconds(20);
 
-        private readonly CommonWebSocket _ws;
+        private readonly ClientWebSocket _ws;
         private readonly Uri _uri;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
@@ -27,7 +26,14 @@ namespace Adaptive.ReactiveTrader.Messaging.WebSocket
 
         protected ClientWebSocketWrapper(string uri)
         {
-            _ws = CommonWebSocket.CreateClientWebSocket(SubProtocol, _keepAliveInterval, ReceiveChunkSize, false);
+            _ws = new ClientWebSocket
+            {
+                Options =
+                {
+                    KeepAliveInterval = _keepAliveInterval
+                }
+            };
+            
             _uri = new Uri(uri);
             _cancellationToken = _cancellationTokenSource.Token;
         }
