@@ -6,10 +6,9 @@ namespace Adaptive.ReactiveTrader.Common.Config
     {
         public BrokerConfiguration(IConfiguration brokerSection)
         {
-            Host = brokerSection["host"] ?? "localhost";
-            int port;
-            Port = int.TryParse(brokerSection["port"], out port) ? port : 8080;
-            Realm = brokerSection["realm"] ?? "com.weareadaptive.reactivetrader";
+            Host = brokerSection.GetStringValue("host", "localhost");
+            Port = brokerSection.GetIntValue("port", 8080);
+            Realm = brokerSection.GetStringValue("realm", "com.weareadaptive.reactivetrader");
         }
 
         public string Host { get; }

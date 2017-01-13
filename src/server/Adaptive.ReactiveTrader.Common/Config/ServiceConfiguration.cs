@@ -32,13 +32,10 @@ namespace Adaptive.ReactiveTrader.Common.Config
 
             if (physicalLocation == null) throw new FileNotFoundException("Cannot find file config", configFile);
 
-            var config = new ConfigurationBuilder();
-            var jsonConfigurationSource = new JsonConfigurationSource {Path = physicalLocation};
-            config.Add(jsonConfigurationSource);
-
-            _config = config.Build();
-
-//            _config = new ConfigurationBuilder(new JsonConfigurationProvider(physicalLocation)).Build();
+            _config = new ConfigurationBuilder()
+                .SetBasePath(Path.GetDirectoryName(physicalLocation))
+                .AddJsonFile(Path.GetFileName(physicalLocation))
+                .Build();
 
             Broker = new BrokerConfiguration(_config.GetSection("broker"));
             EventStore = new EventStoreConfiguration(_config.GetSection("eventStore"));
@@ -58,7 +55,7 @@ namespace Adaptive.ReactiveTrader.Common.Config
 
                 foreach (var entry in config.GetEntries())
                 {
-                    Log.Information(entry.ToString()); // TODO
+                    Log.Information($"{entry.Key}: {entry.Value}");
                 }
             }
 
