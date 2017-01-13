@@ -11,10 +11,10 @@
   "dependencies": {
     "Microsoft.Framework.Configuration": "1.0.0-beta8",
     "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
-    "Rx-Main": "2.2.5",
     "NETStandard.Library": "1.6.1",
     "Newtonsoft.Json": "9.0.1",
-    "Serilog": "2.0.0"
+    "Serilog": "2.0.0",
+    "System.Reactive":  "3.1.1" 
   },
 
   "frameworks": {
