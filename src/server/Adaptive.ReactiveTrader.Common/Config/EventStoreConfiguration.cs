@@ -1,4 +1,4 @@
-﻿using Microsoft.Framework.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace Adaptive.ReactiveTrader.Common.Config
 {
@@ -6,8 +6,9 @@ namespace Adaptive.ReactiveTrader.Common.Config
     {
         public EventStoreConfiguration(IConfiguration eventStoreSection)
         {
-            Host = eventStoreSection.GetStringValue("host", "localhost");
-            Port = eventStoreSection.GetIntValue("port", 1113);
+            Host = eventStoreSection["host"] ?? "localhost";
+            int port;
+            Port = int.TryParse(eventStoreSection["port"], out port) ? port : 1113;
         }
 
         public string Host { get; }

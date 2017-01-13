@@ -13,7 +13,7 @@
     "EventStore.ClientAPI.DotNetCore": "1.0.0",
     "NETStandard.Library": "1.6.1",
     "Newtonsoft.Json": "9.0.1",
-    "protobuf-net": "2.1.0-alpha-1",
+    "protobuf-net": "2.1.0",
     "System.Collections.Immutable": "1.2.0",
     "System.Diagnostics.Contracts": "4.0.1",
     "System.Net.WebSockets": "4.3.0",
@@ -23,10 +23,7 @@
 
   "frameworks": {
     "netstandard1.3": {
-      "imports": [
-        "dnxcore50",
-        "portable-net45"
-      ]
+      "imports": "dnxcore50"
     }
   }
 }

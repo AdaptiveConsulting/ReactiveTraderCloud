@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.Framework.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace Adaptive.ReactiveTrader.Common.Config
 {
