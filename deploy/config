@@ -58,8 +58,8 @@ nginxContainer_minor="0"
 nginxContainer="weareadaptive/nginx:$nginxContainer_major.$nginxContainer_minor"
 
 # dotnet
-dotnetversion="dotnet-dev-1.0.0-preview2-003121"
-dotnetContainer_major="0"
+dotnetversion="dotnet-dev-1.0.0-preview2.1-003177"
+dotnetContainer_major="1"
 dotnetContainer_minor="1"
 dotnetContainer="weareadaptive/dotnet:$dotnetContainer_major.$dotnetContainer_minor"
 
