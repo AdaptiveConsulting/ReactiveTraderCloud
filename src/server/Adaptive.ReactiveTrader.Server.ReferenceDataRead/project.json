@@ -25,10 +25,7 @@
           "version": "1.1.0"
         }
       },
-      "imports": [
-        "dnxcore50",
-        "portable-net45"
-      ]
+      "imports": "dnxcore50"
     }
   }
 }

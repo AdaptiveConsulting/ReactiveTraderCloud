@@ -14,8 +14,8 @@
     "Adaptive.ReactiveTrader.Contract": "1.0.0-*",
     "Adaptive.ReactiveTrader.Messaging": "1.0.0-*",
     "xunit": "2.2.0-*",
-    "Adaptive.WampSharp.Default.Client": "1.0.0.1",
-    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "WampSharp.Default.Client": "1.2.5.33-beta",
+    "dotnet-test-xunit": "2.2.0-*",
     "NETStandard.Library": "1.6.1"
   },
 
@@ -27,11 +27,7 @@
           "version": "1.1.0"
         }
       },
-      "imports": [
-        "dnxcore50",
-        "portable-net45+win8+wp8",
-        "portable-net45+win+MonoAndroid10+xamarinios10+MonoTouch10"
-      ]
+      "imports": "dnxcore50"
     }
   },
 
