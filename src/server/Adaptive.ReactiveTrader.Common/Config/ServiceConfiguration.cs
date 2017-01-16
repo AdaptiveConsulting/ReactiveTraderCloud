@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.Framework.Configuration;
-using Microsoft.Framework.Configuration.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Serilog;
 using Serilog.Events;
 
@@ -32,7 +32,10 @@ namespace Adaptive.ReactiveTrader.Common.Config
 
             if (physicalLocation == null) throw new FileNotFoundException("Cannot find file config", configFile);
 
-            _config = new ConfigurationBuilder(new JsonConfigurationProvider(physicalLocation)).Build();
+            _config = new ConfigurationBuilder()
+                .SetBasePath(Path.GetDirectoryName(physicalLocation))
+                .AddJsonFile(Path.GetFileName(physicalLocation))
+                .Build();
 
             Broker = new BrokerConfiguration(_config.GetSection("broker"));
             EventStore = new EventStoreConfiguration(_config.GetSection("eventStore"));
@@ -52,16 +55,16 @@ namespace Adaptive.ReactiveTrader.Common.Config
 
                 foreach (var entry in config.GetEntries())
                 {
-                    Log.Information(entry.ToString()); // TODO
+                    Log.Information($"{entry.Key}: {entry.Value}");
                 }
             }
 
             return config;
         }
 
-        public IEnumerable<KeyValuePair<string, string>> GetEntries()
+        public IEnumerable<IConfigurationSection> GetEntries()
         {
-            return _config.EnumerateEntries();
+            return _config.GetChildren();
         }
     }
 }

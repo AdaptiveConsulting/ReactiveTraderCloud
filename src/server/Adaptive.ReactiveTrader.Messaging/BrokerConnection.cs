@@ -3,13 +3,10 @@ using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
-using Adaptive.ReactiveTrader.Messaging.WebSocket;
 using Serilog;
 using WampSharp.V2;
 using WampSharp.V2.Client;
 using WampSharp.V2.Fluent;
-using WampSharp.WebsocketsPcl;
-using Websockets;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
@@ -27,11 +24,9 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public BrokerConnection(string uri, string realm)
         {
-            WebSocketFactory.Init(() => new ClientWebSocketConnection());
-
             _channel = new WampChannelFactory()
                 .ConnectToRealm(realm)
-                .WebSocketTransport(uri)
+                .WebSocketTransport(new Uri(uri))
                 .JsonSerialization()
                 .Build();
 
