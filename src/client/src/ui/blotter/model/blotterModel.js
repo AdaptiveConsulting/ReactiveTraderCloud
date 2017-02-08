@@ -107,14 +107,14 @@ export default class BlotterModel extends ModelBase {
             let trades = tradesUpdate.trades;
 
             if (tradesUpdate.isStateOfTheWorld) {
-              this.trades = this.trades.concat(_.sortBy(tradesUpdate.trades, 'tradeId').reverse()).map(trade => new TradeRow(trade));
+              this.trades = _.sortBy(tradesUpdate.trades, 'tradeId').reverse().map(trade => new TradeRow(trade));
             }else{
               _.forEach(trades, (trade:Trade) => {
                 let existingTradeIndex = _.findIndex(this.trades, (t) => t.trade.tradeId === trade.tradeId);
-                if (existingTradeIndex !== -1){
+                if (existingTradeIndex !== -1) {
                   //update the existing trade
                   this.trades[existingTradeIndex] = new TradeRow(trade);
-                }else{
+                } else {
                   //add the existing trade and mark it as new
                   const tradeRow = new TradeRow(trade);
                   this.trades.unshift(tradeRow);
@@ -122,7 +122,7 @@ export default class BlotterModel extends ModelBase {
                 }
 
                 //display a notification if the trade has a final status (Done or Rejected);
-                if ((trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected)){
+                if ((trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected)) {
                   this._openFin.openTradeNotification(trade);
                 }
               });
