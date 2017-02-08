@@ -23,11 +23,19 @@ if [[ $service == "broker" ]];then
   vMajor=$brokerContainer_major
   vMinor=$brokerContainer_minor
 fi
+if [[ $service == "brokergate" ]];then
+  vMajor=$brokerContainer_major
+  vMinor=$brokerContainer_minor
+fi
 if [[ $service == "web" ]];then
   vMajor=$webContainer_major
   vMinor=$webContainer_minor
 fi
 if [[ $service == "eventstore" ]];then
+  vMajor=$populatedEventstoreContainer_major
+  vMinor=$populatedEventstoreContainer_minor
+fi
+if [[ $service == "eventstoregate" ]];then
   vMajor=$populatedEventstoreContainer_major
   vMinor=$populatedEventstoreContainer_minor
 fi

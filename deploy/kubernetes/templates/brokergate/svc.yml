@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "__SERVICE__"
+  namespace: "__NAMESPACE__"
+  labels:
+    name: "__SERVICE____MAJOR__"
+spec:
+  selector:
+    name: "broker"
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: "ws"
+  type: "LoadBalancer"
