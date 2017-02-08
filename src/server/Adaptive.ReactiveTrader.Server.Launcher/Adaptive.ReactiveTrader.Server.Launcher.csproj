@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Service Launcher</Description>
+    <Authors>Adaptive Financial Consulting Ltd.</Authors>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <DebugType>portable</DebugType>
+    <AssemblyName>Adaptive.ReactiveTrader.Server.Launcher</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>Adaptive.ReactiveTrader.Server.Launcher</PackageId>
+    <PackageTags>Adaptive;Reactive Trader</PackageTags>
+    <PackageProjectUrl>https://github.com/AdaptiveConsulting/ReactiveTraderCloud</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE</PackageLicenseUrl>
+    <RuntimeIdentifiers>win7-x64;win7-x86;osx.10.11-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Server.Analytics\Adaptive.ReactiveTrader.Server.Analytics.csproj" />
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Server.Blotter\Adaptive.ReactiveTrader.Server.Blotter.csproj" />
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Server.Pricing\Adaptive.ReactiveTrader.Server.Pricing.csproj" />
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Server.ReferenceDataRead\Adaptive.ReactiveTrader.Server.ReferenceDataRead.csproj" />
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Server.ReferenceDataWrite\Adaptive.ReactiveTrader.Server.ReferenceDataWrite.csproj" />
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Server.TradeExecution\Adaptive.ReactiveTrader.Server.TradeExecution.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EventStore.ClientAPI.DotNetCore" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">
+    <PackageReference Include="Microsoft.NETCore.App" Version="1.1.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <DebugType>portable</DebugType>
+    <AssemblyName>Adaptive.ReactiveTrader.Server.IntegrationTests</AssemblyName>
+    <OutputType>Library</OutputType>
+    <PackageId>Adaptive.ReactiveTrader.Server.IntegrationTests</PackageId>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <RuntimeIdentifiers>win10-x64;ubuntu.14.04-x64</RuntimeIdentifiers>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Server.Launcher\Adaptive.ReactiveTrader.Server.Launcher.csproj" />
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Common\Adaptive.ReactiveTrader.Common.csproj" />
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Contract\Adaptive.ReactiveTrader.Contract.csproj" />
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Messaging\Adaptive.ReactiveTrader.Messaging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0-beta5-build1225" />
+    <PackageReference Include="xunit" Version="2.2.0-beta5-build3474" />
+    <PackageReference Include="WampSharp.Default.Client" Version="1.2.5.33-beta" />
+    <PackageReference Include="NETStandard.Library" Version="1.6.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">
+    <PackageReference Include="Microsoft.NETCore.App" Version="1.1.0" />
+  </ItemGroup>
+
+</Project>
