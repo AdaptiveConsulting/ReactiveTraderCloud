@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Messaging</Description>
+    <Authors>Adaptive Financial Consulting Ltd.</Authors>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <AssemblyName>Adaptive.ReactiveTrader.Messaging</AssemblyName>
+    <PackageId>Adaptive.ReactiveTrader.Messaging</PackageId>
+    <PackageTags>Adaptive;Reactive Trader</PackageTags>
+    <PackageProjectUrl>https://github.com/AdaptiveConsulting/ReactiveTraderCloud</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Common\Adaptive.ReactiveTrader.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EventStore.ClientAPI.DotNetCore" Version="1.0.0" />
+    <PackageReference Include="NETStandard.Library" Version="1.6.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="protobuf-net" Version="2.1.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.2.0" />
+    <PackageReference Include="System.Diagnostics.Contracts" Version="4.0.1" />
+    <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
+    <PackageReference Include="System.Net.WebSockets.Client" Version="4.3.0" />
+    <PackageReference Include="WampSharp.Default.Client" Version="1.2.5.33-beta" />
+  </ItemGroup>
+
+</Project>

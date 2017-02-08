@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Server Common</Description>
+    <Authors>Adaptive Financial Consulting Ltd.</Authors>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <AssemblyName>Adaptive.ReactiveTrader.Server.Common</AssemblyName>
+    <PackageId>Adaptive.ReactiveTrader.Server.Common</PackageId>
+    <PackageTags>Adaptive;Reactive Trader</PackageTags>
+    <PackageProjectUrl>https://github.com/AdaptiveConsulting/ReactiveTraderCloud</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Contract\Adaptive.ReactiveTrader.Contract.csproj" />
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.EventStore\Adaptive.ReactiveTrader.EventStore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NETStandard.Library" Version="1.6.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+</Project>
