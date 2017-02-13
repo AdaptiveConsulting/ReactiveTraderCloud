@@ -1,5 +1,7 @@
 ## Running with Visual Studio 2015 on Windows
 
+*N.B. these instructions are no longer up-to-date. We will publish the new instructions ASAP.*
+
 Install Visual Studio 2015 - a free community edition is available. Then install .NET Core from [here](https://www.microsoft.com/net/core). Also ensure that the NuGet package manager extension is up to date.
 
 That's it! You should be all set to go. Open a cmd prompt and type `dotnet --info` and you should see something like this:
