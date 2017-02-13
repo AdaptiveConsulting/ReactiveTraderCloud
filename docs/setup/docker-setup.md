@@ -1,5 +1,7 @@
 # Running on Docker
 
+*N.B. the Windows portion of these instructions are for Docker Toolbox. We will upgrade to the Docker For Windows version ASAP*
+
 The following instructions have been tested on: 
 - Windows 7 / 10
 - Ubuntu 14.04.3 / 15.10
