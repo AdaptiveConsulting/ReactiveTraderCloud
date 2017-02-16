@@ -1,0 +1,47 @@
+/* These are all general styles to give the chartiq.html template a certai aesthetic.
+ Feel free to customize, or remove this file to meet the needs of your application.
+ */
+
+html {
+	/* this keeps the page sized to exactly the window */
+     height: 100%;
+     position: fixed;
+     width: 100%;
+}
+
+body {
+	-ms-touch-action: none; /* Necessary for windows mobile devices */
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+
+	/* These can be removed or changed to suit your needs */
+	background: #f8f8f8;
+	color: #666;
+	font-family:'Roboto', sans-serif;
+	font-size: 12px;
+	font-weight:300;
+}
+
+input {
+	-webkit-user-select: text;
+	   -moz-user-select: text;
+	    -ms-user-select: text;
+	        user-select: text;
+
+	font-weight: 300;
+	color: #071931;
+}
+
+div, li, span, a {
+	-webkit-tap-highlight-color: rgba(0,0,0,0); /* eliminated annoying flash when tapping screen on ipads */
+	-webkit-tap-highlight-color: transparent; /* For some Androids */
+}
+
+/* You can safely remove or override these */
+input[type="text"], 
+input[type="number"] {
+	border: #ddd solid 1px;
+	padding: 0 5px 0 10px;
+}
