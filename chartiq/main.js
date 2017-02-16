@@ -5,19 +5,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fin.desktop.main(() => {
     const currentWindow = fin.desktop.Window.getCurrent();
+    const fetch = (myself, symbol, interval) => {
+      console.log(`fetch symbol ${symbol}`);
+      if (interval) {
+        myself.stxx.setPeriodicityV2(1, interval);
+      }
+      if (symbol) {
+        myself.UIContext.changeSymbol({symbol: symbol});
+      }
+    };
+
     console.log(`UUID: ${currentWindow.uuid}`);
 
     currentWindow.onMessageCallback = (myself, newSubscription, previousSubscription, subFunction) => {
       console.log('Message received');
-      const fetch = (symbol, interval) => {
-        console.log(`fetch symbol ${symbol}`);
-        if (interval) {
-          myself.stxx.setPeriodicityV2(1, interval);
-        }
-        if (symbol) {
-          myself.UIContext.changeSymbol({symbol: symbol});
-        }
-      };
+
       if (newSubscription == null) {
         myself.subFunctions[subFunction] = null;
         console.log(`${myself.name} unsubscribed from ${previousSubscription}:${subFunction}`);
@@ -26,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         myself.subFunctions[subFunction]= (message, uuid) => {
           console.log(message);
           if (message.interval || message.symbol) {
-            fetch(message.symbol, message.interval);
+            fetch(myself, message.symbol, message.interval);
           }
         }
       }
@@ -73,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     currentWindow.allChildren = 0;
 
-    const render = myWindow => {
+    const render = (myWindow, onRenderCallback) => {
       console.log('Render window');
       const nativeWindow = myWindow.getNativeWindow();
 
@@ -114,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
       myWindow.defineDraggableArea(wrapper);
       const btns = wrapper.querySelectorAll('.ciq-menu');
       Array.prototype.forEach.call(btns, btn => btn.style['-webkit-app-region'] = 'no-drag');
+      onRenderCallback();
     };
 
     // parse symbol and period, and spawn main window
@@ -134,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const openfinWindow = new fin.desktop.Window({
-      url: `template-advanced.html?symbol=${symbol}&period=${interval}`,
+      url: `template-advanced.html`,
       name: 'main',
       defaultTop: 100,
       defaultLeft: 100,
@@ -146,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
       resizable: true,
       maximizable: true
     }, () => {
-      render(openfinWindow);
+      render(openfinWindow, () => fetch(openfinWindow.getNativeWindow(), symbol, interval));
     });
   });
 });
