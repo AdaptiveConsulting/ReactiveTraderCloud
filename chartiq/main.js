@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fin.desktop.main(() => {
     const currentWindow = fin.desktop.Window.getCurrent();
+    let subFunctions = {};
     const fetch = (myself, symbol, interval) => {
       console.log(`fetch symbol ${symbol}`);
       if (interval) {
@@ -19,13 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     currentWindow.onMessageCallback = (myself, newSubscription, previousSubscription, subFunction) => {
       console.log('Message received');
-
       if (newSubscription == null) {
-        myself.subFunctions[subFunction] = null;
+        subFunctions[subFunction] = null;
         console.log(`${myself.name} unsubscribed from ${previousSubscription}:${subFunction}`);
         return;
       } else if (myself.stxx.chart.symbol && subFunction === FeaturesEnum.ChangeSymbol) {
-        myself.subFunctions[subFunction]= (message, uuid) => {
+        subFunctions[subFunction]= (message, uuid) => {
           console.log(message);
           if (message.interval || message.symbol) {
             fetch(myself, message.symbol, message.interval);
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       console.log(`${myself.name} subscribed to ${newSubscription}:${subFunction}`);
-      return myself.subFunctions[subFunction];
+      return subFunctions[subFunction];
     };
 
     // subscribe to change_symbol messages
@@ -48,36 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const recipient= `chartiq:${win.name}`;
       fin.desktop.InterApplicationBus.unsubscribe('*', `${recipient}:${FeaturesEnum.ChangeSymbol}`, currentWindow.onMessageCallback(win, null, recipient, FeaturesEnum.ChangeSymbol));
 
-      currentWindow.allChildren--;
-      if (currentWindow.allChildren === 0) {
-        currentWindow.close();
-      }
+      currentWindow.close();
     };
 
     // for redrawing the stx windows
     currentWindow.redrawWindow = win => win.setTimeout(win.forceRedraw, 5000);
 
-    // hide splash screen
-    currentWindow.hideSplashScreen = () => {
-      const hide = () => {
-        currentWindow.hide();
-        setTimeout(currentWindow.hideSplashScreen, 500);
-      };
-      currentWindow.isShowing(showing => {
-        if (showing) {
-          setTimeout(hide, 3000);
-        } else {
-          setTimeout(currentWindow.hideSplashScreen, 500);
-        }
-      });
-    };
-    currentWindow.hideSplashScreen();
-
-    currentWindow.allChildren = 0;
-
-    const render = (myWindow, onRenderCallback) => {
+    const render = (openfinWindow, onRenderCallback) => {
       console.log('Render window');
-      const nativeWindow = myWindow.getNativeWindow();
+      const nativeWindow = openfinWindow.getNativeWindow();
 
       // wait for full load of main window
       if (!nativeWindow.STX) {
@@ -85,16 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      currentWindow.allChildren++;
-      nativeWindow.subFunctions = {};
-
       // event handler to decrement window count
       nativeWindow.addEventListener('unload', () => currentWindow.unloadWindowEvent(nativeWindow));
-
-      // synchronization code in case stream source is not running yet
-      nativeWindow.forceRedraw = () => currentWindow.redrawWindow(nativeWindow);
-      nativeWindow.setTimeout(nativeWindow.forceRedraw, 5000);
-
 
       // sub/unsubscribe window to stream if symbol changed
       currentWindow.subscribe(nativeWindow);
@@ -113,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // set the window to be draggable by the nav bar
       const wrapper = nativeWindow.document.querySelector('.ciq-nav');
-      myWindow.defineDraggableArea(wrapper);
+      openfinWindow.defineDraggableArea(wrapper);
       const btns = wrapper.querySelectorAll('.ciq-menu');
       Array.prototype.forEach.call(btns, btn => btn.style['-webkit-app-region'] = 'no-drag');
       onRenderCallback();
