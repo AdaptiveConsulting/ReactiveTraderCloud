@@ -1,0 +1,781 @@
+@charset "UTF-8";
+/* CSS Document */
+
+html,body{
+	-ms-touch-action: none; /* This is necessary to allow the chart to grab windows touch events */
+	margin: 0px; /*to deal with iFraming which sets 8px by default in some browsers*/
+}
+
+.chartContainer, #chartContainer { /* DIV that the canvas expands to. #chartContainer is only for backward compatibility with older libraries. */
+	display: block;
+	font-family: Roboto, Helvetica, sans-serif;
+	font-size: 12px;
+	position:relative; /* chart container must be relative for internal DOM elements to be correct */
+}
+
+/* --------------------------------------------------------- BUTTONS --------------------------------------------------------- */
+
+/* Basic Buttons */
+
+.stx-btn { /* Inactive Button */
+	display:inline-block;
+	cursor: pointer;
+	padding: 0px 8px;
+	border: solid 1px #ddd;
+	font-weight: bold;
+	line-height: 27px;
+	color: #7e7e7e;
+	text-align: center;
+	overflow: visible;
+	background-repeat: no-repeat;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-transition: color .25s, border .25s, box-shadow .25s;
+	-moz-transition: color .25s, border .25s, box-shadow .25s;
+	transition: color .25s, border .25s, box-shadow .25s;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.stx-btn:hover { /* Button Hover State */
+	color: #444444;
+	border: solid 1px #c5c5c5;
+	-webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, .1), inset 0px -8px 6px rgba(100, 100, 100, .03);
+	-moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, .1), inset 0px -8px 6px rgba(100, 100, 100, .03);
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, .1), inset 0px -8px 6px rgba(100, 100, 100, .03);
+}
+.stx-btn:active { /* Button Active State */
+	color: #333;
+	-webkit-box-shadow: inset 0px 8px 6px rgba(100, 100, 100, .03);
+	-moz-box-shadow: inset 0px 8px 6px rgba(100, 100, 100, .03);
+	box-shadow: inset 0px 8px 6px rgba(100, 100, 100, .03);
+}
+
+
+/* Panel Buttons */
+
+.stx-btn-panel,
+.stx-btn-panel span {/* Button Defaults */
+	display:inline-block;
+	width:25px;
+	height:25px;
+	cursor:pointer;
+   -webkit-transition: -webkit-transform .2s;
+   transition: transform .2s;
+}
+.stx-btn-panel {/* Button Spacing */
+	margin:3px 2px;
+	}
+.stx-btn-panel:hover span,
+.stx-btn-panel:active span {/* Make buttons full opacity on hover or hit */
+	opacity:1;
+	}
+.stx-btn-panel:active {/* Scale up when active */
+	-webkit-transform: scale(1.2, 1.2);
+	-ms-transform: scale(1.2, 1.2);
+	transform: scale(1.2, 1.2);
+}
+.stx-btn-panel span {/* Button Icons */
+	background-image:url(img/stx-sprite-panels.svg);
+	opacity:.6;
+   -webkit-transition: opacity .2s;
+   -moz-transition: opacity .2s;
+   transition: opacity .2s;
+}
+.no-svg .stx-btn-panel span {/* Button Icons for non SVG browsers */
+	background-image:url(img/stx-sprite-panels.png);
+}
+.stx-btn-panel > span.stx-ico-up {background-position: -150px -25px;}
+.stx-btn-panel > span.stx-ico-down {background-position: -200px -25px;}
+.stx-btn-panel > span.stx-ico-close {background-position: -250px -25px;}
+.stx-btn-panel > span.stx-ico-edit {background-position: -300px -25px;}
+.stx-btn-panel > span.stx-ico-focus {background-position: -350px -25px;}
+
+
+
+/* --------------------------------------------------------- CHART CONTROLS --------------------------------------------------------- */
+
+.stx_chart_controls { /* Chart Control module */
+	position: absolute;
+	display: block;
+	bottom: 60px;
+	left: 50%;
+	margin-left:-55px;
+	height: 27px;
+	margin-bottom: 15px;
+	width: auto;
+	text-align: center;
+	z-index: 30;
+}
+#chartSize, #chartSize span { /* Chart Control element defaults */
+	height: 25px;
+	display: inline-block;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#chartSize { /* Chart size container */
+	margin: 0px auto;
+	position:relative;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background:#fafafa;
+	-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+	-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, .2);
+}
+#chartSize:after {/* Divider between zoom buttons */
+	position:absolute;
+	top:4px;
+	bottom:4px;
+	width:1px;
+	left:36px;
+	content:"";
+	display:block;
+	background:rgba(0,0,0,.2);
+}
+#chartSize span {/* Chart size (+) and (-) buttons */
+	background-image:url(img/stx-sprite-panels.svg);
+	width: 35px;
+	cursor: pointer;
+	transition: opacity .25s, transform .2s;
+	-webkit-transition: opacity .25s, -webkit-transform .2s;
+	opacity: .6;
+}
+.no-svg #chartSize span {/*Chart size (+) and (-) buttons for non SVG browsers */
+	background-image:url(img/stx-sprite-panels.png);
+}
+#chartSize .stx-zoom-out {/* Zoom out */
+	background-position: -45px -25px;
+	-webkit-border-radius: 3px 0 0 3px;
+	-moz-border-radius: 3px 0 0 3px;
+	border-radius: 3px 0 0 3px;
+}
+#chartSize .stx-zoom-in {/* Zoom in */
+	background-position: -95px -25px;
+	-webkit-border-radius: 0 3px 3px 0;
+	-moz-border-radius: 0 3px 3px 0;
+	border-radius: 0 3px 3px 0;
+}
+#chartSize span:hover,
+#chartSize span:active,
+.stx_jump_today:hover,
+.stx_jump_today:active
+  {/* Make buttons full opacity on hover or hit */
+	opacity: 1;
+	}
+#chartSize span:active {/* Scale up when active */
+	-webkit-transform: scale(1.2, 1.2);
+	-ms-transform: scale(1.2, 1.2);
+	transform: scale(1.2, 1.2);
+}
+
+
+
+.stx_jump_today {/* Button  jumping to today's data */
+	color: #FFF;
+	overflow: hidden;
+	position: absolute;
+	bottom: 12px;
+	right: 10px;
+	line-height: 0px;
+	height: 25px;
+	width: 30px;
+	padding: 0px;
+	margin-bottom: 17px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background:#fafafa;
+	-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+	-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, .2);
+	transition: background .25s;
+	-webkit-transition: background .25s;
+	cursor: pointer;
+	z-index:30;
+}
+
+.stx_jump_today span {
+	background-image:url(img/stx-sprite-panels.svg);
+	background-repeat: no-repeat;
+	display: inline-block;
+	line-height: 25px;
+	height: 25px;
+	width: 30px;
+	padding-top: 25px;
+	background-position: -448px -25px;
+	transition: opacity .25s, transform .2s;
+	-webkit-transition: opacity .25s, -webkit-transform .2s;
+	opacity: .6;
+}
+.no-svg .stx_jump_today span {/* Button Icons for non SVG browsers */
+	background-image:url(img/stx-sprite-panels.png);
+}
+.stx_jump_today:hover span {
+	opacity: 1;
+}
+
+/* --------------------------------------------------------- PANEL CONTROL TEMPLATES --------------------------------------------------------- */
+
+.stx-baseline-handle { /* used for dragging the baseline up and down */
+	color: rgba(96,128,192,.5);
+	cursor: ns-resize;
+	display: none;
+	font-size: 20px;
+	font-style:bold;
+	height: 20px;
+	position: absolute;
+	text-align: center;
+	width: 20px;
+	z-index: 30;
+}
+.stx-baseline-handle:before {
+	content: '\f07d';
+}
+
+
+.stx-drag-chart { /* Use the hand icon when grabbing and moving the chart */
+	cursor: url(http://cur-google.com/mail/images/2/closedhand.cur), default !important;
+}
+.stx-ico-handle {/* The div that allows users to ajust the panels */
+	position: absolute;
+	left: 0%;
+	height: 6px;
+	width: 100%;
+	overflow: hidden;
+	cursor:ns-resize;
+	z-index: 30;
+}
+.stx-ico-handle:active {/* Use the vertical resize when adjusting panels */
+	cursor:ns-resize;
+}
+
+
+.stx-panel-control {/* Panel Control buttons template */
+	position: absolute;
+	top: 10px;
+	left: 0px;
+	overflow: hidden;
+	z-index: 30;
+	display: none;
+}
+
+.stx-panel-control * {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.stx-panel-control.stx-show {
+	display: inline-block;
+}
+
+.stx-panel-title {/* Panel/Chart Titles */
+	margin: 5px 10px;
+	float: left;
+	display: inline-block;
+	color: #333;
+	padding: 0 10px 0 10px;
+	line-height:22px;
+	font-size: 12px;
+	text-align:left;
+	text-transform: uppercase;
+	-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+	-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+	/*box-shadow: 0px 1px 1px rgba(0, 0, 0, .2);*/ /* Messes up Android WebView pre-4.3 */
+}
+
+.stx-panel-control .stx-btn {/* Float all icons so they stay in line on the left */
+	float: left;
+}
+
+/* ------------------------------------------------------- CHART OVERLAY ELEMENTS ------------------------------------------------------ */
+
+#mSticky, #showMeasure { /* These are the small divs that come up when you hover over a drawing or study overlay */
+	display: none;
+	background: #efefef;
+	border: solid #ddd 1px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	color: #666;
+	font-size: 11px;
+	/*text-transform: capitalize;*/
+	white-space: nowrap;
+	z-index: 40;
+}
+#mSticky, #vectorTrashCan, #overlayTrashCan, #showMeasure, .overlayEdit {
+	position: absolute;
+	z-index: 40;
+}
+#mStickyInterior, #sMeasure {/* Drawing and study info div contents*/
+	margin: 0px;
+	padding: 5px 10px 5px 10px;
+	display: inline-block;
+	float: left;
+}
+.overlayEdit.stx-btn,
+#overlayTrashCan.stx-btn,
+#vectorTrashCan.stx-btn {/* Drawing and study info div delete button wrappers for mobile */
+	background: none;
+	cursor: pointer;
+	display: inline-block;
+	text-align: center;
+	width: 30px;
+	height: 27px;
+/*	padding:0px; */
+	border:none;
+}
+.overlayEdit.stx-btn span,
+#overlayTrashCan.stx-btn span,
+#vectorTrashCan.stx-btn span {/* Drawing and study info div delete button content */
+	display: block;
+	margin: 0 0 0 5px;
+	width: 23px;
+	height: 23px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	overflow: hidden;
+	text-indent: 100px;
+	background: #efefef;
+	border: solid #ddd 1px;
+	background-image:url(img/stx-sprite-panels.svg);
+	background-position: -401px -26px;
+}
+
+.overlayEdit {
+	opacity: 0;
+}
+
+#overlayTrashCan {
+	margin-left:5px;
+}
+
+/* To enable editing of overlay studies on mobile. You'll need to also implement stxx.callbacks.studyOverlayEdit
+.overlayEdit {
+	margin-left: 5px;
+	opacity: 1;
+}
+#overlayTrashCan {
+	margin-left: 34px;
+}
+*/
+
+.no-svg .overlayEdit.stx-btn span,
+.no-svg #overlayTrashCan.stx-btn span,
+.no-svg #vectorTrashCan.stx-btn span {/* Button Icons for non SVG browsers */
+	background-image:url(img/stx-sprite-panels.png);
+}
+
+#mouseDeleteInstructions {
+	margin: 0px;
+	padding: 5px 10px 5px 10px;
+    display: block;
+    clear: both;
+    font-size: xx-small;
+}
+#mouseDeleteText, #mouseManageText { display:none; }
+.rightclick_drawing #mouseDeleteText { display:inline; }
+.rightclick_series #mouseDeleteText { display:inline; }
+.rightclick_study #mouseDeleteText { display:inline; }
+
+.stx-loader {/* Loading image size and placement */
+	position: absolute;
+	top: 280px;
+	left: 50%;
+	margin-left:-20px;
+	width: 40px;
+	height: 40px;
+	z-index:50;
+}
+
+/* --------------------------------------------------------- CHART ELEMENT STYLES --------------------------------------------------------- */
+
+/* -------- Current Price label (Floating last price on y-axis)-------- */
+
+.stx_current_hr_up {/* 'Up' color for current chart value */
+	background-color: #8cc176;
+	color:#fff;
+}
+.stx_current_hr_down {/* 'Down' color for current chart value */
+	background-color: #b82c0c;
+	color:#fff;
+}
+
+/* -------- Axis Styles -------- */
+
+.stx_xaxis {/* x-axis date styles */
+	font-size: 12px;
+	font-family: Helvetica;
+	color: #666;
+	}
+.stx_xaxis_dark {/* x-axis date divider styles */
+	color: #444444;
+	}
+.stx_yaxis {/* y-axis price styles */
+	font-size: 10px;
+	font-family: Helvetica;
+	color:#333;
+	}
+
+/* -------- Crosshairs lines and labels-------- */
+
+.stx-float-date {/* Crosshair Floating x-axis date label*/
+	position: absolute;
+	font-size: 10px;
+	font-family: Helvetica;
+	z-index: 30;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	color:#fff;
+	padding: 1px 6px;
+	text-align: center;
+	width: 70px;
+	background-color: #333;
+}
+.stx-float-price {/* Corsshair Floating y-axis value label*/
+	color:#fff;
+	background-color: #333;
+}
+.stx_crosshair {/* Standard Crosshair lines color */
+	position: absolute;
+	z-index: 10;
+	background-color:#999;
+	}
+.stx_crosshair_drawing {/* Darker crosshairs lines when drawing */
+	position: absolute;
+	z-index: 10;
+	background-color:#333;
+	}
+#crossY, .stx_crosshair_y {/* Vertical Crosshair line size */
+	left: 0px;
+	height: 1px;
+	width: 98%;
+	margin-top:-1px; /* since we're using border-top to draw the actual line */
+}
+#crossX, .stx_crosshair_x { /* Horizontal Crosshair line size */
+	top: 0px;
+	width: 1px;
+	height: 100%;
+}
+.stx-crosshair-on{	/* Crosshair pointer icon */
+	cursor:crosshair;
+}
+
+
+/* -------- Chart and Study Panel Styling -------- */
+
+.stx_panels {/* Panel Title text */
+	font-family: Helvetica;
+	font-size: 10px;
+	color: white;
+}
+.stx_panel_background {/* Panel Title background */
+	color: #7c878b;
+	}
+.stx_panel_border { /* Divider between panels */
+	width: 1px;
+	color:#cccccc;
+	}
+.stx_panel_drag { /* Darker Divider between panels when resizing */
+	width: 2px;
+	color:#666;
+	}
+.stx_solo_lit span {/* Add background to expand button when toggled on */
+	background-color:#b1b7b8;
+	color:#ffffff;
+	opacity: 1;
+}
+
+
+/* -------- Chart Grid -------- */
+
+.stx_grid { /* Default Grid */
+	color:#efefef;
+	opacity:1;
+	}
+.stx_grid_dark {/* Default Grid dividers */
+	color:#cccccc;
+	opacity:.9;
+	}
+.stx_grid_border {/* Default Grid borders */
+	color:#999999;
+	}
+
+/* -------- Chart Type Styles -------- */
+
+.stx_line_chart {/* Default width for line Charts */
+	width: 1px;
+}
+.stx_bar_chart, .stx_bar_up, .stx_bar_down, .stx_bar_even {/* Default width for bar Charts */
+	width: 1px;
+}
+/* Default color for line and bar Charts */
+.stx_line_chart, .stx_bar_chart {color:#000;}
+
+.stx_bar_down {/* Down Bar color */
+	color: #b82c0c;
+}
+.stx_bar_up {/* Up Bar color */
+	color: #8cc176;
+}
+
+.stx_baseline_delta_mountain {/* Default color for baseline delta mountain Charts */
+	background-color: rgba(163, 102, 255,.5);		/* background color for mountain. If IE8 support is needed use #5CC7C0 instead as rgba is not supported*/
+	color: rgba(163, 102, 255,.01);					/* Optional gradient. If IE8 support is needed use #EFF9F9 instead as rgba is not supported */
+	padding: 3px;									/* Optional padding between the baseline and the mountain shading*/
+}
+
+.stx_colored_mountain_chart {/* Default color for colored mountain Charts */
+	background-color: rgba(163, 102, 255,.5);		/* background color for mountain. If IE8 support is needed use #5CC7C0 instead as rgba is not supported*/
+	color: rgba(163, 102, 255,.01);					/* Optional gradient. If IE8 support is needed use #EFF9F9 instead as rgba is not supported */
+	width: 2px;										/* Optional line width */
+	padding: 4px;									/* Optional padding between the baseline and the mountain shading*/
+}
+
+.stx_mountain_chart {/* Default color for mountain Charts */
+	background-color: rgba(102,202,196,.5);			/* background color for mountain. If IE8 support is needed use #5CC7C0 instead as rgba is not supported*/
+	color: rgba(102,202,196,.01);					/* Optional gradient. If IE8 support is needed use #EFF9F9 instead as rgba is not supported */
+	border: #66CAC4;								/* Optional line color */
+	width: 1px;										/* Optional line width */
+}
+/*.stx_mountain_chart.color {width:24px;}*/
+
+.stx_histogram_down {/* Down Bar color */
+	color: #b82c0c;
+	border-left-color: #000000;
+}
+.stx_histogram_up {/* Up Bar color */
+	color: #8cc176;
+	border-left-color: #000000;
+}
+.stx_histogram_even {/* Even Bar color */
+	color: #999999;
+	border-left-color: #000000;
+}
+
+.stx_highlight_vector {/* change the color and weight of drawings and study overlays on hover */
+	color: red;
+	width: 3px;
+}
+
+.stx_candle_shadow, .stx_bar_even {/* Candle wick color */
+	color:#2e383b;
+}
+/******* Optionally use .stx_candle_shadow_up and .stx_candle_shadow_down to change shadow/wick color for up/down candles
+ .stx_candle_shadow_up {
+	color:#8cc176;
+}
+.stx_candle_shadow_down {
+	color:#b82c0c;
+}
+********/
+
+.stx_candle_down, .stx_line_down { /* Down Candle color */
+	color: #b82c0c;
+	border-left-color: #000000;
+}
+.stx_candle_up, .stx_line_up {/* Up Candle color */
+	color: #8cc176;
+	border-left-color: #000000;
+}
+
+.stx_hollow_candle_down{color:#b82c0c;}
+.stx_hollow_candle_up{color:#8cc176;}
+.stx_hollow_candle_even{color:#888888;}
+
+.stx_baseline{/* color of baseline (dashed horizontal line) */
+	color:#2e383b;
+}
+
+.stx_baseline_down { /* under area color */
+	color: #eb242b;
+  	width: 2px;
+}
+.stx_baseline_up {/* over area color */
+	color: #49ba59;
+  	width: 2px;
+}
+
+.stx_kagi_down {/* Kagi chart width and color for downtrend */
+	color: #FF0000;
+	width: 1px;
+}
+.stx_kagi_up {/* Kagi chart width and color for uptrend */
+	color: #00FF00;
+	width: 3px;
+}
+
+.stx_pandf_down {/* P&F chart color, padding, width for downtrend */
+	color: #FF0000;
+	padding: 2px 0px 2px 0px;
+	width: 2px;
+}
+.stx_pandf_up {/* P&F chart color, padding, width for uptrend */
+	color: #00FF00;
+	padding: 2px 0px 2px 0px;
+	width: 2px;
+}
+
+.stx_volume_up {/* Up Volume color */
+	color: #8cc176;
+}
+.stx_volume_down {/* Down volume color */
+	color: #b82c0c;
+}
+
+/* Volume underlay styles */
+.stx_volume_underlay_up {
+	color: rgb(140, 193, 118);
+	opacity: .3;
+	border-left-color: rgb(0, 0, 0);
+}
+.stx_volume_underlay_down {
+	color: rgb(184, 45, 12);
+	opacity: .3;
+	border-left-color: rgb(0, 0, 0);
+}
+
+/* Volume profile styles */
+.stx_volume_profile {
+	opacity: .3;
+	border-color: rgb(0, 0, 0);
+}
+
+/* Line color for projections */
+
+.stx_projection_new {/* Line color for active line when drawing projections */
+	color: blue;
+}
+
+.stx_gaps {/* Transparent gaps overlay style */
+	color: #b1b7b8;
+	opacity: .3;
+}
+
+.stx_histogram { /* Default color for histograms */
+	color: #000000;
+	opacity: .2;
+}
+
+/* -------- Annotations -------- */
+
+.stx_annotation {/* Annotation styles */
+	font-size: 13px;
+	font-family: Helvetica;
+	background: transparent;
+	border: none;
+	box-shadow: none;
+	padding: 0px 6px;
+	outline: none;
+	color: #333;
+	resize: none;
+	z-index: 1000;
+}
+.stx_annotation_bg {/* Annotation backgrounds */
+	color: #f5f5f5;
+}
+.stx_annotation_highlight {/* Annotation highlight color */
+	color: white;
+}
+.stx_annotation_highlight_bg {/* Annotation highlight background color */
+	color: #3d4447;
+}
+#annotationSave, #annotationCancel,
+.stx-btn.stx_annotation_save, .stx-btn.stx_annotation_cancel {/* Annotation Buttons */
+	position: absolute;
+	display: none;
+	font-size: 11px;
+	-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+	-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+	z-index: 50;
+	background-color: #ffffff;
+}
+
+#annotationCancel, .stx_annotation_cancel {
+	margin-left: 10px;
+}
+.stx_watermark {/* Optional watermark style */
+	font-size: 16px;
+	font-family: Helvetica;
+	color: transparent;
+}
+.stx_fib_levels {/* Text for fibonacci values */
+	font-size: 12px;
+	font-family: Helvetica;
+	color: transparent;
+}
+
+/* -------- Text for shared charts -------- */
+
+.stx_share {
+	font-size: 14px;
+	font-family: georgia;
+	color: #000000;
+	width: 1px;
+}
+.stx_share_symbol {
+	font-size: 14px;
+	font-family: Arial;
+	font-weight: bold;
+}
+
+.stx-holder {
+	display:block;
+	position:absolute;
+	overflow: hidden;
+	z-index: 20;
+}
+
+.stx-subholder {
+	position:absolute;
+	overflow:hidden;
+}
+
+/* -------- Colors for session shading -------- */
+.stx_market_session.divider {
+	background-color: rgba(0,255,0,0.8);
+	width: 1px;
+}
+.stx_market_session.pre {
+	background-color: rgba(255,255,0,0.1);
+}
+.stx_market_session.post {
+	background-color: rgba(0,0,255,0.2);
+}
+
+/* -------- Heads up tooltip -------- */
+stx-hu-tooltip {
+	position: absolute;
+	left: -1000px;
+	z-index: 30;
+	white-space: nowrap;
+	padding: 6px;
+	border: 1px solid gray;
+	background-color: rgba(42,81,208,.5);
+	color: white;
+}
+
+stx-hu-tooltip-field {
+	display:table-row;
+}
+
+stx-hu-tooltip-field-name {
+	display:table-cell;
+	font-weight:bold;
+	padding-right:5px;
+}
+
+stx-hu-tooltip-field-value {
+	display:table-cell;
+	text-align:right;
+}
