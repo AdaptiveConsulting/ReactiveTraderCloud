@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`UUID: ${currentWindow.uuid}`);
 
     currentWindow.onMessageCallback = (myself, newSubscription, previousSubscription, subFunction) => {
-      console.log('getMessagingCallback');
+      console.log('Message received');
       const fetch = (symbol, interval) => {
         console.log(`fetch symbol ${symbol}`);
         if (interval) {
@@ -22,27 +22,26 @@ document.addEventListener('DOMContentLoaded', () => {
         myself.subFunctions[subFunction] = null;
         console.log(`${myself.name} unsubscribed from ${previousSubscription}:${subFunction}`);
         return;
-      } else if (myself.stxx.chart.symbol) {
-        if (subFunction === FeaturesEnum.ChangeSymbol) {
-          myself.subFunctions[subFunction]= (message, uuid) => {
-            console.log(message);
-            if (message.interval || message.symbol) {
-              fetch(message.symbol, message.interval);
-            }
+      } else if (myself.stxx.chart.symbol && subFunction === FeaturesEnum.ChangeSymbol) {
+        myself.subFunctions[subFunction]= (message, uuid) => {
+          console.log(message);
+          if (message.interval || message.symbol) {
+            fetch(message.symbol, message.interval);
           }
         }
       }
+
       console.log(`${myself.name} subscribed to ${newSubscription}:${subFunction}`);
       return myself.subFunctions[subFunction];
     };
 
-    // injection API function for subscribing/unsubscribing
+    // subscribe to change_symbol messages
     currentWindow.subscribe = win => {
       const recipient= `chartiq:${win.name}`;
       fin.desktop.InterApplicationBus.subscribe('*', `${recipient}:${FeaturesEnum.ChangeSymbol}`, currentWindow.onMessageCallback(win, recipient, null, FeaturesEnum.ChangeSymbol));
     };
 
-    // unload the stx windows, unsubscribe on unload
+    // dispose resources on unload
     currentWindow.unloadWindowEvent = win => {
       const recipient= `chartiq:${win.name}`;
       fin.desktop.InterApplicationBus.unsubscribe('*', `${recipient}:${FeaturesEnum.ChangeSymbol}`, currentWindow.onMessageCallback(win, null, recipient, FeaturesEnum.ChangeSymbol));
@@ -53,12 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    // for redrawing the stx windows, in case stream source not running yet
-    currentWindow.redrawWindow = win => {
-      win.setTimeout(win.forceRedraw, 5000);
-    };
+    // for redrawing the stx windows
+    currentWindow.redrawWindow = win => win.setTimeout(win.forceRedraw, 5000);
 
-    // splash screen hide
+    // hide splash screen
     currentWindow.hideSplashScreen = () => {
       const hide = () => {
         currentWindow.hide();
@@ -67,8 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentWindow.isShowing(showing => {
         if (showing) {
           setTimeout(hide, 3000);
-        }
-        else {
+        } else {
           setTimeout(currentWindow.hideSplashScreen, 500);
         }
       });
@@ -120,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
       Array.prototype.forEach.call(btns, btn => btn.style['-webkit-app-region'] = 'no-drag');
     };
 
-    // spawn main window
+    // parse symbol and period, and spawn main window
     let search = location.search;
     if (search.indexOf('?') === 0) {
       search = search.substr(1);
