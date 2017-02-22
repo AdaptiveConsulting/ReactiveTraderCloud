@@ -50,6 +50,16 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
       cursor: default;
     }
   }
+  &:not(.spot-tile--readonly) {
+    .spot-tile__price:hover {
+      background-color: $primary-color;
+      color: white;
+
+      .price-button__pip {
+        color: inherit;
+      }
+    }
+  }
 }
 
 .spot-tile__icon--hidden{
@@ -79,15 +89,6 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
   position: absolute;
   width: $price-width;
   top: 35px;
-
-  &:hover {
-    background-color: $primary-color;
-    color: white;
-
-    .price-button__pip {
-      color: inherit;
-    }
-  }
 }
 
 .spot-tile__price--bid {

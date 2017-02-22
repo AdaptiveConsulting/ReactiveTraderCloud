@@ -17,7 +17,7 @@
     },
     "runtime": {
         "arguments": "--force-device-scale-factor=1",
-        "version": "6.49.12.139"
+        "version": "6.49.17.14"
     },
     "shortcut": {
         "company": "Adaptive Consulting",
