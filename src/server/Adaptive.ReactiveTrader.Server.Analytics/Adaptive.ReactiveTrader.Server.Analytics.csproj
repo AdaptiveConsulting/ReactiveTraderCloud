@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Server.Common\Adaptive.ReactiveTrader.Server.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">
-    <PackageReference Include="Microsoft.NETCore.App" Version="1.1.0" />
-  </ItemGroup>
-
 </Project>

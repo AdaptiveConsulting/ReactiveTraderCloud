@@ -31,7 +31,7 @@ buildCommand="mkdir -p /packages"
 # buildCommand="$buildCommand && cp -r /packages /root/.nuget/"
 buildCommand="$buildCommand && dotnet restore"
 # buildCommand="$buildCommand && cp -r /root/.nuget/packages /"
-buildCommand="$buildCommand && dotnet build */project.json --configuration Release"
+buildCommand="$buildCommand && dotnet build --configuration Release"
 
 docker run -t --name dotnetrestored -v /$(pwd)/dotnetcache:/packages weareadaptive/serverssrc:$build bash -c "$buildCommand"
 
