@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Serilog" Version="2.0.0" />
+    <PackageReference Include="Serilog" Version="2.4.0" />
     <PackageReference Include="System.Reactive" Version="3.1.1" />
   </ItemGroup>
 
