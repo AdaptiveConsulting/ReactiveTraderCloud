@@ -5,16 +5,80 @@ release="release"
 
 # fail fast
 set -euo pipefail
+. ../config
 
-scream() {
-    echo "error on $1"
-    exit 1
-}
+cat <<EOF > ${docker_compose_file}
+version: '2'
+networks:
+    reactivetrader:
+        driver: bridge
+services:
+    web:
+        image: "$webContainer$build"
+        command: "/web/start.sh"
+        networks:
+            - reactivetrader
+        ports:
+            - "80:80"
+            - "8080:8080"
 
-for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter" "analytics"
-do
-    cd run/$server
-    ./run $build $release || scream $server
-    sleep 2
-    cd ../..
-done
+    broker:
+        image: "$brokerContainer$build"
+        networks:
+            - reactivetrader
+
+    eventstore:
+        image: "$populatedEventstoreContainer$build"
+        networks:
+            - reactivetrader
+        ports:
+            - "1113:1113"
+            - "2113:2113"
+
+    analytics:
+        image: "$serversContainer$build"
+        command: "dotnet run --configuration Release -p Adaptive.ReactiveTrader.Server.Analytics config.prod.json && while true; do echo ping; sleep 60; done"
+        networks:
+            - reactivetrader
+        depends_on:
+            - broker
+            - eventstore
+    pricing:
+        image: "$serversContainer$build"
+        command: "dotnet run --configuration Release -p Adaptive.ReactiveTrader.Server.Pricing config.prod.json && while true; do echo ping; sleep 60; done"
+        networks:
+            - reactivetrader
+        depends_on:
+            - broker
+            - eventstore
+            - analytics
+    referencedataread:
+        image: "$serversContainer$build"
+        command: "dotnet run --configuration Release -p Adaptive.ReactiveTrader.Server.ReferenceDataRead config.prod.json && while true; do echo ping; sleep 60; done"
+        networks:
+            - reactivetrader
+        depends_on:
+            - broker
+            - eventstore
+            - pricing
+    tradeexecution:
+        image: "$serversContainer$build"
+        command: "dotnet run --configuration Release -p Adaptive.ReactiveTrader.Server.TradeExecution config.prod.json && while true; do echo ping; sleep 60; done"
+        networks:
+            - reactivetrader
+        depends_on:
+            - broker
+            - eventstore
+            - referencedataread
+    blotter:
+        image: "$serversContainer$build"
+        command: "dotnet run --configuration Release -p Adaptive.ReactiveTrader.Server.Blotter config.prod.json && while true; do echo ping; sleep 60; done"
+        networks:
+            - reactivetrader
+        depends_on:
+            - broker
+            - eventstore
+            - tradeexecution
+EOF
+
+docker-compose up

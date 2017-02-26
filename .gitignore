@@ -19,3 +19,4 @@ key.priv
 key.pub
 bin/
 obj/
+docker-compose.yml
