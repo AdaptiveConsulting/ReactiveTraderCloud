@@ -1,0 +1,34 @@
+#! /bin/bash
+
+releaseMode=""
+if [[ $1 == "release" ]];then
+  releaseMode="--configuration Release"
+  build=""
+elif [[ $1 != "" ]];then
+  build=".$1"
+fi
+if [[ $2 == "release" ]];then
+  releaseMode="--configuration Release"
+fi
+
+#fail fast
+set euo -pipefail
+
+echo "Pricing"
+
+. ../../../config
+
+startCommand="dotnet run $releaseMode -p Adaptive.ReactiveTrader.Server.Launcher p"
+waitCommand="while true; do echo ping; sleep 60; done"
+
+docker rm pricing 2&> garbage || true
+
+docker run -d --net=host                       \
+     --name pricing                            \
+     $serversContainer$build                   \
+     bash -c "$startCommand && $waitCommand"   \
+     > container_id 
+
+rm garbage
+
+echo " "

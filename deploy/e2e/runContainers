@@ -15,5 +15,5 @@ echo "Run ReactiveTrader containers"
 echo ""
 
 cd ../docker
-./runAll $build release
+./circleci.runAll $build release
 cd ../e2e

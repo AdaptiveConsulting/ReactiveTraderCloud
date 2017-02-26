@@ -1,0 +1,20 @@
+#! /bin/bash
+
+build=$1
+release="release"
+
+# fail fast
+set -euo pipefail
+
+scream() {
+    echo "error on $1"
+    exit 1
+}
+
+for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter" "analytics"
+do
+    cd run/$server
+    ./run $build $release || scream $server
+    sleep 5
+    cd ../..
+done
