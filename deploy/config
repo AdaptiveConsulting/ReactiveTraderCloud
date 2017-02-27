@@ -10,7 +10,7 @@ domainName="adaptivecluster.com"
 vMajor="0"
 vMinor="0"
 
-# Reactive Trader 
+# Reactive Trader
 brokerContainer_major="0"
 brokerContainer_minor="0"
 brokerContainer="reactivetrader/broker:$brokerContainer_major.$brokerContainer_minor"
@@ -116,3 +116,7 @@ kube_zone="europe-west1-c"
 # kube_zone="us-central1-b"
 # kube_zone="us-central1-c"
 # kube_zone="us-central1-f"
+
+# DOCKER-COMPOSE
+# ==============
+docker_compose_file="docker-compose.yml"

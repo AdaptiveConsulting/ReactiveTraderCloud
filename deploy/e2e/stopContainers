@@ -6,5 +6,5 @@ echo "Stop ReactiveTrader containers"
 echo ""
 
 cd ../docker
-./killAll
+./circleci.killAll
 cd ../e2e
