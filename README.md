@@ -58,6 +58,7 @@ The following topics will be covered in the upcoming weeks:
 + [It's all messages now; where are my abstractions?](http://www.codesleuth.co.uk/notes/ndcoslo2015/Its-all-messages-now;-where-are-my-absractions.html) by Matt Barrett at NDC Oslo 2015
 + [The Hanselminutes: Creating Reactive User Interfaces](http://hanselminutes.com/428/creating-reactive-user-interfaces-with-adaptive-consultings-reactive-trader) with Matt Barrett
 + [Full-stack ReactiveX](http://dotnetrocks.com/?show=1333) with Qiming Liu on .NET Rocks!
++ [Developing Modern Applications in .NET core with Docker and Kubernetes](https://www.youtube.com/watch?v=70hcZO3zpnc) with Qiming Liu and James Watson
 
 ## Blog posts
 
