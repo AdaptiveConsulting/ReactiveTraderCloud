@@ -10,7 +10,7 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
   color: #c2c5c9;
   background-color: #262a33;
   border: solid 1px #424545;
-  &:hover {
+  &:not(.spot-tile--error):hover {
     background-color: rgba(0, 167, 204, 0.16);
     border: 1px solid $primary-color;
     .spot-tile__icon--chart,
@@ -62,7 +62,7 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
   }
 }
 
-.spot-tile__icon--hidden{
+.spot-tile__icon--hidden {
   display: none;
 }
 
@@ -120,31 +120,42 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
 }
 
 .spot-tile__controls {
-  float: right;
+  position: absolute;
+  top: 0;
+  right: -15px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
+.spot-tile__control {
+  display: inline-block;
+  width: 20px;
+}
 
 .spot-tile__icon--chart.glyphicon,
 .spot-tile__icon--tearoff.glyphicon,
 .spot-tile__icon--undock.glyphicon {
   display: none;
   cursor: pointer;
-  margin-left: 6px;
 }
 
-.spot-tile__icon--rotate{
-  margin-left: 6px;
+.spot-tile__icon--rotate {
+  position: absolute;
+  height: 14px;
+  left: 0;
+  top: 4px;
   animation-name: spin;
   animation-duration: 1000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-
   @keyframes spin {
     from {
       transform: rotate(0deg);
-    } to {
-        transform: rotate(360deg);
-      }
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 }
 

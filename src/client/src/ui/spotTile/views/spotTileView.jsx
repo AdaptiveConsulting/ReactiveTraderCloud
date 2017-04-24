@@ -73,14 +73,19 @@ export default class SpotTileView extends React.Component {
     return (
       <div className={className}>
         <div className='spot-tile__container'>
-          <div className='spot-tile__controls'>
-            <i className={chartIQIconClassName}
-               onClick={() => this._displayCurrencyChart()}/>
-            <i className={newWindowClassName}
-               onClick={() => this.props.router.publishEvent(model.modelId, 'popOutTile', {})}/>
-            <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
-               onClick={() => this.props.router.publishEvent(model.modelId, 'undockTile', {})}/>
-          </div>
+          <ul className='spot-tile__controls'>
+            <li className='spot-tile__control'>
+              <i className={chartIQIconClassName} onClick={() => this._displayCurrencyChart()}/>
+            </li>
+            <li className='spot-tile__control'>
+              <i className={newWindowClassName}
+                 onClick={() => this.props.router.publishEvent(model.modelId, 'popOutTile', {})}/>
+            </li>
+            <li className='spot-tile__control'>
+              <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
+                 onClick={() => this.props.router.publishEvent(model.modelId, 'undockTile', {})}/>
+            </li>
+          </ul>
           {!model.hasNotification ? spotTileContent : notification}
         </div>
       </div>
