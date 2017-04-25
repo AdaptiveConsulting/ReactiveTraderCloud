@@ -189,9 +189,9 @@ export default class OpenFin {
     return new Promise((resolve, reject) => {
       let interval = 5;
       let chartIqAppId = 'ChartIQ';
-      let url = `http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=${symbol}&period=${interval}`;
+      let url = `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/chartiq-shim.html?symbol=${symbol}&period=${interval}`;
       let name = `chartiq_${(new Date()).getTime()}`;
-      const applicationIcon = 'http://openfin.chartiq.com/0.5/img/openfin-logo.png';
+      const applicationIcon = 'http://adaptiveconsulting.github.io/chartiq/icon.png';
       let app = new fin.desktop.Application({
         uuid: chartIqAppId,
         url: url,
