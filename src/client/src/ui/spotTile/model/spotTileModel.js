@@ -100,7 +100,7 @@ export default class SpotTileModel extends ModelBase {
   }
 
   get canPopout() {
-    return Environment.isRunningInIE;
+    return !Environment.isRunningInIE;
   }
 
   @observeEvent('init')

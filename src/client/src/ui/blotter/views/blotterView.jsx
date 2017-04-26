@@ -2,7 +2,6 @@ import React from 'react';
 import {Table, Column, Cell} from 'fixed-data-table';
 import {DateCell, NotionalCell} from './';
 import {TradeRow} from '../../../services/model';
-import {logger} from '../../../system';
 import classNames from 'classnames';
 import SizeMe from 'react-sizeme';
 import 'fixed-data-table/dist/fixed-data-table.css';
@@ -32,20 +31,17 @@ class BlotterView extends React.Component {
         'blotter--online': model.isConnected,
         'blotter--offline': !model.isConnected
       });
-    let newWindowClassName = classNames(
-      'glyphicon glyphicon-new-window',
-      {
-        'blotter__controls--hidden': model.canPopout
-      }
-    );
+
     let {width, height} = this.props.size; // comes from SizeMe
     return (
       <div className={className}>
         <div className='blotter-wrapper'>
-          <div className='blotter__controls popout__controls'>
-            <i className={newWindowClassName}
-               onClick={() => this.props.router.publishEvent(model.modelId, 'tearOffBlotter', {})}/>
-          </div>
+          { model.canPopout ? (
+            <div className='blotter__controls popout__controls'>
+              <i className='glyphicon glyphicon-new-window'
+                 onClick={() => this.props.router.publishEvent(model.modelId, 'tearOffBlotter', {})}/>
+            </div> ) : null
+          }
           <Table
             rowHeight={30}
             headerHeight={30}

@@ -62,10 +62,6 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
   }
 }
 
-.spot-tile__icon--hidden {
-  display: none;
-}
-
 .spot-tile__container {
   position: absolute;
   top: 10px;
@@ -141,10 +137,7 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
 }
 
 .spot-tile__icon--rotate {
-  position: absolute;
   height: 14px;
-  left: 0;
-  top: 4px;
   animation-name: spin;
   animation-duration: 1000ms;
   animation-iteration-count: infinite;

@@ -58,20 +58,14 @@ export default class AnalyticsView extends React.Component {
     let pnlSliders = this._createPnlSliders();
     let positionsBubbleChart = this._createPositionsChart();
 
-    let newWindowBtnClassName = classnames(
-      'glyphicon glyphicon-new-window',
-      {
-        'analytics__icon--tearoff' : !model.canPopout,
-        'analytics__icon--tearoff--hidden' : model.canPopout
-      }
-    );
-
     return (
       <div className='analytics analytics__container animated fadeIn'>
-        <div className='analytics__controls popout__controls'>
-          <i className={newWindowBtnClassName}
-             onClick={() => router.publishEvent(model.modelId, 'popOutAnalytics', {})}/>
-        </div>
+        { model.canPopout ? (
+          <div className='analytics__controls popout__controls'>
+            <i className='glyphicon glyphicon-new-window analytics__icon--tearoff' onClick={() => router.publishEvent(model.modelId, 'popOutAnalytics', {})}/>
+          </div>
+          ) : null
+        }
         {pnlComponents}
         {positionsBubbleChart}
         {pnlSliders}

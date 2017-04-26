@@ -58,7 +58,7 @@ export default class AnalyticsModel extends ModelBase {
   }
 
   get canPopout() {
-    return Environment.isRunningInIE;
+    return !Environment.isRunningInIE;
   }
 
   observeEvents() {
