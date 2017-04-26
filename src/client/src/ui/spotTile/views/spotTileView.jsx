@@ -67,13 +67,13 @@ export default class SpotTileView extends React.Component {
               <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
                  onClick={() => this.props.router.publishEvent(model.modelId, 'undockTile', {})}/>
             </li>
-            { model.isRunningInOpenFin ? (
+            {model.isRunningInOpenFin ? (
               <li className='spot-tile__control'>
                 <i className={chartIQIconClassName} onClick={() => this._displayCurrencyChart()}/>
               </li>
               ) : null
             }
-            { model.canPopout ? (
+            {model.canPopout ? (
                 <li className='spot-tile__control'>
                   <i className='popout__controls  glyphicon glyphicon-new-window spot-tile__icon--tearoff'
                      onClick={() => this.props.router.publishEvent(model.modelId, 'popOutTile', {})}/>

@@ -36,7 +36,7 @@ class BlotterView extends React.Component {
     return (
       <div className={className}>
         <div className='blotter-wrapper'>
-          { model.canPopout ? (
+          {model.canPopout ? (
             <div className='blotter__controls popout__controls'>
               <i className='glyphicon glyphicon-new-window'
                  onClick={() => this.props.router.publishEvent(model.modelId, 'tearOffBlotter', {})}/>

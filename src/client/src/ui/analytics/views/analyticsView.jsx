@@ -60,7 +60,7 @@ export default class AnalyticsView extends React.Component {
 
     return (
       <div className='analytics analytics__container animated fadeIn'>
-        { model.canPopout ? (
+        {model.canPopout ? (
           <div className='analytics__controls popout__controls'>
             <i className='glyphicon glyphicon-new-window analytics__icon--tearoff' onClick={() => router.publishEvent(model.modelId, 'popOutAnalytics', {})}/>
           </div>
