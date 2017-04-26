@@ -21,7 +21,7 @@ namespace Adaptive.ReactiveTrader.Common.Config
             Path.Combine(Directory.GetCurrentDirectory(), "..", ConfigFolderName)
         };
 
-        private ServiceConfiguration(string[] args) : this(args.Any() ? args.First() : "config.dev.json")
+        private ServiceConfiguration(string[] args) : this(args.Any() ? args.First() : "config.devlocal.json")
         {
         }
 

@@ -4,12 +4,10 @@ metadata:
   name: "__SERVICE__"
   namespace: "__NAMESPACE__"
   labels:
-    name: "__SERVICE__"
-    major: "__MAJOR__"
+    name: "__SERVICE____MAJOR__"
 spec:
   selector:
-    name: "__SERVICE__"
-    major: "__MAJOR__"
+    name: "eventstore"
   ports:
   - port: 1113
     targetPort: 1113
@@ -17,3 +15,4 @@ spec:
   - port: 2113
     targetPort: 2113
     name: "http"
+  type: "LoadBalancer"

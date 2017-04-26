@@ -43,6 +43,8 @@ cd templates
   ./generate_svc_manifest web $namespace
   ./generate_svc_manifest broker $namespace
   ./generate_svc_manifest eventstore $namespace
+  ./generate_svc_manifest brokergate $namespace
+  ./generate_svc_manifest eventstoregate $namespace
 
   # replication controller
   ./generate_rc_manifest blotter           $namespace $build
@@ -63,6 +65,8 @@ cd ..
   # service
   ./kubectl create -f manifests/broker-svc.yml 
   ./kubectl create -f manifests/eventstore-svc.yml 
+  ./kubectl create -f manifests/brokergate-svc.yml 
+  ./kubectl create -f manifests/eventstoregate-svc.yml 
   ./kubectl create -f manifests/web-svc.yml 
   
   # replication controller
