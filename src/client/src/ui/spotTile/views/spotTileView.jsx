@@ -74,8 +74,8 @@ export default class SpotTileView extends React.Component {
               ) : null
             }
             {model.canPopout ? (
-                <li className='spot-tile__control'>
-                  <i className='popout__controls  glyphicon glyphicon-new-window spot-tile__icon--tearoff'
+                <li className='spot-tile__control popout__controls'>
+                  <i className='glyphicon glyphicon-new-window spot-tile__icon--tearoff'
                      onClick={() => this.props.router.publishEvent(model.modelId, 'popOutTile', {})}/>
                 </li>
               ) : null
