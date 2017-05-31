@@ -23,10 +23,11 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
 
         public async Task<IDisposable> Start(string streamName, string groupName, IEnumerable<IEventHandler> eventHandlers)
         {
+            // TODO - consider usage of async lambda here.
             var subscription = await _eventStoreConnection.ConnectToPersistentSubscriptionAsync(
                 stream: streamName,
                 groupName: groupName,
-                eventAppeared: (s, e) => OnEventAppeared(s, e, eventHandlers),
+                eventAppeared: async (s, e) => await OnEventAppeared(s, e, eventHandlers),
                 subscriptionDropped: OnSubscriptionDropped,
                 autoAck: false);
 
@@ -34,9 +35,9 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
             return Disposable.Create(() => subscription.Stop(TimeSpan.FromSeconds(10)));
         }
 
-        private void OnEventAppeared(EventStorePersistentSubscriptionBase subscription,
-                                     ResolvedEvent resolvedEvent,
-                                     IEnumerable<IEventHandler> eventHandlers)
+        private async Task OnEventAppeared(EventStorePersistentSubscriptionBase subscription,
+                                           ResolvedEvent resolvedEvent,
+                                           IEnumerable<IEventHandler> eventHandlers)
         {
             object deserialisedEvent;
 
@@ -71,7 +72,8 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
             {
                 foreach (var eventHandler in matchingHandlers)
                 {
-                    ((dynamic)eventHandler).Handle((dynamic)deserialisedEvent);
+                    Task task = ((dynamic)eventHandler).Handle((dynamic)deserialisedEvent);
+                    await task;
                 }
 
                 // All handlers successfully handled this event. Mark it as acknowledged.

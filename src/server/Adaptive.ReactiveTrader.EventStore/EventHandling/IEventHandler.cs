@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Adaptive.ReactiveTrader.EventStore.EventHandling
 {
     public interface IEventHandler
@@ -6,6 +8,6 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
 
     public interface IEventHandler<in TEvent> : IEventHandler
     {
-        void Handle(TEvent @event);
+        Task Handle(TEvent @event);
     }
 }

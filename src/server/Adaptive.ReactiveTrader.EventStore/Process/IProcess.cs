@@ -4,7 +4,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
 {
     public interface IProcess
     {
-        string Id { get; }
+        object Identifier { get; }
 
         int Version { get; }
 
@@ -12,9 +12,9 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
 
         IEnumerable<object> GetUncommittedEvents();
 
-        void ClearUncommittedEvents();
-
         IEnumerable<object> GetUndispatchedCommands();
+
+        void ClearUncommittedEvents();
 
         void ClearUndispatchedCommands();
     }
