@@ -31,6 +31,11 @@ cp ./$service/rc.yml $rcFile
 
 # get good docker image
 dockerImage=""
+if [ $service == "nsgate" ];then
+  dockerImage="$nsGateContainer$buildTag";
+  vMajor=$nsGateContainer_major
+  vMinor=$nsGateContainer_minor
+fi
 if [[ $service == "broker" ]];then
   dockerImage="$brokerContainer$buildTag";
   vMajor=$brokerContainer_major
