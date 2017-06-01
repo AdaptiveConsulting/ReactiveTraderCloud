@@ -32,7 +32,7 @@ cd ..
 
 
 # deploy on kubernetes
-./kubectl stop -f manifests/nsgate-rc.yml
+./kubectl delete -f manifests/nsgate-rc.yml
 ./kubectl create -f manifests/nsgate-rc.yml
 
 
