@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Linq;
 using System.Threading;
 using Adaptive.ReactiveTrader.Common.Config;
 using Adaptive.ReactiveTrader.EventStore;
@@ -70,7 +71,6 @@ namespace Adaptive.ReactiveTrader.Server.Host
                         using (esFactory.Initialize(brokerStream, esStream))
                         {
                             connectionFactory.Start();
-
                             _reset.WaitOne();
                         }
                     }

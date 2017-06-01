@@ -12,10 +12,10 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
     {
         //protected static readonly ILogger Log = Log.ForContext<TradeExecutionEngine>();
 
-        private readonly IRepository _repository;
+        private readonly IAggregateRepository _repository;
         private readonly TradeIdProvider _tradeIdProvider;
 
-        public TradeExecutionEngine(IRepository repository, TradeIdProvider tradeIdProvider)
+        public TradeExecutionEngine(IAggregateRepository repository, TradeIdProvider tradeIdProvider)
         {
             _repository = repository;
             _tradeIdProvider = tradeIdProvider;
@@ -55,6 +55,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             // the completed/rejected event emitted after the actual execution happens, which will be after a slight delay.
             // This gives us a sequence of events that is more like a real world application
             // rather than both events being received on the client almost simultaneously
+            // TODO - get rid of this, and wire this up to the process manager
             await _repository.SaveAsync(trade);
 
             return new ExecuteTradeResponseDto

@@ -1,5 +1,4 @@
 using System;
-using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Contract.Events.Trade;
 using Adaptive.ReactiveTrader.EventStore.Domain;

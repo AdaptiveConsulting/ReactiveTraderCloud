@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using EventStore.ClientAPI;
@@ -35,6 +36,10 @@ namespace Adaptive.ReactiveTrader.EventStore.Connection
             _connectionInfoChanged = Observable.Merge(connectedChanged, disconnectedChanged, reconnectingChanged)
                                                .Scan(ConnectionInfo.Initial, UpdateConnectionInfo)
                                                .StartWith(ConnectionInfo.Initial)
+                                               // If we don't observe on another thread here, we end up on same thread that the
+                                               // connection raises the Connected event on, which causes issues when trying to
+                                               // subscribe to a persisted subscription (i.e. it blocks forever).
+                                               .ObserveOn(TaskPoolScheduler.Default)
                                                .Replay(1);
 
             _connection = _connectionInfoChanged.Connect();
@@ -47,7 +52,8 @@ namespace Adaptive.ReactiveTrader.EventStore.Connection
             _connection.Dispose();
         }
 
-        private static ConnectionInfo UpdateConnectionInfo(ConnectionInfo previousConnectionInfo, ConnectionStatus connectionStatus)
+        private static ConnectionInfo UpdateConnectionInfo(ConnectionInfo previousConnectionInfo,
+                                                           ConnectionStatus connectionStatus)
         {
             ConnectionInfo newConnectionInfo;
 

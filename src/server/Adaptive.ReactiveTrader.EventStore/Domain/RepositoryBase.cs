@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,55 +10,34 @@ using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
-using ILogger = Serilog.ILogger;
 
 namespace Adaptive.ReactiveTrader.EventStore.Domain
 {
-    public class Repository : IRepository, IDisposable
+    public abstract class RepositoryBase
     {
-        private const int WritePageSize = 500;
         private const int ReadPageSize = 500;
-        //private static readonly ILogger Log = Log.ForContext<Repository>();
-        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.None};
+        private const int WritePageSize = 500;
+        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None };
         private readonly IEventStoreConnection _eventStoreConnection;
         private readonly EventTypeResolver _eventTypeResolver;
 
-        public Repository(IEventStoreConnection eventStoreConnection, EventTypeResolver eventTypeResolver)
+        protected RepositoryBase(IEventStoreConnection eventStoreConnection, EventTypeResolver eventTypeResolver)
         {
             _eventStoreConnection = eventStoreConnection;
             _eventTypeResolver = eventTypeResolver;
         }
 
-        public void Dispose()
+        protected async Task<SliceReadStatus> ReadEventsAsync(string streamName, Action<object> onEventRead)
         {
-            Log.Warning("Not Disposing.");
-        }
-
-        public async Task<TAggregate> GetById<TAggregate>(object id) where TAggregate : IAggregate, new()
-        {
-            var aggregate = new TAggregate();
-
-            var streamName = $"{aggregate.Identifier}{id}";
-
-            if (Log.IsEnabled(LogEventLevel.Information))
-            {
-                Log.Information("Loading aggregate {streamName} from Event Store", streamName);
-            }
-
             var eventNumber = 0;
             StreamEventsSlice currentSlice;
             do
             {
                 currentSlice = await _eventStoreConnection.ReadStreamEventsForwardAsync(streamName, eventNumber, ReadPageSize, false);
 
-                if (currentSlice.Status == SliceReadStatus.StreamNotFound)
+                if (currentSlice.Status != SliceReadStatus.Success)
                 {
-                    throw new AggregateNotFoundException(id, typeof (TAggregate));
-                }
-
-                if (currentSlice.Status == SliceReadStatus.StreamDeleted)
-                {
-                    throw new AggregateDeletedException(id, typeof (TAggregate));
+                    return currentSlice.Status;
                 }
 
                 eventNumber = currentSlice.NextEventNumber;
@@ -66,40 +45,34 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
                 foreach (var resolvedEvent in currentSlice.Events)
                 {
                     var payload = DeserializeEvent(resolvedEvent.Event);
-                    aggregate.ApplyEvent(payload);
+                    onEventRead(payload);
                 }
             } while (!currentSlice.IsEndOfStream);
 
-            return aggregate;
+            return SliceReadStatus.Success;
         }
 
-        public async Task<int> SaveAsync(AggregateBase aggregate, params KeyValuePair<string, string>[] extraHeaders)
+        protected async Task<WriteResult> WriteEventsAsync(string streamName,
+                                                           int expectedVersion,
+                                                           IEnumerable<object> events,
+                                                           IEnumerable<KeyValuePair<string, string>> extraHeaders,
+                                                           string commitId)
         {
-            var streamName = aggregate.Identifier.ToString();
-
-            if (Log.IsEnabled(LogEventLevel.Information))
-            {
-                Log.Information("Saving aggregate {streamName}", streamName);
-            }
-
-            var pendingEvents = aggregate.GetPendingEvents();
-            var originalVersion = aggregate.Version - pendingEvents.Count;
-
             try
             {
                 WriteResult result;
-
-                var commitHeaders = CreateCommitHeaders(aggregate, extraHeaders);
-                var eventsToSave = pendingEvents.Select(x => ToEventData(Guid.NewGuid(), x, commitHeaders));
+                var commitHeaders = CreateCommitHeaders(commitId, extraHeaders);
+                var eventList = events as IReadOnlyList<object> ?? events.ToList();
+                var eventsToSave = eventList.Select(x => ToEventData(Guid.NewGuid(), x, commitHeaders));
 
                 if (Log.IsEnabled(LogEventLevel.Information))
                 {
-                    Log.Information("{pendingEventsCount} events to write to stream {streamName}...", pendingEvents.Count, streamName);
+                    Log.Information("{pendingEventsCount} events to write to stream {streamName}...", eventList.Count, streamName);
                 }
 
                 if (Log.IsEnabled(LogEventLevel.Debug))
                 {
-                    foreach (var evt in pendingEvents)
+                    foreach (var evt in eventList)
                     {
                         // Take the hit of serializing twice here as debug logging should only be on in exceptional circumstances
                         Log.Debug("Event Type: {eventType}. Payload: {payload}", evt.GetType().Name, JsonConvert.SerializeObject(evt));
@@ -112,12 +85,12 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
                 if (eventBatches.Count == 1)
                 {
                     // If just one batch write them straight to the Event Store
-                    result = await _eventStoreConnection.AppendToStreamAsync(streamName, originalVersion, eventBatches[0]);
+                    result = await _eventStoreConnection.AppendToStreamAsync(streamName, expectedVersion, eventBatches[0]);
                 }
                 else
                 {
                     // If we have more events to save than can be done in one batch according to the WritePageSize, then we need to save them in a transaction to ensure atomicity
-                    using (var transaction = await _eventStoreConnection.StartTransactionAsync(streamName, originalVersion))
+                    using (var transaction = await _eventStoreConnection.StartTransactionAsync(streamName, expectedVersion))
                     {
                         if (Log.IsEnabled(LogEventLevel.Information))
                         {
@@ -138,14 +111,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
                     }
                 }
 
-                aggregate.ClearPendingEvents();
-
-                if (Log.IsEnabled(LogEventLevel.Information))
-                {
-                    Log.Information("Aggregate {streamName} pending events cleaned up", streamName);
-                }
-
-                return result.NextExpectedVersion;
+                return result;
             }
             catch (Exception ex)
             {
@@ -153,7 +119,8 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
                 ExceptionDispatchInfo.Capture(ex).Throw();
             }
 
-            return originalVersion + 1;
+            // Should never get here.
+            return new WriteResult();
         }
 
         private object DeserializeEvent(RecordedEvent evt)
@@ -162,23 +129,15 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             var json = Encoding.UTF8.GetString(evt.Data);
             return JsonConvert.DeserializeObject(json, targetType);
         }
-        
-        private IList<IList<EventData>> GetEventBatches(IEnumerable<EventData> events)
-        {
-            return events.Batch(WritePageSize).Select(x => (IList<EventData>) x.ToList()).ToList();
-        }
 
-        private static IDictionary<string, string> CreateCommitHeaders(AggregateBase aggregate, KeyValuePair<string, string>[] extraHeaders)
+        private static IDictionary<string, string> CreateCommitHeaders(string commitId, IEnumerable<KeyValuePair<string, string>> extraHeaders)
         {
-            var commitId = Guid.NewGuid();
-
             var commitHeaders = new Dictionary<string, string>
             {
-                {MetadataKeys.CommitIdHeader, commitId.ToString()},
-                {MetadataKeys.AggregateClrTypeHeader, aggregate.GetType().AssemblyQualifiedName},
-                {MetadataKeys.UserIdentityHeader, Thread.CurrentThread.Name}, // TODO - was Thread.CurrentPrincipal?.Identity?.Name
-                {MetadataKeys.ServerNameHeader, "DefaultServerNameHEader"}, // TODO - was Environment.MachineName
-                {MetadataKeys.ServerClockHeader, DateTime.UtcNow.ToString("o")}
+                { MetadataKeys.CommitIdHeader, commitId },
+                { MetadataKeys.UserIdentityHeader, Thread.CurrentThread.Name }, // TODO - was Thread.CurrentPrincipal?.Identity?.Name
+                { MetadataKeys.ServerNameHeader, "DefaultServerNameHeader" }, // TODO - was Environment.MachineName
+                { MetadataKeys.ServerClockHeader, DateTime.UtcNow.ToString("o") }
             };
 
             foreach (var extraHeader in extraHeaders)
@@ -189,18 +148,24 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             return commitHeaders;
         }
 
-        private static EventData ToEventData(Guid eventId, object evnt, IDictionary<string, string> headers)
+        private static EventData ToEventData(Guid eventId, object @event, IDictionary<string, string> headers)
         {
-            var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(evnt, SerializerSettings));
+            var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(@event, SerializerSettings));
 
             var eventHeaders = new Dictionary<string, string>(headers)
             {
-                {MetadataKeys.EventClrTypeHeader, evnt.GetType().AssemblyQualifiedName}
+                { MetadataKeys.EventClrTypeHeader, @event.GetType().AssemblyQualifiedName }
             };
+
             var metadata = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(eventHeaders, SerializerSettings));
-            var typeName = evnt.GetType().Name;
+            var typeName = @event.GetType().Name;
 
             return new EventData(eventId, typeName, true, data, metadata);
+        }
+
+        private static IList<IList<EventData>> GetEventBatches(IEnumerable<EventData> events)
+        {
+            return events.Batch(WritePageSize).Select(x => (IList<EventData>)x.ToList()).ToList();
         }
     }
 }

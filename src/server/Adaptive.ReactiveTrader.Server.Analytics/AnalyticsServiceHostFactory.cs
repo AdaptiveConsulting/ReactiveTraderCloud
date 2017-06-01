@@ -1,6 +1,7 @@
 ﻿using System;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Server.Common;
 using Adaptive.ReactiveTrader.Server.Host;
 using EventStore.ClientAPI;
 

@@ -14,19 +14,19 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
 
         public void Transition(object @event)
         {
-            ((dynamic)this).Transition((dynamic)@event);
+            ((dynamic)this).OnEvent((dynamic)@event);
             Version++;
             _uncommittedEvents.Add(@event);
         }
 
-        public IEnumerable<object> GetUncommittedEvents()
+        public IReadOnlyList<object> GetUncommittedEvents()
         {
-            return _uncommittedEvents;
+            return _uncommittedEvents.AsReadOnly();
         }
 
-        public IEnumerable<object> GetUndispatchedCommands()
+        public IReadOnlyList<object> GetUndispatchedMessages()
         {
-            return _undispatchedMessages;
+            return _undispatchedMessages.AsReadOnly();
         }
 
         public void ClearUncommittedEvents()
@@ -34,7 +34,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
             _uncommittedEvents.Clear();
         }
 
-        public void ClearUndispatchedCommands()
+        public void ClearUndispatchedMessages()
         {
             _undispatchedMessages.Clear();
         }
@@ -48,7 +48,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
         {
             foreach (var message in _undispatchedMessages)
             {
-                await message.Invoke();
+                await message();
             }
         }
     }

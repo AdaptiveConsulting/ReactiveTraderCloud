@@ -1,21 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.EventStore.Process
 {
     public interface IProcess
     {
         object Identifier { get; }
-
         int Version { get; }
-
         void Transition(object @event);
-
-        IEnumerable<object> GetUncommittedEvents();
-
-        IEnumerable<object> GetUndispatchedCommands();
-
+        IReadOnlyList<object> GetUncommittedEvents();
+        IReadOnlyList<object> GetUndispatchedMessages();
         void ClearUncommittedEvents();
-
-        void ClearUndispatchedCommands();
+        void ClearUndispatchedMessages();
+        Task DispatchMessages();
     }
 }

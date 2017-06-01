@@ -19,14 +19,14 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
         private const int HiValueTryCount = 3;
         private const int Multiplier = 100;
         //protected static readonly ILogger Log = Log.FoContext<TradeIdProvider>();
-        private readonly IRepository _repository;
+        private readonly IAggregateRepository _repository;
         private readonly EventLoopScheduler _scheduler = new EventLoopScheduler();
         private int _hiValue;
         private bool _initialized;
 
         private int _loValue;
 
-        public TradeIdProvider(IRepository repository)
+        public TradeIdProvider(IAggregateRepository repository)
         {
             _repository = repository;
         }
@@ -85,7 +85,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
             try
             {
-                tradeId = await _repository.GetById<TradeId>(null);
+                tradeId = await _repository.GetByIdAsync<TradeId>(null);
             }
             catch (AggregateNotFoundException)
             {

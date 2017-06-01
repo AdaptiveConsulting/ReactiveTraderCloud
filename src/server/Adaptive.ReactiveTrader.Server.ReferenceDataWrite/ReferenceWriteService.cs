@@ -11,9 +11,9 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
     public class ReferenceWriteService : IDisposable
     {
         //private static readonly ILogger Log = Log.ForContext<ReferenceWriteService>();
-        private readonly IRepository _repository;
+        private readonly IAggregateRepository _repository;
 
-        public ReferenceWriteService(IRepository repository)
+        public ReferenceWriteService(IAggregateRepository repository)
         {
             _repository = repository;
         }
@@ -27,7 +27,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         {
             Log.Information("Received activate for currency pair {currencyPair} for user {username}", request.CurrencyPair, context.UserSession.Username);
 
-            var currencyPair = await _repository.GetById<CurrencyPair>(request.CurrencyPair);
+            var currencyPair = await _repository.GetByIdAsync<CurrencyPair>(request.CurrencyPair);
             currencyPair.Activate();
 
             await _repository.SaveAsync(currencyPair);
@@ -39,7 +39,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
         {
             Log.Information("Received deactivate for currency pair {currencyPair} for user {username}", request.CurrencyPair, context.UserSession.Username);
 
-            var currencyPair = await _repository.GetById<CurrencyPair>(request.CurrencyPair);
+            var currencyPair = await _repository.GetByIdAsync<CurrencyPair>(request.CurrencyPair);
             currencyPair.Deactivate();
 
             await _repository.SaveAsync(currencyPair);

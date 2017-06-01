@@ -25,7 +25,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             CurrencyPairDeactivatedEventType
         };
 
-        public CurrencyPairCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) : base(eventStoreConnectionStream, Serilog.Log.Logger)
+        public CurrencyPairCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) 
+            : base(eventStoreConnectionStream, Serilog.Log.Logger, "ccyPair-")
         {
         }
 
@@ -77,7 +78,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                 case CurrencyPairChangedEventType:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("Unsupported CurrencyPair event type");
+                    throw new ArgumentOutOfRangeException(nameof(evt), "Unsupported CurrencyPair event type");
             }
         }
 
@@ -93,7 +94,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                 case CurrencyPairChangedEventType:
                     return CurrencyPairUpdatesDto.Empty;
                 default:
-                    throw new ArgumentOutOfRangeException("Unsupported CurrencyPair event type");
+                    throw new ArgumentOutOfRangeException(nameof(evt), "Unsupported CurrencyPair event type");
             }
         }
 
@@ -112,18 +113,19 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                                                                          UpdateTypeDto updateType)
         {
             var ccyPairToDeactivate = currentSow[symbol];
-            return new CurrencyPairUpdatesDto(new[]
-            {
-                new CurrencyPairUpdateDto
+            return new CurrencyPairUpdatesDto(
+                updates: new[]
                 {
-                    CurrencyPair =
-                        new CurrencyPairDto(ccyPairToDeactivate.Symbol, ccyPairToDeactivate.RatePrecision,
-                            ccyPairToDeactivate.PipsPosition),
-                    UpdateType = updateType
-                }
-            },
-                false,
-                false);
+                    new CurrencyPairUpdateDto
+                    {
+                        CurrencyPair = new CurrencyPairDto(ccyPairToDeactivate.Symbol,
+                                                           ccyPairToDeactivate.RatePrecision,
+                                                           ccyPairToDeactivate.PipsPosition),
+                        UpdateType = updateType
+                    }
+                },
+                isStateOfTheWorld: false,
+                isStale: false);
         }
     }
 }

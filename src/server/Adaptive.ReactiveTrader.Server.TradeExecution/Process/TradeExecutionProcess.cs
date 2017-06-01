@@ -6,19 +6,22 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Process
 {
     public class TradeExecutionProcess : ProcessBase
     {
-        public override object Identifier => "TODO";
+        public override object Identifier => $"tradeExecution-{Id}";
 
-        public void Transition(TradeCreatedEvent @event)
+        public long Id { get; private set; }
+
+        public void OnEvent(TradeCreatedEvent @event)
         {
+            Id = @event.TradeId;
             // TODO - dispatch ReserveCreditCommand
         }
 
-        public void Transition(CreditReservedEvent @event)
+        public void OnEvent(CreditReservedEvent @event)
         {
             // TODO - dispatch CompleteTradeCommand
         }
 
-        public void Transition(CreditLimitBreachedEvent @event)
+        public void OnEvent(CreditLimitBreachedEvent @event)
         {
             // TODO - dispatch RejectTradeCommand
         }

@@ -26,6 +26,12 @@ namespace Adaptive.ReactiveTrader.EventStore
 
     public abstract class EventStoreCache<TKey, TCacheItem, TOutput> : IDisposable
     {
+        private static CatchUpSubscriptionSettings DefaultSettings => new CatchUpSubscriptionSettings(
+            maxLiveQueueSize: CatchUpSubscriptionSettings.Default.MaxLiveQueueSize,
+            readBatchSize: CatchUpSubscriptionSettings.Default.ReadBatchSize,
+            verboseLogging: CatchUpSubscriptionSettings.Default.VerboseLogging,
+            resolveLinkTos: false);
+
         private readonly IConnectableObservable<IConnected<IEventStoreConnection>> _connectionChanged;
         private readonly IScheduler _eventLoopScheduler = new EventLoopScheduler();
         private readonly SerialDisposable _eventsConnection = new SerialDisposable();
@@ -37,12 +43,16 @@ namespace Adaptive.ReactiveTrader.EventStore
             new BehaviorSubject<StateOfTheWorldContainer<TKey, TCacheItem>>(new StateOfTheWorldContainer<TKey, TCacheItem>());
 
         private readonly ILogger _log;
+        private readonly string _streamPrefix;
         private IConnectableObservable<RecordedEvent> _events = Observable.Never<RecordedEvent>().Publish();
         private bool _isCaughtUp;
 
-        protected EventStoreCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream, ILogger log)
+        protected EventStoreCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream,
+                                  ILogger log,
+                                  string streamPrefix = null)
         {
             _log = log;
+            _streamPrefix = streamPrefix;
             Disposables = new CompositeDisposable(_eventsConnection, _eventsSubscription);
 
             _connectionChanged = eventStoreConnectionStream.ObserveOn(_eventLoopScheduler)
@@ -154,7 +164,17 @@ namespace Adaptive.ReactiveTrader.EventStore
                 }
 
                 Action<EventStoreCatchUpSubscription, ResolvedEvent> onEvent =
-                    (_, e) => { _eventLoopScheduler.Schedule(() => { o.OnNext(e.Event); }); };
+                    (_, e) =>
+                    {
+                        // If specified, ignore anything that doesn't start with the given stream prefix.
+                        // If projections are turned on, we could use the category projection and call SubscribeToStreamFrom.
+                        if (!string.IsNullOrEmpty(_streamPrefix) && !e.OriginalStreamId.StartsWith(_streamPrefix))
+                        {
+                            return;
+                        }
+
+                        _eventLoopScheduler.Schedule(() => o.OnNext(e.Event));
+                    };
 
                 Action<EventStoreCatchUpSubscription> onCaughtUp = evt =>
                 {
@@ -171,7 +191,9 @@ namespace Adaptive.ReactiveTrader.EventStore
                     });
                 };
 
-                var subscription = connection.SubscribeToAllFrom(Position.Start, false, onEvent, onCaughtUp);
+                var subscription =
+                    connection.SubscribeToAllFrom(Position.Start, DefaultSettings, onEvent, onCaughtUp);
+
                 var guid = Guid.Empty;
 
                 if (_log.IsEnabled(LogEventLevel.Information))

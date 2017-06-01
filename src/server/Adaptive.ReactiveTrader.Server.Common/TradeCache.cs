@@ -7,9 +7,8 @@ using Adaptive.ReactiveTrader.Contract.Events.Trade;
 using Adaptive.ReactiveTrader.EventStore;
 using EventStore.ClientAPI;
 using Serilog;
-using ILogger = Serilog.ILogger;
 
-namespace Adaptive.ReactiveTrader.Server.Host
+namespace Adaptive.ReactiveTrader.Server.Common
 {
     public class TradeCache : EventStoreCache<long, Trade, TradesDto>
     {
@@ -25,7 +24,8 @@ namespace Adaptive.ReactiveTrader.Server.Host
             TradeCreatedEvent
         };
 
-        public TradeCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream) : base(eventStoreConnectionStream, Log.Logger)
+        public TradeCache(IObservable<IConnected<IEventStoreConnection>> eventStoreConnectionStream)
+            : base(eventStoreConnectionStream, Log.Logger, "trade-")
         {
         }
 
@@ -55,7 +55,7 @@ namespace Adaptive.ReactiveTrader.Server.Host
                 case TradeRejectedEvent:
                     return CreateSingleEventUpdateDto(currentSotw, evt.GetEvent<TradeRejectedEvent>().TradeId, TradeStatusDto.Rejected);
                 default:
-                    throw new ArgumentOutOfRangeException("Unsupported Trade event type");
+                    throw new ArgumentOutOfRangeException(nameof(evt), "Unsupported Trade event type");
             }
         }
 
@@ -100,7 +100,7 @@ namespace Adaptive.ReactiveTrader.Server.Host
                     currentSotw[deactivatedEvent.TradeId].Status = TradeStatusDto.Rejected;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("Unsupported Trade event type");
+                    throw new ArgumentOutOfRangeException(nameof(evt), "Unsupported Trade event type");
             }
         }
 

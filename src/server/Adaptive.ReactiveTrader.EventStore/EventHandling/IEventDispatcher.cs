@@ -6,6 +6,7 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
 {
     public interface IEventDispatcher
     {
+        Task<IDisposable> Start(string streamName, string groupName, params IEventHandler[] eventHandlers);
         Task<IDisposable> Start(string streamName, string groupName, IEnumerable<IEventHandler> eventHandlers);
     }
 }

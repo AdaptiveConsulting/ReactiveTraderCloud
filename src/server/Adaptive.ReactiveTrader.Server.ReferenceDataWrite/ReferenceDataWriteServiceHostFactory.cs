@@ -21,7 +21,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
-            var repositoryStream = eventStoreStream.LaunchOrKill(conn => new Repository(conn, new EventTypeResolver(ReflectionHelper.ContractsAssembly)));
+            var repositoryStream = eventStoreStream.LaunchOrKill(conn => new AggregateRepository(conn, new EventTypeResolver(ReflectionHelper.ContractsAssembly)));
             var serviceStream = repositoryStream.LaunchOrKill(engine => new ReferenceWriteService(engine));
             _cleanup.Disposable =
                 serviceStream.LaunchOrKill(brokerStream, (service, broker) => new ReferenceWriteServiceHost(service, broker)).Subscribe();

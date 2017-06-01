@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.EventStore.EventHandling
 {
-    public class EventDispatcher : IEventDispatcher
+    public class EventDispatcher : IEventDispatcher, IDisposable
     {
         private readonly IEventStoreConnection _eventStoreConnection;
         private readonly EventTypeResolver _eventTypeResolver;
@@ -21,6 +21,17 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
             _eventTypeResolver = eventTypeResolver;
         }
 
+        public void Dispose()
+        {
+            // Nothing to to
+            // TODO - confirm this - should we kill all created subscriptions?
+        }
+
+        public Task<IDisposable> Start(string streamName, string groupName, params IEventHandler[] eventHandlers)
+        {
+            return Start(streamName, groupName, eventHandlers.AsEnumerable());
+        }
+
         public async Task<IDisposable> Start(string streamName, string groupName, IEnumerable<IEventHandler> eventHandlers)
         {
             // TODO - consider usage of async lambda here.
@@ -29,7 +40,7 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
                 groupName: groupName,
                 eventAppeared: async (s, e) => await OnEventAppeared(s, e, eventHandlers),
                 subscriptionDropped: OnSubscriptionDropped,
-                autoAck: false);
+                autoAck: false).ConfigureAwait(false);
 
             // TODO - consider the blocking timeout here, and where the timeout should come from.
             return Disposable.Create(() => subscription.Stop(TimeSpan.FromSeconds(10)));
@@ -76,7 +87,7 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
                     await task;
                 }
 
-                // All handlers successfully handled this event. Mark it as acknowledged.
+                // All handlers successfully handled this event. Mark it as acknowledged.   
                 subscription.Acknowledge(resolvedEvent);
             }
             catch (Exception ex)

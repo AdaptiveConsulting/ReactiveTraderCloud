@@ -7,6 +7,9 @@ using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Host;
 using EventStore.ClientAPI;
 using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.EventStore.EventHandling;
+using Adaptive.ReactiveTrader.EventStore.Process;
+using Adaptive.ReactiveTrader.Server.TradeExecution.Process;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
@@ -21,15 +24,30 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
-            var repositoryStream = eventStoreStream.LaunchOrKill(conn => new Repository(conn, new EventTypeResolver(ReflectionHelper.ContractsAssembly)));
+            var eventTypeResolver = new EventTypeResolver(ReflectionHelper.ContractsAssembly);
+            var repositoryStream = eventStoreStream.LaunchOrKill(conn => new AggregateRepository(conn, eventTypeResolver));
             var idProvider = repositoryStream.LaunchOrKill(repo => new TradeIdProvider(repo));
             var engineStream = repositoryStream.LaunchOrKill(idProvider, (repo, id) => new TradeExecutionEngine(repo, id));
             var serviceStream = engineStream.LaunchOrKill(engine => new TradeExecutionService(engine));
             var disposable = serviceStream.LaunchOrKill(brokerStream, (service, broker) => new TradeExecutionServiceHost(service, broker)).Subscribe();
 
-            _cleanup.Add(disposable);
+            var tradeExecutionSubcription = eventStoreStream
+                .LaunchOrKill(
+                    conn =>
+                    {
+                        var eventDispatcher = new EventDispatcher(conn, eventTypeResolver);
+                        var processRepo = new ProcessRepository(conn, eventTypeResolver);
+                        var eventHandler = new TradeExecutionEventHandler(processRepo);
 
-            return disposable;
+                        // TODO - revisit blocking here.
+                        return eventDispatcher.Start("trade_execution", "trade_execution_group", eventHandler).Result;
+                    })
+                .Subscribe();
+
+            var disposables = new CompositeDisposable(disposable, tradeExecutionSubcription);
+            _cleanup.Add(disposables);
+
+            return disposables;
         }
 
         public void Dispose()
