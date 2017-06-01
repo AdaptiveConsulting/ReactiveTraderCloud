@@ -1,8 +1,8 @@
-﻿namespace Adaptive.ReactiveTrader.Contract.Events.CreditAccount
+namespace Adaptive.ReactiveTrader.Server.TradeExecution.Process
 {
-    public class CreditReservedEvent
+    public class ReserveCreditCommand
     {
-        public CreditReservedEvent(string accountName, string tradeId)
+        public ReserveCreditCommand(string accountName, string tradeId)
         {
             AccountName = accountName;
             TradeId = tradeId;

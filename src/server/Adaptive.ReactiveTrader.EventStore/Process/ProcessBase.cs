@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.EventStore.Process
@@ -8,8 +9,8 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
         private readonly List<object> _uncommittedEvents = new List<object>();
         private readonly List<Message> _undispatchedMessages = new List<Message>();
 
-        public abstract object Identifier { get; }
-
+        public abstract string StreamPrefix { get; }
+        public abstract string Identifier { get; }
         public int Version { get; private set; } = -1;
 
         public void Transition(object @event)
@@ -44,12 +45,9 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
             _undispatchedMessages.Add(message);
         }
 
-        public async Task DispatchMessages()
+        public Task DispatchMessages()
         {
-            foreach (var message in _undispatchedMessages)
-            {
-                await message();
-            }
+            return Task.WhenAll(_undispatchedMessages.Select(m => m()));
         }
     }
 }

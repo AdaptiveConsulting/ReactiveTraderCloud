@@ -6,7 +6,8 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
     {
         private readonly List<object> _pendingEvents = new List<object>();
 
-        public abstract object Identifier { get; }
+        public abstract string StreamPrefix { get; }
+        public abstract string Identifier { get; }
         public int Version { get; private set; } = -1;
 
         void IAggregate.ApplyEvent(object @event)

@@ -6,7 +6,7 @@ namespace Adaptive.ReactiveTrader.Contract
 {
     public class TradeDto
     {
-        public long TradeId { get; set; }
+        public string TradeId { get; set; }
         public string TraderName { get; set; }
         public string CurrencyPair { get; set; }
         public decimal Notional { get; set; }

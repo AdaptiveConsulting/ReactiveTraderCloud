@@ -5,8 +5,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
 {
     public class TradeId : AggregateBase
     {
-        public static readonly string IdentifierString = "TradeIdentifier";
-        public override object Identifier => IdentifierString;
+        public override string StreamPrefix { get; } = "TradeIdentifier";
+        public override string Identifier => StreamPrefix;
 
         public void IncrementId()
         {

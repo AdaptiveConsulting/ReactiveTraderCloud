@@ -11,7 +11,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
         {
         }
 
-        public Trade(long id,
+        public Trade(string id,
                      string userName,
                      string currencyPair,
                      decimal spotRate,
@@ -32,9 +32,9 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
                                              dealtCurrency));
         }
 
-        public override object Identifier => $"trade-{Id}";
-
-        public long Id { get; private set; }
+        public override string StreamPrefix { get; } = "trade-";
+        public override string Identifier => $"{StreamPrefix}{Id}";
+        public string Id { get; private set; }
         public string TraderName { get; private set; }
         public string CurrencyPair { get; private set; }
         public decimal SpotRate { get; private set; }

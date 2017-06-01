@@ -10,7 +10,7 @@ using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Common
 {
-    public class TradeCache : EventStoreCache<long, Trade, TradesDto>
+    public class TradeCache : EventStoreCache<string, Trade, TradesDto>
     {
         private const string TradeCompletedEvent = "TradeCompletedEvent";
         private const string TradeRejectedEvent = "TradeRejectedEvent";
@@ -39,12 +39,12 @@ namespace Adaptive.ReactiveTrader.Server.Common
             return TradeEventTypes.Contains(eventType);
         }
 
-        protected override TradesDto CreateResponseFromStateOfTheWorld(StateOfTheWorldContainer<long, Trade> container)
+        protected override TradesDto CreateResponseFromStateOfTheWorld(StateOfTheWorldContainer<string, Trade> container)
         {
             return new TradesDto(container.StateOfTheWorld.Values.Select(x => x.ToDto()).ToList(), true, container.IsStale);
         }
 
-        protected override TradesDto MapSingleEventToUpdateDto(IDictionary<long, Trade> currentSotw, RecordedEvent evt)
+        protected override TradesDto MapSingleEventToUpdateDto(IDictionary<string, Trade> currentSotw, RecordedEvent evt)
         {
             switch (evt.EventType)
             {
@@ -64,7 +64,7 @@ namespace Adaptive.ReactiveTrader.Server.Common
             return update != TradesDto.Empty;
         }
 
-        private static TradesDto CreateSingleEventUpdateDto(IDictionary<long, Trade> currentSotw, long tradeId, TradeStatusDto status)
+        private static TradesDto CreateSingleEventUpdateDto(IDictionary<string, Trade> currentSotw, string tradeId, TradeStatusDto status)
         {
             var trade = currentSotw[tradeId];
             var dto = trade.ToDto();
@@ -72,7 +72,7 @@ namespace Adaptive.ReactiveTrader.Server.Common
             return new TradesDto(new[] {dto}, false, false);
         }
 
-        protected override void UpdateStateOfTheWorld(IDictionary<long, Trade> currentSotw, RecordedEvent evt)
+        protected override void UpdateStateOfTheWorld(IDictionary<string, Trade> currentSotw, RecordedEvent evt)
         {
             switch (evt.EventType)
             {

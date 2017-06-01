@@ -4,7 +4,8 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 {
     public interface IAggregate
     {
-        object Identifier { get; }
+        string StreamPrefix { get; }
+        string Identifier { get; }
         int Version { get; }
         void ApplyEvent(object @event);
         ICollection<object> GetPendingEvents();

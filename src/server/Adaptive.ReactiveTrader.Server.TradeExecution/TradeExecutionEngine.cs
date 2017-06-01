@@ -28,7 +28,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         public async Task<ExecuteTradeResponseDto> ExecuteAsync(ExecuteTradeRequestDto request, string user)
         {
-            var id = await _tradeIdProvider.GetNextId();
+            var id = (await _tradeIdProvider.GetNextId()).ToString();
             var tradeDate = DateTime.UtcNow;
 
             DateTime valueDate;
@@ -36,7 +36,6 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             {
                 valueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday();
             }
-
 
             var trade = new Trade(id,
                                   user,
@@ -49,14 +48,14 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                                   request.DealtCurrency);
             await _repository.SaveAsync(trade);
 
-            await ExecuteImpl(trade);
+            //await ExecuteImpl(trade);
 
             // We do the saving in two phases here as this gives us the created event emitted when the first save happens, then
             // the completed/rejected event emitted after the actual execution happens, which will be after a slight delay.
             // This gives us a sequence of events that is more like a real world application
             // rather than both events being received on the client almost simultaneously
             // TODO - get rid of this, and wire this up to the process manager
-            await _repository.SaveAsync(trade);
+            //await _repository.SaveAsync(trade);
 
             return new ExecuteTradeResponseDto
             {

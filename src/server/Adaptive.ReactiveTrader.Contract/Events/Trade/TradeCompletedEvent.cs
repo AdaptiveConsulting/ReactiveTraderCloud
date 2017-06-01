@@ -2,11 +2,11 @@
 {
     public class TradeCompletedEvent
     {
-        public TradeCompletedEvent(long tradeId)
+        public TradeCompletedEvent(string tradeId)
         {
             TradeId = tradeId;
         }
 
-        public long TradeId { get; }
+        public string TradeId { get; }
     }
 }

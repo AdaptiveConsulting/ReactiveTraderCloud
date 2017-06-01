@@ -1,8 +1,8 @@
-﻿namespace Adaptive.ReactiveTrader.Contract.Events.Trade
+namespace Adaptive.ReactiveTrader.Server.TradeExecution.Process
 {
-    public class TradeRejectedEvent
+    public class RejectTradeCommand
     {
-        public TradeRejectedEvent(string tradeId, string reason)
+        public RejectTradeCommand(string tradeId, string reason)
         {
             TradeId = tradeId;
             Reason = reason;

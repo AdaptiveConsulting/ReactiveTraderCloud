@@ -19,7 +19,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Domain
             RaiseEvent(new CurrencyPairCreatedEvent(symbol, pipsPosition, ratePrecision, sampleRate, comment));
         }
 
-        public override object Identifier => $"ccyPair-{Symbol}";
+        public override string StreamPrefix { get; } = "ccyPair-";
+        public override string Identifier => $"{StreamPrefix}{Symbol}";
         private string Symbol { get; set; }
         private int PipsPosition { get; set; }
         private int RatePrecision { get; set; }

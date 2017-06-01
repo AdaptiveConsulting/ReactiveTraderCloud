@@ -19,10 +19,10 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             Log.Warning("Not Disposing.");
         }
 
-        public async Task<TAggregate> GetByIdAsync<TAggregate>(object id) where TAggregate : IAggregate, new()
+        public async Task<TAggregate> GetByIdAsync<TAggregate>(string id) where TAggregate : IAggregate, new()
         {
             var aggregate = new TAggregate();
-            var streamName = $"{aggregate.Identifier}{id}";
+            var streamName = $"{aggregate.StreamPrefix}{id}";
 
             if (Log.IsEnabled(LogEventLevel.Information))
             {
@@ -31,14 +31,36 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
             var result = await ReadEventsAsync(streamName, e => aggregate.ApplyEvent(e));
 
-            if (result == SliceReadStatus.StreamNotFound)
+            switch (result)
             {
-                throw new AggregateNotFoundException(id, typeof(TAggregate));
+                case SliceReadStatus.StreamNotFound:
+                    throw new AggregateNotFoundException(id, typeof(TAggregate));
+                case SliceReadStatus.StreamDeleted:
+                    throw new AggregateDeletedException(id, typeof(TAggregate));
             }
 
-            if (result == SliceReadStatus.StreamDeleted)
+            return aggregate;
+        }
+
+        public async Task<TAggregate> GetByIdOrCreateAsync<TAggregate>(string id)
+            where TAggregate : class, IAggregate, new()
+        {
+            var aggregate = new TAggregate();
+            var streamName = $"{aggregate.StreamPrefix}{id}";
+
+            if (Log.IsEnabled(LogEventLevel.Information))
             {
-                throw new AggregateDeletedException(id, typeof(TAggregate));
+                Log.Information("Loading aggregate {streamName} from Event Store", streamName);
+            }
+
+            var result = await ReadEventsAsync(streamName, e => aggregate.ApplyEvent(e));
+
+            switch (result)
+            {
+                case SliceReadStatus.StreamNotFound:
+                    return aggregate;
+                case SliceReadStatus.StreamDeleted:
+                    throw new AggregateDeletedException(id, typeof(TAggregate));
             }
 
             return aggregate;
@@ -46,7 +68,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
 
         public async Task<int> SaveAsync(AggregateBase aggregate, params KeyValuePair<string, string>[] extraHeaders)
         {
-            var streamName = aggregate.Identifier.ToString();
+            var streamName = aggregate.Identifier;
             var pendingEvents = aggregate.GetPendingEvents();
             var expectedVersion = aggregate.Version - pendingEvents.Count;
             var commitId = Guid.NewGuid().ToString();

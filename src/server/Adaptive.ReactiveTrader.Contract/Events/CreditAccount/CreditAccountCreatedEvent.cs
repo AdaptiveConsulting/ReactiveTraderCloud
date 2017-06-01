@@ -1,14 +1,12 @@
 ﻿namespace Adaptive.ReactiveTrader.Contract.Events.CreditAccount
 {
-    public class CreditReservedEvent
+    public class CreditAccountCreatedEvent
     {
-        public CreditReservedEvent(string accountName, string tradeId)
+        public CreditAccountCreatedEvent(string accountName)
         {
             AccountName = accountName;
-            TradeId = tradeId;
         }
 
         public string AccountName { get; }
-        public string TradeId { get; }
     }
 }

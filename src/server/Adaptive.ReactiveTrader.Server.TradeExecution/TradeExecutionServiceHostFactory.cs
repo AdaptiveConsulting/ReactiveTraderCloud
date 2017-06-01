@@ -33,14 +33,22 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
             var tradeExecutionSubcription = eventStoreStream
                 .LaunchOrKill(
-                    conn =>
+                    repositoryStream,
+                    (conn, repo) =>
                     {
+                        var processFactory = new ProcessFactory();
+                        processFactory.AddResolver(() => new TradeExecutionProcess(
+                            new ReserveCreditCommandHandler(repo),
+                            new CompleteTradeCommandHandler(repo),
+                            new RejectTradeCommandHandler(repo)));
+                        var processRepository = new ProcessRepository(conn, processFactory, eventTypeResolver);
+                        var eventHandler = new TradeExecutionEventHandler(processFactory, processRepository);
                         var eventDispatcher = new EventDispatcher(conn, eventTypeResolver);
-                        var processRepo = new ProcessRepository(conn, eventTypeResolver);
-                        var eventHandler = new TradeExecutionEventHandler(processRepo);
 
                         // TODO - revisit blocking here.
-                        return eventDispatcher.Start("trade_execution", "trade_execution_group", eventHandler).Result;
+                        const string streamName = "trade_execution";
+                        const string groupName = "trade_execution_group";
+                        return eventDispatcher.Start(streamName, groupName, eventHandler).Result;
                     })
                 .Subscribe();
 

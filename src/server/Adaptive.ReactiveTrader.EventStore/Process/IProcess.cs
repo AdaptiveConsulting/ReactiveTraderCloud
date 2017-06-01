@@ -5,7 +5,8 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
 {
     public interface IProcess
     {
-        object Identifier { get; }
+        string StreamPrefix { get; }
+        string Identifier { get; }
         int Version { get; }
         void Transition(object @event);
         IReadOnlyList<object> GetUncommittedEvents();

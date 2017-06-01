@@ -6,24 +6,45 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Process
 {
     public class TradeExecutionProcess : ProcessBase
     {
-        public override object Identifier => $"tradeExecution-{Id}";
+        private readonly IReserveCreditCommandHandler _reserveCreditCommandHandler;
+        private readonly ICompleteTradeCommandHandler _completeTradeCommandHandler;
+        private readonly IRejectTradeCommandHandler _rejectTradeCommandHandler;
 
-        public long Id { get; private set; }
+        public TradeExecutionProcess()
+        {
+        }
+
+        public TradeExecutionProcess(
+            IReserveCreditCommandHandler reserveCreditCommandHandler,
+            ICompleteTradeCommandHandler completeTradeCommandHandler,
+            IRejectTradeCommandHandler rejectTradeCommandHandler)
+        {
+            _reserveCreditCommandHandler = reserveCreditCommandHandler;
+            _completeTradeCommandHandler = completeTradeCommandHandler;
+            _rejectTradeCommandHandler = rejectTradeCommandHandler;
+        }
+
+        public override string StreamPrefix { get; } = "tradeExecution-";
+        public override string Identifier => $"{StreamPrefix}{TradeId}";
+        public string TradeId { get; private set; }
 
         public void OnEvent(TradeCreatedEvent @event)
         {
-            Id = @event.TradeId;
-            // TODO - dispatch ReserveCreditCommand
+            TradeId = @event.TradeId;
+            var command = new ReserveCreditCommand(@event.TraderName, @event.TradeId);
+            AddMessageToDispatch(() => _reserveCreditCommandHandler.HandleAsync(command));
         }
 
         public void OnEvent(CreditReservedEvent @event)
         {
-            // TODO - dispatch CompleteTradeCommand
+            var command = new CompleteTradeCommand(@event.TradeId);
+            AddMessageToDispatch(() => _completeTradeCommandHandler.HandleAsync(command));
         }
 
         public void OnEvent(CreditLimitBreachedEvent @event)
         {
-            // TODO - dispatch RejectTradeCommand
+            var command = new RejectTradeCommand(@event.TradeId, "Credit limit breached.");
+            AddMessageToDispatch(() => _rejectTradeCommandHandler.HandleAsync(command));
         }
     }
 }

@@ -2,6 +2,11 @@
 {
     public class CreditLimitBreachedEvent
     {
-        // TODO
+        public CreditLimitBreachedEvent(string tradeId)
+        {
+            TradeId = tradeId;
+        }
+
+        public string TradeId { get; }
     }
 }
