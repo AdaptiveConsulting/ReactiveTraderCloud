@@ -64,7 +64,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
             SpotRate = evt.SpotRate;
             TradeDate = evt.TradeDate;
             ValueDate = evt.ValueDate;
-            Direction = (DirectionDto) Enum.Parse(typeof (DirectionDto), evt.Direction);
+            Direction = (DirectionDto)Enum.Parse(typeof(DirectionDto), evt.Direction);
             Notional = evt.Notional;
             DealtCurrency = evt.DealtCurrency;
             State = TradeStatusDto.Pending;

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.EventStore.EventHandling
 {
@@ -34,7 +35,6 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
 
         public async Task<IDisposable> Start(string streamName, string groupName, IEnumerable<IEventHandler> eventHandlers)
         {
-            // TODO - consider usage of async lambda here.
             var subscription = await _eventStoreConnection.ConnectToPersistentSubscriptionAsync(
                 stream: streamName,
                 groupName: groupName,
@@ -83,8 +83,7 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
             {
                 foreach (var eventHandler in matchingHandlers)
                 {
-                    Task task = ((dynamic)eventHandler).Handle((dynamic)deserialisedEvent);
-                    await task;
+                    await ((dynamic)eventHandler).Handle((dynamic)deserialisedEvent);
                 }
 
                 // All handlers successfully handled this event. Mark it as acknowledged.   
@@ -97,11 +96,12 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
             }
         }
 
-        private void OnSubscriptionDropped(EventStorePersistentSubscriptionBase subscription,
+        private static void OnSubscriptionDropped(EventStorePersistentSubscriptionBase subscription,
                                            SubscriptionDropReason reason,
                                            Exception exception)
         {
-            // TODO - what to do here?
+            // TODO - what to do here? Do we need any additional reconnect logic, or is the IConnected stuff enough?
+            Log.Error(exception, "Connection to persisited subscription dropped. Reason: {reason}", reason);
         }
 
         private object DeserialiseEvent(RecordedEvent evt)

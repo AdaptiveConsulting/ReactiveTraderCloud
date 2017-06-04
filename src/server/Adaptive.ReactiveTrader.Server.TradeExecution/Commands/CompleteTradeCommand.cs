@@ -1,4 +1,4 @@
-namespace Adaptive.ReactiveTrader.Server.TradeExecution.Process
+namespace Adaptive.ReactiveTrader.Server.TradeExecution.Commands
 {
     public class CompleteTradeCommand
     {

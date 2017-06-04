@@ -2,11 +2,13 @@
 {
     public class CreditLimitBreachedEvent
     {
-        public CreditLimitBreachedEvent(string tradeId)
+        public CreditLimitBreachedEvent(string accountName, string tradeId)
         {
+            AccountName = accountName;
             TradeId = tradeId;
         }
 
+        public string AccountName { get; }
         public string TradeId { get; }
     }
 }

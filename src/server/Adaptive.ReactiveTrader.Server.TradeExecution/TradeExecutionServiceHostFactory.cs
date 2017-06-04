@@ -9,7 +9,8 @@ using EventStore.ClientAPI;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore.EventHandling;
 using Adaptive.ReactiveTrader.EventStore.Process;
-using Adaptive.ReactiveTrader.Server.TradeExecution.Process;
+using Adaptive.ReactiveTrader.Server.TradeExecution.CommandHandlers;
+using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
@@ -25,34 +26,37 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
             var eventTypeResolver = new EventTypeResolver(ReflectionHelper.ContractsAssembly);
+
             var repositoryStream = eventStoreStream.LaunchOrKill(conn => new AggregateRepository(conn, eventTypeResolver));
-            var idProvider = repositoryStream.LaunchOrKill(repo => new TradeIdProvider(repo));
-            var engineStream = repositoryStream.LaunchOrKill(idProvider, (repo, id) => new TradeExecutionEngine(repo, id));
-            var serviceStream = engineStream.LaunchOrKill(engine => new TradeExecutionService(engine));
-            var disposable = serviceStream.LaunchOrKill(brokerStream, (service, broker) => new TradeExecutionServiceHost(service, broker)).Subscribe();
+            var idProviderStream = repositoryStream.LaunchOrKill(repo => new TradeIdProvider(repo));
+            var commandHandlerStream = repositoryStream.LaunchOrKill(idProviderStream, (repo, id) => new ExecuteTradeCommandHandler(repo, id));
+            var serviceStream = commandHandlerStream.LaunchOrKill(commandHandler => new TradeExecutionService(commandHandler));
 
-            var tradeExecutionSubcription = eventStoreStream
-                .LaunchOrKill(
-                    repositoryStream,
-                    (conn, repo) =>
-                    {
-                        var processFactory = new ProcessFactory();
-                        processFactory.AddResolver(() => new TradeExecutionProcess(
-                            new ReserveCreditCommandHandler(repo),
-                            new CompleteTradeCommandHandler(repo),
-                            new RejectTradeCommandHandler(repo)));
-                        var processRepository = new ProcessRepository(conn, processFactory, eventTypeResolver);
-                        var eventHandler = new TradeExecutionEventHandler(processFactory, processRepository);
-                        var eventDispatcher = new EventDispatcher(conn, eventTypeResolver);
-
-                        // TODO - revisit blocking here.
-                        const string streamName = "trade_execution";
-                        const string groupName = "trade_execution_group";
-                        return eventDispatcher.Start(streamName, groupName, eventHandler).Result;
-                    })
+            var serviceHostSubscription = serviceStream
+                .LaunchOrKill(brokerStream, (service, broker) => new TradeExecutionServiceHost(service, broker))
                 .Subscribe();
 
-            var disposables = new CompositeDisposable(disposable, tradeExecutionSubcription);
+            var tradeExecutionSubcription = eventStoreStream
+                .LaunchOrKill(repositoryStream, (conn, repo) =>
+                {
+                    var processFactory = new ProcessFactory();
+
+                    processFactory.AddResolver(() => new TradeExecutionProcess(new ReserveCreditCommandHandler(repo),
+                                                                               new CompleteTradeCommandHandler(repo),
+                                                                               new RejectTradeCommandHandler(repo)));
+
+                    var processRepository = new ProcessRepository(conn, processFactory, eventTypeResolver);
+                    var eventHandler = new TradeExecutionEventHandler(processFactory, processRepository);
+                    var eventDispatcher = new EventDispatcher(conn, eventTypeResolver);
+
+                    // TODO - revisit blocking here. Should we be returning Task<IDisposable>?
+                    const string streamName = "trade_execution";
+                    const string groupName = "trade_execution_group";
+                    return eventDispatcher.Start(streamName, groupName, eventHandler).Result;
+                })
+                .Subscribe();
+
+            var disposables = new CompositeDisposable(serviceHostSubscription, tradeExecutionSubcription);
             _cleanup.Add(disposables);
 
             return disposables;

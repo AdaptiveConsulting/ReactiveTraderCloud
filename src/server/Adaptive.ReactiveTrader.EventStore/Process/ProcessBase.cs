@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Adaptive.ReactiveTrader.EventStore.Process
 {
@@ -48,6 +50,12 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
         public Task DispatchMessages()
         {
             return Task.WhenAll(_undispatchedMessages.Select(m => m()));
+        }
+
+        [SuppressMessage("ReSharper", "UnusedMember.Local", Justification = "Ok here, as we need a default route")]
+        private void OnEvent(object @event)
+        {
+            Log.Warning("No OnEvent method found for event type {type}.", @event.GetType().Name);
         }
     }
 }

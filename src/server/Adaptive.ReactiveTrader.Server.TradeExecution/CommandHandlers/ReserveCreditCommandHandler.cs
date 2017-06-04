@@ -1,10 +1,12 @@
+using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.EventStore.Domain;
+using Adaptive.ReactiveTrader.Server.TradeExecution.Commands;
 using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
 
-namespace Adaptive.ReactiveTrader.Server.TradeExecution.Process
+namespace Adaptive.ReactiveTrader.Server.TradeExecution.CommandHandlers
 {
-    public class ReserveCreditCommandHandler : IReserveCreditCommandHandler
+    public class ReserveCreditCommandHandler
     {
         private readonly IAggregateRepository _aggregateRepository;
 
@@ -27,8 +29,22 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Process
                 creditAccount.Create(command.AccountName);
             }
 
-            // TODO - add more params here
-            creditAccount.ReserveCredit(command.TradeId);
+            // Emulate some variable delays based on currency pair.
+            switch (command.TradeDetails.CurrencyPair)
+            {
+                case "EURJPY":
+                    // TODO - 5 seconds should cause a timeout, but this currently doesn't work due to process manager changes.
+                    await Task.Delay(TimeSpan.FromSeconds(5));
+                    break;
+                case "GBPUSD":
+                    await Task.Delay(TimeSpan.FromSeconds(1.5));
+                    break;
+                default:
+                    await Task.Delay(TimeSpan.FromSeconds(.5));
+                    break;
+            }
+
+            creditAccount.ReserveCredit(command.TradeDetails);
 
             await _aggregateRepository.SaveAsync(creditAccount);
         }

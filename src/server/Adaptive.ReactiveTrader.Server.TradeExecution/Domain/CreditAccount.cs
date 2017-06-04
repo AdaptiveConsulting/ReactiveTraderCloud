@@ -14,9 +14,17 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
             RaiseEvent(new CreditAccountCreatedEvent(accountName));
         }
 
-        public void ReserveCredit(string tradeId)
+        public void ReserveCredit(TradeDetails tradeDetails)
         {
-            RaiseEvent(new CreditReservedEvent(AccountName, tradeId));
+            // Emulate a credit limit breach if currency pair is GBPJPY.
+            if (tradeDetails.CurrencyPair == "GBPJPY")
+            {
+                RaiseEvent(new CreditLimitBreachedEvent(AccountName, tradeDetails.TradeId));
+            }
+            else
+            {
+                RaiseEvent(new CreditReservedEvent(AccountName, tradeDetails.TradeId));
+            }
         }
 
         public void Apply(CreditAccountCreatedEvent @event)

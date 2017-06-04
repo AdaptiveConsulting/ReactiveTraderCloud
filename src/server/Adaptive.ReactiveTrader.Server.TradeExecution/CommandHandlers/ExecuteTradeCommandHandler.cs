@@ -4,18 +4,15 @@ using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
-using Serilog;
 
-namespace Adaptive.ReactiveTrader.Server.TradeExecution
+namespace Adaptive.ReactiveTrader.Server.TradeExecution.CommandHandlers
 {
-    public class TradeExecutionEngine : IDisposable
+    public class ExecuteTradeCommandHandler : IDisposable
     {
-        //protected static readonly ILogger Log = Log.ForContext<TradeExecutionEngine>();
-
         private readonly IAggregateRepository _repository;
         private readonly TradeIdProvider _tradeIdProvider;
 
-        public TradeExecutionEngine(IAggregateRepository repository, TradeIdProvider tradeIdProvider)
+        public ExecuteTradeCommandHandler(IAggregateRepository repository, TradeIdProvider tradeIdProvider)
         {
             _repository = repository;
             _tradeIdProvider = tradeIdProvider;
@@ -23,10 +20,10 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         public void Dispose()
         {
-            Log.Warning("Not disposed.");
+            // Nothing to do.
         }
 
-        public async Task<ExecuteTradeResponseDto> ExecuteAsync(ExecuteTradeRequestDto request, string user)
+        public async Task<ExecuteTradeResponseDto> HandleAsync(ExecuteTradeRequestDto request, string user)
         {
             var id = (await _tradeIdProvider.GetNextId()).ToString();
             var tradeDate = DateTime.UtcNow;
@@ -46,16 +43,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                                   request.Direction,
                                   request.Notional,
                                   request.DealtCurrency);
+
             await _repository.SaveAsync(trade);
-
-            //await ExecuteImpl(trade);
-
-            // We do the saving in two phases here as this gives us the created event emitted when the first save happens, then
-            // the completed/rejected event emitted after the actual execution happens, which will be after a slight delay.
-            // This gives us a sequence of events that is more like a real world application
-            // rather than both events being received on the client almost simultaneously
-            // TODO - get rid of this, and wire this up to the process manager
-            //await _repository.SaveAsync(trade);
 
             return new ExecuteTradeResponseDto
             {
@@ -73,31 +62,6 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                     DealtCurrency = trade.DealtCurrency
                 }
             };
-        }
-
-        private async Task ExecuteImpl(Trade trade)
-        {
-            switch (trade.CurrencyPair)
-            {
-                case "EURJPY":
-                    await Task.Delay(TimeSpan.FromSeconds(5));
-                    break;
-                case "GBPUSD":
-                    await Task.Delay(TimeSpan.FromSeconds(1.5));
-                    break;
-                default:
-                    await Task.Delay(TimeSpan.FromSeconds(.5));
-                    break;
-            }
-
-            if (trade.CurrencyPair == "GBPJPY")
-            {
-                trade.Reject("Execution engine rejected trade");
-            }
-            else
-            {
-                trade.Complete();
-            }
         }
     }
 }
