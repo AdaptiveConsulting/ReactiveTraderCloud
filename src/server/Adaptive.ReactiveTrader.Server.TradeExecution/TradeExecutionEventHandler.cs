@@ -15,13 +15,13 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                                               IEventHandler<TradeRejectedEvent>,
                                               IDisposable
     {
-        private readonly IProcessFactory _processFactory;
         private readonly IProcessRepository _processRepository;
+        private readonly Func<TradeExecutionProcess> _processFactory;
 
-        public TradeExecutionEventHandler(IProcessFactory processFactory, IProcessRepository processRepository)
+        public TradeExecutionEventHandler(IProcessRepository processRepository, Func<TradeExecutionProcess> processFactory)
         {
-            _processFactory = processFactory;
             _processRepository = processRepository;
+            _processFactory = processFactory;
         }
 
         public void Dispose()
@@ -31,35 +31,35 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         public async Task Handle(TradeCreatedEvent @event)
         {
-            var process = _processFactory.Create<TradeExecutionProcess>();
+            var process = _processFactory();
             process.Transition(@event);
             await _processRepository.SaveAsync(process);
         }
 
         public async Task Handle(CreditReservedEvent @event)
         {
-            var process = await _processRepository.GetByIdAsync<TradeExecutionProcess>(@event.TradeId);
+            var process = await _processRepository.GetByIdAsync(@event.TradeId, _processFactory);
             process.Transition(@event);
             await _processRepository.SaveAsync(process);
         }
 
         public async Task Handle(CreditLimitBreachedEvent @event)
         {
-            var process = await _processRepository.GetByIdAsync<TradeExecutionProcess>(@event.TradeId);
+            var process = await _processRepository.GetByIdAsync(@event.TradeId, _processFactory);
             process.Transition(@event);
             await _processRepository.SaveAsync(process);
         }
 
         public async Task Handle(TradeCompletedEvent @event)
         {
-            var process = await _processRepository.GetByIdAsync<TradeExecutionProcess>(@event.TradeId);
+            var process = await _processRepository.GetByIdAsync(@event.TradeId, _processFactory);
             process.Transition(@event);
             await _processRepository.SaveAsync(process);
         }
 
         public async Task Handle(TradeRejectedEvent @event)
         {
-            var process = await _processRepository.GetByIdAsync<TradeExecutionProcess>(@event.TradeId);
+            var process = await _processRepository.GetByIdAsync(@event.TradeId, _processFactory);
             process.Transition(@event);
             await _processRepository.SaveAsync(process);
         }

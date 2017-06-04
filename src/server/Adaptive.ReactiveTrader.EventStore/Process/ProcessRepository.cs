@@ -10,13 +10,9 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
 {
     public class ProcessRepository : RepositoryBase, IProcessRepository, IDisposable
     {
-        private readonly IProcessFactory _processFactory;
-
-        public ProcessRepository(IEventStoreConnection eventStoreConnection,
-                                 IProcessFactory processFactory,
-                                 EventTypeResolver eventTypeResolver) : base(eventStoreConnection, eventTypeResolver)
+        public ProcessRepository(IEventStoreConnection eventStoreConnection, EventTypeResolver eventTypeResolver)
+            : base(eventStoreConnection, eventTypeResolver)
         {
-            _processFactory = processFactory;
         }
 
         public void Dispose()
@@ -24,9 +20,9 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
             // Nothing to do
         }
 
-        public async Task<TProcess> GetByIdAsync<TProcess>(string id) where TProcess : IProcess, new()
+        public async Task<TProcess> GetByIdAsync<TProcess>(string id, Func<TProcess> factory) where TProcess : IProcess
         {
-            var process = _processFactory.Create<TProcess>();
+            var process = factory();
             var streamName = $"{process.StreamPrefix}{id}";
 
             if (Log.IsEnabled(LogEventLevel.Information))

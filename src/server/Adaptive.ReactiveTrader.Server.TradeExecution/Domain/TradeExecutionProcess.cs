@@ -14,10 +14,6 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
         private readonly CompleteTradeCommandHandler _completeTradeCommandHandler;
         private readonly RejectTradeCommandHandler _rejectTradeCommandHandler;
 
-        public TradeExecutionProcess()
-        {
-        }
-
         public TradeExecutionProcess(ReserveCreditCommandHandler reserveCreditCommandHandler,
                                      CompleteTradeCommandHandler completeTradeCommandHandler,
                                      RejectTradeCommandHandler rejectTradeCommandHandler)

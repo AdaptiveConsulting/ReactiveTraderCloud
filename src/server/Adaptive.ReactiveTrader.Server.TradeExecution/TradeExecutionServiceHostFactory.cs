@@ -39,14 +39,14 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             var tradeExecutionSubcription = eventStoreStream
                 .LaunchOrKill(repositoryStream, (conn, repo) =>
                 {
-                    var processFactory = new ProcessFactory();
+                    var processRepository = new ProcessRepository(conn, eventTypeResolver);
 
-                    processFactory.AddResolver(() => new TradeExecutionProcess(new ReserveCreditCommandHandler(repo),
-                                                                               new CompleteTradeCommandHandler(repo),
-                                                                               new RejectTradeCommandHandler(repo)));
+                    var eventHandler = new TradeExecutionEventHandler(
+                        processRepository,
+                        () => new TradeExecutionProcess(new ReserveCreditCommandHandler(repo),
+                                                        new CompleteTradeCommandHandler(repo),
+                                                        new RejectTradeCommandHandler(repo)));
 
-                    var processRepository = new ProcessRepository(conn, processFactory, eventTypeResolver);
-                    var eventHandler = new TradeExecutionEventHandler(processFactory, processRepository);
                     var eventDispatcher = new EventDispatcher(conn, eventTypeResolver);
 
                     // TODO - revisit blocking here. Should we be returning Task<IDisposable>?
