@@ -37,23 +37,24 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                 .Subscribe();
 
             var tradeExecutionSubcription = eventStoreStream
-                .LaunchOrKill(repositoryStream, (conn, repo) =>
-                {
-                    var processRepository = new ProcessRepository(conn, eventTypeResolver);
+                .LaunchOrKill(
+                    repositoryStream,
+                    (conn, repo) =>
+                    {
+                        const string streamName = "trade_execution";
+                        const string groupName = "trade_execution_group";
 
-                    var eventHandler = new TradeExecutionEventHandler(
-                        processRepository,
-                        () => new TradeExecutionProcess(new ReserveCreditCommandHandler(repo),
-                                                        new CompleteTradeCommandHandler(repo),
-                                                        new RejectTradeCommandHandler(repo)));
+                        var processRepository = new ProcessRepository(conn, eventTypeResolver);
 
-                    var eventDispatcher = new EventDispatcher(conn, eventTypeResolver);
+                        var router = TradeExecutionEventHandlers.GetRouter(
+                            processRepository,
+                            () => new TradeExecutionProcess(new ReserveCreditCommandHandler(repo),
+                                                            new CompleteTradeCommandHandler(repo),
+                                                            new RejectTradeCommandHandler(repo)));
 
-                    // TODO - revisit blocking here. Should we be returning Task<IDisposable>?
-                    const string streamName = "trade_execution";
-                    const string groupName = "trade_execution_group";
-                    return eventDispatcher.Start(streamName, groupName, eventHandler).Result;
-                })
+                        // TODO - revisit blocking here. Should we be returning Task<IDisposable>?
+                        return EventDispatcher.Start(conn, eventTypeResolver, streamName, groupName, router).Result;
+                    })
                 .Subscribe();
 
             var disposables = new CompositeDisposable(serviceHostSubscription, tradeExecutionSubcription);

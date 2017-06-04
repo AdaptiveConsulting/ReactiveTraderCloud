@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Serilog;
 
 namespace Adaptive.ReactiveTrader.EventStore.Process
 {
     public abstract class ProcessBase : IProcess
     {
+        private readonly RouteProvider _routeProvider = new RouteProvider();
         private readonly List<object> _uncommittedEvents = new List<object>();
         private readonly List<Message> _undispatchedMessages = new List<Message>();
 
@@ -17,7 +17,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
 
         public void Transition(object @event)
         {
-            ((dynamic)this).OnEvent((dynamic)@event);
+            _routeProvider.DispatchToRoute(@event);
             Version++;
             _uncommittedEvents.Add(@event);
         }
@@ -52,10 +52,9 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
             return Task.WhenAll(_undispatchedMessages.Select(m => m()));
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Local", Justification = "Ok here, as we need a default route")]
-        private void OnEvent(object @event)
+        protected void RegisterRoute<TEvent>(Action<TEvent> onEvent)
         {
-            Log.Warning("No OnEvent method found for event type {type}.", @event.GetType().Name);
+            _routeProvider.RegisterRoute(onEvent);
         }
     }
 }

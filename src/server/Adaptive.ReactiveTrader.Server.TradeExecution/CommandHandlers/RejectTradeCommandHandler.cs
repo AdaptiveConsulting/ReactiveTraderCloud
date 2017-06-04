@@ -20,5 +20,12 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.CommandHandlers
             trade.Reject(command.Reason);
             await _aggregateRepository.SaveAsync(trade);
         }
+
+        public static async Task HandleAsync(RejectTradeCommand command, IAggregateRepository repository)
+        {
+            var trade = await repository.GetByIdAsync<Trade>(command.TradeId);
+            trade.Reject(command.Reason);
+            await repository.SaveAsync(trade);
+        }
     }
 }

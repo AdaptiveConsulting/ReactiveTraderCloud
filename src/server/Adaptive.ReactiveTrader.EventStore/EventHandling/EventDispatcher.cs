@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Disposables;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using EventStore.ClientAPI;
@@ -11,80 +8,54 @@ using Serilog;
 
 namespace Adaptive.ReactiveTrader.EventStore.EventHandling
 {
-    public class EventDispatcher : IEventDispatcher, IDisposable
+    public static class EventDispatcher
     {
-        private readonly IEventStoreConnection _eventStoreConnection;
-        private readonly EventTypeResolver _eventTypeResolver;
-
-        public EventDispatcher(IEventStoreConnection eventStoreConnection, EventTypeResolver eventTypeResolver)
+        public static async Task<IDisposable> Start(IEventStoreConnection connection,
+                                                    EventTypeResolver eventTypeResolver,
+                                                    string streamName,
+                                                    string groupName,
+                                                    EventHandlerRouter eventHandlerRouter)
         {
-            _eventStoreConnection = eventStoreConnection;
-            _eventTypeResolver = eventTypeResolver;
-        }
-
-        public void Dispose()
-        {
-            // Nothing to to
-            // TODO - confirm this - should we kill all created subscriptions?
-        }
-
-        public Task<IDisposable> Start(string streamName, string groupName, params IEventHandler[] eventHandlers)
-        {
-            return Start(streamName, groupName, eventHandlers.AsEnumerable());
-        }
-
-        public async Task<IDisposable> Start(string streamName, string groupName, IEnumerable<IEventHandler> eventHandlers)
-        {
-            var subscription = await _eventStoreConnection.ConnectToPersistentSubscriptionAsync(
-                stream: streamName,
-                groupName: groupName,
-                eventAppeared: async (s, e) => await OnEventAppeared(s, e, eventHandlers),
-                subscriptionDropped: OnSubscriptionDropped,
-                autoAck: false).ConfigureAwait(false);
+            var subscription = await connection
+                .ConnectToPersistentSubscriptionAsync(
+                    stream: streamName,
+                    groupName: groupName,
+                    eventAppeared: async (s, e) => await OnEventAppeared(s, e, eventTypeResolver, eventHandlerRouter),
+                    subscriptionDropped: OnSubscriptionDropped,
+                    autoAck: false);
 
             // TODO - consider the blocking timeout here, and where the timeout should come from.
             return Disposable.Create(() => subscription.Stop(TimeSpan.FromSeconds(10)));
         }
 
-        private async Task OnEventAppeared(EventStorePersistentSubscriptionBase subscription,
-                                           ResolvedEvent resolvedEvent,
-                                           IEnumerable<IEventHandler> eventHandlers)
+        private static async Task OnEventAppeared(EventStorePersistentSubscriptionBase subscription,
+                                                  ResolvedEvent resolvedEvent,
+                                                  EventTypeResolver eventTypeResolver,
+                                                  EventHandlerRouter eventHandlerRouter)
         {
             object deserialisedEvent;
 
             try
             {
-                deserialisedEvent = DeserialiseEvent(resolvedEvent.Event);
+                deserialisedEvent = DeserialiseEvent(resolvedEvent.Event, eventTypeResolver);
             }
             catch (Exception ex)
             {
                 // Failed to deserialise. Park this event.
-                subscription.Fail(resolvedEvent,
-                                  PersistentSubscriptionNakEventAction.Park,
-                                  $"Failed to deserialise. Error: {ex.Message}");
+                subscription.Fail(resolvedEvent, PersistentSubscriptionNakEventAction.Park, $"Failed to deserialise. Error: {ex.Message}");
                 return;
             }
 
-            var eventType = deserialisedEvent.GetType();
-            var eventHandlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
-            var matchingHandlers = eventHandlers.Where(x => eventHandlerType.IsInstanceOfType(x)).ToList();
-
-            if (matchingHandlers.Count == 0)
+            if (!eventHandlerRouter.CanRoute(deserialisedEvent))
             {
-                // No matching event handler found. Skip this event.
-                subscription.Fail(resolvedEvent,
-                                  PersistentSubscriptionNakEventAction.Skip,
-                                  "Event handler not found");
-
+                // No event route handler found. Skip this event.
+                subscription.Fail(resolvedEvent, PersistentSubscriptionNakEventAction.Skip, "Event handler route not found");
                 return;
             }
 
             try
             {
-                foreach (var eventHandler in matchingHandlers)
-                {
-                    await ((dynamic)eventHandler).Handle((dynamic)deserialisedEvent);
-                }
+                await eventHandlerRouter.Route(deserialisedEvent);
 
                 // All handlers successfully handled this event. Mark it as acknowledged.   
                 subscription.Acknowledge(resolvedEvent);
@@ -97,16 +68,16 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
         }
 
         private static void OnSubscriptionDropped(EventStorePersistentSubscriptionBase subscription,
-                                           SubscriptionDropReason reason,
-                                           Exception exception)
+                                                  SubscriptionDropReason reason,
+                                                  Exception exception)
         {
             // TODO - what to do here? Do we need any additional reconnect logic, or is the IConnected stuff enough?
             Log.Error(exception, "Connection to persisited subscription dropped. Reason: {reason}", reason);
         }
 
-        private object DeserialiseEvent(RecordedEvent evt)
+        private static object DeserialiseEvent(RecordedEvent evt, EventTypeResolver eventTypeResolver)
         {
-            var targetType = _eventTypeResolver.GetTypeForEventName(evt.EventType);
+            var targetType = eventTypeResolver.GetTypeForEventName(evt.EventType);
             var json = Encoding.UTF8.GetString(evt.Data);
             return JsonConvert.DeserializeObject(json, targetType);
         }

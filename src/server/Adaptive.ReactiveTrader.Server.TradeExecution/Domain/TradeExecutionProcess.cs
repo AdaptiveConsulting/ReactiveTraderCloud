@@ -21,13 +21,17 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
             _reserveCreditCommandHandler = reserveCreditCommandHandler;
             _completeTradeCommandHandler = completeTradeCommandHandler;
             _rejectTradeCommandHandler = rejectTradeCommandHandler;
+
+            RegisterRoute<TradeCreatedEvent>(OnEvent);
+            RegisterRoute<CreditReservedEvent>(OnEvent);
+            RegisterRoute<CreditLimitBreachedEvent>(OnEvent);
         }
 
         public override string StreamPrefix { get; } = "tradeExecution-";
         public override string Identifier => $"{StreamPrefix}{TradeId}";
         public string TradeId { get; private set; }
 
-        public void OnEvent(TradeCreatedEvent @event)
+        private void OnEvent(TradeCreatedEvent @event)
         {
             TradeId = @event.TradeId;
 
@@ -46,13 +50,13 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
             AddMessageToDispatch(() => _reserveCreditCommandHandler.HandleAsync(command));
         }
 
-        public void OnEvent(CreditReservedEvent @event)
+        private void OnEvent(CreditReservedEvent @event)
         {
             var command = new CompleteTradeCommand(@event.TradeId);
             AddMessageToDispatch(() => _completeTradeCommandHandler.HandleAsync(command));
         }
 
-        public void OnEvent(CreditLimitBreachedEvent @event)
+        private void OnEvent(CreditLimitBreachedEvent @event)
         {
             var command = new RejectTradeCommand(@event.TradeId, "Credit limit breached.");
             AddMessageToDispatch(() => _rejectTradeCommandHandler.HandleAsync(command));
