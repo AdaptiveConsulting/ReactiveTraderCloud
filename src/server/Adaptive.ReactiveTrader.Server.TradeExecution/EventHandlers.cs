@@ -8,7 +8,7 @@ using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
-    public static class TradeExecutionEventHandlers
+    public static class EventHandlers
     {
         public static EventHandlerRouter GetRouter(IProcessRepository processRepository, Func<TradeExecutionProcess> processFactory)
         {
@@ -25,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         private static async Task Handle(TradeCreatedEvent @event, IProcessRepository repository, Func<TradeExecutionProcess> factory)
         {
-            var process = factory();
+            var process = await repository.GetByIdOrCreateAsync(@event.TradeId, factory);
             process.Transition(@event);
             await repository.SaveAsync(process);
         }

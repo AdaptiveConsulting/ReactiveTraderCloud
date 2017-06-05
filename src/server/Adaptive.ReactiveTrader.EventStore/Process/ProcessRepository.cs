@@ -34,16 +34,40 @@ namespace Adaptive.ReactiveTrader.EventStore.Process
             process.ClearUncommittedEvents();
             process.ClearUndispatchedMessages();
 
-            if (result == SliceReadStatus.StreamNotFound)
+            switch (result)
             {
-                // TODO - new exception type for Processes
-                throw new AggregateNotFoundException(id, typeof(TProcess));
+                case SliceReadStatus.StreamNotFound:
+                    // TODO - new exception type for Processes
+                    throw new AggregateNotFoundException(id, typeof(TProcess));
+                case SliceReadStatus.StreamDeleted:
+                    // TODO - new exception type for Processes
+                    throw new AggregateDeletedException(id, typeof(TProcess));
             }
 
-            if (result == SliceReadStatus.StreamDeleted)
+            return process;
+        }
+
+        public async Task<TProcess> GetByIdOrCreateAsync<TProcess>(string id, Func<TProcess> factory) where TProcess : IProcess
+        {
+            var process = factory();
+            var streamName = $"{process.StreamPrefix}{id}";
+
+            if (Log.IsEnabled(LogEventLevel.Information))
             {
-                // TODO - new exception type for Processes
-                throw new AggregateDeletedException(id, typeof(TProcess));
+                Log.Information("Loading process {streamName} from Event Store", streamName);
+            }
+
+            var result = await ReadEventsAsync(streamName, e => process.Transition(e));
+            process.ClearUncommittedEvents();
+            process.ClearUndispatchedMessages();
+
+            switch (result)
+            {
+                case SliceReadStatus.StreamNotFound:
+                    return process;
+                case SliceReadStatus.StreamDeleted:
+                    // TODO - new exception type for Processes
+                    throw new AggregateDeletedException(id, typeof(TProcess));
             }
 
             return process;

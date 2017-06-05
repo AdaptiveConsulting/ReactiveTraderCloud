@@ -2,29 +2,25 @@
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Contract.Events.CreditAccount;
 using Adaptive.ReactiveTrader.Contract.Events.Trade;
+using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.EventStore.Process;
-using Adaptive.ReactiveTrader.Server.TradeExecution.CommandHandlers;
 using Adaptive.ReactiveTrader.Server.TradeExecution.Commands;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
 {
     public class TradeExecutionProcess : ProcessBase
     {
-        private readonly ReserveCreditCommandHandler _reserveCreditCommandHandler;
-        private readonly CompleteTradeCommandHandler _completeTradeCommandHandler;
-        private readonly RejectTradeCommandHandler _rejectTradeCommandHandler;
+        private readonly IAggregateRepository _repository;
+        private bool _isComplete;
 
-        public TradeExecutionProcess(ReserveCreditCommandHandler reserveCreditCommandHandler,
-                                     CompleteTradeCommandHandler completeTradeCommandHandler,
-                                     RejectTradeCommandHandler rejectTradeCommandHandler)
+        public TradeExecutionProcess(IAggregateRepository repository)
         {
-            _reserveCreditCommandHandler = reserveCreditCommandHandler;
-            _completeTradeCommandHandler = completeTradeCommandHandler;
-            _rejectTradeCommandHandler = rejectTradeCommandHandler;
-
+            _repository = repository;
             RegisterRoute<TradeCreatedEvent>(OnEvent);
             RegisterRoute<CreditReservedEvent>(OnEvent);
             RegisterRoute<CreditLimitBreachedEvent>(OnEvent);
+            RegisterRoute<TradeCompletedEvent>(OnEvent);
+            RegisterRoute<TradeRejectedEvent>(OnEvent);
         }
 
         public override string StreamPrefix { get; } = "tradeExecution-";
@@ -33,6 +29,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
 
         private void OnEvent(TradeCreatedEvent @event)
         {
+            if (_isComplete) return;
+
             TradeId = @event.TradeId;
 
             var direction = (DirectionDto)Enum.Parse(typeof(DirectionDto), @event.Direction);
@@ -47,19 +45,33 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
 
             var command = new ReserveCreditCommand(@event.TraderName, tradeDetails);
 
-            AddMessageToDispatch(() => _reserveCreditCommandHandler.HandleAsync(command));
+            AddMessageToDispatch(() => CommandHandlers.HandleAsync(command, _repository));
         }
 
         private void OnEvent(CreditReservedEvent @event)
         {
+            if (_isComplete) return;
             var command = new CompleteTradeCommand(@event.TradeId);
-            AddMessageToDispatch(() => _completeTradeCommandHandler.HandleAsync(command));
+            AddMessageToDispatch(() => CommandHandlers.HandleAsync(command, _repository));
         }
 
         private void OnEvent(CreditLimitBreachedEvent @event)
         {
+            if (_isComplete) return;
             var command = new RejectTradeCommand(@event.TradeId, "Credit limit breached.");
-            AddMessageToDispatch(() => _rejectTradeCommandHandler.HandleAsync(command));
+            AddMessageToDispatch(() => CommandHandlers.HandleAsync(command, _repository));
+        }
+
+        private void OnEvent(TradeCompletedEvent @event)
+        {
+            if (_isComplete) return;
+            _isComplete = true;
+        }
+
+        private void OnEvent(TradeRejectedEvent @event)
+        {
+            if (_isComplete) return;
+            _isComplete = true;
         }
     }
 }

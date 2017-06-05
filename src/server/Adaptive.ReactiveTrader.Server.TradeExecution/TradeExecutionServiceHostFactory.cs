@@ -9,7 +9,6 @@ using EventStore.ClientAPI;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore.EventHandling;
 using Adaptive.ReactiveTrader.EventStore.Process;
-using Adaptive.ReactiveTrader.Server.TradeExecution.CommandHandlers;
 using Adaptive.ReactiveTrader.Server.TradeExecution.Domain;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
@@ -29,8 +28,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
             var repositoryStream = eventStoreStream.LaunchOrKill(conn => new AggregateRepository(conn, eventTypeResolver));
             var idProviderStream = repositoryStream.LaunchOrKill(repo => new TradeIdProvider(repo));
-            var commandHandlerStream = repositoryStream.LaunchOrKill(idProviderStream, (repo, id) => new ExecuteTradeCommandHandler(repo, id));
-            var serviceStream = commandHandlerStream.LaunchOrKill(commandHandler => new TradeExecutionService(commandHandler));
+            var serviceStream = repositoryStream.LaunchOrKill(idProviderStream,
+                                                              (repository, idProvider) => new TradeExecutionService(repository, idProvider));
 
             var serviceHostSubscription = serviceStream
                 .LaunchOrKill(brokerStream, (service, broker) => new TradeExecutionServiceHost(service, broker))
@@ -45,12 +44,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                         const string groupName = "trade_execution_group";
 
                         var processRepository = new ProcessRepository(conn, eventTypeResolver);
-
-                        var router = TradeExecutionEventHandlers.GetRouter(
-                            processRepository,
-                            () => new TradeExecutionProcess(new ReserveCreditCommandHandler(repo),
-                                                            new CompleteTradeCommandHandler(repo),
-                                                            new RejectTradeCommandHandler(repo)));
+                        var router = EventHandlers.GetRouter(processRepository, () => new TradeExecutionProcess(repo));
 
                         // TODO - revisit blocking here. Should we be returning Task<IDisposable>?
                         return EventDispatcher.Start(conn, eventTypeResolver, streamName, groupName, router).Result;

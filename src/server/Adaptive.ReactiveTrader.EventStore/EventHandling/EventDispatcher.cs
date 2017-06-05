@@ -3,6 +3,7 @@ using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using EventStore.ClientAPI;
+using EventStore.ClientAPI.Exceptions;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -59,6 +60,15 @@ namespace Adaptive.ReactiveTrader.EventStore.EventHandling
 
                 // All handlers successfully handled this event. Mark it as acknowledged.   
                 subscription.Acknowledge(resolvedEvent);
+            }
+            catch (WrongExpectedVersionException ex)
+            {
+                // Concurrency error. Try again.
+                Log.Warning("Concurrency error handling event {event} on stream {stream}. Retrying.",
+                            resolvedEvent.Event.EventType,
+                            resolvedEvent.OriginalStreamId);
+
+                subscription.Fail(resolvedEvent, PersistentSubscriptionNakEventAction.Retry, ex.Message);
             }
             catch (Exception ex)
             {

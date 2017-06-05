@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.EventStore.Domain;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using Adaptive.ReactiveTrader.Server.TradeExecution.CommandHandlers;
 using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     public class TradeExecutionService : ITradeExecutionService, IDisposable
     {
-        //private static readonly ILogger Log = Log.ForContext<TradeExecutionService>();
-        private readonly ExecuteTradeCommandHandler _commandHandler;
+        private readonly IAggregateRepository _repository;
+        private readonly TradeIdProvider _idProvider;
 
-        public TradeExecutionService(ExecuteTradeCommandHandler commandHandler)
+        public TradeExecutionService(IAggregateRepository repository, TradeIdProvider idProvider)
         {
-            _commandHandler = commandHandler;
+            _repository = repository;
+            _idProvider = idProvider;
         }
 
         public void Dispose()
@@ -24,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
         public Task<ExecuteTradeResponseDto> ExecuteTrade(IRequestContext context, ExecuteTradeRequestDto request)
         {
             Log.Debug("[REQ. RESPONSE] Executing Trade: ({username})", context.UserSession.Username);
-            return _commandHandler.HandleAsync(request, context.UserSession.Username);
+            return CommandHandlers.HandleAsync(request, context.UserSession.Username, _repository, _idProvider);
         }
     }
 }
