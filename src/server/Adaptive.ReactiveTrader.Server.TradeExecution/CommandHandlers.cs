@@ -34,6 +34,11 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
                                   request.Notional,
                                   request.DealtCurrency);
 
+            if (request.CurrencyPair == "EURJPY")
+            {
+                await Task.Delay(TimeSpan.FromSeconds(5));
+            }
+
             await repository.SaveAsync(trade);
 
             return new ExecuteTradeResponseDto
@@ -71,10 +76,6 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             // Emulate some variable delays based on currency pair.
             switch (command.TradeDetails.CurrencyPair)
             {
-                case "EURJPY":
-                    // TODO - 5 seconds should cause a timeout, but this currently doesn't work due to process manager changes.
-                    await Task.Delay(TimeSpan.FromSeconds(5));
-                    break;
                 case "GBPUSD":
                     await Task.Delay(TimeSpan.FromSeconds(1.5));
                     break;
