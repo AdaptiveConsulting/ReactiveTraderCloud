@@ -172,29 +172,22 @@ export default class SpotTileModel extends ModelBase {
             (response:ExecuteTradeResponse) => {
               if (response.hasError || !response.trade)
               {
-                console.log(`TRADE ERROR`);
                 this.notification = TradeExecutionNotification.createForError(response.error);
                 this.isTradeExecutionInFlight = false;
               } else {
                 if (response.trade.status === TradeStatus.Pending)
                 {
-                  console.log(`TRADE PENDING`);
                   let tradeId = response.trade.tradeId;
-                  
                   // TODO: make this better
                   var tradeSubscription = this._blotterService
                     .getTradesStream()
-                    .do(tradesUpdate => console.log(`blotter sub: isSOTW: ${tradesUpdate.isStateOfTheWorld}; trades: ${tradesUpdate.trades.length}`))
                     .selectMany(tradesUpdate => tradesUpdate.trades)
                     .where(trade => trade.tradeId === tradeId && (trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected))
                     .take(1)
                     .subscribe(t => {
-                      console.log(`TRADE PENDING RESOLVED`);
-                      console.log(`TRADE UPDATE!! status = ${t.status.name}`);
                       this._completeTrade(!response.hasError, t);
                     });
                 } else {
-                  console.log(`TRADE COMPLETED`);
                   this._completeTrade(!response.hasError, response.trade);
                 }
               }
@@ -211,7 +204,6 @@ export default class SpotTileModel extends ModelBase {
   }
 
   _completeTrade(tradeOk, trade){
-
     this.notification = TradeExecutionNotification.createForSuccess(trade);
     this.isTradeExecutionInFlight = false;
 
