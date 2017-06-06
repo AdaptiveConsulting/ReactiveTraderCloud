@@ -113,7 +113,7 @@ class AppBootstrapper {
     let spotTileLoader = new SpotTileLoader(
       espRouter,
       this._referenceDataService,
-      new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager, this._schedulerService, this._openFin)
+      new SpotTileFactory(espRouter, this._blotterService, this._pricingService, this._executionService, regionManager, this._schedulerService, this._openFin)
     );
     spotTileLoader.beginLoadTiles();
 

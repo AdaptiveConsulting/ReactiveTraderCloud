@@ -30,6 +30,7 @@ import { SpotTileView } from '../views';
 @viewBinding(SpotTileView)
 export default class SpotTileModel extends ModelBase {
   // non view state
+  _blotterService:BlotterService;
   _pricingService:PricingService;
   _executionService:ExecutionService;
   _executionDisposable:Rx.SerialDisposable;
@@ -57,6 +58,7 @@ export default class SpotTileModel extends ModelBase {
   constructor(modelId:string,
               currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
               router:Router,
+              blotterService:BlotterService,
               pricingService:PricingService,
               executionService:ExecutionService,
               regionManager:RegionManager,
@@ -64,6 +66,7 @@ export default class SpotTileModel extends ModelBase {
               openFin:OpenFin) {
     super(modelId, router);
     this._log = logger.create(`${this.modelId}:${currencyPair.symbol}`);// can't change ccy pair in this demo app, so reasonable to use the symbol in the logger name
+    this._blotterService = blotterService;
     this._pricingService = pricingService;
     this._executionService = executionService;
     this._regionManager = regionManager;
@@ -167,14 +170,33 @@ export default class SpotTileModel extends ModelBase {
             this.router,
             this.modelId,
             (response:ExecuteTradeResponse) => {
-              this.isTradeExecutionInFlight = false;
-              this.notification = response.hasError
-                ? TradeExecutionNotification.createForError(response.error)
-                : TradeExecutionNotification.createForSuccess(response.trade);
-              if (!response.hasError && response.trade.status === TradeStatus.Done) {
-                this._toastNotificationTimerDisposable.setDisposable(
-                  this._schedulerService.async.scheduleFuture('', DISMISS_NOTIFICATION_AFTER_X_IN_MS, () => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {}))
-                );
+              if (response.hasError || !response.trade)
+              {
+                console.log(`TRADE ERROR`);
+                this.notification = TradeExecutionNotification.createForError(response.error);
+                this.isTradeExecutionInFlight = false;
+              } else {
+                if (response.trade.status === TradeStatus.Pending)
+                {
+                  console.log(`TRADE PENDING`);
+                  let tradeId = response.trade.tradeId;
+                  
+                  // TODO: make this better
+                  var tradeSubscription = this._blotterService
+                    .getTradesStream()
+                    .do(tradesUpdate => console.log(`blotter sub: isSOTW: ${tradesUpdate.isStateOfTheWorld}; trades: ${tradesUpdate.trades.length}`))
+                    .selectMany(tradesUpdate => tradesUpdate.trades)
+                    .where(trade => trade.tradeId === tradeId && (trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected))
+                    .take(1)
+                    .subscribe(t => {
+                      console.log(`TRADE PENDING RESOLVED`);
+                      console.log(`TRADE UPDATE!! status = ${t.status.name}`);
+                      this._completeTrade(!response.hasError, t);
+                    });
+                } else {
+                  console.log(`TRADE COMPLETED`);
+                  this._completeTrade(!response.hasError, response.trade);
+                }
               }
             },
             err => {
@@ -185,6 +207,17 @@ export default class SpotTileModel extends ModelBase {
         );
     } else {
       this._log.warn(`Ignoring execute request as we can't trade with pricing and execution down`);
+    }
+  }
+
+  _completeTrade(tradeOk, trade){
+
+    this.notification = TradeExecutionNotification.createForSuccess(trade);
+    this.isTradeExecutionInFlight = false;
+
+    if (tradeOk && trade.status === TradeStatus.Done) {
+      this._toastNotificationTimerDisposable.setDisposable(
+        this._schedulerService.async.scheduleFuture('', DISMISS_NOTIFICATION_AFTER_X_IN_MS, () => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {})));
     }
   }
 

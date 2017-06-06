@@ -14,6 +14,7 @@ import { OpenFin } from '../../system/openFin';
  */
 export default class SpotTileFactory {
   _router:Router;
+  _blotterService:BlotterService;
   _pricingService:PricingService;
   _executionService:ExecutionService;
   _regionManager:RegionManager;
@@ -22,6 +23,7 @@ export default class SpotTileFactory {
 
   constructor(
     router:Router,
+    blotterService:BlotterService,
     pricingService:PricingService,
     executionService:ExecutionService,
     regionManager:RegionManager,
@@ -29,6 +31,7 @@ export default class SpotTileFactory {
     openFin: OpenFin
   ) {
     this._router = router;
+    this._blotterService = blotterService;
     this._pricingService = pricingService;
     this._executionService = executionService;
     this._regionManager = regionManager;
@@ -41,6 +44,7 @@ export default class SpotTileFactory {
       this._createSpotTileModelId(currencyPair.symbol),
       currencyPair,
       this._router,
+      this._blotterService,
       this._pricingService,
       this._executionService,
       this._regionManager,
