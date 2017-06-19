@@ -1,0 +1,6 @@
+Binding for:
+jp.wasabeef:recyclerview-animators:1.3.0
+
+Dependencies:
+
+recyclerview-animators-1.3.0.aar,    Path=C:\Users\tom\.gradle\caches\modules-2\files-2.1\jp.wasabeef\recyclerview-animators\1.3.0\ec6386bde607f3025e060651f8f0771d2a39c8ec\recyclerview-animators-1.3.0.aar

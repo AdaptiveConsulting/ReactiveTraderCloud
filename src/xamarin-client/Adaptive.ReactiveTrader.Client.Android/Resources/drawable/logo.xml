@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="298dp"
+    android:height="292dp"
+    android:viewportWidth="298"
+    android:viewportHeight="292"
+    android:name="logo">
+  <group android:name="box1">
+    <path
+        android:fillColor="#2b4563"
+        android:strokeColor="#2b4563"
+        android:strokeWidth="1"
+        android:pathData="M 215.785 32.62 H 272.785 V 201.12 H 215.785 V 32.62 Z" />
+  </group>
+  <group android:name="box2">
+    <path
+      android:fillColor="#2b4563"
+              android:strokeColor="#2b4563"
+        android:strokeWidth="1"
+      android:pathData="M215.785,201.12l0,-130.5l-71.5,0l0,195.5l0,-27l71.5,0l0,-38Z" />
+  </group>
+  <group android:name="box3">
+    <path
+      android:fillColor="#2b4563"
+              android:strokeColor="#2b4563"
+        android:strokeWidth="1"
+      android:pathData="M 73.285 97.62 H 144.285 V 266.12 H 73.285 V 97.62 Z" />
+  </group>
+  <group android:name="box4">
+    <path
+      android:fillColor="#2b4563"
+              android:strokeColor="#2b4563"
+        android:strokeWidth="1"
+      android:pathData="M 15.785 80.62 H 73.285 V 249.12 H 15.785 V 80.62 Z" />
+  </group> µ
+</vector>

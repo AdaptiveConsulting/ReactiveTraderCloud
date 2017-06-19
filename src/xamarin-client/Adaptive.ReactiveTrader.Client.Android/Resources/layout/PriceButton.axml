@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/pricebutton_background_selector">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/PriceButtonContent">
+        <TextView
+            android:id="@+id/PriceButtonDirectionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BUY"
+            android:textSize="14dp"
+            android:textColor="#F290AFC1"
+            android:layout_gravity="center_horizontal" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/PriceButtonBigFiguresTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.23"
+                android:textSize="14dp"
+                android:textColor="#F290AFC1"
+                android:focusable="false" />
+            <TextView
+                android:id="@+id/PriceButtonPipsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="45"
+                android:textSize="32dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@drawable/pricebutton_foreground_selector" />
+            <TextView
+                android:id="@+id/PriceButtonTenthOfPipTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6"
+                android:textSize="14dp"
+                android:textColor="#F290AFC1" />
+        </LinearLayout>
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/PriceButtonProgress"
+        android:indeterminateOnly="true"
+        android:indeterminate="true"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="invisible"
+        android:layout_gravity="center_vertical|center_horizontal" />
+</FrameLayout>

@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E92115A5-D7BE-4A19-AF2B-9FB100B28CE4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Adaptive.ReactiveTrader.Client</RootNamespace>
+    <AssemblyName>Adaptive.ReactiveTrader.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BootstrapperBase.cs" />
+    <Compile Include="Concurrency\ConstantRatePump.cs" />
+    <Compile Include="Concurrency\IConcurrencyService.cs" />
+    <Compile Include="Concurrency\IConstantRateConfigurationProvider.cs" />
+    <Compile Include="Concurrency\IConstantRatePump.cs" />
+    <Compile Include="Configuration\IConfigurationProvider.cs" />
+    <Compile Include="Configuration\IUserProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Blotter\BlotterViewModel.cs" />
+    <Compile Include="UI\Blotter\Designer\DesignerModeBlotterViewModel.cs" />
+    <Compile Include="UI\Blotter\Designer\DesignerModeTradeViewModel.cs" />
+    <Compile Include="UI\Blotter\IBlotterViewModel.cs" />
+    <Compile Include="UI\Blotter\ITradeViewModel.cs" />
+    <Compile Include="UI\Blotter\TradeViewModel.cs" />
+    <Compile Include="UI\Connectivity\ConnectivityStatusViewModel.cs" />
+    <Compile Include="UI\Connectivity\IConnectivityStatusViewModel.cs" />
+    <Compile Include="UI\Shell\IShellViewModel.cs" />
+    <Compile Include="UI\Shell\ShellViewModel.cs" />
+    <Compile Include="UI\SpotTiles\Designer\DesignTimeOneWayPriceViewModel.cs" />
+    <Compile Include="UI\SpotTiles\Designer\DesignTimeSpotTileAffirmationViewModel.cs" />
+    <Compile Include="UI\SpotTiles\Designer\DesignTimeSpotTileConfigViewModel.cs" />
+    <Compile Include="UI\SpotTiles\Designer\DesignTimeSpotTileErrorViewModel.cs" />
+    <Compile Include="UI\SpotTiles\Designer\DesignTimeSpotTilePricingViewModel.cs" />
+    <Compile Include="UI\SpotTiles\Designer\DesignTimeSpotTilesViewModel.cs" />
+    <Compile Include="UI\SpotTiles\Designer\DesignTimeSpotTileViewModel.cs" />
+    <Compile Include="UI\SpotTiles\FormattedPrice.cs" />
+    <Compile Include="UI\SpotTiles\IOneWayPriceViewModel.cs" />
+    <Compile Include="UI\SpotTiles\ISpotTileAffirmationViewModel.cs" />
+    <Compile Include="UI\SpotTiles\ISpotTileConfigViewModel.cs" />
+    <Compile Include="UI\SpotTiles\ISpotTileErrorViewModel.cs" />
+    <Compile Include="UI\SpotTiles\ISpotTilePricingViewModel.cs" />
+    <Compile Include="UI\SpotTiles\ISpotTilesViewModel.cs" />
+    <Compile Include="UI\SpotTiles\ISpotTileViewModel.cs" />
+    <Compile Include="UI\SpotTiles\OneWayPriceViewModel.cs" />
+    <Compile Include="UI\SpotTiles\PriceFormatter.cs" />
+    <Compile Include="UI\SpotTiles\PriceMovement.cs" />
+    <Compile Include="UI\SpotTiles\PriceMovementExtentions.cs" />
+    <Compile Include="UI\SpotTiles\SpotTileAffirmationViewModel.cs" />
+    <Compile Include="UI\SpotTiles\SpotTileConfigViewModel.cs" />
+    <Compile Include="UI\SpotTiles\SpotTileErrorViewModel.cs" />
+    <Compile Include="UI\SpotTiles\SpotTileExecutionMode.cs" />
+    <Compile Include="UI\SpotTiles\SpotTilePricingViewModel.cs" />
+    <Compile Include="UI\SpotTiles\SpotTileSubscriptionMode.cs" />
+    <Compile Include="UI\SpotTiles\SpotTilesViewModel.cs" />
+    <Compile Include="UI\SpotTiles\SpotTileViewModel.cs" />
+    <Compile Include="UI\SpotTiles\TileState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj">
+      <Project>{94678B85-9C41-4353-889D-F2202F3DB740}</Project>
+      <Name>Adaptive.ReactiveTrader.Client.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Shared\Adaptive.ReactiveTrader.Shared.csproj">
+      <Project>{B954B5A9-ABD0-469B-9397-039675BEC8F0}</Project>
+      <Name>Adaptive.ReactiveTrader.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da">
+      <HintPath>..\packages\Autofac.3.5.2\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyChanged, Version=1.50.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.1.50.3\lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\PropertyChanged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Interactive, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Ix-Main.1.2.5\lib\portable-windows8+net45+wp8\System.Interactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net45+win8\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net45+win8\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Rx-Core.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Rx-Linq.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\packages\Fody.1.29.4\build\portable-net+sl+win+wpa+wp\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\portable-net+sl+win+wpa+wp\Fody.targets')" />
+</Project>
