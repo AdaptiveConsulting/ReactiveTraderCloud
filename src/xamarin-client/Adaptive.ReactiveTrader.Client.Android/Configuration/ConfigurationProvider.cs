@@ -7,7 +7,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.Configuration
         public string[] Servers
         {
             //get { return new[] { "http://localhost:8080" }; }
-            get { return new[] { "ws://web-dev.adaptivecluster.com:8080/ws" }; }
+            get { return new[] { "ws://web-demo.adaptivecluster.com:8080/ws" }; }
         }
     }
 }

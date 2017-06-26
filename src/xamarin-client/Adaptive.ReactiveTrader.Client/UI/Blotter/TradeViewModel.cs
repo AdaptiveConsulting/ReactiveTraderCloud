@@ -7,7 +7,7 @@ using PropertyChanged;
 
 namespace Adaptive.ReactiveTrader.Client.UI.Blotter
 {
-    [ImplementPropertyChanged]
+    [AddINotifyPropertyChangedInterface]
     public class TradeViewModel : ViewModelBase, ITradeViewModel
     {
         private readonly DateTimeOffset _createdTime = DateTimeOffset.UtcNow;

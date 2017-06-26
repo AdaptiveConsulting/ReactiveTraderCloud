@@ -1,5 +1,6 @@
 using Adaptive.ReactiveTrader.Shared.Logging;
 using System;
+using System.Diagnostics;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
 {
@@ -19,8 +20,8 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
             {
                 return;
             }
-
             _observer.OnNext(result);
+            _observer.OnCompleted();
         }
 
         protected override void OnError(Exception ex)

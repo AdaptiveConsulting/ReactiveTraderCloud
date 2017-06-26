@@ -26,13 +26,13 @@
 	<string>Resources/Images.xcassets/AppIcons.appiconset</string>
 	<key>CFBundleName</key>
 	<string>ReactiveTrader</string>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleLightContent</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleVersion</key>
 	<string>16</string>
+	<key>CFBundleDisplayName</key>
+	<string></string>
 </dict>
 </plist>

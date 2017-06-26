@@ -28,16 +28,16 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
             _loggerFactory = loggerFactory;
         }
 
-        public async Task ConnectAsync()
+        public Task ConnectAsync()
         {
             _statusStream.OnNext(new ConnectionInfo(ConnectionStatus.Connecting, _server, TransportName));
             InitializeServiceClients();
 
             GetStatusStream().Subscribe(s => _statusStream.OnNext(new ConnectionInfo(s, _server, TransportName)),
-                                        _statusStream.OnError,
-                                        _statusStream.OnCompleted);
+                _statusStream.OnError,
+                _statusStream.OnCompleted);
 
-            await _connection.ConnectAsync();
+            return _connection.ConnectAsync();
         }
 
         public WampServiceClient Reference { get; private set; }
@@ -58,9 +58,9 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
         private WampServiceClient CreateServiceClient(string serviceType)
         {
             var serviceClient = new WampServiceClient(_connection,
-                                                      serviceType,
-                                                      _concurrencyService.TaskPool,
-                                                      _loggerFactory);
+                serviceType,
+                _concurrencyService.TaskPool,
+                _loggerFactory);
             serviceClient.Connect();
             return serviceClient;
         }
@@ -69,24 +69,24 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
         {
             // ReSharper disable once InvokeAsExtensionMethod
             return Observable.CombineLatest(Reference.ServiceStatusStream,
-                                            Blotter.ServiceStatusStream,
-                                            Execution.ServiceStatusStream,
-                                            Pricing.ServiceStatusStream,
-                                            (a, b, c, d) => (a.IsConnected ? 1 : 0) +
-                                                            (b.IsConnected ? 1 : 0) +
-                                                            (c.IsConnected ? 1 : 0) +
-                                                            (d.IsConnected ? 1 : 0))
-                             .Select(serviceCount =>
-                             {
-                                 if (serviceCount == 0)
-                                 {
-                                     return ConnectionStatus.Closed;
-                                 }
+                Blotter.ServiceStatusStream,
+                Execution.ServiceStatusStream,
+                Pricing.ServiceStatusStream,
+                (a, b, c, d) => (a.IsConnected ? 1 : 0) +
+                                (b.IsConnected ? 1 : 0) +
+                                (c.IsConnected ? 1 : 0) +
+                                (d.IsConnected ? 1 : 0))
+                .Select(serviceCount =>
+                {
+                    if (serviceCount == 0)
+                    {
+                        return ConnectionStatus.Closed;
+                    }
 
-                                 return serviceCount < ExpectedServiceCount
-                                     ? ConnectionStatus.PartiallyConnected
-                                     : ConnectionStatus.Connected;
-                             });
+                    return serviceCount < ExpectedServiceCount
+                        ? ConnectionStatus.PartiallyConnected
+                        : ConnectionStatus.Connected;
+                }).DistinctUntilChanged();
         }
 
         public void Dispose()

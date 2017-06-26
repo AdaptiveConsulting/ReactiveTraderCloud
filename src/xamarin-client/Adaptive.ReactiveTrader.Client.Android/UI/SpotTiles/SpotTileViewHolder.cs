@@ -115,8 +115,6 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             stopwatch.Start();
             _allSubscriptions.Clear();
 
-            int i = 0;
-
             concurrencyService.Dispatcher.Schedule(() =>
             {
                 if (spotTileViewModel.State == TileState.Affirmation)

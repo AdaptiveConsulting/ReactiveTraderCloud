@@ -14,7 +14,7 @@ using PropertyChanged;
 
 namespace Adaptive.ReactiveTrader.Client.UI.Blotter
 {
-    [ImplementPropertyChanged]
+    [AddINotifyPropertyChangedInterface]
     public class BlotterViewModel : ViewModelBase, IBlotterViewModel, IDisposable
     {
         private readonly ITradeRepository _tradeRepository;

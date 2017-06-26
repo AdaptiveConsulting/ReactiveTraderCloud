@@ -1,11 +1,11 @@
-﻿using Adaptive.ReactiveTrader.Shared.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Adaptive.ReactiveTrader.Shared.Logging;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
 {
@@ -26,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
             _serviceType = serviceType;
             _serviceInstanceStreamCache = CreateServiceInstanceDictionaryStream(serviceType, scheduler)
                 .Multicast(new BehaviorSubject<IDictionary<string, ILastValueObservable<ServiceInstanceStatus>>>(
-                               new Dictionary<string, ILastValueObservable<ServiceInstanceStatus>>()));
+                    new Dictionary<string, ILastValueObservable<ServiceInstanceStatus>>()));
         }
 
         public void Connect()
@@ -48,35 +48,34 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
             string serviceType,
             IScheduler scheduler)
         {
-
             return Observable.Create<IDictionary<string, ILastValueObservable<ServiceInstanceStatus>>>(o =>
             {
                 var connectionStatus = _connection.ConnectionStatus.Publish().RefCount();
                 var isConnectedStream = connectionStatus.Where(isConnected => isConnected);
 
                 var errorOnDisconnectStream = connectionStatus.Where(isConnected => !isConnected).
-                                                               Take(1)
-                                                              .SelectMany(Observable.Throw<ServiceInstanceStatus>(new InvalidOperationException("Disconnected")));
+                    Take(1)
+                    .SelectMany(Observable.Throw<ServiceInstanceStatus>(new InvalidOperationException("Disconnected")));
 
                 // a stream of all service instance status, yields a disconnect when the underlying connection goes down
                 var serviceInstanceDictionaryStream = _connection.SubscribeToTopic<ServiceStatusDto>("status")
-                                                                 .Where(s => s.Type == serviceType)
-                                                                 .Select(dto => ServiceInstanceStatus.CreateForConnected(dto.Type, dto.Instance, dto.Load))
+                    .Where(s => s.Type == serviceType)
+                    .Select(dto => ServiceInstanceStatus.CreateForConnected(dto.Type, dto.Instance, dto.Load))
                     // If the underlying connection goes down we error the stream.
                     // Do this before the grouping so all grouped streams error.
-                                                                 .Merge(errorOnDisconnectStream)
-                                                                 .GroupBy(serviceStatus => serviceStatus.ServiceId)
+                    .Merge(errorOnDisconnectStream)
+                    .GroupBy(serviceStatus => serviceStatus.ServiceId)
                     // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
-                                                                 .DebounceOnMissedHeartbeat(TimeSpan.FromSeconds(DisconnectTimeoutInSeconds),
-                                                                                            serviceId => ServiceInstanceStatus.CreateForDisconnected(
-                                                                                                serviceType,
-                                                                                                serviceId),
-                                                                                            scheduler)
+                    .DebounceOnMissedHeartbeat(TimeSpan.FromSeconds(DisconnectTimeoutInSeconds),
+                        serviceId => ServiceInstanceStatus.CreateForDisconnected(
+                            serviceType,
+                            serviceId),
+                        scheduler)
                     // flattens all our service instances stream into an observable dictionary so we query the service with the least load on a per-subscribe basis
-                                                                 .ToLastValueObservableDictionary(serviceStatus => serviceStatus.ServiceId)
+                    .ToLastValueObservableDictionary(serviceStatus => serviceStatus.ServiceId)
                     // catch the disconnect error of the outter stream and continue with an empty (thus disconencted) dictionary
-                                                                 .Catch(Observable.Return(
-                                                                         new Dictionary<string, ILastValueObservable<ServiceInstanceStatus>>()));
+                    .Catch(Observable.Return(
+                        new Dictionary<string, ILastValueObservable<ServiceInstanceStatus>>()));
                 return isConnectedStream
                     .Take(1)
                     // selectMany: since we're just taking one, this effectively just continues the stream by subscribing to serviceInstanceDictionaryStream
@@ -97,24 +96,23 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
                     // we only take one as once we've found a service we use that for the remainder of the operation, 
                     // if there are errors, a higher level service will deal with how to retry
                     _serviceInstanceStreamCache.GetServiceWithMinLoad(waitForSuitableService)
-                                               .Take(1)
-                                               .Subscribe(serviceInstanceStatus =>
-                                               {
-                                                   if (!serviceInstanceStatus.IsConnected)
-                                                   {
-                                                       o.OnError(new InvalidOperationException("Disconnected"));
-                                                   }
+                        .Take(1)
+                        .Subscribe(serviceInstanceStatus =>
+                        {
+                            if (!serviceInstanceStatus.IsConnected)
+                            {
+                                o.OnError(new InvalidOperationException("Disconnected"));
+                            }
 
-                                                   var remoteProcedure = $"{serviceInstanceStatus.ServiceId}.{operationName}";
-                                                   _log.Info($"Will use service instance [{serviceInstanceStatus}] for request response operation");
-                                                   disposables.Add(
-                                                       _connection
-                                                           .RequestResponse<TRequest, TResponse>(remoteProcedure, request)
-                                                           .Subscribe(o)
-                                                       );
-                                               },
-                                                          o.OnError,
-                                                          o.OnCompleted));
+                            var remoteProcedure = $"{serviceInstanceStatus.ServiceId}.{operationName}";
+                            _log.Info($"Will use service instance [{serviceInstanceStatus}] for request response operation");
+                            disposables.Add(
+                                _connection
+                                    .RequestResponse<TRequest, TResponse>(remoteProcedure, request)
+                                    .Subscribe(o)
+                                );
+                        }, o.OnError)
+                    );
                 return disposables;
             });
         }
@@ -130,32 +128,31 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
 
                 disposables.Add(
                     _serviceInstanceStreamCache.GetServiceWithMinLoad()
-                                               .Take(1)
-                                               .Subscribe(statusStream =>
-                                               {
-                                                   if (!statusStream.IsConnected)
-                                                   {
-                                                       o.OnError(new InvalidOperationException("Disconnected"));
-                                                   }
-                                                   else if (!hasSubscribed)
-                                                   {
-                                                       hasSubscribed = true;
-                                                   }
+                        .Take(1)
+                        .Subscribe(statusStream =>
+                        {
+                            if (!statusStream.IsConnected)
+                            {
+                                o.OnError(new InvalidOperationException("Disconnected"));
+                            }
+                            else if (!hasSubscribed)
+                            {
+                                hasSubscribed = true;
+                            }
 
-                                                   var serviceInstance = statusStream.ServiceId;
-                                                   _log.Info($"Will use service instance [{serviceInstance}] for stream operation");
-                                                   disposables.Add(_connection.SubscribeToTopic<TResponse>(topicName)
-                                                                              .Subscribe(o));
+                            var serviceInstance = statusStream.ServiceId;
+                            _log.Info($"Will use service instance [{serviceInstance}] for stream operation");
+                            disposables.Add(_connection.SubscribeToTopic<TResponse>(topicName)
+                                .Subscribe(o));
 
-                                                   var remoteProcedure = $"{serviceInstance}.{operationName}";
+                            var remoteProcedure = $"{serviceInstance}.{operationName}";
 
-                                                   disposables.Add(_connection.RequestResponse<TRequest, TResponse>(remoteProcedure,
-                                                                                                                    request,
-                                                                                                                    topicName)
-                                                                              .Subscribe(_ => _log.Info($"Ack received for stream operation {operationName}"),
-                                                                                  o.OnError,
-                                                                                  o.OnCompleted));
-                                               }));
+                            disposables.Add(_connection.RequestResponse<TRequest, TResponse>(remoteProcedure,
+                                request,
+                                topicName)
+                                .Subscribe(_ => _log.Info($"Ack received for stream operation {operationName}"),
+                                    o.OnError));
+                        }));
                 return disposables;
             });
         }

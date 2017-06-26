@@ -6,7 +6,7 @@ using PropertyChanged;
 
 namespace Adaptive.ReactiveTrader.Client.UI.Shell
 {
-    [ImplementPropertyChanged]
+    [AddINotifyPropertyChangedInterface]
     public class ShellViewModel : ViewModelBase, IShellViewModel
     {
         public ISpotTilesViewModel SpotTiles { get; private set; }

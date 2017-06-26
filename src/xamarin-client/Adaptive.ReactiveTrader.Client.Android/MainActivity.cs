@@ -38,6 +38,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
         {
             base.OnCreate(savedInstanceState);
 
+            Websockets.Droid.WebsocketConnection.Link();
+
             var reactiveTrader = App.Container.Resolve<IReactiveTrader>();
             Connect(reactiveTrader);
 

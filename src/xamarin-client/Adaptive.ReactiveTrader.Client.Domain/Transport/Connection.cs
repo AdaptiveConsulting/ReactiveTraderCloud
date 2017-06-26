@@ -9,7 +9,6 @@ using Adaptive.ReactiveTrader.Shared.Logging;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Http;
 using System.Net.Http;
-using ModernHttpClient;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Transport
 {
@@ -47,10 +46,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
 
         class ModernHttpClientSignalR : DefaultHttpClient
         {
-            protected override HttpMessageHandler CreateHandler()
-            {
-                return new NativeMessageHandler();
-            }
         }
 
         public IObservable<Unit> Initialize()

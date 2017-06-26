@@ -15,7 +15,7 @@ using PropertyChanged;
 
 namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 {
-    [ImplementPropertyChanged]
+    [AddINotifyPropertyChangedInterface]
     public class SpotTilesViewModel : ViewModelBase, ISpotTilesViewModel, IDisposable
     {
         public ObservableCollection<ISpotTileViewModel> SpotTiles { get; private set; }

@@ -112,7 +112,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 		void Initalize()
 		{
-			_reactiveTrader.Initialize(UserModel.Instance.TraderId, new[] { "https://reactivetrader.azurewebsites.net/signalr" }, _loggerFactory);
+            Websockets.Ios.WebsocketConnection.Link();
+
+           _reactiveTrader.Initialize(UserModel.Instance.TraderId, new[] { "ws://web-demo.adaptivecluster.com:8080/ws" }, _loggerFactory);
 			_startUpViewController.DisplayMessages(true, "Connecting..");
 			_reactiveTrader.ConnectionStatusStream
 				.Where(ci => ci.ConnectionStatus == ConnectionStatus.Connected)

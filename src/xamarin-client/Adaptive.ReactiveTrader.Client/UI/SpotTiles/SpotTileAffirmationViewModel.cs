@@ -7,7 +7,7 @@ using PropertyChanged;
 
 namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 {
-    [ImplementPropertyChanged]
+    [AddINotifyPropertyChangedInterface]
     public class SpotTileAffirmationViewModel : ViewModelBase, ISpotTileAffirmationViewModel
     {
         private readonly ITrade _trade;

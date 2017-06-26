@@ -12,7 +12,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain
         ITradeRepository TradeRepository { get; }
         IObservable<ConnectionInfo> ConnectionStatusStream { get; }
         IPriceLatencyRecorder PriceLatencyRecorder { get; }
-        IControlRepository Control { get; }
         IPricingServiceClient PricingServiceClient { get; }
         void Initialize(string username, string[] servers, ILoggerFactory loggerFactory = null, string authToken = null);
     }

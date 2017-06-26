@@ -70,7 +70,7 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
             {
                 var gate = new object();
                 bool active = false;
-                var cancelable = new MultipleAssignmentDisposable();
+                var cancelable = new SerialDisposable();
                 var disposable = source.Materialize().Subscribe(thisNotification =>
                 {
                     bool wasNotAlreadyActive;
@@ -128,7 +128,7 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
                 var lastUpdateTime = DateTimeOffset.MinValue;
                 // indicate if an update is currently scheduled
                 var updateScheduled = new MultipleAssignmentDisposable();
-                // indicate if completion has been requested (we can't complete immediatly if an update is in flight)
+                // indicate if completion has been requested (we can't complete immediately if an update is in flight)
                 var completionRequested = false;
                 var gate = new object();
 

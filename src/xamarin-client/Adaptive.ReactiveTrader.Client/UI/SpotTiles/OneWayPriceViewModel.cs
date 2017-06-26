@@ -12,7 +12,7 @@ using PropertyChanged;
 
 namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 {
-    [ImplementPropertyChanged]
+    [AddINotifyPropertyChangedInterface]
     public class OneWayPriceViewModel : ViewModelBase, IOneWayPriceViewModel
     {
         private readonly ISpotTilePricingViewModel _parent;
