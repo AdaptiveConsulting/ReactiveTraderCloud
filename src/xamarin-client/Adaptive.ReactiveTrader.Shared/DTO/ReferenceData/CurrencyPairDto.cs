@@ -9,9 +9,9 @@
             PipsPosition = pipsPosition;
         }
 
-        public string Symbol { get; private set; }
-        public int RatePrecision { get; private set; }
-        public int PipsPosition { get; private set; }
+        public string Symbol { get; }
+        public int RatePrecision { get; }
+        public int PipsPosition { get; }
 
         public override string ToString()
         {

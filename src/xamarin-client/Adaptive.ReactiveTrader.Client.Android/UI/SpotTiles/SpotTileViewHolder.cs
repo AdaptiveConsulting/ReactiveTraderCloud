@@ -15,7 +15,6 @@ using Adaptive.ReactiveTrader.Shared.Extensions;
 using Android.Content;
 using Android.Runtime;
 using Android.Support.V7.Widget;
-using Android.Text;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Views.InputMethods;
@@ -29,9 +28,9 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
 {
     public class SpotTileViewHolder : RecyclerView.ViewHolder, IDisposable
     {
-        const int GraphLimit = 100;
-        PlotModel _plotModel;
-        AreaSeries _areaSeries;
+        private const int GraphLimit = 100;
+        private PlotModel _plotModel;
+        private AreaSeries _areaSeries;
         private readonly CompositeDisposable _allSubscriptions = new CompositeDisposable();
         private CancellationTokenSource _cancelAnimationSource = new CancellationTokenSource();
         private readonly List<decimal> _historicalPrices = new List<decimal>();

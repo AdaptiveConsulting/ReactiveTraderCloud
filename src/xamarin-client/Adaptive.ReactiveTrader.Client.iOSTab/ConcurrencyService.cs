@@ -14,12 +14,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			_dispatcher = new iOSDispatcherScheduler();
 		}
 
-		public IScheduler Dispatcher
-		{
-			get { return _dispatcher; }
-		}
+		public IScheduler Dispatcher => _dispatcher;
 
-		public IScheduler DispatcherPeriodic { get { throw new NotImplementedException ("");} }
-		public IScheduler TaskPool { get { return TaskPoolScheduler.Default; } }
+	    public IScheduler DispatcherPeriodic { get { throw new NotImplementedException ("");} }
+		public IScheduler TaskPool => TaskPoolScheduler.Default;
 	}}
 

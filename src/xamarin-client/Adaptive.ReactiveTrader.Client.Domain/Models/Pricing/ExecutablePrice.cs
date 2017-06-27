@@ -21,8 +21,8 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
             return _executionRepository.ExecuteRequest(this, notional, dealtCurrency);
         }
 
-        public Direction Direction { get; private set; }
-        public decimal Rate { get; private set; }
+        public Direction Direction { get; }
+        public decimal Rate { get; }
         public IPrice Parent { get; internal set; }
     }
 }

@@ -22,32 +22,23 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             _dismissCommand = new DelegateCommand(OnDismissExecute);
         }
 
-        public string CurrencyPair { get { return BaseCurrency + " / " + CounterCurrency; } }
-        public Direction Direction { get { return _trade.Direction; } }
-        public long Notional { get { return _trade.Notional; } }
-        public decimal SpotRate { get { return _trade.SpotRate; } }
-        public DateTime TradeDate { get { return _trade.TradeDate; } }
-        public long TradeId { get { return _trade.TradeId; } }
-        public string TraderName { get { return _trade.TraderName; } }
-        public DateTime ValueDate { get { return _trade.ValueDate; } }
-        public ICommand DismissCommand { get { return _dismissCommand; } }
-        public string DealtCurrency { get { return _trade.DealtCurrency; } }
-        public string Rejected { get {  return _trade.TradeStatus == TradeStatus.Done? "":"REJECTED";} }
+        public string CurrencyPair => BaseCurrency + " / " + CounterCurrency;
+        public Direction Direction => _trade.Direction;
+        public long Notional => _trade.Notional;
+        public decimal SpotRate => _trade.SpotRate;
+        public DateTime TradeDate => _trade.TradeDate;
+        public long TradeId => _trade.TradeId;
+        public string TraderName => _trade.TraderName;
+        public DateTime ValueDate => _trade.ValueDate;
+        public ICommand DismissCommand => _dismissCommand;
+        public string DealtCurrency => _trade.DealtCurrency;
+        public string Rejected => _trade.TradeStatus == TradeStatus.Done? "":"REJECTED";
 
-        public string OtherCurrency
-        {
-            get { return DealtCurrency == BaseCurrency ? CounterCurrency : BaseCurrency; }
-        }
+        public string OtherCurrency => DealtCurrency == BaseCurrency ? CounterCurrency : BaseCurrency;
 
-        private string BaseCurrency
-        {
-            get { return _trade.CurrencyPair.Substring(0, 3); }
-        }
+        private string BaseCurrency => _trade.CurrencyPair.Substring(0, 3);
 
-        private string CounterCurrency
-        {
-            get { return _trade.CurrencyPair.Substring(3, 3); }
-        }
+        private string CounterCurrency => _trade.CurrencyPair.Substring(3, 3);
 
         private void OnDismissExecute()
         {

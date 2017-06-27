@@ -6,15 +6,15 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
 {
     public class BlotterRowViewHolder : RecyclerView.ViewHolder
     {
-        public TextView TradeDate { get; private set; }
-        public TextView Direction { get; private set; }
-        public TextView CurrencyPair { get; private set; }
-        public TextView Notional { get; private set; }
-        public TextView SpotRate { get; private set; }
-        public TextView Status { get; private set; }
-        public TextView ValueDate { get; private set; }
-        public TextView TraderName { get; private set; }
-        public LinearLayout BlotterRow { get; private set; }
+        public TextView TradeDate { get; }
+        public TextView Direction { get; }
+        public TextView CurrencyPair { get; }
+        public TextView Notional { get; }
+        public TextView SpotRate { get; }
+        public TextView Status { get; }
+        public TextView ValueDate { get; }
+        public TextView TraderName { get; }
+        public LinearLayout BlotterRow { get; }
 
         public BlotterRowViewHolder(View itemView)
             : base(itemView)

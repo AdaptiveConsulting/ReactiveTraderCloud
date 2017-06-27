@@ -66,9 +66,6 @@ namespace Adaptive.ReactiveTrader.Client.Android.Concurrency
             return disposable;
         }
 
-        public DateTimeOffset Now
-        {
-            get { return DateTimeOffset.Now; }
-        }
+        public DateTimeOffset Now => DateTimeOffset.Now;
     }
 }

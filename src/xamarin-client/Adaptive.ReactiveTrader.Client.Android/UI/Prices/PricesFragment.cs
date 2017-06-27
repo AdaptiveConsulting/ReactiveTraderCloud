@@ -4,9 +4,7 @@ using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.V7.Widget;
-using Android.Util;
 using Android.Views;
 using Fragment = Android.Support.V4.App.Fragment;
 
@@ -14,8 +12,8 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Prices
 {
     public class PricesListFragment : Fragment
     {
-        readonly IShellViewModel _shellViewModel;
-        readonly IConcurrencyService _concurrencyService;
+        private readonly IShellViewModel _shellViewModel;
+        private readonly IConcurrencyService _concurrencyService;
 
         public PricesListFragment() // Required by Android SDK
         {
@@ -78,19 +76,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Prices
                 }
             }
 
-            public BugFixGridLayoutManager(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
-            {
-            }
-
-            public BugFixGridLayoutManager(Context context, int spanCount, int orientation, bool reverseLayout) : base(context, spanCount, orientation, reverseLayout)
-            {
-            }
-
             public BugFixGridLayoutManager(Context context, int spanCount) : base(context, spanCount)
-            {
-            }
-
-            public BugFixGridLayoutManager(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes) : base(context, attrs, defStyleAttr, defStyleRes)
             {
             }
         }

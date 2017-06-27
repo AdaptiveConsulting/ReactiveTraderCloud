@@ -2,8 +2,8 @@
 {
     internal class Heartbeat<T> : IHeartbeat<T>
     {
-        public bool IsHeartbeat { get; private set; }
-        public T Update { get; private set; }
+        public bool IsHeartbeat { get; }
+        public T Update { get; }
 
         public Heartbeat() : this(true, default(T))
         {

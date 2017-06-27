@@ -33,21 +33,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Model
 			);
 		}
 
-		public ObservableCollection<TradeDoneModel> DoneTrades  { get { return _doneTrades; } }
+		public ObservableCollection<TradeDoneModel> DoneTrades => _doneTrades;
 
-		public int Count { 
-			get {
-				return _doneTrades.Count;
-			}
-		}
+	    public int Count => _doneTrades.Count;
 
-		public TradeDoneModel this[int index] {
-			get { 
-				return _doneTrades [index];
-			}
-		}
+	    public TradeDoneModel this[int index] => _doneTrades [index];
 
-		public void Dispose ()
+	    public void Dispose ()
 		{
 			_disposables.Dispose();
 		}

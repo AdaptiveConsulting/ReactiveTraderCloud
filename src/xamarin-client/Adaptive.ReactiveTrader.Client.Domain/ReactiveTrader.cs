@@ -25,6 +25,8 @@ namespace Adaptive.ReactiveTrader.Client.Domain
             var concurrencyService = new ConcurrencyService();
 
             _serviceClientContainer = new WampServiceClientContainer(servers[0], username, concurrencyService, _loggerFactory);
+
+            // TODO: Make the Async Connection better
             _serviceClientContainer.ConnectAsync().Wait();
 
             var referenceDataServiceClient = new ReferenceDataServiceClient(_serviceClientContainer.Reference, _loggerFactory);
@@ -48,15 +50,9 @@ namespace Adaptive.ReactiveTrader.Client.Domain
         public IPriceLatencyRecorder PriceLatencyRecorder { get; private set; }
         public IPricingServiceClient PricingServiceClient { get; private set; }
 
-        public IObservable<ConnectionInfo> ConnectionStatusStream
-        {
-            get
-            {
-                return _serviceClientContainer.ConnectionStatusStream
-                    .Publish()
-                    .RefCount();
-            }
-        }
+        public IObservable<ConnectionInfo> ConnectionStatusStream => _serviceClientContainer.ConnectionStatusStream
+                                                                                            .Publish()
+                                                                                            .RefCount();
 
         public void Dispose()
         {

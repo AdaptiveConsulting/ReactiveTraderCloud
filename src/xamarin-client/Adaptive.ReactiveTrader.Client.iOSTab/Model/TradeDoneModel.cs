@@ -4,7 +4,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Model
 {
 	public class TradeDoneModel
 	{
-		public ITrade Trade { get; private set; }
+		public ITrade Trade { get; }
 
 		public TradeDoneModel (ITrade trade)
 		{

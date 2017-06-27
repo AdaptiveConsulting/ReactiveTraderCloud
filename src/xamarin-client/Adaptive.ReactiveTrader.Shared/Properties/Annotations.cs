@@ -67,7 +67,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       FormatParameterName = formatParameterName;
     }
 
-    public string FormatParameterName { get; private set; }
+    public string FormatParameterName { get; }
   }
 
   /// <summary>
@@ -129,7 +129,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       ParameterName = parameterName;
     }
 
-    public string ParameterName { get; private set; }
+    public string ParameterName { get; }
   }
 
   /// <summary>
@@ -186,8 +186,8 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       ForceFullStates = forceFullStates;
     }
 
-    public string Contract { get; private set; }
-    public bool ForceFullStates { get; private set; }
+    public string Contract { get; }
+    public bool ForceFullStates { get; }
   }
 
   /// <summary>
@@ -208,7 +208,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       Required = required;
     }
 
-    public bool Required { get; private set; }
+    public bool Required { get; }
   }
 
   /// <summary>
@@ -254,7 +254,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       BaseType = baseType;
     }
 
-    [NotNull] public Type BaseType { get; private set; }
+    [NotNull] public Type BaseType { get; }
   }
 
   /// <summary>
@@ -281,8 +281,8 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       TargetFlags = targetFlags;
     }
 
-    public ImplicitUseKindFlags UseKindFlags { get; private set; }
-    public ImplicitUseTargetFlags TargetFlags { get; private set; }
+    public ImplicitUseKindFlags UseKindFlags { get; }
+    public ImplicitUseTargetFlags TargetFlags { get; }
   }
 
   /// <summary>
@@ -309,8 +309,8 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       TargetFlags = targetFlags;
     }
 
-    [UsedImplicitly] public ImplicitUseKindFlags UseKindFlags { get; private set; }
-    [UsedImplicitly] public ImplicitUseTargetFlags TargetFlags { get; private set; }
+    [UsedImplicitly] public ImplicitUseKindFlags UseKindFlags { get; }
+    [UsedImplicitly] public ImplicitUseTargetFlags TargetFlags { get; }
   }
   
   [Flags]
@@ -359,7 +359,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       Comment = comment;
     }
 
-    [NotNull] public string Comment { get; private set; }
+    [NotNull] public string Comment { get; }
   }
 
   /// <summary>
@@ -400,7 +400,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       BasePath = basePath;
     }
 
-    [NotNull] public string BasePath { get; private set; }
+    [NotNull] public string BasePath { get; }
   }
 
   // ASP.NET MVC attributes
@@ -456,7 +456,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       AnonymousProperty = anonymousProperty;
     }
 
-    [NotNull] public string AnonymousProperty { get; private set; }
+    [NotNull] public string AnonymousProperty { get; }
   }
 
   /// <summary>
@@ -473,7 +473,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       AnonymousProperty = anonymousProperty;
     }
 
-    [NotNull] public string AnonymousProperty { get; private set; }
+    [NotNull] public string AnonymousProperty { get; }
   }
 
   /// <summary>
@@ -492,7 +492,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       AnonymousProperty = anonymousProperty;
     }
 
-    [NotNull] public string AnonymousProperty { get; private set; }
+    [NotNull] public string AnonymousProperty { get; }
   }
 
   /// <summary>
@@ -586,7 +586,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       Name = name;
     }
 
-    [NotNull] public string Name { get; private set; }
+    [NotNull] public string Name { get; }
   }
 
   [AttributeUsage(
@@ -599,7 +599,7 @@ namespace Adaptive.ReactiveTrader.Shared.Properties
       Name = name;
     }
 
-    [NotNull] public string Name { get; private set; }
+    [NotNull] public string Name { get; }
   }
 
   // Razor attributes

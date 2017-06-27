@@ -9,8 +9,8 @@
             TenthOfPip = tenthOfPip;
         }
 
-        public string BigFigures { get; private set; }
-        public string Pips { get; private set; }
-        public string TenthOfPip { get; private set; }
+        public string BigFigures { get; }
+        public string Pips { get; }
+        public string TenthOfPip { get; }
     }
 }

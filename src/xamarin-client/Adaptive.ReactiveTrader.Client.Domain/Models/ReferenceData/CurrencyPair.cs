@@ -28,11 +28,11 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData
                 .RefCount();
         }
 
-        public string Symbol { get; private set; }
-        public int RatePrecision { get; private set; }
-        public int PipsPosition { get; private set; }
-        public string BaseCurrency { get; private set; }
-        public string CounterCurrency { get; private set; }
-        public IObservable<IPrice> PriceStream { get { return _lazyPriceStream.Value; } }
+        public string Symbol { get; }
+        public int RatePrecision { get; }
+        public int PipsPosition { get; }
+        public string BaseCurrency { get; }
+        public string CounterCurrency { get; }
+        public IObservable<IPrice> PriceStream => _lazyPriceStream.Value;
     }
 }

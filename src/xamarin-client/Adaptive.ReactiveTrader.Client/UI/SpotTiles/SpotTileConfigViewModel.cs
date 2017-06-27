@@ -34,35 +34,17 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             return new DelegateCommand(() => Execute(spotTileSubscriptionMode), () => CanExecute(spotTileSubscriptionMode));
         }
 
-        public ICommand StandardCommand
-        {
-            get { return _standardCommand; }
-        }
+        public ICommand StandardCommand => _standardCommand;
 
-        public ICommand DropFrameCommand
-        {
-            get { return _dropFrameCommand; }
-        }
+        public ICommand DropFrameCommand => _dropFrameCommand;
 
-        public ICommand ConflateCommand
-        {
-            get { return _conflateCommand; }
-        }
+        public ICommand ConflateCommand => _conflateCommand;
 
-        public ICommand ConstantRateCommand
-        {
-            get { return _constantRateCommand; }
-        }
+        public ICommand ConstantRateCommand => _constantRateCommand;
 
-        public ICommand AsyncCommand
-        {
-            get { return _asyncCommand; }
-        }
+        public ICommand AsyncCommand => _asyncCommand;
 
-        public ICommand SyncCommand
-        {
-            get { return _syncCommand; }
-        }
+        public ICommand SyncCommand => _syncCommand;
 
         public SpotTileSubscriptionMode SubscriptionMode { get; private set; }
 

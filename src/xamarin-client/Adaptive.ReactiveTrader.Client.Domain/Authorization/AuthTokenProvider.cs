@@ -9,6 +9,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Authorization
             AuthToken = authToken;
         }
 
-        public string AuthToken { get; private set; }
+        public string AuthToken { get; }
     }
 }

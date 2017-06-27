@@ -20,18 +20,15 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
             Spread = (ask.Rate - bid.Rate)* (long)Math.Pow(10, currencyPair.PipsPosition);
         }
 
-        public IExecutablePrice Bid { get; private set; }
-        public IExecutablePrice Ask { get; private set; }
+        public IExecutablePrice Bid { get; }
+        public IExecutablePrice Ask { get; }
 
-        public decimal Mid
-        {
-            get { return (Ask.Rate + Bid.Rate)/2; }
-        }
+        public decimal Mid => (Ask.Rate + Bid.Rate)/2;
 
-        public ICurrencyPair CurrencyPair { get; private set; }
-        public DateTime ValueDate { get; private set; }
-        public decimal Spread { get; private set; }
-        public bool IsStale { get { return false; } }
+        public ICurrencyPair CurrencyPair { get; }
+        public DateTime ValueDate { get; }
+        public decimal Spread { get; }
+        public bool IsStale => false;
 
         public override string ToString()
         {
@@ -44,15 +41,9 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
         private long _receivedTimestamp;
         private long _renderedTimestamp;
 
-        public double ServerToClientMs
-        {
-            get { return GetElapsedMs(_serverTimestamp, _receivedTimestamp); }
-        }
-        
-        public double UiProcessingTimeMs
-        {
-            get { return GetElapsedMs(_receivedTimestamp, _renderedTimestamp); }
-        }
+        public double ServerToClientMs => GetElapsedMs(_serverTimestamp, _receivedTimestamp);
+
+        public double UiProcessingTimeMs => GetElapsedMs(_receivedTimestamp, _renderedTimestamp);
 
         public void DisplayedOnUi()
         {
@@ -64,10 +55,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
             _receivedTimestamp = Stopwatch.GetTimestamp();
         }
 
-        public double TotalLatencyMs
-        {
-            get { return UiProcessingTimeMs + ServerToClientMs; }
-        }
+        public double TotalLatencyMs => UiProcessingTimeMs + ServerToClientMs;
 
         private static double GetElapsedMs(long start, long end)
         {

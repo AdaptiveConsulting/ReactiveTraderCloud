@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Adaptive.ReactiveTrader.Client.Domain.Models;
+﻿using Adaptive.ReactiveTrader.Client.Domain.Models;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using Adaptive.ReactiveTrader.Shared.UI;
 
@@ -19,21 +18,21 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer
 
         public SpotTileSubscriptionMode SubscriptionMode { get; set; }
         public SpotTileExecutionMode ExecutionMode { get; set; }
-        public string Symbol { get { return "EUR / USD"; } }
-        public IOneWayPriceViewModel Bid { get; private set; }
-        public IOneWayPriceViewModel Ask { get; private set; }
+        public string Symbol => "EUR / USD";
+        public IOneWayPriceViewModel Bid { get; }
+        public IOneWayPriceViewModel Ask { get; }
 
         public string Notional
         {
             get { return "1000000"; }
             set { }
         }
-        public string Spread { get { return "1.0"; } }
-        public string DealtCurrency { get { return "EUR"; } }
-        public PriceMovement Movement { get { return PriceMovement.Up; } }
-        public string SpotDate { get { return "SP. 9 Apr"; } }
+        public string Spread => "1.0";
+        public string DealtCurrency => "EUR";
+        public PriceMovement Movement => PriceMovement.Up;
+        public string SpotDate => "SP. 9 Apr";
         public bool IsSubscribing { get; private set; }
-        public bool IsStale { get { return true; } }
+        public bool IsStale => true;
 
         public void OnTrade(ITrade trade)
         {
@@ -43,7 +42,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer
         {
         }
 
-        public decimal Mid { get { return 5m; } }
-        public decimal[] HistoricalMid { get { return new decimal[0]; } }
+        public decimal Mid => 5m;
+        public decimal[] HistoricalMid => new decimal[0];
     }
 }

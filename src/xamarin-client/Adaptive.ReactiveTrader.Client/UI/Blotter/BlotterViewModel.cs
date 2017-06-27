@@ -26,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
         private bool _stowReceived;
         private readonly ILog _log;
 
-        public ObservableCollection<ITradeViewModel> Trades { get; private set; }
+        public ObservableCollection<ITradeViewModel> Trades { get; }
 
         public BlotterViewModel(IReactiveTrader reactiveTrader,
                                 Func<ITrade, bool, ITradeViewModel> tradeViewModelFactory,

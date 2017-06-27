@@ -8,7 +8,7 @@
             CurrencyPair = currencyPair;
         }
 
-        public UpdateType UpdateType { get; private set; }
-        public ICurrencyPair CurrencyPair { get; private set; }
+        public UpdateType UpdateType { get; }
+        public ICurrencyPair CurrencyPair { get; }
     }
 }

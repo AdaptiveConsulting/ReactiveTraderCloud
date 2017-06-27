@@ -9,6 +9,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
             throw new InvalidOperationException("Can not calculate processing time on this platform.");
         }
 
-        public bool IsAvailable { get { return false; } }
+        public bool IsAvailable => false;
     }
 }

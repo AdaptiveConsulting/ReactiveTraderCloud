@@ -30,22 +30,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			System.Console.WriteLine ("UserModel's random TraderId is {0}", _traderId);
 		}
 
-		public static UserModel Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
-			
-		public String TraderId
-		{
-			get {
-				return _traderId;
-			}
-		}
+		public static UserModel Instance => instance;
 
-		public Boolean OneTouchTradingEnabled
+	    public String TraderId => _traderId;
+
+	    public Boolean OneTouchTradingEnabled
 		{
 			get {
 				return (_oneTouchTradingEnabled);

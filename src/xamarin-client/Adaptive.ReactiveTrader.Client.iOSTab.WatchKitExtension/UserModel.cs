@@ -29,19 +29,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             System.Console.WriteLine ("UserModel's random TraderId is {0}", _traderId);
         }
 
-        public static UserModel Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public static UserModel Instance => instance;
 
-        public String TraderId
-        {
-            get {
-                return _traderId;
-            }
-        }
+        public String TraderId => _traderId;
     }
 }

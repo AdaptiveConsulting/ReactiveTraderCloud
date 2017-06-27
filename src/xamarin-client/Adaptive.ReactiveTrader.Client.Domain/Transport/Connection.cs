@@ -44,6 +44,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
             ControlHubProxy = _hubConnection.CreateHubProxy(ServiceConstants.Server.ControlHub);
         }
 
+        // TODO: Use modernhttpclient again when .netstandard is supported
         class ModernHttpClientSignalR : DefaultHttpClient
         {
         }
@@ -104,30 +105,17 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
             return null;
         }
 
-        public IObservable<ConnectionInfo> StatusStream
-        {
-            get { return _statusStream; }
-        }
+        public IObservable<ConnectionInfo> StatusStream => _statusStream;
 
-        public string Address { get; private set; }
+        public string Address { get; }
 
-        public string TransportName
-        {
-            get
-            {
-                if (_hubConnection == null || _hubConnection.Transport == null)
-                {
-                    return "none";
-                }
-                return _hubConnection.Transport.Name;
-            }
-        }
+        public string TransportName => _hubConnection?.Transport == null ? "none" : _hubConnection.Transport.Name;
 
-        public IHubProxy ReferenceDataHubProxy { get; private set; }
-        public IHubProxy PricingHubProxy { get; private set; }
-        public IHubProxy ExecutionHubProxy { get; private set; }
-        public IHubProxy BlotterHubProxy { get; private set; }
-        public IHubProxy ControlHubProxy { get; private set; }
+        public IHubProxy ReferenceDataHubProxy { get; }
+        public IHubProxy PricingHubProxy { get; }
+        public IHubProxy ExecutionHubProxy { get; }
+        public IHubProxy BlotterHubProxy { get; }
+        public IHubProxy ControlHubProxy { get; }
 
         public void SetAuthToken(string authToken)
         {
