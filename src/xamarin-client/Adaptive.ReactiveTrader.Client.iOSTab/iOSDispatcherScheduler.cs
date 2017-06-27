@@ -23,15 +23,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			return Work(state, dueTime.Subtract(Now), action);
 		}
 
-		public DateTimeOffset Now
-		{
-			get
-			{
-				return DateTimeOffset.Now;
-			}
-		}
+		public DateTimeOffset Now => DateTimeOffset.Now;
 
-		private IDisposable Work<TState>(TState state, Func<IScheduler, TState, IDisposable> action)
+	    private IDisposable Work<TState>(TState state, Func<IScheduler, TState, IDisposable> action)
 		{
 			var cd = new CompositeDisposable();
 			var bd = new BooleanDisposable();

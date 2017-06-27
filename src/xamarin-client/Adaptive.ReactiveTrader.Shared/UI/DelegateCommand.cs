@@ -36,11 +36,7 @@ namespace Adaptive.ReactiveTrader.Shared.UI
 
         public void RaiseCanExecuteChanged()
         {
-            var canExecuteChanged = CanExecuteChanged;
-            if (canExecuteChanged != null)
-            {
-                canExecuteChanged(this, EventArgs.Empty);
-            }
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

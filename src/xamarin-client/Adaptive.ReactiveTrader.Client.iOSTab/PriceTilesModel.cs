@@ -35,9 +35,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				.Subscribe (updates => OnCurrencyPairUpdates(updates));
 		}
 
-		public ObservableCollection<PriceTileModel> ActiveCurrencyPairs { get { return _activeCurrencyPairs; } }
+		public ObservableCollection<PriceTileModel> ActiveCurrencyPairs => _activeCurrencyPairs;
 
-		private void OnCurrencyPairUpdates (IEnumerable<ICurrencyPairUpdate> updates)
+	    private void OnCurrencyPairUpdates (IEnumerable<ICurrencyPairUpdate> updates)
 		{
 			foreach (var update in updates) {
 				if (update.UpdateType == Adaptive.ReactiveTrader.Client.Domain.Models.UpdateType.Add) {
@@ -52,13 +52,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			}
 		}		
 
-		public PriceTileModel this[int index] {
-			get { 
-				return _activeCurrencyPairs [index];
-			}
-		}
+		public PriceTileModel this[int index] => _activeCurrencyPairs [index];
 
-		public void Dispose ()
+	    public void Dispose ()
 		{
 			_disposables.Dispose();
 		}

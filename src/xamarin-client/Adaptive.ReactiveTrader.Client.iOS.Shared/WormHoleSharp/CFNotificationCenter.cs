@@ -27,18 +27,14 @@ namespace WormHoleSharp
 			{
 				Message = message;
 			}
-			public string Message {get;private set;}
+			public string Message {get; }
 		}
 		#region INativeObject implementation
 
 		CFNotificationCenterRef handle;
-		public CFNotificationCenterRef Handle {
-			get {
-				return handle;
-			}
-		}
+		public CFNotificationCenterRef Handle => handle;
 
-		#endregion
+	    #endregion
 
 		public delegate void NotificationChangeEventHandler (object sender, NoticationEventArgs notification);
 
@@ -52,22 +48,14 @@ namespace WormHoleSharp
 
 		static CFNotificationCenter darwinCenter;
 
-		public static CFNotificationCenter DarwinCenter {
-			get {
-				return darwinCenter ?? (darwinCenter = new CFNotificationCenter (GetDarwinNotifyCenter ()));
-			}
-		}
+		public static CFNotificationCenter DarwinCenter => darwinCenter ?? (darwinCenter = new CFNotificationCenter (GetDarwinNotifyCenter ()));
 
 
-		static CFNotificationCenter localCenter;
+	    static CFNotificationCenter localCenter;
 
-		public static CFNotificationCenter LocalCenter {
-			get {
-				return localCenter ?? (localCenter = new CFNotificationCenter (GetLocalCenter ()));
-			}
-		}
+		public static CFNotificationCenter LocalCenter => localCenter ?? (localCenter = new CFNotificationCenter (GetLocalCenter ()));
 
-		public void Dispose ()
+	    public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);

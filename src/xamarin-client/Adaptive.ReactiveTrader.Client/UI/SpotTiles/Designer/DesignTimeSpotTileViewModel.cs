@@ -18,12 +18,12 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer
         {
         }
 
-        public ISpotTilePricingViewModel Pricing { get; private set; }
-        public ISpotTileAffirmationViewModel Affirmation { get; private set; }
-        public ISpotTileErrorViewModel Error { get; private set; }
+        public ISpotTilePricingViewModel Pricing { get; }
+        public ISpotTileAffirmationViewModel Affirmation { get; }
+        public ISpotTileErrorViewModel Error { get; }
         public ISpotTileConfigViewModel Config { get; private set; }
-        public TileState State { get { return TileState.Pricing;} }
-        public string CurrencyPair { get; private set; }
+        public TileState State => TileState.Pricing;
+        public string CurrencyPair { get; }
 
         public void OnTrade(ITrade trade)
         {

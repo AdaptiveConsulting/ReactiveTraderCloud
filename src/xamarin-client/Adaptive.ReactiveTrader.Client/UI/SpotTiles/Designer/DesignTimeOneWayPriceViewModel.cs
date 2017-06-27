@@ -15,10 +15,10 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer
             TenthOfPip = tenthOfPip;
         }
 
-        public Direction Direction { get; private set; }
-        public string BigFigures { get; private set; }
-        public string Pips { get; private set; }
-        public string TenthOfPip { get; private set; }
+        public Direction Direction { get; }
+        public string BigFigures { get; }
+        public string Pips { get; }
+        public string TenthOfPip { get; }
         public ICommand ExecuteCommand { get; private set; }
         public bool IsExecuting { get; private set; }
         public bool IsStale { get; private set; }

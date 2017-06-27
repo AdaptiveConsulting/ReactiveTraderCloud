@@ -21,7 +21,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 
         }
 
-        public string ErrorMessage { get; private set; }
-        public ICommand DismissCommand { get; private set; }
+        public string ErrorMessage { get; }
+        public ICommand DismissCommand { get; }
     }
 }

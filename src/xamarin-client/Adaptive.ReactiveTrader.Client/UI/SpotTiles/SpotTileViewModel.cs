@@ -9,13 +9,13 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
     [AddINotifyPropertyChangedInterface]
     public class SpotTileViewModel : ViewModelBase, ISpotTileViewModel
     {
-        public ISpotTilePricingViewModel Pricing { get; private set; }
+        public ISpotTilePricingViewModel Pricing { get; }
         public ISpotTileAffirmationViewModel Affirmation { get; private set; }
         public ISpotTileErrorViewModel Error { get; private set; }
         public ISpotTileConfigViewModel Config { get; private set; }
         public TileState State { get; private set; }
 
-        public string CurrencyPair { get; private set; }
+        public string CurrencyPair { get; }
 
         private readonly Func<ITrade, ISpotTileViewModel, ISpotTileAffirmationViewModel> _affirmationFactory;
         private readonly Func<string, ISpotTileViewModel, ISpotTileErrorViewModel> _errorFactory;

@@ -4,9 +4,9 @@ namespace Adaptive.ReactiveTrader.Client.Domain
 {
     public class ConnectionInfo
     {
-        public ConnectionStatus ConnectionStatus { get; private set; }
-        public string Server { get; private set; }
-        public string TransportName { get; private set; }
+        public ConnectionStatus ConnectionStatus { get; }
+        public string Server { get; }
+        public string TransportName { get; }
 
         public ConnectionInfo(ConnectionStatus connectionStatus, string server, string transportName)
         {

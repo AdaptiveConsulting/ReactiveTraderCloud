@@ -28,23 +28,17 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
             DealtCurrency = trade.DealtCurrency;
         }
 
-        public decimal SpotRate { get; private set; }
-        public string Notional { get; private set; }
-        public Direction Direction { get; private set; }
-        public string CurrencyPair { get; private set; }
-        public string TradeId { get; private set; }
-        public DateTime TradeDate { get; private set; }
-        public string TradeStatus { get; private set; }
-        public string TraderName { get; private set; }
-        public DateTime ValueDate { get; private set; }
-        public string DealtCurrency { get; private set; }
+        public decimal SpotRate { get; }
+        public string Notional { get; }
+        public Direction Direction { get; }
+        public string CurrencyPair { get; }
+        public string TradeId { get; }
+        public DateTime TradeDate { get; }
+        public string TradeStatus { get; }
+        public string TraderName { get; }
+        public DateTime ValueDate { get; }
+        public string DealtCurrency { get; }
 
-        public bool IsNewTrade
-        {
-            get
-            {
-                return !_isStowTrade && (_createdTime.AddSeconds(2) > DateTimeOffset.UtcNow);
-            }
-        }
+        public bool IsNewTrade => !_isStowTrade && _createdTime.AddSeconds(2) > DateTimeOffset.UtcNow;
     }
 }

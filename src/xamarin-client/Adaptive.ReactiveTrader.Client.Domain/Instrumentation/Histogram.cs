@@ -53,10 +53,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
         /// <summary>
         /// Size of the list of interval bars.
         /// </summary>
-        public int Size
-        {
-            get { return _upperBounds.Length; }
-        }
+        public int Size => _upperBounds.Length;
 
         /// <summary>
         /// Get the upper bound of an interval for an index.
@@ -189,18 +186,12 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
         /// <summary>
         /// Get the minimum observed value.
         /// </summary>
-        public long Min
-        {
-            get { return _minValue; }
-        }
+        public long Min => _minValue;
 
         /// <summary>
         /// Get the maximum observed value.
         /// </summary>
-        public long Max
-        {
-            get { return _maxValue; }
-        }
+        public long Max => _maxValue;
 
         /// <summary>
         /// Calculate the mean of all recorded observations.
@@ -242,18 +233,12 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
         ///<summary>
         /// Calculate the upper bound within which 99% of observations fall.
         ///</summary>
-        public long TwoNinesUpperBound
-        {
-            get { return GetUpperBoundForFactor(0.99d); }
-        }
+        public long TwoNinesUpperBound => GetUpperBoundForFactor(0.99d);
 
         ///<summary>
         /// Calculate the upper bound within which 99.99% of observations fall.
         ///</summary>
-        public long FourNinesUpperBound
-        {
-            get { return GetUpperBoundForFactor(0.9999d); }
-        }
+        public long FourNinesUpperBound => GetUpperBoundForFactor(0.9999d);
 
         /// <summary>
         /// Get the interval upper bound for a given factor of the observation population.

@@ -15,12 +15,12 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer
             SyncCommand = new DelegateCommand(() => { }, () => false);
         }
 
-        public ICommand StandardCommand { get; private set; }
-        public ICommand DropFrameCommand { get; private set; }
-        public ICommand ConflateCommand { get; private set; }
-        public ICommand ConstantRateCommand { get; private set; }
-        public ICommand AsyncCommand { get; private set; }
-        public ICommand SyncCommand { get; private set; }
+        public ICommand StandardCommand { get; }
+        public ICommand DropFrameCommand { get; }
+        public ICommand ConflateCommand { get; }
+        public ICommand ConstantRateCommand { get; }
+        public ICommand AsyncCommand { get; }
+        public ICommand SyncCommand { get; }
 
         public SpotTileSubscriptionMode SubscriptionMode { get; private set; }
         public SpotTileExecutionMode ExecutionMode { get; private set; }

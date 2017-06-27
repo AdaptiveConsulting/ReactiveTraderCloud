@@ -18,7 +18,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
     [AddINotifyPropertyChangedInterface]
     public class SpotTilesViewModel : ViewModelBase, ISpotTilesViewModel, IDisposable
     {
-        public ObservableCollection<ISpotTileViewModel> SpotTiles { get; private set; }
+        public ObservableCollection<ISpotTileViewModel> SpotTiles { get; }
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
         private readonly IReferenceDataRepository _referenceDataRepository;
         private readonly Func<ICurrencyPair, SpotTileSubscriptionMode, ISpotTileViewModel> _spotTileFactory;

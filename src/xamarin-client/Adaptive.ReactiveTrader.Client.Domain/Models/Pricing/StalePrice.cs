@@ -25,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
             get { throw new InvalidOperationException("Should not access this property on stale price."); }
         }
 
-        public ICurrencyPair CurrencyPair { get; private set; }
+        public ICurrencyPair CurrencyPair { get; }
 
         public long QuoteId
         {
@@ -42,15 +42,9 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
             get { throw new InvalidOperationException("Should not access this property on stale price."); }
         }
 
-        public bool IsStale
-        {
-            get { return true; }
-        }
+        public bool IsStale => true;
 
-        public TimeSpan ElpasedTimeSinceCreated
-        {
-            get { return TimeSpan.Zero; }
-        }
+        public TimeSpan ElpasedTimeSinceCreated => TimeSpan.Zero;
 
         public override string ToString()
         {

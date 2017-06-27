@@ -9,9 +9,9 @@ namespace Adaptive.ReactiveTrader.Client.UI.Shell
     [AddINotifyPropertyChangedInterface]
     public class ShellViewModel : ViewModelBase, IShellViewModel
     {
-        public ISpotTilesViewModel SpotTiles { get; private set; }
-        public IBlotterViewModel Blotter { get; private set; }
-        public IConnectivityStatusViewModel ConnectivityStatus { get; private set; }
+        public ISpotTilesViewModel SpotTiles { get; }
+        public IBlotterViewModel Blotter { get; }
+        public IConnectivityStatusViewModel ConnectivityStatus { get; }
 
         public ShellViewModel(ISpotTilesViewModel spotTiles, IBlotterViewModel blotter, IConnectivityStatusViewModel connectivityStatusViewModel)
         {

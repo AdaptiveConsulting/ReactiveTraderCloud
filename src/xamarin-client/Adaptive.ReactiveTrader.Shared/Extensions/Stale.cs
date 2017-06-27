@@ -20,7 +20,7 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
             _update = update;
         }
 
-        public bool IsStale { get; private set; }
+        public bool IsStale { get; }
 
         public T Update
         {

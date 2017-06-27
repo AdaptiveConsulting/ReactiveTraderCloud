@@ -8,7 +8,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
 {
     public class BlotterFragment : Fragment
     {
-        readonly IShellViewModel _shellViewModel;
+        private readonly IShellViewModel _shellViewModel;
 
         public BlotterFragment() // Required by Android SDK
         {
@@ -25,8 +25,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
 
             var blotterRowsRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.BlotterRowsRecyclerView);
             blotterRowsRecyclerView.HasFixedSize = true;
-            var blotterGridLayoutManager = new LinearLayoutManager(Activity);
-            blotterGridLayoutManager.StackFromEnd = true;
+            var blotterGridLayoutManager = new LinearLayoutManager(Activity) {StackFromEnd = true};
             blotterRowsRecyclerView.SetLayoutManager(blotterGridLayoutManager);
             var blotterRowsAdapter = new BlotterRowAdapter(blotterRowsRecyclerView, _shellViewModel.Blotter.Trades);
             blotterRowsRecyclerView.SetAdapter(blotterRowsAdapter);

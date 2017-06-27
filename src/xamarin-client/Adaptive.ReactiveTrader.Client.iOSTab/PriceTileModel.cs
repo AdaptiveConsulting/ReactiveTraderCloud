@@ -56,10 +56,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		public PriceTileStatus Status { get; set; }
 
 		public string Symbol { get;	set; }
-		public string Base { get { return _currencyPair.BaseCurrency; } }
-		public string Counter { get { return _currencyPair.CounterCurrency;}}
+		public string Base => _currencyPair.BaseCurrency;
+	    public string Counter => _currencyPair.CounterCurrency;
 
-		public string LeftSideNumber { get; set; }
+	    public string LeftSideNumber { get; set; }
 		public string LeftSideBigNumber { get; set; }
 		public string LeftSidePips { get; set; }
 

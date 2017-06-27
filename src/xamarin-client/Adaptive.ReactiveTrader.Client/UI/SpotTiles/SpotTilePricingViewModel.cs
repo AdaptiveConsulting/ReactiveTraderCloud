@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
@@ -20,11 +19,11 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
     [AddINotifyPropertyChangedInterface]
     public class SpotTilePricingViewModel : ViewModelBase, ISpotTilePricingViewModel
     {
-        public IOneWayPriceViewModel Bid { get; private set; }
-        public IOneWayPriceViewModel Ask { get; private set; }
+        public IOneWayPriceViewModel Bid { get; }
+        public IOneWayPriceViewModel Ask { get; }
         public string Notional { get; set; }
         public string Spread { get; private set; }
-        public string DealtCurrency { get; private set; }
+        public string DealtCurrency { get; }
         public PriceMovement Movement { get; private set; }
         public string SpotDate { get; private set; }
         public bool IsSubscribing { get; private set; }
@@ -78,7 +77,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             _priceSubscription.Dispose();
         }
 
-        public string Symbol { get { return String.Format("{0} / {1}", _currencyPair.BaseCurrency, _currencyPair.CounterCurrency); } }
+        public string Symbol => string.Format("{0} / {1}", _currencyPair.BaseCurrency, _currencyPair.CounterCurrency);
 
         public SpotTileSubscriptionMode SubscriptionMode
         {
@@ -231,6 +230,5 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             _parent.OnExecutionError(message);
         }
 
-        
-    }
+        }
 }

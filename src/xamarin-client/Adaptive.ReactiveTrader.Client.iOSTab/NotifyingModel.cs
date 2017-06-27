@@ -18,13 +18,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		#region INotifyChanged implementation
 		private readonly Subject<T> _onChanged = new Subject<T>();
 
-		public IObservable<T> OnChanged {
-			get {
-				return _onChanged.AsObservable ();
-			}
-		}
+		public IObservable<T> OnChanged => _onChanged.AsObservable ();
 
-		protected void NotifyOnChanged(T instance) {
+	    protected void NotifyOnChanged(T instance) {
 			_onChanged.OnNext (instance);
 		}
 		#endregion

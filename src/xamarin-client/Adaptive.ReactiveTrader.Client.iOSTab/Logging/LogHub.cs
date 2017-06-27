@@ -12,10 +12,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Logging
 			_source.OnNext (message);
 		}
 
-		public IObservable<string> LogSource {
-			get {
-				return (IObservable<string>)_source;
-			}
-		}
+		public IObservable<string> LogSource => (IObservable<string>)_source;
 	}
 }

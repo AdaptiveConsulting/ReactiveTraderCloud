@@ -3,7 +3,6 @@ using Adaptive.ReactiveTrader.Client.Configuration;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Android.App;
 using Android.Content.Res;
-using Android.Util;
 using Autofac;
 using Java.Lang;
 
@@ -55,7 +54,6 @@ namespace Adaptive.ReactiveTrader.Client.Android
         {
             get
             {
-                
                 var metrics = Resources.System.DisplayMetrics;
                 float scaleFactor = metrics.Density;
                 float widthDp = metrics.WidthPixels / scaleFactor;
@@ -63,7 +61,6 @@ namespace Adaptive.ReactiveTrader.Client.Android
                 float smallestWidth = Math.Min(widthDp, heightDp);
 
                 return (smallestWidth > 600);
-
             }
         }
     }

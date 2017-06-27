@@ -1,6 +1,5 @@
 using System;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Client.Android.UI.Blotter;
 using Adaptive.ReactiveTrader.Client.Android.UI.Prices;
 using Adaptive.ReactiveTrader.Client.Android.UI.Status;
@@ -9,10 +8,7 @@ using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
-using Android.Graphics.Drawables;
-using Android.Media;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.App;

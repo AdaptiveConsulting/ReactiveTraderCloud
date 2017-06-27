@@ -72,12 +72,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 
 		// Workaround: Prevent UI from incorrectly extending under tab bar.
 
-		public override UIRectEdge EdgesForExtendedLayout {
-			get {
-				return (base.EdgesForExtendedLayout ^ UIRectEdge.Bottom);
-			}
-		}
-
+		public override UIRectEdge EdgesForExtendedLayout => (base.EdgesForExtendedLayout ^ UIRectEdge.Bottom);
 	}
 }
 

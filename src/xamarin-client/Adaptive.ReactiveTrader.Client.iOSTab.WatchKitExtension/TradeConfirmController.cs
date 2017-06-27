@@ -14,12 +14,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
 	public partial class TradeConfirmController : WKInterfaceController
 	{
-        public static string Name
-        {
-            get { return "confirmation"; }
-        }
+        public static string Name => "confirmation";
 
-		public TradeConfirmController (IntPtr handle) : base (handle)
+	    public TradeConfirmController (IntPtr handle) : base (handle)
 		{
 		}
 
