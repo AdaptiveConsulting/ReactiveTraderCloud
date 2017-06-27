@@ -25,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain
             var concurrencyService = new ConcurrencyService();
 
             _serviceClientContainer = new WampServiceClientContainer(servers[0], username, concurrencyService, _loggerFactory);
-            _serviceClientContainer.ConnectAsync();
+            _serviceClientContainer.ConnectAsync().Wait();
 
             var referenceDataServiceClient = new ReferenceDataServiceClient(_serviceClientContainer.Reference, _loggerFactory);
             var executionServiceClient = new ExecutionServiceClient(_serviceClientContainer.Execution);

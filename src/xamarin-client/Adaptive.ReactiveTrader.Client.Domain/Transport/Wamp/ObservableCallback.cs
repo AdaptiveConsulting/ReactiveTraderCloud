@@ -1,6 +1,5 @@
 using Adaptive.ReactiveTrader.Shared.Logging;
 using System;
-using System.Diagnostics;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
 {

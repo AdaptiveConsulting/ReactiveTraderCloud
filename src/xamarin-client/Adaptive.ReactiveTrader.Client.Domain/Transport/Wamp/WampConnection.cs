@@ -59,7 +59,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
                 return _channel.Open();
             }
 
-            return Task.Delay(0);
+            return Task.CompletedTask;
         }
 
         private IDisposable SubscribeToConnectionStatus()

@@ -93,7 +93,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp
                 disposables.Add(
                     source.Subscribe(innerSource =>
                     {
-                        IObservable<TValue> innerSourcePublished = innerSource.Publish().RefCount();
+                        IObservable<TValue> innerSourcePublished = innerSource.Replay(1).RefCount();
                         disposables.Add(
                             innerSourcePublished.Subscribe(i =>
                             {
