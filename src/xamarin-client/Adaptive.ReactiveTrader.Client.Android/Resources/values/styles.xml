@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<resources>
+  <style name="TraderTheme" parent="TraderTheme.Base">
+  </style>
+  <!-- Base theme applied no matter what API -->
+  <style name="TraderTheme.Base" parent="Theme.AppCompat.Light">
+    <item name="windowNoTitle">true</item>
+    <item name="windowActionBar">false</item>
+    <item name="android:windowFullscreen">false</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:textColor">#ffffff</item>
+    <item name="colorPrimary">#212A35</item>
+    <item name="colorPrimaryDark">#212A35</item>
+    <item name="android:textColorLink">#ffffff</item>
+    <!-- You can also set colorControlNormal, colorControlActivated
+         colorControlHighlight and colorSwitchThumbNormal. -->
+  </style>
+  <color name="traderLabel">#627F98</color>
+  <color name="confirmLabel">#E1F1FF</color>
+  <color name="blotterText">#E5FFFF</color>
+  <color name="blotterBackground">#212A35</color>
+  <color name="blotterFlashBackground">#4C5F73</color>
+  <color name="cardBackground">#212A35</color>
+  <color name="staleBackground">#D32F2F</color>
+  <color name="staleText">#FFFFFF</color>
+</resources>

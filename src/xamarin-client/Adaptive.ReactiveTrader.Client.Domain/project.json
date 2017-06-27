@@ -1,0 +1,12 @@
+﻿{
+  "supports": {},
+  "dependencies": {
+    "Microsoft.AspNet.SignalR.Client": "2.2.2",
+    "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
+    "NETStandard.Library": "1.6.1",
+    "WampSharp.Default": "1.2.5.36-beta"
+  },
+  "frameworks": {
+    "netstandard1.4": {}
+  }
+}

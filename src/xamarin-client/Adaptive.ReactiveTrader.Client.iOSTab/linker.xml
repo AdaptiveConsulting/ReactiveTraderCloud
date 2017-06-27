@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<linker>
+	<assembly fullname="System">
+    	<type fullname="System.Windows.Input.ICommand" />
+    	<type fullname="System.Threading.Tasks.*" />
+	</assembly>
+	<assembly fullname="System.Threading.Tasks">
+		<type fullname="System.Threading.Tasks.*" />
+	</assembly>
+	<assembly fullname="System.Reactive.Core">
+		<type fullname="System.Reactive.Core.*" />
+	</assembly>
+	<assembly fullname="System.Reactive.Linq">
+		<type fullname="System.Reactive.Linq.*" />
+	</assembly>
+	<assembly fullname="System.Reactive.Interfaces">
+		<type fullname="System.Reactive.Interfaces.*" />
+	</assembly>
+
+</linker>

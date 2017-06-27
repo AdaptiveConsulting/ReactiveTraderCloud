@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.weareadaptive.reactivetrader" android:versionName="1.1" android:installLocation="auto" android:versionCode="6">
+	<uses-sdk android:minSdkVersion="16" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<application android:label="Reactive Trader" android:icon="@drawable/icon" android:theme="@style/TraderTheme" android:hardwareAccelerated="true"></application>
+</manifest>
