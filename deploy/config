@@ -73,7 +73,7 @@ testtoolsContainer_latest="$testtoolsContainer_base:latest"
 
 # gcloud
 gcloudContainer_major="1"
-gcloudContainer_minor="1"
+gcloudContainer_minor="2"
 gcloudContainer="weareadaptive/gcloud:$gcloudContainer_major.$gcloudContainer_minor"
 
 # nsgate
@@ -83,8 +83,9 @@ nsGateContainer="weareadaptive/nsgate:$nsGateContainer_major.$nsGateContainer_mi
 
 # GCLOUD
 # ======
-# You need to change this ones
-kube_cluster="cluster"
+# You need to uncomment the cluster you want to use
+# kube_cluster="cluster" # main
+kube_cluster="dev" # dev
 
 # other default parameters
 kube_project="adaptive-trader"

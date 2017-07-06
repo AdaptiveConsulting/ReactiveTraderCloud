@@ -1,34 +1,38 @@
 #! /bin/bash
 
-releaseMode=""
+release_mode=""
 if [[ $1 == "release" ]];then
-  releaseMode="--configuration Release"
+  release_mode="--configuration Release"
   build=""
 elif [[ $1 != "" ]];then
   build=".$1"
 fi
 if [[ $2 == "release" ]];then
-  releaseMode="--configuration Release"
+  release_mode="--configuration Release"
 fi
 
 #fail fast
 set euo -pipefail
 
-echo "Pricing"
+container_name="pricing"
+echo "${container_name}"
 
-. ../../../config
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../../.."
+. ${root_directory}/deploy/config
 
-startCommand="dotnet run $releaseMode -p Adaptive.ReactiveTrader.Server.Launcher p"
-waitCommand="while true; do echo ping; sleep 60; done"
+# remove
+if [[ "$(docker ps -q -a --filter name=${container_name})" != "" ]]
+then docker rm ${container_name} > /dev/null
+fi
 
-docker rm pricing 2&> garbage || true
-
-docker run -d --net=host                       \
-     --name pricing                            \
-     $serversContainer$build                   \
-     bash -c "$startCommand && $waitCommand"   \
-     > container_id 
-
-rm garbage
+# start
+start_command="dotnet run ${release_mode} -p Adaptive.ReactiveTrader.Server.Launcher p"
+wait_command="while true; do echo ping; sleep 60; done"
+docker run -d --net=host \
+     --name ${container_name} \
+     $serversContainer$build \
+     bash -c "${start_command} && ${wait_command}" \
+     > container_id
 
 echo " "

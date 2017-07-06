@@ -1,10 +1,10 @@
 #! /bin/bash
 
-if [[ $# != 3 ]];then 
+if [[ $# != 3 ]];then
   echo " "
   echo "  usage:"
   echo "  $0 NAMESPACE SERVICE NEW_BUILD_ID"
-  echo " "  
+  echo " "
   exit 1
 fi
 namespace=$1
@@ -14,26 +14,29 @@ build=$3
 # fail fast
 set -euo pipefail
 
-. ../config
-. ./helpers/functions.sh
+# load configuration and lib
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+. ${root_directory}/deploy/config
+. ${root_directory}/deploy/kubernetes/helpers/functions.sh
 
 dockerImage=""
-if [[ $service == "broker" ]];then 
+if [[ $service == "broker" ]];then
   dockerImage="$brokerContainer.$build";
 fi
-if [[ $service == "web" ]];then 
+if [[ $service == "web" ]];then
   dockerImage="$webContainer.$build";
 fi
-if [[ $service == "eventstore" ]];then 
+if [[ $service == "eventstore" ]];then
   dockerImage="$populatedEventstoreContainer.$build";
 fi
 
 dotnetServices="analytics blotter pricing referencedataread tradeexecution"
-if listcontains "$dotnetServices" $service; then 
+if listcontains "$dotnetServices" $service; then
   dockerImage="$serversContainer.$build";
-fi 
+fi
 
-./kubectl rolling-update \
+kubectl="${root_directory}/deploy/clis/kubectl"
+${kubectl} rolling-update \
   --namespace=$namespace \
   --image=$dockerImage   \
   --update-period=1s     \

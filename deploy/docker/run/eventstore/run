@@ -8,17 +8,21 @@ fi
 # fail fast
 set -euo pipefail
 
-echo "EventStore"
+container_name="eventstore"
+echo "${container_name}"
 
-. ../../../config
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../../.."
+. ${root_directory}/deploy/config
 
-docker rm eventstore 2&> garbage || true
+# remove
+if [[ "$(docker ps -q -a --filter name=${container_name})" != "" ]]
+then docker rm ${container_name} > /dev/null
+fi
 
-docker run -d --net=host              \
-  --name eventstore                   \
+docker run -d --net=host \
+  --name ${container_name} \
   $populatedEventstoreContainer$build \
   > container_id
-
-rm garbage
 
 echo " "

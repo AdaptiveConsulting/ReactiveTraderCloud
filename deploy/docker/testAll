@@ -8,14 +8,16 @@ fi
 # fail fast
 set euo -pipefail
 
-. ../config
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../.."
+. ${root_directory}/deploy/config
 
 # Test eventstore
-testCommand="for i in {1..10}; do curl -S http://localhost:2113/web/index.html && break; sleep 1; if [[ \$i == 10 ]];then false;fi; done"
+test_command="for i in {1..10}; do curl -S http://localhost:2113/web/index.html && break; sleep 1; if [[ \$i == 10 ]];then false;fi; done"
 docker run -t         \
   --net=host          \
   $testtoolsContainer \
-  bash -c "$testCommand"
+  bash -c "${test_command}"
 
 if [[ $? != 0 ]];then
   echo "Eventstore test as fail"
@@ -24,6 +26,6 @@ fi
 
 # smoke tests
 echo "Starting local tests ..."
-docker run                           \
+docker run \
   --net=host $serversContainer$build \
   bash -c "dotnet test --configuration Release Adaptive.ReactiveTrader.Server.IntegrationTests"

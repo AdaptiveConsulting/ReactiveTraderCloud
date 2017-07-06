@@ -12,18 +12,20 @@ if [[ ! -f ../config ]];then
   exit 1
 fi
 
-. ../config
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+. ${root_directory}/deploy/config
+
 if [[ $NAME == "gcloud" ]];then
   NAME=gke_$kube_project\_$kube_zone\_$kube_cluster
 fi
 
 
-
-EXISTS=`./kubectl config view | grep "name: $NAME" | wc -l`
+kubectl="${root_directory}/deploy/clis/kubectl"
+EXISTS=`${kubectl} config view | grep "name: $NAME" | wc -l`
 
 if [[ $EXISTS == "0" && $NAME == "local" ]];then
   echo "local doesn't exist, creating config"
-  ./kubectl config set-context local --server=127.0.0.1
+  ${kubectl} config set-context local --server=127.0.0.1
   EXISTS=1
 fi
 
@@ -31,15 +33,15 @@ fi
 
 if [[ $EXISTS -gt "0" ]];then
   echo "Found config"
-  ./kubectl config use-context $NAME
+  ${kubectl} config use-context $NAME
 else
-  cd ../googleCloudEngine
-  ./getCredentials
-  cd ../kubernetes
-  EXISTS=`./kubectl config view | grep "name: $NAME" | wc -l`
+  get_credentials="${root_directory}/deploy/googleCloudEngine"
+  ${getCredentials}
+
+  EXISTS=`${kubectl} config view | grep "name: $NAME" | wc -l`
   if [[ $EXISTS > 0 ]];then
-    ./kubectl config use-context $NAME
-  else 
+    ${kubectl} config use-context $NAME
+  else
     echo "Can't find cluster name"
     exit 1
   fi

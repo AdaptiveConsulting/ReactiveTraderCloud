@@ -5,9 +5,9 @@ set -euo pipefail
 
 # CONFIGURATION
 # =============
-possibleCommands="build push"
+possible_commands="build push"
 services="servers broker web populatedEventstore"
-possibleGroup="services gcloud dotnet nginx node testtools crossbar eventstore nsgate $services"
+possible_groups="services gcloud dotnet nginx node testtools crossbar eventstore nsgate $services"
 
 # USAGE
 # =====
@@ -24,10 +24,10 @@ usage() {
     echo "   prepare COMMAND GROUP BUILD_ID"
     echo " "
     echo " COMMAND can be:"
-    echo "   $possibleCommands"
+    echo "   ${possible_commands}"
     echo " "
     echo " GROUP can be:"
-    echo "   $possibleGroup"
+    echo "   ${possible_groups}"
     echo "   use services as [$services]"
     echo " "
     echo " BUILD_ID can be:"
@@ -50,16 +50,16 @@ group=$2
 build=$3
 
 # control build/push
-if ! listcontains "$possibleCommands" $command; then 
+if ! listcontains "${possible_commands}" $command; then
     echo "command $command is not recognised"
-    echo "possible commands are $possibleCommands"
+    echo "possible commands are ${possible_commands}"
     exit 1
-fi 
+fi
 
 # control services/crossbar/eventstore ...
-if ! listcontains "$possibleGroup" $group; then 
+if ! listcontains "${possible_groups}" $group; then
     echo "group $group is not recognised"
-    echo "possible groups are $possibleGroup"
+    echo "possible groups are ${possible_groups}"
     exit 1
 fi
 

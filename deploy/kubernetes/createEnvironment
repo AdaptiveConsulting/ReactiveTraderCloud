@@ -8,8 +8,8 @@ if [[ $1 == "" ]];then
 fi
 namespace=$1
 
-cd templates
-  ./generate_ns_manifest $namespace
-cd ..
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
 
-kubectl create -f manifests/ns.yml
+${root_directory}/deploy/kubernetes/templates/generate_ns_manifest $namespace
+kubectl="${root_directory}/deploy/clis/kubectl"
+${kubectl} create -f deploy/kubernetes/manifests/ns.yml

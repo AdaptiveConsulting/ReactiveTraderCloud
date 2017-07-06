@@ -4,6 +4,8 @@
 root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
 . ${root_directory}/deploy/config
 
-# get cluster credentials
+# define project
 gcloud="${root_directory}/deploy/clis/gcloud"
-${gcloud} container clusters get-credentials $kube_cluster
+${gcloud} config set project $kube_project
+${gcloud} config set compute/zone $kube_zone
+${gcloud} config set container/cluster $kube_cluster

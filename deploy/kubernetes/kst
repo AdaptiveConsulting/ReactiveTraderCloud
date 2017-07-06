@@ -2,6 +2,9 @@
 
 # kst as Kubernetes STatus
 
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+kubectl="${root_directory}/deploy/clis/kubectl"
+
 if [[ -z $1 ]]
 then
   namespace="--namespace=default"
@@ -12,20 +15,20 @@ else
 fi
 echo " "                           && \
 echo -e "\e[92mSERVICES\e[39m"     && \
-./kubectl get services $namespace  && \
+${kubectl} get services $namespace  && \
 echo " "                           && \
 echo -e "\e[92mRC\e[39m"           && \
-./kubectl get rc $namespace        && \
+${kubectl} get rc $namespace        && \
 echo " "                           && \
 echo -e "\e[92mPODS\e[39m"         && \
-./kubectl get pods $namespace      && \
+${kubectl} get pods $namespace      && \
 echo " "                           && \
 echo -e "\e[92mENDPOINTS\e[39m"    && \
-./kubectl get endpoints $namespace && \
+${kubectl} get endpoints $namespace && \
 echo " "                           && \
 echo -e "\e[92mINGRESS\e[39m"      && \
-./kubectl get ingress $namespace   && \
+${kubectl} get ingress $namespace   && \
 echo " "                           && \
 echo -e "\e[92mNODES\e[39m"        && \
-./kubectl get nodes $namespace     && \
+${kubectl} get nodes $namespace     && \
 echo " "

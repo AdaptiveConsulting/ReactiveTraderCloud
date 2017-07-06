@@ -9,16 +9,12 @@ fi
 service=$1
 namespace=$2
 
-. ../../config
-. ../helpers/functions.sh
+# load configuration and libs
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../.."
+. ${root_directory}/deploy/config
+. ${root_directory}/deploy/kubernetes/helpers/functions.sh
 
-manifestFolder="../manifests"
-svcFile="$manifestFolder/$service-svc.yml"
-
-mkdir -p $manifestFolder
-
-cp ./$service/svc.yml $svcFile
-
+# define version
 if [[ $service == "broker" ]];then
   vMajor=$brokerContainer_major
   vMinor=$brokerContainer_minor
@@ -38,7 +34,13 @@ if listcontains "$dotnetServices" $service; then
   vMinor=$serversContainer_minor
 fi
 
-sed -ie "s/__SERVICE__/$service/g"     $svcFile
-sed -ie "s/__MAJOR__/$vMajor/g"        $svcFile
-sed -ie "s/__MINOR__/$vMinor/g"        $svcFile
-sed -ie "s/__NAMESPACE__/$namespace/g" $svcFile
+# fill manifest
+manifests_directory="${root_directory}/deploy/kubernetes/manifests"
+mkdir -p ${manifests_directory}
+service_manifest="${manifests_directory}/$service-svc.yml"
+cp ./$service/svc.yml ${service_manifest}
+
+sed -ie "s/__SERVICE__/$service/g"     ${service_manifest}
+sed -ie "s/__MAJOR__/$vMajor/g"        ${service_manifest}
+sed -ie "s/__MINOR__/$vMinor/g"        ${service_manifest}
+sed -ie "s/__NAMESPACE__/$namespace/g" ${service_manifest}
