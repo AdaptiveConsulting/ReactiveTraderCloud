@@ -7,6 +7,7 @@ import { AnalyticsModel } from './ui/analytics/model';
 import { FooterModel } from './ui/footer/model';
 import { ShellModel } from './ui/shell/model';
 import { ChromeModel } from './ui/common/components/chrome/model';
+import ConnectionStatus from './system/service/connectionStatus';
 import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
 import { User, ServiceConst } from './services/model';
 import { SchedulerService, } from './system';
@@ -76,6 +77,16 @@ class AppBootstrapper {
     this._executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, this._connection, this._schedulerService, this._referenceDataService, this._openFin);
     this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, this._schedulerService, this._referenceDataService);
     this._compositeStatusService = new CompositeStatusService(this._connection, this._pricingService, this._referenceDataService, this._blotterService, this._executionService, this._analyticsService);
+
+    this._connection.connectionStatusStream
+      .where(s => s == ConnectionStatus.connected)
+      .take(1)
+      .subscribe(_ => {
+        var protocol = this._compositeStatusService.connectionType;
+        console.log('PROTOCOL: ' + protocol);
+        // other properties to send? http/https etc
+        // post data to somewhere
+    });
 
     // connect/load all the services
     this._pricingService.connect();
