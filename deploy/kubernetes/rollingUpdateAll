@@ -15,10 +15,13 @@ fi
 namespace=$1
 build=$2
 
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+
 for service in "web" "broker" "eventstore" "blotter" "pricing" "referencedataread" "tradeexecution" "analytics"; do
   echo " "
   echo "==========="
   echo $service
   echo "==========="
-  ./rollingUpdate $namespace $service $build
+  rolling_update="${root_directory}/deploy/clis/kubectl"
+  ${rolling_update} $namespace $service $build
 done

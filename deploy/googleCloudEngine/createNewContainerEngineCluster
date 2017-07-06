@@ -1,17 +1,13 @@
 #! /bin/bash
 
-if [[ ! -f ../config ]];then
-    echo " "
-    echo "usage:"
-    echo "  you need to copy config from sample.config"
-    exit 1
-fi
-
-# load config
-. ../config
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+. ${root_directory}/deploy/config
 
 # create cluster
-./gcloud container clusters create $kube_cluster             \
-                            --zone $kube_zone                \
-                            --machine-type $kube_machinetype \
-                            --num-nodes $kube_num_nodes
+gcloud="${root_directory}/deploy/clis/gcloud"
+${gcloud} container clusters \
+    create $kube_cluster \
+        --zone $kube_zone \
+        --machine-type $kube_machinetype \
+        --num-nodes $kube_num_nodes

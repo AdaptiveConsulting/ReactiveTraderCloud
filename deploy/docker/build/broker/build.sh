@@ -9,15 +9,18 @@ fi
 # fail fast
 set -euo pipefail
 
-. ../../../config
+# load configuration
+this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+root_directory="${this_directory}/../../../.."
+. ${root_directory}/deploy/config
 
-mkdir -p ./build
-
-cp  ./template.Dockerfile                              ./build/Dockerfile
-sed -ie "s|__CROSSBAR_CONTAINER__|$crossbarContainer|g" ./build/Dockerfile
+# create Dockerfile
+mkdir -p "${this_directory}/build"
+cp  ${this_directory}/template.Dockerfile ${this_directory}/build/Dockerfile
+sed -ie "s|__CROSSBAR_CONTAINER__|$crossbarContainer|g" ${this_directory}/build/Dockerfile
 
 # get files from project
-cp -r ../../../../src/server/.crossbar  ./build/.crossbar
+cp -r ${root_directory}/src/server/.crossbar  ${this_directory}/build/.crossbar
 
 docker build --no-cache -t $brokerContainer ./build/.
 docker tag $brokerContainer $brokerContainer.$build

@@ -34,47 +34,52 @@ build=$2
 
 set -euo pipefail
 
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+
 # generate manifest
-cd templates
-  # namespace
-  ./generate_ns_manifest $namespace
-  
-  # services
-  ./generate_svc_manifest web $namespace
-  ./generate_svc_manifest broker $namespace
-  ./generate_svc_manifest eventstore $namespace
+# =================
+templates_directory="${root_directory}/deploy/kubernetes/templates"
 
-  # replication controller
-  ./generate_rc_manifest blotter           $namespace $build
-  ./generate_rc_manifest broker            $namespace $build
-  ./generate_rc_manifest eventstore        $namespace $build
-  ./generate_rc_manifest pricing           $namespace $build
-  ./generate_rc_manifest referencedataread $namespace $build
-  ./generate_rc_manifest tradeexecution    $namespace $build
-  ./generate_rc_manifest web               $namespace $build
-  ./generate_rc_manifest analytics         $namespace $build
+# namespace
+${templates_directory}/generate_ns_manifest $namespace
 
-cd ..
+# services
+${templates_directory}/generate_svc_manifest web $namespace
+${templates_directory}/generate_svc_manifest broker $namespace
+${templates_directory}/generate_svc_manifest eventstore $namespace
+
+# replication controller
+${templates_directory}/generate_rc_manifest blotter           $namespace $build
+${templates_directory}/generate_rc_manifest broker            $namespace $build
+${templates_directory}/generate_rc_manifest eventstore        $namespace $build
+${templates_directory}/generate_rc_manifest pricing           $namespace $build
+${templates_directory}/generate_rc_manifest referencedataread $namespace $build
+${templates_directory}/generate_rc_manifest tradeexecution    $namespace $build
+${templates_directory}/generate_rc_manifest web               $namespace $build
+${templates_directory}/generate_rc_manifest analytics         $namespace $build
 
 # deploy on kubernetes
-  # namespace
-  ./kubectl create -f manifests/ns.yml
-  
+kubectl="${root_directory}/deploy/clis/kubectl"
+manifests_directory_in_container="deploy/kubernetes/manifests"
+
+# namespace
+${kubectl} create -f ${manifests_directory_in_container}/ns.yml
+
   # service
-  ./kubectl create -f manifests/broker-svc.yml 
-  ./kubectl create -f manifests/eventstore-svc.yml 
-  ./kubectl create -f manifests/web-svc.yml 
-  
+${kubectl} create -f ${manifests_directory_in_container}/broker-svc.yml
+${kubectl} create -f ${manifests_directory_in_container}/eventstore-svc.yml
+${kubectl} create -f ${manifests_directory_in_container}/web-svc.yml
+
   # replication controller
-  ./kubectl create -f manifests/web-rc.yml
-  ./kubectl create -f manifests/broker-rc.yml  
-  ./kubectl create -f manifests/eventstore-rc.yml
-  ./kubectl create -f manifests/blotter-rc.yml
-  ./kubectl create -f manifests/pricing-rc.yml
-  ./kubectl create -f manifests/referencedataread-rc.yml
-  ./kubectl create -f manifests/tradeexecution-rc.yml
-  ./kubectl create -f manifests/analytics-rc.yml
-  
+${kubectl} create -f ${manifests_directory_in_container}/web-rc.yml
+${kubectl} create -f ${manifests_directory_in_container}/broker-rc.yml
+${kubectl} create -f ${manifests_directory_in_container}/eventstore-rc.yml
+${kubectl} create -f ${manifests_directory_in_container}/blotter-rc.yml
+${kubectl} create -f ${manifests_directory_in_container}/pricing-rc.yml
+${kubectl} create -f ${manifests_directory_in_container}/referencedataread-rc.yml
+${kubectl} create -f ${manifests_directory_in_container}/tradeexecution-rc.yml
+${kubectl} create -f ${manifests_directory_in_container}/analytics-rc.yml
+
 sleep 2
 
 echo " "

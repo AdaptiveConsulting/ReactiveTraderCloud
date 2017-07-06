@@ -1,34 +1,38 @@
 #! /bin/bash
 
-releaseMode=""
+release_mode=""
 if [[ $1 == "release" ]];then
-  releaseMode="--configuration Release"
+  release_mode="--configuration Release"
   build=""
 elif [[ $1 != "" ]];then
   build=".$1"
 fi
 if [[ $2 == "release" ]];then
-  releaseMode="--configuration Release"
+  release_mode="--configuration Release"
 fi
 
 #fail fast
 set euo -pipefail
 
-echo "TradeExecution"
+container_name="tradeexecution"
+echo "${container_name}"
 
-. ../../../config
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../../.."
+. ${root_directory}/deploy/config
 
-startCommand="dotnet run $releaseMode -p Adaptive.ReactiveTrader.Server.Launcher exec"
+# remove
+if [[ "$(docker ps -q -a --filter name=${container_name})" != "" ]]
+then docker rm ${container_name} > /dev/null
+fi
+
+# start
+startCommand="dotnet run ${release_mode} -p Adaptive.ReactiveTrader.Server.Launcher exec"
 waitCommand="while true; do echo ping; sleep 60; done"
-
-docker rm tradeexecution 2&> garbage || true
-
-docker run -d --net=host                     \
-     --name tradeexecution                   \
-     $serversContainer$build                 \
+docker run -d --net=host \
+     --name ${container_name} \
+     $serversContainer$build \
      bash -c "$startCommand && $waitCommand" \
-     > container_id 
-
-rm garbage
+     > container_id
 
 echo " "

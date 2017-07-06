@@ -52,7 +52,10 @@
                             "type": "websocket"
                         },
                         "lp": {
-                            "type": "longpoll"
+                            "type": "longpoll",
+                            "options": {
+                                "allow_cross_origin": true
+                            }
                         }
                     }
                 }

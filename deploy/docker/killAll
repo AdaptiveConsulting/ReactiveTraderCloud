@@ -1,8 +1,13 @@
 #! /bin/bash
 
+# stop all containers
 docker-compose down
 
-. ../config
-if [ -f $docker_compose_file ]
-    then rm ${docker_compose_file}
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../.."
+. ${root_directory}/deploy/config
+
+# clean
+if [ -f ${docker_compose_file} ]
+then rm ${docker_compose_file}
 fi

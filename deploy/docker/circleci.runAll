@@ -13,8 +13,7 @@ scream() {
 
 for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter" "analytics"
 do
-    cd run/$server
-    ./run $build $release || scream $server
+    server_run_command="${root_directory}/deploy/docker/run/${server}/run"
+    ${server_run_command} $build $release || scream $server
     sleep 5
-    cd ../..
 done
