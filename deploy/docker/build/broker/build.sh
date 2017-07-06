@@ -22,5 +22,5 @@ sed -ie "s|__CROSSBAR_CONTAINER__|$crossbarContainer|g" ${this_directory}/build/
 # get files from project
 cp -r ${root_directory}/src/server/.crossbar  ${this_directory}/build/.crossbar
 
-docker build --no-cache -t $brokerContainer ./build/.
+docker build --no-cache -t $brokerContainer ${root_directory}/build/.
 docker tag $brokerContainer $brokerContainer.$build
