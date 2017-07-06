@@ -7,7 +7,7 @@ release="release"
 set -euo pipefail
 
 # load configuration
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../.."
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
 . ${root_directory}/deploy/config
 
 # create file
