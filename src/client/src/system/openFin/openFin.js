@@ -97,13 +97,18 @@ export default class OpenFin {
         } else {
           _log.debug(`checking if limit is ok with ${_this.limitCheckSubscriber}`);
           const topic = `limit-check-response (${_this.limitCheckId++})`;
-          let limitCheckResponse:(msg:any) => void = (msg) => {
+          const limitCheckerCallback:(msg:any) => void = (msg) => {
             _log.debug(`${_this.limitCheckSubscriber} limit check response was ${msg}`);
             observer.onNext(msg.result);
             observer.onCompleted();
           };
+          const limitCheckerSuccessHandler = () =>  _log.debug(`${_this.limitCheckSubscriber} subscribed successfully`);
+          const limitCheckerErrorHandler = error => {
+            _log.error(`${_this.limitCheckSubscriber} limit check failed.`, error);
+            observer.onError(error);
+          };
 
-          fin.desktop.InterApplicationBus.subscribe(_this.limitCheckSubscriber, topic, limitCheckResponse);
+          fin.desktop.InterApplicationBus.subscribe(_this.limitCheckSubscriber, topic, limitCheckerCallback, limitCheckerSuccessHandler, limitCheckerErrorHandler);
 
           fin.desktop.InterApplicationBus.send(_this.limitCheckSubscriber, REQUEST_LIMIT_CHECK_TOPIC, {
             id: _this.limitCheckId,
@@ -114,7 +119,7 @@ export default class OpenFin {
           });
 
           disposables.add(Rx.Disposable.create(() => {
-            fin.desktop.InterApplicationBus.unsubscribe(_this.limitCheckSubscriber, topic, limitCheckResponse);
+            fin.desktop.InterApplicationBus.unsubscribe(_this.limitCheckSubscriber, topic, limitCheckerCallback);
           }));
         }
         return disposables;

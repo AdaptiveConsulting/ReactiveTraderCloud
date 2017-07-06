@@ -33,6 +33,7 @@ export default class ExecutionService extends ServiceBase {
         disposables.add(
           _this._openFin
             .checkLimit(executeTradeRequest.SpotRate, executeTradeRequest.Notional, executeTradeRequest.CurrencyPair)
+            .timeout(ExecutionService.EXECUTION_REQUEST_TIMEOUT_MS, Rx.Observable.throw(new Error('Timeout')))
             .take(1)
             .subscribe(limitCheckResult => {
               if (limitCheckResult) {
@@ -60,7 +61,7 @@ export default class ExecutionService extends ServiceBase {
               else {
                 o.onNext(ExecuteTradeResponse.createForError('Credit limit exceeded'));
               }
-            })
+            }, () => o.onNext(ExecuteTradeResponse.createForError('Credit limit check failed')))
         );
         return disposables;
       }
