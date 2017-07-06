@@ -3,17 +3,18 @@
 # fail fast
 set -euo pipefail
 
-chmod 755 ../docker/prepare
-chmod 755 ../docker/build/servers/build.sh
-chmod 755 ../docker/build/broker/build.sh
-chmod 755 ../docker/build/populatedEventstore/build.sh
-chmod 755 ../docker/build/web/build.sh
-chmod 755 ../docker/build/servers/push.sh
-chmod 755 ../docker/build/broker/push.sh
-chmod 755 ../docker/build/populatedEventstore/push.sh
-chmod 755 ../docker/build/web/push.sh
-chmod 755 buildContainers
-chmod 755 loadContainers
-chmod 755 saveContainers
-chmod 755 pushContainers
-chmod 755 runContainers
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+chmod 755 ${root_directory}/deploy/docker/prepare
+chmod 755 ${root_directory}/deploy/docker/build/servers/build.sh
+chmod 755 ${root_directory}/deploy/docker/build/broker/build.sh
+chmod 755 ${root_directory}/deploy/docker/build/populatedEventstore/build.sh
+chmod 755 ${root_directory}/deploy/docker/build/web/build.sh
+chmod 755 ${root_directory}/deploy/docker/build/servers/push.sh
+chmod 755 ${root_directory}/deploy/docker/build/broker/push.sh
+chmod 755 ${root_directory}/deploy/docker/build/populatedEventstore/push.sh
+chmod 755 ${root_directory}/deploy/docker/build/web/push.sh
+chmod 755 ${root_directory}/deploy/e2e/buildContainers
+chmod 755 ${root_directory}/deploy/e2e/loadContainers
+chmod 755 ${root_directory}/deploy/e2e/saveContainers
+chmod 755 ${root_directory}/deploy/e2e/pushContainers
+chmod 755 ${root_directory}/deploy/e2e/runContainers
