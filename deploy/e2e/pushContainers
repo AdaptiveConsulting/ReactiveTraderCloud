@@ -11,5 +11,5 @@ set -euo pipefail
 
 docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
-cd ../docker
-./prepare push services $build
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+${root_directory}/deploy/docker/prepare push services $build
