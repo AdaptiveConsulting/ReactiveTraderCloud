@@ -32,7 +32,7 @@ fi
 build_command="mkdir -p /packages"
 build_command="${build_command} && dotnet restore"
 build_command="${build_command} && dotnet build */project.json --configuration Release"
-docker run -t --name ${container_name} -v /$(pwd)/dotnetcache:/packages weareadaptive/serverssrc:$build bash -c "${build_command}"
+docker run -t --name ${container_name} -v /${this_directory}/dotnetcache:/packages weareadaptive/serverssrc:$build bash -c "${build_command}"
 
 # commit
 docker commit ${container_name} $serversContainer
