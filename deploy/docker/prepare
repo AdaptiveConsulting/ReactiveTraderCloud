@@ -12,10 +12,11 @@ possible_groups="services gcloud dotnet nginx node testtools crossbar eventstore
 # USAGE
 # =====
 listcontains() {
-  for word in $1; do
-    [[ $word = $2 ]] && return 0
-  done
-  return 1
+    for word in $1
+    do
+        [[ $word = $2 ]] && return 0
+    done
+    return 1
 }
 
 usage() {
@@ -40,9 +41,10 @@ usage() {
     echo " "
 }
 
-if [[ $# != 3 ]];then
-  usage
-  exit 1
+if [[ $# != 3 ]]
+then
+    usage
+    exit 1
 fi
 
 command=$1
@@ -50,53 +52,53 @@ group=$2
 build=$3
 
 # control build/push
-if ! listcontains "${possible_commands}" $command; then
+if ! listcontains "${possible_commands}" $command
+then
     echo "command $command is not recognised"
     echo "possible commands are ${possible_commands}"
     exit 1
 fi
 
 # control services/crossbar/eventstore ...
-if ! listcontains "${possible_groups}" $group; then
+if ! listcontains "${possible_groups}" $group
+then
     echo "group $group is not recognised"
     echo "possible groups are ${possible_groups}"
     exit 1
 fi
 
 # define services
-if [[ $group = "services" ]];then
+if [[ $group = "services" ]]
+then
     group=$services
 fi
 
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../.."
+
 # BUILD
 # =====
-if [[ $command = "build" ]];then
-  for service in $group
-  do
-    pushd build/$service > garbage
-      echo "======================"
-      echo "= Build $service"
-      echo "======================"
-      ./build.sh $build
-    popd > garbage
-    rm garbage build/$service/garbage
-  done
-  exit 0
+if [[ $command = "build" ]]
+then
+    for service in $group
+    do
+        echo "======================"
+        echo "= Build $service"
+        echo "======================"
+        ${root_directory}/deploy/docker/build/$service/build.sh $build
+    done
+    exit 0
 fi
 
 
 # PUSH
 # ====
 if [[ $command = "push" ]];then
-  for service in $group
-  do
-    pushd build/$service > garbage
-      echo "======================"
-      echo "= Push $service"
-      echo "======================"
-      ./push.sh $build
-    popd > garbage
-    rm garbage build/$service/garbage
-  done
-  exit 0
+    for service in $group
+    do
+        echo "======================"
+        echo "= Push $service"
+        echo "======================"
+        ${root_directory}/deploy/docker/build/$service/push.sh $build
+    done
+    exit 0
 fi
