@@ -79,12 +79,12 @@ root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
 # =====
 if [[ $command = "build" ]]
 then
-    for service in $group
+    for service in ${group}
     do
         echo "======================"
-        echo "= Build $service"
+        echo "= Build ${service}"
         echo "======================"
-        ${root_directory}/deploy/docker/build/$service/build.sh $build
+        ${root_directory}/deploy/docker/build/${service}/build.sh $build
     done
     exit 0
 fi
@@ -93,12 +93,12 @@ fi
 # PUSH
 # ====
 if [[ $command = "push" ]];then
-    for service in $group
+    for service in ${group}
     do
         echo "======================"
-        echo "= Push $service"
+        echo "= Push ${service}"
         echo "======================"
-        ${root_directory}/deploy/docker/build/$service/push.sh $build
+        ${root_directory}/deploy/docker/build/${service}/push.sh $build
     done
     exit 0
 fi

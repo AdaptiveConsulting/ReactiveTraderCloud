@@ -17,11 +17,11 @@ root_directory="${this_directory}/../../../.."
 # get source code
 mkdir -p ${this_directory}/build
 cp -r ${root_directory}/src/server ${this_directory}/build/
-cp ${this_directory}template.Dockerfile ${this_directory}build/Dockerfile
-sed -ie "s|__DOTNET_CONTAINER__|$dotnetContainer|g" ${this_directory}build/Dockerfile
+cp ${this_directory}/template.Dockerfile ${this_directory}/build/Dockerfile
+sed -ie "s|__DOTNET_CONTAINER__|$dotnetContainer|g" ${this_directory}/build/Dockerfile
 
 # build
-docker build --no-cache -t weareadaptive/serverssrc:$build ${this_directory}build/.
+docker build --no-cache -t weareadaptive/serverssrc:$build ${this_directory}/build/.
 
 # restore package
 container_name="dotnetrestored"
