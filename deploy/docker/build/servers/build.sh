@@ -15,7 +15,9 @@ root_directory="${this_directory}/../../../.."
 . ${root_directory}/deploy/config
 
 # get source code
-rm -r ${this_directory}/build
+if [[ -d "${this_directory}/build" ]]
+then rm -r ${this_directory}/build
+fi
 mkdir -p ${this_directory}/build
 cp -r ${root_directory}/src/server ${this_directory}/build/
 cp ${this_directory}/template.Dockerfile ${this_directory}/build/Dockerfile
