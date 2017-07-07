@@ -16,8 +16,8 @@ root_directory="${this_directory}/../../../.."
 
 mkdir -p ${this_directory}/build
 
-cp ${this_directory}template.Dockerfile ${this_directory}/build/Dockerfile
-cp ${this_directory}template.install.sh ${this_directory}/build/install.sh
+cp ${this_directory}/template.Dockerfile ${this_directory}/build/Dockerfile
+cp ${this_directory}/template.install.sh ${this_directory}/build/install.sh
 
 sed -ie "s|__UBUNTU_CONTAINER__|$ubuntuContainer|g" ${this_directory}/build/Dockerfile
 sed -ie "s/__VNODE__/$vNode/g" ${this_directory}/build/install.sh

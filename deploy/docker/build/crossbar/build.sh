@@ -14,13 +14,11 @@ this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 root_directory="${this_directory}/../../../.."
 . ${root_directory}/deploy/config
 
-mkdir -p ./build
+mkdir -p ${this_directory}/build
 
 cp ${this_directory}/template.Dockerfile ${this_directory}/build/Dockerfile
 sed -ie "s/__UBUNTU_CONTAINER__/$ubuntuContainer/g" ${this_directory}/build/Dockerfile
-
-cp ${this_directory}/template.install.sh ${this_directory}/build/install.sh
-sed -ie "s/__CROSSBAR_VERSION__/$vCrossbar/g" ${this_directory}/build/install.sh
+sed -ie "s/__CROSSBAR_VERSION__/$vCrossbar/g" ${this_directory}/build/Dockerfile
 
 docker build --no-cache -t $crossbarContainer ${this_directory}/build/.
 docker tag $crossbarContainer $crossbarContainer.$build
