@@ -15,6 +15,7 @@ root_directory="${this_directory}/../../../.."
 . ${root_directory}/deploy/config
 
 # get source code
+rm -r ${this_directory}/build
 mkdir -p ${this_directory}/build
 cp -r ${root_directory}/src/server ${this_directory}/build/
 cp ${this_directory}/template.Dockerfile ${this_directory}/build/Dockerfile
@@ -26,7 +27,7 @@ docker build --no-cache -t weareadaptive/serverssrc:$build ${this_directory}/bui
 # restore package
 container_name="dotnetrestored"
 if [[ "$(docker ps -q -a --filter name=${container_name})" != "" ]]
-then docker rm ${container_name} > /dev/null
+then docker rm ${container_name} > /dev/null || true
 fi
 
 build_command="mkdir -p /packages"
@@ -40,5 +41,5 @@ docker tag $serversContainer $serversContainer.$build
 
 # clean
 if [[ "$(docker ps -q -a --filter name=${container_name})" != "" ]]
-then docker rm ${container_name} > /dev/null
+then docker rm ${container_name} > /dev/null || true
 fi

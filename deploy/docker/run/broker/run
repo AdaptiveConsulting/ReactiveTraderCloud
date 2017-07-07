@@ -12,7 +12,8 @@ container_name="broker"
 echo "${container_name}"
 
 # load configuration
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../../.."
+this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+root_directory="${this_directory}/../../../.."
 . ${root_directory}/deploy/config
 
 # remove
@@ -24,6 +25,6 @@ fi
 docker run -d --net=host \
      --name ${container_name} \
      $brokerContainer$build \
-     > container_id
+     > ${this_directory}/container_id
 
 echo " "

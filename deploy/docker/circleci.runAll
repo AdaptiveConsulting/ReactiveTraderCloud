@@ -11,9 +11,11 @@ scream() {
     exit 1
 }
 
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+
 for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter" "analytics"
 do
     server_run_command="${root_directory}/deploy/docker/run/${server}/run"
     ${server_run_command} $build $release || scream $server
-    sleep 5
+    sleep 2
 done

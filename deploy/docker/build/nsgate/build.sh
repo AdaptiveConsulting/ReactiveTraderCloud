@@ -19,12 +19,12 @@ root_directory="${this_directory}/../../../.."
 # generate container folder
 mkdir -p ${this_directory}/build
 
-cp nginx.conf                 ${this_directory}/build/
-cp bootstrap.sh               ${this_directory}/build/
-cp install.sh                 ${this_directory}/build/
-cp template.Dockerfile        ${this_directory}/build/Dockerfile
-cp template.updateServers.sh  ${this_directory}/build/updateServers.sh
-cp template.writeFunctions.sh ${this_directory}/build/writeFunctions.sh
+cp ${this_directory}/nginx.conf                 ${this_directory}/build/
+cp ${this_directory}/bootstrap.sh               ${this_directory}/build/
+cp ${this_directory}/install.sh                 ${this_directory}/build/
+cp ${this_directory}/template.Dockerfile        ${this_directory}/build/Dockerfile
+cp ${this_directory}/template.updateServers.sh  ${this_directory}/build/updateServers.sh
+cp ${this_directory}/template.writeFunctions.sh ${this_directory}/build/writeFunctions.sh
 
 sed -ie "s|__NGINX_CONTAINER__|$nginxContainer|g" ${this_directory}/build/Dockerfile
 sed -ie "s/__DOMAIN_NAME__/$domainName/g" ${this_directory}/build/writeFunctions.sh

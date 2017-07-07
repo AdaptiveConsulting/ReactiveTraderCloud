@@ -22,7 +22,7 @@ docker run -d --net=host $eventstoreContainer > ${eventstore_id_file}
 populate_command=`cat "${root_directory}/src/server/Populate Event Store.bat"`
 docker run -t --net=host      \
      $serversContainer.$build \
-     ${populate_command} > populate_id
+     ${populate_command}
 
 # commit container
 docker commit `cat ${eventstore_id_file}` $populatedEventstoreContainer

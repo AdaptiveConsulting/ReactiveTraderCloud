@@ -18,7 +18,8 @@ container_name="pricing"
 echo "${container_name}"
 
 # load configuration
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../../.."
+this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+root_directory="${this_directory}/../../../.."
 . ${root_directory}/deploy/config
 
 # remove
@@ -33,6 +34,6 @@ docker run -d --net=host \
      --name ${container_name} \
      $serversContainer$build \
      bash -c "${start_command} && ${wait_command}" \
-     > container_id
+     > ${this_directory}/container_id
 
 echo " "
