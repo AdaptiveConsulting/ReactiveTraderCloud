@@ -1,0 +1,72 @@
+{
+  "name": "reactive-trader-cloud",
+  "version": "2.1.0",
+  "description": "Reactive Trader - Cloud edition. Example reactive currency pair trading app",
+  "keywords": [
+    "react",
+    "fx",
+    "spot",
+    "cloud",
+    "rxjs"
+  ],
+  "authors": [
+    {
+      "name": "Adaptive Consulting",
+      "email": "@AdaptiveLimited"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
+  },
+  "scripts": {
+    "start": "cross-env NODE_ENV=dev node dev.server.js",
+    "build": "rimraf dist  && cross-env NODE_ENV=prod webpack",
+    "lint": "tslint 'src/**/*.{ts,tsx}'"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "animate.css": "3.5.2",
+    "autobahn": "17.5.2",
+    "font-awesome": "4.7.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
+    "react-router-dom": "^4.1.1",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/autobahn": "0.9.35",
+    "@types/react": "^15.0.38",
+    "@types/react-dom": "^15.5.1",
+    "@types/react-redux": "^4.4.46",
+    "@types/react-router-dom": "^4.0.7",
+    "@types/redux-logger": "^3.0.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "cross-env": "^5.0.1",
+    "css-loader": "^0.28.4",
+    "eslint": "^4.1.1",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "extract-text-webpack-plugin": "2.1.2",
+    "file-loader": "0.11.2",
+    "html-loader": "0.4.5",
+    "html-webpack-plugin": "2.29.0",
+    "node-sass": "4.5.3",
+    "react-router-dom": "^4.1.1",
+    "react-transform-hmr": "^1.0.4",
+    "rimraf": "2.6.1",
+    "sass-loader": "6.0.6",
+    "style-loader": "^0.18.2",
+    "ts-loader": "^2.2.2",
+    "tslint": "^5.5.0",
+    "tslint-loader": "^3.5.3",
+    "tslint-react": "^3.0.0",
+    "typescript": "^2.4.1",
+    "url-loader": "0.5.9",
+    "webpack": "^3.2.0",
+    "webpack-dev-server": "^2.5.1"
+  }
+}

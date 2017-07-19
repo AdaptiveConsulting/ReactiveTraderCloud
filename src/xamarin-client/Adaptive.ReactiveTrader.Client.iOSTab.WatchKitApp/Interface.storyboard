@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="20">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="9019"/>
+    </dependencies>
+    <scenes>
+        <!--Glance Interface Controller-->
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="AEw-b0-oYE">
+            <objects>
+                <notificationController id="YCC-NB-fut">
+                    <items>
+                        <label alignment="left" text="Trade Successful static" numberOfLines="0" id="XkS-y5-khE">
+                            <color key="textColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                        </label>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="trade" descriptionFormat="trade" wantsSashBlur="YES" id="JfB-70-Muf">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="sashColor" red="0.070588235289999995" green="0.2666666667" blue="0.4549019608" alpha="1" colorSpace="calibratedRGB"/>
+                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                    </notificationCategory>
+                    <color key="backgroundColor" red="0.070588235289999995" green="0.2666666667" blue="0.4549019608" alpha="1" colorSpace="calibratedRGB"/>
+                    <edgeInsets key="margins" left="5" right="5" top="5" bottom="5"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="XkS-y5-khE" id="49B-RR-99y"/>
+                        <segue destination="gdX-wl-uQE" kind="relationship" relationship="dynamicNotificationInterface" id="fKh-qV-3T2"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="329" y="-3"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="KIl-fV-djm">
+            <objects>
+                <controller spacing="0.0" id="gdX-wl-uQE" customClass="NotificationController">
+                    <items>
+                        <group width="1" alignment="left" layout="vertical" spacing="0.0" id="tEF-ac-nQd">
+                            <items>
+                                <label width="1" alignment="center" text="1" textAlignment="center" minimumScaleFactor="0.5" id="htB-aa-BPn">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="font" style="UICTFontTextStyleBody"/>
+                                </label>
+                                <label width="1" alignment="left" text="2" textAlignment="center" minimumScaleFactor="0.5" id="W4l-xL-rHV"/>
+                            </items>
+                            <edgeInsets key="margins" left="2" right="2" top="0.0" bottom="5"/>
+                        </group>
+                        <separator alignment="left" id="Xkr-gB-01u">
+                            <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </separator>
+                        <group width="1" height="50" alignment="left" contentMode="scaleAspectFit" layout="vertical" spacing="0.0" id="0zA-8w-Owo">
+                            <items>
+                                <group width="1" alignment="left" radius="13" spacing="0.0" id="zM3-fo-W4W">
+                                    <items>
+                                        <label alignment="left" verticalAlignment="bottom" text="Sell" textAlignment="left" minimumScaleFactor="0.5" id="pHJ-QS-z9c">
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="font" type="system" pointSize="14"/>
+                                        </label>
+                                        <label alignment="center" verticalAlignment="center" id="0aE-zA-9j8">
+                                            <fontDescription key="font" type="system" pointSize="12"/>
+                                        </label>
+                                        <label alignment="right" verticalAlignment="bottom" text="Buy" minimumScaleFactor="0.5" id="m1P-Vi-YD0">
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="font" type="system" pointSize="14"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="5" right="5" top="0.0" bottom="0.0"/>
+                                </group>
+                                <group width="1" alignment="left" verticalAlignment="bottom" spacing="0.0" id="6ze-SS-hwP">
+                                    <items>
+                                        <label alignment="left" verticalAlignment="center" minimumScaleFactor="0.59999999999999998" id="Vae-J2-34i">
+                                            <fontDescription key="font" type="system" pointSize="17"/>
+                                        </label>
+                                        <label alignment="center" verticalAlignment="center" minimumScaleFactor="0.80000000000000004" id="Avd-45-CAp">
+                                            <fontDescription key="font" type="system" pointSize="12"/>
+                                        </label>
+                                        <label alignment="right" verticalAlignment="bottom" minimumScaleFactor="0.59999999999999998" id="8Mz-3Z-edn">
+                                            <fontDescription key="font" type="system" pointSize="17"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="5" right="5" top="0.0" bottom="0.0"/>
+                                </group>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="5" bottom="5"/>
+                        </group>
+                    </items>
+                    <color key="backgroundColor" red="0.070588235294117646" green="0.26666666666666666" blue="0.45490196078431372" alpha="1" colorSpace="calibratedRGB"/>
+                    <edgeInsets key="margins" left="0.0" right="0.0" top="5" bottom="0.0"/>
+                    <connections>
+                        <outlet property="_arrowLabel" destination="Avd-45-CAp" id="fIt-Ig-p37"/>
+                        <outlet property="_buyPriceLabel" destination="8Mz-3Z-edn" id="NmN-Pb-Fjx"/>
+                        <outlet property="_priceGroup" destination="0zA-8w-Owo" id="3cs-8i-8S7"/>
+                        <outlet property="_priceLabel" destination="0aE-zA-9j8" id="ace-PN-I2d"/>
+                        <outlet property="_sellPriceLabel" destination="Vae-J2-34i" id="02S-qf-4nr"/>
+                        <outlet property="_tradeDetailsLabel1" destination="htB-aa-BPn" id="NmJ-jG-JCQ"/>
+                        <outlet property="_tradeDetailsLabel2" destination="W4l-xL-rHV" id="Edc-sN-TM3"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="535" y="-7"/>
+        </scene>
+        <!--Initial Controller-->
+        <scene sceneID="19">
+            <objects>
+                <controller hidesWhenLoading="NO" id="20" customClass="InitialController"/>
+            </objects>
+            <point key="canvasLocation" x="329" y="308"/>
+        </scene>
+        <!--Trade-->
+        <scene sceneID="21">
+            <objects>
+                <controller identifier="price" title="Trade" hidesWhenLoading="NO" alwaysBounce="YES" id="22" customClass="PriceController">
+                    <items>
+                        <button alignment="left" id="24">
+                            <group key="contentGroup" width="1" height="0.34000000000000002" alignment="left" radius="10" id="phn-zX-3Cd">
+                                <items>
+                                    <label alignment="left" verticalAlignment="center" text="Sell" id="23"/>
+                                    <label alignment="right" verticalAlignment="center" textAlignment="right" id="RGW-nl-jvm" minimumScaleFactor="0.5"/>
+                                </items>
+                                <color key="backgroundColor" red="0.16113173629999999" green="0.26442886310000002" blue="0.39929486190000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <edgeInsets key="margins" left="10" right="10" top="0.0" bottom="0.0"/>
+                            </group>
+                            <connections>
+                                <action selector="SellButtonTapped" destination="22" id="j8s-C0-a6V"/>
+                            </connections>
+                        </button>
+                        <group width="1" alignment="center" verticalAlignment="center" id="Yc3-XS-6zB">
+                            <items>
+                                <label alignment="center" verticalAlignment="center" id="1fS-46-Hpo"/>
+                            </items>
+                        </group>
+                        <button alignment="left" verticalAlignment="bottom" id="4RI-o3-vjw">
+                            <group key="contentGroup" width="1" height="0.34000000000000002" alignment="left" radius="10" id="sn8-ki-hhz">
+                                <items>
+                                    <label alignment="left" verticalAlignment="center" text="Buy" id="Z9M-1g-6RS"/>
+                                    <label alignment="right" verticalAlignment="center" id="sHf-Y1-44M"/>
+                                </items>
+                                <color key="backgroundColor" red="0.16113173629999999" green="0.26442886310000002" blue="0.39929486190000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <edgeInsets key="margins" left="10" right="10" top="0.0" bottom="0.0"/>
+                            </group>
+                            <connections>
+                                <action selector="BuyButtonTapped" destination="22" id="jWm-rI-TNT"/>
+                            </connections>
+                        </button>
+                        <group width="1" height="3" alignment="left" verticalAlignment="bottom" id="jJD-tF-Doo"/>
+                    </items>
+                    <connections>
+                        <outlet property="BuyButton" destination="4RI-o3-vjw" id="hWa-2i-Kcp"/>
+                        <outlet property="BuyPriceLabel" destination="sHf-Y1-44M" id="name-outlet-sHf-Y1-44M"/>
+                        <outlet property="PriceLabel" destination="1fS-46-Hpo" id="pQw-3F-pcK"/>
+                        <outlet property="SellButton" destination="24" id="jbM-8t-A3z"/>
+                        <outlet property="SellPriceLabel" destination="RGW-nl-jvm" id="name-outlet-RGW-nl-jvm"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="534" y="310"/>
+        </scene>
+        <!-- -->
+        <scene sceneID="QB6-FH-h7v">
+            <objects>
+                <controller identifier="confirmation" title=" " id="4FM-J6-eh2" customClass="TradeConfirmController">
+                    <items>
+                        <group width="1" alignment="left" id="26">
+                            <items>
+                                <label width="1" alignment="left" text="Sold" numberOfLines="0" id="ORY-Jz-rHh"/>
+                            </items>
+                            <edgeInsets key="margins" left="5" right="5" top="5" bottom="5"/>
+                        </group>
+                        <button width="1" alignment="left" verticalAlignment="bottom" title="Dismiss" id="25">
+                            <connections>
+                                <action selector="DoneTapped" destination="4FM-J6-eh2" id="UBG-UH-Ft0"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="DetailsLabel" destination="ORY-Jz-rHh" id="name-outlet-ORY-Jz-rHh"/>
+                        <outlet property="DoneButton" destination="25" id="name-outlet-25"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="745" y="310"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Activity" width="22" height="22"/>
+    </resources>
+</document>

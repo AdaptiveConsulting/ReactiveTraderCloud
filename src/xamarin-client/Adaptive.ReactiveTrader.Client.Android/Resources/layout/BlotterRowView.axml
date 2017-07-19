@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="20dp"
+    android:layout_marginLeft="30dp">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1">
+        <TextView
+            android:id="@+id/BlotterRowCurrencyPairTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="(USD / JPN)"
+            android:layout_marginBottom="5.3dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/BlotterRowTradeDateTextView"
+            android:textSize="14dp"
+            android:text="(date)"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="80dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/BlotterRowDirectionTextView"
+            android:textSize="14dp"
+            android:text="(BUY)"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/traderLabel" />
+        <TextView
+            android:id="@+id/BlotterRowNotionalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="(1,000,000 USD)" />
+        <TextView
+            android:text=" at "
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView1"
+            android:textColor="@color/traderLabel" />
+        <TextView
+            android:id="@+id/BlotterRowSpotRateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="100.345" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="14dp"
+            android:text="Value Date "
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/traderLabel" />
+        <TextView
+            android:id="@+id/BlotterRowValueDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="(29 Nov 15)" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="14dp"
+            android:text="Trader "
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/traderLabel" />
+        <TextView
+            android:id="@+id/BlotterRowTraderNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="(TRADER-ID)" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="14dp"
+            android:text=""
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/traderLabel" />
+        <TextView
+            android:id="@+id/BlotterRowStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="(Done)" />
+    </LinearLayout>
+</LinearLayout>

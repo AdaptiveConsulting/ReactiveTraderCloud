@@ -1,0 +1,1 @@
+dotnet run -p Adaptive.ReactiveTrader.Server.Launcher dev

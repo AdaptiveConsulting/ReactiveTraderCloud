@@ -1,0 +1,25 @@
+#! /bin/bash
+
+if [[ $1 == "" ]];then
+  echo "usage:"
+  echo "  $0 NAMESPACE"
+  echo " "
+  exit 1
+fi
+namespace=$1
+
+set -euo pipefail
+
+kubectl delete -f templates/testtools/pod.yml --namespace=$namespace && echo "waiting for pod to be deleted" || true
+
+needtowait=true
+while $needtowait; do
+  kubectl create -f templates/testtools/pod.yml --namespace=$namespace && needtowait=false \
+  || echo "waiting for pod to be deleted" && sleep 10
+done
+
+needtowait=true
+while true; do
+  kubectl exec --namespace=$namespace -ti testtools bash && needtowait=false \
+  || echo "waiting for pod to be started" && sleep 10
+done

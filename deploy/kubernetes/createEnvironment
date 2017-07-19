@@ -1,0 +1,15 @@
+#! /bin/bash
+
+if [[ $1 == "" ]];then
+  echo "usage:"
+  echo "  $0 NAMESPACE"
+  echo " "
+  exit 1
+fi
+namespace=$1
+
+cd templates
+  ./generate_ns_manifest $namespace
+cd ..
+
+kubectl create -f manifests/ns.yml

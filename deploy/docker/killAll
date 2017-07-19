@@ -1,0 +1,8 @@
+#! /bin/bash
+
+docker-compose down
+
+. ../config
+if [ -f $docker_compose_file ]
+    then rm ${docker_compose_file}
+fi

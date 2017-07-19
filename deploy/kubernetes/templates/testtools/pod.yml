@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: testtools
+spec:
+  containers:
+  - image: weareadaptive/testtools:latest
+    name: testtools
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: Always

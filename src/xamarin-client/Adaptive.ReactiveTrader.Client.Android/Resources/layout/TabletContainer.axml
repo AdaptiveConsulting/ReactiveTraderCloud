@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="#212A35"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/toolbar_logo" />
+            <TextView
+                android:text="Waiting for an internet connection..."
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/TabletConnectingLabel"
+                android:textColor="@color/traderLabel"
+                android:layout_gravity="center|center"
+                android:visibility="invisible" />
+        </android.support.v7.widget.Toolbar>
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:id="@+id/fragmentContainer" />
+    </RelativeLayout>
+    <ProgressBar
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/TabletProgressBar"
+        android:indeterminate="true"
+        android:layout_gravity="center"
+        android:indeterminateTint="#212A35" />
+</FrameLayout>
