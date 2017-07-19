@@ -72,8 +72,8 @@ const addOpenfinControls = () => {
   // set the window to be draggable by the nav bar
   const wrapper = nativeWindow.document.querySelector('.ciq-nav');
   openfinWindow.defineDraggableArea(wrapper);
-  const btns = wrapper.querySelectorAll('.ciq-menu');
-  Array.prototype.forEach.call(btns, btn => btn.style['-webkit-app-region'] = 'no-drag');
+  // exclude menu from draggable area
+  menu.style['-webkit-app-region'] = 'no-drag';
 };
 
 const initialize = () => {
