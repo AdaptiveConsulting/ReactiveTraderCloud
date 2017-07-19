@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 
-import AutobahnConnection from './services/autobahn'
+import autobahnConnection from './services/autobahn';
 import { MainContainer } from './ui/main';
 import rootReducer from './reducers';
 
@@ -21,13 +21,11 @@ if (env === 'dev') {
 
 const autobahnService = () => ({
   type: 'START_BOOTSTRAP',
-  payload: new AutobahnConnection()
-})
+  payload: autobahnConnection
+});
 
-
-const store = createStore(rootReducer, {}, applyMiddleware(...middlewares))
-store.dispatch(autobahnService())
-
+const store = createStore(rootReducer, {}, applyMiddleware(...middlewares));
+store.dispatch(autobahnService());
 
 ReactDOM.render(
   <Provider store={store}>
