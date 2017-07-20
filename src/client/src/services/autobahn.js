@@ -25,59 +25,82 @@ const connection = new autobahn.Connection({
 });
 
 connection.onopen = (session, details) => {
-  subscribe(session, 'status');
-  // subscribe(session, 'status');
-  // subscribe(session, 'status');
-  // subscribe(session, 'status');
-  // subscribe(session, 'status');
+  const refRaw$ = topicSubscribe(session, 'reference')
+  
+  const refConnected$ = refRaw$
+    .filter(el => el.event === 'connection')
+    .pluck('topic')
 
-  subscribe(session, 'reference');
-  subscribe(session, 'blotter');
-  subscribe(session, 'analytics');
-  subscribe(session, 'pricing');
+  const reference$ = refRaw$
+    .filter(el => el.event === 'message')
+  
+
+  const status$ = topicSubscribe(session, 'status')
+    .filter(el => el.event === 'message')
+    .pluck('response');
+
+  
+  const priceList$ = status$
+    .filter(el => el.Type === 'reference')
+    .pluck('Instance')
+    .distinct()
+    .combineLatest(refConnected$, (instance, topic) => ({ instance, topic }))
+    .flatMap(({instance, topic}) => {
+      const remoteProcedure = instance + '.' + 'getCurrencyPairUpdatesStream';
+      return RPC(session, remoteProcedure, {}, topic);
+    })
+
+  const priceSubRaw$ = reference$
+    .pluck('response')
+    .flatMap(({Updates}) => Rx.Observable.from(Updates))
+    .flatMap(() => topicSubscribe(session, 'pricing'))
+
+  const priceSubConnected$ = priceSubRaw$
+    .filter(el => el.event === 'connection')
+    .pluck('topic')
+
+  const priceUpdates$ = status$
+    .filter(el => el.Type === 'pricing')
+    .pluck('Instance')
+    .distinct()
+    .combineLatest(priceSubConnected$, (instance, topic) => ({ instance, topic }))
+    .flatMap(({instance, topic}) => {
+      const remoteProcedure = instance + '.' + 'getPriceUpdates';
+      return RPC(session, remoteProcedure, { symbol: 'EURUSD' }, topic);
+    });
+
+  
+  const priceSubMessages$ = priceSubRaw$
+    .filter(el => el.event === 'message')
+
+  priceList$.subscribe((response) => {
+    console.log('$$$', response);
+  });
+
+  priceUpdates$.subscribe((response) => {
+    console.log('$$$', response);
+  });
+
+  priceSubMessages$.subscribe((response) => {
+    console.log('Price update', response);
+  });
 };
-// getPriceUpdates topic_pricing_owdkrb
-// getPriceUpdates topic_pricing_xxf4mv
-// getPriceUpdates topic_pricing_-xk3033
-// getPriceUpdates topic_pricing_3mzhcm
-// getPriceUpdates topic_pricing_cuf4y9
-// getPriceUpdates topic_pricing_2povb0
-// getPriceUpdates topic_pricing_-fe6psb
-// getPriceUpdates topic_pricing_kpnk84
-// getPriceUpdates topic_pricing_cx2eww
 
-  const ulgyMap = {};
   let currencyPair = '';
 
-  function subscribe(session, topicName) {
+  function topicSubscribe(session, topicName) {
     let topic = topicName === 'status' ? 'status' : `topic_${topicName}_` + (Math.random() * Math.pow(36, 8) << 0).toString(36);
-    ulgyMap[topicName] = topic;
 
-    session.subscribe(topic, response => {
-      const reponseObj = response[0];
-      console.log('RESPONSE ', topic, ulgyMap[reponseObj.Type], response[0]);
+    return Rx.Observable.create(o => {
 
-      if(reponseObj.Updates) {
-        currencyPair = reponseObj.Updates[0].CurrencyPair.Symbol;
-      } else if (reponseObj.Type === 'pricing') {
-        let remoteProcedure = reponseObj.Instance + '.' + 'getPriceUpdates';
-        const obs = requestResponse(session, remoteProcedure, {}, ulgyMap[reponseObj.Type]);        
-      } else if (reponseObj.Type === 'reference') {
-        let remoteProcedure = reponseObj.Instance + '.' + 'getCurrencyPairUpdatesStream';
-        const obs = requestResponse(session, remoteProcedure, {}, ulgyMap[reponseObj.Type]);
-        obs.subscribe((data) => {
-          console.warn(data);
-        });
-      }
-    }).then((sub) => {
-      console.log('Subscription started ', sub);
-
-      // subscription succeeded, subscription is an instance of autobahn.Subscription
-      // _log.verbose(`subscription acked on topic [${topic}]`);
-      // subscription = sub;
-    }, (error) => {
-      // subscription failed, error is an instance of autobahn.Error
-      throw new Error(error);
+      session.subscribe(topic, response => {
+        const reponseObj = response[0];
+        o.next({ event: 'message', topic, response: reponseObj }); //onmessage
+      }).then((sub) => {
+        o.next({ event: 'connection', topic, sub });// on connectiom
+      }, (error) => {
+        o.error(error);
+      });
     });
 
   }
@@ -89,7 +112,10 @@ connection.onopen = (session, details) => {
    * @param replyTo
    * @returns {Observable}
    */
-  function requestResponse(session, remoteProcedure, payload, replyTo = '') {
+  function RPC(session, remoteProcedure, payload, replyTo = '') {
+
+    console.log(session, remoteProcedure, payload, replyTo);
+
     return Rx.Observable.create(o => {
       // _log.debug(`Doing a RPC to [${remoteProcedure}]. Is connected [${_this._isConnected}]`);
 
@@ -98,7 +124,7 @@ connection.onopen = (session, details) => {
       const isDisposed = false;
       const dto = [{
         replyTo,
-        Username: 'asadasdsd', // TODO: use fake users list
+        Username: 'NGA', // TODO: use fake users list
         payload
       }];
 
