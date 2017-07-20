@@ -34,6 +34,7 @@ connection.onopen = (session, details) => {
   subscribe(session, 'reference');
   subscribe(session, 'blotter');
   subscribe(session, 'analytics');
+  subscribe(session, 'pricing');
 };
 // getPriceUpdates topic_pricing_owdkrb
 // getPriceUpdates topic_pricing_xxf4mv
@@ -46,6 +47,7 @@ connection.onopen = (session, details) => {
 // getPriceUpdates topic_pricing_cx2eww
 
   const ulgyMap = {};
+  let currencyPair = '';
 
   function subscribe(session, topicName) {
     let topic = topicName === 'status' ? 'status' : `topic_${topicName}_` + (Math.random() * Math.pow(36, 8) << 0).toString(36);
@@ -53,17 +55,19 @@ connection.onopen = (session, details) => {
 
     session.subscribe(topic, response => {
       const reponseObj = response[0];
-      console.log('RESPONSE ', ulgyMap[reponseObj.Type], response[0]);
+      console.log('RESPONSE ', topic, ulgyMap[reponseObj.Type], response[0]);
 
-      if(reponseObj.Type === 'status') {
-
+      if(reponseObj.Updates) {
+        currencyPair = reponseObj.Updates[0].CurrencyPair.Symbol;
+      } else if (reponseObj.Type === 'pricing') {
+        let remoteProcedure = reponseObj.Instance + '.' + 'getPriceUpdates';
+        const obs = requestResponse(session, remoteProcedure, {}, ulgyMap[reponseObj.Type]);        
       } else if (reponseObj.Type === 'reference') {
         let remoteProcedure = reponseObj.Instance + '.' + 'getCurrencyPairUpdatesStream';
         const obs = requestResponse(session, remoteProcedure, {}, ulgyMap[reponseObj.Type]);
         obs.subscribe((data) => {
           console.warn(data);
         });
-
       }
     }).then((sub) => {
       console.log('Subscription started ', sub);
@@ -94,15 +98,15 @@ connection.onopen = (session, details) => {
       const isDisposed = false;
       const dto = [{
         replyTo,
-        Username: 'LMO', // TODO: use fake users list
+        Username: 'asadasdsd', // TODO: use fake users list
         payload
       }];
 
       session.call(remoteProcedure, dto).then(
         result => {
           if (!isDisposed) {
-            o.next(result);
             console.log('----', result);
+            o.next(result);
             o.complete();
           } else {
             _log.verbose(`Ignoring response for remoteProcedure [${remoteProcedure}] as stream disposed`);
