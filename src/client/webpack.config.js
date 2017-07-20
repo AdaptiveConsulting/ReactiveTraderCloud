@@ -36,7 +36,7 @@ var plugins = [
 var devtool = '';
 
 if (env === 'dev') {
-  entries = entries.concat(['webpack-dev-server/client?http://localhost:3000']);
+  entries = entries.concat(['webpack-dev-server/client?http://localhost:3001']);
   output.path = path.resolve(__dirname, 'dist');
   devtool = 'eval';
   plugins.push(new webpack.HotModuleReplacementPlugin());

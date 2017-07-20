@@ -58,6 +58,8 @@
     "react-router-dom": "^4.1.1",
     "react-transform-hmr": "^1.0.4",
     "rimraf": "2.6.1",
+    "rxjs": "5.4.2",
+    "rxjs-es": "5.0.0-beta.12",
     "sass-loader": "6.0.6",
     "style-loader": "^0.18.2",
     "ts-loader": "^2.2.2",
