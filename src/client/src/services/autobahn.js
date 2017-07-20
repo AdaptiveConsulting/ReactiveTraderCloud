@@ -23,4 +23,12 @@ const connection = new autobahn.Connection({
     ]
 });
 
+connection.onopen = (session, details) => {
+    let topicName = 'topic_reference_' + (Math.random() * Math.pow(36, 8) << 0).toString(36);
+    session.subscribe(topicName).then(res => {
+        console.log('result:', result)
+    })
+    
+};
+
 export default connection;
