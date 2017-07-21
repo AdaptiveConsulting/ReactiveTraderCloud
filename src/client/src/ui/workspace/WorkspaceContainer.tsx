@@ -1,5 +1,5 @@
-import * as React from 'react';
-import SpotTile from './SpotTile';
+import * as React from 'react'
+import SpotTile from './SpotTile'
 
 class WorkspaceContainer extends React.Component<any, {}> {
   public render() {
@@ -9,8 +9,8 @@ class WorkspaceContainer extends React.Component<any, {}> {
           <SpotTile />
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default WorkspaceContainer;
+export default WorkspaceContainer

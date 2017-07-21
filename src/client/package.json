@@ -39,6 +39,10 @@
   },
   "devDependencies": {
     "@types/autobahn": "0.9.35",
+    "@types/classnames": "2.2.0",
+    "@types/moment": "2.13.0",
+    "@types/node": "8.0.14",
+    "@types/numeral": "0.0.21",
     "@types/react": "^15.0.38",
     "@types/react-dom": "^15.5.1",
     "@types/react-redux": "^4.4.46",

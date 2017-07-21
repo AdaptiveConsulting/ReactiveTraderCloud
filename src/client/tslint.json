@@ -8,5 +8,8 @@
     "object-literal-sort-keys": false,
     "member-ordering": false,
     "semicolon": [true, "never"]
+  },
+  "lint": {
+    "exclude": "**/node_modules/**/*"
   }
 }

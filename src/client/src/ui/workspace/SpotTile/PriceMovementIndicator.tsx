@@ -1,5 +1,5 @@
-import React from 'react'
-import classnames from 'classnames'
+import * as React from 'react'
+import * as classnames from 'classnames'
 import './priceMovement.scss'
 
 const priceMovementTypes = {
@@ -34,7 +34,7 @@ const PriceMovementIndicator = (props: PriceMovementIndicatorProps) => {
       'fa-caret-down': priceMovementType === priceMovementTypes.Down,
     },
     {
-      'price-movement__icon--inactive': priceMovementType ===  priceMovementTypes.Up,
+      'price-movement__icon--inactive': priceMovementType === priceMovementTypes.Up,
     },
   )
 
