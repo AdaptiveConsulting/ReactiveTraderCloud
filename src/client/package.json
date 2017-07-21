@@ -22,7 +22,9 @@
   "scripts": {
     "start": "cross-env NODE_ENV=dev node dev.server.js",
     "build": "rimraf dist  && cross-env NODE_ENV=prod webpack",
-    "lint": "tslint 'src/**/*.{ts,tsx}'"
+    "lint": "tslint 'src/**/*.{ts,tsx}'",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "license": "MIT",
   "dependencies": {
@@ -69,6 +71,7 @@
     "typescript": "^2.4.1",
     "url-loader": "0.5.9",
     "webpack": "^3.2.0",
-    "webpack-dev-server": "^2.5.1"
+    "webpack-dev-server": "^2.5.1",
+    "@storybook/react": "^3.1.9"
   }
 }
