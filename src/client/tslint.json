@@ -1,9 +1,8 @@
 {
-  "extends": ["tslint:latest", "tslint-react"],
+  "extends": ["tslint-config-airbnb"],
   "rules": {
     "quotemark": [true, "single", "jsx-double"],
     "ordered-imports": false,
-    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
     "interface-name": [true, "never-prefix"],
     "no-console": false,
     "object-literal-sort-keys": false,

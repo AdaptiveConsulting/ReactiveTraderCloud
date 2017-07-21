@@ -1,1 +1,1 @@
-export {default as WorkspaceContainer} from './WorkspaceContainer'
+export { default as WorkspaceContainer } from './WorkspaceContainer';
