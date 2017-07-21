@@ -7,6 +7,6 @@
     "no-console": false,
     "object-literal-sort-keys": false,
     "member-ordering": false,
-    "semicolon": [true, "never"],
+    "semicolon": [true, "never"]
   }
 }

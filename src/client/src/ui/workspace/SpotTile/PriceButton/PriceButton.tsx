@@ -20,13 +20,16 @@ const PriceButton = (props: PriceButtonProps) => {
   let classes = classnames(
     'price-button',
     props.className
-  );
-  let paddedPips = rate.pips.toString().length === 1
+  )
+
+  const paddedPips = rate.pips.toString().length === 1
     ? `0${rate.pips}`
-    : rate.pips;
+    : rate.pips
+
   let bigFigureDisplay = rate.bigFigure === Math.floor(rate.rawRate)
     ? `${rate.bigFigure}.`
-    : rate.bigFigure;
+    : rate.bigFigure
+
   if (bigFigureDisplay.toString().length === 3) {
     bigFigureDisplay += '0'
   }
