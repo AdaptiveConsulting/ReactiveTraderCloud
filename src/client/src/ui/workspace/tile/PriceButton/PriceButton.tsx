@@ -1,11 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import './priceButton.scss'
-
-const direction = {
-  Buy: 'Buy',
-  Sell: 'Sell',
-}
+import './price-button.scss'
 
 interface PriceButtonProps {
   className: string
