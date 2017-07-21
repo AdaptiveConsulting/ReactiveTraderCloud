@@ -54,23 +54,17 @@ export default class SpotTileView extends React.Component<SpotTileViewProps, {}>
     });
 
     const formattedDate = props.currentSpotPrice ? moment(props.currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT) : '';
-    const className = classnames(
-      'spot-tile',
-      {
-        'spot-tile--stale': (!props.pricingConnected || props.priceStale) && !(props.hasNotification && props.notification.notificationType === notificationType.Trade),
-        'spot-tile--readonly': !props.executionConnected,
-        'spot-tile--executing': props.isTradeExecutionInFlight,
-        'spot-tile--error': props.hasNotification && props.notification.error,
-      },
-    );
+    const className = classnames('spot-tile', {
+      'spot-tile--stale': (!props.pricingConnected || props.priceStale) && !(props.hasNotification && props.notification.notificationType === notificationType.Trade),
+      'spot-tile--readonly': !props.executionConnected,
+      'spot-tile--executing': props.isTradeExecutionInFlight,
+      'spot-tile--error': props.hasNotification && props.notification.error,
+    });
 
-    const newWindowClassName = classnames(
-      'popout__controls  glyphicon glyphicon-new-window',
-      {
-        'spot-tile__icon--tearoff': !props.canPopout,
-        'spot-tile__icon--hidden': props.canPopout
-      }
-    );
+    const newWindowClassName = classnames('popout__controls  glyphicon glyphicon-new-window', {
+      'spot-tile__icon--tearoff': !props.canPopout,
+      'spot-tile__icon--hidden': props.canPopout,
+    });
     const spotTileContent = (
       <div>
         <span className="spot-tile__execution-label">Executing</span>
@@ -82,20 +76,20 @@ export default class SpotTileView extends React.Component<SpotTileViewProps, {}>
           maxValue={props.maxNotional}
           currencyPair={props.currencyPair}/>
         <div className={spotDateClass}>
-          <span className='spot-tile__tenor'>SP</span>
-          <span className='spot-tile__delivery-date'>. {formattedDate}</span>
+          <span className="spot-tile__tenor">SP</span>
+          <span className="spot-tile__delivery-date">. {formattedDate}</span>
         </div>
       </div>
     );
     return (
       <div className={className}>
-        <div className='spot-tile__container'>
-          <div className='spot-tile__controls'>
+        <div className="spot-tile__container">
+          <div className="spot-tile__controls">
             <i className={chartIQIconClassName}
                onClick={() => this._displayCurrencyChart()}/>
             <i className={newWindowClassName}
                onClick={() => replaceWithAction('popOutTile', {})}/>
-            <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
+            <i className="popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out"
                onClick={() => replaceWithAction('undockTile', {})}/>
           </div>
           {!props.hasNotification ? spotTileContent : notification}
@@ -110,25 +104,25 @@ export default class SpotTileView extends React.Component<SpotTileViewProps, {}>
 
   _createPriceComponents() {
     const props = this.props;
-    const pricingContainerClass = classnames({ 'hide': props.hasNotification });
+    const pricingContainerClass = classnames({ hide: props.hasNotification });
     if (props.currentSpotPrice === null) {
       return null;
     }
     return (
       <div className={pricingContainerClass}>
-        <span className='spot-tile__symbol'>{props.title}</span>
+        <span className="spot-tile__symbol">{props.title}</span>
         <PriceButton
-          className='spot-tile__price spot-tile__price--bid'
+          className="spot-tile__price spot-tile__price--bid"
           direction={direction.Sell}
           onExecute={() => this._onExecuteTrade(direction.Sell)}
           rate={props.currentSpotPrice.bid}/>
-        <div className='spot-tile__price-movement'>
+        <div className="spot-tile__price-movement">
           <PriceMovementIndicator
             priceMovementType={props.currentSpotPrice.priceMovementType}
             spread={props.currentSpotPrice.spread}/>
         </div>
         <PriceButton
-          className='spot-tile__price spot-tile__price--ask'
+          className="spot-tile__price spot-tile__price--ask"
           direction={direction.Buy}
           onExecute={() => this._onExecuteTrade(direction.Buy)}
           rate={props.currentSpotPrice.ask}/>
@@ -138,7 +132,7 @@ export default class SpotTileView extends React.Component<SpotTileViewProps, {}>
 
   _onExecuteTrade(direction:Direction) {
     if (this.props.executionConnected) {
-      replaceWithAction('executeTrade', {direction});
+      replaceWithAction('executeTrade', { direction });
     }
   }
 
@@ -148,13 +142,13 @@ export default class SpotTileView extends React.Component<SpotTileViewProps, {}>
       if (props.notification.notificationType === notificationType.Trade) {
         return (
           <TradeNotification
-            className='spot-tile__trade-summary'
+            className="spot-tile__trade-summary"
             tradeExecutionNotification={props.notification}
-            onDismissedClicked={(e) => replaceWithAction('tradeNotificationDismissed', {})}/>
+            onDismissedClicked={e => replaceWithAction('tradeNotificationDismissed', {})}/>
         );
       } else if (props.notification.notificationType === notificationType.Text) {
         return (
-          <div className='spot-tile__notification-message'>{props.notification.message}</div>
+          <div className="spot-tile__notification-message">{props.notification.message}</div>
         );
       } else {
         throw new Error(`Unknown notification type ${props.notification.notificationType}`);
