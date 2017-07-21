@@ -15,15 +15,15 @@ const NUMERAL_FORMAT      = '0,000,000[.]00',
 
 const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]; //K, M, k, m
 
-export default class NotionalInput extends React.Component {
+export interface NotionalInputProps {
+  className: string
+  notional: number,
+  currencyPair: React.PropTypes.instanceOf(CurrencyPair),
+  onChange: React.PropTypes.func,
+  maxValue: React.PropTypes.number
+}
 
-  static propTypes = {
-    className: React.PropTypes.string,
-    notional: React.PropTypes.number,
-    currencyPair: React.PropTypes.instanceOf(CurrencyPair),
-    onChange: React.PropTypes.func,
-    maxValue: React.PropTypes.number
-  };
+export default class NotionalInput extends React.Component<NotionalInputProps> {
 
   shouldComponentUpdate(nextProps, nextState){
     return this.props.className !== nextProps.className ||

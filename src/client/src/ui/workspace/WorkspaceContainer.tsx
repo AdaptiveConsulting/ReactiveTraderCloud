@@ -1,12 +1,12 @@
 import * as React from 'react';
-import SpotTileView from './tile/SpotTileView';
+import SpotTile from './SpotTile';
 
 class WorkspaceContainer extends React.Component<any, {}> {
   public render() {
     return (
       <div className="shell__workspace">
         <div className="workspace-region">
-          <SpotTileView />
+          <SpotTile />
         </div>
       </div>
     );
