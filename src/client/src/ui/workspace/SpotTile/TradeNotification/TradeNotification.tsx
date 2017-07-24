@@ -5,17 +5,22 @@ import './trade-notification.scss';
 
 interface TradeNotificationProps {
   className: string
-  tradeExecutionNotification: {},
+  tradeExecutionNotification: {
+    hasError: boolean
+    status: any
+    dealtCurrency: string
+    notional: number
+    termsCurrency: any
+    direction: string
+    spotRate: number
+    formattedValueDate: string
+    tradeId: string
+  },
   onDismissedClicked: () => void
 }
 
-type TradeStatus = {
-  rejected: string,
-  done: string,
-  pending: string
-}
 
-const tradeStatus: TradeStatus = {
+const tradeStatus = {
   rejected: 'Rejected',
   done: 'Done',
   pending: 'Pending'
