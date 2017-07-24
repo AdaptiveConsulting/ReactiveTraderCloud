@@ -6,15 +6,16 @@ import './trade-notification.scss'
 interface TradeNotificationProps {
   className: string,
   tradeExecutionNotification: {
-    hasError: boolean,
-    status: any,
-    dealtCurrency: string,
-    notional: number,
-    termsCurrency: any,
-    direction: string,
-    spotRate: number,
-    formattedValueDate: string,
-    tradeId: string,
+    hasError: boolean
+    status: any
+    dealtCurrency: string
+    notional: number
+    termsCurrency: any
+    direction: string
+    spotRate: number
+    formattedValueDate: string
+    // tslint:disable-next-line:trailing-comma
+    tradeId: string
   },
   onDismissedClicked: () => void
 }
