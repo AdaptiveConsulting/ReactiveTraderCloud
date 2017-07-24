@@ -5,9 +5,9 @@ import { WorkspaceContainer } from './../workspace'
 import { BlotterContainer } from './../blotter'
 import { AnalyticsContainer } from './../analytics'
 
-import './main.scss';
-import '../common/styles/_base.scss';
-import '../common/styles/_fonts.scss';
+import './main.scss'
+import '../common/styles/_base.scss'
+import '../common/styles/_fonts.scss'
 
 class MainContainer extends React.Component<any, {}> {
 
@@ -36,4 +36,4 @@ const mapStateToProps = (state: any): object => {
   return { isLoaded: state.isLoaded }
 }
 
-export default connect(mapStateToProps)(MainContainer);
+export default connect(mapStateToProps)(MainContainer)

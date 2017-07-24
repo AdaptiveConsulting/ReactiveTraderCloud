@@ -59,7 +59,7 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
     const classNames = classnames(
       'trade-notification',
       className,
-      { 'trade-notification--rejected': tradeExecutionNotification.status === tradeStatus.rejected }
+      { 'trade-notification--rejected': tradeExecutionNotification.status === tradeStatus.rejected },
     )
     return (
       <div className={classNames}>
