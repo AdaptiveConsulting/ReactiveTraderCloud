@@ -1,5 +1,5 @@
-import React from 'react'
-import classnames from 'classnames'
+import * as React from 'react'
+import * as classnames from 'classnames'
 import './price-button.scss'
 
 interface PriceButtonProps {
@@ -9,17 +9,18 @@ interface PriceButtonProps {
     pips: any
     bigFigure: number
     pipFraction: number
-    rawRate: number
+    rawRate: number,
   },
   onExecute: () => void
 }
 
+// tslint:disable-next-line:variable-name
 const PriceButton = (props: PriceButtonProps) => {
-  const { direction, rate } = props;
+  const { direction, rate } = props
 
-  let classes = classnames(
+  const classes = classnames(
     'price-button',
-    props.className
+    props.className,
   )
 
   const paddedPips = rate.pips.toString().length === 1
