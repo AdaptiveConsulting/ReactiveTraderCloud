@@ -9,7 +9,8 @@ interface PriceButtonProps {
     pips: any
     bigFigure: number
     pipFraction: number
-    rawRate: number,
+    // tslint:disable-next-line:trailing-comma
+    rawRate: number
   },
   onExecute: () => void
 }
@@ -17,12 +18,7 @@ interface PriceButtonProps {
 // tslint:disable-next-line:variable-name
 const PriceButton = (props: PriceButtonProps) => {
   const { direction, rate } = props
-
-  const classes = classnames(
-    'price-button',
-    props.className,
-  )
-
+  const classes = classnames('price-button', props.className)
   const paddedPips = rate.pips.toString().length === 1
     ? `0${rate.pips}`
     : rate.pips
