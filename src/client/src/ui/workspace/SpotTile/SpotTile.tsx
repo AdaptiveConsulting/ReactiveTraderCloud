@@ -1,7 +1,7 @@
-import React from 'react'
-import classnames from 'classnames'
+import * as React from 'react'
+import * as classnames from 'classnames'
 import { PriceMovementIndicator, PriceButton, NotionalInput, TradeNotification } from './'
-import moment from 'moment/src/moment'
+import * as moment from 'moment'
 import './spotTile.scss'
 
 const SPOT_DATE_FORMAT = 'DD MMM'
@@ -10,22 +10,35 @@ const SPOT_DATE_FORMAT = 'DD MMM'
 function replaceWithAction(a: any, b: any): void {
   return
 }
-type Direction = 'Buy' | 'Sell'
 type NotificationType = 'Trade' | 'Sell'
+interface Notification {
+  error: any
+  // tslint:disable-next-line:trailing-comma
+  notificationType: NotificationType
+}
 interface CurrentSpotPrice {
   ask: any
   bid: any
-  priceMovementType: number
-  spread: number
+  priceMovementType: string
+  spread: {
+    // tslint:disable-next-line:trailing-comma
+    formattedValue: string
+  }
   valueDate: number
 }
+interface Direction {
+  name: 'Buy' | 'Sell' | string
+}
+const directionBuy = { name: 'Buy' }
+const directionSell = { name: 'Buy' }
 
 export interface SpotTileProps {
   canPopout: boolean
   currencyChartIsOpening: boolean
   currencyPair: {
     symbol: string
-    base: string
+    // tslint:disable-next-line:trailing-comma
+    base: number
   }
   currentSpotPrice: CurrentSpotPrice
   executionConnected: boolean
@@ -33,9 +46,7 @@ export interface SpotTileProps {
   isRunningInOpenFin: boolean
   isTradeExecutionInFlight: boolean
   maxNotional: number
-  notification: {
-    notificationType: NotificationType
-  }
+  notification: Notification
   notional: number
   priceStale: boolean
   pricingConnected: boolean
@@ -46,14 +57,15 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   props: SpotTileProps
 
   render() {
-    const props = this.props
-    const { canPopout, currencyChartIsOpening, currentSpotPrice, hasNotification, notification, title } = props
+    const { canPopout, currencyChartIsOpening, currentSpotPrice, currencyPair, executionConnected, 
+      hasNotification, isRunningInOpenFin, isTradeExecutionInFlight, maxNotional, notification, 
+      notional, priceStale, pricingConnected, title } = this.props
 
     const notionalInputClass = classnames('spot-tile__notional', { hide: hasNotification })
     const spotDateClass = classnames('spot-tile__delivery', { hide: hasNotification })
     const generatedNotification = hasNotification ? this.createNotification(notification) : null
     const priceComponents = this.createPriceComponents(title, currentSpotPrice, !hasNotification)
-    const showChartIQIcon = props.isRunningInOpenFin
+    const showChartIQIcon = isRunningInOpenFin
 
     const chartIQIconClassName = classnames({
       'spot-tile__icon--hidden': !showChartIQIcon,
@@ -61,11 +73,14 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
       'spot-tile__icon--chart glyphicon glyphicon-stats': !currencyChartIsOpening,
     })
 
-    const formattedDate = currentSpotPrice ? moment(currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT) : ''
+    const formattedDate = currentSpotPrice ?
+      moment(currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT)
+      : ''
     const className = classnames('spot-tile', {
-      'spot-tile--stale': (!props.pricingConnected || props.priceStale) && !(hasNotification && notification.notificationType === 'Trade'),
-      'spot-tile--readonly': !props.executionConnected,
-      'spot-tile--executing': props.isTradeExecutionInFlight,
+      'spot-tile--stale': (!pricingConnected || priceStale) &&
+        !(hasNotification && notification.notificationType === 'Trade'),
+      'spot-tile--readonly': !executionConnected,
+      'spot-tile--executing': isTradeExecutionInFlight,
       'spot-tile--error': hasNotification && notification.error,
     })
 
@@ -79,10 +94,10 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         {priceComponents}
         <NotionalInput
           className={notionalInputClass}
-          notional={props.notional}
+          notional={notional}
           onChange={notional => replaceWithAction('notionalChanged', { notional })}
-          maxValue={props.maxNotional}
-          currencyPair={props.currencyPair}/>
+          maxValue={maxNotional}
+          currencyPair={currencyPair}/>
         <div className={spotDateClass}>
           <span className="spot-tile__tenor">SP</span>
           <span className="spot-tile__delivery-date">. {formattedDate}</span>
@@ -120,8 +135,8 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         <span className="spot-tile__symbol">{title}</span>
         <PriceButton
           className="spot-tile__price spot-tile__price--bid"
-          direction={'Sell'}
-          onExecute={() => this.executeTrade('Sell')}
+          direction={directionSell}
+          onExecute={() => this.executeTrade(directionSell)}
           rate={currentSpotPrice.bid}/>
         <div className="spot-tile__price-movement">
           <PriceMovementIndicator
@@ -130,8 +145,8 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         </div>
         <PriceButton
           className="spot-tile__price spot-tile__price--ask"
-          direction={'Buy'}
-          onExecute={() => this.executeTrade('Buy')}
+          direction={directionBuy}
+          onExecute={() => this.executeTrade(directionBuy)}
           rate={currentSpotPrice.ask}/>
       </div>
     )
@@ -143,13 +158,13 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     }
   }
 
-  createNotification(notification) {
+  createNotification(notification: any) {
     if (notification.notificationType === 'Trade') {
       return (
         <TradeNotification
           className="spot-tile__trade-summary"
           tradeExecutionNotification={notification}
-          onDismissedClicked={e => replaceWithAction('tradeNotificationDismissed', {})}/>
+          onDismissedClicked={() => replaceWithAction('tradeNotificationDismissed', {})}/>
       )
     } else if (notification.notificationType === 'Text') {
       return (

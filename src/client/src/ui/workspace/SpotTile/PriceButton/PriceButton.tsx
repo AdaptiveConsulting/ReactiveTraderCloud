@@ -4,7 +4,7 @@ import './price-button.scss'
 
 interface PriceButtonProps {
   className: string
-  direction: { name: string, Buy: string, Sell: string }
+  direction: { name: 'Buy' | 'Sell' | string }
   rate: {
     pips: any
     bigFigure: number
