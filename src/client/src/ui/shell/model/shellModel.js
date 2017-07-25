@@ -1,29 +1,28 @@
-import { Router, observeEvent } from 'esp-js';
+import { observeEvent } from 'esp-js';
 import { viewBinding } from 'esp-js-react';
 import { logger } from '../../../system';
-import { Connection } from '../../../system/service';
 import { ConnectionStatus } from '../../../system/service';
 import { ModelBase } from '../../common';
 import { WellKnownModelIds } from '../../../';
 import ShellView from '../views/shellView';
 
-var _log:logger.Logger = logger.create('ShellModel');
+var _log = logger.create('ShellModel');
 
 @viewBinding(ShellView)
 export default class ShellModel extends ModelBase {
-  _connection:Connection;
-  sessionExpired:boolean;
-  wellKnownModelIds:WellKnownModelIds;
+  _connection;
+  sessionExpired;
+  wellKnownModelIds;
 
-  _blotterRegionModel:SingleItemRegionModel;
-  _sidebarRegionModel:SingleItemRegionModel;
+  _blotterRegionModel;
+  _sidebarRegionModel;
 
   constructor(
-    modelId:string,
-    router:Router,
-    connection:Connection,
-    blotterRegionModel:SingleItemRegionModel,
-    sidebarRegionModel:SingleItemRegionModel
+    modelId,
+    router,
+    connection,
+    blotterRegionModel,
+    sidebarRegionModel
   ) {
     super(modelId, router);
     this._connection = connection;
@@ -51,7 +50,7 @@ export default class ShellModel extends ModelBase {
       this._connection.connectionStatusStream.subscribeWithRouter(
         this.router,
         this.modelId,
-        (status:String) => {
+        (status) => {
           this.sessionExpired = status === ConnectionStatus.sessionExpired;
         },
         err => {

@@ -3,11 +3,11 @@ import { HistoricPosition } from '../../../services/model';
 import numeral from 'numeral';
 
 export default class PnlChartModel  {
-  options:Object;
-  lastPos:string;
-  minPnl:number;
-  maxPnl:number;
-  _seriesData:Array<PricePoint>;
+  options;
+  lastPos;
+  minPnl;
+  maxPnl;
+  _seriesData;
 
   constructor() {
     this._seriesData = [];
@@ -32,7 +32,7 @@ export default class PnlChartModel  {
     };
   }
 
-  get hasData() : Boolean {
+  get hasData() {
     return this._seriesData.length > 0;
   }
 
@@ -46,7 +46,7 @@ export default class PnlChartModel  {
     }];
   }
 
-  update(positions):Array<HistoricPosition> {
+  update(positions) {
     let { lastPos, minPnl, maxPnl, series } = this._processUpdate(positions);
     this.lastPos = lastPos;
     this.minPnl = minPnl;
@@ -54,13 +54,13 @@ export default class PnlChartModel  {
     this._seriesData = series;
   }
 
-  _processUpdate(positions:Array<HistoricPosition> = []):{ lastPos:string, domainMin:number,domainMax:number, series:Array<PricePoint>  } {
-    let lastPos:string,
-      minPnl:number = 0,
-      maxPnl:number = 0;
-    let series:Array<PricePoint> = _(positions)
-      .filter((item:HistoricPosition) => item && item.usdPnl != null)
-      .map((item:HistoricPosition) => {
+  _processUpdate(positions = []) {
+    let lastPos,
+      minPnl = 0,
+      maxPnl = 0;
+    let series = _(positions)
+      .filter((item) => item && item.usdPnl != null)
+      .map((item) => {
         lastPos = item.usdPnl.toFixed(2);
         minPnl = Math.min(minPnl, item.usdPnl);
         maxPnl = Math.max(maxPnl, item.usdPnl);

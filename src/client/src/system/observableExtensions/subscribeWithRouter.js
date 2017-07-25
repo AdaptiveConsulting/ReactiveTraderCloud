@@ -17,12 +17,12 @@ import { Guard } from '../';
  * @param onError
  * @param onCompleted
  */
-Rx.Observable.prototype.subscribeWithRouter = function<T, TModel>(
-  router : Router,
-  modelId: String,
-  onNext?: (value: T, model : TModel) => void,
-  onError?: (exception: any, model : TModel) => void,
-  onCompleted?: (model : TModel) => void) : Rx.Disposable {
+Rx.Observable.prototype.subscribeWithRouter = function(
+  router,
+  modelId,
+  onNext,
+  onError,
+  onCompleted) {
 
   Guard.isDefined(router, 'router should be defined');
   Guard.isString(modelId, 'modelId should be defined and a string');

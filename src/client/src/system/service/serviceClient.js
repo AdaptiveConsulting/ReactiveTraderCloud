@@ -16,16 +16,16 @@ import LastValueObservableDictionary from './lastValueObservableDictionary';
  * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
 export default class ServiceClient extends DisposableBase {
-  _log:logger.Logger;
-  _serviceType:string;
-  _serviceInstanceDictionaryStream:Rx.Observable<LastValueObservableDictionary>;
-  _isConnectCalled:boolean;
+  _log;
+  _serviceType;
+  _serviceInstanceDictionaryStream;
+  _isConnectCalled;
 
-  static get HEARTBEAT_TIMEOUT():number {
+  static get HEARTBEAT_TIMEOUT() {
     return 3000;
   }
 
-  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService) {
+  constructor(serviceType, connection, schedulerService) {
     super();
     Guard.stringIsNotEmpty(serviceType, 'serviceType required and should not be empty');
     Guard.isDefined(connection, 'connection required');
@@ -46,7 +46,7 @@ export default class ServiceClient extends DisposableBase {
    *
    * @returns {Observable<T>}
    */
-  get serviceStatusStream():Rx.Observable<ServiceStatus> {
+  get serviceStatusStream() {
     let _this = this;
     return this._serviceInstanceDictionaryStream
       .select(cache => _this._createServiceStatus(cache))
@@ -55,7 +55,7 @@ export default class ServiceClient extends DisposableBase {
   }
 
   // connects the underlying status observable
-  connect():void {
+  connect() {
     if(!this._isConnectCalled) {
       this._isConnectCalled = true;
       this.addDisposable(this._serviceInstanceDictionaryStream.connect());
@@ -73,7 +73,7 @@ export default class ServiceClient extends DisposableBase {
    * @returns {Observable}
    * @private
    */
-  _createServiceInstanceDictionaryStream(serviceType:string):Rx.Observable<LastValueObservableDictionary> {
+  _createServiceInstanceDictionaryStream(serviceType) {
     let _this = this;
     return Rx.Observable.create(o => {
       let connectionStatus = this._connection.connectionStatusStream
@@ -116,9 +116,9 @@ export default class ServiceClient extends DisposableBase {
    * @param waitForSuitableService if true, will wait for a service to become available before requesting, else will error the stream
    * @returns {Observable}
    */
-  createRequestResponseOperation<TRequest, TResponse>(operationName:string, request:TRequest, waitForSuitableService:boolean = false):Rx.Observable<TResponse> {
+  createRequestResponseOperation(operationName, request, waitForSuitableService = false) {
     let _this = this;
-    return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
+    return Rx.Observable.create((o) => {
       _this._log.debug(`Creating request response operation for [${operationName}]`);
       let disposables = new Rx.CompositeDisposable();
       let hasSubscribed = false;
@@ -130,7 +130,7 @@ export default class ServiceClient extends DisposableBase {
             } else if (!hasSubscribed) {
               hasSubscribed = true;
               _this._log.debug(`Will use service instance [${serviceInstanceStatus.serviceId}] for request/response operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`);
-              let remoteProcedure:string = serviceInstanceStatus.serviceId + '.' + operationName;
+              let remoteProcedure = serviceInstanceStatus.serviceId + '.' + operationName;
               disposables.add(
                 _this._connection.requestResponse(remoteProcedure, request).subscribe(
                   response => {
@@ -165,9 +165,9 @@ export default class ServiceClient extends DisposableBase {
    * @param request
    * @returns {Observable}
    */
-  createStreamOperation<TRequest, TResponse>(operationName:string, request:TRequest):Rx.Observable<TResponse> {
+  createStreamOperation(operationName, request) {
     let _this = this;
-    return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
+    return Rx.Observable.create((o) => {
       _this._log.debug(`Creating stream operation for [${operationName}]`);
       let disposables = new Rx.CompositeDisposable();
       // The backend has a different contract for streams (i.e. request-> n responses) as it does with request-response (request->single response) thus
@@ -202,7 +202,7 @@ export default class ServiceClient extends DisposableBase {
                   }
                 )
               );
-              let remoteProcedure:string = serviceInstanceStatus.serviceId + '.' + operationName;
+              let remoteProcedure = serviceInstanceStatus.serviceId + '.' + operationName;
               disposables.add(
                 _this._connection.requestResponse(remoteProcedure, request, topicName).subscribe(
                   _ => {
@@ -229,9 +229,9 @@ export default class ServiceClient extends DisposableBase {
     });
   }
 
-  _createServiceStatus(cache:LastValueObservableDictionary):ServiceStatus {
-    let serviceInstanceStatuses : Array<ServiceInstanceStatus> = _.values(cache.values).map((item:LastValueObservable<ServiceInstanceStatus>) => item.latestValue);
-    let isConnected : Boolean = _(cache.values).some((item:LastValueObservable<ServiceInstanceStatus>) => item.latestValue.isConnected);
+  _createServiceStatus(cache) {
+    let serviceInstanceStatuses = _.values(cache.values).map((item) => item.latestValue);
+    let isConnected = _(cache.values).some((item) => item.latestValue.isConnected);
     return new ServiceStatus(this._serviceType, serviceInstanceStatuses, isConnected);
   }
 }

@@ -1,23 +1,21 @@
 import Rx from 'rx';
 import { TradeMapper } from './mappers';
-import { Connection, ServiceBase } from '../system/service';
-import { logger, SchedulerService, RetryPolicy } from '../system';
-import { ReferenceDataService } from './';
-import { TradesUpdate } from '../services/model';
+import { ServiceBase } from '../system/service';
+import { logger, RetryPolicy } from '../system';
 
-var _log:logger.Logger = logger.create('BlotterService');
+var _log = logger.create('BlotterService');
 
 export default class BlotterService extends ServiceBase {
 
-  constructor(serviceType:string,
-              connection:Connection,
-              schedulerService:SchedulerService,
-              referenceDataService:ReferenceDataService) {
+  constructor(serviceType,
+              connection,
+              schedulerService,
+              referenceDataService) {
     super(serviceType, connection, schedulerService);
     this._tradeMapper = new TradeMapper(referenceDataService);
   }
 
-  getTradesStream() : Rx.Observable<TradesUpdate> {
+  getTradesStream() {
     let _this = this;
     return Rx.Observable.create(
       o => {

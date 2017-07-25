@@ -1,11 +1,11 @@
 import { Router, DisposableBase } from 'esp-js';
 import { logger, Guard } from '../../system';
 
-var _log:logger.Logger = logger.create('ModelBase');
+var _log = logger.create('ModelBase');
 
 export default class ModelBase extends DisposableBase {
-  _modelId:string;
-  router:Router;
+  _modelId;
+  router;
 
   constructor(modelId, router) {
     super();
@@ -29,14 +29,14 @@ export default class ModelBase extends DisposableBase {
    * Runs the given action on the dispatch loop for this model, ensures that any model observer will be notified of the change
    * @param action
    */
-  ensureOnDispatchLoop(action:() => void) {
+  ensureOnDispatchLoop(action) {
     // TODO update when https://github.com/esp/esp-js/issues/86 is implemented
     this.router.runAction(this.modelId, ()=>{
       action();
     });
   }
 
-  get modelId():string {
+  get modelId() {
     return this._modelId;
   }
 }

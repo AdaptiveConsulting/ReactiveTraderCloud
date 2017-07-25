@@ -1,6 +1,12 @@
+// TODO: this should be a Typescript enum
+
 class PriceMovementType {
 
-  name:string;
+  name;
+
+  constructor(name) {
+    this.name = name;
+  }
 
   static get None() {
     return this._none;
@@ -12,10 +18,6 @@ class PriceMovementType {
 
   static get Down() {
     return this._down;
-  }
-
-  constructor(name:string) {
-    this.name = name;
   }
 }
 

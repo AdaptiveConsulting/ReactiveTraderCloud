@@ -11,11 +11,11 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
  * @param scheduler
  * @returns {Logger|Object}
  */
-function debounceOnMissedHeartbeat<TKey, TValue>(dueTime:number, onDebounceItemFactory:(key:TKey) => TValue, scheduler:Rx.Scheduler) {
-  let sources:Rx.GroupedObservable = this;
+function debounceOnMissedHeartbeat(dueTime, onDebounceItemFactory, scheduler) {
+  let sources = this;
   return Rx.Observable.create(o => {
     return sources.subscribe(innerSource => {
-        let key:TKey = innerSource.key;
+        let key = innerSource.key;
         let debouncedStream = innerSource.debounceWithSelector(dueTime, () => onDebounceItemFactory(key), scheduler);
         o.onNext(debouncedStream);
       },
@@ -34,7 +34,7 @@ Rx.Observable.prototype.debounceOnMissedHeartbeat = debounceOnMissedHeartbeat;
  * @param keySelector
  * @returns {Logger|Object}
  */
-function toServiceStatusObservableDictionary<TKey, TValue>(keySelector:(value:TValue) => TKey):Rx.Observable<ServiceInstanceCache> {
+function toServiceStatusObservableDictionary(keySelector) {
   let sources = this;
   return Rx.Observable.create(o => {
     let dictionary = new LastValueObservableDictionary();
@@ -76,15 +76,15 @@ Rx.Observable.prototype.toServiceStatusObservableDictionary = toServiceStatusObs
  * @param waitForServiceIfNoneAvailable
  * @returns {Observable}
  */
-function getServiceWithMinLoad(waitForServiceIfNoneAvailable:boolean = true):Rx.Observable<LastValueObservable<ServiceInstanceStatus>> {
-  let source:Rx.Observable<LastValueObservableDictionary<ServiceInstanceStatus>> = this;
+function getServiceWithMinLoad(waitForServiceIfNoneAvailable = true) {
+  let source = this;
   return Rx.Observable.create(o => {
     let disposables = new Rx.CompositeDisposable();
     let findServiceInstanceDisposable = new Rx.SingleAssignmentDisposable();
     disposables.add(findServiceInstanceDisposable);
     findServiceInstanceDisposable = source.subscribe(
       dictionary => {
-        let serviceWithLeastLoad:LastValueObservable<ServiceInstanceStatus> = _(dictionary.values)
+        let serviceWithLeastLoad = _(dictionary.values)
           .sortBy(i => i.latestValue.serviceLoad)
           .find(i => i.latestValue.isConnected);
         if (serviceWithLeastLoad) {
@@ -110,8 +110,8 @@ Rx.Observable.prototype.getServiceWithMinLoad = getServiceWithMinLoad;
 /**
  * Adds distinctUntilChanged semantics to inner streams of a grouped observable
  */
-function distinctUntilChangedGroup<TKey, TValue>(keySelector:(value:TValue) => Object) : Rx.Observable<Rx.Observable<TValue>> {
-  let sources:Rx.Observable<Rx.Observable<TValue>> = this;
+function distinctUntilChangedGroup(keySelector) {
+  let sources = this;
   return Rx.Observable.create(o => {
     return sources.subscribe(innerSource => {
         var distinctStream = innerSource.distinctUntilChanged(value => keySelector(value));
@@ -132,7 +132,7 @@ Rx.Observable.prototype.distinctUntilChangedGroup = distinctUntilChangedGroup;
  * @param scheduler
  * @returns {Observable}
  */
-function debounceWithSelector(dueTime:number, itemSelector:() => TValue, scheduler:Rx.Scheduler) {
+function debounceWithSelector(dueTime, itemSelector, scheduler) {
   let source = this;
   return Rx.Observable.create(o => {
     let disposables = new Rx.CompositeDisposable();

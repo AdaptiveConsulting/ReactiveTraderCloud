@@ -2,10 +2,10 @@ import system from 'system';
 import StubAutobahnProxy from './stub-autobahn-proxy';
 
 describe('Connection', () => {
-  let _stubAutobahnProxy:StubAutobahnProxy,
-    _connection:system.service.Connection,
-    _receivedStatusUpdates:Array<boolean>,
-    _scheduler:system.SchedulerService;
+  let _stubAutobahnProxy,
+    _connection,
+    _receivedStatusUpdates,
+    _scheduler;
 
   beforeEach(() => {
     _scheduler = new Rx.HistoricalScheduler();

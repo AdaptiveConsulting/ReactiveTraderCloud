@@ -5,16 +5,16 @@ import { CurrencyPairUpdates, CurrencyPairUpdate, CurrencyPair, UpdateType } fro
 import { logger, SchedulerService, RetryPolicy } from '../system';
 import { Connection, ServiceBase } from '../system/service';
 
-var _log:logger.Logger = logger.create('ReferenceDataService');
+var _log = logger.create('ReferenceDataService');
 
 export default class ReferenceDataService extends ServiceBase {
-  _hasLoadedSubject:Rx.Subject<boolean>;
-  _referenceDataMapper:ReferenceDataMapper;
-  _referenceDataStreamConnectable:Rx.ConnectableObservable;
-  _currencyPairCache:Object;
-  _loadCalled:boolean;
+  _hasLoadedSubject;
+  _referenceDataMapper;
+  _referenceDataStreamConnectable;
+  _currencyPairCache;
+  _loadCalled;
 
-  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService) {
+  constructor(serviceType, connection, schedulerService) {
     super(serviceType, connection, schedulerService);
     this._referenceDataMapper = new ReferenceDataMapper();
     this._referenceDataStreamConnectable = this._referenceDataStream().publish();
@@ -26,7 +26,7 @@ export default class ReferenceDataService extends ServiceBase {
   }
 
   load() {
-    if(this._loadCalled) {
+    if (this._loadCalled) {
       return;
     }
     this._loadCalled = true;
@@ -37,7 +37,7 @@ export default class ReferenceDataService extends ServiceBase {
     return this._hasLoadedSubject.asObservable();
   }
 
-  getCurrencyPair(symbol:string):CurrencyPair {
+  getCurrencyPair(symbol) {
     if (!this._currencyPairCache.hasLoaded) {
       throw new Error(`Reference data cache hasn't finished loading`);
     }
@@ -47,11 +47,11 @@ export default class ReferenceDataService extends ServiceBase {
     return this._currencyPairCache[symbol];
   }
 
-  getCurrencyPairUpdatesStream():Rx.Observable<CurrencyPairUpdates> {
+  getCurrencyPairUpdatesStream() {
     return this._referenceDataStreamConnectable.asObservable();
   }
 
-  _referenceDataStream():Rx.Observable<CurrencyPairUpdates> {
+  _referenceDataStream() {
     let _this = this;
     return Rx.Observable.create(
       o => {
@@ -61,7 +61,7 @@ export default class ReferenceDataService extends ServiceBase {
           .retryWithPolicy(RetryPolicy.backoffTo10SecondsMax, 'getCurrencyPairUpdatesStream', _this._schedulerService.async)
           .select(data => _this._referenceDataMapper.mapCurrencyPairsFromDto(data))
           .subscribe(
-            (updates:CurrencyPairUpdates) => {
+            (updates) => {
               // note : we have a side effect here.
               // In this instance it's ok as this stream is published and ref counted, i.e. there is only ever 1
               // and this services is designed to be run at startup and other calls should block until it's loaded.
@@ -81,8 +81,8 @@ export default class ReferenceDataService extends ServiceBase {
     );
   }
 
-  _updateCache(update:CurrencyPairUpdates) {
-    _.forEach(update.currencyPairUpdates, (currencyPairUpdate:CurrencyPairUpdate) => {
+  _updateCache(update) {
+    _.forEach(update.currencyPairUpdates, (currencyPairUpdate) => {
       if (currencyPairUpdate.updateType == UpdateType.Added) {
         this._currencyPairCache[currencyPairUpdate.currencyPair.symbol] = currencyPairUpdate.currencyPair;
       } else if (currencyPairUpdate.updateType == UpdateType.Removed) {

@@ -1,7 +1,12 @@
 // TODO this should be called Side
+// TODO: this should be a Typescript enum
 class Direction {
 
-  name:string;
+  name;
+
+  constructor(name) {
+    this.name = name;
+  }
 
   static get Buy() {
     return this._buy;
@@ -9,10 +14,6 @@ class Direction {
 
   static get Sell() {
     return this._sell;
-  }
-
-  constructor(name:string) {
-    this.name = name;
   }
 }
 

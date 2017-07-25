@@ -4,30 +4,30 @@ import { NotificationType  } from './';
 import numeral from 'numeral';
 
 export class NotificationBase {
-  constructor(notificationType:NotificationType) {
+  constructor(notificationType) {
     this.notificationType = notificationType;
   }
 }
 
 export class TextNotification extends NotificationBase {
-  constructor(message:string) {
+  constructor(message) {
     super(NotificationType.Text);
     this.message = message;
   }
 }
 
 export class TradeExecutionNotification extends NotificationBase {
-  direction:string;
-  notional:string;
-  status:string;
-  dealtCurrency:string;
-  termsCurrency:string;
-  spotRate:string;
-  formattedValueDate:string;
-  tradeId:string;
-  error:string;
+  direction;
+  notional;
+  status;
+  dealtCurrency;
+  termsCurrency;
+  spotRate;
+  formattedValueDate;
+  tradeId;
+  error;
 
-  constructor(trade:Trade, error:string) {
+  constructor(trade, error) {
     super(NotificationType.Trade);
     this.error = error;
     if (trade) {
@@ -44,11 +44,11 @@ export class TradeExecutionNotification extends NotificationBase {
     }
   }
 
-  static createForSuccess(trade:Trade) {
+  static createForSuccess(trade) {
     return new TradeExecutionNotification(trade);
   }
 
-  static createForError(error:Error) {
+  static createForError(error) {
     return new TradeExecutionNotification(null, error);
   }
 

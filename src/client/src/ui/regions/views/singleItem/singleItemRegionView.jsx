@@ -15,7 +15,7 @@ export default class SingleItemRegionView extends React.Component {
       let classNames = classnames(this.props.className, 'hide');
       return (<div className={classNames}></div>);
     } else {
-      let modelRegistration:RegionModelRegistration = model.modelRegistrations[0];
+      let modelRegistration = model.modelRegistrations[0];
       return (
         <div className={this.props.className}>
           <SmartComponent modelId={modelRegistration.model.modelId} viewContext={modelRegistration.displayContext}/>

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import logger from '../system/logger';
 import { User } from './model';
 
-var _log:logger.Logger = logger.create('FakeUserRepository');
+var _log = logger.create('FakeUserRepository');
 
 var fakeUserDetails = [{
   shortCode: 'LMO',
@@ -87,7 +87,7 @@ var fakeUserDetails = [{
 }];
 
 let userDetails = _.sample(fakeUserDetails);
-let currentUser : User = new User(userDetails.firstName, userDetails.lastName, userDetails.shortCode);
+let currentUser = new User(userDetails.firstName, userDetails.lastName, userDetails.shortCode);
 _log.info(`Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`);
 
 export default class FakeUserRepository {

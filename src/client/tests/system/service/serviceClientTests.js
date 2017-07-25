@@ -3,11 +3,11 @@ import system from 'system';
 import StubAutobahnProxy from './stub-autobahn-proxy';
 
 describe('ServiceClient', () => {
-  let _stubAutobahnProxy:StubAutobahnProxy,
-    _connection:system.service.Connection,
-    _receivedServiceStatusStream:Array<system.service.ServiceStatus>,
-    _serviceClient:system.service.ServiceClient,
-    _scheduler:system.SchedulerService;
+  let _stubAutobahnProxy,
+    _connection,
+    _receivedServiceStatusStream,
+    _serviceClient,
+    _scheduler;
 
   beforeEach(() => {
     _scheduler = new Rx.HistoricalScheduler();
@@ -245,7 +245,7 @@ describe('ServiceClient', () => {
       pushPrice('myServiceType.1', 1);
     }
 
-    function pushPrice(serviceId:string, price:number) {
+    function pushPrice(serviceId, price) {
       var replyToTopic = _stubAutobahnProxy.session.getTopic(serviceId + '.getPriceStream').dto.replyTo;
       _stubAutobahnProxy.session.getTopic(replyToTopic).onResults(price);
     }
@@ -341,12 +341,12 @@ describe('ServiceClient', () => {
       );
     }
 
-    function pushSuccessfulResponse(serviceId:string, response:number) {
+    function pushSuccessfulResponse(serviceId, response) {
       var stubCallResult = _stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade');
       stubCallResult.onSuccess(response);
     }
 
-    function pushErrorResponse(serviceId:string, err:Error) {
+    function pushErrorResponse(serviceId, err) {
       var stubCallResult = _stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade');
       stubCallResult.onReject(err);
     }
@@ -358,7 +358,7 @@ describe('ServiceClient', () => {
     _stubAutobahnProxy.setIsConnected(true);
   }
 
-  function pushServiceHeartbeat(serviceType:string, serviceId:string, instanceLoad:number = 0) {
+  function pushServiceHeartbeat(serviceType, serviceId, instanceLoad = 0) {
     _stubAutobahnProxy.session.getTopic('status').onResults({
       Type: serviceType,
       Instance: serviceId,
@@ -367,14 +367,14 @@ describe('ServiceClient', () => {
     });
   }
 
-  function assertExpectedStatusUpdate(expectedCount:number, lastStatusExpectedIsConnectedStatus:boolean) {
+  function assertExpectedStatusUpdate(expectedCount, lastStatusExpectedIsConnectedStatus) {
     expect(_receivedServiceStatusStream.length).toEqual(expectedCount);
     if (expectedCount > 0) {
       expect(_receivedServiceStatusStream[expectedCount - 1].isConnected).toEqual(lastStatusExpectedIsConnectedStatus);
     }
   }
 
-  function assertServiceInstanceStatus(statusUpdateIndex:number, serviceId:string, expectedIsConnectedStatus:boolean) {
+  function assertServiceInstanceStatus(statusUpdateIndex, serviceId, expectedIsConnectedStatus) {
     var serviceStatus = _receivedServiceStatusStream[statusUpdateIndex];
     expect(serviceStatus).toBeDefined('Can\'t find service status summary at index ' + statusUpdateIndex);
     var instanceStatus = serviceStatus.getInstanceStatus(serviceId);

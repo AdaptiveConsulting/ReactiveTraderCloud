@@ -1,23 +1,20 @@
 import _ from 'lodash';
-import { Router, DisposableBase } from 'esp-js';
-import { ReferenceDataService } from '../../services';
-import { CurrencyPairUpdates, CurrencyPairUpdate, UpdateType } from '../../services/model';
-import { SpotTileFactory } from './';
-import { SpotTileModel } from './model';
-import { logger } from '../../system';
+import { DisposableBase } from 'esp-js';
+import { UpdateType } from '../../services/model';
+import logger from '../../system/logger';
 
-var _log:logger.Logger = logger.create('SpotTileLoader');
+var _log = logger.create('OpenfinPopoutService');
 
 export default class SpotTileLoader extends DisposableBase{
 
-  _router:Router;
-  _referenceDataService:ReferenceDataService;
-  _spotTileFactory:SpotTileFactory;
-  _spotTilesByCurrencyPairSymbol:{ [modelId: string] : SpotTileModel };
+  _router;
+  _referenceDataService;
+  _spotTileFactory;
+  _spotTilesByCurrencyPairSymbol;
 
-  constructor(router:Router,
-              referenceDataService:ReferenceDataService,
-              spotTileFactory:SpotTileFactory) {
+  constructor(router,
+              referenceDataService,
+              spotTileFactory) {
     super();
     this._router = router;
     this._referenceDataService = referenceDataService;
@@ -29,7 +26,7 @@ export default class SpotTileLoader extends DisposableBase{
     let _this = this;
     _this.addDisposable(
       _this._referenceDataService.getCurrencyPairUpdatesStream().subscribe(
-        (referenceData:CurrencyPairUpdates) => {
+        (referenceData) => {
           _this._processCurrencyPairUpdate(referenceData.currencyPairUpdates);
         },
         err => _log.error(`'error getting ccy pairs ${err}`, err)
@@ -44,11 +41,11 @@ export default class SpotTileLoader extends DisposableBase{
    * In a real app this component wouldn't know much of the children it hosts, it would just get told to display something.
    * For this demo it seems sensible as all the workspace hosts is spot tiles.
    */
-  _processCurrencyPairUpdate(currencyPairUpdates:Array<CurrencyPairUpdate>) {
+  _processCurrencyPairUpdate(currencyPairUpdates) {
     _log.debug(`Received [${currencyPairUpdates.length}] currency pairs.`);
     let _this = this;
 
-    _.forEach(currencyPairUpdates, (currencyPairUpdate:CurrencyPairUpdate) => {
+    _.forEach(currencyPairUpdates, (currencyPairUpdate) => {
       let currencyPairSymbol = currencyPairUpdate.currencyPair.symbol;
       if (currencyPairUpdate.updateType === UpdateType.Added && !_this._spotTilesByCurrencyPairSymbol.hasOwnProperty(currencyPairSymbol)) {
         let spotTileModel = _this._spotTileFactory.createTileModel(currencyPairUpdate.currencyPair);

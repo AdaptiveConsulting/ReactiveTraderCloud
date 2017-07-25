@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
 import _ from 'lodash';
-import { logger } from '../../../../system';
 import SizeMe from 'react-sizeme';
 import {  createScales,
           getPositionsDataFromSeries,
@@ -12,7 +11,8 @@ import {  createScales,
           getRadius,
           getPositionValue} from './chartUtil';
 
-const _log:logger.Logger = logger.create('PositionsBubbleChart');
+import logger from '../../../../system/logger';
+var _log = logger.create('PositionsBubbleChart');
 
 class PositionsBubbleChart extends React.Component{
 

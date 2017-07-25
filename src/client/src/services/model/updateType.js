@@ -1,6 +1,12 @@
+// TODO: this should be a Typescript enum
+
 class UpdateType {
 
-  name:string;
+  name;
+
+  constructor(name) {
+    this.name = name;
+  }
 
   static get Added() {
     return this._added;
@@ -8,10 +14,6 @@ class UpdateType {
 
   static get Removed() {
     return this._removed;
-  }
-
-  constructor(name:string) {
-    this.name = name;
   }
 }
 

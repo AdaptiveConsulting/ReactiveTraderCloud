@@ -11,7 +11,7 @@ export default class WorkspaceRegionView extends React.Component {
   };
 
   render() {
-    let model : RegionModel = this.props.model;
+    let model = this.props.model;
     return (
       <div className={this.props.className}>
         <div className='workspace-region'>
@@ -24,8 +24,8 @@ export default class WorkspaceRegionView extends React.Component {
       </div>);
   }
 
-  _renderWorkspaceItems(modelRegistrations:Array<RegionModelRegistration>) {
-    return _.map(modelRegistrations, (modelRegistration:RegionModelRegistration) => {
+  _renderWorkspaceItems(modelRegistrations) {
+    return _.map(modelRegistrations, (modelRegistration) => {
       return (
         <WorkspaceItemContainer
           key={modelRegistration.model.modelId}>

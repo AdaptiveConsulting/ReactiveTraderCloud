@@ -1,20 +1,18 @@
 import Rx from 'rx';
-import { Connection, ServiceBase } from '../system/service';
-import { AnalyticsRequest, PositionUpdates } from './model';
+import { ServiceBase } from '../system/service';
 import { PositionsMapper } from './mappers';
-import { Guard, logger, SchedulerService, RetryPolicy } from '../system';
-import { ReferenceDataService } from './';
+import { Guard, logger, RetryPolicy } from '../system';
 
-var _log:logger.Logger = logger.create('AnalyticsService');
+var _log = logger.create('AnalyticsService');
 
 export default class AnalyticsService extends ServiceBase {
 
-  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService, referenceDataService:ReferenceDataService) {
+  constructor(serviceType, connection, schedulerService, referenceDataService) {
     super(serviceType, connection, schedulerService);
     this._positionsMapper = new PositionsMapper(referenceDataService);
   }
 
-  getAnalyticsStream(analyticsRequest:AnalyticsRequest):Rx.Observable<PositionUpdates> {
+  getAnalyticsStream(analyticsRequest) {
     Guard.isDefined(analyticsRequest, 'analyticsRequest required');
     let _this = this;
     return Rx.Observable.create(

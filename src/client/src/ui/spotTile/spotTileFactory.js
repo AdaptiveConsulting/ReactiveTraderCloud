@@ -13,20 +13,20 @@ import { OpenFin } from '../../system/openFin';
  * Note if you're using a container (for example <shamelessPlug>microdi-js</shamelessPlug>) you don't need factories.
  */
 export default class SpotTileFactory {
-  _router:Router;
-  _pricingService:PricingService;
-  _executionService:ExecutionService;
-  _regionManager:RegionManager;
-  _schedulerService:SchedulerService;
-  _openFin:OpenFin;
+  _router;
+  _pricingService;
+  _executionService;
+  _regionManager;
+  _schedulerService;
+  _openFin;
 
   constructor(
-    router:Router,
-    pricingService:PricingService,
-    executionService:ExecutionService,
-    regionManager:RegionManager,
-    schedulerService: SchedulerService,
-    openFin: OpenFin
+    router,
+    pricingService,
+    executionService,
+    regionManager,
+    schedulerService,
+    openFin
   ) {
     this._router = router;
     this._pricingService = pricingService;
@@ -36,7 +36,7 @@ export default class SpotTileFactory {
     this._openFin = openFin;
   }
 
-  createTileModel(currencyPair:CurrencyPair) {
+  createTileModel(currencyPair) {
     let spotTileModel = new SpotTileModel(
       this._createSpotTileModelId(currencyPair.symbol),
       currencyPair,

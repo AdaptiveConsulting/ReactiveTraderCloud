@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
-import { logger } from '../../../system';
-import { PositionsChartModel, PnlChartModel } from '../model';
 import { ChartGradient } from './';
 import NVD3Chart from 'react-nvd3';
 import d3 from 'd3';
@@ -10,8 +8,6 @@ import AnalyticsBarChart from './chart/analyticsBarChart';
 import numeral from 'numeral';
 import PositionsBubbleChart from './positions-chart/positionsBubbleChart';
 import './analytics.scss';
-
-var _log:logger.Logger = logger.create('AnalyticsView');
 
 export default class AnalyticsView extends React.Component {
 
@@ -79,7 +75,7 @@ export default class AnalyticsView extends React.Component {
   }
 
   _createPnlComponents() {
-    let pnlChartModel:PnlChartModel = this.props.model.pnlChartModel;
+    let pnlChartModel = this.props.model.pnlChartModel;
     let pnlChart = null;
     let analyticsHeaderClassName = classnames('analytics__header-value', {
       'analytics__header-value--negative': pnlChartModel.lastPos < 0,
@@ -137,7 +133,7 @@ export default class AnalyticsView extends React.Component {
   }
 
   _createPnlSliders() {
-    let positionsChartModel:PositionsChartModel = this.props.model.positionsChartModel;
+    let positionsChartModel = this.props.model.positionsChartModel;
     return (
       <div>
         <div className='analytics__chart-container'>

@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { PopoutOptions } from './';
-import { logger } from '../../../system';
 import OpenFinChrome from '../../common/components/openFinChrome/openFinChrome';
 import PopoutServiceBase from './popoutServiceBase';
 import _ from 'lodash';
@@ -10,7 +8,9 @@ const DockingManager = require('exports?DockingManager!../../../../lib/dockingMa
 const DOCKED_CLASS_NAME = 'docked';
 const BOUNDS_CHANGING_EVENT = 'bounds-changing';
 const CLOSE_REQUESTED_EVENT = 'close-requested';
-let _log:logger.Logger = logger.create('OpenfinPopoutService');
+import logger from '../../../system/logger';
+
+var _log = logger.create('OpenfinPopoutService');
 
 export default class OpenfinPopoutService extends PopoutServiceBase {
 
@@ -21,7 +21,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
     this._initializeDockingManager();
   }
 
-  openPopout({url, title, onClosing, windowOptions = { height: 400, width: 400, dockable: false }}:PopoutOptions, view:React.Component) {
+  openPopout({url, title, onClosing, windowOptions = { height: 400, width: 400, dockable: false }}, view) {
     this._createWindow({url, title, windowOptions}, tearoutWindow => {
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div');
       const onBoundsChanging = _.throttle(() => tearoutWindow.setAsForeground(), 300);
