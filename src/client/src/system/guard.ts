@@ -43,12 +43,6 @@ export default class Guard {
     }
   }
 
-  static isString(value, message) {
-    if (!isString(value)) {
-      doThrow(message);
-    }
-  }
-
   static isTrue(check, message) {
     if (!check) {
       doThrow(message);

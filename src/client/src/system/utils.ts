@@ -1,5 +1,4 @@
-import React        from 'react';
-import d3 from 'd3';
+import * as d3 from 'd3';
 
 const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/;
 
@@ -44,6 +43,6 @@ export function hasShorthandInput(notionalShorthand){
 }
 
 export function formatDate(date, format:string = '%b %e, %H:%M:%S') {
-  let formatter = d3.time.format(format);
+  let formatter = d3.timeFormat(format);
   return formatter(date);
 }
