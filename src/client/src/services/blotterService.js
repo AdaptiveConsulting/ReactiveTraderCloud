@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 import { TradeMapper } from './mappers';
 import { Connection, ServiceBase } from '../system/service';
 import { logger, SchedulerService, RetryPolicy } from '../system';

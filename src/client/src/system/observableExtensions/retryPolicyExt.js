@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 import logger from '../logger';
 import ShouldRetryResult from './shouldRetryResult';
 
@@ -10,17 +10,19 @@ function retryWithPolicy<TValue>(
   scheduler:Rx.Scheduler,
   onErrorCallback:(err:Error, willRetry:boolean) => void
 ):Rx.Observable<TValue> {
+
+  console.log('scheduler', scheduler);
   var source:Rx.Observable<TValue> = this;
   return Rx.Observable.create(o => {
     let retryCount:number = 0;
     let subscribe:() => void = null;
     let isDisposed = false;
-    let currentSubscriptionDisposable = new Rx.SerialDisposable();
+    let currentSubscriptionDisposable = new Rx.Subscription();
     subscribe = () => {
-      currentSubscriptionDisposable.setDisposable(source.subscribe(
+      currentSubscriptionDisposable.add(source.subscribe(
         i => {
           if (!isDisposed) {
-            o.onNext(i);
+            o.next(i);
           }
         },
         err => {
@@ -46,10 +48,10 @@ function retryWithPolicy<TValue>(
           } else {
             // don't retry
             _log.error(`Not retrying [${operationDescription}]. Retry count [${retryCount}]. Will error`, err);
-            o.onError(err);
+            o.error(err);
           }
         },
-        () => o.onCompleted()
+        () => o.complete()
       ));
     };
     subscribe();

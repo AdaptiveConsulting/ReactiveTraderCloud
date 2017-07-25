@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 import _ from 'lodash';
 import { Trade, TradeNotification, CurrencyPairPosition } from '../../services/model';
 import { logger } from '../';
@@ -89,18 +89,18 @@ export default class OpenFin {
   checkLimit(executablePrice, notional:number, tradedCurrencyPair:string):Rx.Observable<boolean> {
     let _this = this;
     return Rx.Observable.create(observer => {
-        let disposables = new Rx.CompositeDisposable();
+        let disposables = new Rx.Subscription();
         if (_this.limitCheckSubscriber === null) {
           _log.debug('client side limit check not up, will delegate to to server');
-          observer.onNext(true);
-          observer.onCompleted();
+          observer.next(true);
+          observer.complete();
         } else {
           _log.debug(`checking if limit is ok with ${_this.limitCheckSubscriber}`);
           const topic = `limit-check-response (${_this.limitCheckId++})`;
           let limitCheckResponse:(msg:any) => void = (msg) => {
             _log.debug(`${_this.limitCheckSubscriber} limit check response was ${msg}`);
-            observer.onNext(msg.result);
-            observer.onCompleted();
+            observer.next(msg.result);
+            observer.complete();
           };
 
           fin.desktop.InterApplicationBus.subscribe(_this.limitCheckSubscriber, topic, limitCheckResponse);

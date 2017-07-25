@@ -1,4 +1,4 @@
-var Rx = require('rx');
+var Rx = require('rxjs/Rx');
 
 /**
  * Abstracts scheduling concerns to enable testing

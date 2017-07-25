@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 import system from 'system';
 import StubAutobahnProxy from './stub-autobahn-proxy';
 

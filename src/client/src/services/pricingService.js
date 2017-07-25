@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 import { SpotPrice, GetSpotStreamRequest } from './model';
 import { PriceMapper } from './mappers';
 import { ReferenceDataService } from './';
@@ -43,7 +43,7 @@ export default class PricingService extends ServiceBase {
                   lastPrice.spread,
                   false
                 );
-                o.onNext(stalePrice);
+                o.next(stalePrice);
               }
             }
           )
@@ -60,10 +60,10 @@ export default class PricingService extends ServiceBase {
           .subscribe(
             (price:SpotPrice) => {
               lastPrice = price;
-              o.onNext(price);
+              o.next(price);
             },
-            err => { o.onError(err); },
-            () => { o.onCompleted(); }
+            err => { o.error(err); },
+            () => { o.complete(); }
           );
       }
     );

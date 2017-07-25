@@ -1,8 +1,8 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 
 export default class DisposableBase {
   constructor() {
-    this._disposables = new Rx.CompositeDisposable();
+    this._disposables = new Rx.Subscription();
   }
 
   get isDisposed() {
@@ -10,10 +10,13 @@ export default class DisposableBase {
   }
 
   addDisposable(disposable) {
+    // esp-js is expecting a dispose method
+    let prevProto = Object.getPrototypeOf(disposable);
+    prevProto.dispose = prevProto.unsubscribe;
     this._disposables.add(disposable);
   }
 
   dispose() {
-    this._disposables.dispose();
+    this._disposables.unsubscribe();
   }
 }
