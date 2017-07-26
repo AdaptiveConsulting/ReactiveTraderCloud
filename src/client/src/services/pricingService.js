@@ -14,7 +14,9 @@ export default class PricingService extends ServiceBase {
     this._priceMapper = new PriceMapper(referenceDataService);
   }
 
-  getSpotPriceStream(request:GetSpotStreamRequest):Rx.Observable<SpotPrice> {
+  getSpotPriceStream(request) {
+
+    console.warn('request coming in: ', request);
     let _this = this;
     const getPriceUpdatesOperationName = 'getPriceUpdates';
     return Rx.Observable.create(
@@ -23,6 +25,9 @@ export default class PricingService extends ServiceBase {
         let lastPrice = null;
         return _this._serviceClient
           .createStreamOperation(getPriceUpdatesOperationName, request)
+          .do(() => {
+            console.warn('we\'re getting here');
+          })
           // we retry the price stream forever, if it errors (likely connection down) we pump a non tradable price
           .retryWithPolicy(
             RetryPolicy.indefiniteEvery2Seconds,
@@ -56,7 +61,7 @@ export default class PricingService extends ServiceBase {
             },
             { lastPriceDto: null, nextPriceDto: null } // the accumulator seed for the scan function
           )
-          .select(tuple => _this._priceMapper.mapFromSpotPriceDto(tuple.lastPriceDto, tuple.nextPriceDto))
+          .map(tuple => _this._priceMapper.mapFromSpotPriceDto(tuple.lastPriceDto, tuple.nextPriceDto))
           .subscribe(
             (price:SpotPrice) => {
               lastPrice = price;

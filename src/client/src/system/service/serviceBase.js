@@ -22,6 +22,8 @@ export default class ServiceBase extends DisposableBase {
   }
 
   connect() {
-    this._serviceClient.connect();
+    
+    let result = this._serviceClient.connect();
+    console.warn('this._serviceClient', result);
   }
 }

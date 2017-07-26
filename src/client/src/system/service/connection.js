@@ -15,19 +15,8 @@ const _log:logger.Logger = logger.create('Connection');
  * Represents a Connection to autobahn
  */
 export default class Connection extends DisposableBase {
-  _userName:string;
-  _autobahn:AutobahnConnectionProxy;
-  _connectionStatusSubject:Rx.BehaviorSubject<boolean>;
-  _serviceStatusSubject:Rx.BehaviorSubject<ServiceInstanceStatus>;
-  _connectCalled:boolean;
-  _isConnected:boolean;
-  _schedulerService:SchedulerService;
-  _autoDisconnectDisposable:Rx.Subscription;
-  _connectionType:ConnectionType;
-  _connectionUrl:string;
-  _connectionTypeMapper:ConnectionTypeMapper;
 
-  constructor(userName:string, autobahn:AutobahnConnectionProxy, schedulerService:SchedulerService) {
+  constructor(userName, autobahn, schedulerService) {
     super();
     Guard.isDefined(autobahn, 'autobahn required');
     Guard.isString(userName, 'userName required');
@@ -55,7 +44,7 @@ export default class Connection extends DisposableBase {
    * A stream of the current connection status (see ConnectionStatus for possible values)
    * @returns {*}
    */
-  get connectionStatusStream():Rx.Observable<string> {
+  get connectionStatusStream() {
     return this._connectionStatusSubject.distinctUntilChanged();
   }
 
@@ -191,7 +180,7 @@ export default class Connection extends DisposableBase {
    */
   requestResponse<TRequest, TResponse>(remoteProcedure:string, payload:TRequest, responseTopic:string = ''):Rx.Observable<TResponse> {
     let _this : Connection = this;
-    return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
+    return Rx.Observable.create((o) => {
       _log.debug(`Doing a RPC to [${remoteProcedure}]. Is connected [${_this._isConnected}]`);
 
       let disposables = new Rx.Subscription();
@@ -205,6 +194,8 @@ export default class Connection extends DisposableBase {
         Username: _this._userName,
         payload: payload
       }];
+
+      console.warn('dto', dto);
 
       _this._autobahn.session.call(remoteProcedure, dto).then(
         result => {
@@ -224,7 +215,7 @@ export default class Connection extends DisposableBase {
         }
       );
 
-      disposables.add(Rx.Disposable.create(() => {
+      disposables.add(Rx.subscription.create(() => {
         isDisposed = true;
       }));
 
