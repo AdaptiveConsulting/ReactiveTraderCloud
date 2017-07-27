@@ -5,8 +5,8 @@ var Rx = require('rxjs/Rx');
  */
 export default class SchedulerService {
   constructor() {
-    this._immediate = Rx.Scheduler.immediate;
-    this._async = Rx.Scheduler.default;
+    this._immediate = Rx.Scheduler.asap;
+    this._async = Rx.Scheduler.async;
   }
 
   get immediate() {
