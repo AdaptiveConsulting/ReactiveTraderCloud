@@ -1,6 +1,12 @@
+// TODO: this should be a Typescript enum
+
 class TradeStatus {
 
-  name:string;
+  name;
+
+  constructor(name) {
+    this.name = name;
+  }
 
   static get Pending() {
     return this._pending;
@@ -12,10 +18,6 @@ class TradeStatus {
 
   static get Rejected() {
     return this._rejected;
-  }
-
-  constructor(name:string) {
-    this.name = name;
   }
 }
 

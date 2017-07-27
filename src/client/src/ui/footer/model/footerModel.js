@@ -1,29 +1,28 @@
-import { Router,  observeEvent } from 'esp-js';
-import { CompositeStatusService } from '../../../services';
-import { logger } from '../../../system';
+import { observeEvent } from 'esp-js';
 import { ModelBase } from '../../common';
 import { ServiceStatusLookup, ApplicationStatusConst, ConnectionType } from '../../../services/model';
 import { ConnectionStatus } from '../../../system/service';
-import { OpenFin } from '../../../system/openFin';
 import _ from 'lodash';
 
-var _log:logger.Logger = logger.create('FooterModel');
+import logger from '../../../system/logger';
+
+var _log = logger.create('FooterModel');
 
 export default class FooterModel extends ModelBase {
-  _compositeStatusService:CompositeStatusService;
-  _openFin:OpenFin;
+  _compositeStatusService;
+  _openFin;
 
-  isConnectedToBroker:boolean;
-  connectionUrl:string;
-  connectionType:ConnectionType;
-  serviceLookup:ServiceStatusLookup;
-  isRunningInOpenFin:boolean;
+  isConnectedToBroker;
+  connectionUrl;
+  connectionType;
+  serviceLookup;
+  isRunningInOpenFin;
 
   constructor(
-    modelId:string,
-    router:Router,
-    compositeStatusService:CompositeStatusService,
-    openFin:OpenFin
+    modelId,
+    router,
+    compositeStatusService,
+    openFin
   ) {
     super(modelId, router);
     this._compositeStatusService = compositeStatusService;
@@ -54,7 +53,7 @@ export default class FooterModel extends ModelBase {
       this._compositeStatusService.serviceStatusStream.subscribeWithRouter(
         this.router,
         this.modelId,
-        (serviceStatusLookup:ServiceStatusLookup) => {
+        (serviceStatusLookup) => {
           this.serviceLookup = serviceStatusLookup;
         })
     );
@@ -62,7 +61,7 @@ export default class FooterModel extends ModelBase {
       this._compositeStatusService.connectionStatusStream.subscribeWithRouter(
         this.router,
         this.modelId,
-        (connectionStatus:String) => {
+        (connectionStatus) => {
           this.isConnectedToBroker = connectionStatus === ConnectionStatus.connected;
           this.connectionUrl = this._compositeStatusService.connectionUrl;
           this.connectionType = this._compositeStatusService.connectionType;
@@ -74,7 +73,7 @@ export default class FooterModel extends ModelBase {
     this._updateApplicationStatus();
   }
 
-  openLink(url): void {
+  openLink(url) {
     if(this.isRunningInOpenFin){
       this._openFin.openLink(url);
     } else {

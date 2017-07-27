@@ -1,18 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {PopoutOptions} from './';
-import {logger} from '../../../system';
 import PopoutServiceBase from './popoutServiceBase';
 import _ from 'lodash';
+import logger from '../../../system/logger';
 
-let _log:logger.Logger = logger.create('BrowserPopoutService');
+var _log = logger.create('BlotterModel');
 
 export default class BrowserPopoutService extends PopoutServiceBase {
   constructor() {
     super();
   }
 
-  openPopout(options:PopoutOptions, view:React.Component) {
+  openPopout(options, view) {
     let popoutContainer;
     let windowOptionsString = this._getWindowOptionsString(options.windowOptions);
     _log.debug(`Opening child window url:${options.url},title:${options.title}`);

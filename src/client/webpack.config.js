@@ -34,7 +34,7 @@ const webpackConfig = {
   target: 'web',
   entry: {
     app: [
-      './src/appBootstrapper.js'
+      './src/appBootstrapper.tsx'
     ],
     notification:
       ['./src/notificationBootstrapper.js'],
@@ -93,7 +93,7 @@ const webpackConfig = {
     tls: 'empty'
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx', '.ts', '.tsx'],
     // You might notice that though out the app we don't really make use of alisa and instead have relative paths.
     // This is purely for ide object/type discoverability.
     // Until our ide (intellij/webstorm) understands import aliass we feel the benefits of object discoverability outweigh the relative path cost.
@@ -111,14 +111,14 @@ const webpackConfig = {
     noParse: /\/bindings\//,
     preLoaders: [
       {
-        test: /\.j(s|sx)$/,
+        test: /\.jsx?$/,
         loader: 'eslint-loader',
         exclude: /node_modules/
       }
     ],
     loaders: [
       {
-        test: /\.j(s|sx)$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
@@ -129,6 +129,13 @@ const webpackConfig = {
             'stage-0',
           ],
           plugins: babelPlugins
+        }
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'awesome-typescript',
+        query: {
+          configFileName: './tsconfig.json'
         }
       },
       {

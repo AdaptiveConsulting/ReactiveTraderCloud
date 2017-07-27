@@ -1,6 +1,6 @@
 class NotificationType {
 
-  name:string;
+  name;
 
   static get Trade() {
     return this._trade;
@@ -10,7 +10,7 @@ class NotificationType {
     return this._text;
   }
 
-  constructor(name:string) {
+  constructor(name) {
     this.name = name;
   }
 }

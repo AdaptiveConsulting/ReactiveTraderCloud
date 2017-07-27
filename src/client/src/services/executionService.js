@@ -1,29 +1,30 @@
 import Rx from 'rx';
 import { OpenFin } from '../system/openFin';
-import { ExecuteTradeRequest, ExecuteTradeResponse } from './model';
+import ExecuteTradeResponse from './model/executeTradeResponse';
+import ExecuteTradeRequest from './model/executeTradeRequest';
 import { TradeMapper } from './mappers';
 import { logger, SchedulerService } from '../system';
 import { Connection, ServiceBase } from '../system/service';
 import { ReferenceDataService } from './';
 
-const _log:logger.Logger = logger.create('ExecutionService');
+const _log = logger.create('ExecutionService');
 
 export default class ExecutionService extends ServiceBase {
 
   static EXECUTION_CLIENT_TIMEOUT_MS  =  2000;
   static EXECUTION_REQUEST_TIMEOUT_MS = 30000;
 
-  constructor(serviceType:string,
-              connection:Connection,
-              schedulerService:SchedulerService,
-              referenceDataService:ReferenceDataService,
-              openFin:OpenFin) {
+  constructor(serviceType,
+              connection,
+              schedulerService,
+              referenceDataService,
+              openFin) {
     super(serviceType, connection, schedulerService);
     this._openFin = openFin;
     this._tradeMapper = new TradeMapper(referenceDataService);
   }
 
-  executeTrade(executeTradeRequest:ExecuteTradeRequest):Rx.Observable<ExecuteTradeResponse> {
+  executeTrade(executeTradeRequest) {
     let _this = this;
     return Rx.Observable.create(
       o => {

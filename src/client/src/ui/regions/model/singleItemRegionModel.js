@@ -4,7 +4,7 @@ import { ModelBase } from '../../common';
 
 export default class SingleItemRegionModel extends RegionModel {
 
-  constructor(modelId:string, regionName:string, router:Router) {
+  constructor(modelId, regionName, router) {
     super(modelId, regionName, router);
     this.isCollapsed = false;
   }
@@ -19,9 +19,9 @@ export default class SingleItemRegionModel extends RegionModel {
   }
 
   // override
-  _addToRegion(model:ModelBase, options?:RegionOptions) : RegionModelRegistration {
+  _addToRegion(model, options) {
     if (this.modelRegistrations.length === 1) {
-      let regionModelRegistration : RegionModelRegistration = this.modelRegistrations[0];
+      let regionModelRegistration = this.modelRegistrations[0];
       this._removeFromRegion(regionModelRegistration.model, true);
     }
     this.modelRegistrations.length = 0;
@@ -31,7 +31,7 @@ export default class SingleItemRegionModel extends RegionModel {
   }
 
   // override
-  _removeFromRegion(model:ModelBase, wasExternallyRemoved:boolean, displayContext?:string) {
+  _removeFromRegion(model, wasExternallyRemoved, displayContext) {
     this.isCollapsed = true;
     return super._removeFromRegion(model, wasExternallyRemoved, displayContext);
   }

@@ -1,8 +1,8 @@
 export default class PricePoint {
-  x:Date;
-  y:string;
+  x;
+  y;
 
-  constructor(x:Date, y:string) {
+  constructor(x, y) {
       this.x = x;
       this.y = y;
   }

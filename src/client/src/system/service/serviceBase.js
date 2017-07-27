@@ -4,9 +4,9 @@ import SchedulerService from '../schedulerService';
 import { DisposableBase } from '../disposables';
 
 export default class ServiceBase extends DisposableBase {
-  _serviceClient:ServiceClient;
+  _serviceClient;
 
-  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService) {
+  constructor(serviceType, connection, schedulerService) {
     super();
 
     this._serviceClient = new ServiceClient(
@@ -17,7 +17,7 @@ export default class ServiceBase extends DisposableBase {
     this._schedulerService = schedulerService;
   }
 
-  get serviceStatusStream():Rx.Observable<system.service.ServiceStatus> {
+  get serviceStatusStream() {
     return this._serviceClient.serviceStatusStream;
   }
 

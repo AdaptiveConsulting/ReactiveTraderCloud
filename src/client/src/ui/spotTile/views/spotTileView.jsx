@@ -119,7 +119,7 @@ export default class SpotTileView extends React.Component {
     );
   }
 
-  _onExecuteTrade(direction:Direction) {
+  _onExecuteTrade(direction) {
     if (this.props.model.executionConnected) {
       this.props.router.publishEvent(this.props.model.modelId, 'executeTrade', {direction});
     }

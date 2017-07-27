@@ -1,20 +1,15 @@
 export default class PopoutOptions {
-  key:string;
-  url:string;
-  title:string;
-  onClosing:() => void;
-  windowOptions:{
-    width: number,
-    height: number,
-    resizable: string,
-    scrollable: string
-  };
+  key;
+  url;
+  title;
+  onClosing;
+  windowOptions
   constructor(
-    key:string,
-    url:string,
-    title:string,
+    key,
+    url,
+    title,
     onClosing,
-    windowOptions: {width: number, height: number, resizable: string, scrollable: string}
+    windowOptions
   ) {
     this.key = key;
     this.url = url || 'about:blank';

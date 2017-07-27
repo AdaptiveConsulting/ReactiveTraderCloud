@@ -5,19 +5,19 @@ import { Connection, ServiceStatus } from './../system/service';
 import { ConnectionType } from './../services/model';
 
 export default class CompositeStatusService extends DisposableBase {
-  _connection:Connection;
-  _pricingService:PricingService;
-  _referenceDataService:ReferenceDataService;
-  _blotterService:BlotterService;
-  _executionService:ExecutionService;
-  _analyticsService:AnalyticsService;
+  _connection;
+  _pricingService;
+  _referenceDataService;
+  _blotterService;
+  _executionService;
+  _analyticsService;
 
-  constructor(connection:Connection,
-              pricingService:PricingService,
-              referenceDataService:PricingService,
-              blotterService:BlotterService,
-              executionService:ExecutionService,
-              analyticsService:AnalyticsService) {
+  constructor(connection,
+              pricingService,
+              referenceDataService,
+              blotterService,
+              executionService,
+              analyticsService) {
     super();
     this._connection = connection;
     this._pricingService = pricingService;
@@ -33,7 +33,7 @@ export default class CompositeStatusService extends DisposableBase {
    * A true/false stream indicating if we're connected on the wire
    * @returns {*}
    */
-  get connectionStatusStream():Rx.Observable<boolean> {
+  get connectionStatusStream() {
     return this._connection.connectionStatusStream;
   }
 
@@ -41,7 +41,7 @@ export default class CompositeStatusService extends DisposableBase {
    * The current isConnected status
    * @returns {*}
    */
-  get isConnected():boolean {
+  get isConnected() {
     return this._connection.isConnected;
   }
 
@@ -49,7 +49,7 @@ export default class CompositeStatusService extends DisposableBase {
    * Connection url
    * @returns {string}
    */
-  get connectionUrl():string {
+  get connectionUrl() {
     return this._connection.url;
   }
 
@@ -57,7 +57,7 @@ export default class CompositeStatusService extends DisposableBase {
    * Connection type
    * @returns {ConnectionType}
    */
-  get connectionType():ConnectionType {
+  get connectionType() {
     return this._connection.type;
   }
 
@@ -65,7 +65,7 @@ export default class CompositeStatusService extends DisposableBase {
    * THe current ServiceStatusLookup
    * @returns {model.ServiceStatusLookup}
    */
-  get serviceStatus() : ServiceStatusLookup {
+  get serviceStatus() {
     return this._currentServiceStatusLookup;
   }
 
@@ -73,7 +73,7 @@ export default class CompositeStatusService extends DisposableBase {
    * A stream of ServiceStatusLookup which can be queried for individual service connection status
    * @returns {Rx.Observable.<ServiceStatusLookup>}
    */
-  get serviceStatusStream():Rx.Observable<ServiceStatusLookup> {
+  get serviceStatusStream() {
     return this._serviceStatusStream.asObservable();
   }
 
@@ -88,7 +88,7 @@ export default class CompositeStatusService extends DisposableBase {
     this.addDisposable(this._serviceStatusStream.connect());
   }
 
-  _createServiceStatusStream():Rx.Observable<ServiceStatusLookup> {
+  _createServiceStatusStream() {
     // merge then scan all our underlying service status streams into a single
     // data structure (ServiceStatusLookup) we can query for the current status.
     return Rx.Observable
@@ -99,7 +99,7 @@ export default class CompositeStatusService extends DisposableBase {
         this._executionService.serviceStatusStream,
         this._analyticsService.serviceStatusStream)
       .scan(
-        (statusLookup:ServiceStatusLookup, serviceStatus:ServiceStatus) => statusLookup.updateServiceStatus(serviceStatus),
+        (statusLookup, serviceStatus) => statusLookup.updateServiceStatus(serviceStatus),
         // seed the stream with the initial, empty 'status' data structure
         new ServiceStatusLookup())
       .publish();

@@ -18,7 +18,7 @@ export default class FooterView extends React.Component {
   };
 
   render() {
-    let model:FooterModel = this.props.model;
+    let model = this.props.model;
     let panelClasses = classnames(
       'footer__service-status-panel',
       {
@@ -59,11 +59,11 @@ export default class FooterView extends React.Component {
     this.props.router.publishEvent(this.props.model.modelId, 'toggleServiceStatus', {});
   };
 
-  _renderServices(model:FooterModel) {
+  _renderServices(model) {
     let items = [];
     items.push(this._renderBrokerStatus(model));
 
-    let serviceLookup:ServiceStatusLookup = model.serviceLookup;
+    let serviceLookup = model.serviceLookup;
     if (!serviceLookup) {
       return items;
     }
@@ -73,8 +73,8 @@ export default class FooterView extends React.Component {
     return items;
   }
 
-  _renderService(model:FooterModel, serviceType) {
-    let statusSummary:ServiceStatus = model.serviceLookup.services[serviceType];
+  _renderService(model, serviceType) {
+    let statusSummary = model.serviceLookup.services[serviceType];
     let statusSpan;
     if (statusSummary.isConnected) {
       let connectedNodesText = statusSummary.connectedInstanceCount === 1
@@ -92,7 +92,7 @@ export default class FooterView extends React.Component {
     );
   }
 
-  _renderBrokerStatus(model:FooterModel) {
+  _renderBrokerStatus(model) {
     let statusSpan;
     if (model.isConnectedToBroker) {
       statusSpan = (

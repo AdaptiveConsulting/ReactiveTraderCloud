@@ -1,39 +1,35 @@
-import Rx from 'rx';
 import _ from 'lodash';
-import { Router,  observeEvent, RouterSubject } from 'esp-js';
+import { observeEvent } from 'esp-js';
 import { viewBinding } from 'esp-js-react';
-import { BlotterService } from '../../../services';
-import { ServiceStatus } from '../../../system/service';
-import { logger, Environment } from '../../../system';
+import { Environment } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
-import { RegionManager, RegionNames, view  } from '../../regions';
-import { OpenFin } from '../../../system/openFin';
-import { TradeRow, Trade, TradesUpdate, TradeStatus, TradeNotification, RegionSettings } from '../../../services/model';
+import { RegionNames, view  } from '../../regions';
+import { TradeRow, TradeStatus, TradeNotification, RegionSettings } from '../../../services/model';
 import { BlotterView } from '../views';
-import { SchedulerService, } from '../../../system';
 
-var _log:logger.Logger = logger.create('BlotterModel');
+import logger from '../../../system/logger';
+var _log = logger.create('BlotterModel');
 
 const HIGHLIGHT_TRADE_FOR_IN_MS = 200;
 
 @viewBinding(BlotterView)
 export default class BlotterModel extends ModelBase {
-  _blotterService:BlotterService;
-  _regionManagerHelper:RegionManagerHelper;
-  _regionManager:RegionManager;
-  _regionName:string;
-  _regionSettings:RegionSettings;
-  _schedulerService:SchedulerService;
-  trades:Array<TradeRow>;
-  isConnected:boolean;
+  _blotterService;
+  _regionManagerHelper;
+  _regionManager;
+  _regionName;
+  _regionSettings;
+  _schedulerService;
+  trades;
+  isConnected;
 
   constructor(
-    modelId:string,
-    router:Router,
-    blotterService:BlotterService,
-    regionManager:RegionManager,
-    openFin: OpenFin,
-    schedulerService:SchedulerService,
+    modelId,
+    router,
+    blotterService,
+    regionManager,
+    openFin,
+    schedulerService,
   ) {
     super(modelId, router);
     this._blotterService = blotterService;
@@ -72,7 +68,7 @@ export default class BlotterModel extends ModelBase {
   }
 
   @observeEvent('highlightTradeRow')
-  _highlightTradeRow(e:{trade: Trade}) {
+  _highlightTradeRow(e) {
     let index = _.findIndex(this.trades, traderRow => traderRow.trade.tradeId === e.trade.tradeId);
     if (index >= 0) {
       _log.debug(`Highlight trade ${e.trade.tradeId}`);
@@ -82,7 +78,7 @@ export default class BlotterModel extends ModelBase {
   }
 
   @observeEvent('endHighlightTradeRow')
-  _endHighlightTradeRow(e: {trade: Trade}) {
+  _endHighlightTradeRow(e) {
     let index = _.findIndex(this.trades, traderRow => traderRow.trade.tradeId === e.trade.tradeId);
     if (index >= 0) {
       _log.debug(`Stop highlighting trade ${e.trade.tradeId}`);
@@ -103,13 +99,13 @@ export default class BlotterModel extends ModelBase {
         .subscribeWithRouter(
           this.router,
           this.modelId,
-          (tradesUpdate:TradesUpdate) => {
+          (tradesUpdate) => {
             let trades = tradesUpdate.trades;
 
             if (tradesUpdate.isStateOfTheWorld) {
               this.trades = _.sortBy(tradesUpdate.trades, 'tradeId').reverse().map(trade => new TradeRow(trade));
             }else{
-              _.forEach(trades, (trade:Trade) => {
+              _.forEach(trades, (trade) => {
                 let existingTradeIndex = _.findIndex(this.trades, (t) => t.trade.tradeId === trade.tradeId);
                 if (existingTradeIndex !== -1) {
                   //update the existing trade
@@ -139,7 +135,7 @@ export default class BlotterModel extends ModelBase {
       this._blotterService.serviceStatusStream.subscribeWithRouter(
         this.router,
         this.modelId,
-        (status:ServiceStatus) => {
+        (status) => {
           this.isConnected = status.isConnected;
           if (!this.isConnected){
             this.trades = [];

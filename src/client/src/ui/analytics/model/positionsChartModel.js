@@ -1,14 +1,14 @@
 import { observeEvent } from 'esp-js';
 import {  CurrencyPairPosition } from '../../../services/model';
-import { logger } from '../../../system';
 
-var _log:logger.Logger = logger.create('PositionsChartModel');
+import logger from '../../../system/logger';
+var _log = logger.create('PositionsChartModel');
 
 export default class PositionsChartModel {
-  options:Object;
-  _seriesData:Array<CurrencyPairPosition>;
+  options;
+  _seriesData;
 
-  yAxisValuePropertyName:string;
+  yAxisValuePropertyName;
 
   constructor() {
     this._seriesData = [];
@@ -32,15 +32,15 @@ export default class PositionsChartModel {
     this.yAxisValuePropertyName = CurrencyPairPosition.baseTradedAmountName;
   }
 
-  get hasData() : Boolean {
+  get hasData() {
     return this._seriesData.length > 0;
   }
 
-  get seriesData():Array{
+  get seriesData() {
     return this._seriesData;
   }
 
-  get itemCount() : Number {
+  get itemCount() {
     return this._seriesData.length;
   }
 
@@ -56,7 +56,7 @@ export default class PositionsChartModel {
     }];
   }
 
-  update(positions:Array<CurrencyPairPosition>) {
+  update(positions) {
     this._seriesData = positions;
   }
 

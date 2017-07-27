@@ -1,67 +1,60 @@
 import Rx from 'rx';
-import { Router, observeEvent } from 'esp-js';
+import { observeEvent } from 'esp-js';
 import { viewBinding } from 'esp-js-react';
-import { PricingService, ExecutionService } from '../../../services';
-import { logger, Environment } from '../../../system';
+import logger from '../../../system/logger';
+import { Environment } from '../../../system/';
 import { ModelBase, RegionManagerHelper } from '../../common';
-import { TradeExecutionNotification, TextNotification,  NotificationBase, NotificationType } from './';
-import { RegionManager, RegionNames, view  } from '../../regions';
+import { TradeExecutionNotification, TextNotification, NotificationType } from './';
+import { RegionNames, view  } from '../../regions';
 import { TradeStatus } from '../../../services/model';
-import { SchedulerService, } from '../../../system';
-import { OpenFin } from '../../../system/openFin';
 import { getPopoutService } from '../../common/popout/';
+import {
+  GetSpotStreamRequest,
+  Direction,
+  ExecuteTradeRequest,
+  RegionSettings
+} from '../../../services/model';
+import { SpotTileView } from '../views';
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 4000;
 const MAX_NOTIONAL_VALUE = 1000000000;
 const PRICE_STALE_AFTER_X_IN_MS = 6000;
 
-import {
-  GetSpotStreamRequest,
-  SpotPrice,
-  Direction,
-  ExecuteTradeRequest,
-  CurrencyPair,
-  ExecuteTradeResponse,
-  RegionSettings
-} from '../../../services/model';
-import { SpotTileView } from '../views';
-
-
 @viewBinding(SpotTileView)
 export default class SpotTileModel extends ModelBase {
   // non view state
-  _pricingService:PricingService;
-  _executionService:ExecutionService;
-  _executionDisposable:Rx.SerialDisposable;
-  _priceSubscriptionDisposable:Rx.SerialDisposable;
-  _toastNotificationTimerDisposable:Rx.SerialDisposable;
-  _log:logger.Logger;
-  _regionManagerHelper:RegionManagerHelper;
-  _openFin:OpenFin;
-  _regionName:string;
-  _regionSettings:RegionSettings;
+  _pricingService;
+  _executionService;
+  _executionDisposable;
+  _priceSubscriptionDisposable;
+  _toastNotificationTimerDisposable;
+  _log;
+  _regionManagerHelper;
+  _openFin;
+  _regionName;
+  _regionSettings;
   // React doesn't seem to pickup ES6 properties (last time I looked it seemed to be because Babel doesn't spit them out as enumerable)
   // So we're just exposing the state as fields.
-  currencyPair:CurrencyPair;
-  currentSpotPrice:SpotPrice;
-  notification:NotificationBase;
-  tileTitle:string;
-  notional:number;
-  pricingConnected:boolean;
-  executionConnected:boolean;
-  priceStale:boolean;
-  isTradeExecutionInFlight:boolean;
-  isRunningInOpenFin:boolean;
-  currencyChartIsOpening:boolean;
+  currencyPair;
+  currentSpotPrice;
+  notification;
+  tileTitle;
+  notional;
+  pricingConnected;
+  executionConnected;
+  priceStale;
+  isTradeExecutionInFlight;
+  isRunningInOpenFin;
+  currencyChartIsOpening;
 
-  constructor(modelId:string,
-              currencyPair:CurrencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
-              router:Router,
-              pricingService:PricingService,
-              executionService:ExecutionService,
-              regionManager:RegionManager,
-              schedulerService:SchedulerService,
-              openFin:OpenFin) {
+  constructor(modelId,
+              currencyPair, // in a real system you'd take a specific state object, not just a piece of state (currencyPair) as we do here
+              router,
+              pricingService,
+              executionService,
+              regionManager,
+              schedulerService,
+              openFin) {
     super(modelId, router);
     this._log = logger.create(`${this.modelId}:${currencyPair.symbol}`);// can't change ccy pair in this demo app, so reasonable to use the symbol in the logger name
     this._pricingService = pricingService;
@@ -148,13 +141,13 @@ export default class SpotTileModel extends ModelBase {
   }
 
   @observeEvent('notionalChanged')
-  _onNotionalChanged(e:{notional:number}) {
+  _onNotionalChanged(e) {
     this._log.info(`Updating notional to ${e.notional}`);
     this.notional = e.notional;
   }
 
   @observeEvent('executeTrade')
-  _onExecuteTrade(e:{direction:Direction}) {
+  _onExecuteTrade(e) {
     if (this.pricingConnected && this.executionConnected && !this.isTradeExecutionInFlight) {
       // stop the price stream so the users can see what the traded
       let request = this._createTradeRequest(e.direction, this.notional);
@@ -166,7 +159,7 @@ export default class SpotTileModel extends ModelBase {
          .subscribeWithRouter(
             this.router,
             this.modelId,
-            (response:ExecuteTradeResponse) => {
+            (response) => {
               this.isTradeExecutionInFlight = false;
               this.notification = response.hasError
                 ? TradeExecutionNotification.createForError(response.error)
@@ -202,7 +195,7 @@ export default class SpotTileModel extends ModelBase {
         .subscribeWithRouter(
           this.router,
           this.modelId,
-          (response:ExecuteTradeResponse) => {
+          (response) => {
             this._openFin.sendPositionClosedNotification(uuid, msg.correlationId);
           },
           err => {
@@ -212,7 +205,7 @@ export default class SpotTileModel extends ModelBase {
     );
   }
 
-  _createTradeRequest(direction:Direction, notional:number) {
+  _createTradeRequest(direction, notional) {
     var spotRate = direction == Direction.Buy
       ? this.currentSpotPrice.ask.rawRate
       : this.currentSpotPrice.bid.rawRate;
@@ -238,7 +231,7 @@ export default class SpotTileModel extends ModelBase {
         .subscribeWithRouter(
           this.router,
           this.modelId,
-          (price:SpotPrice) => {
+          (price) => {
             this.priceStale = true;
             this._updatePricingDownStatusNotification();
           }),
@@ -246,7 +239,7 @@ export default class SpotTileModel extends ModelBase {
         .subscribeWithRouter(
           this.router,
           this.modelId,
-          (price:SpotPrice) => {
+          (price) => {
             this._openFin.publishPrice(price);
             // we don't update the price if we have an inflight trade, the users will want to see what they are buying
             if(!this.isTradeExecutionInFlight) {
@@ -279,7 +272,7 @@ export default class SpotTileModel extends ModelBase {
       serviceStatusStream.subscribeWithRouter(
         this.router,
         this._modelId,
-        (tuple:{pricingConnected:boolean, executionConnected:boolean}) => {
+        (tuple) => {
           this.pricingConnected = tuple.pricingConnected;
           this.executionConnected = tuple.executionConnected;
           this._updatePricingDownStatusNotification();

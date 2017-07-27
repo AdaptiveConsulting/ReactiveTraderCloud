@@ -1,7 +1,8 @@
-import { logger } from '../../../system';
 import './popoutRegion.scss';
 
-let _log:logger.Logger = logger.create('PopoutServiceBase');
+import logger from '../../../system/logger';
+
+var _log = logger.create('OpenfinPopoutService');
 
 const POPOUT_CONTAINER_ID = 'popout-content-container';
 
@@ -16,7 +17,7 @@ export default class PopoutServiceBase {
   openPopout() {
     _log.error(new Error('NotImplementedException'));
   }
-  
+
   /**
    * Should be overwritten
    */

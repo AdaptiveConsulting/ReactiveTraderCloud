@@ -60,7 +60,7 @@ class BlotterView extends React.Component {
     );
   }
 
-  _createGridColumns():Array<Column> {
+  _createGridColumns() {
     var model = this.props.model;
     return [
       <Column
@@ -134,7 +134,7 @@ class BlotterView extends React.Component {
    * @param rowItem
    * @returns {string}
    */
-  _getRowClass(rowItem:TradeRow) {
+  _getRowClass(rowItem) {
     return classNames(
       'blotter__trade',
       {
