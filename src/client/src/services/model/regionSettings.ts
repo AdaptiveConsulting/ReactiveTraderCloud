@@ -1,8 +1,8 @@
 export default class RegionSettings {
-  _title:string;
-  _width:number;
-  _height:number;
-  _dockable:boolean;
+  _title: string;
+  _width: number;
+  _height: number;
+  _dockable: boolean;
 
   constructor(title:string, width:number, height: number, dockable: false) {
     this._title = title;
@@ -11,11 +11,11 @@ export default class RegionSettings {
     this._dockable = dockable;
   }
 
-  get title():string {
+  get title(): string {
     return this._title;
   }
 
-  get width():number {
+  get width(): number {
     return this._width;
   }
 
@@ -23,7 +23,7 @@ export default class RegionSettings {
     return this._height;
   }
 
-  get dockable():boolean {
+  get dockable(): boolean {
     return this._dockable;
   }
 }

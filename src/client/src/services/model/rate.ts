@@ -1,10 +1,10 @@
 export default class Rate {
-  _rawRate:number;
-  _bigFigure:number;
-  _pips:number;
-  _pipFraction:number;
+  _rawRate: number;
+  _bigFigure: number;
+  _pips: number;
+  _pipFraction: number;
 
-  constructor(rawRate:number, ratePrecision:number, pipPrecision:number) {
+  constructor(rawRate: number, ratePrecision: number, pipPrecision: number) {
     this._rawRate = rawRate;
 
     let rateString = rawRate.toFixed(ratePrecision);
@@ -16,19 +16,19 @@ export default class Rate {
     this._pipFraction = Number(fractions.substring(pipPrecision, pipPrecision + 1));
   }
 
-  get rawRate():number {
+  get rawRate(): number {
     return this._rawRate;
   }
 
-  get bigFigure():number {
+  get bigFigure(): number {
     return this._bigFigure;
   }
 
-  get pips():number {
+  get pips(): number {
     return this._pips;
   }
 
-  get pipFraction():number {
+  get pipFraction(): number {
     return this._pipFraction;
   }
 }

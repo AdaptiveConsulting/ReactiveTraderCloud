@@ -13,7 +13,6 @@ import {
 } from '../../../services/model';
 import AnalyticsView from '../views/analyticsView.jsx';
 import { OpenFin } from '../../../system/openFin';
-import { WellKnownModelIds } from '../../../';
 
 var _log:logger.Logger = logger.create('AnalyticsModel');
 
