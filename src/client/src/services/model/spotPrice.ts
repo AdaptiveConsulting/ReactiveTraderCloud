@@ -14,8 +14,8 @@ export default class SpotPrice {
               spread: Spread,
               isTradable: boolean) {
     this._symbol = symbol;
-    this._ratePrecision = ratePrecision,
-      this._bid = bid;
+    this._ratePrecision = ratePrecision;
+    this._bid = bid;
     this._ask = ask;
     this._mid = mid;
     this._valueDate = valueDate;
