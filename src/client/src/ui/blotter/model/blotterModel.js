@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 import _ from 'lodash';
 import { Router,  observeEvent, RouterSubject } from 'esp-js';
 import { viewBinding } from 'esp-js-react';

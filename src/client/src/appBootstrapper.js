@@ -138,7 +138,6 @@ class AppBootstrapper {
       sidebarRegionModel
     );
     shellModel.observeEvents();
-
     this._referenceDataService.hasLoadedStream.subscribe(() => {
       // Some models require the ref data to be loaded before they subscribe to their streams.
       // You could make all ref data access on top of an observable API, but in most instances this make it difficult to use.

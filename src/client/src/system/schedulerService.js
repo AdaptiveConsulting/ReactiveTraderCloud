@@ -1,12 +1,12 @@
-var Rx = require('rx');
+var Rx = require('rxjs/Rx');
 
 /**
  * Abstracts scheduling concerns to enable testing
  */
 export default class SchedulerService {
   constructor() {
-    this._immediate = Rx.Scheduler.immediate;
-    this._async = Rx.Scheduler.default;
+    this._immediate = Rx.Scheduler.asap;
+    this._async = Rx.Scheduler.async;
   }
 
   get immediate() {

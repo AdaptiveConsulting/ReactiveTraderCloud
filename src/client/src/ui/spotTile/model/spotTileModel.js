@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 import { Router, observeEvent } from 'esp-js';
 import { viewBinding } from 'esp-js-react';
 import { PricingService, ExecutionService } from '../../../services';
@@ -32,9 +32,9 @@ export default class SpotTileModel extends ModelBase {
   // non view state
   _pricingService:PricingService;
   _executionService:ExecutionService;
-  _executionDisposable:Rx.SerialDisposable;
-  _priceSubscriptionDisposable:Rx.SerialDisposable;
-  _toastNotificationTimerDisposable:Rx.SerialDisposable;
+  _executionDisposable:Rx.Subscription;
+  _priceSubscriptionDisposable:Rx.Subscription;
+  _toastNotificationTimerDisposable:Rx.Subscription;
   _log:logger.Logger;
   _regionManagerHelper:RegionManagerHelper;
   _openFin:OpenFin;
@@ -70,10 +70,10 @@ export default class SpotTileModel extends ModelBase {
     this._schedulerService = schedulerService;
     this._openFin = openFin;
     this.currencyPair = currencyPair;
-    this._executionDisposable = new Rx.SerialDisposable();
+    this._executionDisposable = new Rx.Subscription();
     this.addDisposable(this._executionDisposable);
-    this._priceSubscriptionDisposable = new Rx.SerialDisposable();
-    this._toastNotificationTimerDisposable = new Rx.SerialDisposable();
+    this._priceSubscriptionDisposable = new Rx.Subscription();
+    this._toastNotificationTimerDisposable = new Rx.Subscription();
     this.addDisposable(this._priceSubscriptionDisposable);
     this.addDisposable(this._toastNotificationTimerDisposable);
 
@@ -161,7 +161,7 @@ export default class SpotTileModel extends ModelBase {
       this._log.info(`Will execute ${request.toString()}`);
       this.isTradeExecutionInFlight = true;
 
-      this._executionDisposable.setDisposable(
+      this._executionDisposable.add(
         this._executionService.executeTrade(request)
          .subscribeWithRouter(
             this.router,
@@ -172,7 +172,7 @@ export default class SpotTileModel extends ModelBase {
                 ? TradeExecutionNotification.createForError(response.error)
                 : TradeExecutionNotification.createForSuccess(response.trade);
               if (!response.hasError && response.trade.status === TradeStatus.Done) {
-                this._toastNotificationTimerDisposable.setDisposable(
+                this._toastNotificationTimerDisposable.add(
                   this._schedulerService.async.scheduleFuture('', DISMISS_NOTIFICATION_AFTER_X_IN_MS, () => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {}))
                 );
               }
@@ -197,7 +197,7 @@ export default class SpotTileModel extends ModelBase {
     let direction = msg.amount > 0 ? Direction.Sell : Direction.Buy;
     let request = this._createTradeRequest(direction, Math.abs(msg.amount));
 
-    this._executionDisposable.setDisposable(
+    this._executionDisposable.add(
       this._executionService.executeTrade(request)
         .subscribeWithRouter(
           this.router,
@@ -231,7 +231,7 @@ export default class SpotTileModel extends ModelBase {
       .getSpotPriceStream(new GetSpotStreamRequest(this.currencyPair.symbol))
       .publish()
       .refCount();
-    this._priceSubscriptionDisposable.setDisposable(
+    this._priceSubscriptionDisposable.add(
       priceStream
         .debounce(PRICE_STALE_AFTER_X_IN_MS, this._schedulerService)
         .do(() => this._log.warn(`Price stale for ${this.currencyPair.symbol}`))

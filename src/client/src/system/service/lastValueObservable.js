@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 
 /**
  * Holds an observable stream and it's last value. Handy for querying in a procedural manor.

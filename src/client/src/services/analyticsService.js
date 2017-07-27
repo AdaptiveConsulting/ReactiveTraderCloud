@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 import { Connection, ServiceBase } from '../system/service';
 import { AnalyticsRequest, PositionUpdates } from './model';
 import { PositionsMapper } from './mappers';

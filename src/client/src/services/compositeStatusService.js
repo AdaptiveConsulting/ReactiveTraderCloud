@@ -1,3 +1,4 @@
+import Rx from 'rxjs/Rx';
 import { DisposableBase } from 'esp-js';
 import { ServiceStatusLookup } from './model';
 import { PricingService, ReferenceDataService, BlotterService, ExecutionService, AnalyticsService } from './';
@@ -33,7 +34,7 @@ export default class CompositeStatusService extends DisposableBase {
    * A true/false stream indicating if we're connected on the wire
    * @returns {*}
    */
-  get connectionStatusStream():Rx.Observable<boolean> {
+  get connectionStatusStream() {
     return this._connection.connectionStatusStream;
   }
 
@@ -73,8 +74,8 @@ export default class CompositeStatusService extends DisposableBase {
    * A stream of ServiceStatusLookup which can be queried for individual service connection status
    * @returns {Rx.Observable.<ServiceStatusLookup>}
    */
-  get serviceStatusStream():Rx.Observable<ServiceStatusLookup> {
-    return this._serviceStatusStream.asObservable();
+  get serviceStatusStream() {
+    return this._serviceStatusStream;
   }
 
   // since we expose some synchronous state state that's derived from
@@ -88,7 +89,7 @@ export default class CompositeStatusService extends DisposableBase {
     this.addDisposable(this._serviceStatusStream.connect());
   }
 
-  _createServiceStatusStream():Rx.Observable<ServiceStatusLookup> {
+  _createServiceStatusStream() {
     // merge then scan all our underlying service status streams into a single
     // data structure (ServiceStatusLookup) we can query for the current status.
     return Rx.Observable

@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 import { OpenFin } from '../system/openFin';
 import { ExecuteTradeRequest, ExecuteTradeResponse } from './model';
 import { TradeMapper } from './mappers';
@@ -28,7 +28,7 @@ export default class ExecutionService extends ServiceBase {
     return Rx.Observable.create(
       o => {
         _log.info(`executing: ${executeTradeRequest.toString()}`, executeTradeRequest);
-        let disposables = new Rx.CompositeDisposable();
+        let disposables = new Rx.Subscription();
 
         disposables.add(
           _this._openFin
@@ -58,7 +58,7 @@ export default class ExecutionService extends ServiceBase {
                 );
               }
               else {
-                o.onNext(ExecuteTradeResponse.createForError('Credit limit exceeded'));
+                o.next(ExecuteTradeResponse.createForError('Credit limit exceeded'));
               }
             })
         );
