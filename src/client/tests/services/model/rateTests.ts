@@ -1,6 +1,6 @@
 import { Rate } from '../../../src/services/model';
 
-describe('Rate Tests', () => {
+test('Rate Tests', () => {
 
   describe('rate precision of 4', () => {
     let rate;
