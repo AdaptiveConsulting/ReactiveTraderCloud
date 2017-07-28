@@ -1,30 +1,34 @@
 'use strict';
 var argv = require('yargs').argv;
 var webpack = require('webpack');
-var webpackConfig = require('./webpack.config');
+var config1 = require('./webpack.config');
+var webpackConfig = config1({});
+
+const path = require('path');
+
+const TEST_BUNDLER = './tests/testIndex.js';
 
 module.exports = function(config){
   config.set({
     basePath: './',
     singleRun: !argv.watch,
     frameworks: ['jasmine'],
-    files: [
-      './tests/testIndex.js'
-    ],
+    files: [{
+      pattern  : TEST_BUNDLER,
+      watched  : false,
+      served   : true,
+      included : true
+    }],
     preprocessors: {
-      './tests/testIndex.js': ['webpack']
+      [TEST_BUNDLER]: ['webpack']
     },
     reporters: ['spec'],
     browsers: ['Chrome'],
     webpack: {
       devtool: 'inline-source-map',
       resolve: webpackConfig.resolve,
-      plugins: [], // none required for testing ATM
-      module: {
-        loaders: webpackConfig.module.loaders,
-        noParse: webpackConfig.module.noParse
-      },
-      sassLoader: webpackConfig.sassLoader,
+      plugins: [],
+      module: webpackConfig.module,
       node: webpackConfig.node
     },
     plugins: [
@@ -33,8 +37,15 @@ module.exports = function(config){
       require('karma-chrome-launcher'),
       require('karma-spec-reporter')
     ],
+    stats: {
+      colors: true,
+      modules: true,
+      reasons: true,
+      errorDetails: true
+    },
     webpackServer: {
-      noInfo: true
+      quiet: false,
+      noInfo: false,
     }
   });
 };
