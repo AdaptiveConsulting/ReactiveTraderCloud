@@ -8,23 +8,52 @@ const chalk = require('chalk');
 const path = require('path');
 
 
-module.exports = function(env={}){
+module.exports = function (env = {}) {
 
-  const isProductionMode = process.env.NODE_ENV === 'production';
+  const isProductionMode = process.env.NODE_ENV == 'production';
   const config = env.endpoint ? env.endpoint + '.config.json' : 'default.config.json';
   const babelPlugins = [];
 
+  const productionStyleLoaderConfig = {
+    use: ExtractTextPlugin.extract({
+      fallback: 'style-loader',
+      use: ['css-loader', 'sass-loader']
+    })
+  };
+
+  const styleLoaderConfig = {
+    test: /\.(css|scss)$/,
+    use: [
+      {
+        loader: 'style-loader'
+      },
+      {
+        loader: 'css-loader'
+      },
+      {
+        loader: 'sass-loader',
+        options: {
+          includePaths: ['./src/**/*.scss']
+        }
+      }
+    ]
+  };
+
+  const getStyleLoader = (isProductionMode) => {
+    return isProductionMode ? Object.assign({}, styleLoaderConfig, productionStyleLoaderConfig) : styleLoaderConfig;
+  };
 // in production you should not have hot reloader etc
   if (!isProductionMode) babelPlugins.push(['react-transform', {
     transforms: [
       {
         transform: 'react-transform-hmr',
         imports: ['react'],
-        locals: ['module'],
-      }, {
-        transform: 'react-transform-catch-errors',
-        imports: ['react', 'redbox-react'],
+        locals: ['module']
       },
+      {
+        transform: 'react-transform-catch-errors',
+        imports: ['react', 'redbox-react']
+      }
     ]
   }]);
 
@@ -76,13 +105,13 @@ module.exports = function(env={}){
         }
       ]),
       new webpack.optimize.CommonsChunkPlugin({
-        name: "vendor",
+        name: 'vendor',
         minChunks: function (module) {
-          return module.context && module.context.indexOf("node_modules") !== -1;
+          return module.context && module.context.indexOf('node_modules') !== -1;
         }
       }),
       new webpack.optimize.CommonsChunkPlugin({
-        name: "manifest",
+        name: 'manifest',
         minChunks: Infinity
       }),
       new webpack.DefinePlugin({
@@ -118,34 +147,22 @@ module.exports = function(env={}){
           use: {
             loader: 'babel-loader',
             options: {
-              presets: [ 'env', 'flow', 'react'],
+              presets: ['env', 'flow', 'react'],
               plugins: [
-                "transform-decorators-legacy",
-                "transform-class-properties"
+                'transform-decorators-legacy',
+                'transform-class-properties'
               ]
             }
           }
         },
         {
           test: /\.tsx?$/,
-          loader: 'awesome-typescript',
+          loader: 'awesome-typescript-loader',
           query: {
             configFileName: './tsconfig.json'
           }
         },
-        {
-          test: /\.(css|scss)$/,
-          use: [{
-            loader: "style-loader"
-          }, {
-            loader: "css-loader"
-          }, {
-            loader: "sass-loader",
-            options: {
-              includePaths: ['./src/**/*.scss']
-            }
-          }]
-        },
+        getStyleLoader(isProductionMode),
         {
           test: /\.json$/,
           loader: 'json-loader'
@@ -177,29 +194,22 @@ module.exports = function(env={}){
     }
   };
 
-
   if (isProductionMode) {
     console.log('Starting a ' + chalk.red('production') + ' build...');
-
-    webpackConfig.module.loaders = webpackConfig.module.loaders.map(function (loader) {
-      if (/css/.test(loader.test)) {
-        var first = loader.loaders[0];
-        var rest = loader.loaders.slice(1, loader.loaders.length);
-        loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
-        delete loader.loaders;
-      }
-      return loader;
-    });
 
     webpackConfig.plugins.push(
       new ExtractTextPlugin('[name].css?[contenthash]'),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
-          'unused': true,
-          'dead_code': true
-        },
-        output: {
-          comments: false
+          warnings: false,
+          conditionals: true,
+          unused: true,
+          comparisons: true,
+          sequences: true,
+          dead_code: true,
+          evaluate: true,
+          if_return: true,
+          join_vars: true
         }
       })
     );
@@ -220,7 +230,6 @@ module.exports = function(env={}){
     };
 
     webpackConfig.devtool = 'source-map';
-
 
     webpackConfig.plugins.push(
       new webpack.HotModuleReplacementPlugin()
