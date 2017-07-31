@@ -1,12 +1,25 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 export default class StubAutobahnProxy {
+  onOpenCallbacks;
+  onCloseCallbacks;
+  openCallCount;
+  closeCallCount;
+  session;
+  connection;
   constructor() {
     this.onOpenCallbacks = [];
     this.onCloseCallbacks = [];
     this.openCallCount = 0;
     this.closeCallCount = 0;
     this.session = new StubAutobahnSession();
+    this.connection = {
+      transport: {
+        info: {
+          url: ''
+        }
+      }
+    };
   }
 
   open() {
@@ -36,6 +49,7 @@ export default class StubAutobahnProxy {
 }
 
 class StubAutobahnSession {
+  _stubPromises;
   constructor() {
     this._stubPromises = {};
   }
@@ -89,6 +103,8 @@ class StubAutobahnSession {
 //}
 
 class DummyPromise {
+  onSuccess;
+  onReject;
   then(onSuccess, onReject) {
     this.onSuccess = onSuccess;
     this.onReject = onReject;
@@ -96,6 +112,7 @@ class DummyPromise {
 }
 
 class StubCallResult extends DummyPromise {
+  _dto;
   constructor(dto) {
     super();
     this._dto = dto;
@@ -107,6 +124,7 @@ class StubCallResult extends DummyPromise {
 }
 
 class StubSubscribeResult extends DummyPromise {
+  _onResults;
   constructor(onResults) {
     super();
     this._onResults = onResults;

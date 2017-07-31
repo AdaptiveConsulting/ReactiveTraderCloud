@@ -16,12 +16,14 @@
     "experimentalDecorators": true,
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
-    // skipLibCheck is required as esp types subscribeOn & addDisposable do not have type definitions
     "skipLibCheck": true,
     "lib": [
       "es6",
       "es7",
       "dom"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
     ]
   },
   "exclude": [

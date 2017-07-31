@@ -10,16 +10,24 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
 import ServiceStatus from './serviceStatus';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
 
+// Importing ServiceObservableExtensions to add functions to Rx prototype
+import '../../../src/system/service/serviceObservableExtensions'
+
 /**
  * Abstracts a back end service for which there can be multiple instances.
  * Offers functionality to perform request-response and stream operations against a service instance.
  * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
+
+
 export default class ServiceClient extends DisposableBase {
+
   _log;
   _serviceType;
   _serviceInstanceDictionaryStream;
   _isConnectCalled;
+  _connection;
+  _schedulerService;
 
   static get HEARTBEAT_TIMEOUT() {
     return 3000;
