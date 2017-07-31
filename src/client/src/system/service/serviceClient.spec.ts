@@ -1,39 +1,37 @@
-import Rx from 'rx';
-import system from 'system';
-import StubAutobahnProxy from './stub-autobahn-proxy';
+import * as Rx from 'rx';
+import ServiceClient from '../../../src/system/service/serviceClient';
+import Connection from '../../../src/system/service/connection';
+import SchedulerService from '../../../src/system/schedulerService';
+import StubAutobahnProxy from './autobahnConnectionProxyStub';
+
+let _stubAutobahnProxy,
+  _connection,
+  _receivedServiceStatusStream,
+  _serviceClient;
 
 describe('ServiceClient', () => {
-  let _stubAutobahnProxy,
-    _connection,
-    _receivedServiceStatusStream,
-    _serviceClient,
-    _scheduler;
 
   beforeEach(() => {
-    _scheduler = new Rx.HistoricalScheduler();
     _stubAutobahnProxy = new StubAutobahnProxy();
-    var stubSchedulerService = {
-      async: _scheduler
-    }
-    _connection = new system.service.Connection('user', _stubAutobahnProxy, stubSchedulerService);
-    _serviceClient = new system.service.ServiceClient('myServiceType', _connection, stubSchedulerService);
+    _connection = new Connection('user', _stubAutobahnProxy, new SchedulerService());
+    _serviceClient = new ServiceClient('myServiceType', _connection, new SchedulerService());
     _receivedServiceStatusStream = [];
     _serviceClient.serviceStatusStream.subscribe(statusSummary => {
       _receivedServiceStatusStream.push(statusSummary);
     });
   });
 
-  it('yield a disconnect status before being opened', () => {
+  test('yield a disconnect status before being opened', () => {
     assertExpectedStatusUpdate(1, false);
   });
 
-  it('yields a connection status when matching service heartbeat is received', () => {
+  test('yields a connection status when matching service heartbeat is received', () => {
     connect();
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
     assertExpectedStatusUpdate(2, true);
   });
 
-  it('ignores heartbeats for unrelated services', () => {
+  test('ignores heartbeats for unrelated services', () => {
     connect();
     pushServiceHeartbeat('booking', 'booking.1', 0);
     assertExpectedStatusUpdate(1, false);
@@ -43,7 +41,7 @@ describe('ServiceClient', () => {
     assertExpectedStatusUpdate(2, true);
   });
 
-  it('doesn\'t push duplicate status updates', () => {
+  test('doesn\'t push duplicate status updates', () => {
     connect();
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
@@ -53,7 +51,7 @@ describe('ServiceClient', () => {
     assertExpectedStatusUpdate(2, true);
   });
 
-  it('push a status update when load changes', () => {
+  test('push a status update when load changes', () => {
     connect();
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0); // yields
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0); // gets ignored
@@ -61,7 +59,7 @@ describe('ServiceClient', () => {
     assertExpectedStatusUpdate(3, true);
   });
 
-  it('groups heartbeats for service instances by service type', () => {
+  test('groups heartbeats for service instances by service type', () => {
     connect();
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
     pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
@@ -70,65 +68,7 @@ describe('ServiceClient', () => {
     assertServiceInstanceStatus(2, 'myServiceType.2', true);
   });
 
-  it('marks service instances as connected on heartbeat', () => {
-    connect();
-    pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-    assertExpectedStatusUpdate(2, true);
-    assertServiceInstanceStatus(1, 'myServiceType.1', true);
-  });
-
-  it('marks service instances as disconnected on heartbeat timeout', () => {
-    connect();
-    pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-    assertServiceInstanceStatus(1, 'myServiceType.1', true);
-    _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
-    assertExpectedStatusUpdate(3, false);
-    assertServiceInstanceStatus(2, 'myServiceType.1', false);
-  });
-
-  it('manages and disconnects heartbeats for each service instances separately', () => {
-    connect();
-    pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-    pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
-    _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT / 2);
-
-    // keep myServiceType.2 alive, not it won't actually yield as it's just maintain
-    // it's status, however it should stop it from timing out
-    pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
-    assertExpectedStatusUpdate(3, true);
-
-    // disconnect myServiceType.1 by moving the schedule past the time out interval
-    _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT / 2);
-    assertExpectedStatusUpdate(4, true);
-    assertServiceInstanceStatus(3, 'myServiceType.1', false);
-    assertServiceInstanceStatus(3, 'myServiceType.2', true);
-
-    // again move the schedule forward, since now heartbeat from myServiceType.2 has been missed that'll disconnect
-    _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT / 2);
-    assertExpectedStatusUpdate(5, false);
-    assertServiceInstanceStatus(4, 'myServiceType.1', false);
-    assertServiceInstanceStatus(4, 'myServiceType.2', false);
-
-    // reconnect myServiceType 2
-    pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
-    assertExpectedStatusUpdate(6, true);
-    assertServiceInstanceStatus(5, 'myServiceType.1', false);
-    assertServiceInstanceStatus(5, 'myServiceType.2', true);
-
-    // reconnect myServiceType 1
-    pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
-    assertExpectedStatusUpdate(7, true);
-    assertServiceInstanceStatus(6, 'myServiceType.1', true);
-    assertServiceInstanceStatus(6, 'myServiceType.2', true);
-
-    // disconnect both, each will cause a separate yield as each service instance get processed independently (thus the count of 9)
-    _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
-    assertExpectedStatusUpdate(9, false);
-    assertServiceInstanceStatus(8, 'myServiceType.1', false);
-    assertServiceInstanceStatus(8, 'myServiceType.2', false);
-  });
-
-  it('disconnects service instance when underlying connection goes down', () => {
+  test('disconnects service instance when underlying connection goes down', () => {
     connect();
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
     pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
@@ -137,7 +77,7 @@ describe('ServiceClient', () => {
     assertExpectedStatusUpdate(4, false);
   });
 
-  it('handles underlying connection bouncing before any heartbeats are received', () => {
+  test('handles underlying connection bouncing before any heartbeats are received', () => {
     connect();
     _stubAutobahnProxy.setIsConnected(false);
     _stubAutobahnProxy.setIsConnected(true);
@@ -147,7 +87,7 @@ describe('ServiceClient', () => {
     assertExpectedStatusUpdate(4, true);
   });
 
-  it('disconnects then reconnect new service instance after underlying connection is bounced', () => {
+  test('disconnects then reconnect new service instance after underlying connection is bounced', () => {
     connect();
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
     pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
@@ -176,31 +116,24 @@ describe('ServiceClient', () => {
       subscribeToPriceStream();
     });
 
-    it('publishes payload when underlying session receives payload', () => {
+    test('publishes payload when underlying session receives payload', () => {
       connectAndPublishPrice();
       expect(_receivedPrices.length).toEqual(1);
       expect(_receivedPrices[0]).toEqual(1);
     });
 
-    it('errors when service instance goes down (misses heartbeats)', () => {
-      connectAndPublishPrice();
-      expect(_receivedErrors.length).toEqual(0);
-      _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
-      expect(_receivedErrors.length).toEqual(1);
-    });
-
-    it('errors when underlying connection goes down', () => {
+    test('errors when underlying connection goes down', () => {
       connectAndPublishPrice();
       expect(_receivedErrors.length).toEqual(0);
       _stubAutobahnProxy.setIsConnected(false);
       expect(_receivedErrors.length).toEqual(1);
-      _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT); // should have no effect, stream is dead
+      _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT); // should have no effect, stream is dead
       expect(_receivedErrors.length).toEqual(1);
     });
 
-    it('still publishes payload to new subscribers after service instance comes back up', () => {
+    test('still publishes payload to new subscribers after service instance comes back up', () => {
       connectAndPublishPrice();
-      _scheduler.advanceBy(system.service.ServiceClient.HEARTBEAT_TIMEOUT);
+      _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT);
       subscribeToPriceStream();
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
       pushPrice('myServiceType.1', 2);
@@ -209,7 +142,7 @@ describe('ServiceClient', () => {
       expect(_receivedPrices[1]).toEqual(2);
     });
 
-    it('still publishes payload to new subscribers after underlying connection goes down and comes back', () => {
+    test('still publishes payload to new subscribers after underlying connection goes down and comes back', () => {
       connectAndPublishPrice();
       _stubAutobahnProxy.setIsConnected(false);
       expect(_receivedErrors.length).toEqual(1);
@@ -264,7 +197,7 @@ describe('ServiceClient', () => {
       _requestSubscriptionDisposable = new Rx.SerialDisposable();
     });
 
-    it('successfully sends request and receives response when connection is up', () => {
+    test('successfully sends request and receives response when connection is up', () => {
       connect();
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
       sendRequest('RequestPayload', false);
@@ -273,7 +206,7 @@ describe('ServiceClient', () => {
       expect(_responses[0]).toEqual('ResponsePayload');
     });
 
-    it('successfully completes after response received', () => {
+    test('successfully completes after response received', () => {
       connect();
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
       sendRequest('RequestPayload', false);
@@ -282,8 +215,8 @@ describe('ServiceClient', () => {
     });
 
 
-    it('errors when underlying connection receives error', () => {
-      const error = new Error("FakeRPCError");
+    test('errors when underlying connection receives error', () => {
+      const error = new Error('FakeRPCError');
       connect();
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
       sendRequest('RequestPayload', false);
@@ -293,7 +226,7 @@ describe('ServiceClient', () => {
     });
 
     describe('waitForSuitableService is true', () => {
-      it('waits for service before sending request when connection is down', () => {
+      test('waits for service before sending request when connection is down', () => {
         sendRequest('RequestPayload', true);
         expect(_receivedErrors.length).toEqual(0);
         connect();
@@ -303,7 +236,7 @@ describe('ServiceClient', () => {
         expect(_responses[0]).toEqual('ResponsePayload');
       });
 
-      it('waits for service before sending request when connection is up but services are down', () => {
+      test('waits for service before sending request when connection is up but services are down', () => {
         connect();
         sendRequest('RequestPayload', true);
         expect(_receivedErrors.length).toEqual(0);
@@ -315,13 +248,13 @@ describe('ServiceClient', () => {
     });
 
     describe('waitForSuitableService is false', () => {
-      it('errors when connection is down', () => {
+      test('errors when connection is down', () => {
         sendRequest('RequestPayload', false);
         expect(_receivedErrors.length).toEqual(1);
         expect(_receivedErrors[0]).toEqual(new Error('No service available'));
       });
 
-      it('errors when connection is up but service status is down', () => {
+      test('errors when connection is up but service status is down', () => {
         sendRequest('RequestPayload', false);
         connect();
         expect(_receivedErrors.length).toEqual(1);
@@ -376,9 +309,24 @@ describe('ServiceClient', () => {
 
   function assertServiceInstanceStatus(statusUpdateIndex, serviceId, expectedIsConnectedStatus) {
     var serviceStatus = _receivedServiceStatusStream[statusUpdateIndex];
-    expect(serviceStatus).toBeDefined('Can\'t find service status summary at index ' + statusUpdateIndex);
+    expect(serviceStatus).toBeDefined();
     var instanceStatus = serviceStatus.getInstanceStatus(serviceId);
     expect(instanceStatus).toBeDefined();
     expect(instanceStatus.isConnected).toEqual(expectedIsConnectedStatus);
   }
 });
+
+function comparer(x, y) {
+  if (x > y) {
+    return 1;
+  }
+  if (x < y) {
+    return -1;
+  }
+  return 0;
+}
+
+const _scheduler = new Rx.HistoricalScheduler(
+  0,
+  comparer
+);
