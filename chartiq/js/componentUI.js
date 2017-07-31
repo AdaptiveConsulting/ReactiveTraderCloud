@@ -336,7 +336,7 @@
 				}else if(arg=="true"){
 					argArray.push(true);
 				}else if(arg=="false"){
-					argArray=push(false);
+					argArray.push(false);
 				}else if(arg=="null"){
 					argArray.push(null);
 				}else if(isInteger.test(arg)){
@@ -1756,18 +1756,24 @@
 	};
 
 	CIQ.UI.Layout.prototype.getAggregationEdit=function(node, field){
-		var obj=this.context.stx.layout;
-		var objectChain=field.split(".");
-		for(var i=1;i<objectChain.length-1;i++){
-			if(!obj[objectChain[i]]) obj[objectChain[i]]={};
-			obj=obj[objectChain[i]];
+		var stx=this.context.stx;
+		function populateEditField(params){
+			var name=params.selector.name;
+			var value=params.obj[params.member];
+			if(!value && stx.chart.defaultChartStyleConfig[name]){
+				$(params.selector).val(stx.chart.defaultChartStyleConfig[name]);
+			}else{
+				$(params.selector).val(value);
+			}
 		}
-		var member=(obj===this.context.stx.layout)?field:objectChain[objectChain.length-1];
+
+		var tuple=CIQ.deriveFromObjectChain(stx.layout, field);
 		this.context.observe({
 			selector: node,
-			obj: obj,
-			member: member,
-			action: "value"
+			obj: tuple.obj,
+			member: tuple.member,
+			action: "callback",
+			value: populateEditField
 		});
 	};
 
@@ -1789,7 +1795,6 @@
 				stx.layout.pandf.box=null;
 				stx.layout.pandf.reversal=null;
 			}
-			this.aggregationDialog.find("input:visible").val('');
 		}else{
 			var tuple=CIQ.deriveFromObjectChain(stx.layout, field);
 			tuple.obj[tuple.member]=$(node.node).val();
@@ -1800,6 +1805,7 @@
 	};
 
 	CIQ.UI.Layout.prototype.showAggregationEdit=function(node, aggregationType){
+		var stx=this.context.stx;
 		var map={
 			kagi:{
 				title:"Set Reversal Percentage"
@@ -1817,19 +1823,23 @@
 				title:"Set Point & Figure Parameters"
 			}
 		};
-		if(this.context.stx.layout.aggregationType!=aggregationType)
-			this.context.stx.setAggregationType(aggregationType);
+		if(stx.layout.aggregationType!=aggregationType)
+			stx.setAggregationType(aggregationType);
 		if(!this.aggregationDialog){
 			console.log("Error:  Layout.aggregationDialog must reference your dialog for editing aggregation parameters");
 			return;
 		}
 		var dialog=$(this.aggregationDialog);
 		var entry=map[aggregationType];
-		dialog.find(".title").text(this.context.stx.translateIf(entry.title));
+		dialog.find(".title").text(stx.translateIf(entry.title));
 
 		for(var type in map){
 			dialog.find(".ciq" + type).css(aggregationType===type?{display:""}:{display:"none"});
 		}
+		dialog.find(".ciq" + aggregationType + " input").each(function(){
+			if($(this).val()==="" && stx.chart.defaultChartStyleConfig[this.name])
+				$(this).val(stx.chart.defaultChartStyleConfig[this.name]);
+		});
 
 		dialog[0].open();
 	};
