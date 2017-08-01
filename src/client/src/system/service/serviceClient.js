@@ -111,7 +111,7 @@ export default class ServiceClient extends DisposableBase {
       return isConnectedStream
         .take(1)
         // flatMap: since we're just taking one, this effectively just continues the stream by subscribing to serviceInstanceDictionaryStream
-        .flatMap(serviceInstanceDictionaryStream)
+        .flatMap(() => serviceInstanceDictionaryStream)
         // repeat after disconnects
         .repeat()
         .subscribe(o);
@@ -130,9 +130,9 @@ export default class ServiceClient extends DisposableBase {
     let _this = this;
     return Observable.create((o) => {
       _this._log.debug(`Creating request response operation for [${operationName}]`);
-      let disposables = new Subscription();
+      let subscriptions = new Subscription();
       let hasSubscribed = false;
-      disposables.add(_this._serviceInstanceDictionaryStream
+      subscriptions.add(_this._serviceInstanceDictionaryStream
         .getServiceWithMinLoad(waitForSuitableService)
         .subscribe(serviceInstanceStatus => {
             if (!serviceInstanceStatus.isConnected) {
@@ -141,7 +141,7 @@ export default class ServiceClient extends DisposableBase {
               hasSubscribed = true;
               _this._log.debug(`Will use service instance [${serviceInstanceStatus.serviceId}] for request/response operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`);
               let remoteProcedure = serviceInstanceStatus.serviceId + '.' + operationName;
-              disposables.add(
+              subscriptions.add(
                 _this._connection.requestResponse(remoteProcedure, request).subscribe(
                   response => {
                     _this._log.debug(`Response received for stream operation [${operationName}]`);
@@ -164,7 +164,7 @@ export default class ServiceClient extends DisposableBase {
             o.complete();
           }
         ));
-      return disposables;
+      return subscriptions;
     });
   }
 
@@ -215,7 +215,8 @@ export default class ServiceClient extends DisposableBase {
               );
               let remoteProcedure = serviceInstanceStatus.serviceId + '.' + operationName;
               disposables.add(
-                _this._connection.requestResponse(remoteProcedure, request, topicName).subscribe(
+                _this._connection.requestResponse(remoteProcedure, request, topicName)
+                  .subscribe(
                   _ => {
                     _this._log.debug(`Ack received for RPC hookup as part of stream operation [${operationName}]`);
                   },

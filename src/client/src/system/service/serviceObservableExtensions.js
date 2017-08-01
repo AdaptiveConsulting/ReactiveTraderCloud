@@ -90,7 +90,7 @@ function getServiceWithMinLoad(waitForServiceIfNoneAvailable = true) {
         if (serviceWithLeastLoad) {
           findServiceInstanceDisposable.dispose();
           let serviceStatusStream = Observable
-            .return(serviceWithLeastLoad.latestValue)
+            .of(serviceWithLeastLoad.latestValue)
             .concat(serviceWithLeastLoad.stream)
             .subscribe(o);
           disposables.add(serviceStatusStream);
@@ -140,13 +140,13 @@ function debounceWithSelector(dueTime, itemSelector, scheduler) {
     disposables.add(debounceDisposable);
     let debounce = () => {
       debounceDisposable.add(
-        scheduler.scheduleFuture(
-          '',
-          dueTime,
+        scheduler.schedule(
           () => {
             let debouncedItem = itemSelector();
             o.next(debouncedItem);
-          }
+          },
+          dueTime,
+          '',
         )
       );
     };
