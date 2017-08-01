@@ -62,7 +62,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
     fin.desktop.InterApplicationBus.publish('undock-window', { windowName });
   }
 
-  _createWindow({url, title, windowOptions}, onSuccessCallback, onErrorCallback) {
+  _createWindow({url, title, windowOptions}, onSuccessCallback, errorCallback) {
     const tearoutWindow = new fin.desktop.Window({
         name: title,
         autoShow: false,
@@ -75,7 +75,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
         alwaysOnTop: true
       },
       () => onSuccessCallback(tearoutWindow),
-      err => onErrorCallback(err)
+      err => errorCallback(err)
     );
   }
 

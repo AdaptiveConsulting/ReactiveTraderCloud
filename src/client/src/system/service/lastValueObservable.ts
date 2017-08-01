@@ -1,12 +1,12 @@
-import * as Rx from 'rx';
+import { Observable } from 'rxjs/Rx';
 
 /**
  * Holds an observable stream and it's last value. Handy for querying in a procedural manor.
  */
 export default class LastValueObservable<TLastValue> {
-  _underlyingStream: Rx.Observable<TLastValue>;
+  _underlyingStream: Observable<TLastValue>;
 
-  constructor(stream: Rx.Observable<TLastValue>, latestValue: TLastValue) {
+  constructor(stream: Observable<TLastValue>, latestValue: TLastValue) {
     this._latestValue = latestValue;
     this._underlyingStream = stream;
   }
@@ -21,7 +21,7 @@ export default class LastValueObservable<TLastValue> {
     this._latestValue = value;
   }
 
-  get stream(): Rx.Observable<TLastValue> {
+  get stream(): Observable<TLastValue> {
     return this._underlyingStream;
   }
 }
