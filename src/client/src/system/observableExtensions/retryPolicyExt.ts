@@ -18,7 +18,7 @@ function retryWithPolicy<TValue>(this: Observable<TValue>,
       currentSubscriptionDisposable.add(source.subscribe(
         i => {
           if (!isDisposed) {
-            o.onNext(i);
+            o.next(i);
           }
         },
         err => {
@@ -44,7 +44,7 @@ function retryWithPolicy<TValue>(this: Observable<TValue>,
           } else {
             // don't retry
             _log.error(`Not retrying [${operationDescription}]. Retry count [${retryCount}]. Will error`, err);
-            o.onError(err);
+            o.error(err);
           }
         },
         () => o.onCompleted()

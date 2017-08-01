@@ -111,7 +111,7 @@ export default class ServiceClient extends DisposableBase {
       return isConnectedStream
         .take(1)
         // flatMap: since we're just taking one, this effectively just continues the stream by subscribing to serviceInstanceDictionaryStream
-        .flatMap(serviceInstanceDictionaryStream)
+        .flatMap(() => serviceInstanceDictionaryStream)
         // repeat after disconnects
         .repeat()
         .subscribe(o);

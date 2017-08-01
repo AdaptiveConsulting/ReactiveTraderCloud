@@ -239,15 +239,15 @@ export default class Connection extends DisposableBase {
   }
 
   _startAutoDisconnectTimer() {
-    this._autoDisconnectDisposable.add(
-      this._schedulerService.async.scheduleFuture(
-        '',
-        Connection.DISCONNECT_SESSION_AFTER,
-        () => {
-          _log.debug('Auto disconnect timeout elapsed');
-          this.disconnect();
-        }
-      )
-    );
+    // this._autoDisconnectDisposable.add(
+    //   this._schedulerService.async.scheduleFuture(
+    //     '',
+    //     Connection.DISCONNECT_SESSION_AFTER,
+    //     () => {
+    //       _log.debug('Auto disconnect timeout elapsed');
+    //       this.disconnect();
+    //     }
+    //   )
+    // );
   }
 }
