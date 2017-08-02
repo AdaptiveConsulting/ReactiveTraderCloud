@@ -215,7 +215,8 @@ export default class ServiceClient extends DisposableBase {
               );
               let remoteProcedure = serviceInstanceStatus.serviceId + '.' + operationName;
               disposables.add(
-                _this._connection.requestResponse(remoteProcedure, request, topicName).subscribe(
+                _this._connection.requestResponse(remoteProcedure, request, topicName)
+                  .subscribe(
                   _ => {
                     _this._log.debug(`Ack received for RPC hookup as part of stream operation [${operationName}]`);
                   },
