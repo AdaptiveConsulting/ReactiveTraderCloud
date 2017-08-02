@@ -35,10 +35,10 @@ function retryWithPolicy<TValue>(this: Observable<TValue>,
             } else {
               _log.warn(`Retrying [${operationDescription}] after [${shouldRetryResult.retryAfterMilliseconds}]. This is attempt [${retryCount}]`, err);
               // throwing away the disposable as we do a dispose check before we onNext
-              scheduler.scheduleFuture(
-                '',
+              scheduler.schedule(
+                () => subscribe(),
                 shouldRetryResult.retryAfterMilliseconds,
-                () => subscribe()
+                ''
               );
             }
           } else {

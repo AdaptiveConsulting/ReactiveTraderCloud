@@ -17,19 +17,18 @@ export default class PricingService extends ServiceBase {
   }
 
   getSpotPriceStream(request) {
-    let _this = this;
     const getPriceUpdatesOperationName = 'getPriceUpdates';
     return Observable.create(
       o => {
         _log.debug(`Subscribing to spot price stream for [${request.symbol}]`);
         let lastPrice = null;
-        return _this._serviceClient
+        return this._serviceClient
           .createStreamOperation(getPriceUpdatesOperationName, request)
           // we retry the price stream forever, if it errors (likely connection down) we pump a non tradable price
           .retryWithPolicy(
             RetryPolicy.indefiniteEvery2Seconds,
             getPriceUpdatesOperationName,
-            _this._schedulerService.async,
+            this._schedulerService.async,
             (err, willRetry) => {
               if(willRetry && lastPrice !== null) {
                 // if we have any error on the price stream we pump a stale price
@@ -58,10 +57,8 @@ export default class PricingService extends ServiceBase {
             },
             { lastPriceDto: null, nextPriceDto: null } // the accumulator seed for the scan function
           )
-          .map(tuple => _this._priceMapper.mapFromSpotPriceDto(tuple.lastPriceDto, tuple.nextPriceDto))
-          .subscribe(
-            (price) => {
-              lastPrice = price;
+          .map(tuple => this._priceMapper.mapFromSpotPriceDto(tuple.lastPriceDto, tuple.nextPriceDto))
+          .subscribe((price) => {
               o.next(price);
             },
             err => { o.error(err); },
