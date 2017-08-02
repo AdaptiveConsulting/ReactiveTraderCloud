@@ -84,6 +84,24 @@ class StubAutobahnSession {
   }
 }
 
+//class StubPromiseResult {
+//    constructor() {
+//        this._underlyingPromise = new Promise((onSuccess, onReject) => {
+//            this._onSuccess = onSuccess;
+//            this._onReject = onReject;
+//        });
+//    }
+//    get underlyingPromise() {
+//        return this._underlyingPromise;
+//    }
+//    get onSuccess() {
+//        return this._onSuccess;
+//    }
+//    get onReject() {
+//        return this._onReject;
+//    }
+//}
+
 class DummyPromise {
   onSuccess;
   onReject;

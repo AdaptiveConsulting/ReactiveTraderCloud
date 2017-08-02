@@ -18,7 +18,7 @@ function retryWithPolicy<TValue>(this: Observable<TValue>,
       currentSubscriptionDisposable.add(source.subscribe(
         i => {
           if (!isDisposed) {
-            o.next(i);
+            o.onNext(i);
           }
         },
         err => {
@@ -35,16 +35,16 @@ function retryWithPolicy<TValue>(this: Observable<TValue>,
             } else {
               _log.warn(`Retrying [${operationDescription}] after [${shouldRetryResult.retryAfterMilliseconds}]. This is attempt [${retryCount}]`, err);
               // throwing away the disposable as we do a dispose check before we onNext
-              scheduler.schedule(
-                () => subscribe(),
+              scheduler.scheduleFuture(
+                '',
                 shouldRetryResult.retryAfterMilliseconds,
-                ''
+                () => subscribe()
               );
             }
           } else {
             // don't retry
             _log.error(`Not retrying [${operationDescription}]. Retry count [${retryCount}]. Will error`, err);
-            o.error(err);
+            o.onError(err);
           }
         },
         () => o.onCompleted()

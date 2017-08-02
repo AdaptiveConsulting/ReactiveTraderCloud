@@ -1,8 +1,11 @@
-import { Observable, Subscription, Scheduler } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
+import { OpenFin } from '../system/openFin';
 import ExecuteTradeResponse from './model/executeTradeResponse';
+import ExecuteTradeRequest from './model/executeTradeRequest';
 import { TradeMapper } from './mappers';
 import { logger, SchedulerService } from '../system';
-import { ServiceBase } from '../system/service';
+import { Connection, ServiceBase } from '../system/service';
+import { ReferenceDataService } from './';
 
 const _log = logger.create('ExecutionService');
 
@@ -46,7 +49,8 @@ export default class ExecutionService extends ServiceBase {
                         _log.info(`execute response received for: ${executeTradeRequest.toString()}. Status: ${trade.status}`, dto);
                         return ExecuteTradeResponse.create(trade);
                       })
-                      .timeout(ExecutionService.EXECUTION_REQUEST_TIMEOUT_MS, Scheduler.asap.schedule(() => ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))),
+                      // if we never receive a response, mark request as complete
+                      .timeout(ExecutionService.EXECUTION_REQUEST_TIMEOUT_MS, Observable.of(ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))),
                     // show timeout error if request is taking longer than expected
                     Observable.timer(ExecutionService.EXECUTION_CLIENT_TIMEOUT_MS)
                       .map(() => ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))

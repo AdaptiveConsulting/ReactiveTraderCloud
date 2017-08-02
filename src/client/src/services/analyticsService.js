@@ -23,7 +23,7 @@ export default class AnalyticsService extends ServiceBase {
         return _this._serviceClient
           .createStreamOperation('getAnalytics', analyticsRequest)
           .retryWithPolicy(RetryPolicy.backoffTo10SecondsMax, 'getAnalytics', _this._schedulerService.async)
-          .map(dto => _this._positionsMapper.mapFromDto(dto))
+          .select(dto => _this._positionsMapper.mapFromDto(dto))
           .subscribe(o);
       }
     );

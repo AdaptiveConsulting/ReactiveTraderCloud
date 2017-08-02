@@ -73,7 +73,7 @@ export default class BlotterModel extends ModelBase {
     if (index >= 0) {
       _log.debug(`Highlight trade ${e.trade.tradeId}`);
       this.trades[index].isInFocus = true;
-      this._schedulerService.async.scheduleFuture(() => this.router.publishEvent(this.modelId, 'endHighlightTradeRow', {trade: e.trade}), HIGHLIGHT_TRADE_FOR_IN_MS, '');
+      this._schedulerService.async.scheduleFuture('', HIGHLIGHT_TRADE_FOR_IN_MS, () => this.router.publishEvent(this.modelId, 'endHighlightTradeRow', {trade: e.trade}));
     }
   }
 

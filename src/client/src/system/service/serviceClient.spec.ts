@@ -1,15 +1,15 @@
-import { Subscription } from 'rxjs/Rx';
+import * as Rx from 'rx';
 import ServiceClient from '../../../src/system/service/serviceClient';
 import Connection from '../../../src/system/service/connection';
 import SchedulerService from '../../../src/system/schedulerService';
 import StubAutobahnProxy from './autobahnConnectionProxyStub';
 
-describe('ServiceClient', () => {
+let _stubAutobahnProxy,
+  _connection,
+  _receivedServiceStatusStream,
+  _serviceClient;
 
-  let _stubAutobahnProxy,
-    _connection,
-    _receivedServiceStatusStream,
-    _serviceClient;
+describe('ServiceClient', () => {
 
   beforeEach(() => {
     _stubAutobahnProxy = new StubAutobahnProxy();
@@ -56,7 +56,7 @@ describe('ServiceClient', () => {
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0); // yields
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0); // gets ignored
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 1); // yields
-    assertExpectedStatusUpdate(2, true);
+    assertExpectedStatusUpdate(3, true);
   });
 
   test('groups heartbeats for service instances by service type', () => {
@@ -66,6 +66,122 @@ describe('ServiceClient', () => {
     assertExpectedStatusUpdate(3, true);
     assertServiceInstanceStatus(2, 'myServiceType.1', true);
     assertServiceInstanceStatus(2, 'myServiceType.2', true);
+  });
+
+  test('disconnects service instance when underlying connection goes down', () => {
+    connect();
+    pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+    pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
+    assertExpectedStatusUpdate(3, true);
+    _stubAutobahnProxy.setIsConnected(false);
+    assertExpectedStatusUpdate(4, false);
+  });
+
+  test('handles underlying connection bouncing before any heartbeats are received', () => {
+    connect();
+    _stubAutobahnProxy.setIsConnected(false);
+    _stubAutobahnProxy.setIsConnected(true);
+    pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+    assertExpectedStatusUpdate(3, true);
+    pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
+    assertExpectedStatusUpdate(4, true);
+  });
+
+  test('disconnects then reconnect new service instance after underlying connection is bounced', () => {
+    connect();
+    pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+    pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0);
+    assertExpectedStatusUpdate(3, true);
+    assertServiceInstanceStatus(1, 'myServiceType.1', true);
+    assertServiceInstanceStatus(2, 'myServiceType.1', true);
+    _stubAutobahnProxy.setIsConnected(false);
+    assertExpectedStatusUpdate(4, false);
+    _stubAutobahnProxy.setIsConnected(true);
+    pushServiceHeartbeat('myServiceType', 'myServiceType.4', 0);
+    assertExpectedStatusUpdate(5, true);
+    assertServiceInstanceStatus(4, 'myServiceType.4', true);
+  });
+
+  describe('createStreamOperation()', () => {
+    let _receivedPrices,
+      _receivedErrors,
+      _onCompleteCount,
+      _priceSubscriptionDisposable;
+
+    beforeEach(() => {
+      _receivedPrices = [];
+      _receivedErrors = [];
+      _onCompleteCount = 0;
+      _priceSubscriptionDisposable = new Rx.SerialDisposable();
+      subscribeToPriceStream();
+    });
+
+    test('publishes payload when underlying session receives payload', () => {
+      connectAndPublishPrice();
+      expect(_receivedPrices.length).toEqual(1);
+      expect(_receivedPrices[0]).toEqual(1);
+    });
+
+    test('errors when underlying connection goes down', () => {
+      connectAndPublishPrice();
+      expect(_receivedErrors.length).toEqual(0);
+      _stubAutobahnProxy.setIsConnected(false);
+      expect(_receivedErrors.length).toEqual(1);
+      _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT); // should have no effect, stream is dead
+      expect(_receivedErrors.length).toEqual(1);
+    });
+
+    test('still publishes payload to new subscribers after service instance comes back up', () => {
+      connectAndPublishPrice();
+      _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT);
+      subscribeToPriceStream();
+      pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+      pushPrice('myServiceType.1', 2);
+      expect(_receivedPrices.length).toEqual(2);
+      expect(_receivedPrices[0]).toEqual(1);
+      expect(_receivedPrices[1]).toEqual(2);
+    });
+
+    test('still publishes payload to new subscribers after underlying connection goes down and comes back', () => {
+      connectAndPublishPrice();
+      _stubAutobahnProxy.setIsConnected(false);
+      expect(_receivedErrors.length).toEqual(1);
+
+      subscribeToPriceStream();
+      _stubAutobahnProxy.setIsConnected(true);
+      pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+      pushPrice('myServiceType.1', 2);
+      expect(_receivedPrices.length).toEqual(2);
+      expect(_receivedPrices[0]).toEqual(1);
+      expect(_receivedPrices[1]).toEqual(2);
+    });
+
+    function subscribeToPriceStream() {
+      var existing = _priceSubscriptionDisposable.getDisposable();
+      if (existing) {
+        existing.dispose();
+      }
+      _priceSubscriptionDisposable.setDisposable(
+        _serviceClient.createStreamOperation('getPriceStream', 'EURUSD')
+          .subscribe(price => {
+              _receivedPrices.push(price);
+            },
+            err => _receivedErrors.push(err),
+            () => _onCompleteCount++
+          )
+      );
+    }
+
+    function connectAndPublishPrice() {
+      connect();
+      pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
+      pushPrice('myServiceType.1', 1);
+    }
+
+    function pushPrice(serviceId, price) {
+      var replyToTopic = _stubAutobahnProxy.session.getTopic(serviceId + '.getPriceStream').dto.replyTo;
+      _stubAutobahnProxy.session.getTopic(replyToTopic).onResults(price);
+    }
   });
 
   describe('createRequestResponseOperation()', () => {
@@ -78,7 +194,7 @@ describe('ServiceClient', () => {
       _responses = [];
       _receivedErrors = [];
       _onCompleteCount = 0;
-      _requestSubscriptionDisposable = new Subscription();
+      _requestSubscriptionDisposable = new Rx.SerialDisposable();
     });
 
     test('successfully sends request and receives response when connection is up', () => {
@@ -147,7 +263,7 @@ describe('ServiceClient', () => {
     });
 
     function sendRequest(request, waitForSuitableService) {
-      _requestSubscriptionDisposable.add(
+      _requestSubscriptionDisposable.setDisposable(
         _serviceClient.createRequestResponseOperation('executeTrade', request, waitForSuitableService)
           .subscribe(response => {
               _responses.push(response);
@@ -199,3 +315,18 @@ describe('ServiceClient', () => {
     expect(instanceStatus.isConnected).toEqual(expectedIsConnectedStatus);
   }
 });
+
+function comparer(x, y) {
+  if (x > y) {
+    return 1;
+  }
+  if (x < y) {
+    return -1;
+  }
+  return 0;
+}
+
+const _scheduler = new Rx.HistoricalScheduler(
+  0,
+  comparer
+);
