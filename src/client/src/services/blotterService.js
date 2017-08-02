@@ -1,7 +1,8 @@
-import Rx from 'rx';
+import { Observable } from 'rxjs/Rx';
 import { TradeMapper } from './mappers';
 import { ServiceBase } from '../system/service';
 import { logger, RetryPolicy } from '../system';
+import '../system/observableExtensions/retryPolicyExt';
 
 var _log = logger.create('BlotterService');
 
@@ -17,7 +18,7 @@ export default class BlotterService extends ServiceBase {
 
   getTradesStream() {
     let _this = this;
-    return Rx.Observable.create(
+    return Observable.create(
       o => {
         _log.debug('Subscribing to trade stream');
         return _this._serviceClient

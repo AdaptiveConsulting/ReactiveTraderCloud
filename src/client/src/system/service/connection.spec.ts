@@ -1,5 +1,3 @@
-import * as Rx from 'rx';
-
 import StubAutobahnProxy from './autobahnConnectionProxyStub';
 import Connection from '../../../src/system/service/connection';
 import SchedulerService from '../../../src/system/schedulerService';
@@ -7,11 +5,11 @@ import ConnectionStatus from '../../../src/system/service/connectionStatus';
 
 describe('Connection', () => {
 
+  let _stubAutobahnProxy,
+    _connection,
+    _receivedStatusUpdates;
+
   beforeEach(() => {
-    _scheduler = new Rx.HistoricalScheduler(
-      0, /* initial clock of 0 */
-      comparer      /* comparer for determining order */
-    );
     _stubAutobahnProxy = new StubAutobahnProxy();
     _connection = new Connection('user', _stubAutobahnProxy, new SchedulerService());
     _receivedStatusUpdates = [];
@@ -77,22 +75,3 @@ describe('Connection', () => {
     expect(receivedError.error).toEqual('Session not connected, can\'t subscribe to topic [status]');
   });
 });
-
-function comparer(x, y) {
-  if (x > y) {
-    return 1;
-  }
-  if (x < y) {
-    return -1;
-  }
-  return 0;
-}
-
-let _stubAutobahnProxy,
-  _connection,
-  _receivedStatusUpdates;
-
-let _scheduler = new Rx.HistoricalScheduler(
-  0,
-  comparer
-);
