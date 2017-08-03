@@ -1,4 +1,4 @@
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable, Subscription, Scheduler } from 'rxjs/Rx';
 import { OpenFin } from '../system/openFin';
 import ExecuteTradeResponse from './model/executeTradeResponse';
 import ExecuteTradeRequest from './model/executeTradeRequest';

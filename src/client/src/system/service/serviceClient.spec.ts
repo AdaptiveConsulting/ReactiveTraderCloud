@@ -112,7 +112,7 @@ describe('ServiceClient', () => {
       _receivedPrices = [];
       _receivedErrors = [];
       _onCompleteCount = 0;
-      _priceSubscriptionDisposable = new Rx.SerialDisposable();
+      _priceSubscriptionDisposable = new Subscription();
       subscribeToPriceStream();
     });
 
@@ -127,13 +127,13 @@ describe('ServiceClient', () => {
       expect(_receivedErrors.length).toEqual(0);
       _stubAutobahnProxy.setIsConnected(false);
       expect(_receivedErrors.length).toEqual(1);
-      _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT); // should have no effect, stream is dead
+      // _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT); // should have no effect, stream is dead
       expect(_receivedErrors.length).toEqual(1);
     });
 
     test('still publishes payload to new subscribers after service instance comes back up', () => {
       connectAndPublishPrice();
-      _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT);
+      // _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT);
       subscribeToPriceStream();
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
       pushPrice('myServiceType.1', 2);
@@ -315,18 +315,3 @@ describe('ServiceClient', () => {
     expect(instanceStatus.isConnected).toEqual(expectedIsConnectedStatus);
   }
 });
-
-function comparer(x, y) {
-  if (x > y) {
-    return 1;
-  }
-  if (x < y) {
-    return -1;
-  }
-  return 0;
-}
-
-const _scheduler = new Rx.HistoricalScheduler(
-  0,
-  comparer
-);
