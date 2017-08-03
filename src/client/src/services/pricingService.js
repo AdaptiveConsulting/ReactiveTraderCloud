@@ -6,7 +6,6 @@ import { Connection, ServiceBase } from '../system/service';
 import { logger, SchedulerService, RetryPolicy } from '../system';
 import '../system/observableExtensions/retryPolicyExt';
 
-
 var _log = logger.create('PricingService');
 
 export default class PricingService extends ServiceBase {

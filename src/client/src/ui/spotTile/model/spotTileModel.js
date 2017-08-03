@@ -166,7 +166,7 @@ export default class SpotTileModel extends ModelBase {
                 : TradeExecutionNotification.createForSuccess(response.trade);
               if (!response.hasError && response.trade.status === TradeStatus.Done) {
                 this._toastNotificationTimerDisposable.add(
-                  this._schedulerService.async.scheduleFuture('', DISMISS_NOTIFICATION_AFTER_X_IN_MS, () => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {}))
+                  this._schedulerService.async.schedule(() => this.router.publishEvent(this.modelId, 'tradeNotificationDismissed', {}), DISMISS_NOTIFICATION_AFTER_X_IN_MS, '')
                 );
               }
             },
@@ -226,7 +226,7 @@ export default class SpotTileModel extends ModelBase {
       .refCount();
     this._priceSubscriptionDisposable.add(
       priceStream
-        .debounce(PRICE_STALE_AFTER_X_IN_MS, this._schedulerService)
+        .debounce(() => Observable.interval(PRICE_STALE_AFTER_X_IN_MS))
         .do(() => this._log.warn(`Price stale for ${this.currencyPair.symbol}`))
         .subscribeWithRouter(
           this.router,

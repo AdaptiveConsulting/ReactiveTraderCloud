@@ -231,7 +231,6 @@ export default class Connection extends DisposableBase {
 
       const sub = new Subscription();
       sub.unsubscribe();
-
       disposables.add(sub);
 
       return disposables;
@@ -240,13 +239,13 @@ export default class Connection extends DisposableBase {
 
   _startAutoDisconnectTimer() {
     this._autoDisconnectDisposable.add(
-      this._schedulerService.async.scheduleFuture(
-        '',
-        Connection.DISCONNECT_SESSION_AFTER,
+      this._schedulerService.async.schedule(
         () => {
           _log.debug('Auto disconnect timeout elapsed');
           this.disconnect();
-        }
+        },
+        Connection.DISCONNECT_SESSION_AFTER,
+        ''
       )
     );
   }

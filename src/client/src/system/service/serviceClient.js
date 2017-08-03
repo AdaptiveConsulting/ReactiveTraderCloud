@@ -91,7 +91,8 @@ export default class ServiceClient extends DisposableBase {
         .publish()
         .refCount();
       let isConnectedStream = connectionStatus.filter(isConnected => isConnected);
-      let errorOnDisconnectStream = connectionStatus.filter(isConnected => !isConnected).take(1).flatMap(Observable.throw(new Error('Underlying connection disconnected')));
+      let errorOnDisconnectStream = connectionStatus.filter(isConnected => !isConnected).take(1)
+        .flatMap(Observable.throw(new Error('Underlying connection disconnected')));
       let serviceInstanceDictionaryStream = this._connection
         .subscribeToTopic('status')
         .filter(s => s.Type === serviceType)
@@ -111,7 +112,7 @@ export default class ServiceClient extends DisposableBase {
       return isConnectedStream
         .take(1)
         // flatMap: since we're just taking one, this effectively just continues the stream by subscribing to serviceInstanceDictionaryStream
-        .flatMap(serviceInstanceDictionaryStream)
+        .flatMap(() => serviceInstanceDictionaryStream)
         // repeat after disconnects
         .repeat()
         .subscribe(o);
@@ -215,7 +216,8 @@ export default class ServiceClient extends DisposableBase {
               );
               let remoteProcedure = serviceInstanceStatus.serviceId + '.' + operationName;
               disposables.add(
-                _this._connection.requestResponse(remoteProcedure, request, topicName).subscribe(
+                _this._connection.requestResponse(remoteProcedure, request, topicName)
+                  .subscribe(
                   _ => {
                     _this._log.debug(`Ack received for RPC hookup as part of stream operation [${operationName}]`);
                   },

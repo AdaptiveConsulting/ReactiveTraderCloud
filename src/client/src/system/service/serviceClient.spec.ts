@@ -1,4 +1,4 @@
-import * as Rx from 'rx';
+import { Subscription } from 'rxjs/Rx';
 import ServiceClient from '../../../src/system/service/serviceClient';
 import Connection from '../../../src/system/service/connection';
 import SchedulerService from '../../../src/system/schedulerService';
@@ -161,7 +161,7 @@ describe('ServiceClient', () => {
       if (existing) {
         existing.dispose();
       }
-      _priceSubscriptionDisposable.setDisposable(
+      _priceSubscriptionDisposable.add(
         _serviceClient.createStreamOperation('getPriceStream', 'EURUSD')
           .subscribe(price => {
               _receivedPrices.push(price);
@@ -194,7 +194,7 @@ describe('ServiceClient', () => {
       _responses = [];
       _receivedErrors = [];
       _onCompleteCount = 0;
-      _requestSubscriptionDisposable = new Rx.SerialDisposable();
+      _requestSubscriptionDisposable = new Subscription();
     });
 
     test('successfully sends request and receives response when connection is up', () => {
