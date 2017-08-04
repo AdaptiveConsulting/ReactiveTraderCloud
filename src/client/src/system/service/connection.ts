@@ -1,5 +1,5 @@
 import Guard from '../guard';
-import * as Rx from 'rx';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
 import DisposableBase from '../disposables/disposableBase';
 import ConnectionStatus from './connectionStatus';
 import { ConnectionTypeMapper } from '../../services/mappers';
@@ -17,11 +17,11 @@ const _log = logger.create('Connection');
 export default class Connection extends DisposableBase {
   _userName: string;
   _autobahn: any;
-  _connectionStatusSubject: Rx.BehaviorSubject<any>;
-  _serviceStatusSubject: Rx.BehaviorSubject<any>;
+  _connectionStatusSubject: BehaviorSubject<any>;
+  _serviceStatusSubject: BehaviorSubject<any>;
   _connectCalled: boolean;
   _schedulerService: SchedulerService;
-  _autoDisconnectDisposable: Rx.SerialDisposable;
+  _autoDisconnectDisposable: Subscription;
   _connectionType: any;
   _connectionUrl: string;
   _connectionTypeMapper: ConnectionTypeMapper;
@@ -34,13 +34,13 @@ export default class Connection extends DisposableBase {
     Guard.isDefined(schedulerService, 'schedulerService required');
     this._userName = userName;
     this._autobahn = autobahn;
-    this._connectionStatusSubject = new Rx.BehaviorSubject(ConnectionStatus.idle);
-    this._serviceStatusSubject = new Rx.BehaviorSubject(false);
+    this._connectionStatusSubject = new BehaviorSubject(ConnectionStatus.idle);
+    this._serviceStatusSubject = new BehaviorSubject(false);
     this._connectionTypeMapper = new ConnectionTypeMapper();
     this._connectCalled = false;
     this._isConnected = false;
     this._schedulerService = schedulerService;
-    this._autoDisconnectDisposable = new Rx.SerialDisposable();
+    this._autoDisconnectDisposable = new Subscription();
     this._connectionUrl = '';
     this._connectionType = ConnectionType.Unknown;
     this.addDisposable(this._autoDisconnectDisposable);
@@ -65,7 +65,7 @@ export default class Connection extends DisposableBase {
    * A stream of the current connection status (see ConnectionStatus for possible values)
    * @returns {*}
    */
-  get connectionStatusStream(): Rx.Observable<string> {
+  get connectionStatusStream(): Observable<string> {
     return this._connectionStatusSubject.distinctUntilChanged();
   }
 
@@ -99,20 +99,21 @@ export default class Connection extends DisposableBase {
         this._connectionUrl = this._autobahn.connection.transport.info.url;
         this._connectionType = this._connectionTypeMapper.map(this._autobahn.connection.transport.info.type);
         this._startAutoDisconnectTimer();
-        this._connectionStatusSubject.onNext(ConnectionStatus.connected);
+        this._connectionStatusSubject.next(ConnectionStatus.connected);
+        console.log('Connection status subject --->', ConnectionStatus.connected)
       });
       this._autobahn.onclose((reason, details) => {
         _log.error(`connection lost, reason [${reason}]`);
         this._isConnected = false;
-        var disconnectTimerDisposable = this._autoDisconnectDisposable.getDisposable();
+        var disconnectTimerDisposable = this._autoDisconnectDisposable;
         if (disconnectTimerDisposable) {
-          disconnectTimerDisposable.dispose();
+          disconnectTimerDisposable.unsubscribe();
         }
         // if we explicitly called close then we move to ConnectionStatus.idle status
         if (reason === 'closed') {
-          this._connectionStatusSubject.onNext(ConnectionStatus.sessionExpired);
+          this._connectionStatusSubject.next(ConnectionStatus.sessionExpired);
         } else {
-          this._connectionStatusSubject.onNext(ConnectionStatus.disconnected);
+          this._connectionStatusSubject.next(ConnectionStatus.disconnected);
         }
       });
       this._autobahn.open();
@@ -142,21 +143,21 @@ export default class Connection extends DisposableBase {
    * @param topic
    * @returns {Observable}
    */
-  subscribeToTopic(topic: string): Rx.Observable<any> {
-    return Rx.Observable.create((o) => {
+  subscribeToTopic(topic: string): Observable<any> {
+    return Observable.create((o) => {
 
-      let disposables = new Rx.CompositeDisposable();
+      let disposables = new Subscription();
       _log.debug(`Subscribing to topic [${topic}]. Is connected [${this._isConnected}]`);
 
       if (!this.isConnected) {
-        o.onError(new Error(`Session not connected, can\'t subscribe to topic [${topic}]`));
+        o.error(new Error(`Session not connected, can\'t subscribe to topic [${topic}]`));
         return disposables;
       }
 
       let subscription;
       this._autobahn.session.subscribe(topic, (response: Array<any>) => {
         this._logResponse(topic, response);
-        o.onNext(response[0]);
+        o.next(response[0]);
       }).then((sub) => {
         // subscription succeeded, subscription is an instance of autobahn.Subscription
         _log.verbose(`subscription acked on topic [${topic}]`);
@@ -164,10 +165,10 @@ export default class Connection extends DisposableBase {
       }, (error: Error) => {
         // subscription failed, error is an instance of autobahn.Error
         _log.error(`Error on topic ${topic}`, error);
-        o.onError(error);
+        o.error(error);
       });
 
-      disposables.add(Rx.Disposable.create(() => {
+      disposables.add(new Subscription(() => {
         if (!subscription) {
           return;
         }
@@ -195,13 +196,13 @@ export default class Connection extends DisposableBase {
    * @param responseTopic
    * @returns {Observable}
    */
-  requestResponse(remoteProcedure: string, payload, responseTopic: string = ''): Rx.Observable<any> {
-    return Rx.Observable.create((o) => {
+  requestResponse(remoteProcedure: string, payload, responseTopic: string = ''): Observable<any> {
+    return Observable.create((o) => {
       _log.debug(`Doing a RPC to [${remoteProcedure}]. Is connected [${this._isConnected}]`);
 
-      let disposables = new Rx.CompositeDisposable();
+      let disposables = new Subscription();
       if (!this.isConnected) {
-        o.onError(new Error(`Session not connected, can\'t perform remoteProcedure ${remoteProcedure}`));
+        o.error(new Error(`Session not connected, can\'t perform remoteProcedure ${remoteProcedure}`));
         return disposables;
       }
       let isDisposed;
@@ -214,38 +215,38 @@ export default class Connection extends DisposableBase {
       this._autobahn.session.call(remoteProcedure, dto).then(
         result => {
           if (!isDisposed) {
-            o.onNext(result);
-            o.onCompleted();
+            o.next(result);
+            o.complete();
           } else {
             _log.verbose(`Ignoring response for remoteProcedure [${remoteProcedure}] as stream disposed`);
           }
         },
         error => {
           if (!isDisposed) {
-            o.onError(error);
+            o.error(error);
           } else {
             _log.error(`Ignoring error for remoteProcedure [${remoteProcedure}] as stream disposed.`, error);
           }
         }
       );
 
-      disposables.add(Rx.Disposable.create(() => {
-        isDisposed = true;
-      }));
+      const sub = new Subscription();
+      sub.unsubscribe();
+      disposables.add(sub);
 
       return disposables;
     });
   }
 
   _startAutoDisconnectTimer() {
-    this._autoDisconnectDisposable.setDisposable(
-      this._schedulerService.async.scheduleFuture(
-        '',
-        Connection.DISCONNECT_SESSION_AFTER,
+    this._autoDisconnectDisposable.add(
+      this._schedulerService.async.schedule(
         () => {
           _log.debug('Auto disconnect timeout elapsed');
           this.disconnect();
-        }
+        },
+        Connection.DISCONNECT_SESSION_AFTER,
+        ''
       )
     );
   }

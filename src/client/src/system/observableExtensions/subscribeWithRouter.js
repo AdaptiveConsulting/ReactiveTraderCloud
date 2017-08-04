@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import { Observable } from 'rxjs/Rx';
 import { Router } from 'esp-js';
 import { Guard } from '../';
 
@@ -9,20 +9,20 @@ import { Guard } from '../';
  * There are a few ways to do this:
  * 1) publish an esp event in your rx subscription handler, handle the esp event as normal (the publish will have kicked off the the routers dispatch loop).
  * 2) call router.runAction() in your subscription handler and deal with the results inline, again this kicks off the the routers dispatch loop.
- * 3) use subscribeWithRouter which effectively wraps up method 2 for for all functions of subscribe (onNext, onError, onCompleted).
+ * 3) use subscribeWithRouter which effectively wraps up method 2 for for all functions of subscribe (next, error, complete).
  *
  * @param router
  * @param modelId : the model id you want to update
- * @param onNext
- * @param onError
- * @param onCompleted
+ * @param next
+ * @param error
+ * @param complete
  */
-Rx.Observable.prototype.subscribeWithRouter = function(
+Observable.prototype.subscribeWithRouter = function(
   router,
   modelId,
-  onNext,
-  onError,
-  onCompleted) {
+  next,
+  error,
+  complete) {
 
   Guard.isDefined(router, 'router should be defined');
   Guard.isString(modelId, 'modelId should be defined and a string');
@@ -32,20 +32,20 @@ Rx.Observable.prototype.subscribeWithRouter = function(
   {
     switch (i.kind) {
       case 'N':
-        if(onNext !== null && onNext !== undefined) {
-          router.runAction(modelId, model => onNext(i.value, model));
+        if(next !== null && next !== undefined) {
+          router.runAction(modelId, model => next(i.value, model));
         }
         break;
       case 'E':
-        if(onError === null || onError === undefined) {
+        if(error === null || error === undefined) {
           throw i.error;
         } else {
-          router.runAction(modelId, model => onError(i.error, model));
+          router.runAction(modelId, model => error(i.error, model));
         }
         break;
       case 'C':
-        if(onCompleted !== null && onCompleted !== undefined) {
-          router.runAction(modelId, model => onCompleted(model));
+        if(complete !== null && complete !== undefined) {
+          router.runAction(modelId, model => complete(model));
         }
         break;
       default:

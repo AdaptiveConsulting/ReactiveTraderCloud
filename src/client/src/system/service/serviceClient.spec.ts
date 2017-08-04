@@ -1,4 +1,4 @@
-import * as Rx from 'rx';
+import { Subscription } from 'rxjs/Rx';
 import ServiceClient from '../../../src/system/service/serviceClient';
 import Connection from '../../../src/system/service/connection';
 import SchedulerService from '../../../src/system/schedulerService';
@@ -56,7 +56,7 @@ describe('ServiceClient', () => {
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0); // yields
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0); // gets ignored
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 1); // yields
-    assertExpectedStatusUpdate(3, true);
+    assertExpectedStatusUpdate(2, true);
   });
 
   test('groups heartbeats for service instances by service type', () => {
@@ -112,7 +112,7 @@ describe('ServiceClient', () => {
       _receivedPrices = [];
       _receivedErrors = [];
       _onCompleteCount = 0;
-      _priceSubscriptionDisposable = new Rx.SerialDisposable();
+      _priceSubscriptionDisposable = new Subscription();
       subscribeToPriceStream();
     });
 
@@ -127,13 +127,11 @@ describe('ServiceClient', () => {
       expect(_receivedErrors.length).toEqual(0);
       _stubAutobahnProxy.setIsConnected(false);
       expect(_receivedErrors.length).toEqual(1);
-      _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT); // should have no effect, stream is dead
       expect(_receivedErrors.length).toEqual(1);
     });
 
     test('still publishes payload to new subscribers after service instance comes back up', () => {
       connectAndPublishPrice();
-      _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT);
       subscribeToPriceStream();
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
       pushPrice('myServiceType.1', 2);
@@ -157,11 +155,11 @@ describe('ServiceClient', () => {
     });
 
     function subscribeToPriceStream() {
-      var existing = _priceSubscriptionDisposable.getDisposable();
+      var existing = _priceSubscriptionDisposable;
       if (existing) {
         existing.dispose();
       }
-      _priceSubscriptionDisposable.setDisposable(
+      _priceSubscriptionDisposable.add(
         _serviceClient.createStreamOperation('getPriceStream', 'EURUSD')
           .subscribe(price => {
               _receivedPrices.push(price);
@@ -194,7 +192,7 @@ describe('ServiceClient', () => {
       _responses = [];
       _receivedErrors = [];
       _onCompleteCount = 0;
-      _requestSubscriptionDisposable = new Rx.SerialDisposable();
+      _requestSubscriptionDisposable = new Subscription();
     });
 
     test('successfully sends request and receives response when connection is up', () => {
@@ -263,7 +261,7 @@ describe('ServiceClient', () => {
     });
 
     function sendRequest(request, waitForSuitableService) {
-      _requestSubscriptionDisposable.setDisposable(
+      _requestSubscriptionDisposable.add(
         _serviceClient.createRequestResponseOperation('executeTrade', request, waitForSuitableService)
           .subscribe(response => {
               _responses.push(response);
@@ -315,18 +313,3 @@ describe('ServiceClient', () => {
     expect(instanceStatus.isConnected).toEqual(expectedIsConnectedStatus);
   }
 });
-
-function comparer(x, y) {
-  if (x > y) {
-    return 1;
-  }
-  if (x < y) {
-    return -1;
-  }
-  return 0;
-}
-
-const _scheduler = new Rx.HistoricalScheduler(
-  0,
-  comparer
-);

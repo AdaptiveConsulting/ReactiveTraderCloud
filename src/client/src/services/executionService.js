@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import { Observable, Subscription, Scheduler } from 'rxjs/Rx';
 import { OpenFin } from '../system/openFin';
 import ExecuteTradeResponse from './model/executeTradeResponse';
 import ExecuteTradeRequest from './model/executeTradeRequest';
@@ -26,10 +26,10 @@ export default class ExecutionService extends ServiceBase {
 
   executeTrade(executeTradeRequest) {
     let _this = this;
-    return Rx.Observable.create(
+    return Observable.create(
       o => {
         _log.info(`executing: ${executeTradeRequest.toString()}`, executeTradeRequest);
-        let disposables = new Rx.CompositeDisposable();
+        let disposables = new Subscription();
 
         disposables.add(
           _this._openFin
@@ -42,7 +42,7 @@ export default class ExecutionService extends ServiceBase {
                   .publish()
                   .refCount();
                 disposables.add(
-                  Rx.Observable.merge(
+                  Observable.merge(
                     request
                       .map(dto => {
                         const trade = _this._tradeMapper.mapFromTradeDto(dto.Trade);
@@ -50,16 +50,16 @@ export default class ExecutionService extends ServiceBase {
                         return ExecuteTradeResponse.create(trade);
                       })
                       // if we never receive a response, mark request as complete
-                      .timeout(ExecutionService.EXECUTION_REQUEST_TIMEOUT_MS, Rx.Observable.return(ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))),
+                      .timeout(ExecutionService.EXECUTION_REQUEST_TIMEOUT_MS, Scheduler.asap.schedule(() => ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))),
                     // show timeout error if request is taking longer than expected
-                    Rx.Observable.timer(ExecutionService.EXECUTION_CLIENT_TIMEOUT_MS)
+                    Observable.timer(ExecutionService.EXECUTION_CLIENT_TIMEOUT_MS)
                       .map(() => ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))
                       .takeUntil(request))
                     .subscribe(o)
                 );
               }
               else {
-                o.onNext(ExecuteTradeResponse.createForError('Credit limit exceeded'));
+                o.next(ExecuteTradeResponse.createForError('Credit limit exceeded'));
               }
             })
         );

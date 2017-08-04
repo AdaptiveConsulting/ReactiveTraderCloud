@@ -1,4 +1,4 @@
-import Rx from 'rx';
+import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import _ from 'lodash';
 import { TradeNotification } from '../../services/model';
 import PriceMapper from '../../services/mappers/priceMapper';
@@ -18,7 +18,7 @@ export default class OpenFin {
   _router;
 
   constructor(router) {
-    this.tradeClickedSubject = new Rx.Subject();
+    this.tradeClickedSubject = new Subject();
     this.limitCheckId = 1;
     this.limitCheckSubscriber = null;
     this._router = router;
@@ -88,19 +88,19 @@ export default class OpenFin {
 
   checkLimit(executablePrice, notional, tradedCurrencyPair) {
     let _this = this;
-    return Rx.Observable.create(observer => {
-        let disposables = new Rx.CompositeDisposable();
+    return Observable.create(observer => {
+        let disposables = new Subscription();
         if (_this.limitCheckSubscriber === null) {
           _log.debug('client side limit check not up, will delegate to to server');
-          observer.onNext(true);
-          observer.onCompleted();
+          observer.next(true);
+          observer.complete();
         } else {
           _log.debug(`checking if limit is ok with ${_this.limitCheckSubscriber}`);
           const topic = `limit-check-response (${_this.limitCheckId++})`;
           let limitCheckResponse = (msg) => {
             _log.debug(`${_this.limitCheckSubscriber} limit check response was ${msg}`);
-            observer.onNext(msg.result);
-            observer.onCompleted();
+            observer.next(msg.result);
+            observer.complete();
           };
 
           fin.desktop.InterApplicationBus.subscribe(_this.limitCheckSubscriber, topic, limitCheckResponse);
@@ -113,7 +113,7 @@ export default class OpenFin {
             rate: executablePrice
           });
 
-          disposables.add(Rx.Disposable.create(() => {
+          disposables.add(new Subscription(() => {
             fin.desktop.InterApplicationBus.unsubscribe(_this.limitCheckSubscriber, topic, limitCheckResponse);
           }));
         }

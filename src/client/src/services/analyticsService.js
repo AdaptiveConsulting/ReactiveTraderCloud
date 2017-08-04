@@ -1,7 +1,8 @@
-import Rx from 'rx';
+import { Observable } from 'rxjs/Rx';
 import { ServiceBase } from '../system/service';
 import { PositionsMapper } from './mappers';
 import { Guard, logger, RetryPolicy } from '../system';
+import '../system/observableExtensions/retryPolicyExt';
 
 var _log = logger.create('AnalyticsService');
 
@@ -15,13 +16,14 @@ export default class AnalyticsService extends ServiceBase {
   getAnalyticsStream(analyticsRequest) {
     Guard.isDefined(analyticsRequest, 'analyticsRequest required');
     let _this = this;
-    return Rx.Observable.create(
+    return Observable.create(
       o => {
         _log.debug('Subscribing to analytics stream');
+
         return _this._serviceClient
           .createStreamOperation('getAnalytics', analyticsRequest)
           .retryWithPolicy(RetryPolicy.backoffTo10SecondsMax, 'getAnalytics', _this._schedulerService.async)
-          .select(dto => _this._positionsMapper.mapFromDto(dto))
+          .map(dto => _this._positionsMapper.mapFromDto(dto))
           .subscribe(o);
       }
     );

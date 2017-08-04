@@ -1,24 +1,24 @@
-import * as  Rx from 'rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 import logger from '../logger';
 
 var _log = logger.create('RetryPolicy');
 
-function retryWithPolicy<TValue>(this: Rx.Observable<TValue>,
+function retryWithPolicy<TValue>(this: Observable<TValue>,
                                  retryPolicy,
                                  operationDescription: string,
                                  scheduler: any,
                                  onErrorCallback: (err: Error, willRetry: boolean) => void) {
-  let source: Rx.Observable<TValue> = this;
-  return Rx.Observable.create(o => {
+  let source: Observable<TValue> = this;
+  return Observable.create(o => {
     let retryCount = 0;
     let subscribe = null;
     let isDisposed = false;
-    let currentSubscriptionDisposable = new Rx.SerialDisposable();
+    let currentSubscriptionDisposable = new Subscription();
     subscribe = () => {
-      currentSubscriptionDisposable.setDisposable(source.subscribe(
+      currentSubscriptionDisposable.add(source.subscribe(
         i => {
           if (!isDisposed) {
-            o.onNext(i);
+            o.next(i);
           }
         },
         err => {
@@ -35,16 +35,16 @@ function retryWithPolicy<TValue>(this: Rx.Observable<TValue>,
             } else {
               _log.warn(`Retrying [${operationDescription}] after [${shouldRetryResult.retryAfterMilliseconds}]. This is attempt [${retryCount}]`, err);
               // throwing away the disposable as we do a dispose check before we onNext
-              scheduler.scheduleFuture(
-                '',
+              scheduler.schedule(
+                () => subscribe(),
                 shouldRetryResult.retryAfterMilliseconds,
-                () => subscribe()
+                ''
               );
             }
           } else {
             // don't retry
             _log.error(`Not retrying [${operationDescription}]. Retry count [${retryCount}]. Will error`, err);
-            o.onError(err);
+            o.error(err);
           }
         },
         () => o.onCompleted()
@@ -53,9 +53,9 @@ function retryWithPolicy<TValue>(this: Rx.Observable<TValue>,
     subscribe();
     return () => {
       isDisposed = true;
-      currentSubscriptionDisposable.dispose();
+      currentSubscriptionDisposable.unsubscribe();
     };
   });
 }
 
-Rx.Observable.prototype.retryWithPolicy = retryWithPolicy;
+Observable.prototype['retryWithPolicy'] = retryWithPolicy;

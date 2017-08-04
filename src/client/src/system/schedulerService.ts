@@ -1,4 +1,4 @@
-import * as Rx from 'rx';
+import { Scheduler } from 'rxjs/Rx';
 
 /**
  * Abstracts scheduling concerns to enable testing
@@ -9,8 +9,8 @@ export default class SchedulerService {
   _async: any;
 
   constructor() {
-    this._immediate = Rx.Scheduler.immediate;
-    this._async = Rx.Scheduler.default;
+    this._immediate = Scheduler.asap;
+    this._async = Scheduler.asap;
   }
 
   get immediate() {

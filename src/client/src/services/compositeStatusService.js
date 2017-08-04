@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Rx';
 import { DisposableBase } from 'esp-js';
 import { ServiceStatusLookup } from './model';
 import { PricingService, ReferenceDataService, BlotterService, ExecutionService, AnalyticsService } from './';
@@ -71,10 +72,10 @@ export default class CompositeStatusService extends DisposableBase {
 
   /**
    * A stream of ServiceStatusLookup which can be queried for individual service connection status
-   * @returns {Rx.Observable.<ServiceStatusLookup>}
+   * @returns {Observable.<ServiceStatusLookup>}
    */
   get serviceStatusStream() {
-    return this._serviceStatusStream.asObservable();
+    return this._serviceStatusStream;
   }
 
   // since we expose some synchronous state state that's derived from
@@ -91,7 +92,7 @@ export default class CompositeStatusService extends DisposableBase {
   _createServiceStatusStream() {
     // merge then scan all our underlying service status streams into a single
     // data structure (ServiceStatusLookup) we can query for the current status.
-    return Rx.Observable
+    return Observable
       .merge(
         this._pricingService.serviceStatusStream,
         this._referenceDataService.serviceStatusStream,
