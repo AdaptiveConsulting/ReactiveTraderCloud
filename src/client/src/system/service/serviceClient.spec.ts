@@ -3,6 +3,7 @@ import ServiceClient from '../../../src/system/service/serviceClient';
 import Connection from '../../../src/system/service/connection';
 import SchedulerService from '../../../src/system/schedulerService';
 import StubAutobahnProxy from './autobahnConnectionProxyStub';
+import { clock } from 'sinon';
 
 let _stubAutobahnProxy,
   _connection,
@@ -56,7 +57,7 @@ describe('ServiceClient', () => {
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0); // yields
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0); // gets ignored
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 1); // yields
-    assertExpectedStatusUpdate(3, true);
+    assertExpectedStatusUpdate(2, true);
   });
 
   test('groups heartbeats for service instances by service type', () => {
@@ -127,13 +128,14 @@ describe('ServiceClient', () => {
       expect(_receivedErrors.length).toEqual(0);
       _stubAutobahnProxy.setIsConnected(false);
       expect(_receivedErrors.length).toEqual(1);
-      // _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT); // should have no effect, stream is dead
+      clock.tick(10000000);
       expect(_receivedErrors.length).toEqual(1);
     });
 
     test('still publishes payload to new subscribers after service instance comes back up', () => {
       connectAndPublishPrice();
       // _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT);
+      clock.tick(10000000);
       subscribeToPriceStream();
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
       pushPrice('myServiceType.1', 2);
@@ -157,7 +159,7 @@ describe('ServiceClient', () => {
     });
 
     function subscribeToPriceStream() {
-      var existing = _priceSubscriptionDisposable.getDisposable();
+      var existing = _priceSubscriptionDisposable;
       if (existing) {
         existing.dispose();
       }
@@ -263,7 +265,7 @@ describe('ServiceClient', () => {
     });
 
     function sendRequest(request, waitForSuitableService) {
-      _requestSubscriptionDisposable.setDisposable(
+      _requestSubscriptionDisposable.add(
         _serviceClient.createRequestResponseOperation('executeTrade', request, waitForSuitableService)
           .subscribe(response => {
               _responses.push(response);

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { Observable } from 'rxjs/Rx';
 import { observeEvent } from 'esp-js';
 import { viewBinding } from 'esp-js-react';
 import { Environment } from '../../../system';

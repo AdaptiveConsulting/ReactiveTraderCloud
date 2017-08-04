@@ -16,8 +16,9 @@ function debounceOnMissedHeartbeat(dueTime, onDebounceItemFactory, scheduler) {
   return Observable.create(o => {
     return sources.subscribe(innerSource => {
         let key = innerSource.key;
-        let debouncedStream = innerSource.debounceWithSelector(dueTime, () => onDebounceItemFactory(key), scheduler);
-        o.next(debouncedStream);
+        let connectionTimeoutStream = innerSource
+        .timeout(dueTime, scheduler.schedule(() => o.next(Observable.of(onDebounceItemFactory(key)))));
+        o.next(connectionTimeoutStream);
       },
       ex => o.error(ex),
       () => o.complete()
@@ -122,50 +123,3 @@ function distinctUntilChangedGroup(keySelector) {
   });
 }
 Observable.prototype.distinctUntilChangedGroup = distinctUntilChangedGroup;
-
-/**
- * Emits an item from the source Observable after a particular timespan has passed without the Observable omitting any other items.
- * The onTimeoutItemSelector selector is used to select the item to procure.
- * @param dueTime
- * @param itemSelector
- * @param scheduler
- * @returns {Observable}
- */
-function debounceWithSelector(dueTime, itemSelector, scheduler) {
-  let source = this;
-  return Observable.create(o => {
-    let disposables = new Subscription();
-    let debounceDisposable = new Subscription();
-    disposables.add(debounceDisposable);
-    let debounce = () => {
-      debounceDisposable.add(
-        scheduler.schedule(
-          () => {
-            let debouncedItem = itemSelector();
-            o.next(debouncedItem);
-          },
-          dueTime,
-          ''
-        )
-      );
-    };
-    disposables.add(
-      source.subscribe(
-        item => {
-          debounce();
-          o.next(item);
-        },
-        ex => {
-          try {
-            o.error(ex);
-          } catch (err1) {
-          }
-        },
-        () => o.complete()
-      )
-    );
-    debounce();
-    return disposables;
-  });
-}
-Observable.prototype.debounceWithSelector = debounceWithSelector;

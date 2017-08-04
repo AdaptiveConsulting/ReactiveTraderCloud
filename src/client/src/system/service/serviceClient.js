@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, Subscription } from 'rxjs/Rx';
+import { BehaviorSubject, Observable, Subscription, ConnectableObservable, Scheduler } from 'rxjs/Rx';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 
@@ -91,8 +91,7 @@ export default class ServiceClient extends DisposableBase {
         .publish()
         .refCount();
       let isConnectedStream = connectionStatus.filter(isConnected => isConnected);
-      let errorOnDisconnectStream = connectionStatus.filter(isConnected => !isConnected).take(1)
-        .flatMap(Observable.throw(new Error('Underlying connection disconnected')));
+      let errorOnDisconnectStream = connectionStatus.filter(isConnected => !isConnected).take(1);
       let serviceInstanceDictionaryStream = this._connection
         .subscribeToTopic('status')
         .filter(s => s.Type === serviceType)
@@ -100,19 +99,19 @@ export default class ServiceClient extends DisposableBase {
         // If the underlying connection goes down we error the stream.
         // Do this before the grouping so all grouped streams error.
         .merge(errorOnDisconnectStream)
-        .groupBy(serviceStatus => serviceStatus.serviceId)
+        .groupBy((serviceStatus) =>  serviceStatus.serviceId)
         // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
-        .debounceOnMissedHeartbeat(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.async)
+        .debounceOnMissedHeartbeat(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), Scheduler.async)
         // create a hash of properties which represent significant change in a status, we'll use this to filter out duplicates
         .distinctUntilChangedGroup(status => { return `${status.serviceType}.${status.serviceId}.${status.isConnected}.${status.serviceLoad}`;})
         // flattens all our service instances stream into an observable dictionary so we query the service with the least load on a per-subscribe basis
         .toServiceStatusObservableDictionary(serviceStatus => serviceStatus.serviceId)
         // catch the disconnect error of the outer stream and continue with an empty (thus disconnected) dictionary
-        .catch(Observable.of(new LastValueObservableDictionary()));
+        .catch(() => Observable.of(new LastValueObservableDictionary()));
       return isConnectedStream
         .take(1)
         // flatMap: since we're just taking one, this effectively just continues the stream by subscribing to serviceInstanceDictionaryStream
-        .flatMap(() => serviceInstanceDictionaryStream)
+        .mergeMap(() => serviceInstanceDictionaryStream)
         // repeat after disconnects
         .repeat()
         .subscribe(o);
