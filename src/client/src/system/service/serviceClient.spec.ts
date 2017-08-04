@@ -132,7 +132,6 @@ describe('ServiceClient', () => {
 
     test('still publishes payload to new subscribers after service instance comes back up', () => {
       connectAndPublishPrice();
-      // _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT);
       subscribeToPriceStream();
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
       pushPrice('myServiceType.1', 2);
