@@ -3,7 +3,6 @@ import ServiceClient from '../../../src/system/service/serviceClient';
 import Connection from '../../../src/system/service/connection';
 import SchedulerService from '../../../src/system/schedulerService';
 import StubAutobahnProxy from './autobahnConnectionProxyStub';
-import { clock } from 'sinon';
 
 let _stubAutobahnProxy,
   _connection,
@@ -128,14 +127,12 @@ describe('ServiceClient', () => {
       expect(_receivedErrors.length).toEqual(0);
       _stubAutobahnProxy.setIsConnected(false);
       expect(_receivedErrors.length).toEqual(1);
-      clock.tick(10000000);
       expect(_receivedErrors.length).toEqual(1);
     });
 
     test('still publishes payload to new subscribers after service instance comes back up', () => {
       connectAndPublishPrice();
       // _scheduler.advanceBy(ServiceClient.HEARTBEAT_TIMEOUT);
-      clock.tick(10000000);
       subscribeToPriceStream();
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0);
       pushPrice('myServiceType.1', 2);

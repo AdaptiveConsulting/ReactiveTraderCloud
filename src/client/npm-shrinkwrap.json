@@ -213,132 +213,6 @@
         "@types/react": "15.6.0"
       }
     },
-    "@types/rx": {
-      "version": "4.1.1",
-      "resolved": "https://registry.npmjs.org/@types/rx/-/rx-4.1.1.tgz",
-      "integrity": "sha1-WY/JSla67ZdfGUV04PVy/Y5iekg=",
-      "dev": true,
-      "requires": {
-        "@types/rx-core": "4.0.3",
-        "@types/rx-core-binding": "4.0.4",
-        "@types/rx-lite": "4.0.4",
-        "@types/rx-lite-aggregates": "4.0.3",
-        "@types/rx-lite-async": "4.0.2",
-        "@types/rx-lite-backpressure": "4.0.3",
-        "@types/rx-lite-coincidence": "4.0.3",
-        "@types/rx-lite-experimental": "4.0.1",
-        "@types/rx-lite-joinpatterns": "4.0.1",
-        "@types/rx-lite-testing": "4.0.1",
-        "@types/rx-lite-time": "4.0.3",
-        "@types/rx-lite-virtualtime": "4.0.3"
-      }
-    },
-    "@types/rx-core": {
-      "version": "4.0.3",
-      "resolved": "https://registry.npmjs.org/@types/rx-core/-/rx-core-4.0.3.tgz",
-      "integrity": "sha1-CzNUsSOM7b4rdPYybxOdvHpZHWA=",
-      "dev": true
-    },
-    "@types/rx-core-binding": {
-      "version": "4.0.4",
-      "resolved": "https://registry.npmjs.org/@types/rx-core-binding/-/rx-core-binding-4.0.4.tgz",
-      "integrity": "sha512-5pkfxnC4w810LqBPUwP5bg7SFR/USwhMSaAeZQQbEHeBp57pjKXRlXmqpMrLJB4y1oglR/c2502853uN0I+DAQ==",
-      "dev": true,
-      "requires": {
-        "@types/rx-core": "4.0.3"
-      }
-    },
-    "@types/rx-lite": {
-      "version": "4.0.4",
-      "resolved": "https://registry.npmjs.org/@types/rx-lite/-/rx-lite-4.0.4.tgz",
-      "integrity": "sha1-cQ6/idCi1ZbCEEfZGxJCvO9Rwws=",
-      "dev": true,
-      "requires": {
-        "@types/rx-core": "4.0.3",
-        "@types/rx-core-binding": "4.0.4"
-      }
-    },
-    "@types/rx-lite-aggregates": {
-      "version": "4.0.3",
-      "resolved": "https://registry.npmjs.org/@types/rx-lite-aggregates/-/rx-lite-aggregates-4.0.3.tgz",
-      "integrity": "sha512-MAGDAHy8cRatm94FDduhJF+iNS5//jrZ/PIfm+QYw9OCeDgbymFHChM8YVIvN2zArwsRftKgE33QfRWvQk4DPg==",
-      "dev": true,
-      "requires": {
-        "@types/rx-lite": "4.0.4"
-      }
-    },
-    "@types/rx-lite-async": {
-      "version": "4.0.2",
-      "resolved": "https://registry.npmjs.org/@types/rx-lite-async/-/rx-lite-async-4.0.2.tgz",
-      "integrity": "sha512-vTEv5o8l6702ZwfAM5aOeVDfUwBSDOs+ARoGmWAKQ6LOInQ8J4/zjM7ov12fuTpktUKdMQjkeCp07Vd73mPkxw==",
-      "dev": true,
-      "requires": {
-        "@types/rx-lite": "4.0.4"
-      }
-    },
-    "@types/rx-lite-backpressure": {
-      "version": "4.0.3",
-      "resolved": "https://registry.npmjs.org/@types/rx-lite-backpressure/-/rx-lite-backpressure-4.0.3.tgz",
-      "integrity": "sha512-Y6aIeQCtNban5XSAF4B8dffhIKu6aAy/TXFlScHzSxh6ivfQBQw6UjxyEJxIOt3IT49YkS+siuayM2H/Q0cmgA==",
-      "dev": true,
-      "requires": {
-        "@types/rx-lite": "4.0.4"
-      }
-    },
-    "@types/rx-lite-coincidence": {
-      "version": "4.0.3",
-      "resolved": "https://registry.npmjs.org/@types/rx-lite-coincidence/-/rx-lite-coincidence-4.0.3.tgz",
-      "integrity": "sha512-1VNJqzE9gALUyMGypDXZZXzR0Tt7LC9DdAZQ3Ou/Q0MubNU35agVUNXKGHKpNTba+fr8GdIdkC26bRDqtCQBeQ==",
-      "dev": true,
-      "requires": {
-        "@types/rx-lite": "4.0.4"
-      }
-    },
-    "@types/rx-lite-experimental": {
-      "version": "4.0.1",
-      "resolved": "https://registry.npmjs.org/@types/rx-lite-experimental/-/rx-lite-experimental-4.0.1.tgz",
-      "integrity": "sha1-xTL1y98/LBXaFt7Ykw0bKYQCPL0=",
-      "dev": true,
-      "requires": {
-        "@types/rx-lite": "4.0.4"
-      }
-    },
-    "@types/rx-lite-joinpatterns": {
-      "version": "4.0.1",
-      "resolved": "https://registry.npmjs.org/@types/rx-lite-joinpatterns/-/rx-lite-joinpatterns-4.0.1.tgz",
-      "integrity": "sha1-9w/jcFGKhDLykVjMkv+1a05K/D4=",
-      "dev": true,
-      "requires": {
-        "@types/rx-lite": "4.0.4"
-      }
-    },
-    "@types/rx-lite-testing": {
-      "version": "4.0.1",
-      "resolved": "https://registry.npmjs.org/@types/rx-lite-testing/-/rx-lite-testing-4.0.1.tgz",
-      "integrity": "sha1-IbGdEfTf1v/vWp0WSOnIh5v+Iek=",
-      "dev": true,
-      "requires": {
-        "@types/rx-lite-virtualtime": "4.0.3"
-      }
-    },
-    "@types/rx-lite-time": {
-      "version": "4.0.3",
-      "resolved": "https://registry.npmjs.org/@types/rx-lite-time/-/rx-lite-time-4.0.3.tgz",
-      "integrity": "sha512-ukO5sPKDRwCGWRZRqPlaAU0SKVxmWwSjiOrLhoQDoWxZWg6vyB9XLEZViKOzIO6LnTIQBlk4UylYV0rnhJLxQw==",
-      "dev": true,
-      "requires": {
-        "@types/rx-lite": "4.0.4"
-      }
-    },
-    "@types/rx-lite-virtualtime": {
-      "version": "4.0.3",
-      "resolved": "https://registry.npmjs.org/@types/rx-lite-virtualtime/-/rx-lite-virtualtime-4.0.3.tgz",
-      "integrity": "sha512-3uC6sGmjpOKatZSVHI2xB1+dedgml669ZRvqxy+WqmGJDVusOdyxcKfyzjW0P3/GrCiN4nmRkLVMhPwHCc5QLg==",
-      "dev": true,
-      "requires": {
-        "@types/rx-lite": "4.0.4"
-      }
-    },
     "@types/serve-static": {
       "version": "1.7.31",
       "resolved": "https://registry.npmjs.org/@types/serve-static/-/serve-static-1.7.31.tgz",
@@ -9772,11 +9646,6 @@
         "is-promise": "2.1.0"
       }
     },
-    "rx": {
-      "version": "4.0.7",
-      "resolved": "https://registry.npmjs.org/rx/-/rx-4.0.7.tgz",
-      "integrity": "sha1-t65IV8WUBotfxWH3L0eYwtBX4kc="
-    },
     "rx-lite": {
       "version": "4.0.8",
       "resolved": "https://registry.npmjs.org/rx-lite/-/rx-lite-4.0.8.tgz",
@@ -9790,6 +9659,14 @@
       "dev": true,
       "requires": {
         "rx-lite": "4.0.8"
+      }
+    },
+    "rxjs": {
+      "version": "5.4.2",
+      "resolved": "https://registry.npmjs.org/rxjs/-/rxjs-5.4.2.tgz",
+      "integrity": "sha1-KjI2/L8D31e64G/Wly/ZnlwI/Pc=",
+      "requires": {
+        "symbol-observable": "1.0.4"
       }
     },
     "safe-buffer": {
@@ -10864,8 +10741,7 @@
     "symbol-observable": {
       "version": "1.0.4",
       "resolved": "https://registry.npmjs.org/symbol-observable/-/symbol-observable-1.0.4.tgz",
-      "integrity": "sha1-Kb9hXUqnEhvdiYsi1LP5vE4qoD0=",
-      "dev": true
+      "integrity": "sha1-Kb9hXUqnEhvdiYsi1LP5vE4qoD0="
     },
     "symbol-tree": {
       "version": "3.2.2",
