@@ -2,7 +2,7 @@
 
 usage() {
   echo " "
-  echo " usage:"
+  echo -e "\e[32mUsage:\e[39m"
   echo " "
   echo "    deploy NAMESPACE [BUILD_ID]"
   echo " "
@@ -34,11 +34,12 @@ build=$2
 
 set -euo pipefail
 
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+root_directory="${this_directory}/../.."
 
 # generate manifest
 # =================
-templates_directory="${root_directory}/deploy/kubernetes/templates"
+templates_directory="${this_directory}/templates"
 
 # namespace
 ${templates_directory}/generate_ns_manifest $namespace
@@ -84,7 +85,7 @@ sleep 2
 
 echo " "
 echo " "
-./kst $namespace
+${this_directory}/describe $namespace
 echo " "
 echo " "
-echo " Wait a moment and run <kst $namespace> to see the PODS generated on your cluster"
+echo " Wait a moment and run <describe $namespace> to see the PODS generated on your cluster"

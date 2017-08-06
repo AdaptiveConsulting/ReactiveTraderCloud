@@ -21,7 +21,7 @@ if [[ "$(docker ps -q -a --filter name=${container_name})" != "" ]]
 then docker rm ${container_name} > /dev/null
 fi
 
-docker run -d --net=host \
+docker run -d --net=${docker_network} \
   --name ${container_name} \
   $populatedEventstoreContainer$build \
   > ${this_directory}/container_id

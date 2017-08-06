@@ -3,4 +3,9 @@
 root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
 kubectl="${root_directory}/deploy/clis/kubectl"
 
+echo -e "\e[32mCURRENT CLUSTER\e[39m"
+${kubectl} config view | grep current-context:
+echo " "
+
+echo -e "\e[32mNAMESPACES:\e[39m"
 ${kubectl} get ns

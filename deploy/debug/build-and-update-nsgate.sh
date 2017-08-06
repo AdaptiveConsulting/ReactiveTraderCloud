@@ -9,11 +9,11 @@ then
 fi
 
 build_number="${1}"
-deploy_folder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+prepare="${root_directory}/deploy/docker/prepare"
+replaceNsGate="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../kubernetes/replaceNsGate"
 service="nsgate"
 
-cd ${deploy_folder}/docker &&
-./prepare build ${service} ${build_number} &&
-./prepare push ${service} ${build_number} &&
-cd ${deploy_folder}/kubernetes &&
-./replaceNsGate ${build_number}
+${prepare} build ${service} ${build_number} &&
+${prepare} push ${service} ${build_number} &&
+${replaceNsGate} ${build_number}

@@ -15,4 +15,4 @@ echo "Build ReactiveTrader containers"
 echo ""
 
 root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
-${root_directory}/deploy/docker/prepare build services $build
+${root_directory}/deploy/docker/prepare build rtc $build

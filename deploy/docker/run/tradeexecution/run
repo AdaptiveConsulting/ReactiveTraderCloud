@@ -30,7 +30,7 @@ fi
 # start
 startCommand="dotnet run ${release_mode} -p Adaptive.ReactiveTrader.Server.Launcher exec"
 waitCommand="while true; do echo ping; sleep 60; done"
-docker run -d --net=host \
+docker run -d --net=${docker_network} \
      --name ${container_name} \
      $serversContainer$build \
      bash -c "$startCommand && $waitCommand" \

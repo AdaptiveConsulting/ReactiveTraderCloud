@@ -1,46 +1,57 @@
 #! /bin/bash
 
 if [[ $# < 2 ]];then
-  echo "parameter error: "
-  echo "  usage:"
-  echo "  $0 SERVICE NAMESPACE [BUILD_ID]"
-  exit 1
+    echo "parameter error: "
+    echo "  usage:"
+    echo "  $0 SERVICE NAMESPACE [BUILD_ID]"
+    exit 1
 fi
 service=$1
 namespace=$2
 
 # load configuration and libs
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../.."
+this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+root_directory="${this_directory}/../../.."
 . ${root_directory}/deploy/config
 . ${root_directory}/deploy/kubernetes/helpers/functions.sh
-
-# define version
-if [[ $service == "broker" ]];then
-  vMajor=$brokerContainer_major
-  vMinor=$brokerContainer_minor
-fi
-if [[ $service == "web" ]];then
-  vMajor=$webContainer_major
-  vMinor=$webContainer_minor
-fi
-if [[ $service == "eventstore" ]];then
-  vMajor=$populatedEventstoreContainer_major
-  vMinor=$populatedEventstoreContainer_minor
-fi
-
-dotnetServices="analytics blotter pricing referencedataread tradeexecution"
-if listcontains "$dotnetServices" $service; then
-  vMajor=$serversContainer_major
-  vMinor=$serversContainer_minor
-fi
 
 # fill manifest
 manifests_directory="${root_directory}/deploy/kubernetes/manifests"
 mkdir -p ${manifests_directory}
-service_manifest="${manifests_directory}/$service-svc.yml"
-cp ./$service/svc.yml ${service_manifest}
+service_manifest="${manifests_directory}/${service}-svc.yml"
+cp ${this_directory}/${service}/svc.yml ${service_manifest}
 
-sed -ie "s/__SERVICE__/$service/g"     ${service_manifest}
-sed -ie "s/__MAJOR__/$vMajor/g"        ${service_manifest}
-sed -ie "s/__MINOR__/$vMinor/g"        ${service_manifest}
-sed -ie "s/__NAMESPACE__/$namespace/g" ${service_manifest}
+if [[ ${service} == "broker" ]];then
+    vMajor=${brokerContainer_major}
+    vMinor=${brokerContainer_minor}
+fi
+if [[ ${service} == "web" ]];then
+    vMajor=${webContainer_major}
+    vMinor=${webContainer_minor}
+fi
+if [[ ${service} == "eventstore" ]];then
+    vMajor=${populatedEventstoreContainer_major}
+    vMinor=${populatedEventstoreContainer_minor}
+fi
+if [[ ${service} == "nsgate" ]];then
+    cluster=`${root_directory}/deploy/clis/kubectl config current-context`
+    cluster_base_name="gke_${kube_project}_${kube_zone}"
+    if [[ "${cluster}" == "${cluster_base_name}_dev" ]];then
+        sed -ie "s/__LOAD_BALANCER_IP__/loadBalancerIP: ${config_gcloud_externalip_dev}/g" ${service_manifest}
+    elif [[ "${cluster}" == "${cluster_base_name}_cluster" ]];then
+        sed -ie "s/__LOAD_BALANCER_IP__/loadBalancerIP: ${config_gcloud_externalip_cluster}/g" ${service_manifest}
+    else
+        sed -ie "s/__LOAD_BALANCER_IP__//g" ${service_manifest}
+    fi
+fi
+
+dotnetServices="analytics blotter pricing referencedataread tradeexecution"
+if listcontains "${dotnetServices}" ${service}; then
+    vMajor=${serversContainer_major}
+    vMinor=${serversContainer_minor}
+fi
+
+sed -ie "s/__SERVICE__/${service}/g"     ${service_manifest}
+sed -ie "s/__MAJOR__/${vMajor}/g"        ${service_manifest}
+sed -ie "s/__MINOR__/${vMinor}/g"        ${service_manifest}
+sed -ie "s/__NAMESPACE__/${namespace}/g" ${service_manifest}

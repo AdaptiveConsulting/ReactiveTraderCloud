@@ -30,7 +30,7 @@ result_log=""
 
 for namespace in $namespaces
 do
-    result_log+="|| $namespace ==> "
+    result_log+="|| {ns:$namespace, ["
 
     servicesData=$(curl -sS \
       --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
@@ -45,37 +45,19 @@ do
     do
         selector="select(.metadata.name==\"$service\")"
         portsData=$(echo $servicesData | jq "$selector" | jq '.spec.ports[]')
-        ports=$(echo $portsData | jq -r '.name')
-        for port in $ports
+        ports_names=$(echo $portsData | jq -r '.name')
+        for port_name in $ports_names
         do
-            selector="select(.name==\"$port\")"
-            portNumber=$(echo $portsData | jq "$selector" | jq -r '.port')
+            selector="select(.name==\"$port_name\")"
+            port_number=$(echo $portsData | jq "$selector" | jq -r '.port')
 
-            if [[ $port == "http" ]]
-            then
-                createHttpFile $portNumber $service $namespace
-                result_log+="$port-$service-$portNumber, "
-            fi
-
-            if [[ $port == "ws" ]]
-            then
-                createWsFile $portNumber $service $namespace
-                result_log+="$port-$service-$portNumber, "
-            fi
-
-            if [[ $port == "https" ]]
-            then
-                createHttpsFile $portNumber $service $namespace
-                result_log+="$port-$service-$portNumber, "
-            fi
-
-            if [[ $port == "wss" ]]
-            then
-                createWssFile $portNumber $service $namespace
-                result_log+="$port-$service-$portNumber, "
-            fi
+            createProxyConfiguration $service $port_name $port_number $namespace
+            
+            result_log+="$port_name, "
         done
     done
+    
+    result_log+="]}"
 done
 
 echo "NsGate reloaded, Services found are: $result_log"

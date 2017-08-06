@@ -8,4 +8,3 @@ root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
 gcloud="${root_directory}/deploy/clis/gcloud"
 ${gcloud} config set project $kube_project
 ${gcloud} config set compute/zone $kube_zone
-${gcloud} config set container/cluster $kube_cluster

@@ -2,7 +2,7 @@
 
 if [[ $# != 3 ]];then
   echo " "
-  echo "  usage:"
+  echo -e "\e[32mUsage:\e[39m"
   echo "  $0 NAMESPACE SERVICE NEW_BUILD_ID"
   echo " "
   exit 1

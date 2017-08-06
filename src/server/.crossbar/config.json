@@ -41,7 +41,7 @@
                     "type": "web",
                     "endpoint": {
                         "type": "tcp",
-                        "port": 8080
+                        "port": 8000
                     },
                     "paths": {
                         "/": {
@@ -52,10 +52,7 @@
                             "type": "websocket"
                         },
                         "lp": {
-                            "type": "longpoll",
-                            "options": {
-                                "allow_cross_origin": true
-                            }
+                            "type": "longpoll"
                         }
                     }
                 }

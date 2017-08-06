@@ -7,7 +7,7 @@ set -euo pipefail
 
 if [[  $# != 2 ]];then
   echo " "
-  echo " usage:"
+  echo -e "\e[32mUsage:\e[39m"
   echo "    ./rollingUpdate NAMESPACE NEW_BUILD"
   echo " "
   exit 1

@@ -1,13 +1,13 @@
 #! /bin/bash
-set -euo pipefail
-
 if [[ $1 == "" ]];then
-  echo "usage:"
+  echo -e "\e[32mUsage:\e[39m"
   echo "  $0 BUILD"
   echo " "
   exit 1
 fi
 build=$1
+set -euo pipefail
+
 service="nsgate"
 namespace="nsgate"
 
@@ -16,12 +16,10 @@ templates_directory="${root_directory}/deploy/kubernetes/templates"
 manifest_directory="${root_directory}/deploy/kubernetes/manifests"
 manifest_directory_in_container="deploy/kubernetes/manifests"
 kubectl="${root_directory}/deploy/clis/kubectl"
-kst="${root_directory}/deploy/kubernetes/kst"
-
-# generate certificates
-${templates_directory}/generateNewCertificates
+describe="${root_directory}/deploy/kubernetes/describe"
 
 # generate manifest
+mkdir -p ${manifest_directory}
 cp ${templates_directory}/nsgate/ns.yml ${manifest_directory}/ns.yml
 ${templates_directory}/generate_secret_manifest web-ssl ${namespace}
 ${templates_directory}/generate_svc_manifest ${service} ${namespace}
@@ -35,7 +33,7 @@ ${kubectl} create -f ${manifest_directory_in_container}/${service}-rc.yml
 
 echo " "
 echo " "
-${kst} ${namespace}
+${describe} ${namespace}
 echo " "
 echo " "
-echo " Wait a moment and run <kst ${namespace}> to see the PODS generated on your cluster"
+echo " Wait a moment and run <describe ${namespace}> to see the PODS generated on your cluster"

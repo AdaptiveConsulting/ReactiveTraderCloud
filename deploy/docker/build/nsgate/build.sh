@@ -27,9 +27,9 @@ cp ${this_directory}/template.updateServers.sh  ${this_directory}/build/updateSe
 cp ${this_directory}/template.writeFunctions.sh ${this_directory}/build/writeFunctions.sh
 
 sed -ie "s|__NGINX_CONTAINER__|$nginxContainer|g" ${this_directory}/build/Dockerfile
-sed -ie "s/__DOMAIN_NAME__/$domainName/g" ${this_directory}/build/writeFunctions.sh
-sed -ie "s/__NSGATE_VERSION__/$nsGateContainer_major$nsGateContainer_minor$build/g" ${this_directory}/build/writeFunctions.sh
-sed -ie "s/__NSGATE_VERSION__/$nsGateContainer_major$nsGateContainer_minor$build/g" ${this_directory}/build/nginx.conf
+nsgate_version="$nsGateContainer_major.$nsGateContainer_minor.$build"
+sed -ie "s/__NSGATE_VERSION__/$nsgate_version/g" ${this_directory}/build/writeFunctions.sh
+sed -ie "s/__NSGATE_VERSION__/$nsgate_version/g" ${this_directory}/build/nginx.conf
 
 docker build --no-cache -t $nsGateContainer ${this_directory}/build/.
 docker tag $nsGateContainer $nsGateContainer.$build

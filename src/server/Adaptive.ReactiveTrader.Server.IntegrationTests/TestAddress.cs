@@ -2,6 +2,6 @@
 {
     public static class TestAddress
     {
-        public const string Broker = "ws://127.0.0.1:8080/ws";
+        public const string Broker = "ws://127.0.0.1:8000/ws";
     }
 }

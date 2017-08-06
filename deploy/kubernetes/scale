@@ -3,12 +3,9 @@
 # fail fast
 set -euo pipefail
 
-. ../config
-
 if [[ $# < 3 ]];then
-  echo "parameter error: "
-  echo "  usage:"
-  echo "  $0 NAMESPACE SERVICE NEW_COUNT"
+  echo -e "\e[32mUsage:  \e[39m $0 NAMESPACE SERVICE NEW_COUNT"
+  echo -e "\e[32mExample:\e[39m $0 demo web 2"
   exit 1
 fi
 namespace=$1
@@ -18,4 +15,4 @@ count=$3
 root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
 kubectl="${root_directory}/deploy/clis/kubectl"
 
-${kubectl} scale --namespace=$namespace --replicas=$count rc $service
+${kubectl} scale --namespace=${namespace} --replicas=${count} rc ${service}
