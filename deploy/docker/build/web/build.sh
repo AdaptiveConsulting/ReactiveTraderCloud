@@ -30,7 +30,10 @@ sed -ie "s|__NODE_CONTAINER__|$nodeContainer|g" ${npminstall_build_dir}/Dockerfi
 docker build --no-cache -t ${temp_image} ${npminstall_build_dir}/.
 
 if [[ "$(docker ps -q -a --filter name=${temp_container})" != "" ]]
-then docker rm ${temp_container} > /dev/null || true
+then
+  if [[ "${CIRCLECI}"  != "true" ]]
+  then docker rm ${temp_container} > /dev/null || true
+  fi
 fi
 docker run \
   --name ${temp_container} \
@@ -40,8 +43,11 @@ docker run \
 
 if [[ -f dist ]];then rm -r dist; fi
 docker cp ${temp_container}:/client/dist ${this_directory}/.
-docker rm ${temp_container}
-docker rmi ${temp_image}
+if [[ "${CIRCLECI}"  != "true" ]]
+then
+  docker rm ${temp_container}
+  docker rmi ${temp_image}
+fi
 
 # build nginx container
 nginx_dir="${this_directory}/nginx"
