@@ -55,6 +55,7 @@ class AppBootstrapper {
   run() {
     let espRouter = this.createRouter();
     this.startServices(espRouter);
+    configureStore(this._referenceDataService, this._blotterService, this._pricingService);
     this.startModels(espRouter);
     this.displayUi(espRouter);
   }
@@ -97,9 +98,6 @@ class AppBootstrapper {
     this._referenceDataService.load();
     // and finally the underlying connection
     this._connection.connect();
-
-    configureStore(this._referenceDataService, this._blotterService);
-
   }
 
   startModels(espRouter) {
