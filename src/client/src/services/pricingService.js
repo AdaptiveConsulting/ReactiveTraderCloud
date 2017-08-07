@@ -1,10 +1,9 @@
 import { Observable } from 'rxjs/Rx';
-import { SpotPrice, GetSpotStreamRequest } from './model';
 import { PriceMapper } from './mappers';
-import { ReferenceDataService } from './';
-import { Connection, ServiceBase } from '../system/service';
+import { ServiceBase } from '../system/service';
 import { logger, SchedulerService, RetryPolicy } from '../system';
 import '../system/observableExtensions/retryPolicyExt';
+import SpotPrice from './model/spotPrice';
 
 var _log = logger.create('PricingService');
 
