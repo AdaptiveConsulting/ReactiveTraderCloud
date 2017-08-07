@@ -1,15 +1,25 @@
 import { createStore, applyMiddleware } from 'redux'
-import { createEpicMiddleware } from 'redux-observable'
-import { pricingReducer } from './reducers'
-import { pricingEpic } from './epics'
+import { createEpicMiddleware, combineEpics } from 'redux-observable'
+import { composeWithDevTools } from 'redux-devtools-extension';
+import rootReducer from './combineReducers';
 
-const epicMiddleware = createEpicMiddleware(pricingEpic);
+import { blotterEpic } from './blotter/blotterOperations';
+import { referenceServiceEpic } from './reference/referenceOperations'
 
-export default function configureStore() {
-  const store = createStore(
-    pricingReducer,
-    applyMiddleware(epicMiddleware)
+const creatEpicMiddleware = (referenceDataService, blotterService) => createEpicMiddleware(
+  combineEpics(
+    referenceServiceEpic(referenceDataService.getCurrencyPairUpdatesStream()),
+    blotterEpic(blotterService.getTradesStream())
   )
 
-  return store
+)
+
+export default function configureStore(referenceDataService, blotterService) {
+  const epicMiddleware = creatEpicMiddleware(referenceDataService, blotterService)
+  return createStore(
+    rootReducer,
+    composeWithDevTools(
+      applyMiddleware(epicMiddleware)
+    )
+  )
 }

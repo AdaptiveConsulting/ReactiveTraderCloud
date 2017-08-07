@@ -29,8 +29,7 @@ import {
 import { WellKnownModelIds } from './';
 import logger from './system/logger';
 import User from './services/model/user';
-import { createStore } from 'redux'
-import { pricingReducer } from './redux/reducers'
+import configureStore from './redux/configureStore'
 
 var _log = logger.create('OpenfinPopoutService');
 
@@ -99,19 +98,8 @@ class AppBootstrapper {
     // and finally the underlying connection
     this._connection.connect();
 
-    const reduxStore = createStore(pricingReducer);
+    configureStore(this._referenceDataService, this._blotterService);
 
-    this._referenceDataService
-      .getCurrencyPairUpdatesStream()
-      .subscribe(payload => reduxStore.dispatch({ type: 'ccyUpdate', payload }));
-
-    // const pingEpic = refService$ => action$ => {
-    //   return refService$
-    //   .do(x=>console.error(x))
-    //   .map(payload=>({ type: 'ccyUpdate', payload}));
-    // }
-
-    // const epicMiddleware = createEpicMiddleware(pingEpic(this._referenceDataService.getCurrencyPairUpdatesStream()));
   }
 
   startModels(espRouter) {

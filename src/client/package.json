@@ -128,6 +128,7 @@
     "react-transform-catch-errors": "1.0.1",
     "react-transform-hmr": "1.0.1",
     "redbox-react": "1.2.0",
+    "redux-devtools-extension": "2.13.2",
     "sass-loader": "^6.0.5",
     "sinon": "^2.4.1",
     "style-loader": "^0.17.0",
