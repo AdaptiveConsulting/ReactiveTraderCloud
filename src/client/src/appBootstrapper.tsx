@@ -29,6 +29,8 @@ import {
 import { WellKnownModelIds } from './';
 import logger from './system/logger';
 import User from './services/model/user';
+import { createStore } from 'redux'
+import { pricingReducer } from './redux/reducers'
 
 var _log = logger.create('OpenfinPopoutService');
 
@@ -81,8 +83,7 @@ class AppBootstrapper {
     // in a larger app you'd put a container in here (shameless plug: https://github.com/KeithWoods/microdi-js, but there are many offerings in this space).
     this._openFin = new OpenFin(espRouter);
     this._referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this._connection, this._schedulerService);
-    this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, this._schedulerService, this._referenceDataService);
-    this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, this._schedulerService, this._referenceDataService);
+    this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, this._schedulerService, this._referenceDataService); this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, this._schedulerService, this._referenceDataService);
     this._executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, this._connection, this._schedulerService, this._referenceDataService, this._openFin);
     this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, this._schedulerService, this._referenceDataService);
     this._compositeStatusService = new CompositeStatusService(this._connection, this._pricingService, this._referenceDataService, this._blotterService, this._executionService, this._analyticsService);
@@ -97,6 +98,20 @@ class AppBootstrapper {
     this._referenceDataService.load();
     // and finally the underlying connection
     this._connection.connect();
+
+    const reduxStore = createStore(pricingReducer);
+
+    this._referenceDataService
+      .getCurrencyPairUpdatesStream()
+      .subscribe(payload => reduxStore.dispatch({ type: 'ccyUpdate', payload }));
+
+    // const pingEpic = refService$ => action$ => {
+    //   return refService$
+    //   .do(x=>console.error(x))
+    //   .map(payload=>({ type: 'ccyUpdate', payload}));
+    // }
+
+    // const epicMiddleware = createEpicMiddleware(pingEpic(this._referenceDataService.getCurrencyPairUpdatesStream()));
   }
 
   startModels(espRouter) {
@@ -168,7 +183,7 @@ class AppBootstrapper {
   displayUi(espRouter) {
     ReactDOM.render(
       <RouterProvider router={espRouter}>
-        <SmartComponent modelId={WellKnownModelIds.shellModelId}/>
+        <SmartComponent modelId={WellKnownModelIds.shellModelId} />
       </RouterProvider>,
       document.getElementById('root')
     );

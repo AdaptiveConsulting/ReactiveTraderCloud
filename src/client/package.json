@@ -81,6 +81,8 @@
     "react-nvd3": "0.5.7",
     "react-sizeme": "2.2.0",
     "react-sparklines": "1.4.2",
+    "redux": "https://registry.npmjs.org/redux/-/redux-3.7.2.tgz",
+    "redux-observable": "0.14.1",
     "rxjs": "5.4.2",
     "ua-parser-js": "0.7.10",
     "ws": "0.8.1"
