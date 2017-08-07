@@ -4,7 +4,6 @@ export const ACTION_TYPES = {
   BLOTTER_SERVICE: '@ReactiveTraderCloud/BLOTTER_SERVICE'
 }
 
-// TODO rename
 export const fetchBlotter = payload => ({ type: ACTION_TYPES.BLOTTER_SERVICE, payload })
 
 export const blotterEpic = blotterService$ => action$ => {
