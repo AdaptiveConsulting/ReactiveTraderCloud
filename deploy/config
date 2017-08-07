@@ -101,4 +101,4 @@ docker_compose_file="docker-compose.yml"
 
 # LOCAL DOCKER
 # ============
-docker_network="bridge"
+docker_network="host"
