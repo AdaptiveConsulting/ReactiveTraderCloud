@@ -9,7 +9,7 @@ export const ACTION_TYPES = {
 export const fetchPricing = payload => ({ type: ACTION_TYPES.PRICING_SERVICE, payload })
 
 const getCurrencyPairs = (symbols: Array<string>, pricingService$: any) => {
-  return Observable.from(symbols).mergeMap(s => pricingService$.getSpotPriceStream({ symbol: s }))
+  return Observable.from(symbols).mergeMap(symbol => pricingService$.getSpotPriceStream({ symbol }))
 }
 
 const accumulatePrices = (acc, tick, index) => {
@@ -19,7 +19,6 @@ const accumulatePrices = (acc, tick, index) => {
   return {
     ...acc,
     [tick.symbol]: tick
-
   }
 }
 
