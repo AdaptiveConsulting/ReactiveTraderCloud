@@ -16,12 +16,17 @@ export const blotterServiceEpic = blotterService$ => action$ => {
     .map(fetchBlotter);
 }
 
-export const blotterServiceReducer = (state = {}, action) => {
+export const blotterServiceReducer = (state: any = {}, action) => {
   switch (action.type) {
     case ACTION_TYPES.BLOTTER_SERVICE:
-      const blotterData = _.mapKeys(action.payload._trades, '_tradeId')
-      return Object.assign({}, state, blotterData)
+      if (_.isEmpty(state)) {
+        return action.payload;
+      }
+      const _trades = [ ...state, ...action.payload ]
+      return Object.assign({}, state, { _trades })
+
     default:
       return state
   }
 }
+

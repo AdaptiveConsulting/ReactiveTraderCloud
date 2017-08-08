@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 
 import { Router } from 'esp-js';
 import { RouterProvider, SmartComponent } from 'esp-js-react/dist/esp-react';
-import { BlotterModel } from './ui/blotter/model';
 import { AnalyticsModel } from './ui/analytics/model';
 import { FooterModel } from './ui/footer/model';
 import { ShellModel } from './ui/shell/model';
@@ -15,6 +14,7 @@ import { AutobahnConnectionProxy, Connection } from './system/service';
 import { OpenFin } from './system/openFin';
 import { PopoutRegionModel, RegionModel, SingleItemRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
+import { Provider } from 'react-redux'
 import * as config from 'config.json';
 
 import {
@@ -47,6 +47,7 @@ class AppBootstrapper {
   _compositeStatusService: CompositeStatusService;
   _schedulerService: SchedulerService;
   _openFin: any;
+  store: any;
 
   get endpointURL() {
     return config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
@@ -55,7 +56,7 @@ class AppBootstrapper {
   run() {
     let espRouter = this.createRouter();
     this.startServices(espRouter);
-    configureStore(this._referenceDataService, this._blotterService, this._pricingService, this._analyticsService, this._compositeStatusService);
+    this.store = configureStore(this._referenceDataService, this._blotterService, this._pricingService, this._analyticsService, this._compositeStatusService);
     this.startModels(espRouter);
     this.displayUi(espRouter);
   }
@@ -129,10 +130,6 @@ class AppBootstrapper {
     );
     spotTileLoader.beginLoadTiles();
 
-    // wire-up the blotter
-    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager, this._openFin, this._schedulerService);
-    blotterModel.observeEvents();
-
     // wire-up analytics
     let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService, regionManager, this._openFin);
     analyticsModel.observeEvents();
@@ -168,9 +165,12 @@ class AppBootstrapper {
   }
 
   displayUi(espRouter) {
+    const store = this.store;
     ReactDOM.render(
       <RouterProvider router={espRouter}>
-        <SmartComponent modelId={WellKnownModelIds.shellModelId} />
+        <Provider store={store}>
+          <SmartComponent modelId={WellKnownModelIds.shellModelId} />
+        </Provider>
       </RouterProvider>,
       document.getElementById('root')
     );

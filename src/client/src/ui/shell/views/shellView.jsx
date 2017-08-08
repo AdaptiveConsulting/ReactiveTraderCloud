@@ -5,6 +5,7 @@ import {FooterView} from '../../footer/views';
 import {WorkspaceRegionView} from '../../regions/views/workspace';
 import {SingleItemRegionView} from '../../regions/views/singleItem';
 import {SidebarRegionView} from '../../regions/views/sidebar';
+import { BlotterContainer } from '../../blotter';
 import './shell.scss';
 import '../../common/styles/_base.scss';
 import '../../common/styles/_fonts.scss';
@@ -41,7 +42,9 @@ export default class ShellView extends React.Component {
             </Modal>
             <div className='shell_workspace_blotter'>
               <SmartComponent className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId} view={WorkspaceRegionView} />
-              <SmartComponent className='shell__blotter' modelId={wellKnownModelIds.blotterRegionModelId} view={SingleItemRegionView} />
+              <div className='shell__blotter'>
+                <BlotterContainer />
+              </div>
             </div>
             <SmartComponent className='shell__sidebar' modelId={wellKnownModelIds.sidebarRegionModelId} view={SidebarRegionView} />
           </div>
