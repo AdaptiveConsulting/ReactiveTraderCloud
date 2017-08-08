@@ -3,7 +3,6 @@ export const ACTION_TYPES = {
   REFERENCE_SERVICE: 'REFERENCE_SERVICE'
 }
 
-// TODO rename
 export const fetchReference = payload => ({ type: ACTION_TYPES.REFERENCE_SERVICE, payload })
 
 export const referenceServiceEpic = refService$ => action$ => {
