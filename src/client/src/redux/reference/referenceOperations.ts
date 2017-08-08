@@ -1,12 +1,13 @@
+import { createAction } from 'redux-actions';
 
-export const ACTION_TYPES = {
-  REFERENCE_SERVICE: 'REFERENCE_SERVICE'
+export enum ACTION_TYPES {
+  REFERENCE_SERVICE = '@ReactiveTraderCloud/REFERENCE_SERVICE'
 }
 
-export const fetchReference = payload => ({ type: ACTION_TYPES.REFERENCE_SERVICE, payload })
+export const fetchReference = createAction(ACTION_TYPES.REFERENCE_SERVICE)
 
 export const referenceServiceEpic = refService$ => action$ => {
-  return refService$
+  return refService$.getCurrencyPairUpdatesStream()
     .map(fetchReference);
 }
 

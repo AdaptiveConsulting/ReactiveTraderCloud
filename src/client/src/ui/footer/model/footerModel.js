@@ -11,7 +11,6 @@ var _log = logger.create('FooterModel');
 export default class FooterModel extends ModelBase {
   _compositeStatusService;
   _openFin;
-
   isConnectedToBroker;
   connectionUrl;
   connectionType;

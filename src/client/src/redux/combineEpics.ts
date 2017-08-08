@@ -1,10 +1,14 @@
 import { combineEpics } from 'redux-observable';
 import { referenceServiceEpic } from './reference/referenceOperations';
-import { blotterEpic } from './blotter/blotterOperations';
-import { pricingEpic } from './pricing/pricingOperations'
+import { blotterServiceEpic } from './blotter/blotterOperations';
+import { pricingServiceEpic } from './pricing/pricingOperations'
+import { analyticsServiceEpic } from './analytics/analyticsOperations';
+import { compositeStatusServiceEpic } from './compositeStatusService/compositeStatusServiceOperations';
 
 export default combineEpics(
   referenceServiceEpic,
-  blotterEpic,
-  pricingEpic
+  blotterServiceEpic,
+  pricingServiceEpic,
+  analyticsServiceEpic,
+  compositeStatusServiceEpic
 );

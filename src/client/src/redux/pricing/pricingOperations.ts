@@ -1,12 +1,13 @@
 import { Observable } from 'rxjs/Rx';
+import { createAction } from 'redux-actions';
 
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../reference/referenceOperations'
 
-export const ACTION_TYPES = {
-  PRICING_SERVICE: '@ReactiveTraderCloud/PRICING_SERVICE'
+export enum ACTION_TYPES {
+  PRICING_SERVICE = '@ReactiveTraderCloud/PRICING_SERVICE'
 }
 
-export const fetchPricing = payload => ({ type: ACTION_TYPES.PRICING_SERVICE, payload })
+export const fetchPricing = createAction(ACTION_TYPES.PRICING_SERVICE)
 
 const getCurrencyPairs = (symbols: Array<string>, pricingService$: any) => {
   return Observable.from(symbols).mergeMap(symbol => pricingService$.getSpotPriceStream({ symbol }))
@@ -22,7 +23,7 @@ const accumulatePrices = (acc, tick, index) => {
   }
 }
 
-export const pricingEpic = pricingService$ => (action$) => {
+export const pricingServiceEpic = pricingService$ => (action$) => {
   return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
     .map(action => action.payload.currencyPairUpdates.map(currency => currency.currencyPair.symbol))
     .mergeMap((symbols: Array<string>) => getCurrencyPairs(symbols, pricingService$))

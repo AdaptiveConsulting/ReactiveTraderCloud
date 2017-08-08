@@ -1,13 +1,14 @@
 import * as _ from 'lodash'
+import { createAction } from 'redux-actions';
 
-export const ACTION_TYPES = {
-  BLOTTER_SERVICE: '@ReactiveTraderCloud/BLOTTER_SERVICE'
+export enum ACTION_TYPES {
+  BLOTTER_SERVICE = '@ReactiveTraderCloud/BLOTTER_SERVICE'
 }
 
-export const fetchBlotter = payload => ({ type: ACTION_TYPES.BLOTTER_SERVICE, payload })
+export const fetchBlotter = createAction(ACTION_TYPES.BLOTTER_SERVICE)
 
-export const blotterEpic = blotterService$ => action$ => {
-  return blotterService$
+export const blotterServiceEpic = blotterService$ => action$ => {
+  return blotterService$.getTradesStream()
     .map(fetchBlotter);
 }
 
