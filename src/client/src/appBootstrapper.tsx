@@ -29,6 +29,7 @@ import {
 import { WellKnownModelIds } from './';
 import logger from './system/logger';
 import User from './services/model/user';
+import configureStore from './redux/configureStore'
 
 var _log = logger.create('OpenfinPopoutService');
 
@@ -54,6 +55,7 @@ class AppBootstrapper {
   run() {
     let espRouter = this.createRouter();
     this.startServices(espRouter);
+    configureStore(this._referenceDataService, this._blotterService, this._pricingService);
     this.startModels(espRouter);
     this.displayUi(espRouter);
   }
@@ -168,7 +170,7 @@ class AppBootstrapper {
   displayUi(espRouter) {
     ReactDOM.render(
       <RouterProvider router={espRouter}>
-        <SmartComponent modelId={WellKnownModelIds.shellModelId}/>
+        <SmartComponent modelId={WellKnownModelIds.shellModelId} />
       </RouterProvider>,
       document.getElementById('root')
     );
