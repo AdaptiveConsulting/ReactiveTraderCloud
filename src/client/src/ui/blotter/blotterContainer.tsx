@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as _ from 'lodash'
 import sizeMe from 'react-sizeme'
 import { connect } from  'react-redux'
 import Blotter from './blotter'
@@ -7,9 +8,9 @@ class BlotterContainer extends React.Component<any, {}> {
 
   public render() {
 
-    const trades = this.props.blotterService._trades
+    const trades = this.props.blotterService.trades
     const blotterProps = {
-      trades: trades || [],
+      trades: _.values(trades),
       isConnected: this.props.isConnected,
       canPopout: false,
       size: this.props.size

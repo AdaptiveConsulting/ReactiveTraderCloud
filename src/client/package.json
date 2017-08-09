@@ -74,6 +74,7 @@
     "fixed-data-table": "0.6.3",
     "font-awesome": "4.5.0",
     "lodash": "3.10.1",
+    "lodash.keyby": "4.6.0",
     "moment": "2.13.0",
     "numeral": "1.5.3",
     "nvd3": "1.8.1",
