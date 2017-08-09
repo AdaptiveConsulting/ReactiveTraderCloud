@@ -9,6 +9,7 @@ import { BlotterContainer } from '../../blotter';
 import './shell.scss';
 import '../../common/styles/_base.scss';
 import '../../common/styles/_fonts.scss';
+import { AnalyticsContainer } from '../../analytics';
 
 export default class ShellView extends React.Component {
 
@@ -46,7 +47,10 @@ export default class ShellView extends React.Component {
                 <BlotterContainer />
               </div>
             </div>
-            <SmartComponent className='shell__sidebar' modelId={wellKnownModelIds.sidebarRegionModelId} view={SidebarRegionView} />
+            {/*<SmartComponent className='shell__sidebar' modelId={wellKnownModelIds.sidebarRegionModelId} view={SidebarRegionView} />*/}
+            <div className='shell__sidebar'>
+              <AnalyticsContainer />
+            </div>
           </div>
           <div className='shell__footer'>
             <SmartComponent modelId={wellKnownModelIds.footerModelId} view={FooterView} />

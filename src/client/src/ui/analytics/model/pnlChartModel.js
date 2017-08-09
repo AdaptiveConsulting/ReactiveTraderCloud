@@ -9,8 +9,8 @@ export default class PnlChartModel  {
   maxPnl;
   _seriesData;
 
-  constructor() {
-    this._seriesData = [];
+  constructor(analyticsHistory = []) {
+    this._seriesData = analyticsHistory;
     this.options = {
       xAxis: {
         tickFormat: (d) => d3.time.format('%X')(new Date(d))

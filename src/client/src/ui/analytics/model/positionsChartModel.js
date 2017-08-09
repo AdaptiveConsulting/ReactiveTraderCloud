@@ -10,8 +10,8 @@ export default class PositionsChartModel {
 
   yAxisValuePropertyName;
 
-  constructor() {
-    this._seriesData = [];
+  constructor(analyticsData = []) {
+    this._seriesData = analyticsData;
     this.options = {
       showYAxis: true,
       showXAxis: true,

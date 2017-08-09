@@ -25,7 +25,6 @@ class BlotterContainer extends React.Component<any, {}> {
 function mapStateToProps({blotterService, statusService}) {
   const isConnected = true
   return { blotterService, isConnected }
-
 }
 
 export default connect(mapStateToProps)(BlotterContainer)
