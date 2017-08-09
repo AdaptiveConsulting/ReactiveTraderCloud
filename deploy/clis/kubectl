@@ -1,0 +1,17 @@
+#! /bin/bash
+
+# exit on first error
+set -euo pipefail
+
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+. ${root_directory}/deploy/config
+
+# run kubectl container
+docker run --rm -ti \
+  --net=host \
+  -v /${root_directory}:/root_directory \
+  -v rtc-gcloud-config:/root/.config \
+  -v rtc-kubectl-config:/root/.kube \
+  -w //root_directory \
+  ${gcloudContainer} kubectl $@

@@ -11,5 +11,5 @@ echo "[nginx] started"
 while true; do
   /opt/updateServers.sh
   nginx -s reload
-  sleep 10
+  sleep 20
 done

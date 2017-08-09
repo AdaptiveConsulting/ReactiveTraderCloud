@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if [[ $1 == "" ]];then
-  echo "usage:"
+  echo -e "\e[32mUsage:\e[39m"
   echo "  $0 BUILD"
   echo " "
   exit 1
@@ -12,34 +12,36 @@ set -euo pipefail
 
 namespace="nsgate"
 service="nsgate"
-. ../config
+
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+. ${root_directory}/deploy/config
 
 # generate manifest
-cd templates
-manifestFolder="../manifests"
-rcFile="$manifestFolder/$service-rc.yml"
+manifest_directory="${root_directory}/deploy/kubernetes/manifests"
+templates_directory="${root_directory}/deploy/kubernetes/templates"
+replication_controller_file="${manifest_directory}/${service}-rc.yml"
 
-mkdir -p $manifestFolder
+mkdir -p ${manifest_directory}
 
-cp ./$service/rc.yml $rcFile
-
-sed -ie "s/__MAJOR__/$nsGateContainer_major/g" $rcFile
-sed -ie "s/__MINOR__/$nsGateContainer_minor/g" $rcFile
-sed -ie "s/__BUILD__/$build/g" $rcFile
-sed -ie "s|__DOCKERIMAGE__|$nsGateContainer.$build|g" $rcFile
-sed -ie "s/__NAMESPACE__/$namespace/g" $rcFile
-cd ..
-
+cp ${templates_directory}/${service}/rc.yml ${replication_controller_file}
+sed -ie "s/__MAJOR__/${nsGateContainer_major}/g" ${replication_controller_file}
+sed -ie "s/__MINOR__/${nsGateContainer_minor}/g" ${replication_controller_file}
+sed -ie "s/__BUILD__/${build}/g" ${replication_controller_file}
+sed -ie "s|__DOCKERIMAGE__|${nsGateContainer}.${build}|g" ${replication_controller_file}
+sed -ie "s/__NAMESPACE__/${namespace}/g" ${replication_controller_file}
 
 # deploy on kubernetes
-./kubectl stop -f manifests/nsgate-rc.yml
-./kubectl create -f manifests/nsgate-rc.yml
-
+kubectl="${root_directory}/deploy/clis/kubectl"
+manifests_directory_in_container="deploy/kubernetes/manifests"
+${kubectl} delete -f ${manifests_directory_in_container}/nsgate-rc.yml
+${kubectl} create -f ${manifests_directory_in_container}/nsgate-rc.yml
 
 # get the namespace informations
+describe="${root_directory}/deploy/kubernetes/describe"
 echo " "
 echo " "
-./kst $namespace
+${describe} ${namespace}
 echo " "
 echo " "
-echo " Wait a moment and run <kst $namespace> to see the PODS generated on your cluster"
+echo " Wait a moment and run <describe ${namespace}> to see the PODS generated on your cluster"
