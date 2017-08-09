@@ -11,14 +11,9 @@ const CURRENCY: string = 'USD';
 
 export const fetchAnalytics = createAction(ACTION_TYPES.ANALYTICS_SERVICE)
 
-const getAnalyticsStream = (analyticsService$: any) => {
-  return Observable.from(CURRENCY)
-    .mergeMap(currency => analyticsService$.getAnalyticsStream(CURRENCY))
-}
-
 export const analyticsServiceEpic = analyticsService$ => action$ => {
   return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
-    .mergeMapTo(getAnalyticsStream(analyticsService$))
+    .mergeMapTo(Observable.merge(analyticsService$.getAnalyticsStream(CURRENCY)))
     .map(fetchAnalytics)
 }
 
