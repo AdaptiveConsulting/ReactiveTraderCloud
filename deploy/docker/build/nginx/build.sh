@@ -9,14 +9,16 @@ fi
 # fail fast
 set -euo pipefail
 
-. ../../../config
+# load configuration
+this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+root_directory="${this_directory}/../../../.."
+. ${root_directory}/deploy/config
 
-mkdir -p ./build
+# Dockerfile
+mkdir -p ${this_directory}/build
+cp ${this_directory}/template.Dockerfile ${this_directory}/build/Dockerfile
+sed -ie "s|__OFFICIAL_NGINX_CONTAINER__|$officialNginxContainer|g" ${this_directory}/build/Dockerfile
 
-cp ./template.Dockerfile ./build/Dockerfile
-
-sed -ie "s|__OFFICIAL_NGINX_CONTAINER__|$officialNginxContainer|g" ./build/Dockerfile
-
-# build
-docker build --no-cache -t $nginxContainer ./build/.
+# build image
+docker build --no-cache -t $nginxContainer ${this_directory}/build/.
 docker tag $nginxContainer $nginxContainer.$build

@@ -6,7 +6,7 @@ metadata:
   labels:
     name: "nsgate__MAJOR__"
     minor: "__MINOR__"
-    build: "__BUILD__" 
+    build: "__BUILD__"
 spec:
   replicas: 2
   selector:
@@ -23,20 +23,18 @@ spec:
       containers:
       - name: "nsgate__MAJOR__"
         image: "__DOCKERIMAGE__"
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 80
             name: "http"
           - containerPort: 443
             name: "https"
           - containerPort: 8000
-            name: "app1"
-          - containerPort: 8080
-            name: "app2"
+            name: "broker"
           - containerPort: 1113
-            name: "app3"
+            name: "eventstore-tcp"
           - containerPort: 2113
-            name: "app4"
+            name: "eventstore"
         volumeMounts:
         - name: web-ssl
           readOnly: true

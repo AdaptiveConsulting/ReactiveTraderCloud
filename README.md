@@ -36,7 +36,9 @@ The front end is written in JavaScript with React. For more details on the clien
 The back-end services are cross-platform. For more details on the back-end infrastructure, see [here](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/server.md).
 
 ## Getting started
-For help with setting up ReactiveTraderCloud for your platform, see [here](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/setup/getting-started.md).
+You can go to the [You want to](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/readme.md) page to follow build and deployment with docker
+
+Or for more traditional builds for your platform, see [here](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/setup/getting-started.md).
 
 ## Concepts
 

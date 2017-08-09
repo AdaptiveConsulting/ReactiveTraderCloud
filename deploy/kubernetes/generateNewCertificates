@@ -2,6 +2,18 @@
 
 set -euo pipefail
 
+# usage
+if [[ $# != 1 ]];then
+  echo " "
+  echo " Will create certificates for this domain"
+  echo " "
+  echo " Usage:    ${0} DOMAIN_NAME"
+  echo " Example:  ${0} *.adaptivecluster.com"
+  exit 1
+fi
+domainName=$1
+
+# assert openssl presence
 openssl=$(which openssl)
 if [[ $? == 1 ]];then
   echo "openssl is needed, exiting"
@@ -9,21 +21,23 @@ if [[ $? == 1 ]];then
   exit 1
 fi
 
-. ../config
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+# . ${root_directory}/deploy/config
 
-mkdir -p certificates
-rm certificates/* || true
-cd certificates
+certificate_folder="${root_directory}/deploy/kubernetes/certificates"
+if [[ -d ${certificate_folder} ]]
+then rm -r ${certificate_folder}
+fi
+mkdir -p ${certificate_folder}
 
-key="server.key"
-csr="server.csr"
-crt="server.crt"
-pem="server.pem"
+key="${certificate_folder}/server.key"
+csr="${certificate_folder}/server.csr"
+crt="${certificate_folder}/server.crt"
+pem="${certificate_folder}/server.pem"
 
 openssl genrsa -out $key 2048
 openssl rsa -in $key -out $key
-openssl req -sha256 -new -key $key -out $csr -subj "//CN=$domainName"
+openssl req -sha256 -new -key $key -out $csr -subj "//CN=${domainName}"
 openssl x509 -req -days 365 -in $csr -signkey $key -out $crt
 cat $crt $key > $pem
-
-cd ..
