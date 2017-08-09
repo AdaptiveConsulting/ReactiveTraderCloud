@@ -10,7 +10,7 @@ import { pricingEpic } from './pricing/pricingOperations'
 const creatEpicMiddleware = (referenceDataService, blotterService, pricingService) => createEpicMiddleware(
   combineEpics(
     referenceServiceEpic(referenceDataService.getCurrencyPairUpdatesStream()),
-    blotterEpic(blotterService.getTradesStream()),
+    blotterEpic(blotterService),
     pricingEpic(pricingService)
   )
 )

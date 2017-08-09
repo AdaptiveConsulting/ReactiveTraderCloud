@@ -1,7 +1,7 @@
 import * as React from 'react'
+import sizeMe from 'react-sizeme'
 import { connect } from  'react-redux'
 import Blotter from './blotter'
-
 
 class BlotterContainer extends React.Component<any, {}> {
 
@@ -11,7 +11,8 @@ class BlotterContainer extends React.Component<any, {}> {
     const blotterProps = {
       trades: trades || [],
       isConnected: this.props.isConnected,
-      canPopout: false
+      canPopout: false,
+      size: this.props.size
     }
 
     return (
@@ -22,10 +23,10 @@ class BlotterContainer extends React.Component<any, {}> {
   }
 }
 
-function mapStateToProps({blotterService, statusService}) {
+const mapStateToProps = ({blotterService, statusService}) => {
   const isConnected = true
   return { blotterService, isConnected }
 
 }
 
-export default connect(mapStateToProps)(BlotterContainer)
+export default connect(mapStateToProps)(sizeMe({monitorHeight: true})(BlotterContainer))

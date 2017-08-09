@@ -27,7 +27,7 @@ function replaceWithAction(a: any, b: any): void {
 
 export default class Blotter extends React.Component<BlotterProps, {}> {
   render() {
-    const { canPopout, isConnected, trades } = this.props
+    const { canPopout, isConnected, trades, size } = this.props
     const columns = this.createGridColumns(trades)
     const className = classNames(
       'blotter', {
@@ -52,8 +52,8 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
             rowHeight={30}
             headerHeight={30}
             rowCount={trades.length}
-            width={900}
-            height={600}
+            width={size.width}
+            height={size.height}
             rowStyle={{ display: 'flex' }}
             rowClassName={({index}) => this.getRowClass(trades[index])}
             rowGetter={({ index }) => trades[index]}>
