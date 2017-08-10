@@ -1,4 +1,5 @@
 import { createAction } from 'redux-actions';
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../reference/referenceOperations';
 
 export enum ACTION_TYPES {
   COMPOSITE_STATUS_SERVICE = '@ReactiveTraderCloud/COMPOSITE_STATUS_SERVICE'
@@ -7,7 +8,8 @@ export enum ACTION_TYPES {
 export const fetchCompositeServiceStatus = createAction(ACTION_TYPES.COMPOSITE_STATUS_SERVICE)
 
 export const compositeStatusServiceEpic = compositeStatusService$ => action$ => {
-  return compositeStatusService$.serviceStatusStream
+  return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
+    .flatMapTo(compositeStatusService$.serviceStatusStream)
     .map(fetchCompositeServiceStatus);
 }
 

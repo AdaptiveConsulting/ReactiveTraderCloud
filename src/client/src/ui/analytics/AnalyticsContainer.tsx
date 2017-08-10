@@ -1,33 +1,39 @@
 import * as React from 'react'
-import { connect } from  'react-redux'
+import { connect } from 'react-redux'
 
-import './analytics.scss'
-import { PositionsChartModel, PnlChartModel } from './model'
+import { getPnlChartModel } from './model/pnlChartModel';
+import { getPositionsChartModel } from './model/positionsChartModel';
 import Analytics from './Analytics';
+import './analytics.scss'
 
-class AnalyticsContainer extends React.Component<any, {}> {
-  public render() {
-    const analyticsData = this.props.analyticsService
-    const positionsChartModel = new PositionsChartModel(analyticsData.currentPositions)
-    const pnlChartModel = new PnlChartModel(analyticsData.history)
+class AnalyticsContainer extends React.Component<any, any> {
+
+  render() {
+
+    const { analyticsService, isConnected } = this.props
+    const positionsChartModel = getPositionsChartModel(analyticsService.currentPositions)
+    const pnlChartModel = getPnlChartModel(analyticsService.history)
 
     const analyticsProps = {
-      isConnected: this.props.isConnected,
+      isConnected: isConnected,
       pnlChartModel: pnlChartModel,
       positionsChartModel: positionsChartModel
     }
 
-    return <div className="analytics__container">
-            <div ref="analyticsInnerContainer">
-              <Analytics canPopout={false} {...analyticsProps}  />
-            </div>
-          </div>
+    return (
+      <div>
+        <Analytics
+          canPopout={false}
+          {...analyticsProps}
+        />
+      </div>
+    );
   }
 }
 
-function mapStateToProps({analyticsService, compositeStatusService}) {
+function mapStateToProps({ analyticsService, compositeStatusService, displayAnalytics }) {
   const isConnected = compositeStatusService && compositeStatusService.services && compositeStatusService.services.analytics.isConnected
-  return { analyticsService, isConnected }
+  return { analyticsService, isConnected, displayAnalytics }
 }
 
 export default connect(mapStateToProps)(AnalyticsContainer)

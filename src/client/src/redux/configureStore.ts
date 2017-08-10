@@ -14,7 +14,7 @@ const creatEpicMiddleware = (referenceDataService, blotterService, pricingServic
     referenceServiceEpic(referenceDataService),
     blotterServiceEpic(blotterService),
     pricingServiceEpic(pricingService),
-    analyticsServiceEpic(analyticsService, openFin),
+    analyticsServiceEpic(analyticsService),
     compositeStatusServiceEpic(compositeStatusService)
   )
 )

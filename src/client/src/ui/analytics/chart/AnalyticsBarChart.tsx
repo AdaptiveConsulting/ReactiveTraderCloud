@@ -1,39 +1,39 @@
 import * as React from 'react'
-import PNLBar from './PNLBar'
-import { map, max, min } from 'lodash'
+import * as _ from 'lodash'
+import PNLBar from './PNLBar';
 
 export interface AnalyticsBarChartProps {
   chartData: any[]
   isPnL: boolean
 }
 
-export default class AnalyticsBarChart extends React.Component<AnalyticsBarChartProps, {}>{
+export default class AnalyticsBarChart extends React.Component<AnalyticsBarChartProps, {}> {
 
   render() {
-    const bars = this.createBars()
     return (
-      <div>{bars}</div>
+      <div>
+        {!_.isEmpty(this.props.chartData) && this.createBars()}
+      </div>
     )
   }
 
   createBars() {
-    // const propName = CurrencyPairPosition.basePnlName // 'basePnl' was here
     const { isPnL, chartData } = this.props
-
-    const baseValues: any[] = map(chartData, 'basePnl')
-    const maxValue: number = max(baseValues)
-    const minValue: number = min(baseValues)
-
-    const maxWidth =  Math.max(Math.abs(maxValue), Math.abs(minValue))
+    const baseValues: any[] = _.map(chartData, 'basePnl')
+    const maxValue: number = _.max(baseValues)
+    const minValue: number = _.min(baseValues)
+    const maxWidth = Math.max(Math.abs(maxValue), Math.abs(minValue))
     const bars = chartData.map(({ basePnl, symbol, currencyPair }, index) => {
       return (
-        <PNLBar key={index}
-                index={index}
-                basePnl={basePnl}
-                symbol={symbol}
-                currencyPair={currencyPair}
-                isPnL={isPnL}
-                maxVal={maxWidth}/>
+        <PNLBar
+          key={index}
+          index={index}
+          basePnl={basePnl}
+          symbol={symbol}
+          currencyPair={currencyPair}
+          isPnL={isPnL}
+          maxVal={maxWidth}
+        />
       )
     })
     return bars

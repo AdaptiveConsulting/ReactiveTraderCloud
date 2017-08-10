@@ -16,7 +16,7 @@ export interface PNLBarProps {
 export default class PNLBar extends React.Component<PNLBarProps, {}> {
   barChartContainerDOM: any
   labelDOM: any
-  // Is this necessary? leaving until cleared
+
   refreshState() {
     this.setState({ updateRequired: true })
   }

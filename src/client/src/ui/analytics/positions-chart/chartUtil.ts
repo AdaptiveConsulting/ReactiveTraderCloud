@@ -1,36 +1,26 @@
 /* tslint:disable */
-import { findIndex, map, max, min } from 'lodash'
+import * as _ from 'lodash'
 import * as d3 from 'd3'
-// d3 v4 for upgrade
-// import { scaleLinear, scaleSqrt } from 'd3-scale'
-// import { select } from 'd3-selection'
-// import { quadtree } from 'd3-quadtree'
 import * as numeral from 'numeral'
 
-// extracted:
-// import { CurrencyPairPosition } from '../../../../services/model'
-// and CurrencyPairPosition.baseTradedAmountName === 'baseTradedAmount'
-// to:
 const baseTradedAmountName = 'baseTradedAmount'
 
-export function getPositionsDataFromSeries(series: any[]) {
+export function getPositionsDataFromSeries(series = []) {
   const baseAmountPropertyName = baseTradedAmountName
   const positionsPerCcyObj = series.reduce(
     (aggregatedPositionsObj, ccyPairPosition) => {
-      // aggregate amount per ccy
       const baseCurrency = ccyPairPosition.currencyPair.base
       aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
-        ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmountPropertyName] 
+        ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmountPropertyName]
         : ccyPairPosition[baseAmountPropertyName]
 
-      return aggregatedPositionsObj 
-    }, 
+      return aggregatedPositionsObj
+    },
     {})
 
-  // map the object to the array of ccy-amount pairs and exclude 0 base amount
-  return map(positionsPerCcyObj, (val, key) => {
-    return { 
-      symbol: key, 
+  return _.map(positionsPerCcyObj, (val, key) => {
+    return {
+      symbol: key,
       [baseAmountPropertyName]: val,
     }
   }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
@@ -46,12 +36,12 @@ export function createScales(props: any) {
 
   const positionData = getPositionsDataFromSeries(props.data)
 
-  const baseValues = map(positionData, (val: any) => {
+  const baseValues = _.map(positionData, (val: any) => {
     return Math.abs(val[baseTradedAmountName])
   })
 
-  const maxValue = max(baseValues) || 0
-  let minValue = min(baseValues) || 0
+  const maxValue = _.max(baseValues) || 0
+  let minValue = _.min(baseValues) || 0
 
   if (minValue === maxValue) minValue = 0
 
@@ -103,8 +93,7 @@ export function updateNodes(nodeGroup: any, nodes: any[], scales: any) {
 export function drawCircles(nodeGroup: any, duration: number = 800) {
   nodeGroup
     .on('mouseover', (d: any) => {
-      // using standard callback function to capture 'this'
-      d3.select(d.target).style('fill', '#00A8CC') // v4: select(this).style('fill', '#00A8CC')
+      d3.select(d.target).style('fill', '#00A8CC')
     })
     .on('mouseout', (d: any) => {
       d3.select(d.target).style('fill', d.color)
@@ -139,7 +128,7 @@ export function getRadius(dataObj: any, scales: any) {
 }
 
 export function getPositionValue(id: string, positionsData: any[]) {
-  const index = findIndex(positionsData, (pos: any) => pos.symbol === id)
+  const index = _.findIndex(positionsData, (pos: any) => pos.symbol === id)
   if (index >= 0) {
     return numeral(positionsData[index].baseTradedAmount).format('0,0')
   }
@@ -147,7 +136,7 @@ export function getPositionValue(id: string, positionsData: any[]) {
 }
 
 export function collide(alpha: number, nodes: any[], scale?: number) {
-  const qt = d3.geom.quadtree(nodes) // v4: quadtree().addAll(nodes) // v3: d3.geom.quadtree(nodes)
+  const qt = d3.geom.quadtree(nodes)
   const padding = 10
 
   return (d: any) => {
@@ -174,23 +163,5 @@ export function collide(alpha: number, nodes: any[], scale?: number) {
       }
       return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1
     })
-
-    // d3 v4 may look like:
-    // return qt.visit((quad, x1, y1, x2, y2) => {
-    //   if (quad && quad !== d) {
-    //     let x = d.x - quad[0]
-    //     let y = d.y - quad[1]
-    //     let l = Math.sqrt(x * x + y * y)
-    //     r = d.r + quad[2] + padding
-    //     if (l < r) {
-    //       l = (l - r) / l * alpha
-    //       d.x -= x *= l
-    //       d.y -= y *= l
-    //       quad[0] += x
-    //       quad[1] += y
-    //     }
-    //   }
-    //   return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1
-    // })
   }
 }

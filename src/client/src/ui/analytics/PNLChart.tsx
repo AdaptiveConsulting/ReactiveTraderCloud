@@ -7,7 +7,8 @@ import * as NVD3Chart from 'react-nvd3'
 import { timeFormat } from 'd3-time-format'
 import * as numeral from 'numeral'
 
-import { default as ChartGradient } from './chartGradient'
+import ChartGradient from './chartGradient'
+import { PNLChartProps } from './model/pnlChartModel';
 
 export interface PnlChartModelOptions {
   xAxis: {
@@ -34,18 +35,10 @@ export interface PricePoint {
   y: string
 }
 
-export interface PNLChartProps {
-  hasData: boolean
-  lastPos: number
-  maxPnl: number
-  minPnl: number
-  options: PnlChartModelOptions
-  _seriesData: PricePoint[] // this returns seriesData
-}
-
 export default class PNLChart extends React.Component<PNLChartProps, {}> {
   chartGradient: ChartGradient
   refs: any
+
   componentDidMount() {
     this.updateGradient()
   }
@@ -72,21 +65,21 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
       label: 'PNL',
       area: true,
       color: 'slategray',
-      values: seriesData,
+      values: seriesData
     }]
   }
 
   render() {
-    const { hasData, lastPos, minPnl, maxPnl, options, _seriesData } = this.props
+    const { lastPos, minPnl, maxPnl, options, seriesData } = this.props
 
     const analyticsHeaderClassName = classnames('analytics__header-value', {
       'analytics__header-value--negative': lastPos < 0,
-      'analytics__header-value--positive': lastPos > 0,
+      'analytics__header-value--positive': lastPos > 0
     })
     const formattedLastPos = numeral(lastPos).format()
     let pnlChart: any = null
 
-    if (hasData) {
+    if (this.props.seriesData.length >= 0) {
       const configurePnLChart = (chart: any) => {
         const pnlTooltip = (el: any) => {
           const date = timeFormat('%X')(new Date(el.value))
@@ -108,7 +101,7 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
         <NVD3Chart
           ref="pnlChart"
           type="lineChart"
-          datum={this.prepareDatum(_seriesData)}
+          datum={this.prepareDatum(seriesData)}
           options={options}
           height={240}
           configure={configurePnLChart}/>

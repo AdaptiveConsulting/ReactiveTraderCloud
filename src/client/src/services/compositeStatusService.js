@@ -1,8 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { DisposableBase } from 'esp-js';
 import { ServiceStatusLookup } from './model';
-import { PricingService, ReferenceDataService, BlotterService, ExecutionService, AnalyticsService } from './';
-import { Connection, ServiceStatus } from './../system/service';
 import { ConnectionType } from './../services/model';
 
 export default class CompositeStatusService extends DisposableBase {
@@ -103,6 +101,6 @@ export default class CompositeStatusService extends DisposableBase {
         (statusLookup, serviceStatus) => statusLookup.updateServiceStatus(serviceStatus),
         // seed the stream with the initial, empty 'status' data structure
         new ServiceStatusLookup())
-      .publish();
+      .publishReplay();
   }
 }

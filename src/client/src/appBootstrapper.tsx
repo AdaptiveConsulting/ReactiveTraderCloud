@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 
 import { Router } from 'esp-js';
 import { RouterProvider, SmartComponent } from 'esp-js-react/dist/esp-react';
-import { AnalyticsModel } from './ui/analytics/model';
 import { FooterModel } from './ui/footer/model';
 import { ShellModel } from './ui/shell/model';
 import { ChromeModel } from './ui/common/components/chrome/model';
@@ -129,10 +128,6 @@ class AppBootstrapper {
       new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager, this._schedulerService, this._openFin)
     );
     spotTileLoader.beginLoadTiles();
-
-    // wire-up analytics
-    let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService, regionManager, this._openFin);
-    analyticsModel.observeEvents();
 
     // wire-up the footer
     let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService, this._openFin);

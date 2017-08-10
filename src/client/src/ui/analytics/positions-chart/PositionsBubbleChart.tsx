@@ -31,7 +31,6 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   tooltip: any
   constructor(props: PositionsBubbleChartProps) {
     super(props)
-
     this.state = {
       nodes: [],
       prevPositionsData: {},
@@ -155,9 +154,9 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
 
     const tick = () => {
       const nodeGroup = svg.selectAll('g.node')
-        .on('mouseover', (dataObj: any, index: number, event: MouseEvent) => { 
+        .on('mouseover', (dataObj: any, index: number, event: MouseEvent) => {
           this.tooltip.style('visibility', 'visible')
-          this.positionTooltip(dataObj, event) 
+          this.positionTooltip(dataObj, event)
         })
         .on('mousemove', this.positionTooltip.bind(this))
         .on('mouseout', () => this.tooltip.style('visibility', 'hidden'))
@@ -185,7 +184,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
       .links([])
       .size([this.props.size.width, this.props.size.height])
       .charge((d: number) => {
-        return -1 
+        return -1
       })
       .gravity(0.1)
       .on('tick', tick)
@@ -239,8 +238,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   }
 
   render() {
-    return <div className="analytics__bubblechart-container">
-      </div>
+    return <div className="analytics__bubblechart-container"></div>
   }
 }
 
