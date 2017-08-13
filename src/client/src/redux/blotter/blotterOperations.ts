@@ -3,12 +3,15 @@ import * as _ from 'lodash'
 import * as keyBy from 'lodash.keyby'
 import { createAction } from 'redux-actions'
 
+
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../reference/referenceOperations'
 export const ACTION_TYPES = {
-  BLOTTER_SERVICE: '@ReactiveTraderCloud/BLOTTER_SERVICE'
+  BLOTTER_SERVICE: '@ReactiveTraderCloud/BLOTTER_SERVICE',
+  BLOTTER_POPOUT: '@ReactiveTraderCloud/BLOTTER_POPOUT',
 }
 
 export const fetchBlotter = createAction(ACTION_TYPES.BLOTTER_SERVICE)
+export const onPopoutClick = createAction(ACTION_TYPES.BLOTTER_POPOUT)
 
 export const blotterServiceEpic = blotterService$ => action$ => {
   return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
@@ -23,8 +26,10 @@ export const blotterServiceReducer = (state: any = {}, action) => {
       return {
         trades: _.sortBy({ ...trades, ...state.trades }, '_topicId').reverse()
       }
+    case ACTION_TYPES.BLOTTER_POPOUT:
+      console.log('blotter reducer')
+    return state
     default:
       return state
   }
 }
-
