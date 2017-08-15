@@ -44,13 +44,12 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
         {this.props.pnlChartModel && <PNLChart {...this.props.pnlChartModel} />}
         <div className="analytics__bubblechart-container">
           <span className="analytics__chart-title analytics__bubblechart-title">Positions</span>
-          {this.props.positionsChartModel && <PositionsBubbleChart data={this.props.positionsChartModel.seriesData}/>}
+          {!_.isEmpty(this.props.positionsChartModel.seriesData) && <PositionsBubbleChart data={this.props.positionsChartModel.seriesData}/>}
         </div>
         <div>
           <div className="analytics__chart-container">
             <span className="analytics__chart-title">PnL</span>
-            {!_.isEmpty(this.props.positionsChartModel.seriesData) &&
-            <AnalyticsBarChart chartData={this.props.positionsChartModel.seriesData} isPnL={true}/>}
+            {!_.isEmpty(this.props.positionsChartModel.seriesData) && <AnalyticsBarChart chartData={this.props.positionsChartModel.seriesData} isPnL={true}/>}
           </div>
         </div>
       </div>

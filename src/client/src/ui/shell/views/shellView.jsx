@@ -1,9 +1,9 @@
 import React from 'react';
 import { SmartComponent } from 'esp-js-react';
 import {Modal, Chrome} from '../../common/components';
-import {FooterView} from '../../footer/views';
+import FooterContainer from '../../footer/FooterContainer';
 import {WorkspaceRegionView} from '../../regions/views/workspace';
-import SidebarRegionContainer from '../../regions/views/sidebar/SidebarRegionContainer';
+import SidebarRegionContainer from '../../sidebar/SidebarRegionContainer';
 import { BlotterContainer } from '../../blotter';
 import './shell.scss';
 import '../../common/styles/_base.scss';
@@ -48,7 +48,7 @@ export default class ShellView extends React.Component {
               <SidebarRegionContainer />
           </div>
           <div className='shell__footer'>
-            <SmartComponent modelId={wellKnownModelIds.footerModelId} view={FooterView} />
+            <FooterContainer />
           </div>
         </div>
       </SmartComponent>

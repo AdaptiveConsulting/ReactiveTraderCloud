@@ -6,8 +6,8 @@ export enum ACTION_TYPES {
 
 export const toggleAnalytics = createAction(ACTION_TYPES.TOGGLE_ANALYTICS)
 
-const initialState = true
+const INITIAL_STATE = true
 
 export default handleActions({
   [ACTION_TYPES.TOGGLE_ANALYTICS]: state => !state
-}, initialState)
+}, INITIAL_STATE)

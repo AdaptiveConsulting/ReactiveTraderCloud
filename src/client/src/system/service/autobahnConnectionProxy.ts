@@ -32,7 +32,6 @@ export default class AutobahnConnectionProxy {
   }
 
   open() {
-
     this.connection.onopen = session => {
       this.session = new AutobahnSessionProxy(session);
       if (this._onOpen) {

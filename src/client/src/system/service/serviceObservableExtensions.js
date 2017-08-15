@@ -1,8 +1,7 @@
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable, Subscription, TimeoutError } from 'rxjs/Rx';
 import _ from 'lodash';
 import LastValueObservable from './lastValueObservable';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
-import ServiceInstanceStatus from './serviceInstanceStatus';
 
 /**
  * Adds timeout semantics to the inner observable streams, on timeout calls onDebounceItemFactory to get the item to pump down the stream
@@ -16,8 +15,7 @@ function debounceOnMissedHeartbeat(dueTime, onDebounceItemFactory, scheduler) {
   return Observable.create(o => {
     return sources.subscribe(innerSource => {
         let key = innerSource.key;
-        let connectionTimeoutStream = innerSource
-        .timeout(dueTime, scheduler.schedule(() => o.next(Observable.of(onDebounceItemFactory(key)))));
+        let connectionTimeoutStream = innerSource.timeout(dueTime, scheduler.schedule(() =>  { o.next(Observable.of(onDebounceItemFactory(key))) }))
         o.next(connectionTimeoutStream);
       },
       ex => o.error(ex),

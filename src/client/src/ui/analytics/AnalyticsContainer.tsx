@@ -21,18 +21,16 @@ class AnalyticsContainer extends React.Component<any, any> {
     }
 
     return (
-      <div>
-        <Analytics
-          canPopout={false}
-          {...analyticsProps}
-        />
-      </div>
+      <Analytics
+        canPopout={false}
+        {...analyticsProps}
+      />
     );
   }
 }
 
 function mapStateToProps({ analyticsService, compositeStatusService, displayAnalytics }) {
-  const isConnected = compositeStatusService && compositeStatusService.services && compositeStatusService.services.analytics.isConnected
+  const isConnected =  compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected || false
   return { analyticsService, isConnected, displayAnalytics }
 }
 

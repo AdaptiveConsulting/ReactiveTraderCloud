@@ -1,10 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import * as d3 from 'd3'
-// d3 v4:
-// import { select } from 'd3-selection'
-// import { drag } from 'd3-drag'
-// import { forceSimulation, forceLink, forceX, forceY, forceManyBody } from 'd3-force'
 
 import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
 import reactSizeme from 'react-sizeme'
@@ -169,16 +165,6 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
       .attr('width', this.props.size.width)
       .attr('height', this.props.size.height)
 
-    // new v4
-    // this.force = forceSimulation()
-    //     .nodes(this.state.nodes)
-    //     .force('link', forceLink([]))
-    //     .force('Y', forceY().y((d: any) => { return d._y }))
-    //     .force('charge', forceManyBody().strength(-1))
-    //     .force('X', forceX().x((d: any) => { return d._x }))
-    //     .on('tick', tick)
-
-    // old d3 v3:
     this.force = d3.layout.force()
       .nodes(this.state.nodes)
       .links([])
