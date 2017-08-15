@@ -1,11 +1,14 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 import sizeMe from 'react-sizeme'
-import { connect } from  'react-redux'
-import { onPopoutClick } from './../../redux/blotter/blotterOperations'
+import {connect} from 'react-redux'
+import {onPopoutClick, onComponentMount, blotterRegionsSettings} from './../../redux/blotter/blotterOperations'
 import Blotter from './blotter'
 
 class BlotterContainer extends React.Component<any, {}> {
+  componentDidMount() {
+    this.props.onComponentMount()
+  }
 
   public render() {
 
@@ -15,7 +18,7 @@ class BlotterContainer extends React.Component<any, {}> {
       isConnected: this.props.isConnected,
       onPopoutClick: this.props.onPopoutClick,
       canPopout: true,
-      size: this.props.size
+      size: this.props.size,
     }
 
     return (
@@ -28,13 +31,22 @@ class BlotterContainer extends React.Component<any, {}> {
 
 const mapStateToProps = ({blotterService, statusService}) => {
   const isConnected = true
-  return { blotterService, isConnected }
+  return {blotterService, isConnected}
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const blotterRegion = {
+  id: 'blotter',
+  isTearedOff: false,
+  settings: blotterRegionsSettings
+}
+
+const mapDispatchToProps = dispatch => {
   return {
     onPopoutClick: () => {
-      dispatch(onPopoutClick())
+      dispatch(onPopoutClick(blotterRegion))
+    },
+    onComponentMount: () => {
+      dispatch(onComponentMount(blotterRegion))
     }
   }
 }
