@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
 import { Router } from 'esp-js';
 import { RouterProvider, SmartComponent } from 'esp-js-react/dist/esp-react';
 import { ShellModel } from './ui/shell/model';
@@ -63,6 +62,7 @@ class AppBootstrapper {
       this._compositeStatusService,
       this._openFin
     );
+
     this.startModels(espRouter);
     this.displayUi(espRouter);
   }
@@ -180,3 +180,4 @@ let runBootstrapper = location.pathname === '/' && location.hash.length === 0;
 if (runBootstrapper) {
   new AppBootstrapper().run();
 }
+

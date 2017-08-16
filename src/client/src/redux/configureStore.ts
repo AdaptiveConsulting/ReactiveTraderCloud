@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import { createEpicMiddleware, combineEpics } from 'redux-observable'
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { persistStore } from 'redux-persist'
 
 import rootReducer from './combineReducers';
 import { blotterServiceEpic } from './blotter/blotterOperations';
@@ -25,10 +26,13 @@ const epicMiddleware = (referenceDataService, blotterService, pricingService, an
 
 export default function configureStore(referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, openFin) {
   const middleware = epicMiddleware(referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, openFin)
-  return createStore(
+
+  const store = createStore(
     rootReducer,
     composeWithDevTools(
       applyMiddleware(middleware)
     )
   )
+  persistStore(store)
+  return store
 }

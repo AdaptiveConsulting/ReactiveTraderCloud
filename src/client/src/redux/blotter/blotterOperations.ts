@@ -27,8 +27,11 @@ export const blotterServiceReducer = (state: any = {}, action) => {
   switch (action.type) {
     case ACTION_TYPES.BLOTTER_SERVICE:
       const trades = keyBy(_.values(action.payload.trades), '_tradeId')
+      const orderedTrades = _.sortBy({ ...trades, ...state.trades }, ['_tradeId']).reverse()
+      console.log('orderedTrades', orderedTrades)
+
       return {
-        trades: _.sortBy({ ...trades, ...state.trades }, '_topicId').reverse()
+        trades: keyBy(orderedTrades, '_tradeId')
       }
     default:
       return state

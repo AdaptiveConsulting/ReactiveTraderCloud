@@ -1,22 +1,34 @@
 import * as React from 'react'
-import { Provider } from 'react-redux'
 import {createAction} from 'redux-actions'
-
+import {Provider} from 'react-redux'
 import {ACTION_TYPES as REGIONS_ACTIONS} from './regions/regionsOperations'
 import {getPopoutService} from './../ui/common/popout'
-import {BlotterContainer} from './../ui/blotter/'
+import {createStore} from "redux";
+
+
+const popoutWrapper = (component) => {
+  // read from the localstorage
+  /./
+}
+
 
 const popoutOpened = createAction(REGIONS_ACTIONS.REGION_OPENED)
-const generateView = (store) => {
-  console.log('store:', store)
-  return React.createElement(Provider, {store: store}, BlotterContainer)
+const generateView = () => {
+
+  const store = createStore(() => {})
+
+  return (
+    <Provider store={store}>
+      <div>Hello Vasi</div>
+    </Provider>
+  )
 }
 
 export const openFinEpic = openFin => (action$, store) => {
   return action$.ofType(REGIONS_ACTIONS.REGION_REMOVE)
     .map(action => {
       const popoutService = getPopoutService(openFin)
-      const popoutView = generateView(store)
+      const popoutView = generateView()
       const {id, settings} = action.payload
       popoutService.openPopout(
         {

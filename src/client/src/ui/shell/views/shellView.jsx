@@ -46,10 +46,10 @@ export default class ShellView extends React.Component {
                 <BlotterContainer/>
               </div>
             </div>
-            <SidebarRegionContainer/>
+            {/*<SidebarRegionContainer/>*/}
           </div>
           <div className='shell__footer'>
-            <FooterContainer/>
+            {/*<FooterContainer/>*/}
           </div>
         </div>
       </SmartComponent>

@@ -1,9 +1,8 @@
 import * as React from 'react'
-import * as _ from 'lodash'
 import sizeMe from 'react-sizeme'
 import {connect} from 'react-redux'
 import {onPopoutClick, onComponentMount, blotterRegionsSettings} from './../../redux/blotter/blotterOperations'
-import Blotter from './blotter'
+// import Blotter from './blotter'
 
 class BlotterContainer extends React.Component<any, {}> {
   componentDidMount() {
@@ -11,7 +10,13 @@ class BlotterContainer extends React.Component<any, {}> {
   }
 
   public render() {
-    const trades = this.props.blotterService.trades
+    // const trades = this.props.blotterService.trades
+
+    // if is tearedOff
+
+      // get the blotter props from localStorage
+    // otherwise
+      //  use the store
     const blotterProps = {
       trades: _.values(trades),
       isConnected: this.props.isConnected,
@@ -20,9 +25,11 @@ class BlotterContainer extends React.Component<any, {}> {
       size: this.props.size,
     }
 
+
     return (
       <div className="shell_workspace_blotter">
-        <Blotter {...blotterProps} />
+        {/*<Blotter {...blotterProps} />*/}
+        <button onClick={this.props.onPopoutClick}></button>
       </div>
     )
   }
