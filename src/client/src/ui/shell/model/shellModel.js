@@ -43,6 +43,7 @@ export default class ShellModel extends ModelBase {
   @observeEvent('reconnectClicked')
   _onReconnect() {
     this._connection.connect();
+    this.router.broadcastEvent('init', {});
   }
 
   _observeForSessionExpired() {

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Observable, AsyncSubject } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 import { ReferenceDataMapper } from './mappers';
 import { CurrencyPairUpdates, CurrencyPairUpdate, CurrencyPair, UpdateType } from './model';
 import { logger, SchedulerService, RetryPolicy } from '../system';
@@ -8,38 +8,31 @@ import '../system/observableExtensions/retryPolicyExt';
 var _log = logger.create('ReferenceDataService');
 
 export default class ReferenceDataService extends ServiceBase {
-  _hasLoadedSubject;
   _referenceDataMapper;
   _referenceDataStreamConnectable;
   _currencyPairCache;
-  _loadCalled;
 
   constructor(serviceType, connection, schedulerService) {
     super(serviceType, connection, schedulerService);
     this._referenceDataMapper = new ReferenceDataMapper();
     this._referenceDataStreamConnectable = this._referenceDataStream().publish();
-    this._loadCalled = false;
-    this._hasLoadedSubject = new AsyncSubject();
     this._currencyPairCache = {
       hasLoaded:false
     };
-  }
 
-  load() {
-    if (this._loadCalled) {
-      return;
-    }
-    this._loadCalled = true;
-    this.addDisposable(this._referenceDataStreamConnectable.connect());
-  }
+    // on connection/reconnection get reference data stream
+    connection.connectionStatusStream.filter(el => el === 'connected').subscribe(() => {
+      // TEMP force refdata reconnecting
+      this._serviceClient._isConnectCalled = false;
+      this._referenceDataStreamConnectable._connection = null;
 
-  get hasLoadedStream() {
-    return this._hasLoadedSubject;
+      this.addDisposable(this._referenceDataStreamConnectable.connect());
+    });
   }
 
   getCurrencyPair(symbol) {
     if (!this._currencyPairCache.hasLoaded) {
-      throw new Error(`Reference data cache hasn't finished loading`);
+      throw new Error('Reference data cache hasn\'t finished loading');
     }
     if (!this._currencyPairCache.hasOwnProperty(symbol)) {
       throw new Error(`CurrencyPair with symbol [${symbol}] is not in the cache.`);
@@ -91,8 +84,6 @@ export default class ReferenceDataService extends ServiceBase {
     });
     if(!this._currencyPairCache.hasLoaded && update.currencyPairUpdates.length > 0) {
       this._currencyPairCache.hasLoaded = true;
-      this._hasLoadedSubject.next(true);
-      this._hasLoadedSubject.complete();
     }
   }
 }

@@ -103,7 +103,6 @@ class AppBootstrapper {
     this._analyticsService.connect();
     this._compositeStatusService.start();
     this._referenceDataService.connect();
-    this._referenceDataService.load();
     // and finally the underlying connection
     this._connection.connect();
   }
@@ -145,15 +144,6 @@ class AppBootstrapper {
       sidebarRegionModel
     );
     shellModel.observeEvents();
-
-    this._referenceDataService.hasLoadedStream.subscribe(() => {
-      // Some models require the ref data to be loaded before they subscribe to their streams.
-      // You could make all ref data access on top of an observable API, but in most instances this make it difficult to use.
-      // Synchronous APIs for data that's effectively static make for much nicer code paths, the trade off is you need to bootstrap the loading
-      // so the reference data cache is ready for consumption.
-      // Note the ref service still exposes a push based api, it's just in most instances you don't want to use it.
-      espRouter.broadcastEvent('referenceDataLoaded', {});
-    });
 
     if (this._openFin.isRunningInOpenFin) {
       window.fin.desktop.main(() => espRouter.broadcastEvent('init', {}));

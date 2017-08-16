@@ -27,9 +27,9 @@ class BlotterContainer extends React.Component<any, {}> {
   }
 }
 
-const mapStateToProps = ({blotterService, statusService}) => {
-  const isConnected = true
-  return {blotterService, isConnected}
+const mapStateToProps = ({ blotterService, compositeStatusService }) => {
+  const isConnected =  compositeStatusService && compositeStatusService.blotter && compositeStatusService.blotter.isConnected || false
+  return { blotterService, isConnected }
 }
 
 const mapDispatchToProps = dispatch => {
