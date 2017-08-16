@@ -94,7 +94,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
       <Column
         key="Notional"
         dataKey="Notional"
-        label={'Notional'} // <div className="blotter__trade-field--align-right">
+        label={'Notional'}
         cellRenderer={(props: any) => {
           const trade = trades[props.rowIndex]
           return (
@@ -110,7 +110,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
       <Column
         key="Rate"
         dataKey="Rate"
-        label={'Rate'} // <div className="blotter__trade-field--align-right">
+        label={'Rate'}
         cellRenderer={(props: any) => <div className="blotter__trade-field--align-right">
           {trades[props.rowIndex].spotRate}</div>}
         flexGrow={1}

@@ -1,4 +1,3 @@
-import {Observable} from 'rxjs/Observable'
 import * as _ from 'lodash'
 import * as keyBy from 'lodash.keyby'
 import { createAction } from 'redux-actions';

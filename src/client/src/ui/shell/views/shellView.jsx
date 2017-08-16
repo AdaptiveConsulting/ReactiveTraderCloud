@@ -1,10 +1,9 @@
 import React from 'react';
 import { SmartComponent } from 'esp-js-react';
-import {Modal, Chrome} from '../../common/components';
+import { Chrome, Modal } from '../../common/components';
 import FooterContainer from '../../footer/FooterContainer';
-import {WorkspaceRegionView} from '../../regions/views/workspace';
-import {SingleItemRegionView} from '../../regions/views/singleItem';
-import {SidebarRegionView} from '../../regions/views/sidebar';
+import SidebarRegionContainer from '../../sidebar/SidebarRegionContainer';
+import { WorkspaceRegionView } from '../../regions/views/workspace';
 import { BlotterContainer } from '../../blotter';
 import './shell.scss';
 import '../../common/styles/_base.scss';
@@ -28,7 +27,7 @@ export default class ShellView extends React.Component {
       <SmartComponent modelId={wellKnownModelIds.chromeModelId} view={Chrome}>
         <div>
           <div className='shell__splash'>
-            <span className='shell__splash-message'>{model.appVersion}<br />Loading...</span>
+            <span className='shell__splash-message'>{model.appVersion}<br/>Loading...</span>
           </div>
           <div className='shell__container'>
             <Modal shouldShow={model.sessionExpired} title='Session expired'>
@@ -41,15 +40,16 @@ export default class ShellView extends React.Component {
               </div>
             </Modal>
             <div className='shell_workspace_blotter'>
-              <SmartComponent className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId} view={WorkspaceRegionView} />
+              <SmartComponent className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId}
+                              view={WorkspaceRegionView}/>
               <div className='shell__blotter'>
-                <BlotterContainer />
+                <BlotterContainer/>
               </div>
             </div>
-              <SidebarRegionContainer />
+            <SidebarRegionContainer/>
           </div>
           <div className='shell__footer'>
-            <FooterContainer />
+            <FooterContainer/>
           </div>
         </div>
       </SmartComponent>
