@@ -55,7 +55,14 @@ class AppBootstrapper {
   run() {
     let espRouter = this.createRouter();
     this.startServices(espRouter);
-    this.store = configureStore(this._referenceDataService, this._blotterService, this._pricingService, this._analyticsService, this._compositeStatusService, this._openFin);
+    this.store = configureStore(
+      this._referenceDataService,
+      this._blotterService,
+      this._pricingService,
+      this._analyticsService,
+      this._compositeStatusService,
+      this._openFin
+    );
     this.startModels(espRouter);
     this.displayUi(espRouter);
   }

@@ -10,6 +10,7 @@ type TradeRow = any
 
 export interface BlotterProps {
   canPopout: boolean
+  onPopoutClick: () => void
   isConnected: boolean
   trades: any
   // passed by SizeMe :
@@ -19,15 +20,9 @@ export interface BlotterProps {
   }
 }
 
-// TODO: Move these to types and actions
-function replaceWithAction(a: any, b: any): void {
-  return
-}
-
-
 export default class Blotter extends React.Component<BlotterProps, {}> {
   render() {
-    const { canPopout, isConnected, trades } = this.props
+    const { canPopout, onPopoutClick, isConnected, trades, size } = this.props
     const columns = this.createGridColumns(trades)
     const className = classNames(
       'blotter', {
@@ -46,14 +41,14 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
         <div className="blotter-wrapper">
           <div className="blotter__controls popout__controls">
             <i className={newWindowClassName}
-              onClick={() => replaceWithAction('tearOffBlotter', {})} />
+              onClick={() => onPopoutClick()} />
           </div>
           <Table
             rowHeight={30}
             headerHeight={30}
             rowCount={trades.length}
-            width={900}
-            height={600}
+            width={size.width}
+            height={size.height}
             rowStyle={{ display: 'flex' }}
             rowClassName={({index}) => this.getRowClass(trades[index])}
             rowGetter={({ index }) => trades[index]}>

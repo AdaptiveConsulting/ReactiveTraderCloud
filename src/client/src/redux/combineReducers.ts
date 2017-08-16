@@ -8,6 +8,8 @@ import connectionStatusReducer from './connectionStatus/connectionStatusOperatio
 import analyticsServiceReducer from './analytics/analyticsOperations';
 import sidebarRegionReducer from '../ui/sidebar/SidebarRegionOperations';
 import footerReducer from '../ui/footer/FooterOperations';
+import { regionsReducer } from "./regions/regionsOperations"
+
 
 const rootReducer = combineReducers({
   blotterService: blotterServiceReducer,
@@ -17,7 +19,8 @@ const rootReducer = combineReducers({
   compositeStatusService: compositeStatusServiceReducer,
   connectionStatus: connectionStatusReducer,
   displayAnalytics: sidebarRegionReducer,
-  displayStatusServices: footerReducer
+  displayStatusServices: footerReducer,
+  regionsService: regionsReducer
 })
 
 export default rootReducer
