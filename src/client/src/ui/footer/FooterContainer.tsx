@@ -23,6 +23,7 @@ type FooterContainerProps = FooterContainerOwnProps & FooterContainerStateProps 
 
 class FooterContainer extends React.Component<FooterContainerProps, any> {
 
+  // TODO add openFin
   render() {
     return (
       <FooterView

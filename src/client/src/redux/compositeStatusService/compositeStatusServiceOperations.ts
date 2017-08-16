@@ -12,11 +12,11 @@ export const fetchCompositeServiceStatus = createAction(ACTION_TYPES.COMPOSITE_S
 export const compositeStatusServiceEpic = compositeStatusService$ => action$ => {
   return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
     .flatMapTo(compositeStatusService$.serviceStatusStream)
-    .map(service => testing(service))
+    .map(service => getServiceStatus(service))
     .map(fetchCompositeServiceStatus);
 }
 
-const testing = (service) => {
+const getServiceStatus = (service) => {
   return _.mapValues(service.services, (service: ServiceStatus) => {
     return {
       isConnected: service.isConnected,
