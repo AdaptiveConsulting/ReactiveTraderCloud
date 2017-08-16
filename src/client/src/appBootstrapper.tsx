@@ -3,14 +3,13 @@ import * as ReactDOM from 'react-dom';
 
 import { Router } from 'esp-js';
 import { RouterProvider, SmartComponent } from 'esp-js-react/dist/esp-react';
-import { AnalyticsModel } from './ui/analytics/model';
-import { FooterModel } from './ui/footer/model';
 import { ShellModel } from './ui/shell/model';
 import { ChromeModel } from './ui/common/components/chrome/model';
 import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
 import { ServiceConst } from './services/model';
 import SchedulerService from './system/schedulerService';
-import { AutobahnConnectionProxy, Connection } from './system/service';
+import AutobahnConnectionProxy from './system/service/autobahnConnectionProxy'
+import Connection from './system/service/connection'
 import { OpenFin } from './system/openFin';
 import { PopoutRegionModel, RegionModel, SingleItemRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
@@ -136,14 +135,6 @@ class AppBootstrapper {
       new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager, this._schedulerService, this._openFin)
     );
     spotTileLoader.beginLoadTiles();
-
-    // wire-up analytics
-    let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService, regionManager, this._openFin);
-    analyticsModel.observeEvents();
-
-    // wire-up the footer
-    let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService, this._openFin);
-    footerModel.observeEvents();
 
     // wire up the apps main shell
     let shellModel = new ShellModel(

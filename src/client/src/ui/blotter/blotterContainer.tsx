@@ -11,7 +11,6 @@ class BlotterContainer extends React.Component<any, {}> {
   }
 
   public render() {
-
     const trades = this.props.blotterService.trades
     const blotterProps = {
       trades: _.values(trades),

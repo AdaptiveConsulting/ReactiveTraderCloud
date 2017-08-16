@@ -1,20 +1,20 @@
-import { BehaviorSubject, Observable, Subscription, ConnectableObservable, Scheduler } from 'rxjs/Rx';
+import { BehaviorSubject, Observable, Scheduler, Subscription, Subject } from 'rxjs/Rx';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/repeat';
+import 'rxjs/add/operator/mergeMapTo';
 
 import _ from 'lodash';
 import logger from '../logger';
 import Guard from '../guard';
 import { DisposableBase } from '../disposables';
-import SchedulerService from '../schedulerService';
-import Connection from './connection';
 import ConnectionStatus from './connectionStatus';
 import ServiceInstanceStatus from './serviceInstanceStatus';
 import ServiceStatus from './serviceStatus';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
-
 // Importing ServiceObservableExtensions to add functions to Rx prototype
 import '../../../src/system/service/serviceObservableExtensions';
+import '../observableExtensions/retryPolicyExt';
 
 /**
  * Abstracts a back end service for which there can be multiple instances.
@@ -66,7 +66,7 @@ export default class ServiceClient extends DisposableBase {
 
   // connects the underlying status observable
   connect() {
-    if(!this._isConnectCalled) {
+    if (!this._isConnectCalled) {
       this._isConnectCalled = true;
       this.addDisposable(this._serviceInstanceDictionaryStream.connect());
     }
@@ -84,7 +84,6 @@ export default class ServiceClient extends DisposableBase {
    * @private
    */
   _createServiceInstanceDictionaryStream(serviceType) {
-    let _this = this;
     return Observable.create(o => {
       let connectionStatus = this._connection.connectionStatusStream
         .map(status => status === ConnectionStatus.connected)
