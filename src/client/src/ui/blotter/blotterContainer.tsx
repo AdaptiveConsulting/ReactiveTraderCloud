@@ -2,48 +2,34 @@ import * as React from 'react'
 import sizeMe from 'react-sizeme'
 import {connect} from 'react-redux'
 import {onPopoutClick, onComponentMount, blotterRegionsSettings} from './../../redux/blotter/blotterOperations'
-// import Blotter from './blotter'
+import Blotter from './blotter'
 
 class BlotterContainer extends React.Component<any, {}> {
-  componentDidMount() {
+  public componentDidMount() {
     this.props.onComponentMount()
   }
 
   public render() {
-    // const trades = this.props.blotterService.trades
-
-    // if is tearedOff
-
-      // get the blotter props from localStorage
-    // otherwise
-      //  use the store
+    const trades = this.props.blotterService.trades
     const blotterProps = {
-      trades: _.values(trades),
+      trades: _.values(trades).reverse(),
       isConnected: this.props.isConnected,
       onPopoutClick: this.props.onPopoutClick,
       canPopout: true,
       size: this.props.size,
     }
-
-
     return (
       <div className="shell_workspace_blotter">
-        {/*<Blotter {...blotterProps} />*/}
-        <button onClick={this.props.onPopoutClick}></button>
+        <Blotter {...blotterProps} />
       </div>
     )
+
   }
 }
 
 const mapStateToProps = ({blotterService, statusService}) => {
   const isConnected = true
   return {blotterService, isConnected}
-}
-
-const blotterRegion = {
-  id: 'blotter',
-  isTearedOff: false,
-  settings: blotterRegionsSettings
 }
 
 const mapDispatchToProps = dispatch => {
@@ -57,4 +43,13 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(sizeMe({monitorHeight: true})(BlotterContainer))
+const ConnectedBlotterContainer = connect(mapStateToProps, mapDispatchToProps)(sizeMe({monitorHeight: true})(BlotterContainer))
+
+const blotterRegion = {
+  id: 'blotter',
+  isTearedOff: false,
+  container: ConnectedBlotterContainer,
+  settings: blotterRegionsSettings
+}
+
+export default ConnectedBlotterContainer

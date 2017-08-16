@@ -1,5 +1,4 @@
 import * as _ from 'lodash'
-import * as keyBy from 'lodash.keyby'
 import { createAction } from 'redux-actions';
 
 import {ACTION_TYPES as REGION_ACTION_TYPES} from '../regions/regionsOperations'
@@ -26,12 +25,10 @@ export const blotterRegionsSettings = regionsSettings('Blotter', 850, 250, false
 export const blotterServiceReducer = (state: any = {}, action) => {
   switch (action.type) {
     case ACTION_TYPES.BLOTTER_SERVICE:
-      const trades = keyBy(_.values(action.payload.trades), '_tradeId')
-      const orderedTrades = _.sortBy({ ...trades, ...state.trades }, ['_tradeId']).reverse()
-      console.log('orderedTrades', orderedTrades)
-
+      const trades = _.mapKeys(_.values(action.payload.trades), '_tradeId')
+      const orderedTrades = _.sortBy({ ...trades, ...state.trades }, ['_tradeId'])
       return {
-        trades: keyBy(orderedTrades, '_tradeId')
+        trades: orderedTrades
       }
     default:
       return state

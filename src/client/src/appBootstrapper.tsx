@@ -164,6 +164,7 @@ class AppBootstrapper {
 
   displayUi(espRouter) {
     const store = this.store;
+    window.store = store;
     ReactDOM.render(
       <RouterProvider router={espRouter}>
         <Provider store={store}>
