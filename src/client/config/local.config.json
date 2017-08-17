@@ -1,4 +1,5 @@
 {
   "overwriteServerEndpoint": true,
-  "serverEndPointUrl": "localhost"
+  "serverEndPointUrl": "localhost",
+  "serverPort": 8000
 }

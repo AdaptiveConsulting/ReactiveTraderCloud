@@ -10,10 +10,15 @@ export default class AutobahnConnectionProxy {
   _onOpen;
   _onClose;
 
-  constructor(url: string, realm: string) {
+  constructor(url: string, realm: string, port: number) {
     const useSecure = location.protocol === 'https:';
     const securePort = 443;
-    const defaultPort = 80;
+    let defaultPort = 80;
+
+    if (port) {
+      defaultPort = port;
+    }
+
     this.connection = new Connection({
       realm: realm,
       use_es6_promises: true,
