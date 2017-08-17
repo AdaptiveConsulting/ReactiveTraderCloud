@@ -5,6 +5,7 @@ import FooterContainer from '../../footer/FooterContainer';
 import SidebarRegionContainer from '../../sidebar/SidebarRegionContainer';
 import { WorkspaceRegionView } from '../../regions/views/workspace';
 import { BlotterContainer } from '../../blotter';
+import { RegionWrapper } from '../../../redux/regions'
 import './shell.scss';
 import '../../common/styles/_base.scss';
 import '../../common/styles/_fonts.scss';
@@ -43,7 +44,9 @@ export default class ShellView extends React.Component {
               <SmartComponent className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId}
                               view={WorkspaceRegionView}/>
               <div className='shell__blotter'>
-                <BlotterContainer/>
+                <RegionWrapper region="blotter">
+                  <BlotterContainer/>
+                </RegionWrapper>
               </div>
             </div>
             <SidebarRegionContainer/>
