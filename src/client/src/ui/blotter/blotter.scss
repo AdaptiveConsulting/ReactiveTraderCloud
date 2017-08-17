@@ -56,34 +56,25 @@
   }
 }
 
-.public_fixedDataTableRow_main.blotter__trade--new {
-  animation: highlightTradeInBlotter 0.5s ease-in;
-}
-
-.public_fixedDataTableRow_main.blotter__trade--highlighted {
-  background-color: #7DE3FC;
-}
-
-.blotter__trade--rejected {
-  .public_fixedDataTableCell_cellContent {
+  .blotter__trade--rejected {
     text-decoration: line-through;
   }
 
-  .blotter__trade-status .public_fixedDataTableCell_cellContent {
-    text-decoration: none;
-    color: #ee5f5b;
+.blotter__trade--processing {
+  .ReactVirtualized__Table__rowColumn {
+    animation: highlightTradeInBlotter 500ms ease-in-out;
   }
 }
 
-.blotter__trade--processing {
-  .public_fixedDataTableCell_cellContent {
-    color: #f89406;
-    background: rgba(255,255,255,.1);
-  }
+.cellRejected {
+  color: #ee5f5b;
 }
 
 .blotter--offline {
   opacity: .5;
 }
 
+.ReactVirtualized__Table__headerRow {
+  background-color: #E1E3E8;
+}
 
