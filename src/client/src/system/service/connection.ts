@@ -92,6 +92,8 @@ export default class Connection extends DisposableBase {
     if (!this._connectCalled) {
       this._connectCalled = true;
       _log.info('Opening connection');
+      _log.verbose('Autobahn: ' + JSON.stringify(this._autobahn));
+
       this._autobahn.onopen(session => {
         _log.info('Connected');
         this._isConnected = true;
@@ -103,7 +105,8 @@ export default class Connection extends DisposableBase {
         console.log('Connection status subject --->', ConnectionStatus.connected)
       });
       this._autobahn.onclose((reason, details) => {
-        _log.error(`connection lost, reason [${reason}]`);
+        _log.error(`Connection lost, reason: [${reason}]`);
+        _log.error(`Connection lost, details: [${JSON.stringify(details)}]`);
         this._isConnected = false;
         var disconnectTimerDisposable = this._autoDisconnectDisposable;
         if (disconnectTimerDisposable) {

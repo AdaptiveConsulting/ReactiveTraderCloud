@@ -52,6 +52,10 @@ class AppBootstrapper {
     return config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
   }
 
+  get endpointPort() {
+    return config.overwriteServerEndpoint ? config.serverPort: location.port;
+  }
+
   run() {
     let espRouter = this.createRouter();
     this.startServices(espRouter);
@@ -72,11 +76,12 @@ class AppBootstrapper {
     const user: User = FakeUserRepository.currentUser;
     const realm = 'com.weareadaptive.reactivetrader';
     const url = this.endpointURL;
+    const port = this.endpointPort;
 
     this._schedulerService = new SchedulerService();
     this._connection = new Connection(
       user.code,
-      new AutobahnConnectionProxy(url, realm),
+      new AutobahnConnectionProxy(url, realm, port),
       this._schedulerService
     );
 
