@@ -7,13 +7,14 @@ import {Provider} from 'react-redux'
 declare const window: any;
 
 const popoutOpened = createAction(REGIONS_ACTIONS.REGION_TEAROFF_WINDOW, payload => payload)
+const popoutClosed = createAction(REGIONS_ACTIONS.REGION_ATTACH_WINDOW, payload => payload)
 
 const generateView = (container) => {
   const childComponent = React.createElement(container)
   return React.createElement(Provider, {store: window.store}, childComponent)
 }
 
-export const openFinEpic = openFin => action$ => {
+export const openFinEpic = openFin => (action$, store) => {
   return action$.ofType(REGIONS_ACTIONS.REGION_OPEN_WINDOW)
     .map(action => {
       const popoutService = getPopoutService(openFin)
@@ -25,7 +26,7 @@ export const openFinEpic = openFin => action$ => {
           url: '/#/popout',
           title: settings.title,
           onClosing: () => {
-            console.log('close callback')
+            store.dispatch(popoutClosed(action.payload))
           },
           windowOptions: {
             width: settings.width,

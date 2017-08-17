@@ -46,7 +46,9 @@ class ShellContainer extends React.Component<ShellProps, {}> {
               </div>
             </RegionWrapper>
           </div>
-          <SidebarRegionContainer/>
+          <RegionWrapper region="analytics">
+            <SidebarRegionContainer/>
+          </RegionWrapper>
         </div>
         <div className="shell__footer">
           <FooterContainer/>
