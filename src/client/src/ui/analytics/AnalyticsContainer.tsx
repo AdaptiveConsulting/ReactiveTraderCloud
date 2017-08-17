@@ -8,7 +8,24 @@ import './analytics.scss'
 import { onComponentMount, onPopoutClick } from '../../redux/blotter/blotterOperations';
 import { analyticsRegionSettings } from '../../redux/analytics/analyticsOperations';
 
-class AnalyticsContainer extends React.Component<any, any> {
+interface AnalyticsContainerOwnProps {
+
+}
+
+interface AnalyticsContainerStateProps {
+  isConnected: boolean
+  canPopout: boolean
+  analyticsService: any
+}
+
+interface AnalyticsContainerDispatchProps {
+  onPopoutClick: () => void
+  onComponentMount: () => void
+}
+
+type AnalyticsContainerProps = AnalyticsContainerOwnProps & AnalyticsContainerStateProps & AnalyticsContainerDispatchProps
+
+class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
 
   public componentDidMount() {
     this.props.onComponentMount()
@@ -30,7 +47,6 @@ class AnalyticsContainer extends React.Component<any, any> {
 
     return (
       <Analytics
-        canPopout={false}
         {...analyticsProps}
       />
     );
