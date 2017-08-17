@@ -25,10 +25,18 @@ export const blotterRegionsSettings = regionsSettings('Blotter', 850, 250, false
 export const blotterServiceReducer = (state: any = {}, action) => {
   switch (action.type) {
     case ACTION_TYPES.BLOTTER_SERVICE:
-      const trades = _.mapKeys(_.values(action.payload.trades), '_tradeId')
-      const orderedTrades = _.sortBy({ ...trades, ...state.trades }, ['_tradeId'])
+      let newState = state
+      const payloadTrades = action.payload.trades
+      // removing the existing key for a single trade
+      if (payloadTrades.length === 1) {
+        const tradeKey = payloadTrades[0]['_tradeId']
+        if (state.trades[tradeKey]) {
+          newState.trades = _.omit(state.trades, tradeKey)
+        }
+      }
+      const trades = _.mapKeys(_.values(payloadTrades), '_tradeId')
       return {
-        trades: orderedTrades
+        trades: { ...trades, ...newState.trades }
       }
     default:
       return state
