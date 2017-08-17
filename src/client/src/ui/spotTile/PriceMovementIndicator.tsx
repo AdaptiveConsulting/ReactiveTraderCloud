@@ -8,9 +8,29 @@ const priceMovementTypes = {
 }
 
 export interface PriceMovementIndicatorProps {
-  priceMovementType: string
+  priceMovementType: any
   spread: {
     formattedValue: string,
+  }
+}
+
+const getCaretDirection = (priceMovement: string) => {
+
+  const upDirectionClasses = {
+    [priceMovementTypes.Up]: 'fa-caret-up',
+    [priceMovementTypes.Down]: 'price-movement__icon--inactive'
+  }
+
+  const downDirectionClasses = {
+    [priceMovementTypes.Down]: 'fa-caret-down',
+    [priceMovementTypes.Up]: 'price-movement__icon--inactive'
+  }
+
+  'price-movement__icon--up fa fa-lg fa-caret-up'
+
+  return {
+    up: classnames('price-movement__icon--up fa fa-lg', upDirectionClasses[priceMovement]),
+    down: classnames('price-movement__icon--down fa fa-lg', downDirectionClasses[priceMovement])
   }
 }
 
@@ -18,33 +38,13 @@ export interface PriceMovementIndicatorProps {
 const PriceMovementIndicator = (props: PriceMovementIndicatorProps) => {
 
   const { priceMovementType, spread } = props
-
-  const upDirectionClassName = classnames(
-    'price-movement__icon--up fa fa-lg',
-    {
-      'fa-caret-up': priceMovementType === priceMovementTypes.Up,
-    },
-    {
-      'price-movement__icon--inactive': priceMovementType === priceMovementTypes.Down,
-    },
-  )
-
-  const downDirectionClassName = classnames(
-    'price-movement__icon--down fa fa-lg',
-    {
-      'fa-caret-down': priceMovementType === priceMovementTypes.Down,
-    },
-    {
-      'price-movement__icon--inactive': priceMovementType === priceMovementTypes.Up,
-    },
-  )
-
+  const priceMovementClassNames = getCaretDirection(priceMovementType.name)
   return (
     <div>
       <div className="price-movement">
-        <i className={upDirectionClassName}></i>
+        <i className={priceMovementClassNames.up}></i>
         <span className="price-movement__value">{spread.formattedValue}</span>
-        <i className={downDirectionClassName}></i>
+        <i className={priceMovementClassNames.down}></i>
       </div>
     </div>
   )

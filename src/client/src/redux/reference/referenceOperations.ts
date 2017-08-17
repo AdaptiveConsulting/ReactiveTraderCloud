@@ -1,4 +1,5 @@
 import { createAction } from 'redux-actions'
+import * as keyBy from 'lodash.keyby'
 
 export enum ACTION_TYPES {
   REFERENCE_SERVICE = '@ReactiveTraderCloud/REFERENCE_SERVICE',
@@ -14,7 +15,7 @@ export const referenceServiceEpic = refService$ => action$ => {
 export const referenceServiceReducer = (state = {}, action) => {
   switch (action.type) {
     case ACTION_TYPES.REFERENCE_SERVICE:
-      return action.payload.currencyPairUpdates
+      return keyBy(action.payload.currencyPairUpdates, '_currencyPair._symbol')
     default:
       return state
   }

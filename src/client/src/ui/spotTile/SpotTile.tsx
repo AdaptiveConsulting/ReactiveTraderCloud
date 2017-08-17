@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
-import { CurrencyPair, PriceMovementIndicator, PriceButton, NotionalInput, 
+import { CurrencyPair, PriceMovementIndicator, PriceButton, NotionalInput,
          TradeNotification } from './'
 import * as moment from 'moment'
 import './spotTile.scss'

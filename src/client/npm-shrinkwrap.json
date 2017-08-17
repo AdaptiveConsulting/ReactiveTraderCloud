@@ -4573,6 +4573,30 @@
         "pinkie-promise": "2.0.1"
       }
     },
+    "findup-sync": {
+      "version": "0.3.0",
+      "resolved": "https://registry.npmjs.org/findup-sync/-/findup-sync-0.3.0.tgz",
+      "integrity": "sha1-N5MKpdgWt3fANEXhlmzGeQpMCxY=",
+      "dev": true,
+      "requires": {
+        "glob": "5.0.15"
+      },
+      "dependencies": {
+        "glob": {
+          "version": "5.0.15",
+          "resolved": "https://registry.npmjs.org/glob/-/glob-5.0.15.tgz",
+          "integrity": "sha1-G8k2ueAvSmA/zCIuz3Yz0wuLk7E=",
+          "dev": true,
+          "requires": {
+            "inflight": "1.0.6",
+            "inherits": "2.0.3",
+            "minimatch": "3.0.4",
+            "once": "1.4.0",
+            "path-is-absolute": "1.0.1"
+          }
+        }
+      }
+    },
     "fixed-data-table": {
       "version": "0.6.3",
       "resolved": "https://registry.npmjs.org/fixed-data-table/-/fixed-data-table-0.6.3.tgz",
@@ -11073,6 +11097,154 @@
       "integrity": "sha1-OTvnMKlEb9Hq1tpZoBQwjzbCics=",
       "dev": true
     },
+    "tslib": {
+      "version": "1.7.1",
+      "resolved": "https://registry.npmjs.org/tslib/-/tslib-1.7.1.tgz",
+      "integrity": "sha1-vIAEFkaRkjp5/oN4u+s9ogF1OOw=",
+      "dev": true
+    },
+    "tslint": {
+      "version": "5.6.0",
+      "resolved": "https://registry.npmjs.org/tslint/-/tslint-5.6.0.tgz",
+      "integrity": "sha1-CIqmxgJmIzOGULKQCCirPt9Z9s8=",
+      "dev": true,
+      "requires": {
+        "babel-code-frame": "6.22.0",
+        "colors": "1.1.2",
+        "commander": "2.11.0",
+        "diff": "3.3.0",
+        "glob": "7.1.2",
+        "minimatch": "3.0.4",
+        "resolve": "1.4.0",
+        "semver": "5.4.1",
+        "tslib": "1.7.1",
+        "tsutils": "2.8.0"
+      }
+    },
+    "tslint-config-airbnb": {
+      "version": "5.2.1",
+      "resolved": "https://registry.npmjs.org/tslint-config-airbnb/-/tslint-config-airbnb-5.2.1.tgz",
+      "integrity": "sha1-3sJc5JatIj2XBQbOHNHe2fmzr5M=",
+      "dev": true,
+      "requires": {
+        "tslint-consistent-codestyle": "1.6.0",
+        "tslint-eslint-rules": "4.1.1",
+        "tslint-microsoft-contrib": "5.0.1",
+        "vrsource-tslint-rules": "5.1.1"
+      }
+    },
+    "tslint-consistent-codestyle": {
+      "version": "1.6.0",
+      "resolved": "https://registry.npmjs.org/tslint-consistent-codestyle/-/tslint-consistent-codestyle-1.6.0.tgz",
+      "integrity": "sha1-5C9f0dW9T/ppc4bsikHtLLaBKq8=",
+      "dev": true,
+      "requires": {
+        "tslib": "1.7.1",
+        "tsutils": "2.8.0"
+      }
+    },
+    "tslint-eslint-rules": {
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/tslint-eslint-rules/-/tslint-eslint-rules-4.1.1.tgz",
+      "integrity": "sha1-fDDniC8mvCdr/5HSOEl1xp2viLo=",
+      "dev": true,
+      "requires": {
+        "doctrine": "0.7.2",
+        "tslib": "1.7.1",
+        "tsutils": "1.9.1"
+      },
+      "dependencies": {
+        "doctrine": {
+          "version": "0.7.2",
+          "resolved": "https://registry.npmjs.org/doctrine/-/doctrine-0.7.2.tgz",
+          "integrity": "sha1-fLhgNZujvpDgQLJrcpzkv6ZUxSM=",
+          "dev": true,
+          "requires": {
+            "esutils": "1.1.6",
+            "isarray": "0.0.1"
+          }
+        },
+        "esutils": {
+          "version": "1.1.6",
+          "resolved": "https://registry.npmjs.org/esutils/-/esutils-1.1.6.tgz",
+          "integrity": "sha1-wBzKqa5LiXxtDD4hCuUvPHqEQ3U=",
+          "dev": true
+        },
+        "isarray": {
+          "version": "0.0.1",
+          "resolved": "https://registry.npmjs.org/isarray/-/isarray-0.0.1.tgz",
+          "integrity": "sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=",
+          "dev": true
+        },
+        "tsutils": {
+          "version": "1.9.1",
+          "resolved": "https://registry.npmjs.org/tsutils/-/tsutils-1.9.1.tgz",
+          "integrity": "sha1-ufmrROVa+WgYMdXyjQrur1x1DLA=",
+          "dev": true
+        }
+      }
+    },
+    "tslint-loader": {
+      "version": "3.5.3",
+      "resolved": "https://registry.npmjs.org/tslint-loader/-/tslint-loader-3.5.3.tgz",
+      "integrity": "sha1-ND90Ei2U81a2iUV9P1n2SmmrYG8=",
+      "dev": true,
+      "requires": {
+        "loader-utils": "1.1.0",
+        "mkdirp": "0.5.1",
+        "object-assign": "4.1.1",
+        "rimraf": "2.6.1",
+        "semver": "5.4.1"
+      },
+      "dependencies": {
+        "loader-utils": {
+          "version": "1.1.0",
+          "resolved": "https://registry.npmjs.org/loader-utils/-/loader-utils-1.1.0.tgz",
+          "integrity": "sha1-yYrvSIvM7aL/teLeZG1qdUQp9c0=",
+          "dev": true,
+          "requires": {
+            "big.js": "3.1.3",
+            "emojis-list": "2.1.0",
+            "json5": "0.5.1"
+          }
+        }
+      }
+    },
+    "tslint-microsoft-contrib": {
+      "version": "5.0.1",
+      "resolved": "https://registry.npmjs.org/tslint-microsoft-contrib/-/tslint-microsoft-contrib-5.0.1.tgz",
+      "integrity": "sha1-Mo7pwo0HzfeTKTIEyW4v+rkiGZQ=",
+      "dev": true,
+      "requires": {
+        "tsutils": "1.9.1"
+      },
+      "dependencies": {
+        "tsutils": {
+          "version": "1.9.1",
+          "resolved": "https://registry.npmjs.org/tsutils/-/tsutils-1.9.1.tgz",
+          "integrity": "sha1-ufmrROVa+WgYMdXyjQrur1x1DLA=",
+          "dev": true
+        }
+      }
+    },
+    "tslint-react": {
+      "version": "3.2.0",
+      "resolved": "https://registry.npmjs.org/tslint-react/-/tslint-react-3.2.0.tgz",
+      "integrity": "sha1-hR+1BSAcY9A0PFFybmNk9+mtLpk=",
+      "dev": true,
+      "requires": {
+        "tsutils": "2.8.0"
+      }
+    },
+    "tsutils": {
+      "version": "2.8.0",
+      "resolved": "https://registry.npmjs.org/tsutils/-/tsutils-2.8.0.tgz",
+      "integrity": "sha1-AWAXNymzvxOGKN0UoVN+AIUdgUo=",
+      "dev": true,
+      "requires": {
+        "tslib": "1.7.1"
+      }
+    },
     "tty-browserify": {
       "version": "0.0.0",
       "resolved": "https://registry.npmjs.org/tty-browserify/-/tty-browserify-0.0.0.tgz",
@@ -11550,6 +11722,40 @@
       "dev": true,
       "requires": {
         "indexof": "0.0.1"
+      }
+    },
+    "vrsource-tslint-rules": {
+      "version": "5.1.1",
+      "resolved": "https://registry.npmjs.org/vrsource-tslint-rules/-/vrsource-tslint-rules-5.1.1.tgz",
+      "integrity": "sha1-m+96YLw09s3GN9e6G410W3H23L4=",
+      "dev": true,
+      "requires": {
+        "tslint": "5.1.0"
+      },
+      "dependencies": {
+        "tslint": {
+          "version": "5.1.0",
+          "resolved": "https://registry.npmjs.org/tslint/-/tslint-5.1.0.tgz",
+          "integrity": "sha1-UaR7rutYlW/NYXvSzwDi7w7qLtk=",
+          "dev": true,
+          "requires": {
+            "babel-code-frame": "6.22.0",
+            "colors": "1.1.2",
+            "diff": "3.3.0",
+            "findup-sync": "0.3.0",
+            "glob": "7.1.2",
+            "optimist": "0.6.1",
+            "resolve": "1.4.0",
+            "semver": "5.4.1",
+            "tsutils": "1.9.1"
+          }
+        },
+        "tsutils": {
+          "version": "1.9.1",
+          "resolved": "https://registry.npmjs.org/tsutils/-/tsutils-1.9.1.tgz",
+          "integrity": "sha1-ufmrROVa+WgYMdXyjQrur1x1DLA=",
+          "dev": true
+        }
       }
     },
     "walker": {
