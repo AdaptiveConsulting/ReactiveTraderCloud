@@ -6,42 +6,42 @@
 export default class WellKnownModelIds {
 
   static get workspaceRegionModelId(): string {
-    return 'workspaceRegionModelId';
+    return 'workspaceRegionModelId'
   }
 
   static get popoutRegionModelId(): string {
-    return 'popoutRegionModelId';
+    return 'popoutRegionModelId'
   }
 
   static get sidebarRegionModelId(): string {
-    return 'sidebarRegionModelId';
+    return 'sidebarRegionModelId'
   }
 
   static get blotterRegionModelId(): string {
-    return 'blotterRegionModelId';
+    return 'blotterRegionModelId'
   }
 
   static get shellModelId(): string {
-    return 'shellModelId';
+    return 'shellModelId'
   }
 
   static get footerModelId(): string {
-    return 'footerModelId';
+    return 'footerModelId'
   }
 
   static get analyticsModelId(): string {
-    return 'analyticsModelId';
+    return 'analyticsModelId'
   }
 
   static get blotterModelId(): string {
-    return 'blotterModelId';
+    return 'blotterModelId'
   }
 
   static get chromeModelId(): string {
-    return 'chromeModelId';
+    return 'chromeModelId'
   }
 
   static get sidebarModelId(): string {
-    return 'sidebarModelId';
+    return 'sidebarModelId'
   }
 }

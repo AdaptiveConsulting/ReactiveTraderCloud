@@ -1,4 +1,4 @@
-import CurrencyPair from './currencyPair';
+import CurrencyPair from './currencyPair'
 
 export default class Trade {
   constructor(tradeId: number,
@@ -11,75 +11,75 @@ export default class Trade {
               tradeDate: Date,
               valueDate: Date,
               status: any) {
-    this._tradeId = tradeId;
-    this._traderName = traderName;
-    this._currencyPair = currencyPair;
-    this._notional = notional;
-    this._dealtCurrency = dealtCurrency;
-    this._direction = direction;
-    this._spotRate = spotRate;
-    this._tradeDate = tradeDate;
-    this._valueDate = valueDate;
-    this._status = status;
+    this._tradeId = tradeId
+    this._traderName = traderName
+    this._currencyPair = currencyPair
+    this._notional = notional
+    this._dealtCurrency = dealtCurrency
+    this._direction = direction
+    this._spotRate = spotRate
+    this._tradeDate = tradeDate
+    this._valueDate = valueDate
+    this._status = status
   }
 
-  _tradeId: number;
+  _tradeId: number
 
   get tradeId(): number {
-    return this._tradeId;
+    return this._tradeId
   }
 
-  _traderName: string;
+  _traderName: string
 
   get traderName(): string {
-    return this._traderName;
+    return this._traderName
   }
 
-  _currencyPair: CurrencyPair;
+  _currencyPair: CurrencyPair
 
   get currencyPair(): CurrencyPair {
-    return this._currencyPair;
+    return this._currencyPair
   }
 
-  _notional: number;
+  _notional: number
 
   get notional(): number {
-    return this._notional;
+    return this._notional
   }
 
-  _dealtCurrency: string;
+  _dealtCurrency: string
 
   get dealtCurrency(): string {
-    return this._dealtCurrency;
+    return this._dealtCurrency
   }
 
-  _direction: string;
+  _direction: string
 
   get direction(): any {
-    return this._direction;
+    return this._direction
   }
 
-  _spotRate: number;
+  _spotRate: number
 
   get spotRate(): number {
-    return this._spotRate;
+    return this._spotRate
   }
 
-  _tradeDate: Date;
+  _tradeDate: Date
 
   get tradeDate(): Date {
-    return this._tradeDate;
+    return this._tradeDate
   }
 
-  _valueDate: Date;
+  _valueDate: Date
 
   get valueDate(): Date {
-    return this._valueDate;
+    return this._valueDate
   }
 
-  _status: any;
+  _status: any
 
   get status(): any {
-    return this._status;
+    return this._status
   }
 }

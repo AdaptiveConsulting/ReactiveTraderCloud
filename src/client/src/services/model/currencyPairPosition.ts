@@ -1,42 +1,42 @@
-import CurrencyPair from './currencyPair';
+import CurrencyPair from './currencyPair'
 
 export default class CurrencyPairPosition {
   constructor(symbol: string, basePnl: number, baseTradedAmount: number, currencyPair: CurrencyPair) {
-    this._symbol = symbol;
-    this._currencyPair = currencyPair;
-    this._basePnl = basePnl;
-    this._baseTradedAmount = baseTradedAmount;
+    this._symbol = symbol
+    this._currencyPair = currencyPair
+    this._basePnl = basePnl
+    this._baseTradedAmount = baseTradedAmount
   }
 
   static get basePnlName() {
-    return 'basePnl'; // matches basePnl prop name
+    return 'basePnl' // matches basePnl prop name
   }
 
   static get baseTradedAmountName() {
-    return 'baseTradedAmount'; // matches baseTradedAmount prop name
+    return 'baseTradedAmount' // matches baseTradedAmount prop name
   }
 
-  _symbol: string;
+  _symbol: string
 
   get symbol(): string {
-    return this._symbol;
+    return this._symbol
   }
 
-  _currencyPair: CurrencyPair;
+  _currencyPair: CurrencyPair
 
   get currencyPair(): CurrencyPair {
-    return this._currencyPair;
+    return this._currencyPair
   }
 
-  _basePnl: number;
+  _basePnl: number
 
   get basePnl(): number {
-    return this._basePnl;
+    return this._basePnl
   }
 
-  _baseTradedAmount: number;
+  _baseTradedAmount: number
 
   get baseTradedAmount(): number {
-    return this._baseTradedAmount;
+    return this._baseTradedAmount
   }
 }

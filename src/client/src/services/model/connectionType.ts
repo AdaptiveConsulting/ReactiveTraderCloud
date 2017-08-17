@@ -1,5 +1,5 @@
 export default {
   Unknown: '',
   WebSocket: 'web socket',
-  LongPolling: 'long polling'
-};
+  LongPolling: 'long polling',
+}

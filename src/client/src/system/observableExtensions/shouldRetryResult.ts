@@ -1,19 +1,19 @@
 export default class ShouldRetryResult {
 
   constructor(shouldRetry: boolean, retryAfterMilliseconds: number) {
-    this._shouldRetry = shouldRetry;
-    this._retryAfterMilliseconds = retryAfterMilliseconds;
+    this._shouldRetry = shouldRetry
+    this._retryAfterMilliseconds = retryAfterMilliseconds
   }
 
-  _shouldRetry: boolean;
+  _shouldRetry: boolean
 
   get shouldRetry() {
-    return this._shouldRetry;
+    return this._shouldRetry
   }
 
-  _retryAfterMilliseconds: number;
+  _retryAfterMilliseconds: number
 
   get retryAfterMilliseconds() {
-    return this._retryAfterMilliseconds;
+    return this._retryAfterMilliseconds
   }
 }

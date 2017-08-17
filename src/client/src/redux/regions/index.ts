@@ -1,1 +1,1 @@
-export {default as RegionWrapper} from './RegionWrapper'
+export { default as RegionWrapper } from './RegionWrapper'

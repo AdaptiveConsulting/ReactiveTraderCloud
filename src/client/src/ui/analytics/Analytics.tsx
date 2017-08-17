@@ -1,11 +1,11 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
 
-import { PNLChartProps } from './model/pnlChartModel';
-import PositionsBubbleChart from './positions-chart/PositionsBubbleChart';
-import PNLChart from './PNLChart';
-import AnalyticsBarChart from './chart/AnalyticsBarChart';
-import { PositionsChartModel } from './model/positionsChartModel';
+import { PNLChartProps } from './model/pnlChartModel'
+import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
+import PNLChart from './PNLChart'
+import AnalyticsBarChart from './chart/AnalyticsBarChart'
+import { PositionsChartModel } from './model/positionsChartModel'
 import './analytics.scss'
 
 export interface AnalyticsProps {
@@ -22,11 +22,11 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
 
   componentWillMount() {
     // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
-    window.addEventListener(RESIZE_EVENT, () => this.forceUpdate());
+    window.addEventListener(RESIZE_EVENT, () => this.forceUpdate())
   }
 
   componentWillUnmount() {
-    window.removeEventListener(RESIZE_EVENT, () => {});
+    window.removeEventListener(RESIZE_EVENT, () => {})
   }
 
   render() {

@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import { getPnlChartModel } from './model/pnlChartModel';
-import { getPositionsChartModel } from './model/positionsChartModel';
-import Analytics from './Analytics';
+import { getPnlChartModel } from './model/pnlChartModel'
+import { getPositionsChartModel } from './model/positionsChartModel'
+import Analytics from './Analytics'
 import './analytics.scss'
-import { onComponentMount, onPopoutClick } from '../blotter/blotterOperations';
-import { analyticsRegionSettings } from './analyticsOperations';
+import { onComponentMount, onPopoutClick } from '../blotter/blotterOperations'
+import { analyticsRegionSettings } from './analyticsOperations'
 
 interface AnalyticsContainerOwnProps {
 
@@ -38,9 +38,9 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
     const pnlChartModel = getPnlChartModel(analyticsService.history)
 
     const analyticsProps = {
-      isConnected: isConnected,
-      pnlChartModel: pnlChartModel,
-      positionsChartModel: positionsChartModel,
+      isConnected,
+      pnlChartModel,
+      positionsChartModel,
       onPopoutClick: this.props.onPopoutClick,
       canPopout: true,
     }
@@ -49,7 +49,7 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
       <Analytics
         {...analyticsProps}
       />
-    );
+    )
   }
 }
 
@@ -60,7 +60,7 @@ const mapDispatchToProps = dispatch => {
     },
     onComponentMount: () => {
       dispatch(onComponentMount(analyticsRegion))
-    }
+    },
   }
 }
 
@@ -75,7 +75,7 @@ const analyticsRegion = {
   id: 'analytics',
   isTearedOff: false,
   container: ConnectedAnalyticsContainer,
-  settings: analyticsRegionSettings
+  settings: analyticsRegionSettings,
 }
 
 export default ConnectedAnalyticsContainer

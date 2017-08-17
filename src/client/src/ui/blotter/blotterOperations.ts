@@ -1,12 +1,12 @@
 import * as _ from 'lodash'
-import { createAction } from 'redux-actions';
+import { createAction } from 'redux-actions'
 
-import {ACTION_TYPES as REGION_ACTION_TYPES} from '../../redux/regions/regionsOperations'
-import {ACTION_TYPES as REF_ACTION_TYPES} from '../../redux/reference/referenceOperations'
-import {regionsSettings} from '../../redux/regions/regionsOperations'
+import { ACTION_TYPES as REGION_ACTION_TYPES } from '../../redux/regions/regionsOperations'
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../../redux/reference/referenceOperations'
+import { regionsSettings } from '../../redux/regions/regionsOperations'
 
 export const ACTION_TYPES = {
-  BLOTTER_SERVICE: '@ReactiveTraderCloud/BLOTTER_SERVICE'
+  BLOTTER_SERVICE: '@ReactiveTraderCloud/BLOTTER_SERVICE',
 }
 
 export const fetchBlotter = createAction(ACTION_TYPES.BLOTTER_SERVICE)
@@ -16,7 +16,7 @@ export const onComponentMount = createAction(REGION_ACTION_TYPES.REGION_ADD, pay
 export const blotterServiceEpic = blotterService$ => action$ => {
   return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
     .flatMapTo(blotterService$.getTradesStream())
-    .map(fetchBlotter);
+    .map(fetchBlotter)
 }
 
 export const blotterRegionsSettings = regionsSettings('Blotter', 850, 250, false)
@@ -24,7 +24,7 @@ export const blotterRegionsSettings = regionsSettings('Blotter', 850, 250, false
 export const blotterServiceReducer = (state: any = {}, action) => {
   switch (action.type) {
     case ACTION_TYPES.BLOTTER_SERVICE:
-      let newState = state
+      const newState = state
       const payloadTrades = action.payload.trades
       // removing the existing key for a single trade
       if (payloadTrades.length === 1) {
@@ -35,7 +35,7 @@ export const blotterServiceReducer = (state: any = {}, action) => {
       }
       const trades = _.mapKeys(_.values(payloadTrades), '_tradeId')
       return {
-        trades: { ...trades, ...newState.trades }
+        trades: { ...trades, ...newState.trades },
       }
     default:
       return state

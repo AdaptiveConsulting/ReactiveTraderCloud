@@ -1,6 +1,5 @@
 import * as React from 'react'
-import {connect} from 'react-redux'
-
+import { connect } from 'react-redux'
 class RegionWrapper extends React.Component<any, any> {
 
   public render() {

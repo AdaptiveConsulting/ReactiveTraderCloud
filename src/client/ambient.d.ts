@@ -1,2 +1,2 @@
-declare module '*.scss';
-declare module '*.json';
+declare module '*.scss'
+declare module '*.json'

@@ -1,1 +1,1 @@
-export {default} from './TradeNotification'
+export { default } from './TradeNotification'

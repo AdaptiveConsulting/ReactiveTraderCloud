@@ -1,17 +1,17 @@
 export default class ConnectionStatus {
   static get idle(): string {
-    return 'idle';
+    return 'idle'
   }
 
   static get connected(): string {
-    return 'connected';
+    return 'connected'
   }
 
   static get disconnected(): string {
-    return 'disconnected';
+    return 'disconnected'
   }
 
   static get sessionExpired(): string {
-    return 'sessionExpired';
+    return 'sessionExpired'
   }
 }

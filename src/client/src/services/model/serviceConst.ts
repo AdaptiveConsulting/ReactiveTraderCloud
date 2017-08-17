@@ -1,21 +1,21 @@
 export default class ServiceConst {
   static get PricingServiceKey(): string {
-    return 'pricing';
+    return 'pricing'
   }
 
   static get ReferenceServiceKey(): string {
-    return 'reference';
+    return 'reference'
   }
 
   static get BlotterServiceKey(): string {
-    return 'blotter';
+    return 'blotter'
   }
 
   static get ExecutionServiceKey(): string {
-    return 'execution';
+    return 'execution'
   }
 
   static get AnalyticsServiceKey(): string {
-    return 'analytics';
+    return 'analytics'
   }
 }

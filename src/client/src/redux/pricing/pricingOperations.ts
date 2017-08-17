@@ -1,10 +1,10 @@
-import { Observable } from 'rxjs/Rx';
-import { createAction } from 'redux-actions';
+import { Observable } from 'rxjs/Rx'
+import { createAction } from 'redux-actions'
 
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../reference/referenceOperations'
 
 export enum ACTION_TYPES {
-  PRICING_SERVICE = '@ReactiveTraderCloud/PRICING_SERVICE'
+  PRICING_SERVICE = '@ReactiveTraderCloud/PRICING_SERVICE',
 }
 
 export const fetchPricing = createAction(ACTION_TYPES.PRICING_SERVICE)
@@ -16,7 +16,7 @@ const getCurrencyPairs = (symbols: Array<string>, pricingService$: any) => {
 const accumulatePrices = (acc, tick, index) => {
   return {
     ...acc,
-    [tick.symbol]: tick
+    [tick.symbol]: tick,
   }
 }
 

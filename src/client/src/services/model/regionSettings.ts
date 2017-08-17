@@ -1,32 +1,32 @@
 export default class RegionSettings {
   constructor(title: string, width: number, height: number, dockable: false) {
-    this._title = title;
-    this._width = width;
-    this._height = height;
-    this._dockable = dockable;
+    this._title = title
+    this._width = width
+    this._height = height
+    this._dockable = dockable
   }
 
-  _title: string;
+  _title: string
 
   get title(): string {
-    return this._title;
+    return this._title
   }
 
-  _width: number;
+  _width: number
 
   get width(): number {
-    return this._width;
+    return this._width
   }
 
-  _height: number;
+  _height: number
 
   get height(): number {
-    return this._height;
+    return this._height
   }
 
-  _dockable: boolean;
+  _dockable: boolean
 
   get dockable(): boolean {
-    return this._dockable;
+    return this._dockable
   }
 }

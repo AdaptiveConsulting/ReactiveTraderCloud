@@ -1,65 +1,65 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash'
 
 export default class StubAutobahnProxy {
-  onOpenCallbacks;
-  onCloseCallbacks;
-  openCallCount;
-  closeCallCount;
-  session;
-  connection;
+  onOpenCallbacks
+  onCloseCallbacks
+  openCallCount
+  closeCallCount
+  session
+  connection
   constructor() {
-    this.onOpenCallbacks = [];
-    this.onCloseCallbacks = [];
-    this.openCallCount = 0;
-    this.closeCallCount = 0;
-    this.session = new StubAutobahnSession();
+    this.onOpenCallbacks = []
+    this.onCloseCallbacks = []
+    this.openCallCount = 0
+    this.closeCallCount = 0
+    this.session = new StubAutobahnSession()
     this.connection = {
       transport: {
         info: {
-          url: ''
-        }
-      }
-    };
+          url: '',
+        },
+      },
+    }
   }
 
   open() {
-    this.openCallCount++;
+    this.openCallCount++
   }
 
   close() {
-    this.closeCallCount++;
-    _.forEach(this.onCloseCallbacks, onClose => onClose('closed'));
+    this.closeCallCount++
+    _.forEach(this.onCloseCallbacks, onClose => onClose('closed'))
   }
 
   onopen(callback) {
-    this.onOpenCallbacks.push(callback);
+    this.onOpenCallbacks.push(callback)
   }
 
   onclose(callback) {
-    this.onCloseCallbacks.push(callback);
+    this.onCloseCallbacks.push(callback)
   }
 
   setIsConnected(isConnected) {
     if (isConnected) {
-      _.forEach(this.onOpenCallbacks, onOpen => onOpen());
+      _.forEach(this.onOpenCallbacks, onOpen => onOpen())
     } else {
-      _.forEach(this.onCloseCallbacks, onClose => onClose());
+      _.forEach(this.onCloseCallbacks, onClose => onClose())
     }
   }
 }
 
 class StubAutobahnSession {
-  _stubPromises;
+  _stubPromises
   constructor() {
-    this._stubPromises = {};
+    this._stubPromises = {}
   }
 
   subscribe(topic, onResults) {
-    var stubPromise = new StubSubscribeResult(onResults);
+    let stubPromise = new StubSubscribeResult(onResults)
     // we only support one request for the given topic,
     // if there is anything there we just blow it away
-    this._stubPromises[topic] = stubPromise;
-    return stubPromise;
+    this._stubPromises[topic] = stubPromise
+    return stubPromise
   }
 
   unsubscribe(subscription) {
@@ -69,52 +69,52 @@ class StubAutobahnSession {
   }
 
   call(operationName, dto) {
-    var stubPromise = new StubCallResult(dto);
+    let stubPromise = new StubCallResult(dto)
     // we only support one request for the given topic,
     // if there is anything there we just blow it away
-    this._stubPromises[operationName] = stubPromise;
-    return stubPromise;
+    this._stubPromises[operationName] = stubPromise
+    return stubPromise
   }
 
   getTopic(name) {
     if (!this._stubPromises[name]) {
-      throw new Error('Nothing has subscribed to topic/operation [' + name + ']');
+      throw new Error('Nothing has subscribed to topic/operation [' + name + ']')
     }
-    return this._stubPromises[name];
+    return this._stubPromises[name]
   }
 }
 
 class DummyPromise {
-  onSuccess;
-  onReject;
+  onSuccess
+  onReject
   then(onSuccess, onReject) {
-    this.onSuccess = onSuccess;
-    this.onReject = onReject;
+    this.onSuccess = onSuccess
+    this.onReject = onReject
   }
 }
 
 class StubCallResult extends DummyPromise {
-  _dto;
+  _dto
   constructor(dto) {
-    super();
-    this._dto = dto;
+    super()
+    this._dto = dto
   }
 
   get dto() {
-    return this._dto[0];
+    return this._dto[0]
   }
 }
 
 class StubSubscribeResult extends DummyPromise {
-  _onResults;
+  _onResults
   constructor(onResults) {
-    super();
-    this._onResults = onResults;
+    super()
+    this._onResults = onResults
   }
 
   onResults(payload) {
     // autobahn returns results in an array, fake this up:
-    return this._onResults([payload]);
+    return this._onResults([payload])
   }
 }
 
