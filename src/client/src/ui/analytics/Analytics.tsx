@@ -26,7 +26,7 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
   }
 
   componentWillUnmount() {
-    window.removeEventListener(RESIZE_EVENT);
+    window.removeEventListener(RESIZE_EVENT, () => {});
   }
 
   render() {
