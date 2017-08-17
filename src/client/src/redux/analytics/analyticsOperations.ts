@@ -1,6 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../reference/referenceOperations';
+import { regionsSettings } from '../regions/regionsOperations';
 
 export enum ACTION_TYPES {
   ANALYTICS_SERVICE = '@ReactiveTraderCloud/ANALYTICS_SERVICE'
@@ -17,6 +18,8 @@ export const analyticsServiceEpic = analyticsService$ => action$ => {
     .flatMapTo(analyticsService$.getAnalyticsStream(CURRENCY))
     .map(fetchAnalytics)
 }
+
+export const analyticsRegionSettings = regionsSettings('Analytics', 400, 800, false)
 
 export default handleActions({
   [ACTION_TYPES.ANALYTICS_SERVICE]: (state, action) => action.payload

@@ -8,16 +8,12 @@ import AnalyticsBarChart from './chart/AnalyticsBarChart';
 import { PositionsChartModel } from './model/positionsChartModel';
 import './analytics.scss'
 
-// TODO: Move these to types and actions
-function replaceWithAction(a: any, b: any): void {
-  return
-}
-
 export interface AnalyticsProps {
   canPopout: boolean
   isConnected: boolean
   pnlChartModel?: PNLChartProps
-  positionsChartModel?: PositionsChartModel
+  positionsChartModel?: PositionsChartModel,
+  onPopoutClick?: () => void
 }
 
 const RESIZE_EVENT: string = 'resize'
@@ -50,7 +46,7 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
       <div className="analytics analytics__container animated fadeIn">
         <div className="analytics__controls popout__controls">
           <i className={newWindowBtnClassName}
-             onClick={() => replaceWithAction('popOutAnalytics', {})}/>
+             onClick={() => this.props.onPopoutClick()}/>
         </div>
         {this.props.pnlChartModel && <PNLChart {...this.props.pnlChartModel} />}
         <div className="analytics__bubblechart-container">

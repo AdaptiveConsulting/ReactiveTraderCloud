@@ -5,8 +5,14 @@ import { getPnlChartModel } from './model/pnlChartModel';
 import { getPositionsChartModel } from './model/positionsChartModel';
 import Analytics from './Analytics';
 import './analytics.scss'
+import { onComponentMount, onPopoutClick } from '../../redux/blotter/blotterOperations';
+import { analyticsRegionSettings } from '../../redux/analytics/analyticsOperations';
 
 class AnalyticsContainer extends React.Component<any, any> {
+
+  public componentDidMount() {
+    this.props.onComponentMount()
+  }
 
   render() {
 
@@ -17,7 +23,9 @@ class AnalyticsContainer extends React.Component<any, any> {
     const analyticsProps = {
       isConnected: isConnected,
       pnlChartModel: pnlChartModel,
-      positionsChartModel: positionsChartModel
+      positionsChartModel: positionsChartModel,
+      onPopoutClick: this.props.onPopoutClick,
+      canPopout: true,
     }
 
     return (
@@ -29,9 +37,29 @@ class AnalyticsContainer extends React.Component<any, any> {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    onPopoutClick: () => {
+      dispatch(onPopoutClick(analyticsRegion))
+    },
+    onComponentMount: () => {
+      dispatch(onComponentMount(analyticsRegion))
+    }
+  }
+}
+
 function mapStateToProps({ analyticsService, compositeStatusService, displayAnalytics }) {
   const isConnected =  compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected || false
   return { analyticsService, isConnected, displayAnalytics }
 }
 
-export default connect(mapStateToProps)(AnalyticsContainer)
+const ConnectedAnalyticsContainer = connect(mapStateToProps, mapDispatchToProps)(AnalyticsContainer)
+
+const analyticsRegion = {
+  id: 'analytics',
+  isTearedOff: false,
+  container: ConnectedAnalyticsContainer,
+  settings: analyticsRegionSettings
+}
+
+export default ConnectedAnalyticsContainer
