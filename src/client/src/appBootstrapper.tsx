@@ -1,17 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Router } from 'esp-js';
-import { RouterProvider, SmartComponent } from 'esp-js-react/dist/esp-react';
-import { ShellModel } from './ui/shell/model';
-import { ChromeModel } from './ui/common/components/chrome/model';
-import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
+import { RouterProvider } from 'esp-js-react/dist/esp-react';
 import { ServiceConst } from './services/model';
 import SchedulerService from './system/schedulerService';
 import AutobahnConnectionProxy from './system/service/autobahnConnectionProxy'
 import Connection from './system/service/connection'
 import { OpenFin } from './system/openFin';
+import { Shell } from './ui/shell';
 import { PopoutRegionModel, RegionModel, SingleItemRegionModel } from './ui/regions/model';
-import { RegionManager, RegionNames } from './ui/regions';
 import { Provider } from 'react-redux'
 import * as config from 'config.json';
 
@@ -116,39 +113,14 @@ class AppBootstrapper {
 
     // Wire up the region management infrastructure:
     // This infrastructure allows for differing views to be put into the shell without the shell having to be coupled to all these views.
-    let workspaceRegionModel = new RegionModel(WellKnownModelIds.workspaceRegionModelId, RegionNames.workspace, espRouter);
+    let workspaceRegionModel = new RegionModel(WellKnownModelIds.workspaceRegionModelId, 'workspace', espRouter);
     workspaceRegionModel.observeEvents();
-    let popoutRegionModel = new PopoutRegionModel(WellKnownModelIds.popoutRegionModelId, RegionNames.popout, espRouter, this._openFin);
+    let popoutRegionModel = new PopoutRegionModel(WellKnownModelIds.popoutRegionModelId, 'popout', espRouter, this._openFin);
     popoutRegionModel.observeEvents();
-    let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, RegionNames.blotter, espRouter);
+    let blotterRegionModel = new SingleItemRegionModel(WellKnownModelIds.blotterRegionModelId, 'blotter', espRouter);
     blotterRegionModel.observeEvents();
-    let sidebarRegionModel = new SingleItemRegionModel(WellKnownModelIds.sidebarRegionModelId, RegionNames.sidebar, espRouter);
+    let sidebarRegionModel = new SingleItemRegionModel(WellKnownModelIds.sidebarRegionModelId, 'sidebar', espRouter);
     sidebarRegionModel.observeEvents();
-    let allRegionModels = [workspaceRegionModel, popoutRegionModel, blotterRegionModel, sidebarRegionModel];
-    let regionManager = new RegionManager(allRegionModels, this._openFin.isRunningInOpenFin);
-
-    // wire up the application chrome
-    let chromeModel = new ChromeModel(WellKnownModelIds.chromeModelId, espRouter, this._openFin);
-    chromeModel.observeEvents();
-
-    // wire-up the loader that populates the workspace with spot tiles.
-    // In a more sophisticated app you'd have some 'add product' functionality allowing the users to add workspace views/products manually.
-    let spotTileLoader = new SpotTileLoader(
-      espRouter,
-      this._referenceDataService,
-      new SpotTileFactory(espRouter, this._pricingService, this._executionService, regionManager, this._schedulerService, this._openFin)
-    );
-    spotTileLoader.beginLoadTiles();
-
-    // wire up the apps main shell
-    let shellModel = new ShellModel(
-      WellKnownModelIds.shellModelId,
-      espRouter,
-      this._connection,
-      blotterRegionModel,
-      sidebarRegionModel
-    );
-    shellModel.observeEvents();
 
     if (this._openFin.isRunningInOpenFin) {
       window.fin.desktop.main(() => espRouter.broadcastEvent('init', {}));
@@ -163,7 +135,7 @@ class AppBootstrapper {
     ReactDOM.render(
       <RouterProvider router={espRouter}>
         <Provider store={store}>
-          <SmartComponent modelId={WellKnownModelIds.shellModelId} />
+          <Shell />
         </Provider>
       </RouterProvider>,
       document.getElementById('root')

@@ -14,9 +14,6 @@ const getCurrencyPairs = (symbols: Array<string>, pricingService$: any) => {
 }
 
 const accumulatePrices = (acc, tick, index) => {
-  if (index === 0) {
-    return { [tick.symbol]: tick }
-  }
   return {
     ...acc,
     [tick.symbol]: tick
@@ -27,7 +24,7 @@ export const pricingServiceEpic = pricingService$ => (action$) => {
   return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
     .map(action => action.payload.currencyPairUpdates.map(currency => currency.currencyPair.symbol))
     .mergeMap((symbols: Array<string>) => getCurrencyPairs(symbols, pricingService$))
-    .scan(accumulatePrices)
+    .scan(accumulatePrices, {})
     .map(fetchPricing)
 }
 

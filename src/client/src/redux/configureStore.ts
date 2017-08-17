@@ -3,7 +3,7 @@ import { createEpicMiddleware, combineEpics } from 'redux-observable'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore } from 'redux-persist'
 
-import rootReducer from './combineReducers';
+import rootReducer from './combineReducers'
 import { blotterServiceEpic } from '../ui/blotter/blotterOperations'
 import { referenceServiceEpic } from './reference/referenceOperations'
 import { pricingServiceEpic } from './pricing/pricingOperations'

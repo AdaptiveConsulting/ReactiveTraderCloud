@@ -18,12 +18,15 @@
     "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true,
     "lib": [
-      "es6",
-      "es7",
+      "es2015",
+      "es2017",
       "dom"
     ],
     "typeRoots": [
       "node_modules/@types"
+    ],
+    "files": [
+      "type-declarations/globals.d.ts"
     ]
   },
   "exclude": [
