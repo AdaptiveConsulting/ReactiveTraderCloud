@@ -9,6 +9,7 @@ import { reconnect } from './actions'
 import './shell.scss'
 import '../common/styles/_base.scss'
 import '../common/styles/_fonts.scss'
+import RegionWrapper from '../../redux/regions/RegionWrapper';
 
 export interface ShellProps {
   sessionExpired: boolean
@@ -25,9 +26,9 @@ class ShellContainer extends React.Component<ShellProps, {}> {
   render() {
     const { sessionExpired } = this.props
     return (
-      <div>
+      <div className="shellWrapper">
         <div className="shell__splash">
-          <span className="shell__splash-message">{this.appVersion}<br />Loading...</span>
+          <span className="shell__splash-message">{this.appVersion}<br/>Loading...</span>
         </div>
         <div className="shell__container">
           <Modal shouldShow={sessionExpired} title="Session expired">
@@ -41,11 +42,15 @@ class ShellContainer extends React.Component<ShellProps, {}> {
           </Modal>
           <div className="shell_workspace_blotter">
             <WorkspaceContainer/>
-            <div className="shell__blotter">
-              <BlotterContainer/>
-            </div>
+            <RegionWrapper region="blotter">
+              <div className="shell__blotter">
+                <BlotterContainer/>
+              </div>
+            </RegionWrapper>
           </div>
-          <SidebarRegionContainer/>
+          <RegionWrapper region="analytics">
+            <SidebarRegionContainer/>
+          </RegionWrapper>
         </div>
         <div className="shell__footer">
           <FooterContainer/>

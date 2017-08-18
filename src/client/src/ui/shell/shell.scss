@@ -18,6 +18,11 @@
   }
 }
 
+.shellWrapper {
+  width: 100vw;
+  height: 100vh;
+}
+
 .shell__splash {
   background: url('../common/images/splash-screen.jpg'), #1f2a36;
   background-size: 400px $splash-logo-height;
