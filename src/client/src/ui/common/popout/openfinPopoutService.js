@@ -19,7 +19,6 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
     this._openFin = openFin;
     this._popouts = {};
     this._initializeDockingManager();
-    console.log('init open fin')
   }
 
   openPopout({url, title, onClosing, windowOptions = { height: 400, width: 400, dockable: false }}, view) {

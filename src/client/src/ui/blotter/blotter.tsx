@@ -6,7 +6,6 @@ import 'fixed-data-table/dist/fixed-data-table.css'
 import './blotter.scss'
 import { TradeStatus } from '../../services/model/index';
 
-// import { TradeRow } from '../../../services/model'
 type TradeRow = any
 
 export interface BlotterProps {
