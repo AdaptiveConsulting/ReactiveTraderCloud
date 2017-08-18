@@ -11,7 +11,8 @@ import { analyticsServiceEpic } from '../ui/analytics/analyticsOperations'
 import { compositeStatusServiceEpic } from './compositeStatusService/compositeStatusServiceOperations'
 import { connectionStatusEpicsCreator } from './connectionStatus/connectionStatusOperations'
 import { popoutEpic } from './popoutEpic'
-import { executionServiceEpic } from './execution/executionOperations';
+import { executionServiceEpic } from './execution/executionOperations'
+import { footerEpic } from '../ui/footer/FooterOperations'
 
 const epicMiddleware = (referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, executionService, openFin) => createEpicMiddleware(
   combineEpics(
@@ -22,8 +23,9 @@ const epicMiddleware = (referenceDataService, blotterService, pricingService, an
     compositeStatusServiceEpic(compositeStatusService),
     connectionStatusEpicsCreator(compositeStatusService),
     executionServiceEpic(executionService),
-    popoutEpic(openFin)
-  )
+    popoutEpic(openFin),
+    footerEpic(openFin),
+  ),
 )
 
 export default function configureStore(referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, executionService, openFin) {
@@ -32,8 +34,8 @@ export default function configureStore(referenceDataService, blotterService, pri
   const store = createStore(
     rootReducer,
     composeWithDevTools(
-      applyMiddleware(middleware)
-    )
+      applyMiddleware(middleware),
+    ),
   )
   persistStore(store)
   return store
