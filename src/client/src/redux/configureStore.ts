@@ -1,15 +1,15 @@
 import { createStore, applyMiddleware } from 'redux'
 import { createEpicMiddleware, combineEpics } from 'redux-observable'
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore } from 'redux-persist'
 
 import rootReducer from './combineReducers';
-import { blotterServiceEpic } from './blotter/blotterOperations';
+import { blotterServiceEpic } from '../ui/blotter/blotterOperations'
 import { referenceServiceEpic } from './reference/referenceOperations'
 import { pricingServiceEpic } from './pricing/pricingOperations'
-import { analyticsServiceEpic } from './analytics/analyticsOperations';
-import { compositeStatusServiceEpic } from './compositeStatusService/compositeStatusServiceOperations';
-import { connectionStatusEpic } from './connectionStatus/connectionStatusOperations';
+import { analyticsServiceEpic } from '../ui/analytics/analyticsOperations'
+import { compositeStatusServiceEpic } from './compositeStatusService/compositeStatusServiceOperations'
+import { connectionStatusEpic } from './connectionStatus/connectionStatusOperations'
 import { popoutEpic } from './popoutEpic'
 
 const epicMiddleware = (referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, openFin) => createEpicMiddleware(

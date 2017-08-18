@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {connect} from 'react-redux'
+
 class RegionWrapper extends React.Component<any, any> {
 
   public render() {
@@ -14,10 +15,6 @@ class RegionWrapper extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    service: state.regionsService
-  }
-}
+const mapStateToProps = (state) => ({service: state.regionsService})
 
 export default connect(mapStateToProps)(RegionWrapper)

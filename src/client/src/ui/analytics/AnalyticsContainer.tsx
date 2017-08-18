@@ -5,8 +5,8 @@ import { getPnlChartModel } from './model/pnlChartModel';
 import { getPositionsChartModel } from './model/positionsChartModel';
 import Analytics from './Analytics';
 import './analytics.scss'
-import { onComponentMount, onPopoutClick } from '../../redux/blotter/blotterOperations';
-import { analyticsRegionSettings } from '../../redux/analytics/analyticsOperations';
+import { onComponentMount, onPopoutClick } from '../blotter/blotterOperations';
+import { analyticsRegionSettings } from './analyticsOperations';
 
 interface AnalyticsContainerOwnProps {
 

@@ -1,9 +1,9 @@
 import * as _ from 'lodash'
 import { createAction } from 'redux-actions';
 
-import {ACTION_TYPES as REGION_ACTION_TYPES} from '../regions/regionsOperations'
-import {ACTION_TYPES as REF_ACTION_TYPES} from '../reference/referenceOperations'
-import {regionsSettings} from '../regions/regionsOperations'
+import {ACTION_TYPES as REGION_ACTION_TYPES} from '../../redux/regions/regionsOperations'
+import {ACTION_TYPES as REF_ACTION_TYPES} from '../../redux/reference/referenceOperations'
+import {regionsSettings} from '../../redux/regions/regionsOperations'
 
 export const ACTION_TYPES = {
   BLOTTER_SERVICE: '@ReactiveTraderCloud/BLOTTER_SERVICE'
