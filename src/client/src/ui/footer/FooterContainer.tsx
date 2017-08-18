@@ -39,7 +39,7 @@ class FooterContainer extends React.Component<FooterContainerProps, any> {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => bindActionCreators({
   toggleStatusServices,
-},                                                                         dispatch)
+}, dispatch)
 
 function mapStateToProps({ compositeStatusService, displayStatusServices, connectionStatus }) {
   return { compositeStatusService, displayStatusServices, connectionStatus }

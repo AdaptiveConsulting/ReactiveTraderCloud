@@ -4,16 +4,30 @@ import './workspace.scss'
 import { connect } from 'react-redux'
 import SpotTile from '../spotTile/SpotTile';
 import CurrencyPair from '../../services/model/currencyPair';
+import { Direction } from '../../services/model/index';
+import { bindActionCreators, Dispatch } from 'redux';
+import { executeTrade } from '../../redux/execution/executionOperations';
 
-export interface WorkspaceContainerProps {
+interface WorkspaceContainerOwnProps {
+
+}
+
+interface WorkspaceContainerStateProps {
   children: any
   pricingService: any
   referenceService: any
   executionService?: any
   isConnected: boolean
   compositeStatusService: any
+  notionals: any
 }
-const MAX_NOTIONAL_VALUE = 1000000000
+
+interface WorkspaceContainerDispatchProps {
+  executeTrade: (direction: Direction) => void
+}
+
+type WorkspaceContainerProps = WorkspaceContainerOwnProps & WorkspaceContainerStateProps & WorkspaceContainerDispatchProps
+
 const NOTIONAL = 1000000
 
 export class WorkspaceContainer extends React.Component<WorkspaceContainerProps, {}> {
@@ -46,21 +60,26 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
             hasNotification={false}
             isRunningInOpenFin={false}
             isTradeExecutionInFlight={false}
-            maxNotional={MAX_NOTIONAL_VALUE}
             notification={null}
-            notional={NOTIONAL}
+            notional={this.props.notionals[currencyPair.symbol] || NOTIONAL}
             priceStale={false}
             pricingConnected={true}
-            title={title}/>
+            title={title}
+            executeTrade={this.props.executeTrade}
+          />
         </div>
       )
     }).concat(_.times(6, i => <div key={i} className="workspace-region__spacer"/>)) // add empty items at the end so tiles lay out nicely
   }
 }
 
-function mapStateToProps({ pricingService, compositeStatusService, referenceService }) {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => bindActionCreators({
+    executeTrade,
+  }, dispatch)
+
+  function mapStateToProps({ pricingService, compositeStatusService, referenceService, notionals }) {
   const isConnected =  compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected || false
-  return { pricingService, isConnected, referenceService }
+  return { pricingService, isConnected, referenceService, notionals }
 }
 
-export default connect(mapStateToProps)(WorkspaceContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(WorkspaceContainer)

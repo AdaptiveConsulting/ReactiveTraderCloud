@@ -61,6 +61,7 @@ class AppBootstrapper {
       this._pricingService,
       this._analyticsService,
       this._compositeStatusService,
+      this._executionService,
       this._openFin,
     )
 

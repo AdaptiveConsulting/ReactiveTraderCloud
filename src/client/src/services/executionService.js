@@ -1,11 +1,8 @@
 import { Observable, Subscription, Scheduler } from 'rxjs/Rx';
-import { OpenFin } from '../system/openFin';
 import ExecuteTradeResponse from './model/executeTradeResponse';
-import ExecuteTradeRequest from './model/executeTradeRequest';
 import { TradeMapper } from './mappers';
 import { logger, SchedulerService } from '../system';
-import { Connection, ServiceBase } from '../system/service';
-import { ReferenceDataService } from './';
+import { ServiceBase } from '../system/service';
 
 const _log = logger.create('ExecutionService');
 
@@ -28,7 +25,7 @@ export default class ExecutionService extends ServiceBase {
     let _this = this;
     return Observable.create(
       o => {
-        _log.info(`executing: ${executeTradeRequest.toString()}`, executeTradeRequest);
+        _log.info('executing: ', executeTradeRequest);
         let disposables = new Subscription();
 
         disposables.add(
@@ -46,7 +43,7 @@ export default class ExecutionService extends ServiceBase {
                     request
                       .map(dto => {
                         const trade = _this._tradeMapper.mapFromTradeDto(dto.Trade);
-                        _log.info(`execute response received for: ${executeTradeRequest.toString()}. Status: ${trade.status}`, dto);
+                        _log.info(`execute response received for: ${executeTradeRequest}. Status: ${trade.status}`, dto);
                         return ExecuteTradeResponse.create(trade);
                       })
                       // if we never receive a response, mark request as complete

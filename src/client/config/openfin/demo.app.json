@@ -3,7 +3,7 @@
     "splashScreenImage": "https://web-demo.adaptivecluster.com/images/splash-screen.jpg",
     "startup_app": {
         "name": "Reactive Trader Cloud",
-        "url": "https://web-demo.adaptivecluster.com",
+        "url": "http://web-dev.adaptivecluster.com/",
         "uuid": "reactive-trader-cloud-web-demo",
         "applicationIcon": "https://web-demo.adaptivecluster.com/images/adaptive-mark-large.png",
         "autoShow": true,

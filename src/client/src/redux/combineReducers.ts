@@ -8,6 +8,7 @@ import connectionStatusReducer from './connectionStatus/connectionStatusOperatio
 import analyticsServiceReducer from '../ui/analytics/analyticsOperations'
 import sidebarRegionReducer from '../ui/sidebar/SidebarRegionOperations'
 import footerReducer from '../ui/footer/FooterOperations'
+import notionalsReducer from '../ui/spotTile/notional/NotionalOperations'
 import { regionsReducer } from './regions/regionsOperations'
 
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   displayAnalytics: sidebarRegionReducer,
   displayStatusServices: footerReducer,
   regionsService: regionsReducer,
+  notionals: notionalsReducer
 })
 
 export default rootReducer

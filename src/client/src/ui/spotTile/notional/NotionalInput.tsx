@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as numeral from 'numeral'
-import { utils } from '../../system'
+import { utils } from '../../../system'
 import * as classnames from 'classnames'
 import './notionalInput.scss'
 
@@ -13,6 +13,8 @@ const CHAR_CODE_9         = 57
 const CHAR_CODE_UNIT_SEP  = 31
 const SHORTCUT_CHAR_CODES = [75, 77, 107, 109] // K, M, k, m
 
+const MAX_NOTIONAL_VALUE = 1000000000
+
 export interface CurrencyPair {
   symbol: string
   base: string
@@ -22,8 +24,7 @@ export interface NotionalInputProps {
   className: string
   notional: number
   currencyPair: CurrencyPair
-  onChange: (number: number) => void
-  maxValue: number
+  onNotionalInputChange: (value: number) => void
 }
 
 export default class NotionalInput extends React.Component<NotionalInputProps, {}> {
@@ -34,7 +35,7 @@ export default class NotionalInput extends React.Component<NotionalInputProps, {
       this.props.notional !== nextProps.notional ||
       // currencyPair always here
       this.props.currencyPair.symbol !== nextProps.currencyPair.symbol ||
-      this.props.onChange !== nextProps.onChange
+      this.props.onNotionalInputChange !== nextProps.onChange
   }
 
   render() {
@@ -79,13 +80,12 @@ export default class NotionalInput extends React.Component<NotionalInputProps, {
   processNotional(inputValue: string) {
     const inputValueTrimmed = inputValue.trim()
     let notional: any = utils.convertNotionalShorthandToNumericValue(inputValueTrimmed)
-
-    if (notional >= this.props.maxValue) {
+    if (notional >= MAX_NOTIONAL_VALUE) {
       notional = 0
     }
     if (!isNaN(notional)) {
       // send temp notional back to parent
-      this.props.onChange(notional)
+      this.props.onNotionalInputChange(notional)
 
       // user may be trying to enter decimals. restore BACK into input
       if (inputValueTrimmed.indexOf(DOT) === inputValueTrimmed.length - 1) {
