@@ -43,7 +43,13 @@ export default class ShellModel extends ModelBase {
   @observeEvent('reconnectClicked')
   _onReconnect() {
     this._connection.connect();
+    // TEMP the two events below are workarounds to fix the production
+    // to be replaced when replacing ESP with Redux and redux-observable 
+    // init - needed for spotTile to start rendering again
     this.router.broadcastEvent('init', {});
+    // blotter only starts rendering after referenceDataLoaded is triggered
+    this.router.broadcastEvent('referenceDataLoaded', {}); 
+
   }
 
   _observeForSessionExpired() {
