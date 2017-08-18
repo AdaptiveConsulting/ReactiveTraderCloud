@@ -23,7 +23,7 @@ export const popoutEpic = openFin => (action$, store) => {
       popoutService.openPopout(
         {
           id,
-          url: '/#/popout?vasi',
+          url: '/#/popout',
           title: settings.title,
           onClosing: () => {
             store.dispatch(popoutClosed(action.payload))
