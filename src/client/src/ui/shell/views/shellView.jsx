@@ -43,13 +43,15 @@ export default class ShellView extends React.Component {
             <div className='shell_workspace_blotter'>
               <SmartComponent className='shell__workspace' modelId={wellKnownModelIds.workspaceRegionModelId}
                               view={WorkspaceRegionView}/>
-              <div className='shell__blotter'>
-                <RegionWrapper region="blotter">
+              <RegionWrapper region="blotter">
+                <div className='shell__blotter'>
                   <BlotterContainer/>
-                </RegionWrapper>
-              </div>
+                </div>
+              </RegionWrapper>
             </div>
-            <SidebarRegionContainer/>
+            <RegionWrapper region="analytics">
+              <SidebarRegionContainer/>
+            </RegionWrapper>
           </div>
           <div className='shell__footer'>
             <FooterContainer/>
