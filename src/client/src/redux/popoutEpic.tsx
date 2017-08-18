@@ -26,7 +26,6 @@ export const popoutEpic = openFin => (action$, store) => {
           url: '/#/popout?vasi',
           title: settings.title,
           onClosing: () => {
-            console.log('new code')
             store.dispatch(popoutClosed(action.payload))
           },
           windowOptions: {
