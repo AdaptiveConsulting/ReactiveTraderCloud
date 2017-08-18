@@ -25,7 +25,6 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
   render() {
     const { canPopout, onPopoutClick, isConnected, trades, size } = this.props
     const columns = this.createGridColumns(trades)
-    console.log('size: ', size)
     const className = classNames(
       'blotter', {
         'blotter--online': isConnected,

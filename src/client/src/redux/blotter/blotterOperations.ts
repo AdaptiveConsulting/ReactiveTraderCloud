@@ -6,8 +6,7 @@ import {ACTION_TYPES as REF_ACTION_TYPES} from '../reference/referenceOperations
 import {regionsSettings} from '../regions/regionsOperations'
 
 export const ACTION_TYPES = {
-  BLOTTER_SERVICE: '@ReactiveTraderCloud/BLOTTER_SERVICE',
-  BLOTTER_POPOUT: '@ReactiveTraderCloud/BLOTTER_POPOUT'
+  BLOTTER_SERVICE: '@ReactiveTraderCloud/BLOTTER_SERVICE'
 }
 
 export const fetchBlotter = createAction(ACTION_TYPES.BLOTTER_SERVICE)

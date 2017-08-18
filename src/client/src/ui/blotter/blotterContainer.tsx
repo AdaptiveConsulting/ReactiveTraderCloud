@@ -23,7 +23,6 @@ class BlotterContainer extends React.Component<any, {}> {
         <Blotter {...blotterProps} />
       </div>
     )
-
   }
 }
 
