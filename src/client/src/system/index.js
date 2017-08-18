@@ -8,4 +8,3 @@ export { default as Environment } from './environment';
 
 // these imports add functionality to rx
 import './observableExtensions/retryPolicyExt';
-import './observableExtensions/subscribeWithRouter';
