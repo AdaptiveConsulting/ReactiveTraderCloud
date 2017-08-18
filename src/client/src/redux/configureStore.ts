@@ -10,7 +10,7 @@ import { pricingServiceEpic } from './pricing/pricingOperations'
 import { analyticsServiceEpic } from './analytics/analyticsOperations';
 import { compositeStatusServiceEpic } from './compositeStatusService/compositeStatusServiceOperations';
 import { connectionStatusEpic } from './connectionStatus/connectionStatusOperations';
-import { openFinEpic } from './openFinEpic'
+import { popoutEpic } from './popoutEpic'
 
 const epicMiddleware = (referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, openFin) => createEpicMiddleware(
   combineEpics(
@@ -20,7 +20,7 @@ const epicMiddleware = (referenceDataService, blotterService, pricingService, an
     analyticsServiceEpic(analyticsService),
     compositeStatusServiceEpic(compositeStatusService),
     connectionStatusEpic(compositeStatusService),
-    openFinEpic(openFin)
+    popoutEpic(openFin)
   )
 )
 

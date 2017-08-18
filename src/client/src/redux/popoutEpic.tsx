@@ -14,7 +14,7 @@ const generateView = (container) => {
   return React.createElement(Provider, {store: window.store}, childComponent)
 }
 
-export const openFinEpic = openFin => (action$, store) => {
+export const popoutEpic = openFin => (action$, store) => {
   return action$.ofType(REGIONS_ACTIONS.REGION_OPEN_WINDOW)
     .map(action => {
       const popoutService = getPopoutService(openFin)
@@ -23,9 +23,10 @@ export const openFinEpic = openFin => (action$, store) => {
       popoutService.openPopout(
         {
           id,
-          url: '/#/popout',
+          url: '/#/popout?vasi',
           title: settings.title,
           onClosing: () => {
+            console.log('new code')
             store.dispatch(popoutClosed(action.payload))
           },
           windowOptions: {
