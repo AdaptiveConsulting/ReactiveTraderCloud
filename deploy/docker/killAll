@@ -1,8 +1,13 @@
 #! /bin/bash
 
-for server in "referencedataread" "pricing" "tradeexecution" "blotter" "analytics" "broker" "eventstore" "web"
-do
-    cd run/$server
-    ./kill
-    cd ../..
-done
+# stop all containers
+docker-compose down
+
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+. ${root_directory}/deploy/config
+
+# clean
+if [ -f ${docker_compose_file} ]
+then rm ${docker_compose_file}
+fi

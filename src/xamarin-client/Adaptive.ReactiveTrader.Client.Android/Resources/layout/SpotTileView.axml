@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ViewAnimator"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+    <android.support.v7.widget.CardView
+        android:id="@+id/CardView"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        card_view:cardBackgroundColor="@color/cardBackground"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true"
+        android:pivotX="50%"
+        android:pivotY="50%">
+      <FrameLayout
+            android:layout_width="match_parent"
+              android:layout_height="match_parent"
+         >
+
+            <oxyplot.xamarin.android.PlotView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/plotView"
+            />
+      
+          <LinearLayout
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/SpotTileContent"
+              android:padding="10dp">
+              <TextView
+                  android:id="@+id/SpotTileCurrencyPairTextView"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="#E5FFFFFF"
+                  android:textSize="12dp" />
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+                  <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.PriceButton
+                      android:id="@+id/SpotTileBidPriceButton"
+                      tools:layout="@android:layout/SpotTileView"
+                      direction_label="SELL"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center" />
+                  <LinearLayout
+                      android:id="@+id/SpotTileSpreadLayout"
+                      android:layout_centerInParent="true"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical"
+                      android:gravity="center"
+                      android:layout_marginLeft="5dp"
+                      android:layout_marginRight="5dp"
+                      android:layout_weight="0">
+                      <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.DirectionArrow
+                          android:id="@+id/SpotTileUpArrow"
+                          android:layout_width="12dp"
+                          android:layout_height="12dp"
+                          direction="Up" />
+                      <TextView
+                          android:id="@+id/SpotTileSpreadTextView"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textColor="#E5FFFFFF"
+                          android:textSize="12dp"
+                          android:layout_marginTop="5dp"
+                          android:layout_marginBottom="5dp" />
+                      <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.DirectionArrow
+                          android:id="@+id/SpotTileDownArrow"
+                          android:layout_width="12dp"
+                          android:layout_height="12dp"
+                          direction="Down" />
+                  </LinearLayout>
+                  <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.PriceButton
+                      android:id="@+id/SpotTileAskPriceButton"
+                      direction_label="BUY"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center" />
+              </LinearLayout>
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginTop="1dp"
+                  android:addStatesFromChildren="true">
+                  <TextView
+                      android:id="@+id/SpotTileDealtCurrencyTextView"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="#F290AFC1"
+                      android:textSize="12dp" />
+                  <EditText
+                      android:id="@+id/SpotTileNotionalEditText"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginLeft="5dp"
+                      android:layout_marginRight="5dp"
+                      android:background="@drawable/notional_background_selector"
+                      android:textColor="@drawable/notional_textcolor_selector"
+                      android:inputType="number"
+                      android:layout_weight="1"
+                      android:imeOptions="actionDone"
+                      android:singleLine="true" />
+                  <TextView
+                      android:id="@+id/SpotTileSpotDateTextView"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="#F290AFC1"
+                      android:textSize="12dp" />
+              </LinearLayout>
+          </LinearLayout>  
+            
+          <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:id="@+id/PriceNotAvailableOverlay"
+          android:background="@color/staleBackground"
+          android:padding="10dp"
+          android:visibility="gone"
+          android:gravity="center">
+            <TextView
+                android:text="Pricing currently unavailable"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView1"
+                android:layout_gravity="center"
+                android:textColor="@color/staleText" />
+      </LinearLayout>
+            
+        </FrameLayout>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:id="@+id/CardViewBack"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        card_view:cardBackgroundColor="#4C5F73"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true"
+        android:pivotX="50%"
+        android:pivotY="50%">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="20dp"
+                android:layout_marginLeft="30dp">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearLayout1">
+                    <TextView
+                        android:id="@+id/ConfirmCurrencyPairTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="(USD / JPN)" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/ConfirmDirectionTextView"
+                        android:textSize="14dp"
+                        android:text="(BUY)"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/confirmLabel" />
+                    <TextView
+                        android:id="@+id/ConfirmNotionalTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:text="(1,000,000 USD)" />
+
+                      <TextView
+                        android:id="@+id/ConfirmAt"
+                        android:textSize="14dp"
+                        android:text=" at "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/confirmLabel" />
+                   <TextView
+                        android:id="@+id/ConfirmSpotRateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:text="100.345" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textSize="14dp"
+                        android:text="Trade ID "
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/confirmLabel" />
+                    <TextView
+                        android:id="@+id/ConfirmTradeIdTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:text="(257)" />
+                    <TextView
+                        android:id="@+id/ConfirmStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:text="(Done)"
+                        android:layout_marginLeft="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+    </android.support.v7.widget.CardView>
+</ViewAnimator>

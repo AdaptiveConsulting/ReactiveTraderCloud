@@ -1,24 +1,24 @@
-import Rx from 'rx';
+import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import _ from 'lodash';
-import { Trade, TradeNotification, CurrencyPairPosition } from '../../services/model';
-import { logger } from '../';
-import { PriceMapper, PositionsMapper } from '../../services/mappers';
-import { Router } from 'esp-js';
+import { TradeNotification } from '../../services/model';
+import PriceMapper from '../../services/mappers/priceMapper';
+import PositionsMapper from '../../services/mappers/positionsMapper';
+import logger from '../logger';
 import { WellKnownModelIds } from '../../';
 
-const _log:logger.Logger = logger.create('OpenFin');
+var _log = logger.create('OpenFin');
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check';
 
 export default class OpenFin {
 
-  tradeClickedSubject:Rx.Subject<string>;
-  limitCheckSubscriber:string;
-  limitCheckId:number;
-  _router:Router;
+  tradeClickedSubject;
+  limitCheckSubscriber;
+  limitCheckId;
+  _router;
 
-  constructor(router: Router) {
-    this.tradeClickedSubject = new Rx.Subject();
+  constructor(router) {
+    this.tradeClickedSubject = new Subject();
     this.limitCheckId = 1;
     this.limitCheckSubscriber = null;
     this._router = router;
@@ -71,7 +71,7 @@ export default class OpenFin {
     });
   }
 
-  addSubscription(name:string, callback){
+  addSubscription(name, callback){
     if (!this.isRunningInOpenFin) return;
     if (!fin.desktop.InterApplicationBus){
       fin.desktop.main(() => {
@@ -86,21 +86,21 @@ export default class OpenFin {
     }
   }
 
-  checkLimit(executablePrice, notional:number, tradedCurrencyPair:string):Rx.Observable<boolean> {
+  checkLimit(executablePrice, notional, tradedCurrencyPair) {
     let _this = this;
-    return Rx.Observable.create(observer => {
-        let disposables = new Rx.CompositeDisposable();
+    return Observable.create(observer => {
+        let disposables = new Subscription();
         if (_this.limitCheckSubscriber === null) {
           _log.debug('client side limit check not up, will delegate to to server');
-          observer.onNext(true);
-          observer.onCompleted();
+          observer.next(true);
+          observer.complete();
         } else {
           _log.debug(`checking if limit is ok with ${_this.limitCheckSubscriber}`);
           const topic = `limit-check-response (${_this.limitCheckId++})`;
-          let limitCheckResponse:(msg:any) => void = (msg) => {
+          let limitCheckResponse = (msg) => {
             _log.debug(`${_this.limitCheckSubscriber} limit check response was ${msg}`);
-            observer.onNext(msg.result);
-            observer.onCompleted();
+            observer.next(msg.result);
+            observer.complete();
           };
 
           fin.desktop.InterApplicationBus.subscribe(_this.limitCheckSubscriber, topic, limitCheckResponse);
@@ -113,7 +113,7 @@ export default class OpenFin {
             rate: executablePrice
           });
 
-          disposables.add(Rx.Disposable.create(() => {
+          disposables.add(new Subscription(() => {
             fin.desktop.InterApplicationBus.unsubscribe(_this.limitCheckSubscriber, topic, limitCheckResponse);
           }));
         }
@@ -189,9 +189,9 @@ export default class OpenFin {
     return new Promise((resolve, reject) => {
       let interval = 5;
       let chartIqAppId = 'ChartIQ';
-      let url = `http://openfin.chartiq.com/0.5/chartiq-shim.html?symbol=${symbol}&period=${interval}`;
+      let url = `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/chartiq-shim.html?symbol=${symbol}&period=${interval}`;
       let name = `chartiq_${(new Date()).getTime()}`;
-      const applicationIcon = 'http://openfin.chartiq.com/0.5/img/openfin-logo.png';
+      const applicationIcon = 'http://adaptiveconsulting.github.io/chartiq/icon.png';
       let app = new fin.desktop.Application({
         uuid: chartIqAppId,
         url: url,
@@ -204,7 +204,7 @@ export default class OpenFin {
     });
   }
 
-  openTradeNotification(trade:Trade): void {
+  openTradeNotification(trade) {
     if (!this.isRunningInOpenFin) return;
 
     let tradeNotification = new TradeNotification(trade);
@@ -219,26 +219,26 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification);
   }
 
-  publishCurrentPositions(ccyPairPositions:Array<CurrencyPairPosition>){
+  publishCurrentPositions(ccyPairPositions) {
     if (!this.isRunningInOpenFin ) return;
     let serialisePositions = ccyPairPositions.map( p => PositionsMapper.mapToDto(p));
     fin.desktop.InterApplicationBus.publish('position-update', serialisePositions);
   }
 
-  publishPrice(price){
+  publishPrice(price) {
     if (!this.isRunningInOpenFin) return;
     fin.desktop.InterApplicationBus.publish('price-update', PriceMapper.mapToSpotPriceDto(price));
   }
 
-  sendAllBlotterData(uuid:string, blotterData:Array){
+  sendAllBlotterData(uuid, blotterData){
     fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', blotterData);
   }
 
-  sendPositionClosedNotification(uuid:string, correlationId:string){
+  sendPositionClosedNotification(uuid, correlationId){
     fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId);
   }
 
-  openLink(url): void {
+  openLink(url) {
     fin.desktop.System.openUrlWithBrowser(url);
   }
 }

@@ -15,7 +15,7 @@ export default class Chrome extends React.Component {
   };
 
   render() {
-    let model:ChromeModel = this.props.model;
+    let model = this.props.model;
     let router = this.props.router;
 
     if (model.isRunningInOpenFin) {

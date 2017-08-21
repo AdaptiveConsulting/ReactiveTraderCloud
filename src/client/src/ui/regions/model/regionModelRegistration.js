@@ -2,12 +2,12 @@ import { ModelBase } from '../../common';
 
 let key = 1;
 export default class RegionModelRegistration {
-  _model:ModelBase;
-  _displayContext:string;
-  _onExternallyRemovedCallback:() => void;
-  _regionSettings:any;
+  _model;
+  _displayContext;
+  _onExternallyRemovedCallback;
+  _regionSettings;
 
-  constructor(model:ModelBase, onExternallyRemovedCallback:?() => void, displayContext:?string, regionSettings?:any) {
+  constructor(model, onExternallyRemovedCallback, displayContext, regionSettings) {
     this._model = model;
     this._displayContext = displayContext;
     this._onExternallyRemovedCallback = onExternallyRemovedCallback;
@@ -19,19 +19,19 @@ export default class RegionModelRegistration {
     return this._key;
   }
 
-  get model():ModelBase {
+  get model() {
     return this._model;
   }
 
-  get displayContext():string {
+  get displayContext() {
     return this._displayContext;
   }
 
-  get onExternallyRemovedCallback():() => void {
+  get onExternallyRemovedCallback() {
     return this._onExternallyRemovedCallback;
   }
 
-  get regionSettings():any {
+  get regionSettings() {
     return this._regionSettings;
   }
 }

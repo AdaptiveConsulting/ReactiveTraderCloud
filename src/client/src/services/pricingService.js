@@ -1,23 +1,23 @@
-import Rx from 'rx';
-import { SpotPrice, GetSpotStreamRequest } from './model';
+import { Observable } from 'rxjs/Rx';
 import { PriceMapper } from './mappers';
-import { ReferenceDataService } from './';
-import { Connection, ServiceBase } from '../system/service';
+import { ServiceBase } from '../system/service';
 import { logger, SchedulerService, RetryPolicy } from '../system';
+import '../system/observableExtensions/retryPolicyExt';
+import SpotPrice from './model/spotPrice';
 
-var _log:logger.Logger = logger.create('PricingService');
+var _log = logger.create('PricingService');
 
 export default class PricingService extends ServiceBase {
 
-  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService, referenceDataService:ReferenceDataService) {
+  constructor(serviceType, connection, schedulerService, referenceDataService) {
     super(serviceType, connection, schedulerService);
     this._priceMapper = new PriceMapper(referenceDataService);
   }
 
-  getSpotPriceStream(request:GetSpotStreamRequest):Rx.Observable<SpotPrice> {
+  getSpotPriceStream(request) {
     let _this = this;
     const getPriceUpdatesOperationName = 'getPriceUpdates';
-    return Rx.Observable.create(
+    return Observable.create(
       o => {
         _log.debug(`Subscribing to spot price stream for [${request.symbol}]`);
         let lastPrice = null;
@@ -28,7 +28,7 @@ export default class PricingService extends ServiceBase {
             RetryPolicy.indefiniteEvery2Seconds,
             getPriceUpdatesOperationName,
             _this._schedulerService.async,
-            (err:Error, willRetry:boolean) => {
+            (err, willRetry) => {
               if(willRetry && lastPrice !== null) {
                 // if we have any error on the price stream we pump a stale price
                 let stalePrice = new SpotPrice(
@@ -43,7 +43,7 @@ export default class PricingService extends ServiceBase {
                   lastPrice.spread,
                   false
                 );
-                o.onNext(stalePrice);
+                o.next(stalePrice);
               }
             }
           )
@@ -56,14 +56,14 @@ export default class PricingService extends ServiceBase {
             },
             { lastPriceDto: null, nextPriceDto: null } // the accumulator seed for the scan function
           )
-          .select(tuple => _this._priceMapper.mapFromSpotPriceDto(tuple.lastPriceDto, tuple.nextPriceDto))
+          .map(tuple => _this._priceMapper.mapFromSpotPriceDto(tuple.lastPriceDto, tuple.nextPriceDto))
           .subscribe(
-            (price:SpotPrice) => {
+            (price) => {
               lastPrice = price;
-              o.onNext(price);
+              o.next(price);
             },
-            err => { o.onError(err); },
-            () => { o.onCompleted(); }
+            err => { o.error(err); },
+            () => { o.complete(); }
           );
       }
     );

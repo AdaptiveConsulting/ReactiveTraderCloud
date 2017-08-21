@@ -6,6 +6,7 @@ metadata:
   labels:
     name: "__SERVICE__"
     major: "__MAJOR__"
+    public: "true"
 spec:
   selector:
     name: "__SERVICE__"
@@ -13,7 +14,7 @@ spec:
   ports:
   - port: 2113
     targetPort: 2113
-    name: "http"
+    name: "eventstore"
   - port: 1113
     targetPort: 1113
-    name: "stream"
+    name: "eventstore-tcp"

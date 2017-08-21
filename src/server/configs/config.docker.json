@@ -5,7 +5,7 @@
   },
   "broker": {
     "host": "192.168.99.100",
-    "port": 8080,
+    "port": 8000,
     "realm": "com.weareadaptive.reactivetrader"
   }
 }

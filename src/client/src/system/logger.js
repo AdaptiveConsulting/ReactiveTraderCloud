@@ -88,7 +88,7 @@ class Logger {
   }
 }
 
-function create(name):Logger {
+function create(name) {
   Guard.isDefined(name, 'The name argument should be defined');
   Guard.isString(name, 'The name argument should be a string');
   return new Logger(name);

@@ -1,0 +1,13 @@
+#! /bin/bash
+
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+
+for server in "referencedataread" "pricing" "tradeexecution" "blotter" "analytics" "broker" "eventstore" "web"
+do
+    container_id_file="${root_directory}/deploy/docker/run/${server}/container_id"
+    if [[ -f ${container_id_file} ]]
+    then
+        docker kill `cat ${container_id_file}`
+        rm ${container_id_file}
+    fi
+done

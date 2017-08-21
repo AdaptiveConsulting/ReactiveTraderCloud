@@ -1,4 +1,7 @@
-import Rx from 'rx';
+import { BehaviorSubject, Observable, Subscription, ConnectableObservable, Scheduler } from 'rxjs/Rx';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+
 import _ from 'lodash';
 import logger from '../logger';
 import Guard from '../guard';
@@ -10,22 +13,29 @@ import ServiceInstanceStatus from './serviceInstanceStatus';
 import ServiceStatus from './serviceStatus';
 import LastValueObservableDictionary from './lastValueObservableDictionary';
 
+// Importing ServiceObservableExtensions to add functions to Rx prototype
+import '../../../src/system/service/serviceObservableExtensions';
+
 /**
  * Abstracts a back end service for which there can be multiple instances.
  * Offers functionality to perform request-response and stream operations against a service instance.
  * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
-export default class ServiceClient extends DisposableBase {
-  _log:logger.Logger;
-  _serviceType:string;
-  _serviceInstanceDictionaryStream:Rx.Observable<LastValueObservableDictionary>;
-  _isConnectCalled:boolean;
 
-  static get HEARTBEAT_TIMEOUT():number {
+export default class ServiceClient extends DisposableBase {
+
+  _log;
+  _serviceType;
+  _serviceInstanceDictionaryStream;
+  _isConnectCalled;
+  _connection;
+  _schedulerService;
+
+  static get HEARTBEAT_TIMEOUT() {
     return 3000;
   }
 
-  constructor(serviceType:string, connection:Connection, schedulerService:SchedulerService) {
+  constructor(serviceType, connection, schedulerService) {
     super();
     Guard.stringIsNotEmpty(serviceType, 'serviceType required and should not be empty');
     Guard.isDefined(connection, 'connection required');
@@ -38,7 +48,7 @@ export default class ServiceClient extends DisposableBase {
     // each service we're getting heartbeats from .
     // The dictionary support querying by service load, handy when we kick off new operations.
     this._serviceInstanceDictionaryStream = this._createServiceInstanceDictionaryStream(serviceType)
-      .multicast(new Rx.BehaviorSubject(new LastValueObservableDictionary()));
+      .multicast(new BehaviorSubject(new LastValueObservableDictionary()));
   }
 
   /**
@@ -46,16 +56,16 @@ export default class ServiceClient extends DisposableBase {
    *
    * @returns {Observable<T>}
    */
-  get serviceStatusStream():Rx.Observable<ServiceStatus> {
+  get serviceStatusStream() {
     let _this = this;
     return this._serviceInstanceDictionaryStream
-      .select(cache => _this._createServiceStatus(cache))
+      .map(cache => _this._createServiceStatus(cache))
       .publish()
       .refCount();
   }
 
   // connects the underlying status observable
-  connect():void {
+  connect() {
     if(!this._isConnectCalled) {
       this._isConnectCalled = true;
       this.addDisposable(this._serviceInstanceDictionaryStream.connect());
@@ -73,35 +83,35 @@ export default class ServiceClient extends DisposableBase {
    * @returns {Observable}
    * @private
    */
-  _createServiceInstanceDictionaryStream(serviceType:string):Rx.Observable<LastValueObservableDictionary> {
+  _createServiceInstanceDictionaryStream(serviceType) {
     let _this = this;
-    return Rx.Observable.create(o => {
+    return Observable.create(o => {
       let connectionStatus = this._connection.connectionStatusStream
-        .select(status => status === ConnectionStatus.connected)
+        .map(status => status === ConnectionStatus.connected)
         .publish()
         .refCount();
-      let isConnectedStream = connectionStatus.where(isConnected => isConnected);
-      let errorOnDisconnectStream = connectionStatus.where(isConnected => !isConnected).take(1).selectMany(Rx.Observable.throw(new Error('Underlying connection disconnected')));
+      let isConnectedStream = connectionStatus.filter(isConnected => isConnected);
+      let errorOnDisconnectStream = connectionStatus.filter(isConnected => !isConnected).take(1);
       let serviceInstanceDictionaryStream = this._connection
         .subscribeToTopic('status')
-        .where(s => s.Type === serviceType)
-        .select(status => ServiceInstanceStatus.createForConnected(status.Type, status.Instance, status.TimeStamp, status.Load))
+        .filter(s => s.Type === serviceType)
+        .map(status => ServiceInstanceStatus.createForConnected(status.Type, status.Instance, status.TimeStamp, status.Load))
         // If the underlying connection goes down we error the stream.
         // Do this before the grouping so all grouped streams error.
         .merge(errorOnDisconnectStream)
-        .groupBy(serviceStatus => serviceStatus.serviceId)
+        .groupBy((serviceStatus) =>  serviceStatus.serviceId)
         // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
-        .debounceOnMissedHeartbeat(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), _this._schedulerService.async)
+        .debounceOnMissedHeartbeat(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), Scheduler.async)
         // create a hash of properties which represent significant change in a status, we'll use this to filter out duplicates
         .distinctUntilChangedGroup(status => { return `${status.serviceType}.${status.serviceId}.${status.isConnected}.${status.serviceLoad}`;})
         // flattens all our service instances stream into an observable dictionary so we query the service with the least load on a per-subscribe basis
         .toServiceStatusObservableDictionary(serviceStatus => serviceStatus.serviceId)
         // catch the disconnect error of the outer stream and continue with an empty (thus disconnected) dictionary
-        .catch(Rx.Observable.return(new LastValueObservableDictionary()));
+        .catch(() => Observable.of(new LastValueObservableDictionary()));
       return isConnectedStream
         .take(1)
-        // selectMany: since we're just taking one, this effectively just continues the stream by subscribing to serviceInstanceDictionaryStream
-        .selectMany(serviceInstanceDictionaryStream)
+        // flatMap: since we're just taking one, this effectively just continues the stream by subscribing to serviceInstanceDictionaryStream
+        .mergeMap(() => serviceInstanceDictionaryStream)
         // repeat after disconnects
         .repeat()
         .subscribe(o);
@@ -116,42 +126,42 @@ export default class ServiceClient extends DisposableBase {
    * @param waitForSuitableService if true, will wait for a service to become available before requesting, else will error the stream
    * @returns {Observable}
    */
-  createRequestResponseOperation<TRequest, TResponse>(operationName:string, request:TRequest, waitForSuitableService:boolean = false):Rx.Observable<TResponse> {
+  createRequestResponseOperation(operationName, request, waitForSuitableService = false) {
     let _this = this;
-    return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
+    return Observable.create((o) => {
       _this._log.debug(`Creating request response operation for [${operationName}]`);
-      let disposables = new Rx.CompositeDisposable();
+      let disposables = new Subscription();
       let hasSubscribed = false;
       disposables.add(_this._serviceInstanceDictionaryStream
         .getServiceWithMinLoad(waitForSuitableService)
         .subscribe(serviceInstanceStatus => {
             if (!serviceInstanceStatus.isConnected) {
-              o.onError(new Error('Service instance is disconnected for request response operation'));
+              o.error(new Error('Service instance is disconnected for request response operation'));
             } else if (!hasSubscribed) {
               hasSubscribed = true;
               _this._log.debug(`Will use service instance [${serviceInstanceStatus.serviceId}] for request/response operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`);
-              let remoteProcedure:string = serviceInstanceStatus.serviceId + '.' + operationName;
+              let remoteProcedure = serviceInstanceStatus.serviceId + '.' + operationName;
               disposables.add(
                 _this._connection.requestResponse(remoteProcedure, request).subscribe(
                   response => {
                     _this._log.debug(`Response received for stream operation [${operationName}]`);
-                    o.onNext(response);
+                    o.next(response);
                   },
                   err => {
-                    o.onError(err);
+                    o.error(err);
                   },
                   () => {
-                    o.onCompleted();
+                    o.complete();
                   }
                 )
               );
             }
           },
           err => {
-            o.onError(err);
+            o.error(err);
           },
           () => {
-            o.onCompleted();
+            o.complete();
           }
         ));
       return disposables;
@@ -165,11 +175,12 @@ export default class ServiceClient extends DisposableBase {
    * @param request
    * @returns {Observable}
    */
-  createStreamOperation<TRequest, TResponse>(operationName:string, request:TRequest):Rx.Observable<TResponse> {
+  createStreamOperation(operationName, request) {
     let _this = this;
-    return Rx.Observable.create((o:Rx.Observer<TResponse>) => {
+
+    return Observable.create((o) => {
       _this._log.debug(`Creating stream operation for [${operationName}]`);
-      let disposables = new Rx.CompositeDisposable();
+      let disposables = new Subscription();
       // The backend has a different contract for streams (i.e. request-> n responses) as it does with request-response (request->single response) thus
       // the different method here to support this.
       // It works like this: client creates a temp topic, we perform a RPC to then tell the backend to push to this topic.
@@ -186,30 +197,31 @@ export default class ServiceClient extends DisposableBase {
         .getServiceWithMinLoad()
         .subscribe(serviceInstanceStatus => {
             if (!serviceInstanceStatus.isConnected) {
-              o.onError(new Error('Service instance is disconnected for stream operation'));
+              o.error(new Error('Service instance is disconnected for stream operation'));
             } else if (!hasSubscribed) {
               hasSubscribed = true;
               _this._log.debug(`Will use service instance [${serviceInstanceStatus.serviceId}] for stream operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`);
               disposables.add(_this._connection
                 .subscribeToTopic(topicName)
                 .subscribe(
-                  i => o.onNext(i),
+                  i => o.next(i),
                   err => {
-                    o.onError(err);
+                    o.error(err);
                   },
                   () => {
-                    o.onCompleted();
+                    o.complete();
                   }
                 )
               );
-              let remoteProcedure:string = serviceInstanceStatus.serviceId + '.' + operationName;
+              let remoteProcedure = serviceInstanceStatus.serviceId + '.' + operationName;
               disposables.add(
-                _this._connection.requestResponse(remoteProcedure, request, topicName).subscribe(
+                _this._connection.requestResponse(remoteProcedure, request, topicName)
+                  .subscribe(
                   _ => {
                     _this._log.debug(`Ack received for RPC hookup as part of stream operation [${operationName}]`);
                   },
                   err => {
-                    o.onError(err);
+                    o.error(err);
                   },
                   () => {
                     // noop, nothing to do here, we don't complete the outer observer on ack
@@ -219,19 +231,19 @@ export default class ServiceClient extends DisposableBase {
             }
           },
           err => {
-            o.onError(err);
+            o.error(err);
           },
           () => {
-            o.onCompleted();
+            o.complete();
           }
         ));
       return disposables;
     });
   }
 
-  _createServiceStatus(cache:LastValueObservableDictionary):ServiceStatus {
-    let serviceInstanceStatuses : Array<ServiceInstanceStatus> = _.values(cache.values).map((item:LastValueObservable<ServiceInstanceStatus>) => item.latestValue);
-    let isConnected : Boolean = _(cache.values).some((item:LastValueObservable<ServiceInstanceStatus>) => item.latestValue.isConnected);
+  _createServiceStatus(cache) {
+    let serviceInstanceStatuses = _.values(cache.values).map((item) => item.latestValue);
+    let isConnected = _(cache.values).some((item) => item.latestValue.isConnected);
     return new ServiceStatus(this._serviceType, serviceInstanceStatuses, isConnected);
   }
 }

@@ -12,7 +12,7 @@ export default class SidebarRegionView extends React.Component {
   };
 
   render() {
-    let model:SingleItemRegionModel = this.props.model;
+    let model = this.props.model;
     if(!model.hasContent) {
       return null;
     }
@@ -20,7 +20,7 @@ export default class SidebarRegionView extends React.Component {
       'sidebar-region__content',
       { 'sidebar-region__container--no-content' : model.isCollapsed }
     );
-    let modelRegistration:RegionModelRegistration = model.modelRegistrations[0];
+    let modelRegistration = model.modelRegistrations[0];
     let innerContent = (
       <div className={className}>
         <SmartComponent modelId={modelRegistration.model.modelId} viewContext={modelRegistration.displayContext} />

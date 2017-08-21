@@ -9,32 +9,39 @@ fi
 # fail fast
 set -euo pipefail
 
-. ../../../config
-
-mkdir -p ./build
+# load configuration
+this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+root_directory="${this_directory}/../../../.."
+. ${root_directory}/deploy/config
 
 # get source code
-cp -r ../../../../src/server ./build/
-
-cp  ./template.Dockerfile                           ./build/Dockerfile
-sed -ie "s|__DOTNET_CONTAINER__|$dotnetContainer|g" ./build/Dockerfile
+if [[ -d "${this_directory}/build" ]]
+then rm -r ${this_directory}/build
+fi
+mkdir -p ${this_directory}/build
+cp -r ${root_directory}/src/server ${this_directory}/build/
+cp ${this_directory}/template.Dockerfile ${this_directory}/build/Dockerfile
+sed -ie "s|__DOTNET_CONTAINER__|$dotnetContainer|g" ${this_directory}/build/Dockerfile
 
 # build
-docker build --no-cache -t weareadaptive/serverssrc:$build ./build/.
+docker build --no-cache -t weareadaptive/serverssrc:$build ${this_directory}/build/.
 
 # restore package
-docker rm dotnetrestored || true
+container_name="dotnetrestored"
+if [[ "$(docker ps -q -a --filter name=${container_name})" != "" ]]
+then docker rm ${container_name} > /dev/null || true
+fi
 
-buildCommand="mkdir -p /packages"
-### TODO: this doesn't work when running on windows due to file permission issues
-### Also even in a Linux host it doesn't seem to stop package downloads, thus need investigating 
-# buildCommand="$buildCommand && cp -r /packages /root/.nuget/"
-buildCommand="$buildCommand && dotnet restore"
-# buildCommand="$buildCommand && cp -r /root/.nuget/packages /"
-buildCommand="$buildCommand && dotnet build --configuration Release"
-
-docker run -t --name dotnetrestored -v /$(pwd)/dotnetcache:/packages weareadaptive/serverssrc:$build bash -c "$buildCommand"
+build_command="mkdir -p /packages"
+build_command="${build_command} && dotnet restore"
+build_command="${build_command} && dotnet build */project.json --configuration Release"
+docker run -t --name ${container_name} -v /${this_directory}/dotnetcache:/packages weareadaptive/serverssrc:$build bash -c "${build_command}"
 
 # commit
-docker commit dotnetrestored $serversContainer
+docker commit ${container_name} $serversContainer
 docker tag $serversContainer $serversContainer.$build
+
+# clean
+if [[ "$(docker ps -q -a --filter name=${container_name})" != "" ]]
+then docker rm ${container_name} > /dev/null || true
+fi

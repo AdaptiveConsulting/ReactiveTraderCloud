@@ -1,10 +1,9 @@
-import { Router,  observeEvent, RouterSubject } from 'esp-js';
+import { observeEvent } from 'esp-js';
 import { viewBinding } from 'esp-js-react';
-import { AnalyticsService } from '../../../services';
 import { ServiceStatus } from '../../../system/service';
-import { logger, Environment } from '../../../system';
+import { Environment } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
-import { RegionManager, RegionNames, } from '../../regions';
+import { RegionNames, } from '../../regions';
 import { PnlChartModel, PositionsChartModel, ChartModelBase } from './';
 import {
   AnalyticsRequest,
@@ -13,29 +12,30 @@ import {
 } from '../../../services/model';
 import AnalyticsView from '../views/analyticsView.jsx';
 import { OpenFin } from '../../../system/openFin';
-import { WellKnownModelIds } from '../../../';
 
-var _log:logger.Logger = logger.create('AnalyticsModel');
+import logger from '../../../system/logger';
+
+var _log = logger.create('AnalyticsModel');
 
 @viewBinding(AnalyticsView)
 export default class AnalyticsModel extends ModelBase {
-  _analyticsService:AnalyticsService;
-  _positionsChartModel:PositionsChartModel;
-  _pnlChartModel:PnlChartModel;
-  _regionManagerHelper:RegionManagerHelper;
-  _regionManager:RegionManager;
-  _regionSettings:RegionSettings;
-  _regionName:string;
-  _openFin:OpenFin;
+  _analyticsService;
+  _positionsChartModel;
+  _pnlChartModel;
+  _regionManagerHelper;
+  _regionManager;
+  _regionSettings;
+  _regionName;
+  _openFin;
 
-  isAnalyticsServiceConnected: Boolean;
+  isAnalyticsServiceConnected;
 
   constructor(
-    modelId:string,
-    router:Router,
-    analyticsService:AnalyticsService,
-    regionManager:RegionManager,
-    openFin:OpenFin
+    modelId,
+    router,
+    analyticsService,
+    regionManager,
+    openFin
   ) {
     super(modelId, router);
     this._analyticsService = analyticsService;
@@ -90,7 +90,7 @@ export default class AnalyticsModel extends ModelBase {
       this._analyticsService.getAnalyticsStream(new AnalyticsRequest('USD')).subscribeWithRouter(
         this.router,
         this.modelId,
-        (analyticsUpdate:PositionUpdates) => {
+        (analyticsUpdate) => {
           this._pnlChartModel.update(analyticsUpdate.history);
           this._positionsChartModel.update(analyticsUpdate.currentPositions);
           this._openFin.publishCurrentPositions(analyticsUpdate.currentPositions);
@@ -107,7 +107,7 @@ export default class AnalyticsModel extends ModelBase {
       this._analyticsService.serviceStatusStream.subscribeWithRouter(
         this.router,
         this.modelId,
-        (status:ServiceStatus) => {
+        (status) => {
           this.isAnalyticsServiceConnected = status.isConnected;
         })
     );

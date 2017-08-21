@@ -5,12 +5,12 @@ import { logger } from '../../system';
 
 const REGION_STATE_STORAGE_KEY = 'regions-state';
 
-let _log:logger.Logger = logger.create('RegionManager');
+let _log = logger.create('RegionManager');
 
 export default class RegionManager {
-  _regionsByName:{ [regionName: string] : RegionModel };
-  _persistRegionConfiguration:Boolean;
-  constructor(regions:Array<RegionModel>, persistRegionConfiguration) {
+  _regionsByName;
+  _persistRegionConfiguration;
+  constructor(regions, persistRegionConfiguration) {
     this._regionsByName = {};
     this._persistRegionConfiguration = persistRegionConfiguration;
     regions.forEach(region => {
@@ -19,16 +19,12 @@ export default class RegionManager {
   }
 
   addToRegion(
-    regionName:string,
-    model:ModelBase,
-    options?: {
-      displayContext?:string,
-      onExternallyRemovedCallback:?() => void,
-      regionSettings:any
-    },
+    regionName,
+    model,
+    options,
     persistToLocalStorage
   ) {
-    const region : RegionModel = this._regionsByName[regionName];
+    const region = this._regionsByName[regionName];
     Guard.isDefined(region, `region with name ${regionName} not registered`);
     region.addToRegion(model, options);
 
@@ -37,8 +33,8 @@ export default class RegionManager {
     }
   }
 
-  removeFromRegion(regionName:string, model:ModelBase, displayContext:?string) {
-    const region : RegionModel = this._regionsByName[regionName];
+  removeFromRegion(regionName, model, displayContext) {
+    const region = this._regionsByName[regionName];
     Guard.isDefined(region, `region with name ${regionName} not registered`);
     region.removeFromRegion(model, displayContext);
   }

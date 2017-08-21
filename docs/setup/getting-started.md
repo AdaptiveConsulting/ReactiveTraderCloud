@@ -4,7 +4,7 @@
 
 The simplest way to build and run the full application no matter which OS you are running is by using Docker.
 
-[Getting Started using Docker](docker-setup.md)
+[Getting Started using Docker](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/readme.md)
 
 ### Front-End
 

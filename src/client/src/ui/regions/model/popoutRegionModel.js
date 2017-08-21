@@ -7,13 +7,13 @@ import { ModelBase } from '../../common';
 
 export default class PopoutRegionModel extends RegionModel {
 
-  constructor(modelId:string, regionName:string, router:Router, openfin) {
+  constructor(modelId, regionName, router, openfin) {
     super(modelId, regionName, router);
     this._popoutService = getPopoutService(openfin);
   }
 
   // override
-  _addToRegion(model:ModelBase, options:?RegionOptions) : RegionModelRegistration {
+  _addToRegion(model, options) {
     let modelRegistration = super._addToRegion(model, options);
     let regionSettings = modelRegistration.regionSettings || {};
     let width = regionSettings.width || 400;

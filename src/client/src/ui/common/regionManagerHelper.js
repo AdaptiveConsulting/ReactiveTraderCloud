@@ -4,16 +4,16 @@ import { RegionSettings } from '../../services/model';
  * helper class for models that can be popped out into their own window
  */
 export default class RegionManagerHelper {
-  _regionManager:RegionManager;
-  _regionName:string;
-  _model:any;
-  _regionSettings:RegionSettings;
+  _regionManager;
+  _regionName;
+  _model;
+  _regionSettings;
 
   constructor(
-    regionName:string,
-    regionManager:RegionManager,
-    model:any,
-    regionSettings:RegionSettings
+    regionName,
+    regionManager,
+    model,
+    regionSettings
   ) {
     this._regionManager = regionManager;
     this._regionName = regionName;

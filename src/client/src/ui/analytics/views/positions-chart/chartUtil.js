@@ -3,7 +3,7 @@ import d3 from 'd3';
 import numeral from 'numeral';
 import {  CurrencyPairPosition } from '../../../../services/model';
 
-export function getPositionsDataFromSeries(series):Array<{symbol:string, baseAmount:number}>{
+export function getPositionsDataFromSeries(series) {
   let baseAmountPropertyName = CurrencyPairPosition.baseTradedAmountName;
   let positionsPerCcyObj = series.reduce((aggregatedPositionsObj, ccyPairPosition) => {
 

@@ -4,7 +4,8 @@ echo "Loading containers"
 
 for container in "dotnet" "crossbar" "eventstore" "nginx"
 do
-  if [[ -e ~/docker/$container.tar ]]; then 
-    docker load -i ~/docker/$container.tar && echo "$container loaded" 
+  # Here ~ refer to the home in circleci
+  if [[ -e ~/docker/$container.tar ]]; then
+    docker load -i ~/docker/$container.tar && echo "$container loaded"
   fi
 done
