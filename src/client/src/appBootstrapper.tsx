@@ -5,7 +5,7 @@ import SchedulerService from './system/schedulerService'
 import AutobahnConnectionProxy from './system/service/autobahnConnectionProxy'
 import Connection from './system/service/connection'
 import { OpenFin } from './system/openFin'
-import { Shell } from './ui/shell'
+import { Shell, OpenFinProvider } from './ui/shell'
 import { Provider } from 'react-redux'
 import * as config from 'config.json'
 
@@ -108,7 +108,9 @@ class AppBootstrapper {
     window.store = store
     ReactDOM.render(
         <Provider store={store}>
-          <Shell />
+          <OpenFinProvider openFin={this._openFin}>
+            <Shell/>
+          </OpenFinProvider>
         </Provider>
       ,
       document.getElementById('root'),
