@@ -2,11 +2,11 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import './workspace.scss'
 import { connect } from 'react-redux'
-import SpotTile from '../spotTile/SpotTile';
-import CurrencyPair from '../../services/model/currencyPair';
-import { Direction } from '../../services/model/index';
-import { bindActionCreators, Dispatch } from 'redux';
-import { executeTrade } from '../../redux/execution/executionOperations';
+import SpotTile from '../spotTile/SpotTile'
+import CurrencyPair from '../../services/model/currencyPair'
+import { Direction } from '../../services/model/index'
+import { bindActionCreators, Dispatch } from 'redux'
+import { executeTrade } from '../../redux/execution/executionOperations'
 
 interface WorkspaceContainerOwnProps {
 
@@ -73,11 +73,13 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => bindActionCreators({
+const mapDispatchToProps = (dispatch: Dispatch<any>) => bindActionCreators(
+  {
     executeTrade,
-  }, dispatch)
+  },
+  dispatch)
 
-  function mapStateToProps({ pricingService, compositeStatusService, referenceService, notionals }) {
+function mapStateToProps({ pricingService, compositeStatusService, referenceService, notionals }) {
   const isConnected =  compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected || false
   return { pricingService, isConnected, referenceService, notionals }
 }

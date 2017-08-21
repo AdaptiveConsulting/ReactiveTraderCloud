@@ -1,2 +1,2 @@
 declare var __VERSION__: string
-declare var fin: object
+declare var fin: any

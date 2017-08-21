@@ -4,8 +4,6 @@ import FooterContainer from '../footer/FooterContainer'
 import SidebarRegionContainer from '../sidebar/SidebarRegionContainer'
 import { WorkspaceContainer } from '../workspace/'
 import { BlotterContainer } from '../blotter'
-import { connect } from 'react-redux'
-import { reconnect } from './actions'
 import './shell.scss'
 import '../common/styles/_base.scss'
 import '../common/styles/_fonts.scss'
@@ -18,13 +16,12 @@ export interface ShellProps {
   reconnect: () => void
 }
 
-class ShellContainer extends React.Component<ShellProps, {}> {
-  props: ShellProps
-  appVersion: string = __VERSION__ // version from package.json exported in webpack.config.js
-
+export default class Shell extends React.Component<ShellProps, {}> {
   static contextTypes = {
     openFin: React.PropTypes.object,
   }
+  props: ShellProps
+  appVersion: string = __VERSION__ // version from package.json exported in webpack.config.js
 
   render() {
     const { sessionExpired } = this.props
@@ -62,10 +59,3 @@ class ShellContainer extends React.Component<ShellProps, {}> {
     )
   }
 }
-
-function mapStateToProps({ connectionStatus }) {
-  const sessionExpired = connectionStatus.connection !== 'connected'
-  return { sessionExpired }
-}
-
-export default connect(mapStateToProps, { reconnect })(ShellContainer)

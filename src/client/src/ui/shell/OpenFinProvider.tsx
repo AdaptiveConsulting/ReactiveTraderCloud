@@ -1,4 +1,5 @@
 import * as React from 'react'
+import OpenFinChrome from './OpenFinChrome'
 
 interface childContextTypes {
   getChildContext?: () => boolean
@@ -11,10 +12,22 @@ export default class OpenFinProvider extends React.Component<childContextTypes, 
   }
 
   getChildContext() {
-    return { openFin: this.props.openFin.isRunningInOpenFin ? this.props.openFin : null }
+    const { openFin } = this.props
+
+    return { openFin: openFin.isRunningInOpenFin ? openFin : null }
   }
 
   render() {
-    return React.Children.only(this.props.children)
+    const { openFin } = this.props
+
+    return openFin.isRunningInOpenFin ? 
+      <OpenFinChrome
+        openFin={openFin}
+        minimize={openFin.minimize.bind(openFin)}
+        maximize={openFin.maximize.bind(openFin)}
+        close={openFin.close.bind(openFin)}>
+        {this.props.children}
+      </OpenFinChrome> 
+    : React.Children.only(this.props.children)
   }
 }

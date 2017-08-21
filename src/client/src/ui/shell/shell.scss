@@ -23,6 +23,12 @@
   height: 100vh;
 }
 
+@media all and (max-width: 700px) {
+  .shell__browser_wrapper {
+    height: auto;
+  }
+}
+
 .shell__splash {
   background: url('../common/images/splash-screen.jpg'), #1f2a36;
   background-size: 400px $splash-logo-height;
