@@ -19,13 +19,17 @@ interface AnalyticsContainerStateProps {
 }
 
 interface AnalyticsContainerDispatchProps {
-  onPopoutClick: () => void
+  onPopoutClick: (any) => any
   onComponentMount: () => void
 }
 
 type AnalyticsContainerProps = AnalyticsContainerOwnProps & AnalyticsContainerStateProps & AnalyticsContainerDispatchProps
 
 class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
+
+  static contextTypes = {
+    openFin: React.PropTypes.object,
+  }
 
   public componentDidMount() {
     this.props.onComponentMount()
@@ -34,6 +38,7 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
   render() {
 
     const { analyticsService, isConnected } = this.props
+    const openFin = this.context.openFin
     const positionsChartModel = getPositionsChartModel(analyticsService.currentPositions)
     const pnlChartModel = getPnlChartModel(analyticsService.history)
 
@@ -41,7 +46,7 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
       isConnected,
       pnlChartModel,
       positionsChartModel,
-      onPopoutClick: this.props.onPopoutClick,
+      onPopoutClick: this.props.onPopoutClick(openFin),
       canPopout: true,
     }
 
@@ -55,8 +60,8 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onPopoutClick: () => {
-      dispatch(onPopoutClick(analyticsRegion))
+    onPopoutClick: (openFin) => {
+     return () => { dispatch(onPopoutClick(analyticsRegion, openFin))}
     },
     onComponentMount: () => {
       dispatch(onComponentMount(analyticsRegion))

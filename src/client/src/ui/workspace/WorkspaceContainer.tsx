@@ -32,7 +32,7 @@ const NOTIONAL = 1000000
 
 export class WorkspaceContainer extends React.Component<WorkspaceContainerProps, {}> {
   render() {
-    const items = Object.values(this.props.pricingService)
+    const items = _.values(this.props.pricingService)
 
     return <div className="shell__workspace">
         <div className="workspace-region">

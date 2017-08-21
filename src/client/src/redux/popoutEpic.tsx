@@ -17,7 +17,7 @@ const generateView = (container) => {
 export const popoutEpic = openFin => (action$, store) => {
   return action$.ofType(REGIONS_ACTIONS.REGION_OPEN_WINDOW)
     .map(action => {
-      const popoutService = getPopoutService(openFin)
+      const popoutService = getPopoutService(action.payload.openFin)
       const { id, container, settings } = action.payload
       const popoutView = generateView(container)
       popoutService.openPopout(

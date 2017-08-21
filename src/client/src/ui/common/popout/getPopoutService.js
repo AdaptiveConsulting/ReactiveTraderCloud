@@ -5,7 +5,7 @@ let popoutService = null;
 
 export default function getPopoutService(openfin) {
   if (popoutService === null) {
-    popoutService = openfin.isRunningInOpenFin ? new OpenfinPopoutService(openfin) : new BrowserPopoutService();
+    popoutService = openfin && openfin.isRunningInOpenFin ? new OpenfinPopoutService(openfin) : new BrowserPopoutService();
   }
   return popoutService;
 }

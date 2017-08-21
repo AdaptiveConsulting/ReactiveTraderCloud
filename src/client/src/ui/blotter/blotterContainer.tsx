@@ -5,16 +5,22 @@ import { onPopoutClick, onComponentMount, blotterRegionsSettings } from './blott
 import Blotter from './blotter'
 
 class BlotterContainer extends React.Component<any, {}> {
+
+  static contextTypes = {
+    openFin: React.PropTypes.object,
+  }
+
   public componentDidMount() {
     this.props.onComponentMount()
   }
 
   public render() {
     const trades = this.props.blotterService.trades
+    const openFin = this.context.openFin
     const blotterProps = {
       trades: _.values(trades).reverse(),
       isConnected: this.props.isConnected,
-      onPopoutClick: this.props.onPopoutClick,
+      onPopoutClick: this.props.onPopoutClick(openFin),
       canPopout: true,
       size: this.props.size,
     }
@@ -33,8 +39,10 @@ const mapStateToProps = ({ blotterService, compositeStatusService }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onPopoutClick: () => {
-      dispatch(onPopoutClick(blotterRegion))
+    onPopoutClick: (openFin) => {
+      return () => {
+        dispatch(onPopoutClick(blotterRegion, openFin))
+      }
     },
     onComponentMount: () => {
       dispatch(onComponentMount(blotterRegion))

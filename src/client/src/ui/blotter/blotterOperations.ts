@@ -10,7 +10,7 @@ export const ACTION_TYPES = {
 }
 
 export const fetchBlotter = createAction(ACTION_TYPES.BLOTTER_SERVICE)
-export const onPopoutClick = createAction(REGION_ACTION_TYPES.REGION_OPEN_WINDOW, payload => payload)
+export const onPopoutClick = createAction(REGION_ACTION_TYPES.REGION_OPEN_WINDOW, (payload, openFin) => ({...payload, openFin}))
 export const onComponentMount = createAction(REGION_ACTION_TYPES.REGION_ADD, payload => payload)
 
 export const blotterServiceEpic = blotterService$ => action$ => {
