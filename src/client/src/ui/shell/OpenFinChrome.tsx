@@ -12,16 +12,6 @@ interface OpenFinChromeProps {
 }
 
 export default class OpenFinChrome extends React.Component<OpenFinChromeProps, {}> {
-  currentWindow: any = null
-  componentDidMount() {
-    const { openFin } = this.props
-
-    openFin.desktop.main(() => {
-      this.currentWindow = openFin.desktop.Window.getCurrent()
-      // const toolbar = this.currentWindow.contentWindow.document.getElementsByClassName('openfin-chrome__header')[0]
-    })
-  }
-
   render() {
     const headerClasses = classnames('openfin-chrome__header', {
       'openfin-chrome__header--no-bar' : this.props.showHeaderBar === false,
