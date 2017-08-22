@@ -1,12 +1,13 @@
 import * as React from 'react'
 import OpenFinChrome from './OpenFinChrome'
 
-interface childContextTypes {
+export interface ChildContextTypes {
   getChildContext?: () => boolean
   openFin: any,
 }
 
-export default class OpenFinProvider extends React.Component<childContextTypes, {}> {
+export default class OpenFinProvider extends React.Component<ChildContextTypes, {}> {
+  props
   static childContextTypes = {
     openFin: React.PropTypes.object,
   }

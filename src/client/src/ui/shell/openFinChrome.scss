@@ -44,7 +44,8 @@ $header-height: 30px;
   z-index: 2;
   background: transparent;
   width: calc(100% - 70px);
-  cursor: move;
+  // when using -webkit-app-region: drag; cursor is overwritten by system settings and the visual result is contradictory to function
+  // cursor: move;
   .openfin-chrome__header-controls-container {
     position: absolute;
     color: #90AFC1;
