@@ -1,4 +1,4 @@
-import numeral from 'numeral';
+import * as numeral from 'numeral';
 import * as moment from 'moment';
 
 import Trade from './trade';
