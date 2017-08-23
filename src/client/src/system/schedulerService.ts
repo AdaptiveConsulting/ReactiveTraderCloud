@@ -11,6 +11,7 @@ export default class SchedulerService {
   constructor() {
     this._immediate = Scheduler.asap;
     this._async = Scheduler.asap;
+    this._async.scheduleFuture = Scheduler.asap.schedule;
   }
 
   get immediate() {
