@@ -5,10 +5,4 @@ jq
 certificates
 
 # Minikube
-minikube/apiserver.crt
-minikube/apiserver.key
-minikube/ca.crt
-minikube/docker-env.ps1
-minikube/docker-env.sh
-minikube_ip
-minikube/minikube.exe
+minikube/minikube_data
