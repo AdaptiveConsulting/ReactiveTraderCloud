@@ -5,8 +5,10 @@ import { connect } from 'react-redux'
 import SpotTile from '../spotTile/SpotTile'
 import CurrencyPair from '../../services/model/currencyPair'
 import { Direction } from '../../services/model/index'
-import { bindActionCreators, Dispatch } from 'redux'
-import { executeTrade } from '../../redux/execution/executionOperations'
+import { Dispatch } from 'redux'
+import { executeTrade, spotRegionSettings } from '../../redux/execution/executionOperations'
+import { onComponentMount } from '../blotter/blotterOperations'
+
 
 interface WorkspaceContainerOwnProps {
 
@@ -24,24 +26,35 @@ interface WorkspaceContainerStateProps {
 
 interface WorkspaceContainerDispatchProps {
   executeTrade: (direction: Direction) => void
+  onComponentMount: (id: string) => void
 }
 
-type WorkspaceContainerProps = WorkspaceContainerOwnProps & WorkspaceContainerStateProps & WorkspaceContainerDispatchProps
+type WorkspaceContainerProps =
+  WorkspaceContainerOwnProps
+  & WorkspaceContainerStateProps
+  & WorkspaceContainerDispatchProps
 
 const NOTIONAL = 1000000
 
 export class WorkspaceContainer extends React.Component<WorkspaceContainerProps, {}> {
+
+  static contextTypes = {
+    openFin: React.PropTypes.object,
+  }
+
+
   render() {
+    const openFin = this.context.openFin
     const items = _.values(this.props.pricingService)
 
     return <div className="shell__workspace">
-        <div className="workspace-region">
-          { this.renderItems(items) }
-        </div>
+      <div className="workspace-region">
+        {this.renderItems(items, openFin)}
       </div>
+    </div>
   }
 
-  renderItems(items) {
+  renderItems(items, openFin) {
     if (!items.length) {
       return <div className="workspace-region__icon--loading"><i className="fa fa-5x fa-cog fa-spin"/></div>
     }
@@ -66,6 +79,7 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
             pricingConnected={true}
             title={title}
             executeTrade={this.props.executeTrade}
+            onComponentMount={this.props.onComponentMount}
           />
         </div>
       )
@@ -73,15 +87,29 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => bindActionCreators(
-  {
-    executeTrade,
+const mapDispatchToProps = (dispatch: Dispatch<any>,) => ({
+  executeTrade: (payload) => {
+    dispatch(executeTrade(payload))
   },
-  dispatch)
+  onComponentMount: (id) => {
+    dispatch(onComponentMount(spotTileRegion(id)))
+  }
+})
 
-function mapStateToProps({ pricingService, compositeStatusService, referenceService, notionals }) {
-  const isConnected =  compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected || false
-  return { pricingService, isConnected, referenceService, notionals }
+const spotTileRegion = id => (
+  {
+    id,
+    isTearedOff: false,
+    container: ConnectedWorkspaceContainer,
+    settings: spotRegionSettings(id)
+  }
+)
+
+function mapStateToProps({pricingService, compositeStatusService, referenceService, notionals}) {
+  const isConnected = compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected || false
+  return {pricingService, isConnected, referenceService, notionals}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WorkspaceContainer)
+const ConnectedWorkspaceContainer = connect(mapStateToProps, mapDispatchToProps)(WorkspaceContainer)
+
+export default ConnectedWorkspaceContainer

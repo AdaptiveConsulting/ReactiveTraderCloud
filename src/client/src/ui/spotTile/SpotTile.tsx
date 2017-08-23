@@ -49,10 +49,16 @@ export interface SpotTileProps {
   pricingConnected: boolean
   title: string
   executeTrade: (direction: any) => void
+  onComponentMount: (id: string) => void
 }
 
 export default class SpotTile extends React.Component<SpotTileProps, {}> {
   props: SpotTileProps
+
+  componentDidMount() {
+    const currencyPair = this.props.currencyPair.currencyPair.symbol
+    this.props.onComponentMount(currencyPair)
+  }
 
   render() {
     const {
