@@ -54,7 +54,7 @@ nginxContainer_minor="12"
 nginxContainer="weareadaptive/nginx:$nginxContainer_major.$nginxContainer_minor"
 
 # dotnet
-dotnetversion="dotnet-dev-2.0.0"
+dotnetversion="dotnet-sdk-2.0.0"
 dotnetContainer_major="2"
 dotnetContainer_minor="0"
 dotnetContainer="weareadaptive/dotnet:$dotnetContainer_major.$dotnetContainer_minor"
