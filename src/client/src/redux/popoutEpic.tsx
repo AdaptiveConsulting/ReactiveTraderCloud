@@ -10,7 +10,7 @@ const popoutOpened = createAction(REGIONS_ACTIONS.REGION_TEAROFF_WINDOW, payload
 const popoutClosed = createAction(REGIONS_ACTIONS.REGION_ATTACH_WINDOW, payload => payload)
 
 const generateView = (container) => {
-  const childComponent = React.createElement(container)
+  const childComponent = React.isValidElement(container) ? container : React.createElement(container)
   return React.createElement(Provider, { store: window.store }, childComponent)
 }
 
