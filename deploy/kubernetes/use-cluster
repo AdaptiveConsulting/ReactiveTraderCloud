@@ -39,9 +39,10 @@ else
     # USE OF MINIKUBE
     if [[ "${CLUSTER_NAME}" == "minikube" ]]
     then
-        minikube_ip=$(cat ${root_directory}/deploy/minikube/minikube_ip)
+        minikube_data_directory="deploy/minikube/minikube_data"
+        minikube_ip=$(cat ${root_directory}/${minikube_data_directory}/minikube_ip)
         ${root_directory}/deploy/clis/kubectl config set-cluster minikube \
-            --certificate-authority=//root_directory/deploy/minikube/ca.crt \
+            --certificate-authority=//root_directory/${minikube_data_directory}/ca.crt \
             --server=https://${minikube_ip}:8443
 
         ${root_directory}/deploy/clis/kubectl config set-context minikube \
@@ -49,8 +50,8 @@ else
             --user=minikube
 
         ${root_directory}/deploy/clis/kubectl config set-credentials minikube \
-            --client-key=//root_directory/deploy/minikube/apiserver.key \
-            --client-certificate=//root_directory/deploy/minikube/apiserver.crt
+            --client-key=//root_directory/${minikube_data_directory}/apiserver.key \
+            --client-certificate=//root_directory/${minikube_data_directory}/apiserver.crt
     fi
 
     EXISTS=`${kubectl} config view | grep "name: ${CLUSTER_NAME}" | wc -l`
