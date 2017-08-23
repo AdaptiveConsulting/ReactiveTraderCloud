@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Trade Execution Service</Description>
     <Authors>Adaptive Financial Consulting Ltd.</Authors>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>Adaptive.ReactiveTrader.Server.TradeExecution</AssemblyName>
     <OutputType>Exe</OutputType>

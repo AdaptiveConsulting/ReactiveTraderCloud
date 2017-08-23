@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>EventStore</Description>
     <Authors>Adaptive Financial Consulting Ltd.</Authors>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Adaptive.ReactiveTrader.EventStore</AssemblyName>
     <PackageId>Adaptive.ReactiveTrader.EventStore</PackageId>
     <PackageTags>Adaptive;Reactive Trader</PackageTags>
@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="EventStore.ClientAPI.DotNetCore" Version="1.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.Reactive" Version="3.1.1" />
   </ItemGroup>

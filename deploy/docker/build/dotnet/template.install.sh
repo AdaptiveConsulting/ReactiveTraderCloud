@@ -14,6 +14,6 @@ apt-get autoremove -y
 
 # Pre-populate packages
 cd ~ && mkdir init && cd init
-dotnet new console --framework netcoreapp1.1
+dotnet new console --framework netcoreapp2.0
 dotnet restore
 cd ~ && rm -rf init

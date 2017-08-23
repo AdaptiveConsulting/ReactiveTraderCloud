@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Server Host</Description>
     <Authors>Adaptive Financial Consulting Ltd.</Authors>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Adaptive.ReactiveTrader.Server.Host</AssemblyName>
     <PackageId>Adaptive.ReactiveTrader.Server.Host</PackageId>
     <PackageTags>Adaptive;Reactive Trader</PackageTags>
@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
     <PackageReference Include="System.Reactive" Version="3.1.1" />
   </ItemGroup>
 

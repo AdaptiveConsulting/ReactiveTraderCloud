@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Server Common</Description>
     <Authors>Adaptive Financial Consulting Ltd.</Authors>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Adaptive.ReactiveTrader.Server.Common</AssemblyName>
     <PackageId>Adaptive.ReactiveTrader.Server.Common</PackageId>
     <PackageTags>Adaptive;Reactive Trader</PackageTags>
@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
 
 </Project>

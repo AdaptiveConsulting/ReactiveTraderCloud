@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Pricing Service</Description>
     <Authors>Adaptive Financial Consulting Ltd.</Authors>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>Adaptive.ReactiveTrader.Server.Pricing</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
 
 </Project>

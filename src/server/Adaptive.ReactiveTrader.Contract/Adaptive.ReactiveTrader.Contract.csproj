@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Contracts and DTOs</Description>
     <Authors>Adaptive Financial Consulting Ltd.</Authors>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Adaptive.ReactiveTrader.Contract</AssemblyName>
     <PackageId>Adaptive.ReactiveTrader.Contract</PackageId>
     <PackageTags>Adaptive;Reactive Trader</PackageTags>
@@ -13,8 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="protobuf-net" Version="2.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="protobuf-net" Version="2.3.2" />
   </ItemGroup>
 
 </Project>
