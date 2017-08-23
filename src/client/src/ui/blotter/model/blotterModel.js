@@ -45,7 +45,7 @@ export default class BlotterModel extends ModelBase {
   }
 
   get canPopout() {
-    return Environment.isRunningInIE;
+    return !Environment.isRunningInIE;
   }
 
   @observeEvent('init')

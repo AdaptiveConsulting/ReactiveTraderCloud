@@ -26,15 +26,11 @@ export default class SpotTileView extends React.Component {
     let spotDateClass = classnames('spot-tile__delivery', {'hide': model.hasNotification});
     let notification = this._tryCreateNotification();
     let priceComponents = this._createPriceComponents();
-    let showChartIQIcon = model.isRunningInOpenFin;
 
-    const chartIQIconClassName = classnames(
-      {
-        'spot-tile__icon--hidden': !showChartIQIcon,
-        'glyphicon glyphicon-refresh spot-tile__icon--rotate': model.currencyChartIsOpening,
-        'spot-tile__icon--chart glyphicon glyphicon-stats': !model.currencyChartIsOpening
-      }
-    );
+    const chartIQIconClassName = classnames({
+      'glyphicon glyphicon-refresh spot-tile__icon--rotate': model.currencyChartIsOpening,
+      'glyphicon glyphicon-stats spot-tile__icon--chart': !model.currencyChartIsOpening
+    });
 
     const formattedDate = model.currentSpotPrice ? moment(model.currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT) : '';
     const className = classnames(
@@ -47,13 +43,6 @@ export default class SpotTileView extends React.Component {
       }
     );
 
-    const newWindowClassName = classnames(
-      'popout__controls  glyphicon glyphicon-new-window',
-      {
-        'spot-tile__icon--tearoff': !model.canPopout,
-        'spot-tile__icon--hidden': model.canPopout
-      }
-    );
     let spotTileContent = (
       <div>
         <span className='spot-tile__execution-label'>Executing</span>
@@ -73,14 +62,25 @@ export default class SpotTileView extends React.Component {
     return (
       <div className={className}>
         <div className='spot-tile__container'>
-          <div className='spot-tile__controls'>
-            <i className={chartIQIconClassName}
-               onClick={() => this._displayCurrencyChart()}/>
-            <i className={newWindowClassName}
-               onClick={() => this.props.router.publishEvent(model.modelId, 'popOutTile', {})}/>
-            <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
-               onClick={() => this.props.router.publishEvent(model.modelId, 'undockTile', {})}/>
-          </div>
+          <ul className='spot-tile__controls'>
+            <li className='spot-tile__control'>
+              <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
+                 onClick={() => this.props.router.publishEvent(model.modelId, 'undockTile', {})}/>
+            </li>
+            {model.isRunningInOpenFin ? (
+              <li className='spot-tile__control'>
+                <i className={chartIQIconClassName} onClick={() => this._displayCurrencyChart()}/>
+              </li>
+              ) : null
+            }
+            {model.canPopout ? (
+                <li className='spot-tile__control popout__controls'>
+                  <i className='glyphicon glyphicon-new-window spot-tile__icon--tearoff'
+                     onClick={() => this.props.router.publishEvent(model.modelId, 'popOutTile', {})}/>
+                </li>
+              ) : null
+            }
+          </ul>
           {!model.hasNotification ? spotTileContent : notification}
         </div>
       </div>
