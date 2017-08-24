@@ -25,39 +25,51 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
         public string Procedure { get; }
 
-        public void Invoke<TMessage>(IWampRawRpcOperationRouterCallback caller,
-                                     IWampFormatter<TMessage> formatter,
-                                     InvocationDetails details)
+        public IWampCancellableInvocation Invoke<TMessage>(IWampRawRpcOperationRouterCallback caller,
+            IWampFormatter<TMessage> formatter,
+            InvocationDetails details)
         {
             var dummyDetails = new Dictionary<string, object>();
 
             caller.Error(WampObjectFormatter.Value,
-                         dummyDetails,
-                         "wamp.error.runtime_error",
-                         new object[] { "Expected parameters" });
+                dummyDetails,
+                "wamp.error.runtime_error",
+                new object[] {"Expected parameters"});
+
+            // see: http://wampsharp.net/release-notes/wampsharp-v1.2.6.41-beta-release-notes/
+            // section: "Internal/Breaking changes"
+            return null;
         }
 
-        public void Invoke<TMessage>(IWampRawRpcOperationRouterCallback caller,
-                                     IWampFormatter<TMessage> formatter,
-                                     InvocationDetails details,
-                                     TMessage[] arguments)
+        public IWampCancellableInvocation Invoke<TMessage>(IWampRawRpcOperationRouterCallback caller,
+            IWampFormatter<TMessage> formatter,
+            InvocationDetails details,
+            TMessage[] arguments)
         {
             InnerInvoke(_serviceMethod, caller, formatter, arguments);
+
+            // see: http://wampsharp.net/release-notes/wampsharp-v1.2.6.41-beta-release-notes/
+            // section: "Internal/Breaking changes"
+            return null;
         }
 
-        public void Invoke<TMessage>(IWampRawRpcOperationRouterCallback caller,
-                                     IWampFormatter<TMessage> formatter,
-                                     InvocationDetails details,
-                                     TMessage[] arguments,
-                                     IDictionary<string, TMessage> argumentsKeywords)
+        public IWampCancellableInvocation Invoke<TMessage>(IWampRawRpcOperationRouterCallback caller,
+            IWampFormatter<TMessage> formatter,
+            InvocationDetails details,
+            TMessage[] arguments,
+            IDictionary<string, TMessage> argumentsKeywords)
         {
             InnerInvoke(_serviceMethod, caller, formatter, arguments);
+
+            // see: http://wampsharp.net/release-notes/wampsharp-v1.2.6.41-beta-release-notes/
+            // section: "Internal/Breaking changes"
+            return null;
         }
 
         private void InnerInvoke<T>(Func<IRequestContext, IMessage, Task> serviceMethod,
-                                    IWampRawRpcOperationRouterCallback caller,
-                                    IWampFormatter<T> formatter,
-                                    T[] arguments)
+            IWampRawRpcOperationRouterCallback caller,
+            IWampFormatter<T> formatter,
+            T[] arguments)
         {
             var dummyDetails = new YieldOptions();
 
@@ -88,7 +100,8 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 
                         var userContext = new RequestContext(message, userSession);
 
-                        Log.Debug($"[{guid}] Calling service method from Username: {userSession.Username}, ReplyTo: {message.ReplyTo}, Payload: {payload}");
+                        Log.Debug(
+                            $"[{guid}] Calling service method from Username: {userSession.Username}, ReplyTo: {message.ReplyTo}, Payload: {payload}");
 
                         await serviceMethod(userContext, message);
 

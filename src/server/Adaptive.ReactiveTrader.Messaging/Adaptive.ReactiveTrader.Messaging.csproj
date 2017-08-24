@@ -22,7 +22,7 @@
     <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
     <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
     <PackageReference Include="System.Net.WebSockets.Client" Version="4.3.1" />
-    <PackageReference Include="WampSharp.Default.Client" Version="1.2.5.33-beta" />
+    <PackageReference Include="WampSharp.Default.Client" Version="1.2.6.41-beta" />
   </ItemGroup>
 
 </Project>

@@ -18,10 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0-preview-20170810-02" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="WampSharp.Default.Client" Version="1.2.5.33-beta" />
+    <PackageReference Include="WampSharp.Default.Client" Version="1.2.6.41-beta" />
   </ItemGroup>
 
 </Project>
