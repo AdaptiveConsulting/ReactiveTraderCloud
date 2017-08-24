@@ -18,9 +18,9 @@ export const displayCurrencyChart = createAction(ACTION_TYPES.DISPLAY_CURRENCY_C
 
 export const spotRegionSettings = id => regionsSettings(`${id} Spot`, 370, 155, true)
 
-export const executionServiceEpic = executionService$ => action$ => {
+export const executionServiceEpic = executionService$ => (action$) => {
   return action$.ofType(ACTION_TYPES.EXECUTE_TRADE)
-    .flatMap(action => {
+    .flatMap((action) => {
       return executionService$.executeTrade(action.payload)
     })
     .map(tradeExecuted)
@@ -29,11 +29,11 @@ export const executionServiceEpic = executionService$ => action$ => {
 export const spotTileReducer = (state = {}, action) => {
   switch (action.type) {
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
-      console.log('DISPLAY_CURRENCY_CHART: ', action.payload)
+      action.payload.openFin.displayCurrencyChart(action.payload.symbol)
       return state
     case ACTION_TYPES.CURRENCY_CHART_OPENED:
-        console.log('CURRENCY_CHART_OPENED: ', action.payload)
-        return state
+      console.log('CURRENCY_CHART_OPENED: ', action.payload)
+      return state
     default:
       return state
   }
