@@ -8,6 +8,5 @@ echo "=============================="
 echo "Test ReactiveTrader containers"
 echo ""
 
-cd ../docker
-./testAll
-cd ../e2e
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+${root_directory}/deploy/docker/testAll
