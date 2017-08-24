@@ -29,7 +29,7 @@
     "dev:openfin:local": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin dev:local",
     "dev:openfin:cloud": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin dev:cloud",
     "dev": "webpack-dev-server --progress --debug --config webpack.config.js",
-    "test": "jest",
+    "test": "jest --watch",
     "test:dev": "npm test -- --watch",
     "deploy": "webpack --display-error-details",
     "deploy:prod": "set NODE_ENV=production&&webpack",
@@ -37,24 +37,18 @@
     "workbench": "start-storybook -p 9001"
   },
   "jest": {
-    "globals": {
-      "__TS_CONFIG__": {
-        "module": "commonjs",
-        "jsx": "react"
-      }
-    },
     "moduleFileExtensions": [
       "ts",
       "tsx",
       "js",
       "jsx"
     ],
-    "transform": {
-      "^.+\\.(js|ts|tsx)$": "<rootDir>/preprocessor.js"
-    },
     "testMatch": [
-      "**/src/**/*.spec.(ts|tsx|js)"
+      "**/src/**/*.spec.(ts|tsx|js|jsx)"
     ],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/preprocessor.js"
+    },
     "verbose": true
   },
   "license": "MIT",
@@ -114,6 +108,7 @@
     "copy-webpack-plugin": "0.3.3",
     "css-loader": "^0.28.1",
     "dotenv": "1.2.0",
+    "enzyme": "2.9.1",
     "eslint": "^4.3.0",
     "eslint-config-airbnb": "15.1.0",
     "eslint-loader": "1.9.0",

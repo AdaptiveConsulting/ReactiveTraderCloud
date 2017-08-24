@@ -21,8 +21,6 @@ import {
 import User from './services/model/user'
 import configureStore from './redux/configureStore'
 
-
-
 // When the application is run in openfin then 'fin' will be registered on the global window object.
 declare const window: any
 

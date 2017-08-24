@@ -1,0 +1,280 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TradeNotification renders correct markup for all statuses 1`] = `
+<div
+  className="trade-notification spot-tile__trade-summary trade-notification--rejected"
+>
+  <span
+    className="trade-notification__trade-status"
+  >
+    Rejected
+  </span>
+  <ul
+    className="trade-notification__summary-items"
+  >
+    <li
+      className="trade-notification__summary-item trade-notification__summary-item--direction"
+    >
+      Up
+    </li>
+    <li
+      className="trade-notification__summary-item trade-notification__summary-item--notional"
+    >
+      GBP
+       
+      12345
+    </li>
+    <li
+      className="trade-notification__summary-item trade-notification__summary-item--currency"
+    >
+      <span
+        className="trade-notification__label--versus"
+      >
+        vs 
+      </span>
+      GBP
+    </li>
+  </ul>
+  <div
+    className="trade-notification__details-items-container"
+  >
+    <ul
+      className="trade-notification__details-items trade-notification__details-items--rate"
+    >
+      <li
+        className="trade-notification__details-item trade-notification__details-item--label"
+      >
+        Rate
+      </li>
+      <li
+        className="trade-notification__details-item trade-notification__details-item--value"
+      >
+        1
+      </li>
+    </ul>
+    <ul
+      className="trade-notification__details-items trade-notification__details-items--date"
+    >
+      <li
+        className="trade-notification__details-item trade-notification__details-item--label"
+      >
+        Date
+      </li>
+      <li
+        className="trade-notification__details-item trade-notification__details-item--value"
+      >
+        12/12/2012
+      </li>
+    </ul>
+    <ul
+      className="trade-notification__details-items trade-notification__details-items--trade-id"
+    >
+      <li
+        className="trade-notification__details-item trade-notification__details-item--label"
+      >
+        Trade ID
+      </li>
+      <li
+        className="trade-notification__details-item trade-notification__details-item--value"
+      >
+        ABC
+      </li>
+    </ul>
+  </div>
+  <a
+    className="trade-notification__button--dismiss"
+    href="#"
+    onClick={[Function]}
+  >
+    <i
+      className="trade-notification__button--dismiss-icon fa fa-share"
+    />
+  </a>
+</div>
+`;
+
+exports[`TradeNotification renders correct markup for all statuses 2`] = `
+<div
+  className="trade-notification spot-tile__trade-summary"
+>
+  <span
+    className="trade-notification__trade-status"
+  >
+    Done
+  </span>
+  <ul
+    className="trade-notification__summary-items"
+  >
+    <li
+      className="trade-notification__summary-item trade-notification__summary-item--direction"
+    >
+      Up
+    </li>
+    <li
+      className="trade-notification__summary-item trade-notification__summary-item--notional"
+    >
+      GBP
+       
+      12345
+    </li>
+    <li
+      className="trade-notification__summary-item trade-notification__summary-item--currency"
+    >
+      <span
+        className="trade-notification__label--versus"
+      >
+        vs 
+      </span>
+      GBP
+    </li>
+  </ul>
+  <div
+    className="trade-notification__details-items-container"
+  >
+    <ul
+      className="trade-notification__details-items trade-notification__details-items--rate"
+    >
+      <li
+        className="trade-notification__details-item trade-notification__details-item--label"
+      >
+        Rate
+      </li>
+      <li
+        className="trade-notification__details-item trade-notification__details-item--value"
+      >
+        1
+      </li>
+    </ul>
+    <ul
+      className="trade-notification__details-items trade-notification__details-items--date"
+    >
+      <li
+        className="trade-notification__details-item trade-notification__details-item--label"
+      >
+        Date
+      </li>
+      <li
+        className="trade-notification__details-item trade-notification__details-item--value"
+      >
+        12/12/2012
+      </li>
+    </ul>
+    <ul
+      className="trade-notification__details-items trade-notification__details-items--trade-id"
+    >
+      <li
+        className="trade-notification__details-item trade-notification__details-item--label"
+      >
+        Trade ID
+      </li>
+      <li
+        className="trade-notification__details-item trade-notification__details-item--value"
+      >
+        ABC
+      </li>
+    </ul>
+  </div>
+  <a
+    className="trade-notification__button--dismiss"
+    href="#"
+    onClick={[Function]}
+  >
+    <i
+      className="trade-notification__button--dismiss-icon fa fa-share"
+    />
+  </a>
+</div>
+`;
+
+exports[`TradeNotification renders correct markup for all statuses 3`] = `
+<div
+  className="trade-notification spot-tile__trade-summary"
+>
+  <span
+    className="trade-notification__trade-status"
+  >
+    Pending
+  </span>
+  <ul
+    className="trade-notification__summary-items"
+  >
+    <li
+      className="trade-notification__summary-item trade-notification__summary-item--direction"
+    >
+      Up
+    </li>
+    <li
+      className="trade-notification__summary-item trade-notification__summary-item--notional"
+    >
+      GBP
+       
+      12345
+    </li>
+    <li
+      className="trade-notification__summary-item trade-notification__summary-item--currency"
+    >
+      <span
+        className="trade-notification__label--versus"
+      >
+        vs 
+      </span>
+      GBP
+    </li>
+  </ul>
+  <div
+    className="trade-notification__details-items-container"
+  >
+    <ul
+      className="trade-notification__details-items trade-notification__details-items--rate"
+    >
+      <li
+        className="trade-notification__details-item trade-notification__details-item--label"
+      >
+        Rate
+      </li>
+      <li
+        className="trade-notification__details-item trade-notification__details-item--value"
+      >
+        1
+      </li>
+    </ul>
+    <ul
+      className="trade-notification__details-items trade-notification__details-items--date"
+    >
+      <li
+        className="trade-notification__details-item trade-notification__details-item--label"
+      >
+        Date
+      </li>
+      <li
+        className="trade-notification__details-item trade-notification__details-item--value"
+      >
+        12/12/2012
+      </li>
+    </ul>
+    <ul
+      className="trade-notification__details-items trade-notification__details-items--trade-id"
+    >
+      <li
+        className="trade-notification__details-item trade-notification__details-item--label"
+      >
+        Trade ID
+      </li>
+      <li
+        className="trade-notification__details-item trade-notification__details-item--value"
+      >
+        ABC
+      </li>
+    </ul>
+  </div>
+  <a
+    className="trade-notification__button--dismiss"
+    href="#"
+    onClick={[Function]}
+  >
+    <i
+      className="trade-notification__button--dismiss-icon fa fa-share"
+    />
+  </a>
+</div>
+`;

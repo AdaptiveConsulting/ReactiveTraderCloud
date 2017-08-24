@@ -18,19 +18,19 @@ const getCaretDirection = (priceMovement: string) => {
 
   const upDirectionClasses = {
     [priceMovementTypes.Up]: 'fa-caret-up',
-    [priceMovementTypes.Down]: 'price-movement__icon--inactive'
+    [priceMovementTypes.Down]: 'price-movement__icon--inactive',
   }
 
   const downDirectionClasses = {
     [priceMovementTypes.Down]: 'fa-caret-down',
-    [priceMovementTypes.Up]: 'price-movement__icon--inactive'
+    [priceMovementTypes.Up]: 'price-movement__icon--inactive',
   }
 
   'price-movement__icon--up fa fa-lg fa-caret-up'
 
   return {
     up: classnames('price-movement__icon--up fa fa-lg', upDirectionClasses[priceMovement]),
-    down: classnames('price-movement__icon--down fa fa-lg', downDirectionClasses[priceMovement])
+    down: classnames('price-movement__icon--down fa fa-lg', downDirectionClasses[priceMovement]),
   }
 }
 
