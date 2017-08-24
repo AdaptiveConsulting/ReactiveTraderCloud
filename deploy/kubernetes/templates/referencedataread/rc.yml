@@ -5,21 +5,21 @@ metadata:
   namespace: "__NAMESPACE__"
   labels:
     name: "__SERVICE__"
-    major: "__MAJOR__"
+    major: "__MAJOR__" 
     minor: "__MINOR__"
-    build: "__BUILD__"
+    build: "__BUILD__" 
 spec:
   replicas: 1
   selector:
     name: "__SERVICE__"
-    major: "__MAJOR__"
+    major: "__MAJOR__" 
     minor: "__MINOR__"
     build: "__BUILD__"
   template:
     metadata:
       labels:
         name: "__SERVICE__"
-        major: "__MAJOR__"
+        major: "__MAJOR__" 
         minor: "__MINOR__"
         build: "__BUILD__"
     spec:
@@ -27,4 +27,4 @@ spec:
       - name: "__SERVICE__"
         image: "__DOCKERIMAGE__"
         command: [ "dotnet", "run", "--configuration", "Release", "-p", "Adaptive.ReactiveTrader.Server.ReferenceDataRead", "config.prod.json" ]
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always

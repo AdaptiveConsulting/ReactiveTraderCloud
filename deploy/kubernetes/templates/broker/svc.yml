@@ -6,12 +6,11 @@ metadata:
   labels:
     name: "__SERVICE__"
     major: "__MAJOR__"
-    public: "true"
 spec:
   selector:
     name: "__SERVICE__"
     major: "__MAJOR__"
   ports:
-  - port: 8000
-    targetPort: 8000
-    name: "broker"
+  - port: 8080
+    targetPort: 8080
+    name: "ws"

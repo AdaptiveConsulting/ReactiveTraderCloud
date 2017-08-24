@@ -3,6 +3,7 @@ MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
 COPY        client /client
 
-WORKDIR     /client
-ENTRYPOINT  npm install && npm run deploy:prod
-# ENTRYPOINT  npm install && npm test && npm run deploy:prod
+COPY        npminstall.sh /opt/npminstall.sh
+RUN         chmod 755 /opt/npminstall.sh
+WORKDIR     /opt
+CMD         ./npminstall.sh

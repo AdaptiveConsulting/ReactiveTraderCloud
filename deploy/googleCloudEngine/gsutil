@@ -1,6 +1,8 @@
 #! /bin/bash
 
-docker run --rm -ti \
-  -v rtc-gcloud-config:/root/.config \
-  -v rtc-kubectl-config:/root/.kube \
+cacheFolder=$(pwd)/../cache
+
+docker run --rm -ti                       \
+  -v /$cacheFolder/.config://root/.config \
+  -v /$cacheFolder/.kube://root/.kube     \
   weareadaptive/gcloud gsutil $@

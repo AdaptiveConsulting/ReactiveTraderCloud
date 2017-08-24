@@ -6,12 +6,11 @@ if [[ $# != 1 ]];then
 fi
 namespace=$1
 
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../.."
+manifestFolder="../manifests"
+nsFile="$manifestFolder/ns.yml"
 
-manifest_directory="${root_directory}/deploy/kubernetes/manifests"
-mkdir -p ${manifest_directory}
+mkdir -p $manifestFolder
 
-namespace_manifest="${manifest_directory}/ns.yml"
-cp "${root_directory}/deploy/kubernetes/templates/ns.yml" ${namespace_manifest}
+cp ./ns.yml $nsFile
 
-sed -ie "s/__NAMESPACE__/${namespace}/g" ${namespace_manifest}
+sed -ie "s/__NAMESPACE__/$namespace/g" $nsFile
