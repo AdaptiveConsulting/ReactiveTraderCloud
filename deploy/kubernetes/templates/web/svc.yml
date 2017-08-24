@@ -1,26 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "__SERVICE__"
-  namespace: "__NAMESPACE__"
-  labels:
-    name:   "__SERVICE__"
-    major:  "__MAJOR__"
-    public: "true"
+    name: "__SERVICE__"
+    namespace: "__NAMESPACE__"
+    labels:
+        name:   "__SERVICE__"
+        major:  "__MAJOR__"
+        public: "true"
 spec:
-  selector:
-    name:  "__SERVICE__"
-    major: "__MAJOR__"
-  ports:
-  - port: 80
-    targetPort: 80
-    name: "http"
-  - port: 8080
-    targetPort: 8080
-    name: "ws"
-  - port: 443
-    targetPort: 80
-    name: "https"
-  - port: 8000
-    targetPort: 8080
-    name: "wss"
+    selector:
+        name:  "__SERVICE__"
+        major: "__MAJOR__"
+    ports:
+    -   name: "web"
+        port: 80
+        targetPort: 80

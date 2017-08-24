@@ -9,8 +9,9 @@ fi
 # fail fast
 set -euo pipefail
 
-# get and control config
-. ../../../config
+# load configuration
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../../.."
+. ${root_directory}/deploy/config
 
 docker push $dotnetContainer
 docker push $dotnetContainer.$build

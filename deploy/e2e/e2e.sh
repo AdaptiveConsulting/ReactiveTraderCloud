@@ -10,17 +10,18 @@ set -euo pipefail
 
 startTime=$(date)
 
-chmod 755 ./ensurePermissions
-./ensurePermissions
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+chmod 755 ${root_directory}/deploy/e2e/ensurePermissions
+${root_directory}/deploy/e2e/ensurePermissions
 
-./buildContainers $build_id
-./runContainers $build_id
+${root_directory}/deploy/e2e/buildContainers $build_id
+${root_directory}/deploy/e2e/runContainers $build_id
 
 echo "Giving some time for services to start"
 sleep 10
 
-./testContainers $build_id
-./stopContainers $build_id
+${root_directory}/deploy/e2e/testContainers $build_id
+${root_directory}/deploy/e2e/stopContainers $build_id
 
 echo " "
 echo "============="
