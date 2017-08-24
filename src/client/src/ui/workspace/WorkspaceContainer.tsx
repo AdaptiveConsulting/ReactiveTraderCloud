@@ -6,9 +6,11 @@ import SpotTile from '../spotTile/SpotTile'
 import CurrencyPair from '../../services/model/currencyPair'
 import { Direction } from '../../services/model/index'
 import { Dispatch } from 'redux'
-import { executeTrade, spotRegionSettings } from '../../redux/execution/executionOperations'
+import { executeTrade, undockTile, displayCurrencyChart, spotRegionSettings } from '../../redux/spotTile/spotTileOperations'
+// @todo: move (and possiblly rename) the region  related methods to RegionOperations
 import { onComponentMount, onPopoutClick } from '../blotter/blotterOperations'
 import { RegionWrapper } from '../../redux/regions'
+import {Environment} from '../../system'
 
 
 interface WorkspaceContainerOwnProps {
@@ -29,6 +31,8 @@ interface WorkspaceContainerDispatchProps {
   executeTrade: (direction: Direction) => void
   onComponentMount: (id: string) => void
   onPopoutClick: (region: any, component: any, openFin:any) => any
+  undockTile: (openFin: any, title: string) => any
+  displayCurrencyChart: (openFin: any, symbol: string) => any
 }
 
 type WorkspaceContainerProps =
@@ -64,13 +68,13 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
       const currencyPair: CurrencyPair = this.props.referenceService[item.symbol].currencyPair
       const title = `${currencyPair.base} / ${currencyPair.terms}`
       let tileProps = {
-        canPopout: false,
+        canPopout:Environment.isRunningInIE,
         currencyChartIsOpening: false,
         currencyPair: this.props.referenceService[item.symbol],
         currentSpotPrice: item,
-        executionConnected: false,
+        executionConnected: true,
         hasNotification: false,
-        isRunningInOpenFin: false,
+        isRunningInOpenFin: !!openFin,
         isTradeExecutionInFlight: false,
         notification: null,
         notional: this.props.notionals[currencyPair.symbol] || NOTIONAL,
@@ -79,7 +83,9 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
         title: title,
         executeTrade: this.props.executeTrade,
         onComponentMount: this.props.onComponentMount,
-        onPopoutClick: () => {}
+        undockTile: this.props.undockTile(openFin, title),
+        onPopoutClick: () => {},
+        displayCurrencyChart: this.props.displayCurrencyChart(openFin, item.symbol)
       }
 
       tileProps.onPopoutClick = this.props.onPopoutClick(item.symbol, tileProps, openFin)
@@ -109,6 +115,17 @@ const mapDispatchToProps = (dispatch: Dispatch<any>,) => ({
       dispatch(onPopoutClick(spotTileRegion(id, tileProps), openFin))
     }
   },
+  undockTile: (openFin, tileName) => {
+    return () => {
+      dispatch(undockTile({openFin, tileName}) )
+    }
+  },
+  displayCurrencyChart: (openFin, symbol) => {
+    return () => {
+      dispatch(displayCurrencyChart({openFin, symbol}))
+    }
+  }
+
 })
 
 const spotTileRegion = (id, tileProps) => (

@@ -10,6 +10,7 @@ import sidebarRegionReducer from '../ui/sidebar/SidebarRegionOperations'
 import footerReducer from '../ui/footer/FooterOperations'
 import notionalsReducer from '../ui/spotTile/notional/NotionalOperations'
 import { regionsReducer } from './regions/regionsOperations'
+import { spotTileReducer } from './spotTile/spotTileOperations'
 
 
 const rootReducer = combineReducers({
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   displayAnalytics: sidebarRegionReducer,
   displayStatusServices: footerReducer,
   regionsService: regionsReducer,
-  notionals: notionalsReducer
+  notionals: notionalsReducer,
+  spotTiles: spotTileReducer,
 })
 
 export default rootReducer

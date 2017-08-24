@@ -50,7 +50,9 @@ export interface SpotTileProps {
   title: string
   executeTrade: (direction: any) => void
   onComponentMount: (id: string) => void
-  onPopoutClick: () => any
+  onPopoutClick: () => void
+  undockTile: () => void
+  displayCurrencyChart: () => void
 }
 
 export default class SpotTile extends React.Component<SpotTileProps, {}> {
@@ -65,7 +67,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     const {
       canPopout, currencyChartIsOpening, currentSpotPrice, currencyPair, executionConnected,
       hasNotification, isRunningInOpenFin, isTradeExecutionInFlight, notification, priceStale, pricingConnected, title,
-      onPopoutClick
+      onPopoutClick, undockTile, displayCurrencyChart
     } = this.props
 
     const notionalInputClass = classnames('spot-tile__notional', { hide: hasNotification })
@@ -114,20 +116,16 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         <div className="spot-tile__container">
           <div className="spot-tile__controls">
             <i className={chartIQIconClassName}
-               onClick={() => this.displayCurrencyChart()}/>
+               onClick={() => displayCurrencyChart()}/>
             <i className={newWindowClassName}
                onClick={() => onPopoutClick()}/>
             <i className="popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out"
-               onClick={() => replaceWithAction('undockTile', {})}/>
+               onClick={() => undockTile()}/>
           </div>
           {!hasNotification ? spotTileContent : generatedNotification}
         </div>
       </div>
     )
-  }
-
-  displayCurrencyChart() {
-    replaceWithAction('displayCurrencyChart', {})
   }
 
   createPriceComponents(title: string, currentSpotPrice: CurrentSpotPrice, hide: boolean) {
