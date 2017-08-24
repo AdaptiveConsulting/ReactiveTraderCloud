@@ -5,100 +5,98 @@ set -euo pipefail
 
 # CONFIGURATION
 # =============
-possible_commands="build push"
-rtc="servers broker web populatedEventstore"
-possible_groups="rtc gcloud dotnet nginx node testtools crossbar eventstore nsgate minikubegate ${rtc}"
+possibleCommands="build push"
+services="servers broker web populatedEventstore"
+possibleGroup="services gcloud dotnet nginx node testtools crossbar eventstore nsgate $services"
 
 # USAGE
 # =====
 listcontains() {
-    for word in ${1}
-    do
-        [[ ${word} = ${2} ]] && return 0
-    done
-    return 1
+  for word in $1; do
+    [[ $word = $2 ]] && return 0
+  done
+  return 1
 }
 
 usage() {
     echo " "
-    echo -e "\e[31mUsage:\e[39m"
+    echo " usage:"
     echo "   prepare COMMAND GROUP BUILD_ID"
     echo " "
     echo " COMMAND can be:"
-    echo "   ${possible_commands}"
+    echo "   $possibleCommands"
     echo " "
     echo " GROUP can be:"
-    echo "   ${possible_groups}"
-    echo "   use rtc as [${rtc}]"
+    echo "   $possibleGroup"
+    echo "   use services as [$services]"
     echo " "
     echo " BUILD_ID can be:"
     echo "   - a string"
     echo "   - a number"
     echo " "
-    echo " ie: prepare build rtc 125"
+    echo " ie: prepare build services 125"
     echo "     prepare build dotnet localtest"
     echo "     prepare push node 178"
     echo " "
 }
 
-if [[ $# != 3 ]]
-then
-    usage
-    exit 1
+if [[ $# != 3 ]];then
+  usage
+  exit 1
 fi
 
-command=${1}
-group=${2}
-build=${3}
+command=$1
+group=$2
+build=$3
 
 # control build/push
-if ! listcontains "${possible_commands}" ${command}
-then
-    echo "command ${command} is not recognised"
-    echo "possible commands are ${possible_commands}"
+if ! listcontains "$possibleCommands" $command; then 
+    echo "command $command is not recognised"
+    echo "possible commands are $possibleCommands"
+    exit 1
+fi 
+
+# control services/crossbar/eventstore ...
+if ! listcontains "$possibleGroup" $group; then 
+    echo "group $group is not recognised"
+    echo "possible groups are $possibleGroup"
     exit 1
 fi
 
-# control rtc/crossbar/eventstore ...
-if ! listcontains "${possible_groups}" ${group}
-then
-    echo "group ${group} is not recognised"
-    echo "possible groups are ${possible_groups}"
-    exit 1
+# define services
+if [[ $group = "services" ]];then
+    group=$services
 fi
-
-# define rtc
-if [[ ${group} = "rtc" ]]
-then
-    group=${rtc}
-fi
-
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
 
 # BUILD
 # =====
-if [[ $command = "build" ]]
-then
-    for service in ${group}
-    do
-        echo "======================"
-        echo "= Build ${service}"
-        echo "======================"
-        ${root_directory}/deploy/docker/build/${service}/build.sh ${build}
-    done
-    exit 0
+if [[ $command = "build" ]];then
+  for service in $group
+  do
+    pushd build/$service > garbage
+      echo "======================"
+      echo "= Build $service"
+      echo "======================"
+      ./build.sh $build
+    popd > garbage
+    rm garbage build/$service/garbage
+  done
+  exit 0
 fi
 
 
 # PUSH
 # ====
 if [[ $command = "push" ]];then
-    for service in ${group}
-    do
-        echo "======================"
-        echo "= Push ${service}"
-        echo "======================"
-        ${root_directory}/deploy/docker/build/${service}/push.sh $build
-    done
-    exit 0
+  for service in $group
+  do
+    pushd build/$service > garbage
+      echo "======================"
+      echo "= Push $service"
+      echo "======================"
+      ./push.sh $build
+    popd > garbage
+    rm garbage build/$service/garbage
+  done
+  exit 0
 fi

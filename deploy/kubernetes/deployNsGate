@@ -1,39 +1,36 @@
 #! /bin/bash
+set -euo pipefail
+
 if [[ $1 == "" ]];then
-  echo -e "\e[32mUsage:\e[39m"
+  echo "usage:"
   echo "  $0 BUILD"
   echo " "
   exit 1
 fi
 build=$1
-set -euo pipefail
-
 service="nsgate"
 namespace="nsgate"
 
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
-templates_directory="${root_directory}/deploy/kubernetes/templates"
-manifest_directory="${root_directory}/deploy/kubernetes/manifests"
-manifest_directory_in_container="deploy/kubernetes/manifests"
-kubectl="${root_directory}/deploy/clis/kubectl"
-describe="${root_directory}/deploy/kubernetes/describe"
+# generate certificates
+./generateNewCertificates
 
 # generate manifest
-mkdir -p ${manifest_directory}
-cp ${templates_directory}/nsgate/ns.yml ${manifest_directory}/ns.yml
-${templates_directory}/generate_secret_manifest web-ssl ${namespace}
-${templates_directory}/generate_svc_manifest ${service} ${namespace}
-${templates_directory}/generate_rc_manifest ${service} ${namespace} ${build}
+cd templates
+cp nsgate/ns.yml ../manifests/ns.yml
+./generate_secret_manifest web-ssl $namespace
+./generate_svc_manifest $service $namespace
+./generate_rc_manifest $service $namespace $build
+cd ..
 
 # deploy on kubernetes
-${kubectl} create -f ${manifest_directory_in_container}/ns.yml
-${kubectl} create -f ${manifest_directory_in_container}/web-ssl.yml
-${kubectl} create -f ${manifest_directory_in_container}/${service}-svc.yml
-${kubectl} create -f ${manifest_directory_in_container}/${service}-rc.yml
+./kubectl create -f manifests/ns.yml
+./kubectl create -f manifests/web-ssl.yml
+./kubectl create -f manifests/$service-svc.yml 
+./kubectl create -f manifests/$service-rc.yml
 
 echo " "
 echo " "
-${describe} ${namespace}
+./kst $namespace
 echo " "
 echo " "
-echo " Wait a moment and run <describe ${namespace}> to see the PODS generated on your cluster"
+echo " Wait a moment and run <kst $namespace> to see the PODS generated on your cluster"

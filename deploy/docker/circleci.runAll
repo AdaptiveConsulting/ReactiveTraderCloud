@@ -7,15 +7,14 @@ release="release"
 set -euo pipefail
 
 scream() {
-    echo -e "\e[31merror on $1\e[39m"
+    echo "error on $1"
     exit 1
 }
 
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
-
 for server in "web" "eventstore" "broker" "referencedataread" "pricing" "tradeexecution" "blotter" "analytics"
 do
-    server_run_command="${root_directory}/deploy/docker/run/${server}/run"
-    ${server_run_command} $build $release || scream $server
-    sleep 2
+    cd run/$server
+    ./run $build $release || scream $server
+    sleep 5
+    cd ../..
 done

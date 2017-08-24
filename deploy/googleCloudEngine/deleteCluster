@@ -1,18 +1,19 @@
 #! /bin/bash
 
-cluster=$1
-if [[ $cluster == "" ]];then
-    echo "Usage:"
-    echo "$0 <cluster_name>"
+if [[ ! -f ../config ]];then
     echo " "
-    echo "This commamd let you delete the cluster with name defined as parameter"
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
     exit 1
 fi
 
-# load configuration
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
-. ${root_directory}/deploy/config
+if [[ $1 != "-y" ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to confirm deletion by adding -y"
+    echo "  ie: ./deleteCluster -y"
+    exit 1
+fi
 
-# delete cluster
-gcloud="${root_directory}/deploy/clis/gcloud"
-${gcloud} container clusters delete $cluster
+. ../config
+./gcloud container clusters delete --quiet $kube_cluster 

@@ -3,39 +3,34 @@
 if [[ $1 != "" ]];then
   build=".$1"
 fi
-release_mode=""
+releaseMode=""
 
 if [[ $1 == "release" ]];then
-  release_mode="--configuration Release"
+  releaseMode="--configuration Release"
   build=""
 fi
 if [[ $2 == "release" ]];then
-  release_mode="--configuration Release"
+  releaseMode="--configuration Release"
 fi
 
 #fail fast
 set euo -pipefail
 
-container_name="referencedataread"
-echo "${container_name}"
+echo "ReferenceDataRead"
 
-# load configuration
-this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-root_directory="${this_directory}/../../../.."
-. ${root_directory}/deploy/config
+. ../../../config
 
-# remove
-if [[ "$(docker ps -q -a --filter name=${container_name})" != "" ]]
-then docker rm ${container_name} > /dev/null
-fi
+startCommand="dotnet run $releaseMode -p Adaptive.ReactiveTrader.Server.Launcher ref"
+waitCommand="while true; do echo ping; sleep 60; done"
 
-# start
-start_command="dotnet run ${release_mode} -p Adaptive.ReactiveTrader.Server.Launcher ref"
-wait_command="while true; do echo ping; sleep 60; done"
-docker run -d --net=${docker_network} \
-     --name ${container_name} \
-     $serversContainer$build \
-     bash -c "${start_command} && ${wait_command}" \
-     > ${this_directory}/container_id
+docker rm reference 2&> garbage || true
+
+docker run -d --net=host                      \
+     --name reference                         \
+     $serversContainer$build                  \
+     bash -c "$startCommand && $waitCommand"  \
+     > container_id 
+
+rm garbage
 
 echo " "

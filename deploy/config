@@ -1,6 +1,10 @@
 #! /bin/bash
 # Here are the list of version for every part of the deployment
 
+# SSL Domain
+# ==========
+domainName="adaptivecluster.com"
+
 # VERSIONING
 # ==========
 vMajor="0"
@@ -29,9 +33,9 @@ ubuntuContainer="ubuntu:14.04.2"
 debianContainer="debian:8.2"
 
 # crossbar
-vCrossbar="17.5.1"
-crossbarContainer_major="17"
-crossbarContainer_minor="5"
+vCrossbar="0.13.2-trusty"
+crossbarContainer_major="0"
+crossbarContainer_minor="1"
 crossbarContainer="weareadaptive/crossbar:$crossbarContainer_major.$crossbarContainer_minor"
 
 # eventstore
@@ -47,10 +51,10 @@ nodeContainer_minor="2"
 nodeContainer="weareadaptive/node:$nodeContainer_major.$nodeContainer_minor"
 
 # nginx
-vNginx="1.12.0"
+vNginx="1.9.7"
 officialNginxContainer="nginx:$vNginx"
-nginxContainer_major="1"
-nginxContainer_minor="12"
+nginxContainer_major="0"
+nginxContainer_minor="0"
 nginxContainer="weareadaptive/nginx:$nginxContainer_major.$nginxContainer_minor"
 
 # dotnet
@@ -69,36 +73,50 @@ testtoolsContainer_latest="$testtoolsContainer_base:latest"
 
 # gcloud
 gcloudContainer_major="1"
-gcloudContainer_minor="2"
+gcloudContainer_minor="1"
 gcloudContainer="weareadaptive/gcloud:$gcloudContainer_major.$gcloudContainer_minor"
 
-# Clusters Access
 # nsgate
 nsGateContainer_major="0"
-nsGateContainer_minor="2"
+nsGateContainer_minor="1"
 nsGateContainer="weareadaptive/nsgate:$nsGateContainer_major.$nsGateContainer_minor"
-
-minikubegate_major="0"
-minikubegate_minor="0"
-minikubegate_image="weareadaptive/minikubegate:$minikubegate_major.$minikubegate_minor"
 
 # GCLOUD
 # ======
+# You need to change this ones
+kube_cluster="cluster"
+
 # other default parameters
 kube_project="adaptive-trader"
 kube_num_nodes=1
 
+# kube_machinetype="f1-micro"       #   0.6 Go
+# kube_machinetype="g1-small"       #   1.7 Go
 kube_machinetype="n1-standard-1"  #   3.7 Go
+# kube_machinetype="n1-standard-2"  #   7.5 Go
+# kube_machinetype="n1-standard-4"  #  15   Go
+# kube_machinetype="n1-standard-8"  #  30   Go
+# kube_machinetype="n1-standard-16" #  60   Go
+# kube_machinetype="n1-highcpu-2"   #   1.8 Go
+# kube_machinetype="n1-highcpu-4"   #   3.6 Go
+# kube_machinetype="n1-highcpu-8"   #   7.2 Go
+# kube_machinetype="n1-highcpu-16"  #  14.4 Go
 # kube_machinetype="n1-highmem-2"   #  13   Go
-kube_zone="europe-west1-c"
+# kube_machinetype="n1-highmem-4"   #  26   Go
+# kube_machinetype="n1-highmem-8"   #  52   Go
+# kube_machinetype="n1-highmem-16"  # 104   Go
 
-config_gcloud_externalip_dev="35.195.122.136"
-config_gcloud_externalip_cluster="104.155.13.196"
+# kube_zone="asia-east1-a"
+# kube_zone="asia-east1-b"
+# kube_zone="asia-east1-c"
+# kube_zone="europe-west1-b"
+kube_zone="europe-west1-c"
+# kube_zone="europe-west1-d"
+# kube_zone="us-central1-a"
+# kube_zone="us-central1-b"
+# kube_zone="us-central1-c"
+# kube_zone="us-central1-f"
 
 # DOCKER-COMPOSE
 # ==============
 docker_compose_file="docker-compose.yml"
-
-# LOCAL DOCKER
-# ============
-docker_network="host"

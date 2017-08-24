@@ -9,17 +9,14 @@ fi
 # fail fast
 set -euo pipefail
 
-# load configuration
-this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-root_directory="${this_directory}/../../../.."
-. ${root_directory}/deploy/config
+. ../../../config
 
-mkdir -p ${this_directory}/build
+mkdir -p ./build
 
-cp ${this_directory}/template.Dockerfile ${this_directory}/build/Dockerfile
-sed -ie "s|__DEBIAN_CONTAINER__|$debianContainer|g" ${this_directory}/build/Dockerfile
+cp ./template.Dockerfile                           ./build/Dockerfile
+sed -ie "s|__DEBIAN_CONTAINER__|$debianContainer|g" ./build/Dockerfile
 
-cp ${this_directory}/template.install.sh ${this_directory}/build/install.sh
+cp ./template.install.sh ./build/install.sh
 
-docker build --no-cache -t $gcloudContainer ${this_directory}/build/.
+docker build --no-cache -t $gcloudContainer ./build/.
 docker tag $gcloudContainer $gcloudContainer.$build

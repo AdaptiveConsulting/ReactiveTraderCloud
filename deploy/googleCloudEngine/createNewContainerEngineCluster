@@ -1,25 +1,17 @@
 #! /bin/bash
 
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
-
-cluster=$1
-if [[ $cluster == "" ]];then
-    echo "Usage:"
-    echo "$0 <cluster_name>"
+if [[ ! -f ../config ]];then
     echo " "
-    echo "This commamd let you create a cluster with name defined as parameter"
-    . ${root_directory}/deploy/googleCloudEngine/showCluster.sh
-    showClusters
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
     exit 1
 fi
 
-# load configuration
-. ${root_directory}/deploy/config
+# load config
+. ../config
 
 # create cluster
-gcloud="${root_directory}/deploy/clis/gcloud"
-${gcloud} container clusters \
-    create $cluster \
-        --zone $kube_zone \
-        --machine-type $kube_machinetype \
-        --num-nodes $kube_num_nodes
+./gcloud container clusters create $kube_cluster             \
+                            --zone $kube_zone                \
+                            --machine-type $kube_machinetype \
+                            --num-nodes $kube_num_nodes

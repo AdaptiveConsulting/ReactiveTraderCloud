@@ -5,12 +5,8 @@ release="release"
 
 # fail fast
 set -euo pipefail
+. ../config
 
-# load configuration
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
-. ${root_directory}/deploy/config
-
-# create file
 cat <<EOF > ${docker_compose_file}
 version: '2'
 networks:
@@ -24,6 +20,7 @@ services:
             - reactivetrader
         ports:
             - "80:80"
+            - "8080:8080"
 
     broker:
         image: "$brokerContainer$build"
@@ -84,5 +81,4 @@ services:
             - tradeexecution
 EOF
 
-# start containers
 docker-compose up

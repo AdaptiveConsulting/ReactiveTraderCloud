@@ -9,23 +9,19 @@ fi
 # fail fast
 set -euo pipefail
 
-# load configuration
-this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-root_directory="${this_directory}/../../../.."
-. ${root_directory}/deploy/config
+. ../../../config
 
 # run eventstore
-eventstore_id_file="${this_directory}/eventstore_id"
-docker run -d --net=host $eventstoreContainer > ${eventstore_id_file}
+docker run -d --net=host $eventstoreContainer > eventstore_id
 
 # populate it
-populate_command=`cat "${root_directory}/src/server/Populate Event Store.bat"`
+populateCommand=`cat "../../../../src/server/Populate Event Store.bat"`
 docker run -t --net=host      \
      $serversContainer.$build \
-     ${populate_command}
+     $populateCommand > populate_id
 
 # commit container
-docker commit `cat ${eventstore_id_file}` $populatedEventstoreContainer
+docker commit `cat eventstore_id` $populatedEventstoreContainer
 docker tag $populatedEventstoreContainer $populatedEventstoreContainer.$build
 
-docker kill `cat ${eventstore_id_file}`
+docker kill `cat eventstore_id`

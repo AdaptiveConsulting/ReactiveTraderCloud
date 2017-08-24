@@ -9,19 +9,16 @@ fi
 # fail fast
 set -euo pipefail
 
-# load configuration
-this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-root_directory="${this_directory}/../../../.."
-. ${root_directory}/deploy/config
+. ../../../config
 
-mkdir -p ${this_directory}/build
+mkdir -p ./build
 
-cp ${this_directory}/template.Dockerfile ${this_directory}/build/Dockerfile
-sed -ie "s/__UBUNTU_CONTAINER__/$ubuntuContainer/g" ${this_directory}/build/Dockerfile
-sed -ie "s/__VEVENTSTORE__/$vEventstore/g" ${this_directory}/build/Dockerfile
+cp ./template.Dockerfile                           ./build/Dockerfile
+sed -ie "s/__UBUNTU_CONTAINER__/$ubuntuContainer/g" ./build/Dockerfile
+sed -ie "s/__VEVENTSTORE__/$vEventstore/g"          ./build/Dockerfile
 
-cp ${this_directory}/template.install.sh ${this_directory}/build/install.sh
-sed -ie "s/__VEVENTSTORE__/$vEventstore/g" ${this_directory}/build/install.sh
+cp ./template.install.sh                  ./build/install.sh
+sed -ie "s/__VEVENTSTORE__/$vEventstore/g" ./build/install.sh
 
-docker build --no-cache -t $eventstoreContainer ${this_directory}/build/.
+docker build --no-cache -t $eventstoreContainer ./build/.
 docker tag $eventstoreContainer $eventstoreContainer.$build

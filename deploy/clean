@@ -1,5 +1,0 @@
-#!/bin/bash
-
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
-${root_directory}/deploy/docker/cleanAllLocalBuilds
-${root_directory}/deploy/kubernetes/clean

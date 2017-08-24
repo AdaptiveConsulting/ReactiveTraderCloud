@@ -2,7 +2,7 @@
 
 if [[ $# != 1 ]];then
   echo " "
-  echo -e "\e[32mUsage:\e[39m"
+  echo " usage:"
   echo "   ./delete NAMESPACE"
   echo ""
   echo " Will delete an environment"
@@ -10,6 +10,4 @@ if [[ $# != 1 ]];then
 fi
 namespace=$1
 
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
-kubectl="${root_directory}/deploy/clis/kubectl"
-${kubectl} delete ns $namespace
+./kubectl delete ns $namespace

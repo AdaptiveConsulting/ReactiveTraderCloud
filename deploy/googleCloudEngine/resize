@@ -1,0 +1,20 @@
+#! /bin/bash
+
+if [[ ! -f ../config ]];then
+    echo " "
+    echo "usage:"
+    echo "  you need to copy config from sample.config"
+    exit 1
+fi
+
+. ../config
+
+if [[ $kube_cluster == "" ]];then
+  echo "error:"
+  echo "  resize: require cluster name. Fill in adaptivetrader/config/config"
+  echo " "
+
+# gcloud container clusters describe $kube_cluster --format yaml | grep -A 1 instanceGroupUrls
+# need this ==> gke-example-b937f2ba-group
+# gcloud compute instance-groups managed resize gke-example-b937f2ba-group --zone us-central1-f --size 4
+
