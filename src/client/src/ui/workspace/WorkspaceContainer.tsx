@@ -10,7 +10,7 @@ import { executeTrade, undockTile, displayCurrencyChart, spotRegionSettings } fr
 // @todo: move (and possiblly rename) the region  related methods to RegionOperations
 import { onComponentMount, onPopoutClick } from '../blotter/blotterOperations'
 import { RegionWrapper } from '../../redux/regions'
-import {Environment} from '../../system'
+import { Environment } from '../../system'
 
 
 interface WorkspaceContainerOwnProps {

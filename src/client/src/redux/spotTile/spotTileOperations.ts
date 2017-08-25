@@ -7,7 +7,6 @@ export enum ACTION_TYPES {
   UNDOCK_TILE = '@ReactiveTraderCloud/UNDOCK_TILE',
   TILE_UNDOCKED = '@ReactiveTraderCloud/TILE_UNDOCKED',
   DISPLAY_CURRENCY_CHART = '@ReactiveTraderCloud/DISPLAY_CURRENCY_CHART',
-  CURRENCY_CHART_OPENED = '@ReactiveTraderCloud/CURRENCY_CHART_OPENED',
 }
 
 export const executeTrade = createAction(ACTION_TYPES.EXECUTE_TRADE, payload => payload)
@@ -31,11 +30,7 @@ export const spotTileReducer = (state = {}, action) => {
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
       action.payload.openFin.displayCurrencyChart(action.payload.symbol)
       return state
-    case ACTION_TYPES.CURRENCY_CHART_OPENED:
-      console.log('CURRENCY_CHART_OPENED: ', action.payload)
-      return state
     default:
       return state
   }
 }
-

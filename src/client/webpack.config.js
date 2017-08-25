@@ -57,13 +57,12 @@ module.exports = function (env = {}) {
     ]
   }])
 
-
   const webpackConfig = {
     name: 'client',
     target: 'web',
     entry: {
       app: ['./src/appBootstrapper.tsx'],
-      notification: ['./src/notificationBootstrapper.js']
+      notification: ['./src/notificationBootstrapper.tsx'],
     },
     output: {
       filename: '[name].js',
@@ -131,7 +130,6 @@ module.exports = function (env = {}) {
 
       // 'dist/rx.all.js': 'rx/dist/rx.all.js' is needed for webpack 2 and rx 4
       alias: {
-        'dist/rx.all.js': 'rx/dist/rx.all.js',
         'config.json': path.join(__dirname, 'config', config),
         system: path.join(__dirname, 'src/system'),
         services: path.join(__dirname, 'src/services')
@@ -191,7 +189,12 @@ module.exports = function (env = {}) {
           loader: 'file-loader'
         }
       ]
-    }
+    },
+    stats: { // for "npm run stats" and analyse stats.json result here http://webpack.github.io/analyse/#modules
+       exclude: [
+          'node_modules',
+       ]
+    },
   }
 
   if (isProductionMode) {

@@ -13,15 +13,14 @@ const popoutClosed = createAction(REGIONS_ACTIONS.REGION_ATTACH_WINDOW, payload 
 
 const generateView = (container) => {
   const childComponent = React.isValidElement(container) ? container : React.createElement(container)
-  return React.createElement(Provider, {store: window.store}, childComponent)
+  return React.createElement(Provider, { store: window.store }, childComponent)
 }
 
-function popoutWindowEpic  (action$, store) {
+function popoutWindowEpic(action$, store) {
   return action$.ofType(REGIONS_ACTIONS.REGION_OPEN_WINDOW)
-    .map(action => {
-      console.log('popoutWindowEpic')
+    .map((action) => {
       const popoutService = getPopoutService(action.payload.openFin)
-      const {id, container, settings} = action.payload
+      const { id, container, settings } = action.payload
       const popoutView = generateView(container)
       popoutService.openPopout(
         {
@@ -38,19 +37,18 @@ function popoutWindowEpic  (action$, store) {
             scrollable: false,
             dockable: settings.dockable,
           },
-        }, popoutView,
+        },
+        popoutView,
       )
       return popoutOpened(action.payload)
     })
 }
 
-function undockTile (action$) {
+function undockTile(action$) {
   return action$.ofType(TILE_ACTIONS.UNDOCK_TILE)
-    .map(action => {
+    .map((action) => {
       const popoutService = getPopoutService(action.payload.openFin)
       popoutService.undockPopout(action.payload.tileName)
-      console.log('undockTile: ', action.payload)
-
       return action
     })
     .map(tileUndocked)
@@ -59,6 +57,3 @@ function undockTile (action$) {
 export const popoutEpic = () => {
   return combineEpics(popoutWindowEpic, undockTile)
 }
-
-
-

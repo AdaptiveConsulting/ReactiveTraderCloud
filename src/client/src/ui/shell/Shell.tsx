@@ -9,6 +9,7 @@ import '../common/styles/_base.scss'
 import '../common/styles/_fonts.scss'
 import RegionWrapper from '../../redux/regions/RegionWrapper'
 import * as classnames from 'classnames'
+import TradeNotificationContainer from '../notification/TradeNotificationContainer'
 
 export interface ShellProps {
   sessionExpired: boolean
@@ -54,6 +55,7 @@ export default class Shell extends React.Component<ShellProps, {}> {
         </div>
         <div className="shell__footer">
           <FooterContainer/>
+          <TradeNotificationContainer/>
         </div>
       </div>
     )

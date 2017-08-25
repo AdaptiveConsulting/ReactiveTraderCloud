@@ -7,7 +7,8 @@ import Connection from './system/service/connection'
 import { OpenFin } from './system/openFin'
 import { ShellContainer, OpenFinProvider } from './ui/shell'
 import { Provider } from 'react-redux'
-import * as config from 'config.json'
+// TODO: change to import when webpack bug solved https://github.com/webpack/webpack/issues/4160
+const config = require('config.json')
 
 import {
   AnalyticsService,
@@ -96,8 +97,6 @@ class AppBootstrapper {
   startModels() {
     if (this._openFin.isRunningInOpenFin) {
       window.fin.desktop.main(() => {})
-    } else {
-      // espRouter.broadcastEvent('init', {})
     }
   }
 

@@ -1,4 +1,4 @@
-import {createAction, handleActions} from 'redux-actions'
+import { createAction, handleActions } from 'redux-actions'
 
 export enum ACTION_TYPES {
   TOGGLE_STATUS_SERVICES = '@ReactiveTraderCloud/TOGGLE_STATUS_SERVICES',
@@ -11,10 +11,9 @@ export const openLinks = createAction(ACTION_TYPES.OPEN_LINK, payload => payload
 const INITIAL_STATE = false
 
 
-export const footerEpic = openFin => action$ => {
+export const footerEpic = openFin => (action$) => {
   return action$.ofType(ACTION_TYPES.OPEN_LINK)
-    .map(action => {
-      // check if we're running in openFin so we
+    .map((action) => {
       return openLinks(openFin)
     })
 }
