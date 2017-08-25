@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EventStore.ClientAPI.DotNetCore" Version="1.0.0" />
+    <PackageReference Include="EventStore.ClientAPI.DotNetCore" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.Reactive" Version="3.1.1" />
