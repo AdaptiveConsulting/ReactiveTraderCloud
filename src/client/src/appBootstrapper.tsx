@@ -1,20 +1,18 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
 import { Router } from 'esp-js';
 import { RouterProvider, SmartComponent } from 'esp-js-react/dist/esp-react';
-import { BlotterModel } from './ui/blotter/model';
-import { AnalyticsModel } from './ui/analytics/model';
-import { FooterModel } from './ui/footer/model';
 import { ShellModel } from './ui/shell/model';
 import { ChromeModel } from './ui/common/components/chrome/model';
 import { SpotTileFactory, SpotTileLoader } from './ui/spotTile';
 import { ServiceConst } from './services/model';
 import SchedulerService from './system/schedulerService';
-import { AutobahnConnectionProxy, Connection } from './system/service';
+import AutobahnConnectionProxy from './system/service/autobahnConnectionProxy'
+import Connection from './system/service/connection'
 import { OpenFin } from './system/openFin';
 import { PopoutRegionModel, RegionModel, SingleItemRegionModel } from './ui/regions/model';
 import { RegionManager, RegionNames } from './ui/regions';
+import { Provider } from 'react-redux'
 import * as config from 'config.json';
 
 import {
@@ -47,6 +45,7 @@ class AppBootstrapper {
   _compositeStatusService: CompositeStatusService;
   _schedulerService: SchedulerService;
   _openFin: any;
+  store: any;
 
   get endpointURL() {
     return config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname;
@@ -59,7 +58,15 @@ class AppBootstrapper {
   run() {
     let espRouter = this.createRouter();
     this.startServices(espRouter);
-    configureStore(this._referenceDataService, this._blotterService, this._pricingService, this._analyticsService, this._compositeStatusService);
+    this.store = configureStore(
+      this._referenceDataService,
+      this._blotterService,
+      this._pricingService,
+      this._analyticsService,
+      this._compositeStatusService,
+      this._openFin
+    );
+
     this.startModels(espRouter);
     this.displayUi(espRouter);
   }
@@ -101,7 +108,6 @@ class AppBootstrapper {
     this._analyticsService.connect();
     this._compositeStatusService.start();
     this._referenceDataService.connect();
-    this._referenceDataService.load();
     // and finally the underlying connection
     this._connection.connect();
   }
@@ -134,18 +140,6 @@ class AppBootstrapper {
     );
     spotTileLoader.beginLoadTiles();
 
-    // wire-up the blotter
-    let blotterModel = new BlotterModel(WellKnownModelIds.blotterModelId, espRouter, this._blotterService, regionManager, this._openFin, this._schedulerService);
-    blotterModel.observeEvents();
-
-    // wire-up analytics
-    let analyticsModel = new AnalyticsModel(WellKnownModelIds.analyticsModelId, espRouter, this._analyticsService, regionManager, this._openFin);
-    analyticsModel.observeEvents();
-
-    // wire-up the footer
-    let footerModel = new FooterModel(WellKnownModelIds.footerModelId, espRouter, this._compositeStatusService, this._openFin);
-    footerModel.observeEvents();
-
     // wire up the apps main shell
     let shellModel = new ShellModel(
       WellKnownModelIds.shellModelId,
@@ -156,15 +150,6 @@ class AppBootstrapper {
     );
     shellModel.observeEvents();
 
-    this._referenceDataService.hasLoadedStream.subscribe(() => {
-      // Some models require the ref data to be loaded before they subscribe to their streams.
-      // You could make all ref data access on top of an observable API, but in most instances this make it difficult to use.
-      // Synchronous APIs for data that's effectively static make for much nicer code paths, the trade off is you need to bootstrap the loading
-      // so the reference data cache is ready for consumption.
-      // Note the ref service still exposes a push based api, it's just in most instances you don't want to use it.
-      espRouter.broadcastEvent('referenceDataLoaded', {});
-    });
-
     if (this._openFin.isRunningInOpenFin) {
       window.fin.desktop.main(() => espRouter.broadcastEvent('init', {}));
     } else {
@@ -173,9 +158,13 @@ class AppBootstrapper {
   }
 
   displayUi(espRouter) {
+    const store = this.store;
+    window.store = store;
     ReactDOM.render(
       <RouterProvider router={espRouter}>
-        <SmartComponent modelId={WellKnownModelIds.shellModelId} />
+        <Provider store={store}>
+          <SmartComponent modelId={WellKnownModelIds.shellModelId} />
+        </Provider>
       </RouterProvider>,
       document.getElementById('root')
     );
@@ -187,3 +176,4 @@ let runBootstrapper = location.pathname === '/' && location.hash.length === 0;
 if (runBootstrapper) {
   new AppBootstrapper().run();
 }
+

@@ -102,7 +102,6 @@ export default class Connection extends DisposableBase {
         this._connectionType = this._connectionTypeMapper.map(this._autobahn.connection.transport.info.type);
         this._startAutoDisconnectTimer();
         this._connectionStatusSubject.next(ConnectionStatus.connected);
-        console.log('Connection status subject --->', ConnectionStatus.connected)
       });
       this._autobahn.onclose((reason, details) => {
         _log.error(`Connection lost, reason: [${reason}]`);
