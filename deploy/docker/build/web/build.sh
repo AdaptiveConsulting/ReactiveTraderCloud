@@ -7,6 +7,7 @@ if [[ $build = "" ]];then
 fi
 
 # failfast
+RUN_ON_CIRCLE_CI="${CIRCLECI}"
 set -euo pipefail
 
 # load configuration
@@ -31,7 +32,7 @@ docker build --no-cache -t ${temp_image} ${npminstall_build_dir}/.
 
 if [[ "$(docker ps -q -a --filter name=${temp_container})" != "" ]]
 then
-  if [[ "${CIRCLECI}"  != "true" ]]
+  if [[ "${RUN_ON_CIRCLE_CI}"  != "true" ]]
   then docker rm ${temp_container} > /dev/null || true
   fi
 fi
@@ -43,7 +44,7 @@ docker run \
 
 if [[ -f dist ]];then rm -r dist; fi
 docker cp ${temp_container}:/client/dist ${this_directory}/.
-if [[ "${CIRCLECI}"  != "true" ]]
+if [[ "${RUN_ON_CIRCLE_CI}"  != "true" ]]
 then
   docker rm ${temp_container}
   docker rmi ${temp_image}
