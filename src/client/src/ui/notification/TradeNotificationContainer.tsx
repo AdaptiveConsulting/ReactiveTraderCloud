@@ -10,13 +10,13 @@ class TradeNotification extends React.Component<any, {}> {
   }
 
   public componentWillReceiveProps(newProps) {
-    if (this.props.trades && Object.keys(this.props.trades).length) {
-      this.showNotificationsForNewTrades(this.props.trades, newProps.trades)
+    if (this.context.openFin && this.props.trades && Object.keys(this.props.trades).length) {
+      this.showOpenFinNotificationsForNewTrades(this.props.trades, newProps.trades)
     }
     return newProps
   }
 
-  public showNotificationsForNewTrades(previousTrades, payloadTrades) {
+  public showOpenFinNotificationsForNewTrades(previousTrades, payloadTrades) {
     _.forEach(payloadTrades, (trade) => {
       // ignore existing trades, unless it was pending
       if (previousTrades[trade.tradeId] && previousTrades[trade.tradeId].status !== TradeStatus.Pending) return
