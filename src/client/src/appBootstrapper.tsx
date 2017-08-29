@@ -42,7 +42,7 @@ class AppBootstrapper {
   }
 
   get endpointPort() {
-    return config.overwriteServerEndpoint ? config.serverPort: location.port;
+    return config.overwriteServerEndpoint ? config.serverPort : location.port
   }
 
   run() {
@@ -57,7 +57,6 @@ class AppBootstrapper {
       this._openFin,
     )
 
-    this.startModels()
     this.displayUi()
   }
 
@@ -94,22 +93,15 @@ class AppBootstrapper {
     this._connection.connect()
   }
 
-  startModels() {
-    if (this._openFin.isRunningInOpenFin) {
-      window.fin.desktop.main(() => {})
-    }
-  }
-
   displayUi() {
     const store = this.store
     window.store = store
     ReactDOM.render(
-        <Provider store={store}>
-          <OpenFinProvider openFin={this._openFin}>
-            <ShellContainer/>
-          </OpenFinProvider>
-        </Provider>
-      ,
+      <Provider store={store}>
+        <OpenFinProvider openFin={this._openFin}>
+          <ShellContainer/>
+        </OpenFinProvider>
+      </Provider>,
       document.getElementById('root'),
     )
   }
@@ -120,4 +112,3 @@ const runBootstrapper = location.pathname === '/' && location.hash.length === 0
 if (runBootstrapper) {
   new AppBootstrapper().run()
 }
-
