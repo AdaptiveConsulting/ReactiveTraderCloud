@@ -196,7 +196,7 @@ export default class OpenFin {
         mainWindowOptions: {
           autoShow: false,
         },
-      }, () => app.run(() => setTimeout(() => resolve(), 1000), err => reject(err)), err => reject(err))
+      }, () => app.run(() => setTimeout(() => resolve(symbol), 1000), err => reject(err)), err => reject(err))
     })
   }
 

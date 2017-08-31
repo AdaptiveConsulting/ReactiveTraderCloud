@@ -95,15 +95,9 @@ export function spotTileEpicsCreator(executionService$, pricingService$, referen
       .flatMap((payload) => {
         return Observable.fromPromise(payload.payload.openFin.displayCurrencyChart(payload.payload.symbol))
       })
-      .map(currencyChartOpened)
-      // .subscribe((payload, param2) => {
-      //   console.log('TODO: I\'m stuck here. Change to regular map to make the app work again')
-      //   console.log('payload 1 is', payload, param2)
-      //   return currencyChartOpened(payload.payload)
-      // }, (payload, param2) => {
-      //   console.log('payload 2 is', payload, param2)
-      //   return currencyChartOpened(payload.payload)
-      // })
+      .map((symbol) => {
+        return currencyChartOpened(symbol)
+      })
   }
 
   return combineEpics(executeTradeEpic, onPriceUpdateEpic, displayCurrencyChart)
@@ -115,13 +109,10 @@ export const spotTileReducer = (state: any = {}, action) => {
       // TODO: prices shoould not update while execution is in progress
       return action.payload.payload && _.values(action.payload.payload).reduce(spotTileAccumulator(state), {})
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
-      console.log('EKSZYN 1', action)
-      
       state[action.payload.symbol].currencyChartIsOpening = true
       return state
     case ACTION_TYPES.CURRENCY_CHART_OPENED:
-      console.log('EKSZYN 2', action)
-      state[action.payload.payload.symbol].currencyChartIsOpening = false
+      state[action.payload].currencyChartIsOpening = false
       return state
     case ACTION_TYPES.EXECUTE_TRADE:
       state[action.payload.CurrencyPair].isTradeExecutionInFlight = true
