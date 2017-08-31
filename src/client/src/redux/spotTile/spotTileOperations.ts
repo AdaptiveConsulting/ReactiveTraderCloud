@@ -88,6 +88,7 @@ export function spotTileEpicsCreator(executionService$, pricingService$, referen
         })
         return payload
       })
+      .map(action => action.payload)
       .map(updateTiles)
   }
 
@@ -103,30 +104,30 @@ export function spotTileEpicsCreator(executionService$, pricingService$, referen
 
   function onTradeExecuted(action$) {
     return action$.ofType(ACTION_TYPES.TRADE_EXECUTED)
-      .debounceTime(DISMISS_NOTIFICATION_AFTER_X_IN_MS)
-      .map(action => ({ symbol: action.payload.trade.currencyPair.symbol }))
+      .delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS)
+      .map(action => ({ symbol: action.payload.trade.CurrencyPair || action.payload.trade.currencyPair.symbol }))
       .map(dismissNotification)
   }
 
   return combineEpics(executeTradeEpic, onPriceUpdateEpic, displayCurrencyChart, onTradeExecuted)
 }
 
-export const spotTileReducer = (state: any = {}, action) => {
-  switch (action.type) {
+export const spotTileReducer = (state: any = {}, { type, payload }) => {
+  switch (type) {
     case ACTION_TYPES.UPDATE_TILES:
       // TODO: prices shoould not update while execution is in progress
-      return action.payload.payload && _.values(action.payload.payload).reduce(spotTileAccumulator(state), {})
+      return _.values(payload).reduce(spotTileAccumulator(state), {})
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
-      state[action.payload.symbol].currencyChartIsOpening = true
+      state[payload.symbol].currencyChartIsOpening = true
       return state
     case ACTION_TYPES.CURRENCY_CHART_OPENED:
-      state[action.payload].currencyChartIsOpening = false
+      state[payload].currencyChartIsOpening = false
       return state
     case ACTION_TYPES.EXECUTE_TRADE:
-      state[action.payload.CurrencyPair].isTradeExecutionInFlight = true
+      state[payload.CurrencyPair].isTradeExecutionInFlight = true
       return state
     case ACTION_TYPES.TRADE_EXECUTED:
-      const response = action.payload
+      const response = payload
       const symbol = response.hasError ? response.trade.CurrencyPair : response.trade.currencyPair.symbol
       const item = state[symbol]
 
@@ -135,7 +136,7 @@ export const spotTileReducer = (state: any = {}, action) => {
       item.notification = buildNotification(response.trade, response.error)
       return state
     case ACTION_TYPES.DISMISS_NOTIFICATION:
-      state[action.payload.symbol].notification = null
+      state[payload.symbol].notification = null
       return state
     default:
       return state
