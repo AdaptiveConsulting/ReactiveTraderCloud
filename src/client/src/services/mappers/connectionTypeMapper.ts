@@ -1,4 +1,4 @@
-import { ConnectionType } from '../model/index'
+import { ConnectionType } from '../../types'
 
 export default class ConnectionTypeMapper {
   _lookup: Object

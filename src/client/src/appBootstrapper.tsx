@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { ServiceConst } from './services/model'
+import { ServiceConst, User } from './types'
 import SchedulerService from './system/schedulerService'
 import AutobahnConnectionProxy from './system/service/autobahnConnectionProxy'
 import Connection from './system/service/connection'
@@ -19,7 +19,6 @@ import {
   PricingService,
   ReferenceDataService,
 } from './services'
-import User from './services/model/user'
 import configureStore from './redux/configureStore'
 
 // When the application is run in openfin then 'fin' will be registered on the global window object.

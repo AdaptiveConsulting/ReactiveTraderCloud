@@ -5,7 +5,7 @@ import ConnectionStatus from './connectionStatus'
 import { ConnectionTypeMapper } from '../../services/mappers'
 import logger from '../logger'
 import SchedulerService from '../schedulerService'
-import ConnectionType from '../../services/model/connectionType'
+import { ConnectionType } from '../../types'
 import AutobahnConnectionProxy from './autobahnConnectionProxy'
 import { Error } from 'autobahn'
 

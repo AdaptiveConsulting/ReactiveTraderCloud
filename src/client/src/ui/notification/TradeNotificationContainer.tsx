@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { TradeStatus } from '../../services/model/index'
+import { TradeStatus } from '../../types'
 
 class TradeNotification extends React.Component<any, {}> {
 

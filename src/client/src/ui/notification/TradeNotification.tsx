@@ -1,14 +1,9 @@
 import * as React from 'react'
 import './notification.scss'
 import * as classnames from 'classnames'
-import Direction from '../../services/model/direction'
-import TradeStatus from '../../services/model/tradeStatus'
+import { Direction, TradeStatus } from '../../types'
 import '../common/styles/_base.scss'
 import '../common/styles/_fonts.scss'
-const DONE = 'Done'
-const REJECTED = 'Rejected'
-const BOUGHT = 'Bought'
-const SOLD = 'Sold'
 
 export interface TradeNotificationProps {
   message: any
@@ -21,18 +16,18 @@ export default class TradeNotification extends React.Component<TradeNotification
     const statusClassName = classnames(
       'notification__status',
       {
-        'notification__status--done': trade.tradeStatus === DONE,
-        'notification__status--rejected' : trade.tradeStatus !== DONE,
+        'notification__status--done': trade.tradeStatus === TradeStatus.Done,
+        'notification__status--rejected' : trade.tradeStatus !== TradeStatus.Done,
       },
     )
     const tradeSummaryClasses = classnames(
       'notification__summary-items',
       {
-        'notification__summary-items--rejected': trade.tradeStatus === REJECTED,
+        'notification__summary-items--rejected': trade.tradeStatus === TradeStatus.Rejected,
       },
     )
-    const tradeStatus = trade.tradeStatus === TradeStatus.Done ? trade.tradeStatus : REJECTED.toUpperCase()
-    const direction = trade.direction === Direction.Buy.name ? BOUGHT : SOLD
+    const tradeStatus = trade.tradeStatus === TradeStatus.Done ? trade.tradeStatus : 'REJECTED'
+    const direction = trade.direction === Direction.Buy ? 'Bought' : 'Sold'
 
     return (
       <div className="notification">

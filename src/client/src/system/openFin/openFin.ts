@@ -1,8 +1,10 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx'
 import * as _ from 'lodash'
-import { TradeNotification } from '../../services/model'
+import { Trade } from '../../types'
 import PositionsMapper from '../../services/mappers/positionsMapper'
 import logger from '../logger'
+import * as numeral from 'numeral'
+import * as moment from 'moment'
 
 const _log = logger.create('OpenFin')
 
@@ -203,7 +205,7 @@ export default class OpenFin {
   openTradeNotification(trade) {
     if (!this.isRunningInOpenFin) return
 
-    const tradeNotification = new TradeNotification(trade)
+    const tradeNotification = formatTradeNotification(trade)
     new fin.desktop.Notification({
       url: '/notification.html',
       message: tradeNotification,
@@ -239,5 +241,21 @@ export default class OpenFin {
 
   openLink(url) {
     fin.desktop.System.openUrlWithBrowser(url)
+  }
+}
+
+function formatTradeNotification(trade: Trade) {
+  return {
+    spotRate: trade.spotRate,
+    notional: numeral(trade.notional).format('0,000,000[.]00'),
+    direction: trade.direction.name,
+    baseCurrency: trade.currencyPair.base,
+    tradeId: trade.tradeId.toString(),
+    termsCurrency: trade.currencyPair.terms,
+    currencyPair: `${trade.currencyPair.base} / ${trade.currencyPair.terms}`,
+    tradeDate: moment(trade.tradeDate).format(),
+    tradeStatus: trade.status.name,
+    dealtCurrency: trade.dealtCurrency,
+    valueDate: moment(trade.valueDate).format('DD MMM'),
   }
 }

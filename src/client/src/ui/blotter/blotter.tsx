@@ -4,7 +4,7 @@ import { DateCell, NotionalCell } from './'
 import * as classNames from 'classnames'
 import 'fixed-data-table/dist/fixed-data-table.css'
 import './blotter.scss'
-import { TradeStatus } from '../../services/model/index'
+import { TradeStatus } from '../../types'
 
 type TradeRow = any
 
@@ -81,7 +81,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
         key="Dir"
         dataKey="Dir"
         label={'Direction'}
-        cellRenderer={(props: any) => <div>{trades[props.rowIndex].direction.name.toUpperCase()}</div>}
+        cellRenderer={(props: any) => <div>{trades[props.rowIndex].direction.toUpperCase()}</div>}
         flexGrow={1}
         width={80}/>,
       <Column
@@ -101,8 +101,8 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
             <NotionalCell
               width={props.width}
               className="blotter__trade-field--align-right"
-              notionalValue={trade._notional}
-              suffix={' ' + trade._currencyPair.base}/>
+              notionalValue={trade.notional}
+              suffix={' ' + trade.currencyPair.base}/>
           )
         }}
         flexGrow={1}
@@ -166,7 +166,7 @@ const getTradeClassName = (tradeStatus: TradeStatus) => {
     Rejected: 'blotter__trade--rejected',
     Pending: 'blotter__trade--processing',
   }
-  return tradeStatusMap[tradeStatus.name]
+  return tradeStatusMap[tradeStatus]
 }
 
 const getStatusCellStyles = (tradeStatus: string) => {

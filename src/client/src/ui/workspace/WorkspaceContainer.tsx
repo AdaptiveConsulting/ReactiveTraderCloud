@@ -3,8 +3,8 @@ import * as React from 'react'
 import './workspace.scss'
 import { connect } from 'react-redux'
 import SpotTile from '../spotTile/SpotTile'
-import CurrencyPair from '../../services/model/currencyPair'
-import { Direction } from '../../services/model/index'
+import { CurrencyPair } from '../../types/currencyPair'
+import { Direction } from '../../types'
 import { Dispatch } from 'redux'
 import { executeTrade, undockTile, displayCurrencyChart, spotRegionSettings, dismissNotification } from '../../redux/spotTile/spotTileOperations'
 // @todo: move (and possiblly rename) the region  related methods to RegionOperations
@@ -69,7 +69,7 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
       const title = `${currencyPair.base} / ${currencyPair.terms}`
       const tileProps = {
         title,
-        canPopout:Environment.isRunningInIE,
+        canPopout:Environment.isRunningInIE(),
         currencyChartIsOpening: item.currencyChartIsOpening,
         currencyPair: this.props.referenceService[item.symbol],
         currentSpotPrice: item,

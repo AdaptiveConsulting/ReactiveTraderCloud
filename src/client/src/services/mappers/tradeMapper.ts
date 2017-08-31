@@ -1,9 +1,7 @@
 import * as _ from 'lodash'
 
-import Trade from '../model/trade'
-import TradesUpdate from '../model/tradesUpdate'
+import { Trade, Direction, TradeStatus, TradesUpdate } from '../../types/'
 import ReferenceDataService from '../referenceDataService'
-import { Direction, TradeStatus } from '../model/index'
 
 export default class TradeMapper {
 
@@ -13,16 +11,20 @@ export default class TradeMapper {
     this._referenceDataService = referenceDataService
   }
 
-  mapFromDto(dto: any) {
+  mapFromDto(dto: any): TradesUpdate {
     const trades = _.map(dto.Trades, trade => this.mapFromTradeDto(trade))
-    return new TradesUpdate(dto.IsStateOfTheWorld, dto.IsStale, trades)
+    return {
+      trades,
+      isStateOfTheWorld: dto.IsStateOfTheWorld,
+      isStale: dto.IsStale,
+    }
   }
 
   mapFromTradeDto(tradeDto: any): Trade {
     const direction = this._mapDirectionFromDto(tradeDto.Direction)
     const status = this._mapTradeStatusFromDto(tradeDto.Status)
     const currencyPair = this._referenceDataService.getCurrencyPair(tradeDto.CurrencyPair)
-    return new Trade(
+    return createTrade(
       tradeDto.TradeId,
       tradeDto.TraderName,
       currencyPair,
@@ -38,9 +40,9 @@ export default class TradeMapper {
 
   _mapDirectionFromDto(directionDto: string) {
     switch (directionDto) {
-      case Direction.Buy.name:
+      case Direction.Buy:
         return Direction.Buy
-      case Direction.Sell.name:
+      case Direction.Sell:
         return Direction.Sell
       default:
         throw new Error(`Unknown direction ${directionDto}`)
@@ -48,15 +50,30 @@ export default class TradeMapper {
   }
 
   _mapTradeStatusFromDto(statusDto: string) {
-    switch (statusDto) {
-      case TradeStatus.Pending.name:
+    switch (statusDto.toLowerCase()) {
+      case TradeStatus.Pending:
         return TradeStatus.Pending
-      case TradeStatus.Done.name:
+      case TradeStatus.Done:
         return TradeStatus.Done
-      case TradeStatus.Rejected.name:
+      case TradeStatus.Rejected:
         return TradeStatus.Rejected
       default:
         throw new Error(`Unknown trade status ${statusDto}`)
     }
+  }
+}
+
+function createTrade(tradeId, traderName, currencyPair, notional, dealtCurrency, direction, spotRate, tradeDate, valueDate, status): Trade {
+  return {
+    tradeId,
+    traderName,
+    currencyPair,
+    notional,
+    dealtCurrency,
+    direction,
+    spotRate,
+    tradeDate,
+    valueDate,
+    status,
   }
 }
