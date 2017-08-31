@@ -47,16 +47,16 @@ export default class ExecutionService extends ServiceBase {
                         return ExecuteTradeResponse.create(trade);
                       })
                       // if we never receive a response, mark request as complete
-                      .timeout(ExecutionService.EXECUTION_REQUEST_TIMEOUT_MS, Scheduler.asap.schedule(() => ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))),
+                      .timeout(ExecutionService.EXECUTION_REQUEST_TIMEOUT_MS, Scheduler.asap.schedule(() => ExecuteTradeResponse.createForError('Trade execution timeout exceeded', executeTradeRequest))),
                     // show timeout error if request is taking longer than expected
                     Observable.timer(ExecutionService.EXECUTION_CLIENT_TIMEOUT_MS)
-                      .map(() => ExecuteTradeResponse.createForError('Trade execution timeout exceeded'))
+                      .map(() => ExecuteTradeResponse.createForError('Trade execution timeout exceeded', executeTradeRequest))
                       .takeUntil(request))
                     .subscribe(o)
                 );
               }
               else {
-                o.next(ExecuteTradeResponse.createForError('Credit limit exceeded'));
+                o.next(ExecuteTradeResponse.createForError('Credit limit exceeded', executeTradeRequest));
               }
             })
         );

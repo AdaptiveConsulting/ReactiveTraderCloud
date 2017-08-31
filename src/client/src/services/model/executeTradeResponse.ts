@@ -25,8 +25,8 @@ export default class ExecuteTradeResponse {
     return this._hasError
   }
 
-  static createForError(error: string) {
-    return new ExecuteTradeResponse(null, error, true)
+  static createForError(error: string, request) {
+    return new ExecuteTradeResponse(request, error, true)
   }
 
   static create(trade: Trade) {

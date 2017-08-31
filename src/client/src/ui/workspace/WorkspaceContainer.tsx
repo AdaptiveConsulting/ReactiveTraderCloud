@@ -6,7 +6,7 @@ import SpotTile from '../spotTile/SpotTile'
 import CurrencyPair from '../../services/model/currencyPair'
 import { Direction } from '../../services/model/index'
 import { Dispatch } from 'redux'
-import { executeTrade, undockTile, displayCurrencyChart, spotRegionSettings } from '../../redux/spotTile/spotTileOperations'
+import { executeTrade, undockTile, displayCurrencyChart, spotRegionSettings, dismissNotification } from '../../redux/spotTile/spotTileOperations'
 // @todo: move (and possiblly rename) the region  related methods to RegionOperations
 import { onComponentMount, onPopoutClick } from '../blotter/blotterOperations'
 import { RegionWrapper } from '../../redux/regions'
@@ -19,9 +19,8 @@ interface WorkspaceContainerOwnProps {
 
 interface WorkspaceContainerStateProps {
   children: any
-  pricingService: any
   referenceService: any
-  executionService?: any
+  spotTiles: any
   isConnected: boolean
   compositeStatusService: any
   notionals: any
@@ -33,6 +32,7 @@ interface WorkspaceContainerDispatchProps {
   onPopoutClick: (region: any, component: any, openFin:any) => any
   undockTile: (openFin: any, title: string) => any
   displayCurrencyChart: (openFin: any, symbol: string) => any
+  onNotificationDismissedClick: (symbol: string) => any
 }
 
 type WorkspaceContainerProps =
@@ -50,7 +50,7 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
 
   render() {
     const openFin = this.context.openFin
-    const items = _.values(this.props.pricingService)
+    const items = this.props.spotTiles && _.values(this.props.spotTiles)
 
     return <div className="shell__workspace">
       <div className="workspace-region">
@@ -67,31 +67,32 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
     return _.map(items, (item: any) => {
       const currencyPair: CurrencyPair = this.props.referenceService[item.symbol].currencyPair
       const title = `${currencyPair.base} / ${currencyPair.terms}`
-      let tileProps = {
+      const tileProps = {
+        title,
         canPopout:Environment.isRunningInIE,
-        currencyChartIsOpening: false,
+        currencyChartIsOpening: item.currencyChartIsOpening,
         currencyPair: this.props.referenceService[item.symbol],
         currentSpotPrice: item,
         executionConnected: true,
-        hasNotification: false,
+        hasNotification: !!item.notification,
         isRunningInOpenFin: !!openFin,
-        isTradeExecutionInFlight: false,
-        notification: null,
+        isTradeExecutionInFlight: item.isTradeExecutionInFlight,
+        notification: item.notification,
         notional: this.props.notionals[currencyPair.symbol] || NOTIONAL,
-        priceStale: false,
+        priceStale: item.priceStale,
         pricingConnected: true,
-        title: title,
         executeTrade: this.props.executeTrade,
         onComponentMount: this.props.onComponentMount,
         undockTile: this.props.undockTile(openFin, title),
         onPopoutClick: () => {},
-        displayCurrencyChart: this.props.displayCurrencyChart(openFin, item.symbol)
+        onNotificationDismissedClick: this.props.onNotificationDismissedClick(item.symbol),
+        displayCurrencyChart: this.props.displayCurrencyChart(openFin, item.symbol),
       }
 
       tileProps.onPopoutClick = this.props.onPopoutClick(item.symbol, tileProps, openFin)
 
       return (
-        <RegionWrapper key={item._symbol} region={item._symbol}>
+        <RegionWrapper key={item.symbol} region={item.symbol}>
           <div className="workspace-region__item" >
             <SpotTile
               {...tileProps}
@@ -103,7 +104,7 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<any>,) => ({
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   executeTrade: (payload) => {
     dispatch(executeTrade(payload))
   },
@@ -117,30 +118,32 @@ const mapDispatchToProps = (dispatch: Dispatch<any>,) => ({
   },
   undockTile: (openFin, tileName) => {
     return () => {
-      dispatch(undockTile({openFin, tileName}) )
+      dispatch(undockTile({ openFin, tileName }))
     }
   },
   displayCurrencyChart: (openFin, symbol) => {
     return () => {
-      dispatch(displayCurrencyChart({openFin, symbol}))
+      dispatch(displayCurrencyChart({ openFin, symbol }))
     }
-  }
-
+  },
+  onNotificationDismissedClick: (symbol) => {
+    return () => {
+      dispatch(dismissNotification({ symbol }))
+    }
+  },
 })
 
-const spotTileRegion = (id, tileProps) => (
-  {
-    id,
-    isTearedOff: false,
-    container: <SpotTile {...tileProps} />,
-    settings: spotRegionSettings(id)
-  }
-)
+const spotTileRegion = (id, tileProps) => ({
+  id,
+  isTearedOff: false,
+  container: <SpotTile {...tileProps} />,
+  settings: spotRegionSettings(id),
+})
 
-function mapStateToProps({pricingService, compositeStatusService, referenceService, notionals}) {
+function mapStateToProps({ spotTiles, compositeStatusService, referenceService, notionals }) {
   const isConnected = compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected || false
-  return {pricingService, isConnected, referenceService, notionals}
-}
 
+  return { spotTiles, isConnected, referenceService, notionals }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkspaceContainer)

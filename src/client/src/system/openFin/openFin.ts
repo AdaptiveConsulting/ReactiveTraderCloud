@@ -1,7 +1,6 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx'
 import * as _ from 'lodash'
 import { TradeNotification } from '../../services/model'
-import PriceMapper from '../../services/mappers/priceMapper'
 import PositionsMapper from '../../services/mappers/positionsMapper'
 import logger from '../logger'
 
@@ -174,7 +173,7 @@ export default class OpenFin {
   _refreshCurrencyChart(symbol) {
     const interval = 5
     fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', { symbol, interval })
-    return Promise.resolve()
+    return Promise.resolve(symbol)
   }
 
   /**
@@ -225,7 +224,9 @@ export default class OpenFin {
 
   publishPrice(price) {
     if (!this.isRunningInOpenFin) return
-    fin.desktop.InterApplicationBus.publish('price-update', PriceMapper.mapToSpotPriceDto(price))
+
+    console.warn('PriceMapper.mapToSpotPriceDto moved to spotTileItemFormatter')
+    // fin.desktop.InterApplicationBus.publish('price-update', PriceMapper.mapToSpotPriceDto(price))
   }
 
   sendAllBlotterData(uuid, blotterData){
