@@ -7,6 +7,7 @@ import * as numeral from 'numeral'
 import * as _ from 'lodash'
 import { Observable } from 'rxjs/Rx'
 
+const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
 export interface Rate {
   bigFigure: number
   rawRate: number
@@ -100,7 +101,14 @@ export function spotTileEpicsCreator(executionService$, pricingService$, referen
       })
   }
 
-  return combineEpics(executeTradeEpic, onPriceUpdateEpic, displayCurrencyChart)
+  function onTradeExecuted(action$) {
+    return action$.ofType(ACTION_TYPES.TRADE_EXECUTED)
+      .debounceTime(DISMISS_NOTIFICATION_AFTER_X_IN_MS)
+      .map(action => ({ symbol: action.payload.trade.currencyPair.symbol }))
+      .map(dismissNotification)
+  }
+
+  return combineEpics(executeTradeEpic, onPriceUpdateEpic, displayCurrencyChart, onTradeExecuted)
 }
 
 export const spotTileReducer = (state: any = {}, action) => {
