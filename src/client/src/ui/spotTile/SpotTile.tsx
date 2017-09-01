@@ -9,7 +9,7 @@ import { Direction, NotificationType } from '../../types'
 const SPOT_DATE_FORMAT = 'DD MMM'
 
 interface Notification {
-  error: any
+  hasError: any
   notificationType: NotificationType
 }
 
@@ -80,7 +80,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
       !(hasNotification && notification.notificationType === NotificationType.Trade),
       'spot-tile--readonly': !executionConnected,
       'spot-tile--executing': isTradeExecutionInFlight,
-      'spot-tile--error': hasNotification && notification.error,
+      'spot-tile--error': hasNotification && notification.hasError,
     })
 
     const newWindowClassName = classnames('popout__controls  glyphicon glyphicon-new-window', {

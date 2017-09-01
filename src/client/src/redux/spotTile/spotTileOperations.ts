@@ -52,6 +52,9 @@ export enum ACTION_TYPES {
   DISMISS_NOTIFICATION = '@ReactiveTraderCloud/DISMISS_NOTIFICATION',
   PRICING_STALE = '@ReactiveTraderCloud/PRICING_STALE',
 }
+
+const stalePriceErrorMessage = 'Pricing is unavailable'
+
 export const executeTrade = createAction(ACTION_TYPES.EXECUTE_TRADE, payload => payload)
 export const tradeExecuted = createAction(ACTION_TYPES.TRADE_EXECUTED)
 export const undockTile = createAction(ACTION_TYPES.UNDOCK_TILE, payload => payload)
@@ -124,7 +127,6 @@ export const spotTileReducer = (state: any = {}, { type, payload }) => {
       const response = payload
       const symbol = response.hasError ? response.trade.CurrencyPair : response.trade.currencyPair.symbol
       const item = state[symbol]
-
       item.hasError = response.hasError
       item.isTradeExecutionInFlight = false
       item.notification = buildNotification(response.trade, response.error)
@@ -136,8 +138,8 @@ export const spotTileReducer = (state: any = {}, { type, payload }) => {
       const stalePrice = _.pick(state, payload.symbol)
       if (stalePrice) {
         stalePrice[payload.symbol].priceStale = true
-        const newState = _.assign(state, stalePrice)
-        return newState
+        stalePrice[payload.symbol].notification = buildNotification({},  stalePriceErrorMessage)
+        return _.assign(state, stalePrice)
       }
       return state
     default:
@@ -157,6 +159,18 @@ function spotTileAccumulator(state) {
     return acc
   }
 }
+
+function getNotification(prevItem, item) {
+  if (prevItem) {
+    if (!prevItem.notification ||
+      (!isPriceStale(prevItem, item) && prevItem.notification.message === stalePriceErrorMessage)) {
+      return null
+    }
+    return prevItem.notification
+  }
+  return null
+}
+
 // use priceMapper as a source of this reducer
 function spotTileItemFormatter(state, item): SpotPrice {
   const prevItem = state[item.symbol]
@@ -180,7 +194,7 @@ function spotTileItemFormatter(state, item): SpotPrice {
     isTradable: item.isTradable,
     priceStale: isPriceStale(prevItem, item),
     isTradeExecutionInFlight: prevItem ? prevItem.isTradeExecutionInFlight : false,
-    notification: prevItem ? prevItem.notification : null,
+    notification: getNotification(prevItem, item),
   }
 }
 
