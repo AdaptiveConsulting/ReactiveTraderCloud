@@ -24,6 +24,7 @@ class BlotterContainer extends React.Component<any, {}> {
       canPopout: true,
       size: this.props.size,
     }
+
     return (
       <div className="shell_workspace_blotter">
         <Blotter {...blotterProps} />

@@ -8,7 +8,7 @@ function getButtonProps (type: string, action: any) {
 
   return {
     className: `spot-tile__price spot-tile__price--${classNameType}`,
-    direction: { name: type },
+    direction: type,
     rate: {
       pips: 5,
       bigFigure: 100,

@@ -1,11 +1,7 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
 import './priceMovement.scss'
-
-const priceMovementTypes = {
-  Up: 'Up',
-  Down: 'Down',
-}
+import { PriceMovementTypes } from '../../types'
 
 export interface PriceMovementIndicatorProps {
   priceMovementType: any
@@ -17,13 +13,13 @@ export interface PriceMovementIndicatorProps {
 const getCaretDirection = (priceMovement: string) => {
 
   const upDirectionClasses = {
-    [priceMovementTypes.Up]: 'fa-caret-up',
-    [priceMovementTypes.Down]: 'price-movement__icon--inactive',
+    [PriceMovementTypes.Up]: 'fa-caret-up',
+    [PriceMovementTypes.Down]: 'price-movement__icon--inactive',
   }
 
   const downDirectionClasses = {
-    [priceMovementTypes.Down]: 'fa-caret-down',
-    [priceMovementTypes.Up]: 'price-movement__icon--inactive',
+    [PriceMovementTypes.Down]: 'fa-caret-down',
+    [PriceMovementTypes.Up]: 'price-movement__icon--inactive',
   }
 
   'price-movement__icon--up fa fa-lg fa-caret-up'

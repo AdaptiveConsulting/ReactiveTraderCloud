@@ -248,13 +248,13 @@ function formatTradeNotification(trade: Trade) {
   return {
     spotRate: trade.spotRate,
     notional: numeral(trade.notional).format('0,000,000[.]00'),
-    direction: trade.direction.name,
+    direction: trade.direction,
     baseCurrency: trade.currencyPair.base,
     tradeId: trade.tradeId.toString(),
     termsCurrency: trade.currencyPair.terms,
     currencyPair: `${trade.currencyPair.base} / ${trade.currencyPair.terms}`,
     tradeDate: moment(trade.tradeDate).format(),
-    tradeStatus: trade.status.name,
+    tradeStatus: trade.status,
     dealtCurrency: trade.dealtCurrency,
     valueDate: moment(trade.valueDate).format('DD MMM'),
   }

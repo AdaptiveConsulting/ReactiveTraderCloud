@@ -1,10 +1,11 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
 import './price-button.scss'
+import { Direction } from '../../../types'
 
 interface PriceButtonProps {
   className: string
-  direction: { name: 'Buy' | 'Sell' | string }
+  direction: Direction
   rate: {
     pips: any
     bigFigure: number
@@ -34,7 +35,7 @@ const PriceButton = (props: PriceButtonProps) => {
       <span className="price-button__wrapper">
         <span className="price-button__big-figure">
           <span className="price-button__direction">
-            {direction.name}
+            {direction}
           </span><br />
           {bigFigureDisplay}
         </span>

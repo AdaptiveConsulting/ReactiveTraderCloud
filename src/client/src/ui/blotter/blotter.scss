@@ -66,8 +66,12 @@
   }
 }
 
-.cellRejected {
-  color: #ee5f5b;
+.blotter__trade-status {
+  text-transform: capitalize;
+
+  &.cellRejected {
+    color: #ee5f5b;
+  }
 }
 
 .blotter--offline {
