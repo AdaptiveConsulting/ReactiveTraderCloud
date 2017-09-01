@@ -8,6 +8,8 @@ import * as _ from 'lodash'
 import { Observable } from 'rxjs/Rx'
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
+export const PRICE_STALE_AFTER_X_IN_MS = 6000
+
 export interface Rate {
   bigFigure: number
   rawRate: number
@@ -44,6 +46,7 @@ export interface SpotPrice {
     formattedValue: string,
   }
   isTradable: boolean,
+  priceStale: boolean,
   isTradeExecutionInFlight: boolean,
   notification: any,
 }
@@ -57,8 +60,8 @@ export enum ACTION_TYPES {
   CURRENCY_CHART_OPENED = '@ReactiveTraderCloud/CURRENCY_CHART_OPENED',
   UPDATE_TILES = '@ReactiveTraderCloud/UPDATE_TILES',
   DISMISS_NOTIFICATION = '@ReactiveTraderCloud/DISMISS_NOTIFICATION',
+  PRICING_STALE = '@ReactiveTraderCloud/PRICING_STALE',
 }
-
 export const executeTrade = createAction(ACTION_TYPES.EXECUTE_TRADE, payload => payload)
 export const tradeExecuted = createAction(ACTION_TYPES.TRADE_EXECUTED)
 export const undockTile = createAction(ACTION_TYPES.UNDOCK_TILE, payload => payload)
@@ -67,6 +70,7 @@ export const displayCurrencyChart = createAction(ACTION_TYPES.DISPLAY_CURRENCY_C
 export const currencyChartOpened = createAction(ACTION_TYPES.CURRENCY_CHART_OPENED, payload => payload)
 export const updateTiles = createAction(ACTION_TYPES.UPDATE_TILES)
 export const dismissNotification = createAction(ACTION_TYPES.DISMISS_NOTIFICATION, payload => payload)
+export const stalePricing = createAction(ACTION_TYPES.PRICING_STALE)
 
 export const spotRegionSettings = id => regionsSettings(`${id} Spot`, 370, 155, true)
 
@@ -138,9 +142,23 @@ export const spotTileReducer = (state: any = {}, { type, payload }) => {
     case ACTION_TYPES.DISMISS_NOTIFICATION:
       state[payload.symbol].notification = null
       return state
+    case ACTION_TYPES.PRICING_STALE:
+      const stalePrice = _.pick(state, payload.symbol)
+      if (stalePrice) {
+        stalePrice[payload.symbol].priceStale = true
+        const newState = _.assign(state, stalePrice)
+        return newState
+      }
+      return state
     default:
       return state
   }
+}
+
+function isPriceStale(prevItem, item) {
+  return prevItem && prevItem.hasOwnProperty('priceStale') &&
+         item.creationTimestamp === prevItem.creationTimestamp &&
+         prevItem.priceStale === true
 }
 
 function spotTileAccumulator(state) {
@@ -149,7 +167,6 @@ function spotTileAccumulator(state) {
     return acc
   }
 }
-
 // use priceMapper as a source of this reducer
 function spotTileItemFormatter(state, item): SpotPrice {
   const prevItem = state[item.symbol]
@@ -171,6 +188,7 @@ function spotTileItemFormatter(state, item): SpotPrice {
     priceMovementType: prevItem ? getPriceMovementType(prevItem.mid.rawRate, mid.rawRate) : PriceMovementTypes.None,
     spread: getSpread(item.bid, item.ask, pipsPosition, ratePrecision),
     isTradable: item.isTradable,
+    priceStale: isPriceStale(prevItem, item),
     isTradeExecutionInFlight: prevItem ? prevItem.isTradeExecutionInFlight : false,
     notification: prevItem ? prevItem.notification : null,
   }
