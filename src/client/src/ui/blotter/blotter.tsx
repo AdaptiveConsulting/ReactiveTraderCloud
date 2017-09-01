@@ -120,8 +120,8 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
         dataKey="Status"
         label={'Status'}
         cellRenderer={(props: any) =>
-          <div className={classNames('blotter__trade-status', getStatusCellStyles(trades[props.rowIndex].status.name))}>
-            {trades[props.rowIndex].status.name}
+          <div className={classNames('blotter__trade-status', getStatusCellStyles(trades[props.rowIndex].status))}>
+            {trades[props.rowIndex].status}
           </div>}
         flexGrow={1}
         width={80}/>,
@@ -170,5 +170,5 @@ const getTradeClassName = (tradeStatus: TradeStatus) => {
 }
 
 const getStatusCellStyles = (tradeStatus: string) => {
-  return tradeStatus === 'Rejected' && 'cellRejected'
+  return tradeStatus === TradeStatus.Rejected && 'cellRejected'
 }

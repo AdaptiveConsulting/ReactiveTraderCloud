@@ -4,12 +4,13 @@ import { PriceButton, PriceMovementIndicator, TradeNotification } from './'
 import * as moment from 'moment'
 import './spotTile.scss'
 import NotionalContainer from './notional/NotionalContainer'
+import { Direction, NotificationType } from '../../types'
 
 const SPOT_DATE_FORMAT = 'DD MMM'
 
 interface Notification {
   error: any
-  notificationType: 'Trade' | 'Text' | string
+  notificationType: NotificationType
 }
 
 interface CurrentSpotPrice {
@@ -21,13 +22,6 @@ interface CurrentSpotPrice {
   }
   valueDate: number
 }
-
-interface Direction {
-  name: 'Buy' | 'Sell' | string
-}
-
-const directionBuy = { name: 'Buy' }
-const directionSell = { name: 'Sell' }
 
 export interface SpotTileProps {
   canPopout: boolean
@@ -83,7 +77,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
       : ''
     const className = classnames('spot-tile', {
       'spot-tile--stale': (!pricingConnected || priceStale) &&
-      !(hasNotification && notification.notificationType === 'Trade'),
+      !(hasNotification && notification.notificationType === NotificationType.Trade),
       'spot-tile--readonly': !executionConnected,
       'spot-tile--executing': isTradeExecutionInFlight,
       'spot-tile--error': hasNotification && notification.error,
@@ -134,8 +128,8 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         <span className="spot-tile__symbol">{title}</span>
         <PriceButton
           className="spot-tile__price spot-tile__price--bid"
-          direction={directionSell}
-          onExecute={() => !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(directionSell, this.props.currencyPair.currencyPair.symbol, this.props.currentSpotPrice.bid, this.props.notional, this.props.currencyPair.currencyPair.base, this.props))}
+          direction={Direction.Sell}
+          onExecute={() => !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Sell, this.props.currencyPair.currencyPair.symbol, this.props.currentSpotPrice.bid, this.props.notional, this.props.currencyPair.currencyPair.base, this.props))}
           rate={currentSpotPrice.bid}/>
         <div className="spot-tile__price-movement">
           <PriceMovementIndicator
@@ -144,22 +138,22 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         </div>
         <PriceButton
           className="spot-tile__price spot-tile__price--ask"
-          direction={directionBuy}
-          onExecute={() => !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(directionBuy, this.props.currencyPair.currencyPair.symbol, this.props.currentSpotPrice.ask, this.props.notional, this.props.currencyPair.currencyPair.base, this.props))}
+          direction={Direction.Buy}
+          onExecute={() => !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Buy, this.props.currencyPair.currencyPair.symbol, this.props.currentSpotPrice.ask, this.props.notional, this.props.currencyPair.currencyPair.base, this.props))}
           rate={currentSpotPrice.ask}/>
       </div>
     )
   }
 
   createNotification(notification: any) {
-    if (notification.notificationType === 'Trade') {
+    if (notification.notificationType === NotificationType.Trade) {
       return (
         <TradeNotification
           className="spot-tile__trade-summary"
           notification={notification}
           onDismissedClicked={() => this.props.onNotificationDismissedClick()}/>
       )
-    } else if (notification.notificationType === 'Text') {
+    } else if (notification.notificationType === NotificationType.Text) {
       return (
         <div className="spot-tile__notification-message">{notification.message}</div>
       )
@@ -173,7 +167,7 @@ const createTradeRequest = (direction: Direction, currencyPair: string, spotRate
   return {
     CurrencyPair: currencyPair,
     SpotRate: spotRate.rawRate,
-    Direction: direction.name,
+    Direction: direction,
     Notional: notional,
     DealtCurrency: currencyBase,
   }

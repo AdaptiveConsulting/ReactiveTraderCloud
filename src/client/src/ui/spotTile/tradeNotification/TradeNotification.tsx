@@ -1,14 +1,13 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
 import './trade-notification.scss'
+import { TradeStatus } from '../../../types'
 
 interface TradeNotificationProps {
   className: string,
   notification: {
     hasError: boolean
-    status: {
-      name: string,
-    }
+    status: TradeStatus
     dealtCurrency: string
     notional: number
     termsCurrency: any
@@ -18,12 +17,6 @@ interface TradeNotificationProps {
     tradeId: string,
   },
   onDismissedClicked: () => void
-}
-
-const tradeStatus = {
-  rejected: { name: 'Rejected' },
-  done: { name: 'Done' },
-  pending: { name: 'Pending' },
 }
 
 class TradeNotification extends React.Component<TradeNotificationProps, {}>{
@@ -58,12 +51,12 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
     const classNames = classnames(
       'trade-notification',
       className,
-      { 'trade-notification--rejected': notification.status.name === tradeStatus.rejected.name },
+      { 'trade-notification--rejected': notification.status === TradeStatus.Rejected },
     )
     return (
       <div className={classNames}>
         <span className="trade-notification__trade-status">
-          {notification.status.name}
+          {notification.status}
           </span>
         <ul className="trade-notification__summary-items">
           <li

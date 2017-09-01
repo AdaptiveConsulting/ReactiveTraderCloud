@@ -6,27 +6,9 @@ import { timeFormat } from 'd3-time-format'
 import * as numeral from 'numeral'
 import * as _ from 'lodash'
 import { Observable } from 'rxjs/Rx'
+import { Direction, NotificationType, PriceMovementTypes, Rate } from '../../types'
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
-export interface Rate {
-  bigFigure: number
-  rawRate: number
-  ratePrecision: number
-  pipFraction: number
-  pipPrecision: number
-  pips: number
-}
-
-export enum Direction {
-  Sell = 'Sell',
-  Buy = 'Buy',
-}
-
-export enum PriceMovementTypes {
-  Up = 'Up',
-  Down = 'Down',
-  None = 'None',
-}
 
 export interface SpotPrice {
   currencyPair: any
@@ -216,11 +198,11 @@ export function toRate(rawRate: number, ratePrecision: number, pipPrecision: num
 
 function buildNotification(trade, error) {
   if (error) {
-    return { message: error, hasError: true, notificationType: 'Text' }
+    return { message: error, hasError: true, notificationType: NotificationType.Text }
   }
 
   return {
-    notificationType: 'Trade',
+    notificationType: NotificationType.Trade,
     hasError: false,
     direction: trade.direction === Direction.Sell ? 'Sold' : 'Bought',
     notional: numeral(trade.notional).format('0,000,000[.]00'),

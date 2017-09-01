@@ -9,9 +9,7 @@ describe.only('TradeNotification', () => {
     const mockOnDismissedClicked = jest.fn(() => {})
     const notification = {
       hasError: true,
-      status: {
-        name: 'Rejected',
-      },
+      status: 'rejected',
       dealtCurrency: 'GBP',
       notional: 12345,
       termsCurrency: 'GBP',
@@ -32,9 +30,9 @@ describe.only('TradeNotification', () => {
 
   test('renders correct markup for all statuses', () => {
     const tradeStatus = [
-      { name: 'Rejected' },
-      { name: 'Done' },
-      { name: 'Pending' },
+      'rejected',
+      'done',
+      'pending',
     ]
 
     tradeStatus.forEach((status) => {

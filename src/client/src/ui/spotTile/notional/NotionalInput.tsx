@@ -3,6 +3,7 @@ import * as numeral from 'numeral'
 import { utils } from '../../../system'
 import * as classnames from 'classnames'
 import './notionalInput.scss'
+import { CurrencyPair }  from '../../../types'
 
 const NUMERAL_FORMAT      = '0,000,000[.]00'
 const DOT                 = '.'
@@ -14,11 +15,6 @@ const CHAR_CODE_UNIT_SEP  = 31
 const SHORTCUT_CHAR_CODES = [75, 77, 107, 109] // K, M, k, m
 
 const MAX_NOTIONAL_VALUE = 1000000000
-
-export interface CurrencyPair {
-  symbol: string
-  base: string
-}
 
 export interface NotionalInputProps {
   className: string

@@ -25,14 +25,15 @@ export const blotterServiceReducer = (state: any = {}, action) => {
     case ACTION_TYPES.BLOTTER_SERVICE:
       const newState = state
       const payloadTrades = action.payload.trades
+
       // removing the existing key for a single trade
       if (payloadTrades.length === 1) {
-        const tradeKey = payloadTrades[0]['_tradeId']
+        const tradeKey = payloadTrades[0]['tradeId']
         if (state.trades[tradeKey]) {
           newState.trades = _.omit(state.trades, tradeKey)
         }
       }
-      const trades = _.mapKeys(_.values(payloadTrades), '_tradeId')
+      const trades = _.mapKeys(_.values(payloadTrades), 'tradeId')
       return {
         trades: { ...trades, ...newState.trades },
       }

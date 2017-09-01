@@ -15,7 +15,12 @@ export default class ReferenceDataMapper {
   _mapUpdatesFromDto(currencyPairUpdateDtos: Array<any>): Array<CurrencyPairUpdate> {
     return _.map(currencyPairUpdateDtos, (dto): CurrencyPairUpdate => {
       const updateType = this._mapUpdateType(dto.UpdateType)
-      const currencyPair = this._mapFromCurrencyPairFromDto(dto.CurrencyPair)
+      const currencyPair = createCurrencyPair(
+        dto.CurrencyPair.Symbol,
+        dto.CurrencyPair.RatePrecision,
+        dto.CurrencyPair.PipsPosition,
+      )
+
       return {
         currencyPair,
         updateType,
@@ -23,15 +28,7 @@ export default class ReferenceDataMapper {
     })
   }
 
-  _mapFromCurrencyPairFromDto(currencyPairDto: any): any {
-    return createCurrencyPair(
-      currencyPairDto.Symbol,
-      currencyPairDto.RatePrecision,
-      currencyPairDto.PipsPosition,
-    )
-  }
-
-  _mapUpdateType(updateTypeString: any): UpdateType {
+  _mapUpdateType(updateTypeString: string): UpdateType {
     if (updateTypeString === UpdateType.Added) {
       return UpdateType.Added
     } else if (updateTypeString === UpdateType.Removed) {
