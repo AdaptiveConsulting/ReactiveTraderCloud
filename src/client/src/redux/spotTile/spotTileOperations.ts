@@ -11,15 +11,6 @@ import { Direction, NotificationType, PriceMovementTypes, Rate } from '../../typ
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
 export const PRICE_STALE_AFTER_X_IN_MS = 6000
 
-export interface Rate {
-  bigFigure: number
-  rawRate: number
-  ratePrecision: number
-  pipFraction: number
-  pipPrecision: number
-  pips: number
-}
-
 export interface SpotPrice {
   currencyPair: any
   symbol: any
@@ -189,7 +180,7 @@ function spotTileItemFormatter(state, item): SpotPrice {
     ask: toRate(item.ask, ratePrecision, pipsPosition),
     valueDate: item.valueDate,
     creationTimestamp: item.creationTimestamp,
-    priceMovementType: prevItem ? getPriceMovementType(prevItem.mid.rawRate, mid.rawRate) : PriceMovementTypes.None,
+    priceMovementType: setPriceMovement(prevItem, mid),
     spread: getSpread(item.bid, item.ask, pipsPosition, ratePrecision),
     isTradable: item.isTradable,
     priceStale: isPriceStale(prevItem, item),
@@ -198,10 +189,21 @@ function spotTileItemFormatter(state, item): SpotPrice {
   }
 }
 
-function getPriceMovementType(lastPrice: any, nextPrice: any) {
-  if (lastPrice === null) {
+function setPriceMovement(prevItem, mid) {
+  if (!prevItem) {
     return PriceMovementTypes.None
   }
+
+  const priceMovement = getPriceMovementType(prevItem.mid.rawRate, mid.rawRate)
+
+  if (priceMovement === PriceMovementTypes.None) {
+    return prevItem.priceMovementType
+  } else {
+    return priceMovement
+  }
+}
+
+function getPriceMovementType(lastPrice: any, nextPrice: any) {
   if (lastPrice < nextPrice) {
     return PriceMovementTypes.Up
   }

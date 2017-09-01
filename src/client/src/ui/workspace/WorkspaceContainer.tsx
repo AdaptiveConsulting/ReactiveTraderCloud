@@ -68,12 +68,13 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
       const title = `${currencyPair.base} / ${currencyPair.terms}`
       const tileProps = {
         title,
+        currencyPair,
         canPopout:Environment.isRunningInIE(),
         currencyChartIsOpening: item.currencyChartIsOpening,
-        currencyPair: this.props.referenceService[item.symbol],
         currentSpotPrice: item,
         executionConnected: true,
         hasNotification: !!item.notification,
+        isTradable: true, // or false if prace is stale
         isRunningInOpenFin: !!openFin,
         isTradeExecutionInFlight: item.isTradeExecutionInFlight,
         notification: item.notification,

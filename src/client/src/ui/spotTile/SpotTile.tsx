@@ -42,15 +42,70 @@ export interface SpotTileProps {
   onPopoutClick: () => void
   undockTile: () => void
   displayCurrencyChart: () => void
-  onNotificationDismissedClick: () => void
+  onNotificationDismissedClick: () => void,
+  isTradable: boolean,
 }
 
 export default class SpotTile extends React.Component<SpotTileProps, {}> {
   props: SpotTileProps
 
   componentDidMount() {
-    const currencyPair = this.props.currencyPair.currencyPair.symbol
+    const currencyPair = this.props.currencyPair.symbol
     this.props.onComponentMount(currencyPair)
+  }
+
+
+  // for checking if shouldComponentUpdate is doing it's job
+  // componentDidUpdate() {
+  //   console.log('did update')
+  // }
+
+  // TODO: this workaround prevents unnecessary rerendering of spottile and it's subcomponents
+  // shape of data should be changed to allow shallow checks
+  shouldComponentUpdate(nextProps) {
+    // shape of what properties to check including nested props
+    // not true values are skipped so no need to include false entries
+    // UNDEFINED values will cause the whole thing to always trigger update, so this must be avoided
+    const comparisonTemplate = {
+      // currencyChartIsOpening: false,
+      updateType: true,
+      currentSpotPrice: {
+        ask: {
+          bigFigure: true,
+          pipFraction: true,
+          pipPrecision: true,
+          pips: true,
+          ratePrecision: true,
+          rawRate: true,
+        },
+        bid: {
+          bigFigure: true,
+          pipFraction: true,
+          pipPrecision: true,
+          pips: true,
+          ratePrecision: true,
+          rawRate: true,
+        },
+        priceMovementType: true,
+        spread: {
+          value: true,
+        },
+        // symbol: false,
+        // valueDate: false,
+      },
+      currencyChartIsOpening: true,
+      // creationTimestamp: false,
+      isTradable: true,
+      executionConnected: true,
+      // isRunningInOpenFin: false,
+      priceStale: true,
+      pricingConnected: true,
+      isTradeExecutionInFlight: true,
+      hasNotification: true,
+    }
+
+    // workaround to reduce number of redraws for current complex shape of data
+    return !objetcsDeepEqualByTemplate(this.props, nextProps, comparisonTemplate)
   }
 
   render() {
@@ -129,7 +184,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         <PriceButton
           className="spot-tile__price spot-tile__price--bid"
           direction={Direction.Sell}
-          onExecute={() => !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Sell, this.props.currencyPair.currencyPair.symbol, this.props.currentSpotPrice.bid, this.props.notional, this.props.currencyPair.currencyPair.base, this.props))}
+          onExecute={() => !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Sell, this.props.currencyPair.symbol, this.props.currentSpotPrice.bid, this.props.notional, this.props.currencyPair.base, this.props))}
           rate={currentSpotPrice.bid}/>
         <div className="spot-tile__price-movement">
           <PriceMovementIndicator
@@ -139,7 +194,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         <PriceButton
           className="spot-tile__price spot-tile__price--ask"
           direction={Direction.Buy}
-          onExecute={() => !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Buy, this.props.currencyPair.currencyPair.symbol, this.props.currentSpotPrice.ask, this.props.notional, this.props.currencyPair.currencyPair.base, this.props))}
+          onExecute={() => !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Buy, this.props.currencyPair.symbol, this.props.currentSpotPrice.ask, this.props.notional, this.props.currencyPair.base, this.props))}
           rate={currentSpotPrice.ask}/>
       </div>
     )
@@ -171,4 +226,25 @@ const createTradeRequest = (direction: Direction, currencyPair: string, spotRate
     Notional: notional,
     DealtCurrency: currencyBase,
   }
+}
+
+
+// deep comparison of 2 objects using a 3rd object as a template of which properties to compare
+function objetcsDeepEqualByTemplate(objectA, objectB, comparisonTemplate) {
+  if (!objectA || !objectB) return false
+
+  let areDifferent = false
+  Object.keys(comparisonTemplate).some((key) => {
+    if (typeof comparisonTemplate[key] === 'object') {
+      areDifferent = !objetcsDeepEqualByTemplate(objectA[key], objectB[key], comparisonTemplate[key])
+      return areDifferent
+    } else if (comparisonTemplate[key] === true) {
+      areDifferent = objectA[key] !== objectB[key]
+      return areDifferent
+    } else {
+      return false
+    }
+  })
+
+  return !areDifferent
 }
