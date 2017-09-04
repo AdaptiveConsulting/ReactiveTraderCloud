@@ -1,7 +1,8 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
-import './priceMovement.scss'
+
 import { PriceMovementTypes } from '../../types'
+import './PriceMovementIndicatorStyles.scss'
 
 export interface PriceMovementIndicatorProps {
   priceMovementType: any
@@ -22,8 +23,6 @@ const getCaretDirection = (priceMovement: string) => {
     [PriceMovementTypes.Up]: 'price-movement__icon--inactive',
   }
 
-  'price-movement__icon--up fa fa-lg fa-caret-up'
-
   return {
     up: classnames('price-movement__icon--up fa fa-lg', upDirectionClasses[priceMovement]),
     down: classnames('price-movement__icon--down fa fa-lg', downDirectionClasses[priceMovement]),
@@ -32,7 +31,6 @@ const getCaretDirection = (priceMovement: string) => {
 
 // tslint:disable-next-line:variable-name
 const PriceMovementIndicator = (props: PriceMovementIndicatorProps) => {
-
 
   const { priceMovementType, spread } = props
   const priceMovementClassNames = getCaretDirection(priceMovementType)

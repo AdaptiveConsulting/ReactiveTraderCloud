@@ -1,7 +1,8 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
-import './price-button.scss'
+
 import { Direction } from '../../../types'
+import './PriceButtonStyles.scss'
 
 interface PriceButtonProps {
   className: string
@@ -15,21 +16,16 @@ interface PriceButtonProps {
   onExecute: () => void
 }
 
-// tslint:disable-next-line:variable-name
+const renderPips = (pips: number) => pips.toString().length === 1 ? `0${pips}` : pips
+const getBigFigureDisplay = (bigFigure: number, rawRate: number) => bigFigure === Math.floor(rawRate) ? `${bigFigure}.` : bigFigure.toString()
+const renderBigFigureDisplay = (bigFigureDisplay: string) => bigFigureDisplay.toString().length === 3 ? `${bigFigureDisplay}0` : bigFigureDisplay
+
 const PriceButton = (props: PriceButtonProps) => {
+
   const { direction, rate } = props
   const classes = classnames('price-button', props.className)
-  const paddedPips = rate.pips.toString().length === 1
-    ? `0${rate.pips}`
-    : rate.pips
+  const bigFigure = getBigFigureDisplay(rate.bigFigure, rate.rawRate)
 
-  let bigFigureDisplay = rate.bigFigure === Math.floor(rate.rawRate)
-    ? `${rate.bigFigure}.`
-    : rate.bigFigure
-
-  if (bigFigureDisplay.toString().length === 3) {
-    bigFigureDisplay += '0'
-  }
   return (
     <div className={classes} onClick={() => props.onExecute()}>
       <span className="price-button__wrapper">
@@ -37,9 +33,9 @@ const PriceButton = (props: PriceButtonProps) => {
           <span className="price-button__direction">
             {direction}
           </span><br />
-          {bigFigureDisplay}
+          {renderBigFigureDisplay(bigFigure)}
         </span>
-        <span className="price-button__pip">{paddedPips}</span>
+        <span className="price-button__pip">{renderPips(rate.pips)}</span>
         <span className="price-button__tenth">{rate.pipFraction}</span>
       </span>
     </div>

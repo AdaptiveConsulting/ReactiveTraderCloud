@@ -19,5 +19,5 @@ export default handleActions({
       ...state,
       [action.payload.currencyPairSymbol]: action.payload.value
     }
-  },
+  }
 }, INITIAL_STATE)
