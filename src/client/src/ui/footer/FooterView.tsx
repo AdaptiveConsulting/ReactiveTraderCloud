@@ -4,8 +4,7 @@ import * as classnames from 'classnames'
 import { StatusIndicator } from './StatusIndicator'
 
 import './Footer.scss'
-import ServiceStatus from '../../system/service/serviceStatus'
-import ConnectionStatus from '../../system/service/connectionStatus'
+import { ConnectionStatus, ServiceStatus } from '../../types/'
 import { Connections } from '../../connectionStatusOperations'
 import { ApplicationStatusConst, ConnectionType } from '../../types'
 
@@ -102,7 +101,7 @@ const renderBroker = (connection: ConnectionStatus) => (
   <span className="footer__service-label"><i className="footer__icon--offline fa fa-circle-o"/>broker</span>
 )
 
-const renderStatus = (serviceStatus: ServiceStatus) => (
+const renderStatus = serviceStatus => (
   serviceStatus.isConnected && <span className="footer__service-label"><i
     className="footer__icon--online fa fa-circle "/>{renderTitle(serviceStatus)}</span> ||
   <span className="footer__service-label"><i
@@ -113,7 +112,7 @@ const renderConnectedNodesText = (connectedInstanceCount: number) => (
   connectedInstanceCount === 1 && 'node' || 'nodes'
 )
 
-const renderTitle = ({serviceType, connectedInstanceCount}: ServiceStatus) => (
+const renderTitle = ({ serviceType, connectedInstanceCount }) => (
   `${serviceType} (${connectedInstanceCount} ${renderConnectedNodesText(connectedInstanceCount)})`
 )
 

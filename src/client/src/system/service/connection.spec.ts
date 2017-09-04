@@ -1,7 +1,7 @@
 import StubAutobahnProxy from './autobahnConnectionProxyStub'
 import Connection from '../../../src/system/service/connection'
 import SchedulerService from '../../../src/system/schedulerService'
-import ConnectionStatus from '../../../src/system/service/connectionStatus'
+import { ConnectionStatus } from '../../../src/types/'
 
 describe('Connection', () => {
   

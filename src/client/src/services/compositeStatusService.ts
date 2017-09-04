@@ -1,8 +1,6 @@
 import { Observable } from 'rxjs/Rx'
 import DisposableBase from './DisposableBase'
-import { ServiceConst } from '../types'
-import ServiceStatus from './../system/service/serviceStatus'
-
+import { ServiceConst, ServiceStatus } from '../types'
 
 export default class CompositeStatusService extends DisposableBase {
   _connection

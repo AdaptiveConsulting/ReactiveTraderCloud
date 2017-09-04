@@ -8,9 +8,7 @@ import * as _ from 'lodash'
 import logger from '../logger'
 import Guard from '../guard'
 import { DisposableBase } from '../disposables'
-import ConnectionStatus from './connectionStatus'
-import ServiceInstanceStatus from './serviceInstanceStatus'
-import ServiceStatus from './serviceStatus'
+import { ConnectionStatus, ServiceStatus, ServiceInstanceStatus } from '../../types/'
 import LastValueObservableDictionary from './lastValueObservableDictionary'
 // Importing ServiceObservableExtensions to add functions to Rx prototype
 import '../../../src/system/service/serviceObservableExtensions'
@@ -58,7 +56,7 @@ export default class ServiceClient extends DisposableBase {
    */
   get serviceStatusStream() {
     return this._serviceInstanceDictionaryStream
-      .map(cache => this._createServiceStatus(cache))
+      .map(cache => createServiceStatus(cache, this._serviceType))
       .publish()
       .refCount()
   }
@@ -89,17 +87,18 @@ export default class ServiceClient extends DisposableBase {
         .publish()
         .refCount()
       const isConnectedStream = connectionStatus.filter(isConnected => isConnected)
-      const errorOnDisconnectStream = connectionStatus.filter(isConnected => !isConnected).take(1)
+      const errorOnDisconnectStream = connectionStatus.filter(isConnected => !isConnected).take(1).flatMap(Observable.throw('Underlying connection disconnected'))
       const serviceInstanceDictionaryStream = this._connection
         .subscribeToTopic('status')
         .filter(s => s.Type === serviceType)
-        .map(status => ServiceInstanceStatus.createForConnected(status.Type, status.Instance, status.TimeStamp, status.Load))
+        .map(status => createServiceInstanceForConnected(status.Type, status.Instance, status.TimeStamp, status.Load))
         // If the underlying connection goes down we error the stream.
         // Do this before the grouping so all grouped streams error.
         .merge(errorOnDisconnectStream)
+        // .filter(item => item) // if item is false don't continue
         .groupBy((serviceStatus) =>  serviceStatus.serviceId)
         // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
-        .debounceOnMissedHeartbeat(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => ServiceInstanceStatus.createForDisconnected(serviceType, serviceId), Scheduler.async)
+        .debounceOnMissedHeartbeat(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => createServiceInstanceForDisconnected(serviceType, serviceId), Scheduler.async)
         // create a hash of properties which represent significant change in a status, we'll use this to filter out duplicates
         .distinctUntilChangedGroup(status => { return `${status.serviceType}.${status.serviceId}.${status.isConnected}.${status.serviceLoad}`})
         // flattens all our service instances stream into an observable dictionary so we query the service with the least load on a per-subscribe basis
@@ -235,10 +234,40 @@ export default class ServiceClient extends DisposableBase {
       return disposables
     })
   }
+}
 
-  _createServiceStatus(cache) {
-    const serviceInstanceStatuses = _.values(cache.values).map((item: any) => item.latestValue)
-    const isConnected = _(cache.values).some((item: any) => item.latestValue.isConnected)
-    return new ServiceStatus(this._serviceType, serviceInstanceStatuses, isConnected)
+function createServiceStatus(cache, serviceType): ServiceStatus {
+  const instanceStatuses = _.values(cache.values).map((item: any) => item.latestValue)
+  const isConnected = _(cache.values).some((item: any) => item.latestValue.isConnected)
+  return {
+    isConnected,
+    instanceStatuses,
+    serviceType,
+  }
+}
+
+function createServiceInstanceForConnected(serviceType: string, serviceId: string, timestamp: number, serviceLoad: number): ServiceInstanceStatus {
+  Guard.stringIsNotEmpty(serviceType, 'serviceType must be as string and not empty')
+  Guard.stringIsNotEmpty(serviceId, 'serviceId must be as string and not empty')
+
+  return {
+    serviceType,
+    serviceId,
+    timestamp,
+    serviceLoad,
+    isConnected: true,
+  }
+}
+
+function createServiceInstanceForDisconnected(serviceType: string, serviceId: string): ServiceInstanceStatus {
+  Guard.stringIsNotEmpty(serviceType, 'serviceType must be as string and not empty')
+  Guard.stringIsNotEmpty(serviceId, 'serviceId must be as string and not empty')
+
+  return {
+    serviceType,
+    serviceId,
+    timestamp: NaN,
+    serviceLoad: NaN,
+    isConnected: false,
   }
 }

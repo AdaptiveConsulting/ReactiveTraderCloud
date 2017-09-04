@@ -1,6 +1,6 @@
 import { combineEpics } from 'redux-observable'
 import { createAction, handleActions } from 'redux-actions'
-import ConnectionStatus from './system/service/connectionStatus'
+import { ConnectionStatus } from './types/'
 
 export enum ACTION_TYPES {
   CONNECTION_STATUS = '@ReactiveTraderCloud/CONNECTION_STATUS',
@@ -13,7 +13,7 @@ export interface Connections {
   url: string
 }
 
-const INITIAL_STATE: ConnectionStatus = {
+const INITIAL_STATE: Connections = {
   connection: ConnectionStatus.disconnected,
   connectionType: '',
   url: '',

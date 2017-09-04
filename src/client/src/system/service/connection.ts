@@ -1,7 +1,7 @@
 import Guard from '../guard'
 import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx'
 import DisposableBase from '../disposables/disposableBase'
-import ConnectionStatus from './connectionStatus'
+import { ConnectionStatus } from '../../types'
 import { ConnectionTypeMapper } from '../../services/mappers'
 import logger from '../logger'
 import SchedulerService from '../schedulerService'

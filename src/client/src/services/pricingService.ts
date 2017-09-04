@@ -36,8 +36,8 @@ export default class PricingService extends ServiceBase {
                 //   false
                 // )
 
-                // TODO: stalePrice not yet implemented in new version
-                o.next(false)
+                // TODO: stalePrice now is implemented in spottile. Move it back here or remove what's left from here?
+                // o.next(false)
               }
             },
           )

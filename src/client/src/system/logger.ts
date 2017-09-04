@@ -82,6 +82,7 @@ class Logger {
   _log(level, args, color = 'black') {
     Guard.isString(level, 'level isn\'t a string');
     _sink({
+      args,
       color,
       level,
       logger: this._name,

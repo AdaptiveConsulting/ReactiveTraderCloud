@@ -23,7 +23,8 @@ function retryWithPolicy<TValue>(this: Observable<TValue>,
         },
         err => {
           retryCount++
-          const shouldRetryResult = retryPolicy.shouldRetry(err, retryCount)
+          const shouldRetryResult = retryPolicy(err, retryCount)
+
           if (onErrorCallback) {
             // give the caller a chance to react to the error
             onErrorCallback(err, shouldRetryResult)

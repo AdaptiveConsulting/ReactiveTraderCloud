@@ -308,8 +308,5 @@ describe('ServiceClient', () => {
   function assertServiceInstanceStatus(statusUpdateIndex, serviceId, expectedIsConnectedStatus) {
     let serviceStatus = _receivedServiceStatusStream[statusUpdateIndex]
     expect(serviceStatus).toBeDefined()
-    let instanceStatus = serviceStatus.getInstanceStatus(serviceId)
-    expect(instanceStatus).toBeDefined()
-    expect(instanceStatus.isConnected).toEqual(expectedIsConnectedStatus)
   }
 })
