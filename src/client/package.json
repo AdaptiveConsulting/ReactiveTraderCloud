@@ -35,7 +35,8 @@
     "deploy:prod": "set NODE_ENV=production&&webpack",
     "openfin": "openfin -c config/openfin/local.app.json -l",
     "stats": "webpack --profile --json > stats.json",
-    "workbench": "start-storybook -p 9001"
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -88,7 +89,7 @@
     "ws": "0.8.1"
   },
   "devDependencies": {
-    "@kadira/storybook": "1.33.0",
+    "@storybook/react": "^3.1.9",
     "@types/autobahn": "^0.9.35",
     "@types/jest": "20.0.5",
     "@types/karma": "0.13.36",
@@ -97,6 +98,9 @@
     "@types/react-dom": "15.5.2",
     "@types/react-virtualized": "9.7.3",
     "@types/redux-actions": "1.2.7",
+    "@types/storybook__addon-actions": "3.0.1",
+    "@types/storybook__addon-links": "3.0.1",
+    "@types/storybook__react": "3.0.2",
     "autoprefixer": "6.3.1",
     "awesome-typescript-loader": "3.2.2",
     "babel-core": "^6.25.0",
@@ -104,6 +108,8 @@
     "babel-loader": "^7.1.1",
     "babel-plugin-transform-es2015-modules-commonjs": "6.24.1",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
     "chalk": "^1.1.3",
     "classlist-polyfill": "1.0.3",
     "copy-webpack-plugin": "0.3.3",
