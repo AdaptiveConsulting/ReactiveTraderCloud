@@ -92,7 +92,6 @@ export default class Connection extends DisposableBase {
     if (!this._connectCalled) {
       this._connectCalled = true
       _log.info('Opening connection')
-      _log.verbose('Autobahn: ' + JSON.stringify(this._autobahn))
       this._autobahn.onopen(session => {
         _log.info('Connected')
         this._isConnected = true

@@ -1,5 +1,6 @@
 import * as React from 'react'
-import './modal.scss'
+
+import './ModalStyles.scss'
 
 export interface ModalProps {
   shouldShow?: boolean
