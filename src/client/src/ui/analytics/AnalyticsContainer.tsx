@@ -5,7 +5,7 @@ import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
 import Analytics from './Analytics'
 import './analytics.scss'
-import { onComponentMount, onPopoutClick } from '../blotter/blotterOperations'
+import { addRegion, openWindow } from '../../regions/regionsOperations'
 import { analyticsRegionSettings } from './analyticsOperations'
 
 interface AnalyticsContainerOwnProps {
@@ -61,10 +61,10 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
 const mapDispatchToProps = dispatch => {
   return {
     onPopoutClick: (openFin) => {
-     return () => { dispatch(onPopoutClick(analyticsRegion, openFin))}
+     return () => { dispatch(openWindow(analyticsRegion, openFin))}
     },
     onComponentMount: () => {
-      dispatch(onComponentMount(analyticsRegion))
+      dispatch(addRegion(analyticsRegion))
     },
   }
 }

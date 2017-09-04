@@ -1,7 +1,9 @@
 import * as React from 'react'
 import sizeMe from 'react-sizeme'
+
 import { connect } from 'react-redux'
-import { onPopoutClick, onComponentMount, blotterRegionsSettings } from './blotterOperations'
+import { blotterRegionsSettings } from './blotterOperations'
+import { openWindow, addRegion } from '../../regions/regionsOperations'
 import Blotter from './blotter'
 
 class BlotterContainer extends React.Component<any, {}> {
@@ -42,11 +44,11 @@ const mapDispatchToProps = dispatch => {
   return {
     onPopoutClick: (openFin) => {
       return () => {
-        dispatch(onPopoutClick(blotterRegion, openFin))
+        dispatch(openWindow(blotterRegion, openFin))
       }
     },
     onComponentMount: () => {
-      dispatch(onComponentMount(blotterRegion))
+      dispatch(addRegion(blotterRegion))
     },
   }
 }

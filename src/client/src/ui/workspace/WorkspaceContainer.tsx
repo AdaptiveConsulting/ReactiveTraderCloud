@@ -1,14 +1,14 @@
 import * as _ from 'lodash'
 import * as React from 'react'
+
 import './workspace.scss'
 import { connect } from 'react-redux'
 import SpotTile from '../spotTile/SpotTile'
 import { CurrencyPair, Direction } from '../../types'
 import { Dispatch } from 'redux'
 import { executeTrade, undockTile, displayCurrencyChart, spotRegionSettings, dismissNotification } from '../spotTile/spotTileOperations'
-// @todo: move (and possiblly rename) the region  related methods to RegionOperations
-import { onComponentMount, onPopoutClick } from '../blotter/blotterOperations'
-import { RegionWrapper } from '../../regions'
+import { addRegion, openWindow } from '../../regions/regionsOperations'
+import RegionWrapper from '../../regions/RegionWrapper'
 import { Environment } from '../../system'
 
 
@@ -109,11 +109,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(executeTrade(payload))
   },
   onComponentMount: (id, tileProps) => {
-    dispatch(onComponentMount(spotTileRegion(id, tileProps)))
+    dispatch(addRegion(spotTileRegion(id, tileProps)))
   },
   onPopoutClick: (id, tileProps, openFin) => {
     return () => {
-      dispatch(onPopoutClick(spotTileRegion(id, tileProps), openFin))
+      dispatch(openWindow(spotTileRegion(id, tileProps), openFin))
     }
   },
   undockTile: (openFin, tileName) => {
