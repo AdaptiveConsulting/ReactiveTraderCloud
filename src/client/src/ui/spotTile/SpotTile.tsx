@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as classnames from 'classnames'
 import { PriceButton, PriceMovementIndicator, TradeNotification } from './'
 import * as moment from 'moment'
-import './spotTile.scss'
+import './SpotTileStyles.scss'
 import NotionalContainer from './notional/NotionalContainer'
 import { Direction, NotificationType } from '../../types'
 
@@ -53,12 +53,6 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     const currencyPair = this.props.currencyPair.symbol
     this.props.onComponentMount(currencyPair)
   }
-
-
-  // for checking if shouldComponentUpdate is doing it's job
-  // componentDidUpdate() {
-  //   console.log('did update')
-  // }
 
   // TODO: this workaround prevents unnecessary rerendering of spottile and it's subcomponents
   // shape of data should be changed to allow shallow checks

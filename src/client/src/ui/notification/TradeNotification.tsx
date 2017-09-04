@@ -1,9 +1,9 @@
 import * as React from 'react'
-import './notification.scss'
 import * as classnames from 'classnames'
 import { Direction, TradeStatus } from '../../types'
 import '../common/styles/_base.scss'
 import '../common/styles/_fonts.scss'
+import './TradeNotificationStyles.scss'
 
 export interface TradeNotificationProps {
   message: any

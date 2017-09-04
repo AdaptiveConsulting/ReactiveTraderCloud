@@ -13,9 +13,7 @@ const INITIAL_STATE = false
 
 export const footerEpic = openFin => (action$) => {
   return action$.ofType(ACTION_TYPES.OPEN_LINK)
-    .map((action) => {
-      return openLinks(openFin)
-    })
+    .map(action => openLinks(openFin))
 }
 
 export default handleActions({
