@@ -7,7 +7,7 @@ import { BlotterContainer } from '../blotter'
 import './shell.scss'
 import '../common/styles/_base.scss'
 import '../common/styles/_fonts.scss'
-import RegionWrapper from '../../redux/regions/RegionWrapper'
+import RegionWrapper from '../../regions/RegionWrapper'
 import * as classnames from 'classnames'
 import TradeNotificationContainer from '../notification/TradeNotificationContainer'
 

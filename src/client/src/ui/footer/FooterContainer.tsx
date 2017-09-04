@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import FooterView, { Services } from './FooterView'
 import { bindActionCreators, Dispatch } from 'redux'
 import { toggleStatusServices } from './FooterOperations'
-import { Connections } from '../../redux/connectionStatus/connectionStatusOperations'
+import { Connections } from '../../connectionStatusOperations'
 
 interface FooterContainerOwnProps {
 

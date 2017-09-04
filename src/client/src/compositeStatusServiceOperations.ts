@@ -1,7 +1,7 @@
 import { createAction, handleActions } from 'redux-actions'
 import * as _ from 'lodash'
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../reference/referenceOperations'
-import ServiceStatus from '../../system/service/serviceStatus'
+import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceOperations'
+import ServiceStatus from './system/service/serviceStatus'
 
 export enum ACTION_TYPES {
   COMPOSITE_STATUS_SERVICE = '@ReactiveTraderCloud/COMPOSITE_STATUS_SERVICE',

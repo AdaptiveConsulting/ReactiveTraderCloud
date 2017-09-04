@@ -5,10 +5,10 @@ import { connect } from 'react-redux'
 import SpotTile from '../spotTile/SpotTile'
 import { CurrencyPair, Direction } from '../../types'
 import { Dispatch } from 'redux'
-import { executeTrade, undockTile, displayCurrencyChart, spotRegionSettings, dismissNotification } from '../../redux/spotTile/spotTileOperations'
+import { executeTrade, undockTile, displayCurrencyChart, spotRegionSettings, dismissNotification } from '../spotTile/spotTileOperations'
 // @todo: move (and possiblly rename) the region  related methods to RegionOperations
 import { onComponentMount, onPopoutClick } from '../blotter/blotterOperations'
-import { RegionWrapper } from '../../redux/regions'
+import { RegionWrapper } from '../../regions'
 import { Environment } from '../../system'
 
 

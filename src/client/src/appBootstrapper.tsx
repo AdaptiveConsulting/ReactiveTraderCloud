@@ -19,7 +19,7 @@ import {
   PricingService,
   ReferenceDataService,
 } from './services'
-import configureStore from './redux/configureStore'
+import configureStore from './configureStore'
 
 // When the application is run in openfin then 'fin' will be registered on the global window object.
 declare const window: any

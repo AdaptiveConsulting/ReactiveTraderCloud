@@ -6,7 +6,7 @@ import { StatusIndicator } from './StatusIndicator'
 import './Footer.scss'
 import ServiceStatus from '../../system/service/serviceStatus'
 import ConnectionStatus from '../../system/service/connectionStatus'
-import { Connections } from '../../redux/connectionStatus/connectionStatusOperations'
+import { Connections } from '../../connectionStatusOperations'
 import { ApplicationStatusConst, ConnectionType } from '../../types'
 
 export interface Services {

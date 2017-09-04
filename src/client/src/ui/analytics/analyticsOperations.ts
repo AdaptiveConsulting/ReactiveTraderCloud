@@ -1,7 +1,7 @@
 import { createAction, handleActions } from 'redux-actions'
 
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../../redux/reference/referenceOperations'
-import { regionsSettings } from '../../redux/regions/regionsOperations'
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceOperations'
+import { regionsSettings } from '../../regions/regionsOperations'
 
 export enum ACTION_TYPES {
   ANALYTICS_SERVICE = '@ReactiveTraderCloud/ANALYTICS_SERVICE',
