@@ -1,11 +1,10 @@
 import Guard from '../guard'
 import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx'
 import DisposableBase from '../disposables/disposableBase'
-import { ConnectionStatus } from '../../types'
+import { ConnectionType, ConnectionStatus } from '../../types'
 import { ConnectionTypeMapper } from '../../services/mappers'
 import logger from '../logger'
 import SchedulerService from '../schedulerService'
-import { ConnectionType } from '../../types'
 import AutobahnConnectionProxy from './autobahnConnectionProxy'
 import { Error } from 'autobahn'
 
