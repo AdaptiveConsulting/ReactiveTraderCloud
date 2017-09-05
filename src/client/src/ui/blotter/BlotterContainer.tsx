@@ -4,7 +4,7 @@ import sizeMe from 'react-sizeme'
 import { connect } from 'react-redux'
 import { blotterRegionsSettings } from './blotterOperations'
 import { openWindow, addRegion } from '../../regions/regionsOperations'
-import Blotter from './blotter'
+import Blotter from './Blotter'
 
 class BlotterContainer extends React.Component<any, {}> {
 

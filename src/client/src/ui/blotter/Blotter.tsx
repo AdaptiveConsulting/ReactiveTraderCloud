@@ -1,10 +1,13 @@
 import * as React from 'react'
 import { Column, Table } from 'react-virtualized'
-import { DateCell, NotionalCell } from './'
 import * as classNames from 'classnames'
 import 'fixed-data-table/dist/fixed-data-table.css'
-import './blotter.scss'
+
 import { TradeStatus } from '../../types'
+import { DateCell, NotionalCell } from './'
+import { BaseCell, getCellClassName } from './DefaultCell';
+
+import './BlotterStyles.scss'
 
 type TradeRow = any
 
@@ -27,13 +30,13 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
     const className = classNames(
       'blotter', {
         'blotter--online': isConnected,
-        'blotter--offline': !isConnected,
+        'blotter--offline': !isConnected
       })
     const newWindowClassName = classNames(
       'glyphicon glyphicon-new-window',
       {
-        'blotter__controls--hidden': canPopout,
-      },
+        'blotter__controls--hidden': canPopout
+      }
     )
 
     return (
@@ -60,35 +63,55 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
   }
 
   createGridColumns(trades: any): any[] {
+    const trade = (rowIndex: number) => trades[rowIndex];
     return [
       <Column
         key="tradeId"
         dataKey="tradeId"
         label={'Id'}
-        cellRenderer={(props: any) => <div>{trades[props.rowIndex].tradeId}</div>}
+        cellRenderer={(props: any) =>
+          <BaseCell
+            cellKey="tradeId"
+            trade={trade(props.rowIndex)}
+          />
+        }
         flexGrow={1}
         width={50}/>,
       <Column
         key="Date"
         dataKey="Date"
         label={'Date'}
-        cellRenderer={(props: any) => <DateCell
-          width={props.width}
-          dateValue={trades[props.rowIndex].tradeDate}/>}
+        cellRenderer={(props: any) =>
+          <DateCell
+            width={props.width}
+            dateValue={trades[props.rowIndex].tradeDate}
+            classname={getCellClassName(trades[props.rowIndex].status, "Value date")}
+          />
+        }
         flexGrow={1}
         width={150}/>,
       <Column
         key="Dir"
         dataKey="Dir"
         label={'Direction'}
-        cellRenderer={(props: any) => <div>{trades[props.rowIndex].direction.toUpperCase()}</div>}
+        cellRenderer={(props: any) =>
+          <BaseCell
+            cellKey="direction"
+            trade={trade(props.rowIndex)}
+          />
+        }
         flexGrow={1}
         width={80}/>,
       <Column
         key="CCY"
         dataKey="CCY"
         label={'CCYCCY'}
-        cellRenderer={(props: any) => <div>{trades[props.rowIndex].currencyPair.symbol}</div>}
+        cellRenderer={(props: any) =>
+          <BaseCell
+            cellKey="currencyPair.symbol"
+            trade={trade(props.rowIndex)}
+          />
+        }
         flexGrow={1}
         width={70}/>,
       <Column
@@ -100,7 +123,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
           return (
             <NotionalCell
               width={props.width}
-              className="blotter__trade-field--align-right"
+              className={classNames('blotter__trade-field--align-right', getCellClassName(trades[props.rowIndex].status, "Notional"))}
               notionalValue={trade.notional}
               suffix={' ' + trade.currencyPair.base}/>
           )
@@ -111,8 +134,13 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
         key="Rate"
         dataKey="Rate"
         label={'Rate'}
-        cellRenderer={(props: any) => <div className="blotter__trade-field--align-right">
-          {trades[props.rowIndex].spotRate}</div>}
+        cellRenderer={(props: any) =>
+          <BaseCell
+            classname="blotter__trade-field--align-right"
+            cellKey="spotRate"
+            trade={trade(props.rowIndex)}
+          />
+        }
         flexGrow={1}
         width={80}/>,
       <Column
@@ -120,29 +148,41 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
         dataKey="Status"
         label={'Status'}
         cellRenderer={(props: any) =>
-          <div className={classNames('blotter__trade-status', getStatusCellStyles(trades[props.rowIndex].status))}>
-            {trades[props.rowIndex].status}
-          </div>}
+          <BaseCell
+            classname={classNames("blotter__trade-status", getTradeStatusCellStyle(trade(props.rowIndex).status))}
+            cellKey="status"
+            trade={trade(props.rowIndex)}
+          />
+        }
         flexGrow={1}
         width={80}/>,
       <Column
         key="Value date"
         dataKey="Value date"
         label={'Value date'}
-        cellRenderer={(props: any) => <DateCell
-          width={props.width}
-          prefix="SP. "
-          format="%d %b"
-          dateValue={trades[props.rowIndex].valueDate}/>}
+        cellRenderer={(props: any) =>
+          <DateCell
+            width={props.width}
+            prefix="SP. "
+            format="%d %b"
+            dateValue={trades[props.rowIndex].valueDate}
+            classname={getCellClassName(trades[props.rowIndex].status, "Value date")}
+          />
+        }
         flexGrow={1}
         width={100}/>,
       <Column
         key="Trader"
         dataKey="Trader"
         label={'Trader'}
-        cellRenderer={(props: any) => <div>{trades[props.rowIndex].traderName}</div>}
+        cellRenderer={(props: any) =>
+          <BaseCell
+            cellKey="traderName"
+            trade={trade(props.rowIndex)}
+          />
+        }
         flexGrow={1}
-        width={80}/>,
+        width={80}/>
     ]
   }
 
@@ -156,19 +196,17 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
 
     return classNames(
       'blotter__trade',
-      getTradeClassName(rowItem.status),
+      getTradeClassName(rowItem.status)
     )
   }
 }
 
+const getTradeStatusCellStyle = (tradeStatus: TradeStatus) => tradeStatus === 'rejected' && 'tradeRejected'
+
 const getTradeClassName = (tradeStatus: TradeStatus) => {
   const tradeStatusMap = {
     Rejected: 'blotter__trade--rejected',
-    Pending: 'blotter__trade--processing',
+    Pending: 'blotter__trade--processing'
   }
   return tradeStatusMap[tradeStatus]
-}
-
-const getStatusCellStyles = (tradeStatus: string) => {
-  return tradeStatus === TradeStatus.Rejected && 'cellRejected'
 }

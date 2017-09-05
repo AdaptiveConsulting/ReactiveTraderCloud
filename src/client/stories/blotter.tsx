@@ -2,7 +2,7 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import { DateCell, NotionalCell } from '../src/ui/blotter'
-import Blotter from '../src/ui/blotter/blotter'
+import Blotter from '../src/ui/blotter/Blotter'
 import blottersProps from './blotter/blottersProps'
 
 storiesOf('Blotter', module)
@@ -10,7 +10,7 @@ storiesOf('Blotter', module)
     <Blotter {...blottersProps} />)
   .add('Date cell', () =>
     <div style={{ background: '#FFFFFF' }}>
-      <DateCell dateValue={new Date()} width={200}/>
+      <DateCell dateValue={new Date()} width={200} classname={''}/>
     </div>)
   .add('Notional cell', () =>
     <div style={{ background: '#FFFFFF' }}>
