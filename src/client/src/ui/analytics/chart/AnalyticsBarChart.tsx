@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as _ from 'lodash'
-import PNLBar from './PNLBar';
+import PNLBar from './PNLBar'
 
 export interface AnalyticsBarChartProps {
   chartData: any[]

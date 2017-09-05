@@ -1,0 +1,16 @@
+$scrollbar-width:             8px;
+$sidebar-width:               440px;
+$shell-background-color:      #1d2027;
+$panel-background-color:      #293543;
+$blotter-height:              20vh;
+$header-height:               30px;
+$footer-height:               40px;
+$footer-width:                100%;
+$workspace-height:            calc(100% - #{$blotter-height});
+$workspace-height-expanded:   100%;
+$analytics-height:            100%;
+$workspace-width:             calc(100% - #{$scrollbar-width});
+$blotter-width:               calc(100%);
+$splash-logo-height:          400px;
+$splash-logo-margin-top:      20vh;
+$sidebar-height:              $workspace-height;

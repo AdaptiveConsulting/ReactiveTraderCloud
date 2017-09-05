@@ -1,28 +1,28 @@
-import CurrencyPairUpdate from './currencyPairUpdate';
+import CurrencyPairUpdate from './currencyPairUpdate'
 
 export default class CurrencyPairUpdates {
 
   constructor(isStateOfTheWorld: boolean, isStale: boolean, currencyPairUpdates: Array<CurrencyPairUpdate>) {
-    this._isStateOfTheWorld = isStateOfTheWorld;
-    this._isStale = isStale;
-    this._currencyPairUpdates = currencyPairUpdates;
+    this._isStateOfTheWorld = isStateOfTheWorld
+    this._isStale = isStale
+    this._currencyPairUpdates = currencyPairUpdates
   }
 
-  _isStateOfTheWorld: boolean;
+  _isStateOfTheWorld: boolean
 
   get isStateOfTheWorld(): boolean {
-    return this._isStateOfTheWorld;
+    return this._isStateOfTheWorld
   }
 
-  _isStale: boolean;
+  _isStale: boolean
 
   get isStale(): boolean {
-    return this._isStale;
+    return this._isStale
   }
 
-  _currencyPairUpdates: Array<CurrencyPairUpdate>;
+  _currencyPairUpdates: Array<CurrencyPairUpdate>
 
   get currencyPairUpdates(): Array<CurrencyPairUpdate> {
-    return this._currencyPairUpdates;
+    return this._currencyPairUpdates
   }
 }

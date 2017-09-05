@@ -1,30 +1,30 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash'
 
-import { ReferenceDataService } from '../';
-import PositionUpdates from '../model/positionUpdates';
-import CurrencyPairPosition from '../model/currencyPairPosition';
-import HistoricPosition from '../model/historicPosition';
+import { ReferenceDataService } from '../'
+import PositionUpdates from '../model/positionUpdates'
+import CurrencyPairPosition from '../model/currencyPairPosition'
+import HistoricPosition from '../model/historicPosition'
 
 export default class PositionsMapper {
 
-  _referenceDataService: ReferenceDataService;
+  _referenceDataService: ReferenceDataService
 
   constructor(referenceDataService: ReferenceDataService) {
-    this._referenceDataService = referenceDataService;
+    this._referenceDataService = referenceDataService
   }
 
   static mapToDto(ccyPairPosition: CurrencyPairPosition) {
     return {
       symbol: ccyPairPosition._symbol,
       basePnl: ccyPairPosition._basePnl,
-      baseTradedAmount: ccyPairPosition._baseTradedAmount
-    };
+      baseTradedAmount: ccyPairPosition._baseTradedAmount,
+    }
   }
 
   mapFromDto(dto: any): PositionUpdates {
-    let positions = this._mapPositionsFromDto(dto.CurrentPositions);
-    let history = this._mapHistoricPositionFromDto(dto.History);
-    return new PositionUpdates(positions, history);
+    const positions = this._mapPositionsFromDto(dto.CurrentPositions)
+    const history = this._mapHistoricPositionFromDto(dto.History)
+    return new PositionUpdates(positions, history)
   }
 
   _mapPositionsFromDto(dtos: Array<any>): Array<CurrencyPairPosition> {
@@ -34,14 +34,14 @@ export default class PositionsMapper {
         dto.Symbol,
         dto.BasePnl,
         dto.BaseTradedAmount,
-        this._referenceDataService.getCurrencyPair(dto.Symbol))
-    );
+        this._referenceDataService.getCurrencyPair(dto.Symbol)),
+    )
   }
 
   _mapHistoricPositionFromDto(dtos: Array<any>): Array<HistoricPosition> {
     return _.map(
       dtos,
-      dto => new HistoricPosition(new Date(dto.Timestamp), dto.UsdPnl)
-    );
+      dto => new HistoricPosition(new Date(dto.Timestamp), dto.UsdPnl),
+    )
   }
 }

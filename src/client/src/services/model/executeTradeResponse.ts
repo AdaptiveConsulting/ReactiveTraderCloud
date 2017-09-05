@@ -1,36 +1,36 @@
-import Trade from './trade';
+import Trade from './trade'
 
 export default class ExecuteTradeResponse {
   constructor(trade, error, hasError) {
-    this._trade = trade;
-    this._error = error;
-    this._hasError = hasError;
+    this._trade = trade
+    this._error = error
+    this._hasError = hasError
   }
 
-  _trade: Trade;
+  _trade: Trade
 
   get trade() {
-    return this._trade;
+    return this._trade
   }
 
-  _error: string;
+  _error: string
 
   get error() {
-    return this._error;
+    return this._error
   }
 
-  _hasError: boolean;
+  _hasError: boolean
 
   get hasError() {
-    return this._hasError;
+    return this._hasError
   }
 
   static createForError(error: string) {
-    return new ExecuteTradeResponse(null, error, true);
+    return new ExecuteTradeResponse(null, error, true)
   }
 
   static create(trade: Trade) {
-    return new ExecuteTradeResponse(trade, '', false);
+    return new ExecuteTradeResponse(trade, '', false)
   }
 }
 

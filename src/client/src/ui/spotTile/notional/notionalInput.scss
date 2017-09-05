@@ -1,0 +1,31 @@
+@import "../variables";
+
+.notional__currency-pair {
+  float: left;
+  padding-right: 10px;
+  padding-bottom: 1px;
+}
+
+.notional__size-input {
+  float: left;
+  padding: 0 0 0 3px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  width: 100px;
+  &:hover,
+  &:focus {
+    border-bottom: 1px solid $primary-color;
+  }
+  &:focus {
+    outline: none;
+    background-color: #1d2027;
+    color: white;
+  }
+  &::selection {
+    background-color: #00A8CC;
+  }
+}

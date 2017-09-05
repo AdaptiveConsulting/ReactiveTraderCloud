@@ -1,7 +1,7 @@
 export default class GetSpotStreamRequest {
-  symbol: string;
+  symbol: string
 
   constructor(symbol: string) {
-    this.symbol = symbol;
+    this.symbol = symbol
   }
 }

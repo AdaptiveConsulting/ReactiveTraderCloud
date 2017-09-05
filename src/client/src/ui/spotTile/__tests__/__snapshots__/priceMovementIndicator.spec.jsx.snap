@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PriceMovementIndicator renders correct markup Down 1`] = `
+<div>
+  <div
+    className="price-movement"
+  >
+    <i
+      className="price-movement__icon--up fa fa-lg"
+    />
+    <span
+      className="price-movement__value"
+    >
+      -1.23
+    </span>
+    <i
+      className="price-movement__icon--down fa fa-lg"
+    />
+  </div>
+</div>
+`;
+
+exports[`PriceMovementIndicator renders correct markup Up 1`] = `
+<div>
+  <div
+    className="price-movement"
+  >
+    <i
+      className="price-movement__icon--up fa fa-lg"
+    />
+    <span
+      className="price-movement__value"
+    >
+      -1.23
+    </span>
+    <i
+      className="price-movement__icon--down fa fa-lg"
+    />
+  </div>
+</div>
+`;

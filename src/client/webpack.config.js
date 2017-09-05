@@ -1,25 +1,25 @@
-'use strict';
+'use strict'
 
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const chalk = require('chalk');
-const path = require('path');
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const chalk = require('chalk')
+const path = require('path')
 
 
 module.exports = function (env = {}) {
 
-  const isProductionMode = process.env.NODE_ENV == 'production';
-  const config = env.endpoint ? env.endpoint + '.config.json' : 'default.config.json';
-  const babelPlugins = [];
+  const isProductionMode = process.env.NODE_ENV == 'production'
+  const config = env.endpoint ? env.endpoint + '.config.json' : 'default.config.json'
+  const babelPlugins = []
 
   const productionStyleLoaderConfig = {
     use: ExtractTextPlugin.extract({
       fallback: 'style-loader',
       use: ['css-loader', 'sass-loader']
     })
-  };
+  }
 
   const styleLoaderConfig = {
     test: /\.(css|scss)$/,
@@ -37,11 +37,11 @@ module.exports = function (env = {}) {
         }
       }
     ]
-  };
+  }
 
   const getStyleLoader = (isProductionMode) => {
-    return isProductionMode ? Object.assign({}, styleLoaderConfig, productionStyleLoaderConfig) : styleLoaderConfig;
-  };
+    return isProductionMode ? Object.assign({}, styleLoaderConfig, productionStyleLoaderConfig) : styleLoaderConfig
+  }
 // in production you should not have hot reloader etc
   if (!isProductionMode) babelPlugins.push(['react-transform', {
     transforms: [
@@ -55,15 +55,14 @@ module.exports = function (env = {}) {
         imports: ['react', 'redbox-react']
       }
     ]
-  }]);
-
+  }])
 
   const webpackConfig = {
     name: 'client',
     target: 'web',
     entry: {
       app: ['./src/appBootstrapper.tsx'],
-      notification: ['./src/notificationBootstrapper.js']
+      notification: ['./src/notificationBootstrapper.tsx'],
     },
     output: {
       filename: '[name].js',
@@ -107,7 +106,7 @@ module.exports = function (env = {}) {
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         minChunks: function (module) {
-          return module.context && module.context.indexOf('node_modules') !== -1;
+          return module.context && module.context.indexOf('node_modules') !== -1
         }
       }),
       new webpack.optimize.CommonsChunkPlugin({
@@ -131,7 +130,6 @@ module.exports = function (env = {}) {
 
       // 'dist/rx.all.js': 'rx/dist/rx.all.js' is needed for webpack 2 and rx 4
       alias: {
-        'dist/rx.all.js': 'rx/dist/rx.all.js',
         'config.json': path.join(__dirname, 'config', config),
         system: path.join(__dirname, 'src/system'),
         services: path.join(__dirname, 'src/services')
@@ -191,11 +189,16 @@ module.exports = function (env = {}) {
           loader: 'file-loader'
         }
       ]
-    }
-  };
+    },
+    stats: { // for "npm run stats" and analyse stats.json result here http://webpack.github.io/analyse/#modules
+       exclude: [
+          'node_modules',
+       ]
+    },
+  }
 
   if (isProductionMode) {
-    console.log('Starting a ' + chalk.red('production') + ' build...');
+    console.log('Starting a ' + chalk.red('production') + ' build...')
 
     webpackConfig.plugins.push(
       new ExtractTextPlugin('[name].css?[contenthash]'),
@@ -212,10 +215,10 @@ module.exports = function (env = {}) {
           join_vars: true
         }
       })
-    );
+    )
     // can work in any sub-folder
-    webpackConfig.output.publicPath = './';
-    webpackConfig.devtool = 'source-map';
+    webpackConfig.output.publicPath = './'
+    webpackConfig.devtool = 'source-map'
   } else {
     webpackConfig.devServer = {
       port: 3000,
@@ -227,14 +230,14 @@ module.exports = function (env = {}) {
       noInfo: false,
       quiet: false,
       hot: true
-    };
+    }
 
-    webpackConfig.devtool = 'source-map';
+    webpackConfig.devtool = 'source-map'
 
     webpackConfig.plugins.push(
       new webpack.HotModuleReplacementPlugin()
-    );
+    )
   }
 
-  return webpackConfig;
-};
+  return webpackConfig
+}

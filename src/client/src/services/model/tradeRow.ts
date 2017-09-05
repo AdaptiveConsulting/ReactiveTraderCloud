@@ -1,38 +1,38 @@
-import Trade from './trade';
+import Trade from './trade'
 
 export default class TradeRow {
 
   constructor(trade: Trade) {
-    this._trade = trade;
+    this._trade = trade
   }
 
-  _isNew: boolean;
+  _isNew: boolean
 
   get isNew(): boolean {
-    return this._isNew;
+    return this._isNew
   }
 
   set isNew(val: boolean) {
-    this._isNew = val;
+    this._isNew = val
   }
 
-  _isInFocus: boolean;
+  _isInFocus: boolean
 
   get isInFocus(): boolean {
-    return this._isInFocus;
+    return this._isInFocus
   }
 
   set isInFocus(val: boolean) {
-    this._isInFocus = val;
+    this._isInFocus = val
   }
 
-  _trade: Trade;
+  _trade: Trade
 
   get trade(): Trade {
-    return this._trade;
+    return this._trade
   }
 
   set trade(val: Trade) {
-    this._trade = val;
+    this._trade = val
   }
 }

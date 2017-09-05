@@ -1,21 +1,21 @@
-import CurrencyPair from './currencyPair';
-import { UpdateType } from './index';
+import CurrencyPair from './currencyPair'
+import { UpdateType } from './index'
 
 export default class CurrencyPairUpdate {
   constructor(updateType, currencyPair) {
-    this._updateType = updateType;
-    this._currencyPair = currencyPair;
+    this._updateType = updateType
+    this._currencyPair = currencyPair
   }
 
-  _updateType: UpdateType;
+  _updateType: UpdateType
 
   get updateType() {
-    return this._updateType;
+    return this._updateType
   }
 
-  _currencyPair: CurrencyPair;
+  _currencyPair: CurrencyPair
 
   get currencyPair() {
-    return this._currencyPair;
+    return this._currencyPair
   }
 }

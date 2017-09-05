@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import OpenFinChrome from '../../common/components/openFinChrome/openFinChrome';
+import OpenFinChrome from '../../shell/OpenFinChrome';
 import PopoutServiceBase from './popoutServiceBase';
 import _ from 'lodash';
 const DockingManager = require('exports-loader?DockingManager!../../../../lib/dockingManager.js');

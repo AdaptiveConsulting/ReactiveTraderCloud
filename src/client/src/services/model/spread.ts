@@ -1,18 +1,18 @@
 export default class Spread {
   constructor(value: number, formattedValue: string) {
-    this._value = value;
-    this._formattedValue = formattedValue;
+    this._value = value
+    this._formattedValue = formattedValue
   }
 
-  _value: number;
+  _value: number
 
   get value(): number {
-    return this._value;
+    return this._value
   }
 
-  _formattedValue: string;
+  _formattedValue: string
 
   get formattedValue(): string {
-    return this._formattedValue;
+    return this._formattedValue
   }
 }

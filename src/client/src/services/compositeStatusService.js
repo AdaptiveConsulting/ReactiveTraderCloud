@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx';
-import { DisposableBase } from 'esp-js';
+import DisposableBase from './DisposableBase';
 import { ServiceStatusLookup } from './model';
 import { ConnectionType } from './../services/model';
 

@@ -9,7 +9,7 @@ export interface ModalProps {
 
 // TODO disable tabbing outside of the modal
 // tslint:disable-next-line:variable-name
-const Modal = (props:ModalProps) => {
+const Modal = (props: ModalProps) => {
   if (!props.shouldShow) {
     return null
   }
