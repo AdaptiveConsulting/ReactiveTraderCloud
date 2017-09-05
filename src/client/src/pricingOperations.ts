@@ -7,9 +7,11 @@ import {combineEpics} from "redux-observable";
 
 export enum ACTION_TYPES {
   PRICING_SERVICE = '@ReactiveTraderCloud/PRICING_SERVICE',
+  PRICING_SERVICE_STATUS_UPDATE = '@ReactiveTraderCloud/PRICING_SERVICE_STATUS_UPDATE',
 }
 
 export const fetchPricing = createAction(ACTION_TYPES.PRICING_SERVICE)
+export const pricingStatusUpdate = createAction(ACTION_TYPES.PRICING_SERVICE_STATUS_UPDATE)
 
 const getCurrencyPairs = (symbols: Array<string>, pricingService$: any) => {
   return Observable.from(symbols).mergeMap(symbol => pricingService$.getSpotPriceStream({ symbol }))
@@ -43,7 +45,13 @@ export const pricingServiceEpic = (pricingService$) => {
       .scan(accumulatePrices, {}).map(fetchPricing)
   }
 
-  return combineEpics(getPrices, stalePriceCheck)
+  function subscribeToConnectionStatus(action$) {
+    return pricingStream$(action$)
+      .flatMap(item => pricingService$.serviceStatusStream)
+      .map(pricingStatusUpdate)
+  }
+
+  return combineEpics(getPrices, stalePriceCheck, subscribeToConnectionStatus)
 }
 
 export const pricingServiceReducer = (state = {}, action) => {

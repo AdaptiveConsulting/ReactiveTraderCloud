@@ -30,6 +30,7 @@ export interface SpotPrice {
   priceStale: boolean,
   isTradeExecutionInFlight: boolean,
   notification: any,
+  pricingConnected: boolean,
 }
 
 export enum ACTION_TYPES {
@@ -137,6 +138,13 @@ export const spotTileReducer = (state: any = {}, { type, payload }) => {
         return _.assign(state, stalePrice)
       }
       return state
+    case PRICING_ACTION_TYPES.PRICING_SERVICE_STATUS_UPDATE:
+      return _.mapValues(state, (item) => {
+        const newItem: SpotPrice = _.clone(item)
+        newItem.pricingConnected = payload.isConnected
+        newItem.notification = buildNotification({},  stalePriceErrorMessage)
+        return newItem
+      })
     default:
       return state
   }
@@ -190,6 +198,7 @@ function spotTileItemFormatter(state, item): SpotPrice {
     priceStale: isPriceStale(prevItem, item),
     isTradeExecutionInFlight: prevItem ? prevItem.isTradeExecutionInFlight : false,
     notification: getNotification(prevItem, item),
+    pricingConnected: prevItem ? prevItem.pricingConnected : true,
   }
 }
 
