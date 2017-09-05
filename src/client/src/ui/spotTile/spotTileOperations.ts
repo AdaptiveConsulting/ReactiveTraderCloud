@@ -105,7 +105,7 @@ const changeValueInState = (state, symbol, flagKey, value) => {
   if (target.hasOwnProperty(symbol) && target[symbol].hasOwnProperty(flagKey)) {
     target[symbol][flagKey] = value
   }
-  return _.assign(state, target);
+  return _.assign(state, target)
 }
 
 export const spotTileReducer = (state: any = {}, { type, payload }) => {
