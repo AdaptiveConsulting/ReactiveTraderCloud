@@ -87,7 +87,7 @@ export default class ServiceClient extends DisposableBase {
         .publish()
         .refCount()
       const isConnectedStream = connectionStatus.filter(isConnected => isConnected)
-      const errorOnDisconnectStream = connectionStatus.filter(isConnected => !isConnected).take(1).flatMap(Observable.throw('Underlying connection disconnected'))
+      const errorOnDisconnectStream = connectionStatus.filter(isConnected => !isConnected).take(1).flatMap(() => Observable.throw('Underlying connection disconnected'))
       const serviceInstanceDictionaryStream = this._connection
         .subscribeToTopic('status')
         .filter(s => s.Type === serviceType)
