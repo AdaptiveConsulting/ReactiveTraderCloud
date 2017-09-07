@@ -105,10 +105,10 @@ Observable.prototype['getServiceWithMinLoad'] = getServiceWithMinLoad
 /**
  * Adds distinctUntilChanged semantics to inner streams of a grouped observable
  */
-function distinctUntilChangedGroup<TValue>(this: Observable<TValue>, keySelector) {
+function distinctUntilChangedGroup<TValue>(this: Observable<TValue>, comparisonFn) {
   return Observable.create((o) => {
     return this.subscribe((innerSource: any) => {
-        const distinctStream = innerSource.distinctUntilChanged(value => keySelector(value))
+        const distinctStream = innerSource.distinctUntilChanged(comparisonFn)
         o.next(distinctStream)
       },
       (ex) => o.error(ex),

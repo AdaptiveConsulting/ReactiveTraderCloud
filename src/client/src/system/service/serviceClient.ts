@@ -100,7 +100,7 @@ export default class ServiceClient extends DisposableBase {
         // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
         .debounceOnMissedHeartbeat(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => createServiceInstanceForDisconnected(serviceType, serviceId), Scheduler.async)
         // create a hash of properties which represent significant change in a status, we'll use this to filter out duplicates
-        .distinctUntilChangedGroup(status => { return `${status.serviceType}.${status.serviceId}.${status.isConnected}.${status.serviceLoad}`})
+        .distinctUntilChangedGroup((status, statusNew) => status.isConnected === statusNew.isConnected && status.serviceLoad === statusNew.serviceLoad )
         // flattens all our service instances stream into an observable dictionary so we query the service with the least load on a per-subscribe basis
         .toServiceStatusObservableDictionary(serviceStatus => serviceStatus.serviceId)
         // catch the disconnect error of the outer stream and continue with an empty (thus disconnected) dictionary
