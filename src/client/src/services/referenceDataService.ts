@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import { Observable } from 'rxjs/Rx'
 import { ReferenceDataMapper } from './mappers'
-import { UpdateType } from '../types'
+import { ConnectionStatus, UpdateType } from '../types'
 import { logger, RetryPolicy } from '../system'
 import { ServiceBase } from '../system/service'
 import '../system/observableExtensions/retryPolicyExt'
@@ -22,7 +22,7 @@ export default class ReferenceDataService extends ServiceBase {
     }
 
     // on connection/reconnection get reference data stream
-    connection.connectionStatusStream.filter(el => el === 'connected').subscribe(() => {
+    connection.connectionStatusStream.filter(el => el === ConnectionStatus.connected).subscribe(() => {
       // TEMP force refdata reconnecting
       this._serviceClient._isConnectCalled = false
       this._referenceDataStreamConnectable._connection = null
