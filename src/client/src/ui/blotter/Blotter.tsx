@@ -85,7 +85,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
           <DateCell
             width={props.width}
             dateValue={trades[props.rowIndex].tradeDate}
-            classname={getCellClassName(trades[props.rowIndex].status, "Value date")}
+            classname={getCellClassName(trades[props.rowIndex].status, 'Value date')}
           />
         }
         flexGrow={1}
@@ -123,7 +123,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
           return (
             <NotionalCell
               width={props.width}
-              className={classNames('blotter__trade-field--align-right', getCellClassName(trades[props.rowIndex].status, "Notional"))}
+              className={classNames('blotter__trade-field--align-right', getCellClassName(trades[props.rowIndex].status, 'Notional'))}
               notionalValue={trade.notional}
               suffix={' ' + trade.currencyPair.base}/>
           )
@@ -149,7 +149,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
         label={'Status'}
         cellRenderer={(props: any) =>
           <BaseCell
-            classname={classNames("blotter__trade-status", getTradeStatusCellStyle(trade(props.rowIndex).status))}
+            classname={classNames('blotter__trade-status', getTradeStatusCellStyle(trade(props.rowIndex).status))}
             cellKey="status"
             trade={trade(props.rowIndex)}
           />
@@ -166,7 +166,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
             prefix="SP. "
             format="%d %b"
             dateValue={trades[props.rowIndex].valueDate}
-            classname={getCellClassName(trades[props.rowIndex].status, "Value date")}
+            classname={getCellClassName(trades[props.rowIndex].status, 'Value date')}
           />
         }
         flexGrow={1}
@@ -196,17 +196,9 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
 
     return classNames(
       'blotter__trade',
-      getTradeClassName(rowItem.status)
+      rowItem.status === 'pending' && 'blotter__trade--processing'
     )
   }
 }
 
 const getTradeStatusCellStyle = (tradeStatus: TradeStatus) => tradeStatus === 'rejected' && 'tradeRejected'
-
-const getTradeClassName = (tradeStatus: TradeStatus) => {
-  const tradeStatusMap = {
-    Rejected: 'blotter__trade--rejected',
-    Pending: 'blotter__trade--processing'
-  }
-  return tradeStatusMap[tradeStatus]
-}
