@@ -3,7 +3,7 @@ import { reconnect } from './actions'
 import Shell from './Shell'
 
 function mapStateToProps({ connectionStatus }) {
-  const sessionExpired = connectionStatus.connection !== 'connected'
+  const sessionExpired = connectionStatus.connection !== 'connected' && connectionStatus.connection !== 'idle'
   return { sessionExpired }
 }
 
