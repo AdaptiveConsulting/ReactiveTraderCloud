@@ -34,6 +34,7 @@
     "deploy": "webpack --display-error-details",
     "deploy:prod": "set NODE_ENV=production&&webpack",
     "openfin": "openfin -c config/openfin/local.app.json -l",
+    "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "stats": "webpack --profile --json > stats.json",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
