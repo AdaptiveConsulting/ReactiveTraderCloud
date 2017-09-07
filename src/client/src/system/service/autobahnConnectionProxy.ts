@@ -7,8 +7,8 @@ import AutobahnSessionProxy from './autobahnSessionProxy'
 export default class AutobahnConnectionProxy {
   session: AutobahnSessionProxy
   connection: Connection
-  _onOpen
-  _onClose
+  onOpen
+  onClose
 
   constructor(url: string, realm: string, port: number) {
     const useSecure = location.protocol === 'https:'
@@ -36,16 +36,16 @@ export default class AutobahnConnectionProxy {
   }
 
   open() {
-    this.connection.onopen = session => {
+    this.connection.onopen = (session) => {
       this.session = new AutobahnSessionProxy(session)
-      if (this._onOpen) {
-        this._onOpen(session)
+      if (this.onOpen) {
+        this.onOpen(session)
       }
     }
 
     this.connection.onclose = (reason: string, details: { reason: string, message: string }): boolean => {
-      if (this._onClose) {
-        this._onClose(reason, details)
+      if (this.onClose) {
+        this.onClose(reason, details)
       }
       return true
     }
@@ -58,10 +58,10 @@ export default class AutobahnConnectionProxy {
   }
 
   onopen(callback: (session: Session) => void) {
-    this._onOpen = callback
+    this.onOpen = callback
   }
 
   onclose(callback: (reason: string, details: { reason: string, message: string }) => void) {
-    this._onClose = callback
+    this.onClose = callback
   }
 }

@@ -5,10 +5,10 @@ import { CurrencyPairPosition, HistoricPosition, PositionUpdates } from '../../t
 
 export default class PositionsMapper {
 
-  _referenceDataService: ReferenceDataService
+  referenceDataService: ReferenceDataService
 
   constructor(referenceDataService: ReferenceDataService) {
-    this._referenceDataService = referenceDataService
+    this.referenceDataService = referenceDataService
   }
 
   static mapToDto(ccyPairPosition: CurrencyPairPosition) {
@@ -20,29 +20,29 @@ export default class PositionsMapper {
   }
 
   mapFromDto(dto: any): PositionUpdates {
-    const positions = this._mapPositionsFromDto(dto.CurrentPositions)
-    const history = this._mapHistoricPositionFromDto(dto.History)
+    const positions = this.mapPositionsFromDto(dto.CurrentPositions)
+    const history = this.mapHistoricPositionFromDto(dto.History)
     return {
       history,
       currentPositions: positions,
     }
   }
 
-  _mapPositionsFromDto(dtos: Array<any>): Array<CurrencyPairPosition> {
+  mapPositionsFromDto(dtos: Array<any>): Array<CurrencyPairPosition> {
     return _.map(
       dtos,
       (dto): CurrencyPairPosition => ({
         symbol: dto.Symbol,
         basePnl: dto.BasePnl,
         baseTradedAmount: dto.BaseTradedAmount,
-        currencyPair: this._referenceDataService.getCurrencyPair(dto.Symbol),
+        currencyPair: this.referenceDataService.getCurrencyPair(dto.Symbol),
         basePnlName: 'basePnl',
         baseTradedAmountName: 'baseTradedAmount',
       }),
     )
   }
 
-  _mapHistoricPositionFromDto(dtos: Array<any>): Array<HistoricPosition> {
+  mapHistoricPositionFromDto(dtos: Array<any>): Array<HistoricPosition> {
     return _.map(
       dtos,
       (dto): HistoricPosition => ({

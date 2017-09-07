@@ -1,7 +1,7 @@
-import { Direction } from '../../src/types/direction';
-import { NotificationType } from '../../src/types/notificationType';
-import { SpotTileProps } from '../../src/ui/spotTile/SpotTile';
-import { TradeStatus } from '../../src/types/tradeStatus';
+import { Direction } from '../../src/types/direction'
+import { NotificationType } from '../../src/types/notificationType'
+import { SpotTileProps } from '../../src/ui/spotTile/SpotTile'
+import { TradeStatus } from '../../src/types/tradeStatus'
 
 const getRandomNumber = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min)
@@ -22,7 +22,7 @@ export const getSpotTileProps: () => SpotTileProps = (executionConnected: boolea
       base: 'GBP',
       ratePrecision: 0,
       pipsPosition: 0,
-      terms: ''
+      terms: '',
     },
     currentSpotPrice: {
       ask: getButtonProps('ask', () => {}).rate,
@@ -41,7 +41,7 @@ export const getSpotTileProps: () => SpotTileProps = (executionConnected: boolea
     notification: {
       error: null,
       notificationType: NotificationType.Trade,
-      hasError: false
+      hasError: false,
     },
     notional: 500,
     priceStale: false,
@@ -53,7 +53,7 @@ export const getSpotTileProps: () => SpotTileProps = (executionConnected: boolea
     undockTile: () => {},
     displayCurrencyChart: () => {},
     onNotificationDismissedClick: () => {},
-    isTradable: true
+    isTradable: true,
   }
 }
 
@@ -80,7 +80,7 @@ export const getNotionalInputProps = {
   currencyPair: { symbol: 'GBP', base: 'GBP', ratePrecision: 0, pipsPosition: 0, terms: '' },
   onChange: () => console.log('Changed'),
   maxValue: 5000000,
-  onNotionalInputChange: () => {}
+  onNotionalInputChange: () => {},
 }
 
 export const getPriceMovementIndicatorProps = (priceMovementType: string,

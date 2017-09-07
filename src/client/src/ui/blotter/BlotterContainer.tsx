@@ -40,7 +40,7 @@ const mapStateToProps = ({ blotterService, compositeStatusService }) => {
   return { blotterService, isConnected }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onPopoutClick: (openFin) => {
       return () => {

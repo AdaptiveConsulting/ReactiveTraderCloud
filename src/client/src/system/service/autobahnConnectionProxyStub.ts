@@ -49,16 +49,16 @@ export default class StubAutobahnProxy {
 }
 
 class StubAutobahnSession {
-  _stubPromises
+  stubPromises
   constructor() {
-    this._stubPromises = {}
+    this.stubPromises = {}
   }
 
   subscribe(topic, onResults) {
-    let stubPromise = new StubSubscribeResult(onResults)
+    const stubPromise = new StubSubscribeResult(onResults)
     // we only support one request for the given topic,
     // if there is anything there we just blow it away
-    this._stubPromises[topic] = stubPromise
+    this.stubPromises[topic] = stubPromise
     return stubPromise
   }
 
@@ -69,18 +69,18 @@ class StubAutobahnSession {
   }
 
   call(operationName, dto) {
-    let stubPromise = new StubCallResult(dto)
+    const stubPromise = new StubCallResult(dto)
     // we only support one request for the given topic,
     // if there is anything there we just blow it away
-    this._stubPromises[operationName] = stubPromise
+    this.stubPromises[operationName] = stubPromise
     return stubPromise
   }
 
   getTopic(name) {
-    if (!this._stubPromises[name]) {
+    if (!this.stubPromises[name]) {
       throw new Error('Nothing has subscribed to topic/operation [' + name + ']')
     }
-    return this._stubPromises[name]
+    return this.stubPromises[name]
   }
 }
 

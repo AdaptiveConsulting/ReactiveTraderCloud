@@ -2,8 +2,8 @@ import { Observable } from 'rxjs/Rx'
 import { createAction } from 'redux-actions'
 
 import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceOperations'
-import {stalePricing, PRICE_STALE_AFTER_X_IN_MS} from "./ui/spotTile/spotTileOperations"
-import {combineEpics} from "redux-observable";
+import { stalePricing, PRICE_STALE_AFTER_X_IN_MS } from './ui/spotTile/spotTileOperations'
+import { combineEpics } from 'redux-observable'
 
 export enum ACTION_TYPES {
   PRICING_SERVICE = '@ReactiveTraderCloud/PRICING_SERVICE',

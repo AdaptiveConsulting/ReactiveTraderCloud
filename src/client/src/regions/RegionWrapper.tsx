@@ -11,10 +11,10 @@ class RegionWrapper extends React.Component<any, any> {
       displayChildComponent = !service[region].isTearedOff
     }
 
-    return ( displayChildComponent ? children : null )
+    return (displayChildComponent ? children : null)
   }
 }
 
-const mapStateToProps = (state) => ({service: state.regionsService})
+const mapStateToProps = state => ({ service: state.regionsService })
 
 export default connect(mapStateToProps)(RegionWrapper)

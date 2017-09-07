@@ -17,7 +17,7 @@ export default handleActions({
   [ACTION_TYPES.NOTIONAL_INPUT]: (state: any, action: Action<NotionalUpdate>) => {
     return {
       ...state,
-      [action.payload.currencyPairSymbol]: action.payload.value
+      [action.payload.currencyPairSymbol]: action.payload.value,
     }
-  }
+  },
 }, INITIAL_STATE)

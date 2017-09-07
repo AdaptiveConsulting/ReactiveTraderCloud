@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { ServiceConst, User } from './types'
-import SchedulerService from './system/schedulerService'
 import AutobahnConnectionProxy from './system/service/autobahnConnectionProxy'
 import Connection from './system/service/connection'
 import { OpenFin } from './system/openFin'
@@ -25,15 +24,14 @@ import configureStore from './configureStore'
 declare const window: any
 
 class AppBootstrapper {
-  _connection: Connection
-  _referenceDataService: ReferenceDataService
-  _pricingService: PricingService
-  _blotterService: BlotterService
-  _executionService: ExecutionService
-  _analyticsService: AnalyticsService
-  _compositeStatusService: CompositeStatusService
-  _schedulerService: SchedulerService
-  _openFin: any
+  connection: Connection
+  referenceDataService: ReferenceDataService
+  pricingService: PricingService
+  blotterService: BlotterService
+  executionService: ExecutionService
+  analyticsService: AnalyticsService
+  compositeStatusService: CompositeStatusService
+  openFin: any
   store: any
 
   get endpointURL() {
@@ -47,13 +45,13 @@ class AppBootstrapper {
   run() {
     this.startServices()
     this.store = configureStore(
-      this._referenceDataService,
-      this._blotterService,
-      this._pricingService,
-      this._analyticsService,
-      this._compositeStatusService,
-      this._executionService,
-      this._openFin,
+      this.referenceDataService,
+      this.blotterService,
+      this.pricingService,
+      this.analyticsService,
+      this.compositeStatusService,
+      this.executionService,
+      this.openFin,
     )
 
     this.displayUi()
@@ -65,31 +63,29 @@ class AppBootstrapper {
     const url = this.endpointURL
     const port = this.endpointPort
 
-    this._schedulerService = new SchedulerService()
-    this._connection = new Connection(
+    this.connection = new Connection(
       user.code,
       new AutobahnConnectionProxy(url, realm, port),
-      this._schedulerService,
     )
 
     // in a larger app you'd put a container in here (shameless plug: https://github.com/KeithWoods/microdi-js, but there are many offerings in this space).
-    this._openFin = new OpenFin()
-    this._referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this._connection, this._schedulerService)
-    this._pricingService = new PricingService(ServiceConst.PricingServiceKey, this._connection, this._schedulerService)
-    this._blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this._connection, this._schedulerService, this._referenceDataService)
-    this._executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, this._connection, this._schedulerService, this._referenceDataService, this._openFin)
-    this._analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this._connection, this._schedulerService, this._referenceDataService)
-    this._compositeStatusService = new CompositeStatusService(this._connection, this._pricingService, this._referenceDataService, this._blotterService, this._executionService, this._analyticsService)
+    this.openFin = new OpenFin()
+    this.referenceDataService = new ReferenceDataService(ServiceConst.ReferenceServiceKey, this.connection)
+    this.pricingService = new PricingService(ServiceConst.PricingServiceKey, this.connection)
+    this.blotterService = new BlotterService(ServiceConst.BlotterServiceKey, this.connection, this.referenceDataService)
+    this.executionService = new ExecutionService(ServiceConst.ExecutionServiceKey, this.connection, this.referenceDataService, this.openFin)
+    this.analyticsService = new AnalyticsService(ServiceConst.AnalyticsServiceKey, this.connection, this.referenceDataService)
+    this.compositeStatusService = new CompositeStatusService(this.connection, this.pricingService, this.referenceDataService, this.blotterService, this.executionService, this.analyticsService)
 
     // connect/load all the services
-    this._pricingService.connect()
-    this._blotterService.connect()
-    this._executionService.connect()
-    this._analyticsService.connect()
-    this._referenceDataService.connect()
-    this._compositeStatusService.start()
+    this.pricingService.connect()
+    this.blotterService.connect()
+    this.executionService.connect()
+    this.analyticsService.connect()
+    this.referenceDataService.connect()
+    this.compositeStatusService.start()
     // and finally the underlying connection
-    this._connection.connect()
+    this.connection.connect()
   }
 
   displayUi() {
@@ -97,7 +93,7 @@ class AppBootstrapper {
     window.store = store
     ReactDOM.render(
       <Provider store={store}>
-        <OpenFinProvider openFin={this._openFin}>
+        <OpenFinProvider openFin={this.openFin}>
           <ShellContainer/>
         </OpenFinProvider>
       </Provider>,

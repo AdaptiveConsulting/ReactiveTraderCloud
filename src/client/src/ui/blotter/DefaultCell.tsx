@@ -1,12 +1,12 @@
 import * as React from 'react'
 import * as classNames from 'classnames'
 
-import './DefaultCellStyles.scss';
+import './DefaultCellStyles.scss'
 
-import { TradeStatus } from '../../types/tradeStatus';
+import { TradeStatus } from '../../types/tradeStatus'
 
 export interface BaseCellProps {
-  classname?: string,
+  classname?: string
   cellKey: string
   trade: any
 }

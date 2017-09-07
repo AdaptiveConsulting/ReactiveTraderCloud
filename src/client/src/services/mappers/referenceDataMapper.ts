@@ -4,7 +4,7 @@ import { CurrencyPair, CurrencyPairUpdate, CurrencyPairUpdates, UpdateType } fro
 
 export default class ReferenceDataMapper {
   mapCurrencyPairsFromDto(dto: any): CurrencyPairUpdates {
-    const updates = this._mapUpdatesFromDto(dto.Updates)
+    const updates = this.mapUpdatesFromDto(dto.Updates)
     return {
       isStateOfTheWorld: dto.IsStateOfTheWorld,
       isStale: dto.IsStale,
@@ -12,9 +12,9 @@ export default class ReferenceDataMapper {
     }
   }
 
-  _mapUpdatesFromDto(currencyPairUpdateDtos: Array<any>): Array<CurrencyPairUpdate> {
+  mapUpdatesFromDto(currencyPairUpdateDtos: Array<any>): Array<CurrencyPairUpdate> {
     return _.map(currencyPairUpdateDtos, (dto): CurrencyPairUpdate => {
-      const updateType = this._mapUpdateType(dto.UpdateType)
+      const updateType = this.mapUpdateType(dto.UpdateType)
       const currencyPair = createCurrencyPair(
         dto.CurrencyPair.Symbol,
         dto.CurrencyPair.RatePrecision,
@@ -28,7 +28,7 @@ export default class ReferenceDataMapper {
     })
   }
 
-  _mapUpdateType(updateTypeString: string): UpdateType {
+  mapUpdateType(updateTypeString: string): UpdateType {
     if (updateTypeString === UpdateType.Added) {
       return UpdateType.Added
     } else if (updateTypeString === UpdateType.Removed) {

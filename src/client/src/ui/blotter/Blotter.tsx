@@ -5,7 +5,7 @@ import 'fixed-data-table/dist/fixed-data-table.css'
 
 import { TradeStatus } from '../../types'
 import { DateCell, NotionalCell } from './'
-import { BaseCell, getCellClassName } from './DefaultCell';
+import { BaseCell, getCellClassName } from './DefaultCell'
 
 import './BlotterStyles.scss'
 
@@ -30,13 +30,13 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
     const className = classNames(
       'blotter', {
         'blotter--online': isConnected,
-        'blotter--offline': !isConnected
+        'blotter--offline': !isConnected,
       })
     const newWindowClassName = classNames(
       'glyphicon glyphicon-new-window',
       {
-        'blotter__controls--hidden': canPopout
-      }
+        'blotter__controls--hidden': canPopout,
+      },
     )
 
     return (
@@ -63,7 +63,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
   }
 
   createGridColumns(trades: any): any[] {
-    const trade = (rowIndex: number) => trades[rowIndex];
+    const trade = (rowIndex: number) => trades[rowIndex]
     return [
       <Column
         key="tradeId"
@@ -182,7 +182,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
           />
         }
         flexGrow={1}
-        width={80}/>
+        width={80}/>,
     ]
   }
 
@@ -196,9 +196,9 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
 
     return classNames(
       'blotter__trade',
-      rowItem.status === 'pending' && 'blotter__trade--processing'
+      rowItem.status === 'pending' && 'blotter__trade--processing',
     )
   }
 }
 
-const getTradeStatusCellStyle = (tradeStatus: TradeStatus) => tradeStatus === 'rejected' && 'tradeRejected'
+const getTradeStatusCellStyle = (tradeStatus: TradeStatus) => tradeStatus === TradeStatus.Rejected && 'tradeRejected'

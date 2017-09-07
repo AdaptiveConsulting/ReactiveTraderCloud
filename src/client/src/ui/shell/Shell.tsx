@@ -27,7 +27,7 @@ export default class Shell extends React.Component<ShellProps, {}> {
   render() {
     const { sessionExpired } = this.props
     return (
-      <div className={classnames({ 'shell__browser_wrapper': !this.context.openFin })}>
+      <div className={classnames({ shell__browser_wrapper: !this.context.openFin })}>
         <div className="shell__splash">
           <span className="shell__splash-message">{this.appVersion}<br/>Loading...</span>
         </div>

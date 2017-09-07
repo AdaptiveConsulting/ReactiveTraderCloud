@@ -6,7 +6,7 @@ import logger from '../logger'
 import * as numeral from 'numeral'
 import * as moment from 'moment'
 
-const _log = logger.create('OpenFin')
+const log = logger.create('OpenFin')
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'
 
@@ -21,7 +21,7 @@ export default class OpenFin {
     this.limitCheckId = 1
     this.limitCheckSubscriber = null
     if (this.isRunningInOpenFin) {
-      this._initializeLimitChecker()
+      this.initializeLimitChecker()
     }
   }
 
@@ -30,54 +30,54 @@ export default class OpenFin {
   }
 
   close(currentWindow = this._currentWindow) {
-    currentWindow.close(true, () => _log.info('Window closed with success.'), err => _log.error('Failed to close window.', err))
+    currentWindow.close(true, () => log.info('Window closed with success.'), err => log.error('Failed to close window.', err))
   }
 
   minimize(currentWindow = this._currentWindow) {
-    currentWindow.minimize(() => _log.info('Window minimized with success.'), err => _log.error('Failed to minimize window.', err))
+    currentWindow.minimize(() => log.info('Window minimized with success.'), err => log.error('Failed to minimize window.', err))
   }
 
   maximize(currentWindow = this._currentWindow) {
-    currentWindow.getState(state => {
-        switch (state){
-          case 'maximized':
-          case 'restored':
-          case 'minimized':
-            currentWindow.restore(() => currentWindow.bringToFront(
-              () => _log.info('Window brought to front.'),
-              err => _log.error(err)
-            ), err => _log.error(err))
-            break
-          default:
-            currentWindow.maximize(() => _log.info('Window maximized with success.'), err => _log.error('Failed to maximize window.', err))
-        }
-      })
-  }
-
-  bringToFront(currentWindow = this._currentWindow){
-    currentWindow.getState(state => {
-      if (state === 'minimized'){
-        currentWindow.restore(() => currentWindow.bringToFront(
-          () => _log.info('Window brought to front.'),
-          err => _log.error(err)
-        ), err => _log.error(err))
-      }else{
-        currentWindow.bringToFront(
-          () => _log.info('Window brought to front.'),
-          err => _log.error(err))
+    currentWindow.getState((state) => {
+      switch (state){
+        case 'maximized':
+        case 'restored':
+        case 'minimized':
+          currentWindow.restore(() => currentWindow.bringToFront(
+              () => log.info('Window brought to front.'),
+              err => log.error(err),
+            ), err => log.error(err))
+          break
+        default:
+          currentWindow.maximize(() => log.info('Window maximized with success.'), err => log.error('Failed to maximize window.', err))
       }
     })
   }
 
-  addSubscription(name, callback){
+  bringToFront(currentWindow = this._currentWindow) {
+    currentWindow.getState((state) => {
+      if (state === 'minimized') {
+        currentWindow.restore(() => currentWindow.bringToFront(
+          () => log.info('Window brought to front.'),
+          err => log.error(err),
+        ), err => log.error(err))
+      } else {
+        currentWindow.bringToFront(
+          () => log.info('Window brought to front.'),
+          err => log.error(err))
+      }
+    })
+  }
+
+  addSubscription(name, callback) {
     if (!this.isRunningInOpenFin) return
-    if (!fin.desktop.InterApplicationBus){
+    if (!fin.desktop.InterApplicationBus) {
       fin.desktop.main(() => {
         fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
           callback.call(null, msg, uuid)
         })
       })
-    }else{
+    } else {
       fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
         callback.call(null, msg, uuid)
       })
@@ -85,38 +85,37 @@ export default class OpenFin {
   }
 
   checkLimit(executablePrice, notional, tradedCurrencyPair) {
-    const _this = this
-    return Observable.create(observer => {
-        const disposables = new Subscription()
-        if (_this.limitCheckSubscriber === null) {
-          _log.debug('client side limit check not up, will delegate to to server')
-          observer.next(true)
+    return Observable.create((observer) => {
+      const disposables = new Subscription()
+      if (this.limitCheckSubscriber === null) {
+        log.debug('client side limit check not up, will delegate to to server')
+        observer.next(true)
+        observer.compconste()
+      } else {
+        log.debug(`checking if limit is ok with ${this.limitCheckSubscriber}`)
+        const topic = `limit-check-response (${this.limitCheckId++})`
+        const limitCheckResponse = (msg) => {
+          log.debug(`${this.limitCheckSubscriber} limit check response was ${msg}`)
+          observer.next(msg.result)
           observer.compconste()
-        } else {
-          _log.debug(`checking if limit is ok with ${_this.limitCheckSubscriber}`)
-          const topic = `limit-check-response (${_this.limitCheckId++})`
-          const limitCheckResponse = (msg) => {
-            _log.debug(`${_this.limitCheckSubscriber} limit check response was ${msg}`)
-            observer.next(msg.result)
-            observer.compconste()
-          }
-
-          fin.desktop.InterApplicationBus.subscribe(_this.limitCheckSubscriber, topic, limitCheckResponse)
-
-          fin.desktop.InterApplicationBus.send(_this.limitCheckSubscriber, REQUEST_LIMIT_CHECK_TOPIC, {
-            id: _this.limitCheckId,
-            responseTopic: topic,
-            tradedCurrencyPair: tradedCurrencyPair,
-            notional: notional,
-            rate: executablePrice
-          })
-
-          disposables.add(new Subscription(() => {
-            fin.desktop.InterApplicationBus.unsubscribe(_this.limitCheckSubscriber, topic, limitCheckResponse)
-          }))
         }
-        return disposables
-      })
+
+        fin.desktop.InterApplicationBus.subscribe(this.limitCheckSubscriber, topic, limitCheckResponse)
+
+        fin.desktop.InterApplicationBus.send(this.limitCheckSubscriber, REQUEST_LIMIT_CHECK_TOPIC, {
+          tradedCurrencyPair,
+          notional,
+          id: this.limitCheckId,
+          responseTopic: topic,
+          rate: executablePrice,
+        })
+
+        disposables.add(new Subscription(() => {
+          fin.desktop.InterApplicationBus.unsubscribe(this.limitCheckSubscriber, topic, limitCheckResponse)
+        }))
+      }
+      return disposables
+    })
   }
 
   get _currentWindow() {
@@ -136,9 +135,9 @@ export default class OpenFin {
           return app.isRunning && app.uuid === chartIqAppId
         }))
         if (chartIqApp) {
-          resolve(this._refreshCurrencyChart(symbol))
+          resolve(this.refreshCurrencyChart(symbol))
         } else {
-          resolve(this._launchCurrencyChart(symbol))
+          resolve(this.launchCurrencyChart(symbol))
         }
       })
     })
@@ -148,18 +147,18 @@ export default class OpenFin {
    * Initialize limit checker
    * @private
    */
-  _initializeLimitChecker() {
+  initializeLimitChecker() {
     fin.desktop.main(() => {
       fin.desktop.InterApplicationBus.addSubscribeListener((uuid, topic) => {
         if (topic === REQUEST_LIMIT_CHECK_TOPIC) {
-          _log.info(`${uuid} has subscribed as a limit checker`)
+          log.info(`${uuid} has subscribed as a limit checker`)
           // There will only be one. If there are more, last subscriber will be used
           this.limitCheckSubscriber = uuid
         }
       })
       fin.desktop.InterApplicationBus.addUnsubscribeListener((uuid, topic) => {
         if (topic === REQUEST_LIMIT_CHECK_TOPIC) {
-          _log.info(`${uuid} has unsubscribed as a limit checker`)
+          log.info(`${uuid} has unsubscribed as a limit checker`)
           this.limitCheckSubscriber = null
         }
       })
@@ -172,7 +171,7 @@ export default class OpenFin {
    * @returns {Promise<void>|Promise.<T>|Promise<T>}
    * @private
    */
-  _refreshCurrencyChart(symbol) {
+  refreshCurrencyChart(symbol) {
     const interval = 5
     fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', { symbol, interval })
     return Promise.resolve(symbol)
@@ -183,7 +182,7 @@ export default class OpenFin {
    * @returns {Promise<T>|Promise}
    * @private
    */
-  _launchCurrencyChart(symbol) {
+  launchCurrencyChart(symbol) {
     return new Promise((resolve, reject) => {
       const interval = 5
       const chartIqAppId = 'ChartIQ'
@@ -219,8 +218,8 @@ export default class OpenFin {
   }
 
   publishCurrentPositions(ccyPairPositions) {
-    if (!this.isRunningInOpenFin ) return
-    const serialisePositions = ccyPairPositions.map( p => PositionsMapper.mapToDto(p))
+    if (!this.isRunningInOpenFin) return
+    const serialisePositions = ccyPairPositions.map(p => PositionsMapper.mapToDto(p))
     fin.desktop.InterApplicationBus.publish('position-update', serialisePositions)
   }
 
@@ -231,11 +230,11 @@ export default class OpenFin {
     // fin.desktop.InterApplicationBus.publish('price-update', PriceMapper.mapToSpotPriceDto(price))
   }
 
-  sendAllBlotterData(uuid, blotterData){
+  sendAllBlotterData(uuid, blotterData) {
     fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', blotterData)
   }
 
-  sendPositionClosedNotification(uuid, correlationId){
+  sendPositionClosedNotification(uuid, correlationId) {
     fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId)
   }
 

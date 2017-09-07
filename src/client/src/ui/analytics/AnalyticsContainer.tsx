@@ -58,10 +58,10 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onPopoutClick: (openFin) => {
-     return () => { dispatch(openWindow(analyticsRegion, openFin))}
+      return () => { dispatch(openWindow(analyticsRegion, openFin))}
     },
     onComponentMount: () => {
       dispatch(addRegion(analyticsRegion))

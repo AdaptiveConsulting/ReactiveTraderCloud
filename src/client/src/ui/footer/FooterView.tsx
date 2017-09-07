@@ -38,8 +38,8 @@ export const FooterView: React.SFC<FooterViewProps> = (props: FooterViewProps) =
       hide: !isConnected(props.connectionStatus.connection) || !props.displayStatusServices,
     })
 
-  const openfinLogoClassName = classnames('footer__logo', {'footer__logo-openfin': false})
-  const footerClasses = classnames('footer', {'footer--disconnected': !isConnected(props.connectionStatus.connection)})
+  const openfinLogoClassName = classnames('footer__logo', { 'footer__logo-openfin': false })
+  const footerClasses = classnames('footer', { 'footer--disconnected': !isConnected(props.connectionStatus.connection) })
 
   const openLink = (url: string) => {
     props.isRunningInOpenFin ?  props.openFin.openLink(url) : window.open(url, '_blank')

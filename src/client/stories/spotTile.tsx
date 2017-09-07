@@ -2,16 +2,16 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux';
+import { createStore } from 'redux'
 
-import rootReducer from '../src/combineReducers';
+import rootReducer from '../src/combineReducers'
 import {
   getButtonProps,
   getContainerStyling,
   getNotionalInputProps,
   getPriceMovementIndicatorProps,
   getSpotTileProps,
-  getTradeNotificationProps
+  getTradeNotificationProps,
 } from './spotTile/'
 import SpotTile, { NotionalInput, PriceButton, PriceMovementIndicator, TradeNotification } from '../src/ui/spotTile'
 import '../src/ui/spotTile/SpotTileStyles.scss'

@@ -38,7 +38,7 @@ export function connectionStatusEpicsCreator(compositeStatusService$) {
   function reconnectEpic(action$) {
     return action$.ofType(ACTION_TYPES.RECONNECT)
       .flatMap((action$) => {
-        compositeStatusService$._connection.connect()
+        compositeStatusService$.connection.connect()
         return fetchConnectionStatus
       })
   }

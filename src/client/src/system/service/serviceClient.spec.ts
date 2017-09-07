@@ -1,23 +1,22 @@
 import { Subscription } from 'rxjs/Rx'
 import ServiceClient from '../../../src/system/service/serviceClient'
 import Connection from '../../../src/system/service/connection'
-import SchedulerService from '../../../src/system/schedulerService'
 import StubAutobahnProxy from './autobahnConnectionProxyStub'
 
-let _stubAutobahnProxy,
-  _connection,
-  _receivedServiceStatusStream,
-  _serviceClient
+let stubAutobahnProxy
+let connection
+let receivedServiceStatusStream
+let serviceClient
 
 describe('ServiceClient', () => {
 
   beforeEach(() => {
-    _stubAutobahnProxy = new StubAutobahnProxy()
-    _connection = new Connection('user', _stubAutobahnProxy, new SchedulerService())
-    _serviceClient = new ServiceClient('myServiceType', _connection, new SchedulerService())
-    _receivedServiceStatusStream = []
-    _serviceClient.serviceStatusStream.subscribe(statusSummary => {
-      _receivedServiceStatusStream.push(statusSummary)
+    stubAutobahnProxy = new StubAutobahnProxy()
+    connection = new Connection('user', stubAutobahnProxy)
+    serviceClient = new ServiceClient('myServiceType', connection)
+    receivedServiceStatusStream = []
+    serviceClient.serviceStatusStream.subscribe((statusSummary) => {
+      receivedServiceStatusStream.push(statusSummary)
     })
   })
 
@@ -73,14 +72,14 @@ describe('ServiceClient', () => {
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
     pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0)
     assertExpectedStatusUpdate(3, true)
-    _stubAutobahnProxy.setIsConnected(false)
+    stubAutobahnProxy.setIsConnected(false)
     assertExpectedStatusUpdate(4, false)
   })
 
   test('handles underlying connection bouncing before any heartbeats are received', () => {
     connect()
-    _stubAutobahnProxy.setIsConnected(false)
-    _stubAutobahnProxy.setIsConnected(true)
+    stubAutobahnProxy.setIsConnected(false)
+    stubAutobahnProxy.setIsConnected(true)
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
     assertExpectedStatusUpdate(3, true)
     pushServiceHeartbeat('myServiceType', 'myServiceType.2', 0)
@@ -94,40 +93,40 @@ describe('ServiceClient', () => {
     assertExpectedStatusUpdate(3, true)
     assertServiceInstanceStatus(1, 'myServiceType.1', true)
     assertServiceInstanceStatus(2, 'myServiceType.1', true)
-    _stubAutobahnProxy.setIsConnected(false)
+    stubAutobahnProxy.setIsConnected(false)
     assertExpectedStatusUpdate(4, false)
-    _stubAutobahnProxy.setIsConnected(true)
+    stubAutobahnProxy.setIsConnected(true)
     pushServiceHeartbeat('myServiceType', 'myServiceType.4', 0)
     assertExpectedStatusUpdate(5, true)
     assertServiceInstanceStatus(4, 'myServiceType.4', true)
   })
 
   describe('createStreamOperation()', () => {
-    let _receivedPrices,
-      _receivedErrors,
-      _onCompleteCount,
+    let receivedPrices
+    let receivedErrors
+    let onCompleteCount
       _priceSubscriptionDisposable
 
     beforeEach(() => {
-      _receivedPrices = []
-      _receivedErrors = []
-      _onCompleteCount = 0
+      receivedPrices = []
+      receivedErrors = []
+      onCompleteCount = 0
       _priceSubscriptionDisposable = new Subscription()
       subscribeToPriceStream()
     })
 
     test('publishes payload when underlying session receives payload', () => {
       connectAndPublishPrice()
-      expect(_receivedPrices.length).toEqual(1)
-      expect(_receivedPrices[0]).toEqual(1)
+      expect(receivedPrices.length).toEqual(1)
+      expect(receivedPrices[0]).toEqual(1)
     })
 
     test('errors when underlying connection goes down', () => {
       connectAndPublishPrice()
-      expect(_receivedErrors.length).toEqual(0)
-      _stubAutobahnProxy.setIsConnected(false)
-      expect(_receivedErrors.length).toEqual(1)
-      expect(_receivedErrors.length).toEqual(1)
+      expect(receivedErrors.length).toEqual(0)
+      stubAutobahnProxy.setIsConnected(false)
+      expect(receivedErrors.length).toEqual(1)
+      expect(receivedErrors.length).toEqual(1)
     })
 
     test('still publishes payload to new subscribers after service instance comes back up', () => {
@@ -135,37 +134,37 @@ describe('ServiceClient', () => {
       subscribeToPriceStream()
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
       pushPrice('myServiceType.1', 2)
-      expect(_receivedPrices.length).toEqual(2)
-      expect(_receivedPrices[0]).toEqual(1)
-      expect(_receivedPrices[1]).toEqual(2)
+      expect(receivedPrices.length).toEqual(2)
+      expect(receivedPrices[0]).toEqual(1)
+      expect(receivedPrices[1]).toEqual(2)
     })
 
     test('still publishes payload to new subscribers after underlying connection goes down and comes back', () => {
       connectAndPublishPrice()
-      _stubAutobahnProxy.setIsConnected(false)
-      expect(_receivedErrors.length).toEqual(1)
+      stubAutobahnProxy.setIsConnected(false)
+      expect(receivedErrors.length).toEqual(1)
 
       subscribeToPriceStream()
-      _stubAutobahnProxy.setIsConnected(true)
+      stubAutobahnProxy.setIsConnected(true)
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
       pushPrice('myServiceType.1', 2)
-      expect(_receivedPrices.length).toEqual(2)
-      expect(_receivedPrices[0]).toEqual(1)
-      expect(_receivedPrices[1]).toEqual(2)
+      expect(receivedPrices.length).toEqual(2)
+      expect(receivedPrices[0]).toEqual(1)
+      expect(receivedPrices[1]).toEqual(2)
     })
 
     function subscribeToPriceStream() {
-      let existing = _priceSubscriptionDisposable
+      const existing = _priceSubscriptionDisposable
       if (existing) {
         existing.dispose()
       }
       _priceSubscriptionDisposable.add(
-        _serviceClient.createStreamOperation('getPriceStream', 'EURUSD')
-          .subscribe(price => {
-            _receivedPrices.push(price)
+        serviceClient.createStreamOperation('getPriceStream', 'EURUSD')
+          .subscribe((price) => {
+            receivedPrices.push(price)
           },
-                     err => _receivedErrors.push(err),
-                     () => _onCompleteCount++,
+            err => receivedErrors.push(err),
+            () => onCompleteCount++,
           ),
       )
     }
@@ -177,22 +176,22 @@ describe('ServiceClient', () => {
     }
 
     function pushPrice(serviceId, price) {
-      let replyToTopic = _stubAutobahnProxy.session.getTopic(serviceId + '.getPriceStream').dto.replyTo
-      _stubAutobahnProxy.session.getTopic(replyToTopic).onResults(price)
+      const replyToTopic = stubAutobahnProxy.session.getTopic(serviceId + '.getPriceStream').dto.replyTo
+      stubAutobahnProxy.session.getTopic(replyToTopic).onResults(price)
     }
   })
 
   describe('createRequestResponseOperation()', () => {
-    let _responses,
-      _receivedErrors,
-      _onCompleteCount,
-      _requestSubscriptionDisposable
+    let responses
+    let receivedErrors
+    let onCompleteCount
+    let requestSubscriptionDisposable
 
     beforeEach(() => {
-      _responses = []
-      _receivedErrors = []
-      _onCompleteCount = 0
-      _requestSubscriptionDisposable = new Subscription()
+      responses = []
+      receivedErrors = []
+      onCompleteCount = 0
+      requestSubscriptionDisposable = new Subscription()
     })
 
     test('successfully sends request and receives response when connection is up', () => {
@@ -200,8 +199,8 @@ describe('ServiceClient', () => {
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
       sendRequest('RequestPayload', false)
       pushSuccessfulResponse('myServiceType.1', 'ResponsePayload')
-      expect(_responses.length).toEqual(1)
-      expect(_responses[0]).toEqual('ResponsePayload')
+      expect(responses.length).toEqual(1)
+      expect(responses[0]).toEqual('ResponsePayload')
     })
 
     test('successfully completes after response received', () => {
@@ -209,7 +208,7 @@ describe('ServiceClient', () => {
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
       sendRequest('RequestPayload', false)
       pushSuccessfulResponse('myServiceType.1', 'ResponsePayload')
-      expect(_onCompleteCount).toEqual(1)
+      expect(onCompleteCount).toEqual(1)
     })
 
 
@@ -219,78 +218,78 @@ describe('ServiceClient', () => {
       pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
       sendRequest('RequestPayload', false)
       pushErrorResponse('myServiceType.1', error)
-      expect(_receivedErrors.length).toEqual(1)
-      expect(_receivedErrors[0]).toEqual(error)
+      expect(receivedErrors.length).toEqual(1)
+      expect(receivedErrors[0]).toEqual(error)
     })
 
     describe('waitForSuitableService is true', () => {
       test('waits for service before sending request when connection is down', () => {
         sendRequest('RequestPayload', true)
-        expect(_receivedErrors.length).toEqual(0)
+        expect(receivedErrors.length).toEqual(0)
         connect()
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
         pushSuccessfulResponse('myServiceType.1', 'ResponsePayload')
-        expect(_responses.length).toEqual(1)
-        expect(_responses[0]).toEqual('ResponsePayload')
+        expect(responses.length).toEqual(1)
+        expect(responses[0]).toEqual('ResponsePayload')
       })
 
       test('waits for service before sending request when connection is up but services are down', () => {
         connect()
         sendRequest('RequestPayload', true)
-        expect(_receivedErrors.length).toEqual(0)
+        expect(receivedErrors.length).toEqual(0)
         pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
         pushSuccessfulResponse('myServiceType.1', 'ResponsePayload')
-        expect(_responses.length).toEqual(1)
-        expect(_responses[0]).toEqual('ResponsePayload')
+        expect(responses.length).toEqual(1)
+        expect(responses[0]).toEqual('ResponsePayload')
       })
     })
 
     describe('waitForSuitableService is false', () => {
       test('errors when connection is down', () => {
         sendRequest('RequestPayload', false)
-        expect(_receivedErrors.length).toEqual(1)
-        expect(_receivedErrors[0]).toEqual(new Error('No service available'))
+        expect(receivedErrors.length).toEqual(1)
+        expect(receivedErrors[0]).toEqual(new Error('No service available'))
       })
 
       test('errors when connection is up but service status is down', () => {
         sendRequest('RequestPayload', false)
         connect()
-        expect(_receivedErrors.length).toEqual(1)
-        expect(_receivedErrors[0]).toEqual(new Error('No service available'))
+        expect(receivedErrors.length).toEqual(1)
+        expect(receivedErrors[0]).toEqual(new Error('No service available'))
       })
     })
 
     function sendRequest(request, waitForSuitableService) {
-      _requestSubscriptionDisposable.add(
-        _serviceClient.createRequestResponseOperation('executeTrade', request, waitForSuitableService)
+      requestSubscriptionDisposable.add(
+        serviceClient.createRequestResponseOperation('executeTrade', request, waitForSuitableService)
           .subscribe(response => {
-            _responses.push(response)
+            responses.push(response)
           },
-                     err => _receivedErrors.push(err),
-                     () => _onCompleteCount++,
+            err => receivedErrors.push(err),
+            () => onCompleteCount++,
           ),
       )
     }
 
     function pushSuccessfulResponse(serviceId, response) {
-      let stubCallResult = _stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade')
+      const stubCallResult = stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade')
       stubCallResult.onSuccess(response)
     }
 
     function pushErrorResponse(serviceId, err) {
-      let stubCallResult = _stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade')
+      const stubCallResult = stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade')
       stubCallResult.onReject(err)
     }
   })
 
   function connect() {
-    _connection.connect()
-    _serviceClient.connect()
-    _stubAutobahnProxy.setIsConnected(true)
+    connection.connect()
+    serviceClient.connect()
+    stubAutobahnProxy.setIsConnected(true)
   }
 
   function pushServiceHeartbeat(serviceType, serviceId, instanceLoad = 0) {
-    _stubAutobahnProxy.session.getTopic('status').onResults({
+    stubAutobahnProxy.session.getTopic('status').onResults({
       Type: serviceType,
       Instance: serviceId,
       TimeStamp: '',
@@ -299,14 +298,14 @@ describe('ServiceClient', () => {
   }
 
   function assertExpectedStatusUpdate(expectedCount, lastStatusExpectedIsConnectedStatus) {
-    expect(_receivedServiceStatusStream.length).toEqual(expectedCount)
+    expect(receivedServiceStatusStream.length).toEqual(expectedCount)
     if (expectedCount > 0) {
-      expect(_receivedServiceStatusStream[expectedCount - 1].isConnected).toEqual(lastStatusExpectedIsConnectedStatus)
+      expect(receivedServiceStatusStream[expectedCount - 1].isConnected).toEqual(lastStatusExpectedIsConnectedStatus)
     }
   }
 
   function assertServiceInstanceStatus(statusUpdateIndex, serviceId, expectedIsConnectedStatus) {
-    let serviceStatus = _receivedServiceStatusStream[statusUpdateIndex]
+    const serviceStatus = receivedServiceStatusStream[statusUpdateIndex]
     expect(serviceStatus).toBeDefined()
   }
 })

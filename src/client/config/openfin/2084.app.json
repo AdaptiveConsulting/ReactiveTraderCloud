@@ -1,3 +1,4 @@
+
 {
     "devtools_port": 9090,
     "splashScreenImage": "https://web-2084.adaptivecluster.com/images/splash-screen.jpg",
@@ -17,7 +18,9 @@
     },
     "runtime": {
         "arguments": "--force-device-scale-factor=1",
-        "version": "7.53.23.23"
+        "version": "7.53.23.23",
+        "futureVersion": "7.53.23.23",
+        "forceLatest": true
     },
     "shortcut": {
         "company": "Adaptive Consulting",

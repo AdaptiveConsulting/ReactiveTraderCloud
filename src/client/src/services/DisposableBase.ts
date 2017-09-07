@@ -1,17 +1,17 @@
 import { Subscription } from 'rxjs/Rx'
 
 export default class DisposableBase {
-  _disposables: any
+  disposables: any
   constructor() {
-    this._disposables = new Subscription()
+    this.disposables = new Subscription()
   }
   get isDisposed() {
-    return this._disposables.isDisposed
+    return this.disposables.isDisposed
   }
   addDisposable (disposable) {
-    this._disposables.add(disposable)
+    this.disposables.add(disposable)
   }
   dispose () {
-    this._disposables.dispose()
+    this.disposables.dispose()
   }
 }

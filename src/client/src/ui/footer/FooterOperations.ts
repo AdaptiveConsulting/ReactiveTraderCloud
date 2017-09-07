@@ -16,6 +16,8 @@ export const footerEpic = openFin => (action$) => {
     .map(action => openLinks(openFin))
 }
 
-export default handleActions({
-  [ACTION_TYPES.TOGGLE_STATUS_SERVICES]: state => !state,
-}, INITIAL_STATE)
+export default handleActions(
+  {
+    [ACTION_TYPES.TOGGLE_STATUS_SERVICES]: state => !state,
+  },
+  INITIAL_STATE)

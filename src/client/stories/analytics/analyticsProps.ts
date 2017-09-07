@@ -4,7 +4,7 @@ import { positionsChartModelData } from './positionsChartModel'
 const analyticsProps = {
   isConnected: true,
   pnlChartModel: pnlChartModelData,
-  positionsChartModel: positionsChartModelData
+  positionsChartModel: positionsChartModelData,
 }
 
 // convert stringified dates to date format

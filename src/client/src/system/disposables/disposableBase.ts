@@ -1,24 +1,23 @@
-import { Subscription } from 'rxjs/Rx';
-
+import { Subscription } from 'rxjs/Rx'
 
 export default class DisposableBase {
-  _disposables
+  disposables
   constructor() {
-    this._disposables = new Subscription();
+    this.disposables = new Subscription()
   }
 
   get isDisposed() {
-    return this._disposables.isDisposed;
+    return this.disposables.isDisposed
   }
 
   addDisposable(disposable) {
     // esp-js is expecting a dispose method
-    let prevProto = Object.getPrototypeOf(disposable);
-    prevProto.dispose = prevProto.unsubscribe;
-    this._disposables.add(disposable);
+    const prevProto = Object.getPrototypeOf(disposable)
+    prevProto.dispose = prevProto.unsubscribe
+    this.disposables.add(disposable)
   }
 
   dispose() {
-    this._disposables.unsubscribe();
+    this.disposables.unsubscribe()
   }
 }

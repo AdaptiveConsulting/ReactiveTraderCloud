@@ -14,10 +14,10 @@ import LastValueObservableDictionary from './lastValueObservableDictionary'
 function debounceOnMissedHeartbeat<TValue>(this: Observable<TValue>, dueTime, onDebounceItemFactory, scheduler) {
   return Observable.create((o) => {
     return this.subscribe((innerSource: any) => {
-        const key = innerSource.key
-        const debouncedStream = innerSource.debounceWithSelector(dueTime, () => onDebounceItemFactory(key), scheduler)
-        o.next(debouncedStream)
-      },
+      const key = innerSource.key
+      const debouncedStream = innerSource.debounceWithSelector(dueTime, () => onDebounceItemFactory(key), scheduler)
+      o.next(debouncedStream)
+    },
       ex => o.error(ex),
       () => o.complete(),
     )
@@ -35,14 +35,14 @@ Observable.prototype['debounceOnMissedHeartbeat'] = debounceOnMissedHeartbeat
  */
 function toServiceStatusObservableDictionary<TValue>(this: Observable<TValue>, keySelector) {
   const sources = <any>this
-  return Observable.create(o => {
+  return Observable.create((o) => {
     const dictionary = new LastValueObservableDictionary()
     const disposables = new Subscription()
     disposables.add(
       sources.subscribe(
-        innerSource => {
+        (innerSource) => {
           disposables.add(innerSource.subscribe(
-            value => {
+            (value) => {
               const key = keySelector(value)
               if (!dictionary.hasKey(key)) {
                 dictionary.add(key, new LastValueObservable(innerSource, value))
@@ -51,7 +51,7 @@ function toServiceStatusObservableDictionary<TValue>(this: Observable<TValue>, k
               }
               o.next(dictionary) // note: not creating a copy of local state, something we could do
             },
-            ex => {
+            (ex) => {
               try {
                 o.error(ex)
               } catch (err1) {}
@@ -108,10 +108,10 @@ Observable.prototype['getServiceWithMinLoad'] = getServiceWithMinLoad
 function distinctUntilChangedGroup<TValue>(this: Observable<TValue>, comparisonFn) {
   return Observable.create((o) => {
     return this.subscribe((innerSource: any) => {
-        const distinctStream = innerSource.distinctUntilChanged(comparisonFn)
-        o.next(distinctStream)
-      },
-      (ex) => o.error(ex),
+      const distinctStream = innerSource.distinctUntilChanged(comparisonFn)
+      o.next(distinctStream)
+    },
+      ex => o.error(ex),
       () => o.complete(),
     )
   })
@@ -127,39 +127,39 @@ Observable.prototype['distinctUntilChangedGroup'] = distinctUntilChangedGroup
  * @returns {Observable}
  */
 function debounceWithSelector<TValue>(this: Observable<TValue>, dueTime, itemSelector, scheduler) {
-  return Observable.create(o => {
-    let disposables = new Subscription();
-    let debounceDisposable = new SerialSubscription();
-    disposables.add(debounceDisposable);
-    let debounce = () => {
+  return Observable.create((o) => {
+    const disposables = new Subscription()
+    const debounceDisposable = new SerialSubscription()
+    disposables.add(debounceDisposable)
+    const debounce = () => {
       debounceDisposable.add(
         scheduler.schedule(
           () => {
-            let debouncedItem = itemSelector();
-            o.next(debouncedItem);
+            const debouncedItem = itemSelector()
+            o.next(debouncedItem)
           },
           dueTime,
           '',
-        )
-      );
-    };
+        ),
+      )
+    }
     disposables.add(
       this.subscribe(
-        item => {
-          debounce();
-          o.next(item);
+        (item) => {
+          debounce()
+          o.next(item)
         },
-        ex => {
+        (ex) => {
           try {
-            o.error(ex);
+            o.error(ex)
           } catch (err1) {
           }
         },
-        () => o.complete()
-      )
-    );
-    debounce();
-    return disposables;
-  });
+        () => o.complete(),
+      ),
+    )
+    debounce()
+    return disposables
+  })
 }
 Observable.prototype['debounceWithSelector'] = debounceWithSelector

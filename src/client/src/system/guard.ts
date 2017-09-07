@@ -67,7 +67,7 @@ export default class Guard {
 }
 
 function isString(value: any) {
-  return typeof value == 'string' || value instanceof String
+  return typeof value === 'string' || value instanceof String
 }
 
 

@@ -2,25 +2,22 @@ import ServiceClient from './serviceClient'
 import { DisposableBase } from '../disposables'
 
 export default class ServiceBase extends DisposableBase {
-  _serviceClient
-  _schedulerService
+  serviceClient
 
-  constructor(serviceType, connection, schedulerService) {
+  constructor(serviceType, connection) {
     super()
 
-    this._serviceClient = new ServiceClient(
+    this.serviceClient = new ServiceClient(
       serviceType,
       connection,
-      schedulerService,
     )
-    this._schedulerService = schedulerService
   }
 
   get serviceStatusStream() {
-    return this._serviceClient.serviceStatusStream
+    return this.serviceClient.serviceStatusStream
   }
 
   connect() {
-    this._serviceClient.connect()
+    this.serviceClient.connect()
   }
 }

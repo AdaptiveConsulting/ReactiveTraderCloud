@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
 import { time } from 'd3'
-import numeral from 'numeral'
+import * as numeral from 'numeral'
 
 import { PnlChartModelOptions } from '../PNLChart'
 
@@ -29,10 +29,10 @@ export const getPnlChartModel = (history) => {
     ...getPnlPositions(history),
     options: {
       xAxis: {
-        tickFormat: (d) => time.format('%X')(new Date(d)),
+        tickFormat: d => time.format('%X')(new Date(d)),
       },
       yAxis: {
-        tickFormat: (d) => numeral(d).format('0.0a'),
+        tickFormat: d => numeral(d).format('0.0a'),
       },
       showYAxis: true,
       showXAxis: true,
@@ -56,20 +56,20 @@ const getLimit = (values: Array<number>, callback) => {
 export const getPnlPositions = (positions = []) => {
 
   const allPricePoints: Array<number> = positions
-    .filter((item) => !_.isNull(item.usdPnl))
-    .map((item) => item.usdPnl.toFixed(2))
+    .filter(item => !_.isNull(item.usdPnl))
+    .map(item => item.usdPnl.toFixed(2))
 
   const seriesData: Array<PricePoint> = positions
-    .filter((item) => !_.isNull(item.usdPnl))
-    .map((item) => ({ x: new Date(item.timestamp), y: item.usdPnl.toFixed(2) }))
+    .filter(item => !_.isNull(item.usdPnl))
+    .map(item => ({ x: new Date(item.timestamp), y: item.usdPnl.toFixed(2) }))
 
   const lastPosition = _.last(positions)
   if (lastPosition) {
     return {
+      seriesData,
       lastPos: lastPosition.usdPnl.toFixed(2),
       minPnl: getLimit(allPricePoints, Math.min),
       maxPnl: getLimit(allPricePoints, Math.max),
-      seriesData,
     }
   }
   return DEFAULT_PNL

@@ -2,27 +2,27 @@ import { Subscription } from 'rxjs/Rx'
 import { TeardownLogic } from 'rxjs/src/Subscription'
 
 /**
- * SerialSubscription for rxjs 5. Do not use
+ * SerialSubscription for rxjs 5. Only for use with not yet refactored legacy SerialDisposable
  */
 export class SerialSubscription extends Subscription {
-  _currentSubscription
+  currentSubscription: Subscription | null
   constructor() {
-    super();
-    this._currentSubscription = Subscription.EMPTY;
+    super()
+    this.currentSubscription = Subscription.EMPTY
   }
 
   add(teardownSrc: TeardownLogic): Subscription {
     let teardown: any = teardownSrc
-    if (this.closed) return this;
-    if (typeof(teardownSrc) === 'function') teardown = new Subscription(teardown);
+    if (this.closed) return this
+    if (typeof(teardownSrc) === 'function') teardown = new Subscription(teardown)
 
-    if (this._currentSubscription) {
-      this.remove(this._currentSubscription);
-      this._currentSubscription.unsubscribe();
-      this._currentSubscription = null;
+    if (this.currentSubscription) {
+      this.remove(this.currentSubscription)
+      this.currentSubscription.unsubscribe()
+      this.currentSubscription = null
     }
 
-    super.add(this._currentSubscription = teardown);
-    return this;
+    super.add(this.currentSubscription = teardown)
+    return this
   }
 }

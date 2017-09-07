@@ -32,7 +32,7 @@ const changeRegionTearOffStatus = (state, payload, status) => {
   const cleanState = _.omit(state, [regionId])
   return {
     ...region,
-    ...cleanState
+    ...cleanState,
   }
 }
 

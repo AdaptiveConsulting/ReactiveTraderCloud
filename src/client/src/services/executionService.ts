@@ -9,39 +9,38 @@ const log = logger.create('ExecutionService')
 export default class ExecutionService extends ServiceBase {
   static EXECUTION_CLIENT_TIMEOUT_MS  =  2000
   static EXECUTION_REQUEST_TIMEOUT_MS = 30000
-  _openFin: any
-  _tradeMapper: any
+  openFin: any
+  tradeMapper: any
   constructor(serviceType,
               connection,
-              schedulerService,
               referenceDataService,
               openFin) {
-    super(serviceType, connection, schedulerService)
-    this._openFin = openFin
-    this._tradeMapper = new TradeMapper(referenceDataService)
+    super(serviceType, connection)
+    this.openFin = openFin
+    this.tradeMapper = new TradeMapper(referenceDataService)
   }
 
   executeTrade(executeTradeRequest) {
     return Observable.create(
-      o => {
+      (o) => {
         log.info('executing: ', executeTradeRequest)
         const disposables = new Subscription()
 
         disposables.add(
-          this._openFin
+          this.openFin
             .checkLimit(executeTradeRequest.SpotRate, executeTradeRequest.Notional, executeTradeRequest.CurrencyPair)
             .take(1)
-            .subscribe(limitCheckResult => {
+            .subscribe((limitCheckResult) => {
               if (limitCheckResult) {
-                let request = this._serviceClient
+                const request = this.serviceClient
                   .createRequestResponseOperation('executeTrade', executeTradeRequest)
                   .publish()
                   .refCount()
                 disposables.add(
                   Observable.merge(
                     request
-                      .map(dto => {
-                        const trade = this._tradeMapper.mapFromTradeDto(dto.Trade)
+                      .map((dto) => {
+                        const trade = this.tradeMapper.mapFromTradeDto(dto.Trade)
                         log.info(`execute response received for: ${executeTradeRequest}. Status: ${trade.status}`, dto)
                         return createExecuteTradeResponse(trade)
                       })
@@ -51,16 +50,15 @@ export default class ExecutionService extends ServiceBase {
                     Observable.timer(ExecutionService.EXECUTION_CLIENT_TIMEOUT_MS)
                       .map(() => createExecuteTradeResponseForError('Trade execution timeout exceeded', executeTradeRequest))
                       .takeUntil(request))
-                    .subscribe(o)
+                    .subscribe(o),
                 )
-              }
-              else {
+              } else {
                 o.next(createExecuteTradeResponseForError('Credit limit exceeded', executeTradeRequest))
               }
-            })
+            }),
         )
         return disposables
-      }
+      },
     )
   }
 }
