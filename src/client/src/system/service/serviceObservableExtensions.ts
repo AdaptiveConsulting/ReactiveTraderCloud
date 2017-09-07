@@ -1,4 +1,5 @@
 import { Observable, Subscription } from 'rxjs/Rx'
+import { SerialSubscription } from '../../serialSubscription'
 import * as _ from 'lodash'
 import LastValueObservable from './lastValueObservable'
 import LastValueObservableDictionary from './lastValueObservableDictionary'
@@ -11,12 +12,11 @@ import LastValueObservableDictionary from './lastValueObservableDictionary'
  * @returns {Logger|Object}
  */
 function debounceOnMissedHeartbeat<TValue>(this: Observable<TValue>, dueTime, onDebounceItemFactory, scheduler) {
-  const sources: Observable<TValue> = this
   return Observable.create((o) => {
-    return sources.subscribe((innerSource: any) => {
+    return this.subscribe((innerSource: any) => {
         const key = innerSource.key
-        const connectionTimeoutStream = innerSource.timeout(dueTime, scheduler.schedule(() =>  { o.next(Observable.of(onDebounceItemFactory(key))) }))
-        o.next(connectionTimeoutStream)
+        const debouncedStream = innerSource.debounceWithSelector(dueTime, () => onDebounceItemFactory(key), scheduler)
+        o.next(debouncedStream)
       },
       ex => o.error(ex),
       () => o.complete(),
@@ -74,12 +74,11 @@ Observable.prototype['toServiceStatusObservableDictionary'] = toServiceStatusObs
  * @returns {Observable}
  */
 function getServiceWithMinLoad<TValue>(this: Observable<TValue>, waitForServiceIfNoneAvailable = true) {
-  const source = this
-  return Observable.create(o => {
+  return Observable.create((o) => {
     const disposables = new Subscription()
     let findServiceInstanceDisposable = new Subscription()
     disposables.add(findServiceInstanceDisposable)
-    findServiceInstanceDisposable = source.subscribe(
+    findServiceInstanceDisposable = this.subscribe(
       (dictionary: any) => {
         const serviceWithLeastLoad = _(dictionary.values)
           .sortBy(i => i.latestValue.serviceLoad)
@@ -94,9 +93,9 @@ function getServiceWithMinLoad<TValue>(this: Observable<TValue>, waitForServiceI
           o.error(new Error('No service available'))
         }
       },
-      ex => {
+      (ex) => {
         o.error(ex)
-      }
+      },
     )
     return disposables
   })
@@ -107,15 +106,60 @@ Observable.prototype['getServiceWithMinLoad'] = getServiceWithMinLoad
  * Adds distinctUntilChanged semantics to inner streams of a grouped observable
  */
 function distinctUntilChangedGroup<TValue>(this: Observable<TValue>, keySelector) {
-  const sources = this
-  return Observable.create(o => {
-    return sources.subscribe((innerSource: any) => {
-        var distinctStream = innerSource.distinctUntilChanged(value => keySelector(value))
+  return Observable.create((o) => {
+    return this.subscribe((innerSource: any) => {
+        const distinctStream = innerSource.distinctUntilChanged(value => keySelector(value))
         o.next(distinctStream)
       },
-      ex => o.error(ex),
-      () => o.complete()
+      (ex) => o.error(ex),
+      () => o.complete(),
     )
   })
 }
 Observable.prototype['distinctUntilChangedGroup'] = distinctUntilChangedGroup
+
+/**
+ * Emits an item from the source Observable after a particular timespan has passed without the Observable omitting any other items.
+ * The onTimeoutItemSelector selector is used to select the item to procure.
+ * @param dueTime
+ * @param itemSelector
+ * @param scheduler
+ * @returns {Observable}
+ */
+function debounceWithSelector<TValue>(this: Observable<TValue>, dueTime, itemSelector, scheduler) {
+  return Observable.create(o => {
+    let disposables = new Subscription();
+    let debounceDisposable = new SerialSubscription();
+    disposables.add(debounceDisposable);
+    let debounce = () => {
+      debounceDisposable.add(
+        scheduler.schedule(
+          () => {
+            let debouncedItem = itemSelector();
+            o.next(debouncedItem);
+          },
+          dueTime,
+          '',
+        )
+      );
+    };
+    disposables.add(
+      this.subscribe(
+        item => {
+          debounce();
+          o.next(item);
+        },
+        ex => {
+          try {
+            o.error(ex);
+          } catch (err1) {
+          }
+        },
+        () => o.complete()
+      )
+    );
+    debounce();
+    return disposables;
+  });
+}
+Observable.prototype['debounceWithSelector'] = debounceWithSelector

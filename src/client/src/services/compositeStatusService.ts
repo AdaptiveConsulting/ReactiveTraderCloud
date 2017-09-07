@@ -106,9 +106,6 @@ export default class CompositeStatusService extends DisposableBase {
   }
 }
 
-
-
-// it was in models but types is not the right place for such complex...thing
 /**
  * A data structure that can be used to look up the current statuses of well known services.
  */

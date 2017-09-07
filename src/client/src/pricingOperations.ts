@@ -33,7 +33,7 @@ export const pricingServiceEpic = (pricingService$) => {
     return pricingStream$(action$)
       .mergeMap((symbols: Array<string>) => {
         return Observable.from(symbols)
-          .mergeMap(symbol => pricingService$.getSpotPriceStream({symbol})
+          .mergeMap(symbol => pricingService$.getSpotPriceStream({ symbol })
             .debounce(() => Observable.interval(PRICE_STALE_AFTER_X_IN_MS))
             .map(stalePricing))
       })

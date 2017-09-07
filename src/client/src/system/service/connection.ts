@@ -7,6 +7,8 @@ import logger from '../logger'
 import SchedulerService from '../schedulerService'
 import AutobahnConnectionProxy from './autobahnConnectionProxy'
 import { Error } from 'autobahn'
+import { SerialSubscription } from '../../serialSubscription'
+
 
 const _log = logger.create('Connection')
 
@@ -20,7 +22,7 @@ export default class Connection extends DisposableBase {
   _serviceStatusSubject: BehaviorSubject<any>
   _connectCalled: boolean
   _schedulerService: SchedulerService
-  _autoDisconnectDisposable: Subscription
+  _autoDisconnectDisposable: SerialSubscription
   _connectionType: any
   _connectionUrl: string
   _connectionTypeMapper: ConnectionTypeMapper
@@ -39,7 +41,7 @@ export default class Connection extends DisposableBase {
     this._connectCalled = false
     this._isConnected = false
     this._schedulerService = schedulerService
-    this._autoDisconnectDisposable = new Subscription()
+    this._autoDisconnectDisposable = new SerialSubscription()
     this._connectionUrl = ''
     this._connectionType = ConnectionType.Unknown
     this.addDisposable(this._autoDisconnectDisposable)

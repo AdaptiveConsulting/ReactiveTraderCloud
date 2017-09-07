@@ -1,4 +1,4 @@
-interface ShouldRetryResult {
+export interface ShouldRetryResult {
   shouldRetry: boolean
   retryAfterMilliseconds: number
 }

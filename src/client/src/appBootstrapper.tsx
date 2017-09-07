@@ -86,8 +86,8 @@ class AppBootstrapper {
     this._blotterService.connect()
     this._executionService.connect()
     this._analyticsService.connect()
-    this._compositeStatusService.start()
     this._referenceDataService.connect()
+    this._compositeStatusService.start()
     // and finally the underlying connection
     this._connection.connect()
   }
