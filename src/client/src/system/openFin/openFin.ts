@@ -29,15 +29,15 @@ export default class OpenFin {
     return typeof fin !== 'undefined'
   }
 
-  close(currentWindow = this._currentWindow) {
+  close(currentWindow = this.currentWindow) {
     currentWindow.close(true, () => log.info('Window closed with success.'), err => log.error('Failed to close window.', err))
   }
 
-  minimize(currentWindow = this._currentWindow) {
+  minimize(currentWindow = this.currentWindow) {
     currentWindow.minimize(() => log.info('Window minimized with success.'), err => log.error('Failed to minimize window.', err))
   }
 
-  maximize(currentWindow = this._currentWindow) {
+  maximize(currentWindow = this.currentWindow) {
     currentWindow.getState((state) => {
       switch (state){
         case 'maximized':
@@ -54,7 +54,7 @@ export default class OpenFin {
     })
   }
 
-  bringToFront(currentWindow = this._currentWindow) {
+  bringToFront(currentWindow = this.currentWindow) {
     currentWindow.getState((state) => {
       if (state === 'minimized') {
         currentWindow.restore(() => currentWindow.bringToFront(
@@ -118,7 +118,7 @@ export default class OpenFin {
     })
   }
 
-  get _currentWindow() {
+  get currentWindow() {
     return fin.desktop.Window.getCurrent()
   }
 

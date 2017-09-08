@@ -25,6 +25,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
   }
 
   openPopout({ url, title, onClosing, windowOptions = { height: 400, width: 400, dockable: false } }, view) {
+    const openFin = this.openFin
     this.createWindow({ url, title, windowOptions }, (tearoutWindow) => {
       const popoutContainer = tearoutWindow.contentWindow.document.createElement('div')
       const onBoundsChanging = _.throttle(() => tearoutWindow.setAsForeground(), 300)
@@ -38,13 +39,12 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
         }
         tearoutWindow.removeEventListener(BOUNDS_CHANGING_EVENT, onBoundsChanging)
         tearoutWindow.removeEventListener(CLOSE_REQUESTED_EVENT, onCloseRequested)
-        this.openFin.close(tearoutWindow)
+        openFin.close(tearoutWindow)
       }
       popoutContainer.id = this.popoutContainerId
       tearoutWindow.contentWindow.document.body.appendChild(popoutContainer)
       ReactDOM.render(
-          <OpenFinChrome showHeaderBar={false}
-            close={onCloseRequested}>
+        <OpenFinChrome showHeaderBar={false} close={onCloseRequested}>
             {view}
           </OpenFinChrome>,
           popoutContainer)
