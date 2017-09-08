@@ -38,7 +38,7 @@ export interface SpotTileProps {
   pricingConnected: boolean
   title: string
   executeTrade: (direction: any) => void
-  onComponentMount: (id: string) => void
+  onComponentMount: any
   onPopoutClick: () => void
   undockTile: () => void
   displayCurrencyChart: () => void
