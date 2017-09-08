@@ -178,7 +178,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         <PriceButton
           className="spot-tile__price spot-tile__price--bid"
           direction={Direction.Sell}
-          onExecute={() => !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Sell, this.props.currencyPair.symbol, this.props.currentSpotPrice.bid, this.props.notional, this.props.currencyPair.base, this.props))}
+          onExecute={() => this.props.executionConnected && !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Sell, this.props.currencyPair.symbol, this.props.currentSpotPrice.bid, this.props.notional, this.props.currencyPair.base, this.props))}
           rate={currentSpotPrice.bid}/>
         <div className="spot-tile__price-movement">
           <PriceMovementIndicator
@@ -188,7 +188,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         <PriceButton
           className="spot-tile__price spot-tile__price--ask"
           direction={Direction.Buy}
-          onExecute={() => !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Buy, this.props.currencyPair.symbol, this.props.currentSpotPrice.ask, this.props.notional, this.props.currencyPair.base, this.props))}
+          onExecute={() => this.props.executionConnected && !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Buy, this.props.currencyPair.symbol, this.props.currentSpotPrice.ask, this.props.notional, this.props.currencyPair.base, this.props))}
           rate={currentSpotPrice.ask}/>
       </div>
     )

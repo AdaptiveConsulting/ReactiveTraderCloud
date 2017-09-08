@@ -2,17 +2,16 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 import { addRegion, openWindow } from '../../regions/regionsOperations'
-import SpotTile from './SpotTile';
+import SpotTile from './SpotTile'
 import {
   dismissNotification,
   displayCurrencyChart,
   executeTrade,
   spotRegionSettings,
-  undockTile
-} from './spotTileOperations';
-import { CurrencyPair } from '../../types/currencyPair';
-import Environment from '../../system/environment';
-import { Direction } from '../../types/direction';
+  undockTile,
+} from './spotTileOperations'
+import { CurrencyPair, Direction } from '../../types/'
+import Environment from '../../system/environment'
 
 interface SpotTileContainerOwnProps {
   id: string
@@ -20,6 +19,7 @@ interface SpotTileContainerOwnProps {
 
 interface SpotTileContainerStateProps {
   isConnected: boolean
+  executionConnected: boolean
   canPopout: boolean
   referenceService: any
   spotTiles: any
@@ -42,7 +42,7 @@ const NOTIONAL = 1000000
 class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
 
   static contextTypes = {
-    openFin: React.PropTypes.object
+    openFin: React.PropTypes.object,
   }
 
   render() {
@@ -58,7 +58,7 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
       canPopout: Environment.isRunningInIE(),
       currencyChartIsOpening: spotData.currencyChartIsOpening,
       currentSpotPrice: spotData,
-      executionConnected: true,
+      executionConnected: this.props.executionConnected,
       hasNotification: !!spotData.notification,
       isTradable: true, // or false if prace is stale
       isRunningInOpenFin: !!openFin,
@@ -110,13 +110,15 @@ const mapDispatchToProps = (dispatch) => {
       return () => {
         dispatch(dismissNotification({ symbol }))
       }
-    }
+    },
   }
 }
 
 function mapStateToProps({ referenceService, compositeStatusService, displayAnalytics, spotTiles, notionals }) {
+  const executionConnected = compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected || false
+
   const isConnected = compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected || false
-  return { referenceService, isConnected, displayAnalytics, spotTiles, notionals }
+  return { referenceService, isConnected, executionConnected, displayAnalytics, spotTiles, notionals }
 }
 
 const ConnectedSpotTileContainer = connect(mapStateToProps, mapDispatchToProps)(SpotTileContainer)
@@ -124,7 +126,7 @@ const spotTileRegion = (id) => ({
   id,
   isTearedOff: false,
   container: connect((state) => ({ id }))(ConnectedSpotTileContainer),
-  settings: spotRegionSettings(id)
+  settings: spotRegionSettings(id),
 })
 
 export default ConnectedSpotTileContainer
