@@ -11,12 +11,7 @@ interface WorkspaceContainerOwnProps {
 }
 
 interface WorkspaceContainerStateProps {
-  children: any
-  referenceService: any
   spotTiles: any
-  isConnected: boolean
-  compositeStatusService: any
-  notionals: any
 }
 
 interface WorkspaceContainerDispatchProps {
@@ -41,7 +36,7 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
   }
 
   renderItems(items) {
-    
+
     if (!items.length) {
       return <div className="workspace-region__icon--loading"><i className="fa fa-5x fa-cog fa-spin"/></div>
     }
@@ -57,10 +52,8 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
   }
 }
 
-function mapStateToProps({ spotTiles, compositeStatusService, referenceService, notionals }) {
-  const isConnected = compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected || false
-
-  return { spotTiles, isConnected, referenceService, notionals }
+function mapStateToProps({ spotTiles }) {
+  return { spotTiles }
 }
 
 export default connect(mapStateToProps)(WorkspaceContainer)
