@@ -7,7 +7,7 @@ exports[`TradeNotification renders correct markup for all statuses 1`] = `
   <span
     className="trade-notification__trade-status"
   >
-    Rejected
+    rejected
   </span>
   <ul
     className="trade-notification__summary-items"
@@ -100,7 +100,7 @@ exports[`TradeNotification renders correct markup for all statuses 2`] = `
   <span
     className="trade-notification__trade-status"
   >
-    Done
+    done
   </span>
   <ul
     className="trade-notification__summary-items"
@@ -193,7 +193,7 @@ exports[`TradeNotification renders correct markup for all statuses 3`] = `
   <span
     className="trade-notification__trade-status"
   >
-    Pending
+    pending
   </span>
   <ul
     className="trade-notification__summary-items"

@@ -105,13 +105,13 @@ describe('ServiceClient', () => {
     let receivedPrices
     let receivedErrors
     let onCompleteCount
-      _priceSubscriptionDisposable
+    let priceSubscriptionDisposable
 
     beforeEach(() => {
       receivedPrices = []
       receivedErrors = []
       onCompleteCount = 0
-      _priceSubscriptionDisposable = new Subscription()
+      priceSubscriptionDisposable = new Subscription()
       subscribeToPriceStream()
     })
 
@@ -154,11 +154,11 @@ describe('ServiceClient', () => {
     })
 
     function subscribeToPriceStream() {
-      const existing = _priceSubscriptionDisposable
+      const existing = priceSubscriptionDisposable
       if (existing) {
-        existing.dispose()
+        existing.unsubscribe()
       }
-      _priceSubscriptionDisposable.add(
+      priceSubscriptionDisposable.add(
         serviceClient.createStreamOperation('getPriceStream', 'EURUSD')
           .subscribe((price) => {
             receivedPrices.push(price)

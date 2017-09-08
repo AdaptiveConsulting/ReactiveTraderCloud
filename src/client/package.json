@@ -31,6 +31,7 @@
     "dev": "webpack-dev-server --progress --debug --config webpack.config.js",
     "test": "jest --watch",
     "test:dev": "npm test -- --watch",
+    "test-inspect": "node inspect ./node_modules/jest/bin/jest.js --runInBand --no-cache",
     "deploy": "webpack --display-error-details",
     "deploy:prod": "set NODE_ENV=production&&webpack",
     "openfin": "openfin -c config/openfin/local.app.json -l",

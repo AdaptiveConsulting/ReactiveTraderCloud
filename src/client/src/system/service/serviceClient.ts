@@ -200,7 +200,7 @@ export default class ServiceClient extends DisposableBase {
             disposables.add(
               this.connection.requestResponse(remoteProcedure, request, topicName)
                 .subscribe(
-                _ => {
+                () => {
                   this.log.debug(`Ack received for RPC hookup as part of stream operation [${operationName}]`)
                 },
                 err => o.error(err),

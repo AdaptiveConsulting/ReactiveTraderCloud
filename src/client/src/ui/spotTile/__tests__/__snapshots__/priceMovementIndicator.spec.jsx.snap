@@ -6,7 +6,7 @@ exports[`PriceMovementIndicator renders correct markup Down 1`] = `
     className="price-movement"
   >
     <i
-      className="price-movement__icon--up fa fa-lg"
+      className="price-movement__icon--up fa fa-lg price-movement__icon--inactive"
     />
     <span
       className="price-movement__value"
@@ -14,7 +14,7 @@ exports[`PriceMovementIndicator renders correct markup Down 1`] = `
       -1.23
     </span>
     <i
-      className="price-movement__icon--down fa fa-lg"
+      className="price-movement__icon--down fa fa-lg fa-caret-down"
     />
   </div>
 </div>
@@ -26,7 +26,7 @@ exports[`PriceMovementIndicator renders correct markup Up 1`] = `
     className="price-movement"
   >
     <i
-      className="price-movement__icon--up fa fa-lg"
+      className="price-movement__icon--up fa fa-lg fa-caret-up"
     />
     <span
       className="price-movement__value"
@@ -34,7 +34,7 @@ exports[`PriceMovementIndicator renders correct markup Up 1`] = `
       -1.23
     </span>
     <i
-      className="price-movement__icon--down fa fa-lg"
+      className="price-movement__icon--down fa fa-lg price-movement__icon--inactive"
     />
   </div>
 </div>

@@ -39,11 +39,7 @@ exports[`SpotTile renders correct markup 1`] = `
         </span>
         <PriceButton
           className="spot-tile__price spot-tile__price--bid"
-          direction={
-            Object {
-              "name": "Sell",
-            }
-          }
+          direction="Sell"
           onExecute={[Function]}
           rate={
             Object {
@@ -68,11 +64,7 @@ exports[`SpotTile renders correct markup 1`] = `
         </div>
         <PriceButton
           className="spot-tile__price spot-tile__price--ask"
-          direction={
-            Object {
-              "name": "Buy",
-            }
-          }
+          direction="Buy"
           onExecute={[Function]}
           rate={
             Object {
