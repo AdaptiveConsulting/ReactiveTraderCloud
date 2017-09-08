@@ -19,7 +19,7 @@
   "rules": {
     "semi": [
       2,
-      "always"
+      "never"
     ],
     "global-strict": 0,
     "quotes": [

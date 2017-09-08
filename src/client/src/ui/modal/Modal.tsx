@@ -1,5 +1,6 @@
 import * as React from 'react'
-import './modal.scss'
+
+import './ModalStyles.scss'
 
 export interface ModalProps {
   shouldShow?: boolean
@@ -9,7 +10,7 @@ export interface ModalProps {
 
 // TODO disable tabbing outside of the modal
 // tslint:disable-next-line:variable-name
-const Modal = (props:ModalProps) => {
+const Modal = (props: ModalProps) => {
   if (!props.shouldShow) {
     return null
   }

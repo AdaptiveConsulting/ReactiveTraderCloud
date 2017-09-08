@@ -1,5 +1,3 @@
-import CurrencyPairPosition from '../../../services/model/currencyPairPosition';
-
 export interface PositionsChartModel {
   seriesData: any[]
   options: {
@@ -23,6 +21,8 @@ export interface PositionsChartModel {
 }
 
 export const getPositionsChartModel = (data) => {
+  const baseTradedAmount = 'baseTradedAmount' // from CurrencyPairPosition
+
   return {
     seriesData: data,
     options: {
@@ -35,14 +35,14 @@ export const getPositionsChartModel = (data) => {
       showControls: false,
       width: 900,
       tooltip: {
-        enabled: false
+        enabled: false,
       },
       margin: {
         top: 0,
         right: 0,
-        bottom: 0
-      }
+        bottom: 0,
+      },
     },
-    yAxisValuePropertyName: CurrencyPairPosition.baseTradedAmountName
+    yAxisValuePropertyName: baseTradedAmount,
   }
 }

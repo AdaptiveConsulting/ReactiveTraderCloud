@@ -1,0 +1,150 @@
+@import "./variables.scss";
+
+@keyframes hideSplashScreen {
+  0% {
+    opacity: 1;
+    width: 100vw;
+    height: 100vh;
+  }
+  99% {
+    opacity: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+  100% {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+}
+
+.shell__browser_wrapper {
+  width: 100vw;
+  height: 100vh;
+}
+
+@media all and (max-width: 700px) {
+  .shell__browser_wrapper {
+    height: auto;
+  }
+}
+
+.shell__splash {
+  background: url('../common/images/logo-transparent.png'), #1f2a36;
+  background-size: 400px $splash-logo-height;
+  background-position: 50% $splash-logo-margin-top;
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  position: fixed;
+  z-index: 100;
+  animation: hideSplashScreen 1s ease-out 2s forwards;
+}
+
+.shell__splash-message {
+  text-align: center;
+  color: white;
+  position: absolute;
+  bottom: calc(100vh - #{$splash-logo-margin-top} - #{$splash-logo-height} - 50px);
+  left: 0;
+  right: 0;
+  width: 100px;
+  margin: auto;
+  font-size: 18px;
+}
+
+.shell__container {
+  background-color: $shell-background-color;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+  height: calc(100% - #{$footer-height});
+  width: 100%;
+  & * {
+    box-sizing: border-box;
+  }
+}
+
+.shell_workspace_blotter {
+  background-color: $shell-background-color;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+  & * {
+    box-sizing: border-box;
+  }
+}
+
+.shell__sidebar {
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: $analytics-height;
+  overflow-y: auto;
+  background: $panel-background-color;
+  padding: 0px;
+  display: flex;
+  flex-direction: row;
+}
+
+.shell__workspace {
+  flex-grow: 1;
+  height: $workspace-height;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: $workspace-width;
+  order: 1;
+}
+
+.shell__blotter {
+  flex-grow: 1;
+  height: $blotter-height;
+  overflow: hidden;
+  order: 2;
+}
+
+.shell__footer {
+  height: $footer-height;
+}
+
+.shell__button--reconnect {
+  min-width: 100px;
+  height: 28px;
+  margin: 20px 10px;
+}
+
+@media all and (max-width: 700px) {
+  body {
+    overflow-y: auto;
+  }
+  .shell__container {
+    height: 100%;
+    flex-direction: column;
+  }
+
+  .shell__sidebar,
+  .shell__workspace {
+    height: auto;
+    width: 100%;
+  }
+
+  .shell__sidebar,
+  .shell__workspace,
+  .shell__blotter {
+    flex: 1;
+  }
+
+  .shell__sidebar {
+    order: 2;
+  }
+  .shell__blotter {
+    min-height: 400px;
+    width: 100%;
+    order: 3;
+  }
+  .shell__side-bar {
+    display: none;
+  }
+}

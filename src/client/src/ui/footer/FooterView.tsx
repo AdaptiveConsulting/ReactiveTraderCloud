@@ -1,13 +1,12 @@
-import * as React from 'react';
-import * as _ from 'lodash';
-import * as classnames from 'classnames';
-import { StatusIndicator } from './StatusIndicator';
+import * as React from 'react'
+import * as _ from 'lodash'
+import * as classnames from 'classnames'
+import { StatusIndicator } from './StatusIndicator'
 
-import './Footer.scss';
-import ServiceStatus from '../../system/service/serviceStatus';
-import ConnectionStatus from '../../system/service/connectionStatus';
-import { Connections } from '../../redux/connectionStatus/connectionStatusOperations';
-import { ApplicationStatusConst, ConnectionType } from '../../services/model/index';
+import './FooterStyles.scss'
+import { ConnectionStatus, ServiceStatus } from '../../types/'
+import { Connections } from '../../connectionStatusOperations'
+import { ApplicationStatusConst, ConnectionType } from '../../types'
 
 export interface Services {
   pricing: ServiceStatus
@@ -27,27 +26,20 @@ interface FooterViewProps {
 }
 
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
-const OPENFIN_URL: string = 'http://openfin.co';
+const OPENFIN_URL: string = 'http://openfin.co'
 
 export const FooterView: React.SFC<FooterViewProps> = (props: FooterViewProps) => {
 
   const servicesAsList = _.values(props.compositeStatusService)
 
-  let panelClasses = classnames(
+  const panelClasses = classnames(
     'footer__service-status-panel',
     {
-      'hide': !isConnected(props.connectionStatus.connection) || !props.displayStatusServices
-    });
+      hide: !isConnected(props.connectionStatus.connection) || !props.displayStatusServices,
+    })
 
-  let openfinLogoClassName = classnames(
-    'footer__logo',
-    {
-      'footer__logo-openfin': false //TODO replace this
-    }
-  );
-  let footerClasses = classnames('footer', {
-    'footer--disconnected': !isConnected(props.connectionStatus.connection)
-  });
+  const openfinLogoClassName = classnames('footer__logo', { 'footer__logo-openfin': false })
+  const footerClasses = classnames('footer', { 'footer--disconnected': !isConnected(props.connectionStatus.connection) })
 
   const openLink = (url: string) => {
     props.isRunningInOpenFin ?  props.openFin.openLink(url) : window.open(url, '_blank')
@@ -56,20 +48,20 @@ export const FooterView: React.SFC<FooterViewProps> = (props: FooterViewProps) =
   return (
     <footer className={footerClasses}>
       <span
-        className='footer__connection-url'>{isConnected(props.connectionStatus.connection) ? `Connected to ${props.connectionStatus.url} (${props.connectionStatus.connectionType})` : 'Disconnected'} </span>
-      <span className='footer__logo-container'>
+        className="footer__connection-url">{isConnected(props.connectionStatus.connection) ? `Connected to ${props.connectionStatus.url} (${props.connectionStatus.connectionType})` : 'Disconnected'} </span>
+      <span className="footer__logo-container">
             <span className={openfinLogoClassName} onClick={() => openLink(OPENFIN_URL)}></span>
-            <span className='footer__logo footer__logo-adaptive' onClick={() => openLink(ADAPTIVE_URL)}></span>
+            <span className="footer__logo footer__logo-adaptive" onClick={() => openLink(ADAPTIVE_URL)}></span>
       </span>
-      <div className='footer__status-indicator-wrapper' onMouseOut={() => props.toggleStatusServices()}
+      <div className="footer__status-indicator-wrapper" onMouseOut={() => props.toggleStatusServices()}
            onMouseOver={() => props.toggleStatusServices()}>
         <StatusIndicator
           status={getApplicationStatus(props.connectionStatus.connection, servicesAsList, props.connectionStatus.connectionType)}/>
       </div>
       <div className={panelClasses}>
-        <ul className='footer__services'>
+        <ul className="footer__services">
           <li
-            className='footer__service'
+            className="footer__service"
             key={Math.random()}>
             {renderBroker(props.connectionStatus.connection)}
           </li>
@@ -77,16 +69,16 @@ export const FooterView: React.SFC<FooterViewProps> = (props: FooterViewProps) =
         </ul>
       </div>
     </footer>
-  );
+  )
 }
 
 const getApplicationStatus = (connection: ConnectionStatus, services, connectionType) => {
   if (connection === ConnectionStatus.connected && _.every(services, 'isConnected') && connectionType === ConnectionType.WebSocket) {
-    return ApplicationStatusConst.Healthy;
+    return ApplicationStatusConst.Healthy
   } else if (_.some(services, 'isConnected')) {
-    return ApplicationStatusConst.Warning;
+    return ApplicationStatusConst.Warning
   } else {
-    return ApplicationStatusConst.Down;
+    return ApplicationStatusConst.Down
   }
 }
 
@@ -96,32 +88,32 @@ const renderServiceStatus = (serviceStatus: ServiceStatus) => {
   const statusSpan = renderStatus(serviceStatus)
   return (
     <li
-      className='footer__service'
+      className="footer__service"
       key={Math.random()}>
       {statusSpan}
     </li>
-  );
+  )
 }
 
 const renderBroker = (connection: ConnectionStatus) => (
   isConnected(connection) &&
-  <span className='footer__service-label'><i className='footer__icon--online fa fa-circle '/>broker</span> ||
-  <span className='footer__service-label'><i className='footer__icon--offline fa fa-circle-o'/>broker</span>
+  <span className="footer__service-label"><i className="footer__icon--online fa fa-circle "/>broker</span> ||
+  <span className="footer__service-label"><i className="footer__icon--offline fa fa-circle-o"/>broker</span>
 )
 
-const renderStatus = (serviceStatus: ServiceStatus) => (
-  serviceStatus.isConnected && <span className='footer__service-label'><i
-    className='footer__icon--online fa fa-circle '/>{renderTitle(serviceStatus)}</span> ||
-  <span className='footer__service-label'><i
-    className='footer__icon--offline fa fa-circle-o'/>{serviceStatus.serviceType}</span>
+const renderStatus = serviceStatus => (
+  serviceStatus.isConnected && <span className="footer__service-label"><i
+    className="footer__icon--online fa fa-circle "/>{renderTitle(serviceStatus)}</span> ||
+  <span className="footer__service-label"><i
+    className="footer__icon--offline fa fa-circle-o"/>{serviceStatus.serviceType}</span>
 )
 
 const renderConnectedNodesText = (connectedInstanceCount: number) => (
   connectedInstanceCount === 1 && 'node' || 'nodes'
 )
 
-const renderTitle = (serviceStatus: ServiceStatus) => (
-  `${serviceStatus.serviceType} (${serviceStatus.connectedInstanceCount} ${renderConnectedNodesText(serviceStatus.connectedInstanceCount)})`
+const renderTitle = ({ serviceType, connectedInstanceCount }) => (
+  `${serviceType} (${connectedInstanceCount} ${renderConnectedNodesText(connectedInstanceCount)})`
 )
 
 

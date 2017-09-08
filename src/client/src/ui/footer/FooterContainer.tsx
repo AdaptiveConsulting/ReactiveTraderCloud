@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import FooterView, { Services } from './FooterView';
-import { bindActionCreators, Dispatch } from 'redux';
-import { toggleStatusServices } from './FooterOperations';
-import { Connections } from '../../redux/connectionStatus/connectionStatusOperations';
+import FooterView, { Services } from './FooterView'
+import { bindActionCreators, Dispatch } from 'redux'
+import { toggleStatusServices } from './FooterOperations'
+import { Connections } from '../../connectionStatusOperations'
 
 interface FooterContainerOwnProps {
 
@@ -23,6 +23,10 @@ type FooterContainerProps = FooterContainerOwnProps & FooterContainerStateProps 
 
 class FooterContainer extends React.Component<FooterContainerProps, any> {
 
+  static contextTypes = {
+    openFin: React.PropTypes.object,
+  }
+
   render() {
     return (
       <FooterView
@@ -30,16 +34,16 @@ class FooterContainer extends React.Component<FooterContainerProps, any> {
         connectionStatus={this.props.connectionStatus}
         toggleStatusServices={this.props.toggleStatusServices}
         displayStatusServices={this.props.displayStatusServices}
-        openFin={{}}
-        isRunningInOpenFin={false}
+        openFin={this.context.openFin}
+        isRunningInOpenFin={!!this.context.openFin}
       />
-    );
+    )
   }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => bindActionCreators({
-  toggleStatusServices: toggleStatusServices
-}, dispatch);
+  toggleStatusServices,
+}, dispatch)
 
 function mapStateToProps({ compositeStatusService, displayStatusServices, connectionStatus }) {
   return { compositeStatusService, displayStatusServices, connectionStatus }

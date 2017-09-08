@@ -1,28 +1,30 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash'
 
-import Trade from '../model/trade';
-import TradesUpdate from '../model/tradesUpdate';
-import ReferenceDataService from '../referenceDataService';
-import { Direction, TradeStatus } from '../model/index';
+import { Trade, Direction, TradeStatus, TradesUpdate } from '../../types/'
+import ReferenceDataService from '../referenceDataService'
 
 export default class TradeMapper {
 
-  _referenceDataService: ReferenceDataService;
+  referenceDataService: ReferenceDataService
 
   constructor(referenceDataService: ReferenceDataService) {
-    this._referenceDataService = referenceDataService;
+    this.referenceDataService = referenceDataService
   }
 
-  mapFromDto(dto: any) {
-    let trades = _.map(dto.Trades, trade => this.mapFromTradeDto(trade));
-    return new TradesUpdate(dto.IsStateOfTheWorld, dto.IsStale, trades);
+  mapFromDto(dto: any): TradesUpdate {
+    const trades = _.map(dto.Trades, trade => this.mapFromTradeDto(trade))
+    return {
+      trades,
+      isStateOfTheWorld: dto.IsStateOfTheWorld,
+      isStale: dto.IsStale,
+    }
   }
 
   mapFromTradeDto(tradeDto: any): Trade {
-    let direction = this._mapDirectionFromDto(tradeDto.Direction);
-    let status = this._mapTradeStatusFromDto(tradeDto.Status);
-    let currencyPair = this._referenceDataService.getCurrencyPair(tradeDto.CurrencyPair);
-    return new Trade(
+    const direction = this.mapDirectionFromDto(tradeDto.Direction)
+    const status = this.mapTradeStatusFromDto(tradeDto.Status)
+    const currencyPair = this.referenceDataService.getCurrencyPair(tradeDto.CurrencyPair)
+    return createTrade(
       tradeDto.TradeId,
       tradeDto.TraderName,
       currencyPair,
@@ -32,31 +34,46 @@ export default class TradeMapper {
       tradeDto.SpotRate,
       new Date(tradeDto.TradeDate),
       new Date(tradeDto.ValueDate),
-      status
-    );
+      status,
+    )
   }
 
-  _mapDirectionFromDto(directionDto: string) {
+  mapDirectionFromDto(directionDto: string) {
     switch (directionDto) {
-      case Direction.Buy.name:
-        return Direction.Buy;
-      case Direction.Sell.name:
-        return Direction.Sell;
+      case Direction.Buy:
+        return Direction.Buy
+      case Direction.Sell:
+        return Direction.Sell
       default:
-        throw new Error(`Unknown direction ${directionDto}`);
+        throw new Error(`Unknown direction ${directionDto}`)
     }
   }
 
-  _mapTradeStatusFromDto(statusDto: string) {
-    switch (statusDto) {
-      case TradeStatus.Pending.name:
-        return TradeStatus.Pending;
-      case TradeStatus.Done.name:
-        return TradeStatus.Done;
-      case TradeStatus.Rejected.name:
-        return TradeStatus.Rejected;
+  mapTradeStatusFromDto(statusDto: string) {
+    switch (statusDto.toLowerCase()) {
+      case TradeStatus.Pending:
+        return TradeStatus.Pending
+      case TradeStatus.Done:
+        return TradeStatus.Done
+      case TradeStatus.Rejected:
+        return TradeStatus.Rejected
       default:
-        throw new Error(`Unknown trade status ${statusDto}`);
+        throw new Error(`Unknown trade status ${statusDto}`)
     }
+  }
+}
+
+function createTrade(tradeId, traderName, currencyPair, notional, dealtCurrency, direction, spotRate, tradeDate, valueDate, status): Trade {
+  return {
+    tradeId,
+    traderName,
+    currencyPair,
+    notional,
+    dealtCurrency,
+    direction,
+    spotRate,
+    tradeDate,
+    valueDate,
+    status,
   }
 }

@@ -29,32 +29,30 @@
     "dev:openfin:local": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin dev:local",
     "dev:openfin:cloud": "node ./node_modules/npm-run-all/bin/npm-run-all --parallel openfin dev:cloud",
     "dev": "webpack-dev-server --progress --debug --config webpack.config.js",
-    "test": "jest",
+    "test": "jest --watch",
     "test:dev": "npm test -- --watch",
+    "test-inspect": "node inspect ./node_modules/jest/bin/jest.js --runInBand --no-cache",
     "deploy": "webpack --display-error-details",
     "deploy:prod": "set NODE_ENV=production&&webpack",
     "openfin": "openfin -c config/openfin/local.app.json -l",
-    "workbench": "start-storybook -p 9001"
+    "openfin-build-installer": "node ./lib/downloadInstaller.js",
+    "stats": "webpack --profile --json > stats.json",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "jest": {
-    "globals": {
-      "__TS_CONFIG__": {
-        "module": "commonjs",
-        "jsx": "react"
-      }
-    },
     "moduleFileExtensions": [
       "ts",
       "tsx",
       "js",
       "jsx"
     ],
-    "transform": {
-      "^.+\\.(js|ts|tsx)$": "<rootDir>/preprocessor.js"
-    },
     "testMatch": [
-      "**/src/**/*.spec.(ts|tsx|js)"
+      "**/src/**/*.spec.(ts|tsx|js|jsx)"
     ],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/preprocessor.js"
+    },
     "verbose": true
   },
   "license": "MIT",
@@ -70,8 +68,6 @@
     "classnames": "2.2.3",
     "d3": "3.5.12",
     "d3-time-format": "2.0.5",
-    "esp-js": "1.1.2",
-    "esp-js-react": "0.1.0",
     "fixed-data-table": "0.6.3",
     "font-awesome": "4.5.0",
     "lodash": "3.10.1",
@@ -95,7 +91,7 @@
     "ws": "0.8.1"
   },
   "devDependencies": {
-    "@kadira/storybook": "1.33.0",
+    "@storybook/react": "^3.1.9",
     "@types/autobahn": "^0.9.35",
     "@types/jest": "20.0.5",
     "@types/karma": "0.13.36",
@@ -104,6 +100,9 @@
     "@types/react-dom": "15.5.2",
     "@types/react-virtualized": "9.7.3",
     "@types/redux-actions": "1.2.7",
+    "@types/storybook__addon-actions": "3.0.1",
+    "@types/storybook__addon-links": "3.0.1",
+    "@types/storybook__react": "3.0.2",
     "autoprefixer": "6.3.1",
     "awesome-typescript-loader": "3.2.2",
     "babel-core": "^6.25.0",
@@ -111,11 +110,14 @@
     "babel-loader": "^7.1.1",
     "babel-plugin-transform-es2015-modules-commonjs": "6.24.1",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
     "chalk": "^1.1.3",
     "classlist-polyfill": "1.0.3",
     "copy-webpack-plugin": "0.3.3",
     "css-loader": "^0.28.1",
     "dotenv": "1.2.0",
+    "enzyme": "2.9.1",
     "eslint": "^4.3.0",
     "eslint-config-airbnb": "15.1.0",
     "eslint-loader": "1.9.0",
@@ -140,6 +142,10 @@
     "redux-devtools-extension": "2.13.2",
     "sass-loader": "^6.0.5",
     "style-loader": "^0.17.0",
+    "tslint": "^5.5.0",
+    "tslint-config-airbnb": "5.2.1",
+    "tslint-loader": "^3.5.3",
+    "tslint-react": "^3.0.0",
     "typescript": "2.4.2",
     "url-loader": "^0.5.8",
     "webpack": "^3.4.0",

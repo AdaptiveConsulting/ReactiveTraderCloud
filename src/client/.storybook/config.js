@@ -1,5 +1,7 @@
-import { configure } from '@kadira/storybook';
+import { configure } from '@storybook/react';
 
-const loadStories = () => require('../workbench/');
+function loadStories() {
+  require('../stories');
+}
 
 configure(loadStories, module);
