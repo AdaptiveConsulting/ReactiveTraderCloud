@@ -1,5 +1,7 @@
 # AdaptiveTrader.deploy.googleCloudEngine
 
+**WARNING: This documentation is old and have not been validated for new mechanism**
+
 ### To initialise a project by hand:
 - go to [google developer console](https://console.developers.google.com)
 - click on `Free Trial`
