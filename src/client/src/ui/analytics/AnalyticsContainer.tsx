@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
 import Analytics from './Analytics'
-import './analytics.scss'
+import './AnalyticsStyles.scss'
 import { addRegion, openWindow } from '../../regions/regionsOperations'
 import { analyticsRegionSettings } from './analyticsOperations'
 

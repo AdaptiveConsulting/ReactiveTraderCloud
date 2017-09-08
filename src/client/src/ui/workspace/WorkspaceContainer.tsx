@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as React from 'react'
 
-import './workspace.scss'
+import './WorkspaceContainerStyles.scss'
 import { connect } from 'react-redux'
 import SpotTile from '../spotTile/SpotTile'
 import { CurrencyPair, Direction } from '../../types'

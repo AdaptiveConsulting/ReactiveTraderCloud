@@ -6,7 +6,7 @@ import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 import PNLChart from './PNLChart'
 import AnalyticsBarChart from './chart/AnalyticsBarChart'
 import { PositionsChartModel } from './model/positionsChartModel'
-import './analytics.scss'
+import './AnalyticsStyles.scss'
 
 export interface AnalyticsProps {
   canPopout: boolean

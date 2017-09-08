@@ -1,5 +1,5 @@
 import * as React from 'react'
-import './openFinChrome.scss'
+import './OpenFinChromeStyles.scss'
 import * as classnames from 'classnames'
 
 interface OpenFinChromeProps {

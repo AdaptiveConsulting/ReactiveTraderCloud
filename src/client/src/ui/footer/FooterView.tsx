@@ -3,7 +3,7 @@ import * as _ from 'lodash'
 import * as classnames from 'classnames'
 import { StatusIndicator } from './StatusIndicator'
 
-import './Footer.scss'
+import './FooterStyles.scss'
 import { ConnectionStatus, ServiceStatus } from '../../types/'
 import { Connections } from '../../connectionStatusOperations'
 import { ApplicationStatusConst, ConnectionType } from '../../types'
