@@ -1,5 +1,7 @@
-# docker
+- This documentation is to understand local rtc builds.
+- For deployment documentation go [here](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/doc/deployment/readme.md)
 
+# docker
 You will find here:
 - `a build folder`: the src to generate the containers for the project
   - `base containers` stored on `weareadaptive` at `dockerhub`:
@@ -55,4 +57,3 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 ### Some known issues (Toolbox on Windows and MacOSX)
 
 The different scripts here will need to share code with the different containers. On Windows and Mac, the sharing is between the container and the virtual machine. The virtual machine is defined to share your home folder (/c/Users/ for windows or /Users for mac). If your git clone folder is a children folder of your home user, it's fine. Else you need to open Virtual Box and share that specific folder.
-
