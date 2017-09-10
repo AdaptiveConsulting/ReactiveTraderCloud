@@ -13,7 +13,7 @@ Running rtc for a demo is definetly easier to do with the help of docker as dock
 
 ### Development
 If you want to do development, docker add a layer that can be difficult to understand. And most of the time, developer will go in the traditional way by installing all dependencies (that are anyway needed to do the development).  
-But you can still use docker for other services where you don't want to do development. Backends can be running on docker while you'll install and work with node.
+But you can still use docker for other services where you don't want to do development. Backends can be running on docker while you'll install and work on the front-end.
 
 ## Docker as the only mandatory dependency
 To build or deploy RTC, the only mandatory dependency is docker.  
