@@ -9,7 +9,7 @@ There are a lot of solutions when you choose to run Reactive Trader Cloud locall
 
 ## docker or not docker
 ### Demo
-Running rtc for a demo is definetly easier to do with the help of docker as docker becomes the only dependency to install. You then just have to run the good commands and fill the authentication for gcloud.  
+Running rtc for a demo is definitely easier to do with the help of docker as docker becomes the only dependency to install. You then just have to run the good commands and fill the authentication for gcloud.  
 
 ### Development
 If you want to do development, docker add a layer that can be difficult to understand. And most of the time, developer will go in the traditional way by installing all dependencies (that are anyway needed to do the development).  
