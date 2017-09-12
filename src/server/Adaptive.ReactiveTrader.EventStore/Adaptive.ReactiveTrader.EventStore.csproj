@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>EventStore</Description>
+    <Authors>Adaptive Financial Consulting Ltd.</Authors>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Adaptive.ReactiveTrader.EventStore</AssemblyName>
+    <PackageId>Adaptive.ReactiveTrader.EventStore</PackageId>
+    <PackageTags>Adaptive;Reactive Trader</PackageTags>
+    <PackageProjectUrl>https://github.com/AdaptiveConsulting/ReactiveTraderCloud</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE</PackageLicenseUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Common\Adaptive.ReactiveTrader.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EventStore.ClientAPI.DotNetCore" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+    <PackageReference Include="System.Reactive" Version="3.1.1" />
+  </ItemGroup>
+
+</Project>

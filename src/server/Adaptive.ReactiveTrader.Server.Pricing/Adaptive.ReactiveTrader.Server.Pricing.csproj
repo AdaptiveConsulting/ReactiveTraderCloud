@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Pricing Service</Description>
+    <Authors>Adaptive Financial Consulting Ltd.</Authors>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <DebugType>portable</DebugType>
+    <AssemblyName>Adaptive.ReactiveTrader.Server.Pricing</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>Adaptive.ReactiveTrader.Server.Pricing</PackageId>
+    <PackageTags>Adaptive;Reactive Trader</PackageTags>
+    <PackageProjectUrl>https://github.com/AdaptiveConsulting/ReactiveTraderCloud</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/LICENSE</PackageLicenseUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Server.Host\Adaptive.ReactiveTrader.Server.Host.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+</Project>

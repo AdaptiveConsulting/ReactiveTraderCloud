@@ -54,9 +54,9 @@ nginxContainer_minor="12"
 nginxContainer="weareadaptive/nginx:$nginxContainer_major.$nginxContainer_minor"
 
 # dotnet
-dotnetversion="dotnet-dev-1.0.0-preview2.1-003177"
-dotnetContainer_major="1"
-dotnetContainer_minor="1"
+dotnetversion="dotnet-sdk-2.0.0"
+dotnetContainer_major="2"
+dotnetContainer_minor="0"
 dotnetContainer="weareadaptive/dotnet:$dotnetContainer_major.$dotnetContainer_minor"
 
 # TestTool
