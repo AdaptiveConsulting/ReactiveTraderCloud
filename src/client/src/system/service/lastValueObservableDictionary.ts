@@ -1,35 +1,25 @@
-import LastValueObservable from './lastValueObservable';
+import LastValueObservable from './lastValueObservable'
 
 export default class LastValueObservableDictionary {
+  version: number
+  values: {}
 
   constructor() {
-    this._values = {};
-    this._version = 0;
-  }
-
-  _values: any;
-
-  get values() {
-    return this._values;
-  }
-
-  _version: number;
-
-  get version() {
-    return this._version;
+    this.values = {}
+    this.version = 0
   }
 
   hasKey(key: string) {
-    return this._values.hasOwnProperty(key);
+    return this.values.hasOwnProperty(key)
   }
 
   add(key: string, value: LastValueObservable<any>) {
-    this._values[key] = value;
-    this._version++;
+    this.values[key] = value
+    this.version++
   }
 
   updateWithLatestValue(key: string, latestValue: Object) {
-    this._values[key].latestValue = latestValue;
-    this._version++;
+    this.values[key].latestValue = latestValue
+    this.version++
   }
 }

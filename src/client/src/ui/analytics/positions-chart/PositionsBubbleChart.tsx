@@ -154,7 +154,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
           this.tooltip.style('visibility', 'visible')
           this.positionTooltip(dataObj, event)
         })
-        .on('mousemove', this.positionTooltip.bind(this))
+        .on('mousemove', (dataObj: any, index: number, event: MouseEvent) => this.positionTooltip(dataObj, event))
         .on('mouseout', () => this.tooltip.style('visibility', 'hidden'))
 
       updateNodes(nodeGroup, this.state.nodes, this.scales)

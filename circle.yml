@@ -12,6 +12,7 @@ dependencies:
     - "~/docker"
     - deploy/docker/build/servers/dotnetcache
     - deploy/docker/build/web/.npm
+
   override:
     - docker info
     - cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions

@@ -1,7 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import './../analytics.scss'
 import * as numeral from 'numeral'
+
+import '../AnalyticsStyles.scss'
 
 export interface PNLBarProps {
   basePnl: number

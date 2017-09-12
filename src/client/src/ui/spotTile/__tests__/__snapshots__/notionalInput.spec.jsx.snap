@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotionalInput renders correct markup 1`] = `
+<div
+  className="notional notional"
+>
+  <label
+    className="notional__currency-pair"
+  >
+    GBP
+  </label>
+  <input
+    className="notional__size-input"
+    defaultValue="999,999"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onClick={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+  />
+</div>
+`;

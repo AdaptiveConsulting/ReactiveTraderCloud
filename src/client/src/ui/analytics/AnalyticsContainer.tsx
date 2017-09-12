@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import { getPnlChartModel } from './model/pnlChartModel';
-import { getPositionsChartModel } from './model/positionsChartModel';
-import Analytics from './Analytics';
-import './analytics.scss'
-import { onComponentMount, onPopoutClick } from '../blotter/blotterOperations';
-import { analyticsRegionSettings } from './analyticsOperations';
+import { getPnlChartModel } from './model/pnlChartModel'
+import { getPositionsChartModel } from './model/positionsChartModel'
+import Analytics from './Analytics'
+import './AnalyticsStyles.scss'
+import { addRegion, openWindow } from '../../regions/regionsOperations'
+import { analyticsRegionSettings } from './analyticsOperations'
 
 interface AnalyticsContainerOwnProps {
 
@@ -19,13 +19,17 @@ interface AnalyticsContainerStateProps {
 }
 
 interface AnalyticsContainerDispatchProps {
-  onPopoutClick: () => void
+  onPopoutClick: (any) => any
   onComponentMount: () => void
 }
 
 type AnalyticsContainerProps = AnalyticsContainerOwnProps & AnalyticsContainerStateProps & AnalyticsContainerDispatchProps
 
 class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
+
+  static contextTypes = {
+    openFin: React.PropTypes.object,
+  }
 
   public componentDidMount() {
     this.props.onComponentMount()
@@ -34,14 +38,15 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
   render() {
 
     const { analyticsService, isConnected } = this.props
+    const openFin = this.context.openFin
     const positionsChartModel = getPositionsChartModel(analyticsService.currentPositions)
     const pnlChartModel = getPnlChartModel(analyticsService.history)
 
     const analyticsProps = {
-      isConnected: isConnected,
-      pnlChartModel: pnlChartModel,
-      positionsChartModel: positionsChartModel,
-      onPopoutClick: this.props.onPopoutClick,
+      isConnected,
+      pnlChartModel,
+      positionsChartModel,
+      onPopoutClick: this.props.onPopoutClick(openFin),
       canPopout: true,
     }
 
@@ -49,18 +54,18 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
       <Analytics
         {...analyticsProps}
       />
-    );
+    )
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onPopoutClick: () => {
-      dispatch(onPopoutClick(analyticsRegion))
+    onPopoutClick: (openFin) => {
+      return () => { dispatch(openWindow(analyticsRegion, openFin))}
     },
     onComponentMount: () => {
-      dispatch(onComponentMount(analyticsRegion))
-    }
+      dispatch(addRegion(analyticsRegion))
+    },
   }
 }
 
@@ -75,7 +80,7 @@ const analyticsRegion = {
   id: 'analytics',
   isTearedOff: false,
   container: ConnectedAnalyticsContainer,
-  settings: analyticsRegionSettings
+  settings: analyticsRegionSettings,
 }
 
 export default ConnectedAnalyticsContainer
