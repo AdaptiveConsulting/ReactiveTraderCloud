@@ -1,6 +1,7 @@
 # AdaptiveTrader.deploy.googleCloudEngine
 
 **WARNING: This documentation is old and have not been validated for new mechanism**
+- refer to the [new deployment documentation](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/readme.md)
 
 ### To initialise a project by hand:
 - go to [google developer console](https://console.developers.google.com)

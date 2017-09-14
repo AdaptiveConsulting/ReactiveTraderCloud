@@ -44,7 +44,7 @@ With docker installed, you can:
 
 #### Added value
 We have added the Minikube feature to rtc in order to be able to deploy locally in the same way we deploy to gcloud.  
-This let us use the same [deployment code and mechanism](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deploy/rtc_deployment.md).  
+This let us use the same [deployment code and mechanism](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deploy/rtc-deployment.md).  
 
 Docker let us run rtc locally without kubernetes but that code is custom and requires maintenance as docker is in a constant evolution with constant breaking changes (mainly for windows/mac).
 
