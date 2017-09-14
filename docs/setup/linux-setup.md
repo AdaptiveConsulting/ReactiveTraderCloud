@@ -2,7 +2,7 @@
 
 ### Docker
 
-The way to run ReactiveTrader on Linux is by using Docker. You can find the tutorial [here](docker-setup.md).
+The way to run ReactiveTrader on Linux is by using Docker. You can find the tutorial [here](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/readme.md).
 
 
 ### Linux 
