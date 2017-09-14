@@ -3,33 +3,56 @@
 ## Setup and validate docker
 Follow the [docker setup instructions](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/docker-setup.md)
 
-## Run
+## Choose a method to run
 ### already pre-built images
-You can run Reactive Trader Cloud locally using pre-built Docker images by running the runAll script in the docker directory:
-```bash
-.deploy/docker/runAll
-```
+- You can run Reactive Trader Cloud locally using pre-built Docker images by running the runAll script in the docker directory:
+    ```bash
+    ./deploy/docker/runAll
+    ```
+
+This will download the 4 images required for Reactive Trader Cloud and run them.
 
 ### your local rtc images
-Follow the [local build instructions](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/build-rtc-locally.md)
-```bash
-.deploy/docker/runAll localBuildId
-```
+- Follow the [local build instructions](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/build-rtc-locally.md)
+- You can then run the built images by passing the `BUILD_ID` to the `./runAll` script
+    ```bash
+    ./deploy/docker/runAll localbuild
+    ```
+- You will see the docker-compose mechanism start your containers and print the logs
 
 ## See it running
-This will download the 4 images required for Reactive Trader Cloud and run them. Check that they are running:
+Open a browser, navigate to the docker address (`localhost` for linux users and something like `10.0.75.2` for windows/mac users) and the web client will load.
 
+## Test ReactiveTrader
+After having started ReactiveTrader, you can run the tests.
+
+The tests use the **reactivetrader/servers** to connect backends.
+
+In a different bash, run:
 ```bash
-$ docker ps
-CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS               NAMES
-edce33456efd        reactivetrader/servers:0.1      "bash -c 'dotnet run "   6 minutes ago       Up 5 minutes                            analytics
-dc5a84cfd971        reactivetrader/servers:0.1      "bash -c 'dotnet run "   6 minutes ago       Up 5 minutes                            blotter
-2c37eb4f30f1        reactivetrader/servers:0.1      "bash -c 'dotnet run "   6 minutes ago       Up 6 minutes                            tradeexecution
-aeb3cd1ffdfc        reactivetrader/servers:0.1      "bash -c 'dotnet run "   6 minutes ago       Up 6 minutes                            pricing
-9285b85818ed        reactivetrader/servers:0.1      "bash -c 'dotnet run "   6 minutes ago       Up 6 minutes                            reference
-e7994ff99e40        reactivetrader/broker:0.0       "/bin/sh -c 'crossbar"   11 minutes ago      Up 11 minutes                           broker
-b766ac9c9709        reactivetrader/eventstore:0.0   "/bin/sh -c './run-no"   12 minutes ago      Up 11 minutes                           eventstore
-07a7848c23c1        reactivetrader/web:0.0          "bash -c 'cp /localho"   12 minutes ago      Up 12 minutes                           web
+# If you build/run with a `build_id` (ie: `localbuild`)
+./deploy/docker/testAll localbuild
 ```
 
-Wait a short while for the services to start up, then in a browser navigate to the docker address (`localhost` for linux users and something like `192.168.99.100` for windows/mac users) and the web client will load.
+This should output something like this:
+```bash
+ 
+xUnit.net .NET CLI test runner (64-bit .NET Core ubuntu.14.04-x64)
+  Discovering: Adaptive.ReactiveTrader.Server.IntegrationTests
+  Discovered:  Adaptive.ReactiveTrader.Server.IntegrationTests
+  Starting:    Adaptive.ReactiveTrader.Server.IntegrationTests
+
+...
+some test data
+...
+
+  Finished:    Adaptive.ReactiveTrader.Server.IntegrationTests
+=== TEST EXECUTION SUMMARY ===
+   Adaptive.ReactiveTrader.Server.IntegrationTests  Total: 8, Errors: 0, Failed: 0, Skipped: 0, Time: 9.464s
+```
+
+## Stop all the running containers
+You can stop all the containers by hitting ctrl+c on the runAll process or by running:
+```bash
+./deploy/docker/killAll
+```

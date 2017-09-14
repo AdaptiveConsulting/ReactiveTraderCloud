@@ -29,32 +29,7 @@
 ### Setup and validate docker
 follow the [docker setup instructions](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/docker-setup.md)
 
-### Run Reactive Trader Cloud locally via Docker
-You can run Reactive Trader Cloud locally using pre-built Docker images by navigating to the `docker` folder and running the `./runAll` script
-
-```bash
-$ cd deploy/docker/
-$ ./runAll
-```
-
-This will download the 4 images required for Reactive Trader Cloud and run them. Check that they are running:
-
-```bash
-$ docker ps
-CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS               NAMES
-edce33456efd        reactivetrader/servers:0.1      "bash -c 'dotnet run "   6 minutes ago       Up 5 minutes                            analytics
-dc5a84cfd971        reactivetrader/servers:0.1      "bash -c 'dotnet run "   6 minutes ago       Up 5 minutes                            blotter
-2c37eb4f30f1        reactivetrader/servers:0.1      "bash -c 'dotnet run "   6 minutes ago       Up 6 minutes                            tradeexecution
-aeb3cd1ffdfc        reactivetrader/servers:0.1      "bash -c 'dotnet run "   6 minutes ago       Up 6 minutes                            pricing
-9285b85818ed        reactivetrader/servers:0.1      "bash -c 'dotnet run "   6 minutes ago       Up 6 minutes                            reference
-e7994ff99e40        reactivetrader/broker:0.0       "/bin/sh -c 'crossbar"   11 minutes ago      Up 11 minutes                           broker
-b766ac9c9709        reactivetrader/eventstore:0.0   "/bin/sh -c './run-no"   12 minutes ago      Up 11 minutes                           eventstore
-07a7848c23c1        reactivetrader/web:0.0          "bash -c 'cp /localho"   12 minutes ago      Up 12 minutes                           web
-```
-
-Wait a short while for the services to start up, then in a browser navigate to the docker address (`localhost` for linux users and something like `192.168.99.100` for windows/mac users) and the web client will load.
-
-## Build containers from source
+### Build containers from source
 First define an `BUILD_ID` for your build. It's a string used to identify the images. For documentation, we will use *localbuild*
 
 You will find scripts to help build/run/test Reactive Trader components:
@@ -101,67 +76,37 @@ docker images
 ```
 Will output something like:
 ```bash
+ ~/repository/tdeheurles/reactivetradercloud (master)
+$ docker images
 REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
-reactivetrader/eventstore   0.0                 4b320ebaea77        6 minutes ago       562.1 MB
-reactivetrader/eventstore   0.0.localbuild      4b320ebaea77        6 minutes ago       562.1 MB
-reactivetrader/web          0.0                 0a215f2c76f7        8 minutes ago       146.5 MB
-reactivetrader/web          0.0.localbuild      0a215f2c76f7        8 minutes ago       146.5 MB
-weareadaptive/websrc        localbuild          c848e9f8affb        14 minutes ago      435.8 MB
-reactivetrader/broker       0.0                 ec5c0bce868d        17 minutes ago      387 MB
-reactivetrader/broker       0.0.localbuild      ec5c0bce868d        17 minutes ago      387 MB
-reactivetrader/servers      0.1                 31ad537d4432        18 minutes ago      1.913 GB
-reactivetrader/servers      0.1.localbuild      31ad537d4432        18 minutes ago      1.913 GB
-weareadaptive/serverssrc    localbuild          48595078a5bb        21 minutes ago      823.3 MB
-weareadaptive/node          6.2                 9b0abe35bff5        7 days ago          433.7 MB
-weareadaptive/dotnet        0.0                 e49fd48a6619        2 weeks ago         698.1 MB
-weareadaptive/crossbar      0.1                 97d364615d31        4 weeks ago         387 MB
-weareadaptive/nginx         0.0                 07994306ed18        5 months ago        132.8 MB
-weareadaptive/eventstore    0.0                 e2cbb26040c9        5 months ago        293.6 MB
+reactivetrader/eventstore   0.0                 a2137e0ed763        19 minutes ago      562MB
+reactivetrader/eventstore   0.0.localbuild      a2137e0ed763        19 minutes ago      562MB
+reactivetrader/web          0.0                 d3d529b6cb35        19 minutes ago      139MB
+reactivetrader/web          0.0.localbuild      d3d529b6cb35        19 minutes ago      139MB
+reactivetrader/broker       0.0                 e14bf8686e42        23 minutes ago      830MB
+reactivetrader/broker       0.0.localbuild      e14bf8686e42        23 minutes ago      830MB
+reactivetrader/servers      0.1                 a26ebd967a2b        24 minutes ago      2.05GB
+reactivetrader/servers      0.1.localbuild      a26ebd967a2b        24 minutes ago      2.05GB
+weareadaptive/serverssrc    localbuild          7db7dab3d324        25 minutes ago      1.05GB
+reactivetrader/eventstore   0.0.2084            a135c5d9e74c        2 weeks ago         562MB
+reactivetrader/web          0.0.2084            443251f8105b        2 weeks ago         122MB
+reactivetrader/broker       0.0.2084            7f4ccead74e4        2 weeks ago         830MB
+reactivetrader/servers      0.1.2084            bc8d48de18fe        2 weeks ago         2.05GB
+eventstore/eventstore       latest              73f009f50a3d        3 weeks ago         206MB
+weareadaptive/crossbar      17.5                57da26d57567        5 weeks ago         830MB
+appropriate/curl            latest              f73fee23ac74        6 weeks ago         5.35MB
+weareadaptive/nginx         1.12                a6292ecfcd04        2 months ago        107MB
+weareadaptive/dotnet        1.1                 06a8bb1d4f25        8 months ago        1.05GB
+eventstore/eventstore       release-3.9.3       14f289b4c09e        9 months ago        261MB
+d4w/nsenter                 latest              9e4f13a0901e        11 months ago       83.8kB
+weareadaptive/node          6.2                 9b0abe35bff5        15 months ago       434MB
+weareadaptive/eventstore    0.0                 e2cbb26040c9        20 months ago       294MB
 ```
 
-Note that only these containers are used to run ReactiveTrader with the `1` build number:
+Note that only these containers are used to run ReactiveTrader with the `localbuild` build number:
 ```bash
 reactivetrader/eventstore   0.0.localbuild       0df22c060d23        8 seconds ago       562.1 MB
 reactivetrader/web          0.0.localbuild       d0412eae6ff5        15 seconds ago      146.5 MB
 reactivetrader/broker       0.0.localbuild       addab85a78aa        4 minutes ago       387 MB
 reactivetrader/servers      0.0.localbuild       cbc536864104        4 minutes ago       1.913 GB
-```
-
-You can then run the built images by passing the `BUILD_ID` to the `./runAll` script
-```bash
-$ .deploy/docker/runAll localbuild
-```
-
-Open a browser, navigate to the docker address (`localhost` for linux users and something like `10.0.75.2` for windows/mac users) and the web client will load.
-
-
-## Test ReactiveTrader
-After having started ReactiveTrader, you can run the tests. The tests use the **reactivetrader/servers** to connect backends.
-
-If you build/run with a `build_id` (ie: `1`): 
-```bash
-./deploy/docker/testAll localbuild
-```
-
-This should output something like this:
-```bash
- 
-xUnit.net .NET CLI test runner (64-bit .NET Core ubuntu.14.04-x64)
-  Discovering: Adaptive.ReactiveTrader.Server.IntegrationTests
-  Discovered:  Adaptive.ReactiveTrader.Server.IntegrationTests
-  Starting:    Adaptive.ReactiveTrader.Server.IntegrationTests
-
-...
-some test data
-...
-
-  Finished:    Adaptive.ReactiveTrader.Server.IntegrationTests
-=== TEST EXECUTION SUMMARY ===
-   Adaptive.ReactiveTrader.Server.IntegrationTests  Total: 8, Errors: 0, Failed: 0, Skipped: 0, Time: 9.464s
-```
-
-## Stop all the running containers
-You can stop all the containers with:
-```bash
-$ ./deploy/docker/killAll
 ```
