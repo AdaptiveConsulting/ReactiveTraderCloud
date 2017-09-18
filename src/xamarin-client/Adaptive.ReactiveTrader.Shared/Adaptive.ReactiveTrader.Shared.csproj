@@ -1,94 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{082250AA-12EF-4CF8-86B6-4523967550C9}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Adaptive.ReactiveTrader.Shared</RootNamespace>
-    <AssemblyName>Adaptive.ReactiveTrader.Shared</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFramework>netstandard1.4</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="packages.config" />
-    <None Include="project.json" />
+    <PackageReference Include="System.Reactive" Version="3.1.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AuthTokenProvider.cs" />
-    <Compile Include="DTO\Analytics\CurrencyPairPositionDto.cs" />
-    <Compile Include="DTO\Analytics\HistoricPositionDto.cs" />
-    <Compile Include="DTO\Analytics\PositionUpdatesDto.cs" />
-    <Compile Include="DTO\Control\CurrencyPairStateDto.cs" />
-    <Compile Include="DTO\Control\FeedThroughputDto.cs" />
-    <Compile Include="DTO\Execution\DirectionDto.cs" />
-    <Compile Include="DTO\Execution\ExecuteTradeRequestDto.cs" />
-    <Compile Include="DTO\Execution\ExecuteTradeResponseDto.cs" />
-    <Compile Include="DTO\Execution\TradeDto.cs" />
-    <Compile Include="DTO\Execution\TradeRequestDto.cs" />
-    <Compile Include="DTO\Execution\TradesDto.cs" />
-    <Compile Include="DTO\Execution\TradeStatusDto.cs" />
-    <Compile Include="DTO\MessageDto.cs" />
-    <Compile Include="DTO\NothingDto.cs" />
-    <Compile Include="DTO\Pricing\GetSpotStreamRequestDto.cs" />
-    <Compile Include="DTO\Pricing\PriceDto.cs" />
-    <Compile Include="DTO\Pricing\PriceSubscriptionRequestDto.cs" />
-    <Compile Include="DTO\ReferenceData\CurrencyPairDto.cs" />
-    <Compile Include="DTO\ReferenceData\CurrencyPairUpdateDto.cs" />
-    <Compile Include="DTO\ReferenceData\CurrencyPairUpdatesDto.cs" />
-    <Compile Include="DTO\UnitDto.cs" />
-    <Compile Include="DTO\UpdateTypeDto.cs" />
-    <Compile Include="Extensions\ArrayExtensions.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Extensions\Heartbeat.cs" />
-    <Compile Include="Extensions\IHeartbeat.cs" />
-    <Compile Include="Extensions\IStale.cs" />
-    <Compile Include="Extensions\ObservableExtensions.cs" />
-    <Compile Include="Extensions\Stale.cs" />
-    <Compile Include="IAuthTokenProvider.cs" />
-    <Compile Include="Logging\DebugLogger.cs" />
-    <Compile Include="Logging\DebugLoggerFactory.cs" />
-    <Compile Include="Logging\ILog.cs" />
-    <Compile Include="Logging\ILoggerFactory.cs" />
-    <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceConstants.cs" />
-    <Compile Include="UI\DelegateCommand.cs" />
-    <Compile Include="UI\IViewModel.cs" />
-    <Compile Include="UI\NotifyingBase.cs" />
-    <Compile Include="UI\ViewModelBase.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
