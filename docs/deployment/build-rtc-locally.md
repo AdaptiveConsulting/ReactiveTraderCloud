@@ -106,9 +106,9 @@ reactivetrader/servers      0.0.localbuild       cbc536864104        4 minutes a
 
 [docker-setup]: ./docker-setup.md
 [build-id]: ./build-id.md
-[dotnetcore-image]: https://hub.docker.com/r/weareadaptive/dotnet/
-[crossbar-image]: https://hub.docker.com/r/weareadaptive/crossbar/
-[eventstore-image]: https://hub.docker.com/r/weareadaptive/eventstore/
-[nodejs-image]: https://hub.docker.com/r/weareadaptive/node/
-[nginx-image]: https://hub.docker.com/r/weareadaptive/nginx/
-[docker-hub]: https://hub.docker.com/u/reactivetrader/dashboard/
+[dotnetcore-image]: https://store.docker.com/community/images/weareadaptive/dotnet/
+[crossbar-image]: https://store.docker.com/community/images/weareadaptive/crossbar/
+[eventstore-image]: https://store.docker.com/community/images/weareadaptive/eventstore/
+[nodejs-image]: https://store.docker.com/community/images/weareadaptive/node/
+[nginx-image]: https://store.docker.com/community/images/weareadaptive/nginx/
+[docker-hub]: https://store.docker.com/profiles/reactivetrader/

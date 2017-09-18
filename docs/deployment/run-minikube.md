@@ -36,4 +36,4 @@ TODO
     ```
 
 ### Mac/Linux
-No rtc script implementation exist for now.
+No rtc script implementation exists for now.

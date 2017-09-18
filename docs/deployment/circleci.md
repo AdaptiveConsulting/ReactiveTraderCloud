@@ -64,4 +64,4 @@ You can add your branch in this list to be able to do a deployment of your code.
 CircleCi build RTC and use its build number to tag all docker images.  
 This build number is the one that you need to use for deployments
 
-[docker-hub]: https://hub.docker.com/u/reactivetrader/dashboard/
+[docker-hub]: https://store.docker.com/profiles/reactivetrader/

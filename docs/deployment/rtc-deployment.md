@@ -9,7 +9,7 @@
     # /!\ Bash
     `./deploy/kubernetes/deploy myenv buildid`
     ```
-- wait a moment and see the ressources :
+- wait a moment and see the resources :
     ```
     # /!\ bash
     `./deploy/kubernetes/describe myenv`

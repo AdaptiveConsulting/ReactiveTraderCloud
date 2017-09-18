@@ -88,4 +88,4 @@
 [bash-setup]: ./bash-setup.md
 [docker-setup]: ./docker-setup.md
 [use-cluster]: ./rtc-deployment-cli.md#use-cluster
-[gcloud-init]: ./gcloud-init.md
+[gcloud-init]: ./rtc-deployment-cli.md#gcloud-init
