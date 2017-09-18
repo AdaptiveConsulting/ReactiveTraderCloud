@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.weareadaptive.ReactiveTrader.watchkitextension</string>
+	<string>com.weareadaptive.ReactiveTraderCloud.watchkitextension</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleShortVersionString</key>
@@ -15,7 +15,7 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>WKAppBundleIdentifier</key>
-			<string>com.weareadaptive.ReactiveTrader.watchkitapp</string>
+			<string>com.weareadaptive.ReactiveTraderCloud.watchkitapp</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.watchkit</string>

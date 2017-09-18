@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.weareadaptive.ReactiveTrader</string>
+		<string>group.com.weareadaptive.ReactiveTraderCloud</string>
 	</array>
 </dict>
 </plist>

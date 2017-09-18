@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.weareadaptive.ReactiveTrader.watchkitapp</string>
+	<string>com.weareadaptive.ReactiveTraderCloud.watchkitapp</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleShortVersionString</key>
@@ -16,7 +16,7 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>com.weareadaptive.ReactiveTrader</string>
+	<string>com.weareadaptive.ReactiveTraderCloud</string>
 	<key>WKWatchKitApp</key>
 	<true/>
 	<key>XSAppIconAssets</key>
