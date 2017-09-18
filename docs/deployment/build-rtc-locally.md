@@ -27,10 +27,10 @@
 
 ## Procedure
 ### Setup and validate docker
-follow the [docker setup instructions](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/docker-setup.md)
+follow the [docker setup instructions][docker-setup]
 
 ### Build containers from source
-First define an `BUILD_ID` for your build. It's a string used to identify the images. For documentation, we will use *localbuild*
+First define a [build-id][builid] for your build. It's a string used to identify the images. For this documentation, we will use *localbuild*
 
 You will find scripts to help build/run/test Reactive Trader components:
 - prepare (to build and push)
@@ -38,7 +38,7 @@ You will find scripts to help build/run/test Reactive Trader components:
 - testAll
 - killAll
 
-To build, run the following with the `BUILD_ID`, in this example we'll use `localbuild`
+To build, run the following with the [build-id][buildid], in this example we'll use *localbuild*
 ```bash
 ./deploy/docker/prepare build rtc localbuild
 ```
@@ -46,28 +46,28 @@ To build, run the following with the `BUILD_ID`, in this example we'll use `loca
 This will run the following tasks:
 
 - Build the .NET services container by
-  - Downloading the base Docker image for .NET Core from https://hub.docker.com/r/weareadaptive/dotnet/
+  - Downloading the [base Docker image for .NET Core][dotnetcore-image]
   - Build the server binaries in that container with the checked out server source code
-  - Create a new `reactivetrader/servers` Docker image from the built services container tagged with the `BUILD_ID` provided and save locally
+  - Create a new `reactivetrader/servers` Docker image from the built services container tagged with the [build-id][build-id] provided and save locally
 
 - Build the messaging broker container by
-  - Download the crossbar Docker image from https://hub.docker.com/r/weareadaptive/crossbar/
+  - Download the [crossbar Docker base image][crossbar-image]
   - Build the broker image by applying the checked out crossbar config file
-  - Create a new `reactivetrader/broker` Docker image from the built broker container tagged with the `BUILD_ID` provided and save locally
+  - Create a new `reactivetrader/broker` Docker image from the built broker container tagged with the [build-id][build-id] provided and save locally
 
 - Build the client container by
-  - Download the nodejs Docker image from https://hub.docker.com/r/weareadaptive/node/
+  - Download the [nodejs base Docker image][nodejs-image]
   - Build the client app in that container with the checked out client source code and save the built client app files
-  - Download the nginx Docker image from https://hub.docker.com/r/weareadaptive/nginx/
+  - Download the [nginx Docker base image][nginx-image]
   - Copy the built client app files to the nginx container
-  - Create a new `reactivetrader/web` Docker image from the nginx container with the client app files tagged with the `BUILD_ID` provided and save locally
+  - Create a new `reactivetrader/web` Docker image from the nginx container with the client app files tagged with the [build-id][build-id] provided and save locally
 
 - Build the eventstore container by
-  - Download the Docker image for eventstore from https://hub.docker.com/r/weareadaptive/eventstore/
+  - Download the [base Docker image for eventstore][eventstore-image]
   - Run the built `reactivetrader/servers` container with a special flag and the eventstore container to populate data into the eventstore container
-  - Create a new `reactivetrader/eventstore` Docker image from the eventstore container which now has the data populated, tagged with the `BUILD_ID` provided and save locally
+  - Create a new `reactivetrader/eventstore` Docker image from the eventstore container which now has the data populated, tagged with the [build-id][build-id] provided and save locally
 
-The 4 `reactivetrader` images will contain all the components needed to run Reactive Trader Cloud. The `servers` image contain binaries for all server micro-services and can be run with a flag to indicate which service to run. 
+The [4 `reactivetrader` images][docker-hub] will contain all the components needed to run Reactive Trader Cloud. The `servers` image contain binaries for all server micro-services and can be run with a flag to indicate which service to run. 
 
 
 Check the generated docker images by:
@@ -76,7 +76,6 @@ docker images
 ```
 Will output something like:
 ```bash
- ~/repository/tdeheurles/reactivetradercloud (master)
 $ docker images
 REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
 reactivetrader/eventstore   0.0                 a2137e0ed763        19 minutes ago      562MB
@@ -88,16 +87,10 @@ reactivetrader/broker       0.0.localbuild      e14bf8686e42        23 minutes a
 reactivetrader/servers      0.1                 a26ebd967a2b        24 minutes ago      2.05GB
 reactivetrader/servers      0.1.localbuild      a26ebd967a2b        24 minutes ago      2.05GB
 weareadaptive/serverssrc    localbuild          7db7dab3d324        25 minutes ago      1.05GB
-reactivetrader/eventstore   0.0.2084            a135c5d9e74c        2 weeks ago         562MB
-reactivetrader/web          0.0.2084            443251f8105b        2 weeks ago         122MB
-reactivetrader/broker       0.0.2084            7f4ccead74e4        2 weeks ago         830MB
-reactivetrader/servers      0.1.2084            bc8d48de18fe        2 weeks ago         2.05GB
-eventstore/eventstore       latest              73f009f50a3d        3 weeks ago         206MB
 weareadaptive/crossbar      17.5                57da26d57567        5 weeks ago         830MB
 appropriate/curl            latest              f73fee23ac74        6 weeks ago         5.35MB
 weareadaptive/nginx         1.12                a6292ecfcd04        2 months ago        107MB
 weareadaptive/dotnet        1.1                 06a8bb1d4f25        8 months ago        1.05GB
-eventstore/eventstore       release-3.9.3       14f289b4c09e        9 months ago        261MB
 d4w/nsenter                 latest              9e4f13a0901e        11 months ago       83.8kB
 weareadaptive/node          6.2                 9b0abe35bff5        15 months ago       434MB
 weareadaptive/eventstore    0.0                 e2cbb26040c9        20 months ago       294MB
@@ -110,3 +103,12 @@ reactivetrader/web          0.0.localbuild       d0412eae6ff5        15 seconds 
 reactivetrader/broker       0.0.localbuild       addab85a78aa        4 minutes ago       387 MB
 reactivetrader/servers      0.0.localbuild       cbc536864104        4 minutes ago       1.913 GB
 ```
+
+[docker-setup]: ./docker-setup.md
+[build-id]: ./build-id.md
+[dotnetcore-image]: https://hub.docker.com/r/weareadaptive/dotnet/
+[crossbar-image]: https://hub.docker.com/r/weareadaptive/crossbar/
+[eventstore-image]: https://hub.docker.com/r/weareadaptive/eventstore/
+[nodejs-image]: https://hub.docker.com/r/weareadaptive/node/
+[nginx-image]: https://hub.docker.com/r/weareadaptive/nginx/
+[docker-hub]: https://hub.docker.com/u/reactivetrader/dashboard/
