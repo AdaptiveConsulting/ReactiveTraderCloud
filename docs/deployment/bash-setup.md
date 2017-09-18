@@ -3,9 +3,9 @@
 Nothing to do, just open a terminal
 
 ## windows
-- install [git with bash](https://git-scm.com/download/win)
+- install [git with bash][bash-install]
 - [optional] ConEMU
-    - Install [ConEMU](https://www.fosshub.com/ConEmu.html). Stable version should be perfect.
+    - Install [ConEMU][conemu-install]. Stable version should be perfect.
     - Start ConEMU
     - Start bash
         - **[Solution 1]**:
@@ -22,4 +22,7 @@ Nothing to do, just open a terminal
                 bash
                 ```
 ## mac
-TODO
+TO BE DONE BY A MAC USER
+
+[bash-install]: https://git-scm.com/download/win
+[conemu-install]: https://www.fosshub.com/ConEmu.html
