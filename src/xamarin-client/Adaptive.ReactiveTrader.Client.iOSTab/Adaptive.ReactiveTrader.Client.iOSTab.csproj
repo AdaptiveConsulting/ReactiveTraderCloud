@@ -232,6 +232,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension\Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension.csproj">
+      <Project>{71fb625a-fca5-47cb-a1d6-d3eff7b5fc63}</Project>
+      <Name>Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension</Name>
+      <IsAppExtension>true</IsAppExtension>
+      <IsWatchApp>true</IsWatchApp>
+    </ProjectReference>
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Client\Adaptive.ReactiveTrader.Client.csproj">
       <Project>{E92115A5-D7BE-4A19-AF2B-9FB100B28CE4}</Project>
       <Name>Adaptive.ReactiveTrader.Client</Name>
