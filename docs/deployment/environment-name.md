@@ -3,7 +3,7 @@ In kubernetes, each container is defined in a namespace. We use these namespaces
 When we deploy in the cluster, we need to define a unique id that we name **environment name**.
 
 ## Cloud deployment
-This **environment name** can be found with the uri to rtc. For example, <https://web-demo.adaptivecluster.com> is written in this pattern: **<PROTOCOL_NAME>://<SERVICE_NAME>-<ENVIRONMENT_NAME>.<CLUSTER_NAME>** where:
+This **environment name** can be found with the uri to RTC. For example, <https://web-demo.adaptivecluster.com> is written in this pattern: **<PROTOCOL_NAME>://<SERVICE_NAME>-<ENVIRONMENT_NAME>.<CLUSTER_NAME>** where:
 - <SERVICE_NAME> is **web**
 - <ENVIRONMENT_NAME> is **demo**
 - <CLUSTER_NAME>> is **adaptivecluster.com**

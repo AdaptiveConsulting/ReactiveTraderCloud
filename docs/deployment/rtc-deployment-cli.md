@@ -1,4 +1,4 @@
-# How to: use rtc deployment commands
+# How to: use RTC deployment commands
 ## Commands
 ### More used Commands
 - Common
@@ -15,7 +15,7 @@
 - requirements:
     - [setup docker][docker-setup]
     - [setup and start bash][bash-setup]
-    - ask rtc administrators for a google rtc project access
+    - ask RTC administrators for a google RTC project access
 - run **./deploy/clis/gcloud init** in *bash* and follow the different steps.
     - *NB: The cloud project is adaptive-trader*
     ```

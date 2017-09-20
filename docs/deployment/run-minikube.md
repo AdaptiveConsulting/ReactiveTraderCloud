@@ -3,7 +3,7 @@
 ## What is minikube
 TODO
 
-## Use minikube with rtc
+## Use minikube with RTC
 ### Windows
 - Setup and start
     - follow the [docker setup documentation][docker-setup]
@@ -19,7 +19,7 @@ TODO
         # /!\ bash
         . .\deploy\minikube\minikube_data\docker-env.sh
         ```
-    - configure rtc deployer to use minikube with [use-cluster command][use-cluster]:
+    - configure RTC deployer to use minikube with [use-cluster command][use-cluster]:
         ```bash
         # /!\ bash
         ./deploy/kubernetes/use-cluster minikube
@@ -36,7 +36,7 @@ TODO
     ```
 
 ### Mac/Linux
-No rtc script implementation exists for now.
+No RTC script implementation exists for now.
 
 [docker-setup]: ./docker-setup.md
 [bash-setup]: ./bash-setup.md

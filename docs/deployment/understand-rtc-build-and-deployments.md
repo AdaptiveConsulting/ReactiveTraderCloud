@@ -1,4 +1,4 @@
-# You want to: Understand rtc build and deployments
+# You want to: Understand RTC build and deployments
 
 There are a lot of solutions when you choose to run Reactive Trader Cloud locally:
 - Installing every part locally without docker
@@ -9,7 +9,7 @@ There are a lot of solutions when you choose to run Reactive Trader Cloud locall
 
 ## docker or not docker
 ### Demo
-Running rtc for a demo is definitely easier to do with the help of docker as docker becomes the only dependency to install. You then just have to run the good commands and fill the authentication for gcloud.  
+Running RTC for a demo is definitely easier to do with the help of docker as docker becomes the only dependency to install. You then just have to run the good commands and fill the authentication for gcloud.  
 
 ### Development
 If you want to do development, docker add a layer that can be difficult to understand. And most of the time, developer will go in the traditional way by installing all dependencies (that are anyway needed to do the development).  
@@ -20,18 +20,18 @@ To build or deploy RTC, the only mandatory dependency is docker.
 With docker installed, you can:
 - **run without build**:
     - ./deploy/docker/runAll
-    - This would use [all rtc docker images from docker hub][hub-docker]
+    - This would use [all RTC docker images from docker hub][hub-docker]
 
 - **build**:
-    - ./deploy/docker/prepare build rtc MyVersion
-    - This would use docker images to build all artifacts and generate all rtc images
+    - ./deploy/docker/prepare build RTC MyVersion
+    - This would use docker images to build all artifacts and generate all RTC images
 
 - **run your local build**
     - ./deploy/docker/runAll MyVersion
 
 - **publish your local build**
-    - ./deploy/docker/prepare push rtc MyVersion
-    - This would push all rtc docker images to [docker hub][hub-docker]
+    - ./deploy/docker/prepare push RTC MyVersion
+    - This would push all RTC docker images to [docker hub][hub-docker]
 
 - **deploy on a kubernetes cluster**
     - ./deploy/kubernetes/use-cluster selected_cluster
@@ -43,19 +43,19 @@ With docker installed, you can:
 [Minikube](https://github.com/kubernetes/Minikube) is the local kubernetes cluster supported by the kubernetes team.  
 
 #### Added value
-We have added the Minikube feature to rtc in order to be able to deploy locally in the same way we deploy to gcloud.  
+We have added the Minikube feature to RTC in order to be able to deploy locally in the same way we deploy to gcloud.  
 This let us use the same [deployment code and mechanism](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/rtc-deployment.md).  
 
-Docker lets us run rtc locally without kubernetes but that code is custom and requires maintenance as docker is in a constant evolution with constant breaking changes (mainly for windows/mac).
+Docker lets us run RTC locally without kubernetes but that code is custom and requires maintenance as docker is in a constant evolution with constant breaking changes (mainly for windows/Mac).
 
 For developers, it's a great solution to be really confident on how will run the code without pushing/merging/reviewing. It also result in a quicker feedback as you suffer the circleci pipeline slowness.
 
 ### New layer == New issues
 #### Understand Windows/Mac docker mechanism
-On Mac and Windows, Minikube comes inside a linux virtual machine from different supported providers (VBox, Hyper-V, etc).  
+On Mac and Windows, Minikube comes inside a Linux virtual machine from different supported providers (VBox, Hyper-V, etc).  
 Installing docker result in:
 - Installing the docker client on your OS
-- Setting up the docker daemon inside a virtual machine in order to access a linux kernel (We will name it MobyLinuxVM)
+- Setting up the docker daemon inside a virtual machine in order to access a Linux kernel (We will name it MobyLinuxVM)
 
 #### Minikube docker daemon
 Minikube is built on top of this kind of virtual machine with the docker daemon. Kubernetes services run as containers inside.

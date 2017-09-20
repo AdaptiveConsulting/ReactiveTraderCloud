@@ -40,7 +40,7 @@ You will find scripts to help build/run/test Reactive Trader components:
 
 To build, run the following with the [build id][buildid], in this example we'll use *localbuild*
 ```bash
-./deploy/docker/prepare build rtc localbuild
+./deploy/docker/prepare build RTC localbuild
 ```
 
 This will run the following tasks:

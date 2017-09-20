@@ -18,7 +18,7 @@
 - Follow the [setup docker][docker-setup]
 - Follow the [bash setup instructions][bash-setup]
 - Authenticate with gcloud:
-    - Ask RTC administrators to be included in the rtc gcloud project
+    - Ask RTC administrators to be included in the RTC gcloud project
     - Run in bash ([see gcloud init details][gcloud-init]):
         ```bash
         ./deploy/clis/gcloud init
