@@ -2,10 +2,10 @@
 
 There are a lot of solutions when you choose to run Reactive Trader Cloud locally:
 - Installing every part locally without docker
-  - [frontend](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/client.md)
-  - [backend](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/server.md)
-- (TODO) Locally on docker without kubernetes
-- (TODO) Locally on docker with the support of kubernetes
+  - [frontend](../client.md)
+  - [backend](../server.md)
+- [Locally on docker without kubernetes](./run-rtc-with-docker.md)
+- Locally on docker with the support of kubernetes: [run minikube](./run-minikube.md) and then do a [standard deployment](./rtc-deployment.md)
 
 ## docker or not docker
 ### Demo

@@ -30,7 +30,7 @@
 follow the [docker setup instructions][docker-setup]
 
 ### Build containers from source
-First define a [build-id][builid] for your build. It's a string used to identify the images. For this documentation, we will use *localbuild*
+First define a [build id][builid] for your build. It's a string used to identify the images. For this documentation, we will use *localbuild*
 
 You will find scripts to help build/run/test Reactive Trader components:
 - prepare (to build and push)
@@ -38,7 +38,7 @@ You will find scripts to help build/run/test Reactive Trader components:
 - testAll
 - killAll
 
-To build, run the following with the [build-id][buildid], in this example we'll use *localbuild*
+To build, run the following with the [build id][buildid], in this example we'll use *localbuild*
 ```bash
 ./deploy/docker/prepare build rtc localbuild
 ```
@@ -48,35 +48,34 @@ This will run the following tasks:
 - Build the .NET services container by
   - Downloading the [base Docker image for .NET Core][dotnetcore-image]
   - Build the server binaries in that container with the checked out server source code
-  - Create a new `reactivetrader/servers` Docker image from the built services container tagged with the [build-id][build-id] provided and save locally
+  - Create a new `reactivetrader/servers` Docker image from the built services container tagged with the [build id][build-id] provided and save locally
 
 - Build the messaging broker container by
   - Download the [crossbar Docker base image][crossbar-image]
   - Build the broker image by applying the checked out crossbar config file
-  - Create a new `reactivetrader/broker` Docker image from the built broker container tagged with the [build-id][build-id] provided and save locally
+  - Create a new `reactivetrader/broker` Docker image from the built broker container tagged with the [build id][build-id] provided and save locally
 
 - Build the client container by
   - Download the [nodejs base Docker image][nodejs-image]
   - Build the client app in that container with the checked out client source code and save the built client app files
   - Download the [nginx Docker base image][nginx-image]
   - Copy the built client app files to the nginx container
-  - Create a new `reactivetrader/web` Docker image from the nginx container with the client app files tagged with the [build-id][build-id] provided and save locally
+  - Create a new `reactivetrader/web` Docker image from the nginx container with the client app files tagged with the [build id][build-id] provided and save locally
 
 - Build the eventstore container by
   - Download the [base Docker image for eventstore][eventstore-image]
   - Run the built `reactivetrader/servers` container with a special flag and the eventstore container to populate data into the eventstore container
-  - Create a new `reactivetrader/eventstore` Docker image from the eventstore container which now has the data populated, tagged with the [build-id][build-id] provided and save locally
+  - Create a new `reactivetrader/eventstore` Docker image from the eventstore container which now has the data populated, tagged with the [build id][build-id] provided and save locally
 
 The [4 `reactivetrader` images][docker-hub] will contain all the components needed to run Reactive Trader Cloud. The `servers` image contain binaries for all server micro-services and can be run with a flag to indicate which service to run. 
 
 
-Check the generated docker images by:
+Check the generated docker images:
 ```bash
 docker images
 ```
 Will output something like:
 ```bash
-$ docker images
 REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
 reactivetrader/eventstore   0.0                 a2137e0ed763        19 minutes ago      562MB
 reactivetrader/eventstore   0.0.localbuild      a2137e0ed763        19 minutes ago      562MB

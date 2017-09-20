@@ -59,6 +59,18 @@
     kubeconfig entry generated for cluster.
     Switched to context "gke_adaptive-trader_europe-west1-c_cluster".
     ```
+- you can run without <CLUSTER_NAME> to see available clusters:
+    ```
+    $ ./deploy/kubernetes/use-cluster
+    Usage:
+      ./deploy/kubernetes/use-cluster minikube|cluster|dev
+
+    existing cluster names:
+     - minikube: local kubernetes
+     - cluster:  where we do service level update. demo/dev/... environments are in this cluster. Present on gcloud
+     - dev:      where we do infrastructure updates. Only Devops and Admin should use this cluster. Present on gcloud
+
+    ```
 
 #### listing-environments
 - requirements:

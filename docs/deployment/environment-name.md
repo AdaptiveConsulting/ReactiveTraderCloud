@@ -11,7 +11,7 @@ This **environment name** can be found with the uri to rtc. For example, <https:
 If you are going to [deploy a new environment][rtc-deployment], you need to define its name yourself.  
 The criteria are:
 - it's a string
-- use characters and letters only, no special characters
+- use letters and numbers only, no special characters
 - it needs to be unique. You can see that by [listing already running environments][listing-environments]
 
 ## Minikube
