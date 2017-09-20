@@ -21,7 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <MtouchArch>i386</MtouchArch>
+    <MtouchArch>i386, x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchUseSGen>true</MtouchUseSGen>
@@ -114,9 +114,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MsgPack, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MsgPack.Cli.0.8.1\lib\Xamarin.iOS10\MsgPack.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MsgPack, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MsgPack.Cli.0.9.1\lib\Xamarin.iOS10\MsgPack.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
@@ -127,9 +126,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Interactive, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Interactive.3.1.1\lib\netstandard1.0\System.Interactive.dll</HintPath>
@@ -153,31 +151,25 @@
       <HintPath>..\packages\System.Reactive.PlatformServices.3.1.1\lib\netstandard1.3\System.Reactive.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.7.0\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.8.0\lib\netstandard2.0\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="WampSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WampSharp.1.2.5.36-beta\lib\Xamarin.iOS10\WampSharp.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\WampSharp.1.2.6.43-beta\lib\Xamarin.iOS10\WampSharp.dll</HintPath>
     </Reference>
     <Reference Include="WampSharp.Default.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WampSharp.Default.Client.1.2.5.36-beta\lib\netstandard1.3\WampSharp.Default.Client.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\WampSharp.Default.Client.1.2.6.43-beta\lib\netstandard1.3\WampSharp.Default.Client.dll</HintPath>
     </Reference>
     <Reference Include="WampSharp.NewtonsoftJson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WampSharp.NewtonsoftJson.1.2.5.36-beta\lib\netstandard1.3\WampSharp.NewtonsoftJson.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\WampSharp.NewtonsoftJson.1.2.6.43-beta\lib\netstandard1.3\WampSharp.NewtonsoftJson.dll</HintPath>
     </Reference>
     <Reference Include="WampSharp.NewtonsoftMsgpack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WampSharp.NewtonsoftMsgpack.1.2.5.36-beta\lib\netstandard1.3\WampSharp.NewtonsoftMsgpack.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\WampSharp.NewtonsoftMsgpack.1.2.6.43-beta\lib\netstandard1.3\WampSharp.NewtonsoftMsgpack.dll</HintPath>
     </Reference>
     <Reference Include="WampSharp.WebSockets, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WampSharp.WebSockets.1.2.5.36-beta\lib\netstandard1.3\WampSharp.WebSockets.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\WampSharp.WebSockets.1.2.6.43-beta\lib\netstandard1.3\WampSharp.WebSockets.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
     <Reference Include="ModernHttpClient">
