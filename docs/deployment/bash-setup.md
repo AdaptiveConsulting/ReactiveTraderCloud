@@ -1,8 +1,8 @@
 # You want to: Setup Bash
-## linux
+## Linux
 Nothing to do, just open a terminal
 
-## windows
+## Windows
 - install [git with bash][bash-install]
 - [optional] ConEMU
     - Install [ConEMU][conemu-install]. Stable version should be perfect.
@@ -21,7 +21,7 @@ Nothing to do, just open a terminal
                 ```powershell
                 bash
                 ```
-## mac
+## Mac
 TO BE DONE BY A MAC USER
 
 [bash-install]: https://git-scm.com/download/win

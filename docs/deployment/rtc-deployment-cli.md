@@ -1,4 +1,4 @@
-# How to: use rtc deployment commands
+# How to: use RTC deployment commands
 ## Commands
 ### More used Commands
 - Common
@@ -15,7 +15,7 @@
 - requirements:
     - [setup docker][docker-setup]
     - [setup and start bash][bash-setup]
-    - ask rtc administrators for a google rtc project access
+    - ask RTC administrators for a google RTC project access
 - run **./deploy/clis/gcloud init** in *bash* and follow the different steps.
     - *NB: The cloud project is adaptive-trader*
     ```
@@ -58,6 +58,18 @@
     Fetching cluster endpoint and auth data.
     kubeconfig entry generated for cluster.
     Switched to context "gke_adaptive-trader_europe-west1-c_cluster".
+    ```
+- you can run without <CLUSTER_NAME> to see available clusters:
+    ```
+    $ ./deploy/kubernetes/use-cluster
+    Usage:
+      ./deploy/kubernetes/use-cluster minikube|cluster|dev
+
+    existing cluster names:
+     - minikube: local kubernetes
+     - cluster:  where we do service level update. demo/dev/... environments are in this cluster. Present on gcloud
+     - dev:      where we do infrastructure updates. Only Devops and Admin should use this cluster. Present on gcloud
+
     ```
 
 #### listing-environments

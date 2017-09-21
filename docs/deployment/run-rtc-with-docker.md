@@ -12,7 +12,7 @@ Follow the [docker setup instructions](https://github.com/AdaptiveConsulting/Rea
 
 This will download the 4 images required for Reactive Trader Cloud and run them.
 
-### your local rtc images
+### your local RTC images
 - Follow the [local build instructions](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/build-rtc-locally.md)
 - You can then run the built images by passing the `BUILD_ID` to the `./runAll` script
     ```bash
@@ -21,7 +21,7 @@ This will download the 4 images required for Reactive Trader Cloud and run them.
 - You will see the docker-compose mechanism start your containers and print the logs
 
 ## See it running
-Open a browser, navigate to the docker address (`localhost` for linux users and something like `10.0.75.2` for windows/mac users) and the web client will load.
+Open a browser, navigate to the docker address (`localhost` for Linux users and something like `10.0.75.2` for Windows/Mac users) and the web client will load.
 
 ## Test ReactiveTrader
 After having started ReactiveTrader, you can run the tests.
