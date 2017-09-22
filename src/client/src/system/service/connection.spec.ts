@@ -1,9 +1,8 @@
 import StubAutobahnProxy from './autobahnConnectionProxyStub'
-import Connection from '../../../src/system/service/connection'
+import { Connection } from '../../../src/system/service/connection'
 import { ConnectionStatus } from '../../../src/types/'
 
 describe('Connection', () => {
-  
   let stubAutobahnProxy
   let connection
   let receivedStatusUpdates
@@ -12,7 +11,7 @@ describe('Connection', () => {
     stubAutobahnProxy = new StubAutobahnProxy()
     connection = new Connection('user', stubAutobahnProxy)
     receivedStatusUpdates = []
-    connection.connectionStatusStream.subscribe((isConnected) => {
+    connection.connectionStatusStream.subscribe(isConnected => {
       receivedStatusUpdates.push(isConnected)
     })
   })
@@ -46,7 +45,7 @@ describe('Connection', () => {
     expect(receivedStatusUpdates.length).toEqual(2)
     expect(receivedStatusUpdates).toEqual([
       ConnectionStatus.idle,
-      ConnectionStatus.connected,
+      ConnectionStatus.connected
     ])
   })
 
@@ -58,20 +57,25 @@ describe('Connection', () => {
     expect(receivedStatusUpdates).toEqual([
       ConnectionStatus.idle,
       ConnectionStatus.connected,
-      ConnectionStatus.disconnected,
+      ConnectionStatus.disconnected
     ])
   })
 
   test('errors if called before session is set', () => {
     let streamYieldCount = 0
     let receivedError
-    connection.subscribeToTopic('status').subscribe((_) => {
-      streamYieldCount++
-    }, (ex) => {
-      receivedError = ex
-    })
+    connection.subscribeToTopic('status').subscribe(
+      _ => {
+        streamYieldCount++
+      },
+      ex => {
+        receivedError = ex
+      }
+    )
     expect(streamYieldCount).toEqual(0)
     expect(receivedError).toBeDefined()
-    expect(receivedError.error).toEqual('Session not connected, can\'t subscribe to topic [status]')
+    expect(receivedError.error).toEqual(
+      "Session not connected, can't subscribe to topic [status]"
+    )
   })
 })

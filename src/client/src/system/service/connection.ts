@@ -14,14 +14,14 @@ export default function createConnection(
   url: string,
   realm: string,
   port: number
-): any {
+): Connection {
   const autobahn = new AutobahnConnectionProxy(url, realm, port)
   return new Connection(userName, autobahn)
 }
 /**
  * Represents a Connection to autobahn
  */
-class Connection {
+export class Connection {
   userName: string
   autobahn: any
   disposables: Subscription
