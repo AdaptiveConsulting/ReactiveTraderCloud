@@ -1,18 +1,23 @@
 import { Observable, Scheduler } from 'rxjs/Rx'
 import { ServiceBase } from '../system/service'
+import { ServiceConst } from '../types'
 import { logger, RetryPolicy } from '../system'
 import '../system/observableExtensions/retryPolicyExt'
 
 const log = logger.create('PricingService')
 
 export default class PricingService extends ServiceBase {
+  constructor(connection) {
+    super(ServiceConst.PricingServiceKey, connection)
+    this.connect()
+  }
   getSpotPriceStream(request) {
     const getPriceUpdatesOperationName = 'getPriceUpdates'
-    return Observable.create(
-      (o) => {
-        log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
-        let lastPrice = null
-        return this.serviceClient
+    return Observable.create(o => {
+      log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
+      let lastPrice = null
+      return (
+        this.serviceClient
           .createStreamOperation(getPriceUpdatesOperationName, request)
           // we retry the price stream forever, if it errors (likely connection down) we pump a non tradable price
           .retryWithPolicy(
@@ -23,19 +28,23 @@ export default class PricingService extends ServiceBase {
               if (willRetry && lastPrice !== null) {
                 // TODO: remove is stale price fully supported
               }
-            },
+            }
           )
           .map(item => keysToLower(item))
           .subscribe(
-            (price) => {
+            price => {
               lastPrice = price
               o.next(price)
             },
-            (err) => { o.error(err) },
-            () => { o.complete() },
+            err => {
+              o.error(err)
+            },
+            () => {
+              o.complete()
+            }
           )
-      },
-    )
+      )
+    })
   }
 }
 
@@ -46,6 +55,6 @@ function keysToLower(object) {
     mid: object.Mid,
     creationTimestamp: object.CreationTimestamp,
     symbol: object.Symbol,
-    valueDate: object.ValueDate,
+    valueDate: object.ValueDate
   }
 }

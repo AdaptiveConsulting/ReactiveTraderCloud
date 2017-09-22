@@ -12,12 +12,14 @@ export default class CompositeStatusService extends DisposableBase {
   serviceStatusStream
   currentServiceStatusLookup
 
-  constructor(connection,
-              pricingService,
-              referenceDataService,
-              blotterService,
-              executionService,
-              analyticsService) {
+  constructor(
+    connection,
+    pricingService,
+    referenceDataService,
+    blotterService,
+    executionService,
+    analyticsService
+  ) {
     super()
     this.connection = connection
     this.pricingService = pricingService
@@ -27,6 +29,7 @@ export default class CompositeStatusService extends DisposableBase {
     this.analyticsService = analyticsService
     this.serviceStatusStream = this.createServiceStatusStream()
     this.currentServiceStatusLookup = new ServiceStatusLookup()
+    this.start()
   }
 
   /**
@@ -73,9 +76,9 @@ export default class CompositeStatusService extends DisposableBase {
   // async streams we need an explicit start to ensure the streams are always hot
   start() {
     this.addDisposable(
-      this.serviceStatusStream.subscribe((update) => {
+      this.serviceStatusStream.subscribe(update => {
         this.currentServiceStatusLookup = update
-      }),
+      })
     )
     this.addDisposable(this.serviceStatusStream.connect())
   }
@@ -83,17 +86,19 @@ export default class CompositeStatusService extends DisposableBase {
   createServiceStatusStream() {
     // merge then scan all our underlying service status streams into a single
     // data structure (ServiceStatusLookup) we can query for the current status.
-    return Observable
-      .merge(
-        this.pricingService.serviceStatusStream,
-        this.referenceDataService.serviceStatusStream,
-        this.blotterService.serviceStatusStream,
-        this.executionService.serviceStatusStream,
-        this.analyticsService.serviceStatusStream)
+    return Observable.merge(
+      this.pricingService.serviceStatusStream,
+      this.referenceDataService.serviceStatusStream,
+      this.blotterService.serviceStatusStream,
+      this.executionService.serviceStatusStream,
+      this.analyticsService.serviceStatusStream
+    )
       .scan(
-        (statusLookup: any, serviceStatus) => statusLookup.updateServiceStatus(serviceStatus),
+        (statusLookup: any, serviceStatus) =>
+          statusLookup.updateServiceStatus(serviceStatus),
         // seed the stream with the initial, empty 'status' data structure
-        new ServiceStatusLookup())
+        new ServiceStatusLookup()
+      )
       .publishReplay()
   }
 }
