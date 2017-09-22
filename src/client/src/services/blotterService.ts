@@ -1,18 +1,26 @@
 import { Observable, Scheduler } from 'rxjs/Rx'
 import { TradeMapper } from './mappers'
-import { ServiceBase } from '../system/service'
+import { ServiceClient } from '../system/service'
 import { logger, RetryPolicy } from '../system'
 import '../system/observableExtensions/retryPolicyExt'
 import { ServiceConst } from '../types'
 
 const log = logger.create('BlotterService')
 
-export default class BlotterService extends ServiceBase {
+export default class BlotterService {
   tradeMapper: any
+  serviceClient: ServiceClient
   constructor(connection, referenceDataService) {
-    super(ServiceConst.BlotterServiceKey, connection)
+    this.serviceClient = new ServiceClient(
+      ServiceConst.BlotterServiceKey,
+      connection
+    )
     this.tradeMapper = new TradeMapper(referenceDataService)
-    this.connect()
+    this.serviceClient.connect()
+  }
+
+  get serviceStatusStream() {
+    return this.serviceClient.serviceStatusStream
   }
 
   getTradesStream() {
