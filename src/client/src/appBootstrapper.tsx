@@ -21,7 +21,6 @@ import configureStore from './configureStore'
 
 // When the application is run in openfin then 'fin' will be registered on the global window object.
 declare const window: any
-void window
 
 const connectSocket = () => {
   const user: User = FakeUserRepository.currentUser
@@ -71,6 +70,7 @@ const appBootstrapper = () => {
     executionService,
     openFin
   )
+  window.store = store
   ReactDOM.render(
     <Provider store={store}>
       <OpenFinProvider openFin={openFin}>
