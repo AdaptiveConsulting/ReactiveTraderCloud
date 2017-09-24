@@ -1,4 +1,9 @@
 # Understand: Environment name
+
+- [Understand: Environment name](#understand-environment-name)
+    - [Cloud deployment](#cloud-deployment)
+    - [Minikube](#minikube)
+
 In kubernetes, each container is defined in a namespace. We use these namespaces to regroup our docker containers for an environment.  
 When we deploy in the cluster, we need to define a unique id that we name **environment name**.
 

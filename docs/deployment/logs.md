@@ -1,5 +1,10 @@
 # Logs
 
+- [Logs](#logs)
+    - [Standard approach - Installing everything on your machine](#standard-approach---installing-everything-on-your-machine)
+    - [Environment running in kubernetes on gcloud](#environment-running-in-kubernetes-on-gcloud)
+    - [Environment running with docker](#environment-running-with-docker)
+
 Reactive Trader Cloud logs are setup differently for each deployment kind.
 
 ## Standard approach - Installing everything on your machine

@@ -1,5 +1,8 @@
 # You want to: Deploy Reactive Trader Cloud
 
+- [You want to: Deploy Reactive Trader Cloud](#you-want-to-deploy-reactive-trader-cloud)
+    - [Do the deployment](#do-the-deployment)
+
 ## Do the deployment
 - follow the [bash setup][bash-setup] and start a bash terminal
 - choose your [environment name][environment-name]. For this example we will use `myenv`

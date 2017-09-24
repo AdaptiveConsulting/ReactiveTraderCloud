@@ -1,4 +1,15 @@
 # Nsgate - Gcloud Cluster Front Loadbalancer
+
+- [Nsgate - Gcloud Cluster Front Loadbalancer](#nsgate---gcloud-cluster-front-loadbalancer)
+    - [Cluster access](#cluster-access)
+        - [Problematic](#problematic)
+    - [High level](#high-level)
+    - [Mechanism](#mechanism)
+        - [Configuration](#configuration)
+        - [SSL](#ssl)
+        - [Issue with 404](#issue-with-404)
+    - [Update](#update)
+
 ## Cluster access
 There are different approach to connect to a Kubernetes cluster.
 - [Kubernetes service resource][service-official-doc]

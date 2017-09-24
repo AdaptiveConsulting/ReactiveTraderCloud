@@ -1,5 +1,14 @@
 # Run Reactive Trader Cloud with docker (without kubernetes)
 
+- [Run Reactive Trader Cloud with docker (without kubernetes)](#run-reactive-trader-cloud-with-docker-without-kubernetes)
+    - [Setup and validate docker](#setup-and-validate-docker)
+    - [Choose a method to run](#choose-a-method-to-run)
+        - [already pre-built images](#already-pre-built-images)
+        - [your local RTC images](#your-local-rtc-images)
+    - [See it running](#see-it-running)
+    - [Test ReactiveTrader](#test-reactivetrader)
+    - [Stop all the running containers](#stop-all-the-running-containers)
+
 ## Setup and validate docker
 Follow the [docker setup instructions](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/docker-setup.md)
 

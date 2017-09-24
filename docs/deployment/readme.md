@@ -24,6 +24,7 @@ Please start by reading the [Understand rtc build and deployments guide](./under
     - See a [list of the rtc managment commands](./rtc-deployment-cli.md)
 - Infrastructure managment
     - [Deploy the kubernetes cluster on glcoud](./gcloud.md#Deploy-a-kubernetes-cluster-on-gcloud)
+    - [Update cluster version](./gcloud.md#Update-cluster-instance-version)
 - Concepts
     - [Understand Nsgate, our gcloud cluster front loadbalancer](./nsgate.md)
     - [Understand rtc build and deployments guide](./understand-rtc-build-and-deployments.md)

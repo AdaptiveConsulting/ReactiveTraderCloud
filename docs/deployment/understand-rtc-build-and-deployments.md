@@ -1,5 +1,18 @@
 # You want to: Understand RTC build and deployments
 
+- [You want to: Understand RTC build and deployments](#you-want-to-understand-rtc-build-and-deployments)
+    - [docker or not docker](#docker-or-not-docker)
+        - [Demo](#demo)
+        - [Development](#development)
+    - [Docker as the only mandatory dependency](#docker-as-the-only-mandatory-dependency)
+    - [Minikube](#minikube)
+        - [Why Minikube](#why-minikube)
+            - [What is Minikube](#what-is-minikube)
+            - [Added value](#added-value)
+        - [New layer == New issues](#new-layer-new-issues)
+            - [Understand Windows/Mac docker mechanism](#understand-windowsmac-docker-mechanism)
+            - [Minikube docker daemon](#minikube-docker-daemon)
+
 There are a lot of solutions when you choose to run Reactive Trader Cloud locally:
 - Installing every part locally without docker
   - [frontend](../client.md)
