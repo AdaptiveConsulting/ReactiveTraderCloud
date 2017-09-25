@@ -43,7 +43,7 @@ const appBootstrapper = () => {
   const blotterService = BlotterService(connection, refDataService)
   const execService = ExecutionService(connection, refDataService, openFin)
   const analyticsService = AnalyticsService(connection, refDataService)
-  const compositeStatusService = new CompositeStatusService(
+  const compositeStatusService = CompositeStatusService(
     connection,
     pricingService,
     refDataService,
