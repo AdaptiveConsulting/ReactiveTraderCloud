@@ -40,7 +40,7 @@ const appBootstrapper = () => {
   const openFin = new OpenFin()
   const referenceDataService = new ReferenceDataService(connection)
   const pricingService = new PricingService(connection)
-  const blotterService = new BlotterService(connection, referenceDataService)
+  const blotterService = BlotterService(connection, referenceDataService)
   const executionService = new ExecutionService(
     connection,
     referenceDataService,
