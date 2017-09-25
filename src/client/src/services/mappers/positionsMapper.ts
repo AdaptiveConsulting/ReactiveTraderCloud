@@ -1,10 +1,13 @@
 import * as _ from 'lodash'
 
-import { ReferenceDataService } from '../'
-import { CurrencyPairPosition, HistoricPosition, PositionUpdates } from '../../types'
+import {
+  CurrencyPairPosition,
+  HistoricPosition,
+  PositionUpdates,
+  ReferenceDataService
+} from '../../types'
 
 export default class PositionsMapper {
-
   referenceDataService: ReferenceDataService
 
   constructor(referenceDataService: ReferenceDataService) {
@@ -15,7 +18,7 @@ export default class PositionsMapper {
     return {
       symbol: ccyPairPosition.symbol,
       basePnl: ccyPairPosition.basePnl,
-      baseTradedAmount: ccyPairPosition.baseTradedAmount,
+      baseTradedAmount: ccyPairPosition.baseTradedAmount
     }
   }
 
@@ -24,31 +27,25 @@ export default class PositionsMapper {
     const history = this.mapHistoricPositionFromDto(dto.History)
     return {
       history,
-      currentPositions: positions,
+      currentPositions: positions
     }
   }
 
   mapPositionsFromDto(dtos: Array<any>): Array<CurrencyPairPosition> {
-    return _.map(
-      dtos,
-      (dto): CurrencyPairPosition => ({
-        symbol: dto.Symbol,
-        basePnl: dto.BasePnl,
-        baseTradedAmount: dto.BaseTradedAmount,
-        currencyPair: this.referenceDataService.getCurrencyPair(dto.Symbol),
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount',
-      }),
-    )
+    return _.map(dtos, (dto): CurrencyPairPosition => ({
+      symbol: dto.Symbol,
+      basePnl: dto.BasePnl,
+      baseTradedAmount: dto.BaseTradedAmount,
+      currencyPair: this.referenceDataService.getCurrencyPair(dto.Symbol),
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount'
+    }))
   }
 
   mapHistoricPositionFromDto(dtos: Array<any>): Array<HistoricPosition> {
-    return _.map(
-      dtos,
-      (dto): HistoricPosition => ({
-        timestamp: new Date(dto.Timestamp),
-        usdPnl: dto.UsdPnl,
-      }),
-    )
+    return _.map(dtos, (dto): HistoricPosition => ({
+      timestamp: new Date(dto.Timestamp),
+      usdPnl: dto.UsdPnl
+    }))
   }
 }
