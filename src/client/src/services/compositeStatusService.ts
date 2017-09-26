@@ -79,7 +79,8 @@ export default function compositeStatusService(
     get serviceStatus() {
       return currentServiceStatusLookup
     },
-    serviceStatusStream
+    serviceStatusStream,
+    connection
   }
 }
 
