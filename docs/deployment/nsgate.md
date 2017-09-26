@@ -1,4 +1,15 @@
 # Nsgate - Gcloud Cluster Front Loadbalancer
+
+- [Nsgate - Gcloud Cluster Front Loadbalancer](#nsgate---gcloud-cluster-front-loadbalancer)
+    - [Cluster access](#cluster-access)
+        - [Problematic](#problematic)
+    - [High level](#high-level)
+    - [Mechanism](#mechanism)
+        - [Configuration](#configuration)
+        - [SSL](#ssl)
+        - [Issue with 404](#issue-with-404)
+    - [Update](#update)
+
 ## Cluster access
 There are different approach to connect to a Kubernetes cluster.
 - [Kubernetes service resource][service-official-doc]
@@ -15,7 +26,7 @@ The **Kubernetes ingress** are load balancer level 7, but these one didn't exist
 The **Kubernetes service** resource is a load balancers level 4. So we did have to implement a small program named **nsgate** based on **nginx** that do the load balancers level 7 for us without the ingress limitations.
 
 ## High level
-**nsgate** means **namespace-gate**. It concist of 2 containers running behind a **Kubernetes service** with one static external ip. We have created a domain for the cluster **adaptivecluster.com** and we redirect all subdomains **wildcard.adaptivecluster.com** to this static ip in order that every connection goes through **nsgate**. **nsgate** is a nginx service that will read the subdomain to dynamicly choose the backend to proxy the connection to.
+**nsgate** means **namespace-gate**. It concists of 2 containers running behind a **Kubernetes service** with one static external ip. We have created a domain for the cluster **adaptivecluster.com** and we redirect all subdomains **wildcard.adaptivecluster.com** to this static ip in order that every connection goes through **nsgate**. **nsgate** is a nginx service that will read the subdomain to dynamicly choose the backend to proxy the connection to.
 
 ## Mechanism
 ### Configuration
@@ -35,3 +46,9 @@ The issue is only present with https. **http://foo-bar.adaptivecluster.com** is 
 
 [service-official-doc]: https://Kubernetes.io/docs/concepts/services-networking/service/
 [ingress-official-doc]: https://Kubernetes.io/docs/concepts/services-networking/ingress/
+
+## Update
+- update the code as expected (/deploy/docker/nsgate)
+- choose the build number by looking latest nsgate built
+- `./deploy/docker/helpers/listAllTags.sh weareadaptive/nsgate`
+- `./deploy/debug/build-and-update-nsgate.sh build`

@@ -1,5 +1,14 @@
 # You want to: use CI server to build RTC
 
+- [You want to: use CI server to build RTC](#you-want-to-use-ci-server-to-build-rtc)
+        - [1 - Ignored branches](#1---ignored-branches)
+        - [2 - Build dependencies](#2---build-dependencies)
+        - [3 - Cache between builds](#3---cache-between-builds)
+        - [4 - Build steps](#4---build-steps)
+        - [5 - Validation steps](#5---validation-steps)
+        - [6 - Deployment](#6---deployment)
+        - [7 - Build number](#7---build-number)
+
 CircleCi read it's configuration in the circle.yml file defined at the ReactiveTraderCloud root directory.
 
 Here is the file:

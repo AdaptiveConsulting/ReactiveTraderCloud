@@ -1,5 +1,11 @@
 # You want to: build RTC locally
 
+- [You want to: build RTC locally](#you-want-to-build-rtc-locally)
+    - [Docker images](#docker-images)
+    - [Procedure](#procedure)
+        - [Setup and validate docker](#setup-and-validate-docker)
+        - [Build containers from source](#build-containers-from-source)
+
 ## Docker images
 - `Build`: we use several docker images to build RTC:
     - **Base images**:

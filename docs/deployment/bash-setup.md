@@ -1,4 +1,10 @@
 # You want to: Setup Bash
+
+- [You want to: Setup Bash](#you-want-to-setup-bash)
+    - [Linux](#linux)
+    - [Windows](#windows)
+    - [Mac](#mac)
+
 ## Linux
 Nothing to do, just open a terminal
 

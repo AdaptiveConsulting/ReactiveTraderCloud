@@ -1,4 +1,14 @@
 # Docker
+
+- [Docker](#docker)
+    - [Docker in really short](#docker-in-really-short)
+    - [Why docker](#why-docker)
+    - [Installation](#installation)
+    - [Configuration](#configuration)
+        - [Windows specifics](#windows-specifics)
+        - [standard](#standard)
+        - [minikube](#minikube)
+
 ## Docker in really short
 In short, docker is like a virtual machine but without the kernel emulation. Every container share the host kernel. For RTC, we use Linux containers that require a Linux kernel.
 
