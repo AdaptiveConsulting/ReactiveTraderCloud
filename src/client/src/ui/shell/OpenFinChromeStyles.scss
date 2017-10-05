@@ -10,10 +10,8 @@ $header-height: 30px;
     .openfin-chrome__header-controls {
       display: block;
     }
-
   }
 }
-
 .openfin-chrome__header {
   width: 100%;
   height: $header-height;
@@ -43,16 +41,14 @@ $header-height: 30px;
   top: 0;
   z-index: 2;
   background: transparent;
-  width: calc(100% - 70px);
   // when using -webkit-app-region: drag; cursor is overwritten by system settings and the visual result is contradictory to function
   // cursor: move;
   .openfin-chrome__header-controls-container {
-    position: absolute;
     color: #90AFC1;
   }
+
   .openfin-chrome__header-controls {
     display: none;
-    right: 25px;
   }
   .openfin-chrome__header-title-label {
     display: none;
@@ -82,8 +78,9 @@ $header-height: 30px;
 .openfin-chrome__header-controls {
   list-style: none;
   position: absolute;
-  right: 10px;
   padding-left: 0;
+  right: 0;
+  padding-right: 5px;
   margin: 3px 0;
 }
 
@@ -112,4 +109,3 @@ $header-height: 30px;
     height: 100%;
   }
 }
-
