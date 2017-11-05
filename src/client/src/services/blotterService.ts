@@ -1,30 +1,40 @@
 import { Observable, Scheduler } from 'rxjs/Rx'
 import { TradeMapper } from './mappers'
-import { ServiceBase } from '../system/service'
+import { ServiceClient } from '../system/service'
 import { logger, RetryPolicy } from '../system'
 import '../system/observableExtensions/retryPolicyExt'
+import { ServiceConst } from '../types'
 
 const log = logger.create('BlotterService')
 
-export default class BlotterService extends ServiceBase {
-  tradeMapper: any
-  constructor(serviceType,
-              connection,
-              referenceDataService) {
-    super(serviceType, connection)
-    this.tradeMapper = new TradeMapper(referenceDataService)
-  }
-
-  getTradesStream() {
-    return Observable.create(
-      (o) => {
+const createBlotterService = (connection, referenceDataService) => {
+  const serviceClient = new ServiceClient(
+    ServiceConst.BlotterServiceKey,
+    connection
+  )
+  const tradeMapper = new TradeMapper(referenceDataService)
+  serviceClient.connect()
+  return  {
+    get serviceStatusStream() {
+      return serviceClient.serviceStatusStream
+    },
+  
+    getTradesStream() {
+      return Observable.create(o => {
         log.debug('Subscribing to trade stream')
-        return this.serviceClient
-          .createStreamOperation('getTradesStream', { /* noop request */ })
-          .retryWithPolicy(RetryPolicy.backoffTo10SecondsMax, 'getTradesStream', Scheduler.async)
-          .map(dto => this.tradeMapper.mapFromDto(dto))
+        return serviceClient
+          .createStreamOperation('getTradesStream', {
+            /* noop request */
+          })
+          .retryWithPolicy(
+            RetryPolicy.backoffTo10SecondsMax,
+            'getTradesStream',
+            Scheduler.async
+          )
+          .map(dto => tradeMapper.mapFromDto(dto))
           .subscribe(o)
-      },
-    )
+      })
+    }    
   }
 }
+export default createBlotterService

@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Rx'
 import ServiceClient from '../../../src/system/service/serviceClient'
-import Connection from '../../../src/system/service/connection'
+import { Connection } from '../../../src/system/service/connection'
 import StubAutobahnProxy from './autobahnConnectionProxyStub'
 
 let stubAutobahnProxy
@@ -9,13 +9,12 @@ let receivedServiceStatusStream
 let serviceClient
 
 describe('ServiceClient', () => {
-
   beforeEach(() => {
     stubAutobahnProxy = new StubAutobahnProxy()
     connection = new Connection('user', stubAutobahnProxy)
     serviceClient = new ServiceClient('myServiceType', connection)
     receivedServiceStatusStream = []
-    serviceClient.serviceStatusStream.subscribe((statusSummary) => {
+    serviceClient.serviceStatusStream.subscribe(statusSummary => {
       receivedServiceStatusStream.push(statusSummary)
     })
   })
@@ -40,7 +39,7 @@ describe('ServiceClient', () => {
     assertExpectedStatusUpdate(2, true)
   })
 
-  test('doesn\'t push duplicate status updates', () => {
+  test("doesn't push duplicate status updates", () => {
     connect()
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
     pushServiceHeartbeat('myServiceType', 'myServiceType.1', 0)
@@ -159,13 +158,15 @@ describe('ServiceClient', () => {
         existing.unsubscribe()
       }
       priceSubscriptionDisposable.add(
-        serviceClient.createStreamOperation('getPriceStream', 'EURUSD')
-          .subscribe((price) => {
-            receivedPrices.push(price)
-          },
+        serviceClient
+          .createStreamOperation('getPriceStream', 'EURUSD')
+          .subscribe(
+            price => {
+              receivedPrices.push(price)
+            },
             err => receivedErrors.push(err),
-            () => onCompleteCount++,
-          ),
+            () => onCompleteCount++
+          )
       )
     }
 
@@ -176,7 +177,9 @@ describe('ServiceClient', () => {
     }
 
     function pushPrice(serviceId, price) {
-      const replyToTopic = stubAutobahnProxy.session.getTopic(serviceId + '.getPriceStream').dto.replyTo
+      const replyToTopic = stubAutobahnProxy.session.getTopic(
+        serviceId + '.getPriceStream'
+      ).dto.replyTo
       stubAutobahnProxy.session.getTopic(replyToTopic).onResults(price)
     }
   })
@@ -210,7 +213,6 @@ describe('ServiceClient', () => {
       pushSuccessfulResponse('myServiceType.1', 'ResponsePayload')
       expect(onCompleteCount).toEqual(1)
     })
-
 
     test('errors when underlying connection receives error', () => {
       const error = new Error('FakeRPCError')
@@ -261,23 +263,33 @@ describe('ServiceClient', () => {
 
     function sendRequest(request, waitForSuitableService) {
       requestSubscriptionDisposable.add(
-        serviceClient.createRequestResponseOperation('executeTrade', request, waitForSuitableService)
-          .subscribe(response => {
-            responses.push(response)
-          },
+        serviceClient
+          .createRequestResponseOperation(
+            'executeTrade',
+            request,
+            waitForSuitableService
+          )
+          .subscribe(
+            response => {
+              responses.push(response)
+            },
             err => receivedErrors.push(err),
-            () => onCompleteCount++,
-          ),
+            () => onCompleteCount++
+          )
       )
     }
 
     function pushSuccessfulResponse(serviceId, response) {
-      const stubCallResult = stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade')
+      const stubCallResult = stubAutobahnProxy.session.getTopic(
+        serviceId + '.executeTrade'
+      )
       stubCallResult.onSuccess(response)
     }
 
     function pushErrorResponse(serviceId, err) {
-      const stubCallResult = stubAutobahnProxy.session.getTopic(serviceId + '.executeTrade')
+      const stubCallResult = stubAutobahnProxy.session.getTopic(
+        serviceId + '.executeTrade'
+      )
       stubCallResult.onReject(err)
     }
   })
@@ -293,18 +305,27 @@ describe('ServiceClient', () => {
       Type: serviceType,
       Instance: serviceId,
       TimeStamp: '',
-      Load: instanceLoad,
+      Load: instanceLoad
     })
   }
 
-  function assertExpectedStatusUpdate(expectedCount, lastStatusExpectedIsConnectedStatus) {
+  function assertExpectedStatusUpdate(
+    expectedCount,
+    lastStatusExpectedIsConnectedStatus
+  ) {
     expect(receivedServiceStatusStream.length).toEqual(expectedCount)
     if (expectedCount > 0) {
-      expect(receivedServiceStatusStream[expectedCount - 1].isConnected).toEqual(lastStatusExpectedIsConnectedStatus)
+      expect(
+        receivedServiceStatusStream[expectedCount - 1].isConnected
+      ).toEqual(lastStatusExpectedIsConnectedStatus)
     }
   }
 
-  function assertServiceInstanceStatus(statusUpdateIndex, serviceId, expectedIsConnectedStatus) {
+  function assertServiceInstanceStatus(
+    statusUpdateIndex,
+    serviceId,
+    expectedIsConnectedStatus
+  ) {
     const serviceStatus = receivedServiceStatusStream[statusUpdateIndex]
     expect(serviceStatus).toBeDefined()
   }
