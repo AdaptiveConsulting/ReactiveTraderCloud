@@ -202,6 +202,7 @@ export default class OpenFin {
   }
 
   openTradeNotification(trade) {
+    if (!this.isRunningInOpenFin) return
 
     const tradeNotification = formatTradeNotification(trade)
     new fin.desktop.Notification({
