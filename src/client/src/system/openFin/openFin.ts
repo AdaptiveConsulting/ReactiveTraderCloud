@@ -39,14 +39,14 @@ export default class OpenFin {
 
   maximize(currentWindow = this.currentWindow) {
     currentWindow.getState((state) => {
-      switch (state){
+      switch (state) {
         case 'maximized':
         case 'restored':
         case 'minimized':
           currentWindow.restore(() => currentWindow.bringToFront(
-              () => log.info('Window brought to front.'),
-              err => log.error(err),
-            ), err => log.error(err))
+            () => log.info('Window brought to front.'),
+            err => log.error(err),
+          ), err => log.error(err))
           break
         default:
           currentWindow.maximize(() => log.info('Window maximized with success.'), err => log.error('Failed to maximize window.', err))
@@ -173,7 +173,7 @@ export default class OpenFin {
    */
   refreshCurrencyChart(symbol) {
     const interval = 5
-    fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', { symbol, interval })
+    fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', {symbol, interval})
     return Promise.resolve(symbol)
   }
 
@@ -223,18 +223,21 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.publish('position-update', serialisePositions)
   }
 
+
   publishPrice(price) {
     if (!this.isRunningInOpenFin) return
-
-    console.warn('PriceMapper.mapToSpotPriceDto moved to spotTileItemFormatter')
-    // fin.desktop.InterApplicationBus.publish('price-update', PriceMapper.mapToSpotPriceDto(price))
+    fin.desktop.InterApplicationBus.publish('price-update', price)
   }
 
   sendAllBlotterData(uuid, blotterData) {
-    fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', blotterData)
+    const parsed = Object.keys(blotterData)
+      .map((x) => formatTradeNotification(blotterData[x]))
+
+    fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', parsed)
   }
 
   sendPositionClosedNotification(uuid, correlationId) {
+    if (!this.isRunningInOpenFin) return
     fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId)
   }
 
