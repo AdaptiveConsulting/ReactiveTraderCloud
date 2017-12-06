@@ -60,7 +60,7 @@ export const stalePricing = createAction(ACTION_TYPES.PRICING_STALE)
 
 export const spotRegionSettings = id => regionsSettings(`${id} Spot`, 370, 155, true)
 
-export function spotTileEpicsCreator(executionService$, referenceDataService$, openfin) {
+export function spotTileEpicsCreator(executionService$, referenceDataService, openfin) {
   function executeTradeEpic(action$) {
     return action$.ofType(ACTION_TYPES.EXECUTE_TRADE)
       .flatMap((action) => executionService$.executeTrade(action.payload),
@@ -73,7 +73,7 @@ export function spotTileEpicsCreator(executionService$, referenceDataService$, o
       .map((payload) => {
         _.values(payload.payload).forEach((item: SpotPrice) => {
           // TODO: do it better
-          item.currencyPair = item.currencyPair || referenceDataService$.getCurrencyPair(item.symbol)
+          item.currencyPair = item.currencyPair || referenceDataService.getCurrencyPair(item.symbol)
         })
         return payload
       })
