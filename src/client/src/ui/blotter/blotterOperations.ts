@@ -11,8 +11,11 @@ export const ACTION_TYPES = {
 export const fetchBlotter = createAction(ACTION_TYPES.BLOTTER_SERVICE)
 
 
-export const blotterServiceEpic = blotterService$ => (action$) => {
+export const blotterServiceEpic = (blotterService$, openFin) => (action$, store) => {
   return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
+    .do(() => openFin.addSubscription('fetch-blotter',
+      (msg, uuid) => openFin.sendAllBlotterData(uuid, store.getState().blotterService.trades))
+    )
     .flatMapTo(blotterService$.getTradesStream())
     .map(fetchBlotter)
 }
@@ -34,7 +37,7 @@ export const blotterServiceReducer = (state: any = {}, action) => {
       }
       const trades = _.mapKeys(_.values(payloadTrades), 'tradeId')
       return {
-        trades: { ...trades, ...newState.trades },
+        trades: {...trades, ...newState.trades},
       }
     default:
       return state

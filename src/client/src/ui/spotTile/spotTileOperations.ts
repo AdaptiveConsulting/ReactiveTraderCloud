@@ -7,6 +7,7 @@ import * as numeral from 'numeral'
 import * as _ from 'lodash'
 import { Observable } from 'rxjs/Rx'
 import { Direction, NotificationType, PriceMovementTypes, Rate } from '../../types'
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceOperations'
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
 export const PRICE_STALE_AFTER_X_IN_MS = 6000
@@ -47,8 +48,8 @@ export enum ACTION_TYPES {
 
 const stalePriceErrorMessage = 'Pricing is unavailable'
 
-export const executeTrade = createAction(ACTION_TYPES.EXECUTE_TRADE, payload => payload)
-export const tradeExecuted = createAction(ACTION_TYPES.TRADE_EXECUTED)
+export const executeTrade = createAction(ACTION_TYPES.EXECUTE_TRADE, payload => payload, (payload, meta) => meta)
+export const tradeExecuted = createAction(ACTION_TYPES.TRADE_EXECUTED, payload => payload, (payload, meta) => meta)
 export const undockTile = createAction(ACTION_TYPES.UNDOCK_TILE, payload => payload)
 export const tileUndocked = createAction(ACTION_TYPES.TILE_UNDOCKED, payload => payload)
 export const displayCurrencyChart = createAction(ACTION_TYPES.DISPLAY_CURRENCY_CHART, payload => payload)
@@ -59,13 +60,12 @@ export const stalePricing = createAction(ACTION_TYPES.PRICING_STALE)
 
 export const spotRegionSettings = id => regionsSettings(`${id} Spot`, 370, 155, true)
 
-export function spotTileEpicsCreator(executionService$, pricingService$, referenceDataService$) {
+export function spotTileEpicsCreator(executionService$, referenceDataService$, openfin) {
   function executeTradeEpic(action$) {
     return action$.ofType(ACTION_TYPES.EXECUTE_TRADE)
-      .flatMap((action) => {
-        return executionService$.executeTrade(action.payload)
-      })
-      .map(tradeExecuted)
+      .flatMap((action) => executionService$.executeTrade(action.payload),
+        (request, result) => ({request, result}))
+      .map(x => tradeExecuted(x.result, x.request.meta))
   }
 
   function onPriceUpdateEpic(action$) {
@@ -93,12 +93,44 @@ export function spotTileEpicsCreator(executionService$, pricingService$, referen
 
   function onTradeExecuted(action$) {
     return action$.ofType(ACTION_TYPES.TRADE_EXECUTED)
+      .do(action => {
+        openfin.isRunningInOpenFin && action.meta && openfin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
+      })
       .delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS)
-      .map(action => ({ symbol: action.payload.trade.CurrencyPair || action.payload.trade.currencyPair.symbol }))
+      .map(action => ({symbol: action.payload.trade.CurrencyPair || action.payload.trade.currencyPair.symbol}))
       .map(dismissNotification)
   }
 
-  return combineEpics(executeTradeEpic, onPriceUpdateEpic, displayCurrencyChart, onTradeExecuted)
+  function createTrade(msg, price) {
+    const direction = msg.amount > 0 ? Direction.Sell : Direction.Buy;
+    const notional = Math.abs(msg.amount);
+
+    const spotRate = direction == Direction.Buy
+      ? price.ask
+      : price.bid;
+
+    return {
+      CurrencyPair: price.symbol,
+      SpotRate: spotRate,
+      Direction: direction,
+      Notional: notional,
+      DealtCurrency: price.currencyPair.base,
+    }
+  }
+
+  function closePositionEpic(action$, store) {
+    return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
+      .do(() => {
+        openfin.addSubscription('close-position',
+          (msg, uuid) => {
+            const trade = createTrade( msg, store.getState().pricingService[msg.symbol])
+            store.dispatch(executeTrade(trade, {uuid, correlationId: msg.correlationId}))
+          })
+      })
+      .filter(() => false)
+  }
+
+  return combineEpics(executeTradeEpic, onPriceUpdateEpic, displayCurrencyChart, onTradeExecuted, closePositionEpic)
 }
 
 const changeValueInState = (state, symbol, flagKey, value) => {
@@ -109,7 +141,7 @@ const changeValueInState = (state, symbol, flagKey, value) => {
   return _.assign(state, target)
 }
 
-export const spotTileReducer = (state: any = {}, { type, payload }) => {
+export const spotTileReducer = (state: any = {}, {type, payload}) => {
   switch (type) {
     case ACTION_TYPES.UPDATE_TILES:
       // TODO: prices shoould not update while execution is in progress
@@ -134,7 +166,7 @@ export const spotTileReducer = (state: any = {}, { type, payload }) => {
       const stalePrice = _.pick(state, payload.symbol)
       if (stalePrice) {
         stalePrice[payload.symbol].priceStale = true
-        stalePrice[payload.symbol].notification = buildNotification({},  stalePriceErrorMessage)
+        stalePrice[payload.symbol].notification = buildNotification({}, stalePriceErrorMessage)
         return _.assign(state, stalePrice)
       }
       return state
@@ -142,7 +174,7 @@ export const spotTileReducer = (state: any = {}, { type, payload }) => {
       return _.mapValues(state, (item) => {
         const newItem: SpotPrice = _.clone(item)
         newItem.pricingConnected = payload.isConnected
-        newItem.notification = buildNotification({},  stalePriceErrorMessage)
+        newItem.notification = buildNotification({}, stalePriceErrorMessage)
         return newItem
       })
     default:
@@ -152,8 +184,8 @@ export const spotTileReducer = (state: any = {}, { type, payload }) => {
 
 function isPriceStale(prevItem, item) {
   return prevItem && prevItem.hasOwnProperty('priceStale') &&
-         item.creationTimestamp === prevItem.creationTimestamp &&
-         prevItem.priceStale === true
+    item.creationTimestamp === prevItem.creationTimestamp &&
+    prevItem.priceStale === true
 }
 
 function spotTileAccumulator(state) {
@@ -253,7 +285,7 @@ export function toRate(rawRate: number, ratePrecision: number, pipPrecision: num
 
 function buildNotification(trade, error) {
   if (error) {
-    return { message: error, hasError: true, notificationType: NotificationType.Text }
+    return {message: error, hasError: true, notificationType: NotificationType.Text}
   }
 
   return {

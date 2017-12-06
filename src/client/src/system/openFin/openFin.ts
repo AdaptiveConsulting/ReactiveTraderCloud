@@ -202,7 +202,6 @@ export default class OpenFin {
   }
 
   openTradeNotification(trade) {
-    if (!this.isRunningInOpenFin) return
 
     const tradeNotification = formatTradeNotification(trade)
     new fin.desktop.Notification({
@@ -223,18 +222,22 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.publish('position-update', serialisePositions)
   }
 
+
+
   publishPrice(price) {
     if (!this.isRunningInOpenFin) return
-
-    console.warn('PriceMapper.mapToSpotPriceDto moved to spotTileItemFormatter')
-    // fin.desktop.InterApplicationBus.publish('price-update', PriceMapper.mapToSpotPriceDto(price))
+    fin.desktop.InterApplicationBus.publish('price-update', price)
   }
 
   sendAllBlotterData(uuid, blotterData) {
-    fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', blotterData)
+    const parsed = Object.keys(blotterData)
+      .map((x)=>formatTradeNotification(blotterData[x]))
+
+    fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', parsed)
   }
 
   sendPositionClosedNotification(uuid, correlationId) {
+    if (!this.isRunningInOpenFin) return
     fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId)
   }
 
