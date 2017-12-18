@@ -1,31 +1,30 @@
-
 {
-    "devtools_port": 9090,
-    "splashScreenImage": "https://web-2084.adaptivecluster.com/images/splash-screen.jpg",
-    "startup_app": {
-        "name": "Reactive Trader Cloud",
-        "url": "https://web-2084.adaptivecluster.com/",
-        "uuid": "reactive-trader-cloud-web-demo",
-        "applicationIcon": "https://web-2084.adaptivecluster.com/images/adaptive-mark-large.png",
-        "autoShow": true,
-        "defaultWidth": 1280,
-        "defaultHeight": 900,
-        "minWidth": 800,
-        "minHeight": 600,
-        "resizable": true,
-        "maximizable": true,
-        "frame": false
-    },
-    "runtime": {
-        "arguments": "--force-device-scale-factor=1",
-        "version": "7.53.23.23",
-        "futureVersion": "7.53.23.23",
-        "forceLatest": true
-    },
-    "shortcut": {
-        "company": "Adaptive Consulting",
-        "description": "Desktop Reactive Trader Cloud",
-        "icon": "https://web-2084.adaptivecluster.com/images/icon.ico",
-        "name": "Reactive Trader Cloud"
-    }
+  "devtools_port": 9090,
+  "splashScreenImage": "https://web-2084.adaptivecluster.com/images/splash-screen.jpg",
+  "startup_app": {
+    "name": "Reactive Trader Cloud",
+    "url": "https://web-2084.adaptivecluster.com/",
+    "uuid": "reactive-trader-cloud-web-demo",
+    "applicationIcon": "https://web-2084.adaptivecluster.com/images/adaptive-mark-large.png",
+    "autoShow": true,
+    "defaultWidth": 1280,
+    "defaultHeight": 900,
+    "minWidth": 800,
+    "minHeight": 600,
+    "resizable": true,
+    "maximizable": true,
+    "frame": false
+  },
+  "runtime": {
+    "arguments": "--force-device-scale-factor=1",
+    "version": "8.56.24.41",
+    "futureVersion": "8.56.24.41",
+    "forceLatest": true
+  },
+  "shortcut": {
+    "company": "Adaptive Consulting",
+    "description": "Desktop Reactive Trader Cloud",
+    "icon": "https://web-2084.adaptivecluster.com/images/icon.ico",
+    "name": "Reactive Trader Cloud"
+  }
 }
