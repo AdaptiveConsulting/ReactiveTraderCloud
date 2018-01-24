@@ -21,7 +21,9 @@ $ dotnet restore
 
 #### Install Event Store
 
-Follow the instructions provided [here](https://geteventstore.com/downloads/)
+Follow the instructions provided [here](https://eventstore.org/downloads/)
+
+Or, [use the docker image](https://hub.docker.com/r/eventstore/eventstore/).
 
 
 #### Install Crossbar.io
