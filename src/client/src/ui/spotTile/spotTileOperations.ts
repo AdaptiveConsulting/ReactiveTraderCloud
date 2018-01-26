@@ -149,7 +149,7 @@ export const spotTileReducer = (state: any = {}, {type, payload}) => {
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
       return changeValueInState(state, payload.symbol, 'currencyChartIsOpening', true)
     case ACTION_TYPES.CURRENCY_CHART_OPENED:
-      return changeValueInState(state, payload.symbol, 'currencyChartIsOpening', false)
+      return changeValueInState(state, payload, 'currencyChartIsOpening', false)
     case ACTION_TYPES.EXECUTE_TRADE:
       return changeValueInState(state, payload.CurrencyPair, 'isTradeExecutionInFlight', true)
     case ACTION_TYPES.TRADE_EXECUTED:
