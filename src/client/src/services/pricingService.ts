@@ -6,6 +6,10 @@ import '../system/observableExtensions/retryPolicyExt'
 
 const log = logger.create('PricingService')
 
+interface Request {
+  symbol: string,
+}
+
 export default function createPricingService(connection) {
   const getPriceUpdatesOperationName = 'getPriceUpdates'
   const cachedObservablesBySymbol = {}
@@ -13,50 +17,50 @@ export default function createPricingService(connection) {
     ServiceConst.PricingServiceKey,
     connection
   )
-  const createSpotPriceStream = request => {
-    return Observable.create(o => {
+  const createSpotPriceStream = (request: Request) => {
+    const observable = Observable.create(clientObserver => {
       log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
       let lastPrice = null
-      return (
-        serviceClient
-          .createStreamOperation(getPriceUpdatesOperationName, request)
-          // we retry the price stream forever, if it errors (likely connection down) we pump a non tradable price
-          .retryWithPolicy(
-            RetryPolicy.indefiniteEvery2Seconds,
-            getPriceUpdatesOperationName,
-            Scheduler.async,
-            (err, willRetry) => {
-              if (willRetry && lastPrice !== null) {
-                // TODO: remove is stale price fully supported
-              }
-            }
-          )
-          .map(keysToLower)
-          .subscribe(
-            price => {
-              lastPrice = price
-              o.next(price)
-            },
-            err => {
-              o.error(err)
-            },
-            () => {
-              o.complete()
-            }
-          )
-      )
-    }).share();
+      const innerObserver = {
+        next: price => {
+          lastPrice = price
+          clientObserver.next(price)
+        },
+        error: err => {
+          clientObserver.error(err)
+        },
+        complete: () => {
+          clientObserver.complete()
+        }
+      }
+      const retryWithPolicyErrorCb = (err, willRetry) => {
+        if (willRetry && lastPrice !== null) {
+          // TODO: remove is stale price fully supported
+        }
+      }
+      const retryWithPolicyArgs = [
+        RetryPolicy.indefiniteEvery2Seconds,
+        getPriceUpdatesOperationName,
+        Scheduler.async,
+        retryWithPolicyErrorCb,
+      ]
+      const subscription = serviceClient
+        .createStreamOperation(getPriceUpdatesOperationName, request)
+        // we retry the price stream forever, if it errors (likely connection down) we pump a non tradable price
+        .retryWithPolicy(...retryWithPolicyArgs)
+        .map(adaptDTO)
+        .subscribe(innerObserver)
+      return subscription
+    })
+    return observable.share()
   }
   serviceClient.connect()
   return {
     get serviceStatusStream() {
       return serviceClient.serviceStatusStream
     },
-    getSpotPriceStream(request) {
+    getSpotPriceStream(request:Request) {
       const { symbol } = request
-      if(symbol === `EURUSD`){
-        debugger
-      }
       if (!cachedObservablesBySymbol[symbol]) {
         cachedObservablesBySymbol[symbol] = createSpotPriceStream(request)
       }
@@ -65,7 +69,7 @@ export default function createPricingService(connection) {
   }
 }
 
-function keysToLower(object) {
+function adaptDTO(object) {
   return {
     ask: object.Ask,
     bid: object.Bid,
