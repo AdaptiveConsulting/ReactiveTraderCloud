@@ -4,10 +4,12 @@ import { logger, RetryPolicy } from '../system'
 import '../system/observableExtensions/retryPolicyExt'
 
 const log = logger.create('PricingService')
+const getPriceUpdatesOperationName = 'getPriceUpdates'
 
 export default class PricingService extends ServiceBase {
-  getSpotPriceStream(request) {
-    const getPriceUpdatesOperationName = 'getPriceUpdates'
+  cachedObservablesBySymbol = {}
+
+  private createSpotPriceStream(request) {
     return Observable.create(
       (o) => {
         log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
@@ -35,7 +37,15 @@ export default class PricingService extends ServiceBase {
             () => { o.complete() },
           )
       },
-    )
+    ).share()
+  }
+
+  getSpotPriceStream(request) {
+    const { symbol } = request
+    if (!this.cachedObservablesBySymbol[symbol]) {
+      this.cachedObservablesBySymbol[symbol] = this.createSpotPriceStream(request)
+    }
+    return this.cachedObservablesBySymbol[symbol]
   }
 }
 
