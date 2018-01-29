@@ -12,8 +12,5 @@
     "ter-arrow-parens": false,
     "import-name": false,
     "trailing-comma": false
-  },
-  "lint": {
-    "exclude": "**/node_modules/**/*"
   }
 }
