@@ -133,12 +133,14 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
   return combineEpics(executeTradeEpic, onPriceUpdateEpic, displayCurrencyChart, onTradeExecuted, closePositionEpic)
 }
 
-const changeValueInState = (state, symbol, flagKey, value) => {
-  const target = _.pick(state, symbol)
-  if (target.hasOwnProperty(symbol) && target[symbol].hasOwnProperty(flagKey)) {
-    target[symbol][flagKey] = value
+const updateSpotTile = (state, symbol, value) => {
+  return {
+    ...state,
+    [symbol]: {
+      ...state[symbol],
+      ...value,
+    },
   }
-  return _.assign(state, target)
 }
 
 export const spotTileReducer = (state: any = {}, {type, payload}) => {
@@ -147,11 +149,11 @@ export const spotTileReducer = (state: any = {}, {type, payload}) => {
       // TODO: prices shoould not update while execution is in progress
       return _.values(payload).reduce(spotTileAccumulator(state), {})
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
-      return changeValueInState(state, payload.symbol, 'currencyChartIsOpening', true)
+      return updateSpotTile(state, payload.symbol, { currencyChartIsOpening: true })
     case ACTION_TYPES.CURRENCY_CHART_OPENED:
-      return changeValueInState(state, payload, 'currencyChartIsOpening', false)
+      return updateSpotTile(state, payload, { currencyChartIsOpening: false })
     case ACTION_TYPES.EXECUTE_TRADE:
-      return changeValueInState(state, payload.CurrencyPair, 'isTradeExecutionInFlight', true)
+      return updateSpotTile(state, payload.CurrencyPair, { isTradeExecutionInFlight: true })
     case ACTION_TYPES.TRADE_EXECUTED:
       const response = payload
       const symbol = response.hasError ? response.trade.CurrencyPair : response.trade.currencyPair.symbol
@@ -161,7 +163,7 @@ export const spotTileReducer = (state: any = {}, {type, payload}) => {
       item.notification = buildNotification(response.trade, response.error)
       return state
     case ACTION_TYPES.DISMISS_NOTIFICATION:
-      return changeValueInState(state, payload.symbol, 'notification', null)
+      return updateSpotTile(state, payload.symbol, { notification: null })
     case ACTION_TYPES.PRICING_STALE:
       const stalePrice = _.pick(state, payload.symbol)
       if (stalePrice) {
