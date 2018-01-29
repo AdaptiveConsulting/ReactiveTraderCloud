@@ -12,8 +12,6 @@ export default function compositeStatusService(
   const disposables = new Subscription()
   const addDisposable = disposable => {
     // esp-js is expecting a dispose method
-    const prevProto = Object.getPrototypeOf(disposable)
-    prevProto.dispose = prevProto.unsubscribe
     disposables.add(disposable)
   }
   const serviceStatusStream = Observable.merge(

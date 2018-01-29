@@ -46,8 +46,6 @@ export class Connection {
     this.autoDisconnectDisposable = new SerialSubscription()
     this.connectionUrl = ''
     this.connectionType = ConnectionType.Unknown
-    const prevProto = Object.getPrototypeOf(this.autoDisconnectDisposable)
-    prevProto.dispose = prevProto.unsubscribe
     this.disposables.add(this.autoDisconnectDisposable)
   }
 
