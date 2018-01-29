@@ -17,12 +17,12 @@ import { footerEpic } from './ui/footer/FooterOperations'
 const epicMiddleware = (referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, executionService, openFin) => createEpicMiddleware(
   combineEpics(
     referenceServiceEpic(referenceDataService),
-    blotterServiceEpic(blotterService),
-    pricingServiceEpic(pricingService),
-    analyticsServiceEpic(analyticsService),
+    blotterServiceEpic(blotterService, openFin),
+    pricingServiceEpic(pricingService, openFin, referenceDataService),
+    analyticsServiceEpic(analyticsService, openFin),
     compositeStatusServiceEpic(compositeStatusService),
     connectionStatusEpicsCreator(compositeStatusService),
-    spotTileEpicsCreator(executionService, pricingService, referenceDataService),
+    spotTileEpicsCreator(executionService, referenceDataService, openFin),
     popoutEpic(),
     footerEpic(openFin),
   ),

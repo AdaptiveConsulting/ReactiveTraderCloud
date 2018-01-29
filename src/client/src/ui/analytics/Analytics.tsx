@@ -16,21 +16,22 @@ export interface AnalyticsProps {
   onPopoutClick?: () => void
 }
 
-const RESIZE_EVENT: string = 'resize'
+const RESIZE_EVENT = 'resize'
 
 export default class Analytics extends React.Component<AnalyticsProps, {}> {
 
+  private handleResize = () => this.forceUpdate();
+
   componentWillMount() {
     // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
-    window.addEventListener(RESIZE_EVENT, () => this.forceUpdate())
+    window.addEventListener(RESIZE_EVENT, this.handleResize)
   }
 
   componentWillUnmount() {
-    window.removeEventListener(RESIZE_EVENT, () => {})
+    window.removeEventListener(RESIZE_EVENT, this.handleResize)
   }
 
   render() {
-
     const { canPopout, isConnected } = this.props
 
     if (!isConnected)

@@ -24,7 +24,7 @@ const accumulatePrices = (acc, tick, index) => {
   }
 }
 
-export const pricingServiceEpic = (pricingService$) => {
+export const pricingServiceEpic = (pricingService$, openFin, referenceDataService) => {
 
   const pricingStream$ = action$ => action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
     .map(action => action.payload.currencyPairUpdates.map(currency => currency.currencyPair.symbol))
@@ -39,9 +39,13 @@ export const pricingServiceEpic = (pricingService$) => {
       })
   }
 
-  function getPrices(action$) {
+  function getPrices(action$, store) {
     return pricingStream$(action$)
       .mergeMap((symbols: Array<string>) => getCurrencyPairs(symbols, pricingService$))
+      .do( price => {
+        const update = {...price, ratePrecision: referenceDataService.getCurrencyPair(price.symbol).ratePrecision }
+        openFin.publishPrice(update)
+      })
       .scan(accumulatePrices, {}).map(fetchPricing)
   }
 

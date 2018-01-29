@@ -13,9 +13,12 @@ const CURRENCY: string = 'USD'
 
 export const fetchAnalytics = createAction(ACTION_TYPES.ANALYTICS_SERVICE)
 
-export const analyticsServiceEpic = analyticsService$ => action$ => {
+
+
+export const analyticsServiceEpic = (analyticsService$, openFin) => action$ => {
   return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
     .flatMapTo(analyticsService$.getAnalyticsStream(CURRENCY))
+    .do(action=>openFin.publishCurrentPositions(action.currentPositions))
     .map(fetchAnalytics)
 }
 
