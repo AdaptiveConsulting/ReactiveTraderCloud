@@ -63,13 +63,6 @@ export default function referenceDataService(connection): Object {
     hasLoaded: false
   }
 
-  const addDisposable = disposable => {
-    // esp-js is expecting a dispose method
-    const prevProto = Object.getPrototypeOf(disposable)
-    prevProto.dispose = prevProto.unsubscribe
-    disposables.add(disposable)
-  }
-
   // on connection/reconnection get reference data stream
   connection.connectionStatusStream
     .filter(el => el === ConnectionStatus.connected)
@@ -78,7 +71,7 @@ export default function referenceDataService(connection): Object {
       serviceClient.isConnectCalled = false
       referenceDataStreamConnectable.connection = null
 
-      addDisposable(referenceDataStreamConnectable.connect())
+      disposables.add(referenceDataStreamConnectable.connect())
     })
   serviceClient.connect()
 

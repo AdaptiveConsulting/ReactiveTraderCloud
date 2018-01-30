@@ -11,9 +11,6 @@ export default class DisposableBase {
   }
 
   addDisposable(disposable) {
-    // esp-js is expecting a dispose method
-    const prevProto = Object.getPrototypeOf(disposable)
-    prevProto.dispose = prevProto.unsubscribe
     this.disposables.add(disposable)
   }
 
