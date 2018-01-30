@@ -2,19 +2,19 @@ import * as _ from 'lodash'
 
 import { CurrencyPair, CurrencyPairUpdate, CurrencyPairUpdates, UpdateType } from '../../types'
 
-export default class ReferenceDataMapper {
+const referenceDataMapper = {
   mapCurrencyPairsFromDto(dto: any): CurrencyPairUpdates {
-    const updates = this.mapUpdatesFromDto(dto.Updates)
+    const updates = referenceDataMapper.mapUpdatesFromDto(dto.Updates)
     return {
       isStateOfTheWorld: dto.IsStateOfTheWorld,
       isStale: dto.IsStale,
       currencyPairUpdates: updates,
     }
-  }
+  },
 
   mapUpdatesFromDto(currencyPairUpdateDtos: Array<any>): Array<CurrencyPairUpdate> {
     return _.map(currencyPairUpdateDtos, (dto): CurrencyPairUpdate => {
-      const updateType = this.mapUpdateType(dto.UpdateType)
+      const updateType = referenceDataMapper.mapUpdateType(dto.UpdateType)
       const currencyPair = createCurrencyPair(
         dto.CurrencyPair.Symbol,
         dto.CurrencyPair.RatePrecision,
@@ -26,7 +26,7 @@ export default class ReferenceDataMapper {
         updateType,
       }
     })
-  }
+  },
 
   mapUpdateType(updateTypeString: string): UpdateType {
     if (updateTypeString === UpdateType.Added) {
@@ -38,6 +38,8 @@ export default class ReferenceDataMapper {
     }
   }
 }
+
+export default referenceDataMapper
 
 function createCurrencyPair(symbol, ratePrecision, pipsPosition): CurrencyPair {
   return {

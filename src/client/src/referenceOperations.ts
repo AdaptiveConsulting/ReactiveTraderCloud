@@ -1,6 +1,8 @@
 import { createAction } from 'redux-actions'
 import * as keyBy from 'lodash.keyby'
 
+import { CurrencyPair } from './types'
+
 export enum ACTION_TYPES {
   /**
    * Looks like is like an init action that is only dispatched on init.
@@ -10,17 +12,9 @@ export enum ACTION_TYPES {
 
 export const createReferenceServiceAction = createAction(ACTION_TYPES.REFERENCE_SERVICE)
 
-export const referenceServiceEpic = refService$ => action$ => {
+export const referenceServiceEpic = refService$ => () => {
   return refService$.getCurrencyPairUpdatesStream()
     .map(createReferenceServiceAction)
-}
-
-interface CurrencyPair {
-  symbol: string,
-  ratePrecision: number,
-  pipsPosition: number,
-  base: string,
-  terms: string,
 }
 
 interface CurrencyPairWrapper {

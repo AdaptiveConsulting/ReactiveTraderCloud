@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { createEpicMiddleware, combineEpics } from 'redux-observable'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore } from 'redux-persist'
-import { compact } from 'lodash';
+import { compact } from 'lodash'
 
 import rootReducer from './combineReducers'
 import { blotterServiceEpic } from './ui/blotter/blotterOperations'

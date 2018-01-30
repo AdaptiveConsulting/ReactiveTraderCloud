@@ -8,17 +8,14 @@ import { ServiceConst } from '../types'
 const log = logger.create('BlotterService')
 
 const createBlotterService = (connection, referenceDataService) => {
-  const serviceClient = new ServiceClient(
-    ServiceConst.BlotterServiceKey,
-    connection
-  )
+  const serviceClient = new ServiceClient(ServiceConst.BlotterServiceKey, connection)
   const tradeMapper = new TradeMapper(referenceDataService)
   serviceClient.connect()
-  return  {
+  return {
     get serviceStatusStream() {
       return serviceClient.serviceStatusStream
     },
-  
+
     getTradesStream() {
       return Observable.create(o => {
         log.debug('Subscribing to trade stream')
@@ -34,7 +31,7 @@ const createBlotterService = (connection, referenceDataService) => {
           .map(dto => tradeMapper.mapFromDto(dto))
           .subscribe(o)
       })
-    }    
+    }
   }
 }
 export default createBlotterService
