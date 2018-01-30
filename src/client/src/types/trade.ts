@@ -6,9 +6,9 @@ export interface Trade {
   currencyPair: CurrencyPair,
   notional: number,
   dealtCurrency: string,
-  direction: any,
+  direction: any, // @todo: replace with enum
   spotRate: number,
   tradeDate: Date,
   valueDate: Date,
-  status: any,
+  status: any, // @todo: replace with enum
 }
