@@ -4714,7 +4714,7 @@ interpret@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.0.3.tgz#cbc35c62eeee73f19ab7b10a801511401afc0f90"
 
-invariant@^2.0.0, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
+invariant@^2.0.0, invariant@^2.1.0, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -7626,6 +7626,13 @@ redux-actions@^2.2.1:
 redux-devtools-extension@2.13.2:
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.2.tgz#e0f9a8e8dfca7c17be92c7124958a3b94eb2911d"
+
+redux-immutable-state-invariant@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/redux-immutable-state-invariant/-/redux-immutable-state-invariant-2.1.0.tgz#308fd3cc7415a0e7f11f51ec997b6379c7055ce1"
+  dependencies:
+    invariant "^2.1.0"
+    json-stringify-safe "^5.0.1"
 
 redux-observable@0.14.1:
   version "0.14.1"

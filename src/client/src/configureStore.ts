@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { createEpicMiddleware, combineEpics } from 'redux-observable'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore } from 'redux-persist'
+import { compact } from 'lodash';
 
 import rootReducer from './combineReducers'
 import { blotterServiceEpic } from './ui/blotter/blotterOperations'
@@ -28,14 +29,18 @@ const epicMiddleware = (referenceDataService, blotterService, pricingService, an
   ),
 )
 
-export default function configureStore(referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, executionService, openFin) {
-  const middleware = epicMiddleware(referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, executionService, openFin)
+const isProduction = process.env.NODE_ENV === 'production'
+const enableReduxStateInvariant = false && !isProduction
 
+export default function configureStore(referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, executionService, openFin) {
+  const appEpicMiddleware = epicMiddleware(referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, executionService, openFin)
+  const middlewares = compact([
+    enableReduxStateInvariant ? require('redux-immutable-state-invariant').default() : void 0,
+    appEpicMiddleware
+  ])
   const store = createStore(
     rootReducer,
-    composeWithDevTools(
-      applyMiddleware(middleware),
-    ),
+    composeWithDevTools(applyMiddleware(...middlewares)),
   )
   persistStore(store)
   return store
