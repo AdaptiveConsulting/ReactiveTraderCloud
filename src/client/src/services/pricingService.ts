@@ -16,14 +16,14 @@ const createSpotPriceStream = (serviceClient, request: Request) => {
     log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
     let lastPrice = null
     const innerObserver = {
-      next: price => {
+      next(price) {
         lastPrice = price
         clientObserver.next(price)
       },
-      error: err => {
+      error(err) {
         clientObserver.error(err)
       },
-      complete: () => {
+      complete() {
         clientObserver.complete()
       }
     }
