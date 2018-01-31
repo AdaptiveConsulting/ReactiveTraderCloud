@@ -7,12 +7,10 @@
     "no-console": false,
     "object-literal-sort-keys": false,
     "member-ordering": false,
-    "max-line-length": [
-      150
-    ],
-    "semicolon": [true, "never"]
-  },
-  "lint": {
-    "exclude": "**/node_modules/**/*"
+    "max-line-length": [150],
+    "semicolon": [true, "never"],
+    "ter-arrow-parens": false,
+    "import-name": false,
+    "trailing-comma": false
   }
 }

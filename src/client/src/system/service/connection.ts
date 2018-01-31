@@ -1,6 +1,5 @@
 import Guard from '../guard'
 import { Observable, BehaviorSubject, Subscription, Scheduler } from 'rxjs/Rx'
-import DisposableBase from '../disposables/disposableBase'
 import { ConnectionType, ConnectionStatus } from '../../types'
 import { ConnectionTypeMapper } from '../../services/mappers'
 import logger from '../logger'
@@ -10,12 +9,22 @@ import { SerialSubscription } from '../../serialSubscription'
 
 const log = logger.create('Connection')
 
+export default function createConnection(
+  userName: string,
+  url: string,
+  realm: string,
+  port: number
+): Connection {
+  const autobahn = new AutobahnConnectionProxy(url, realm, port)
+  return new Connection(userName, autobahn)
+}
 /**
  * Represents a Connection to autobahn
  */
-export default class Connection extends DisposableBase {
+export class Connection {
   userName: string
   autobahn: any
+  disposables: Subscription
   connectionStatusSubject: BehaviorSubject<any>
   connectCalled: boolean
   autoDisconnectDisposable: SerialSubscription
@@ -25,7 +34,7 @@ export default class Connection extends DisposableBase {
   session: any
 
   constructor(userName: string, autobahn: AutobahnConnectionProxy) {
-    super()
+    this.disposables = new Subscription()
     Guard.isDefined(autobahn, 'autobahn required')
     Guard.isString(userName, 'userName required')
     this.userName = userName
@@ -37,7 +46,7 @@ export default class Connection extends DisposableBase {
     this.autoDisconnectDisposable = new SerialSubscription()
     this.connectionUrl = ''
     this.connectionType = ConnectionType.Unknown
-    this.addDisposable(this.autoDisconnectDisposable)
+    this.disposables.add(this.autoDisconnectDisposable)
   }
 
   static get DISCONNECT_SESSION_AFTER() {
@@ -78,12 +87,14 @@ export default class Connection extends DisposableBase {
     if (!this.connectCalled) {
       this.connectCalled = true
       log.info('Opening connection')
-      this.autobahn.onopen((session) => {
+      this.autobahn.onopen(session => {
         log.info('Connected')
         this.isConnected = true
         this.session = session
         this.connectionUrl = this.autobahn.connection.transport.info.url
-        this.connectionType = this.connectionTypeMapper.map(this.autobahn.connection.transport.info.type)
+        this.connectionType = this.connectionTypeMapper.map(
+          this.autobahn.connection.transport.info.type
+        )
         this.startAutoDisconnectTimer()
         this.connectionStatusSubject.next(ConnectionStatus.connected)
       })
@@ -120,7 +131,9 @@ export default class Connection extends DisposableBase {
   logResponse(topic: string, response: Array<any>): void {
     if (log.isVerboseEnabled) {
       const payloadString = JSON.stringify(response[0])
-      log.verbose(`Received response on topic [${topic}]. Payload[${payloadString}]`)
+      log.verbose(
+        `Received response on topic [${topic}]. Payload[${payloadString}]`
+      )
     }
   }
 
@@ -130,43 +143,58 @@ export default class Connection extends DisposableBase {
    * @returns {Observable}
    */
   subscribeToTopic(topic: string): Observable<any> {
-    return Observable.create((o) => {
-
+    return Observable.create(o => {
       const disposables = new Subscription()
-      log.debug(`Subscribing to topic [${topic}]. Is connected [${this.isConnected}]`)
+      log.debug(
+        `Subscribing to topic [${topic}]. Is connected [${this.isConnected}]`
+      )
 
       if (!this.isConnected) {
-        o.error(new Error(`Session not connected, can\'t subscribe to topic [${topic}]`))
+        o.error(
+          new Error(
+            `Session not connected, can\'t subscribe to topic [${topic}]`
+          )
+        )
         return disposables
       }
 
       let subscription
-      this.autobahn.session.subscribe(topic, (response: Array<any>) => {
-        this.logResponse(topic, response)
-        o.next(response[0])
-      }).then((sub) => {
-        // subscription succeeded, subscription is an instance of autobahn.Subscription
-        log.verbose(`subscription acked on topic [${topic}]`)
-        subscription = sub
-      },      (error: Error) => {
-        // subscription failed, error is an instance of autobahn.Error
-        log.error(`Error on topic ${topic}`, error)
-        o.error(error)
-      })
+      this.autobahn.session
+        .subscribe(topic, (response: Array<any>) => {
+          this.logResponse(topic, response)
+          o.next(response[0])
+        })
+        .then(
+          sub => {
+            // subscription succeeded, subscription is an instance of autobahn.Subscription
+            log.verbose(`subscription acked on topic [${topic}]`)
+            subscription = sub
+          },
+          (error: Error) => {
+            // subscription failed, error is an instance of autobahn.Error
+            log.error(`Error on topic ${topic}`, error)
+            o.error(error)
+          }
+        )
 
-      disposables.add(new Subscription(() => {
-        if (!subscription) {
-          return
-        }
-        try {
-          this.autobahn.session.unsubscribe(subscription).then(
-            gone => log.verbose(`Successfully unsubscribing from topic ${topic}`),
-            err => log.error(`Error unsubscribing from topic ${topic}`, err),
-          )
-        } catch (err) {
-          log.error(`Error thrown unsubscribing from topic ${topic}`, err)
-        }
-      }))
+      disposables.add(
+        new Subscription(() => {
+          if (!subscription) {
+            return
+          }
+          try {
+            this.autobahn.session
+              .unsubscribe(subscription)
+              .then(
+                gone =>
+                  log.verbose(`Successfully unsubscribing from topic ${topic}`),
+                err => log.error(`Error unsubscribing from topic ${topic}`, err)
+              )
+          } catch (err) {
+            log.error(`Error thrown unsubscribing from topic ${topic}`, err)
+          }
+        })
+      )
       return disposables
     })
   }
@@ -178,38 +206,56 @@ export default class Connection extends DisposableBase {
    * @param responseTopic
    * @returns {Observable}
    */
-  requestResponse(remoteProcedure: string, payload, responseTopic: string = ''): Observable<any> {
-    return Observable.create((o) => {
-      log.debug(`Doing a RPC to [${remoteProcedure}]. Is connected [${this.isConnected}]`)
+  requestResponse(
+    remoteProcedure: string,
+    payload,
+    responseTopic: string = ''
+  ): Observable<any> {
+    return Observable.create(o => {
+      log.debug(
+        `Doing a RPC to [${remoteProcedure}]. Is connected [${this
+          .isConnected}]`
+      )
 
       const disposables = new Subscription()
       if (!this.isConnected) {
-        o.error(new Error(`Session not connected, can\'t perform remoteProcedure ${remoteProcedure}`))
+        o.error(
+          new Error(
+            `Session not connected, can\'t perform remoteProcedure ${remoteProcedure}`
+          )
+        )
         return disposables
       }
       let isDisposed
-      const dto = [{
-        payload,
-        replyTo: responseTopic,
-        Username: this.userName,
-      }]
+      const dto = [
+        {
+          payload,
+          replyTo: responseTopic,
+          Username: this.userName
+        }
+      ]
 
       this.autobahn.session.call(remoteProcedure, dto).then(
-        (result) => {
+        result => {
           if (!isDisposed) {
             o.next(result)
             o.complete()
           } else {
-            log.verbose(`Ignoring response for remoteProcedure [${remoteProcedure}] as stream disposed`)
+            log.verbose(
+              `Ignoring response for remoteProcedure [${remoteProcedure}] as stream disposed`
+            )
           }
         },
-        (error) => {
+        error => {
           if (!isDisposed) {
             o.error(error)
           } else {
-            log.error(`Ignoring error for remoteProcedure [${remoteProcedure}] as stream disposed.`, error)
+            log.error(
+              `Ignoring error for remoteProcedure [${remoteProcedure}] as stream disposed.`,
+              error
+            )
           }
-        },
+        }
       )
 
       const sub = new Subscription()
@@ -228,8 +274,8 @@ export default class Connection extends DisposableBase {
           this.disconnect()
         },
         Connection.DISCONNECT_SESSION_AFTER,
-        '',
-      ),
+        ''
+      )
     )
   }
 }

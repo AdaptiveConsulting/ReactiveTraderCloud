@@ -23,6 +23,7 @@
     "clean": "rm -rf dist",
     "start": "npm run dev:cloud",
     "lint": "eslint --ext .js --ext .jsx src",
+    "tslint": "./node_modules/.bin/tslint ./**/*.{ts,tsx} -e './node_modules/**/**'",
     "dev:local": "npm run dev -- --env.endpoint local",
     "dev:docker": "npm run dev -- --env.endpoint docker",
     "dev:cloud": "npm run dev -- --env.endpoint demo",

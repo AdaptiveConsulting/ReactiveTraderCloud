@@ -1,10 +1,14 @@
 import * as _ from 'lodash'
 
-import { Trade, Direction, TradeStatus, TradesUpdate } from '../../types/'
-import ReferenceDataService from '../referenceDataService'
+import {
+  Trade,
+  Direction,
+  TradeStatus,
+  TradesUpdate,
+  ReferenceDataService
+} from '../../types/'
 
 export default class TradeMapper {
-
   referenceDataService: ReferenceDataService
 
   constructor(referenceDataService: ReferenceDataService) {
@@ -16,14 +20,16 @@ export default class TradeMapper {
     return {
       trades,
       isStateOfTheWorld: dto.IsStateOfTheWorld,
-      isStale: dto.IsStale,
+      isStale: dto.IsStale
     }
   }
 
   mapFromTradeDto(tradeDto: any): Trade {
     const direction = this.mapDirectionFromDto(tradeDto.Direction)
     const status = this.mapTradeStatusFromDto(tradeDto.Status)
-    const currencyPair = this.referenceDataService.getCurrencyPair(tradeDto.CurrencyPair)
+    const currencyPair = this.referenceDataService.getCurrencyPair(
+      tradeDto.CurrencyPair
+    )
     return createTrade(
       tradeDto.TradeId,
       tradeDto.TraderName,
@@ -34,7 +40,7 @@ export default class TradeMapper {
       tradeDto.SpotRate,
       new Date(tradeDto.TradeDate),
       new Date(tradeDto.ValueDate),
-      status,
+      status
     )
   }
 
@@ -63,7 +69,18 @@ export default class TradeMapper {
   }
 }
 
-function createTrade(tradeId, traderName, currencyPair, notional, dealtCurrency, direction, spotRate, tradeDate, valueDate, status): Trade {
+function createTrade(
+  tradeId,
+  traderName,
+  currencyPair,
+  notional,
+  dealtCurrency,
+  direction,
+  spotRate,
+  tradeDate,
+  valueDate,
+  status
+): Trade {
   return {
     tradeId,
     traderName,
@@ -74,6 +91,6 @@ function createTrade(tradeId, traderName, currencyPair, notional, dealtCurrency,
     spotRate,
     tradeDate,
     valueDate,
-    status,
+    status
   }
 }

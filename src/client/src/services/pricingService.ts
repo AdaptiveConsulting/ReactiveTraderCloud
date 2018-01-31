@@ -1,61 +1,79 @@
 import { Observable, Scheduler } from 'rxjs/Rx'
-import { ServiceBase } from '../system/service'
+import { ServiceClient } from '../system/service'
+import { ServiceConst } from '../types'
 import { logger, RetryPolicy } from '../system'
 import '../system/observableExtensions/retryPolicyExt'
 
 const log = logger.create('PricingService')
 const getPriceUpdatesOperationName = 'getPriceUpdates'
 
-export default class PricingService extends ServiceBase {
-  cachedObservablesBySymbol = {}
+interface Request {
+  symbol: string,
+}
 
-  private createSpotPriceStream(request) {
-    return Observable.create(
-      (o) => {
-        log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
-        let lastPrice = null
-        return this.serviceClient
-          .createStreamOperation(getPriceUpdatesOperationName, request)
-          // we retry the price stream forever, if it errors (likely connection down) we pump a non tradable price
-          .retryWithPolicy(
-            RetryPolicy.indefiniteEvery2Seconds,
-            getPriceUpdatesOperationName,
-            Scheduler.async,
-            (err, willRetry) => {
-              if (willRetry && lastPrice !== null) {
-                // TODO: remove is stale price fully supported
-              }
-            },
-          )
-          .map(item => keysToLower(item))
-          .subscribe(
-            (price) => {
-              lastPrice = price
-              o.next(price)
-            },
-            (err) => { o.error(err) },
-            () => { o.complete() },
-          )
+const createSpotPriceStream = (serviceClient, request: Request) => {
+  const observable = Observable.create(clientObserver => {
+    log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
+    let lastPrice = null
+    const innerObserver = {
+      next(price) {
+        lastPrice = price
+        clientObserver.next(price)
       },
-    ).share()
-  }
-
-  getSpotPriceStream(request) {
-    const { symbol } = request
-    if (!this.cachedObservablesBySymbol[symbol]) {
-      this.cachedObservablesBySymbol[symbol] = this.createSpotPriceStream(request)
+      error(err) {
+        clientObserver.error(err)
+      },
+      complete() {
+        clientObserver.complete()
+      }
     }
-    return this.cachedObservablesBySymbol[symbol]
+    const retryWithPolicyErrorCb = (err, willRetry) => {
+      if (willRetry && lastPrice !== null) {
+        // TODO: remove is stale price fully supported
+      }
+    }
+    const retryWithPolicyArgs = [
+      RetryPolicy.indefiniteEvery2Seconds,
+      getPriceUpdatesOperationName,
+      Scheduler.async,
+      retryWithPolicyErrorCb,
+    ]
+    const subscription = serviceClient
+      .createStreamOperation(getPriceUpdatesOperationName, request)
+      // we retry the price stream forever, if it errors (likely connection down) we pump a non tradable price
+      .retryWithPolicy(...retryWithPolicyArgs)
+      .map(adaptDTO)
+      .subscribe(innerObserver)
+    return subscription
+  })
+  return observable.share()
+}
+
+export default function createPricingService(connection) {
+  const cachedSpotStreamBySymbol = {}
+  const serviceClient = new ServiceClient(ServiceConst.PricingServiceKey, connection)
+  serviceClient.connect()
+  return {
+    get serviceStatusStream() {
+      return serviceClient.serviceStatusStream
+    },
+    getSpotPriceStream(request: Request) {
+      const { symbol } = request
+      if (!cachedSpotStreamBySymbol[symbol]) {
+        cachedSpotStreamBySymbol[symbol] = createSpotPriceStream(serviceClient, request)
+      }
+      return cachedSpotStreamBySymbol[symbol]
+    }
   }
 }
 
-function keysToLower(object) {
+function adaptDTO(dto) {
   return {
-    ask: object.Ask,
-    bid: object.Bid,
-    mid: object.Mid,
-    creationTimestamp: object.CreationTimestamp,
-    symbol: object.Symbol,
-    valueDate: object.ValueDate,
+    ask: dto.Ask,
+    bid: dto.Bid,
+    mid: dto.Mid,
+    creationTimestamp: dto.CreationTimestamp,
+    symbol: dto.Symbol,
+    valueDate: dto.ValueDate
   }
 }

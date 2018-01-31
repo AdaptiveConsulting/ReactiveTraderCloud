@@ -11,7 +11,4 @@ export default class DisposableBase {
   addDisposable (disposable) {
     this.disposables.add(disposable)
   }
-  dispose () {
-    this.disposables.dispose()
-  }
 }
