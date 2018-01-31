@@ -19,3 +19,7 @@ The back-end services are cross-platform. For details of how to set up the servi
 * [Getting Started using Windows and Visual Studio 2015](windows-setup.md)
 * [Getting Started on Linux](linux-setup.md)
 * [Getting Started on Mac OSX](macos-setup.md)
+
+### Reactive Trader Excel
+
+* [Getting Started with Reactive Trader Excel](reactive-trader-excel.md)
