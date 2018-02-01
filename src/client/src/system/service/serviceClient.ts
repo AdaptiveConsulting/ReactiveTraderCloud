@@ -14,6 +14,19 @@ import LastValueObservableDictionary from './lastValueObservableDictionary'
 import '../../../src/system/service/serviceObservableExtensions'
 import '../observableExtensions/retryPolicyExt'
 
+interface RawServiceStatus {
+  Type: string,
+  Instance: string,
+  TimeStamp: number,
+  Load: number,
+}
+
+const toConnectedBoolean = status => status === ConnectionStatus.connected
+const isConnected = isConnected => isConnected
+const isNotConnected = isConnected => !isConnected
+const throwConnectionDisconnectedError = () => Observable.throw('Underlying connection disconnected')
+const isCurrentServiceType = (currentServiceType: string) => (service: RawServiceStatus) => service.Type === currentServiceType
+
 /**
  * Abstracts a back end service for which there can be multiple instances.
  * Offers functionality to perform request-response and stream operations against a service instance.
@@ -73,39 +86,36 @@ export default class ServiceClient extends DisposableBase {
    * for service heartbeats, we group service heartbeats by serviceId and add service level heartbeat timeouts/debounce, finally
    * we wrap all the service instance streams into a dictionary like structure. This structure can be queried at subscribe
    * time to determine which service instance is connected and has minimum load for a given operation.
-   * @param serviceType
+   * @param currentServiceType
    * @returns {Observable}
    * @private
    */
-  createServiceInstanceDictionaryStream(serviceType) {
-    return Observable.create((o) => {
-      const connectionStatus = this.connection.connectionStatusStream
-        .map(status => status === ConnectionStatus.connected)
-        .publish()
-        .refCount()
-      const isConnectedStream = connectionStatus.filter(isConnected => isConnected)
-      const errorOnDisconnectStream = connectionStatus.filter(isConnected => !isConnected).take(1).flatMap(() => Observable.throw('Underlying connection disconnected'))
-      const serviceInstanceDictionaryStream = this.connection
+  createServiceInstanceDictionaryStream(currentServiceType) {
+    return Observable.create(o => {
+      // connectionStatus$ emits booleans
+      const connectionStatus$ = this.connection.connectionStatusStream.map(toConnectedBoolean).share()
+      const connectedConnection$ = connectionStatus$.filter(isConnected)
+      const errorOnDisconnect$ = connectionStatus$.filter(isNotConnected).take(1).flatMap(throwConnectionDisconnectedError)
+      const serviceInstanceDictionary$ = this.connection
         .subscribeToTopic('status')
-        .filter(s => s.Type === serviceType)
-        .map(status => createServiceInstanceForConnected(status.Type, status.Instance, status.TimeStamp, status.Load))
+        .filter(isCurrentServiceType(currentServiceType))
+        .map(createServiceInstanceForConnected)
         // If the underlying connection goes down we error the stream.
         // Do this before the grouping so all grouped streams error.
-        .merge(errorOnDisconnectStream)
-        // .filter(item => item) // if item is false don't continue
+        .merge(errorOnDisconnect$)
         .groupBy(serviceStatus => serviceStatus.serviceId)
         // add service instance level heartbeat timeouts, i.e. each service instance can disconnect independently
-        .debounceOnMissedHeartbeat(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => createServiceInstanceForDisconnected(serviceType, serviceId), Scheduler.async)
+        .debounceOnMissedHeartbeat(ServiceClient.HEARTBEAT_TIMEOUT, serviceId => createServiceInstanceForDisconnected(currentServiceType, serviceId), Scheduler.async)
         // create a hash of properties which represent significant change in a status, we'll use this to filter out duplicates
         .distinctUntilChangedGroup((status, statusNew) => status.isConnected === statusNew.isConnected && status.serviceLoad === statusNew.serviceLoad)
         // flattens all our service instances stream into an observable dictionary so we query the service with the least load on a per-subscribe basis
         .toServiceStatusObservableDictionary(serviceStatus => serviceStatus.serviceId)
         // catch the disconnect error of the outer stream and continue with an empty (thus disconnected) dictionary
         .catch(() => Observable.of(new LastValueObservableDictionary()))
-      return isConnectedStream
+      return connectedConnection$
         .take(1)
-        // flatMap: since we're just taking one, this effectively just continues the stream by subscribing to serviceInstanceDictionaryStream
-        .mergeMap(() => serviceInstanceDictionaryStream)
+        // When we are connected for the first time we start listening to `serviceInstanceDictionary$`
+        .mergeMapTo(serviceInstanceDictionary$)
         // repeat after disconnects
         .repeat()
         .subscribe(o)
@@ -227,15 +237,15 @@ function createServiceStatus(cache, serviceType): ServiceStatus {
   }
 }
 
-function createServiceInstanceForConnected(serviceType: string, serviceId: string, timestamp: number, serviceLoad: number): ServiceInstanceStatus {
-  Guard.stringIsNotEmpty(serviceType, 'serviceType must be as string and not empty')
-  Guard.stringIsNotEmpty(serviceId, 'serviceId must be as string and not empty')
+function createServiceInstanceForConnected(serviceStatus: RawServiceStatus): ServiceInstanceStatus {
+  Guard.stringIsNotEmpty(serviceStatus.Type, 'serviceStatus.Type must be as string and not empty')
+  Guard.stringIsNotEmpty(serviceStatus.Instance, 'serviceStatus.Instance must be as string and not empty')
 
   return {
-    serviceType,
-    serviceId,
-    timestamp,
-    serviceLoad,
+    serviceType: serviceStatus.Type,
+    serviceId: serviceStatus.Instance,
+    timestamp: serviceStatus.TimeStamp,
+    serviceLoad: serviceStatus.Load,
     isConnected: true,
   }
 }
