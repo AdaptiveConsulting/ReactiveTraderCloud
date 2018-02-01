@@ -10,7 +10,10 @@ import { Direction, NotificationType, PriceMovementTypes, Rate } from '../../typ
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceOperations'
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
-export const PRICE_STALE_AFTER_X_IN_MS = 6000
+
+interface SpotPrices {
+  [symbol: string]: SpotPrice
+}
 
 export interface SpotPrice {
   currencyPair: any
@@ -60,6 +63,16 @@ export const stalePricing = createAction(ACTION_TYPES.PRICING_STALE)
 
 export const spotRegionSettings = id => regionsSettings(`${id} Spot`, 370, 155, true)
 
+const extractPayload = action => action.payload
+const addCurrencyPairToSpotPrices = referenceDataService => (spotPrices: SpotPrices): SpotPrices => {
+  return _.mapValues(spotPrices, (spotPrice: SpotPrice) => {
+    return {
+      ...spotPrice,
+      currencyPair: spotPrice.currencyPair || referenceDataService.getCurrencyPair(spotPrice.symbol)
+    }
+  })
+}
+
 export function spotTileEpicsCreator(executionService$, referenceDataService, openfin) {
   function executeTradeEpic(action$) {
     return action$.ofType(ACTION_TYPES.EXECUTE_TRADE)
@@ -69,15 +82,9 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
   }
 
   function onPriceUpdateEpic(action$) {
-    return action$.ofType(PRICING_ACTION_TYPES.PRICING_SERVICE)
-      .map((payload) => {
-        _.values(payload.payload).forEach((item: SpotPrice) => {
-          // TODO: do it better
-          item.currencyPair = item.currencyPair || referenceDataService.getCurrencyPair(item.symbol)
-        })
-        return payload
-      })
-      .map(action => action.payload)
+    return action$.ofType(PRICING_ACTION_TYPES.SPOT_PRICES_UPDATE)
+      .map(extractPayload)
+      .map(addCurrencyPairToSpotPrices(referenceDataService))
       .map(updateTiles)
   }
 
@@ -105,7 +112,7 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
     const direction = msg.amount > 0 ? Direction.Sell : Direction.Buy;
     const notional = Math.abs(msg.amount);
 
-    const spotRate = direction == Direction.Buy
+    const spotRate = direction === Direction.Buy
       ? price.ask
       : price.bid;
 
@@ -146,7 +153,7 @@ const updateSpotTile = (state, symbol, value) => {
 export const spotTileReducer = (state: any = {}, {type, payload}) => {
   switch (type) {
     case ACTION_TYPES.UPDATE_TILES:
-      // TODO: prices shoould not update while execution is in progress
+      // TODO: prices should not update while execution is in progress
       return _.values(payload).reduce(spotTileAccumulator(state), {})
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
       return updateSpotTile(state, payload.symbol, { currencyChartIsOpening: true })
@@ -165,13 +172,14 @@ export const spotTileReducer = (state: any = {}, {type, payload}) => {
     case ACTION_TYPES.DISMISS_NOTIFICATION:
       return updateSpotTile(state, payload.symbol, { notification: null })
     case ACTION_TYPES.PRICING_STALE:
-      const stalePrice = _.pick(state, payload.symbol)
-      if (stalePrice) {
-        stalePrice[payload.symbol].priceStale = true
-        stalePrice[payload.symbol].notification = buildNotification({}, stalePriceErrorMessage)
-        return _.assign(state, stalePrice)
+      return {
+        ...state,
+        [payload.symbol]: {
+          ...state[payload.symbol],
+          priceStale: true,
+          notification: buildNotification({}, stalePriceErrorMessage)
+        }
       }
-      return state
     case PRICING_ACTION_TYPES.PRICING_SERVICE_STATUS_UPDATE:
       return _.mapValues(state, (item) => {
         const newItem: SpotPrice = _.clone(item)
