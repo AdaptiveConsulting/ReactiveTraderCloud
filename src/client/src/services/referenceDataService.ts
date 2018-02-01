@@ -60,7 +60,6 @@ export default function referenceDataService(connection): Object {
   // on connection/reconnection get reference data stream
   const connectToReferenceStream = () => {
     // TEMP force refdata reconnecting
-    // @todo: looks like a hack, maybe can be done better?
     serviceClient.isConnectCalled = false
     referenceDataStreamConnectable.connection = null
     disposables.add(referenceDataStreamConnectable.connect())
@@ -69,8 +68,6 @@ export default function referenceDataService(connection): Object {
     .filter(isConnected)
     .subscribe(connectToReferenceStream)
 
-  // Not sure whey we need to connect() here and not in the publish() above?
-  // `disposables.add(referenceDataStreamConnectable.connect())` not sure why is needed as well.
   serviceClient.connect()
 
   return {

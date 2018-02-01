@@ -4,9 +4,6 @@ import * as keyBy from 'lodash.keyby'
 import { CurrencyPair } from './types'
 
 export enum ACTION_TYPES {
-  /**
-   * Looks like is like an init action that is only dispatched on init.
-   */
   REFERENCE_SERVICE = '@ReactiveTraderCloud/REFERENCE_SERVICE',
 }
 
@@ -22,11 +19,11 @@ interface CurrencyPairWrapper {
   currencyPair: CurrencyPair
 }
 
-interface State {
+interface ReferenceServiceReducerState {
   [id: string]: CurrencyPairWrapper
 }
 
-export const referenceServiceReducer = (state: State = {}, action): State => {
+export const referenceServiceReducer = (state: ReferenceServiceReducerState = {}, action): ReferenceServiceReducerState => {
   switch (action.type) {
     case ACTION_TYPES.REFERENCE_SERVICE:
       return keyBy(action.payload.currencyPairUpdates, 'currencyPair.symbol')

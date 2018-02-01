@@ -84,7 +84,6 @@
     "react-sparklines": "1.7.0",
     "redux": "3.7.2",
     "redux-actions": "^2.2.1",
-    "redux-immutable-state-invariant": "2.1.0",
     "redux-observable": "0.14.1",
     "redux-persist": "4.8.3",
     "redux-persist-crosstab": "3.5.3",
