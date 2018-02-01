@@ -50,6 +50,7 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
     const key = this.props.id
     const currencyPair: CurrencyPair = this.props.referenceService[key] ? this.props.referenceService[key].currencyPair : 'AUDUSD'
     const title = `${currencyPair.base} / ${currencyPair.terms}`
+    const spotTitle = spotRegionSettings(key)['title']
     const spotData = this.props.spotTiles[key]
     const tileProps = {
       id: key,
@@ -69,7 +70,7 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
       pricingConnected: spotData.pricingConnected,
       executeTrade: this.props.executeTrade,
       onComponentMount: () => this.props.onComponentMount(this.props.id),
-      undockTile: this.props.undockTile(openFin, title),
+      undockTile: this.props.undockTile(openFin, spotTitle),
       onPopoutClick: this.props.onPopoutClick(this.props.id, openFin),
       onNotificationDismissedClick: this.props.onNotificationDismissedClick(this.props.id),
       displayCurrencyChart: this.props.displayCurrencyChart(openFin, this.props.id)
