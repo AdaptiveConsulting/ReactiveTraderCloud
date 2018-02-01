@@ -7,13 +7,16 @@ export enum ACTION_TYPES {
   COMPOSITE_STATUS_SERVICE = '@ReactiveTraderCloud/COMPOSITE_STATUS_SERVICE',
 }
 
-export const fetchCompositeServiceStatus = createAction(ACTION_TYPES.COMPOSITE_STATUS_SERVICE)
+export const createCompositeStatusServiceAction = createAction(ACTION_TYPES.COMPOSITE_STATUS_SERVICE)
 
 export const compositeStatusServiceEpic = compositeStatusService$ => action$ => {
+  // On init
   return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
+    // start listening to the serviceStatusStream
     .flatMapTo(compositeStatusService$.serviceStatusStream)
+    // for each service status
     .map(service => getServiceStatus(service))
-    .map(fetchCompositeServiceStatus)
+    .map(createCompositeStatusServiceAction)
 }
 
 const getServiceStatus = (service) => {

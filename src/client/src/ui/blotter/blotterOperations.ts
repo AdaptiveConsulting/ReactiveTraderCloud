@@ -33,7 +33,7 @@ interface State {
   trades: Trades
 }
 
-const initialState = {
+const initialState: State = {
   trades: {},
 }
 
