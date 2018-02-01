@@ -121,6 +121,8 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
 
 .spot-tile__controls {
   float: right;
+  position: relative;
+  z-index: 3;
 }
 
 
