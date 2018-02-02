@@ -58,7 +58,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@types/numeral": "0.0.22",
     "animate.css": "3.4.0",
     "autobahn": "17.5.2",
     "babel-eslint": "^7.2.3",
