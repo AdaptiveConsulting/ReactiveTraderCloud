@@ -1,5 +1,5 @@
 import { time } from 'd3'
-import numeral from 'numeral'
+import * as numeral from 'numeral'
 
 export const pnlChartModelData = {
   lastPos: -2200369.34,

@@ -1,3 +1,4 @@
+/// <reference path="./OpenFin.d.ts"/>
 import { Observable, Subject, Subscription } from 'rxjs/Rx'
 import * as _ from 'lodash'
 import { Trade } from '../../types'

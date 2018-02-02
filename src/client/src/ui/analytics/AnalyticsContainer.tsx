@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-
+import * as PropTypes from 'prop-types'
 import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
 import Analytics from './Analytics'
@@ -28,7 +28,7 @@ type AnalyticsContainerProps = AnalyticsContainerOwnProps & AnalyticsContainerSt
 class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
 
   static contextTypes = {
-    openFin: React.PropTypes.object,
+    openFin: PropTypes.object
   }
 
   public componentDidMount() {

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
-
+import * as _ from 'lodash'
 import { PNLChartProps } from './model/pnlChartModel'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 import PNLChart from './PNLChart'

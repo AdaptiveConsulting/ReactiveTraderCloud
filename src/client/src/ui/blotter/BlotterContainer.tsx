@@ -1,6 +1,7 @@
 import * as React from 'react'
 import sizeMe from 'react-sizeme'
-
+import * as PropTypes from 'prop-types'
+import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { blotterRegionsSettings } from './blotterOperations'
 import { openWindow, addRegion } from '../../regions/regionsOperations'
@@ -9,7 +10,7 @@ import Blotter from './Blotter'
 class BlotterContainer extends React.Component<any, {}> {
 
   static contextTypes = {
-    openFin: React.PropTypes.object,
+    openFin: PropTypes.object
   }
 
   public componentDidMount() {

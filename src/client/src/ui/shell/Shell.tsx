@@ -10,6 +10,7 @@ import '../common/styles/_fonts.scss'
 import RegionWrapper from '../../regions/RegionWrapper'
 import * as classnames from 'classnames'
 import TradeNotificationContainer from '../notification/TradeNotificationContainer'
+import * as PropTypes from 'prop-types'
 
 export interface ShellProps {
   sessionExpired: boolean
@@ -19,7 +20,7 @@ export interface ShellProps {
 
 export default class Shell extends React.Component<ShellProps, {}> {
   static contextTypes = {
-    openFin: React.PropTypes.object,
+    openFin: PropTypes.object
   }
   props: ShellProps
   appVersion: string = __VERSION__ // version from package.json exported in webpack.config.js
