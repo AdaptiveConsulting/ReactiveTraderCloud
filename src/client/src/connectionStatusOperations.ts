@@ -3,51 +3,55 @@ import { createAction, handleActions } from 'redux-actions'
 import { ConnectionStatus } from './types/'
 
 export enum ACTION_TYPES {
-  CONNECTION_STATUS = '@ReactiveTraderCloud/CONNECTION_STATUS',
+  CONNECTION_STATUS_UPDATE = '@ReactiveTraderCloud/CONNECTION_STATUS_UPDATE',
   RECONNECT = '@ReactiveTraderCloud/RECONNECT',
 }
 
-export interface Connections {
-  connection: ConnectionStatus,
-  connectionType: string,
+interface State {
+  connection: ConnectionStatus
+  connectionType: string
   url: string
 }
 
-const INITIAL_STATE: Connections = {
+export type Connections = State
+
+const initialState: State = {
   connection: ConnectionStatus.disconnected,
   connectionType: '',
   url: '',
 }
 
-export const fetchConnectionStatus = createAction(ACTION_TYPES.CONNECTION_STATUS)
+export const createConnectionStatusUpdateAction = createAction(ACTION_TYPES.CONNECTION_STATUS_UPDATE)
+
+const connectionStatusToState = compositeStatusService$ => (connectionStatus: ConnectionStatus): State => {
+  return {
+    connection: connectionStatus || ConnectionStatus.init,
+    connectionType: compositeStatusService$.connectionType || '',
+    url: compositeStatusService$.connectionUrl || '',
+  }
+}
 
 export function connectionStatusEpicsCreator(compositeStatusService$) {
+  const connectToServices = () => compositeStatusService$.connection.connect()
 
-  function connectionStatusEpic(action$) {
+  const updateConnectionStateEpic = () => {
     return compositeStatusService$.connectionStatusStream
-      .map((connectionStatus) => {
-        return {
-          connection: connectionStatus || '',
-          connectionType: compositeStatusService$.connectionType || '',
-          url: compositeStatusService$.connectionUrl || '',
-        }
-      })
-      .map(fetchConnectionStatus)
+      .map(connectionStatusToState(compositeStatusService$))
+      .map(createConnectionStatusUpdateAction)
   }
 
-  function reconnectEpic(action$) {
+  const reconnectEpic = (action$) => {
     return action$.ofType(ACTION_TYPES.RECONNECT)
-      .flatMap((action$) => {
-        compositeStatusService$.connection.connect()
-        return fetchConnectionStatus
-      })
+      .do(connectToServices)
+      // Hack to never emit any actions, because we don't need any action.
+      .takeLast()
   }
 
-  return combineEpics(connectionStatusEpic, reconnectEpic)
+  return combineEpics(updateConnectionStateEpic, reconnectEpic)
 }
 
 export default handleActions(
   {
-    [ACTION_TYPES.CONNECTION_STATUS]: (state, action) => action.payload,
+    [ACTION_TYPES.CONNECTION_STATUS_UPDATE]: (state: State, action): State => action.payload,
   },
-  INITIAL_STATE)
+  initialState)

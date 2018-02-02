@@ -67,6 +67,7 @@ export const pricingServiceEpic = (pricingService$, openFin, referenceDataServic
     return priceForReferenceServiceSymbols$(action$, pricingService$)
       .map(addRatePrecisionToPrice(referenceDataService))
       .do(publishPriceToOpenFin(openFin))
+      // Hack to never emit any actions, because we don't need any action.
       .takeLast()
   }
 
