@@ -58,7 +58,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@types/numeral": "0.0.22",
     "animate.css": "3.4.0",
     "autobahn": "17.5.2",
     "babel-eslint": "^7.2.3",
@@ -98,6 +97,7 @@
     "@types/jest": "22.1.1",
     "@types/karma": "1.7.3",
     "@types/lodash": "4.14.100",
+    "@types/numeral": "0.0.22",
     "@types/openfin": "17.0.4",
     "@types/react": "16.0.36",
     "@types/react-dom": "16.0.3",

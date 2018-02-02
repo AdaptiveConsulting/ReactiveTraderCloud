@@ -1471,7 +1471,8 @@
     "@types/numeral": {
       "version": "0.0.22",
       "resolved": "https://registry.npmjs.org/@types/numeral/-/numeral-0.0.22.tgz",
-      "integrity": "sha512-zUS7L52zNNVIKDf2/YiWUeFLiJPPZ03h9wVLDa04u4j5bTFc9OeACCg6piZBTwhPyWv3P7nKe4OWzQwU/FGHgQ=="
+      "integrity": "sha512-zUS7L52zNNVIKDf2/YiWUeFLiJPPZ03h9wVLDa04u4j5bTFc9OeACCg6piZBTwhPyWv3P7nKe4OWzQwU/FGHgQ==",
+      "dev": true
     },
     "@types/openfin": {
       "version": "17.0.4",
