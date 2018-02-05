@@ -1,4 +1,5 @@
 import Guard from './guard'
+import * as _ from 'lodash'
 
 const levels = {
   verbose: 0,

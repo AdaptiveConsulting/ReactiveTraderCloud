@@ -1,12 +1,13 @@
 import * as _ from 'lodash'
 import * as React from 'react'
+import * as PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { TradeStatus } from '../../types'
 
 class TradeNotification extends React.Component<any, {}> {
 
   static contextTypes = {
-    openFin: React.PropTypes.object,
+    openFin: PropTypes.object
   }
 
   public componentWillReceiveProps(newProps) {

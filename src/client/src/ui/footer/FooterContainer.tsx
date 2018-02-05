@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import * as PropTypes from 'prop-types'
 import FooterView, { Services } from './FooterView'
 import { bindActionCreators, Dispatch } from 'redux'
 import { toggleStatusServices } from './FooterOperations'
@@ -24,7 +25,7 @@ type FooterContainerProps = FooterContainerOwnProps & FooterContainerStateProps 
 class FooterContainer extends React.Component<FooterContainerProps, any> {
 
   static contextTypes = {
-    openFin: React.PropTypes.object,
+    openFin: PropTypes.object
   }
 
   render() {

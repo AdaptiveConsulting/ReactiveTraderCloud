@@ -14,6 +14,6 @@ export default class DateCell extends React.Component<DateCellProps, {}> {
   render() {
     const { dateValue, format = '%e-%b %H:%M:%S', prefix = '', width, classname } = this.props
     const formatted = timeFormat(format)(dateValue)
-    return <div className={classname} style={{ width }}>{prefix}{formatted}</div>
+    return <div className={classname ? classname : null} style={{ width }}>{prefix}{formatted}</div>
   }
 }

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-
+import * as PropTypes from 'prop-types'
 import { addRegion, openWindow } from '../../regions/regionsOperations'
 import SpotTile from './SpotTile'
 import {
@@ -42,7 +42,7 @@ const NOTIONAL = 1000000
 class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
 
   static contextTypes = {
-    openFin: React.PropTypes.object,
+    openFin: PropTypes.object
   }
 
   render() {
