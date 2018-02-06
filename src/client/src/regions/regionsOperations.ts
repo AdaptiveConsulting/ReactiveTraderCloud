@@ -1,7 +1,6 @@
 import * as _ from 'lodash'
 import { createAction } from 'redux-actions'
 
-
 export const regionsSettings = (title, width, height, dockable) => {
   return {
     title,

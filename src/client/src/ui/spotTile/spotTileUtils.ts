@@ -1,6 +1,10 @@
 import { Rate } from '../../types/rate'
 import { Direction } from '../../types'
 
+export const DEFAULT_NOTIONAL = 1000000
+
+export const SPOT_DATE_FORMAT = 'DD MMM'
+
 export function toRate(rawRate: number = 0, ratePrecision: number = 0, pipPrecision: number = 0): Rate {
   const rateString = rawRate.toFixed(ratePrecision)
   const priceParts = rateString.split('.')

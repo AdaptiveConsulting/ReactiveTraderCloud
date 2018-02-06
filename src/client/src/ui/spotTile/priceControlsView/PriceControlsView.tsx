@@ -3,12 +3,12 @@ import * as classnames from 'classnames'
 import { getSpread, toRate } from '../spotTileUtils'
 import { CurrencyPair, Direction } from '../../../types'
 import { PriceButton, PriceMovementIndicator } from '../'
-import { CurrentSpotPrice } from '../SpotTile'
+import { SpotTileData } from '../../../types/spotTileData'
 
 interface PriceControlsViewProps {
   currencyPair: CurrencyPair
   title: string
-  currentSpotPrice: CurrentSpotPrice
+  spotTileData: SpotTileData
   executeTrade: (direction:string) => void
 }
 
@@ -16,7 +16,7 @@ export default class PriceControlsView extends React.Component<PriceControlsView
 
   render() {
     const pricingContainerClass = classnames({})
-    const { currencyPair, title, currentSpotPrice } = this.props
+    const { currencyPair, title, spotTileData } = this.props
 
     return (
       <div className={pricingContainerClass}>
@@ -25,20 +25,20 @@ export default class PriceControlsView extends React.Component<PriceControlsView
           className="spot-tile__price spot-tile__price--bid"
           direction={Direction.Sell}
           onExecute={() => this.props.executeTrade(Direction.Sell)}
-          rate={toRate(currentSpotPrice.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)}
+          rate={toRate(spotTileData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)}
           currencyPair={this.props.currencyPair}/>
 
         <div className="spot-tile__price-movement">
           <PriceMovementIndicator
-            priceMovementType={currentSpotPrice.priceMovementType}
-            spread={getSpread(currentSpotPrice.bid, currentSpotPrice.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)}/>
+            priceMovementType={spotTileData.priceMovementType}
+            spread={getSpread(spotTileData.bid, spotTileData.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)}/>
         </div>
 
         <PriceButton
           className="spot-tile__price spot-tile__price--ask"
           direction={Direction.Buy}
           onExecute={() => this.props.executeTrade(Direction.Buy)}
-          rate={toRate(currentSpotPrice.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)}
+          rate={toRate(spotTileData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)}
           currencyPair={this.props.currencyPair}/>
       </div>
     )

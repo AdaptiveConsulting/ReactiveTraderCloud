@@ -13,14 +13,15 @@ import {
 import { CurrencyPair, Direction } from '../../types/'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 import { SpotPriceTick } from '../../types/spotPriceTick'
-import { createTradeRequest, TradeRequest } from './spotTileUtils'
+import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './spotTileUtils'
+import { SpotTileData } from '../../types/spotTileData'
 
 const buildSpotTileDataObject = (tileData, spotTick:SpotPriceTick, currencyPair:CurrencyPair) => {
   const tileDataObject:any = { ...tileData, ...spotTick, ...currencyPair }
   return tileDataObject
 }
 
-const getSpotTileData = (id:string ) => createDeepEqualSelector(
+const getSpotTileData = (id:string) => createDeepEqualSelector(
   (state:any) => state.pricingService,
   (state:any) => state.currencyPairs,
   (state:any) => state.spotTilesData,
@@ -34,11 +35,6 @@ const getCurrencyPair = (id:string) => createDeepEqualSelector (
   (currencyPairs) => currencyPairs[id]
 )
 
-const getSpotPriceTick = (id:string) => createDeepEqualSelector (
-  (state:any) => state.pricingService,
-  (spotTicks) => spotTicks[id]
-)
-
 interface SpotTileContainerOwnProps {
   id: string
 }
@@ -48,8 +44,7 @@ interface SpotTileContainerStateProps {
   executionConnected: boolean
   canPopout: boolean
   currencyPair: CurrencyPair
-  spotTilesData
-  spotPriceTick: SpotPriceTick
+  spotTilesData: SpotTileData
   notionals: any
 }
 
@@ -64,36 +59,27 @@ interface SpotTileContainerDispatchProps {
 
 type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
 
-const NOTIONAL = 1000000
-
 class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
 
   static contextTypes = {
     openFin: PropTypes.object
   }
 
+  componentDidMount() {
+    this.props.onComponentMount(this.props.id)
+  }
+
   render() {
     const openFin = this.context.openFin
     const key = this.props.id
-    const currencyPair: CurrencyPair = this.props.currencyPair
-    const title = `${currencyPair.base} / ${currencyPair.terms}`
     const spotTitle = spotRegionSettings(key)['title']
-    const spotData = this.props.spotTilesData
     const tileProps = {
       id: key,
-      title,
-      currencyPair,
-      currencyChartIsOpening: spotData.currencyChartIsOpening,
-      currentSpotPrice: spotData,
+      currencyPair: this.props.currencyPair,
+      spotTileData: this.props.spotTilesData,
       executionConnected: this.props.executionConnected,
-      hasNotification: !!spotData.notification,
       isRunningInOpenFin: !!openFin,
-      isTradeExecutionInFlight: spotData.isTradeExecutionInFlight,
-      notification: spotData.notification,
-      notional: this.props.notionals[currencyPair.symbol] || NOTIONAL,
-      priceStale: spotData.priceStale,
       executeTrade: this.executeTrade,
-      onComponentMount: () => this.props.onComponentMount(this.props.id),
       undockTile: this.props.undockTile(openFin, spotTitle),
       onPopoutClick: this.props.onPopoutClick(this.props.id, openFin),
       onNotificationDismissedClick: this.props.onNotificationDismissedClick(this.props.id),
@@ -107,7 +93,6 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
   }
 
   private executeTrade = (direction:Direction) => {
-
     const { executionConnected, spotTilesData } = this.props
     if (!executionConnected || spotTilesData.isTradeExecutionInFlight) return
 
@@ -116,7 +101,7 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
       direction,
       currencyBase: this.props.currencyPair.base,
       symbol: this.props.currencyPair.symbol,
-      notional: this.props.notionals[this.props.currencyPair.symbol] || NOTIONAL,
+      notional: this.props.notionals[this.props.currencyPair.symbol] || DEFAULT_NOTIONAL,
       rawSpotRate: rate
     }
 
@@ -127,7 +112,6 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
 const mapDispatchToProps = (dispatch) => {
   return {
     executeTrade: (tradeRequestObj:TradeRequest) => {
-      console.log(' ::: executeTrade, payload : ', tradeRequestObj)
       dispatch(executeTrade(tradeRequestObj))
     },
     onComponentMount: (id) => {
@@ -157,7 +141,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 function mapStateToProps(state: any, ownProps: SpotTileContainerProps) {
-  const { compositeStatusService, displayAnalytics, notionals } = state;
+  const { compositeStatusService, displayAnalytics, notionals } = state
   const executionConnected = compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected || false
 
   const isConnected = compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected || false
@@ -167,7 +151,6 @@ function mapStateToProps(state: any, ownProps: SpotTileContainerProps) {
     displayAnalytics,
     currencyPair: getCurrencyPair(ownProps.id)(state),
     spotTilesData: getSpotTileData(ownProps.id)(state),
-    spotPriceTick: getSpotPriceTick(ownProps.id)(state),
     notionals
   }
 }

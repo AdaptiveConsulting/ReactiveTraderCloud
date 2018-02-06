@@ -7,37 +7,15 @@ import NotionalContainer from './notional/NotionalContainer'
 import { NotificationType } from '../../types'
 import { CurrencyPair } from '../../types/currencyPair'
 import PriceControlsView from './priceControlsView/PriceControlsView'
-
-const SPOT_DATE_FORMAT = 'DD MMM'
-
-interface Notification {
-  hasError: any
-  notificationType: NotificationType
-}
-
-export interface CurrentSpotPrice {
-  ask: number
-  bid: number
-  priceMovementType: string
-  mid: number
-  valueDate: number
-  symbol: string
-}
+import { SpotTileData } from '../../types/spotTileData'
+import { SPOT_DATE_FORMAT } from './spotTileUtils'
 
 export interface SpotTileProps {
-  currencyChartIsOpening: boolean
   currencyPair: CurrencyPair
-  currentSpotPrice: CurrentSpotPrice
+  spotTileData: SpotTileData
   executionConnected: boolean
-  hasNotification: boolean
   isRunningInOpenFin: boolean
-  isTradeExecutionInFlight: boolean
-  notification: Notification
-  notional: number
-  priceStale: boolean
-  title: string
   executeTrade: (direction: any) => void
-  onComponentMount: any
   onPopoutClick: () => void
   undockTile: () => void
   displayCurrencyChart: () => void
@@ -46,13 +24,9 @@ export interface SpotTileProps {
 
 export default class SpotTile extends React.Component<SpotTileProps, {}> {
 
-  componentDidMount() {
-    const currencyPair = this.props.currencyPair.symbol
-    this.props.onComponentMount(currencyPair)
-  }
-
   render() {
-    const { hasNotification, notification } = this.props
+    const { notification } = this.props.spotTileData
+    const hasNotification = !!notification
     return (
       <div className={this.getSpotContainerClassName()}>
         <div className="spot-tile__container">
@@ -64,7 +38,9 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   }
 
   getSpotContainerClassName() {
-    const { executionConnected, hasNotification, isTradeExecutionInFlight, notification, priceStale } = this.props
+    const { executionConnected } = this.props
+    const { isTradeExecutionInFlight, notification, priceStale } = this.props.spotTileData
+    const hasNotification = !!notification
     const className = classnames('spot-tile', {
       'spot-tile--stale': (/*!pricingConnected ||*/ priceStale) &&
       !(hasNotification && notification.notificationType === NotificationType.Trade),
@@ -77,13 +53,14 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   }
 
   createSpotTileControls() {
-    const { onPopoutClick, undockTile, displayCurrencyChart, isRunningInOpenFin, currencyChartIsOpening } = this.props
+    const { onPopoutClick, undockTile, displayCurrencyChart, isRunningInOpenFin, spotTileData } = this.props
+
     const spotTileControlsProps = {
       onPopoutClick,
       undockTile,
       displayCurrencyChart,
       isRunningInOpenFin,
-      currencyChartIsOpening
+      currencyChartIsOpening: spotTileData.currencyChartIsOpening
     }
     return (
       <SpotTileControls { ...spotTileControlsProps }/>
@@ -91,22 +68,24 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   }
 
   createPriceComponents() {
-    const { currencyPair, title, currentSpotPrice, executeTrade } = this.props
-    if (currentSpotPrice === null) return null
+    const { currencyPair, spotTileData, executeTrade } = this.props
+    const title = `${currencyPair.base} / ${currencyPair.terms}`
+    if (spotTileData === null) return null
 
     return (
       <PriceControlsView currencyPair={currencyPair}
                          title={title}
-                         currentSpotPrice={currentSpotPrice}
+                         spotTileData={spotTileData}
                          executeTrade={executeTrade}/>
     )
   }
 
   getSpotTileContent() {
-    const { hasNotification, currentSpotPrice, currencyPair } = this.props
+    const { spotTileData, currencyPair } = this.props
+    const hasNotification = !!spotTileData.notification
     const notionalInputClass = classnames('spot-tile__notional', { hide: hasNotification })
     const spotDateClass = classnames('spot-tile__delivery', { hide: hasNotification })
-    const formattedDate = currentSpotPrice ? moment(currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT) : ''
+    const formattedDate = spotTileData ? moment(spotTileData.valueDate).format(SPOT_DATE_FORMAT) : ''
 
     return (<div>
       <span className="spot-tile__execution-label">Executing</span>
