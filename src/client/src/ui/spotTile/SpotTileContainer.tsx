@@ -72,17 +72,13 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
     openFin: PropTypes.object
   }
 
-  /*shouldComponentUpdate(nextProps, nextState) {
-    return false;
-  }*/
-
   render() {
     const openFin = this.context.openFin
     const key = this.props.id
     const currencyPair: CurrencyPair = this.props.currencyPair
     const title = `${currencyPair.base} / ${currencyPair.terms}`
     const spotTitle = spotRegionSettings(key)['title']
-    const spotData = this.props.spotTilesData;
+    const spotData = this.props.spotTilesData
     const tileProps = {
       id: key,
       title,

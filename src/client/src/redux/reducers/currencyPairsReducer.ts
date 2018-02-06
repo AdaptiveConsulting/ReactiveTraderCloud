@@ -9,10 +9,11 @@ export const currencyPairReducer = (state: CurrencyPairReducerState = {}, action
   switch (action.type) {
     case ACTION_TYPES.REFERENCE_SERVICE:
       const payloadUpdateItems = action.payload.currencyPairUpdates
+      const updatedItems = {}
       payloadUpdateItems.forEach((item) => {
-        state[item.currencyPair.symbol] = item.currencyPair
+        updatedItems[item.currencyPair.symbol] = item.currencyPair
       })
-      return state
+      return { ...state, ...updatedItems }
     default:
       return state
   }

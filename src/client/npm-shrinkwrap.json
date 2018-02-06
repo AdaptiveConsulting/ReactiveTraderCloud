@@ -3081,98 +3081,6 @@
           "requires": {
             "locate-path": "2.0.0"
           }
-        },
-        "babel-runtime": {
-          "version": "6.26.0",
-          "resolved": "https://registry.npmjs.org/babel-runtime/-/babel-runtime-6.26.0.tgz",
-          "integrity": "sha1-llxwWGaOgrVde/4E/yM3vItWR/4=",
-          "dev": true,
-          "requires": {
-            "core-js": "2.4.1",
-            "regenerator-runtime": "0.11.1"
-          }
-        },
-        "babel-template": {
-          "version": "6.26.0",
-          "resolved": "https://registry.npmjs.org/babel-template/-/babel-template-6.26.0.tgz",
-          "integrity": "sha1-3gPi0WOWsGn0bdn/+FIfsaDjXgI=",
-          "dev": true,
-          "requires": {
-            "babel-runtime": "6.26.0",
-            "babel-traverse": "6.26.0",
-            "babel-types": "6.26.0",
-            "babylon": "6.18.0",
-            "lodash": "4.17.4"
-          }
-        },
-        "babel-traverse": {
-          "version": "6.26.0",
-          "resolved": "https://registry.npmjs.org/babel-traverse/-/babel-traverse-6.26.0.tgz",
-          "integrity": "sha1-RqnL1+3MYsjlwGTi0tjQ9ANXZu4=",
-          "dev": true,
-          "requires": {
-            "babel-code-frame": "6.26.0",
-            "babel-messages": "6.23.0",
-            "babel-runtime": "6.26.0",
-            "babel-types": "6.26.0",
-            "babylon": "6.18.0",
-            "debug": "2.6.8",
-            "globals": "9.18.0",
-            "invariant": "2.2.2",
-            "lodash": "4.17.4"
-          }
-        },
-        "babel-types": {
-          "version": "6.26.0",
-          "resolved": "https://registry.npmjs.org/babel-types/-/babel-types-6.26.0.tgz",
-          "integrity": "sha1-o7Bz+Uq0nrb6Vc1lInozQ4BjJJc=",
-          "dev": true,
-          "requires": {
-            "babel-runtime": "6.26.0",
-            "esutils": "2.0.2",
-            "lodash": "4.17.4",
-            "to-fast-properties": "1.0.3"
-          }
-        },
-        "babylon": {
-          "version": "6.18.0",
-          "resolved": "https://registry.npmjs.org/babylon/-/babylon-6.18.0.tgz",
-          "integrity": "sha512-q/UEjfGJ2Cm3oKV71DJz9d25TPnq5rhBVL2Q4fA5wcC3jcrdn7+SssEybFIxwAvvP+YCsCYNKughoF33GxgycQ==",
-          "dev": true
-        },
-        "lodash": {
-          "version": "4.17.4",
-          "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.4.tgz",
-          "integrity": "sha1-eCA6TRwyiuHYbcpkYONptX9AVa4=",
-          "dev": true
-        },
-        "regenerator-runtime": {
-          "version": "0.11.1",
-          "resolved": "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz",
-          "integrity": "sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==",
-          "dev": true
-        }
-      }
-    },
-    "babel-plugin-istanbul": {
-      "version": "4.1.4",
-      "resolved": "https://registry.npmjs.org/babel-plugin-istanbul/-/babel-plugin-istanbul-4.1.4.tgz",
-      "integrity": "sha1-GN3oS/POMp/d8/QQP66SFFbY5Yc=",
-      "dev": true,
-      "requires": {
-        "find-up": "2.1.0",
-        "istanbul-lib-instrument": "1.7.4",
-        "test-exclude": "4.1.1"
-      },
-      "dependencies": {
-        "find-up": {
-          "version": "2.1.0",
-          "resolved": "https://registry.npmjs.org/find-up/-/find-up-2.1.0.tgz",
-          "integrity": "sha1-RdG35QbHF93UgndaK3eSCjwMV6c=",
-          "dev": true,
-          "requires": {
-            "locate-path": "2.0.0"
-          }
         }
       }
     },
@@ -6813,22 +6721,6 @@
           "resolved": "https://registry.npmjs.org/globals/-/globals-11.3.0.tgz",
           "integrity": "sha512-kkpcKNlmQan9Z5ZmgqKH/SMbSmjxQ7QjyNqfXVc8VJcoBV2UEg+sxQD15GQofGRh2hfpwUb70VC31DR7Rq5Hdw==",
           "dev": true
-        },
-        "has-flag": {
-          "version": "2.0.0",
-          "resolved": "https://registry.npmjs.org/has-flag/-/has-flag-2.0.0.tgz",
-          "integrity": "sha1-6CB68cx7MNRGzHC3NLXovhj4jVE=",
-          "dev": true
-        },
-        "js-yaml": {
-          "version": "3.10.0",
-          "resolved": "https://registry.npmjs.org/js-yaml/-/js-yaml-3.10.0.tgz",
-          "integrity": "sha512-O2v52ffjLa9VeM43J4XocZE//WT9N0IiwDa3KSHH7Tu8CtH+1qM8SIZvnsTh6v+4yFy5KUY3BHUVwjpfAWsjIA==",
-          "dev": true,
-          "requires": {
-            "argparse": "1.0.9",
-            "esprima": "4.0.0"
-          }
         },
         "has-flag": {
           "version": "2.0.0",

@@ -32,13 +32,13 @@ const getCaretDirection = (priceMovement: string) => {
 // tslint:disable-next-line:variable-name
 const PriceMovementIndicator = (props: PriceMovementIndicatorProps) => {
 
-  const { priceMovementType/*, spread*/ } = props
+  const { priceMovementType, spread } = props
   const priceMovementClassNames = getCaretDirection(priceMovementType)
   return (
     <div>
       <div className="price-movement">
         <i className={priceMovementClassNames.up}></i>
-        <span className="price-movement__value">spread</span>
+        <span className="price-movement__value">{spread.formattedValue}</span>
         <i className={priceMovementClassNames.down}></i>
       </div>
     </div>
