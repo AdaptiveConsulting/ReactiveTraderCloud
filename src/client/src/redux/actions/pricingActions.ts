@@ -1,26 +1,24 @@
 import { Observable } from 'rxjs/Rx'
 import { createAction } from 'redux-actions'
 import { combineEpics } from 'redux-observable'
-
-import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceOperations'
-import { stalePricing as createStalePriceAction } from './ui/spotTile/spotTileOperations'
-import { SpotPriceTick } from './types'
+import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataActions'
+import { SpotPriceTick } from '../../types/index'
 
 export enum ACTION_TYPES {
   SPOT_PRICES_UPDATE = '@ReactiveTraderCloud/SPOT_PRICES_UPDATE',
   PRICING_SERVICE_STATUS_UPDATE = '@ReactiveTraderCloud/PRICING_SERVICE_STATUS_UPDATE',
+  PRICING_STALE = '@ReactiveTraderCloud/PRICING_STALE'
 }
 
 export const createSpotPricesUpdateAction = createAction(ACTION_TYPES.SPOT_PRICES_UPDATE)
 export const createPricingServiceStatusUpdateAction = createAction(ACTION_TYPES.PRICING_SERVICE_STATUS_UPDATE)
+export const createStalePriceAction = createAction(ACTION_TYPES.PRICING_STALE)
 
 const MS_FOR_LAST_PRICE_TO_BECOME_STALE = 6000
 
 interface PricesBySymbol {
   [symbol: string]: SpotPriceTick
 }
-
-type PricingOperationsReducerState = PricesBySymbol
 
 const reducePrices = (acc: PricesBySymbol, tick: SpotPriceTick): PricesBySymbol => {
   return {
@@ -88,11 +86,3 @@ export const pricingServiceEpic = (pricingService$, openFin, referenceDataServic
   return combineEpics(updatePricesEpic, stalePriceEpic, pricingServiceStatusEpic, publishPriceToOpenFinEpic)
 }
 
-export const pricingServiceReducer = (state: PricingOperationsReducerState = {}, action): PricingOperationsReducerState => {
-  switch (action.type) {
-    case ACTION_TYPES.SPOT_PRICES_UPDATE:
-      return action.payload
-    default:
-      return state
-  }
-}

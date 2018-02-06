@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
-import rootReducer from '../src/combineReducers'
+import rootReducer from '../src/redux/reducers/combineReducers'
 import {
   getButtonProps,
   getContainerStyling,
