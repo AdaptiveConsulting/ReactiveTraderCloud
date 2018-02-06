@@ -119,13 +119,6 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
   font-family: BrandonRegular;
 }
 
-.spot-tile__controls {
-  float: right;
-  position: relative;
-  z-index: 3;
-}
-
-
 .spot-tile__icon--chart.glyphicon,
 .spot-tile__icon--tearoff.glyphicon,
 .spot-tile__icon--undock.glyphicon {

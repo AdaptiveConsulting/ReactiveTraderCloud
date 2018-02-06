@@ -1,12 +1,12 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
-import { PriceButton, PriceMovementIndicator, TradeNotification } from './'
+import { TradeNotification, SpotTileControls } from './'
 import * as moment from 'moment'
 import './SpotTileStyles.scss'
 import NotionalContainer from './notional/NotionalContainer'
-import { Direction, NotificationType } from '../../types'
-import { Rate } from '../../types/rate'
+import { NotificationType } from '../../types'
 import { CurrencyPair } from '../../types/currencyPair'
+import PriceControlsView from './priceControlsView/PriceControlsView'
 
 const SPOT_DATE_FORMAT = 'DD MMM'
 
@@ -15,17 +15,16 @@ interface Notification {
   notificationType: NotificationType
 }
 
-interface CurrentSpotPrice {
-  ask: any
-  bid: any
+export interface CurrentSpotPrice {
+  ask: number
+  bid: number
   priceMovementType: string
-  mid: any
+  mid: number
   valueDate: number
   symbol: string
 }
 
 export interface SpotTileProps {
-  canPopout: boolean
   currencyChartIsOpening: boolean
   currencyPair: CurrencyPair
   currentSpotPrice: CurrentSpotPrice
@@ -53,27 +52,19 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   }
 
   render() {
-    const {
-      canPopout, currencyChartIsOpening, currentSpotPrice, currencyPair, executionConnected,
-      hasNotification, isRunningInOpenFin, isTradeExecutionInFlight, notification, priceStale, title,
-      onPopoutClick, undockTile, displayCurrencyChart,
-    } = this.props
+    const { hasNotification, notification } = this.props
+    return (
+      <div className={this.getSpotContainerClassName()}>
+        <div className="spot-tile__container">
+          {this.createSpotTileControls()}
+          {!hasNotification ? this.getSpotTileContent() : this.createNotificationView(notification)}
+        </div>
+      </div>
+    )
+  }
 
-    const notionalInputClass = classnames('spot-tile__notional', { hide: hasNotification })
-    const spotDateClass = classnames('spot-tile__delivery', { hide: hasNotification })
-    const generatedNotification = hasNotification ? this.createNotification(notification) : null
-    const priceComponents = this.createPriceComponents(title, currentSpotPrice, hasNotification)
-    const showChartIQIcon = isRunningInOpenFin
-
-    const chartIQIconClassName = classnames({
-      'spot-tile__icon--hidden': !showChartIQIcon,
-      'glyphicon glyphicon-refresh spot-tile__icon--rotate': currencyChartIsOpening,
-      'spot-tile__icon--chart glyphicon glyphicon-stats': !currencyChartIsOpening,
-    })
-
-    const formattedDate = currentSpotPrice ?
-      moment(currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT)
-      : ''
+  getSpotContainerClassName() {
+    const { executionConnected, hasNotification, isTradeExecutionInFlight, notification, priceStale } = this.props
     const className = classnames('spot-tile', {
       'spot-tile--stale': (/*!pricingConnected ||*/ priceStale) &&
       !(hasNotification && notification.notificationType === NotificationType.Trade),
@@ -82,72 +73,56 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
       'spot-tile--error': hasNotification && notification.hasError,
     })
 
-    const newWindowClassName = classnames('popout__controls  glyphicon glyphicon-new-window', {
-      'spot-tile__icon--tearoff': !canPopout,
-      'spot-tile__icon--hidden': canPopout,
-    })
-    const spotTileContent = (
-      <div>
-        <span className="spot-tile__execution-label">Executing</span>
-        {priceComponents}
-        <NotionalContainer
-          className={notionalInputClass}
-          currencyPair={currencyPair}
-        />
-        <div className={spotDateClass}>
-          <span className="spot-tile__tenor">SP</span>
-          <span className="spot-tile__delivery-date">. {formattedDate}</span>
-        </div>
-      </div>
-    )
+    return className
+  }
+
+  createSpotTileControls() {
+    const { onPopoutClick, undockTile, displayCurrencyChart, isRunningInOpenFin, currencyChartIsOpening } = this.props
+    const spotTileControlsProps = {
+      onPopoutClick,
+      undockTile,
+      displayCurrencyChart,
+      isRunningInOpenFin,
+      currencyChartIsOpening
+    }
     return (
-      <div className={className}>
-        <div className="spot-tile__container">
-          <div className="spot-tile__controls">
-            <i className={chartIQIconClassName}
-               onClick={() => displayCurrencyChart()}/>
-            <i className={newWindowClassName}
-               onClick={() => onPopoutClick()}/>
-            <i className="popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out"
-               onClick={() => undockTile()}/>
-          </div>
-          {!hasNotification ? spotTileContent : generatedNotification}
-        </div>
-      </div>
+      <SpotTileControls { ...spotTileControlsProps }/>
     )
   }
 
-  createPriceComponents(title: string, currentSpotPrice: CurrentSpotPrice, hide: boolean) {
+  createPriceComponents() {
+    const { currencyPair, title, currentSpotPrice, executeTrade } = this.props
     if (currentSpotPrice === null) return null
 
-    const pricingContainerClass = classnames({ hide })
-    const { currencyPair } = this.props
-
     return (
-      <div className={pricingContainerClass}>
-        <span className="spot-tile__symbol">{title}</span>
-        <PriceButton
-          className="spot-tile__price spot-tile__price--bid"
-          direction={Direction.Sell}
-          onExecute={() => this.props.executionConnected && !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Sell, this.props.currencyPair.symbol, this.props.currentSpotPrice.bid, this.props.notional, this.props.currencyPair.base, this.props))}
-          rate={toRate(currentSpotPrice.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)}
-          currencyPair={this.props.currencyPair}/>
-        <div className="spot-tile__price-movement">
-          <PriceMovementIndicator
-            priceMovementType={currentSpotPrice.priceMovementType}
-            spread={getSpread(currentSpotPrice.bid, currentSpotPrice.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)}/>
-        </div>
-        <PriceButton
-          className="spot-tile__price spot-tile__price--ask"
-          direction={Direction.Buy}
-          onExecute={() => this.props.executionConnected && !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Buy, this.props.currencyPair.symbol, this.props.currentSpotPrice.ask, this.props.notional, this.props.currencyPair.base, this.props))}
-          rate={toRate(currentSpotPrice.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)}
-          currencyPair={this.props.currencyPair}/>
-      </div>
+      <PriceControlsView currencyPair={currencyPair}
+                         title={title}
+                         currentSpotPrice={currentSpotPrice}
+                         executeTrade={executeTrade}/>
     )
   }
 
-  createNotification(notification: any) {
+  getSpotTileContent() {
+    const { hasNotification, currentSpotPrice, currencyPair } = this.props
+    const notionalInputClass = classnames('spot-tile__notional', { hide: hasNotification })
+    const spotDateClass = classnames('spot-tile__delivery', { hide: hasNotification })
+    const formattedDate = currentSpotPrice ? moment(currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT) : ''
+
+    return (<div>
+      <span className="spot-tile__execution-label">Executing</span>
+      {this.createPriceComponents()}
+      <NotionalContainer
+        className={notionalInputClass}
+        currencyPair={currencyPair}
+      />
+      <div className={spotDateClass}>
+        <span className="spot-tile__tenor">SP</span>
+        <span className="spot-tile__delivery-date">. {formattedDate}</span>
+      </div>
+    </div>)
+  }
+
+  createNotificationView(notification: any) {
     if (notification.notificationType === NotificationType.Trade) {
       return (
         <TradeNotification
@@ -164,40 +139,3 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     }
   }
 }
-
-function toRate(rawRate: number = 0, ratePrecision: number = 0, pipPrecision: number = 0): Rate {
-  const rateString = rawRate.toFixed(ratePrecision)
-  const priceParts = rateString.split('.')
-  const wholeNumber = priceParts[0]
-  const fractions = priceParts[1]
-
-  return {
-    rawRate,
-    ratePrecision,
-    pipPrecision,
-    bigFigure: Number(wholeNumber + '.' + fractions.substring(0, pipPrecision - 2)),
-    pips: Number(fractions.substring(pipPrecision - 2, pipPrecision)),
-    pipFraction: Number(fractions.substring(pipPrecision, pipPrecision + 1)),
-  }
-}
-
-function getSpread(bid: number, ask: number, pipsPosition: number, ratePrecision: number) {
-  const spread = (ask - bid) * Math.pow(10, pipsPosition)
-  const toFixedPrecision = spread.toFixed(ratePrecision - pipsPosition)
-  return {
-    value: Number(toFixedPrecision),
-    formattedValue: toFixedPrecision,
-  }
-}
-
-
-const createTradeRequest = (direction: Direction, currencyPair: string, spotRate: any, notional: number, currencyBase: string, props: any) => {
-  return {
-    CurrencyPair: currencyPair,
-    SpotRate: spotRate.rawRate,
-    Direction: direction,
-    Notional: notional,
-    DealtCurrency: currencyBase,
-  }
-}
-
