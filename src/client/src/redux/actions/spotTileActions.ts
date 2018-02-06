@@ -5,33 +5,14 @@ import { ACTION_TYPES as PRICING_ACTION_TYPES } from './pricingActions'
 
 import * as _ from 'lodash'
 import { Observable } from 'rxjs/Rx'
-import { Direction, PriceMovementTypes, Rate } from '../../types'
+import { Direction } from '../../types'
 import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataActions'
+import { SpotPrice } from '../../types/spotPrice'
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
 
 interface SpotPrices {
   [symbol: string]: SpotPrice
-}
-
-export interface SpotPrice {
-  currencyPair: any
-  symbol: any
-  ratePrecision: number
-  currencyChartIsOpening: boolean
-  bid: Rate
-  ask: Rate
-  mid: Rate
-  valueDate: Date
-  creationTimestamp: Date
-  priceMovementType: PriceMovementTypes
-  spread: {
-    value: number
-    formattedValue: string,
-  }
-  priceStale: boolean,
-  isTradeExecutionInFlight: boolean,
-  notification: any,
 }
 
 export enum ACTION_TYPES {
@@ -69,8 +50,7 @@ const addCurrencyPairToSpotPrices = referenceDataService => (spotPrices: SpotPri
 export function spotTileEpicsCreator(executionService$, referenceDataService, openfin) {
   function executeTradeEpic(action$) {
     return action$.ofType(ACTION_TYPES.EXECUTE_TRADE)
-      .flatMap((action) => executionService$.executeTrade(action.payload),
-        (request, result) => ({request, result}))
+      .flatMap((action) => executionService$.executeTrade(action.payload), (request, result) => ({ request, result }))
       .map(x => tradeExecuted(x.result, x.request.meta))
   }
 
@@ -97,17 +77,17 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
         openfin.isRunningInOpenFin && action.meta && openfin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
       })
       .delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS)
-      .map(action => ({symbol: action.payload.trade.CurrencyPair || action.payload.trade.currencyPair.symbol}))
+      .map(action => ({ symbol: action.payload.trade.CurrencyPair || action.payload.trade.currencyPair.symbol }))
       .map(dismissNotification)
   }
 
   function createTrade(msg, price) {
-    const direction = msg.amount > 0 ? Direction.Sell : Direction.Buy;
-    const notional = Math.abs(msg.amount);
+    const direction = msg.amount > 0 ? Direction.Sell : Direction.Buy
+    const notional = Math.abs(msg.amount)
 
     const spotRate = direction === Direction.Buy
       ? price.ask
-      : price.bid;
+      : price.bid
 
     return {
       CurrencyPair: price.symbol,
@@ -121,11 +101,10 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
   function closePositionEpic(action$, store) {
     return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
       .do(() => {
-        openfin.addSubscription('close-position',
-          (msg, uuid) => {
-            const trade = createTrade( msg, store.getState().pricingService[msg.symbol])
-            store.dispatch(executeTrade(trade, {uuid, correlationId: msg.correlationId}))
-          })
+        openfin.addSubscription('close-position', (msg, uuid) => {
+          const trade = createTrade(msg, store.getState().pricingService[msg.symbol])
+          store.dispatch(executeTrade(trade, { uuid, correlationId: msg.correlationId }))
+        })
       })
       .filter(() => false)
   }

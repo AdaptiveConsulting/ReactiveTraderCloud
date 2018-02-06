@@ -1,4 +1,4 @@
-import { PriceMovementTypes } from "./priceMovementTypes";
+import { PriceMovementTypes } from './priceMovementTypes'
 
 export interface SpotPriceTick {
   ask: number,

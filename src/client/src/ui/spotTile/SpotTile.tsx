@@ -88,27 +88,27 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     })
     const spotTileContent = (
       <div>
-        <span className='spot-tile__execution-label'>Executing</span>
+        <span className="spot-tile__execution-label">Executing</span>
         {priceComponents}
         <NotionalContainer
           className={notionalInputClass}
           currencyPair={currencyPair}
         />
         <div className={spotDateClass}>
-          <span className='spot-tile__tenor'>SP</span>
-          <span className='spot-tile__delivery-date'>. {formattedDate}</span>
+          <span className="spot-tile__tenor">SP</span>
+          <span className="spot-tile__delivery-date">. {formattedDate}</span>
         </div>
       </div>
     )
     return (
       <div className={className}>
-        <div className='spot-tile__container'>
-          <div className='spot-tile__controls'>
+        <div className="spot-tile__container">
+          <div className="spot-tile__controls">
             <i className={chartIQIconClassName}
                onClick={() => displayCurrencyChart()}/>
             <i className={newWindowClassName}
                onClick={() => onPopoutClick()}/>
-            <i className='popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out'
+            <i className="popout__undock spot-tile__icon--undock glyphicon glyphicon-log-out"
                onClick={() => undockTile()}/>
           </div>
           {!hasNotification ? spotTileContent : generatedNotification}
@@ -125,20 +125,20 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
 
     return (
       <div className={pricingContainerClass}>
-        <span className='spot-tile__symbol'>{title}</span>
+        <span className="spot-tile__symbol">{title}</span>
         <PriceButton
-          className='spot-tile__price spot-tile__price--bid'
+          className="spot-tile__price spot-tile__price--bid"
           direction={Direction.Sell}
           onExecute={() => this.props.executionConnected && !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Sell, this.props.currencyPair.symbol, this.props.currentSpotPrice.bid, this.props.notional, this.props.currencyPair.base, this.props))}
           rate={toRate(currentSpotPrice.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)}
           currencyPair={this.props.currencyPair}/>
-        <div className='spot-tile__price-movement'>
+        <div className="spot-tile__price-movement">
           <PriceMovementIndicator
             priceMovementType={currentSpotPrice.priceMovementType}
             spread={getSpread(currentSpotPrice.bid, currentSpotPrice.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)}/>
         </div>
         <PriceButton
-          className='spot-tile__price spot-tile__price--ask'
+          className="spot-tile__price spot-tile__price--ask"
           direction={Direction.Buy}
           onExecute={() => this.props.executionConnected && !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Buy, this.props.currencyPair.symbol, this.props.currentSpotPrice.ask, this.props.notional, this.props.currencyPair.base, this.props))}
           rate={toRate(currentSpotPrice.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)}
@@ -151,13 +151,13 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     if (notification.notificationType === NotificationType.Trade) {
       return (
         <TradeNotification
-          className='spot-tile__trade-summary'
+          className="spot-tile__trade-summary"
           notification={notification}
           onDismissedClicked={() => this.props.onNotificationDismissedClick()}/>
       )
     } else if (notification.notificationType === NotificationType.Text) {
       return (
-        <div className='spot-tile__notification-message'>{notification.message}</div>
+        <div className="spot-tile__notification-message">{notification.message}</div>
       )
     } else {
       throw new Error(`Unknown notification type ${notification.notificationType}`)

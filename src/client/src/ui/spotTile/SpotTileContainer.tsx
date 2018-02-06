@@ -13,7 +13,7 @@ import {
 import { CurrencyPair, Direction } from '../../types/'
 import Environment from '../../system/environment'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
-import {SpotPriceTick} from '../../types/spotPriceTick';
+import { SpotPriceTick } from '../../types/spotPriceTick'
 
 const buildSpotTileDataObject = (tileData, spotTick:SpotPriceTick, currencyPair:CurrencyPair) => {
   const tileDataObject:any = {...tileData, ...spotTick, ...currencyPair}
