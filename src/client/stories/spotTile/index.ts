@@ -45,15 +45,13 @@ export const getSpotTileProps: () => SpotTileProps = (executionConnected: boolea
     },
     notional: 500,
     priceStale: false,
-    pricingConnected: true,
     title: 'GBP / USD',
     executeTrade: () => {},
     onComponentMount: () => {},
     onPopoutClick: () => {},
     undockTile: () => {},
     displayCurrencyChart: () => {},
-    onNotificationDismissedClick: () => {},
-    isTradable: true,
+    onNotificationDismissedClick: () => {}
   }
 }
 

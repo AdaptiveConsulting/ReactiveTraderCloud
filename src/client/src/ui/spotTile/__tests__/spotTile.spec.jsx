@@ -31,7 +31,6 @@ const spotTileProps = {
   // },
   notional: 500,
   priceStale: false,
-  pricingConnected: true,
   title: 'GBP / USD',
 }
 

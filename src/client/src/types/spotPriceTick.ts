@@ -1,4 +1,4 @@
-import { CurrencyPair } from './currencyPair'
+import { PriceMovementTypes } from './priceMovementTypes'
 
 export interface SpotPriceTick {
   ask: number,
@@ -7,5 +7,6 @@ export interface SpotPriceTick {
   creationTimestamp: number,
   symbol: string
   valueDate: string,
-  currencyPair: CurrencyPair
+  priceMovementType: PriceMovementTypes
+  priceStale: boolean
 }

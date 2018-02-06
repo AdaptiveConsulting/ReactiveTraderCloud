@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions'
 
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceOperations'
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../../redux/actions/referenceDataActions'
 import { regionsSettings } from '../../regions/regionsOperations'
 
 export enum ACTION_TYPES {

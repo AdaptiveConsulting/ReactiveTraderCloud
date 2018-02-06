@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions'
 
 import { regionsSettings } from '../../regions/regionsOperations'
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceOperations'
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../../redux/actions/referenceDataActions'
 import { Trade } from '../../types'
 import * as keyBy from 'lodash.keyby'
 

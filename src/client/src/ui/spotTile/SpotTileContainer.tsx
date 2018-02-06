@@ -9,9 +9,35 @@ import {
   executeTrade,
   spotRegionSettings,
   undockTile,
-} from './spotTileOperations'
+} from '../../redux/actions/spotTileActions'
 import { CurrencyPair, Direction } from '../../types/'
 import Environment from '../../system/environment'
+import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
+import { SpotPriceTick } from '../../types/spotPriceTick'
+
+const buildSpotTileDataObject = (tileData, spotTick:SpotPriceTick, currencyPair:CurrencyPair) => {
+  const tileDataObject:any = {...tileData, ...spotTick, ...currencyPair}
+  return tileDataObject
+}
+
+const getSpotTileData = (id:string ) => createDeepEqualSelector(
+  (state:any) => state.pricingService,
+  (state:any) => state.currencyPairs,
+  (state:any) => state.spotTilesData,
+  (pricingService, currencyPairs, spotTilesData = {}) => {
+    return buildSpotTileDataObject(spotTilesData[id], pricingService[id], currencyPairs[id])
+  }
+)
+
+const getCurrencyPair = (id:string) => createDeepEqualSelector (
+  (state:any) => state.currencyPairs,
+  (currencyPairs) => currencyPairs[id]
+)
+
+const getSpotPriceTick = (id:string) => createDeepEqualSelector (
+  (state:any) => state.pricingService,
+  (spotTicks) => spotTicks[id]
+)
 
 interface SpotTileContainerOwnProps {
   id: string
@@ -21,8 +47,9 @@ interface SpotTileContainerStateProps {
   isConnected: boolean
   executionConnected: boolean
   canPopout: boolean
-  referenceService: any
-  spotTiles: any
+  currencyPair: CurrencyPair
+  spotTilesData
+  spotPriceTick: SpotPriceTick
   notionals: any
 }
 
@@ -48,10 +75,10 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
   render() {
     const openFin = this.context.openFin
     const key = this.props.id
-    const currencyPair: CurrencyPair = this.props.referenceService[key] ? this.props.referenceService[key].currencyPair : 'AUDUSD'
+    const currencyPair: CurrencyPair = this.props.currencyPair
     const title = `${currencyPair.base} / ${currencyPair.terms}`
     const spotTitle = spotRegionSettings(key)['title']
-    const spotData = this.props.spotTiles[key]
+    const spotData = this.props.spotTilesData
     const tileProps = {
       id: key,
       title,
@@ -61,13 +88,11 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
       currentSpotPrice: spotData,
       executionConnected: this.props.executionConnected,
       hasNotification: !!spotData.notification,
-      isTradable: true, // or false if prace is stale
       isRunningInOpenFin: !!openFin,
       isTradeExecutionInFlight: spotData.isTradeExecutionInFlight,
       notification: spotData.notification,
       notional: this.props.notionals[currencyPair.symbol] || NOTIONAL,
       priceStale: spotData.priceStale,
-      pricingConnected: spotData.pricingConnected,
       executeTrade: this.props.executeTrade,
       onComponentMount: () => this.props.onComponentMount(this.props.id),
       undockTile: this.props.undockTile(openFin, spotTitle),
@@ -75,7 +100,6 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
       onNotificationDismissedClick: this.props.onNotificationDismissedClick(this.props.id),
       displayCurrencyChart: this.props.displayCurrencyChart(openFin, this.props.id)
     }
-
     return (
       <SpotTile
         {...tileProps}
@@ -115,11 +139,20 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-function mapStateToProps({ referenceService, compositeStatusService, displayAnalytics, spotTiles, notionals }) {
+function mapStateToProps(state: any, ownProps: SpotTileContainerProps) {
+  const { compositeStatusService, displayAnalytics, notionals } = state;
   const executionConnected = compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected || false
 
   const isConnected = compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected || false
-  return { referenceService, isConnected, executionConnected, displayAnalytics, spotTiles, notionals }
+  return {
+    isConnected,
+    executionConnected,
+    displayAnalytics,
+    currencyPair: getCurrencyPair(ownProps.id)(state),
+    spotTilesData: getSpotTileData(ownProps.id)(state),
+    spotPriceTick: getSpotPriceTick(ownProps.id)(state),
+    notionals
+  }
 }
 
 const ConnectedSpotTileContainer = connect(mapStateToProps, mapDispatchToProps)(SpotTileContainer)

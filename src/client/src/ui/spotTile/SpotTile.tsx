@@ -5,6 +5,8 @@ import * as moment from 'moment'
 import './SpotTileStyles.scss'
 import NotionalContainer from './notional/NotionalContainer'
 import { Direction, NotificationType } from '../../types'
+import { Rate } from '../../types/rate'
+import { CurrencyPair } from '../../types/currencyPair'
 
 const SPOT_DATE_FORMAT = 'DD MMM'
 
@@ -17,16 +19,15 @@ interface CurrentSpotPrice {
   ask: any
   bid: any
   priceMovementType: string
-  spread: {
-    formattedValue: string,
-  }
+  mid: any
   valueDate: number
+  symbol: string
 }
 
 export interface SpotTileProps {
   canPopout: boolean
   currencyChartIsOpening: boolean
-  currencyPair: any
+  currencyPair: CurrencyPair
   currentSpotPrice: CurrentSpotPrice
   executionConnected: boolean
   hasNotification: boolean
@@ -35,77 +36,26 @@ export interface SpotTileProps {
   notification: Notification
   notional: number
   priceStale: boolean
-  pricingConnected: boolean
   title: string
   executeTrade: (direction: any) => void
   onComponentMount: any
   onPopoutClick: () => void
   undockTile: () => void
   displayCurrencyChart: () => void
-  onNotificationDismissedClick: () => void,
-  isTradable: boolean,
+  onNotificationDismissedClick: () => void
 }
 
 export default class SpotTile extends React.Component<SpotTileProps, {}> {
-  props: SpotTileProps
 
   componentDidMount() {
     const currencyPair = this.props.currencyPair.symbol
     this.props.onComponentMount(currencyPair)
   }
 
-  // TODO: this workaround prevents unnecessary rerendering of spottile and it's subcomponents
-  // shape of data should be changed to allow shallow checks
-  shouldComponentUpdate(nextProps) {
-    // shape of what properties to check including nested props
-    // not true values are skipped so no need to include false entries
-    // UNDEFINED values will cause the whole thing to always trigger update, so this must be avoided
-    const comparisonTemplate = {
-      // currencyChartIsOpening: false,
-      updateType: true,
-      currentSpotPrice: {
-        ask: {
-          bigFigure: true,
-          pipFraction: true,
-          pipPrecision: true,
-          pips: true,
-          ratePrecision: true,
-          rawRate: true,
-        },
-        bid: {
-          bigFigure: true,
-          pipFraction: true,
-          pipPrecision: true,
-          pips: true,
-          ratePrecision: true,
-          rawRate: true,
-        },
-        priceMovementType: true,
-        spread: {
-          value: true,
-        },
-        // symbol: false,
-        // valueDate: false,
-      },
-      currencyChartIsOpening: true,
-      // creationTimestamp: false,
-      isTradable: true,
-      executionConnected: true,
-      // isRunningInOpenFin: false,
-      priceStale: true,
-      pricingConnected: true,
-      isTradeExecutionInFlight: true,
-      hasNotification: true,
-    }
-
-    // workaround to reduce number of redraws for current complex shape of data
-    return !objetcsDeepEqualByTemplate(this.props, nextProps, comparisonTemplate)
-  }
-
   render() {
     const {
       canPopout, currencyChartIsOpening, currentSpotPrice, currencyPair, executionConnected,
-      hasNotification, isRunningInOpenFin, isTradeExecutionInFlight, notification, priceStale, pricingConnected, title,
+      hasNotification, isRunningInOpenFin, isTradeExecutionInFlight, notification, priceStale, title,
       onPopoutClick, undockTile, displayCurrencyChart,
     } = this.props
 
@@ -125,7 +75,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
       moment(currentSpotPrice.valueDate).format(SPOT_DATE_FORMAT)
       : ''
     const className = classnames('spot-tile', {
-      'spot-tile--stale': (!pricingConnected || priceStale) &&
+      'spot-tile--stale': (/*!pricingConnected ||*/ priceStale) &&
       !(hasNotification && notification.notificationType === NotificationType.Trade),
       'spot-tile--readonly': !executionConnected,
       'spot-tile--executing': isTradeExecutionInFlight,
@@ -171,6 +121,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     if (currentSpotPrice === null) return null
 
     const pricingContainerClass = classnames({ hide })
+    const { currencyPair } = this.props
 
     return (
       <div className={pricingContainerClass}>
@@ -179,17 +130,19 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
           className="spot-tile__price spot-tile__price--bid"
           direction={Direction.Sell}
           onExecute={() => this.props.executionConnected && !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Sell, this.props.currencyPair.symbol, this.props.currentSpotPrice.bid, this.props.notional, this.props.currencyPair.base, this.props))}
-          rate={currentSpotPrice.bid}/>
+          rate={toRate(currentSpotPrice.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)}
+          currencyPair={this.props.currencyPair}/>
         <div className="spot-tile__price-movement">
           <PriceMovementIndicator
             priceMovementType={currentSpotPrice.priceMovementType}
-            spread={currentSpotPrice.spread}/>
+            spread={getSpread(currentSpotPrice.bid, currentSpotPrice.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)}/>
         </div>
         <PriceButton
           className="spot-tile__price spot-tile__price--ask"
           direction={Direction.Buy}
           onExecute={() => this.props.executionConnected && !this.props.isTradeExecutionInFlight && this.props.executeTrade(createTradeRequest(Direction.Buy, this.props.currencyPair.symbol, this.props.currentSpotPrice.ask, this.props.notional, this.props.currencyPair.base, this.props))}
-          rate={currentSpotPrice.ask}/>
+          rate={toRate(currentSpotPrice.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)}
+          currencyPair={this.props.currencyPair}/>
       </div>
     )
   }
@@ -212,6 +165,32 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   }
 }
 
+function toRate(rawRate: number = 0, ratePrecision: number = 0, pipPrecision: number = 0): Rate {
+  const rateString = rawRate.toFixed(ratePrecision)
+  const priceParts = rateString.split('.')
+  const wholeNumber = priceParts[0]
+  const fractions = priceParts[1]
+
+  return {
+    rawRate,
+    ratePrecision,
+    pipPrecision,
+    bigFigure: Number(wholeNumber + '.' + fractions.substring(0, pipPrecision - 2)),
+    pips: Number(fractions.substring(pipPrecision - 2, pipPrecision)),
+    pipFraction: Number(fractions.substring(pipPrecision, pipPrecision + 1)),
+  }
+}
+
+function getSpread(bid: number, ask: number, pipsPosition: number, ratePrecision: number) {
+  const spread = (ask - bid) * Math.pow(10, pipsPosition)
+  const toFixedPrecision = spread.toFixed(ratePrecision - pipsPosition)
+  return {
+    value: Number(toFixedPrecision),
+    formattedValue: toFixedPrecision,
+  }
+}
+
+
 const createTradeRequest = (direction: Direction, currencyPair: string, spotRate: any, notional: number, currencyBase: string, props: any) => {
   return {
     CurrencyPair: currencyPair,
@@ -222,23 +201,3 @@ const createTradeRequest = (direction: Direction, currencyPair: string, spotRate
   }
 }
 
-
-// deep comparison of 2 objects using a 3rd object as a template of which properties to compare
-function objetcsDeepEqualByTemplate(objectA, objectB, comparisonTemplate) {
-  if (!objectA || !objectB) return false
-
-  let areDifferent = false
-  Object.keys(comparisonTemplate).some((key) => {
-    if (typeof comparisonTemplate[key] === 'object') {
-      areDifferent = !objetcsDeepEqualByTemplate(objectA[key], objectB[key], comparisonTemplate[key])
-      return areDifferent
-    } else if (comparisonTemplate[key] === true) {
-      areDifferent = objectA[key] !== objectB[key]
-      return areDifferent
-    } else {
-      return false
-    }
-  })
-
-  return !areDifferent
-}
