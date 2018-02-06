@@ -61,6 +61,7 @@ module.exports = function (env = {}) {
     name: 'client',
     target: 'web',
     entry: {
+      polyfill: ['babel-polyfill'],
       app: ['./src/appBootstrapper.tsx'],
       notification: ['./src/notificationBootstrapper.tsx'],
     },
