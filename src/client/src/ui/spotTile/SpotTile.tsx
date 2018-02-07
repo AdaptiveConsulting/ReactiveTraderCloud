@@ -9,6 +9,7 @@ import { CurrencyPair } from '../../types/currencyPair'
 import PriceControlsView from './priceControlsView/PriceControlsView'
 import { SpotTileData } from '../../types/spotTileData'
 import { SPOT_DATE_FORMAT } from './spotTileUtils'
+import * as _ from 'lodash'
 
 export interface SpotTileProps {
   currencyPair: CurrencyPair
@@ -24,6 +25,10 @@ export interface SpotTileProps {
 
 export default class SpotTile extends React.Component<SpotTileProps, {}> {
 
+  shouldComponentUpdate(nextProps:SpotTileProps, nextState: {}) {
+    return !_.isEqual(nextProps.spotTileData, this.props.spotTileData)
+  }
+  
   render() {
     const { notification } = this.props.spotTileData
     const hasNotification = !!notification

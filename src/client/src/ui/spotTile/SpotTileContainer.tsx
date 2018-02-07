@@ -15,6 +15,7 @@ import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 import { SpotPriceTick } from '../../types/spotPriceTick'
 import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './spotTileUtils'
 import { SpotTileData } from '../../types/spotTileData'
+import * as _ from 'lodash'
 
 const buildSpotTileDataObject = (tileData, spotTick:SpotPriceTick, currencyPair:CurrencyPair) => {
   const tileDataObject:any = { ...tileData, ...spotTick, ...currencyPair }
@@ -69,6 +70,10 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
     this.props.onComponentMount(this.props.id)
   }
 
+  shouldComponentUpdate(nextProps: SpotTileContainerProps, nextState: any) {
+    const shouldUpdate = !_.isEqual(this.props.spotTilesData, nextProps.spotTilesData)
+    return shouldUpdate
+  }
   render() {
     const openFin = this.context.openFin
     const key = this.props.id
