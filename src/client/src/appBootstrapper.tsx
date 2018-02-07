@@ -41,7 +41,7 @@ const appBootstrapper = () => {
   const openFin = new OpenFin()
   const refDataService = ReferenceDataService(connection)
   const pricingService = PricingService(connection)
-  const blotterService = BlotterService(connection, refDataService)
+  const blotterService = BlotterService(connection)
   const execService = ExecutionService(connection, refDataService, openFin)
   const analyticsService = AnalyticsService(connection, refDataService)
   const compositeStatusService = CompositeStatusService(

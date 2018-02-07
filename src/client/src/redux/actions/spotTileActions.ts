@@ -9,7 +9,7 @@ import { Direction } from '../../types'
 import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataActions'
 import { SpotPrice } from '../../types/spotPrice'
 
-const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
+const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 60000
 
 interface SpotPrices {
   [symbol: string]: SpotPrice
@@ -77,7 +77,7 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
         openfin.isRunningInOpenFin && action.meta && openfin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
       })
       .delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS)
-      .map(action => ({ symbol: action.payload.trade.CurrencyPair || action.payload.trade.currencyPair.symbol }))
+      .map(action => ({ symbol: action.payload.trade.CurrencyPair || action.payload.trade.symbol }))
       .map(dismissNotification)
   }
 

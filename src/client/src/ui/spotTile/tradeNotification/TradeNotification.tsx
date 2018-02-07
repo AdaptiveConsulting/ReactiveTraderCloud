@@ -1,21 +1,13 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
 import './TradeNotificationStyles.scss'
-import { TradeStatus } from '../../../types'
+import { CurrencyPair, TradeStatus } from '../../../types'
+import { Notification } from '../../../types/notification'
 
 interface TradeNotificationProps {
   className: string,
-  notification: {
-    hasError: boolean
-    status: TradeStatus
-    dealtCurrency: string
-    notional: number
-    termsCurrency: any
-    direction: string
-    spotRate: number
-    formattedValueDate: string
-    tradeId: string,
-  },
+  currencyPair: CurrencyPair,
+  notification: Notification,
   onDismissedClicked: () => void
 }
 
@@ -72,7 +64,7 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
             className="trade-notification__summary-item trade-notification__summary-item--currency">
             <span
               className="trade-notification__label--versus">vs </span>
-              {notification.termsCurrency}
+              {/*{notification.termsCurrency}*/}
           </li>
         </ul>
         <div className="trade-notification__details-items-container">

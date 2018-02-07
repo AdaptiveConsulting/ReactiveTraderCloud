@@ -1,9 +1,7 @@
-import { CurrencyPair } from './'
-
 export interface Trade {
   tradeId: number,
   traderName: string,
-  currencyPair: CurrencyPair,
+  symbol: string,
   notional: number,
   dealtCurrency: string,
   direction: any,

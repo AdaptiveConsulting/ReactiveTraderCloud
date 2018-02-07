@@ -2,9 +2,15 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import * as PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { TradeStatus } from '../../types'
+import { CurrencyPair, Trade, TradeStatus } from '../../types'
 
-class TradeNotification extends React.Component<any, {}> {
+interface TradeNotificationContainerProps {
+  blotterService
+  currencyPairs: CurrencyPair[]
+  trades: Trade[]
+}
+
+class TradeNotification extends React.Component<TradeNotificationContainerProps, {}> {
 
   static contextTypes = {
     openFin: PropTypes.object
@@ -34,8 +40,13 @@ class TradeNotification extends React.Component<any, {}> {
   }
 }
 
-const mapStateToProps = ({ blotterService }) => {
-  return { blotterService, trades: blotterService.trades }
+const mapStateToProps = (state: any) => {
+  const { blotterService, currencyPairs } = state
+  return {
+    blotterService,
+    currencyPairs,
+    trades: blotterService.trades
+  }
 }
 
 const TradeNotificationContainer = connect(mapStateToProps)(TradeNotification)

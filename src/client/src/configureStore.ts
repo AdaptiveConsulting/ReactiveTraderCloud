@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore } from 'redux-persist'
 
 import rootReducer from './redux/reducers/combineReducers'
-import { blotterServiceEpic } from './ui/blotter/blotterOperations'
+import { blotterEpic } from './ui/blotter/'
 import { referenceServiceEpic } from './redux/actions/referenceDataActions'
 import { pricingServiceEpic } from './redux/actions/pricingActions'
 import { analyticsServiceEpic } from './ui/analytics/analyticsOperations'
@@ -17,7 +17,7 @@ import { footerEpic } from './ui/footer/FooterOperations'
 const epicMiddleware = (referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, executionService, openFin) => createEpicMiddleware(
   combineEpics(
     referenceServiceEpic(referenceDataService),
-    blotterServiceEpic(blotterService, openFin),
+    blotterEpic(blotterService, openFin),
     pricingServiceEpic(pricingService, openFin, referenceDataService),
     analyticsServiceEpic(analyticsService, openFin),
     compositeStatusServiceEpic(compositeStatusService),

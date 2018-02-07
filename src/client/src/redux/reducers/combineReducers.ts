@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import { blotterServiceReducer } from '../../ui/blotter/blotterOperations'
+import { blotterReducer } from '../../ui/blotter/'
 import { currencyPairReducer } from './currencyPairsReducer'
 import { pricingServiceReducer } from './pricingReducer'
 import compositeStatusServiceReducer from './compositeStatusServiceOperations'
@@ -14,7 +14,7 @@ import { spotTileDataReducer } from './spotTileDataReducer'
 
 
 const rootReducer = combineReducers({
-  blotterService: blotterServiceReducer,
+  blotterService: blotterReducer,
   currencyPairs: currencyPairReducer,
   pricingService: pricingServiceReducer,
   analyticsService: analyticsServiceReducer,
