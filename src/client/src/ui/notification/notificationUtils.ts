@@ -5,7 +5,7 @@ import { timeFormat } from 'd3-time-format'
 import { Trade } from '../../types'
 
 export function buildNotification(trade:Trade = null, error) {
-  if (error) {
+  if (error || !trade) {
     return { message: error, hasError: true, notificationType: NotificationType.Text }
   }
 

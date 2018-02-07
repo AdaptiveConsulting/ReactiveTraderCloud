@@ -10,6 +10,7 @@ import PriceControlsView from './priceControlsView/PriceControlsView'
 import { SpotTileData } from '../../types/spotTileData'
 import { SPOT_DATE_FORMAT } from './spotTileUtils'
 import * as _ from 'lodash'
+import { Notification } from '../../types/notification'
 
 export interface SpotTileProps {
   currencyPair: CurrencyPair
@@ -28,7 +29,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   shouldComponentUpdate(nextProps:SpotTileProps, nextState: {}) {
     return !_.isEqual(nextProps.spotTileData, this.props.spotTileData)
   }
-  
+
   render() {
     const { notification } = this.props.spotTileData
     const hasNotification = !!notification
@@ -106,12 +107,13 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     </div>)
   }
 
-  createNotificationView(notification: any) {
+  createNotificationView(notification: Notification) {
     if (notification.notificationType === NotificationType.Trade) {
       return (
         <TradeNotification
           className="spot-tile__trade-summary"
           notification={notification}
+          currencyPair={this.props.currencyPair}
           onDismissedClicked={() => this.props.onNotificationDismissedClick()}/>
       )
     } else if (notification.notificationType === NotificationType.Text) {
