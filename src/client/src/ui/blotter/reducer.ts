@@ -33,3 +33,4 @@ export const blotterServiceReducer = (state: State = initialState, action): Stat
   }
 }
 
+export default blotterServiceReducer
