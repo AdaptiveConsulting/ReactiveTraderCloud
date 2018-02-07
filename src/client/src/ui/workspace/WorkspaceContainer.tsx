@@ -11,17 +11,13 @@ const getSpotTileKeys = createDeepEqualSelector(
   (spotTilesKeys) => spotTilesKeys
 )
 
-interface WorkspaceContainerOwnProps {
-
-}
+interface WorkspaceContainerOwnProps {}
 
 interface WorkspaceContainerStateProps {
   spotTileKeys: string[]
 }
 
-interface WorkspaceContainerDispatchProps {
-
-}
+interface WorkspaceContainerDispatchProps {}
 
 type WorkspaceContainerProps =
   WorkspaceContainerOwnProps
@@ -41,7 +37,6 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
   renderItems() {
 
     const { spotTileKeys } = this.props
-
     if (!spotTileKeys || spotTileKeys.length === 0) {
       return <div className="workspace-region__icon--loading"><i className="fa fa-5x fa-cog fa-spin"/></div>
     }
