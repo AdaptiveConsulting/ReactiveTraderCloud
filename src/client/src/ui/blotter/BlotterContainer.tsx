@@ -7,6 +7,7 @@ import { blotterRegionsSettings } from './reducer'
 import { openWindow, addRegion } from '../../regions/regionsOperations'
 import Blotter from './Blotter'
 import { CurrencyPair } from '../../types'
+import Environment from '../../system/environment';
 
 interface BlotterContainerProps {
   blotterService: any
@@ -34,7 +35,7 @@ class BlotterContainer extends React.Component<BlotterContainerProps, {}> {
       <div className="shell_workspace_blotter">
         <Blotter trades={trades}
                  currencyPairs={this.props.currencyPairs}
-                 canPopout={true}
+                 canPopout={Environment.isRunningInIE()}
                  size={this.props.size}
                  isConnected={this.props.isConnected}
                  onPopoutClick={this.props.onPopoutClick(openFin)}/>
