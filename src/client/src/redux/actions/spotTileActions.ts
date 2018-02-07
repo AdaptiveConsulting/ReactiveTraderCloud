@@ -9,7 +9,7 @@ import { Direction } from '../../types'
 import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataActions'
 import { SpotPrice } from '../../types/spotPrice'
 
-const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
+const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 60000
 
 interface SpotPrices {
   [symbol: string]: SpotPrice

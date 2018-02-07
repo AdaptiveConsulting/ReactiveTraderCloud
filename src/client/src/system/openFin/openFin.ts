@@ -209,6 +209,7 @@ export default class OpenFin {
     new fin.desktop.Notification({
       url: '/notification.html',
       message: tradeNotification,
+      timeout: 20000,
       onClick: () => {
         this.bringToFront()
         // highlight trade row
@@ -255,7 +256,7 @@ function formatTradeNotification(trade: Trade) {
     direction: trade.direction,
     tradeId: trade.tradeId.toString(),
     tradeDate: moment(trade.tradeDate).format(),
-    tradeStatus: trade.status,
+    status: trade.status,
     dealtCurrency: trade.dealtCurrency,
     valueDate: moment(trade.valueDate).format('DD MMM')
   }

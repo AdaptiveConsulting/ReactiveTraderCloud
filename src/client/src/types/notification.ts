@@ -9,6 +9,7 @@ export interface Notification {
   notional: string
   status: string
   spotRate: number
+  dealtCurrency: string
   formattedValueDate: string
   message?: string
 }

@@ -58,7 +58,7 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
           </li>
           <li
             className="trade-notification__summary-item trade-notification__summary-item--notional">
-            {/*{notification.dealtCurrency}*/} {notification.notional}
+            {notification.dealtCurrency} {notification.notional}
           </li>
           <li
             className="trade-notification__summary-item trade-notification__summary-item--currency">
