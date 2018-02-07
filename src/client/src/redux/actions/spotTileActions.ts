@@ -77,7 +77,7 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
         openfin.isRunningInOpenFin && action.meta && openfin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
       })
       .delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS)
-      .map(action => ({ symbol: action.payload.trade.CurrencyPair || action.payload.trade.currencyPair.symbol }))
+      .map(action => ({ symbol: action.payload.trade.CurrencyPair || action.payload.trade.symbol }))
       .map(dismissNotification)
   }
 

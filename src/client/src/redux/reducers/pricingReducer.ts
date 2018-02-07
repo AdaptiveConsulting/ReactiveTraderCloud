@@ -35,7 +35,7 @@ export const pricingServiceReducer = (state: PricingOperationsReducerState = {},
         [payload.symbol]: {
           ...state[payload.symbol],
           priceStale: true,
-          notification: buildNotification({}, stalePriceErrorMessage)
+          notification: buildNotification(null, stalePriceErrorMessage)
         }
       }
     default:

@@ -7,6 +7,7 @@ import { CurrencyPair, Trade, TradeStatus } from '../../types'
 import { DateCell } from './'
 import { BaseCell, getCellClassName } from './DefaultCell'
 import { timeFormat } from 'd3-time-format'
+import * as numeral from 'numeral'
 
 import './BlotterStyles.scss'
 
@@ -64,11 +65,11 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
     )
   }
 
-  private baseCellRenderer = (cellKey:string, className:string = null) => (props: any) => {
+  private baseCellRenderer = (cellKey:string, className:string = undefined) => (props: any) => {
     return <BaseCell cellKey={cellKey} trade={props.rowData} classname={className}/>
   }
 
-  private dateCellRenderer = (formattedValue:string, cellClassName = null) => (props: any) => {
+  private customCellRenderer = (formattedValue:string, cellClassName = undefined) => (props: any) => {
     const className = cellClassName ? cellClassName : getCellClassName(this.props.trades[props.rowIndex].status, 'Value date')
     return <DateCell formattedValue={formattedValue} classname={className } />
   }
@@ -86,7 +87,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
         key="Date"
         dataKey="Date"
         label={'Date'}
-        cellRenderer={(props: any) => this.dateCellRenderer(`${timeFormat('%e-%b %H:%M:%S')(trades[props.rowIndex].tradeDate)}`)(props)}
+        cellRenderer={(props: any) => this.customCellRenderer(`${timeFormat('%e-%b %H:%M:%S')(trades[props.rowIndex].tradeDate)}`)(props)}
         flexGrow={1}
         width={150}/>,
       <Column
@@ -107,7 +108,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
         key="Notional"
         dataKey="Notional"
         label={'Notional'}
-        cellRenderer={(props: any) => this.dateCellRenderer(trades[props.rowIndex].notional.toString(), classNames('blotter__trade-field--align-right', getCellClassName(trades[props.rowIndex].status, 'Notional')))(props) }
+        cellRenderer={(props: any) => this.customCellRenderer(this.getFormattedNotional(trades[props.rowIndex]), getCellClassName(trades[props.rowIndex].status, 'Notional'))(props) }
         flexGrow={1}
         width={120}/>,
       <Column
@@ -128,7 +129,7 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
         key="Value date"
         dataKey="Value date"
         label={'Value date'}
-        cellRenderer={(props: any) => this.dateCellRenderer(`SP.${timeFormat('%d %b')(trades[props.rowIndex].valueDate)}`)(props)}
+        cellRenderer={(props: any) => this.customCellRenderer(`SP.${timeFormat('%d %b')(trades[props.rowIndex].valueDate)}`)(props)}
         flexGrow={1}
         width={100}/>,
       <Column
@@ -141,17 +142,18 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
     ]
   }
 
-  /**
-   * Returns the class to apply to a row
-   */
-  getRowClass(rowItem: TradeRow) {
-    if (!rowItem) {
-      return ''
-    }
+  getFormattedNotional(rowItem: TradeRow) {
+    const symbol = rowItem.symbol
+    const currencyPair = this.props.currencyPairs[symbol]
+    const format = '0,000,000[.]00'
 
+    return `${numeral(rowItem.notional).format(format)} ${currencyPair.base}`
+  }
+
+  getRowClass(rowItem: TradeRow) {
     return classNames(
       'blotter__trade',
-      rowItem.status === 'pending' && 'blotter__trade--processing',
+      rowItem && rowItem.status === 'pending' && 'blotter__trade--processing',
     )
   }
 }
