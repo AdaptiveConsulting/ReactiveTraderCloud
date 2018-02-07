@@ -249,16 +249,14 @@ export default class OpenFin {
 
 function formatTradeNotification(trade: Trade) {
   return {
+    symbol: trade.symbol,
     spotRate: trade.spotRate,
     notional: numeral(trade.notional).format('0,000,000[.]00'),
     direction: trade.direction,
-    baseCurrency: trade.currencyPair.base,
     tradeId: trade.tradeId.toString(),
-    termsCurrency: trade.currencyPair.terms,
-    currencyPair: `${trade.currencyPair.base} / ${trade.currencyPair.terms}`,
     tradeDate: moment(trade.tradeDate).format(),
     tradeStatus: trade.status,
     dealtCurrency: trade.dealtCurrency,
-    valueDate: moment(trade.valueDate).format('DD MMM'),
+    valueDate: moment(trade.valueDate).format('DD MMM')
   }
 }

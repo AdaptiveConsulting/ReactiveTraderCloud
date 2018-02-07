@@ -7,9 +7,9 @@ import { ServiceConst } from '../types'
 
 const log = logger.create('BlotterService')
 
-const createBlotterService = (connection, referenceDataService) => {
+const createBlotterService = (connection) => {
   const serviceClient = new ServiceClient(ServiceConst.BlotterServiceKey, connection)
-  const tradeMapper = new TradeMapper(referenceDataService)
+  const tradeMapper = new TradeMapper()
   serviceClient.connect()
   return {
     get serviceStatusStream() {

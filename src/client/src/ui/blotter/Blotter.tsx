@@ -3,9 +3,10 @@ import { Column, Table } from 'react-virtualized'
 import * as classNames from 'classnames'
 import 'fixed-data-table/dist/fixed-data-table.css'
 
-import { TradeStatus } from '../../types'
-import { DateCell, NotionalCell } from './'
+import { CurrencyPair, Trade, TradeStatus } from '../../types'
+import { DateCell } from './'
 import { BaseCell, getCellClassName } from './DefaultCell'
+import { timeFormat } from 'd3-time-format'
 
 import './BlotterStyles.scss'
 
@@ -16,6 +17,7 @@ export interface BlotterProps {
   onPopoutClick: () => void
   isConnected: boolean
   trades: any
+  currencyPairs: CurrencyPair[]
   // passed by SizeMe :
   size?: {
     width: number
@@ -25,8 +27,8 @@ export interface BlotterProps {
 
 export default class Blotter extends React.Component<BlotterProps, {}> {
   render() {
-    const { canPopout, onPopoutClick, isConnected, trades, size } = this.props
-    const columns = this.createGridColumns(trades)
+    const { canPopout, onPopoutClick, isConnected, trades, currencyPairs, size } = this.props
+    const columns = this.createGridColumns(trades, currencyPairs)
     const className = classNames(
       'blotter', {
         'blotter--online': isConnected,
@@ -62,125 +64,78 @@ export default class Blotter extends React.Component<BlotterProps, {}> {
     )
   }
 
-  createGridColumns(trades: any): any[] {
-    const trade = (rowIndex: number) => trades[rowIndex]
+  private baseCellRenderer = (cellKey:string, className:string = null) => (props: any) => {
+    return <BaseCell cellKey={cellKey} trade={props.rowData} classname={className}/>
+  }
+
+  private dateCellRenderer = (formattedValue:string, cellClassName = null) => (props: any) => {
+    const className = cellClassName ? cellClassName : getCellClassName(this.props.trades[props.rowIndex].status, 'Value date')
+    return <DateCell formattedValue={formattedValue} classname={className } />
+  }
+
+  createGridColumns(trades: Trade[], currencyPairs: CurrencyPair[]): any[] {
     return [
       <Column
         key="tradeId"
         dataKey="tradeId"
         label={'Id'}
-        cellRenderer={(props: any) =>
-          <BaseCell
-            cellKey="tradeId"
-            trade={trade(props.rowIndex)}
-          />
-        }
+        cellRenderer={this.baseCellRenderer('tradeId')}
         flexGrow={1}
         width={50}/>,
       <Column
         key="Date"
         dataKey="Date"
         label={'Date'}
-        cellRenderer={(props: any) =>
-          <DateCell
-            width={props.width}
-            dateValue={trades[props.rowIndex].tradeDate}
-            classname={getCellClassName(trades[props.rowIndex].status, 'Value date')}
-          />
-        }
+        cellRenderer={(props: any) => this.dateCellRenderer(`${timeFormat('%e-%b %H:%M:%S')(trades[props.rowIndex].tradeDate)}`)(props)}
         flexGrow={1}
         width={150}/>,
       <Column
         key="Dir"
         dataKey="Dir"
         label={'Direction'}
-        cellRenderer={(props: any) =>
-          <BaseCell
-            cellKey="direction"
-            trade={trade(props.rowIndex)}
-          />
-        }
+        cellRenderer={this.baseCellRenderer('direction')}
         flexGrow={1}
         width={80}/>,
       <Column
         key="CCY"
         dataKey="CCY"
         label={'CCYCCY'}
-        cellRenderer={(props: any) =>
-          <BaseCell
-            cellKey="currencyPair.symbol"
-            trade={trade(props.rowIndex)}
-          />
-        }
+        cellRenderer={this.baseCellRenderer('symbol')}
         flexGrow={1}
         width={70}/>,
       <Column
         key="Notional"
         dataKey="Notional"
         label={'Notional'}
-        cellRenderer={(props: any) => {
-          const trade = trades[props.rowIndex]
-          return (
-            <NotionalCell
-              width={props.width}
-              className={classNames('blotter__trade-field--align-right', getCellClassName(trades[props.rowIndex].status, 'Notional'))}
-              notionalValue={trade.notional}
-              suffix={' ' + trade.currencyPair.base}/>
-          )
-        }}
+        cellRenderer={(props: any) => this.dateCellRenderer(trades[props.rowIndex].notional.toString(), classNames('blotter__trade-field--align-right', getCellClassName(trades[props.rowIndex].status, 'Notional')))(props) }
         flexGrow={1}
         width={120}/>,
       <Column
         key="Rate"
         dataKey="Rate"
         label={'Rate'}
-        cellRenderer={(props: any) =>
-          <BaseCell
-            classname="blotter__trade-field--align-right"
-            cellKey="spotRate"
-            trade={trade(props.rowIndex)}
-          />
-        }
+        cellRenderer={this.baseCellRenderer('spotRate', 'blotter__trade-field--align-right')}
         flexGrow={1}
         width={80}/>,
       <Column
         key="Status"
         dataKey="Status"
         label={'Status'}
-        cellRenderer={(props: any) =>
-          <BaseCell
-            classname={classNames('blotter__trade-status', getTradeStatusCellStyle(trade(props.rowIndex).status))}
-            cellKey="status"
-            trade={trade(props.rowIndex)}
-          />
-        }
+        cellRenderer={(props:any) => this.baseCellRenderer('status', classNames('blotter__trade-status', getTradeStatusCellStyle(trades[props.rowIndex].status)))(props)}
         flexGrow={1}
         width={80}/>,
       <Column
         key="Value date"
         dataKey="Value date"
         label={'Value date'}
-        cellRenderer={(props: any) =>
-          <DateCell
-            width={props.width}
-            prefix="SP. "
-            format="%d %b"
-            dateValue={trades[props.rowIndex].valueDate}
-            classname={getCellClassName(trades[props.rowIndex].status, 'Value date')}
-          />
-        }
+        cellRenderer={(props: any) => this.dateCellRenderer(`SP.${timeFormat('%d %b')(trades[props.rowIndex].valueDate)}`)(props)}
         flexGrow={1}
         width={100}/>,
       <Column
         key="Trader"
         dataKey="Trader"
         label={'Trader'}
-        cellRenderer={(props: any) =>
-          <BaseCell
-            cellKey="traderName"
-            trade={trade(props.rowIndex)}
-          />
-        }
+        cellRenderer={this.baseCellRenderer('traderName')}
         flexGrow={1}
         width={80}/>,
     ]

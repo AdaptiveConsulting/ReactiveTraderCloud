@@ -1,19 +1,14 @@
 import * as React from 'react'
-import { timeFormat } from 'd3-time-format'
 
 export interface DateCellProps {
   classname: string
-  format?: string
-  prefix?: string
-  dateValue: Date
-  width: number
+  formattedValue: string
 }
 
 export default class DateCell extends React.Component<DateCellProps, {}> {
 
   render() {
-    const { dateValue, format = '%e-%b %H:%M:%S', prefix = '', width, classname } = this.props
-    const formatted = timeFormat(format)(dateValue)
-    return <div className={classname ? classname : null} style={{ width }}>{prefix}{formatted}</div>
+    const { formattedValue, classname } = this.props
+    return <div className={classname} style={{ width: '100%' }}>{formattedValue}</div>
   }
 }

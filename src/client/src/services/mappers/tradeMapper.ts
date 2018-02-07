@@ -4,16 +4,10 @@ import {
   Trade,
   Direction,
   TradeStatus,
-  TradesUpdate,
-  ReferenceDataService
+  TradesUpdate
 } from '../../types/'
 
 export default class TradeMapper {
-  referenceDataService: ReferenceDataService
-
-  constructor(referenceDataService: ReferenceDataService) {
-    this.referenceDataService = referenceDataService
-  }
 
   mapFromDto(dto: any): TradesUpdate {
     const trades = _.map(dto.Trades, trade => this.mapFromTradeDto(trade))
@@ -27,13 +21,10 @@ export default class TradeMapper {
   mapFromTradeDto(tradeDto: any): Trade {
     const direction = this.mapDirectionFromDto(tradeDto.Direction)
     const status = this.mapTradeStatusFromDto(tradeDto.Status)
-    const currencyPair = this.referenceDataService.getCurrencyPair(
-      tradeDto.CurrencyPair
-    )
     return createTrade(
       tradeDto.TradeId,
+      tradeDto.CurrencyPair,
       tradeDto.TraderName,
-      currencyPair,
       tradeDto.Notional,
       tradeDto.DealtCurrency,
       direction,
@@ -55,6 +46,7 @@ export default class TradeMapper {
     }
   }
 
+
   mapTradeStatusFromDto(statusDto: string) {
     switch (statusDto.toLowerCase()) {
       case TradeStatus.Pending:
@@ -71,8 +63,8 @@ export default class TradeMapper {
 
 function createTrade(
   tradeId,
+  symbol,
   traderName,
-  currencyPair,
   notional,
   dealtCurrency,
   direction,
@@ -83,8 +75,8 @@ function createTrade(
 ): Trade {
   return {
     tradeId,
+    symbol,
     traderName,
-    currencyPair,
     notional,
     dealtCurrency,
     direction,

@@ -12,3 +12,5 @@ export const blotterServiceEpic = (blotterService$, openFin) => (action$, store)
     .flatMapTo(blotterService$.getTradesStream())
     .map(createNewTradesAction)
 }
+
+export default blotterServiceEpic

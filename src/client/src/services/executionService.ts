@@ -21,7 +21,7 @@ export default function executionService(
     ServiceConst.ExecutionServiceKey,
     connection
   )
-  const tradeMapper = new TradeMapper(referenceDataService)
+  const tradeMapper = new TradeMapper()
   serviceClient.connect()
   return {
     get serviceStatusStream() {
