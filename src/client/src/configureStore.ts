@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore } from 'redux-persist'
 
 import rootReducer from './redux/reducers/combineReducers'
-import { blotterServiceEpic } from './ui/blotter/blotterOperations'
+import { blotterServiceEpic } from './ui/blotter/reducer'
 import { referenceServiceEpic } from './redux/actions/referenceDataActions'
 import { pricingServiceEpic } from './redux/actions/pricingActions'
 import { analyticsServiceEpic } from './ui/analytics/analyticsOperations'

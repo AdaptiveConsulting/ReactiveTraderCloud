@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import { blotterServiceReducer } from '../../ui/blotter/blotterOperations'
+import { blotterServiceReducer } from '../../ui/blotter/reducer'
 import { currencyPairReducer } from './currencyPairsReducer'
 import { pricingServiceReducer } from './pricingReducer'
 import compositeStatusServiceReducer from './compositeStatusServiceOperations'

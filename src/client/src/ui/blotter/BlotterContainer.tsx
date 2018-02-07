@@ -3,7 +3,7 @@ import sizeMe from 'react-sizeme'
 import * as PropTypes from 'prop-types'
 import * as _ from 'lodash'
 import { connect } from 'react-redux'
-import { blotterRegionsSettings } from './blotterOperations'
+import { blotterRegionsSettings } from './reducer'
 import { openWindow, addRegion } from '../../regions/regionsOperations'
 import Blotter from './Blotter'
 

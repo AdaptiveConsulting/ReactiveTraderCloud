@@ -1,9 +1,5 @@
-import { createAction } from 'redux-actions'
-
-import { regionsSettings } from '../../regions/regionsOperations'
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../../redux/actions/referenceDataActions'
-import { Trade } from '../../types'
-import * as keyBy from 'lodash.keyby'
+import { createAction } from 'redux-actions'
 
 export const ACTION_TYPES = {
   BLOTTER_SERVICE_NEW_TRADES: '@ReactiveTraderCloud/BLOTTER_SERVICE_NEW_TRADES',
@@ -22,34 +18,3 @@ export const blotterServiceEpic = (blotterService$, openFin) => (action$, store)
     .flatMapTo(blotterService$.getTradesStream())
     .map(createNewTradesAction)
 }
-
-export const blotterRegionsSettings = regionsSettings('Blotter', 850, 250, false)
-
-interface Trades {
-  [tradeId: number]: Trade
-}
-
-interface State {
-  trades: Trades
-}
-
-const initialState: State = {
-  trades: {},
-}
-
-export const blotterServiceReducer = (state: State = initialState, action): State => {
-  switch (action.type) {
-    case ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES:
-      const newTradesById = keyBy(action.payload.trades, `tradeId`)
-      return {
-        ...state,
-        trades: {
-          ...state.trades,
-          ...newTradesById,
-        }
-      }
-    default:
-      return state
-  }
-}
-
