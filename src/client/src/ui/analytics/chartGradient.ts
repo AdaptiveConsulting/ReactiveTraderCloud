@@ -1,3 +1,5 @@
+import 'classlist-polyfill';
+
 /**
  * ChartGradient - a utility to draw linear gradients on area and stroke elements of a line chart
  *
@@ -43,7 +45,7 @@ export default class ChartGradient {
       defs = nvGroups.querySelector('defs')
     } else {
       // very ugly way to wait for dom. leaving as originaly but needs refactor
-      setTimeout(() => this.update(parentChart, domainMin, domainMax), 10) 
+      setTimeout(() => this.update(parentChart, domainMin, domainMax), 10)
     }
 
     if (!defs && nvGroups) {
