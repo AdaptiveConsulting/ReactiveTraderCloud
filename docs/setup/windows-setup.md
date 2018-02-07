@@ -1,3 +1,14 @@
+## Running with Visual Studio 2017 Pro on Windows
+
+Install Visual Studio 2017 Pro - a 30 day trial version is available if you do not have a license.  Upon running the installation, be sure to install the following optional components:
+  - .NET Framework 4.6.2
+  - .NET Core 2.0 development tools
+
+RTC will require these components in order to compile the solutions.
+
+VS 2017 comes with a git client installed.  Simply import this github project and build the 2 solutions.
+
+
 ## Running with Visual Studio 2015 on Windows
 
 *N.B. these instructions are no longer up-to-date. We will publish the new instructions ASAP.*
@@ -34,6 +45,17 @@ The services can also be debugged from Visual Studio like any another console ap
 #### Client
 For the web client follow these [instructions](../client.md)
 
+### Important
+Crossbar.io is required for RTC to properly run.  If not installed, the server cannot communicate with the client.
+
+To install crossbar.io:
+
+- [Download Crossbar](http://crossbar.io/docs/Installation-on-Windows/)
+- Run `crossbar start` from the `/src/server` working directory on the command line
+
+Once the stand-alone Event Store and Crossbar are running, you can fire up the services by running `StartServices.bat` 
+
+
 ### Advanced
 
 #### Set up stand-alone Event Store and Broker (Crossbar)
@@ -43,12 +65,6 @@ If you want to persist data across sessions then you should run a local Event St
 - Follow the [getting started instructions](http://docs.geteventstore.com/introduction/) and run Event Store locally
 - Run `Populate Event Store.bat` to add some dummy data
 
-For Crossbar,
-
-- [Download Crossbar](http://crossbar.io/docs/Installation-on-Windows/)
-- Run `crossbar start` from the `/src/server` working directory on the command line
-
-Once the stand-alone Event Store and Crossbar are running, you can fire up the services by running `StartServices.bat` 
 
 ### Problem running the app?
 
