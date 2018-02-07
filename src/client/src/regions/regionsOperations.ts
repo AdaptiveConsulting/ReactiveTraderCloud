@@ -1,4 +1,3 @@
-import * as _ from 'lodash'
 import { createAction } from 'redux-actions'
 
 export const regionsSettings = (title, width, height, dockable) => {
@@ -24,16 +23,13 @@ export const openWindow = createAction(ACTION_TYPES.REGION_OPEN_WINDOW, (payload
 export const addRegion = createAction(ACTION_TYPES.REGION_ADD, payload => payload)
 
 
-const changeRegionTearOffStatus = (state, payload, status) => {
-  const regionId = payload.id
-  const region = _.pick(state, [regionId])
-  region[regionId].isTearedOff = status
-  const cleanState = _.omit(state, [regionId])
-  return {
-    ...region,
-    ...cleanState,
+const changeRegionTearOffStatus = (state, payload, status) => ({
+  ...state,
+  [payload.id]: {
+    ...state[payload.id],
+    isTearedOff: status
   }
-}
+});
 
 export const regionsReducer = (state: any = {}, action) => {
   switch (action.type) {
