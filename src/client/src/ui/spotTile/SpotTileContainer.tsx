@@ -147,10 +147,10 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const makeMapStateToProps = () => {
-  const getCurrencyPair = makeGetCurrencyPair();
-  const getSpotTileData = makeGetSpotTileData();
+  const getCurrencyPair = makeGetCurrencyPair()
+  const getSpotTileData = makeGetSpotTileData()
   const mapStateToProps = (state, props) => {
-    const { compositeStatusService, displayAnalytics, notionals } = state;
+    const { compositeStatusService, displayAnalytics, notionals } = state
     const executionConnected = compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected
     const isConnected = compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected
     return {
@@ -160,11 +160,11 @@ const makeMapStateToProps = () => {
       currencyPair: getCurrencyPair(state, props),
       spotTilesData: getSpotTileData(state, props),
       notionals
-    };
-  };
+    }
+  }
 
-  return mapStateToProps;
-};
+  return mapStateToProps
+}
 
 const ConnectedSpotTileContainer = connect(makeMapStateToProps, mapDispatchToProps)(SpotTileContainer)
 const spotTileRegion = (id) => ({

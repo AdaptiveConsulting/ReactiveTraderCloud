@@ -7,7 +7,7 @@ import Analytics from './Analytics'
 import './AnalyticsStyles.scss'
 import Environment from '../../system/environment'
 import { addRegion, openWindow, regionsSettings } from '../../regions/regionsOperations'
-import {CurrencyPair} from "../../types/currencyPair";
+import { CurrencyPair } from '../../types/currencyPair'
 
 const analyticsRegionSettings = regionsSettings('Analytics', 400, 800, false)
 
