@@ -36,7 +36,6 @@ export default class PositionsMapper {
       symbol: dto.Symbol,
       basePnl: dto.BasePnl,
       baseTradedAmount: dto.BaseTradedAmount,
-      currencyPair: this.referenceDataService.getCurrencyPair(dto.Symbol),
       basePnlName: 'basePnl',
       baseTradedAmountName: 'baseTradedAmount'
     }))

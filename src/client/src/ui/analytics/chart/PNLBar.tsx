@@ -3,10 +3,11 @@ import * as ReactDOM from 'react-dom'
 import * as numeral from 'numeral'
 
 import '../AnalyticsStyles.scss'
+import { CurrencyPair } from '../../../types/currencyPair'
 
 export interface PNLBarProps {
   basePnl: number
-  currencyPair: any
+  currencyPair: CurrencyPair
   index: number
   isPnL: boolean
   maxVal: number

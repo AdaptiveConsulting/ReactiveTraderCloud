@@ -8,7 +8,6 @@ import { timeFormat } from 'd3-time-format'
 import * as numeral from 'numeral'
 
 import ChartGradient from './chartGradient'
-import { PNLChartProps } from './model/pnlChartModel';
 
 export interface PnlChartModelOptions {
   xAxis: {
@@ -28,6 +27,14 @@ export interface PnlChartModelOptions {
     right: number
     bottom: number,
   }
+}
+
+export interface PNLChartProps {
+  lastPos: number,
+  maxPnl: number,
+  minPnl: number,
+  options: PnlChartModelOptions,
+  seriesData: PricePoint[]
 }
 
 export interface PricePoint {
