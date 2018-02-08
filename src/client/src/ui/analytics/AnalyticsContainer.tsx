@@ -7,6 +7,7 @@ import Analytics from './Analytics'
 import './AnalyticsStyles.scss'
 import { addRegion, openWindow } from '../../regions/regionsOperations'
 import { analyticsRegionSettings } from './analyticsOperations'
+import Environment from '../../system/environment'
 
 interface AnalyticsContainerOwnProps {
 
@@ -47,7 +48,7 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
       pnlChartModel,
       positionsChartModel,
       onPopoutClick: this.props.onPopoutClick(openFin),
-      canPopout: true,
+      canPopout: Environment.isRunningInIE(),
     }
 
     return (
