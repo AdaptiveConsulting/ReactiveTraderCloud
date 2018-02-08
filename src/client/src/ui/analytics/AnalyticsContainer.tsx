@@ -5,9 +5,10 @@ import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
 import Analytics from './Analytics'
 import './AnalyticsStyles.scss'
-import { addRegion, openWindow } from '../../regions/regionsOperations'
-import { analyticsRegionSettings } from './analyticsOperations'
 import Environment from '../../system/environment'
+import { addRegion, openWindow, regionsSettings } from '../../regions/regionsOperations'
+
+const analyticsRegionSettings = regionsSettings('Analytics', 400, 800, false)
 
 interface AnalyticsContainerOwnProps {
 
