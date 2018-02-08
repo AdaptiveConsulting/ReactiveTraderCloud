@@ -1,5 +1,5 @@
-import { ACTION_TYPES } from '../actions/spotTileActions'
-import { buildNotification } from '../../ui/notification/notificationUtils'
+import { ACTION_TYPES } from './actions'
+import { buildNotification } from '../notification/notificationUtils'
 
 const updateSpotTile = (state, symbol, value) => {
   return {
@@ -38,3 +38,5 @@ export const spotTileDataReducer = (state: any = {}, action) => {
       return state
   }
 }
+
+export default spotTileDataReducer

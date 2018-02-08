@@ -11,7 +11,7 @@ import { analyticsServiceEpic } from './ui/analytics/analyticsOperations'
 import { compositeStatusServiceEpic } from './redux/reducers/compositeStatusServiceOperations'
 import { connectionStatusEpicsCreator } from './connectionStatusOperations'
 import { popoutEpic } from './popoutEpic'
-import { spotTileEpicsCreator } from './redux/actions/spotTileActions'
+import { spotTileEpicsCreator } from './ui/spotTile'
 import { footerEpic } from './ui/footer/FooterOperations'
 
 const epicMiddleware = (referenceDataService, blotterService, pricingService, analyticsService, compositeStatusService, executionService, openFin) => createEpicMiddleware(

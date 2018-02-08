@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-
 import { blotterReducer } from '../../ui/blotter/'
 import { currencyPairReducer } from './currencyPairsReducer'
 import { pricingServiceReducer } from './pricingReducer'
@@ -10,8 +9,7 @@ import sidebarRegionReducer from '../../ui/sidebar/SidebarRegionOperations'
 import footerReducer from '../../ui/footer/FooterOperations'
 import notionalsReducer from '../../ui/spotTile/notional/NotionalOperations'
 import { regionsReducer } from '../../regions/regionsOperations'
-import { spotTileDataReducer } from './spotTileDataReducer'
-
+import { spotTileDataReducer } from '../../ui/spotTile'
 
 const rootReducer = combineReducers({
   blotterService: blotterReducer,

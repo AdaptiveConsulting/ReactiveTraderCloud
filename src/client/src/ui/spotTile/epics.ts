@@ -1,41 +1,18 @@
-import { createAction } from 'redux-actions'
-import { combineEpics } from 'redux-observable'
-import { regionsSettings } from '../../regions/regionsOperations'
-import { ACTION_TYPES as PRICING_ACTION_TYPES } from './pricingActions'
-
-import * as _ from 'lodash'
 import { Observable } from 'rxjs/Rx'
 import { Direction } from '../../types'
-import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataActions'
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../../redux/actions/referenceDataActions'
+import { ACTION_TYPES as PRICING_ACTION_TYPES } from '../../redux/actions/pricingActions'
+import { ACTION_TYPES as SPOT_TILE_ACTION_TYPES } from './actions';
+import { combineEpics } from 'redux-observable'
 import { SpotPrice } from '../../types/spotPrice'
+import * as _ from 'lodash'
+import { currencyChartOpened, dismissNotification, executeTrade, tradeExecuted, updateTiles } from './actions';
 
-const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 60000
+const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
 
 interface SpotPrices {
   [symbol: string]: SpotPrice
 }
-
-export enum ACTION_TYPES {
-  EXECUTE_TRADE = '@ReactiveTraderCloud/EXECUTE_TRADE',
-  TRADE_EXECUTED = '@ReactiveTraderCloud/TRADE_EXECUTED',
-  UNDOCK_TILE = '@ReactiveTraderCloud/UNDOCK_TILE',
-  TILE_UNDOCKED = '@ReactiveTraderCloud/TILE_UNDOCKED',
-  DISPLAY_CURRENCY_CHART = '@ReactiveTraderCloud/DISPLAY_CURRENCY_CHART',
-  CURRENCY_CHART_OPENED = '@ReactiveTraderCloud/CURRENCY_CHART_OPENED',
-  UPDATE_TILES = '@ReactiveTraderCloud/UPDATE_TILES',
-  DISMISS_NOTIFICATION = '@ReactiveTraderCloud/DISMISS_NOTIFICATION'
-}
-
-export const executeTrade = createAction(ACTION_TYPES.EXECUTE_TRADE, payload => payload, (payload, meta) => meta)
-export const tradeExecuted = createAction(ACTION_TYPES.TRADE_EXECUTED, payload => payload, (payload, meta) => meta)
-export const undockTile = createAction(ACTION_TYPES.UNDOCK_TILE, payload => payload)
-export const tileUndocked = createAction(ACTION_TYPES.TILE_UNDOCKED, payload => payload)
-export const displayCurrencyChart = createAction(ACTION_TYPES.DISPLAY_CURRENCY_CHART, payload => payload)
-export const currencyChartOpened = createAction(ACTION_TYPES.CURRENCY_CHART_OPENED, payload => payload)
-export const updateTiles = createAction(ACTION_TYPES.UPDATE_TILES)
-export const dismissNotification = createAction(ACTION_TYPES.DISMISS_NOTIFICATION, payload => payload)
-
-export const spotRegionSettings = id => regionsSettings(`${id} Spot`, 370, 155, true)
 
 const extractPayload = action => action.payload
 const addCurrencyPairToSpotPrices = referenceDataService => (spotPrices: SpotPrices): SpotPrices => {
@@ -49,7 +26,7 @@ const addCurrencyPairToSpotPrices = referenceDataService => (spotPrices: SpotPri
 
 export function spotTileEpicsCreator(executionService$, referenceDataService, openfin) {
   function executeTradeEpic(action$) {
-    return action$.ofType(ACTION_TYPES.EXECUTE_TRADE)
+    return action$.ofType(SPOT_TILE_ACTION_TYPES.EXECUTE_TRADE)
       .flatMap((action) => executionService$.executeTrade(action.payload), (request, result) => ({ request, result }))
       .map(x => tradeExecuted(x.result, x.request.meta))
   }
@@ -62,7 +39,7 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
   }
 
   function displayCurrencyChart(action$) {
-    return action$.ofType(ACTION_TYPES.DISPLAY_CURRENCY_CHART)
+    return action$.ofType(SPOT_TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART)
       .flatMap((payload) => {
         return Observable.fromPromise(payload.payload.openFin.displayCurrencyChart(payload.payload.symbol))
       })
@@ -72,7 +49,7 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
   }
 
   function onTradeExecuted(action$) {
-    return action$.ofType(ACTION_TYPES.TRADE_EXECUTED)
+    return action$.ofType(SPOT_TILE_ACTION_TYPES.TRADE_EXECUTED)
       .do(action => {
         openfin.isRunningInOpenFin && action.meta && openfin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
       })
@@ -111,3 +88,5 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
 
   return combineEpics(executeTradeEpic, onPriceUpdateEpic, displayCurrencyChart, onTradeExecuted, closePositionEpic)
 }
+
+export default spotTileEpicsCreator
