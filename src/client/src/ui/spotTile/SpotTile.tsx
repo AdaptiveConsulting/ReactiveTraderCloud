@@ -61,15 +61,12 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   createSpotTileControls() {
     const { onPopoutClick, undockTile, displayCurrencyChart, isRunningInOpenFin, spotTileData } = this.props
 
-    const spotTileControlsProps = {
-      onPopoutClick,
-      undockTile,
-      displayCurrencyChart,
-      isRunningInOpenFin,
-      currencyChartIsOpening: spotTileData.currencyChartIsOpening
-    }
     return (
-      <SpotTileControls { ...spotTileControlsProps }/>
+      <SpotTileControls onPopoutClick={onPopoutClick}
+                        currencyChartIsOpening={spotTileData.currencyChartIsOpening}
+                        displayCurrencyChart={displayCurrencyChart}
+                        isRunningInOpenFin={isRunningInOpenFin}
+                        undockTile={undockTile}/>
     )
   }
 

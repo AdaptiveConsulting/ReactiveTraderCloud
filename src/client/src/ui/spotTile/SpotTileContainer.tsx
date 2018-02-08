@@ -9,7 +9,7 @@ import {
   executeTrade,
   spotRegionSettings,
   undockTile,
-} from '../../redux/actions/spotTileActions'
+} from './actions'
 import { CurrencyPair, Direction } from '../../types/'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 import { SpotPriceTick } from '../../types/spotPriceTick'

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { createAction } from 'redux-actions'
 import { ACTION_TYPES as REGIONS_ACTIONS } from './regions/regionsOperations'
-import { ACTION_TYPES as TILE_ACTIONS, tileUndocked } from './redux/actions/spotTileActions'
+import { ACTION_TYPES as TILE_ACTIONS, tileUndocked } from './ui/spotTile/actions'
 import { getPopoutService } from './ui/common/popout'
 import { Provider } from 'react-redux'
 import { combineEpics } from 'redux-observable'
