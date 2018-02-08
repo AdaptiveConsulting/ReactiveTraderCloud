@@ -22,19 +22,20 @@ const buildSpotTileDataObject = (tileData, spotTick:SpotPriceTick, currencyPair:
   return tileDataObject
 }
 
-const getSpotTileData = (id:string) => createDeepEqualSelector(
-  (state:any) => state.pricingService,
-  (state:any) => state.currencyPairs,
-  (state:any) => state.spotTilesData,
-  (pricingService, currencyPairs, spotTilesData = {}) => {
-    return buildSpotTileDataObject(spotTilesData[id], pricingService[id], currencyPairs[id])
-  }
-)
+const makeGetSpotTileData = () =>
+  createDeepEqualSelector(
+    (state: any, props) => state.spotTilesData[props.id],
+    (state: any, props) => state.pricingService[props.id],
+    (state: any, props) => state.currencyPairs[props.id],
+    (spotTilesData = {}, pricingService, currencyPairs) =>
+      buildSpotTileDataObject(spotTilesData, pricingService, currencyPairs)
+  )
 
-const getCurrencyPair = (id:string) => createDeepEqualSelector (
-  (state:any) => state.currencyPairs,
-  (currencyPairs) => currencyPairs[id]
-)
+const makeGetCurrencyPair = () =>
+  createDeepEqualSelector(
+    (state: any, props) => state.currencyPairs[props.id],
+    currencyPairs => currencyPairs
+  )
 
 interface SpotTileContainerOwnProps {
   id: string
@@ -145,22 +146,27 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-function mapStateToProps(state: any, ownProps: SpotTileContainerProps) {
-  const { compositeStatusService, displayAnalytics, notionals } = state
-  const executionConnected = compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected || false
+const makeMapStateToProps = () => {
+  const getCurrencyPair = makeGetCurrencyPair();
+  const getSpotTileData = makeGetSpotTileData();
+  const mapStateToProps = (state, props) => {
+    const { compositeStatusService, displayAnalytics, notionals } = state;
+    const executionConnected = compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected
+    const isConnected = compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected
+    return {
+      isConnected,
+      executionConnected,
+      displayAnalytics,
+      currencyPair: getCurrencyPair(state, props),
+      spotTilesData: getSpotTileData(state, props),
+      notionals
+    };
+  };
 
-  const isConnected = compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected || false
-  return {
-    isConnected,
-    executionConnected,
-    displayAnalytics,
-    currencyPair: getCurrencyPair(ownProps.id)(state),
-    spotTilesData: getSpotTileData(ownProps.id)(state),
-    notionals
-  }
-}
+  return mapStateToProps;
+};
 
-const ConnectedSpotTileContainer = connect(mapStateToProps, mapDispatchToProps)(SpotTileContainer)
+const ConnectedSpotTileContainer = connect(makeMapStateToProps, mapDispatchToProps)(SpotTileContainer)
 const spotTileRegion = (id) => ({
   id,
   isTearedOff: false,
