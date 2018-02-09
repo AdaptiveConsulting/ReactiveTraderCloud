@@ -8,7 +8,7 @@ import { SpotPrice } from '../../types/spotPrice'
 import * as _ from 'lodash'
 import { currencyChartOpened, dismissNotification, executeTrade, tradeExecuted, updateTiles } from './actions';
 
-const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
+const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 600000
 
 interface SpotPrices {
   [symbol: string]: SpotPrice

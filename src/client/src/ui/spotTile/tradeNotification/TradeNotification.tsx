@@ -59,30 +59,26 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
           </li>
         </ul>
         <div className="trade-notification__details-items-container">
-          { this.createNotificationPropertyDisplay('Rate', notification.spotRate)}
-          { this.createNotificationPropertyDisplay('Date', notification.formattedValueDate)}
-          { this.createNotificationPropertyDisplay('Trade ID', notification.tradeId)}
+          { this.createItemDetailElement('Rate', notification.spotRate)}
+          { this.createItemDetailElement('Date', notification.formattedValueDate)}
+          { this.createItemDetailElement('Trade ID', notification.tradeId)}
         </div>
-        <div className="trade-notification__button--dismiss trade-notification__button--dismiss-icon"
-          onClick={onDismissedClicked}>
-          <i className="fa fa-share" ></i>
-        </div>
+        <i className="trade-notification__button--dismiss trade-notification__button--dismiss-icon fa fa-share"
+           onClick={onDismissedClicked}/>
       </div>
     )
   }
 
-  private createNotificationPropertyDisplay = (label: string, value: string|number) => {
+  private createItemDetailElement = (label: string, value: string|number) => {
     return (
-      <ul className="trade-notification__details-items trade-notification__details-items--date">
-        <li
-          className="trade-notification__details-item trade-notification__details-item--label">
+      <div className="trade-notification__details-item">
+        <div className="trade-notification__details-item--label">
           {label}
-        </li>
-        <li
-          className="trade-notification__details-item trade-notification__details-item--value">
+        </div>
+        <div className="trade-notification__details-item--value">
           {value}
-        </li>
-      </ul>
+        </div>
+      </div>
     )
   }
 }
