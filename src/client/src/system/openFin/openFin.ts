@@ -1,7 +1,7 @@
 /// <reference path="./OpenFin.d.ts"/>
 import { Observable, Subject, Subscription } from 'rxjs/Rx'
 import * as _ from 'lodash'
-import {CurrencyPair, Trade} from '../../types'
+import { CurrencyPair, Trade } from '../../types'
 import PositionsMapper from '../../services/mappers/positionsMapper'
 import logger from '../logger'
 import * as numeral from 'numeral'
