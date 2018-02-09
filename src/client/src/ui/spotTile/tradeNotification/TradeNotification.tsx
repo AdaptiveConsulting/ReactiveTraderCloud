@@ -15,11 +15,9 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
 
   renderError() {
     return (
-    <div >
-      {this.props.notification.hasError}
+    <div className="trade-notification">
       The execution status is unknown. Please contact your sales rep.
-        <div
-          className="trade-notification__button--dismiss"
+        <div className="trade-notification__button-dismiss"
           onClick={this.props.onDismissedClicked}>
           Done
         </div>
@@ -34,36 +32,30 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
     }
 
     const containerClassName = classnames(
-      { 'trade-notification--rejected': notification.status === TradeStatus.Rejected },
+      'trade-notification',
+      { 'trade-notification--rejected': notification.status === TradeStatus.Rejected }
     )
     return (
       <div className={containerClassName}>
         <span className="trade-notification__trade-status">
           {notification.status}
-          </span>
-        <ul className="trade-notification__summary-items">
-          <li
-            // tslint:disable-next-line:max-line-length
-            className="trade-notification__summary-item trade-notification__summary-item--direction">
-            {notification.direction}
-          </li>
-          <li
-            className="trade-notification__summary-item trade-notification__summary-item--notional">
-            {notification.dealtCurrency} {notification.notional}
-          </li>
-          <li
-            className="trade-notification__summary-item trade-notification__summary-item--currency">
-            <span
-              className="trade-notification__label--versus">vs </span>
-              { this.props.currencyPair.terms }
-          </li>
-        </ul>
+        </span>
+        <div className="trade-notification__summary-item--direction">
+          {notification.direction}
+        </div>
+        <div className="trade-notification__summary-item--notional">
+          {notification.dealtCurrency} {notification.notional}
+        </div>
+        <div className="trade-notification__summary-item--currency">
+          <span className="trade-notification__label--versus">vs </span>
+          { this.props.currencyPair.terms }
+        </div>
         <div className="trade-notification__details-items-container">
           { this.createItemDetailElement('Rate', notification.spotRate)}
           { this.createItemDetailElement('Date', notification.formattedValueDate)}
           { this.createItemDetailElement('Trade ID', notification.tradeId)}
         </div>
-        <i className="trade-notification__button--dismiss trade-notification__button--dismiss-icon fa fa-share"
+        <i className="trade-notification__dismiss-icon fa fa-share"
            onClick={onDismissedClicked}/>
       </div>
     )
