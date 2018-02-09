@@ -15,6 +15,7 @@ export function buildNotification(trade:Trade = null, error) {
     notional: numeral(trade.notional).format('0,000,000[.]00'),
     status: trade.status,
     dealtCurrency: trade.dealtCurrency,
+    termsCurrency: trade.termsCurrency,
     spotRate: trade.spotRate,
     formattedValueDate: `SP. ${timeFormat('%b %e')(trade.valueDate)}`,
     tradeId: trade.tradeId,

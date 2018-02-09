@@ -53,11 +53,10 @@
 }
 
 .trade-notification__button--dismiss {
-  text-decoration: none;
   position: absolute;
   bottom: -5px;
   right: 0;
-  color: inherit;
+  cursor: pointer;
 }
 
 .trade-notification__button--dismiss-icon {
@@ -69,7 +68,6 @@
   position: absolute;
   top: 0;
   right: 40px;
-  color: inherit;
   font-family: BrandonRegular;
 }
 

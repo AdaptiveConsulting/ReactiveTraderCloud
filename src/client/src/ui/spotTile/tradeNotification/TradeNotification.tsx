@@ -5,8 +5,7 @@ import { CurrencyPair, TradeStatus } from '../../../types'
 import { Notification } from '../../../types/notification'
 
 interface TradeNotificationProps {
-  className: string,
-  currencyPair: CurrencyPair,
+  currencyPair: CurrencyPair
   notification: Notification,
   onDismissedClicked: () => void
 }
@@ -15,38 +14,30 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
   props: TradeNotificationProps
 
   renderError() {
-    const classNames = classnames(
-      'trade-notification',
-      'trade-notification--error',
-      this.props.className,
-    )
     return (
-    <div className={classNames}>
-      {this.props.notification.hasError}.
+    <div >
+      {this.props.notification.hasError}
       The execution status is unknown. Please contact your sales rep.
-        <a
-          href="#"
+        <div
           className="trade-notification__button--dismiss"
           onClick={this.props.onDismissedClicked}>
           Done
-        </a>
+        </div>
     </div>)
   }
 
   render() {
-    const { notification, onDismissedClicked, className } = this.props
+    const { notification, onDismissedClicked } = this.props
 
     if (notification.hasError) {
       return this.renderError()
     }
 
-    const classNames = classnames(
-      'trade-notification',
-      className,
+    const containerClassName = classnames(
       { 'trade-notification--rejected': notification.status === TradeStatus.Rejected },
     )
     return (
-      <div className={classNames}>
+      <div className={containerClassName}>
         <span className="trade-notification__trade-status">
           {notification.status}
           </span>
@@ -64,49 +55,34 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
             className="trade-notification__summary-item trade-notification__summary-item--currency">
             <span
               className="trade-notification__label--versus">vs </span>
-              {/*{notification.termsCurrency}*/}
+              { this.props.currencyPair.terms }
           </li>
         </ul>
         <div className="trade-notification__details-items-container">
-          <ul className="trade-notification__details-items trade-notification__details-items--rate">
-            <li
-              className="trade-notification__details-item trade-notification__details-item--label">
-              Rate
-            </li>
-            <li
-              className="trade-notification__details-item trade-notification__details-item--value">
-              {notification.spotRate}
-            </li>
-          </ul>
-          <ul className="trade-notification__details-items trade-notification__details-items--date">
-            <li
-              className="trade-notification__details-item trade-notification__details-item--label">
-              Date
-            </li>
-            <li
-              className="trade-notification__details-item trade-notification__details-item--value">
-              {notification.formattedValueDate}
-            </li>
-          </ul>
-          <ul
-             // tslint:disable-next-line:max-line-length
-            className="trade-notification__details-items trade-notification__details-items--trade-id">
-            <li className="trade-notification__details-item trade-notification__details-item--label">
-              Trade ID
-            </li>
-            <li
-              className="trade-notification__details-item trade-notification__details-item--value">
-              {notification.tradeId}
-            </li>
-          </ul>
+          { this.createNotificationPropertyDisplay('Rate', notification.spotRate)}
+          { this.createNotificationPropertyDisplay('Date', notification.formattedValueDate)}
+          { this.createNotificationPropertyDisplay('Trade ID', notification.tradeId)}
         </div>
-        <a
-          href="#"
-          className="trade-notification__button--dismiss"
+        <div className="trade-notification__button--dismiss trade-notification__button--dismiss-icon"
           onClick={onDismissedClicked}>
-          <i className="trade-notification__button--dismiss-icon fa fa-share" ></i>
-        </a>
+          <i className="fa fa-share" ></i>
+        </div>
       </div>
+    )
+  }
+
+  private createNotificationPropertyDisplay = (label: string, value: string|number) => {
+    return (
+      <ul className="trade-notification__details-items trade-notification__details-items--date">
+        <li
+          className="trade-notification__details-item trade-notification__details-item--label">
+          {label}
+        </li>
+        <li
+          className="trade-notification__details-item trade-notification__details-item--value">
+          {value}
+        </li>
+      </ul>
     )
   }
 }

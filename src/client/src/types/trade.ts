@@ -4,6 +4,7 @@ export interface Trade {
   symbol: string,
   notional: number,
   dealtCurrency: string,
+  termsCurrency?: string,
   direction: any,
   spotRate: number,
   tradeDate: Date,
