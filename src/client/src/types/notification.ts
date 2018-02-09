@@ -10,6 +10,7 @@ export interface Notification {
   status: string
   spotRate: number
   dealtCurrency: string
+  termsCurrency:string
   formattedValueDate: string
   message?: string
 }

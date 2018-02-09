@@ -108,7 +108,6 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     if (notification.notificationType === NotificationType.Trade) {
       return (
         <TradeNotification
-          className="spot-tile__trade-summary"
           notification={notification}
           currencyPair={this.props.currencyPair}
           onDismissedClicked={() => this.props.onNotificationDismissedClick()}/>

@@ -19,7 +19,6 @@ describe.only('TradeNotification', () => {
       tradeId: 'ABC',
     }
     const component = <TradeNotification
-          className='spot-tile__trade-summary'
           notification={notification}
           onDismissedClicked={mockOnDismissedClicked}/>
 
@@ -48,7 +47,6 @@ describe.only('TradeNotification', () => {
         tradeId: 'ABC',
       }
       const component = <TradeNotification
-            className='spot-tile__trade-summary'
             notification={notification}
             onDismissedClicked={() => {}}/>
 

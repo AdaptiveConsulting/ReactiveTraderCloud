@@ -96,7 +96,6 @@ export const getTradeNotificationProps = (status: string,
                                           hasError: boolean,
                                           action: any) => {
   return {
-    className: 'spot-tile__trade-summary',
     notification: {
       hasError,
       status: TradeStatus[status],

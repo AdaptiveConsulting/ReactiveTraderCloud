@@ -1,5 +1,9 @@
 @import "../variables.scss";
 
+.trade-notification {
+  padding-top: 4px;
+}
+
 .trade-notification--rejected,
 .trade-notification--error {
   .trade-notification__trade-status {
@@ -9,21 +13,19 @@
 }
 
 .trade-notification--rejected {
-  .trade-notification__trade-status {
-    display: block;
-  }
   .trade-notification__summary-item {
     text-decoration: line-through;
   }
 }
 
-.trade-notification__summary-item {
-  line-height: 16px;
+@mixin trade-notification__summary-item {
+  line-height: 1.1;
+  color: #c2c5c9;
+  font-family: BrandonMedium;
 }
 
 .trade-notification__summary-item--direction {
-  color: #c2c5c9;
-  font-family: BrandonMedium;
+  @include trade-notification__summary-item;
   font-size: 12px;
   text-transform: uppercase;
 }
@@ -33,16 +35,15 @@
 }
 
 .trade-notification__summary-item--currency {
-  color: #c2c5c9;
+  @include trade-notification__summary-item;
   font-size: 14px;
 }
 
 .trade-notification__summary-item--notional {
+  @include trade-notification__summary-item;
   color: #f8ab02;
   font-size: 24px;
-  line-height: 24px;
   font-family: BrandonRegular;
-  display: inline-block;
 }
 
 .trade-notification__summary-items {
@@ -52,15 +53,18 @@
   padding: 0;
 }
 
-.trade-notification__button--dismiss {
-  text-decoration: none;
+@mixin trade-notification__dismiss {
   position: absolute;
   bottom: -5px;
   right: 0;
-  color: inherit;
+  cursor: pointer;
+}
+.trade-notification__button-dismiss {
+  @include trade-notification__dismiss();
 }
 
-.trade-notification__button--dismiss-icon {
+.trade-notification__dismiss-icon {
+  @include trade-notification__dismiss();
   transform: rotate(45deg);
 }
 
@@ -69,46 +73,35 @@
   position: absolute;
   top: 0;
   right: 40px;
-  color: inherit;
   font-family: BrandonRegular;
 }
 
 .trade-notification__details-items-container {
   display: flex;
+  justify-content: space-between;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 10px;
-  position: absolute;
+  padding: 10px 0 0 0 ;
+  margin-top: 18px;
   width: 100%;
-  bottom: 6px;
 }
 
-.trade-notification__details-items {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.trade-notification__details-item {
+  flex: 1 1 33%;
+
+  .trade-notification__details-item--label {
+    color: #c2c5c9;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-family: BrandonMedium;
+  }
+
+  .trade-notification__details-item--value {
+    color: white;
+    font-size: 16px;
+    font-family: BrandonRegular;
+  }
 }
 
-.trade-notification__details-item--label {
-  color: #c2c5c9;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-family: BrandonMedium;
-}
 
-.trade-notification__details-item--value {
-  color: white;
-  font-size: 16px;
-  font-family: BrandonRegular;
-}
 
-.trade-notification__details-items--rate {
-  flex: 0.8;
-}
 
-.trade-notification__details-items--date {
-  flex: 1;
-}
-
-.trade-notification__details-items--trade-id {
-  flex: 0.9
-}

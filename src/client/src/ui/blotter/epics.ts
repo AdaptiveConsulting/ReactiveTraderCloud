@@ -1,8 +1,11 @@
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../../redux/actions/referenceDataActions'
 import { createNewTradesAction } from './actions'
+import { CurrencyPair, Trade } from '../../types'
 
 const subscribeOpenFinToBlotterData = (openFin, store) => () => {
-  const cb = (msg, uuid) => openFin.sendAllBlotterData(uuid, store.getState().blotterService.trades)
+  const trades: Trade[] = store.getState().blotterService.trades
+  const currencyPairs: CurrencyPair[] = store.getState().blotterService.currencyPairs
+  const cb = (msg, uuid) => openFin.sendAllBlotterData(uuid, trades, currencyPairs)
   openFin.addSubscription('fetch-blotter', cb)
 }
 

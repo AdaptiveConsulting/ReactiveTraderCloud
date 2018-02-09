@@ -1,7 +1,7 @@
 /// <reference path="./OpenFin.d.ts"/>
 import { Observable, Subject, Subscription } from 'rxjs/Rx'
 import * as _ from 'lodash'
-import { Trade } from '../../types'
+import { CurrencyPair, Trade } from '../../types'
 import PositionsMapper from '../../services/mappers/positionsMapper'
 import logger from '../logger'
 import * as numeral from 'numeral'
@@ -202,10 +202,10 @@ export default class OpenFin {
     })
   }
 
-  openTradeNotification(trade) {
+  openTradeNotification(trade:Trade, currencyPair: CurrencyPair) {
     if (!this.isRunningInOpenFin) return
 
-    const tradeNotification = formatTradeNotification(trade)
+    const tradeNotification = formatTradeNotification(trade, currencyPair)
     new fin.desktop.Notification({
       url: '/notification.html',
       message: tradeNotification,
@@ -231,9 +231,9 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.publish('price-update', price)
   }
 
-  sendAllBlotterData(uuid, blotterData) {
+  sendAllBlotterData(uuid, blotterData: Trade[], currencyPairs:CurrencyPair[]) {
     const parsed = Object.keys(blotterData)
-      .map((x) => formatTradeNotification(blotterData[x]))
+      .map((x) => formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol]))
 
     fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', parsed)
   }
@@ -248,7 +248,7 @@ export default class OpenFin {
   }
 }
 
-function formatTradeNotification(trade: Trade) {
+function formatTradeNotification(trade: Trade, currencyPair: CurrencyPair) {
   return {
     symbol: trade.symbol,
     spotRate: trade.spotRate,
@@ -258,6 +258,7 @@ function formatTradeNotification(trade: Trade) {
     tradeDate: moment(trade.tradeDate).format(),
     status: trade.status,
     dealtCurrency: trade.dealtCurrency,
+    termsCurrency: currencyPair.terms,
     valueDate: moment(trade.valueDate).format('DD MMM')
   }
 }

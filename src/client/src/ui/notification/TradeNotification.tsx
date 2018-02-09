@@ -37,7 +37,7 @@ export default class TradeNotification extends React.Component<TradeNotification
           <ul className={tradeSummaryClasses}>
             <li className="notification__summary-item notification__summary-item--direction">{direction}</li>
             <li className="notification__summary-item notification__summary-item--notional">{trade.dealtCurrency} {trade.notional}</li>
-            <li className="notification__summary-item notification__summary-item--currency">vs {/*{trade.termsCurrency}*/}</li>
+            <li className="notification__summary-item notification__summary-item--currency">vs {trade.termsCurrency}</li>
           </ul>
           <div className="notification__details-items-container">
             <ul className="notification__details-items">
