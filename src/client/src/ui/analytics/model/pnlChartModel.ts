@@ -9,7 +9,7 @@ export interface PricePoint {
   y: any
 }
 
-export interface PNLChartProps {
+export interface PNLChartModel {
   lastPos: number,
   maxPnl: number,
   minPnl: number,

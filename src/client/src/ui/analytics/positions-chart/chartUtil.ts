@@ -2,14 +2,19 @@
 import * as _ from 'lodash'
 import * as d3 from 'd3'
 import * as numeral from 'numeral'
+import { CurrencyPair } from '../../../types/currencyPair'
+import { CurrencyPairPosition } from '../../../types/currencyPairPosition';
+import { PositionsBubbleChartProps } from './PositionsBubbleChart'
 
 const baseTradedAmountName = 'baseTradedAmount'
 
-export function getPositionsDataFromSeries(series = []) {
+export function getPositionsDataFromSeries(series = [], currencyPairs: CurrencyPair[]) {
   const baseAmountPropertyName = baseTradedAmountName
   const positionsPerCcyObj = series.reduce(
-    (aggregatedPositionsObj, ccyPairPosition) => {
-      const baseCurrency = ccyPairPosition.currencyPair.base
+    (aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
+      const { symbol } = ccyPairPosition
+      const ccyPair:CurrencyPair = currencyPairs[symbol]
+      const baseCurrency = ccyPair ? ccyPair.base : ''
       aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
         ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmountPropertyName]
         : ccyPairPosition[baseAmountPropertyName]
@@ -26,15 +31,13 @@ export function getPositionsDataFromSeries(series = []) {
   }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
 }
 
-export function createScales(props: any) {
+export function createScales(props: PositionsBubbleChartProps) {
   const ratio = 12.5
-  const width = props.containerWidth
-  const height = props.containerHeight
+  const { width, height } = props.size
   const minR = 15
   const maxR = 60
   const offset = maxR / 2
-
-  const positionData = getPositionsDataFromSeries(props.data)
+  const positionData = getPositionsDataFromSeries(props.data, props.currencyPairs)
 
   const baseValues = _.map(positionData, (val: any) => {
     return Math.abs(val[baseTradedAmountName])

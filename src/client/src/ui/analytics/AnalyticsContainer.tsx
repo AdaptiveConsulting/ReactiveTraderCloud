@@ -5,9 +5,11 @@ import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
 import Analytics from './Analytics'
 import './AnalyticsStyles.scss'
-import { addRegion, openWindow } from '../../regions/regionsOperations'
-import { analyticsRegionSettings } from './analyticsOperations'
 import Environment from '../../system/environment'
+import { addRegion, openWindow, regionsSettings } from '../../regions/regionsOperations'
+import { CurrencyPair } from '../../types/currencyPair'
+
+const analyticsRegionSettings = regionsSettings('Analytics', 400, 800, false)
 
 interface AnalyticsContainerOwnProps {
 
@@ -15,8 +17,9 @@ interface AnalyticsContainerOwnProps {
 
 interface AnalyticsContainerStateProps {
   isConnected: boolean
-  canPopout: boolean
+  displayAnalytics: boolean
   analyticsService: any
+  currencyPairs: CurrencyPair[]
 }
 
 interface AnalyticsContainerDispatchProps {
@@ -38,23 +41,19 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
 
   render() {
 
-    const { analyticsService, isConnected } = this.props
+    const { analyticsService, isConnected, currencyPairs } = this.props
     const openFin = this.context.openFin
     const positionsChartModel = getPositionsChartModel(analyticsService.currentPositions)
     const pnlChartModel = getPnlChartModel(analyticsService.history)
-
-    const analyticsProps = {
-      isConnected,
-      pnlChartModel,
-      positionsChartModel,
-      onPopoutClick: this.props.onPopoutClick(openFin),
-      canPopout: Environment.isRunningInIE(),
-    }
-
+    const canPopout = !Environment.isRunningInIE()
+    const onPopoutClick = this.props.onPopoutClick(openFin)
     return (
-      <Analytics
-        {...analyticsProps}
-      />
+      <Analytics currencyPairs={currencyPairs}
+                 canPopout={canPopout}
+                 isConnected={isConnected}
+                 onPopoutClick={onPopoutClick}
+                 pnlChartModel={pnlChartModel}
+                 positionsChartModel={positionsChartModel}/>
     )
   }
 }
@@ -70,9 +69,10 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-function mapStateToProps({ analyticsService, compositeStatusService, displayAnalytics }) {
+function mapStateToProps(state: any) {
+  const { analyticsService, compositeStatusService, displayAnalytics, currencyPairs } = state
   const isConnected =  compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected || false
-  return { analyticsService, isConnected, displayAnalytics }
+  return { analyticsService, isConnected, displayAnalytics, currencyPairs }
 }
 
 const ConnectedAnalyticsContainer = connect(mapStateToProps, mapDispatchToProps)(AnalyticsContainer)

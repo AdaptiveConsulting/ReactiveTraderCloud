@@ -1,18 +1,18 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
 import * as _ from 'lodash'
-import { PNLChartProps } from './model/pnlChartModel'
-import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
-import PNLChart from './PNLChart'
-import AnalyticsBarChart from './chart/AnalyticsBarChart'
+import { PNLChartModel } from './model/pnlChartModel'
+import { PNLChart, AnalyticsBarChart, PositionsBubbleChart } from './'
 import { PositionsChartModel } from './model/positionsChartModel'
 import './AnalyticsStyles.scss'
+import { CurrencyPair } from '../../types/currencyPair'
 
 export interface AnalyticsProps {
   canPopout: boolean
   isConnected: boolean
-  pnlChartModel?: PNLChartProps
+  pnlChartModel?: PNLChartModel
   positionsChartModel?: PositionsChartModel,
+  currencyPairs: CurrencyPair[]
   onPopoutClick?: () => void
 }
 
@@ -32,7 +32,7 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
   }
 
   render() {
-    const { canPopout, isConnected } = this.props
+    const { canPopout, isConnected, currencyPairs } = this.props
 
     if (!isConnected)
       return (
@@ -52,12 +52,14 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
         {this.props.pnlChartModel && <PNLChart {...this.props.pnlChartModel} />}
         <div className="analytics__bubblechart-container">
           <span className="analytics__chart-title analytics__bubblechart-title">Positions</span>
-          {!_.isEmpty(this.props.positionsChartModel.seriesData) && <PositionsBubbleChart data={this.props.positionsChartModel.seriesData}/>}
+          {!_.isEmpty(this.props.positionsChartModel.seriesData) &&
+          <PositionsBubbleChart data={this.props.positionsChartModel.seriesData} currencyPairs={currencyPairs}/>}
         </div>
         <div>
           <div className="analytics__chart-container">
             <span className="analytics__chart-title">PnL</span>
-            {!_.isEmpty(this.props.positionsChartModel.seriesData) && <AnalyticsBarChart chartData={this.props.positionsChartModel.seriesData} isPnL={true}/>}
+            {!_.isEmpty(this.props.positionsChartModel.seriesData) &&
+            <AnalyticsBarChart chartData={this.props.positionsChartModel.seriesData} currencyPairs={currencyPairs} isPnL={true}/>}
           </div>
         </div>
       </div>

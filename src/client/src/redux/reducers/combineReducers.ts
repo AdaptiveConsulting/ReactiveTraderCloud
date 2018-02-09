@@ -4,7 +4,7 @@ import { currencyPairReducer } from './currencyPairsReducer'
 import { pricingServiceReducer } from './pricingReducer'
 import compositeStatusServiceReducer from './compositeStatusServiceOperations'
 import connectionStatusReducer from '../../connectionStatusOperations'
-import analyticsServiceReducer from '../../ui/analytics/analyticsOperations'
+import { analyticsReducer } from '../../ui/analytics'
 import sidebarRegionReducer from '../../ui/sidebar/SidebarRegionOperations'
 import footerReducer from '../../ui/footer/FooterOperations'
 import notionalsReducer from '../../ui/spotTile/notional/NotionalOperations'
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   blotterService: blotterReducer,
   currencyPairs: currencyPairReducer,
   pricingService: pricingServiceReducer,
-  analyticsService: analyticsServiceReducer,
+  analyticsService: analyticsReducer,
   compositeStatusService: compositeStatusServiceReducer,
   connectionStatus: connectionStatusReducer,
   displayAnalytics: sidebarRegionReducer,

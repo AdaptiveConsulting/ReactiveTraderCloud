@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
 
-import AnalyticsContainer from '../analytics/AnalyticsContainer'
+import { AnalyticsContainer } from '../analytics'
 import './SidebarRegionViewStyles.scss'
 
 interface SidebarRegionViewProps {

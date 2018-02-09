@@ -11,9 +11,11 @@ import {  createScales,
           drawLabels,
           getRadius,
           getPositionValue } from './chartUtil'
+import { CurrencyPair } from '../../../types/currencyPair'
 
 export interface PositionsBubbleChartProps {
-  data: any[],
+  data: any[]
+  currencyPairs: CurrencyPair[]
   // passed by reactSizeme :
   size: {
     width: number
@@ -51,7 +53,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   }
 
   shouldRedrawChart(nextProps = this.props) {
-    const positionsData = getPositionsDataFromSeries(nextProps.data)
+    const positionsData = getPositionsDataFromSeries(nextProps.data, nextProps.currencyPairs)
     const existingPositionsData = this.state.prevPositionsData
     const nodesChanged = positionsData.length !== existingPositionsData.length
     return nodesChanged
@@ -61,7 +63,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     if (this.state.nodes.length === 0 && nextProps.data.length > 0) {
       this.updateNodes(nextProps.data)
     }
-    const positionsData = getPositionsDataFromSeries(nextProps.data)
+    const positionsData = getPositionsDataFromSeries(nextProps.data, nextProps.currencyPairs)
     const existingPositionsData = this.state.prevPositionsData
 
     // positions data has changed on the existing nodes
@@ -94,7 +96,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   updateNodes(data: any) {
     let nodes = this.state.nodes
     const colours = ['#6db910', '#d90a0a']
-    const positionsData = getPositionsDataFromSeries(data)
+    const positionsData = getPositionsDataFromSeries(data, this.props.currencyPairs)
 
     nodes = map(positionsData, (dataObj: any, index: number) => {
       const color =  dataObj.baseTradedAmount > 0 ? colours[0] : colours[1]

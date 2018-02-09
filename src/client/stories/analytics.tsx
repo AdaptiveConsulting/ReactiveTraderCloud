@@ -2,9 +2,7 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import { default as analyticsProps, pnlChartModel, positionsChartModel } from './analytics/analyticsProps'
-import Analytics from '../src/ui/analytics/Analytics'
-import { PositionsBubbleChart } from '../src/ui/analytics/positions-chart/PositionsBubbleChart'
-import AnalyticsBarChart from '../src/ui/analytics/chart/AnalyticsBarChart'
+import { Analytics, PositionsBubbleChart, AnalyticsBarChart } from '../src/ui/analytics'
 import PNLChart from '../src/ui/analytics/PNLChart'
 
 storiesOf('Analytics', module)

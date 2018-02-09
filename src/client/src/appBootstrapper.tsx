@@ -37,7 +37,6 @@ const connectSocket = () => {
 
 const appBootstrapper = () => {
   const connection = connectSocket()
-  // in a larger app you'd put a container in here (shameless plug: https://github.com/KeithWoods/microdi-js, but there are many offerings in this space).
   const openFin = new OpenFin()
   const refDataService = ReferenceDataService(connection)
   const pricingService = PricingService(connection)
