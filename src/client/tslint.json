@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint-config-airbnb"],
+  "extends": ["tslint-config-airbnb", "tslint-config-prettier"],
   "rules": {
     "quotemark": [true, "single", "jsx-double"],
     "ordered-imports": false,
