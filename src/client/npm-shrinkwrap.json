@@ -1396,7 +1396,7 @@
         "react-icons": "2.2.7",
         "react-inspector": "2.2.2",
         "react-modal": "3.1.11",
-        "react-split-pane": "0.1.76",
+        "react-split-pane": "0.1.77",
         "react-treebeard": "2.1.0",
         "redux": "3.7.2"
       },
@@ -1432,12 +1432,6 @@
       "version": "3.5.20",
       "resolved": "https://registry.npmjs.org/@types/bluebird/-/bluebird-3.5.20.tgz",
       "integrity": "sha512-Wk41MVdF+cHBfVXj/ufUHJeO3BlIQr1McbHZANErMykaCWeDSZbH5erGjNBw2/3UlRdSxZbLfSuQTzFmPOYFsA==",
-      "dev": true
-    },
-    "@types/inline-style-prefixer": {
-      "version": "3.0.1",
-      "resolved": "https://registry.npmjs.org/@types/inline-style-prefixer/-/inline-style-prefixer-3.0.1.tgz",
-      "integrity": "sha512-+kbOcYW1/noncDwRryRoB9tH87IYcMfdBGvw98iocK39LtTA2DFL7agmk4UHW/GxjzVfwrxfjlLrqrgA7MCtmg==",
       "dev": true
     },
     "@types/jest": {
@@ -1633,6 +1627,16 @@
           "dev": true
         }
       }
+    },
+    "ag-grid": {
+      "version": "15.0.0",
+      "resolved": "https://registry.npmjs.org/ag-grid/-/ag-grid-15.0.0.tgz",
+      "integrity": "sha1-cwSNgSpDVHSU1D3H9culM0Y/zD4="
+    },
+    "ag-grid-react": {
+      "version": "15.0.0",
+      "resolved": "https://registry.npmjs.org/ag-grid-react/-/ag-grid-react-15.0.0.tgz",
+      "integrity": "sha1-WChZMltSSh/fSKwFGYslQp48EbA="
     },
     "airbnb-js-shims": {
       "version": "1.4.1",
@@ -4556,8 +4560,7 @@
     "bowser": {
       "version": "1.9.1",
       "resolved": "https://registry.npmjs.org/bowser/-/bowser-1.9.1.tgz",
-      "integrity": "sha512-UXti1JB6oK8hO983AImunnV6j/fqAEeDlPXh99zhsP5g32oLbxJJ6qcOaUesR+tqqhnUVQHlRJyD0dfiV0Hxaw==",
-      "dev": true
+      "integrity": "sha512-UXti1JB6oK8hO983AImunnV6j/fqAEeDlPXh99zhsP5g32oLbxJJ6qcOaUesR+tqqhnUVQHlRJyD0dfiV0Hxaw=="
     },
     "brace-expansion": {
       "version": "1.1.8",
@@ -5730,7 +5733,6 @@
       "version": "2.0.0",
       "resolved": "https://registry.npmjs.org/css-in-js-utils/-/css-in-js-utils-2.0.0.tgz",
       "integrity": "sha512-yuWmPMD9FLi50Xf3k8W8oO3WM1eVnxEGCldCLyfusQ+CgivFk0s23yst4ooW6tfxMuSa03S6uUEga9UhX6GRrA==",
-      "dev": true,
       "requires": {
         "hyphenate-style-name": "1.0.2"
       }
@@ -9397,8 +9399,7 @@
     "hyphenate-style-name": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz",
-      "integrity": "sha1-MRYKNpMK2vH8BMYHT360FGXU7Es=",
-      "dev": true
+      "integrity": "sha1-MRYKNpMK2vH8BMYHT360FGXU7Es="
     },
     "iconv-lite": {
       "version": "0.4.18",
@@ -9544,7 +9545,6 @@
       "version": "3.0.8",
       "resolved": "https://registry.npmjs.org/inline-style-prefixer/-/inline-style-prefixer-3.0.8.tgz",
       "integrity": "sha1-hVG45bTVcyROZqNLBPfTIHaitTQ=",
-      "dev": true,
       "requires": {
         "bowser": "1.9.1",
         "css-in-js-utils": "2.0.0"
@@ -13976,6 +13976,11 @@
         }
       }
     },
+    "react-dom-factories": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/react-dom-factories/-/react-dom-factories-1.0.2.tgz",
+      "integrity": "sha1-63cFxNs2+1AbOqOP91lhaqD/luA="
+    },
     "react-fuzzy": {
       "version": "0.5.1",
       "resolved": "https://registry.npmjs.org/react-fuzzy/-/react-fuzzy-0.5.1.tgz",
@@ -14149,23 +14154,19 @@
       }
     },
     "react-split-pane": {
-      "version": "0.1.76",
-      "resolved": "https://registry.npmjs.org/react-split-pane/-/react-split-pane-0.1.76.tgz",
-      "integrity": "sha512-b8/rIizOP+b4i8IXk4gIu7y9RxXnItn4tS0VzD+AsiIeWzBEJn6FHoL0lBXT7J64H7sUTASjMdTeZ4xov/0bCA==",
-      "dev": true,
+      "version": "0.1.77",
+      "resolved": "https://registry.npmjs.org/react-split-pane/-/react-split-pane-0.1.77.tgz",
+      "integrity": "sha512-xq0PPsbkNI9xEd6yTrGPr7hzf6XfIgnsxuUEdRJELq+kLPHMsO3ymFCjhiYP35wlDPn9W46+rHDsJd7LFYteMw==",
       "requires": {
-        "@types/inline-style-prefixer": "3.0.1",
-        "@types/react": "16.0.36",
         "inline-style-prefixer": "3.0.8",
         "prop-types": "15.6.0",
-        "react-style-proptype": "3.1.0"
+        "react-style-proptype": "3.2.0"
       }
     },
     "react-style-proptype": {
-      "version": "3.1.0",
-      "resolved": "https://registry.npmjs.org/react-style-proptype/-/react-style-proptype-3.1.0.tgz",
-      "integrity": "sha512-e4lOMjF4f8Pp/jdO9myNzDvSAx1aG5r0olziD64Bgk40LN8LxidRCgnKeI2RiKrqYD6j2Z8ByXoUbwV+/mwpwg==",
-      "dev": true,
+      "version": "3.2.0",
+      "resolved": "https://registry.npmjs.org/react-style-proptype/-/react-style-proptype-3.2.0.tgz",
+      "integrity": "sha512-Mafmkzj3oNmLSJNOlH+WWWyGIdzVLhPj+d12fDxQMQdwDQ5sMX7vQKOLpry4U+zRWieTCx448AyRKK0NLWuXmg==",
       "requires": {
         "prop-types": "15.6.0"
       }

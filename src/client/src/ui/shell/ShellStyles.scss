@@ -103,6 +103,7 @@
   height: $blotter-height;
   overflow: hidden;
   order: 2;
+  box-sizing: border-box;
 }
 
 .shell__footer {

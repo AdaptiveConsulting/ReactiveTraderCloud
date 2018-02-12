@@ -1,0 +1,54 @@
+
+.splitPaneContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.resizerContainer {
+  background: transparent;
+  opacity: 1;
+  z-index: 1;
+  box-sizing: border-box;
+  background-clip: padding-box;
+}
+
+.resizerContainer.horizontal {
+  height: 7px;
+  margin: -3px 0;
+  border-top: 3px solid rgba(0, 0, 0, 0);
+  border-bottom: 2px solid rgba(0, 0, 0, 0);
+  background-color: lightblue;
+  opacity: 0;
+  cursor: row-resize;
+  width: 100%;
+}
+
+.resizerContainer.horizontal:hover {
+  opacity: 1;
+  border-top: 2px solid rgba(0, 0, 0, 0);
+  border-bottom: 2px solid rgba(0, 0, 0, 0);
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  background-color: lightblue;
+}
+
+.resizerContainer.vertical {
+  width: 7px;
+  margin: 0 -3px;
+  border-left: 3px solid rgba(255, 255, 255, 0);
+  border-right: 3px solid rgba(255, 255, 255, 0);
+  cursor: col-resize;
+}
+
+.resizerContainer.vertical:hover {
+  border-left: 3px solid rgba(0, 0, 0, 0.5);
+  border-right: 3px solid rgba(0, 0, 0, 0.5);
+}
+.resizerContainer.disabled {
+  cursor: not-allowed;
+}
+.resizerContainer.disabled:hover {
+  border-color: transparent;
+}
