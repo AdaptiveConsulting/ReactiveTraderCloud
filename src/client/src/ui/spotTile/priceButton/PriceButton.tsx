@@ -3,7 +3,6 @@ import * as classnames from 'classnames'
 
 import { Direction } from '../../../types'
 import './PriceButtonStyles.scss'
-import { CurrencyPair } from '../../../types/currencyPair'
 import { Rate } from '../../../types/rate'
 
 interface PriceButtonProps {
@@ -11,7 +10,6 @@ interface PriceButtonProps {
   direction: Direction
   rate: Rate
   onExecute: () => void
-  currencyPair: CurrencyPair
 }
 
 const renderPips = (pips: number) => pips.toString().length === 1 ? `0${pips}` : pips

@@ -4,23 +4,41 @@ import { action } from '@storybook/addon-actions'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
+const getRandomNumber = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min + 1) + min)
+
+const getRandomRate = () => {
+  return toRate(123, getRandomNumber(0, 10), getRandomNumber(0, 9))
+}
+
 import rootReducer from '../src/redux/reducers/combineReducers'
 import {
-  getButtonProps,
   getContainerStyling,
   getNotionalInputProps,
   getPriceMovementIndicatorProps,
   getSpotTileProps,
-  getTradeNotificationProps,
+  getTradeNotification,
 } from './spotTile/'
 import SpotTile, { NotionalInput, PriceButton, PriceMovementIndicator, TradeNotification } from '../src/ui/spotTile'
 import '../src/ui/spotTile/SpotTileStyles.scss'
+import { Direction } from '../src/types/direction'
+import { toRate } from '../src/ui/spotTile/spotTileUtils'
+import { getCurrencyPair } from './currencyPairs'
 
-const getButtons = (withContainerClass = true) =>
-  <div className={withContainerClass ? 'spot-tile' : ''}>
-    <PriceButton {...getButtonProps('Sell', action)} />
-    <PriceButton {...getButtonProps('Buy', action)} />
-  </div>
+const getButtons = (withContainerClass = true) => {
+  const sellButtonClassName = `spot-tile__price spot-tile__price--bid`
+  const buyButtonClassName = `spot-tile__price spot-tile__price--ask`
+  return (<div className={withContainerClass ? 'spot-tile' : ''}>
+    <PriceButton className={sellButtonClassName}
+                 onExecute={action('sell clicked')}
+                 rate={getRandomRate()}
+                 direction={Direction.Sell} />
+    <PriceButton className={buyButtonClassName}
+                 onExecute={action('buy clicked')}
+                 rate={getRandomRate()}
+                 direction={Direction.Buy} />
+  </div>)
+}
 
 const store = createStore(rootReducer)
 
@@ -33,13 +51,12 @@ storiesOf('Spot Tile', module)
     <div style={getContainerStyling}>
       <SpotTile {...getSpotTileProps()} />
     </div>)
-  .add('Buy & Sell buttons', () =>
-    <div className="spot-tile" style={getContainerStyling}>
-      <div className="spot-tile__container">
-        <PriceButton {...getButtonProps('Sell', action)} />
-        <PriceButton {...getButtonProps('Buy', action)} />
-      </div>
+  .add('Buy & Sell buttons', () => {
+
+    return (<div className="spot-tile" style={getContainerStyling}>
+      {getButtons(true)}
     </div>)
+  })
   .add('Notional Input', () =>
     <div className="spot-tile" style={getContainerStyling}>
       <div className="spot-tile__container">
@@ -57,17 +74,23 @@ storiesOf('Spot Tile', module)
     <div>
       <div className="spot-tile" style={getContainerStyling}>
         <div className="spot-tile__container">
-          <TradeNotification {...getTradeNotificationProps('Rejected', 'Up', false, action)} />
+          <TradeNotification notification={getTradeNotification('Rejected', 'Up', false)}
+                             currencyPair={getCurrencyPair('GBPUSD')}
+                             onDismissedClicked={action('dismiss notification')} />
         </div>
       </div>
       <div className="spot-tile" style={getContainerStyling}>
         <div className="spot-tile__container">
-          <TradeNotification {...getTradeNotificationProps('Done', 'Down', false, action)} />
+          <TradeNotification notification={getTradeNotification('Done', 'Down', false)}
+                             currencyPair={getCurrencyPair('GBPUSD')}
+                             onDismissedClicked={action('dismiss notification')}/>
         </div>
       </div>
       <div className="spot-tile" style={getContainerStyling}>
         <div className="spot-tile__container">
-          <TradeNotification {...getTradeNotificationProps('Done', 'Down', true, action)} />
+          <TradeNotification notification={getTradeNotification('Done', 'Down', true)}
+                             currencyPair={getCurrencyPair('GBPUSD')}
+                             onDismissedClicked={action('dismiss notification')} />
         </div>
       </div>
     </div>)
