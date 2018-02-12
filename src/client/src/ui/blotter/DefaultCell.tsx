@@ -23,3 +23,5 @@ export const BaseCell = (props: BaseCellProps) => {
 export const getCellClassName = (tradeStatus: TradeStatus, cellKey: string) => {
   return cellKey !== 'status' && tradeStatus.toString() === 'rejected' && 'rejectedCell' || undefined
 }
+
+export default BaseCell
