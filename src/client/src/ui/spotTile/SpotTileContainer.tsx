@@ -44,6 +44,7 @@ interface SpotTileContainerOwnProps {
 interface SpotTileContainerStateProps {
   isConnected: boolean
   executionConnected: boolean
+  pricingConnected: boolean
   canPopout: boolean
   currencyPair: CurrencyPair
   spotTilesData: SpotTileData
@@ -77,23 +78,22 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
   }
   render() {
     const openFin = this.context.openFin
-    const key = this.props.id
-    const spotTitle = spotRegionSettings(key)['title']
-    const tileProps = {
-      id: key,
-      currencyPair: this.props.currencyPair,
-      spotTileData: this.props.spotTilesData,
-      executionConnected: this.props.executionConnected,
-      isRunningInOpenFin: !!openFin,
-      executeTrade: this.executeTrade,
-      undockTile: this.props.undockTile(openFin, spotTitle),
-      onPopoutClick: this.props.onPopoutClick(this.props.id, openFin),
-      onNotificationDismissedClick: this.props.onNotificationDismissedClick(this.props.id),
-      displayCurrencyChart: this.props.displayCurrencyChart(openFin, this.props.id)
-    }
+    const { id, currencyPair, spotTilesData, executionConnected,
+            pricingConnected, onPopoutClick, undockTile, onNotificationDismissedClick,
+            displayCurrencyChart } = this.props
+    const spotTitle = spotRegionSettings(id)['title']
     return (
-      <SpotTile
-        {...tileProps}
+      <SpotTile key={id}
+                pricingConnected={pricingConnected}
+                executionConnected={executionConnected}
+                currencyPair={currencyPair}
+                isRunningInOpenFin={!!openFin}
+                spotTileData={spotTilesData}
+                onPopoutClick={onPopoutClick(id, openFin)}
+                displayCurrencyChart={displayCurrencyChart(openFin, id)}
+                onNotificationDismissedClick={onNotificationDismissedClick(id)}
+                undockTile={undockTile(openFin, spotTitle)}
+                executeTrade={this.executeTrade}
       />
     )
   }
@@ -152,10 +152,12 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state, props) => {
     const { compositeStatusService, displayAnalytics, notionals } = state
     const executionConnected = compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected
+    const pricingConnected = compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected
     const isConnected = compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected
     return {
       isConnected,
       executionConnected,
+      pricingConnected,
       displayAnalytics,
       currencyPair: getCurrencyPair(state, props),
       spotTilesData: getSpotTileData(state, props),
