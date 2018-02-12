@@ -1,16 +1,9 @@
 import { NotificationType } from './index'
-import { Direction } from './direction'
+import { Trade } from './trade'
 
 export interface Notification {
-  tradeId: string
   hasError: boolean
   notificationType: NotificationType
-  direction: Direction
-  notional: string
-  status: string
-  spotRate: number
-  dealtCurrency: string
-  termsCurrency:string
-  formattedValueDate: string
   message?: string
+  trade: Trade
 }
