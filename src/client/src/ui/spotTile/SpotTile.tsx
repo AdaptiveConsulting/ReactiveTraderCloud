@@ -16,6 +16,7 @@ export interface SpotTileProps {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
   executionConnected: boolean
+  pricingConnected: boolean
   isRunningInOpenFin: boolean
   executeTrade: (direction: any) => void
   onPopoutClick: () => void
@@ -44,11 +45,11 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   }
 
   getSpotContainerClassName() {
-    const { executionConnected } = this.props
+    const { executionConnected, pricingConnected } = this.props
     const { isTradeExecutionInFlight, notification, priceStale } = this.props.spotTileData
     const hasNotification = !!notification
     const className = classnames('spot-tile', {
-      'spot-tile--stale': (/*!pricingConnected ||*/ priceStale) &&
+      'spot-tile--stale': (!pricingConnected || priceStale) &&
       !(hasNotification && notification.notificationType === NotificationType.Trade),
       'spot-tile--readonly': !executionConnected,
       'spot-tile--executing': isTradeExecutionInFlight,
