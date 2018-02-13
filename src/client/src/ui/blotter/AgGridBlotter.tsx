@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { AgGridReact } from 'ag-grid-react'
-import { COLUMN_DEFINITIONS } from './agGridBlotterUtils'
+import { COLUMN_DEFINITIONS, DEFAULT_COLUMN_DEFINITION } from './agGridBlotterUtils'
 import './agGridBlotter.scss'
 import 'ag-grid/dist/styles/ag-grid.css'
 import 'ag-grid/dist/styles/ag-theme-blue.css'
@@ -16,7 +16,7 @@ interface AgGridBlotterProps {
 export default class AgGridBlotter extends React.Component<AgGridBlotterProps, {}> {
 
   render () {
-    const containerClass = classNames('ag-theme-dark', 'agGridBlotter-container')
+    const containerClass = classNames('ag-theme-dark', 'agGridBlotter-container', 'rt-blotter')
     const newWindowClassName = classNames(
       'glyphicon glyphicon-new-window',
       {
@@ -31,10 +31,12 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, {
       </div>
       <AgGridReact
         columnDefs={COLUMN_DEFINITIONS}
+        defaultColDef={DEFAULT_COLUMN_DEFINITION}
         rowData={this.props.rows}
         enableColResize={true}
         enableSorting={true}
-        enableRangeSelection={true}/>
+        enableFilter={true}
+      />
     </div>
   }
 }

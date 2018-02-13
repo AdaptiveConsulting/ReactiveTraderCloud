@@ -1,5 +1,9 @@
 import * as AgGrid from 'ag-grid'
 
+export const DEFAULT_COLUMN_DEFINITION:AgGrid.ColDef = {
+  menuTabs: ['filterMenuTab']
+}
+
 export const COLUMN_DEFINITIONS:AgGrid.ColDef[] = [
   {
     colId: 'tradeId',

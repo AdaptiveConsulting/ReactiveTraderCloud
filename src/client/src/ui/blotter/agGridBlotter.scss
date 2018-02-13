@@ -1,7 +1,27 @@
+@import '../spotTile/variables';
+
 .agGridBlotter-container {
   position: relative;
   width: 100%;
   height: 100%;
   background-color: white;
-  border: 2px solid green;
+}
+
+.rt-blotter {
+  .ag-body {
+    background-color: #262a33!important;
+  }
+
+  .ag-header {
+    background-color: $primary-color!important;
+    color: black!important;
+  }
+
+  .ag-row-even {
+    background-color: #262a33!important;
+  }
+
+  .ag-row-odd {
+    background-color: #424545!important;
+  }
 }
