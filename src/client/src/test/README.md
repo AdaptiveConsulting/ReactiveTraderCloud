@@ -9,4 +9,10 @@ Run the following commands:
 
 # Configuration:
 
+Node Config Manager
 
+Environment variables
+
+NODE_CONFIG_DIR String ./config Config directory path
+NODE_ENV String -- Node environment
+NODE_CAMEL_CASE Boolean false Naming convention of variables
