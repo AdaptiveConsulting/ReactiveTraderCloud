@@ -65,8 +65,14 @@
   }
 }
 
+.blotter__container {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
 .shell_workspace_blotter {
-  background-color: $shell-background-color;
+  /*background-color: $shell-background-color;
   display: flex;
   flex-flow: column;
   justify-content: space-around;
@@ -75,7 +81,11 @@
   min-width: 0;
   & * {
     box-sizing: border-box;
-  }
+  }*/
+  height: 100%;
+  width: 100%;
+  min-height: 20px;
+  background-color: grey;
 }
 
 .shell__sidebar {
@@ -91,7 +101,7 @@
 
 .shell__workspace {
   flex-grow: 1;
-  height: $workspace-height;
+  height: auto;// $workspace-height;
   overflow-y: auto;
   overflow-x: hidden;
   width: $workspace-width;
@@ -99,9 +109,11 @@
 }
 
 .shell__blotter {
-  flex-grow: 1;
-  height: $blotter-height;
-  overflow: hidden;
+  display: flex;
+  flex: 1 1 20%;
+  //flex-grow: 1;
+  height: 100%;//$blotter-height;
+  overflow: scroll;
   order: 2;
   box-sizing: border-box;
 }

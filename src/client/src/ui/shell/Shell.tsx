@@ -43,19 +43,18 @@ export default class Shell extends React.Component<ShellProps, {}> {
               </button>
             </div>
           </Modal>
-
-          <SplitPane minSize={300} split="horizontal">
+          <SplitPane minSize={200} size={400} split='horizontal'>
             <WorkspaceContainer/>
-            <RegionWrapper region="blotter">
+            <div className="blotter__container"><RegionWrapper region="blotter">
               <div className="shell__blotter">
                 <BlotterContainer/>
               </div>
             </RegionWrapper>
+            </div>
           </SplitPane>
           <RegionWrapper region="analytics">
             <SidebarRegionContainer/>
           </RegionWrapper>
-
         </div>
         <div className="shell__footer">
           <FooterContainer/>
