@@ -38,7 +38,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     )
 
     return <div className={containerClass}>
-      <div className="blotter__controls popout__controls">
+      <div className="rt-blotter__controls popout__controls">
         <i className={newWindowClassName}
            onClick={() => this.props.onPopoutClick()}/>
       </div>

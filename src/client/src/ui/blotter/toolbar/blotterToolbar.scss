@@ -1,5 +1,7 @@
+@import "../variables";
+
 .blotter-toolbar {
   width: 100%;
-  height: 35px;
+  height: $toolbarHeight;
   background-color: gray;
 }

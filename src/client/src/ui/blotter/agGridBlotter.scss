@@ -1,5 +1,5 @@
 @import '../spotTile/variables';
-$statusBarHeight: 20px;
+@import './variables';
 
 .agGridBlotter-container {
   position: relative;
@@ -32,8 +32,17 @@ $statusBarHeight: 20px;
   }
 }
 
+.rt-blotter__controls {
+  position: absolute;
+  right: 5px;
+  top: 4px;
+  z-index: 2;
+  cursor: pointer;
+  color: #c2c5c9;
+}
+
 .rt-blotter__grid-wrapper {
-  height: calc(100% - #{$statusBarHeight})
+  height: calc(100% - #{$statusBarHeight + $toolbarHeight})
 }
 
 .rt-blotter__status-bar {
