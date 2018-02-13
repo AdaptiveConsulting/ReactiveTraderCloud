@@ -1,6 +1,4 @@
-export { default as Blotter } from './Blotter'
+export { default as AgGridBlotter } from './AgGridBlotter'
 export { default as BlotterContainer } from './BlotterContainer'
-export { default as DateCell } from './DateCell'
-export { default as BaseCell } from './DefaultCell'
 export { default as blotterReducer }  from './reducer'
 export { default as blotterEpic } from './epics'

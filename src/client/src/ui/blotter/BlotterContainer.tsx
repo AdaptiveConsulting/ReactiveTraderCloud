@@ -5,7 +5,6 @@ import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { blotterRegionsSettings } from './reducer'
 import { openWindow, addRegion } from '../../regions/regionsOperations'
-// import Blotter from './Blotter'
 import AgGridBlotter from './AgGridBlotter'
 import { CurrencyPair } from '../../types'
 

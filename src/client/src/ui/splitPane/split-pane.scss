@@ -19,8 +19,8 @@
   margin: -3px 0;
   border-top: 3px solid rgba(0, 0, 0, 0);
   border-bottom: 2px solid rgba(0, 0, 0, 0);
-  background-color: lightblue;
-  opacity: 0;
+  background-color: grey;
+  opacity: 1;
   cursor: row-resize;
   width: 100%;
 }
@@ -29,8 +29,8 @@
   opacity: 1;
   border-top: 2px solid rgba(0, 0, 0, 0);
   border-bottom: 2px solid rgba(0, 0, 0, 0);
-  border-left: 2px solid transparent;
-  border-right: 2px solid transparent;
+  // border-left: 2px solid transparent;
+  // border-right: 2px solid transparent;
   background-color: lightblue;
 }
 

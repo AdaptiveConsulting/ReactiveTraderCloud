@@ -77,20 +77,11 @@
 }
 
 .shell_workspace_blotter {
-  /*background-color: $shell-background-color;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-around;
-  height: 100%;
-  width: 100%;
-  min-width: 0;
-  & * {
-    box-sizing: border-box;
-  }*/
+
   height: 100%;
   width: 100%;
   min-height: 20px;
-  background-color: grey;
+  //background-color: grey;
 }
 
 .shell__sidebar {
