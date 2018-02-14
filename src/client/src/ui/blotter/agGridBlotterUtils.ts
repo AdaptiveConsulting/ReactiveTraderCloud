@@ -1,4 +1,25 @@
 import * as AgGrid from 'ag-grid'
+import * as numeral from 'numeral'
+import { Trade } from '../../types'
+
+
+const currencyIconLookup = {
+  ['USD']: `fa fa-usd`,
+  ['AUD']: `fa fa-usd`,
+  ['NZD']: `fa fa-usd`,
+  ['GBP']: `fa fa-gbp`,
+  ['EUR']: `fa fa-euro`,
+  ['YEN']: `fa fa-yen`
+}
+
+const numericCellRenderer = (rowData:any):string => {
+  // console.log(' ::: rowData : ', rowData)
+  const trade = rowData.data as Trade
+  const dealtCurrency = trade.dealtCurrency
+  const icon = currencyIconLookup[dealtCurrency].toString()
+  const renderer = `<span><div class="${icon}"></div> ${numeral(rowData.value).format('0,0')}</span>`
+  return renderer
+}
 
 export const DEFAULT_COLUMN_DEFINITION:AgGrid.ColDef = {
   menuTabs: ['filterMenuTab']
@@ -26,7 +47,7 @@ export const COLUMN_DEFINITIONS:AgGrid.ColDef[] = [
   {
     colId: 'CCY',
     headerName: 'CCYCCY',
-    field: 'currencyPair.symbol',
+    field: 'symbol',
     width: 105
   },
   {
@@ -39,6 +60,7 @@ export const COLUMN_DEFINITIONS:AgGrid.ColDef[] = [
     colId: 'notional',
     headerName: 'Notional',
     field: 'notional',
+    cellRenderer: numericCellRenderer,
     width: 140
   },
   {

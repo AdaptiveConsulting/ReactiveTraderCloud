@@ -52,7 +52,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onPopoutClick: (openFin) => {
       return () => {
-        console.log(' ::: onPopout click , openFin : ', openFin)
         dispatch(openWindow(blotterRegion, openFin))
       }
     },

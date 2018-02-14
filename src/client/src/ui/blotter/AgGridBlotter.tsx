@@ -46,8 +46,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
         <i className={newWindowClassName}
            onClick={() => this.props.onPopoutClick()}/>
       </div>
-      <BlotterToolbar toggleTheme={this.toggleTheme}
-                      isQuickFilterApplied={this.state.quickFilterText && this.state.quickFilterText.length !== 0}
+      <BlotterToolbar isQuickFilterApplied={this.state.quickFilterText && this.state.quickFilterText.length !== 0}
                       quickFilterChangeHandler={this.quickFilterChangeHandler}
                       removeQuickFilter={this.removeQuickFilter}/>
       <div className="rt-blotter__grid-wrapper">
@@ -64,7 +63,10 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
           suppressDragLeaveHidesColumns={true}
         />
       </div>
-      <div className="rt-blotter__status-bar">{`Displaying rows ${ this.state.displayedRows } of ${ this.props.rows.length }`}</div>
+      <div className="rt-blotter__status-bar">
+        {`Displaying rows ${ this.state.displayedRows } of ${ this.props.rows.length }`}
+        <div className="blotter-toolbar__theme-switch" onClick={this.toggleTheme}>Switch theme</div>
+      </div>
     </div>
   }
 
