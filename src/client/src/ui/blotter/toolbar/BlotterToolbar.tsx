@@ -19,9 +19,11 @@ export default class BlotterToolbar extends React.Component<BlotterToolbarProps,
     return (
       <div className="blotter-toolbar">
         <div className="blotter-toolbar__theme-switch" onClick={this.props.toggleTheme}>Switch theme</div>
+        <div className="blotter-toolbar__right-controls">
         <QuickFilter isFilterApplied={this.props.isQuickFilterApplied}
                      removeQuickFilter={this.props.removeQuickFilter}
                      quickFilterChangeHandler={this.props.quickFilterChangeHandler}/>
+        </div>
       </div>
     )
   }

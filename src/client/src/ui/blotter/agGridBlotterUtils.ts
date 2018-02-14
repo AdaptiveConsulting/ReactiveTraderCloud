@@ -15,7 +15,7 @@ export const COLUMN_DEFINITIONS:AgGrid.ColDef[] = [
     colId: 'date',
     headerName: 'Date',
     field: 'tradeDate',
-    width: 150
+    width: 180
   },
   {
     colId: 'direction',
@@ -39,7 +39,7 @@ export const COLUMN_DEFINITIONS:AgGrid.ColDef[] = [
     colId: 'notional',
     headerName: 'Notional',
     field: 'notional',
-    width: 105
+    width: 140
   },
   {
     colId: 'rate',
@@ -57,7 +57,7 @@ export const COLUMN_DEFINITIONS:AgGrid.ColDef[] = [
     colId: 'valueDate',
     headerName: 'Value Date',
     field: 'valueDate',
-    width: 105
+    width: 180
   },
   {
     colId: 'traderName',

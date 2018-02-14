@@ -8,6 +8,9 @@
   //background-color: white;
 }
 
+.rt-blotter .ag-cell-highlight-animation {
+  transition: none!important; }
+
 .rt-blotter-dark {
 
   .ag-root {
@@ -28,12 +31,22 @@
     }
   }
 
+  .ag-row-selected {
+    background-color: white!important;
+  }
+
   .ag-row-even {
     background-color: $darkBodyBgColor!important;
+    &:hover {
+      background-color: rgba(0, 167, 204, 0.25)!important;
+    }
   }
 
   .ag-row-odd {
     background-color: $darkAlternateColor!important;
+    &:hover {
+      background-color: rgba(0, 167, 204, 0.25)!important;
+    }
   }
 
   .ag-cell-focus {
@@ -53,15 +66,32 @@
 
   .ag-header {
     background-color: grey!important;
-    color: black!important;
+    color: white!important;
+    text-transform: uppercase;
+    .ag-header-cell-text {
+      font-size: 12px;
+      font-weight: bold;
+    }
   }
 
   .ag-row-even {
     background-color: white!important;
+    &:hover {
+      background-color: lighten(grey, 10%)!important;
+      .ag-cell {
+        color: white;
+      }
+    }
   }
 
   .ag-row-odd {
     background-color: darken(white, 10%)!important;
+    &:hover {
+      background-color: lighten(grey, 10%)!important;
+      .ag-cell {
+        color: white;
+      }
+    }
   }
 
   .ag-cell {

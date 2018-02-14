@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react'
 import { COLUMN_DEFINITIONS, DEFAULT_COLUMN_DEFINITION } from './agGridBlotterUtils'
 import './agGridBlotter.scss'
 import 'ag-grid/dist/styles/ag-grid.css'
-import 'ag-grid/dist/styles/ag-theme-blue.css'
+// import 'ag-grid/dist/styles/ag-theme-blue.css'
 import 'ag-grid/dist/styles/ag-theme-dark.css'
 import * as classNames from 'classnames'
 import { GridApi, ColumnApi } from 'ag-grid'
@@ -18,7 +18,7 @@ interface AgGridBlotterProps {
 interface AgGridBlotterState {
   displayedRows: number
   themeName: string
-  quickFilterText: string;
+  quickFilterText: string
 }
 
 export default class AgGridBlotter extends React.Component<AgGridBlotterProps, AgGridBlotterState> {
@@ -47,7 +47,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
            onClick={() => this.props.onPopoutClick()}/>
       </div>
       <BlotterToolbar toggleTheme={this.toggleTheme}
-                      isQuickFilterApplied={this.state.quickFilterText !== null}
+                      isQuickFilterApplied={this.state.quickFilterText && this.state.quickFilterText.length !== 0}
                       quickFilterChangeHandler={this.quickFilterChangeHandler}
                       removeQuickFilter={this.removeQuickFilter}/>
       <div className="rt-blotter__grid-wrapper">
