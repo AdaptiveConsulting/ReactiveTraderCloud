@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.6.1" />
+    <PackageReference Include="Autofac" Version="4.6.2" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.2.4" />
     <PackageReference Include="System.Interactive" Version="3.1.1" />
     <PackageReference Include="System.Reactive" Version="3.1.1" />
