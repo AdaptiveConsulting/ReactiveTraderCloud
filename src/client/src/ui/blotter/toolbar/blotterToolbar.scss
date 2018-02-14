@@ -16,6 +16,11 @@
   margin-right: 30px;
 }
 
+.blotter-toolbar__left-controls{
+  margin-left: 3px;
+  display: flex
+}
+
 @mixin toggle-button {
   height: 15px;
   line-height: 0.9;
@@ -40,9 +45,8 @@
 
 .quick-filter-container {
   position: relative;
-  width: 150px;
+  width: 160px;
   margin-left: 4px;
-  background-color: lighten($darkAlternateColor, 20%);
 }
 
 .quick-filter-icon {
@@ -88,4 +92,32 @@
 }
 .filter-icon--applied {
   color: $accentColor
+}
+
+.filter-controls__filter-field {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: silver;
+  padding: 3px 8px 3px 8px;
+  border: 1px solid #1D232E;
+  display: inline-block;
+  height: 24px;
+  margin: 2px 3px 0px 3px;
+  -webkit-user-select: none;
+  cursor: default;
+  float: left;
+  i {
+    margin-left: 6px;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: lighten($darkAlternateColor, 5%);
+    color: white;
+    border: 1px solid black;
+
+    i {
+      color: $accentColor;
+    }
+  }
 }

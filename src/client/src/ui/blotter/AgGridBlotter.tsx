@@ -29,7 +29,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
 
   state = {
     displayedRows: 0,
-    themeName: 'rt-blotter-dark',
+    themeName: 'rt-blotter',
     quickFilterText: null,
     useCustomNumericRenderer: false
   } as AgGridBlotterState
@@ -43,6 +43,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       },
     )
 
+    const colDefs = getColumnDefinitions(this.state.useCustomNumericRenderer)
     return <div className={containerClass}>
       <div className="rt-blotter__controls popout__controls">
         <i className={newWindowClassName}
@@ -50,10 +51,12 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       </div>
       <BlotterToolbar isQuickFilterApplied={this.state.quickFilterText && this.state.quickFilterText.length !== 0}
                       quickFilterChangeHandler={this.quickFilterChangeHandler}
-                      removeQuickFilter={this.removeQuickFilter}/>
+                      removeQuickFilter={this.removeQuickFilter}
+                      filterModel={this.gridApi ? this.gridApi.getFilterModel() : null }
+                      columnDefinitions={colDefs} removeAllFilters={this.removeAllFilters} removeFilter={this.removeFilter}/>
       <div className="rt-blotter__grid-wrapper">
         <AgGridReact
-          columnDefs={getColumnDefinitions(this.state.useCustomNumericRenderer)}
+          columnDefs={colDefs}
           defaultColDef={DEFAULT_COLUMN_DEFINITION}
           rowData={this.props.rows}
           enableColResize={true}
@@ -69,7 +72,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       </div>
       <div className="rt-blotter__status-bar">
         <div>{`Displaying rows ${ this.state.displayedRows } of ${ this.props.rows.length }`}</div>
-        <div style={{ display: 'flex'}}>
+        <div style={{ display: 'flex' }}>
           <div className="blotter-toolbar__numeric-renderer-switch" onClick={this.toggleNumericRenderer}>Switch renderers</div>
           <div className="blotter-toolbar__theme-switch" onClick={this.toggleTheme}>Switch theme</div>
         </div>
@@ -115,6 +118,14 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     this.gridApi.setQuickFilter(null)
     this.gridApi.onFilterChanged()
     this.setState({ quickFilterText: null })
+  }
+
+  private removeAllFilters = () => {
+
+  }
+
+  private removeFilter = (key:string) => {
+    console.log(' *** removeFilter, key : ', key)
   }
 
   private getRowClass({ data }) {

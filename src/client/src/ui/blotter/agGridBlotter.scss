@@ -13,11 +13,6 @@
   transition: none!important; }
 
 .rt-blotter-shared {
-  .rt-blotter__cell-done {
-    color: green!important;
-    text-transform: capitalize;
-  }
-
   .rt-blotter__cell-rejected {
     color: red!important;
     text-transform: capitalize;
@@ -85,6 +80,11 @@
   .ag-cell-no-focus {
     border-right: 1px dotted lighten(black, 5%)!important;
   }
+
+  .rt-blotter__cell-done {
+    color: #5bbd5b!important;
+    text-transform: capitalize;
+  }
 }
 
 .rt-blotter {
@@ -132,6 +132,11 @@
 
   .ag-cell-no-focus {
     border-right: 1px dotted darken(white, 25%)!important;
+  }
+
+  .rt-blotter__cell-done {
+    color: green!important;
+    text-transform: capitalize;
   }
 }
 

@@ -2,6 +2,7 @@ import * as AgGrid from 'ag-grid'
 import * as numeral from 'numeral'
 import { Trade, TradeStatus } from '../../types'
 import RateCellRenderer from './renderers/RateCellRenderer'
+import { formatDate } from '../../system/utils'
 
 
 const currencyIconLookup = {
@@ -21,6 +22,10 @@ const numericCellRenderer = (rowData:any):string => {
   return renderer
 }
 
+const dateRenderer = (trade:Trade, field: string) => {
+  return formatDate(trade[field], '%d-%b %H:%M:%S')
+}
+
 const getCellClass = (trade:Trade) => {
   if (trade.status === TradeStatus.Rejected) {
     return 'rt-blotter__cell-rejected'
@@ -38,7 +43,7 @@ export const DEFAULT_COLUMN_DEFINITION:AgGrid.ColDef = {
   suppressSizeToFit: true
 }
 
-export function getColumnDefinitions(useRateRenderer:boolean = false ):AgGrid.ColDef[] {
+export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.ColDef[] {
   return [
     {
       colId: 'tradeId',
@@ -47,9 +52,17 @@ export function getColumnDefinitions(useRateRenderer:boolean = false ):AgGrid.Co
       width: 105
     },
     {
-      colId: 'date',
+      colId: 'status',
+      headerName: 'Status',
+      field: 'status',
+      width: 105,
+      cellClass: ({ data }) => getCellClass(data)
+    },
+    {
+      colId: 'tradeDate',
       headerName: 'Date',
       field: 'tradeDate',
+      cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
       width: 180
     },
     {
@@ -59,7 +72,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false ):AgGrid.Co
       width: 105
     },
     {
-      colId: 'CCY',
+      colId: 'symbol',
       headerName: 'CCYCCY',
       field: 'symbol',
       width: 105
@@ -75,28 +88,24 @@ export function getColumnDefinitions(useRateRenderer:boolean = false ):AgGrid.Co
       headerName: 'Notional',
       field: 'notional',
       cellRenderer: numericCellRenderer,
-      width: 140
+      width: 140,
+      filter: 'number'
     },
     {
-      colId: 'rate',
+      colId: 'spotRate',
       headerName: 'Rate',
       field: 'spotRate',
       width: 140,
       cellRendererFramework: useRateRenderer ?  RateCellRenderer : null,
-
-    },
-    {
-      colId: 'status',
-      headerName: 'Status',
-      field: 'status',
-      width: 105,
-      cellClass: ({ data}) => getCellClass(data)
+      filter: 'number'
     },
     {
       colId: 'valueDate',
       headerName: 'Value Date',
       field: 'valueDate',
-      width: 180
+      cellRenderer: ({ data }) => dateRenderer(data, 'valueDate'),
+      width: 180,
+      filter: 'date'
     },
     {
       colId: 'traderName',
