@@ -281,28 +281,28 @@
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%402x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon%402x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\Splash.imageset\Contents.json">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\Splash.imageset\splash.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\Splash.imageset\splash%402x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\Splash.imageset\splash%403x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>

@@ -115,31 +115,31 @@
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-24%402x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-27_5%402x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-29%402x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-29%403x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%402x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-44%402x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-86%402x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-98%402x.png">
-      <InProject>false</InProject>
+      <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
 </Project>
