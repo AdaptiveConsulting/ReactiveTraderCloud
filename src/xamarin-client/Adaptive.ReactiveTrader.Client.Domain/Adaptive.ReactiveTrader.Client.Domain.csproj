@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.2.2" />
-    <PackageReference Include="WampSharp.Default" Version="1.2.6.43-beta" />
+    <PackageReference Include="WampSharp.Default" Version="1.2.7.49-beta" />
   </ItemGroup>
 
   <ItemGroup>
