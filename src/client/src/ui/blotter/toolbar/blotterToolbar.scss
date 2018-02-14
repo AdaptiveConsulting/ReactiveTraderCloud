@@ -3,5 +3,22 @@
 .blotter-toolbar {
   width: 100%;
   height: $toolbarHeight;
-  background-color: gray;
+  background-color: $darkBodyBgColor;
+  border-top: 2px solid $darkAlternateColor;
+
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.blotter-toolbar__theme-switch {
+  width: auto;
+  height: 18px;
+  background-color: lightblue;
+  border-radius: 2px;
+  border: 1px solid #555;
+  color: black;
+  font-size: 11px;
+  padding: 2px 4px;
+  cursor: pointer;
 }

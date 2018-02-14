@@ -17,6 +17,8 @@ interface AgGridBlotterProps {
 
 interface AgGridBlotterState {
   displayedRows: number
+  themeName: string
+  quickFilterText: string;
 }
 
 export default class AgGridBlotter extends React.Component<AgGridBlotterProps, AgGridBlotterState> {
@@ -25,11 +27,13 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   private columnApi: ColumnApi
 
   state = {
-    displayedRows: 0
-  }
+    displayedRows: 0,
+    themeName: 'rt-blotter-dark',
+    quickFilterText: null
+  } as AgGridBlotterState
 
   render () {
-    const containerClass = classNames('ag-theme-dark', 'agGridBlotter-container', 'rt-blotter')
+    const containerClass = classNames('ag-theme-dark', 'agGridBlotter-container', this.state.themeName)
     const newWindowClassName = classNames(
       'glyphicon glyphicon-new-window',
       {
@@ -42,7 +46,10 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
         <i className={newWindowClassName}
            onClick={() => this.props.onPopoutClick()}/>
       </div>
-      <BlotterToolbar/>
+      <BlotterToolbar toggleTheme={this.toggleTheme}
+                      isQuickFilterApplied={this.state.quickFilterText !== null}
+                      quickFilterChangeHandler={this.quickFilterChangeHandler}
+                      removeQuickFilter={this.removeQuickFilter}/>
       <div className="rt-blotter__grid-wrapper">
         <AgGridReact
           columnDefs={COLUMN_DEFINITIONS}
@@ -53,6 +60,8 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
           enableFilter={true}
           onModelUpdated={this.onModelUpdated}
           onGridReady={this.onGridReady}
+          rowSelection="multiple"
+          suppressDragLeaveHidesColumns={true}
         />
       </div>
       <div className="rt-blotter__status-bar">{`Displaying rows ${ this.state.displayedRows } of ${ this.props.rows.length }`}</div>
@@ -60,7 +69,6 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   }
 
   private onGridReady = ({ api, columnApi }) => {
-    console.log(' :::: onGridReady, gridApi, columnApi  : ', api, columnApi)
     this.gridApi = api
     this.columnApi = this.columnApi
   }
@@ -69,6 +77,23 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     if (!this.gridApi) {
       return
     }
-    this.setState({ displayedRows: this.gridApi.getModel().getRowCount()})
+    this.setState({ displayedRows: this.gridApi.getModel().getRowCount() })
+  }
+
+  private toggleTheme = () => {
+    const newTheme = this.state.themeName === 'rt-blotter' ? 'rt-blotter-dark' : 'rt-blotter'
+    this.setState({ themeName: newTheme })
+  }
+
+  private quickFilterChangeHandler = (event:React.FormEvent<any>) => {
+    const target = event.target as HTMLInputElement
+    this.setState({ quickFilterText: target.value })
+    this.gridApi.setQuickFilter(target.value)
+  }
+
+  private removeQuickFilter = () => {
+    this.gridApi.setQuickFilter(null)
+    this.gridApi.onFilterChanged()
+    this.setState({ quickFilterText: null })
   }
 }

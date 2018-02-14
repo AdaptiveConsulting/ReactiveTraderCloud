@@ -1,11 +1,11 @@
 import * as React from 'react'
-import './blotterControlBar.scss'
+import './blotterToolbar.scss'
 
 
 interface QuickFilterProps {
   isFilterApplied: boolean
   removeQuickFilter: () => void
-  quickFilterChangeHandler: (event:React.FormEvent<any>) => void;
+  quickFilterChangeHandler: (event:React.FormEvent<any>) => void
 }
 
 interface QuickFilterState {

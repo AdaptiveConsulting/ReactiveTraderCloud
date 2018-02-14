@@ -8,27 +8,64 @@
   //background-color: white;
 }
 
-.rt-blotter {
+.rt-blotter-dark {
 
   .ag-root {
     border: 0px solid black!important;
   }
 
   .ag-body {
-    background-color: #262a33!important;
+    background-color: $darkBodyBgColor!important;
   }
 
   .ag-header {
     background-color: $primary-color!important;
+    color: white!important;
+    text-transform: uppercase;
+    .ag-header-cell-text {
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+
+  .ag-row-even {
+    background-color: $darkBodyBgColor!important;
+  }
+
+  .ag-row-odd {
+    background-color: $darkAlternateColor!important;
+  }
+
+  .ag-cell-focus {
+    //outline: none!important;
+    border-color: black!important;
+  }
+}
+
+.rt-blotter {
+  .ag-root {
+    border: 0px solid grey!important;
+  }
+
+  .ag-body {
+    background-color: darken(white, 10%)!important;
+  }
+
+  .ag-header {
+    background-color: grey!important;
     color: black!important;
   }
 
   .ag-row-even {
-    background-color: #262a33!important;
+    background-color: white!important;
   }
 
   .ag-row-odd {
-    background-color: lighten(#1D2027, 10%)!important;
+    background-color: darken(white, 10%)!important;
+  }
+
+  .ag-cell {
+    color: $darkBodyBgColor;
   }
 }
 
@@ -47,7 +84,7 @@
 
 .rt-blotter__status-bar {
   height: $statusBarHeight;
-  colour: grey;
+  color: $primary-color;
   font-size: 11px;
   font-style: italic;
   padding: 3px 6px;
