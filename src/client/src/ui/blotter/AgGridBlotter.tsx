@@ -1,14 +1,13 @@
 import * as React from 'react'
 import { AgGridReact } from 'ag-grid-react'
-import { COLUMN_DEFINITIONS, DEFAULT_COLUMN_DEFINITION } from './agGridBlotterUtils'
+import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './agGridBlotterUtils'
 import './agGridBlotter.scss'
 import 'ag-grid/dist/styles/ag-grid.css'
-// import 'ag-grid/dist/styles/ag-theme-blue.css'
 import 'ag-grid/dist/styles/ag-theme-dark.css'
 import * as classNames from 'classnames'
 import { GridApi, ColumnApi } from 'ag-grid'
 import BlotterToolbar from './toolbar/BlotterToolbar'
-import {TradeStatus} from '../../types'
+import { TradeStatus } from '../../types'
 
 interface AgGridBlotterProps {
   rows: any[]
@@ -20,6 +19,7 @@ interface AgGridBlotterState {
   displayedRows: number
   themeName: string
   quickFilterText: string
+  useCustomNumericRenderer: boolean
 }
 
 export default class AgGridBlotter extends React.Component<AgGridBlotterProps, AgGridBlotterState> {
@@ -30,7 +30,8 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   state = {
     displayedRows: 0,
     themeName: 'rt-blotter-dark',
-    quickFilterText: null
+    quickFilterText: null,
+    useCustomNumericRenderer: false
   } as AgGridBlotterState
 
   render () {
@@ -52,7 +53,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
                       removeQuickFilter={this.removeQuickFilter}/>
       <div className="rt-blotter__grid-wrapper">
         <AgGridReact
-          columnDefs={COLUMN_DEFINITIONS}
+          columnDefs={getColumnDefinitions(this.state.useCustomNumericRenderer)}
           defaultColDef={DEFAULT_COLUMN_DEFINITION}
           rowData={this.props.rows}
           enableColResize={true}
@@ -67,8 +68,11 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
         />
       </div>
       <div className="rt-blotter__status-bar">
-        {`Displaying rows ${ this.state.displayedRows } of ${ this.props.rows.length }`}
-        <div className="blotter-toolbar__theme-switch" onClick={this.toggleTheme}>Switch theme</div>
+        <div>{`Displaying rows ${ this.state.displayedRows } of ${ this.props.rows.length }`}</div>
+        <div style={{ display: 'flex'}}>
+          <div className="blotter-toolbar__numeric-renderer-switch" onClick={this.toggleNumericRenderer}>Switch renderers</div>
+          <div className="blotter-toolbar__theme-switch" onClick={this.toggleTheme}>Switch theme</div>
+        </div>
       </div>
     </div>
   }
@@ -97,6 +101,10 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     this.setState({ themeName: newTheme })
   }
 
+  private toggleNumericRenderer = () => {
+    this.setState({ useCustomNumericRenderer: !this.state.useCustomNumericRenderer })
+  }
+
   private quickFilterChangeHandler = (event:React.FormEvent<any>) => {
     const target = event.target as HTMLInputElement
     this.setState({ quickFilterText: target.value })
@@ -112,7 +120,9 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   private getRowClass({ data }) {
     if (data.status === TradeStatus.Rejected) {
       return 'rt-blotter__rowStrikeThrough'
+    }else if (data.status === TradeStatus.Pending) {
+      return 'rt-blotter__row-pending'
     }
-    return null;
+    return null
   }
 }

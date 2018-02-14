@@ -13,7 +13,30 @@
   transition: none!important; }
 
 .rt-blotter-shared {
+  .rt-blotter__cell-done {
+    color: green!important;
+    text-transform: capitalize;
+  }
 
+  .rt-blotter__cell-rejected {
+    color: red!important;
+    text-transform: capitalize;
+  }
+
+  .rt-blotter__cell-pending {
+    color: orange!important;
+    text-transform: capitalize;
+  }
+
+  .rt-blotter__row-pending:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(225, 225, 100, 0.3)!important; ;
+  }
 }
 
 .rt-blotter-dark {
