@@ -1,6 +1,7 @@
 import * as AgGrid from 'ag-grid'
 import * as numeral from 'numeral'
 import { Trade } from '../../types'
+import RateCellRenderer from './renderers/RateCellRenderer'
 
 
 const currencyIconLookup = {
@@ -22,7 +23,8 @@ const numericCellRenderer = (rowData:any):string => {
 }
 
 export const DEFAULT_COLUMN_DEFINITION:AgGrid.ColDef = {
-  menuTabs: ['filterMenuTab']
+  menuTabs: ['filterMenuTab'],
+  suppressSizeToFit: true
 }
 
 export const COLUMN_DEFINITIONS:AgGrid.ColDef[] = [
@@ -67,7 +69,9 @@ export const COLUMN_DEFINITIONS:AgGrid.ColDef[] = [
     colId: 'rate',
     headerName: 'Rate',
     field: 'spotRate',
-    width: 105
+    width: 105,
+    cellRendererFramework: RateCellRenderer,
+
   },
   {
     colId: 'status',
@@ -86,5 +90,12 @@ export const COLUMN_DEFINITIONS:AgGrid.ColDef[] = [
     field: 'traderName',
     headerName: 'Trader',
     width: 105
+  },
+  {
+    colId: 'empty',
+    field: 'empty',
+    headerName: '',
+    width: 105,
+    suppressSizeToFit: false
   }
 ]

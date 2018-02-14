@@ -12,6 +12,10 @@
 .rt-blotter .ag-cell-highlight-animation {
   transition: none!important; }
 
+.rt-blotter-shared {
+
+}
+
 .rt-blotter-dark {
 
   .ag-root {
@@ -53,6 +57,10 @@
   .ag-cell-focus {
     //outline: none!important;
     border-color: black!important;
+  }
+
+  .ag-cell-no-focus {
+    border-right: 1px dotted lighten(black, 5%)!important;
   }
 }
 
@@ -98,6 +106,19 @@
   .ag-cell {
     color: $darkBodyBgColor;
   }
+
+  .ag-cell-no-focus {
+    border-right: 1px dotted darken(white, 25%)!important;
+  }
+}
+
+.rt-blotter__rowStrikeThrough:before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-bottom: 1px solid red;
+  width: 100%;
 }
 
 .rt-blotter__controls {

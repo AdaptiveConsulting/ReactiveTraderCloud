@@ -8,6 +8,7 @@ import 'ag-grid/dist/styles/ag-theme-dark.css'
 import * as classNames from 'classnames'
 import { GridApi, ColumnApi } from 'ag-grid'
 import BlotterToolbar from './toolbar/BlotterToolbar'
+import {TradeStatus} from '../../types'
 
 interface AgGridBlotterProps {
   rows: any[]
@@ -33,7 +34,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   } as AgGridBlotterState
 
   render () {
-    const containerClass = classNames('ag-theme-dark', 'agGridBlotter-container', this.state.themeName)
+    const containerClass = classNames('ag-theme-dark', 'agGridBlotter-container', 'rt-blotter-shared', this.state.themeName)
     const newWindowClassName = classNames(
       'glyphicon glyphicon-new-window',
       {
@@ -61,6 +62,8 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
           onGridReady={this.onGridReady}
           rowSelection="multiple"
           suppressDragLeaveHidesColumns={true}
+          getRowClass={this.getRowClass}
+          onColumnResized={this.sizeColumnsToFit}
         />
       </div>
       <div className="rt-blotter__status-bar">
@@ -70,9 +73,16 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     </div>
   }
 
+  private sizeColumnsToFit = (param:any = null) => {
+    if (this.gridApi) {
+      this.gridApi.sizeColumnsToFit()
+    }
+  }
+
   private onGridReady = ({ api, columnApi }) => {
     this.gridApi = api
     this.columnApi = this.columnApi
+    this.sizeColumnsToFit()
   }
 
   private onModelUpdated = () => {
@@ -97,5 +107,12 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     this.gridApi.setQuickFilter(null)
     this.gridApi.onFilterChanged()
     this.setState({ quickFilterText: null })
+  }
+
+  private getRowClass({ data }) {
+    if (data.status === TradeStatus.Rejected) {
+      return 'rt-blotter__rowStrikeThrough'
+    }
+    return null;
   }
 }
