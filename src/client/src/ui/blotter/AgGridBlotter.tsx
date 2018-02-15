@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react'
 import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './agGridBlotterUtils'
 import './agGridBlotter.scss'
 import 'ag-grid/dist/styles/ag-grid.css'
-import 'ag-grid/dist/styles/ag-theme-dark.css'
+//import 'ag-grid/dist/styles/ag-theme-dark.css'
 import * as classNames from 'classnames'
 import { GridApi, ColumnApi } from 'ag-grid'
 import BlotterToolbar from './toolbar/BlotterToolbar'
@@ -29,13 +29,13 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
 
   state = {
     displayedRows: 0,
-    themeName: 'rt-blotter',
+    themeName: 'rt-blotter-dark',
     quickFilterText: null,
     useCustomNumericRenderer: false
   } as AgGridBlotterState
 
   render () {
-    const containerClass = classNames('ag-theme-dark', 'agGridBlotter-container', 'rt-blotter-shared', this.state.themeName)
+    const containerClass = classNames('agGridBlotter-container', 'rt-blotter-shared', this.state.themeName)
     const newWindowClassName = classNames(
       'glyphicon glyphicon-new-window',
       {

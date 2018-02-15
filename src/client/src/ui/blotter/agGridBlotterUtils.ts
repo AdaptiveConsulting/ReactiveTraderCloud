@@ -4,7 +4,6 @@ import { Trade, TradeStatus } from '../../types'
 import RateCellRenderer from './renderers/RateCellRenderer'
 import { formatDate } from '../../system/utils'
 
-
 const currencyIconLookup = {
   ['USD']: `fa fa-usd`,
   ['AUD']: `fa fa-usd`,
@@ -18,7 +17,7 @@ const numericCellRenderer = (rowData:any):string => {
   const trade = rowData.data as Trade
   const dealtCurrency = trade.dealtCurrency
   const icon = currencyIconLookup[dealtCurrency].toString()
-  const renderer = `<span><div class="${icon}"></div> ${numeral(rowData.value).format('0,0')}</span>`
+  const renderer = `<span></div> ${numeral(rowData.value).format('0,0')}<div class="${icon} rt-blotter__ccy-symbol"></span>`
   return renderer
 }
 
@@ -117,7 +116,8 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       field: 'notional',
       cellRenderer: numericCellRenderer,
       width: 140,
-      filter: 'number'
+      filter: 'number',
+      type: 'numericColumn'
     },
     {
       colId: 'spotRate',
