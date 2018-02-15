@@ -100,10 +100,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension\Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension.csproj">
-      <IsAppExtension>true</IsAppExtension>
-      <IsWatchApp>true</IsWatchApp>
-    </ProjectReference>
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Client\Adaptive.ReactiveTrader.Client.csproj" />
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj" />
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Shared\Adaptive.ReactiveTrader.Shared.csproj" />
