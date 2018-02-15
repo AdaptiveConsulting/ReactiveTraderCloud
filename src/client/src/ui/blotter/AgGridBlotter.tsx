@@ -125,7 +125,6 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   }
 
   private removeFilter = (key:string) => {
-    console.log(' *** removeFilter, key : ', key)
     this.gridApi.destroyFilter(key)
   }
 

@@ -20,7 +20,7 @@ const RESIZE_EVENT = 'resize'
 
 export default class Analytics extends React.Component<AnalyticsProps, {}> {
 
-  private handleResize = () => this.forceUpdate();
+  private handleResize = () => this.forceUpdate()
 
   componentWillMount() {
     // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes

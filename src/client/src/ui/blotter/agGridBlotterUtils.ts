@@ -38,6 +38,19 @@ const getCellClass = (trade:Trade) => {
   return null
 }
 
+const getStatusIndicatorClass = (trade:Trade) => {
+
+  switch (trade.status) {
+    case TradeStatus.Rejected:
+      return 'rt-blotter__status-indicator--rejected'
+    case TradeStatus.Done:
+      return 'rt-blotter__status-indicator--done'
+    case TradeStatus.Pending:
+      return 'rt-blotter__status-indicator--pending'
+  }
+  return null
+}
+
 export const DEFAULT_COLUMN_DEFINITION:AgGrid.ColDef = {
   menuTabs: ['filterMenuTab'],
   suppressSizeToFit: true
@@ -45,6 +58,21 @@ export const DEFAULT_COLUMN_DEFINITION:AgGrid.ColDef = {
 
 export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.ColDef[] {
   return [
+    {
+      colId: 'statusIndicator',
+      headerName: '',
+      field: 'statusIndicator',
+      width: 7,
+      maxWidth: 7,
+      cellClass: ({ data }) => getStatusIndicatorClass(data),
+      suppressFilter: true,
+      suppressSorting: true,
+      suppressMenu: true,
+      suppressMovable: true,
+      suppressResize: true,
+      minWidth: 8,
+      headerClass: 'rt-status-indicator__header'
+    },
     {
       colId: 'tradeId',
       headerName: 'Trade ID',
@@ -97,7 +125,8 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       field: 'spotRate',
       width: 140,
       cellRendererFramework: useRateRenderer ?  RateCellRenderer : null,
-      filter: 'number'
+      filter: 'number',
+      headerClass: useRateRenderer ? 'rt-blotter__numeric-header' : null
     },
     {
       colId: 'valueDate',

@@ -29,7 +29,7 @@ const changeRegionTearOffStatus = (state, payload, status) => ({
     ...state[payload.id],
     isTearedOff: status
   }
-});
+})
 
 export const regionsReducer = (state: any = {}, action) => {
   switch (action.type) {

@@ -5657,6 +5657,7 @@
       "version": "15.6.3",
       "resolved": "https://registry.npmjs.org/create-react-class/-/create-react-class-15.6.3.tgz",
       "integrity": "sha512-M+/3Q6E6DLO6Yx3OwrWjwHBnvfXXYA7W+dFjt/ZDBemHO1DDZhsalX/NUtnTYclN6GfnBDRh4qRHjcDHmlJBJg==",
+      "dev": true,
       "requires": {
         "fbjs": "0.8.14",
         "loose-envify": "1.3.1",
@@ -7397,6 +7398,7 @@
       "version": "0.8.14",
       "resolved": "https://registry.npmjs.org/fbjs/-/fbjs-0.8.14.tgz",
       "integrity": "sha1-0dviviVMNakeCfMfnNUKQLKg7Rw=",
+      "dev": true,
       "requires": {
         "core-js": "1.2.7",
         "isomorphic-fetch": "2.2.1",
@@ -7410,7 +7412,8 @@
         "core-js": {
           "version": "1.2.7",
           "resolved": "https://registry.npmjs.org/core-js/-/core-js-1.2.7.tgz",
-          "integrity": "sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY="
+          "integrity": "sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=",
+          "dev": true
         }
       }
     },
@@ -7553,15 +7556,6 @@
             "path-is-absolute": "1.0.1"
           }
         }
-      }
-    },
-    "fixed-data-table": {
-      "version": "0.6.5",
-      "resolved": "https://registry.npmjs.org/fixed-data-table/-/fixed-data-table-0.6.5.tgz",
-      "integrity": "sha512-LjG26Z1cqX3rU3mJp+GSCJ84h/M1JijNgRphh+deGaOeiOrgixEkYb/57jII8b4BH6+a5S8DkJCCRvFY6qa4Zw==",
-      "requires": {
-        "create-react-class": "15.6.3",
-        "prop-types": "15.6.0"
       }
     },
     "flat-cache": {
@@ -14143,14 +14137,6 @@
           "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.4.tgz",
           "integrity": "sha1-eCA6TRwyiuHYbcpkYONptX9AVa4="
         }
-      }
-    },
-    "react-sparklines": {
-      "version": "1.7.0",
-      "resolved": "https://registry.npmjs.org/react-sparklines/-/react-sparklines-1.7.0.tgz",
-      "integrity": "sha512-bJFt9K4c5Z0k44G8KtxIhbG+iyxrKjBZhdW6afP+R7EnIq+iKjbWbEFISrf3WKNFsda+C46XAfnX0StS5fbDcg==",
-      "requires": {
-        "prop-types": "15.6.0"
       }
     },
     "react-split-pane": {

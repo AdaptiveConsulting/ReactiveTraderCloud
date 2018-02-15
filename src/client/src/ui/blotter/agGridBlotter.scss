@@ -12,6 +12,13 @@
 .rt-blotter .ag-cell-highlight-animation {
   transition: none!important; }
 
+@mixin status-indicator($bgColor) {
+  width: 8px!important;
+  padding: 0!important;
+  height: 100%;
+  background-color: $bgColor;
+}
+
 .rt-blotter-shared {
   .rt-blotter__cell-rejected {
     color: red!important;
@@ -23,6 +30,18 @@
     text-transform: capitalize;
   }
 
+  .rt-blotter__status-indicator--rejected {
+    @include status-indicator(red)
+  }
+
+  .rt-blotter__status-indicator--done {
+    @include status-indicator(green)
+  }
+
+  .rt-blotter__status-indicator--pending {
+    @include status-indicator(orange)
+  }
+
   .rt-blotter__row-pending:before {
     content: " ";
     position: absolute;
@@ -30,7 +49,7 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba(225, 225, 100, 0.3)!important; ;
+    background-color: rgba(225, 225, 100, 0.4)!important; ;
   }
 }
 
@@ -149,6 +168,16 @@
   width: 100%;
 }
 
+.rt-blotter__activeSymbol:before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: $accentColor;
+  width: 100%;
+  height: 100%;
+}
+
 .rt-blotter__controls {
   position: absolute;
   right: 5px;
@@ -171,5 +200,17 @@
   font-style: italic;
   padding: 3px 6px;
   border: 1px solid black
+}
+
+.rt-blotter__numeric-header {
+  .ag-header-cell-label {
+    text-align: center!important;
+    justify-content: center;
+  }
+}
+
+.rt-status-indicator__header {
+  max-width: 8px!important;
+  padding: 0!important;
 }
 
