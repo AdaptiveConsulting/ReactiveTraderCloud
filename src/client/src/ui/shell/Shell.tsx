@@ -43,7 +43,7 @@ export default class Shell extends React.Component<ShellProps, {}> {
               </button>
             </div>
           </Modal>
-          <SplitPane minSize={200} size={400} split='horizontal'>
+          <SplitPane minSize={300} size={ 600 } split="horizontal">
             <WorkspaceContainer/>
             <div className="blotter__container"><RegionWrapper region="blotter">
               <div className="shell__blotter">
