@@ -44,13 +44,13 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
         <span className="trade-notification__trade-status">
           {trade.status}
         </span>
-        <div className="trade-notification__summary-item--direction">
+        <div className="trade-notification__summary-item trade-notification__summary-item--direction">
           {trade.direction}
         </div>
-        <div className="trade-notification__summary-item--notional">
+        <div className="trade-notification__summary-item trade-notification__summary-item--notional">
           {trade.dealtCurrency} {trade.notional}
         </div>
-        <div className="trade-notification__summary-item--currency">
+        <div className="trade-notification__summary-item trade-notification__summary-item--currency">
           <span className="trade-notification__label--versus">vs </span>
           { this.props.currencyPair.terms }
         </div>

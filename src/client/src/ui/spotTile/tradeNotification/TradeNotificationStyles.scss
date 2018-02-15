@@ -13,6 +13,9 @@
 }
 
 .trade-notification--rejected {
+  .trade-notification__trade-status {
+    display: block;
+  }
   .trade-notification__summary-item {
     text-decoration: line-through;
   }

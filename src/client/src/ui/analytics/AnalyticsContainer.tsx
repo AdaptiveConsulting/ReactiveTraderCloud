@@ -45,7 +45,7 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
     const openFin = this.context.openFin
     const positionsChartModel = getPositionsChartModel(analyticsService.currentPositions)
     const pnlChartModel = getPnlChartModel(analyticsService.history)
-    const canPopout = !Environment.isRunningInIE()
+    const canPopout = Environment.isRunningInIE()
     const onPopoutClick = this.props.onPopoutClick(openFin)
     return (
       <Analytics currencyPairs={currencyPairs}
