@@ -103,7 +103,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       colId: 'dealtCurrency',
       headerName: 'Dealt CCY',
       field: 'dealtCurrency',
-      width: 85
+      width: 95
     },
     {
       colId: 'notional',
@@ -111,6 +111,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       field: 'notional',
       cellRenderer: numericCellRenderer,
       cellClass: 'rt-blotter__numeric-cell',
+      headerClass: 'rt-header__numeric',
       width: 140,
       filter: 'number'
     },
@@ -122,7 +123,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       cellRendererFramework: useRateRenderer ?  RateCellRenderer : null,
       cellClass: useRateRenderer ? 'rt-blotter__numeric-cell--decimmal' : 'rt-blotter__numeric-cell',
       filter: 'number',
-      headerClass: useRateRenderer ? 'rt-blotter__numeric-header' : null
+      headerClass: useRateRenderer ? 'rt-blotter__rates-custom-header' : 'rt-header__numeric'
     },
     {
       colId: 'valueDate',

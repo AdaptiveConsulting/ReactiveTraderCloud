@@ -1,6 +1,6 @@
 import * as React from 'react'
-import * as classNames from 'classnames'
 import './blotterToolbar.scss'
+import { FILTER_APPLIED_ICON, FILTER_ICON } from '../../assets/icons'
 
 
 interface QuickFilterProps {
@@ -22,22 +22,20 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
   } as QuickFilterState
 
   render() {
-    const filterIconClassName = classNames('fa fa-filter', {
-      'filter-icon--empty': !this.props.isFilterApplied,
-      'filter-icon--applied': this.props.isFilterApplied
-    })
-    const filterIcon = <i className={filterIconClassName} />
+    const filterIcon = this.props.isFilterApplied ? FILTER_APPLIED_ICON : FILTER_ICON
     return  <div className="quick-filter-container">
       <input ref={(el:HTMLInputElement) => this.quickFilterInput = el}
              type="text"
-             placeholder="Search"
+             placeholder="Filter"
              className="quick-filter-input"
              value={this.state.quickFilterText}
              onChange={(event: React.FormEvent<any>) => this.quickFilterChangeHandler(event)}/>
       <span className="quick-filter-icon" onClick={() => this.quickFilterInput.focus()}>{filterIcon}</span>
-      {this.props.isFilterApplied && <span className="quick-filter-clear-icon" onClick={this.removeQuickFilter}>
-                  <i className="fa fa-times" />
-                </span>}
+      {this.props.isFilterApplied &&
+      <span className="quick-filter-clear-icon"
+            onClick={this.removeQuickFilter}>
+        <i className="fa fa-times" />
+      </span>}
     </div>
   }
 

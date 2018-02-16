@@ -22,6 +22,8 @@
 .rt-blotter-shared {
   font-family: BrandonLight;
 
+
+  // header
   .ag-header {
     text-transform: uppercase;
     border-bottom: 2px solid $accentColor;//!important;
@@ -31,14 +33,36 @@
       font-family: BrandonBold;
       color: $accentColor
     }
+
+    .ag-header-cell-menu-button {
+      padding-right: 10px;
+    }
+
+    .rt-header__numeric {
+      .ag-cell-label-container {
+        padding-right: 10px;
+        text-align: right;
+      }
+    }
+
+    .rt-blotter__rates-custom-header {
+      .ag-header-cell-label {
+        text-align: center;
+        justify-content: center;
+      }
+    }
+
+    .ag-header-cell-text {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .ag-header-cell-menu-button {
+      margin-top: 1px;
+    }
   }
 
-  .ag-numeric-header {
-    padding-right: 10px;
-    display: flex;
-    justify-content: flex-end;
-  }
-
+  // cells
   .ag-cell {
     padding: 3px 0 0 10px;
     border: none;
@@ -94,27 +118,42 @@
 }
 
 .rt-blotter-dark {
-
   color: white;
-
   .ag-root {
     border: 0px solid black;
   }
-
   .ag-body {
     background-color: $darkBodyBgColor;
   }
 
+  // header
   .ag-header {
     background-color: $backgroundAccentColor;
     color: white;
     text-transform: uppercase;
-    .ag-header-cell-text {
-      font-size: 12px;
-      font-weight: bold;
+
+    .ag-icon-desc {
+      background-color: transparent;
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGRlZnM+PHBhdGggaWQ9ImEiIGQ9Ik01IDJoMnY5SDV6Ii8+PHBhdGggZD0iTTguOTkzIDYuMVY0LjM5M2gtNnY2SDQuN1Y2LjFoNC4yOTN6IiBpZD0iYiIvPjwvZGVmcz48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjx1c2UgZmlsbD0iIzc4QzhEQiIgeGxpbms6aHJlZj0iI2EiLz48cGF0aCBzdHJva2U9IiM3OEM4REIiIGQ9Ik01LjUgMi41aDF2OGgtMXoiLz48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtMTM1IDUuOTkzIDcuMzkzKSI+PHVzZSBmaWxsPSIjNzhDOERCIiB4bGluazpocmVmPSIjYiIvPjxwYXRoIHN0cm9rZT0iIzc4QzhEQiIgZD0iTTguNDkzIDUuNnYtLjcwN2gtNXY1SDQuMlY1LjZoNC4yOTN6Ii8+PC9nPjwvZz48L3N2Zz4=);
+    }
+
+    .ag-icon-asc {
+      background-color: transparent;
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGRlZnM+PHBhdGggaWQ9ImEiIGQ9Ik01IDNoMnY5SDV6Ii8+PHBhdGggZD0iTTguOTkzIDUuMlYzLjQ5M2gtNnY2SDQuN1Y1LjJoNC4yOTN6IiBpZD0iYiIvPjwvZGVmcz48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjx1c2UgZmlsbD0iIzc4QzhEQiIgeGxpbms6aHJlZj0iI2EiLz48cGF0aCBzdHJva2U9IiM3OEM4REIiIGQ9Ik01LjUgMy41aDF2OGgtMXoiLz48ZyB0cmFuc2Zvcm09InJvdGF0ZSg0NSA1Ljk5MyA2LjQ5MykiPjx1c2UgZmlsbD0iIzc4QzhEQiIgeGxpbms6aHJlZj0iI2IiLz48cGF0aCBzdHJva2U9IiM3OEM4REIiIGQ9Ik04LjQ5MyA0Ljd2LS43MDdoLTV2NUg0LjJWNC43aDQuMjkzeiIvPjwvZz48L2c+PC9zdmc+);
+    }
+
+    .ag-icon-filter {
+      background-color: transparent;
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAyaDEwTDcgNnY1TDUgOVY2TDEgMnptNCA0djFoMlY2SDV6IiBmaWxsPSIjNzhDOERCIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=);
+    }
+
+    .ag-icon-menu {
+        background-color: transparent;
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAxaDEwdjJIMXptMCA0aDEwdjJIMXptMCA0aDEwdjJIMXoiIGZpbGw9IiM3OEM4REIiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==);
     }
   }
 
+  // row
   .ag-row-selected {
     background-color: white;
   }
@@ -142,10 +181,6 @@
 .rt-blotter {
   .ag-root {
     border: 0px solid grey;
-  }
-
-  .ag-body {
-    background-color: darken(white, 10%);
   }
 
   .ag-header {
@@ -232,15 +267,8 @@
   align-items: center;
   font-size: 11px;
   font-style: italic;
-  padding: 3px 6px;
+  padding: 0px 6px 2px;
   background-color: $backgroundAccentColor;
-}
-
-.rt-blotter__numeric-header {
-  .ag-header-cell-label {
-    text-align: center;
-    justify-content: center;
-  }
 }
 
 .rt-status-indicator__header {
@@ -250,10 +278,51 @@
 
 .rt-blotter__ccy-symbol {
   margin-left: 3px;
-  color: grey;
+  color: #aaa;
 }
 
 .capitalise {
   text-transform: capitalize;
+}
+
+// header menu
+.ag-menu {
+  width: auto;
+  border: 1px solid $accentColor;
+  background-color: $backgroundAccentColor;
+  padding: 3px;
+  .ag-filter input[type='text'],
+  .ag-filter input[type='date'] {
+    padding-left: 4px;
+    border-radius: 2px;
+    margin-top: 4px;
+    border: 1px solid $darkInputBorderColour;
+    background: $darkBodyBgColor;
+  }
+  .ag-filter label {
+    display: block;
+    padding-left: 4px; }
+  .ag-filter .ag-set-filter-list {
+    padding-top: 4px; }
+  .ag-filter .ag-filter-header-container {
+    box-sizing: border-box;
+    height: 20px; }
+  .ag-filter .ag-filter-header-container:nth-child(2) {
+    border-bottom: 1px solid darkgrey; }
+  .ag-filter .ag-filter-checkbox {
+    float: left;
+    height: 20px;
+    margin-right: 4px;
+    padding-top: 2px; }
+  .ag-filter .ag-filter-value {
+    height: 20px;
+    line-height: 14px; }
+  .ag-filter .ag-filter-apply-panel {
+    display: flex;
+    justify-content: flex-end;
+    padding: 4px;
+    padding-top: 8px; }
+  .ag-filter .ag-filter-apply-panel button + button {
+    margin-left: 8px; }
 }
 
