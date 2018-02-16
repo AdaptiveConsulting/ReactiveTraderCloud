@@ -1,8 +1,14 @@
 $statusBarHeight: 20px;
 $toolbarHeight: 34px;
+
+//Reactive trade colour themes
+$accentColor: #02a8cc;
+$rtPositive: #91E4A5;
+$rtNegative: #e95656;
+
+// dark theme
 $darkBodyBgColor: #262a33;
 $darkAlternateColor: lighten(#1D2027, 10%);
-$accentColor: #02a8cc;
 $backgroundAccentColor: transparentize($accentColor, 0.5);
 $darkRowOddBgColor: #2b353d;
 $darkRowEvenBgColor: #1e2127;

@@ -59,7 +59,8 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
           columnDefs={colDefs}
           defaultColDef={DEFAULT_COLUMN_DEFINITION}
           rowData={this.props.rows}
-          enableColResize={true}
+          enableColResize={false}
+          suppressMovableColumns={true}
           enableSorting={true}
           enableFilter={true}
           onModelUpdated={this.onModelUpdated}

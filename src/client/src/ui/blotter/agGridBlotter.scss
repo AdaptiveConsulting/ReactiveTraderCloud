@@ -12,26 +12,24 @@
   transition: none; }
 
 @mixin status-indicator($bgColor) {
-  width: 8px;
+  width: 5px!important;
   padding: 0;
+  margin: 0;
   height: 100%;
-  background-color: $bgColor;
+  background-color: transparentize($bgColor, .25);
 }
 
 .rt-blotter-shared {
   font-family: BrandonLight;
 
-  .ag-layout-normal .ag-header-row {
-
-  }
-
   .ag-header {
     text-transform: uppercase;
-    border-bottom: 2px solid $accentColor!important;
-    padding: 3px;
+    border-bottom: 2px solid $accentColor;//!important;
+    padding: 3px 0 0 10px;
     .ag-header-cell-text {
       font-size: 12px;
-      font-weight: bold;
+      font-family: BrandonBold;
+      color: $accentColor
     }
   }
 
@@ -42,9 +40,20 @@
   }
 
   .ag-cell {
-    padding-top: 3px;
-    padding-left: 2px;
+    padding: 3px 0 0 10px;
     border: none;
+  }
+
+  .rt-blotter__numeric-cell{
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+  }
+
+  .rt-blotter__numeric-cell--decimmal {
+    display: flex;
+    justify-content: center;
+
   }
 
   .ag-cell-no-focus {
@@ -62,11 +71,11 @@
   }
 
   .rt-blotter__status-indicator--rejected {
-    @include status-indicator(red)
+    @include status-indicator($rtNegative)
   }
 
   .rt-blotter__status-indicator--done {
-    @include status-indicator(green)
+    @include status-indicator($rtPositive)
   }
 
   .rt-blotter__status-indicator--pending {
@@ -217,13 +226,14 @@
 
 .rt-blotter__status-bar {
   height: $statusBarHeight;
-  color: $primary-color;
+  color: rgba(255, 255, 255, 0.75);
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 11px;
   font-style: italic;
   padding: 3px 6px;
-  border: 1px solid black
+  background-color: $backgroundAccentColor;
 }
 
 .rt-blotter__numeric-header {
@@ -241,5 +251,9 @@
 .rt-blotter__ccy-symbol {
   margin-left: 3px;
   color: grey;
+}
+
+.capitalise {
+  text-transform: capitalize;
 }
 

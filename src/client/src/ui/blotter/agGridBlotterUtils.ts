@@ -25,16 +25,13 @@ const dateRenderer = (trade:Trade, field: string) => {
   return formatDate(trade[field], '%d-%b %H:%M:%S')
 }
 
-const getCellClass = (trade:Trade) => {
+const getStatusCellClass = (trade:Trade) => {
   if (trade.status === TradeStatus.Rejected) {
     return 'rt-blotter__cell-rejected'
-  } else if (trade.status === TradeStatus.Done) {
-    return 'rt-blotter__cell-done'
   } else if (trade.status === TradeStatus.Pending) {
     return 'rt-blotter__cell-pending'
   }
-
-  return null
+  return 'capitalise'
 }
 
 const getStatusIndicatorClass = (trade:Trade) => {
@@ -61,15 +58,13 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       colId: 'statusIndicator',
       headerName: '',
       field: 'statusIndicator',
-      width: 7,
-      maxWidth: 7,
+      width: 6,
+      maxWidth: 6,
+      minWidth: 6,
       cellClass: ({ data }) => getStatusIndicatorClass(data),
       suppressFilter: true,
       suppressSorting: true,
       suppressMenu: true,
-      suppressMovable: true,
-      suppressResize: true,
-      minWidth: 8,
       headerClass: 'rt-status-indicator__header'
     },
     {
@@ -83,14 +78,14 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       headerName: 'Status',
       field: 'status',
       width: 105,
-      cellClass: ({ data }) => getCellClass(data)
+      cellClass: ({ data }) => getStatusCellClass(data)
     },
     {
       colId: 'tradeDate',
       headerName: 'Date',
       field: 'tradeDate',
       cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
-      width: 180
+      width: 170
     },
     {
       colId: 'direction',
@@ -108,23 +103,24 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       colId: 'dealtCurrency',
       headerName: 'Dealt CCY',
       field: 'dealtCurrency',
-      width: 105
+      width: 85
     },
     {
       colId: 'notional',
       headerName: 'Notional',
       field: 'notional',
       cellRenderer: numericCellRenderer,
+      cellClass: 'rt-blotter__numeric-cell',
       width: 140,
-      filter: 'number',
-      type: 'numericColumn'
+      filter: 'number'
     },
     {
       colId: 'spotRate',
       headerName: 'Rate',
       field: 'spotRate',
-      width: 140,
+      width: 120,
       cellRendererFramework: useRateRenderer ?  RateCellRenderer : null,
+      cellClass: useRateRenderer ? 'rt-blotter__numeric-cell--decimmal' : 'rt-blotter__numeric-cell',
       filter: 'number',
       headerClass: useRateRenderer ? 'rt-blotter__numeric-header' : null
     },
@@ -133,7 +129,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       headerName: 'Value Date',
       field: 'valueDate',
       cellRenderer: ({ data }) => dateRenderer(data, 'valueDate'),
-      width: 180,
+      width: 170,
       filter: 'date'
     },
     {
