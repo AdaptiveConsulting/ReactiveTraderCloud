@@ -3,6 +3,7 @@ import * as numeral from 'numeral'
 import { Trade, TradeStatus } from '../../types'
 import RateCellRenderer from './renderers/RateCellRenderer'
 import { formatDate } from '../../system/utils'
+import CurrencyFilter from './filters/CurrencyFilter'
 
 const currencyIconLookup = {
   ['USD']: `fa fa-usd`,
@@ -17,7 +18,7 @@ const numericCellRenderer = (rowData:any):string => {
   const trade = rowData.data as Trade
   const dealtCurrency = trade.dealtCurrency
   const icon = currencyIconLookup[dealtCurrency].toString()
-  const renderer = `<span></div> ${numeral(rowData.value).format('0,0')}<div class="${icon} rt-blotter__ccy-symbol"></span>`
+  const renderer = `<span></div> ${numeral(rowData.value).format('0,0')}<div class='${icon} rt-blotter__ccy-symbol'></span>`
   return renderer
 }
 
@@ -52,6 +53,10 @@ export const DEFAULT_COLUMN_DEFINITION:AgGrid.ColDef = {
   suppressSizeToFit: true
 }
 
+export const frameworkComponents = {
+  currencyFilter: CurrencyFilter
+}
+
 export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.ColDef[] {
   return [
     {
@@ -65,7 +70,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       suppressFilter: true,
       suppressSorting: true,
       suppressMenu: true,
-      headerClass: 'rt-status-indicator__header'
+      headerClass: 'rt-status-indicator__header',
     },
     {
       colId: 'tradeId',
@@ -103,6 +108,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       colId: 'dealtCurrency',
       headerName: 'Dealt CCY',
       field: 'dealtCurrency',
+      filterFramework: CurrencyFilter,
       width: 95
     },
     {

@@ -1,0 +1,19 @@
+@import '../variables';
+
+.filter-container {
+  width: auto;
+  height: auto;
+  position: relative;
+}
+
+.filter-container__tab {
+  width: 30px;
+  height: 30px;
+  border: 1px solid $backgroundAccentColor;
+  background-color: $accentColor;
+}
+
+.filter-container__tab-icon {
+  background-color: transparent;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAyaDEwTDcgNnY1TDUgOVY2TDEgMnptNCA0djFoMlY2SDV6IiBmaWxsPSIjNzhDOERCIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=);
+}

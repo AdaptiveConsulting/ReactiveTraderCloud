@@ -69,6 +69,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
           suppressDragLeaveHidesColumns={true}
           getRowClass={this.getRowClass}
           onColumnResized={this.sizeColumnsToFit}
+          postProcessPopup={this.postProcessPopup}
         />
       </div>
       <div className="rt-blotter__status-bar">
@@ -79,6 +80,10 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
         </div>
       </div>
     </div>
+  }
+
+  private postProcessPopup = (params:any) => {
+    console.log(' ::: postProcessPopup, params : ', params);
   }
 
   private sizeColumnsToFit = (param:any = null) => {
