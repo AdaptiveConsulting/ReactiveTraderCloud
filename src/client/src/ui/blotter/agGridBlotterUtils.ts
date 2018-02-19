@@ -83,7 +83,8 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       headerName: 'Status',
       field: 'status',
       width: 105,
-      cellClass: ({ data }) => getStatusCellClass(data)
+      cellClass: ({ data }) => getStatusCellClass(data),
+      filterFramework: CurrencyFilter
     },
     {
       colId: 'tradeDate',
@@ -102,6 +103,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       colId: 'symbol',
       headerName: 'CCYCCY',
       field: 'symbol',
+      filterFramework: CurrencyFilter,
       width: 105
     },
     {
@@ -143,6 +145,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       colId: 'traderName',
       field: 'traderName',
       headerName: 'Trader',
+      filterFramework: CurrencyFilter,
       width: 105
     },
     {

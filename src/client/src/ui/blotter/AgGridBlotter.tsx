@@ -94,8 +94,8 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     oldLeftStr = oldLeftStr.substring(0, oldLeftStr.indexOf('px'))
     const oldTop = parseInt(oldTopStr, 10)
     const oldLeft = parseInt(oldLeftStr, 10)
-    const newTop = oldTop - 20
-    const newLeft = oldLeft - 100
+    const newTop = oldTop - 23
+    const newLeft = oldLeft - 103
     ePopup.style.top = newTop + 'px'
     ePopup.style.left = newLeft + 'px'
   }

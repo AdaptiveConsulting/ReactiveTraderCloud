@@ -80,10 +80,15 @@ export default class CurrencyFilter extends React.Component<CurrencyFilterProps,
     this.setState({ selectedFreeText: newValue }, () => this.updateFilter())
   }
 
-  onOptionSelectChange = (event, value: string) => {
+  onOptionSelectChange = (event, value: string = null) => {
     const target:HTMLInputElement = event.target as HTMLInputElement
-    const updatedValueSet = { ...this.state.selectedValueSet }
-    updatedValueSet[value] = target.checked
+    let updatedValueSet = { ...this.state.selectedValueSet }
+
+    if (value) {
+      updatedValueSet[value] = target.checked
+    }else {
+      updatedValueSet = {}
+    }
     this.setState({ selectedValueSet: updatedValueSet }, () => this.updateFilter())
 
   }
@@ -140,16 +145,15 @@ export default class CurrencyFilter extends React.Component<CurrencyFilterProps,
   }
 
   render() {
-
-    console.log(' ********** RENDER, this.state.text : ', this.state.text)
     this.getFilteredValues()
     const uniqueValues = this.getUniqueValues()
     const setOptions = uniqueValues.map((value:string) => {
-      return <div>
+      return <div className="filter-container__checkbox-container">
         <input key={value}
                type="checkbox"
+               className="filter-container__checkbox"
                onChange={(event) => this.onOptionSelectChange(event, value)}/>
-          {value}
+          <label>{value}</label>
         </div>
     })
     return (
@@ -158,19 +162,22 @@ export default class CurrencyFilter extends React.Component<CurrencyFilterProps,
           <div className="filter-container__tab-icon"></div>
         </div>
       <div className="filter-container__content-wrapper">
-        Filter:
         <input style={{ height: '20px', width: '100px' }}
                ref="input"
+               placeholder="Search"
                value={this.state.selectedFreeText}
                onChange={this.onTextChange}
-               className="form-control"/>
+               className="filter-container__free-text-input"/>
 
-        <div>
+        <div className="filter-container__checkbox-container">
+          <input key="selectAllOption"
+                 type="checkbox"
+                 className="filter-container__checkbox"
+                 onChange={(event) => this.onOptionSelectChange(event)}/>
+          <label>Select All</label>
+        </div>
           { setOptions }
         </div>
-      </div>
-
-
       </div>
     )
   }
