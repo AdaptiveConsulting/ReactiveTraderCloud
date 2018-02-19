@@ -5,13 +5,15 @@
   height: auto;
   position: relative;
   padding: 0 3px 3px 0;
-
+  filter: drop-shadow(0 0 4px #333);
 }
 
 .filter-container__tab {
   position: relative;
   top: 0;
-  width: 30px;
+  right: 0;
+  left: 95px;
+  width: 25px;
   height: 30px;
   border-top: 1px solid $backgroundAccentColor;
   border-right: 1px solid $backgroundAccentColor;
@@ -22,19 +24,22 @@
 }
 
 .filter-container__tab-icon {
+  width: 20px;
+  height: 20px;
+  background-size: 20px 20px;
   background-color: transparent;
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAyaDEwTDcgNnY1TDUgOVY2TDEgMnptNCA0djFoMlY2SDV6IiBmaWxsPSIjNzhDOERCIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=);
+  background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAyaDEwTDcgNnY1TDUgOVY2TDEgMnptNCA0djFoMlY2SDV6IiBmaWxsPSIjZmZmZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=)center no-repeat;;
 }
 
 .filter-container__content-wrapper {
+  padding: 7px;
   position: relative;
   width: 120px;
-  height: auto;
+  left: 0;
   max-height: 200px;
   overflow: auto;
   border: 1px solid $backgroundAccentColor;
   background-color: $accentColor;
   z-index: 1;
   top: -1px;
-  box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.45);
 }

@@ -83,7 +83,21 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   }
 
   private postProcessPopup = (params:any) => {
-    console.log(' ::: postProcessPopup, params : ', params);
+    console.log(' ::: postProcessPopup, params : ', params)
+    if (params.type !== 'columnMenu') {
+      return
+    }
+    const ePopup = params.ePopup
+    let oldTopStr = ePopup.style.top
+    oldTopStr = oldTopStr.substring(0, oldTopStr.indexOf('px'))
+    let oldLeftStr = ePopup.style.left
+    oldLeftStr = oldLeftStr.substring(0, oldLeftStr.indexOf('px'))
+    const oldTop = parseInt(oldTopStr, 10)
+    const oldLeft = parseInt(oldLeftStr, 10)
+    const newTop = oldTop - 20
+    const newLeft = oldLeft - 100
+    ePopup.style.top = newTop + 'px'
+    ePopup.style.left = newLeft + 'px'
   }
 
   private sizeColumnsToFit = (param:any = null) => {

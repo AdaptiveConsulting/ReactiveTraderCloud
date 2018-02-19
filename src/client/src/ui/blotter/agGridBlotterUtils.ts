@@ -109,7 +109,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       headerName: 'Dealt CCY',
       field: 'dealtCurrency',
       filterFramework: CurrencyFilter,
-      width: 95
+      width: 105
     },
     {
       colId: 'notional',
