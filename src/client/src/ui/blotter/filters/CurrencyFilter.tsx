@@ -66,20 +66,20 @@ export default class CurrencyFilter extends React.Component<CurrencyFilterProps,
   }
 
   render() {
-    const style = {
+    /*const style = {
       border: '2px solid #22ff22',
       borderRadius: '5px',
       backgroundColor: '#bbffbb',
       width: '200px',
       height: '50px'
     }
-
+*/
     return (
       <div className="filter-container">
         <div className="filter-container__tab">
           <div className="filter-container__tab-icon"></div>
         </div>
-      <div style={style}>Filter: <input style={{ height: '20px' }} ref="input" value={this.state.text}
+      <div className="filter-container__content-wrapper">Filter: <input style={{ height: '20px', width: '100px' }} ref="input" value={this.state.text}
                                         onChange={this.onChange} className="form-control"/></div>
       </div>
     )
