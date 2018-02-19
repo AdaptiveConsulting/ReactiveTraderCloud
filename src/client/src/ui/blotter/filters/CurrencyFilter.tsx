@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import './filters.scss'
-import {ColDef, Column, GridApi, InMemoryRowModel, RowNode} from 'ag-grid'
+import { ColDef, Column, GridApi, InMemoryRowModel, RowNode } from 'ag-grid'
 
 interface CurrencyFilterProps {
   api: GridApi
@@ -14,6 +14,7 @@ interface CurrencyFilterProps {
 
 interface CurrencyFilterState {
   text: string
+  selectedFreeText: string
   selectedValueSet: {}
 }
 
@@ -23,6 +24,7 @@ export default class CurrencyFilter extends React.Component<CurrencyFilterProps,
 
     this.state = {
       text: '',
+      selectedFreeText: '',
       selectedValueSet: {}
     }
   }
@@ -46,18 +48,17 @@ export default class CurrencyFilter extends React.Component<CurrencyFilterProps,
         return value.toString().toLowerCase().indexOf(filterWord) >= 0
       })
 
+    //
     const doesOptionsFilterPass = !!this.state.selectedValueSet[value]
-
-    console.log(' ::: doesFilterPass, doesTextFilterPass, doesOptionsFilterPass : ', doesTextFilterPass, doesOptionsFilterPass)
-    return doesTextFilterPass && doesOptionsFilterPass
+    return doesTextFilterPass || doesOptionsFilterPass
   }
 
   getModel() {
-    return { value: [this.state.text].concat(Object.values(this.state.selectedValueSet)) }
+    const model = { value: `${this.state.text}` }
+    return model
   }
 
   setModel(model) {
-    console.log(' ---  *** setModel, model : ', model)
     this.setState({ text: model ? model.value : '' })
   }
 
@@ -74,27 +75,42 @@ export default class CurrencyFilter extends React.Component<CurrencyFilterProps,
     })
   }
 
-  componentMethod(message) {
-    alert(`Alert from PartialMatchFilterComponent ${message}`)
-  }
-
   onTextChange = (event) => {
     const newValue = event.target.value
-    if (this.state.text !== newValue) {
-      this.setState({
-        text: newValue
-      }, () => {
-        this.props.filterChangedCallback()
-      })
-
-    }
+    this.setState({ selectedFreeText: newValue }, () => this.updateFilter())
   }
 
   onOptionSelectChange = (event, value: string) => {
     const target:HTMLInputElement = event.target as HTMLInputElement
-    const newSelectedValueSet = { ...this.state.selectedValueSet }
-    newSelectedValueSet[value] = target.checked
-    this.setState({ selectedValueSet: newSelectedValueSet }, () => this.props.filterChangedCallback)
+    const updatedValueSet = { ...this.state.selectedValueSet }
+    updatedValueSet[value] = target.checked
+    this.setState({ selectedValueSet: updatedValueSet }, () => this.updateFilter())
+
+  }
+
+  updateFilter = () => {
+    const freeText = this.state.selectedFreeText
+    const options = this.state.selectedValueSet
+
+    const newSelectedValueSet = [freeText]
+    for (const key in options) {
+      if (options[key] === true) {
+        newSelectedValueSet.push(key)
+      }
+    }
+    const newFilterText = newSelectedValueSet.join(' ')
+
+    console.log(' ::: new filterText : ', newFilterText)
+    if (this.state.text !== newFilterText) {
+      this.setState({
+        text: newFilterText
+      }, () => {
+        console.log(' --- after refresh ,state, text : ', this.state.text)
+        this.props.api.refreshView()
+        this.props.filterChangedCallback()
+      })
+
+    }
   }
 
   getUniqueValues = ():any[] => {
@@ -124,11 +140,11 @@ export default class CurrencyFilter extends React.Component<CurrencyFilterProps,
   }
 
   render() {
-    console.log(' ::: onRender, this.props : ', this.props)
+
+    console.log(' ********** RENDER, this.state.text : ', this.state.text)
     this.getFilteredValues()
     const uniqueValues = this.getUniqueValues()
     const setOptions = uniqueValues.map((value:string) => {
-      /*checked={uniqueValues.indexOf(value) !== -1}*/
       return <div>
         <input key={value}
                type="checkbox"
@@ -144,7 +160,8 @@ export default class CurrencyFilter extends React.Component<CurrencyFilterProps,
       <div className="filter-container__content-wrapper">
         Filter:
         <input style={{ height: '20px', width: '100px' }}
-               ref="input" value={this.state.text}
+               ref="input"
+               value={this.state.selectedFreeText}
                onChange={this.onTextChange}
                className="form-control"/>
 

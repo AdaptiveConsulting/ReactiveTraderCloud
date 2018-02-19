@@ -66,6 +66,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
           onModelUpdated={this.onModelUpdated}
           onGridReady={this.onGridReady}
           rowSelection="multiple"
+          headerHeight={28}
           suppressDragLeaveHidesColumns={true}
           getRowClass={this.getRowClass}
           onColumnResized={this.sizeColumnsToFit}
@@ -83,7 +84,6 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   }
 
   private postProcessPopup = (params:any) => {
-    console.log(' ::: postProcessPopup, params : ', params)
     if (params.type !== 'columnMenu') {
       return
     }

@@ -14,19 +14,19 @@
   right: 0;
   left: 95px;
   width: 25px;
-  height: 30px;
-  border-top: 1px solid $backgroundAccentColor;
-  border-right: 1px solid $backgroundAccentColor;
-  border-bottom: none;
-  border-left: 1px solid $backgroundAccentColor;
+  height: 24px;
+  //border-top: 1px solid $backgroundAccentColor;
+  //border-right: 1px solid $backgroundAccentColor;
+  //border-bottom: none;
+  //border-left: 1px solid $backgroundAccentColor;
   background-color: $accentColor;
   z-index: 3;
 }
 
 .filter-container__tab-icon {
-  width: 20px;
-  height: 20px;
-  background-size: 20px 20px;
+  width: 23px;
+  height: 23px;
+  background-size: 23px 23px;
   background-color: transparent;
   background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAyaDEwTDcgNnY1TDUgOVY2TDEgMnptNCA0djFoMlY2SDV6IiBmaWxsPSIjZmZmZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=)center no-repeat;;
 }
@@ -38,7 +38,7 @@
   left: 0;
   max-height: 200px;
   overflow: auto;
-  border: 1px solid $backgroundAccentColor;
+  //border: 1px solid $backgroundAccentColor;
   background-color: $accentColor;
   z-index: 1;
   top: -1px;
