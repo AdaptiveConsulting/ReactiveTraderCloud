@@ -11,7 +11,7 @@ import { referenceServiceEpic } from './referenceDataOperations'
 import { analyticsServiceEpic } from './ui/analytics'
 import { blotterEpic } from './ui/blotter/'
 import { popoutEpic } from './ui/common/popout/popoutEpic'
-import { footerEpic } from './ui/footer/FooterOperations'
+import { footerEpic } from './ui/Footer'
 import { spotTileEpicsCreator } from './ui/spotTile'
 
 const epicMiddleware = (
