@@ -1,5 +1,5 @@
-import { regionsSettings } from '../common/regions/regionsOperations'
-import { Trade } from '../../types/index'
+import { regionsSettings } from '../common/regions'
+import { Trade } from '../../types'
 import * as keyBy from 'lodash.keyby'
 import { ACTION_TYPES } from './actions'
 

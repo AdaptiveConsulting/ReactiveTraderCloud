@@ -1,5 +1,5 @@
-import { CurrencyPair } from './types/index'
 import { ACTION_TYPES } from './referenceDataOperations'
+import { CurrencyPair } from './types'
 
 interface CurrencyPairReducerState {
   [id: string]: CurrencyPair

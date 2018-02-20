@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import * as PropTypes from 'prop-types'
-import { addRegion, openWindow } from '../common/regions/regionsOperations'
+import { addRegion, openWindow } from '../common/regions'
 import SpotTile from './SpotTile'
 import {
   dismissNotification,
@@ -12,7 +12,7 @@ import {
 } from './actions'
 import { CurrencyPair, Direction } from '../../types/'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
-import { SpotPriceTick } from '../../types/spotPriceTick'
+import { SpotPriceTick } from '../../types'
 import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './spotTileUtils'
 import { SpotTileData } from '../../types/spotTileData'
 import * as _ from 'lodash'
