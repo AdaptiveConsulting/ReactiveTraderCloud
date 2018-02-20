@@ -62,6 +62,17 @@
   white-space: nowrap;
 }
 
+.filter_container__select-all-option-container {
+  border-bottom: 1px solid lighten($backgroundAccentColor, 10%);
+  padding-bottom: 2px;
+}
+
+.filter_container__option-items-container {
+  max-height: 100px;
+  overflow: auto;
+  margin-top: 6px;
+}
+
 .filter-container__checkbox-container {
   position: relative;
 }
@@ -70,6 +81,7 @@
   color: white;
   background-color: $backgroundAccentColor;
   border: 1px solid lighten($accentColor, 10%);
+  width: 110px;
   border-radius: 3px;
   height: 24px!important;
   padding-top: 0;

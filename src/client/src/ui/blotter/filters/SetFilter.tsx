@@ -22,6 +22,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   constructor(props) {
     super(props)
 
+    console.log(' ::: SetFilter contstructor called')
     this.state = {
       text: '',
       selectedFreeText: '',
@@ -29,18 +30,21 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     }
   }
 
-  isFilterActive() {
+  componentDidMount() {
+    console.log(' ::: SET FILTER DID MOUNT')
+  }
 
+  isFilterActive() {
     const uniquOptions = Object.values(this.getUniqueValues())
     const selectedOptions = Object.values(this.state.selectedValueSet)
-    return this.state.text !== null
+    const filterActive = this.state.text !== null
             && this.state.text !== undefined
             && this.state.text !== ''
             && uniquOptions.length !== selectedOptions.length
+    return filterActive
   }
 
   doesFilterPass(params) {
-
     const value = this.props.valueGetter(params.node)
     const doesTextFilterPass = this.state.text.toLowerCase()
       .split(' ')
@@ -48,17 +52,18 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
         return value.toString().toLowerCase().indexOf(filterWord) >= 0
       })
 
-    //
-    const doesOptionsFilterPass = !!this.state.selectedValueSet[value]
+    const doesOptionsFilterPass = !!this.state.selectedValueSet[value] || this.state.selectedValueSet['all'] === true
     return doesTextFilterPass || doesOptionsFilterPass
   }
 
   getModel() {
     const model = { value: `${this.state.text}` }
+    console.log('::: getModel, model : ', model)
     return model
   }
 
   setModel(model) {
+    console.log(' ::: setModel, model ')
     this.setState({ text: model ? model.value : '' })
   }
 
@@ -80,17 +85,17 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     this.setState({ selectedFreeText: newValue }, () => this.updateFilter())
   }
 
-  onOptionSelectChange = (event, value: string = null) => {
+  onOptionSelectChange = (event, value: string = 'all') => {
     const target:HTMLInputElement = event.target as HTMLInputElement
-    let updatedValueSet = { ...this.state.selectedValueSet }
+    const updatedValueSet = { ...this.state.selectedValueSet }
 
-    if (value) {
-      updatedValueSet[value] = target.checked
-    }else {
-      updatedValueSet = {}
+    updatedValueSet[value] = target.checked
+
+    if (value !== 'all' && target.checked === false) {
+      updatedValueSet['all'] = false
     }
-    this.setState({ selectedValueSet: updatedValueSet }, () => this.updateFilter())
 
+    this.setState({ selectedValueSet: updatedValueSet }, () => this.updateFilter())
   }
 
   updateFilter = () => {
@@ -137,23 +142,31 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     return filterModel[this.props.colDef.colId]
   }
 
-  isOptionSelected = (value:string) => {
-    const filteredValues = this.getFilteredValues()
-    return filteredValues
 
+  isOptionsChecked = (value:string):boolean => {
+    if (Object.keys(this.state.selectedValueSet).length === 0) {
+      return true
+    }
+
+    return !!this.state.selectedValueSet[value] || this.state.selectedValueSet['all'] === true
+  }
+
+  createOptionItem = (value:string, label:string) => {
+    return <div key={value} className="filter-container__checkbox-container">
+      <input key={value}
+             type="checkbox"
+             className="filter-container__checkbox"
+             checked={this.isOptionsChecked(value)}
+             onChange={(event) => this.onOptionSelectChange(event, value)}/>
+      <label>{label || value}</label>
+    </div>
   }
 
   render() {
     this.getFilteredValues()
     const uniqueValues = this.getUniqueValues()
     const setOptions = uniqueValues.map((value:string) => {
-      return <div className="filter-container__checkbox-container">
-        <input key={value}
-               type="checkbox"
-               className="filter-container__checkbox"
-               onChange={(event) => this.onOptionSelectChange(event, value)}/>
-          <label>{value}</label>
-        </div>
+      return this.createOptionItem(value, value)
     })
     return (
       <div className="filter-container">
@@ -161,21 +174,19 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
           <div className="filter-container__tab-icon"></div>
         </div>
       <div className="filter-container__content-wrapper">
-        <input style={{ height: '20px', width: '100px' }}
+        <input key="searchInput"
                ref="input"
                placeholder="Search"
                value={this.state.selectedFreeText}
                onChange={this.onTextChange}
                className="filter-container__free-text-input"/>
 
-        <div className="filter-container__checkbox-container">
-          <input key="selectAllOption"
-                 type="checkbox"
-                 className="filter-container__checkbox"
-                 onChange={(event) => this.onOptionSelectChange(event)}/>
-          <label>Select All</label>
-        </div>
-          { setOptions }
+          <div className="filter_container__select-all-option-container">
+            { this.createOptionItem('all', 'Select All')}
+          </div>
+          <div className="filter_container__option-items-container">
+            { setOptions }
+          </div>
         </div>
       </div>
     )
