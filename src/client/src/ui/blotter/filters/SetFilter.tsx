@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom'
 import './filters.scss'
 import { ColDef, Column, GridApi, InMemoryRowModel, RowNode } from 'ag-grid'
 
+const ALL = 'all'
+
 interface SetFilterProps {
   api: GridApi
   colDef: ColDef
@@ -21,26 +23,31 @@ interface SetFilterState {
 export default class SetFilter extends React.Component<SetFilterProps, SetFilterState> {
   constructor(props) {
     super(props)
-
-    console.log(' ::: SetFilter contstructor called')
     this.state = {
       text: '',
       selectedFreeText: '',
-      selectedValueSet: {}
+      selectedValueSet: { [ALL]: true }
     }
   }
 
   componentDidMount() {
-    console.log(' ::: SET FILTER DID MOUNT')
+    const uniqueValues = Object.values(this.getUniqueValues())
+    const initialSelection = uniqueValues.reduce((resultObj, value, index, array) => {
+      resultObj[value] = true
+      return resultObj
+    }, { [ALL]: true })
+
+    this.setState({ selectedValueSet: initialSelection })
   }
 
   isFilterActive() {
     const uniquOptions = Object.values(this.getUniqueValues())
     const selectedOptions = Object.values(this.state.selectedValueSet)
+    console.log(' --- uniqueOptions.length, selectedOptions.length : ', uniquOptions.length, selectedOptions.length)
     const filterActive = this.state.text !== null
             && this.state.text !== undefined
-            && this.state.text !== ''
-            && uniquOptions.length !== selectedOptions.length
+            && this.state.text.trim() !== ''
+            && (uniquOptions.length + 1 /* counting the 'all' option */) !== selectedOptions.length
     return filterActive
   }
 
@@ -52,18 +59,18 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
         return value.toString().toLowerCase().indexOf(filterWord) >= 0
       })
 
-    const doesOptionsFilterPass = !!this.state.selectedValueSet[value] || this.state.selectedValueSet['all'] === true
+    const doesOptionsFilterPass = !!this.state.selectedValueSet[value]
+      || this.state.selectedValueSet[ALL] === true
+
     return doesTextFilterPass || doesOptionsFilterPass
   }
 
   getModel() {
     const model = { value: `${this.state.text}` }
-    console.log('::: getModel, model : ', model)
     return model
   }
 
   setModel(model) {
-    console.log(' ::: setModel, model ')
     this.setState({ text: model ? model.value : '' })
   }
 
@@ -85,16 +92,14 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     this.setState({ selectedFreeText: newValue }, () => this.updateFilter())
   }
 
-  onOptionSelectChange = (event, value: string = 'all') => {
+  onOptionSelectChange = (event, value: string = ALL) => {
     const target:HTMLInputElement = event.target as HTMLInputElement
     const updatedValueSet = { ...this.state.selectedValueSet }
 
     updatedValueSet[value] = target.checked
-
-    if (value !== 'all' && target.checked === false) {
-      updatedValueSet['all'] = false
+    if (value !== ALL && target.checked === false) {
+      updatedValueSet[ALL] = false
     }
-
     this.setState({ selectedValueSet: updatedValueSet }, () => this.updateFilter())
   }
 
@@ -102,24 +107,18 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     const freeText = this.state.selectedFreeText
     const options = this.state.selectedValueSet
 
-    const newSelectedValueSet = [freeText]
+    const newSelectedValueSet = [freeText, ALL]
     for (const key in options) {
       if (options[key] === true) {
         newSelectedValueSet.push(key)
       }
     }
     const newFilterText = newSelectedValueSet.join(' ')
-
-    console.log(' ::: new filterText : ', newFilterText)
-    if (this.state.text !== newFilterText) {
-      this.setState({
-        text: newFilterText
-      }, () => {
-        this.props.api.refreshView()
-        this.props.filterChangedCallback()
-      })
-
-    }
+    this.setState({
+      text: newFilterText
+    }, () => {
+      this.props.filterChangedCallback()
+    })
   }
 
   getUniqueValues = ():any[] => {
@@ -136,19 +135,11 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     return Object.values(uniqueValuesMap)
   }
 
-  getFilteredValues = ():any => {
-
-    const filterModel = this.props.api.getFilterModel()
-    return filterModel[this.props.colDef.colId]
-  }
-
-
   isOptionsChecked = (value:string):boolean => {
     if (Object.keys(this.state.selectedValueSet).length === 0) {
       return true
     }
-
-    return !!this.state.selectedValueSet[value] || this.state.selectedValueSet['all'] === true
+    return !!this.state.selectedValueSet[value] || this.state.selectedValueSet[ALL] === true
   }
 
   createOptionItem = (value:string, label:string) => {
@@ -163,7 +154,6 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   render() {
-    this.getFilteredValues()
     const uniqueValues = this.getUniqueValues()
     const setOptions = uniqueValues.map((value:string) => {
       return this.createOptionItem(value, value)
@@ -182,7 +172,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
                className="filter-container__free-text-input"/>
 
           <div className="filter_container__select-all-option-container">
-            { this.createOptionItem('all', 'Select All')}
+            { this.createOptionItem(ALL, 'Select All')}
           </div>
           <div className="filter_container__option-items-container">
             { setOptions }
