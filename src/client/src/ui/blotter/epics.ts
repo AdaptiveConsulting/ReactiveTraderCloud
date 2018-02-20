@@ -1,5 +1,5 @@
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
 import { createNewTradesAction } from './actions'
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
 import { CurrencyPair, Trade } from '../../types'
 
 const subscribeOpenFinToBlotterData = (openFin, store) => () => {
@@ -10,7 +10,8 @@ const subscribeOpenFinToBlotterData = (openFin, store) => () => {
 }
 
 export const blotterServiceEpic = (blotterService$, openFin) => (action$, store) => {
-  return action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
+  return action$
+    .ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
     .do(subscribeOpenFinToBlotterData(openFin, store))
     .flatMapTo(blotterService$.getTradesStream())
     .map(createNewTradesAction)

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 
-import { DateCell } from '../src/ui/blotter'
-import Blotter from '../src/ui/blotter/Blotter'
+import { DateCell, NotionalCell } from '../src/ui/Blotter'
+import Blotter from '../src/ui/Blotter/blotter'
 import blottersProps from './blotter/blottersProps'
 import { getCurrencyPairs } from './currencyPairs'
 

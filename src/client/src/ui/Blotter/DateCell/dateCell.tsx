@@ -6,9 +6,12 @@ export interface DateCellProps {
 }
 
 export default class DateCell extends React.Component<DateCellProps, {}> {
-
   render() {
     const { formattedValue, classname } = this.props
-    return <div className={classname} style={{ width: '100%' }}>{formattedValue}</div>
+    return (
+      <div className={classname} style={{ width: '100%' }}>
+        {formattedValue}
+      </div>
+    )
   }
 }
