@@ -32,7 +32,7 @@
   position: relative;
   top: 0;
   right: 0;
-  left: 95px;
+  left: 105px;
   width: 25px;
   height: 24px;
   background-color: $accentColor;
@@ -50,14 +50,16 @@
 .filter-container__content-wrapper {
   padding: 7px;
   position: relative;
-  width: 120px;
+  width: auto;
+  max-width: 250px;
+  min-width: 130px;
   left: 0;
-  max-height: 200px;
+  max-height: 180px;
   overflow: auto;
   background-color: $accentColor;
   z-index: 1;
   top: -1px;
-
+  white-space: nowrap;
 }
 
 .filter-container__checkbox-container {

@@ -3,7 +3,7 @@ import * as numeral from 'numeral'
 import { Trade, TradeStatus } from '../../types'
 import RateCellRenderer from './renderers/RateCellRenderer'
 import { formatDate } from '../../system/utils'
-import CurrencyFilter from './filters/CurrencyFilter'
+import SetFilter from './filters/SetFilter'
 
 const currencyIconLookup = {
   ['USD']: `fa fa-usd`,
@@ -39,7 +39,8 @@ const getStatusIndicatorClass = (trade:Trade) => {
 
   switch (trade.status) {
     case TradeStatus.Rejected:
-      return 'rt-blotter__status-indicator--rejected'
+      return 'rt-blotter__status-i' +
+        'ndicator--rejected'
     case TradeStatus.Done:
       return 'rt-blotter__status-indicator--done'
     case TradeStatus.Pending:
@@ -54,7 +55,7 @@ export const DEFAULT_COLUMN_DEFINITION:AgGrid.ColDef = {
 }
 
 export const frameworkComponents = {
-  currencyFilter: CurrencyFilter
+  currencyFilter: SetFilter
 }
 
 export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.ColDef[] {
@@ -84,7 +85,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       field: 'status',
       width: 105,
       cellClass: ({ data }) => getStatusCellClass(data),
-      filterFramework: CurrencyFilter
+      filterFramework: SetFilter
     },
     {
       colId: 'tradeDate',
@@ -97,20 +98,21 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       colId: 'direction',
       headerName: 'Direction',
       field: 'direction',
+      filterFramework: SetFilter,
       width: 105
     },
     {
       colId: 'symbol',
       headerName: 'CCYCCY',
       field: 'symbol',
-      filterFramework: CurrencyFilter,
+      filterFramework: SetFilter,
       width: 105
     },
     {
       colId: 'dealtCurrency',
       headerName: 'Dealt CCY',
       field: 'dealtCurrency',
-      filterFramework: CurrencyFilter,
+      filterFramework: SetFilter,
       width: 105
     },
     {
@@ -145,7 +147,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       colId: 'traderName',
       field: 'traderName',
       headerName: 'Trader',
-      filterFramework: CurrencyFilter,
+      filterFramework: SetFilter,
       width: 105
     },
     {

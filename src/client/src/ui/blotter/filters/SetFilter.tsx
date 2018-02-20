@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import './filters.scss'
 import { ColDef, Column, GridApi, InMemoryRowModel, RowNode } from 'ag-grid'
 
-interface CurrencyFilterProps {
+interface SetFilterProps {
   api: GridApi
   colDef: ColDef
   column: Column
@@ -12,13 +12,13 @@ interface CurrencyFilterProps {
   filterChangedCallback: () => any
 }
 
-interface CurrencyFilterState {
+interface SetFilterState {
   text: string
   selectedFreeText: string
   selectedValueSet: {}
 }
 
-export default class CurrencyFilter extends React.Component<CurrencyFilterProps, CurrencyFilterState> {
+export default class SetFilter extends React.Component<SetFilterProps, SetFilterState> {
   constructor(props) {
     super(props)
 
@@ -110,7 +110,6 @@ export default class CurrencyFilter extends React.Component<CurrencyFilterProps,
       this.setState({
         text: newFilterText
       }, () => {
-        console.log(' --- after refresh ,state, text : ', this.state.text)
         this.props.api.refreshView()
         this.props.filterChangedCallback()
       })
