@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
-import * as React from 'react'
 import * as PropTypes from 'prop-types'
+import * as React from 'react'
 import { connect } from 'react-redux'
 import { CurrencyPair, Trade, TradeStatus } from '../../types'
 
@@ -11,7 +11,6 @@ interface TradeNotificationContainerProps {
 }
 
 class TradeNotification extends React.Component<TradeNotificationContainerProps, {}> {
-
   static contextTypes = {
     openFin: PropTypes.object
   }
@@ -24,12 +23,12 @@ class TradeNotification extends React.Component<TradeNotificationContainerProps,
   }
 
   public showOpenFinNotificationsForNewTrades(previousTrades, payloadTrades) {
-    _.forEach(payloadTrades, (trade:Trade) => {
+    _.forEach(payloadTrades, (trade: Trade) => {
       // ignore existing trades, unless it was pending
       if (previousTrades[trade.tradeId] && previousTrades[trade.tradeId].status !== TradeStatus.Pending) return
 
       // display a notification if the trade has a final status (Done or Rejected)
-      if ((trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected)) {
+      if (trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected) {
         this.context.openFin.openTradeNotification(trade, this.props.currencyPairs[trade.symbol])
       }
     })
@@ -49,6 +48,4 @@ const mapStateToProps = (state: any) => {
   }
 }
 
-const TradeNotificationContainer = connect(mapStateToProps)(TradeNotification)
-
-export default TradeNotificationContainer
+export default connect(mapStateToProps)(TradeNotification)

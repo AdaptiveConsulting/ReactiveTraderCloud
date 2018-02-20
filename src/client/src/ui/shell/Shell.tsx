@@ -9,7 +9,7 @@ import '../common/styles/_base.scss'
 import '../common/styles/_fonts.scss'
 import RegionWrapper from '../common/regions/RegionWrapper'
 import * as classnames from 'classnames'
-import TradeNotificationContainer from '../notification/TradeNotificationContainer'
+import TradeNotificationContainer from '../TradeNotification'
 import * as PropTypes from 'prop-types'
 
 export interface ShellProps {
