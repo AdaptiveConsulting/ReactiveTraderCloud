@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { createAction } from 'redux-actions'
-import { ACTION_TYPES as REGIONS_ACTIONS } from '../../../regions/regionsOperations'
+import { ACTION_TYPES as REGIONS_ACTIONS } from '../regions/regionsOperations'
 import { ACTION_TYPES as TILE_ACTIONS, tileUndocked } from '../../spotTile/actions'
 import { getPopoutService } from './index'
 import { Provider } from 'react-redux'
