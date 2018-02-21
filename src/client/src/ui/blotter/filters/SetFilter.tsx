@@ -21,6 +21,9 @@ interface SetFilterState {
 }
 
 export default class SetFilter extends React.Component<SetFilterProps, SetFilterState> {
+
+  private container:Element
+
   constructor(props) {
     super(props)
     this.state = {
@@ -43,11 +46,10 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   isFilterActive() {
     const uniquOptions = Object.values(this.getUniqueValues())
     const selectedOptions = Object.values(this.state.selectedValueSet)
-    console.log(' --- uniqueOptions.length, selectedOptions.length : ', uniquOptions.length, selectedOptions.length)
     const filterActive = this.state.text !== null
             && this.state.text !== undefined
             && this.state.text.trim() !== ''
-            && (uniquOptions.length + 1 /* counting the 'all' option */) !== selectedOptions.length
+            && uniquOptions.length !== selectedOptions.length
     return filterActive
   }
 
@@ -143,7 +145,8 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   createOptionItem = (value:string, label:string) => {
-    return <div key={value} className="filter-container__checkbox-container">
+    return <div ref={(el) => this.container = ReactDOM.findDOMNode(el)}
+                key={value} className="filter-container__checkbox-container">
       <input key={value}
              type="checkbox"
              className="filter-container__checkbox"
@@ -158,6 +161,14 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     const setOptions = uniqueValues.map((value:string) => {
       return this.createOptionItem(value, value)
     })
+
+    if (this.container) {
+
+      console.log(' ::: RENDER, this.container : ', this.container);
+
+      const rect = this.container.getBoundingClientRect()
+      console.log(' clientTop, clientLeft : ', rect.top, rect.left)
+    }
     return (
       <div className="filter-container">
         <div className="filter-container__tab">

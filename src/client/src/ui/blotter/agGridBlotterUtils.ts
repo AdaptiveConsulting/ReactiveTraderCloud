@@ -61,6 +61,14 @@ export const frameworkComponents = {
 export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.ColDef[] {
   return [
     {
+      colId: 'status',
+      headerName: 'Status',
+      field: 'status',
+      width: 60,
+      cellClass: ({ data }) => getStatusCellClass(data),
+      filterFramework: SetFilter
+    },
+    {
       colId: 'statusIndicator',
       headerName: '',
       field: 'statusIndicator',
@@ -79,14 +87,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       field: 'tradeId',
       width: 105
     },
-    {
-      colId: 'status',
-      headerName: 'Status',
-      field: 'status',
-      width: 105,
-      cellClass: ({ data }) => getStatusCellClass(data),
-      filterFramework: SetFilter
-    },
+
     {
       colId: 'tradeDate',
       headerName: 'Date',

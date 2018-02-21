@@ -98,6 +98,12 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     const newLeft = oldLeft - 103
     ePopup.style.top = newTop + 'px'
     ePopup.style.left = newLeft + 'px'
+    console.log(' ::: postProcessPopup, params : ', params)
+    console.log(' ePopup : ', ePopup)
+
+    const rect = ePopup.getBoundingClientRect();
+    console.log(' --- boundingRect left, top : ', rect.left, rect.top)
+    ePopup.classList.add('popup__className--TURN-RIGHT')
   }
 
   private sizeColumnsToFit = (param:any = null) => {
