@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
+import { CurrencyPair } from './'
 import NotionalInput from './notionalInput'
 import { NotionalUpdate, onNotionalInputChange } from './notionalOperations'
-import { CurrencyPair } from '../../types'
 
 interface NotionalContainerOwnProps {
   className: string
