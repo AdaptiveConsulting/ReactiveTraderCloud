@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types'
 import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { blotterRegionsSettings } from './reducer'
-import { openWindow, addRegion } from '../../regions/regionsOperations'
+import { openWindow, addRegion } from '../common/regions/regionsOperations'
 import Blotter from './Blotter'
 import { CurrencyPair } from '../../types'
 import Environment from '../../system/environment';

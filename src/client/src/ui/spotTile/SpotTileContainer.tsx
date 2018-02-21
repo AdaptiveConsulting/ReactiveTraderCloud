@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import * as PropTypes from 'prop-types'
-import { addRegion, openWindow } from '../../regions/regionsOperations'
+import { addRegion, openWindow } from '../common/regions/regionsOperations'
 import SpotTile from './SpotTile'
 import {
   dismissNotification,
