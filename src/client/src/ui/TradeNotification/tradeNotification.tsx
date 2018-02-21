@@ -3,7 +3,7 @@ import '../common/styles/_fonts.scss'
 import './TradeNotificationStyles.scss'
 import * as classnames from 'classnames'
 import * as React from 'react'
-import { Direction, Trade, TradeStatus } from '../../types'
+import { Direction, Trade, TradeStatus } from './'
 
 export interface TradeNotificationProps {
   message: Trade

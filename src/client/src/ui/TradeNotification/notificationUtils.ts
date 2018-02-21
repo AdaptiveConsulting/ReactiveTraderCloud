@@ -1,8 +1,7 @@
-import { NotificationType } from '../../types/notificationType'
-import { Trade } from '../../types'
-import { Notification } from '../../types/notification'
+import { timeFormat } from 'd3-time-format'
+import { Notification, NotificationType, Trade } from './'
 
-export function buildNotification(trade:Trade = null, error):Notification {
+export function buildNotification(trade: Trade = null, error): Notification {
   if (error || !trade) {
     return { message: error, hasError: true, notificationType: NotificationType.Text, trade: null }
   }

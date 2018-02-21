@@ -2,7 +2,7 @@ import * as _ from 'lodash'
 import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { CurrencyPair, Trade, TradeStatus } from '../../types'
+import { CurrencyPair, Trade, TradeStatus } from './'
 
 interface TradeNotificationContainerProps {
   blotterService
