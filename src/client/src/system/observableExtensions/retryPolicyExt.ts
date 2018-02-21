@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx'
-import { SerialSubscription } from '../../serialSubscription'
+import { SerialSubscription } from '../serialSubscription'
 
 import logger from '../logger'
 import { ShouldRetryResult } from './retryPolicy'
@@ -11,7 +11,7 @@ function retryWithPolicy<TValue>(this: Observable<TValue>,
                                  operationDescription: string,
                                  scheduler: any,
                                  onErrorCallback: (err: Error, willRetry: boolean) => void) {
-  
+
   return Observable.create((o) => {
     let retryCount = 0
     let subscribe = null

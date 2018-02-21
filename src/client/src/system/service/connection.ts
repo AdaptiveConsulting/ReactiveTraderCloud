@@ -5,7 +5,7 @@ import { ConnectionTypeMapper } from '../../services/mappers'
 import logger from '../logger'
 import AutobahnConnectionProxy from './autobahnConnectionProxy'
 import { Error } from 'autobahn'
-import { SerialSubscription } from '../../serialSubscription'
+import { SerialSubscription } from '../serialSubscription'
 
 const log = logger.create('Connection')
 
