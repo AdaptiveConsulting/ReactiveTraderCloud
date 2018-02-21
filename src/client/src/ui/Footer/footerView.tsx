@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import { StatusIndicator } from './StatusIndicator'
 import { Connections } from '../../connectionStatusOperations'
-import { ApplicationStatusConst, ConnectionStatus, ConnectionType, ServiceStatus } from '../../types'
+import { ApplicationStatusConst, ConnectionStatus, ConnectionType, ServiceStatus } from './'
 
 export interface Services {
   pricing: ServiceStatus
