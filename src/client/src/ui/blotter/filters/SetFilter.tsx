@@ -177,8 +177,10 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
           <div className="filter_container__select-all-option-container">
             { this.createOptionItem(ALL, 'Select All')}
           </div>
-          <div className="filter_container__option-items-container">
-            { setOptions }
+          <div className="filter_container__option-items-wrapper">
+            <div className="filter_container__option-items-container">
+              { setOptions }
+            </div>
           </div>
         </div>
       </div>

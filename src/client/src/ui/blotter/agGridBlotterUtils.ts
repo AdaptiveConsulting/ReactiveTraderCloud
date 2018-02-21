@@ -5,7 +5,6 @@ import RateCellRenderer from './renderers/RateCellRenderer'
 import { formatDate } from '../../system/utils'
 import SetFilter from './filters/SetFilter'
 import './filters/filterOverrides.ts'
-//import './filters/filters.scss'
 
 const currencyIconLookup = {
   ['USD']: `fa fa-usd`,
@@ -79,7 +78,8 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       colId: 'tradeId',
       headerName: 'Trade ID',
       field: 'tradeId',
-      width: 80
+      width: 80,
+      filter: 'number'
     },
     {
       colId: 'status',
