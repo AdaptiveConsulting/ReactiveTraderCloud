@@ -11,7 +11,8 @@ const getRandomRate = () => {
   return toRate(123, getRandomNumber(0, 10), getRandomNumber(0, 9))
 }
 
-import rootReducer from '../src/redux/reducers/combineReducers'
+import rootReducer from '../src/combineReducers'
+
 import {
   getContainerStyling,
   getNotionalInputProps,
