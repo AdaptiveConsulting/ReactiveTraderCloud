@@ -4,6 +4,8 @@ import { Trade, TradeStatus } from '../../types'
 import RateCellRenderer from './renderers/RateCellRenderer'
 import { formatDate } from '../../system/utils'
 import SetFilter from './filters/SetFilter'
+import './filters/filterOverrides.ts'
+//import './filters/filters.scss'
 
 const currencyIconLookup = {
   ['USD']: `fa fa-usd`,
@@ -61,14 +63,6 @@ export const frameworkComponents = {
 export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.ColDef[] {
   return [
     {
-      colId: 'status',
-      headerName: 'Status',
-      field: 'status',
-      width: 60,
-      cellClass: ({ data }) => getStatusCellClass(data),
-      filterFramework: SetFilter
-    },
-    {
       colId: 'statusIndicator',
       headerName: '',
       field: 'statusIndicator',
@@ -85,9 +79,16 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       colId: 'tradeId',
       headerName: 'Trade ID',
       field: 'tradeId',
-      width: 105
+      width: 80
     },
-
+    {
+      colId: 'status',
+      headerName: 'Status',
+      field: 'status',
+      width: 105,
+      cellClass: ({ data }) => getStatusCellClass(data),
+      filterFramework: SetFilter
+    },
     {
       colId: 'tradeDate',
       headerName: 'Date',

@@ -161,14 +161,6 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     const setOptions = uniqueValues.map((value:string) => {
       return this.createOptionItem(value, value)
     })
-
-    if (this.container) {
-
-      console.log(' ::: RENDER, this.container : ', this.container);
-
-      const rect = this.container.getBoundingClientRect()
-      console.log(' clientTop, clientLeft : ', rect.top, rect.left)
-    }
     return (
       <div className="filter-container">
         <div className="filter-container__tab">

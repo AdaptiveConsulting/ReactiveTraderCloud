@@ -2,8 +2,9 @@ import * as React from 'react'
 import { AgGridReact } from 'ag-grid-react'
 import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './agGridBlotterUtils'
 import './agGridBlotter.scss'
+import './toolbar/blotterToolbar.scss'
+import './filters/filters.scss'
 import 'ag-grid/dist/styles/ag-grid.css'
-//import 'ag-grid/dist/styles/ag-theme-dark.css'
 import * as classNames from 'classnames'
 import { GridApi, ColumnApi } from 'ag-grid'
 import BlotterToolbar from './toolbar/BlotterToolbar'
@@ -88,6 +89,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       return
     }
     const ePopup = params.ePopup
+
     let oldTopStr = ePopup.style.top
     oldTopStr = oldTopStr.substring(0, oldTopStr.indexOf('px'))
     let oldLeftStr = ePopup.style.left
@@ -95,15 +97,15 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     const oldTop = parseInt(oldTopStr, 10)
     const oldLeft = parseInt(oldLeftStr, 10)
     const newTop = oldTop - 23
-    const newLeft = oldLeft - 103
+    const newLeft = oldLeft - 115
     ePopup.style.top = newTop + 'px'
     ePopup.style.left = newLeft + 'px'
-    console.log(' ::: postProcessPopup, params : ', params)
-    console.log(' ePopup : ', ePopup)
 
-    const rect = ePopup.getBoundingClientRect();
-    console.log(' --- boundingRect left, top : ', rect.left, rect.top)
-    ePopup.classList.add('popup__className--TURN-RIGHT')
+    const rect = ePopup.getBoundingClientRect()
+    if (rect.left < 0) {
+      ePopup.classList.add('filter-menu__layout-right')
+      ePopup.style.left = (params.column.actualWidth - 20/* tab width offset */) + 'px'
+    }
   }
 
   private sizeColumnsToFit = (param:any = null) => {

@@ -39,6 +39,13 @@
   z-index: 3;
 }
 
+
+.filter-menu__layout-right {
+  .filter-container__tab {
+    left: 0px;
+  }
+}
+
 .filter-container__tab-icon {
   width: 23px;
   height: 23px;
@@ -151,7 +158,6 @@
     background: #ddd;
   }
 
-  // Checkmark. Could be replaced with an image
   &:checked + label:after {
     content: '';
     position: absolute;

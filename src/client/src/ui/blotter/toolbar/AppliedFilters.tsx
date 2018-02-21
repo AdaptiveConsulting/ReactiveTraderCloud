@@ -25,7 +25,7 @@ export default class AppliedFilters extends React.Component<AppliedFiltersProps,
       })
       filterElements = filteredColDefs.map((colDef) => {
         return (
-          <div key={colDef.field} className="filter-controls__filter-field">
+          <div key={colDef.field} className="applied-filter__filter-field">
             <img style={{ height: '10px', marginRight: '5px' }} />
             {colDef.headerName}
             <i className="fa fa-times" onClick={() => this.props.removeFilter(colDef.field)}></i>
