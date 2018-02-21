@@ -5,3 +5,5 @@ export { default as PNLChart } from './PNLChart'
 export { default as PositionsBubbleChart } from './PositionsBubbleChart'
 export { default as analyticsServiceEpic } from './epics'
 export { default as analyticsReducer } from './reducer'
+
+export { CurrencyPair, CurrencyPairPosition } from '../../types'

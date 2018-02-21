@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as React from 'react'
 import PNLBar from './PNLBar'
-import { CurrencyPair } from '../../../types'
+import { CurrencyPair } from '../'
 
 export interface AnalyticsBarChartProps {
   chartData: any[]

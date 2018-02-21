@@ -12,7 +12,7 @@ import {
   getRadius,
   getPositionValue
 } from './chartUtil'
-import { CurrencyPair } from '../../../types'
+import { CurrencyPair } from '../'
 
 export interface PositionsBubbleChartProps {
   data: any[]

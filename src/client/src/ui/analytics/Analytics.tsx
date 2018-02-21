@@ -2,12 +2,12 @@ import './AnalyticsStyles.scss'
 import * as classnames from 'classnames'
 import * as _ from 'lodash'
 import * as React from 'react'
+import { CurrencyPair } from './'
 import AnalyticsBarChart from './AnalyticsBarChart'
 import PNLChart from './PNLChart'
 import PositionsBubbleChart from './PositionsBubbleChart'
 import { PNLChartModel } from './model/pnlChartModel'
 import { PositionsChartModel } from './model/positionsChartModel'
-import { CurrencyPair } from '../../types'
 
 export interface AnalyticsProps {
   canPopout: boolean

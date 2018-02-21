@@ -2,7 +2,7 @@ import '../../AnalyticsStyles.scss'
 import * as numeral from 'numeral'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { CurrencyPair } from '../../../../types'
+import { CurrencyPair } from '../../'
 
 export interface PNLBarProps {
   basePnl: number

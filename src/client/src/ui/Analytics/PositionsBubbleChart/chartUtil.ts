@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 import * as _ from 'lodash'
 import * as numeral from 'numeral'
 import { PositionsBubbleChartProps } from './positionsBubbleChart'
-import { CurrencyPair, CurrencyPairPosition } from '../../../types'
+import { CurrencyPair, CurrencyPairPosition } from '../'
 
 const baseTradedAmountName = 'baseTradedAmount'
 

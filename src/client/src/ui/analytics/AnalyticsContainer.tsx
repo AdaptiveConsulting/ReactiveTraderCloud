@@ -2,12 +2,12 @@ import './AnalyticsStyles.scss'
 import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { CurrencyPair } from './'
 import Analytics from './analytics'
 import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
 import { addRegion, openWindow, regionsSettings } from '../common/regions/regionsOperations'
 import Environment from '../../system/environment'
-import { CurrencyPair } from '../../types'
 
 const analyticsRegionSettings = regionsSettings('Analytics', 400, 800, false)
 
