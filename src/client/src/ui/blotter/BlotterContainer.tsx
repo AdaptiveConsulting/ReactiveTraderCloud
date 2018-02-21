@@ -3,10 +3,10 @@ import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import sizeMe from 'react-sizeme'
+import { CurrencyPair } from './'
 import Blotter from './blotter'
 import { blotterRegionsSettings } from './reducer'
 import { openWindow, addRegion } from '../common/regions/regionsOperations'
-import { CurrencyPair } from '../../types'
 import Environment from '../../system/environment'
 
 interface BlotterContainerProps {

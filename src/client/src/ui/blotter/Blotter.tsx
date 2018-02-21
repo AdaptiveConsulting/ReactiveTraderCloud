@@ -5,9 +5,9 @@ import { timeFormat } from 'd3-time-format'
 import * as numeral from 'numeral'
 import * as React from 'react'
 import { Column, Table } from 'react-virtualized'
+import { CurrencyPair, Trade, TradeStatus } from './'
 import DateCell from './DateCell'
 import { BaseCell, getCellClassName } from './DefaultCell'
-import { CurrencyPair, Trade, TradeStatus } from '../../types'
 
 type TradeRow = any
 

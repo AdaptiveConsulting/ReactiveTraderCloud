@@ -1,7 +1,7 @@
 import './DefaultCellStyles.scss'
 import * as classNames from 'classnames'
 import * as React from 'react'
-import { TradeStatus } from '../../../types'
+import { TradeStatus } from '../'
 
 export interface BaseCellProps {
   classname?: string
