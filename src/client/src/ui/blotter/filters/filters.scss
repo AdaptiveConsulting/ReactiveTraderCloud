@@ -8,6 +8,7 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
 
 .ag-menu {
   pointer-events: none; // disable mouse events to be able to click through transparent areas
+  overflow: hidden!important;
 }
 
 .filter-container {

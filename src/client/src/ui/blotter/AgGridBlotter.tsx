@@ -19,9 +19,7 @@ interface AgGridBlotterProps {
 
 interface AgGridBlotterState {
   displayedRows: number
-  themeName: string
   quickFilterText: string
-  useCustomNumericRenderer: boolean
 }
 
 export default class AgGridBlotter extends React.Component<AgGridBlotterProps, AgGridBlotterState> {
@@ -32,13 +30,11 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
 
   state = {
     displayedRows: 0,
-    themeName: 'rt-blotter-dark',
     quickFilterText: null,
-    useCustomNumericRenderer: false
   } as AgGridBlotterState
 
   render () {
-    const containerClass = classNames('agGridBlotter-container', 'rt-blotter-shared', this.state.themeName)
+    const containerClass = classNames('agGridBlotter-container', 'rt-blotter-shared', 'rt-blotter-dark')
     const newWindowClassName = classNames(
       'glyphicon glyphicon-new-window',
       {
@@ -46,7 +42,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       },
     )
 
-    const colDefs = getColumnDefinitions(this.state.useCustomNumericRenderer)
+    const colDefs = getColumnDefinitions()
     return <div ref={(el) => this.grid = ReactDOM.findDOMNode(el)} className={containerClass}>
       <div className="rt-blotter__controls popout__controls">
         <i className={newWindowClassName}
@@ -78,52 +74,9 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       </div>
       <div className="rt-blotter__status-bar">
         <div>{`Displaying rows ${ this.state.displayedRows } of ${ this.props.rows.length }`}</div>
-        <div style={{ display: 'flex' }}>
-          <div className="blotter-toolbar__numeric-renderer-switch" onClick={this.toggleNumericRenderer}>Switch renderers</div>
-          <div className="blotter-toolbar__theme-switch" onClick={this.toggleTheme}>Switch theme</div>
-        </div>
       </div>
     </div>
   }
-
-  private postProcessPopup = (params:any) => {
-    if (params.type !== 'columnMenu') {
-      return
-    }
-    const ePopup = params.ePopup
-
-    let oldTopStr = ePopup.style.top
-    oldTopStr = oldTopStr.substring(0, oldTopStr.indexOf('px'))
-    let oldLeftStr = ePopup.style.left
-    oldLeftStr = oldLeftStr.substring(0, oldLeftStr.indexOf('px'))
-    const oldTop = parseInt(oldTopStr, 10)
-    const oldLeft = parseInt(oldLeftStr, 10)
-    const newTop = oldTop - 23
-    const newLeft = oldLeft - 145
-    ePopup.style.top = newTop + 'px'
-    ePopup.style.left = newLeft + 'px'
-
-
-    // make sure the tab's layout is correct within the boundaries of the grid
-    // and re-adjust for reposition and offset
-    const rect = ePopup.getBoundingClientRect()
-    const anchorRect = params.eventSource.getBoundingClientRect()
-
-    if (rect.left < 0) {
-      ePopup.classList.add('filter-menu__layout-right')
-      ePopup.style.left = (params.column.actualWidth - 20/* tab width offset */) + 'px'
-    } else {
-      // re-adjust the position of the tab, if it's moved relative to the right edge of the grid
-      const xDelta = anchorRect.left - rect.left
-      if (xDelta > anchorRect.width) {
-        let prevleft = ePopup.style.left
-        prevleft = prevleft.substring(0, prevleft.indexOf('px'))
-        const prevLeftPos = parseInt(prevleft, 10)
-        ePopup.style.left  = (prevLeftPos + xDelta - (rect.width - anchorRect.width)) + 'px'
-      }
-    }
-  }
-
 
   private sizeColumnsToFit = (param:any = null) => {
     if (this.gridApi) {
@@ -142,15 +95,6 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       return
     }
     this.setState({ displayedRows: this.gridApi.getModel().getRowCount() })
-  }
-
-  private toggleTheme = () => {
-    const newTheme = this.state.themeName === 'rt-blotter' ? 'rt-blotter-dark' : 'rt-blotter'
-    this.setState({ themeName: newTheme })
-  }
-
-  private toggleNumericRenderer = () => {
-    this.setState({ useCustomNumericRenderer: !this.state.useCustomNumericRenderer })
   }
 
   private quickFilterChangeHandler = (event:React.FormEvent<any>) => {
@@ -180,5 +124,50 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       return 'rt-blotter__row-pending'
     }
     return null
+  }
+
+  private postProcessPopup = (params:any) => {
+    if (params.type !== 'columnMenu') {
+      return
+    }
+    const ePopup = params.ePopup
+
+    let oldTopStr = ePopup.style.top
+    oldTopStr = oldTopStr.substring(0, oldTopStr.indexOf('px'))
+    let oldLeftStr = ePopup.style.left
+    oldLeftStr = oldLeftStr.substring(0, oldLeftStr.indexOf('px'))
+    const oldTop = parseInt(oldTopStr, 10)
+    const oldLeft = parseInt(oldLeftStr, 10)
+    const newTop = oldTop - 23
+    const newLeft = oldLeft - 145
+    ePopup.style.top = newTop + 'px'
+    ePopup.style.left = newLeft + 'px'
+
+    // make sure the tab's layout is correct within the boundaries of the grid
+    // and re-adjust for reposition and offset
+    const rect = ePopup.getBoundingClientRect()
+    const anchorRect = params.eventSource.getBoundingClientRect()
+    const xDelta = anchorRect.left - rect.left
+    const yDelta = anchorRect.top - rect.top
+
+    if (rect.left < 0) {
+      ePopup.classList.add('filter-menu__layout-right')
+      ePopup.style.left = (params.column.actualWidth - 20/* tab width offset */) + 'px'
+    } else {
+      // re-adjust the position of the tab, if it's moved relative to the right edge of the grid
+      if (xDelta > anchorRect.width) {
+        let prevleft = ePopup.style.left
+        prevleft = prevleft.substring(0, prevleft.indexOf('px'))
+        const prevLeftPos = parseInt(prevleft, 10)
+        ePopup.style.left  = (prevLeftPos + xDelta - (rect.width - anchorRect.width)) + 'px'
+      }
+    }
+
+    if (yDelta > 5) {
+      let prevTopStyle = ePopup.style.top
+      prevTopStyle = prevTopStyle.substring(0, prevTopStyle.indexOf('px'))
+      const prevTopPos = parseInt(prevTopStyle, 10)
+      ePopup.style.top = (prevTopPos + (yDelta)) + 'px'
+    }
   }
 }

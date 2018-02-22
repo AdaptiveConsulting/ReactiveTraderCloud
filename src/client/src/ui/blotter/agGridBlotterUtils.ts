@@ -1,7 +1,6 @@
 import * as AgGrid from 'ag-grid'
 import * as numeral from 'numeral'
 import { Trade, TradeStatus } from '../../types'
-import RateCellRenderer from './renderers/RateCellRenderer'
 import { formatDate } from '../../system/utils'
 import SetFilter from './filters/SetFilter'
 import './filters/filterOverrides.ts'
@@ -59,7 +58,7 @@ export const frameworkComponents = {
   currencyFilter: SetFilter
 }
 
-export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.ColDef[] {
+export function getColumnDefinitions():AgGrid.ColDef[] {
   return [
     {
       colId: 'statusIndicator',
@@ -133,10 +132,9 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       headerName: 'Rate',
       field: 'spotRate',
       width: 120,
-      cellRendererFramework: useRateRenderer ?  RateCellRenderer : null,
-      cellClass: useRateRenderer ? 'rt-blotter__numeric-cell--decimmal' : 'rt-blotter__numeric-cell',
+      cellClass:  'rt-blotter__numeric-cell',
       filter: 'number',
-      headerClass: useRateRenderer ? 'rt-blotter__rates-custom-header' : 'rt-header__numeric'
+      headerClass: 'rt-header__numeric'
     },
     {
       colId: 'valueDate',

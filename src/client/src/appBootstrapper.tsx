@@ -77,7 +77,3 @@ const appBootstrapper = () => {
 const runBootstrapper = location.pathname === '/' && location.hash.length === 0
 // if we're not the root we (perhaps a popup) we never re-run the bootstrap logic
 runBootstrapper && appBootstrapper()
-
-navigator.serviceWorker && navigator.serviceWorker.register('./sw.js').then((registration) =>{
-  console.log('Excellent, registered with scope: ', registration.scope)
-})
