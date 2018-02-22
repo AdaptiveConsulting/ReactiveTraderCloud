@@ -6,6 +6,9 @@ $borderRadius: 3px;
 $inputBorder: 1px solid lighten($accentColor, 10%);
 $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
 
+.ag-menu {
+  pointer-events: none; // disable mouse events to be able to click through transparent areas
+}
 
 .filter-container {
   width: auto;
@@ -36,6 +39,7 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
 }
 
 .filter-container__tab {
+  pointer-events: auto;
   position: relative;
   top: 0;
   right: 0;
@@ -62,6 +66,7 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
 }
 
 .filter-container__content-wrapper {
+  pointer-events: auto;
   padding: 7px;
   position: relative;
   width: auto;
@@ -146,13 +151,7 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
 
   // Box hover
   &:hover + label:before {
-    // background: #f35429;
     border: 1px solid darken($accentColor, 15%);
-  }
-
-  // Box focus
-  &:focus + label:before {
-    // box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
   }
 
   // Box checked

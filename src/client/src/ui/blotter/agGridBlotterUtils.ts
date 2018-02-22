@@ -94,6 +94,7 @@ export function getColumnDefinitions(useRateRenderer:boolean = false):AgGrid.Col
       headerName: 'Date',
       field: 'tradeDate',
       cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
+      filter: 'date',
       width: 170
     },
     {

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import { AgGridReact } from 'ag-grid-react'
 import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './agGridBlotterUtils'
 import './agGridBlotter.scss'
@@ -27,6 +28,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
 
   private gridApi: GridApi
   private columnApi: ColumnApi
+  private grid:Element
 
   state = {
     displayedRows: 0,
@@ -45,7 +47,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     )
 
     const colDefs = getColumnDefinitions(this.state.useCustomNumericRenderer)
-    return <div className={containerClass}>
+    return <div ref={(el) => this.grid = ReactDOM.findDOMNode(el)} className={containerClass}>
       <div className="rt-blotter__controls popout__controls">
         <i className={newWindowClassName}
            onClick={() => this.props.onPopoutClick()}/>
@@ -101,12 +103,27 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     ePopup.style.top = newTop + 'px'
     ePopup.style.left = newLeft + 'px'
 
+
+    // make sure the tab's layout is correct within the boundaries of the grid
+    // and re-adjust for reposition and offset
     const rect = ePopup.getBoundingClientRect()
+    const anchorRect = params.eventSource.getBoundingClientRect()
+
     if (rect.left < 0) {
       ePopup.classList.add('filter-menu__layout-right')
       ePopup.style.left = (params.column.actualWidth - 20/* tab width offset */) + 'px'
+    } else {
+      // re-adjust the position of the tab, if it's moved relative to the right edge of the grid
+      const xDelta = anchorRect.left - rect.left
+      if (xDelta > anchorRect.width) {
+        let prevleft = ePopup.style.left
+        prevleft = prevleft.substring(0, prevleft.indexOf('px'))
+        const prevLeftPos = parseInt(prevleft, 10)
+        ePopup.style.left  = (prevLeftPos + xDelta - (rect.width - anchorRect.width)) + 'px'
+      }
     }
   }
+
 
   private sizeColumnsToFit = (param:any = null) => {
     if (this.gridApi) {
