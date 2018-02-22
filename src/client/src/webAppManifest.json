@@ -1,0 +1,15 @@
+{
+  "name": "TestReactive Trader Cloud",
+  "short_name": "RT Test",
+  "display": "minimal-ui",
+  "start_url": "/",
+  "theme_color": "#673ab6",
+  "background_color": "#111111",
+  "icons": [
+    {
+      "src": "images/adaptive-mark-large.png",
+      "sizes": "250x250",
+      "type": "image/png"
+    }
+  ]
+}

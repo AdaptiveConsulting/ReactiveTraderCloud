@@ -101,6 +101,14 @@ module.exports = function (env = {}) {
         {
           from: './src/ui/common/images/favicon.ico',
           to: 'images/favicon.ico'
+        },
+        {
+          from: './src/webAppManifest.json',
+          to: 'manifest.json'
+        },
+        {
+          from: './src/sw.js',
+          to: 'webapp/sw.js'
         }
       ]),
       new webpack.optimize.CommonsChunkPlugin({
