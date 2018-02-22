@@ -33,6 +33,18 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     quickFilterText: null,
   } as AgGridBlotterState
 
+
+  setGridRef = (el:Element) => {
+    this.grid = ReactDOM.findDOMNode(el)
+    if (this.grid) {
+      this.grid.addEventListener('click', this.gridClickHandler)
+    }
+  }
+
+  gridClickHandler = (event:any) => {
+    console.log(' --- grid click handler called, event ', event)
+  }
+
   render () {
     const containerClass = classNames('agGridBlotter-container', 'rt-blotter-shared', 'rt-blotter-dark')
     const newWindowClassName = classNames(
@@ -42,8 +54,12 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       },
     )
 
+    if (this.grid) {
+      console.log(' ---- grid render, grid.ownerdocument : ', this.grid.ownerDocument)
+    }
+
     const colDefs = getColumnDefinitions()
-    return <div ref={(el) => this.grid = ReactDOM.findDOMNode(el)} className={containerClass}>
+    return <div ref={(el) => this.setGridRef(el)} className={containerClass}>
       <div className="rt-blotter__controls popout__controls">
         <i className={newWindowClassName}
            onClick={() => this.props.onPopoutClick()}/>

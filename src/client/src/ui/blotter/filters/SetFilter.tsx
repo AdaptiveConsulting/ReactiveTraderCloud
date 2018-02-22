@@ -12,6 +12,7 @@ interface SetFilterProps {
   rowModel: InMemoryRowModel
   valueGetter: (node) => any
   filterChangedCallback: () => any
+  reactContainer: any
 }
 
 interface SetFilterState {
@@ -41,6 +42,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     }, { [ALL]: true })
 
     this.setState({ selectedValueSet: initialSelection })
+
   }
 
   isFilterActive() {
@@ -77,6 +79,8 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   afterGuiAttached(params) {
+    console.log(' *** afterGuiAttached , params : ', params)
+    console.log(' this.props : ', this.props)
     this.focus()
   }
 
@@ -145,8 +149,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   createOptionItem = (value:string, label:string) => {
-    return <div ref={(el) => this.container = ReactDOM.findDOMNode(el)}
-                key={value} className="filter-container__checkbox-container">
+    return <div key={value} className="filter-container__checkbox-container">
       <input key={value}
              type="checkbox"
              className="filter-container__checkbox"
@@ -156,13 +159,40 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     </div>
   }
 
+  setupContainer = (el:Element) => {
+    this.container = ReactDOM.findDOMNode(el)
+    if (el) {
+      const popoutContainer = this.container.ownerDocument.getElementById('popout-content-container')
+      console.log(' --- popoutContainer : ', popoutContainer)
+      console.log(' ownerDocument : ', this.container.ownerDocument)
+      if (popoutContainer) {
+
+        popoutContainer.addEventListener('click', this.onWindowClickHandler)
+      }
+    }
+  }
+
+  private onWindowClickHandler= (event:Event) => {
+    console.log(' event.target : ', event.target)
+    console.log(' this.container : ', this.container)
+    console.log(' this.container.ownerDocument : ', this.container.ownerDocument)
+  }
+
+ /* private getDocument(): HTMLDocument {
+    return this.container.ownerDocument
+  }*/
+ /* private getWindow(): Window {
+    return window
+  }*/
+
   render() {
     const uniqueValues = this.getUniqueValues()
     const setOptions = uniqueValues.map((value:string) => {
       return this.createOptionItem(value, value)
     })
     return (
-      <div className="filter-container">
+      <div className="filter-container"
+           ref={(el) => this.setupContainer(el)}>
         <div className="filter-container__tab">
           <div className="filter-container__tab-icon"></div>
         </div>

@@ -58,7 +58,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "ag-grid": "15.0.0",
+    "ag-grid": "zeala/ag-grid#filter-wrapper-ownerdocument",
     "ag-grid-react": "15.0.0",
     "animate.css": "3.4.0",
     "autobahn": "17.5.2",
