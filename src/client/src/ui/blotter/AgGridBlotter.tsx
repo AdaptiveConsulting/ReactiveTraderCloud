@@ -50,11 +50,8 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
 
     COLUMN_FIELDS.forEach((field:string) => {
       const agGridFilter = this.gridApi.getFilterInstance(field)
-      console.log(' --- agGridFilter : ', agGridFilter)
-
       if (agGridFilter && agGridFilter.getFrameworkComponentInstance) {
         const reactFilterInstance = agGridFilter.getFrameworkComponentInstance()
-        console.log(' --(( reactFilterInstance : ', reactFilterInstance)
         if (reactFilterInstance) {
           reactFilterInstance.myCustomMethod(event)
         }

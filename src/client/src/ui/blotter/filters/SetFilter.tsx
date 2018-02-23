@@ -71,7 +71,9 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   getModel() {
-    const model = { value: `${this.state.text}` }
+
+    const filterText = this.state.text
+    const model = filterText !== undefined && filterText.trim().length === 0 ? undefined : filterText
     return model
   }
 
