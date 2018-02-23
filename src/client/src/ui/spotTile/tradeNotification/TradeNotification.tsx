@@ -4,6 +4,7 @@ import { timeFormat } from 'd3-time-format'
 import './TradeNotificationStyles.scss'
 import { CurrencyPair, TradeStatus } from '../../../types'
 import { Notification } from '../../../types/notification'
+import * as numeral from 'numeral'
 
 interface TradeNotificationProps {
   currencyPair: CurrencyPair
@@ -39,6 +40,8 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
       'trade-notification',
       { 'trade-notification--rejected': trade.status === TradeStatus.Rejected }
     )
+
+    const formattedNotional = numeral(trade.notional).format('0,000,000[.]00')
     return (
       <div className={containerClassName}>
         <span className="trade-notification__trade-status">
@@ -48,7 +51,7 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
           {trade.direction}
         </div>
         <div className="trade-notification__summary-item trade-notification__summary-item--notional">
-          {trade.dealtCurrency} {trade.notional}
+          {trade.dealtCurrency} {formattedNotional}
         </div>
         <div className="trade-notification__summary-item trade-notification__summary-item--currency">
           <span className="trade-notification__label--versus">vs </span>
