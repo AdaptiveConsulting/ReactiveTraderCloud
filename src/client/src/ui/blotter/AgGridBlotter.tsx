@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { AgGridReact } from 'ag-grid-react'
-import {COLUMN_FIELDS, DEFAULT_COLUMN_DEFINITION, getColumnDefinitions} from './agGridBlotterUtils'
+import { COLUMN_FIELDS, DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './agGridBlotterUtils'
 import './agGridBlotter.scss'
 import './toolbar/blotterToolbar.scss'
 import './filters/filters.scss'

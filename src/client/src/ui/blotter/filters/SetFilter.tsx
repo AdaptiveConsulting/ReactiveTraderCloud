@@ -80,7 +80,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   afterGuiAttached(params) {
-    console.log(' --- AFter Gui Attached, params : ', params)
+    // console.log(' --- AFter Gui Attached, params : ', params)
     this.hidePopup = params.hidePopup
     this.focus()
   }
@@ -162,13 +162,6 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
 
   setupContainer = (el:Element) => {
     this.container = ReactDOM.findDOMNode(el)
-    if (el) {
-      this.container.addEventListener('click', this.onContainerClick)
-    }
-  }
-
-  onContainerClick = (event:Event) => {
-    console.log(' --- onContainer Clicked called')
   }
 
   myCustomMethod = (event:Event) => {

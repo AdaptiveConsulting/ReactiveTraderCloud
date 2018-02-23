@@ -76,3 +76,4 @@ AgGrid.DateFilter.prototype.bodyTemplate = function ( ) {
 AgGrid.DateFilter.prototype.generateFilterHeader = function ( ) {
   return ''
 }
+

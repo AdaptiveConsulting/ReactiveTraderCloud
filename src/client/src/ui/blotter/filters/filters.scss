@@ -6,6 +6,10 @@ $borderRadius: 3px;
 $inputBorder: 1px solid lighten($accentColor, 10%);
 $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
 
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 .ag-menu {
   pointer-events: none; // disable mouse events to be able to click through transparent areas
   overflow: hidden!important;
