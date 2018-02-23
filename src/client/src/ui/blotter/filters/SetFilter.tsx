@@ -24,6 +24,7 @@ interface SetFilterState {
 export default class SetFilter extends React.Component<SetFilterProps, SetFilterState> {
 
   private container:Element
+  private hidePopup: (params:any) => void
 
   constructor(props) {
     super(props)
@@ -79,8 +80,8 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   afterGuiAttached(params) {
-    console.log(' *** afterGuiAttached , params : ', params)
-    console.log(' this.props : ', this.props)
+    console.log(' --- AFter Gui Attached, params : ', params)
+    this.hidePopup = params.hidePopup
     this.focus()
   }
 
@@ -162,28 +163,23 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   setupContainer = (el:Element) => {
     this.container = ReactDOM.findDOMNode(el)
     if (el) {
-      const popoutContainer = this.container.ownerDocument.getElementById('popout-content-container')
-      console.log(' --- popoutContainer : ', popoutContainer)
-      console.log(' ownerDocument : ', this.container.ownerDocument)
-      if (popoutContainer) {
-
-        popoutContainer.addEventListener('click', this.onWindowClickHandler)
-      }
+      this.container.addEventListener('click', this.onContainerClick)
     }
   }
 
-  private onWindowClickHandler= (event:Event) => {
-    console.log(' event.target : ', event.target)
-    console.log(' this.container : ', this.container)
-    console.log(' this.container.ownerDocument : ', this.container.ownerDocument)
+  onContainerClick = (event:Event) => {
+    console.log(' --- onContainer Clicked called')
   }
 
- /* private getDocument(): HTMLDocument {
-    return this.container.ownerDocument
-  }*/
- /* private getWindow(): Window {
-    return window
-  }*/
+  myCustomMethod = (event:Event) => {
+    const target:HTMLElement = event.target as HTMLElement
+    if (event.target === this.container || this.container.contains(target) || target.classList.contains('ag-icon-menu')) {
+      return
+    }
+    if (this.hidePopup) {
+      this.hidePopup(null)
+    }
+  }
 
   render() {
     const uniqueValues = this.getUniqueValues()

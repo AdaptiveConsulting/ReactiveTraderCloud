@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { AgGridReact } from 'ag-grid-react'
-import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './agGridBlotterUtils'
+import {COLUMN_FIELDS, DEFAULT_COLUMN_DEFINITION, getColumnDefinitions} from './agGridBlotterUtils'
 import './agGridBlotter.scss'
 import './toolbar/blotterToolbar.scss'
 import './filters/filters.scss'
@@ -42,7 +42,25 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   }
 
   gridClickHandler = (event:any) => {
-    console.log(' --- grid click handler called, event ', event)
+
+    // this is a workaround for an issue when the grid is running inside a popup - when a click outside the filter dropdown
+    // does not register on the popup but only when inside the main application window
+
+    // go through all columns ids and close open filters
+
+    COLUMN_FIELDS.forEach((field:string) => {
+      const agGridFilter = this.gridApi.getFilterInstance(field)
+      console.log(' --- agGridFilter : ', agGridFilter)
+
+      if (agGridFilter && agGridFilter.getFrameworkComponentInstance) {
+        const reactFilterInstance = agGridFilter.getFrameworkComponentInstance()
+        console.log(' --(( reactFilterInstance : ', reactFilterInstance)
+        if (reactFilterInstance) {
+          reactFilterInstance.myCustomMethod(event)
+        }
+      }
+    })
+
   }
 
   render () {
@@ -53,11 +71,6 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
         'blotter__controls--hidden': this.props.canPopout,
       },
     )
-
-    if (this.grid) {
-      console.log(' ---- grid render, grid.ownerdocument : ', this.grid.ownerDocument)
-    }
-
     const colDefs = getColumnDefinitions()
     return <div ref={(el) => this.setGridRef(el)} className={containerClass}>
       <div className="rt-blotter__controls popout__controls">
