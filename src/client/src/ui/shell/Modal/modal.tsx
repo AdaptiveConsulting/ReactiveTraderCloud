@@ -1,6 +1,5 @@
-import * as React from 'react'
-
 import './ModalStyles.scss'
+import * as React from 'react'
 
 export interface ModalProps {
   shouldShow?: boolean
@@ -16,14 +15,12 @@ const Modal = (props: ModalProps) => {
   }
   return (
     <div>
-      <div className="modal__overlay"></div>
+      <div className="modal__overlay" />
       <div className="modal">
         <div className="modal__header">
           <span className="modal__header-title">{props.title}</span>
         </div>
-        <div className="modal__body">
-          {props.children}
-        </div>
+        <div className="modal__body">{props.children}</div>
       </div>
     </div>
   )
