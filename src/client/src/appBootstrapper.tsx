@@ -5,7 +5,9 @@ import { Provider } from 'react-redux'
 import { OpenFin } from './system/openFin'
 import createConnection from './system/service/connection'
 import { User } from './types'
-import { ShellContainer, OpenFinProvider } from './ui/shell'
+import OpenFinProvider from './ui/shell/OpenFinProvider'
+import ShellContainer from './ui/Shell'
+
 // TODO: change to import when webpack bug solved https://github.com/webpack/webpack/issues/4160
 const config = require('config.json')
 
