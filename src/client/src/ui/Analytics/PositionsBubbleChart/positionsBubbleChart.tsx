@@ -1,17 +1,18 @@
+import * as d3 from 'd3'
+import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import * as d3 from 'd3'
-
-import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
 import reactSizeme from 'react-sizeme'
-import {  createScales,
-          getPositionsDataFromSeries,
-          updateNodes,
-          drawCircles,
-          drawLabels,
-          getRadius,
-          getPositionValue } from './chartUtil'
-import { CurrencyPair } from '../../../types/currencyPair'
+import {
+  createScales,
+  getPositionsDataFromSeries,
+  updateNodes,
+  drawCircles,
+  drawLabels,
+  getRadius,
+  getPositionValue
+} from './chartUtil'
+import { CurrencyPair } from '../../../types'
 
 export interface PositionsBubbleChartProps {
   data: any[]
@@ -19,7 +20,7 @@ export interface PositionsBubbleChartProps {
   // passed by reactSizeme :
   size: {
     width: number
-    height: number,
+    height: number
   }
 }
 
@@ -31,7 +32,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     super(props)
     this.state = {
       nodes: [],
-      prevPositionsData: {},
+      prevPositionsData: {}
     }
   }
 
@@ -68,11 +69,12 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
 
     // positions data has changed on the existing nodes
     const modifiedData = reduce(
-      positionsData, (result, value, key) => {
-        return isEqual(value, existingPositionsData[key]) ?
-          result : result.concat(key)
+      positionsData,
+      (result, value, key) => {
+        return isEqual(value, existingPositionsData[key]) ? result : result.concat(key)
       },
-      [])
+      []
+    )
 
     function filterStale(existingPos: any) {
       return findIndex(positionsData, (pos: any) => pos.symbol === existingPos.symbol) === -1
@@ -99,7 +101,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     const positionsData = getPositionsDataFromSeries(data, this.props.currencyPairs)
 
     nodes = map(positionsData, (dataObj: any, index: number) => {
-      const color =  dataObj.baseTradedAmount > 0 ? colours[0] : colours[1]
+      const color = dataObj.baseTradedAmount > 0 ? colours[0] : colours[1]
 
       // update an existing node:
       const existingNode = find(nodes, (node: any) => node.id === dataObj.symbol) as any
@@ -113,7 +115,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
           color,
           id: dataObj.symbol,
           r: getRadius(dataObj, this.scales),
-          cx: this.scales.x(index),
+          cx: this.scales.x(index)
         }
         return newNode
       }
@@ -140,7 +142,8 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   createTooltip() {
     if (this.tooltip) return
     const dom = ReactDOM.findDOMNode(this)
-    this.tooltip = d3.select(dom)
+    this.tooltip = d3
+      .select(dom)
       .append('div')
       .style('visibility', 'hidden')
       .attr('class', 'analytics__positions-tooltip')
@@ -151,7 +154,8 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     this.scales = createScales(nextProps)
 
     const tick = () => {
-      const nodeGroup = svg.selectAll('g.node')
+      const nodeGroup = svg
+        .selectAll('g.node')
         .on('mouseover', (dataObj: any, index: number, event: MouseEvent) => {
           this.tooltip.style('visibility', 'visible')
           this.positionTooltip(dataObj, event)
@@ -162,12 +166,14 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
       updateNodes(nodeGroup, this.state.nodes, this.scales)
     }
 
-    const svg = d3.select(dom)
+    const svg = d3
+      .select(dom)
       .append('svg')
       .attr('width', this.props.size.width)
       .attr('height', this.props.size.height)
 
-    this.force = d3.layout.force()
+    this.force = d3.layout
+      .force()
       .nodes(this.state.nodes)
       .links([])
       .size([this.props.size.width, this.props.size.height])
@@ -183,7 +189,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   positionTooltip(dataObj: any, event: MouseEvent) {
     const posX = (event ? event.layerX : dataObj.x) - this.tooltip[0][0].clientWidth / 2
     const posY = event ? event.layerY : dataObj.y
-    this.tooltip.style('top', (posY + 15) + 'px').style('left', posX + 'px')
+    this.tooltip.style('top', posY + 15 + 'px').style('left', posX + 'px')
     this.tooltip.text(`${dataObj.id} ${getPositionValue(dataObj.id, this.state.prevPositionsData)}`)
   }
 
@@ -195,12 +201,13 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     const dom = ReactDOM.findDOMNode(this)
     const svg = d3.select(dom).select('svg')
 
-    const nodeGroup = svg.selectAll('g.node')
-      .data(nodes, (d: any, i: number) => {
-        return d.id
-      })
+    const nodeGroup = svg.selectAll('g.node').data(nodes, (d: any, i: number) => {
+      return d.id
+    })
 
-    nodeGroup.enter().append('g')
+    nodeGroup
+      .enter()
+      .append('g')
       .attr('class', 'node')
       .call(this.force.drag)
 
@@ -210,23 +217,20 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
       drawCircles(circleNodeGroup, 0)
       drawLabels(labelGroup)
       this.force.nodes(nodes).start()
-
     } else {
       const circle = nodeGroup.selectAll('circle')
       drawCircles(circle)
 
-      setTimeout(
-        () => {
-          updateNodes(nodeGroup, this.state.nodes, this.scales)
-          this.force.start()
-        },
-        200)
+      setTimeout(() => {
+        updateNodes(nodeGroup, this.state.nodes, this.scales)
+        this.force.start()
+      }, 200)
     }
     nodeGroup.exit().remove()
   }
 
   render() {
-    return <div className="analytics__bubblechart-container"></div>
+    return <div className="analytics__bubblechart-container" />
   }
 }
 

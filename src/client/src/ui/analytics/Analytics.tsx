@@ -1,17 +1,19 @@
-import * as React from 'react'
+import './AnalyticsStyles.scss'
 import * as classnames from 'classnames'
 import * as _ from 'lodash'
+import * as React from 'react'
+import AnalyticsBarChart from './AnalyticsBarChart'
+import PNLChart from './PNLChart'
+import PositionsBubbleChart from './PositionsBubbleChart'
 import { PNLChartModel } from './model/pnlChartModel'
-import { PNLChart, AnalyticsBarChart, PositionsBubbleChart } from './'
 import { PositionsChartModel } from './model/positionsChartModel'
-import './AnalyticsStyles.scss'
-import { CurrencyPair } from '../../types/currencyPair'
+import { CurrencyPair } from '../../types'
 
 export interface AnalyticsProps {
   canPopout: boolean
   isConnected: boolean
   pnlChartModel?: PNLChartModel
-  positionsChartModel?: PositionsChartModel,
+  positionsChartModel?: PositionsChartModel
   currencyPairs: CurrencyPair[]
   onPopoutClick?: () => void
 }
@@ -19,8 +21,7 @@ export interface AnalyticsProps {
 const RESIZE_EVENT = 'resize'
 
 export default class Analytics extends React.Component<AnalyticsProps, {}> {
-
-  private handleResize = () => this.forceUpdate();
+  private handleResize = () => this.forceUpdate()
 
   componentWillMount() {
     // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
@@ -37,29 +38,37 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
     if (!isConnected)
       return (
         <div className="analytics__container">
-          <div ref="analyticsInnerContainer"></div>
+          <div ref="analyticsInnerContainer" />
         </div>
       )
 
-    const newWindowBtnClassName = classnames('glyphicon glyphicon-new-window', canPopout && 'analytics__icon--tearoff--hidden' || 'analytics__icon--tearoff')
+    const newWindowBtnClassName = classnames(
+      'glyphicon glyphicon-new-window',
+      (canPopout && 'analytics__icon--tearoff--hidden') || 'analytics__icon--tearoff'
+    )
 
     return (
       <div className="analytics analytics__container animated fadeIn">
         <div className="analytics__controls popout__controls">
-          <i className={newWindowBtnClassName}
-             onClick={() => this.props.onPopoutClick()}/>
+          <i className={newWindowBtnClassName} onClick={() => this.props.onPopoutClick()} />
         </div>
         {this.props.pnlChartModel && <PNLChart {...this.props.pnlChartModel} />}
         <div className="analytics__bubblechart-container">
           <span className="analytics__chart-title analytics__bubblechart-title">Positions</span>
-          {!_.isEmpty(this.props.positionsChartModel.seriesData) &&
-          <PositionsBubbleChart data={this.props.positionsChartModel.seriesData} currencyPairs={currencyPairs}/>}
+          {!_.isEmpty(this.props.positionsChartModel.seriesData) && (
+            <PositionsBubbleChart data={this.props.positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+          )}
         </div>
         <div>
           <div className="analytics__chart-container">
             <span className="analytics__chart-title">PnL</span>
-            {!_.isEmpty(this.props.positionsChartModel.seriesData) &&
-            <AnalyticsBarChart chartData={this.props.positionsChartModel.seriesData} currencyPairs={currencyPairs} isPnL={true}/>}
+            {!_.isEmpty(this.props.positionsChartModel.seriesData) && (
+              <AnalyticsBarChart
+                chartData={this.props.positionsChartModel.seriesData}
+                currencyPairs={currencyPairs}
+                isPnL={true}
+              />
+            )}
           </div>
         </div>
       </div>
