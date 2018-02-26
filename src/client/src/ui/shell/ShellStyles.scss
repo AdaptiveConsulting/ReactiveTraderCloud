@@ -66,16 +66,11 @@
 }
 
 .shell_workspace_blotter {
-  background-color: $shell-background-color;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-around;
+
   height: 100%;
   width: 100%;
-  min-width: 0;
-  & * {
-    box-sizing: border-box;
-  }
+  min-height: 20px;
+  //background-color: grey;
 }
 
 .shell__sidebar {
@@ -91,18 +86,30 @@
 
 .shell__workspace {
   flex-grow: 1;
-  height: $workspace-height;
+  height: auto;// $workspace-height;
   overflow-y: auto;
   overflow-x: hidden;
   width: $workspace-width;
   order: 1;
 }
 
+.shell__blotter-container {
+  width: 100%;
+  height: auto;
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 .shell__blotter {
-  flex-grow: 1;
-  height: $blotter-height;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   order: 2;
+  box-sizing: border-box;
 }
 
 .shell__footer {

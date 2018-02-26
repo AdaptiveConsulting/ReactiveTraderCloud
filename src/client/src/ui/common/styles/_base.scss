@@ -12,7 +12,8 @@ body, html {
 
   // scrollbar
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 12px;
+    height: 12px;
   }
 
   ::-webkit-scrollbar-track {
@@ -20,9 +21,13 @@ body, html {
   }
 
   ::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: #262a33;
-    border: solid 1px #424545;
+    border-radius: 6px;
+    background-color: #5e6365;
+    border: solid 3px #262a33;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #424545;
   }
 
   ::-webkit-scrollbar-corner {
