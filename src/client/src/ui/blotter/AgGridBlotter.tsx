@@ -65,7 +65,6 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
           suppressDragLeaveHidesColumns={true}
           getRowClass={this.getRowClass}
           onColumnResized={this.sizeColumnsToFit}
-          postProcessPopup={this.postProcessPopup}
         />
       </div>
       <div className="rt-blotter__status-bar">
@@ -112,50 +111,5 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       return 'rt-blotter__row-pending'
     }
     return null
-  }
-
-  private postProcessPopup = (params:any) => {
-    if (params.type !== 'columnMenu') {
-      return
-    }
-    const ePopup = params.ePopup
-
-    let oldTopStr = ePopup.style.top
-    oldTopStr = oldTopStr.substring(0, oldTopStr.indexOf('px'))
-    let oldLeftStr = ePopup.style.left
-    oldLeftStr = oldLeftStr.substring(0, oldLeftStr.indexOf('px'))
-    const oldTop = parseInt(oldTopStr, 10)
-    const oldLeft = parseInt(oldLeftStr, 10)
-    const newTop = oldTop - 23
-    const newLeft = oldLeft - 145
-    ePopup.style.top = newTop + 'px'
-    ePopup.style.left = newLeft + 'px'
-
-    // make sure the tab's layout is correct within the boundaries of the grid
-    // and re-adjust for reposition and offset
-    const rect = ePopup.getBoundingClientRect()
-    const anchorRect = params.eventSource.getBoundingClientRect()
-    const xDelta = anchorRect.left - rect.left
-    const yDelta = anchorRect.top - rect.top
-
-    if (rect.left < 0) {
-      ePopup.classList.add('filter-menu__layout-right')
-      ePopup.style.left = (params.column.actualWidth - 20/* tab width offset */) + 'px'
-    } else {
-      // re-adjust the position of the tab, if it's moved relative to the right edge of the grid
-      if (xDelta > anchorRect.width) {
-        let prevleft = ePopup.style.left
-        prevleft = prevleft.substring(0, prevleft.indexOf('px'))
-        const prevLeftPos = parseInt(prevleft, 10)
-        ePopup.style.left  = (prevLeftPos + xDelta - (rect.width - anchorRect.width)) + 'px'
-      }
-    }
-
-    if (yDelta > 5) {
-      let prevTopStyle = ePopup.style.top
-      prevTopStyle = prevTopStyle.substring(0, prevTopStyle.indexOf('px'))
-      const prevTopPos = parseInt(prevTopStyle, 10)
-      ePopup.style.top = (prevTopPos + (yDelta)) + 'px'
-    }
   }
 }
