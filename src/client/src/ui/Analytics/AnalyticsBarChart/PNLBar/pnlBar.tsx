@@ -1,9 +1,8 @@
+import '../../AnalyticsStyles.scss'
+import * as numeral from 'numeral'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import * as numeral from 'numeral'
-
-import '../AnalyticsStyles.scss'
-import { CurrencyPair } from '../../../types/currencyPair'
+import { CurrencyPair } from '../../'
 
 export interface PNLBarProps {
   basePnl: number
@@ -61,14 +60,16 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
 
     const isPositive = basePnl > 0
     const displayValue = Math.abs(basePnl) / maxVal * 100
-    const xPosRelative = isPositive ? 50 + displayValue / 2 : (50 - displayValue / 2)
+    const xPosRelative = isPositive ? 50 + displayValue / 2 : 50 - displayValue / 2
     return xPosRelative
   }
 
   getRenderedLabel() {
     const { basePnl, symbol, currencyPair } = this.props
 
-    const amount = numeral(basePnl).format('0a').toUpperCase()
+    const amount = numeral(basePnl)
+      .format('0a')
+      .toUpperCase()
     const amountHover = numeral(basePnl).format('0,0')
     const labelText = `(${amount}) ${symbol}`
 
@@ -97,22 +98,21 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
         <div>
           <div className="analytics__barchart-title-wrapper">
             <div className="analytics__barchart-label-wrapper">
-              <div className="analytics__barchart-label-pusher" style={pusherStyle}></div>
+              <div className="analytics__barchart-label-pusher" style={pusherStyle} />
               {label}
             </div>
 
             <div className="analytics__barchart-pointer-container" style={pointerPosition}>
-              <div className="analytics__barchart-pointer--outline"/>
-              <div className="analytics__barchart-pointer"/>
+              <div className="analytics__barchart-pointer--outline" />
+              <div className="analytics__barchart-pointer" />
             </div>
           </div>
 
           <div className="analytics__barchart-bar-wrapper">
-            <div className="analytics__barchart-bar-background"></div>
-            <div className="analytics__barchart-border analytics__barchart-border--left"/>
-            <div className="analytics__barchart-border analytics__barchart-border--center"/>
-            <div className="analytics__barchart-border analytics__barchart-border--right"/>
-
+            <div className="analytics__barchart-bar-background" />
+            <div className="analytics__barchart-border analytics__barchart-border--left" />
+            <div className="analytics__barchart-border analytics__barchart-border--center" />
+            <div className="analytics__barchart-border analytics__barchart-border--right" />
           </div>
         </div>
       </div>

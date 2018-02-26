@@ -1,32 +1,29 @@
 /* tslint:disable */
-import * as _ from 'lodash'
 import * as d3 from 'd3'
+import * as _ from 'lodash'
 import * as numeral from 'numeral'
-import { CurrencyPair } from '../../../types/currencyPair'
-import { CurrencyPairPosition } from '../../../types/currencyPairPosition';
-import { PositionsBubbleChartProps } from './PositionsBubbleChart'
+import { PositionsBubbleChartProps } from './positionsBubbleChart'
+import { CurrencyPair, CurrencyPairPosition } from '../'
 
 const baseTradedAmountName = 'baseTradedAmount'
 
 export function getPositionsDataFromSeries(series = [], currencyPairs: CurrencyPair[]) {
   const baseAmountPropertyName = baseTradedAmountName
-  const positionsPerCcyObj = series.reduce(
-    (aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
-      const { symbol } = ccyPairPosition
-      const ccyPair:CurrencyPair = currencyPairs[symbol]
-      const baseCurrency = ccyPair ? ccyPair.base : ''
-      aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
-        ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmountPropertyName]
-        : ccyPairPosition[baseAmountPropertyName]
+  const positionsPerCcyObj = series.reduce((aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
+    const { symbol } = ccyPairPosition
+    const ccyPair: CurrencyPair = currencyPairs[symbol]
+    const baseCurrency = ccyPair ? ccyPair.base : ''
+    aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
+      ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmountPropertyName]
+      : ccyPairPosition[baseAmountPropertyName]
 
-      return aggregatedPositionsObj
-    },
-    {})
+    return aggregatedPositionsObj
+  }, {})
 
   return _.map(positionsPerCcyObj, (val, key) => {
     return {
       symbol: key,
-      [baseAmountPropertyName]: val,
+      [baseAmountPropertyName]: val
     }
   }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
 }
@@ -49,39 +46,40 @@ export function createScales(props: PositionsBubbleChartProps) {
   if (minValue === maxValue) minValue = 0
 
   const scales = {
-    x: d3.scale.linear()
+    x: d3.scale
+      .linear()
       .domain([0, props.data.length])
-      .range([(-(width / ratio)), (width / ratio) - offset]),
-    y: d3.scale.linear()
+      .range([-(width / ratio), width / ratio - offset]),
+    y: d3.scale
+      .linear()
       .domain([0, props.data.length])
-      .range([-(height / (ratio)), height / ratio]),
-    r: d3.scale.sqrt()
+      .range([-(height / ratio), height / ratio]),
+    r: d3.scale
+      .sqrt()
       .domain([minValue, maxValue])
-      .range([minR, maxR])}
+      .range([minR, maxR])
+  }
 
   return scales
 }
 
-
 export function updateNodes(nodeGroup: any, nodes: any[], scales: any) {
   const nodeMap = {}
 
-  nodeGroup.each(collide(.1, nodes, scales.r))
-    .attr({
-      transform: (d: any, i: any) => {
-        if (d.x !== undefined && d.y !== undefined && !isNaN(d.x) && !isNaN(d.y)) {
-          nodeMap[d.id] = { x: d.x, y: d.y }
-          return 'translate(' + d.x + ',' + d.y + ')'
-        } else {
-          nodeMap[d.id] = { x: 0, y: 0 }
-          return 'translate(0, 0)'
-        }
-
-      },
-      id: (d: any, i: any) => {
-        return d.id
-      },
-    })
+  nodeGroup.each(collide(0.1, nodes, scales.r)).attr({
+    transform: (d: any, i: any) => {
+      if (d.x !== undefined && d.y !== undefined && !isNaN(d.x) && !isNaN(d.y)) {
+        nodeMap[d.id] = { x: d.x, y: d.y }
+        return 'translate(' + d.x + ',' + d.y + ')'
+      } else {
+        nodeMap[d.id] = { x: 0, y: 0 }
+        return 'translate(0, 0)'
+      }
+    },
+    id: (d: any, i: any) => {
+      return d.id
+    }
+  })
 
   nodes.forEach((node: any) => {
     const newSettings = nodeMap[node.id]
@@ -91,7 +89,6 @@ export function updateNodes(nodeGroup: any, nodes: any[], scales: any) {
     }
   })
 }
-
 
 export function drawCircles(nodeGroup: any, duration: number = 800) {
   nodeGroup
@@ -106,24 +103,25 @@ export function drawCircles(nodeGroup: any, duration: number = 800) {
     .attr({
       r: (d: any) => {
         return d.r
-      },
+      }
     })
     .style({
       fill: (d: any) => {
         return d.color
-      },
+      }
     })
 }
 
 export function drawLabels(nodeGroup: any) {
-  nodeGroup.attr({
-    x: 0,
-    y: 3,
-    class: 'analytics__positions-label',
-  })
-  .text((d: any) => {
-    return d.id
-  })
+  nodeGroup
+    .attr({
+      x: 0,
+      y: 3,
+      class: 'analytics__positions-label'
+    })
+    .text((d: any) => {
+      return d.id
+    })
 }
 
 export function getRadius(dataObj: any, scales: any) {
