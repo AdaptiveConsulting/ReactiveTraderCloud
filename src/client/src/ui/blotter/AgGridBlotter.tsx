@@ -77,7 +77,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
                       quickFilterChangeHandler={this.quickFilterChangeHandler}
                       removeQuickFilter={this.removeQuickFilter}
                       filterModel={this.gridApi ? this.gridApi.getFilterModel() : null }
-                      columnDefinitions={colDefs} removeAllFilters={this.removeAllFilters} removeFilter={this.removeFilter}/>
+                      columnDefinitions={colDefs} />
       <div className="rt-blotter__grid-wrapper">
         <AgGridReact
           columnDefs={colDefs}
@@ -132,14 +132,6 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     this.gridApi.setQuickFilter(null)
     this.gridApi.onFilterChanged()
     this.setState({ quickFilterText: null })
-  }
-
-  private removeAllFilters = () => {
-    this.gridApi.setFilterModel(null)
-  }
-
-  private removeFilter = (key:string) => {
-    this.gridApi.destroyFilter(key)
   }
 
   private getRowClass({ data }) {

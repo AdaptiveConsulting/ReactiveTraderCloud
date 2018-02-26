@@ -9,8 +9,6 @@ interface BlotterToolbarProps {
   quickFilterChangeHandler: (event:React.FormEvent<any>) => void
   filterModel:any
   columnDefinitions: AgGrid.ColDef[]
-  removeAllFilters: () => void
-  removeFilter: (key:string) => void
 }
 
 interface BlotterToobarState {
