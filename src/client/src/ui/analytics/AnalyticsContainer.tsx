@@ -6,7 +6,7 @@ import { getPositionsChartModel } from './model/positionsChartModel'
 import Analytics from './Analytics'
 import './AnalyticsStyles.scss'
 import Environment from '../../system/environment'
-import { addRegion, openWindow } from '../../regions/regionsOperations'
+import { addRegion, openWindow } from '../../ui/common/regions/regionsOperations'
 import { CurrencyPair } from '../../types/currencyPair'
 import { RegionSettings } from '../../types'
 

@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types'
 import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { blotterRegionsSettings } from './reducer'
-import { openWindow, addRegion } from '../../regions/regionsOperations'
+import { openWindow, addRegion } from '../../ui/common/regions/regionsOperations'
 import AgGridBlotter from './AgGridBlotter'
 import { CurrencyPair } from '../../types'
 

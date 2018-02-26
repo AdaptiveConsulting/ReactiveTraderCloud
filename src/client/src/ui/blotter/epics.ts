@@ -1,4 +1,4 @@
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../../redux/actions/referenceDataActions'
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
 import { createNewTradesAction } from './actions'
 import { CurrencyPair, Trade } from '../../types'
 

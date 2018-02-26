@@ -1629,7 +1629,9 @@
       }
     },
     "ag-grid": {
-      "version": "github:zeala/ag-grid#14f07a55d6f08488b91f793431bef8d44aeaf1c1"
+      "version": "15.0.0",
+      "resolved": "https://registry.npmjs.org/ag-grid/-/ag-grid-15.0.0.tgz",
+      "integrity": "sha1-cwSNgSpDVHSU1D3H9culM0Y/zD4="
     },
     "ag-grid-react": {
       "version": "15.0.0",
@@ -6984,6 +6986,22 @@
         "jsx-ast-utils": "2.0.1"
       }
     },
+    "eslint-plugin-prettier": {
+      "version": "2.6.0",
+      "resolved": "https://registry.npmjs.org/eslint-plugin-prettier/-/eslint-plugin-prettier-2.6.0.tgz",
+      "integrity": "sha512-floiaI4F7hRkTrFe8V2ItOK97QYrX75DjmdzmVITZoAP6Cn06oEDPQRsO6MlHEP/u2SxI3xQ52Kpjw6j5WGfeQ==",
+      "requires": {
+        "fast-diff": "1.1.2",
+        "jest-docblock": "21.2.0"
+      },
+      "dependencies": {
+        "jest-docblock": {
+          "version": "21.2.0",
+          "resolved": "https://registry.npmjs.org/jest-docblock/-/jest-docblock-21.2.0.tgz",
+          "integrity": "sha512-5IZ7sY9dBAYSV+YjQ0Ovb540Ku7AO9Z5o2Cg789xj167iQuZ2cG+z0f3Uct6WeYLbU6aQiM2pCs7sZ+4dotydw=="
+        }
+      }
+    },
     "eslint-plugin-react": {
       "version": "7.6.1",
       "resolved": "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-7.6.1.tgz",
@@ -7349,6 +7367,11 @@
       "resolved": "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-1.0.0.tgz",
       "integrity": "sha1-liVqO8l1WV6zbYLpkp0GDYk0Of8=",
       "dev": true
+    },
+    "fast-diff": {
+      "version": "1.1.2",
+      "resolved": "https://registry.npmjs.org/fast-diff/-/fast-diff-1.1.2.tgz",
+      "integrity": "sha512-KaJUt+M9t1qaIteSvjc6P3RbMdXsNhK61GRftR6SNxqmhthcd9MGIi4T+o0jD8LUSpSnSKXE20nLtJ3fOHxQig=="
     },
     "fast-json-stable-stringify": {
       "version": "2.0.0",
@@ -13392,6 +13415,12 @@
       "integrity": "sha1-gV7R9uvGWSb4ZbMQwHE7yzMVzks=",
       "dev": true
     },
+    "prettier": {
+      "version": "1.10.2",
+      "resolved": "https://registry.npmjs.org/prettier/-/prettier-1.10.2.tgz",
+      "integrity": "sha512-TcdNoQIWFoHblurqqU6d1ysopjq7UX0oRcT/hJ8qvBAELiYWn+Ugf0AXdnzISEJ7vuhNnQ98N8jR8Sh53x4IZg==",
+      "dev": true
+    },
     "pretty-error": {
       "version": "2.1.1",
       "resolved": "https://registry.npmjs.org/pretty-error/-/pretty-error-2.1.1.tgz",
@@ -16317,6 +16346,12 @@
         "tslint-microsoft-contrib": "5.0.1",
         "vrsource-tslint-rules": "5.1.1"
       }
+    },
+    "tslint-config-prettier": {
+      "version": "1.7.0",
+      "resolved": "https://registry.npmjs.org/tslint-config-prettier/-/tslint-config-prettier-1.7.0.tgz",
+      "integrity": "sha512-h8fP8VfFoMOkA/fbPQP5pd4VZfD+LvjkEx48OEWmtObQw8Umj14Ja6NxR4unawE0mq5UbaRPWvn/CcnBg74F5w==",
+      "dev": true
     },
     "tslint-consistent-codestyle": {
       "version": "1.6.0",
