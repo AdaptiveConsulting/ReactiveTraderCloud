@@ -1,7 +1,6 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import { AgGridReact } from 'ag-grid-react'
-import { COLUMN_FIELDS, DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './agGridBlotterUtils'
+import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './agGridBlotterUtils'
 import './agGridBlotter.scss'
 import './toolbar/blotterToolbar.scss'
 import 'ag-grid/dist/styles/ag-grid.css'
@@ -25,39 +24,11 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
 
   private gridApi: GridApi
   private columnApi: ColumnApi
-  private grid:Element
 
   state = {
     displayedRows: 0,
     quickFilterText: null,
   } as AgGridBlotterState
-
-
-  setGridRef = (el:Element) => {
-    this.grid = ReactDOM.findDOMNode(el)
-    if (this.grid) {
-      this.grid.addEventListener('click', this.gridClickHandler)
-    }
-  }
-
-  gridClickHandler = (event:any) => {
-
-    // this is a workaround for an issue when the grid is running inside a popup - when a click outside the filter dropdown
-    // does not register on the popup but only when inside the main application window
-
-    // go through all columns ids and close open filters
-
-    COLUMN_FIELDS.forEach((field:string) => {
-      const agGridFilter = this.gridApi.getFilterInstance(field)
-      if (agGridFilter && agGridFilter.getFrameworkComponentInstance) {
-        const reactFilterInstance = agGridFilter.getFrameworkComponentInstance()
-        if (reactFilterInstance) {
-          reactFilterInstance.myCustomMethod(event)
-        }
-      }
-    })
-
-  }
 
   render () {
     const containerClass = classNames('agGridBlotter-container', 'rt-blotter-shared', 'rt-blotter-dark')
@@ -68,7 +39,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       },
     )
     const colDefs = getColumnDefinitions()
-    return <div ref={(el) => this.setGridRef(el)} className={containerClass}>
+    return <div className={containerClass}>
       <div className="rt-blotter__controls popout__controls">
         <i className={newWindowClassName}
            onClick={() => this.props.onPopoutClick()}/>
