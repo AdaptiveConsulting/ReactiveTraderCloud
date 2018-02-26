@@ -7,7 +7,7 @@ import { analyticsReducer } from './ui/analytics/index'
 import { blotterReducer } from './ui/blotter/index'
 import { regionsReducer } from './ui/common/regions/regionsOperations'
 import footerReducer from './ui/footer/FooterOperations'
-import sidebarRegionReducer from './ui/sidebar/SidebarRegionOperations'
+import { sidebarRegionReducer } from './ui/SidebarRegion'
 import { spotTileDataReducer } from './ui/spotTile/index'
 import notionalsReducer from './ui/spotTile/notional/NotionalOperations'
 

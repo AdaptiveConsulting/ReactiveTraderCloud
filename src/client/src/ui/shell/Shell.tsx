@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Modal } from '../modal'
 import FooterContainer from '../footer/FooterContainer'
-import SidebarRegionContainer from '../sidebar/SidebarRegionContainer'
+import SidebarRegionContainer from '../SidebarRegion'
 import { WorkspaceContainer } from '../workspace/'
 import { BlotterContainer } from '../blotter'
 import './ShellStyles.scss'
@@ -30,33 +30,36 @@ export default class Shell extends React.Component<ShellProps, {}> {
     return (
       <div className={classnames({ shell__browser_wrapper: !this.context.openFin })}>
         <div className="shell__splash">
-          <span className="shell__splash-message">{this.appVersion}<br/>Loading...</span>
+          <span className="shell__splash-message">
+            {this.appVersion}
+            <br />Loading...
+          </span>
         </div>
         <div className="shell__container">
           <Modal shouldShow={sessionExpired} title="Session expired">
             <div>
               <div>Your 15 minute session expired, you are now disconnected from the server.</div>
               <div>Click reconnect to start a new session.</div>
-              <button className="btn shell__button--reconnect"
-                      onClick={this.props.reconnect}>Reconnect
+              <button className="btn shell__button--reconnect" onClick={this.props.reconnect}>
+                Reconnect
               </button>
             </div>
           </Modal>
           <div className="shell_workspace_blotter">
-            <WorkspaceContainer/>
+            <WorkspaceContainer />
             <RegionWrapper region="blotter">
               <div className="shell__blotter">
-                <BlotterContainer/>
+                <BlotterContainer />
               </div>
             </RegionWrapper>
           </div>
           <RegionWrapper region="analytics">
-            <SidebarRegionContainer/>
+            <SidebarRegionContainer />
           </RegionWrapper>
         </div>
         <div className="shell__footer">
-          <FooterContainer/>
-          <TradeNotificationContainer/>
+          <FooterContainer />
+          <TradeNotificationContainer />
         </div>
       </div>
     )
