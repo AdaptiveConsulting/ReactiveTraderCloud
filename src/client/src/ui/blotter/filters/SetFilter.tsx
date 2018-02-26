@@ -105,11 +105,24 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     const target:HTMLInputElement = event.target as HTMLInputElement
     const updatedValueSet = { ...this.state.selectedValueSet }
 
-    updatedValueSet[value] = target.checked
-    if (value !== ALL && target.checked === false) {
-      updatedValueSet[ALL] = false
+    if (value === ALL) {
+      this.updateAllOptions(target.checked)
+      return
+    } else {
+      updatedValueSet[value] = target.checked
+      if (value !== ALL && target.checked === false) {
+        updatedValueSet[ALL] = false
+      }
     }
     this.setState({ selectedValueSet: updatedValueSet }, () => this.updateFilter())
+  }
+
+  updateAllOptions = (isChecked:boolean) => {
+    const valueSet = { ...this.state.selectedValueSet }
+    for (const key in valueSet) {
+      valueSet[key] = isChecked
+    }
+    this.setState({ selectedValueSet: valueSet }, () => this.updateFilter())
   }
 
   updateFilter = () => {
@@ -128,6 +141,8 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     }, () => {
       this.props.filterChangedCallback()
     })
+
+    console.log('::::::: updateFilter called, this.state : ', this.state)
   }
 
   getUniqueValues = ():any[] => {
