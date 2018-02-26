@@ -2,7 +2,6 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 class RegionWrapper extends React.Component<any, any> {
-
   public render() {
     const { region, children, service } = this.props
     let displayChildComponent = true
@@ -11,7 +10,7 @@ class RegionWrapper extends React.Component<any, any> {
       displayChildComponent = !service[region].isTearedOff
     }
 
-    return (displayChildComponent ? children : null)
+    return displayChildComponent ? children : null
   }
 }
 
