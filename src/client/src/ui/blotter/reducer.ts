@@ -1,7 +1,7 @@
-import { regionsSettings } from '../common/regions/regionsOperations'
-import { Trade } from '../../types/index'
 import * as keyBy from 'lodash.keyby'
+import { Trade } from './'
 import { ACTION_TYPES } from './actions'
+import { regionsSettings } from '../common/regions/regionsOperations'
 
 export const blotterRegionsSettings = regionsSettings('Blotter', 850, 250, false)
 
@@ -14,7 +14,7 @@ interface State {
 }
 
 const initialState: State = {
-  trades: {},
+  trades: {}
 }
 
 export const blotterServiceReducer = (state: State = initialState, action): State => {
@@ -25,7 +25,7 @@ export const blotterServiceReducer = (state: State = initialState, action): Stat
         ...state,
         trades: {
           ...state.trades,
-          ...newTradesById,
+          ...newTradesById
         }
       }
     default:
