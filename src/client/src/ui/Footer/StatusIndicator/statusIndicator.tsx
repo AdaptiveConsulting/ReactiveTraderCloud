@@ -1,8 +1,7 @@
-import * as React from 'react'
-import * as classnames from 'classnames'
-
-import { ApplicationStatusConst } from '../../types'
 import './StatusIndicatorStyles.scss'
+import * as classnames from 'classnames'
+import * as React from 'react'
+import { ApplicationStatusConst } from '../'
 
 interface StatusIndicatorProps {
   status: string
@@ -13,14 +12,14 @@ export const StatusIndicator: React.SFC<StatusIndicatorProps> = (props: StatusIn
     [ApplicationStatusConst.Healthy]: 'status-indicator--healthy',
     [ApplicationStatusConst.Warning]: 'status-indicator--warning',
     [ApplicationStatusConst.Down]: 'status-indicator--down',
-    [ApplicationStatusConst.Unknown]: '',
+    [ApplicationStatusConst.Unknown]: ''
   }
 
   const iconStatusCssLookup = {
     [ApplicationStatusConst.Healthy]: 'fa fa-check',
     [ApplicationStatusConst.Warning]: '',
     [ApplicationStatusConst.Down]: 'fa fa-times',
-    [ApplicationStatusConst.Unknown]: '',
+    [ApplicationStatusConst.Unknown]: ''
   }
 
   const wrapperClasses = classnames('status-indicator footer__status-indicator', wrapperStatusCssLookup[props.status])
@@ -28,7 +27,7 @@ export const StatusIndicator: React.SFC<StatusIndicatorProps> = (props: StatusIn
 
   return (
     <div className={wrapperClasses}>
-      <i className={iconClasses}></i>
+      <i className={iconClasses} />
     </div>
   )
 }
