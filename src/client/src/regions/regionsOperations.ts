@@ -1,15 +1,5 @@
 import { createAction } from 'redux-actions'
 
-export const regionsSettings = (title, width, height, dockable) => {
-  return {
-    title,
-    width,
-    height,
-    dockable,
-  }
-}
-
-
 export const ACTION_TYPES = {
   REGION_ADD: '@ReactiveTraderCloud/REGION_ADD',
   REGION_OPEN_WINDOW: '@ReactiveTraderCloud/REGION_OPEN_WINDOW',
