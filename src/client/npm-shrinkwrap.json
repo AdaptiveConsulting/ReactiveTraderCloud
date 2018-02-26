@@ -4560,7 +4560,8 @@
     "bowser": {
       "version": "1.9.1",
       "resolved": "https://registry.npmjs.org/bowser/-/bowser-1.9.1.tgz",
-      "integrity": "sha512-UXti1JB6oK8hO983AImunnV6j/fqAEeDlPXh99zhsP5g32oLbxJJ6qcOaUesR+tqqhnUVQHlRJyD0dfiV0Hxaw=="
+      "integrity": "sha512-UXti1JB6oK8hO983AImunnV6j/fqAEeDlPXh99zhsP5g32oLbxJJ6qcOaUesR+tqqhnUVQHlRJyD0dfiV0Hxaw==",
+      "dev": true
     },
     "brace-expansion": {
       "version": "1.1.8",
@@ -5734,6 +5735,7 @@
       "version": "2.0.0",
       "resolved": "https://registry.npmjs.org/css-in-js-utils/-/css-in-js-utils-2.0.0.tgz",
       "integrity": "sha512-yuWmPMD9FLi50Xf3k8W8oO3WM1eVnxEGCldCLyfusQ+CgivFk0s23yst4ooW6tfxMuSa03S6uUEga9UhX6GRrA==",
+      "dev": true,
       "requires": {
         "hyphenate-style-name": "1.0.2"
       }
@@ -9414,7 +9416,8 @@
     "hyphenate-style-name": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz",
-      "integrity": "sha1-MRYKNpMK2vH8BMYHT360FGXU7Es="
+      "integrity": "sha1-MRYKNpMK2vH8BMYHT360FGXU7Es=",
+      "dev": true
     },
     "iconv-lite": {
       "version": "0.4.18",
@@ -9560,6 +9563,7 @@
       "version": "3.0.8",
       "resolved": "https://registry.npmjs.org/inline-style-prefixer/-/inline-style-prefixer-3.0.8.tgz",
       "integrity": "sha1-hVG45bTVcyROZqNLBPfTIHaitTQ=",
+      "dev": true,
       "requires": {
         "bowser": "1.9.1",
         "css-in-js-utils": "2.0.0"
@@ -14170,6 +14174,7 @@
       "version": "0.1.77",
       "resolved": "https://registry.npmjs.org/react-split-pane/-/react-split-pane-0.1.77.tgz",
       "integrity": "sha512-xq0PPsbkNI9xEd6yTrGPr7hzf6XfIgnsxuUEdRJELq+kLPHMsO3ymFCjhiYP35wlDPn9W46+rHDsJd7LFYteMw==",
+      "dev": true,
       "requires": {
         "inline-style-prefixer": "3.0.8",
         "prop-types": "15.6.0",
@@ -14180,6 +14185,7 @@
       "version": "3.2.0",
       "resolved": "https://registry.npmjs.org/react-style-proptype/-/react-style-proptype-3.2.0.tgz",
       "integrity": "sha512-Mafmkzj3oNmLSJNOlH+WWWyGIdzVLhPj+d12fDxQMQdwDQ5sMX7vQKOLpry4U+zRWieTCx448AyRKK0NLWuXmg==",
+      "dev": true,
       "requires": {
         "prop-types": "15.6.0"
       }

@@ -85,7 +85,6 @@
     "react-nvd3": "0.5.7",
     "react-redux": "5.0.6",
     "react-sizeme": "2.3.6",
-    "react-split-pane": "0.1.77",
     "redux": "3.7.2",
     "redux-actions": "^2.2.1",
     "redux-observable": "0.17.0",

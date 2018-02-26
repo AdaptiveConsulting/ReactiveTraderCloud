@@ -65,17 +65,6 @@
   }
 }
 
-.blotter__container {
-  width: 100%;
-  height: auto;
-  overflow: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
 .shell_workspace_blotter {
 
   height: 100%;
@@ -102,6 +91,17 @@
   overflow-x: hidden;
   width: $workspace-width;
   order: 1;
+}
+
+.shell__blotter-container {
+  width: 100%;
+  height: auto;
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 .shell__blotter {
