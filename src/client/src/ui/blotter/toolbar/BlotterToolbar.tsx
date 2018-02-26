@@ -1,7 +1,6 @@
 import * as React from 'react'
 import './blotterToolbar.scss'
 import QuickFilter from './QuickFilter'
-import AppliedFilters from './AppliedFilters'
 import * as AgGrid from 'ag-grid'
 
 interface BlotterToolbarProps {
@@ -27,10 +26,6 @@ export default class BlotterToolbar extends React.Component<BlotterToolbarProps,
           <QuickFilter isFilterApplied={this.props.isQuickFilterApplied}
                        removeQuickFilter={this.props.removeQuickFilter}
                        quickFilterChangeHandler={this.props.quickFilterChangeHandler}/>
-          <AppliedFilters filterModel={this.props.filterModel}
-                          columnDefinitions={this.props.columnDefinitions}
-                          removeAllFilters={this.props.removeAllFilters}
-                          removeFilter={this.props.removeFilter}/>
         </div>
         <div className="blotter-toolbar__right-controls"></div>
       </div>
