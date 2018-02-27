@@ -66,16 +66,11 @@
 }
 
 .shell_workspace_blotter {
-  background-color: $shell-background-color;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-around;
+
   height: 100%;
   width: 100%;
-  min-width: 0;
-  & * {
-    box-sizing: border-box;
-  }
+  min-height: 20px;
+  //background-color: grey;
 }
 
 .shell__sidebar {
@@ -91,18 +86,30 @@
 
 .shell__workspace {
   flex-grow: 1;
-  height: $workspace-height;
+  height: auto;// $workspace-height;
   overflow-y: auto;
   overflow-x: hidden;
   width: $workspace-width;
   order: 1;
 }
 
+.shell__blotter-container {
+  width: 100%;
+  height: auto;
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 .shell__blotter {
-  flex-grow: 1;
-  height: $blotter-height;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   order: 2;
+  box-sizing: border-box;
 }
 
 .shell__footer {
@@ -147,4 +154,54 @@
   .shell__side-bar {
     display: none;
   }
+}
+// Resizer for the split pane view
+.Resizer {
+  background: #000;
+  opacity: .2;
+  z-index: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  background-clip: padding-box;
+}
+
+.Resizer:hover {
+  -webkit-transition: all 2s ease;
+  transition: all 2s ease;
+}
+
+.Resizer.horizontal {
+  height: 11px;
+  margin: -5px 0;
+  border-top: 5px solid rgba(255, 255, 255, 0);
+  border-bottom: 5px solid rgba(255, 255, 255, 0);
+  cursor: row-resize;
+  width: 100%;
+}
+
+.Resizer.horizontal:hover {
+  border-top: 5px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+}
+
+.Resizer.vertical {
+  width: 11px;
+  margin: 0 -5px;
+  border-left: 5px solid rgba(255, 255, 255, 0);
+  border-right: 5px solid rgba(255, 255, 255, 0);
+  cursor: col-resize;
+}
+
+.Resizer.vertical:hover {
+  border-left: 5px solid rgba(0, 0, 0, 0.5);
+  border-right: 5px solid rgba(0, 0, 0, 0.5);
+}
+.Resizer.disabled {
+  cursor: not-allowed;
+}
+.Resizer.disabled:hover {
+  border-color: transparent;
 }

@@ -11,6 +11,7 @@ import RegionWrapper from '../common/regions/RegionWrapper'
 import * as classnames from 'classnames'
 import TradeNotificationContainer from '../notification/TradeNotificationContainer'
 import * as PropTypes from 'prop-types'
+const SplitPane = require('react-split-pane')
 
 export interface ShellProps {
   sessionExpired: boolean
@@ -42,14 +43,15 @@ export default class Shell extends React.Component<ShellProps, {}> {
               </button>
             </div>
           </Modal>
-          <div className="shell_workspace_blotter">
+          <SplitPane minSize={300} size={ 600 } split="horizontal" style={{position: 'relative'}}>
             <WorkspaceContainer/>
-            <RegionWrapper region="blotter">
+            <div className="shell__blotter-container"><RegionWrapper region="blotter">
               <div className="shell__blotter">
                 <BlotterContainer/>
               </div>
             </RegionWrapper>
-          </div>
+            </div>
+          </SplitPane>
           <RegionWrapper region="analytics">
             <SidebarRegionContainer/>
           </RegionWrapper>
