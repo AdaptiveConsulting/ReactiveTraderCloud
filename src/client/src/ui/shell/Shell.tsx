@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Modal } from '../modal'
 import FooterContainer from '../footer/FooterContainer'
-import SidebarRegionContainer from '../SidebarRegion'
+import SidebarRegionContainer from '../sidebarRegion'
 import { WorkspaceContainer } from '../workspace/'
 import { BlotterContainer } from '../blotter'
 import './ShellStyles.scss'
