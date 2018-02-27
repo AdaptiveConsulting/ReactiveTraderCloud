@@ -7,6 +7,7 @@ import { blotterRegionsSettings } from './reducer'
 import { openWindow, addRegion } from '../../ui/common/regions/regionsOperations'
 import AgGridBlotter from './AgGridBlotter'
 import { CurrencyPair } from '../../types'
+import Environment from '../../system/environment'
 
 interface BlotterContainerProps {
   blotterService: any
@@ -36,7 +37,7 @@ class BlotterContainer extends React.Component<BlotterContainerProps, {}> {
       <div className="shell_workspace_blotter">
         <AgGridBlotter rows={ gridRows }
                        onPopoutClick={popoutClick}
-                       canPopout={true}/>
+                       canPopout={Environment.isRunningInIE()}/>
       </div>
     )
   }

@@ -38,6 +38,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
         'blotter__controls--hidden': this.props.canPopout,
       },
     )
+    console.log(' ::: NewWindowClassName, AgGridBlotter : ', newWindowClassName)
     const colDefs = getColumnDefinitions()
     return <div className={containerClass}>
       <div className="rt-blotter__controls popout__controls">
