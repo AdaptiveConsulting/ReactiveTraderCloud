@@ -6,10 +6,16 @@ import { getPositionsChartModel } from './model/positionsChartModel'
 import Analytics from './Analytics'
 import './AnalyticsStyles.scss'
 import Environment from '../../system/environment'
-import { addRegion, openWindow, regionsSettings } from '../common/regions/regionsOperations'
+import { addRegion, openWindow } from '../../ui/common/regions/regionsOperations'
 import { CurrencyPair } from '../../types/currencyPair'
+import { RegionSettings } from '../../types'
 
-const analyticsRegionSettings = regionsSettings('Analytics', 400, 800, false)
+const analyticsRegionSettings: RegionSettings = {
+  title: 'Analytics',
+  width: 400,
+  height: 800,
+  dockable: false,
+  resizable: false}
 
 interface AnalyticsContainerOwnProps {
 

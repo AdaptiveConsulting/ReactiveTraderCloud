@@ -33,8 +33,10 @@ function popoutWindowEpic(action$, store) {
           windowOptions: {
             width: settings.width,
             height: settings.height,
-            resizable: false,
-            scrollable: false,
+            minWidth: 100,
+            minHeight: settings.minHeight,
+            resizable: settings.resizable,
+            scrollable: settings.resizable,
             dockable: settings.dockable,
           },
         },

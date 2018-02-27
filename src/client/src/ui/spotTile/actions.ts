@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { regionsSettings } from '../common/regions/regionsOperations'
+import { RegionSettings } from '../../types'
 
 export enum ACTION_TYPES {
   EXECUTE_TRADE = '@ReactiveTraderCloud/EXECUTE_TRADE',
@@ -21,5 +21,12 @@ export const currencyChartOpened = createAction(ACTION_TYPES.CURRENCY_CHART_OPEN
 export const updateTiles = createAction(ACTION_TYPES.UPDATE_TILES)
 export const dismissNotification = createAction(ACTION_TYPES.DISMISS_NOTIFICATION, payload => payload)
 
-export const spotRegionSettings = id => regionsSettings(`${id} Spot`, 370, 155, true)
-
+export const spotRegionSettings = (id): RegionSettings => {
+  return {
+    title: `${id} Spot`,
+    width: 370,
+    height: 155,
+    dockable: true,
+    resizable: false
+  }
+}

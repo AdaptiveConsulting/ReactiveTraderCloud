@@ -1,9 +1,15 @@
-import { regionsSettings } from '../common/regions/regionsOperations'
-import { Trade } from '../../types/index'
+import { RegionSettings, Trade } from '../../types/index'
 import * as keyBy from 'lodash.keyby'
 import { ACTION_TYPES } from './actions'
 
-export const blotterRegionsSettings = regionsSettings('Blotter', 850, 250, false)
+export const blotterRegionsSettings: RegionSettings = {
+  title: 'Blotter',
+  width: 850,
+  height: 450,
+  minHeight: 200,
+  dockable: false,
+  resizable: true
+}
 
 interface Trades {
   [tradeId: number]: Trade
