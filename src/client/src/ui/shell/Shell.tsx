@@ -15,6 +15,7 @@ const SplitPane = require('react-split-pane')
 
 export interface ShellProps {
   sessionExpired: boolean
+  showSplitter: boolean
   onReconnectClick: () => void
   reconnect: () => void
 }
@@ -27,7 +28,7 @@ export default class Shell extends React.Component<ShellProps, {}> {
   appVersion: string = __VERSION__ // version from package.json exported in webpack.config.js
 
   render() {
-    const { sessionExpired } = this.props
+    const { sessionExpired, showSplitter } = this.props
     return (
       <div className={classnames({ shell__browser_wrapper: !this.context.openFin })}>
         <div className="shell__splash">
@@ -43,15 +44,10 @@ export default class Shell extends React.Component<ShellProps, {}> {
               </button>
             </div>
           </Modal>
-          <SplitPane minSize={300} size={ 600 } split="horizontal" style={{position: 'relative'}}>
-            <WorkspaceContainer/>
-            <div className="shell__blotter-container"><RegionWrapper region="blotter">
-              <div className="shell__blotter">
-                <BlotterContainer/>
-              </div>
-            </RegionWrapper>
-            </div>
-          </SplitPane>
+
+          {/*we do not show the split view if the blotter is popped out*/}
+          { showSplitter ? this.renderSplitView() : this.renderTiles()}
+
           <RegionWrapper region="analytics">
             <SidebarRegionContainer/>
           </RegionWrapper>
@@ -62,5 +58,23 @@ export default class Shell extends React.Component<ShellProps, {}> {
         </div>
       </div>
     )
+  }
+
+  private renderTiles = ():JSX.Element => {
+    return (<div className="shell_workspace_blotter">
+      <WorkspaceContainer/>
+    </div>)
+  }
+
+  private renderSplitView = ():JSX.Element => {
+    return (<SplitPane minSize={300} size={ 600 } split="horizontal" style={{position: 'relative'}}>
+      <WorkspaceContainer/>
+      <div className="shell__blotter-container"><RegionWrapper region="blotter">
+        <div className="shell__blotter">
+          <BlotterContainer/>
+        </div>
+      </RegionWrapper>
+      </div>
+    </SplitPane>)
   }
 }
