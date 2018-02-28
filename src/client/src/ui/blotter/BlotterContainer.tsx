@@ -5,7 +5,7 @@ import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { blotterRegionsSettings } from './reducer'
 import { openWindow, addRegion } from '../../ui/common/regions/regionsOperations'
-import AgGridBlotter from './AgGridBlotter'
+import Blotter from './Blotter'
 import { CurrencyPair } from '../../types'
 import Environment from '../../system/environment'
 
@@ -35,7 +35,7 @@ class BlotterContainer extends React.Component<BlotterContainerProps, {}> {
     const popoutClick = this.props.onPopoutClick(openFin)
     return (
       <div className="shell_workspace_blotter">
-        <AgGridBlotter rows={ gridRows }
+        <Blotter rows={ gridRows }
                        onPopoutClick={popoutClick}
                        canPopout={Environment.isRunningInIE()}/>
       </div>
