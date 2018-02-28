@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { AgGridReact } from 'ag-grid-react'
-import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './agGridBlotterUtils'
-import './agGridBlotter.scss'
+import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './blotterUtils'
+import './blotter.scss'
 import './toolbar/blotterToolbar.scss'
 import 'ag-grid/dist/styles/ag-grid.css'
 import * as classNames from 'classnames'
@@ -38,7 +38,6 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
         'blotter__controls--hidden': this.props.canPopout,
       },
     )
-    console.log(' ::: NewWindowClassName, AgGridBlotter : ', newWindowClassName)
     const colDefs = getColumnDefinitions()
     return <div className={containerClass}>
       <div className="rt-blotter__controls popout__controls">
@@ -83,6 +82,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   private onGridReady = ({ api, columnApi }) => {
     this.gridApi = api
     this.columnApi = this.columnApi
+    this.onModelUpdated()
     this.sizeColumnsToFit()
   }
 
