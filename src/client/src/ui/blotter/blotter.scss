@@ -84,6 +84,11 @@
     border: none;
   }
 
+  .ag-cell-focus {
+    border: none;
+    outline: none;
+  }
+
   .rt-blotter__cell-rejected {
     color: red;
     text-transform: capitalize;
