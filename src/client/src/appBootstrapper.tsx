@@ -34,6 +34,7 @@ const connectSocket = () => {
 const appBootstrapper = () => {
   const connection = connectSocket()
   const openFin = new OpenFin()
+  const isRunningInFinsemble = window.FSBL
   const refDataService = ReferenceDataService(connection)
   const pricingService = PricingService(connection)
   const blotterService = BlotterService(connection)
@@ -62,7 +63,7 @@ const appBootstrapper = () => {
   window.store = store
   ReactDOM.render(
     <Provider store={store}>
-      <OpenFinProvider openFin={openFin}>
+      <OpenFinProvider openFin={openFin} isRunningInFinsemble={isRunningInFinsemble}>
         <ShellContainer />
       </OpenFinProvider>
     </Provider>,
