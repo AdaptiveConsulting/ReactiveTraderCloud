@@ -4,8 +4,7 @@ import { Direction, Trade, TradeStatus } from '../../types'
 import '../common/styles/_base.scss'
 import '../common/styles/_fonts.scss'
 import './TradeNotificationStyles.scss'
-import { SPOT_DATE_FORMAT } from '../spotTile/spotTileUtils'
-import * as moment from 'moment'
+import { spotDateFormatter } from '../utils/dateUtils'
 
 export interface TradeNotificationProps {
   message: Trade
@@ -15,7 +14,7 @@ export interface TradeNotificationProps {
 export default class TradeNotification extends React.Component<TradeNotificationProps, {}> {
   render() {
     const trade = this.props.message
-    const formattedValueDate = trade ? `SP. ${moment(trade.valueDate).format(SPOT_DATE_FORMAT)}` : ''
+    const formattedValueDate = trade ? spotDateFormatter(trade.valueDate) : ''
 
     const statusClassName = classnames(
       'notification__status',
