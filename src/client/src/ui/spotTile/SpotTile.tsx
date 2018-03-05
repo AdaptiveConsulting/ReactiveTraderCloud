@@ -1,16 +1,15 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
 import { TradeNotification, SpotTileControls } from './'
-import * as moment from 'moment'
 import './SpotTileStyles.scss'
 import NotionalContainer from './notional/NotionalContainer'
 import { NotificationType } from '../../types'
 import { CurrencyPair } from '../../types/currencyPair'
 import PriceControlsView from './priceControlsView/PriceControlsView'
 import { SpotTileData } from '../../types/spotTileData'
-import { SPOT_DATE_FORMAT } from './spotTileUtils'
 import * as _ from 'lodash'
 import { Notification } from '../../types/notification'
+import { spotDateFormatter } from '../utils/dateUtils'
 
 export interface SpotTileProps {
   currencyPair: CurrencyPair
@@ -89,7 +88,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     const hasNotification = !!spotTileData.notification
     const notionalInputClass = classnames('spot-tile__notional', { hide: hasNotification })
     const spotDateClass = classnames('spot-tile__delivery', { hide: hasNotification })
-    const formattedDate = spotTileData ? moment(spotTileData.valueDate).format(SPOT_DATE_FORMAT) : ''
+    const formattedDate = spotTileData ? spotDateFormatter(spotTileData.valueDate) : ''
 
     return (<div>
       <span className="spot-tile__execution-label">Executing</span>
@@ -99,8 +98,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         currencyPair={currencyPair}
       />
       <div className={spotDateClass}>
-        <span className="spot-tile__tenor">SP</span>
-        <span className="spot-tile__delivery-date">. {formattedDate}</span>
+        <span className="spot-tile__delivery-date">{formattedDate}</span>
       </div>
     </div>)
   }

@@ -4,8 +4,7 @@ import './TradeNotificationStyles.scss'
 import { CurrencyPair, TradeStatus } from '../../../types'
 import { Notification } from '../../../types/notification'
 import * as numeral from 'numeral'
-import { SPOT_DATE_FORMAT } from '../spotTileUtils'
-import * as moment from 'moment'
+import { spotDateFormatter } from '../../utils/dateUtils'
 
 interface TradeNotificationProps {
   currencyPair: CurrencyPair
@@ -35,7 +34,7 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
     }
 
     const trade = notification.trade
-    const formattedValueDate = trade ? `SP. ${moment(trade.valueDate).format(SPOT_DATE_FORMAT)}` : ''
+    const formattedValueDate = trade ? spotDateFormatter(trade.valueDate) : ''
 
     const containerClassName = classnames(
       'trade-notification',
