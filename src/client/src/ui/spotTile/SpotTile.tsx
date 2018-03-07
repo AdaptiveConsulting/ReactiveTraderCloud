@@ -88,7 +88,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     const hasNotification = !!spotTileData.notification
     const notionalInputClass = classnames('spot-tile__notional', { hide: hasNotification })
     const spotDateClass = classnames('spot-tile__delivery', { hide: hasNotification })
-    const formattedDate = spotTileData ? spotDateFormatter(spotTileData.valueDate) : ''
+    const formattedDate = spotTileData ? spotDateFormatter(spotTileData.valueDate,false) : ''
 
     return (<div>
       <span className="spot-tile__execution-label">Executing</span>
@@ -98,7 +98,8 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         currencyPair={currencyPair}
       />
       <div className={spotDateClass}>
-        <span className="spot-tile__delivery-date">{formattedDate}</span>
+        <span className="spot-tile__tenor">SP</span>
+        <span className="spot-tile__delivery-date">. {formattedDate}</span>
       </div>
     </div>)
   }
