@@ -4,6 +4,7 @@ import * as moment from 'moment'
 function momentDateFormatter (date: any, formatter:string = SPOT_DATE_FORMAT) {
   return moment(date).format(formatter)
 }
-export function spotDateFormatter (date: any) {
-  return `SP. ${momentDateFormatter(date)}`
+
+export function spotDateFormatter (date: any, tenorRequired:boolean = true) {
+  return tenorRequired ? `SP. ${momentDateFormatter(date)}` : `${momentDateFormatter(date)}`
 }
