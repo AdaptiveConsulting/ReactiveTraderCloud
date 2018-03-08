@@ -15,4 +15,4 @@ echo "Run ReactiveTrader containers"
 echo ""
 
 root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
-${root_directory}/deploy/docker/runAll $build release
+${root_directory}/deploy/docker/circleci.runAll $build release
