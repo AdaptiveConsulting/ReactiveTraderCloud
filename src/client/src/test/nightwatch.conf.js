@@ -20,7 +20,8 @@ module.exports = {
     type: 'mocha',
     options: {
       ui: 'bdd',
-      reporter: 'mocha-junit-reporter',
+      // reporter: 'mocha-junit-reporter',
+      reporter: 'list',
       reporterOptions: {
         mochaFile: './reports/test-report.xml'
       }
