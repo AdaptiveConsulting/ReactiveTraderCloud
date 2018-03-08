@@ -21,11 +21,11 @@ const numericCellRenderer = (rowData:any):string => {
 }
 
 const dateRenderer = (trade:Trade, field: string) => {
-  return formatDate((trade[field]), '%d-%b %H:%M:%S')
+  return formatDate(trade[field], '%d-%b %H:%M:%S')
 }
 
 const UtcDateRenderer = (trade:Trade, field: string) => {
-  return UtcFormatDate((trade[field]), '%d-%b %H:%M:%S')
+  return UtcFormatDate(trade[field], '%d-%b %H:%M:%S')
 }
 
 const getStatusCellClass = (trade:Trade) => {
