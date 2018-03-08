@@ -1,7 +1,7 @@
 import * as AgGrid from 'ag-grid'
 import * as numeral from 'numeral'
 import { Trade, TradeStatus } from '../../types'
-import { formatDate } from '../../system/utils'
+import { formatDate, UtcFormatDate } from '../../system/utils'
 
 const currencyIconLookup = {
   ['USD']: `fa fa-usd`,
@@ -22,6 +22,10 @@ const numericCellRenderer = (rowData:any):string => {
 
 const dateRenderer = (trade:Trade, field: string) => {
   return formatDate(trade[field], '%d-%b %H:%M:%S')
+}
+
+const UtcDateRenderer = (trade:Trade, field: string) => {
+  return UtcFormatDate(trade[field], '%d-%b %H:%M:%S')
 }
 
 const getStatusCellClass = (trade:Trade) => {
@@ -144,7 +148,7 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       colId: VALUE_DATE,
       headerName: 'Value Date',
       field: VALUE_DATE,
-      cellRenderer: ({ data }) => dateRenderer(data, 'valueDate'),
+      cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
       width: 170
     },
     {
