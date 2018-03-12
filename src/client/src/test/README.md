@@ -21,6 +21,6 @@ NODE_CAMEL_CASE Boolean false Naming convention of variables
 
 ## IntelliJ / Webstorm
 
-Read and follow the step-by-step instruction on how to integrate Nightwatch into Webstorm to run and debug tests inside your IDE:
+Read the step-by-step instructions on how to integrate Nightwatch into Webstorm to run and debug tests inside your IDE:
 https://github.com/nightwatchjs/nightwatch/wiki/Debugging-Nightwatch-tests-in-WebStorm
 
