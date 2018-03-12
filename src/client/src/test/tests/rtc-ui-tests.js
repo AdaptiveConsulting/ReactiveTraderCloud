@@ -101,7 +101,7 @@ describe('Reactive Trader Cloud tests:', function() {
         );
     });
 
-    it(' EUR/JPY ALWAYS times out and then the execution succeeds- The time out should be reflected by a message on the tile When it succeeds, the trade should appear in the blotter', function(client) {
+    it(' EUR/JPY ALWAYS times out and then the execution succeeds- The time out should be reflected by a message on the tile - When it succeeds, the trade should appear in the blotter', function(client) {
       client
         .url(getConfig().host)
         .waitForElementPresent('body')
@@ -146,6 +146,9 @@ describe('Reactive Trader Cloud tests:', function() {
             client.assert.equal(result.value, 'Done');
           }
         );
+    });
+    it('On execution, a confirmation should appear showing a summary of the trade: Buy/Sell, Notional Currency and Amount, Rate, Spot Date,Trade ID', function(client) {
+      
     });
   });
 });

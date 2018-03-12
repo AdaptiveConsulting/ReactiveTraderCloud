@@ -4,10 +4,10 @@ import * as PropTypes from 'prop-types'
 import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { blotterRegionsSettings } from './reducer'
-import { openWindow, addRegion } from '../../regions/regionsOperations'
+import { openWindow, addRegion } from '../../ui/common/regions/regionsOperations'
 import Blotter from './Blotter'
 import { CurrencyPair } from '../../types'
-import Environment from '../../system/environment';
+import Environment from '../../system/environment'
 
 interface BlotterContainerProps {
   blotterService: any
@@ -29,16 +29,15 @@ class BlotterContainer extends React.Component<BlotterContainerProps, {}> {
   }
 
   public render() {
-    const trades = _.values(this.props.blotterService.trades).reverse()
+    const trades = this.props.blotterService.trades
     const openFin = this.context.openFin
+    const gridRows = _.values(trades).reverse()
+    const popoutClick = this.props.onPopoutClick(openFin)
     return (
       <div className="shell_workspace_blotter">
-        <Blotter trades={trades}
-                 currencyPairs={this.props.currencyPairs}
-                 canPopout={Environment.isRunningInIE()}
-                 size={this.props.size}
-                 isConnected={this.props.isConnected}
-                 onPopoutClick={this.props.onPopoutClick(openFin)}/>
+        <Blotter rows={ gridRows }
+                       onPopoutClick={popoutClick}
+                       canPopout={Environment.isRunningInIE()}/>
       </div>
     )
   }

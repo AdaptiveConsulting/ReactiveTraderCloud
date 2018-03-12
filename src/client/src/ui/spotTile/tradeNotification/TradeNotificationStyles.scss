@@ -13,6 +13,9 @@
 }
 
 .trade-notification--rejected {
+  .trade-notification__trade-status {
+    display: block;
+  }
   .trade-notification__summary-item {
     text-decoration: line-through;
   }
@@ -72,7 +75,7 @@
   display: none;
   position: absolute;
   top: 0;
-  right: 40px;
+  right: 60px;
   font-family: BrandonRegular;
 }
 
@@ -99,6 +102,7 @@
     color: white;
     font-size: 16px;
     font-family: BrandonRegular;
+    text-transform: uppercase;
   }
 }
 

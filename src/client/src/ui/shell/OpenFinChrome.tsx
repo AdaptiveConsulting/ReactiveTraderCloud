@@ -24,7 +24,7 @@ export default class OpenFinChrome extends React.Component<OpenFinChromeProps, {
     return (
       <div className="openfin-chrome">
         <div className={headerClasses}>
-          <div className="openfin-chrome__header-title"><span className="openfin-chrome__header-title-label">Adaptive&#39; Reactive Trader</span></div>
+          <div className="openfin-chrome__header-title"><span className="openfin-chrome__header-title-label">Adaptive&#39;s Reactive Trader</span></div>
           <div className="openfin-chrome__header-controls-container">
             <ul className="openfin-chrome__header-controls">
               {this.props.minimize ? <li className="openfin-chrome__header-control"><a onClick={() => this.props.minimize()}><i className="fa fa-minus fa-set-position"></i></a></li> : null}

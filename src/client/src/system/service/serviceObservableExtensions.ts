@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs/Rx'
-import { SerialSubscription } from '../../serialSubscription'
+import { SerialSubscription } from '../serialSubscription'
 import * as _ from 'lodash'
 import LastValueObservable from './lastValueObservable'
 import LastValueObservableDictionary from './lastValueObservableDictionary'

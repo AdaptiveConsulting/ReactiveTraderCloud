@@ -1,5 +1,5 @@
 import { fetchAnalytics } from './actions';
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../../redux/actions/referenceDataActions'
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
 
 const CURRENCY: string = 'USD'
 

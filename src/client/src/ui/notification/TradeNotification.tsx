@@ -13,6 +13,8 @@ export interface TradeNotificationProps {
 export default class TradeNotification extends React.Component<TradeNotificationProps, {}> {
   render() {
     const trade = this.props.message
+    const formattedValueDate = trade ? trade.valueDate : ''
+
     const statusClassName = classnames(
       'notification__status',
       {
@@ -46,7 +48,7 @@ export default class TradeNotification extends React.Component<TradeNotification
             </ul>
             <ul className="notification__details-items">
               <li className="notification__details-item notification__details-item--label">Date</li>
-              <li className="notification__details-item notification__details-item--value">{trade.valueDate}</li>
+              <li className="notification__details-item notification__details-item--value">SP. {formattedValueDate}</li>
             </ul>
             <ul className="notification__details-items">
               <li className="notification__details-item notification__details-item--label">Trade Id</li>

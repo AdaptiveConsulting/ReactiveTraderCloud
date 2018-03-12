@@ -75,6 +75,8 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
         autoShow: false,
         frame: false,
         resizable: windowOptions.resizable,
+        minWidth: windowOptions.minWidth,
+        minHeight: windowOptions.minHeight,
         maximizable: false,
         minimizable: false,
         showTaskbarIcon: false,

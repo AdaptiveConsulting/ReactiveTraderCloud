@@ -1,161 +1,116 @@
 import * as React from 'react'
-import { Column, Table } from 'react-virtualized'
+import { AgGridReact } from 'ag-grid-react'
+import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './blotterUtils'
+import './blotter.scss'
+import './toolbar/blotterToolbar.scss'
+import 'ag-grid/dist/styles/ag-grid.css'
 import * as classNames from 'classnames'
-import 'fixed-data-table/dist/fixed-data-table.css'
+import { GridApi, ColumnApi } from 'ag-grid'
+import BlotterToolbar from './toolbar/BlotterToolbar'
+import { TradeStatus } from '../../types'
 
-import { CurrencyPair, Trade, TradeStatus } from '../../types'
-import { DateCell } from './'
-import { BaseCell, getCellClassName } from './DefaultCell'
-import { timeFormat } from 'd3-time-format'
-import * as numeral from 'numeral'
-
-import './BlotterStyles.scss'
-
-type TradeRow = any
-
-export interface BlotterProps {
+interface AgGridBlotterProps {
+  rows: any[]
   canPopout: boolean
   onPopoutClick: () => void
-  isConnected: boolean
-  trades: any
-  currencyPairs: CurrencyPair[]
-  // passed by SizeMe :
-  size?: {
-    width: number
-    height: number,
-  }
 }
 
-export default class Blotter extends React.Component<BlotterProps, {}> {
-  render() {
-    const { canPopout, onPopoutClick, isConnected, trades, currencyPairs, size } = this.props
-    const columns = this.createGridColumns(trades, currencyPairs)
-    const className = classNames(
-      'blotter', {
-        'blotter--online': isConnected,
-        'blotter--offline': !isConnected,
-      })
+interface AgGridBlotterState {
+  displayedRows: number
+  quickFilterText: string
+}
+
+export default class AgGridBlotter extends React.Component<AgGridBlotterProps, AgGridBlotterState> {
+
+  private gridApi: GridApi
+  private columnApi: ColumnApi
+
+  state = {
+    displayedRows: 0,
+    quickFilterText: null,
+  } as AgGridBlotterState
+
+  render () {
+    const containerClass = classNames('agGridBlotter-container', 'rt-blotter-shared', 'rt-blotter-dark')
     const newWindowClassName = classNames(
       'glyphicon glyphicon-new-window',
       {
-        'blotter__controls--hidden': canPopout,
+        'blotter__controls--hidden': this.props.canPopout,
       },
     )
-
-    return (
-      <div className={className}>
-        <div className="blotter-wrapper">
-          <div className="blotter__controls popout__controls">
-            <i className={newWindowClassName}
-               onClick={() => onPopoutClick()}/>
-          </div>
-          <Table
-            rowHeight={30}
-            headerHeight={30}
-            rowCount={trades.length}
-            width={size.width}
-            height={size.height}
-            rowStyle={{ display: 'flex' }}
-            rowClassName={({ index }) => this.getRowClass(trades[index])}
-            rowGetter={({ index }) => trades[index]}>
-            {columns}
-          </Table>
-        </div>
+    const colDefs = getColumnDefinitions()
+    return <div className={containerClass}>
+      <div className="rt-blotter__controls popout__controls">
+        <i className={newWindowClassName}
+           onClick={() => this.props.onPopoutClick()}/>
       </div>
-    )
+      <BlotterToolbar isQuickFilterApplied={this.state.quickFilterText && this.state.quickFilterText.length !== 0}
+                      quickFilterChangeHandler={this.quickFilterChangeHandler}
+                      removeQuickFilter={this.removeQuickFilter}
+                      filterModel={this.gridApi ? this.gridApi.getFilterModel() : null }
+                      columnDefinitions={colDefs} />
+      <div className="rt-blotter__grid-wrapper">
+        <AgGridReact
+          columnDefs={colDefs}
+          defaultColDef={DEFAULT_COLUMN_DEFINITION}
+          rowData={this.props.rows}
+          enableColResize={false}
+          suppressMovableColumns={true}
+          enableSorting={true}
+          enableFilter={true}
+          onModelUpdated={this.onModelUpdated}
+          onGridReady={this.onGridReady}
+          rowSelection="multiple"
+          headerHeight={28}
+          suppressDragLeaveHidesColumns={true}
+          getRowClass={this.getRowClass}
+          onColumnResized={this.sizeColumnsToFit}
+        />
+      </div>
+      <div className="rt-blotter__status-bar">
+        <div>{`Displaying rows ${ this.state.displayedRows } of ${ this.props.rows.length }`}</div>
+      </div>
+    </div>
   }
 
-  private baseCellRenderer = (cellKey:string, className:string = undefined) => (props: any) => {
-    return <BaseCell cellKey={cellKey} trade={props.rowData} classname={className}/>
+  private sizeColumnsToFit = (param:any = null) => {
+    if (this.gridApi) {
+      this.gridApi.sizeColumnsToFit()
+    }
   }
 
-  private customCellRenderer = (formattedValue:string, cellClassName = undefined) => (props: any) => {
-    const className = cellClassName ? cellClassName : getCellClassName(this.props.trades[props.rowIndex].status, 'Value date')
-    return <DateCell formattedValue={formattedValue} classname={className } />
+  private onGridReady = ({ api, columnApi }) => {
+    this.gridApi = api
+    this.columnApi = this.columnApi
+    this.onModelUpdated()
+    this.sizeColumnsToFit()
   }
 
-  createGridColumns(trades: Trade[], currencyPairs: CurrencyPair[]): any[] {
-    return [
-      <Column
-        key="tradeId"
-        dataKey="tradeId"
-        label={'Id'}
-        cellRenderer={this.baseCellRenderer('tradeId')}
-        flexGrow={1}
-        width={50}/>,
-      <Column
-        key="Date"
-        dataKey="Date"
-        label={'Date'}
-        cellRenderer={(props: any) => this.customCellRenderer(`${timeFormat('%e-%b %H:%M:%S')(trades[props.rowIndex].tradeDate)}`)(props)}
-        flexGrow={1}
-        width={150}/>,
-      <Column
-        key="Dir"
-        dataKey="Dir"
-        label={'Direction'}
-        cellRenderer={this.baseCellRenderer('direction')}
-        flexGrow={1}
-        width={80}/>,
-      <Column
-        key="CCY"
-        dataKey="CCY"
-        label={'CCYCCY'}
-        cellRenderer={this.baseCellRenderer('symbol')}
-        flexGrow={1}
-        width={70}/>,
-      <Column
-        key="Notional"
-        dataKey="Notional"
-        label={'Notional'}
-        cellRenderer={(props: any) => this.customCellRenderer(this.getFormattedNotional(trades[props.rowIndex]), getCellClassName(trades[props.rowIndex].status, 'Notional'))(props) }
-        flexGrow={1}
-        width={120}/>,
-      <Column
-        key="Rate"
-        dataKey="Rate"
-        label={'Rate'}
-        cellRenderer={this.baseCellRenderer('spotRate', 'blotter__trade-field--align-right')}
-        flexGrow={1}
-        width={80}/>,
-      <Column
-        key="Status"
-        dataKey="Status"
-        label={'Status'}
-        cellRenderer={(props:any) => this.baseCellRenderer('status', classNames('blotter__trade-status', getTradeStatusCellStyle(trades[props.rowIndex].status)))(props)}
-        flexGrow={1}
-        width={80}/>,
-      <Column
-        key="Value date"
-        dataKey="Value date"
-        label={'Value date'}
-        cellRenderer={(props: any) => this.customCellRenderer(`SP.${timeFormat('%d %b')(trades[props.rowIndex].valueDate)}`)(props)}
-        flexGrow={1}
-        width={100}/>,
-      <Column
-        key="Trader"
-        dataKey="Trader"
-        label={'Trader'}
-        cellRenderer={this.baseCellRenderer('traderName')}
-        flexGrow={1}
-        width={80}/>,
-    ]
+  private onModelUpdated = () => {
+    if (!this.gridApi) {
+      return
+    }
+    this.setState({ displayedRows: this.gridApi.getModel().getRowCount() })
   }
 
-  getFormattedNotional(rowItem: TradeRow) {
-    const symbol = rowItem.symbol
-    const currencyPair = this.props.currencyPairs[symbol]
-    const format = '0,000,000[.]00'
-
-    return `${numeral(rowItem.notional).format(format)} ${currencyPair.base}`
+  private quickFilterChangeHandler = (event:React.FormEvent<any>) => {
+    const target = event.target as HTMLInputElement
+    this.setState({ quickFilterText: target.value })
+    this.gridApi.setQuickFilter(target.value)
   }
 
-  getRowClass(rowItem: TradeRow) {
-    return classNames(
-      'blotter__trade',
-      rowItem && rowItem.status === 'pending' && 'blotter__trade--processing',
-    )
+  private removeQuickFilter = () => {
+    this.gridApi.setQuickFilter(null)
+    this.gridApi.onFilterChanged()
+    this.setState({ quickFilterText: null })
+  }
+
+  private getRowClass({ data }) {
+    if (data.status === TradeStatus.Rejected) {
+      return 'rt-blotter__rowStrikeThrough'
+    }else if (data.status === TradeStatus.Pending) {
+      return 'rt-blotter__row-pending'
+    }
+    return null
   }
 }
-
-const getTradeStatusCellStyle = (tradeStatus: TradeStatus) => tradeStatus === TradeStatus.Rejected && 'tradeRejected'

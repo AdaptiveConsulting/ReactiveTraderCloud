@@ -1,7 +1,8 @@
 import { Direction } from '../../src/types/direction'
 import { NotificationType } from '../../src/types/notificationType'
 import { SpotTileProps } from '../../src/ui/spotTile/SpotTile'
-import { TradeStatus } from '../../src/types/tradeStatus'
+import { Trade } from '../../src/types/trade'
+import { Notification } from '../../src/types/notification'
 
 const getRandomNumber = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min)
@@ -15,6 +16,9 @@ export const getContainerStyling = {
 
 export const getSpotTileProps: () => SpotTileProps = (executionConnected: boolean = true, isTradeExecutionInFlight: boolean = false) => {
   return {
+    executionConnected,
+    isTradeExecutionInFlight,
+    spotTileData: null,
     canPopout: true,
     currencyChartIsOpening: false,
     currencyPair: {
@@ -33,10 +37,8 @@ export const getSpotTileProps: () => SpotTileProps = (executionConnected: boolea
       },
       valueDate: 1234436547,
     },
-    executionConnected,
     hasNotification: false,
     isRunningInOpenFin: false,
-    isTradeExecutionInFlight,
     maxNotional: 5000000,
     notification: {
       error: null,
@@ -91,22 +93,28 @@ export const getPriceMovementIndicatorProps = (priceMovementType: string,
   }
 }
 
-export const getTradeNotificationProps = (status: string,
-                                          direction: string,
-                                          hasError: boolean,
-                                          action: any) => {
+export const getRandomTrade = (direction:string, status:string):Trade => {
   return {
-    notification: {
-      hasError,
-      status: TradeStatus[status],
-      dealtCurrency: 'GBP',
-      notional: getRandomNumber(40, 5222),
-      termsCurrency: 'USD',
-      direction: 'Up',
-      spotRate: getRandomNumber(40, 5222),
-      formattedValueDate: 'SP. Jul 26',
-      tradeId: getRandomNumber(4012, 15222).toString(),
-    },
-    onDismissedClicked: action('dismiss notification'),
+    status,
+    direction,
+    tradeId: getRandomNumber(1, 10000),
+    traderName: 'YYY',
+    symbol: 'GBPUSD',
+    notional: getRandomNumber(40, 5222),
+    dealtCurrency: 'GBP',
+    termsCurrency: 'USD',
+    spotRate: 123,
+    tradeDate: new Date(),
+    valueDate: new Date(),
+  }
+}
+
+export const getTradeNotification = (status: string,
+                                     direction: string,
+                                     hasError: boolean):Notification => {
+  return {
+    hasError,
+    notificationType: NotificationType.Trade,
+    trade: getRandomTrade(direction, status)
   }
 }

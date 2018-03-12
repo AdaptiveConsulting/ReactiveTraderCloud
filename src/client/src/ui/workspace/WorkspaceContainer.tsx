@@ -2,7 +2,7 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import './WorkspaceContainerStyles.scss'
 import { connect } from 'react-redux'
-import RegionWrapper from '../../regions/RegionWrapper'
+import RegionWrapper from '../common/regions/RegionWrapper'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 

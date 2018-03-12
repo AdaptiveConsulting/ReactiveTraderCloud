@@ -259,6 +259,6 @@ function formatTradeNotification(trade: Trade, currencyPair: CurrencyPair) {
     status: trade.status,
     dealtCurrency: trade.dealtCurrency,
     termsCurrency: currencyPair.terms,
-    valueDate: moment(trade.valueDate).format('DD MMM')
+    valueDate: moment.utc(trade.valueDate).format('DD MMM')
   }
 }

@@ -5,6 +5,7 @@ import * as PropTypes from 'prop-types'
 export interface ChildContextTypes {
   getChildContext?: () => boolean
   openFin: any,
+  isRunningInFinsemble: boolean
 }
 
 export default class OpenFinProvider extends React.Component<ChildContextTypes, {}> {
@@ -20,9 +21,10 @@ export default class OpenFinProvider extends React.Component<ChildContextTypes, 
   }
 
   render() {
-    const { openFin } = this.props
+    const { openFin, isRunningInFinsemble } = this.props
 
-    return openFin.isRunningInOpenFin ?
+    // display the window chrome in the OpenFin environment, but disable if Finsemble is detected (it has a wrapper with own chrome
+    return openFin.isRunningInOpenFin && !isRunningInFinsemble?
       <OpenFinChrome
         openFin={openFin}
         minimize={openFin.minimize.bind(openFin)}

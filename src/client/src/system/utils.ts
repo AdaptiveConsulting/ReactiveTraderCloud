@@ -1,4 +1,4 @@
-import { timeFormat } from 'd3-time-format'
+import { timeFormat, utcFormat } from 'd3-time-format'
 
 const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/
 
@@ -38,6 +38,10 @@ export function hasShorthandInput(value: any) {
   const notionalShorthand: string | number = String(value).toUpperCase().replace(/,/g, '')
   const matches = notionalShorthand.match(numberConvertRegex)
   return matches && matches[2] !== undefined // found K or M
+}
+
+export function UtcFormatDate(date: any, format:string = '%b %e, %H:%M:%S') {
+  return utcFormat(format)(date)
 }
 
 export function formatDate(date: any, format:string = '%b %e, %H:%M:%S') {

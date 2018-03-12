@@ -1,23 +1,14 @@
 import { NotificationType } from '../../types/notificationType'
-import * as numeral from 'numeral'
-import { Direction } from '../../types/direction'
-import { timeFormat } from 'd3-time-format'
 import { Trade } from '../../types'
+import { Notification } from '../../types/notification'
 
-export function buildNotification(trade:Trade = null, error) {
+export function buildNotification(trade:Trade = null, error):Notification {
   if (error || !trade) {
-    return { message: error, hasError: true, notificationType: NotificationType.Text }
+    return { message: error, hasError: true, notificationType: NotificationType.Text, trade: null }
   }
   return {
+    trade,
     notificationType: NotificationType.Trade,
-    hasError: false,
-    direction: trade.direction === Direction.Sell ? 'Sold' : 'Bought',
-    notional: numeral(trade.notional).format('0,000,000[.]00'),
-    status: trade.status,
-    dealtCurrency: trade.dealtCurrency,
-    termsCurrency: trade.termsCurrency,
-    spotRate: trade.spotRate,
-    formattedValueDate: `SP. ${timeFormat('%b %e')(trade.valueDate)}`,
-    tradeId: trade.tradeId,
+    hasError: false
   }
 }

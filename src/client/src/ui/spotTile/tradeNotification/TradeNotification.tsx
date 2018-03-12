@@ -3,6 +3,8 @@ import * as classnames from 'classnames'
 import './TradeNotificationStyles.scss'
 import { CurrencyPair, TradeStatus } from '../../../types'
 import { Notification } from '../../../types/notification'
+import * as numeral from 'numeral'
+import { spotDateFormatter } from '../../utils/dateUtils'
 
 interface TradeNotificationProps {
   currencyPair: CurrencyPair
@@ -31,29 +33,34 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}>{
       return this.renderError()
     }
 
+    const trade = notification.trade
+    const formattedValueDate = trade ? spotDateFormatter(trade.valueDate) : ''
+
     const containerClassName = classnames(
       'trade-notification',
-      { 'trade-notification--rejected': notification.status === TradeStatus.Rejected }
+      { 'trade-notification--rejected': trade.status === TradeStatus.Rejected }
     )
+
+    const formattedNotional = numeral(trade.notional).format('0,000,000[.]00')
     return (
       <div className={containerClassName}>
         <span className="trade-notification__trade-status">
-          {notification.status}
+          {trade.status}
         </span>
-        <div className="trade-notification__summary-item--direction">
-          {notification.direction}
+        <div className="trade-notification__summary-item trade-notification__summary-item--direction">
+          {trade.direction}
         </div>
-        <div className="trade-notification__summary-item--notional">
-          {notification.dealtCurrency} {notification.notional}
+        <div className="trade-notification__summary-item trade-notification__summary-item--notional">
+          {trade.dealtCurrency} {formattedNotional}
         </div>
-        <div className="trade-notification__summary-item--currency">
+        <div className="trade-notification__summary-item trade-notification__summary-item--currency">
           <span className="trade-notification__label--versus">vs </span>
           { this.props.currencyPair.terms }
         </div>
         <div className="trade-notification__details-items-container">
-          { this.createItemDetailElement('Rate', notification.spotRate)}
-          { this.createItemDetailElement('Date', notification.formattedValueDate)}
-          { this.createItemDetailElement('Trade ID', notification.tradeId)}
+          { this.createItemDetailElement('Rate', trade.spotRate)}
+          { this.createItemDetailElement('Date', formattedValueDate)}
+          { this.createItemDetailElement('Trade ID', trade.tradeId)}
         </div>
         <i className="trade-notification__dismiss-icon fa fa-share"
            onClick={onDismissedClicked}/>

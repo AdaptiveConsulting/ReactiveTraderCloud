@@ -25,8 +25,7 @@ export default class PriceControlsView extends React.Component<PriceControlsView
           className="spot-tile__price spot-tile__price--bid"
           direction={Direction.Sell}
           onExecute={() => this.props.executeTrade(Direction.Sell)}
-          rate={toRate(spotTileData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)}
-          currencyPair={this.props.currencyPair}/>
+          rate={toRate(spotTileData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)}/>
 
         <div className="spot-tile__price-movement">
           <PriceMovementIndicator
@@ -38,8 +37,7 @@ export default class PriceControlsView extends React.Component<PriceControlsView
           className="spot-tile__price spot-tile__price--ask"
           direction={Direction.Buy}
           onExecute={() => this.props.executeTrade(Direction.Buy)}
-          rate={toRate(spotTileData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)}
-          currencyPair={this.props.currencyPair}/>
+          rate={toRate(spotTileData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)}/>
       </div>
     )
   }
