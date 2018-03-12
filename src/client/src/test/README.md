@@ -45,4 +45,4 @@ https://github.com/nightwatchjs/nightwatch/wiki/Debugging-Nightwatch-tests-in-We
 "compounds": []
 }
 
-You can use different browser by changiing the args value.
+You can use different browser by changing the args value.
