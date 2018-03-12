@@ -16,3 +16,11 @@ Environment variables
 NODE_CONFIG_DIR String ./config Config directory path
 NODE_ENV String -- Node environment
 NODE_CAMEL_CASE Boolean false Naming convention of variables
+
+# Nightwatch integration with IDEs
+
+## IntelliJ / Webstorm
+
+Read the step-by-step instructions on how to integrate Nightwatch into Webstorm to run and debug tests inside your IDE:
+https://github.com/nightwatchjs/nightwatch/wiki/Debugging-Nightwatch-tests-in-WebStorm
+
