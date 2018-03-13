@@ -148,7 +148,11 @@ describe('Reactive Trader Cloud tests:', function() {
         );
     });
     it('On execution, a confirmation should appear showing a summary of the trade: Buy/Sell, Notional Currency and Amount, Rate, Spot Date,Trade ID', function(client) {
-      
+      client
+        .url(getConfig().host)
+        .waitForElementPresent('body')
+        .waitForElementNotPresent('.spot-tile__notification-message', 10000)
+        .useXpath();
     });
   });
 });

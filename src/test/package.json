@@ -14,11 +14,13 @@
     "chromedriver": "^2.32.0",
     "eslint": "^4.14.0",
     "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "geckodriver": "^1.8.1",
     "mocha": "^3.2.0",
     "mocha-junit-reporter": "^1.17.0",
     "nightwatch": "^0.9.19",
     "phantomjs-prebuilt": "^2.1.15",
+    "prettier": "^1.11.1",
     "selenium-server": "^3.5.2"
   },
   "dependencies": {
