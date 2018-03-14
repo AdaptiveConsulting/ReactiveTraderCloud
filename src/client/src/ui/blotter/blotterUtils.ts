@@ -112,7 +112,7 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       field: TRADE_DATE,
       cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
       width: 170,
-      filter: 'date'
+      suppressFilter: true
     },
     {
       colId: DIRECTION,
@@ -160,7 +160,7 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       field: VALUE_DATE,
       cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
       width: 130,
-      filter: 'date'
+      suppressFilter: true
     },
     {
       colId: TRADER_NAME,
