@@ -92,3 +92,32 @@
 .filter-icon--applied {
   color: $accentColor
 }
+
+.applied-filter__filter-field {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: silver;
+  padding: 3px 8px 3px 8px;
+  border: 1px solid #1D232E;
+  background-color: $backgroundAccentColor;
+  display: inline-block;
+  height: 22px;
+  margin: 0px 3px 0px 3px;
+  -webkit-user-select: none;
+  cursor: default;
+  float: left;
+  i {
+    margin-left: 6px;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: lighten($darkAlternateColor, 5%);
+    color: white;
+    border: 1px solid black;
+
+    i {
+      color: $accentColor;
+    }
+  }
+}

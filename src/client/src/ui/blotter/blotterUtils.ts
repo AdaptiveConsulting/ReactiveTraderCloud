@@ -2,6 +2,8 @@ import * as AgGrid from 'ag-grid'
 import * as numeral from 'numeral'
 import { Trade, TradeStatus } from '../../types'
 import { formatDate, UtcFormatDate } from '../../system/utils'
+import SetFilter from './filters/SetFilter'
+import './filters/filterOverrides.ts'
 
 const currencyIconLookup = {
   ['USD']: `fa fa-usd`,
@@ -54,7 +56,8 @@ const getStatusIndicatorClass = (trade:Trade) => {
 export const DEFAULT_COLUMN_DEFINITION:AgGrid.ColDef = {
   menuTabs: ['filterMenuTab'],
   suppressSizeToFit: true,
-  suppressFilter: true
+  suppressFilter: false,
+  minWidth: 40
 }
 
 export const STATUS_INDICATOR = 'statusIndicator'
@@ -100,32 +103,37 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       headerName: 'Status',
       field: STATUS,
       width: 105,
-      cellClass: ({ data }) => getStatusCellClass(data)
+      cellClass: ({ data }) => getStatusCellClass(data),
+      filterFramework: SetFilter
     },
     {
       colId: TRADE_DATE,
       headerName: 'Date',
       field: TRADE_DATE,
       cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
-      width: 170
+      width: 170,
+      filter: 'date'
     },
     {
       colId: DIRECTION,
       headerName: 'Direction',
       field: DIRECTION,
-      width: 105
+      width: 105,
+      filterFramework: SetFilter
     },
     {
       colId: SYMBOL,
       headerName: 'CCYCCY',
       field: SYMBOL,
-      width: 105
+      width: 105,
+      filterFramework: SetFilter
     },
     {
       colId: DEALT_CURRENCY,
       headerName: 'Dealt CCY',
       field: DEALT_CURRENCY,
-      width: 105
+      width: 105,
+      filterFramework: SetFilter
     },
     {
       colId: NOTIONAL,
@@ -134,7 +142,8 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       cellRenderer: numericCellRenderer,
       cellClass: 'rt-blotter__numeric-cell',
       headerClass: 'rt-header__numeric',
-      width: 140
+      width: 140,
+      filter: 'number'
     },
     {
       colId: SPOT_RATE,
@@ -142,20 +151,23 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       field: SPOT_RATE,
       width: 120,
       cellClass:  'rt-blotter__numeric-cell',
-      headerClass: 'rt-header__numeric'
+      headerClass: 'rt-header__numeric',
+      filter: 'number'
     },
     {
       colId: VALUE_DATE,
       headerName: 'Value Date',
       field: VALUE_DATE,
       cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
-      width: 170
+      width: 170,
+      filter: 'date'
     },
     {
       colId: TRADER_NAME,
       field: TRADER_NAME,
       headerName: 'Trader',
-      width: 105
+      width: 105,
+      filterFramework: SetFilter
     },
     {
       colId: 'empty',
