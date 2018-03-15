@@ -105,12 +105,11 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   onTextChange = (event) => {
     const newValue = event.target.value.toLowerCase()
 
-    const uniqueValues = this.getUniqueValues()
     const setFilterOptions = { ...this.state.selectedValueSet }
     const keys = Object.keys(setFilterOptions)
     keys.forEach((key:string) => {
       if (key === ALL) {
-        setFilterOptions[ALL] = false
+        setFilterOptions[ALL] = newValue.length === 0 ? true : false
       }else {
         setFilterOptions[key] = key.toLowerCase().indexOf(newValue) !== -1
       }
