@@ -43,17 +43,24 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     }, { [ALL]: true })
 
     this.setState({ selectedValueSet: initialSelection })
-
   }
 
   isFilterActive() {
-    const uniquOptions = Object.values(this.getUniqueValues())
-    const selectedOptions = Object.values(this.state.selectedValueSet)
+
     const filterActive = this.state.text !== null
       && this.state.text !== undefined
       && this.state.text.trim() !== ''
-      && uniquOptions.length !== selectedOptions.length
+      && this.isListSelectionModified()
     return filterActive
+  }
+
+  isListSelectionModified() {
+    const uniquOptions = Object.values(this.getUniqueValues())
+    const selectedOptions = Object.values(this.state.selectedValueSet)
+
+    // find if any options is unchecked
+    const allOptionsSelected = selectedOptions.indexOf(false) === -1
+    return uniquOptions.length + 1 /*accounting for All option*/ !== selectedOptions.length || !allOptionsSelected
   }
 
   doesFilterPass(params) {
@@ -125,10 +132,20 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   updateFilter = () => {
+
+    if (!this.isListSelectionModified()) {
+      this.setState({
+        text: '',
+        selectedFreeText: ''
+      }, () => {
+        this.props.filterChangedCallback()
+      })
+      return
+    }
+
     const freeText = this.state.selectedFreeText
     const options = this.state.selectedValueSet
-
-    const newSelectedValueSet = [freeText, ALL]
+    const newSelectedValueSet = [freeText]
     for (const key in options) {
       if (options[key] === true) {
         newSelectedValueSet.push(key)

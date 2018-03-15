@@ -118,7 +118,7 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       colId: DIRECTION,
       headerName: 'Direction',
       field: DIRECTION,
-      width: 105,
+      width: 110,
       filterFramework: SetFilter
     },
     {

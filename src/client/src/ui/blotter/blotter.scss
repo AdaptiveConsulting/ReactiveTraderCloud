@@ -28,6 +28,13 @@
     border-bottom: 2px solid $accentColor;//!important;
     padding: 3px 0 0 10px;
     height: 30px;
+
+    .ag-header-cell-filtered {
+      .ag-header-cell-menu-button {
+        opacity: 1!important;
+      }
+    }
+
     .ag-header-cell-text {
       font-size: 12px;
       font-family: BrandonBold;
@@ -95,7 +102,7 @@
   }
 
   .rt-blotter__cell-pending {
-    color: orange;
+    // color: orange;
     text-transform: capitalize;
   }
 
@@ -108,7 +115,7 @@
   }
 
   .rt-blotter__status-indicator--pending {
-    @include status-indicator(orange)
+    @include status-indicator(#878A8E)
   }
 
   .rt-blotter__row-pending:before {
@@ -118,7 +125,7 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba(225, 225, 100, 0.4); ;
+    background-color: #878A8E; //rgba(225, 225, 100, 0.4); ;
   }
 }
 
