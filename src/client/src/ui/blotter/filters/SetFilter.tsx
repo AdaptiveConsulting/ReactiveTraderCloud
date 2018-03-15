@@ -103,8 +103,20 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   onTextChange = (event) => {
-    const newValue = event.target.value
-    this.setState({ selectedFreeText: newValue }, () => this.updateFilter())
+    const newValue = event.target.value.toLowerCase()
+
+    const uniqueValues = this.getUniqueValues()
+    const setFilterOptions = { ...this.state.selectedValueSet }
+    const keys = Object.keys(setFilterOptions)
+    keys.forEach((key:string) => {
+      if (key === ALL) {
+        setFilterOptions[ALL] = false
+      }else {
+        setFilterOptions[key] = key.toLowerCase().indexOf(newValue) !== -1
+      }
+    })
+
+    this.setState({ selectedFreeText: newValue, selectedValueSet: setFilterOptions }, () => this.updateFilter())
   }
 
   onOptionSelectChange = (event, value: string = ALL) => {
@@ -135,8 +147,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
 
     if (!this.isListSelectionModified()) {
       this.setState({
-        text: '',
-        selectedFreeText: ''
+        text: ''
       }, () => {
         this.props.filterChangedCallback()
       })
@@ -193,16 +204,6 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
 
   setupContainer = (el:Element) => {
     this.container = ReactDOM.findDOMNode(el)
-  }
-
-  myCustomMethod = (event:Event) => {
-    const target:HTMLElement = event.target as HTMLElement
-    if (event.target === this.container || this.container.contains(target) || target.classList.contains('ag-icon-menu')) {
-      return
-    }
-    if (this.hidePopup) {
-      this.hidePopup(null)
-    }
   }
 
   render() {
