@@ -26,8 +26,8 @@ const dateRenderer = (trade:Trade, field: string) => {
   return formatDate(trade[field], '%d-%b %H:%M:%S')
 }
 
-const UtcDateRenderer = (trade:Trade, field: string) => {
-  return UtcFormatDate(trade[field], '%d-%b %H:%M:%S')
+const UtcDateRenderer = (trade:Trade, field: string, format: string = '%d-%b-%Y' ) => {
+  return UtcFormatDate(trade[field], format)
 }
 
 const getStatusCellClass = (trade:Trade) => {
@@ -95,7 +95,7 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       colId: TRADE_ID,
       headerName: 'Trade ID',
       field: TRADE_ID,
-      width: 80,
+      width: 100,
       filter: 'number'
     },
     {
@@ -112,13 +112,13 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       field: TRADE_DATE,
       cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
       width: 170,
-      filter: 'date'
+      suppressFilter: true
     },
     {
       colId: DIRECTION,
       headerName: 'Direction',
       field: DIRECTION,
-      width: 105,
+      width: 110,
       filterFramework: SetFilter
     },
     {
@@ -159,8 +159,8 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       headerName: 'Value Date',
       field: VALUE_DATE,
       cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
-      width: 170,
-      filter: 'date'
+      width: 130,
+      suppressFilter: true
     },
     {
       colId: TRADER_NAME,
@@ -175,6 +175,7 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       headerName: '',
       width: 105,
       suppressSizeToFit: false,
+      suppressFilter: true
     }
   ]
 }

@@ -43,17 +43,24 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     }, { [ALL]: true })
 
     this.setState({ selectedValueSet: initialSelection })
-
   }
 
   isFilterActive() {
-    const uniquOptions = Object.values(this.getUniqueValues())
-    const selectedOptions = Object.values(this.state.selectedValueSet)
+
     const filterActive = this.state.text !== null
       && this.state.text !== undefined
       && this.state.text.trim() !== ''
-      && uniquOptions.length !== selectedOptions.length
+      && this.isListSelectionModified()
     return filterActive
+  }
+
+  isListSelectionModified() {
+    const uniquOptions = Object.values(this.getUniqueValues())
+    const selectedOptions = Object.values(this.state.selectedValueSet)
+
+    // find if any options is unchecked
+    const allOptionsSelected = selectedOptions.indexOf(false) === -1
+    return uniquOptions.length + 1 /*accounting for All option*/ !== selectedOptions.length || !allOptionsSelected
   }
 
   doesFilterPass(params) {
@@ -96,8 +103,19 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   onTextChange = (event) => {
-    const newValue = event.target.value
-    this.setState({ selectedFreeText: newValue }, () => this.updateFilter())
+    const newValue = event.target.value.toLowerCase()
+
+    const setFilterOptions = { ...this.state.selectedValueSet }
+    const keys = Object.keys(setFilterOptions)
+    keys.forEach((key:string) => {
+      if (key === ALL) {
+        setFilterOptions[ALL] = newValue.length === 0 ? true : false
+      }else {
+        setFilterOptions[key] = key.toLowerCase().indexOf(newValue) !== -1
+      }
+    })
+
+    this.setState({ selectedFreeText: newValue, selectedValueSet: setFilterOptions }, () => this.updateFilter())
   }
 
   onOptionSelectChange = (event, value: string = ALL) => {
@@ -125,10 +143,19 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   updateFilter = () => {
+
+    if (!this.isListSelectionModified()) {
+      this.setState({
+        text: ''
+      }, () => {
+        this.props.filterChangedCallback()
+      })
+      return
+    }
+
     const freeText = this.state.selectedFreeText
     const options = this.state.selectedValueSet
-
-    const newSelectedValueSet = [freeText, ALL]
+    const newSelectedValueSet = [freeText]
     for (const key in options) {
       if (options[key] === true) {
         newSelectedValueSet.push(key)
@@ -176,16 +203,6 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
 
   setupContainer = (el:Element) => {
     this.container = ReactDOM.findDOMNode(el)
-  }
-
-  myCustomMethod = (event:Event) => {
-    const target:HTMLElement = event.target as HTMLElement
-    if (event.target === this.container || this.container.contains(target) || target.classList.contains('ag-icon-menu')) {
-      return
-    }
-    if (this.hidePopup) {
-      this.hidePopup(null)
-    }
   }
 
   render() {
