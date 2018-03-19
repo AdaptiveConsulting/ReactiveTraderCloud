@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import sizeMe from 'react-sizeme'
 import * as PropTypes from 'prop-types'
 import * as _ from 'lodash'
@@ -18,7 +19,15 @@ interface BlotterContainerProps {
   size: {width: number, height: number}
 }
 
-class BlotterContainer extends React.Component<BlotterContainerProps, {}> {
+interface BlotterContainerState {
+  gridDocument:Element
+}
+
+class BlotterContainer extends React.Component<BlotterContainerProps, BlotterContainerState> {
+
+  state = {
+    gridDocument: null
+  }
 
   static contextTypes = {
     openFin: PropTypes.object
@@ -34,12 +43,20 @@ class BlotterContainer extends React.Component<BlotterContainerProps, {}> {
     const gridRows = _.values(trades).reverse()
     const popoutClick = this.props.onPopoutClick(openFin)
     return (
-      <div className="shell_workspace_blotter">
+      <div className="shell_workspace_blotter"
+           ref={(el) => this.updateGridDocument( ReactDOM.findDOMNode(el) )}>
         <Blotter rows={ gridRows }
-                       onPopoutClick={popoutClick}
-                       canPopout={Environment.isRunningInIE()}/>
+                 gridDocument={this.state.gridDocument}
+                 onPopoutClick={popoutClick}
+                 canPopout={Environment.isRunningInIE()}/>
       </div>
     )
+  }
+
+  private updateGridDocument = (doc:Element) => {
+    if (doc && ! this.state.gridDocument) {
+      this.setState({ gridDocument: doc })
+    }
   }
 }
 
