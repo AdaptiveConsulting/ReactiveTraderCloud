@@ -16,22 +16,13 @@ module.exports = {
     port: 4444
   },
 
-  test_runner: {
-    type: 'mocha',
-    options: {
-      ui: 'bdd',
-      // reporter: 'mocha-junit-reporter',
-      reporter: 'list',
-      reporterOptions: {
-        mochaFile: './reports/test-report.xml'
-      }
-    }
-  },
   test_settings: {
     default: {
+      skip_testcases_on_fail: false,
+      end_session_on_fail: false,
       screenshots: {
-        enabled: false,
-        path: '',
+        enabled: true,
+        path: 'reports',
         on_failure: true,
         on_error: true,
         silent: 'false'
