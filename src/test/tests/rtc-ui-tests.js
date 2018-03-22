@@ -228,5 +228,22 @@ module.exports = {
         '.rt-blotter__cell-rejected',
         'rt-blotter__cell-rejected'
       ); // check if the row contains rejected
+  },
+
+  'Profit and Loss chart shows an aggregation of all currency positions in USD- All individual PnL currency pair positions are converted to USD and summed to get the current Profit & Loss amount': function(
+    browser
+  ) {
+    const chartTitles = ['Positions', 'PnL'];
+    browser
+      .waitForElementPresent('.analytics__header-title', 5000)
+      .assert.containsText('.analytics__header-title', 'Profit & Loss')
+      .waitForElementPresent('.analytics__bubblechart-container', 5000)
+      .waitForElementPresent('.analytics__chart-title', 5000)
+      .elements(
+        'css selector',
+        '.analytics__chart-title',
+        validate.valNumberOfElements(browser, chartTitles)
+      )
+      .waitForElementPresent('.analytics__barchart-bar-background', 5000);
   }
 };
