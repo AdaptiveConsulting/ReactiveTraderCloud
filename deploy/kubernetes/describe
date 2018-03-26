@@ -25,7 +25,7 @@ echo -e "\e[32mRC\e[39m"                       && \
 ${kubectl} get rc $namespace                   && \
 echo " "                                       && \
 echo -e "\e[32mPODS\e[39m"                     && \
-${kubectl} get pods $namespace                 && \
+${kubectl} get pods $namespace -L build        && \
 echo " "                                       && \
 echo -e "\e[32mENDPOINTS\e[39m"                && \
 ${kubectl} get endpoints $namespace            && \
