@@ -245,5 +245,29 @@ module.exports = {
         validate.valNumberOfElements(browser, chartTitles)
       )
       .waitForElementPresent('.analytics__barchart-bar-background', 5000);
+  },
+
+  'Pop-out trade window and perform trade': function(browser) {
+    browser
+      .waitForElementPresent('.spot-tile__icon--tearoff', 5000)
+      .moveToElement('.spot-tile__icon--tearoff', 10, 10)
+      .pause(2000)
+      .click('.spot-tile__icon--tearoff')
+      .windowHandles(function(result) {
+        browser
+          .switchWindow(result.value[1])
+          .waitForElementPresent('.spot-tile__symbol', 5000)
+          .assert.containsText('.spot-tile__symbol', 'EUR / USD')
+          .click('.price-button__pip')
+          .pause(2000)
+          .waitForElementPresent(
+            '.trade-notification__summary-item--notional',
+            5000
+          )
+          .assert.containsText(
+            '.trade-notification__summary-item--notional',
+            'EUR 1,000,000'
+          );
+      });
   }
 };
