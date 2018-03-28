@@ -4,7 +4,10 @@ module.exports = {
   '@tags': ['smoke', 'web'],
 
   before: function(browser) {
-    browser.url(getConfig().host).waitForElementPresent('body', 5000);
+    browser
+      .url(getConfig().host)
+      .waitForElementPresent('body', 5000)
+      .pause(5000);
   },
   after: function(browser) {
     browser.end();
@@ -153,5 +156,118 @@ module.exports = {
           browser.assert.equal(result.value, 'Done');
         }
       );
+  },
+
+  'On execution, a confirmation should appear showing a summary of the trade: Buy/Sell, Notional Currency and Amount, Rate, Spot Date, Trade ID': function(
+    browser
+  ) {
+    browser
+      .useXpath()
+      .waitForElementPresent(
+        '//div[@id="root"]/div/div[2]/div/div/div/div/div[5]/div/div/div[2]/div/div/span/span[2]',
+        5000
+      )
+      .click(
+        '//div[@id="root"]/div/div[2]/div/div/div/div/div[5]/div/div/div[2]/div/div/span/span[2]' // AUD/US Sell button
+      )
+      .useCss()
+      .waitForElementPresent(
+        'div.trade-notification__summary-item.trade-notification__summary-item--notional',
+        5000
+      )
+      .assert.containsText(
+        'div.trade-notification__summary-item.trade-notification__summary-item--notional',
+        'AUD 1,000,000'
+      )
+      .assert.containsText(
+        'div.trade-notification__details-item--label',
+        'RATE'
+      )
+      .useXpath()
+      .assert.containsText(
+        '//div[@id="root"]/div/div[2]/div/div/div/div/div[5]/div/div/div[2]/div[4]/div[2]/div',
+        'DATE'
+      )
+      .assert.containsText(
+        '//div[@id="root"]/div/div[2]/div/div/div/div/div[5]/div/div/div[2]/div[4]/div[3]/div',
+        'TRADE ID'
+      );
+  },
+
+  'Rejected trades should have the details struck out': function(browser) {
+    browser
+      .waitForElementNotPresent('.spot-tile__notification-message', 10000)
+      .pause(10000)
+      .useXpath()
+      .waitForElementPresent(
+        '//div[@id="root"]/div/div[2]/div/div/div/div/div[4]/div/div/div[2]/div/div[3]/span/span[2]',
+        5000
+      )
+      .click(
+        '//div[@id="root"]/div/div[2]/div/div/div/div/div[4]/div/div/div[2]/div/div[3]/span/span[2]' // GBP/JPY buy button
+      )
+      .useCss()
+      .waitForElementPresent('span.trade-notification__trade-status', 5000)
+      .useXpath()
+      .waitForElementPresent(
+        '//div[@id="borderLayout_eGridPanel"]/div/div/div[4]/div[3]/div/div/div/div[3]',
+        20000
+      )
+      .getText(
+        '//*[@id="borderLayout_eGridPanel"]/div[1]/div/div[4]/div[3]/div/div/div[1]/div[3]',
+        function(result) {
+          browser.assert.equal(result.value, 'Rejected');
+        }
+      )
+      .useCss()
+      .assert.cssClassPresent(
+        '.rt-blotter__rowStrikeThrough',
+        'rt-blotter__rowStrikeThrough'
+      ) // check if the row is strikethrough
+      .assert.cssClassPresent(
+        '.rt-blotter__cell-rejected',
+        'rt-blotter__cell-rejected'
+      ); // check if the row contains rejected
+  },
+
+  'Profit and Loss chart shows an aggregation of all currency positions in USD- All individual PnL currency pair positions are converted to USD and summed to get the current Profit & Loss amount': function(
+    browser
+  ) {
+    const chartTitles = ['Positions', 'PnL'];
+    browser
+      .waitForElementPresent('.analytics__header-title', 5000)
+      .assert.containsText('.analytics__header-title', 'Profit & Loss')
+      .waitForElementPresent('.analytics__bubblechart-container', 5000)
+      .waitForElementPresent('.analytics__chart-title', 5000)
+      .elements(
+        'css selector',
+        '.analytics__chart-title',
+        validate.valNumberOfElements(browser, chartTitles)
+      )
+      .waitForElementPresent('.analytics__barchart-bar-background', 5000);
+  },
+
+  'Pop-out trade window and perform trade': function(browser) {
+    browser
+      .waitForElementPresent('.spot-tile__icon--tearoff', 5000)
+      .moveToElement('.spot-tile__icon--tearoff', 10, 10)
+      .pause(2000)
+      .click('.spot-tile__icon--tearoff')
+      .windowHandles(function(result) {
+        browser
+          .switchWindow(result.value[1])
+          .waitForElementPresent('.spot-tile__symbol', 5000)
+          .assert.containsText('.spot-tile__symbol', 'EUR / USD')
+          .click('.price-button__pip')
+          .pause(2000)
+          .waitForElementPresent(
+            '.trade-notification__summary-item--notional',
+            5000
+          )
+          .assert.containsText(
+            '.trade-notification__summary-item--notional',
+            'EUR 1,000,000'
+          );
+      });
   }
 };
