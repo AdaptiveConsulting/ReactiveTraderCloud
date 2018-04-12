@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
 import { TradeNotification, SpotTileControls } from './'
-import './SpotTileStyles.scss'
 import NotionalContainer from './notional/NotionalContainer'
 import { NotificationType } from '../../types'
 import { CurrencyPair } from '../../types/currencyPair'

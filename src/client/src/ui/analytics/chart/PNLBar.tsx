@@ -2,7 +2,6 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import * as numeral from 'numeral'
 
-import '../AnalyticsStyles.scss'
 import { CurrencyPair } from '../../../types/currencyPair'
 
 export interface PNLBarProps {

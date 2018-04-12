@@ -1,5 +1,3 @@
-import './popoutRegion.scss'
-
 import logger from '../../../system/logger'
 
 const log = logger.create('OpenfinPopoutService')

@@ -1,0 +1,123 @@
+@import "variables";
+
+.blotter-toolbar {
+  width: 100%;
+  height: $toolbarHeight;
+  background-color: $darkBodyBgColor;
+  border-top: 2px solid $darkAlternateColor;
+
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.blotter-toolbar__right-controls{
+  margin-right: 30px;
+}
+
+.blotter-toolbar__left-controls{
+  margin-left: 3px;
+  display: flex
+}
+
+@mixin toggle-button {
+  height: 15px;
+  line-height: 0.9;
+  background-color: lightblue;
+  border-radius: 2px;
+  border: 1px solid #555;
+  color: black;
+  font-size: 11px;
+  padding: 2px 4px;
+  cursor: pointer;
+  margin-left: 3px;
+}
+.blotter-toolbar__theme-switch {
+  width: 80px;
+  @include toggle-button()
+}
+
+.blotter-toolbar__numeric-renderer-switch {
+  width: 110px;
+  @include toggle-button()
+}
+
+.quick-filter-container {
+  position: relative;
+  width: 160px;
+  margin-left: 4px;
+}
+
+.quick-filter-icon {
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 13px;
+  height: 9px;
+}
+
+.quick-filter-clear-icon {
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  width: 13px;
+  cursor: pointer;
+}
+
+.quick-filter-input {
+  padding-left: 22px;
+  width: 100%;
+  height: 22px;
+  background-color: $darkBodyBgColor;
+  border-radius: 2px;
+  color: white;
+  font-size: 11px;
+  border: 1px solid $darkInputBorderColour;
+  &:focus {
+    outline: none;
+    border: 2px solid $accentColor
+  }
+}
+
+.quick-filter-input::-webkit-input-placeholder {
+  color: #888;
+  font-size: 11px;
+  padding-left: 0!important;
+}
+
+.filter-icon--empty {
+  color: #d8d8d8;
+}
+.filter-icon--applied {
+  color: $accentColor
+}
+
+.applied-filter__filter-field {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: silver;
+  padding: 3px 8px 3px 8px;
+  border: 1px solid #1D232E;
+  background-color: $backgroundAccentColor;
+  display: inline-block;
+  height: 22px;
+  margin: 0px 3px 0px 3px;
+  -webkit-user-select: none;
+  cursor: default;
+  float: left;
+  i {
+    margin-left: 6px;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: lighten($darkAlternateColor, 5%);
+    color: white;
+    border: 1px solid black;
+
+    i {
+      color: $accentColor;
+    }
+  }
+}
