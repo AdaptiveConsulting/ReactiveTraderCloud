@@ -2,7 +2,6 @@ import * as React from 'react'
 import * as classnames from 'classnames'
 
 import { ApplicationStatusConst } from '../../types'
-import './StatusIndicatorStyles.scss'
 
 interface StatusIndicatorProps {
   status: string

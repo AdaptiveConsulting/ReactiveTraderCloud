@@ -4,7 +4,6 @@ import * as _ from 'lodash'
 import { PNLChartModel } from './model/pnlChartModel'
 import { PNLChart, AnalyticsBarChart, PositionsBubbleChart } from './'
 import { PositionsChartModel } from './model/positionsChartModel'
-import './AnalyticsStyles.scss'
 import { CurrencyPair } from '../../types/currencyPair'
 
 export interface AnalyticsProps {

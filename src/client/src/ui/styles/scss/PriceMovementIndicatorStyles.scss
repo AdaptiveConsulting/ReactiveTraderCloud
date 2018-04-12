@@ -1,0 +1,39 @@
+@import "variables";
+
+.price-movement {
+  position: relative;
+  height: 50px;
+}
+
+.price-movement__value,
+.price-movement__icon--up,
+.price-movement__icon--down {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.price-movement__value {
+  top: 14px;
+  color: $spot-tile-primary-color;
+  font-size: 14px;
+}
+
+.price-movement__icon--inactive {
+  display: inherit;
+  color: rgba(255, 255, 255, .1) !important;
+}
+
+.price-movement__icon--up {
+  color: #81d31c;
+  font-size: 12px !important;
+  top: 7px;
+}
+
+.price-movement__icon--down {
+  color: #d90a0a;
+  font-size: 12px !important;
+  bottom: 7px;
+}
+

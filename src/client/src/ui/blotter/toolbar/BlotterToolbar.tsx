@@ -1,5 +1,4 @@
 import * as React from 'react'
-import './blotterToolbar.scss'
 import QuickFilter from './QuickFilter'
 import AppliedFilters from './AppliedFilters'
 import * as AgGrid from 'ag-grid'

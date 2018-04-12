@@ -1,4 +1,3 @@
-/// <reference path="./OpenFin.d.ts"/>
 import { Observable, Subject, Subscription } from 'rxjs/Rx'
 import * as _ from 'lodash'
 import { CurrencyPair, Trade } from '../../types'
@@ -47,7 +46,7 @@ export default class OpenFin {
           currentWindow.restore(() => currentWindow.bringToFront(
             () => log.info('Window brought to front.'),
             err => log.error(err),
-          ), err => log.error(err))
+          ), () => log.error())
           break
         default:
           currentWindow.maximize(() => log.info('Window maximized with success.'), err => log.error('Failed to maximize window.', err))
@@ -189,13 +188,13 @@ export default class OpenFin {
       const chartIqAppId = 'ChartIQ'
       const url = `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/chartiq-shim.html?symbol=${symbol}&period=${interval}`
       const name = `chartiq_${(new Date()).getTime()}`
-      const applicationIcon = 'http://adaptiveconsulting.github.io/chartiq/icon.png'
+      const icon = 'http://adaptiveconsulting.github.io/chartiq/icon.png'
       const app = new fin.desktop.Application({
         url,
         name,
-        applicationIcon,
         uuid: chartIqAppId,
         mainWindowOptions: {
+          icon,
           autoShow: false,
         },
       }, () => app.run(() => setTimeout(() => resolve(symbol), 1000), err => reject(err)), err => reject(err))
@@ -209,7 +208,7 @@ export default class OpenFin {
     new fin.desktop.Notification({
       url: '/notification.html',
       message: tradeNotification,
-      timeout: 20000,
+      duration: 20000,
       onClick: () => {
         this.bringToFront()
         // highlight trade row
