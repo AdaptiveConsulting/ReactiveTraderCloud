@@ -46,7 +46,7 @@ export default class OpenFin {
           currentWindow.restore(() => currentWindow.bringToFront(
             () => log.info('Window brought to front.'),
             err => log.error(err),
-          ), () => log.error())
+          ), (err) => log.error(err))
           break
         default:
           currentWindow.maximize(() => log.info('Window maximized with success.'), err => log.error('Failed to maximize window.', err))
