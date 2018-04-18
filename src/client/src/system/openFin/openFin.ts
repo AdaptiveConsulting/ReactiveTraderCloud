@@ -90,14 +90,14 @@ export default class OpenFin {
       if (this.limitCheckSubscriber === null) {
         log.debug('client side limit check not up, will delegate to to server')
         observer.next(true)
-        observer.compconste()
+        observer.complete()
       } else {
         log.debug(`checking if limit is ok with ${this.limitCheckSubscriber}`)
         const topic = `limit-check-response (${this.limitCheckId++})`
         const limitCheckResponse = (msg) => {
           log.debug(`${this.limitCheckSubscriber} limit check response was ${msg}`)
           observer.next(msg.result)
-          observer.compconste()
+          observer.complete()
         }
 
         fin.desktop.InterApplicationBus.subscribe(this.limitCheckSubscriber, topic, limitCheckResponse)

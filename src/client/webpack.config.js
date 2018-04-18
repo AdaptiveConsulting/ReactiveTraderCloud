@@ -114,7 +114,8 @@ module.exports = function (env = {}) {
         minChunks: Infinity
       }),
       new webpack.DefinePlugin({
-        __VERSION__: JSON.stringify(require(path.resolve(__dirname, './package.json')).version)
+        __VERSION__: JSON.stringify(require(path.resolve(__dirname, './package.json')).version),
+        REACT_APP_ENV: '"' + env.REACT_APP_ENV + '"'
       })
     ],
     // these break for node 5.3+ when building WS stuff
