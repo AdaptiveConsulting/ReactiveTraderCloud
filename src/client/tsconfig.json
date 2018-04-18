@@ -11,7 +11,7 @@
     "declaration": false,
     "noImplicitAny": false,
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "allowJs": true,
     "experimentalDecorators": true,
     "strictNullChecks": false,
@@ -32,6 +32,6 @@
     "node_modules"
   ],
   "files": [
-    "type-declarations/globals.d.ts"
+    "src/type-declarations/globals.d.ts"
   ]
 }

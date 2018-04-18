@@ -4,14 +4,13 @@ import FooterContainer from '../footer/FooterContainer'
 import SidebarRegionContainer from '../sidebar/SidebarRegionContainer'
 import { WorkspaceContainer } from '../workspace/'
 import { BlotterContainer } from '../blotter'
-import './ShellStyles.scss'
-import '../common/styles/_base.scss'
-import '../common/styles/_fonts.scss'
+
 import RegionWrapper from '../common/regions/RegionWrapper'
 import * as classnames from 'classnames'
 import TradeNotificationContainer from '../notification/TradeNotificationContainer'
 import * as PropTypes from 'prop-types'
 const SplitPane = require('react-split-pane')
+import '../styles/scss/index.scss'
 
 export interface ShellProps {
   sessionExpired: boolean

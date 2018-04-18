@@ -1,7 +1,5 @@
 import * as React from 'react'
 
-import './ModalStyles.scss'
-
 export interface ModalProps {
   shouldShow?: boolean
   title?: string

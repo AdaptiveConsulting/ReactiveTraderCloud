@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { AgGridReact } from 'ag-grid-react'
 import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './blotterUtils'
-import './blotter.scss'
-import './toolbar/blotterToolbar.scss'
 import 'ag-grid/dist/styles/ag-grid.css'
 import * as classNames from 'classnames'
 import { GridApi, ColumnApi } from 'ag-grid'

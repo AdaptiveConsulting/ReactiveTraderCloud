@@ -1,6 +1,5 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import './filters.scss'
 import { ColDef, Column, GridApi, InMemoryRowModel, RowNode } from 'ag-grid'
 
 const ALL = 'all'
