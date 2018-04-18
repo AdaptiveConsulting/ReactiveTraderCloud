@@ -7,7 +7,7 @@ import createConnection from './system/service/connection'
 import { User } from './types'
 import { ShellContainer, OpenFinProvider } from './ui/shell'
 // TODO: change to import when webpack bug solved https://github.com/webpack/webpack/issues/4160
-const config = require('config.json')
+import { getEnvVars } from "./config/config"
 
 import {
   AnalyticsService,
@@ -23,12 +23,14 @@ import configureStore from './configureStore'
 // When the application is run in openfin then 'fin' will be registered on the global window object.
 declare const window: any
 
+const config = getEnvVars(REACT_APP_ENV)
+
 const connectSocket = () => {
   const user: User = FakeUserRepository.currentUser
   const realm = 'com.weareadaptive.reactivetrader'
   const url = config.overwriteServerEndpoint ? config.serverEndPointUrl : location.hostname
   const port = config.overwriteServerEndpoint ? config.serverPort : location.port
-  return createConnection(user.code, url, realm, port)
+  return createConnection(user.code, url, realm, +port)
 }
 
 const appBootstrapper = () => {
@@ -64,7 +66,7 @@ const appBootstrapper = () => {
   ReactDOM.render(
     <Provider store={store}>
       <OpenFinProvider openFin={openFin} isRunningInFinsemble={isRunningInFinsemble}>
-        <ShellContainer />
+        <ShellContainer/>
       </OpenFinProvider>
     </Provider>,
     document.getElementById('root')
