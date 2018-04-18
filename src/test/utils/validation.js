@@ -1,11 +1,10 @@
 module.exports = {
-  valNumberOfElements: function(browser, elemVals) {
+  valNumberOfElements: (browser, elemVals) => {
     return function iter(elems) {
-      let i = 0;
-      elems.value.forEach(function(element) {
+      elems.value.map((element, index) => {
         browser.elementIdText(element.ELEMENT, function(result) {
-          browser.assert.equal(result.value, elemVals[i]);
-          i++;
+          console.log(result.value);
+          browser.assert.equal(result.value, elemVals[index]);
         });
       });
     };

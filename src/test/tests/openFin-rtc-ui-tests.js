@@ -3,7 +3,7 @@ var should = require('chai').should();
 var spawn = require('child_process').spawn;
 
 describe('application launch', function() {
-  var app, client;
+  var app, browser;
   var timeout = 30000;
   this.slow(20000);
   this.timeout(timeout);
@@ -29,10 +29,10 @@ describe('application launch', function() {
     return app.start().then(
       function() {
         app.isRunning().should.equal(true);
-        client = app.client;
-        client.timeoutsImplicitWait(timeout);
-        client.timeoutsAsyncScript(timeout);
-        client.timeouts('page load', timeout);
+        browser = app.client;
+        browser.timeoutsImplicitWait(timeout);
+        browser.timeoutsAsyncScript(timeout);
+        browser.timeouts('page load', timeout);
       },
       function(err) {
         console.error(err);
@@ -46,39 +46,82 @@ describe('application launch', function() {
     }
   });
 
-  it('Load RTC page and check the title ', function(done) {
-    client.getTitle().then(function(result) {
+  it('Load RTC page and check the title', function() {
+    return browser.getTitle().then(function(result) {
       should.equal(result, 'Reactive Trader Cloud');
-      done();
     });
   });
 
-  it('Find buy buttons', function(done) {
-    client.elements('.price-button__pip').then(function(result) {
+  it('Find buy buttons', function() {
+    return browser.elements('.price-button__pip').then(function(result) {
       should.exist(result.value);
-      done();
     });
   });
 
-  it('Check the number of tiles displayed is 9', function(done) {
-    client.elements('.workspace-region__item').then(function(result) {
+  it('Check the number of tiles displayed is 9', function() {
+    return browser.elements('.workspace-region__item').then(function(result) {
       should.equal(
         result.value.length,
         9,
         'Wrong number of elements displayed.'
       );
-      done();
     });
   });
 
-  it('Check the Profit & Loss tile is displayed', function(done) {
-    client.getText('.analytics__header-title').then(function(result) {
+  it('Check the Profit & Loss tile is displayed', function() {
+    return browser.getText('.analytics__header-title').then(function(result) {
       should.equal(result, 'Profit & Loss');
-      done();
     });
-    client.getText('.analytics__chart-title').then(function(result) {
-      should.equal(result, 'Positions');
-      done();
+  });
+
+  it('Check the Positions and PnL tiles are displayed', function() {
+    return browser.getText('.analytics__chart-title').then(function(result) {
+      should.equal(result[0], 'Positions');
+      should.equal(result[1], 'PnL');
     });
+  });
+
+  it('Check the grid table is displaying the correct headers', function() {
+    const gridHeaderTitles = [
+      'TRADE ID',
+      'STATUS',
+      'DATE',
+      'DIRECTION',
+      'CCYCCY',
+      'DEALT CCY',
+      'NOTIONAL',
+      'RATE',
+      'VALUE DATE',
+      'TRADER'
+    ];
+    return browser
+      .getText(
+        'div.ag-cell-label-container.ag-header-cell-sorted-none > div.ag-header-cell-label > span.ag-header-cell-text'
+      )
+      .then(function(element) {
+        should.exist(element);
+        element.map(function(element, index) {
+          should.equal(element, gridHeaderTitles[index]);
+        });
+      });
+  });
+
+  it('Hovering on the spot tile should reveal the spot date', () => {
+    return browser.getText('.spot-tile__tenor').then(result => {
+      result.map(res => {
+        should.equal(res, 'SP');
+      });
+    });
+  });
+
+  it('Click and trade on a side to perform a trade', () => {
+    return browser
+      .click('.spot-tile__price--bid')
+      .pause(1000)
+      .then(() => {
+        should.exist(
+          browser.element('.trade-notification__summary-item--notional')
+        );
+      });
   });
 });
