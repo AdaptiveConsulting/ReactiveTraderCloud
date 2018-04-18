@@ -1,5 +1,4 @@
 import * as React from 'react'
-import './blotterToolbar.scss'
 import { FILTER_APPLIED_ICON, FILTER_ICON } from '../../assets/icons'
 
 

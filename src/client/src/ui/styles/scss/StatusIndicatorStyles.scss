@@ -1,0 +1,26 @@
+@import "variables";
+
+.status-indicator {
+  border: 2px solid #1d2027;
+  border-radius: 12px;
+  width: 20px;
+  height: 20px;
+  color: #1d2027;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.status-indicator--healthy {
+  background-color: $success-color;
+}
+
+.status-indicator--warning {
+  background-color: $warning-color;
+}
+
+.status-indicator--down {
+  color: white;
+  background-color: $error-color;
+}

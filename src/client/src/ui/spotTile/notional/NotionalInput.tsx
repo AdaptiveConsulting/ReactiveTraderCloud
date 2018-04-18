@@ -2,7 +2,6 @@ import * as React from 'react'
 import * as numeral from 'numeral'
 import { utils } from '../../../system'
 import * as classnames from 'classnames'
-import './NotionalInputStyles.scss'
 import { CurrencyPair }  from '../../../types'
 
 const NUMERAL_FORMAT      = '0,000,000[.]00'

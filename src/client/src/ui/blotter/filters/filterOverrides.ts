@@ -1,5 +1,4 @@
 import * as AgGrid from 'ag-grid'
-import './filters.scss'
 // import { Column, FilterManager, FilterWrapper, Promise, Utils as _ } from "ag-grid";
 
 const getFilterSelect = (filter: any) => {
