@@ -1,26 +1,28 @@
-import * as ReactDOM from 'react-dom'
 import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import TradeNotification from './ui/notification/TradeNotification'
 
 declare const window: any
 
-export default class NotificationBootstrapper{
-
-  run() {
-    // OpenFin notifications API: need to define the global method onNotificationMessage
-    window.onNotificationMessage = message => this.handleNotificationMessage(message)
-  }
-
-  dismissNotification() {
-    window.fin.desktop.Notification.getCurrent().close()
-  }
-
-  handleNotificationMessage(message) {
-    ReactDOM.render(<TradeNotification message={message} dismissNotification={this.dismissNotification}/>, document.getElementById('root'))
-
-    // send a message back to the main application - required to restore the main application window if it's minimised
-    window.fin.desktop.Notification.getCurrent().sendMessageToApplication('ack')
-  }
+function dismissNotification() {
+  window.fin.desktop.Notification.getCurrent().close()
 }
 
-new NotificationBootstrapper().run()
+function handleNotificationMessage(message) {
+  ReactDOM.render(
+    <TradeNotification
+      message={message}
+      dismissNotification={dismissNotification}
+    />,
+    document.getElementById('root')
+  )
+
+  // send a message back to the main application - required to restore the main application window if it's minimised
+  window.fin.desktop.Notification.getCurrent().sendMessageToApplication('ack')
+}
+
+export function run() {
+  // OpenFin notifications API: need to define the global method onNotificationMessage
+  window.onNotificationMessage = message =>
+    handleNotificationMessage(message)
+}

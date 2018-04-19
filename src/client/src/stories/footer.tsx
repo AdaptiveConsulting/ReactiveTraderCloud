@@ -1,8 +1,8 @@
-import * as React from 'react'
 import { storiesOf } from '@storybook/react'
+import * as React from 'react'
 
-import footerProps from './footer/footerProps'
 import { StatusIndicator } from '../ui/footer/StatusIndicator'
+import footerProps from './footer/footerProps'
 
 storiesOf('Footer', module)
   .add('StatusIndicator', () =>

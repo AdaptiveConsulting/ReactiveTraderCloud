@@ -1,11 +1,11 @@
-import Guard from '../guard'
-import { Observable, BehaviorSubject, Subscription, Scheduler } from 'rxjs/Rx'
-import { ConnectionType, ConnectionStatus } from '../../types'
-import { ConnectionTypeMapper } from '../../services/mappers'
-import logger from '../logger'
-import AutobahnConnectionProxy from './autobahnConnectionProxy'
 import { Error } from 'autobahn'
+import { BehaviorSubject, Observable, Scheduler, Subscription } from 'rxjs/Rx'
+import { ConnectionTypeMapper } from '../../services/mappers'
+import { ConnectionStatus, ConnectionType } from '../../types'
+import Guard from '../guard'
+import logger from '../logger'
 import { SerialSubscription } from '../serialSubscription'
+import AutobahnConnectionProxy from './autobahnConnectionProxy'
 
 const log = logger.create('Connection')
 
@@ -128,7 +128,7 @@ export class Connection {
     }
   }
 
-  logResponse(topic: string, response: Array<any>): void {
+  logResponse(topic: string, response: any[]): void {
     if (log.isVerboseEnabled) {
       const payloadString = JSON.stringify(response[0])
       log.verbose(
@@ -160,7 +160,7 @@ export class Connection {
 
       let subscription
       this.autobahn.session
-        .subscribe(topic, (response: Array<any>) => {
+        .subscribe(topic, (response: any[]) => {
           this.logResponse(topic, response)
           o.next(response[0])
         })
@@ -226,7 +226,7 @@ export class Connection {
         )
         return disposables
       }
-      let isDisposed
+      const isDisposed = false
       const dto = [
         {
           payload,

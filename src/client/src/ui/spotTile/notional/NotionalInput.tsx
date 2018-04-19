@@ -1,7 +1,7 @@
-import * as React from 'react'
-import * as numeral from 'numeral'
-import { utils } from '../../../system'
 import * as classnames from 'classnames'
+import * as numeral from 'numeral'
+import * as React from 'react'
+import { utils } from '../../../system'
 import { CurrencyPair }  from '../../../types'
 
 const NUMERAL_FORMAT      = '0,000,000[.]00'
@@ -106,13 +106,13 @@ export default class NotionalInput extends React.Component<NotionalInputProps, {
 
   inputIsAllowed(charCode: number) {
     // allow charcter codes before the Unit Separator to catch Shift, Backspace, etc
-    if (charCode <= CHAR_CODE_UNIT_SEP) return true
+    if (charCode <= CHAR_CODE_UNIT_SEP) { return true }
 
     // allow shortcut values
-    if (SHORTCUT_CHAR_CODES.indexOf(charCode) !== -1) return true
+    if (SHORTCUT_CHAR_CODES.indexOf(charCode) !== -1) { return true }
 
     // allow numeric values:
-    if (charCode >= CHAR_CODE_0 && charCode <= CHAR_CODE_9) return true
+    if (charCode >= CHAR_CODE_0 && charCode <= CHAR_CODE_9) { return true }
     return false
   }
 }

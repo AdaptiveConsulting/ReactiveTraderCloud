@@ -6,22 +6,16 @@ import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 
 const getSpotTileKeys = createDeepEqualSelector(
-  (state:any) => Object.keys(state.currencyPairs),
+  (state: any) => Object.keys(state.currencyPairs),
   (spotTilesKeys) => spotTilesKeys
 )
 
-interface WorkspaceContainerOwnProps {}
 
 interface WorkspaceContainerStateProps {
   spotTileKeys: string[]
 }
 
-interface WorkspaceContainerDispatchProps {}
-
-type WorkspaceContainerProps =
-  WorkspaceContainerOwnProps
-  & WorkspaceContainerStateProps
-  & WorkspaceContainerDispatchProps
+type WorkspaceContainerProps = WorkspaceContainerStateProps
 
 export class WorkspaceContainer extends React.Component<WorkspaceContainerProps, {}> {
 
@@ -35,7 +29,7 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
 
   renderItems() {
 
-    const { spotTileKeys } = this.props
+    const {spotTileKeys} = this.props
     if (!spotTileKeys || spotTileKeys.length === 0) {
       return <div className="workspace-region__icon--loading"><i className="fa fa-5x fa-cog fa-spin"/></div>
     }

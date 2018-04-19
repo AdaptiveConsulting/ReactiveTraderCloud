@@ -1,3 +1,5 @@
+/* tslint:disable */
+
 import * as React from 'react'
 import SpotTile from '../SpotTile'
 import * as renderer from 'react-test-renderer'
@@ -12,8 +14,8 @@ const spotTileProps = {
     base: 'GBP',
   },
   currentSpotPrice: {
-    ask: getButtonProps('ask', () => {}).rate,
-    bid: getButtonProps('ask', () => {}).rate,
+    ask: getButtonProps('ask', () => undefined).rate,
+    bid: getButtonProps('ask', () => undefined).rate,
     priceMovementType: 'Up',
     spread: {
       formattedValue: '-1.23',

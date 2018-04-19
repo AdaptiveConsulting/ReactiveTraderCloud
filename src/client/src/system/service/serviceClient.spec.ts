@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Rx'
-import ServiceClient from '../../../src/system/service/serviceClient'
 import { Connection } from '../../../src/system/service/connection'
+import ServiceClient from '../../../src/system/service/serviceClient'
 import StubAutobahnProxy from './autobahnConnectionProxyStub'
 
 let stubAutobahnProxy

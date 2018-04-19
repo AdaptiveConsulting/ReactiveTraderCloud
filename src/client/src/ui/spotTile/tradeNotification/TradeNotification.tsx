@@ -1,8 +1,8 @@
-import * as React from 'react'
 import * as classnames from 'classnames'
+import * as numeral from 'numeral'
+import * as React from 'react'
 import { CurrencyPair, TradeStatus } from '../../../types'
 import { Notification } from '../../../types/notification'
-import * as numeral from 'numeral'
 import { spotDateFormatter } from '../../utils/dateUtils'
 
 interface TradeNotificationProps {

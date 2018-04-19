@@ -1,7 +1,7 @@
-import * as React from 'react'
-import QuickFilter from './QuickFilter'
-import AppliedFilters from './AppliedFilters'
 import * as AgGrid from 'ag-grid'
+import * as React from 'react'
+import AppliedFilters from './AppliedFilters'
+import QuickFilter from './QuickFilter'
 
 interface BlotterToolbarProps {
   isQuickFilterApplied: boolean

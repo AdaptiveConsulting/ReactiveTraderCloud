@@ -1,6 +1,6 @@
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
-import { createNewTradesAction } from './actions'
 import { CurrencyPair, Trade } from '../../types'
+import { createNewTradesAction } from './actions'
 
 const subscribeOpenFinToBlotterData = (openFin, store) => () => {
   const trades: Trade[] = store.getState().blotterService.trades
