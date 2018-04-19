@@ -1,5 +1,5 @@
-import * as ReactDOM from 'react-dom'
 import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import TradeNotification from './ui/notification/TradeNotification'
 
 declare const window: any

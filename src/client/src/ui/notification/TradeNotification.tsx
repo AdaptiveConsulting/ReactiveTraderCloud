@@ -1,5 +1,5 @@
-import * as React from 'react'
 import * as classnames from 'classnames'
+import * as React from 'react'
 import { Direction, Trade, TradeStatus } from '../../types'
 
 export interface TradeNotificationProps {

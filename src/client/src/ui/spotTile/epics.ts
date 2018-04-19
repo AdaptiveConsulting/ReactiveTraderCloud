@@ -1,11 +1,11 @@
-import { Observable } from 'rxjs/Rx'
-import { Direction } from '../../types'
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
-import { ACTION_TYPES as PRICING_ACTION_TYPES } from '../../pricingOperations'
-import { ACTION_TYPES as SPOT_TILE_ACTION_TYPES } from './actions';
-import { combineEpics } from 'redux-observable'
-import { SpotPrice } from '../../types/spotPrice'
 import * as _ from 'lodash'
+import { combineEpics } from 'redux-observable'
+import { Observable } from 'rxjs/Rx'
+import { ACTION_TYPES as PRICING_ACTION_TYPES } from '../../pricingOperations'
+import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
+import { Direction } from '../../types'
+import { SpotPrice } from '../../types/spotPrice'
+import { ACTION_TYPES as SPOT_TILE_ACTION_TYPES } from './actions';
 import { currencyChartOpened, dismissNotification, executeTrade, tradeExecuted, updateTiles } from './actions';
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
@@ -51,7 +51,9 @@ export function spotTileEpicsCreator(executionService$, referenceDataService, op
   function onTradeExecuted(action$) {
     return action$.ofType(SPOT_TILE_ACTION_TYPES.TRADE_EXECUTED)
       .do(action => {
-        openfin.isRunningInOpenFin && action.meta && openfin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
+        if(openfin.isRunningInOpenFin && action.meta){
+          openfin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
+        }
       })
       .delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS)
       .map(action => ({ symbol: action.payload.trade.CurrencyPair || action.payload.trade.symbol }))

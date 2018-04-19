@@ -1,10 +1,10 @@
-import * as React from 'react'
 import * as classnames from 'classnames'
 import * as _ from 'lodash'
-import { PNLChartModel } from './model/pnlChartModel'
-import { PNLChart, AnalyticsBarChart, PositionsBubbleChart } from './'
-import { PositionsChartModel } from './model/positionsChartModel'
+import * as React from 'react'
 import { CurrencyPair } from '../../types/currencyPair'
+import { AnalyticsBarChart, PNLChart, PositionsBubbleChart } from './'
+import { PNLChartModel } from './model/pnlChartModel'
+import { PositionsChartModel } from './model/positionsChartModel'
 
 export interface AnalyticsProps {
   canPopout: boolean
@@ -33,12 +33,13 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
   render() {
     const { canPopout, isConnected, currencyPairs } = this.props
 
-    if (!isConnected)
+    if (!isConnected) {
       return (
         <div className="analytics__container">
           <div ref="analyticsInnerContainer"></div>
         </div>
       )
+    }
 
     const newWindowBtnClassName = classnames('glyphicon glyphicon-new-window', canPopout && 'analytics__icon--tearoff--hidden' || 'analytics__icon--tearoff')
 

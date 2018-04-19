@@ -1,5 +1,5 @@
-import { combineEpics } from 'redux-observable'
 import { createAction, handleActions } from 'redux-actions'
+import { combineEpics } from 'redux-observable'
 import { ConnectionStatus } from './types/'
 
 export enum ACTION_TYPES {

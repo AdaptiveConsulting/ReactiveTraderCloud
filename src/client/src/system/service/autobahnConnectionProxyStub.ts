@@ -94,27 +94,27 @@ class DummyPromise {
 }
 
 class StubCallResult extends DummyPromise {
-  _dto
+  dtoInner
   constructor(dto) {
     super()
-    this._dto = dto
+    this.dtoInner = dto
   }
 
   get dto() {
-    return this._dto[0]
+    return this.dtoInner[0]
   }
 }
 
 class StubSubscribeResult extends DummyPromise {
-  _onResults
+  onResultsInner
   constructor(onResults) {
     super()
-    this._onResults = onResults
+    this.onResultsInner = onResults
   }
 
   onResults(payload) {
     // autobahn returns results in an array, fake this up:
-    return this._onResults([payload])
+    return this.onResultsInner([payload])
   }
 }
 

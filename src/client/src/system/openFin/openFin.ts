@@ -1,10 +1,10 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx'
 import * as _ from 'lodash'
-import { CurrencyPair, Trade } from '../../types'
-import PositionsMapper from '../../services/mappers/positionsMapper'
-import logger from '../logger'
-import * as numeral from 'numeral'
 import * as moment from 'moment'
+import * as numeral from 'numeral'
+import { Observable, Subject, Subscription } from 'rxjs/Rx'
+import PositionsMapper from '../../services/mappers/positionsMapper'
+import { CurrencyPair, Trade } from '../../types'
+import logger from '../logger'
 
 const log = logger.create('OpenFin')
 
@@ -70,7 +70,7 @@ export default class OpenFin {
   }
 
   addSubscription(name, callback) {
-    if (!this.isRunningInOpenFin) return
+    if (!this.isRunningInOpenFin) { return }
     if (!fin.desktop.InterApplicationBus) {
       fin.desktop.main(() => {
         fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
@@ -202,9 +202,10 @@ export default class OpenFin {
   }
 
   openTradeNotification(trade:Trade, currencyPair: CurrencyPair) {
-    if (!this.isRunningInOpenFin) return
+    if (!this.isRunningInOpenFin) { return }
 
     const tradeNotification = formatTradeNotification(trade, currencyPair)
+    // tslint:disable-next-line
     new fin.desktop.Notification({
       url: '/notification.html',
       message: tradeNotification,
@@ -219,14 +220,14 @@ export default class OpenFin {
   }
 
   publishCurrentPositions(ccyPairPositions) {
-    if (!this.isRunningInOpenFin) return
+    if (!this.isRunningInOpenFin) { return }
     const serialisePositions = ccyPairPositions.map(p => PositionsMapper.mapToDto(p))
     fin.desktop.InterApplicationBus.publish('position-update', serialisePositions)
   }
 
 
   publishPrice(price) {
-    if (!this.isRunningInOpenFin) return
+    if (!this.isRunningInOpenFin) { return }
     fin.desktop.InterApplicationBus.publish('price-update', price)
   }
 
@@ -238,7 +239,7 @@ export default class OpenFin {
   }
 
   sendPositionClosedNotification(uuid, correlationId) {
-    if (!this.isRunningInOpenFin) return
+    if (!this.isRunningInOpenFin) { return }
     fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId)
   }
 

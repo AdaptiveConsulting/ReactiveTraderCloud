@@ -1,18 +1,18 @@
-import { BehaviorSubject, Observable, Scheduler, Subscription } from 'rxjs/Rx'
 import 'rxjs/add/observable/of'
 import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/repeat'
 import 'rxjs/add/operator/mergeMapTo'
+import 'rxjs/add/operator/repeat'
+import { BehaviorSubject, Observable, Scheduler, Subscription } from 'rxjs/Rx'
 
 import * as _ from 'lodash'
-import logger from '../logger'
-import Guard from '../guard'
-import { DisposableBase } from '../disposables'
-import { ConnectionStatus, ServiceStatus, ServiceInstanceStatus } from '../../types/'
-import LastValueObservableDictionary from './lastValueObservableDictionary'
 // Importing ServiceObservableExtensions to add functions to Rx prototype
 import '../../../src/system/service/serviceObservableExtensions'
+import { ConnectionStatus, ServiceInstanceStatus, ServiceStatus } from '../../types/'
+import { DisposableBase } from '../disposables'
+import Guard from '../guard'
+import logger from '../logger'
 import '../observableExtensions/retryPolicyExt'
+import LastValueObservableDictionary from './lastValueObservableDictionary'
 
 interface RawServiceStatus {
   Type: string,
@@ -22,8 +22,8 @@ interface RawServiceStatus {
 }
 
 const toConnectedBoolean = status => status === ConnectionStatus.connected
-const isConnected = isConnected => isConnected
-const isNotConnected = isConnected => !isConnected
+const isConnected = connected => connected
+const isNotConnected = connected => !connected
 const throwConnectionDisconnectedError = () => Observable.throw('Underlying connection disconnected')
 const isCurrentServiceType = (currentServiceType: string) => (service: RawServiceStatus) => service.Type === currentServiceType
 
@@ -156,8 +156,8 @@ export default class ServiceClient extends DisposableBase {
             )
           }
         },
-        err => o.error(err),
-        () => o.complete(),
+          err => o.error(err),
+          () => o.complete(),
       ))
       return disposables
     })
@@ -184,6 +184,7 @@ export default class ServiceClient extends DisposableBase {
       // Another approach we can incorporate would be to wrap all messages in a wrapper envelope.
       // Such an envelope could denote if the message stream should terminate, this would negate the need to distinguish between
       // request-response and stream operations as is currently the case.
+      // tslint:disable-next-line:no-bitwise
       const topicName = 'topic_' + this.serviceType + '_' + (Math.random() * Math.pow(36, 8) << 0).toString(36)
       let hasSubscribed = false
       disposables.add(this.serviceInstanceDictionaryStream
@@ -204,24 +205,24 @@ export default class ServiceClient extends DisposableBase {
                 () => {
                   o.complete()
                 },
-              ),
+            ),
             )
             const remoteProcedure = serviceInstanceStatus.serviceId + '.' + operationName
             disposables.add(
               this.connection.requestResponse(remoteProcedure, request, topicName)
                 .subscribe(
-                () => {
-                  this.log.debug(`Ack received for RPC hookup as part of stream operation [${operationName}]`)
-                },
-                err => o.error(err),
-                () => {}, // noop, nothing to do here, we don't complete the outer observer on ack,
+                  () => {
+                    this.log.debug(`Ack received for RPC hookup as part of stream operation [${operationName}]`)
+                  },
+                  err => o.error(err),
+                  () => { }, // noop, nothing to do here, we don't complete the outer observer on ack,
               ),
             )
           }
         },
-          err => o.error(err),
+          error => o.error(error),
           () => o.complete(),
-        ))
+      ))
       return disposables
     })
   }
@@ -229,9 +230,9 @@ export default class ServiceClient extends DisposableBase {
 
 function createServiceStatus(cache, serviceType): ServiceStatus {
   const instanceStatuses = _.values(cache.values).map((item: any) => item.latestValue)
-  const isConnected = _(cache.values).some((item: any) => item.latestValue.isConnected)
+  const connected = _(cache.values).some((item: any) => item.latestValue.isConnected)
   return {
-    isConnected,
+    isConnected: connected,
     instanceStatuses,
     serviceType,
   }

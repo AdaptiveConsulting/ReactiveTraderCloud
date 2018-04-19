@@ -1,8 +1,8 @@
 import * as _ from 'lodash'
 
 import {
-  Trade,
   Direction,
+  Trade,
   TradeStatus,
   TradesUpdate
 } from '../../types/'

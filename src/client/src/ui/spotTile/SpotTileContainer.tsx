@@ -1,8 +1,12 @@
+import * as _ from 'lodash'
+import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import * as PropTypes from 'prop-types'
+import { CurrencyPair, Direction } from '../../types/'
+import { SpotPriceTick } from '../../types/spotPriceTick'
+import { SpotTileData } from '../../types/spotTileData'
 import { addRegion, openWindow } from '../common/regions/regionsOperations'
-import SpotTile from './SpotTile'
+import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 import {
   dismissNotification,
   displayCurrencyChart,
@@ -10,12 +14,8 @@ import {
   spotRegionSettings,
   undockTile,
 } from './actions'
-import { CurrencyPair, Direction } from '../../types/'
-import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
-import { SpotPriceTick } from '../../types/spotPriceTick'
+import SpotTile from './SpotTile'
 import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './spotTileUtils'
-import { SpotTileData } from '../../types/spotTileData'
-import * as _ from 'lodash'
 
 const buildSpotTileDataObject = (tileData, spotTick:SpotPriceTick, currencyPair:CurrencyPair) => {
   const tileDataObject:any = { ...tileData, ...spotTick, ...currencyPair }
@@ -79,9 +79,11 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
   render() {
     const openFin = this.context.openFin
     const { id, currencyPair, spotTilesData, executionConnected,
+            // tslint:disable-next-line:no-shadowed-variable
             pricingConnected, onPopoutClick, undockTile, onNotificationDismissedClick,
+            // tslint:disable-next-line:no-shadowed-variable
             displayCurrencyChart } = this.props
-    const spotTitle = spotRegionSettings(id)['title']
+    const spotTitle = spotRegionSettings(id).title
     return (
       <SpotTile key={id}
                 pricingConnected={pricingConnected}
@@ -100,7 +102,7 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
 
   private executeTrade = (direction:Direction) => {
     const { executionConnected, spotTilesData } = this.props
-    if (!executionConnected || spotTilesData.isTradeExecutionInFlight) return
+    if (!executionConnected || spotTilesData.isTradeExecutionInFlight) { return }
 
     const rate = direction === Direction.Buy ? spotTilesData.ask : spotTilesData.bid
     const tradeRequestObj:TradeRequest = {

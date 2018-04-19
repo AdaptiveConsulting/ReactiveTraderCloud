@@ -1,7 +1,7 @@
-import { createAction, handleActions } from 'redux-actions'
 import * as _ from 'lodash'
+import { createAction, handleActions } from 'redux-actions'
 import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataOperations'
-import { ServiceStatus, ServiceInstanceStatus } from './types/index'
+import { ServiceInstanceStatus, ServiceStatus } from './types/index'
 
 export enum ACTION_TYPES {
   COMPOSITE_STATUS_SERVICE = '@ReactiveTraderCloud/COMPOSITE_STATUS_SERVICE'
@@ -22,8 +22,8 @@ export const compositeStatusServiceEpic = compositeStatusService$ => action$ => 
   )
 }
 
-const getServiceStatus = service => {
-  return _.mapValues(service.services, (service: ServiceStatus) => {
+const getServiceStatus = serviceOuter => {
+  return _.mapValues(serviceOuter.services, (service: ServiceStatus) => {
     return {
       isConnected: service.isConnected,
       connectedInstanceCount: countInstances(service.instanceStatuses),

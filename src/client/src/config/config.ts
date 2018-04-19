@@ -4,7 +4,7 @@ interface Config {
   serverPort?: string
 }
 
-type ConfigMap = { [key: string]: Config }
+interface ConfigMap { [key: string]: Config }
 
 const configMap: ConfigMap = {
   local: {

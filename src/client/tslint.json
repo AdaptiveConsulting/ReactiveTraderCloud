@@ -1,16 +1,35 @@
 {
-  "extends": ["tslint-config-airbnb", "tslint-config-prettier"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier"
+  ],
   "rules": {
-    "quotemark": [true, "single", "jsx-double"],
-    "ordered-imports": false,
-    "interface-name": [true, "never-prefix"],
-    "no-console": false,
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
+    "member-access": false,
+    "no-misused-new": false,
     "object-literal-sort-keys": false,
+    "jsx-no-lambda": false,
+    "no-console": false,
+    "no-string-literal": false,
     "member-ordering": false,
-    "max-line-length": [150],
-    "semicolon": [true, "never"],
     "ter-arrow-parens": false,
     "import-name": false,
-    "trailing-comma": false
+    "trailing-comma": false,
+    "only-arrow-functions": false,
+    "no-empty": false,
+    "comment-format": false,
+    "ban-types": false,
+    "no-var-requires": false,
+    "max-classes-per-file": [false, 1]
+  },
+  "defaultSeverity": "warning",
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
   }
 }

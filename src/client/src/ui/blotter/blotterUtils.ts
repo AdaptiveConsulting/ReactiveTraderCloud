@@ -1,9 +1,9 @@
 import * as AgGrid from 'ag-grid'
 import * as numeral from 'numeral'
-import { Trade, TradeStatus } from '../../types'
 import { formatDate, UtcFormatDate } from '../../system/utils'
-import SetFilter from './filters/SetFilter'
+import { Trade, TradeStatus } from '../../types'
 import './filters/filterOverrides.ts'
+import SetFilter from './filters/SetFilter'
 
 const currencyIconLookup = {
   ['USD']: `fa fa-usd`,
@@ -49,6 +49,8 @@ const getStatusIndicatorClass = (trade:Trade) => {
       return 'rt-blotter__status-indicator--done'
     case TradeStatus.Pending:
       return 'rt-blotter__status-indicator--pending'
+    default:
+    console.log('unkown trade status')
   }
   return null
 }

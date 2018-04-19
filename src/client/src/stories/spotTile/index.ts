@@ -1,6 +1,6 @@
 import { Direction, NotificationType, Trade, } from '../../types'
-import { SpotTileProps } from '../../ui/spotTile/SpotTile'
 import { Notification } from '../../types/notification'
+import { SpotTileProps } from '../../ui/spotTile/SpotTile'
 
 const getRandomNumber = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min)
