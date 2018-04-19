@@ -1,5 +1,5 @@
-import { RegionSettings, Trade } from '../../types/index'
 import * as keyBy from 'lodash.keyby'
+import { RegionSettings, Trade } from '../../types/index'
 import { ACTION_TYPES } from './actions'
 
 export const blotterRegionsSettings: RegionSettings = {

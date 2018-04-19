@@ -1,3 +1,5 @@
+/* tslint:disable */
+
 import * as React from 'react'
 import PriceMovementIndicator from '../PriceMovementIndicator'
 import ShallowRenderer from 'react-test-renderer/shallow'

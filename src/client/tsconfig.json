@@ -1,37 +1,35 @@
 {
   "compilerOptions": {
+    "outDir": "build/dist",
+    "module": "esnext",
     "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "removeComments": true,
-    "jsx": "react",
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "declaration": false,
-    "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "noUnusedLocals": false,
-    "allowJs": true,
-    "experimentalDecorators": true,
-    "strictNullChecks": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "skipLibCheck": true,
     "lib": [
       "es2015",
       "es2017",
       "dom"
     ],
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "sourceMap": true,
+    "allowJs": true,
+    "strict": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "declaration": false,
+    "noUnusedLocals": false,
+    "skipLibCheck": true
   },
   "exclude": [
-    "dist",
+    "node_modules",
     "build",
-    "node_modules"
-  ],
-  "files": [
-    "src/type-declarations/globals.d.ts"
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest"
   ]
 }

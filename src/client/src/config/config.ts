@@ -1,27 +1,29 @@
 interface Config {
-  overwriteServerEndpoint: boolean,
-  serverEndPointUrl?: string,
+  overwriteServerEndpoint: boolean
+  serverEndpointUrl?: string
   serverPort?: string
 }
 
-type ConfigMap = { [key: string]: Config }
+interface ConfigMap {
+  [key: string]: Config
+}
 
 const configMap: ConfigMap = {
   local: {
-    "overwriteServerEndpoint": true,
-    "serverEndPointUrl": "localhost",
-    "serverPort": '8000'
+    overwriteServerEndpoint: true,
+    serverEndpointUrl: 'localhost',
+    serverPort: '8000'
   },
   docker: {
-    "overwriteServerEndpoint": true,
-    "serverEndPointUrl": "192.168.99.100"
+    overwriteServerEndpoint: true,
+    serverEndpointUrl: '192.168.99.100'
   },
   demo: {
-    "overwriteServerEndpoint": true,
-    "serverEndPointUrl": "web-demo.adaptivecluster.com"
+    overwriteServerEndpoint: true,
+    serverEndpointUrl: 'web-demo.adaptivecluster.com'
   },
   default: {
-    "overwriteServerEndpoint": false
+    overwriteServerEndpoint: false
   }
 }
 

@@ -1,11 +1,11 @@
-import * as React from 'react'
 import { storiesOf } from '@storybook/react'
+import * as React from 'react'
 
-import { default as analyticsProps, pnlChartModel, positionsChartModel } from './analytics/analyticsProps'
-import { Analytics, PositionsBubbleChart, AnalyticsBarChart } from '../ui/analytics/index'
-import PNLChart from '../ui/analytics/PNLChart'
-import { getCurrencyPairs } from './currencyPairs'
+import { Analytics, AnalyticsBarChart, PositionsBubbleChart } from '../ui/analytics/index'
 import { PricePoint } from '../ui/analytics/model/pnlChartModel'
+import PNLChart from '../ui/analytics/PNLChart'
+import { default as analyticsProps, pnlChartModel, positionsChartModel } from './analytics/analyticsProps'
+import { getCurrencyPairs } from './currencyPairs'
 
 storiesOf('Analytics', module)
   .add('Full panel', () =>

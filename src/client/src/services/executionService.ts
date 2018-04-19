@@ -1,12 +1,12 @@
-import { Observable, Subscription, Scheduler } from 'rxjs/Rx'
+import { Observable, Scheduler, Subscription } from 'rxjs/Rx'
+import { logger } from '../system'
+import { ServiceClient } from '../system/service'
+import { ServiceConst } from '../types'
 import {
   createExecuteTradeResponse,
   createExecuteTradeResponseForError
 } from '../types/executeTradeResponse'
 import { TradeMapper } from './mappers'
-import { logger } from '../system'
-import { ServiceClient } from '../system/service'
-import { ServiceConst } from '../types'
 
 const log = logger.create('ExecutionService')
 

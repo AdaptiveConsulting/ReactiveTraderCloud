@@ -1,13 +1,13 @@
+import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import * as PropTypes from 'prop-types'
+import Environment from '../../system/environment'
+import { RegionSettings } from '../../types'
+import { CurrencyPair } from '../../types/currencyPair'
+import { addRegion, openWindow } from '../../ui/common/regions/regionsOperations'
+import Analytics from './Analytics'
 import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
-import Analytics from './Analytics'
-import Environment from '../../system/environment'
-import { addRegion, openWindow } from '../../ui/common/regions/regionsOperations'
-import { CurrencyPair } from '../../types/currencyPair'
-import { RegionSettings } from '../../types'
 
 const analyticsRegionSettings: RegionSettings = {
   title: 'Analytics',
@@ -16,9 +16,6 @@ const analyticsRegionSettings: RegionSettings = {
   dockable: false,
   resizable: false}
 
-interface AnalyticsContainerOwnProps {
-
-}
 
 interface AnalyticsContainerStateProps {
   isConnected: boolean
@@ -28,11 +25,11 @@ interface AnalyticsContainerStateProps {
 }
 
 interface AnalyticsContainerDispatchProps {
-  onPopoutClick: (any) => any
+  onPopoutClick: (x:any) => any
   onComponentMount: () => void
 }
 
-type AnalyticsContainerProps = AnalyticsContainerOwnProps & AnalyticsContainerStateProps & AnalyticsContainerDispatchProps
+type AnalyticsContainerProps = AnalyticsContainerStateProps & AnalyticsContainerDispatchProps
 
 class AnalyticsContainer extends React.Component<AnalyticsContainerProps, any> {
 

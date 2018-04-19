@@ -1,6 +1,6 @@
-import { NotificationType } from '../../types/notificationType'
 import { Trade } from '../../types'
 import { Notification } from '../../types/notification'
+import { NotificationType } from '../../types/notificationType'
 
 export function buildNotification(trade:Trade = null, error):Notification {
   if (error || !trade) {

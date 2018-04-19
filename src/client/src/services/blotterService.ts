@@ -1,9 +1,9 @@
 import { Observable, Scheduler } from 'rxjs/Rx'
-import { TradeMapper } from './mappers'
-import { ServiceClient } from '../system/service'
 import { logger, RetryPolicy } from '../system'
 import '../system/observableExtensions/retryPolicyExt'
+import { ServiceClient } from '../system/service'
 import { ServiceConst } from '../types'
+import { TradeMapper } from './mappers'
 
 const log = logger.create('BlotterService')
 

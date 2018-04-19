@@ -1,9 +1,11 @@
+/* tslint:disable */
+
 import * as React from 'react'
-import PriceButton from '../PriceButton'
+import PriceButton from '../priceButton'
 import ShallowRenderer from 'react-test-renderer/shallow'
 import { mount } from 'enzyme'
 
-function getButtonProps (type: string, action: any) {
+function getButtonProps (type, action) {
   const classNameType = type === 'Sell' ? 'bid' : 'ask'
 
   return {

@@ -1,16 +1,16 @@
 import * as React from 'react'
-import { Modal } from '../modal'
+import { BlotterContainer } from '../blotter'
 import FooterContainer from '../footer/FooterContainer'
+import { Modal } from '../modal'
 import SidebarRegionContainer from '../sidebar/SidebarRegionContainer'
 import { WorkspaceContainer } from '../workspace/'
-import { BlotterContainer } from '../blotter'
 
-import RegionWrapper from '../common/regions/RegionWrapper'
 import * as classnames from 'classnames'
-import TradeNotificationContainer from '../notification/TradeNotificationContainer'
 import * as PropTypes from 'prop-types'
+import RegionWrapper from '../common/regions/RegionWrapper'
+import TradeNotificationContainer from '../notification/TradeNotificationContainer'
 const SplitPane = require('react-split-pane')
-import '../styles/scss/index.scss'
+import '../styles/css/index.css'
 
 export interface ShellProps {
   sessionExpired: boolean
@@ -24,7 +24,7 @@ export default class Shell extends React.Component<ShellProps, {}> {
     openFin: PropTypes.object
   }
   props: ShellProps
-  appVersion: string = __VERSION__ // version from package.json exported in webpack.config.js
+  appVersion: string = process.env.REACT_APP_VERSION // version from package.json exported in webpack.config.js
 
   render() {
     const { sessionExpired, showSplitter } = this.props
