@@ -13,8 +13,8 @@ export class SerialSubscription extends Subscription {
 
   add(teardownSrc: TeardownLogic): Subscription {
     let teardown: any = teardownSrc
-    if (this.closed) return this
-    if (typeof(teardownSrc) === 'function') teardown = new Subscription(teardown)
+    if (this.closed) { return this }
+    if (typeof(teardownSrc) === 'function') { teardown = new Subscription(teardown) }
 
     if (this.currentSubscription) {
       this.remove(this.currentSubscription)

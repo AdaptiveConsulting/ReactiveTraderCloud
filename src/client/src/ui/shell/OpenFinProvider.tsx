@@ -1,6 +1,6 @@
+import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import OpenFinChrome from './OpenFinChrome'
-import * as PropTypes from 'prop-types'
 
 export interface ChildContextTypes {
   getChildContext?: () => boolean

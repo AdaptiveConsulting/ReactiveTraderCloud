@@ -1,4 +1,20 @@
 /* nvd3 version 1.8.1 (https://github.com/novus/nvd3) 2015-06-15 */
+
+$positive-color:      #6db910;
+$negative-color:      #d62728;
+$barchart-text-color: gray;
+$bar-bg-color:        #414D5C;
+$container-bg-color:  #262a33;
+$highlight-color:     #eee;
+$stroke-color:        #212a35;
+$gray:                #294464;
+$bar-height:          4px;
+$transition-duration: .4s;
+$pointer-color:       #00d2ff;
+$slider-lbl-color:    #00a8cc;
+
+$analytics-header-colour: #ffffff;
+
 .nvd3 .nv-axis {
   pointer-events:none;
   opacity: 1;

@@ -1,14 +1,14 @@
 import * as _ from 'lodash'
 import { Observable, Scheduler, Subscription } from 'rxjs/Rx'
-import { referenceDataMapper } from './mappers'
-import { ConnectionStatus, UpdateType, ServiceConst } from '../types'
 import { logger, RetryPolicy } from '../system'
-import { ServiceClient } from '../system/service'
 import '../system/observableExtensions/retryPolicyExt'
+import { ServiceClient } from '../system/service'
+import { ConnectionStatus, ServiceConst, UpdateType } from '../types'
+import { referenceDataMapper } from './mappers'
 
 const log = logger.create('ReferenceDataService')
 
-const getReferenceDataStream = (serviceClient, updateCache) => {
+const getReferenceDataStream = (serviceClient, updCache) => {
   const retryWithPolicyArgs = [RetryPolicy.backoffTo10SecondsMax, 'getCurrencyPairUpdatesStream', Scheduler.async]
   return Observable.create(o => {
     log.debug('Subscribing reference data stream')
@@ -19,7 +19,7 @@ const getReferenceDataStream = (serviceClient, updateCache) => {
         // and this services is designed to be run at startup and other calls should block until it's loaded.
         // The intent here is all reference data should be exposed via both a synchronous and push API.
         // Push only (i.e. Observable only) APIs within applications for data that is effectively already known are a pain to work with.
-        updateCache(updates)
+        updCache(updates)
         o.next(updates)
       },
       error: err => o.error(err),

@@ -1,17 +1,17 @@
+import * as d3 from 'd3'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import * as d3 from 'd3'
 
 import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
 import reactSizeme from 'react-sizeme'
+import { CurrencyPair } from '../../../types/currencyPair'
 import {  createScales,
-          getPositionsDataFromSeries,
-          updateNodes,
           drawCircles,
           drawLabels,
+          getPositionsDataFromSeries,
+          getPositionValue,
           getRadius,
-          getPositionValue } from './chartUtil'
-import { CurrencyPair } from '../../../types/currencyPair'
+          updateNodes } from './chartUtil'
 
 export interface PositionsBubbleChartProps {
   data: any[]
@@ -138,7 +138,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   }
 
   createTooltip() {
-    if (this.tooltip) return
+    if (this.tooltip) { return }
     const dom = ReactDOM.findDOMNode(this)
     this.tooltip = d3.select(dom)
       .append('div')
@@ -188,8 +188,8 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   }
 
   update(nodes: any) {
-    if (!nodes || !this.force) return
-    if (!this.state.updateRequired) return
+    if (!nodes || !this.force) { return }
+    if (!this.state.updateRequired) { return }
     this.setState({ updateRequired: false })
 
     const dom = ReactDOM.findDOMNode(this)

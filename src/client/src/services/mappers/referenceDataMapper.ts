@@ -12,7 +12,7 @@ const referenceDataMapper = {
     }
   },
 
-  mapUpdatesFromDto(currencyPairUpdateDtos: Array<any>): Array<CurrencyPairUpdate> {
+  mapUpdatesFromDto(currencyPairUpdateDtos: any[]): CurrencyPairUpdate[] {
     return _.map(currencyPairUpdateDtos, (dto): CurrencyPairUpdate => {
       const updateType = referenceDataMapper.mapUpdateType(dto.UpdateType)
       const currencyPair = createCurrencyPair(

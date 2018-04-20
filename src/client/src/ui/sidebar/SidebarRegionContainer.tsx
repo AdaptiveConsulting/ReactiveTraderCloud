@@ -1,12 +1,10 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { SidebarRegionView } from './SidebarRegionView'
-import { toggleAnalytics } from './SidebarRegionOperations'
 import { bindActionCreators, Dispatch } from 'redux'
+import { toggleAnalytics } from './SidebarRegionOperations'
+import { SidebarRegionView } from './SidebarRegionView'
 
-interface SidebarRegionContainerOwnProps {
 
-}
 
 interface SidebarRegionContainerStateProps {
   displayAnalytics: boolean
@@ -16,7 +14,7 @@ interface SidebarRegionContainerDispatchProps {
   toggleAnalytics: () => void
 }
 
-type SidebarRegionContainerProps = SidebarRegionContainerOwnProps & SidebarRegionContainerStateProps & SidebarRegionContainerDispatchProps
+type SidebarRegionContainerProps =  SidebarRegionContainerStateProps & SidebarRegionContainerDispatchProps
 
 class SidebarRegionContainer extends React.Component<SidebarRegionContainerProps, any> {
 

@@ -1,6 +1,6 @@
+import * as numeral from 'numeral'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import * as numeral from 'numeral'
 
 import { CurrencyPair } from '../../../types/currencyPair'
 
@@ -29,7 +29,7 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
   }
 
   calculateOffset() {
-    if (!this.refs.barChartContainer || !this.refs.label) return 0
+    if (!this.refs.barChartContainer || !this.refs.label) { return 0 }
     const containerBounds = this.barChartContainerDOM.getBoundingClientRect()
     const labelBounds = this.labelDOM.getBoundingClientRect()
 
@@ -41,7 +41,7 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
   }
 
   getPusherRelativePosition() {
-    if (!this.refs.barChartContainer || !this.refs.label) return 0
+    if (!this.refs.barChartContainer || !this.refs.label) { return 0 }
 
     const containerBounds = this.barChartContainerDOM.getBoundingClientRect().width
     const labelBounds = this.labelDOM.getBoundingClientRect().width

@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
+import { storiesOf } from '@storybook/react'
+import * as React from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
@@ -19,10 +19,11 @@ import {
   getPriceMovementIndicatorProps,
   getSpotTileProps,
   getTradeNotification,
-} from './spotTile'
-import SpotTile, { NotionalInput, PriceButton, PriceMovementIndicator, TradeNotification } from '../ui/spotTile/index'
+} from './spotTile/index'
+
 import '../src/ui/spotTile/SpotTileStyles.scss'
 import { Direction } from '../types/direction'
+import SpotTile, { NotionalInput, PriceButton, PriceMovementIndicator, TradeNotification } from '../ui/spotTile/index'
 import { toRate } from '../ui/spotTile/spotTileUtils'
 import { getCurrencyPair } from './currencyPairs'
 

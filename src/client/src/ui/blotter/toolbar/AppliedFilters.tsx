@@ -1,6 +1,6 @@
-import * as React from 'react'
 import * as AgGrid from 'ag-grid'
 import * as _ from 'lodash'
+import * as React from 'react'
 
 interface AppliedFiltersProps {
   filterModel:any

@@ -1,14 +1,14 @@
-import * as React from 'react'
 import * as classnames from 'classnames'
-import { TradeNotification, SpotTileControls } from './'
-import NotionalContainer from './notional/NotionalContainer'
+import * as _ from 'lodash'
+import * as React from 'react'
 import { NotificationType } from '../../types'
 import { CurrencyPair } from '../../types/currencyPair'
-import PriceControlsView from './priceControlsView/PriceControlsView'
-import { SpotTileData } from '../../types/spotTileData'
-import * as _ from 'lodash'
 import { Notification } from '../../types/notification'
+import { SpotTileData } from '../../types/spotTileData'
 import { spotDateFormatter } from '../utils/dateUtils'
+import { SpotTileControls, TradeNotification } from './'
+import NotionalContainer from './notional/NotionalContainer'
+import PriceControlsView from './priceControlsView/PriceControlsView'
 
 export interface SpotTileProps {
   currencyPair: CurrencyPair
@@ -72,7 +72,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   createPriceComponents() {
     const { currencyPair, spotTileData, executeTrade } = this.props
     const title = `${currencyPair.base} / ${currencyPair.terms}`
-    if (spotTileData === null) return null
+    if (spotTileData === null) { return null }
 
     return (
       <PriceControlsView currencyPair={currencyPair}

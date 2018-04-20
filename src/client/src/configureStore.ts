@@ -1,6 +1,6 @@
-import { createStore, applyMiddleware } from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { createEpicMiddleware, combineEpics } from 'redux-observable'
+import { combineEpics, createEpicMiddleware } from 'redux-observable'
 import { persistStore } from 'redux-persist'
 
 import rootReducer from './combineReducers'

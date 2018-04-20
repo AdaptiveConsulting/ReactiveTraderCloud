@@ -1,5 +1,5 @@
-import { fetchAnalytics } from './actions';
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
+import { fetchAnalytics } from './actions';
 
 const CURRENCY: string = 'USD'
 

@@ -1,5 +1,5 @@
-import * as _ from 'lodash'
 import { time } from 'd3'
+import * as _ from 'lodash'
 import * as numeral from 'numeral'
 
 import { PnlChartModelOptions } from '../PNLChart'
@@ -49,17 +49,17 @@ export const getPnlChartModel = (history) => {
   }
 }
 
-const getLimit = (values: Array<number>, callback) => {
+const getLimit = (values: number[], callback) => {
   return callback(...values, 0)
 }
 
 export const getPnlPositions = (positions = []) => {
 
-  const allPricePoints: Array<number> = positions
+  const allPricePoints: number[] = positions
     .filter(item => !_.isNull(item.usdPnl))
     .map(item => item.usdPnl.toFixed(2))
 
-  const seriesData: Array<PricePoint> = positions
+  const seriesData: PricePoint[] = positions
     .filter(item => !_.isNull(item.usdPnl))
     .map(item => ({ x: new Date(item.timestamp), y: item.usdPnl.toFixed(2) }))
 

@@ -1,9 +1,9 @@
 import { Observable, Scheduler } from 'rxjs/Rx'
-import { ServiceClient } from '../system/service'
-import { PositionsMapper } from './mappers'
 import { Guard, logger, RetryPolicy } from '../system'
 import '../system/observableExtensions/retryPolicyExt'
+import { ServiceClient } from '../system/service'
 import { ServiceConst } from '../types'
+import { PositionsMapper } from './mappers'
 
 const log = logger.create('AnalyticsService')
 

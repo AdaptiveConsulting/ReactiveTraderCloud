@@ -1,6 +1,6 @@
+import * as _ from 'lodash'
 import { Observable, Subscription } from 'rxjs/Rx'
 import { SerialSubscription } from '../serialSubscription'
-import * as _ from 'lodash'
 import LastValueObservable from './lastValueObservable'
 import LastValueObservableDictionary from './lastValueObservableDictionary'
 
@@ -34,7 +34,7 @@ Observable.prototype['debounceOnMissedHeartbeat'] = debounceOnMissedHeartbeat
  * @returns {Logger|Object}
  */
 function toServiceStatusObservableDictionary<TValue>(this: Observable<TValue>, keySelector) {
-  const sources = <any>this
+  const sources = this as any
   return Observable.create((o) => {
     const dictionary = new LastValueObservableDictionary()
     const disposables = new Subscription()

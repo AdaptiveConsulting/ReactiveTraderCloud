@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { createAction } from 'redux-actions'
-import { ACTION_TYPES as REGIONS_ACTIONS } from '../regions/regionsOperations'
-import { ACTION_TYPES as TILE_ACTIONS, tileUndocked } from '../../spotTile/actions'
-import { getPopoutService } from './index'
 import { Provider } from 'react-redux'
+import { createAction } from 'redux-actions'
 import { combineEpics } from 'redux-observable'
+import { ACTION_TYPES as TILE_ACTIONS, tileUndocked } from '../../spotTile/actions'
+import { ACTION_TYPES as REGIONS_ACTIONS } from '../regions/regionsOperations'
+import { getPopoutService } from './index'
 
 declare const window: any
 
