@@ -30,25 +30,10 @@
     "start:local": "cross-env REACT_APP_ENV=local npm-run-all -p watch-css start-js",
     "start:docker": "cross-env REACT_APP_ENV=docker npm-run-all -p watch-css start-js",
     "start:cloud": "cross-env REACT_APP_ENV=cloud npm-run-all -p watch-css start-js",
-    "start:openfin:local": "npm-run-all --p openfin start:local",
-    "start:openfin:cloud": "npm-run-all --p openfin start:cloud",
+    "start:openfin:local": "npm-run-all -p openfin start:local",
+    "start:openfin:cloud": "npm-run-all -p openfin start:cloud",
     "openfin": "openfin -c config/openfin/local.app.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ],
-    "testMatch": [
-      "**/src/**/*.spec.(ts|tsx|js|jsx)"
-    ],
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/preprocessor.js"
-    },
-    "verbose": true
   },
   "license": "MIT",
   "dependencies": {
@@ -104,10 +89,12 @@
     "@types/storybook__addon-links": "3.0.2",
     "@types/storybook__react": "3.0.6",
     "cross-env": "^5.1.4",
+    "enzyme": "^3.3.0",
     "node-sass-chokidar": "^1.2.2",
     "npm-run-all": "^4.1.2",
     "openfin-cli": "1.1.5",
     "react-scripts-ts": "2.15.1",
+    "react-test-renderer": "^16.3.2",
     "redux-devtools-extension": "2.13.2",
     "typescript": "^2.8.1"
   }
