@@ -207,9 +207,9 @@ export default class OpenFin {
     const tradeNotification = formatTradeNotification(trade, currencyPair)
     // tslint:disable-next-line
     new fin.desktop.Notification({
-      url: '/notification.html',
+      url: '/index.html?notification=true',
       message: tradeNotification,
-      duration: 20000,
+      duration: 2000000,
       onClick: () => {
         this.bringToFront()
         // highlight trade row

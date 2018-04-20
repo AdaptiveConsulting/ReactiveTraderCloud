@@ -1,19 +1,30 @@
 {
     "devtools_port": 9090,
+    "splashScreenImage": "http://localhost:3000/images/splash-screen.jpg",
     "startup_app": {
-        "name": "OpenfinPOC",
-        "description": "OpenFin POC",
-        "url": "http://www.openfin.co",
-        "uuid": "OpenfinPOC-27iecs9oejm",
-        "autoShow": true
+        "name": "Reactive Trader Cloud (LOCAL)",
+        "url": "http://localhost:3000/",
+        "uuid": "reactive-trader-cloud-local",
+        "applicationIcon": "http://localhost:3000/images/adaptive-mark-large.png",
+        "autoShow": true,
+        "defaultWidth": 1280,
+        "defaultHeight": 900,
+        "minWidth": 800,
+        "minHeight": 600,
+        "resizable": true,
+        "maximizable": true,
+        "frame": false
     },
     "runtime": {
-        "arguments": "",
-        "version": "beta"
+        "arguments": "--force-device-scale-factor=1",
+        "version": "8.56.24.41",
+        "futureVersion": "8.56.24.41",
+        "forceLatest": true
     },
     "shortcut": {
-        "company": "OpenFin",
-        "description": "Openfin POC",
-        "name": "Openfin POC"
+        "company": "Adaptive Consulting",
+        "description": "Desktop Reactive Trader Cloud",
+        "icon": "http://localhost:3000/images/icon.ico",
+        "name": "Reactive Trader Cloud (LOCAL)"
     }
 }
