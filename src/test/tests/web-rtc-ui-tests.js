@@ -3,27 +3,27 @@ const validate = require('../utils/validation');
 module.exports = {
   '@tags': ['smoke', 'web'],
 
-  before: function(browser) {
+  before: browser => {
     browser
       .url(getConfig().host)
       .waitForElementPresent('body', 5000)
       .pause(5000);
   },
-  after: function(browser) {
+  after: browser => {
     browser.end();
   },
 
-  'Load RTC page and check the title : ': function(browser) {
+  'Load RTC page and check the title : ': browser => {
     browser.pause(5000).assert.title('Reactive Trader Cloud');
   },
-  'Check the number of tiles displayed is 9': function(browser) {
+  'Check the number of tiles displayed is 9': browser => {
     browser
       .waitForElementPresent('.workspace-region__item', 5000)
-      .elements('css selector', '.workspace-region__item', function(result) {
+      .elements('css selector', '.workspace-region__item', result => {
         browser.assert.equal(result.value.length, 9);
       });
   },
-  'Check the Profit & Loss tile is displayed': function(browser) {
+  'Check the Profit & Loss tile is displayed': browser => {
     browser
       .waitForElementPresent('.analytics__header-title', 5000)
       .expect.element('.analytics__header-title')
@@ -33,7 +33,7 @@ module.exports = {
       .text.to.equal('Positions');
   },
 
-  'Check the grid table is displaying the correct headers': function(browser) {
+  'Check the grid table is displaying the correct headers': browser => {
     const gridHeaderTitles = [
       'TRADE ID',
       'STATUS',
@@ -57,7 +57,7 @@ module.exports = {
       );
   },
 
-  'Hovering on the spot tile should reveal the spot date': function(browser) {
+  'Hovering on the spot tile should reveal the spot date': browser => {
     browser
       .waitForElementPresent('.spot-tile__delivery', 5000)
       .moveToElement('.spot-tile__delivery', 10, 10)
@@ -66,7 +66,7 @@ module.exports = {
     // Missing here a JS validation on the hover - SP date is shown
   },
 
-  'Click and trade on a side to perform a trade': function(browser) {
+  'Click and trade on a side to perform a trade': browser => {
     browser
       .waitForElementPresent('.spot-tile__price--bid', 5000)
       .click('.spot-tile__price--bid')
@@ -76,7 +76,7 @@ module.exports = {
       );
   },
 
-  'Enter a new notional by clicking into the text box': function(browser) {
+  'Enter a new notional by clicking into the text box': browser => {
     browser
       .waitForElementPresent('.notional__size-input', 5000)
       .clearValue('.notional__size-input')
@@ -85,7 +85,7 @@ module.exports = {
       .assert.visible('.trade-notification__summary-item--notional');
   },
 
-  'GBP/JPY is ALWAYS rejected': function(browser) {
+  'GBP/JPY is ALWAYS rejected': browser => {
     browser
       .waitForElementNotPresent('.spot-tile__notification-message', 10000)
       .pause(10000)
@@ -106,15 +106,13 @@ module.exports = {
       )
       .getText(
         '//*[@id="borderLayout_eGridPanel"]/div[1]/div/div[4]/div[3]/div/div/div[1]/div[3]',
-        function(result) {
+        result => {
           browser.assert.equal(result.value, 'Rejected');
         }
       );
   },
 
-  'EUR/JPY ALWAYS times out and then the execution succeeds- The time out should be reflected by a message on the tile - When it succeeds, the trade should appear in the blotter': function(
-    browser
-  ) {
+  'EUR/JPY ALWAYS times out and then the execution succeeds- The time out should be reflected by a message on the tile - When it succeeds, the trade should appear in the blotter': browser => {
     browser
       .pause(5000)
       .useCss()
@@ -129,14 +127,14 @@ module.exports = {
       )
       .useCss()
       .waitForElementPresent('.spot-tile__notification-message', 5000)
-      .getText('.spot-tile__notification-message', function(result) {
+      .getText('.spot-tile__notification-message', result => {
         browser.assert.equal(result.value, 'Trade execution timeout exceeded');
       })
       .waitForElementPresent(
         '.trade-notification__summary-item--notional',
         5000
       )
-      .getText('.trade-notification__summary-item--notional', function(result) {
+      .getText('.trade-notification__summary-item--notional', result => {
         browser.assert.equal(result.value, 'EUR 1,000,000');
       })
       .waitForElementNotPresent(
@@ -146,13 +144,13 @@ module.exports = {
       .useXpath()
       .getText(
         '//*[@id="borderLayout_eGridPanel"]/div[1]/div/div[4]/div[3]/div/div/div[1]/div[6]', // To of the grid
-        function(result) {
+        result => {
           browser.assert.equal(result.value, 'EURJPY');
         }
       )
       .getText(
         '//*[@id="borderLayout_eGridPanel"]/div[1]/div/div[4]/div[3]/div/div/div[1]/div[3]',
-        function(result) {
+        result => {
           browser.assert.equal(result.value, 'Done');
         }
       );
@@ -194,7 +192,7 @@ module.exports = {
       );
   },
 
-  'Rejected trades should have the details struck out': function(browser) {
+  'Rejected trades should have the details struck out': browser => {
     browser
       .waitForElementNotPresent('.spot-tile__notification-message', 10000)
       .pause(10000)
@@ -215,7 +213,7 @@ module.exports = {
       )
       .getText(
         '//*[@id="borderLayout_eGridPanel"]/div[1]/div/div[4]/div[3]/div/div/div[1]/div[3]',
-        function(result) {
+        result => {
           browser.assert.equal(result.value, 'Rejected');
         }
       )
@@ -247,13 +245,13 @@ module.exports = {
       .waitForElementPresent('.analytics__barchart-bar-background', 5000);
   },
 
-  'Pop-out trade window and perform trade': function(browser) {
+  'Pop-out trade window and perform trade': browser => {
     browser
       .waitForElementPresent('.spot-tile__icon--tearoff', 5000)
       .moveToElement('.spot-tile__icon--tearoff', 10, 10)
       .pause(2000)
       .click('.spot-tile__icon--tearoff')
-      .windowHandles(function(result) {
+      .windowHandles(result => {
         browser
           .switchWindow(result.value[1])
           .waitForElementPresent('.spot-tile__symbol', 5000)

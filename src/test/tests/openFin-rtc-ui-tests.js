@@ -9,15 +9,8 @@ describe('application launch', function() {
   this.timeout(timeout);
 
   before(function() {
-    if (process.platform === 'win32') {
-      var args = ['/c', 'ReactiveTraderCloud-dev.exe'];
-      spawn('cmd.exe', args);
-    } else {
-      spawn(
-        config.desiredCapabilities.chromeOptions.binary,
-        config.desiredCapabilities.chromeOptions.args
-      );
-    }
+    var args = ['/c', 'ReactiveTraderCloud-dev.exe'];
+    spawn('cmd.exe', args);
     app = new Application({
       connectionRetryCount: 1,
       connectionRetryTimeout: timeout,
@@ -122,6 +115,36 @@ describe('application launch', function() {
         should.exist(
           browser.element('.trade-notification__summary-item--notional')
         );
+      });
+  });
+  it('Enter a new notional by clicking into the text box', () => {
+    return browser
+      .clearElement('.notional__size-input')
+      .setValue('.notional__size-input', '10000')
+      .click('.spot-tile__price--bid')
+      .pause(1000)
+      .then(() => {
+        should.exist(
+          browser.element('.trade-notification__summary-item--notional')
+        );
+      });
+  });
+  it('GBP/JPY is ALWAYS rejected', () => {
+    return browser
+      .pause(5000)
+      .elements('.spot-tile__price--bid')
+      .then(result => {
+        result.value.map(async (element, index) => {
+          if (index === 3) {
+            browser
+              .elementIdClick(element.ELEMENT) // GBP/JPY sell button
+              .waitForVisible('.trade-notification__trade-status', 5000)
+              .getHTML('.trade-notification__trade-status', false)
+              .then(text => {
+                should.equal(text, 'Rejected');
+              });
+          }
+        });
       });
   });
 });
