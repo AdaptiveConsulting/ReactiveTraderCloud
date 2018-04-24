@@ -85,7 +85,8 @@ describe('application launch', function() {
       'NOTIONAL',
       'RATE',
       'VALUE DATE',
-      'TRADER'
+      'TRADER',
+      ''
     ];
     return browser
       .getText(
@@ -117,6 +118,7 @@ describe('application launch', function() {
         );
       });
   });
+
   it('Enter a new notional by clicking into the text box', () => {
     return browser
       .clearElement('.notional__size-input')
@@ -129,6 +131,7 @@ describe('application launch', function() {
         );
       });
   });
+
   it('GBP/JPY is ALWAYS rejected', () => {
     return browser
       .pause(5000)
