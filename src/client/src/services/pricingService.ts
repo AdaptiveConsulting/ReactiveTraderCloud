@@ -1,8 +1,8 @@
 import { Observable, Scheduler } from 'rxjs/Rx'
-import { ServiceClient } from '../system/service'
-import { ServiceConst } from '../types'
 import { logger, RetryPolicy } from '../system'
 import '../system/observableExtensions/retryPolicyExt'
+import { ServiceClient } from '../system/service'
+import { ServiceConst } from '../types'
 
 const log = logger.create('PricingService')
 const getPriceUpdatesOperationName = 'getPriceUpdates'

@@ -1,14 +1,12 @@
+import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import * as PropTypes from 'prop-types'
-import FooterView, { Services } from './FooterView'
 import { bindActionCreators, Dispatch } from 'redux'
-import { toggleStatusServices } from './FooterOperations'
 import { Connections } from '../../connectionStatusOperations'
+import { toggleStatusServices } from './FooterOperations'
+import FooterView, { Services } from './FooterView'
 
-interface FooterContainerOwnProps {
 
-}
 
 interface FooterContainerStateProps {
   compositeStatusService: Services
@@ -20,7 +18,7 @@ interface FooterContainerDispatchProps {
   toggleStatusServices: () => void
 }
 
-type FooterContainerProps = FooterContainerOwnProps & FooterContainerStateProps & FooterContainerDispatchProps
+type FooterContainerProps = FooterContainerStateProps & FooterContainerDispatchProps
 
 class FooterContainer extends React.Component<FooterContainerProps, any> {
 

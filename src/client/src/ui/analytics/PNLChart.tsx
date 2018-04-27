@@ -61,7 +61,7 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
       }
       const chartDomElement = ReactDOM.findDOMNode(this.refs.pnlChart)
       if (chartDomElement) {
-        this.chartGradient.update(chartDomElement, this.props.minPnl, this.props.maxPnl)
+        this.chartGradient.update(chartDomElement as Element, this.props.minPnl, this.props.maxPnl)
       }
     }
   }

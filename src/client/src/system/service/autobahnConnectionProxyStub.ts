@@ -16,9 +16,9 @@ export default class StubAutobahnProxy {
     this.connection = {
       transport: {
         info: {
-          url: '',
-        },
-      },
+          url: ''
+        }
+      }
     }
   }
 
@@ -78,7 +78,9 @@ class StubAutobahnSession {
 
   getTopic(name) {
     if (!this.stubPromises[name]) {
-      throw new Error('Nothing has subscribed to topic/operation [' + name + ']')
+      throw new Error(
+        'Nothing has subscribed to topic/operation [' + name + ']'
+      )
     }
     return this.stubPromises[name]
   }
@@ -94,28 +96,26 @@ class DummyPromise {
 }
 
 class StubCallResult extends DummyPromise {
-  _dto
+  dtoInner
   constructor(dto) {
     super()
-    this._dto = dto
+    this.dtoInner = dto
   }
 
   get dto() {
-    return this._dto[0]
+    return this.dtoInner[0]
   }
 }
 
 class StubSubscribeResult extends DummyPromise {
-  _onResults
+  onResultsCallback
   constructor(onResults) {
     super()
-    this._onResults = onResults
+    this.onResultsCallback = onResults
   }
 
   onResults(payload) {
     // autobahn returns results in an array, fake this up:
-    return this._onResults([payload])
+    return this.onResultsCallback([payload])
   }
 }
-
-

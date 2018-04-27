@@ -28,7 +28,9 @@ export function convertNotionalShorthandToNumericValue(value: any) {
     notionalShorthand = 0
   } else {
     notionalShorthand = Number(matches[1]) ? Number(matches[1]) : 1
-    matches[2] && (notionalShorthand = notionalShorthand * (matches[2] === 'K' ? 1000 : 1000000))
+    if(matches[2]) {
+      notionalShorthand = notionalShorthand * (matches[2] === 'K' ? 1000 : 1000000)
+    }
   }
 
   return notionalShorthand

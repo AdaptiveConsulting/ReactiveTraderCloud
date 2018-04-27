@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
 import { linkTo } from '@storybook/addon-links'
+import { storiesOf } from '@storybook/react'
+import * as React from 'react'
 
 import { Modal } from '../ui/modal/index'
 

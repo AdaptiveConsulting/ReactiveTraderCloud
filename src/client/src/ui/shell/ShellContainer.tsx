@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
+import { ConnectionStatus } from '../../types'
 import { reconnect } from './actions'
 import Shell from './Shell'
-import { ConnectionStatus } from '../../types'
 
 function mapStateToProps( state: any ) {
   const { connectionStatus, regionsService } = state

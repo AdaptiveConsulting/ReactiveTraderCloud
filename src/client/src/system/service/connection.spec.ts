@@ -1,6 +1,6 @@
-import StubAutobahnProxy from './autobahnConnectionProxyStub'
 import { Connection } from '../../../src/system/service/connection'
 import { ConnectionStatus } from '../../../src/types/'
+import StubAutobahnProxy from './autobahnConnectionProxyStub'
 
 describe('Connection', () => {
   let stubAutobahnProxy

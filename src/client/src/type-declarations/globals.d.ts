@@ -1,3 +1,3 @@
 declare var __VERSION__: string
-declare var fin: any
+declare var REACT_APP_ENV: string
 declare var onNotificationMessage:any

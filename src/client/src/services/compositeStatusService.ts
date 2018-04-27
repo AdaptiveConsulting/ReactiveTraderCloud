@@ -1,14 +1,12 @@
 import { Observable, Subscription } from 'rxjs/Rx'
 import { ServiceConst, ServiceStatus } from '../types'
 
-export default function compositeStatusService(
-  connection,
-  pricingService,
-  referenceDataService,
-  blotterService,
-  executionService,
-  analyticsService
-): Object {
+export default function compositeStatusService(connection,
+                                               pricingService,
+                                               referenceDataService,
+                                               blotterService,
+                                               executionService,
+                                               analyticsService): Object {
   const disposables = new Subscription()
   const addDisposable = disposable => {
     // esp-js is expecting a dispose method
@@ -39,41 +37,41 @@ export default function compositeStatusService(
   addDisposable(serviceStatusStream.connect())
   return {
     /**
-   * A true/false stream indicating if we're connected on the wire
-   * @returns {*}
-   */
+     * A true/false stream indicating if we're connected on the wire
+     * @returns {*}
+     */
     get connectionStatusStream() {
       return connection.connectionStatusStream
     },
 
     /**
-   * The current isConnected status
-   * @returns {*}
-   */
+     * The current isConnected status
+     * @returns {*}
+     */
     get isConnected() {
       return connection.isConnected
     },
 
     /**
-   * Connection url
-   * @returns {string}
-   */
+     * Connection url
+     * @returns {string}
+     */
     get connectionUrl() {
       return connection.url
     },
 
     /**
-   * Connection type
-   * @returns {ConnectionType}
-   */
+     * Connection type
+     * @returns {ConnectionType}
+     */
     get connectionType() {
       return connection.type
     },
 
     /**
-   * THe current ServiceStatusLookup
-   * @returns {model.ServiceStatusLookup}
-   */
+     * THe current ServiceStatusLookup
+     * @returns {model.ServiceStatusLookup}
+     */
     get serviceStatus() {
       return currentServiceStatusLookup
     },

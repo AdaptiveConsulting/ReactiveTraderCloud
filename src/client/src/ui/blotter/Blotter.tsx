@@ -1,11 +1,11 @@
-import * as React from 'react'
+import { ColumnApi, GridApi } from 'ag-grid'
 import { AgGridReact } from 'ag-grid-react'
-import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './blotterUtils'
 import 'ag-grid/dist/styles/ag-grid.css'
 import * as classNames from 'classnames'
-import { GridApi, ColumnApi } from 'ag-grid'
-import BlotterToolbar from './toolbar/BlotterToolbar'
+import * as React from 'react'
 import { TradeStatus } from '../../types'
+import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './blotterUtils'
+import BlotterToolbar from './toolbar/BlotterToolbar'
 
 interface AgGridBlotterProps {
   rows: any[]

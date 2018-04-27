@@ -31,7 +31,7 @@ export default class PositionsMapper {
     }
   }
 
-  mapPositionsFromDto(dtos: Array<any>): Array<CurrencyPairPosition> {
+  mapPositionsFromDto(dtos: any[]): CurrencyPairPosition[] {
     return _.map(dtos, (dto): CurrencyPairPosition => ({
       symbol: dto.Symbol,
       basePnl: dto.BasePnl,
@@ -41,7 +41,7 @@ export default class PositionsMapper {
     }))
   }
 
-  mapHistoricPositionFromDto(dtos: Array<any>): Array<HistoricPosition> {
+  mapHistoricPositionFromDto(dtos: any[]): HistoricPosition[] {
     return _.map(dtos, (dto): HistoricPosition => ({
       timestamp: new Date(dto.Timestamp),
       usdPnl: dto.UsdPnl

@@ -1,6 +1,6 @@
+import { ColDef, Column, GridApi, InMemoryRowModel, RowNode } from 'ag-grid'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { ColDef, Column, GridApi, InMemoryRowModel, RowNode } from 'ag-grid'
 
 const ALL = 'all'
 
@@ -135,6 +135,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
 
   updateAllOptions = (isChecked:boolean) => {
     const valueSet = { ...this.state.selectedValueSet }
+    // tslint:disable-next-line:forin
     for (const key in valueSet) {
       valueSet[key] = isChecked
     }
@@ -201,7 +202,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   setupContainer = (el:Element) => {
-    this.container = ReactDOM.findDOMNode(el)
+    this.container = ReactDOM.findDOMNode(el) as Element
   }
 
   render() {

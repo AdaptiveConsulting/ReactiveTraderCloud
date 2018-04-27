@@ -1,5 +1,5 @@
-import { SPOT_DATE_FORMAT } from '../spotTile/spotTileUtils'
 import * as moment from 'moment'
+import { SPOT_DATE_FORMAT } from '../spotTile/spotTileUtils'
 
 function momentDateFormatter (date: any, formatter:string = SPOT_DATE_FORMAT) {
   return moment.utc(date).format(formatter)

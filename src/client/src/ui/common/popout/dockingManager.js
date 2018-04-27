@@ -1,3 +1,4 @@
+/* tslint:disable */
 // Source: https://github.com/openfin/snap-and-dock
 
 /* globals fin */
@@ -444,7 +445,7 @@ var DockableWindow = (function(_super) {
   return DockableWindow;
 })();
 
-var DockingManager = (function() {
+export var DockingManager = (function() {
 
   var instance = null;
   var windows = [];

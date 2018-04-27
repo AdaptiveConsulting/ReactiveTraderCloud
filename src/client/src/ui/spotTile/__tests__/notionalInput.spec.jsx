@@ -1,3 +1,5 @@
+/* tslint:disable */
+
 import * as React from 'react'
 import NotionalInput from '../notional/NotionalInput'
 import ShallowRenderer from 'react-test-renderer/shallow'
