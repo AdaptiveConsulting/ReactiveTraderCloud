@@ -1,12 +1,15 @@
+import { Connection } from 'autobahn'
 import * as _ from 'lodash'
+import { AutobahnConnection } from '../AutoBahnConnection'
 
-export default class StubAutobahnProxy {
-  onOpenCallbacks
-  onCloseCallbacks
-  openCallCount
-  closeCallCount
-  session
-  connection
+export default class StubAutobahnProxy implements AutobahnConnection {
+  onOpenCallbacks: any[]
+  onCloseCallbacks: any[]
+  openCallCount: number
+  closeCallCount: number
+  session: any
+  connection: any
+
   constructor() {
     this.onOpenCallbacks = []
     this.onCloseCallbacks = []
@@ -24,6 +27,7 @@ export default class StubAutobahnProxy {
 
   open() {
     this.openCallCount++
+    return true
   }
 
   close() {
@@ -46,10 +50,15 @@ export default class StubAutobahnProxy {
       _.forEach(this.onCloseCallbacks, onClose => onClose())
     }
   }
+
+  getConnection(): Connection {
+    return this.connection
+  }
 }
 
 class StubAutobahnSession {
   stubPromises
+
   constructor() {
     this.stubPromises = {}
   }
@@ -89,6 +98,7 @@ class StubAutobahnSession {
 class DummyPromise {
   onSuccess
   onReject
+
   then(onSuccess, onReject) {
     this.onSuccess = onSuccess
     this.onReject = onReject
@@ -97,6 +107,7 @@ class DummyPromise {
 
 class StubCallResult extends DummyPromise {
   dtoInner
+
   constructor(dto) {
     super()
     this.dtoInner = dto
@@ -109,6 +120,7 @@ class StubCallResult extends DummyPromise {
 
 class StubSubscribeResult extends DummyPromise {
   onResultsCallback
+
   constructor(onResults) {
     super()
     this.onResultsCallback = onResults
