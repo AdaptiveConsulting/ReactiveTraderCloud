@@ -1,11 +1,11 @@
-import { Connection } from '../../../src/system/service/connection'
-import { ConnectionStatus } from '../../../src/types/'
+import { ConnectionStatus } from '../../../types'
+import { Connection } from '../connection'
 import StubAutobahnProxy from './autobahnConnectionProxyStub'
 
 describe('Connection', () => {
-  let stubAutobahnProxy
-  let connection
-  let receivedStatusUpdates
+  let stubAutobahnProxy: StubAutobahnProxy
+  let connection: Connection
+  let receivedStatusUpdates: any[]
 
   beforeEach(() => {
     stubAutobahnProxy = new StubAutobahnProxy()
