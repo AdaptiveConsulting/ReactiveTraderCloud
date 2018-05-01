@@ -1,4 +1,4 @@
-import { Observable, Scheduler, Subscription } from 'rxjs/Rx'
+import { Observable, Scheduler, Subscription } from 'rxjs'
 import { logger } from '../system'
 import { ServiceClient } from '../system/service'
 import { ServiceConst } from '../types'
@@ -43,7 +43,7 @@ export default function executionService(
             .subscribe(limitCheckResult => {
               if (limitCheckResult) {
                 const request = serviceClient
-                  .createRequestResponseOperation(
+                  .createRequestResponseOperation<any, any>(
                     'executeTrade',
                     executeTradeRequest
                   )
@@ -55,7 +55,9 @@ export default function executionService(
                       .map(dto => {
                         const trade = tradeMapper.mapFromTradeDto(dto.Trade)
                         log.info(
-                          `execute response received for: ${executeTradeRequest}. Status: ${trade.status}`,
+                          `execute response received for: ${executeTradeRequest}. Status: ${
+                            trade.status
+                          }`,
                           dto
                         )
                         return createExecuteTradeResponse(trade)
@@ -68,7 +70,7 @@ export default function executionService(
                             'Trade execution timeout exceeded',
                             executeTradeRequest
                           )
-                        )
+                        ) as any
                       ),
                     // show timeout error if request is taking longer than expected
                     Observable.timer(EXECUTION_CLIENT_TIMEOUT_MS)

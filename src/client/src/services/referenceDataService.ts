@@ -1,7 +1,8 @@
 import * as _ from 'lodash'
-import { Observable, Scheduler, Subscription } from 'rxjs/Rx'
+import { Observable, Scheduler, Subscription } from 'rxjs'
+import { map } from 'rxjs/operators'
 import { logger, RetryPolicy } from '../system'
-import '../system/observableExtensions/retryPolicyExt'
+import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
 import { ServiceClient } from '../system/service'
 import { ConnectionStatus, ServiceConst, UpdateType } from '../types'
 import { referenceDataMapper } from './mappers'
@@ -9,7 +10,6 @@ import { referenceDataMapper } from './mappers'
 const log = logger.create('ReferenceDataService')
 
 const getReferenceDataStream = (serviceClient, updCache) => {
-  const retryWithPolicyArgs = [RetryPolicy.backoffTo10SecondsMax, 'getCurrencyPairUpdatesStream', Scheduler.async]
   return Observable.create(o => {
     log.debug('Subscribing reference data stream')
     const updateCacheObserver = {
@@ -27,19 +27,27 @@ const getReferenceDataStream = (serviceClient, updCache) => {
     }
     return serviceClient
       .createStreamOperation('getCurrencyPairUpdatesStream', {})
-      .retryWithPolicy(...retryWithPolicyArgs)
-      .map(referenceDataMapper.mapCurrencyPairsFromDto)
+      .pipe(
+        retryWithPolicy(
+          RetryPolicy.backoffTo10SecondsMax,
+          'getCurrencyPairUpdatesStream',
+          Scheduler.async
+        ),
+        map(referenceDataMapper.mapCurrencyPairsFromDto)
+      )
       .subscribe(updateCacheObserver)
   }).publish()
 }
 
-const isConnected = () => connectionStatus => connectionStatus === ConnectionStatus.connected
+const isConnected = () => connectionStatus =>
+  connectionStatus === ConnectionStatus.connected
 
-const updateCache = (currencyPairCache) => update => {
+const updateCache = currencyPairCache => update => {
   const pairUpdates = update.currencyPairUpdates
   _.forEach(pairUpdates, currencyPairUpdate => {
     if (currencyPairUpdate.updateType === UpdateType.Added) {
-      currencyPairCache[currencyPairUpdate.currencyPair.symbol] = currencyPairUpdate.currencyPair
+      currencyPairCache[currencyPairUpdate.currencyPair.symbol] =
+        currencyPairUpdate.currencyPair
     } else if (currencyPairUpdate.updateType === UpdateType.Removed) {
       delete currencyPairCache[currencyPairUpdate.currencyPair.symbol]
     }
@@ -49,13 +57,19 @@ const updateCache = (currencyPairCache) => update => {
   }
 }
 
-export default function referenceDataService(connection): Object {
-  const serviceClient = new ServiceClient(ServiceConst.ReferenceServiceKey, connection)
+export default function referenceDataService(connection) {
+  const serviceClient = new ServiceClient(
+    ServiceConst.ReferenceServiceKey,
+    connection
+  )
   const disposables = new Subscription()
   const currencyPairCache = {
     hasLoaded: false
   }
-  const referenceDataStreamConnectable = getReferenceDataStream(serviceClient, updateCache(currencyPairCache))
+  const referenceDataStreamConnectable = getReferenceDataStream(
+    serviceClient,
+    updateCache(currencyPairCache)
+  )
 
   // on connection/reconnection get reference data stream
   const connectToReferenceStream = () => {
@@ -78,7 +92,9 @@ export default function referenceDataService(connection): Object {
       if (!currencyPairCache.hasLoaded) {
         throw new Error(`Reference data cache hasn't finished loading`)
       } else if (!currencyPairCache.hasOwnProperty(symbol)) {
-        throw new Error(`CurrencyPair with symbol [${symbol}] is not in the cache.`)
+        throw new Error(
+          `CurrencyPair with symbol [${symbol}] is not in the cache.`
+        )
       }
       return currencyPairCache[symbol]
     },

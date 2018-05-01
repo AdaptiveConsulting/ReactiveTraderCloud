@@ -5,3 +5,10 @@ export interface ServiceInstanceStatus {
   serviceLoad: number
   isConnected: boolean
 }
+
+export interface RawServiceStatus {
+  Type: string
+  Instance: string
+  TimeStamp: number
+  Load: number
+}

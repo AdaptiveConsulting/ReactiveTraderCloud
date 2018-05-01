@@ -64,7 +64,7 @@ export class Connection {
    * A stream of the current connection status (see ConnectionStatus for possible values)
    * @returns {*}
    */
-  get connectionStatusStream(): Observable<string> {
+  get connectionStatusStream(): Observable<ConnectionStatus> {
     return this.connectionStatusSubject.distinctUntilChanged()
   }
 

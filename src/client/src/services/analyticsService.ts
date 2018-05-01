@@ -1,6 +1,7 @@
-import { Observable, Scheduler } from 'rxjs/Rx'
+import { map } from 'rxjs/operators'
+import { Observable, Scheduler } from 'rxjs'
 import { Guard, logger, RetryPolicy } from '../system'
-import '../system/observableExtensions/retryPolicyExt'
+import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
 import { ServiceClient } from '../system/service'
 import { ServiceConst } from '../types'
 import { PositionsMapper } from './mappers'
@@ -28,12 +29,14 @@ export default function analyticsService(
 
         return serviceClient
           .createStreamOperation('getAnalytics', analyticsRequest)
-          .retryWithPolicy(
-            RetryPolicy.backoffTo10SecondsMax,
-            'getAnalytics',
-            Scheduler.async
+          .pipe(
+            retryWithPolicy(
+              RetryPolicy.backoffTo10SecondsMax,
+              'getAnalytics',
+              Scheduler.async
+            ),
+            map(dto => positionsMapper.mapFromDto(dto))
           )
-          .map(dto => positionsMapper.mapFromDto(dto))
           .subscribe(o)
       })
     }

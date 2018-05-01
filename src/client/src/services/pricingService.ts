@@ -1,14 +1,15 @@
-import { Observable, Scheduler } from 'rxjs/Rx'
+import { Observable, Scheduler } from 'rxjs'
 import { logger, RetryPolicy } from '../system'
-import '../system/observableExtensions/retryPolicyExt'
+import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
 import { ServiceClient } from '../system/service'
 import { ServiceConst } from '../types'
+import { map } from 'rxjs/operators'
 
 const log = logger.create('PricingService')
 const getPriceUpdatesOperationName = 'getPriceUpdates'
 
 interface Request {
-  symbol: string,
+  symbol: string
 }
 
 const createSpotPriceStream = (serviceClient, request: Request) => {
@@ -32,17 +33,19 @@ const createSpotPriceStream = (serviceClient, request: Request) => {
         // TODO: remove is stale price fully supported
       }
     }
-    const retryWithPolicyArgs = [
-      RetryPolicy.indefiniteEvery2Seconds,
-      getPriceUpdatesOperationName,
-      Scheduler.async,
-      retryWithPolicyErrorCb,
-    ]
+
     const subscription = serviceClient
       .createStreamOperation(getPriceUpdatesOperationName, request)
-      // we retry the price stream forever, if it errors (likely connection down) we pump a non tradable price
-      .retryWithPolicy(...retryWithPolicyArgs)
-      .map(adaptDTO)
+      .pipe(
+        retryWithPolicy(
+          RetryPolicy.indefiniteEvery2Seconds,
+          getPriceUpdatesOperationName,
+          Scheduler.async,
+          retryWithPolicyErrorCb
+        ),
+        map(adaptDTO)
+      )
+
       .subscribe(innerObserver)
     return subscription
   })
@@ -51,7 +54,10 @@ const createSpotPriceStream = (serviceClient, request: Request) => {
 
 export default function createPricingService(connection) {
   const cachedSpotStreamBySymbol = {}
-  const serviceClient = new ServiceClient(ServiceConst.PricingServiceKey, connection)
+  const serviceClient = new ServiceClient(
+    ServiceConst.PricingServiceKey,
+    connection
+  )
   serviceClient.connect()
   return {
     get serviceStatusStream() {
@@ -60,7 +66,10 @@ export default function createPricingService(connection) {
     getSpotPriceStream(request: Request) {
       const { symbol } = request
       if (!cachedSpotStreamBySymbol[symbol]) {
-        cachedSpotStreamBySymbol[symbol] = createSpotPriceStream(serviceClient, request)
+        cachedSpotStreamBySymbol[symbol] = createSpotPriceStream(
+          serviceClient,
+          request
+        )
       }
       return cachedSpotStreamBySymbol[symbol]
     }

@@ -1,8 +1,8 @@
 import LastValueObservable from './lastValueObservable'
 
-export default class LastValueObservableDictionary {
-  version: number
-  values: {}
+export default class LastValueObservableDictionary<T> {
+  private version: number
+  private readonly values: { [key: string]: LastValueObservable<T> }
 
   constructor() {
     this.values = {}
@@ -13,12 +13,16 @@ export default class LastValueObservableDictionary {
     return this.values.hasOwnProperty(key)
   }
 
-  add(key: string, value: LastValueObservable<any>) {
+  add(key: string, value: LastValueObservable<T>) {
     this.values[key] = value
     this.version++
   }
 
-  updateWithLatestValue(key: string, latestValue: Object) {
+  getValues() {
+    return Object.values(this.values)
+  }
+
+  updateWithLatestValue(key: string, latestValue: T) {
     this.values[key].latestValue = latestValue
     this.version++
   }
