@@ -1,26 +1,23 @@
-import * as _ from 'lodash'
-import Guard from './guard'
-
-const levels = {
-  verbose: 0,
-  debug: 1,
-  info: 2,
-  warn: 3,
-  error: 4,
+enum levels {
+  verbose = 'debug',
+  debug = 'debug',
+  info = 'info',
+  warn = 'warn',
+  error = 'error'
 }
 
-let currentLevel = levels.debug
+type SEVERITY = 'info' | 'warn' | 'error' | 'debug'
 
-let sink = (logEvent)  => {
-  const toLog = [`%c [${logEvent.level}][${logEvent.logger}]`, `color:${logEvent.color}`]
-  toLog.push.apply(toLog, logEvent.args)
-  console.log.apply(console, toLog)
+let currentLevel = levels.warn
+
+let sink = (logEvent: LogParams) => {
+  console[logEvent.level].call(null, `${logEvent.logger}:`, logEvent.args)
 }
 
 class Logger {
   name: string
 
-  constructor(name) {
+  constructor(name: string) {
     this.name = name
   }
 
@@ -31,9 +28,9 @@ class Logger {
   /**
    * verbose(message [, ...args]): expects a string log message and optional additional arguments
    */
-  verbose(message?: string, message2?: string, message3?: string) {
+  verbose(message: string, message2?: string, message3?: string) {
     if (this.isVerboseEnabled) {
-      this.log('VERBOSE', arguments)
+      this.log('debug', arguments)
     }
   }
 
@@ -42,7 +39,7 @@ class Logger {
    */
   debug(message?: string, message2?: string, message3?: string) {
     if (currentLevel <= levels.debug) {
-      this.log('DEBUG', arguments)
+      this.log('debug', arguments)
     }
   }
 
@@ -51,7 +48,7 @@ class Logger {
    */
   info(message?: string, message2?: string, message3?: string) {
     if (currentLevel <= levels.info) {
-      this.log('INFO', arguments, 'blue')
+      this.log('info', arguments)
     }
   }
 
@@ -60,7 +57,7 @@ class Logger {
    */
   warn(message?: string, message2?: string, message3?: string) {
     if (currentLevel <= levels.warn) {
-      this.log('WARN', arguments)
+      this.log('warn', arguments)
     }
   }
 
@@ -69,40 +66,34 @@ class Logger {
    */
   error(message?: string, message2?: any, message3?: string) {
     if (currentLevel <= levels.error) {
-      this.log('ERROR', arguments, 'red')
+      this.log('error', arguments)
     }
   }
 
-  logError(level, message, err) {
-    const errorMessage = _.isError(err)
-      ? err.message
-      : err
-    this.log(level, `${message}. Error:${errorMessage}`)
-  }
-
-  log(level, args, color = 'black') {
-    Guard.isString(level, 'level isn\'t a string')
+  log(level: SEVERITY, args: object) {
     sink({
       args,
-      color,
       level,
-      logger: this.name,
+      logger: this.name
     })
   }
 }
 
-function create(name) {
-  Guard.isDefined(name, 'The name argument should be defined')
-  Guard.isString(name, 'The name argument should be a string')
+function create(name: string) {
   return new Logger(name)
 }
 
-function setLevel(level) {
+function setLevel(level: levels) {
   currentLevel = level
 }
 
-function setSink(sinkNew) {
-  Guard.isFunction(sinkNew, 'Logging sink argument must be a function')
+interface LogParams {
+  args: object
+  level: SEVERITY
+  logger: string
+}
+
+function setSink(sinkNew: (params: LogParams) => void) {
   sink = sinkNew
 }
 
