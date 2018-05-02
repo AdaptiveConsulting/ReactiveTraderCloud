@@ -49,7 +49,7 @@ export default function executionService(
     },
     executeTrade(executeTradeRequest: ExecuteTradeRequest) {
       return new Observable<ExecuteTradeResponse>(obs => {
-        log.info('executing: ', executeTradeRequest.toString())
+        log.info('executing: ', executeTradeRequest)
         const disposables = new Subscription()
 
         const localLimitCheck: Subscription = openFin
@@ -85,7 +85,7 @@ export default function executionService(
                       `execute response received for: ${executeTradeRequest}. Status: ${
                         trade.status
                       }`,
-                      dto.toString()
+                      dto
                     )
                     return createExecuteTradeResponse(
                       trade,

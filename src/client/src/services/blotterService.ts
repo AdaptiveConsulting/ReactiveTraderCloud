@@ -22,20 +22,17 @@ const createBlotterService = (connection: Connection) => {
     },
 
     getTradesStream() {
-      return new Observable<TradesUpdate>(o => {
-        log.debug('Subscribing to trade stream')
-        return serviceClient
-          .createStreamOperation<RawTradeUpdate, {}>('getTradesStream', {})
-          .pipe(
-            retryWithPolicy(
-              RetryPolicy.backoffTo10SecondsMax,
-              'getTradesStream',
-              Scheduler.async
-            ),
-            map(dto => mapFromDto(dto))
-          )
-          .subscribe(o)
-      })
+      log.debug('Subscribing to trade stream')
+      return serviceClient
+        .createStreamOperation<RawTradeUpdate, {}>('getTradesStream', {})
+        .pipe(
+          retryWithPolicy(
+            RetryPolicy.backoffTo10SecondsMax,
+            'getTradesStream',
+            Scheduler.async
+          ),
+          map(dto => mapFromDto(dto))
+        )
     }
   }
 }

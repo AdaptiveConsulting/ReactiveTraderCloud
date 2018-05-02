@@ -5,14 +5,14 @@ import {
   ReferenceDataService
 } from '../../types'
 
-export interface CurrencyPairPostionRaw {
+export interface CurrencyPairPositionRaw {
   Symbol: string
   BasePnl: number
   BaseTradedAmount: number
 }
 
 export interface PositionsRaw {
-  CurrentPositions: CurrencyPairPostionRaw[]
+  CurrentPositions: CurrencyPairPositionRaw[]
   History: HistoryRaw[]
 }
 
@@ -45,7 +45,7 @@ export default class PositionsMapper {
     }
   }
 
-  mapPositionsFromDto(dtos: CurrencyPairPostionRaw[]): CurrencyPairPosition[] {
+  mapPositionsFromDto(dtos: CurrencyPairPositionRaw[]): CurrencyPairPosition[] {
     return dtos.map<CurrencyPairPosition>(dto => ({
       symbol: dto.Symbol,
       basePnl: dto.BasePnl,

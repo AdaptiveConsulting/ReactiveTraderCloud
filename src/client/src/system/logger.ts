@@ -46,7 +46,7 @@ export class Logger {
   /**
    * info(message [, ...args]): expects a string log message and optional additional arguments
    */
-  info(message?: string, message2?: string, message3?: string) {
+  info(message?: string, message2?: any, message3?: any) {
     if (currentLevel <= levels.info) {
       this.log('info', arguments)
     }

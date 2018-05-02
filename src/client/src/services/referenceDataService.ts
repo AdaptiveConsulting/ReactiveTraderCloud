@@ -12,6 +12,7 @@ import { ServiceClient } from '../system/service'
 import { Connection } from '../system/service/connection'
 import {
   ConnectionStatus,
+  CurrencyPair,
   CurrencyPairUpdates,
   ReferenceDataService,
   ServiceConst,
@@ -28,54 +29,49 @@ const getReferenceDataStream = (
   serviceClient: ServiceClient,
   updCache: CurrencyPairCache
 ) => {
-  return new Observable<CurrencyPairUpdates>(o => {
-    log.debug('Subscribing reference data stream')
-
-    const updateCacheObserver: Observer<CurrencyPairUpdates> = {
-      next: updates => {
-        // note : we have a side effect here.
-        // In this instance it's ok as this stream is published and ref counted, i.e. there is only ever 1
-        // and this services is designed to be run at startup and other calls should block until it's loaded.
-        // The intent here is all reference data should be exposed via both a synchronous and push API.
-        // Push only (i.e. Observable only) APIs within applications for data that is effectively already known are a pain to work with.
-        updCache(updates)
-        o.next(updates)
-      },
-      error: err => o.error(err),
-      complete: () => o.complete()
-    }
-    return serviceClient
-      .createStreamOperation<RawCurrencyPairUpdates, {}>(
+  const refStream = serviceClient
+    .createStreamOperation<RawCurrencyPairUpdates>(
+      'getCurrencyPairUpdatesStream',
+      {}
+    )
+    .pipe(
+      retryWithPolicy(
+        RetryPolicy.backoffTo10SecondsMax,
         'getCurrencyPairUpdatesStream',
-        {}
-      )
-      .pipe(
-        retryWithPolicy(
-          RetryPolicy.backoffTo10SecondsMax,
-          'getCurrencyPairUpdatesStream',
-          Scheduler.async
-        ),
-        map(referenceDataMapper.mapCurrencyPairsFromDto)
-      )
-      .subscribe(updateCacheObserver)
-  }).pipe(publish()) as ConnectableObservable<CurrencyPairUpdates>
+        Scheduler.async
+      ),
+      map(referenceDataMapper.mapCurrencyPairsFromDto),
+      publish<CurrencyPairUpdates>()
+    )
+
+  refStream.subscribe(updates => updCache(updates))
+
+  return refStream as ConnectableObservable<CurrencyPairUpdates>
 }
 
-const updateCache = (currencyPairCache: { hasLoaded: boolean }) => (
+const updateCache = (currencyPairCache: CCYCache) => (
   update: CurrencyPairUpdates
 ) => {
   const pairUpdates = update.currencyPairUpdates
+
   pairUpdates.forEach(currencyPairUpdate => {
     if (currencyPairUpdate.updateType === UpdateType.Added) {
-      currencyPairCache[currencyPairUpdate.currencyPair.symbol] =
+      currencyPairCache.ccyPairs.set(
+        currencyPairUpdate.currencyPair.symbol,
         currencyPairUpdate.currencyPair
-    } else if (currencyPairUpdate.updateType === UpdateType.Removed) {
-      delete currencyPairCache[currencyPairUpdate.currencyPair.symbol]
+      )
+    } else {
+      currencyPairCache.ccyPairs.delete(currencyPairUpdate.currencyPair.symbol)
     }
   })
   if (!currencyPairCache.hasLoaded && update.currencyPairUpdates.length > 0) {
     currencyPairCache.hasLoaded = true
   }
+}
+
+interface CCYCache {
+  hasLoaded: boolean
+  ccyPairs: Map<string, CurrencyPair>
 }
 
 export default function referenceDataService(
@@ -86,9 +82,12 @@ export default function referenceDataService(
     connection
   )
   const disposables = new Subscription()
-  const currencyPairCache = {
-    hasLoaded: false
+
+  const currencyPairCache: CCYCache = {
+    hasLoaded: false,
+    ccyPairs: new Map()
   }
+
   const referenceDataStreamConnectable = getReferenceDataStream(
     serviceClient,
     updateCache(currencyPairCache)
@@ -116,12 +115,15 @@ export default function referenceDataService(
     getCurrencyPair(symbol: string) {
       if (!currencyPairCache.hasLoaded) {
         throw new Error(`Reference data cache hasn't finished loading`)
-      } else if (!currencyPairCache.hasOwnProperty(symbol)) {
+      }
+
+      if (currencyPairCache.ccyPairs.has(symbol)) {
+        return currencyPairCache.ccyPairs.get(symbol)!
+      } else {
         throw new Error(
           `CurrencyPair with symbol [${symbol}] is not in the cache.`
         )
       }
-      return currencyPairCache[symbol]
     },
     getCurrencyPairUpdatesStream() {
       return referenceDataStreamConnectable

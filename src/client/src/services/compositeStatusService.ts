@@ -23,6 +23,10 @@ export default function compositeStatusService(
       return connection.connectionStatusStream
     },
 
+    get connection() {
+      return connection
+    },
+
     get isConnected() {
       return connection.isConnected
     },
@@ -40,7 +44,7 @@ export default function compositeStatusService(
 }
 
 class ServiceStatusLookup {
-  services: Object = {}
+  services: { [key: string]: ServiceStatus } = {}
 
   updateServiceStatus(serviceStatus: ServiceStatus) {
     this.services[serviceStatus.serviceType] = serviceStatus

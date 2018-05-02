@@ -26,24 +26,21 @@ export default function analyticsService(
       return serviceClient.serviceStatusStream
     },
     getAnalyticsStream(analyticsRequest: string) {
-      return new Observable<PositionUpdates>(obs => {
-        log.debug('Subscribing to analytics stream')
+      log.debug('Subscribing to analytics stream')
 
-        return serviceClient
-          .createStreamOperation<PositionsRaw, string>(
+      return serviceClient
+        .createStreamOperation<PositionsRaw, string>(
+          'getAnalytics',
+          analyticsRequest
+        )
+        .pipe(
+          retryWithPolicy(
+            RetryPolicy.backoffTo10SecondsMax,
             'getAnalytics',
-            analyticsRequest
-          )
-          .pipe(
-            retryWithPolicy(
-              RetryPolicy.backoffTo10SecondsMax,
-              'getAnalytics',
-              Scheduler.async
-            ),
-            map(dto => positionsMapper.mapFromDto(dto))
-          )
-          .subscribe(obs)
-      })
+            Scheduler.async
+          ),
+          map(dto => positionsMapper.mapFromDto(dto))
+        )
     }
   }
 }

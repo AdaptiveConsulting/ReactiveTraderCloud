@@ -237,7 +237,7 @@ export default class ServiceClient extends DisposableBase {
   /**
    * Gets a request-responses observable that will act against a service which currently has the min load
    */
-  createStreamOperation<TResponse, TRequest>(
+  createStreamOperation<TResponse, TRequest = {}>(
     operationName: string,
     request: TRequest
   ) {
