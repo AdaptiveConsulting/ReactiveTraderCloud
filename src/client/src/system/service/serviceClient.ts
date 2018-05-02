@@ -30,10 +30,10 @@ import logger, { Logger } from '../logger'
 import { Connection } from './connection'
 import LastValueObservableDictionary from './lastValueObservableDictionary'
 import {
-  distinctUntilChangedGroup,
-  toServiceStatusObservableDictionary,
   debounceOnMissedHeartbeat,
-  getServiceWithMinLoad
+  distinctUntilChangedGroup,
+  getServiceWithMinLoad,
+  toServiceStatusObservableDictionary
 } from './operators'
 
 /**
@@ -81,7 +81,7 @@ export default class ServiceClient extends DisposableBase {
   get serviceStatusStream() {
     return this.serviceInstanceDictionaryStream.pipe(
       map(cache => createServiceStatus(cache, this.serviceType)),
-      publish(),
+      publish<ServiceStatus>(),
       refCount()
     )
   }
@@ -139,7 +139,7 @@ export default class ServiceClient extends DisposableBase {
               Scheduler.async
             ),
             // create a hash of properties which represent significant change in a status, we'll use this to filter out duplicates
-            distinctUntilChangedGroup(
+            distinctUntilChangedGroup<ServiceInstanceStatus>(
               (status, statusNew) =>
                 status.isConnected === statusNew.isConnected &&
                 status.serviceLoad === statusNew.serviceLoad
@@ -255,11 +255,10 @@ export default class ServiceClient extends DisposableBase {
       // Such an envelope could denote if the message stream should terminate, this would negate the need to distinguish between
       // request-response and stream operations as is currently the case.
       // tslint:disable-next-line:no-bitwise
-      const topicName =
-        'topic_' +
-        this.serviceType +
-        '_' +
+      const topicName = `topic_${this.serviceType}_${
+        // tslint:disable-next-line:no-bitwise
         ((Math.random() * Math.pow(36, 8)) << 0).toString(36)
+      }`
 
       let hasSubscribed = false
 

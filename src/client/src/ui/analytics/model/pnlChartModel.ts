@@ -10,10 +10,10 @@ export interface PricePoint {
 }
 
 export interface PNLChartModel {
-  lastPos: number,
-  maxPnl: number,
-  minPnl: number,
-  options: PnlChartModelOptions,
+  lastPos: number
+  maxPnl: number
+  minPnl: number
+  options: PnlChartModelOptions
   seriesData: PricePoint[]
 }
 
@@ -21,18 +21,18 @@ const DEFAULT_PNL = {
   lastPos: 0,
   minPnl: 0,
   maxPnl: 0,
-  seriesData: [],
+  seriesData: []
 }
 
-export const getPnlChartModel = (history) => {
+export const getPnlChartModel = history => {
   return {
     ...getPnlPositions(history),
     options: {
       xAxis: {
-        tickFormat: d => time.format('%X')(new Date(d)),
+        tickFormat: d => time.format('%X')(new Date(d))
       },
       yAxis: {
-        tickFormat: d => numeral(d).format('0.0a'),
+        tickFormat: d => numeral(d).format('0.0a')
       },
       showYAxis: true,
       showXAxis: true,
@@ -43,9 +43,9 @@ export const getPnlChartModel = (history) => {
         left: 30,
         top: 10,
         right: 0,
-        bottom: 24,
-      },
-    },
+        bottom: 24
+      }
+    }
   }
 }
 
@@ -54,7 +54,6 @@ const getLimit = (values: number[], callback) => {
 }
 
 export const getPnlPositions = (positions = []) => {
-
   const allPricePoints: number[] = positions
     .filter(item => !_.isNull(item.usdPnl))
     .map(item => item.usdPnl.toFixed(2))
@@ -69,7 +68,7 @@ export const getPnlPositions = (positions = []) => {
       seriesData,
       lastPos: lastPosition.usdPnl.toFixed(2),
       minPnl: getLimit(allPricePoints, Math.min),
-      maxPnl: getLimit(allPricePoints, Math.max),
+      maxPnl: getLimit(allPricePoints, Math.max)
     }
   }
   return DEFAULT_PNL

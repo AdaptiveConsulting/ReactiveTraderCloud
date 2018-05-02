@@ -19,68 +19,84 @@ interface AgGridBlotterState {
   quickFilterText: string
 }
 
-export default class AgGridBlotter extends React.Component<AgGridBlotterProps, AgGridBlotterState> {
-
+export default class AgGridBlotter extends React.Component<
+  AgGridBlotterProps,
+  AgGridBlotterState
+> {
   private gridApi: GridApi
   private columnApi: ColumnApi
 
   state = {
     displayedRows: 0,
-    quickFilterText: null,
+    quickFilterText: null
   } as AgGridBlotterState
 
-  render () {
-    const containerClass = classNames('agGridBlotter-container', 'rt-blotter-shared', 'rt-blotter-dark')
-    const newWindowClassName = classNames(
-      'glyphicon glyphicon-new-window',
-      {
-        'blotter__controls--hidden': this.props.canPopout,
-      },
+  render() {
+    const containerClass = classNames(
+      'agGridBlotter-container',
+      'rt-blotter-shared',
+      'rt-blotter-dark'
     )
+    const newWindowClassName = classNames('glyphicon glyphicon-new-window', {
+      'blotter__controls--hidden': this.props.canPopout
+    })
     const colDefs = getColumnDefinitions()
-    return <div className={containerClass}>
-      <div className="rt-blotter__controls popout__controls">
-        <i className={newWindowClassName}
-           onClick={() => this.props.onPopoutClick()}/>
-      </div>
-      <BlotterToolbar isQuickFilterApplied={this.state.quickFilterText && this.state.quickFilterText.length !== 0}
-                      quickFilterChangeHandler={this.quickFilterChangeHandler}
-                      removeQuickFilter={this.removeQuickFilter}
-                      removeAllFilters={this.removeAllFilters}
-                      removeFilter={this.removeFilter}
-                      filterModel={this.gridApi ? this.gridApi.getFilterModel() : null }
-                      columnDefinitions={colDefs} />
-      <div className="rt-blotter__grid-wrapper">
-        <AgGridReact
-          columnDefs={colDefs}
-          defaultColDef={DEFAULT_COLUMN_DEFINITION}
-          rowData={this.props.rows}
-          enableColResize={true}
-          suppressMovableColumns={true}
-          enableSorting={true}
-          enableFilter={true}
-          onModelUpdated={this.onModelUpdated}
-          onGridReady={this.onGridReady}
-          rowSelection="multiple"
-          headerHeight={28}
-          suppressDragLeaveHidesColumns={true}
-          getRowClass={this.getRowClass}
-          onColumnResized={this.sizeColumnsToFit}
-          getDocument={this.getGridDocument}
-          postProcessPopup={this.postProcessPopup}
+    return (
+      <div className={containerClass}>
+        <div className="rt-blotter__controls popout__controls">
+          <i
+            className={newWindowClassName}
+            onClick={() => this.props.onPopoutClick()}
+          />
+        </div>
+        <BlotterToolbar
+          isQuickFilterApplied={
+            this.state.quickFilterText &&
+            this.state.quickFilterText.length !== 0
+          }
+          quickFilterChangeHandler={this.quickFilterChangeHandler}
+          removeQuickFilter={this.removeQuickFilter}
+          removeAllFilters={this.removeAllFilters}
+          removeFilter={this.removeFilter}
+          filterModel={this.gridApi ? this.gridApi.getFilterModel() : null}
+          columnDefinitions={colDefs}
         />
+        <div className="rt-blotter__grid-wrapper">
+          <AgGridReact
+            columnDefs={colDefs}
+            defaultColDef={DEFAULT_COLUMN_DEFINITION}
+            rowData={this.props.rows}
+            enableColResize={true}
+            suppressMovableColumns={true}
+            enableSorting={true}
+            enableFilter={true}
+            onModelUpdated={this.onModelUpdated}
+            onGridReady={this.onGridReady}
+            rowSelection="multiple"
+            headerHeight={28}
+            suppressDragLeaveHidesColumns={true}
+            getRowClass={this.getRowClass}
+            onColumnResized={this.sizeColumnsToFit}
+            getDocument={this.getGridDocument}
+            postProcessPopup={this.postProcessPopup}
+          />
+        </div>
+        <div className="rt-blotter__status-bar">
+          <div>{`Displaying rows ${this.state.displayedRows} of ${
+            this.props.rows.length
+          }`}</div>
+        </div>
       </div>
-      <div className="rt-blotter__status-bar">
-        <div>{`Displaying rows ${ this.state.displayedRows } of ${ this.props.rows.length }`}</div>
-      </div>
-    </div>
+    )
   }
 
   private getGridDocument = () => {
-    return this.props.gridDocument ? this.props.gridDocument.ownerDocument : null
+    return this.props.gridDocument
+      ? this.props.gridDocument.ownerDocument
+      : null
   }
 
-  private sizeColumnsToFit = (param:any = null) => {
+  private sizeColumnsToFit = (param: any = null) => {
     if (this.gridApi) {
       this.gridApi.sizeColumnsToFit()
     }
@@ -100,7 +116,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     this.setState({ displayedRows: this.gridApi.getModel().getRowCount() })
   }
 
-  private quickFilterChangeHandler = (event:React.FormEvent<any>) => {
+  private quickFilterChangeHandler = (event: React.FormEvent<any>) => {
     const target = event.target as HTMLInputElement
     this.setState({ quickFilterText: target.value })
     this.gridApi.setQuickFilter(target.value)
@@ -116,20 +132,20 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     this.gridApi.setFilterModel(null)
   }
 
-  private removeFilter = (key:string) => {
+  private removeFilter = (key: string) => {
     this.gridApi.destroyFilter(key)
   }
 
   private getRowClass({ data }) {
     if (data.status === TradeStatus.Rejected) {
       return 'rt-blotter__rowStrikeThrough'
-    }else if (data.status === TradeStatus.Pending) {
+    } else if (data.status === TradeStatus.Pending) {
       return 'rt-blotter__row-pending'
     }
     return null
   }
 
-  private postProcessPopup = (params:any) => {
+  private postProcessPopup = (params: any) => {
     if (params.type !== 'columnMenu') {
       return
     }
@@ -155,14 +171,16 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
 
     if (rect.left < 0) {
       ePopup.classList.add('filter-menu__layout-right')
-      ePopup.style.left = (params.column.actualWidth - 20/* tab width offset */) + 'px'
+      ePopup.style.left =
+        params.column.actualWidth - 20 /* tab width offset */ + 'px'
     } else {
       // re-adjust the position of the tab, if it's moved relative to the right edge of the grid
       if (xDelta > anchorRect.width) {
         let prevleft = ePopup.style.left
         prevleft = prevleft.substring(0, prevleft.indexOf('px'))
         const prevLeftPos = parseInt(prevleft, 10)
-        ePopup.style.left  = (prevLeftPos + xDelta - (rect.width - anchorRect.width)) + 'px'
+        ePopup.style.left =
+          prevLeftPos + xDelta - (rect.width - anchorRect.width) + 'px'
       }
     }
 
@@ -170,7 +188,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
       let prevTopStyle = ePopup.style.top
       prevTopStyle = prevTopStyle.substring(0, prevTopStyle.indexOf('px'))
       const prevTopPos = parseInt(prevTopStyle, 10)
-      ePopup.style.top = (prevTopPos + (yDelta)) + 'px'
+      ePopup.style.top = prevTopPos + yDelta + 'px'
     }
   }
 }

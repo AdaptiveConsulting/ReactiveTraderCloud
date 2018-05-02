@@ -1,4 +1,4 @@
-export { default as TradeMapper } from './tradeMapper'
+export { mapFromDto, mapFromTradeDto } from './tradeMapper'
 export { default as referenceDataMapper } from './referenceDataMapper'
 export { default as PositionsMapper } from './positionsMapper'
-export { default as ConnectionTypeMapper } from './connectionTypeMapper'
+export { connectionTypeMapper } from './connectionTypeMapper'

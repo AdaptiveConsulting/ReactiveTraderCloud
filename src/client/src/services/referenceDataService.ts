@@ -1,18 +1,37 @@
-import * as _ from 'lodash'
-import { Observable, Scheduler, Subscription } from 'rxjs'
-import { map } from 'rxjs/operators'
+import {
+  ConnectableObservable,
+  Observable,
+  Observer,
+  Scheduler,
+  Subscription
+} from 'rxjs'
+import { filter, map, publish } from 'rxjs/operators'
 import { logger, RetryPolicy } from '../system'
 import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
 import { ServiceClient } from '../system/service'
-import { ConnectionStatus, ServiceConst, UpdateType } from '../types'
+import { Connection } from '../system/service/connection'
+import {
+  ConnectionStatus,
+  CurrencyPairUpdates,
+  ReferenceDataService,
+  ServiceConst,
+  UpdateType
+} from '../types'
 import { referenceDataMapper } from './mappers'
+import { RawCurrencyPairUpdates } from './mappers/referenceDataMapper'
+
+type CurrencyPairCache = (update: CurrencyPairUpdates) => void
 
 const log = logger.create('ReferenceDataService')
 
-const getReferenceDataStream = (serviceClient, updCache) => {
-  return Observable.create(o => {
+const getReferenceDataStream = (
+  serviceClient: ServiceClient,
+  updCache: CurrencyPairCache
+) => {
+  return new Observable<CurrencyPairUpdates>(o => {
     log.debug('Subscribing reference data stream')
-    const updateCacheObserver = {
+
+    const updateCacheObserver: Observer<CurrencyPairUpdates> = {
       next: updates => {
         // note : we have a side effect here.
         // In this instance it's ok as this stream is published and ref counted, i.e. there is only ever 1
@@ -26,7 +45,10 @@ const getReferenceDataStream = (serviceClient, updCache) => {
       complete: () => o.complete()
     }
     return serviceClient
-      .createStreamOperation('getCurrencyPairUpdatesStream', {})
+      .createStreamOperation<RawCurrencyPairUpdates, {}>(
+        'getCurrencyPairUpdatesStream',
+        {}
+      )
       .pipe(
         retryWithPolicy(
           RetryPolicy.backoffTo10SecondsMax,
@@ -36,15 +58,14 @@ const getReferenceDataStream = (serviceClient, updCache) => {
         map(referenceDataMapper.mapCurrencyPairsFromDto)
       )
       .subscribe(updateCacheObserver)
-  }).publish()
+  }).pipe(publish()) as ConnectableObservable<CurrencyPairUpdates>
 }
 
-const isConnected = () => connectionStatus =>
-  connectionStatus === ConnectionStatus.connected
-
-const updateCache = currencyPairCache => update => {
+const updateCache = (currencyPairCache: { hasLoaded: boolean }) => (
+  update: CurrencyPairUpdates
+) => {
   const pairUpdates = update.currencyPairUpdates
-  _.forEach(pairUpdates, currencyPairUpdate => {
+  pairUpdates.forEach(currencyPairUpdate => {
     if (currencyPairUpdate.updateType === UpdateType.Added) {
       currencyPairCache[currencyPairUpdate.currencyPair.symbol] =
         currencyPairUpdate.currencyPair
@@ -57,7 +78,9 @@ const updateCache = currencyPairCache => update => {
   }
 }
 
-export default function referenceDataService(connection) {
+export default function referenceDataService(
+  connection: Connection
+): ReferenceDataService {
   const serviceClient = new ServiceClient(
     ServiceConst.ReferenceServiceKey,
     connection
@@ -73,13 +96,15 @@ export default function referenceDataService(connection) {
 
   // on connection/reconnection get reference data stream
   const connectToReferenceStream = () => {
-    // TEMP force refdata reconnecting
     serviceClient.isConnectCalled = false
-    referenceDataStreamConnectable.connection = null
     disposables.add(referenceDataStreamConnectable.connect())
   }
   connection.connectionStatusStream
-    .filter(isConnected)
+    .pipe(
+      filter(
+        connectionStatus => connectionStatus === ConnectionStatus.connected
+      )
+    )
     .subscribe(connectToReferenceStream)
 
   serviceClient.connect()
@@ -88,7 +113,7 @@ export default function referenceDataService(connection) {
     get serviceStatusStream() {
       return serviceClient.serviceStatusStream
     },
-    getCurrencyPair(symbol) {
+    getCurrencyPair(symbol: string) {
       if (!currencyPairCache.hasLoaded) {
         throw new Error(`Reference data cache hasn't finished loading`)
       } else if (!currencyPairCache.hasOwnProperty(symbol)) {

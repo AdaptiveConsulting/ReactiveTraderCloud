@@ -20,10 +20,13 @@ interface State {
 }
 
 const initialState: State = {
-  trades: {},
+  trades: {}
 }
 
-export const blotterServiceReducer = (state: State = initialState, action): State => {
+export const blotterServiceReducer = (
+  state: State = initialState,
+  action
+): State => {
   switch (action.type) {
     case ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES:
       const newTradesById = keyBy(action.payload.trades, `tradeId`)
@@ -31,7 +34,7 @@ export const blotterServiceReducer = (state: State = initialState, action): Stat
         ...state,
         trades: {
           ...state.trades,
-          ...newTradesById,
+          ...newTradesById
         }
       }
     default:

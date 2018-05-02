@@ -24,8 +24,7 @@ export interface SpotTileProps {
 }
 
 export default class SpotTile extends React.Component<SpotTileProps, {}> {
-
-  shouldComponentUpdate(nextProps:SpotTileProps, nextState: {}) {
+  shouldComponentUpdate(nextProps: SpotTileProps, nextState: {}) {
     return !_.isEqual(nextProps.spotTileData, this.props.spotTileData)
   }
 
@@ -36,7 +35,9 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
       <div className={this.getSpotContainerClassName()}>
         <div className="spot-tile__container">
           {this.createSpotTileControls()}
-          {!hasNotification ? this.getSpotTileContent() : this.createNotificationView(notification)}
+          {!hasNotification
+            ? this.getSpotTileContent()
+            : this.createNotificationView(notification)}
         </div>
       </div>
     )
@@ -44,63 +45,91 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
 
   getSpotContainerClassName() {
     const { executionConnected, pricingConnected } = this.props
-    const { isTradeExecutionInFlight, notification, priceStale } = this.props.spotTileData
+    const {
+      isTradeExecutionInFlight,
+      notification,
+      priceStale
+    } = this.props.spotTileData
     const hasNotification = !!notification
     const className = classnames('spot-tile', {
-      'spot-tile--stale': (!pricingConnected || priceStale) &&
-      !(hasNotification && notification.notificationType === NotificationType.Trade),
+      'spot-tile--stale':
+        (!pricingConnected || priceStale) &&
+        !(
+          hasNotification &&
+          notification.notificationType === NotificationType.Trade
+        ),
       'spot-tile--readonly': !executionConnected,
       'spot-tile--executing': isTradeExecutionInFlight,
-      'spot-tile--error': hasNotification && notification.hasError,
+      'spot-tile--error': hasNotification && notification.hasError
     })
 
     return className
   }
 
   createSpotTileControls() {
-    const { onPopoutClick, undockTile, displayCurrencyChart, isRunningInOpenFin, spotTileData } = this.props
+    const {
+      onPopoutClick,
+      undockTile,
+      displayCurrencyChart,
+      isRunningInOpenFin,
+      spotTileData
+    } = this.props
 
     return (
-      <SpotTileControls onPopoutClick={onPopoutClick}
-                        currencyChartIsOpening={spotTileData.currencyChartIsOpening}
-                        displayCurrencyChart={displayCurrencyChart}
-                        isRunningInOpenFin={isRunningInOpenFin}
-                        undockTile={undockTile}/>
+      <SpotTileControls
+        onPopoutClick={onPopoutClick}
+        currencyChartIsOpening={spotTileData.currencyChartIsOpening}
+        displayCurrencyChart={displayCurrencyChart}
+        isRunningInOpenFin={isRunningInOpenFin}
+        undockTile={undockTile}
+      />
     )
   }
 
   createPriceComponents() {
     const { currencyPair, spotTileData, executeTrade } = this.props
     const title = `${currencyPair.base} / ${currencyPair.terms}`
-    if (spotTileData === null) { return null }
+    if (spotTileData === null) {
+      return null
+    }
 
     return (
-      <PriceControlsView currencyPair={currencyPair}
-                         title={title}
-                         spotTileData={spotTileData}
-                         executeTrade={executeTrade}/>
+      <PriceControlsView
+        currencyPair={currencyPair}
+        title={title}
+        spotTileData={spotTileData}
+        executeTrade={executeTrade}
+      />
     )
   }
 
   getSpotTileContent() {
     const { spotTileData, currencyPair } = this.props
     const hasNotification = !!spotTileData.notification
-    const notionalInputClass = classnames('spot-tile__notional', { hide: hasNotification })
-    const spotDateClass = classnames('spot-tile__delivery', { hide: hasNotification })
-    const formattedDate = spotTileData ? spotDateFormatter(spotTileData.valueDate,false) : ''
+    const notionalInputClass = classnames('spot-tile__notional', {
+      hide: hasNotification
+    })
+    const spotDateClass = classnames('spot-tile__delivery', {
+      hide: hasNotification
+    })
+    const formattedDate = spotTileData
+      ? spotDateFormatter(spotTileData.valueDate, false)
+      : ''
 
-    return (<div>
-      <span className="spot-tile__execution-label">Executing</span>
-      {this.createPriceComponents()}
-      <NotionalContainer
-        className={notionalInputClass}
-        currencyPair={currencyPair}
-      />
-      <div className={spotDateClass}>
-        <span className="spot-tile__tenor">SP</span>
-        <span className="spot-tile__delivery-date">. {formattedDate}</span>
+    return (
+      <div>
+        <span className="spot-tile__execution-label">Executing</span>
+        {this.createPriceComponents()}
+        <NotionalContainer
+          className={notionalInputClass}
+          currencyPair={currencyPair}
+        />
+        <div className={spotDateClass}>
+          <span className="spot-tile__tenor">SP</span>
+          <span className="spot-tile__delivery-date">. {formattedDate}</span>
+        </div>
       </div>
-    </div>)
+    )
   }
 
   createNotificationView(notification: Notification) {
@@ -109,14 +138,19 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         <TradeNotification
           notification={notification}
           currencyPair={this.props.currencyPair}
-          onDismissedClicked={() => this.props.onNotificationDismissedClick()}/>
+          onDismissedClicked={() => this.props.onNotificationDismissedClick()}
+        />
       )
     } else if (notification.notificationType === NotificationType.Text) {
       return (
-        <div className="spot-tile__notification-message">{notification.message}</div>
+        <div className="spot-tile__notification-message">
+          {notification.message}
+        </div>
       )
     } else {
-      throw new Error(`Unknown notification type ${notification.notificationType}`)
+      throw new Error(
+        `Unknown notification type ${notification.notificationType}`
+      )
     }
   }
 }

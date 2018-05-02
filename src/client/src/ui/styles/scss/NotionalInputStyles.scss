@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .notional__currency-pair {
   float: left;
@@ -26,6 +26,6 @@
     color: white;
   }
   &::selection {
-    background-color: #00A8CC;
+    background-color: #00a8cc;
   }
 }

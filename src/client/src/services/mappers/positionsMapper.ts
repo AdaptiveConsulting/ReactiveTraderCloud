@@ -1,11 +1,25 @@
-import * as _ from 'lodash'
-
 import {
   CurrencyPairPosition,
   HistoricPosition,
   PositionUpdates,
   ReferenceDataService
 } from '../../types'
+
+export interface CurrencyPairPostionRaw {
+  Symbol: string
+  BasePnl: number
+  BaseTradedAmount: number
+}
+
+export interface PositionsRaw {
+  CurrentPositions: CurrencyPairPostionRaw[]
+  History: HistoryRaw[]
+}
+
+export interface HistoryRaw {
+  Timestamp: string
+  UsdPnl: number
+}
 
 export default class PositionsMapper {
   referenceDataService: ReferenceDataService
@@ -22,7 +36,7 @@ export default class PositionsMapper {
     }
   }
 
-  mapFromDto(dto: any): PositionUpdates {
+  mapFromDto(dto: PositionsRaw): PositionUpdates {
     const positions = this.mapPositionsFromDto(dto.CurrentPositions)
     const history = this.mapHistoricPositionFromDto(dto.History)
     return {
@@ -31,8 +45,8 @@ export default class PositionsMapper {
     }
   }
 
-  mapPositionsFromDto(dtos: any[]): CurrencyPairPosition[] {
-    return _.map(dtos, (dto): CurrencyPairPosition => ({
+  mapPositionsFromDto(dtos: CurrencyPairPostionRaw[]): CurrencyPairPosition[] {
+    return dtos.map<CurrencyPairPosition>(dto => ({
       symbol: dto.Symbol,
       basePnl: dto.BasePnl,
       baseTradedAmount: dto.BaseTradedAmount,
@@ -41,8 +55,8 @@ export default class PositionsMapper {
     }))
   }
 
-  mapHistoricPositionFromDto(dtos: any[]): HistoricPosition[] {
-    return _.map(dtos, (dto): HistoricPosition => ({
+  mapHistoricPositionFromDto(dtos: HistoryRaw[]): HistoricPosition[] {
+    return dtos.map<HistoricPosition>(dto => ({
       timestamp: new Date(dto.Timestamp),
       usdPnl: dto.UsdPnl
     }))

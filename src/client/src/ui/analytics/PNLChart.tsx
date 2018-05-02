@@ -11,10 +11,10 @@ import ChartGradient from './chartGradient'
 
 export interface PnlChartModelOptions {
   xAxis: {
-    tickFormat: (string: string) => string,
-  },
+    tickFormat: (string: string) => string
+  }
   yAxis: {
-    tickFormat: (number: number) => string,
+    tickFormat: (number: number) => string
   }
   showYAxis: boolean
   showXAxis: boolean
@@ -25,15 +25,15 @@ export interface PnlChartModelOptions {
     left: number
     top: number
     right: number
-    bottom: number,
+    bottom: number
   }
 }
 
 export interface PNLChartProps {
-  lastPos: number,
-  maxPnl: number,
-  minPnl: number,
-  options: PnlChartModelOptions,
+  lastPos: number
+  maxPnl: number
+  minPnl: number
+  options: PnlChartModelOptions
   seriesData: PricePoint[]
 }
 
@@ -61,19 +61,25 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
       }
       const chartDomElement = ReactDOM.findDOMNode(this.refs.pnlChart)
       if (chartDomElement) {
-        this.chartGradient.update(chartDomElement as Element, this.props.minPnl, this.props.maxPnl)
+        this.chartGradient.update(
+          chartDomElement as Element,
+          this.props.minPnl,
+          this.props.maxPnl
+        )
       }
     }
   }
 
   prepareDatum(seriesData: PricePoint[]) {
-    return [{
-      series: 'PNL',
-      label: 'PNL',
-      area: true,
-      color: 'slategray',
-      values: seriesData
-    }]
+    return [
+      {
+        series: 'PNL',
+        label: 'PNL',
+        area: true,
+        color: 'slategray',
+        values: seriesData
+      }
+    ]
   }
 
   render() {
@@ -101,33 +107,37 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
         chart.interactiveLayer.tooltip.contentGenerator(pnlTooltip)
       }
 
-      options.xAxis = { tickFormat: (d: string) => timeFormat('%X')(new Date(d)) }
+      options.xAxis = {
+        tickFormat: (d: string) => timeFormat('%X')(new Date(d))
+      }
       options.yAxis = { tickFormat: (d: number) => numeral(d).format('0.0a') }
 
-      pnlChart =
+      pnlChart = (
         <NVD3Chart
           ref="pnlChart"
           type="lineChart"
           datum={this.prepareDatum(seriesData)}
           options={options}
           height={240}
-          configure={configurePnLChart}/>
+          configure={configurePnLChart}
+        />
+      )
     } else {
-      pnlChart = (<div>No PNL data yet</div>)
+      pnlChart = <div>No PNL data yet</div>
     }
 
     return (
       <div>
         <div className="analytics__header">
           <span className="analytics__header-title">
-            <i className="analytics__header-title-icon glyphicon glyphicon-stats"></i>
+            <i className="analytics__header-title-icon glyphicon glyphicon-stats" />
             Profit &amp; Loss
           </span>
-          <span className={analyticsHeaderClassName}>USD {formattedLastPos}</span>
+          <span className={analyticsHeaderClassName}>
+            USD {formattedLastPos}
+          </span>
         </div>
-        <div className="analytics__chart-container">
-          {pnlChart}
-        </div>
+        <div className="analytics__chart-container">{pnlChart}</div>
       </div>
     )
   }

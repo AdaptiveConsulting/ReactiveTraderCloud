@@ -23,6 +23,5 @@ function handleNotificationMessage(message) {
 
 export function run() {
   // OpenFin notifications API: need to define the global method onNotificationMessage
-  window.onNotificationMessage = message =>
-    handleNotificationMessage(message)
+  window.onNotificationMessage = message => handleNotificationMessage(message)
 }

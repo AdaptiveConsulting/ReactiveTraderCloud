@@ -4,7 +4,9 @@ import * as AgGrid from 'ag-grid'
 const getFilterSelect = (filter: any) => {
   const defaultFilterTypes = filter.getApplicableFilterTypes()
   const restrictedFilterTypes = filter.filterParams.filterOptions
-  const actualFilterTypes = restrictedFilterTypes ? restrictedFilterTypes : defaultFilterTypes;
+  const actualFilterTypes = restrictedFilterTypes
+    ? restrictedFilterTypes
+    : defaultFilterTypes
 
   const optionsHtml: string[] = actualFilterTypes.map(filterType => {
     const localeFilterName = filter.translate(filterType)
@@ -12,9 +14,10 @@ const getFilterSelect = (filter: any) => {
   })
   const readOnly = optionsHtml.length === 1 ? 'disabled' : ''
 
-  const selector =  optionsHtml.length <= 0 ?
-    '' :
-    `<div class="filter-container__selector-wrapper">
+  const selector =
+    optionsHtml.length <= 0
+      ? ''
+      : `<div class="filter-container__selector-wrapper">
        <select class="filter-container__select" id="filterType" ${readOnly}>
             ${optionsHtml.join('')}
             
@@ -26,7 +29,7 @@ const getFilterSelect = (filter: any) => {
 }
 
 // Numeric filter layout override to add a tab on top of the content
-AgGrid.NumberFilter.prototype.bodyTemplate = function ( ) {
+AgGrid.NumberFilter.prototype.bodyTemplate = function() {
   const translate = this.translate.bind(this)
 
   const selector = getFilterSelect(this)
@@ -37,26 +40,29 @@ AgGrid.NumberFilter.prototype.bodyTemplate = function ( ) {
             </div>
             <div class="filter-container__content-wrapper">
               <div>
-               ${ selector }
+               ${selector}
                
                <input class="ag-filter-filter filter-container__free-text-input" 
-                  id="filterText" type="text" placeholder="${translate('filterOoo')}"/>
+                  id="filterText" type="text" placeholder="${translate(
+                    'filterOoo'
+                  )}"/>
                 </div>
                  <div class="ag-filter-number-to" id="filterNumberToPanel">
                     <input class="ag-filter-filter filter-container__free-text-input" 
-                      id="filterToText" type="text" placeholder="${translate('filterOoo')}"/>
+                      id="filterToText" type="text" placeholder="${translate(
+                        'filterOoo'
+                      )}"/>
                </div>
             </div>
           </div>`
 }
 
-AgGrid.NumberFilter.prototype.generateFilterHeader = function ( ) {
+AgGrid.NumberFilter.prototype.generateFilterHeader = function() {
   return ''
 }
 
 // Date filter override
-AgGrid.DateFilter.prototype.bodyTemplate = function ( ) {
-
+AgGrid.DateFilter.prototype.bodyTemplate = function() {
   const selector = getFilterSelect(this)
   return `<div class="filter-container">
             <div class="filter-container__tab">
@@ -64,7 +70,7 @@ AgGrid.DateFilter.prototype.bodyTemplate = function ( ) {
             </div>
             <div class="filter-container__content-wrapper">
               <div>
-               ${ selector }
+               ${selector}
             </div>
              <div class="ag-filter-date-from" id="filterDateFromPanel"/>
               <div class="ag-filter-date-to" id="filterDateToPanel"/>
@@ -72,6 +78,6 @@ AgGrid.DateFilter.prototype.bodyTemplate = function ( ) {
               </div>`
 }
 
-AgGrid.DateFilter.prototype.generateFilterHeader = function ( ) {
+AgGrid.DateFilter.prototype.generateFilterHeader = function() {
   return ''
 }

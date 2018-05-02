@@ -70,7 +70,6 @@ function isString(value: any) {
   return typeof value === 'string' || value instanceof String
 }
 
-
 function doThrow(message: any) {
   if (typeof message === 'undefined' || message === '') {
     throw new Error('Argument error')

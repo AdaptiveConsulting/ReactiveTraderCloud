@@ -4,7 +4,7 @@ interface TransportDefinition {
   info: {
     url: string
     protocols?: string[]
-    type: string
+    type: 'websocket' | 'longpoll'
   }
 }
 

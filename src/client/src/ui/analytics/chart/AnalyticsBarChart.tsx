@@ -9,14 +9,12 @@ export interface AnalyticsBarChartProps {
   isPnL: boolean
 }
 
-export default class AnalyticsBarChart extends React.Component<AnalyticsBarChartProps, {}> {
-
+export default class AnalyticsBarChart extends React.Component<
+  AnalyticsBarChartProps,
+  {}
+> {
   render() {
-    return (
-      <div>
-        {!_.isEmpty(this.props.chartData) && this.createBars()}
-      </div>
-    )
+    return <div>{!_.isEmpty(this.props.chartData) && this.createBars()}</div>
   }
 
   createBars() {

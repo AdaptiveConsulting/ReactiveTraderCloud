@@ -12,14 +12,37 @@ export enum ACTION_TYPES {
   DISMISS_NOTIFICATION = '@ReactiveTraderCloud/DISMISS_NOTIFICATION'
 }
 
-export const executeTrade = createAction(ACTION_TYPES.EXECUTE_TRADE, payload => payload, (payload, meta) => meta)
-export const tradeExecuted = createAction(ACTION_TYPES.TRADE_EXECUTED, payload => payload, (payload, meta) => meta)
-export const undockTile = createAction(ACTION_TYPES.UNDOCK_TILE, payload => payload)
-export const tileUndocked = createAction(ACTION_TYPES.TILE_UNDOCKED, payload => payload)
-export const displayCurrencyChart = createAction(ACTION_TYPES.DISPLAY_CURRENCY_CHART, payload => payload)
-export const currencyChartOpened = createAction(ACTION_TYPES.CURRENCY_CHART_OPENED, payload => payload)
+export const executeTrade = createAction(
+  ACTION_TYPES.EXECUTE_TRADE,
+  payload => payload,
+  (payload, meta) => meta
+)
+export const tradeExecuted = createAction(
+  ACTION_TYPES.TRADE_EXECUTED,
+  payload => payload,
+  (payload, meta) => meta
+)
+export const undockTile = createAction(
+  ACTION_TYPES.UNDOCK_TILE,
+  payload => payload
+)
+export const tileUndocked = createAction(
+  ACTION_TYPES.TILE_UNDOCKED,
+  payload => payload
+)
+export const displayCurrencyChart = createAction(
+  ACTION_TYPES.DISPLAY_CURRENCY_CHART,
+  payload => payload
+)
+export const currencyChartOpened = createAction(
+  ACTION_TYPES.CURRENCY_CHART_OPENED,
+  payload => payload
+)
 export const updateTiles = createAction(ACTION_TYPES.UPDATE_TILES)
-export const dismissNotification = createAction(ACTION_TYPES.DISMISS_NOTIFICATION, payload => payload)
+export const dismissNotification = createAction(
+  ACTION_TYPES.DISMISS_NOTIFICATION,
+  payload => payload
+)
 
 export const spotRegionSettings = (id): RegionSettings => {
   return {

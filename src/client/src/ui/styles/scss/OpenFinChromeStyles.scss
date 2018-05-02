@@ -19,7 +19,8 @@ $header-height: 30px;
 }
 
 .openfin-chrome__header--with-bar {
-  background: url('../../common/images/adaptive-logo-light.svg') no-repeat, #DEE3E8;
+  background: url('../../common/images/adaptive-logo-light.svg') no-repeat,
+    #dee3e8;
   background-position: 6px 1px;
   align-content: center;
   vertical-align: middle;
@@ -33,7 +34,6 @@ $header-height: 30px;
   .openfin-chrome__header-control--close:hover {
     background-color: #800000;
   }
-
 }
 
 .openfin-chrome__header--no-bar {
@@ -44,7 +44,7 @@ $header-height: 30px;
   // when using -webkit-app-region: drag; cursor is overwritten by system settings and the visual result is contradictory to function
   // cursor: move;
   .openfin-chrome__header-controls-container {
-    color: #90AFC1;
+    color: #90afc1;
   }
 
   .openfin-chrome__header-controls {
@@ -98,7 +98,7 @@ $header-height: 30px;
 
   &.openfin-chrome__content--no-header-bar {
     height: 100%;
-    border: 1px solid #90AFC1;
+    border: 1px solid #90afc1;
     box-sizing: border-box;
     .spot-tile__controls {
       margin-right: 20px;

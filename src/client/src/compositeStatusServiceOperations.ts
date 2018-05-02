@@ -7,7 +7,9 @@ export enum ACTION_TYPES {
   COMPOSITE_STATUS_SERVICE = '@ReactiveTraderCloud/COMPOSITE_STATUS_SERVICE'
 }
 
-export const createCompositeStatusServiceAction = createAction(ACTION_TYPES.COMPOSITE_STATUS_SERVICE)
+export const createCompositeStatusServiceAction = createAction(
+  ACTION_TYPES.COMPOSITE_STATUS_SERVICE
+)
 
 export const compositeStatusServiceEpic = compositeStatusService$ => action$ => {
   // On init
@@ -39,5 +41,7 @@ export default handleActions(
 )
 
 export function countInstances(instances) {
-  return instances.filter((instance: ServiceInstanceStatus) => instance.isConnected).length
+  return instances.filter(
+    (instance: ServiceInstanceStatus) => instance.isConnected
+  ).length
 }

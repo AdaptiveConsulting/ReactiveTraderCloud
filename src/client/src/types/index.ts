@@ -1,4 +1,3 @@
-export { AnalyticsRequest } from './analyticsRequest'
 export { ApplicationStatusConst } from './applicationStatusConst'
 export { ConnectionType } from './connectionType'
 export { ConnectionStatus } from './connectionStatus'
@@ -7,8 +6,14 @@ export { CurrencyPairPosition } from './currencyPairPosition'
 export { CurrencyPairUpdate } from './currencyPairUpdate'
 export { CurrencyPairUpdates } from './currencyPairUpdates'
 export { Direction } from './direction'
-export { ExecuteTradeRequest } from './executeTradeRequest'
-export { ExecuteTradeResponse } from './executeTradeResponse'
+export {
+  ExecuteTradeRequest,
+  TradeSuccessResponse,
+  TradeErrorResponse,
+  ExecuteTradeResponse,
+  createExecuteTradeResponseForError,
+  createExecuteTradeResponse
+} from './executeTradeRequest'
 export { HistoricPosition } from './historicPosition'
 export { NotificationType } from './notificationType'
 export { PositionUpdates } from './positionUpdates'
@@ -25,4 +30,6 @@ export { TradesUpdate } from './tradesUpdate'
 export { UpdateType } from './updateType'
 export { User } from './user'
 export { ReferenceDataService } from './referenceDataService'
+export { StatusService } from './statusService'
 export { SpotPriceTick } from './spotPriceTick'
+export { CollectionUpdate, CollectionUpdates } from './CollectionUpdate'

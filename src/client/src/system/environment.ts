@@ -1,9 +1,8 @@
 import * as userAgentParser from 'ua-parser-js'
 
-let isRunningInIE = null
+let isRunningInIE: boolean = false
 
 export default class Environment {
-
   static isRunningInIE() {
     if (isRunningInIE === null) {
       const browser = new userAgentParser().getBrowser().name

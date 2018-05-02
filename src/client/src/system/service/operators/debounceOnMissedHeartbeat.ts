@@ -33,8 +33,6 @@ export function debounceOnMissedHeartbeat<T>(
         () => obs.complete()
       )
     })
-
-  //})
 }
 
 /**

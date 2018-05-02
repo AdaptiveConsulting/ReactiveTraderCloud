@@ -10,27 +10,47 @@ interface TradeNotificationContainerProps {
   trades: Trade[]
 }
 
-class TradeNotification extends React.Component<TradeNotificationContainerProps, {}> {
-
+class TradeNotification extends React.Component<
+  TradeNotificationContainerProps,
+  {}
+> {
   static contextTypes = {
     openFin: PropTypes.object
   }
 
   public componentWillReceiveProps(newProps) {
-    if (this.context.openFin && this.props.trades && Object.keys(this.props.trades).length) {
-      this.showOpenFinNotificationsForNewTrades(this.props.trades, newProps.trades)
+    if (
+      this.context.openFin &&
+      this.props.trades &&
+      Object.keys(this.props.trades).length
+    ) {
+      this.showOpenFinNotificationsForNewTrades(
+        this.props.trades,
+        newProps.trades
+      )
     }
     return newProps
   }
 
   public showOpenFinNotificationsForNewTrades(previousTrades, payloadTrades) {
-    _.forEach(payloadTrades, (trade:Trade) => {
+    _.forEach(payloadTrades, (trade: Trade) => {
       // ignore existing trades, unless it was pending
-      if (previousTrades[trade.tradeId] && previousTrades[trade.tradeId].status !== TradeStatus.Pending) { return }
+      if (
+        previousTrades[trade.tradeId] &&
+        previousTrades[trade.tradeId].status !== TradeStatus.Pending
+      ) {
+        return
+      }
 
       // display a notification if the trade has a final status (Done or Rejected)
-      if ((trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected)) {
-        this.context.openFin.openTradeNotification(trade, this.props.currencyPairs[trade.symbol])
+      if (
+        trade.status === TradeStatus.Done ||
+        trade.status === TradeStatus.Rejected
+      ) {
+        this.context.openFin.openTradeNotification(
+          trade,
+          this.props.currencyPairs[trade.symbol]
+        )
       }
     })
   }

@@ -4,9 +4,9 @@ $glyphicons-font-path: '../fonts/bootstrap/glyphicons-halflings-regular';
   font-family: 'Glyphicons Halflings';
   src: url('#{$glyphicons-font-path}.eot');
   src: url('#{$glyphicons-font-path}.eot?#iefix') format('embedded-opentype'),
-  url('#{$glyphicons-font-path}.woff2') format('woff2'),
-  url('#{$glyphicons-font-path}.woff') format('woff'),
-  url('#{$glyphicons-font-path}.ttf') format('truetype');
+    url('#{$glyphicons-font-path}.woff2') format('woff2'),
+    url('#{$glyphicons-font-path}.woff') format('woff'),
+    url('#{$glyphicons-font-path}.ttf') format('truetype');
 }
 
 .glyphicon {
@@ -21,13 +21,29 @@ $glyphicons-font-path: '../fonts/bootstrap/glyphicons-halflings-regular';
   -moz-osx-font-smoothing: grayscale;
 }
 
-.glyphicon-new-window { &:before { content: "\e164"; } }
+.glyphicon-new-window {
+  &:before {
+    content: '\e164';
+  }
+}
 
-.glyphicon-stats { &:before { content: '\e185'; }}
+.glyphicon-stats {
+  &:before {
+    content: '\e185';
+  }
+}
 
-.glyphicon-refresh { &:before { content: "\e031"; }}
+.glyphicon-refresh {
+  &:before {
+    content: '\e031';
+  }
+}
 
-.glyphicon-log-out { &:before { content: "\e163"; } }
+.glyphicon-log-out {
+  &:before {
+    content: '\e163';
+  }
+}
 
 @font-face {
   font-family: 'Rubik Light';

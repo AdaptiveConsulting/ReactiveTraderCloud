@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .blotter-toolbar {
   width: 100%;
@@ -12,13 +12,13 @@
   justify-content: space-between;
 }
 
-.blotter-toolbar__right-controls{
+.blotter-toolbar__right-controls {
   margin-right: 30px;
 }
 
-.blotter-toolbar__left-controls{
+.blotter-toolbar__left-controls {
   margin-left: 3px;
-  display: flex
+  display: flex;
 }
 
 @mixin toggle-button {
@@ -35,12 +35,12 @@
 }
 .blotter-toolbar__theme-switch {
   width: 80px;
-  @include toggle-button()
+  @include toggle-button();
 }
 
 .blotter-toolbar__numeric-renderer-switch {
   width: 110px;
-  @include toggle-button()
+  @include toggle-button();
 }
 
 .quick-filter-container {
@@ -76,21 +76,21 @@
   border: 1px solid $darkInputBorderColour;
   &:focus {
     outline: none;
-    border: 2px solid $accentColor
+    border: 2px solid $accentColor;
   }
 }
 
 .quick-filter-input::-webkit-input-placeholder {
   color: #888;
   font-size: 11px;
-  padding-left: 0!important;
+  padding-left: 0 !important;
 }
 
 .filter-icon--empty {
   color: #d8d8d8;
 }
 .filter-icon--applied {
-  color: $accentColor
+  color: $accentColor;
 }
 
 .applied-filter__filter-field {
@@ -98,7 +98,7 @@
   text-transform: uppercase;
   color: silver;
   padding: 3px 8px 3px 8px;
-  border: 1px solid #1D232E;
+  border: 1px solid #1d232e;
   background-color: $backgroundAccentColor;
   display: inline-block;
   height: 22px;

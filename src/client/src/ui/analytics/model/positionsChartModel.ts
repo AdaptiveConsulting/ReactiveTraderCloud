@@ -9,18 +9,18 @@ export interface PositionsChartModel {
     showValues: boolean
     showControls: boolean
     tooltip: {
-      enabled: boolean,
-    },
+      enabled: boolean
+    }
     margin: {
       top: number
       right: number
-      bottom: number,
-    },
-  },
+      bottom: number
+    }
+  }
   yAxisValuePropertyName: any
 }
 
-export const getPositionsChartModel = (data) => {
+export const getPositionsChartModel = data => {
   const baseTradedAmount = 'baseTradedAmount' // from CurrencyPairPosition
 
   return {
@@ -35,14 +35,14 @@ export const getPositionsChartModel = (data) => {
       showControls: false,
       width: 900,
       tooltip: {
-        enabled: false,
+        enabled: false
       },
       margin: {
         top: 0,
         right: 0,
-        bottom: 0,
-      },
+        bottom: 0
+      }
     },
-    yAxisValuePropertyName: baseTradedAmount,
+    yAxisValuePropertyName: baseTradedAmount
   }
 }

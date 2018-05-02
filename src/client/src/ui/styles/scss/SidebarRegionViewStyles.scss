@@ -1,13 +1,13 @@
-$container-bg-color:  #30333a;
-$active-color:        #262a33;
-$border-color:        #424545;
-$button-height:       50px;
+$container-bg-color: #30333a;
+$active-color: #262a33;
+$border-color: #424545;
+$button-height: 50px;
 
 .sidebar-region__content {
   width: 440px;
 }
 
-.sidebar-region__container{
+.sidebar-region__container {
   background-color: $container-bg-color;
   height: 100%;
   display: flex;
@@ -15,11 +15,11 @@ $button-height:       50px;
   overflow: hidden;
 }
 
-.sidebar-region__container--no-content{
+.sidebar-region__container--no-content {
   display: none;
 }
 
-.sidebar-region__element{
+.sidebar-region__element {
   border-left: 1px solid $border-color;
   width: 100%;
   flex: 1;
@@ -29,7 +29,7 @@ $button-height:       50px;
   background-color: $active-color;
   border: 1px solid $border-color;
   border-left-color: $active-color;
-  &:hover{
+  &:hover {
     background-color: $container-bg-color;
     border-right-color: $border-color;
   }
@@ -39,7 +39,7 @@ $button-height:       50px;
   border: 1px solid $container-bg-color;
   border-left-color: $border-color;
   background-color: $container-bg-color;
-  &:hover{
+  &:hover {
     background-color: $active-color;
     border-bottom-color: $border-color;
     border-top-color: $border-color;

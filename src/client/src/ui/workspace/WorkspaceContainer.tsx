@@ -7,9 +7,8 @@ import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 
 const getSpotTileKeys = createDeepEqualSelector(
   (state: any) => Object.keys(state.currencyPairs),
-  (spotTilesKeys) => spotTilesKeys
+  spotTilesKeys => spotTilesKeys
 )
-
 
 interface WorkspaceContainerStateProps {
   spotTileKeys: string[]
@@ -17,31 +16,39 @@ interface WorkspaceContainerStateProps {
 
 type WorkspaceContainerProps = WorkspaceContainerStateProps
 
-export class WorkspaceContainer extends React.Component<WorkspaceContainerProps, {}> {
-
+export class WorkspaceContainer extends React.Component<
+  WorkspaceContainerProps,
+  {}
+> {
   render() {
-    return <div className="shell__workspace">
-      <div className="workspace-region">
-        {this.renderItems()}
+    return (
+      <div className="shell__workspace">
+        <div className="workspace-region">{this.renderItems()}</div>
       </div>
-    </div>
+    )
   }
 
   renderItems() {
-
-    const {spotTileKeys} = this.props
+    const { spotTileKeys } = this.props
     if (!spotTileKeys || spotTileKeys.length === 0) {
-      return <div className="workspace-region__icon--loading"><i className="fa fa-5x fa-cog fa-spin"/></div>
+      return (
+        <div className="workspace-region__icon--loading">
+          <i className="fa fa-5x fa-cog fa-spin" />
+        </div>
+      )
     }
 
     return spotTileKeys
       .map(key => (
         <RegionWrapper key={key} region={key}>
           <div className="workspace-region__item">
-            <ConnectedSpotTileContainer id={key}/>
+            <ConnectedSpotTileContainer id={key} />
           </div>
         </RegionWrapper>
-      )).concat(_.times(6, i => <div key={i} className="workspace-region__spacer"/>))
+      ))
+      .concat(
+        _.times(6, i => <div key={i} className="workspace-region__spacer" />)
+      )
   }
 }
 

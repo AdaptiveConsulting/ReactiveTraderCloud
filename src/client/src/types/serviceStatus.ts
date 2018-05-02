@@ -5,7 +5,7 @@
 import { ServiceInstanceStatus } from '.'
 
 export interface ServiceStatus {
-  serviceType: string, 
-  instanceStatuses: ServiceInstanceStatus[], 
-  isConnected: boolean,
+  serviceType: string
+  instanceStatuses: ServiceInstanceStatus[]
+  isConnected: boolean
 }

@@ -13,8 +13,12 @@ export enum ACTION_TYPES {
   PRICING_STALE = '@ReactiveTraderCloud/PRICING_STALE'
 }
 
-export const createSpotPricesUpdateAction = createAction(ACTION_TYPES.SPOT_PRICES_UPDATE)
-export const createPricingServiceStatusUpdateAction = createAction(ACTION_TYPES.PRICING_SERVICE_STATUS_UPDATE)
+export const createSpotPricesUpdateAction = createAction(
+  ACTION_TYPES.SPOT_PRICES_UPDATE
+)
+export const createPricingServiceStatusUpdateAction = createAction(
+  ACTION_TYPES.PRICING_SERVICE_STATUS_UPDATE
+)
 export const createStalePriceAction = createAction(ACTION_TYPES.PRICING_STALE)
 
 // Epics Logic
@@ -24,7 +28,10 @@ interface PricesBySymbol {
   [symbol: string]: SpotPriceTick
 }
 
-const reducePrices = (acc: PricesBySymbol, tick: SpotPriceTick): PricesBySymbol => {
+const reducePrices = (
+  acc: PricesBySymbol,
+  tick: SpotPriceTick
+): PricesBySymbol => {
   return {
     ...acc,
     [tick.symbol]: tick
@@ -32,17 +39,23 @@ const reducePrices = (acc: PricesBySymbol, tick: SpotPriceTick): PricesBySymbol 
 }
 
 const getSymbol = (currency): string => currency.currencyPair.symbol
-const getSymbols = (action): string[] => action.payload.currencyPairUpdates.map(getSymbol)
+const getSymbols = (action): string[] =>
+  action.payload.currencyPairUpdates.map(getSymbol)
 // returns a stream that emits an array containing the currencyPairSymbols like this: `["EURUSD", ...]`
-const getSymbolArray$ = action$ => action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE).map(getSymbols)
+const getSymbolArray$ = action$ =>
+  action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE).map(getSymbols)
 // returns a stream that emits each currencyPairSymbol individually. Example: `EURUSD`
-const getSymbol$ = action$ => getSymbolArray$(action$).mergeMap((symbols: string[]) => Observable.from(symbols))
+const getSymbol$ = action$ =>
+  getSymbolArray$(action$).mergeMap((symbols: string[]) =>
+    Observable.from(symbols)
+  )
 
 const publishPriceToOpenFin = openFin => price => openFin.publishPrice(price)
 const addRatePrecisionToPrice = referenceDataService => price => {
   return {
     ...price,
-    ratePrecision: referenceDataService.getCurrencyPair(price.symbol).ratePrecision
+    ratePrecision: referenceDataService.getCurrencyPair(price.symbol)
+      .ratePrecision
   }
 }
 
@@ -57,14 +70,20 @@ const priceForReferenceServiceSymbols$ = (action$, pricingService$) => {
   )
 }
 
-export const pricingServiceEpic = (pricingService$, openFin, referenceDataService) => {
+export const pricingServiceEpic = (
+  pricingService$,
+  openFin,
+  referenceDataService
+) => {
   const stalePriceEpic = action$ => {
     // For each symbol
     return (
       getSymbol$(action$)
         // creates a new price stream and will wait to debounce
         .mergeMap(symbol =>
-          pricingService$.getSpotPriceStream({ symbol }).debounceTime(MS_FOR_LAST_PRICE_TO_BECOME_STALE)
+          pricingService$
+            .getSpotPriceStream({ symbol })
+            .debounceTime(MS_FOR_LAST_PRICE_TO_BECOME_STALE)
         )
         // when debounces, it creates an action
         .map(createStalePriceAction)
@@ -98,7 +117,12 @@ export const pricingServiceEpic = (pricingService$, openFin, referenceDataServic
     )
   }
 
-  return combineEpics(updatePricesEpic, stalePriceEpic, pricingServiceStatusEpic, publishPriceToOpenFinEpic)
+  return combineEpics(
+    updatePricesEpic,
+    stalePriceEpic,
+    pricingServiceStatusEpic,
+    publishPriceToOpenFinEpic
+  )
 }
 
 // Reducer Logic

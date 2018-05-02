@@ -13,9 +13,9 @@ export interface SpotPrice {
   priceMovementType: PriceMovementTypes
   spread: {
     value: number
-    formattedValue: string,
+    formattedValue: string
   }
-  priceStale: boolean,
-  isTradeExecutionInFlight: boolean,
-  notification: any,
+  priceStale: boolean
+  isTradeExecutionInFlight: boolean
+  notification: any
 }

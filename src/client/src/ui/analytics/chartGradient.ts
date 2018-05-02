@@ -1,4 +1,4 @@
-import 'classlist-polyfill';
+import 'classlist-polyfill'
 
 /**
  * ChartGradient - a utility to draw linear gradients on area and stroke elements of a line chart
@@ -29,7 +29,11 @@ export default class ChartGradient {
     this.updateStops(domainMin, domainMax)
   }
 
-  appendLinearGradients(parentChart: Element, domainMin: number, domainMax: number) {
+  appendLinearGradients(
+    parentChart: Element,
+    domainMin: number,
+    domainMax: number
+  ) {
     if (!parentChart) {
       throw new Error('No parent chart element exists')
     }
@@ -54,7 +58,10 @@ export default class ChartGradient {
       nvGroups.appendChild(defs)
     }
 
-    if (defs && !(this.linearGradient && this.linearGradient.parentNode === defs)) {
+    if (
+      defs &&
+      !(this.linearGradient && this.linearGradient.parentNode === defs)
+    ) {
       defs.appendChild(this.linearGradient)
       if (nvArea) {
         if (nvArea.classList.contains('new-chart-area')) {
@@ -69,7 +76,6 @@ export default class ChartGradient {
 
       if (nvStroke) {
         if (nvStroke.classList.contains('new-chart-stroke')) {
-
         } else {
           nvStroke.classList.add('new-chart-stroke')
         }
@@ -78,7 +84,6 @@ export default class ChartGradient {
   }
 
   createGradients() {
-
     // add a linea gradient to the chart
     const svgNS = 'http://www.w3.org/2000/svg'
 
@@ -102,7 +107,6 @@ export default class ChartGradient {
     stop1End.setAttribute('offset', '50%')
     stop1End.setAttribute('stop-opacity', '.06')
     this.linearGradient.appendChild(stop1End)
-
 
     const stop2 = document.createElementNS(svgNS, 'stop')
     stop2.setAttribute('id', 'stop2')
@@ -145,15 +149,16 @@ export default class ChartGradient {
     lineStop2End.setAttribute('class', 'lineStop2End')
     lineStop2End.setAttribute('offset', '100%')
     this.strokeGradient.appendChild(lineStop2End)
-
   }
 
   updateStops(domainMin: number, domainMax: number) {
     // update colour stops
     // need to modify stop1End and stop2
     const fullRange = Math.abs(domainMin) + Math.abs(domainMax)
-    if (isNaN(fullRange) || fullRange === 0) { return }
-    const zeroAt = (domainMax / fullRange) * 100 + '%'
+    if (isNaN(fullRange) || fullRange === 0) {
+      return
+    }
+    const zeroAt = domainMax / fullRange * 100 + '%'
 
     const stopGreenStart = this.linearGradient.querySelector('#stop1')
     const stopGreenEnd = this.linearGradient.querySelector('#stop1End')
@@ -175,6 +180,5 @@ export default class ChartGradient {
     const lineStopRedEnd = this.strokeGradient.querySelector('#lineStop2End')
     lineStopRedStart.setAttribute('offset', zeroAt)
     lineStopRedEnd.setAttribute('offset', '100%')
-
   }
 }

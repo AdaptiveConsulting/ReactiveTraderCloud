@@ -8,14 +8,15 @@
 }
 
 .rt-blotter .ag-cell-highlight-animation {
-  transition: none; }
+  transition: none;
+}
 
 @mixin status-indicator($bgColor) {
-  width: 5px!important;
+  width: 5px !important;
   padding: 0;
   margin: 0;
   height: 100%;
-  background-color: transparentize($bgColor, .25);
+  background-color: transparentize($bgColor, 0.25);
 }
 
 .rt-blotter-shared {
@@ -24,20 +25,20 @@
   // header
   .ag-header {
     text-transform: uppercase;
-    border-bottom: 2px solid $accentColor;//!important;
+    border-bottom: 2px solid $accentColor; //!important;
     padding: 3px 0 0 10px;
     height: 30px;
 
     .ag-header-cell-filtered {
       .ag-header-cell-menu-button {
-        opacity: 1!important;
+        opacity: 1 !important;
       }
     }
 
     .ag-header-cell-text {
       font-size: 12px;
       font-family: BrandonBold;
-      color: $accentColor
+      color: $accentColor;
     }
 
     .ag-header-cell-menu-button {
@@ -74,7 +75,7 @@
     border: none;
   }
 
-  .rt-blotter__numeric-cell{
+  .rt-blotter__numeric-cell {
     display: flex;
     justify-content: flex-end;
     padding-right: 20px;
@@ -83,7 +84,6 @@
   .rt-blotter__numeric-cell--decimmal {
     display: flex;
     justify-content: center;
-
   }
 
   .ag-cell-no-focus {
@@ -106,25 +106,25 @@
   }
 
   .rt-blotter__status-indicator--rejected {
-    @include status-indicator($rtNegative)
+    @include status-indicator($rtNegative);
   }
 
   .rt-blotter__status-indicator--done {
-    @include status-indicator($rtPositive)
+    @include status-indicator($rtPositive);
   }
 
   .rt-blotter__status-indicator--pending {
-    @include status-indicator(#878A8E)
+    @include status-indicator(#878a8e);
   }
 
   .rt-blotter__row-pending:before {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: #878A8E; //rgba(225, 225, 100, 0.4); ;
+    background-color: #878a8e; //rgba(225, 225, 100, 0.4); ;
   }
 }
 
@@ -239,7 +239,7 @@
 }
 
 .rt-blotter__rowStrikeThrough:before {
-  content: " ";
+  content: ' ';
   position: absolute;
   top: 50%;
   left: 0;
@@ -248,7 +248,7 @@
 }
 
 .rt-blotter__activeSymbol:before {
-  content: " ";
+  content: ' ';
   position: absolute;
   top: 0;
   left: 0;
@@ -267,7 +267,7 @@
 }
 
 .rt-blotter__grid-wrapper {
-  height: calc(100% - #{$statusBarHeight + $toolbarHeight})
+  height: calc(100% - #{$statusBarHeight + $toolbarHeight});
 }
 
 .rt-blotter__status-bar {
@@ -296,8 +296,7 @@
   text-transform: capitalize;
 }
 
-.blotter__controls--hidden{
+.blotter__controls--hidden {
   display: none;
   visibility: hidden;
 }
-

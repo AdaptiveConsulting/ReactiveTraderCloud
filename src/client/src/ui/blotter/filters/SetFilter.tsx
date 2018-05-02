@@ -20,10 +20,12 @@ interface SetFilterState {
   selectedValueSet: {}
 }
 
-export default class SetFilter extends React.Component<SetFilterProps, SetFilterState> {
-
-  private container:Element
-  private hidePopup: (params:any) => void
+export default class SetFilter extends React.Component<
+  SetFilterProps,
+  SetFilterState
+> {
+  private container: Element
+  private hidePopup: (params: any) => void
 
   constructor(props) {
     super(props)
@@ -36,20 +38,23 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
 
   componentDidMount() {
     const uniqueValues = Object.values(this.getUniqueValues())
-    const initialSelection = uniqueValues.reduce((resultObj, value, index, array) => {
-      resultObj[value] = true
-      return resultObj
-    }, { [ALL]: true })
+    const initialSelection = uniqueValues.reduce(
+      (resultObj, value, index, array) => {
+        resultObj[value] = true
+        return resultObj
+      },
+      { [ALL]: true }
+    )
 
     this.setState({ selectedValueSet: initialSelection })
   }
 
   isFilterActive() {
-
-    const filterActive = this.state.text !== null
-      && this.state.text !== undefined
-      && this.state.text.trim() !== ''
-      && this.isListSelectionModified()
+    const filterActive =
+      this.state.text !== null &&
+      this.state.text !== undefined &&
+      this.state.text.trim() !== '' &&
+      this.isListSelectionModified()
     return filterActive
   }
 
@@ -59,27 +64,39 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
 
     // find if any options is unchecked
     const allOptionsSelected = selectedOptions.indexOf(false) === -1
-    return uniquOptions.length + 1 /*accounting for All option*/ !== selectedOptions.length || !allOptionsSelected
+    return (
+      uniquOptions.length + 1 /*accounting for All option*/ !==
+        selectedOptions.length || !allOptionsSelected
+    )
   }
 
   doesFilterPass(params) {
     const value = this.props.valueGetter(params.node)
-    const doesTextFilterPass = this.state.text.toLowerCase()
+    const doesTextFilterPass = this.state.text
+      .toLowerCase()
       .split(' ')
-      .every((filterWord) => {
-        return value.toString().toLowerCase().indexOf(filterWord) >= 0
+      .every(filterWord => {
+        return (
+          value
+            .toString()
+            .toLowerCase()
+            .indexOf(filterWord) >= 0
+        )
       })
 
-    const doesOptionsFilterPass = !!this.state.selectedValueSet[value]
-      || this.state.selectedValueSet[ALL] === true
+    const doesOptionsFilterPass =
+      !!this.state.selectedValueSet[value] ||
+      this.state.selectedValueSet[ALL] === true
 
     return doesTextFilterPass || doesOptionsFilterPass
   }
 
   getModel() {
-
     const filterText = this.state.text
-    const model = filterText !== undefined && filterText.trim().length === 0 ? undefined : filterText
+    const model =
+      filterText !== undefined && filterText.trim().length === 0
+        ? undefined
+        : filterText
     return model
   }
 
@@ -101,24 +118,27 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     })
   }
 
-  onTextChange = (event) => {
+  onTextChange = event => {
     const newValue = event.target.value.toLowerCase()
 
     const setFilterOptions = { ...this.state.selectedValueSet }
     const keys = Object.keys(setFilterOptions)
-    keys.forEach((key:string) => {
+    keys.forEach((key: string) => {
       if (key === ALL) {
         setFilterOptions[ALL] = newValue.length === 0 ? true : false
-      }else {
+      } else {
         setFilterOptions[key] = key.toLowerCase().indexOf(newValue) !== -1
       }
     })
 
-    this.setState({ selectedFreeText: newValue, selectedValueSet: setFilterOptions }, () => this.updateFilter())
+    this.setState(
+      { selectedFreeText: newValue, selectedValueSet: setFilterOptions },
+      () => this.updateFilter()
+    )
   }
 
   onOptionSelectChange = (event, value: string = ALL) => {
-    const target:HTMLInputElement = event.target as HTMLInputElement
+    const target: HTMLInputElement = event.target as HTMLInputElement
     const updatedValueSet = { ...this.state.selectedValueSet }
 
     if (value === ALL) {
@@ -130,10 +150,12 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
         updatedValueSet[ALL] = false
       }
     }
-    this.setState({ selectedValueSet: updatedValueSet }, () => this.updateFilter())
+    this.setState({ selectedValueSet: updatedValueSet }, () =>
+      this.updateFilter()
+    )
   }
 
-  updateAllOptions = (isChecked:boolean) => {
+  updateAllOptions = (isChecked: boolean) => {
     const valueSet = { ...this.state.selectedValueSet }
     // tslint:disable-next-line:forin
     for (const key in valueSet) {
@@ -143,13 +165,15 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   }
 
   updateFilter = () => {
-
     if (!this.isListSelectionModified()) {
-      this.setState({
-        text: ''
-      }, () => {
-        this.props.filterChangedCallback()
-      })
+      this.setState(
+        {
+          text: ''
+        },
+        () => {
+          this.props.filterChangedCallback()
+        }
+      )
       return
     }
 
@@ -162,74 +186,84 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
       }
     }
     const newFilterText = newSelectedValueSet.join(' ')
-    this.setState({
-      text: newFilterText
-    }, () => {
-      this.props.filterChangedCallback()
-    })
+    this.setState(
+      {
+        text: newFilterText
+      },
+      () => {
+        this.props.filterChangedCallback()
+      }
+    )
   }
 
-  getUniqueValues = ():any[] => {
-
+  getUniqueValues = (): any[] => {
     const uniqueValuesMap = {}
     const rowModel = this.props.api.getModel()
     if (!rowModel) {
       return []
     }
-    rowModel.forEachNode((rowNode:RowNode) => {
+    rowModel.forEachNode((rowNode: RowNode) => {
       const value = this.props.valueGetter(rowNode)
       uniqueValuesMap[value] = value
     })
     return Object.values(uniqueValuesMap)
   }
 
-  isOptionsChecked = (value:string):boolean => {
+  isOptionsChecked = (value: string): boolean => {
     if (Object.keys(this.state.selectedValueSet).length === 0) {
       return true
     }
-    return !!this.state.selectedValueSet[value] || this.state.selectedValueSet[ALL] === true
+    return (
+      !!this.state.selectedValueSet[value] ||
+      this.state.selectedValueSet[ALL] === true
+    )
   }
 
-  createOptionItem = (value:string, label:string) => {
-    return <div key={value} className="filter-container__checkbox-container">
-      <input key={value}
-             type="checkbox"
-             className="filter-container__checkbox"
-             checked={this.isOptionsChecked(value)}
-             onChange={(event) => this.onOptionSelectChange(event, value)}/>
-      <label>{label || value}</label>
-    </div>
+  createOptionItem = (value: string, label: string) => {
+    return (
+      <div key={value} className="filter-container__checkbox-container">
+        <input
+          key={value}
+          type="checkbox"
+          className="filter-container__checkbox"
+          checked={this.isOptionsChecked(value)}
+          onChange={event => this.onOptionSelectChange(event, value)}
+        />
+        <label>{label || value}</label>
+      </div>
+    )
   }
 
-  setupContainer = (el:Element) => {
+  setupContainer = (el: Element) => {
     this.container = ReactDOM.findDOMNode(el) as Element
   }
 
   render() {
     const uniqueValues = this.getUniqueValues()
-    const setOptions = uniqueValues.map((value:string) => {
+    const setOptions = uniqueValues.map((value: string) => {
       return this.createOptionItem(value, value)
     })
     return (
-      <div className="filter-container"
-           ref={(el) => this.setupContainer(el)}>
+      <div className="filter-container" ref={el => this.setupContainer(el)}>
         <div className="filter-container__tab">
-          <div className="filter-container__tab-icon"></div>
+          <div className="filter-container__tab-icon" />
         </div>
         <div className="filter-container__content-wrapper">
-          <input key="searchInput"
-                 ref="input"
-                 placeholder="Search"
-                 value={this.state.selectedFreeText}
-                 onChange={this.onTextChange}
-                 className="filter-container__free-text-input"/>
+          <input
+            key="searchInput"
+            ref="input"
+            placeholder="Search"
+            value={this.state.selectedFreeText}
+            onChange={this.onTextChange}
+            className="filter-container__free-text-input"
+          />
 
           <div className="filter_container__select-all-option-container">
-            { this.createOptionItem(ALL, 'Select All')}
+            {this.createOptionItem(ALL, 'Select All')}
           </div>
           <div className="filter_container__option-items-wrapper">
             <div className="filter_container__option-items-container">
-              { setOptions }
+              {setOptions}
             </div>
           </div>
         </div>

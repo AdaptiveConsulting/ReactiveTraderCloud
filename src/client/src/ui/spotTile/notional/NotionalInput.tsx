@@ -2,15 +2,15 @@ import * as classnames from 'classnames'
 import * as numeral from 'numeral'
 import * as React from 'react'
 import { utils } from '../../../system'
-import { CurrencyPair }  from '../../../types'
+import { CurrencyPair } from '../../../types'
 
-const NUMERAL_FORMAT      = '0,000,000[.]00'
-const DOT                 = '.'
-const ENTER               = 'Enter'
-const CHAR_CODE_DOT       = 46
-const CHAR_CODE_0         = 48
-const CHAR_CODE_9         = 57
-const CHAR_CODE_UNIT_SEP  = 31
+const NUMERAL_FORMAT = '0,000,000[.]00'
+const DOT = '.'
+const ENTER = 'Enter'
+const CHAR_CODE_DOT = 46
+const CHAR_CODE_0 = 48
+const CHAR_CODE_9 = 57
+const CHAR_CODE_UNIT_SEP = 31
 const SHORTCUT_CHAR_CODES = [75, 77, 107, 109] // K, M, k, m
 
 const MAX_NOTIONAL_VALUE = 1000000000
@@ -22,15 +22,20 @@ export interface NotionalInputProps {
   onNotionalInputChange: (value: number) => void
 }
 
-export default class NotionalInput extends React.Component<NotionalInputProps, {}> {
+export default class NotionalInput extends React.Component<
+  NotionalInputProps,
+  {}
+> {
   props: NotionalInputProps
   refs: any
   shouldComponentUpdate(nextProps: any, nextState: any) {
-    return this.props.className !== nextProps.className ||
+    return (
+      this.props.className !== nextProps.className ||
       this.props.notional !== nextProps.notional ||
       // currencyPair always here
       this.props.currencyPair.symbol !== nextProps.currencyPair.symbol ||
       this.props.onNotionalInputChange !== nextProps.onChange
+    )
   }
 
   render() {
@@ -42,14 +47,16 @@ export default class NotionalInput extends React.Component<NotionalInputProps, {
     return (
       <div className={classes}>
         <label className="notional__currency-pair">{currencyPair.base}</label>
-        <input className="notional__size-input"
+        <input
+          className="notional__size-input"
           type="text"
           ref="notionalInput"
           defaultValue={formattedSize}
           onClick={this.handleSelect}
           onChange={(e: any) => this.handleInputChange(e)}
           onBlur={(e: any) => this.processNotional(e.target.value)}
-          onKeyPress={(e: any) => this.handleKeyPressNotionalInput(e)}/>
+          onKeyPress={(e: any) => this.handleKeyPressNotionalInput(e)}
+        />
       </div>
     )
   }
@@ -74,7 +81,9 @@ export default class NotionalInput extends React.Component<NotionalInputProps, {
 
   processNotional(inputValue: string) {
     const inputValueTrimmed = inputValue.trim()
-    let notional: any = utils.convertNotionalShorthandToNumericValue(inputValueTrimmed)
+    let notional: any = utils.convertNotionalShorthandToNumericValue(
+      inputValueTrimmed
+    )
     if (notional >= MAX_NOTIONAL_VALUE) {
       notional = 0
     }
@@ -106,13 +115,19 @@ export default class NotionalInput extends React.Component<NotionalInputProps, {
 
   inputIsAllowed(charCode: number) {
     // allow charcter codes before the Unit Separator to catch Shift, Backspace, etc
-    if (charCode <= CHAR_CODE_UNIT_SEP) { return true }
+    if (charCode <= CHAR_CODE_UNIT_SEP) {
+      return true
+    }
 
     // allow shortcut values
-    if (SHORTCUT_CHAR_CODES.indexOf(charCode) !== -1) { return true }
+    if (SHORTCUT_CHAR_CODES.indexOf(charCode) !== -1) {
+      return true
+    }
 
     // allow numeric values:
-    if (charCode >= CHAR_CODE_0 && charCode <= CHAR_CODE_9) { return true }
+    if (charCode >= CHAR_CODE_0 && charCode <= CHAR_CODE_9) {
+      return true
+    }
     return false
   }
 }

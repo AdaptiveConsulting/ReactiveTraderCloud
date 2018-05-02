@@ -4,7 +4,7 @@ import { ConnectionStatus } from './types/'
 
 export enum ACTION_TYPES {
   CONNECTION_STATUS_UPDATE = '@ReactiveTraderCloud/CONNECTION_STATUS_UPDATE',
-  RECONNECT = '@ReactiveTraderCloud/RECONNECT',
+  RECONNECT = '@ReactiveTraderCloud/RECONNECT'
 }
 
 interface State {
@@ -18,16 +18,20 @@ export type Connections = State
 const initialState: State = {
   connection: ConnectionStatus.disconnected,
   connectionType: '',
-  url: '',
+  url: ''
 }
 
-export const createConnectionStatusUpdateAction = createAction(ACTION_TYPES.CONNECTION_STATUS_UPDATE)
+export const createConnectionStatusUpdateAction = createAction(
+  ACTION_TYPES.CONNECTION_STATUS_UPDATE
+)
 
-const connectionStatusToState = compositeStatusService$ => (connectionStatus: ConnectionStatus): State => {
+const connectionStatusToState = compositeStatusService$ => (
+  connectionStatus: ConnectionStatus
+): State => {
   return {
     connection: connectionStatus || ConnectionStatus.init,
     connectionType: compositeStatusService$.connectionType || '',
-    url: compositeStatusService$.connectionUrl || '',
+    url: compositeStatusService$.connectionUrl || ''
   }
 }
 
@@ -40,11 +44,14 @@ export function connectionStatusEpicsCreator(compositeStatusService$) {
       .map(createConnectionStatusUpdateAction)
   }
 
-  const reconnectEpic = (action$) => {
-    return action$.ofType(ACTION_TYPES.RECONNECT)
-      .do(connectToServices)
-      // Hack to never emit any actions, because we don't need any action.
-      .takeLast()
+  const reconnectEpic = action$ => {
+    return (
+      action$
+        .ofType(ACTION_TYPES.RECONNECT)
+        .do(connectToServices)
+        // Hack to never emit any actions, because we don't need any action.
+        .takeLast()
+    )
   }
 
   return combineEpics(updateConnectionStateEpic, reconnectEpic)
@@ -52,6 +59,8 @@ export function connectionStatusEpicsCreator(compositeStatusService$) {
 
 export default handleActions(
   {
-    [ACTION_TYPES.CONNECTION_STATUS_UPDATE]: (state: State, action): State => action.payload,
+    [ACTION_TYPES.CONNECTION_STATUS_UPDATE]: (state: State, action): State =>
+      action.payload
   },
-  initialState)
+  initialState
+)
