@@ -4,14 +4,19 @@ export const ACTION_TYPES = {
   REGION_ADD: '@ReactiveTraderCloud/REGION_ADD',
   REGION_OPEN_WINDOW: '@ReactiveTraderCloud/REGION_OPEN_WINDOW',
   REGION_TEAROFF_WINDOW: '@ReactiveTraderCloud/REGION_TEAROFF_WINDOW',
-  REGION_ATTACH_WINDOW: '@ReactiveTraderCloud/REGION_ATTACH_WINDOW',
+  REGION_ATTACH_WINDOW: '@ReactiveTraderCloud/REGION_ATTACH_WINDOW'
 }
 
 // onPopoutClick
-export const openWindow = createAction(ACTION_TYPES.REGION_OPEN_WINDOW, (payload, openFin) => ({ ...payload, openFin }))
+export const openWindow = createAction(
+  ACTION_TYPES.REGION_OPEN_WINDOW,
+  (payload, openFin) => ({ ...payload, openFin })
+)
 // onComponentMount
-export const addRegion = createAction(ACTION_TYPES.REGION_ADD, payload => payload)
-
+export const addRegion = createAction(
+  ACTION_TYPES.REGION_ADD,
+  payload => payload
+)
 
 const changeRegionTearOffStatus = (state, payload, status) => ({
   ...state,
@@ -27,7 +32,7 @@ export const regionsReducer = (state: any = {}, action) => {
       const newRegion = action.payload
       return {
         [newRegion.id]: newRegion,
-        ...state,
+        ...state
       }
     case ACTION_TYPES.REGION_ATTACH_WINDOW:
       return changeRegionTearOffStatus(state, action.payload, false)
@@ -36,5 +41,4 @@ export const regionsReducer = (state: any = {}, action) => {
     default:
       return state
   }
-
 }

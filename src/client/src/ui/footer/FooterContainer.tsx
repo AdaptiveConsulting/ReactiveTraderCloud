@@ -6,8 +6,6 @@ import { Connections } from '../../connectionStatusOperations'
 import { toggleStatusServices } from './FooterOperations'
 import FooterView, { Services } from './FooterView'
 
-
-
 interface FooterContainerStateProps {
   compositeStatusService: Services
   displayStatusServices: boolean
@@ -18,10 +16,10 @@ interface FooterContainerDispatchProps {
   toggleStatusServices: () => void
 }
 
-type FooterContainerProps = FooterContainerStateProps & FooterContainerDispatchProps
+type FooterContainerProps = FooterContainerStateProps &
+  FooterContainerDispatchProps
 
 class FooterContainer extends React.Component<FooterContainerProps, any> {
-
   static contextTypes = {
     openFin: PropTypes.object
   }
@@ -40,11 +38,19 @@ class FooterContainer extends React.Component<FooterContainerProps, any> {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => bindActionCreators({
-  toggleStatusServices,
-}, dispatch)
+const mapDispatchToProps = (dispatch: Dispatch<any>) =>
+  bindActionCreators(
+    {
+      toggleStatusServices
+    },
+    dispatch
+  )
 
-function mapStateToProps({ compositeStatusService, displayStatusServices, connectionStatus }) {
+function mapStateToProps({
+  compositeStatusService,
+  displayStatusServices,
+  connectionStatus
+}) {
   return { compositeStatusService, displayStatusServices, connectionStatus }
 }
 

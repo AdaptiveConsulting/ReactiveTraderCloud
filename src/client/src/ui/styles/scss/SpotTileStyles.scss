@@ -1,7 +1,6 @@
-@import "variables";
+@import 'variables';
 $price-movement-width: 7.5%;
 $price-width: calc(50% - #{$price-movement-width} / 2);
-
 
 .spot-tile {
   position: relative;
@@ -62,7 +61,7 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
   }
 }
 
-.spot-tile__icon--hidden{
+.spot-tile__icon--hidden {
   display: none;
 }
 
@@ -127,7 +126,7 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
   margin-left: 6px;
 }
 
-.spot-tile__icon--rotate{
+.spot-tile__icon--rotate {
   margin-left: 6px;
   animation-name: spin;
   animation-duration: 1000ms;
@@ -137,9 +136,10 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
   @keyframes spin {
     from {
       transform: rotate(0deg);
-    } to {
-        transform: rotate(360deg);
-      }
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 }
 
@@ -153,7 +153,6 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
   width: 100%;
   text-align: center;
 }
-
 
 .spot-tile__delivery {
   position: absolute;

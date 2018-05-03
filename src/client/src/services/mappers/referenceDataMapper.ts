@@ -1,52 +1,66 @@
-import * as _ from 'lodash'
+import {
+  CollectionUpdate,
+  CollectionUpdates,
+  CurrencyPair,
+  CurrencyPairUpdate,
+  CurrencyPairUpdates
+} from '../../types'
 
-import { CurrencyPair, CurrencyPairUpdate, CurrencyPairUpdates, UpdateType } from '../../types'
+export interface CurrencyRaw {
+  Symbol: string
+  RatePrecision: number
+  PipsPosition: number
+}
+
+export interface RawCurrencyPairUpdate extends CollectionUpdate {
+  CurrencyPair: CurrencyRaw
+}
+
+export interface RawCurrencyPairUpdates extends CollectionUpdates {
+  Updates: RawCurrencyPairUpdate[]
+}
 
 const referenceDataMapper = {
-  mapCurrencyPairsFromDto(dto: any): CurrencyPairUpdates {
+  mapCurrencyPairsFromDto(dto: RawCurrencyPairUpdates): CurrencyPairUpdates {
     const updates = referenceDataMapper.mapUpdatesFromDto(dto.Updates)
     return {
       isStateOfTheWorld: dto.IsStateOfTheWorld,
       isStale: dto.IsStale,
-      currencyPairUpdates: updates,
+      currencyPairUpdates: updates
     }
   },
 
-  mapUpdatesFromDto(currencyPairUpdateDtos: any[]): CurrencyPairUpdate[] {
-    return _.map(currencyPairUpdateDtos, (dto): CurrencyPairUpdate => {
-      const updateType = referenceDataMapper.mapUpdateType(dto.UpdateType)
+  mapUpdatesFromDto(
+    currencyPairUpdateDtos: RawCurrencyPairUpdate[]
+  ): CurrencyPairUpdate[] {
+    return currencyPairUpdateDtos.map<CurrencyPairUpdate>(dto => {
+      const updateType = dto.UpdateType
       const currencyPair = createCurrencyPair(
         dto.CurrencyPair.Symbol,
         dto.CurrencyPair.RatePrecision,
-        dto.CurrencyPair.PipsPosition,
+        dto.CurrencyPair.PipsPosition
       )
 
       return {
         currencyPair,
-        updateType,
+        updateType
       }
     })
-  },
-
-  mapUpdateType(updateTypeString: string): UpdateType {
-    if (updateTypeString === UpdateType.Added) {
-      return UpdateType.Added
-    } else if (updateTypeString === UpdateType.Removed) {
-      return UpdateType.Removed
-    } else {
-      throw new Error(`Unknown update type [${updateTypeString}]`)
-    }
   }
 }
 
 export default referenceDataMapper
 
-function createCurrencyPair(symbol, ratePrecision, pipsPosition): CurrencyPair {
+function createCurrencyPair(
+  symbol: string,
+  ratePrecision: number,
+  pipsPosition: number
+): CurrencyPair {
   return {
     symbol,
     ratePrecision,
     pipsPosition,
     base: symbol.substr(0, 3),
-    terms: symbol.substr(3, 3),
+    terms: symbol.substr(3, 3)
   }
 }

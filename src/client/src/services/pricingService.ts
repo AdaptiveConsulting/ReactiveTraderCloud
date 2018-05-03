@@ -1,57 +1,46 @@
-import { Observable, Scheduler } from 'rxjs/Rx'
+import { Observable, Scheduler } from 'rxjs'
+import { map, share } from 'rxjs/operators'
 import { logger, RetryPolicy } from '../system'
-import '../system/observableExtensions/retryPolicyExt'
+import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
 import { ServiceClient } from '../system/service'
-import { ServiceConst } from '../types'
+import { ServiceConst, SpotPriceTick } from '../types'
+import { Connection } from './../system/service/connection'
 
 const log = logger.create('PricingService')
 const getPriceUpdatesOperationName = 'getPriceUpdates'
 
 interface Request {
-  symbol: string,
+  symbol: string
 }
 
-const createSpotPriceStream = (serviceClient, request: Request) => {
-  const observable = Observable.create(clientObserver => {
-    log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
-    let lastPrice = null
-    const innerObserver = {
-      next(price) {
-        lastPrice = price
-        clientObserver.next(price)
-      },
-      error(err) {
-        clientObserver.error(err)
-      },
-      complete() {
-        clientObserver.complete()
-      }
-    }
-    const retryWithPolicyErrorCb = (err, willRetry) => {
-      if (willRetry && lastPrice !== null) {
-        // TODO: remove is stale price fully supported
-      }
-    }
-    const retryWithPolicyArgs = [
-      RetryPolicy.indefiniteEvery2Seconds,
+const createSpotPriceStream = (
+  serviceClient: ServiceClient,
+  request: Request
+) => {
+  log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
+  return serviceClient
+    .createStreamOperation<RawPrice, Request>(
       getPriceUpdatesOperationName,
-      Scheduler.async,
-      retryWithPolicyErrorCb,
-    ]
-    const subscription = serviceClient
-      .createStreamOperation(getPriceUpdatesOperationName, request)
-      // we retry the price stream forever, if it errors (likely connection down) we pump a non tradable price
-      .retryWithPolicy(...retryWithPolicyArgs)
-      .map(adaptDTO)
-      .subscribe(innerObserver)
-    return subscription
-  })
-  return observable.share()
+      request
+    )
+    .pipe(
+      retryWithPolicy(
+        RetryPolicy.indefiniteEvery2Seconds,
+        getPriceUpdatesOperationName,
+        Scheduler.async
+      ),
+      map(adaptDTO),
+      share()
+    )
 }
 
-export default function createPricingService(connection) {
-  const cachedSpotStreamBySymbol = {}
-  const serviceClient = new ServiceClient(ServiceConst.PricingServiceKey, connection)
+export default function createPricingService(connection: Connection) {
+  const cachedSpotStreamBySymbol = new Map<string, Observable<SpotPriceTick>>()
+
+  const serviceClient = new ServiceClient(
+    ServiceConst.PricingServiceKey,
+    connection
+  )
   serviceClient.connect()
   return {
     get serviceStatusStream() {
@@ -59,15 +48,27 @@ export default function createPricingService(connection) {
     },
     getSpotPriceStream(request: Request) {
       const { symbol } = request
-      if (!cachedSpotStreamBySymbol[symbol]) {
-        cachedSpotStreamBySymbol[symbol] = createSpotPriceStream(serviceClient, request)
+      if (!cachedSpotStreamBySymbol.has(symbol)) {
+        cachedSpotStreamBySymbol.set(
+          symbol,
+          createSpotPriceStream(serviceClient, request)
+        )
       }
-      return cachedSpotStreamBySymbol[symbol]
+      return cachedSpotStreamBySymbol.get(symbol)!
     }
   }
 }
 
-function adaptDTO(dto) {
+interface RawPrice {
+  Ask: number
+  Bid: number
+  Mid: number
+  CreationTimestamp: number
+  Symbol: string
+  ValueDate: string
+}
+
+function adaptDTO(dto: RawPrice): SpotPriceTick {
   return {
     ask: dto.Ask,
     bid: dto.Bid,

@@ -1,15 +1,15 @@
-$positive-color:      #6db910;
-$negative-color:      #d62728;
+$positive-color: #6db910;
+$negative-color: #d62728;
 $barchart-text-color: gray;
-$bar-bg-color:        #414D5C;
-$container-bg-color:  #262a33;
-$highlight-color:     #eee;
-$stroke-color:        #212a35;
-$gray:                #294464;
-$bar-height:          4px;
-$transition-duration: .4s;
-$pointer-color:       #00d2ff;
-$slider-lbl-color:    #00a8cc;
+$bar-bg-color: #414d5c;
+$container-bg-color: #262a33;
+$highlight-color: #eee;
+$stroke-color: #212a35;
+$gray: #294464;
+$bar-height: 4px;
+$transition-duration: 0.4s;
+$pointer-color: #00d2ff;
+$slider-lbl-color: #00a8cc;
 
 $analytics-header-colour: #ffffff;
 $default-padding: 10px;
@@ -61,7 +61,7 @@ $default-padding: 10px;
 }
 
 .analytics__header-value--negative {
-  color: $negative-color
+  color: $negative-color;
 }
 
 .analytics__header-value--positive {
@@ -102,8 +102,8 @@ $default-padding: 10px;
   padding-bottom: 14px;
   color: $barchart-text-color;
   height: 50px;
-  &:hover{
-    color:$highlight-color;
+  &:hover {
+    color: $highlight-color;
   }
 }
 
@@ -128,7 +128,7 @@ $default-padding: 10px;
   margin-top: 30px;
 }
 
-.analytics__barchart-border{
+.analytics__barchart-border {
   height: 9px;
   width: 2px;
   background-color: #484f5f;
@@ -155,19 +155,19 @@ $default-padding: 10px;
   position: absolute;
   color: white;
 
-  &:hover{
+  &:hover {
     color: $slider-lbl-color;
 
     .analytics__barchart-pointer-container {
       transform: scale(1.5);
     }
 
-    .analytics__barchart-label{
+    .analytics__barchart-label {
       font-size: 14px;
       cursor: default;
     }
 
-    .analytics__barchart-label-amount{
+    .analytics__barchart-label-amount {
       color: $slider-lbl-color;
       display: none;
     }
@@ -193,7 +193,7 @@ $default-padding: 10px;
   width: 0;
   height: 0;
   border-width: 8px 5px 0 5px;
-  border-color: #007D92 transparent transparent transparent;
+  border-color: #007d92 transparent transparent transparent;
   border-style: inset;
   -webkit-transform: rotate(360deg);
   position: absolute;
@@ -204,12 +204,9 @@ $default-padding: 10px;
 
 .analytics__barchart-pointer-icon {
   color: #46477a;
-  text-shadow:
-  0px 0px 0 $pointer-color,
-  -1px -1px 0 $pointer-color,
-  1px -1px 0 $pointer-color,
-  -1px 1px 0 $pointer-color,
-  1px 1px 0 $pointer-color;
+  text-shadow: 0px 0px 0 $pointer-color, -1px -1px 0 $pointer-color,
+    1px -1px 0 $pointer-color, -1px 1px 0 $pointer-color,
+    1px 1px 0 $pointer-color;
   rotation: 90deg;
 }
 
@@ -283,7 +280,6 @@ $default-padding: 10px;
   display: block;
   position: relative;
   padding-bottom: 2px;
-
 }
 
 .analytics__positions-label {
@@ -300,9 +296,9 @@ $default-padding: 10px;
   height: auto;
   padding: 2px 10px;
   font-size: 14px;
-  background-color: #E1E3E8;
-  opacity:1.0;
-  border:1px solid black;
+  background-color: #e1e3e8;
+  opacity: 1;
+  border: 1px solid black;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
   pointer-events: none;
   z-index: 100;

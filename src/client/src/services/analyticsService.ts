@@ -1,16 +1,20 @@
-import { Observable, Scheduler } from 'rxjs/Rx'
-import { Guard, logger, RetryPolicy } from '../system'
-import '../system/observableExtensions/retryPolicyExt'
+import { Observable, Scheduler } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { logger, RetryPolicy } from '../system'
+import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
 import { ServiceClient } from '../system/service'
-import { ServiceConst } from '../types'
+import { Connection } from '../system/service/connection'
+import { PositionUpdates, ServiceConst } from '../types'
+import { ReferenceDataService } from './../types/referenceDataService'
 import { PositionsMapper } from './mappers'
+import { PositionsRaw } from './mappers/positionsMapper'
 
 const log = logger.create('AnalyticsService')
 
 export default function analyticsService(
-  connection,
-  referenceDataService
-): Object {
+  connection: Connection,
+  referenceDataService: ReferenceDataService
+) {
   const serviceClient = new ServiceClient(
     ServiceConst.AnalyticsServiceKey,
     connection
@@ -21,21 +25,22 @@ export default function analyticsService(
     get serviceStatusStream() {
       return serviceClient.serviceStatusStream
     },
-    getAnalyticsStream(analyticsRequest) {
-      Guard.isDefined(analyticsRequest, 'analyticsRequest required')
-      return Observable.create(o => {
-        log.debug('Subscribing to analytics stream')
+    getAnalyticsStream(analyticsRequest: string) {
+      log.debug('Subscribing to analytics stream')
 
-        return serviceClient
-          .createStreamOperation('getAnalytics', analyticsRequest)
-          .retryWithPolicy(
+      return serviceClient
+        .createStreamOperation<PositionsRaw, string>(
+          'getAnalytics',
+          analyticsRequest
+        )
+        .pipe(
+          retryWithPolicy(
             RetryPolicy.backoffTo10SecondsMax,
             'getAnalytics',
             Scheduler.async
-          )
-          .map(dto => positionsMapper.mapFromDto(dto))
-          .subscribe(o)
-      })
+          ),
+          map(dto => positionsMapper.mapFromDto(dto))
+        )
     }
   }
 }

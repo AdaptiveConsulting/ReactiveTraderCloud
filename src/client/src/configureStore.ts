@@ -56,7 +56,10 @@ export default function configureStore(
     openFin
   )
 
-  const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(middleware)))
+  const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(middleware))
+  )
   persistStore(store)
 
   return store

@@ -6,13 +6,15 @@ $borderRadius: 3px;
 $inputBorder: 1px solid lighten($accentColor, 10%);
 $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
 }
 
 .ag-menu {
   pointer-events: none; // disable mouse events to be able to click through transparent areas
-  overflow: hidden!important;
+  overflow: hidden !important;
 }
 
 .filter-container {
@@ -55,7 +57,6 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
   z-index: 3;
 }
 
-
 .filter-menu__layout-right {
   .filter-container__tab {
     left: 0px;
@@ -67,7 +68,8 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
   height: 23px;
   background-size: 23px 23px;
   background-color: transparent;
-  background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAyaDEwTDcgNnY1TDUgOVY2TDEgMnptNCA0djFoMlY2SDV6IiBmaWxsPSIjZmZmZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=)center no-repeat;;
+  background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAyaDEwTDcgNnY1TDUgOVY2TDEgMnptNCA0djFoMlY2SDV6IiBmaWxsPSIjZmZmZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=)
+    center no-repeat;
 }
 
 .filter-container__content-wrapper {
@@ -111,12 +113,12 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
   color: white;
   background-color: $backgroundAccentColor;
   border: $inputBorder;
-  width: $inputTextWidth!important;
+  width: $inputTextWidth !important;
   border-radius: $borderRadius;
-  height: 24px!important;
+  height: 24px !important;
   padding-top: 0;
-  padding-left: 4px!important;
-  padding-right: 20px!important;
+  padding-left: 4px !important;
+  padding-right: 20px !important;
   margin-bottom: 5px;
 }
 
@@ -127,19 +129,17 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
 .filter-container__free-text-input::-webkit-input-placeholder {
   color: $accentColor;
   font-size: 11px;
-  padding-left: 4px!important;
+  padding-left: 4px !important;
 }
 
 .filter-container__checkbox {
   position: absolute; // take it out of document flow
   display: flex;
   opacity: 0; // hide it
-  padding: 2px 0px
-
-  & + label {
+  padding: 2px 0px & + label {
     position: relative;
     cursor: pointer;
-    padding: 0px
+    padding: 0px;
   }
 
   // Box.
@@ -185,13 +185,8 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
     background: white;
     width: 2px;
     height: 2px;
-    box-shadow:
-      2px 0 0 white,
-      4px 0 0 white,
-      4px -2px 0 white,
-      4px -4px 0 white,
-      4px -6px 0 white,
-      4px -8px 0 white;
+    box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white,
+      4px -6px 0 white, 4px -8px 0 white;
     transform: rotate(45deg);
   }
 }
@@ -209,12 +204,11 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
   border: $inputBorder;
   border-radius: $borderRadius;
   background-color: $backgroundAccentColor;
-  color: #FFF7F7;
+  color: #fff7f7;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
 }
-
 
 .filter-container__selector-wrapper {
   margin: 5px 0px;
@@ -227,13 +221,13 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
     pointer-events: none;
     border-style: solid;
     border-width: 7px 4px 0px 4px;
-    border-color: #EBE1E1 transparent transparent transparent;
+    border-color: #ebe1e1 transparent transparent transparent;
   }
 
   .filter-container__select select:hover,
   .filter-container__select select:focus {
     color: #000000;
-    background: #CCCCCC;
+    background: #cccccc;
   }
   .filter-container__select select:disabled {
     opacity: 0.5;
@@ -242,9 +236,9 @@ $inputTextWidth: calc(#{$filterContainerWidth} - 20px);
 
   .filter-container__select select:hover ~ .select_arrow,
   .filter-container__select select:focus ~ .select_arrow {
-    border-top-color: #5ACCCC;
+    border-top-color: #5acccc;
   }
   .filter-container__select select:disabled ~ .select_arrow {
-    border-top-color: #CCCCCC;
+    border-top-color: #cccccc;
   }
 }

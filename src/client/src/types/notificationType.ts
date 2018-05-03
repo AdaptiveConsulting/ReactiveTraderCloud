@@ -1,4 +1,4 @@
 export enum NotificationType {
   Trade = 'Trade',
-  Text = 'Text',
+  Text = 'Text'
 }

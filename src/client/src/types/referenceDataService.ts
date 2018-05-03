@@ -1,7 +1,12 @@
-import { Observable } from 'rxjs/Rx'
+import { Observable } from 'rxjs'
+import {
+  CurrencyPair,
+  CurrencyPairUpdates,
+  ServiceStatus,
+  StatusService
+} from '.'
 
-export interface ReferenceDataService {
-  serviceStatusStream: Observable<any>
-  getCurrencyPair: Function
-  getCurrencyPairUpdatesStream: Observable<any>
+export interface ReferenceDataService extends StatusService {
+  getCurrencyPair: (symbol: string) => CurrencyPair
+  getCurrencyPairUpdatesStream: () => Observable<CurrencyPairUpdates>
 }

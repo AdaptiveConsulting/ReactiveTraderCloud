@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .price-movement {
   position: relative;
@@ -22,7 +22,7 @@
 
 .price-movement__icon--inactive {
   display: inherit;
-  color: rgba(255, 255, 255, .1) !important;
+  color: rgba(255, 255, 255, 0.1) !important;
 }
 
 .price-movement__icon--up {
@@ -36,4 +36,3 @@
   font-size: 12px !important;
   bottom: 7px;
 }
-

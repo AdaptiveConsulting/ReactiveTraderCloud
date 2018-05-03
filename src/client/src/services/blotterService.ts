@@ -1,15 +1,20 @@
+import { map } from 'rxjs/operators'
 import { Observable, Scheduler } from 'rxjs/Rx'
 import { logger, RetryPolicy } from '../system'
-import '../system/observableExtensions/retryPolicyExt'
+import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
 import { ServiceClient } from '../system/service'
-import { ServiceConst } from '../types'
-import { TradeMapper } from './mappers'
+import { Connection } from '../system/service/connection'
+import { ServiceConst, TradesUpdate } from '../types'
+import { mapFromDto } from './mappers'
+import { RawTradeUpdate } from './mappers/tradeMapper'
 
 const log = logger.create('BlotterService')
 
-const createBlotterService = (connection) => {
-  const serviceClient = new ServiceClient(ServiceConst.BlotterServiceKey, connection)
-  const tradeMapper = new TradeMapper()
+const createBlotterService = (connection: Connection) => {
+  const serviceClient = new ServiceClient(
+    ServiceConst.BlotterServiceKey,
+    connection
+  )
   serviceClient.connect()
   return {
     get serviceStatusStream() {
@@ -17,20 +22,17 @@ const createBlotterService = (connection) => {
     },
 
     getTradesStream() {
-      return Observable.create(o => {
-        log.debug('Subscribing to trade stream')
-        return serviceClient
-          .createStreamOperation('getTradesStream', {
-            /* noop request */
-          })
-          .retryWithPolicy(
+      log.debug('Subscribing to trade stream')
+      return serviceClient
+        .createStreamOperation<RawTradeUpdate, {}>('getTradesStream', {})
+        .pipe(
+          retryWithPolicy(
             RetryPolicy.backoffTo10SecondsMax,
             'getTradesStream',
             Scheduler.async
-          )
-          .map(dto => tradeMapper.mapFromDto(dto))
-          .subscribe(o)
-      })
+          ),
+          map(dto => mapFromDto(dto))
+        )
     }
   }
 }

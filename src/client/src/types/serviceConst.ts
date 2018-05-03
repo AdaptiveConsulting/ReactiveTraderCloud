@@ -3,5 +3,5 @@ export enum ServiceConst {
   ReferenceServiceKey = 'reference',
   BlotterServiceKey = 'blotter',
   ExecutionServiceKey = 'execution',
-  AnalyticsServiceKey = 'analytics',
+  AnalyticsServiceKey = 'analytics'
 }

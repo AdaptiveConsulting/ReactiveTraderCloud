@@ -14,23 +14,29 @@ const currencyIconLookup = {
   ['YEN']: `fa fa-yen`
 }
 
-const numericCellRenderer = (rowData:any):string => {
+const numericCellRenderer = (rowData: any): string => {
   const trade = rowData.data as Trade
   const dealtCurrency = trade.dealtCurrency
   const icon = currencyIconLookup[dealtCurrency].toString()
-  const renderer = `<span></div> ${numeral(rowData.value).format('0,0')}<div class='${icon} rt-blotter__ccy-symbol'></span>`
+  const renderer = `<span></div> ${numeral(rowData.value).format(
+    '0,0'
+  )}<div class='${icon} rt-blotter__ccy-symbol'></span>`
   return renderer
 }
 
-const dateRenderer = (trade:Trade, field: string) => {
+const dateRenderer = (trade: Trade, field: string) => {
   return formatDate(trade[field], '%d-%b %H:%M:%S')
 }
 
-const UtcDateRenderer = (trade:Trade, field: string, format: string = '%d-%b-%Y' ) => {
+const UtcDateRenderer = (
+  trade: Trade,
+  field: string,
+  format: string = '%d-%b-%Y'
+) => {
   return UtcFormatDate(trade[field], format)
 }
 
-const getStatusCellClass = (trade:Trade) => {
+const getStatusCellClass = (trade: Trade) => {
   if (trade.status === TradeStatus.Rejected) {
     return 'rt-blotter__cell-rejected'
   } else if (trade.status === TradeStatus.Pending) {
@@ -39,23 +45,21 @@ const getStatusCellClass = (trade:Trade) => {
   return 'capitalise'
 }
 
-const getStatusIndicatorClass = (trade:Trade) => {
-
+const getStatusIndicatorClass = (trade: Trade) => {
   switch (trade.status) {
     case TradeStatus.Rejected:
-      return 'rt-blotter__status-i' +
-        'ndicator--rejected'
+      return 'rt-blotter__status-i' + 'ndicator--rejected'
     case TradeStatus.Done:
       return 'rt-blotter__status-indicator--done'
     case TradeStatus.Pending:
       return 'rt-blotter__status-indicator--pending'
     default:
-    console.log('unkown trade status')
+      console.log('unkown trade status')
   }
   return null
 }
 
-export const DEFAULT_COLUMN_DEFINITION:AgGrid.ColDef = {
+export const DEFAULT_COLUMN_DEFINITION: AgGrid.ColDef = {
   menuTabs: ['filterMenuTab'],
   suppressSizeToFit: true,
   suppressFilter: false,
@@ -75,11 +79,20 @@ export const VALUE_DATE = 'valueDate'
 export const TRADER_NAME = 'traderName'
 
 export const COLUMN_FIELDS = [
-  STATUS_INDICATOR, TRADE_ID, STATUS, TRADE_DATE, DIRECTION,
-  SYMBOL, DEALT_CURRENCY, NOTIONAL, SPOT_RATE, VALUE_DATE, TRADER_NAME
+  STATUS_INDICATOR,
+  TRADE_ID,
+  STATUS,
+  TRADE_DATE,
+  DIRECTION,
+  SYMBOL,
+  DEALT_CURRENCY,
+  NOTIONAL,
+  SPOT_RATE,
+  VALUE_DATE,
+  TRADER_NAME
 ]
 
-export function getColumnDefinitions():AgGrid.ColDef[] {
+export function getColumnDefinitions(): AgGrid.ColDef[] {
   return [
     {
       colId: STATUS_INDICATOR,
@@ -91,7 +104,7 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       cellClass: ({ data }) => getStatusIndicatorClass(data),
       suppressSorting: true,
       suppressMenu: true,
-      headerClass: 'rt-status-indicator__header',
+      headerClass: 'rt-status-indicator__header'
     },
     {
       colId: TRADE_ID,
@@ -152,7 +165,7 @@ export function getColumnDefinitions():AgGrid.ColDef[] {
       headerName: 'Rate',
       field: SPOT_RATE,
       width: 120,
-      cellClass:  'rt-blotter__numeric-cell',
+      cellClass: 'rt-blotter__numeric-cell',
       headerClass: 'rt-header__numeric',
       filter: 'number'
     },

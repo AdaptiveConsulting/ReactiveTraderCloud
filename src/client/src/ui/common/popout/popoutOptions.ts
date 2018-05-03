@@ -4,13 +4,7 @@ export default class PopoutOptions {
   title
   onClosing
   windowOptions
-  constructor(
-    key,
-    url,
-    title,
-    onClosing,
-    windowOptions,
-  ) {
+  constructor(key, url, title, onClosing, windowOptions) {
     this.key = key
     this.url = url || 'about:blank'
     this.title = title

@@ -14,7 +14,7 @@ let sink = (logEvent: LogParams) => {
   console[logEvent.level].call(null, `${logEvent.logger}:`, logEvent.args)
 }
 
-class Logger {
+export class Logger {
   name: string
 
   constructor(name: string) {
@@ -22,7 +22,7 @@ class Logger {
   }
 
   get isVerboseEnabled() {
-    return currentLevel <= levels.verbose
+    return currentLevel === levels.verbose
   }
 
   /**
@@ -46,7 +46,7 @@ class Logger {
   /**
    * info(message [, ...args]): expects a string log message and optional additional arguments
    */
-  info(message?: string, message2?: string, message3?: string) {
+  info(message?: string, message2?: any, message3?: any) {
     if (currentLevel <= levels.info) {
       this.log('info', arguments)
     }

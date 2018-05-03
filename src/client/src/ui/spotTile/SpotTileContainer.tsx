@@ -12,13 +12,21 @@ import {
   displayCurrencyChart,
   executeTrade,
   spotRegionSettings,
-  undockTile,
+  undockTile
 } from './actions'
 import SpotTile from './SpotTile'
-import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './spotTileUtils'
+import {
+  createTradeRequest,
+  DEFAULT_NOTIONAL,
+  TradeRequest
+} from './spotTileUtils'
 
-const buildSpotTileDataObject = (tileData, spotTick:SpotPriceTick, currencyPair:CurrencyPair) => {
-  const tileDataObject:any = { ...tileData, ...spotTick, ...currencyPair }
+const buildSpotTileDataObject = (
+  tileData,
+  spotTick: SpotPriceTick,
+  currencyPair: CurrencyPair
+) => {
+  const tileDataObject: any = { ...tileData, ...spotTick, ...currencyPair }
   return tileDataObject
 }
 
@@ -52,7 +60,7 @@ interface SpotTileContainerStateProps {
 }
 
 interface SpotTileContainerDispatchProps {
-  executeTrade: (request:any) => void
+  executeTrade: (request: any) => void
   onComponentMount: (id: string) => void
   onPopoutClick: (region: any, openFin: any) => any
   undockTile: (openFin: any, title: string) => any
@@ -60,10 +68,11 @@ interface SpotTileContainerDispatchProps {
   onNotificationDismissedClick: (symbol: string) => any
 }
 
-type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
+type SpotTileContainerProps = SpotTileContainerOwnProps &
+  SpotTileContainerStateProps &
+  SpotTileContainerDispatchProps
 
 class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
-
   static contextTypes = {
     openFin: PropTypes.object
   }
@@ -73,43 +82,61 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
   }
 
   shouldComponentUpdate(nextProps: SpotTileContainerProps, nextState: any) {
-    const shouldUpdate = !_.isEqual(this.props.spotTilesData, nextProps.spotTilesData)
+    const shouldUpdate = !_.isEqual(
+      this.props.spotTilesData,
+      nextProps.spotTilesData
+    )
     return shouldUpdate
   }
   render() {
     const openFin = this.context.openFin
-    const { id, currencyPair, spotTilesData, executionConnected,
-            // tslint:disable-next-line:no-shadowed-variable
-            pricingConnected, onPopoutClick, undockTile, onNotificationDismissedClick,
-            // tslint:disable-next-line:no-shadowed-variable
-            displayCurrencyChart } = this.props
+    const {
+      id,
+      currencyPair,
+      spotTilesData,
+      executionConnected,
+      // tslint:disable-next-line:no-shadowed-variable
+      pricingConnected,
+      onPopoutClick,
+      // tslint:disable-next-line:no-shadowed-variable
+      undockTile,
+      onNotificationDismissedClick,
+      // tslint:disable-next-line:no-shadowed-variable
+      displayCurrencyChart
+    } = this.props
     const spotTitle = spotRegionSettings(id).title
     return (
-      <SpotTile key={id}
-                pricingConnected={pricingConnected}
-                executionConnected={executionConnected}
-                currencyPair={currencyPair}
-                isRunningInOpenFin={!!openFin}
-                spotTileData={spotTilesData}
-                onPopoutClick={onPopoutClick(id, openFin)}
-                displayCurrencyChart={displayCurrencyChart(openFin, id)}
-                onNotificationDismissedClick={onNotificationDismissedClick(id)}
-                undockTile={undockTile(openFin, spotTitle)}
-                executeTrade={this.executeTrade}
+      <SpotTile
+        key={id}
+        pricingConnected={pricingConnected}
+        executionConnected={executionConnected}
+        currencyPair={currencyPair}
+        isRunningInOpenFin={!!openFin}
+        spotTileData={spotTilesData}
+        onPopoutClick={onPopoutClick(id, openFin)}
+        displayCurrencyChart={displayCurrencyChart(openFin, id)}
+        onNotificationDismissedClick={onNotificationDismissedClick(id)}
+        undockTile={undockTile(openFin, spotTitle)}
+        executeTrade={this.executeTrade}
       />
     )
   }
 
-  private executeTrade = (direction:Direction) => {
+  private executeTrade = (direction: Direction) => {
     const { executionConnected, spotTilesData } = this.props
-    if (!executionConnected || spotTilesData.isTradeExecutionInFlight) { return }
+    if (!executionConnected || spotTilesData.isTradeExecutionInFlight) {
+      return
+    }
 
-    const rate = direction === Direction.Buy ? spotTilesData.ask : spotTilesData.bid
-    const tradeRequestObj:TradeRequest = {
+    const rate =
+      direction === Direction.Buy ? spotTilesData.ask : spotTilesData.bid
+    const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: this.props.currencyPair.base,
       symbol: this.props.currencyPair.symbol,
-      notional: this.props.notionals[this.props.currencyPair.symbol] || DEFAULT_NOTIONAL,
+      notional:
+        this.props.notionals[this.props.currencyPair.symbol] ||
+        DEFAULT_NOTIONAL,
       rawSpotRate: rate
     }
 
@@ -117,12 +144,12 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    executeTrade: (tradeRequestObj:TradeRequest) => {
+    executeTrade: (tradeRequestObj: TradeRequest) => {
       dispatch(executeTrade(tradeRequestObj))
     },
-    onComponentMount: (id) => {
+    onComponentMount: id => {
       dispatch(addRegion(spotTileRegion(id)))
     },
     onPopoutClick: (id, openFin) => {
@@ -140,11 +167,11 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(displayCurrencyChart({ openFin, symbol }))
       }
     },
-    onNotificationDismissedClick: (symbol) => {
+    onNotificationDismissedClick: symbol => {
       return () => {
         dispatch(dismissNotification({ symbol }))
       }
-    },
+    }
   }
 }
 
@@ -153,9 +180,18 @@ const makeMapStateToProps = () => {
   const getSpotTileData = makeGetSpotTileData()
   const mapStateToProps = (state, props) => {
     const { compositeStatusService, displayAnalytics, notionals } = state
-    const executionConnected = compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected
-    const pricingConnected = compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected
-    const isConnected = compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected
+    const executionConnected =
+      compositeStatusService &&
+      compositeStatusService.execution &&
+      compositeStatusService.execution.isConnected
+    const pricingConnected =
+      compositeStatusService &&
+      compositeStatusService.pricing &&
+      compositeStatusService.pricing.isConnected
+    const isConnected =
+      compositeStatusService &&
+      compositeStatusService.analytics &&
+      compositeStatusService.analytics.isConnected
     return {
       isConnected,
       executionConnected,
@@ -170,12 +206,15 @@ const makeMapStateToProps = () => {
   return mapStateToProps
 }
 
-const ConnectedSpotTileContainer = connect(makeMapStateToProps, mapDispatchToProps)(SpotTileContainer)
-const spotTileRegion = (id) => ({
+const ConnectedSpotTileContainer = connect(
+  makeMapStateToProps,
+  mapDispatchToProps
+)(SpotTileContainer)
+const spotTileRegion = id => ({
   id,
   isTearedOff: false,
-  container: connect((state) => ({ id }))(ConnectedSpotTileContainer),
-  settings: spotRegionSettings(id),
+  container: connect(state => ({ id }))(ConnectedSpotTileContainer),
+  settings: spotRegionSettings(id)
 })
 
 export default ConnectedSpotTileContainer

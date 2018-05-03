@@ -3,6 +3,6 @@ export interface RegionSettings {
   width: number
   height: number
   minHeight?: number
-  dockable:boolean
+  dockable: boolean
   resizable: boolean
 }

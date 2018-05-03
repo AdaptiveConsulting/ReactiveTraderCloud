@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .trade-notification {
   padding-top: 4px;
@@ -83,7 +83,7 @@
   display: flex;
   justify-content: space-between;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 10px 0 0 0 ;
+  padding: 10px 0 0 0;
   margin-top: 18px;
   width: 100%;
 }
@@ -105,7 +105,3 @@
     text-transform: uppercase;
   }
 }
-
-
-
-

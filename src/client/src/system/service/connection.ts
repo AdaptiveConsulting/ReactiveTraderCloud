@@ -1,6 +1,6 @@
 import { Error, ISubscription } from 'autobahn'
 import { BehaviorSubject, Observable, Scheduler, Subscription } from 'rxjs'
-import { ConnectionTypeMapper } from '../../services/mappers'
+import { connectionTypeMapper } from '../../services/mappers'
 import { ConnectionStatus, ConnectionType } from '../../types'
 import logger from '../logger'
 import { AutobahnConnection } from './AutoBahnConnection'
@@ -40,13 +40,11 @@ export class Connection {
   autoDisconnectDisposable?: Subscription
   connectionType: ConnectionType
   connectionUrl: string
-  connectionTypeMapper: ConnectionTypeMapper
 
   constructor(userName: string, autobahn: AutobahnConnection) {
     this.userName = userName
     this.autobahn = autobahn
     this.connectionStatusSubject = new BehaviorSubject(ConnectionStatus.idle)
-    this.connectionTypeMapper = new ConnectionTypeMapper()
     this.connectCalled = false
     this.isConnected = false
     this.connectionUrl = ''
@@ -64,7 +62,7 @@ export class Connection {
    * A stream of the current connection status (see ConnectionStatus for possible values)
    * @returns {*}
    */
-  get connectionStatusStream(): Observable<string> {
+  get connectionStatusStream(): Observable<ConnectionStatus> {
     return this.connectionStatusSubject.distinctUntilChanged()
   }
 
@@ -95,7 +93,7 @@ export class Connection {
         log.info('Connected')
         this.isConnected = true
         this.connectionUrl = this.autobahn.getConnection().transport.info.url
-        this.connectionType = this.connectionTypeMapper.map(
+        this.connectionType = connectionTypeMapper(
           this.autobahn.getConnection().transport.info.type
         )
         this.autoDisconnectDisposable = this.startAutoDisconnectTimer()

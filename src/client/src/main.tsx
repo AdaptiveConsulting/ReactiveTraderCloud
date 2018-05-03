@@ -45,14 +45,13 @@ const appBootstrapper = () => {
   const blotterService = BlotterService(connection)
   const execService = ExecutionService(connection, refDataService, openFin)
   const analyticsService = AnalyticsService(connection, refDataService)
-  const compositeStatusService = CompositeStatusService(
-    connection,
+  const compositeStatusService = CompositeStatusService(connection, [
     pricingService,
     refDataService,
     blotterService,
     execService,
     analyticsService
-  )
+  ])
   // connect the underlying connection
   connection.connect()
 

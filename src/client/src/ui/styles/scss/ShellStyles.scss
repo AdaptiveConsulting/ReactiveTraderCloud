@@ -1,4 +1,4 @@
-@import "shellVariables";
+@import 'shellVariables';
 
 @keyframes hideSplashScreen {
   0% {
@@ -45,7 +45,9 @@
   text-align: center;
   color: white;
   position: absolute;
-  bottom: calc(100vh - #{$splash-logo-margin-top} - #{$splash-logo-height} - 50px);
+  bottom: calc(
+    100vh - #{$splash-logo-margin-top} - #{$splash-logo-height} - 50px
+  );
   left: 0;
   right: 0;
   width: 100px;
@@ -66,7 +68,6 @@
 }
 
 .shell_workspace_blotter {
-
   height: 100%;
   width: 100%;
   min-height: 20px;
@@ -88,7 +89,7 @@
 
 .shell__workspace {
   flex-grow: 1;
-  height: auto;// $workspace-height;
+  height: auto; // $workspace-height;
   overflow-y: auto;
   overflow-x: hidden;
   width: $workspace-width;
@@ -160,7 +161,7 @@
 // Resizer for the split pane view
 .Resizer {
   background: #000;
-  opacity: .2;
+  opacity: 0.2;
   z-index: 1;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
