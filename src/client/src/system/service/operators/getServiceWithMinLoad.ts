@@ -11,11 +11,7 @@ export function getServiceWithMinLoad(
     new Observable(obs => {
       const disposables = new Subscription()
 
-      let findServiceInstanceDisposable = new Subscription()
-
-      disposables.add(findServiceInstanceDisposable)
-
-      findServiceInstanceDisposable = source.subscribe(
+      const findServiceInstanceDisposable = source.subscribe(
         dictionary => {
           const serviceWithLeastLoad = dictionary
             .getValues()
@@ -23,7 +19,9 @@ export function getServiceWithMinLoad(
             .find(i => i.latestValue.isConnected)
 
           if (serviceWithLeastLoad) {
-            findServiceInstanceDisposable.unsubscribe()
+            if (findServiceInstanceDisposable) {
+              findServiceInstanceDisposable.unsubscribe()
+            }
 
             const serviceStatusStream = Observable.of(
               serviceWithLeastLoad.latestValue
