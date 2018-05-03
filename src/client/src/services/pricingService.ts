@@ -1,4 +1,4 @@
-import { Observable, Scheduler } from 'rxjs'
+import { asyncScheduler, Observable } from 'rxjs'
 import { map, share } from 'rxjs/operators'
 import { logger, RetryPolicy } from '../system'
 import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
@@ -27,7 +27,7 @@ const createSpotPriceStream = (
       retryWithPolicy(
         RetryPolicy.indefiniteEvery2Seconds,
         getPriceUpdatesOperationName,
-        Scheduler.async
+        asyncScheduler
       ),
       map(adaptDTO),
       share()

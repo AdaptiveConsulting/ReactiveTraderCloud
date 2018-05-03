@@ -1,4 +1,4 @@
-import { Observable, Scheduler } from 'rxjs'
+import { asyncScheduler, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { logger, RetryPolicy } from '../system'
 import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
@@ -37,7 +37,7 @@ export default function analyticsService(
           retryWithPolicy(
             RetryPolicy.backoffTo10SecondsMax,
             'getAnalytics',
-            Scheduler.async
+            asyncScheduler
           ),
           map(dto => positionsMapper.mapFromDto(dto))
         )

@@ -1,4 +1,5 @@
 import {
+  asyncScheduler,
   ConnectableObservable,
   Observable,
   Observer,
@@ -38,7 +39,7 @@ const getReferenceDataStream = (
       retryWithPolicy(
         RetryPolicy.backoffTo10SecondsMax,
         'getCurrencyPairUpdatesStream',
-        Scheduler.async
+        asyncScheduler
       ),
       map(referenceDataMapper.mapCurrencyPairsFromDto),
       publish<CurrencyPairUpdates>()

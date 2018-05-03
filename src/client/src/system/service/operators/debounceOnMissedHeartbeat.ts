@@ -1,6 +1,5 @@
-import { Observable, Subscription } from 'rxjs'
-import { GroupedObservable } from 'rxjs/operator/groupBy'
-import { Scheduler } from 'rxjs/Scheduler'
+import { Observable, Scheduler, Subscription } from 'rxjs'
+import { GroupedObservable } from 'rxjs/operators/groupBy'
 import { SerialSubscription } from '../../serialSubscription'
 
 /**

@@ -1,4 +1,4 @@
-import { merge } from 'rxjs/observable/merge'
+import { merge } from 'rxjs'
 import { scan, share } from 'rxjs/operators'
 import { Connection } from '../system/service/connection'
 import { ServiceStatus, StatusService } from '../types'

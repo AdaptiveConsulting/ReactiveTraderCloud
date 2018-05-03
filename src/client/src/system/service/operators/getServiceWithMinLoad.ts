@@ -1,4 +1,6 @@
-import { Observable, Subscription } from 'rxjs'
+import { Observable, of as observableOf, Subscription } from 'rxjs'
+
+import { concat } from 'rxjs/operators'
 import { ServiceInstanceStatus } from '../../../types'
 import LastValueObservableDictionary from './../lastValueObservableDictionary'
 
@@ -23,10 +25,10 @@ export function getServiceWithMinLoad(
               findServiceInstanceDisposable.unsubscribe()
             }
 
-            const serviceStatusStream = Observable.of(
+            const serviceStatusStream = observableOf(
               serviceWithLeastLoad.latestValue
             )
-              .concat(serviceWithLeastLoad.stream)
+              .pipe(concat(serviceWithLeastLoad.stream))
               .subscribe(obs)
 
             disposables.add(serviceStatusStream)

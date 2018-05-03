@@ -1,6 +1,11 @@
-import { Observable, Scheduler, Subscription } from 'rxjs'
-import { merge } from 'rxjs/observable/merge'
-import { timer } from 'rxjs/observable/timer'
+import {
+  asapScheduler,
+  merge,
+  Observable,
+  Scheduler,
+  Subscription,
+  timer
+} from 'rxjs'
 import {
   map,
   publish,
@@ -93,7 +98,7 @@ export default function executionService(
                     )
                   }),
                   // if we never receive a response, mark request as complete
-                  timeout(EXECUTION_REQUEST_TIMEOUT_MS, Scheduler.asap.schedule(
+                  timeout(EXECUTION_REQUEST_TIMEOUT_MS, asapScheduler.schedule(
                     () =>
                       createExecuteTradeResponseForError(
                         'Trade execution timeout exceeded',
