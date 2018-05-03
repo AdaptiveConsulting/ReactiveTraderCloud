@@ -1,3 +1,4 @@
+import { from as observableFrom } from 'rxjs'
 import * as _ from 'lodash'
 import { combineEpics } from 'redux-observable'
 import { Observable } from 'rxjs/Rx'
@@ -61,7 +62,7 @@ export function spotTileEpicsCreator(
     return action$
       .ofType(SPOT_TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART)
       .flatMap(payload => {
-        return Observable.fromPromise(
+        return observableFrom(
           payload.payload.openFin.displayCurrencyChart(payload.payload.symbol)
         )
       })

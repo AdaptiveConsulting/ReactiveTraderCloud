@@ -2,6 +2,7 @@ import * as _ from 'lodash'
 import * as keyBy from 'lodash.keyby'
 import { createAction } from 'redux-actions'
 import { combineEpics } from 'redux-observable'
+import { from as observableFrom } from 'rxjs'
 import { Observable } from 'rxjs/Rx'
 import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataOperations'
 import { PriceMovementTypes, SpotPriceTick } from './types'
@@ -47,7 +48,7 @@ const getSymbolArray$ = action$ =>
 // returns a stream that emits each currencyPairSymbol individually. Example: `EURUSD`
 const getSymbol$ = action$ =>
   getSymbolArray$(action$).mergeMap((symbols: string[]) =>
-    Observable.from(symbols)
+    observableFrom(symbols)
   )
 
 const publishPriceToOpenFin = openFin => price => openFin.publishPrice(price)

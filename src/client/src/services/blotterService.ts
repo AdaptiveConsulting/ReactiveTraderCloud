@@ -1,5 +1,5 @@
+import { asyncScheduler } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { Observable, Scheduler } from 'rxjs/Rx'
 import { logger, RetryPolicy } from '../system'
 import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
 import { ServiceClient } from '../system/service'
@@ -29,7 +29,7 @@ const createBlotterService = (connection: Connection) => {
           retryWithPolicy(
             RetryPolicy.backoffTo10SecondsMax,
             'getTradesStream',
-            Scheduler.async
+            asyncScheduler
           ),
           map(dto => mapFromDto(dto))
         )

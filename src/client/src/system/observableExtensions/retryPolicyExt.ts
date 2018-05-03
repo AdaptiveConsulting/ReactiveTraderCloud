@@ -1,5 +1,5 @@
+import { Scheduler } from 'rxjs'
 import { Observable } from 'rxjs/Rx'
-import { Scheduler } from 'rxjs/Scheduler'
 import logger from '../logger'
 import { SerialSubscription } from '../serialSubscription'
 import { Retry, ShouldRetryResult } from './retryPolicy'

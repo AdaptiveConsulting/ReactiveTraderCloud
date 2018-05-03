@@ -1,9 +1,11 @@
 import {
+  asyncScheduler,
   BehaviorSubject,
   ConnectableObservable,
   Observable,
-  Scheduler,
-  Subscription
+  of as observableOf,
+  Subscription,
+  throwError as observableThrowError
 } from 'rxjs'
 import {
   catchError,
@@ -117,7 +119,7 @@ export default class ServiceClient extends DisposableBase {
         const errorOnDisconnect$ = connectionStatus$.pipe(
           filter(connected => !connected),
           take(1),
-          mergeMapTo(Observable.throw('Underlying connection disconnected'))
+          mergeMapTo(observableThrowError('Underlying connection disconnected'))
         )
 
         const serviceInstanceDictionary$ = this.connection
@@ -136,7 +138,7 @@ export default class ServiceClient extends DisposableBase {
                   currentServiceType,
                   serviceId
                 ),
-              Scheduler.async
+              asyncScheduler
             ),
             // create a hash of properties which represent significant change in a status, we'll use this to filter out duplicates
             distinctUntilChangedGroup<ServiceInstanceStatus>(
@@ -151,7 +153,7 @@ export default class ServiceClient extends DisposableBase {
             // catch the disconnect error of the outer stream and continue with an empty (thus disconnected) dictionary
 
             catchError(() =>
-              Observable.of(
+              observableOf(
                 new LastValueObservableDictionary<ServiceInstanceStatus>()
               )
             )

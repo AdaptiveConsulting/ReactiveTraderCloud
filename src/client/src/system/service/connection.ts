@@ -1,5 +1,6 @@
 import { Error, ISubscription } from 'autobahn'
-import { BehaviorSubject, Observable, Scheduler, Subscription } from 'rxjs'
+import { asyncScheduler, BehaviorSubject, Observable, Subscription } from 'rxjs'
+import { distinctUntilChanged } from 'rxjs/operators'
 import { connectionTypeMapper } from '../../services/mappers'
 import { ConnectionStatus, ConnectionType } from '../../types'
 import logger from '../logger'
@@ -63,7 +64,7 @@ export class Connection {
    * @returns {*}
    */
   get connectionStatusStream(): Observable<ConnectionStatus> {
-    return this.connectionStatusSubject.distinctUntilChanged()
+    return this.connectionStatusSubject.pipe(distinctUntilChanged())
   }
 
   /**
@@ -245,7 +246,7 @@ export class Connection {
   }
 
   startAutoDisconnectTimer() {
-    return Scheduler.async.schedule<void>(() => {
+    return asyncScheduler.schedule<void>(() => {
       log.debug('Auto disconnect timeout elapsed')
       this.disconnect()
     }, Connection.DISCONNECT_SESSION_AFTER)
