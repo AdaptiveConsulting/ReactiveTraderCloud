@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as moment from 'moment'
 import * as numeral from 'numeral'
-import { Observable, Subject, Subscription } from 'rxjs/Rx'
+import { Observable, Subject, Subscription } from 'rxjs'
 import PositionsMapper from '../../services/mappers/positionsMapper'
 import { CurrencyPair, Trade } from '../../types'
 import logger from '../logger'

@@ -1,25 +1,30 @@
 import * as _ from 'lodash'
 import * as keyBy from 'lodash.keyby'
 import { createAction } from 'redux-actions'
-import { combineEpics } from 'redux-observable'
+import { combineEpics, ofType } from 'redux-observable'
 import { from as observableFrom } from 'rxjs'
-import { Observable } from 'rxjs/Rx'
+import {
+  debounceTime,
+  map,
+  mergeMap,
+  scan,
+  takeLast,
+  tap
+} from 'rxjs/operators'
 import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataOperations'
+import { PricingService, ReferenceDataService } from './services'
 import { PriceMovementTypes, SpotPriceTick } from './types'
 import { buildNotification } from './ui/notification/notificationUtils'
 
 export enum ACTION_TYPES {
   SPOT_PRICES_UPDATE = '@ReactiveTraderCloud/SPOT_PRICES_UPDATE',
-  PRICING_SERVICE_STATUS_UPDATE = '@ReactiveTraderCloud/PRICING_SERVICE_STATUS_UPDATE',
   PRICING_STALE = '@ReactiveTraderCloud/PRICING_STALE'
 }
 
 export const createSpotPricesUpdateAction = createAction(
   ACTION_TYPES.SPOT_PRICES_UPDATE
 )
-export const createPricingServiceStatusUpdateAction = createAction(
-  ACTION_TYPES.PRICING_SERVICE_STATUS_UPDATE
-)
+
 export const createStalePriceAction = createAction(ACTION_TYPES.PRICING_STALE)
 
 // Epics Logic
@@ -44,15 +49,17 @@ const getSymbols = (action): string[] =>
   action.payload.currencyPairUpdates.map(getSymbol)
 // returns a stream that emits an array containing the currencyPairSymbols like this: `["EURUSD", ...]`
 const getSymbolArray$ = action$ =>
-  action$.ofType(REF_ACTION_TYPES.REFERENCE_SERVICE).map(getSymbols)
+  action$.pipe(ofType(REF_ACTION_TYPES.REFERENCE_SERVICE), map(getSymbols))
 // returns a stream that emits each currencyPairSymbol individually. Example: `EURUSD`
 const getSymbol$ = action$ =>
-  getSymbolArray$(action$).mergeMap((symbols: string[]) =>
-    observableFrom(symbols)
+  getSymbolArray$(action$).pipe(
+    mergeMap((symbols: string[]) => observableFrom(symbols))
   )
 
 const publishPriceToOpenFin = openFin => price => openFin.publishPrice(price)
-const addRatePrecisionToPrice = referenceDataService => price => {
+const addRatePrecisionToPrice = (
+  referenceDataService: ReferenceDataService
+) => price => {
   return {
     ...price,
     ratePrecision: referenceDataService.getCurrencyPair(price.symbol)
@@ -62,66 +69,60 @@ const addRatePrecisionToPrice = referenceDataService => price => {
 
 // Creates a stream that only start emitting new prices after `REFERENCE_SERVICE` action is received.
 // Also only emits for symbols specified in `REFERENCE_SERVICE`.
-const priceForReferenceServiceSymbols$ = (action$, pricingService$) => {
+const priceForReferenceServiceSymbols$ = (
+  action$,
+  pricingService$: PricingService
+) => {
   // For each symbol
   return (
     getSymbol$(action$)
       // get a new price stream for that symbol
-      .mergeMap(symbol => pricingService$.getSpotPriceStream({ symbol }))
+      .pipe(
+        mergeMap((symbol: any) =>
+          pricingService$.getSpotPriceStream({ symbol })
+        )
+      )
   )
 }
 
 export const pricingServiceEpic = (
-  pricingService$,
+  pricingService$: PricingService,
   openFin,
-  referenceDataService
+  referenceDataService: ReferenceDataService
 ) => {
   const stalePriceEpic = action$ => {
     // For each symbol
-    return (
-      getSymbol$(action$)
-        // creates a new price stream and will wait to debounce
-        .mergeMap(symbol =>
-          pricingService$
-            .getSpotPriceStream({ symbol })
-            .debounceTime(MS_FOR_LAST_PRICE_TO_BECOME_STALE)
-        )
-        // when debounces, it creates an action
-        .map(createStalePriceAction)
+    return getSymbol$(action$).pipe(
+      // creates a new price stream and will wait to debounce
+      mergeMap((symbol: string) =>
+        pricingService$
+          .getSpotPriceStream({ symbol })
+          .pipe(debounceTime(MS_FOR_LAST_PRICE_TO_BECOME_STALE))
+      ),
+      // when debounces, it creates an action
+      map(createStalePriceAction)
     )
   }
 
   const publishPriceToOpenFinEpic = action$ => {
-    return (
-      priceForReferenceServiceSymbols$(action$, pricingService$)
-        .map(addRatePrecisionToPrice(referenceDataService))
-        .do(publishPriceToOpenFin(openFin))
-        // Hack to never emit any actions, because we don't need any action.
-        .takeLast()
+    return priceForReferenceServiceSymbols$(action$, pricingService$).pipe(
+      map(addRatePrecisionToPrice(referenceDataService)),
+      tap(publishPriceToOpenFin(openFin)),
+      // Hack to never emit any actions, because we don't need any action.
+      takeLast(1)
     )
   }
 
   const updatePricesEpic = action$ => {
-    return priceForReferenceServiceSymbols$(action$, pricingService$)
-      .scan(reducePrices, {})
-      .map(createSpotPricesUpdateAction)
-  }
-
-  const pricingServiceStatusEpic = action$ => {
-    return (
-      action$
-        .ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
-        // when previous action happens, starts listening on the service status
-        .flatMapTo(pricingService$.serviceStatusStream)
-        // creates action if service status changes
-        .map(createPricingServiceStatusUpdateAction)
+    return priceForReferenceServiceSymbols$(action$, pricingService$).pipe(
+      scan(reducePrices, {}),
+      map(createSpotPricesUpdateAction)
     )
   }
 
   return combineEpics(
     updatePricesEpic,
     stalePriceEpic,
-    pricingServiceStatusEpic,
     publishPriceToOpenFinEpic
   )
 }

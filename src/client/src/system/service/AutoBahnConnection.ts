@@ -1,4 +1,4 @@
-import { Connection, Session } from 'autobahn'
+import { Connection } from 'autobahn'
 import AutobahnSessionProxy from './autobahnSessionProxy'
 
 export interface AutobahnConnection {
@@ -10,7 +10,7 @@ export interface AutobahnConnection {
 
   getConnection(): Connection
 
-  onopen(callback: (session: Session) => void): void
+  onopen(callback: (session: AutobahnSessionProxy) => void): void
 
   onclose(
     callback: (

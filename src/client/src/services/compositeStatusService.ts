@@ -1,53 +1,88 @@
-import { merge } from 'rxjs'
-import { scan, share } from 'rxjs/operators'
+import { Observable } from 'rxjs'
+import {
+  groupBy,
+  map,
+  mergeAll,
+  publishReplay,
+  refCount,
+  scan
+} from 'rxjs/operators'
 import { Connection } from '../system/service/connection'
-import { ServiceStatus, StatusService } from '../types'
+import { ServiceInstanceStatus } from '../types'
 
-export default function compositeStatusService(
-  connection: Connection,
-  services: StatusService[]
-) {
-  const serviceStatusStream = merge(
-    ...services.map(service => service.serviceStatusStream)
-  ).pipe(
-    scan<ServiceStatus, ServiceStatusLookup>(
-      (statusLookup, serviceStatus) =>
-        statusLookup.updateServiceStatus(serviceStatus),
-      new ServiceStatusLookup()
-    ),
-    share<ServiceStatusLookup>()
-  )
-
-  return {
-    get connectionStatusStream() {
-      return connection.connectionStatusStream
-    },
-
-    get connection() {
-      return connection
-    },
-
-    get isConnected() {
-      return connection.isConnected
-    },
-
-    get connectionUrl() {
-      return connection.url
-    },
-
-    get connectionType() {
-      return connection.type
-    },
-
-    serviceStatusStream
+interface ServiceConnectionInfo {
+  [key: string]: {
+    serviceType: string
+    connectedInstanceCount: number
+    isConnected: boolean
   }
 }
 
-class ServiceStatusLookup {
-  services: { [key: string]: ServiceStatus } = {}
+export default class CompositeStatusService {
+  private readonly serviceStatusStream$: Observable<ServiceConnectionInfo>
+  constructor(
+    private readonly connection: Connection,
+    private readonly serviceInstanceDictionaryStream: Observable<
+      ServiceInstanceStatus
+    >
+  ) {
+    this.serviceStatusStream$ = serviceInstanceDictionaryStream.pipe(
+      groupBy(serviceStatus => serviceStatus.serviceType),
+      map(status =>
+        status.pipe(
+          scan<
+            ServiceInstanceStatus,
+            [string, Map<string, ServiceInstanceStatus>]
+          >(
+            (statusLookup, serviceStatus) => {
+              const [key, lookup] = statusLookup
+              lookup.set(serviceStatus.serviceId, serviceStatus)
+              return [key, lookup]
+            },
+            [status.key, new Map()]
+          )
+        )
+      ),
+      mergeAll(),
+      scan<[string, Map<string, ServiceInstanceStatus>], ServiceConnectionInfo>(
+        (acc, next) => {
+          const [key, lookup] = next
+          const vals = Array.from(lookup.values())
+          const isConnected = vals.some(x => x.isConnected)
+          const connectedInstanceCount = vals.length
+          return {
+            ...acc,
+            [key]: {
+              serviceType: key,
+              connectedInstanceCount,
+              isConnected
+            }
+          }
+        },
+        {}
+      ),
+      publishReplay(1),
+      refCount()
+    )
+  }
 
-  updateServiceStatus(serviceStatus: ServiceStatus) {
-    this.services[serviceStatus.serviceType] = serviceStatus
-    return this
+  get connectionStatusStream() {
+    return this.connection.connectionStatusStream
+  }
+
+  get isConnected() {
+    return this.connection.connected
+  }
+
+  get connectionUrl() {
+    return this.connection.url
+  }
+
+  get connectionType() {
+    return this.connection.type
+  }
+
+  get serviceStatusStream() {
+    return this.serviceStatusStream$
   }
 }

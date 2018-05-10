@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { getEnvVars } from './config/config'
 import { OpenFin } from './system/openFin'
 import createConnection from './system/service/connection'
-import { User } from './types'
+import { ServiceConst, ServiceInstanceStatus, User } from './types'
 import { OpenFinProvider, ShellContainer } from './ui/shell'
 
 import configureStore from './configureStore'
@@ -18,6 +18,18 @@ import {
   PricingService,
   ReferenceDataService
 } from './services'
+
+import { merge, Observer, of, Subscriber } from 'rxjs'
+import {
+  catchError,
+  filter,
+  mergeMap,
+  scan,
+  share,
+  shareReplay
+} from 'rxjs/operators'
+import { ServiceClient } from './system/service'
+import { serviceInstanceDictionaryStream$ } from './system/service/serviceStatusStream'
 
 // When the application is run in openfin then 'fin' will be registered on the global window object.
 declare const window: any
@@ -36,24 +48,65 @@ const connectSocket = () => {
   return createConnection(user.code, url, realm, +port)
 }
 
+const HEARTBEAT_TIMEOUT = 3000
+
 const appBootstrapper = () => {
+  const createLogger = (name: string) => {
+    return {
+      next: x => console.log(`${name}: next `, x),
+      error: x => console.error(`${name}: error `, x),
+      complete: () => console.log(`${name}: complete `)
+    }
+  }
+
   const connection = connectSocket()
+
+  const serviceStatus$ = serviceInstanceDictionaryStream$(
+    connection,
+    HEARTBEAT_TIMEOUT
+  ).pipe(share())
+
+  serviceStatus$.subscribe(createLogger('serviceStatus'))
+
+  const createServiceClient = (serviceName: ServiceConst) =>
+    new ServiceClient(serviceName, connection, serviceStatus$)
+
+  const blotterService = new BlotterService(
+    createServiceClient(ServiceConst.BlotterServiceKey)
+  )
+
+  const pricingService = new PricingService(
+    createServiceClient(ServiceConst.PricingServiceKey)
+  )
+
+  const refDataService = new ReferenceDataService(
+    createServiceClient(ServiceConst.ReferenceServiceKey)
+  )
+
   const openFin = new OpenFin()
+
+  const execService = new ExecutionService(
+    createServiceClient(ServiceConst.ExecutionServiceKey),
+    openFin
+  )
+  const analyticsService = new AnalyticsService(
+    createServiceClient(ServiceConst.AnalyticsServiceKey)
+  )
+
+  const compositeStatusService = new CompositeStatusService(
+    connection,
+    serviceStatus$
+  )
+
   const isRunningInFinsemble = window.FSBL
-  const refDataService = ReferenceDataService(connection)
-  const pricingService = PricingService(connection)
-  const blotterService = BlotterService(connection)
-  const execService = ExecutionService(connection, refDataService, openFin)
-  const analyticsService = AnalyticsService(connection, refDataService)
-  const compositeStatusService = CompositeStatusService(connection, [
-    pricingService,
-    refDataService,
-    blotterService,
-    execService,
-    analyticsService
-  ])
-  // connect the underlying connection
-  connection.connect()
+
+  // const s = merge(
+  //   connection.connectionStream,
+  //   serviceStatus$,
+  //   blotterService.getTradesStream(),
+  //   refDataService.getCurrencyPairUpdatesStream(),
+  //   analyticsService.getAnalyticsStream('USD')
+  // ).subscribe(log)
 
   const store = configureStore(
     refDataService,
@@ -79,6 +132,7 @@ const appBootstrapper = () => {
 }
 
 const runBootstrapper = location.pathname === '/' && location.hash.length === 0
+
 // if we're not the root we (perhaps a popup) we never re-run the bootstrap logic
 
 export function run() {

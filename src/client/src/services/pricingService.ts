@@ -4,7 +4,6 @@ import { logger, RetryPolicy } from '../system'
 import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
 import { ServiceClient } from '../system/service'
 import { ServiceConst, SpotPriceTick } from '../types'
-import { Connection } from './../system/service/connection'
 
 const log = logger.create('PricingService')
 const getPriceUpdatesOperationName = 'getPriceUpdates'
@@ -34,28 +33,22 @@ const createSpotPriceStream = (
     )
 }
 
-export default function createPricingService(connection: Connection) {
-  const cachedSpotStreamBySymbol = new Map<string, Observable<SpotPriceTick>>()
+export default class PricingService {
+  private readonly cachedSpotStreamBySymbol = new Map<
+    string,
+    Observable<SpotPriceTick>
+  >()
+  constructor(private readonly serviceClient: ServiceClient) {}
 
-  const serviceClient = new ServiceClient(
-    ServiceConst.PricingServiceKey,
-    connection
-  )
-  serviceClient.connect()
-  return {
-    get serviceStatusStream() {
-      return serviceClient.serviceStatusStream
-    },
-    getSpotPriceStream(request: Request) {
-      const { symbol } = request
-      if (!cachedSpotStreamBySymbol.has(symbol)) {
-        cachedSpotStreamBySymbol.set(
-          symbol,
-          createSpotPriceStream(serviceClient, request)
-        )
-      }
-      return cachedSpotStreamBySymbol.get(symbol)!
+  getSpotPriceStream(request: Request) {
+    const { symbol } = request
+    if (!this.cachedSpotStreamBySymbol.has(symbol)) {
+      this.cachedSpotStreamBySymbol.set(
+        symbol,
+        createSpotPriceStream(this.serviceClient, request)
+      )
     }
+    return this.cachedSpotStreamBySymbol.get(symbol)!
   }
 }
 

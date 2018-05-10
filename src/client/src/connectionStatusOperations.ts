@@ -1,5 +1,7 @@
 import { createAction, handleActions } from 'redux-actions'
-import { combineEpics } from 'redux-observable'
+import { combineEpics, ofType } from 'redux-observable'
+import { map, takeLast } from 'rxjs/operators'
+import { CompositeStatusService } from './services'
 import { ConnectionStatus } from './types/'
 
 export enum ACTION_TYPES {
@@ -35,22 +37,21 @@ const connectionStatusToState = compositeStatusService$ => (
   }
 }
 
-export function connectionStatusEpicsCreator(compositeStatusService$) {
-  const connectToServices = () => compositeStatusService$.connection.connect()
-
+export function connectionStatusEpicsCreator(
+  compositeStatusService$: CompositeStatusService
+) {
   const updateConnectionStateEpic = () => {
-    return compositeStatusService$.connectionStatusStream
-      .map(connectionStatusToState(compositeStatusService$))
-      .map(createConnectionStatusUpdateAction)
+    return compositeStatusService$.connectionStatusStream.pipe(
+      map(connectionStatusToState(compositeStatusService$)),
+      map(createConnectionStatusUpdateAction)
+    )
   }
 
   const reconnectEpic = action$ => {
-    return (
-      action$
-        .ofType(ACTION_TYPES.RECONNECT)
-        .do(connectToServices)
-        // Hack to never emit any actions, because we don't need any action.
-        .takeLast()
+    return action$.pipe(
+      ofType(ACTION_TYPES.RECONNECT),
+      // Hack to never emit any actions, because we don't need any action.
+      takeLast(1)
     )
   }
 

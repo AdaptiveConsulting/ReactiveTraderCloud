@@ -1,4 +1,5 @@
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
+import { map, tap } from 'rxjs/operators'
+import { BlotterService } from '../../services'
 import { CurrencyPair, Trade } from '../../types'
 import { createNewTradesAction } from './actions'
 
@@ -11,15 +12,16 @@ const subscribeOpenFinToBlotterData = (openFin, store) => () => {
   openFin.addSubscription('fetch-blotter', cb)
 }
 
-export const blotterServiceEpic = (blotterService$, openFin) => (
-  action$,
-  store
-) => {
-  return action$
-    .ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
-    .do(subscribeOpenFinToBlotterData(openFin, store))
-    .flatMapTo(blotterService$.getTradesStream())
-    .map(createNewTradesAction)
+export const blotterServiceEpic = (
+  blotterService$: BlotterService,
+  openFin
+) => (action$, store) => {
+  return blotterService$
+    .getTradesStream()
+    .pipe(
+      map(createNewTradesAction),
+      tap(subscribeOpenFinToBlotterData(openFin, store))
+    )
 }
 
 export default blotterServiceEpic

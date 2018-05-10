@@ -1,5 +1,5 @@
 export enum ConnectionType {
   Unknown = '',
-  WebSocket = 'web socket',
+  WebSocket = 'websocket',
   LongPolling = 'long polling'
 }

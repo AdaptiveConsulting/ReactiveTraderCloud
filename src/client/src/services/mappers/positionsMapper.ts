@@ -1,8 +1,7 @@
 import {
   CurrencyPairPosition,
   HistoricPosition,
-  PositionUpdates,
-  ReferenceDataService
+  PositionUpdates
 } from '../../types'
 
 export interface CurrencyPairPositionRaw {
@@ -22,11 +21,7 @@ export interface HistoryRaw {
 }
 
 export default class PositionsMapper {
-  referenceDataService: ReferenceDataService
-
-  constructor(referenceDataService: ReferenceDataService) {
-    this.referenceDataService = referenceDataService
-  }
+  constructor() {}
 
   static mapToDto(ccyPairPosition: CurrencyPairPosition) {
     return {
@@ -36,7 +31,7 @@ export default class PositionsMapper {
     }
   }
 
-  mapFromDto(dto: PositionsRaw): PositionUpdates {
+  static mapFromDto(dto: PositionsRaw): PositionUpdates {
     const positions = this.mapPositionsFromDto(dto.CurrentPositions)
     const history = this.mapHistoricPositionFromDto(dto.History)
     return {
@@ -45,7 +40,9 @@ export default class PositionsMapper {
     }
   }
 
-  mapPositionsFromDto(dtos: CurrencyPairPositionRaw[]): CurrencyPairPosition[] {
+  static mapPositionsFromDto(
+    dtos: CurrencyPairPositionRaw[]
+  ): CurrencyPairPosition[] {
     return dtos.map<CurrencyPairPosition>(dto => ({
       symbol: dto.Symbol,
       basePnl: dto.BasePnl,
@@ -55,7 +52,7 @@ export default class PositionsMapper {
     }))
   }
 
-  mapHistoricPositionFromDto(dtos: HistoryRaw[]): HistoricPosition[] {
+  static mapHistoricPositionFromDto(dtos: HistoryRaw[]): HistoricPosition[] {
     return dtos.map<HistoricPosition>(dto => ({
       timestamp: new Date(dto.Timestamp),
       usdPnl: dto.UsdPnl
