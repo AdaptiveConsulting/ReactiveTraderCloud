@@ -1,5 +1,5 @@
 import { Connection, Session } from 'autobahn'
-import { ConnectionType } from '../../types/connectionType'
+import { ConnectionType } from './connectionType'
 
 interface TransportDefinition {
   info: {

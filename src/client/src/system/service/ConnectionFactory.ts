@@ -36,7 +36,7 @@ export function createConnection$(
       log.error(`Connection lost, reason: [${reason}]`)
       log.error(`Connection lost, details: [${JSON.stringify(details)}]`)
 
-      obs.next({
+      obs.error({
         type: ConnectionEventType.DISCONNECTED,
         reason,
         details: details.message

@@ -19,6 +19,7 @@ const createSpotPriceStream = (
   log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
   return serviceClient
     .createStreamOperation<RawPrice, Request>(
+      ServiceConst.PricingServiceKey,
       getPriceUpdatesOperationName,
       request
     )

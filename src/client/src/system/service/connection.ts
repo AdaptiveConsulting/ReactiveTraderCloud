@@ -1,11 +1,5 @@
 import { Error, ISubscription } from 'autobahn'
-import {
-  asyncScheduler,
-  NextObserver,
-  Observable,
-  Subscription,
-  timer
-} from 'rxjs'
+import { NextObserver, Observable, Subscription, timer } from 'rxjs'
 import {
   distinctUntilChanged,
   filter,
@@ -15,7 +9,7 @@ import {
   refCount,
   shareReplay
 } from 'rxjs/operators'
-import { ConnectionStatus, ConnectionType } from '../../types'
+
 import logger from '../logger'
 import { AutobahnConnection } from './AutoBahnConnection'
 import AutobahnConnectionProxy from './autobahnConnectionProxy'
@@ -26,6 +20,8 @@ import {
   ConnectionOpenEvent,
   createConnection$
 } from './ConnectionFactory'
+import { ConnectionStatus } from './connectionStatus'
+import { ConnectionType } from './connectionType'
 
 const log = logger.create('Connection')
 
@@ -104,54 +100,33 @@ export class Connection {
 
   static DISCONNECT_SESSION_AFTER = 1000 * 60 * 15
 
-  /**
-   * A stream of the current connection status (see ConnectionStatus for possible values)
-   * @returns {*}
-   */
   get connectionStatusStream(): Observable<ConnectionStatus> {
     return this.connectionStatusSubject.pipe(distinctUntilChanged())
   }
 
-  /**
-   * Connection url
-   * @returns {string}
-   */
   get url(): string {
     return this.connectionUrl
   }
 
-  /**
-   * Connection url
-   * @returns {string}
-   */
   get connected(): boolean {
     return this.connectionType !== ConnectionType.Unknown
   }
 
-  /**
-   * Connection type
-   * @returns {ConnectionType}
-   */
   get type() {
     return this.connectionType
   }
 
-  /**
-   * Disconnects the underlying transport
-   */
   disconnect() {
     log.info('Disconnecting connection')
     this.autobahn.close()
   }
 
   logResponse(topic: string, response: any[]): void {
-    if (log.isVerboseEnabled) {
-      const payloadString = JSON.stringify(response[0])
-      if (topic !== 'status') {
-        log.verbose(
-          `Received response on topic [${topic}]. Payload[${payloadString}]`
-        )
-      }
+    const payloadString = JSON.stringify(response[0])
+    if (topic !== 'status') {
+      log.verbose(
+        `Received response on topic [${topic}]. Payload[${payloadString}]`
+      )
     }
   }
 
@@ -171,7 +146,7 @@ export class Connection {
       ),
       mergeMap(
         ({ session }) =>
-          new Observable<T>(o => {
+          new Observable<T>(obs => {
             log.info(`Subscribing to topic [${topic}].`)
 
             let subscription: ISubscription
@@ -179,7 +154,7 @@ export class Connection {
             session
               .subscribe<T>(topic, response => {
                 this.logResponse(topic, response)
-                o.next(response[0])
+                obs.next(response[0])
               })
               .then(
                 sub => {
@@ -192,7 +167,7 @@ export class Connection {
                 (error: Error) => {
                   // subscription failed, error is an instance of autobahn.Error
                   log.error(`Error on topic ${topic}`, error)
-                  o.error(error)
+                  obs.error(error)
                 }
               )
 
@@ -267,9 +242,9 @@ export class Connection {
   }
 
   startAutoDisconnectTimer() {
-    return asyncScheduler.schedule<void>(() => {
+    return timer(Connection.DISCONNECT_SESSION_AFTER).subscribe(() => {
       log.debug('Auto disconnect timeout elapsed')
       this.disconnect()
-    }, Connection.DISCONNECT_SESSION_AFTER)
+    })
   }
 }

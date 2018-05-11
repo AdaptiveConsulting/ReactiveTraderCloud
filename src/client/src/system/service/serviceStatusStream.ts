@@ -1,61 +1,78 @@
-import { throwError as observableThrowError } from 'rxjs'
+import { Observable } from 'rxjs'
 import {
   distinctUntilChanged,
-  filter,
   groupBy,
   map,
-  merge,
-  mergeAll,
-  mergeMapTo,
-  take
+  mergeMap,
+  scan
 } from 'rxjs/operators'
 import { ServiceInstanceStatus } from '../../types/'
 import { RawServiceStatus } from '../../types/serviceInstanceStatus'
 import { Connection } from './connection'
-import { ConnectionClosedEvent, ConnectionEventType } from './ConnectionFactory'
 import { debounceWithSelector } from './debounceOnMissedHeartbeat'
+import {
+  ServiceCollectionMap,
+  ServiceInstanceCollection
+} from './ServiceInstanceCollection'
+
+export function addHeartBeatToServiceInstanceStatus(
+  heartBeatTimeout: number
+): (
+  source: Observable<ServiceInstanceStatus>
+) => Observable<ServiceInstanceStatus> {
+  return source =>
+    source.pipe(
+      groupBy(serviceStatus => serviceStatus.serviceId),
+      mergeMap(service$ =>
+        service$.pipe(
+          debounceWithSelector<ServiceInstanceStatus>(
+            heartBeatTimeout,
+            lastValue =>
+              createServiceInstanceForDisconnected(
+                lastValue.serviceType,
+                lastValue.serviceId
+              )
+          ),
+          distinctUntilChanged<ServiceInstanceStatus>(
+            (status, statusNew) =>
+              status.isConnected === statusNew.isConnected &&
+              status.serviceLoad === statusNew.serviceLoad
+          )
+        )
+      )
+    )
+}
 
 export function serviceInstanceDictionaryStream$(
   connection$: Connection,
   heartBeatTimeout: number
 ) {
-  const errorOnDisconnect$ = connection$.connectionStream.pipe(
-    filter(
-      (connection): connection is ConnectionClosedEvent =>
-        connection.type === ConnectionEventType.DISCONNECTED
-    ),
-    take(1),
-    mergeMapTo(observableThrowError('Underlying connection disconnected'))
-  )
-
   return connection$.subscribeToTopic<RawServiceStatus>('status').pipe(
-    map(convertServiceMesage),
-    merge<ServiceInstanceStatus>(errorOnDisconnect$),
-    // If the underlying connection goes down we error the stream.
-    // Do this before the grouping so all grouped streams error.
-    groupBy(serviceStatus => serviceStatus.serviceId),
-    map(service$ =>
-      service$.pipe(
-        debounceWithSelector<ServiceInstanceStatus>(
-          heartBeatTimeout,
-          lastValue =>
-            createServiceInstanceForDisconnected(
-              lastValue.serviceType,
-              lastValue.serviceId
-            )
-        ),
-        distinctUntilChanged<ServiceInstanceStatus>(
-          (status, statusNew) =>
-            status.isConnected === statusNew.isConnected &&
-            status.serviceLoad === statusNew.serviceLoad
+    map(convertFromRawMessage),
+    groupBy(serviceInstanceStatus => serviceInstanceStatus.serviceType),
+    mergeMap(serviceInstanceStatus =>
+      serviceInstanceStatus.pipe(
+        addHeartBeatToServiceInstanceStatus(heartBeatTimeout),
+        scan<ServiceInstanceStatus, ServiceInstanceCollection>(
+          (serviceInstanceCollection, next) =>
+            serviceInstanceCollection.update(next),
+          new ServiceInstanceCollection(serviceInstanceStatus.key)
         )
       )
     ),
-    mergeAll()
+    scan<ServiceInstanceCollection, ServiceCollectionMap>(
+      (serviceCollectionMap, serviceInstanceCollection) => {
+        return serviceCollectionMap.add(
+          serviceInstanceCollection.serviceType,
+          serviceInstanceCollection
+        )
+      },
+      new ServiceCollectionMap()
+    )
   )
 }
 
-function convertServiceMesage(
+function convertFromRawMessage(
   serviceStatus: RawServiceStatus
 ): ServiceInstanceStatus {
   return {

@@ -2,14 +2,15 @@ import { ofType } from 'redux-observable'
 import { map, mergeMapTo, tap } from 'rxjs/operators'
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
 import { AnalyticsService } from '../../services'
-import { PositionUpdates } from './../../types/positionUpdates'
+import { OpenFin } from '../../services/openFin'
+import { PositionUpdates } from '../../types'
 import { fetchAnalytics } from './actions'
 
 const CURRENCY: string = 'USD'
 
 export const analyticsServiceEpic = (
   analyticsService$: AnalyticsService,
-  openFin
+  openFin: OpenFin
 ) => action$ => {
   return action$.pipe(
     ofType(REF_ACTION_TYPES.REFERENCE_SERVICE),

@@ -1,10 +1,11 @@
 import * as _ from 'lodash'
 import { combineEpics, ofType } from 'redux-observable'
-import { from as observableFrom } from 'rxjs'
+import { bindCallback, from as observableFrom } from 'rxjs'
 import { delay, filter, map, mergeMap, tap } from 'rxjs/operators'
 import { ACTION_TYPES as PRICING_ACTION_TYPES } from '../../pricingOperations'
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
 import { ExecutionService, ReferenceDataService } from '../../services'
+import { OpenFin } from '../../services/openFin'
 import { Direction } from '../../types'
 import { SpotPrice } from '../../types/spotPrice'
 import {
@@ -39,7 +40,7 @@ const addCurrencyPairToSpotPrices = (
 export function spotTileEpicsCreator(
   executionService$: ExecutionService,
   referenceDataService: ReferenceDataService,
-  openfin
+  openfin: OpenFin
 ) {
   function executeTradeEpic(action$) {
     return action$.pipe(
@@ -110,21 +111,21 @@ export function spotTileEpicsCreator(
     }
   }
 
-  function closePositionEpic(action$, store) {
+  function closePositionEpic(action$, state$) {
     return action$.pipe(
       ofType(REF_ACTION_TYPES.REFERENCE_SERVICE),
-      tap(() => {
-        openfin.addSubscription('close-position', (msg, uuid) => {
-          const trade = createTrade(
-            msg,
-            store.getState().pricingService[msg.symbol]
-          )
-          store.dispatch(
-            executeTrade(trade, { uuid, correlationId: msg.correlationId })
-          )
-        })
+      mergeMap(() => {
+        return bindCallback(openfin.addSubscription).bind(openfin)(
+          'close-position'
+        )
       }),
-      filter(() => false)
+      map<any, any>(([msg, uuid]) => {
+        const trade = createTrade(
+          msg,
+          state$.getState().pricingService[msg.symbol]
+        )
+        return executeTrade(trade, { uuid, correlationId: msg.correlationId })
+      })
     )
   }
 

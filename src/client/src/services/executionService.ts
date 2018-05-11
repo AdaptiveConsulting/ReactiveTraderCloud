@@ -13,7 +13,8 @@ import {
   createExecuteTradeResponse,
   createExecuteTradeResponseForError,
   ExecuteTradeRequest,
-  ExecuteTradeResponse
+  ExecuteTradeResponse,
+  ServiceConst
 } from '../types'
 import { mapFromTradeDto } from './mappers'
 import { TradeRaw } from './mappers/tradeMapper'
@@ -32,6 +33,7 @@ export default class ExecutionService {
     private readonly serviceClient: ServiceClient,
     private readonly openFin: any
   ) {}
+
   executeTrade(executeTradeRequest: ExecuteTradeRequest) {
     return new Observable<ExecuteTradeResponse>(obs => {
       log.info('executing: ', executeTradeRequest)
@@ -58,7 +60,11 @@ export default class ExecutionService {
             .createRequestResponseOperation<
               RawTradeReponse,
               ExecuteTradeRequest
-            >('executeTrade', executeTradeRequest)
+            >(
+              ServiceConst.ExecutionServiceKey,
+              'executeTrade',
+              executeTradeRequest
+            )
             .pipe(publish<RawTradeReponse>(), refCount())
 
           disposables.add(

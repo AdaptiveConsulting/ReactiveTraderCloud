@@ -13,6 +13,7 @@ import {
 } from 'rxjs/operators'
 import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataOperations'
 import { PricingService, ReferenceDataService } from './services'
+import { OpenFin } from './services/openFin'
 import { PriceMovementTypes, SpotPriceTick } from './types'
 import { buildNotification } from './ui/notification/notificationUtils'
 
@@ -56,7 +57,8 @@ const getSymbol$ = action$ =>
     mergeMap((symbols: string[]) => observableFrom(symbols))
   )
 
-const publishPriceToOpenFin = openFin => price => openFin.publishPrice(price)
+const publishPriceToOpenFin = (openFin: OpenFin) => price =>
+  openFin.publishPrice(price)
 const addRatePrecisionToPrice = (
   referenceDataService: ReferenceDataService
 ) => price => {
@@ -87,7 +89,7 @@ const priceForReferenceServiceSymbols$ = (
 
 export const pricingServiceEpic = (
   pricingService$: PricingService,
-  openFin,
+  openFin: OpenFin,
   referenceDataService: ReferenceDataService
 ) => {
   const stalePriceEpic = action$ => {

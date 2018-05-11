@@ -1,5 +1,6 @@
 import { map, tap } from 'rxjs/operators'
 import { BlotterService } from '../../services'
+import { OpenFin } from '../../services/openFin'
 import { CurrencyPair, Trade } from '../../types'
 import { createNewTradesAction } from './actions'
 
@@ -14,7 +15,7 @@ const subscribeOpenFinToBlotterData = (openFin, store) => () => {
 
 export const blotterServiceEpic = (
   blotterService$: BlotterService,
-  openFin
+  openFin: OpenFin
 ) => (action$, store) => {
   return blotterService$
     .getTradesStream()

@@ -3,11 +3,12 @@ import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 // TODO: change to import when webpack bug solved https://github.com/webpack/webpack/issues/4160
 import { getEnvVars } from './config/config'
-import { OpenFin } from './system/openFin'
+import { OpenFin } from './services/openFin'
 import createConnection from './system/service/connection'
-import { ServiceConst, ServiceInstanceStatus, User } from './types'
+import { ServiceConst, User } from './types'
 import { OpenFinProvider, ShellContainer } from './ui/shell'
 
+import { shareReplay } from 'rxjs/operators'
 import configureStore from './configureStore'
 import {
   AnalyticsService,
@@ -18,16 +19,6 @@ import {
   PricingService,
   ReferenceDataService
 } from './services'
-
-import { merge, Observer, of, Subscriber } from 'rxjs'
-import {
-  catchError,
-  filter,
-  mergeMap,
-  scan,
-  share,
-  shareReplay
-} from 'rxjs/operators'
 import { ServiceClient } from './system/service'
 import { serviceInstanceDictionaryStream$ } from './system/service/serviceStatusStream'
 
@@ -51,47 +42,36 @@ const connectSocket = () => {
 const HEARTBEAT_TIMEOUT = 3000
 
 const appBootstrapper = () => {
-  const createLogger = (name: string) => {
-    return {
-      next: x => console.log(`${name}: next `, x),
-      error: x => console.error(`${name}: error `, x),
-      complete: () => console.log(`${name}: complete `)
-    }
-  }
+  // const createLogger = (name: string) => {
+  //   return {
+  //     next: x => console.log(`${name}: next `, x),
+  //     error: x => console.error(`${name}: error `, x),
+  //     complete: () => console.log(`${name}: complete `)
+  //   }
+  // }
 
   const connection = connectSocket()
 
   const serviceStatus$ = serviceInstanceDictionaryStream$(
     connection,
     HEARTBEAT_TIMEOUT
-  ).pipe(share())
+  ).pipe(shareReplay(1))
 
-  serviceStatus$.subscribe(createLogger('serviceStatus'))
+  //serviceStatus$.subscribe(createLogger('serviceStatus'))
 
-  const createServiceClient = (serviceName: ServiceConst) =>
-    new ServiceClient(serviceName, connection, serviceStatus$)
+  const serviceClient = new ServiceClient(connection, serviceStatus$)
 
-  const blotterService = new BlotterService(
-    createServiceClient(ServiceConst.BlotterServiceKey)
-  )
+  const blotterService = new BlotterService(serviceClient)
 
-  const pricingService = new PricingService(
-    createServiceClient(ServiceConst.PricingServiceKey)
-  )
+  const pricingService = new PricingService(serviceClient)
 
-  const refDataService = new ReferenceDataService(
-    createServiceClient(ServiceConst.ReferenceServiceKey)
-  )
+  const refDataService = new ReferenceDataService(serviceClient)
 
   const openFin = new OpenFin()
 
-  const execService = new ExecutionService(
-    createServiceClient(ServiceConst.ExecutionServiceKey),
-    openFin
-  )
-  const analyticsService = new AnalyticsService(
-    createServiceClient(ServiceConst.AnalyticsServiceKey)
-  )
+  const execService = new ExecutionService(serviceClient, openFin)
+
+  const analyticsService = new AnalyticsService(serviceClient)
 
   const compositeStatusService = new CompositeStatusService(
     connection,

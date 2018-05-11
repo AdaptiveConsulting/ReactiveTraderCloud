@@ -1,6 +1,4 @@
 export { ApplicationStatusConst } from './applicationStatusConst'
-export { ConnectionType } from './connectionType'
-export { ConnectionStatus } from './connectionStatus'
 export { CurrencyPair } from './currencyPair'
 export { CurrencyPairPosition } from './currencyPairPosition'
 export { CurrencyPairUpdate } from './currencyPairUpdate'

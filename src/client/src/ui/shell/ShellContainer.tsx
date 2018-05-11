@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { ConnectionStatus } from '../../types'
+import { ConnectionStatus } from '../../system'
 import { reconnect } from './actions'
 import Shell from './Shell'
 

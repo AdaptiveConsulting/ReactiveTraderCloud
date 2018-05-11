@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions'
 import { combineEpics, ofType } from 'redux-observable'
 import { map, takeLast } from 'rxjs/operators'
 import { CompositeStatusService } from './services'
-import { ConnectionStatus } from './types/'
+import { ConnectionStatus } from './system'
 
 export enum ACTION_TYPES {
   CONNECTION_STATUS_UPDATE = '@ReactiveTraderCloud/CONNECTION_STATUS_UPDATE',

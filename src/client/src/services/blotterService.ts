@@ -1,8 +1,9 @@
 import { asyncScheduler } from 'rxjs'
-import { map, tap } from 'rxjs/operators'
+import { map } from 'rxjs/operators'
 import { logger, RetryPolicy } from '../system'
 import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
 import { ServiceClient } from '../system/service'
+import { ServiceConst } from '../types'
 import { mapFromDto } from './mappers'
 import { RawTradeUpdate } from './mappers/tradeMapper'
 
@@ -14,7 +15,11 @@ export default class BlotterService {
   getTradesStream() {
     log.info('Subscribing to blotter stream')
     return this.serviceClient
-      .createStreamOperation<RawTradeUpdate, {}>('getTradesStream', {})
+      .createStreamOperation<RawTradeUpdate, {}>(
+        ServiceConst.BlotterServiceKey,
+        'getTradesStream',
+        {}
+      )
       .pipe(
         retryWithPolicy(
           RetryPolicy.backoffTo10SecondsMax,

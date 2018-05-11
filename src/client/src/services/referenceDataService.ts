@@ -1,6 +1,12 @@
+import { Observable } from 'rxjs'
 import { map, shareReplay } from 'rxjs/operators'
 import { ServiceClient } from '../system/service'
-import { CurrencyPair, CurrencyPairUpdates, UpdateType } from '../types'
+import {
+  CurrencyPair,
+  CurrencyPairUpdates,
+  ServiceConst,
+  UpdateType
+} from '../types'
 import { referenceDataMapper } from './mappers'
 import { RawCurrencyPairUpdates } from './mappers/referenceDataMapper'
 
@@ -12,6 +18,7 @@ const getReferenceDataStream = (
 ) => {
   const refStream = serviceClient
     .createStreamOperation<RawCurrencyPairUpdates>(
+      ServiceConst.ReferenceServiceKey,
       'getCurrencyPairUpdatesStream',
       {}
     )
@@ -48,13 +55,15 @@ interface CCYCache {
 }
 
 export default class ReferenceDataService {
-  private readonly referenceDataStreamConnectable
+  private readonly referenceDataStreamConnectable: Observable<
+    CurrencyPairUpdates
+  >
   private readonly currencyPairCache: CCYCache = {
     hasLoaded: false,
     ccyPairs: new Map()
   }
 
-  constructor(private readonly serviceClient: ServiceClient) {
+  constructor(serviceClient: ServiceClient) {
     this.referenceDataStreamConnectable = getReferenceDataStream(
       serviceClient,
       updateCache(this.currencyPairCache)

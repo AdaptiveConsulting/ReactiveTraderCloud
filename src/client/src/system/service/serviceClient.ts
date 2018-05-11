@@ -1,16 +1,9 @@
-import { ConnectableObservable, Observable } from 'rxjs'
-import {
-  filter,
-  first,
-  mergeMap,
-  publishReplay,
-  scan,
-  shareReplay,
-  take
-} from 'rxjs/operators'
-import { ServiceConst, ServiceInstanceStatus } from '../../types/'
+import { Observable } from 'rxjs'
+import { filter, first, map, mergeMap } from 'rxjs/operators'
+import { ServiceConst } from '../../types/'
 import logger, { Logger } from '../logger'
 import { Connection } from './connection'
+import { ServiceCollectionMap } from './ServiceInstanceCollection'
 
 /**
  * Abstracts a back end service for which there can be multiple instances.
@@ -20,34 +13,27 @@ import { Connection } from './connection'
 
 export default class ServiceClient {
   private readonly log: Logger
-  private serviceInstanceDictionaryStream: ConnectableObservable<
-    ServiceInstanceStatus
-  >
 
   constructor(
-    private readonly serviceType: ServiceConst,
     private connection: Connection,
-    serviceInstanceDictionaryStream: Observable<ServiceInstanceStatus>
+    private readonly serviceInstanceDictionaryStream: Observable<
+      ServiceCollectionMap
+    >
   ) {
-    this.log = logger.create(`ServiceClient:${serviceType}`)
-    this.serviceType = serviceType
-    this.serviceInstanceDictionaryStream = serviceInstanceDictionaryStream.pipe(
-      filter(x => {
-        return x.serviceType === serviceType
-      }),
-      scan<ServiceInstanceStatus, ServiceInstanceStatus>((acc, next) => {
-        if (next.isConnected && next.serviceLoad < acc.serviceLoad) {
-          return next
-        } else {
-          return acc
-        }
-      }),
-      publishReplay(1)
-    ) as ConnectableObservable<ServiceInstanceStatus>
+    this.log = logger.create(`ServiceClient: Initiated`)
+  }
 
-    this.serviceInstanceDictionaryStream.connect()
-
-    //this.serviceInstanceDictionaryStream.subscribe(x => console.info)
+  private getServiceWithMinLoad$(serviceType: string) {
+    return this.serviceInstanceDictionaryStream.pipe(
+      filter(
+        serviceCollectionMap =>
+          !!serviceCollectionMap.getServiceInstanceWithMinimumLoad(serviceType)
+      ),
+      map(
+        serviceCollectionMap =>
+          serviceCollectionMap.getServiceInstanceWithMinimumLoad(serviceType)!
+      )
+    )
   }
 
   /**
@@ -55,11 +41,13 @@ export default class ServiceClient {
    *
    */
   createRequestResponseOperation<TResponse, TRequest>(
+    service: string,
     operationName: string,
     request: TRequest
   ) {
     this.log.info(`Creating request response operation for [${operationName}]`)
-    return this.serviceInstanceDictionaryStream.pipe(
+
+    return this.getServiceWithMinLoad$(service).pipe(
       first(),
       mergeMap(serviceInstanceStatus => {
         if (serviceInstanceStatus.serviceId !== 'status') {
@@ -87,10 +75,11 @@ export default class ServiceClient {
    * Gets a request-responses observable that will act against a service which currently has the min load
    */
   createStreamOperation<TResponse, TRequest = {}>(
+    service: ServiceConst,
     operationName: string,
     request: TRequest
   ) {
-    return this.serviceInstanceDictionaryStream.pipe(
+    return this.getServiceWithMinLoad$(service).pipe(
       first(),
       mergeMap(serviceInstanceStatus => {
         // The backend has a different contract for streams (i.e. request-> n responses) as it does with request-response (request->single response) thus
@@ -105,7 +94,7 @@ export default class ServiceClient {
         // request-response and stream operations as is currently the case.
         // tslint:disable-next-line:no-bitwise
 
-        const topicName = `topic_${this.serviceType}_${
+        const topicName = `topic_${service}_${
           // tslint:disable-next-line:no-bitwise
           ((Math.random() * Math.pow(36, 8)) << 0).toString(36)
         }`

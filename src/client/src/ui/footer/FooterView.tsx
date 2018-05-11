@@ -4,8 +4,8 @@ import * as React from 'react'
 import { StatusIndicator } from './StatusIndicator'
 
 import { Connections } from '../../connectionStatusOperations'
-import { ApplicationStatusConst, ConnectionType } from '../../types'
-import { ConnectionStatus, ServiceStatus } from '../../types/'
+import { ConnectionStatus, ConnectionType } from '../../system'
+import { ApplicationStatusConst, ServiceStatus } from '../../types'
 
 export interface Services {
   pricing: ServiceStatus

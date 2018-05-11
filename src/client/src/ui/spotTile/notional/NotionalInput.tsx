@@ -1,8 +1,8 @@
 import * as classnames from 'classnames'
 import * as numeral from 'numeral'
 import * as React from 'react'
-import { utils } from '../../../system'
 import { CurrencyPair } from '../../../types'
+import * as utils from './utils'
 
 const NUMERAL_FORMAT = '0,000,000[.]00'
 const DOT = '.'
@@ -28,6 +28,7 @@ export default class NotionalInput extends React.Component<
 > {
   props: NotionalInputProps
   refs: any
+
   shouldComponentUpdate(nextProps: any, nextState: any) {
     return (
       this.props.className !== nextProps.className ||
