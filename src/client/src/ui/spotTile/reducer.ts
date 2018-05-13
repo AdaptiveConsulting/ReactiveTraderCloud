@@ -28,7 +28,7 @@ export const spotTileDataReducer = (state: any = {}, action) => {
       })
 
     case ACTION_TYPES.TRADE_EXECUTED:
-      const symbol = payload.trade.symbol || payload.trade.CurrencyPair
+      const symbol = payload.request.CurrencyPair
       return updateSpotTile(state, symbol, {
         hasError: payload.hasError,
         isTradeExecutionInFlight: false,

@@ -90,7 +90,7 @@ export function spotTileEpicsCreator(
       }),
       delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
       map((action: any) => ({
-        symbol: action.payload.trade.CurrencyPair || action.payload.trade.symbol
+        symbol: action.payload.request.CurrencyPair
       })),
       map(dismissNotification)
     )

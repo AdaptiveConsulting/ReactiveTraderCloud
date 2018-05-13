@@ -33,14 +33,16 @@ export function createConnection$(
     })
 
     autobahn.onclose((reason, details) => {
-      log.error(`Connection lost, reason: [${reason}]`)
-      log.error(`Connection lost, details: [${JSON.stringify(details)}]`)
-
-      obs.error({
-        type: ConnectionEventType.DISCONNECTED,
-        reason,
-        details: details.message
-      })
+      if (reason === 'closed') {
+        log.warn('Connection closed')
+      } else {
+        log.error(`Connection lost, details: [${JSON.stringify(details)}]`)
+        obs.error({
+          type: ConnectionEventType.DISCONNECTED,
+          reason,
+          details: details.message
+        })
+      }
     })
 
     autobahn.open()

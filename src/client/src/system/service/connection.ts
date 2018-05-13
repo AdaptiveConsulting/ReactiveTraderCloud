@@ -67,10 +67,6 @@ export class Connection {
       shareReplay(1)
     )
 
-    timer(Connection.DISCONNECT_SESSION_AFTER).subscribe(() => {
-      this.autobahn.close()
-    })
-
     this.connectionStatusSubject = this.connectionStream.pipe(
       map(x => {
         if (x.type === ConnectionEventType.CONNECTED) {
@@ -87,15 +83,21 @@ export class Connection {
       refCount()
     )
 
-    this.connectionStream.subscribe(connectionEvent => {
-      if (connectionEvent.type === ConnectionEventType.CONNECTED) {
-        this.connectionUrl = this.autobahn.getConnection().transport.info.url
-        this.connectionType = this.autobahn.getConnection().transport.info.type
-      } else {
+    this.connectionStream.subscribe(
+      connectionEvent => {
+        if (connectionEvent.type === ConnectionEventType.CONNECTED) {
+          this.connectionUrl = this.autobahn.getConnection().transport.info.url
+          this.connectionType = this.autobahn.getConnection().transport.info.type
+        } else {
+          this.connectionUrl = ''
+          this.connectionType = ConnectionType.Unknown
+        }
+      },
+      err => {
         this.connectionUrl = ''
         this.connectionType = ConnectionType.Unknown
       }
-    })
+    )
   }
 
   static DISCONNECT_SESSION_AFTER = 1000 * 60 * 15
@@ -172,11 +174,12 @@ export class Connection {
               )
 
             return () => {
+              log.info(`Tearing down topic ${topic}`)
               if (!subscription) {
                 return
               }
               try {
-                if (session) {
+                if (session && session.isOpen()) {
                   session
                     .unsubscribe(subscription)
                     .then(
@@ -239,12 +242,5 @@ export class Connection {
           })
       )
     )
-  }
-
-  startAutoDisconnectTimer() {
-    return timer(Connection.DISCONNECT_SESSION_AFTER).subscribe(() => {
-      log.debug('Auto disconnect timeout elapsed')
-      this.disconnect()
-    })
   }
 }
