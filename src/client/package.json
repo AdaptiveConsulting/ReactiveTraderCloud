@@ -38,7 +38,6 @@
     "analyze": "source-map-explorer build/static/js/main.*",
     "precommit": "lint-staged"
   },
-
   "license": "MIT",
   "lint-staged": {
     "src/**/*.{ts,tsx,json,scss}": [
@@ -83,6 +82,7 @@
     "redux-persist-crosstab": "3.7.0",
     "reselect": "3.0.1",
     "rxjs": "beta",
+    "rxjs-spy": "^7.0.1",
     "ua-parser-js": "0.7.10",
     "ws": "0.8.1"
   },

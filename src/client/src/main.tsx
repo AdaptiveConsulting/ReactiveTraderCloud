@@ -8,19 +8,25 @@ import createConnection from './system/service/connection'
 import { ServiceConst, User } from './types'
 import { OpenFinProvider, ShellContainer } from './ui/shell'
 
-import { shareReplay } from 'rxjs/operators'
+import { timer } from 'rxjs'
+import { publishReplay, refCount, shareReplay } from 'rxjs/operators'
 import configureStore from './configureStore'
+import { connect, disconnect } from './connectionActions'
 import {
   AnalyticsService,
   BlotterService,
   CompositeStatusService,
+  ConnectionStatusService,
   ExecutionService,
   FakeUserRepository,
   PricingService,
   ReferenceDataService
 } from './services'
+import { logger } from './system'
 import { ServiceClient } from './system/service'
 import { serviceInstanceDictionaryStream$ } from './system/service/serviceStatusStream'
+
+const log = logger.create('Application Service')
 
 // When the application is run in openfin then 'fin' will be registered on the global window object.
 declare const window: any
@@ -40,24 +46,15 @@ const connectSocket = () => {
 }
 
 const HEARTBEAT_TIMEOUT = 3000
+const APPLICATION_DISCONNECT = 15 * 60 * 1000
 
 const appBootstrapper = () => {
-  // const createLogger = (name: string) => {
-  //   return {
-  //     next: x => console.log(`${name}: next `, x),
-  //     error: x => console.error(`${name}: error `, x),
-  //     complete: () => console.log(`${name}: complete `)
-  //   }
-  // }
-
   const connection = connectSocket()
 
   const serviceStatus$ = serviceInstanceDictionaryStream$(
     connection,
     HEARTBEAT_TIMEOUT
-  ).pipe(shareReplay(1))
-
-  //serviceStatus$.subscribe(createLogger('serviceStatus'))
+  ).pipe(publishReplay(1), refCount())
 
   const serviceClient = new ServiceClient(connection, serviceStatus$)
 
@@ -73,20 +70,11 @@ const appBootstrapper = () => {
 
   const analyticsService = new AnalyticsService(serviceClient)
 
-  const compositeStatusService = new CompositeStatusService(
-    connection,
-    serviceStatus$
-  )
+  const compositeStatusService = new CompositeStatusService(serviceStatus$)
+
+  const connectionStatusService = new ConnectionStatusService(connection)
 
   const isRunningInFinsemble = window.FSBL
-
-  // const s = merge(
-  //   connection.connectionStream,
-  //   serviceStatus$,
-  //   blotterService.getTradesStream(),
-  //   refDataService.getCurrencyPairUpdatesStream(),
-  //   analyticsService.getAnalyticsStream('USD')
-  // ).subscribe(log)
 
   const store = configureStore(
     refDataService,
@@ -94,6 +82,7 @@ const appBootstrapper = () => {
     pricingService,
     analyticsService,
     compositeStatusService,
+    connectionStatusService,
     execService,
     openFin
   )
@@ -109,6 +98,15 @@ const appBootstrapper = () => {
     </Provider>,
     document.getElementById('root')
   )
+
+  store.dispatch(connect())
+
+  const applicationTimeout = timer(APPLICATION_DISCONNECT).subscribe(() => {
+    store.dispatch(disconnect())
+    log.warn(
+      `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`
+    )
+  })
 }
 
 const runBootstrapper = location.pathname === '/' && location.hash.length === 0

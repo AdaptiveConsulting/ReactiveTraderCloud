@@ -20,6 +20,7 @@ const epicMiddleware = (
   pricingService,
   analyticsService,
   compositeStatusService,
+  connectionStatusService,
   executionService,
   openFin
 ) =>
@@ -30,7 +31,7 @@ const epicMiddleware = (
       pricingServiceEpic(pricingService, openFin, referenceDataService),
       analyticsServiceEpic(analyticsService, openFin),
       compositeStatusServiceEpic(compositeStatusService),
-      connectionStatusEpicsCreator(compositeStatusService),
+      connectionStatusEpicsCreator(connectionStatusService),
       spotTileEpicsCreator(executionService, referenceDataService, openFin),
       popoutEpic(),
       footerEpic(openFin)
@@ -43,6 +44,7 @@ export default function configureStore(
   pricingService,
   analyticsService,
   compositeStatusService,
+  connectionStatusService,
   executionService,
   openFin
 ) {
@@ -52,6 +54,7 @@ export default function configureStore(
     pricingService,
     analyticsService,
     compositeStatusService,
+    connectionStatusService,
     executionService,
     openFin
   )

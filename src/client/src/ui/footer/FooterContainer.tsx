@@ -2,14 +2,14 @@ import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
-import { Connections } from '../../connectionStatusOperations'
+import { ConnectionInfo } from '../../services/connectionStatusService'
 import { toggleStatusServices } from './FooterOperations'
 import FooterView, { Services } from './FooterView'
 
 interface FooterContainerStateProps {
   compositeStatusService: Services
   displayStatusServices: boolean
-  connectionStatus: Connections
+  connectionStatus: ConnectionInfo
 }
 
 interface FooterContainerDispatchProps {

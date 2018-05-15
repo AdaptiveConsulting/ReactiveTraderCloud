@@ -1,5 +1,6 @@
 import { buildNotification } from '../notification/notificationUtils'
 import { ACTION_TYPES } from './actions'
+import { DISCONNECT_SERVICES } from '../../connectionActions'
 
 const updateSpotTile = (state, symbol, value) => {
   return {
@@ -37,7 +38,8 @@ export const spotTileDataReducer = (state: any = {}, action) => {
 
     case ACTION_TYPES.DISMISS_NOTIFICATION:
       return updateSpotTile(state, payload.symbol, { notification: null })
-
+    case DISCONNECT_SERVICES:
+      return {}
     default:
       return state
   }

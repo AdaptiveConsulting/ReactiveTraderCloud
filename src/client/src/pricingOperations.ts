@@ -1,20 +1,25 @@
 import * as _ from 'lodash'
 import * as keyBy from 'lodash.keyby'
-import { createAction } from 'redux-actions'
+import { Action, createAction } from 'redux-actions'
 import { combineEpics, ofType } from 'redux-observable'
 import { from as observableFrom } from 'rxjs'
 import {
   debounceTime,
+  filter,
   map,
+  mapTo,
   mergeMap,
   scan,
   takeLast,
+  takeUntil,
   tap
 } from 'rxjs/operators'
+import { DISCONNECT_SERVICES } from './connectionActions'
 import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataOperations'
 import { PricingService, ReferenceDataService } from './services'
 import { OpenFin } from './services/openFin'
 import { PriceMovementTypes, SpotPriceTick } from './types'
+import { CurrencyPair } from './types/currencyPair'
 import { buildNotification } from './ui/notification/notificationUtils'
 
 export enum ACTION_TYPES {
@@ -45,12 +50,14 @@ const reducePrices = (
   }
 }
 
-const getSymbol = (currency): string => currency.currencyPair.symbol
-const getSymbols = (action): string[] =>
-  action.payload.currencyPairUpdates.map(getSymbol)
 // returns a stream that emits an array containing the currencyPairSymbols like this: `["EURUSD", ...]`
 const getSymbolArray$ = action$ =>
-  action$.pipe(ofType(REF_ACTION_TYPES.REFERENCE_SERVICE), map(getSymbols))
+  action$.pipe(
+    ofType(REF_ACTION_TYPES.REFERENCE_SERVICE),
+    map((x: Action<Map<string, CurrencyPair>>) => {
+      return Array.from(x.payload.values()).map((y: any) => y.symbol)
+    })
+  )
 // returns a stream that emits each currencyPairSymbol individually. Example: `EURUSD`
 const getSymbol$ = action$ =>
   getSymbolArray$(action$).pipe(
@@ -59,15 +66,6 @@ const getSymbol$ = action$ =>
 
 const publishPriceToOpenFin = (openFin: OpenFin) => price =>
   openFin.publishPrice(price)
-const addRatePrecisionToPrice = (
-  referenceDataService: ReferenceDataService
-) => price => {
-  return {
-    ...price,
-    ratePrecision: referenceDataService.getCurrencyPair(price.symbol)
-      .ratePrecision
-  }
-}
 
 // Creates a stream that only start emitting new prices after `REFERENCE_SERVICE` action is received.
 // Also only emits for symbols specified in `REFERENCE_SERVICE`.
@@ -81,7 +79,9 @@ const priceForReferenceServiceSymbols$ = (
       // get a new price stream for that symbol
       .pipe(
         mergeMap((symbol: any) =>
-          pricingService$.getSpotPriceStream({ symbol })
+          pricingService$
+            .getSpotPriceStream({ symbol })
+            .pipe(takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES))))
         )
       )
   )
@@ -99,19 +99,31 @@ export const pricingServiceEpic = (
       mergeMap((symbol: string) =>
         pricingService$
           .getSpotPriceStream({ symbol })
-          .pipe(debounceTime(MS_FOR_LAST_PRICE_TO_BECOME_STALE))
-      ),
-      // when debounces, it creates an action
-      map(createStalePriceAction)
+          .pipe(
+            debounceTime(MS_FOR_LAST_PRICE_TO_BECOME_STALE),
+            map(createStalePriceAction),
+            takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+          )
+      )
     )
+  }
+
+  const addRatePrecisionToPrice = (
+    currencyData: Map<string, CurrencyPair>
+  ) => price => {
+    return {
+      ...price,
+      ratePrecision: currencyData.get(price.symbol).ratePrecision
+    }
   }
 
   const publishPriceToOpenFinEpic = action$ => {
     return priceForReferenceServiceSymbols$(action$, pricingService$).pipe(
-      map(addRatePrecisionToPrice(referenceDataService)),
-      tap(publishPriceToOpenFin(openFin)),
-      // Hack to never emit any actions, because we don't need any action.
-      takeLast(1)
+      mergeMap(x =>
+        referenceDataService
+          .getCurrencyPairUpdatesStream()
+          .pipe(map(currencyMap => addRatePrecisionToPrice(currencyMap)))
+      )
     )
   }
 
@@ -122,11 +134,7 @@ export const pricingServiceEpic = (
     )
   }
 
-  return combineEpics(
-    updatePricesEpic,
-    stalePriceEpic,
-    publishPriceToOpenFinEpic
-  )
+  return combineEpics(updatePricesEpic, updatePricesEpic, stalePriceEpic)
 }
 
 // Reducer Logic

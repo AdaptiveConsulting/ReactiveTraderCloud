@@ -1,5 +1,7 @@
 import { createAction } from 'redux-actions'
-import { map } from 'rxjs/operators'
+import { ofType } from 'redux-observable'
+import { map, switchMapTo, takeUntil } from 'rxjs/operators'
+import { CONNECT_SERVICES, DISCONNECT_SERVICES } from './connectionActions'
 import { ReferenceDataService } from './services'
 
 export enum ACTION_TYPES {
@@ -12,8 +14,16 @@ export const createReferenceServiceAction = createAction(
 
 export const referenceServiceEpic = (
   refService$: ReferenceDataService
-) => () => {
-  return refService$
-    .getCurrencyPairUpdatesStream()
-    .pipe(map(createReferenceServiceAction))
+) => action$ => {
+  return action$.pipe(
+    ofType(CONNECT_SERVICES),
+    switchMapTo(
+      refService$
+        .getCurrencyPairUpdatesStream()
+        .pipe(
+          map(createReferenceServiceAction),
+          takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+        )
+    )
+  )
 }

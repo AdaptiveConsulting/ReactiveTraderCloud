@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs'
-import { filter, first, map, mergeMap } from 'rxjs/operators'
+import { filter, first, map, mergeMap, switchMap, take } from 'rxjs/operators'
 import { ServiceConst } from '../../types/'
 import logger, { Logger } from '../logger'
 import { Connection } from './connection'
@@ -48,8 +48,8 @@ export default class ServiceClient {
     this.log.info(`Creating request response operation for [${operationName}]`)
 
     return this.getServiceWithMinLoad$(service).pipe(
-      first(),
-      mergeMap(serviceInstanceStatus => {
+      take(1),
+      switchMap(serviceInstanceStatus => {
         if (serviceInstanceStatus.serviceId !== 'status') {
           this.log.info(
             `Will use service instance [${
@@ -80,8 +80,8 @@ export default class ServiceClient {
     request: TRequest
   ) {
     return this.getServiceWithMinLoad$(service).pipe(
-      first(),
-      mergeMap(serviceInstanceStatus => {
+      take(1),
+      switchMap(serviceInstanceStatus => {
         // The backend has a different contract for streams (i.e. request-> n responses) as it does with request-response (request->single response) thus
         // the different method here to support this.
         // It works like this: client creates a temp topic, we perform a RPC to then tell the backend to push to this topic.
@@ -119,14 +119,16 @@ export default class ServiceClient {
               this.log.info(
                 `Subscribed to ${topic}, requesting ${remoteProcedure}`
               )
-              this.connection
+              const req = this.connection
                 .requestResponse<TResponse, {}>(
                   remoteProcedure,
                   request,
                   topicName
                 )
+                .pipe(take(1))
                 .subscribe(ack => {
                   this.log.info(`request acknowledged for ${remoteProcedure}`)
+                  req.unsubscribe()
                 })
             }
           }

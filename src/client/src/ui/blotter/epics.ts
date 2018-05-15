@@ -1,4 +1,6 @@
-import { map, tap } from 'rxjs/operators'
+import { ofType } from 'redux-observable'
+import { map, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { CONNECT_SERVICES, DISCONNECT_SERVICES } from '../../connectionActions'
 import { BlotterService } from '../../services'
 import { OpenFin } from '../../services/openFin'
 import { CurrencyPair, Trade } from '../../types'
@@ -16,13 +18,18 @@ const subscribeOpenFinToBlotterData = (openFin, store) => () => {
 export const blotterServiceEpic = (
   blotterService$: BlotterService,
   openFin: OpenFin
-) => (action$, store) => {
-  return blotterService$
-    .getTradesStream()
-    .pipe(
-      map(createNewTradesAction),
-      tap(subscribeOpenFinToBlotterData(openFin, store))
+) => (action$, store) =>
+  action$.pipe(
+    ofType(CONNECT_SERVICES),
+    switchMapTo(
+      blotterService$
+        .getTradesStream()
+        .pipe(
+          map(createNewTradesAction),
+          tap(subscribeOpenFinToBlotterData(openFin, store)),
+          takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+        )
     )
-}
+  )
 
 export default blotterServiceEpic

@@ -1,4 +1,3 @@
-import * as _ from 'lodash'
 import * as moment from 'moment'
 import * as numeral from 'numeral'
 import { Observable, Subscription } from 'rxjs'
@@ -164,7 +163,7 @@ export default class OpenFin {
     return new Promise((resolve, reject) => {
       const chartIqAppId = 'ChartIQ'
       fin.desktop.System.getAllApplications(apps => {
-        const chartIqApp = _.find(apps, (app: any) => {
+        const chartIqApp = apps.find((app: any) => {
           return app.isRunning && app.uuid === chartIqAppId
         })
         if (chartIqApp) {

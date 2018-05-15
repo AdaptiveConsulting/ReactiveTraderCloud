@@ -1,13 +1,15 @@
 import * as _ from 'lodash'
 import { combineEpics, ofType } from 'redux-observable'
 import { bindCallback, from as observableFrom } from 'rxjs'
-import { delay, filter, map, mergeMap, tap } from 'rxjs/operators'
+import { delay, filter, map, mergeMap, takeUntil, tap } from 'rxjs/operators'
+import { DISCONNECT_SERVICES } from '../../connectionActions'
 import { ACTION_TYPES as PRICING_ACTION_TYPES } from '../../pricingOperations'
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
 import { ExecutionService, ReferenceDataService } from '../../services'
 import { OpenFin } from '../../services/openFin'
 import { Direction } from '../../types'
 import { SpotPrice } from '../../types/spotPrice'
+import { CurrencyPair } from './../../types/currencyPair'
 import {
   ACTION_TYPES as SPOT_TILE_ACTION_TYPES,
   currencyChartOpened,
@@ -25,14 +27,13 @@ interface SpotPrices {
 
 const extractPayload = action => action.payload
 const addCurrencyPairToSpotPrices = (
-  referenceDataService: ReferenceDataService
+  referenceData: Map<string, CurrencyPair>
 ) => (spotPrices: SpotPrices): SpotPrices => {
   return _.mapValues(spotPrices, (spotPrice: SpotPrice) => {
     return {
       ...spotPrice,
       currencyPair:
-        spotPrice.currencyPair ||
-        referenceDataService.getCurrencyPair(spotPrice.symbol)
+        spotPrice.currencyPair || referenceData.get(spotPrice.symbol)
     }
   })
 }
@@ -58,8 +59,15 @@ export function spotTileEpicsCreator(
     return action$.pipe(
       ofType(PRICING_ACTION_TYPES.SPOT_PRICES_UPDATE),
       map(extractPayload),
-      map(addCurrencyPairToSpotPrices(referenceDataService)),
-      map(updateTiles)
+      mergeMap(x =>
+        referenceDataService
+          .getCurrencyPairUpdatesStream()
+          .pipe(
+            map(currencyMap => addCurrencyPairToSpotPrices(currencyMap)),
+            map(updateTiles),
+            takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+          )
+      )
     )
   }
 

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
+import { connect as reconnect } from '../../connectionActions'
 import { ConnectionStatus } from '../../system'
-import { reconnect } from './actions'
 import Shell from './Shell'
 
 function mapStateToProps(state: any) {
   const { connectionStatus, regionsService } = state
   const sessionExpired =
-    connectionStatus.connection === ConnectionStatus.sessionExpired
+    connectionStatus.status === ConnectionStatus.sessionExpired
 
   // show splitter at the initialisation step (blotter not added to the state yet) or if it isn't teared off
   const showSplitter =

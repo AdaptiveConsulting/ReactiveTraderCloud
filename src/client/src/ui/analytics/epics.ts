@@ -1,9 +1,10 @@
 import { ofType } from 'redux-observable'
-import { map, mergeMapTo, tap } from 'rxjs/operators'
+import { map, mergeMapTo, takeUntil, tap } from 'rxjs/operators'
 import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
 import { AnalyticsService } from '../../services'
 import { OpenFin } from '../../services/openFin'
 import { PositionUpdates } from '../../types'
+import { DISCONNECT_SERVICES } from './../../connectionActions'
 import { fetchAnalytics } from './actions'
 
 const CURRENCY: string = 'USD'
@@ -14,11 +15,17 @@ export const analyticsServiceEpic = (
 ) => action$ => {
   return action$.pipe(
     ofType(REF_ACTION_TYPES.REFERENCE_SERVICE),
-    mergeMapTo(analyticsService$.getAnalyticsStream(CURRENCY)),
-    tap((action: PositionUpdates) =>
-      openFin.publishCurrentPositions(action.currentPositions)
-    ),
-    map(fetchAnalytics)
+    mergeMapTo(
+      analyticsService$
+        .getAnalyticsStream(CURRENCY)
+        .pipe(
+          tap((action: PositionUpdates) =>
+            openFin.publishCurrentPositions(action.currentPositions)
+          ),
+          map(fetchAnalytics),
+          takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+        )
+    )
   )
 }
 
