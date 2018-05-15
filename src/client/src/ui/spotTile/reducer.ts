@@ -1,6 +1,6 @@
+import { DISCONNECT_SERVICES } from '../../connectionActions'
 import { buildNotification } from '../notification/notificationUtils'
 import { ACTION_TYPES } from './actions'
-import { DISCONNECT_SERVICES } from '../../connectionActions'
 
 const updateSpotTile = (state, symbol, value) => {
   return {
