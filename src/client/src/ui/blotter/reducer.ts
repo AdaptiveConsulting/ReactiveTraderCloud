@@ -1,4 +1,5 @@
 import * as keyBy from 'lodash.keyby'
+import { DISCONNECT_SERVICES } from '../../connectionActions'
 import { RegionSettings, Trade } from '../../types/index'
 import { ACTION_TYPES } from './actions'
 
@@ -37,6 +38,8 @@ export const blotterServiceReducer = (
           ...newTradesById
         }
       }
+    case DISCONNECT_SERVICES:
+      return initialState
     default:
       return state
   }

@@ -1,7 +1,6 @@
-import * as utils from './utils'
-
-export { utils }
 export { default as logger } from './logger'
 export { default as RetryPolicy } from './observableExtensions/retryPolicy'
-export { default as Guard } from './guard'
 export { default as Environment } from './environment'
+export { ConnectionStatus } from './service/connectionStatus'
+export { ConnectionType } from './service/connectionType'
+export { Connection } from './service/connection'

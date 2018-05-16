@@ -23,7 +23,10 @@
     "comment-format": false,
     "ban-types": false,
     "no-var-requires": false,
-    "max-classes-per-file": [false, 1]
+    "max-classes-per-file": [
+      false,
+      1
+    ]
   },
   "defaultSeverity": "warning",
   "linterOptions": {

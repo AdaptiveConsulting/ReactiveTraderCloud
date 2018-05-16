@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs/Rx'
-import { Scheduler } from 'rxjs/Scheduler'
+import { Observable } from 'rxjs'
 import logger from '../logger'
 import { SerialSubscription } from '../serialSubscription'
 import { Retry, ShouldRetryResult } from './retryPolicy'
@@ -9,7 +8,7 @@ const log = logger.create('RetryPolicy')
 export function retryWithPolicy<TValue>(
   retryPolicy: Retry,
   operationDescription: string,
-  scheduler: Scheduler,
+  scheduler: any,
   onErrorCallback?: (err: Error, willRetry: boolean) => void
 ): (source: Observable<TValue>) => Observable<TValue> {
   return source =>

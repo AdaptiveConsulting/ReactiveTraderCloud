@@ -19,7 +19,7 @@ export default class AnalyticsBarChart extends React.Component<
 
   createBars() {
     const { isPnL, chartData } = this.props
-    const baseValues: any[] = _.map(chartData, 'basePnl')
+    const baseValues: any[] = chartData.map(x => x.basePnl)
     const maxValue: number = _.max(baseValues)
     const minValue: number = _.min(baseValues)
     const maxWidth = Math.max(Math.abs(maxValue), Math.abs(minValue))

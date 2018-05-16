@@ -1,24 +1,20 @@
-import * as _ from 'lodash'
 import * as moment from 'moment'
 import * as numeral from 'numeral'
-import { Observable, Subject, Subscription } from 'rxjs/Rx'
-import PositionsMapper from '../../services/mappers/positionsMapper'
+import { Observable, Subscription } from 'rxjs'
+import PositionsMapper from '../mappers/positionsMapper'
+
+import logger from '../../system/logger'
 import { CurrencyPair, Trade } from '../../types'
-import logger from '../logger'
 
 const log = logger.create('OpenFin')
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'
 
 export default class OpenFin {
-  tradeClickedSubject
-  limitCheckSubscriber: string
-  limitCheckId
+  private limitCheckSubscriber: string | null = null
+  private limitCheckId: number = 1
 
   constructor() {
-    this.tradeClickedSubject = new Subject()
-    this.limitCheckId = 1
-    this.limitCheckSubscriber = null
     if (this.isRunningInOpenFin) {
       this.initializeLimitChecker()
     }
@@ -28,7 +24,7 @@ export default class OpenFin {
     return typeof fin !== 'undefined'
   }
 
-  close(currentWindow = this.currentWindow) {
+  close(currentWindow: fin.OpenFinWindow = this.currentWindow) {
     currentWindow.close(
       true,
       () => log.info('Window closed with success.'),
@@ -36,14 +32,14 @@ export default class OpenFin {
     )
   }
 
-  minimize(currentWindow = this.currentWindow) {
+  minimize(currentWindow: fin.OpenFinWindow = this.currentWindow) {
     currentWindow.minimize(
       () => log.info('Window minimized with success.'),
       err => log.error('Failed to minimize window.', err)
     )
   }
 
-  maximize(currentWindow = this.currentWindow) {
+  maximize(currentWindow: fin.OpenFinWindow = this.currentWindow) {
     currentWindow.getState(state => {
       switch (state) {
         case 'maximized':
@@ -67,7 +63,7 @@ export default class OpenFin {
     })
   }
 
-  bringToFront(currentWindow = this.currentWindow) {
+  bringToFront(currentWindow: fin.OpenFinWindow = this.currentWindow) {
     currentWindow.getState(state => {
       if (state === 'minimized') {
         currentWindow.restore(
@@ -87,7 +83,7 @@ export default class OpenFin {
     })
   }
 
-  addSubscription(name, callback) {
+  addSubscription(name: string, callback: (msg: any, uuid: any) => void) {
     if (!this.isRunningInOpenFin) {
       return
     }
@@ -167,7 +163,7 @@ export default class OpenFin {
     return new Promise((resolve, reject) => {
       const chartIqAppId = 'ChartIQ'
       fin.desktop.System.getAllApplications(apps => {
-        const chartIqApp = _.find(apps, (app: any) => {
+        const chartIqApp = apps.find((app: any) => {
           return app.isRunning && app.uuid === chartIqAppId
         })
         if (chartIqApp) {
@@ -306,14 +302,14 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', parsed)
   }
 
-  sendPositionClosedNotification(uuid, correlationId) {
+  sendPositionClosedNotification(uuid: string, correlationId: string) {
     if (!this.isRunningInOpenFin) {
       return
     }
     fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId)
   }
 
-  openLink(url) {
+  openLink(url: string) {
     fin.desktop.System.openUrlWithBrowser(url)
   }
 }

@@ -6,6 +6,6 @@ import { ServiceInstanceStatus } from '.'
 
 export interface ServiceStatus {
   serviceType: string
-  instanceStatuses: ServiceInstanceStatus[]
+  instanceStatuses: Map<string, ServiceInstanceStatus>
   isConnected: boolean
 }

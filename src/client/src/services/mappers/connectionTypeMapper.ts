@@ -1,4 +1,4 @@
-import { ConnectionType } from '../../types'
+import { ConnectionType } from '../../system'
 
 const lookup = {
   websocket: ConnectionType.WebSocket,

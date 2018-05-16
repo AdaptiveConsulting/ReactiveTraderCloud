@@ -1,5 +1,4 @@
 import * as AgGrid from 'ag-grid'
-import * as _ from 'lodash'
 import * as React from 'react'
 
 interface AppliedFiltersProps {
@@ -22,8 +21,7 @@ export default class AppliedFilters extends React.Component<
   private getAppliedFilters() {
     let filterElements = []
     if (this.props.filterModel && this.props.columnDefinitions) {
-      const filteredColDefs = _.filter(
-        this.props.columnDefinitions,
+      const filteredColDefs = this.props.columnDefinitions.filter(
         (colDef: any) => {
           return this.props.filterModel.hasOwnProperty(colDef.field)
         }

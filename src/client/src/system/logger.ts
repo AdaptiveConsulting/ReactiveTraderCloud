@@ -8,10 +8,14 @@ enum levels {
 
 type SEVERITY = 'info' | 'warn' | 'error' | 'debug'
 
-let currentLevel = levels.warn
+let currentLevel = levels.verbose
 
 let sink = (logEvent: LogParams) => {
-  console[logEvent.level].call(null, `${logEvent.logger}:`, logEvent.args)
+  console[logEvent.level].call(
+    null,
+    `${logEvent.logger}:`,
+    ...Array.from(logEvent.args)
+  )
 }
 
 export class Logger {
@@ -70,7 +74,7 @@ export class Logger {
     }
   }
 
-  log(level: SEVERITY, args: object) {
+  log(level: SEVERITY, args: IArguments) {
     sink({
       args,
       level,
@@ -88,7 +92,7 @@ function setLevel(level: levels) {
 }
 
 interface LogParams {
-  args: object
+  args: IArguments
   level: SEVERITY
   logger: string
 }

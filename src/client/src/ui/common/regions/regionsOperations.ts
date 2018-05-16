@@ -1,4 +1,5 @@
 import { createAction } from 'redux-actions'
+import { DISCONNECT_SERVICES } from '../../../connectionActions'
 
 export const ACTION_TYPES = {
   REGION_ADD: '@ReactiveTraderCloud/REGION_ADD',
@@ -38,6 +39,8 @@ export const regionsReducer = (state: any = {}, action) => {
       return changeRegionTearOffStatus(state, action.payload, false)
     case ACTION_TYPES.REGION_TEAROFF_WINDOW:
       return changeRegionTearOffStatus(state, action.payload, true)
+    case DISCONNECT_SERVICES:
+      return {}
     default:
       return state
   }

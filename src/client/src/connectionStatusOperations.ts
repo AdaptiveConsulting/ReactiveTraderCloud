@@ -1,23 +1,20 @@
 import { createAction, handleActions } from 'redux-actions'
-import { combineEpics } from 'redux-observable'
-import { ConnectionStatus } from './types/'
+import { combineEpics, ofType } from 'redux-observable'
+import { map, switchMapTo, takeUntil } from 'rxjs/operators'
+import { CONNECT_SERVICES, DISCONNECT_SERVICES } from './connectionActions'
+import { CompositeStatusService, ConnectionStatusService } from './services'
+import { ConnectionInfo } from './services/connectionStatusService'
+import { ConnectionStatus, ConnectionType } from './system'
 
 export enum ACTION_TYPES {
-  CONNECTION_STATUS_UPDATE = '@ReactiveTraderCloud/CONNECTION_STATUS_UPDATE',
-  RECONNECT = '@ReactiveTraderCloud/RECONNECT'
+  CONNECTION_STATUS_UPDATE = '@ReactiveTraderCloud/CONNECTION_STATUS_UPDATE'
 }
 
-interface State {
-  connection: ConnectionStatus
-  connectionType: string
-  url: string
-}
-
-export type Connections = State
+export type State = ConnectionInfo
 
 const initialState: State = {
-  connection: ConnectionStatus.disconnected,
-  connectionType: '',
+  status: ConnectionStatus.disconnected,
+  transportType: ConnectionType.Unknown,
   url: ''
 }
 
@@ -25,42 +22,32 @@ export const createConnectionStatusUpdateAction = createAction(
   ACTION_TYPES.CONNECTION_STATUS_UPDATE
 )
 
-const connectionStatusToState = compositeStatusService$ => (
-  connectionStatus: ConnectionStatus
-): State => {
-  return {
-    connection: connectionStatus || ConnectionStatus.init,
-    connectionType: compositeStatusService$.connectionType || '',
-    url: compositeStatusService$.connectionUrl || ''
-  }
-}
-
-export function connectionStatusEpicsCreator(compositeStatusService$) {
-  const connectToServices = () => compositeStatusService$.connection.connect()
-
-  const updateConnectionStateEpic = () => {
-    return compositeStatusService$.connectionStatusStream
-      .map(connectionStatusToState(compositeStatusService$))
-      .map(createConnectionStatusUpdateAction)
-  }
-
-  const reconnectEpic = action$ => {
-    return (
-      action$
-        .ofType(ACTION_TYPES.RECONNECT)
-        .do(connectToServices)
-        // Hack to never emit any actions, because we don't need any action.
-        .takeLast()
+export function connectionStatusEpicsCreator(
+  connectionStatusService: ConnectionStatusService
+) {
+  const updateConnectionStateEpic = action$ =>
+    action$.pipe(
+      ofType(CONNECT_SERVICES),
+      switchMapTo(
+        connectionStatusService.connectionStatus$.pipe(
+          map(createConnectionStatusUpdateAction),
+          takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+        )
+      )
     )
-  }
 
-  return combineEpics(updateConnectionStateEpic, reconnectEpic)
+  return combineEpics(updateConnectionStateEpic)
 }
 
 export default handleActions(
   {
     [ACTION_TYPES.CONNECTION_STATUS_UPDATE]: (state: State, action): State =>
-      action.payload
+      action.payload,
+    [DISCONNECT_SERVICES]: (): State => ({
+      status: ConnectionStatus.sessionExpired,
+      transportType: ConnectionType.Unknown,
+      url: ''
+    })
   },
   initialState
 )

@@ -3,9 +3,9 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import { StatusIndicator } from './StatusIndicator'
 
-import { Connections } from '../../connectionStatusOperations'
-import { ApplicationStatusConst, ConnectionType } from '../../types'
-import { ConnectionStatus, ServiceStatus } from '../../types/'
+import { ConnectionInfo } from '../../services/connectionStatusService'
+import { ConnectionStatus, ConnectionType } from '../../system'
+import { ApplicationStatusConst, ServiceStatus } from '../../types'
 
 export interface Services {
   pricing: ServiceStatus
@@ -17,7 +17,7 @@ export interface Services {
 
 interface FooterViewProps {
   compositeStatusService: Services
-  connectionStatus: Connections
+  connectionStatus: ConnectionInfo
   toggleStatusServices: () => void
   displayStatusServices: boolean
   isRunningInOpenFin: boolean
@@ -34,7 +34,7 @@ export const FooterView: React.SFC<FooterViewProps> = (
 
   const panelClasses = classnames('footer__service-status-panel', {
     hide:
-      !isConnected(props.connectionStatus.connection) ||
+      !isConnected(props.connectionStatus.status) ||
       !props.displayStatusServices
   })
 
@@ -42,7 +42,7 @@ export const FooterView: React.SFC<FooterViewProps> = (
     'footer__logo-openfin': props.isRunningInOpenFin
   })
   const footerClasses = classnames('footer', {
-    'footer--disconnected': !isConnected(props.connectionStatus.connection)
+    'footer--disconnected': !isConnected(props.connectionStatus.status)
   })
 
   const openLink = (url: string) => {
@@ -54,9 +54,9 @@ export const FooterView: React.SFC<FooterViewProps> = (
   return (
     <footer className={footerClasses}>
       <span className="footer__connection-url">
-        {isConnected(props.connectionStatus.connection)
+        {isConnected(props.connectionStatus.status)
           ? `Connected to ${props.connectionStatus.url} (${
-              props.connectionStatus.connectionType
+              props.connectionStatus.transportType
             })`
           : 'Disconnected'}{' '}
       </span>
@@ -77,16 +77,16 @@ export const FooterView: React.SFC<FooterViewProps> = (
       >
         <StatusIndicator
           status={getApplicationStatus(
-            props.connectionStatus.connection,
+            props.connectionStatus.status,
             servicesAsList,
-            props.connectionStatus.connectionType
+            props.connectionStatus.transportType
           )}
         />
       </div>
       <div className={panelClasses}>
         <ul className="footer__services">
           <li className="footer__service" key={Math.random()}>
-            {renderBroker(props.connectionStatus.connection)}
+            {renderBroker(props.connectionStatus.status)}
           </li>
           {servicesAsList.map(renderServiceStatus)}
         </ul>

@@ -1,4 +1,6 @@
 import { createAction, handleActions } from 'redux-actions'
+import { ofType } from 'redux-observable'
+import { map } from 'rxjs/operators'
 
 export enum ACTION_TYPES {
   TOGGLE_STATUS_SERVICES = '@ReactiveTraderCloud/TOGGLE_STATUS_SERVICES',
@@ -16,9 +18,10 @@ export const openLinks = createAction(
 const INITIAL_STATE = false
 
 export const footerEpic = openFin => action$ => {
-  return action$
-    .ofType(ACTION_TYPES.OPEN_LINK)
-    .map(action => openLinks(openFin))
+  return action$.pipe(
+    ofType(ACTION_TYPES.OPEN_LINK),
+    map(action => openLinks(openFin))
+  )
 }
 
 export default handleActions(

@@ -1,3 +1,4 @@
+import { DISCONNECT_SERVICES } from '../../connectionActions'
 import { buildNotification } from '../notification/notificationUtils'
 import { ACTION_TYPES } from './actions'
 
@@ -28,7 +29,7 @@ export const spotTileDataReducer = (state: any = {}, action) => {
       })
 
     case ACTION_TYPES.TRADE_EXECUTED:
-      const symbol = payload.trade.symbol || payload.trade.CurrencyPair
+      const symbol = payload.request.CurrencyPair
       return updateSpotTile(state, symbol, {
         hasError: payload.hasError,
         isTradeExecutionInFlight: false,
@@ -37,7 +38,8 @@ export const spotTileDataReducer = (state: any = {}, action) => {
 
     case ACTION_TYPES.DISMISS_NOTIFICATION:
       return updateSpotTile(state, payload.symbol, { notification: null })
-
+    case DISCONNECT_SERVICES:
+      return {}
     default:
       return state
   }

@@ -1,4 +1,4 @@
-import { Connection, Session } from 'autobahn'
+import { Connection } from 'autobahn'
 import { AutobahnConnection } from './AutoBahnConnection'
 import AutobahnSessionProxy from './autobahnSessionProxy'
 
@@ -8,7 +8,7 @@ import AutobahnSessionProxy from './autobahnSessionProxy'
 export default class AutobahnConnectionProxy implements AutobahnConnection {
   public session?: AutobahnSessionProxy
   private readonly connection: Connection
-  private onOpen?: (session: Session) => void
+  private onOpen?: (session: AutobahnSessionProxy) => void
   private onClose?: (
     reason: string,
     details: { reason: string; message: string }
@@ -44,7 +44,7 @@ export default class AutobahnConnectionProxy implements AutobahnConnection {
     this.connection.onopen = session => {
       this.session = new AutobahnSessionProxy(session)
       if (this.onOpen) {
-        this.onOpen(session)
+        this.onOpen(this.session!)
       }
     }
 
@@ -70,7 +70,7 @@ export default class AutobahnConnectionProxy implements AutobahnConnection {
     this.connection.close()
   }
 
-  onopen(callback: (session: Session) => void) {
+  onopen(callback: (session: AutobahnSessionProxy) => void) {
     this.onOpen = callback
   }
 

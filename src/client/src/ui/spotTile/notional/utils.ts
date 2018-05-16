@@ -3,23 +3,6 @@ import { timeFormat, utcFormat } from 'd3-time-format'
 const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/
 
 /**
- * Class mixin E7 style decorator
- * @param source
- * @returns {Function}
- */
-export function mixin(source: any) {
-  return function(target: any) {
-    Object.getOwnPropertyNames(source.prototype).forEach(prop => {
-      Object.defineProperty(
-        target.prototype,
-        prop,
-        Object.getOwnPropertyDescriptor(source.prototype, prop)
-      )
-    })
-  }
-}
-
-/**
  * Returns the expanded price from k/m shorthand.
  * @param {String|Number} notionalShorthand
  * @returns {Number}

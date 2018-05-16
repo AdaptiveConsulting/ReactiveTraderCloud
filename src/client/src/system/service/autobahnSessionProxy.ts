@@ -10,6 +10,9 @@ export default class AutobahnSessionProxy {
     this.session = session
   }
 
+  isOpen() {
+    return this.session.isOpen
+  }
   subscribe<T>(topic: string, onResults: (r: T[]) => void) {
     return this.session.subscribe(topic, onResults)
   }

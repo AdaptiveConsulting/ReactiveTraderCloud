@@ -5,7 +5,6 @@ import * as ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import sizeMe from 'react-sizeme'
 import Environment from '../../system/environment'
-import { CurrencyPair } from '../../types'
 import { addRegion, openWindow } from '../common/regions/regionsOperations'
 import Blotter from './Blotter'
 import { blotterRegionsSettings } from './reducer'
@@ -13,7 +12,6 @@ import { blotterRegionsSettings } from './reducer'
 interface BlotterContainerProps {
   blotterService: any
   isConnected: boolean
-  currencyPairs: CurrencyPair[]
   onPopoutClick: (openFin) => () => void
   onComponentMount: () => void
   size: { width: number; height: number }
@@ -67,13 +65,13 @@ class BlotterContainer extends React.Component<
 }
 
 const mapStateToProps = (state: any) => {
-  const { blotterService, compositeStatusService, currencyPairs } = state
+  const { blotterService, compositeStatusService } = state
   const isConnected =
     (compositeStatusService &&
       compositeStatusService.blotter &&
       compositeStatusService.blotter.isConnected) ||
     false
-  return { blotterService, isConnected, currencyPairs }
+  return { blotterService, isConnected }
 }
 
 const mapDispatchToProps = dispatch => {

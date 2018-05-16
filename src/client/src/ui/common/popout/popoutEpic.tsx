@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import { createAction } from 'redux-actions'
-import { combineEpics } from 'redux-observable'
+import { combineEpics, ofType } from 'redux-observable'
+import { map } from 'rxjs/operators'
 import {
   ACTION_TYPES as TILE_ACTIONS,
   tileUndocked
@@ -28,43 +29,47 @@ const generateView = container => {
 }
 
 function popoutWindowEpic(action$, store) {
-  return action$.ofType(REGIONS_ACTIONS.REGION_OPEN_WINDOW).map(action => {
-    const popoutService = getPopoutService(action.payload.openFin)
-    const { id, container, settings } = action.payload
-    const popoutView = generateView(container)
-    popoutService.openPopout(
-      {
-        id,
-        url: '/#/popout',
-        title: settings.title,
-        onClosing: () => {
-          store.dispatch(popoutClosed(action.payload))
+  return action$.pipe(
+    ofType(REGIONS_ACTIONS.REGION_OPEN_WINDOW),
+    map((action: any) => {
+      const popoutService = getPopoutService(action.payload.openFin)
+      const { id, container, settings } = action.payload
+      const popoutView = generateView(container)
+      popoutService.openPopout(
+        {
+          id,
+          url: '/#/popout',
+          title: settings.title,
+          onClosing: () => {
+            store.dispatch(popoutClosed(action.payload))
+          },
+          windowOptions: {
+            width: settings.width,
+            height: settings.height,
+            minWidth: 100,
+            minHeight: settings.minHeight,
+            resizable: settings.resizable,
+            scrollable: settings.resizable,
+            dockable: settings.dockable
+          }
         },
-        windowOptions: {
-          width: settings.width,
-          height: settings.height,
-          minWidth: 100,
-          minHeight: settings.minHeight,
-          resizable: settings.resizable,
-          scrollable: settings.resizable,
-          dockable: settings.dockable
-        }
-      },
-      popoutView
-    )
-    return popoutOpened(action.payload)
-  })
+        popoutView
+      )
+      return popoutOpened(action.payload)
+    })
+  )
 }
 
 function undockTile(action$) {
-  return action$
-    .ofType(TILE_ACTIONS.UNDOCK_TILE)
-    .map(action => {
+  return action$.pipe(
+    ofType(TILE_ACTIONS.UNDOCK_TILE),
+    map((action: any) => {
       const popoutService = getPopoutService(action.payload.openFin)
       popoutService.undockPopout(action.payload.tileName)
       return action
-    })
-    .map(tileUndocked)
+    }),
+    map(tileUndocked)
+  )
 }
 
 export const popoutEpic = () => {

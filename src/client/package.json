@@ -1,14 +1,9 @@
 {
   "name": "reactive-trader-cloud",
   "version": "2.1.0",
-  "description": "Reactive Trader - Cloud edition. Example reactive currency pair trading app",
-  "keywords": [
-    "react",
-    "fx",
-    "spot",
-    "cloud",
-    "rxjs"
-  ],
+  "description":
+    "Reactive Trader - Cloud edition. Example reactive currency pair trading app",
+  "keywords": ["react", "fx", "spot", "cloud", "rxjs"],
   "authors": [
     {
       "name": "Adaptive Consulting",
@@ -20,8 +15,10 @@
     "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
   },
   "scripts": {
-    "build-css": "node-sass-chokidar --o src/ui/styles/css --source-map true --source-map-contents src/ui/styles/scss",
-    "watch-css": "npm run build-css && node-sass-chokidar --o src/ui/styles/css --source-map true --source-map-contents src/ui/styles/scss --watch --recursive",
+    "build-css":
+      "node-sass-chokidar --o src/ui/styles/css --source-map true --source-map-contents src/ui/styles/scss",
+    "watch-css":
+      "npm run build-css && node-sass-chokidar --o src/ui/styles/css --source-map true --source-map-contents src/ui/styles/scss --watch --recursive",
     "start-js": "react-scripts-ts start",
     "start-all": "npm-run-all -p watch-css start-js",
     "start": "npm run start:cloud",
@@ -40,10 +37,7 @@
   },
   "license": "MIT",
   "lint-staged": {
-    "src/**/*.{ts,tsx,json,scss}": [
-      "prettier --write",
-      "git add"
-    ],
+    "src/**/*.{ts,tsx,json,scss}": ["prettier --write", "git add"],
     "src/**/*.{ts,tsx}": ["tslint --fix", "git add"]
   },
   "dependencies": {
@@ -74,20 +68,19 @@
     "react-split-pane": "0.1.77",
     "redux": "3.7.2",
     "redux-actions": "^2.2.1",
-    "redux-observable": "0.17.0",
+    "redux-observable": "next",
     "redux-persist": "5.6.5",
     "redux-persist-crosstab": "3.7.0",
     "reselect": "3.0.1",
-    "rxjs": "5.5.9",
+    "rxjs": "beta",
+    "rxjs-spy": "^7.0.1",
     "ua-parser-js": "0.7.10",
     "ws": "0.8.1"
   },
   "devDependencies": {
+    "@types/autobahn": "^0.9.38",
     "@types/enzyme": "^3.1.10",
     "@types/enzyme-adapter-react-16": "^1.0.2",
-    "@types/react-test-renderer": "^16.0.1",
-    "@storybook/react": "3.3.11",
-    "@types/autobahn": "^0.9.38",
     "@types/jest": "^22.2.3",
     "@types/karma": "1.7.3",
     "@types/lodash": "4.14.100",
@@ -96,15 +89,12 @@
     "@types/query-string": "^5.1.0",
     "@types/react": "^16.3.11",
     "@types/react-dom": "^16.0.5",
+    "@types/react-test-renderer": "^16.0.1",
     "@types/react-virtualized": "9.7.10",
     "@types/redux-actions": "2.2.3",
-    "@types/storybook__addon-actions": "3.0.1",
-    "@types/storybook__addon-links": "3.0.2",
-    "@types/storybook__react": "3.0.6",
-    "source-map-explorer": "^1.5.0",
     "cross-env": "^5.1.4",
     "husky": "^0.14.3",
-    "lint-staged": "^7.0.5",
+    "lint-staged": "^7.1.0",
     "node-sass-chokidar": "^1.2.2",
     "npm-run-all": "^4.1.2",
     "openfin-cli": "1.1.5",
@@ -112,6 +102,9 @@
     "react-scripts-ts": "2.15.1",
     "react-test-renderer": "^16.3.2",
     "redux-devtools-extension": "2.13.2",
+    "rxjs-compat": "^6.1.0",
+    "rxjs-tslint-rules": "^4.1.1",
+    "source-map-explorer": "^1.5.0",
     "typescript": "^2.8.3"
   }
 }

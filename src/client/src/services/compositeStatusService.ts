@@ -1,53 +1,22 @@
-import { merge } from 'rxjs/observable/merge'
-import { scan, share } from 'rxjs/operators'
-import { Connection } from '../system/service/connection'
-import { ServiceStatus, StatusService } from '../types'
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
+import {
+  ServiceCollectionMap,
+  ServiceConnectionInfo
+} from '../system/service/ServiceInstanceCollection'
 
-export default function compositeStatusService(
-  connection: Connection,
-  services: StatusService[]
-) {
-  const serviceStatusStream = merge(
-    ...services.map(service => service.serviceStatusStream)
-  ).pipe(
-    scan<ServiceStatus, ServiceStatusLookup>(
-      (statusLookup, serviceStatus) =>
-        statusLookup.updateServiceStatus(serviceStatus),
-      new ServiceStatusLookup()
-    ),
-    share<ServiceStatusLookup>()
-  )
+export default class CompositeStatusService {
+  private readonly serviceStatusStream$: Observable<ServiceConnectionInfo>
 
-  return {
-    get connectionStatusStream() {
-      return connection.connectionStatusStream
-    },
-
-    get connection() {
-      return connection
-    },
-
-    get isConnected() {
-      return connection.isConnected
-    },
-
-    get connectionUrl() {
-      return connection.url
-    },
-
-    get connectionType() {
-      return connection.type
-    },
-
-    serviceStatusStream
+  constructor(
+    serviceInstanceDictionaryStream: Observable<ServiceCollectionMap>
+  ) {
+    this.serviceStatusStream$ = serviceInstanceDictionaryStream.pipe(
+      map(serviceCollectionMap => serviceCollectionMap.getStatusOfServices())
+    )
   }
-}
 
-class ServiceStatusLookup {
-  services: { [key: string]: ServiceStatus } = {}
-
-  updateServiceStatus(serviceStatus: ServiceStatus) {
-    this.services[serviceStatus.serviceType] = serviceStatus
-    return this
+  get serviceStatusStream() {
+    return this.serviceStatusStream$
   }
 }

@@ -1,7 +1,8 @@
-import * as _ from 'lodash'
 import { createAction, handleActions } from 'redux-actions'
-import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataOperations'
-import { ServiceInstanceStatus, ServiceStatus } from './types/index'
+import { ofType } from 'redux-observable'
+import { map, switchMapTo, takeUntil } from 'rxjs/operators'
+import { CONNECT_SERVICES, DISCONNECT_SERVICES } from './connectionActions'
+import { CompositeStatusService } from './services'
 
 export enum ACTION_TYPES {
   COMPOSITE_STATUS_SERVICE = '@ReactiveTraderCloud/COMPOSITE_STATUS_SERVICE'
@@ -11,37 +12,23 @@ export const createCompositeStatusServiceAction = createAction(
   ACTION_TYPES.COMPOSITE_STATUS_SERVICE
 )
 
-export const compositeStatusServiceEpic = compositeStatusService$ => action$ => {
-  // On init
-  return (
-    action$
-      .ofType(REF_ACTION_TYPES.REFERENCE_SERVICE)
-      // start listening to the serviceStatusStream
-      .flatMapTo(compositeStatusService$.serviceStatusStream)
-      // for each service status
-      .map(service => getServiceStatus(service))
-      .map(createCompositeStatusServiceAction)
+export const compositeStatusServiceEpic = (
+  compositeStatusService$: CompositeStatusService
+) => action$ =>
+  action$.pipe(
+    ofType(CONNECT_SERVICES),
+    switchMapTo(
+      compositeStatusService$.serviceStatusStream.pipe(
+        map(createCompositeStatusServiceAction),
+        takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+      )
+    )
   )
-}
 
-const getServiceStatus = serviceOuter => {
-  return _.mapValues(serviceOuter.services, (service: ServiceStatus) => {
-    return {
-      isConnected: service.isConnected,
-      connectedInstanceCount: countInstances(service.instanceStatuses),
-      serviceType: service.serviceType
-    }
-  })
-}
 export default handleActions(
   {
-    [ACTION_TYPES.COMPOSITE_STATUS_SERVICE]: (state, action) => action.payload
+    [ACTION_TYPES.COMPOSITE_STATUS_SERVICE]: (state, action) => action.payload,
+    [DISCONNECT_SERVICES]: (state, action) => ({})
   },
   {}
 )
-
-export function countInstances(instances) {
-  return instances.filter(
-    (instance: ServiceInstanceStatus) => instance.isConnected
-  ).length
-}
