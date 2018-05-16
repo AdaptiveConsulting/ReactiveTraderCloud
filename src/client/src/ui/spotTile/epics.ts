@@ -61,7 +61,7 @@ export function spotTileEpicsCreator(
       map(extractPayload),
       mergeMap(x =>
         referenceDataService
-          .getCurrencyPairUpdatesStream()
+          .getCurrencyPairUpdates$()
           .pipe(
             map(currencyMap => addCurrencyPairToSpotPrices(currencyMap)),
             map(updateTiles),

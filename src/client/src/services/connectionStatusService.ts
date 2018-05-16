@@ -1,10 +1,5 @@
 import { Observable } from 'rxjs/index'
-import {
-  distinctUntilChanged,
-  map,
-  publishBehavior,
-  refCount
-} from 'rxjs/operators'
+import { map, publishBehavior, refCount } from 'rxjs/operators'
 import { Connection } from '../system'
 import { ConnectionEventType } from '../system/service/ConnectionFactory'
 import { ConnectionStatus } from '../system/service/connectionStatus'
@@ -29,22 +24,13 @@ export class ConnectionStatusService {
             transportType: connectionUpdate.transportType
           }
         } else {
-          if (connectionUpdate.reason === 'closed') {
-            return {
-              status: ConnectionStatus.sessionExpired,
-              url: 'Expired',
-              transportType: ConnectionType.Unknown
-            }
-          } else {
-            return {
-              status: ConnectionStatus.disconnected,
-              url: 'Disconnected',
-              transportType: ConnectionType.Unknown
-            }
+          return {
+            status: ConnectionStatus.disconnected,
+            url: 'Disconnected',
+            transportType: ConnectionType.Unknown
           }
         }
       }),
-      distinctUntilChanged(),
       publishBehavior({
         status: ConnectionStatus.init,
         url: 'Starting',

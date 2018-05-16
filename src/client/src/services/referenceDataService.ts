@@ -11,12 +11,10 @@ import { referenceDataMapper } from './mappers'
 import { RawCurrencyPairUpdates } from './mappers/referenceDataMapper'
 
 export default class ReferenceDataService {
-  private readonly referenceDataStreamConnectable: Observable<
-    Map<string, CurrencyPair>
-  >
+  private readonly referenceDataStream$: Observable<Map<string, CurrencyPair>>
 
   constructor(serviceClient: ServiceClient) {
-    this.referenceDataStreamConnectable = serviceClient
+    this.referenceDataStream$ = serviceClient
       .createStreamOperation<RawCurrencyPairUpdates>(
         ServiceConst.ReferenceServiceKey,
         'getCurrencyPairUpdatesStream',
@@ -45,7 +43,7 @@ export default class ReferenceDataService {
       )
   }
 
-  getCurrencyPairUpdatesStream() {
-    return this.referenceDataStreamConnectable
+  getCurrencyPairUpdates$() {
+    return this.referenceDataStream$
   }
 }

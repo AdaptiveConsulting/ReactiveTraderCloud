@@ -18,6 +18,7 @@ import {
 } from '../types'
 import { mapFromTradeDto } from './mappers'
 import { TradeRaw } from './mappers/tradeMapper'
+import { OpenFin } from './openFin'
 
 interface RawTradeReponse {
   Trade: TradeRaw
@@ -31,7 +32,7 @@ const EXECUTION_REQUEST_TIMEOUT_MS = 30000
 export default class ExecutionService {
   constructor(
     private readonly serviceClient: ServiceClient,
-    private readonly openFin: any
+    private readonly openFin: OpenFin
   ) {}
 
   executeTrade(executeTradeRequest: ExecuteTradeRequest) {

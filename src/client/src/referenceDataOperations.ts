@@ -19,7 +19,7 @@ export const referenceServiceEpic = (
     ofType(CONNECT_SERVICES),
     switchMapTo(
       refService$
-        .getCurrencyPairUpdatesStream()
+        .getCurrencyPairUpdates$()
         .pipe(
           map(createReferenceServiceAction),
           takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))

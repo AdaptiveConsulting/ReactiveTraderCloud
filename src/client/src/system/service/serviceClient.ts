@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs'
-import { filter, first, map, mergeMap, switchMap, take } from 'rxjs/operators'
+import { filter, map, switchMap, take } from 'rxjs/operators'
 import { ServiceConst } from '../../types/'
 import logger, { Logger } from '../logger'
 import { Connection } from './connection'
@@ -85,13 +85,11 @@ export default class ServiceClient {
         // The backend has a different contract for streams (i.e. request-> n responses) as it does with request-response (request->single response) thus
         // the different method here to support this.
         // It works like this: client creates a temp topic, we perform a RPC to then tell the backend to push to this topic.
-        // TBH this is a bit odd as the server needs to handle fanout and we don't have any really control over the attributes of the topic, however it's sufficient for our needs now.
-        // What's important here for now is we can bury this logic deep in the client, expose a consistent API which could be swapped out later.
+        // TBH this is a bit odd as the server needs to handle fanout and we don't have any real control over the attributes of the topic, however it's sufficient for our needs now.
         // An alternative could be achieved by having well known endpoints for pub-sub, and request-response, const the server manage them.
         // Server could push to these with a filter, or routing key allowing the infrastructure to handle fanout, persistence, all the usual messaging middleware concerns.
         // Another approach we can incorporate would be to wrap all messages in a wrapper envelope.
         // Such an envelope could denote if the message stream should terminate, this would negate the need to distinguish between
-        // request-response and stream operations as is currently the case.
         // tslint:disable-next-line:no-bitwise
 
         const topicName = `topic_${service}_${

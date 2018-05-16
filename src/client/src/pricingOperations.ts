@@ -121,7 +121,7 @@ export const pricingServiceEpic = (
     return priceForReferenceServiceSymbols$(action$, pricingService$).pipe(
       mergeMap(x =>
         referenceDataService
-          .getCurrencyPairUpdatesStream()
+          .getCurrencyPairUpdates$()
           .pipe(map(currencyMap => addRatePrecisionToPrice(currencyMap)))
       )
     )

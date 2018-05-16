@@ -117,8 +117,6 @@ export class Connection {
 
             return () => {
               log.info(`Tearing down topic ${topic}`)
-              //obs.complete()
-              //obs.unsubscribe()
 
               if (!subscription) {
                 return
@@ -178,7 +176,6 @@ export class Connection {
               result => {
                 obs.next(result)
                 obs.complete()
-                obs.unsubscribe()
               },
               error => {
                 obs.error(error)
@@ -187,7 +184,6 @@ export class Connection {
 
             return () => {
               obs.complete()
-              // obs.unsubscribe()
             }
           })
       )
