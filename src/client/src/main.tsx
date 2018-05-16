@@ -1,15 +1,14 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-// TODO: change to import when webpack bug solved https://github.com/webpack/webpack/issues/4160
 import { getEnvVars } from './config/config'
 import { OpenFin } from './services/openFin'
 import createConnection from './system/service/connection'
-import { ServiceConst, User } from './types'
+import { User } from './types'
 import { OpenFinProvider, ShellContainer } from './ui/shell'
 
 import { timer } from 'rxjs'
-import { publishReplay, refCount, shareReplay } from 'rxjs/operators'
+import { publishReplay, refCount } from 'rxjs/operators'
 import configureStore from './configureStore'
 import { connect, disconnect } from './connectionActions'
 import {
@@ -66,7 +65,10 @@ const appBootstrapper = () => {
 
   const openFin = new OpenFin()
 
-  const execService = new ExecutionService(serviceClient, openFin)
+  const execService = new ExecutionService(
+    serviceClient,
+    openFin.checkLimit.bind(openFin)
+  )
 
   const analyticsService = new AnalyticsService(serviceClient)
 
@@ -101,7 +103,7 @@ const appBootstrapper = () => {
 
   store.dispatch(connect())
 
-  const applicationTimeout = timer(APPLICATION_DISCONNECT).subscribe(() => {
+  timer(APPLICATION_DISCONNECT).subscribe(() => {
     store.dispatch(disconnect())
     log.warn(
       `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`
