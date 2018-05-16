@@ -1,14 +1,12 @@
-import { Observable, of, race, timer } from 'rxjs'
-import { map, mapTo, mergeMap, take, tap } from 'rxjs/operators'
+import { merge, Observable, of, timer } from 'rxjs'
+import { map, mapTo, mergeMap, take, takeUntil, tap } from 'rxjs/operators'
 import { logger } from '../system'
 import { ServiceClient } from '../system/service'
-import { TradeSuccessResponse } from '../types'
 import {
   createExecuteTradeResponse,
   createExecuteTradeResponseForError,
   ExecuteTradeRequest,
-  ServiceConst,
-  TradeErrorResponse
+  ServiceConst
 } from '../types'
 import { mapFromTradeDto } from './mappers'
 import { TradeRaw } from './mappers/tradeMapper'
@@ -20,6 +18,7 @@ interface RawTradeReponse {
 const log = logger.create('ExecutionService')
 
 const EXECUTION_CLIENT_TIMEOUT_MS = 2000
+const EXECUTION_REQUEST_TIMEOUT_MS = 30000
 
 export default class ExecutionService {
   constructor(
@@ -58,19 +57,35 @@ export default class ExecutionService {
               )
             ),
             map(dto => mapFromTradeDto(dto.Trade)),
-            map(trade => createExecuteTradeResponse(trade, executeTradeRequest))
+            map(trade =>
+              createExecuteTradeResponse(trade, executeTradeRequest)
+            ),
+            takeUntil(timer(EXECUTION_REQUEST_TIMEOUT_MS))
           )
 
-        const timeout = timer(EXECUTION_CLIENT_TIMEOUT_MS).pipe(
+        // When the execution has taken a few seconds but we cannot assume its not going to go through
+        const firstTimeout = timer(EXECUTION_CLIENT_TIMEOUT_MS).pipe(
+          mapTo(
+            createExecuteTradeResponseForError(
+              'Trade Execution taking longer then Expected',
+              executeTradeRequest
+            )
+          ),
+          takeUntil(request)
+        )
+
+        // After a longer period of time we know a trade is not coming back
+        const lastTimeout = timer(EXECUTION_REQUEST_TIMEOUT_MS).pipe(
           mapTo(
             createExecuteTradeResponseForError(
               'Trade execution timeout exceeded',
               executeTradeRequest
             )
-          )
+          ),
+          takeUntil(request)
         )
 
-        return race<TradeErrorResponse | TradeSuccessResponse>(request, timeout)
+        return merge(request, firstTimeout, lastTimeout)
       })
     )
   }
