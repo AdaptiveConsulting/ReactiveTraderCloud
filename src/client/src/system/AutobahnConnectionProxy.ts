@@ -1,6 +1,6 @@
 import { Connection } from 'autobahn'
 import { AutobahnConnection } from './AutoBahnConnection'
-import AutobahnSessionProxy from './autobahnSessionProxy'
+import AutobahnSessionProxy from './AutobahnSessionProxy'
 
 /**
  * AutobahnProxy: makes the autobahn connection api more explicit, aids testing

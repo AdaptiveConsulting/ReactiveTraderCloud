@@ -1,9 +1,12 @@
 import { Observable } from 'rxjs/index'
 import { map, publishBehavior, refCount } from 'rxjs/operators'
-import { Connection } from '../system'
-import { ConnectionEventType } from '../system/service/ConnectionFactory'
-import { ConnectionStatus } from '../system/service/connectionStatus'
-import { ConnectionType } from './../system/service/connectionType'
+import {
+  ConnectionEventType,
+  ConnectionStatus,
+  ConnectionType,
+  ServiceStub
+} from '../system'
+import { ConnectionEvent } from '../system'
 
 export interface ConnectionInfo {
   status: ConnectionStatus
@@ -14,8 +17,8 @@ export interface ConnectionInfo {
 export class ConnectionStatusService {
   private readonly connectionStatusStream$: Observable<ConnectionInfo>
 
-  constructor(connection: Connection) {
-    this.connectionStatusStream$ = connection.connectionStream.pipe(
+  constructor(connection: Observable<ConnectionEvent>) {
+    this.connectionStatusStream$ = connection.pipe(
       map(connectionUpdate => {
         if (connectionUpdate.type === ConnectionEventType.CONNECTED) {
           return {

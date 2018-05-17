@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import Environment from '../../system/environment'
+import { Environment } from '../../system'
 import { RegionSettings } from '../../types'
 import { CurrencyPair } from '../../types/currencyPair'
 import {

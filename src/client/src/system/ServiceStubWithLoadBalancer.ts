@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs'
 import { filter, map, switchMap, take } from 'rxjs/operators'
-import { ServiceConst } from '../../types/'
-import logger, { Logger } from '../logger'
-import { Connection } from './connection'
+import { ServiceConst } from '../types/index'
+import logger, { Logger } from './logger'
 import { ServiceCollectionMap } from './ServiceInstanceCollection'
+import { ServiceStub } from './ServiceStub'
 
 /**
  * Abstracts a back end service for which there can be multiple instances.
@@ -11,11 +11,11 @@ import { ServiceCollectionMap } from './ServiceInstanceCollection'
  * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
 
-export default class ServiceClient {
+export default class ServiceStubWithLoadBalancer {
   private readonly log: Logger
 
   constructor(
-    private connection: Connection,
+    private connection: ServiceStub,
     private readonly serviceInstanceDictionaryStream: Observable<
       ServiceCollectionMap
     >

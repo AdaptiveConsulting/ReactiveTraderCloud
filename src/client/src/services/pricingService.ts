@@ -1,8 +1,6 @@
-import { asyncScheduler, Observable } from 'rxjs'
-import { map, share } from 'rxjs/operators'
-import { logger, RetryPolicy } from '../system'
-import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
-import { ServiceClient } from '../system/service'
+import { Observable } from 'rxjs'
+import { map, retryWhen, share } from 'rxjs/operators'
+import { logger, retryConstantly, ServiceClient } from '../system'
 import { ServiceConst, SpotPriceTick } from '../types'
 
 const log = logger.create('PricingService')
@@ -24,10 +22,10 @@ const createSpotPriceStream = (
       request
     )
     .pipe(
-      retryWithPolicy(
-        RetryPolicy.indefiniteEvery2Seconds,
-        getPriceUpdatesOperationName,
-        asyncScheduler
+      retryWhen(
+        retryConstantly({
+          interval: 2000
+        })
       ),
       map(adaptDTO),
       share()
@@ -39,6 +37,7 @@ export default class PricingService {
     string,
     Observable<SpotPriceTick>
   >()
+
   constructor(private readonly serviceClient: ServiceClient) {}
 
   getSpotPriceStream(request: Request) {

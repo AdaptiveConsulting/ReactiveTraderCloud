@@ -1,6 +1,6 @@
 import * as classnames from 'classnames'
 import * as React from 'react'
-import Environment from '../../../system/environment'
+import { Environment } from '../../../system'
 
 interface SpotTileControlsProps {
   isRunningInOpenFin: boolean

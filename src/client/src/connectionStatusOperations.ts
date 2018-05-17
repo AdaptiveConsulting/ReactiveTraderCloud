@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions'
 import { combineEpics, ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { CONNECT_SERVICES, DISCONNECT_SERVICES } from './connectionActions'
-import { CompositeStatusService, ConnectionStatusService } from './services'
+import { ConnectionStatusService } from './services'
 import { ConnectionInfo } from './services/connectionStatusService'
 import { ConnectionStatus, ConnectionType } from './system'
 

@@ -1,6 +1,25 @@
-export { default as logger } from './logger'
-export { default as RetryPolicy } from './observableExtensions/retryPolicy'
+export { retryWithBackOff, retryConstantly } from './retryPolicy'
 export { default as Environment } from './environment'
-export { ConnectionStatus } from './service/connectionStatus'
-export { ConnectionType } from './service/connectionType'
-export { Connection } from './service/connection'
+export { ConnectionStatus } from './connectionStatus'
+export { ConnectionType } from './connectionType'
+export { ServiceStub } from './ServiceStub'
+export { default as ServiceClient } from './ServiceStubWithLoadBalancer'
+export { ConnectionEventType } from './connectionStream'
+export { default as logger } from './logger'
+export {
+  ServiceInstanceCollection,
+  ServiceCollectionMap,
+  ServiceConnectionInfo
+} from './ServiceInstanceCollection'
+export { AutobahnConnection } from './AutoBahnConnection'
+
+export { default as AutobahnConnectionProxy } from './AutobahnConnectionProxy'
+
+export {
+  ConnectionEvent,
+  createConnection$,
+  ConnectionOpenEvent,
+  ConnectionClosedEvent
+} from './connectionStream'
+
+export { default as AutobahnSessionProxy } from './AutobahnSessionProxy'

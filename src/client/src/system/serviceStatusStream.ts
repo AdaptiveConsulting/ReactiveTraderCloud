@@ -6,16 +6,16 @@ import {
   mergeMap,
   scan
 } from 'rxjs/operators'
-import { ServiceInstanceStatus } from '../../types/'
-import { RawServiceStatus } from '../../types/serviceInstanceStatus'
-import { Connection } from './connection'
+import { ServiceInstanceStatus } from '../types/index'
+import { RawServiceStatus } from '../types/serviceInstanceStatus'
 import { debounceWithSelector } from './debounceOnMissedHeartbeat'
 import {
   ServiceCollectionMap,
   ServiceInstanceCollection
 } from './ServiceInstanceCollection'
+import { ServiceStub } from './ServiceStub'
 
-export function addHeartBeatToServiceInstanceStatus(
+function addHeartBeatToServiceInstanceStatus(
   heartBeatTimeout: number
 ): (
   source: Observable<ServiceInstanceStatus>
@@ -43,8 +43,8 @@ export function addHeartBeatToServiceInstanceStatus(
     )
 }
 
-export function serviceInstanceDictionaryStream$(
-  connection$: Connection,
+export function serviceStatusStream$(
+  connection$: ServiceStub,
   heartBeatTimeout: number
 ) {
   return connection$.subscribeToTopic<RawServiceStatus>('status').pipe(

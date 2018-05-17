@@ -3,7 +3,7 @@ import * as numeral from 'numeral'
 import { Observable } from 'rxjs'
 import PositionsMapper from '../mappers/positionsMapper'
 
-import logger from '../../system/logger'
+import { logger } from '../../system'
 import { CurrencyPair, ExecuteTradeRequest, Trade } from '../../types'
 
 const log = logger.create('OpenFin')

@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import { map, publishReplay, refCount, scan } from 'rxjs/operators'
-import { ServiceClient } from '../system/service'
+import { ServiceClient } from '../system'
 import {
   CurrencyPair,
   CurrencyPairUpdates,
