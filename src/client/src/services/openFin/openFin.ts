@@ -1,10 +1,10 @@
 import * as moment from 'moment'
 import * as numeral from 'numeral'
-import { Observable, Subscription } from 'rxjs'
+import { Observable } from 'rxjs'
 import PositionsMapper from '../mappers/positionsMapper'
 
 import logger from '../../system/logger'
-import { CurrencyPair, Trade } from '../../types'
+import { CurrencyPair, ExecuteTradeRequest, Trade } from '../../types'
 
 const log = logger.create('OpenFin')
 
@@ -100,53 +100,50 @@ export default class OpenFin {
     }
   }
 
-  checkLimit(executablePrice, notional, tradedCurrencyPair) {
-    return Observable.create(observer => {
-      const disposables = new Subscription()
+  checkLimit(executeTradeRequest: ExecuteTradeRequest) {
+    return new Observable<boolean>(observer => {
       if (this.limitCheckSubscriber === null) {
-        log.debug('client side limit check not up, will delegate to to server')
+        log.info('client side limit check not up, will delegate to to server')
         observer.next(true)
         observer.complete()
-      } else {
-        log.debug(`checking if limit is ok with ${this.limitCheckSubscriber}`)
-        const topic = `limit-check-response (${this.limitCheckId++})`
-        const limitCheckResponse = msg => {
-          log.debug(
-            `${this.limitCheckSubscriber} limit check response was ${msg}`
-          )
-          observer.next(msg.result)
-          observer.complete()
-        }
+        return
+      }
 
-        fin.desktop.InterApplicationBus.subscribe(
-          this.limitCheckSubscriber,
+      log.info(`checking if limit is ok with ${this.limitCheckSubscriber}`)
+
+      const topic = `limit-check-response (${this.limitCheckId++})`
+
+      const limitCheckResponse = (msg: { result: boolean }) => {
+        log.info(`${this.limitCheckSubscriber} limit check response was ${msg}`)
+        observer.next(msg.result)
+        observer.complete()
+      }
+
+      fin.desktop.InterApplicationBus.subscribe(
+        this.limitCheckSubscriber,
+        topic,
+        limitCheckResponse
+      )
+
+      fin.desktop.InterApplicationBus.send(
+        this.limitCheckSubscriber,
+        REQUEST_LIMIT_CHECK_TOPIC,
+        {
+          tradedCurrencyPair: executeTradeRequest.CurrencyPair,
+          notional: executeTradeRequest.Notional,
+          id: this.limitCheckId,
+          responseTopic: topic,
+          rate: executeTradeRequest.SpotRate
+        }
+      )
+
+      return () => {
+        fin.desktop.InterApplicationBus.unsubscribe(
+          this.limitCheckSubscriber!,
           topic,
           limitCheckResponse
         )
-
-        fin.desktop.InterApplicationBus.send(
-          this.limitCheckSubscriber,
-          REQUEST_LIMIT_CHECK_TOPIC,
-          {
-            tradedCurrencyPair,
-            notional,
-            id: this.limitCheckId,
-            responseTopic: topic,
-            rate: executablePrice
-          }
-        )
-
-        disposables.add(
-          new Subscription(() => {
-            fin.desktop.InterApplicationBus.unsubscribe(
-              this.limitCheckSubscriber,
-              topic,
-              limitCheckResponse
-            )
-          })
-        )
       }
-      return disposables
     })
   }
 
