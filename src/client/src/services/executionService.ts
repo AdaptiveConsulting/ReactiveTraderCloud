@@ -32,8 +32,8 @@ export default class ExecutionService {
     return this.limitChecker(executeTradeRequest).pipe(
       tap(() => log.info('executing: ', executeTradeRequest)),
       take(1),
-      mergeMap(limitBreached => {
-        if (!limitBreached) {
+      mergeMap(tradeWithinLimit => {
+        if (!tradeWithinLimit) {
           return of(
             createExecuteTradeResponseForError(
               'Credit limit exceeded',
