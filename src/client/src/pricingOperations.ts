@@ -3,38 +3,24 @@ import * as keyBy from 'lodash.keyby'
 import { Action, createAction } from 'redux-actions'
 import { combineEpics, ofType } from 'redux-observable'
 import { from as observableFrom } from 'rxjs'
-import {
-  debounceTime,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  scan,
-  takeLast,
-  takeUntil,
-  tap
-} from 'rxjs/operators'
+import { filter, map, mergeMap, scan, takeUntil } from 'rxjs/operators'
 import { DISCONNECT_SERVICES } from './connectionActions'
 import { ACTION_TYPES as REF_ACTION_TYPES } from './referenceDataOperations'
 import { PricingService, ReferenceDataService } from './services'
 import { OpenFin } from './services/openFin'
-import { PriceMovementTypes, SpotPriceTick } from './types'
+import { SpotPriceTick } from './types'
 import { CurrencyPair } from './types/currencyPair'
 import { buildNotification } from './ui/notification/notificationUtils'
 
 export enum ACTION_TYPES {
-  SPOT_PRICES_UPDATE = '@ReactiveTraderCloud/SPOT_PRICES_UPDATE',
-  PRICING_STALE = '@ReactiveTraderCloud/PRICING_STALE'
+  SPOT_PRICES_UPDATE = '@ReactiveTraderCloud/SPOT_PRICES_UPDATE'
 }
 
 export const createSpotPricesUpdateAction = createAction(
   ACTION_TYPES.SPOT_PRICES_UPDATE
 )
 
-export const createStalePriceAction = createAction(ACTION_TYPES.PRICING_STALE)
-
 // Epics Logic
-const MS_FOR_LAST_PRICE_TO_BECOME_STALE = 6000
 
 interface PricesBySymbol {
   [symbol: string]: SpotPriceTick
@@ -92,22 +78,6 @@ export const pricingServiceEpic = (
   openFin: OpenFin,
   referenceDataService: ReferenceDataService
 ) => {
-  const stalePriceEpic = action$ => {
-    // For each symbol
-    return getSymbol$(action$).pipe(
-      // creates a new price stream and will wait to debounce
-      mergeMap((symbol: string) =>
-        pricingService$
-          .getSpotPriceStream({ symbol })
-          .pipe(
-            debounceTime(MS_FOR_LAST_PRICE_TO_BECOME_STALE),
-            map(createStalePriceAction),
-            takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
-          )
-      )
-    )
-  }
-
   const addRatePrecisionToPrice = (
     currencyData: Map<string, CurrencyPair>
   ) => price => {
@@ -122,7 +92,11 @@ export const pricingServiceEpic = (
       mergeMap(x =>
         referenceDataService
           .getCurrencyPairUpdates$()
-          .pipe(map(currencyMap => addRatePrecisionToPrice(currencyMap)))
+          .pipe(
+            map(currencyMap => addRatePrecisionToPrice(currencyMap)),
+            filter(() => false),
+            takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+          )
       )
     )
   }
@@ -134,24 +108,11 @@ export const pricingServiceEpic = (
     )
   }
 
-  return combineEpics(updatePricesEpic, updatePricesEpic, stalePriceEpic)
+  return combineEpics(updatePricesEpic, publishPriceToOpenFinEpic)
 }
 
 // Reducer Logic
 const stalePriceErrorMessage = 'Pricing is unavailable'
-
-function getPriceMovementType(prevItem: any, newItem: any) {
-  const prevPriceMove = prevItem.priceMovementType || PriceMovementTypes.None
-  const lastPrice = prevItem.mid
-  const nextPrice = newItem.mid
-  if (lastPrice < nextPrice) {
-    return PriceMovementTypes.Up
-  }
-  if (lastPrice > nextPrice) {
-    return PriceMovementTypes.Down
-  }
-  return prevPriceMove
-}
 
 interface PricingOperationsReducerState {
   [symbol: string]: SpotPriceTick
@@ -164,27 +125,18 @@ export const pricingServiceReducer = (
   const { type, payload } = action
   switch (type) {
     case ACTION_TYPES.SPOT_PRICES_UPDATE:
-      const updatedPrices = keyBy(action.payload, 'symbol')
+      const updatedPrices = keyBy(payload, 'symbol')
       const updatedPricesDataObj = {}
 
       _.forOwn(updatedPrices, (value, key) => {
-        const prevItem = state[key] || {}
         const newItem: SpotPriceTick = { ...value }
-        newItem.priceStale = false
-        newItem.priceMovementType = getPriceMovementType(prevItem, newItem)
+        if (newItem.priceStale && !newItem.notification) {
+          newItem.notification = buildNotification(null, stalePriceErrorMessage)
+        }
         updatedPricesDataObj[key] = newItem
       })
 
       return { ...state, ...updatedPricesDataObj }
-    case ACTION_TYPES.PRICING_STALE:
-      return {
-        ...state,
-        [payload.symbol]: {
-          ...state[payload.symbol],
-          priceStale: true,
-          notification: buildNotification(null, stalePriceErrorMessage)
-        }
-      }
     default:
       return state
   }

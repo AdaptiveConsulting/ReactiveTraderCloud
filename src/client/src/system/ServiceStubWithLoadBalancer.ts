@@ -1,5 +1,12 @@
 import { Observable } from 'rxjs'
-import { filter, map, switchMap, take } from 'rxjs/operators'
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  share,
+  switchMap,
+  take
+} from 'rxjs/operators'
 import { ServiceConst } from '../types/index'
 import logger, { Logger } from './logger'
 import { ServiceCollectionMap } from './ServiceInstanceCollection'
@@ -32,7 +39,9 @@ export default class ServiceStubWithLoadBalancer {
       map(
         serviceCollectionMap =>
           serviceCollectionMap.getServiceInstanceWithMinimumLoad(serviceType)!
-      )
+      ),
+      distinctUntilChanged((last, next) => last.serviceId === next.serviceId),
+      take(1)
     )
   }
 
@@ -48,7 +57,6 @@ export default class ServiceStubWithLoadBalancer {
     this.log.info(`Creating request response operation for [${operationName}]`)
 
     return this.getServiceWithMinLoad$(service).pipe(
-      take(1),
       switchMap(serviceInstanceStatus => {
         if (serviceInstanceStatus.serviceId !== 'status') {
           this.log.info(
@@ -67,7 +75,8 @@ export default class ServiceStubWithLoadBalancer {
           remoteProcedure,
           request
         )
-      })
+      }),
+      share()
     )
   }
 
@@ -80,7 +89,6 @@ export default class ServiceStubWithLoadBalancer {
     request: TRequest
   ) {
     return this.getServiceWithMinLoad$(service).pipe(
-      take(1),
       switchMap(serviceInstanceStatus => {
         // The backend has a different contract for streams (i.e. request-> n responses) as it does with request-response (request->single response) thus
         // the different method here to support this.
@@ -133,7 +141,8 @@ export default class ServiceStubWithLoadBalancer {
         )
 
         return subscribeTopic$
-      })
+      }),
+      share()
     )
   }
 }

@@ -1,7 +1,6 @@
 import { applyMiddleware, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { combineEpics, createEpicMiddleware } from 'redux-observable'
-import { persistStore } from 'redux-persist'
 
 import rootReducer from './combineReducers'
 import { compositeStatusServiceEpic } from './compositeStatusServiceOperations'
@@ -63,7 +62,6 @@ export default function configureStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(middleware))
   )
-  persistStore(store)
 
   return store
 }

@@ -42,7 +42,7 @@ class BlotterContainer extends React.Component<
     const openFin = this.context.openFin
     const gridRows = _.values(trades).reverse()
     const popoutClick = this.props.onPopoutClick(openFin)
-    return (
+    return this.props.isConnected ? (
       <div
         className="shell_workspace_blotter"
         ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}
@@ -54,7 +54,7 @@ class BlotterContainer extends React.Component<
           canPopout={Environment.isRunningInIE()}
         />
       </div>
-    )
+    ) : null
   }
 
   private updateGridDocument = (doc: Element) => {
@@ -67,10 +67,9 @@ class BlotterContainer extends React.Component<
 const mapStateToProps = (state: any) => {
   const { blotterService, compositeStatusService } = state
   const isConnected =
-    (compositeStatusService &&
-      compositeStatusService.blotter &&
-      compositeStatusService.blotter.isConnected) ||
-    false
+    compositeStatusService &&
+    compositeStatusService.blotter &&
+    compositeStatusService.blotter.isConnected
   return { blotterService, isConnected }
 }
 
