@@ -25,4 +25,6 @@ const rootReducer = combineReducers({
   spotTilesData: spotTileDataReducer
 })
 
+export type GlobalState = ReturnType<typeof rootReducer>
+
 export default rootReducer

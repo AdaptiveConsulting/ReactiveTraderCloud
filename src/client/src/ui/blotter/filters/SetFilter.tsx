@@ -20,12 +20,8 @@ interface SetFilterState {
   selectedValueSet: {}
 }
 
-export default class SetFilter extends React.Component<
-  SetFilterProps,
-  SetFilterState
-> {
-  private container: Element
-  private hidePopup: (params: any) => void
+export default class SetFilter extends React.Component<SetFilterProps, SetFilterState> {
+  //private hidePopup: (params: any) => void
 
   constructor(props) {
     super(props)
@@ -64,10 +60,7 @@ export default class SetFilter extends React.Component<
 
     // find if any options is unchecked
     const allOptionsSelected = selectedOptions.indexOf(false) === -1
-    return (
-      uniquOptions.length + 1 /*accounting for All option*/ !==
-        selectedOptions.length || !allOptionsSelected
-    )
+    return uniquOptions.length + 1 /*accounting for All option*/ !== selectedOptions.length || !allOptionsSelected
   }
 
   doesFilterPass(params) {
@@ -84,19 +77,14 @@ export default class SetFilter extends React.Component<
         )
       })
 
-    const doesOptionsFilterPass =
-      !!this.state.selectedValueSet[value] ||
-      this.state.selectedValueSet[ALL] === true
+    const doesOptionsFilterPass = !!this.state.selectedValueSet[value] || this.state.selectedValueSet[ALL] === true
 
     return doesTextFilterPass || doesOptionsFilterPass
   }
 
   getModel() {
     const filterText = this.state.text
-    const model =
-      filterText !== undefined && filterText.trim().length === 0
-        ? undefined
-        : filterText
+    const model = filterText !== undefined && filterText.trim().length === 0 ? undefined : filterText
     return model
   }
 
@@ -105,7 +93,7 @@ export default class SetFilter extends React.Component<
   }
 
   afterGuiAttached(params) {
-    this.hidePopup = params.hidePopup
+    //this.hidePopup = params.hidePopup
     this.focus()
   }
 
@@ -131,10 +119,7 @@ export default class SetFilter extends React.Component<
       }
     })
 
-    this.setState(
-      { selectedFreeText: newValue, selectedValueSet: setFilterOptions },
-      () => this.updateFilter()
-    )
+    this.setState({ selectedFreeText: newValue, selectedValueSet: setFilterOptions }, () => this.updateFilter())
   }
 
   onOptionSelectChange = (event, value: string = ALL) => {
@@ -150,9 +135,7 @@ export default class SetFilter extends React.Component<
         updatedValueSet[ALL] = false
       }
     }
-    this.setState({ selectedValueSet: updatedValueSet }, () =>
-      this.updateFilter()
-    )
+    this.setState({ selectedValueSet: updatedValueSet }, () => this.updateFilter())
   }
 
   updateAllOptions = (isChecked: boolean) => {
@@ -213,10 +196,7 @@ export default class SetFilter extends React.Component<
     if (Object.keys(this.state.selectedValueSet).length === 0) {
       return true
     }
-    return (
-      !!this.state.selectedValueSet[value] ||
-      this.state.selectedValueSet[ALL] === true
-    )
+    return !!this.state.selectedValueSet[value] || this.state.selectedValueSet[ALL] === true
   }
 
   createOptionItem = (value: string, label: string) => {
@@ -235,7 +215,7 @@ export default class SetFilter extends React.Component<
   }
 
   setupContainer = (el: Element) => {
-    this.container = ReactDOM.findDOMNode(el) as Element
+    //this.container = ReactDOM.findDOMNode(el) as Element
   }
 
   render() {
@@ -262,9 +242,7 @@ export default class SetFilter extends React.Component<
             {this.createOptionItem(ALL, 'Select All')}
           </div>
           <div className="filter_container__option-items-wrapper">
-            <div className="filter_container__option-items-container">
-              {setOptions}
-            </div>
+            <div className="filter_container__option-items-container">{setOptions}</div>
           </div>
         </div>
       </div>

@@ -5,11 +5,12 @@ import { NotificationType } from '../../types'
 import { CurrencyPair } from '../../types/currencyPair'
 import { Notification } from '../../types/notification'
 import { SpotTileData } from '../../types/spotTileData'
+import { buildNotification } from '../notification/notificationUtils'
 import { spotDateFormatter } from '../utils/dateUtils'
 import { SpotTileControls, TradeNotification } from './'
 import NotionalContainer from './notional/NotionalContainer'
 import PriceControlsView from './priceControlsView/PriceControlsView'
-
+const stalePriceErrorMessage = 'Pricing is unavailable'
 export interface SpotTileProps {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
@@ -29,15 +30,18 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   }
 
   render() {
-    const { notification } = this.props.spotTileData
+    let { notification } = this.props.spotTileData
+    const { priceStale } = this.props.spotTileData
+    if (!notification && priceStale) {
+      notification = buildNotification(null, stalePriceErrorMessage)
+    }
     const hasNotification = !!notification
+
     return (
       <div className={this.getSpotContainerClassName()}>
         <div className="spot-tile__container">
           {this.createSpotTileControls()}
-          {!hasNotification
-            ? this.getSpotTileContent()
-            : this.createNotificationView(notification)}
+          {!hasNotification ? this.getSpotTileContent() : this.createNotificationView(notification)}
         </div>
       </div>
     )
@@ -45,19 +49,12 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
 
   getSpotContainerClassName() {
     const { executionConnected, pricingConnected } = this.props
-    const {
-      isTradeExecutionInFlight,
-      notification,
-      priceStale
-    } = this.props.spotTileData
+    const { isTradeExecutionInFlight, notification, priceStale } = this.props.spotTileData
     const hasNotification = !!notification
     const className = classnames('spot-tile', {
       'spot-tile--stale':
         (!pricingConnected || priceStale) &&
-        !(
-          hasNotification &&
-          notification.notificationType === NotificationType.Trade
-        ),
+        !(hasNotification && notification.notificationType === NotificationType.Trade),
       'spot-tile--readonly': !executionConnected,
       'spot-tile--executing': isTradeExecutionInFlight,
       'spot-tile--error': hasNotification && notification.hasError
@@ -67,13 +64,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   }
 
   createSpotTileControls() {
-    const {
-      onPopoutClick,
-      undockTile,
-      displayCurrencyChart,
-      isRunningInOpenFin,
-      spotTileData
-    } = this.props
+    const { onPopoutClick, undockTile, displayCurrencyChart, isRunningInOpenFin, spotTileData } = this.props
 
     return (
       <SpotTileControls
@@ -112,18 +103,13 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
     const spotDateClass = classnames('spot-tile__delivery', {
       hide: hasNotification
     })
-    const formattedDate = spotTileData
-      ? spotDateFormatter(spotTileData.valueDate, false)
-      : ''
+    const formattedDate = spotTileData ? spotDateFormatter(spotTileData.valueDate, false) : ''
 
     return (
       <div>
         <span className="spot-tile__execution-label">Executing</span>
         {this.createPriceComponents()}
-        <NotionalContainer
-          className={notionalInputClass}
-          currencyPair={currencyPair}
-        />
+        <NotionalContainer className={notionalInputClass} currencyPair={currencyPair} />
         <div className={spotDateClass}>
           <span className="spot-tile__tenor">SP</span>
           <span className="spot-tile__delivery-date">. {formattedDate}</span>
@@ -142,15 +128,9 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         />
       )
     } else if (notification.notificationType === NotificationType.Text) {
-      return (
-        <div className="spot-tile__notification-message">
-          {notification.message}
-        </div>
-      )
+      return <div className="spot-tile__notification-message">{notification.message}</div>
     } else {
-      throw new Error(
-        `Unknown notification type ${notification.notificationType}`
-      )
+      throw new Error(`Unknown notification type ${notification.notificationType}`)
     }
   }
 }

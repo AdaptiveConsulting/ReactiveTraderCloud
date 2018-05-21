@@ -1,149 +1,45 @@
-import * as _ from 'lodash'
+import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
-import { bindCallback, from as observableFrom } from 'rxjs'
-import { delay, filter, map, mergeMap, takeUntil, tap } from 'rxjs/operators'
-import { DISCONNECT_SERVICES } from '../../connectionActions'
-import { ACTION_TYPES as PRICING_ACTION_TYPES } from '../../pricingOperations'
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
-import { ExecutionService, ReferenceDataService } from '../../services'
-import { OpenFin } from '../../services/openFin'
-import { Direction } from '../../types'
-import { SpotPrice } from '../../types/spotPrice'
-import { CurrencyPair } from './../../types/currencyPair'
-import {
-  ACTION_TYPES as SPOT_TILE_ACTION_TYPES,
-  currencyChartOpened,
-  dismissNotification,
-  executeTrade,
-  tradeExecuted,
-  updateTiles
-} from './actions'
-
+import { from as observableFrom } from 'rxjs'
+import { delay, map, mergeMap, tap } from 'rxjs/operators'
+import { ApplicationEpic } from '../../ApplicationEpic'
+import { ACTION_TYPES, SpotTileActions } from './actions'
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
 
-interface SpotPrices {
-  [symbol: string]: SpotPrice
-}
+type ExecutionAction = ReturnType<typeof SpotTileActions.executeTrade>
 
-const extractPayload = action => action.payload
-const addCurrencyPairToSpotPrices = (
-  referenceData: Map<string, CurrencyPair>
-) => (spotPrices: SpotPrices): SpotPrices => {
-  return _.mapValues(spotPrices, (spotPrice: SpotPrice) => {
-    return {
-      ...spotPrice,
-      currencyPair:
-        spotPrice.currencyPair || referenceData.get(spotPrice.symbol)
-    }
-  })
-}
-
-export function spotTileEpicsCreator(
-  executionService$: ExecutionService,
-  referenceDataService: ReferenceDataService,
-  openfin: OpenFin
-) {
-  function executeTradeEpic(action$) {
-    return action$.pipe(
-      ofType(SPOT_TILE_ACTION_TYPES.EXECUTE_TRADE),
-      mergeMap((request: any) =>
-        executionService$
-          .executeTrade(request.payload)
-          .pipe(map(result => ({ result, request })))
-      ),
-      map((x: any) => tradeExecuted(x.result, x.request.meta))
+const executeTradeEpic: ApplicationEpic<SpotTileActions> = (action$, store, { executionService }) =>
+  action$.pipe(
+    ofType<SpotTileActions, ExecutionAction>(ACTION_TYPES.EXECUTE_TRADE),
+    mergeMap(request =>
+      executionService
+        .executeTrade(request.payload)
+        .pipe(map(result => SpotTileActions.tradeExecuted(result, request.meta)))
     )
-  }
-
-  function onPriceUpdateEpic(action$) {
-    return action$.pipe(
-      ofType(PRICING_ACTION_TYPES.SPOT_PRICES_UPDATE),
-      map(extractPayload),
-      mergeMap(x =>
-        referenceDataService
-          .getCurrencyPairUpdates$()
-          .pipe(
-            map(currencyMap => addCurrencyPairToSpotPrices(currencyMap)),
-            map(updateTiles),
-            takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
-          )
-      )
-    )
-  }
-
-  function displayCurrencyChart(action$) {
-    return action$.pipe(
-      ofType(SPOT_TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART),
-      mergeMap((payload: any) => {
-        return observableFrom(
-          payload.payload.openFin.displayCurrencyChart(payload.payload.symbol)
-        )
-      }),
-      map(symbol => {
-        return currencyChartOpened(symbol)
-      })
-    )
-  }
-
-  function onTradeExecuted(action$) {
-    return action$.pipe(
-      ofType(SPOT_TILE_ACTION_TYPES.TRADE_EXECUTED),
-      tap((action: any) => {
-        if (openfin.isRunningInOpenFin && action.meta) {
-          openfin.sendPositionClosedNotification(
-            action.meta.uuid,
-            action.meta.correlationId
-          )
-        }
-      }),
-      delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
-      map((action: any) => ({
-        symbol: action.payload.request.CurrencyPair
-      })),
-      map(dismissNotification)
-    )
-  }
-
-  function createTrade(msg, price) {
-    const direction = msg.amount > 0 ? Direction.Sell : Direction.Buy
-    const notional = Math.abs(msg.amount)
-
-    const spotRate = direction === Direction.Buy ? price.ask : price.bid
-
-    return {
-      CurrencyPair: price.symbol,
-      SpotRate: spotRate,
-      Direction: direction,
-      Notional: notional,
-      DealtCurrency: price.currencyPair.base
-    }
-  }
-
-  function closePositionEpic(action$, state$) {
-    return action$.pipe(
-      ofType(REF_ACTION_TYPES.REFERENCE_SERVICE),
-      mergeMap(() => {
-        return bindCallback(openfin.addSubscription).bind(openfin)(
-          'close-position'
-        )
-      }),
-      map<any, any>(([msg, uuid]) => {
-        const trade = createTrade(
-          msg,
-          state$.getState().pricingService[msg.symbol]
-        )
-        return executeTrade(trade, { uuid, correlationId: msg.correlationId })
-      })
-    )
-  }
-
-  return combineEpics(
-    executeTradeEpic,
-    onPriceUpdateEpic,
-    displayCurrencyChart,
-    onTradeExecuted,
-    closePositionEpic
   )
-}
 
-export default spotTileEpicsCreator
+type DisplayChartAction = ReturnType<typeof SpotTileActions.displayCurrencyChart>
+
+export const displayCurrencyChart: ApplicationEpic = (action$, store, { openFin }) =>
+  action$.pipe(
+    ofType<Action, DisplayChartAction>(ACTION_TYPES.DISPLAY_CURRENCY_CHART),
+    mergeMap(action => observableFrom(openFin.displayCurrencyChart(action.payload))),
+    map(symbol => SpotTileActions.currencyChartOpened(symbol))
+  )
+
+type ExecutedTradeAction = ReturnType<typeof SpotTileActions.tradeExecuted>
+
+export const onTradeExecuted: ApplicationEpic = (action$, store, { openFin }) =>
+  action$.pipe(
+    ofType<Action, ExecutedTradeAction>(ACTION_TYPES.TRADE_EXECUTED),
+    tap(action => {
+      if (openFin.isRunningInOpenFin && action.meta) {
+        openFin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
+      }
+    }),
+    delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
+    map(action => action.payload.request.CurrencyPair),
+    map(SpotTileActions.dismissNotification)
+  )
+
+export const spotTileEpicsCreator = combineEpics(executeTradeEpic, displayCurrencyChart, onTradeExecuted)

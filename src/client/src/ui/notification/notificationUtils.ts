@@ -2,7 +2,7 @@ import { Trade } from '../../types'
 import { Notification } from '../../types/notification'
 import { NotificationType } from '../../types/notificationType'
 
-export function buildNotification(trade: Trade = null, error): Notification {
+export function buildNotification(trade: Trade = null, error?: string): Notification {
   if (error || !trade) {
     return {
       message: error,

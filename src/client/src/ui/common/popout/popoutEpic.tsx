@@ -1,38 +1,29 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
+import { Action } from 'redux'
 import { createAction } from 'redux-actions'
 import { combineEpics, ofType } from 'redux-observable'
 import { map } from 'rxjs/operators'
-import {
-  ACTION_TYPES as TILE_ACTIONS,
-  tileUndocked
-} from '../../spotTile/actions'
+import { ApplicationEpic } from '../../../ApplicationEpic'
+import { ACTION_TYPES as TILE_ACTIONS, SpotTileActions } from '../../spotTile/actions'
 import { ACTION_TYPES as REGIONS_ACTIONS } from '../regions/regionsOperations'
 import { getPopoutService } from './index'
 
 declare const window: any
 
-const popoutOpened = createAction(
-  REGIONS_ACTIONS.REGION_TEAROFF_WINDOW,
-  payload => payload
-)
-const popoutClosed = createAction(
-  REGIONS_ACTIONS.REGION_ATTACH_WINDOW,
-  payload => payload
-)
+const popoutOpened = createAction(REGIONS_ACTIONS.REGION_TEAROFF_WINDOW, payload => payload)
+const popoutClosed = createAction(REGIONS_ACTIONS.REGION_ATTACH_WINDOW, payload => payload)
 
 const generateView = container => {
-  const childComponent = React.isValidElement(container)
-    ? container
-    : React.createElement(container)
+  const childComponent = React.isValidElement(container) ? container : React.createElement(container)
   return React.createElement(Provider, { store: window.store }, childComponent)
 }
 
-function popoutWindowEpic(action$, store) {
+const popoutWindowEpic: ApplicationEpic = (action$, store, { openFin }) => {
   return action$.pipe(
     ofType(REGIONS_ACTIONS.REGION_OPEN_WINDOW),
     map((action: any) => {
-      const popoutService = getPopoutService(action.payload.openFin)
+      const popoutService = getPopoutService(openFin)
       const { id, container, settings } = action.payload
       const popoutView = generateView(container)
       popoutService.openPopout(
@@ -60,18 +51,18 @@ function popoutWindowEpic(action$, store) {
   )
 }
 
-function undockTile(action$) {
+type UndockAction = ReturnType<typeof SpotTileActions.undockTile>
+
+const undockTile: ApplicationEpic = (action$, store, { openFin }) => {
   return action$.pipe(
-    ofType(TILE_ACTIONS.UNDOCK_TILE),
-    map((action: any) => {
-      const popoutService = getPopoutService(action.payload.openFin)
-      popoutService.undockPopout(action.payload.tileName)
+    ofType<Action, UndockAction>(TILE_ACTIONS.UNDOCK_TILE),
+    map(action => {
+      const popoutService = getPopoutService(openFin)
+      popoutService.undockPopout(action.payload)
       return action
     }),
-    map(tileUndocked)
+    map(SpotTileActions.tileUndocked)
   )
 }
 
-export const popoutEpic = () => {
-  return combineEpics(popoutWindowEpic, undockTile)
-}
+export const popoutEpic = combineEpics(popoutWindowEpic, undockTile)

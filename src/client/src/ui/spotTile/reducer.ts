@@ -1,6 +1,8 @@
+import { Action } from 'redux'
 import { DISCONNECT_SERVICES } from '../../connectionActions'
 import { buildNotification } from '../notification/notificationUtils'
-import { ACTION_TYPES } from './actions'
+import { tradeError, tradeSuccesful } from './../../types/executeTradeRequest'
+import { ACTION_TYPES, SpotTileActions } from './actions'
 
 const updateSpotTile = (state, symbol, value) => {
   return {
@@ -12,32 +14,43 @@ const updateSpotTile = (state, symbol, value) => {
   }
 }
 
-export const spotTileDataReducer = (state: any = {}, action) => {
-  const { type, payload } = action
-  switch (type) {
+export const spotTileDataReducer = (state: any = {}, action: SpotTileActions | Action<typeof DISCONNECT_SERVICES>) => {
+  switch (action.type) {
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
-      return updateSpotTile(state, payload.symbol, {
+      return updateSpotTile(state, action.payload, {
         currencyChartIsOpening: true
       })
 
     case ACTION_TYPES.CURRENCY_CHART_OPENED:
-      return updateSpotTile(state, payload, { currencyChartIsOpening: false })
+      return updateSpotTile(state, action.payload, { currencyChartIsOpening: false })
 
     case ACTION_TYPES.EXECUTE_TRADE:
-      return updateSpotTile(state, payload.CurrencyPair, {
+      return updateSpotTile(state, action.payload.CurrencyPair, {
         isTradeExecutionInFlight: true
       })
 
-    case ACTION_TYPES.TRADE_EXECUTED:
-      const symbol = payload.request.CurrencyPair
-      return updateSpotTile(state, symbol, {
-        hasError: payload.hasError,
-        isTradeExecutionInFlight: false,
-        notification: buildNotification(payload.trade, payload.error)
-      })
+    case ACTION_TYPES.TRADE_EXECUTED: {
+      const { payload } = action
+      const symbol = action.payload.request.CurrencyPair
 
+      if (tradeError(payload)) {
+        return updateSpotTile(state, symbol, {
+          hasError: true,
+          isTradeExecutionInFlight: false,
+          notification: buildNotification(null, payload.error)
+        })
+      }
+      if (tradeSuccesful(payload)) {
+        return updateSpotTile(state, symbol, {
+          hasError: false,
+          isTradeExecutionInFlight: false,
+          notification: buildNotification(payload.trade)
+        })
+      }
+      return state
+    }
     case ACTION_TYPES.DISMISS_NOTIFICATION:
-      return updateSpotTile(state, payload.symbol, { notification: null })
+      return updateSpotTile(state, action.payload, { notification: null })
     case DISCONNECT_SERVICES:
       return {}
     default:
