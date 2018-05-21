@@ -1,5 +1,5 @@
 import { Connection } from 'autobahn'
-import AutobahnSessionProxy from './autobahnSessionProxy'
+import AutobahnSessionProxy from './AutobahnSessionProxy'
 
 export interface AutobahnConnection {
   session?: AutobahnSessionProxy

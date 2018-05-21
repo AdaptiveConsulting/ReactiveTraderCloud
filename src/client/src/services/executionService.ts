@@ -1,7 +1,14 @@
 import { merge, Observable, of, timer } from 'rxjs'
-import { map, mapTo, mergeMap, take, takeUntil, tap } from 'rxjs/operators'
-import { logger } from '../system'
-import { ServiceClient } from '../system/service'
+import {
+  map,
+  mapTo,
+  mergeMap,
+  share,
+  take,
+  takeUntil,
+  tap
+} from 'rxjs/operators'
+import { logger, ServiceClient } from '../system'
 import {
   createExecuteTradeResponse,
   createExecuteTradeResponseForError,

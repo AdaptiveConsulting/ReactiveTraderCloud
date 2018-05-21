@@ -1,26 +1,14 @@
 import { Error, ISubscription } from 'autobahn'
-import { NextObserver, Observable, Subscription, timer } from 'rxjs'
-import {
-  filter,
-  mergeMap,
-  multicast,
-  publishReplay,
-  refCount,
-  switchMap,
-  take
-} from 'rxjs/operators'
+import { NextObserver, Observable } from 'rxjs'
+import { filter, mergeMap, switchMap } from 'rxjs/operators'
 
-import { ReplaySubject } from 'rxjs/ReplaySubject'
-import logger from '../logger'
-import { AutobahnConnection } from './AutoBahnConnection'
-import AutobahnConnectionProxy from './autobahnConnectionProxy'
 import './AutoBahnTypeExtensions'
 import {
   ConnectionEvent,
   ConnectionEventType,
-  ConnectionOpenEvent,
-  createConnection$
-} from './ConnectionFactory'
+  ConnectionOpenEvent
+} from './connectionStream'
+import logger from './logger'
 
 const log = logger.create('Connection')
 
@@ -34,34 +22,15 @@ interface SubscriptionDTO<TPayload> {
 
 type SubscriptionRequest<TPayload> = Array<SubscriptionDTO<TPayload>>
 
-export default function createConnection(
-  userName: string,
-  url: string,
-  realm: string,
-  port: number
-): Connection {
-  const autobahn = new AutobahnConnectionProxy(url, realm, port)
-  return new Connection(userName, autobahn)
-}
-
 /**
- * Represents a Connection to autobahn
+ * A stub Used to call services. Hides the complexity of server interactions
  */
-export class Connection {
-  private readonly userName: string
-  private autobahn: AutobahnConnection
-  public connectionStream: Observable<ConnectionEvent>
-
-  constructor(userName: string, autobahn: AutobahnConnection) {
+export class ServiceStub {
+  constructor(
+    private readonly userName: string,
+    private connection$: Observable<ConnectionEvent>
+  ) {
     this.userName = userName
-    this.autobahn = autobahn
-
-    this.connectionStream = createConnection$(this.autobahn).pipe(
-      multicast(() => {
-        return new ReplaySubject<ConnectionEvent>(1)
-      }),
-      refCount()
-    )
   }
 
   logResponse(topic: string, response: any[]): void {
@@ -83,7 +52,7 @@ export class Connection {
     topic: string,
     acknowledgementObs?: NextObserver<string>
   ): Observable<T> {
-    return this.connectionStream.pipe(
+    return this.connection$.pipe(
       filter(
         (connection): connection is ConnectionOpenEvent =>
           connection.type === ConnectionEventType.CONNECTED
@@ -154,7 +123,7 @@ export class Connection {
     payload: TPayload,
     responseTopic: string = ''
   ) {
-    return this.connectionStream.pipe(
+    return this.connection$.pipe(
       filter(
         (connection): connection is ConnectionOpenEvent =>
           connection.type === ConnectionEventType.CONNECTED

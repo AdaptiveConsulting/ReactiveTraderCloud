@@ -8,7 +8,6 @@ export {
   ExecuteTradeRequest,
   TradeSuccessResponse,
   TradeErrorResponse,
-  ExecuteTradeResponse,
   createExecuteTradeResponseForError,
   createExecuteTradeResponse
 } from './executeTradeRequest'

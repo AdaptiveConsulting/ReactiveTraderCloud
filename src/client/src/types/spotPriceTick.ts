@@ -9,4 +9,5 @@ export interface SpotPriceTick {
   valueDate: string
   priceMovementType?: PriceMovementTypes
   priceStale?: boolean
+  notification?: any
 }

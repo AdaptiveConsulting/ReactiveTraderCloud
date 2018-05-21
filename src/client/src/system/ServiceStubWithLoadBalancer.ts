@@ -1,9 +1,16 @@
 import { Observable } from 'rxjs'
-import { filter, map, switchMap, take } from 'rxjs/operators'
-import { ServiceConst } from '../../types/'
-import logger, { Logger } from '../logger'
-import { Connection } from './connection'
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  share,
+  switchMap,
+  take
+} from 'rxjs/operators'
+import { ServiceConst } from '../types/index'
+import logger, { Logger } from './logger'
 import { ServiceCollectionMap } from './ServiceInstanceCollection'
+import { ServiceStub } from './ServiceStub'
 
 /**
  * Abstracts a back end service for which there can be multiple instances.
@@ -11,11 +18,11 @@ import { ServiceCollectionMap } from './ServiceInstanceCollection'
  * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
 
-export default class ServiceClient {
+export default class ServiceStubWithLoadBalancer {
   private readonly log: Logger
 
   constructor(
-    private connection: Connection,
+    private connection: ServiceStub,
     private readonly serviceInstanceDictionaryStream: Observable<
       ServiceCollectionMap
     >
@@ -32,7 +39,9 @@ export default class ServiceClient {
       map(
         serviceCollectionMap =>
           serviceCollectionMap.getServiceInstanceWithMinimumLoad(serviceType)!
-      )
+      ),
+      distinctUntilChanged((last, next) => last.serviceId === next.serviceId),
+      take(1)
     )
   }
 
@@ -48,7 +57,6 @@ export default class ServiceClient {
     this.log.info(`Creating request response operation for [${operationName}]`)
 
     return this.getServiceWithMinLoad$(service).pipe(
-      take(1),
       switchMap(serviceInstanceStatus => {
         if (serviceInstanceStatus.serviceId !== 'status') {
           this.log.info(
@@ -67,7 +75,8 @@ export default class ServiceClient {
           remoteProcedure,
           request
         )
-      })
+      }),
+      share()
     )
   }
 
@@ -80,7 +89,6 @@ export default class ServiceClient {
     request: TRequest
   ) {
     return this.getServiceWithMinLoad$(service).pipe(
-      take(1),
       switchMap(serviceInstanceStatus => {
         // The backend has a different contract for streams (i.e. request-> n responses) as it does with request-response (request->single response) thus
         // the different method here to support this.
@@ -133,7 +141,8 @@ export default class ServiceClient {
         )
 
         return subscribeTopic$
-      })
+      }),
+      share()
     )
   }
 }

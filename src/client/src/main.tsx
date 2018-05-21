@@ -1,14 +1,9 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { ReplaySubject, timer } from 'rxjs'
+import { multicast, publishReplay, refCount } from 'rxjs/operators'
 import { getEnvVars } from './config/config'
-import { OpenFin } from './services/openFin'
-import createConnection from './system/service/connection'
-import { User } from './types'
-import { OpenFinProvider, ShellContainer } from './ui/shell'
-
-import { timer } from 'rxjs'
-import { publishReplay, refCount } from 'rxjs/operators'
 import configureStore from './configureStore'
 import { connect, disconnect } from './connectionActions'
 import {
@@ -21,9 +16,15 @@ import {
   PricingService,
   ReferenceDataService
 } from './services'
-import { logger } from './system'
-import { ServiceClient } from './system/service'
-import { serviceInstanceDictionaryStream$ } from './system/service/serviceStatusStream'
+import { OpenFin } from './services/openFin'
+import { logger, ServiceStub } from './system'
+import { ServiceClient } from './system'
+import { AutobahnConnectionProxy } from './system'
+import { ServiceCollectionMap } from './system'
+import { ConnectionEvent, createConnection$ } from './system/connectionStream'
+import { serviceStatusStream$ } from './system/serviceStatusStream'
+import { User } from './types'
+import { OpenFinProvider, ShellContainer } from './ui/shell'
 
 const log = logger.create('Application Service')
 
@@ -32,7 +33,12 @@ declare const window: any
 
 const config = getEnvVars(process.env.REACT_APP_ENV)
 
-const connectSocket = () => {
+const connectSocket = () => {}
+
+const HEARTBEAT_TIMEOUT = 3000
+const APPLICATION_DISCONNECT = 15 * 60 * 1000
+
+const appBootstrapper = () => {
   const user: User = FakeUserRepository.currentUser
   const realm = 'com.weareadaptive.reactivetrader'
   const url = config.overwriteServerEndpoint
@@ -41,40 +47,48 @@ const connectSocket = () => {
   const port = config.overwriteServerEndpoint
     ? config.serverPort
     : location.port
-  return createConnection(user.code, url, realm, +port)
-}
 
-const HEARTBEAT_TIMEOUT = 3000
-const APPLICATION_DISCONNECT = 15 * 60 * 1000
+  const autobahn = new AutobahnConnectionProxy(url, realm, +port)
 
-const appBootstrapper = () => {
-  const connection = connectSocket()
+  const connection$ = createConnection$(autobahn).pipe(
+    multicast(() => {
+      return new ReplaySubject<ConnectionEvent>(1)
+    }),
+    refCount()
+  )
 
-  const serviceStatus$ = serviceInstanceDictionaryStream$(
-    connection,
+  const serviceStub = new ServiceStub(user.code, connection$)
+
+  const serviceStatus$ = serviceStatusStream$(
+    serviceStub,
     HEARTBEAT_TIMEOUT
-  ).pipe(publishReplay(1), refCount())
+  ).pipe(
+    multicast(() => {
+      return new ReplaySubject<ServiceCollectionMap>(1)
+    }),
+    refCount()
+  )
 
-  const serviceClient = new ServiceClient(connection, serviceStatus$)
+  const loadBalancedServiceStub = new ServiceClient(serviceStub, serviceStatus$)
 
-  const blotterService = new BlotterService(serviceClient)
+  const blotterService = new BlotterService(loadBalancedServiceStub)
 
-  const pricingService = new PricingService(serviceClient)
+  const pricingService = new PricingService(loadBalancedServiceStub)
 
-  const refDataService = new ReferenceDataService(serviceClient)
+  const refDataService = new ReferenceDataService(loadBalancedServiceStub)
 
   const openFin = new OpenFin()
 
   const execService = new ExecutionService(
-    serviceClient,
+    loadBalancedServiceStub,
     openFin.checkLimit.bind(openFin)
   )
 
-  const analyticsService = new AnalyticsService(serviceClient)
+  const analyticsService = new AnalyticsService(loadBalancedServiceStub)
 
   const compositeStatusService = new CompositeStatusService(serviceStatus$)
 
-  const connectionStatusService = new ConnectionStatusService(connection)
+  const connectionStatusService = new ConnectionStatusService(connection$)
 
   const isRunningInFinsemble = window.FSBL
 

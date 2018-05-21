@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs'
-import { AutobahnSessionProxy } from '.'
-import logger from '../logger'
 import { AutobahnConnection } from './AutoBahnConnection'
 import { ConnectionType } from './connectionType'
+import { AutobahnSessionProxy } from './index'
+import logger from './logger'
 
 const log = logger.create('ConnectionFactory')
 

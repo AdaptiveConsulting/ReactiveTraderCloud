@@ -1,7 +1,8 @@
-import { ServiceInstanceStatus } from '../../types'
+import { ServiceInstanceStatus } from '../types/index'
 
 export class ServiceInstanceCollection {
   private readonly serviceMap: Map<string, ServiceInstanceStatus> = new Map()
+
   constructor(public readonly serviceType: string) {}
 
   update(update: ServiceInstanceStatus) {
@@ -50,17 +51,16 @@ export class ServiceCollectionMap {
   }
 
   getStatusOfServices(): ServiceConnectionInfo {
-    return Array.from(this.serviceInstanceCollections.values()).reduce(
-      (acc, next) => {
-        acc[next.serviceType] = {
-          serviceType: next.serviceType,
-          connectedInstanceCount: next.getServiceInstances().length,
-          isConnected: !!next.getServiceWithMinLoad()
-        }
-        return acc
-      },
-      {}
-    )
+    return Array.from(this.serviceInstanceCollections.values()).reduce<
+      ServiceConnectionInfo
+    >((acc, next) => {
+      acc[next.serviceType] = {
+        serviceType: next.serviceType,
+        connectedInstanceCount: next.getServiceInstances().length,
+        isConnected: !!next.getServiceWithMinLoad()
+      }
+      return acc
+    }, {})
   }
 }
 

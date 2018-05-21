@@ -1,8 +1,5 @@
-import { asyncScheduler } from 'rxjs'
-import { map } from 'rxjs/operators'
-import { logger, RetryPolicy } from '../system'
-import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
-import { ServiceClient } from '../system/service'
+import { map, retryWhen } from 'rxjs/operators'
+import { logger, retryWithBackOff, ServiceClient } from '../system'
 import { ServiceConst } from '../types'
 import { mapFromDto } from './mappers'
 import { RawTradeUpdate } from './mappers/tradeMapper'
@@ -20,13 +17,6 @@ export default class BlotterService {
         'getTradesStream',
         {}
       )
-      .pipe(
-        retryWithPolicy(
-          RetryPolicy.backoffTo10SecondsMax,
-          'getTradesStream',
-          asyncScheduler
-        ),
-        map(dto => mapFromDto(dto))
-      )
+      .pipe(retryWhen(retryWithBackOff()), map(dto => mapFromDto(dto)))
   }
 }
