@@ -1,29 +1,14 @@
-import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
-import { ConnectionInfo } from '../../services/connectionStatusService'
+import { GlobalState } from '../../combineReducers'
+import { openLink } from '../../linkEpic'
 import { toggleStatusServices } from './FooterOperations'
-import FooterView, { Services } from './FooterView'
+import FooterView from './FooterView'
 
-interface FooterContainerStateProps {
-  compositeStatusService: Services
-  displayStatusServices: boolean
-  connectionStatus: ConnectionInfo
-}
-
-interface FooterContainerDispatchProps {
-  toggleStatusServices: () => void
-}
-
-type FooterContainerProps = FooterContainerStateProps &
-  FooterContainerDispatchProps
+type FooterContainerProps = FooterContainerStateProps & FooterContainerDispatchProps
 
 class FooterContainer extends React.Component<FooterContainerProps, any> {
-  static contextTypes = {
-    openFin: PropTypes.object
-  }
-
   render() {
     return (
       <FooterView
@@ -31,17 +16,18 @@ class FooterContainer extends React.Component<FooterContainerProps, any> {
         connectionStatus={this.props.connectionStatus}
         toggleStatusServices={this.props.toggleStatusServices}
         displayStatusServices={this.props.displayStatusServices}
-        openFin={this.context.openFin}
-        isRunningInOpenFin={!!this.context.openFin}
+        isRunningOnDesktop={this.props.isRunningOnDesktop}
+        openLink={this.props.openLink}
       />
     )
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) =>
+const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      toggleStatusServices
+      toggleStatusServices,
+      openLink
     },
     dispatch
   )
@@ -49,9 +35,19 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) =>
 function mapStateToProps({
   compositeStatusService,
   displayStatusServices,
-  connectionStatus
-}) {
-  return { compositeStatusService, displayStatusServices, connectionStatus }
+  connectionStatus,
+  environment
+}: GlobalState) {
+  return {
+    compositeStatusService,
+    displayStatusServices,
+    connectionStatus,
+    isRunningOnDesktop: environment.isRunningOnDesktop
+  }
 }
+
+type FooterContainerStateProps = ReturnType<typeof mapStateToProps>
+
+type FooterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 
 export default connect(mapStateToProps, mapDispatchToProps)(FooterContainer)

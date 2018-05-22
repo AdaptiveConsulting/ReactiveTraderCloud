@@ -22,5 +22,4 @@ export const analyticsServiceEpic: ApplicationEpic = (action$, store, { analytic
     )
   )
 }
-
 export default analyticsServiceEpic

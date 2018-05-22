@@ -1,3 +1,4 @@
+import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ActionUnion } from './ActionHelper'
@@ -33,7 +34,8 @@ interface PricingOperationsState {
 
 export const initialState: PricingOperationsState = {}
 
-export const pricingServiceReducer = (state = initialState, action: PriceActions) => {
+export const pricingServiceReducer = (state = initialState, actions: Action) => {
+  const action = actions as PriceActions
   switch (action.type) {
     case SPOT_PRICES_UPDATE:
       const { payload } = action

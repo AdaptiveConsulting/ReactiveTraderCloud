@@ -6,13 +6,13 @@ import { ApplicationDependencies } from './applicationServices'
 import rootReducer from './combineReducers'
 import { compositeStatusServiceEpic } from './compositeStatusServiceOperations'
 import { connectionStatusEpicsCreator } from './connectionStatusOperations'
+import { linkEpic } from './linkEpic'
 import { openfinEpic } from './openfinEpics'
 import { pricingServiceEpic } from './pricingOperations'
 import { referenceServiceEpic } from './referenceDataOperations'
 import { analyticsServiceEpic } from './ui/analytics'
 import { blotterEpic } from './ui/blotter/'
 import { popoutEpic } from './ui/common/popout/popoutEpic'
-import { footerEpic } from './ui/footer/FooterOperations'
 import { spotTileEpicsCreator } from './ui/spotTile'
 
 export default function configureStore(dependencies: ApplicationDependencies) {
@@ -25,7 +25,7 @@ export default function configureStore(dependencies: ApplicationDependencies) {
     connectionStatusEpicsCreator,
     spotTileEpicsCreator,
     popoutEpic,
-    footerEpic
+    linkEpic
   ]
 
   if (dependencies.openFin.isRunningInOpenFin) {

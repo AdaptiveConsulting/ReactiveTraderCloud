@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
-import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { GlobalState } from '../../combineReducers'
 import { CurrencyPair, Direction, ExecuteTradeRequest } from '../../types/'
 import { SpotPriceTick } from '../../types/spotPriceTick'
 import { SpotTileData } from '../../types/spotTileData'
@@ -40,24 +40,21 @@ interface SpotTileContainerStateProps {
   currencyPair: CurrencyPair
   spotTilesData: SpotTileData
   notionals: any
+  isRunningOnDesktop: boolean
 }
 
 interface SpotTileContainerDispatchProps {
   executeTrade: (request: any) => void
   onComponentMount: (id: string) => void
-  onPopoutClick: (region: any, openFin: any) => any
-  undockTile: (title: string) => any
-  displayCurrencyChart: (symbol: string) => any
-  onNotificationDismissedClick: (symbol: string) => any
+  onPopoutClick: (region: string) => () => void
+  undockTile: (title: string) => () => void
+  displayCurrencyChart: (symbol: string) => () => void
+  onNotificationDismissedClick: (symbol: string) => () => void
 }
 
 type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
 
 class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
-  static contextTypes = {
-    openFin: PropTypes.object
-  }
-
   componentDidMount() {
     this.props.onComponentMount(this.props.id)
   }
@@ -67,7 +64,6 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
     return shouldUpdate
   }
   render() {
-    const openFin = this.context.openFin
     const {
       id,
       currencyPair,
@@ -89,9 +85,9 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps, any> {
         pricingConnected={pricingConnected}
         executionConnected={executionConnected}
         currencyPair={currencyPair}
-        isRunningInOpenFin={!!openFin}
+        isRunningOnDesktop={this.props.isRunningOnDesktop}
         spotTileData={spotTilesData}
-        onPopoutClick={onPopoutClick(id, openFin)}
+        onPopoutClick={onPopoutClick(id)}
         displayCurrencyChart={displayCurrencyChart(id)}
         onNotificationDismissedClick={onNotificationDismissedClick(id)}
         undockTile={undockTile(spotTitle)}
@@ -149,8 +145,8 @@ const mapDispatchToProps = dispatch => {
 const makeMapStateToProps = () => {
   const getCurrencyPair = makeGetCurrencyPair()
   const getSpotTileData = makeGetSpotTileData()
-  const mapStateToProps = (state, props) => {
-    const { compositeStatusService, displayAnalytics, notionals } = state
+  const mapStateToProps = (state: GlobalState, props) => {
+    const { compositeStatusService, displayAnalytics, notionals, environment } = state
     const executionConnected =
       compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected
     const pricingConnected =
@@ -158,6 +154,7 @@ const makeMapStateToProps = () => {
     const isConnected =
       compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected
     return {
+      isRunningOnDesktop: environment.isRunningOnDesktop,
       isConnected,
       executionConnected,
       pricingConnected,

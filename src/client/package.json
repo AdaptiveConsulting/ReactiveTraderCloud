@@ -51,6 +51,7 @@
     ]
   },
   "dependencies": {
+    "@types/react-redux": "^6.0.0",
     "ag-grid": "15.0.0",
     "ag-grid-react": "15.0.0",
     "animate.css": "3.4.0",

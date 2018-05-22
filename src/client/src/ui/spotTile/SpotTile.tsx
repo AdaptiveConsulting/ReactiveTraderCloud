@@ -16,7 +16,7 @@ export interface SpotTileProps {
   spotTileData: SpotTileData
   executionConnected: boolean
   pricingConnected: boolean
-  isRunningInOpenFin: boolean
+  isRunningOnDesktop: boolean
   executeTrade: (direction: any) => void
   onPopoutClick: () => void
   undockTile: () => void
@@ -64,14 +64,14 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   }
 
   createSpotTileControls() {
-    const { onPopoutClick, undockTile, displayCurrencyChart, isRunningInOpenFin, spotTileData } = this.props
+    const { onPopoutClick, undockTile, displayCurrencyChart, isRunningOnDesktop, spotTileData } = this.props
 
     return (
       <SpotTileControls
         onPopoutClick={onPopoutClick}
         currencyChartIsOpening={spotTileData.currencyChartIsOpening}
         displayCurrencyChart={displayCurrencyChart}
-        isRunningInOpenFin={isRunningInOpenFin}
+        isRunningOnDesktop={isRunningOnDesktop}
         undockTile={undockTile}
       />
     )

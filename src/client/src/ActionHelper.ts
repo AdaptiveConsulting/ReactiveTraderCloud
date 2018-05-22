@@ -1,5 +1,5 @@
 /**
- * Typesctipt definitions for creating actions and action creators.
+ * Typescript definitions for creating actions and action creators.
  * This allows us to fully type epics and reducers without boiler plate
  */
 
