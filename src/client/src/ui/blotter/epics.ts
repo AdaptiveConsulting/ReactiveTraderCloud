@@ -4,7 +4,7 @@ import { ApplicationEpic } from '../../ApplicationEpic'
 import { CONNECT_SERVICES, DISCONNECT_SERVICES } from '../../connectionActions'
 import { OpenFin } from '../../services/openFin'
 import { CurrencyPair, Trade } from '../../types'
-import { createNewTradesAction } from './actions'
+import { BlotterActions } from './actions'
 
 const subscribeOpenFinToBlotterData = (openFin: OpenFin, store) => () => {
   const trades: Trade[] = store.getState().blotterService.trades
@@ -17,13 +17,11 @@ export const blotterServiceEpic: ApplicationEpic = (action$, store, { blotterSer
   action$.pipe(
     ofType(CONNECT_SERVICES),
     switchMapTo(
-      blotterService
-        .getTradesStream()
-        .pipe(
-          map(createNewTradesAction),
-          tap(subscribeOpenFinToBlotterData(openFin, store)),
-          takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
-        )
+      blotterService.getTradesStream().pipe(
+        map(BlotterActions.createNewTradesAction),
+        tap(subscribeOpenFinToBlotterData(openFin, store)),
+        takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+      )
     )
   )
 
