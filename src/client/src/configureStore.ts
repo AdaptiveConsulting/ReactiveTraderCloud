@@ -1,9 +1,9 @@
-import { applyMiddleware, createStore } from 'redux'
+import { Action, applyMiddleware, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { combineEpics, createEpicMiddleware } from 'redux-observable'
 
 import { ApplicationDependencies } from './applicationServices'
-import rootReducer from './combineReducers'
+import rootReducer, { GlobalState } from './combineReducers'
 import { compositeStatusServiceEpic } from './compositeStatusServiceOperations'
 import { connectionStatusEpicsCreator } from './connectionStatusOperations'
 import { linkEpic } from './linkEpic'
@@ -32,9 +32,12 @@ export default function configureStore(dependencies: ApplicationDependencies) {
     epics.push(openfinEpic)
   }
 
-  const middleware = createEpicMiddleware(combineEpics(...epics), {
+  const middleware = createEpicMiddleware<Action, Action, GlobalState, ApplicationDependencies>({
     dependencies
   })
 
-  return createStore(rootReducer, composeWithDevTools(applyMiddleware(middleware)))
+  const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(middleware)))
+  middleware.run(combineEpics(...epics))
+
+  return store
 }
