@@ -33,7 +33,7 @@ class BlotterContainer extends React.Component<BlotterContainerProps, BlotterCon
     const trades = this.props.blotterService.trades
     const gridRows = _.values(trades).reverse()
     const popoutClick = this.props.onPopoutClick()
-    return !this.props.isConnected ? (
+    return this.props.isConnected ? (
       <div className="shell_workspace_blotter" ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
         <Blotter
           rows={gridRows}
@@ -43,7 +43,7 @@ class BlotterContainer extends React.Component<BlotterContainerProps, BlotterCon
         />
       </div>
     ) : (
-      <div className="shell_workspace_blotter blotter--disconnected">Blotter Disconnected</div>
+      <div className="shell_workspace_blotter blotter--disconnected">Blotter disconnected</div>
     )
   }
 
