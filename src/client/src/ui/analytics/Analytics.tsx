@@ -32,10 +32,10 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
   render() {
     const { canPopout, isConnected, currencyPairs } = this.props
 
-    if (isConnected) {
+    if (!isConnected) {
       return (
         <div className="analytics__container analytics__container--disconnected">
-          <div ref="analyticsInnerContainer">Analytics Disconnected</div>
+          <div ref="analyticsInnerContainer">Analytics disconnected</div>
         </div>
       )
     }
