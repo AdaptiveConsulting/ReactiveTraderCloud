@@ -300,3 +300,13 @@
   display: none;
   visibility: hidden;
 }
+
+.blotter--disconnected {
+  display: flex;
+  background-color: #000000;
+  color: #ffffff;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
