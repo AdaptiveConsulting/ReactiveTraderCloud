@@ -79,7 +79,7 @@
     "react-split-pane": "0.1.77",
     "redux": "4.0.0",
     "redux-actions": "2.3.2",
-    "redux-observable": "next",
+    "redux-observable": "1.0.0-alpha.3",
     "reselect": "3.0.1",
     "rxjs": "6.1.0",
     "rxjs-spy": "^7.0.1",

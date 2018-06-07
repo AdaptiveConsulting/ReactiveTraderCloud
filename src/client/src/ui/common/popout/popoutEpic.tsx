@@ -19,7 +19,7 @@ const generateView = container => {
   return React.createElement(Provider, { store: window.store }, childComponent)
 }
 
-const popoutWindowEpic: ApplicationEpic = (action$, store, { openFin }) => {
+const popoutWindowEpic: ApplicationEpic = (action$, store: any, { openFin }) => {
   return action$.pipe(
     ofType(REGIONS_ACTIONS.REGION_OPEN_WINDOW),
     map((action: any) => {
