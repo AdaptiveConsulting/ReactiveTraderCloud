@@ -11,4 +11,4 @@ export const BlotterActions = {
   )
 }
 
-export type SpotTileActions = ActionUnion<typeof BlotterActions>
+export type BlotterActions = ActionUnion<typeof BlotterActions>
