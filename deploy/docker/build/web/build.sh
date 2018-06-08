@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 build=$1
-if [[ $build = "" ]];then
-  echo "web-build: build number required as first parameter"
+if [[ $build = "" ]]; then
+  echo "ERROR: web-build: build number required as first parameter"
   exit 1
 fi
 
@@ -32,22 +32,25 @@ cp ${npminstall_dir}/Dockerfile ${npminstall_build_dir}/Dockerfile
 sed -ie "s|__NODE_CONTAINER__|$nodeContainer|g" ${npminstall_build_dir}/Dockerfile
 docker build --no-cache -t ${temp_image} ${npminstall_build_dir}/.
 
-if [[ "$(docker ps -q -a --filter name=${temp_container})" != "" ]]
-then
+if [[ "$(docker ps -q -a --filter name=${temp_container})" != "" ]]; then
   if [[ "${RUN_ON_CIRCLE_CI}"  != "true" ]]
   then docker rm ${temp_container} > /dev/null || true
   fi
 fi
+
 docker run \
   --name ${temp_container} \
   -v ${npm_cache_container}://root/.npm \
   -v ${nodemodules_cache_container}://client/node_modules \
   ${temp_image}
 
-if [[ -f build ]];then rm -r build; fi
+if [[ -f build ]]; then
+  rm -r build;
+fi
+
 docker cp ${temp_container}:/client/build ${this_directory}/.
-if [[ "${RUN_ON_CIRCLE_CI}"  != "true" ]]
-then
+
+if [[ "${RUN_ON_CIRCLE_CI}"  != "true" ]]; then
   docker rm ${temp_container}
   docker rmi ${temp_image}
 fi

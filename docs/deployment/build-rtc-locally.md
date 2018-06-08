@@ -27,7 +27,7 @@
         - *Broker*: A crossbar image with the configuration
     - **Utilities**:
         - *Gcloud*: image used for the clis Gcloud and Kubectl
-        - *Minikugegate*: image that give access to RTC when running on local minikube cluster
+        - *Minikubegate*: image that give access to RTC when running on local minikube cluster
         - *Nsgate*: image that give access to RTC when running on google cloud
         - *Testtools*: image with simple utilitise to connect and debug other services
 
@@ -46,7 +46,7 @@ You will find scripts to help build/run/test Reactive Trader components:
 
 To build, run the following with the [build id][buildid], in this example we'll use *localbuild*
 ```bash
-./deploy/docker/prepare build RTC localbuild
+./deploy/docker/prepare build rtc localbuild
 ```
 
 This will run the following tasks:
