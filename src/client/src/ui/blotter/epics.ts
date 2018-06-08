@@ -1,19 +1,8 @@
-import { ofType, StateObservable } from 'redux-observable'
-import { map, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { ofType } from 'redux-observable'
+import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
-import { GlobalState } from '../../combineReducers'
 import { CONNECT_SERVICES, DISCONNECT_SERVICES } from '../../connectionActions'
-import { CurrencyPairReducerState } from '../../currencyPairsOperations'
-import { OpenFin } from '../../services/openFin'
-import { Trades } from '../../types'
 import { BlotterActions } from './actions'
-
-const subscribeOpenFinToBlotterData = (openFin: OpenFin, state$: StateObservable<GlobalState>) => () => {
-  const trades: Trades = state$.value.blotterService.trades
-  const currencyPairs: CurrencyPairReducerState = state$.value.currencyPairs
-  const cb = (msg: any, uuid: string) => openFin.sendAllBlotterData(uuid, trades, currencyPairs)
-  openFin.addSubscription('fetch-blotter', cb)
-}
 
 export const blotterServiceEpic: ApplicationEpic = (action$, state$, { blotterService, openFin }) =>
   action$.pipe(
@@ -21,7 +10,6 @@ export const blotterServiceEpic: ApplicationEpic = (action$, state$, { blotterSe
     switchMapTo(
       blotterService.getTradesStream().pipe(
         map(BlotterActions.createNewTradesAction),
-        tap(subscribeOpenFinToBlotterData(openFin, state$)),
         takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
       )
     )
