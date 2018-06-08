@@ -1,4 +1,3 @@
-import { Connection, Session } from 'autobahn'
 import { ConnectionType } from './connectionType'
 
 interface TransportDefinition {

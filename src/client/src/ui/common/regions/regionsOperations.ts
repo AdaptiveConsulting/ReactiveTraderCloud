@@ -9,15 +9,9 @@ export const ACTION_TYPES = {
 }
 
 // onPopoutClick
-export const openWindow = createAction(
-  ACTION_TYPES.REGION_OPEN_WINDOW,
-  (payload, openFin) => ({ ...payload, openFin })
-)
+export const openWindow = createAction(ACTION_TYPES.REGION_OPEN_WINDOW, payload => ({ ...payload }))
 // onComponentMount
-export const addRegion = createAction(
-  ACTION_TYPES.REGION_ADD,
-  payload => payload
-)
+export const addRegion = createAction(ACTION_TYPES.REGION_ADD, payload => payload)
 
 const changeRegionTearOffStatus = (state, payload, status) => ({
   ...state,

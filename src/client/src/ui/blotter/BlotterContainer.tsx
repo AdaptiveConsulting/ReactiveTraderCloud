@@ -1,5 +1,4 @@
 import * as _ from 'lodash'
-import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
@@ -12,7 +11,7 @@ import { blotterRegionsSettings } from './reducer'
 interface BlotterContainerProps {
   blotterService: any
   isConnected: boolean
-  onPopoutClick: (openFin) => () => void
+  onPopoutClick: () => () => void
   onComponentMount: () => void
   size: { width: number; height: number }
 }
@@ -21,16 +20,9 @@ interface BlotterContainerState {
   gridDocument: Element
 }
 
-class BlotterContainer extends React.Component<
-  BlotterContainerProps,
-  BlotterContainerState
-> {
+class BlotterContainer extends React.Component<BlotterContainerProps, BlotterContainerState> {
   state = {
     gridDocument: null
-  }
-
-  static contextTypes = {
-    openFin: PropTypes.object
   }
 
   public componentDidMount() {
@@ -39,14 +31,10 @@ class BlotterContainer extends React.Component<
 
   public render() {
     const trades = this.props.blotterService.trades
-    const openFin = this.context.openFin
     const gridRows = _.values(trades).reverse()
-    const popoutClick = this.props.onPopoutClick(openFin)
+    const popoutClick = this.props.onPopoutClick()
     return this.props.isConnected ? (
-      <div
-        className="shell_workspace_blotter"
-        ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}
-      >
+      <div className="shell_workspace_blotter" ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
         <Blotter
           rows={gridRows}
           gridDocument={this.state.gridDocument}
@@ -67,17 +55,15 @@ class BlotterContainer extends React.Component<
 const mapStateToProps = (state: any) => {
   const { blotterService, compositeStatusService } = state
   const isConnected =
-    compositeStatusService &&
-    compositeStatusService.blotter &&
-    compositeStatusService.blotter.isConnected
+    compositeStatusService && compositeStatusService.blotter && compositeStatusService.blotter.isConnected
   return { blotterService, isConnected }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onPopoutClick: openFin => {
+    onPopoutClick: () => {
       return () => {
-        dispatch(openWindow(blotterRegion, openFin))
+        dispatch(openWindow(blotterRegion))
       }
     },
     onComponentMount: () => {

@@ -1,32 +1,20 @@
-import { createAction, handleActions } from 'redux-actions'
-import { ofType } from 'redux-observable'
-import { map } from 'rxjs/operators'
+import { Action } from 'redux'
+import { action as creatAction } from '../../ActionHelper'
 
 export enum ACTION_TYPES {
-  TOGGLE_STATUS_SERVICES = '@ReactiveTraderCloud/TOGGLE_STATUS_SERVICES',
-  OPEN_LINK = '@ReactiveTraderCloud/FOOTER_OPEN_LINK'
+  TOGGLE_STATUS_SERVICES = '@ReactiveTraderCloud/TOGGLE_STATUS_SERVICES'
 }
 
-export const toggleStatusServices = createAction(
-  ACTION_TYPES.TOGGLE_STATUS_SERVICES
-)
-export const openLinks = createAction(
-  ACTION_TYPES.OPEN_LINK,
-  payload => payload
-)
+export const toggleStatusServices = creatAction(ACTION_TYPES.TOGGLE_STATUS_SERVICES)
 
-const INITIAL_STATE = false
+const INITIAL_STATE: boolean = false
 
-export const footerEpic = openFin => action$ => {
-  return action$.pipe(
-    ofType(ACTION_TYPES.OPEN_LINK),
-    map(action => openLinks(openFin))
-  )
+export default function(state: typeof INITIAL_STATE = INITIAL_STATE, actions: Action) {
+  const action = actions as ReturnType<typeof toggleStatusServices>
+  switch (action.type) {
+    case ACTION_TYPES.TOGGLE_STATUS_SERVICES:
+      return !state
+    default:
+      return state
+  }
 }
-
-export default handleActions(
-  {
-    [ACTION_TYPES.TOGGLE_STATUS_SERVICES]: state => !state
-  },
-  INITIAL_STATE
-)
