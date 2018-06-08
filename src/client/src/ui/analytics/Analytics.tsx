@@ -34,36 +34,27 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
 
     if (!isConnected) {
       return (
-        <div className="analytics__container">
-          <div ref="analyticsInnerContainer" />
+        <div className="analytics__container analytics__container--disconnected">
+          <div ref="analyticsInnerContainer">Analytics disconnected</div>
         </div>
       )
     }
 
     const newWindowBtnClassName = classnames(
       'glyphicon glyphicon-new-window',
-      (canPopout && 'analytics__icon--tearoff--hidden') ||
-        'analytics__icon--tearoff'
+      (canPopout && 'analytics__icon--tearoff--hidden') || 'analytics__icon--tearoff'
     )
 
     return (
       <div className="analytics analytics__container animated fadeIn">
         <div className="analytics__controls popout__controls">
-          <i
-            className={newWindowBtnClassName}
-            onClick={() => this.props.onPopoutClick()}
-          />
+          <i className={newWindowBtnClassName} onClick={() => this.props.onPopoutClick()} />
         </div>
         {this.props.pnlChartModel && <PNLChart {...this.props.pnlChartModel} />}
         <div className="analytics__bubblechart-container">
-          <span className="analytics__chart-title analytics__bubblechart-title">
-            Positions
-          </span>
+          <span className="analytics__chart-title analytics__bubblechart-title">Positions</span>
           {!_.isEmpty(this.props.positionsChartModel.seriesData) && (
-            <PositionsBubbleChart
-              data={this.props.positionsChartModel.seriesData}
-              currencyPairs={currencyPairs}
-            />
+            <PositionsBubbleChart data={this.props.positionsChartModel.seriesData} currencyPairs={currencyPairs} />
           )}
         </div>
         <div>
