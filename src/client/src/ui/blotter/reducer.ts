@@ -1,7 +1,8 @@
 import * as keyBy from 'lodash.keyby'
+import { Action } from 'redux'
 import { DISCONNECT_SERVICES } from '../../connectionActions'
 import { RegionSettings, Trade } from '../../types/index'
-import { ACTION_TYPES } from './actions'
+import { ACTION_TYPES, BlotterActions } from './actions'
 
 export const blotterRegionsSettings: RegionSettings = {
   title: 'Blotter',
@@ -16,18 +17,18 @@ interface Trades {
   [tradeId: number]: Trade
 }
 
-interface State {
+interface BlotterState {
   trades: Trades
 }
 
-const initialState: State = {
+const initialState: BlotterState = {
   trades: {}
 }
 
 export const blotterServiceReducer = (
-  state: State = initialState,
-  action
-): State => {
+  state: BlotterState = initialState,
+  action: BlotterActions | Action<typeof DISCONNECT_SERVICES>
+): BlotterState => {
   switch (action.type) {
     case ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES:
       const newTradesById = keyBy(action.payload.trades, `tradeId`)
