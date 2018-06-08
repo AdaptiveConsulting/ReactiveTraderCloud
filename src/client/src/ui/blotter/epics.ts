@@ -5,8 +5,8 @@ import { GlobalState } from '../../combineReducers'
 import { CONNECT_SERVICES, DISCONNECT_SERVICES } from '../../connectionActions'
 import { CurrencyPairReducerState } from '../../currencyPairsOperations'
 import { OpenFin } from '../../services/openFin'
+import { Trades } from '../../types'
 import { BlotterActions } from './actions'
-import { Trades } from './reducer'
 
 const subscribeOpenFinToBlotterData = (openFin: OpenFin, state$: StateObservable<GlobalState>) => () => {
   const trades: Trades = state$.value.blotterService.trades
