@@ -42,7 +42,9 @@ class BlotterContainer extends React.Component<BlotterContainerProps, BlotterCon
           canPopout={Environment.isRunningInIE()}
         />
       </div>
-    ) : null
+    ) : (
+      <div className="shell_workspace_blotter blotter--disconnected">Blotter disconnected</div>
+    )
   }
 
   private updateGridDocument = (doc: Element) => {
@@ -72,9 +74,10 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const ConnectedBlotterContainer = connect(mapStateToProps, mapDispatchToProps)(
-  sizeMe({ monitorHeight: true })(BlotterContainer)
-)
+const ConnectedBlotterContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(sizeMe({ monitorHeight: true })(BlotterContainer))
 
 const blotterRegion = {
   id: 'blotter',
