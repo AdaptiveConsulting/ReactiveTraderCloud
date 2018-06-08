@@ -8,7 +8,7 @@ import { AnalyticsActions } from './actions'
 
 const CURRENCY: string = 'USD'
 
-export const analyticsServiceEpic: ApplicationEpic = (action$, store, { analyticsService, openFin }) => {
+export const analyticsServiceEpic: ApplicationEpic = (action$, state$, { analyticsService, openFin }) => {
   return action$.pipe(
     ofType(REF_ACTION_TYPES.REFERENCE_SERVICE),
     mergeMapTo(
@@ -20,4 +20,5 @@ export const analyticsServiceEpic: ApplicationEpic = (action$, store, { analytic
     )
   )
 }
+
 export default analyticsServiceEpic
