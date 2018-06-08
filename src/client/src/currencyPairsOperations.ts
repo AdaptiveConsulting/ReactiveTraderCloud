@@ -3,7 +3,7 @@ import { DISCONNECT_SERVICES } from './connectionActions'
 import { ACTION_TYPES } from './referenceDataOperations'
 import { CurrencyPair } from './types/index'
 
-interface CurrencyPairReducerState {
+export interface CurrencyPairReducerState {
   [id: string]: CurrencyPair
 }
 

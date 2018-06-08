@@ -13,7 +13,7 @@ export const blotterRegionsSettings: RegionSettings = {
   resizable: true
 }
 
-interface Trades {
+export interface Trades {
   [tradeId: number]: Trade
 }
 
