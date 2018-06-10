@@ -6,7 +6,7 @@ export class ServiceInstanceCollection {
   constructor(public readonly serviceType: string) {}
 
   update(update: ServiceInstanceStatus) {
-    this.serviceMap.set(update.serviceType, update)
+    this.serviceMap.set(update.serviceId, update)
     return this
   }
 
@@ -18,6 +18,10 @@ export class ServiceInstanceCollection {
     return this.getServiceInstances()
       .filter(x => x.isConnected)
       .sort((x, y) => x.serviceLoad - y.serviceLoad)[0]
+  }
+
+  get(serviceInstance: string) {
+    return this.serviceMap.get(serviceInstance)
   }
 }
 
@@ -37,6 +41,14 @@ export class ServiceCollectionMap {
     return this.serviceInstanceCollections.get(service)
   }
 
+  getServiceInstanceStatus(type: string, instance: string) {
+    if (this.serviceInstanceCollections.has(type)) {
+      return this.serviceInstanceCollections.get(type)!.get(instance)
+    }
+
+    return undefined
+  }
+
   getServiceInstanceWithMinimumLoad(serviceType: string) {
     const x = this.serviceInstanceCollections.get(serviceType)
 
@@ -51,7 +63,7 @@ export class ServiceCollectionMap {
     return Array.from(this.serviceInstanceCollections.values()).reduce<ServiceConnectionInfo>((acc, next) => {
       acc[next.serviceType] = {
         serviceType: next.serviceType,
-        connectedInstanceCount: next.getServiceInstances().length,
+        connectedInstanceCount: next.getServiceInstances().filter(instance => instance.isConnected === true).length,
         isConnected: !!next.getServiceWithMinLoad()
       }
       return acc
