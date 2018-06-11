@@ -4,13 +4,12 @@ import { map, mergeMapTo, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
 import { ACTION_TYPES as REF_ACTION_TYPES, createReferenceServiceAction } from '../../referenceDataOperations'
 import { PositionUpdates } from '../../types'
-import { disconnect, DISCONNECT_SERVICES } from './../../connectionActions'
+import { DISCONNECT_SERVICES, DisconnectAction } from './../../connectionActions'
 import { AnalyticsActions } from './actions'
 
 const CURRENCY: string = 'USD'
 
 type ReferenceServiceAction = ReturnType<typeof createReferenceServiceAction>
-type DisconnectAction = ReturnType<typeof disconnect>
 type FetchAnalyticsAction = ReturnType<typeof AnalyticsActions.fetchAnalytics>
 
 export const analyticsServiceEpic: ApplicationEpic = (action$, state$, { analyticsService, openFin }) =>
