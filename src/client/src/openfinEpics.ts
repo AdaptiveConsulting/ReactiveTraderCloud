@@ -3,7 +3,7 @@ import { bindCallback } from 'rxjs'
 import { filter, map, mergeMap, switchMapTo, takeUntil, tap, withLatestFrom } from 'rxjs/operators'
 import { ApplicationEpic } from './ApplicationEpic'
 import { CONNECT_SERVICES, DISCONNECT_SERVICES } from './connectionActions'
-import { connectBlotterServiceToOpenFinEpic } from './services/openFin'
+import { openfinServiceEpics } from './services/openFin'
 import { Direction, SpotPriceTick } from './types'
 import { CurrencyPair } from './types/currencyPair'
 import { SpotTileActions } from './ui/spotTile/actions'
@@ -67,4 +67,4 @@ export const closePositionEpic: ApplicationEpic = (action$, state$, { openFin })
     })
   )
 
-export const openfinEpic = combineEpics(publishPriceToOpenFinEpic, connectBlotterServiceToOpenFinEpic)
+export const openfinEpic = combineEpics(publishPriceToOpenFinEpic, openfinServiceEpics)

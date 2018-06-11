@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { map, mergeMapTo, takeUntil, tap } from 'rxjs/operators'
+import { map, mergeMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
 import { ACTION_TYPES as REF_ACTION_TYPES, createReferenceServiceAction } from '../../referenceDataOperations'
 import { PositionUpdates } from '../../types'
@@ -17,7 +17,6 @@ export const analyticsServiceEpic: ApplicationEpic = (action$, state$, { analyti
     ofType<Action, ReferenceServiceAction>(REF_ACTION_TYPES.REFERENCE_SERVICE),
     mergeMapTo<FetchAnalyticsAction>(
       analyticsService.getAnalyticsStream(CURRENCY).pipe(
-        tap((positionUpdates: PositionUpdates) => openFin.publishCurrentPositions(positionUpdates.currentPositions)),
         map<PositionUpdates, FetchAnalyticsAction>(AnalyticsActions.fetchAnalytics),
         takeUntil<FetchAnalyticsAction>(action$.pipe(ofType<Action, DisconnectAction>(DISCONNECT_SERVICES)))
       )
