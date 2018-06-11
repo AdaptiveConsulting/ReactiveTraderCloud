@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ofType, StateObservable } from 'redux-observable'
-import { tap } from 'rxjs/operators'
+import { ignoreElements, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
 import { GlobalState } from '../../combineReducers'
 import { CurrencyPairReducerState } from '../../currencyPairsOperations'
@@ -20,5 +20,6 @@ const subscribeOpenFinToBlotterData = (openFin: OpenFin, state$: StateObservable
 export const connectBlotterServiceToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(
     ofType<Action, NewTradesAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
-    tap(subscribeOpenFinToBlotterData(openFin, state$))
+    tap(subscribeOpenFinToBlotterData(openFin, state$)),
+    ignoreElements()
   )
