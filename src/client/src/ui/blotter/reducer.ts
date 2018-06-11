@@ -1,7 +1,7 @@
 import * as keyBy from 'lodash.keyby'
 import { Action } from 'redux'
 import { DISCONNECT_SERVICES } from '../../connectionActions'
-import { RegionSettings, Trade } from '../../types/index'
+import { RegionSettings, Trades } from '../../types'
 import { ACTION_TYPES, BlotterActions } from './actions'
 
 export const blotterRegionsSettings: RegionSettings = {
@@ -11,10 +11,6 @@ export const blotterRegionsSettings: RegionSettings = {
   minHeight: 200,
   dockable: false,
   resizable: true
-}
-
-export interface Trades {
-  [tradeId: number]: Trade
 }
 
 interface BlotterState {

@@ -5,8 +5,7 @@ import PositionsMapper from '../mappers/positionsMapper'
 
 import { CurrencyPairReducerState } from '../../currencyPairsOperations'
 import { logger } from '../../system'
-import { CurrencyPair, ExecuteTradeRequest, Trade } from '../../types'
-import { Trades } from '../../ui/blotter'
+import { CurrencyPair, ExecuteTradeRequest, Trade, Trades } from '../../types'
 
 const log = logger.create('OpenFin')
 

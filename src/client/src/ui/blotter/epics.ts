@@ -1,28 +1,22 @@
-import { ofType, StateObservable } from 'redux-observable'
-import { map, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { Action } from 'redux'
+import { ofType } from 'redux-observable'
+import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
-import { GlobalState } from '../../combineReducers'
-import { CONNECT_SERVICES, DISCONNECT_SERVICES } from '../../connectionActions'
-import { CurrencyPairReducerState } from '../../currencyPairsOperations'
-import { OpenFin } from '../../services/openFin'
+import { connect, CONNECT_SERVICES, disconnect, DISCONNECT_SERVICES } from '../../connectionActions'
+import { TradesUpdate } from '../../types'
 import { BlotterActions } from './actions'
-import { Trades } from './reducer'
 
-const subscribeOpenFinToBlotterData = (openFin: OpenFin, state$: StateObservable<GlobalState>) => () => {
-  const trades: Trades = state$.value.blotterService.trades
-  const currencyPairs: CurrencyPairReducerState = state$.value.currencyPairs
-  const cb = (msg: any, uuid: string) => openFin.sendAllBlotterData(uuid, trades, currencyPairs)
-  openFin.addSubscription('fetch-blotter', cb)
-}
+type ConnectAction = ReturnType<typeof connect>
+type DisconnectAction = ReturnType<typeof disconnect>
+type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
 
-export const blotterServiceEpic: ApplicationEpic = (action$, state$, { blotterService, openFin }) =>
+export const blotterServiceEpic: ApplicationEpic = (action$, state$, { blotterService }) =>
   action$.pipe(
-    ofType(CONNECT_SERVICES),
-    switchMapTo(
+    ofType<Action, ConnectAction>(CONNECT_SERVICES),
+    switchMapTo<NewTradesAction>(
       blotterService.getTradesStream().pipe(
-        map(BlotterActions.createNewTradesAction),
-        tap(subscribeOpenFinToBlotterData(openFin, state$)),
-        takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+        map<TradesUpdate, NewTradesAction>(BlotterActions.createNewTradesAction),
+        takeUntil<NewTradesAction>(action$.pipe(ofType<Action, DisconnectAction>(DISCONNECT_SERVICES)))
       )
     )
   )
