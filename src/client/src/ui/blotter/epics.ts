@@ -1,29 +1,23 @@
+import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { map, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
-import { CONNECT_SERVICES, DISCONNECT_SERVICES } from '../../connectionActions'
-import { OpenFin } from '../../services/openFin'
-import { CurrencyPair, Trade } from '../../types'
-import { createNewTradesAction } from './actions'
+import { connect, CONNECT_SERVICES, disconnect, DISCONNECT_SERVICES } from '../../connectionActions'
+import { TradesUpdate } from '../../types'
+import { BlotterActions } from './actions'
 
-const subscribeOpenFinToBlotterData = (openFin: OpenFin, store) => () => {
-  const trades: Trade[] = store.getState().blotterService.trades
-  const currencyPairs: CurrencyPair[] = store.getState().blotterService.currencyPairs
-  const cb = (msg, uuid) => openFin.sendAllBlotterData(uuid, trades, currencyPairs)
-  openFin.addSubscription('fetch-blotter', cb)
-}
+type ConnectAction = ReturnType<typeof connect>
+type DisconnectAction = ReturnType<typeof disconnect>
+type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
 
-export const blotterServiceEpic: ApplicationEpic = (action$, store, { blotterService, openFin }) =>
+export const blotterServiceEpic: ApplicationEpic = (action$, state$, { blotterService }) =>
   action$.pipe(
-    ofType(CONNECT_SERVICES),
-    switchMapTo(
-      blotterService
-        .getTradesStream()
-        .pipe(
-          map(createNewTradesAction),
-          tap(subscribeOpenFinToBlotterData(openFin, store)),
-          takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
-        )
+    ofType<Action, ConnectAction>(CONNECT_SERVICES),
+    switchMapTo<NewTradesAction>(
+      blotterService.getTradesStream().pipe(
+        map<TradesUpdate, NewTradesAction>(BlotterActions.createNewTradesAction),
+        takeUntil<NewTradesAction>(action$.pipe(ofType<Action, DisconnectAction>(DISCONNECT_SERVICES)))
+      )
     )
   )
 
