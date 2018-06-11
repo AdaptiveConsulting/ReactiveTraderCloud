@@ -1,4 +1,5 @@
 import { action, ActionUnion } from './ActionHelper'
+import { ConnectionInfo } from './services/connectionStatusService'
 
 export enum ACTION_TYPES {
   CONNECT_SERVICES = '@ReactiveTraderCloud/CONNECT',
@@ -9,7 +10,7 @@ export enum ACTION_TYPES {
 export const ConnectionActions = {
   connect: action<typeof ACTION_TYPES.CONNECT_SERVICES>(ACTION_TYPES.CONNECT_SERVICES),
   disconnect: action<typeof ACTION_TYPES.DISCONNECT_SERVICES>(ACTION_TYPES.DISCONNECT_SERVICES),
-  createConnectionStatusUpdateAction: action<typeof ACTION_TYPES.CONNECTION_STATUS_UPDATE>(
+  createConnectionStatusUpdateAction: action<typeof ACTION_TYPES.CONNECTION_STATUS_UPDATE, ConnectionInfo>(
     ACTION_TYPES.CONNECTION_STATUS_UPDATE
   )
 }

@@ -1,5 +1,4 @@
 import { Action } from 'redux'
-import { handleActions } from 'redux-actions'
 import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from './ApplicationEpic'
@@ -39,15 +38,20 @@ export const connectionStatusEpicsCreator: ApplicationEpic = (action$, state$, {
     )
   )
 
-export default handleActions(
-  {
-    [CONNECTION_ACTION_TYPES.CONNECTION_STATUS_UPDATE]: (state: ConnectionState, action): ConnectionState =>
-      action.payload,
-    [CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES]: (): ConnectionState => ({
-      status: ConnectionStatus.sessionExpired,
-      transportType: ConnectionType.Unknown,
-      url: ''
-    })
-  },
-  initialState
-)
+export const connectionStatusReducer = (
+  state: ConnectionState = initialState,
+  action: ConnectionActions
+): ConnectionState => {
+  switch (action.type) {
+    case CONNECTION_ACTION_TYPES.CONNECTION_STATUS_UPDATE:
+      return action.payload
+    case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
+      return {
+        status: ConnectionStatus.sessionExpired,
+        transportType: ConnectionType.Unknown,
+        url: ''
+      }
+    default:
+      return state
+  }
+}

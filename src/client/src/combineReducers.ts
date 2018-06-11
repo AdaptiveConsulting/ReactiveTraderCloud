@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import compositeStatusServiceReducer from './compositeStatusServiceOperations'
-import connectionStatusReducer from './connectionStatusOperations'
+import { connectionStatusReducer } from './connectionStatusOperations'
 import { currencyPairReducer } from './currencyPairsOperations'
 import { enviromentReducer } from './enviromentReducer'
 import { pricingServiceReducer } from './pricingOperations'

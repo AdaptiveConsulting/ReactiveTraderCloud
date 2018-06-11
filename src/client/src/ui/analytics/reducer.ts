@@ -12,7 +12,10 @@ const initialState: AnalyticsState = {
   history: []
 }
 
-export const analyticsReducer = (state: AnalyticsState = initialState, action: AnalyticsActions | DisconnectAction) => {
+export const analyticsReducer = (
+  state: AnalyticsState = initialState,
+  action: AnalyticsActions | DisconnectAction
+): AnalyticsState => {
   switch (action.type) {
     case ACTION_TYPES.ANALYTICS_SERVICE:
       return { ...state, ...action.payload }
