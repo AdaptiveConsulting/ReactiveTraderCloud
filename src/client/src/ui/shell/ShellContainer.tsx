@@ -1,8 +1,10 @@
 import { connect, Dispatch } from 'react-redux'
 import { GlobalState } from '../../combineReducers'
-import { connect as reconnect } from '../../connectionActions'
+import { ConnectionActions } from '../../connectionActions'
 import { ConnectionStatus } from '../../system'
 import Shell from './Shell'
+
+const reconnect = ConnectionActions.connect
 
 function mapStateToProps(state: GlobalState) {
   const { connectionStatus, regionsService } = state
@@ -20,4 +22,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Shell)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Shell)

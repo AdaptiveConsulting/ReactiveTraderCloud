@@ -3,7 +3,7 @@ import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { action as createAction } from './ActionHelper'
 import { ApplicationEpic } from './ApplicationEpic'
-import { CONNECT_SERVICES, DISCONNECT_SERVICES } from './connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from './connectionActions'
 import { ServiceConnectionInfo } from './system'
 
 export enum ACTION_TYPES {
@@ -17,23 +17,25 @@ export const createCompositeStatusServiceAction = createAction<
 
 export const compositeStatusServiceEpic: ApplicationEpic = (action$, store, { compositeStatusService }) =>
   action$.pipe(
-    ofType(CONNECT_SERVICES),
+    ofType(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     switchMapTo(
       compositeStatusService.serviceStatusStream.pipe(
         map(createCompositeStatusServiceAction),
-        takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+        takeUntil(action$.pipe(ofType(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
       )
     )
   )
 
 export default function(
   state: ServiceConnectionInfo = {},
-  action: ReturnType<typeof createCompositeStatusServiceAction> | Action<typeof DISCONNECT_SERVICES>
+  action:
+    | ReturnType<typeof createCompositeStatusServiceAction>
+    | Action<typeof CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES>
 ) {
   switch (action.type) {
     case ACTION_TYPES.COMPOSITE_STATUS_SERVICE:
       return action.payload
-    case DISCONNECT_SERVICES:
+    case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
       return {}
     default:
       return state

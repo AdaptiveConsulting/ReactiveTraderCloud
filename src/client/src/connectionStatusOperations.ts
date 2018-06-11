@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions'
 import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from './ApplicationEpic'
-import { CONNECT_SERVICES, DISCONNECT_SERVICES } from './connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from './connectionActions'
 import { ConnectionInfo } from './services/connectionStatusService'
 import { ConnectionStatus, ConnectionType } from './system'
 
@@ -22,11 +22,11 @@ export const createConnectionStatusUpdateAction = createAction(ACTION_TYPES.CONN
 
 export const connectionStatusEpicsCreator: ApplicationEpic = (action$, store, { connectionStatusService }) =>
   action$.pipe(
-    ofType(CONNECT_SERVICES),
+    ofType(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     switchMapTo(
       connectionStatusService.connectionStatus$.pipe(
         map(createConnectionStatusUpdateAction),
-        takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+        takeUntil(action$.pipe(ofType(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
       )
     )
   )
@@ -34,7 +34,7 @@ export const connectionStatusEpicsCreator: ApplicationEpic = (action$, store, { 
 export default handleActions(
   {
     [ACTION_TYPES.CONNECTION_STATUS_UPDATE]: (state: State, action): State => action.payload,
-    [DISCONNECT_SERVICES]: (): State => ({
+    [CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES]: (): State => ({
       status: ConnectionStatus.sessionExpired,
       transportType: ConnectionType.Unknown,
       url: ''

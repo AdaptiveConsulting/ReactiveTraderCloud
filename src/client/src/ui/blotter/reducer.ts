@@ -1,6 +1,6 @@
 import * as keyBy from 'lodash.keyby'
 import { Action } from 'redux'
-import { DISCONNECT_SERVICES } from '../../connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from '../../connectionActions'
 import { RegionSettings, Trades } from '../../types'
 import { ACTION_TYPES, BlotterActions } from './actions'
 
@@ -23,7 +23,7 @@ const initialState: BlotterState = {
 
 export const blotterServiceReducer = (
   state: BlotterState = initialState,
-  action: BlotterActions | Action<typeof DISCONNECT_SERVICES>
+  action: BlotterActions | Action<typeof CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES>
 ): BlotterState => {
   switch (action.type) {
     case ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES:
@@ -35,7 +35,7 @@ export const blotterServiceReducer = (
           ...newTradesById
         }
       }
-    case DISCONNECT_SERVICES:
+    case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
       return initialState
     default:
       return state

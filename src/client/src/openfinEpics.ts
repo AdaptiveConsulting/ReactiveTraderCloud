@@ -2,7 +2,7 @@ import { combineEpics, ofType } from 'redux-observable'
 import { bindCallback } from 'rxjs'
 import { filter, map, mergeMap, switchMapTo, takeUntil, tap, withLatestFrom } from 'rxjs/operators'
 import { ApplicationEpic } from './ApplicationEpic'
-import { CONNECT_SERVICES, DISCONNECT_SERVICES } from './connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from './connectionActions'
 import { openfinServiceEpics } from './services/openFin'
 import { Direction, SpotPriceTick } from './types'
 import { CurrencyPair } from './types/currencyPair'
@@ -21,7 +21,7 @@ const publishPriceToOpenFinEpic: ApplicationEpic = (
   { pricesForCurrenciesInRefData, referenceDataService, openFin }
 ) =>
   action$.pipe(
-    ofType(CONNECT_SERVICES),
+    ofType(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     switchMapTo(
       pricesForCurrenciesInRefData.pipe(
         mergeMap(price =>
@@ -29,7 +29,7 @@ const publishPriceToOpenFinEpic: ApplicationEpic = (
             map(currencyMap => addRatePrecisionToPrice(currencyMap, price)),
             tap<any>(enhancedPrice => openFin.publishPrice(enhancedPrice)),
             filter(() => false),
-            takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+            takeUntil(action$.pipe(ofType(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
           )
         )
       )
@@ -53,7 +53,7 @@ function createTrade(msg, price) {
 
 export const closePositionEpic: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(
-    ofType(CONNECT_SERVICES),
+    ofType(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     mergeMap(() => {
       return bindCallback(openFin.addSubscription).bind(openFin)('close-position')
     }),
