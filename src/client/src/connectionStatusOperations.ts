@@ -1,12 +1,22 @@
+import { Action } from 'redux'
 import { handleActions } from 'redux-actions'
 import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from './ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, ConnectionActions } from './connectionActions'
+import {
+  ACTION_TYPES as CONNECTION_ACTION_TYPES,
+  ConnectAction,
+  ConnectionActions,
+  DisconnectAction
+} from './connectionActions'
 import { ConnectionInfo } from './services/connectionStatusService'
 import { ConnectionStatus, ConnectionType } from './system'
 
-export type ConnectionState = ConnectionInfo
+export interface ConnectionState {
+  status: ConnectionStatus
+  url: string
+  transportType: ConnectionType
+}
 
 const initialState: ConnectionState = {
   status: ConnectionStatus.disconnected,
@@ -14,13 +24,17 @@ const initialState: ConnectionState = {
   url: ''
 }
 
-export const connectionStatusEpicsCreator: ApplicationEpic = (action$, store, { connectionStatusService }) =>
+type CreateConnectionAction = ReturnType<typeof ConnectionActions.createConnectionStatusUpdateAction>
+
+export const connectionStatusEpicsCreator: ApplicationEpic = (action$, state$, { connectionStatusService }) =>
   action$.pipe(
-    ofType(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
-    switchMapTo(
+    ofType<Action, ConnectAction>(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
+    switchMapTo<CreateConnectionAction>(
       connectionStatusService.connectionStatus$.pipe(
-        map(ConnectionActions.createConnectionStatusUpdateAction),
-        takeUntil(action$.pipe(ofType(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
+        map<ConnectionInfo, CreateConnectionAction>(ConnectionActions.createConnectionStatusUpdateAction),
+        takeUntil<CreateConnectionAction>(
+          action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES))
+        )
       )
     )
   )
