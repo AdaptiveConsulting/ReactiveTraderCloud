@@ -2,12 +2,16 @@ import { action, ActionUnion } from './ActionHelper'
 
 export enum ACTION_TYPES {
   CONNECT_SERVICES = '@ReactiveTraderCloud/CONNECT',
-  DISCONNECT_SERVICES = '@ReactiveTraderCloud/DISCONNECT'
+  DISCONNECT_SERVICES = '@ReactiveTraderCloud/DISCONNECT',
+  CONNECTION_STATUS_UPDATE = '@ReactiveTraderCloud/CONNECTION_STATUS_UPDATE'
 }
 
 export const ConnectionActions = {
   connect: action<typeof ACTION_TYPES.CONNECT_SERVICES>(ACTION_TYPES.CONNECT_SERVICES),
-  disconnect: action<typeof ACTION_TYPES.DISCONNECT_SERVICES>(ACTION_TYPES.DISCONNECT_SERVICES)
+  disconnect: action<typeof ACTION_TYPES.DISCONNECT_SERVICES>(ACTION_TYPES.DISCONNECT_SERVICES),
+  createConnectionStatusUpdateAction: action<typeof ACTION_TYPES.CONNECTION_STATUS_UPDATE>(
+    ACTION_TYPES.CONNECTION_STATUS_UPDATE
+  )
 }
 
 export type ConnectionActions = ActionUnion<typeof ConnectionActions>

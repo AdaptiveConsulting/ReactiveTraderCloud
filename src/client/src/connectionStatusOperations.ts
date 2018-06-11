@@ -1,31 +1,25 @@
-import { createAction, handleActions } from 'redux-actions'
+import { handleActions } from 'redux-actions'
 import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from './ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from './connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, ConnectionActions } from './connectionActions'
 import { ConnectionInfo } from './services/connectionStatusService'
 import { ConnectionStatus, ConnectionType } from './system'
 
-export enum ACTION_TYPES {
-  CONNECTION_STATUS_UPDATE = '@ReactiveTraderCloud/CONNECTION_STATUS_UPDATE'
-}
+export type ConnectionState = ConnectionInfo
 
-export type State = ConnectionInfo
-
-const initialState: State = {
+const initialState: ConnectionState = {
   status: ConnectionStatus.disconnected,
   transportType: ConnectionType.Unknown,
   url: ''
 }
-
-export const createConnectionStatusUpdateAction = createAction(ACTION_TYPES.CONNECTION_STATUS_UPDATE)
 
 export const connectionStatusEpicsCreator: ApplicationEpic = (action$, store, { connectionStatusService }) =>
   action$.pipe(
     ofType(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     switchMapTo(
       connectionStatusService.connectionStatus$.pipe(
-        map(createConnectionStatusUpdateAction),
+        map(ConnectionActions.createConnectionStatusUpdateAction),
         takeUntil(action$.pipe(ofType(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
       )
     )
@@ -33,8 +27,9 @@ export const connectionStatusEpicsCreator: ApplicationEpic = (action$, store, { 
 
 export default handleActions(
   {
-    [ACTION_TYPES.CONNECTION_STATUS_UPDATE]: (state: State, action): State => action.payload,
-    [CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES]: (): State => ({
+    [CONNECTION_ACTION_TYPES.CONNECTION_STATUS_UPDATE]: (state: ConnectionState, action): ConnectionState =>
+      action.payload,
+    [CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES]: (): ConnectionState => ({
       status: ConnectionStatus.sessionExpired,
       transportType: ConnectionType.Unknown,
       url: ''
