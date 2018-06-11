@@ -1,5 +1,4 @@
-import { Action } from 'redux'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from '../../connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
 import { CurrencyPairPosition, HistoricPosition } from '../../types'
 import { ACTION_TYPES, AnalyticsActions } from './actions'
 
@@ -13,10 +12,7 @@ const initialState: AnalyticsState = {
   history: []
 }
 
-export const analyticsReducer = (
-  state: AnalyticsState = initialState,
-  action: AnalyticsActions | Action<typeof CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES>
-) => {
+export const analyticsReducer = (state: AnalyticsState = initialState, action: AnalyticsActions | DisconnectAction) => {
   switch (action.type) {
     case ACTION_TYPES.ANALYTICS_SERVICE:
       return { ...state, ...action.payload }

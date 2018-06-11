@@ -1,9 +1,8 @@
-import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { action as createAction } from './ActionHelper'
 import { ApplicationEpic } from './ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from './connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from './connectionActions'
 import { ServiceConnectionInfo } from './system'
 
 export enum ACTION_TYPES {
@@ -28,9 +27,7 @@ export const compositeStatusServiceEpic: ApplicationEpic = (action$, store, { co
 
 export default function(
   state: ServiceConnectionInfo = {},
-  action:
-    | ReturnType<typeof createCompositeStatusServiceAction>
-    | Action<typeof CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES>
+  action: ReturnType<typeof createCompositeStatusServiceAction> | DisconnectAction
 ) {
   switch (action.type) {
     case ACTION_TYPES.COMPOSITE_STATUS_SERVICE:

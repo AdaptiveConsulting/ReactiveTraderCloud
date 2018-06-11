@@ -1,5 +1,4 @@
-import { Action } from 'redux'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from '../../connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
 import { buildNotification } from '../notification/notificationUtils'
 import { tradeError, tradeSuccesful } from './../../types/executeTradeRequest'
 import { ACTION_TYPES, SpotTileActions } from './actions'
@@ -14,10 +13,7 @@ const updateSpotTile = (state, symbol, value) => {
   }
 }
 
-export const spotTileDataReducer = (
-  state: any = {},
-  action: SpotTileActions | Action<typeof CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES>
-) => {
+export const spotTileDataReducer = (state: any = {}, action: SpotTileActions | DisconnectAction) => {
   switch (action.type) {
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
       return updateSpotTile(state, action.payload, {
