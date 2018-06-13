@@ -1,4 +1,3 @@
-import { handleActions } from 'redux-actions'
 import { action, ActionUnion } from '../../ActionHelper'
 
 export enum ACTION_TYPES {
@@ -11,11 +10,18 @@ export const SidebarRegionActions = {
 
 export type SidebarRegionActions = ActionUnion<typeof SidebarRegionActions>
 
-const INITIAL_STATE = true
+export type SidebarRegionState = boolean
 
-export default handleActions(
-  {
-    [ACTION_TYPES.TOGGLE_ANALYTICS]: state => !state
-  },
-  INITIAL_STATE
-)
+const initialState: SidebarRegionState = true
+
+export const sidebarRegionReducer = (
+  state: SidebarRegionState = initialState,
+  action: SidebarRegionActions
+): SidebarRegionState => {
+  switch (action.type) {
+    case ACTION_TYPES.TOGGLE_ANALYTICS:
+      return !state
+    default:
+      return state
+  }
+}
