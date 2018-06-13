@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
-import { toggleAnalytics } from './SidebarRegionOperations'
+import { SidebarRegionActions } from './SidebarRegionOperations'
 import { SidebarRegionView } from './SidebarRegionView'
 
 interface SidebarRegionContainerStateProps {
@@ -29,9 +29,12 @@ const mapStateToProps = ({ displayAnalytics }) => ({
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      toggleAnalytics
+      toggleAnalytics: SidebarRegionActions.toggleAnalytics
     },
     dispatch
   )
 
-export default connect(mapStateToProps, mapDispatchToProps)(SidebarRegionContainer)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SidebarRegionContainer)
