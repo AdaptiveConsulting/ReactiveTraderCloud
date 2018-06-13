@@ -2,7 +2,7 @@ import * as React from 'react'
 import { BlotterContainer } from '../blotter'
 import FooterContainer from '../footer/FooterContainer'
 import { Modal } from '../modal'
-import SidebarRegionContainer from '../sidebar/SidebarRegionContainer'
+import SidebarRegionContainer from '../sidebar'
 import { WorkspaceContainer } from '../workspace/'
 
 import * as classnames from 'classnames'
