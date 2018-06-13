@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
-import { SidebarRegionActions } from './SidebarRegionOperations'
+import { SidebarRegionActions } from './actions'
 import { SidebarRegionView } from './SidebarRegionView'
 
 interface SidebarRegionContainerStateProps {
