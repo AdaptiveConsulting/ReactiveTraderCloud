@@ -1,19 +1,32 @@
 import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
+import { Notification, Trade } from '../../types'
 import { buildNotification } from '../notification/notificationUtils'
 import { tradeError, tradeSuccesful } from './../../types/executeTradeRequest'
 import { ACTION_TYPES, SpotTileActions } from './actions'
 
-const updateSpotTile = (state, symbol, value) => {
-  return {
-    ...state,
-    [symbol]: {
-      ...state[symbol],
-      ...value
-    }
-  }
+interface SpotTileState {
+  [tradeId: number]: Trade
 }
 
-export const spotTileDataReducer = (state: any = {}, action: SpotTileActions | DisconnectAction) => {
+interface SpotTileValue {
+  currencyChartIsOpening?: boolean
+  hasError?: boolean
+  isTradeExecutionInFlight?: boolean
+  notification?: Notification
+}
+
+const updateSpotTile = (state: SpotTileState, symbol: string, value: SpotTileValue): SpotTileState => ({
+  ...state,
+  [symbol]: {
+    ...state[symbol],
+    ...value
+  }
+})
+
+export const spotTileDataReducer = (
+  state: SpotTileState = {},
+  action: SpotTileActions | DisconnectAction
+): SpotTileState => {
   switch (action.type) {
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
       return updateSpotTile(state, action.payload, {
