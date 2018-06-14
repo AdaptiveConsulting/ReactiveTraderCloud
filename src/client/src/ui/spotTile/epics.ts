@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
-import { delay, map, mergeMap, tap } from 'rxjs/operators'
+import { delay, map, mergeMap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
 import { ExecuteTradeResponse } from '../../types'
 import { ACTION_TYPES, SpotTileActions } from './actions'
@@ -8,7 +8,7 @@ import { ACTION_TYPES, SpotTileActions } from './actions'
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
 
 type ExecutionAction = ReturnType<typeof SpotTileActions.executeTrade>
-type ExecutedTradeAction = ReturnType<typeof SpotTileActions.tradeExecuted>
+export type ExecutedTradeAction = ReturnType<typeof SpotTileActions.tradeExecuted>
 
 const executeTradeEpic: ApplicationEpic = (action$, state$, { executionService }) =>
   action$.pipe(
@@ -29,11 +29,6 @@ type DismissNotificationAction = ReturnType<typeof SpotTileActions.dismissNotifi
 export const onTradeExecuted: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(
     ofType<Action, ExecutedTradeAction>(ACTION_TYPES.TRADE_EXECUTED),
-    tap((action: ExecutedTradeAction) => {
-      if (openFin.isRunningInOpenFin && action.meta) {
-        openFin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
-      }
-    }),
     delay<ExecutedTradeAction>(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
     map<ExecutedTradeAction, string>((action: ExecutedTradeAction) => action.payload.request.CurrencyPair),
     map<string, DismissNotificationAction>(SpotTileActions.dismissNotification)

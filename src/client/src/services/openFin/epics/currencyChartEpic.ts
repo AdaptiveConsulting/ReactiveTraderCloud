@@ -8,7 +8,7 @@ import { ACTION_TYPES, SpotTileActions } from '../../../ui/spotTile'
 type DisplayChartAction = ReturnType<typeof SpotTileActions.displayCurrencyChart>
 type ChartOpenedAction = ReturnType<typeof SpotTileActions.currencyChartOpened>
 
-export const displayCurrencyChartEpic: ApplicationEpic = (action$, state$, { openFin }) =>
+export const connectCurrencyChartToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(
     ofType<Action, DisplayChartAction>(ACTION_TYPES.DISPLAY_CURRENCY_CHART),
     mergeMap<DisplayChartAction, string>((action: DisplayChartAction) =>
