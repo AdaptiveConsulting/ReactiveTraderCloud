@@ -5,7 +5,7 @@ import { timer } from 'rxjs'
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
-import { connect, disconnect } from './connectionActions'
+import { ConnectionActions } from './connectionActions'
 import { FakeUserRepository } from './services'
 import { OpenFin } from './services/openFin'
 import { AutobahnConnectionProxy, logger } from './system'
@@ -46,10 +46,10 @@ const appBootstrapper = () => {
     document.getElementById('root')
   )
 
-  store.dispatch(connect())
+  store.dispatch(ConnectionActions.connect())
 
   timer(APPLICATION_DISCONNECT).subscribe(() => {
-    store.dispatch(disconnect())
+    store.dispatch(ConnectionActions.disconnect())
     log.warn(`Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
   })
 }

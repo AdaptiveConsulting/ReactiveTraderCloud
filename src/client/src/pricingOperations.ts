@@ -4,7 +4,7 @@ import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ActionUnion } from './ActionHelper'
 import { action as createAction } from './ActionHelper'
 import { ApplicationEpic } from './ApplicationEpic'
-import { CONNECT_SERVICES, DISCONNECT_SERVICES } from './connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from './connectionActions'
 import { SpotPriceTick } from './types'
 
 const SPOT_PRICES_UPDATE = '@ReactiveTraderCloud/SPOT_PRICES_UPDATE'
@@ -17,11 +17,11 @@ export type PriceActions = ActionUnion<typeof PriceActions>
 
 const updatePricesEpic: ApplicationEpic = (action$, store, { pricesForCurrenciesInRefData }) =>
   action$.pipe(
-    ofType(CONNECT_SERVICES),
+    ofType(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     switchMapTo(
       pricesForCurrenciesInRefData.pipe(
         map(PriceActions.priceUpdateAction),
-        takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+        takeUntil(action$.pipe(ofType(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
       )
     )
   )

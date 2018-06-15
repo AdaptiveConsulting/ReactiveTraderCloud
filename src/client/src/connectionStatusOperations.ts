@@ -1,44 +1,56 @@
-import { createAction, handleActions } from 'redux-actions'
+import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from './ApplicationEpic'
-import { CONNECT_SERVICES, DISCONNECT_SERVICES } from './connectionActions'
-import { ConnectionInfo } from './services/connectionStatusService'
+import {
+  ACTION_TYPES as CONNECTION_ACTION_TYPES,
+  ConnectAction,
+  ConnectionActions,
+  DisconnectAction
+} from './connectionActions'
 import { ConnectionStatus, ConnectionType } from './system'
 
-export enum ACTION_TYPES {
-  CONNECTION_STATUS_UPDATE = '@ReactiveTraderCloud/CONNECTION_STATUS_UPDATE'
+export interface ConnectionState {
+  status: ConnectionStatus
+  url: string
+  transportType: ConnectionType
 }
 
-export type State = ConnectionInfo
-
-const initialState: State = {
+const initialState: ConnectionState = {
   status: ConnectionStatus.disconnected,
   transportType: ConnectionType.Unknown,
   url: ''
 }
 
-export const createConnectionStatusUpdateAction = createAction(ACTION_TYPES.CONNECTION_STATUS_UPDATE)
+type CreateConnectionAction = ReturnType<typeof ConnectionActions.createConnectionStatusUpdateAction>
 
-export const connectionStatusEpicsCreator: ApplicationEpic = (action$, store, { connectionStatusService }) =>
+export const connectionStatusEpic: ApplicationEpic = (action$, state$, { connectionStatusService }) =>
   action$.pipe(
-    ofType(CONNECT_SERVICES),
+    ofType<Action, ConnectAction>(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     switchMapTo(
       connectionStatusService.connectionStatus$.pipe(
-        map(createConnectionStatusUpdateAction),
-        takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+        map(ConnectionActions.createConnectionStatusUpdateAction),
+        takeUntil<CreateConnectionAction>(
+          action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES))
+        )
       )
     )
   )
 
-export default handleActions(
-  {
-    [ACTION_TYPES.CONNECTION_STATUS_UPDATE]: (state: State, action): State => action.payload,
-    [DISCONNECT_SERVICES]: (): State => ({
-      status: ConnectionStatus.sessionExpired,
-      transportType: ConnectionType.Unknown,
-      url: ''
-    })
-  },
-  initialState
-)
+export const connectionStatusReducer = (
+  state: ConnectionState = initialState,
+  action: ConnectionActions
+): ConnectionState => {
+  switch (action.type) {
+    case CONNECTION_ACTION_TYPES.CONNECTION_STATUS_UPDATE:
+      return action.payload
+    case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
+      return {
+        status: ConnectionStatus.sessionExpired,
+        transportType: ConnectionType.Unknown,
+        url: ''
+      }
+    default:
+      return state
+  }
+}

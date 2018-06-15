@@ -1,9 +1,9 @@
 import { Action } from 'redux-actions'
-import { DISCONNECT_SERVICES } from './connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from './connectionActions'
 import { ACTION_TYPES } from './referenceDataOperations'
 import { CurrencyPair } from './types/index'
 
-interface CurrencyPairReducerState {
+export interface CurrencyPairReducerState {
   [id: string]: CurrencyPair
 }
 
@@ -24,7 +24,7 @@ export const currencyPairReducer = (
     case ACTION_TYPES.REFERENCE_SERVICE:
       const payloadUpdateItems = action.payload
       return { ...state, ...toObject<CurrencyPair>(payloadUpdateItems) }
-    case DISCONNECT_SERVICES:
+    case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
       return {}
     default:
       return state

@@ -1,12 +1,26 @@
-import { DISCONNECT_SERVICES } from '../../connectionActions'
-import { ACTION_TYPES } from './actions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
+import { CurrencyPairPosition, HistoricPosition } from '../../types'
+import { ACTION_TYPES, AnalyticsActions } from './actions'
 
-export const analyticsReducer = (state: any = {}, action) => {
+export interface AnalyticsState {
+  currentPositions: CurrencyPairPosition[]
+  history: HistoricPosition[]
+}
+
+const initialState: AnalyticsState = {
+  currentPositions: [],
+  history: []
+}
+
+export const analyticsReducer = (
+  state: AnalyticsState = initialState,
+  action: AnalyticsActions | DisconnectAction
+): AnalyticsState => {
   switch (action.type) {
     case ACTION_TYPES.ANALYTICS_SERVICE:
       return { ...state, ...action.payload }
-    case DISCONNECT_SERVICES:
-      return {}
+    case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
+      return initialState
     default:
       return state
   }

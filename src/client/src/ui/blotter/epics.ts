@@ -1,29 +1,22 @@
+import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { map, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
-import { CONNECT_SERVICES, DISCONNECT_SERVICES } from '../../connectionActions'
-import { OpenFin } from '../../services/openFin'
-import { CurrencyPair, Trade } from '../../types'
-import { createNewTradesAction } from './actions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, ConnectAction, DisconnectAction } from '../../connectionActions'
+import { BlotterActions } from './actions'
 
-const subscribeOpenFinToBlotterData = (openFin: OpenFin, store) => () => {
-  const trades: Trade[] = store.getState().blotterService.trades
-  const currencyPairs: CurrencyPair[] = store.getState().blotterService.currencyPairs
-  const cb = (msg, uuid) => openFin.sendAllBlotterData(uuid, trades, currencyPairs)
-  openFin.addSubscription('fetch-blotter', cb)
-}
+type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
 
-export const blotterServiceEpic: ApplicationEpic = (action$, store, { blotterService, openFin }) =>
+export const blotterServiceEpic: ApplicationEpic = (action$, state$, { blotterService }) =>
   action$.pipe(
-    ofType(CONNECT_SERVICES),
+    ofType<Action, ConnectAction>(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     switchMapTo(
-      blotterService
-        .getTradesStream()
-        .pipe(
-          map(createNewTradesAction),
-          tap(subscribeOpenFinToBlotterData(openFin, store)),
-          takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+      blotterService.getTradesStream().pipe(
+        map(BlotterActions.createNewTradesAction),
+        takeUntil<NewTradesAction>(
+          action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES))
         )
+      )
     )
   )
 

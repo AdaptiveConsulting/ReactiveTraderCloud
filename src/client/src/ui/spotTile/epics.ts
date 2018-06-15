@@ -42,4 +42,4 @@ export const onTradeExecuted: ApplicationEpic = (action$, store, { openFin }) =>
     map(SpotTileActions.dismissNotification)
   )
 
-export const spotTileEpicsCreator = combineEpics(executeTradeEpic, displayCurrencyChart, onTradeExecuted)
+export const spotTileEpic = combineEpics(executeTradeEpic, displayCurrencyChart, onTradeExecuted)

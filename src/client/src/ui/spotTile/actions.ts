@@ -1,7 +1,6 @@
-import { action } from '../../ActionHelper'
+import { action, ActionUnion } from '../../ActionHelper'
 import { ExecuteTradeRequest, RegionSettings } from '../../types'
 import { ExecuteTradeResponse } from '../../types/executeTradeRequest'
-import { ActionUnion } from './../../ActionHelper'
 import { TradeExectionMeta } from './spotTileUtils'
 
 export enum ACTION_TYPES {
