@@ -9,8 +9,6 @@ type FetchAnalyticsAction = ReturnType<typeof AnalyticsActions.fetchAnalytics>
 export const connectAnalyticsServiceToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(
     ofType<Action, FetchAnalyticsAction>(ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE),
-    tap<FetchAnalyticsAction>((action: FetchAnalyticsAction) =>
-      openFin.publishCurrentPositions(action.payload.currentPositions)
-    ),
+    tap((action: FetchAnalyticsAction) => openFin.publishCurrentPositions(action.payload.currentPositions)),
     ignoreElements()
   )

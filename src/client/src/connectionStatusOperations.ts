@@ -8,7 +8,6 @@ import {
   ConnectionActions,
   DisconnectAction
 } from './connectionActions'
-import { ConnectionInfo } from './services/connectionStatusService'
 import { ConnectionStatus, ConnectionType } from './system'
 
 export interface ConnectionState {
@@ -25,12 +24,12 @@ const initialState: ConnectionState = {
 
 type CreateConnectionAction = ReturnType<typeof ConnectionActions.createConnectionStatusUpdateAction>
 
-export const connectionStatusEpicsCreator: ApplicationEpic = (action$, state$, { connectionStatusService }) =>
+export const connectionStatusEpic: ApplicationEpic = (action$, state$, { connectionStatusService }) =>
   action$.pipe(
     ofType<Action, ConnectAction>(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
-    switchMapTo<CreateConnectionAction>(
+    switchMapTo(
       connectionStatusService.connectionStatus$.pipe(
-        map<ConnectionInfo, CreateConnectionAction>(ConnectionActions.createConnectionStatusUpdateAction),
+        map(ConnectionActions.createConnectionStatusUpdateAction),
         takeUntil<CreateConnectionAction>(
           action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES))
         )
