@@ -8,15 +8,16 @@ import { AnalyticsActions } from './actions'
 
 const CURRENCY: string = 'USD'
 
+const { fetchAnalytics } = AnalyticsActions
 type ReferenceServiceAction = ReturnType<typeof createReferenceServiceAction>
-type FetchAnalyticsAction = ReturnType<typeof AnalyticsActions.fetchAnalytics>
+type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
 
 export const analyticsServiceEpic: ApplicationEpic = (action$, state$, { analyticsService }) =>
   action$.pipe(
     ofType<Action, ReferenceServiceAction>(REF_ACTION_TYPES.REFERENCE_SERVICE),
     mergeMapTo(
       analyticsService.getAnalyticsStream(CURRENCY).pipe(
-        map(AnalyticsActions.fetchAnalytics),
+        map(fetchAnalytics),
         takeUntil<FetchAnalyticsAction>(
           action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES))
         )

@@ -4,7 +4,8 @@ import { ignoreElements, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { ACTION_TYPES as ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../../../ui/analytics'
 
-type FetchAnalyticsAction = ReturnType<typeof AnalyticsActions.fetchAnalytics>
+const { fetchAnalytics } = AnalyticsActions
+type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
 
 export const connectAnalyticsServiceToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(

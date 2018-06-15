@@ -9,14 +9,15 @@ import {
 } from '../../operations/connectionStatus'
 import { BlotterActions } from './actions'
 
-type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
+const { createNewTradesAction } = BlotterActions
+type NewTradesAction = ReturnType<typeof createNewTradesAction>
 
 export const blotterServiceEpic: ApplicationEpic = (action$, state$, { blotterService }) =>
   action$.pipe(
     ofType<Action, ConnectAction>(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     switchMapTo(
       blotterService.getTradesStream().pipe(
-        map(BlotterActions.createNewTradesAction),
+        map(createNewTradesAction),
         takeUntil<NewTradesAction>(
           action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES))
         )

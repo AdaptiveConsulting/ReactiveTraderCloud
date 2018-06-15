@@ -5,8 +5,9 @@ import { map, mergeMap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { ACTION_TYPES, SpotTileActions } from '../../../ui/spotTile'
 
-type DisplayChartAction = ReturnType<typeof SpotTileActions.displayCurrencyChart>
-type ChartOpenedAction = ReturnType<typeof SpotTileActions.currencyChartOpened>
+const { displayCurrencyChart, currencyChartOpened } = SpotTileActions
+type DisplayChartAction = ReturnType<typeof displayCurrencyChart>
+type ChartOpenedAction = ReturnType<typeof currencyChartOpened>
 
 export const connectCurrencyChartToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(
@@ -14,5 +15,5 @@ export const connectCurrencyChartToOpenFinEpic: ApplicationEpic = (action$, stat
     mergeMap<DisplayChartAction, string>((action: DisplayChartAction) =>
       from<string>(openFin.displayCurrencyChart(action.payload))
     ),
-    map<string, ChartOpenedAction>(symbol => SpotTileActions.currencyChartOpened(symbol))
+    map<string, ChartOpenedAction>(symbol => currencyChartOpened(symbol))
   )

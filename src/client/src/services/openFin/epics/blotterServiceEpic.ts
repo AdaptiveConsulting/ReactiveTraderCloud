@@ -7,7 +7,8 @@ import { CurrencyPairState } from '../../../operations/currencyPairs'
 import { ACTION_TYPES as BLOTTER_ACTION_TYPES, BlotterActions, Trades } from '../../../ui/blotter'
 import OpenFin from '../openFin'
 
-type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
+const { createNewTradesAction } = BlotterActions
+type NewTradesAction = ReturnType<typeof createNewTradesAction>
 
 const subscribeOpenFinToBlotterData = (openFin: OpenFin, state$: StateObservable<GlobalState>) => () => {
   const trades: Trades = state$.value.blotterService.trades
