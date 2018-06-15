@@ -1,16 +1,20 @@
+import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from '../../connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, ConnectAction, DisconnectAction } from '../../connectionActions'
 import { CompositeStatusServiceActions } from './actions'
 
-export const compositeStatusServiceEpic: ApplicationEpic = (action$, store, { compositeStatusService }) =>
+const { createCompositeStatusServiceAction } = CompositeStatusServiceActions
+type CreateStatusServiceAction = ReturnType<typeof createCompositeStatusServiceAction>
+
+export const compositeStatusServiceEpic: ApplicationEpic = (action$, state$, { compositeStatusService }) =>
   action$.pipe(
-    ofType(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
-    switchMapTo(
+    ofType<Action, ConnectAction>(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
+    switchMapTo<CreateStatusServiceAction>(
       compositeStatusService.serviceStatusStream.pipe(
-        map(CompositeStatusServiceActions.createCompositeStatusServiceAction),
-        takeUntil(action$.pipe(ofType(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
+        map(createCompositeStatusServiceAction),
+        takeUntil(action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
       )
     )
   )
