@@ -1,9 +1,9 @@
 import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
-import { action as createAction } from './ActionHelper'
-import { ApplicationEpic } from './ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from './connectionActions'
-import { ServiceConnectionInfo } from './system'
+import { action as createAction } from '../../ActionHelper'
+import { ApplicationEpic } from '../../ApplicationEpic'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
+import { ServiceConnectionInfo } from '../../system'
 
 export enum ACTION_TYPES {
   COMPOSITE_STATUS_SERVICE = '@ReactiveTraderCloud/COMPOSITE_STATUS_SERVICE'
@@ -25,7 +25,7 @@ export const compositeStatusServiceEpic: ApplicationEpic = (action$, store, { co
     )
   )
 
-export default function(
+export function compositeStatusServiceReducer(
   state: ServiceConnectionInfo = {},
   action: ReturnType<typeof createCompositeStatusServiceAction> | DisconnectAction
 ) {
