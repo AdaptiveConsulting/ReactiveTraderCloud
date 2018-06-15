@@ -3,7 +3,7 @@ import * as numeral from 'numeral'
 import { Observable } from 'rxjs'
 import PositionsMapper from '../mappers/positionsMapper'
 
-import { CurrencyPairReducerState } from '../../currencyPairsOperations'
+import { CurrencyPairState } from '../../operations/currencyPairs'
 import { logger } from '../../system'
 import { CurrencyPair, ExecuteTradeRequest, Trade, Trades } from '../../types'
 
@@ -250,7 +250,7 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.publish('price-update', price)
   }
 
-  sendAllBlotterData(uuid, blotterData: Trades, currencyPairs: CurrencyPairReducerState) {
+  sendAllBlotterData(uuid, blotterData: Trades, currencyPairs: CurrencyPairState) {
     const parsed = Object.keys(blotterData).map(x =>
       formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol])
     )

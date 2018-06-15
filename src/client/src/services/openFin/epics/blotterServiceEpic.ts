@@ -3,7 +3,7 @@ import { ofType, StateObservable } from 'redux-observable'
 import { ignoreElements, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { GlobalState } from '../../../combineReducers'
-import { CurrencyPairReducerState } from '../../../currencyPairsOperations'
+import { CurrencyPairState } from '../../../operations/currencyPairs'
 import { Trades } from '../../../types'
 import { ACTION_TYPES as BLOTTER_ACTION_TYPES, BlotterActions } from '../../../ui/blotter'
 import OpenFin from '../openFin'
@@ -12,7 +12,7 @@ type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
 
 const subscribeOpenFinToBlotterData = (openFin: OpenFin, state$: StateObservable<GlobalState>) => () => {
   const trades: Trades = state$.value.blotterService.trades
-  const currencyPairs: CurrencyPairReducerState = state$.value.currencyPairs
+  const currencyPairs: CurrencyPairState = state$.value.currencyPairs
   const cb = (msg: any, uuid: string) => openFin.sendAllBlotterData(uuid, trades, currencyPairs)
   openFin.addSubscription('fetch-blotter', cb)
 }
