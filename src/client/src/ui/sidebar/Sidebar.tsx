@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
 import { AnalyticsContainer } from '../analytics'
 import { SidebarRegionActions } from './actions'
 import { getSidebarStyles } from './sidebarUtils'
@@ -9,7 +8,7 @@ interface SidebarProps {
   toggleAnalytics: typeof SidebarRegionActions.toggleAnalytics
 }
 
-const Sidebar: React.SFC<SidebarProps> = ({ displayAnalytics, toggleAnalytics }: SidebarProps) => {
+export const Sidebar: React.SFC<SidebarProps> = ({ displayAnalytics, toggleAnalytics }: SidebarProps) => {
   const { analyticsStyles, buttonStyles } = getSidebarStyles(displayAnalytics)
 
   return (
@@ -25,11 +24,4 @@ const Sidebar: React.SFC<SidebarProps> = ({ displayAnalytics, toggleAnalytics }:
   )
 }
 
-const mapStateToProps = ({ displayAnalytics }) => ({
-  displayAnalytics
-})
-
-export default connect(
-  mapStateToProps,
-  { toggleAnalytics: SidebarRegionActions.toggleAnalytics }
-)(Sidebar)
+export default Sidebar

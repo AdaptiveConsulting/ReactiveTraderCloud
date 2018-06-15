@@ -7,8 +7,10 @@ export interface CurrencyPairState {
   [id: string]: CurrencyPair
 }
 
+const initialState: CurrencyPairState = {}
+
 export const currencyPairReducer = (
-  state: CurrencyPairState = {},
+  state: CurrencyPairState = initialState,
   action: ReferenceServiceAction | DisconnectAction
 ): CurrencyPairState => {
   switch (action.type) {
@@ -16,7 +18,7 @@ export const currencyPairReducer = (
       const payloadUpdateItems = action.payload
       return { ...state, ...toObject<CurrencyPair>(payloadUpdateItems) }
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
-      return {}
+      return initialState
     default:
       return state
   }

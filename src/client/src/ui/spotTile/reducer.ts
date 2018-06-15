@@ -4,6 +4,14 @@ import { buildNotification } from '../notification/notificationUtils'
 import { tradeError, tradeSuccesful } from './../../types/executeTradeRequest'
 import { ACTION_TYPES, SpotTileActions } from './actions'
 
+const updateSpotTile = (state: SpotTileState, symbol: string, value: SpotTileValue): SpotTileState => ({
+  ...state,
+  [symbol]: {
+    ...state[symbol],
+    ...value
+  }
+})
+
 interface SpotTileState {
   [tradeId: number]: Trade
 }
@@ -15,16 +23,10 @@ interface SpotTileValue {
   notification?: Notification
 }
 
-const updateSpotTile = (state: SpotTileState, symbol: string, value: SpotTileValue): SpotTileState => ({
-  ...state,
-  [symbol]: {
-    ...state[symbol],
-    ...value
-  }
-})
+const initialState: SpotTileState = {}
 
 export const spotTileDataReducer = (
-  state: SpotTileState = {},
+  state: SpotTileState = initialState,
   action: SpotTileActions | DisconnectAction
 ): SpotTileState => {
   switch (action.type) {
@@ -64,7 +66,7 @@ export const spotTileDataReducer = (
     case ACTION_TYPES.DISMISS_NOTIFICATION:
       return updateSpotTile(state, action.payload, { notification: null })
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
-      return {}
+      return initialState
     default:
       return state
   }
