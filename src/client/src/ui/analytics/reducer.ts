@@ -20,7 +20,7 @@ export const analyticsReducer = (
     case ACTION_TYPES.ANALYTICS_SERVICE:
       return { ...state, ...action.payload }
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
-      return { currentPositions: [], history: [] }
+      return initialState
     default:
       return state
   }

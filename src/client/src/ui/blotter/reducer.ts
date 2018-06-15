@@ -1,7 +1,11 @@
 import * as keyBy from 'lodash.keyby'
 import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
-import { Trades } from '../../types'
+import { Trade } from '../../types'
 import { ACTION_TYPES, BlotterActions } from './actions'
+
+export interface Trades {
+  [tradeId: number]: Trade
+}
 
 export interface BlotterState {
   trades: Trades
