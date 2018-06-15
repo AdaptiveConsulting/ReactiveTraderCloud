@@ -10,10 +10,10 @@ import { ApplicationStatusConst, ServiceStatus } from '../../types'
 interface FooterViewProps {
   compositeStatusService: ServiceConnectionInfo
   connectionStatus: ConnectionInfo
-  toggleStatusServices: () => void
+  toggleStatusServices: () => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
   displayStatusServices: boolean
   isRunningOnDesktop: boolean
-  openLink: (link: string) => void
+  openLink: (link: string) => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
 }
 
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'

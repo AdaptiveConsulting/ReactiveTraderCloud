@@ -1,0 +1,1 @@
+export { footerReducer } from './reducer'
