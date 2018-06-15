@@ -1,4 +1,4 @@
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
 import { ACTION_TYPES, ReferenceServiceAction } from '../../referenceDataOperations'
 import { CurrencyPair } from '../../types'
 import { toObject } from './utils'

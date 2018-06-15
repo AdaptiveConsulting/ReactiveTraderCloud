@@ -1,4 +1,4 @@
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
 import { Notification, Trade } from '../../types'
 import { buildNotification } from '../notification/notificationUtils'
 import { tradeError, tradeSuccesful } from './../../types/executeTradeRequest'

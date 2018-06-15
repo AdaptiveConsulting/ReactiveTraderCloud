@@ -2,7 +2,7 @@ import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { map, mergeMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
 import { ACTION_TYPES as REF_ACTION_TYPES, createReferenceServiceAction } from '../../referenceDataOperations'
 import { AnalyticsActions } from './actions'
 

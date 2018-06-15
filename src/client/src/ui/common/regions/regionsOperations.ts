@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from '../../../connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from '../../../operations/connectionStatus'
 
 export const ACTION_TYPES = {
   REGION_ADD: '@ReactiveTraderCloud/REGION_ADD',

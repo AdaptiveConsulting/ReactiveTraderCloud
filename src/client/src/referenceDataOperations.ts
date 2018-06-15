@@ -2,7 +2,7 @@ import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { action } from './ActionHelper'
 import { ApplicationEpic } from './ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from './connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from './operations/connectionStatus'
 import { CurrencyPair } from './types'
 
 export enum ACTION_TYPES {

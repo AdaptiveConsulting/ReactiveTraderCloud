@@ -1,4 +1,4 @@
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
 import { CurrencyPairPosition, HistoricPosition } from '../../types'
 import { ACTION_TYPES, AnalyticsActions } from './actions'
 

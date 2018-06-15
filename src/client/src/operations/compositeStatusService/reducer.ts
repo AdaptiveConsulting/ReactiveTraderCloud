@@ -1,4 +1,4 @@
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../connectionActions'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
 import { ServiceStatus } from '../../types'
 import { ACTION_TYPES, CompositeStatusServiceActions } from './actions'
 

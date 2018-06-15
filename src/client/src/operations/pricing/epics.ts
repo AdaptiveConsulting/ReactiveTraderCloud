@@ -2,7 +2,11 @@ import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, ConnectAction, DisconnectAction } from '../../connectionActions'
+import {
+  ACTION_TYPES as CONNECTION_ACTION_TYPES,
+  ConnectAction,
+  DisconnectAction
+} from '../../operations/connectionStatus'
 import { PricingActions } from './actions'
 
 const { priceUpdateAction } = PricingActions
