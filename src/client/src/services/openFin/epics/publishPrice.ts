@@ -1,31 +1,34 @@
+import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { filter, map, mergeMap, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { ignoreElements, map, mergeMap, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES } from '../../../operations/connectionStatus'
+import {
+  ACTION_TYPES as CONNECTION_ACTION_TYPES,
+  ConnectAction,
+  DisconnectAction
+} from '../../../operations/connectionStatus'
 import { CurrencyPair, SpotPriceTick } from '../../../types'
 
-export const addRatePrecisionToPrice = (currencyData: Map<string, CurrencyPair>, price: SpotPriceTick) => {
-  return {
-    ...price,
-    ratePrecision: currencyData.get(price.symbol).ratePrecision
-  }
-}
+export const addRatePrecisionToPrice = (currencyData: Map<string, CurrencyPair>, price: SpotPriceTick) => ({
+  ...price,
+  ratePrecision: currencyData.get(price.symbol).ratePrecision
+})
 
 export const publishPriceToOpenFinEpic: ApplicationEpic = (
   action$,
-  store,
+  state$,
   { pricesForCurrenciesInRefData, referenceDataService, openFin }
 ) =>
   action$.pipe(
-    ofType(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
+    ofType<Action, ConnectAction>(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     switchMapTo(
       pricesForCurrenciesInRefData.pipe(
-        mergeMap(price =>
+        mergeMap((price: SpotPriceTick) =>
           referenceDataService.getCurrencyPairUpdates$().pipe(
             map(currencyMap => addRatePrecisionToPrice(currencyMap, price)),
-            tap<any>(enhancedPrice => openFin.publishPrice(enhancedPrice)),
-            filter(() => false),
-            takeUntil(action$.pipe(ofType(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
+            tap(enhancedPrice => openFin.publishPrice(enhancedPrice)),
+            ignoreElements(),
+            takeUntil(action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
           )
         )
       )
