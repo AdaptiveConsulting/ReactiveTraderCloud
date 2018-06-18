@@ -6,7 +6,7 @@ export enum ACTION_TYPES {
 }
 
 export const PricingActions = {
-  priceUpdateAction: action<typeof ACTION_TYPES.SPOT_PRICES_UPDATE, SpotPriceTick>(ACTION_TYPES.SPOT_PRICES_UPDATE)
+  priceUpdateAction: action<ACTION_TYPES.SPOT_PRICES_UPDATE, SpotPriceTick>(ACTION_TYPES.SPOT_PRICES_UPDATE)
 }
 
 export type PricingActions = ActionUnion<typeof PricingActions>
