@@ -1,5 +1,5 @@
 import { Action, applyMiddleware, createStore } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import { combineEpics, createEpicMiddleware } from 'redux-observable'
 
 import { ApplicationDependencies } from './applicationServices'
