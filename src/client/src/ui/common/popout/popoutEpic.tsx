@@ -1,18 +1,16 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import { Action } from 'redux'
-import { createAction } from 'redux-actions'
 import { combineEpics, ofType } from 'redux-observable'
 import { map } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { ACTION_TYPES as TILE_ACTIONS, SpotTileActions } from '../../spotTile/actions'
-import { ACTION_TYPES as REGIONS_ACTIONS } from '../regions/regionsOperations'
+import { ACTION_TYPES as REGIONS_ACTIONS, RegionActions } from '../regions'
 import { getPopoutService } from './index'
 
 declare const window: any
 
-const popoutOpened = createAction(REGIONS_ACTIONS.REGION_TEAROFF_WINDOW, payload => payload)
-const popoutClosed = createAction(REGIONS_ACTIONS.REGION_ATTACH_WINDOW, payload => payload)
+const { popoutClosed, popoutOpened } = RegionActions
 
 const generateView = container => {
   const childComponent = React.isValidElement(container) ? container : React.createElement(container)

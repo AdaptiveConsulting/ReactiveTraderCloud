@@ -3,10 +3,12 @@ import { connect } from 'react-redux'
 import { Environment } from '../../system'
 import { RegionSettings } from '../../types'
 import { CurrencyPair } from '../../types/currencyPair'
-import { addRegion, openWindow } from '../../ui/common/regions/regionsOperations'
+import { RegionActions } from '../../ui/common/regions'
 import Analytics from './Analytics'
 import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
+
+const { openWindow, addRegion } = RegionActions
 
 const analyticsRegionSettings: RegionSettings = {
   title: 'Analytics',
@@ -75,7 +77,10 @@ function mapStateToProps(state: any) {
   return { analyticsService, isConnected, displayAnalytics, currencyPairs }
 }
 
-const ConnectedAnalyticsContainer = connect(mapStateToProps, mapDispatchToProps)(AnalyticsContainer)
+const ConnectedAnalyticsContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnalyticsContainer)
 
 const analyticsRegion = {
   id: 'analytics',

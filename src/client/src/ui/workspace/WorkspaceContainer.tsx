@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import RegionWrapper from '../common/regions/RegionWrapper'
+import RegionWrapper from '../common/regions'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 
@@ -16,10 +16,7 @@ interface WorkspaceContainerStateProps {
 
 type WorkspaceContainerProps = WorkspaceContainerStateProps
 
-export class WorkspaceContainer extends React.Component<
-  WorkspaceContainerProps,
-  {}
-> {
+export class WorkspaceContainer extends React.Component<WorkspaceContainerProps, {}> {
   render() {
     return (
       <div className="shell__workspace">
@@ -46,9 +43,7 @@ export class WorkspaceContainer extends React.Component<
           </div>
         </RegionWrapper>
       ))
-      .concat(
-        _.times(6, i => <div key={i} className="workspace-region__spacer" />)
-      )
+      .concat(_.times(6, i => <div key={i} className="workspace-region__spacer" />))
   }
 }
 
