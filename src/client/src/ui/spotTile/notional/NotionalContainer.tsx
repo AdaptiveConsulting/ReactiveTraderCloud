@@ -2,8 +2,10 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import { CurrencyPair } from '../../../types'
+import { NotionalActions, NotionalUpdate } from './actions'
 import NotionalInput from './NotionalInput'
-import { NotionalUpdate, onNotionalInputChange } from './NotionalOperations'
+
+const { onNotionalInputChange } = NotionalActions
 
 interface NotionalContainerOwnProps {
   className: string
@@ -52,4 +54,7 @@ function mapStateToProps({ notionals }) {
   return { notionals }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotionalContainer)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NotionalContainer)
