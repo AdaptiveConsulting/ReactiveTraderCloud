@@ -4,9 +4,9 @@ export interface NotionalState {
   [currencyPairSymbol: string]: number
 }
 
-const initialState: NotionalState = {}
+const INITIAL_STATE: NotionalState = {}
 
-export const notionalsReducer = (state: NotionalState = initialState, action: NotionalActions): NotionalState => {
+export const notionalsReducer = (state: NotionalState = INITIAL_STATE, action: NotionalActions): NotionalState => {
   switch (action.type) {
     case ACTION_TYPES.NOTIONAL_INPUT:
       return {

@@ -2,8 +2,8 @@ interface EnvironmentState {
   isRunningOnDesktop: boolean
 }
 
-const initialState: EnvironmentState = {
+const INITIAL_STATE: EnvironmentState = {
   isRunningOnDesktop: typeof fin !== 'undefined'
 }
 
-export const enviromentReducer = (state: EnvironmentState = initialState): EnvironmentState => state
+export const enviromentReducer = (state: EnvironmentState = INITIAL_STATE): EnvironmentState => state

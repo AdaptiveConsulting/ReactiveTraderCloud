@@ -7,14 +7,14 @@ export interface ConnectionState {
   transportType: ConnectionType
 }
 
-const initialState: ConnectionState = {
+const INITIAL_STATE: ConnectionState = {
   status: ConnectionStatus.disconnected,
   transportType: ConnectionType.Unknown,
   url: ''
 }
 
 export const connectionStatusReducer = (
-  state: ConnectionState = initialState,
+  state: ConnectionState = INITIAL_STATE,
   action: ConnectionActions
 ): ConnectionState => {
   switch (action.type) {

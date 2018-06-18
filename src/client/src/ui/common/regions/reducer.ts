@@ -13,7 +13,7 @@ export interface RegionState {
   [regionId: string]: Region
 }
 
-const initialState: RegionState = {}
+const INITIAL_STATE: RegionState = {}
 
 export const regionsReducer = (state: RegionState = {}, action: RegionActions | DisconnectAction): RegionState => {
   switch (action.type) {
@@ -27,7 +27,7 @@ export const regionsReducer = (state: RegionState = {}, action: RegionActions | 
     case ACTION_TYPES.REGION_TEAROFF_WINDOW:
       return changeRegionTearOffStatus(state, action.payload, true)
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
-      return initialState
+      return INITIAL_STATE
     default:
       return state
   }

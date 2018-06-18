@@ -23,10 +23,10 @@ interface SpotTileValue {
   notification?: Notification
 }
 
-const initialState: SpotTileState = {}
+const INITIAL_STATE: SpotTileState = {}
 
 export const spotTileDataReducer = (
-  state: SpotTileState = initialState,
+  state: SpotTileState = INITIAL_STATE,
   action: SpotTileActions | DisconnectAction
 ): SpotTileState => {
   switch (action.type) {
@@ -66,7 +66,7 @@ export const spotTileDataReducer = (
     case ACTION_TYPES.DISMISS_NOTIFICATION:
       return updateSpotTile(state, action.payload, { notification: null })
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
-      return initialState
+      return INITIAL_STATE
     default:
       return state
   }

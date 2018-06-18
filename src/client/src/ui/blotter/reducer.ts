@@ -11,12 +11,12 @@ export interface BlotterState {
   trades: Trades
 }
 
-const initialState: BlotterState = {
+const INITIAL_STATE: BlotterState = {
   trades: {}
 }
 
 export const blotterServiceReducer = (
-  state: BlotterState = initialState,
+  state: BlotterState = INITIAL_STATE,
   action: BlotterActions | DisconnectAction
 ): BlotterState => {
   switch (action.type) {
@@ -30,7 +30,7 @@ export const blotterServiceReducer = (
         }
       }
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
-      return initialState
+      return INITIAL_STATE
     default:
       return state
   }
