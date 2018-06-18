@@ -1,2 +1,2 @@
 export { default as OpenFin } from './openFin'
-export { openfinServiceEpics } from './epics'
+export { openfinEpic } from './epics'
