@@ -9,7 +9,7 @@ const changeRegionTearOffStatus = (state: RegionState, payload: Region, status: 
   }
 })
 
-interface RegionState {
+export interface RegionState {
   [regionId: string]: Region
 }
 
