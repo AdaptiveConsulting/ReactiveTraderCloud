@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { GlobalState } from '../../combineReducers'
 import { openLink } from '../../linkEpic'
 import { FooterActions } from './actions'
-import Footer from './FooterView'
+import Footer from './Footer'
 
 const { toggleStatusServices } = FooterActions
 
