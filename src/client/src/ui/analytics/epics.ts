@@ -3,12 +3,13 @@ import { ofType } from 'redux-observable'
 import { map, mergeMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
 import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
-import { ACTION_TYPES as REF_ACTION_TYPES, createReferenceServiceAction } from '../../referenceDataOperations'
+import { ACTION_TYPES as REF_ACTION_TYPES, ReferenceActions } from '../../operations/referenceData'
 import { AnalyticsActions } from './actions'
 
 const CURRENCY: string = 'USD'
 
 const { fetchAnalytics } = AnalyticsActions
+const { createReferenceServiceAction } = ReferenceActions
 type ReferenceServiceAction = ReturnType<typeof createReferenceServiceAction>
 type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
 
