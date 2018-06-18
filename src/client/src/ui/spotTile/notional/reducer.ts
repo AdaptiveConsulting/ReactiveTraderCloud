@@ -1,6 +1,6 @@
 import { ACTION_TYPES, NotionalActions } from './actions'
 
-interface NotionalState {
+export interface NotionalState {
   [currencyPairSymbol: string]: number
 }
 
