@@ -3,10 +3,12 @@ import { mergeMap, multicast, refCount, share } from 'rxjs/operators'
 import {
   AnalyticsService,
   BlotterService,
+  BrowserPopoutService,
   CompositeStatusService,
   ConnectionStatusService,
   ExecutionService,
   OpenFin,
+  OpenfinPopoutService,
   PricingService,
   ReferenceDataService
 } from './services'
@@ -63,7 +65,9 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
     )
   )
 
-  return {
+  const popoutService = openFin.isRunningInOpenFin ? new OpenfinPopoutService(openFin) : new BrowserPopoutService()
+
+  const dependencies = {
     referenceDataService,
     blotterService,
     pricingService,
@@ -72,8 +76,11 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
     connectionStatusService,
     executionService,
     openFin,
-    pricesForCurrenciesInRefData
+    pricesForCurrenciesInRefData,
+    popoutService
   }
+
+  return dependencies
 }
 
 export type ApplicationDependencies = ReturnType<typeof createApplicationServices>

@@ -24,12 +24,13 @@ export default function configureStore(dependencies: ApplicationDependencies) {
     compositeStatusServiceEpic,
     connectionStatusEpic,
     spotTileEpic,
-    popoutEpic,
     linkEpic
   ]
 
   if (dependencies.openFin.isRunningInOpenFin) {
     epics.push(openfinEpic)
+  } else {
+    epics.push(popoutEpic)
   }
 
   const middleware = createEpicMiddleware<Action, Action, GlobalState, ApplicationDependencies>({

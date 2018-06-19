@@ -1,18 +1,21 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import { StateObservable } from 'redux-observable'
-import { GlobalState } from '../../../combineReducers'
-import { OpenFin } from '../../../services'
-import { RegionActions } from '../regions'
-import { getPopoutService } from './index'
-import { OpenWindowAction, UndockAction } from './popoutEpic'
+
+import { GlobalState } from '../../combineReducers'
+import { OpenWindowAction, UndockAction } from '../../ui/common/popout/popoutEpic'
+import { RegionActions } from '../../ui/common/regions'
+import { PopoutService } from './types'
 
 const { popoutClosed, popoutOpened } = RegionActions
 
 declare const window: any
 
-export const createPopout = (action: OpenWindowAction, state$: StateObservable<GlobalState>, openFin?: OpenFin) => {
-  const popoutService = getPopoutService(openFin)
+export const createPopout = (
+  action: OpenWindowAction,
+  state$: StateObservable<GlobalState>,
+  popoutService: PopoutService
+) => {
   const { id, container, settings } = action.payload
   const popoutView = generateView(container)
   popoutService.openPopout(
@@ -43,7 +46,6 @@ const generateView = (container: React.ComponentClass<{}>) => {
   return React.createElement(Provider, { store: window.store }, childComponent)
 }
 
-export function undockPopout(action: UndockAction, openFin?: OpenFin) {
-  const popoutService = getPopoutService(openFin)
+export function undockPopout(action: UndockAction, popoutService: PopoutService) {
   popoutService.undockPopout(action.payload)
 }
