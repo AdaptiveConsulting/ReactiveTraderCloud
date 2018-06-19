@@ -1,5 +1,5 @@
-import { action, ActionUnion } from './ActionHelper'
-import { ConnectionInfo } from './services/connectionStatusService'
+import { action, ActionUnion } from '../../ActionHelper'
+import { ConnectionInfo } from '../../services/connectionStatusService'
 
 export enum ACTION_TYPES {
   CONNECT_SERVICES = '@ReactiveTraderCloud/CONNECT',

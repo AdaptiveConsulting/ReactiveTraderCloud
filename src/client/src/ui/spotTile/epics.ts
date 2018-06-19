@@ -1,45 +1,32 @@
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
-import { from as observableFrom } from 'rxjs'
-import { delay, map, mergeMap, tap } from 'rxjs/operators'
+import { delay, map, mergeMap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
+import { ExecuteTradeResponse } from '../../types'
 import { ACTION_TYPES, SpotTileActions } from './actions'
+
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
 
-type ExecutionAction = ReturnType<typeof SpotTileActions.executeTrade>
+const { executeTrade, tradeExecuted } = SpotTileActions
+type ExecutionAction = ReturnType<typeof executeTrade>
+export type ExecutedTradeAction = ReturnType<typeof tradeExecuted>
 
-const executeTradeEpic: ApplicationEpic<SpotTileActions> = (action$, store, { executionService }) =>
+const executeTradeEpic: ApplicationEpic = (action$, state$, { executionService }) =>
   action$.pipe(
-    ofType<SpotTileActions, ExecutionAction>(ACTION_TYPES.EXECUTE_TRADE),
-    mergeMap(request =>
+    ofType<Action, ExecutionAction>(ACTION_TYPES.EXECUTE_TRADE),
+    mergeMap((request: ExecutionAction) =>
       executionService
         .executeTrade(request.payload)
-        .pipe(map(result => SpotTileActions.tradeExecuted(result, request.meta)))
+        .pipe(map((result: ExecuteTradeResponse) => tradeExecuted(result, request.meta)))
     )
   )
 
-type DisplayChartAction = ReturnType<typeof SpotTileActions.displayCurrencyChart>
-
-export const displayCurrencyChart: ApplicationEpic = (action$, store, { openFin }) =>
-  action$.pipe(
-    ofType<Action, DisplayChartAction>(ACTION_TYPES.DISPLAY_CURRENCY_CHART),
-    mergeMap(action => observableFrom(openFin.displayCurrencyChart(action.payload))),
-    map(symbol => SpotTileActions.currencyChartOpened(symbol))
-  )
-
-type ExecutedTradeAction = ReturnType<typeof SpotTileActions.tradeExecuted>
-
-export const onTradeExecuted: ApplicationEpic = (action$, store, { openFin }) =>
+export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     ofType<Action, ExecutedTradeAction>(ACTION_TYPES.TRADE_EXECUTED),
-    tap(action => {
-      if (openFin.isRunningInOpenFin && action.meta) {
-        openFin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
-      }
-    }),
     delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
-    map(action => action.payload.request.CurrencyPair),
+    map((action: ExecutedTradeAction) => action.payload.request.CurrencyPair),
     map(SpotTileActions.dismissNotification)
   )
 
-export const spotTileEpic = combineEpics(executeTradeEpic, displayCurrencyChart, onTradeExecuted)
+export const spotTileEpic = combineEpics(executeTradeEpic, onTradeExecuted)

@@ -7,22 +7,20 @@ import {
   ConnectAction,
   DisconnectAction
 } from '../../operations/connectionStatus'
-import { BlotterActions } from './actions'
+import { PricingActions } from './actions'
 
-const { createNewTradesAction } = BlotterActions
-type NewTradesAction = ReturnType<typeof createNewTradesAction>
+const { priceUpdateAction } = PricingActions
+type PriceUpdateAction = ReturnType<typeof priceUpdateAction>
 
-export const blotterServiceEpic: ApplicationEpic = (action$, state$, { blotterService }) =>
+export const pricingServiceEpic: ApplicationEpic = (action$, state$, { pricesForCurrenciesInRefData }) =>
   action$.pipe(
     ofType<Action, ConnectAction>(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
     switchMapTo(
-      blotterService.getTradesStream().pipe(
-        map(createNewTradesAction),
-        takeUntil<NewTradesAction>(
+      pricesForCurrenciesInRefData.pipe(
+        map(priceUpdateAction),
+        takeUntil<PriceUpdateAction>(
           action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES))
         )
       )
     )
   )
-
-export default blotterServiceEpic

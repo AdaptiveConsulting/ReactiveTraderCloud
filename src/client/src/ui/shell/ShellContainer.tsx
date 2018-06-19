@@ -1,6 +1,6 @@
 import { connect, Dispatch } from 'react-redux'
 import { GlobalState } from '../../combineReducers'
-import { ConnectionActions } from '../../connectionActions'
+import { ConnectionActions } from '../../operations/connectionStatus'
 import { ConnectionStatus } from '../../system'
 import Shell from './Shell'
 
