@@ -14,13 +14,13 @@ type UndockAction = ReturnType<typeof undockTile>
 const popoutWindowEpic: ApplicationEpic = (action$, state$, { popoutService }) =>
   action$.pipe(
     ofType<Action, OpenWindowAction>(REGIONS_ACTIONS.REGION_OPEN_WINDOW),
-    map(action => createPopout(action, state$, popoutService))
+    map(({ payload }) => createPopout(payload, state$, popoutService))
   )
 
 const undockTileEpic: ApplicationEpic = (action$, state$, { popoutService }) =>
   action$.pipe(
     ofType<Action, UndockAction>(TILE_ACTIONS.UNDOCK_TILE),
-    tap(action => undockPopout(action, popoutService)),
+    tap(({ payload }) => undockPopout(payload, popoutService)),
     map(tileUndocked)
   )
 
