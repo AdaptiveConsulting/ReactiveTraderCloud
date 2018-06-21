@@ -8,3 +8,6 @@ echo "" >> ~/.profile
 echo "export PATH=~/.npm-global/bin:$PATH" >> ~/.profile
 
 source ~/.profile
+
+npm install
+npm run build
