@@ -1,6 +1,5 @@
 FROM        __NODE_CONTAINER__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
-USER node
 
 COPY        client /client
 
