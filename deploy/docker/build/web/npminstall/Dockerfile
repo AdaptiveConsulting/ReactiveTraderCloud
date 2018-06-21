@@ -7,7 +7,6 @@ COPY        npm-global.sh /client/npm-global.sh
 WORKDIR     /client
 
 RUN         chmod 755 npm-global.sh
-RUN         bash npm-global.sh
 
-ENTRYPOINT  npm install && npm run build
+ENTRYPOINT  ./npm-global.sh && npm install && npm run build
 # ENTRYPOINT  npm install && npm test && npm run deploy:prod
