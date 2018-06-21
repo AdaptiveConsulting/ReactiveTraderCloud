@@ -1,7 +1,5 @@
-import { action } from '../../ActionHelper'
-import { ExecuteTradeRequest, RegionSettings } from '../../types'
-import { ExecuteTradeResponse } from '../../types/executeTradeRequest'
-import { ActionUnion } from './../../ActionHelper'
+import { action, ActionUnion } from '../../ActionHelper'
+import { ExecuteTradeRequest, ExecuteTradeResponse, RegionSettings } from '../../types'
 import { TradeExectionMeta } from './spotTileUtils'
 
 export enum ACTION_TYPES {
@@ -22,7 +20,7 @@ export const SpotTileActions = {
     ACTION_TYPES.TRADE_EXECUTED
   ),
   undockTile: action<typeof ACTION_TYPES.UNDOCK_TILE, string>(ACTION_TYPES.UNDOCK_TILE),
-  tileUndocked: action(ACTION_TYPES.TILE_UNDOCKED),
+  tileUndocked: action<typeof ACTION_TYPES.TILE_UNDOCKED>(ACTION_TYPES.TILE_UNDOCKED),
   displayCurrencyChart: action<typeof ACTION_TYPES.DISPLAY_CURRENCY_CHART, string>(ACTION_TYPES.DISPLAY_CURRENCY_CHART),
   currencyChartOpened: action<typeof ACTION_TYPES.CURRENCY_CHART_OPENED, string>(ACTION_TYPES.CURRENCY_CHART_OPENED),
   dismissNotification: action<typeof ACTION_TYPES.DISMISS_NOTIFICATION, string>(ACTION_TYPES.DISMISS_NOTIFICATION)
@@ -30,12 +28,10 @@ export const SpotTileActions = {
 
 export type SpotTileActions = ActionUnion<typeof SpotTileActions>
 
-export const spotRegionSettings = (id): RegionSettings => {
-  return {
-    title: `${id} Spot`,
-    width: 370,
-    height: 155,
-    dockable: true,
-    resizable: false
-  }
-}
+export const spotRegionSettings = (id: string): RegionSettings => ({
+  title: `${id} Spot`,
+  width: 370,
+  height: 155,
+  dockable: true,
+  resizable: false
+})

@@ -4,16 +4,16 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable'
 
 import { ApplicationDependencies } from './applicationServices'
 import rootReducer, { GlobalState } from './combineReducers'
-import { compositeStatusServiceEpic } from './compositeStatusServiceOperations'
-import { connectionStatusEpicsCreator } from './connectionStatusOperations'
 import { linkEpic } from './linkEpic'
 import { openfinEpic } from './openfinEpics'
-import { pricingServiceEpic } from './pricingOperations'
+import { compositeStatusServiceEpic } from './operations/compositeStatusService'
+import { connectionStatusEpic } from './operations/connectionStatus'
+import { pricingServiceEpic } from './operations/pricing'
 import { referenceServiceEpic } from './referenceDataOperations'
 import { analyticsServiceEpic } from './ui/analytics'
 import { blotterEpic } from './ui/blotter/'
 import { popoutEpic } from './ui/common/popout/popoutEpic'
-import { spotTileEpicsCreator } from './ui/spotTile'
+import { spotTileEpic } from './ui/spotTile'
 
 export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [
@@ -22,8 +22,8 @@ export default function configureStore(dependencies: ApplicationDependencies) {
     pricingServiceEpic,
     analyticsServiceEpic,
     compositeStatusServiceEpic,
-    connectionStatusEpicsCreator,
-    spotTileEpicsCreator,
+    connectionStatusEpic,
+    spotTileEpic,
     popoutEpic,
     linkEpic
   ]
