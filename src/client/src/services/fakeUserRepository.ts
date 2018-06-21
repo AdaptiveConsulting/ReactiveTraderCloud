@@ -1,4 +1,4 @@
-import logger from '../system/logger'
+import { logger } from '../system'
 import { User } from '../types'
 
 const log = logger.create('FakeUserRepository')

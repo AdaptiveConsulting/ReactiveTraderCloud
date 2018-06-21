@@ -1,12 +1,7 @@
 import { Observable } from 'rxjs'
 import { map, publishReplay, refCount, scan } from 'rxjs/operators'
-import { ServiceClient } from '../system/service'
-import {
-  CurrencyPair,
-  CurrencyPairUpdates,
-  ServiceConst,
-  UpdateType
-} from '../types'
+import { ServiceClient } from '../system'
+import { CurrencyPair, CurrencyPairUpdates, ServiceConst, UpdateType } from '../types'
 import { referenceDataMapper } from './mappers'
 import { RawCurrencyPairUpdates } from './mappers/referenceDataMapper'
 
@@ -27,10 +22,7 @@ export default class ReferenceDataService {
 
           pairUpdates.forEach(currencyPairUpdate => {
             if (currencyPairUpdate.updateType === UpdateType.Added) {
-              acc.set(
-                currencyPairUpdate.currencyPair.symbol,
-                currencyPairUpdate.currencyPair
-              )
+              acc.set(currencyPairUpdate.currencyPair.symbol, currencyPairUpdate.currencyPair)
             } else {
               acc.delete(currencyPairUpdate.currencyPair.symbol)
             }

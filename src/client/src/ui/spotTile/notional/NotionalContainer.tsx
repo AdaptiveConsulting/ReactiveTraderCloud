@@ -18,14 +18,11 @@ interface NotionalContainerDispatchProps {
   onNotionalInputChange: (payload: NotionalUpdate) => void
 }
 
-type NotionalContainerProps = NotionalContainerOwnProps &
-  NotionalContainerStateProps &
-  NotionalContainerDispatchProps
+type NotionalContainerProps = NotionalContainerOwnProps & NotionalContainerStateProps & NotionalContainerDispatchProps
 
 class NotionalContainer extends React.Component<NotionalContainerProps, any> {
   render() {
-    const notional =
-      this.props.notionals[this.props.currencyPair.symbol] || 1000000
+    const notional = this.props.notionals[this.props.currencyPair.symbol] || 1000000
     const currencyPairSymbol = this.props.currencyPair.symbol
     return (
       <NotionalInput
@@ -43,7 +40,7 @@ class NotionalContainer extends React.Component<NotionalContainerProps, any> {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) =>
+const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
       onNotionalInputChange

@@ -17,7 +17,7 @@
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
     "declaration": false,
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "skipLibCheck": true
   },
   "exclude": [

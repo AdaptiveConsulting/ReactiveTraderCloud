@@ -1,7 +1,16 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { GlobalState } from '../../../combineReducers'
 
-class RegionWrapper extends React.Component<any, any> {
+interface OwnProps {
+  region: string
+}
+
+const mapStateToProps = (state: GlobalState) => ({ service: state.regionsService })
+
+type StateProps = ReturnType<typeof mapStateToProps>
+
+class RegionWrapper extends React.Component<OwnProps & StateProps> {
   public render() {
     const { region, children, service } = this.props
     let displayChildComponent = true
@@ -13,7 +22,5 @@ class RegionWrapper extends React.Component<any, any> {
     return displayChildComponent ? children : null
   }
 }
-
-const mapStateToProps = state => ({ service: state.regionsService })
 
 export default connect(mapStateToProps)(RegionWrapper)

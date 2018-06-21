@@ -4,7 +4,7 @@ import TradeNotification from '../tradeNotification'
 import ShallowRenderer from 'react-test-renderer/shallow'
 import { mount } from 'enzyme'
 
-describe.only('TradeNotification', () => {
+describe.skip('TradeNotification', () => {
 
   test('dismisses the error message when hasError', () => {
     const mockOnDismissedClicked = jest.fn(() => {})

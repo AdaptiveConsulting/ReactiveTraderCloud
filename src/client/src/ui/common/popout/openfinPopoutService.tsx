@@ -3,12 +3,13 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import OpenFinChrome from '../../shell/OpenFinChrome'
 import PopoutServiceBase from './popoutServiceBase'
+
 const { DockingManager } = require('./dockingManager.js')
 
 const DOCKED_CLASS_NAME = 'docked'
 const BOUNDS_CHANGING_EVENT = 'bounds-changing'
 const CLOSE_REQUESTED_EVENT = 'close-requested'
-import logger from '../../../system/logger'
+import { logger } from '../../../system'
 
 const log = logger.create('OpenfinPopoutService')
 

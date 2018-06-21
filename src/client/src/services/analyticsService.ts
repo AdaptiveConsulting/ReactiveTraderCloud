@@ -1,8 +1,5 @@
-import { asyncScheduler } from 'rxjs'
-import { map } from 'rxjs/operators'
-import { RetryPolicy } from '../system'
-import { retryWithPolicy } from '../system/observableExtensions/retryPolicyExt'
-import { ServiceClient } from '../system/service'
+import { map, retryWhen } from 'rxjs/operators'
+import { retryWithBackOff, ServiceClient } from '../system'
 import { ServiceConst } from '../types'
 import { PositionsMapper } from './mappers'
 import { PositionsRaw } from './mappers/positionsMapper'
@@ -18,11 +15,7 @@ export default class AnalyticsService {
         analyticsRequest
       )
       .pipe(
-        retryWithPolicy(
-          RetryPolicy.backoffTo10SecondsMax,
-          'getAnalytics',
-          asyncScheduler
-        ),
+        retryWhen(retryWithBackOff()),
         map(dto => PositionsMapper.mapFromDto(dto))
       )
   }

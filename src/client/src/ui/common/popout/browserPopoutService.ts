@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
 import * as ReactDOM from 'react-dom'
-import logger from '../../../system/logger'
+import { logger } from '../../../system/'
 import PopoutServiceBase from './popoutServiceBase'
 
 const log = logger.create('BlotterModel')

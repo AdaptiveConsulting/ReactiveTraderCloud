@@ -1,36 +1,30 @@
 import * as _ from 'lodash'
-import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import sizeMe from 'react-sizeme'
-import Environment from '../../system/environment'
+import { GlobalState } from '../../combineReducers'
+import { Environment } from '../../system'
+import { RegionSettings } from '../../types'
 import { addRegion, openWindow } from '../common/regions/regionsOperations'
 import Blotter from './Blotter'
-import { blotterRegionsSettings } from './reducer'
+import { BlotterState } from './reducer'
 
 interface BlotterContainerProps {
-  blotterService: any
+  blotterService: BlotterState
   isConnected: boolean
-  onPopoutClick: (openFin) => () => void
-  onComponentMount: () => void
   size: { width: number; height: number }
+  onPopoutClick: () => void
+  onComponentMount: () => void
 }
 
 interface BlotterContainerState {
   gridDocument: Element
 }
 
-class BlotterContainer extends React.Component<
-  BlotterContainerProps,
-  BlotterContainerState
-> {
+class BlotterContainer extends React.Component<BlotterContainerProps, BlotterContainerState> {
   state = {
     gridDocument: null
-  }
-
-  static contextTypes = {
-    openFin: PropTypes.object
   }
 
   public componentDidMount() {
@@ -38,22 +32,21 @@ class BlotterContainer extends React.Component<
   }
 
   public render() {
-    const trades = this.props.blotterService.trades
-    const openFin = this.context.openFin
+    const { blotterService, onPopoutClick, isConnected } = this.props
+    const { trades } = blotterService
+    const { gridDocument } = this.state
     const gridRows = _.values(trades).reverse()
-    const popoutClick = this.props.onPopoutClick(openFin)
-    return (
-      <div
-        className="shell_workspace_blotter"
-        ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}
-      >
+    return isConnected ? (
+      <div className="shell_workspace_blotter" ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
         <Blotter
           rows={gridRows}
-          gridDocument={this.state.gridDocument}
-          onPopoutClick={popoutClick}
+          gridDocument={gridDocument}
+          onPopoutClick={onPopoutClick}
           canPopout={Environment.isRunningInIE()}
         />
       </div>
+    ) : (
+      <div className="shell_workspace_blotter blotter--disconnected">Blotter disconnected</div>
     )
   }
 
@@ -64,34 +57,36 @@ class BlotterContainer extends React.Component<
   }
 }
 
-const mapStateToProps = (state: any) => {
-  const { blotterService, compositeStatusService } = state
-  const isConnected =
-    (compositeStatusService &&
-      compositeStatusService.blotter &&
-      compositeStatusService.blotter.isConnected) ||
-    false
-  return { blotterService, isConnected }
-}
+const mapStateToProps = ({ blotterService, compositeStatusService }: GlobalState) => ({
+  blotterService,
+  isConnected: compositeStatusService && compositeStatusService.blotter && compositeStatusService.blotter.isConnected
+})
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onPopoutClick: openFin => {
-      return () => {
-        dispatch(openWindow(blotterRegion, openFin))
-      }
-    },
-    onComponentMount: () => {
-      dispatch(addRegion(blotterRegion))
-    }
+const ConnectedBlotterContainer = connect(
+  mapStateToProps,
+  {
+    onPopoutClick: () => openWindow(blotterRegion),
+    onComponentMount: () => addRegion(blotterRegion)
   }
+)(sizeMe({ monitorHeight: true })(BlotterContainer))
+
+interface Region {
+  id: string
+  isTearedOff: boolean
+  container: React.ComponentClass
+  settings: RegionSettings
 }
 
-const ConnectedBlotterContainer = connect(mapStateToProps, mapDispatchToProps)(
-  sizeMe({ monitorHeight: true })(BlotterContainer)
-)
+const blotterRegionsSettings: RegionSettings = {
+  title: 'Blotter',
+  width: 850,
+  height: 450,
+  minHeight: 200,
+  dockable: false,
+  resizable: true
+}
 
-const blotterRegion = {
+const blotterRegion: Region = {
   id: 'blotter',
   isTearedOff: false,
   container: ConnectedBlotterContainer,

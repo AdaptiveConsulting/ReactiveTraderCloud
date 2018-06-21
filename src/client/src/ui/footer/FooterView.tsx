@@ -4,71 +4,45 @@ import * as React from 'react'
 import { StatusIndicator } from './StatusIndicator'
 
 import { ConnectionInfo } from '../../services/connectionStatusService'
-import { ConnectionStatus, ConnectionType } from '../../system'
+import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from '../../system'
 import { ApplicationStatusConst, ServiceStatus } from '../../types'
 
-export interface Services {
-  pricing: ServiceStatus
-  reference: ServiceStatus
-  blotter: ServiceStatus
-  execution: ServiceStatus
-  analytics: ServiceStatus
-}
-
 interface FooterViewProps {
-  compositeStatusService: Services
+  compositeStatusService: ServiceConnectionInfo
   connectionStatus: ConnectionInfo
   toggleStatusServices: () => void
   displayStatusServices: boolean
-  isRunningInOpenFin: boolean
-  openFin: any
+  isRunningOnDesktop: boolean
+  openLink: (link: string) => void
 }
 
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
 const OPENFIN_URL: string = 'http://openfin.co'
 
-export const FooterView: React.SFC<FooterViewProps> = (
-  props: FooterViewProps
-) => {
+export const FooterView: React.SFC<FooterViewProps> = (props: FooterViewProps) => {
   const servicesAsList = _.values(props.compositeStatusService)
 
   const panelClasses = classnames('footer__service-status-panel', {
-    hide:
-      !isConnected(props.connectionStatus.status) ||
-      !props.displayStatusServices
+    hide: !isConnected(props.connectionStatus.status) || !props.displayStatusServices
   })
 
   const openfinLogoClassName = classnames('footer__logo', {
-    'footer__logo-openfin': props.isRunningInOpenFin
+    'footer__logo-openfin': props.isRunningOnDesktop
   })
   const footerClasses = classnames('footer', {
     'footer--disconnected': !isConnected(props.connectionStatus.status)
   })
 
-  const openLink = (url: string) => {
-    props.isRunningInOpenFin
-      ? props.openFin.openLink(url)
-      : window.open(url, '_blank')
-  }
-
   return (
     <footer className={footerClasses}>
       <span className="footer__connection-url">
         {isConnected(props.connectionStatus.status)
-          ? `Connected to ${props.connectionStatus.url} (${
-              props.connectionStatus.transportType
-            })`
+          ? `Connected to ${props.connectionStatus.url} (${props.connectionStatus.transportType})`
           : 'Disconnected'}{' '}
       </span>
       <span className="footer__logo-container">
-        <span
-          className={openfinLogoClassName}
-          onClick={() => openLink(OPENFIN_URL)}
-        />
-        <span
-          className="footer__logo footer__logo-adaptive"
-          onClick={() => openLink(ADAPTIVE_URL)}
-        />
+        <span className={openfinLogoClassName} onClick={() => props.openLink(OPENFIN_URL)} />
+        <span className="footer__logo footer__logo-adaptive" onClick={() => props.openLink(ADAPTIVE_URL)} />
       </span>
       <div
         className="footer__status-indicator-wrapper"
@@ -95,11 +69,7 @@ export const FooterView: React.SFC<FooterViewProps> = (
   )
 }
 
-const getApplicationStatus = (
-  connection: ConnectionStatus,
-  services,
-  connectionType
-) => {
+const getApplicationStatus = (connection: ConnectionStatus, services, connectionType) => {
   if (
     connection === ConnectionStatus.connected &&
     _.every(services, 'isConnected') &&
@@ -113,8 +83,7 @@ const getApplicationStatus = (
   }
 }
 
-const isConnected = (connection: ConnectionStatus) =>
-  connection === ConnectionStatus.connected
+const isConnected = (connection: ConnectionStatus) => connection === ConnectionStatus.connected
 
 const renderServiceStatus = (serviceStatus: ServiceStatus) => {
   const statusSpan = renderStatus(serviceStatus)
@@ -149,12 +118,9 @@ const renderStatus = serviceStatus =>
     </span>
   )
 
-const renderConnectedNodesText = (connectedInstanceCount: number) =>
-  (connectedInstanceCount === 1 && 'node') || 'nodes'
+const renderConnectedNodesText = (connectedInstanceCount: number) => (connectedInstanceCount === 1 && 'node') || 'nodes'
 
 const renderTitle = ({ serviceType, connectedInstanceCount }) =>
-  `${serviceType} (${connectedInstanceCount} ${renderConnectedNodesText(
-    connectedInstanceCount
-  )})`
+  `${serviceType} (${connectedInstanceCount} ${renderConnectedNodesText(connectedInstanceCount)})`
 
 export default FooterView

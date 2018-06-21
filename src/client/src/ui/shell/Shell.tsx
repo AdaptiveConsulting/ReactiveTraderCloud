@@ -2,7 +2,7 @@ import * as React from 'react'
 import { BlotterContainer } from '../blotter'
 import FooterContainer from '../footer/FooterContainer'
 import { Modal } from '../modal'
-import SidebarRegionContainer from '../sidebar/SidebarRegionContainer'
+import SidebarRegionContainer from '../sidebar'
 import { WorkspaceContainer } from '../workspace/'
 
 import * as classnames from 'classnames'
@@ -15,15 +15,13 @@ import '../styles/css/index.css'
 export interface ShellProps {
   sessionExpired: boolean
   showSplitter: boolean
-  onReconnectClick: () => void
   reconnect: () => void
 }
 
-export default class Shell extends React.Component<ShellProps, {}> {
+export default class Shell extends React.Component<ShellProps> {
   static contextTypes = {
     openFin: PropTypes.object
   }
-  props: ShellProps
   appVersion: string = process.env.REACT_APP_VERSION // version from package.json exported in webpack.config.js
 
   render() {
@@ -43,15 +41,9 @@ export default class Shell extends React.Component<ShellProps, {}> {
         <div className="shell__container">
           <Modal shouldShow={sessionExpired} title="Session expired">
             <div>
-              <div>
-                Your 15 minute session expired, you are now disconnected from
-                the server.
-              </div>
+              <div>Your 15 minute session expired, you are now disconnected from the server.</div>
               <div>Click reconnect to start a new session.</div>
-              <button
-                className="btn shell__button--reconnect"
-                onClick={this.props.reconnect}
-              >
+              <button className="btn shell__button--reconnect" onClick={this.props.reconnect}>
                 Reconnect
               </button>
             </div>
@@ -82,12 +74,7 @@ export default class Shell extends React.Component<ShellProps, {}> {
 
   private renderSplitView = (): JSX.Element => {
     return (
-      <SplitPane
-        minSize={300}
-        size={600}
-        split="horizontal"
-        style={{ position: 'relative' }}
-      >
+      <SplitPane minSize={300} size={600} split="horizontal" style={{ position: 'relative' }}>
         <WorkspaceContainer />
         <div className="shell__blotter-container">
           <RegionWrapper region="blotter">

@@ -6,13 +6,14 @@ export { CurrencyPairUpdates } from './currencyPairUpdates'
 export { Direction } from './direction'
 export {
   ExecuteTradeRequest,
+  ExecuteTradeResponse,
   TradeSuccessResponse,
   TradeErrorResponse,
-  ExecuteTradeResponse,
   createExecuteTradeResponseForError,
   createExecuteTradeResponse
 } from './executeTradeRequest'
 export { HistoricPosition } from './historicPosition'
+export { Notification } from './notification'
 export { NotificationType } from './notificationType'
 export { PositionUpdates } from './positionUpdates'
 export { PriceMovementTypes } from './priceMovementTypes'

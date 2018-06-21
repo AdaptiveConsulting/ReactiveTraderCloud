@@ -1,32 +1,28 @@
+import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { map, mergeMapTo, takeUntil, tap } from 'rxjs/operators'
-import { ACTION_TYPES as REF_ACTION_TYPES } from '../../referenceDataOperations'
-import { AnalyticsService } from '../../services'
-import { OpenFin } from '../../services/openFin'
-import { PositionUpdates } from '../../types'
-import { DISCONNECT_SERVICES } from './../../connectionActions'
-import { fetchAnalytics } from './actions'
+import { map, mergeMapTo, takeUntil } from 'rxjs/operators'
+import { ApplicationEpic } from '../../ApplicationEpic'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
+import { ACTION_TYPES as REF_ACTION_TYPES, createReferenceServiceAction } from '../../referenceDataOperations'
+import { AnalyticsActions } from './actions'
 
 const CURRENCY: string = 'USD'
 
-export const analyticsServiceEpic = (
-  analyticsService$: AnalyticsService,
-  openFin: OpenFin
-) => action$ => {
-  return action$.pipe(
-    ofType(REF_ACTION_TYPES.REFERENCE_SERVICE),
+const { fetchAnalytics } = AnalyticsActions
+type ReferenceServiceAction = ReturnType<typeof createReferenceServiceAction>
+type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
+
+export const analyticsServiceEpic: ApplicationEpic = (action$, state$, { analyticsService }) =>
+  action$.pipe(
+    ofType<Action, ReferenceServiceAction>(REF_ACTION_TYPES.REFERENCE_SERVICE),
     mergeMapTo(
-      analyticsService$
-        .getAnalyticsStream(CURRENCY)
-        .pipe(
-          tap((action: PositionUpdates) =>
-            openFin.publishCurrentPositions(action.currentPositions)
-          ),
-          map(fetchAnalytics),
-          takeUntil(action$.pipe(ofType(DISCONNECT_SERVICES)))
+      analyticsService.getAnalyticsStream(CURRENCY).pipe(
+        map(fetchAnalytics),
+        takeUntil<FetchAnalyticsAction>(
+          action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES))
         )
+      )
     )
   )
-}
 
 export default analyticsServiceEpic

@@ -1,29 +1,16 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { timer } from 'rxjs'
+import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
+import configureStore from './configureStore'
+import { ConnectionActions } from './operations/connectionStatus'
+import { FakeUserRepository } from './services'
 import { OpenFin } from './services/openFin'
-import createConnection from './system/service/connection'
+import { AutobahnConnectionProxy, logger } from './system'
 import { User } from './types'
 import { OpenFinProvider, ShellContainer } from './ui/shell'
-
-import { timer } from 'rxjs'
-import { publishReplay, refCount } from 'rxjs/operators'
-import configureStore from './configureStore'
-import { connect, disconnect } from './connectionActions'
-import {
-  AnalyticsService,
-  BlotterService,
-  CompositeStatusService,
-  ConnectionStatusService,
-  ExecutionService,
-  FakeUserRepository,
-  PricingService,
-  ReferenceDataService
-} from './services'
-import { logger } from './system'
-import { ServiceClient } from './system/service'
-import { serviceInstanceDictionaryStream$ } from './system/service/serviceStatusStream'
 
 const log = logger.create('Application Service')
 
@@ -32,82 +19,38 @@ declare const window: any
 
 const config = getEnvVars(process.env.REACT_APP_ENV)
 
-const connectSocket = () => {
-  const user: User = FakeUserRepository.currentUser
-  const realm = 'com.weareadaptive.reactivetrader'
-  const url = config.overwriteServerEndpoint
-    ? config.serverEndpointUrl
-    : location.hostname
-  const port = config.overwriteServerEndpoint
-    ? config.serverPort
-    : location.port
-  return createConnection(user.code, url, realm, +port)
-}
-
-const HEARTBEAT_TIMEOUT = 3000
 const APPLICATION_DISCONNECT = 15 * 60 * 1000
 
 const appBootstrapper = () => {
-  const connection = connectSocket()
+  const user: User = FakeUserRepository.currentUser
+  const realm = 'com.weareadaptive.reactivetrader'
+  const url = config.overwriteServerEndpoint ? config.serverEndpointUrl : location.hostname
+  const port = config.overwriteServerEndpoint ? config.serverPort : location.port
 
-  const serviceStatus$ = serviceInstanceDictionaryStream$(
-    connection,
-    HEARTBEAT_TIMEOUT
-  ).pipe(publishReplay(1), refCount())
-
-  const serviceClient = new ServiceClient(connection, serviceStatus$)
-
-  const blotterService = new BlotterService(serviceClient)
-
-  const pricingService = new PricingService(serviceClient)
-
-  const refDataService = new ReferenceDataService(serviceClient)
+  const autobahn = new AutobahnConnectionProxy(url, realm, +port)
 
   const openFin = new OpenFin()
 
-  const execService = new ExecutionService(
-    serviceClient,
-    openFin.checkLimit.bind(openFin)
-  )
-
-  const analyticsService = new AnalyticsService(serviceClient)
-
-  const compositeStatusService = new CompositeStatusService(serviceStatus$)
-
-  const connectionStatusService = new ConnectionStatusService(connection)
+  const applicationDependencies = createApplicationServices(user, autobahn, openFin)
 
   const isRunningInFinsemble = window.FSBL
 
-  const store = configureStore(
-    refDataService,
-    blotterService,
-    pricingService,
-    analyticsService,
-    compositeStatusService,
-    connectionStatusService,
-    execService,
-    openFin
-  )
+  const store = configureStore(applicationDependencies)
   window.store = store
   ReactDOM.render(
     <Provider store={store}>
-      <OpenFinProvider
-        openFin={openFin}
-        isRunningInFinsemble={isRunningInFinsemble}
-      >
+      <OpenFinProvider openFin={openFin} isRunningInFinsemble={isRunningInFinsemble}>
         <ShellContainer />
       </OpenFinProvider>
     </Provider>,
     document.getElementById('root')
   )
 
-  store.dispatch(connect())
+  store.dispatch(ConnectionActions.connect())
 
   timer(APPLICATION_DISCONNECT).subscribe(() => {
-    store.dispatch(disconnect())
-    log.warn(
-      `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`
-    )
+    store.dispatch(ConnectionActions.disconnect())
+    log.warn(`Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
   })
 }
 
