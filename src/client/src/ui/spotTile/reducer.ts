@@ -1,5 +1,6 @@
 import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
-import { Notification, Trade } from '../../types'
+import { Notification } from '../../types'
+import { SpotTileData } from '../../types/spotTileData'
 import { buildNotification } from '../notification/notificationUtils'
 import { tradeError, tradeSuccesful } from './../../types/executeTradeRequest'
 import { ACTION_TYPES, SpotTileActions } from './actions'
@@ -13,7 +14,7 @@ const updateSpotTile = (state: SpotTileState, symbol: string, value: SpotTileVal
 })
 
 interface SpotTileState {
-  [tradeId: number]: Trade
+  [currencyPair: string]: SpotTileData
 }
 
 interface SpotTileValue {
