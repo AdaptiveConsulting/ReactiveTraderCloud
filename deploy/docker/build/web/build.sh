@@ -29,7 +29,7 @@ mkdir -p ${npminstall_build_dir}
 rm -rf ${npminstall_build_dir}/*
 cp -r ${root_directory}/src/client ${npminstall_build_dir}/
 cp ${npminstall_dir}/Dockerfile ${npminstall_build_dir}/Dockerfile
-cp ${npminstall_dir}/npm-global.sh ${npminstall_build_dir}/npm-global.sh
+cp ${npminstall_dir}/npm-run.sh ${npminstall_build_dir}/npm-run.sh
 sed -ie "s|__NODE_CONTAINER__|$nodeContainer|g" ${npminstall_build_dir}/Dockerfile
 docker build --no-cache -t ${temp_image} ${npminstall_build_dir}/.
 
