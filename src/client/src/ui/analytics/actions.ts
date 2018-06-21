@@ -6,7 +6,7 @@ export enum ACTION_TYPES {
 }
 
 export const AnalyticsActions = {
-  fetchAnalytics: action<typeof ACTION_TYPES.ANALYTICS_SERVICE, PositionUpdates>(ACTION_TYPES.ANALYTICS_SERVICE)
+  fetchAnalytics: action<ACTION_TYPES.ANALYTICS_SERVICE, PositionUpdates>(ACTION_TYPES.ANALYTICS_SERVICE)
 }
 
 export type AnalyticsActions = ActionUnion<typeof AnalyticsActions>

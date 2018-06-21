@@ -1,22 +1,17 @@
 import * as _ from 'lodash'
 import * as ReactDOM from 'react-dom'
-import { logger } from '../../../system/'
+import { logger } from '../../system'
 import PopoutServiceBase from './popoutServiceBase'
+import { PopoutOptions, PopoutView } from './types'
 
 const log = logger.create('BlotterModel')
 
 export default class BrowserPopoutService extends PopoutServiceBase {
-  openPopout(options, view) {
+  openPopout(options: PopoutOptions, view: PopoutView): void {
     let popoutContainer
-    const windowOptionsString = this.getWindowOptionsString(
-      options.windowOptions
-    )
+    const windowOptionsString = this.getWindowOptionsString(options.windowOptions)
     log.debug(`Opening child window url:${options.url},title:${options.title}`)
-    const childWindow = window.open(
-      options.url,
-      options.title,
-      windowOptionsString
-    )
+    const childWindow = window.open(options.url, options.title, windowOptionsString)
     const onloadHandler = () => {
       log.debug(`Popout window loading`)
       childWindow.document.title = options.title

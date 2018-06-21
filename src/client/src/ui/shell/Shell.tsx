@@ -7,7 +7,7 @@ import { WorkspaceContainer } from '../workspace/'
 
 import * as classnames from 'classnames'
 import * as PropTypes from 'prop-types'
-import RegionWrapper from '../common/regions/RegionWrapper'
+import RegionWrapper from '../common/regions'
 import TradeNotificationContainer from '../notification/TradeNotificationContainer'
 const SplitPane = require('react-split-pane')
 import '../styles/css/index.css'

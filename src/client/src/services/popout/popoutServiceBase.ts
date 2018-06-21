@@ -1,4 +1,4 @@
-import { logger } from '../../../system'
+import { logger } from '../../system'
 
 const log = logger.create('OpenfinPopoutService')
 

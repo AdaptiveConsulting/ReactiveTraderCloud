@@ -2,10 +2,10 @@ import { ACTION_TYPES, SidebarRegionActions } from './actions'
 
 export type SidebarRegionState = boolean
 
-const initialState: SidebarRegionState = true
+const INITIAL_STATE: SidebarRegionState = true
 
 export const sidebarRegionReducer = (
-  state: SidebarRegionState = initialState,
+  state: SidebarRegionState = INITIAL_STATE,
   action: SidebarRegionActions
 ): SidebarRegionState => {
   switch (action.type) {

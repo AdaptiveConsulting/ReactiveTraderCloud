@@ -5,7 +5,7 @@ export enum ACTION_TYPES {
 }
 
 export const SidebarRegionActions = {
-  toggleAnalytics: action<typeof ACTION_TYPES.TOGGLE_ANALYTICS>(ACTION_TYPES.TOGGLE_ANALYTICS)
+  toggleAnalytics: action<ACTION_TYPES.TOGGLE_ANALYTICS>(ACTION_TYPES.TOGGLE_ANALYTICS)
 }
 
 export type SidebarRegionActions = ActionUnion<typeof SidebarRegionActions>

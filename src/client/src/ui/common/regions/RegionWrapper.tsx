@@ -1,26 +1,27 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { GlobalState } from '../../../combineReducers'
+import { RegionState } from './reducer'
 
-interface OwnProps {
+interface RegionProps {
   region: string
+  service: RegionState
+  children?: any
 }
 
-const mapStateToProps = (state: GlobalState) => ({ service: state.regionsService })
+export const RegionWrapper: React.SFC<RegionProps> = ({ region, children, service }: RegionProps) =>
+  (displayChildComponent(service, region) && children) || null
 
-type StateProps = ReturnType<typeof mapStateToProps>
+const displayChildComponent = (service: RegionState, region: string) => {
+  let displayChild = true
 
-class RegionWrapper extends React.Component<OwnProps & StateProps> {
-  public render() {
-    const { region, children, service } = this.props
-    let displayChildComponent = true
-
-    if (service && region && service[region]) {
-      displayChildComponent = !service[region].isTearedOff
-    }
-
-    return displayChildComponent ? children : null
+  if (service && region && service[region]) {
+    displayChild = !service[region].isTearedOff
   }
+
+  return displayChild
 }
+
+const mapStateToProps = ({ regionsService: service }: GlobalState) => ({ service })
 
 export default connect(mapStateToProps)(RegionWrapper)

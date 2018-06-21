@@ -7,20 +7,20 @@ export interface AnalyticsState {
   history: HistoricPosition[]
 }
 
-const initialState: AnalyticsState = {
+const INITIAL_STATE: AnalyticsState = {
   currentPositions: [],
   history: []
 }
 
 export const analyticsReducer = (
-  state: AnalyticsState = initialState,
+  state: AnalyticsState = INITIAL_STATE,
   action: AnalyticsActions | DisconnectAction
 ): AnalyticsState => {
   switch (action.type) {
     case ACTION_TYPES.ANALYTICS_SERVICE:
       return { ...state, ...action.payload }
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
-      return initialState
+      return INITIAL_STATE
     default:
       return state
   }

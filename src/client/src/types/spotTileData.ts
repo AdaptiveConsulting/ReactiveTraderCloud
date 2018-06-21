@@ -11,4 +11,5 @@ export interface SpotTileData {
   currencyChartIsOpening: boolean
   isTradeExecutionInFlight: boolean
   priceStale: boolean
+  hasError: boolean
 }

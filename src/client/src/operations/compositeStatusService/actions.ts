@@ -6,7 +6,7 @@ export enum ACTION_TYPES {
 }
 
 export const CompositeStatusServiceActions = {
-  createCompositeStatusServiceAction: action<typeof ACTION_TYPES.COMPOSITE_STATUS_SERVICE, ServiceConnectionInfo>(
+  createCompositeStatusServiceAction: action<ACTION_TYPES.COMPOSITE_STATUS_SERVICE, ServiceConnectionInfo>(
     ACTION_TYPES.COMPOSITE_STATUS_SERVICE
   )
 }

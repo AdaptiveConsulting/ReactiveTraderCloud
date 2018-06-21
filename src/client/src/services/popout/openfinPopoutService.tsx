@@ -1,15 +1,15 @@
 import * as _ from 'lodash'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import OpenFinChrome from '../../shell/OpenFinChrome'
+import OpenFinChrome from '../../ui/shell/OpenFinChrome'
+import { DockingManager } from './dockingManager'
 import PopoutServiceBase from './popoutServiceBase'
-
-const { DockingManager } = require('./dockingManager.js')
 
 const DOCKED_CLASS_NAME = 'docked'
 const BOUNDS_CHANGING_EVENT = 'bounds-changing'
 const CLOSE_REQUESTED_EVENT = 'close-requested'
-import { logger } from '../../../system'
+import { logger } from '../../system'
+import { PopoutOptions, PopoutView } from './types'
 
 const log = logger.create('OpenfinPopoutService')
 
@@ -26,25 +26,15 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
   }
 
   openPopout(
-    {
-      url,
-      title,
-      onClosing,
-      windowOptions = { height: 400, width: 400, dockable: false }
-    },
-    view
-  ) {
+    { url, title, onClosing, windowOptions = { height: 400, width: 400, dockable: false } }: PopoutOptions,
+    view: PopoutView
+  ): void {
     const openFin = this.openFin
     this.createWindow(
       { url, title, windowOptions },
       tearoutWindow => {
-        const popoutContainer = tearoutWindow.contentWindow.document.createElement(
-          'div'
-        )
-        const onBoundsChanging = _.throttle(
-          () => tearoutWindow.setAsForeground(),
-          300
-        )
+        const popoutContainer = tearoutWindow.contentWindow.document.createElement('div')
+        const onBoundsChanging = _.throttle(() => tearoutWindow.setAsForeground(), 300)
         const onCloseRequested = () => {
           this.unregisterWindow(tearoutWindow)
           if (popoutContainer) {
@@ -53,14 +43,8 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
           if (_.isFunction(onClosing)) {
             onClosing()
           }
-          tearoutWindow.removeEventListener(
-            BOUNDS_CHANGING_EVENT,
-            onBoundsChanging
-          )
-          tearoutWindow.removeEventListener(
-            CLOSE_REQUESTED_EVENT,
-            onCloseRequested
-          )
+          tearoutWindow.removeEventListener(BOUNDS_CHANGING_EVENT, onBoundsChanging)
+          tearoutWindow.removeEventListener(CLOSE_REQUESTED_EVENT, onCloseRequested)
           openFin.close(tearoutWindow)
         }
         popoutContainer.id = this.popoutContainerId
@@ -96,11 +80,7 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
     fin.desktop.InterApplicationBus.publish('undock-window', { windowName })
   }
 
-  createWindow(
-    { url, title, windowOptions },
-    onSuccessCallback,
-    errorCallback
-  ) {
+  createWindow({ url, title, windowOptions }, onSuccessCallback, errorCallback) {
     const tearoutWindow = new fin.desktop.Window(
       {
         url,
@@ -123,37 +103,22 @@ export default class OpenfinPopoutService extends PopoutServiceBase {
   initializeDockingManager() {
     fin.desktop.main(() => {
       this.dockingManager = DockingManager.getInstance()
-      fin.desktop.InterApplicationBus.subscribe(
-        '*',
-        'window-docked',
-        ({ windowName }) => {
-          const tearoutWindow = this.popouts[windowName]
-          if (tearoutWindow) {
-            const container = tearoutWindow.contentWindow.document.getElementsByClassName(
-              'openfin-chrome__content'
-            )[0]
-            container.className += ` ${DOCKED_CLASS_NAME}`
-            log.info(`Docking ${tearoutWindow.name}`)
-          }
+      fin.desktop.InterApplicationBus.subscribe('*', 'window-docked', ({ windowName }) => {
+        const tearoutWindow = this.popouts[windowName]
+        if (tearoutWindow) {
+          const container = tearoutWindow.contentWindow.document.getElementsByClassName('openfin-chrome__content')[0]
+          container.className += ` ${DOCKED_CLASS_NAME}`
+          log.info(`Docking ${tearoutWindow.name}`)
         }
-      )
-      fin.desktop.InterApplicationBus.subscribe(
-        '*',
-        'window-undocked',
-        ({ windowName }) => {
-          const tearoutWindow = this.popouts[windowName]
-          if (tearoutWindow) {
-            const container = tearoutWindow.contentWindow.document.getElementsByClassName(
-              'openfin-chrome__content'
-            )[0]
-            container.className = container.className.replace(
-              new RegExp(DOCKED_CLASS_NAME, 'g'),
-              ''
-            )
-            log.info(`Undocking ${tearoutWindow.name}`)
-          }
+      })
+      fin.desktop.InterApplicationBus.subscribe('*', 'window-undocked', ({ windowName }) => {
+        const tearoutWindow = this.popouts[windowName]
+        if (tearoutWindow) {
+          const container = tearoutWindow.contentWindow.document.getElementsByClassName('openfin-chrome__content')[0]
+          container.className = container.className.replace(new RegExp(DOCKED_CLASS_NAME, 'g'), '')
+          log.info(`Undocking ${tearoutWindow.name}`)
         }
-      )
+      })
     })
   }
 

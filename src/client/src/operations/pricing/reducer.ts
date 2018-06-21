@@ -5,10 +5,10 @@ interface PricingOperationsState {
   readonly [symbol: string]: SpotPriceTick
 }
 
-export const initialState: PricingOperationsState = {}
+export const INITIAL_STATE: PricingOperationsState = {}
 
 export const pricingServiceReducer = (
-  state: PricingOperationsState = initialState,
+  state: PricingOperationsState = INITIAL_STATE,
   action: PricingActions
 ): PricingOperationsState => {
   switch (action.type) {

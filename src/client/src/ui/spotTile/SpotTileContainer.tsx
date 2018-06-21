@@ -5,11 +5,13 @@ import { GlobalState } from '../../combineReducers'
 import { CurrencyPair, Direction, ExecuteTradeRequest } from '../../types/'
 import { SpotPriceTick } from '../../types/spotPriceTick'
 import { SpotTileData } from '../../types/spotTileData'
-import { addRegion, openWindow } from '../common/regions/regionsOperations'
+import { RegionActions } from '../common/regions'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 import { spotRegionSettings, SpotTileActions } from './actions'
 import SpotTile from './SpotTile'
 import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './spotTileUtils'
+
+const { openWindow, addRegion } = RegionActions
 
 const buildSpotTileDataObject = (tileData, spotTick: SpotPriceTick, currencyPair: CurrencyPair) => {
   const tileDataObject: any = { ...tileData, ...spotTick, ...currencyPair }
@@ -168,7 +170,10 @@ const makeMapStateToProps = () => {
   return mapStateToProps
 }
 
-const ConnectedSpotTileContainer = connect(makeMapStateToProps, mapDispatchToProps)(SpotTileContainer)
+const ConnectedSpotTileContainer = connect(
+  makeMapStateToProps,
+  mapDispatchToProps
+)(SpotTileContainer)
 const spotTileRegion = id => ({
   id,
   isTearedOff: false,

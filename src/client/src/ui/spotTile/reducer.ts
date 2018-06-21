@@ -1,5 +1,6 @@
 import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
-import { Notification, Trade } from '../../types'
+import { Notification } from '../../types'
+import { SpotTileData } from '../../types/spotTileData'
 import { buildNotification } from '../notification/notificationUtils'
 import { tradeError, tradeSuccesful } from './../../types/executeTradeRequest'
 import { ACTION_TYPES, SpotTileActions } from './actions'
@@ -13,7 +14,7 @@ const updateSpotTile = (state: SpotTileState, symbol: string, value: SpotTileVal
 })
 
 interface SpotTileState {
-  [tradeId: number]: Trade
+  [currencyPair: string]: SpotTileData
 }
 
 interface SpotTileValue {
@@ -23,10 +24,10 @@ interface SpotTileValue {
   notification?: Notification
 }
 
-const initialState: SpotTileState = {}
+const INITIAL_STATE: SpotTileState = {}
 
 export const spotTileDataReducer = (
-  state: SpotTileState = initialState,
+  state: SpotTileState = INITIAL_STATE,
   action: SpotTileActions | DisconnectAction
 ): SpotTileState => {
   switch (action.type) {
@@ -66,7 +67,7 @@ export const spotTileDataReducer = (
     case ACTION_TYPES.DISMISS_NOTIFICATION:
       return updateSpotTile(state, action.payload, { notification: null })
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
-      return initialState
+      return INITIAL_STATE
     default:
       return state
   }

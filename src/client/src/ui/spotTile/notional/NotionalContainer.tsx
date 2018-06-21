@@ -1,55 +1,46 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators, Dispatch } from 'redux'
+import { GlobalState } from '../../../combineReducers'
 import { CurrencyPair } from '../../../types'
+import { NotionalActions } from './actions'
 import NotionalInput from './NotionalInput'
-import { NotionalUpdate, onNotionalInputChange } from './NotionalOperations'
+import { NotionalState } from './reducer'
 
-interface NotionalContainerOwnProps {
+interface NotionalContainerProps {
   className: string
   currencyPair: CurrencyPair
+  notionals: NotionalState
+  onNotionalInputChange: typeof NotionalActions.onNotionalInputChange
 }
 
-interface NotionalContainerStateProps {
-  notionals: any
-}
+const NotionalContainer: React.SFC<NotionalContainerProps> = ({
+  className,
+  currencyPair,
+  notionals,
+  onNotionalInputChange
+}: NotionalContainerProps) => (
+  <NotionalInput
+    className={className}
+    notional={getNotional(notionals, currencyPair)}
+    currencyPair={currencyPair}
+    onNotionalInputChange={(value: number) =>
+      onNotionalInputChange({
+        currencyPairSymbol: getCurrencyPairSymbol(currencyPair),
+        value
+      })
+    }
+  />
+)
 
-interface NotionalContainerDispatchProps {
-  onNotionalInputChange: (payload: NotionalUpdate) => void
-}
+const mapStateToProps = ({ notionals }: GlobalState) => ({
+  notionals
+})
 
-type NotionalContainerProps = NotionalContainerOwnProps & NotionalContainerStateProps & NotionalContainerDispatchProps
+export default connect(
+  mapStateToProps,
+  { onNotionalInputChange: NotionalActions.onNotionalInputChange }
+)(NotionalContainer)
 
-class NotionalContainer extends React.Component<NotionalContainerProps, any> {
-  render() {
-    const notional = this.props.notionals[this.props.currencyPair.symbol] || 1000000
-    const currencyPairSymbol = this.props.currencyPair.symbol
-    return (
-      <NotionalInput
-        className={this.props.className}
-        notional={notional}
-        currencyPair={this.props.currencyPair}
-        onNotionalInputChange={(value: number) =>
-          this.props.onNotionalInputChange({
-            currencyPairSymbol,
-            value
-          })
-        }
-      />
-    )
-  }
-}
+const getCurrencyPairSymbol = (currencyPair: CurrencyPair) => currencyPair.symbol
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(
-    {
-      onNotionalInputChange
-    },
-    dispatch
-  )
-
-function mapStateToProps({ notionals }) {
-  return { notionals }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NotionalContainer)
+const getNotional = (notionals: NotionalState, currencyPair: CurrencyPair) => notionals[currencyPair.symbol] || 1000000

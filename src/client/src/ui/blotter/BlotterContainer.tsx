@@ -6,9 +6,11 @@ import sizeMe from 'react-sizeme'
 import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
 import { RegionSettings } from '../../types'
-import { addRegion, openWindow } from '../common/regions/regionsOperations'
+import { RegionActions } from '../common/regions'
 import Blotter from './Blotter'
 import { BlotterState } from './reducer'
+
+const { openWindow, addRegion } = RegionActions
 
 interface BlotterContainerProps {
   blotterService: BlotterState
