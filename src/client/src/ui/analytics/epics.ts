@@ -16,12 +16,10 @@ type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
 export const analyticsServiceEpic: ApplicationEpic = (action$, state$, { analyticsService }) =>
   action$.pipe(
     ofType<Action, ReferenceServiceAction>(REF_ACTION_TYPES.REFERENCE_SERVICE),
-    mergeMapTo(
+    mergeMapTo<FetchAnalyticsAction>(
       analyticsService.getAnalyticsStream(CURRENCY).pipe(
         map(fetchAnalytics),
-        takeUntil<FetchAnalyticsAction>(
-          action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES))
-        )
+        takeUntil(action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
       )
     )
   )

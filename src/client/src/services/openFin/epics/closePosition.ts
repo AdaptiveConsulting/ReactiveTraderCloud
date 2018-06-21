@@ -1,9 +1,7 @@
-import { Action } from 'redux'
-import { ofType } from 'redux-observable'
 import { bindCallback } from 'rxjs'
 import { map, mergeMapTo, withLatestFrom } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, ConnectAction } from '../../../operations/connectionStatus'
+import { applicationConnected } from '../../../operations/connectionStatus'
 import { Direction } from '../../../types'
 import { SpotTileActions } from '../../../ui/spotTile'
 
@@ -24,7 +22,7 @@ function createTrade(msg, price) {
 
 export const closePositionEpic: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(
-    ofType<Action, ConnectAction>(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
+    applicationConnected,
     mergeMapTo(bindCallback(openFin.addSubscription).bind(openFin)('close-position')),
     withLatestFrom(state$),
     map<any, any>(([[msg, uuid], state]) => {
