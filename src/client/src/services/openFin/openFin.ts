@@ -233,7 +233,7 @@ export default class OpenFin {
         // this._router.publishEvent(WellKnownModelIds.blotterModelId, 'highlightTradeRow', { trade })
       }
     })
-    fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification)
+    ///fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification)
   }
 
   publishCurrentPositions(ccyPairPositions) {
@@ -251,12 +251,15 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.publish('price-update', price)
   }
 
-  sendAllBlotterData(uuid, blotterData: Trades, currencyPairs: CurrencyPairState) {
+  sendAllBlotterData(blotterData: Trades, currencyPairs: CurrencyPairState) {
+    if (Object.keys(currencyPairs).length === 0 || Object.keys(blotterData).length === 0) {
+      return
+    }
     const parsed = Object.keys(blotterData).map(x =>
       formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol])
     )
 
-    fin.desktop.InterApplicationBus.send(uuid, 'blotter-data', parsed)
+    fin.desktop.InterApplicationBus.publish('blotter-data', parsed)
   }
 
   sendPositionClosedNotification(uuid: string, correlationId: string) {
@@ -282,6 +285,7 @@ function formatTradeNotification(trade: Trade, currencyPair: CurrencyPair) {
     status: trade.status,
     dealtCurrency: trade.dealtCurrency,
     termsCurrency: currencyPair.terms,
-    valueDate: moment.utc(trade.valueDate).format('DD MMM')
+    valueDate: moment.utc(trade.valueDate).format('DD MMM'),
+    traderName: trade.traderName
   }
 }
