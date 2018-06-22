@@ -5,7 +5,7 @@ import logger from './logger'
 const log = logger.create('Retry')
 
 export const retryWithBackOff = ({
-  maxRetryAttempts = 3,
+  maxRetryAttempts = Number.POSITIVE_INFINITY,
   scalingDuration = 1000
 }: {
   maxRetryAttempts?: number
@@ -19,10 +19,7 @@ export const retryWithBackOff = ({
       if (retryAttempt > maxRetryAttempts) {
         return throwError(error)
       }
-      log.info(
-        `Attempt ${retryAttempt}: retrying in ${retryAttempt *
-          scalingDuration}ms`
-      )
+      log.info(`Attempt ${retryAttempt}: retrying in ${retryAttempt * scalingDuration}ms`)
       // retry after 1s, 2s, etc...
       return timer(retryAttempt * scalingDuration)
     }),
@@ -31,7 +28,7 @@ export const retryWithBackOff = ({
 }
 
 export const retryConstantly = ({
-  maxRetryAttempts = 3,
+  maxRetryAttempts = Number.POSITIVE_INFINITY,
   interval = 1000
 }: {
   maxRetryAttempts?: number
