@@ -28,6 +28,7 @@
     "build-js": "react-scripts-ts build",
     "build": "npm-run-all build-css build-js",
     "build:cloud": "cross-env REACT_APP_ENV=demo npm run build",
+    "build:local": "cross-env REACT_APP_ENV=local npm run build",
     "test": "react-scripts-ts test --env=jsdom",
     "start:local": "cross-env REACT_APP_ENV=local npm run start-all",
     "start:docker": "cross-env REACT_APP_ENV=docker npm run start-all",

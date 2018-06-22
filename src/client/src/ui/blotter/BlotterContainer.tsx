@@ -5,12 +5,9 @@ import { connect } from 'react-redux'
 import sizeMe from 'react-sizeme'
 import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
-import { RegionSettings } from '../../types'
-import { RegionActions } from '../common/regions'
 import Blotter from './Blotter'
+import { TearOff } from './Portal'
 import { BlotterState } from './reducer'
-
-const { openWindow, addRegion } = RegionActions
 
 interface BlotterContainerProps {
   blotterService: BlotterState
@@ -22,31 +19,53 @@ interface BlotterContainerProps {
 
 interface BlotterContainerState {
   gridDocument: Element
+  tornOff: boolean
 }
 
 class BlotterContainer extends React.Component<BlotterContainerProps, BlotterContainerState> {
   state = {
-    gridDocument: null
+    gridDocument: null,
+    tornOff: false
   }
 
-  public componentDidMount() {
-    this.props.onComponentMount()
+  popout = () => {
+    this.setState({ tornOff: true })
+  }
+
+  popIn = () => {
+    this.setState({ tornOff: false })
   }
 
   public render() {
-    const { blotterService, onPopoutClick, isConnected } = this.props
+    const { blotterService, isConnected } = this.props
     const { trades } = blotterService
-    const { gridDocument } = this.state
+    const { gridDocument, tornOff } = this.state
     const gridRows = _.values(trades).reverse()
+
+    const portalProps = {
+      title: 'blotter',
+      features: { width: 850, height: 450 },
+      onUnload: this.popIn
+    }
+
     return isConnected ? (
-      <div className="shell_workspace_blotter" ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
-        <Blotter
-          rows={gridRows}
-          gridDocument={gridDocument}
-          onPopoutClick={onPopoutClick}
-          canPopout={Environment.isRunningInIE()}
-        />
-      </div>
+      <TearOff
+        tornOff={tornOff}
+        portalProps={portalProps}
+        render={() => (
+          <div
+            className="shell_workspace_blotter"
+            ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}
+          >
+            <Blotter
+              rows={gridRows}
+              gridDocument={gridDocument}
+              onPopoutClick={this.popout}
+              canPopout={Environment.isRunningInIE()}
+            />
+          </div>
+        )}
+      />
     ) : (
       <div className="shell_workspace_blotter blotter--disconnected">Blotter disconnected</div>
     )
@@ -67,32 +86,9 @@ const mapStateToProps = ({ blotterService, compositeStatusService }: GlobalState
 const ConnectedBlotterContainer = connect(
   mapStateToProps,
   {
-    onPopoutClick: () => openWindow(blotterRegion),
-    onComponentMount: () => addRegion(blotterRegion)
+    onPopoutClick: () => () => {},
+    onComponentMount: () => () => {}
   }
 )(sizeMe({ monitorHeight: true })(BlotterContainer))
-
-interface Region {
-  id: string
-  isTearedOff: boolean
-  container: React.ComponentClass
-  settings: RegionSettings
-}
-
-const blotterRegionsSettings: RegionSettings = {
-  title: 'Blotter',
-  width: 850,
-  height: 450,
-  minHeight: 200,
-  dockable: false,
-  resizable: true
-}
-
-const blotterRegion: Region = {
-  id: 'blotter',
-  isTearedOff: false,
-  container: ConnectedBlotterContainer,
-  settings: blotterRegionsSettings
-}
 
 export default ConnectedBlotterContainer
