@@ -28,6 +28,7 @@ This will download the 4 images required for Reactive Trader Cloud and run them.
     ./deploy/docker/runAll localbuild
     ```
 - You will see the docker-compose mechanism start your containers and print the logs
+
 **Note**: If you are running Linux you will need to install docker-compose if it wasn't done previously. Refer to the [docker official documentation](https://docs.docker.com/compose/install/).
 
 ## See it running
