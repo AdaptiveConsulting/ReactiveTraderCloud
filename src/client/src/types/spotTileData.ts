@@ -5,7 +5,7 @@ export interface SpotTileData {
   bid: number
   mid: number
   priceMovementType: string
-  valueDate: number
+  valueDate: string
   symbol: string
   notification: Notification
   currencyChartIsOpening: boolean
