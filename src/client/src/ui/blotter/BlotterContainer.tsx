@@ -43,7 +43,8 @@ class BlotterContainer extends React.Component<BlotterContainerProps, BlotterCon
     const gridRows = _.values(trades).reverse()
 
     const portalProps = {
-      title: 'blotter',
+      name: 'blotter',
+      title: 'Blotter',
       features: { width: 850, height: 450 },
       onUnload: this.popIn
     }

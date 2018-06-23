@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-export const withDefualtProps = <P extends object, DP extends Partial<P> = Partial<P>>(
+export const withDefaultProps = <P extends object, DP extends Partial<P> = Partial<P>>(
   defaultProps: DP,
   Cmp: React.ComponentType<P>
 ) => {

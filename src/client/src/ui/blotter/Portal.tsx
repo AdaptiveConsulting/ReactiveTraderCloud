@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { withDefualtProps } from '../utils/reactTypes'
+import { withDefaultProps } from '../utils/reactTypes'
 
 interface WindowFeatures {
   width: number
@@ -55,7 +55,7 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
    * Create the new window when NewWindow component mount.
    */
   openChild() {
-    const { url, title, name, features, onBlock, center } = this.props
+    const { url, name, features, center } = this.props
 
     let left = 0
     let top = 0
@@ -82,16 +82,40 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
       top = height / 2 - features.height / 2 + screenTop
     }
 
-    this.window = window.open(
-      url,
-      name,
-      toWindowFeatures({
-        ...features,
-        left,
-        top
-      })
-    )
+    if (true) {
+      const win = new fin.desktop.Window(
+        {
+          name,
+          url,
+          defaultTop: top,
+          defaultLeft: left,
+          autoShow: true,
+          frame: false
+        },
+        () => {
+          this.window = win.getNativeWindow()
+          this.injectIntoWindow()
+        },
+        error => {
+          console.log('Error creating window:', error)
+        }
+      )
+    } else {
+      this.window = window.open(
+        url,
+        name,
+        toWindowFeatures({
+          ...features,
+          left,
+          top
+        })
+      )
+      this.injectIntoWindow()
+    }
+  }
 
+  injectIntoWindow() {
+    const { onBlock, title } = this.props
     // Check if the new window was succesfully opened.
     if (this.window) {
       this.window.document.title = title
@@ -202,7 +226,7 @@ function toWindowFeatures(windowFeatures: WindowFeatures) {
     .join(',')
 }
 
-export const Portal = withDefualtProps(defaultPortalProps, NewWindow)
+export const Portal = withDefaultProps(defaultPortalProps, NewWindow)
 
 type RenderCB = () => JSX.Element
 
