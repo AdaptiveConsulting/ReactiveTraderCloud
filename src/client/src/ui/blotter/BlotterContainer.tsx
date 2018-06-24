@@ -7,14 +7,9 @@ import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
 import Blotter from './Blotter'
 import { TearOff } from './Portal'
-import { BlotterState } from './reducer'
 
-interface BlotterContainerProps {
-  blotterService: BlotterState
-  isConnected: boolean
+interface BlotterContainerSizeProps {
   size: { width: number; height: number }
-  onPopoutClick: () => void
-  onComponentMount: () => void
 }
 
 interface BlotterContainerState {
@@ -22,22 +17,21 @@ interface BlotterContainerState {
   tornOff: boolean
 }
 
+type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
+type BlotterContainerProps = BlotterContainerSizeProps & BlotterContainerStateProps
+
 class BlotterContainer extends React.Component<BlotterContainerProps, BlotterContainerState> {
   state = {
     gridDocument: null,
     tornOff: false
   }
 
-  popout = () => {
-    this.setState({ tornOff: true })
-  }
+  popout = () => this.setState({ tornOff: true })
 
-  popIn = () => {
-    this.setState({ tornOff: false })
-  }
+  popIn = () => this.setState({ tornOff: false })
 
   public render() {
-    const { blotterService, isConnected } = this.props
+    const { blotterService, isConnected, environment } = this.props
     const { trades } = blotterService
     const { gridDocument, tornOff } = this.state
     const gridRows = _.values(trades).reverse()
@@ -53,6 +47,7 @@ class BlotterContainer extends React.Component<BlotterContainerProps, BlotterCon
       <TearOff
         tornOff={tornOff}
         portalProps={portalProps}
+        onDesktop={environment.isRunningOnDesktop}
         render={() => (
           <div
             className="shell_workspace_blotter"
@@ -79,17 +74,12 @@ class BlotterContainer extends React.Component<BlotterContainerProps, BlotterCon
   }
 }
 
-const mapStateToProps = ({ blotterService, compositeStatusService }: GlobalState) => ({
+const mapStateToProps = ({ blotterService, compositeStatusService, environment }: GlobalState) => ({
+  environment,
   blotterService,
   isConnected: compositeStatusService && compositeStatusService.blotter && compositeStatusService.blotter.isConnected
 })
 
-const ConnectedBlotterContainer = connect(
-  mapStateToProps,
-  {
-    onPopoutClick: () => () => {},
-    onComponentMount: () => () => {}
-  }
-)(sizeMe({ monitorHeight: true })(BlotterContainer))
+const ConnectedBlotterContainer = connect(mapStateToProps)(sizeMe({ monitorHeight: true })(BlotterContainer))
 
 export default ConnectedBlotterContainer

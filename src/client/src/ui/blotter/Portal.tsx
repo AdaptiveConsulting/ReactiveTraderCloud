@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import OpenFinChrome from '../shell/OpenFinChrome'
 import { withDefaultProps } from '../utils/reactTypes'
 
 interface WindowFeatures {
@@ -17,7 +18,8 @@ const defaultPortalProps = {
   center: 'parent' as 'parent' | 'screen',
   copyStyles: true,
   onBlock: null as () => void,
-  onUnload: null as () => void
+  onUnload: null as () => void,
+  onDesktop: false
 }
 
 type PortalProps = typeof defaultPortalProps
@@ -42,6 +44,19 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
     if (!this.state.mounted) {
       return false
     }
+    if (this.props.onDesktop) {
+      return ReactDOM.createPortal(
+        <OpenFinChrome
+          showHeaderBar={false}
+          minimize={() => {
+            console.log('Minimize')
+          }}
+        >
+          {this.props.children}
+        </OpenFinChrome>,
+        this.container
+      )
+    }
 
     return ReactDOM.createPortal(this.props.children, this.container)
   }
@@ -55,7 +70,7 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
    * Create the new window when NewWindow component mount.
    */
   openChild() {
-    const { url, name, features, center } = this.props
+    const { url, name, features, center, onDesktop } = this.props
 
     let left = 0
     let top = 0
@@ -82,7 +97,7 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
       top = height / 2 - features.height / 2 + screenTop
     }
 
-    if (true) {
+    if (onDesktop) {
       const win = new fin.desktop.Window(
         {
           name,
@@ -138,12 +153,14 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
     }
   }
 
+  closeWindow = () => this.window.close()
+
   /**
    * Close the opened window (if any) when NewWindow will unmount.
    */
   componentWillUnmount() {
     if (this.window) {
-      this.window.close()
+      this.closeWindow()
     }
   }
 
@@ -234,12 +251,18 @@ export class TearOff extends React.PureComponent<{
   tornOff: boolean
   render: RenderCB
   portalProps: Partial<PortalProps>
+  onDesktop: boolean
 }> {
   render() {
-    if (this.props.tornOff) {
-      return <Portal {...this.props.portalProps}>{this.props.render()}</Portal>
+    const { render, tornOff, portalProps, onDesktop } = this.props
+    if (tornOff) {
+      return (
+        <Portal {...portalProps} onDesktop={onDesktop}>
+          {render()}
+        </Portal>
+      )
     } else {
-      return this.props.render()
+      return render()
     }
   }
 }
