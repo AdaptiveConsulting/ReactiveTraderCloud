@@ -46,12 +46,7 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
     }
     if (this.props.onDesktop) {
       return ReactDOM.createPortal(
-        <OpenFinChrome
-          showHeaderBar={false}
-          minimize={() => {
-            console.log('Minimize')
-          }}
-        >
+        <OpenFinChrome showHeaderBar={false} close={this.closeWindow}>
           {this.props.children}
         </OpenFinChrome>,
         this.container
@@ -135,6 +130,9 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
     if (this.window) {
       this.window.document.title = title
       this.window.document.body.appendChild(this.container)
+
+      // Update component to allow event handlers
+      this.forceUpdate()
 
       // If specified, copy styles from parent window's document.
       if (this.props.copyStyles) {
