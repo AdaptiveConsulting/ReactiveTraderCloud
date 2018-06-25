@@ -29,6 +29,8 @@ This will download the 4 images required for Reactive Trader Cloud and run them.
     ```
 - You will see the docker-compose mechanism start your containers and print the logs
 
+**Note**: If you are running Linux you will need to install docker-compose if it wasn't done previously. Refer to the [docker official documentation](https://docs.docker.com/compose/install/).
+
 ## See it running
 Open a browser, navigate to the docker address (`localhost` for Linux users and something like `10.0.75.2` for Windows/Mac users) and the web client will load.
 
