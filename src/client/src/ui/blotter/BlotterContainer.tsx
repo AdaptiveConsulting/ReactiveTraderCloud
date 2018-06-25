@@ -5,8 +5,8 @@ import { connect, Dispatch } from 'react-redux'
 import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
 import { Region, RegionActions } from '../common/regions'
+import { TearOff } from '../tearoff'
 import Blotter from './Blotter'
-import { TearOff } from './Portal'
 
 interface BlotterContainerState {
   gridDocument: Element
