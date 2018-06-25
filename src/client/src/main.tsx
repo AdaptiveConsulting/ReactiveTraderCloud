@@ -44,11 +44,11 @@ const appBootstrapper = () => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <OpenFinProvider openFin={openFin}>
-        <EnvironmentProvider value={false}>
+      <EnvironmentProvider value={openFin.isRunningInOpenFin && !isRunningInFinsemble}>
+        <OpenFinProvider openFin={openFin}>
           <ShellContainer />
-        </EnvironmentProvider>
-      </OpenFinProvider>
+        </OpenFinProvider>
+      </EnvironmentProvider>
     </Provider>,
     document.getElementById('root')
   )

@@ -22,13 +22,13 @@ const defaultPortalProps = {
   onDesktop: false
 }
 
-type PortalProps = typeof defaultPortalProps
+export type PortalProps = typeof defaultPortalProps
 
 const initialState = { mounted: false }
 
 type PortalState = Readonly<typeof initialState>
 
-const Portal: React.SFC<Partial<PortalProps>> = portalProps => (
+export const Portal: React.SFC<Partial<PortalProps>> = portalProps => (
   <EnvironmentConsumer>
     {isRunningOnDesktop =>
       isRunningOnDesktop ? <DesktopWindow {...portalProps} /> : <BrowserWindow {...portalProps} />
@@ -328,22 +328,4 @@ function toWindowFeatures(windowFeatures: WindowFeatures) {
       return features
     }, [])
     .join(',')
-}
-
-// Move to its own file
-type RenderCB = () => JSX.Element
-
-export class TearOff extends React.PureComponent<{
-  tornOff: boolean
-  render: RenderCB
-  portalProps: Partial<PortalProps>
-}> {
-  render() {
-    const { render, tornOff, portalProps } = this.props
-    if (tornOff) {
-      return <Portal {...portalProps}>{render()}</Portal>
-    } else {
-      return render()
-    }
-  }
 }
