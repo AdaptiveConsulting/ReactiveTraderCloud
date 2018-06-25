@@ -60,7 +60,7 @@
 - requirements:
     - [setup docker][docker-setup]
     - [setup and start bash][bash-setup]
-    - [authenticate with gcloud][gcloud-init]
+    - *(Optional)* [authenticate with gcloud][gcloud-init]
 - run **./deploy/kubernetes/user-cluster <CLUSTER_NAME>** in *bash*
     ```
     $ ./deploy/kubernetes/use-cluster cluster
@@ -85,7 +85,7 @@
 - requirements:
     - [setup docker][docker-setup]
     - [setup and start bash][bash-setup]
-    - [authenticate with gcloud][gcloud-init]
+    - *(Optional)* [authenticate with gcloud][gcloud-init]
     - [select cluster][use-cluster]
 - run **./deploy/kubernetes/list_environments** in *bash*
     ```
