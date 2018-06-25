@@ -1,22 +1,22 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { EnvironmentConsumer } from '../../main'
 import OpenFinChrome from '../shell/OpenFinChrome'
-import { withDefaultProps } from '../utils/reactTypes'
 
 interface WindowFeatures {
-  width: number
-  height: number
+  width?: number
+  height?: number
   left?: number
   top?: number
 }
 
 const defaultPortalProps = {
-  url: '',
   name: '',
   title: '',
-  features: { width: 600, height: 640 } as WindowFeatures,
+  url: '',
+  width: 600,
+  height: 640,
   center: 'parent' as 'parent' | 'screen',
-  copyStyles: true,
   onBlock: null as () => void,
   onUnload: null as () => void,
   onDesktop: false
@@ -28,7 +28,15 @@ const initialState = { mounted: false }
 
 type PortalState = Readonly<typeof initialState>
 
-class NewWindow extends React.PureComponent<PortalProps, PortalState> {
+const Portal: React.SFC<Partial<PortalProps>> = portalProps => (
+  <EnvironmentConsumer>
+    {isRunningOnDesktop =>
+      isRunningOnDesktop ? <DesktopWindow {...portalProps} /> : <BrowserWindow {...portalProps} />
+    }
+  </EnvironmentConsumer>
+)
+
+class BrowserWindow extends React.PureComponent<Partial<PortalProps>, PortalState> {
   private container: HTMLDivElement
   private window: Window
 
@@ -44,14 +52,6 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
     if (!this.state.mounted) {
       return false
     }
-    if (this.props.onDesktop) {
-      return ReactDOM.createPortal(
-        <OpenFinChrome showHeaderBar={false} close={this.closeWindow}>
-          {this.props.children}
-        </OpenFinChrome>,
-        this.container
-      )
-    }
 
     return ReactDOM.createPortal(this.props.children, this.container)
   }
@@ -65,66 +65,44 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
    * Create the new window when NewWindow component mount.
    */
   openChild() {
-    const { url, name, features, center, onDesktop } = this.props
+    const { name, width, height, center, url } = this.props
 
     let left = 0
     let top = 0
 
     if (center === 'parent') {
-      left = window.top.outerWidth / 2 + window.top.screenX - features.width / 2
-      top = window.top.outerHeight / 2 + window.top.screenY - features.height / 2
+      left = window.top.outerWidth / 2 + window.top.screenX - width / 2
+      top = window.top.outerHeight / 2 + window.top.screenY - height / 2
     } else if (center === 'screen') {
       const screenLeft = window.screenLeft
       const screenTop = window.screenTop
 
-      const width = window.innerWidth
+      const windowWidth = window.innerWidth
         ? window.innerWidth
         : document.documentElement.clientWidth
           ? document.documentElement.clientWidth
           : screen.width
-      const height = window.innerHeight
+      const windowHeight = window.innerHeight
         ? window.innerHeight
         : document.documentElement.clientHeight
           ? document.documentElement.clientHeight
           : screen.height
 
-      left = width / 2 - features.width / 2 + screenLeft
-      top = height / 2 - features.height / 2 + screenTop
+      left = windowWidth / 2 - width / 2 + screenLeft
+      top = windowHeight / 2 - height / 2 + screenTop
     }
 
-    if (onDesktop) {
-      const win = new fin.desktop.Window(
-        {
-          name,
-          url,
-          defaultTop: top,
-          defaultLeft: left,
-          defaultWidth: features.width,
-          defaultHeight: features.height,
-          autoShow: true,
-          frame: false,
-          saveWindowState: false
-        },
-        () => {
-          this.window = win.getNativeWindow()
-          this.injectIntoWindow()
-        },
-        error => {
-          console.log('Error creating window:', error)
-        }
-      )
-    } else {
-      this.window = window.open(
-        url,
-        name,
-        toWindowFeatures({
-          ...features,
-          left,
-          top
-        })
-      )
-      this.injectIntoWindow()
-    }
+    this.window = window.open(
+      url,
+      name,
+      toWindowFeatures({
+        width,
+        height,
+        left,
+        top
+      })
+    )
+    this.injectIntoWindow()
   }
 
   injectIntoWindow() {
@@ -138,9 +116,115 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
       this.forceUpdate()
 
       // If specified, copy styles from parent window's document.
-      if (this.props.copyStyles) {
-        setTimeout(() => copyStyles(document, this.window.document), 0)
+
+      setTimeout(() => copyStyles(document, this.window.document), 0)
+
+      // Release anything bound to this component before the new window unload.
+      this.window.addEventListener('beforeunload', () => this.release())
+    } else {
+      // Handle error on opening of new window.
+      if (onBlock) {
+        onBlock.call(null)
+      } else {
+        console.warn('A new window could not be opened. Maybe it was blocked.')
       }
+    }
+  }
+
+  closeWindow = () => this.window.close()
+
+  /**
+   * Close the opened window (if any) when NewWindow will unmount.
+   */
+  componentWillUnmount() {
+    if (this.window) {
+      this.closeWindow()
+    }
+  }
+
+  /**
+   * Release the new window and anything that was bound to it.
+   */
+  release() {
+    // Call any function bound to the `onUnload` prop.
+    const { onUnload } = this.props
+
+    if (onUnload) {
+      onUnload.call(null)
+    }
+  }
+}
+
+class DesktopWindow extends React.PureComponent<Partial<PortalProps>, PortalState> {
+  private container: HTMLDivElement
+  private window: Window
+
+  constructor(props) {
+    super(props)
+    this.container = document.createElement('div')
+    this.state = {
+      mounted: false
+    }
+  }
+
+  render() {
+    if (!this.state.mounted) {
+      return false
+    }
+
+    return ReactDOM.createPortal(
+      <OpenFinChrome showHeaderBar={false} close={this.closeWindow}>
+        {this.props.children}
+      </OpenFinChrome>,
+      this.container
+    )
+  }
+
+  componentDidMount() {
+    this.openChild()
+    this.setState({ mounted: true })
+  }
+
+  /**
+   * Create the new window when NewWindow component mount.
+   */
+  openChild() {
+    const { url, name, width, height } = this.props
+
+    const win = new fin.desktop.Window(
+      {
+        name,
+        url,
+        defaultCentered: true,
+        defaultWidth: width,
+        defaultHeight: height,
+        autoShow: true,
+        frame: false,
+        saveWindowState: false
+      },
+      () => {
+        this.window = win.getNativeWindow()
+        this.injectIntoWindow()
+      },
+      error => {
+        console.log('Error creating window:', error)
+      }
+    )
+  }
+
+  injectIntoWindow() {
+    const { onBlock, title } = this.props
+    // Check if the new window was succesfully opened.
+    if (this.window) {
+      this.window.document.title = title
+      this.window.document.body.appendChild(this.container)
+
+      // Update component to allow event handlers
+      this.forceUpdate()
+
+      // If specified, copy styles from parent window's document.
+
+      setTimeout(() => copyStyles(document, this.window.document), 0)
 
       // Release anything bound to this component before the new window unload.
       this.window.addEventListener('beforeunload', () => this.release())
@@ -182,6 +266,7 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
  * Copy styles from a source document to a target.
  */
 
+//util
 function copyStyles(source: Document, target: Document) {
   Array.from(source.styleSheets).forEach((styleSheet: any) => {
     // For <style> elements
@@ -230,6 +315,7 @@ function copyStyles(source: Document, target: Document) {
  * Convert features props to window features format (name=value,other=value).
  */
 
+//browser window manager
 function toWindowFeatures(windowFeatures: WindowFeatures) {
   return Object.keys(windowFeatures)
     .reduce<string[]>((features, name) => {
@@ -244,24 +330,18 @@ function toWindowFeatures(windowFeatures: WindowFeatures) {
     .join(',')
 }
 
-export const Portal = withDefaultProps(defaultPortalProps, NewWindow)
-
+// Move to its own file
 type RenderCB = () => JSX.Element
 
 export class TearOff extends React.PureComponent<{
   tornOff: boolean
   render: RenderCB
   portalProps: Partial<PortalProps>
-  onDesktop: boolean
 }> {
   render() {
-    const { render, tornOff, portalProps, onDesktop } = this.props
+    const { render, tornOff, portalProps } = this.props
     if (tornOff) {
-      return (
-        <Portal {...portalProps} onDesktop={onDesktop}>
-          {render()}
-        </Portal>
-      )
+      return <Portal {...portalProps}>{render()}</Portal>
     } else {
       return render()
     }

@@ -1,33 +1,15 @@
-import * as PropTypes from 'prop-types'
 import * as React from 'react'
+import { OpenFin } from '../../services'
 import OpenFinChrome from './OpenFinChrome'
 
-export interface ChildContextTypes {
-  getChildContext?: () => boolean
-  openFin: any
-  isRunningInFinsemble: boolean
+interface OpenFinShellProps {
+  openFin: OpenFin
 }
 
-export default class OpenFinProvider extends React.Component<
-  ChildContextTypes,
-  {}
-> {
-  props
-  static childContextTypes = {
-    openFin: PropTypes.object
-  }
-
-  getChildContext() {
-    const { openFin } = this.props
-
-    return { openFin: openFin.isRunningInOpenFin ? openFin : null }
-  }
-
+export default class OpenFinMainWindow extends React.Component<OpenFinShellProps> {
   render() {
-    const { openFin, isRunningInFinsemble } = this.props
-
-    // display the window chrome in the OpenFin environment, but disable if Finsemble is detected (it has a wrapper with own chrome
-    return openFin.isRunningInOpenFin && !isRunningInFinsemble ? (
+    const { openFin } = this.props
+    return (
       <OpenFinChrome
         openFin={openFin}
         minimize={openFin.minimize.bind(openFin)}
@@ -36,8 +18,6 @@ export default class OpenFinProvider extends React.Component<
       >
         {this.props.children}
       </OpenFinChrome>
-    ) : (
-      React.Children.only(this.props.children)
     )
   }
 }

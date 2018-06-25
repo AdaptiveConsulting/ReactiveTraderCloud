@@ -49,8 +49,21 @@ export default class Shell extends React.Component<ShellProps> {
             </div>
           </Modal>
 
-          {/*we do not show the split view if the blotter is popped out*/}
-          {showSplitter ? this.renderSplitView() : this.renderTiles()}
+          {/*we do not show the split view if the blotter is popped out
+          Put this in a tearoff?
+            
+        */}
+
+          <Conditional showSplitter={showSplitter}>
+            <WorkspaceContainer />
+            <div className="shell__blotter-container">
+              <RegionWrapper region="blotter">
+                <div className="shell__blotter">
+                  <BlotterContainer />
+                </div>
+              </RegionWrapper>
+            </div>
+          </Conditional>
 
           <RegionWrapper region="analytics">
             <SidebarRegionContainer />
@@ -63,27 +76,15 @@ export default class Shell extends React.Component<ShellProps> {
       </div>
     )
   }
+}
 
-  private renderTiles = (): JSX.Element => {
-    return (
-      <div className="shell_workspace_blotter">
-        <WorkspaceContainer />
-      </div>
-    )
-  }
-
-  private renderSplitView = (): JSX.Element => {
+const Conditional = ({ showSplitter, children }) => {
+  if (showSplitter) {
     return (
       <SplitPane minSize={300} size={600} split="horizontal" style={{ position: 'relative' }}>
-        <WorkspaceContainer />
-        <div className="shell__blotter-container">
-          <RegionWrapper region="blotter">
-            <div className="shell__blotter">
-              <BlotterContainer />
-            </div>
-          </RegionWrapper>
-        </div>
+        {children}
       </SplitPane>
     )
   }
+  return <div className="shell_workspace_blotter">{children}</div>
 }

@@ -3,9 +3,9 @@ import { RegionSettings } from '../../../types'
 
 export interface Region {
   id: string
-  isTearedOff: boolean
-  container: React.ComponentClass
-  settings: RegionSettings
+  isTearedOff?: boolean
+  container?: React.ComponentClass
+  settings?: RegionSettings
 }
 
 export enum ACTION_TYPES {
