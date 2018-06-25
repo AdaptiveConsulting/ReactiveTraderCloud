@@ -1,70 +1,47 @@
 import * as _ from 'lodash'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { connect, Dispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
-import { Region, RegionActions } from '../common/regions'
-import { TearOff } from '../tearoff'
 import Blotter from './Blotter'
 
 interface BlotterContainerState {
   gridDocument: Element
+}
+
+interface BlotterContainerOwnProps {
+  onPopoutClick: () => void
   tornOff: boolean
 }
 
 type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
-type BlotterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
-type BlotterContainerProps = BlotterContainerStateProps & BlotterContainerDispatchProps
+type BlotterContainerProps = BlotterContainerStateProps & BlotterContainerOwnProps
 
 class BlotterContainer extends React.Component<BlotterContainerProps, BlotterContainerState> {
   state = {
-    gridDocument: null,
-    tornOff: false
-  }
-
-  popout = () => {
-    this.setState({ tornOff: true } /* () => this.props.onPopout(blotterRegion) */)
-  }
-
-  popIn = () => {
-    this.setState({ tornOff: false } /* () => this.props.onPopin(blotterRegion) */)
+    gridDocument: null
   }
 
   public render() {
-    const { blotterService, isConnected } = this.props
+    const { blotterService, isConnected, tornOff, onPopoutClick } = this.props
     const { trades } = blotterService
-    const { gridDocument, tornOff } = this.state
+    const { gridDocument } = this.state
     const gridRows = _.values(trades).reverse()
-
-    const portalProps = {
-      name: 'blotter',
-      title: 'Blotter',
-      width: 850,
-      height: 450,
-      onUnload: this.popIn,
-      url: 'about:Blotter'
-    }
 
     if (isConnected) {
       return (
-        <TearOff
-          tornOff={tornOff}
-          portalProps={portalProps}
-          render={() => (
-            <div
-              className="shell_workspace_blotter"
-              ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}
-            >
-              <Blotter
-                rows={gridRows}
-                gridDocument={gridDocument}
-                onPopoutClick={this.popout}
-                canPopout={Environment.isRunningInIE() || tornOff}
-              />
-            </div>
-          )}
-        />
+        <div
+          className="shell_workspace_blotter"
+          ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}
+        >
+          <Blotter
+            rows={gridRows}
+            gridDocument={gridDocument}
+            onPopoutClick={onPopoutClick}
+            canPopout={Environment.isRunningInIE() || tornOff}
+          />
+        </div>
       )
     }
 
@@ -78,23 +55,11 @@ class BlotterContainer extends React.Component<BlotterContainerProps, BlotterCon
   }
 }
 
-export const blotterRegion: Region = {
-  id: 'blotter'
-}
-
 const mapStateToProps = ({ blotterService, compositeStatusService }: GlobalState) => ({
   blotterService,
   isConnected: compositeStatusService && compositeStatusService.blotter && compositeStatusService.blotter.isConnected
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onPopout: region => dispatch(RegionActions.popoutOpened(region)),
-  onPopin: region => dispatch(RegionActions.popoutClosed(region))
-})
-
-const ConnectedBlotterContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BlotterContainer)
+const ConnectedBlotterContainer = connect(mapStateToProps)(BlotterContainer)
 
 export default ConnectedBlotterContainer

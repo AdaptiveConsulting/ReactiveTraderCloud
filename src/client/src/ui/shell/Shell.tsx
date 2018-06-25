@@ -7,10 +7,12 @@ import { WorkspaceContainer } from '../workspace/'
 
 import * as classnames from 'classnames'
 import * as PropTypes from 'prop-types'
-import RegionWrapper from '../common/regions'
+import { connect, Dispatch } from 'react-redux'
+import SplitPane from 'react-split-pane'
+import RegionWrapper, { Region, RegionActions } from '../common/regions'
 import TradeNotificationContainer from '../notification/TradeNotificationContainer'
-const SplitPane = require('react-split-pane')
 import '../styles/css/index.css'
+import { TearOff } from '../tearoff'
 
 export interface ShellProps {
   sessionExpired: boolean
@@ -18,14 +20,40 @@ export interface ShellProps {
   reconnect: () => void
 }
 
-export default class Shell extends React.Component<ShellProps> {
+type ShellDispatchProps = ReturnType<typeof mapDispatchToProps>
+
+class Shell extends React.Component<ShellProps & ShellDispatchProps> {
+  state = {
+    gridDocument: null,
+    tornOff: false
+  }
+
+  popout = () => {
+    this.setState({ tornOff: true }, () => this.props.onPopout(blotterRegion))
+  }
+
+  popIn = () => {
+    this.setState({ tornOff: false }, () => this.props.onPopin(blotterRegion))
+  }
+
   static contextTypes = {
     openFin: PropTypes.object
   }
   appVersion: string = process.env.REACT_APP_VERSION // version from package.json exported in webpack.config.js
 
   render() {
-    const { sessionExpired, showSplitter } = this.props
+    const { sessionExpired } = this.props
+    const { tornOff } = this.state
+
+    const portalProps = {
+      name: 'blotter',
+      title: 'Blotter',
+      width: 850,
+      height: 450,
+      onUnload: this.popIn,
+      url: 'about:Blotter'
+    }
+
     return (
       <div
         className={classnames({
@@ -49,21 +77,18 @@ export default class Shell extends React.Component<ShellProps> {
             </div>
           </Modal>
 
-          {/*we do not show the split view if the blotter is popped out
-          Put this in a tearoff?
-            
-        */}
-
-          <Conditional showSplitter={showSplitter}>
-            <WorkspaceContainer />
-            <div className="shell__blotter-container">
-              <RegionWrapper region="blotter">
+          <WorkspaceContainer />
+          <TearOff
+            tornOff={tornOff}
+            portalProps={portalProps}
+            render={() => (
+              <div className="shell__blotter-container">
                 <div className="shell__blotter">
-                  <BlotterContainer />
+                  <BlotterContainer onPopoutClick={this.popout} tornOff={this.state.tornOff} />
                 </div>
-              </RegionWrapper>
-            </div>
-          </Conditional>
+              </div>
+            )}
+          />
 
           <RegionWrapper region="analytics">
             <SidebarRegionContainer />
@@ -78,7 +103,11 @@ export default class Shell extends React.Component<ShellProps> {
   }
 }
 
-const Conditional = ({ showSplitter, children }) => {
+export const blotterRegion: Region = {
+  id: 'blotter'
+}
+
+export const Conditional = ({ showSplitter, children }) => {
   if (showSplitter) {
     return (
       <SplitPane minSize={300} size={600} split="horizontal" style={{ position: 'relative' }}>
@@ -88,3 +117,13 @@ const Conditional = ({ showSplitter, children }) => {
   }
   return <div className="shell_workspace_blotter">{children}</div>
 }
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onPopout: region => dispatch(RegionActions.popoutOpened(region)),
+  onPopin: region => dispatch(RegionActions.popoutClosed(region))
+})
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Shell)
