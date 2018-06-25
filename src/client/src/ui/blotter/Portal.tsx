@@ -99,8 +99,11 @@ class NewWindow extends React.PureComponent<PortalProps, PortalState> {
           url,
           defaultTop: top,
           defaultLeft: left,
+          defaultWidth: features.width,
+          defaultHeight: features.height,
           autoShow: true,
-          frame: false
+          frame: false,
+          saveWindowState: false
         },
         () => {
           this.window = win.getNativeWindow()

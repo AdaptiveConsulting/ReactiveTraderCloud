@@ -1,11 +1,12 @@
-import { ColumnApi, GridApi } from 'ag-grid'
+import { GridApi } from 'ag-grid'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid/dist/styles/ag-grid.css'
 import * as classNames from 'classnames'
 import * as React from 'react'
 import { TradeStatus } from '../../types'
-import { DEFAULT_COLUMN_DEFINITION, getColumnDefinitions } from './blotterUtils'
+import { columnDefinitions, DEFAULT_COLUMN_DEFINITION } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
+
 interface AgGridBlotterProps {
   rows: any[]
   canPopout: boolean
@@ -20,7 +21,6 @@ interface AgGridBlotterState {
 
 export default class AgGridBlotter extends React.Component<AgGridBlotterProps, AgGridBlotterState> {
   private gridApi: GridApi
-  private columnApi: ColumnApi
 
   state = {
     displayedRows: 0,
@@ -28,30 +28,32 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
   } as AgGridBlotterState
 
   render() {
+    const { canPopout, rows, onPopoutClick } = this.props
+    const { displayedRows, quickFilterText } = this.state
     const containerClass = classNames('agGridBlotter-container', 'rt-blotter-shared', 'rt-blotter-dark')
     const newWindowClassName = classNames('glyphicon glyphicon-new-window', {
-      'blotter__controls--hidden': this.props.canPopout
+      'blotter__controls--hidden': canPopout
     })
-    const colDefs = getColumnDefinitions()
+
     return (
       <div className={containerClass}>
         <div className="rt-blotter__controls popout__controls">
-          <i className={newWindowClassName} onClick={() => this.props.onPopoutClick()} />
+          <i className={newWindowClassName} onClick={onPopoutClick} />
         </div>
         <BlotterToolbar
-          isQuickFilterApplied={this.state.quickFilterText && this.state.quickFilterText.length !== 0}
+          isQuickFilterApplied={quickFilterText && quickFilterText.length !== 0}
           quickFilterChangeHandler={this.quickFilterChangeHandler}
           removeQuickFilter={this.removeQuickFilter}
           removeAllFilters={this.removeAllFilters}
           removeFilter={this.removeFilter}
           filterModel={this.gridApi ? this.gridApi.getFilterModel() : null}
-          columnDefinitions={colDefs}
+          columnDefinitions={columnDefinitions}
         />
         <div className="rt-blotter__grid-wrapper">
           <AgGridReact
-            columnDefs={colDefs}
+            columnDefs={columnDefinitions}
             defaultColDef={DEFAULT_COLUMN_DEFINITION}
-            rowData={this.props.rows}
+            rowData={rows}
             enableColResize={true}
             suppressMovableColumns={true}
             enableSorting={true}
@@ -68,7 +70,7 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
           />
         </div>
         <div className="rt-blotter__status-bar">
-          <div>{`Displaying rows ${this.state.displayedRows} of ${this.props.rows.length}`}</div>
+          <div>{`Displaying rows ${displayedRows} of ${rows.length}`}</div>
         </div>
       </div>
     )
@@ -78,25 +80,15 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     return this.props.gridDocument ? this.props.gridDocument.ownerDocument : null
   }
 
-  private sizeColumnsToFit = (param: any = null) => {
-    if (this.gridApi) {
-      this.gridApi.sizeColumnsToFit()
-    }
-  }
+  private sizeColumnsToFit = () => this.gridApi && this.gridApi.sizeColumnsToFit()
 
-  private onGridReady = ({ api, columnApi }) => {
+  private onGridReady = ({ api }) => {
     this.gridApi = api
-    this.columnApi = this.columnApi
     this.onModelUpdated()
     this.sizeColumnsToFit()
   }
 
-  private onModelUpdated = () => {
-    if (!this.gridApi) {
-      return
-    }
-    this.setState({ displayedRows: this.gridApi.getModel().getRowCount() })
-  }
+  private onModelUpdated = () => this.gridApi && this.setState({ displayedRows: this.gridApi.getModel().getRowCount() })
 
   private quickFilterChangeHandler = (event: React.FormEvent<any>) => {
     const target = event.target as HTMLInputElement
@@ -110,13 +102,9 @@ export default class AgGridBlotter extends React.Component<AgGridBlotterProps, A
     this.setState({ quickFilterText: null })
   }
 
-  private removeAllFilters = () => {
-    this.gridApi.setFilterModel(null)
-  }
+  private removeAllFilters = () => this.gridApi.setFilterModel(null)
 
-  private removeFilter = (key: string) => {
-    this.gridApi.destroyFilter(key)
-  }
+  private removeFilter = (key: string) => this.gridApi.destroyFilter(key)
 
   private getRowClass({ data }) {
     if (data.status === TradeStatus.Rejected) {
