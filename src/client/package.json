@@ -68,7 +68,6 @@
     "lodash": "3.10.1",
     "lodash.keyby": "4.6.0",
     "moment": "2.13.0",
-    "npm": "^6.1.0",
     "numeral": "1.5.3",
     "nvd3": "1.8.5",
     "prop-types": "15.6.0",
