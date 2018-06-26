@@ -27,7 +27,7 @@
         - *Broker*: A crossbar image with the configuration
     - **Utilities**:
         - *Gcloud*: image used for the clis Gcloud and Kubectl
-        - *Minikugegate*: image that give access to RTC when running on local minikube cluster
+        - *Minikubegate*: image that give access to RTC when running on local minikube cluster
         - *Nsgate*: image that give access to RTC when running on google cloud
         - *Testtools*: image with simple utilitise to connect and debug other services
 
@@ -45,8 +45,13 @@ You will find scripts to help build/run/test Reactive Trader components:
 - killAll
 
 To build, run the following with the [build id][buildid], in this example we'll use *localbuild*
+
+**Note:** Sometimes, when changing the node version in the build scripts, there could be cache coming from the mounted folders `//root/.npm` and `//client/node_modules` in your local machine that prevents the prepare script to run normally popping different node issues (See the references in the following script: `ReactiveTraderCloud/deploy/docker/web/build.sh`.).
+
+If this is the case, go to the folders `rtc_nodemodules_cache_container/_data` and `rtc_nodemodules_cache_container/_data` and delete the cached contents inside those directories.
+
 ```bash
-./deploy/docker/prepare build RTC localbuild
+./deploy/docker/prepare build rtc localbuild
 ```
 
 This will run the following tasks:
