@@ -1,17 +1,13 @@
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import * as React from 'react'
-import { BrowserWindow } from '../tearoff/BrowserPortal'
-import { PortalProps } from '../tearoff/Portal'
+import { BrowserWindow, DesktopWindow } from '../tearoff'
 
-const environmentContext: Environment = {
+const environmentContext = {
   isRunningDesktop: false,
-  PortalManager: BrowserWindow
+  PortalManager: BrowserWindow as typeof BrowserWindow | typeof DesktopWindow
 }
 
-export interface Environment {
-  isRunningDesktop: boolean
-  PortalManager: React.ComponentType<Partial<PortalProps>>
-}
+export type Environment = typeof environmentContext
 
 export const { Provider: EnvironmentProvider, Consumer: EnvironmentConsumer } = React.createContext<Environment>(
   environmentContext
