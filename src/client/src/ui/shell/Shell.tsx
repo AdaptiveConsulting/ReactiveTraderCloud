@@ -43,7 +43,7 @@ class Shell extends React.Component<ShellProps & ShellDispatchProps> {
   appVersion: string = process.env.REACT_APP_VERSION // version from package.json exported in webpack.config.js
 
   render() {
-    const { sessionExpired } = this.props
+    const { sessionExpired, showSplitter } = this.props
     const { tornOff } = this.state
 
     const portalProps = {
@@ -78,18 +78,26 @@ class Shell extends React.Component<ShellProps & ShellDispatchProps> {
             </div>
           </Modal>
 
-          <WorkspaceContainer />
-          <TearOff
-            tornOff={tornOff}
-            portalProps={portalProps}
-            render={() => (
-              <div className="shell__blotter-container">
-                <div className="shell__blotter">
-                  <BlotterContainer onPopoutClick={this.popout} tornOff={this.state.tornOff} />
+          <SplitPane
+            minSize={300}
+            size={600}
+            split="horizontal"
+            style={{ position: 'relative' }}
+            className={showSplitter ? '' : 'soloPane1'}
+          >
+            <WorkspaceContainer />
+            <TearOff
+              tornOff={tornOff}
+              portalProps={portalProps}
+              render={() => (
+                <div className="shell__blotter-container">
+                  <div className="shell__blotter">
+                    <BlotterContainer onPopoutClick={this.popout} tornOff={this.state.tornOff} />
+                  </div>
                 </div>
-              </div>
-            )}
-          />
+              )}
+            />
+          </SplitPane>
 
           <RegionWrapper region="analytics">
             <SidebarRegionContainer />
@@ -106,17 +114,6 @@ class Shell extends React.Component<ShellProps & ShellDispatchProps> {
 
 export const blotterRegion: Region = {
   id: 'blotter'
-}
-
-export const Conditional = ({ showSplitter, children }) => {
-  if (showSplitter) {
-    return (
-      <SplitPane minSize={300} size={600} split="horizontal" style={{ position: 'relative' }}>
-        {children}
-      </SplitPane>
-    )
-  }
-  return <div className="shell_workspace_blotter">{children}</div>
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

@@ -30,7 +30,7 @@ const openFin = new OpenFin()
 
 const environmentContext = {
   isRunningDesktop: openFin.isRunningInOpenFin,
-  PortalManager: openFin.isRunningInOpenFin ? BrowserWindow : DesktopWindow
+  PortalManager: openFin.isRunningInOpenFin ? DesktopWindow : BrowserWindow
 }
 
 const appBootstrapper = () => {
