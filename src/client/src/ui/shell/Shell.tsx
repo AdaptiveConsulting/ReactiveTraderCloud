@@ -6,7 +6,6 @@ import SidebarRegionContainer from '../sidebar'
 import { WorkspaceContainer } from '../workspace/'
 
 import * as classnames from 'classnames'
-import * as PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import SplitPane from 'react-split-pane'
 import { Dispatch } from 'redux'
@@ -37,9 +36,6 @@ class Shell extends React.Component<ShellProps & ShellDispatchProps> {
     this.setState({ tornOff: false }, () => this.props.onPopin(blotterRegion))
   }
 
-  static contextTypes = {
-    openFin: PropTypes.object
-  }
   appVersion: string = process.env.REACT_APP_VERSION // version from package.json exported in webpack.config.js
 
   render() {

@@ -12,8 +12,7 @@ import { AutobahnConnectionProxy, logger } from './system'
 import { User } from './types'
 import { OpenFinProvider, ShellContainer } from './ui/shell'
 import { EnvironmentProvider } from './ui/shell/EnvironmentProvider'
-import { BrowserWindow } from './ui/tearoff/BrowserPortal'
-import { DesktopWindow } from './ui/tearoff/DesktopPortal'
+import { BrowserWindow, DesktopWindow } from './ui/tearoff'
 
 const log = logger.create('Application Service')
 
@@ -49,9 +48,13 @@ const appBootstrapper = () => {
   ReactDOM.render(
     <Provider store={store}>
       <EnvironmentProvider value={environmentContext}>
-        <OpenFinProvider openFin={openFin}>
+        {openFin.isRunningInOpenFin ? (
+          <OpenFinProvider openFin={openFin}>
+            <ShellContainer />
+          </OpenFinProvider>
+        ) : (
           <ShellContainer />
-        </OpenFinProvider>
+        )}
       </EnvironmentProvider>
     </Provider>,
     document.getElementById('root')
