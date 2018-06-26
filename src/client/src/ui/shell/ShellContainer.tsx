@@ -1,4 +1,5 @@
-import { connect, Dispatch } from 'react-redux'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import { GlobalState } from '../../combineReducers'
 import { ConnectionActions } from '../../operations/connectionStatus'
 import { ConnectionStatus } from '../../system'
