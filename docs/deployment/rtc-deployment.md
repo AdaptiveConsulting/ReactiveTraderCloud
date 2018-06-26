@@ -19,5 +19,5 @@
     ```
 
 [environment-name]: ./environment-name.md
-[build-id]: ./build_id.md
+[build-id]: ./build-id.md
 [bash-setup]: ./bash-setup.md
