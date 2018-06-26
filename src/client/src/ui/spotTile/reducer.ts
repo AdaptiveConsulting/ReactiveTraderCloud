@@ -45,9 +45,15 @@ export const spotTileDataReducer = (
     case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
     case ACTION_TYPES.CURRENCY_CHART_OPENED:
     case ACTION_TYPES.DISMISS_NOTIFICATION:
-      return { ...state, [action.payload]: spotTileReducer(state[action.payload], action) }
+      return {
+        ...state,
+        [action.payload]: spotTileReducer(state[action.payload], action)
+      }
     case ACTION_TYPES.EXECUTE_TRADE:
-      return { ...state, [action.payload.CurrencyPair]: spotTileReducer(state[action.payload.CurrencyPair], action) }
+      return {
+        ...state,
+        [action.payload.CurrencyPair]: spotTileReducer(state[action.payload.CurrencyPair], action)
+      }
     case ACTION_TYPES.TRADE_EXECUTED:
       return {
         ...state,

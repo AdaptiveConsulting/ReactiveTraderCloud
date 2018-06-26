@@ -15,7 +15,10 @@ export const regionsReducer = (
     case ACTION_TYPES.REGION_ADD:
     case ACTION_TYPES.REGION_ATTACH_WINDOW:
     case ACTION_TYPES.REGION_TEAROFF_WINDOW:
-      return { ...state, [action.payload.id]: regionReducer(state[action.payload.id], action) }
+      return {
+        ...state,
+        [action.payload.id]: regionReducer(state[action.payload.id], action)
+      }
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
       return INITIAL_STATE
     default:
@@ -35,15 +38,9 @@ const regionReducer = (state: Region = REGION_INITIAL_STATE, action: RegionActio
     case ACTION_TYPES.REGION_ADD:
       return { ...action.payload, ...state }
     case ACTION_TYPES.REGION_ATTACH_WINDOW:
-      return {
-        ...state,
-        isTearedOff: false
-      }
+      return { ...state, isTearedOff: false }
     case ACTION_TYPES.REGION_TEAROFF_WINDOW:
-      return {
-        ...state,
-        isTearedOff: true
-      }
+      return { ...state, isTearedOff: true }
     default:
       return state
   }
