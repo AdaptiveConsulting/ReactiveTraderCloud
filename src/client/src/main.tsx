@@ -11,6 +11,9 @@ import { OpenFin } from './services/openFin'
 import { AutobahnConnectionProxy, logger } from './system'
 import { User } from './types'
 import { OpenFinProvider, ShellContainer } from './ui/shell'
+import { EnvironmentProvider } from './ui/shell/EnvironmentProvider'
+import { BrowserWindow } from './ui/tearoff/BrowserPortal'
+import { DesktopWindow } from './ui/tearoff/DesktopPortal'
 
 const log = logger.create('Application Service')
 
@@ -23,11 +26,12 @@ const APPLICATION_DISCONNECT = 15 * 60 * 1000
 
 const openFin = new OpenFin()
 
-const isRunningInFinsemble = window.FSBL
+//const isRunningInFinsemble = window.FSBL
 
-export const { Provider: EnvironmentProvider, Consumer: EnvironmentConsumer } = React.createContext(
-  openFin.isRunningInOpenFin && !isRunningInFinsemble
-)
+const environmentContext = {
+  isRunningDesktop: openFin.isRunningInOpenFin,
+  PortalManager: openFin.isRunningInOpenFin ? BrowserWindow : DesktopWindow
+}
 
 const appBootstrapper = () => {
   const user: User = FakeUserRepository.currentUser
@@ -44,7 +48,7 @@ const appBootstrapper = () => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <EnvironmentProvider value={openFin.isRunningInOpenFin && !isRunningInFinsemble}>
+      <EnvironmentProvider value={environmentContext}>
         <OpenFinProvider openFin={openFin}>
           <ShellContainer />
         </OpenFinProvider>
