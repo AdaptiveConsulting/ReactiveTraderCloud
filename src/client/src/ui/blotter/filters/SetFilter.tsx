@@ -22,14 +22,10 @@ interface SetFilterState {
 
 export default class SetFilter extends React.Component<SetFilterProps, SetFilterState> {
   //private hidePopup: (params: any) => void
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      text: '',
-      selectedFreeText: '',
-      selectedValueSet: { [ALL]: true }
-    }
+  state = {
+    text: '',
+    selectedFreeText: '',
+    selectedValueSet: { [ALL]: true }
   }
 
   componentDidMount() {

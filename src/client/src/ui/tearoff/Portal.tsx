@@ -10,7 +10,7 @@ const defaultPortalProps = {
   height: 640,
   center: 'parent' as 'parent' | 'screen',
   onBlock: null as () => void,
-  onUnload: null as () => void
+  onUnload: null as (region: string) => void
 }
 
 export type PortalProps = typeof defaultPortalProps
@@ -20,16 +20,13 @@ const initialState = { mounted: false }
 type PortalState = Readonly<typeof initialState>
 
 class NewPortal extends React.Component<Partial<PortalProps> & { environment: Environment }, PortalState> {
-  private container: HTMLDivElement
   private window: Window
 
-  constructor(props) {
-    super(props)
-    this.container = document.createElement('div')
-    this.state = {
-      mounted: false
-    }
+  state = {
+    mounted: false
   }
+
+  container = document.createElement('div')
 
   componentDidMount() {
     this.setState({ mounted: true })

@@ -25,31 +25,33 @@ type ShellDispatchProps = ReturnType<typeof mapDispatchToProps>
 class Shell extends React.Component<ShellProps & ShellDispatchProps> {
   state = {
     gridDocument: null,
-    tornOff: false
+    blotterRegionTearOff: false
   }
 
-  popout = () => {
-    this.setState({ tornOff: true }, () => this.props.onPopout(blotterRegion))
+  popout = (region: string) => {
+    this.setState({ [region]: true }, () => this.props.onPopout(regionSettings[region]))
   }
 
-  popIn = () => {
-    this.setState({ tornOff: false }, () => this.props.onPopin(blotterRegion))
+  popIn = (region: string) => {
+    this.setState({ [region]: false }, () => this.props.onPopin(regionSettings[region]))
+  }
+
+  portalProps = {
+    blotterRegion: {
+      name: 'blotter',
+      title: 'Blotter',
+      width: 850,
+      height: 450,
+      onUnload: () => this.popIn('blotterRegionTearOff'),
+      url: 'about:Blotter'
+    }
   }
 
   appVersion: string = process.env.REACT_APP_VERSION // version from package.json exported in webpack.config.js
 
   render() {
     const { sessionExpired, showSplitter } = this.props
-    const { tornOff } = this.state
-
-    const portalProps = {
-      name: 'blotter',
-      title: 'Blotter',
-      width: 850,
-      height: 450,
-      onUnload: this.popIn,
-      url: 'about:Blotter'
-    }
+    const { blotterRegionTearOff } = this.state
 
     return (
       <div
@@ -83,18 +85,20 @@ class Shell extends React.Component<ShellProps & ShellDispatchProps> {
           >
             <WorkspaceContainer />
             <TearOff
-              tornOff={tornOff}
-              portalProps={portalProps}
+              tornOff={blotterRegionTearOff}
+              portalProps={this.portalProps.blotterRegion}
               render={() => (
                 <div className="shell__blotter-container">
                   <div className="shell__blotter">
-                    <BlotterContainer onPopoutClick={this.popout} tornOff={this.state.tornOff} />
+                    <BlotterContainer
+                      onPopoutClick={() => this.popout('blotterRegionTearOff')}
+                      tornOff={blotterRegionTearOff}
+                    />
                   </div>
                 </div>
               )}
             />
           </SplitPane>
-
           <RegionWrapper region="analytics">
             <SidebarRegionContainer />
           </RegionWrapper>
@@ -108,8 +112,14 @@ class Shell extends React.Component<ShellProps & ShellDispatchProps> {
   }
 }
 
-export const blotterRegion: Region = {
-  id: 'blotter'
+interface Regions {
+  [regionName: string]: Region
+}
+
+const regionSettings: Regions = {
+  blotterRegionTearOff: {
+    id: 'blotter'
+  }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
