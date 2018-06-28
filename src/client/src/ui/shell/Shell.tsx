@@ -9,7 +9,7 @@ import * as classnames from 'classnames'
 import { connect } from 'react-redux'
 import SplitPane from 'react-split-pane'
 import { Dispatch } from 'redux'
-import RegionWrapper, { Region, RegionActions } from '../common/regions'
+import { Region, RegionActions } from '../common/regions'
 import TradeNotificationContainer from '../notification/TradeNotificationContainer'
 import '../styles/css/index.css'
 import { TearOff } from '../tearoff'
@@ -25,7 +25,8 @@ type ShellDispatchProps = ReturnType<typeof mapDispatchToProps>
 class Shell extends React.Component<ShellProps & ShellDispatchProps> {
   state = {
     gridDocument: null,
-    blotterRegionTearOff: false
+    blotterRegionTearOff: false,
+    analyticsRegionTearOff: false
   }
 
   popout = (region: string) => {
@@ -44,6 +45,14 @@ class Shell extends React.Component<ShellProps & ShellDispatchProps> {
       height: 450,
       onUnload: () => this.popIn('blotterRegionTearOff'),
       url: 'about:Blotter'
+    },
+    analyticsRegion: {
+      name: 'analytics',
+      title: 'Analytics',
+      width: 400,
+      height: 800,
+      onUnload: () => this.popIn('analyticsRegionTearOff'),
+      url: 'about:Analytics'
     }
   }
 
@@ -51,7 +60,7 @@ class Shell extends React.Component<ShellProps & ShellDispatchProps> {
 
   render() {
     const { sessionExpired, showSplitter } = this.props
-    const { blotterRegionTearOff } = this.state
+    const { blotterRegionTearOff, analyticsRegionTearOff } = this.state
 
     return (
       <div
@@ -99,9 +108,16 @@ class Shell extends React.Component<ShellProps & ShellDispatchProps> {
               )}
             />
           </SplitPane>
-          <RegionWrapper region="analytics">
-            <SidebarRegionContainer />
-          </RegionWrapper>
+          <TearOff
+            tornOff={analyticsRegionTearOff}
+            portalProps={this.portalProps.analyticsRegion}
+            render={() => (
+              <SidebarRegionContainer
+                onPopoutClick={() => this.popout('analyticsRegionTearOff')}
+                tornOff={analyticsRegionTearOff}
+              />
+            )}
+          />
         </div>
         <div className="shell__footer">
           <FooterContainer />
@@ -119,6 +135,9 @@ interface Regions {
 const regionSettings: Regions = {
   blotterRegionTearOff: {
     id: 'blotter'
+  },
+  analyticsRegionTearOff: {
+    id: 'analytics'
   }
 }
 
