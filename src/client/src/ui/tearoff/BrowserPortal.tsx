@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { withDefaultProps } from '../utils/reactTypes'
 
 interface WindowFeatures {
   width?: number
@@ -7,16 +8,18 @@ interface WindowFeatures {
   top?: number
 }
 
-export interface BrowserWindowProps {
-  createWindow: (Window) => void
-  name: string
-  width: number
-  height: number
-  center: string
-  url: string
+export const defaultBrowserProps = {
+  name: '',
+  url: '',
+  center: 'parent' as 'parent' | 'screen',
+  width: 600,
+  height: 640,
+  createWindow: null as (Window) => void
 }
 
-export class BrowserWindow extends React.PureComponent<Partial<BrowserWindowProps>> {
+type BrowserWindowProps = typeof defaultBrowserProps
+
+class BrowserWindow extends React.PureComponent<BrowserWindowProps> {
   componentDidMount() {
     this.props.createWindow(this.openChild())
   }
@@ -79,3 +82,5 @@ function toWindowFeatures(windowFeatures: WindowFeatures) {
     }, [])
     .join(',')
 }
+
+export default withDefaultProps(defaultBrowserProps, BrowserWindow)

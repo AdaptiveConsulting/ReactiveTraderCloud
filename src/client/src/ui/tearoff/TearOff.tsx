@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Portal, PortalProps } from './Portal'
+import Portal, { PortalProps } from './Portal'
 
 type RenderCB = () => JSX.Element
 

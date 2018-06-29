@@ -1,15 +1,19 @@
 import * as React from 'react'
 import OpenFinChrome from '../shell/OpenFinChrome'
-export interface DesktopWindowProps {
-  createWindow: (Window) => void
-  closeWindow: () => void
-  name: string
-  width: number
-  height: number
-  url: string
+import { withDefaultProps } from '../utils/reactTypes'
+
+export const defaultDesktopProps = {
+  name: '',
+  url: '',
+  width: 600,
+  height: 640,
+  createWindow: null as (Window) => void,
+  closeWindow: null as () => void
 }
 
-export class DesktopWindow extends React.PureComponent<Partial<DesktopWindowProps>> {
+type DesktopWindowProps = typeof defaultDesktopProps
+
+class DesktopWindow extends React.PureComponent<DesktopWindowProps> {
   async componentDidMount() {
     this.props.createWindow(await this.openChild())
     this.forceUpdate()
@@ -48,3 +52,5 @@ export class DesktopWindow extends React.PureComponent<Partial<DesktopWindowProp
     })
   }
 }
+
+export default withDefaultProps(defaultDesktopProps, DesktopWindow)

@@ -1,25 +1,22 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
+import { withDefaultProps } from '../utils/reactTypes'
 
+// tslint:disable-next-line:one-variable-per-declaration
 const defaultPortalProps = {
-  name: '',
   title: '',
-  url: '',
-  width: 600,
-  height: 640,
-  center: 'parent' as 'parent' | 'screen',
   onBlock: null as () => void,
   onUnload: null as (region: string) => void
 }
 
 export type PortalProps = typeof defaultPortalProps
 
-const initialState = { mounted: false }
+interface PortalState {
+  mounted: boolean
+}
 
-type PortalState = Readonly<typeof initialState>
-
-class NewPortal extends React.Component<Partial<PortalProps> & { environment: Environment }, PortalState> {
+class NewPortal extends React.Component<PortalProps & { environment: Environment }, PortalState> {
   private window: Window
 
   state = {
@@ -133,4 +130,4 @@ function copyStyles(source: Document, target: Document) {
   })
 }
 
-export const Portal = withEnvironment(NewPortal)
+export default withEnvironment(withDefaultProps(defaultPortalProps, NewPortal))
