@@ -1,19 +1,15 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { Trade } from './types'
 import TradeNotification from './ui/notification/TradeNotification'
 
 declare const window: any
 
-function dismissNotification() {
-  window.fin.desktop.Notification.getCurrent().close()
-}
+const dismissNotification = () => window.fin.desktop.Notification.getCurrent().close()
 
-function handleNotificationMessage(message) {
+const handleNotificationMessage = (message: Trade) => {
   ReactDOM.render(
-    <TradeNotification
-      message={message}
-      dismissNotification={dismissNotification}
-    />,
+    <TradeNotification message={message} dismissNotification={dismissNotification} />,
     document.getElementById('root')
   )
 
@@ -23,5 +19,5 @@ function handleNotificationMessage(message) {
 
 export function run() {
   // OpenFin notifications API: need to define the global method onNotificationMessage
-  window.onNotificationMessage = message => handleNotificationMessage(message)
+  window.onNotificationMessage = (message: Trade) => handleNotificationMessage(message)
 }
