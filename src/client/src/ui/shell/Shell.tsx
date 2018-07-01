@@ -39,20 +39,26 @@ class Shell extends React.Component<ShellProps & ShellDispatchProps> {
 
   portalProps = {
     blotterRegion: {
-      name: 'blotter',
       title: 'Blotter',
-      width: 850,
-      height: 450,
       onUnload: () => this.popIn('blotterRegionTearOff'),
-      url: 'about:Blotter'
+      config: {
+        name: 'blotter',
+        width: 850,
+        height: 450,
+        url: 'about:Blotter',
+        center: 'screen' as 'screen'
+      }
     },
     analyticsRegion: {
-      name: 'analytics',
       title: 'Analytics',
-      width: 400,
-      height: 800,
       onUnload: () => this.popIn('analyticsRegionTearOff'),
-      url: 'about:Analytics'
+      config: {
+        name: 'analytics',
+        width: 400,
+        height: 800,
+        url: 'about:Analytics',
+        center: 'screen' as 'screen'
+      }
     }
   }
 

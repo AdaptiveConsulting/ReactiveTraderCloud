@@ -3,13 +3,22 @@ import * as ReactDOM from 'react-dom'
 import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
 import { withDefaultProps } from '../utils/reactTypes'
 
-// tslint:disable-next-line:one-variable-per-declaration
+const portalConfig = {
+  name: '',
+  url: '',
+  width: 600,
+  height: 640,
+  center: 'parent' as 'parent' | 'screen'
+}
+
 const defaultPortalProps = {
   title: '',
   onBlock: null as () => void,
-  onUnload: null as (region: string) => void
+  onUnload: null as (region: string) => void,
+  config: portalConfig
 }
 
+export type PortalConfig = typeof portalConfig
 export type PortalProps = typeof defaultPortalProps
 
 interface PortalState {
@@ -39,11 +48,11 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     if (!this.state.mounted) {
       return false
     }
-    const { environment, ...props } = this.props
+    const { environment, config } = this.props
     const PortalManager = environment.PortalManager
 
     const element = (
-      <PortalManager createWindow={this.createWindow} closeWindow={this.closeWindow} {...props}>
+      <PortalManager createWindow={this.createWindow} closeWindow={this.closeWindow} {...config}>
         {this.props.children}
       </PortalManager>
     )
@@ -51,7 +60,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     return ReactDOM.createPortal(element, this.container)
   }
 
-  createWindow = window => {
+  createWindow = (window: Window) => {
     this.window = window
     this.injectIntoWindow()
   }

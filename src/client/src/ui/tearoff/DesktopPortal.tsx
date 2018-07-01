@@ -1,19 +1,13 @@
 import * as React from 'react'
 import OpenFinChrome from '../shell/OpenFinChrome'
-import { withDefaultProps } from '../utils/reactTypes'
+import { PortalConfig } from './Portal'
 
-export const defaultDesktopProps = {
-  name: '',
-  url: '',
-  width: 600,
-  height: 640,
-  createWindow: null as (Window) => void,
-  closeWindow: null as () => void
+type DesktopWindowProps = PortalConfig & {
+  createWindow: (Window) => void
+  closeWindow: () => void
 }
 
-type DesktopWindowProps = typeof defaultDesktopProps
-
-class DesktopWindow extends React.PureComponent<DesktopWindowProps> {
+export default class DesktopWindow extends React.PureComponent<DesktopWindowProps> {
   async componentDidMount() {
     this.props.createWindow(await this.openChild())
     this.forceUpdate()
@@ -28,16 +22,16 @@ class DesktopWindow extends React.PureComponent<DesktopWindowProps> {
   }
 
   openChild() {
-    const { url, name, width, height } = this.props
+    const { url, name, width: defaultWidth, height: defaultHeight } = this.props
 
     return new Promise(resolve => {
       const win = new fin.desktop.Window(
         {
           name,
           url,
+          defaultWidth,
+          defaultHeight,
           defaultCentered: true,
-          defaultWidth: width,
-          defaultHeight: height,
           autoShow: true,
           frame: false,
           saveWindowState: false
@@ -52,5 +46,3 @@ class DesktopWindow extends React.PureComponent<DesktopWindowProps> {
     })
   }
 }
-
-export default withDefaultProps(defaultDesktopProps, DesktopWindow)

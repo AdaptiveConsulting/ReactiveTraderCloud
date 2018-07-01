@@ -1,25 +1,11 @@
 import * as React from 'react'
-import { withDefaultProps } from '../utils/reactTypes'
+import { PortalConfig } from './Portal'
 
-interface WindowFeatures {
-  width?: number
-  height?: number
-  left?: number
-  top?: number
+type BrowserWindowProps = PortalConfig & {
+  createWindow: (Window: Window) => void
 }
 
-export const defaultBrowserProps = {
-  name: '',
-  url: '',
-  center: 'parent' as 'parent' | 'screen',
-  width: 600,
-  height: 640,
-  createWindow: null as (Window) => void
-}
-
-type BrowserWindowProps = typeof defaultBrowserProps
-
-class BrowserWindow extends React.PureComponent<BrowserWindowProps> {
+export default class BrowserWindow extends React.PureComponent<BrowserWindowProps> {
   componentDidMount() {
     this.props.createWindow(this.openChild())
   }
@@ -29,32 +15,8 @@ class BrowserWindow extends React.PureComponent<BrowserWindowProps> {
   }
 
   openChild() {
-    const { name, width, height, center, url } = this.props
-
-    let left = 0
-    let top = 0
-
-    if (center === 'parent') {
-      left = window.top.outerWidth / 2 + window.top.screenX - width / 2
-      top = window.top.outerHeight / 2 + window.top.screenY - height / 2
-    } else if (center === 'screen') {
-      const screenLeft = window.screenLeft
-      const screenTop = window.screenTop
-
-      const windowWidth = window.innerWidth
-        ? window.innerWidth
-        : document.documentElement.clientWidth
-          ? document.documentElement.clientWidth
-          : screen.width
-      const windowHeight = window.innerHeight
-        ? window.innerHeight
-        : document.documentElement.clientHeight
-          ? document.documentElement.clientHeight
-          : screen.height
-
-      left = windowWidth / 2 - width / 2 + screenLeft
-      top = windowHeight / 2 - height / 2 + screenTop
-    }
+    const { url, name, width, height, center } = this.props
+    const { left, top } = calculatePosition(center, width, height)
 
     return window.open(
       url,
@@ -67,6 +29,38 @@ class BrowserWindow extends React.PureComponent<BrowserWindowProps> {
       })
     )
   }
+}
+
+function calculatePosition(center: string, width: number, height: number) {
+  let left = 0
+  let top = 0
+  if (center === 'parent') {
+    left = window.top.outerWidth / 2 + window.top.screenX - width / 2
+    top = window.top.outerHeight / 2 + window.top.screenY - height / 2
+  } else if (center === 'screen') {
+    const screenLeft = window.screenLeft
+    const screenTop = window.screenTop
+    const windowWidth = window.innerWidth
+      ? window.innerWidth
+      : document.documentElement.clientWidth
+        ? document.documentElement.clientWidth
+        : screen.width
+    const windowHeight = window.innerHeight
+      ? window.innerHeight
+      : document.documentElement.clientHeight
+        ? document.documentElement.clientHeight
+        : screen.height
+    left = windowWidth / 2 - width / 2 + screenLeft
+    top = windowHeight / 2 - height / 2 + screenTop
+  }
+  return { left, top }
+}
+
+interface WindowFeatures {
+  width?: number
+  height?: number
+  left?: number
+  top?: number
 }
 
 function toWindowFeatures(windowFeatures: WindowFeatures) {
@@ -82,5 +76,3 @@ function toWindowFeatures(windowFeatures: WindowFeatures) {
     }, [])
     .join(',')
 }
-
-export default withDefaultProps(defaultBrowserProps, BrowserWindow)
