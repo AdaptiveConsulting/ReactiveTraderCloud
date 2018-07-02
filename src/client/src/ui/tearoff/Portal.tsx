@@ -52,9 +52,11 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     const PortalManager = environment.PortalManager
 
     const element = (
-      <PortalManager createWindow={this.createWindow} closeWindow={this.closeWindow} {...config}>
-        <div id="popout-content-container">{this.props.children}</div>
-      </PortalManager>
+      <div id="popout-content-container">
+        <PortalManager createWindow={this.createWindow} closeWindow={this.closeWindow} {...config}>
+          {this.props.children}
+        </PortalManager>
+      </div>
     )
 
     return ReactDOM.createPortal(element, this.container)
