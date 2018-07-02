@@ -1,9 +1,7 @@
 import * as React from 'react'
-import { PortalConfig } from './Portal'
+import { BrowserWindowConfig, WindowConfig } from './types'
 
-type BrowserWindowProps = PortalConfig & {
-  createWindow: (Window: Window) => void
-}
+type BrowserWindowProps = WindowConfig & BrowserWindowConfig
 
 export default class BrowserWindow extends React.PureComponent<BrowserWindowProps> {
   componentDidMount() {

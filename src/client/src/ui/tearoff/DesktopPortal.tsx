@@ -1,11 +1,8 @@
 import * as React from 'react'
 import OpenFinChrome from '../shell/OpenFinChrome'
-import { PortalConfig } from './Portal'
+import { DesktopWindowConfig, WindowConfig } from './types'
 
-type DesktopWindowProps = PortalConfig & {
-  createWindow: (Window) => void
-  closeWindow: () => void
-}
+type DesktopWindowProps = WindowConfig & DesktopWindowConfig
 
 export default class DesktopWindow extends React.PureComponent<DesktopWindowProps> {
   async componentDidMount() {

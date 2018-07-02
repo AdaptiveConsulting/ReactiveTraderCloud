@@ -2,23 +2,10 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
 import { withDefaultProps } from '../utils/reactTypes'
+import BrowserPortal from './BrowserPortal'
+import DesktopPortal from './DesktopPortal'
+import { BrowserWindowConfig, DesktopWindowConfig, WindowConfig } from './types'
 
-const portalConfig = {
-  name: '',
-  url: '',
-  width: 600,
-  height: 640,
-  center: 'parent' as 'parent' | 'screen'
-}
-
-const defaultPortalProps = {
-  title: '',
-  onBlock: null as () => void,
-  onUnload: null as (region: string) => void,
-  config: portalConfig
-}
-
-export type PortalConfig = typeof portalConfig
 export type PortalProps = typeof defaultPortalProps
 
 interface PortalState {
@@ -48,14 +35,19 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     if (!this.state.mounted) {
       return false
     }
-    const { environment, config } = this.props
-    const PortalManager = environment.PortalManager
+    const { environment, config, desktopConfig, browserConfig } = this.props
 
-    const element = (
+    const element = environment.isRunningDesktop ? (
       <div id="popout-content-container">
-        <PortalManager createWindow={this.createWindow} closeWindow={this.closeWindow} {...config}>
+        <DesktopPortal createWindow={this.createWindow} closeWindow={this.closeWindow} {...config} {...desktopConfig}>
           {this.props.children}
-        </PortalManager>
+        </DesktopPortal>
+      </div>
+    ) : (
+      <div id="popout-content-container">
+        <BrowserPortal createWindow={this.createWindow} {...config} {...browserConfig}>
+          {this.props.children}
+        </BrowserPortal>
       </div>
     )
 
@@ -139,6 +131,20 @@ function copyStyles(source: Document, target: Document) {
       target.head.appendChild(newLinkEl)
     }
   })
+}
+
+const defaultPortalProps = {
+  title: '',
+  onBlock: null as () => void,
+  onUnload: null as (region: string) => void,
+  config: {
+    name: '',
+    url: '',
+    width: 600,
+    height: 640
+  } as WindowConfig,
+  desktopConfig: {} as DesktopWindowConfig,
+  browserConfig: { center: 'parent' } as BrowserWindowConfig
 }
 
 export default withEnvironment(withDefaultProps(defaultPortalProps, NewPortal))
