@@ -13,11 +13,11 @@ export default class BrowserWindow extends React.PureComponent<BrowserWindowProp
   }
 
   openChild() {
-    const { url, name, width, height, center } = this.props
+    const { name, width, height, center } = this.props
     const { left, top } = calculatePosition(center, width, height)
 
     return window.open(
-      url,
+      '',
       name,
       toWindowFeatures({
         width,

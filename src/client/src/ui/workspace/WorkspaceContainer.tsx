@@ -76,16 +76,16 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
 
     return spotTileKeys
       .map(key => (
-        <div className="workspace-region__item">
-          <TearOff
-            tornOff={this.state[key]}
-            portalProps={this.makePortalProps(key)}
-            key={key}
-            render={() => (
+        <TearOff
+          tornOff={this.state[key]}
+          portalProps={this.makePortalProps(key)}
+          key={key}
+          render={() => (
+            <div className="workspace-region__item">
               <ConnectedSpotTileContainer id={key} onPopoutClick={() => this.popout(key)} tornOff={this.state[key]} />
-            )}
-          />
-        </div>
+            </div>
+          )}
+        />
       ))
       .concat(_.times(6, i => <div key={i} className="workspace-region__spacer" />))
   }
