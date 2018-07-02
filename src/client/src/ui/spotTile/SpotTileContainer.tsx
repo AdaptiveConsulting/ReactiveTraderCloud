@@ -6,8 +6,6 @@ import { GlobalState } from '../../combineReducers'
 import { CurrencyPair, Direction, ExecuteTradeRequest } from '../../types/'
 import { SpotPriceTick } from '../../types/spotPriceTick'
 import { SpotTileData } from '../../types/spotTileData'
-import { RegionActions } from '../common/regions'
-import { Region } from '../common/regions/actions'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 import { spotRegionSettings, SpotTileActions } from './actions'
 import SpotTile from './SpotTile'
@@ -37,6 +35,8 @@ const makeGetCurrencyPair = () =>
 
 interface SpotTileContainerOwnProps {
   id: string
+  onPopoutClick: () => void
+  tornOff: boolean
 }
 
 type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
@@ -46,10 +46,6 @@ type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToPr
 type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
 
 class SpotTileContainer extends React.Component<SpotTileContainerProps> {
-  componentDidMount() {
-    this.props.onComponentMount(this.props.id)
-  }
-
   shouldComponentUpdate(nextProps: SpotTileContainerProps) {
     return !_.isEqual(this.props.spotTilesData, nextProps.spotTilesData)
   }
@@ -64,7 +60,8 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps> {
       onPopoutClick,
       undockTile,
       onNotificationDismissedClick,
-      displayCurrencyChart
+      displayCurrencyChart,
+      tornOff
     } = this.props
     const spotTitle = spotRegionSettings(id).title
     return (
@@ -75,11 +72,12 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps> {
         currencyPair={currencyPair}
         isRunningOnDesktop={this.props.isRunningOnDesktop}
         spotTileData={spotTilesData}
-        onPopoutClick={onPopoutClick(id)}
+        onPopoutClick={onPopoutClick}
         displayCurrencyChart={displayCurrencyChart(id)}
         onNotificationDismissedClick={onNotificationDismissedClick(id)}
         undockTile={undockTile(spotTitle)}
         executeTrade={this.executeTrade}
+        tornOff={tornOff}
       />
     )
   }
@@ -103,8 +101,6 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps> {
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
-  onComponentMount: (id: string) => dispatch(RegionActions.addRegion(spotTileRegion(id))),
-  onPopoutClick: (id: string) => () => dispatch(RegionActions.openWindow(spotTileRegion(id))),
   undockTile: (tileName: string) => () => dispatch(SpotTileActions.undockTile(tileName)),
   displayCurrencyChart: (symbol: string) => () => dispatch(SpotTileActions.displayCurrencyChart(symbol)),
   onNotificationDismissedClick: (symbol: string) => () => dispatch(SpotTileActions.dismissNotification(symbol))
@@ -134,12 +130,5 @@ const ConnectedSpotTileContainer = connect(
   makeMapStateToProps,
   mapDispatchToProps
 )(SpotTileContainer)
-
-const spotTileRegion = (id: string): Region => ({
-  id,
-  isTearedOff: false,
-  container: connect(state => ({ id }))(ConnectedSpotTileContainer),
-  settings: spotRegionSettings(id)
-})
 
 export default ConnectedSpotTileContainer

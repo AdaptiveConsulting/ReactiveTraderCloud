@@ -24,7 +24,6 @@ type ShellDispatchProps = ReturnType<typeof mapDispatchToProps>
 
 class Shell extends React.Component<ShellProps & ShellDispatchProps> {
   state = {
-    gridDocument: null,
     blotterRegionTearOff: false,
     analyticsRegionTearOff: false
   }
