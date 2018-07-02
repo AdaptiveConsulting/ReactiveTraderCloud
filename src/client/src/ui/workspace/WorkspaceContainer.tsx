@@ -1,12 +1,9 @@
 import * as _ from 'lodash'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
 import { GlobalState } from '../../combineReducers'
-import { RegionActions } from '../common/regions'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
 import { TearOff } from '../tearoff'
-import { PortalProps } from '../tearoff/Portal'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 
 const getSpotTileKeys = createDeepEqualSelector(
@@ -15,30 +12,15 @@ const getSpotTileKeys = createDeepEqualSelector(
 )
 
 type WorkspaceContainerStateProps = ReturnType<typeof mapStateToProps>
-type WorkspaceContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
-type WorkspaceContainerProps = WorkspaceContainerStateProps & WorkspaceContainerDispatchProps
+type WorkspaceContainerProps = WorkspaceContainerStateProps
 
 interface WorkspaceContainerState {
   [key: string]: boolean
 }
 
-interface SpotTilePortalProps {
-  [key: string]: PortalProps
-}
-
 export class WorkspaceContainer extends React.Component<WorkspaceContainerProps, WorkspaceContainerState> {
-  state = {}
-
-  portalProps: SpotTilePortalProps = {}
-
-  componentDidMount() {
-    const { spotTileKeys } = this.props
-    spotTileKeys.map(key => this.setState({ [key]: false }))
-  }
-
   makePortalProps = key => ({
     title: `${key} Spot`,
-    onUnload: () => this.popIn(key),
     config: {
       name: `${key} Spot`,
       width: 370,
@@ -47,14 +29,6 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
       center: 'screen' as 'screen'
     }
   })
-
-  popout = (key: string) => {
-    this.setState({ [key]: true }, () => this.props.onPopout({ id: key }))
-  }
-
-  popIn = (key: string) => {
-    this.setState({ [key]: false }, () => this.props.onPopin({ id: key }))
-  }
 
   render() {
     return (
@@ -77,30 +51,22 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
     return spotTileKeys
       .map(key => (
         <TearOff
-          tornOff={this.state[key]}
+          id={key}
           portalProps={this.makePortalProps(key)}
-          key={key}
-          render={() => (
+          render={(popOut, tornOff) => (
             <div className="workspace-region__item">
-              <ConnectedSpotTileContainer id={key} onPopoutClick={() => this.popout(key)} tornOff={this.state[key]} />
+              <ConnectedSpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} />
             </div>
           )}
+          key={key}
         />
       ))
       .concat(_.times(6, i => <div key={i} className="workspace-region__spacer" />))
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onPopout: region => dispatch(RegionActions.popoutOpened(region)),
-  onPopin: region => dispatch(RegionActions.popoutClosed(region))
-})
-
 const mapStateToProps = (state: GlobalState) => ({
   spotTileKeys: getSpotTileKeys(state)
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(WorkspaceContainer)
+export default connect(mapStateToProps)(WorkspaceContainer)

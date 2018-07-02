@@ -5,21 +5,14 @@ import { ConnectionActions } from '../../operations/connectionStatus'
 import { ConnectionStatus } from '../../system'
 import Shell from './Shell'
 
-const reconnect = ConnectionActions.connect
-
-function mapStateToProps(state: GlobalState) {
-  const { connectionStatus, regionsService } = state
-  const sessionExpired = connectionStatus.status === ConnectionStatus.sessionExpired
-
-  // show splitter at the initialisation step (blotter not added to the state yet) or if it isn't teared off
-  const showSplitter =
-    !regionsService.blotter || (regionsService.blotter && regionsService.blotter.isTearedOff === false)
-  return { sessionExpired, showSplitter }
-}
+const mapStateToProps = ({ connectionStatus, regionsService }: GlobalState) => ({
+  sessionExpired: connectionStatus.status === ConnectionStatus.sessionExpired,
+  showSplitter: regionsService.blotter && !regionsService.blotter.isTearedOff
+})
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   reconnect: () => {
-    dispatch(reconnect())
+    dispatch(ConnectionActions.connect())
   }
 })
 
