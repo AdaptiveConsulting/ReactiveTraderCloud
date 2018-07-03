@@ -4,7 +4,7 @@ import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
 import { withDefaultProps } from '../utils/reactTypes'
 import BrowserPortal from './BrowserPortal'
 import DesktopPortal from './DesktopPortal'
-import { BrowserWindowConfig, DesktopWindowConfig, WindowConfig } from './types'
+import { WindowConfig } from './types'
 
 export type PortalProps = typeof defaultPortalProps
 
@@ -143,8 +143,8 @@ const defaultPortalProps = {
     width: 600,
     height: 640
   } as WindowConfig,
-  desktopConfig: {} as DesktopWindowConfig,
-  browserConfig: { center: 'parent' } as BrowserWindowConfig
+  desktopConfig: {},
+  browserConfig: { center: 'parent' as 'parent' | 'screen' }
 }
 
 export default withEnvironment(withDefaultProps(defaultPortalProps, NewPortal))

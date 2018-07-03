@@ -25,9 +25,9 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
       name: `${key} Spot`,
       width: 370,
       height: 155,
-      url: 'about:`${key} Spot`',
-      center: 'screen' as 'screen'
-    }
+      url: 'about:`${key} Spot`'
+    },
+    browserConfig: { center: 'screen' as 'screen' }
   })
 
   render() {
