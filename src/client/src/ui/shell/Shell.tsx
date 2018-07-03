@@ -10,12 +10,76 @@ import SplitPane from 'react-split-pane'
 import TradeNotificationContainer from '../notification/TradeNotificationContainer'
 import '../styles/css/index.css'
 import { TearOff } from '../tearoff'
+import { Environment, withEnvironment } from './EnvironmentProvider'
 
 export interface ShellProps {
   sessionExpired: boolean
   showSplitter: boolean
   reconnect: () => void
 }
+
+const appVersion: string = process.env.REACT_APP_VERSION // version from package.json exported in webpack.config.js
+
+const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
+  sessionExpired,
+  showSplitter,
+  reconnect,
+  environment
+}) => (
+  <div
+    className={classnames({
+      shell__browser_wrapper: !environment.isRunningDesktop
+    })}
+  >
+    <div className="shell__splash">
+      <span className="shell__splash-message">
+        {appVersion}
+        <br />Loading...
+      </span>
+    </div>
+    <div className="shell__container">
+      <Modal shouldShow={sessionExpired} title="Session expired">
+        <div>
+          <div>Your 15 minute session expired, you are now disconnected from the server.</div>
+          <div>Click reconnect to start a new session.</div>
+          <button className="btn shell__button--reconnect" onClick={reconnect}>
+            Reconnect
+          </button>
+        </div>
+      </Modal>
+
+      <SplitPane
+        minSize={300}
+        size={600}
+        split="horizontal"
+        style={{ position: 'relative' }}
+        className={showSplitter ? '' : 'soloPane1'}
+      >
+        <WorkspaceContainer />
+        <TearOff
+          id="blotter"
+          portalProps={portalProps.blotterRegion}
+          render={(popOut, tornOff) => (
+            <div className="shell__blotter-container">
+              <div className="shell__blotter">
+                <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />
+              </div>
+            </div>
+          )}
+        />
+      </SplitPane>
+      <TearOff
+        id="region"
+        portalProps={portalProps.analyticsRegion}
+        render={(popOut, tornOff) => <SidebarRegionContainer onPopoutClick={popOut} tornOff={tornOff} />}
+      />
+    </div>
+    <div className="shell__footer">
+      <FooterContainer />
+      <TradeNotificationContainer />
+    </div>
+  </div>
+)
 
 const portalProps = {
   blotterRegion: {
@@ -40,64 +104,4 @@ const portalProps = {
   }
 }
 
-const appVersion: string = process.env.REACT_APP_VERSION // version from package.json exported in webpack.config.js
-
-const Shell: React.SFC<ShellProps> = ({ sessionExpired, showSplitter, reconnect }) => {
-  return (
-    <div
-      className={classnames({
-        shell__browser_wrapper: true //this.context.openFin fix this
-      })}
-    >
-      <div className="shell__splash">
-        <span className="shell__splash-message">
-          {appVersion}
-          <br />Loading...
-        </span>
-      </div>
-      <div className="shell__container">
-        <Modal shouldShow={sessionExpired} title="Session expired">
-          <div>
-            <div>Your 15 minute session expired, you are now disconnected from the server.</div>
-            <div>Click reconnect to start a new session.</div>
-            <button className="btn shell__button--reconnect" onClick={reconnect}>
-              Reconnect
-            </button>
-          </div>
-        </Modal>
-
-        <SplitPane
-          minSize={300}
-          size={600}
-          split="horizontal"
-          style={{ position: 'relative' }}
-          className={showSplitter ? '' : 'soloPane1'}
-        >
-          <WorkspaceContainer />
-          <TearOff
-            id="blotter"
-            portalProps={portalProps.blotterRegion}
-            render={(popOut, tornOff) => (
-              <div className="shell__blotter-container">
-                <div className="shell__blotter">
-                  <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />
-                </div>
-              </div>
-            )}
-          />
-        </SplitPane>
-        <TearOff
-          id="region"
-          portalProps={portalProps.analyticsRegion}
-          render={(popOut, tornOff) => <SidebarRegionContainer onPopoutClick={popOut} tornOff={tornOff} />}
-        />
-      </div>
-      <div className="shell__footer">
-        <FooterContainer />
-        <TradeNotificationContainer />
-      </div>
-    </div>
-  )
-}
-
-export default Shell
+export default withEnvironment(Shell)

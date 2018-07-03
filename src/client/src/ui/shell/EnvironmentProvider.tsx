@@ -1,10 +1,10 @@
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import * as React from 'react'
-import { BrowserWindow, DesktopWindow } from '../tearoff'
+import { OpenFin } from '../../services'
 
 const environmentContext = {
   isRunningDesktop: false,
-  PortalManager: BrowserWindow as typeof BrowserWindow | typeof DesktopWindow
+  openFin: null as OpenFin
 }
 
 export type Environment = typeof environmentContext

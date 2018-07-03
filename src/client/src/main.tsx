@@ -12,7 +12,6 @@ import { AutobahnConnectionProxy, logger } from './system'
 import { User } from './types'
 import { OpenFinProvider, ShellContainer } from './ui/shell'
 import { EnvironmentProvider } from './ui/shell/EnvironmentProvider'
-import { BrowserWindow, DesktopWindow } from './ui/tearoff'
 
 const log = logger.create('Application Service')
 
@@ -29,7 +28,7 @@ const openFin = new OpenFin()
 
 const environmentContext = {
   isRunningDesktop: openFin.isRunningInOpenFin,
-  PortalManager: openFin.isRunningInOpenFin ? DesktopWindow : BrowserWindow
+  openFin
 }
 
 const appBootstrapper = () => {
