@@ -98,8 +98,7 @@ const portalProps = {
       name: 'analytics',
       width: 400,
       height: 800,
-      url: 'about:Analytics',
-      center: 'screen' as 'screen'
+      url: 'about:Analytics'
     },
     browserConfig: { center: 'screen' as 'screen' }
   }
