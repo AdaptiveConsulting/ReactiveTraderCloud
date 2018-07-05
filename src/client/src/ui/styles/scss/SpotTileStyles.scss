@@ -166,5 +166,9 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
 #popout-content-container {
   .spot-tile {
     border: none;
+    height: 100%;
+  }
+  .workspace-region__item {
+    margin: 0;
   }
 }

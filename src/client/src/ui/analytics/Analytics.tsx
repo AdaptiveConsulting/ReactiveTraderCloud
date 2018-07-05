@@ -1,7 +1,7 @@
 import * as classnames from 'classnames'
 import * as _ from 'lodash'
 import * as React from 'react'
-import { CurrencyPair } from '../../types/currencyPair'
+import { CurrencyPairState } from '../../operations/currencyPairs'
 import { AnalyticsBarChart, PNLChart, PositionsBubbleChart } from './'
 import { PNLChartModel } from './model/pnlChartModel'
 import { PositionsChartModel } from './model/positionsChartModel'
@@ -11,8 +11,8 @@ export interface AnalyticsProps {
   isConnected: boolean
   pnlChartModel?: PNLChartModel
   positionsChartModel?: PositionsChartModel
-  currencyPairs: CurrencyPair[]
-  onPopoutClick?: () => void
+  currencyPairs: CurrencyPairState
+  onPopoutClick: () => void
 }
 
 const RESIZE_EVENT = 'resize'
@@ -20,8 +20,8 @@ const RESIZE_EVENT = 'resize'
 export default class Analytics extends React.Component<AnalyticsProps, {}> {
   private handleResize = () => this.forceUpdate()
 
+  // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
   componentWillMount() {
-    // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
     window.addEventListener(RESIZE_EVENT, this.handleResize)
   }
 
@@ -30,7 +30,7 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
   }
 
   render() {
-    const { canPopout, isConnected, currencyPairs } = this.props
+    const { canPopout, isConnected, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
 
     if (!isConnected) {
       return (
@@ -40,29 +40,24 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
       )
     }
 
-    const newWindowBtnClassName = classnames(
-      'glyphicon glyphicon-new-window',
-      (canPopout && 'analytics__icon--tearoff--hidden') || 'analytics__icon--tearoff'
-    )
-
     return (
       <div className="analytics analytics__container animated fadeIn">
         <div className="analytics__controls popout__controls">
-          <i className={newWindowBtnClassName} onClick={() => this.props.onPopoutClick()} />
+          <i className={getWindowButtonClassName(canPopout)} onClick={onPopoutClick} />
         </div>
-        {this.props.pnlChartModel && <PNLChart {...this.props.pnlChartModel} />}
+        {pnlChartModel && <PNLChart {...pnlChartModel} />}
         <div className="analytics__bubblechart-container">
           <span className="analytics__chart-title analytics__bubblechart-title">Positions</span>
-          {!_.isEmpty(this.props.positionsChartModel.seriesData) && (
-            <PositionsBubbleChart data={this.props.positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+          {!_.isEmpty(positionsChartModel.seriesData) && (
+            <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
           )}
         </div>
         <div>
           <div className="analytics__chart-container">
             <span className="analytics__chart-title">PnL</span>
-            {!_.isEmpty(this.props.positionsChartModel.seriesData) && (
+            {!_.isEmpty(positionsChartModel.seriesData) && (
               <AnalyticsBarChart
-                chartData={this.props.positionsChartModel.seriesData}
+                chartData={positionsChartModel.seriesData}
                 currencyPairs={currencyPairs}
                 isPnL={true}
               />
@@ -73,3 +68,9 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
     )
   }
 }
+
+const getWindowButtonClassName = (canPopout: boolean) =>
+  classnames(
+    'glyphicon glyphicon-new-window',
+    (canPopout && 'analytics__icon--tearoff--hidden') || 'analytics__icon--tearoff'
+  )

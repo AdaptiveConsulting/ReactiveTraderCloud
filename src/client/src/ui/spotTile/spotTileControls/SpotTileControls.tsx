@@ -8,12 +8,20 @@ interface SpotTileControlsProps {
   displayCurrencyChart: () => void
   onPopoutClick: () => void
   undockTile: () => void
+  tornOff: boolean
 }
 
 export default class SpotTileControls extends React.Component<SpotTileControlsProps, {}> {
   render() {
-    const { isRunningOnDesktop, currencyChartIsOpening, displayCurrencyChart, undockTile, onPopoutClick } = this.props
-    const canPopout = Environment.isRunningInIE()
+    const {
+      isRunningOnDesktop,
+      currencyChartIsOpening,
+      displayCurrencyChart,
+      undockTile,
+      onPopoutClick,
+      tornOff
+    } = this.props
+    const canPopout = Environment.isRunningInIE() || tornOff
 
     const newWindowClassName = classnames('popout__controls  glyphicon glyphicon-new-window', {
       'spot-tile__icon--tearoff': !canPopout,

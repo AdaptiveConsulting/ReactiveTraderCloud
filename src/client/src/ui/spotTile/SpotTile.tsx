@@ -1,7 +1,7 @@
 import * as classnames from 'classnames'
 import * as _ from 'lodash'
 import * as React from 'react'
-import { NotificationType } from '../../types'
+import { Direction, NotificationType } from '../../types'
 import { CurrencyPair } from '../../types/currencyPair'
 import { Notification } from '../../types/notification'
 import { SpotTileData } from '../../types/spotTileData'
@@ -17,11 +17,12 @@ export interface SpotTileProps {
   executionConnected: boolean
   pricingConnected: boolean
   isRunningOnDesktop: boolean
-  executeTrade: (direction: any) => void
+  executeTrade: (direction: Direction) => void
   onPopoutClick: () => void
   undockTile: () => void
   displayCurrencyChart: () => void
   onNotificationDismissedClick: () => void
+  tornOff: boolean
 }
 
 export default class SpotTile extends React.Component<SpotTileProps, {}> {
@@ -64,7 +65,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
   }
 
   createSpotTileControls() {
-    const { onPopoutClick, undockTile, displayCurrencyChart, isRunningOnDesktop, spotTileData } = this.props
+    const { onPopoutClick, undockTile, displayCurrencyChart, isRunningOnDesktop, spotTileData, tornOff } = this.props
 
     return (
       <SpotTileControls
@@ -73,6 +74,7 @@ export default class SpotTile extends React.Component<SpotTileProps, {}> {
         displayCurrencyChart={displayCurrencyChart}
         isRunningOnDesktop={isRunningOnDesktop}
         undockTile={undockTile}
+        tornOff={tornOff}
       />
     )
   }

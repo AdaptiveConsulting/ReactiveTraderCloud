@@ -11,6 +11,7 @@ import { OpenFin } from './services/openFin'
 import { AutobahnConnectionProxy, logger } from './system'
 import { User } from './types'
 import { OpenFinProvider, ShellContainer } from './ui/shell'
+import { EnvironmentProvider } from './ui/shell/EnvironmentProvider'
 
 const log = logger.create('Application Service')
 
@@ -21,6 +22,15 @@ const config = getEnvVars(process.env.REACT_APP_ENV)
 
 const APPLICATION_DISCONNECT = 15 * 60 * 1000
 
+const openFin = new OpenFin()
+
+//const isRunningInFinsemble = window.FSBL
+
+const environmentContext = {
+  isRunningDesktop: openFin.isRunningInOpenFin,
+  openFin
+}
+
 const appBootstrapper = () => {
   const user: User = FakeUserRepository.currentUser
   const realm = 'com.weareadaptive.reactivetrader'
@@ -29,19 +39,22 @@ const appBootstrapper = () => {
 
   const autobahn = new AutobahnConnectionProxy(url, realm, +port)
 
-  const openFin = new OpenFin()
-
   const applicationDependencies = createApplicationServices(user, autobahn, openFin)
-
-  const isRunningInFinsemble = window.FSBL
 
   const store = configureStore(applicationDependencies)
   window.store = store
+
   ReactDOM.render(
     <Provider store={store}>
-      <OpenFinProvider openFin={openFin} isRunningInFinsemble={isRunningInFinsemble}>
-        <ShellContainer />
-      </OpenFinProvider>
+      <EnvironmentProvider value={environmentContext}>
+        {openFin.isRunningInOpenFin ? (
+          <OpenFinProvider openFin={openFin}>
+            <ShellContainer />
+          </OpenFinProvider>
+        ) : (
+          <ShellContainer />
+        )}
+      </EnvironmentProvider>
     </Provider>,
     document.getElementById('root')
   )

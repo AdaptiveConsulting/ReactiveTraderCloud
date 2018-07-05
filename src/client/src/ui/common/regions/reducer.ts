@@ -28,9 +28,7 @@ export const regionsReducer = (
 
 const REGION_INITIAL_STATE = {
   id: '',
-  isTearedOff: false,
-  container: null,
-  settings: null
+  isTearedOff: false
 }
 
 const regionReducer = (state: Region = REGION_INITIAL_STATE, action: RegionActions): Region => {

@@ -28,11 +28,7 @@ const dateRenderer = (trade: Trade, field: string) => {
   return formatDate(trade[field], '%d-%b %H:%M:%S')
 }
 
-const UtcDateRenderer = (
-  trade: Trade,
-  field: string,
-  format: string = '%d-%b-%Y'
-) => {
+const UtcDateRenderer = (trade: Trade, field: string, format: string = '%d-%b-%Y') => {
   return UtcFormatDate(trade[field], format)
 }
 
@@ -92,105 +88,103 @@ export const COLUMN_FIELDS = [
   TRADER_NAME
 ]
 
-export function getColumnDefinitions(): AgGrid.ColDef[] {
-  return [
-    {
-      colId: STATUS_INDICATOR,
-      headerName: '',
-      field: STATUS_INDICATOR,
-      width: 6,
-      maxWidth: 6,
-      minWidth: 6,
-      cellClass: ({ data }) => getStatusIndicatorClass(data),
-      suppressSorting: true,
-      suppressMenu: true,
-      headerClass: 'rt-status-indicator__header'
-    },
-    {
-      colId: TRADE_ID,
-      headerName: 'Trade ID',
-      field: TRADE_ID,
-      width: 100,
-      filter: 'number'
-    },
-    {
-      colId: STATUS,
-      headerName: 'Status',
-      field: STATUS,
-      width: 105,
-      cellClass: ({ data }) => getStatusCellClass(data),
-      filterFramework: SetFilter
-    },
-    {
-      colId: TRADE_DATE,
-      headerName: 'Date',
-      field: TRADE_DATE,
-      cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
-      width: 170,
-      suppressFilter: true
-    },
-    {
-      colId: DIRECTION,
-      headerName: 'Direction',
-      field: DIRECTION,
-      width: 110,
-      filterFramework: SetFilter
-    },
-    {
-      colId: SYMBOL,
-      headerName: 'CCYCCY',
-      field: SYMBOL,
-      width: 105,
-      filterFramework: SetFilter
-    },
-    {
-      colId: DEALT_CURRENCY,
-      headerName: 'Dealt CCY',
-      field: DEALT_CURRENCY,
-      width: 105,
-      filterFramework: SetFilter
-    },
-    {
-      colId: NOTIONAL,
-      headerName: 'Notional',
-      field: NOTIONAL,
-      cellRenderer: numericCellRenderer,
-      cellClass: 'rt-blotter__numeric-cell',
-      headerClass: 'rt-header__numeric',
-      width: 140,
-      filter: 'number'
-    },
-    {
-      colId: SPOT_RATE,
-      headerName: 'Rate',
-      field: SPOT_RATE,
-      width: 120,
-      cellClass: 'rt-blotter__numeric-cell',
-      headerClass: 'rt-header__numeric',
-      filter: 'number'
-    },
-    {
-      colId: VALUE_DATE,
-      headerName: 'Value Date',
-      field: VALUE_DATE,
-      cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
-      width: 130,
-      suppressFilter: true
-    },
-    {
-      colId: TRADER_NAME,
-      field: TRADER_NAME,
-      headerName: 'Trader',
-      width: 105,
-      filterFramework: SetFilter
-    },
-    {
-      colId: 'empty',
-      field: 'empty',
-      headerName: '',
-      width: 105,
-      suppressSizeToFit: false,
-      suppressFilter: true
-    }
-  ]
-}
+export const columnDefinitions: AgGrid.ColDef[] = [
+  {
+    colId: STATUS_INDICATOR,
+    headerName: '',
+    field: STATUS_INDICATOR,
+    width: 6,
+    maxWidth: 6,
+    minWidth: 6,
+    cellClass: ({ data }) => getStatusIndicatorClass(data),
+    suppressSorting: true,
+    suppressMenu: true,
+    headerClass: 'rt-status-indicator__header'
+  },
+  {
+    colId: TRADE_ID,
+    headerName: 'Trade ID',
+    field: TRADE_ID,
+    width: 100,
+    filter: 'number'
+  },
+  {
+    colId: STATUS,
+    headerName: 'Status',
+    field: STATUS,
+    width: 105,
+    cellClass: ({ data }) => getStatusCellClass(data),
+    filterFramework: SetFilter
+  },
+  {
+    colId: TRADE_DATE,
+    headerName: 'Date',
+    field: TRADE_DATE,
+    cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
+    width: 170,
+    suppressFilter: true
+  },
+  {
+    colId: DIRECTION,
+    headerName: 'Direction',
+    field: DIRECTION,
+    width: 110,
+    filterFramework: SetFilter
+  },
+  {
+    colId: SYMBOL,
+    headerName: 'CCYCCY',
+    field: SYMBOL,
+    width: 105,
+    filterFramework: SetFilter
+  },
+  {
+    colId: DEALT_CURRENCY,
+    headerName: 'Dealt CCY',
+    field: DEALT_CURRENCY,
+    width: 105,
+    filterFramework: SetFilter
+  },
+  {
+    colId: NOTIONAL,
+    headerName: 'Notional',
+    field: NOTIONAL,
+    cellRenderer: numericCellRenderer,
+    cellClass: 'rt-blotter__numeric-cell',
+    headerClass: 'rt-header__numeric',
+    width: 140,
+    filter: 'number'
+  },
+  {
+    colId: SPOT_RATE,
+    headerName: 'Rate',
+    field: SPOT_RATE,
+    width: 120,
+    cellClass: 'rt-blotter__numeric-cell',
+    headerClass: 'rt-header__numeric',
+    filter: 'number'
+  },
+  {
+    colId: VALUE_DATE,
+    headerName: 'Value Date',
+    field: VALUE_DATE,
+    cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
+    width: 130,
+    suppressFilter: true
+  },
+  {
+    colId: TRADER_NAME,
+    field: TRADER_NAME,
+    headerName: 'Trader',
+    width: 105,
+    filterFramework: SetFilter
+  },
+  {
+    colId: 'empty',
+    field: 'empty',
+    headerName: '',
+    width: 105,
+    suppressSizeToFit: false,
+    suppressFilter: true
+  }
+]

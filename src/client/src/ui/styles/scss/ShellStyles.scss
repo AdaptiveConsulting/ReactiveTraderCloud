@@ -45,16 +45,13 @@
   text-align: center;
   color: white;
   position: absolute;
-  bottom: calc(
-    100vh - #{$splash-logo-margin-top} - #{$splash-logo-height} - 50px
-  );
+  bottom: calc(100vh - #{$splash-logo-margin-top} - #{$splash-logo-height} - 50px);
   left: 0;
   right: 0;
   width: 100px;
   margin: auto;
   font-size: 18px;
 }
-
 .shell__container {
   background-color: $shell-background-color;
   display: flex;
@@ -66,7 +63,6 @@
     box-sizing: border-box;
   }
 }
-
 .shell_workspace_blotter {
   height: 100%;
   width: 100%;
@@ -75,7 +71,6 @@
     box-sizing: border-box;
   }
 }
-
 .shell__sidebar {
   flex-grow: 0;
   flex-shrink: 0;
@@ -86,7 +81,6 @@
   display: flex;
   flex-direction: row;
 }
-
 .shell__workspace {
   flex-grow: 1;
   height: auto; // $workspace-height;
@@ -95,7 +89,6 @@
   width: $workspace-width;
   order: 1;
 }
-
 .shell__blotter-container {
   width: 100%;
   height: auto;
@@ -106,7 +99,6 @@
   bottom: 0;
   right: 0;
 }
-
 .shell__blotter {
   width: 100%;
   height: 100%;
@@ -114,17 +106,14 @@
   order: 2;
   box-sizing: border-box;
 }
-
 .shell__footer {
   height: $footer-height;
 }
-
 .shell__button--reconnect {
   min-width: 100px;
   height: 28px;
   margin: 20px 10px;
 }
-
 @media all and (max-width: 700px) {
   body {
     overflow-y: auto;
@@ -133,19 +122,16 @@
     height: 100%;
     flex-direction: column;
   }
-
   .shell__sidebar,
   .shell__workspace {
     height: auto;
     width: 100%;
   }
-
   .shell__sidebar,
   .shell__workspace,
   .shell__blotter {
     flex: 1;
   }
-
   .shell__sidebar {
     order: 2;
   }
@@ -170,12 +156,10 @@
   -webkit-background-clip: padding;
   background-clip: padding-box;
 }
-
 .Resizer:hover {
   -webkit-transition: all 2s ease;
   transition: all 2s ease;
 }
-
 .Resizer.horizontal {
   height: 11px;
   margin: -5px 0;
@@ -184,12 +168,10 @@
   cursor: row-resize;
   width: 100%;
 }
-
 .Resizer.horizontal:hover {
   border-top: 5px solid rgba(0, 0, 0, 0.5);
   border-bottom: 5px solid rgba(0, 0, 0, 0.5);
 }
-
 .Resizer.vertical {
   width: 11px;
   margin: 0 -5px;
@@ -197,7 +179,6 @@
   border-right: 5px solid rgba(255, 255, 255, 0);
   cursor: col-resize;
 }
-
 .Resizer.vertical:hover {
   border-left: 5px solid rgba(0, 0, 0, 0.5);
   border-right: 5px solid rgba(0, 0, 0, 0.5);
@@ -207,4 +188,20 @@
 }
 .Resizer.disabled:hover {
   border-color: transparent;
+}
+div.SplitPane.soloPane1.vertical > .Pane2,
+div.SplitPane.soloPane2.vertical > .Pane1 {
+  width: 0px !important;
+}
+div.SplitPane.soloPane1.vertical > .Pane1,
+div.SplitPane.soloPane2.vertical > .Pane2 {
+  width: 100% !important;
+}
+div.SplitPane.soloPane1.horizontal > .Pane2,
+div.SplitPane.soloPane2.horizontal > .Pane1 {
+  height: 0px !important;
+}
+div.SplitPane.soloPane1.horizontal > .Pane1,
+div.SplitPane.soloPane2.horizontal > .Pane2 {
+  height: 100% !important;
 }

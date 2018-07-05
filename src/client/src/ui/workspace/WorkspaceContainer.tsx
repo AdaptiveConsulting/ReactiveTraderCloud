@@ -1,22 +1,35 @@
 import * as _ from 'lodash'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import RegionWrapper from '../common/regions'
+import { GlobalState } from '../../combineReducers'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
+import { TearOff } from '../tearoff'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 
 const getSpotTileKeys = createDeepEqualSelector(
-  (state: any) => Object.keys(state.currencyPairs),
+  (state: GlobalState) => Object.keys(state.currencyPairs),
   spotTilesKeys => spotTilesKeys
 )
 
-interface WorkspaceContainerStateProps {
-  spotTileKeys: string[]
-}
-
+type WorkspaceContainerStateProps = ReturnType<typeof mapStateToProps>
 type WorkspaceContainerProps = WorkspaceContainerStateProps
 
-export class WorkspaceContainer extends React.Component<WorkspaceContainerProps, {}> {
+interface WorkspaceContainerState {
+  [key: string]: boolean
+}
+
+export class WorkspaceContainer extends React.Component<WorkspaceContainerProps, WorkspaceContainerState> {
+  makePortalProps = key => ({
+    title: `${key} Spot`,
+    config: {
+      name: `${key} Spot`,
+      width: 370,
+      height: 155,
+      url: 'about:`${key} Spot`'
+    },
+    browserConfig: { center: 'screen' as 'screen' }
+  })
+
   render() {
     return (
       <div className="shell__workspace">
@@ -37,20 +50,23 @@ export class WorkspaceContainer extends React.Component<WorkspaceContainerProps,
 
     return spotTileKeys
       .map(key => (
-        <RegionWrapper key={key} region={key}>
-          <div className="workspace-region__item">
-            <ConnectedSpotTileContainer id={key} />
-          </div>
-        </RegionWrapper>
+        <TearOff
+          id={key}
+          portalProps={this.makePortalProps(key)}
+          render={(popOut, tornOff) => (
+            <div className="workspace-region__item">
+              <ConnectedSpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} />
+            </div>
+          )}
+          key={key}
+        />
       ))
       .concat(_.times(6, i => <div key={i} className="workspace-region__spacer" />))
   }
 }
 
-function mapStateToProps(state: any) {
-  return {
-    spotTileKeys: getSpotTileKeys(state)
-  }
-}
+const mapStateToProps = (state: GlobalState) => ({
+  spotTileKeys: getSpotTileKeys(state)
+})
 
 export default connect(mapStateToProps)(WorkspaceContainer)

@@ -1,11 +1,8 @@
 import { action, ActionUnion } from '../../../ActionHelper'
-import { RegionSettings } from '../../../types'
 
 export interface Region {
   id: string
-  isTearedOff: boolean
-  container: React.ComponentClass
-  settings: RegionSettings
+  isTearedOff?: boolean
 }
 
 export enum ACTION_TYPES {

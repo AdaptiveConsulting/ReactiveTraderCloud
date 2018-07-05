@@ -11,7 +11,6 @@ import { referenceServiceEpic } from './operations/referenceData'
 import { openfinEpic } from './services/openFin/epics'
 import { analyticsServiceEpic } from './ui/analytics'
 import { blotterEpic } from './ui/blotter/'
-import { popoutEpic } from './ui/common/popout/popoutEpic'
 import { linkEpic } from './ui/footer'
 import { spotTileEpic } from './ui/spotTile'
 
@@ -29,8 +28,6 @@ export default function configureStore(dependencies: ApplicationDependencies) {
 
   if (dependencies.openFin.isRunningInOpenFin) {
     epics.push(openfinEpic)
-  } else {
-    epics.push(popoutEpic)
   }
 
   const middleware = createEpicMiddleware<Action, Action, GlobalState, ApplicationDependencies>({
