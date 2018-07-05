@@ -89,8 +89,7 @@ const portalProps = {
       width: 850,
       height: 450,
       url: 'about:Blotter'
-    },
-    browserConfig: { center: 'screen' as 'screen' }
+    }
   },
   analyticsRegion: {
     title: 'Analytics',
@@ -99,8 +98,7 @@ const portalProps = {
       width: 400,
       height: 800,
       url: 'about:Analytics'
-    },
-    browserConfig: { center: 'screen' as 'screen' }
+    }
   }
 }
 

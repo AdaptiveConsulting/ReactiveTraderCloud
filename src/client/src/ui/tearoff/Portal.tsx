@@ -6,6 +6,20 @@ import BrowserPortal from './BrowserPortal'
 import DesktopPortal from './DesktopPortal'
 import { WindowConfig } from './types'
 
+const defaultPortalProps = {
+  title: '',
+  onBlock: null as () => void,
+  onUnload: null as (region: string) => void,
+  config: {
+    name: '',
+    url: '',
+    width: 600,
+    height: 640
+  } as WindowConfig,
+  desktopConfig: {},
+  browserConfig: { center: 'parent' as 'parent' | 'screen' }
+}
+
 export type PortalProps = typeof defaultPortalProps
 
 interface PortalState {
@@ -37,17 +51,17 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     }
     const { environment, config, desktopConfig, browserConfig } = this.props
 
-    const element = environment.isRunningDesktop ? (
+    const element = (
       <div id="popout-content-container">
-        <DesktopPortal createWindow={this.createWindow} closeWindow={this.closeWindow} {...config} {...desktopConfig}>
-          {this.props.children}
-        </DesktopPortal>
-      </div>
-    ) : (
-      <div id="popout-content-container">
-        <BrowserPortal createWindow={this.createWindow} {...config} {...browserConfig}>
-          {this.props.children}
-        </BrowserPortal>
+        {environment.isRunningDesktop ? (
+          <DesktopPortal createWindow={this.createWindow} closeWindow={this.closeWindow} {...config} {...desktopConfig}>
+            {this.props.children}
+          </DesktopPortal>
+        ) : (
+          <BrowserPortal createWindow={this.createWindow} {...config} {...browserConfig}>
+            {this.props.children}
+          </BrowserPortal>
+        )}
       </div>
     )
 
@@ -131,20 +145,6 @@ function copyStyles(source: Document, target: Document) {
       target.head.appendChild(newLinkEl)
     }
   })
-}
-
-const defaultPortalProps = {
-  title: '',
-  onBlock: null as () => void,
-  onUnload: null as (region: string) => void,
-  config: {
-    name: '',
-    url: '',
-    width: 600,
-    height: 640
-  } as WindowConfig,
-  desktopConfig: {},
-  browserConfig: { center: 'parent' as 'parent' | 'screen' }
 }
 
 export default withEnvironment(withDefaultProps(defaultPortalProps, NewPortal))
