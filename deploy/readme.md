@@ -1,3 +1,3 @@
 # Deployment documentation
 
-You will find deployment documentation [here](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/doc/deployment/readme.md)
+You will find deployment documentation [here](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/readme.md).
