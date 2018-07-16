@@ -1,11 +1,11 @@
 {
     "devtools_port": 9090,
-    "splashScreenImage": "http://localhost:3000/images/splash-screen.jpg",
+    "splashScreenImage": "http://localhost:3000/static/media/splash-screen.jpg",
     "startup_app": {
         "name": "Reactive Trader Cloud (LOCAL)",
         "url": "http://localhost:3000/",
         "uuid": "reactive-trader-cloud-local",
-        "applicationIcon": "http://localhost:3000/images/adaptive-mark-large.png",
+        "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
         "autoShow": true,
         "defaultWidth": 1280,
         "defaultHeight": 900,
@@ -24,7 +24,7 @@
     "shortcut": {
         "company": "Adaptive Consulting",
         "description": "Desktop Reactive Trader Cloud",
-        "icon": "http://localhost:3000/images/icon.ico",
+        "icon": "http://localhost:3000/static/media/icon.ico",
         "name": "Reactive Trader Cloud (LOCAL)"
     },
     "services": [
