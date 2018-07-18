@@ -26,7 +26,6 @@ jobs:
         # - this should be unnecessary if you have your default branch configured correctly
         - v1-dep-
     # BUILD
-    - run: docker info
     - run: cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions
     - run: cd deploy/e2e && ./loadContainers
     - run:
@@ -66,3 +65,17 @@ jobs:
           name: "Deployment"
           command: |
             cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - dev
