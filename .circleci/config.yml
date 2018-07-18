@@ -18,40 +18,40 @@ jobs:
     - run:
         name: "Start Docker"
         command: 'sudo docker info >/dev/null 2>&1 || sudo service docker start;'
-    # RESTORE CACHE
-    - restore_cache:
-        keys:
-        # This branch if available
-        - v1-dep-{{ .Branch }}-
-        # Default branch if not
-        - v1-dep-master-
-        # Any branch if there are none on the default branch
-        # - this should be unnecessary if you have your default branch configured correctly
-        - v1-dep-
-    # BUILD
-    - run:
-        name: "Ensure permissions"
-        command: cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions
-    - run:
-        name: "Load containers"
-        command: cd deploy/e2e && ./loadContainers
-    - run:
-        name: "Build containers"
-        command: cd deploy/e2e && ./buildContainers $CIRCLE_BUILD_NUM
-        no_output_timeout: 1200s
-    - run:
-        name: "Run containers"
-        command: cd deploy/e2e && ./runContainers $CIRCLE_BUILD_NUM
-    - run:
-        name: "Save containers"
-        command: cd deploy/e2e && ./saveContainers
-    # SAVE CACHE
-    - save_cache:
-        key: v1-dep-{{ .Branch }}-{{ epoch }}
-        paths:
-        - ~/docker
-        - deploy/docker/build/servers/dotnetcache
-        - deploy/docker/build/web/.npm
+    ## RESTORE CACHE
+    #- restore_cache:
+    #    keys:
+    #    # This branch if available
+    #    - v1-dep-{{ .Branch }}-
+    #    # Default branch if not
+    #    - v1-dep-master-
+    #    # Any branch if there are none on the default branch
+    #    # - this should be unnecessary if you have your default branch configured correctly
+    #    - v1-dep-
+    ## BUILD
+    #- run:
+    #    name: "Ensure permissions"
+    #    command: cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions
+    #- run:
+    #    name: "Load containers"
+    #    command: cd deploy/e2e && ./loadContainers
+    #- run:
+    #    name: "Build containers"
+    #    command: cd deploy/e2e && ./buildContainers $CIRCLE_BUILD_NUM
+    #    no_output_timeout: 1200s
+    #- run:
+    #    name: "Run containers"
+    #    command: cd deploy/e2e && ./runContainers $CIRCLE_BUILD_NUM
+    #- run:
+    #    name: "Save containers"
+    #    command: cd deploy/e2e && ./saveContainers
+    ## SAVE CACHE
+    #- save_cache:
+    #    key: v1-dep-{{ .Branch }}-{{ epoch }}
+    #    paths:
+    #    - ~/docker
+    #    - deploy/docker/build/servers/dotnetcache
+    #    - deploy/docker/build/web/.npm
     # # TESTS
     # - run: docker ps
     # - run:
@@ -81,5 +81,19 @@ jobs:
     steps:
       - run:
           name: "Deployment (Push containers to the repository)"
-          command: |
-            cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
+          command: echo "Deployed" # cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - dev
+                - circleci-20-migration
