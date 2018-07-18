@@ -12,9 +12,11 @@ jobs:
         - gh-pages
     steps:
     - checkout
-    - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
     - run:
-        command: 'sudo docker info >/dev/null 2>&1 || sudo service docker start; '
+        name: "Create artifacts and test results directories"
+        command: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
+    - run:
+        command: 'sudo docker info >/dev/null 2>&1 || sudo service docker start;'
     # RESTORE CACHE
     - restore_cache:
         keys:
@@ -40,26 +42,28 @@ jobs:
         - ~/docker
         - deploy/docker/build/servers/dotnetcache
         - deploy/docker/build/web/.npm
-    # TESTS
-    - run: docker ps
-    - run: for i in {1..10}; do curl http://localhost:2113/web/index.html && break; sleep 1; if [[ $i == 10 ]];then false;fi; done
-    - run: . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$CIRCLE_BUILD_NUM bash -c "dotnet test --configuration Release ./Adaptive.ReactiveTrader.Server.IntegrationTests/Adaptive.ReactiveTrader.Server.IntegrationTests.csproj"
-    # SAVE RESULTS
-    - store_test_results:
-        path: /tmp/circleci-test-results
-    # SAVE ARTIFACTS
-    - store_artifacts:
-        path: /tmp/circleci-artifacts
-    - store_artifacts:
-        path: /tmp/circleci-test-results
+    # # TESTS
+    # - run: docker ps
+    # - run: for i in {1..10}; do curl http://localhost:2113/web/index.html && break; sleep 1; if [[ $i == 10 ]];then false;fi; done
+    # - run: . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$CIRCLE_BUILD_NUM bash -c "dotnet test --configuration Release ./Adaptive.ReactiveTrader.Server.IntegrationTests/Adaptive.ReactiveTrader.Server.IntegrationTests.csproj"
+    # # SAVE RESULTS
+    # - store_test_results:
+    #     path: /tmp/circleci-test-results
+    # # SAVE ARTIFACTS
+    # - store_artifacts:
+    #     path: /tmp/circleci-artifacts
+    # - store_artifacts:
+    #     path: /tmp/circleci-test-results
     # PUSH ARTIFACTS
   deploy:
-    docker:
-    - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
+    machine:
+      enabled: true
+      docker_layer_caching: true
     branches:
       only:
         - master
         - dev
+        - circleci-20-migration
     steps:
       - run:
           name: "Deployment"
