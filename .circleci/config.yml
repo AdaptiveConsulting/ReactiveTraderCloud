@@ -65,17 +65,3 @@ jobs:
           name: "Deployment"
           command: |
             cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
-
-workflows:
-  version: 2
-  build-deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - master
-                - dev
