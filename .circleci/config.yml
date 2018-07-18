@@ -73,11 +73,6 @@ jobs:
     machine:
       enabled: true
       docker_layer_caching: true
-    branches:
-      only:
-        - master
-        - dev
-        - circleci-20-migration
     steps:
       - run:
           name: "Deployment (Push containers to the repository)"
