@@ -16,6 +16,7 @@ jobs:
         name: "Create artifacts and test results directories"
         command: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
     - run:
+        name: "Start Docker"
         command: 'sudo docker info >/dev/null 2>&1 || sudo service docker start;'
     # RESTORE CACHE
     - restore_cache:
@@ -28,13 +29,22 @@ jobs:
         # - this should be unnecessary if you have your default branch configured correctly
         - v1-dep-
     # BUILD
-    - run: cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions
-    - run: cd deploy/e2e && ./loadContainers
     - run:
+        name: "Ensure permissions"
+        command: cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions
+    - run:
+        name: "Load containers"
+        command: cd deploy/e2e && ./loadContainers
+    - run:
+        name: "Build containers"
         command: cd deploy/e2e && ./buildContainers $CIRCLE_BUILD_NUM
         no_output_timeout: 1200s
-    - run: cd deploy/e2e && ./runContainers $CIRCLE_BUILD_NUM
-    - run: cd deploy/e2e && ./saveContainers
+    - run:
+        name: "Run containers"
+        command: cd deploy/e2e && ./runContainers $CIRCLE_BUILD_NUM
+    - run:
+        name: "Save containers"
+        command: cd deploy/e2e && ./saveContainers
     # SAVE CACHE
     - save_cache:
         key: v1-dep-{{ .Branch }}-{{ epoch }}
@@ -44,8 +54,12 @@ jobs:
         - deploy/docker/build/web/.npm
     # # TESTS
     # - run: docker ps
-    # - run: for i in {1..10}; do curl http://localhost:2113/web/index.html && break; sleep 1; if [[ $i == 10 ]];then false;fi; done
-    # - run: . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$CIRCLE_BUILD_NUM bash -c "dotnet test --configuration Release ./Adaptive.ReactiveTrader.Server.IntegrationTests/Adaptive.ReactiveTrader.Server.IntegrationTests.csproj"
+    # - run:
+    #     name: "Check connectivity"
+    #     command: for i in {1..10}; do curl http://localhost:2113/web/index.html && break; sleep 1; if [[ $i == 10 ]];then false;fi; done
+    # - run:
+    #     name: "Running tests"
+    #     command: . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$CIRCLE_BUILD_NUM bash -c "dotnet test --configuration Release ./Adaptive.ReactiveTrader.Server.IntegrationTests/Adaptive.ReactiveTrader.Server.IntegrationTests.csproj"
     # # SAVE RESULTS
     # - store_test_results:
     #     path: /tmp/circleci-test-results
@@ -66,6 +80,6 @@ jobs:
         - circleci-20-migration
     steps:
       - run:
-          name: "Deployment"
+          name: "Deployment (Push containers to the repository)"
           command: |
             cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
