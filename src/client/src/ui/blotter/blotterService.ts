@@ -1,8 +1,8 @@
 import { map, retryWhen } from 'rxjs/operators'
-import { logger, retryConstantly, ServiceClient } from '../system'
-import { ServiceConst } from '../types'
-import { mapFromDto } from './mappers'
-import { RawTradeUpdate } from './mappers/tradeMapper'
+import { mapFromDto } from '../../services/mappers'
+import { RawTradeUpdate } from '../../services/mappers/tradeMapper'
+import { logger, retryConstantly, ServiceClient } from '../../system'
+import { ServiceConst } from '../../types'
 
 const log = logger.create('BlotterService')
 

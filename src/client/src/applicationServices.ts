@@ -2,7 +2,6 @@ import { from, ReplaySubject } from 'rxjs'
 import { mergeMap, multicast, refCount, share } from 'rxjs/operators'
 import {
   AnalyticsService,
-  BlotterService,
   CompositeStatusService,
   ConnectionStatusService,
   ExecutionService,
@@ -14,6 +13,7 @@ import { AutobahnConnection, ConnectionEvent, createConnection$, ServiceClient, 
 import { ServiceCollectionMap } from './system/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './system/serviceStatusStream'
 import { User } from './types'
+import { BlotterService } from './ui/blotter'
 
 const HEARTBEAT_TIMEOUT = 3000
 
