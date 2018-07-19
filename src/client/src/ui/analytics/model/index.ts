@@ -1,0 +1,6 @@
+export { CurrencyPairPositionRaw, PositionsRaw, HistoryRaw } from './TradePositions'
+export { CurrencyPairPosition } from './currencyPairPosition'
+export { PNLChartModel } from './pnlChartModel'
+export { PositionUpdates } from './positionUpdates'
+export { PositionsChartModel } from './positionsChartModel'
+export { HistoricPosition } from './historicPosition'

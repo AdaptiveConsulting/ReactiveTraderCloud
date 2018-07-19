@@ -61,11 +61,7 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
       }
       const chartDomElement = ReactDOM.findDOMNode(this.refs.pnlChart)
       if (chartDomElement) {
-        this.chartGradient.update(
-          chartDomElement as Element,
-          this.props.minPnl,
-          this.props.maxPnl
-        )
+        this.chartGradient.update(chartDomElement as Element, this.props.minPnl, this.props.maxPnl)
       }
     }
   }
@@ -99,7 +95,7 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
           const formatted = numeral(el.series[0].value).format('0.0a')
 
           return `<p class="analytics__chart-tooltip">
-            <strong class="analytics__chart-tooltip-date">${date}:</strong> 
+            <strong class="analytics__chart-tooltip-date">${date}:</strong>
             ${formatted}
           </p>`
         }
@@ -133,9 +129,7 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
             <i className="analytics__header-title-icon glyphicon glyphicon-stats" />
             Profit &amp; Loss
           </span>
-          <span className={analyticsHeaderClassName}>
-            USD {formattedLastPos}
-          </span>
+          <span className={analyticsHeaderClassName}>USD {formattedLastPos}</span>
         </div>
         <div className="analytics__chart-container">{pnlChart}</div>
       </div>

@@ -1,10 +1,10 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { map, mergeMapTo, takeUntil } from 'rxjs/operators'
-import { ApplicationEpic } from '../../ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
-import { ACTION_TYPES as REF_ACTION_TYPES, ReferenceActions } from '../../operations/referenceData'
-import { AnalyticsActions } from './actions'
+import { ApplicationEpic } from '../../../ApplicationEpic'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../../operations/connectionStatus'
+import { ACTION_TYPES as REF_ACTION_TYPES, ReferenceActions } from '../../../operations/referenceData'
+import { AnalyticsActions } from '../actions'
 
 const CURRENCY: string = 'USD'
 
@@ -23,5 +23,3 @@ export const analyticsServiceEpic: ApplicationEpic = (action$, state$, { analyti
       )
     )
   )
-
-export default analyticsServiceEpic

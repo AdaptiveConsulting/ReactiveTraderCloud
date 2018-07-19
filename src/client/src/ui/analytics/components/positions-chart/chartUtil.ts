@@ -2,42 +2,31 @@
 import * as _ from 'lodash'
 import * as d3 from 'd3'
 import * as numeral from 'numeral'
-import { CurrencyPair } from '../../../types/currencyPair'
-import { CurrencyPairPosition } from '../../../types/currencyPairPosition'
+import { CurrencyPair } from '../../../../types/currencyPair'
+import { CurrencyPairPosition } from '../../model/currencyPairPosition'
 import { PositionsBubbleChartProps } from './PositionsBubbleChart'
 
 const baseTradedAmountName = 'baseTradedAmount'
 
-export function getPositionsDataFromSeries(
-  series = [],
-  currencyPairs: CurrencyPair[]
-) {
+export function getPositionsDataFromSeries(series = [], currencyPairs: CurrencyPair[]) {
   const baseAmountPropertyName = baseTradedAmountName
-  const positionsPerCcyObj = series.reduce(
-    (aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
-      const { symbol } = ccyPairPosition
-      const ccyPair: CurrencyPair = currencyPairs[symbol]
-      const baseCurrency = ccyPair ? ccyPair.base : ''
-      aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[
-        baseCurrency
-      ]
-        ? aggregatedPositionsObj[baseCurrency] +
-          ccyPairPosition[baseAmountPropertyName]
-        : ccyPairPosition[baseAmountPropertyName]
+  const positionsPerCcyObj = series.reduce((aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
+    const { symbol } = ccyPairPosition
+    const ccyPair: CurrencyPair = currencyPairs[symbol]
+    const baseCurrency = ccyPair ? ccyPair.base : ''
+    aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
+      ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmountPropertyName]
+      : ccyPairPosition[baseAmountPropertyName]
 
-      return aggregatedPositionsObj
-    },
-    {}
-  )
+    return aggregatedPositionsObj
+  }, {})
 
   return _.map(positionsPerCcyObj, (val, key) => {
     return {
       symbol: key,
       [baseAmountPropertyName]: val
     }
-  }).filter(
-    (positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0
-  )
+  }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
 }
 
 export function createScales(props: PositionsBubbleChartProps) {
@@ -46,10 +35,7 @@ export function createScales(props: PositionsBubbleChartProps) {
   const minR = 15
   const maxR = 60
   const offset = maxR / 2
-  const positionData = getPositionsDataFromSeries(
-    props.data,
-    props.currencyPairs
-  )
+  const positionData = getPositionsDataFromSeries(props.data, props.currencyPairs)
 
   const baseValues = _.map(positionData, (val: any) => {
     return Math.abs(val[baseTradedAmountName])
@@ -83,12 +69,7 @@ export function updateNodes(nodeGroup: any, nodes: any[], scales: any) {
 
   nodeGroup.each(collide(0.1, nodes, scales.r)).attr({
     transform: (d: any, i: any) => {
-      if (
-        d.x !== undefined &&
-        d.y !== undefined &&
-        !isNaN(d.x) &&
-        !isNaN(d.y)
-      ) {
+      if (d.x !== undefined && d.y !== undefined && !isNaN(d.x) && !isNaN(d.y)) {
         nodeMap[d.id] = { x: d.x, y: d.y }
         return 'translate(' + d.x + ',' + d.y + ')'
       } else {
@@ -168,23 +149,21 @@ export function collide(alpha: number, nodes: any[], scale?: number) {
     const ny1 = d.y - r
     const ny2 = d.y + r
 
-    return qt.visit(
-      (quad: any, x1: number, y1: number, x2: number, y2: number) => {
-        if (quad.point && quad.point !== d) {
-          let x = d.x - quad.point.x
-          let y = d.y - quad.point.y
-          let l = Math.sqrt(x * x + y * y)
-          r = d.r + quad.point.r + padding
-          if (l < r) {
-            l = (l - r) / l * alpha
-            d.x -= x *= l
-            d.y -= y *= l
-            quad.point.x += x
-            quad.point.y += y
-          }
+    return qt.visit((quad: any, x1: number, y1: number, x2: number, y2: number) => {
+      if (quad.point && quad.point !== d) {
+        let x = d.x - quad.point.x
+        let y = d.y - quad.point.y
+        let l = Math.sqrt(x * x + y * y)
+        r = d.r + quad.point.r + padding
+        if (l < r) {
+          l = ((l - r) / l) * alpha
+          d.x -= x *= l
+          d.y -= y *= l
+          quad.point.x += x
+          quad.point.y += y
         }
-        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1
       }
-    )
+      return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1
+    })
   }
 }

@@ -1,4 +1,3 @@
-export { default as AnalyticsService } from './analyticsService'
 export { default as ExecutionService } from './executionService'
 export { default as FakeUserRepository } from './fakeUserRepository'
 export { default as PricingService } from './pricingService'

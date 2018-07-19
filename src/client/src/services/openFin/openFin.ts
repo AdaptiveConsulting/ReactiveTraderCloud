@@ -1,7 +1,6 @@
 import * as moment from 'moment'
 import * as numeral from 'numeral'
 import { Observable } from 'rxjs'
-import PositionsMapper from '../mappers/positionsMapper'
 
 import { CurrencyPairState } from '../../operations/currencyPairs'
 import { logger } from '../../system'
@@ -240,8 +239,8 @@ export default class OpenFin {
     if (!this.isRunningInOpenFin) {
       return
     }
-    const serialisePositions = ccyPairPositions.map(p => PositionsMapper.mapToDto(p))
-    fin.desktop.InterApplicationBus.publish('position-update', serialisePositions)
+
+    fin.desktop.InterApplicationBus.publish('position-update', ccyPairPositions)
   }
 
   publishPrice(price) {
