@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
-import Analytics from './components/Analytics'
+import Analytics from './components'
 import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
 
