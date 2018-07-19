@@ -2,7 +2,7 @@ import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { map, mergeMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../../operations/connectionStatus'
+import { applicationDisconnected } from '../../../operations/connectionStatus'
 import { ACTION_TYPES as REF_ACTION_TYPES, ReferenceActions } from '../../../operations/referenceData'
 import { AnalyticsActions } from '../actions'
 
@@ -19,7 +19,7 @@ export const analyticsServiceEpic: ApplicationEpic = (action$, state$, { analyti
     mergeMapTo<FetchAnalyticsAction>(
       analyticsService.getAnalyticsStream(CURRENCY).pipe(
         map(fetchAnalytics),
-        takeUntil(action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)))
+        takeUntil(action$.pipe(applicationDisconnected))
       )
     )
   )

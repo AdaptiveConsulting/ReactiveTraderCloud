@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FILTER_APPLIED_ICON, FILTER_ICON } from '../../../assets/icons'
+import { FILTER_APPLIED_ICON, FILTER_ICON } from './Icons'
 
 interface QuickFilterProps {
   isFilterApplied: boolean
