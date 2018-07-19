@@ -1,0 +1,76 @@
+version: 2
+jobs:
+  build:
+    branches:
+      ignore:
+        - gh-pages
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    machine:
+      enabled: true
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run:
+          name: "Create artifacts and test results directories"
+          command: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
+      - run:
+          name: "Start Docker"
+          command: 'sudo docker info >/dev/null 2>&1 || sudo service docker start;'
+      # RESTORE CACHE
+      - restore_cache:
+          keys:
+          # This branch if available
+          - v1-dep-{{ .Branch }}-
+          # Default branch if not
+          - v1-dep-master-
+          # Any branch if there are none on the default branch
+          - v1-dep-
+      # BUILD
+      - run:
+          name: "Ensure permissions"
+          command: cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions
+      - run:
+          name: "Load containers"
+          command: cd deploy/e2e && ./loadContainers
+      - run:
+          name: "Build containers"
+          command: cd deploy/e2e && ./buildContainers $CIRCLE_BUILD_NUM
+          no_output_timeout: 1200s
+      - run:
+          name: "Run containers"
+          command: cd deploy/e2e && ./runContainers $CIRCLE_BUILD_NUM
+      - run:
+          name: "Save containers"
+          command: cd deploy/e2e && ./saveContainers
+      # SAVE CACHE
+      - save_cache:
+          key: v1-dep-{{ .Branch }}-{{ epoch }}
+          paths:
+          - ~/docker
+          - deploy/docker/build/servers/dotnetcache
+          - deploy/docker/build/web/.npm
+      # TESTS
+      - run: docker ps
+      - run:
+          name: "Check connectivity"
+          command: for i in {1..10}; do curl http://localhost:2113/web/index.html && break; sleep 1; if [[ $i == 10 ]];then false;fi; done
+      - run:
+          name: "Running tests"
+          command: . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$CIRCLE_BUILD_NUM bash -c "dotnet test --configuration Release ./Adaptive.ReactiveTrader.Server.IntegrationTests/Adaptive.ReactiveTrader.Server.IntegrationTests.csproj"
+      # SAVE RESULTS
+      - store_test_results:
+          path: /tmp/circleci-test-results
+      # SAVE ARTIFACTS
+      - store_artifacts:
+          path: /tmp/circleci-artifacts
+      - store_artifacts:
+          path: /tmp/circleci-test-results
+  # PUSH ARTIFACTS
+      - deploy:
+          name: "Deployment (Push containers to the repository)"
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "dev" ] || [ "${CIRCLE_BRANCH}" == "circleci" ]; then
+              cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
+            fi
