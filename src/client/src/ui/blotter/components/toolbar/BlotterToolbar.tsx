@@ -17,10 +17,7 @@ interface BlotterToobarState {
   themeName: string
 }
 
-export default class BlotterToolbar extends React.Component<
-  BlotterToolbarProps,
-  BlotterToobarState
-> {
+export default class BlotterToolbar extends React.Component<BlotterToolbarProps, BlotterToobarState> {
   render() {
     return (
       <div className="blotter-toolbar">

@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
-import Blotter from './Blotter'
+import Blotter from './components'
 
 interface BlotterContainerState {
   gridDocument: Element

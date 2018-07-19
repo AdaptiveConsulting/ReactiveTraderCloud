@@ -4,9 +4,7 @@ import * as AgGrid from 'ag-grid'
 const getFilterSelect = (filter: any) => {
   const defaultFilterTypes = filter.getApplicableFilterTypes()
   const restrictedFilterTypes = filter.filterParams.filterOptions
-  const actualFilterTypes = restrictedFilterTypes
-    ? restrictedFilterTypes
-    : defaultFilterTypes
+  const actualFilterTypes = restrictedFilterTypes ? restrictedFilterTypes : defaultFilterTypes
 
   const optionsHtml: string[] = actualFilterTypes.map(filterType => {
     const localeFilterName = filter.translate(filterType)
@@ -43,15 +41,11 @@ AgGrid.NumberFilter.prototype.bodyTemplate = function() {
                ${selector}
                
                <input class="ag-filter-filter filter-container__free-text-input" 
-                  id="filterText" type="text" placeholder="${translate(
-                    'filterOoo'
-                  )}"/>
+                  id="filterText" type="text" placeholder="${translate('filterOoo')}"/>
                 </div>
                  <div class="ag-filter-number-to" id="filterNumberToPanel">
                     <input class="ag-filter-filter filter-container__free-text-input" 
-                      id="filterToText" type="text" placeholder="${translate(
-                        'filterOoo'
-                      )}"/>
+                      id="filterToText" type="text" placeholder="${translate('filterOoo')}"/>
                </div>
             </div>
           </div>`
