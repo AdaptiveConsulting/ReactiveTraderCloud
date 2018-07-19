@@ -9,7 +9,7 @@ build=$1
 # fail fast
 set -euo pipefail
 
-docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
 ${root_directory}/deploy/docker/prepare push rtc $build
