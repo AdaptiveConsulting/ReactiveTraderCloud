@@ -72,6 +72,7 @@ jobs:
     machine:
       enabled: true
       docker_layer_caching: true
+    steps:
       - run:
           name: "Create artifacts and test results directories"
           command: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
@@ -87,7 +88,6 @@ jobs:
           - v1-dep-master-
           # Any branch if there are none on the default branch
           - v1-dep-
-    steps:
       - run:
           name: "Load containers"
           command: cd deploy/e2e && ./loadContainers
