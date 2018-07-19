@@ -66,10 +66,31 @@ jobs:
           path: /tmp/circleci-test-results
   # PUSH ARTIFACTS
   deploy:
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
     machine:
       enabled: true
       docker_layer_caching: true
+      - run:
+          name: "Create artifacts and test results directories"
+          command: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
+      - run:
+          name: "Start Docker"
+          command: 'sudo docker info >/dev/null 2>&1 || sudo service docker start;'
+      # RESTORE CACHE
+      - restore_cache:
+          keys:
+          # This branch if available
+          - v1-dep-{{ .Branch }}-
+          # Default branch if not
+          - v1-dep-master-
+          # Any branch if there are none on the default branch
+          - v1-dep-
     steps:
+      - run:
+          name: "Load containers"
+          command: cd deploy/e2e && ./loadContainers
       - run:
           name: "Deployment (Push containers to the repository)"
           command: cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
