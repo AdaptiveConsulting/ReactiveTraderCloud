@@ -1,10 +1,4 @@
-import {
-  CollectionUpdates,
-  Direction,
-  Trade,
-  TradeStatus,
-  TradesUpdate
-} from '../../types/'
+import { CollectionUpdates, Direction, Trade, TradeStatus } from '../../types/'
 
 export interface TradeRaw {
   TradeId: number
@@ -21,15 +15,6 @@ export interface TradeRaw {
 
 export interface RawTradeUpdate extends CollectionUpdates {
   Trades: TradeRaw[]
-}
-
-export function mapFromDto(dto: RawTradeUpdate): TradesUpdate {
-  const trades = dto.Trades.map<Trade>(trade => mapFromTradeDto(trade))
-  return {
-    trades,
-    isStateOfTheWorld: dto.IsStateOfTheWorld,
-    isStale: dto.IsStale
-  }
 }
 
 export function mapFromTradeDto(tradeDto: TradeRaw): Trade {

@@ -1,5 +1,5 @@
 import { action, ActionUnion } from '../../ActionHelper'
-import { TradesUpdate } from '../../types'
+import { TradesUpdate } from './blotterService'
 
 export enum ACTION_TYPES {
   BLOTTER_SERVICE_NEW_TRADES = '@ReactiveTraderCloud/BLOTTER_SERVICE_NEW_TRADES'
