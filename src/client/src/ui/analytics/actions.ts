@@ -1,5 +1,5 @@
 import { action, ActionUnion } from '../../ActionHelper'
-import { PositionUpdates } from '../../types'
+import { PositionUpdates } from './model/positionUpdates'
 
 export enum ACTION_TYPES {
   ANALYTICS_SERVICE = '@ReactiveTraderCloud/ANALYTICS_SERVICE'

@@ -1,7 +1,6 @@
 import { from, ReplaySubject } from 'rxjs'
 import { mergeMap, multicast, refCount, share } from 'rxjs/operators'
 import {
-  AnalyticsService,
   BlotterService,
   CompositeStatusService,
   ConnectionStatusService,
@@ -14,6 +13,7 @@ import { AutobahnConnection, ConnectionEvent, createConnection$, ServiceClient, 
 import { ServiceCollectionMap } from './system/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './system/serviceStatusStream'
 import { User } from './types'
+import AnalyticsService from './ui/analytics/analyticsService'
 
 const HEARTBEAT_TIMEOUT = 3000
 

@@ -1,6 +1,5 @@
 import { defer, Observable } from 'rxjs'
 import { distinctUntilChanged, filter, map, share, switchMap, take } from 'rxjs/operators'
-import { ServiceConst } from '../types/index'
 import logger, { Logger } from './logger'
 import { ServiceCollectionMap } from './ServiceInstanceCollection'
 import { ServiceStub } from './ServiceStub'
@@ -58,7 +57,7 @@ export default class ServiceStubWithLoadBalancer {
   /**
    * Gets a request-responses observable that will act against a service which currently has the min load
    */
-  createStreamOperation<TResponse, TRequest = {}>(service: ServiceConst, operationName: string, request: TRequest) {
+  createStreamOperation<TResponse, TRequest = {}>(service: string, operationName: string, request: TRequest) {
     return defer(() =>
       this.getServiceWithMinLoad$(service).pipe(
         switchMap(serviceInstanceStatus => {

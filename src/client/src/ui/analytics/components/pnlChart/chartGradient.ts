@@ -29,11 +29,7 @@ export default class ChartGradient {
     this.updateStops(domainMin, domainMax)
   }
 
-  appendLinearGradients(
-    parentChart: Element,
-    domainMin: number,
-    domainMax: number
-  ) {
+  appendLinearGradients(parentChart: Element, domainMin: number, domainMax: number) {
     if (!parentChart) {
       throw new Error('No parent chart element exists')
     }
@@ -58,10 +54,7 @@ export default class ChartGradient {
       nvGroups.appendChild(defs)
     }
 
-    if (
-      defs &&
-      !(this.linearGradient && this.linearGradient.parentNode === defs)
-    ) {
+    if (defs && !(this.linearGradient && this.linearGradient.parentNode === defs)) {
       defs.appendChild(this.linearGradient)
       if (nvArea) {
         if (nvArea.classList.contains('new-chart-area')) {
@@ -158,7 +151,7 @@ export default class ChartGradient {
     if (isNaN(fullRange) || fullRange === 0) {
       return
     }
-    const zeroAt = domainMax / fullRange * 100 + '%'
+    const zeroAt = (domainMax / fullRange) * 100 + '%'
 
     const stopGreenStart = this.linearGradient.querySelector('#stop1')
     const stopGreenEnd = this.linearGradient.querySelector('#stop1End')
