@@ -2,12 +2,12 @@ import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { interval } from 'rxjs'
 import { ignoreElements, switchMapTo, takeUntil, tap } from 'rxjs/operators'
-import { ApplicationEpic } from '../../ApplicationEpic'
+import { ApplicationEpic } from '../../../ApplicationEpic'
 import {
   ACTION_TYPES as CONNECTION_ACTION_TYPES,
   ConnectAction,
   DisconnectAction
-} from '../../operations/connectionStatus'
+} from '../../../operations/connectionStatus'
 
 export const connectBlotterServiceToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(

@@ -1,7 +1,7 @@
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
-import { ApplicationEpic } from '../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../operations/connectionStatus'
-import { BlotterActions } from './actions'
+import { ApplicationEpic } from '../../../ApplicationEpic'
+import { applicationConnected, applicationDisconnected } from '../../../operations/connectionStatus'
+import { BlotterActions } from '../actions'
 
 const { createNewTradesAction } = BlotterActions
 
@@ -15,5 +15,3 @@ export const blotterServiceEpic: ApplicationEpic = (action$, state$, { blotterSe
       )
     )
   )
-
-export default blotterServiceEpic

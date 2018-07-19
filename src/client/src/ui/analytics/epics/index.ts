@@ -4,7 +4,7 @@ import { analyticsServiceEpic } from './epics'
 
 const epics = [analyticsServiceEpic]
 
-if (typeof fin) {
+if (typeof fin !== 'undefined') {
   epics.push(connectAnalyticsServiceToOpenFinEpic)
 }
 
