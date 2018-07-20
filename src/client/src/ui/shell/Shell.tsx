@@ -7,7 +7,6 @@ import { WorkspaceContainer } from '../workspace/'
 
 import * as classnames from 'classnames'
 import SplitPane from 'react-split-pane'
-import TradeNotificationContainer from '../notification/TradeNotificationContainer'
 import '../styles/css/index.css'
 import { TearOff } from '../tearoff'
 import { Environment, withEnvironment } from './EnvironmentProvider'
@@ -76,7 +75,6 @@ const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
     </div>
     <div className="shell__footer">
       <FooterContainer />
-      <TradeNotificationContainer />
     </div>
   </div>
 )
