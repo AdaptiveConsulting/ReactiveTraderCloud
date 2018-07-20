@@ -1,6 +1,6 @@
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
 import { ACTION_TYPES, ReferenceActions } from '../../operations/referenceData'
 import { CurrencyPair } from '../../types'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../ui/connectionStatus'
 import { toObject } from './utils'
 
 export interface CurrencyPairState {

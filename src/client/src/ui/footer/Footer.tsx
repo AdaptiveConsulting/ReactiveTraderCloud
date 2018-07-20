@@ -3,9 +3,9 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import { StatusIndicator } from './StatusIndicator'
 
-import { ConnectionInfo } from '../../services/connectionStatusService'
 import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from '../../system'
 import { ApplicationStatusConst, ServiceStatus } from '../../types'
+import { ConnectionInfo } from '../connectionStatus'
 
 interface FooterProps {
   compositeStatusService: ServiceConnectionInfo

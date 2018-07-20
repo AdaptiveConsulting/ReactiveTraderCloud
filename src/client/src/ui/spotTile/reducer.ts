@@ -1,6 +1,6 @@
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../operations/connectionStatus'
 import { TradeErrorResponse, TradeSuccessResponse } from '../../types'
 import { SpotTileData } from '../../types/spotTileData'
+import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../connectionStatus'
 import { buildNotification } from '../notification/notificationUtils'
 import { ACTION_TYPES, SpotTileActions } from './actions'
 

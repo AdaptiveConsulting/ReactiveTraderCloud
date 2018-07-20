@@ -1,7 +1,7 @@
 import { interval } from 'rxjs'
 import { ignoreElements, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../../operations/connectionStatus'
+import { applicationConnected, applicationDisconnected } from '../../connectionStatus'
 
 export const connectBlotterServiceToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(

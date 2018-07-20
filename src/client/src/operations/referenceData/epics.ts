@@ -1,6 +1,6 @@
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../connectionStatus'
+import { applicationConnected, applicationDisconnected } from '../../ui/connectionStatus'
 import { ReferenceActions } from './actions'
 
 const { createReferenceServiceAction } = ReferenceActions
