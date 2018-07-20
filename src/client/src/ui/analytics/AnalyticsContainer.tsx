@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import { connect, Dispatch } from 'react-redux'
 import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
+import { AnalyticsActions } from './actions'
 import Analytics from './components'
 import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
@@ -44,6 +45,13 @@ const mapStateToProps = ({
   currencyPairs
 })
 
-const ConnectedAnalyticsContainer = connect(mapStateToProps)(AnalyticsContainer)
+const mapToDispatch = (dispatch: Dispatch) => ({
+  subscribeToAnalytics: dispatch(AnalyticsActions.subcribeToAnalytics())
+})
+
+const ConnectedAnalyticsContainer = connect(
+  mapStateToProps,
+  mapToDispatch
+)(AnalyticsContainer)
 
 export default ConnectedAnalyticsContainer
