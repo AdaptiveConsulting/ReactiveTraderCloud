@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { connect, Dispatch } from 'react-redux'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
 import { AnalyticsActions } from './actions'
