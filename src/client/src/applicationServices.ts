@@ -5,7 +5,6 @@ import { AutobahnConnection, ConnectionEvent, createConnection$, ServiceClient, 
 import { ServiceCollectionMap } from './system/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './system/serviceStatusStream'
 import { User } from './types'
-import { CompositeStatusService } from './ui/compositeStatus'
 
 const HEARTBEAT_TIMEOUT = 3000
 
@@ -34,8 +33,6 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
 
   const executionService = new ExecutionService(loadBalancedServiceStub, openFin.checkLimit.bind(openFin))
 
-  const compositeStatusService = new CompositeStatusService(serviceStatus$)
-
   const connectionStatusService = new ConnectionStatusService(connection$)
 
   const pricesForCurrenciesInRefData = referenceDataService.getCurrencyPairUpdates$().pipe(
@@ -54,12 +51,12 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
   return {
     referenceDataService,
     pricingService,
-    compositeStatusService,
     connectionStatusService,
     executionService,
     openFin,
     pricesForCurrenciesInRefData,
-    loadBalancedServiceStub
+    loadBalancedServiceStub,
+    serviceStatus$
   }
 }
 
