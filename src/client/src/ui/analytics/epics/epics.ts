@@ -19,6 +19,7 @@ export const analyticsServiceEpic: ApplicationEpic = (action$, $state, { loadBal
   const analyticsService = new AnalyticsService(loadBalancedServiceStub)
 
   const refAction$ = action$.pipe(ofType<Action, ReferenceServiceAction>(REF_ACTION_TYPES.REFERENCE_SERVICE))
+
   const subscribeAction$ = action$.pipe(
     ofType<Action, SubscribeToAnalyticsAction>(ANALYTICS_ACTION_TYPES.SUBCRIBE_TO_ANALYTICS)
   )

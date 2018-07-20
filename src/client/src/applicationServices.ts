@@ -12,7 +12,6 @@ import { AutobahnConnection, ConnectionEvent, createConnection$, ServiceClient, 
 import { ServiceCollectionMap } from './system/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './system/serviceStatusStream'
 import { User } from './types'
-import { BlotterService } from './ui/blotter'
 
 const HEARTBEAT_TIMEOUT = 3000
 
@@ -34,8 +33,6 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
   )
 
   const loadBalancedServiceStub = new ServiceClient(serviceStub, serviceStatus$)
-
-  const blotterService = new BlotterService(loadBalancedServiceStub)
 
   const pricingService = new PricingService(loadBalancedServiceStub)
 
@@ -62,7 +59,6 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
 
   return {
     referenceDataService,
-    blotterService,
     pricingService,
     compositeStatusService,
     connectionStatusService,
