@@ -1,4 +1,3 @@
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../../operations/connectionStatus'
 import { ACTION_TYPES, Region, RegionActions } from './actions'
 
 export interface RegionsState {
@@ -7,10 +6,7 @@ export interface RegionsState {
 
 const INITIAL_STATE: RegionsState = {}
 
-export const regionsReducer = (
-  state: RegionsState = INITIAL_STATE,
-  action: RegionActions | DisconnectAction
-): RegionsState => {
+export const regionsReducer = (state: RegionsState = INITIAL_STATE, action: RegionActions): RegionsState => {
   switch (action.type) {
     case ACTION_TYPES.REGION_ADD:
     case ACTION_TYPES.REGION_ATTACH_WINDOW:
@@ -19,8 +15,6 @@ export const regionsReducer = (
         ...state,
         [action.payload.id]: regionReducer(state[action.payload.id], action)
       }
-    case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
-      return INITIAL_STATE
     default:
       return state
   }
