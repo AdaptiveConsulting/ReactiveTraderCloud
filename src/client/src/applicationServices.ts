@@ -1,17 +1,11 @@
 import { from, ReplaySubject } from 'rxjs'
 import { mergeMap, multicast, refCount, share } from 'rxjs/operators'
-import {
-  CompositeStatusService,
-  ConnectionStatusService,
-  ExecutionService,
-  OpenFin,
-  PricingService,
-  ReferenceDataService
-} from './services'
+import { ConnectionStatusService, ExecutionService, OpenFin, PricingService, ReferenceDataService } from './services'
 import { AutobahnConnection, ConnectionEvent, createConnection$, ServiceClient, ServiceStub } from './system'
 import { ServiceCollectionMap } from './system/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './system/serviceStatusStream'
 import { User } from './types'
+import { CompositeStatusService } from './ui/compositeStatus'
 
 const HEARTBEAT_TIMEOUT = 3000
 
