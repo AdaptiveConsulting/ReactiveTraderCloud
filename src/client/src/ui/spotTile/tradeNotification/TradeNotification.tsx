@@ -1,8 +1,7 @@
 import * as classnames from 'classnames'
+import { CurrencyPair, Notification, TradeStatus } from 'common/types'
 import * as numeral from 'numeral'
 import * as React from 'react'
-import { CurrencyPair, TradeStatus } from '../../../types'
-import { Notification } from '../../../types/notification'
 import { spotDateFormatter } from '../../utils/dateUtils'
 
 interface TradeNotificationProps {
@@ -18,10 +17,7 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}> {
     return (
       <div className="trade-notification">
         The execution status is unknown. Please contact your sales rep.
-        <div
-          className="trade-notification__button-dismiss"
-          onClick={this.props.onDismissedClicked}
-        >
+        <div className="trade-notification__button-dismiss" onClick={this.props.onDismissedClicked}>
           Done
         </div>
       </div>
@@ -61,10 +57,7 @@ class TradeNotification extends React.Component<TradeNotificationProps, {}> {
           {this.createItemDetailElement('Date', formattedValueDate)}
           {this.createItemDetailElement('Trade ID', trade.tradeId)}
         </div>
-        <i
-          className="trade-notification__dismiss-icon fa fa-share"
-          onClick={onDismissedClicked}
-        />
+        <i className="trade-notification__dismiss-icon fa fa-share" onClick={onDismissedClicked} />
       </div>
     )
   }

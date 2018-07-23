@@ -1,8 +1,7 @@
+import { mapFromTradeDto, RawTradeUpdate } from 'common/parsers/tradeMapper'
+import { Trade } from 'common/types'
 import { map, retryWhen } from 'rxjs/operators'
-
-import { mapFromTradeDto, RawTradeUpdate } from '../../services/mappers/tradeMapper'
 import { logger, retryConstantly, ServiceClient } from '../../system'
-import { Trade } from '../../types'
 
 const log = logger.create('BlotterService')
 

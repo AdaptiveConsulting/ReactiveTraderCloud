@@ -1,4 +1,4 @@
-import { SpotPriceTick } from '../../types'
+import { SpotPriceTick } from 'common/types'
 import { ACTION_TYPES, PricingActions } from './actions'
 
 interface PricingOperationsState {

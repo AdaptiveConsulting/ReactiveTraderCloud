@@ -1,8 +1,7 @@
 import * as classnames from 'classnames'
+import { CurrencyPair, Direction, SpotTileData } from 'common/types'
 import * as React from 'react'
 import { PriceButton, PriceMovementIndicator } from '../'
-import { CurrencyPair, Direction } from '../../../types'
-import { SpotTileData } from '../../../types/spotTileData'
 import { getSpread, toRate } from '../spotTileUtils'
 
 interface PriceControlsViewProps {

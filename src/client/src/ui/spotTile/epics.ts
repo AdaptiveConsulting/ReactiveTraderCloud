@@ -1,8 +1,8 @@
+import { ExecuteTradeResponse } from 'common/types'
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 import { delay, map, mergeMap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
-import { ExecuteTradeResponse } from '../../types'
 import { ACTION_TYPES, SpotTileActions } from './actions'
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000

@@ -1,3 +1,4 @@
+import { CurrencyPair, CurrencyPairMap, Trade, TradeStatus } from 'common/types'
 import * as moment from 'moment'
 import * as numeral from 'numeral'
 import { Action } from 'redux'
@@ -6,8 +7,6 @@ import { interval } from 'rxjs'
 import { filter, ignoreElements, map, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 import { Trades } from '..'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { CurrencyPair, Trade, TradeStatus } from '../../../types'
-import { CurrencyPairMap } from '../../../types/currencyPair'
 import { applicationConnected, applicationDisconnected } from '../../connectionStatus'
 import { ACTION_TYPES, BlotterActions } from '../actions'
 

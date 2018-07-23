@@ -1,10 +1,8 @@
+import { RawCurrencyPairUpdates, referenceDataMapper } from 'common/parsers'
+import { CurrencyPairMap, CurrencyPairUpdates, UpdateType } from 'common/types'
 import { Observable } from 'rxjs'
 import { map, publishReplay, refCount, scan } from 'rxjs/operators'
 import { ServiceClient } from '../system'
-import { CurrencyPairUpdates, UpdateType } from '../types'
-import { CurrencyPairMap } from '../types/currencyPair'
-import { referenceDataMapper } from './mappers'
-import { RawCurrencyPairUpdates } from './mappers/referenceDataMapper'
 
 export default class ReferenceDataService {
   private readonly referenceDataStream$: Observable<CurrencyPairMap>
