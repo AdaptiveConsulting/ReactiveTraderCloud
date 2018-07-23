@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import { currencyPairReducer } from './operations/currencyPairs'
-import { enviromentReducer } from './operations/environment'
 import { pricingServiceReducer } from './operations/pricing'
 import { analyticsReducer } from './ui/analytics'
 import { blotterReducer } from './ui/blotter'
@@ -23,8 +22,7 @@ const rootReducer = combineReducers({
   displayStatusServices: footerReducer,
   regionsService: regionsReducer,
   notionals: notionalsReducer,
-  spotTilesData: spotTileDataReducer,
-  environment: enviromentReducer
+  spotTilesData: spotTileDataReducer
 })
 
 export type GlobalState = ReturnType<typeof rootReducer>

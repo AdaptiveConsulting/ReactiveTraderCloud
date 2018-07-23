@@ -1,10 +1,8 @@
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import * as React from 'react'
-import { OpenFin } from '../../services'
 
 const environmentContext = {
-  isRunningDesktop: false,
-  openFin: null as OpenFin
+  isRunningDesktop: false
 }
 
 export type Environment = typeof environmentContext

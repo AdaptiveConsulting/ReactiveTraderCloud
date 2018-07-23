@@ -6,6 +6,7 @@ import { GlobalState } from '../../combineReducers'
 import { CurrencyPair, Direction, ExecuteTradeRequest } from '../../types/'
 import { SpotPriceTick } from '../../types/spotPriceTick'
 import { SpotTileData } from '../../types/spotTileData'
+import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
 import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 import { spotRegionSettings, SpotTileActions } from './actions'
 import SpotTile from './SpotTile'
@@ -43,7 +44,9 @@ type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 
 type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToProps>>
 
-type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
+type SpotTileContainerProps = SpotTileContainerOwnProps &
+  SpotTileContainerStateProps &
+  SpotTileContainerDispatchProps & { environment: Environment }
 
 class SpotTileContainer extends React.Component<SpotTileContainerProps> {
   shouldComponentUpdate(nextProps: SpotTileContainerProps) {
@@ -61,7 +64,8 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps> {
       undockTile,
       onNotificationDismissedClick,
       displayCurrencyChart,
-      tornOff
+      tornOff,
+      environment
     } = this.props
     const spotTitle = spotRegionSettings(id).title
     return (
@@ -70,7 +74,7 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps> {
         pricingConnected={pricingConnected}
         executionConnected={executionConnected}
         currencyPair={currencyPair}
-        isRunningOnDesktop={this.props.isRunningOnDesktop}
+        isRunningOnDesktop={environment.isRunningDesktop}
         spotTileData={spotTilesData}
         onPopoutClick={onPopoutClick}
         displayCurrencyChart={displayCurrencyChart(id)}
@@ -107,7 +111,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 })
 
 const makeMapStateToProps = () => (state: GlobalState, props: SpotTileContainerOwnProps) => {
-  const { compositeStatusService, displayAnalytics, notionals, environment } = state
+  const { compositeStatusService, displayAnalytics, notionals } = state
   const executionConnected =
     compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected
   const pricingConnected =
@@ -115,7 +119,6 @@ const makeMapStateToProps = () => (state: GlobalState, props: SpotTileContainerO
   const isConnected =
     compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected
   return {
-    isRunningOnDesktop: environment.isRunningOnDesktop,
     isConnected,
     executionConnected,
     pricingConnected,
@@ -131,4 +134,4 @@ const ConnectedSpotTileContainer = connect(
   mapDispatchToProps
 )(SpotTileContainer)
 
-export default ConnectedSpotTileContainer
+export default withEnvironment(ConnectedSpotTileContainer)
