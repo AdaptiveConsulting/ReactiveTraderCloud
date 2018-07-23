@@ -1,8 +1,7 @@
 import { ignoreElements, map, mergeMap, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../../operations/connectionStatus'
-import { SpotPriceTick } from '../../../types'
-import { CurrencyPairMap } from '../../../types/currencyPair'
+import { CurrencyPairMap, SpotPriceTick } from '../../../types'
+import { applicationConnected, applicationDisconnected } from '../../../ui/connectionStatus'
 
 export const addRatePrecisionToPrice = (currencyData: CurrencyPairMap, price: SpotPriceTick) => ({
   ...price,

@@ -1,4 +1,4 @@
-export { CurrencyPair } from './currencyPair'
+export { CurrencyPair, CurrencyPairMap } from './currencyPair'
 export { CurrencyPairUpdate } from './currencyPairUpdate'
 export { CurrencyPairUpdates } from './currencyPairUpdates'
 export { Direction } from './direction'

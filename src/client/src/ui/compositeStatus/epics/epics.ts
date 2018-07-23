@@ -1,6 +1,6 @@
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../../operations/connectionStatus'
+import { applicationConnected, applicationDisconnected } from '../../connectionStatus'
 import { CompositeStatusServiceActions } from '../actions'
 import CompositeStatusService from '../compositeStatusService'
 

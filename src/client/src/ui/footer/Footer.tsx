@@ -3,9 +3,10 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import { StatusIndicator } from './StatusIndicator'
 
-import { ConnectionInfo } from '../../services/connectionStatusService'
 import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from '../../system'
 import { ServiceStatus } from '../../types'
+import { ConnectionInfo } from '../connectionStatus'
+import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
 import { ApplicationStatusConst } from './applicationStatusConst'
 
 interface FooterProps {
@@ -13,21 +14,20 @@ interface FooterProps {
   connectionStatus: ConnectionInfo
   toggleStatusServices: () => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
   displayStatusServices: boolean
-  isRunningOnDesktop: boolean
   openLink: (link: string) => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
 }
 
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
 const OPENFIN_URL: string = 'http://openfin.co'
 
-export const Footer: React.SFC<FooterProps> = ({
+export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
   compositeStatusService,
   connectionStatus,
   toggleStatusServices,
   displayStatusServices,
-  isRunningOnDesktop,
+  environment,
   openLink
-}: FooterProps) => {
+}) => {
   const servicesAsList = _.values(compositeStatusService)
 
   const panelClasses = classnames('footer__service-status-panel', {
@@ -35,7 +35,7 @@ export const Footer: React.SFC<FooterProps> = ({
   })
 
   const openfinLogoClassName = classnames('footer__logo', {
-    'footer__logo-openfin': isRunningOnDesktop
+    'footer__logo-openfin': environment.isRunningDesktop
   })
   const footerClasses = classnames('footer', {
     'footer--disconnected': !isConnected(connectionStatus.status)
@@ -128,4 +128,4 @@ const renderTitle = ({ serviceType, connectedInstanceCount }: ServiceStatus) =>
 
 const renderConnectedNodesText = (connectedInstanceCount: number) => (connectedInstanceCount === 1 && 'node') || 'nodes'
 
-export default Footer
+export default withEnvironment(Footer)

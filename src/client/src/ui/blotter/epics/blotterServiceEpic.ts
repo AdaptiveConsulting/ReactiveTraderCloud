@@ -5,9 +5,9 @@ import { interval } from 'rxjs'
 import { filter, ignoreElements, map, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 import { Trades } from '..'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../../operations/connectionStatus'
 import { CurrencyPair, Trade, TradeStatus } from '../../../types'
 import { CurrencyPairMap } from '../../../types/currencyPair'
+import { applicationConnected, applicationDisconnected } from '../../connectionStatus'
 import { ACTION_TYPES, BlotterActions } from '../actions'
 
 type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>

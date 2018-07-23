@@ -1,8 +1,8 @@
 import { bindCallback } from 'rxjs'
 import { map, mergeMapTo, withLatestFrom } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected } from '../../../operations/connectionStatus'
 import { Direction } from '../../../types'
+import { applicationConnected } from '../../../ui/connectionStatus'
 import { SpotTileActions } from '../../../ui/spotTile'
 
 function createTrade(msg, price) {
