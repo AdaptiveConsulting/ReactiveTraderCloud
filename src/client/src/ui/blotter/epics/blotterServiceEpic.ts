@@ -1,4 +1,5 @@
 import * as moment from 'moment'
+import * as numeral from 'numeral'
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 import { interval } from 'rxjs'
@@ -12,21 +13,19 @@ import { ACTION_TYPES, BlotterActions } from '../actions'
 
 type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
 
-function formatTradeNotification(trade: Trade, currencyPair: CurrencyPair) {
-  return {
-    symbol: trade.symbol,
-    spotRate: trade.spotRate,
-    notional: numeral(trade.notional).format('0,000,000[.]00'),
-    direction: trade.direction,
-    tradeId: trade.tradeId.toString(),
-    tradeDate: moment(trade.tradeDate).format(),
-    status: trade.status,
-    dealtCurrency: trade.dealtCurrency,
-    termsCurrency: currencyPair.terms,
-    valueDate: moment.utc(trade.valueDate).format('DD MMM'),
-    traderName: trade.traderName
-  }
-}
+const formatTradeNotification = (trade: Trade, currencyPair: CurrencyPair) => ({
+  symbol: trade.symbol,
+  spotRate: trade.spotRate,
+  notional: numeral(trade.notional).format('0,000,000[.]00'),
+  direction: trade.direction,
+  tradeId: trade.tradeId.toString(),
+  tradeDate: moment(trade.tradeDate).format(),
+  status: trade.status,
+  dealtCurrency: trade.dealtCurrency,
+  termsCurrency: currencyPair.terms,
+  valueDate: moment.utc(trade.valueDate).format('DD MMM'),
+  traderName: trade.traderName
+})
 
 function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
   if (Object.keys(currencyPairs).length === 0 || Object.keys(blotterData).length === 0) {
@@ -56,7 +55,8 @@ const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { openF
     ofType<Action, NewTradesAction>(ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
     map(action => action.payload.trades[0]),
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
-    tap(trade => openFin.openTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),
+    map(trade => formatTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),
+    tap(tradeNotifcation => openFin.openTradeNotification(tradeNotifcation)),
     ignoreElements()
   )
 

@@ -1,8 +1,6 @@
-import * as moment from 'moment'
-import * as numeral from 'numeral'
 import { Observable } from 'rxjs'
 import { logger } from '../../system'
-import { CurrencyPair, ExecuteTradeRequest, Trade } from '../../types'
+import { ExecuteTradeRequest } from '../../types'
 
 const log = logger.create('OpenFin')
 
@@ -212,12 +210,7 @@ export default class OpenFin {
     })
   }
 
-  openTradeNotification(trade: Trade, currencyPair: CurrencyPair) {
-    if (!this.isRunningInOpenFin) {
-      return
-    }
-
-    const tradeNotification = formatTradeNotification(trade, currencyPair)
+  openTradeNotification = tradeNotification =>
     // tslint:disable-next-line
     new fin.desktop.Notification({
       url: '/index.html?notification=true',
@@ -229,8 +222,6 @@ export default class OpenFin {
         // this._router.publishEvent(WellKnownModelIds.blotterModelId, 'highlightTradeRow', { trade })
       }
     })
-    ///fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification)
-  }
 
   publishCurrentPositions(ccyPairPositions) {
     if (!this.isRunningInOpenFin) {
@@ -260,21 +251,5 @@ export default class OpenFin {
 
   openLink(url: string) {
     fin.desktop.System.openUrlWithBrowser(url)
-  }
-}
-
-function formatTradeNotification(trade: Trade, currencyPair: CurrencyPair) {
-  return {
-    symbol: trade.symbol,
-    spotRate: trade.spotRate,
-    notional: numeral(trade.notional).format('0,000,000[.]00'),
-    direction: trade.direction,
-    tradeId: trade.tradeId.toString(),
-    tradeDate: moment(trade.tradeDate).format(),
-    status: trade.status,
-    dealtCurrency: trade.dealtCurrency,
-    termsCurrency: currencyPair.terms,
-    valueDate: moment.utc(trade.valueDate).format('DD MMM'),
-    traderName: trade.traderName
   }
 }
