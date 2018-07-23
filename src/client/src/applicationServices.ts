@@ -1,13 +1,6 @@
 import { from, ReplaySubject } from 'rxjs'
 import { mergeMap, multicast, refCount, share } from 'rxjs/operators'
-import {
-  CompositeStatusService,
-  ConnectionStatusService,
-  ExecutionService,
-  OpenFin,
-  PricingService,
-  ReferenceDataService
-} from './services'
+import { ConnectionStatusService, ExecutionService, OpenFin, PricingService, ReferenceDataService } from './services'
 import { AutobahnConnection, ConnectionEvent, createConnection$, ServiceClient, ServiceStub } from './system'
 import { ServiceCollectionMap } from './system/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './system/serviceStatusStream'
@@ -40,8 +33,6 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
 
   const executionService = new ExecutionService(loadBalancedServiceStub, openFin.checkLimit.bind(openFin))
 
-  const compositeStatusService = new CompositeStatusService(serviceStatus$)
-
   const connectionStatusService = new ConnectionStatusService(connection$)
 
   const pricesForCurrenciesInRefData = referenceDataService.getCurrencyPairUpdates$().pipe(
@@ -60,12 +51,12 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
   return {
     referenceDataService,
     pricingService,
-    compositeStatusService,
     connectionStatusService,
     executionService,
     openFin,
     pricesForCurrenciesInRefData,
-    loadBalancedServiceStub
+    loadBalancedServiceStub,
+    serviceStatus$
   }
 }
 
