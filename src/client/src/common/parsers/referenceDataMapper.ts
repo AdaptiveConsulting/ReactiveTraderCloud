@@ -4,7 +4,7 @@ import {
   CurrencyPair,
   CurrencyPairUpdate,
   CurrencyPairUpdates
-} from '../../types'
+} from 'common/types'
 
 export interface CurrencyRaw {
   Symbol: string
@@ -30,9 +30,7 @@ const referenceDataMapper = {
     }
   },
 
-  mapUpdatesFromDto(
-    currencyPairUpdateDtos: RawCurrencyPairUpdate[]
-  ): CurrencyPairUpdate[] {
+  mapUpdatesFromDto(currencyPairUpdateDtos: RawCurrencyPairUpdate[]): CurrencyPairUpdate[] {
     return currencyPairUpdateDtos.map<CurrencyPairUpdate>(dto => {
       const updateType = dto.UpdateType
       const currencyPair = createCurrencyPair(
@@ -51,11 +49,7 @@ const referenceDataMapper = {
 
 export default referenceDataMapper
 
-function createCurrencyPair(
-  symbol: string,
-  ratePrecision: number,
-  pipsPosition: number
-): CurrencyPair {
+function createCurrencyPair(symbol: string, ratePrecision: number, pipsPosition: number): CurrencyPair {
   return {
     symbol,
     ratePrecision,
