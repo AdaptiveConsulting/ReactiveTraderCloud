@@ -1,5 +1,5 @@
 import { Trade } from 'common/types'
-import * as keyBy from 'lodash.keyby'
+import keyBy from 'lodash.keyby'
 import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../connectionStatus'
 import { ACTION_TYPES, BlotterActions } from './actions'
 

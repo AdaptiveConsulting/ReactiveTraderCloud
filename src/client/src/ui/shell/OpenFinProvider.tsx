@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { OpenFin } from '../../services'
 import OpenFinChrome from './OpenFinChrome'
 

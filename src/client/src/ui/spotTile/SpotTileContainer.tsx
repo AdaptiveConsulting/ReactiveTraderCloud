@@ -1,6 +1,6 @@
 import { CurrencyPair, Direction, ExecuteTradeRequest, SpotPriceTick, SpotTileData } from 'common/types'
-import * as _ from 'lodash'
-import * as React from 'react'
+import _ from 'lodash'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { GlobalState } from '../../combineReducers'

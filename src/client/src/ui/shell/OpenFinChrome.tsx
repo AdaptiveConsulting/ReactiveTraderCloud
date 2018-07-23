@@ -1,5 +1,5 @@
-import * as classnames from 'classnames'
-import * as React from 'react'
+import classnames from 'classnames'
+import React from 'react'
 
 interface OpenFinChromeProps {
   children: any
@@ -10,10 +10,7 @@ interface OpenFinChromeProps {
   showHeaderBar?: boolean
 }
 
-export default class OpenFinChrome extends React.Component<
-  OpenFinChromeProps,
-  {}
-> {
+export default class OpenFinChrome extends React.Component<OpenFinChromeProps, {}> {
   props
   render() {
     const headerClasses = classnames('openfin-chrome__header', {
@@ -21,16 +18,13 @@ export default class OpenFinChrome extends React.Component<
       'openfin-chrome__header--with-bar': this.props.showHeaderBar !== false
     })
     const contentClasses = classnames('openfin-chrome__content', {
-      'openfin-chrome__content--no-header-bar':
-        this.props.showHeaderBar === false
+      'openfin-chrome__content--no-header-bar': this.props.showHeaderBar === false
     })
     return (
       <div className="openfin-chrome">
         <div className={headerClasses}>
           <div className="openfin-chrome__header-title">
-            <span className="openfin-chrome__header-title-label">
-              Adaptive&#39;s Reactive Trader
-            </span>
+            <span className="openfin-chrome__header-title-label">Adaptive&#39;s Reactive Trader</span>
           </div>
           <div className="openfin-chrome__header-controls-container">
             <ul className="openfin-chrome__header-controls">

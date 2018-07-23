@@ -1,5 +1,5 @@
 /* tslint:disable */
-import * as React from 'react'
+import React from 'react'
 import TradeNotification from '../tradeNotification'
 import ShallowRenderer from 'react-test-renderer/shallow'
 import { mount } from 'enzyme'

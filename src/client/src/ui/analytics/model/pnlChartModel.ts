@@ -1,6 +1,6 @@
 import { time } from 'd3'
-import * as _ from 'lodash'
-import * as numeral from 'numeral'
+import _ from 'lodash'
+import numeral from 'numeral'
 
 import { PnlChartModelOptions } from '../components/pnlChart/PNLChart'
 

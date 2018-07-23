@@ -1,6 +1,6 @@
-import * as classnames from 'classnames'
+import classnames from 'classnames'
 import { CurrencyPair, Direction, SpotTileData } from 'common/types'
-import * as React from 'react'
+import React from 'react'
 import { PriceButton, PriceMovementIndicator } from '../'
 import { getSpread, toRate } from '../spotTileUtils'
 
