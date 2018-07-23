@@ -107,19 +107,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 })
 
 const makeMapStateToProps = () => (state: GlobalState, props: SpotTileContainerOwnProps) => {
-  const { compositeStatusService, displayAnalytics, notionals, environment } = state
+  const { compositeStatusService, notionals, environment } = state
   const executionConnected =
     compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected
   const pricingConnected =
     compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected
-  const isConnected =
-    compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected
   return {
     isRunningOnDesktop: environment.isRunningOnDesktop,
-    isConnected,
     executionConnected,
     pricingConnected,
-    displayAnalytics,
     currencyPair: makeGetCurrencyPair()(state, props),
     spotTilesData: makeGetSpotTileData()(state, props),
     notionals

@@ -5,7 +5,8 @@ import { StatusIndicator } from './StatusIndicator'
 
 import { ConnectionInfo } from '../../services/connectionStatusService'
 import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from '../../system'
-import { ApplicationStatusConst, ServiceStatus } from '../../types'
+import { ServiceStatus } from '../../types'
+import { ApplicationStatusConst } from './applicationStatusConst'
 
 interface FooterProps {
   compositeStatusService: ServiceConnectionInfo

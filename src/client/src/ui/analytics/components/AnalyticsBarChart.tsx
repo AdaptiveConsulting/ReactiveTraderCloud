@@ -1,11 +1,11 @@
 import * as _ from 'lodash'
 import * as React from 'react'
-import { CurrencyPairState } from '../../../operations/currencyPairs'
+import { CurrencyPairMap } from '../../../types/currencyPair'
 import PNLBar from './PNLBar'
 
 export interface AnalyticsBarChartProps {
   chartData: any[]
-  currencyPairs: CurrencyPairState
+  currencyPairs: CurrencyPairMap
   isPnL: boolean
 }
 

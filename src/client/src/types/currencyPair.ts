@@ -5,3 +5,7 @@ export interface CurrencyPair {
   base: string
   terms: string
 }
+
+export interface CurrencyPairMap {
+  [id: string]: CurrencyPair
+}
