@@ -1,11 +1,8 @@
 import * as moment from 'moment'
 import * as numeral from 'numeral'
 import { Observable } from 'rxjs'
-
-import { CurrencyPairState } from '../../operations/currencyPairs'
 import { logger } from '../../system'
 import { CurrencyPair, ExecuteTradeRequest, Trade } from '../../types'
-import { Trades } from '../../ui/blotter'
 
 const log = logger.create('OpenFin')
 
@@ -250,14 +247,7 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.publish('price-update', price)
   }
 
-  sendAllBlotterData(blotterData: Trades, currencyPairs: CurrencyPairState) {
-    if (Object.keys(currencyPairs).length === 0 || Object.keys(blotterData).length === 0) {
-      return
-    }
-    const parsed = Object.keys(blotterData).map(x =>
-      formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol])
-    )
-
+  sendAllBlotterData(parsed) {
     fin.desktop.InterApplicationBus.publish('blotter-data', parsed)
   }
 

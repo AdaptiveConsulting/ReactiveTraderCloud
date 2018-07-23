@@ -38,15 +38,14 @@ interface SpotTileContainerOwnProps {
   id: string
   onPopoutClick: () => void
   tornOff: boolean
+  environment: Environment
 }
 
 type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 
 type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToProps>>
 
-type SpotTileContainerProps = SpotTileContainerOwnProps &
-  SpotTileContainerStateProps &
-  SpotTileContainerDispatchProps & { environment: Environment }
+type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
 
 class SpotTileContainer extends React.Component<SpotTileContainerProps> {
   shouldComponentUpdate(nextProps: SpotTileContainerProps) {
@@ -111,18 +110,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 })
 
 const makeMapStateToProps = () => (state: GlobalState, props: SpotTileContainerOwnProps) => {
-  const { compositeStatusService, displayAnalytics, notionals } = state
+  const { compositeStatusService, notionals } = state
   const executionConnected =
     compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected
   const pricingConnected =
     compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected
-  const isConnected =
-    compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected
   return {
-    isConnected,
+    isRunningOnDesktop: props.environment.isRunningDesktop,
     executionConnected,
     pricingConnected,
-    displayAnalytics,
     currencyPair: makeGetCurrencyPair()(state, props),
     spotTilesData: makeGetSpotTileData()(state, props),
     notionals

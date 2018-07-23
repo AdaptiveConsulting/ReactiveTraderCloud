@@ -1,12 +1,12 @@
 import * as classnames from 'classnames'
 import * as _ from 'lodash'
 import * as React from 'react'
-import { CurrencyPairState } from '../../../operations/currencyPairs'
 import { PNLChartModel } from '../model/pnlChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
 import AnalyticsBarChart from './AnalyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
+import { CurrencyPairMap } from '../../../types/currencyPair'
 import PNLChart from './pnlChart/PNLChart'
 
 export interface AnalyticsProps {
@@ -14,7 +14,7 @@ export interface AnalyticsProps {
   isConnected: boolean
   pnlChartModel?: PNLChartModel
   positionsChartModel?: PositionsChartModel
-  currencyPairs: CurrencyPairState
+  currencyPairs: CurrencyPairMap
   onPopoutClick: () => void
 }
 

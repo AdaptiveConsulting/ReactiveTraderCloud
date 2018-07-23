@@ -1,12 +1,7 @@
 import { merge, Observable, of, timer } from 'rxjs'
 import { map, mapTo, mergeMap, take, takeUntil, tap } from 'rxjs/operators'
 import { logger, ServiceClient } from '../system'
-import {
-  createExecuteTradeResponse,
-  createExecuteTradeResponseForError,
-  ExecuteTradeRequest,
-  ServiceConst
-} from '../types'
+import { createExecuteTradeResponse, createExecuteTradeResponseForError, ExecuteTradeRequest } from '../types'
 import { mapFromTradeDto } from './mappers'
 import { TradeRaw } from './mappers/tradeMapper'
 
@@ -35,7 +30,7 @@ export default class ExecutionService {
         }
         const request = this.serviceClient
           .createRequestResponseOperation<RawTradeReponse, ExecuteTradeRequest>(
-            ServiceConst.ExecutionServiceKey,
+            'execution',
             'executeTrade',
             executeTradeRequest
           )

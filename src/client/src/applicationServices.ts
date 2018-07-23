@@ -35,7 +35,7 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
 
   const pricesForCurrenciesInRefData = referenceDataService.getCurrencyPairUpdates$().pipe(
     mergeMap(refData =>
-      from(refData.values()).pipe(
+      from(Object.values(refData)).pipe(
         mergeMap(refDataForSymbol =>
           pricingService.getSpotPriceStream({
             symbol: refDataForSymbol.symbol

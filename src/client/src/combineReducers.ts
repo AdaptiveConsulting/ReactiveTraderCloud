@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import { currencyPairReducer } from './operations/currencyPairs'
 import { pricingServiceReducer } from './operations/pricing'
+import { currencyPairReducer } from './operations/referenceData'
 import { analyticsReducer } from './ui/analytics'
 import { blotterReducer } from './ui/blotter'
 import { regionsReducer } from './ui/common/regions'

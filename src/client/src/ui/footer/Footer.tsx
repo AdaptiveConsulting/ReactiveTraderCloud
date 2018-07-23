@@ -4,9 +4,10 @@ import * as React from 'react'
 import { StatusIndicator } from './StatusIndicator'
 
 import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from '../../system'
-import { ApplicationStatusConst, ServiceStatus } from '../../types'
+import { ServiceStatus } from '../../types'
 import { ConnectionInfo } from '../connectionStatus'
 import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
+import { ApplicationStatusConst } from './applicationStatusConst'
 
 interface FooterProps {
   compositeStatusService: ServiceConnectionInfo
