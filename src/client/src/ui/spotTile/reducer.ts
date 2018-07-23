@@ -1,8 +1,8 @@
 import { TradeErrorResponse, TradeSuccessResponse } from '../../types'
 import { SpotTileData } from '../../types/spotTileData'
 import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../connectionStatus'
-import { buildNotification } from '../notification/notificationUtils'
 import { ACTION_TYPES, SpotTileActions } from './actions'
+import { buildNotification } from './tradeNotification/notificationUtils'
 
 interface SpotTileState {
   [currencyPair: string]: SpotTileData
