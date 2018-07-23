@@ -170,5 +170,6 @@ $price-width: calc(50% - #{$price-movement-width} / 2);
   }
   .workspace-region__item {
     margin: 0;
+    width: 100%;
   }
 }
