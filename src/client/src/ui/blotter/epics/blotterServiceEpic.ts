@@ -1,9 +1,15 @@
+import { Action } from 'redux'
+import { combineEpics, ofType } from 'redux-observable'
 import { interval } from 'rxjs'
-import { ignoreElements, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { filter, ignoreElements, map, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { applicationConnected, applicationDisconnected } from '../../../operations/connectionStatus'
+import { TradeStatus } from '../../../types'
+import { ACTION_TYPES, BlotterActions } from '../actions'
 
-export const connectBlotterServiceToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
+type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
+
+const connectBlotterToExcel: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(
     applicationConnected,
     switchMapTo(
@@ -14,3 +20,14 @@ export const connectBlotterServiceToOpenFinEpic: ApplicationEpic = (action$, sta
       )
     )
   )
+
+const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { openFin }) =>
+  action$.pipe(
+    ofType<Action, NewTradesAction>(ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
+    map(action => action.payload.trades[0]),
+    filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
+    tap(trade => openFin.openTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),
+    ignoreElements()
+  )
+
+export const connectBlotterServiceToOpenFinEpic = combineEpics(connectBlotterToExcel, connectBlotterToNotifications)
