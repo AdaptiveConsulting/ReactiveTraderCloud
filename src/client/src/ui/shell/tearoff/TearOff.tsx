@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { RegionActions } from '../common/regions'
+import { RegionActions } from '../regions'
 import Portal, { PortalProps } from './Portal'
 
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element

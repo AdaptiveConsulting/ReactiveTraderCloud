@@ -1,5 +1,5 @@
 import * as React from 'react'
-import OpenFinChrome from '../shell/OpenFinChrome'
+import OpenFinChrome from '../OpenFinChrome'
 import { DesktopWindowConfig, WindowConfig } from './types'
 
 type DesktopWindowProps = WindowConfig & DesktopWindowConfig

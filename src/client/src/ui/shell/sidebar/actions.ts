@@ -1,4 +1,4 @@
-import { action, ActionUnion } from '../../ActionHelper'
+import { action, ActionUnion } from '../../../ActionHelper'
 
 export enum ACTION_TYPES {
   TOGGLE_ANALYTICS = '@ReactiveTraderCloud/TOGGLE_ANALYTICS'

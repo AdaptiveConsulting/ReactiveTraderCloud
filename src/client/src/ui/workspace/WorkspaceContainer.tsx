@@ -1,9 +1,8 @@
-import * as _ from 'lodash'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { GlobalState } from '../../combineReducers'
+import { TearOff } from '../shell/tearoff'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
-import { TearOff } from '../tearoff'
 
 type WorkspaceContainerStateProps = ReturnType<typeof mapStateToProps>
 type WorkspaceContainerProps = WorkspaceContainerStateProps
@@ -32,33 +31,35 @@ export class WorkspaceContainer extends React.PureComponent<WorkspaceContainerPr
     )
   }
 
+  renderLoading() {
+    return (
+      <div className="workspace-region__icon--loading">
+        <i className="fa fa-5x fa-cog fa-spin" />
+      </div>
+    )
+  }
+
   renderItems() {
     const { spotTileKeys } = this.props
 
     const pairs = Object.keys(spotTileKeys)
 
     if (!spotTileKeys || pairs.length === 0) {
-      return (
-        <div className="workspace-region__icon--loading">
-          <i className="fa fa-5x fa-cog fa-spin" />
-        </div>
-      )
+      return this.renderLoading()
     }
 
-    return pairs
-      .map(key => (
-        <TearOff
-          id={key}
-          portalProps={this.makePortalProps(key)}
-          render={(popOut, tornOff) => (
-            <div className="workspace-region__item">
-              <ConnectedSpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} />
-            </div>
-          )}
-          key={key}
-        />
-      ))
-      .concat(_.times(6, i => <div key={i} className="workspace-region__spacer" />))
+    return pairs.map(key => (
+      <TearOff
+        id={key}
+        portalProps={this.makePortalProps(key)}
+        render={(popOut, tornOff) => (
+          <div className="workspace-region__item">
+            <ConnectedSpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} />
+          </div>
+        )}
+        key={key}
+      />
+    ))
   }
 }
 
