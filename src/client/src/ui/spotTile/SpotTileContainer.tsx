@@ -116,7 +116,6 @@ const makeMapStateToProps = () => (state: GlobalState, props: SpotTileContainerO
   const pricingConnected =
     compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected
   return {
-    isRunningOnDesktop: props.environment.isRunningDesktop,
     executionConnected,
     pricingConnected,
     currencyPair: makeGetCurrencyPair()(state, props),
