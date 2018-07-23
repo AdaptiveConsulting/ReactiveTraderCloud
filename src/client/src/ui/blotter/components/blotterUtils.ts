@@ -1,6 +1,6 @@
 import * as AgGrid from 'ag-grid'
+import { Trade, TradeStatus } from 'common/types'
 import * as numeral from 'numeral'
-import { Trade, TradeStatus } from '../../../types'
 import { formatDate, UtcFormatDate } from '../../spotTile/notional/utils'
 import './filters/filterOverrides.ts'
 import SetFilter from './filters/SetFilter'

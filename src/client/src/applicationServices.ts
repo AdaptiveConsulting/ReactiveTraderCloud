@@ -1,10 +1,10 @@
+import { User } from 'common/types'
 import { from, ReplaySubject } from 'rxjs'
 import { mergeMap, multicast, refCount, share } from 'rxjs/operators'
 import { ExecutionService, OpenFin, PricingService, ReferenceDataService } from './services'
 import { AutobahnConnection, ConnectionEvent, createConnection$, ServiceClient, ServiceStub } from './system'
 import { ServiceCollectionMap } from './system/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './system/serviceStatusStream'
-import { User } from './types'
 
 const HEARTBEAT_TIMEOUT = 3000
 

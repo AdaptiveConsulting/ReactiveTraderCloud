@@ -1,4 +1,4 @@
-import { ServiceInstanceStatus, ServiceStatus } from '../types'
+import { ServiceInstanceStatus, ServiceStatus } from 'common/types'
 
 export class ServiceInstanceCollection {
   private readonly serviceMap: Map<string, ServiceInstanceStatus> = new Map()

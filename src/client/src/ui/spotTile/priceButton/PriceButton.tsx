@@ -1,8 +1,7 @@
 import * as classnames from 'classnames'
 import * as React from 'react'
 
-import { Direction } from '../../../types'
-import { Rate } from '../../../types/rate'
+import { Direction, Rate } from 'common/types'
 
 interface PriceButtonProps {
   className: string
@@ -11,14 +10,11 @@ interface PriceButtonProps {
   onExecute: () => void
 }
 
-const renderPips = (pips: number) =>
-  pips.toString().length === 1 ? `0${pips}` : pips
+const renderPips = (pips: number) => (pips.toString().length === 1 ? `0${pips}` : pips)
 const getBigFigureDisplay = (bigFigure: number, rawRate: number) =>
   bigFigure === Math.floor(rawRate) ? `${bigFigure}.` : bigFigure.toString()
 const renderBigFigureDisplay = (bigFigureDisplay: string) =>
-  bigFigureDisplay.toString().length === 3
-    ? `${bigFigureDisplay}0`
-    : bigFigureDisplay
+  bigFigureDisplay.toString().length === 3 ? `${bigFigureDisplay}0` : bigFigureDisplay
 
 const PriceButton = (props: PriceButtonProps) => {
   const { direction, rate } = props

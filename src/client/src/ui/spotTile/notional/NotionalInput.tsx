@@ -1,7 +1,7 @@
 import * as classnames from 'classnames'
+import { CurrencyPair } from 'common/types'
 import * as numeral from 'numeral'
 import * as React from 'react'
-import { CurrencyPair } from '../../../types'
 import * as utils from './utils'
 
 const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -22,10 +22,7 @@ export interface NotionalInputProps {
   onNotionalInputChange: (value: number) => void
 }
 
-export default class NotionalInput extends React.Component<
-  NotionalInputProps,
-  {}
-> {
+export default class NotionalInput extends React.Component<NotionalInputProps, {}> {
   props: NotionalInputProps
   refs: any
 
@@ -82,9 +79,7 @@ export default class NotionalInput extends React.Component<
 
   processNotional(inputValue: string) {
     const inputValueTrimmed = inputValue.trim()
-    let notional: any = utils.convertNotionalShorthandToNumericValue(
-      inputValueTrimmed
-    )
+    let notional: any = utils.convertNotionalShorthandToNumericValue(inputValueTrimmed)
     if (notional >= MAX_NOTIONAL_VALUE) {
       notional = 0
     }

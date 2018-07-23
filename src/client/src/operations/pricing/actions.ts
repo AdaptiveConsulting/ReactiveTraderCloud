@@ -1,5 +1,5 @@
+import { SpotPriceTick } from 'common/types'
 import { action, ActionUnion } from '../../ActionHelper'
-import { SpotPriceTick } from '../../types'
 
 export enum ACTION_TYPES {
   SPOT_PRICES_UPDATE = '@ReactiveTraderCloud/SPOT_PRICES_UPDATE'
