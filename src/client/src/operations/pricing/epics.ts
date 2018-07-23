@@ -1,6 +1,6 @@
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../operations/connectionStatus'
+import { applicationConnected, applicationDisconnected } from '../../ui/connectionStatus'
 import { PricingActions } from './actions'
 
 const { priceUpdateAction } = PricingActions

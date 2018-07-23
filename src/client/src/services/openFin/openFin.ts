@@ -1,12 +1,6 @@
-import * as moment from 'moment'
-import * as numeral from 'numeral'
 import { Observable } from 'rxjs'
-import PositionsMapper from '../mappers/positionsMapper'
-
-import { CurrencyPairState } from '../../operations/currencyPairs'
 import { logger } from '../../system'
-import { CurrencyPair, ExecuteTradeRequest, Trade } from '../../types'
-import { Trades } from '../../ui/blotter'
+import { ExecuteTradeRequest } from '../../types'
 
 const log = logger.create('OpenFin')
 
@@ -216,12 +210,7 @@ export default class OpenFin {
     })
   }
 
-  openTradeNotification(trade: Trade, currencyPair: CurrencyPair) {
-    if (!this.isRunningInOpenFin) {
-      return
-    }
-
-    const tradeNotification = formatTradeNotification(trade, currencyPair)
+  openTradeNotification = tradeNotification =>
     // tslint:disable-next-line
     new fin.desktop.Notification({
       url: '/index.html?notification=true',
@@ -233,15 +222,13 @@ export default class OpenFin {
         // this._router.publishEvent(WellKnownModelIds.blotterModelId, 'highlightTradeRow', { trade })
       }
     })
-    ///fin.desktop.InterApplicationBus.publish('blotter-new-item', tradeNotification)
-  }
 
   publishCurrentPositions(ccyPairPositions) {
     if (!this.isRunningInOpenFin) {
       return
     }
-    const serialisePositions = ccyPairPositions.map(p => PositionsMapper.mapToDto(p))
-    fin.desktop.InterApplicationBus.publish('position-update', serialisePositions)
+
+    fin.desktop.InterApplicationBus.publish('position-update', ccyPairPositions)
   }
 
   publishPrice(price) {
@@ -251,14 +238,7 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.publish('price-update', price)
   }
 
-  sendAllBlotterData(blotterData: Trades, currencyPairs: CurrencyPairState) {
-    if (Object.keys(currencyPairs).length === 0 || Object.keys(blotterData).length === 0) {
-      return
-    }
-    const parsed = Object.keys(blotterData).map(x =>
-      formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol])
-    )
-
+  sendAllBlotterData(parsed) {
     fin.desktop.InterApplicationBus.publish('blotter-data', parsed)
   }
 
@@ -271,21 +251,5 @@ export default class OpenFin {
 
   openLink(url: string) {
     fin.desktop.System.openUrlWithBrowser(url)
-  }
-}
-
-function formatTradeNotification(trade: Trade, currencyPair: CurrencyPair) {
-  return {
-    symbol: trade.symbol,
-    spotRate: trade.spotRate,
-    notional: numeral(trade.notional).format('0,000,000[.]00'),
-    direction: trade.direction,
-    tradeId: trade.tradeId.toString(),
-    tradeDate: moment(trade.tradeDate).format(),
-    status: trade.status,
-    dealtCurrency: trade.dealtCurrency,
-    termsCurrency: currencyPair.terms,
-    valueDate: moment.utc(trade.valueDate).format('DD MMM'),
-    traderName: trade.traderName
   }
 }

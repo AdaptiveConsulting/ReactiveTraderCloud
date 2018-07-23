@@ -1,16 +1,16 @@
 import * as React from 'react'
 import { BlotterContainer } from '../blotter'
 import FooterContainer from '../footer/FooterContainer'
-import { Modal } from '../modal'
-import SidebarRegionContainer from '../sidebar'
+import { Modal } from '../shell/modal'
 import { WorkspaceContainer } from '../workspace/'
+import SidebarRegionContainer from './sidebar'
 
 import * as classnames from 'classnames'
 import SplitPane from 'react-split-pane'
-import TradeNotificationContainer from '../notification/TradeNotificationContainer'
+import { AnalyticsContainer } from '../analytics'
 import '../styles/css/index.css'
-import { TearOff } from '../tearoff'
 import { Environment, withEnvironment } from './EnvironmentProvider'
+import { TearOff } from './tearoff'
 
 export interface ShellProps {
   sessionExpired: boolean
@@ -71,12 +71,16 @@ const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
       <TearOff
         id="region"
         portalProps={portalProps.analyticsRegion}
-        render={(popOut, tornOff) => <SidebarRegionContainer onPopoutClick={popOut} tornOff={tornOff} />}
+        render={(popOut, tornOff) => (
+          <SidebarRegionContainer
+            tornOff={tornOff}
+            renderContent={() => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} />}
+          />
+        )}
       />
     </div>
     <div className="shell__footer">
       <FooterContainer />
-      <TradeNotificationContainer />
     </div>
   </div>
 )

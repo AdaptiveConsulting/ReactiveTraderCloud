@@ -1,1 +1,0 @@
-export { enviromentReducer } from './reducer'

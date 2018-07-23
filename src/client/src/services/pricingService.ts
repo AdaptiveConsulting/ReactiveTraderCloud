@@ -2,7 +2,7 @@ import { Observable } from 'rxjs'
 import { map, retryWhen, scan, share } from 'rxjs/operators'
 import { logger, retryConstantly, ServiceClient } from '../system'
 import { debounceWithSelector } from '../system/debounceOnMissedHeartbeat'
-import { PriceMovementTypes, ServiceConst, SpotPriceTick } from '../types'
+import { PriceMovementTypes, SpotPriceTick } from '../types'
 
 const log = logger.create('PricingService')
 const getPriceUpdatesOperationName = 'getPriceUpdates'
@@ -34,7 +34,7 @@ export default class PricingService {
   private static createSpotPriceStream = (serviceClient: ServiceClient, request: Request) => {
     log.debug(`Subscribing to spot price stream for [${request.symbol}]`)
     return serviceClient
-      .createStreamOperation<RawPrice, Request>(ServiceConst.PricingServiceKey, getPriceUpdatesOperationName, request)
+      .createStreamOperation<RawPrice, Request>('pricing', getPriceUpdatesOperationName, request)
       .pipe(
         retryWhen(
           retryConstantly({

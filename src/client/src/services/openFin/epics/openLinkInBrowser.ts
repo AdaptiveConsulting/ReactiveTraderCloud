@@ -10,6 +10,6 @@ type OpenLinkAction = ReturnType<typeof openLink>
 export const openLinkWithOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(
     ofType<Action, OpenLinkAction>(ACTION_TYPES.OPEN_LINK),
-    tap(link => state$.value.environment.isRunningOnDesktop && openFin.openLink(link.payload)),
+    tap(link => openFin.openLink(link.payload)),
     ignoreElements()
   )

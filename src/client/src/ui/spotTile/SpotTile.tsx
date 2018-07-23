@@ -5,11 +5,11 @@ import { Direction, NotificationType } from '../../types'
 import { CurrencyPair } from '../../types/currencyPair'
 import { Notification } from '../../types/notification'
 import { SpotTileData } from '../../types/spotTileData'
-import { buildNotification } from '../notification/notificationUtils'
 import { spotDateFormatter } from '../utils/dateUtils'
 import { SpotTileControls, TradeNotification } from './'
 import NotionalContainer from './notional/NotionalContainer'
 import PriceControlsView from './priceControlsView/PriceControlsView'
+import { buildNotification } from './tradeNotification/notificationUtils'
 const stalePriceErrorMessage = 'Pricing is unavailable'
 export interface SpotTileProps {
   currencyPair: CurrencyPair

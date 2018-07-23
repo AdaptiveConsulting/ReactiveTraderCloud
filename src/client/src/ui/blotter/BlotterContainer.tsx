@@ -2,9 +2,11 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
-import Blotter from './Blotter'
+import { BlotterActions } from './actions'
+import Blotter from './components'
 
 interface BlotterContainerState {
   gridDocument: Element
@@ -13,6 +15,7 @@ interface BlotterContainerState {
 interface BlotterContainerOwnProps {
   onPopoutClick: () => void
   tornOff: boolean
+  subscribeToBlotter: () => void
 }
 
 type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
@@ -23,7 +26,11 @@ class BlotterContainer extends React.Component<BlotterContainerProps, BlotterCon
     gridDocument: null
   }
 
-  public render() {
+  componentDidMount() {
+    this.props.subscribeToBlotter()
+  }
+
+  render() {
     const { blotterService, isConnected, tornOff, onPopoutClick } = this.props
     const { trades } = blotterService
     const { gridDocument } = this.state
@@ -60,6 +67,13 @@ const mapStateToProps = ({ blotterService, compositeStatusService }: GlobalState
   isConnected: compositeStatusService && compositeStatusService.blotter && compositeStatusService.blotter.isConnected
 })
 
-const ConnectedBlotterContainer = connect(mapStateToProps)(BlotterContainer)
+const mapToDispatch = (dispatch: Dispatch) => ({
+  subscribeToBlotter: () => dispatch(BlotterActions.subscribeToBlotterAction())
+})
+
+const ConnectedBlotterContainer = connect(
+  mapStateToProps,
+  mapToDispatch
+)(BlotterContainer)
 
 export default ConnectedBlotterContainer

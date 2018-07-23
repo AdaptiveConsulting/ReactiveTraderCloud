@@ -1,15 +1,6 @@
 import { from, ReplaySubject } from 'rxjs'
 import { mergeMap, multicast, refCount, share } from 'rxjs/operators'
-import {
-  AnalyticsService,
-  BlotterService,
-  CompositeStatusService,
-  ConnectionStatusService,
-  ExecutionService,
-  OpenFin,
-  PricingService,
-  ReferenceDataService
-} from './services'
+import { ExecutionService, OpenFin, PricingService, ReferenceDataService } from './services'
 import { AutobahnConnection, ConnectionEvent, createConnection$, ServiceClient, ServiceStub } from './system'
 import { ServiceCollectionMap } from './system/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './system/serviceStatusStream'
@@ -36,23 +27,15 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
 
   const loadBalancedServiceStub = new ServiceClient(serviceStub, serviceStatus$)
 
-  const blotterService = new BlotterService(loadBalancedServiceStub)
-
   const pricingService = new PricingService(loadBalancedServiceStub)
 
   const referenceDataService = new ReferenceDataService(loadBalancedServiceStub)
 
   const executionService = new ExecutionService(loadBalancedServiceStub, openFin.checkLimit.bind(openFin))
 
-  const analyticsService = new AnalyticsService(loadBalancedServiceStub)
-
-  const compositeStatusService = new CompositeStatusService(serviceStatus$)
-
-  const connectionStatusService = new ConnectionStatusService(connection$)
-
   const pricesForCurrenciesInRefData = referenceDataService.getCurrencyPairUpdates$().pipe(
     mergeMap(refData =>
-      from(refData.values()).pipe(
+      from(Object.values(refData)).pipe(
         mergeMap(refDataForSymbol =>
           pricingService.getSpotPriceStream({
             symbol: refDataForSymbol.symbol
@@ -63,19 +46,16 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
     )
   )
 
-  const dependencies = {
+  return {
     referenceDataService,
-    blotterService,
     pricingService,
-    analyticsService,
-    compositeStatusService,
-    connectionStatusService,
     executionService,
     openFin,
-    pricesForCurrenciesInRefData
+    pricesForCurrenciesInRefData,
+    loadBalancedServiceStub,
+    serviceStatus$,
+    connection$
   }
-
-  return dependencies
 }
 
 export type ApplicationDependencies = ReturnType<typeof createApplicationServices>
