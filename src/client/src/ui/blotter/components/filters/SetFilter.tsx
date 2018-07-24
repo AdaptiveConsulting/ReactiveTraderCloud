@@ -1,6 +1,6 @@
 import { ColDef, Column, GridApi, InMemoryRowModel, RowNode } from 'ag-grid'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 const ALL = 'all'
 

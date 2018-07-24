@@ -1,6 +1,6 @@
-import * as d3 from 'd3'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import d3 from 'd3'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
 import reactSizeme from 'react-sizeme'

@@ -1,4 +1,4 @@
-import * as moment from 'moment'
+import moment from 'moment'
 import { SPOT_DATE_FORMAT } from '../spotTile/spotTileUtils'
 
 function momentDateFormatter(date: any, formatter: string = SPOT_DATE_FORMAT) {
@@ -6,7 +6,5 @@ function momentDateFormatter(date: any, formatter: string = SPOT_DATE_FORMAT) {
 }
 
 export function spotDateFormatter(date: any, tenorRequired: boolean = true) {
-  return tenorRequired
-    ? `SP. ${momentDateFormatter(date)}`
-    : `${momentDateFormatter(date)}`
+  return tenorRequired ? `SP. ${momentDateFormatter(date)}` : `${momentDateFormatter(date)}`
 }

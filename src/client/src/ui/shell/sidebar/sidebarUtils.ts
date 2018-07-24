@@ -1,4 +1,4 @@
-import * as classnames from 'classnames'
+import classnames from 'classnames'
 
 export function getSidebarStyles(displayAnalytics: boolean) {
   const buttonStyles = classnames(

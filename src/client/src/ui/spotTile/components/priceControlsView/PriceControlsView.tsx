@@ -1,5 +1,5 @@
-import * as classnames from 'classnames'
-import * as React from 'react'
+import classnames from 'classnames'
+import React from 'react'
 import { CurrencyPair, Direction, SpotPriceTick } from 'rt-types'
 import { PriceButton, PriceMovementIndicator } from '../'
 import { getSpread, toRate } from '../../spotTileUtils'

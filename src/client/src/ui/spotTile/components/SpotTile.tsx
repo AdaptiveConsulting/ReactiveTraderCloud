@@ -1,5 +1,5 @@
-import * as classnames from 'classnames'
-import * as React from 'react'
+import classnames from 'classnames'
+import React from 'react'
 import { CurrencyPair, Direction, Notification, NotificationType, SpotTileData } from 'rt-types'
 import { spotDateFormatter } from '../../utils/dateUtils'
 import { SpotTileControls, TradeNotification } from '../components/'
