@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import OpenFinChrome from '../OpenFinChrome'
 import { DesktopWindowConfig, WindowConfig } from './types'
 

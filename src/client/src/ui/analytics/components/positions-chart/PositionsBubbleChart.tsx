@@ -1,8 +1,8 @@
 import { CurrencyPair } from 'common/types'
-import * as d3 from 'd3'
+import d3 from 'd3'
 import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import React from 'react'
+import ReactDOM from 'react-dom'
 import reactSizeme from 'react-sizeme'
 import {
   createScales,

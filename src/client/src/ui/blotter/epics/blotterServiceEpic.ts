@@ -1,6 +1,6 @@
 import { CurrencyPair, CurrencyPairMap, Trade, TradeStatus } from 'common/types'
-import * as moment from 'moment'
-import * as numeral from 'numeral'
+import moment from 'moment'
+import numeral from 'numeral'
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 import { interval } from 'rxjs'

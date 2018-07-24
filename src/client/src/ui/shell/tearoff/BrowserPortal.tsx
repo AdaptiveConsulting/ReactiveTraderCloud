@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { BrowserWindowConfig, WindowConfig } from './types'
 
 type BrowserWindowProps = WindowConfig & BrowserWindowConfig

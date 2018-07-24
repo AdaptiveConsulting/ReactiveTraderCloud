@@ -1,6 +1,6 @@
 import { User } from 'common/types'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { timer } from 'rxjs'
 import { createApplicationServices } from './applicationServices'

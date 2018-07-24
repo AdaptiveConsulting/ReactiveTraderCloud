@@ -1,4 +1,4 @@
-import * as userAgentParser from 'ua-parser-js'
+import userAgentParser from 'ua-parser-js'
 
 let isRunningInIE: boolean = false
 

@@ -1,9 +1,9 @@
-import * as AgGrid from 'ag-grid'
-import * as React from 'react'
+import { ColDef } from 'ag-grid'
+import React from 'react'
 
 interface AppliedFiltersProps {
   filterModel: any
-  columnDefinitions: AgGrid.ColDef[]
+  columnDefinitions: ColDef[]
   removeAllFilters: () => void
   removeFilter: (key: string) => void
 }

@@ -1,9 +1,9 @@
 import { GridApi } from 'ag-grid'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid/dist/styles/ag-grid.css'
-import * as classNames from 'classnames'
+import classNames from 'classnames'
 import { TradeStatus } from 'common/types'
-import * as React from 'react'
+import React from 'react'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
 

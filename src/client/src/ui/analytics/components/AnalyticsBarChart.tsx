@@ -1,6 +1,6 @@
 import { CurrencyPairMap } from 'common/types'
-import * as _ from 'lodash'
-import * as React from 'react'
+import _ from 'lodash'
+import React from 'react'
 import PNLBar from './PNLBar'
 
 export interface AnalyticsBarChartProps {

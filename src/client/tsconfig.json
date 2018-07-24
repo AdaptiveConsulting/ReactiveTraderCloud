@@ -22,7 +22,8 @@
     "baseUrl": "src",
     "paths": {
       "common": ["common/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "webpack", "jest", "**/*.spec.ts"]
 }
