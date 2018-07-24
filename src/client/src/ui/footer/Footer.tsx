@@ -1,24 +1,39 @@
 import * as classnames from 'classnames'
 import * as _ from 'lodash'
 import * as React from 'react'
-import { StatusIndicator } from './StatusIndicator'
+import styled from 'react-emotion'
 
+import { Styled } from 'ui/theme'
 import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from '../../system'
 import { ServiceStatus } from '../../types'
 import { ConnectionInfo } from '../connectionStatus'
 import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
 import { ApplicationStatusConst } from './applicationStatusConst'
+import { StatusIndicator } from './StatusIndicator'
 
 interface FooterProps {
   compositeStatusService: ServiceConnectionInfo
   connectionStatus: ConnectionInfo
   toggleStatusServices: () => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
   displayStatusServices: boolean
-  openLink: (link: string) => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
+  openLink: (link: string) => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874,
+  toggleTheme: () => any
 }
 
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
 const OPENFIN_URL: string = 'http://openfin.co'
+
+type StyleProps = Styled<{
+  connected: boolean
+}>
+const FooterContainer = styled('footer')`
+  height: 100%;
+  width: 100vw;
+  background-color: ${({ connected, theme }: StyleProps) =>
+    connected ? theme.footer.colors.background : theme.colors.error};
+  color: white;
+  position: relative;
+`
 
 export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
   compositeStatusService,
@@ -26,7 +41,8 @@ export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
   toggleStatusServices,
   displayStatusServices,
   environment,
-  openLink
+  openLink,
+  toggleTheme
 }) => {
   const servicesAsList = _.values(compositeStatusService)
 
@@ -42,7 +58,8 @@ export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
   })
 
   return (
-    <footer className={footerClasses}>
+    <FooterContainer className={footerClasses} connected={isConnected(connectionStatus.status)}>
+      <button onClick={toggleTheme}>Toggle Theme</button>
       <span className="footer__connection-url">
         {isConnected(connectionStatus.status)
           ? `Connected to ${connectionStatus.url} (${connectionStatus.transportType})`
@@ -69,7 +86,7 @@ export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
           {servicesAsList.map(renderServiceStatus)}
         </ul>
       </div>
-    </footer>
+    </FooterContainer>
   )
 }
 

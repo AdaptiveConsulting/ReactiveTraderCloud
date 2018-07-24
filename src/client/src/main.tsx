@@ -2,6 +2,8 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { timer } from 'rxjs'
+
+import { Theme } from 'ui/theme'
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
@@ -47,13 +49,15 @@ const appBootstrapper = () => {
   ReactDOM.render(
     <Provider store={store}>
       <EnvironmentProvider value={environmentContext}>
-        {openFin.isRunningInOpenFin ? (
-          <OpenFinProvider openFin={openFin}>
+        <Theme>
+          {openFin.isRunningInOpenFin ? (
+            <OpenFinProvider openFin={openFin}>
+              <ShellContainer />
+            </OpenFinProvider>
+          ) : (
             <ShellContainer />
-          </OpenFinProvider>
-        ) : (
-          <ShellContainer />
-        )}
+          )}
+        </Theme>
       </EnvironmentProvider>
     </Provider>,
     document.getElementById('root')
