@@ -1,38 +1,12 @@
-import * as _ from 'lodash'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { GlobalState } from '../../combineReducers'
-import { CurrencyPair, Direction, ExecuteTradeRequest } from '../../types/'
-import { SpotPriceTick } from '../../types/spotPriceTick'
-import { SpotTileData } from '../../types/spotTileData'
+import { Direction, ExecuteTradeRequest } from '../../types/'
 import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
-import { createDeepEqualSelector } from '../utils/mapToPropsSelectorFactory'
 import { spotRegionSettings, SpotTileActions } from './actions'
-import SpotTile from './SpotTile'
+import SpotTile from './components/SpotTile'
 import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './spotTileUtils'
-
-const buildSpotTileDataObject = (tileData: SpotTileData, spotTick: SpotPriceTick, currencyPair: CurrencyPair) => ({
-  ...tileData,
-  ...spotTick,
-  ...currencyPair
-})
-
-//type props
-const makeGetSpotTileData = () =>
-  createDeepEqualSelector(
-    ({ spotTilesData }: GlobalState, { id }: SpotTileContainerOwnProps) => spotTilesData[id],
-    ({ pricingService }: GlobalState, { id }: SpotTileContainerOwnProps) => pricingService[id],
-    ({ currencyPairs }: GlobalState, { id }: SpotTileContainerOwnProps) => currencyPairs[id],
-    (spotTilesData, pricingService, currencyPairs) =>
-      buildSpotTileDataObject(spotTilesData, pricingService, currencyPairs)
-  )
-
-const makeGetCurrencyPair = () =>
-  createDeepEqualSelector(
-    ({ currencyPairs }: GlobalState, { id }: SpotTileContainerOwnProps) => currencyPairs[id],
-    currencyPairs => currencyPairs
-  )
 
 interface SpotTileContainerOwnProps {
   id: string
@@ -47,11 +21,7 @@ type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToPr
 
 type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
 
-class SpotTileContainer extends React.Component<SpotTileContainerProps> {
-  shouldComponentUpdate(nextProps: SpotTileContainerProps) {
-    return !_.isEqual(this.props.spotTilesData, nextProps.spotTilesData)
-  }
-
+class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
   render() {
     const {
       id,
@@ -90,7 +60,7 @@ class SpotTileContainer extends React.Component<SpotTileContainerProps> {
     if (!executionConnected || spotTilesData.isTradeExecutionInFlight) {
       return
     }
-    const rate = direction === Direction.Buy ? spotTilesData.ask : spotTilesData.bid
+    const rate = direction === Direction.Buy ? spotTilesData.price.ask : spotTilesData.price.bid
     const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: currencyPair.base,
@@ -118,8 +88,8 @@ const makeMapStateToProps = () => (state: GlobalState, props: SpotTileContainerO
   return {
     executionConnected,
     pricingConnected,
-    currencyPair: makeGetCurrencyPair()(state, props),
-    spotTilesData: makeGetSpotTileData()(state, props),
+    currencyPair: state.currencyPairs[props.id],
+    spotTilesData: state.spotTilesData[props.id],
     notionals
   }
 }
