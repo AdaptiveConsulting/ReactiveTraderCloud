@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { CurrencyPair } from 'rt-types'
 import { GlobalState } from '../../../../combineReducers'
-import { CurrencyPair } from '../../../../types'
 import { NotionalActions } from './actions'
 import NotionalInput from './NotionalInput'
 import { NotionalState } from './notionalReducer'

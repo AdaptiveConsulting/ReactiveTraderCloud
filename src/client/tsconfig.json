@@ -21,7 +21,7 @@
     "skipLibCheck": true,
     "baseUrl": "src",
     "paths": {
-      "rt-types": ["rt-types/*"]
+      "rt-types": ["rt-types/index"]
     }
   },
   "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "webpack", "jest", "**/*.spec.ts"]

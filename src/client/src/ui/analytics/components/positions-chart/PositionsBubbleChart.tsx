@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom'
 
 import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
 import reactSizeme from 'react-sizeme'
-import { CurrencyPair } from '../../../../types/currencyPair'
+import { CurrencyPair } from 'rt-types'
 import {
   createScales,
   drawCircles,

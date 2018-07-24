@@ -6,7 +6,7 @@ import { PositionsChartModel } from '../model/positionsChartModel'
 import AnalyticsBarChart from './AnalyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
-import { CurrencyPairMap } from '../../../types/currencyPair'
+import { CurrencyPairMap } from 'rt-types'
 import PNLChart from './pnlChart/PNLChart'
 
 export interface AnalyticsProps {

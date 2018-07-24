@@ -1,7 +1,7 @@
 import * as classnames from 'classnames'
 import * as React from 'react'
 
-import { Direction, Rate } from '../../../../types'
+import { Direction, Rate } from 'rt-types'
 
 interface PriceButtonProps {
   className: string

@@ -1,7 +1,7 @@
 import * as classnames from 'classnames'
 import * as numeral from 'numeral'
 import * as React from 'react'
-import { CurrencyPair } from '../../../../types'
+import { CurrencyPair } from 'rt-types'
 import * as utils from './utils'
 
 const NUMERAL_FORMAT = '0,000,000[.]00'

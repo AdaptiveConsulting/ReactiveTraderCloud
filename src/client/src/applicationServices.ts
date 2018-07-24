@@ -1,3 +1,4 @@
+import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
 import { multicast, refCount } from 'rxjs/operators'
 import { ReferenceDataService } from './operations/referenceData'
@@ -5,7 +6,6 @@ import { OpenFin } from './services'
 import { AutobahnConnection, ConnectionEvent, createConnection$, ServiceClient, ServiceStub } from './system'
 import { ServiceCollectionMap } from './system/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './system/serviceStatusStream'
-import { User } from './types'
 
 const HEARTBEAT_TIMEOUT = 3000
 

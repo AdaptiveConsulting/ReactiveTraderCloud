@@ -1,5 +1,5 @@
+import { ExecuteTradeRequest, ExecuteTradeResponse, RegionSettings, SpotPriceTick } from 'rt-types'
 import { action, ActionUnion } from '../../ActionHelper'
-import { ExecuteTradeRequest, ExecuteTradeResponse, RegionSettings, SpotPriceTick } from '../../types'
 import { TradeExectionMeta } from './spotTileUtils'
 
 export enum ACTION_TYPES {

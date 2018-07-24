@@ -1,4 +1,4 @@
-import { CollectionUpdates, Direction, Trade, TradeStatus } from './types'
+import { CollectionUpdates, Direction, Trade, TradeStatus } from 'rt-types'
 
 export interface TradeRaw {
   TradeId: number

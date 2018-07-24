@@ -1,10 +1,10 @@
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
+import { ExecuteTradeResponse } from 'rt-types'
 import { of } from 'rxjs'
 import { delay, map, mergeMap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { ACTION_TYPES as REFERENCE_ACTION_TYPES, ReferenceActions } from '../../../operations/referenceData'
-import { ExecuteTradeResponse } from '../../../types'
 import { ACTION_TYPES, SpotTileActions } from '../actions'
 import ExecutionService from './executionService'
 

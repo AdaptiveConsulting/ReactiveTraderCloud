@@ -1,5 +1,4 @@
-import { TradeErrorResponse, TradeSuccessResponse } from '../../types'
-import { SpotTileData } from '../../types/spotTileData'
+import { SpotTileData, TradeErrorResponse, TradeSuccessResponse } from 'rt-types'
 import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../connectionStatus'
 import { ACTION_TYPES, SpotTileActions } from './actions'
 import { buildNotification } from './components/tradeNotification/notificationUtils'

@@ -1,6 +1,4 @@
-import { Trade } from '../../../../types'
-import { NotificationType } from '../../../../types'
-import { Notification } from '../../../../types/notification'
+import { Notification, NotificationType, Trade } from 'rt-types'
 
 export function buildNotification(trade: Trade = null, error?: string): Notification {
   if (error || !trade) {

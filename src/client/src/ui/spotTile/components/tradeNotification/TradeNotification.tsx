@@ -1,8 +1,7 @@
 import * as classnames from 'classnames'
 import * as numeral from 'numeral'
 import * as React from 'react'
-import { CurrencyPair, TradeStatus } from '../../../../types'
-import { Notification } from '../../../../types/notification'
+import { CurrencyPair, Notification, TradeStatus } from 'rt-types'
 import { spotDateFormatter } from '../../../utils/dateUtils'
 
 interface TradeNotificationProps {
