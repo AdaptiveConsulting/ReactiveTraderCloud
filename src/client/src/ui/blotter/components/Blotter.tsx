@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid/dist/styles/ag-grid.css'
 import * as classNames from 'classnames'
 import * as React from 'react'
-import { TradeStatus } from '../../../types'
+import { TradeStatus } from 'rt-types'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
 

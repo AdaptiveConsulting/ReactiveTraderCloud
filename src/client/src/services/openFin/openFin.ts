@@ -1,6 +1,6 @@
+import { ExecuteTradeRequest } from 'rt-types'
 import { Observable } from 'rxjs'
 import { logger } from '../../system'
-import { ExecuteTradeRequest } from '../../types'
 
 const log = logger.create('OpenFin')
 

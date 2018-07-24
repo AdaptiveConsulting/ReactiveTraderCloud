@@ -2,7 +2,7 @@ import * as numeral from 'numeral'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-import { CurrencyPair } from '../../../types'
+import { CurrencyPair } from 'rt-types'
 
 export interface PNLBarProps {
   basePnl: number

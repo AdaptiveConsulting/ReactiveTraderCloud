@@ -1,7 +1,7 @@
+import { Direction } from 'rt-types'
 import { bindCallback } from 'rxjs'
 import { map, mergeMapTo, withLatestFrom } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { Direction } from '../../../types'
 import { applicationConnected } from '../../../ui/connectionStatus'
 import { SpotTileActions } from '../../../ui/spotTile'
 

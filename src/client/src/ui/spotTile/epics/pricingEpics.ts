@@ -1,6 +1,6 @@
+import { SpotPriceTick } from 'rt-types'
 import { Observable } from 'rxjs'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
-import { SpotPriceTick } from '../../../types'
 import { applicationConnected, applicationDisconnected } from '../../../ui/connectionStatus'
 import { SpotTileActions } from '../actions'
 

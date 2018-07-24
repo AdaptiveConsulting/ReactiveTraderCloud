@@ -1,5 +1,5 @@
+import { User } from 'rt-types'
 import { logger } from '../system'
-import { User } from '../types'
 
 const log = logger.create('FakeUserRepository')
 
@@ -106,8 +106,7 @@ const fakeUserDetails = [
   }
 ]
 
-const userDetails =
-  fakeUserDetails[Math.floor(Math.random() * fakeUserDetails.length)]
+const userDetails = fakeUserDetails[Math.floor(Math.random() * fakeUserDetails.length)]
 
 const currentUser: User = {
   firstName: userDetails.firstName,
@@ -115,11 +114,7 @@ const currentUser: User = {
   code: userDetails.shortCode
 }
 
-log.info(
-  `Will use user ${currentUser.firstName} ${currentUser.lastName} (${
-    currentUser.code
-  }) for this session`
-)
+log.info(`Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`)
 
 export default class FakeUserRepository {
   /**

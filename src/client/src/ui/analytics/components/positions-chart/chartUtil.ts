@@ -2,7 +2,7 @@
 import * as _ from 'lodash'
 import * as d3 from 'd3'
 import * as numeral from 'numeral'
-import { CurrencyPair } from '../../../../types/currencyPair'
+import { CurrencyPair } from 'rt-types'
 import { CurrencyPairPosition } from '../../model/currencyPairPosition'
 import { PositionsBubbleChartProps } from './PositionsBubbleChart'
 
@@ -21,12 +21,14 @@ export function getPositionsDataFromSeries(series = [], currencyPairs: CurrencyP
     return aggregatedPositionsObj
   }, {})
 
-  return _.map(positionsPerCcyObj, (val, key) => {
-    return {
-      symbol: key,
-      [baseAmountPropertyName]: val
-    }
-  }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
+  return _
+    .map(positionsPerCcyObj, (val, key) => {
+      return {
+        symbol: key,
+        [baseAmountPropertyName]: val
+      }
+    })
+    .filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
 }
 
 export function createScales(props: PositionsBubbleChartProps) {

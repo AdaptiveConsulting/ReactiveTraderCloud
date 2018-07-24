@@ -1,5 +1,5 @@
+import { CurrencyPairMap } from 'rt-types'
 import { action, ActionUnion } from '../../ActionHelper'
-import { CurrencyPairMap } from '../../types/currencyPair'
 
 export enum ACTION_TYPES {
   REFERENCE_SERVICE = '@ReactiveTraderCloud/REFERENCE_SERVICE'

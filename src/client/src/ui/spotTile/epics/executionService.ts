@@ -1,8 +1,8 @@
+import { createExecuteTradeResponse, createExecuteTradeResponseForError, ExecuteTradeRequest } from 'rt-types'
 import { merge, Observable, of, timer } from 'rxjs'
 import { map, mapTo, mergeMap, take, takeUntil, tap } from 'rxjs/operators'
 import { logger, ServiceClient } from '../../../system'
 import { mapFromTradeDto, TradeRaw } from '../../../tradeMapper'
-import { createExecuteTradeResponse, createExecuteTradeResponseForError, ExecuteTradeRequest } from '../../../types'
 
 interface RawTradeReponse {
   Trade: TradeRaw
