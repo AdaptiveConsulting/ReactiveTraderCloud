@@ -1,5 +1,5 @@
 import { action, ActionUnion } from '../../ActionHelper'
-import { ExecuteTradeRequest, ExecuteTradeResponse, RegionSettings } from '../../types'
+import { ExecuteTradeRequest, ExecuteTradeResponse, RegionSettings, SpotPriceTick } from '../../types'
 import { TradeExectionMeta } from './spotTileUtils'
 
 export enum ACTION_TYPES {
@@ -9,7 +9,9 @@ export enum ACTION_TYPES {
   TILE_UNDOCKED = '@ReactiveTraderCloud/TILE_UNDOCKED',
   DISPLAY_CURRENCY_CHART = '@ReactiveTraderCloud/DISPLAY_CURRENCY_CHART',
   CURRENCY_CHART_OPENED = '@ReactiveTraderCloud/CURRENCY_CHART_OPENED',
-  DISMISS_NOTIFICATION = '@ReactiveTraderCloud/DISMISS_NOTIFICATION'
+  DISMISS_NOTIFICATION = '@ReactiveTraderCloud/DISMISS_NOTIFICATION',
+  SHOW_SPOT_TILE = '@ReactiveTraderCloud/SHOW_SPOT_TILE',
+  SPOT_PRICES_UPDATE = '@ReactiveTraderCloud/SPOT_PRICES_UPDATE'
 }
 
 export const SpotTileActions = {
@@ -23,7 +25,9 @@ export const SpotTileActions = {
   tileUndocked: action<ACTION_TYPES.TILE_UNDOCKED>(ACTION_TYPES.TILE_UNDOCKED),
   displayCurrencyChart: action<ACTION_TYPES.DISPLAY_CURRENCY_CHART, string>(ACTION_TYPES.DISPLAY_CURRENCY_CHART),
   currencyChartOpened: action<ACTION_TYPES.CURRENCY_CHART_OPENED, string>(ACTION_TYPES.CURRENCY_CHART_OPENED),
-  dismissNotification: action<ACTION_TYPES.DISMISS_NOTIFICATION, string>(ACTION_TYPES.DISMISS_NOTIFICATION)
+  dismissNotification: action<ACTION_TYPES.DISMISS_NOTIFICATION, string>(ACTION_TYPES.DISMISS_NOTIFICATION),
+  showSpotTile: action<ACTION_TYPES.SHOW_SPOT_TILE, string>(ACTION_TYPES.SHOW_SPOT_TILE),
+  priceUpdateAction: action<ACTION_TYPES.SPOT_PRICES_UPDATE, SpotPriceTick>(ACTION_TYPES.SPOT_PRICES_UPDATE)
 }
 
 export type SpotTileActions = ActionUnion<typeof SpotTileActions>

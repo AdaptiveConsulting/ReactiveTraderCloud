@@ -1,15 +1,10 @@
 import { Notification } from './notification'
+import { SpotPriceTick } from './spotPriceTick'
 
 export interface SpotTileData {
-  ask: number
-  bid: number
-  mid: number
-  priceMovementType: string
-  valueDate: string
-  symbol: string
-  notification: Notification
+  notification?: Notification
   currencyChartIsOpening: boolean
   isTradeExecutionInFlight: boolean
-  priceStale: boolean
   hasError: boolean
+  price?: SpotPriceTick
 }
