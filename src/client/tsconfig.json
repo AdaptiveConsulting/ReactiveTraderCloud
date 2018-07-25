@@ -9,7 +9,7 @@
     "strict": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDirs": ["src", "stories"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": false,
     "noImplicitThis": false,
@@ -20,9 +20,6 @@
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "baseUrl": "src",
-    "paths": {
-      "rt-types": ["rt-types"]
-    },
     "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "webpack", "jest", "**/*.spec.ts"]

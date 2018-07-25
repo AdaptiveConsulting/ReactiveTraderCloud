@@ -95,7 +95,7 @@
     "@storybook/addon-info": "^3.4.8",
     "@storybook/addon-links": "^3.4.8",
     "@storybook/addons": "^3.4.8",
-    "@storybook/react": "^3.4.8",
+    "@storybook/react": "^4.0.0-alpha.3",
     "@types/autobahn": "^0.9.38",
     "@types/enzyme": "^3.1.10",
     "@types/enzyme-adapter-react-16": "^1.0.2",
