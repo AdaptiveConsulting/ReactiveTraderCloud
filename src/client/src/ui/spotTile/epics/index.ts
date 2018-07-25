@@ -2,6 +2,8 @@ import { combineEpics } from 'redux-observable'
 import { from } from 'rxjs'
 import { mergeMap, share } from 'rxjs/operators'
 import { ApplicationDependencies } from '../../../applicationServices'
+import { closePositionEpic } from './closePosition'
+import { connectCurrencyChartToOpenFinEpic } from './currencyChartEpic'
 import { pricingServiceEpic } from './pricingEpics'
 import PricingService from './pricingService'
 import { publishPriceToOpenFinEpic } from './publishPrice'
@@ -26,7 +28,12 @@ export default function epic({ referenceDataService, loadBalancedServiceStub }: 
   const epics = [spotTileEpic, pricingServiceEpic(pricesForCurrenciesInRefData)]
 
   if (typeof fin !== 'undefined') {
-    epics.push(publishPriceToOpenFinEpic, connectTradeExecutedToOpenFinEpic)
+    epics.push(
+      publishPriceToOpenFinEpic,
+      connectTradeExecutedToOpenFinEpic,
+      closePositionEpic,
+      connectCurrencyChartToOpenFinEpic
+    )
   }
 
   return combineEpics(...epics)

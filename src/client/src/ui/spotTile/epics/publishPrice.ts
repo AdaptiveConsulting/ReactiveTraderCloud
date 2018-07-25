@@ -1,8 +1,9 @@
-import { CurrencyPairMap, SpotPriceTick } from 'rt-types'
+import { CurrencyPairMap } from 'rt-types'
 import { Observable } from 'rxjs'
 import { ignoreElements, map, mergeMap, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationDependencies } from '../../../applicationServices'
 import { applicationConnected, applicationDisconnected } from '../../../ui/connectionStatus'
+import { SpotPriceTick } from '../model/spotPriceTick'
 
 const addRatePrecisionToPrice = (currencyData: CurrencyPairMap, price: SpotPriceTick) => ({
   ...price,

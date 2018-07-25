@@ -1,6 +1,6 @@
+import { ConnectionActions } from 'rt-actions'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { ConnectionActions } from '../actions'
 import { ConnectionStatusService } from '../connectionStatusService'
 import { applicationConnected, applicationDisconnected } from '../operators'
 

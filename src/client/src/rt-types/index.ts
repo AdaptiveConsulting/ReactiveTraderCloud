@@ -9,7 +9,7 @@ export {
   TradeErrorResponse,
   createExecuteTradeResponseForError,
   createExecuteTradeResponse
-} from './executeTradeRequest'
+} from '../ui/spotTile/model/executeTradeRequest'
 export { Notification } from './notification'
 export { NotificationType } from './notificationType'
 export { PriceMovementTypes } from './priceMovementTypes'
@@ -17,11 +17,10 @@ export { Rate } from './rate'
 export { RegionSettings } from './regionSettings'
 export { ServiceStatus } from './serviceStatus'
 export { ServiceInstanceStatus } from './serviceInstanceStatus'
-export { Trade } from './trade'
+export { Trade, Trades } from './trade'
 export { TradeStatus } from './tradeStatus'
 export { UpdateType } from './updateType'
 export { User } from './user'
-export { SpotPriceTick } from './spotPriceTick'
 export { CollectionUpdate, CollectionUpdates } from './CollectionUpdate'
-export { SpotTileData } from './spotTileData'
 export { RawServiceStatus } from './serviceInstanceStatus'
+export { mapFromTradeDto, TradeRaw, RawTradeUpdate } from './tradeMapper'

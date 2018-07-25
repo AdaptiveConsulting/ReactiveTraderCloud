@@ -1,5 +1,5 @@
+import { CONNECTION_ACTION_TYPES, ConnectionActions } from 'rt-actions'
 import { ConnectionStatus, ConnectionType } from '../../system'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, ConnectionActions } from './actions'
 
 export interface ConnectionState {
   status: ConnectionStatus

@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import { Environment, withEnvironment } from 'rt-components'
 import { Direction, ExecuteTradeRequest } from 'rt-types'
 import { GlobalState } from '../../combineReducers'
-import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
 import { spotRegionSettings, SpotTileActions } from './actions'
 import SpotTile from './components/SpotTile'
-import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './spotTileUtils'
+import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './model/spotTileUtils'
 
 interface SpotTileContainerOwnProps {
   id: string

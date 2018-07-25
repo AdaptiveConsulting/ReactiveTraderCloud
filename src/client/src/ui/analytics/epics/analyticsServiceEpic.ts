@@ -2,7 +2,7 @@ import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { ignoreElements, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { ACTION_TYPES as ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
+import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
 import { CurrencyPairPosition } from '../model/currencyPairPosition'
 
 const { fetchAnalytics } = AnalyticsActions
