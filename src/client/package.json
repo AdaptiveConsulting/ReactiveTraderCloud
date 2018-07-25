@@ -38,7 +38,9 @@
     "openfin": "openfin -c config/openfin/local.app.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "analyze": "source-map-explorer build/static/js/main.*",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "license": "MIT",
   "lint-staged": {
@@ -89,7 +91,11 @@
     "ws": "0.8.1"
   },
   "devDependencies": {
-    "@types/redux-actions": "^2.3.0",
+    "@storybook/addon-actions": "^3.4.8",
+    "@storybook/addon-info": "^3.4.8",
+    "@storybook/addon-links": "^3.4.8",
+    "@storybook/addons": "^3.4.8",
+    "@storybook/react": "^3.4.8",
     "@types/autobahn": "^0.9.38",
     "@types/enzyme": "^3.1.10",
     "@types/enzyme-adapter-react-16": "^1.0.2",
@@ -103,6 +109,10 @@
     "@types/react-dom": "^16.0.5",
     "@types/react-test-renderer": "^16.0.1",
     "@types/react-virtualized": "9.7.10",
+    "@types/redux-actions": "^2.3.0",
+    "awesome-typescript-loader": "^5.2.0",
+    "babel-core": "^6.26.3",
+    "babel-runtime": "^6.26.0",
     "cross-env": "^5.1.4",
     "husky": "^0.14.3",
     "lint-staged": "^7.1.1",
@@ -110,6 +120,7 @@
     "npm-run-all": "^4.1.2",
     "openfin-cli": "1.1.5",
     "prettier": "^1.12.1",
+    "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "react-scripts-ts": "2.15.1",
     "react-test-renderer": "^16.3.2",
     "redux-devtools-extension": "^2.13.2",
