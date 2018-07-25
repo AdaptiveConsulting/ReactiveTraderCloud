@@ -1,4 +1,4 @@
-import { ACTION_TYPES, SidebarRegionActions } from './actions'
+import { SIDEBAR_ACTION_TYPES, SidebarRegionActions } from './actions'
 
 export type SidebarRegionState = boolean
 
@@ -9,7 +9,7 @@ export const sidebarRegionReducer = (
   action: SidebarRegionActions
 ): SidebarRegionState => {
   switch (action.type) {
-    case ACTION_TYPES.TOGGLE_ANALYTICS:
+    case SIDEBAR_ACTION_TYPES.TOGGLE_ANALYTICS:
       return !state
     default:
       return state
