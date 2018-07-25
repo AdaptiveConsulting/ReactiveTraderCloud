@@ -6,7 +6,7 @@ import { EnvironmentProvider } from 'rt-components'
 import { User } from 'rt-types'
 import { timer } from 'rxjs'
 
-import { Theme } from 'ui/theme'
+import { ThemeProvider } from 'ui/theme'
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
@@ -49,7 +49,7 @@ const appBootstrapper = () => {
   ReactDOM.render(
     <Provider store={store}>
       <EnvironmentProvider value={environmentContext}>
-        <Theme>
+        <ThemeProvider>
           {openFin.isRunningInOpenFin ? (
             <OpenFinProvider openFin={openFin}>
               <ShellContainer />
@@ -57,7 +57,7 @@ const appBootstrapper = () => {
           ) : (
             <ShellContainer />
           )}
-        </Theme>
+        </ThemeProvider>
       </EnvironmentProvider>
     </Provider>,
     document.getElementById('root')
