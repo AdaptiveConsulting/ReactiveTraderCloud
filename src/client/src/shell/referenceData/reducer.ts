@@ -1,4 +1,4 @@
-import { ACTION_TYPES, ReferenceActions } from 'rt-actions'
+import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
 import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { CurrencyPair } from 'rt-types'
 
@@ -13,7 +13,7 @@ export const currencyPairReducer = (
   action: ReferenceActions | DisconnectAction
 ): CurrencyPairState => {
   switch (action.type) {
-    case ACTION_TYPES.REFERENCE_SERVICE:
+    case REF_ACTION_TYPES.REFERENCE_SERVICE:
       const payloadUpdateItems = action.payload
       return { ...state, ...payloadUpdateItems }
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:

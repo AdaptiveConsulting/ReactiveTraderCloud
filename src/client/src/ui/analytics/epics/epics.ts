@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { ACTION_TYPES as REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
+import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
 import { combineLatest, map, mergeMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { applicationDisconnected } from '../../connectionStatus'

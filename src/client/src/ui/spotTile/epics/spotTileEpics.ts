@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
-import { ACTION_TYPES as REFERENCE_ACTION_TYPES, ReferenceActions } from 'rt-actions'
+import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
 import { ExecuteTradeRequest, ExecuteTradeResponse } from 'rt-types'
 import { of } from 'rxjs'
 import { delay, map, mergeMap } from 'rxjs/operators'
@@ -39,7 +39,7 @@ type ReferenceDataAction = ReturnType<typeof ReferenceActions.createReferenceSer
 
 const addSpotTileEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
-    ofType<Action, ReferenceDataAction>(REFERENCE_ACTION_TYPES.REFERENCE_SERVICE),
+    ofType<Action, ReferenceDataAction>(REF_ACTION_TYPES.REFERENCE_SERVICE),
     mergeMap(refData => {
       const symbols = Object.keys(refData.payload).map(symbol => SpotTileActions.showSpotTile(symbol))
       return of(...symbols)
