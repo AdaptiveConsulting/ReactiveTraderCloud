@@ -1,7 +1,4 @@
-import * as _ from 'lodash'
+import _ from 'lodash'
 import { createSelectorCreator, defaultMemoize } from 'reselect'
 
-export const createDeepEqualSelector = createSelectorCreator<any>(
-  defaultMemoize,
-  _.isEqual
-)
+export const createDeepEqualSelector = createSelectorCreator<any>(defaultMemoize, _.isEqual)
