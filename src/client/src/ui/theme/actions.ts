@@ -1,4 +1,4 @@
-import { action, ActionUnion } from 'ActionHelper'
+import { action, ActionUnion } from 'rt-util/ActionHelper'
 
 export enum ACTION_TYPES {
   TOGGLE_THEME = '@ReactiveTraderCloud/TOGGLE_THEME'

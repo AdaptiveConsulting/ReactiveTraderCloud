@@ -1,7 +1,7 @@
 /* tslint:disable */
-import * as _ from 'lodash'
-import * as d3 from 'd3'
-import * as numeral from 'numeral'
+import _ from 'lodash'
+import d3 from 'd3'
+import numeral from 'numeral'
 import { CurrencyPair } from 'rt-types'
 import { CurrencyPairPosition } from '../../model/currencyPairPosition'
 import { PositionsBubbleChartProps } from './PositionsBubbleChart'

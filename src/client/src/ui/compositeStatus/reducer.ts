@@ -1,6 +1,6 @@
+import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { ServiceStatus } from 'rt-types'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../connectionStatus'
-import { ACTION_TYPES, CompositeStatusServiceActions } from './actions'
+import { COMPOSITE_ACTION_TYPES, CompositeStatusServiceActions } from './actions'
 
 interface CompositeStatusServiceState {
   [key: string]: ServiceStatus
@@ -13,7 +13,7 @@ export function compositeStatusServiceReducer(
   action: CompositeStatusServiceActions | DisconnectAction
 ): CompositeStatusServiceState {
   switch (action.type) {
-    case ACTION_TYPES.COMPOSITE_STATUS_SERVICE:
+    case COMPOSITE_ACTION_TYPES.COMPOSITE_STATUS_SERVICE:
       return action.payload
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
       return INITIAL_STATE

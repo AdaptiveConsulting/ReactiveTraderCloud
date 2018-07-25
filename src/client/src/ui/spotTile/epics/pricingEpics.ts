@@ -1,8 +1,8 @@
-import { SpotPriceTick } from 'rt-types'
 import { Observable } from 'rxjs'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { applicationConnected, applicationDisconnected } from '../../../ui/connectionStatus'
 import { SpotTileActions } from '../actions'
+import { SpotPriceTick } from '../model/spotPriceTick'
 
 const { priceUpdateAction } = SpotTileActions
 type PriceUpdateAction = ReturnType<typeof priceUpdateAction>

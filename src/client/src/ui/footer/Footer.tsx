@@ -1,13 +1,12 @@
-import * as classnames from 'classnames'
-import * as _ from 'lodash'
-import * as React from 'react'
+import classnames from 'classnames'
+import _ from 'lodash'
+import React from 'react'
 
+import { Environment, withEnvironment } from 'rt-components'
 import styled from 'rt-styled'
 import { ServiceStatus } from 'rt-types'
 import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from 'system'
 import { ConnectionInfo } from '../connectionStatus'
-import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
-
 import { ApplicationStatusConst } from './applicationStatusConst'
 import { StatusIndicator } from './StatusIndicator'
 

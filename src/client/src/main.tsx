@@ -1,6 +1,8 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { ConnectionActions } from 'rt-actions'
+import { EnvironmentProvider } from 'rt-components'
 import { User } from 'rt-types'
 import { timer } from 'rxjs'
 
@@ -8,12 +10,10 @@ import { Theme } from 'ui/theme'
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
-import { FakeUserRepository } from './services'
-import { OpenFin } from './services/openFin'
+import { OpenFinProvider, ShellContainer } from './shell'
+import { default as FakeUserRepository } from './shell/fakeUserRepository'
+import { OpenFin } from './shell/openFin'
 import { AutobahnConnectionProxy, logger } from './system'
-import { ConnectionActions } from './ui/connectionStatus'
-import { OpenFinProvider, ShellContainer } from './ui/shell'
-import { EnvironmentProvider } from './ui/shell/EnvironmentProvider'
 
 const log = logger.create('Application Service')
 

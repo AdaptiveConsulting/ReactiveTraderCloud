@@ -1,10 +1,10 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
+import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
 import { combineLatest, map, mergeMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
-import { ACTION_TYPES as REF_ACTION_TYPES, ReferenceActions } from '../../../operations/referenceData'
 import { applicationDisconnected } from '../../connectionStatus'
-import { ACTION_TYPES as ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
+import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
 import AnalyticsService from '../analyticsService'
 
 const CURRENCY: string = 'USD'

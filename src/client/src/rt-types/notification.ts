@@ -1,4 +1,4 @@
-import { NotificationType } from './index'
+import { NotificationType } from '.'
 import { Trade } from './trade'
 
 export interface Notification {

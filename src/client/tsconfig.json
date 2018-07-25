@@ -23,7 +23,8 @@
     "baseUrl": "src",
     "paths": {
       "rt-types": ["rt-types"]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "webpack", "jest", "**/*.spec.ts"]
 }

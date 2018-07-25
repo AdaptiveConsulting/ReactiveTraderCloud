@@ -1,8 +1,8 @@
-import * as classnames from 'classnames'
-import * as numeral from 'numeral'
-import * as React from 'react'
+import classnames from 'classnames'
+import numeral from 'numeral'
+import React from 'react'
 import { CurrencyPair, Notification, TradeStatus } from 'rt-types'
-import { spotDateFormatter } from '../../../utils/dateUtils'
+import { spotDateFormatter } from '../../model/dateUtils'
 
 interface TradeNotificationProps {
   currencyPair: CurrencyPair

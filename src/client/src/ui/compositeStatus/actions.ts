@@ -1,13 +1,13 @@
-import { action, ActionUnion } from '../../ActionHelper'
+import { action, ActionUnion } from 'rt-util'
 import { ServiceConnectionInfo } from '../../system'
 
-export enum ACTION_TYPES {
+export enum COMPOSITE_ACTION_TYPES {
   COMPOSITE_STATUS_SERVICE = '@ReactiveTraderCloud/COMPOSITE_STATUS_SERVICE'
 }
 
 export const CompositeStatusServiceActions = {
-  createCompositeStatusServiceAction: action<ACTION_TYPES.COMPOSITE_STATUS_SERVICE, ServiceConnectionInfo>(
-    ACTION_TYPES.COMPOSITE_STATUS_SERVICE
+  createCompositeStatusServiceAction: action<COMPOSITE_ACTION_TYPES.COMPOSITE_STATUS_SERVICE, ServiceConnectionInfo>(
+    COMPOSITE_ACTION_TYPES.COMPOSITE_STATUS_SERVICE
   )
 }
 
