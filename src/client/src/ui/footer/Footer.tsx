@@ -1,13 +1,12 @@
 import * as classnames from 'classnames'
 import * as _ from 'lodash'
 import * as React from 'react'
-import styled from 'react-emotion'
 
+import styled from 'rt-styled'
 import { ServiceStatus } from 'rt-types'
 import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from 'system'
-import { ConnectionInfo } from 'ui/connectionStatus'
-import { Environment, withEnvironment } from 'ui/shell/EnvironmentProvider'
-import { Styled } from 'ui/theme'
+import { ConnectionInfo } from '../connectionStatus'
+import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
 
 import { ApplicationStatusConst } from './applicationStatusConst'
 import { StatusIndicator } from './StatusIndicator'
@@ -23,13 +22,14 @@ interface FooterProps {
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
 const OPENFIN_URL: string = 'http://openfin.co'
 
-type StyleProps = Styled<{
+interface FooterStyledProps {
   connected: boolean
-}>
-const FooterContainer = styled('footer')`
+}
+const FooterStyled = styled('footer')<FooterStyledProps>`
   height: 100%;
   width: 100vw;
-  background-color: ${({ connected, theme }: StyleProps) => (connected ? theme.colors.primary : theme.colors.error)};
+  background-color: ${({ connected, theme: { palette } }) =>
+    connected ? palette.accentPrimary.normal : palette.accentBad.normal};
   color: white;
   position: relative;
 `
@@ -56,7 +56,7 @@ export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
   })
 
   return (
-    <FooterContainer className={footerClasses} connected={isConnected(connectionStatus.status)}>
+    <FooterStyled className={footerClasses} connected={isConnected(connectionStatus.status)}>
       <span className="footer__connection-url">
         {isConnected(connectionStatus.status)
           ? `Connected to ${connectionStatus.url} (${connectionStatus.transportType})`
@@ -83,7 +83,7 @@ export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
           {servicesAsList.map(renderServiceStatus)}
         </ul>
       </div>
-    </FooterContainer>
+    </FooterStyled>
   )
 }
 
