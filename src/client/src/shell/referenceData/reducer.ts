@@ -1,6 +1,6 @@
 import { ACTION_TYPES, ReferenceActions } from 'rt-actions'
+import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { CurrencyPair } from 'rt-types'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../ui/connectionStatus'
 
 export interface CurrencyPairState {
   [id: string]: CurrencyPair

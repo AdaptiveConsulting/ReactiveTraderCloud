@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { ConnectionActions } from 'rt-actions'
 import { EnvironmentProvider } from 'rt-components'
 import { User } from 'rt-types'
 import { timer } from 'rxjs'
@@ -11,7 +12,6 @@ import { OpenFinProvider, ShellContainer } from './shell'
 import { default as FakeUserRepository } from './shell/fakeUserRepository'
 import { OpenFin } from './shell/openFin'
 import { AutobahnConnectionProxy, logger } from './system'
-import { ConnectionActions } from './ui/connectionStatus'
 
 const log = logger.create('Application Service')
 

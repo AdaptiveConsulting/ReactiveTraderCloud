@@ -1,5 +1,5 @@
+import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { ServiceStatus } from 'rt-types'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../connectionStatus'
 import { ACTION_TYPES, CompositeStatusServiceActions } from './actions'
 
 interface CompositeStatusServiceState {

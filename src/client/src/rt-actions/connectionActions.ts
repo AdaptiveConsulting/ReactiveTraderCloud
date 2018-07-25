@@ -1,17 +1,17 @@
 import { action, ActionUnion } from 'rt-util'
-import { ConnectionInfo } from './connectionStatusService'
+import { ConnectionInfo } from '../ui/connectionStatus/connectionStatusService'
 
-export enum ACTION_TYPES {
+export enum CONNECTION_ACTION_TYPES {
   CONNECT_SERVICES = '@ReactiveTraderCloud/CONNECT',
   DISCONNECT_SERVICES = '@ReactiveTraderCloud/DISCONNECT',
   CONNECTION_STATUS_UPDATE = '@ReactiveTraderCloud/CONNECTION_STATUS_UPDATE'
 }
 
 export const ConnectionActions = {
-  connect: action<ACTION_TYPES.CONNECT_SERVICES>(ACTION_TYPES.CONNECT_SERVICES),
-  disconnect: action<ACTION_TYPES.DISCONNECT_SERVICES>(ACTION_TYPES.DISCONNECT_SERVICES),
-  createConnectionStatusUpdateAction: action<ACTION_TYPES.CONNECTION_STATUS_UPDATE, ConnectionInfo>(
-    ACTION_TYPES.CONNECTION_STATUS_UPDATE
+  connect: action<CONNECTION_ACTION_TYPES.CONNECT_SERVICES>(CONNECTION_ACTION_TYPES.CONNECT_SERVICES),
+  disconnect: action<CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES),
+  createConnectionStatusUpdateAction: action<CONNECTION_ACTION_TYPES.CONNECTION_STATUS_UPDATE, ConnectionInfo>(
+    CONNECTION_ACTION_TYPES.CONNECTION_STATUS_UPDATE
   )
 }
 

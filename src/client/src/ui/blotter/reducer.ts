@@ -1,6 +1,6 @@
 import * as keyBy from 'lodash.keyby'
+import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { Trade } from 'rt-types'
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../connectionStatus'
 import { ACTION_TYPES, BlotterActions } from './actions'
 
 export interface Trades {

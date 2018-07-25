@@ -1,4 +1,4 @@
-import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../connectionStatus'
+import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { ACTION_TYPES, AnalyticsActions } from './actions'
 import { CurrencyPairPosition, HistoricPosition } from './model'
 
