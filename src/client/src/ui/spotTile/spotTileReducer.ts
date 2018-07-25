@@ -1,6 +1,6 @@
 import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { TradeErrorResponse, TradeSuccessResponse } from 'rt-types'
-import { ACTION_TYPES, SpotTileActions } from './actions'
+import { SpotTileActions, TILE_ACTION_TYPES } from './actions'
 import { buildNotification } from './components/tradeNotification/notificationUtils'
 import { SpotTileData } from './model/spotTileData'
 
@@ -18,17 +18,17 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
 
 const spotTileReducer = (state: SpotTileData, action: SpotTileActions): SpotTileData => {
   switch (action.type) {
-    case ACTION_TYPES.SHOW_SPOT_TILE:
+    case TILE_ACTION_TYPES.SHOW_SPOT_TILE:
       return { ...INITIAL_SPOT_TILE_STATE }
-    case ACTION_TYPES.SPOT_PRICES_UPDATE:
+    case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
       return { ...state, price: action.payload }
-    case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
+    case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
       return { ...state, currencyChartIsOpening: true }
-    case ACTION_TYPES.CURRENCY_CHART_OPENED:
+    case TILE_ACTION_TYPES.CURRENCY_CHART_OPENED:
       return { ...state, currencyChartIsOpening: false }
-    case ACTION_TYPES.EXECUTE_TRADE:
+    case TILE_ACTION_TYPES.EXECUTE_TRADE:
       return { ...state, isTradeExecutionInFlight: true }
-    case ACTION_TYPES.TRADE_EXECUTED: {
+    case TILE_ACTION_TYPES.TRADE_EXECUTED: {
       const { hasError } = action.payload
       const notification = hasError
         ? buildNotification(null, (action.payload as TradeErrorResponse).error)
@@ -40,7 +40,7 @@ const spotTileReducer = (state: SpotTileData, action: SpotTileActions): SpotTile
         isTradeExecutionInFlight: false
       }
     }
-    case ACTION_TYPES.DISMISS_NOTIFICATION:
+    case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
       return { ...state, notification: null }
     default:
       return state
@@ -52,25 +52,25 @@ export const spotTileDataReducer = (
   action: SpotTileActions | DisconnectAction
 ): SpotTileState => {
   switch (action.type) {
-    case ACTION_TYPES.DISPLAY_CURRENCY_CHART:
-    case ACTION_TYPES.CURRENCY_CHART_OPENED:
-    case ACTION_TYPES.DISMISS_NOTIFICATION:
-    case ACTION_TYPES.SHOW_SPOT_TILE:
+    case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
+    case TILE_ACTION_TYPES.CURRENCY_CHART_OPENED:
+    case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
+    case TILE_ACTION_TYPES.SHOW_SPOT_TILE:
       return {
         ...state,
         [action.payload]: spotTileReducer(state[action.payload], action)
       }
-    case ACTION_TYPES.EXECUTE_TRADE:
+    case TILE_ACTION_TYPES.EXECUTE_TRADE:
       return {
         ...state,
         [action.payload.CurrencyPair]: spotTileReducer(state[action.payload.CurrencyPair], action)
       }
-    case ACTION_TYPES.TRADE_EXECUTED:
+    case TILE_ACTION_TYPES.TRADE_EXECUTED:
       return {
         ...state,
         [action.payload.request.CurrencyPair]: spotTileReducer(state[action.payload.request.CurrencyPair], action)
       }
-    case ACTION_TYPES.SPOT_PRICES_UPDATE:
+    case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
       return {
         ...state,
         [action.payload.symbol]: spotTileReducer(state[action.payload.symbol], action)

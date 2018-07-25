@@ -3,7 +3,7 @@ import { action, ActionUnion } from 'rt-util'
 import { SpotPriceTick } from './model/spotPriceTick'
 import { TradeExectionMeta } from './model/spotTileUtils'
 
-export enum ACTION_TYPES {
+export enum TILE_ACTION_TYPES {
   EXECUTE_TRADE = '@ReactiveTraderCloud/EXECUTE_TRADE',
   TRADE_EXECUTED = '@ReactiveTraderCloud/TRADE_EXECUTED',
   UNDOCK_TILE = '@ReactiveTraderCloud/UNDOCK_TILE',
@@ -16,19 +16,21 @@ export enum ACTION_TYPES {
 }
 
 export const SpotTileActions = {
-  executeTrade: action<ACTION_TYPES.EXECUTE_TRADE, ExecuteTradeRequest, TradeExectionMeta | null>(
-    ACTION_TYPES.EXECUTE_TRADE
+  executeTrade: action<TILE_ACTION_TYPES.EXECUTE_TRADE, ExecuteTradeRequest, TradeExectionMeta | null>(
+    TILE_ACTION_TYPES.EXECUTE_TRADE
   ),
-  tradeExecuted: action<ACTION_TYPES.TRADE_EXECUTED, ExecuteTradeResponse, TradeExectionMeta | null>(
-    ACTION_TYPES.TRADE_EXECUTED
+  tradeExecuted: action<TILE_ACTION_TYPES.TRADE_EXECUTED, ExecuteTradeResponse, TradeExectionMeta | null>(
+    TILE_ACTION_TYPES.TRADE_EXECUTED
   ),
-  undockTile: action<ACTION_TYPES.UNDOCK_TILE, string>(ACTION_TYPES.UNDOCK_TILE),
-  tileUndocked: action<ACTION_TYPES.TILE_UNDOCKED>(ACTION_TYPES.TILE_UNDOCKED),
-  displayCurrencyChart: action<ACTION_TYPES.DISPLAY_CURRENCY_CHART, string>(ACTION_TYPES.DISPLAY_CURRENCY_CHART),
-  currencyChartOpened: action<ACTION_TYPES.CURRENCY_CHART_OPENED, string>(ACTION_TYPES.CURRENCY_CHART_OPENED),
-  dismissNotification: action<ACTION_TYPES.DISMISS_NOTIFICATION, string>(ACTION_TYPES.DISMISS_NOTIFICATION),
-  showSpotTile: action<ACTION_TYPES.SHOW_SPOT_TILE, string>(ACTION_TYPES.SHOW_SPOT_TILE),
-  priceUpdateAction: action<ACTION_TYPES.SPOT_PRICES_UPDATE, SpotPriceTick>(ACTION_TYPES.SPOT_PRICES_UPDATE)
+  undockTile: action<TILE_ACTION_TYPES.UNDOCK_TILE, string>(TILE_ACTION_TYPES.UNDOCK_TILE),
+  tileUndocked: action<TILE_ACTION_TYPES.TILE_UNDOCKED>(TILE_ACTION_TYPES.TILE_UNDOCKED),
+  displayCurrencyChart: action<TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART, string>(
+    TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART
+  ),
+  currencyChartOpened: action<TILE_ACTION_TYPES.CURRENCY_CHART_OPENED, string>(TILE_ACTION_TYPES.CURRENCY_CHART_OPENED),
+  dismissNotification: action<TILE_ACTION_TYPES.DISMISS_NOTIFICATION, string>(TILE_ACTION_TYPES.DISMISS_NOTIFICATION),
+  showSpotTile: action<TILE_ACTION_TYPES.SHOW_SPOT_TILE, string>(TILE_ACTION_TYPES.SHOW_SPOT_TILE),
+  priceUpdateAction: action<TILE_ACTION_TYPES.SPOT_PRICES_UPDATE, SpotPriceTick>(TILE_ACTION_TYPES.SPOT_PRICES_UPDATE)
 }
 
 export type SpotTileActions = ActionUnion<typeof SpotTileActions>
