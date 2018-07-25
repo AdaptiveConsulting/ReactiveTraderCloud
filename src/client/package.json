@@ -92,7 +92,7 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.8",
-    "@storybook/addon-info": "^3.4.8",
+    "@storybook/addon-centered": "^3.4.8",
     "@storybook/addon-links": "^3.4.8",
     "@storybook/addons": "^3.4.8",
     "@storybook/react": "^4.0.0-alpha.3",
