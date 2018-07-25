@@ -1,7 +1,7 @@
 import { ThemeProvider } from 'emotion-theming'
-import * as React from 'react'
+import React from 'react'
 
-import { Themes } from './constants'
+import { Themes } from 'shell/theme/constants'
 import { darkTheme, lightTheme } from './themes'
 
 export interface Props {
