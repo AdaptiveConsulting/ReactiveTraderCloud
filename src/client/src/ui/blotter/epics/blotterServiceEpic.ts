@@ -7,7 +7,7 @@ import { interval } from 'rxjs'
 import { filter, ignoreElements, map, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { applicationConnected, applicationDisconnected } from '../../connectionStatus'
-import { ACTION_TYPES, BlotterActions } from '../actions'
+import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 
 type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
 
@@ -50,7 +50,7 @@ const connectBlotterToExcel: ApplicationEpic = (action$, state$, { openFin }) =>
 
 const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { openFin }) =>
   action$.pipe(
-    ofType<Action, NewTradesAction>(ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
+    ofType<Action, NewTradesAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
     map(action => action.payload.trades[0]),
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
     map(trade => formatTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),

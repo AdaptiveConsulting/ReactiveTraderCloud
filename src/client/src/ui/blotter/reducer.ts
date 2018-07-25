@@ -1,7 +1,7 @@
 import * as keyBy from 'lodash.keyby'
 import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { Trade } from 'rt-types'
-import { ACTION_TYPES, BlotterActions } from './actions'
+import { BLOTTER_ACTION_TYPES, BlotterActions } from './actions'
 
 export interface Trades {
   [tradeId: number]: Trade
@@ -20,7 +20,7 @@ export const blotterServiceReducer = (
   action: BlotterActions | DisconnectAction
 ): BlotterState => {
   switch (action.type) {
-    case ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES:
+    case BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES:
       const newTradesById = keyBy(action.payload.trades, `tradeId`)
       return {
         ...state,
