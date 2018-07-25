@@ -1,8 +1,8 @@
-import * as classnames from 'classnames'
-import * as numeral from 'numeral'
-import * as React from 'react'
+import classnames from 'classnames'
+import numeral from 'numeral'
+import React from 'react'
 import { CurrencyPair } from 'rt-types'
-import * as utils from './utils'
+import { convertNotionalShorthandToNumericValue, hasShorthandInput } from './utils'
 
 const NUMERAL_FORMAT = '0,000,000[.]00'
 const DOT = '.'
@@ -79,7 +79,7 @@ export default class NotionalInput extends React.Component<NotionalInputProps, {
 
   processNotional(inputValue: string) {
     const inputValueTrimmed = inputValue.trim()
-    let notional: any = utils.convertNotionalShorthandToNumericValue(inputValueTrimmed)
+    let notional: any = convertNotionalShorthandToNumericValue(inputValueTrimmed)
     if (notional >= MAX_NOTIONAL_VALUE) {
       notional = 0
     }
@@ -104,7 +104,7 @@ export default class NotionalInput extends React.Component<NotionalInputProps, {
   handleInputChange(e: any) {
     const rawValue = (this.refs.notionalInput.value || e.target.value).trim()
     // check for a shortcut input
-    if (utils.hasShorthandInput(rawValue)) {
+    if (hasShorthandInput(rawValue)) {
       this.processNotional(rawValue)
     }
   }

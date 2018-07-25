@@ -1,5 +1,5 @@
-import * as moment from 'moment'
-import * as numeral from 'numeral'
+import moment from 'moment'
+import numeral from 'numeral'
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 import { CurrencyPair, CurrencyPairMap, Trade, Trades, TradeStatus } from 'rt-types'

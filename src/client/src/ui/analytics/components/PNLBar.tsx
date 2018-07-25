@@ -1,6 +1,6 @@
-import * as numeral from 'numeral'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import numeral from 'numeral'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 import { CurrencyPair } from 'rt-types'
 

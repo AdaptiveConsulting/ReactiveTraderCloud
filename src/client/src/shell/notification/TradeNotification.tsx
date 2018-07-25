@@ -1,6 +1,6 @@
-import * as classnames from 'classnames'
-import * as React from 'react'
-import { Direction, Trade, TradeStatus } from 'rt-types/index'
+import classnames from 'classnames'
+import React from 'react'
+import { Direction, Trade, TradeStatus } from 'rt-types'
 import '../../ui/styles/css/index.css'
 
 export interface TradeNotificationProps {

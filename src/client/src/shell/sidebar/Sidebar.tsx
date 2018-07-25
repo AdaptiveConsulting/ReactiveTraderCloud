@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { SidebarRegionActions } from './actions'
 import { getSidebarStyles } from './sidebarUtils'
 import Toggle from './Toggle'

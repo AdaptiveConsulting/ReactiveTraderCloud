@@ -1,5 +1,5 @@
-import * as AgGrid from 'ag-grid'
-import * as numeral from 'numeral'
+import { ColDef } from 'ag-grid'
+import numeral from 'numeral'
 import { Trade, TradeStatus } from 'rt-types'
 import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
 import './filters/filterOverrides.ts'
@@ -55,7 +55,7 @@ const getStatusIndicatorClass = (trade: Trade) => {
   return null
 }
 
-export const DEFAULT_COLUMN_DEFINITION: AgGrid.ColDef = {
+export const DEFAULT_COLUMN_DEFINITION: ColDef = {
   menuTabs: ['filterMenuTab'],
   suppressSizeToFit: true,
   suppressFilter: false,
@@ -88,7 +88,7 @@ export const COLUMN_FIELDS = [
   TRADER_NAME
 ]
 
-export const columnDefinitions: AgGrid.ColDef[] = [
+export const columnDefinitions: ColDef[] = [
   {
     colId: STATUS_INDICATOR,
     headerName: '',

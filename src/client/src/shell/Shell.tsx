@@ -1,16 +1,15 @@
-import * as React from 'react'
-import { BlotterContainer } from '../ui/blotter/index'
-import FooterContainer from '../ui/footer/FooterContainer'
-import { WorkspaceContainer } from '../ui/workspace'
-import { Modal } from './modal/index'
-import SidebarRegionContainer from './sidebar/index'
-
-import * as classnames from 'classnames'
+import classnames from 'classnames'
+import React from 'react'
 import SplitPane from 'react-split-pane'
 import { Environment, withEnvironment } from 'rt-components'
 import { TearOff } from 'rt-components'
 import { AnalyticsContainer } from '../ui/analytics/index'
+import { BlotterContainer } from '../ui/blotter'
+import FooterContainer from '../ui/footer/FooterContainer'
 import '../ui/styles/css/index.css'
+import { WorkspaceContainer } from '../ui/workspace'
+import { Modal } from './modal'
+import SidebarRegionContainer from './sidebar'
 
 export interface ShellProps {
   sessionExpired: boolean

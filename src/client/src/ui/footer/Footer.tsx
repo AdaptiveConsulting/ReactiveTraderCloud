@@ -1,6 +1,6 @@
-import * as classnames from 'classnames'
-import * as _ from 'lodash'
-import * as React from 'react'
+import classnames from 'classnames'
+import _ from 'lodash'
+import React from 'react'
 import { StatusIndicator } from './StatusIndicator'
 
 import { Environment, withEnvironment } from 'rt-components'

@@ -1,11 +1,11 @@
 /* tslint:disable */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import * as classnames from 'classnames'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import classnames from 'classnames'
 // tslint:disable-next-line:noImplicitAny
-import * as NVD3Chart from 'react-nvd3'
+import NVD3Chart from 'react-nvd3'
 import { timeFormat } from 'd3-time-format'
-import * as numeral from 'numeral'
+import numeral from 'numeral'
 
 import ChartGradient from './chartGradient'
 

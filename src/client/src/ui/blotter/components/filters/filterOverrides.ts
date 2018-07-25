@@ -1,4 +1,4 @@
-import * as AgGrid from 'ag-grid'
+import { DateFilter, NumberFilter } from 'ag-grid'
 // import { Column, FilterManager, FilterWrapper, Promise, Utils as _ } from "ag-grid";
 
 const getFilterSelect = (filter: any) => {
@@ -27,7 +27,7 @@ const getFilterSelect = (filter: any) => {
 }
 
 // Numeric filter layout override to add a tab on top of the content
-AgGrid.NumberFilter.prototype.bodyTemplate = function() {
+NumberFilter.prototype.bodyTemplate = function() {
   const translate = this.translate.bind(this)
 
   const selector = getFilterSelect(this)
@@ -51,12 +51,12 @@ AgGrid.NumberFilter.prototype.bodyTemplate = function() {
           </div>`
 }
 
-AgGrid.NumberFilter.prototype.generateFilterHeader = function() {
+NumberFilter.prototype.generateFilterHeader = function() {
   return ''
 }
 
 // Date filter override
-AgGrid.DateFilter.prototype.bodyTemplate = function() {
+DateFilter.prototype.bodyTemplate = function() {
   const selector = getFilterSelect(this)
   return `<div class="filter-container">
             <div class="filter-container__tab">
@@ -72,6 +72,6 @@ AgGrid.DateFilter.prototype.bodyTemplate = function() {
               </div>`
 }
 
-AgGrid.DateFilter.prototype.generateFilterHeader = function() {
+DateFilter.prototype.generateFilterHeader = function() {
   return ''
 }

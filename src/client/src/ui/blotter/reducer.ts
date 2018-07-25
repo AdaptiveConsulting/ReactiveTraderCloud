@@ -1,4 +1,4 @@
-import * as keyBy from 'lodash.keyby'
+import keyBy from 'lodash.keyby'
 import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { Trade } from 'rt-types'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from './actions'
