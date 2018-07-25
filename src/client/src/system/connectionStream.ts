@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs'
+import { AutobahnSessionProxy } from '.'
 import { AutobahnConnection } from './AutoBahnConnection'
 import { ConnectionType } from './connectionType'
-import { AutobahnSessionProxy } from './index'
 import logger from './logger'
 
 const log = logger.create('ConnectionFactory')
@@ -26,9 +26,7 @@ export interface ConnectionClosedEvent {
 
 export type ConnectionEvent = ConnectionOpenEvent | ConnectionClosedEvent
 
-export function createConnection$(
-  autobahn: AutobahnConnection
-): Observable<ConnectionEvent> {
+export function createConnection$(autobahn: AutobahnConnection): Observable<ConnectionEvent> {
   return new Observable(obs => {
     autobahn.onopen(session => {
       log.info('Connected')

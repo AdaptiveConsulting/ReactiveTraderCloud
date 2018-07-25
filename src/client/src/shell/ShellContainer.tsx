@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { ConnectionActions } from 'rt-actions'
 import { GlobalState } from '../combineReducers'
-import { ConnectionStatus } from '../system/index'
+import { ConnectionStatus } from '../system'
 import Shell from './Shell'
 
 const mapStateToProps = ({ connectionStatus, regionsService }: GlobalState) => ({

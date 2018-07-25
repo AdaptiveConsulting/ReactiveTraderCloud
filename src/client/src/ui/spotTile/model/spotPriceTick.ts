@@ -1,4 +1,4 @@
-import { PriceMovementTypes } from '../../../rt-types/priceMovementTypes'
+import { PriceMovementTypes } from 'rt-types'
 
 export interface SpotPriceTick {
   ask: number

@@ -1,5 +1,4 @@
-import { Direction } from '../../../rt-types/index'
-import { ExecuteTradeRequest, Trade } from '../../../rt-types/index'
+import { Direction, ExecuteTradeRequest, Trade } from 'rt-types'
 
 export interface ExecuteTradeRequest extends Object {
   CurrencyPair: string
