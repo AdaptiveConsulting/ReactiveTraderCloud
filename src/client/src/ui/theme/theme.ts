@@ -5,37 +5,13 @@ const colors = {
   primary: '#00a8cc'
 }
 
-const darkColors = {
-  ...colors,
-  background: 'black'
-}
-
-const footer = {
-  colors: {
-    background: '#00a8cc'
-  }
-}
-
-const darkFooter = {
-  colors: {
-    background: '#00008B'
-  }
-}
-
 const theme = {
-  colors,
-  footer
+  colors
 }
 
 export const darkTheme = {
-  ...theme,
-  colors: darkColors,
-  footer: darkFooter
+  ...theme
 }
-
 export const lightTheme = theme
 
-type Theme = typeof theme
-export type Styled<P extends {}> = P & {
-  theme?: Theme
-}
+export type Theme = typeof theme

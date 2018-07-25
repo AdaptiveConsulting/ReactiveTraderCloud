@@ -3,11 +3,12 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import styled from 'react-emotion'
 
+import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from 'system'
+import { ServiceStatus } from 'types'
+import { ConnectionInfo } from 'ui/connectionStatus'
+import { Environment, withEnvironment } from 'ui/shell/EnvironmentProvider'
 import { Styled } from 'ui/theme'
-import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from '../../system'
-import { ServiceStatus } from '../../types'
-import { ConnectionInfo } from '../connectionStatus'
-import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
+
 import { ApplicationStatusConst } from './applicationStatusConst'
 import { StatusIndicator } from './StatusIndicator'
 
@@ -17,7 +18,6 @@ interface FooterProps {
   toggleStatusServices: () => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
   displayStatusServices: boolean
   openLink: (link: string) => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874,
-  toggleTheme: () => any
 }
 
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
@@ -29,8 +29,7 @@ type StyleProps = Styled<{
 const FooterContainer = styled('footer')`
   height: 100%;
   width: 100vw;
-  background-color: ${({ connected, theme }: StyleProps) =>
-    connected ? theme.footer.colors.background : theme.colors.error};
+  background-color: ${({ connected, theme }: StyleProps) => (connected ? theme.colors.primary : theme.colors.error)};
   color: white;
   position: relative;
 `
@@ -41,8 +40,7 @@ export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
   toggleStatusServices,
   displayStatusServices,
   environment,
-  openLink,
-  toggleTheme
+  openLink
 }) => {
   const servicesAsList = _.values(compositeStatusService)
 
@@ -59,7 +57,6 @@ export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
 
   return (
     <FooterContainer className={footerClasses} connected={isConnected(connectionStatus.status)}>
-      <button onClick={toggleTheme}>Toggle Theme</button>
       <span className="footer__connection-url">
         {isConnected(connectionStatus.status)
           ? `Connected to ${connectionStatus.url} (${connectionStatus.transportType})`

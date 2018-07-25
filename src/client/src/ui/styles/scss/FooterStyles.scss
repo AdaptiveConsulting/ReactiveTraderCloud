@@ -1,18 +1,6 @@
 @import 'variables';
 $footer-background-color: #00a8cc;
 
-.footer {
-  height: 100%;
-  width: 100vw;
-  background-color: $footer-background-color;
-  color: white;
-  position: relative;
-
-  &.footer--disconnected {
-    background-color: $error-color;
-  }
-}
-
 .footer__services {
   list-style: none;
   margin: 0;
