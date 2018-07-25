@@ -4,7 +4,7 @@ import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
 import { combineLatest, map, mergeMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { applicationDisconnected } from '../../connectionStatus'
-import { ACTION_TYPES as ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
+import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
 import AnalyticsService from '../analyticsService'
 
 const CURRENCY: string = 'USD'
