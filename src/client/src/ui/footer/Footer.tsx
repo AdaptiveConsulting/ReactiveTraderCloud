@@ -3,10 +3,10 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import { StatusIndicator } from './StatusIndicator'
 
+import { Environment, withEnvironment } from 'rt-components'
 import { ServiceStatus } from 'rt-types'
 import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from '../../system'
 import { ConnectionInfo } from '../connectionStatus'
-import { Environment, withEnvironment } from '../shell/EnvironmentProvider'
 import { ApplicationStatusConst } from './applicationStatusConst'
 
 interface FooterProps {

@@ -1,4 +1,4 @@
-import { action, ActionUnion } from '../../ActionHelper'
+import { action, ActionUnion } from 'rt-util'
 import { ConnectionInfo } from './connectionStatusService'
 
 export enum ACTION_TYPES {

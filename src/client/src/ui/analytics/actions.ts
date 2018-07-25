@@ -1,4 +1,4 @@
-import { action, ActionUnion } from '../../ActionHelper'
+import { action, ActionUnion } from 'rt-util'
 import { PositionUpdates } from './model/positionUpdates'
 
 export enum ACTION_TYPES {

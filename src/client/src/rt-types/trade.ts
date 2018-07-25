@@ -11,3 +11,7 @@ export interface Trade {
   valueDate: Date
   status: any
 }
+
+export interface Trades {
+  [tradeId: number]: Trade
+}

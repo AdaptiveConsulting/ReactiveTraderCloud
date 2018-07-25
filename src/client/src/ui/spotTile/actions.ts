@@ -1,6 +1,7 @@
-import { ExecuteTradeRequest, ExecuteTradeResponse, RegionSettings, SpotPriceTick } from 'rt-types'
-import { action, ActionUnion } from '../../ActionHelper'
-import { TradeExectionMeta } from './spotTileUtils'
+import { ExecuteTradeRequest, ExecuteTradeResponse, RegionSettings } from 'rt-types'
+import { action, ActionUnion } from 'rt-util'
+import { SpotPriceTick } from './model/spotPriceTick'
+import { TradeExectionMeta } from './model/spotTileUtils'
 
 export enum ACTION_TYPES {
   EXECUTE_TRADE = '@ReactiveTraderCloud/EXECUTE_TRADE',

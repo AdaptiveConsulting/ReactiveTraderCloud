@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { TearOff } from 'rt-components'
 import { GlobalState } from '../../combineReducers'
-import { TearOff } from '../shell/tearoff'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
 
 type WorkspaceContainerStateProps = ReturnType<typeof mapStateToProps>
