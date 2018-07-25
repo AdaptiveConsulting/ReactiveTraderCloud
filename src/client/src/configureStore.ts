@@ -4,7 +4,6 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable'
 
 import { ApplicationDependencies } from './applicationServices'
 import rootReducer, { GlobalState } from './combineReducers'
-import { pricingServiceEpic } from './operations/pricing'
 import { referenceServiceEpic } from './operations/referenceData'
 import { openfinEpic } from './services/openFin/epics'
 import { analyticsServiceEpic } from './ui/analytics'
@@ -18,11 +17,10 @@ export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [
     referenceServiceEpic,
     blotterEpic,
-    pricingServiceEpic,
     analyticsServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,
-    spotTileEpic,
+    spotTileEpic(dependencies),
     linkEpic
   ]
 

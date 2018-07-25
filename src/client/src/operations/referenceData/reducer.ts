@@ -1,5 +1,5 @@
+import { CurrencyPair } from 'rt-types'
 import { ACTION_TYPES, ReferenceActions } from '../../operations/referenceData'
-import { CurrencyPair } from '../../types'
 import { ACTION_TYPES as CONNECTION_ACTION_TYPES, DisconnectAction } from '../../ui/connectionStatus'
 
 export interface CurrencyPairState {

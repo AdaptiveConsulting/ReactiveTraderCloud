@@ -1,5 +1,4 @@
-import { Direction } from '../../types'
-import { Rate } from '../../types/rate'
+import { Direction, Rate } from 'rt-types'
 
 export const DEFAULT_NOTIONAL = 1000000
 

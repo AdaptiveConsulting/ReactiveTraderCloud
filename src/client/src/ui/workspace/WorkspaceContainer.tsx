@@ -64,7 +64,7 @@ export class WorkspaceContainer extends React.PureComponent<WorkspaceContainerPr
 }
 
 const mapStateToProps = (state: GlobalState) => ({
-  spotTileKeys: state.currencyPairs
+  spotTileKeys: state.spotTilesData
 })
 
 export default connect(mapStateToProps)(WorkspaceContainer)

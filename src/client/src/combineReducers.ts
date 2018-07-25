@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { pricingServiceReducer } from './operations/pricing'
 import { currencyPairReducer } from './operations/referenceData'
 import { analyticsReducer } from './ui/analytics'
 import { blotterReducer } from './ui/blotter'
@@ -9,13 +8,12 @@ import { footerReducer } from './ui/footer'
 import { regionsReducer } from './ui/shell/regions'
 import { sidebarRegionReducer } from './ui/shell/sidebar'
 import { spotTileDataReducer } from './ui/spotTile'
-import { notionalsReducer } from './ui/spotTile/notional'
+import { notionalsReducer } from './ui/spotTile/components/notional'
 import { themeReducer } from './ui/theme'
 
 const rootReducer = combineReducers({
   blotterService: blotterReducer,
   currencyPairs: currencyPairReducer,
-  pricingService: pricingServiceReducer,
   analyticsService: analyticsReducer,
   compositeStatusService: compositeStatusServiceReducer,
   connectionStatus: connectionStatusReducer,
