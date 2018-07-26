@@ -9,7 +9,7 @@ import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from '../../s
 import { ConnectionInfo } from '../connectionStatus'
 import { ApplicationStatusConst } from './applicationStatusConst'
 
-interface FooterProps {
+export interface FooterProps {
   compositeStatusService: ServiceConnectionInfo
   connectionStatus: ConnectionInfo
   toggleStatusServices: () => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874

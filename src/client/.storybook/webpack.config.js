@@ -1,5 +1,6 @@
 const path = require('path')
 const TSDocgenPlugin = require('react-docgen-typescript-webpack-plugin')
+
 module.exports = (baseConfig, env, defaultConfig) => {
   defaultConfig.module.rules.push({
     test: /\.(ts|tsx)$/,
@@ -11,7 +12,10 @@ module.exports = (baseConfig, env, defaultConfig) => {
     'rt-components': path.resolve(__dirname, '../src', 'rt-components'),
     'rt-util': path.resolve(__dirname, '../src', 'rt-util'),
     'rt-types': path.resolve(__dirname, '../src', 'rt-types'),
-    'rt-actions': path.resolve(__dirname, '../src', 'rt-actions')
+    'rt-actions': path.resolve(__dirname, '../src', 'rt-actions'),
+    ui: path.resolve(__dirname, '../src', 'ui'),
+    system: path.resolve(__dirname, '../src', 'system'),
+    shell: path.resolve(__dirname, '../src', 'shell')
   }
   return defaultConfig
 }
