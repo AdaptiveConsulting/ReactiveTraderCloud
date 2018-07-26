@@ -3,81 +3,87 @@ import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid/dist/styles/ag-grid.css'
 import classNames from 'classnames'
 import React from 'react'
-import { TradeStatus } from 'rt-types'
+import ReactDOM from 'react-dom'
+import { Trade, TradeStatus } from 'rt-types'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
 
-interface AgGridBlotterProps {
-  rows: any[]
+export interface BlotterProps {
+  rows: Trade[]
   canPopout: boolean
   onPopoutClick: () => void
+}
+
+interface BlotterState {
+  displayedRows: number
+  quickFilterText: string
   gridDocument: Element
 }
 
-interface AgGridBlotterState {
-  displayedRows: number
-  quickFilterText: string
-}
-
-export default class AgGridBlotter extends React.Component<AgGridBlotterProps, AgGridBlotterState> {
+export default class Blotter extends React.Component<BlotterProps, BlotterState> {
   private gridApi: GridApi
 
   state = {
     displayedRows: 0,
-    quickFilterText: null
-  } as AgGridBlotterState
+    quickFilterText: null,
+    gridDocument: null
+  } as BlotterState
 
   render() {
     const { canPopout, rows, onPopoutClick } = this.props
-    const { displayedRows, quickFilterText } = this.state
+    const { displayedRows, quickFilterText, gridDocument } = this.state
     const containerClass = classNames('agGridBlotter-container', 'rt-blotter-shared', 'rt-blotter-dark')
     const newWindowClassName = classNames('glyphicon glyphicon-new-window', {
       'blotter__controls--hidden': canPopout
     })
 
     return (
-      <div className={containerClass}>
-        <div className="rt-blotter__controls popout__controls">
-          <i className={newWindowClassName} onClick={onPopoutClick} />
-        </div>
-        <BlotterToolbar
-          isQuickFilterApplied={quickFilterText && quickFilterText.length !== 0}
-          quickFilterChangeHandler={this.quickFilterChangeHandler}
-          removeQuickFilter={this.removeQuickFilter}
-          removeAllFilters={this.removeAllFilters}
-          removeFilter={this.removeFilter}
-          filterModel={this.gridApi ? this.gridApi.getFilterModel() : null}
-          columnDefinitions={columnDefinitions}
-        />
-        <div className="rt-blotter__grid-wrapper">
-          <AgGridReact
-            columnDefs={columnDefinitions}
-            defaultColDef={DEFAULT_COLUMN_DEFINITION}
-            rowData={rows}
-            enableColResize={true}
-            suppressMovableColumns={true}
-            enableSorting={true}
-            enableFilter={true}
-            onModelUpdated={this.onModelUpdated}
-            onGridReady={this.onGridReady}
-            rowSelection="multiple"
-            headerHeight={28}
-            suppressDragLeaveHidesColumns={true}
-            getRowClass={this.getRowClass}
-            onColumnResized={this.sizeColumnsToFit}
-            getDocument={this.getGridDocument}
-            postProcessPopup={this.postProcessPopup}
+      <div className="shell_workspace_blotter" ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
+        <div className={containerClass}>
+          <div className="rt-blotter__controls popout__controls">
+            <i className={newWindowClassName} onClick={onPopoutClick} />
+          </div>
+          <BlotterToolbar
+            isQuickFilterApplied={quickFilterText && quickFilterText.length !== 0}
+            quickFilterChangeHandler={this.quickFilterChangeHandler}
+            removeQuickFilter={this.removeQuickFilter}
+            removeAllFilters={this.removeAllFilters}
+            removeFilter={this.removeFilter}
+            filterModel={this.gridApi ? this.gridApi.getFilterModel() : null}
+            columnDefinitions={columnDefinitions}
           />
-        </div>
-        <div className="rt-blotter__status-bar">
-          <div>{`Displaying rows ${displayedRows} of ${rows.length}`}</div>
+          <div className="rt-blotter__grid-wrapper">
+            <AgGridReact
+              columnDefs={columnDefinitions}
+              defaultColDef={DEFAULT_COLUMN_DEFINITION}
+              rowData={rows}
+              enableColResize={true}
+              suppressMovableColumns={true}
+              enableSorting={true}
+              enableFilter={true}
+              onModelUpdated={this.onModelUpdated}
+              onGridReady={this.onGridReady}
+              rowSelection="multiple"
+              headerHeight={28}
+              suppressDragLeaveHidesColumns={true}
+              getRowClass={this.getRowClass}
+              onColumnResized={this.sizeColumnsToFit}
+              getDocument={() => (gridDocument && gridDocument.ownerDocument) || null}
+              postProcessPopup={this.postProcessPopup}
+            />
+          </div>
+          <div className="rt-blotter__status-bar">
+            <div>{`Displaying rows ${displayedRows} of ${rows.length}`}</div>
+          </div>
         </div>
       </div>
     )
   }
 
-  private getGridDocument = () => {
-    return this.props.gridDocument ? this.props.gridDocument.ownerDocument : null
+  private updateGridDocument = (doc: Element) => {
+    if (doc && !this.state.gridDocument) {
+      this.setState({ gridDocument: doc })
+    }
   }
 
   private sizeColumnsToFit = () => this.gridApi && this.gridApi.sizeColumnsToFit()
