@@ -1,6 +1,14 @@
 import { darken, lighten } from './colorUtils'
 
-import { accentBad, accentGood, accentPrimary, accentWarning, brandPrimary, brandSecondary } from './baseColors'
+import {
+  accentBad,
+  accentGood,
+  accentPrimary,
+  accentWarning,
+  backgroundPrimary,
+  brandPrimary,
+  brandSecondary
+} from './baseColors'
 
 const getLightPrimary = (color: string) => ({
   '0': lighten(color, 100),
@@ -21,6 +29,7 @@ const getAccent = (color: string) => ({
 })
 
 const palette = {
+  backgroundPrimary,
   brand: {
     primary: brandPrimary,
     secondary: brandSecondary

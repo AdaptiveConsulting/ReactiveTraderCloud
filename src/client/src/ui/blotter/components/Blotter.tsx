@@ -1,12 +1,12 @@
 import { GridApi } from 'ag-grid'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid/dist/styles/ag-grid.css'
-import classNames from 'classnames'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Trade, TradeStatus } from 'rt-types'
+import { styled } from 'rt-util'
+import BlotterHeader from './BlotterHeader'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION } from './blotterUtils'
-import BlotterToolbar from './toolbar/BlotterToolbar'
 
 export interface BlotterProps {
   rows: Trade[]
@@ -16,42 +16,41 @@ export interface BlotterProps {
 
 interface BlotterState {
   displayedRows: number
-  quickFilterText: string
   gridDocument: Element
 }
+
+const BlotterShellStyle = styled('div')`
+  height: 100%;
+  width: 100%;
+  min-height: 20px;
+  background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
+`
+
+const BlotterStyle = styled('div')`
+  color: #fff;
+  font-family: BrandonLight;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-size: 13px;
+`
 
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {
   private gridApi: GridApi
 
   state = {
     displayedRows: 0,
-    quickFilterText: null,
     gridDocument: null
-  } as BlotterState
+  }
 
   render() {
     const { canPopout, rows, onPopoutClick } = this.props
-    const { displayedRows, quickFilterText, gridDocument } = this.state
-    const containerClass = classNames('agGridBlotter-container', 'rt-blotter-shared', 'rt-blotter-dark')
-    const newWindowClassName = classNames('glyphicon glyphicon-new-window', {
-      'blotter__controls--hidden': canPopout
-    })
+    const { displayedRows, gridDocument } = this.state
 
     return (
-      <div className="shell_workspace_blotter" ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
-        <div className={containerClass}>
-          <div className="rt-blotter__controls popout__controls">
-            <i className={newWindowClassName} onClick={onPopoutClick} />
-          </div>
-          <BlotterToolbar
-            isQuickFilterApplied={quickFilterText && quickFilterText.length !== 0}
-            quickFilterChangeHandler={this.quickFilterChangeHandler}
-            removeQuickFilter={this.removeQuickFilter}
-            removeAllFilters={this.removeAllFilters}
-            removeFilter={this.removeFilter}
-            filterModel={this.gridApi ? this.gridApi.getFilterModel() : null}
-            columnDefinitions={columnDefinitions}
-          />
+      <BlotterShellStyle ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
+        <BlotterStyle>
+          <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
           <div className="rt-blotter__grid-wrapper">
             <AgGridReact
               columnDefs={columnDefinitions}
@@ -75,8 +74,8 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
           <div className="rt-blotter__status-bar">
             <div>{`Displaying rows ${displayedRows} of ${rows.length}`}</div>
           </div>
-        </div>
-      </div>
+        </BlotterStyle>
+      </BlotterShellStyle>
     )
   }
 
@@ -95,22 +94,6 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
   }
 
   private onModelUpdated = () => this.gridApi && this.setState({ displayedRows: this.gridApi.getModel().getRowCount() })
-
-  private quickFilterChangeHandler = (event: React.FormEvent<any>) => {
-    const target = event.target as HTMLInputElement
-    this.setState({ quickFilterText: target.value })
-    this.gridApi.setQuickFilter(target.value)
-  }
-
-  private removeQuickFilter = () => {
-    this.gridApi.setQuickFilter(null)
-    this.gridApi.onFilterChanged()
-    this.setState({ quickFilterText: null })
-  }
-
-  private removeAllFilters = () => this.gridApi.setFilterModel(null)
-
-  private removeFilter = (key: string) => this.gridApi.destroyFilter(key)
 
   private getRowClass({ data }) {
     if (data.status === TradeStatus.Rejected) {

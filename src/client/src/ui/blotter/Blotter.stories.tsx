@@ -38,7 +38,7 @@ const blotterSuccessRow: Trade = {
 }
 
 const blotterProps: BlotterProps = {
-  rows: [blotterRejectedRow, blotterSuccessRow],
+  rows: [blotterRejectedRow, blotterSuccessRow, blotterSuccessRow, blotterSuccessRow, blotterRejectedRow],
   onPopoutClick: action('onPopoutClick'),
   canPopout: false
 }
