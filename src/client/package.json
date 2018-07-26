@@ -38,7 +38,9 @@
     "openfin": "openfin -c config/openfin/local.app.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "analyze": "source-map-explorer build/static/js/main.*",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "license": "MIT",
   "lint-staged": {
@@ -52,7 +54,6 @@
     ]
   },
   "dependencies": {
-    "@types/react-redux": "^6.0.0",
     "ag-grid": "15.0.0",
     "ag-grid-react": "15.0.0",
     "animate.css": "3.4.0",
@@ -93,6 +94,11 @@
     "ws": "0.8.1"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^4.0.0-alpha.14",
+    "@storybook/addon-centered": "^4.0.0-alpha.14",
+    "@storybook/addon-links": "^4.0.0-alpha.14",
+    "@storybook/addons": "^4.0.0-alpha.14",
+    "@storybook/react": "4.0.0-alpha.14",
     "@types/autobahn": "^0.9.38",
     "@types/enzyme": "^3.1.10",
     "@types/enzyme-adapter-react-16": "^1.0.2",
@@ -104,17 +110,23 @@
     "@types/query-string": "^5.1.0",
     "@types/react": "^16.3.11",
     "@types/react-dom": "^16.0.5",
+    "@types/react-redux": "^6.0.0",
     "@types/react-test-renderer": "^16.0.1",
     "@types/react-virtualized": "9.7.10",
     "@types/redux-actions": "^2.3.0",
+    "awesome-typescript-loader": "^5.2.0",
+    "babel-core": "^6.26.3",
+    "babel-runtime": "^6.26.0",
     "@types/tinycolor2": "^1.4.0",
     "cross-env": "^5.1.4",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.1.1",
     "node-sass-chokidar": "^1.2.2",
     "npm-run-all": "^4.1.2",
     "openfin-cli": "1.1.5",
     "prettier": "^1.12.1",
+    "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "react-scripts-ts": "2.15.1",
     "react-test-renderer": "^16.3.2",
     "redux-devtools-extension": "^2.13.2",

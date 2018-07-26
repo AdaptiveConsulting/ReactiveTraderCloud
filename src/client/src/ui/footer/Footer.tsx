@@ -10,7 +10,7 @@ import { ConnectionInfo } from '../connectionStatus'
 import { ApplicationStatusConst } from './applicationStatusConst'
 import { StatusIndicator } from './StatusIndicator'
 
-interface FooterProps {
+export interface FooterProps {
   compositeStatusService: ServiceConnectionInfo
   connectionStatus: ConnectionInfo
   toggleStatusServices: () => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
@@ -28,8 +28,8 @@ const FooterStyled = styled('footer')<FooterStyledProps>`
   height: 100%;
   width: 100vw;
   background-color: ${({ connected, theme: { palette } }) =>
-    connected ? palette.accentPrimary.normal : palette.accentBad.normal};
-  color: white;
+    connected ? palette.primary[0] : palette.accentBad.normal};
+  color: ${({ theme: { palette } }) => palette.secondary[0]};
   position: relative;
 `
 
