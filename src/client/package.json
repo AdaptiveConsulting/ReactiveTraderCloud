@@ -94,11 +94,11 @@
     "ws": "0.8.1"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^3.4.8",
-    "@storybook/addon-centered": "^3.4.8",
-    "@storybook/addon-links": "^3.4.8",
-    "@storybook/addons": "^3.4.8",
-    "@storybook/react": "^4.0.0-alpha.3",
+    "@storybook/addon-actions": "^4.0.0-alpha.14",
+    "@storybook/addon-centered": "^4.0.0-alpha.14",
+    "@storybook/addon-links": "^4.0.0-alpha.14",
+    "@storybook/addons": "^4.0.0-alpha.14",
+    "@storybook/react": "4.0.0-alpha.14",
     "@types/autobahn": "^0.9.38",
     "@types/enzyme": "^3.1.10",
     "@types/enzyme-adapter-react-16": "^1.0.2",
