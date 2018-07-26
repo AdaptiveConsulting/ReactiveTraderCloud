@@ -5,15 +5,7 @@ import { Themes } from 'shell/theme'
 import Theme from 'ui/theme/Theme'
 
 const StyledStory = styled('div')`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 100vw;
 `
 
 const Toolbar = styled('div')`

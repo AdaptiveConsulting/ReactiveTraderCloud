@@ -72,6 +72,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
             onColumnResized={this.sizeColumnsToFit}
             getDocument={() => (gridDocument && gridDocument.ownerDocument) || null}
             postProcessPopup={this.postProcessPopup}
+            gridAutoHeight={true}
           />
         </BlotterGridStyle>
         <BlotterStatusStyle>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatusStyle>
