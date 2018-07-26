@@ -24,15 +24,13 @@ const BlotterShellStyle = styled('div')`
   width: 100%;
   min-height: 20px;
   background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
+  color: ${({ theme: { palette } }) => palette.textPrimary};
+  font-family: BrandonLight;
+  font-size: 13px;
 `
 
-const BlotterStyle = styled('div')`
-  color: #fff;
-  font-family: BrandonLight;
-  position: relative;
-  width: 100%;
+const BlotterGridStyle = styled('div')`
   height: 100%;
-  font-size: 13px;
 `
 
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {
@@ -49,32 +47,30 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
 
     return (
       <BlotterShellStyle ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
-        <BlotterStyle>
-          <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
-          <div className="rt-blotter__grid-wrapper">
-            <AgGridReact
-              columnDefs={columnDefinitions}
-              defaultColDef={DEFAULT_COLUMN_DEFINITION}
-              rowData={rows}
-              enableColResize={true}
-              suppressMovableColumns={true}
-              enableSorting={true}
-              enableFilter={true}
-              onModelUpdated={this.onModelUpdated}
-              onGridReady={this.onGridReady}
-              rowSelection="multiple"
-              headerHeight={28}
-              suppressDragLeaveHidesColumns={true}
-              getRowClass={this.getRowClass}
-              onColumnResized={this.sizeColumnsToFit}
-              getDocument={() => (gridDocument && gridDocument.ownerDocument) || null}
-              postProcessPopup={this.postProcessPopup}
-            />
-          </div>
-          <div className="rt-blotter__status-bar">
-            <div>{`Displaying rows ${displayedRows} of ${rows.length}`}</div>
-          </div>
-        </BlotterStyle>
+        <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
+        <BlotterGridStyle>
+          <AgGridReact
+            columnDefs={columnDefinitions}
+            defaultColDef={DEFAULT_COLUMN_DEFINITION}
+            rowData={rows}
+            enableColResize={true}
+            suppressMovableColumns={true}
+            enableSorting={true}
+            enableFilter={true}
+            onModelUpdated={this.onModelUpdated}
+            onGridReady={this.onGridReady}
+            rowSelection="multiple"
+            headerHeight={28}
+            suppressDragLeaveHidesColumns={true}
+            getRowClass={this.getRowClass}
+            onColumnResized={this.sizeColumnsToFit}
+            getDocument={() => (gridDocument && gridDocument.ownerDocument) || null}
+            postProcessPopup={this.postProcessPopup}
+          />
+        </BlotterGridStyle>
+        <div className="rt-blotter__status-bar">
+          <div>{`Displaying rows ${displayedRows} of ${rows.length}`}</div>
+        </div>
       </BlotterShellStyle>
     )
   }

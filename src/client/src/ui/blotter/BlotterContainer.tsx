@@ -28,7 +28,7 @@ class BlotterContainer extends React.Component<BlotterContainerProps> {
 
     if (isConnected) {
       return (
-        <Blotter rows={gridRows} onPopoutClick={onPopoutClick} canPopout={Environment.isRunningInIE() || tornOff} />
+        <Blotter rows={gridRows} onPopoutClick={onPopoutClick} canPopout={!Environment.isRunningInIE() && !tornOff} />
       )
     }
 

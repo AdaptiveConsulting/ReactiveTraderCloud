@@ -1,6 +1,6 @@
 import { GridApi } from 'ag-grid'
-import classNames from 'classnames'
 import React, { Component } from 'react'
+import { styled } from 'rt-util'
 import { columnDefinitions } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
 
@@ -14,6 +14,17 @@ interface BlotterHeaderState {
   quickFilterText: string
 }
 
+const BlotterHeaderStyle = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const BlotterControlsStyle = styled('div')`
+  cursor: pointer;
+  color: ${({ theme: { palette } }) => palette.textSecondary};
+`
+
 export default class BlotterHeader extends Component<BlotterHeaderProps, BlotterHeaderState> {
   state = {
     quickFilterText: null
@@ -23,14 +34,8 @@ export default class BlotterHeader extends Component<BlotterHeaderProps, Blotter
     const { canPopout, onPopoutClick } = this.props
     const { quickFilterText } = this.state
 
-    const newWindowClassName = classNames('glyphicon glyphicon-new-window', {
-      'blotter__controls--hidden': canPopout
-    })
     return (
-      <React.Fragment>
-        <div className="rt-blotter__controls popout__controls">
-          <i className={newWindowClassName} onClick={onPopoutClick} />
-        </div>
+      <BlotterHeaderStyle>
         <BlotterToolbar
           isQuickFilterApplied={quickFilterText && quickFilterText.length !== 0}
           quickFilterChangeHandler={this.quickFilterChangeHandler}
@@ -40,7 +45,12 @@ export default class BlotterHeader extends Component<BlotterHeaderProps, Blotter
           filterModel={this.props.gridApi ? this.props.gridApi.getFilterModel() : null}
           columnDefinitions={columnDefinitions}
         />
-      </React.Fragment>
+        {canPopout && (
+          <BlotterControlsStyle>
+            <i className="glyphicon glyphicon-new-window" onClick={onPopoutClick} />
+          </BlotterControlsStyle>
+        )}
+      </BlotterHeaderStyle>
     )
   }
 

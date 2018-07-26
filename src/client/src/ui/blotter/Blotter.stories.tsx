@@ -40,7 +40,7 @@ const blotterSuccessRow: Trade = {
 const blotterProps: BlotterProps = {
   rows: [blotterRejectedRow, blotterSuccessRow, blotterSuccessRow, blotterSuccessRow, blotterRejectedRow],
   onPopoutClick: action('onPopoutClick'),
-  canPopout: false
+  canPopout: true
 }
 
 stories.add('default', () => (

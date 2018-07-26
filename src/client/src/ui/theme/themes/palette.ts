@@ -7,7 +7,9 @@ import {
   accentWarning,
   backgroundPrimary,
   brandPrimary,
-  brandSecondary
+  brandSecondary,
+  textPrimary,
+  textSecondary
 } from './baseColors'
 
 const getLightPrimary = (color: string) => ({
@@ -30,6 +32,8 @@ const getAccent = (color: string) => ({
 
 const palette = {
   backgroundPrimary,
+  textPrimary,
+  textSecondary,
   brand: {
     primary: brandPrimary,
     secondary: brandSecondary

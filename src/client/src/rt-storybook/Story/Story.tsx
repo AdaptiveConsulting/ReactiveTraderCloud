@@ -19,14 +19,9 @@ const StyledStory = styled('div')`
 const Toolbar = styled('div')`
   position: absolute;
   height: 40px;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: white;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
 `
 
 interface State {
