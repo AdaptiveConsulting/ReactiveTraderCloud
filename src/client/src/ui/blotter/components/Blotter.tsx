@@ -33,6 +33,12 @@ const BlotterGridStyle = styled('div')`
   height: 100%;
 `
 
+const BlotterStatusStyle = styled('div')`
+  color:  color: ${({ theme: { palette } }) => palette.textSecondary};
+  font-size: 10px;
+  font-style: italic;
+`
+
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {
   private gridApi: GridApi
 
@@ -68,9 +74,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
             postProcessPopup={this.postProcessPopup}
           />
         </BlotterGridStyle>
-        <div className="rt-blotter__status-bar">
-          <div>{`Displaying rows ${displayedRows} of ${rows.length}`}</div>
-        </div>
+        <BlotterStatusStyle>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatusStyle>
       </BlotterShellStyle>
     )
   }

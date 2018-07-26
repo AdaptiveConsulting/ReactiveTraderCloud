@@ -1,4 +1,4 @@
-import { ColDef, Column, GridApi, InMemoryRowModel, RowNode } from 'ag-grid'
+import { ClientSideRowModel, ColDef, Column, GridApi, RowNode } from 'ag-grid'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -8,7 +8,7 @@ interface SetFilterProps {
   api: GridApi
   colDef: ColDef
   column: Column
-  rowModel: InMemoryRowModel
+  rowModel: ClientSideRowModel
   valueGetter: (node) => any
   filterChangedCallback: () => any
   reactContainer: any

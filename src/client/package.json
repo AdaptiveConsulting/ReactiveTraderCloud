@@ -54,8 +54,8 @@
     ]
   },
   "dependencies": {
-    "ag-grid": "15.0.0",
-    "ag-grid-react": "15.0.0",
+    "ag-grid": "18.1.2",
+    "ag-grid-react": "18.1.0",
     "animate.css": "3.4.0",
     "autobahn": "17.5.2",
     "classlist-polyfill": "1.0.3",
