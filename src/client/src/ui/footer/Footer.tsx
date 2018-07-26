@@ -1,24 +1,37 @@
 import classnames from 'classnames'
 import _ from 'lodash'
 import React from 'react'
-import { StatusIndicator } from './StatusIndicator'
 
 import { Environment, withEnvironment } from 'rt-components'
 import { ServiceStatus } from 'rt-types'
-import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from '../../system'
+import { styled } from 'rt-util'
+import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from 'system'
 import { ConnectionInfo } from '../connectionStatus'
 import { ApplicationStatusConst } from './applicationStatusConst'
+import { StatusIndicator } from './StatusIndicator'
 
 export interface FooterProps {
   compositeStatusService: ServiceConnectionInfo
   connectionStatus: ConnectionInfo
   toggleStatusServices: () => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
   displayStatusServices: boolean
-  openLink: (link: string) => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
+  openLink: (link: string) => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874,
 }
 
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
 const OPENFIN_URL: string = 'http://openfin.co'
+
+interface FooterStyledProps {
+  connected: boolean
+}
+const FooterStyled = styled('footer')<FooterStyledProps>`
+  height: 100%;
+  width: 100vw;
+  background-color: ${({ connected, theme: { palette } }) =>
+    connected ? palette.primary[0] : palette.accentBad.normal};
+  color: ${({ theme: { palette } }) => palette.secondary[0]};
+  position: relative;
+`
 
 export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
   compositeStatusService,
@@ -42,7 +55,7 @@ export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
   })
 
   return (
-    <footer className={footerClasses}>
+    <FooterStyled className={footerClasses} connected={isConnected(connectionStatus.status)}>
       <span className="footer__connection-url">
         {isConnected(connectionStatus.status)
           ? `Connected to ${connectionStatus.url} (${connectionStatus.transportType})`
@@ -69,7 +82,7 @@ export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
           {servicesAsList.map(renderServiceStatus)}
         </ul>
       </div>
-    </footer>
+    </FooterStyled>
   )
 }
 

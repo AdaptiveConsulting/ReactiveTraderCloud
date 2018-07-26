@@ -22,5 +22,14 @@
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true
   },
-  "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "webpack", "jest", "**/*.spec.ts"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "**/*.spec.ts",
+    "storybook-static"
+  ]
 }

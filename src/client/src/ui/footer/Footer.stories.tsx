@@ -5,6 +5,7 @@ import centered from '@storybook/addon-centered'
 import { storiesOf } from '@storybook/react'
 
 import { Environment } from 'rt-components'
+import { Story } from 'rt-storybook'
 import { ConnectionStatus, ConnectionType } from 'system'
 import { Footer, FooterProps } from 'ui/footer/Footer'
 import 'ui/styles/css/index.css'
@@ -55,9 +56,11 @@ const footerProps: Props = {
 }
 
 stories.add('default', () => (
-  <div className="shell__footer">
-    <Footer {...footerProps} />
-  </div>
+  <Story>
+    <div className="shell__footer">
+      <Footer {...footerProps} />
+    </div>
+  </Story>
 ))
 
 const disconnectedFooterProps: Props = {
@@ -69,7 +72,9 @@ const disconnectedFooterProps: Props = {
 }
 
 stories.add('disconnected', () => (
-  <div className="shell__footer">
-    <Footer {...disconnectedFooterProps} />
-  </div>
+  <Story>
+    <div className="shell__footer">
+      <Footer {...disconnectedFooterProps} />
+    </div>
+  </Story>
 ))

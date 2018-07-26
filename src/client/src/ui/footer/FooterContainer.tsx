@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
-import { GlobalState } from '../../combineReducers'
+
+import { GlobalState } from 'combineReducers'
 import { FooterActions } from './actions'
 import Footer from './Footer'
 
