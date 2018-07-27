@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { action } from '@storybook/addon-actions'
-import centered from '@storybook/addon-centered'
 import { storiesOf } from '@storybook/react'
 
 import { Story } from 'rt-storybook'
@@ -9,7 +8,7 @@ import { Trade } from 'rt-types/trade'
 import 'ui/styles/css/index.css'
 import Blotter, { BlotterProps } from './components/Blotter'
 
-const stories = storiesOf('Blotter', module).addDecorator(centered)
+const stories = storiesOf('Blotter', module)
 
 const blotterRejectedRow: Trade = {
   dealtCurrency: 'GBP',
@@ -38,13 +37,41 @@ const blotterSuccessRow: Trade = {
 }
 
 const blotterProps: BlotterProps = {
-  rows: [blotterRejectedRow, blotterSuccessRow, blotterSuccessRow, blotterSuccessRow, blotterRejectedRow],
+  rows: [
+    blotterRejectedRow,
+    blotterSuccessRow,
+    blotterSuccessRow,
+    blotterSuccessRow,
+    blotterRejectedRow,
+    blotterSuccessRow,
+    blotterSuccessRow,
+    blotterSuccessRow,
+    blotterRejectedRow,
+    blotterSuccessRow,
+    blotterSuccessRow,
+    blotterSuccessRow,
+    blotterRejectedRow,
+    blotterSuccessRow,
+    blotterSuccessRow,
+    blotterSuccessRow,
+    blotterRejectedRow,
+    blotterSuccessRow,
+    blotterSuccessRow,
+    blotterSuccessRow,
+    blotterRejectedRow
+  ],
   onPopoutClick: action('onPopoutClick'),
   canPopout: true
 }
 
-stories.add('default', () => (
+stories.add('Default', () => (
   <Story>
     <Blotter {...blotterProps} />
+  </Story>
+))
+
+stories.add('No Rows', () => (
+  <Story>
+    <Blotter {...blotterProps} rows={[]} />
   </Story>
 ))

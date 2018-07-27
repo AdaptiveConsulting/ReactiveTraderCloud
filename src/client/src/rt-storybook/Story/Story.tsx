@@ -5,7 +5,7 @@ import { Themes } from 'shell/theme'
 import Theme from 'ui/theme/Theme'
 
 const StyledStory = styled('div')`
-  width: 100vw;
+  width: 100%;
 `
 
 const Toolbar = styled('div')`

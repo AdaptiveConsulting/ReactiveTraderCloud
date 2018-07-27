@@ -29,7 +29,8 @@ const BlotterStyle = styled('div')`
 `
 
 const BlotterGrid = styled('div')`
-  height: 100%;
+  height: 300px;
+  min-height: 300px;
   background-color: ${({ theme: { palette } }) => palette.backgroundSecondary};
   border-radius: 3px;
 
@@ -87,8 +88,8 @@ const BlotterGrid = styled('div')`
 const BlotterStatus = styled('div')`
   color: ${({ theme: { palette } }) => palette.textMeta};
   font-size: 10px;
+  padding: 10px 0px;
 `
-
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {
   private gridApi: GridApi
 
@@ -122,7 +123,6 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
             onColumnResized={this.sizeColumnsToFit}
             getDocument={() => (gridDocument && gridDocument.ownerDocument) || null}
             postProcessPopup={this.postProcessPopup}
-            gridAutoHeight={true}
             rowHeight={28}
           />
         </BlotterGrid>
