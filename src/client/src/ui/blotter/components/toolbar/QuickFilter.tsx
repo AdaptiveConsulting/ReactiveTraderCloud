@@ -25,7 +25,7 @@ const QuickFilterInputWrap = styled('div')`
 `
 
 const QuickFilterInput = styled('input')`
-  color: ${({ theme: { palette } }) => palette.textPrimary};
+  color: ${({ theme: { palette } }) => palette.textMeta};
   background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
   border: none;
   border-bottom: 1px solid ${({ theme: { palette } }) => palette.textTertiary};

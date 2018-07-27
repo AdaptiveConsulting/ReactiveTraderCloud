@@ -6,8 +6,10 @@ import {
   accentPrimary,
   accentWarning,
   backgroundPrimary,
+  backgroundSecondary,
   brandPrimary,
   brandSecondary,
+  textMeta,
   textPrimary,
   textSecondary,
   textTertiary
@@ -33,9 +35,11 @@ const getAccent = (color: string) => ({
 
 const palette = {
   backgroundPrimary,
+  backgroundSecondary,
   textPrimary,
   textSecondary,
   textTertiary,
+  textMeta,
   brand: {
     primary: brandPrimary,
     secondary: brandSecondary

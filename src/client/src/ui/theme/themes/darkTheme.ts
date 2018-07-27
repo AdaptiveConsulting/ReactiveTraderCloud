@@ -1,4 +1,13 @@
-import { brandPrimary, brandSecondary } from './baseColors'
+import {
+  brandPrimary,
+  brandSecondary,
+  darkBackgroundPrimary,
+  darkBackgroundSecondary,
+  darkTextMeta,
+  darkTextPrimary,
+  darkTextSecondary,
+  darkTextTertiary
+} from './baseColors'
 import theme, { Theme } from './baseTheme'
 import { darken, lighten } from './colorUtils'
 import palette from './palette'
@@ -18,6 +27,12 @@ const getDarkSecondary = (color: string) => ({
 
 const darkPalette = {
   ...palette,
+  backgroundPrimary: darkBackgroundPrimary,
+  backgroundSecondary: darkBackgroundSecondary,
+  textPrimary: darkTextPrimary,
+  textSecondary: darkTextSecondary,
+  textTertiary: darkTextTertiary,
+  textMeta: darkTextMeta,
   primary: getDarkPrimary(brandPrimary),
   secondary: getDarkSecondary(brandSecondary)
 }

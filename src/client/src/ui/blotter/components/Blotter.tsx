@@ -25,18 +25,33 @@ const BlotterStyle = styled('div')`
   min-height: 20px;
   background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
   color: ${({ theme: { palette } }) => palette.textPrimary};
-  font-family: BrandonLight;
   font-size: 13px;
 `
 
 const BlotterGrid = styled('div')`
   height: 100%;
+  background-color: ${({ theme: { palette } }) => palette.backgroundSecondary};
+  border-radius: 3px;
+  .ag-header {
+    border-bottom: 1px solid black;
+  }
+
+  .ag-row-odd {
+    background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
+  }
+
+  .rt-blotter-shared .rt-blotter__status-indicator--rejected {
+    width: 5px !important;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    background-color: rgba(216, 12, 10, 0.75);
+  }
 `
 
 const BlotterStatus = styled('div')`
-  color:  color: ${({ theme: { palette } }) => palette.textSecondary};
+  color: ${({ theme: { palette } }) => palette.textMeta};
   font-size: 10px;
-  font-style: italic;
 `
 
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {
@@ -66,7 +81,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
             onModelUpdated={this.onModelUpdated}
             onGridReady={this.onGridReady}
             rowSelection="multiple"
-            headerHeight={28}
+            headerHeight={38}
             suppressDragLeaveHidesColumns={true}
             getRowClass={this.getRowClass}
             onColumnResized={this.sizeColumnsToFit}
