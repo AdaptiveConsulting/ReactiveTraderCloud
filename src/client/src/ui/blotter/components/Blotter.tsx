@@ -32,20 +32,55 @@ const BlotterGrid = styled('div')`
   height: 100%;
   background-color: ${({ theme: { palette } }) => palette.backgroundSecondary};
   border-radius: 3px;
+
   .ag-header {
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid ${({ theme: { palette } }) => palette.backgroundPrimary};
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
+  .ag-header-container {
+    margin-top: 12px;
   }
 
   .ag-row-odd {
     background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
   }
 
-  .rt-blotter-shared .rt-blotter__status-indicator--rejected {
+  .rt-blotter__status-indicator--done {
     width: 5px !important;
     padding: 0;
     margin: 0;
-    height: 100%;
-    background-color: rgba(216, 12, 10, 0.75);
+    background-color: ${({ theme: { palette } }) => palette.accentGood.normal};
+  }
+
+  .rt-blotter__status-indicator--rejected {
+    width: 5px !important;
+    padding: 0;
+    margin: 0;
+    background-color: ${({ theme: { palette } }) => palette.accentBad.normal};
+  }
+
+  .rt-blotter__rowStrikeThrough:before {
+    content: ' ';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-bottom: 1px solid ${({ theme: { palette } }) => palette.accentBad.normal};
+    width: 100%;
+  }
+
+  .ag-row {
+    transition: none;
+  }
+
+  .ag-cell {
+    display: flex;
+    align-items: center;
+  }
+
+  .ag-icon-filter {
+    color: ${({ theme: { palette } }) => palette.textSecondary};
   }
 `
 
@@ -88,6 +123,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
             getDocument={() => (gridDocument && gridDocument.ownerDocument) || null}
             postProcessPopup={this.postProcessPopup}
             gridAutoHeight={true}
+            rowHeight={28}
           />
         </BlotterGrid>
         <BlotterStatus>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatus>
