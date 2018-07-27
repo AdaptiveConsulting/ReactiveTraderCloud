@@ -1,4 +1,5 @@
 import React from 'react'
+import { styled } from 'rt-util'
 import { FILTER_APPLIED_ICON, FILTER_ICON } from './Icons'
 
 interface QuickFilterProps {
@@ -11,6 +12,40 @@ interface QuickFilterState {
   quickFilterText: string
 }
 
+const QuickFilterStyle = styled('div')`
+  width: 160px;
+  display: flex;
+  align-items: flex-start;
+  height: 20px;
+`
+
+const QuickFilterInputWrap = styled('div')`
+  display: flex;
+  align-items: center;
+`
+
+const QuickFilterInput = styled('input')`
+  color: ${({ theme: { palette } }) => palette.textPrimary};
+  background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
+  border: none;
+  border-bottom: 1px solid ${({ theme: { palette } }) => palette.textTertiary};
+  width: 100%;
+  font-size: 12px;
+  height: 20px;
+  padding: 0px 4px;
+`
+
+const QuickFilterIcon = styled('div')`
+  width: 11px;
+`
+
+const QuickFilterClearIcon = styled('div')`
+  width: 11px;
+  i {
+    cursor: pointer;
+  }
+`
+
 export default class QuickFilter extends React.Component<QuickFilterProps, QuickFilterState> {
   private quickFilterInput: HTMLInputElement
 
@@ -21,24 +56,21 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
   render() {
     const filterIcon = this.props.isFilterApplied ? FILTER_APPLIED_ICON : FILTER_ICON
     return (
-      <div className="quick-filter-container">
-        <input
-          ref={(el: HTMLInputElement) => (this.quickFilterInput = el)}
-          type="text"
-          placeholder="Filter"
-          className="quick-filter-input"
-          value={this.state.quickFilterText}
-          onChange={(event: React.FormEvent<any>) => this.quickFilterChangeHandler(event)}
-        />
-        <span className="quick-filter-icon" onClick={() => this.quickFilterInput.focus()}>
-          {filterIcon}
-        </span>
-        {this.props.isFilterApplied && (
-          <span className="quick-filter-clear-icon" onClick={this.removeQuickFilter}>
-            <i className="fa fa-times" />
-          </span>
-        )}
-      </div>
+      <QuickFilterStyle>
+        <QuickFilterIcon onClick={() => this.quickFilterInput.focus()}>{filterIcon}</QuickFilterIcon>
+        <QuickFilterInputWrap>
+          <QuickFilterInput
+            ref={el => (this.quickFilterInput = el)}
+            type="text"
+            placeholder="Filter"
+            value={this.state.quickFilterText}
+            onChange={(event: React.FormEvent<any>) => this.quickFilterChangeHandler(event)}
+          />
+          <QuickFilterClearIcon onClick={this.removeQuickFilter}>
+            {this.props.isFilterApplied && <i className="fa fa-times" />}
+          </QuickFilterClearIcon>
+        </QuickFilterInputWrap>
+      </QuickFilterStyle>
     )
   }
 

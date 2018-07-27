@@ -19,7 +19,7 @@ interface BlotterState {
   gridDocument: Element
 }
 
-const BlotterShellStyle = styled('div')`
+const BlotterStyle = styled('div')`
   height: 100%;
   width: 100%;
   min-height: 20px;
@@ -29,11 +29,11 @@ const BlotterShellStyle = styled('div')`
   font-size: 13px;
 `
 
-const BlotterGridStyle = styled('div')`
+const BlotterGrid = styled('div')`
   height: 100%;
 `
 
-const BlotterStatusStyle = styled('div')`
+const BlotterStatus = styled('div')`
   color:  color: ${({ theme: { palette } }) => palette.textSecondary};
   font-size: 10px;
   font-style: italic;
@@ -52,9 +52,9 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
     const { displayedRows, gridDocument } = this.state
 
     return (
-      <BlotterShellStyle ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
+      <BlotterStyle ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
         <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
-        <BlotterGridStyle>
+        <BlotterGrid>
           <AgGridReact
             columnDefs={columnDefinitions}
             defaultColDef={DEFAULT_COLUMN_DEFINITION}
@@ -74,9 +74,9 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
             postProcessPopup={this.postProcessPopup}
             gridAutoHeight={true}
           />
-        </BlotterGridStyle>
-        <BlotterStatusStyle>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatusStyle>
-      </BlotterShellStyle>
+        </BlotterGrid>
+        <BlotterStatus>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatus>
+      </BlotterStyle>
     )
   }
 

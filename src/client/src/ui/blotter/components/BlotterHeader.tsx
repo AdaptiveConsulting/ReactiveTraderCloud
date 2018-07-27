@@ -18,11 +18,21 @@ const BlotterHeaderStyle = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px;
 `
 
-const BlotterControlsStyle = styled('div')`
+const BlotterControls = styled('div')`
   cursor: pointer;
   color: ${({ theme: { palette } }) => palette.textSecondary};
+`
+
+const BlotterRight = styled('div')`
+  display: flex;
+  align-items: center;
+`
+
+const BlotterLeft = styled('div')`
+  font-size: 15px;
 `
 
 export default class BlotterHeader extends Component<BlotterHeaderProps, BlotterHeaderState> {
@@ -36,20 +46,23 @@ export default class BlotterHeader extends Component<BlotterHeaderProps, Blotter
 
     return (
       <BlotterHeaderStyle>
-        <BlotterToolbar
-          isQuickFilterApplied={quickFilterText && quickFilterText.length !== 0}
-          quickFilterChangeHandler={this.quickFilterChangeHandler}
-          removeQuickFilter={this.removeQuickFilter}
-          removeAllFilters={this.removeAllFilters}
-          removeFilter={this.removeFilter}
-          filterModel={this.props.gridApi ? this.props.gridApi.getFilterModel() : null}
-          columnDefinitions={columnDefinitions}
-        />
-        {canPopout && (
-          <BlotterControlsStyle>
-            <i className="glyphicon glyphicon-new-window" onClick={onPopoutClick} />
-          </BlotterControlsStyle>
-        )}
+        <BlotterLeft>Executed Trades</BlotterLeft>
+        <BlotterRight>
+          <BlotterToolbar
+            isQuickFilterApplied={quickFilterText && quickFilterText.length !== 0}
+            quickFilterChangeHandler={this.quickFilterChangeHandler}
+            removeQuickFilter={this.removeQuickFilter}
+            removeAllFilters={this.removeAllFilters}
+            removeFilter={this.removeFilter}
+            filterModel={this.props.gridApi ? this.props.gridApi.getFilterModel() : null}
+            columnDefinitions={columnDefinitions}
+          />
+          {canPopout && (
+            <BlotterControls>
+              <i className="glyphicon glyphicon-new-window" onClick={onPopoutClick} />
+            </BlotterControls>
+          )}
+        </BlotterRight>
       </BlotterHeaderStyle>
     )
   }

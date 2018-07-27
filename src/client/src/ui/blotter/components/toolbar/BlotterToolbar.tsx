@@ -1,5 +1,6 @@
 import { ColDef } from 'ag-grid'
 import React from 'react'
+import { styled } from 'rt-util'
 import AppliedFilters from './AppliedFilters'
 import QuickFilter from './QuickFilter'
 
@@ -17,22 +18,30 @@ interface BlotterToobarState {
   themeName: string
 }
 
+const BlotterToolbarStyle = styled('div')`
+  padding: 0px 10px;
+`
+
 export default class BlotterToolbar extends React.Component<BlotterToolbarProps, BlotterToobarState> {
   render() {
     return (
-      <React.Fragment>
+      <BlotterToolbarStyle>
         <QuickFilter
           isFilterApplied={this.props.isQuickFilterApplied}
           removeQuickFilter={this.props.removeQuickFilter}
           quickFilterChangeHandler={this.props.quickFilterChangeHandler}
         />
-        <AppliedFilters
-          filterModel={this.props.filterModel}
-          columnDefinitions={this.props.columnDefinitions}
-          removeAllFilters={this.props.removeAllFilters}
-          removeFilter={this.props.removeFilter}
-        />
-      </React.Fragment>
+
+        {// Hide applied filters div
+        false && (
+          <AppliedFilters
+            filterModel={this.props.filterModel}
+            columnDefinitions={this.props.columnDefinitions}
+            removeAllFilters={this.props.removeAllFilters}
+            removeFilter={this.props.removeFilter}
+          />
+        )}
+      </BlotterToolbarStyle>
     )
   }
 }

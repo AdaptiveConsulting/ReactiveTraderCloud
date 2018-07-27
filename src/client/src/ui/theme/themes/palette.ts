@@ -9,7 +9,8 @@ import {
   brandPrimary,
   brandSecondary,
   textPrimary,
-  textSecondary
+  textSecondary,
+  textTertiary
 } from './baseColors'
 
 const getLightPrimary = (color: string) => ({
@@ -34,6 +35,7 @@ const palette = {
   backgroundPrimary,
   textPrimary,
   textSecondary,
+  textTertiary,
   brand: {
     primary: brandPrimary,
     secondary: brandSecondary

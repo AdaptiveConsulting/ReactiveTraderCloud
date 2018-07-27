@@ -8,5 +8,6 @@ export const accentBad = '#F94C4C'
 
 export const textPrimary = '#FFFFFF'
 export const textSecondary = '#737987'
+export const textTertiary = '#2f3542'
 
 export const backgroundPrimary = '#282D39'
