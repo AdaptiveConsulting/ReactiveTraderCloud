@@ -1,4 +1,4 @@
-import { brandPrimary, brandSecondary } from './baseColors'
+import { BRAND_PRIMARY, BRAND_SECONDARY } from './baseColors'
 import theme, { Theme } from './baseTheme'
 import { darken, lighten } from './colorUtils'
 import palette from './palette'
@@ -18,8 +18,8 @@ const getDarkSecondary = (color: string) => ({
 
 const darkPalette = {
   ...palette,
-  primary: getDarkPrimary(brandPrimary),
-  secondary: getDarkSecondary(brandSecondary)
+  primary: getDarkPrimary(BRAND_PRIMARY),
+  secondary: getDarkSecondary(BRAND_SECONDARY)
 }
 
 const darkTheme: Theme = {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
 
+import { styled } from 'rt-util'
 import { Themes } from 'shell/theme'
 import Theme from 'ui/theme/Theme'
 
@@ -14,6 +14,7 @@ const StyledStory = styled('div')`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-top: 40px;
 `
 
 const Toolbar = styled('div')`
