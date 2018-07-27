@@ -4,6 +4,8 @@ import React from 'react'
 import { Themes } from 'shell/theme/constants'
 import { darkTheme, lightTheme } from './themes'
 
+import './fonts/fonts.css'
+
 export interface Props {
   type: Themes
 }

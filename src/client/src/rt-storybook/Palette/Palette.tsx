@@ -8,13 +8,10 @@ import ColorGroup from './ColorGroup'
 
 const StyledPalette = styled('div')`
   width: 100%;
-  flex: 1;
-  background-color: ${({ theme }) => theme.palette.fixed.white};
   h1 {
     margin: 0px;
     font-size: ${({ theme }) => theme.fontSize.h1};
   }
-  overflow-y: scroll;
   padding: 0px 20px;
 `
 

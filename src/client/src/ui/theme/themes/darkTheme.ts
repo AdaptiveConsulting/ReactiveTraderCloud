@@ -13,13 +13,26 @@ const getDarkSecondary = (color: string) => ({
   '0': lighten(color, 100),
   '1': lighten(color, 95),
   '2': lighten(color, 90),
-  '3': darken(color, 80)
+  '3': lighten(color, 80)
 })
+
+const primary = getDarkPrimary(BRAND_PRIMARY)
+const secondary = getDarkSecondary(BRAND_SECONDARY)
 
 const darkPalette = {
   ...palette,
-  primary: getDarkPrimary(BRAND_PRIMARY),
-  secondary: getDarkSecondary(BRAND_SECONDARY)
+  primary,
+  secondary,
+  background: {
+    primary: primary[0],
+    secondary: secondary[3]
+  },
+  text: {
+    dark: primary[0],
+    light: secondary[3],
+    primary: secondary[3],
+    secondary: primary[0]
+  }
 }
 
 const darkTheme: Theme = {

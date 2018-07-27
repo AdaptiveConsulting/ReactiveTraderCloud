@@ -3,9 +3,17 @@ import Color from 'tinycolor2'
 
 import { styled } from 'rt-util'
 
+const getBestTextColor = (
+  background: string,
+  colorOptions: {
+    [color: string]: string
+  }
+) => {
+  return Color.mostReadable(background, Object.values(colorOptions)).toHexString()
+}
+
 interface StyledProps {
   color: string
-  isLight: boolean
 }
 const StyledColorTile = styled('div')<StyledProps>`
   width: 200px;
@@ -16,7 +24,7 @@ const StyledColorTile = styled('div')<StyledProps>`
   justify-content: center;
   background-color: ${({ color }) => color};
   transition: background-color 0.3s;
-  color: ${({ theme, isLight }) => (isLight ? theme.palette.fixed.black : theme.palette.fixed.white)};
+  color: ${({ theme, color }) => getBestTextColor(color, theme.palette.text)};
   transition: color 0.3s;
   h3 {
     font-size: ${({ theme }) => theme.fontSize.h3};
@@ -33,7 +41,7 @@ interface Props {
   color: string
 }
 const ColorTile: React.SFC<Props> = ({ name, color }: Props) => (
-  <StyledColorTile color={color} isLight={Color(color).isLight()}>
+  <StyledColorTile color={color}>
     <h3>{name.toUpperCase()}</h3>
     <h4>{color.toUpperCase()}</h4>
   </StyledColorTile>

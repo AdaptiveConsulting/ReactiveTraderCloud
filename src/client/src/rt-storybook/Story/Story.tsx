@@ -12,22 +12,31 @@ const StyledStory = styled('div')`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  padding-top: 40px;
+  background-color: ${({ theme }) => theme.palette.background.primary};
+  color: ${({ theme }) => theme.palette.text.primary};
+  transition: background-color 0.3s, color 0.3s;
 `
 
 const Toolbar = styled('div')`
-  position: absolute;
-  height: 40px;
-  top: 0px;
-  left: 0px;
-  width: 100%;
+  padding: 0px 20px;
+  height: 60px;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
-  background-color: white;
+  background-color: ${({ theme }) => theme.palette.background.secondary};
+  color: ${({ theme }) => theme.palette.text.secondary};
+  transition: background-color 0.3s, color 0.3s;
+  h2 {
+    flex: 1;
+  }
+`
+
+const Content = styled('div')`
+  flex: 1;
+  position: relative;
+  overflow-y: auto;
 `
 
 interface State {
@@ -59,9 +68,10 @@ class Story extends Component<{}, State> {
       <Theme type={theme}>
         <StyledStory>
           <Toolbar>
+            <h2>{theme === Themes.LIGHT_THEME ? 'Light Theme' : 'Dark Theme'}</h2>
             <button onClick={this.toggleTheme}>Toggle Theme</button>
           </Toolbar>
-          {children}
+          <Content>{children}</Content>
         </StyledStory>
       </Theme>
     )

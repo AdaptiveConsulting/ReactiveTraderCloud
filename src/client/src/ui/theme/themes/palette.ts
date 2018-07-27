@@ -29,24 +29,39 @@ const getAccent = (color: string) => ({
   light: lighten(color, 50)
 })
 
+const primary = getLightPrimary(BRAND_PRIMARY)
+const secondary = getLightSecondary(BRAND_SECONDARY)
+const accentPrimary = getAccent(ACCENT_PRIMARY)
+const accentGood = getAccent(ACCENT_GOOD)
+const accentWarning = getAccent(ACCENT_WARNING)
+const accentBad = getAccent(ACCENT_BAD)
+
 const palette = {
   brand: {
     primary: BRAND_PRIMARY,
     secondary: BRAND_SECONDARY
   },
-  primary: getLightPrimary(BRAND_PRIMARY),
-  secondary: getLightSecondary(BRAND_SECONDARY),
-  accentPrimary: getAccent(ACCENT_PRIMARY),
-  accentGood: getAccent(ACCENT_GOOD),
-  accentWarning: getAccent(ACCENT_WARNING),
-  accentBad: getAccent(ACCENT_BAD),
-  trading: {
+  primary,
+  secondary,
+  accentPrimary,
+  accentGood,
+  accentWarning,
+  accentBad,
+  unique: {
+    buy: ACCENT_GOOD,
     sell: ACCENT_BAD,
-    buy: ACCENT_GOOD
-  },
-  fixed: {
     black: BLACK,
     white: WHITE
+  },
+  background: {
+    primary: primary[0],
+    secondary: secondary[3]
+  },
+  text: {
+    dark: secondary[3],
+    light: primary[0],
+    primary: secondary[3],
+    secondary: primary[0]
   }
 }
 
