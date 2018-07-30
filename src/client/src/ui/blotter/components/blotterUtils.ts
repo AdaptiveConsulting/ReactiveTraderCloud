@@ -37,6 +37,8 @@ const getStatusCellClass = (trade: Trade) => {
     return 'rt-blotter__cell-rejected'
   } else if (trade.status === TradeStatus.Pending) {
     return 'rt-blotter__cell-pending'
+  } else if (trade.status === TradeStatus.Done) {
+    return 'rt-blotter__cell-done'
   }
   return 'capitalise'
 }

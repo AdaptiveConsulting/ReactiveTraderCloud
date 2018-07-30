@@ -16,7 +16,7 @@ export interface BlotterProps {
 
 interface BlotterState {
   displayedRows: number
-  gridDocument: Element
+  gridDocument: Element | null
 }
 
 const BlotterStyle = styled('div')`
@@ -62,6 +62,11 @@ const BlotterGrid = styled('div')`
     background-color: ${({ theme: { palette } }) => palette.accentBad.normal};
   }
 
+  .rt-blotter__cell-rejected,
+  .rt-blotter__cell-done {
+    text-transform: capitalize;
+  }
+
   .rt-blotter__rowStrikeThrough:before {
     content: ' ';
     position: absolute;
@@ -91,7 +96,7 @@ const BlotterStatus = styled('div')`
   padding: 10px 0px;
 `
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {
-  private gridApi: GridApi
+  private gridApi: GridApi | null = null
 
   state = {
     displayedRows: 0,
@@ -103,7 +108,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
     const { displayedRows, gridDocument } = this.state
 
     return (
-      <BlotterStyle ref={el => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
+      <BlotterStyle ref={(el: any) => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
         <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
         <BlotterGrid>
           <AgGridReact
@@ -139,7 +144,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
 
   private sizeColumnsToFit = () => this.gridApi && this.gridApi.sizeColumnsToFit()
 
-  private onGridReady = ({ api }) => {
+  private onGridReady = ({ api }: { api: GridApi }) => {
     this.gridApi = api
     this.onModelUpdated()
     this.sizeColumnsToFit()
@@ -147,13 +152,13 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
 
   private onModelUpdated = () => this.gridApi && this.setState({ displayedRows: this.gridApi.getModel().getRowCount() })
 
-  private getRowClass({ data }) {
+  private getRowClass({ data }: { data: Trade }) {
     if (data.status === TradeStatus.Rejected) {
       return 'rt-blotter__rowStrikeThrough'
     } else if (data.status === TradeStatus.Pending) {
       return 'rt-blotter__row-pending'
     }
-    return null
+    return ''
   }
 
   private postProcessPopup = (params: any) => {

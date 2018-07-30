@@ -7,11 +7,11 @@ import BlotterToolbar from './toolbar/BlotterToolbar'
 interface BlotterHeaderProps {
   canPopout: boolean
   onPopoutClick: () => void
-  gridApi: GridApi
+  gridApi: GridApi | null
 }
 
 interface BlotterHeaderState {
-  quickFilterText: string
+  quickFilterText: string | null
 }
 
 const BlotterHeaderStyle = styled('div')`
