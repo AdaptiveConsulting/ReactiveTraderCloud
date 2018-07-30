@@ -15,10 +15,11 @@ interface BlotterHeaderState {
 }
 
 const BlotterHeaderStyle = styled('div')`
+  height: 38px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 10px 16px 10px;
+  padding-bottom: 8px;
 `
 
 const BlotterControls = styled('div')`
