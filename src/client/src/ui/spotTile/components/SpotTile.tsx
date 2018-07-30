@@ -15,15 +15,19 @@ export interface SpotTileProps {
   pricingConnected: boolean
   isRunningOnDesktop: boolean
   executeTrade: (direction: Direction) => void
-  onPopoutClick: () => void
+  onPopoutClick?: () => void
   undockTile: () => void
   displayCurrencyChart: () => void
   onNotificationDismissedClick: () => void
   tornOff: boolean
+  onMount: () => void
 }
 
 export default class SpotTile extends React.PureComponent<SpotTileProps> {
   render() {
+    if (!this.props.spotTileData || !this.props.currencyPair) {
+      return null
+    }
     let { notification } = this.props.spotTileData
     if (!notification && this.props.spotTileData.price && this.props.spotTileData.price.priceStale) {
       notification = buildNotification(null, stalePriceErrorMessage)
