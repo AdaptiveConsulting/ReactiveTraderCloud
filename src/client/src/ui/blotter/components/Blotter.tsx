@@ -2,7 +2,6 @@ import { GridApi } from 'ag-grid'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid/dist/styles/ag-grid.css'
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Trade, TradeStatus } from 'rt-types'
 import { styled } from 'rt-util'
 import BlotterHeader from './BlotterHeader'
@@ -16,7 +15,6 @@ export interface BlotterProps {
 
 interface BlotterState {
   displayedRows: number
-  gridDocument: Element | null
 }
 
 const BlotterStyle = styled('div')`
@@ -99,16 +97,15 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
   private gridApi: GridApi | null = null
 
   state = {
-    displayedRows: 0,
-    gridDocument: null
+    displayedRows: 0
   }
 
   render() {
     const { canPopout, rows, onPopoutClick } = this.props
-    const { displayedRows, gridDocument } = this.state
+    const { displayedRows } = this.state
 
     return (
-      <BlotterStyle ref={(el: any) => this.updateGridDocument(ReactDOM.findDOMNode(el) as Element)}>
+      <BlotterStyle>
         <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
         <BlotterGrid>
           <AgGridReact
@@ -126,7 +123,6 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
             suppressDragLeaveHidesColumns={true}
             getRowClass={this.getRowClass}
             onColumnResized={this.sizeColumnsToFit}
-            getDocument={() => (gridDocument && gridDocument.ownerDocument) || null}
             postProcessPopup={this.postProcessPopup}
             rowHeight={28}
           />
@@ -134,12 +130,6 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
         <BlotterStatus>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatus>
       </BlotterStyle>
     )
-  }
-
-  private updateGridDocument = (doc: Element) => {
-    if (doc && !this.state.gridDocument) {
-      this.setState({ gridDocument: doc })
-    }
   }
 
   private sizeColumnsToFit = () => this.gridApi && this.gridApi.sizeColumnsToFit()
