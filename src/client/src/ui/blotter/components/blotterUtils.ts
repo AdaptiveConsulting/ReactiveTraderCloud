@@ -2,8 +2,6 @@ import { ColDef } from 'ag-grid'
 import numeral from 'numeral'
 import { Trade, TradeStatus } from 'rt-types'
 import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
-import './filters/filterOverrides.ts'
-import SetFilter from './filters/SetFilter'
 
 const currencyIconLookup = {
   ['USD']: `fa fa-usd`,
@@ -108,7 +106,7 @@ export const columnDefinitions: ColDef[] = [
     headerName: 'Trade ID',
     field: TRADE_ID,
     width: 100,
-    filter: 'number'
+    filter: 'agNumberColumnFilter'
   },
   {
     colId: STATUS,
@@ -116,7 +114,7 @@ export const columnDefinitions: ColDef[] = [
     field: STATUS,
     width: 105,
     cellClass: ({ data }) => getStatusCellClass(data),
-    filterFramework: SetFilter
+    filter: 'agTextColumnFilter'
   },
   {
     colId: TRADE_DATE,
@@ -131,21 +129,21 @@ export const columnDefinitions: ColDef[] = [
     headerName: 'Direction',
     field: DIRECTION,
     width: 110,
-    filterFramework: SetFilter
+    filter: 'agTextColumnFilter'
   },
   {
     colId: SYMBOL,
     headerName: 'CCYCCY',
     field: SYMBOL,
     width: 105,
-    filterFramework: SetFilter
+    filter: 'agTextColumnFilter'
   },
   {
     colId: DEALT_CURRENCY,
     headerName: 'Dealt CCY',
     field: DEALT_CURRENCY,
     width: 105,
-    filterFramework: SetFilter
+    filter: 'agTextColumnFilter'
   },
   {
     colId: NOTIONAL,
@@ -155,7 +153,7 @@ export const columnDefinitions: ColDef[] = [
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
     width: 140,
-    filter: 'number'
+    filter: 'agNumberColumnFilter'
   },
   {
     colId: SPOT_RATE,
@@ -164,7 +162,7 @@ export const columnDefinitions: ColDef[] = [
     width: 120,
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
-    filter: 'number'
+    filter: 'agNumberColumnFilter'
   },
   {
     colId: VALUE_DATE,
@@ -179,7 +177,7 @@ export const columnDefinitions: ColDef[] = [
     field: TRADER_NAME,
     headerName: 'Trader',
     width: 105,
-    filterFramework: SetFilter
+    filter: 'agNumberColumnFilter'
   },
   {
     colId: 'empty',

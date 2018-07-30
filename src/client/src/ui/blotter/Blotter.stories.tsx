@@ -41,7 +41,7 @@ const blotterProps: BlotterProps = {
     blotterRejectedRow,
     blotterSuccessRow,
     blotterSuccessRow,
-    blotterSuccessRow,
+    blotterRejectedRow,
     blotterRejectedRow,
     blotterSuccessRow,
     blotterSuccessRow,
@@ -66,12 +66,16 @@ const blotterProps: BlotterProps = {
 
 stories.add('Default', () => (
   <Story>
-    <Blotter {...blotterProps} />
+    <div style={{ height: '460px' }}>
+      <Blotter {...blotterProps} />
+    </div>
   </Story>
 ))
 
 stories.add('No Rows', () => (
   <Story>
-    <Blotter {...blotterProps} rows={[]} />
+    <div style={{ height: '460px' }}>
+      <Blotter {...blotterProps} rows={[]} />
+    </div>
   </Story>
 ))
