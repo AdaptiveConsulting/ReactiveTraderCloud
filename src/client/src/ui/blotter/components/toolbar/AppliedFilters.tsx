@@ -1,5 +1,6 @@
 import { ColDef } from 'ag-grid'
 import React from 'react'
+import { styled } from 'rt-util'
 
 interface AppliedFiltersProps {
   filterModel: any
@@ -8,9 +9,27 @@ interface AppliedFiltersProps {
   removeFilter: (key: string) => void
 }
 
+const FilterField = styled('div')`
+  font-size: 10px;
+  text-transform: uppercase;
+  background-color: ${({ theme: { palette } }) => palette.backgroundSecondary};
+  border: 1px solid ${({ theme: { palette } }) => palette.textPrimary};
+  margin-left: 8px;
+  padding: 2px;
+
+  & i {
+    padding-left: 4px;
+    cursor: pointer;
+  }
+
+  &:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+`
+
 export default class AppliedFilters extends React.Component<AppliedFiltersProps, any> {
   render() {
-    return <div style={{ display: 'inline-block' }}>{this.getAppliedFilters()}</div>
+    return <React.Fragment>{this.getAppliedFilters()}</React.Fragment>
   }
 
   private getAppliedFilters() {
@@ -21,11 +40,10 @@ export default class AppliedFilters extends React.Component<AppliedFiltersProps,
       })
       filterElements = filteredColDefs.map(colDef => {
         return (
-          <div key={colDef.field} className="applied-filter__filter-field">
-            <img style={{ height: '10px', marginRight: '5px' }} />
+          <FilterField key={colDef.field}>
             {colDef.headerName}
             <i className="fa fa-times" onClick={() => this.props.removeFilter(colDef.field)} />
-          </div>
+          </FilterField>
         )
       })
     }

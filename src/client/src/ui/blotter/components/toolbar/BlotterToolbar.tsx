@@ -19,28 +19,26 @@ interface BlotterToobarState {
 }
 
 const BlotterToolbarStyle = styled('div')`
-  padding: 0px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 `
 
 export default class BlotterToolbar extends React.Component<BlotterToolbarProps, BlotterToobarState> {
   render() {
     return (
       <BlotterToolbarStyle>
+        <AppliedFilters
+          filterModel={this.props.filterModel}
+          columnDefinitions={this.props.columnDefinitions}
+          removeAllFilters={this.props.removeAllFilters}
+          removeFilter={this.props.removeFilter}
+        />
         <QuickFilter
           isFilterApplied={this.props.isQuickFilterApplied}
           removeQuickFilter={this.props.removeQuickFilter}
           quickFilterChangeHandler={this.props.quickFilterChangeHandler}
         />
-
-        {// Hide applied filters div
-        false && (
-          <AppliedFilters
-            filterModel={this.props.filterModel}
-            columnDefinitions={this.props.columnDefinitions}
-            removeAllFilters={this.props.removeAllFilters}
-            removeFilter={this.props.removeFilter}
-          />
-        )}
       </BlotterToolbarStyle>
     )
   }
