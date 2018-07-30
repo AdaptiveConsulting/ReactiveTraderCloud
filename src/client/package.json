@@ -54,7 +54,6 @@
     ]
   },
   "dependencies": {
-    "@types/styled-system": "^2.3.2",
     "ag-grid": "15.0.0",
     "ag-grid-react": "15.0.0",
     "animate.css": "3.4.0",
@@ -91,7 +90,6 @@
     "reselect": "3.0.1",
     "rxjs": "6.1.0",
     "rxjs-spy": "^7.0.1",
-    "styled-system": "^3.0.2",
     "tinycolor2": "^1.4.1",
     "ua-parser-js": "0.7.10",
     "ws": "0.8.1"
