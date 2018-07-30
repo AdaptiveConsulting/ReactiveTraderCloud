@@ -32,7 +32,6 @@ const BlotterGrid = styled('div')`
   flex: 1;
   background-color: ${({ theme: { palette } }) => palette.backgroundSecondary};
   border-radius: 3px;
-  position: relative;
 
   .ag-header {
     border-bottom: 2px solid ${({ theme: { palette } }) => palette.backgroundPrimary};
@@ -91,14 +90,6 @@ const BlotterGrid = styled('div')`
   }
 `
 
-const BlotterGridInner = styled('div')`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`
-
 const BlotterStatus = styled('div')`
   height: 30px;
   color: ${({ theme: { palette } }) => palette.textMeta};
@@ -122,26 +113,24 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
       <BlotterStyle>
         <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
         <BlotterGrid>
-          <BlotterGridInner>
-            <AgGridReact
-              columnDefs={columnDefinitions}
-              defaultColDef={DEFAULT_COLUMN_DEFINITION}
-              rowData={rows}
-              enableColResize={true}
-              suppressMovableColumns={true}
-              enableSorting={true}
-              enableFilter={true}
-              onModelUpdated={this.onModelUpdated}
-              onGridReady={this.onGridReady}
-              rowSelection="multiple"
-              headerHeight={38}
-              suppressDragLeaveHidesColumns={true}
-              getRowClass={this.getRowClass}
-              onColumnResized={this.sizeColumnsToFit}
-              postProcessPopup={this.postProcessPopup}
-              rowHeight={28}
-            />
-          </BlotterGridInner>
+          <AgGridReact
+            columnDefs={columnDefinitions}
+            defaultColDef={DEFAULT_COLUMN_DEFINITION}
+            rowData={rows}
+            enableColResize={true}
+            suppressMovableColumns={true}
+            enableSorting={true}
+            enableFilter={true}
+            onModelUpdated={this.onModelUpdated}
+            onGridReady={this.onGridReady}
+            rowSelection="multiple"
+            headerHeight={38}
+            suppressDragLeaveHidesColumns={true}
+            getRowClass={this.getRowClass}
+            onColumnResized={this.sizeColumnsToFit}
+            postProcessPopup={this.postProcessPopup}
+            rowHeight={28}
+          />
         </BlotterGrid>
         <BlotterStatus>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatus>
       </BlotterStyle>
