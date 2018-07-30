@@ -13,6 +13,8 @@ export const textMeta = 'rgba(68, 76, 95, .59)'
 
 export const backgroundPrimary = '#F4F6F9'
 export const backgroundSecondary = '#FFFFFF'
+export const backgroundTertiary = '#E9EDF3'
+export const backgroundExtra = '#D4DDE8'
 
 export const darkTextPrimary = '#FFFFFF'
 export const darkTextSecondary = '#737987'
@@ -21,3 +23,5 @@ export const darkTextMeta = 'rgba(255, 255, 255, .59)'
 
 export const darkBackgroundPrimary = '#282D39'
 export const darkBackgroundSecondary = '#2F3542'
+export const darkBackgroundTertiary = '#444C5F'
+export const darkBackgroundExtra = '#3D4455'

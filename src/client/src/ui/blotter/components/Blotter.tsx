@@ -47,6 +47,18 @@ const BlotterGrid = styled('div')`
     background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
   }
 
+  .ag-row-odd:hover {
+    background-color: ${({ theme: { palette } }) => palette.backgroundTertiary};
+  }
+
+  .ag-row-even:hover {
+    background-color: ${({ theme: { palette } }) => palette.backgroundTertiary};
+  }
+
+  .rt-blotter__row-pending {
+    background-color: ${({ theme: { palette } }) => palette.backgroundExtra};
+  }
+
   .rt-blotter__status-indicator--done {
     width: 5px !important;
     padding: 0;
