@@ -59,10 +59,8 @@ const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
           id="blotter"
           portalProps={portalProps.blotterRegion}
           render={(popOut, tornOff) => (
-            <div className="shell__blotter-container">
-              <div className="shell__blotter">
-                <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />
-              </div>
+            <div className="shell__blotter">
+              <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />
             </div>
           )}
         />

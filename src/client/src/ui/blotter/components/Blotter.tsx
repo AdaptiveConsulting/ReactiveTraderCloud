@@ -21,14 +21,15 @@ const BlotterStyle = styled('div')`
   height: 100%;
   width: 100%;
   min-height: 20px;
+  display: flex;
+  flex-direction: column;
   background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
   color: ${({ theme: { palette } }) => palette.textPrimary};
   font-size: 13px;
 `
 
 const BlotterGrid = styled('div')`
-  height: 300px;
-  min-height: 300px;
+  height: 100%;
   background-color: ${({ theme: { palette } }) => palette.backgroundSecondary};
   border-radius: 3px;
 
@@ -93,6 +94,7 @@ const BlotterStatus = styled('div')`
   font-size: 10px;
   padding: 10px 0px;
 `
+
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {
   private gridApi: GridApi | null = null
 
