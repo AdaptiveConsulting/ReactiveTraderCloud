@@ -62,7 +62,8 @@ const BlotterGrid = styled('div')`
   }
 
   .rt-blotter__cell-rejected,
-  .rt-blotter__cell-done {
+  .rt-blotter__cell-done,
+  .rt-blotter__cell-pending {
     text-transform: capitalize;
   }
 

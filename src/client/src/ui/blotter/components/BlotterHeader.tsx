@@ -11,7 +11,7 @@ interface BlotterHeaderProps {
 }
 
 interface BlotterHeaderState {
-  quickFilterText: string | null
+  quickFilterText: string
 }
 
 const BlotterHeaderStyle = styled('div')`
@@ -37,7 +37,7 @@ const BlotterLeft = styled('div')`
 
 export default class BlotterHeader extends Component<BlotterHeaderProps, BlotterHeaderState> {
   state = {
-    quickFilterText: null
+    quickFilterText: ''
   }
 
   render() {
@@ -49,7 +49,7 @@ export default class BlotterHeader extends Component<BlotterHeaderProps, Blotter
         <BlotterLeft>Executed Trades</BlotterLeft>
         <BlotterRight>
           <BlotterToolbar
-            isQuickFilterApplied={quickFilterText && quickFilterText.length !== 0}
+            isQuickFilterApplied={quickFilterText.length !== 0}
             quickFilterChangeHandler={this.quickFilterChangeHandler}
             removeQuickFilter={this.removeQuickFilter}
             removeAllFilters={this.removeAllFilters}
@@ -67,19 +67,30 @@ export default class BlotterHeader extends Component<BlotterHeaderProps, Blotter
     )
   }
 
-  private quickFilterChangeHandler = (event: React.FormEvent<any>) => {
-    const target = event.target as HTMLInputElement
-    this.setState({ quickFilterText: target.value })
-    this.props.gridApi.setQuickFilter(target.value)
+  private quickFilterChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
+    const { gridApi } = this.props
+    const { value } = event.currentTarget
+    this.setState({ quickFilterText: value })
+    return gridApi && gridApi.setQuickFilter(value)
   }
 
   private removeQuickFilter = () => {
-    this.props.gridApi.setQuickFilter(null)
-    this.props.gridApi.onFilterChanged()
-    this.setState({ quickFilterText: null })
+    const { gridApi } = this.props
+    if (!gridApi) {
+      return
+    }
+    gridApi.setQuickFilter(null)
+    gridApi.onFilterChanged()
+    this.setState({ quickFilterText: '' })
   }
 
-  private removeAllFilters = () => this.props.gridApi.setFilterModel(null)
+  private removeAllFilters = () => {
+    const { gridApi } = this.props
+    return gridApi && gridApi.setFilterModel(null)
+  }
 
-  private removeFilter = (key: string) => this.props.gridApi.destroyFilter(key)
+  private removeFilter = (key: string) => {
+    const { gridApi } = this.props
+    return gridApi && gridApi.destroyFilter(key)
+  }
 }

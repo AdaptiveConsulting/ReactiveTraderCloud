@@ -54,6 +54,7 @@
     ]
   },
   "dependencies": {
+    "@types/lodash.keyby": "^4.6.4",
     "ag-grid": "18.1.2",
     "ag-grid-react": "18.1.0",
     "animate.css": "3.4.0",

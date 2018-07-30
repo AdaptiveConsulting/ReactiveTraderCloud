@@ -1,7 +1,7 @@
 import { DateFilter, NumberFilter } from 'ag-grid'
 // import { Column, FilterManager, FilterWrapper, Promise, Utils as _ } from "ag-grid";
 
-const getFilterSelect = (filter: any) => {
+const getFilterSelect = (filter: NumberFilter | DateFilter) => {
   const defaultFilterTypes = filter.getApplicableFilterTypes()
   const restrictedFilterTypes = filter.filterParams.filterOptions
   const actualFilterTypes = restrictedFilterTypes ? restrictedFilterTypes : defaultFilterTypes

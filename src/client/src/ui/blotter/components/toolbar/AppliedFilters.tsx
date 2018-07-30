@@ -33,20 +33,19 @@ export default class AppliedFilters extends React.Component<AppliedFiltersProps,
   }
 
   private getAppliedFilters() {
-    let filterElements = []
     if (this.props.filterModel && this.props.columnDefinitions) {
       const filteredColDefs = this.props.columnDefinitions.filter((colDef: any) => {
         return this.props.filterModel.hasOwnProperty(colDef.field)
       })
-      filterElements = filteredColDefs.map(colDef => {
+      return filteredColDefs.map(colDef => {
         return (
           <FilterField key={colDef.field}>
             {colDef.headerName}
-            <i className="fa fa-times" onClick={() => this.props.removeFilter(colDef.field)} />
+            <i className="fa fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
           </FilterField>
         )
       })
     }
-    return filterElements
+    return []
   }
 }

@@ -54,7 +54,7 @@ const getStatusIndicatorClass = (trade: Trade) => {
     default:
       console.log('unkown trade status')
   }
-  return null
+  return ''
 }
 
 export const DEFAULT_COLUMN_DEFINITION: ColDef = {
