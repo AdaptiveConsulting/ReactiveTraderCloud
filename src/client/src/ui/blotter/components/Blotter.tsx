@@ -18,8 +18,6 @@ interface BlotterState {
 }
 
 const BlotterStyle = styled('div')`
-  display: flex;
-  flex-direction: column;
   height: 100%;
   width: 100%;
   min-height: 20px;
@@ -29,7 +27,7 @@ const BlotterStyle = styled('div')`
 `
 
 const BlotterGrid = styled('div')`
-  flex: 1;
+  height: calc(100% - 70px);
   background-color: ${({ theme: { palette } }) => palette.backgroundSecondary};
   border-radius: 3px;
 
