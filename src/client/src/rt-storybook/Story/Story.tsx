@@ -17,6 +17,7 @@ const StyledStory = styled('div')`
   background-color: ${({ theme }) => theme.palette.background.primary};
   color: ${({ theme }) => theme.palette.text.primary};
   transition: background-color 0.3s, color 0.3s;
+  font-family: ${({ theme }) => theme.fontFamily.primary};
 `
 
 const Toolbar = styled('div')`

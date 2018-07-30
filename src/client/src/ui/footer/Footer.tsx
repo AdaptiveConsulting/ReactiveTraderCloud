@@ -1,144 +1,132 @@
-import classnames from 'classnames'
-import _ from 'lodash'
-import React from 'react'
+import React, { Component } from 'react'
+import Ink from 'react-ink'
 
 import { Environment, withEnvironment } from 'rt-components'
-import { ServiceStatus } from 'rt-types'
 import { styled } from 'rt-util'
-import { ConnectionStatus, ConnectionType, ServiceConnectionInfo } from 'system'
-import { ConnectionInfo } from '../connectionStatus'
-import { ApplicationStatusConst } from './applicationStatusConst'
-import { StatusIndicator } from './StatusIndicator'
+import { ConnectionType, ServiceConnectionInfo } from 'system'
 
-export interface FooterProps {
-  compositeStatusService: ServiceConnectionInfo
-  connectionStatus: ConnectionInfo
-  toggleStatusServices: () => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874
-  displayStatusServices: boolean
-  openLink: (link: string) => any // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25874,
-}
+import ServiceStatus from './ServiceStatus'
 
-const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
-const OPENFIN_URL: string = 'http://openfin.co'
+// const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
+// const OPENFIN_URL: string = 'http://openfin.co'
 
-interface FooterStyledProps {
-  connected: boolean
-}
-const FooterStyled = styled('footer')<FooterStyledProps>`
-  height: 100%;
-  width: 100vw;
-  background-color: ${({ connected, theme: { palette } }) =>
-    connected ? palette.primary[0] : palette.accentBad.normal};
-  color: ${({ theme: { palette } }) => palette.secondary[0]};
+const FooterContainer = styled('div')`
   position: relative;
+  width: 100%;
 `
 
-export const Footer: React.SFC<FooterProps & { environment: Environment }> = ({
-  compositeStatusService,
-  connectionStatus,
-  toggleStatusServices,
-  displayStatusServices,
-  environment,
-  openLink
-}) => {
-  const servicesAsList = _.values(compositeStatusService)
+interface IsConnectedProps {
+  isConnected: boolean
+}
+const StyledFooter = styled('div')<IsConnectedProps>`
+  position: relative;
+  height: ${({ theme: { footer } }) => footer.bar.height};
+  width: 100%;
+  color: ${({ theme: { footer } }) => footer.text.color};
+  background-color: ${({ theme: { footer }, isConnected }) =>
+    isConnected ? footer.bar.colorConnected : footer.bar.colorDisconnected};
+  padding-left: ${({ theme: { footer } }) => footer.bar.sidePadding};
+  padding-right: ${({ theme: { footer } }) => footer.bar.sidePadding};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+`
 
-  const panelClasses = classnames('footer__service-status-panel', {
-    hide: !isConnected(connectionStatus.status) || !displayStatusServices
-  })
+const FooterText = styled('p')`
+  font-size: ${({ theme: { footer } }) => footer.text.fontSize};
+  margin: 0px;
+`
 
-  const openfinLogoClassName = classnames('footer__logo', {
-    'footer__logo-openfin': environment.isRunningDesktop
-  })
-  const footerClasses = classnames('footer', {
-    'footer--disconnected': !isConnected(connectionStatus.status)
-  })
+const FooterIcon = styled('div')<IsConnectedProps>`
+  width: ${({ theme: { footer } }) => footer.icon.size};
+  height: ${({ theme: { footer } }) => footer.icon.size};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme: { footer }, isConnected }) =>
+    isConnected ? footer.icon.backgroundColorConnected : footer.icon.backgroundColorDisonnected};
+  border-radius: 50%;
+  margin-right: 20px;
+`
 
-  return (
-    <FooterStyled className={footerClasses} connected={isConnected(connectionStatus.status)}>
-      <span className="footer__connection-url">
-        {isConnected(connectionStatus.status)
-          ? `Connected to ${connectionStatus.url} (${connectionStatus.transportType})`
-          : 'Disconnected'}{' '}
-      </span>
-      <span className="footer__logo-container">
-        <span className={openfinLogoClassName} onClick={() => openLink(OPENFIN_URL)} />
-        <span className="footer__logo footer__logo-adaptive" onClick={() => openLink(ADAPTIVE_URL)} />
-      </span>
-      <div
-        className="footer__status-indicator-wrapper"
-        onMouseOut={() => toggleStatusServices()}
-        onMouseOver={() => toggleStatusServices()}
-      >
-        <StatusIndicator
-          status={getApplicationStatus(connectionStatus.status, servicesAsList, connectionStatus.transportType)}
-        />
-      </div>
-      <div className={panelClasses}>
-        <ul className="footer__services">
-          <li className="footer__service" key={Math.random()}>
-            {renderBroker(connectionStatus.status)}
-          </li>
-          {servicesAsList.map(renderServiceStatus)}
-        </ul>
-      </div>
-    </FooterStyled>
-  )
+interface IsExpandedProps {
+  isExpanded: boolean
+}
+const ExpandIcon = styled('i')<IsExpandedProps>`
+  transform: rotate(${({ isExpanded }) => (isExpanded ? 180 : 0)}deg);
+  transition: transform 0.3s;
+`
+
+const Padding = styled('div')`
+  flex: 1;
+`
+
+const ServiceStatusContainer = styled('div')<IsExpandedProps>`
+  position: absolute;
+  bottom: 100%;
+  left: 0px;
+  color: black;
+  transform: translate(0px, ${({ isExpanded }) => (isExpanded ? '0%' : '100%')});
+  opacity: ${({ isExpanded }) => (isExpanded ? 1 : 0)};
+  transition: transform 0.3s, opacity 0.3s;
+  height: 200px;
+  width: 100%;
+`
+
+export interface FooterProps {
+  url: string
+  isConnected: boolean
+  transportType: ConnectionType
+  serviceStatus: ServiceConnectionInfo
+}
+interface PropsWithEnvironment extends FooterProps {
+  environment: Environment
 }
 
-const getApplicationStatus = (
-  connection: ConnectionStatus,
-  services: ServiceStatus[],
-  connectionType: ConnectionType
-) => {
-  if (
-    connection === ConnectionStatus.connected &&
-    _.every(services, 'isConnected') &&
-    connectionType === ConnectionType.WebSocket
-  ) {
-    return ApplicationStatusConst.Healthy
-  } else if (_.some(services, 'isConnected')) {
-    return ApplicationStatusConst.Warning
-  } else {
-    return ApplicationStatusConst.Down
+interface State {
+  isExpanded: boolean
+}
+const initialState = {
+  isExpanded: false
+}
+
+class Footer extends Component<PropsWithEnvironment, State> {
+  constructor(props: PropsWithEnvironment) {
+    super(props)
+    this.state = initialState
+
+    this.toggleExpand = this.toggleExpand.bind(this)
+  }
+
+  toggleExpand() {
+    const { isExpanded } = this.state
+    this.setState({
+      isExpanded: !isExpanded
+    })
+  }
+
+  render() {
+    const { url, isConnected, serviceStatus, transportType } = this.props
+    const { isExpanded } = this.state
+
+    return (
+      <FooterContainer>
+        <ServiceStatusContainer isExpanded={isExpanded}>
+          <ServiceStatus serviceStatus={serviceStatus} />
+        </ServiceStatusContainer>
+        <StyledFooter isConnected={isConnected} onClick={this.toggleExpand}>
+          <Ink />
+          <FooterIcon isConnected={isConnected}>
+            <i className={`fas fa-${isConnected ? 'check' : 'times'}`} />
+          </FooterIcon>
+          <FooterText>{isConnected ? `Connected to ${url} (${transportType})` : 'Disconnected'}</FooterText>
+          <Padding />
+          <ExpandIcon className="fas fa-chevron-up" isExpanded={isExpanded} />
+        </StyledFooter>
+      </FooterContainer>
+    )
   }
 }
-
-const isConnected = (connection: ConnectionStatus) => connection === ConnectionStatus.connected
-
-const renderBroker = (connection: ConnectionStatus) =>
-  (isConnected(connection) && (
-    <span className="footer__service-label">
-      <i className="footer__icon--online fa fa-circle " />broker
-    </span>
-  )) || (
-    <span className="footer__service-label">
-      <i className="footer__icon--offline fa fa-circle-o" />broker
-    </span>
-  )
-
-const renderServiceStatus = (serviceStatus: ServiceStatus) => (
-  <li className="footer__service" key={Math.random()}>
-    {renderStatus(serviceStatus)}
-  </li>
-)
-
-const renderStatus = (serviceStatus: ServiceStatus) =>
-  (serviceStatus.isConnected && (
-    <span className="footer__service-label">
-      <i className="footer__icon--online fa fa-circle " />
-      {renderTitle(serviceStatus)}
-    </span>
-  )) || (
-    <span className="footer__service-label">
-      <i className="footer__icon--offline fa fa-circle-o" />
-      {serviceStatus.serviceType}
-    </span>
-  )
-
-const renderTitle = ({ serviceType, connectedInstanceCount }: ServiceStatus) =>
-  `${serviceType} (${connectedInstanceCount} ${renderConnectedNodesText(connectedInstanceCount)})`
-
-const renderConnectedNodesText = (connectedInstanceCount: number) => (connectedInstanceCount === 1 && 'node') || 'nodes'
 
 export default withEnvironment(Footer)
