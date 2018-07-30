@@ -10,21 +10,32 @@ interface AppliedFiltersProps {
 }
 
 const FilterField = styled('div')`
+  display: flex;
+  align-items: center;
   font-size: 10px;
   text-transform: uppercase;
-  background-color: ${({ theme: { palette } }) => palette.backgroundSecondary};
-  border: 1px solid ${({ theme: { palette } }) => palette.textPrimary};
+  background-color: #abb2b9;
   margin-left: 8px;
-  padding: 2px;
-
-  & i {
-    padding-left: 4px;
-    cursor: pointer;
-  }
+  border-radius: 3px;
+  overflow: hidden;
 
   &:hover {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    background-color: #808b96;
+
+    i {
+      background-color: #21618c;
+    }
   }
+`
+
+const FilterName = styled('div')`
+  padding: 0px 8px;
+`
+
+const FilterIcon = styled('i')`
+  padding: 4px;
+  background-color: #aeb6bf;
+  cursor: pointer;
 `
 
 export default class AppliedFilters extends React.Component<AppliedFiltersProps, any> {
@@ -40,8 +51,8 @@ export default class AppliedFilters extends React.Component<AppliedFiltersProps,
       return filteredColDefs.map(colDef => {
         return (
           <FilterField key={colDef.field}>
-            {colDef.headerName}
-            <i className="fa fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
+            <FilterName>{colDef.headerName}</FilterName>
+            <FilterIcon className="fa fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
           </FilterField>
         )
       })
