@@ -1,6 +1,15 @@
 import { darken, lighten } from './colorUtils'
 
-import { accentBad, accentGood, accentPrimary, accentWarning, brandPrimary, brandSecondary } from './baseColors'
+import {
+  ACCENT_BAD,
+  ACCENT_GOOD,
+  ACCENT_PRIMARY,
+  ACCENT_WARNING,
+  BLACK,
+  BRAND_PRIMARY,
+  BRAND_SECONDARY,
+  WHITE
+} from './baseColors'
 
 const getLightPrimary = (color: string) => ({
   '0': lighten(color, 100),
@@ -20,20 +29,39 @@ const getAccent = (color: string) => ({
   light: lighten(color, 50)
 })
 
+const primary = getLightPrimary(BRAND_PRIMARY)
+const secondary = getLightSecondary(BRAND_SECONDARY)
+const accentPrimary = getAccent(ACCENT_PRIMARY)
+const accentGood = getAccent(ACCENT_GOOD)
+const accentWarning = getAccent(ACCENT_WARNING)
+const accentBad = getAccent(ACCENT_BAD)
+
 const palette = {
   brand: {
-    primary: brandPrimary,
-    secondary: brandSecondary
+    primary: BRAND_PRIMARY,
+    secondary: BRAND_SECONDARY
   },
-  primary: getLightPrimary(brandPrimary),
-  secondary: getLightSecondary(brandSecondary),
-  accentPrimary: getAccent(accentPrimary),
-  accentGood: getAccent(accentGood),
-  accentWarning: getAccent(accentWarning),
-  accentBad: getAccent(accentBad),
-  trading: {
-    sell: accentBad,
-    buy: accentGood
+  primary,
+  secondary,
+  accentPrimary,
+  accentGood,
+  accentWarning,
+  accentBad,
+  unique: {
+    buy: ACCENT_GOOD,
+    sell: ACCENT_BAD,
+    black: BLACK,
+    white: WHITE
+  },
+  background: {
+    primary: primary[0],
+    secondary: secondary[3]
+  },
+  text: {
+    dark: secondary[3],
+    light: primary[0],
+    primary: secondary[3],
+    secondary: primary[0]
   }
 }
 
