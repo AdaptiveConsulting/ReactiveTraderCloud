@@ -100,10 +100,42 @@ const BlotterGrid = styled('div')`
   }
 
   .ag-menu {
-    background-color: purple;
+    background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
+    box-shadow: 0 0 20px 0 rgba(68, 76, 95, 0.2);
+    border-radius: 3px;
 
-    .ag-filter-body {
-      margin: 4px;
+    .filter-container__checkbox-container {
+      display: flex;
+      align-items: center;
+      padding: 4px 10px;
+
+      &:hover {
+        background-color: ${({ theme: { palette } }) => palette.backgroundTertiary};
+      }
+    }
+
+    .ag-filter-body-wrapper > div,
+    .filter_container__select-all-option-container {
+      border-bottom: 2px solid #beccdc;
+    }
+
+    input,
+    select {
+      margin: 10px;
+      font-size: 11px;
+      padding: 6px;
+      border: none;
+      border-bottom: 1px solid ${({ theme: { palette } }) => palette.backgroundPrimary};
+      width: auto;
+    }
+
+    input[type='checkbox' i] {
+      margin: 0px 4px;
+      cursor: pointer;
+    }
+
+    label {
+      text-transform: capitalize;
     }
   }
 `
