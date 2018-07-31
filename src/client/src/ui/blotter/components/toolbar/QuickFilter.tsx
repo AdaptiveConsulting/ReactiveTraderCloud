@@ -1,6 +1,5 @@
 import React from 'react'
 import { styled } from 'rt-util'
-import { FILTER_APPLIED_ICON, FILTER_ICON } from './Icons'
 
 interface QuickFilterProps {
   isFilterApplied: boolean
@@ -11,6 +10,12 @@ interface QuickFilterProps {
 interface QuickFilterState {
   quickFilterText: string
 }
+
+const FilterIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="icon" width="100%" height="100%" viewBox="0 0 13 9">
+    <path fill="none" fillRule="evenodd" stroke="#888" d="M.5.5h12-12zm2 2h8-8zm1 2h6-6zm1 2h4-4zm1.5 2h1-1z" />
+  </svg>
+)
 
 const QuickFilterStyle = styled('div')`
   padding: 0px 10px;
@@ -29,13 +34,21 @@ const QuickFilterInput = styled('input')`
   width: 100%;
   font-size: 12px;
   height: 20px;
-  padding: 0px 14px 0px 16px;
+  padding: 0px 14px 0px 6px;
+  outline: none;
+
+  &:hover {
+    border-bottom: 1px solid ${({ theme: { palette } }) => palette.accentPrimary.light};
+  }
+
+  &:focus {
+    border-bottom: 1px solid ${({ theme: { palette } }) => palette.accentPrimary.normal};
+  }
 `
 
 const QuickFilterIcon = styled('div')`
-  width: 11px;
-  position: absolute;
-  left: 12px;
+  width: 14px;
+  margin: 0px 4px;
 `
 
 const QuickFilterClearIcon = styled('div')`
@@ -55,10 +68,11 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
   }
 
   render() {
-    const filterIcon = this.props.isFilterApplied ? FILTER_APPLIED_ICON : FILTER_ICON
     return (
       <QuickFilterStyle>
-        <QuickFilterIcon onClick={this.quickFilterFocus}>{filterIcon}</QuickFilterIcon>
+        <QuickFilterIcon onClick={this.quickFilterFocus}>
+          <FilterIcon />
+        </QuickFilterIcon>
         <QuickFilterInput
           innerRef={this.quickFilterInput}
           type="text"
