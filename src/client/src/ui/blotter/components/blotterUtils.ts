@@ -2,6 +2,7 @@ import { ColDef } from 'ag-grid'
 import numeral from 'numeral'
 import { Trade, TradeStatus } from 'rt-types'
 import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
+import SetFilter from './filters/SetFilter'
 
 const currencyIconLookup = {
   ['USD']: `fa fa-usd`,
@@ -114,7 +115,7 @@ export const columnDefinitions: ColDef[] = [
     field: STATUS,
     width: 90,
     cellClass: ({ data }) => getStatusCellClass(data),
-    filter: 'agTextColumnFilter'
+    filterFramework: SetFilter
   },
   {
     colId: TRADE_DATE,
@@ -129,21 +130,21 @@ export const columnDefinitions: ColDef[] = [
     headerName: 'Direction',
     field: DIRECTION,
     width: 90,
-    filter: 'agTextColumnFilter'
+    filterFramework: SetFilter
   },
   {
     colId: SYMBOL,
     headerName: 'CCYCCY',
     field: SYMBOL,
     width: 90,
-    filter: 'agTextColumnFilter'
+    filterFramework: SetFilter
   },
   {
     colId: DEALT_CURRENCY,
     headerName: 'Dealt CCY',
     field: DEALT_CURRENCY,
     width: 90,
-    filter: 'agTextColumnFilter'
+    filterFramework: SetFilter
   },
   {
     colId: NOTIONAL,
@@ -177,7 +178,7 @@ export const columnDefinitions: ColDef[] = [
     field: TRADER_NAME,
     headerName: 'Trader',
     width: 90,
-    filter: 'agNumberColumnFilter'
+    filterFramework: SetFilter
   },
   {
     colId: 'empty',
