@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import values from 'lodash.values'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
@@ -24,7 +24,7 @@ class BlotterContainer extends React.Component<BlotterContainerProps> {
   render() {
     const { blotterService, isConnected, tornOff, onPopoutClick } = this.props
     const { trades } = blotterService
-    const gridRows = _.values(trades).reverse()
+    const gridRows = values(trades).reverse()
 
     if (isConnected) {
       return (
@@ -45,9 +45,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   subscribeToBlotter: () => dispatch(BlotterActions.subscribeToBlotterAction())
 })
 
-const ConnectedBlotterContainer = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(BlotterContainer)
-
-export default ConnectedBlotterContainer

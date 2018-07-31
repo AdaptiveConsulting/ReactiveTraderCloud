@@ -77,7 +77,7 @@ const BlotterGrid = styled('div')`
     text-transform: capitalize;
   }
 
-  .rt-blotter__rowStrikeThrough:before {
+  .rt-blotter__row-rejected:before {
     content: ' ';
     position: absolute;
     top: 50%;
@@ -139,14 +139,13 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
             suppressMovableColumns={true}
             enableSorting={true}
             enableFilter={true}
-            onModelUpdated={this.onModelUpdated}
-            onGridReady={this.onGridReady}
             rowSelection="multiple"
-            headerHeight={38}
             suppressDragLeaveHidesColumns={true}
             getRowClass={this.getRowClass}
-            onColumnResized={this.sizeColumnsToFit}
+            headerHeight={38}
             rowHeight={28}
+            onModelUpdated={this.onModelUpdated}
+            onGridReady={this.onGridReady}
           />
         </BlotterGrid>
         <BlotterStatus>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatus>
@@ -154,19 +153,17 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
     )
   }
 
-  private sizeColumnsToFit = () => this.gridApi && this.gridApi.sizeColumnsToFit()
-
   private onGridReady = ({ api }: { api: GridApi }) => {
     this.gridApi = api
     this.onModelUpdated()
-    this.sizeColumnsToFit()
+    api.sizeColumnsToFit()
   }
 
-  private onModelUpdated = () => this.gridApi && this.setState({ displayedRows: this.gridApi.getModel().getRowCount() })
+  private onModelUpdated = () => this.gridApi && this.setState({ displayedRows: this.gridApi.getDisplayedRowCount() })
 
   private getRowClass({ data }: { data: Trade }) {
     if (data.status === TradeStatus.Rejected) {
-      return 'rt-blotter__rowStrikeThrough'
+      return 'rt-blotter__row-rejected'
     } else if (data.status === TradeStatus.Pending) {
       return 'rt-blotter__row-pending'
     }

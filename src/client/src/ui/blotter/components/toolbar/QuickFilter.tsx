@@ -48,7 +48,7 @@ const QuickFilterClearIcon = styled('div')`
 `
 
 export default class QuickFilter extends React.Component<QuickFilterProps, QuickFilterState> {
-  private quickFilterInput: HTMLInputElement | null = null
+  private quickFilterInput = React.createRef<HTMLInputElement>()
 
   state = {
     quickFilterText: ''
@@ -58,13 +58,9 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
     const filterIcon = this.props.isFilterApplied ? FILTER_APPLIED_ICON : FILTER_ICON
     return (
       <QuickFilterStyle>
-        <QuickFilterIcon onClick={() => this.quickFilterInput && this.quickFilterInput.focus()}>
-          {filterIcon}
-        </QuickFilterIcon>
+        <QuickFilterIcon onClick={this.quickFilterFocus}>{filterIcon}</QuickFilterIcon>
         <QuickFilterInput
-          ref={(el: any) => {
-            this.quickFilterInput = el
-          }}
+          innerRef={this.quickFilterInput}
           type="text"
           placeholder="Filter"
           value={this.state.quickFilterText}
@@ -87,4 +83,6 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
     this.setState({ quickFilterText: '' })
     this.props.removeQuickFilter()
   }
+
+  private quickFilterFocus = () => this.quickFilterInput.current && this.quickFilterInput.current.focus()
 }
