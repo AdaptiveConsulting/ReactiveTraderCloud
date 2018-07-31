@@ -43,6 +43,7 @@ const QuickFilterInput = styled('input')`
 
   &:focus {
     border-bottom: 1px solid ${({ theme: { palette } }) => palette.accentPrimary.normal};
+    color: ${({ theme: { palette } }) => palette.textPrimary};
   }
 `
 

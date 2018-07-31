@@ -101,7 +101,7 @@ const BlotterGrid = styled('div')`
 
   .ag-menu {
     background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
-    box-shadow: 0 0 20px 0 rgba(68, 76, 95, 0.2);
+    box-shadow: 0 0 0.5px 0 ${({ theme: { palette } }) => palette.textPrimary};
     border-radius: 3px;
 
     .filter-container__checkbox-container {
@@ -114,9 +114,8 @@ const BlotterGrid = styled('div')`
       }
     }
 
-    .ag-filter-body-wrapper > div,
     .filter_container__select-all-option-container {
-      border-bottom: 2px solid #beccdc;
+      border-bottom: 2px solid ${({ theme: { palette } }) => palette.textMeta};
     }
 
     input,
@@ -124,9 +123,16 @@ const BlotterGrid = styled('div')`
       margin: 10px;
       font-size: 11px;
       padding: 6px;
+      color: ${({ theme: { palette } }) => palette.textPrimary};
+      background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
       border: none;
-      border-bottom: 1px solid ${({ theme: { palette } }) => palette.backgroundPrimary};
+      border-bottom: 1px solid ${({ theme: { palette } }) => palette.textMeta};
       width: auto;
+      outline: none;
+
+      &:focus {
+        border-bottom: 1px solid ${({ theme: { palette } }) => palette.accentPrimary.normal};
+      }
     }
 
     input[type='checkbox' i] {
