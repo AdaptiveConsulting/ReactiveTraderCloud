@@ -14,8 +14,8 @@ const StyledStory = styled('div')`
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  background-color: ${({ theme }) => theme.palette.background.primary};
-  color: ${({ theme }) => theme.palette.text.primary};
+  background-color: ${({ theme }) => theme.background.primary};
+  color: ${({ theme }) => theme.text.primary};
   transition: background-color 0.3s, color 0.3s;
   font-family: ${({ theme }) => theme.fontFamily.primary};
 `
@@ -26,8 +26,8 @@ const Toolbar = styled('div')`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme }) => theme.palette.background.secondary};
-  color: ${({ theme }) => theme.palette.text.secondary};
+  background-color: ${({ theme }) => theme.background.secondary};
+  color: ${({ theme }) => theme.text.secondary};
   transition: background-color 0.3s, color 0.3s;
   h2 {
     flex: 1;

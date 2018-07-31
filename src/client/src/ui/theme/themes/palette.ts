@@ -52,17 +52,9 @@ const palette = {
     sell: ACCENT_BAD,
     black: BLACK,
     white: WHITE
-  },
-  background: {
-    primary: primary[0],
-    secondary: secondary[3]
-  },
-  text: {
-    dark: secondary[3],
-    light: primary[0],
-    primary: secondary[3],
-    secondary: primary[0]
   }
 }
+
+export type Palette = typeof palette
 
 export default palette

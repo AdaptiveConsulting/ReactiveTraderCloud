@@ -1,3 +1,3 @@
-export { Theme } from './baseTheme'
+export { Theme } from './defaultTheme'
 export { default as lightTheme } from './lightTheme'
 export { default as darkTheme } from './darkTheme'

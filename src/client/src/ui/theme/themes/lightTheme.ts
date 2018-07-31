@@ -1,4 +1,4 @@
-import baseTheme, { Theme } from './baseTheme'
+import baseTheme, { Theme } from './defaultTheme'
 
 const lightTheme: Theme = baseTheme
 

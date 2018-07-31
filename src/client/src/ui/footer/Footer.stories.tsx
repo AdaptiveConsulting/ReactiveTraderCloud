@@ -33,34 +33,21 @@ interface Props extends FooterProps {
   environment: Environment
 }
 
-const footerProps: Props = {
-  serviceStatus: {
-    blotter: {
-      connectedInstanceCount: 1,
-      isConnected: true,
-      serviceType: 'blotter'
-    },
-    reference: {
-      connectedInstanceCount: 1,
-      isConnected: true,
-      serviceType: 'reference'
-    },
-    execution: {
-      connectedInstanceCount: 1,
-      isConnected: true,
-      serviceType: 'execution'
-    },
-    pricing: {
-      connectedInstanceCount: 1,
-      isConnected: true,
-      serviceType: 'pricing'
-    },
-    analytics: {
-      connectedInstanceCount: 1,
-      isConnected: true,
-      serviceType: 'analytics'
+const SERVICES = ['blotter', 'reference', 'execution', 'pricing', 'analytics']
+
+const getServiceStatus = (services, isConnected, connectedInstanceCount) =>
+  services.reduce((acc, val) => {
+    const newAcc = acc
+    newAcc[val] = {
+      connectedInstanceCount,
+      isConnected,
+      serviceType: val
     }
-  },
+    return newAcc
+  }, {})
+
+const footerProps: Props = {
+  serviceStatus: getServiceStatus(SERVICES, true, 1),
   isConnected: true,
   url: 'wss://web-demo.adaptivecluster.com:443/ws',
   transportType: ConnectionType.WebSocket,
@@ -75,33 +62,7 @@ stories.add('Connected', () => (
 
 const disconnectedFooterProps: Props = {
   ...footerProps,
-  serviceStatus: {
-    blotter: {
-      connectedInstanceCount: 0,
-      isConnected: false,
-      serviceType: 'blotter'
-    },
-    reference: {
-      connectedInstanceCount: 0,
-      isConnected: false,
-      serviceType: 'reference'
-    },
-    execution: {
-      connectedInstanceCount: 0,
-      isConnected: false,
-      serviceType: 'execution'
-    },
-    pricing: {
-      connectedInstanceCount: 0,
-      isConnected: false,
-      serviceType: 'pricing'
-    },
-    analytics: {
-      connectedInstanceCount: 0,
-      isConnected: false,
-      serviceType: 'analytics'
-    }
-  },
+  serviceStatus: getServiceStatus(SERVICES, false, 0),
   isConnected: false
 }
 

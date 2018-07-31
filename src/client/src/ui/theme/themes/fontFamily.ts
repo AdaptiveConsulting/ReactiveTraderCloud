@@ -1,6 +1,6 @@
-const fontFamily = {
+export const getFontFamily = () => ({
   primary: 'Lato',
   secondary: 'Montserrat'
-}
+})
 
-export default fontFamily
+export default getFontFamily()

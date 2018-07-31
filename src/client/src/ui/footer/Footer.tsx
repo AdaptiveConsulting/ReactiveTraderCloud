@@ -21,6 +21,7 @@ interface IsConnectedProps {
 const StyledFooter = styled('div')<IsConnectedProps>`
   position: relative;
   height: ${({ theme: { footer } }) => footer.bar.height};
+  max-height: ${({ theme: { footer } }) => footer.bar.height};
   width: 100%;
   color: ${({ theme: { footer } }) => footer.text.color};
   background-color: ${({ theme: { footer }, isConnected }) =>
@@ -55,7 +56,8 @@ interface IsExpandedProps {
 }
 const ExpandIcon = styled('i')<IsExpandedProps>`
   transform: rotate(${({ isExpanded }) => (isExpanded ? 180 : 0)}deg);
-  transition: transform 0.3s;
+  transition: transform 0.5s;
+  will-change: transform;
 `
 
 const Padding = styled('div')`
@@ -69,7 +71,8 @@ const ServiceStatusContainer = styled('div')<IsExpandedProps>`
   color: black;
   transform: translate(0px, ${({ isExpanded }) => (isExpanded ? '0%' : '100%')});
   opacity: ${({ isExpanded }) => (isExpanded ? 1 : 0)};
-  transition: transform 0.3s, opacity 0.3s;
+  will-change: transform, opacity;
+  transition: transform 0.5s, opacity 0.5s;
   height: 200px;
   width: 100%;
 `
