@@ -105,14 +105,14 @@ export const columnDefinitions: ColDef[] = [
     colId: TRADE_ID,
     headerName: 'Trade ID',
     field: TRADE_ID,
-    width: 100,
+    width: 80,
     filter: 'agNumberColumnFilter'
   },
   {
     colId: STATUS,
     headerName: 'Status',
     field: STATUS,
-    width: 105,
+    width: 90,
     cellClass: ({ data }) => getStatusCellClass(data),
     filter: 'agTextColumnFilter'
   },
@@ -121,28 +121,28 @@ export const columnDefinitions: ColDef[] = [
     headerName: 'Date',
     field: TRADE_DATE,
     cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
-    width: 170,
+    width: 130,
     suppressFilter: true
   },
   {
     colId: DIRECTION,
     headerName: 'Direction',
     field: DIRECTION,
-    width: 110,
+    width: 90,
     filter: 'agTextColumnFilter'
   },
   {
     colId: SYMBOL,
     headerName: 'CCYCCY',
     field: SYMBOL,
-    width: 105,
+    width: 90,
     filter: 'agTextColumnFilter'
   },
   {
     colId: DEALT_CURRENCY,
     headerName: 'Dealt CCY',
     field: DEALT_CURRENCY,
-    width: 105,
+    width: 90,
     filter: 'agTextColumnFilter'
   },
   {
@@ -152,14 +152,14 @@ export const columnDefinitions: ColDef[] = [
     cellRenderer: numericCellRenderer,
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
-    width: 140,
+    width: 100,
     filter: 'agNumberColumnFilter'
   },
   {
     colId: SPOT_RATE,
     headerName: 'Rate',
     field: SPOT_RATE,
-    width: 120,
+    width: 80,
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
     filter: 'agNumberColumnFilter'
@@ -169,21 +169,21 @@ export const columnDefinitions: ColDef[] = [
     headerName: 'Value Date',
     field: VALUE_DATE,
     cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
-    width: 130,
+    width: 100,
     suppressFilter: true
   },
   {
     colId: TRADER_NAME,
     field: TRADER_NAME,
     headerName: 'Trader',
-    width: 105,
+    width: 90,
     filter: 'agNumberColumnFilter'
   },
   {
     colId: 'empty',
     field: 'empty',
     headerName: '',
-    width: 105,
+    width: 80,
     suppressSizeToFit: false,
     suppressFilter: true
   }
