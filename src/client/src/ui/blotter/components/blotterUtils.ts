@@ -106,14 +106,14 @@ export const columnDefinitions: ColDef[] = [
     colId: TRADE_ID,
     headerName: 'Trade ID',
     field: TRADE_ID,
-    width: 80,
+    width: 100,
     filter: 'agNumberColumnFilter'
   },
   {
     colId: STATUS,
     headerName: 'Status',
     field: STATUS,
-    width: 90,
+    width: 110,
     cellClass: ({ data }) => getStatusCellClass(data),
     filterFramework: SetFilter
   },
@@ -129,21 +129,21 @@ export const columnDefinitions: ColDef[] = [
     colId: DIRECTION,
     headerName: 'Direction',
     field: DIRECTION,
-    width: 90,
+    width: 110,
     filterFramework: SetFilter
   },
   {
     colId: SYMBOL,
     headerName: 'CCYCCY',
     field: SYMBOL,
-    width: 90,
+    width: 110,
     filterFramework: SetFilter
   },
   {
     colId: DEALT_CURRENCY,
     headerName: 'Dealt CCY',
     field: DEALT_CURRENCY,
-    width: 90,
+    width: 110,
     filterFramework: SetFilter
   },
   {
@@ -153,14 +153,14 @@ export const columnDefinitions: ColDef[] = [
     cellRenderer: numericCellRenderer,
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
-    width: 100,
+    width: 120,
     filter: 'agNumberColumnFilter'
   },
   {
     colId: SPOT_RATE,
     headerName: 'Rate',
     field: SPOT_RATE,
-    width: 80,
+    width: 100,
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
     filter: 'agNumberColumnFilter'
@@ -170,14 +170,14 @@ export const columnDefinitions: ColDef[] = [
     headerName: 'Value Date',
     field: VALUE_DATE,
     cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
-    width: 100,
+    width: 120,
     suppressFilter: true
   },
   {
     colId: TRADER_NAME,
     field: TRADER_NAME,
     headerName: 'Trader',
-    width: 90,
+    width: 110,
     filterFramework: SetFilter
   },
   {

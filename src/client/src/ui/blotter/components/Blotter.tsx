@@ -78,7 +78,7 @@ const BlotterGrid = styled('div')`
   }
 
   .rt-blotter__row-rejected:before {
-    content: ' ';
+    content: '';
     position: absolute;
     top: 50%;
     left: 0;
@@ -97,6 +97,16 @@ const BlotterGrid = styled('div')`
 
   .ag-icon-filter {
     color: ${({ theme: { palette } }) => palette.textSecondary};
+  }
+
+  .ag-header-cell-label {
+    display: flex;
+    align-items: center;
+  }
+
+  .ag-header-cell-label i {
+    color: ${({ theme: { palette } }) => palette.textPrimary};
+    padding: 0px 4px;
   }
 
   .ag-menu {
@@ -154,6 +164,13 @@ const BlotterStatus = styled('div')`
   align-items: center;
 `
 
+const icons = {
+  menu: '<i class="fa fa-filter" aria-hidden="true" />',
+  filter: '<i class="fa fa-filter" aria-hidden="true" />',
+  sortAscending: '<i class="fa fa-long-arrow-down" aria-hidden="true" />',
+  sortDescending: '<i class="fa fa-long-arrow-up" aria-hidden="true" />'
+}
+
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {
   private gridApi: GridApi | null = null
 
@@ -184,6 +201,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
             rowHeight={28}
             onModelUpdated={this.onModelUpdated}
             onGridReady={this.onGridReady}
+            icons={icons}
           />
         </BlotterGrid>
         <BlotterStatus>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatus>
