@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { TickCross } from 'rt-components'
 import { styled } from 'rt-util'
-
 import { ServiceConnectionInfo } from 'system'
 
 const StyledServiceStatus = styled('div')`
@@ -24,14 +24,27 @@ const ServiceItem = styled('div')<ServiceItemProps>`
       ? theme.footer.serviceStatus.connectedColors[order]
       : theme.footer.serviceStatus.disconnectedColors[order]};
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   color: ${({ theme }) => theme.footer.serviceStatus.textColor};
-  p {
-    margin: 3px;
-    font-size: ${({ theme }) => theme.footer.serviceStatus.fontSize};
-  }
+`
+
+const StatusText = styled('div')`
+  display: flex;
+  flex-direction: column;
+`
+
+const ServiceName = styled('p')`
+  margin: 0px;
+  margin-bottom: 6px;
+  font-size: ${({ theme }) => theme.footer.serviceStatus.fontSize};
+`
+
+const NodeCount = styled('p')`
+  margin: 0px;
+  opacity: 0.75;
+  font-size: ${({ theme }) => theme.footer.serviceStatus.nodeFontSize};
 `
 
 interface Props {
@@ -39,10 +52,17 @@ interface Props {
 }
 const ServiceStatus: React.SFC<Props> = ({ serviceStatus }: Props) => (
   <StyledServiceStatus>
-    {Object.entries(serviceStatus).map(([service, data], i) => (
-      <ServiceItem isConnected={data.isConnected} order={i} key={data.serviceType}>
-        <p>{data.serviceType}</p>
-        <p>{`(${data.connectedInstanceCount} node${data.connectedInstanceCount !== 1 ? 's' : ''})`}</p>
+    {Object.values(serviceStatus).map((service, i) => (
+      <ServiceItem isConnected={service.isConnected} order={i} key={service.serviceType}>
+        <TickCross isTick={service.isConnected} />
+        <StatusText>
+          <ServiceName>{service.serviceType}</ServiceName>
+          {!!service.connectedInstanceCount && (
+            <NodeCount>{`(${service.connectedInstanceCount} Node${
+              service.connectedInstanceCount !== 1 ? 's' : ''
+            })`}</NodeCount>
+          )}
+        </StatusText>
       </ServiceItem>
     ))}
   </StyledServiceStatus>

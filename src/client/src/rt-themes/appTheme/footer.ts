@@ -23,16 +23,13 @@ const footer = (baseTheme: BaseTheme) => ({
     colorDisconnected: baseTheme.palette.accentBad.normal,
     sidePadding: '20px'
   },
-  icon: {
-    backgroundColorConnected: baseTheme.palette.accentGood.dark,
-    backgroundColorDisonnected: baseTheme.palette.accentBad.dark,
-    size: '24px'
-  },
   serviceStatus: {
     connectedColors: getColorRange(baseTheme.palette, true, COLOR_NUM),
     disconnectedColors: getColorRange(baseTheme.palette, false, COLOR_NUM),
     fontSize: baseTheme.fontSize.h3,
-    textColor: baseTheme.text.light
+    nodeFontSize: baseTheme.fontSize.h4,
+    textColor: baseTheme.text.light,
+    height: '100px'
   }
 })
 

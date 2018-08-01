@@ -33,13 +33,13 @@ interface Props extends FooterProps {
   environment: Environment
 }
 
-const SERVICES = ['blotter', 'reference', 'execution', 'pricing', 'analytics']
+const SERVICES = ['broker', 'blotter', 'reference', 'execution', 'pricing', 'analytics']
 
 const getServiceStatus = (services, isConnected, connectedInstanceCount) =>
   services.reduce((acc, val) => {
     const newAcc = acc
     newAcc[val] = {
-      connectedInstanceCount,
+      connectedInstanceCount: val === 'broker' ? 0 : connectedInstanceCount,
       isConnected,
       serviceType: val
     }
