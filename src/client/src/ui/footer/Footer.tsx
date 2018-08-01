@@ -8,9 +8,8 @@ import { ConnectionType, ServiceConnectionInfo } from 'system'
 
 import ServiceStatus from './ServiceStatus'
 
-// const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
-// const OPENFIN_URL: string = 'http://openfin.co'
-
+// Linter got confused when this was inline within the string template
+const getTransform = (isExpanded: boolean, height: string) => `translate(0px, ${isExpanded ? `-${height}` : '0px'})`
 interface IsExpandedProps {
   isExpanded: boolean
 }
@@ -18,10 +17,7 @@ const FooterContainer = styled('div')<IsExpandedProps>`
   position: relative;
   width: 100%;
   transition: transform ${({ theme }) => theme.animationSpeed.slow};
-  transform: translate(
-    0px,
-    ${({ isExpanded, theme }) => (isExpanded ? '-' + theme.footer.serviceStatus.height : '0px')}
-  );
+  transform: ${({ isExpanded, theme }) => getTransform(isExpanded, theme.footer.serviceStatus.height)};
   will-change: transform;
 `
 
