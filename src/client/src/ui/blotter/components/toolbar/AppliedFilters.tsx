@@ -15,7 +15,7 @@ const FilterField = styled('div')`
   align-items: center;
   font-size: 11px;
   text-transform: uppercase;
-  background-color: ${({ theme: { palette } }) => palette.backgroundSecondary};
+  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   margin-left: 8px;
   border-radius: 3px;
   height: 20px;

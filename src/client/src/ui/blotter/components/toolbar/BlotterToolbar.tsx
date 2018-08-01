@@ -1,5 +1,6 @@
 import { ColDef } from 'ag-grid'
 import React from 'react'
+import { flexStyle } from 'rt-components'
 import { styled } from 'rt-util'
 import AppliedFilters from './AppliedFilters'
 import QuickFilter from './QuickFilter'
@@ -19,9 +20,7 @@ interface BlotterToobarState {
 }
 
 const BlotterToolbarStyle = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  ${flexStyle({ alignItems: 'center', justifyContent: 'flex-end' })};
 `
 
 export default class BlotterToolbar extends React.Component<BlotterToolbarProps, BlotterToobarState> {

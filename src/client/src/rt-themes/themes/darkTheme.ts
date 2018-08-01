@@ -34,10 +34,6 @@ export const darkTheme = (baseColors?: CoreColors) => {
 
   const palette = {
     ...paletteFromCoreColors(darkCoreColors),
-    backgroundPrimary: darkBackgroundPrimary,
-    backgroundSecondary: darkBackgroundSecondary,
-    backgroundTertiary: darkBackgroundTertiary,
-    backgroundExtra: darkBackgroundExtra,
     primary,
     secondary
   }
@@ -53,6 +49,13 @@ export const darkTheme = (baseColors?: CoreColors) => {
       textMeta: darkTextMeta,
       light: palette.secondary[0],
       dark: palette.primary[2]
+    },
+    background: {
+      ...baseTheme.background,
+      backgroundPrimary: darkBackgroundPrimary,
+      backgroundSecondary: darkBackgroundSecondary,
+      backgroundTertiary: darkBackgroundTertiary,
+      backgroundExtra: darkBackgroundExtra
     }
   })
 }

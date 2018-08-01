@@ -5,7 +5,6 @@ import { storiesOf } from '@storybook/react'
 
 import { Story } from 'rt-storybook'
 import { Trade } from 'rt-types/trade'
-import 'ui/styles/css/index.css'
 import Blotter, { BlotterProps } from './components/Blotter'
 
 const stories = storiesOf('Blotter', module)

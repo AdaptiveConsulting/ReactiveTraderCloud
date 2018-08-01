@@ -2,11 +2,6 @@ import { darken, lighten } from 'rt-themes/utils'
 
 import { CoreColors } from 'rt-themes/coreColors'
 
-const backgroundPrimary = '#F4F6F9'
-const backgroundSecondary = '#FFFFFF'
-const backgroundTertiary = '#E9EDF3'
-const backgroundExtra = '#D4DDE8'
-
 const getLightPrimary = (color: string) => ({
   '0': lighten(color, 100),
   '1': lighten(color, 95),
@@ -26,10 +21,6 @@ const getAccent = (color: string) => ({
 })
 
 const paletteFromCoreColors = (coreColors: CoreColors) => ({
-  backgroundExtra,
-  backgroundPrimary,
-  backgroundSecondary,
-  backgroundTertiary,
   brand: {
     primary: coreColors.brandPrimary,
     secondary: coreColors.brandSecondary

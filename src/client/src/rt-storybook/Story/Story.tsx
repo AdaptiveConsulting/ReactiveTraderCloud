@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Ink from 'react-ink'
 import { styled } from 'rt-util'
 import { Themes } from 'shell/theme'
+import 'ui/styles/css/index.css'
 import Theme from 'ui/theme/Theme'
 
 const StyledStory = styled('div')`

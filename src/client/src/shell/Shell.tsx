@@ -22,7 +22,7 @@ const appVersion: string = process.env.REACT_APP_VERSION // version from package
 
 const BlotterWrapper = styled('div')`
   height: 100%;
-  background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
+  background-color: ${({ theme: { background } }) => background.backgroundPrimary};
   padding: 0px 8px 0px 16px;
 `
 

@@ -1,10 +1,9 @@
-import values from 'lodash.values'
+import { GlobalState } from 'combineReducers'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { styled } from 'rt-util'
-import { GlobalState } from '../../combineReducers'
-import { Environment } from '../../system'
+import { Environment } from 'system'
 import { BlotterActions } from './actions'
 import Blotter from './components'
 import { selectBlotterService, selectBlotterStatus } from './selectors'
@@ -35,7 +34,7 @@ class BlotterContainer extends React.Component<BlotterContainerProps> {
   render() {
     const { blotterService, isConnected, tornOff, onPopoutClick } = this.props
     const { trades } = blotterService
-    const gridRows = values(trades).reverse()
+    const gridRows = Object.values(trades).reverse()
 
     if (isConnected) {
       return (

@@ -1,16 +1,17 @@
 import { GridApi } from 'ag-grid'
 import React, { Component } from 'react'
+import { flexStyle } from 'rt-components'
 import { styled } from 'rt-util'
 import { columnDefinitions } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
 
-interface BlotterHeaderProps {
+interface Props {
   canPopout: boolean
   onPopoutClick: () => void
   gridApi: GridApi | null
 }
 
-interface BlotterHeaderState {
+interface State {
   quickFilterText: string
 }
 
@@ -27,15 +28,14 @@ const BlotterControls = styled('div')`
 `
 
 const BlotterRight = styled('div')`
-  display: flex;
-  align-items: center;
+  ${flexStyle({ alignItems: 'center' })};
 `
 
 const BlotterLeft = styled('div')`
   font-size: 15px;
 `
 
-export default class BlotterHeader extends Component<BlotterHeaderProps, BlotterHeaderState> {
+export default class BlotterHeader extends Component<Props, State> {
   state = {
     quickFilterText: ''
   }

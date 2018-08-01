@@ -11,12 +11,6 @@ interface QuickFilterState {
   quickFilterText: string
 }
 
-const FilterIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="icon" width="100%" height="100%" viewBox="0 0 13 9">
-    <path fill="none" fillRule="evenodd" stroke="#888" d="M.5.5h12-12zm2 2h8-8zm1 2h6-6zm1 2h4-4zm1.5 2h1-1z" />
-  </svg>
-)
-
 const QuickFilterStyle = styled('div')`
   padding: 0px 10px;
   width: 160px;
@@ -28,7 +22,7 @@ const QuickFilterStyle = styled('div')`
 
 const QuickFilterInput = styled('input')`
   color: ${({ theme: { text } }) => text.textMeta};
-  background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
+  background-color: ${({ theme: { background } }) => background.backgroundPrimary};
   border: none;
   border-bottom: 1px solid ${({ theme: { text } }) => text.textTertiary};
   width: 100%;
@@ -52,12 +46,14 @@ const QuickFilterIcon = styled('div')`
   margin: 0px 4px;
 `
 
-const QuickFilterClearIcon = styled('div')`
+const QuickFilterClearIcon = styled('i')`
   width: 11px;
   position: absolute;
   right: 12px;
+
   i {
     cursor: pointer;
+    color: ${({ theme: { text } }) => text.textMeta};
   }
 `
 
@@ -72,7 +68,7 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
     return (
       <QuickFilterStyle>
         <QuickFilterIcon onClick={this.quickFilterFocus}>
-          <FilterIcon />
+          <i className="fa fa-filter" aria-hidden="true" />
         </QuickFilterIcon>
         <QuickFilterInput
           innerRef={this.quickFilterInput}
