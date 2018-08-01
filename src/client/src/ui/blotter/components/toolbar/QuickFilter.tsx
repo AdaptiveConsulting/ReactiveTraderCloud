@@ -27,10 +27,10 @@ const QuickFilterStyle = styled('div')`
 `
 
 const QuickFilterInput = styled('input')`
-  color: ${({ theme: { palette } }) => palette.textMeta};
+  color: ${({ theme: { text } }) => text.textMeta};
   background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
   border: none;
-  border-bottom: 1px solid ${({ theme: { palette } }) => palette.textTertiary};
+  border-bottom: 1px solid ${({ theme: { text } }) => text.textTertiary};
   width: 100%;
   font-size: 12px;
   height: 20px;
@@ -43,7 +43,7 @@ const QuickFilterInput = styled('input')`
 
   &:focus {
     border-bottom: 1px solid ${({ theme: { palette } }) => palette.accentPrimary.normal};
-    color: ${({ theme: { palette } }) => palette.textPrimary};
+    color: ${({ theme: { text } }) => text.textPrimary};
   }
 `
 

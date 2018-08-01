@@ -23,7 +23,7 @@ const BlotterHeaderStyle = styled('div')`
 
 const BlotterControls = styled('div')`
   cursor: pointer;
-  color: ${({ theme: { palette } }) => palette.textSecondary};
+  color: ${({ theme: { text } }) => text.textSecondary};
 `
 
 const BlotterRight = styled('div')`

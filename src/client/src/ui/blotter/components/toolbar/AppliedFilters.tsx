@@ -23,7 +23,7 @@ const FilterField = styled('div')`
   cursor: default;
 
   &:hover {
-    background-color: ${({ theme: { palette } }) => palette.textMeta};
+    background-color: ${({ theme: { text } }) => text.textMeta};
   }
 `
 
@@ -34,11 +34,11 @@ const FilterName = styled('div')`
 const FilterIcon = styled('i')`
   height: 12px;
   width: 11px;
-  color: ${({ theme: { palette } }) => palette.textPrimary};
+  color: ${({ theme: { text } }) => text.textPrimary};
   cursor: pointer;
 
   &:hover {
-    color: ${({ theme: { palette } }) => palette.textSecondary};
+    color: ${({ theme: { text } }) => text.textSecondary};
   }
 `
 

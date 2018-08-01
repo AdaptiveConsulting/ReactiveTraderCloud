@@ -22,7 +22,7 @@ const BlotterStyle = styled('div')`
   width: 100%;
   min-height: 20px;
   background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
-  color: ${({ theme: { palette } }) => palette.textPrimary};
+  color: ${({ theme: { text } }) => text.textPrimary};
   font-size: 13px;
 `
 
@@ -96,7 +96,7 @@ const BlotterGrid = styled('div')`
   }
 
   .ag-filter-icon {
-    color: ${({ theme: { palette } }) => palette.textSecondary};
+    color: ${({ theme: { text } }) => text.textSecondary};
     display: none;
   }
 
@@ -121,13 +121,13 @@ const BlotterGrid = styled('div')`
   }
 
   .ag-header-cell-label i {
-    color: ${({ theme: { palette } }) => palette.textPrimary};
+    color: ${({ theme: { text } }) => text.textPrimary};
     padding: 0px 4px;
   }
 
   .ag-menu {
     background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
-    box-shadow: 0 0 0.5px 0 ${({ theme: { palette } }) => palette.textPrimary};
+    box-shadow: 0 0 0.5px 0 ${({ theme: { text } }) => text.textPrimary};
     border-radius: 3px;
 
     .filter-container__checkbox-container {
@@ -141,7 +141,7 @@ const BlotterGrid = styled('div')`
     }
 
     .filter_container__select-all-option-container {
-      border-bottom: 2px solid ${({ theme: { palette } }) => palette.textMeta};
+      border-bottom: 2px solid ${({ theme: { text } }) => text.textMeta};
     }
 
     input,
@@ -149,10 +149,10 @@ const BlotterGrid = styled('div')`
       margin: 10px;
       font-size: 11px;
       padding: 6px;
-      color: ${({ theme: { palette } }) => palette.textPrimary};
+      color: ${({ theme: { text } }) => text.textPrimary};
       background-color: ${({ theme: { palette } }) => palette.backgroundPrimary};
       border: none;
-      border-bottom: 1px solid ${({ theme: { palette } }) => palette.textMeta};
+      border-bottom: 1px solid ${({ theme: { text } }) => text.textMeta};
       width: auto;
       outline: none;
 
@@ -174,7 +174,7 @@ const BlotterGrid = styled('div')`
 
 const BlotterStatus = styled('div')`
   height: 30px;
-  color: ${({ theme: { palette } }) => palette.textMeta};
+  color: ${({ theme: { text } }) => text.textMeta};
   font-size: 10px;
   display: flex;
   align-items: center;
