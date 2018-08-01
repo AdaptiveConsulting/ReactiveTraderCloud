@@ -1,19 +1,63 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
-
+import Ink from 'react-ink'
+import { styled } from 'rt-util'
 import { Themes } from 'shell/theme'
 import Theme from 'ui/theme/Theme'
 
 const StyledStory = styled('div')`
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background-color: ${({ theme }) => theme.background.primary};
+  color: ${({ theme }) => theme.text.primary};
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal},
+    color ${({ theme }) => theme.animationSpeed.normal};
+  will-change: color, background-color;
+  font-family: ${({ theme }) => theme.fontFamily.primary};
 `
 
 const Toolbar = styled('div')`
-  position: absolute;
-  height: 40px;
-  bottom: 0;
-  right: 0;
-  z-index: 10;
+  padding: 0px 20px;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: ${({ theme }) => theme.background.secondary};
+  will-change: color, background-color;
+  color: ${({ theme }) => theme.text.secondary};
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal},
+    color ${({ theme }) => theme.animationSpeed.normal};
+  h2 {
+    flex: 1;
+  }
+`
+
+const IconButton = styled('div')`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal};
+  cursor: pointer;
+  position: relative;
+  will-change: background-color;
+  &&:hover {
+    background-color: ${({ theme }) => theme.palette.secondary[1]};
+  }
+  > i {
+    font-size: ${({ theme }) => theme.fontSize.h2};
+  }
+`
+
+const Content = styled('div')`
+  display: flex;
+  flex: 1;
+  position: relative;
 `
 
 interface State {
@@ -45,9 +89,12 @@ class Story extends Component<{}, State> {
       <Theme type={theme}>
         <StyledStory>
           <Toolbar>
-            <button onClick={this.toggleTheme}>Toggle Theme</button>
+            <IconButton onClick={this.toggleTheme}>
+              <Ink />
+              <i className={`fa${theme === Themes.LIGHT_THEME ? 'r' : 's'} fa-lightbulb`} />
+            </IconButton>
           </Toolbar>
-          {children}
+          <Content>{children}</Content>
         </StyledStory>
       </Theme>
     )

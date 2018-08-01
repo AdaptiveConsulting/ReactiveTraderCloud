@@ -71,10 +71,12 @@ export const spotTileDataReducer = (
         [action.payload.request.CurrencyPair]: spotTileReducer(state[action.payload.request.CurrencyPair], action)
       }
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
-      return {
-        ...state,
-        [action.payload.symbol]: spotTileReducer(state[action.payload.symbol], action)
-      }
+      return state[action.payload.symbol]
+        ? {
+            ...state,
+            [action.payload.symbol]: spotTileReducer(state[action.payload.symbol], action)
+          }
+        : state
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
       return INITIAL_STATE
     default:

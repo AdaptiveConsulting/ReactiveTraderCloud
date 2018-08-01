@@ -10,8 +10,8 @@ import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './model/spot
 
 interface SpotTileContainerOwnProps {
   id: string
-  onPopoutClick: () => void
-  tornOff: boolean
+  onPopoutClick?: () => void
+  tornOff?: boolean
   environment: Environment
 }
 
@@ -22,6 +22,9 @@ type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToPr
 type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
 
 class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
+  componentDidMount() {
+    this.props.onMount()
+  }
   render() {
     const {
       id,
@@ -34,12 +37,14 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
       onNotificationDismissedClick,
       displayCurrencyChart,
       tornOff,
-      environment
+      environment,
+      onMount
     } = this.props
     const spotTitle = spotRegionSettings(id).title
     return (
       <SpotTile
         key={id}
+        onMount={onMount}
         pricingConnected={pricingConnected}
         executionConnected={executionConnected}
         currencyPair={currencyPair}
@@ -72,7 +77,8 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
+  onMount: () => dispatch(SpotTileActions.showSpotTile(ownProps.id)),
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
   undockTile: (tileName: string) => () => dispatch(SpotTileActions.undockTile(tileName)),
   displayCurrencyChart: (symbol: string) => () => dispatch(SpotTileActions.displayCurrencyChart(symbol)),

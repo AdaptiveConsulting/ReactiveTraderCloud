@@ -12,6 +12,8 @@ module.exports = (baseConfig, env, defaultConfig) => {
     'rt-types': path.resolve(__dirname, '../src', 'rt-types'),
     'rt-actions': path.resolve(__dirname, '../src', 'rt-actions'),
     'rt-storybook': path.resolve(__dirname, '../src', 'rt-storybook'),
+    'rt-style-guide': path.resolve(__dirname, '../src', 'rt-style-guide'),
+    'rt-themes': path.resolve(__dirname, '../src', 'rt-themes'),
     ui: path.resolve(__dirname, '../src', 'ui'),
     system: path.resolve(__dirname, '../src', 'system'),
     shell: path.resolve(__dirname, '../src', 'shell')

@@ -1,21 +1,16 @@
 import { connect } from 'react-redux'
 
 import { GlobalState } from 'combineReducers'
-import { FooterActions } from './actions'
+import { selectIsConnected, selectTransportType, selectUrl } from 'ui/connectionStatus'
+
 import Footer from './Footer'
+import { selectCombinedServiceStatus } from './selectors'
 
-const { openLink, toggleStatusServices } = FooterActions
-
-const mapStateToProps = ({ compositeStatusService, displayStatusServices, connectionStatus }: GlobalState) => ({
-  compositeStatusService,
-  displayStatusServices,
-  connectionStatus
+const mapStateToProps = (state: GlobalState) => ({
+  url: selectUrl(state),
+  isConnected: selectIsConnected(state),
+  transportType: selectTransportType(state),
+  serviceStatus: selectCombinedServiceStatus(state)
 })
 
-export default connect(
-  mapStateToProps,
-  {
-    toggleStatusServices,
-    openLink
-  }
-)(Footer)
+export default connect(mapStateToProps)(Footer)

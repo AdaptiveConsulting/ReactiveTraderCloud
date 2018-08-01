@@ -7,7 +7,6 @@ import { analyticsReducer } from 'ui/analytics'
 import { blotterReducer } from 'ui/blotter'
 import { compositeStatusServiceReducer } from 'ui/compositeStatus'
 import { connectionStatusReducer } from 'ui/connectionStatus'
-import { footerReducer } from 'ui/footer'
 import { spotTileDataReducer } from 'ui/spotTile'
 import { notionalsReducer } from 'ui/spotTile/components/notional'
 
@@ -18,7 +17,6 @@ const rootReducer = combineReducers({
   compositeStatusService: compositeStatusServiceReducer,
   connectionStatus: connectionStatusReducer,
   displayAnalytics: sidebarRegionReducer,
-  displayStatusServices: footerReducer,
   regionsService: regionsReducer,
   notionals: notionalsReducer,
   spotTilesData: spotTileDataReducer,

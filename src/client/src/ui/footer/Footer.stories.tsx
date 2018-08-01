@@ -1,80 +1,67 @@
 import React from 'react'
 
-import { action } from '@storybook/addon-actions'
-import centered from '@storybook/addon-centered'
 import { storiesOf } from '@storybook/react'
 
-import { Environment } from 'rt-components'
+import { Environment, Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
-import { ConnectionStatus, ConnectionType } from 'system'
-import { Footer, FooterProps } from 'ui/footer/Footer'
+import { styled } from 'rt-util'
+import { ConnectionType } from 'system'
+import Footer, { FooterProps } from 'ui/footer/Footer'
 import 'ui/styles/css/index.css'
 
-const stories = storiesOf('Components', module).addDecorator(centered)
+const Padding = styled('div')`
+  flex: 1;
+`
+const FooterStory: React.SFC = ({ children }) => (
+  <Story>
+    <Flex width="100%" height="100%" direction="column">
+      <Padding />
+      {children}
+    </Flex>
+  </Story>
+)
+
+const stories = storiesOf('Footer', module)
 
 interface Props extends FooterProps {
   environment: Environment
 }
 
-const footerProps: Props = {
-  compositeStatusService: {
-    blotter: {
-      connectedInstanceCount: 1,
-      isConnected: true,
-      serviceType: 'blotter'
-    },
-    reference: {
-      connectedInstanceCount: 1,
-      isConnected: true,
-      serviceType: 'reference'
-    },
-    execution: {
-      connectedInstanceCount: 1,
-      isConnected: true,
-      serviceType: 'execution'
-    },
-    pricing: {
-      connectedInstanceCount: 1,
-      isConnected: true,
-      serviceType: 'pricing'
-    },
-    analytics: {
-      connectedInstanceCount: 1,
-      isConnected: true,
-      serviceType: 'analytics'
+const SERVICES = ['broker', 'blotter', 'reference', 'execution', 'pricing', 'analytics']
+
+const getServiceStatus = (services, isConnected, connectedInstanceCount) =>
+  services.reduce((acc, val) => {
+    const newAcc = acc
+    newAcc[val] = {
+      connectedInstanceCount: val === 'broker' ? 0 : connectedInstanceCount,
+      isConnected,
+      serviceType: val
     }
-  },
-  displayStatusServices: true,
-  connectionStatus: {
-    status: ConnectionStatus.connected,
-    url: 'wss://web-demo.adaptivecluster.com:443/ws',
-    transportType: ConnectionType.WebSocket
-  },
-  environment: { isRunningDesktop: false },
-  toggleStatusServices: action('toggleStatusService'),
-  openLink: action('openLink')
+    return newAcc
+  }, {})
+
+const footerProps: Props = {
+  serviceStatus: getServiceStatus(SERVICES, true, 1),
+  isConnected: true,
+  url: 'wss://web-demo.adaptivecluster.com:443/ws',
+  transportType: ConnectionType.WebSocket,
+  environment: { isRunningDesktop: false }
 }
 
-stories.add('default', () => (
-  <Story>
-    <div className="shell__footer">
-      <Footer {...footerProps} />
-    </div>
-  </Story>
+stories.add('Connected', () => (
+  <FooterStory>
+    <Footer {...footerProps} />
+  </FooterStory>
 ))
 
 const disconnectedFooterProps: Props = {
   ...footerProps,
-  connectionStatus: {
-    ...footerProps.connectionStatus,
-    status: ConnectionStatus.disconnected
-  }
+  serviceStatus: getServiceStatus(SERVICES, false, 0),
+  isConnected: false
 }
 
-stories.add('disconnected', () => (
-  <Story>
-    <div className="shell__footer">
-      <Footer {...disconnectedFooterProps} />
-    </div>
-  </Story>
+stories.add('Disconnected', () => (
+  <FooterStory>
+    <Footer {...disconnectedFooterProps} />
+  </FooterStory>
 ))
