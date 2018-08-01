@@ -62,15 +62,13 @@ const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
         className={showSplitter ? '' : 'soloPane1'}
       >
         <WorkspaceContainer />
-        <TearOff
-          id="blotter"
-          portalProps={portalProps.blotterRegion}
-          render={(popOut, tornOff) => (
-            <BlotterWrapper>
-              <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />
-            </BlotterWrapper>
-          )}
-        />
+        <BlotterWrapper>
+          <TearOff
+            id="blotter"
+            portalProps={portalProps.blotterRegion}
+            render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
+          />
+        </BlotterWrapper>
       </SplitPane>
       <TearOff
         id="region"

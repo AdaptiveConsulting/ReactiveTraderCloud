@@ -2,10 +2,12 @@ import values from 'lodash.values'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import { styled } from 'rt-util'
 import { GlobalState } from '../../combineReducers'
 import { Environment } from '../../system'
 import { BlotterActions } from './actions'
 import Blotter from './components'
+import { selectBlotterService, selectBlotterStatus } from './selectors'
 
 interface BlotterContainerOwnProps {
   onPopoutClick: () => void
@@ -15,6 +17,15 @@ interface BlotterContainerOwnProps {
 type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
 type BlotterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 type BlotterContainerProps = BlotterContainerStateProps & BlotterContainerDispatchProps & BlotterContainerOwnProps
+
+const BlotterDisconnected = styled('div')`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme: { palette } }) => palette.accentBad.normal};
+  color: ${({ theme: { text } }) => text.primary};
+`
 
 class BlotterContainer extends React.Component<BlotterContainerProps> {
   componentDidMount() {
@@ -32,13 +43,13 @@ class BlotterContainer extends React.Component<BlotterContainerProps> {
       )
     }
 
-    return <div className="shell_workspace_blotter blotter--disconnected">Blotter disconnected</div>
+    return <BlotterDisconnected>Blotter disconnected</BlotterDisconnected>
   }
 }
 
-const mapStateToProps = ({ blotterService, compositeStatusService }: GlobalState) => ({
-  blotterService,
-  isConnected: compositeStatusService && compositeStatusService.blotter && compositeStatusService.blotter.isConnected
+const mapStateToProps = (state: GlobalState) => ({
+  blotterService: selectBlotterService(state),
+  isConnected: selectBlotterStatus(state)
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
