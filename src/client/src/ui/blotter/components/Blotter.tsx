@@ -95,13 +95,29 @@ const BlotterGrid = styled('div')`
     align-items: center;
   }
 
-  .ag-icon-filter {
+  .ag-filter-icon {
     color: ${({ theme: { palette } }) => palette.textSecondary};
+    display: none;
   }
 
-  .ag-header-cell-label {
+  .ag-header-cell-filtered {
+    .ag-header-cell-menu-button {
+      opacity: 1 !important;
+    }
+  }
+
+  .ag-cell-label-container {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+
+    .ag-header-cell-label {
+      order: -1;
+    }
+
+    i {
+      padding: 0px 4px;
+    }
   }
 
   .ag-header-cell-label i {
