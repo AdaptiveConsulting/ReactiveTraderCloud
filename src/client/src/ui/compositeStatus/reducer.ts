@@ -2,7 +2,7 @@ import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { ServiceStatus } from 'rt-types'
 import { COMPOSITE_ACTION_TYPES, CompositeStatusServiceActions } from './actions'
 
-interface CompositeStatusServiceState {
+export interface CompositeStatusServiceState {
   [key: string]: ServiceStatus
 }
 

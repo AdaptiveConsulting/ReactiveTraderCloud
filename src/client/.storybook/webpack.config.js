@@ -1,12 +1,10 @@
 const path = require('path')
-const TSDocgenPlugin = require('react-docgen-typescript-webpack-plugin')
 
 module.exports = (baseConfig, env, defaultConfig) => {
   defaultConfig.module.rules.push({
     test: /\.(ts|tsx)$/,
     loader: require.resolve('awesome-typescript-loader')
   })
-  defaultConfig.plugins.push(new TSDocgenPlugin())
   defaultConfig.resolve.extensions.push('.ts', '.tsx')
   defaultConfig.resolve.alias = {
     'rt-components': path.resolve(__dirname, '../src', 'rt-components'),
@@ -15,6 +13,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
     'rt-actions': path.resolve(__dirname, '../src', 'rt-actions'),
     'rt-storybook': path.resolve(__dirname, '../src', 'rt-storybook'),
     'rt-style-guide': path.resolve(__dirname, '../src', 'rt-style-guide'),
+    'rt-themes': path.resolve(__dirname, '../src', 'rt-themes'),
     ui: path.resolve(__dirname, '../src', 'ui'),
     system: path.resolve(__dirname, '../src', 'system'),
     shell: path.resolve(__dirname, '../src', 'shell')

@@ -23,9 +23,9 @@ const StyledColorTile = styled('div')<StyledProps>`
   align-items: center;
   justify-content: center;
   background-color: ${({ color }) => color};
-  transition: background-color 0.3s;
-  color: ${({ theme, color }) => getBestTextColor(color, theme.palette.text)};
-  transition: color 0.3s;
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal};
+  color: ${({ theme, color }) => getBestTextColor(color, theme.text)};
+  transition: color ${({ theme }) => theme.animationSpeed.normal};
   h3 {
     font-size: ${({ theme }) => theme.fontSize.h3};
     margin: 2px;

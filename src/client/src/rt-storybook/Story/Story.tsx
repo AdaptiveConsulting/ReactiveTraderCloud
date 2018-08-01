@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import Ink from 'react-ink'
 import { styled } from 'rt-util'
 import { Themes } from 'shell/theme'
 import Theme from 'ui/theme/Theme'
@@ -13,10 +13,12 @@ const StyledStory = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.palette.background.primary};
-  color: ${({ theme }) => theme.palette.text.primary};
-  transition: background-color 0.3s, color 0.3s;
+  background-color: ${({ theme }) => theme.background.primary};
+  color: ${({ theme }) => theme.text.primary};
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal},
+    color ${({ theme }) => theme.animationSpeed.normal};
+  will-change: color, background-color;
+  font-family: ${({ theme }) => theme.fontFamily.primary};
 `
 
 const Toolbar = styled('div')`
@@ -25,18 +27,40 @@ const Toolbar = styled('div')`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme }) => theme.palette.background.secondary};
-  color: ${({ theme }) => theme.palette.text.secondary};
-  transition: background-color 0.3s, color 0.3s;
+  justify-content: flex-end;
+  background-color: ${({ theme }) => theme.background.secondary};
+  will-change: color, background-color;
+  color: ${({ theme }) => theme.text.secondary};
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal},
+    color ${({ theme }) => theme.animationSpeed.normal};
   h2 {
     flex: 1;
   }
 `
 
+const IconButton = styled('div')`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal};
+  cursor: pointer;
+  position: relative;
+  will-change: background-color;
+  &&:hover {
+    background-color: ${({ theme }) => theme.palette.secondary[1]};
+  }
+  > i {
+    font-size: ${({ theme }) => theme.fontSize.h2};
+  }
+`
+
 const Content = styled('div')`
+  display: flex;
   flex: 1;
   position: relative;
-  overflow-y: auto;
 `
 
 interface State {
@@ -68,8 +92,10 @@ class Story extends Component<{}, State> {
       <Theme type={theme}>
         <StyledStory>
           <Toolbar>
-            <h2>{theme === Themes.LIGHT_THEME ? 'Light Theme' : 'Dark Theme'}</h2>
-            <button onClick={this.toggleTheme}>Toggle Theme</button>
+            <IconButton onClick={this.toggleTheme}>
+              <Ink />
+              <i className={`fa${theme === Themes.LIGHT_THEME ? 'r' : 's'} fa-lightbulb`} />
+            </IconButton>
           </Toolbar>
           <Content>{children}</Content>
         </StyledStory>
