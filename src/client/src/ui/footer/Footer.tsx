@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Ink from 'react-ink'
 
 import { Environment, withEnvironment } from 'rt-components'
-import { TickCross } from 'rt-components'
+import { Flex, TickCross } from 'rt-components'
 import { styled } from 'rt-util'
 import { ConnectionType, ServiceConnectionInfo } from 'system'
 
@@ -28,19 +28,15 @@ const FooterContainer = styled('div')<IsExpandedProps>`
 interface IsConnectedProps {
   isConnected: boolean
 }
-const StyledFooter = styled('div')<IsConnectedProps>`
+const StyledFooter = styled(Flex)<IsConnectedProps>`
   position: relative;
   height: ${({ theme: { footer } }) => footer.bar.height};
   max-height: ${({ theme: { footer } }) => footer.bar.height};
-  width: 100%;
   color: ${({ theme: { footer } }) => footer.text.color};
   background-color: ${({ theme: { footer }, isConnected }) =>
     isConnected ? footer.bar.colorConnected : footer.bar.colorDisconnected};
   padding-left: ${({ theme: { footer } }) => footer.bar.sidePadding};
   padding-right: ${({ theme: { footer } }) => footer.bar.sidePadding};
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   cursor: pointer;
 `
 
@@ -107,7 +103,7 @@ class Footer extends Component<PropsWithEnvironment, State> {
 
     return (
       <FooterContainer isExpanded={isExpanded}>
-        <StyledFooter isConnected={isConnected} onClick={this.toggleExpand}>
+        <StyledFooter direction="row" alignItems="center" isConnected={isConnected} onClick={this.toggleExpand}>
           <Ink />
           <TickCross isTick={isConnected} />
           <FooterText>{isConnected ? `Connected to ${url} (${transportType})` : 'Disconnected'}</FooterText>

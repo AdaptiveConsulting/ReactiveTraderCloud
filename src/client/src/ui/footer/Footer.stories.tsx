@@ -2,28 +2,22 @@ import React from 'react'
 
 import { storiesOf } from '@storybook/react'
 
-import { Environment } from 'rt-components'
+import { Environment, Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
 import { styled } from 'rt-util'
 import { ConnectionType } from 'system'
 import Footer, { FooterProps } from 'ui/footer/Footer'
 import 'ui/styles/css/index.css'
 
-const StyledStoryContainer = styled('div')`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`
 const Padding = styled('div')`
   flex: 1;
 `
 const FooterStory: React.SFC = ({ children }) => (
   <Story>
-    <StyledStoryContainer>
+    <Flex width="100%" height="100%" direction="column">
       <Padding />
       {children}
-    </StyledStoryContainer>
+    </Flex>
   </Story>
 )
 

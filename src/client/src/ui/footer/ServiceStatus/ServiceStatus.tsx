@@ -1,38 +1,27 @@
 import React from 'react'
 
-import { TickCross } from 'rt-components'
+import { Flex, TickCross } from 'rt-components'
 import { styled } from 'rt-util'
 import { ServiceConnectionInfo } from 'system'
 
-const StyledServiceStatus = styled('div')`
+const StyledServiceStatus = styled(Flex)`
   position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: row;
 `
 
 interface ServiceItemProps {
   order: number
   isConnected: boolean
 }
-const ServiceItem = styled('div')<ServiceItemProps>`
+const ServiceItem = styled(Flex)<ServiceItemProps>`
   height: 100%;
   flex: 1;
   background-color: ${({ theme, isConnected, order }) =>
     isConnected
       ? theme.footer.serviceStatus.connectedColors[order]
       : theme.footer.serviceStatus.disconnectedColors[order]};
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
   color: ${({ theme }) => theme.footer.serviceStatus.textColor};
-`
-
-const StatusText = styled('div')`
-  display: flex;
-  flex-direction: column;
 `
 
 const ServiceName = styled('p')`
@@ -51,18 +40,25 @@ interface Props {
   serviceStatus: ServiceConnectionInfo
 }
 const ServiceStatus: React.SFC<Props> = ({ serviceStatus }: Props) => (
-  <StyledServiceStatus>
+  <StyledServiceStatus direction="row">
     {Object.values(serviceStatus).map((service, i) => (
-      <ServiceItem isConnected={service.isConnected} order={i} key={service.serviceType}>
+      <ServiceItem
+        isConnected={service.isConnected}
+        order={i}
+        key={service.serviceType}
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+      >
         <TickCross isTick={service.isConnected} />
-        <StatusText>
+        <Flex direction="column">
           <ServiceName>{service.serviceType}</ServiceName>
           {!!service.connectedInstanceCount && (
             <NodeCount>{`(${service.connectedInstanceCount} Node${
               service.connectedInstanceCount !== 1 ? 's' : ''
             })`}</NodeCount>
           )}
-        </StatusText>
+        </Flex>
       </ServiceItem>
     ))}
   </StyledServiceStatus>

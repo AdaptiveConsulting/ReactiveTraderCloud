@@ -3,6 +3,7 @@ import styled from 'rt-util/styled'
 
 interface Flex {
   height?: string
+  width?: string
   direction?: 'column' | 'row'
   wrap?: string
   justifyContent?: 'center' | 'flex-start' | 'flex-end' | 'space-between'

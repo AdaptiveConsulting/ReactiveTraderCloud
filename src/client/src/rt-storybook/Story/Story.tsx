@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Ink from 'react-ink'
-
 import { styled } from 'rt-util'
 import { Themes } from 'shell/theme'
 import Theme from 'ui/theme/Theme'
