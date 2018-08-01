@@ -9,33 +9,37 @@ interface AppliedFiltersProps {
   removeFilter: (key: string) => void
 }
 
+//TODO: Colors based on new theme format
 const FilterField = styled('div')`
   display: flex;
   align-items: center;
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
-  background-color: #abb2b9;
+  background-color: ${({ theme: { palette } }) => palette.backgroundSecondary};
   margin-left: 8px;
   border-radius: 3px;
-  overflow: hidden;
+  height: 20px;
+  padding: 0px 6px;
+  cursor: default;
 
   &:hover {
-    background-color: #808b96;
-
-    i {
-      background-color: #21618c;
-    }
+    background-color: ${({ theme: { palette } }) => palette.textMeta};
   }
 `
 
 const FilterName = styled('div')`
-  padding: 0px 8px;
+  padding-right: 10px;
 `
 
 const FilterIcon = styled('i')`
-  padding: 4px;
-  background-color: #aeb6bf;
+  height: 12px;
+  width: 11px;
+  color: ${({ theme: { palette } }) => palette.textPrimary};
   cursor: pointer;
+
+  &:hover {
+    color: ${({ theme: { palette } }) => palette.textSecondary};
+  }
 `
 
 export default class AppliedFilters extends React.Component<AppliedFiltersProps, any> {
