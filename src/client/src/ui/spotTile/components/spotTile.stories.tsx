@@ -7,6 +7,7 @@ import { storiesOf } from '@storybook/react'
 import { Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
 import { Direction } from 'rt-types'
+import NotionalInput from './NotionalInput'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
 
@@ -25,8 +26,22 @@ stories.add('Price button', () => (
 
 stories.add('Price movement', () => (
   <Story>
-    <Flex height="150px">
-      <PriceMovement priceMovementType={text('Direction', 'Down')} spread={{ formattedValue: '3.0' }} />
-    </Flex>
+    <PriceMovement priceMovementType={text('Direction', 'Down')} spread={{ formattedValue: '3.0' }} />
+  </Story>
+))
+
+stories.add('Notional input', () => (
+  <Story>
+    <div style={{ padding: '24px' }}>
+      <NotionalInput
+        currencyPair={{
+          base: 'USD',
+          pipsPosition: 2,
+          ratePrecision: 3,
+          symbol: 'USDJPY',
+          terms: 'JPY'
+        }}
+      />
+    </div>
   </Story>
 ))
