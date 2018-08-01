@@ -13,10 +13,10 @@ const StyledStory = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: center;
   background-color: ${({ theme }) => theme.background.primary};
   color: ${({ theme }) => theme.text.primary};
   transition: background-color 0.3s, color 0.3s;
+  will-change: color, background-color;
   font-family: ${({ theme }) => theme.fontFamily.primary};
 `
 
@@ -27,6 +27,7 @@ const Toolbar = styled('div')`
   flex-direction: row;
   align-items: center;
   background-color: ${({ theme }) => theme.background.secondary};
+  will-change: color, background-color;
   color: ${({ theme }) => theme.text.secondary};
   transition: background-color 0.3s, color 0.3s;
   h2 {
@@ -35,9 +36,9 @@ const Toolbar = styled('div')`
 `
 
 const Content = styled('div')`
+  display: flex;
   flex: 1;
   position: relative;
-  overflow-y: auto;
 `
 
 interface State {

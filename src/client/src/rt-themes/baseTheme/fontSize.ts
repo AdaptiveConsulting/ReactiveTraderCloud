@@ -1,4 +1,4 @@
-const getFontSize = () => ({
+export const fontSize = () => ({
   h1: '55px',
   h2: '34px',
   h3: '21px',
@@ -6,5 +6,3 @@ const getFontSize = () => ({
   body: '11px',
   caption: '8px'
 })
-
-export default getFontSize()

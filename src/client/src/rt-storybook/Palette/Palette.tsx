@@ -1,8 +1,8 @@
 import { withTheme } from 'emotion-theming'
 import React from 'react'
 
+import { Theme } from 'rt-themes'
 import { styled } from 'rt-util'
-import { Theme } from 'ui/theme/themes'
 
 import ColorGroup from './ColorGroup'
 
@@ -13,6 +13,8 @@ const StyledPalette = styled('div')`
     font-size: ${({ theme }) => theme.fontSize.h1};
   }
   padding: 0px 20px;
+  height: 100%;
+  overflow-y: auto;
 `
 
 interface Props {
@@ -20,7 +22,7 @@ interface Props {
 }
 
 const Palette: React.SFC<Props> = ({ theme }) => (
-  <StyledPalette>
+  <StyledPalette className="palette">
     <h1>Palette</h1>
     {Object.entries(theme.palette).map(([groupName, colors]) => (
       <ColorGroup

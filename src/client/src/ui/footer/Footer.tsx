@@ -74,6 +74,7 @@ const ServiceStatusContainer = styled('div')<IsExpandedProps>`
   will-change: transform, opacity;
   transition: transform 0.5s, opacity 0.5s;
   height: 200px;
+  max-height: 200px;
   width: 100%;
 `
 
