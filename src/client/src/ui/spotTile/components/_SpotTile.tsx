@@ -32,7 +32,7 @@ const SpotTileStyle = styled('div')`
   }
 `
 
-interface Props {
+export interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
   executeTrade: (direction: Direction) => void
@@ -45,7 +45,7 @@ class SpotTile extends Component<Props> {
     const spotDate = spotDateFormatter(priceData.valueDate, false).toUpperCase()
     return (
       <>
-        <TileExecution />
+        {spotTileData.isTradeExecutionInFlight && <TileExecution />}
         <SpotTileStyle>
           <Flex direction="column" justifyContent="space-between" height="100%">
             <Flex alignItems="center" justifyContent="space-between">

@@ -51,7 +51,7 @@ stories.add('Delivery date', () => (
   </Story>
 ))
 
-stories.add('Tile symbol', () => (
+stories.add('Symbol', () => (
   <Story>
     <div style={{ padding: '24px' }}>
       <TileSymbol>USD/JPY</TileSymbol>
@@ -59,7 +59,45 @@ stories.add('Tile symbol', () => (
   </Story>
 ))
 
-stories.add('Spot tile', () => (
+const currencyPair = {
+  base: 'USD',
+  pipsPosition: 2,
+  ratePrecision: 3,
+  symbol: 'USDJPY',
+  terms: 'JPY'
+}
+
+const spotTileData = {
+  currencyChartIsOpening: false,
+  isTradeExecutionInFlight: false,
+  hasError: false,
+  price: {
+    ask: 184.775,
+    bid: 184.767,
+    creationTimestamp: 31566750203189236,
+    mid: 184.771,
+    priceMovementType: PriceMovementTypes.Up,
+    symbol: 'GBPJPY',
+    valueDate: '2018-08-04T00:00:00Z'
+  }
+}
+
+const executeTrade = action('executeTrade')
+
+stories.add('Tile', () => (
+  <Story>
+    <div
+      style={{
+        width: '320px',
+        height: '150px'
+      }}
+    >
+      <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade} />
+    </div>
+  </Story>
+))
+
+stories.add('Tile executing', () => (
   <Story>
     <div
       style={{
@@ -68,28 +106,9 @@ stories.add('Spot tile', () => (
       }}
     >
       <SpotTile
-        currencyPair={{
-          base: 'USD',
-          pipsPosition: 2,
-          ratePrecision: 3,
-          symbol: 'USDJPY',
-          terms: 'JPY'
-        }}
-        spotTileData={{
-          currencyChartIsOpening: false,
-          isTradeExecutionInFlight: false,
-          hasError: false,
-          price: {
-            ask: 184.775,
-            bid: 184.767,
-            creationTimestamp: 31566750203189236,
-            mid: 184.771,
-            priceMovementType: PriceMovementTypes.Up,
-            symbol: 'GBPJPY',
-            valueDate: '2018-08-04T00:00:00Z'
-          }
-        }}
-        executeTrade={action('executeTrade')}
+        currencyPair={currencyPair}
+        spotTileData={{ ...spotTileData, isTradeExecutionInFlight: true }}
+        executeTrade={executeTrade}
       />
     </div>
   </Story>
