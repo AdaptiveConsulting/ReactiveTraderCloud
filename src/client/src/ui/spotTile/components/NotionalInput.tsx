@@ -1,7 +1,6 @@
 import numeral from 'numeral'
 import React, { Component } from 'react'
 import { Flex } from 'rt-components'
-import { CurrencyPair } from 'rt-types'
 import { styled } from 'rt-util'
 import { convertNotionalShorthandToNumericValue, hasShorthandInput } from './notional/utils'
 
@@ -15,7 +14,7 @@ const CHAR_CODE_UNIT_SEP = 31
 const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]
 const MAX_NOTIONAL_VALUE = 1000000000
 
-const CurrencyPair = styled('div')`
+const CurrencyPairSymbol = styled('div')`
   color: ${({ theme: { text } }) => text.textMeta};
   font-size: 10px;
   padding-right: 6px;
@@ -38,7 +37,7 @@ const Input = styled('input')`
 `
 
 interface Props {
-  currencyPair: CurrencyPair
+  currencyPairSymbol: string
 }
 
 interface State {
@@ -53,12 +52,12 @@ export default class NotionalInput extends Component<Props, State> {
   }
 
   render() {
-    const { currencyPair } = this.props
+    const { currencyPairSymbol } = this.props
     const { notional } = this.state
     const formattedSize = numeral(notional).format(NUMERAL_FORMAT)
     return (
       <Flex alignItems="center" justifyContent="center">
-        <CurrencyPair>{currencyPair.base}</CurrencyPair>
+        <CurrencyPairSymbol>{currencyPairSymbol}</CurrencyPairSymbol>
         <Input
           type="text"
           innerRef={this.inputRef}

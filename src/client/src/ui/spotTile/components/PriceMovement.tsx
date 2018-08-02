@@ -5,9 +5,7 @@ import { styled } from 'rt-util'
 
 interface Props {
   priceMovementType: string
-  spread: {
-    formattedValue: string
-  }
+  spread: string
 }
 
 const MovementIcon = styled('i')<{ show: boolean; color: string }>`
@@ -29,7 +27,7 @@ const PriceMovement = ({ priceMovementType, spread }: Props) => (
       className="fas fa-caret-up"
       aria-hidden="true"
     />
-    <MovementValue>{spread.formattedValue}</MovementValue>
+    <MovementValue>{spread}</MovementValue>
     <MovementIcon
       show={priceMovementType === PriceMovementTypes.Down}
       color="accentBad"

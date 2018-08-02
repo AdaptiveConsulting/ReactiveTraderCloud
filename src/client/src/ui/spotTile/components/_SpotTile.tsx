@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Flex } from 'rt-components'
-import { Direction, PriceMovementTypes } from 'rt-types'
-import { styled } from 'rt-util'
+import { CurrencyPair, Direction, PriceMovementTypes } from 'rt-types'
+import { styled, withDefaultProps } from 'rt-util'
+import { spotDateFormatter } from '../model/dateUtils'
+import { SpotTileData } from '../model/spotTileData'
 import NotionalInput from './NotionalInput'
-import PriceButton from './PriceButton'
-import PriceMovement from './PriceMovement'
+import PriceControls from './PriceControls'
 import { DeliveryDate, TileSymbol } from './Styled'
 
 const SpotTileStyle = styled('div')`
@@ -15,31 +16,54 @@ const SpotTileStyle = styled('div')`
   box-sizing: border-box;
 `
 
-const _SpotTile = () => {
-  return (
-    <SpotTileStyle>
-      <Flex direction="column" justifyContent="space-between" height="100%">
-        <Flex alignItems="center" justifyContent="space-between">
-          <TileSymbol symbol="USD/JPY" />
-          <DeliveryDate date="04 AUG" />
-        </Flex>
-        <Flex alignItems="center" justifyContent="space-between">
-          <PriceButton direction={Direction.Buy} big="33" pip="1" tenth="22" />
-          <PriceMovement priceMovementType={PriceMovementTypes.Up} spread={{ formattedValue: '3.0' }} />
-          <PriceButton direction={Direction.Sell} big="34" pip="2" tenth="22" />
-        </Flex>
-        <NotionalInput
-          currencyPair={{
-            base: 'USD',
-            pipsPosition: 2,
-            ratePrecision: 3,
-            symbol: 'USDJPY',
-            terms: 'JPY'
-          }}
-        />
-      </Flex>
-    </SpotTileStyle>
-  )
+interface Props {
+  currencyPair: CurrencyPair
+  spotTileData: SpotTileData
+  executeTrade: (direction: Direction) => void
 }
 
-export default _SpotTile
+class SpotTile extends Component<Props> {
+  render() {
+    const { currencyPair, spotTileData, executeTrade } = this.props
+    const priceData = spotTileData.price
+    const spotDate = spotDateFormatter(priceData.valueDate, false).toUpperCase()
+    return (
+      <SpotTileStyle>
+        <Flex direction="column" justifyContent="space-between" height="100%">
+          <Flex alignItems="center" justifyContent="space-between">
+            <TileSymbol symbol={`${currencyPair.base}/${currencyPair.terms}`} />
+            <DeliveryDate date={spotDate} />
+          </Flex>
+          <PriceControls executeTrade={executeTrade} priceData={priceData} currencyPair={currencyPair} />
+          <NotionalInput currencyPairSymbol={currencyPair.base} />
+        </Flex>
+      </SpotTileStyle>
+    )
+  }
+}
+
+const defaultProps = {
+  currencyPair: {
+    symbol: '',
+    ratePrecision: 0,
+    pipsPosition: 0,
+    base: '',
+    terms: ''
+  },
+  spotTileData: {
+    currencyChartIsOpening: false,
+    isTradeExecutionInFlight: false,
+    hasError: false,
+    price: {
+      ask: 0,
+      bid: 0,
+      mid: 0,
+      creationTimestamp: 0,
+      symbol: '',
+      valueDate: '',
+      priceMovementType: PriceMovementTypes.None
+    }
+  }
+}
+
+export default withDefaultProps(defaultProps, SpotTile)
