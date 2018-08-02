@@ -6,15 +6,11 @@ import { spotDateFormatter } from '../model/dateUtils'
 import { SpotTileData } from '../model/spotTileData'
 import NotionalInput from './NotionalInput'
 import PriceControls from './PriceControls'
-import { DeliveryDate, TileSymbol } from './Styled'
-import TileExecution from './TileExecution'
+import { DeliveryDate, TileBaseStyle, TileSymbol } from './Styled'
+import TileBooking from './TileBooking'
 
-const SpotTileStyle = styled('div')`
+const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
-  height: 100%;
-  border-radius: 3px;
-  padding: 20px;
-  box-sizing: border-box;
   position: relative;
 
   &:hover {
@@ -45,7 +41,7 @@ class SpotTile extends Component<Props> {
     const spotDate = spotDateFormatter(priceData.valueDate, false).toUpperCase()
     return (
       <>
-        {spotTileData.isTradeExecutionInFlight && <TileExecution />}
+        {spotTileData.isTradeExecutionInFlight && <TileBooking />}
         <SpotTileStyle>
           <Flex direction="column" justifyContent="space-between" height="100%">
             <Flex alignItems="center" justifyContent="space-between">

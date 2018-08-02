@@ -13,6 +13,7 @@ import NotionalInput from './NotionalInput'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
 import { DeliveryDate, TileSymbol } from './Styled'
+import TileExecuted from './TileExecuted'
 
 const stories = storiesOf('Spot Tile', module).addDecorator(centered)
 stories.addDecorator(withKnobs)
@@ -110,6 +111,19 @@ stories.add('Tile executing', () => (
         spotTileData={{ ...spotTileData, isTradeExecutionInFlight: true }}
         executeTrade={executeTrade}
       />
+    </div>
+  </Story>
+))
+
+stories.add('Tile executed', () => (
+  <Story>
+    <div
+      style={{
+        width: '320px',
+        height: '150px'
+      }}
+    >
+      <TileExecuted />
     </div>
   </Story>
 ))

@@ -9,3 +9,10 @@ export const TileSymbol = styled('div')`
   color: ${({ theme: { text } }) => text.textPrimary};
   font-size: 13px;
 `
+
+export const TileBaseStyle = styled('div')`
+  height: 100%;
+  border-radius: 3px;
+  padding: 20px;
+  box-sizing: border-box;
+`

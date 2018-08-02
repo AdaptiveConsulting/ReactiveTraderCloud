@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from 'rt-util'
 
-const TileExecutionStyle = styled('div')`
+const TileBookingStyle = styled('div')`
   position: absolute;
   height: 100%;
   width: 100%;
@@ -11,7 +11,7 @@ const TileExecutionStyle = styled('div')`
   z-index: 2;
 `
 
-const ExecutionPill = styled('div')`
+const BookingPill = styled('div')`
   background-color: ${({ theme: { palette } }) => palette.accentPrimary.normal};
   color: ${({ theme: { text } }) => text.white};
   padding: 10px 16px;
@@ -21,10 +21,10 @@ const ExecutionPill = styled('div')`
     0 0 10px ${({ theme: { palette } }) => palette.accentPrimary.dark};
 `
 
-const TileExecution = () => (
-  <TileExecutionStyle>
-    <ExecutionPill>[LOGO] Executing</ExecutionPill>
-  </TileExecutionStyle>
+const TileBooking = () => (
+  <TileBookingStyle>
+    <BookingPill>[LOGO] Executing</BookingPill>
+  </TileBookingStyle>
 )
 
-export default TileExecution
+export default TileBooking
