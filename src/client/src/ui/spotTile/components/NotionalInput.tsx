@@ -24,6 +24,7 @@ const CurrencyPair = styled('div')`
 //Todo hover border from parent
 const Input = styled('input')`
   color: ${({ theme: { text } }) => text.textPrimary};
+  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0);
   outline: none;
