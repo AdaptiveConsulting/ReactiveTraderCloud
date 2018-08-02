@@ -7,6 +7,7 @@ import { SpotTileData } from '../model/spotTileData'
 import NotionalInput from './NotionalInput'
 import PriceControls from './PriceControls'
 import { DeliveryDate, TileSymbol } from './Styled'
+import TileExecution from './TileExecution'
 
 const SpotTileStyle = styled('div')`
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
@@ -14,6 +15,7 @@ const SpotTileStyle = styled('div')`
   border-radius: 3px;
   padding: 20px;
   box-sizing: border-box;
+  position: relative;
 
   &:hover {
     .price-button {
@@ -42,16 +44,19 @@ class SpotTile extends Component<Props> {
     const priceData = spotTileData.price
     const spotDate = spotDateFormatter(priceData.valueDate, false).toUpperCase()
     return (
-      <SpotTileStyle>
-        <Flex direction="column" justifyContent="space-between" height="100%">
-          <Flex alignItems="center" justifyContent="space-between">
-            <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
-            <DeliveryDate className="delivery-date">{`SPT (${spotDate})`} </DeliveryDate>
+      <>
+        <TileExecution />
+        <SpotTileStyle>
+          <Flex direction="column" justifyContent="space-between" height="100%">
+            <Flex alignItems="center" justifyContent="space-between">
+              <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
+              <DeliveryDate className="delivery-date">{`SPT (${spotDate})`} </DeliveryDate>
+            </Flex>
+            <PriceControls executeTrade={executeTrade} priceData={priceData} currencyPair={currencyPair} />
+            <NotionalInput currencyPairSymbol={currencyPair.base} />
           </Flex>
-          <PriceControls executeTrade={executeTrade} priceData={priceData} currencyPair={currencyPair} />
-          <NotionalInput currencyPairSymbol={currencyPair.base} />
-        </Flex>
-      </SpotTileStyle>
+        </SpotTileStyle>
+      </>
     )
   }
 }
