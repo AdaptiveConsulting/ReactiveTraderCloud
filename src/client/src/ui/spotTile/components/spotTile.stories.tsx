@@ -7,6 +7,7 @@ import { storiesOf } from '@storybook/react'
 import { Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
 import { Direction } from 'rt-types'
+import SpotTile from './_SpotTile'
 import NotionalInput from './NotionalInput'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
@@ -61,6 +62,19 @@ stories.add('Tile symbol', () => (
   <Story>
     <div style={{ padding: '24px' }}>
       <TileSymbol symbol="USD/JPY" />
+    </div>
+  </Story>
+))
+
+stories.add('Spot tile', () => (
+  <Story>
+    <div
+      style={{
+        width: '320px',
+        height: '150px'
+      }}
+    >
+      <SpotTile />
     </div>
   </Story>
 ))
