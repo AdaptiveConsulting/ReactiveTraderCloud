@@ -45,6 +45,8 @@ interface State {
 }
 
 export default class NotionalInput extends Component<Props, State> {
+  private inputRef = React.createRef<HTMLInputElement>()
+
   state = {
     notional: '1000000'
   }
@@ -52,15 +54,16 @@ export default class NotionalInput extends Component<Props, State> {
   render() {
     const { currencyPair } = this.props
     const { notional } = this.state
-    console.log(notional)
     const formattedSize = numeral(notional).format(NUMERAL_FORMAT)
     return (
       <Flex alignItems="center" justifyContent="center">
         <CurrencyPair>{currencyPair.base}</CurrencyPair>
         <Input
+          type="text"
+          innerRef={this.inputRef}
           defaultValue={formattedSize}
           onChange={this.handleInputChange}
-          onBlur={this.processNotional}
+          onBlur={event => this.processNotional(event.currentTarget.value)}
           onKeyPress={this.handleKeyPressNotionalInput}
         />
       </Flex>
@@ -71,7 +74,7 @@ export default class NotionalInput extends Component<Props, State> {
     const charCode = event.charCode
 
     if (event.key === ENTER) {
-      this.processNotional(event)
+      this.processNotional(event.currentTarget.value)
     } else if (charCode === CHAR_CODE_DOT) {
       // only allow one dot
       if (event.currentTarget.value.match(/\./g)) {
@@ -84,30 +87,35 @@ export default class NotionalInput extends Component<Props, State> {
     }
   }
 
-  processNotional = (event: React.FormEvent<HTMLInputElement>) => {
-    const inputValue = event.currentTarget.value
+  processNotional = (inputValue: string) => {
     const inputValueTrimmed = inputValue.trim()
-    let notional: any = convertNotionalShorthandToNumericValue(inputValueTrimmed)
+    let notional: string | number = convertNotionalShorthandToNumericValue(inputValueTrimmed)
     if (notional >= MAX_NOTIONAL_VALUE) {
       notional = 0
     }
     if (!isNaN(notional)) {
+      this.setState({
+        notional: notional.toString()
+      })
       // user may be trying to enter decimals. restore BACK into input
+
       if (inputValueTrimmed.indexOf(DOT) === inputValueTrimmed.length - 1) {
         notional = notional + DOT
       }
       // propagate change back to dom node's value
+      const newNotional = numeral(notional).format(NUMERAL_FORMAT)
       this.setState({
-        notional: numeral(notional).format(NUMERAL_FORMAT)
+        notional: newNotional
       })
+      this.inputRef.current.value = newNotional
     }
   }
 
   handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const rawValue = event.currentTarget.value.trim()
+    const rawValue = (this.inputRef.current.value || event.currentTarget.value).trim()
     // check for a shortcut input
     if (hasShorthandInput(rawValue)) {
-      this.processNotional(event)
+      this.processNotional(rawValue)
     }
   }
 
