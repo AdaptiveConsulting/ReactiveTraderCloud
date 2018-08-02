@@ -28,7 +28,7 @@ interface BarProps {
   order: number
   moveDistance: number
   speed: number
-  type: LOADER_TYPE
+  type: LoaderType
 }
 const Bar = styled('rect')<BarProps>`
   animation: ${({ moveDistance }) => getBounce(moveDistance)} ${({ speed }) => speed}s infinite;
@@ -37,30 +37,27 @@ const Bar = styled('rect')<BarProps>`
   will-change: transform;
 `
 
-export enum LOADER_TYPE {
-  PRIMARY = 'primary',
-  SECONDARY = 'secondary'
-}
-
+type LoaderType = 'primary' | 'secondary'
 interface Props {
-  size: number
-  type?: LOADER_TYPE
+  size: number | string
+  type?: LoaderType
   seperation?: number
   speed?: number
 }
 
-const AdaptiveLoader: React.SFC<Props> = ({ size, type, seperation, speed }) => {
-  const barHeight = size * 0.75
+const AdaptiveLoader: React.SFC<Props> = ({ size, type, seperation, speed, children }) => {
+  const sizeNum = Number(size)
+  const barHeight = sizeNum * 0.75
   const barWidth = barHeight / 4
-  const seperationDistance = (seperation !== undefined ? seperation : size / 25) - 0.5
+  const seperationDistance = (seperation !== undefined ? seperation : sizeNum / 25) - 0.5
   const moveDistance = barHeight / 3
   const totalBarWidth = barWidth * BAR_NUMBER + seperationDistance * (BAR_NUMBER - 1)
-  const extraWidth = size - totalBarWidth
+  const extraWidth = sizeNum - totalBarWidth
   return (
-    <svg width={size} height={size}>
+    <svg width={sizeNum} height={sizeNum}>
       {bars.map((item, i) => (
         <Bar
-          type={type || LOADER_TYPE.PRIMARY}
+          type={type || 'primary'}
           key={i}
           height={barHeight}
           width={barWidth}
@@ -70,6 +67,7 @@ const AdaptiveLoader: React.SFC<Props> = ({ size, type, seperation, speed }) => 
           speed={speed || ANIMATION_SPEED}
         />
       ))}
+      {children}
     </svg>
   )
 }

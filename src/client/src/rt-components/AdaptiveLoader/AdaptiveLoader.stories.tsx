@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react'
 import { Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
 
-import AdaptiveLoader, { LOADER_TYPE } from './AdaptiveLoader'
+import AdaptiveLoader from './AdaptiveLoader'
 
 const AdaptiveLoaderStory: React.SFC = ({ children }) => (
   <Story>
@@ -19,24 +19,24 @@ const stories = storiesOf('AdaptiveLoader', module)
 
 stories.add('Small', () => (
   <AdaptiveLoaderStory>
-    <AdaptiveLoader size={50} type={LOADER_TYPE.SECONDARY} />
+    <AdaptiveLoader size={50} type="secondary" />
   </AdaptiveLoaderStory>
 ))
 
 stories.add('Large', () => (
   <AdaptiveLoaderStory>
-    <AdaptiveLoader size={500} type={LOADER_TYPE.SECONDARY} />
+    <AdaptiveLoader size={500} type="secondary" />
   </AdaptiveLoaderStory>
 ))
 
 stories.add('Close', () => (
   <AdaptiveLoaderStory>
-    <AdaptiveLoader size={200} type={LOADER_TYPE.SECONDARY} seperation={0} />
+    <AdaptiveLoader size={200} type="secondary" seperation={0} />
   </AdaptiveLoaderStory>
 ))
 
 stories.add('Fast', () => (
   <AdaptiveLoaderStory>
-    <AdaptiveLoader size={60} type={LOADER_TYPE.SECONDARY} speed={0.5} />
+    <AdaptiveLoader size={60} type="secondary" speed={0.5} />
   </AdaptiveLoaderStory>
 ))
