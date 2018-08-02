@@ -11,12 +11,13 @@ const hoverColors = {
 export const TradeButton = styled('button')<{ direction: string }>`
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   border-radius: 3px;
-  margin: 5px 5px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;
+  padding: 10px 26px;
+
   &:hover {
-    background-color: ${({ theme: { palette }, direction }) => palette[hoverColors[direction]].light};
+    background-color: ${({ theme: { palette }, direction }) => palette[hoverColors[direction]].light} !important;
   }
 `
 
@@ -28,7 +29,6 @@ const Box = styled('div')`
 const DirectionLabel = styled(Box)`
   color: ${({ theme: { text } }) => text.textMeta};
   margin: 0 0 2px 0;
-  opacity: 0.59;
   font-size: 10px;
 `
 
@@ -65,7 +65,7 @@ interface PriceButtonProps {
 }
 
 const PriceButtonComp: SFC<PriceButtonProps> = ({ big, pip, tenth, direction, handleClick }) => (
-  <TradeButton direction={direction} onClick={() => handleClick(direction)}>
+  <TradeButton direction={direction} onClick={() => handleClick(direction)} className="price-button">
     <Flex height="34px" direction="row" justifyContent="center" alignItems="center">
       <Flex height="100%" direction="column" justifyContent="center">
         <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>

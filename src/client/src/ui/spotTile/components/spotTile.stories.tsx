@@ -46,7 +46,7 @@ stories.add('Notional input', () => (
 stories.add('Delivery date', () => (
   <Story>
     <div style={{ padding: '24px' }}>
-      <DeliveryDate date="04 AUG" />
+      <DeliveryDate>04 AUG</DeliveryDate>
     </div>
   </Story>
 ))
@@ -54,7 +54,7 @@ stories.add('Delivery date', () => (
 stories.add('Tile symbol', () => (
   <Story>
     <div style={{ padding: '24px' }}>
-      <TileSymbol symbol="USD/JPY" />
+      <TileSymbol>USD/JPY</TileSymbol>
     </div>
   </Story>
 ))

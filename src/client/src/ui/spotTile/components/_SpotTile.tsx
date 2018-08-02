@@ -14,6 +14,20 @@ const SpotTileStyle = styled('div')`
   border-radius: 3px;
   padding: 20px;
   box-sizing: border-box;
+
+  &:hover {
+    .price-button {
+      background-color: ${({ theme: { background } }) => background.backgroundPrimary};
+    }
+
+    .notional-input {
+      border-bottom: 1px solid ${({ theme: { text } }) => text.textMeta};
+    }
+
+    .delivery-date {
+      color: ${({ theme: { text } }) => text.textPrimary};
+    }
+  }
 `
 
 interface Props {
@@ -31,8 +45,8 @@ class SpotTile extends Component<Props> {
       <SpotTileStyle>
         <Flex direction="column" justifyContent="space-between" height="100%">
           <Flex alignItems="center" justifyContent="space-between">
-            <TileSymbol symbol={`${currencyPair.base}/${currencyPair.terms}`} />
-            <DeliveryDate date={spotDate} />
+            <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
+            <DeliveryDate className="delivery-date">{`SPT (${spotDate})`} </DeliveryDate>
           </Flex>
           <PriceControls executeTrade={executeTrade} priceData={priceData} currencyPair={currencyPair} />
           <NotionalInput currencyPairSymbol={currencyPair.base} />

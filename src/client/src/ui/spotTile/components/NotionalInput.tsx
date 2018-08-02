@@ -21,7 +21,7 @@ const CurrencyPairSymbol = styled('div')`
 `
 
 //Todo hover border from parent
-const Input = styled('input')`
+export const Input = styled('input')`
   color: ${({ theme: { text } }) => text.textPrimary};
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   border: none;
@@ -29,10 +29,10 @@ const Input = styled('input')`
   outline: none;
   font-size: 12px;
   width: 70px;
-  border-bottom: 1px solid ${({ theme: { text } }) => text.textMeta};
+  transition: border-bottom 0.2s ease;
 
   &:focus {
-    border-color: ${({ theme: { palette } }) => palette.accentPrimary.normal};
+    border-color: ${({ theme: { palette } }) => palette.accentPrimary.normal} !important;
   }
 `
 
@@ -59,6 +59,7 @@ export default class NotionalInput extends Component<Props, State> {
       <Flex alignItems="center" justifyContent="center">
         <CurrencyPairSymbol>{currencyPairSymbol}</CurrencyPairSymbol>
         <Input
+          className="notional-input"
           type="text"
           innerRef={this.inputRef}
           defaultValue={formattedSize}
