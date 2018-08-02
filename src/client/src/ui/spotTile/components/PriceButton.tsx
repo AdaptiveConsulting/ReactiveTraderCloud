@@ -14,7 +14,7 @@ export const TradeButton = styled('button')<{ direction: string }>`
   transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;
-  padding: 10px 26px;
+  padding: 10px 24px;
 
   &:hover {
     background-color: ${({ theme: { palette }, direction }) => palette[hoverColors[direction]].light} !important;
