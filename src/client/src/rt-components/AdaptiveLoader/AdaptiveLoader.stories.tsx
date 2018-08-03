@@ -1,3 +1,5 @@
+import { number } from '@storybook/addon-knobs/react'
+import { withKnobs } from '@storybook/addon-knobs/react'
 import React from 'react'
 
 import { storiesOf } from '@storybook/react'
@@ -15,7 +17,19 @@ const AdaptiveLoaderStory: React.SFC = ({ children }) => (
   </Story>
 )
 
-const stories = storiesOf('AdaptiveLoader', module)
+const stories = storiesOf('AdaptiveLoader', module).addDecorator(withKnobs)
+
+stories.add('Interactive', () => {
+  const size = number('size', 50)
+  const speed = number('speed', 1)
+  const seperation = number('separation', 3)
+
+  return (
+    <AdaptiveLoaderStory>
+      <AdaptiveLoader size={size} type="secondary" speed={speed} seperation={seperation} />
+    </AdaptiveLoaderStory>
+  )
+})
 
 stories.add('Small', () => (
   <AdaptiveLoaderStory>

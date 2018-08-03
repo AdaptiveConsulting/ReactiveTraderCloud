@@ -3,12 +3,15 @@ import React from 'react'
 import SplitPane from 'react-split-pane'
 import { Environment, withEnvironment } from 'rt-components'
 import { TearOff } from 'rt-components'
-import { AnalyticsContainer } from '../ui/analytics'
-import { BlotterContainer } from '../ui/blotter'
-import FooterContainer from '../ui/footer/FooterContainer'
-import '../ui/styles/css/index.css'
-import { WorkspaceContainer } from '../ui/workspace'
-import { Modal } from './modal'
+
+import { AnalyticsContainer } from 'ui/analytics'
+import { BlotterContainer } from 'ui/blotter'
+import Footer from 'ui/footer'
+
+import { WorkspaceContainer } from 'ui/workspace'
+
+import Header from './Header'
+import ReconnectModal from './ReconnectModal'
 import SidebarRegionContainer from './sidebar'
 
 export interface ShellProps {
@@ -37,16 +40,7 @@ const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
       </span>
     </div>
     <div className="shell__container">
-      <Modal shouldShow={sessionExpired} title="Session expired">
-        <div>
-          <div>Your 15 minute session expired, you are now disconnected from the server.</div>
-          <div>Click reconnect to start a new session.</div>
-          <button className="btn shell__button--reconnect" onClick={reconnect}>
-            Reconnect
-          </button>
-        </div>
-      </Modal>
-
+      <Header />
       <SplitPane
         minSize={300}
         size={600}
@@ -78,8 +72,9 @@ const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
         )}
       />
     </div>
+    <ReconnectModal shouldShow={sessionExpired} reconnect={reconnect} />
     <div className="shell__footer">
-      <FooterContainer />
+      <Footer />
     </div>
   </div>
 )

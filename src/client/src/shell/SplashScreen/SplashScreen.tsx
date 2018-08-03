@@ -22,6 +22,8 @@ const AdaptiveText = styled('h1')`
   margin: 0px;
   font-size: ${({ theme }) => theme.fontSize.h1};
   color: ${({ theme }) => theme.text.secondary};
+  text-shadow: -1px -1px 0 ${({ theme }) => theme.text.primary}, 1px -1px 0 ${({ theme }) => theme.text.primary},
+    -1px 1px 0 ${({ theme }) => theme.text.primary}, 1px 1px 0 ${({ theme }) => theme.text.primary};
 `
 
 const Version = styled('p')`
@@ -39,7 +41,7 @@ const LoaderContainer = styled('div')`
 const SplashScreen = () => (
   <Background width="100%" height="100%" alignItems="center" direction="column" justifyContent="center">
     <LoaderContainer>
-      <AdaptiveLoader size="400" type="secondary" seperation={-1} />
+      <AdaptiveLoader size="400" type="secondary" seperation={2} />
       <AdaptiveText>Adaptive</AdaptiveText>
     </LoaderContainer>
     <Version>{appVersion}</Version>

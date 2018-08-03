@@ -35,6 +35,11 @@ export const darkTheme = (baseColors?: CoreColors) => {
       ...baseTheme.text,
       light: palette.secondary[0],
       dark: palette.primary[2]
+    },
+    background: {
+      ...baseTheme.background,
+      light: palette.secondary[0],
+      dark: palette.primary[2]
     }
   })
 }

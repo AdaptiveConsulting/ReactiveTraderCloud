@@ -10,6 +10,21 @@ interface Flex {
   alignItems?: 'center' | 'stretch' | 'flex-end' | 'flex-start'
 }
 
+// const bg = (color: string) => {
+//   return css<hhh>`
+//     background-color: ${color}
+//   `;
+// }
+
+// interface ButtonProps {
+//   primary: boolean;
+// }
+// const StyledButton = styled('button')<ButtonProps>`
+// `
+
+// const Button = ({ primary, ...rest }) => (
+//   <StyledButton primary={primary} {...rest} />
+// )
 export const flexStyle = ({ direction, wrap, justifyContent, alignItems }: Flex) =>
   css`
     display: flex;

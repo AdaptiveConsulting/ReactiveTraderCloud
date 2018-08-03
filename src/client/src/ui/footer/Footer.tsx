@@ -16,7 +16,7 @@ interface IsExpandedProps {
 const FooterContainer = styled('div')<IsExpandedProps>`
   position: relative;
   width: 100%;
-  transition: transform ${({ theme }) => theme.animationSpeed.slow};
+  transition: transform ${({ theme }) => theme.animationSpeed.slow}ms;
   transform: ${({ isExpanded, theme }) => getTransform(isExpanded, theme.footer.serviceStatus.height)};
   will-change: transform;
 `
@@ -46,7 +46,7 @@ interface IsExpandedProps {
 }
 const ExpandIcon = styled('i')<IsExpandedProps>`
   transform: rotate(${({ isExpanded }) => (isExpanded ? 180 : 0)}deg);
-  transition: transform ${({ theme }) => theme.animationSpeed.slow};
+  transition: transform ${({ theme }) => theme.animationSpeed.slow}ms;
   will-change: transform;
 `
 
