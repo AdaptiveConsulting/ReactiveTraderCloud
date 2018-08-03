@@ -25,6 +25,9 @@ export default class TileSwitch extends Component<Props> {
     if (spotTileData.isTradeExecutionInFlight) {
       return <TileBooking />
     }
+    if (spotTileData.notification) {
+      console.log(spotTileData.notification)
+    }
     return <div />
   }
 }

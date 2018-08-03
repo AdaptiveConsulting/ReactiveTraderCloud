@@ -1,13 +1,13 @@
 import React from 'react'
 
 import centered from '@storybook/addon-centered'
-import { boolean, select, withKnobs } from '@storybook/addon-knobs/react'
+import { boolean, select, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 
 import { action } from '@storybook/addon-actions'
 import { Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
-import { Direction, PriceMovementTypes } from 'rt-types'
+import { Direction, Notification, NotificationType, PriceMovementTypes } from 'rt-types'
 import SpotTile from './_SpotTile'
 import NotionalInput from './NotionalInput'
 import PriceButton from './PriceButton'
@@ -63,11 +63,11 @@ stories.add('Symbol', () => (
 ))
 
 const currencyPair = {
-  base: 'USD',
+  base: 'EUR',
   pipsPosition: 2,
   ratePrecision: 3,
-  symbol: 'USDJPY',
-  terms: 'JPY'
+  symbol: 'EURUSD',
+  terms: 'USD'
 }
 
 const spotTileData = {
@@ -86,6 +86,24 @@ const spotTileData = {
 }
 
 const executeTrade = action('executeTrade')
+
+const notification: Notification = {
+  hasError: false,
+  notificationType: NotificationType.Trade,
+  message: 'Test',
+  trade: {
+    dealtCurrency: 'EUR',
+    direction: 'Buy',
+    notional: 1000000,
+    spotRate: 1.09403,
+    status: 'done',
+    symbol: 'EURUSD',
+    tradeDate: new Date('Fri Aug 03 2018 10:56:24 GMT-0400 (Eastern Daylight Time)'),
+    tradeId: 2896,
+    traderName: 'KLA',
+    valueDate: new Date('Sun Aug 05 2018 20:00:00 GMT-0400 (Eastern Daylight Time)')
+  }
+}
 
 stories.add('Tile', () => (
   <Story>
@@ -144,12 +162,12 @@ stories.add('Tile executed', () => (
       }}
     >
       <TileExecuted
-        symbols={'USD/JPY'}
-        tradeId={2307}
-        currency={'USD 1,000,000'}
-        rate={121.577}
-        counterCurrency={'JPY 1,215,770'}
-        date={'(Spt) 30 Jul'}
+        symbols={`${notification.trade.dealtCurrency}/${currencyPair.terms}`}
+        tradeId={notification.trade.tradeId}
+        currency={`${notification.trade.dealtCurrency} ${notification.trade.notional}`}
+        rate={notification.trade.spotRate}
+        counterCurrency={`${currencyPair.terms} ${notification.trade.notional * notification.trade.spotRate}`}
+        date={`(Spt) ${notification.trade.tradeDate.toString()}`}
       />
     </div>
   </Story>
