@@ -15,6 +15,7 @@ import PriceMovement from './PriceMovement'
 import { DeliveryDate, TileSymbol } from './Styled'
 import TileBooking from './TileBooking'
 import TileExecuted from './TileExecuted'
+import TileNotification from './TileNotification'
 import TileRejected from './TileRejected'
 import TileSwitch from './TileSwitch'
 
@@ -193,6 +194,33 @@ stories.add('Rejected', () => (
         counterCurrency={currencyPair.terms}
         tradeId={notification.trade.tradeId}
       />
+    </div>
+  </Story>
+))
+
+stories.add('Error', () => (
+  <Story>
+    <div
+      style={{
+        width: '320px',
+        height: '150px'
+      }}
+    >
+      <TileNotification
+        symbols={`${currencyPair.base}/${currencyPair.terms}`}
+        icon="warning"
+        colors={{ bg: 'accentBad', color: 'white' }}
+      >
+        {select(
+          'Message',
+          {
+            Pricing: 'Pricing is unavailable',
+            Timeout: 'Trade execution taking longer then expected',
+            Disconnected: 'Disconnected'
+          },
+          'Disconnected'
+        )}
+      </TileNotification>
     </div>
   </Story>
 ))

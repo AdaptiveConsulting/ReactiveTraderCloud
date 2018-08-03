@@ -67,11 +67,11 @@ const TileNotification = ({ colors, icon, symbols, tradeId, handleClick, childre
       </TradeSymbol>
       {tradeId && <HeavyFont>Trade ID: {tradeId}</HeavyFont>}
       <div>{children}</div>
-      {handleClick && (
+      {(handleClick && (
         <PillButton {...colors} onClick={handleClick}>
           Close
         </PillButton>
-      )}
+      )) || <div />}
     </Flex>
   </TileNotificationStyle>
 )
