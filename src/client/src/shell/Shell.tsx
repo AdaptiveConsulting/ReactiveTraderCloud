@@ -3,6 +3,7 @@ import React from 'react'
 import SplitPane from 'react-split-pane'
 import { Environment, withEnvironment } from 'rt-components'
 import { TearOff } from 'rt-components'
+import { styled } from 'rt-util'
 import { AnalyticsContainer } from '../ui/analytics'
 import { BlotterContainer } from '../ui/blotter'
 import FooterContainer from '../ui/footer/FooterContainer'
@@ -18,6 +19,12 @@ export interface ShellProps {
 }
 
 const appVersion: string = process.env.REACT_APP_VERSION // version from package.json exported in webpack.config.js
+
+const BlotterWrapper = styled('div')`
+  height: 100%;
+  background-color: ${({ theme: { background } }) => background.backgroundPrimary};
+  padding: 0px 8px 0px 16px;
+`
 
 const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
   sessionExpired,
@@ -55,17 +62,13 @@ const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
         className={showSplitter ? '' : 'soloPane1'}
       >
         <WorkspaceContainer />
-        <TearOff
-          id="blotter"
-          portalProps={portalProps.blotterRegion}
-          render={(popOut, tornOff) => (
-            <div className="shell__blotter-container">
-              <div className="shell__blotter">
-                <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />
-              </div>
-            </div>
-          )}
-        />
+        <BlotterWrapper>
+          <TearOff
+            id="blotter"
+            portalProps={portalProps.blotterRegion}
+            render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
+          />
+        </BlotterWrapper>
       </SplitPane>
       <TearOff
         id="region"

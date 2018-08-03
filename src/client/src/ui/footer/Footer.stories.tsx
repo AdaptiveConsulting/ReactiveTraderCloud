@@ -7,7 +7,6 @@ import { Story } from 'rt-storybook'
 import { styled } from 'rt-util'
 import { ConnectionType } from 'system'
 import Footer, { FooterProps } from 'ui/footer/Footer'
-import 'ui/styles/css/index.css'
 
 const Padding = styled('div')`
   flex: 1;
