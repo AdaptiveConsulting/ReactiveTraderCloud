@@ -1,5 +1,8 @@
+import moment from 'moment'
+import numeral from 'numeral'
 import React from 'react'
 import { Flex } from 'rt-components'
+import { Direction } from 'rt-types'
 import { styled } from 'rt-util'
 import { TileBaseStyle } from './Styled'
 
@@ -7,7 +10,8 @@ const TileExecutedStyle = styled(TileBaseStyle)`
   background-color: ${({ theme: { palette } }) => palette.accentGood.dark};
   color: ${({ theme: { text } }) => text.white};
   font-size: 13px;
-  cursor: select;
+  text-align: center;
+  line-height: 1.5;
 `
 
 const TradeSymbol = styled('div')`
@@ -50,29 +54,42 @@ const PillButton = styled(Button)`
 `
 
 interface Props {
-  symbols: string
-  tradeId: number
-  currency: string
-  rate: number
+  dealtCurrency: string
   counterCurrency: string
-  date: string
+  notional: number
+  tradeId: number
+  rate: number
+  date: Date
+  direction: Direction
 }
 
-const TileExecuted = ({ symbols, tradeId, currency, rate, counterCurrency, date }: Props) => (
-  <TileExecutedStyle>
-    <Flex direction="column" alignItems="center" justifyContent="space-between" height="100%">
-      <TradeSymbol>
-        <CheckIcon className="fas fa-check" aria-hidden="true" />
-        <HeavyFont>{symbols}</HeavyFont>
-      </TradeSymbol>
-      <HeavyFont>Trade ID: {tradeId}</HeavyFont>
-      <div>
-        You bought <InverseFont>{currency}</InverseFont> at a rate of <InverseFont>{rate}</InverseFont> giving you{' '}
-        <HeavyItalicsFont>{counterCurrency}</HeavyItalicsFont> settling <HeavyFont>{date}.</HeavyFont>
-      </div>
-      <PillButton>Close</PillButton>
-    </Flex>
-  </TileExecutedStyle>
-)
+const directionText = {
+  [Direction.Buy]: 'bought',
+  [Direction.Sell]: 'sold'
+}
+
+const TileExecuted = ({ direction, tradeId, dealtCurrency, rate, notional, counterCurrency, date }: Props) => {
+  const symbols = `${dealtCurrency}/${counterCurrency}`
+  const dealtText = `${dealtCurrency} ${numeral(notional).format('0,000,000[.]00')}`
+  const counterText = `${counterCurrency} ${numeral(notional * rate).format('0,000,000[.]00')}`
+  const formattedDate = `(Spt) ${moment(date).format('D MMM')}`
+  return (
+    <TileExecutedStyle>
+      <Flex direction="column" alignItems="center" justifyContent="space-between" height="100%">
+        <TradeSymbol>
+          <CheckIcon className="fas fa-check" aria-hidden="true" />
+          <HeavyFont>{symbols}</HeavyFont>
+        </TradeSymbol>
+        <HeavyFont>Trade ID: {tradeId}</HeavyFont>
+        <div>
+          You {directionText[direction]} <InverseFont>{dealtText}</InverseFont> at a rate of{' '}
+          <InverseFont>{rate}</InverseFont> for <HeavyItalicsFont>{counterText}</HeavyItalicsFont> settling{'  '}
+          <HeavyFont>{formattedDate}.</HeavyFont>
+        </div>
+        <PillButton>Close</PillButton>
+      </Flex>
+    </TileExecutedStyle>
+  )
+}
 
 export default TileExecuted

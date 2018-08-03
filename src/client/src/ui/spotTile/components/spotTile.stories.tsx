@@ -162,12 +162,13 @@ stories.add('Tile executed', () => (
       }}
     >
       <TileExecuted
-        symbols={`${notification.trade.dealtCurrency}/${currencyPair.terms}`}
+        direction={notification.trade.direction}
+        dealtCurrency={notification.trade.dealtCurrency}
+        counterCurrency={currencyPair.terms}
+        notional={notification.trade.notional}
         tradeId={notification.trade.tradeId}
-        currency={`${notification.trade.dealtCurrency} ${notification.trade.notional}`}
         rate={notification.trade.spotRate}
-        counterCurrency={`${currencyPair.terms} ${notification.trade.notional * notification.trade.spotRate}`}
-        date={`(Spt) ${notification.trade.tradeDate.toString()}`}
+        date={notification.trade.tradeDate}
       />
     </div>
   </Story>
