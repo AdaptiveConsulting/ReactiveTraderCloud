@@ -28,6 +28,7 @@ interface Props {
   rate: number
   date: Date
   direction: Direction
+  onNotificationDismissedClick: () => void
 }
 
 const directionText = {
@@ -35,7 +36,16 @@ const directionText = {
   [Direction.Sell]: 'sold'
 }
 
-const TileExecuted = ({ direction, tradeId, dealtCurrency, rate, notional, counterCurrency, date }: Props) => {
+const TileExecuted = ({
+  onNotificationDismissedClick,
+  direction,
+  tradeId,
+  dealtCurrency,
+  rate,
+  notional,
+  counterCurrency,
+  date
+}: Props) => {
   const symbols = `${dealtCurrency}/${counterCurrency}`
   const dealtText = `${dealtCurrency} ${numeral(notional).format('0,000,000[.]00')}`
   const counterText = `${counterCurrency} ${numeral(notional * rate).format('0,000,000[.]00')}`
@@ -46,7 +56,7 @@ const TileExecuted = ({ direction, tradeId, dealtCurrency, rate, notional, count
       icon="check"
       symbols={symbols}
       tradeId={tradeId}
-      handleClick={() => {}}
+      handleClick={onNotificationDismissedClick}
     >
       You {directionText[direction]} <InverseFont>{dealtText}</InverseFont> at a rate of{' '}
       <InverseFont>{rate}</InverseFont> for <HeavyItalicsFont>{counterText}</HeavyItalicsFont> settling{'  '}

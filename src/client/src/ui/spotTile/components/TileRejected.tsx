@@ -5,15 +5,16 @@ interface Props {
   dealtCurrency: string
   counterCurrency: string
   tradeId: number
+  onNotificationDismissedClick: () => void
 }
 
-const TileRejected = ({ tradeId, dealtCurrency, counterCurrency }: Props) => (
+const TileRejected = ({ onNotificationDismissedClick, tradeId, dealtCurrency, counterCurrency }: Props) => (
   <TileNotification
     colors={{ bg: 'accentBad', color: 'white' }}
     icon="warning"
     symbols={`${dealtCurrency}/${counterCurrency}`}
     tradeId={tradeId}
-    handleClick={() => {}}
+    handleClick={onNotificationDismissedClick}
   >
     Your trade has been rejected
   </TileNotification>

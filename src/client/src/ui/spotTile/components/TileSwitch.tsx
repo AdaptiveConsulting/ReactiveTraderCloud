@@ -11,6 +11,7 @@ interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
   executeTrade: (direction: Direction) => void
+  onNotificationDismissedClick: () => void
 }
 
 export default class TileSwitch extends Component<Props> {
@@ -24,7 +25,7 @@ export default class TileSwitch extends Component<Props> {
   }
 
   private renderStates = () => {
-    const { spotTileData, currencyPair } = this.props
+    const { spotTileData, currencyPair, onNotificationDismissedClick } = this.props
     if (spotTileData.isTradeExecutionInFlight) {
       return <TileBooking />
     }
@@ -38,6 +39,7 @@ export default class TileSwitch extends Component<Props> {
 
           return (
             <TileExecuted
+              onNotificationDismissedClick={onNotificationDismissedClick}
               direction={direction}
               dealtCurrency={dealtCurrency}
               counterCurrency={terms}
@@ -48,7 +50,14 @@ export default class TileSwitch extends Component<Props> {
             />
           )
         } else if (notification.trade.status === TradeStatus.Rejected) {
-          return <TileRejected dealtCurrency={dealtCurrency} counterCurrency={terms} tradeId={tradeId} />
+          return (
+            <TileRejected
+              onNotificationDismissedClick={onNotificationDismissedClick}
+              dealtCurrency={dealtCurrency}
+              counterCurrency={terms}
+              tradeId={tradeId}
+            />
+          )
         }
       } else if (notification.notificationType === NotificationType.Text) {
         return (

@@ -106,6 +106,8 @@ const notification: Notification = {
   }
 }
 
+const onNotificationDismissedClick = action('Notification dismissed')
+
 stories.add('Tile', () => (
   <Story>
     <div
@@ -128,6 +130,7 @@ stories.add('Switch', () => (
       }}
     >
       <TileSwitch
+        onNotificationDismissedClick={onNotificationDismissedClick}
         currencyPair={currencyPair}
         spotTileData={{ ...spotTileData, isTradeExecutionInFlight: boolean('Booking', false) }}
         executeTrade={executeTrade}
@@ -163,6 +166,7 @@ stories.add('Executed', () => (
       }}
     >
       <TileExecuted
+        onNotificationDismissedClick={onNotificationDismissedClick}
         direction={notification.trade.direction}
         dealtCurrency={notification.trade.dealtCurrency}
         counterCurrency={currencyPair.terms}
@@ -184,6 +188,7 @@ stories.add('Rejected', () => (
       }}
     >
       <TileRejected
+        onNotificationDismissedClick={onNotificationDismissedClick}
         dealtCurrency={notification.trade.dealtCurrency}
         counterCurrency={currencyPair.terms}
         tradeId={notification.trade.tradeId}
