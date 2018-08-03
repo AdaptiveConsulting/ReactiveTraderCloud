@@ -13,6 +13,6 @@ type OpenLinkAction = ReturnType<typeof openLink>
 export const linkEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     ofType<Action, OpenLinkAction>(SHELL_ACTION_TYPES.OPEN_LINK),
-    tap(link => console.log({ link }) || window.open(link.payload, '_blank')),
+    tap(link => window.open(link.payload, '_blank')),
     ignoreElements()
   )

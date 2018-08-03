@@ -1,103 +1,98 @@
-import classnames from 'classnames'
+import { withTheme } from 'emotion-theming'
 import React from 'react'
-import SplitPane from 'react-split-pane'
-import { Environment, withEnvironment } from 'rt-components'
-import { TearOff } from 'rt-components'
+import Transition from 'react-addons-css-transition-group'
 
-import { AnalyticsContainer } from 'ui/analytics'
-import { BlotterContainer } from 'ui/blotter'
+import { Theme } from 'rt-themes'
+import { styled } from 'rt-util'
 import Footer from 'ui/footer'
 
-import { WorkspaceContainer } from 'ui/workspace'
+import Header from './components/Header'
+import ReconnectModal from './components/ReconnectModal'
+import SplashScreen from './components/SplashScreen'
+import { Themes } from './theme'
 
-import Header from './Header'
-import ReconnectModal from './ReconnectModal'
-import SidebarRegionContainer from './sidebar'
+const StyledShell = styled('div')`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  color: ${({ theme }) => theme.text.primary};
+  font-family: ${({ theme }) => theme.fontFamily.primary};
+`
 
-export interface ShellProps {
-  sessionExpired: boolean
-  showSplitter: boolean
-  reconnect: () => void
+const Body = styled('div')`
+  flex: 1;
+  width: 100%;
+  position: relative;
+  background-color: ${({ theme }) => theme.shell.backgroundColor};
+  min-height: 0;
+  min-width: 0;
+`
+
+const SplashScreenContainer = styled('div')`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  z-index: 200;
+`
+
+interface State {
+  loaded: boolean
 }
 
-const appVersion: string = process.env.REACT_APP_VERSION // version from package.json exported in webpack.config.js
+const initialState: State = {
+  loaded: false
+}
 
-const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
-  sessionExpired,
-  showSplitter,
-  reconnect,
-  environment
-}) => (
-  <div
-    className={classnames({
-      shell__browser_wrapper: !environment.isRunningDesktop
-    })}
-  >
-    <div className="shell__splash">
-      <span className="shell__splash-message">
-        {appVersion}
-        <br />Loading...
-      </span>
-    </div>
-    <div className="shell__container">
-      <Header />
-      <SplitPane
-        minSize={300}
-        size={600}
-        split="horizontal"
-        style={{ position: 'relative' }}
-        className={showSplitter ? '' : 'soloPane1'}
-      >
-        <WorkspaceContainer />
-        <TearOff
-          id="blotter"
-          portalProps={portalProps.blotterRegion}
-          render={(popOut, tornOff) => (
-            <div className="shell__blotter-container">
-              <div className="shell__blotter">
-                <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />
-              </div>
-            </div>
+interface Props {
+  sessionExpired: boolean
+  reconnect: () => void
+  theme?: Theme
+  themeType: Themes
+  openLink: (url: string) => void
+  toggleTheme: () => void
+}
+class Shell extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+
+    this.state = initialState
+  }
+
+  componentDidMount() {
+    setTimeout(this.onLoaded.bind(this), 1000)
+  }
+
+  onLoaded() {
+    this.setState({
+      loaded: true
+    })
+  }
+  render() {
+    const { children, sessionExpired, reconnect, theme, themeType, openLink, toggleTheme } = this.props
+    const { loaded } = this.state
+    return (
+      <StyledShell>
+        <Header theme={themeType} openLink={openLink} toggleTheme={toggleTheme} />
+        <Body>{children}</Body>
+        <Footer />
+        <ReconnectModal shouldShow={sessionExpired} reconnect={reconnect} />
+        <Transition
+          transitionName={`fade${theme.animationSpeed.slow}`}
+          transitionLeaveTimeout={theme.animationSpeed.slow}
+        >
+          {loaded || (
+            <SplashScreenContainer>
+              <SplashScreen />
+            </SplashScreenContainer>
           )}
-        />
-      </SplitPane>
-      <TearOff
-        id="region"
-        portalProps={portalProps.analyticsRegion}
-        render={(popOut, tornOff) => (
-          <SidebarRegionContainer
-            tornOff={tornOff}
-            renderContent={() => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} />}
-          />
-        )}
-      />
-    </div>
-    <ReconnectModal shouldShow={sessionExpired} reconnect={reconnect} />
-    <div className="shell__footer">
-      <Footer />
-    </div>
-  </div>
-)
-
-const portalProps = {
-  blotterRegion: {
-    title: 'Blotter',
-    config: {
-      name: 'blotter',
-      width: 850,
-      height: 450,
-      url: 'about:Blotter'
-    }
-  },
-  analyticsRegion: {
-    title: 'Analytics',
-    config: {
-      name: 'analytics',
-      width: 400,
-      height: 800,
-      url: 'about:Analytics'
-    }
+        </Transition>
+      </StyledShell>
+    )
   }
 }
 
-export default withEnvironment(Shell)
+export default withTheme(Shell)

@@ -4,12 +4,14 @@ import { Palette, paletteFromCoreColors } from 'rt-themes/palette'
 
 import footer from './footer'
 import header from './header'
+import shell from './shell'
 
 export const themeFromBaseTheme = (baseTheme: BaseTheme) => {
   return {
     ...baseTheme,
     footer: footer(baseTheme),
-    header: header(baseTheme)
+    header: header(baseTheme),
+    shell: shell(baseTheme)
   }
 }
 export const themeFromPalette = (palette: Palette) => themeFromBaseTheme(baseThemeFromPalette(palette))

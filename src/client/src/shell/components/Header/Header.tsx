@@ -12,9 +12,12 @@ const HeaderBar = styled('div')`
   background-color: ${({ theme }) => theme.header.backgroundColor};
   color: ${({ theme }) => theme.header.textColor};
   height: 55px;
+  min-height: 55px;
   display: flex;
   align-items: center;
   padding-right: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  z-index: 1;
 `
 
 const Logo = styled('div')`

@@ -1,18 +1,28 @@
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+
+import { GlobalState } from 'combineReducers'
 import { ConnectionActions } from 'rt-actions'
-import { GlobalState } from '../combineReducers'
-import { ConnectionStatus } from '../system'
+import { ShellActions } from 'shell'
+import { selectType, ThemeActions } from 'shell/theme'
+import { ConnectionStatus } from 'system'
+
 import Shell from './Shell'
 
-const mapStateToProps = ({ connectionStatus, regionsService }: GlobalState) => ({
-  sessionExpired: connectionStatus.status === ConnectionStatus.sessionExpired,
-  showSplitter: regionsService.blotter && !regionsService.blotter.isTearedOff
+const mapStateToProps = (state: GlobalState) => ({
+  sessionExpired: state.connectionStatus.status === ConnectionStatus.sessionExpired,
+  themeType: selectType(state)
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   reconnect: () => {
     dispatch(ConnectionActions.connect())
+  },
+  openLink: (link: string) => {
+    dispatch(ShellActions.openLink(link))
+  },
+  toggleTheme: () => {
+    dispatch(ThemeActions.toggleTheme())
   }
 })
 
