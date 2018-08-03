@@ -4,6 +4,7 @@ import { SpotTileData } from '../model/spotTileData'
 import SpotTile from './_SpotTile'
 import TileBooking from './TileBooking'
 import TileExecuted from './TileExecuted'
+import TileNotification from './TileNotification'
 import TileRejected from './TileRejected'
 
 interface Props {
@@ -49,8 +50,20 @@ export default class TileSwitch extends Component<Props> {
         } else if (notification.trade.status === TradeStatus.Rejected) {
           return <TileRejected dealtCurrency={dealtCurrency} counterCurrency={terms} tradeId={tradeId} />
         }
+      } else if (notification.notificationType === NotificationType.Text) {
+        return (
+          <TileNotification
+            symbols={`${currencyPair.base}/${currencyPair.terms}`}
+            icon="warning"
+            colors={{ bg: 'accentBad', color: 'white' }}
+          >
+            {notification.message}
+          </TileNotification>
+        )
+      } else {
+        throw new Error(`Unknown notification type ${notification.notificationType}`)
       }
     }
-    return <div />
+    return null
   }
 }
