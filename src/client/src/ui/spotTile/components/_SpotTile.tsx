@@ -11,20 +11,6 @@ import { DeliveryDate, TileBaseStyle, TileSymbol } from './Styled'
 const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   position: relative;
-
-  &:hover {
-    .price-button {
-      background-color: ${({ theme: { background } }) => background.backgroundPrimary};
-    }
-
-    .notional-input {
-      border-bottom: 1px solid ${({ theme: { text } }) => text.textMeta};
-    }
-
-    .delivery-date {
-      color: ${({ theme: { text } }) => text.textPrimary};
-    }
-  }
 `
 
 export interface Props {
@@ -41,7 +27,7 @@ export default class SpotTile extends Component<Props> {
     return (
       <>
         {children}
-        <SpotTileStyle>
+        <SpotTileStyle className="_spot-tile">
           <Flex direction="column" justifyContent="space-between" height="100%">
             <Flex alignItems="center" justifyContent="space-between">
               <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>

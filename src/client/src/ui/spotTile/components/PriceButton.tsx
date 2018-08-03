@@ -16,8 +16,12 @@ export const TradeButton = styled('button')<{ direction: string }>`
   border: none;
   padding: 10px 24px;
 
-  &:hover {
-    background-color: ${({ theme: { palette }, direction }) => palette[hoverColors[direction]].light} !important;
+  ._spot-tile:hover & {
+    background-color: ${({ theme: { background } }) => background.backgroundPrimary};
+  }
+
+  ._spot-tile:hover &:hover {
+    background-color: ${({ theme: { palette }, direction }) => palette[hoverColors[direction]].light};
   }
 `
 
