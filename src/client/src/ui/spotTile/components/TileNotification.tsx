@@ -14,6 +14,7 @@ export const TileNotificationStyle = styled(TileBaseStyle)<ColorProps>`
   font-size: 13px;
   text-align: center;
   line-height: 1.5;
+  position: absolute;
 `
 
 const TradeSymbol = styled('div')`

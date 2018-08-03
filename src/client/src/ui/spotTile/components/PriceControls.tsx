@@ -24,6 +24,7 @@ const PriceControls = ({ currencyPair, priceData, executeTrade }: Props) => {
         big={bidRate.bigFigure}
         pip={bidRate.pips}
         tenth={bidRate.pipFraction}
+        rawRate={bidRate.rawRate}
       />
       <PriceMovement priceMovementType={priceData.priceMovementType} spread={spread.formattedValue} />
       <PriceButton
@@ -32,6 +33,7 @@ const PriceControls = ({ currencyPair, priceData, executeTrade }: Props) => {
         big={askRate.bigFigure}
         pip={askRate.pips}
         tenth={askRate.pipFraction}
+        rawRate={askRate.rawRate}
       />
     </Flex>
   )

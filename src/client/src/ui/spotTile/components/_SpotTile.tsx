@@ -10,6 +10,9 @@ import { DeliveryDate, TileBaseStyle, TileSymbol } from './Styled'
 
 const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+`
+
+const SpotTileWrapper = styled('div')`
   position: relative;
 `
 
@@ -25,7 +28,7 @@ export default class SpotTile extends Component<Props> {
     const priceData = spotTileData.price
     const spotDate = spotDateFormatter(priceData.valueDate, false).toUpperCase()
     return (
-      <>
+      <SpotTileWrapper>
         {children}
         <SpotTileStyle className="_spot-tile">
           <Flex direction="column" justifyContent="space-between" height="100%">
@@ -37,7 +40,7 @@ export default class SpotTile extends Component<Props> {
             <NotionalInput currencyPairSymbol={currencyPair.base} />
           </Flex>
         </SpotTileStyle>
-      </>
+      </SpotTileWrapper>
     )
   }
 }

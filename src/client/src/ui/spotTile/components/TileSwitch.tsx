@@ -17,6 +17,10 @@ interface Props {
 export default class TileSwitch extends Component<Props> {
   render() {
     const { currencyPair, spotTileData, executeTrade } = this.props
+    //TODO Don't render if services not up
+    if (!spotTileData || !currencyPair || !spotTileData.price) {
+      return null
+    }
     return (
       <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade}>
         {this.renderStates()}

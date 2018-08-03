@@ -56,6 +56,7 @@ const defaultProps: PriceButtonProps = {
   big: 0,
   pip: 0,
   tenth: 0,
+  rawRate: 0,
   direction: Direction.Buy,
   handleClick: () => {}
 }
@@ -64,21 +65,31 @@ interface PriceButtonProps {
   big: number
   pip: number
   tenth: number
+  rawRate: number
   direction: Direction
   handleClick: (direction: Direction) => void
 }
 
-const PriceButtonComp: SFC<PriceButtonProps> = ({ big, pip, tenth, direction, handleClick }) => (
-  <TradeButton direction={direction} onClick={() => handleClick(direction)} className="price-button">
-    <Flex height="34px" direction="row" justifyContent="center" alignItems="center">
-      <Flex height="100%" direction="column" justifyContent="center">
-        <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
-        <Big>{big}</Big>
+const renderPips = (pips: number) => (pips.toString().length === 1 ? `0${pips}` : pips)
+const getBigFigureDisplay = (bigFigure: number, rawRate: number) =>
+  bigFigure === Math.floor(rawRate) ? `${bigFigure}.` : bigFigure.toString()
+const renderBigFigureDisplay = (bigFigureDisplay: string) =>
+  bigFigureDisplay.toString().length === 3 ? `${bigFigureDisplay}0` : bigFigureDisplay
+
+const PriceButtonComp: SFC<PriceButtonProps> = ({ big, pip, tenth, rawRate, direction, handleClick }) => {
+  const bigFigure = getBigFigureDisplay(big, rawRate)
+  return (
+    <TradeButton direction={direction} onClick={() => handleClick(direction)} className="price-button">
+      <Flex height="34px" direction="row" justifyContent="center" alignItems="center">
+        <Flex height="100%" direction="column" justifyContent="center">
+          <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
+          <Big>{renderBigFigureDisplay(bigFigure)}</Big>
+        </Flex>
+        <Pip>{renderPips(pip)}</Pip>
+        <Tenth>{tenth}</Tenth>
       </Flex>
-      <Pip>{pip}</Pip>
-      <Tenth>{tenth}</Tenth>
-    </Flex>
-  </TradeButton>
-)
+    </TradeButton>
+  )
+}
 
 export default withDefaultProps(defaultProps, PriceButtonComp)
