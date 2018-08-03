@@ -49,17 +49,26 @@ const PillButton = styled(Button)`
   font-weight: 900;
 `
 
-const TileExecuted = () => (
+interface Props {
+  symbols: string
+  tradeId: number
+  currency: string
+  rate: number
+  counterCurrency: string
+  date: string
+}
+
+const TileExecuted = ({ symbols, tradeId, currency, rate, counterCurrency, date }: Props) => (
   <TileExecutedStyle>
     <Flex direction="column" alignItems="center" justifyContent="space-between" height="100%">
       <TradeSymbol>
         <CheckIcon className="fas fa-check" aria-hidden="true" />
-        <HeavyFont>USD/JPY</HeavyFont>
+        <HeavyFont>{symbols}</HeavyFont>
       </TradeSymbol>
-      <HeavyFont>Trade ID: 2307</HeavyFont>
+      <HeavyFont>Trade ID: {tradeId}</HeavyFont>
       <div>
-        You bought <InverseFont>USD 1,000,000</InverseFont> at a rate of <InverseFont>121.577</InverseFont> giving you{' '}
-        <HeavyItalicsFont>JPY 1,215,770</HeavyItalicsFont> settling <HeavyFont>(Spt) 30 Jul.</HeavyFont>
+        You bought <InverseFont>{currency}</InverseFont> at a rate of <InverseFont>{rate}</InverseFont> giving you{' '}
+        <HeavyItalicsFont>{counterCurrency}</HeavyItalicsFont> settling <HeavyFont>{date}.</HeavyFont>
       </div>
       <PillButton>Close</PillButton>
     </Flex>

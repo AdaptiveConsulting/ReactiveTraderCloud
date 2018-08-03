@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Flex } from 'rt-components'
-import { CurrencyPair, Direction, PriceMovementTypes } from 'rt-types'
-import { styled, withDefaultProps } from 'rt-util'
+import { CurrencyPair, Direction } from 'rt-types'
+import { styled } from 'rt-util'
 import { spotDateFormatter } from '../model/dateUtils'
 import { SpotTileData } from '../model/spotTileData'
 import NotionalInput from './NotionalInput'
@@ -33,13 +33,14 @@ export interface Props {
   executeTrade: (direction: Direction) => void
 }
 
-class SpotTile extends Component<Props> {
+export default class SpotTile extends Component<Props> {
   render() {
-    const { currencyPair, spotTileData, executeTrade } = this.props
+    const { currencyPair, spotTileData, executeTrade, children } = this.props
     const priceData = spotTileData.price
     const spotDate = spotDateFormatter(priceData.valueDate, false).toUpperCase()
     return (
       <>
+        {children}
         <SpotTileStyle>
           <Flex direction="column" justifyContent="space-between" height="100%">
             <Flex alignItems="center" justifyContent="space-between">
@@ -54,29 +55,3 @@ class SpotTile extends Component<Props> {
     )
   }
 }
-
-const defaultProps = {
-  currencyPair: {
-    symbol: '',
-    ratePrecision: 0,
-    pipsPosition: 0,
-    base: '',
-    terms: ''
-  },
-  spotTileData: {
-    currencyChartIsOpening: false,
-    isTradeExecutionInFlight: false,
-    hasError: false,
-    price: {
-      ask: 0,
-      bid: 0,
-      mid: 0,
-      creationTimestamp: 0,
-      symbol: '',
-      valueDate: '',
-      priceMovementType: PriceMovementTypes.None
-    }
-  }
-}
-
-export default withDefaultProps(defaultProps, SpotTile)

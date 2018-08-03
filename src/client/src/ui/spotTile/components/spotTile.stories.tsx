@@ -1,7 +1,7 @@
 import React from 'react'
 
 import centered from '@storybook/addon-centered'
-import { select, withKnobs } from '@storybook/addon-knobs/react'
+import { boolean, select, withKnobs } from '@storybook/addon-knobs/react'
 import { storiesOf } from '@storybook/react'
 
 import { action } from '@storybook/addon-actions'
@@ -15,6 +15,7 @@ import PriceMovement from './PriceMovement'
 import { DeliveryDate, TileSymbol } from './Styled'
 import TileBooking from './TileBooking'
 import TileExecuted from './TileExecuted'
+import TileSwitch from './TileSwitch'
 
 const stories = storiesOf('Spot Tile', module).addDecorator(centered)
 stories.addDecorator(withKnobs)
@@ -99,6 +100,23 @@ stories.add('Tile', () => (
   </Story>
 ))
 
+stories.add('Tile switch', () => (
+  <Story>
+    <div
+      style={{
+        width: '320px',
+        height: '150px'
+      }}
+    >
+      <TileSwitch
+        currencyPair={currencyPair}
+        spotTileData={{ ...spotTileData, isTradeExecutionInFlight: boolean('Booking', false) }}
+        executeTrade={executeTrade}
+      />
+    </div>
+  </Story>
+))
+
 stories.add('Tile executing', () => (
   <Story>
     <div
@@ -125,7 +143,14 @@ stories.add('Tile executed', () => (
         height: '150px'
       }}
     >
-      <TileExecuted />
+      <TileExecuted
+        symbols={'USD/JPY'}
+        tradeId={2307}
+        currency={'USD 1,000,000'}
+        rate={121.577}
+        counterCurrency={'JPY 1,215,770'}
+        date={'(Spt) 30 Jul'}
+      />
     </div>
   </Story>
 ))
