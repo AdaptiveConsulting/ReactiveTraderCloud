@@ -13,6 +13,6 @@ export const TileSymbol = styled('div')`
 export const TileBaseStyle = styled('div')`
   height: 100%;
   border-radius: 3px;
-  padding: 20px;
+  padding: 18px;
   box-sizing: border-box;
 `

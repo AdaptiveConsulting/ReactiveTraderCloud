@@ -36,12 +36,17 @@ const InverseFont = styled(HeavyFont)`
   padding: 0px 1px;
 `
 
-const PillButton = styled('button')`
+const Button = styled('button')`
+  font-family: Lato;
+  border: none;
+`
+
+const PillButton = styled(Button)`
   background-color: ${({ theme: { palette } }) => palette.accentGood.normal};
+  color: ${({ theme: { text } }) => text.white};
   border-radius: 17px;
   padding: 8px 10px;
-  border: none;
-  color: ${({ theme: { text } }) => text.white};
+  font-weight: 900;
 `
 
 const TileExecuted = () => (
