@@ -4,6 +4,7 @@ import { SpotTileData } from '../model/spotTileData'
 import SpotTile from './_SpotTile'
 import TileBooking from './TileBooking'
 import TileExecuted from './TileExecuted'
+import TileRejected from './TileRejected'
 
 interface Props {
   currencyPair: CurrencyPair
@@ -29,9 +30,11 @@ export default class TileSwitch extends Component<Props> {
     if (spotTileData.notification) {
       const { notification } = spotTileData
       if (notification.notificationType === NotificationType.Trade) {
+        const { dealtCurrency, tradeId } = notification.trade
+        const { terms } = currencyPair
         if (notification.trade.status === TradeStatus.Done) {
-          const { direction, dealtCurrency, tradeId, notional, spotRate, tradeDate } = notification.trade
-          const { terms } = currencyPair
+          const { direction, notional, spotRate, tradeDate } = notification.trade
+
           return (
             <TileExecuted
               direction={direction}
@@ -44,7 +47,7 @@ export default class TileSwitch extends Component<Props> {
             />
           )
         } else if (notification.trade.status === TradeStatus.Rejected) {
-          return <div />
+          return <TileRejected dealtCurrency={dealtCurrency} counterCurrency={terms} tradeId={tradeId} />
         }
       }
     }

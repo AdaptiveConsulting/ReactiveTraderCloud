@@ -15,6 +15,7 @@ import PriceMovement from './PriceMovement'
 import { DeliveryDate, TileSymbol } from './Styled'
 import TileBooking from './TileBooking'
 import TileExecuted from './TileExecuted'
+import TileRejected from './TileRejected'
 import TileSwitch from './TileSwitch'
 
 const stories = storiesOf('Spot Tile', module).addDecorator(centered)
@@ -118,7 +119,7 @@ stories.add('Tile', () => (
   </Story>
 ))
 
-stories.add('Tile switch', () => (
+stories.add('Switch', () => (
   <Story>
     <div
       style={{
@@ -135,7 +136,7 @@ stories.add('Tile switch', () => (
   </Story>
 ))
 
-stories.add('Tile executing', () => (
+stories.add('Booking', () => (
   <Story>
     <div
       style={{
@@ -153,7 +154,7 @@ stories.add('Tile executing', () => (
   </Story>
 ))
 
-stories.add('Tile executed', () => (
+stories.add('Executed', () => (
   <Story>
     <div
       style={{
@@ -169,6 +170,23 @@ stories.add('Tile executed', () => (
         tradeId={notification.trade.tradeId}
         rate={notification.trade.spotRate}
         date={notification.trade.tradeDate}
+      />
+    </div>
+  </Story>
+))
+
+stories.add('Rejected', () => (
+  <Story>
+    <div
+      style={{
+        width: '320px',
+        height: '150px'
+      }}
+    >
+      <TileRejected
+        dealtCurrency={notification.trade.dealtCurrency}
+        counterCurrency={currencyPair.terms}
+        tradeId={notification.trade.tradeId}
       />
     </div>
   </Story>
