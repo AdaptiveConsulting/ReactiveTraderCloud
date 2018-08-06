@@ -14,6 +14,7 @@ export const TradeButton = styled('button')<{ direction: string }>`
   transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;
+  outline: none;
   padding: 10px 24px;
 
   ._spot-tile:hover & {

@@ -4,8 +4,8 @@ import { Dispatch } from 'redux'
 import { Environment, withEnvironment } from 'rt-components'
 import { Direction, ExecuteTradeRequest } from 'rt-types'
 import { GlobalState } from '../../combineReducers'
-import { spotRegionSettings, SpotTileActions } from './actions'
-import SpotTile from './components/SpotTile'
+import { SpotTileActions } from './actions'
+import TileSwitch from './components/TileSwitch'
 import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './model/spotTileUtils'
 
 interface SpotTileContainerOwnProps {
@@ -26,34 +26,14 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
     this.props.onMount()
   }
   render() {
-    const {
-      id,
-      currencyPair,
-      spotTilesData,
-      executionConnected,
-      pricingConnected,
-      onPopoutClick,
-      undockTile,
-      onNotificationDismissedClick,
-      displayCurrencyChart,
-      tornOff,
-      environment,
-      onMount
-    } = this.props
-    const spotTitle = spotRegionSettings(id).title
+    const { id, currencyPair, spotTilesData, onPopoutClick, onNotificationDismissedClick, tornOff } = this.props
     return (
-      <SpotTile
+      <TileSwitch
         key={id}
-        onMount={onMount}
-        pricingConnected={pricingConnected}
-        executionConnected={executionConnected}
         currencyPair={currencyPair}
-        isRunningOnDesktop={environment.isRunningDesktop}
         spotTileData={spotTilesData}
         onPopoutClick={onPopoutClick}
-        displayCurrencyChart={displayCurrencyChart(id)}
         onNotificationDismissedClick={onNotificationDismissedClick(id)}
-        undockTile={undockTile(spotTitle)}
         executeTrade={this.executeTrade}
         tornOff={tornOff}
       />

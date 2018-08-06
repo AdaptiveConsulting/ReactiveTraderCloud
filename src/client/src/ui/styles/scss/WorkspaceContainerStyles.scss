@@ -22,7 +22,8 @@
     width: calc(33% - 10px);
   }
 
-  margin: 5px;
+  max-width: 320px;
+  margin: 2px;
 }
 
 .workspace-region__icon--loading {
