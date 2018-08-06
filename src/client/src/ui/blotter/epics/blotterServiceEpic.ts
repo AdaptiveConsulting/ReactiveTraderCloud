@@ -54,7 +54,7 @@ const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { openF
     map(action => action.payload.trades[0]),
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
     map(trade => formatTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),
-    tap(tradeNotifcation => openFin.openTradeNotification(tradeNotifcation)),
+    tap(tradeNotification => openFin.openTradeNotification(tradeNotification)),
     ignoreElements()
   )
 
