@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex } from 'rt-components'
 import { styled } from 'rt-util'
-import { Button, ColorProps, Icon, TileBaseStyle } from './Styled'
+import { Button, ColorProps, Icon, TileBaseStyle } from '../Styled'
 
 export const TileNotificationStyle = styled(TileBaseStyle)<ColorProps>`
   color: ${({ theme: { text }, color }) => text[color]};
