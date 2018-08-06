@@ -11,6 +11,10 @@ import { DeliveryDate, TileBaseStyle, TileSymbol } from './Styled'
 
 const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+
+  &:hover {
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+  }
 `
 
 const SpotTileWrapper = styled('div')`

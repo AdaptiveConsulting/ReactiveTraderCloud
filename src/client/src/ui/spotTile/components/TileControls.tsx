@@ -13,6 +13,10 @@ const TileControlsStyle = styled('div')`
   opacity: 0;
   transition: opacity 0.2s;
 
+  ._spot-tile:hover & {
+    opacity: 1;
+  }
+
   svg {
     cursor: pointer;
   }
@@ -21,19 +25,28 @@ const TileControlsStyle = styled('div')`
     stroke: ${({ theme: { text } }) => text.textMeta};
     fill: ${({ theme: { text } }) => text.textMeta};
   }
+`
 
-  ._spot-tile:hover & {
-    opacity: 1;
+const TileControl = styled(Circle)`
+  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+
+  &:hover {
+    background-color: ${({ theme: { palette } }) => palette.accentPrimary.normal};
+
+    .svg-icon {
+      stroke: ${({ theme: { text } }) => text.textPrimary};
+      fill: ${({ theme: { text } }) => text.textPrimary};
+    }
   }
 `
 
-const TopRightButton = styled(Circle)`
+const TopRightButton = styled(TileControl)`
   position: absolute;
   right: -17px;
   top: -17px;
 `
 
-const BottomRightButton = styled(Circle)`
+const BottomRightButton = styled(TileControl)`
   position: absolute;
   right: -17px;
   bottom: -17px;

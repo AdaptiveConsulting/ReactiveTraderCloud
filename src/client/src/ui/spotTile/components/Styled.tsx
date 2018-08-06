@@ -38,7 +38,6 @@ export const Button = styled('button')`
 `
 
 export const Circle = styled('div')`
-  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   width: 34px;
   height: 34px;
   border-radius: 50%;
