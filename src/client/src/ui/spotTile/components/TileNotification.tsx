@@ -1,12 +1,7 @@
 import React from 'react'
 import { Flex } from 'rt-components'
 import { styled } from 'rt-util'
-import { TileBaseStyle } from './Styled'
-
-interface ColorProps {
-  color: string
-  bg: string
-}
+import { Button, ColorProps, Icon, TileBaseStyle } from './Styled'
 
 export const TileNotificationStyle = styled(TileBaseStyle)<ColorProps>`
   color: ${({ theme: { text }, color }) => text[color]};
@@ -20,24 +15,16 @@ export const TileNotificationStyle = styled(TileBaseStyle)<ColorProps>`
 const TradeSymbol = styled('div')`
   align-self: flex-start;
 `
-const Icon = styled('i')<ColorProps>`
-  color: ${({ theme: { text }, color }) => text[color]};
-  margin-right: 5px;
-`
 
 const CheckIcon = styled(Icon)<ColorProps>`
   background-color: ${({ theme: { palette }, bg }) => palette[bg].normal};
+  margin-right: 5px;
   border-radius: 50%;
   padding: 5px;
 `
 
 const HeavyFont = styled('span')`
   font-weight: 900;
-`
-
-const Button = styled('button')`
-  font-family: Lato;
-  border: none;
 `
 
 const PillButton = styled(Button)<ColorProps>`

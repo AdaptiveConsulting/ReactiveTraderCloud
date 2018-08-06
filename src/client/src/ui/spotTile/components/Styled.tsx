@@ -1,4 +1,10 @@
+import React from 'react'
 import { styled } from 'rt-util'
+
+export interface ColorProps {
+  color?: string
+  bg?: string
+}
 
 export const DeliveryDate = styled('div')`
   color: ${({ theme: { text } }) => text.textMeta};
@@ -21,3 +27,25 @@ export const TileBaseStyle = styled('div')`
   padding: 18px;
   box-sizing: border-box;
 `
+
+export const Icon = styled('i')<ColorProps>`
+  color: ${({ theme: { text }, color }) => text[color]};
+`
+
+export const Button = styled('button')`
+  font-family: Lato;
+  border: none;
+`
+
+export const CircleButton = styled(Button)`
+  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  text-align: center;
+`
+export const IconButton = ({ icon }) => (
+  <CircleButton>
+    <Icon className={icon} aria-hidden="true" color="textMeta" />
+  </CircleButton>
+)

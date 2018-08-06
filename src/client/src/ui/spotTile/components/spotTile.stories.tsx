@@ -12,7 +12,7 @@ import SpotTile from './_SpotTile'
 import NotionalInput from './NotionalInput'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
-import { DeliveryDate, TileSymbol } from './Styled'
+import { DeliveryDate, IconButton, TileSymbol } from './Styled'
 import TileBooking from './TileBooking'
 import TileExecuted from './TileExecuted'
 import TileNotification from './TileNotification'
@@ -221,6 +221,19 @@ stories.add('Error', () => (
           'Disconnected'
         )}
       </TileNotification>
+    </div>
+  </Story>
+))
+
+stories.add('Popout button', () => (
+  <Story>
+    <div
+      style={{
+        width: '320px',
+        height: '150px'
+      }}
+    >
+      <IconButton icon="fas fa-external-link-square-alt" />
     </div>
   </Story>
 ))
