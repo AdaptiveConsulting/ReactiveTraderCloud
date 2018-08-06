@@ -21,11 +21,17 @@ const StyledShell = styled('div')`
   font-family: ${({ theme }) => theme.fontFamily.primary};
 `
 
+const BodyContainer = styled('div')`
+  flex: 1;
+  display: flex;
+  padding: 10px 20px 0px 20px;
+  background-color: ${({ theme }) => theme.shell.backgroundColor};
+`
+
 const Body = styled('div')`
   flex: 1;
   width: 100%;
   position: relative;
-  background-color: ${({ theme }) => theme.shell.backgroundColor};
   min-height: 0;
   min-width: 0;
 `
@@ -63,7 +69,7 @@ class Shell extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    setTimeout(this.onLoaded.bind(this), 1000)
+    setTimeout(this.onLoaded.bind(this), 2000)
   }
 
   onLoaded() {
@@ -77,7 +83,9 @@ class Shell extends React.Component<Props, State> {
     return (
       <StyledShell>
         <Header theme={themeType} openLink={openLink} toggleTheme={toggleTheme} />
-        <Body>{children}</Body>
+        <BodyContainer>
+          <Body>{children}</Body>
+        </BodyContainer>
         <Footer />
         <ReconnectModal shouldShow={sessionExpired} reconnect={reconnect} />
         <Transition

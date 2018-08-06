@@ -5,8 +5,6 @@ import { TearOff } from 'rt-components'
 import { WorkspaceContainer } from 'ui/workspace'
 
 import { ShellContainer } from 'shell'
-import SidebarRegionContainer from 'shell/sidebar'
-import { AnalyticsContainer } from 'ui/analytics'
 import { BlotterContainer } from 'ui/blotter'
 
 const portalProps = {
@@ -32,7 +30,7 @@ const portalProps = {
 
 const DefaultLayout = () => (
   <ShellContainer>
-    <SplitPane minSize={300} size={600} split="horizontal" style={{ position: 'relative' }}>
+    <SplitPane minSize={300} size={600} maxSize={-50} split="horizontal" style={{ position: 'relative' }}>
       <WorkspaceContainer />
       <TearOff
         id="blotter"
@@ -40,16 +38,6 @@ const DefaultLayout = () => (
         render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
       />
     </SplitPane>
-    <TearOff
-      id="region"
-      portalProps={portalProps.analyticsRegion}
-      render={(popOut, tornOff) => (
-        <SidebarRegionContainer
-          tornOff={tornOff}
-          renderContent={() => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} />}
-        />
-      )}
-    />
   </ShellContainer>
 )
 

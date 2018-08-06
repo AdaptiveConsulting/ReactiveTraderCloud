@@ -2,12 +2,10 @@ import React, { Component } from 'react'
 import { ThemeSwitcher } from 'rt-components'
 import { styled } from 'rt-util'
 import { Themes } from 'shell/theme'
+import 'ui/styles/css/index.css'
 import Theme from 'ui/theme/Theme'
 
 const StyledStory = styled('div')`
-  position: absolute;
-  top: 0px;
-  left: 0px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -19,6 +17,7 @@ const StyledStory = styled('div')`
     color ${({ theme }) => theme.animationSpeed.normal}ms;
   will-change: color, background-color;
   font-family: ${({ theme }) => theme.fontFamily.primary};
+  position: fixed;
 `
 
 const Toolbar = styled('div')`
