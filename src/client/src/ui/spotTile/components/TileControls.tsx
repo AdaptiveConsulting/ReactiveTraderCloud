@@ -1,15 +1,23 @@
 import React from 'react'
 import { styled } from 'rt-util'
+import { Environment } from '../../../system'
 import { IconButton } from './Styled'
 
 const TileControlsStyle = styled('div')`
   position: absolute;
+  right: 0px;
+  top: 0px;
   height: 100%;
-  width: 100%;
   z-index: 1;
+  opacity: 0;
+  transition: opacity 0.2s;
 
   i {
     cursor: pointer;
+  }
+
+  ._spot-tile:hover & {
+    opacity: 1;
   }
 `
 
@@ -25,17 +33,23 @@ const BottomRightButton = styled('div')`
   bottom: -17px;
 `
 
-const TileControls = () => {
-  return (
-    <TileControlsStyle>
-      <TopRightButton>
-        <IconButton icon="fas fa-external-link-square-alt" />
-      </TopRightButton>
-      <BottomRightButton>
-        <IconButton icon="fas fa-expand" />
-      </BottomRightButton>
-    </TileControlsStyle>
-  )
+interface Props {
+  tornOff: boolean
+  onPopoutClick?: () => void
 }
+
+const TileControls = ({ tornOff, onPopoutClick }: Props) => (
+  <TileControlsStyle>
+    {!Environment.isRunningInIE() &&
+      !tornOff && (
+        <TopRightButton>
+          <IconButton icon="fas fa-external-link-square-alt" handleClick={onPopoutClick} />
+        </TopRightButton>
+      )}
+    <BottomRightButton>
+      <IconButton icon="fas fa-expand" />
+    </BottomRightButton>
+  </TileControlsStyle>
+)
 
 export default TileControls

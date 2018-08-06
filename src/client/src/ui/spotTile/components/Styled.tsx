@@ -44,8 +44,14 @@ export const CircleButton = styled(Button)`
   border-radius: 50%;
   text-align: center;
 `
-export const IconButton = ({ icon }) => (
+
+interface IconButtonProps {
+  icon: string
+  handleClick?: () => void
+}
+
+export const IconButton = ({ icon, handleClick }: IconButtonProps) => (
   <CircleButton>
-    <Icon className={icon} aria-hidden="true" color="textMeta" />
+    <Icon className={icon} aria-hidden="true" color="textMeta" onClick={handleClick} />
   </CircleButton>
 )

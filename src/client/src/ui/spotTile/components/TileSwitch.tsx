@@ -3,6 +3,7 @@ import { CurrencyPair, Direction, NotificationType, TradeStatus } from 'rt-types
 import { SpotTileData } from '../model/spotTileData'
 import SpotTile from './_SpotTile'
 import TileBooking from './TileBooking'
+import TileControls from './TileControls'
 import TileExecuted from './TileExecuted'
 import TileNotification from './TileNotification'
 import TileRejected from './TileRejected'
@@ -10,19 +11,22 @@ import TileRejected from './TileRejected'
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
+  tornOff: boolean
   executeTrade: (direction: Direction) => void
+  onPopoutClick?: () => void
   onNotificationDismissedClick: () => void
 }
 
 export default class TileSwitch extends Component<Props> {
   render() {
-    const { currencyPair, spotTileData, executeTrade } = this.props
+    const { currencyPair, spotTileData, executeTrade, tornOff, onPopoutClick } = this.props
     //TODO Don't render if services not up
     if (!spotTileData || !currencyPair || !spotTileData.price) {
       return null
     }
     return (
       <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade}>
+        <TileControls tornOff={tornOff} onPopoutClick={onPopoutClick} />
         {this.renderStates()}
       </SpotTile>
     )

@@ -135,6 +135,8 @@ stories.add('Switch', () => (
         currencyPair={currencyPair}
         spotTileData={{ ...spotTileData, isTradeExecutionInFlight: boolean('Booking', false) }}
         executeTrade={executeTrade}
+        onPopoutClick={action('On popout click')}
+        tornOff={boolean('Torn off', false)}
       />
     </div>
   </Story>
