@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import { CurrencyPair, Direction, NotificationType, TradeStatus } from 'rt-types'
 import { SpotTileData } from '../model/spotTileData'
-import SpotTile from './_SpotTile'
-import TileBooking from './TileBooking'
+import { TileBooking, TileExecuted, TileNotification, TileRejected } from './notifications'
+import SpotTile from './SpotTile'
 import TileControls from './TileControls'
-import TileExecuted from './TileExecuted'
-import TileNotification from './TileNotification'
-import TileRejected from './TileRejected'
 
 interface Props {
   currencyPair: CurrencyPair

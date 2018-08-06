@@ -1,7 +1,7 @@
 import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { TradeErrorResponse, TradeSuccessResponse } from 'rt-types'
 import { SpotTileActions, TILE_ACTION_TYPES } from './actions'
-import { buildNotification } from './components/tradeNotification/notificationUtils'
+import { buildNotification } from './components/notifications'
 import { SpotTileData } from './model/spotTileData'
 
 interface SpotTileState {

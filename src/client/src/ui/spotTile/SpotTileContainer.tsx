@@ -5,7 +5,7 @@ import { Environment, withEnvironment } from 'rt-components'
 import { Direction, ExecuteTradeRequest } from 'rt-types'
 import { GlobalState } from '../../combineReducers'
 import { SpotTileActions } from './actions'
-import TileSwitch from './components/TileSwitch'
+import { TileSwitch } from './components'
 import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './model/spotTileUtils'
 
 interface SpotTileContainerOwnProps {
@@ -41,7 +41,7 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
   }
 
   private executeTrade = (direction: Direction) => {
-    const { executionConnected, spotTilesData, currencyPair, notionals, executeTrade } = this.props
+    const { executionConnected, spotTilesData, currencyPair, executeTrade } = this.props
     if (!executionConnected || spotTilesData.isTradeExecutionInFlight) {
       return
     }
@@ -50,7 +50,7 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
       direction,
       currencyBase: currencyPair.base,
       symbol: currencyPair.symbol,
-      notional: notionals[currencyPair.symbol] || DEFAULT_NOTIONAL,
+      notional: DEFAULT_NOTIONAL,
       rawSpotRate: rate
     }
     executeTrade(createTradeRequest(tradeRequestObj))
@@ -66,7 +66,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
 })
 
 const makeMapStateToProps = () => (state: GlobalState, props: SpotTileContainerOwnProps) => {
-  const { compositeStatusService, notionals } = state
+  const { compositeStatusService } = state
   const executionConnected =
     compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected
   const pricingConnected =
@@ -75,8 +75,7 @@ const makeMapStateToProps = () => (state: GlobalState, props: SpotTileContainerO
     executionConnected,
     pricingConnected,
     currencyPair: state.currencyPairs[props.id],
-    spotTilesData: state.spotTilesData[props.id],
-    notionals
+    spotTilesData: state.spotTilesData[props.id]
   }
 }
 
