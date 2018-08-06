@@ -15,11 +15,14 @@ export const TileNotificationStyle = styled(TileBaseStyle)<ColorProps>`
 
 const TradeSymbol = styled('div')`
   align-self: flex-start;
+
+  i {
+    margin-right: 5px;
+  }
 `
 
 const CheckIcon = styled(Icon)<ColorProps>`
   background-color: ${({ theme: { palette }, bg }) => palette[bg].normal};
-  margin-right: 5px;
   border-radius: 50%;
   padding: 5px;
 `

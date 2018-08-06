@@ -40,7 +40,7 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
     )
   }
 
-  private executeTrade = (direction: Direction) => {
+  private executeTrade = (direction: Direction, notional: number) => {
     const { executionConnected, spotTilesData, currencyPair, executeTrade } = this.props
     if (!executionConnected || spotTilesData.isTradeExecutionInFlight) {
       return
@@ -50,7 +50,7 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
       direction,
       currencyBase: currencyPair.base,
       symbol: currencyPair.symbol,
-      notional: DEFAULT_NOTIONAL,
+      notional: notional || DEFAULT_NOTIONAL,
       rawSpotRate: rate
     }
     executeTrade(createTradeRequest(tradeRequestObj))

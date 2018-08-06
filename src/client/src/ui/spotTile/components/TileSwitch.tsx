@@ -9,7 +9,7 @@ interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
   tornOff: boolean
-  executeTrade: (direction: Direction) => void
+  executeTrade: (direction: Direction, notional: number) => void
   onPopoutClick?: () => void
   onNotificationDismissedClick: () => void
 }

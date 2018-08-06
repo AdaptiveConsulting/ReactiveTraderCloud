@@ -1,3 +1,4 @@
+import numeral from 'numeral'
 import React, { Component } from 'react'
 import { Flex } from 'rt-components'
 import { CurrencyPair, Direction } from 'rt-types'
@@ -23,14 +24,29 @@ const SpotTileWrapper = styled('div')`
 export interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
-  executeTrade: (direction: Direction) => void
+  executeTrade: (direction: Direction, notional: number) => void
 }
 
-export default class SpotTile extends Component<Props> {
+interface State {
+  notional: string
+}
+
+export default class SpotTile extends Component<Props, State> {
+  state = {
+    notional: '1000000'
+  }
+
+  updateNotional = (notional: string) => this.setState({ notional })
+
+  executeTrade = (direction: Direction) => this.props.executeTrade(direction, numeral(this.state.notional).value())
+
   render() {
-    const { currencyPair, spotTileData, executeTrade, children } = this.props
+    const { currencyPair, spotTileData, children } = this.props
+    const { notional } = this.state
+
     const priceData = spotTileData.price
     const spotDate = spotDateFormatter(priceData.valueDate, false).toUpperCase()
+
     return (
       <SpotTileWrapper className="_spot-tile">
         {children}
@@ -40,8 +56,12 @@ export default class SpotTile extends Component<Props> {
               <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
               <DeliveryDate className="delivery-date">{`SPT (${spotDate})`} </DeliveryDate>
             </Flex>
-            <PriceControls executeTrade={executeTrade} priceData={priceData} currencyPair={currencyPair} />
-            <NotionalInput currencyPairSymbol={currencyPair.base} />
+            <PriceControls executeTrade={this.executeTrade} priceData={priceData} currencyPair={currencyPair} />
+            <NotionalInput
+              notional={notional}
+              currencyPairSymbol={currencyPair.base}
+              updateNotional={this.updateNotional}
+            />
           </Flex>
         </SpotTileStyle>
       </SpotTileWrapper>

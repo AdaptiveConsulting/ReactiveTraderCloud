@@ -42,22 +42,15 @@ export const Input = styled('input')`
 
 interface Props {
   currencyPairSymbol: string
-}
-
-interface State {
   notional: string
+  updateNotional: (notional: string) => void
 }
 
-export default class NotionalInput extends Component<Props, State> {
+export default class NotionalInput extends Component<Props> {
   private inputRef = React.createRef<HTMLInputElement>()
 
-  state = {
-    notional: '1000000'
-  }
-
   render() {
-    const { currencyPairSymbol } = this.props
-    const { notional } = this.state
+    const { currencyPairSymbol, notional } = this.props
     const formattedSize = numeral(notional).format(NUMERAL_FORMAT)
     return (
       <Flex alignItems="center" justifyContent="center">
@@ -93,15 +86,14 @@ export default class NotionalInput extends Component<Props, State> {
   }
 
   processNotional = (inputValue: string) => {
+    const { updateNotional } = this.props
     const inputValueTrimmed = inputValue.trim()
     let notional: string | number = convertNotionalShorthandToNumericValue(inputValueTrimmed)
     if (notional >= MAX_NOTIONAL_VALUE) {
       notional = 0
     }
     if (!isNaN(notional)) {
-      this.setState({
-        notional: notional.toString()
-      })
+      updateNotional(notional.toString())
       // user may be trying to enter decimals. restore BACK into input
 
       if (inputValueTrimmed.indexOf(DOT) === inputValueTrimmed.length - 1) {
@@ -109,9 +101,7 @@ export default class NotionalInput extends Component<Props, State> {
       }
       // propagate change back to dom node's value
       const newNotional = numeral(notional).format(NUMERAL_FORMAT)
-      this.setState({
-        notional: newNotional
-      })
+      updateNotional(newNotional)
       this.inputRef.current.value = newNotional
     }
   }

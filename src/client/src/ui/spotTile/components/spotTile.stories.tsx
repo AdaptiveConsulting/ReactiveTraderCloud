@@ -40,7 +40,7 @@ stories.add('Price movement', () => {
 stories.add('Notional input', () => (
   <Story>
     <div style={{ padding: '24px' }}>
-      <NotionalInput currencyPairSymbol="USD" />
+      <NotionalInput notional="1,000,000" currencyPairSymbol="USD" updateNotional={action('Update notional')} />
     </div>
   </Story>
 ))
