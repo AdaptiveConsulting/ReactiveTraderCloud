@@ -37,21 +37,28 @@ export const Button = styled('button')`
   border: none;
 `
 
-export const CircleButton = styled(Button)`
+export const Circle = styled('div')`
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const CircleButton = styled(Button)`
+  cursor: pointer;
+  background: none;
 `
 
 interface IconButtonProps {
-  icon: string
+  children: JSX.Element
   handleClick?: () => void
 }
 
-export const IconButton = ({ icon, handleClick }: IconButtonProps) => (
-  <CircleButton>
-    <Icon className={icon} aria-hidden="true" color="textMeta" onClick={handleClick} />
-  </CircleButton>
+export const IconButton = ({ children, handleClick }: IconButtonProps) => (
+  <Circle>
+    <CircleButton onClick={handleClick}>{children}</CircleButton>
+  </Circle>
 )

@@ -1,4 +1,5 @@
 import React from 'react'
+import { PopoutIcon } from 'rt-components'
 import { styled } from 'rt-util'
 import { Environment } from '../../../system'
 import { IconButton } from './Styled'
@@ -12,7 +13,9 @@ const TileControlsStyle = styled('div')`
   opacity: 0;
   transition: opacity 0.2s;
 
-  i {
+  .svg-icon {
+    stroke: ${({ theme: { text } }) => text.textMeta};
+    fill: ${({ theme: { text } }) => text.textMeta};
     cursor: pointer;
   }
 
@@ -43,11 +46,15 @@ const TileControls = ({ tornOff, onPopoutClick }: Props) => (
     {!Environment.isRunningInIE() &&
       !tornOff && (
         <TopRightButton>
-          <IconButton icon="fas fa-external-link-square-alt" handleClick={onPopoutClick} />
+          <IconButton handleClick={onPopoutClick}>
+            <PopoutIcon />
+          </IconButton>
         </TopRightButton>
       )}
     <BottomRightButton>
-      <IconButton icon="fas fa-expand" />
+      <IconButton>
+        <PopoutIcon />
+      </IconButton>
     </BottomRightButton>
   </TileControlsStyle>
 )

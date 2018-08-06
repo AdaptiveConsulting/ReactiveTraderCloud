@@ -5,6 +5,7 @@ import { boolean, select, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 
 import { action } from '@storybook/addon-actions'
+import { PopoutIcon } from 'rt-components'
 import { Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
 import { Direction, Notification, NotificationType, PriceMovementTypes } from 'rt-types'
@@ -228,11 +229,13 @@ stories.add('Popout button', () => (
   <Story>
     <div
       style={{
-        width: '320px',
-        height: '150px'
+        width: '50px',
+        height: '50px'
       }}
     >
-      <IconButton icon="fas fa-external-link-square-alt" />
+      <IconButton>
+        <PopoutIcon />
+      </IconButton>
     </div>
   </Story>
 ))
