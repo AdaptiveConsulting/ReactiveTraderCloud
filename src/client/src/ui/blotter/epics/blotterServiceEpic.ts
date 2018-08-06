@@ -4,7 +4,7 @@ import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 import { CurrencyPair, CurrencyPairMap, Trade, Trades, TradeStatus } from 'rt-types'
 import { interval } from 'rxjs'
-import { filter, ignoreElements, map, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { applicationConnected, applicationDisconnected } from '../../connectionStatus'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
@@ -52,6 +52,7 @@ const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { openF
   action$.pipe(
     ofType<Action, NewTradesAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
     map(action => action.payload.trades[0]),
+    skipWhile(trade => !state$.value.currencyPairs[trade.symbol]),
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
     map(trade => formatTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),
     tap(tradeNotification => openFin.openTradeNotification(tradeNotification)),
