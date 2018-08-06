@@ -1,4 +1,3 @@
-import React from 'react'
 import { styled } from 'rt-util'
 
 export interface ColorProps {
@@ -47,19 +46,3 @@ export const Circle = styled('div')`
   align-items: center;
   justify-content: center;
 `
-
-const CircleButton = styled(Button)`
-  cursor: pointer;
-  background: none;
-`
-
-interface IconButtonProps {
-  children: JSX.Element
-  handleClick?: () => void
-}
-
-export const IconButton = ({ children, handleClick }: IconButtonProps) => (
-  <Circle>
-    <CircleButton onClick={handleClick}>{children}</CircleButton>
-  </Circle>
-)

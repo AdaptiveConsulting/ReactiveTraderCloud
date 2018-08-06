@@ -5,7 +5,6 @@ import { boolean, select, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 
 import { action } from '@storybook/addon-actions'
-import { PopoutIcon } from 'rt-components'
 import { Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
 import { Direction, Notification, NotificationType, PriceMovementTypes } from 'rt-types'
@@ -14,7 +13,7 @@ import NotionalInput from './notional'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
 import SpotTile from './SpotTile'
-import { DeliveryDate, IconButton, TileSymbol } from './Styled'
+import { DeliveryDate, TileSymbol } from './Styled'
 import TileSwitch from './TileSwitch'
 
 const stories = storiesOf('Spot Tile', module).addDecorator(centered)
@@ -221,21 +220,6 @@ stories.add('Error', () => (
           'Disconnected'
         )}
       </TileNotification>
-    </div>
-  </Story>
-))
-
-stories.add('Popout button', () => (
-  <Story>
-    <div
-      style={{
-        width: '50px',
-        height: '50px'
-      }}
-    >
-      <IconButton>
-        <PopoutIcon />
-      </IconButton>
     </div>
   </Story>
 ))

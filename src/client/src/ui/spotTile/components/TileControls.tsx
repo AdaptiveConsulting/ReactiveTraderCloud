@@ -1,8 +1,8 @@
 import React from 'react'
-import { PopoutIcon } from 'rt-components'
+import { ExpandIcon, PopoutIcon } from 'rt-components'
 import { styled } from 'rt-util'
 import { Environment } from '../../../system'
-import { IconButton } from './Styled'
+import { Circle } from './Styled'
 
 const TileControlsStyle = styled('div')`
   position: absolute;
@@ -13,10 +13,13 @@ const TileControlsStyle = styled('div')`
   opacity: 0;
   transition: opacity 0.2s;
 
+  svg {
+    cursor: pointer;
+  }
+
   .svg-icon {
     stroke: ${({ theme: { text } }) => text.textMeta};
     fill: ${({ theme: { text } }) => text.textMeta};
-    cursor: pointer;
   }
 
   ._spot-tile:hover & {
@@ -24,13 +27,13 @@ const TileControlsStyle = styled('div')`
   }
 `
 
-const TopRightButton = styled('div')`
+const TopRightButton = styled(Circle)`
   position: absolute;
   right: -17px;
   top: -17px;
 `
 
-const BottomRightButton = styled('div')`
+const BottomRightButton = styled(Circle)`
   position: absolute;
   right: -17px;
   bottom: -17px;
@@ -45,16 +48,12 @@ const TileControls = ({ tornOff, onPopoutClick }: Props) => (
   <TileControlsStyle>
     {!Environment.isRunningInIE() &&
       !tornOff && (
-        <TopRightButton>
-          <IconButton handleClick={onPopoutClick}>
-            <PopoutIcon />
-          </IconButton>
+        <TopRightButton onClick={onPopoutClick}>
+          <PopoutIcon />
         </TopRightButton>
       )}
     <BottomRightButton>
-      <IconButton>
-        <PopoutIcon />
-      </IconButton>
+      <ExpandIcon />
     </BottomRightButton>
   </TileControlsStyle>
 )
