@@ -11,9 +11,6 @@ import { DeliveryDate, TileBaseStyle, TileSymbol } from './Styled'
 
 const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
-  position: absolute;
-  height: 100%;
-  width: 100%;
 `
 
 const SpotTileWrapper = styled('div')`

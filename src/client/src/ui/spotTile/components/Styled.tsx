@@ -21,6 +21,7 @@ export const TileSymbol = styled('div')`
 `
 
 export const TileBaseStyle = styled('div')`
+  position: absolute;
   height: 100%;
   width: 100%;
   border-radius: 3px;
