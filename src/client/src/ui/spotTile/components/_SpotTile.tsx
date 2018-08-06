@@ -10,10 +10,12 @@ import { DeliveryDate, TileBaseStyle, TileSymbol } from './Styled'
 
 const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+  position: absolute;
 `
 
 const SpotTileWrapper = styled('div')`
   position: relative;
+  min-height: 150px;
 `
 
 export interface Props {
