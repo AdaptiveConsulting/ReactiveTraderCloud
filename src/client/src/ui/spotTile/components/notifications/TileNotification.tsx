@@ -39,6 +39,10 @@ const PillButton = styled(Button)<ColorProps>`
   cursor: pointer;
 `
 
+const Content = styled('div')`
+  max-width: 260px;
+`
+
 interface Props {
   colors: ColorProps
   icon: string
@@ -57,7 +61,7 @@ const TileNotification = ({ colors, icon, symbols, tradeId, handleClick, childre
         <HeavyFont>{symbols}</HeavyFont>
       </TradeSymbol>
       {tradeId && <HeavyFont>Trade ID: {tradeId}</HeavyFont>}
-      <div>{children}</div>
+      <Content>{children}</Content>
       {(handleClick && (
         <PillButton {...colors} onClick={handleClick}>
           Close

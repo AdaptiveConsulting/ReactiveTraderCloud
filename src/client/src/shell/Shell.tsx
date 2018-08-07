@@ -24,6 +24,11 @@ const BlotterWrapper = styled('div')`
   height: 100%;
   background-color: ${({ theme: { background } }) => background.backgroundPrimary};
   padding: 0px 8px 0px 16px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
 `
 
 const Shell: React.SFC<ShellProps & { environment: Environment }> = ({
