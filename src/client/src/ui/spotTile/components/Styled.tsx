@@ -24,7 +24,7 @@ export const TileBaseStyle = styled('div')`
   height: 100%;
   width: 100%;
   border-radius: 3px;
-  padding: 18px;
+  padding: 20px;
   box-sizing: border-box;
 `
 

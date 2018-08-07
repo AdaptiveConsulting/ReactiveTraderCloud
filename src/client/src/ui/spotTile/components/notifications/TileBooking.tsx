@@ -1,4 +1,5 @@
 import React from 'react'
+import { Flex, LogoIcon } from 'rt-components'
 import { styled } from 'rt-util'
 
 const TileBookingStyle = styled('div')`
@@ -11,19 +12,32 @@ const TileBookingStyle = styled('div')`
   z-index: 2;
 `
 
-const BookingPill = styled('div')`
+const BookingPill = styled(Flex)`
   background-color: ${({ theme: { palette } }) => palette.accentPrimary.normal};
-  color: ${({ theme: { text } }) => text.white};
   padding: 10px 16px;
   border-radius: 17px;
-  font-size: 13px;
+
   box-shadow: 0 0 30px ${({ theme: { palette } }) => palette.accentPrimary.normal},
     0 0 10px ${({ theme: { palette } }) => palette.accentPrimary.dark};
+
+  .svg-icon {
+    padding-right: 10px;
+    fill: ${({ theme: { text } }) => text.white};
+  }
+`
+
+const BookingStatus = styled('span')`
+  margin-left: 6px;
+  color: ${({ theme: { text } }) => text.white};
+  font-size: 13px;
 `
 
 const TileBooking = () => (
   <TileBookingStyle>
-    <BookingPill>[LOGO] Executing</BookingPill>
+    <BookingPill>
+      <LogoIcon />
+      <BookingStatus>Executing</BookingStatus>
+    </BookingPill>
   </TileBookingStyle>
 )
 
