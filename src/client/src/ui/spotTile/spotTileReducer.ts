@@ -16,10 +16,13 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   hasError: false
 }
 
-const spotTileReducer = (state: SpotTileData, action: SpotTileActions): SpotTileData => {
+const spotTileReducer = (
+  state: SpotTileData = { ...INITIAL_SPOT_TILE_STATE },
+  action: SpotTileActions
+): SpotTileData => {
   switch (action.type) {
     case TILE_ACTION_TYPES.SHOW_SPOT_TILE:
-      return { ...INITIAL_SPOT_TILE_STATE }
+      return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
       return { ...state, price: action.payload }
     case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
