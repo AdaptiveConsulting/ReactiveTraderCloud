@@ -147,7 +147,7 @@ stories.add('Booking', () => (
         height: '150px'
       }}
     >
-      <TileBooking />
+      <TileBooking show={true} />
       <SpotTile
         currencyPair={currencyPair}
         spotTileData={{ ...spotTileData, isTradeExecutionInFlight: true }}

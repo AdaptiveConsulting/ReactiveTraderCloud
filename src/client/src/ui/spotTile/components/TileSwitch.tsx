@@ -27,7 +27,7 @@ export default class TileSwitch extends Component<Props> {
     return (
       <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade}>
         <TileControls tornOff={tornOff} onPopoutClick={onPopoutClick} />
-        {isTradeExecutionInFlight && <TileBooking />}
+        <TileBooking show={isTradeExecutionInFlight} />
 
         {notification && this.renderNotifications()}
       </SpotTile>
