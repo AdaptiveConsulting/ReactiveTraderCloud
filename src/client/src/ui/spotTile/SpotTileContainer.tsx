@@ -26,6 +26,7 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
   componentDidMount() {
     this.props.onMount()
   }
+
   render() {
     const { id, currencyPair, spotTileData, onPopoutClick, onNotificationDismissedClick, tornOff } = this.props
     return (
