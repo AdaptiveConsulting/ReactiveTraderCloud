@@ -34,7 +34,7 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
         currencyPair={currencyPair}
         spotTileData={spotTileData}
         onPopoutClick={onPopoutClick}
-        onNotificationDismissedClick={onNotificationDismissedClick(id)}
+        onNotificationDismissedClick={onNotificationDismissedClick}
         executeTrade={this.executeTrade}
         tornOff={tornOff}
       />
@@ -61,21 +61,16 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
   onMount: () => dispatch(SpotTileActions.showSpotTile(ownProps.id)),
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
-  undockTile: (tileName: string) => () => dispatch(SpotTileActions.undockTile(tileName)),
-  displayCurrencyChart: (symbol: string) => () => dispatch(SpotTileActions.displayCurrencyChart(symbol)),
-  onNotificationDismissedClick: (symbol: string) => () => dispatch(SpotTileActions.dismissNotification(symbol))
+  displayCurrencyChart: () => dispatch(SpotTileActions.displayCurrencyChart(ownProps.id)),
+  onNotificationDismissedClick: () => dispatch(SpotTileActions.dismissNotification(ownProps.id))
 })
 
-const makeMapStateToProps = () => (state: GlobalState, props: SpotTileContainerOwnProps) => {
-  const executionConnected = selectExecutionStatus(state)
-  const pricingConnected = selectPricingStatus(state)
-  return {
-    executionConnected,
-    pricingConnected,
-    currencyPair: selectCurrencyPair(state, props),
-    spotTileData: selectSpotTileData(state, props)
-  }
-}
+const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
+  executionConnected: selectExecutionStatus(state),
+  pricingConnected: selectPricingStatus(state),
+  currencyPair: selectCurrencyPair(state, ownProps),
+  spotTileData: selectSpotTileData(state, ownProps)
+})
 
 const ConnectedSpotTileContainer = connect(
   makeMapStateToProps,
