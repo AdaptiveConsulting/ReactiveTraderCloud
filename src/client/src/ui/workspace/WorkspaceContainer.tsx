@@ -8,7 +8,6 @@ import { selectSpotTiles } from './selectors'
 
 const Workspace = styled('div')`
   background-color: ${({ theme: { background } }) => background.backgroundPrimary};
-  color: ${({ theme: { text } }) => text.textPrimary};
   padding: 0px 8px 0px 16px;
   flex-grow: 1;
   overflow-y: auto;
@@ -18,6 +17,8 @@ const Workspace = styled('div')`
 
 const WorkspaceHeader = styled(Flex)`
   padding: 20px 14px 20px 20px;
+  color: ${({ theme: { text } }) => text.textPrimary};
+  font-size: 15px;
 `
 
 const WorkspaceItems = styled('div')`
