@@ -45,8 +45,8 @@ export default class SpotTile extends Component<Props, State> {
     const { currencyPair, spotTileData, children } = this.props
     const { notional } = this.state
 
-    const priceData = spotTileData.price
-    const spotDate = spotDateFormatter(priceData.valueDate, false).toUpperCase()
+    const priceData = spotTileData && spotTileData.price
+    const spotDate = priceData && spotDateFormatter(priceData.valueDate, false).toUpperCase()
 
     return (
       <SpotTileWrapper className="_spot-tile">
@@ -55,7 +55,7 @@ export default class SpotTile extends Component<Props, State> {
           <Flex direction="column" justifyContent="space-between" height="100%">
             <Flex alignItems="center" justifyContent="space-between">
               <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
-              <DeliveryDate className="delivery-date">{`SPT (${spotDate})`} </DeliveryDate>
+              <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
             </Flex>
             <PriceControls executeTrade={this.executeTrade} priceData={priceData} currencyPair={currencyPair} />
             <NotionalInput
