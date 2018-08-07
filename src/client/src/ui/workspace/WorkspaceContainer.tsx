@@ -1,70 +1,65 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { TearOff } from 'rt-components'
+import { Flex, TearOff } from 'rt-components'
+import { styled } from 'rt-util'
 import { GlobalState } from '../../combineReducers'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
+import { selectSpotTiles } from './selectors'
+
+const Workspace = styled('div')`
+  background-color: ${({ theme: { background } }) => background.backgroundPrimary};
+  color: ${({ theme: { text } }) => text.textPrimary};
+  padding: 0px 8px 0px 16px;
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  order: 1;
+`
+
+const WorkspaceHeader = styled(Flex)`
+  padding: 20px 14px 20px 20px;
+`
+
+const WorkspaceItems = styled('div')`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+`
+
+const WorkspaceItem = styled('div')`
+  flex-grow: 1;
+  flex-basis: 320px;
+  margin: 2px;
+`
 
 type WorkspaceContainerStateProps = ReturnType<typeof mapStateToProps>
 type WorkspaceContainerProps = WorkspaceContainerStateProps
 
-interface WorkspaceContainerState {
-  [key: string]: boolean
-}
+const WorkspaceContainer = ({ spotTiles = [] }: WorkspaceContainerProps) => (
+  <Workspace>
+    <WorkspaceHeader justifyContent="space-between">
+      <div>Live Rates</div>
+      <div>Switch</div>
+    </WorkspaceHeader>
 
-export class WorkspaceContainer extends React.PureComponent<WorkspaceContainerProps, WorkspaceContainerState> {
-  makePortalProps = key => ({
-    title: `${key} Spot`,
-    config: {
-      name: `${key} Spot`,
-      width: 370,
-      height: 155,
-      url: 'about:`${key} Spot`'
-    },
-    browserConfig: { center: 'screen' as 'screen' }
-  })
-
-  render() {
-    return (
-      <div className="shell__workspace">
-        <div className="workspace-region">{this.renderItems()}</div>
-      </div>
-    )
-  }
-
-  renderLoading() {
-    return (
-      <div className="workspace-region__icon--loading">
-        <i className="fa fa-5x fa-cog fa-spin" />
-      </div>
-    )
-  }
-
-  renderItems() {
-    const { spotTileKeys } = this.props
-
-    const pairs = Object.keys(spotTileKeys)
-
-    if (!spotTileKeys || pairs.length === 0) {
-      return this.renderLoading()
-    }
-
-    return pairs.map(key => (
-      <TearOff
-        id={key}
-        portalProps={this.makePortalProps(key)}
-        render={(popOut, tornOff) => (
-          <div className="workspace-region__item">
-            <ConnectedSpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} />
-          </div>
-        )}
-        key={key}
-      />
-    ))
-  }
-}
+    <WorkspaceItems>
+      {spotTiles.map(({ key, portalProps }) => (
+        <TearOff
+          id={key}
+          portalProps={portalProps}
+          render={(popOut, tornOff) => (
+            <WorkspaceItem>
+              <ConnectedSpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} />
+            </WorkspaceItem>
+          )}
+          key={key}
+        />
+      ))}
+    </WorkspaceItems>
+  </Workspace>
+)
 
 const mapStateToProps = (state: GlobalState) => ({
-  spotTileKeys: state.currencyPairs
+  spotTiles: selectSpotTiles(state)
 })
 
 export default connect(mapStateToProps)(WorkspaceContainer)
