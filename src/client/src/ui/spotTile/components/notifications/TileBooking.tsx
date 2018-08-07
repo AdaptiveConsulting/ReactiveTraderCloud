@@ -14,7 +14,7 @@ const TileBookingStyle = styled('div')`
 
 const BookingPill = styled(Flex)`
   background-color: ${({ theme: { palette } }) => palette.accentPrimary.normal};
-  padding: 10px 16px;
+  padding: 10px 14px;
   border-radius: 17px;
 
   box-shadow: 0 0 30px ${({ theme: { palette } }) => palette.accentPrimary.normal},
@@ -29,7 +29,7 @@ const BookingPill = styled(Flex)`
 const BookingStatus = styled('span')`
   margin-left: 6px;
   color: ${({ theme: { text } }) => text.white};
-  font-size: 13px;
+  font-size: 12px;
 `
 
 const TileBooking = () => (

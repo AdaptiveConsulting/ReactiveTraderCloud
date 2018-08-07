@@ -2,8 +2,8 @@ import React from 'react'
 
 const LogoIcon = () => (
   <svg
-    width="14px"
-    height="16px"
+    width="12px"
+    height="14px"
     viewBox="0 0 21 23"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +12,7 @@ const LogoIcon = () => (
     <title>logo-bars-only</title>
     <desc>Created with Sketch.</desc>
     <defs />
-    <g className="svg-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g className="svg-icon" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g transform="translate(-30.000000, -15.000000)">
         <g transform="translate(30.000000, 15.000000)">
           <g>
