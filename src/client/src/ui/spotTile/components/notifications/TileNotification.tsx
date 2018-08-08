@@ -4,8 +4,8 @@ import { styled } from 'rt-util'
 import { Button, ColorProps, Icon, TileBaseStyle } from '../Styled'
 
 export const TileNotificationStyle = styled(TileBaseStyle)<ColorProps>`
-  color: ${({ theme: { text }, color }) => text[color]};
-  background-color: ${({ theme: { palette }, bg }) => palette[bg].dark};
+  color: ${({ theme: { text } }) => text.white};
+  background-color: ${({ theme: { palette }, backgroundColor }) => palette[backgroundColor].dark};
   font-size: 13px;
   text-align: center;
   line-height: 1.5;
@@ -21,7 +21,7 @@ const TradeSymbol = styled('div')`
 `
 
 const CheckIcon = styled(Icon)<ColorProps>`
-  background-color: ${({ theme: { palette }, bg }) => palette[bg].normal};
+  background-color: ${({ theme: { palette }, backgroundColor }) => palette[backgroundColor].normal};
   border-radius: 50%;
   padding: 5px;
 `
@@ -31,8 +31,8 @@ const HeavyFont = styled('span')`
 `
 
 const PillButton = styled(Button)<ColorProps>`
-  color: ${({ theme: { text }, color }) => text[color]};
-  background-color: ${({ theme: { palette }, bg }) => palette[bg].normal};
+  color: ${({ theme: { text } }) => text.white};
+  background-color: ${({ theme: { palette }, backgroundColor }) => palette[backgroundColor].normal};
   border-radius: 17px;
   padding: 8px 10px;
   font-weight: 900;
@@ -44,31 +44,38 @@ const Content = styled('div')`
 `
 
 interface Props {
-  colors: ColorProps
-  icon: string
+  style: React.CSSProperties
+  isWarning: boolean
   symbols: string
   children: React.ReactNode
   tradeId?: number
   handleClick?: () => void
 }
 
-const TileNotification = ({ colors, icon, symbols, tradeId, handleClick, children }: Props) => (
-  <TileNotificationStyle {...colors}>
-    <Flex direction="column" alignItems="center" justifyContent="space-between" height="100%">
-      <TradeSymbol>
-        {icon === 'check' && <CheckIcon {...colors} className="fas fa-check" aria-hidden="true" />}
-        {icon === 'warning' && <Icon {...colors} className="fas fa-lg fa-exclamation-triangle" aria-hidden="true" />}
-        <HeavyFont>{symbols}</HeavyFont>
-      </TradeSymbol>
-      {tradeId && <HeavyFont>Trade ID: {tradeId}</HeavyFont>}
-      <Content>{children}</Content>
-      {(handleClick && (
-        <PillButton {...colors} onClick={handleClick}>
-          Close
-        </PillButton>
-      )) || <div />}
-    </Flex>
-  </TileNotificationStyle>
-)
+const TileNotification = ({ style, isWarning, symbols, tradeId, handleClick, children }: Props) => {
+  const backgroundColor = isWarning ? 'accentBad' : 'accentGood'
+
+  return (
+    <TileNotificationStyle backgroundColor={backgroundColor} style={style}>
+      <Flex direction="column" alignItems="center" justifyContent="space-between" height="100%">
+        <TradeSymbol>
+          {isWarning ? (
+            <CheckIcon backgroundColor={backgroundColor} className="fas fa-check" aria-hidden="true" />
+          ) : (
+            <Icon backgroundColor={backgroundColor} className="fas fa-lg fa-exclamation-triangle" aria-hidden="true" />
+          )}
+          <HeavyFont>{symbols}</HeavyFont>
+        </TradeSymbol>
+        {tradeId && <HeavyFont>Trade ID: {tradeId}</HeavyFont>}
+        <Content>{children}</Content>
+        {(handleClick && (
+          <PillButton backgroundColor={backgroundColor} onClick={handleClick}>
+            Close
+          </PillButton>
+        )) || <div />}
+      </Flex>
+    </TileNotificationStyle>
+  )
+}
 
 export default TileNotification

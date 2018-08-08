@@ -1,17 +1,9 @@
 import React, { Component } from 'react'
 import { Transition } from 'react-spring'
 import { CurrencyPair, TradeStatus } from 'rt-types'
-import { styled } from 'rt-util'
 import { LastTradeExecutionStatus } from '../../model/spotTileData'
 import TileExecuted from './TileExecuted'
 import TileNotification from './TileNotification'
-
-const NotificationWrapper = styled('div')`
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  z-index: 2;
-`
 
 interface Props {
   isPriceStale: boolean
@@ -38,17 +30,12 @@ export default class NotificationContainer extends Component<Props> {
 
   private renderNotifications = () => {
     const { lastTradeExecutionStatus, currencyPair, onNotificationDismissedClick, isPriceStale } = this.props
+    const symbols = `${currencyPair.base}/${currencyPair.terms}`
     if (isPriceStale) {
       return style => (
-        <NotificationWrapper style={style}>
-          <TileNotification
-            symbols={`${currencyPair.base}/${currencyPair.terms}`}
-            icon="warning"
-            colors={{ bg: 'accentBad', color: 'white' }}
-          >
-            Pricing is unavailable
-          </TileNotification>
-        </NotificationWrapper>
+        <TileNotification style={style} symbols={symbols} isWarning={true}>
+          Pricing is unavailable
+        </TileNotification>
       )
     }
     if (!hasNotification(lastTradeExecutionStatus)) {
@@ -56,15 +43,9 @@ export default class NotificationContainer extends Component<Props> {
     }
     if (lastTradeExecutionStatus.hasError) {
       return style => (
-        <NotificationWrapper style={style}>
-          <TileNotification
-            symbols={`${currencyPair.base}/${currencyPair.terms}`}
-            icon="warning"
-            colors={{ bg: 'accentBad', color: 'white' }}
-          >
-            {lastTradeExecutionStatus.error}
-          </TileNotification>
-        </NotificationWrapper>
+        <TileNotification style={style} symbols={symbols} isWarning={true}>
+          {lastTradeExecutionStatus.error}
+        </TileNotification>
       )
     }
 
@@ -75,39 +56,35 @@ export default class NotificationContainer extends Component<Props> {
         const { direction, notional, spotRate, tradeDate } = lastTradeExecutionStatus.trade
 
         return style => (
-          <NotificationWrapper style={style}>
-            <TileNotification
-              colors={{ bg: 'accentGood', color: 'white' }}
-              icon="check"
-              symbols={`${dealtCurrency}/${terms}`}
-              tradeId={tradeId}
-              handleClick={onNotificationDismissedClick}
-            >
-              <TileExecuted
-                direction={direction}
-                dealtCurrency={dealtCurrency}
-                counterCurrency={terms}
-                notional={notional}
-                rate={spotRate}
-                date={tradeDate}
-              />
-            </TileNotification>
-          </NotificationWrapper>
+          <TileNotification
+            style={style}
+            isWarning={false}
+            symbols={symbols}
+            tradeId={tradeId}
+            handleClick={onNotificationDismissedClick}
+          >
+            <TileExecuted
+              direction={direction}
+              dealtCurrency={dealtCurrency}
+              counterCurrency={terms}
+              notional={notional}
+              rate={spotRate}
+              date={tradeDate}
+            />
+          </TileNotification>
         )
       }
       if (lastTradeExecutionStatus.trade.status === TradeStatus.Rejected) {
         return style => (
-          <NotificationWrapper style={style}>
-            <TileNotification
-              colors={{ bg: 'accentBad', color: 'white' }}
-              icon="warning"
-              symbols={`${dealtCurrency}/${terms}`}
-              tradeId={tradeId}
-              handleClick={onNotificationDismissedClick}
-            >
-              Your trade has been rejected
-            </TileNotification>
-          </NotificationWrapper>
+          <TileNotification
+            style={style}
+            isWarning={true}
+            symbols={symbols}
+            tradeId={tradeId}
+            handleClick={onNotificationDismissedClick}
+          >
+            Your trade has been rejected
+          </TileNotification>
         )
       }
     }

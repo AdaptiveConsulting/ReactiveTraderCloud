@@ -2,7 +2,7 @@ import { styled } from 'rt-util'
 
 export interface ColorProps {
   color?: string
-  bg?: string
+  backgroundColor?: string
 }
 
 export const DeliveryDate = styled('div')`
