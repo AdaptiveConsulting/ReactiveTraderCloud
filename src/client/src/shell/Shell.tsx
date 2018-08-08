@@ -59,7 +59,7 @@ class Shell extends React.Component<Props, State> {
 
         <FooterRoot>
           <FooterBody>
-            <StatusBar />
+            <StatusBar expand={loaded ? null : true} />
           </FooterBody>
         </FooterRoot>
 
@@ -81,7 +81,7 @@ class Shell extends React.Component<Props, State> {
 }
 
 const ShellRoot = styled('div')`
-  width: 100vw;
+  width: 100%;
   height: 100%;
   position: absolute;
   display: flex;
@@ -116,6 +116,7 @@ const FooterBody = styled('div')`
   top: 0;
   width: 100%;
   min-height: 3rem;
+  z-index: 40;
 `
 
 const SplashScreenContainer = styled('div')`
