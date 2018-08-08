@@ -17,11 +17,11 @@ export const TradeButton = styled('button')<{ direction: string }>`
   outline: none;
   padding: 10px 24px;
 
-  ._spot-tile:hover & {
+  .spot-tile:hover & {
     background-color: ${({ theme: { background } }) => background.backgroundPrimary};
   }
 
-  ._spot-tile:hover &:hover {
+  .spot-tile:hover &:hover {
     background-color: ${({ direction }) => hoverColors[direction]};
   }
 `

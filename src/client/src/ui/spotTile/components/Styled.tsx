@@ -9,7 +9,7 @@ export const DeliveryDate = styled('div')`
   color: ${({ theme: { text } }) => text.textMeta};
   font-size: 10px;
 
-  ._spot-tile:hover & {
+  .spot-tile:hover & {
     color: ${({ theme: { text } }) => text.textPrimary};
   }
 `

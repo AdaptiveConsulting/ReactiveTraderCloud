@@ -31,11 +31,11 @@ export const Input = styled('input')`
   width: 70px;
   transition: border-bottom 0.2s ease;
 
-  ._spot-tile:hover & {
+  .spot-tile:hover & {
     border-color: ${({ theme: { text } }) => text.textMeta};
   }
 
-  ._spot-tile:hover &:focus {
+  .spot-tile:hover &:focus {
     border-color: ${({ theme: { palette } }) => palette.accentPrimary.normal};
   }
 `

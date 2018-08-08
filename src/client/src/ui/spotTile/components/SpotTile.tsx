@@ -46,9 +46,9 @@ export default class SpotTile extends Component<Props, State> {
     const spotDate = priceData && spotDateFormatter(priceData.valueDate, false).toUpperCase()
 
     return (
-      <SpotTileWrapper className="_spot-tile">
+      <SpotTileWrapper>
         {children}
-        <SpotTileStyle>
+        <SpotTileStyle className="spot-tile">
           <Flex direction="column" justifyContent="space-between" height="100%">
             <Flex alignItems="center" justifyContent="space-between">
               <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>

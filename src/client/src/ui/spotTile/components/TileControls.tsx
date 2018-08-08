@@ -13,7 +13,7 @@ const TileControlsStyle = styled('div')`
   opacity: 0;
   transition: opacity 0.2s;
 
-  ._spot-tile:hover & {
+  .spot-tile:hover & {
     opacity: 1;
   }
 

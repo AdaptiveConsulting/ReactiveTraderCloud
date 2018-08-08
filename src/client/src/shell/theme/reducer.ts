@@ -6,7 +6,7 @@ type State = Readonly<{
 }>
 
 const initialState: State = {
-  type: Themes.DARK_THEME
+  type: Themes.LIGHT_THEME
 }
 
 const theme = (state = initialState, action: ThemeActions): State => {
