@@ -1,9 +1,18 @@
 import React, { Component } from 'react'
+import { animated, Transition } from 'react-spring'
 import { CurrencyPair, TradeStatus } from 'rt-types'
 import { LastTradeExecutionStatus } from '../../model/spotTileData'
 import TileExecuted from './TileExecuted'
 import TileNotification from './TileNotification'
-import TileRejected from './TileRejected'
+
+const defaultStyles: React.CSSProperties = {
+  position: 'absolute',
+  height: '100%',
+  width: '100%',
+  bottom: '0px',
+  zIndex: 2,
+  overflowY: 'hidden'
+}
 
 interface Props {
   lastTradeExecutionStatus: LastTradeExecutionStatus
@@ -11,14 +20,34 @@ interface Props {
   onNotificationDismissedClick: () => void
 }
 
+const hasNotification = (tradeStatus: LastTradeExecutionStatus) => {
+  if (tradeStatus && (tradeStatus.hasError || tradeStatus.trade)) {
+    return true
+  }
+  return false
+}
+
 export default class NotificationContainer extends Component<Props> {
   render() {
     const { lastTradeExecutionStatus } = this.props
-    return lastTradeExecutionStatus && this.renderNotifications()
+    return (
+      <Transition
+        from={{ maxHeight: 0 }}
+        enter={{ maxHeight: 'auto' }}
+        leave={{ maxHeight: 0 }}
+        config={{ duration: 1000 }}
+      >
+        {hasNotification(lastTradeExecutionStatus) &&
+          (styles => <animated.div style={{ ...defaultStyles, ...styles }}>{this.renderNotifications()}</animated.div>)}
+      </Transition>
+    )
   }
 
   private renderNotifications = () => {
     const { lastTradeExecutionStatus, currencyPair, onNotificationDismissedClick } = this.props
+    if (!hasNotification(lastTradeExecutionStatus)) {
+      return null
+    }
     if (lastTradeExecutionStatus.hasError) {
       return (
         <TileNotification
@@ -38,26 +67,35 @@ export default class NotificationContainer extends Component<Props> {
         const { direction, notional, spotRate, tradeDate } = lastTradeExecutionStatus.trade
 
         return (
-          <TileExecuted
-            onNotificationDismissedClick={onNotificationDismissedClick}
-            direction={direction}
-            dealtCurrency={dealtCurrency}
-            counterCurrency={terms}
-            notional={notional}
+          <TileNotification
+            colors={{ bg: 'accentGood', color: 'white' }}
+            icon="check"
+            symbols={`${dealtCurrency}/${terms}`}
             tradeId={tradeId}
-            rate={spotRate}
-            date={tradeDate}
-          />
+            handleClick={onNotificationDismissedClick}
+          >
+            <TileExecuted
+              direction={direction}
+              dealtCurrency={dealtCurrency}
+              counterCurrency={terms}
+              notional={notional}
+              rate={spotRate}
+              date={tradeDate}
+            />
+          </TileNotification>
         )
       }
       if (lastTradeExecutionStatus.trade.status === TradeStatus.Rejected) {
         return (
-          <TileRejected
-            onNotificationDismissedClick={onNotificationDismissedClick}
-            dealtCurrency={dealtCurrency}
-            counterCurrency={terms}
+          <TileNotification
+            colors={{ bg: 'accentBad', color: 'white' }}
+            icon="warning"
+            symbols={`${dealtCurrency}/${terms}`}
             tradeId={tradeId}
-          />
+            handleClick={onNotificationDismissedClick}
+          >
+            Your trade has been rejected
+          </TileNotification>
         )
       }
     }

@@ -3,7 +3,6 @@ import numeral from 'numeral'
 import React from 'react'
 import { Direction } from 'rt-types'
 import { styled } from 'rt-util'
-import TileNotification from './TileNotification'
 
 const HeavyFont = styled('span')`
   font-weight: 900;
@@ -24,11 +23,9 @@ interface Props {
   dealtCurrency: string
   counterCurrency: string
   notional: number
-  tradeId: number
   rate: number
   date: Date
   direction: Direction
-  onNotificationDismissedClick: () => void
 }
 
 const directionText = {
@@ -36,32 +33,16 @@ const directionText = {
   [Direction.Sell]: 'sold'
 }
 
-const TileExecuted = ({
-  onNotificationDismissedClick,
-  direction,
-  tradeId,
-  dealtCurrency,
-  rate,
-  notional,
-  counterCurrency,
-  date
-}: Props) => {
-  const symbols = `${dealtCurrency}/${counterCurrency}`
+const TileExecuted = ({ direction, dealtCurrency, rate, notional, counterCurrency, date }: Props) => {
   const dealtText = `${dealtCurrency} ${numeral(notional).format('0,000,000[.]00')}`
   const counterText = `${counterCurrency} ${numeral(notional * rate).format('0,000,000[.]00')}`
   const formattedDate = `(Spt) ${moment(date).format('D MMM')}`
   return (
-    <TileNotification
-      colors={{ bg: 'accentGood', color: 'white' }}
-      icon="check"
-      symbols={symbols}
-      tradeId={tradeId}
-      handleClick={onNotificationDismissedClick}
-    >
+    <React.Fragment>
       You {directionText[direction]} <InverseFont>{dealtText}</InverseFont> at a rate of{' '}
       <InverseFont>{rate}</InverseFont> for <HeavyItalicsFont>{counterText}</HeavyItalicsFont> settling{'  '}
       <HeavyFont>{formattedDate}.</HeavyFont>
-    </TileNotification>
+    </React.Fragment>
   )
 }
 
