@@ -25,10 +25,9 @@ class StatusBar extends Component {
 
     theme = {
       ...theme,
-      ...theme.statusBar,
       ...theme.statusBar[mode],
       serviceItem: {
-        connecting: theme.statusBar.connected,
+        connected: theme.statusBar.connected,
         disconnected: mode === 'connecting' ? theme.statusBar.connecting : theme.statusBar.disconnected
       }
     }
@@ -82,7 +81,7 @@ class StatusBar extends Component {
 }
 
 const Service = ({ service: { serviceType, isConnected, connectedInstanceCount }, index }) => (
-  <ThemeProvider theme={theme => theme.serviceItem[isConnected ? 'connecting' : 'disconnected']}>
+  <ThemeProvider theme={theme => theme.serviceItem[isConnected ? 'connected' : 'disconnected']}>
     <ServiceRoot index={index + 2}>
       <Icon name={isConnected == null ? 'ellipsis-h' : isConnected ? 'check' : 'times'} />
       <div>
