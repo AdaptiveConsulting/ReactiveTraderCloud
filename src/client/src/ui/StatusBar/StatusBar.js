@@ -3,11 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { ThemeProvider } from 'emotion-theming'
 
-import { Environment, withEnvironment } from 'rt-components'
-import { Flex } from 'rt-components'
-import { ConnectionType, ServiceConnectionInfo } from 'system'
 import Icon from './Icon'
-
 import { Root, Body, Fill, ExpandToggle, ServiceList, ServiceRoot, ServiceName, NodeCount } from './styled.js'
 
 export const SERVICES = ['blotter', 'reference', 'execution', 'pricing', 'analytics'].map(serviceType => ({
@@ -16,23 +12,23 @@ export const SERVICES = ['blotter', 'reference', 'execution', 'pricing', 'analyt
 
 class StatusBar extends Component {
   state = {
-    expanded: true
+    expanded: false
   }
 
   resolveTheme = theme => {
     const { mode } = this.props
     const currentTheme = theme.statusBar[mode]
 
-    theme = {
+    return {
       ...theme,
+
       ...theme.statusBar[mode],
+
       serviceItem: {
         connected: theme.statusBar.connected,
         disconnected: mode === 'connecting' ? theme.statusBar.connecting : theme.statusBar.disconnected
       }
     }
-
-    return theme
   }
 
   toggleExpanded = () => this.setState(({ expanded }) => ({ expanded: !expanded }))
