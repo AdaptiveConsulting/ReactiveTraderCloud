@@ -8,7 +8,7 @@ import { action } from '@storybook/addon-actions'
 import { Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
 import { Direction, PriceMovementTypes } from 'rt-types'
-import { TileBooking, TileNotification } from './notifications'
+import { TileBooking } from './notifications'
 import NotionalInput from './notional'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
@@ -134,33 +134,6 @@ stories.add('Booking', () => (
         spotTileData={{ ...spotTileData, isTradeExecutionInFlight: true }}
         executeTrade={executeTrade}
       />
-    </div>
-  </Story>
-))
-
-stories.add('Error', () => (
-  <Story>
-    <div
-      style={{
-        width: '320px',
-        height: '150px'
-      }}
-    >
-      <TileNotification
-        symbols={`${currencyPair.base}/${currencyPair.terms}`}
-        icon="warning"
-        colors={{ bg: 'accentBad', color: 'white' }}
-      >
-        {select(
-          'Message',
-          {
-            Pricing: 'Pricing is unavailable',
-            Timeout: 'Trade execution taking longer then expected',
-            Disconnected: 'Disconnected'
-          },
-          'Disconnected'
-        )}
-      </TileNotification>
     </div>
   </Story>
 ))

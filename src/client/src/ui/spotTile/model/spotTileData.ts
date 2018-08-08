@@ -1,7 +1,7 @@
 import { ExecuteTradeRequest, Trade } from 'rt-types'
 import { SpotPriceTick } from './spotPriceTick'
 
-interface LastTradeExecutionStatus {
+export interface LastTradeExecutionStatus {
   request: ExecuteTradeRequest
   hasError: boolean
   error?: string
