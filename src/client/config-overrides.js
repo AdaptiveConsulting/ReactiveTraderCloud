@@ -1,6 +1,6 @@
 const { compose, getBabelLoader, injectBabelPlugin } = require('react-app-rewired')
 
-module.exports = compose((config, env) => {
+module.exports = function override(config, env) {
   const babelLoader = getBabelLoader(config.module.rules)
 
   if (env === 'production') {
@@ -8,9 +8,9 @@ module.exports = compose((config, env) => {
   } else {
     config = injectBabelPlugin(
       ['emotion', { sourceMap: true, autoLabel: true, labelFormat: '[filename]--[local]' }],
-      config,
+      config
     )
   }
 
   return config
-})
+}
