@@ -37,7 +37,7 @@ const spotTileReducer = (
       }
     }
     case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
-      return { ...state, lastTradeExecutionStatus: { ...state.lastTradeExecutionStatus, trade: null } }
+      return { ...state, lastTradeExecutionStatus: null }
     default:
       return state
   }

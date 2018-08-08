@@ -13,14 +13,12 @@ interface Props {
 
 export default class NotificationContainer extends Component<Props> {
   render() {
-    return this.renderNotifications()
+    const { lastTradeExecutionStatus } = this.props
+    return lastTradeExecutionStatus && this.renderNotifications()
   }
 
   private renderNotifications = () => {
     const { lastTradeExecutionStatus, currencyPair, onNotificationDismissedClick } = this.props
-    if (!lastTradeExecutionStatus) {
-      return null
-    }
     if (lastTradeExecutionStatus.hasError) {
       return (
         <TileNotification
@@ -63,7 +61,5 @@ export default class NotificationContainer extends Component<Props> {
         )
       }
     }
-
-    return null
   }
 }
