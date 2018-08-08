@@ -86,6 +86,7 @@
     "react-router-dom": "^4.3.1",
     "react-sizeme": "2.3.6",
     "react-split-pane": "0.1.77",
+    "recompose": "^0.28.2",
     "redux": "4.0.0",
     "redux-actions": "2.3.2",
     "redux-observable": "1.0.0-alpha.3",

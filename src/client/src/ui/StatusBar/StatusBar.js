@@ -8,33 +8,16 @@ import { Flex } from 'rt-components'
 import { ConnectionType, ServiceConnectionInfo } from 'system'
 import Icon from './Icon'
 
-import {
-  Root,
-  Body,
-  Fill,
-  ExpandIcon,
-  ServiceList,
-  ServiceItem,
-  ServiceName,
-  NodeCount,
-} from './styled.js'
+import { Root, Body, Fill, ExpandToggle, ServiceList, ServiceRoot, ServiceName, NodeCount } from './styled.js'
 
-const SERVICES = ['blotter', 'reference', 'execution', 'pricing', 'analytics'].map(serviceType => ({
-  serviceType,
+export const SERVICES = ['blotter', 'reference', 'execution', 'pricing', 'analytics'].map(serviceType => ({
+  serviceType
 }))
 
 class StatusBar extends Component {
-  static getDerivedStateFromProps(props, state) {
-    return {
-      expanded: props.expanded || state.expanded,
-    }
-  }
-
   state = {
-    expanded: false,
+    expanded: true
   }
-
-  toggle = () => this.setState(({ expanded }) => ({ expanded: !expanded }))
 
   resolveTheme = theme => {
     const { mode } = this.props
@@ -44,17 +27,22 @@ class StatusBar extends Component {
       ...theme,
       ...theme.statusBar,
       ...theme.statusBar[mode],
-      motion: { duration: 200 },
+      serviceItem: {
+        connecting: theme.statusBar.connected,
+        disconnected: mode === 'connecting' ? theme.statusBar.connecting : theme.statusBar.disconnected
+      }
     }
 
     return theme
   }
 
+  toggleExpanded = () => this.setState(({ expanded }) => ({ expanded: !expanded }))
+
   render() {
     const {
       connectionStatus: { url, transportType },
       mode,
-      serviceStatus,
+      serviceStatus
     } = this.props
 
     const { expanded } = this.state
@@ -62,24 +50,26 @@ class StatusBar extends Component {
     return (
       <ThemeProvider key={mode} theme={this.resolveTheme}>
         <Root expand={expanded}>
-          <Body direction="row" alignItems="center" onClick={this.toggle}>
+          <Body onClick={this.toggleExpanded}>
             <Icon name="check" />
-            <span>
-              {mode === 'disconnected' ? (
-                'Disconnected'
-              ) : (
-                <React.Fragment>
-                  {_.capitalize(mode)} to {url} ({transportType})
-                </React.Fragment>
-              )}
-            </span>
+
+            {mode === 'disconnected' ? (
+              'Disconnected'
+            ) : (
+              <React.Fragment>
+                {_.capitalize(mode)} to {url} ({transportType})
+              </React.Fragment>
+            )}
+
             <Fill />
-            <ExpandIcon className="fas fa-chevron-up" expand={expanded} />
+
+            <ExpandToggle expand={expanded} />
           </Body>
+
           <ServiceList>
             {_.map(SERVICES, (service, index) => (
               <Service
-                key={service.serviceType}
+                key={service.serviceType + service.isConnected}
                 service={serviceStatus[service.serviceType] || service}
                 index={index}
               />
@@ -91,22 +81,22 @@ class StatusBar extends Component {
   }
 }
 
-const Service = ({ service, index }) => (
-  <ServiceItem index={index}>
-    <Icon
-      name={service.isConnected == null ? 'ellipsis-h' : service.isConnected ? 'check' : 'times'}
-    />
-    <div>
-      <ServiceName>{service.serviceType}</ServiceName>
-      <NodeCount>
-        {service.connectedInstanceCount != null && (
-          <React.Fragment>
-            ({service.connectedInstanceCount} Node{service.connectedInstanceCount !== 1 ? 's' : ''})
-          </React.Fragment>
-        )}
-      </NodeCount>
-    </div>
-  </ServiceItem>
+const Service = ({ service: { serviceType, isConnected, connectedInstanceCount }, index }) => (
+  <ThemeProvider theme={theme => theme.serviceItem[isConnected ? 'connecting' : 'disconnected']}>
+    <ServiceRoot index={index + 2}>
+      <Icon name={isConnected == null ? 'ellipsis-h' : isConnected ? 'check' : 'times'} />
+      <div>
+        <ServiceName>{serviceType}</ServiceName>
+        <NodeCount>
+          {connectedInstanceCount != null && (
+            <React.Fragment>
+              ({connectedInstanceCount} Node{connectedInstanceCount !== 1 ? 's' : ''})
+            </React.Fragment>
+          )}
+        </NodeCount>
+      </div>
+    </ServiceRoot>
+  </ThemeProvider>
 )
 
 export default connect(({ compositeStatusService: serviceStatus, connectionStatus }) => {
@@ -121,6 +111,6 @@ export default connect(({ compositeStatusService: serviceStatus, connectionStatu
   return {
     connectionStatus,
     serviceStatus,
-    mode,
+    mode
   }
-})(withEnvironment(StatusBar))
+})(StatusBar)

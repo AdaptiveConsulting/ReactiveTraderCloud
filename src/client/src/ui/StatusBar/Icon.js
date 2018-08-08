@@ -9,8 +9,10 @@ const Icon = ({ name, ...props }) => (
 
 export default styled(Icon)`
   ${({ size = 1.5 }) => css`
-    width: ${size}rem;
-    height: ${size}rem;
+    min-width: ${size}rem;
+    max-width: ${size}rem;
+    min-height: ${size}rem;
+    max-height: ${size}rem;
   `};
 
   line-height: 1rem;

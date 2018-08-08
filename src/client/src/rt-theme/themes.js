@@ -4,6 +4,10 @@ import { colors, palettes } from './colors'
 
 export function createTheme({ primary, secondary }, accents, overrides) {
   const theme = {
+    motion: {
+      duration: 200
+    },
+
     colors,
     palettes,
 
@@ -61,7 +65,7 @@ export function createTheme({ primary, secondary }, accents, overrides) {
 
       connecting: {
         backgroundColor: accents.aware.base,
-        textColor: accents.aware[2]
+        textColor: palettes.light.primary.base
       },
 
       connected: {
@@ -75,7 +79,7 @@ export function createTheme({ primary, secondary }, accents, overrides) {
       }
     }
   }
-  console.log({ theme })
+
   return _.merge(theme, overrides)
 }
 
