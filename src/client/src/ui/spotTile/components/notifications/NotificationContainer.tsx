@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
-import { animated, Transition } from 'react-spring'
+import { Transition } from 'react-spring'
 import { CurrencyPair, TradeStatus } from 'rt-types'
+import { styled } from 'rt-util'
 import { LastTradeExecutionStatus } from '../../model/spotTileData'
 import TileExecuted from './TileExecuted'
 import TileNotification from './TileNotification'
 
-const defaultStyles: React.CSSProperties = {
-  position: 'absolute',
-  height: '100%',
-  width: '100%',
-  bottom: '0px',
-  zIndex: 2,
-  overflowY: 'hidden'
-}
+const NotificationWrapper = styled('div')`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  bottom: 0px;
+  z-index: 2;
+`
 
 interface Props {
   lastTradeExecutionStatus: LastTradeExecutionStatus
@@ -31,14 +32,9 @@ export default class NotificationContainer extends Component<Props> {
   render() {
     const { lastTradeExecutionStatus } = this.props
     return (
-      <Transition
-        from={{ maxHeight: 0 }}
-        enter={{ maxHeight: 'auto' }}
-        leave={{ maxHeight: 0 }}
-        config={{ duration: 1000 }}
-      >
+      <Transition from={{ maxHeight: 0 }} enter={{ maxHeight: 'auto' }} leave={{ maxHeight: 0 }}>
         {hasNotification(lastTradeExecutionStatus) &&
-          (styles => <animated.div style={{ ...defaultStyles, ...styles }}>{this.renderNotifications()}</animated.div>)}
+          (styles => <NotificationWrapper style={styles}>{this.renderNotifications()}</NotificationWrapper>)}
       </Transition>
     )
   }
