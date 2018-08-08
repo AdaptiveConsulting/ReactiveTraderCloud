@@ -71,6 +71,6 @@ jobs:
       - deploy:
           name: "Deployment (Push containers to the repository)"
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "dev" ] || [ "${CIRCLE_BRANCH}" == "circleci" ]; then
+            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "dev" ]; then
               cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
             fi
