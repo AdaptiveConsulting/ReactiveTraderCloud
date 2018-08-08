@@ -59,4 +59,5 @@ typings/
 .env
 #node
 *-lock.json
-
+#test packages
+*.exe
