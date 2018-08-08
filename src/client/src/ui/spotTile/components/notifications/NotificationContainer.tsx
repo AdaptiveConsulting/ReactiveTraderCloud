@@ -32,7 +32,11 @@ export default class NotificationContainer extends Component<Props> {
   render() {
     const { lastTradeExecutionStatus } = this.props
     return (
-      <Transition from={{ maxHeight: 0 }} enter={{ maxHeight: 'auto' }} leave={{ maxHeight: 0 }}>
+      <Transition
+        from={{ transform: 'translateY(150px)' }}
+        enter={{ transform: 'translateY(0px)' }}
+        leave={{ transform: 'translateY(150px)' }}
+      >
         {hasNotification(lastTradeExecutionStatus) &&
           (styles => <NotificationWrapper style={styles}>{this.renderNotifications()}</NotificationWrapper>)}
       </Transition>
