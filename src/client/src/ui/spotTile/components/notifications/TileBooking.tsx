@@ -1,21 +1,16 @@
 import React from 'react'
-import { animated, Transition } from 'react-spring'
+import { Transition } from 'react-spring'
 import { Flex, LogoIcon } from 'rt-components'
 import { styled } from 'rt-util'
 
-const defaultStyles: React.CSSProperties = {
-  position: 'absolute',
-  height: '100%',
-  width: '100%',
-  zIndex: 2
-}
-
 const TileBookingStyle = styled('div')`
+  position: absolute;
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 `
 
 const BookingPill = styled(Flex)`
@@ -35,7 +30,7 @@ const BookingPill = styled(Flex)`
 const BookingStatus = styled('span')`
   margin-left: 6px;
   color: ${({ theme: { text } }) => text.white};
-  font-size: 12px;
+  font-size: 13px;
 `
 interface Props {
   show: boolean
@@ -45,14 +40,12 @@ const TileBooking = ({ show }: Props) => (
   <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
     {show &&
       (styles => (
-        <animated.div style={{ ...defaultStyles, ...styles }}>
-          <TileBookingStyle>
-            <BookingPill>
-              <LogoIcon />
-              <BookingStatus>Executing</BookingStatus>
-            </BookingPill>
-          </TileBookingStyle>
-        </animated.div>
+        <TileBookingStyle style={styles}>
+          <BookingPill>
+            <LogoIcon />
+            <BookingStatus>Executing</BookingStatus>
+          </BookingPill>
+        </TileBookingStyle>
       ))}
   </Transition>
 )
