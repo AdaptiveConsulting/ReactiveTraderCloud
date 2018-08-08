@@ -14,6 +14,7 @@ const NotificationWrapper = styled('div')`
 `
 
 interface Props {
+  isPriceStale: boolean
   lastTradeExecutionStatus: LastTradeExecutionStatus
   currencyPair: CurrencyPair
   onNotificationDismissedClick: () => void
@@ -36,7 +37,20 @@ export default class NotificationContainer extends Component<Props> {
   }
 
   private renderNotifications = () => {
-    const { lastTradeExecutionStatus, currencyPair, onNotificationDismissedClick } = this.props
+    const { lastTradeExecutionStatus, currencyPair, onNotificationDismissedClick, isPriceStale } = this.props
+    if (isPriceStale) {
+      return style => (
+        <NotificationWrapper style={style}>
+          <TileNotification
+            symbols={`${currencyPair.base}/${currencyPair.terms}`}
+            icon="warning"
+            colors={{ bg: 'accentBad', color: 'white' }}
+          >
+            Pricing is unavailable
+          </TileNotification>
+        </NotificationWrapper>
+      )
+    }
     if (!hasNotification(lastTradeExecutionStatus)) {
       return () => null
     }

@@ -4,8 +4,8 @@ import { Direction } from 'rt-types'
 import { styled, withDefaultProps } from 'rt-util'
 
 const hoverColors = {
-  [Direction.Buy]: 'accentBad',
-  [Direction.Sell]: 'accentPrimary'
+  [Direction.Buy]: '#F94C4C',
+  [Direction.Sell]: '#5f94f5'
 }
 
 export const TradeButton = styled('button')<{ direction: string }>`
@@ -22,7 +22,7 @@ export const TradeButton = styled('button')<{ direction: string }>`
   }
 
   ._spot-tile:hover &:hover {
-    background-color: ${({ theme: { palette }, direction }) => palette[hoverColors[direction]].light};
+    background-color: ${({ direction }) => hoverColors[direction]};
   }
 `
 

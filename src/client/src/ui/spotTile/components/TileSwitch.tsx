@@ -31,12 +31,14 @@ export default class TileSwitch extends Component<Props> {
     }
 
     const { lastTradeExecutionStatus, isTradeExecutionInFlight } = spotTileData
+    const isPriceStale = !lastTradeExecutionStatus && spotTileData.price.priceStale
 
     return (
       <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade}>
         <TileControls tornOff={tornOff} onPopoutClick={onPopoutClick} />
         <TileBooking show={isTradeExecutionInFlight} />
         <NotificationContainer
+          isPriceStale={isPriceStale}
           lastTradeExecutionStatus={lastTradeExecutionStatus}
           currencyPair={currencyPair}
           onNotificationDismissedClick={onNotificationDismissedClick}
