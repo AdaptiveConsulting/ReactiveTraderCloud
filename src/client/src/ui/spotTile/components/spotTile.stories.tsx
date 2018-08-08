@@ -7,8 +7,8 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
-import { Direction, Notification, NotificationType, PriceMovementTypes } from 'rt-types'
-import { TileBooking, TileExecuted, TileNotification, TileRejected } from './notifications'
+import { Direction, PriceMovementTypes } from 'rt-types'
+import { TileBooking, TileNotification } from './notifications'
 import NotionalInput from './notional'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
@@ -72,7 +72,6 @@ const currencyPair = {
 const spotTileData = {
   currencyChartIsOpening: false,
   isTradeExecutionInFlight: false,
-  hasError: false,
   price: {
     ask: 184.775,
     bid: 184.767,
@@ -85,24 +84,6 @@ const spotTileData = {
 }
 
 const executeTrade = action('executeTrade')
-
-const notification: Notification = {
-  hasError: false,
-  notificationType: NotificationType.Trade,
-  message: 'Test',
-  trade: {
-    dealtCurrency: 'EUR',
-    direction: 'Buy',
-    notional: 1000000,
-    spotRate: 1.09403,
-    status: 'done',
-    symbol: 'EURUSD',
-    tradeDate: new Date('Fri Aug 03 2018 10:56:24 GMT-0400 (Eastern Daylight Time)'),
-    tradeId: 2896,
-    traderName: 'KLA',
-    valueDate: new Date('Sun Aug 05 2018 20:00:00 GMT-0400 (Eastern Daylight Time)')
-  }
-}
 
 const onNotificationDismissedClick = action('Notification dismissed')
 
@@ -152,46 +133,6 @@ stories.add('Booking', () => (
         currencyPair={currencyPair}
         spotTileData={{ ...spotTileData, isTradeExecutionInFlight: true }}
         executeTrade={executeTrade}
-      />
-    </div>
-  </Story>
-))
-
-stories.add('Executed', () => (
-  <Story>
-    <div
-      style={{
-        width: '320px',
-        height: '150px'
-      }}
-    >
-      <TileExecuted
-        onNotificationDismissedClick={onNotificationDismissedClick}
-        direction={notification.trade.direction}
-        dealtCurrency={notification.trade.dealtCurrency}
-        counterCurrency={currencyPair.terms}
-        notional={notification.trade.notional}
-        tradeId={notification.trade.tradeId}
-        rate={notification.trade.spotRate}
-        date={notification.trade.tradeDate}
-      />
-    </div>
-  </Story>
-))
-
-stories.add('Rejected', () => (
-  <Story>
-    <div
-      style={{
-        width: '320px',
-        height: '150px'
-      }}
-    >
-      <TileRejected
-        onNotificationDismissedClick={onNotificationDismissedClick}
-        dealtCurrency={notification.trade.dealtCurrency}
-        counterCurrency={currencyPair.terms}
-        tradeId={notification.trade.tradeId}
       />
     </div>
   </Story>

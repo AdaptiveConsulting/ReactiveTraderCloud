@@ -1,10 +1,16 @@
-import { Notification } from 'rt-types'
+import { ExecuteTradeRequest, Trade } from 'rt-types'
 import { SpotPriceTick } from './spotPriceTick'
 
+interface LastTradeExecutionStatus {
+  request: ExecuteTradeRequest
+  hasError: boolean
+  error?: string
+  trade?: Trade
+}
+
 export interface SpotTileData {
-  notification?: Notification
   currencyChartIsOpening: boolean
   isTradeExecutionInFlight: boolean
-  hasError: boolean
   price?: SpotPriceTick
+  lastTradeExecutionStatus?: LastTradeExecutionStatus
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { CurrencyPair, Direction, NotificationType, TradeStatus } from 'rt-types'
+import { CurrencyPair, Direction, TradeStatus } from 'rt-types'
 import { SpotTileData } from '../model/spotTileData'
 import { TileBooking, TileExecuted, TileNotification, TileRejected } from './notifications'
 import SpotTile from './SpotTile'
@@ -22,32 +22,41 @@ export default class TileSwitch extends Component<Props> {
       return null
     }
 
-    const { notification, isTradeExecutionInFlight } = spotTileData
+    const { lastTradeExecutionStatus, isTradeExecutionInFlight } = spotTileData
 
     return (
       <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade}>
         <TileControls tornOff={tornOff} onPopoutClick={onPopoutClick} />
         <TileBooking show={isTradeExecutionInFlight} />
 
-        {notification && this.renderNotifications()}
+        {lastTradeExecutionStatus && this.renderNotifications()}
       </SpotTile>
     )
   }
 
   private renderNotifications = () => {
     const {
-      spotTileData: { notification },
+      spotTileData: { lastTradeExecutionStatus },
       currencyPair,
       onNotificationDismissedClick
     } = this.props
-    if (!notification) {
-      return null
+    if (lastTradeExecutionStatus.hasError) {
+      return (
+        <TileNotification
+          symbols={`${currencyPair.base}/${currencyPair.terms}`}
+          icon="warning"
+          colors={{ bg: 'accentBad', color: 'white' }}
+        >
+          {lastTradeExecutionStatus.error}
+        </TileNotification>
+      )
     }
-    if (notification.notificationType === NotificationType.Trade) {
-      const { dealtCurrency, tradeId } = notification.trade
+
+    if (lastTradeExecutionStatus.trade) {
+      const { dealtCurrency, tradeId } = lastTradeExecutionStatus.trade
       const { terms } = currencyPair
-      if (notification.trade.status === TradeStatus.Done) {
-        const { direction, notional, spotRate, tradeDate } = notification.trade
+      if (lastTradeExecutionStatus.trade.status === TradeStatus.Done) {
+        const { direction, notional, spotRate, tradeDate } = lastTradeExecutionStatus.trade
 
         return (
           <TileExecuted
@@ -61,7 +70,8 @@ export default class TileSwitch extends Component<Props> {
             date={tradeDate}
           />
         )
-      } else if (notification.trade.status === TradeStatus.Rejected) {
+      }
+      if (lastTradeExecutionStatus.trade.status === TradeStatus.Rejected) {
         return (
           <TileRejected
             onNotificationDismissedClick={onNotificationDismissedClick}
@@ -71,18 +81,6 @@ export default class TileSwitch extends Component<Props> {
           />
         )
       }
-    } else if (notification.notificationType === NotificationType.Text) {
-      return (
-        <TileNotification
-          symbols={`${currencyPair.base}/${currencyPair.terms}`}
-          icon="warning"
-          colors={{ bg: 'accentBad', color: 'white' }}
-        >
-          {notification.message}
-        </TileNotification>
-      )
-    } else {
-      return null
     }
   }
 }
