@@ -17,7 +17,7 @@ module.exports = function override(config, env) {
       [
         'emotion',
         {
-          sourceMap: false,
+          sourceMap: true,
           autoLabel: true,
           labelFormat: '[filename]--[local]'
         }
