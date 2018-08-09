@@ -2,11 +2,11 @@ import { mix, rgb, rgba } from 'polished'
 
 export interface Palette {
   base: string
-  [extra: string]: string
+  [shade: string]: string
 }
 
 export interface PaletteMap {
-  [key: string]: Palette
+  [palette: string]: Palette
 }
 
 export type ColorPalette = Palette & {
@@ -31,6 +31,10 @@ export type ColorPalette = Palette & {
   D8: string
   D9: string
   D10: string
+}
+
+export interface ColorMap {
+  [colorGroup: string]: PaletteMap
 }
 
 // Some designs will redefine white to achieve different
@@ -173,7 +177,7 @@ const spectrum: PaletteMap = {
   blue
 }
 
-export const palettes: { [key: string]: PaletteMap } = {
+export const colors: { [colorGroup: string]: PaletteMap } = {
   spectrum,
   accents,
   light,
@@ -229,20 +233,20 @@ function createPalette({
     //
     // So, the result of
     //    mix(0.5, rgb(255, 0, 0), rgb(0, 0, 255))
-    //      != rgb(255, 0, 255)
+    //      != rgb(127, 0, 127)
     // it would be
     //    rgb(141, 0, 132) in sRGB
     //    rgb(128, 0, 128) in P3
     //
     // Or, the result of
     //    mix(0.5, rgba(255, 0, 0, 0.5), rgba(0, 0, 255, 0.5))
-    //      != rgb(255, 0, 255, 1)
+    //      != rgb(127, 0, 127, 1)
     //
     //    rgb(207, 47, 97) in sRGB
     //    rgb(190, 62, 98) in P3
     //
     // Because of the various ways colors may show up on different
-    // displays we typically show a preferenced for a smaller
+    // displays we typically show a preference for a smaller
     // color space such as sRGB.
     //
     // So we may have to override specific values to achieve a

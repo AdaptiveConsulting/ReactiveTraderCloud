@@ -1,15 +1,46 @@
 import _ from 'lodash'
 
-import { colors, palettes } from './colors'
+import { colors, Palette, PaletteMap } from './colors'
 
-export function createTheme({ primary, secondary }, accents, overrides) {
-  const theme = {
-    motion: {
-      duration: 200
+type Theme = typeof defaultTheme &
+  ColorPair & {
+    primary: Palette
+    secondary: Palette
+    accents: PaletteMap
+  }
+
+interface ColorPair {
+  backgroundColor: string
+  textColor?: string
+}
+
+const defaultTheme = {
+  motion: {
+    duration: 200,
+    easing: 'ease',
+
+    fast: {
+      duration: 150,
+      easing: 'ease-in'
     },
 
-    colors,
-    palettes,
+    normal: {
+      duration: 200,
+      easing: 'ease'
+    },
+
+    slow: {
+      duration: 250,
+      ease: 'ease-out'
+    }
+  },
+
+  colors
+}
+
+export function createTheme({ primary, secondary }: PaletteMap, accents: PaletteMap, overrides) {
+  const theme: Theme & { [key: string]: any } = {
+    ..._.cloneDeep(defaultTheme),
 
     primary,
     secondary,
@@ -24,7 +55,7 @@ export function createTheme({ primary, secondary }, accents, overrides) {
 
       primary: {
         backgroundColor: accents.accent.base,
-        textColor: palettes.light.primary.base,
+        textColor: colors.light.primary.base,
 
         active: {
           backgroundColor: accents.accent[1]
@@ -48,7 +79,7 @@ export function createTheme({ primary, secondary }, accents, overrides) {
 
       ..._.mapValues(accents, ({ base, [1]: active, [2]: disabled }) => ({
         backgroundColor: base,
-        textColor: palettes.light.primary.base,
+        textColor: colors.light.primary.base,
 
         active: {
           backgroundColor: active
@@ -65,17 +96,17 @@ export function createTheme({ primary, secondary }, accents, overrides) {
 
       connecting: {
         backgroundColor: accents.aware.base,
-        textColor: palettes.light.primary.base
+        textColor: colors.light.primary.base
       },
 
       connected: {
         backgroundColor: accents.good.base,
-        textColor: palettes.light.primary.base
+        textColor: colors.light.primary.base
       },
 
       disconnected: {
         backgroundColor: accents.bad.base,
-        textColor: palettes.light.primary.base
+        textColor: colors.light.primary.base
       }
     }
   }
@@ -84,11 +115,11 @@ export function createTheme({ primary, secondary }, accents, overrides) {
 }
 
 export const themes = {
-  light: createTheme(palettes.light, palettes.accents, {}),
-  dark: createTheme(palettes.dark, palettes.accents, {
+  light: createTheme(colors.light, colors.accents, {}),
+  dark: createTheme(colors.dark, colors.accents, {
     button: {
       secondary: {
-        textColor: palettes.dark.primary.base
+        textColor: colors.dark.primary.base
       }
     }
   })
