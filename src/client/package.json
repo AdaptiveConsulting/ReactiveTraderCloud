@@ -106,6 +106,7 @@
     "@storybook/react": "4.0.0-alpha.14",
     "@types/autobahn": "^0.9.38",
     "@types/classnames": "^2.2.6",
+    "@types/d3-time-format": "^2.1.0",
     "@types/enzyme": "^3.1.10",
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^22.2.3",

@@ -6,14 +6,14 @@ import TileExecuted from './TileExecuted'
 import TileNotification from './TileNotification'
 
 interface Props {
-  isPriceStale: boolean
-  lastTradeExecutionStatus: LastTradeExecutionStatus
+  isPriceStale?: boolean
+  lastTradeExecutionStatus?: LastTradeExecutionStatus | null
   currencyPair: CurrencyPair
   onNotificationDismissedClick: () => void
 }
 
 const hasNotification = (tradeStatus: LastTradeExecutionStatus) => {
-  if (tradeStatus && (tradeStatus.hasError || tradeStatus.trade)) {
+  if (tradeStatus.hasError || tradeStatus.trade) {
     return true
   }
   return false
@@ -32,17 +32,17 @@ export default class NotificationContainer extends Component<Props> {
     const { lastTradeExecutionStatus, currencyPair, onNotificationDismissedClick, isPriceStale } = this.props
     const symbols = `${currencyPair.base}/${currencyPair.terms}`
     if (isPriceStale) {
-      return style => (
+      return (style: React.CSSProperties) => (
         <TileNotification style={style} symbols={symbols} isWarning={true}>
           Pricing is unavailable
         </TileNotification>
       )
     }
-    if (!hasNotification(lastTradeExecutionStatus)) {
+    if (!lastTradeExecutionStatus || !hasNotification(lastTradeExecutionStatus)) {
       return () => null
     }
     if (lastTradeExecutionStatus.hasError) {
-      return style => (
+      return (style: React.CSSProperties) => (
         <TileNotification style={style} symbols={symbols} isWarning={true}>
           {lastTradeExecutionStatus.error}
         </TileNotification>
@@ -55,7 +55,7 @@ export default class NotificationContainer extends Component<Props> {
       if (lastTradeExecutionStatus.trade.status === TradeStatus.Done) {
         const { direction, notional, spotRate, tradeDate } = lastTradeExecutionStatus.trade
 
-        return style => (
+        return (style: React.CSSProperties) => (
           <TileNotification
             style={style}
             isWarning={false}
@@ -75,7 +75,7 @@ export default class NotificationContainer extends Component<Props> {
         )
       }
       if (lastTradeExecutionStatus.trade.status === TradeStatus.Rejected) {
-        return style => (
+        return (style: React.CSSProperties) => (
           <TileNotification
             style={style}
             isWarning={true}
@@ -88,5 +88,6 @@ export default class NotificationContainer extends Component<Props> {
         )
       }
     }
+    return () => null
   }
 }

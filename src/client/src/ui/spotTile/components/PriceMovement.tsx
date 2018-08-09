@@ -4,7 +4,7 @@ import { PriceMovementTypes } from 'rt-types'
 import { styled } from 'rt-util'
 
 interface Props {
-  priceMovementType: string
+  priceMovementType?: string
   spread: string
 }
 

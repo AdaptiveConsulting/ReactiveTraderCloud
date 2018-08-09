@@ -102,12 +102,14 @@ export default class NotionalInput extends Component<Props> {
       // propagate change back to dom node's value
       const newNotional = numeral(notional).format(NUMERAL_FORMAT)
       updateNotional(newNotional)
-      this.inputRef.current.value = newNotional
+      if (this.inputRef.current) {
+        this.inputRef.current.value = newNotional
+      }
     }
   }
 
   handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const rawValue = (this.inputRef.current.value || event.currentTarget.value).trim()
+    const rawValue = ((this.inputRef.current && this.inputRef.current.value) || event.currentTarget.value).trim()
     // check for a shortcut input
     if (hasShorthandInput(rawValue)) {
       this.processNotional(rawValue)

@@ -5,7 +5,8 @@ import { Button, ColorProps, Icon, TileBaseStyle } from '../Styled'
 
 export const TileNotificationStyle = styled(TileBaseStyle)<ColorProps>`
   color: ${({ theme: { text } }) => text.white};
-  background-color: ${({ theme: { palette }, backgroundColor }) => palette[backgroundColor].dark};
+  background-color: ${({ theme: { palette }, backgroundColor }) =>
+    (backgroundColor && palette[backgroundColor].dark) || 'initial'};
   font-size: 13px;
   text-align: center;
   line-height: 1.5;
@@ -21,7 +22,8 @@ const TradeSymbol = styled('div')`
 `
 
 const CheckIcon = styled(Icon)<ColorProps>`
-  background-color: ${({ theme: { palette }, backgroundColor }) => palette[backgroundColor].normal};
+  background-color: ${({ theme: { palette }, backgroundColor }) =>
+    (backgroundColor && palette[backgroundColor].dark) || 'initial'};
   border-radius: 50%;
   padding: 5px;
 `
@@ -32,7 +34,8 @@ const HeavyFont = styled('span')`
 
 const PillButton = styled(Button)<ColorProps>`
   color: ${({ theme: { text } }) => text.white};
-  background-color: ${({ theme: { palette }, backgroundColor }) => palette[backgroundColor].normal};
+  background-color: ${({ theme: { palette }, backgroundColor }) =>
+    (backgroundColor && palette[backgroundColor].dark) || 'initial'};
   border-radius: 17px;
   padding: 8px 10px;
   font-weight: 900;

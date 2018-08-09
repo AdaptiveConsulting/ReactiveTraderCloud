@@ -44,7 +44,7 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
 
   private executeTrade = (direction: Direction, notional: number) => {
     const { executionConnected, spotTileData, currencyPair, executeTrade } = this.props
-    if (!executionConnected || spotTileData.isTradeExecutionInFlight) {
+    if (!executionConnected || spotTileData.isTradeExecutionInFlight || !spotTileData.price) {
       return
     }
     const rate = direction === Direction.Buy ? spotTileData.price.ask : spotTileData.price.bid

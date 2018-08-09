@@ -53,7 +53,7 @@ const BottomRightButton = styled(TileControl)`
 `
 
 interface Props {
-  tornOff: boolean
+  tornOff?: boolean
   onPopoutClick?: () => void
 }
 

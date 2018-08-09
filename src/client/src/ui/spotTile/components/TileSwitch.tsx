@@ -9,7 +9,7 @@ import TileControls from './TileControls'
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
-  tornOff: boolean
+  tornOff?: boolean
   executeTrade: (direction: Direction, notional: number) => void
   onPopoutClick?: () => void
   onNotificationDismissedClick: () => void

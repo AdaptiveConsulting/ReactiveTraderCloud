@@ -29,7 +29,7 @@ export default function epic({ referenceDataService, loadBalancedServiceStub }: 
 
   if (typeof fin !== 'undefined') {
     epics.push(
-      publishPriceToOpenFinEpic,
+      publishPriceToOpenFinEpic(pricesForCurrenciesInRefData),
       connectTradeExecutedToOpenFinEpic,
       closePositionEpic,
       connectCurrencyChartToOpenFinEpic
