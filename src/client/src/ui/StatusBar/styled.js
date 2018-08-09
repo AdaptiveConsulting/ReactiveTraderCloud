@@ -61,10 +61,12 @@ export const ServiceName = styled.div`
   min-width: 5rem;
   text-transform: capitalize;
   font-size: 1rem;
+  line-height: 1rem;
 `
 
 export const NodeCount = styled.div`
   display: block;
+  font-size: 0.5rem;
   min-height: 1.25rem;
   max-height: 1.25rem;
   line-height: 1.25rem;

@@ -82,13 +82,13 @@ const Service = ({ service: { serviceType, isConnected, connectedInstanceCount }
       <Icon name={isConnected == null ? 'ellipsis-h' : isConnected ? 'check' : 'times'} />
       <div>
         <ServiceName>{serviceType}</ServiceName>
-        <NodeCount>
-          {connectedInstanceCount != null && (
-            <React.Fragment>
-              ({connectedInstanceCount} Node{connectedInstanceCount !== 1 ? 's' : ''})
-            </React.Fragment>
-          )}
-        </NodeCount>
+
+        {connectedInstanceCount != null && (
+          <NodeCount>
+            ({connectedInstanceCount} Node
+            {connectedInstanceCount !== 1 ? 's' : ''})
+          </NodeCount>
+        )}
       </div>
     </ServiceRoot>
   </ThemeProvider>
