@@ -54,6 +54,7 @@
     ]
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0-rc.0",
     "ag-grid": "18.1.2",
     "ag-grid-react": "18.1.0",
     "animate.css": "3.4.0",
@@ -98,6 +99,9 @@
     "ws": "0.8.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-rc.0",
+    "@babel/preset-env": "^7.0.0-rc.0",
+    "@babel/register": "^7.0.0-rc.0",
     "@storybook/addon-actions": "^4.0.0-alpha.14",
     "@storybook/addon-centered": "^4.0.0-alpha.14",
     "@storybook/addon-knobs": "^4.0.0-alpha.14",
@@ -125,9 +129,7 @@
     "@types/storybook__react": "^3.0.8",
     "@types/tinycolor2": "^1.4.0",
     "awesome-typescript-loader": "^5.2.0",
-    "babel-core": "^6.26.3",
     "babel-plugin-emotion": "^9.2.6",
-    "babel-runtime": "^6.26.0",
     "cross-env": "^5.1.4",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "husky": "^0.14.3",
