@@ -79,7 +79,7 @@ const renderBigFigureDisplay = (bigFigureDisplay: string) =>
 const PriceButtonComp: React.SFC<PriceButtonProps> = ({ big, pip, tenth, rawRate, direction, handleClick }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
   return (
-    <TradeButton direction={direction} onClick={() => handleClick(direction)} className="price-button">
+    <TradeButton direction={direction} onClick={() => handleClick(direction)}>
       <Flex height="34px" direction="row" justifyContent="center" alignItems="center">
         <Flex height="100%" direction="column" justifyContent="center">
           <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>

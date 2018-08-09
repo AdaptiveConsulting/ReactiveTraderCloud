@@ -10,8 +10,8 @@ interface Props {
 
 const MovementIcon = styled('i')<{ show: boolean; color: string }>`
   text-align: center;
-  color: ${({ theme: { background, palette }, show, color }) =>
-    show ? palette[color].normal : background.backgroundSecondary};
+  color: ${({ theme: { palette }, color }) => palette[color].normal}}};
+  visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
 `
 
 const MovementValue = styled('div')`
@@ -19,6 +19,7 @@ const MovementValue = styled('div')`
   color: ${({ theme: { text } }) => text.textMeta};
 `
 
+//TODO: SVG icons
 const PriceMovement: React.SFC<Props> = ({ priceMovementType, spread }) => (
   <Flex alignItems="center" justifyContent="center" direction="column" width="100%">
     <MovementIcon

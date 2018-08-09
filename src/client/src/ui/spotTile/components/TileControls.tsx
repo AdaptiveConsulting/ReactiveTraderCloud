@@ -15,18 +15,11 @@ const TileControlsStyle = styled('div')`
   .spot-tile-container:hover & {
     opacity: 0.75;
   }
-
-  svg {
-    cursor: pointer;
-  }
-
-  .svg-icon {
-    stroke: ${({ theme: { text } }) => text.textMeta};
-    fill: ${({ theme: { text } }) => text.textMeta};
-  }
 `
 
 const TopRightButton = styled('div')`
+  cursor: pointer;
+
   .svg-icon {
     stroke: ${({ theme: { text } }) => text.textPrimary};
     fill: ${({ theme: { text } }) => text.textPrimary};
@@ -34,18 +27,16 @@ const TopRightButton = styled('div')`
 `
 
 interface Props {
-  tornOff?: boolean
   onPopoutClick?: () => void
 }
 
-const TileControls: React.SFC<Props> = ({ tornOff, onPopoutClick }) => (
+const TileControls: React.SFC<Props> = ({ onPopoutClick }) => (
   <TileControlsStyle>
-    {!Environment.isRunningInIE() &&
-      !tornOff && (
-        <TopRightButton onClick={onPopoutClick}>
-          <PopoutIcon />
-        </TopRightButton>
-      )}
+    {!Environment.isRunningInIE() && (
+      <TopRightButton onClick={onPopoutClick}>
+        <PopoutIcon />
+      </TopRightButton>
+    )}
   </TileControlsStyle>
 )
 

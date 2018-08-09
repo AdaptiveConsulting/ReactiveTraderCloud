@@ -28,7 +28,7 @@ const TileSwitch: React.SFC<Props> = ({
 
   return (
     <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade}>
-      <TileControls tornOff={tornOff} onPopoutClick={onPopoutClick} />
+      {!tornOff && <TileControls onPopoutClick={onPopoutClick} />}
       <TileBooking show={isTradeExecutionInFlight} />
       <NotificationContainer
         isPriceStale={isPriceStale}

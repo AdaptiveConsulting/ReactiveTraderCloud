@@ -20,7 +20,6 @@ const CurrencyPairSymbol = styled('div')`
   padding-right: 6px;
 `
 
-//Todo hover border from parent
 export const Input = styled('input')`
   color: ${({ theme: { text } }) => text.textPrimary};
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
@@ -56,7 +55,6 @@ export default class NotionalInput extends PureComponent<Props> {
       <Flex alignItems="center" justifyContent="center">
         <CurrencyPairSymbol>{currencyPairSymbol}</CurrencyPairSymbol>
         <Input
-          className="notional-input"
           type="text"
           innerRef={this.inputRef}
           defaultValue={formattedSize}
@@ -88,22 +86,22 @@ export default class NotionalInput extends PureComponent<Props> {
   processNotional = (inputValue: string) => {
     const { updateNotional } = this.props
     const inputValueTrimmed = inputValue.trim()
-    let notional: string | number = convertNotionalShorthandToNumericValue(inputValueTrimmed)
+    let notional = convertNotionalShorthandToNumericValue(inputValueTrimmed)
     if (notional >= MAX_NOTIONAL_VALUE) {
       notional = 0
     }
     if (!isNaN(notional)) {
       updateNotional(notional.toString())
       // user may be trying to enter decimals. restore BACK into input
-
+      let stringNotional = notional.toString()
       if (inputValueTrimmed.indexOf(DOT) === inputValueTrimmed.length - 1) {
-        notional = notional + DOT
+        stringNotional += DOT
       }
       // propagate change back to dom node's value
-      const newNotional = numeral(notional).format(NUMERAL_FORMAT)
-      updateNotional(newNotional)
+      stringNotional = numeral(stringNotional).format(NUMERAL_FORMAT)
+      updateNotional(stringNotional)
       if (this.inputRef.current) {
-        this.inputRef.current.value = newNotional
+        this.inputRef.current.value = stringNotional
       }
     }
   }
