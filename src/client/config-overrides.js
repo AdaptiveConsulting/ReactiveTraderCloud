@@ -1,8 +1,30 @@
-require('@babel/polyfill')
-require('@babel/register')({
-  // This will override `node_modules` ignoring - you can alternatively pass
-  // an array of strings to be explicitly matched or a regex / glob
-  // ignore: []
-})
+const { injectBabelPlugin } = require('react-app-rewired')
 
-module.exports = require('./addEmotionToBabel')
+module.exports = function override(config, env) {
+  if (env === 'production') {
+    config = injectBabelPlugin(
+      [
+        'emotion',
+        {
+          hoist: true,
+          autoLabel: true
+        }
+      ],
+      config
+    )
+  } else {
+    config = injectBabelPlugin(
+      [
+        'emotion',
+        {
+          sourceMap: false,
+          autoLabel: true,
+          labelFormat: '[filename]--[local]'
+        }
+      ],
+      config
+    )
+  }
+
+  return config
+}
