@@ -1,7 +1,7 @@
 const animationSpeed = () => ({
-  fast: '0.2s',
-  normal: '0.3s',
-  slow: '0.5s'
+  fast: 200,
+  normal: 300,
+  slow: 500
 })
 
 export default animationSpeed
