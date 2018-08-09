@@ -40,7 +40,7 @@ const PillButton = styled(Button)<ColorProps>`
 `
 
 const Content = styled('div')`
-  max-width: 260px;
+  max-width: 280px;
 `
 
 interface Props {

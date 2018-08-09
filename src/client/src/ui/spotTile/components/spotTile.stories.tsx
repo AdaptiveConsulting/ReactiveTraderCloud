@@ -83,6 +83,40 @@ const spotTileData = {
   }
 }
 
+const trade = {
+  tradeId: 4619,
+  symbol: 'GBPJPY',
+  traderName: 'ESP',
+  notional: 1000000,
+  dealtCurrency: 'GBP',
+  direction: Direction.Buy,
+  spotRate: 184.672,
+  tradeDate: new Date('2018-08-09T16:34:52.622Z'),
+  valueDate: new Date('2018-08-13T00:00:00.000Z'),
+  status: 'rejected'
+}
+
+const lastTradeExecutionStatus = {
+  hasError: false,
+  request: {
+    CurrencyPair: 'GBPJPY',
+    SpotRate: 184.672,
+    Direction: Direction.Buy,
+    Notional: 1000000,
+    DealtCurrency: 'GBP'
+  }
+}
+
+const tradeExecuted = {
+  ...lastTradeExecutionStatus,
+  trade: { ...trade, status: 'done' }
+}
+
+const tradeRejected = {
+  ...lastTradeExecutionStatus,
+  trade: { ...trade, status: 'rejected' }
+}
+
 const executeTrade = action('executeTrade')
 
 const onNotificationDismissedClick = action('Notification dismissed')
@@ -96,26 +130,6 @@ stories.add('Tile', () => (
       }}
     >
       <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade} />
-    </div>
-  </Story>
-))
-
-stories.add('Switch', () => (
-  <Story>
-    <div
-      style={{
-        width: '320px',
-        height: '150px'
-      }}
-    >
-      <TileSwitch
-        onNotificationDismissedClick={onNotificationDismissedClick}
-        currencyPair={currencyPair}
-        spotTileData={{ ...spotTileData, isTradeExecutionInFlight: boolean('Booking', false) }}
-        executeTrade={executeTrade}
-        onPopoutClick={action('On popout click')}
-        tornOff={boolean('Torn off', false)}
-      />
     </div>
   </Story>
 ))
@@ -137,3 +151,79 @@ stories.add('Booking', () => (
     </div>
   </Story>
 ))
+
+stories.add('Executed', () => (
+  <Story>
+    <div
+      style={{
+        width: '320px',
+        height: '150px'
+      }}
+    >
+      <TileSwitch
+        onNotificationDismissedClick={onNotificationDismissedClick}
+        currencyPair={currencyPair}
+        spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeExecuted }}
+        executeTrade={executeTrade}
+        onPopoutClick={action('On popout click')}
+      />
+    </div>
+  </Story>
+))
+
+stories.add('Rejected', () => (
+  <Story>
+    <div
+      style={{
+        width: '320px',
+        height: '150px'
+      }}
+    >
+      <TileSwitch
+        onNotificationDismissedClick={onNotificationDismissedClick}
+        currencyPair={currencyPair}
+        spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeRejected }}
+        executeTrade={executeTrade}
+        onPopoutClick={action('On popout click')}
+      />
+    </div>
+  </Story>
+))
+
+const options = {
+  Rejected: 'rejected',
+  Done: 'done',
+  None: 'none'
+}
+
+const tradeOptions = {
+  rejected: tradeRejected,
+  done: tradeExecuted,
+  none: null
+}
+
+stories.add('Switch', () => {
+  const option = select('Notification', options, 'none')
+  return (
+    <Story>
+      <div
+        style={{
+          width: '320px',
+          height: '150px'
+        }}
+      >
+        <TileSwitch
+          onNotificationDismissedClick={onNotificationDismissedClick}
+          currencyPair={currencyPair}
+          spotTileData={{
+            ...spotTileData,
+            isTradeExecutionInFlight: boolean('Booking', false),
+            lastTradeExecutionStatus: tradeOptions[option]
+          }}
+          executeTrade={executeTrade}
+          onPopoutClick={action('On popout click')}
+        />
+      </div>
+    </Story>
+  )
+})
