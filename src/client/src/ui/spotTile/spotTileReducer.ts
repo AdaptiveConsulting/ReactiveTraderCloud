@@ -30,7 +30,6 @@ const spotTileReducer = (
     case TILE_ACTION_TYPES.EXECUTE_TRADE:
       return { ...state, isTradeExecutionInFlight: true }
     case TILE_ACTION_TYPES.TRADE_EXECUTED: {
-      console.log(action.payload)
       return {
         ...state,
         lastTradeExecutionStatus: action.payload,
