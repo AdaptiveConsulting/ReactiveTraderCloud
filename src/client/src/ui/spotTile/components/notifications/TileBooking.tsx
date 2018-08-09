@@ -10,7 +10,7 @@ const TileBookingStyle = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  z-index: 3;
 `
 
 const BookingPill = styled(Flex)`
