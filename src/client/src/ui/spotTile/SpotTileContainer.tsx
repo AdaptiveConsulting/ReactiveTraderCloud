@@ -29,6 +29,9 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
 
   render() {
     const { id, currencyPair, spotTileData, onPopoutClick, onNotificationDismissedClick, tornOff } = this.props
+    if (!spotTileData || !spotTileData.price || !currencyPair) {
+      return null
+    }
     return (
       <TileSwitch
         key={id}

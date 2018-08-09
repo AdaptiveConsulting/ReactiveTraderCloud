@@ -36,7 +36,7 @@ interface Props {
   show: boolean
 }
 
-const TileBooking = ({ show }: Props) => (
+const TileBooking: React.SFC<Props> = ({ show }) => (
   <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
     {show &&
       (styles => (

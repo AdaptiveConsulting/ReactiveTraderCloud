@@ -19,7 +19,7 @@ const MovementValue = styled('div')`
   color: ${({ theme: { text } }) => text.textMeta};
 `
 
-const PriceMovement = ({ priceMovementType, spread }: Props) => (
+const PriceMovement: React.SFC<Props> = ({ priceMovementType, spread }) => (
   <Flex alignItems="center" justifyContent="center" direction="column" width="100%">
     <MovementIcon
       show={priceMovementType === PriceMovementTypes.Up}

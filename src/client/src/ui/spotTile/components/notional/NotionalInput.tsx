@@ -1,5 +1,5 @@
 import numeral from 'numeral'
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Flex } from 'rt-components'
 import { styled } from 'rt-util'
 import { convertNotionalShorthandToNumericValue, hasShorthandInput } from './utils'
@@ -46,7 +46,7 @@ interface Props {
   updateNotional: (notional: string) => void
 }
 
-export default class NotionalInput extends Component<Props> {
+export default class NotionalInput extends PureComponent<Props> {
   private inputRef = React.createRef<HTMLInputElement>()
 
   render() {

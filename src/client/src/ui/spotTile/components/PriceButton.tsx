@@ -1,4 +1,4 @@
-import React, { SFC } from 'react'
+import React from 'react'
 import { Flex } from 'rt-components'
 import { Direction } from 'rt-types'
 import { styled, withDefaultProps } from 'rt-util'
@@ -76,7 +76,7 @@ const getBigFigureDisplay = (bigFigure: number, rawRate: number) =>
 const renderBigFigureDisplay = (bigFigureDisplay: string) =>
   bigFigureDisplay.toString().length === 3 ? `${bigFigureDisplay}0` : bigFigureDisplay
 
-const PriceButtonComp: SFC<PriceButtonProps> = ({ big, pip, tenth, rawRate, direction, handleClick }) => {
+const PriceButtonComp: React.SFC<PriceButtonProps> = ({ big, pip, tenth, rawRate, direction, handleClick }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
   return (
     <TradeButton direction={direction} onClick={() => handleClick(direction)} className="price-button">

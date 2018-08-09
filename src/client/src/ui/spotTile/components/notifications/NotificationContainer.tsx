@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Transition } from 'react-spring'
 import { CurrencyPair, TradeStatus } from 'rt-types'
 import { LastTradeExecutionStatus } from '../../model/spotTileData'
@@ -19,7 +19,7 @@ const hasNotification = (tradeStatus: LastTradeExecutionStatus) => {
   return false
 }
 
-export default class NotificationContainer extends Component<Props> {
+export default class NotificationContainer extends PureComponent<Props> {
   render() {
     return (
       <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>

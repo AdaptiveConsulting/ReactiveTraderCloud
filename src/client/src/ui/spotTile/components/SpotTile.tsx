@@ -1,5 +1,5 @@
 import numeral from 'numeral'
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Flex } from 'rt-components'
 import { CurrencyPair, Direction } from 'rt-types'
 import { styled } from 'rt-util'
@@ -29,7 +29,7 @@ interface State {
   notional: string
 }
 
-export default class SpotTile extends Component<Props, State> {
+export default class SpotTile extends PureComponent<Props, State> {
   state = {
     notional: '1000000'
   }

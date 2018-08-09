@@ -33,7 +33,7 @@ const directionText = {
   [Direction.Sell]: 'sold'
 }
 
-const TileExecuted = ({ direction, dealtCurrency, rate, notional, counterCurrency, date }: Props) => {
+const TileExecuted: React.SFC<Props> = ({ direction, dealtCurrency, rate, notional, counterCurrency, date }) => {
   const dealtText = `${dealtCurrency} ${numeral(notional).format('0,000,000[.]00')}`
   const counterText = `${counterCurrency} ${numeral(notional * rate).format('0,000,000[.]00')}`
   const formattedDate = `(Spt) ${moment(date).format('D MMM')}`

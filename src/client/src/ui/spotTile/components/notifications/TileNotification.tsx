@@ -52,7 +52,7 @@ interface Props {
   handleClick?: () => void
 }
 
-const TileNotification = ({ style, isWarning, symbols, tradeId, handleClick, children }: Props) => {
+const TileNotification: React.SFC<Props> = ({ style, isWarning, symbols, tradeId, handleClick, children }) => {
   const baseColor = isWarning ? 'accentBad' : 'accentGood'
 
   return (

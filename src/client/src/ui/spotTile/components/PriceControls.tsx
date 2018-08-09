@@ -13,7 +13,7 @@ interface Props {
   executeTrade: (direction: Direction) => void
 }
 
-const PriceControls = ({ currencyPair, priceData, executeTrade }: Props) => {
+const PriceControls: React.SFC<Props> = ({ currencyPair, priceData, executeTrade }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const spread = getSpread(priceData.bid, priceData.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)

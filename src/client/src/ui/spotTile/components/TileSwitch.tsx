@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { CurrencyPair, Direction } from 'rt-types'
 import { SpotTileData } from '../model/spotTileData'
 import { TileBooking } from './notifications'
@@ -15,35 +15,29 @@ interface Props {
   onNotificationDismissedClick: () => void
 }
 
-export default class TileSwitch extends Component<Props> {
-  render() {
-    const {
-      currencyPair,
-      spotTileData,
-      executeTrade,
-      tornOff,
-      onPopoutClick,
-      onNotificationDismissedClick
-    } = this.props
+const TileSwitch: React.SFC<Props> = ({
+  currencyPair,
+  spotTileData,
+  executeTrade,
+  tornOff,
+  onPopoutClick,
+  onNotificationDismissedClick
+}) => {
+  const { lastTradeExecutionStatus, isTradeExecutionInFlight } = spotTileData
+  const isPriceStale = !lastTradeExecutionStatus && spotTileData.price && spotTileData.price.priceStale
 
-    if (!spotTileData || !spotTileData.price || !currencyPair) {
-      return null
-    }
-
-    const { lastTradeExecutionStatus, isTradeExecutionInFlight } = spotTileData
-    const isPriceStale = !lastTradeExecutionStatus && spotTileData.price.priceStale
-
-    return (
-      <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade}>
-        <TileControls tornOff={tornOff} onPopoutClick={onPopoutClick} />
-        <TileBooking show={isTradeExecutionInFlight} />
-        <NotificationContainer
-          isPriceStale={isPriceStale}
-          lastTradeExecutionStatus={lastTradeExecutionStatus}
-          currencyPair={currencyPair}
-          onNotificationDismissedClick={onNotificationDismissedClick}
-        />
-      </SpotTile>
-    )
-  }
+  return (
+    <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade}>
+      <TileControls tornOff={tornOff} onPopoutClick={onPopoutClick} />
+      <TileBooking show={isTradeExecutionInFlight} />
+      <NotificationContainer
+        isPriceStale={isPriceStale}
+        lastTradeExecutionStatus={lastTradeExecutionStatus}
+        currencyPair={currencyPair}
+        onNotificationDismissedClick={onNotificationDismissedClick}
+      />
+    </SpotTile>
+  )
 }
+
+export default TileSwitch

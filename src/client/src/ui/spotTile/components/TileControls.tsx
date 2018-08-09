@@ -38,7 +38,7 @@ interface Props {
   onPopoutClick?: () => void
 }
 
-const TileControls = ({ tornOff, onPopoutClick }: Props) => (
+const TileControls: React.SFC<Props> = ({ tornOff, onPopoutClick }) => (
   <TileControlsStyle>
     {!Environment.isRunningInIE() &&
       !tornOff && (
