@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ThemeSwitcher } from 'rt-components'
+import Ink from 'react-ink'
 import { styled } from 'rt-util'
 import { Themes } from 'shell/theme'
 import 'ui/styles/css/index.css'
@@ -13,15 +13,13 @@ const StyledStory = styled('div')`
   align-items: stretch;
   background-color: ${({ theme: { background } }) => background.backgroundPrimary};
   color: ${({ theme }) => theme.text.primary};
-  transition: background-color ${({ theme }) => theme.animationSpeed.normal}ms,
-    color ${({ theme }) => theme.animationSpeed.normal}ms;
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal},
+    color ${({ theme }) => theme.animationSpeed.normal};
   will-change: color, background-color;
   font-family: ${({ theme }) => theme.fontFamily.primary};
-  position: fixed;
 `
 
 const Toolbar = styled('div')`
-  z-index: 9999;
   padding: 0px 20px;
   height: 60px;
   display: flex;
@@ -31,10 +29,29 @@ const Toolbar = styled('div')`
   background-color: ${({ theme }) => theme.background.secondary};
   will-change: color, background-color;
   color: ${({ theme }) => theme.text.secondary};
-  transition: background-color ${({ theme }) => theme.animationSpeed.normal}ms,
-    color ${({ theme }) => theme.animationSpeed.normal}ms;
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal},
+    color ${({ theme }) => theme.animationSpeed.normal};
   h2 {
     flex: 1;
+  }
+`
+
+const IconButton = styled('div')`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal};
+  cursor: pointer;
+  position: relative;
+  will-change: background-color;
+  &&:hover {
+    background-color: ${({ theme }) => theme.palette.secondary[1]};
+  }
+  > i {
+    font-size: ${({ theme }) => theme.fontSize.h2};
   }
 `
 
@@ -42,7 +59,6 @@ const Content = styled('div')`
   display: flex;
   flex: 1;
   position: relative;
-  overflow-y: hidden;
 `
 
 interface State {
@@ -74,7 +90,10 @@ class Story extends Component<{}, State> {
       <Theme type={theme}>
         <StyledStory>
           <Toolbar>
-            <ThemeSwitcher toggleTheme={this.toggleTheme} theme={theme} type="secondary" />
+            <IconButton onClick={this.toggleTheme}>
+              <Ink />
+              <i className={`fa${theme === Themes.LIGHT_THEME ? 'r' : 's'} fa-lightbulb`} />
+            </IconButton>
           </Toolbar>
           <Content>{children}</Content>
         </StyledStory>

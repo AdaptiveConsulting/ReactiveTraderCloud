@@ -52,8 +52,6 @@ export const darkTheme = (baseColors?: CoreColors) => {
     },
     background: {
       ...baseTheme.background,
-      light: palette.secondary[0],
-      dark: palette.primary[2],
       backgroundPrimary: darkBackgroundPrimary,
       backgroundSecondary: darkBackgroundSecondary,
       backgroundTertiary: darkBackgroundTertiary,

@@ -41,10 +41,10 @@ eventstoreContainer_minor="0"
 eventstoreContainer="weareadaptive/eventstore:$eventstoreContainer_major.$eventstoreContainer_minor"
 
 # node
-vNode="8.11.3-alpine"
-nodeContainer_major="8"
-nodeContainer_minor="11.3-alpine"
-nodeContainer="node:$nodeContainer_major.$nodeContainer_minor"
+vNode="6.2.1"
+nodeContainer_major="6"
+nodeContainer_minor="2"
+nodeContainer="weareadaptive/node:$nodeContainer_major.$nodeContainer_minor"
 
 # nginx
 vNginx="1.12.0"

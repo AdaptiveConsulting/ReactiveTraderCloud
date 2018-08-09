@@ -1,5 +1,3 @@
-import { darkest, lightest } from 'rt-themes/utils'
-
 import { Palette } from 'rt-themes/palette'
 
 const backgroundPrimary = '#F4F6F9'
@@ -13,9 +11,7 @@ const background = (palette: Palette) => ({
   backgroundSecondary,
   backgroundTertiary,
   primary: palette.primary[0],
-  secondary: palette.secondary[3],
-  dark: darkest(palette.secondary[3], palette.primary[0]),
-  light: lightest(palette.secondary[3], palette.primary[0])
+  secondary: palette.secondary[3]
 })
 
 export default background

@@ -1,1 +1,1 @@
-export { lighten, lightest, darken, darkest } from './colorUtils'
+export { lighten, darken } from './colorUtils'

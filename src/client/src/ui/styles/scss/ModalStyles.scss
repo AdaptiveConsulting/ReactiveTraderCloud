@@ -1,0 +1,37 @@
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.7;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 600px;
+  height: 150px;
+  margin: auto;
+  background-color: white;
+  text-align: center;
+  z-index: 101;
+}
+
+.modal__header {
+  border-bottom: 1px solid #da4d2e;
+}
+
+.modal__header-title {
+  display: inline-block;
+  padding: 5px;
+}
+
+.modal__body {
+  padding: 5px;
+}

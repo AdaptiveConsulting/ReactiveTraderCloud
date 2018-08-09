@@ -1,0 +1,82 @@
+@import 'variables';
+$footer-background-color: #00a8cc;
+
+.footer__services {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+}
+
+.footer__service-label {
+  font-size: 14px;
+}
+
+.footer__status-indicator-wrapper {
+  position: absolute;
+  right: 16px;
+  height: 24px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  cursor: pointer;
+}
+
+.footer__icon--online,
+.footer__icon--offline {
+  margin-right: 5px;
+}
+
+.footer__icon--online {
+  color: $success-color;
+}
+
+.footer__icon--offline {
+  color: $error-color;
+}
+
+.footer__service-status-panel {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  width: 200px;
+  background-color: $footer-background-color;
+  z-index: 100;
+}
+
+.footer__connection-url {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10px;
+  margin: auto;
+  height: 20px;
+  font-size: 16px;
+  font-family: BrandonLight;
+}
+
+.footer__logo-container {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  right: 50px;
+  display: flex;
+  width: 250px;
+  height: 100%;
+  margin-top: 2px;
+}
+
+.footer__logo {
+  cursor: pointer;
+  flex: 1;
+}
+
+.footer__logo-openfin {
+  background: url('../images/openfin-logo.svg') no-repeat;
+  height: 70%;
+  margin-top: 5px;
+}
+
+.footer__logo-adaptive {
+  background: url('../images/adaptive-logo-dark.svg') no-repeat;
+}

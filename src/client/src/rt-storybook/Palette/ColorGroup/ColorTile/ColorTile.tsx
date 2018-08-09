@@ -23,9 +23,9 @@ const StyledColorTile = styled('div')<StyledProps>`
   align-items: center;
   justify-content: center;
   background-color: ${({ color }) => color};
-  transition: background-color ${({ theme }) => theme.animationSpeed.normal}ms;
+  transition: background-color ${({ theme }) => theme.animationSpeed.normal};
   color: ${({ theme, color }) => getBestTextColor(color, theme.text)};
-  transition: color ${({ theme }) => theme.animationSpeed.normal}ms;
+  transition: color ${({ theme }) => theme.animationSpeed.normal};
   h3 {
     font-size: ${({ theme }) => theme.fontSize.h3};
     margin: 2px;
@@ -33,7 +33,6 @@ const StyledColorTile = styled('div')<StyledProps>`
   h4 {
     margin: 2px;
     font-size: ${({ theme }) => theme.fontSize.h4};
-    text-transform: uppercase;
   }
 `
 
@@ -43,8 +42,8 @@ interface Props {
 }
 const ColorTile: React.SFC<Props> = ({ name, color }: Props) => (
   <StyledColorTile color={color}>
-    <h3>{name}</h3>
-    <h4>{color}</h4>
+    <h3>{name.toUpperCase()}</h3>
+    <h4>{color.toUpperCase()}</h4>
   </StyledColorTile>
 )
 

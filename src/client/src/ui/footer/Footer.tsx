@@ -8,19 +8,21 @@ import { ConnectionType, ServiceConnectionInfo } from 'system'
 
 import ServiceStatus from './ServiceStatus'
 
-// Linter got confused when this was inline within the string template
-const getTransform = (isExpanded: boolean, height: string) => `translate(0px, ${isExpanded ? `-${height}` : '0px'})`
+// const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
+// const OPENFIN_URL: string = 'http://openfin.co'
+
 interface IsExpandedProps {
   isExpanded: boolean
 }
 const FooterContainer = styled('div')<IsExpandedProps>`
   position: relative;
   width: 100%;
-  transition: transform ${({ theme }) => theme.animationSpeed.slow}ms;
-  transform: ${({ isExpanded, theme }) => getTransform(isExpanded, theme.footer.serviceStatus.height)};
+  transition: transform ${({ theme }) => theme.animationSpeed.slow};
+  transform: translate(
+    0px,
+    ${({ isExpanded, theme }) => (isExpanded ? '-' + theme.footer.serviceStatus.height : '0px')}
+  );
   will-change: transform;
-  height: ${({ theme: { footer } }) => footer.bar.height};
-  max-height: ${({ theme: { footer } }) => footer.bar.height};
 `
 
 interface IsConnectedProps {
@@ -48,7 +50,8 @@ interface IsExpandedProps {
 }
 const ExpandIcon = styled('i')<IsExpandedProps>`
   transform: rotate(${({ isExpanded }) => (isExpanded ? 180 : 0)}deg);
-  transition: transform ${({ theme }) => theme.animationSpeed.slow}ms;
+  transition: transform ${({ theme }) => theme.animationSpeed.slow};
+  will-change: transform;
 `
 
 const Padding = styled('div')`
@@ -56,8 +59,10 @@ const Padding = styled('div')`
 `
 
 const ServiceStatusContainer = styled('div')<IsExpandedProps>`
-  position: relative;
+  position: absolute;
+  top: 100%;
   height: ${({ theme: { footer } }) => footer.serviceStatus.height};
+  width: 100%;
 `
 
 export interface FooterProps {

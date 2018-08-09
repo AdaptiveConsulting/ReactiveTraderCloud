@@ -1,4 +1,4 @@
-import { THEME_ACTION_TYPES, ThemeActions } from './actions'
+import { ACTION_TYPES, ThemeActions } from './actions'
 import { Themes } from './constants'
 
 type State = Readonly<{
@@ -6,12 +6,12 @@ type State = Readonly<{
 }>
 
 const initialState: State = {
-  type: Themes.LIGHT_THEME
+  type: Themes.DARK_THEME
 }
 
 const theme = (state = initialState, action: ThemeActions): State => {
   switch (action.type) {
-    case THEME_ACTION_TYPES.TOGGLE_THEME:
+    case ACTION_TYPES.TOGGLE_THEME:
       return {
         ...state,
         type: state.type === Themes.DARK_THEME ? Themes.LIGHT_THEME : Themes.DARK_THEME
