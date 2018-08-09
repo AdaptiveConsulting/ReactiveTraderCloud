@@ -29,7 +29,7 @@ export const TileBaseStyle = styled('div')`
 `
 
 export const Icon = styled('i')<ColorProps>`
-  color: ${({ theme: { text }, color }) => (color && text[color]) || 'initial'};
+  color: ${({ theme: { text }, color }) => color && text[color]};
 `
 
 export const Button = styled('button')`

@@ -5,8 +5,7 @@ import { Button, ColorProps, Icon, TileBaseStyle } from '../Styled'
 
 export const TileNotificationStyle = styled(TileBaseStyle)<ColorProps>`
   color: ${({ theme: { text } }) => text.white};
-  background-color: ${({ theme: { palette }, backgroundColor }) =>
-    (backgroundColor && palette[backgroundColor].dark) || 'initial'};
+  background-color: ${({ theme: { palette }, backgroundColor }) => backgroundColor && palette[backgroundColor].dark};
   font-size: 13px;
   text-align: center;
   line-height: 1.5;
@@ -22,8 +21,7 @@ const TradeSymbol = styled('div')`
 `
 
 const CheckIcon = styled(Icon)<ColorProps>`
-  background-color: ${({ theme: { palette }, backgroundColor }) =>
-    (backgroundColor && palette[backgroundColor].dark) || 'initial'};
+  background-color: ${({ theme: { palette }, backgroundColor }) => backgroundColor && palette[backgroundColor].normal};
   border-radius: 50%;
   padding: 5px;
 `
@@ -34,8 +32,7 @@ const HeavyFont = styled('span')`
 
 const PillButton = styled(Button)<ColorProps>`
   color: ${({ theme: { text } }) => text.white};
-  background-color: ${({ theme: { palette }, backgroundColor }) =>
-    (backgroundColor && palette[backgroundColor].dark) || 'initial'};
+  background-color: ${({ theme: { palette }, backgroundColor }) => backgroundColor && palette[backgroundColor].normal};
   border-radius: 17px;
   padding: 8px 10px;
   font-weight: 900;
@@ -56,23 +53,23 @@ interface Props {
 }
 
 const TileNotification = ({ style, isWarning, symbols, tradeId, handleClick, children }: Props) => {
-  const backgroundColor = isWarning ? 'accentBad' : 'accentGood'
+  const baseColor = isWarning ? 'accentBad' : 'accentGood'
 
   return (
-    <TileNotificationStyle backgroundColor={backgroundColor} style={style}>
+    <TileNotificationStyle backgroundColor={baseColor} style={style}>
       <Flex direction="column" alignItems="center" justifyContent="space-between" height="100%">
         <TradeSymbol>
           {isWarning ? (
-            <CheckIcon backgroundColor={backgroundColor} className="fas fa-check" aria-hidden="true" />
+            <Icon color="white" className="fas fa-lg fa-exclamation-triangle" aria-hidden="true" />
           ) : (
-            <Icon backgroundColor={backgroundColor} className="fas fa-lg fa-exclamation-triangle" aria-hidden="true" />
+            <CheckIcon color="white" backgroundColor={baseColor} className="fas fa-check" aria-hidden="true" />
           )}
           <HeavyFont>{symbols}</HeavyFont>
         </TradeSymbol>
         {tradeId && <HeavyFont>Trade ID: {tradeId}</HeavyFont>}
         <Content>{children}</Content>
         {(handleClick && (
-          <PillButton backgroundColor={backgroundColor} onClick={handleClick}>
+          <PillButton backgroundColor={baseColor} onClick={handleClick}>
             Close
           </PillButton>
         )) || <div />}

@@ -10,6 +10,7 @@ const hoverColors = {
 
 export const TradeButton = styled('button')<{ direction: string }>`
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+  color: ${({ theme: { text } }) => text.textPrimary};
   border-radius: 3px;
   transition: background-color 0.2s ease;
   cursor: pointer;
@@ -23,6 +24,7 @@ export const TradeButton = styled('button')<{ direction: string }>`
 
   .spot-tile:hover &:hover {
     background-color: ${({ direction }) => hoverColors[direction]};
+    color: ${({ theme: { text } }) => text.white};
   }
 `
 
@@ -38,18 +40,15 @@ const DirectionLabel = styled(Box)`
 `
 
 const Big = styled(Box)`
-  color: ${({ theme: { text } }) => text.textPrimary};
   font-size: ${p => p.theme.fontSize.h4};
 `
 
 const Pip = styled(Box)`
-  color: ${({ theme: { text } }) => text.textPrimary};
   font-size: ${p => p.theme.fontSize.h2};
   margin: 0 2px;
 `
 
 const Tenth = styled(Box)`
-  color: ${({ theme: { text } }) => text.textPrimary};
   margin: 2px 0;
   align-self: flex-end;
 `
