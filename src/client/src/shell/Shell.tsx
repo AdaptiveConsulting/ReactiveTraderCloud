@@ -1,9 +1,9 @@
 import { withTheme } from 'emotion-theming'
 import React from 'react'
 import Transition from 'react-addons-css-transition-group'
+import styled from 'react-emotion'
 
 import { Theme } from 'rt-themes'
-import { styled } from 'rt-util'
 import StatusBar from 'ui/StatusBar'
 
 import Header from './components/Header'
@@ -65,16 +65,18 @@ class Shell extends React.Component<Props, State> {
 
         <ReconnectModal shouldShow={sessionExpired} reconnect={reconnect} />
 
-        <Transition
-          transitionName={`fade${theme.animationSpeed.slow}`}
-          transitionLeaveTimeout={theme.animationSpeed.slow}
-        >
-          {loaded || (
-            <SplashScreenContainer>
-              <SplashScreen />
-            </SplashScreenContainer>
-          )}
-        </Transition>
+        {false && (
+          <Transition
+            transitionName={`fade${theme.animationSpeed.slow}`}
+            transitionLeaveTimeout={theme.animationSpeed.slow}
+          >
+            {loaded || (
+              <SplashScreenContainer>
+                <SplashScreen />
+              </SplashScreenContainer>
+            )}
+          </Transition>
+        )}
       </ShellRoot>
     )
   }
@@ -86,8 +88,9 @@ const ShellRoot = styled('div')`
   position: absolute;
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => theme.text.primary};
-  font-family: ${({ theme }) => theme.fontFamily.primary};
+
+  background-color: ${({ theme }) => theme.shell.backgroundColor};
+  color: ${({ theme }) => theme.shell.textColor};
 `
 
 const BodyContainer = styled('div')`
@@ -95,6 +98,7 @@ const BodyContainer = styled('div')`
   display: flex;
   padding: 0.5rem 1rem;
   background-color: ${({ theme }) => theme.shell.backgroundColor};
+  color: ${({ theme }) => theme.shell.textColor};
 `
 
 const Body = styled('div')`

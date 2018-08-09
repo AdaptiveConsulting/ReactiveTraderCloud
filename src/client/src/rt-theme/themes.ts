@@ -46,8 +46,23 @@ export function createTheme({ primary, secondary }: PaletteMap, accents: Palette
     secondary,
     accents,
 
-    backgroundColor: primary.base,
+    backgroundColor: primary[1],
     textColor: secondary.base,
+
+    shell: {
+      backgroundColor: primary[1],
+      textColor: secondary.base
+    },
+
+    component: {
+      backgroundColor: primary.base,
+      textColor: secondary.base
+    },
+
+    header: {
+      backgroundColor: primary.base,
+      textColor: secondary[2]
+    },
 
     button: {
       backgroundColor: primary.base,

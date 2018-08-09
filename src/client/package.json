@@ -92,6 +92,7 @@
     "redux-actions": "2.3.2",
     "redux-observable": "1.0.0-alpha.3",
     "reselect": "3.0.1",
+    "ress": "^1.2.2",
     "rxjs": "6.1.0",
     "rxjs-spy": "^7.0.1",
     "tinycolor2": "^1.4.1",

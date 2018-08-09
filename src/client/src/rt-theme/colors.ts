@@ -80,7 +80,11 @@ export const offblack = createPalette({
   base: rgb(85, 93, 112),
   // We can provide additional shades or override
   // the generated shades.
-  L25: mix(0.25, white.base, rgb(85, 93, 112))
+  L25: mix(0.25, white.base, rgb(85, 93, 112)),
+  // We are overriding the value for D4 due to
+  // insuffcient contrast ratio and inconsistency
+  // with the designers intent.
+  D4: rgb(39, 45, 58)
 })
 
 export const brand = createPalette({
@@ -127,7 +131,7 @@ export const light: PaletteMap = {
 export const dark: PaletteMap = {
   primary: {
     base: offblack.D3,
-    1: offblack.D1,
+    1: offblack.D4,
     2: offblack.base,
     3: offblack.D1,
     4: offblack.D7
