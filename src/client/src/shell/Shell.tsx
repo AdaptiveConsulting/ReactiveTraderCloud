@@ -41,6 +41,8 @@ class Shell extends React.Component<Props, State> {
     const { loaded, connected } = this.props
 
     if (!loaded && connected) {
+      // In the event we connected but have not resolved all services,
+      // dismiss loader and handle error state … somewhere, not here … 👴 get off my lawn!
       setTimeout(() => this.setState({ loaded: true }), 500)
     }
   }
@@ -65,7 +67,7 @@ class Shell extends React.Component<Props, State> {
 
         <ReconnectModal shouldShow={sessionExpired} reconnect={reconnect} />
 
-        {false && (
+        {
           <Transition
             transitionName={`fade${theme.animationSpeed.slow}`}
             transitionLeaveTimeout={theme.animationSpeed.slow}
@@ -76,7 +78,7 @@ class Shell extends React.Component<Props, State> {
               </SplashScreenContainer>
             )}
           </Transition>
-        )}
+        }
       </ShellRoot>
     )
   }
