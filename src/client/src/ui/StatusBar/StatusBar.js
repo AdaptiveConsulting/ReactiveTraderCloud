@@ -48,16 +48,14 @@ class StatusBar extends Component {
           </Body>
 
           <ServiceList>
-            {_.map(SERVICES, ({ serviceType }) => ({ serviceType, ...serviceStatus[serviceType] })).map(
-              (service, index) => (
-                <ThemeProvider
-                  key={service.serviceType}
-                  theme={theme => theme.button[service.isConnected ? 'good' : mode === 'connecting' ? 'aware' : 'bad']}
-                >
-                  <Service service={serviceStatus[service.serviceType] || service} index={index} />
-                </ThemeProvider>
-              )
-            )}
+            {_.map(SERVICES, service => serviceStatus[service.serviceType] || service).map((service, index) => (
+              <ThemeProvider
+                key={service.serviceType}
+                theme={theme => theme.button[service.isConnected ? 'good' : mode === 'connecting' ? 'aware' : 'bad']}
+              >
+                <Service service={service} index={index} />
+              </ThemeProvider>
+            ))}
           </ServiceList>
         </Root>
       </ThemeProvider>
