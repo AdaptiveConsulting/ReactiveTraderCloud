@@ -5,7 +5,7 @@ import { ApplicationEpic } from '../../../ApplicationEpic'
 import { applicationConnected } from '../../../ui/connectionStatus'
 import { SpotTileActions } from '../actions'
 
-function createTrade(msg, price) {
+function createTrade(msg: any, price: any) {
   const direction = msg.amount > 0 ? Direction.Sell : Direction.Buy
   const notional = Math.abs(msg.amount)
 

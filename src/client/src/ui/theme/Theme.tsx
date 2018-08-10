@@ -1,6 +1,6 @@
-import { ThemeProvider } from 'emotion-theming'
 import React from 'react'
 
+import { ThemeProvider } from 'rt-theme'
 import { themes } from 'rt-theme'
 import { darkTheme, lightTheme } from 'rt-themes'
 import { Themes } from 'shell/theme/constants'
@@ -16,11 +16,7 @@ export interface Props {
 
 const Theme: React.SFC<Props> = ({ type, children }) => (
   <ThemeProvider
-    theme={
-      type === Themes.DARK_THEME
-        ? { ...darkTheme(), ...themes.dark }
-        : { ...lightTheme(), ...themes.light }
-    }
+    theme={type === Themes.DARK_THEME ? { ...darkTheme(), ...themes.dark } : { ...lightTheme(), ...themes.light }}
     children={children}
   />
 )
