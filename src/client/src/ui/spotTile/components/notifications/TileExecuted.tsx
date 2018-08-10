@@ -40,7 +40,8 @@ const TileExecuted: React.SFC<Props> = ({ direction, dealtCurrency, rate, notion
   return (
     <React.Fragment>
       You {directionText[direction]} <InverseFont>{dealtText}</InverseFont> at a rate of{' '}
-      <InverseFont>{rate}</InverseFont> for <HeavyItalicsFont>{counterText}</HeavyItalicsFont> settling{'  '}
+      <InverseFont>{rate}</InverseFont> for <HeavyItalicsFont>{counterText}</HeavyItalicsFont> settling
+      {'  '}
       <HeavyFont>{formattedDate}.</HeavyFont>
     </React.Fragment>
   )

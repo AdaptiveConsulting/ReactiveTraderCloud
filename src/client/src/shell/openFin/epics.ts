@@ -1,3 +1,5 @@
 import { combineEpics } from 'redux-observable'
 
-export const openfinEpic = combineEpics()
+import { openLinkWithOpenFinEpic } from './epics/openLink'
+
+export const openfinEpic = combineEpics(openLinkWithOpenFinEpic)

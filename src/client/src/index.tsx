@@ -1,3 +1,5 @@
+import 'ress'
+
 import { parse } from 'query-string'
 import { run } from './notificationBootstrapper'
 

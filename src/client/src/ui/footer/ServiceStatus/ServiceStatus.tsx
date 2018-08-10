@@ -28,6 +28,7 @@ const ServiceName = styled('p')`
   margin: 0px;
   margin-bottom: 6px;
   font-size: ${({ theme }) => theme.footer.serviceStatus.fontSize};
+  text-transform: capitalize;
 `
 
 const NodeCount = styled('p')`
