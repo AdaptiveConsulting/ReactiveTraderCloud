@@ -10,27 +10,26 @@ const TileBookingStyle = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3;
 `
 
 const BookingPill = styled(Flex)`
   background-color: ${({ theme: { palette } }) => palette.accentPrimary.normal};
-  padding: 10px 14px;
+  padding: 0.625rem 0.875rem;
   border-radius: 17px;
 
   box-shadow: 0 0 30px ${({ theme: { palette } }) => palette.accentPrimary.normal},
-    0 0 10px ${({ theme: { palette } }) => palette.accentPrimary.dark};
+    0 0 0.625rem ${({ theme: { palette } }) => palette.accentPrimary.dark};
 
   .svg-icon {
-    padding-right: 10px;
+    padding-right: 0.625rem;
     fill: ${({ theme: { text } }) => text.white};
   }
 `
 
 const BookingStatus = styled('span')`
-  margin-left: 6px;
+  margin-left: 0.375rem;
   color: ${({ theme: { text } }) => text.white};
-  font-size: 13px;
+  font-size: 0.8125rem;
 `
 interface Props {
   show: boolean

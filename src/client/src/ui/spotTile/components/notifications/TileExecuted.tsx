@@ -16,7 +16,7 @@ const InverseFont = styled(HeavyFont)`
   background-color: ${({ theme: { text } }) => text.white};
   color: ${({ theme: { palette } }) => palette.accentGood.normal};
   border-radius: 2px;
-  padding: 0px 1px;
+  padding: 0 0.0625rem;
 `
 
 interface Props {

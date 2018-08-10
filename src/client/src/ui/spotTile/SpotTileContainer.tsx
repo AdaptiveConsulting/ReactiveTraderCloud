@@ -28,7 +28,7 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
   }
 
   render() {
-    const { id, currencyPair, spotTileData, onPopoutClick, onNotificationDismissedClick, tornOff } = this.props
+    const { id, currencyPair, spotTileData, onPopoutClick, onNotificationDismissed, tornOff } = this.props
     if (!spotTileData || !spotTileData.price || !currencyPair) {
       return null
     }
@@ -38,7 +38,7 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
         currencyPair={currencyPair}
         spotTileData={spotTileData}
         onPopoutClick={onPopoutClick}
-        onNotificationDismissedClick={onNotificationDismissedClick}
+        onNotificationDismissed={onNotificationDismissed}
         executeTrade={this.executeTrade}
         tornOff={tornOff}
       />
@@ -66,7 +66,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
   onMount: () => dispatch(SpotTileActions.showSpotTile(ownProps.id)),
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
   displayCurrencyChart: () => dispatch(SpotTileActions.displayCurrencyChart(ownProps.id)),
-  onNotificationDismissedClick: () => dispatch(SpotTileActions.dismissNotification(ownProps.id))
+  onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id))
 })
 
 const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({

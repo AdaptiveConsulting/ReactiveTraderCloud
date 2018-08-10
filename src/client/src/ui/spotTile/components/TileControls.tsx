@@ -5,12 +5,11 @@ import { Environment } from '../../../system'
 
 const TileControlsStyle = styled('div')`
   position: absolute;
-  right: 0px;
-  top: 0px;
-  z-index: 3;
+  right: 0;
+  top: 0;
   opacity: 0;
   transition: opacity 0.2s;
-  padding: 0px 6px;
+  padding: 0 0.375rem;
 
   .spot-tile-container:hover & {
     opacity: 0.75;

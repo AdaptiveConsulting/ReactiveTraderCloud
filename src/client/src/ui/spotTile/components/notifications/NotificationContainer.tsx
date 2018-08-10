@@ -9,15 +9,10 @@ interface Props {
   isPriceStale?: boolean
   lastTradeExecutionStatus?: LastTradeExecutionStatus | null
   currencyPair: CurrencyPair
-  onNotificationDismissedClick: () => void
+  onNotificationDismissed: () => void
 }
 
-const hasNotification = (tradeStatus: LastTradeExecutionStatus) => {
-  if (tradeStatus.hasError || tradeStatus.trade) {
-    return true
-  }
-  return false
-}
+const hasNotification = (tradeStatus: LastTradeExecutionStatus) => tradeStatus.hasError || tradeStatus.trade
 
 export default class NotificationContainer extends PureComponent<Props> {
   render() {
@@ -29,7 +24,7 @@ export default class NotificationContainer extends PureComponent<Props> {
   }
 
   private renderNotifications = () => {
-    const { lastTradeExecutionStatus, currencyPair, onNotificationDismissedClick, isPriceStale } = this.props
+    const { lastTradeExecutionStatus, currencyPair, onNotificationDismissed, isPriceStale } = this.props
     const symbols = `${currencyPair.base}/${currencyPair.terms}`
     if (isPriceStale) {
       return (style: React.CSSProperties) => (
@@ -61,7 +56,7 @@ export default class NotificationContainer extends PureComponent<Props> {
             isWarning={false}
             symbols={symbols}
             tradeId={tradeId}
-            handleClick={onNotificationDismissedClick}
+            handleClick={onNotificationDismissed}
           >
             <TileExecuted
               direction={direction}
@@ -81,7 +76,7 @@ export default class NotificationContainer extends PureComponent<Props> {
             isWarning={true}
             symbols={symbols}
             tradeId={tradeId}
-            handleClick={onNotificationDismissedClick}
+            handleClick={onNotificationDismissed}
           >
             Your trade has been rejected
           </TileNotification>
