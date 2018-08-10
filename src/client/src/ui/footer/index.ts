@@ -1,3 +1,3 @@
-export { footerReducer } from './reducer'
-export { linkEpic } from './epics'
-export { FooterActions, FOOTER_ACTION_TYPES } from './actions'
+import Footer from './FooterContainer'
+
+export default Footer

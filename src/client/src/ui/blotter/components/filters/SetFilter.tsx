@@ -1,6 +1,7 @@
-import { ColDef, Column, GridApi, InMemoryRowModel, RowNode } from 'ag-grid'
+import { ClientSideRowModel, ColDef, Column, GridApi, ProcessRowParams, RowNode } from 'ag-grid'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import './filterOverrides'
 
 const ALL = 'all'
 
@@ -8,8 +9,8 @@ interface SetFilterProps {
   api: GridApi
   colDef: ColDef
   column: Column
-  rowModel: InMemoryRowModel
-  valueGetter: (node) => any
+  rowModel: ClientSideRowModel
+  valueGetter: (node: RowNode) => any
   filterChangedCallback: () => any
   reactContainer: any
 }
@@ -59,7 +60,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     return uniquOptions.length + 1 /*accounting for All option*/ !== selectedOptions.length || !allOptionsSelected
   }
 
-  doesFilterPass(params) {
+  doesFilterPass(params: ProcessRowParams) {
     const value = this.props.valueGetter(params.node)
     const doesTextFilterPass = this.state.text
       .toLowerCase()
@@ -84,11 +85,11 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     return model
   }
 
-  setModel(model) {
+  setModel(model: { value: string }) {
     this.setState({ text: model ? model.value : '' })
   }
 
-  afterGuiAttached(params) {
+  afterGuiAttached() {
     //this.hidePopup = params.hidePopup
     this.focus()
   }
@@ -102,8 +103,8 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     })
   }
 
-  onTextChange = event => {
-    const newValue = event.target.value.toLowerCase()
+  onTextChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const newValue = event.currentTarget.value.toLowerCase()
 
     const setFilterOptions = { ...this.state.selectedValueSet }
     const keys = Object.keys(setFilterOptions)
@@ -118,7 +119,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     this.setState({ selectedFreeText: newValue, selectedValueSet: setFilterOptions }, () => this.updateFilter())
   }
 
-  onOptionSelectChange = (event, value: string = ALL) => {
+  onOptionSelectChange = (event: React.FormEvent<HTMLInputElement>, value: string = ALL) => {
     const target: HTMLInputElement = event.target as HTMLInputElement
     const updatedValueSet = { ...this.state.selectedValueSet }
 
@@ -220,7 +221,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
       return this.createOptionItem(value, value)
     })
     return (
-      <div className="filter-container" ref={el => this.setupContainer(el)}>
+      <div className="filter-container">
         <div className="filter-container__tab">
           <div className="filter-container__tab-icon" />
         </div>

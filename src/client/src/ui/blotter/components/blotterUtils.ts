@@ -2,7 +2,6 @@ import { ColDef } from 'ag-grid'
 import numeral from 'numeral'
 import { Trade, TradeStatus } from 'rt-types'
 import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
-import './filters/filterOverrides.ts'
 import SetFilter from './filters/SetFilter'
 
 const currencyIconLookup = {
@@ -37,6 +36,8 @@ const getStatusCellClass = (trade: Trade) => {
     return 'rt-blotter__cell-rejected'
   } else if (trade.status === TradeStatus.Pending) {
     return 'rt-blotter__cell-pending'
+  } else if (trade.status === TradeStatus.Done) {
+    return 'rt-blotter__cell-done'
   }
   return 'capitalise'
 }
@@ -52,7 +53,7 @@ const getStatusIndicatorClass = (trade: Trade) => {
     default:
       console.log('unkown trade status')
   }
-  return null
+  return ''
 }
 
 export const DEFAULT_COLUMN_DEFINITION: ColDef = {
@@ -106,13 +107,13 @@ export const columnDefinitions: ColDef[] = [
     headerName: 'Trade ID',
     field: TRADE_ID,
     width: 100,
-    filter: 'number'
+    filter: 'agNumberColumnFilter'
   },
   {
     colId: STATUS,
     headerName: 'Status',
     field: STATUS,
-    width: 105,
+    width: 110,
     cellClass: ({ data }) => getStatusCellClass(data),
     filterFramework: SetFilter
   },
@@ -121,7 +122,7 @@ export const columnDefinitions: ColDef[] = [
     headerName: 'Date',
     field: TRADE_DATE,
     cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
-    width: 170,
+    width: 130,
     suppressFilter: true
   },
   {
@@ -135,14 +136,14 @@ export const columnDefinitions: ColDef[] = [
     colId: SYMBOL,
     headerName: 'CCYCCY',
     field: SYMBOL,
-    width: 105,
+    width: 110,
     filterFramework: SetFilter
   },
   {
     colId: DEALT_CURRENCY,
     headerName: 'Dealt CCY',
     field: DEALT_CURRENCY,
-    width: 105,
+    width: 110,
     filterFramework: SetFilter
   },
   {
@@ -152,38 +153,38 @@ export const columnDefinitions: ColDef[] = [
     cellRenderer: numericCellRenderer,
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
-    width: 140,
-    filter: 'number'
+    width: 120,
+    filter: 'agNumberColumnFilter'
   },
   {
     colId: SPOT_RATE,
     headerName: 'Rate',
     field: SPOT_RATE,
-    width: 120,
+    width: 100,
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
-    filter: 'number'
+    filter: 'agNumberColumnFilter'
   },
   {
     colId: VALUE_DATE,
     headerName: 'Value Date',
     field: VALUE_DATE,
     cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
-    width: 130,
+    width: 120,
     suppressFilter: true
   },
   {
     colId: TRADER_NAME,
     field: TRADER_NAME,
     headerName: 'Trader',
-    width: 105,
+    width: 110,
     filterFramework: SetFilter
   },
   {
     colId: 'empty',
     field: 'empty',
     headerName: '',
-    width: 105,
+    width: 80,
     suppressSizeToFit: false,
     suppressFilter: true
   }
