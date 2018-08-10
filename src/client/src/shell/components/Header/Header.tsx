@@ -1,35 +1,32 @@
 import React from 'react'
-import Ink from 'react-ink'
+import styled from 'react-emotion'
 
 import { ThemeSwitcher } from 'rt-components'
-import { styled } from 'rt-util'
 import { Themes } from 'shell/theme'
+import Logo from './Logo'
 
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
 
-const HeaderBar = styled('div')`
+const Root = styled('div')`
   width: 100%;
-  background-color: ${({ theme }) => theme.header.backgroundColor};
-  color: ${({ theme }) => theme.header.textColor};
-  height: 55px;
-  min-height: 55px;
+  max-width: 100%;
+
+  min-height: 3.5rem;
+  max-height: 3.5rem;
+
+  padding: 0 1rem;
+
   display: flex;
   align-items: center;
-  padding-right: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+  background-color: ${({ theme }) => theme.header.backgroundColor};
+  color: ${({ theme }) => theme.header.textColor};
+
+  position: relative;
   z-index: 1;
 `
 
-const Logo = styled('div')`
-  position: relative;
-  background-image: url(${({ theme }) => theme.header.logo});
-  background-repeat: no-repeat;
-  width: 190px;
-  height: 100%;
-  cursor: pointer;
-`
-
-const Padding = styled('div')`
+const Fill = styled('div')`
   flex: 1;
 `
 
@@ -55,13 +52,16 @@ class Header extends React.Component<Props> {
     const { toggleTheme, theme } = this.props
 
     return (
-      <HeaderBar>
-        <Logo onClick={this.openLink}>
-          <Ink />
-        </Logo>
-        <Padding />
+      <Root>
+        <Logo
+          size={2}
+          // Has no properties in common with React.SFC? 🤔
+          // onClick={this.openLink}
+        />
+
+        <Fill />
         <ThemeSwitcher toggleTheme={toggleTheme} theme={theme} />
-      </HeaderBar>
+      </Root>
     )
   }
 }
