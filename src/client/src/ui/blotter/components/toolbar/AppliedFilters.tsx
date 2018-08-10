@@ -15,7 +15,7 @@ const FilterField = styled('div')`
   align-items: center;
   font-size: 11px;
   text-transform: uppercase;
-  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+  background-color: ${({ theme: { background } }) => background.backgroundTertiary};
   margin-left: 8px;
   border-radius: 3px;
   height: 20px;
@@ -56,7 +56,7 @@ export default class AppliedFilters extends React.Component<AppliedFiltersProps,
         return (
           <FilterField key={colDef.field}>
             <FilterName>{colDef.headerName}</FilterName>
-            <FilterIcon className="fa fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
+            <FilterIcon className="fas fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
           </FilterField>
         )
       })

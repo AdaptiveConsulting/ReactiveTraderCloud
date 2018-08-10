@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Popout = () => (
+const PopoutIcon = () => (
   <svg
     width="13px"
     height="12px"
@@ -21,4 +21,4 @@ const Popout = () => (
   </svg>
 )
 
-export default Popout
+export default PopoutIcon

@@ -36,10 +36,10 @@ const BlotterStatus = styled('div')`
 `
 
 const icons = {
-  menu: '<i class="fa fa-filter" aria-hidden="true" />',
-  filter: '<i class="fa fa-filter" aria-hidden="true" />',
-  sortAscending: '<i class="fa fa-long-arrow-down" aria-hidden="true" />',
-  sortDescending: '<i class="fa fa-long-arrow-up" aria-hidden="true" />'
+  menu: '<i class="fas fa-filter" aria-hidden="true" />',
+  filter: '<i class="fas fa-filter" aria-hidden="true" />',
+  sortAscending: '<i class="fas fa-long-arrow-alt-up" aria-hidden="true" />',
+  sortDescending: '<i class="fas fa-long-arrow-alt-down" aria-hidden="true" />'
 }
 
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {

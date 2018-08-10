@@ -107,7 +107,8 @@ export default styled('div')`
     .filter-container__checkbox-container {
       display: flex;
       align-items: center;
-      padding: 4px 10px;
+      padding: 8px 16px;
+      font-size: 11px;
 
       &:hover {
         background-color: ${({ theme: { background } }) => background.backgroundTertiary};
@@ -118,8 +119,8 @@ export default styled('div')`
       border-bottom: 2px solid ${({ theme: { text } }) => text.textMeta};
     }
 
-    input,
-    select {
+    .filter-container__free-text-input,
+    .filter-container__select {
       margin: 10px;
       font-size: 11px;
       padding: 6px;
@@ -135,8 +136,16 @@ export default styled('div')`
       }
     }
 
+    option {
+      padding: 8px 10px;
+    }
+
+    option:hover {
+      background-color: ${({ theme: { background } }) => background.backgroundTertiary};
+    }
+
     input[type='checkbox' i] {
-      margin: 0px 4px;
+      margin-right: 8px;
       cursor: pointer;
     }
 

@@ -65,7 +65,7 @@ const blotterProps: BlotterProps = {
 
 stories.add('Default', () => (
   <Story>
-    <div style={{ height: '460px' }}>
+    <div style={{ height: '460px', width: '100%' }}>
       <Blotter {...blotterProps} />
     </div>
   </Story>
@@ -73,7 +73,7 @@ stories.add('Default', () => (
 
 stories.add('No Rows', () => (
   <Story>
-    <div style={{ height: '460px' }}>
+    <div style={{ height: '460px', width: '100%' }}>
       <Blotter {...blotterProps} rows={[]} />
     </div>
   </Story>

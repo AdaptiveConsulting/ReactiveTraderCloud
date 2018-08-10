@@ -1,6 +1,7 @@
 import { GridApi } from 'ag-grid'
 import React, { Component } from 'react'
 import { flexStyle } from 'rt-components'
+import { PopoutIcon } from 'rt-components'
 import { styled } from 'rt-util'
 import { columnDefinitions } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
@@ -25,6 +26,11 @@ const BlotterHeaderStyle = styled('div')`
 const BlotterControls = styled('div')`
   cursor: pointer;
   color: ${({ theme: { text } }) => text.textSecondary};
+
+  .svg-icon {
+    fill: ${({ theme: { text } }) => text.textMeta};
+    stroke: ${({ theme: { text } }) => text.textMeta};
+  }
 `
 
 const BlotterRight = styled('div')`
@@ -58,8 +64,8 @@ export default class BlotterHeader extends Component<Props, State> {
             columnDefinitions={columnDefinitions}
           />
           {canPopout && (
-            <BlotterControls>
-              <i className="glyphicon glyphicon-new-window" onClick={onPopoutClick} />
+            <BlotterControls onClick={onPopoutClick}>
+              <PopoutIcon />
             </BlotterControls>
           )}
         </BlotterRight>

@@ -68,7 +68,7 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
     return (
       <QuickFilterStyle>
         <QuickFilterIcon onClick={this.quickFilterFocus}>
-          <i className="fa fa-filter" aria-hidden="true" />
+          <i className="fas fa-filter" aria-hidden="true" />
         </QuickFilterIcon>
         <QuickFilterInput
           innerRef={this.quickFilterInput}
@@ -78,7 +78,7 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
           onChange={(event: React.FormEvent<any>) => this.quickFilterChangeHandler(event)}
         />
         <QuickFilterClearIcon onClick={this.removeQuickFilter}>
-          {this.props.isFilterApplied && <i className="fa fa-times" />}
+          {this.props.isFilterApplied && <i className="fas fa-times" />}
         </QuickFilterClearIcon>
       </QuickFilterStyle>
     )
