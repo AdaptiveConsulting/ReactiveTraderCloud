@@ -66,16 +66,17 @@ export const ServiceName = styled.div`
 
 export const NodeCount = styled.div`
   display: block;
+  margin-bottom: -0.5rem;
+  min-height: 1rem;
+  max-height: 1rem;
+  line-height: 1rem;
   font-size: 0.5rem;
-  min-height: 1.25rem;
-  max-height: 1.25rem;
-  line-height: 1.25rem;
   opacity: 0.6;
 `
 
 export const ServiceRoot = styled.div`
-  min-height: 3.5rem;
-  max-height: 3.5rem;
+  min-height: 4.5rem;
+  max-height: 4.5rem;
   padding: 0.5rem 1rem;
 
   display: flex;

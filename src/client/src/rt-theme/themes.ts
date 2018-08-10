@@ -103,26 +103,6 @@ export function createTheme({ primary, secondary }: PaletteMap, accents: Palette
           backgroundColor: disabled
         }
       }))
-    },
-
-    statusBar: {
-      backgroundColor: secondary.base,
-      textColor: primary.base,
-
-      connecting: {
-        backgroundColor: accents.aware.base,
-        textColor: colors.light.primary.base
-      },
-
-      connected: {
-        backgroundColor: accents.good.base,
-        textColor: colors.light.primary.base
-      },
-
-      disconnected: {
-        backgroundColor: accents.bad.base,
-        textColor: colors.light.primary.base
-      }
     }
   }
 
