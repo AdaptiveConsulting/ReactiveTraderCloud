@@ -39,7 +39,7 @@ stories.add('Price movement', () => {
 
 stories.add('Notional input', () => (
   <Story>
-    <div style={{ padding: '24px' }}>
+    <div style={{ padding: '1.5rem' }}>
       <NotionalInput notional="1,000,000" currencyPairSymbol="USD" updateNotional={action('Update notional')} />
     </div>
   </Story>
@@ -47,7 +47,7 @@ stories.add('Notional input', () => (
 
 stories.add('Delivery date', () => (
   <Story>
-    <div style={{ padding: '24px' }}>
+    <div style={{ padding: '1.5rem' }}>
       <DeliveryDate>04 AUG</DeliveryDate>
     </div>
   </Story>
@@ -55,7 +55,7 @@ stories.add('Delivery date', () => (
 
 stories.add('Symbol', () => (
   <Story>
-    <div style={{ padding: '24px' }}>
+    <div style={{ padding: '1.5rem' }}>
       <TileSymbol>USD/JPY</TileSymbol>
     </div>
   </Story>
@@ -161,7 +161,7 @@ stories.add('Executed', () => (
       }}
     >
       <TileSwitch
-        onNotificationDismissedClick={onNotificationDismissedClick}
+        onNotificationDismissed={onNotificationDismissedClick}
         currencyPair={currencyPair}
         spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeExecuted }}
         executeTrade={executeTrade}
@@ -180,7 +180,7 @@ stories.add('Rejected', () => (
       }}
     >
       <TileSwitch
-        onNotificationDismissedClick={onNotificationDismissedClick}
+        onNotificationDismissed={onNotificationDismissedClick}
         currencyPair={currencyPair}
         spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeRejected }}
         executeTrade={executeTrade}
@@ -213,7 +213,7 @@ stories.add('Switch', () => {
         }}
       >
         <TileSwitch
-          onNotificationDismissedClick={onNotificationDismissedClick}
+          onNotificationDismissed={onNotificationDismissedClick}
           currencyPair={currencyPair}
           spotTileData={{
             ...spotTileData,

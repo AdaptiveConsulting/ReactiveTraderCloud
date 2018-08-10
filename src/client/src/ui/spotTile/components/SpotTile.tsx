@@ -16,7 +16,7 @@ const SpotTileStyle = styled(TileBaseStyle)`
 const SpotTileWrapper = styled('div')`
   position: relative;
   min-height: 150px;
-  overflow: hidden;
+  height: 100%;
 `
 
 export interface Props {
@@ -47,7 +47,6 @@ export default class SpotTile extends PureComponent<Props, State> {
 
     return (
       <SpotTileWrapper className="spot-tile-container">
-        {children}
         <SpotTileStyle className="spot-tile">
           <Flex direction="column" justifyContent="space-between" height="100%">
             <Flex alignItems="center" justifyContent="space-between">
@@ -62,6 +61,7 @@ export default class SpotTile extends PureComponent<Props, State> {
             />
           </Flex>
         </SpotTileStyle>
+        {children}
       </SpotTileWrapper>
     )
   }

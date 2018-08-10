@@ -7,7 +7,7 @@ export interface ColorProps {
 
 export const DeliveryDate = styled('div')`
   color: ${({ theme: { text } }) => text.textMeta};
-  font-size: 10px;
+  font-size: 0.625rem;
 
   .spot-tile:hover & {
     color: ${({ theme: { text } }) => text.textPrimary};
@@ -16,7 +16,7 @@ export const DeliveryDate = styled('div')`
 
 export const TileSymbol = styled('div')`
   color: ${({ theme: { text } }) => text.textPrimary};
-  font-size: 13px;
+  font-size: 0.8125rem;
 `
 
 export const TileBaseStyle = styled('div')`
@@ -24,7 +24,7 @@ export const TileBaseStyle = styled('div')`
   height: 100%;
   width: 100%;
   border-radius: 3px;
-  padding: 20px;
+  padding: 1.25rem;
   box-sizing: border-box;
 `
 
@@ -35,13 +35,4 @@ export const Icon = styled('i')<ColorProps>`
 export const Button = styled('button')`
   font-family: Lato;
   border: none;
-`
-
-export const Circle = styled('div')`
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `

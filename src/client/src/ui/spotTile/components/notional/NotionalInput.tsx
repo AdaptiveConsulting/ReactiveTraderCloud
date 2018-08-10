@@ -16,8 +16,8 @@ const MAX_NOTIONAL_VALUE = 1000000000
 
 const CurrencyPairSymbol = styled('div')`
   color: ${({ theme: { text } }) => text.textMeta};
-  font-size: 10px;
-  padding-right: 6px;
+  font-size: 0.625rem;
+  padding-right: 0.375rem;
 `
 
 export const Input = styled('input')`
@@ -26,7 +26,7 @@ export const Input = styled('input')`
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0);
   outline: none;
-  font-size: 12px;
+  font-size: 0.75rem;
   width: 70px;
   transition: border-bottom 0.2s ease;
 

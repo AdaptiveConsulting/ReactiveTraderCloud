@@ -16,7 +16,7 @@ export const TradeButton = styled('button')<{ direction: string }>`
   cursor: pointer;
   border: none;
   outline: none;
-  padding: 10px 24px;
+  padding: 0.5rem 1.5rem;
 
   .spot-tile:hover & {
     background-color: ${({ theme: { background } }) => background.backgroundPrimary};
@@ -35,8 +35,8 @@ const Box = styled('div')`
 
 const DirectionLabel = styled(Box)`
   color: ${({ theme: { text } }) => text.textMeta};
-  margin: 0 0 2px 0;
-  font-size: 10px;
+  margin: 0 0 0.125rem 0;
+  font-size: 0.625rem;
 `
 
 const Big = styled(Box)`
@@ -45,11 +45,11 @@ const Big = styled(Box)`
 
 const Pip = styled(Box)`
   font-size: ${p => p.theme.fontSize.h2};
-  margin: 0 2px;
+  margin: 0 0.125rem;
 `
 
 const Tenth = styled(Box)`
-  margin: 2px 0;
+  margin: 0.125rem 0;
   align-self: flex-end;
 `
 const defaultProps: PriceButtonProps = {

@@ -1,5 +1,4 @@
 import { Palette } from 'rt-themes/palette'
-import { darkest, lightest } from 'rt-themes/utils'
 
 const textPrimary = '#444C5F'
 const textSecondary = '#737987'
@@ -13,10 +12,10 @@ const text = (palette: Palette) => ({
   textSecondary,
   textTertiary,
   white,
+  dark: palette.secondary[3],
+  light: palette.primary[0],
   primary: palette.secondary[3],
-  secondary: palette.primary[0],
-  dark: darkest(palette.secondary[3], palette.primary[0]),
-  light: lightest(palette.secondary[3], palette.primary[0])
+  secondary: palette.primary[0]
 })
 
 export default text
