@@ -1,1 +1,1 @@
-export { notionalsReducer } from './notionalReducer'
+export { default } from './NotionalInput'

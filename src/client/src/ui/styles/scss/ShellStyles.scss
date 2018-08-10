@@ -81,14 +81,6 @@
   display: flex;
   flex-direction: row;
 }
-.shell__workspace {
-  flex-grow: 1;
-  height: auto; // $workspace-height;
-  overflow-y: auto;
-  overflow-x: hidden;
-  width: $workspace-width;
-  order: 1;
-}
 
 .shell__blotter {
   height: 100%;

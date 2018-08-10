@@ -1,7 +1,7 @@
-import classnames from 'classnames'
 import numeral from 'numeral'
-import React from 'react'
-import { CurrencyPair } from 'rt-types'
+import React, { PureComponent } from 'react'
+import { Flex } from 'rt-components'
+import { styled } from 'rt-util'
 import { convertNotionalShorthandToNumericValue, hasShorthandInput } from './utils'
 
 const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -11,105 +11,110 @@ const CHAR_CODE_DOT = 46
 const CHAR_CODE_0 = 48
 const CHAR_CODE_9 = 57
 const CHAR_CODE_UNIT_SEP = 31
-const SHORTCUT_CHAR_CODES = [75, 77, 107, 109] // K, M, k, m
-
+const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]
 const MAX_NOTIONAL_VALUE = 1000000000
 
-export interface NotionalInputProps {
-  className: string
-  notional: number
-  currencyPair: CurrencyPair
-  onNotionalInputChange: (value: number) => void
+const CurrencyPairSymbol = styled('div')`
+  color: ${({ theme: { text } }) => text.textMeta};
+  font-size: 10px;
+  padding-right: 6px;
+`
+
+export const Input = styled('input')`
+  color: ${({ theme: { text } }) => text.textPrimary};
+  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+  outline: none;
+  font-size: 12px;
+  width: 70px;
+  transition: border-bottom 0.2s ease;
+
+  .spot-tile:hover & {
+    border-color: ${({ theme: { text } }) => text.textMeta};
+  }
+
+  .spot-tile:hover &:focus {
+    border-color: ${({ theme: { palette } }) => palette.accentPrimary.normal};
+  }
+`
+
+interface Props {
+  currencyPairSymbol: string
+  notional: string
+  updateNotional: (notional: string) => void
 }
 
-export default class NotionalInput extends React.Component<NotionalInputProps, {}> {
-  props: NotionalInputProps
-  refs: any
-
-  shouldComponentUpdate(nextProps: any, nextState: any) {
-    return (
-      this.props.className !== nextProps.className ||
-      this.props.notional !== nextProps.notional ||
-      // currencyPair always here
-      this.props.currencyPair.symbol !== nextProps.currencyPair.symbol ||
-      this.props.onNotionalInputChange !== nextProps.onChange
-    )
-  }
+export default class NotionalInput extends PureComponent<Props> {
+  private inputRef = React.createRef<HTMLInputElement>()
 
   render() {
-    const { className, currencyPair, notional } = this.props
-
+    const { currencyPairSymbol, notional } = this.props
     const formattedSize = numeral(notional).format(NUMERAL_FORMAT)
-    const classes = classnames('notional', className)
-
     return (
-      <div className={classes}>
-        <label className="notional__currency-pair">{currencyPair.base}</label>
-        <input
-          className="notional__size-input"
+      <Flex alignItems="center" justifyContent="center">
+        <CurrencyPairSymbol>{currencyPairSymbol}</CurrencyPairSymbol>
+        <Input
           type="text"
-          ref="notionalInput"
+          innerRef={this.inputRef}
           defaultValue={formattedSize}
-          onClick={this.handleSelect}
-          onChange={(e: any) => this.handleInputChange(e)}
-          onBlur={(e: any) => this.processNotional(e.target.value)}
-          onKeyPress={(e: any) => this.handleKeyPressNotionalInput(e)}
+          onChange={this.handleInputChange}
+          onBlur={event => this.processNotional(event.currentTarget.value)}
+          onKeyPress={this.handleKeyPressNotionalInput}
         />
-      </div>
+      </Flex>
     )
   }
 
-  handleKeyPressNotionalInput(e: any) {
-    const charCode = e.charCode
+  handleKeyPressNotionalInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const charCode = event.charCode
 
-    if (e.key === ENTER) {
-      this.processNotional(e.target.value)
+    if (event.key === ENTER) {
+      this.processNotional(event.currentTarget.value)
     } else if (charCode === CHAR_CODE_DOT) {
       // only allow one dot
-      const numDots = e.target.value.match(/\./g).length
-      if (numDots > 0) {
-        e.nativeEvent.stopImmediatePropagation()
-        e.preventDefault()
+      if (event.currentTarget.value.match(/\./g)) {
+        event.nativeEvent.stopImmediatePropagation()
+        event.preventDefault()
       }
     } else if (!this.inputIsAllowed(charCode)) {
-      e.nativeEvent.stopImmediatePropagation()
-      e.preventDefault()
+      event.nativeEvent.stopImmediatePropagation()
+      event.preventDefault()
     }
   }
 
-  processNotional(inputValue: string) {
+  processNotional = (inputValue: string) => {
+    const { updateNotional } = this.props
     const inputValueTrimmed = inputValue.trim()
-    let notional: any = convertNotionalShorthandToNumericValue(inputValueTrimmed)
+    let notional = convertNotionalShorthandToNumericValue(inputValueTrimmed)
     if (notional >= MAX_NOTIONAL_VALUE) {
       notional = 0
     }
     if (!isNaN(notional)) {
-      // send temp notional back to parent
-      this.props.onNotionalInputChange(notional)
-
+      updateNotional(notional.toString())
       // user may be trying to enter decimals. restore BACK into input
+      let stringNotional = notional.toString()
       if (inputValueTrimmed.indexOf(DOT) === inputValueTrimmed.length - 1) {
-        notional = notional + DOT
+        stringNotional += DOT
       }
       // propagate change back to dom node's value
-      this.refs.notionalInput.value = numeral(notional).format(NUMERAL_FORMAT)
+      stringNotional = numeral(stringNotional).format(NUMERAL_FORMAT)
+      updateNotional(stringNotional)
+      if (this.inputRef.current) {
+        this.inputRef.current.value = stringNotional
+      }
     }
   }
 
-  handleSelect(e: any) {
-    const el = e.target
-    el.setSelectionRange(0, el.value.length)
-  }
-
-  handleInputChange(e: any) {
-    const rawValue = (this.refs.notionalInput.value || e.target.value).trim()
+  handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const rawValue = ((this.inputRef.current && this.inputRef.current.value) || event.currentTarget.value).trim()
     // check for a shortcut input
     if (hasShorthandInput(rawValue)) {
       this.processNotional(rawValue)
     }
   }
 
-  inputIsAllowed(charCode: number) {
+  inputIsAllowed = (charCode: number) => {
     // allow charcter codes before the Unit Separator to catch Shift, Backspace, etc
     if (charCode <= CHAR_CODE_UNIT_SEP) {
       return true
