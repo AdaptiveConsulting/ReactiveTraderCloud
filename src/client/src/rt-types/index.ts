@@ -10,8 +10,6 @@ export {
   createExecuteTradeResponseForError,
   createExecuteTradeResponse
 } from '../ui/spotTile/model/executeTradeRequest'
-export { Notification } from './notification'
-export { NotificationType } from './notificationType'
 export { PriceMovementTypes } from './priceMovementTypes'
 export { Rate } from './rate'
 export { RegionSettings } from './regionSettings'

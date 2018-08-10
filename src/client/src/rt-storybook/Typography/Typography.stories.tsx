@@ -1,4 +1,4 @@
-import { boolean, selectV2, text } from '@storybook/addon-knobs/react'
+import { boolean, select, text } from '@storybook/addon-knobs/react'
 import React from 'react'
 
 import { Story } from 'rt-storybook'
@@ -14,7 +14,7 @@ const fontWeightOptions = {
 
 stories.add('Typography', () => {
   const sampleText = text('Sample Text', 'Adaptive Financial')
-  const fontWeight = selectV2('Font Weight', fontWeightOptions, '400')
+  const fontWeight = select('Font Weight', fontWeightOptions, '400')
   const italic = boolean('Italic?', false)
   return (
     <Story>

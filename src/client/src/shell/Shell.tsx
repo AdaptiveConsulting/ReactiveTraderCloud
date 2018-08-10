@@ -96,7 +96,6 @@ const ShellRoot = styled('div')`
 const BodyContainer = styled('div')`
   flex: 1;
   display: flex;
-  padding: 0.5rem 1rem;
   background-color: ${({ theme }) => theme.shell.backgroundColor};
   color: ${({ theme }) => theme.shell.textColor};
 `

@@ -4,11 +4,12 @@ import { Dispatch } from 'redux'
 import { Environment, withEnvironment } from 'rt-components'
 import { Direction, ExecuteTradeRequest } from 'rt-types'
 import { GlobalState } from '../../combineReducers'
-import { spotRegionSettings, SpotTileActions } from './actions'
-import SpotTile from './components/SpotTile'
+import { SpotTileActions } from './actions'
+import { TileSwitch } from './components'
 import { createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from './model/spotTileUtils'
+import { selectCurrencyPair, selectExecutionStatus, selectPricingStatus, selectSpotTileData } from './selectors'
 
-interface SpotTileContainerOwnProps {
+export interface SpotTileContainerOwnProps {
   id: string
   onPopoutClick?: () => void
   tornOff?: boolean
@@ -25,52 +26,36 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
   componentDidMount() {
     this.props.onMount()
   }
+
   render() {
-    const {
-      id,
-      currencyPair,
-      spotTilesData,
-      executionConnected,
-      pricingConnected,
-      onPopoutClick,
-      undockTile,
-      onNotificationDismissedClick,
-      displayCurrencyChart,
-      tornOff,
-      environment,
-      onMount
-    } = this.props
-    const spotTitle = spotRegionSettings(id).title
+    const { id, currencyPair, spotTileData, onPopoutClick, onNotificationDismissedClick, tornOff } = this.props
+    if (!spotTileData || !spotTileData.price || !currencyPair) {
+      return null
+    }
     return (
-      <SpotTile
+      <TileSwitch
         key={id}
-        onMount={onMount}
-        pricingConnected={pricingConnected}
-        executionConnected={executionConnected}
         currencyPair={currencyPair}
-        isRunningOnDesktop={environment.isRunningDesktop}
-        spotTileData={spotTilesData}
+        spotTileData={spotTileData}
         onPopoutClick={onPopoutClick}
-        displayCurrencyChart={displayCurrencyChart(id)}
-        onNotificationDismissedClick={onNotificationDismissedClick(id)}
-        undockTile={undockTile(spotTitle)}
+        onNotificationDismissedClick={onNotificationDismissedClick}
         executeTrade={this.executeTrade}
         tornOff={tornOff}
       />
     )
   }
 
-  private executeTrade = (direction: Direction) => {
-    const { executionConnected, spotTilesData, currencyPair, notionals, executeTrade } = this.props
-    if (!executionConnected || spotTilesData.isTradeExecutionInFlight) {
+  private executeTrade = (direction: Direction, notional: number) => {
+    const { executionConnected, spotTileData, currencyPair, executeTrade } = this.props
+    if (!executionConnected || spotTileData.isTradeExecutionInFlight || !spotTileData.price) {
       return
     }
-    const rate = direction === Direction.Buy ? spotTilesData.price.ask : spotTilesData.price.bid
+    const rate = direction === Direction.Buy ? spotTileData.price.ask : spotTileData.price.bid
     const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: currencyPair.base,
       symbol: currencyPair.symbol,
-      notional: notionals[currencyPair.symbol] || DEFAULT_NOTIONAL,
+      notional: notional || DEFAULT_NOTIONAL,
       rawSpotRate: rate
     }
     executeTrade(createTradeRequest(tradeRequestObj))
@@ -80,25 +65,16 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
   onMount: () => dispatch(SpotTileActions.showSpotTile(ownProps.id)),
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
-  undockTile: (tileName: string) => () => dispatch(SpotTileActions.undockTile(tileName)),
-  displayCurrencyChart: (symbol: string) => () => dispatch(SpotTileActions.displayCurrencyChart(symbol)),
-  onNotificationDismissedClick: (symbol: string) => () => dispatch(SpotTileActions.dismissNotification(symbol))
+  displayCurrencyChart: () => dispatch(SpotTileActions.displayCurrencyChart(ownProps.id)),
+  onNotificationDismissedClick: () => dispatch(SpotTileActions.dismissNotification(ownProps.id))
 })
 
-const makeMapStateToProps = () => (state: GlobalState, props: SpotTileContainerOwnProps) => {
-  const { compositeStatusService, notionals } = state
-  const executionConnected =
-    compositeStatusService && compositeStatusService.execution && compositeStatusService.execution.isConnected
-  const pricingConnected =
-    compositeStatusService && compositeStatusService.pricing && compositeStatusService.pricing.isConnected
-  return {
-    executionConnected,
-    pricingConnected,
-    currencyPair: state.currencyPairs[props.id],
-    spotTilesData: state.spotTilesData[props.id],
-    notionals
-  }
-}
+const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
+  executionConnected: selectExecutionStatus(state),
+  pricingConnected: selectPricingStatus(state),
+  currencyPair: selectCurrencyPair(state, ownProps),
+  spotTileData: selectSpotTileData(state, ownProps)
+})
 
 const ConnectedSpotTileContainer = connect(
   makeMapStateToProps,

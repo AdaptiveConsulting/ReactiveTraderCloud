@@ -49,23 +49,21 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     if (!this.state.mounted) {
       return false
     }
+
+    return ReactDOM.createPortal(this.wrapChildrenWithPortal(this.props.children), this.container)
+  }
+
+  wrapChildrenWithPortal = (children: React.ReactNode) => {
     const { environment, config, desktopConfig, browserConfig } = this.props
-
-    const element = (
-      <div id="popout-content-container">
-        {environment.isRunningDesktop ? (
-          <DesktopPortal createWindow={this.createWindow} closeWindow={this.closeWindow} {...config} {...desktopConfig}>
-            {this.props.children}
-          </DesktopPortal>
-        ) : (
-          <BrowserPortal createWindow={this.createWindow} {...config} {...browserConfig}>
-            {this.props.children}
-          </BrowserPortal>
-        )}
-      </div>
+    return environment.isRunningDesktop ? (
+      <DesktopPortal createWindow={this.createWindow} closeWindow={this.closeWindow} {...config} {...desktopConfig}>
+        {children}
+      </DesktopPortal>
+    ) : (
+      <BrowserPortal createWindow={this.createWindow} {...config} {...browserConfig}>
+        {children}
+      </BrowserPortal>
     )
-
-    return ReactDOM.createPortal(element, this.container)
   }
 
   createWindow = (window: Window) => {
