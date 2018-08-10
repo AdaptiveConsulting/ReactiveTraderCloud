@@ -1,134 +1,68 @@
-import classnames from 'classnames'
-import React from 'react'
-import { CurrencyPair, Direction, Notification, NotificationType } from 'rt-types'
-import { SpotTileControls, TradeNotification } from '../components/'
+import numeral from 'numeral'
+import React, { PureComponent } from 'react'
+import { Flex } from 'rt-components'
+import { CurrencyPair, Direction } from 'rt-types'
+import { styled } from 'rt-util'
 import { spotDateFormatter } from '../model/dateUtils'
 import { SpotTileData } from '../model/spotTileData'
-import NotionalContainer from './notional/NotionalContainer'
-import PriceControlsView from './priceControlsView/PriceControlsView'
-import { buildNotification } from './tradeNotification/notificationUtils'
-const stalePriceErrorMessage = 'Pricing is unavailable'
-export interface SpotTileProps {
+import NotionalInput from './notional'
+import PriceControls from './PriceControls'
+import { DeliveryDate, TileBaseStyle, TileSymbol } from './Styled'
+
+const SpotTileStyle = styled(TileBaseStyle)`
+  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+`
+
+const SpotTileWrapper = styled('div')`
+  position: relative;
+  min-height: 150px;
+  height: 100%;
+`
+
+export interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
-  executionConnected: boolean
-  pricingConnected: boolean
-  isRunningOnDesktop: boolean
-  executeTrade: (direction: Direction) => void
-  onPopoutClick?: () => void
-  undockTile: () => void
-  displayCurrencyChart: () => void
-  onNotificationDismissedClick: () => void
-  tornOff: boolean
-  onMount: () => void
+  executeTrade: (direction: Direction, notional: number) => void
 }
 
-export default class SpotTile extends React.PureComponent<SpotTileProps> {
+interface State {
+  notional: string
+}
+
+export default class SpotTile extends PureComponent<Props, State> {
+  state = {
+    notional: '1000000'
+  }
+
+  updateNotional = (notional: string) => this.setState({ notional })
+
+  executeTrade = (direction: Direction) => this.props.executeTrade(direction, numeral(this.state.notional).value())
+
   render() {
-    if (!this.props.spotTileData || !this.props.currencyPair) {
-      return null
-    }
-    let { notification } = this.props.spotTileData
-    if (!notification && this.props.spotTileData.price && this.props.spotTileData.price.priceStale) {
-      notification = buildNotification(null, stalePriceErrorMessage)
-    }
-    const hasNotification = !!notification
+    const { currencyPair, spotTileData, children } = this.props
+    const { notional } = this.state
+
+    const priceData = spotTileData && spotTileData.price
+    const spotDate = priceData && spotDateFormatter(priceData.valueDate, false).toUpperCase()
 
     return (
-      <div className={this.getSpotContainerClassName()}>
-        <div className="spot-tile__container">
-          {this.createSpotTileControls()}
-          {!hasNotification ? this.getSpotTileContent() : this.createNotificationView(notification)}
-        </div>
-      </div>
+      <SpotTileWrapper className="spot-tile-container">
+        <SpotTileStyle className="spot-tile">
+          <Flex direction="column" justifyContent="space-between" height="100%">
+            <Flex alignItems="center" justifyContent="space-between">
+              <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
+              <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
+            </Flex>
+            <PriceControls executeTrade={this.executeTrade} priceData={priceData} currencyPair={currencyPair} />
+            <NotionalInput
+              notional={notional}
+              currencyPairSymbol={currencyPair.base}
+              updateNotional={this.updateNotional}
+            />
+          </Flex>
+        </SpotTileStyle>
+        {children}
+      </SpotTileWrapper>
     )
-  }
-
-  getSpotContainerClassName() {
-    const { executionConnected, pricingConnected } = this.props
-    const { isTradeExecutionInFlight, notification, price } = this.props.spotTileData
-    const hasNotification = !!notification
-    const className = classnames('spot-tile', {
-      'spot-tile--stale':
-        (!pricingConnected || (price && price.priceStale)) &&
-        !(hasNotification && notification.notificationType === NotificationType.Trade),
-      'spot-tile--readonly': !executionConnected,
-      'spot-tile--executing': isTradeExecutionInFlight,
-      'spot-tile--error': hasNotification && notification.hasError
-    })
-
-    return className
-  }
-
-  createSpotTileControls() {
-    const { onPopoutClick, undockTile, displayCurrencyChart, isRunningOnDesktop, spotTileData, tornOff } = this.props
-
-    return (
-      <SpotTileControls
-        onPopoutClick={onPopoutClick}
-        currencyChartIsOpening={spotTileData.currencyChartIsOpening}
-        displayCurrencyChart={displayCurrencyChart}
-        isRunningOnDesktop={isRunningOnDesktop}
-        undockTile={undockTile}
-        tornOff={tornOff}
-      />
-    )
-  }
-
-  createPriceComponents() {
-    const { currencyPair, spotTileData, executeTrade } = this.props
-    const title = `${currencyPair.base} / ${currencyPair.terms}`
-    if (spotTileData === null) {
-      return null
-    }
-
-    return (
-      <PriceControlsView
-        currencyPair={currencyPair}
-        title={title}
-        priceData={spotTileData.price}
-        executeTrade={executeTrade}
-      />
-    )
-  }
-
-  getSpotTileContent() {
-    const { spotTileData, currencyPair } = this.props
-    const hasNotification = !!spotTileData.notification
-    const notionalInputClass = classnames('spot-tile__notional', {
-      hide: hasNotification
-    })
-    const spotDateClass = classnames('spot-tile__delivery', {
-      hide: hasNotification
-    })
-    const formattedDate = spotTileData.price ? spotDateFormatter(spotTileData.price.valueDate, false) : ''
-
-    return (
-      <div>
-        <span className="spot-tile__execution-label">Executing</span>
-        {this.createPriceComponents()}
-        <NotionalContainer className={notionalInputClass} currencyPair={currencyPair} />
-        <div className={spotDateClass}>
-          <span className="spot-tile__tenor">SP</span>
-          <span className="spot-tile__delivery-date">. {formattedDate}</span>
-        </div>
-      </div>
-    )
-  }
-
-  createNotificationView(notification: Notification) {
-    if (notification.notificationType === NotificationType.Trade) {
-      return (
-        <TradeNotification
-          notification={notification}
-          currencyPair={this.props.currencyPair}
-          onDismissedClicked={() => this.props.onNotificationDismissedClick()}
-        />
-      )
-    } else if (notification.notificationType === NotificationType.Text) {
-      return <div className="spot-tile__notification-message">{notification.message}</div>
-    } else {
-      throw new Error(`Unknown notification type ${notification.notificationType}`)
-    }
   }
 }

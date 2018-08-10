@@ -23,7 +23,12 @@ const appVersion: string = process.env.REACT_APP_VERSION // version from package
 const BlotterWrapper = styled('div')`
   height: 100%;
   background-color: ${({ theme: { background } }) => background.backgroundPrimary};
-  padding: 0px 8px 0px 16px;
+  padding: 0 0.5rem 0 1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 `
 
 const Shell: React.SFC<ShellProps & { environment: Environment }> = ({

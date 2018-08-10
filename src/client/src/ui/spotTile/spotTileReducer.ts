@@ -1,7 +1,5 @@
 import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
-import { TradeErrorResponse, TradeSuccessResponse } from 'rt-types'
 import { SpotTileActions, TILE_ACTION_TYPES } from './actions'
-import { buildNotification } from './components/tradeNotification/notificationUtils'
 import { SpotTileData } from './model/spotTileData'
 
 interface SpotTileState {
@@ -13,13 +11,16 @@ const INITIAL_STATE: SpotTileState = {}
 const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   isTradeExecutionInFlight: false,
   currencyChartIsOpening: false,
-  hasError: false
+  lastTradeExecutionStatus: null
 }
 
-const spotTileReducer = (state: SpotTileData, action: SpotTileActions): SpotTileData => {
+const spotTileReducer = (
+  state: SpotTileData = { ...INITIAL_SPOT_TILE_STATE },
+  action: SpotTileActions
+): SpotTileData => {
   switch (action.type) {
     case TILE_ACTION_TYPES.SHOW_SPOT_TILE:
-      return { ...INITIAL_SPOT_TILE_STATE }
+      return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
       return { ...state, price: action.payload }
     case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
@@ -29,19 +30,14 @@ const spotTileReducer = (state: SpotTileData, action: SpotTileActions): SpotTile
     case TILE_ACTION_TYPES.EXECUTE_TRADE:
       return { ...state, isTradeExecutionInFlight: true }
     case TILE_ACTION_TYPES.TRADE_EXECUTED: {
-      const { hasError } = action.payload
-      const notification = hasError
-        ? buildNotification(null, (action.payload as TradeErrorResponse).error)
-        : buildNotification((action.payload as TradeSuccessResponse).trade)
       return {
         ...state,
-        hasError,
-        notification,
+        lastTradeExecutionStatus: action.payload,
         isTradeExecutionInFlight: false
       }
     }
     case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
-      return { ...state, notification: null }
+      return { ...state, lastTradeExecutionStatus: null }
     default:
       return state
   }

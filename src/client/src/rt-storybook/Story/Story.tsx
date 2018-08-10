@@ -11,7 +11,7 @@ const StyledStory = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: ${({ theme }) => theme.background.primary};
+  background-color: ${({ theme: { background } }) => background.backgroundPrimary};
   color: ${({ theme }) => theme.text.primary};
   transition: background-color ${({ theme }) => theme.animationSpeed.normal},
     color ${({ theme }) => theme.animationSpeed.normal};
@@ -66,7 +66,7 @@ interface State {
 }
 
 const initialState: State = {
-  theme: Themes.LIGHT_THEME
+  theme: Themes.DARK_THEME
 }
 class Story extends Component<{}, State> {
   constructor(props) {
