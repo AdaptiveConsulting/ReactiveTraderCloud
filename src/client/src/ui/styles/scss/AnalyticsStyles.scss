@@ -50,13 +50,11 @@ $default-padding: 10px;
 
 .analytics__header-value {
   font-weight: bold;
-  font-family: BrandonRegular;
 }
 
 .analytics__header-title {
   display: block;
   padding-bottom: 2px;
-  font-family: BrandonRegular;
   font-size: 24px;
 }
 
@@ -76,7 +74,7 @@ $default-padding: 10px;
   position: relative;
   background: inherit;
   width: 100%;
-  font-family: BrandonMedium;
+
   font-size: 14px;
   margin-bottom: 20px;
   .nv-lineChart {
@@ -267,7 +265,7 @@ $default-padding: 10px;
 .analytics__chart-title {
   color: white;
   color: $analytics-header-colour;
-  font-family: BrandonMedium;
+
   font-size: 18px;
 }
 
@@ -349,7 +347,6 @@ $default-padding: 10px;
 .analytics__chart-container .nv-lineChart .nv-axis.nv-x text,
 .analytics__chart-container .nv-lineChart .nv-axis.nv-y text {
   fill: #c2c5c9;
-  font-family: BrandonLight;
 }
 // grid
 .analytics__container .nvd3 .nv-axis line {
@@ -359,7 +356,6 @@ $default-padding: 10px;
 .analytics__chart-tooltip {
   font-size: 10px;
   color: white;
-  font-family: BrandonLight;
 }
 
 .analytics__chart-tooltip-date {

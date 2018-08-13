@@ -1,8 +1,13 @@
 FROM        __NODE_CONTAINER__
 MAINTAINER  weareadaptive <thibault@weareadaptive.com>
 
-COPY        client /client
+COPY        client/package.json client/package.json
 
 WORKDIR     /client
-ENTRYPOINT  npm install && npm run build
+
+RUN         npm install
+
+COPY        client /client
+
+ENTRYPOINT  ["npm", "run", "build"]
 # ENTRYPOINT  npm install && npm test && npm run deploy:prod
