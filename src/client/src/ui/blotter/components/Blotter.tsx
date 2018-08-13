@@ -31,6 +31,7 @@ const BlotterStatus = styled('div')`
   height: 30px;
   color: ${({ theme: { text } }) => text.textMeta};
   font-size: 0.625rem;
+  line-height: 1rem;
   display: flex;
   align-items: center;
 `

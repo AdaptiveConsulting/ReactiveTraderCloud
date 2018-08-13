@@ -17,7 +17,7 @@ const FilterField = styled('div')`
   text-transform: uppercase;
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   margin-left: 0.5rem;
-  border-radius: 3px;
+  border-radius: 0.25rem;
   height: 20px;
   padding: 0 0.375rem;
   cursor: default;
@@ -35,8 +35,10 @@ const FilterName = styled('div')`
 `
 
 const FilterIcon = styled('i')`
-  height: 12px;
-  width: 11px;
+  line-height: 1rem;
+  font-size: 0.6875rem;
+  height: 0.75rem;
+  width: 0.6875rem;
   color: ${({ theme: { text } }) => text.textSecondary};
   cursor: pointer;
 `

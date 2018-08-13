@@ -65,7 +65,7 @@ export default class BlotterHeader extends Component<Props, State> {
           />
           {canPopout && (
             <BlotterControls onClick={onPopoutClick}>
-              <PopoutIcon />
+              <PopoutIcon width={0.8125} height={0.75} />
             </BlotterControls>
           )}
         </BlotterRight>

@@ -13,7 +13,7 @@ interface QuickFilterState {
 
 const QuickFilterStyle = styled('div')`
   padding: 0 0.625rem;
-  width: 160px;
+  width: 10rem;
   display: flex;
   align-items: flex-start;
   height: 20px;
