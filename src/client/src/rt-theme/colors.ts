@@ -7,11 +7,11 @@ export interface Palette {
   [shade: string]: Color
 }
 
-export interface PaletteMap {
-  [palette: string]: Palette
+export interface PaletteMap<PaletteType = Palette> {
+  [palette: string]: PaletteType
 }
 
-export type ColorPalette = Palette & {
+export interface ColorPalette extends Palette {
   L10: Color
   L95: Color
   L9: Color
@@ -35,16 +35,21 @@ export type ColorPalette = Palette & {
   D10: Color
 }
 
-export type CorePalette = Palette & {
+export interface CorePalette extends Palette {
   1: Color
   2: Color
   3: Color
   4: Color
 }
 
-export interface ColorMap {
-  [colorGroup: string]: PaletteMap
+export interface AccentPalette extends Palette {
+  1: Color
+  2: Color
 }
+
+export type CorePaletteMap = typeof light
+export type AccentPaletteMap = typeof accents
+export type ColorPaletteMaps = typeof colors
 
 // Some designs will redefine white to achieve different
 // visual effects on the viewers eyes.
@@ -120,7 +125,7 @@ export const green = createPalette({
   base: rgb(0, 205, 130)
 })
 
-export const light: PaletteMap = {
+export const light: PaletteMap<CorePalette> = {
   primary: {
     base: blue.L10,
     1: blue.L95,
@@ -137,7 +142,7 @@ export const light: PaletteMap = {
   }
 }
 
-export const dark: PaletteMap = {
+export const dark: PaletteMap<CorePalette> = {
   primary: {
     base: offblack.D3,
     1: offblack.D4,
@@ -154,7 +159,7 @@ export const dark: PaletteMap = {
   }
 }
 
-export const accents: PaletteMap = {
+export const accents: { [K in 'accent' | 'good' | 'aware' | 'bad']: AccentPalette } = {
   accent: {
     base: blue.base,
     1: blue.D2,
@@ -177,7 +182,7 @@ export const accents: PaletteMap = {
   }
 }
 
-const spectrum: PaletteMap = {
+export const spectrum = {
   transparent,
   white,
   black,
@@ -190,7 +195,7 @@ const spectrum: PaletteMap = {
   blue
 }
 
-export const colors: { [colorGroup: string]: PaletteMap } = {
+export const colors = {
   spectrum,
   accents,
   light,

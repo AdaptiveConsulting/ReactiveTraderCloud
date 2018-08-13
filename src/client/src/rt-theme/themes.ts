@@ -1,11 +1,13 @@
 import _ from 'lodash'
 
-import { Color, colors, Palette, PaletteMap } from './colors'
+import { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
+import { colors, dark, light } from './colors'
 
 export interface Theme {
-  primary: Palette
-  secondary: Palette
-  accents: PaletteMap
+  primary: CorePalette
+  secondary: CorePalette
+  accents: AccentPaletteMap
+  colors: ColorPaletteMaps
 
   motion: Motion & {
     fase: Motion
@@ -41,6 +43,7 @@ export interface Touchable {
 
   active: ColorPair
   disabled: ColorPair
+
   // Hover states don't transfer to mobile
   hover?: ColorPair
 }
@@ -50,20 +53,28 @@ export interface Motion {
   easing: string
 }
 
-interface ColorPair {
+export interface ColorPair {
   backgroundColor: string
   textColor?: string
 }
 
-export function createTheme(
-  { primary, secondary }: PaletteMap,
-  accents: PaletteMap,
-  overrides
-): Theme & { [key: string]: any } {
+export const themes = {
+  light: createTheme(light, colors.accents, {}),
+  dark: createTheme(dark, colors.accents, {
+    button: {
+      secondary: {
+        textColor: colors.dark.primary.base
+      }
+    }
+  })
+}
+
+export function createTheme({ primary, secondary }: CorePaletteMap, accents: AccentPaletteMap, overrides): Theme {
   const theme = {
     primary,
     secondary,
     accents,
+    colors,
 
     motion: {
       duration: 200,
@@ -140,17 +151,6 @@ export function createTheme(
   }
 
   return _.merge(theme, overrides)
-}
-
-export const themes = {
-  light: createTheme(colors.light, colors.accents, {}),
-  dark: createTheme(colors.dark, colors.accents, {
-    button: {
-      secondary: {
-        textColor: colors.dark.primary.base
-      }
-    }
-  })
 }
 
 export default themes
