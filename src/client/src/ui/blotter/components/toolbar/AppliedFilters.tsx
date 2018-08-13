@@ -15,7 +15,7 @@ const FilterField = styled('div')`
   align-items: center;
   font-size: 11px;
   text-transform: uppercase;
-  background-color: ${({ theme: { background } }) => background.backgroundTertiary};
+  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   margin-left: 8px;
   border-radius: 3px;
   height: 20px;
@@ -23,7 +23,10 @@ const FilterField = styled('div')`
   cursor: default;
 
   &:hover {
-    background-color: ${({ theme: { text } }) => text.textMeta};
+    background-color: ${({ theme: { background } }) => background.backgroundTertiary};
+    i {
+      color: ${({ theme: { text } }) => text.textPrimary};
+    }
   }
 `
 
@@ -34,12 +37,8 @@ const FilterName = styled('div')`
 const FilterIcon = styled('i')`
   height: 12px;
   width: 11px;
-  color: ${({ theme: { text } }) => text.textPrimary};
+  color: ${({ theme: { text } }) => text.textSecondary};
   cursor: pointer;
-
-  &:hover {
-    color: ${({ theme: { text } }) => text.textSecondary};
-  }
 `
 
 export default class AppliedFilters extends React.Component<AppliedFiltersProps, any> {
