@@ -13,13 +13,13 @@ interface AppliedFiltersProps {
 const FilterField = styled('div')`
   display: flex;
   align-items: center;
-  font-size: 11px;
+  font-size: 0.6875rem;
   text-transform: uppercase;
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
-  margin-left: 8px;
+  margin-left: 0.5rem;
   border-radius: 3px;
   height: 20px;
-  padding: 0px 6px;
+  padding: 0 0.375rem;
   cursor: default;
 
   &:hover {
@@ -31,7 +31,7 @@ const FilterField = styled('div')`
 `
 
 const FilterName = styled('div')`
-  padding-right: 10px;
+  padding-right: 0.625rem;
 `
 
 const FilterIcon = styled('i')`

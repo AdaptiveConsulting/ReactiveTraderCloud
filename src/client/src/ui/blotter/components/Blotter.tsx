@@ -24,13 +24,13 @@ const BlotterStyle = styled('div')`
   min-height: 20px;
   background-color: ${({ theme: { background } }) => background.backgroundPrimary};
   color: ${({ theme: { text } }) => text.textPrimary};
-  font-size: 13px;
+  font-size: 0.8125rem;
 `
 
 const BlotterStatus = styled('div')`
   height: 30px;
   color: ${({ theme: { text } }) => text.textMeta};
-  font-size: 10px;
+  font-size: 0.625rem;
   display: flex;
   align-items: center;
 `

@@ -20,7 +20,7 @@ const BlotterHeaderStyle = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 8px 16px 20px;
+  padding: 0.5rem 0.5rem 1rem 1.25rem;
 `
 
 const BlotterControls = styled('div')`
@@ -38,7 +38,7 @@ const BlotterRight = styled('div')`
 `
 
 const BlotterLeft = styled('div')`
-  font-size: 15px;
+  font-size: 0.9375rem;
 `
 
 export default class BlotterHeader extends Component<Props, State> {

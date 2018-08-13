@@ -12,7 +12,7 @@ interface QuickFilterState {
 }
 
 const QuickFilterStyle = styled('div')`
-  padding: 0px 10px;
+  padding: 0 0.625rem;
   width: 160px;
   display: flex;
   align-items: flex-start;
@@ -26,9 +26,9 @@ const QuickFilterInput = styled('input')`
   border: none;
   border-bottom: 1px solid ${({ theme: { text } }) => text.textTertiary};
   width: 100%;
-  font-size: 12px;
+  font-size: 0.75rem;
   height: 20px;
-  padding: 0px 14px 0px 6px;
+  padding: 0 0.875rem 0 0.375rem;
   outline: none;
 
   &:hover {
@@ -43,7 +43,7 @@ const QuickFilterInput = styled('input')`
 
 const QuickFilterIcon = styled('div')`
   width: 14px;
-  margin: 0px 4px;
+  margin: 0 0.25rem;
 `
 
 const QuickFilterClearIcon = styled('i')`
