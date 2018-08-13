@@ -1,53 +1,89 @@
 import _ from 'lodash'
 
-import { colors, Palette, PaletteMap } from './colors'
+import { Color, colors, Palette, PaletteMap } from './colors'
 
-export type Theme = typeof defaultTheme &
-  ColorPair & {
-    primary: Palette
-    secondary: Palette
-    accents: PaletteMap
+export interface Theme {
+  primary: Palette
+  secondary: Palette
+  accents: PaletteMap
+
+  motion: Motion & {
+    fase: Motion
+    normal: Motion
+    slow: Motion
   }
+
+  shell: ColorPair
+  component: ColorPair
+
+  button: TouchableIntents
+
+  // Known extensible properties
+  backgroundColor?: Color
+  textColor?: Color
+
+  // TODO: remove after theme migration
+  [key: string]: any
+}
+
+export interface TouchableIntents {
+  primary: Touchable
+  secondary: Touchable
+  accent: Touchable
+  good: Touchable
+  aware: Touchable
+  bad: Touchable
+}
+
+export interface Touchable {
+  backgroundColor: Color
+  textColor: Color
+
+  active: ColorPair
+  disabled: ColorPair
+  // Hover states don't transfer to mobile
+  hover?: ColorPair
+}
+
+export interface Motion {
+  duration: number
+  easing: string
+}
 
 interface ColorPair {
   backgroundColor: string
   textColor?: string
 }
 
-const defaultTheme = {
-  motion: {
-    duration: 200,
-    easing: 'ease',
-
-    fast: {
-      duration: 150,
-      easing: 'ease-in'
-    },
-
-    normal: {
-      duration: 200,
-      easing: 'ease'
-    },
-
-    slow: {
-      duration: 250,
-      ease: 'ease-out'
-    }
-  },
-
-  colors
-}
-
-export function createTheme({ primary, secondary }: PaletteMap, accents: PaletteMap, overrides) {
-  const theme: Theme & { [key: string]: any } = {
-    ..._.cloneDeep(defaultTheme),
-
+export function createTheme(
+  { primary, secondary }: PaletteMap,
+  accents: PaletteMap,
+  overrides
+): Theme & { [key: string]: any } {
+  const theme = {
     primary,
     secondary,
     accents,
 
-    backgroundColor: primary[1],
-    textColor: secondary.base,
+    motion: {
+      duration: 200,
+      easing: 'ease',
+
+      fast: {
+        duration: 150,
+        easing: 'ease-in'
+      },
+
+      normal: {
+        duration: 200,
+        easing: 'ease'
+      },
+
+      slow: {
+        duration: 250,
+        ease: 'ease-out'
+      }
+    },
 
     shell: {
       backgroundColor: primary[1],
@@ -65,9 +101,6 @@ export function createTheme({ primary, secondary }: PaletteMap, accents: Palette
     },
 
     button: {
-      backgroundColor: primary.base,
-      textColor: secondary.base,
-
       primary: {
         backgroundColor: accents.accent.base,
         textColor: colors.light.primary.base,
