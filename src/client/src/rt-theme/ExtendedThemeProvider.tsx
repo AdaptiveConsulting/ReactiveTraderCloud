@@ -3,10 +3,9 @@ import { isEqual } from 'lodash'
 import React, { ComponentClass } from 'react'
 
 type Theme = object
-type ThemeExtension<T> = T | ((theme: T) => T & object)
 
-export interface ExtendedThemeProviderProps<T> {
-  theme?: ThemeExtension<T>
+export interface ExtendedThemeProviderProps<T = Theme> {
+  theme?: Theme | ((theme: T) => Theme)
 }
 
 export type ExtendedThemeProviderClass<T> = ComponentClass<ExtendedThemeProviderProps<T>>
@@ -34,9 +33,7 @@ const ThemeContext = React.createContext<any>({})
  *  border-color: ${({ theme }) => theme.red};
  * `
  */
-export class ExtendedThemeProvider<T extends object> extends React.Component<
-  ExtendedThemeProviderProps<ThemeExtension<T>>
-> {
+export class ExtendedThemeProvider extends React.Component<ExtendedThemeProviderProps> {
   render() {
     return (
       // We provide and consume theme information from our own ThemeContext
