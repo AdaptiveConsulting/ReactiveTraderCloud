@@ -1,9 +1,20 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import { ThemeProvider as StyledThemeProvider } from 'emotion-theming'
 import { isEqual } from 'lodash'
+import React, { ComponentClass } from 'react'
 
-const ThemeContext = React.createContext()
+type Theme = object
+type ThemeExtension<T> = T | ((theme: T) => T & object)
+
+export interface ExtendedThemeProviderProps<T> {
+  theme?: ThemeExtension<T>
+}
+
+export type ExtendedThemeProviderClass<T> = ComponentClass<ExtendedThemeProviderProps<T>>
+
+/**
+ * Our internal context to communicate theme changes
+ */
+const ThemeContext = React.createContext<any>({})
 
 /**
  * This ThemeProvider adds support for effecient inline theming
@@ -23,7 +34,9 @@ const ThemeContext = React.createContext()
  *  border-color: ${({ theme }) => theme.red};
  * `
  */
-export default class ThemeProvider extends React.Component {
+export class ExtendedThemeProvider<T extends object> extends React.Component<
+  ExtendedThemeProviderProps<ThemeExtension<T>>
+> {
   render() {
     return (
       // We provide and consume theme information from our own ThemeContext
@@ -31,12 +44,12 @@ export default class ThemeProvider extends React.Component {
     )
   }
 
-  renderResolver = theme => (
+  renderResolver = (theme: Theme) => (
     // We combine the parent theme with the resolved the child theme
-    <ThemeResolver {...this.props} {...{ parentTheme: theme }} children={this.renderProvider} />
+    <ExtendTheme {...this.props} {...{ parentTheme: theme }} children={this.renderProvider} />
   )
 
-  renderProvider = theme => {
+  renderProvider = (theme: Theme) => {
     const { children } = this.props
 
     return (
@@ -53,13 +66,17 @@ export default class ThemeProvider extends React.Component {
   }
 }
 
-class ThemeResolver extends React.Component {
-  static propTypes = {
-    theme: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
-    parentTheme: PropTypes.object
-  }
+interface ExtendThemeProps extends ExtendedThemeProviderProps<Theme> {
+  parentTheme: Theme
+  children: (theme: Theme) => React.ReactNode
+}
 
-  static getDerivedStateFromProps({ theme, parentTheme }, state) {
+interface ExtendThemeState {
+  theme: Theme
+}
+
+class ExtendTheme extends React.Component<ExtendThemeProps, ExtendThemeState> {
+  static getDerivedStateFromProps({ theme, parentTheme }: ExtendThemeProps, state: ExtendThemeState) {
     if (typeof theme === 'function') {
       theme = theme(parentTheme)
     }
@@ -85,3 +102,5 @@ class ThemeResolver extends React.Component {
     return this.props.children(this.state.theme)
   }
 }
+
+export default ExtendedThemeProvider

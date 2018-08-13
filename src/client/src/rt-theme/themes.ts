@@ -2,7 +2,7 @@ import _ from 'lodash'
 
 import { colors, Palette, PaletteMap } from './colors'
 
-type Theme = typeof defaultTheme &
+export type Theme = typeof defaultTheme &
   ColorPair & {
     primary: Palette
     secondary: Palette
