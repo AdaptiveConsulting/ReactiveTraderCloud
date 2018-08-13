@@ -5,12 +5,12 @@ import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/ut
 import SetFilter from './filters/SetFilter'
 
 const currencyIconLookup = {
-  ['USD']: `fa fa-usd`,
-  ['AUD']: `fa fa-usd`,
-  ['NZD']: `fa fa-usd`,
-  ['GBP']: `fa fa-gbp`,
-  ['EUR']: `fa fa-euro`,
-  ['YEN']: `fa fa-yen`
+  ['USD']: `fas fa-usd`,
+  ['AUD']: `fas fa-usd`,
+  ['NZD']: `fas fa-usd`,
+  ['GBP']: `fas fa-gbp`,
+  ['EUR']: `fas fa-euro`,
+  ['YEN']: `fas fa-yen`
 }
 
 const numericCellRenderer = (rowData: any): string => {

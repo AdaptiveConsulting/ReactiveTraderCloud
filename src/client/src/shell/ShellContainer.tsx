@@ -13,7 +13,7 @@ const mapStateToProps = (state: GlobalState) => ({
   connected: state.connectionStatus.status === 'connected',
   loaded: Object.keys(state.compositeStatusService).length >= 3,
   sessionExpired: state.connectionStatus.status === ConnectionStatus.sessionExpired,
-  themeType: selectType(state),
+  themeType: selectType(state)
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -25,10 +25,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   toggleTheme: () => {
     dispatch(ThemeActions.toggleTheme())
-  },
+  }
 })
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Shell)

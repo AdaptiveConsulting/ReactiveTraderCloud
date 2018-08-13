@@ -33,7 +33,7 @@ const TileControls: React.SFC<Props> = ({ onPopoutClick }) => (
   <TileControlsStyle>
     {!Environment.isRunningInIE() && (
       <TopRightButton onClick={onPopoutClick}>
-        <PopoutIcon />
+        <PopoutIcon width={0.8125} height={0.75} />
       </TopRightButton>
     )}
   </TileControlsStyle>
