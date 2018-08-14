@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 import { currencyPairReducer } from 'shell/referenceData'
 import { regionsReducer } from 'shell/regions'
 import { sidebarRegionReducer } from 'shell/sidebar'
-import { themeReducer } from 'shell/theme'
 import { analyticsReducer } from 'ui/analytics'
 import { blotterReducer } from 'ui/blotter'
 import { compositeStatusServiceReducer } from 'ui/compositeStatus'
@@ -17,8 +16,7 @@ const rootReducer = combineReducers({
   connectionStatus: connectionStatusReducer,
   displayAnalytics: sidebarRegionReducer,
   regionsService: regionsReducer,
-  spotTilesData: spotTileDataReducer,
-  theme: themeReducer
+  spotTilesData: spotTileDataReducer
 })
 
 export type GlobalState = ReturnType<typeof rootReducer>

@@ -20,7 +20,7 @@ interface ThemeStateProps extends ThemeSelector {
   onChange?: (value: ThemeSelector) => void
 }
 
-interface ThemeStateValue extends ThemeSelector {
+export interface ThemeStateValue extends ThemeSelector {
   setTheme: (options: ThemeSelector) => void
 }
 

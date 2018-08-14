@@ -1,35 +1,22 @@
 import React from 'react'
 import styled from 'react-emotion'
 
-import { ThemeSwitcher } from 'rt-components'
 import { ThemeState } from 'rt-theme'
-import { Themes } from 'shell/theme'
 
 import Logo from './Logo'
 
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
 
-interface Props {
+class Header extends React.Component<{
   openLink: (url: string) => void
-  toggleTheme: () => void
-  theme: Themes
-}
-
-class Header extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props)
-
-    this.openLink = this.openLink.bind(this)
-  }
-
-  openLink() {
+}> {
+  openLink = () => {
     const { openLink } = this.props
+
     openLink(ADAPTIVE_URL)
   }
 
   render() {
-    const { toggleTheme, theme } = this.props
-
     return (
       <Root>
         <Logo
@@ -39,13 +26,9 @@ class Header extends React.Component<Props> {
         />
 
         <Fill />
-        <ThemeSwitcher toggleTheme={toggleTheme} theme={theme} />
         <ThemeState.Consumer>
           {({ name, setTheme }) => (
-            <IconButton
-              onClick={() => console.log(name) || setTheme({ name: name === 'dark' ? 'light' : 'dark' })}
-              type={name || 'primary'}
-            >
+            <IconButton onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })} type={name || 'primary'}>
               <i className={`fa${name === 'light' ? 'r' : 's'} fa-lightbulb`} />
             </IconButton>
           )}

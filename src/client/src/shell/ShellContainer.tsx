@@ -4,7 +4,6 @@ import { Dispatch } from 'redux'
 import { GlobalState } from 'combineReducers'
 import { ConnectionActions } from 'rt-actions'
 import { ShellActions } from 'shell'
-import { selectType, ThemeActions } from 'shell/theme'
 import { ConnectionStatus } from 'system'
 
 import Shell from './Shell'
@@ -12,8 +11,7 @@ import Shell from './Shell'
 const mapStateToProps = (state: GlobalState) => ({
   connected: state.connectionStatus.status === 'connected',
   loaded: Object.keys(state.compositeStatusService).length >= 3,
-  sessionExpired: state.connectionStatus.status === ConnectionStatus.sessionExpired,
-  themeType: selectType(state),
+  sessionExpired: state.connectionStatus.status === ConnectionStatus.sessionExpired
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -22,13 +20,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   openLink: (link: string) => {
     dispatch(ShellActions.openLink(link))
-  },
-  toggleTheme: () => {
-    dispatch(ThemeActions.toggleTheme())
-  },
+  }
 })
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Shell)

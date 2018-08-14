@@ -1,9 +1,54 @@
 import React, { Component } from 'react'
-import { ThemeSwitcher } from 'rt-components'
-import { styled } from 'rt-util'
-import { Themes } from 'shell/theme'
-import 'ui/styles/css/index.css'
-import Theme from 'ui/theme/Theme'
+import styled from 'react-emotion'
+import { ThemeState } from 'rt-theme'
+
+class Story extends Component {
+  render() {
+    const { children } = this.props
+
+    return (
+      <ThemeState.Provider name="light">
+        <StyledStory>
+          <Toolbar>
+            <ThemeState.Consumer>
+              {({ name, setTheme }) => (
+                <IconButton
+                  onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })}
+                  type={name || 'primary'}
+                >
+                  <i className={`fa${name === 'light' ? 'r' : 's'} fa-lightbulb`} />
+                </IconButton>
+              )}
+            </ThemeState.Consumer>
+          </Toolbar>
+          <Content>{children}</Content>
+        </StyledStory>
+      </ThemeState.Provider>
+    )
+  }
+}
+
+const IconButton = styled('div')<{ [key: string]: any }>`
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  line-height: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  transition: background-color ${({ theme }) => theme.motion.duration}ms ${({ theme }) => theme.motion.easing};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.button.secondary.active.backgroundColor};
+    color: ${({ theme }) => theme.button.secondary.textColor};
+  }
+`
 
 const StyledStory = styled('div')`
   width: 100%;
@@ -44,43 +89,5 @@ const Content = styled('div')`
   position: relative;
   overflow-y: hidden;
 `
-
-interface State {
-  theme: Themes
-}
-
-const initialState: State = {
-  theme: Themes.DARK_THEME
-}
-class Story extends Component<{}, State> {
-  constructor(props) {
-    super(props)
-    this.state = initialState
-
-    this.toggleTheme = this.toggleTheme.bind(this)
-  }
-
-  toggleTheme() {
-    const { theme } = this.state
-    this.setState({
-      theme: theme === Themes.LIGHT_THEME ? Themes.DARK_THEME : Themes.LIGHT_THEME
-    })
-  }
-
-  render() {
-    const { children } = this.props
-    const { theme } = this.state
-    return (
-      <Theme type={theme}>
-        <StyledStory>
-          <Toolbar>
-            <ThemeSwitcher toggleTheme={this.toggleTheme} theme={theme} type="secondary" />
-          </Toolbar>
-          <Content>{children}</Content>
-        </StyledStory>
-      </Theme>
-    )
-  }
-}
 
 export default Story
