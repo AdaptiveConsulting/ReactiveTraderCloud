@@ -12,10 +12,5 @@ export interface AutobahnConnection {
 
   onopen(callback: (session: AutobahnSessionProxy) => void): void
 
-  onclose(
-    callback: (
-      reason: string,
-      details: { reason: string; message: string }
-    ) => void
-  ): void
+  onclose(callback: (reason: string, details: { reason: string; message: string }) => void): void
 }

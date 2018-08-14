@@ -1,4 +1,5 @@
-import { ExecuteTradeRequest, Trade } from 'rt-types'
+import { Trade } from 'rt-types'
+import { ExecuteTradeRequest } from './executeTradeRequest'
 import { SpotPriceTick } from './spotPriceTick'
 
 export interface LastTradeExecutionStatus {

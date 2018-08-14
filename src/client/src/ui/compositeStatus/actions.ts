@@ -1,5 +1,5 @@
+import { ServiceConnectionInfo } from 'rt-system'
 import { action, ActionUnion } from 'rt-util'
-import { ServiceConnectionInfo } from '../../system'
 
 export enum COMPOSITE_ACTION_TYPES {
   COMPOSITE_STATUS_SERVICE = '@ReactiveTraderCloud/COMPOSITE_STATUS_SERVICE'

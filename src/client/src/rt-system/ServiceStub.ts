@@ -3,11 +3,7 @@ import { NextObserver, Observable } from 'rxjs'
 import { filter, mergeMap, switchMap } from 'rxjs/operators'
 
 import './AutoBahnTypeExtensions'
-import {
-  ConnectionEvent,
-  ConnectionEventType,
-  ConnectionOpenEvent
-} from './connectionStream'
+import { ConnectionEvent, ConnectionEventType, ConnectionOpenEvent } from './connectionStream'
 import logger from './logger'
 
 const log = logger.create('Connection')
@@ -26,19 +22,14 @@ type SubscriptionRequest<TPayload> = Array<SubscriptionDTO<TPayload>>
  * A stub Used to call services. Hides the complexity of server interactions
  */
 export class ServiceStub {
-  constructor(
-    private readonly userName: string,
-    private connection$: Observable<ConnectionEvent>
-  ) {
+  constructor(private readonly userName: string, private connection$: Observable<ConnectionEvent>) {
     this.userName = userName
   }
 
   logResponse(topic: string, response: any[]): void {
     const payloadString = JSON.stringify(response[0])
     if (topic !== 'status') {
-      log.verbose(
-        `Received response on topic [${topic}]. Payload[${payloadString}]`
-      )
+      log.verbose(`Received response on topic [${topic}]. Payload[${payloadString}]`)
     }
   }
 
@@ -48,15 +39,9 @@ export class ServiceStub {
    * @param acknowledgementObs
    * @returns {Observable}
    */
-  subscribeToTopic<T>(
-    topic: string,
-    acknowledgementObs?: NextObserver<string>
-  ): Observable<T> {
+  subscribeToTopic<T>(topic: string, acknowledgementObs?: NextObserver<string>): Observable<T> {
     return this.connection$.pipe(
-      filter(
-        (connection): connection is ConnectionOpenEvent =>
-          connection.type === ConnectionEventType.CONNECTED
-      ),
+      filter((connection): connection is ConnectionOpenEvent => connection.type === ConnectionEventType.CONNECTED),
       switchMap(
         ({ session }) =>
           new Observable<T>(obs => {
@@ -97,12 +82,9 @@ export class ServiceStub {
                       obs.complete()
 
                       //obs.unsubscribe()
-                      return log.info(
-                        `Successfully unsubscribing from topic ${topic}`
-                      )
+                      return log.info(`Successfully unsubscribing from topic ${topic}`)
                     },
-                    err =>
-                      log.error(`Error unsubscribing from topic ${topic}`, err)
+                    err => log.error(`Error unsubscribing from topic ${topic}`, err)
                   )
                 }
               } catch (err) {
@@ -118,16 +100,9 @@ export class ServiceStub {
    * wraps a RPC up as an observable stream
    */
 
-  requestResponse<TResult, TPayload>(
-    remoteProcedure: string,
-    payload: TPayload,
-    responseTopic: string = ''
-  ) {
+  requestResponse<TResult, TPayload>(remoteProcedure: string, payload: TPayload, responseTopic: string = '') {
     return this.connection$.pipe(
-      filter(
-        (connection): connection is ConnectionOpenEvent =>
-          connection.type === ConnectionEventType.CONNECTED
-      ),
+      filter((connection): connection is ConnectionOpenEvent => connection.type === ConnectionEventType.CONNECTED),
       mergeMap(
         ({ session }) =>
           new Observable<TResult>(obs => {

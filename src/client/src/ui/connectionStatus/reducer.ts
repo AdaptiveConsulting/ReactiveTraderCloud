@@ -1,5 +1,6 @@
 import { CONNECTION_ACTION_TYPES, ConnectionActions } from 'rt-actions'
-import { ConnectionStatus, ConnectionType } from '../../system'
+import { ConnectionStatus, ConnectionType } from 'rt-system'
+import { CONNECTION_STATUS_ACTION_TYPES, ConnectionStatusActions } from './connectionStatusActions'
 
 export interface ConnectionState {
   status: ConnectionStatus
@@ -15,10 +16,10 @@ const INITIAL_STATE: ConnectionState = {
 
 export const connectionStatusReducer = (
   state: ConnectionState = INITIAL_STATE,
-  action: ConnectionActions
+  action: ConnectionActions | ConnectionStatusActions
 ): ConnectionState => {
   switch (action.type) {
-    case CONNECTION_ACTION_TYPES.CONNECTION_STATUS_UPDATE:
+    case CONNECTION_STATUS_ACTION_TYPES.CONNECTION_STATUS_UPDATE:
       return action.payload
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
       return {

@@ -8,7 +8,7 @@ import { withKnobs, boolean } from '@storybook/addon-knobs'
 
 import { Story } from 'rt-storybook'
 import { styled } from 'rt-util'
-import { ConnectionType } from 'system'
+import { ConnectionType } from 'rt-system'
 
 import StatusBar, { SERVICES } from './StatusBar'
 

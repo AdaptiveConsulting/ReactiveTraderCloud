@@ -1,5 +1,5 @@
+import { retryConstantly, ServiceClient } from 'rt-system'
 import { map, retryWhen } from 'rxjs/operators'
-import { retryConstantly, ServiceClient } from '../../system'
 import {
   CurrencyPairPosition,
   CurrencyPairPositionRaw,
