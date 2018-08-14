@@ -23,7 +23,7 @@ export interface Theme {
   backgroundColor?: Color
   textColor?: Color
 
-  // TODO: remove after theme migration
+  // TODO (8/14/18) remove after theme migration
   [key: string]: any
 }
 
