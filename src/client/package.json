@@ -35,7 +35,7 @@
     "start:cloud": "cross-env REACT_APP_ENV=demo npm run start-all",
     "start:openfin:local": "npm-run-all -p openfin start:local",
     "start:openfin:cloud": "npm-run-all -p openfin start:cloud",
-    "openfin": "openfin -c config/openfin/local.app.json -l",
+    "openfin": "openfin -c public/config/openfin/local.app.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "analyze": "source-map-explorer build/static/js/main.*",
     "precommit": "lint-staged",
