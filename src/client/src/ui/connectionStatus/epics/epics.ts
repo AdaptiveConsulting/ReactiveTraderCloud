@@ -1,20 +1,18 @@
-import { ConnectionActions } from 'rt-actions'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
+import { ConnectionStatusActions } from '../connectionStatusActions'
 import { ConnectionStatusService } from '../connectionStatusService'
 import { applicationConnected, applicationDisconnected } from '../operators'
 
-const { createConnectionStatusUpdateAction } = ConnectionActions
-type CreateConnectionAction = ReturnType<typeof createConnectionStatusUpdateAction>
+type CreateConnectionAction = ReturnType<typeof ConnectionStatusActions.createConnectionStatusUpdateAction>
 
 export const connectionStatusEpic: ApplicationEpic = (action$, state$, { connection$ }) => {
   const connectionStatusService = new ConnectionStatusService(connection$)
-
   return action$.pipe(
     applicationConnected,
     switchMapTo<CreateConnectionAction>(
       connectionStatusService.connectionStatus$.pipe(
-        map(createConnectionStatusUpdateAction),
+        map(ConnectionStatusActions.createConnectionStatusUpdateAction),
         takeUntil(action$.pipe(applicationDisconnected))
       )
     )

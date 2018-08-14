@@ -1,5 +1,5 @@
+import { logger } from 'rt-system'
 import { User } from 'rt-types'
-import { logger } from '../system'
 
 const log = logger.create('FakeUserRepository')
 

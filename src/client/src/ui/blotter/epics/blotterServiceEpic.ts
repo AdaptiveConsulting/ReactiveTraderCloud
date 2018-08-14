@@ -27,7 +27,7 @@ const formatTradeNotification = (trade: Trade, currencyPair: CurrencyPair) => ({
 
 function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
   if (Object.keys(currencyPairs).length === 0 || Object.keys(blotterData).length === 0) {
-    return
+    return []
   }
   return Object.keys(blotterData).map(x =>
     formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol])
