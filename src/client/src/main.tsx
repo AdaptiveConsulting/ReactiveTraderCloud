@@ -10,10 +10,10 @@ import { Router } from 'shell/Router'
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
+import { AutobahnConnectionProxy, logger } from './rt-system'
 import { OpenFinProvider } from './shell'
 import { default as FakeUserRepository } from './shell/fakeUserRepository'
 import { OpenFin } from './shell/openFin'
-import { AutobahnConnectionProxy, logger } from './system'
 
 import * as DeprecatedUITheme from './ui/theme'
 

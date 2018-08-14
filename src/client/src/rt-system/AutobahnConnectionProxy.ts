@@ -9,10 +9,7 @@ export default class AutobahnConnectionProxy implements AutobahnConnection {
   public session?: AutobahnSessionProxy
   private readonly connection: Connection
   private onOpen?: (session: AutobahnSessionProxy) => void
-  private onClose?: (
-    reason: string,
-    details: { reason: string; message: string }
-  ) => void
+  private onClose?: (reason: string, details: { reason: string; message: string }) => void
 
   constructor(url: string, realm: string, port?: number) {
     const useSecure = location.protocol === 'https:'
@@ -26,15 +23,11 @@ export default class AutobahnConnectionProxy implements AutobahnConnection {
       transports: [
         {
           type: 'websocket',
-          url: useSecure
-            ? `wss://${url}:${securePort}/ws`
-            : `ws://${url}:${defaultPort}/ws`
+          url: useSecure ? `wss://${url}:${securePort}/ws` : `ws://${url}:${defaultPort}/ws`
         },
         {
           type: 'longpoll',
-          url: useSecure
-            ? `https://${url}:${securePort}/lp`
-            : `http://${url}:${defaultPort}/lp`
+          url: useSecure ? `https://${url}:${securePort}/lp` : `http://${url}:${defaultPort}/lp`
         }
       ]
     })
@@ -48,10 +41,7 @@ export default class AutobahnConnectionProxy implements AutobahnConnection {
       }
     }
 
-    this.connection.onclose = (
-      reason: string,
-      details: { reason: string; message: string }
-    ): boolean => {
+    this.connection.onclose = (reason: string, details: { reason: string; message: string }): boolean => {
       if (this.onClose) {
         this.onClose(reason, details)
       }
@@ -74,12 +64,7 @@ export default class AutobahnConnectionProxy implements AutobahnConnection {
     this.onOpen = callback
   }
 
-  onclose(
-    callback: (
-      reason: string,
-      details: { reason: string; message: string }
-    ) => void
-  ) {
+  onclose(callback: (reason: string, details: { reason: string; message: string }) => void) {
     this.onClose = callback
   }
 }

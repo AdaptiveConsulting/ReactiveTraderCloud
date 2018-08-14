@@ -24,22 +24,23 @@ const BlotterStyle = styled('div')`
   min-height: 20px;
   background-color: ${({ theme: { background } }) => background.backgroundPrimary};
   color: ${({ theme: { text } }) => text.textPrimary};
-  font-size: 13px;
+  font-size: 0.8125rem;
 `
 
 const BlotterStatus = styled('div')`
   height: 30px;
   color: ${({ theme: { text } }) => text.textMeta};
-  font-size: 10px;
+  font-size: 0.625rem;
+  line-height: 1rem;
   display: flex;
   align-items: center;
 `
 
 const icons = {
-  menu: '<i class="fa fa-filter" aria-hidden="true" />',
-  filter: '<i class="fa fa-filter" aria-hidden="true" />',
-  sortAscending: '<i class="fa fa-long-arrow-down" aria-hidden="true" />',
-  sortDescending: '<i class="fa fa-long-arrow-up" aria-hidden="true" />'
+  menu: '<i class="fas fa-filter" aria-hidden="true" />',
+  filter: '<i class="fas fa-filter" aria-hidden="true" />',
+  sortAscending: '<i class="fas fa-long-arrow-alt-up" aria-hidden="true" />',
+  sortDescending: '<i class="fas fa-long-arrow-alt-down" aria-hidden="true" />'
 }
 
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {

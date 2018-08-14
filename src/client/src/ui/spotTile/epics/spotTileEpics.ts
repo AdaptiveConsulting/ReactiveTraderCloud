@@ -1,10 +1,10 @@
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 // import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
-import { ExecuteTradeRequest, ExecuteTradeResponse } from 'rt-types'
 import { delay, map, mergeMap } from 'rxjs/operators'
 import { ApplicationEpic } from '../../../ApplicationEpic'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
+import { ExecuteTradeRequest, ExecuteTradeResponse } from '../model/executeTradeRequest'
 import ExecutionService from './executionService'
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000

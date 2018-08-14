@@ -13,33 +13,34 @@ interface AppliedFiltersProps {
 const FilterField = styled('div')`
   display: flex;
   align-items: center;
-  font-size: 11px;
+  font-size: 0.6875rem;
   text-transform: uppercase;
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
-  margin-left: 8px;
-  border-radius: 3px;
+  margin-left: 0.5rem;
+  border-radius: 0.25rem;
   height: 20px;
-  padding: 0px 6px;
+  padding: 0 0.375rem;
   cursor: default;
 
   &:hover {
-    background-color: ${({ theme: { text } }) => text.textMeta};
+    background-color: ${({ theme: { background } }) => background.backgroundTertiary};
+    i {
+      color: ${({ theme: { text } }) => text.textPrimary};
+    }
   }
 `
 
 const FilterName = styled('div')`
-  padding-right: 10px;
+  padding-right: 0.625rem;
 `
 
 const FilterIcon = styled('i')`
-  height: 12px;
-  width: 11px;
-  color: ${({ theme: { text } }) => text.textPrimary};
+  line-height: 1rem;
+  font-size: 0.6875rem;
+  height: 0.75rem;
+  width: 0.6875rem;
+  color: ${({ theme: { text } }) => text.textSecondary};
   cursor: pointer;
-
-  &:hover {
-    color: ${({ theme: { text } }) => text.textSecondary};
-  }
 `
 
 export default class AppliedFilters extends React.Component<AppliedFiltersProps, any> {
@@ -56,7 +57,7 @@ export default class AppliedFilters extends React.Component<AppliedFiltersProps,
         return (
           <FilterField key={colDef.field}>
             <FilterName>{colDef.headerName}</FilterName>
-            <FilterIcon className="fa fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
+            <FilterIcon className="fas fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
           </FilterField>
         )
       })

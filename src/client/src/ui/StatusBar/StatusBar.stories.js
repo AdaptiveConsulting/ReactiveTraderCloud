@@ -8,7 +8,7 @@ import { withKnobs, boolean } from '@storybook/addon-knobs'
 
 import { Story } from 'rt-storybook'
 import { styled } from 'rt-util'
-import { ConnectionType } from 'system'
+import { ConnectionType } from 'rt-system'
 
 import StatusBar, { SERVICES } from './StatusBar'
 
@@ -19,42 +19,42 @@ stories.addDecorator(withKnobs)
 const connectionStatus = {
   status: 'connected',
   url: 'wss://web-demo.adaptivecluster.com:443/ws',
-  transportType: ConnectionType.WebSocket,
+  transportType: ConnectionType.WebSocket
 }
 
 const compositeStatusService = _.mapValues(_.keyBy(SERVICES, 'serviceType'), ({ serviceType }) => ({
   serviceType,
   isConnected: true,
-  connectedInstanceCount: 2,
+  connectedInstanceCount: 2
 }))
 
 const state = {
   connected: {
     connectionStatus,
-    compositeStatusService,
+    compositeStatusService
   },
 
   disconnected: {
     connectionStatus: {
       ...connectionStatus,
-      status: 'disconnected',
+      status: 'disconnected'
     },
     compositeStatusService: _.mapValues(compositeStatusService, s => ({
       ...s,
-      isConnected: false,
-    })),
+      isConnected: false
+    }))
   },
 
   connecting: {
     connectionStatus: {
       ...connectionStatus,
-      status: 'disconnected',
+      status: 'disconnected'
     },
     compositeStatusService: _.mapValues(compositeStatusService, s => ({
       ...s,
-      isConnected: Math.random() > 0.5,
-    })),
-  },
+      isConnected: Math.random() > 0.5
+    }))
+  }
 }
 
 _.forEach(state, (state, key) =>
@@ -65,7 +65,7 @@ _.forEach(state, (state, key) =>
         <StatusBar />
       </Root>
     )
-  }),
+  })
 )
 
 const Root = ({ children, state = {} }) => (

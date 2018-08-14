@@ -3,8 +3,8 @@ import Ink from 'react-ink'
 
 import { Environment, withEnvironment } from 'rt-components'
 import { Flex, TickCross } from 'rt-components'
+import { ConnectionType, ServiceConnectionInfo } from 'rt-system'
 import { styled } from 'rt-util'
-import { ConnectionType, ServiceConnectionInfo } from 'system'
 
 import ServiceStatus from './ServiceStatus'
 

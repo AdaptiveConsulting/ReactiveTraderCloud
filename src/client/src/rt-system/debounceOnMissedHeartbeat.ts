@@ -9,9 +9,7 @@ export function debounceWithSelector<T>(
   itemSelector: (lastValue: T) => T
 ): (source: Observable<T>) => Observable<T> {
   return source$ => {
-    const timeout$ = source$.pipe(
-      switchMap(last => timer(dueTime).pipe(mapTo(itemSelector(last))))
-    )
+    const timeout$ = source$.pipe(switchMap(last => timer(dueTime).pipe(mapTo(itemSelector(last)))))
 
     return merge(source$, timeout$)
   }

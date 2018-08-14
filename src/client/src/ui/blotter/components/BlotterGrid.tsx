@@ -1,18 +1,18 @@
 import { styled } from 'rt-util'
 
 export default styled('div')`
-  height: calc(100% - 70px);
+  height: calc(100% - 76px);
   background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   border-radius: 3px;
 
   .ag-header {
     border-bottom: 2px solid ${({ theme: { background } }) => background.backgroundPrimary};
-    font-size: 11px;
+    font-size: 0.6875rem;
     text-transform: uppercase;
   }
 
   .ag-header-container {
-    margin-top: 12px;
+    margin-top: 0.75rem;
   }
 
   .ag-row-odd {
@@ -90,13 +90,13 @@ export default styled('div')`
     }
 
     i {
-      padding: 0px 4px;
+      padding: 0 0.25rem;
     }
   }
 
   .ag-header-cell-label i {
     color: ${({ theme: { text } }) => text.textPrimary};
-    padding: 0px 4px;
+    padding: 0 0.25rem;
   }
 
   .ag-menu {
@@ -107,7 +107,8 @@ export default styled('div')`
     .filter-container__checkbox-container {
       display: flex;
       align-items: center;
-      padding: 4px 10px;
+      padding: 0.5rem 1rem;
+      font-size: 0.6875rem;
 
       &:hover {
         background-color: ${({ theme: { background } }) => background.backgroundTertiary};
@@ -118,11 +119,11 @@ export default styled('div')`
       border-bottom: 2px solid ${({ theme: { text } }) => text.textMeta};
     }
 
-    input,
-    select {
-      margin: 10px;
-      font-size: 11px;
-      padding: 6px;
+    .filter-container__free-text-input,
+    .filter-container__select {
+      margin: 0.625rem;
+      font-size: 0.6875rem;
+      padding: 0.375rem;
       color: ${({ theme: { text } }) => text.textPrimary};
       background-color: ${({ theme: { background } }) => background.backgroundPrimary};
       border: none;
@@ -135,8 +136,16 @@ export default styled('div')`
       }
     }
 
+    option {
+      padding: 0.5rem 0.625rem;
+    }
+
+    option:hover {
+      background-color: ${({ theme: { background } }) => background.backgroundTertiary};
+    }
+
     input[type='checkbox' i] {
-      margin: 0px 4px;
+      margin-right: 0.5rem;
       cursor: pointer;
     }
 

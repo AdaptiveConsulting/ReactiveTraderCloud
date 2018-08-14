@@ -15,3 +15,5 @@ export { ConnectionEvent, createConnection$, ConnectionOpenEvent, ConnectionClos
 
 export { default as AutobahnSessionProxy } from './AutobahnSessionProxy'
 export { default as ServiceStubWithLoadBalancer } from './ServiceStubWithLoadBalancer'
+export { serviceStatusStream$ } from './serviceStatusStream'
+export { debounceWithSelector } from './debounceOnMissedHeartbeat'

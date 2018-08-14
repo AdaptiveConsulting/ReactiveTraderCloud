@@ -1,7 +1,7 @@
 import React from 'react'
 import { PopoutIcon } from 'rt-components'
+import { Environment } from 'rt-system'
 import { styled } from 'rt-util'
-import { Environment } from '../../../system'
 
 const TileControlsStyle = styled('div')`
   position: absolute;
@@ -33,7 +33,7 @@ const TileControls: React.SFC<Props> = ({ onPopoutClick }) => (
   <TileControlsStyle>
     {!Environment.isRunningInIE() && (
       <TopRightButton onClick={onPopoutClick}>
-        <PopoutIcon />
+        <PopoutIcon width={0.8125} height={0.75} />
       </TopRightButton>
     )}
   </TileControlsStyle>

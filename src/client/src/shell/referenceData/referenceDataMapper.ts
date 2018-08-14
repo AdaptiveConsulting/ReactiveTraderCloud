@@ -1,4 +1,5 @@
-import { CollectionUpdate, CollectionUpdates, CurrencyPair, CurrencyPairUpdate, CurrencyPairUpdates } from 'rt-types'
+import { CollectionUpdate, CollectionUpdates, CurrencyPair } from 'rt-types'
+import { CurrencyPairUpdate, CurrencyPairUpdates } from './currencyPairUpdates'
 
 export interface CurrencyRaw {
   Symbol: string

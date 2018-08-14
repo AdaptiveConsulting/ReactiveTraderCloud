@@ -1,9 +1,14 @@
 import React from 'react'
 
-const Popout = () => (
+interface Props {
+  width: number
+  height: number
+}
+
+const PopoutIcon: React.SFC<Props> = ({ width, height }) => (
   <svg
-    width="13px"
-    height="12px"
+    width={width * 16}
+    height={height * 16}
     viewBox="0 0 11 12"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -21,4 +26,4 @@ const Popout = () => (
   </svg>
 )
 
-export default Popout
+export default PopoutIcon

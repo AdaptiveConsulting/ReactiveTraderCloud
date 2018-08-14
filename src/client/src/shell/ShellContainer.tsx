@@ -3,8 +3,8 @@ import { Dispatch } from 'redux'
 
 import { GlobalState } from 'combineReducers'
 import { ConnectionActions } from 'rt-actions'
+import { ConnectionStatus } from 'rt-system'
 import { ShellActions } from 'shell'
-import { ConnectionStatus } from 'system'
 
 import Shell from './Shell'
 

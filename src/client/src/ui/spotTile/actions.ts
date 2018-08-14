@@ -1,5 +1,5 @@
-import { ExecuteTradeRequest, ExecuteTradeResponse, RegionSettings } from 'rt-types'
 import { action, ActionUnion } from 'rt-util'
+import { ExecuteTradeRequest, ExecuteTradeResponse } from './model/executeTradeRequest'
 import { SpotPriceTick } from './model/spotPriceTick'
 import { TradeExectionMeta } from './model/spotTileUtils'
 
@@ -30,11 +30,3 @@ export const SpotTileActions = {
 }
 
 export type SpotTileActions = ActionUnion<typeof SpotTileActions>
-
-export const spotRegionSettings = (id: string): RegionSettings => ({
-  title: `${id} Spot`,
-  width: 370,
-  height: 155,
-  dockable: true,
-  resizable: false
-})

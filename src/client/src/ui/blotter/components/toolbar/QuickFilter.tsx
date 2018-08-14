@@ -12,8 +12,8 @@ interface QuickFilterState {
 }
 
 const QuickFilterStyle = styled('div')`
-  padding: 0px 10px;
-  width: 160px;
+  padding: 0 0.625rem;
+  width: 10rem;
   display: flex;
   align-items: flex-start;
   height: 20px;
@@ -26,9 +26,9 @@ const QuickFilterInput = styled('input')`
   border: none;
   border-bottom: 1px solid ${({ theme: { text } }) => text.textTertiary};
   width: 100%;
-  font-size: 12px;
+  font-size: 0.75rem;
   height: 20px;
-  padding: 0px 14px 0px 6px;
+  padding: 0 0.875rem 0 0.375rem;
   outline: none;
 
   &:hover {
@@ -43,7 +43,7 @@ const QuickFilterInput = styled('input')`
 
 const QuickFilterIcon = styled('div')`
   width: 14px;
-  margin: 0px 4px;
+  margin: 0 0.25rem;
 `
 
 const QuickFilterClearIcon = styled('i')`
@@ -68,7 +68,7 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
     return (
       <QuickFilterStyle>
         <QuickFilterIcon onClick={this.quickFilterFocus}>
-          <i className="fa fa-filter" aria-hidden="true" />
+          <i className="fas fa-filter" aria-hidden="true" />
         </QuickFilterIcon>
         <QuickFilterInput
           innerRef={this.quickFilterInput}
@@ -78,7 +78,7 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
           onChange={(event: React.FormEvent<any>) => this.quickFilterChangeHandler(event)}
         />
         <QuickFilterClearIcon onClick={this.removeQuickFilter}>
-          {this.props.isFilterApplied && <i className="fa fa-times" />}
+          {this.props.isFilterApplied && <i className="fas fa-times" />}
         </QuickFilterClearIcon>
       </QuickFilterStyle>
     )

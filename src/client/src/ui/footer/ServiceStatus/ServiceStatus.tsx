@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { Flex, TickCross } from 'rt-components'
+import { ServiceConnectionInfo } from 'rt-system'
 import { styled } from 'rt-util'
-import { ServiceConnectionInfo } from 'system'
 
 const StyledServiceStatus = styled(Flex)`
   position: relative;

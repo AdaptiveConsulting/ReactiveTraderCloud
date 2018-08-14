@@ -1,5 +1,5 @@
+import { logger } from 'rt-system'
 import { Observable } from 'rxjs'
-import { logger } from '../../system'
 
 const log = logger.create('OpenFin')
 

@@ -1,6 +1,6 @@
+import { ServiceCollectionMap, ServiceConnectionInfo } from 'rt-system'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { ServiceCollectionMap, ServiceConnectionInfo } from '../../system'
 
 export default class CompositeStatusService {
   private readonly serviceStatusStream$: Observable<ServiceConnectionInfo>
