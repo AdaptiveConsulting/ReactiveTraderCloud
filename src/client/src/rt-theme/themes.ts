@@ -1,7 +1,6 @@
-import _ from 'lodash'
+import { mapValues } from 'lodash'
 
-import { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
-import { colors, dark, light } from './colors'
+import colors, { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
 
 export interface Theme {
   primary: CorePalette
@@ -10,7 +9,7 @@ export interface Theme {
   colors: ColorPaletteMaps
 
   motion: Motion & {
-    fase: Motion
+    fast: Motion
     normal: Motion
     slow: Motion
   }
@@ -59,18 +58,24 @@ export interface ColorPair {
 }
 
 export const themes = {
-  light: createTheme(light, colors.accents, {}),
-  dark: createTheme(dark, colors.accents, {
+  light: createTheme(colors.light, colors.accents),
+  dark: createTheme(colors.dark, colors.accents, (theme: Theme) => ({
     button: {
+      ...theme.button,
       secondary: {
-        textColor: colors.dark.primary.base
+        ...theme.button.secondary,
+        textColor: theme.primary.base
       }
     }
-  })
+  }))
 }
 
-export function createTheme({ primary, secondary }: CorePaletteMap, accents: AccentPaletteMap, overrides): Theme {
-  const theme = {
+export function createTheme(
+  { primary, secondary }: CorePaletteMap,
+  accents: AccentPaletteMap,
+  modify: (theme: Theme) => object = (theme: Theme) => theme
+): Theme {
+  const theme: Theme = {
     primary,
     secondary,
     accents,
@@ -92,7 +97,7 @@ export function createTheme({ primary, secondary }: CorePaletteMap, accents: Acc
 
       slow: {
         duration: 250,
-        ease: 'ease-out'
+        easing: 'ease-out'
       }
     },
 
@@ -136,7 +141,7 @@ export function createTheme({ primary, secondary }: CorePaletteMap, accents: Acc
         }
       },
 
-      ..._.mapValues(accents, ({ base, [1]: active, [2]: disabled }) => ({
+      ...mapValues(accents, ({ base, [1]: active, [2]: disabled }) => ({
         backgroundColor: base,
         textColor: colors.light.primary.base,
 
@@ -150,7 +155,10 @@ export function createTheme({ primary, secondary }: CorePaletteMap, accents: Acc
     }
   }
 
-  return _.merge(theme, overrides)
+  return {
+    ...theme,
+    ...modify(theme)
+  }
 }
 
 export default themes

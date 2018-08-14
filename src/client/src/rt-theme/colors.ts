@@ -1,5 +1,10 @@
 import { mix, rgb, rgba } from 'polished'
 
+/**
+ * Colors, the things you see, or don't if you're color blind!
+ *
+ * @example #123456, rgba(0, 0, 0, 0.5), salmon, or royalblue
+ */
 export type Color = string
 
 export interface Palette {
@@ -47,8 +52,18 @@ export interface AccentPalette extends Palette {
   2: Color
 }
 
-export type CorePaletteMap = typeof light
-export type AccentPaletteMap = typeof accents
+export interface CorePaletteMap extends PaletteMap<CorePalette> {
+  primary: CorePalette
+  secondary: CorePalette
+}
+
+export interface AccentPaletteMap extends PaletteMap<AccentPalette> {
+  accent: AccentPalette
+  aware: AccentPalette
+  bad: AccentPalette
+  good: AccentPalette
+}
+
 export type ColorPaletteMaps = typeof colors
 
 // Some designs will redefine white to achieve different
@@ -125,7 +140,7 @@ export const green = createPalette({
   base: rgb(0, 205, 130)
 })
 
-export const light: PaletteMap<CorePalette> = {
+export const light: CorePaletteMap = {
   primary: {
     base: blue.L10,
     1: blue.L95,
@@ -142,7 +157,7 @@ export const light: PaletteMap<CorePalette> = {
   }
 }
 
-export const dark: PaletteMap<CorePalette> = {
+export const dark: CorePaletteMap = {
   primary: {
     base: offblack.D3,
     1: offblack.D4,
@@ -159,7 +174,7 @@ export const dark: PaletteMap<CorePalette> = {
   }
 }
 
-export const accents: { [K in 'accent' | 'good' | 'aware' | 'bad']: AccentPalette } = {
+export const accents: AccentPaletteMap = {
   accent: {
     base: blue.base,
     1: blue.D2,
@@ -201,6 +216,8 @@ export const colors = {
   light,
   dark
 }
+
+export default colors
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////   🐲   ///////////////////////////////////////////
