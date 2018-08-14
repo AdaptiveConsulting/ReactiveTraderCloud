@@ -1,8 +1,8 @@
-import { RawServiceStatus, ServiceInstanceStatus } from 'rt-types'
 import { Observable } from 'rxjs'
 import { distinctUntilChanged, groupBy, map, mergeMap, scan } from 'rxjs/operators'
 import { debounceWithSelector } from './debounceOnMissedHeartbeat'
 import { ServiceCollectionMap, ServiceInstanceCollection } from './ServiceInstanceCollection'
+import { RawServiceStatus, ServiceInstanceStatus } from './serviceInstanceStatus'
 import { ServiceStub } from './ServiceStub'
 
 function addHeartBeatToServiceInstanceStatus(
