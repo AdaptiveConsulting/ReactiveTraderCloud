@@ -1,7 +1,7 @@
 import React from 'react'
 import { PopoutIcon } from 'rt-components'
+import { Environment } from 'rt-system'
 import { styled } from 'rt-util'
-import { Environment } from '../../../system'
 
 const TileControlsStyle = styled('div')`
   position: absolute;

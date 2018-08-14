@@ -4,8 +4,8 @@ import { storiesOf } from '@storybook/react'
 
 import { Environment, Flex } from 'rt-components'
 import { Story } from 'rt-storybook'
+import { ConnectionType } from 'rt-system'
 import { styled } from 'rt-util'
-import { ConnectionType } from 'system'
 
 import Footer, { FooterProps } from './Footer'
 

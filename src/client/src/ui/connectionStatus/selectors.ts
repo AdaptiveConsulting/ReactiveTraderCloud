@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 
 import { GlobalState } from 'combineReducers'
-import { ConnectionStatus } from 'system'
+import { ConnectionStatus } from 'rt-system'
 
 export const selectState = (state: GlobalState) => state.connectionStatus
 

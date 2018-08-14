@@ -1,7 +1,7 @@
+import { ServiceClient } from 'rt-system'
 import { CurrencyPairMap, UpdateType } from 'rt-types'
 import { Observable } from 'rxjs'
 import { map, publishReplay, refCount, scan } from 'rxjs/operators'
-import { ServiceClient } from '../../system'
 import { CurrencyPairUpdates } from './currencyPairUpdates'
 import { default as referenceDataMapper, RawCurrencyPairUpdates } from './referenceDataMapper'
 

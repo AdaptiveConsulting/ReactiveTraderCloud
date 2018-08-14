@@ -10,10 +10,10 @@ import { ThemeProvider } from 'ui/theme'
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
+import { AutobahnConnectionProxy, logger } from './rt-system'
 import { OpenFinProvider } from './shell'
 import { default as FakeUserRepository } from './shell/fakeUserRepository'
 import { OpenFin } from './shell/openFin'
-import { AutobahnConnectionProxy, logger } from './system'
 
 const log = logger.create('Application Service')
 
