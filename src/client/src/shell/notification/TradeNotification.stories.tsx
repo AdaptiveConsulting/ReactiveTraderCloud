@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { Story } from 'rt-storybook'
+import { styled } from 'rt-util'
 import TradeNotification, { Props } from './_TradeNotification'
 
 const stories = storiesOf('Trade Notification', module)
@@ -23,10 +24,25 @@ const props: Props = {
   dismissNotification: action('Dismiss notification')
 }
 
+const Centered = styled('div')`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const NotificationContainer = styled('div')`
+  height: 120px;
+  width: 360px;
+`
+
 stories.add('Default', () => (
   <Story>
-    <div style={{ height: '120px', width: '360px' }}>
-      <TradeNotification {...props} />
-    </div>
+    <Centered>
+      <NotificationContainer>
+        <TradeNotification {...props} />
+      </NotificationContainer>
+    </Centered>
   </Story>
 ))

@@ -3,11 +3,12 @@ import { styled } from 'rt-util'
 
 export const Notification = styled('div')`
   height: 100%;
-  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+  background-color: ${({ theme: { palette } }) => palette.accentBad.normal};
   color: ${({ theme: { text } }) => text.textPrimary};
   user-select: none;
   display: flex;
   flex-direction: column;
+  border-radius: 3px;
 `
 export const Top = styled(Flex)`
   flex-grow: 2;
