@@ -84,7 +84,7 @@ class ExtendTheme extends React.Component<ExtendThemeProps, ExtendThemeState> {
       ? null
       : {
           theme: {
-            // TODO explore how to protect values
+            // TODO (8/14/18) explore how to protect values
             ...parentTheme,
             ...theme
           }

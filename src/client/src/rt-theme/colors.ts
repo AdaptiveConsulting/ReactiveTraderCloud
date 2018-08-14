@@ -1,41 +1,70 @@
 import { mix, rgb, rgba } from 'polished'
 
+/**
+ * Colors, the things you see, or don't if you're color blind!
+ *
+ * @example #123456, rgba(0, 0, 0, 0.5), salmon, or royalblue
+ */
+export type Color = string
+
 export interface Palette {
-  base: string
-  [shade: string]: string
+  base: Color
+  [shade: string]: Color
 }
 
-export interface PaletteMap {
-  [palette: string]: Palette
+export interface PaletteMap<PaletteType = Palette> {
+  [palette: string]: PaletteType
 }
 
-export type ColorPalette = Palette & {
-  L10: string
-  L95: string
-  L9: string
-  L8: string
-  L7: string
-  L6: string
-  L5: string
-  L4: string
-  L3: string
-  L2: string
-  L1: string
-  D1: string
-  D2: string
-  D3: string
-  D4: string
-  D5: string
-  D6: string
-  D7: string
-  D8: string
-  D9: string
-  D10: string
+export interface ColorPalette extends Palette {
+  L10: Color
+  L95: Color
+  L9: Color
+  L8: Color
+  L7: Color
+  L6: Color
+  L5: Color
+  L4: Color
+  L3: Color
+  L2: Color
+  L1: Color
+  D1: Color
+  D2: Color
+  D3: Color
+  D4: Color
+  D5: Color
+  D6: Color
+  D7: Color
+  D8: Color
+  D9: Color
+  D10: Color
 }
 
-export interface ColorMap {
-  [colorGroup: string]: PaletteMap
+export interface CorePalette extends Palette {
+  1: Color
+  2: Color
+  3: Color
+  4: Color
 }
+
+export interface AccentPalette extends Palette {
+  1: Color
+  2: Color
+}
+
+export interface CorePaletteMap extends PaletteMap<CorePalette> {
+  primary: CorePalette
+  secondary: CorePalette
+}
+
+export interface AccentPaletteMap extends PaletteMap<AccentPalette> {
+  accent: AccentPalette
+  aware: AccentPalette
+  bad: AccentPalette
+  good: AccentPalette
+}
+
+export type ColorPaletteMaps = typeof colors
 
 // Some designs will redefine white to achieve different
 // visual effects on the viewers eyes.
@@ -111,7 +140,7 @@ export const green = createPalette({
   base: rgb(0, 205, 130)
 })
 
-export const light: PaletteMap = {
+export const light: CorePaletteMap = {
   primary: {
     base: blue.L10,
     1: blue.L95,
@@ -128,7 +157,7 @@ export const light: PaletteMap = {
   }
 }
 
-export const dark: PaletteMap = {
+export const dark: CorePaletteMap = {
   primary: {
     base: offblack.D3,
     1: offblack.D4,
@@ -145,7 +174,7 @@ export const dark: PaletteMap = {
   }
 }
 
-export const accents: PaletteMap = {
+export const accents: AccentPaletteMap = {
   accent: {
     base: blue.base,
     1: blue.D2,
@@ -168,7 +197,7 @@ export const accents: PaletteMap = {
   }
 }
 
-const spectrum: PaletteMap = {
+export const spectrum = {
   transparent,
   white,
   black,
@@ -181,12 +210,14 @@ const spectrum: PaletteMap = {
   blue
 }
 
-export const colors: { [colorGroup: string]: PaletteMap } = {
+export const colors = {
   spectrum,
   accents,
   light,
   dark
 }
+
+export default colors
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////   🐲   ///////////////////////////////////////////
