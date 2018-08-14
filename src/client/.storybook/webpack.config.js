@@ -5,7 +5,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
 
   defaultConfig.module.rules.push({
     test: /\.(ts|tsx)$/,
-    loader: require.resolve('awesome-typescript-loader'),
+    loader: require.resolve('awesome-typescript-loader')
   })
   defaultConfig.resolve.extensions.push('.ts', '.tsx', '.js')
   defaultConfig.resolve.alias = {
@@ -17,9 +17,9 @@ module.exports = (baseConfig, env, defaultConfig) => {
     'rt-styleguide': path.resolve(__dirname, '../src', 'rt-styleguide'),
     'rt-themes': path.resolve(__dirname, '../src', 'rt-themes'),
     'rt-theme': path.resolve(__dirname, '../src', 'rt-theme'),
+    'rt-system': path.resolve(__dirname, '../src', 'rt-system'),
     ui: path.resolve(__dirname, '../src', 'ui'),
-    system: path.resolve(__dirname, '../src', 'system'),
-    shell: path.resolve(__dirname, '../src', 'shell'),
+    shell: path.resolve(__dirname, '../src', 'shell')
   }
 
   return defaultConfig
