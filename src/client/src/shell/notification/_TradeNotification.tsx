@@ -1,18 +1,7 @@
 import moment from 'moment'
 import React from 'react'
 import { Direction, Trade, TradeStatus } from 'rt-types'
-import {
-  Bottom,
-  Close,
-  CloseContainer,
-  Meta,
-  MetaContainer,
-  MetaTitle,
-  Notification,
-  Status,
-  Top,
-  Traded
-} from './Styled'
+import { Bottom, Close, CloseContainer, MetaContainer, MetaTitle, Notification, Status, Top, Traded } from './Styled'
 
 export interface Props {
   message: Trade
@@ -25,36 +14,38 @@ const TradeNotification: React.SFC<Props> = ({ message: trade, dismissNotificati
         .format('DD MMM')
         .toUpperCase()
     : ''
-  const tradeStatus = trade.status === TradeStatus.Done ? trade.status : 'REJECTED'
+
+  const isDone = trade.status === TradeStatus.Done
+
+  const tradeStatus = isDone ? '' : 'REJECTED'
   const direction = trade.direction === Direction.Buy ? 'Bought' : 'Sold'
 
   return (
     <Notification>
       <Top justifyContent="space-between">
-        <Traded>
-          <div>{direction}</div>
-          <div>{`${trade.dealtCurrency} ${trade.notional}`}</div>
+        <Traded isDone={isDone}>
+          <div>{`${direction.toUpperCase()} ${trade.dealtCurrency} ${trade.notional}`}</div>
           <div>{`vs ${trade.termsCurrency}`}</div>
         </Traded>
 
-        <Status>{tradeStatus.toUpperCase()}</Status>
+        <Status isDone={isDone}>{tradeStatus.toUpperCase()}</Status>
       </Top>
       <Bottom justifyContent="space-between">
         <MetaContainer>
           <MetaTitle>Rate</MetaTitle>
-          <Meta>{trade.spotRate}</Meta>
+          <div>{trade.spotRate}</div>
         </MetaContainer>
         <MetaContainer>
           <MetaTitle>Date</MetaTitle>
-          <Meta>SP. {formattedValueDate.toString()}</Meta>
+          <div>SP. {formattedValueDate.toString()}</div>
         </MetaContainer>
         <MetaContainer>
           <MetaTitle>Trade Id</MetaTitle>
-          <Meta>{trade.tradeId}</Meta>
+          <div>{trade.tradeId}</div>
         </MetaContainer>
         <CloseContainer>
           <Close>
-            <i className="fas fa-share" onClick={dismissNotification} />
+            <i className="fas fa-share fa-lg" onClick={dismissNotification} />
           </Close>
         </CloseContainer>
       </Bottom>

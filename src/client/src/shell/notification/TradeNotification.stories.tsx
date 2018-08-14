@@ -1,4 +1,5 @@
 import { action } from '@storybook/addon-actions'
+import { select } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { Story } from 'rt-storybook'
@@ -13,7 +14,14 @@ const props: Props = {
     direction: 'Sell',
     notional: 1000000,
     spotRate: 133.303,
-    status: 'done',
+    status: select(
+      'Status',
+      {
+        Rejected: 'rejected',
+        Done: 'done'
+      },
+      'done'
+    ),
     symbol: 'EURJPY',
     tradeDate: new Date('Thu Jul 26 2018 14:46:12 GMT-0400 (Eastern Daylight Time)'),
     tradeId: 2356,
@@ -30,10 +38,10 @@ const Centered = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: grey;
 `
 
 const NotificationContainer = styled('div')`
-  height: 120px;
   width: 360px;
 `
 

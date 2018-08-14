@@ -3,23 +3,33 @@ import { styled } from 'rt-util'
 
 export const Notification = styled('div')`
   height: 100%;
-  background-color: ${({ theme: { palette } }) => palette.accentBad.normal};
+  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
   color: ${({ theme: { text } }) => text.textPrimary};
   user-select: none;
   display: flex;
   flex-direction: column;
-  border-radius: 3px;
+  border-radius: 0.1875rem;
+  padding: 1.25rem;
 `
 export const Top = styled(Flex)`
-  flex-grow: 2;
-  padding: 0.375rem;
+  font-size: 0.875rem;
+  flex-grow: 1;
+  padding-bottom: 1.25rem;
 `
+
+export const Traded = styled('div')<{ isDone: boolean }>`
+  text-decoration: ${({ isDone }) => (isDone ? '' : 'line-through')};
+`
+
+export const Status = styled('div')<{ isDone: boolean }>`
+  color: ${({ theme: { palette }, isDone }) => !isDone && palette.accentBad.normal};
+  font-size: 0.75rem;
+`
+
 export const Bottom = styled(Flex)`
-  border-top: 0.0625rem solid ${({ theme: { text } }) => text.textMeta};
-  padding: 0.375rem;
+  font-size: 0.75rem;
 `
-export const Status = styled('div')``
-export const Traded = styled('div')``
+
 export const MetaContainer = styled('div')`
   flex-grow: 1;
   flex-basis: 0;
@@ -27,7 +37,7 @@ export const MetaContainer = styled('div')`
 export const MetaTitle = styled('div')`
   color: ${({ theme: { text } }) => text.textMeta};
 `
-export const Meta = styled('div')``
+
 export const CloseContainer = styled(MetaContainer)`
   position: relative;
 `
