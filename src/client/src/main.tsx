@@ -47,7 +47,24 @@ export const run = () => {
 
   const store = (window.store = configureStore(applicationDependencies))
 
-  ReactDOM.render(<Main store={store} />, document.getElementById('root'))
+  ReactDOM.render(
+    <Provider store={store}>
+      <EnvironmentProvider value={environmentContext}>
+        <ThemeState.Provider name="light">
+          <DeprecatedUITheme.ThemeProvider>
+            {openFin.isRunningInOpenFin ? (
+              <OpenFinProvider openFin={openFin}>
+                <Router />
+              </OpenFinProvider>
+            ) : (
+              <Router />
+            )}
+          </DeprecatedUITheme.ThemeProvider>
+        </ThemeState.Provider>
+      </EnvironmentProvider>
+    </Provider>,
+    document.getElementById('root')
+  )
 
   store.dispatch(ConnectionActions.connect())
 
@@ -55,28 +72,4 @@ export const run = () => {
     store.dispatch(ConnectionActions.disconnect())
     log.warn(`Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
   })
-}
-
-class Main extends React.Component<{ store: any }> {
-  render() {
-    const { store } = this.props
-
-    return (
-      <Provider store={store}>
-        <EnvironmentProvider value={environmentContext}>
-          <ThemeState.Provider name="light">
-            <DeprecatedUITheme.ThemeProvider>
-              {openFin.isRunningInOpenFin ? (
-                <OpenFinProvider openFin={openFin}>
-                  <Router />
-                </OpenFinProvider>
-              ) : (
-                <Router />
-              )}
-            </DeprecatedUITheme.ThemeProvider>
-          </ThemeState.Provider>
-        </EnvironmentProvider>
-      </Provider>
-    )
-  }
 }
