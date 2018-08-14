@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { ConnectionActions } from 'rt-actions'
 import { EnvironmentProvider } from 'rt-components'
+import { ThemeState } from 'rt-theme'
 import { User } from 'rt-types'
 import { timer } from 'rxjs'
 import { Router } from 'shell/Router'
-import { ThemeProvider } from 'ui/theme'
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
@@ -14,6 +14,8 @@ import { OpenFinProvider } from './shell'
 import { default as FakeUserRepository } from './shell/fakeUserRepository'
 import { OpenFin } from './shell/openFin'
 import { AutobahnConnectionProxy, logger } from './system'
+
+import * as DeprecatedUITheme from './ui/theme'
 
 const log = logger.create('Application Service')
 
@@ -33,7 +35,7 @@ const environmentContext = {
   openFin
 }
 
-const appBootstrapper = () => {
+export const run = () => {
   const user: User = FakeUserRepository.currentUser
   const realm = 'com.weareadaptive.reactivetrader'
   const url = config.overwriteServerEndpoint ? config.serverEndpointUrl : location.hostname
@@ -43,25 +45,9 @@ const appBootstrapper = () => {
 
   const applicationDependencies = createApplicationServices(user, autobahn, openFin)
 
-  const store = configureStore(applicationDependencies)
-  window.store = store
+  const store = (window.store = configureStore(applicationDependencies))
 
-  ReactDOM.render(
-    <Provider store={store}>
-      <EnvironmentProvider value={environmentContext}>
-        <ThemeProvider>
-          {openFin.isRunningInOpenFin ? (
-            <OpenFinProvider openFin={openFin}>
-              <Router />
-            </OpenFinProvider>
-          ) : (
-            <Router />
-          )}
-        </ThemeProvider>
-      </EnvironmentProvider>
-    </Provider>,
-    document.getElementById('root')
-  )
+  ReactDOM.render(<Main store={store} />, document.getElementById('root'))
 
   store.dispatch(ConnectionActions.connect())
 
@@ -71,6 +57,26 @@ const appBootstrapper = () => {
   })
 }
 
-export function run() {
-  appBootstrapper()
+class Main extends React.Component<{ store: any }> {
+  render() {
+    const { store } = this.props
+
+    return (
+      <Provider store={store}>
+        <EnvironmentProvider value={environmentContext}>
+          <ThemeState.Provider name="light">
+            <DeprecatedUITheme.ThemeProvider>
+              {openFin.isRunningInOpenFin ? (
+                <OpenFinProvider openFin={openFin}>
+                  <Router />
+                </OpenFinProvider>
+              ) : (
+                <Router />
+              )}
+            </DeprecatedUITheme.ThemeProvider>
+          </ThemeState.Provider>
+        </EnvironmentProvider>
+      </Provider>
+    )
+  }
 }
