@@ -9,10 +9,11 @@ declare const window: any
 
 const dismissNotification = () => window.fin.desktop.Notification.getCurrent().close()
 
-const handleNotificationMessage = (message: Trade) => {
+const handleNotificationMessage = (message: Trade & { theme: Themes }) => {
+  const { theme, ...tradeMessage } = message
   ReactDOM.render(
-    <Theme type={Themes.DARK_THEME}>
-      <TradeNotification message={message} dismissNotification={dismissNotification} />
+    <Theme type={theme}>
+      <TradeNotification message={tradeMessage} dismissNotification={dismissNotification} />
     </Theme>,
     document.getElementById('root')
   )
@@ -23,5 +24,5 @@ const handleNotificationMessage = (message: Trade) => {
 
 export function run() {
   // OpenFin notifications API: need to define the global method onNotificationMessage
-  window.onNotificationMessage = (message: Trade) => handleNotificationMessage(message)
+  window.onNotificationMessage = (message: Trade & { theme: Themes }) => handleNotificationMessage(message)
 }
