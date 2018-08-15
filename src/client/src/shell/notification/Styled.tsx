@@ -8,13 +8,11 @@ export const Notification = styled('div')`
   user-select: none;
   display: flex;
   flex-direction: column;
-  border-radius: 0.1875rem;
-  padding: 1.25rem;
+  padding: 0.5625rem;
 `
 export const Top = styled(Flex)`
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   flex-grow: 1;
-  padding-bottom: 1.25rem;
 `
 
 export const Traded = styled('div')<{ isDone: boolean }>`

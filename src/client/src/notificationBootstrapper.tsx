@@ -1,7 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Trade } from 'rt-types'
-import TradeNotification from './shell/notification/TradeNotification'
+import { Themes } from 'shell/theme'
+import Theme from 'ui/theme/Theme'
+import TradeNotification from './shell/notification/_TradeNotification'
 
 declare const window: any
 
@@ -9,7 +11,9 @@ const dismissNotification = () => window.fin.desktop.Notification.getCurrent().c
 
 const handleNotificationMessage = (message: Trade) => {
   ReactDOM.render(
-    <TradeNotification message={message} dismissNotification={dismissNotification} />,
+    <Theme type={Themes.DARK_THEME}>
+      <TradeNotification message={message} dismissNotification={dismissNotification} />
+    </Theme>,
     document.getElementById('root')
   )
 
