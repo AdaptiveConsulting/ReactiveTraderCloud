@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { Story } from 'rt-storybook'
 import { styled } from 'rt-util'
-import TradeNotification, { Props } from './_TradeNotification'
+import TradeNotification, { Props } from './TradeNotification'
 
 const stories = storiesOf('Trade Notification', module)
 
