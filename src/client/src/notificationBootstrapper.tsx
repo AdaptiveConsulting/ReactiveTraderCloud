@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { Trade } from 'rt-types'
 import { Themes } from 'shell/theme'
 import Theme from 'ui/theme/Theme'
-import TradeNotification from './shell/notification/_TradeNotification'
+import TradeNotification from './shell/notification/TradeNotification'
 
 declare const window: any
 
