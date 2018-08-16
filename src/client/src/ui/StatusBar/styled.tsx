@@ -3,6 +3,7 @@ import React from 'react'
 import { css } from 'react-emotion'
 import { styled } from 'rt-theme'
 import Icon from './Icon'
+
 export const Root = styled('div')`
   width: 100%;
   height: min-content;
@@ -19,6 +20,10 @@ export const Root = styled('div')`
 
   background-color: ${props => props.theme.backgroundColor};
   color: ${props => props.theme.textColor};
+
+  ${Icon} {
+    margin-right: 0.5rem;
+  }
 `
 
 export const Body = styled('div')`
@@ -84,4 +89,10 @@ export const ServiceRoot = styled('div')<{ index: number }>`
   background-color: ${({ index = 0, theme }) =>
     // it'd be nice if this were selected from the original palette …
     darken(index / 50, theme.backgroundColor)};
+
+  ${Icon} {
+    /* We're using important here. 	
+         But you should see what happens with Emotion when you don't!  */
+    margin-right: 1rem !important;
+  }
 `
