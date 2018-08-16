@@ -21,14 +21,16 @@ interface Props {
 }
 
 class Shell extends React.Component<Props, State> {
-  static getDerivedStateFromProps(props) {
-    return {
-      loaded: props.loaded
+  static getDerivedStateFromProps(props, state) {
+    if (state.loaded == null) {
+      return {
+        loaded: props.loaded
+      }
     }
   }
 
   state = {
-    loaded: false
+    loaded: null
   }
 
   componentDidUpdate() {
@@ -55,7 +57,7 @@ class Shell extends React.Component<Props, State> {
 
         <FooterRoot>
           <FooterBody>
-            <StatusBar expand={loaded ? null : true} />
+            <StatusBar />
           </FooterBody>
         </FooterRoot>
 

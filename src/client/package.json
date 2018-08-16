@@ -35,7 +35,7 @@
     "start:cloud": "cross-env REACT_APP_ENV=demo npm run start-all",
     "start:openfin:local": "npm-run-all -p openfin start:local",
     "start:openfin:cloud": "npm-run-all -p openfin start:cloud",
-    "openfin": "openfin -c config/openfin/local.app.json -l",
+    "openfin": "openfin -c public/config/openfin/local.app.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "analyze": "source-map-explorer build/static/js/main.*",
     "precommit": "lint-staged",
@@ -54,7 +54,6 @@
     ]
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0-rc.0",
     "ag-grid": "18.1.2",
     "ag-grid-react": "18.1.0",
     "animate.css": "3.4.0",
@@ -65,8 +64,6 @@
     "d3-time-format": "2.0.5",
     "emotion": "^9.2.6",
     "emotion-theming": "^9.2.6",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
     "font-awesome": "4.5.0",
     "hoist-non-react-statics": "^2.5.5",
     "lodash": "4.17.10",
@@ -87,8 +84,8 @@
     "react-router-dom": "^4.3.1",
     "react-sizeme": "2.3.6",
     "react-split-pane": "0.1.77",
-    "recompose": "^0.28.2",
     "react-spring": "^5.5.4",
+    "recompose": "^0.28.2",
     "redux": "4.0.0",
     "redux-actions": "2.3.2",
     "redux-observable": "1.0.0-alpha.3",
@@ -97,13 +94,15 @@
     "rxjs": "6.1.0",
     "rxjs-spy": "^7.0.1",
     "tinycolor2": "^1.4.1",
+    "typeface-lato": "^0.0.54",
+    "typeface-montserrat": "^0.0.54",
     "ua-parser-js": "0.7.10",
     "ws": "0.8.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-rc.0",
-    "@babel/preset-env": "^7.0.0-rc.0",
-    "@babel/register": "^7.0.0-rc.0",
+    "@babel/core": "^7.0.0-rc.1",
+    "@babel/polyfill": "^7.0.0-rc.1",
+    "@babel/preset-env": "^7.0.0-rc.1",
     "@storybook/addon-actions": "^4.0.0-alpha.14",
     "@storybook/addon-centered": "^4.0.0-alpha.14",
     "@storybook/addon-knobs": "^4.0.0-alpha.14",
@@ -135,6 +134,8 @@
     "awesome-typescript-loader": "^5.2.0",
     "babel-plugin-emotion": "^9.2.6",
     "cross-env": "^5.1.4",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.1.1",
@@ -145,12 +146,12 @@
     "react-app-rewired": "^1.5.2",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "react-scripts": "^1.1.4",
-    "react-scripts-ts": "2.15.1",
+    "react-scripts-ts": "^2.17.0",
     "react-test-renderer": "^16.3.2",
     "redux-devtools-extension": "^2.13.2",
     "rxjs-compat": "^6.1.0",
     "rxjs-tslint-rules": "^4.1.1",
     "source-map-explorer": "^1.5.0",
-    "typescript": "^2.8.3"
+    "typescript": "^3.0.1"
   }
 }
