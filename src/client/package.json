@@ -136,6 +136,7 @@
     "cross-env": "^5.1.4",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.1.1",
     "node-sass-chokidar": "^1.2.2",
