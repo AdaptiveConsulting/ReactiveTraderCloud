@@ -1,16 +1,27 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { ThemeProvider } from 'rt-theme'
+import { styled, ThemeProvider } from 'rt-theme'
 
+import { GlobalState } from 'combineReducers'
 import Icon from './Icon'
-import { Root, Body, Fill, ExpandToggle, ServiceList, ServiceRoot, ServiceName, NodeCount } from './styled.js'
+import { Body, ExpandToggle, Fill, NodeCount, Root, ServiceList, ServiceName, ServiceRoot } from './styled'
 
 export const SERVICES = ['blotter', 'reference', 'execution', 'pricing', 'analytics'].map(serviceType => ({
-  serviceType
+  serviceType,
+  isConnected: false,
+  connectedInstanceCount: 0
 }))
 
-class StatusBar extends Component {
+interface State {
+  expanded: boolean
+}
+
+const StatusBarIcon = styled(Icon)`
+  margin-right: 0.5rem;
+`
+
+class StatusBar extends Component<StatusBarProps, State> {
   state = {
     expanded: false
   }
@@ -32,7 +43,7 @@ class StatusBar extends Component {
       >
         <Root expand={expanded}>
           <Body onClick={this.toggleExpanded}>
-            <Icon name="check" />
+            <StatusBarIcon name="check" />
 
             {mode === 'disconnected' ? (
               'Disconnected'
@@ -41,7 +52,6 @@ class StatusBar extends Component {
                 {_.capitalize(mode)} to {url} ({transportType})
               </React.Fragment>
             )}
-
             <Fill />
 
             <ExpandToggle expand={expanded} />
@@ -63,9 +73,13 @@ class StatusBar extends Component {
   }
 }
 
+const ServiceRootIcon = styled(Icon)`
+  margin-right: 1rem;
+`
+
 const Service = ({ service: { serviceType, isConnected, connectedInstanceCount }, index }) => (
   <ServiceRoot index={index + 2}>
-    <Icon name={isConnected == null ? 'ellipsis-h' : isConnected ? 'check' : 'times'} />
+    <ServiceRootIcon name={isConnected == null ? 'ellipsis-h' : isConnected ? 'check' : 'times'} />
     <div>
       <ServiceName>{serviceType}</ServiceName>
 
@@ -78,8 +92,9 @@ const Service = ({ service: { serviceType, isConnected, connectedInstanceCount }
   </ServiceRoot>
 )
 
-export default connect(({ compositeStatusService: serviceStatus, connectionStatus }) => {
-  const services = Object.values(serviceStatus).map(s => s.isConnected)
+const mapStateToProps = ({ compositeStatusService, connectionStatus }: GlobalState) => {
+  const services = Object.values(compositeStatusService).map(s => s.isConnected)
+
   const mode =
     services.length < SERVICES.length || (services.some(s => s) && !services.every(s => s))
       ? 'connecting'
@@ -89,7 +104,11 @@ export default connect(({ compositeStatusService: serviceStatus, connectionStatu
 
   return {
     connectionStatus,
-    serviceStatus,
+    serviceStatus: compositeStatusService,
     mode
   }
-})(StatusBar)
+}
+
+type StatusBarProps = ReturnType<typeof mapStateToProps>
+
+export default connect(mapStateToProps)(StatusBar)
