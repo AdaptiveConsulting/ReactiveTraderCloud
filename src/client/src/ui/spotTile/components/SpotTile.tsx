@@ -1,6 +1,7 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
 import { Flex } from 'rt-components'
+import { ThemeProvider } from 'rt-theme'
 import { CurrencyPair, Direction } from 'rt-types'
 import { styled } from 'rt-util'
 import { spotDateFormatter } from '../model/dateUtils'
@@ -9,8 +10,8 @@ import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import { DeliveryDate, TileBaseStyle, TileSymbol } from './Styled'
 
-const SpotTileStyle = styled(TileBaseStyle)`
-  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
+const SpotTileStyle = styled(TileBaseStyle)<{ theme?: any }>`
+  background-color: ${({ theme }) => theme.backgroundColor};
 `
 
 const SpotTileWrapper = styled('div')`
@@ -46,23 +47,25 @@ export default class SpotTile extends PureComponent<Props, State> {
     const spotDate = priceData && spotDateFormatter(priceData.valueDate, false).toUpperCase()
 
     return (
-      <SpotTileWrapper className="spot-tile-container">
-        <SpotTileStyle className="spot-tile">
-          <Flex direction="column" justifyContent="space-between" height="100%">
-            <Flex alignItems="center" justifyContent="space-between">
-              <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
-              <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
+      <ThemeProvider theme={theme => theme.tile}>
+        <SpotTileWrapper className="spot-tile-container">
+          <SpotTileStyle className="spot-tile">
+            <Flex direction="column" justifyContent="space-between" height="100%">
+              <Flex alignItems="center" justifyContent="space-between">
+                <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
+                <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
+              </Flex>
+              <PriceControls executeTrade={this.executeTrade} priceData={priceData} currencyPair={currencyPair} />
+              <NotionalInput
+                notional={notional}
+                currencyPairSymbol={currencyPair.base}
+                updateNotional={this.updateNotional}
+              />
             </Flex>
-            <PriceControls executeTrade={this.executeTrade} priceData={priceData} currencyPair={currencyPair} />
-            <NotionalInput
-              notional={notional}
-              currencyPairSymbol={currencyPair.base}
-              updateNotional={this.updateNotional}
-            />
-          </Flex>
-        </SpotTileStyle>
-        {children}
-      </SpotTileWrapper>
+          </SpotTileStyle>
+          {children}
+        </SpotTileWrapper>
+      </ThemeProvider>
     )
   }
 }

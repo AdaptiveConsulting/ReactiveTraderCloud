@@ -5,17 +5,14 @@ export interface ColorProps {
   backgroundColor?: string
 }
 
-export const DeliveryDate = styled('div')`
-  color: ${({ theme: { text } }) => text.textMeta};
+export const DeliveryDate = styled('div')<{ theme?: any }>`
+  color: ${({ theme }) => theme.textColor};
   font-size: 0.625rem;
-
-  .spot-tile:hover & {
-    color: ${({ theme: { text } }) => text.textPrimary};
-  }
+  opacity: 0.59;
 `
 
-export const TileSymbol = styled('div')`
-  color: ${({ theme: { text } }) => text.textPrimary};
+export const TileSymbol = styled('div')<{ theme?: any }>`
+  color: ${({ theme }) => theme.textColor};
   font-size: 0.8125rem;
 `
 
@@ -28,8 +25,8 @@ export const TileBaseStyle = styled('div')`
   box-sizing: border-box;
 `
 
-export const Icon = styled('i')<ColorProps>`
-  color: ${({ theme: { text }, color }) => color && text[color]};
+export const Icon = styled('i')<{ theme?: any }>`
+  color: ${({ theme }) => theme.iconColor};
 `
 
 export const Button = styled('button')`

@@ -116,6 +116,17 @@ export function createTheme(
       textColor: secondary[2]
     },
 
+    tile: {
+      backgroundColor: primary.base,
+      textColor: secondary.base,
+      iconColor: colors.spectrum.white.base,
+      button: {
+        backgroundColor: primary.base,
+        textColor: colors.spectrum.white.base,
+        hoverColor: primary['1']
+      }
+    },
+
     button: {
       primary: {
         backgroundColor: accents.accent.base,
