@@ -1,15 +1,33 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Trade } from 'rt-types'
+
+import { ThemeState } from 'rt-theme'
+// TODO (8/16/18) remove after removing rt-themes
+import * as DeprecatedUITheme from 'ui/theme'
+
 import TradeNotification from './shell/notification/TradeNotification'
 
 declare const window: any
 
 const dismissNotification = () => window.fin.desktop.Notification.getCurrent().close()
 
-const handleNotificationMessage = (message: Trade) => {
+interface Message {
+  tradeNotification: Trade
+}
+
+const handleNotificationMessage = ({ tradeNotification }: Message) => {
   ReactDOM.render(
-    <TradeNotification message={message} dismissNotification={dismissNotification} />,
+    <ThemeState.Provider
+      name={
+        // Expected global value established by the root container
+        window.localStorage.themeName
+      }
+    >
+      <DeprecatedUITheme.ThemeProvider>
+        <TradeNotification message={tradeNotification} dismissNotification={dismissNotification} />
+      </DeprecatedUITheme.ThemeProvider>
+    </ThemeState.Provider>,
     document.getElementById('root')
   )
 
@@ -19,5 +37,5 @@ const handleNotificationMessage = (message: Trade) => {
 
 export function run() {
   // OpenFin notifications API: need to define the global method onNotificationMessage
-  window.onNotificationMessage = (message: Trade) => handleNotificationMessage(message)
+  window.onNotificationMessage = (message: Message) => handleNotificationMessage(message)
 }

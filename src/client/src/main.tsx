@@ -47,10 +47,15 @@ export const run = () => {
 
   const store = (window.store = configureStore(applicationDependencies))
 
+  window.localStorage.themeName = window.localStorage.themeName || 'light'
+  function updateLocalStorageThemeName(name) {
+    window.localStorage.themeName = name
+  }
+
   ReactDOM.render(
     <Provider store={store}>
       <EnvironmentProvider value={environmentContext}>
-        <ThemeState.Provider name="light">
+        <ThemeState.Provider name={window.localStorage.themeName} onChange={updateLocalStorageThemeName}>
           <DeprecatedUITheme.ThemeProvider>
             {openFin.isRunningInOpenFin ? (
               <OpenFinProvider openFin={openFin}>
