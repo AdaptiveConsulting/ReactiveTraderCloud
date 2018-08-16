@@ -1,17 +1,17 @@
-import { styled } from 'rt-util'
+import styled from 'react-emotion'
 
 export interface ColorProps {
   color?: string
   backgroundColor?: string
 }
 
-export const DeliveryDate = styled('div')<{ theme?: any }>`
+export const DeliveryDate = styled('div')`
   color: ${({ theme }) => theme.textColor};
   font-size: 0.625rem;
   opacity: 0.59;
 `
 
-export const TileSymbol = styled('div')<{ theme?: any }>`
+export const TileSymbol = styled('div')`
   color: ${({ theme }) => theme.textColor};
   font-size: 0.8125rem;
 `
@@ -25,8 +25,8 @@ export const TileBaseStyle = styled('div')`
   box-sizing: border-box;
 `
 
-export const Icon = styled('i')<{ theme?: any }>`
-  color: ${({ theme }) => theme.iconColor};
+export const Icon = styled('i')`
+  color: ${({ theme }) => theme.white};
 `
 
 export const Button = styled('button')`
