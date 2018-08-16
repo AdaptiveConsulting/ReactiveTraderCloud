@@ -1,7 +1,7 @@
 import moment from 'moment'
 import React from 'react'
 import { Direction, Trade, TradeStatus } from 'rt-types'
-import { Bottom, Close, CloseContainer, MetaContainer, MetaTitle, Notification, Status, Top, Traded } from './Styled'
+import { Bottom, Close, CloseContainer, MetaContainer, MetaTitle, Notification, Status, Top, Traded } from './styled'
 
 export interface Props {
   message: Trade
