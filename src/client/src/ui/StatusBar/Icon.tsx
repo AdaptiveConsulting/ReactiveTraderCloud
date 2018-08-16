@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { SFC } from 'react'
 import styled, { css } from 'react-emotion'
 
-const Icon = ({ name, ...props }) => (
+const Icon: SFC<{
+  name: string
+}> = ({ name, ...props }) => (
   <div {...props}>
     <i className={`fas fa-${name}`} />
   </div>
 )
 
-export default styled(Icon)`
+interface IconProps {
+  size?: number
+}
+
+export default styled(Icon)<IconProps>`
   ${({ size = 1.5 }) => css`
     min-width: ${size}rem;
     max-width: ${size}rem;

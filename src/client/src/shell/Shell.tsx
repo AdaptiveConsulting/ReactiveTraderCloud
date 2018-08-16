@@ -55,7 +55,7 @@ class Shell extends React.Component<Props, State> {
 
         <FooterRoot>
           <FooterBody>
-            <StatusBar expand={loaded ? null : true} />
+            <StatusBar />
           </FooterBody>
         </FooterRoot>
 
