@@ -1,7 +1,7 @@
 import React from 'react'
+import styled from 'react-emotion'
 import { Transition } from 'react-spring'
 import { Flex, LogoIcon } from 'rt-components'
-import { styled } from 'rt-util'
 
 const TileBookingStyle = styled('div')`
   position: absolute;
@@ -13,22 +13,21 @@ const TileBookingStyle = styled('div')`
 `
 
 const BookingPill = styled(Flex)`
-  background-color: ${({ theme: { palette } }) => palette.accentPrimary.normal};
+  background-color: ${({ theme }) => theme.primary.base};
   padding: 0.625rem 0.875rem;
   border-radius: 17px;
 
-  box-shadow: 0 0 30px ${({ theme: { palette } }) => palette.accentPrimary.normal},
-    0 0 0.625rem ${({ theme: { palette } }) => palette.accentPrimary.dark};
+  box-shadow: 0 0 30px ${({ theme }) => theme.primary.base}, 0 0 0.625rem ${({ theme }) => theme.primary.light};
 
   .svg-icon {
     padding-right: 0.625rem;
-    fill: ${({ theme: { text } }) => text.white};
+    fill: ${({ theme }) => theme.white};
   }
 `
 
 const BookingStatus = styled('span')`
   margin-left: 0.375rem;
-  color: ${({ theme: { text } }) => text.white};
+  color: ${({ theme }) => theme.white};
   font-size: 0.8125rem;
 `
 interface Props {

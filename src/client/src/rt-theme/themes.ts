@@ -116,10 +116,24 @@ export function createTheme(
       textColor: secondary[2]
     },
 
+    white: colors.spectrum.white.base,
+
     tile: {
       backgroundColor: primary.base,
       textColor: secondary.base,
-      iconColor: colors.spectrum.white.base,
+      inputColor: secondary['4'],
+      primary: {
+        base: accents.accent.base,
+        light: accents.accent['2']
+      },
+      bad: {
+        base: accents.bad.base,
+        light: accents.bad['3']
+      },
+      good: {
+        base: accents.good.base,
+        light: accents.good['3']
+      },
       button: {
         backgroundColor: primary.base,
         textColor: colors.spectrum.white.base,

@@ -1,7 +1,8 @@
 import React from 'react'
+import styled from 'react-emotion'
 import { Flex } from 'rt-components'
 import { Direction } from 'rt-types'
-import { styled, withDefaultProps } from 'rt-util'
+import { withDefaultProps } from 'rt-util'
 
 const hoverColors = {
   [Direction.Buy]: 'bad',

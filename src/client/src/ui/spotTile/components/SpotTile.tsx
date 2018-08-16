@@ -1,22 +1,22 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
+import styled from 'react-emotion'
 import { Flex } from 'rt-components'
 import { ThemeProvider } from 'rt-theme'
 import { CurrencyPair, Direction } from 'rt-types'
-import { styled } from 'rt-util'
 import { spotDateFormatter } from '../model/dateUtils'
 import { SpotTileData } from '../model/spotTileData'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
-import { DeliveryDate, TileBaseStyle, TileSymbol } from './Styled'
+import { DeliveryDate, TileBaseStyle, TileSymbol } from './styled'
 
-const SpotTileStyle = styled(TileBaseStyle)<{ theme?: any }>`
+const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme }) => theme.backgroundColor};
 `
 
 const SpotTileWrapper = styled('div')`
   position: relative;
-  min-height: 150px;
+  min-height: 160px;
   height: 100%;
 `
 
