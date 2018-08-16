@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { ThemeState } from 'rt-theme'
+// TODO (8/16/18) remove after removing rt-themes
+import * as DeprecatedUITheme from '../../ui/theme'
 
 class Story extends Component {
   render() {
@@ -8,21 +10,23 @@ class Story extends Component {
 
     return (
       <ThemeState.Provider name="light">
-        <StyledStory>
-          <Toolbar>
-            <ThemeState.Consumer>
-              {({ name, setTheme }) => (
-                <IconButton
-                  onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })}
-                  type={name || 'primary'}
-                >
-                  <i className={`fa${name === 'light' ? 'r' : 's'} fa-lightbulb`} />
-                </IconButton>
-              )}
-            </ThemeState.Consumer>
-          </Toolbar>
-          <Content>{children}</Content>
-        </StyledStory>
+        <DeprecatedUITheme.ThemeProvider>
+          <StyledStory>
+            <Toolbar>
+              <ThemeState.Consumer>
+                {({ name, setTheme }) => (
+                  <IconButton
+                    onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })}
+                    type={name || 'primary'}
+                  >
+                    <i className={`fa${name === 'light' ? 'r' : 's'} fa-lightbulb`} />
+                  </IconButton>
+                )}
+              </ThemeState.Consumer>
+            </Toolbar>
+            <Content>{children}</Content>
+          </StyledStory>
+        </DeprecatedUITheme.ThemeProvider>
       </ThemeState.Provider>
     )
   }
