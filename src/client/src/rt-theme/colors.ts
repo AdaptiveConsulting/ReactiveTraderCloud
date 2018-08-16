@@ -113,6 +113,7 @@ export const offblack = createPalette({
   // We are overriding the value for D4 due to
   // insuffcient contrast ratio and inconsistency
   // with the designers intent.
+  D3: rgb(46, 53, 67),
   D4: rgb(39, 45, 58)
 })
 
