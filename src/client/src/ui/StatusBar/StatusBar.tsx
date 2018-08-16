@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { Component } from 'react'
+import React, { Component, SFC } from 'react'
 import { connect } from 'react-redux'
 import { styled, ThemeProvider } from 'rt-theme'
 
@@ -7,9 +7,15 @@ import { GlobalState } from 'combineReducers'
 import Icon from './Icon'
 import { Body, ExpandToggle, Fill, NodeCount, Root, ServiceList, ServiceName, ServiceRoot } from './styled'
 
+interface ServiceStatus {
+  serviceType: string
+  isConnected: boolean | null
+  connectedInstanceCount: number | null
+}
+
 export const SERVICES = ['blotter', 'reference', 'execution', 'pricing', 'analytics'].map(serviceType => ({
   serviceType,
-  isConnected: false,
+  isConnected: null,
   connectedInstanceCount: 0
 }))
 
@@ -77,7 +83,10 @@ const ServiceRootIcon = styled(Icon)`
   margin-right: 1rem;
 `
 
-const Service = ({ service: { serviceType, isConnected, connectedInstanceCount }, index }) => (
+const Service: SFC<{ service: ServiceStatus; index: number }> = ({
+  service: { serviceType, isConnected, connectedInstanceCount },
+  index
+}) => (
   <ServiceRoot index={index + 2}>
     <ServiceRootIcon name={isConnected == null ? 'ellipsis-h' : isConnected ? 'check' : 'times'} />
     <div>
