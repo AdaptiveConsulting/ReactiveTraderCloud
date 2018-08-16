@@ -1,15 +1,12 @@
 import { withTheme } from 'emotion-theming'
 import React from 'react'
-import Transition from 'react-addons-css-transition-group'
 import styled from 'react-emotion'
 
-import { Theme } from 'rt-themes'
 import StatusBar from 'ui/StatusBar'
 
 import Header from './components/Header'
 import ReconnectModal from './components/ReconnectModal'
 import SplashScreen from './components/SplashScreen'
-import { Themes } from './theme'
 
 interface State {
   loaded: boolean
@@ -20,10 +17,7 @@ interface Props {
   loaded: boolean
   sessionExpired: boolean
   reconnect: () => void
-  theme?: Theme
-  themeType: Themes
   openLink: (url: string) => void
-  toggleTheme: () => void
 }
 
 class Shell extends React.Component<Props, State> {
@@ -48,12 +42,12 @@ class Shell extends React.Component<Props, State> {
   }
 
   render() {
-    const { children, sessionExpired, reconnect, theme, themeType, openLink, toggleTheme } = this.props
+    const { children, sessionExpired, reconnect, openLink } = this.props
     const { loaded } = this.state
 
     return (
       <ShellRoot>
-        <Header theme={themeType} openLink={openLink} toggleTheme={toggleTheme} />
+        <Header openLink={openLink} />
 
         <BodyContainer>
           <Body>{children}</Body>
@@ -61,24 +55,17 @@ class Shell extends React.Component<Props, State> {
 
         <FooterRoot>
           <FooterBody>
-            <StatusBar expand={loaded ? null : true} />
+            <StatusBar />
           </FooterBody>
         </FooterRoot>
 
         <ReconnectModal shouldShow={sessionExpired} reconnect={reconnect} />
 
-        {
-          <Transition
-            transitionName={`fade${theme.animationSpeed.slow}`}
-            transitionLeaveTimeout={theme.animationSpeed.slow}
-          >
-            {loaded || (
-              <SplashScreenContainer>
-                <SplashScreen />
-              </SplashScreenContainer>
-            )}
-          </Transition>
-        }
+        {loaded ? null : (
+          <SplashScreenContainer>
+            <SplashScreen />
+          </SplashScreenContainer>
+        )}
       </ShellRoot>
     )
   }

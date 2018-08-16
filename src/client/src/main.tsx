@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { ConnectionActions } from 'rt-actions'
 import { EnvironmentProvider } from 'rt-components'
+import { ThemeState } from 'rt-theme'
 import { User } from 'rt-types'
 import { timer } from 'rxjs'
 import { Router } from 'shell/Router'
-import { ThemeProvider } from 'ui/theme'
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
@@ -14,6 +14,8 @@ import { AutobahnConnectionProxy, logger } from './rt-system'
 import { OpenFinProvider } from './shell'
 import { default as FakeUserRepository } from './shell/fakeUserRepository'
 import { OpenFin } from './shell/openFin'
+// TODO (8/16/18) remove after removing rt-themes
+import * as DeprecatedUITheme from './ui/theme'
 
 const log = logger.create('Application Service')
 
@@ -33,7 +35,7 @@ const environmentContext = {
   openFin
 }
 
-const appBootstrapper = () => {
+export const run = () => {
   const user: User = FakeUserRepository.currentUser
   const realm = 'com.weareadaptive.reactivetrader'
   const url = config.overwriteServerEndpoint ? config.serverEndpointUrl : location.hostname
@@ -43,21 +45,22 @@ const appBootstrapper = () => {
 
   const applicationDependencies = createApplicationServices(user, autobahn, openFin)
 
-  const store = configureStore(applicationDependencies)
-  window.store = store
+  const store = (window.store = configureStore(applicationDependencies))
 
   ReactDOM.render(
     <Provider store={store}>
       <EnvironmentProvider value={environmentContext}>
-        <ThemeProvider>
-          {openFin.isRunningInOpenFin ? (
-            <OpenFinProvider openFin={openFin}>
+        <ThemeState.Provider name="light">
+          <DeprecatedUITheme.ThemeProvider>
+            {openFin.isRunningInOpenFin ? (
+              <OpenFinProvider openFin={openFin}>
+                <Router />
+              </OpenFinProvider>
+            ) : (
               <Router />
-            </OpenFinProvider>
-          ) : (
-            <Router />
-          )}
-        </ThemeProvider>
+            )}
+          </DeprecatedUITheme.ThemeProvider>
+        </ThemeState.Provider>
       </EnvironmentProvider>
     </Provider>,
     document.getElementById('root')
@@ -69,8 +72,4 @@ const appBootstrapper = () => {
     store.dispatch(ConnectionActions.disconnect())
     log.warn(`Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
   })
-}
-
-export function run() {
-  appBootstrapper()
 }

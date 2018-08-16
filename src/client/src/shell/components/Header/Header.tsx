@@ -1,11 +1,42 @@
 import React from 'react'
 import styled from 'react-emotion'
 
-import { ThemeSwitcher } from 'rt-components'
-import { Themes } from 'shell/theme'
+import { ThemeState } from 'rt-theme'
+
 import Logo from './Logo'
 
 const ADAPTIVE_URL: string = 'http://www.weareadaptive.com'
+
+class Header extends React.Component<{
+  openLink: (url: string) => void
+}> {
+  openLink = () => {
+    const { openLink } = this.props
+
+    openLink(ADAPTIVE_URL)
+  }
+
+  render() {
+    return (
+      <Root>
+        <Logo
+          size={2}
+          // Has no properties in common with React.SFC? 🤔
+          // onClick={this.openLink}
+        />
+
+        <Fill />
+        <ThemeState.Consumer>
+          {({ name, setTheme }) => (
+            <IconButton onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })} type={name || 'primary'}>
+              <i className={`fa${name === 'light' ? 'r' : 's'} fa-lightbulb`} />
+            </IconButton>
+          )}
+        </ThemeState.Consumer>
+      </Root>
+    )
+  }
+}
 
 const Root = styled('div')`
   width: 100%;
@@ -30,40 +61,26 @@ const Fill = styled('div')`
   flex: 1;
 `
 
-interface Props {
-  openLink: (url: string) => void
-  toggleTheme: () => void
-  theme: Themes
-}
+const IconButton = styled('div')<{ [key: string]: any }>`
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  line-height: 1rem;
 
-class Header extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props)
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    this.openLink = this.openLink.bind(this)
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  transition: background-color ${({ theme }) => theme.motion.duration}ms ${({ theme }) => theme.motion.easing};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.button.secondary.active.backgroundColor};
+    color: ${({ theme }) => theme.button.secondary.textColor};
   }
-
-  openLink() {
-    const { openLink } = this.props
-    openLink(ADAPTIVE_URL)
-  }
-
-  render() {
-    const { toggleTheme, theme } = this.props
-
-    return (
-      <Root>
-        <Logo
-          size={2}
-          // Has no properties in common with React.SFC? 🤔
-          // onClick={this.openLink}
-        />
-
-        <Fill />
-        <ThemeSwitcher toggleTheme={toggleTheme} theme={theme} />
-      </Root>
-    )
-  }
-}
+`
 
 export default Header
