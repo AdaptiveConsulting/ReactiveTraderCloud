@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component, SFC } from 'react'
 import { connect } from 'react-redux'
-import { styled, ThemeProvider } from 'rt-theme'
+import { ThemeProvider } from 'rt-theme'
 
 import { GlobalState } from 'combineReducers'
 import Icon from './Icon'
@@ -22,10 +22,6 @@ export const SERVICES = ['blotter', 'reference', 'execution', 'pricing', 'analyt
 interface State {
   expanded: boolean
 }
-
-const StatusBarIcon = styled(Icon)`
-  margin-right: 0.5rem;
-`
 
 class StatusBar extends Component<StatusBarProps, State> {
   state = {
@@ -49,7 +45,7 @@ class StatusBar extends Component<StatusBarProps, State> {
       >
         <Root expand={expanded}>
           <Body onClick={this.toggleExpanded}>
-            <StatusBarIcon name="check" />
+            <Icon name="check" />
 
             {mode === 'disconnected' ? (
               'Disconnected'
@@ -79,16 +75,12 @@ class StatusBar extends Component<StatusBarProps, State> {
   }
 }
 
-const ServiceRootIcon = styled(Icon)`
-  margin-right: 1rem;
-`
-
 const Service: SFC<{ service: ServiceStatus; index: number }> = ({
   service: { serviceType, isConnected, connectedInstanceCount },
   index
 }) => (
   <ServiceRoot index={index + 2}>
-    <ServiceRootIcon name={isConnected == null ? 'ellipsis-h' : isConnected ? 'check' : 'times'} />
+    <Icon name={isConnected == null ? 'ellipsis-h' : isConnected ? 'check' : 'times'} />
     <div>
       <ServiceName>{serviceType}</ServiceName>
 
