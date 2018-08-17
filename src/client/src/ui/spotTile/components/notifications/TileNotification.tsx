@@ -20,7 +20,7 @@ const TradeSymbol = styled('div')`
 `
 
 const CheckIcon = styled(Icon)`
-  background-color: ${({ theme }) => theme.good.light};
+  background-color: ${({ theme }) => theme.green.light};
   border-radius: 50%;
   padding: 0.3125rem;
 `
@@ -52,7 +52,7 @@ interface Props {
 }
 
 const TileNotification: React.SFC<Props> = ({ style, isWarning, symbols, tradeId, handleClick, children }) => {
-  const accentColor = isWarning ? 'bad' : 'good'
+  const accentColor = isWarning ? 'red' : 'green'
 
   return (
     <TileNotificationStyle accentColor={accentColor} style={style}>

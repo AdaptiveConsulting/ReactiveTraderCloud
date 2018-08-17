@@ -23,14 +23,14 @@ const PriceMovement: React.SFC<Props> = ({ priceMovementType, spread }) => (
   <Flex alignItems="center" justifyContent="center" direction="column" width="100%">
     <MovementIcon
       show={priceMovementType === PriceMovementTypes.Up}
-      color="good"
+      color="green"
       className="fas fa-caret-up"
       aria-hidden="true"
     />
     <MovementValue>{spread}</MovementValue>
     <MovementIcon
       show={priceMovementType === PriceMovementTypes.Down}
-      color="bad"
+      color="red"
       className="fas fa-caret-down"
       aria-hidden="true"
     />

@@ -17,6 +17,7 @@ const MAX_NOTIONAL_VALUE = 1000000000
 const CurrencyPairSymbol = styled('div')`
   opacity: 0.59;
   font-size: 0.625rem;
+  line-height: 1rem;
   padding-right: 0.375rem;
 `
 
@@ -35,7 +36,7 @@ export const Input = styled('input')`
 
   .spot-tile:hover &:focus,
   &:focus {
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.primary.base};
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.blue.base};
   }
 `
 

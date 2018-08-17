@@ -123,23 +123,19 @@ export function createTheme(
       textColor: secondary.base,
       inputColor: secondary['4'],
 
-      primary: {
+      blue: {
         base: accents.accent.base,
         light: accents.accent['2']
       },
 
-      bad: {
+      red: {
         base: accents.bad.base,
         light: accents.bad['3']
       },
 
-      good: {
+      green: {
         base: accents.good.base,
         light: accents.good['3']
-      },
-
-      accent: {
-        base: accents.accent.base
       },
 
       priceButton: {

@@ -12,7 +12,7 @@ import { DeliveryDate, TileBaseStyle, TileSymbol } from './styled'
 
 export const SpotTileWrapper = styled('div')`
   position: relative;
-  min-height: 160px;
+  min-height: 10rem;
   height: 100%;
 `
 

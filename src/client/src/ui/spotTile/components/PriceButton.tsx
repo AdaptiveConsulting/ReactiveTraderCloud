@@ -5,8 +5,8 @@ import { Direction } from 'rt-types'
 import { withDefaultProps } from 'rt-util'
 
 const hoverColors = {
-  [Direction.Buy]: 'bad',
-  [Direction.Sell]: 'accent'
+  [Direction.Buy]: 'red',
+  [Direction.Sell]: 'blue'
 }
 
 export const TradeButton = styled('button')<{ direction: string }>`
@@ -41,10 +41,12 @@ const DirectionLabel = styled(Box)`
 
 const Big = styled(Box)`
   font-size: 0.8125rem;
+  line-height: 1rem;
 `
 
 const Pip = styled(Box)`
   font-size: 2.125rem;
+  line-height: 2.5rem;
   margin: 0 0.125rem;
 `
 
