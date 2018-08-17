@@ -114,8 +114,9 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
           type="lineChart"
           datum={this.prepareDatum(seriesData)}
           options={options}
-          height={240}
+          height={12 * 16}
           configure={configurePnLChart}
+          margin={{ left: 16, right: 0, top: 8, bottom: 8 }}
         />
       )
     } else {
@@ -125,10 +126,7 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
     return (
       <div>
         <div className="analytics__header">
-          <span className="analytics__header-title">
-            <i className="analytics__header-title-icon glyphicon glyphicon-stats" />
-            Profit &amp; Loss
-          </span>
+          <span className="analytics__header-title">Profit and Loss</span>
           <span className={analyticsHeaderClassName}>USD {formattedLastPos}</span>
         </div>
         <div className="analytics__chart-container">{pnlChart}</div>

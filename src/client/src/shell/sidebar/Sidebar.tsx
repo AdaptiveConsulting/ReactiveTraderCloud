@@ -1,7 +1,9 @@
 import React from 'react'
+import { ThemeProvider } from 'rt-theme'
 import { SidebarRegionActions } from './actions'
-import { getSidebarStyles } from './sidebarUtils'
 import Toggle from './Toggle'
+
+import { RegionContainer, RegionContent, RegionElement, Root } from './styled'
 
 interface SidebarProps {
   displayAnalytics: boolean
@@ -15,19 +17,27 @@ export class Sidebar extends React.PureComponent<SidebarProps> {
   render() {
     const { displayAnalytics, toggleAnalytics, tornOff, renderContent } = this.props
 
-    const showButton = displayAnalytics
-    const { analyticsStyles, buttonStyles } = getSidebarStyles(showButton)
-
     return (
-      <div className="shell__sidebar">
-        <div className={analyticsStyles}>{renderContent()}</div>
-        <Toggle show={!tornOff}>
-          <div className="sidebar-region__container">
-            <i className={buttonStyles} onClick={toggleAnalytics} />
-            <div className="sidebar-region__element" />
-          </div>
-        </Toggle>
-      </div>
+      <ThemeProvider
+        theme={theme => ({
+          backgroundColor: theme.primary.base,
+          textColor: theme.shell.textColor,
+          shadowColor: theme.shell.textColor,
+          hover: theme.component.hover
+        })}
+      >
+        <Root>
+          <RegionContent>{renderContent()}</RegionContent>
+          <Toggle show={!tornOff}>
+            <RegionContainer>
+              {displayAnalytics && (
+                <i className="sidebar-region__element-button glyphicon glyphicon-stats" onClick={toggleAnalytics} />
+              )}
+              <RegionElement />
+            </RegionContainer>
+          </Toggle>
+        </Root>
+      </ThemeProvider>
     )
   }
 }

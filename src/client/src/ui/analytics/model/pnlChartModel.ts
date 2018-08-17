@@ -40,10 +40,10 @@ export const getPnlChartModel = history => {
       useInteractiveGuideline: true,
       duration: 0,
       margin: {
-        left: 30,
-        top: 10,
+        left: 0,
+        top: 0,
         right: 0,
-        bottom: 24
+        bottom: 0
       }
     }
   }

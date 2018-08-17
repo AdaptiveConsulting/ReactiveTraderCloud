@@ -1,6 +1,7 @@
 import d3 from 'd3'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { colors } from 'rt-theme'
 
 import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
 import reactSizeme from 'react-sizeme'
@@ -96,7 +97,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
 
   updateNodes(data: any) {
     let nodes = this.state.nodes
-    const colours = ['#6db910', '#d90a0a']
+    const colours = [colors.accents.good.base, colors.accents.bad.base]
     const positionsData = getPositionsDataFromSeries(data, this.props.currencyPairs)
 
     nodes = map(positionsData, (dataObj: any, index: number) => {
