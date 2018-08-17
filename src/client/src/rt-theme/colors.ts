@@ -106,7 +106,7 @@ export const offwhite = createPalette({
 // We use a base color to generate a complement
 // of shades above and below at 10% increments.
 export const offblack = createPalette({
-  base: rgb(85, 93, 112),
+  base: rgb(68, 76, 95), // sRGB
   // We can provide additional shades or override
   // the generated shades.
   L25: mix(0.25, white.base, rgb(85, 93, 112)),
