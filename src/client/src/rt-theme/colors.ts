@@ -110,7 +110,7 @@ export const offblack = createPalette({
   // We can provide additional shades or override
   // the generated shades.
   L25: mix(0.25, white.base, rgb(85, 93, 112)),
-  // We are overriding the value for D4 due to
+  // We are overriding these values due to
   // insuffcient contrast ratio and inconsistency
   // with the designers intent.
   D3: rgb(46, 53, 67),

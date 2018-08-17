@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { ThemeState } from 'rt-theme'
+
+// TODO make styleguide globals?
+import 'rt-theme/globals'
+
 // TODO (8/16/18) remove after removing rt-themes
 import * as DeprecatedUITheme from '../../ui/theme'
 
@@ -55,6 +59,8 @@ const IconButton = styled('div')<{ [key: string]: any }>`
 `
 
 const StyledStory = styled('div')`
+  margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
   display: flex;
@@ -64,15 +70,12 @@ const StyledStory = styled('div')`
   color: ${({ theme }) => theme.text.primary};
   transition: background-color ${({ theme }) => theme.animationSpeed.normal}ms,
     color ${({ theme }) => theme.animationSpeed.normal}ms;
-  will-change: color, background-color;
-  font-family: ${({ theme }) => theme.fontFamily.primary};
-  position: fixed;
 `
 
 const Toolbar = styled('div')`
   z-index: 9999;
-  padding: 0px 20px;
-  height: 60px;
+  padding: 0 1rem;
+  height: 3rem;
   display: flex;
   flex-direction: row;
   align-items: center;
