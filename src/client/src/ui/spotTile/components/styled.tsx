@@ -1,4 +1,4 @@
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 
 export interface ColorProps {
   color?: string
@@ -6,17 +6,16 @@ export interface ColorProps {
 }
 
 export const DeliveryDate = styled('div')`
-  color: ${({ theme: { text } }) => text.textMeta};
+  color: ${({ theme }) => theme.textColor};
   font-size: 0.625rem;
-
-  .spot-tile:hover & {
-    color: ${({ theme: { text } }) => text.textPrimary};
-  }
+  line-height: 1rem;
+  opacity: 0.59;
 `
 
 export const TileSymbol = styled('div')`
-  color: ${({ theme: { text } }) => text.textPrimary};
+  color: ${({ theme }) => theme.textColor};
   font-size: 0.8125rem;
+  line-height: 1rem;
 `
 
 export const TileBaseStyle = styled('div')`
@@ -28,8 +27,8 @@ export const TileBaseStyle = styled('div')`
   box-sizing: border-box;
 `
 
-export const Icon = styled('i')<ColorProps>`
-  color: ${({ theme: { text }, color }) => color && text[color]};
+export const Icon = styled('i')`
+  color: ${({ theme }) => theme.white};
 `
 
 export const Button = styled('button')`

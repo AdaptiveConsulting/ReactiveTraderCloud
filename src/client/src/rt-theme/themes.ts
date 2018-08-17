@@ -116,6 +116,35 @@ export function createTheme(
       textColor: secondary[2]
     },
 
+    white: colors.spectrum.white.base,
+
+    tile: {
+      backgroundColor: primary.base,
+      textColor: secondary.base,
+      inputColor: secondary['4'],
+
+      blue: {
+        base: accents.accent.base,
+        light: accents.accent['2']
+      },
+
+      red: {
+        base: accents.bad.base,
+        light: accents.bad['3']
+      },
+
+      green: {
+        base: accents.good.base,
+        light: accents.good['3']
+      },
+
+      priceButton: {
+        backgroundColor: primary.base,
+        textColor: colors.spectrum.white.base,
+        hoverColor: primary['1']
+      }
+    },
+
     button: {
       primary: {
         backgroundColor: accents.accent.base,

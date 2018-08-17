@@ -1,16 +1,16 @@
 import React from 'react'
 import { Flex } from 'rt-components'
+import { styled } from 'rt-theme'
 import { Direction } from 'rt-types'
-import { styled, withDefaultProps } from 'rt-util'
+import { withDefaultProps } from 'rt-util'
 
 const hoverColors = {
-  [Direction.Buy]: '#F94C4C',
-  [Direction.Sell]: '#5f94f5'
+  [Direction.Buy]: 'red',
+  [Direction.Sell]: 'blue'
 }
 
 export const TradeButton = styled('button')<{ direction: string }>`
-  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
-  color: ${({ theme: { text } }) => text.textPrimary};
+  background-color: ${({ theme }) => theme.priceButton.backgroundColor};
   border-radius: 3px;
   transition: background-color 0.2s ease;
   cursor: pointer;
@@ -19,12 +19,12 @@ export const TradeButton = styled('button')<{ direction: string }>`
   padding: 0.5rem 1.5rem;
 
   .spot-tile:hover & {
-    background-color: ${({ theme: { background } }) => background.backgroundPrimary};
+    background-color: ${({ theme }) => theme.priceButton.hoverColor};
   }
 
   .spot-tile:hover &:hover {
-    background-color: ${({ direction }) => hoverColors[direction]};
-    color: ${({ theme: { text } }) => text.white};
+    background-color: ${({ theme, direction }) => theme[hoverColors[direction]].base};
+    color: ${({ theme }) => theme.priceButton.textColor};
   }
 `
 
@@ -34,17 +34,19 @@ const Box = styled('div')`
 `
 
 const DirectionLabel = styled(Box)`
-  color: ${({ theme: { text } }) => text.textMeta};
+  opacity: 0.59;
   margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
 `
 
 const Big = styled(Box)`
-  font-size: ${p => p.theme.fontSize.h4};
+  font-size: 0.8125rem;
+  line-height: 1rem;
 `
 
 const Pip = styled(Box)`
-  font-size: ${p => p.theme.fontSize.h2};
+  font-size: 2.125rem;
+  line-height: 2.5rem;
   margin: 0 0.125rem;
 `
 

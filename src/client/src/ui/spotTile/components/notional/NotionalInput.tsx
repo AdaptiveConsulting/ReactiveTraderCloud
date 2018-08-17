@@ -1,7 +1,7 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
 import { Flex } from 'rt-components'
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 import { convertNotionalShorthandToNumericValue, hasShorthandInput } from './utils'
 
 const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -15,27 +15,28 @@ const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]
 const MAX_NOTIONAL_VALUE = 1000000000
 
 const CurrencyPairSymbol = styled('div')`
-  color: ${({ theme: { text } }) => text.textMeta};
+  opacity: 0.59;
   font-size: 0.625rem;
+  line-height: 1rem;
   padding-right: 0.375rem;
 `
 
 export const Input = styled('input')`
-  color: ${({ theme: { text } }) => text.textPrimary};
-  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
-  border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0);
+  background: none;
   outline: none;
+  border: none;
   font-size: 0.75rem;
   width: 70px;
-  transition: border-bottom 0.2s ease;
+  transition: box-shadow 0.2s ease;
+  padding: 2px 0;
 
   .spot-tile:hover & {
-    border-color: ${({ theme: { text } }) => text.textMeta};
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.textColor};
   }
 
-  .spot-tile:hover &:focus {
-    border-color: ${({ theme: { palette } }) => palette.accentPrimary.normal};
+  .spot-tile:hover &:focus,
+  &:focus {
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.blue.base};
   }
 `
 

@@ -39,7 +39,6 @@ const WorkspaceContainer = ({ spotTiles = [] }: WorkspaceContainerProps) => (
   <Workspace>
     <WorkspaceHeader justifyContent="space-between">
       <div>Live Rates</div>
-      <div>Switch</div>
     </WorkspaceHeader>
 
     <WorkspaceItems>

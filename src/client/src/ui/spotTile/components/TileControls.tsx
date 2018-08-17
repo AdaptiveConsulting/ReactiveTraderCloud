@@ -1,7 +1,8 @@
 import React from 'react'
 import { PopoutIcon } from 'rt-components'
 import { Environment } from 'rt-system'
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
+import { SpotTileWrapper } from './SpotTile'
 
 const TileControlsStyle = styled('div')`
   position: absolute;
@@ -11,7 +12,7 @@ const TileControlsStyle = styled('div')`
   transition: opacity 0.2s;
   padding: 0 0.375rem;
 
-  .spot-tile-container:hover & {
+  ${SpotTileWrapper}:hover & {
     opacity: 0.75;
   }
 `
@@ -20,8 +21,8 @@ const TopRightButton = styled('div')`
   cursor: pointer;
 
   .svg-icon {
-    stroke: ${({ theme: { text } }) => text.textPrimary};
-    fill: ${({ theme: { text } }) => text.textPrimary};
+    stroke: ${({ theme }) => theme.textColor};
+    fill: ${({ theme }) => theme.textColor};
   }
 `
 
