@@ -6,7 +6,10 @@ import { WorkspaceContainer } from 'ui/workspace'
 
 import { styled } from 'rt-theme'
 import { ShellContainer } from 'shell'
+import { AnalyticsContainer } from 'ui/analytics'
 import { BlotterContainer } from 'ui/blotter'
+
+import SidebarRegionContainer from 'shell/sidebar'
 
 const portalProps = {
   blotterRegion: {
@@ -46,6 +49,16 @@ const DefaultLayout = () => (
         />
       </BlotterWrapper>
     </SplitPane>
+    <TearOff
+      id="region"
+      portalProps={portalProps.analyticsRegion}
+      render={(popOut, tornOff) => (
+        <SidebarRegionContainer
+          tornOff={tornOff}
+          renderContent={() => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} />}
+        />
+      )}
+    />
   </ShellContainer>
 )
 

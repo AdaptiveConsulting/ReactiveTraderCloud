@@ -92,6 +92,7 @@ const BodyContainer = styled('div')`
 `
 
 const Body = styled('div')`
+  display: flex;
   flex: 1;
   width: 100%;
   position: relative;

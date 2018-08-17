@@ -15,13 +15,17 @@ export interface Theme {
   }
 
   shell: ColorPair
-  component: ColorPair
+  component: ColorPair & {
+    hover: ColorPair
+  }
 
   button: TouchableIntents
 
   // Known extensible properties
   backgroundColor?: Color
   textColor?: Color
+  shadowColor?: Color
+  hover?: ColorPair
 
   // TODO (8/14/18) remove after theme migration
   [key: string]: any
@@ -108,7 +112,10 @@ export function createTheme(
 
     component: {
       backgroundColor: primary.base,
-      textColor: secondary.base
+      textColor: secondary.base,
+      hover: {
+        backgroundColor: primary[1]
+      }
     },
 
     header: {

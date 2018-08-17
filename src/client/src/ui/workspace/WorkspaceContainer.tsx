@@ -6,8 +6,8 @@ import { GlobalState } from '../../combineReducers'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
 import { selectSpotTiles } from './selectors'
 
-const Workspace = styled('div')`
-  background-color: ${({ theme: { background } }) => background.backgroundPrimary};
+const Workspace = styled.div`
+  padding: 0px 8px 0px 16px;
   padding: 0 0.5rem 0 1rem;
   flex-grow: 1;
   overflow-y: auto;

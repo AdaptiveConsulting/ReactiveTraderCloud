@@ -1,4 +1,6 @@
+import { css } from 'emotion'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { ThemeProvider } from './ThemeProvider'
 import { Theme, themes } from './themes'
 
@@ -75,10 +77,34 @@ class ThemeStateManager extends React.Component<ThemeStateProps & { context: The
   render() {
     const { context, children } = this.props
     const { name } = this.state
+    const theme = themes[name]
 
     return (
       <ContextProvider value={this.state}>
-        {context && context.name === name ? children : <ThemeProvider theme={themes[name]} children={children} />}
+        {context && context.name === name ? (
+          children
+        ) : (
+          <ThemeProvider theme={theme}>
+            <React.Fragment>
+              {children}
+              {// TODO (8/17/18) move to ThemeProvider?
+              // Set the background color and color
+              context ? null : (
+                <Helmet>
+                  <html
+                    className={css`
+                      :root,
+                      body {
+                        background-color: ${theme.shell.backgroundColor};
+                        color: ${theme.shell.textColor};
+                      }
+                    `}
+                  />
+                </Helmet>
+              )}
+            </React.Fragment>
+          </ThemeProvider>
+        )}
       </ContextProvider>
     )
   }

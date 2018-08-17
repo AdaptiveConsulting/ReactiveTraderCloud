@@ -21,14 +21,12 @@ export function getPositionsDataFromSeries(series = [], currencyPairs: CurrencyP
     return aggregatedPositionsObj
   }, {})
 
-  return _
-    .map(positionsPerCcyObj, (val, key) => {
-      return {
-        symbol: key,
-        [baseAmountPropertyName]: val
-      }
-    })
-    .filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
+  return _.map(positionsPerCcyObj, (val, key) => {
+    return {
+      symbol: key,
+      [baseAmountPropertyName]: val
+    }
+  }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
 }
 
 export function createScales(props: PositionsBubbleChartProps) {
