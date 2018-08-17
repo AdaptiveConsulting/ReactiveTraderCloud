@@ -145,6 +145,30 @@ export function createTheme(
       }
     },
 
+    blotter: {
+      backgroundColor: primary[1],
+      textColor: secondary.base,
+      alternateBackgroundColor: primary.base,
+      foregroundColor: primary['3'],
+      secondaryColor: secondary['2'],
+      pending: primary['2'],
+
+      blue: {
+        base: accents.accent.base,
+        light: accents.accent['2']
+      },
+
+      red: {
+        base: accents.bad.base,
+        light: accents.bad['3']
+      },
+
+      green: {
+        base: accents.good.base,
+        light: accents.good['3']
+      }
+    },
+
     button: {
       primary: {
         backgroundColor: accents.accent.base,

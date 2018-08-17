@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 
 interface QuickFilterProps {
   isFilterApplied: boolean
@@ -21,10 +21,10 @@ const QuickFilterStyle = styled('div')`
 `
 
 const QuickFilterInput = styled('input')`
-  color: ${({ theme: { text } }) => text.textMeta};
-  background-color: ${({ theme: { background } }) => background.backgroundPrimary};
+  opacity: 0.59;
+  background: none;
   border: none;
-  border-bottom: 1px solid ${({ theme: { text } }) => text.textTertiary};
+  box-shadow: 0px 1px 0px ${({ theme }) => theme.textColor};
   width: 100%;
   font-size: 0.75rem;
   height: 20px;
@@ -32,18 +32,21 @@ const QuickFilterInput = styled('input')`
   outline: none;
 
   &:hover {
-    border-bottom: 1px solid ${({ theme: { palette } }) => palette.accentPrimary.light};
+    opacity: 1;
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.blue.light};
   }
 
   &:focus {
-    border-bottom: 1px solid ${({ theme: { palette } }) => palette.accentPrimary.normal};
-    color: ${({ theme: { text } }) => text.textPrimary};
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.blue.base};
+    color: ${({ theme }) => theme.textColor};
+    opacity: 1;
   }
 `
 
 const QuickFilterIcon = styled('div')`
   width: 14px;
   margin: 0 0.25rem;
+  opacity: 0.59;
 `
 
 const QuickFilterClearIcon = styled('i')`
@@ -52,8 +55,9 @@ const QuickFilterClearIcon = styled('i')`
   right: 12px;
 
   i {
+    opacity: 0.59;
     cursor: pointer;
-    color: ${({ theme: { text } }) => text.textMeta};
+    color: ${({ theme }) => theme.textColor};
   }
 `
 
