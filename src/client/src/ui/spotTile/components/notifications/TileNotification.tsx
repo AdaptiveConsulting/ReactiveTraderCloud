@@ -51,7 +51,6 @@ interface Props {
   handleClick?: () => void
 }
 
-//TODO: SVG icons
 const TileNotification: React.SFC<Props> = ({ style, isWarning, symbols, tradeId, handleClick, children }) => {
   const accentColor = isWarning ? 'bad' : 'good'
 

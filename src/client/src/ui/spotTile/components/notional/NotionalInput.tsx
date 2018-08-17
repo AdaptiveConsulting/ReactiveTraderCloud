@@ -35,7 +35,7 @@ export const Input = styled('input')`
 
   .spot-tile:hover &:focus,
   &:focus {
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.accents.accent.base};
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.primary.base};
   }
 `
 

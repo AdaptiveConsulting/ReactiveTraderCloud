@@ -9,7 +9,7 @@ const hoverColors = {
   [Direction.Sell]: 'accent'
 }
 
-export const TradeButton = styled('button')<{ direction: string; theme?: any }>`
+export const TradeButton = styled('button')<{ direction: string }>`
   background-color: ${({ theme }) => theme.button.backgroundColor};
   border-radius: 3px;
   transition: background-color 0.2s ease;
@@ -23,7 +23,7 @@ export const TradeButton = styled('button')<{ direction: string; theme?: any }>`
   }
 
   .spot-tile:hover &:hover {
-    background-color: ${({ theme, direction }) => theme.accents[hoverColors[direction]].base};
+    background-color: ${({ theme, direction }) => theme[hoverColors[direction]].base};
     color: ${({ theme }) => theme.button.textColor};
   }
 `

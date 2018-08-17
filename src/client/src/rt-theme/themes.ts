@@ -122,18 +122,26 @@ export function createTheme(
       backgroundColor: primary.base,
       textColor: secondary.base,
       inputColor: secondary['4'],
+
       primary: {
         base: accents.accent.base,
         light: accents.accent['2']
       },
+
       bad: {
         base: accents.bad.base,
         light: accents.bad['3']
       },
+
       good: {
         base: accents.good.base,
         light: accents.good['3']
       },
+
+      accent: {
+        base: accents.accent.base
+      },
+
       button: {
         backgroundColor: primary.base,
         textColor: colors.spectrum.white.base,
