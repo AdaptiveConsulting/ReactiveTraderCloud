@@ -1,35 +1,36 @@
 import React from 'react'
 
 import { AdaptiveLoader, Flex } from 'rt-components'
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 
 const appVersion: string = process.env.REACT_APP_VERSION
 const LOADER_SIZE = 400
 
 const Background = styled(Flex)`
-  background-color: ${({ theme }) => theme.background.primary};
+  background-color: ${({ theme }) => theme.shell.backgroundColor};
 `
 
-const AdaptiveText = styled('h1')`
+const AdaptiveText = styled.div`
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0px;
-  font-size: ${({ theme }) => theme.fontSize.h1};
-  color: ${({ theme }) => theme.text.secondary};
-  text-shadow: -1px -1px 0 ${({ theme }) => theme.text.primary}, 1px -1px 0 ${({ theme }) => theme.text.primary},
-    -1px 1px 0 ${({ theme }) => theme.text.primary}, 1px 1px 0 ${({ theme }) => theme.text.primary};
+  margin: 0;
+  font-size: 4rem;
+  font-family: Lato;
+  font-weight: 600;
+  color: ${({ theme }) => theme.shell.backgroundColor};
 `
 
 const Version = styled('p')`
-  margin-top: 20px;
-  font-size: ${({ theme }) => theme.fontSize.body};
-  color: ${({ theme }) => theme.text.primary};
+  margin-top: 3rem;
+  line-height: 1rem;
+  font-size: 0.75rem;
+  color: ${({ theme }) => theme.shell.textColor};
 `
 
 const LoaderContainer = styled('div')`
