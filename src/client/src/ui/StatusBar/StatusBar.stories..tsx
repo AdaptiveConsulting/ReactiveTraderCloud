@@ -1,14 +1,14 @@
 import _ from 'lodash'
 import React from 'react'
-import { createStore } from 'redux'
 import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 
+import { withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, boolean } from '@storybook/addon-knobs'
 
 import { Story } from 'rt-storybook'
-import { styled } from 'rt-util'
 import { ConnectionType } from 'rt-system'
+import { styled } from 'rt-util'
 
 import StatusBar, { SERVICES } from './StatusBar'
 
@@ -28,7 +28,7 @@ const compositeStatusService = _.mapValues(_.keyBy(SERVICES, 'serviceType'), ({ 
   connectedInstanceCount: 2
 }))
 
-const state = {
+const connectionState = {
   connected: {
     connectionStatus,
     compositeStatusService
@@ -57,7 +57,7 @@ const state = {
   }
 }
 
-_.forEach(state, (state, key) =>
+_.forEach(connectionState, (state, key) =>
   stories.add(_.capitalize(key), () => {
     // const expanded = boolean('expanded', false)
     return (

@@ -73,9 +73,9 @@ export const themes = {
 export function createTheme(
   { primary, secondary }: CorePaletteMap,
   accents: AccentPaletteMap,
-  modify: (theme: Theme) => object = (theme: Theme) => theme
+  modify: (originalTheme: Theme) => object = (theme: Theme) => theme
 ): Theme {
-  const theme: Theme = {
+  const newTheme: Theme = {
     primary,
     secondary,
     accents,
@@ -185,8 +185,8 @@ export function createTheme(
   }
 
   return {
-    ...theme,
-    ...modify(theme)
+    ...newTheme,
+    ...modify(newTheme)
   }
 }
 
