@@ -9,6 +9,8 @@ import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 import { CurrencyPairMap } from 'rt-types'
 import PNLChart from './pnlChart/PNLChart'
 
+import { Root } from './styled'
+
 export interface AnalyticsProps {
   canPopout: boolean
   isConnected: boolean
@@ -37,14 +39,14 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
 
     if (!isConnected) {
       return (
-        <div className="analytics__container analytics__container--disconnected">
+        <Root className="analytics__container analytics__container--disconnected">
           <div ref="analyticsInnerContainer">Analytics disconnected</div>
-        </div>
+        </Root>
       )
     }
 
     return (
-      <div className="analytics analytics__container animated fadeIn">
+      <Root className="analytics analytics__container animated fadeIn">
         <div className="analytics__controls popout__controls">
           <i className={getWindowButtonClassName(canPopout)} onClick={onPopoutClick} />
         </div>
@@ -67,7 +69,7 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
             )}
           </div>
         </div>
-      </div>
+      </Root>
     )
   }
 }

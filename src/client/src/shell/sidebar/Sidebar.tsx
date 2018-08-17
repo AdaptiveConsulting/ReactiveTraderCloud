@@ -1,7 +1,7 @@
 import React from 'react'
 import { SidebarRegionActions } from './actions'
 
-import { RegionContent, Root } from './st\yled'
+import { RegionContent, Root } from './styled'
 
 interface SidebarProps {
   displayAnalytics: boolean

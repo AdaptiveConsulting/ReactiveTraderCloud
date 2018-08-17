@@ -333,10 +333,13 @@ $default-padding: 0.5rem;
 }
 
 .analytics__chart-tooltip {
-  font-size: 0.5rem;
+  font-weight: 500;
+  display: block;
+  mix-blend-mode: difference !important;
 }
 
 .analytics__chart-tooltip-date {
+  font-weight: 600;
 }
 
 .analytics__container--disconnected {
