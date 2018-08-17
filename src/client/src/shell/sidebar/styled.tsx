@@ -12,41 +12,12 @@ export const Root = styled.div`
 `
 
 export const RegionContainer = styled.div`
-  /*
-    ${props => props.theme.hover.backgroundColor}: #30333a;
-    ${props => props.theme.backgroundColor}: #262a33;
-    ${props => props.theme.shadowColor}: #424545;
-    $button-height: 50px;
-
-  
-  
-  
-  */
-
   background-color: ${props => props.theme.hover.backgroundColor};
   height: 100%;
+  width: 2rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-
-  &.no-content {
-    display: none;
-  }
-
-  .sidebar-region__container--no-content {
-  }
-
-  .sidebar-region__element {
-  }
-
-  .sidebar-region__element--active {
-  }
-
-  .sidebar-region__element--inactive {
-  }
-
-  .sidebar-region__element-button {
-  }
 `
 
 export const RegionContent = styled.div`
@@ -59,35 +30,15 @@ export const RegionContent = styled.div`
 
 export const RegionElement = styled.div`
   /**/
-
-  border-left: 1px solid ${props => props.theme.shadowColor};
   width: 100%;
   flex: 1;
 
-  &.active {
-    background-color: ${props => props.theme.backgroundColor};
-    border: 1px solid ${props => props.theme.shadowColor};
-    border-left-color: ${props => props.theme.backgroundColor};
-    &:hover {
-      background-color: ${props => props.theme.hover.backgroundColor};
-      border-right-color: ${props => props.theme.shadowColor};
-    }
-  }
-
-  &.inactive {
-    border: 1px solid ${props => props.theme.hover.backgroundColor};
-    border-left-color: ${props => props.theme.shadowColor};
-    background-color: ${props => props.theme.hover.backgroundColor};
-    &:hover {
-      background-color: ${props => props.theme.backgroundColor};
-      border-bottom-color: ${props => props.theme.shadowColor};
-      border-top-color: ${props => props.theme.shadowColor};
-    }
-  }
+  height: 2rem;
+  width: 2rem;
 
   i {
-    height: $button-height;
-    color: white;
+    height: 2rem;
+    color: ${props => props.theme.textColor};
     text-align: center;
     padding: 20px 10px;
     cursor: pointer;
