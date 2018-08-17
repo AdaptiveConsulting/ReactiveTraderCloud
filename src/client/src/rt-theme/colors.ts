@@ -122,7 +122,8 @@ export const brand = createPalette({
 })
 
 export const blue = createPalette({
-  base: rgb(81, 147, 253)
+  base: rgb(81, 147, 253),
+  L95: rgb(244, 246, 249)
 })
 
 export const red = createPalette({

@@ -1,8 +1,7 @@
 import React from 'react'
-import { ThemeProvider } from 'rt-theme'
 import { SidebarRegionActions } from './actions'
 
-import { RegionContent, Root } from './styled'
+import { RegionContent, Root } from './st\yled'
 
 interface SidebarProps {
   displayAnalytics: boolean
@@ -17,18 +16,9 @@ export class Sidebar extends React.PureComponent<SidebarProps> {
     const { renderContent } = this.props
 
     return (
-      <ThemeProvider
-        theme={theme => ({
-          backgroundColor: theme.primary.base,
-          textColor: theme.shell.textColor,
-          shadowColor: theme.shell.textColor,
-          hover: theme.component.hover
-        })}
-      >
-        <Root>
-          <RegionContent>{renderContent()}</RegionContent>
-        </Root>
-      </ThemeProvider>
+      <Root>
+        <RegionContent>{renderContent()}</RegionContent>
+      </Root>
     )
   }
 }
