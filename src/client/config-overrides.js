@@ -8,8 +8,8 @@ module.exports = function override(config, env) {
     [
       'emotion',
       {
-        hoist: env === 'production',
         autoLabel: true,
+        hoist: env === 'production',
         labelFormat: '[filename]--[local]'
       }
     ],

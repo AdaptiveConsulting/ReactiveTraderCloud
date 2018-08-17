@@ -13,7 +13,7 @@ import NotionalInput from './notional'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
 import SpotTile from './SpotTile'
-import { DeliveryDate, TileSymbol } from './Styled'
+import { DeliveryDate, TileSymbol } from './styled'
 import TileSwitch from './TileSwitch'
 
 const Centered = styled('div')`

@@ -4,6 +4,7 @@ import SplitPane from 'react-split-pane'
 import { TearOff } from 'rt-components'
 import { WorkspaceContainer } from 'ui/workspace'
 
+import { styled } from 'rt-theme'
 import { ShellContainer } from 'shell'
 import { AnalyticsContainer } from 'ui/analytics'
 import { BlotterContainer } from 'ui/blotter'
@@ -31,15 +32,22 @@ const portalProps = {
   }
 }
 
+const BlotterWrapper = styled('div')`
+  height: 100%;
+  padding: 0 0.5rem 0 1rem;
+`
+
 const DefaultLayout = () => (
   <ShellContainer>
     <SplitPane minSize={300} size={600} maxSize={-50} split="horizontal" style={{ position: 'relative' }}>
       <WorkspaceContainer />
-      <TearOff
-        id="blotter"
-        portalProps={portalProps.blotterRegion}
-        render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
-      />
+      <BlotterWrapper>
+        <TearOff
+          id="blotter"
+          portalProps={portalProps.blotterRegion}
+          render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
+        />
+      </BlotterWrapper>
     </SplitPane>
     <TearOff
       id="region"

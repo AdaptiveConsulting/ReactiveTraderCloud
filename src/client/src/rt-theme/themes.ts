@@ -77,9 +77,9 @@ export const themes = {
 export function createTheme(
   { primary, secondary }: CorePaletteMap,
   accents: AccentPaletteMap,
-  modify: (theme: Theme) => object = (theme: Theme) => theme
+  modify: (originalTheme: Theme) => object = (theme: Theme) => theme
 ): Theme {
-  const theme: Theme = {
+  const newTheme: Theme = {
     primary,
     secondary,
     accents,
@@ -123,6 +123,59 @@ export function createTheme(
       textColor: secondary[2]
     },
 
+    white: colors.spectrum.white.base,
+
+    tile: {
+      backgroundColor: primary.base,
+      textColor: secondary.base,
+      inputColor: secondary['4'],
+
+      blue: {
+        base: accents.accent.base,
+        light: accents.accent['2']
+      },
+
+      red: {
+        base: accents.bad.base,
+        light: accents.bad['3']
+      },
+
+      green: {
+        base: accents.good.base,
+        light: accents.good['3']
+      },
+
+      priceButton: {
+        backgroundColor: primary.base,
+        textColor: colors.spectrum.white.base,
+        hoverColor: primary['1']
+      }
+    },
+
+    blotter: {
+      backgroundColor: primary[1],
+      alternateBackgroundColor: primary.base,
+      foregroundColor: primary['3'],
+      pending: primary['2'],
+
+      textColor: secondary.base,
+
+      blue: {
+        base: accents.accent.base,
+        light: accents.accent['2']
+      },
+
+      red: {
+        base: accents.bad.base,
+        light: accents.bad['3']
+      },
+
+      green: {
+        base: accents.good.base,
+        light: accents.good['3']
+      }
+    },
+
     button: {
       primary: {
         backgroundColor: accents.accent.base,
@@ -163,8 +216,8 @@ export function createTheme(
   }
 
   return {
-    ...theme,
-    ...modify(theme)
+    ...newTheme,
+    ...modify(newTheme)
   }
 }
 

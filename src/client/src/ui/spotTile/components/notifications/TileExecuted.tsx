@@ -1,8 +1,8 @@
 import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
+import { styled } from 'rt-theme'
 import { Direction } from 'rt-types'
-import { styled } from 'rt-util'
 
 const HeavyFont = styled('span')`
   font-weight: 900;
@@ -13,8 +13,8 @@ const HeavyItalicsFont = styled(HeavyFont)`
 `
 
 const InverseFont = styled(HeavyFont)`
-  background-color: ${({ theme: { text } }) => text.white};
-  color: ${({ theme: { palette } }) => palette.accentGood.normal};
+  background-color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.green.base};
   border-radius: 2px;
   padding: 0 0.0625rem;
 `

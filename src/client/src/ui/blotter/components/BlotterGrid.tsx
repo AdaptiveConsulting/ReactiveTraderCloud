@@ -1,12 +1,12 @@
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 
 export default styled('div')`
-  height: calc(100% - 76px);
-  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
-  border-radius: 3px;
+  height: calc(100% - 4.75rem);
+  background-color: ${({ theme }) => theme.alternateBackgroundColor};
+  border-radius: 0.1875rem;
 
   .ag-header {
-    border-bottom: 2px solid ${({ theme: { background } }) => background.backgroundPrimary};
+    border-bottom: 0.125rem solid ${({ theme }) => theme.backgroundColor};
     font-size: 0.6875rem;
     text-transform: uppercase;
   }
@@ -16,33 +16,33 @@ export default styled('div')`
   }
 
   .ag-row-odd {
-    background-color: ${({ theme: { background } }) => background.backgroundPrimary};
+    background-color: ${({ theme }) => theme.backgroundColor};
   }
 
   .ag-row-odd:hover {
-    background-color: ${({ theme: { background } }) => background.backgroundTertiary};
+    background-color: ${({ theme }) => theme.foregroundColor};
   }
 
   .ag-row-even:hover {
-    background-color: ${({ theme: { background } }) => background.backgroundTertiary};
+    background-color: ${({ theme }) => theme.foregroundColor};
   }
 
   .rt-blotter__row-pending {
-    background-color: ${({ theme: { background } }) => background.backgroundExtra};
+    background-color: ${({ theme }) => theme.pending};
   }
 
   .rt-blotter__status-indicator--done {
-    width: 5px !important;
+    width: 0.3125rem !important;
     padding: 0;
     margin: 0;
-    background-color: ${({ theme: { palette } }) => palette.accentGood.normal};
+    background-color: ${({ theme }) => theme.green.base};
   }
 
   .rt-blotter__status-indicator--rejected {
-    width: 5px !important;
+    width: 0.3125rem !important;
     padding: 0;
     margin: 0;
-    background-color: ${({ theme: { palette } }) => palette.accentBad.normal};
+    background-color: ${({ theme }) => theme.red.base};
   }
 
   .rt-blotter__cell-rejected,
@@ -56,7 +56,7 @@ export default styled('div')`
     position: absolute;
     top: 50%;
     left: 0;
-    border-bottom: 1px solid ${({ theme: { palette } }) => palette.accentBad.normal};
+    border-bottom: 0.0625rem solid ${({ theme }) => theme.red.base};
     width: 100%;
   }
 
@@ -70,7 +70,6 @@ export default styled('div')`
   }
 
   .ag-filter-icon {
-    color: ${({ theme: { text } }) => text.textSecondary};
     display: none;
   }
 
@@ -95,14 +94,13 @@ export default styled('div')`
   }
 
   .ag-header-cell-label i {
-    color: ${({ theme: { text } }) => text.textPrimary};
     padding: 0 0.25rem;
   }
 
   .ag-menu {
-    background-color: ${({ theme: { background } }) => background.backgroundPrimary};
-    box-shadow: 0 0 0.5px 0 ${({ theme: { text } }) => text.textPrimary};
-    border-radius: 3px;
+    background-color: ${({ theme }) => theme.backgroundColor};
+    box-shadow: 0 0 0.3125rem 0 ${({ theme }) => theme.textColor};
+    border-radius: 0.1875rem;
 
     .filter-container__checkbox-container {
       display: flex;
@@ -111,12 +109,12 @@ export default styled('div')`
       font-size: 0.6875rem;
 
       &:hover {
-        background-color: ${({ theme: { background } }) => background.backgroundTertiary};
+        background-color: ${({ theme }) => theme.foregroundColor};
       }
     }
 
     .filter_container__select-all-option-container {
-      border-bottom: 2px solid ${({ theme: { text } }) => text.textMeta};
+      border-bottom: 0.125rem solid ${({ theme }) => theme.textColor};
     }
 
     .filter-container__free-text-input,
@@ -124,15 +122,14 @@ export default styled('div')`
       margin: 0.625rem;
       font-size: 0.6875rem;
       padding: 0.375rem;
-      color: ${({ theme: { text } }) => text.textPrimary};
-      background-color: ${({ theme: { background } }) => background.backgroundPrimary};
+      background-color: ${({ theme }) => theme.backgroundColor};
       border: none;
-      border-bottom: 1px solid ${({ theme: { text } }) => text.textMeta};
+      border-bottom: 0.0625rem solid ${({ theme }) => theme.textColor};
       width: auto;
       outline: none;
 
       &:focus {
-        border-bottom: 1px solid ${({ theme: { palette } }) => palette.accentPrimary.normal};
+        border-bottom: 0.0625rem solid ${({ theme }) => theme.blue.base};
       }
     }
 
@@ -141,7 +138,7 @@ export default styled('div')`
     }
 
     option:hover {
-      background-color: ${({ theme: { background } }) => background.backgroundTertiary};
+      background-color: ${({ theme }) => theme.foregroundColor};
     }
 
     input[type='checkbox' i] {

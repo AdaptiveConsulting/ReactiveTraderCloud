@@ -185,7 +185,8 @@ export const accents: AccentPaletteMap = {
   good: {
     base: green.base,
     1: green.D1,
-    2: green.L5
+    2: green.L5,
+    3: green.L2
   },
   aware: {
     base: yellow.base,
@@ -195,7 +196,8 @@ export const accents: AccentPaletteMap = {
   bad: {
     base: red.base,
     1: red.D1,
-    2: red.L5
+    2: red.L5,
+    3: red.L2
   }
 }
 

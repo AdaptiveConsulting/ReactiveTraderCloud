@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Environment } from 'rt-system'
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 import { BlotterActions } from './actions'
 import Blotter from './components'
 import { selectBlotterService, selectBlotterStatus } from './selectors'
@@ -22,8 +22,8 @@ const BlotterDisconnected = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme: { palette } }) => palette.accentBad.normal};
-  color: ${({ theme: { text } }) => text.primary};
+  background-color: ${({ theme }) => theme.accents.bad.base};
+  color: ${({ theme }) => theme.white};
 `
 
 class BlotterContainer extends React.Component<BlotterContainerProps> {
