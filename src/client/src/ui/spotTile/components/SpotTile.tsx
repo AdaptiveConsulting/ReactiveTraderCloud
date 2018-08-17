@@ -14,6 +14,7 @@ export const SpotTileWrapper = styled('div')`
   position: relative;
   min-height: 10rem;
   height: 100%;
+  color: ${({ theme }) => theme.tile.textColor};
 `
 
 export const SpotTileStyle = styled(TileBaseStyle)`
