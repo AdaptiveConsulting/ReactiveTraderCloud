@@ -1,11 +1,17 @@
+import {
+  AutobahnConnection,
+  ConnectionEvent,
+  createConnection$,
+  ServiceClient,
+  ServiceCollectionMap,
+  serviceStatusStream$,
+  ServiceStub
+} from 'rt-system'
 import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
 import { multicast, refCount } from 'rxjs/operators'
 import { OpenFin } from './shell/openFin'
 import { ReferenceDataService } from './shell/referenceData'
-import { AutobahnConnection, ConnectionEvent, createConnection$, ServiceClient, ServiceStub } from './system'
-import { ServiceCollectionMap } from './system/ServiceInstanceCollection'
-import { serviceStatusStream$ } from './system/serviceStatusStream'
 
 const HEARTBEAT_TIMEOUT = 3000
 

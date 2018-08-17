@@ -27,7 +27,7 @@ const formatTradeNotification = (trade: Trade, currencyPair: CurrencyPair) => ({
 
 function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
   if (Object.keys(currencyPairs).length === 0 || Object.keys(blotterData).length === 0) {
-    return
+    return []
   }
   return Object.keys(blotterData).map(x =>
     formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol])
@@ -55,7 +55,7 @@ const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { openF
     skipWhile(trade => !state$.value.currencyPairs[trade.symbol]),
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
     map(trade => formatTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),
-    tap(tradeNotification => openFin.openTradeNotification(tradeNotification)),
+    tap(tradeNotification => openFin.openTradeNotification({ tradeNotification })),
     ignoreElements()
   )
 

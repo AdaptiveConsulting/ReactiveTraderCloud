@@ -1,18 +1,25 @@
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+
+import { GlobalState } from 'combineReducers'
 import { ConnectionActions } from 'rt-actions'
-import { GlobalState } from '../combineReducers'
-import { ConnectionStatus } from '../system'
+import { ConnectionStatus } from 'rt-system'
+import { ShellActions } from 'shell'
+
 import Shell from './Shell'
 
-const mapStateToProps = ({ connectionStatus, regionsService }: GlobalState) => ({
-  sessionExpired: connectionStatus.status === ConnectionStatus.sessionExpired,
-  showSplitter: regionsService.blotter && !regionsService.blotter.isTearedOff
+const mapStateToProps = (state: GlobalState) => ({
+  connected: state.connectionStatus.status === 'connected',
+  loaded: Object.keys(state.compositeStatusService).length >= 3,
+  sessionExpired: state.connectionStatus.status === ConnectionStatus.sessionExpired
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   reconnect: () => {
     dispatch(ConnectionActions.connect())
+  },
+  openLink: (link: string) => {
+    dispatch(ShellActions.openLink(link))
   }
 })
 

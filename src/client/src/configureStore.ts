@@ -4,24 +4,24 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable'
 
 import { ApplicationDependencies } from './applicationServices'
 import rootReducer, { GlobalState } from './combineReducers'
+import { linkEpic } from './shell/epics'
 import { openfinEpic } from './shell/openFin/epics'
 import { referenceServiceEpic } from './shell/referenceData'
 import { analyticsServiceEpic } from './ui/analytics'
 import { blotterEpic } from './ui/blotter/'
 import { compositeStatusServiceEpic } from './ui/compositeStatus'
 import { connectionStatusEpic } from './ui/connectionStatus'
-import { linkEpic } from './ui/footer'
 import { spotTileEpic } from './ui/spotTile'
 
 export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [
     referenceServiceEpic,
     blotterEpic,
+    linkEpic,
     analyticsServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,
-    spotTileEpic(dependencies),
-    linkEpic
+    spotTileEpic(dependencies)
   ]
 
   if (dependencies.openFin.isRunningInOpenFin) {

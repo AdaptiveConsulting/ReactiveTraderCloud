@@ -1,4 +1,5 @@
-import { Direction, Rate } from 'rt-types'
+import { Direction } from 'rt-types'
+import { Rate } from './rate'
 
 export const DEFAULT_NOTIONAL = 1000000
 
@@ -20,7 +21,7 @@ export function toRate(rawRate: number = 0, ratePrecision: number = 0, pipPrecis
   }
 }
 
-export function getSpread(bid: number, ask: number, pipsPosition: number, ratePrecision: number) {
+export function getSpread(bid: number = 0, ask: number = 0, pipsPosition: number = 0, ratePrecision: number = 0) {
   const spread = (ask - bid) * Math.pow(10, pipsPosition)
   const toFixedPrecision = spread.toFixed(ratePrecision - pipsPosition)
   return {

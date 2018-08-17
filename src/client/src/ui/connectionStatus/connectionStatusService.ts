@@ -1,6 +1,6 @@
+import { ConnectionEvent, ConnectionEventType, ConnectionStatus, ConnectionType } from 'rt-system'
 import { Observable } from 'rxjs'
 import { map, publishBehavior, refCount } from 'rxjs/operators'
-import { ConnectionEvent, ConnectionEventType, ConnectionStatus, ConnectionType } from '../../system'
 
 export interface ConnectionInfo {
   status: ConnectionStatus
