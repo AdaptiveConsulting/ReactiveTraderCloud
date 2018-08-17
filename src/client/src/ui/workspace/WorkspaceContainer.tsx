@@ -8,7 +8,7 @@ import { selectSpotTiles } from './selectors'
 
 const Workspace = styled('div')`
   background-color: ${({ theme: { background } }) => background.backgroundPrimary};
-  padding: 0px 8px 0px 16px;
+  padding: 0 0.5rem 0 1rem;
   flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -16,19 +16,19 @@ const Workspace = styled('div')`
 `
 
 const WorkspaceHeader = styled(Flex)`
-  padding: 20px 14px 20px 20px;
+  padding: 1.25rem 0.875rem 1.25rem 1.25rem;
   color: ${({ theme: { text } }) => text.textPrimary};
   font-size: 15px;
 `
 
 const WorkspaceItems = styled('div')`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
 `
 
 const WorkspaceItem = styled('div')`
   flex-grow: 1;
-  flex-basis: 320px;
+  flex-basis: 20rem;
   margin: 2px;
 `
 
