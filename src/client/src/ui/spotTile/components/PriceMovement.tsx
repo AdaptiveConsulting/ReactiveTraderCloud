@@ -1,6 +1,6 @@
 import React from 'react'
-import styled from 'react-emotion'
 import { Flex } from 'rt-components'
+import { styled } from 'rt-theme'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 
 interface Props {

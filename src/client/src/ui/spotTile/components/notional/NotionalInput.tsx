@@ -1,7 +1,7 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import styled from 'react-emotion'
 import { Flex } from 'rt-components'
+import { styled } from 'rt-theme'
 import { convertNotionalShorthandToNumericValue, hasShorthandInput } from './utils'
 
 const NUMERAL_FORMAT = '0,000,000[.]00'

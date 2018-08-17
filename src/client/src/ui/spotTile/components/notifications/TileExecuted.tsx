@@ -1,7 +1,7 @@
 import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
-import styled from 'react-emotion'
+import { styled } from 'rt-theme'
 import { Direction } from 'rt-types'
 
 const HeavyFont = styled('span')`

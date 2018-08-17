@@ -1,4 +1,4 @@
-import styled from 'react-emotion'
+import { styled } from 'rt-theme'
 
 export interface ColorProps {
   color?: string

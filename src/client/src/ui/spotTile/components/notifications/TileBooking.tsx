@@ -1,7 +1,7 @@
 import React from 'react'
-import styled from 'react-emotion'
 import { Transition } from 'react-spring'
 import { Flex, LogoIcon } from 'rt-components'
+import { styled } from 'rt-theme'
 
 const TileBookingStyle = styled('div')`
   position: absolute;

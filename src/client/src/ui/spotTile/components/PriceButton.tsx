@@ -1,6 +1,6 @@
 import React from 'react'
-import styled from 'react-emotion'
 import { Flex } from 'rt-components'
+import { styled } from 'rt-theme'
 import { Direction } from 'rt-types'
 import { withDefaultProps } from 'rt-util'
 
@@ -10,7 +10,7 @@ const hoverColors = {
 }
 
 export const TradeButton = styled('button')<{ direction: string }>`
-  background-color: ${({ theme }) => theme.button.backgroundColor};
+  background-color: ${({ theme }) => theme.priceButton.backgroundColor};
   border-radius: 3px;
   transition: background-color 0.2s ease;
   cursor: pointer;
@@ -19,12 +19,12 @@ export const TradeButton = styled('button')<{ direction: string }>`
   padding: 0.5rem 1.5rem;
 
   .spot-tile:hover & {
-    background-color: ${({ theme }) => theme.button.hoverColor};
+    background-color: ${({ theme }) => theme.priceButton.hoverColor};
   }
 
   .spot-tile:hover &:hover {
     background-color: ${({ theme, direction }) => theme[hoverColors[direction]].base};
-    color: ${({ theme }) => theme.button.textColor};
+    color: ${({ theme }) => theme.priceButton.textColor};
   }
 `
 

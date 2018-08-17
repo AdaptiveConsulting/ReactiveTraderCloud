@@ -1,7 +1,7 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import styled from 'react-emotion'
 import { Flex } from 'rt-components'
+import { styled } from 'rt-theme'
 import { ThemeProvider } from 'rt-theme'
 import { CurrencyPair, Direction } from 'rt-types'
 import { spotDateFormatter } from '../model/dateUtils'

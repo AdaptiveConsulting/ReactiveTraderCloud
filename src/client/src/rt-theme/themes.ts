@@ -142,7 +142,7 @@ export function createTheme(
         base: accents.accent.base
       },
 
-      button: {
+      priceButton: {
         backgroundColor: primary.base,
         textColor: colors.spectrum.white.base,
         hoverColor: primary['1']

@@ -1,7 +1,7 @@
 import React from 'react'
-import styled from 'react-emotion'
 import { PopoutIcon } from 'rt-components'
 import { Environment } from 'rt-system'
+import { styled } from 'rt-theme'
 
 const TileControlsStyle = styled('div')`
   position: absolute;
