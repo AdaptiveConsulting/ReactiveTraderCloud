@@ -10,14 +10,14 @@ import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import { DeliveryDate, TileBaseStyle, TileSymbol } from './styled'
 
-const SpotTileStyle = styled(TileBaseStyle)`
-  background-color: ${({ theme }) => theme.backgroundColor};
-`
-
-const SpotTileWrapper = styled('div')`
+export const SpotTileWrapper = styled('div')`
   position: relative;
   min-height: 160px;
   height: 100%;
+`
+
+export const SpotTileStyle = styled(TileBaseStyle)`
+  background-color: ${({ theme }) => theme.backgroundColor};
 `
 
 export interface Props {
@@ -48,7 +48,7 @@ export default class SpotTile extends PureComponent<Props, State> {
 
     return (
       <ThemeProvider theme={theme => theme.tile}>
-        <SpotTileWrapper className="spot-tile-container">
+        <SpotTileWrapper>
           <SpotTileStyle className="spot-tile">
             <Flex direction="column" justifyContent="space-between" height="100%">
               <Flex alignItems="center" justifyContent="space-between">
