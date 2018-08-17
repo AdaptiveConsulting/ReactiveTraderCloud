@@ -147,11 +147,11 @@ export function createTheme(
 
     blotter: {
       backgroundColor: primary[1],
-      textColor: secondary.base,
       alternateBackgroundColor: primary.base,
       foregroundColor: primary['3'],
-      secondaryColor: secondary['2'],
       pending: primary['2'],
+
+      textColor: secondary.base,
 
       blue: {
         base: accents.accent.base,

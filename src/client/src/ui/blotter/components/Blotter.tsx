@@ -21,14 +21,14 @@ interface BlotterState {
 const BlotterStyle = styled('div')`
   height: 100%;
   width: 100%;
-  min-height: 20px;
+  min-height: 1.25rem;
   background-color: ${({ theme }) => theme.backgroundColor};
   color: ${({ theme }) => theme.textColor};
   font-size: 0.8125rem;
 `
 
 const BlotterStatus = styled('div')`
-  height: 30px;
+  height: 1.875rem;
   color: ${({ theme }) => theme.textColor};
   font-size: 0.625rem;
   line-height: 1rem;

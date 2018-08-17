@@ -16,7 +16,7 @@ const QuickFilterStyle = styled('div')`
   width: 10rem;
   display: flex;
   align-items: flex-start;
-  height: 20px;
+  height: 1.25rem;
   position: relative;
 `
 
@@ -24,35 +24,35 @@ const QuickFilterInput = styled('input')`
   opacity: 0.59;
   background: none;
   border: none;
-  box-shadow: 0px 1px 0px ${({ theme }) => theme.textColor};
+  box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.textColor};
   width: 100%;
   font-size: 0.75rem;
-  height: 20px;
+  height: 1.25rem;
   padding: 0 0.875rem 0 0.375rem;
   outline: none;
 
   &:hover {
     opacity: 1;
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.blue.light};
+    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.blue.light};
   }
 
   &:focus {
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.blue.base};
+    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.blue.base};
     color: ${({ theme }) => theme.textColor};
     opacity: 1;
   }
 `
 
 const QuickFilterIcon = styled('div')`
-  width: 14px;
+  width: 0.875rem;
   margin: 0 0.25rem;
   opacity: 0.59;
 `
 
 const QuickFilterClearIcon = styled('i')`
-  width: 11px;
+  width: 0.6875rem;
   position: absolute;
-  right: 12px;
+  right: 0.75rem;
 
   i {
     opacity: 0.59;

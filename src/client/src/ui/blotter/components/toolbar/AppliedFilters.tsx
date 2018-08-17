@@ -14,7 +14,7 @@ const FilterIcon = styled('i')`
   font-size: 0.6875rem;
   height: 0.75rem;
   width: 0.6875rem;
-  color: ${({ theme }) => theme.secondaryColor};
+  opacity: 0.59;
   cursor: pointer;
 `
 
@@ -26,14 +26,14 @@ const FilterField = styled('div')`
   background-color: ${({ theme }) => theme.alternateBackgroundColor};
   margin-left: 0.5rem;
   border-radius: 0.25rem;
-  height: 20px;
+  height: 1.25rem;
   padding: 0 0.375rem;
   cursor: default;
 
   &:hover {
     background-color: ${({ theme }) => theme.foregroundColor};
     ${FilterIcon} {
-      color: ${({ theme }) => theme.textColor};
+      opacity: 1;
     }
   }
 `

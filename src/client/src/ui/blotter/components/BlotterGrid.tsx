@@ -1,12 +1,12 @@
 import { styled } from 'rt-theme'
 
 export default styled('div')`
-  height: calc(100% - 76px);
+  height: calc(100% - 4.75rem);
   background-color: ${({ theme }) => theme.alternateBackgroundColor};
-  border-radius: 3px;
+  border-radius: 0.1875rem;
 
   .ag-header {
-    border-bottom: 2px solid ${({ theme }) => theme.backgroundColor};
+    border-bottom: 0.125rem solid ${({ theme }) => theme.backgroundColor};
     font-size: 0.6875rem;
     text-transform: uppercase;
   }
@@ -32,14 +32,14 @@ export default styled('div')`
   }
 
   .rt-blotter__status-indicator--done {
-    width: 5px !important;
+    width: 0.3125rem !important;
     padding: 0;
     margin: 0;
     background-color: ${({ theme }) => theme.green.base};
   }
 
   .rt-blotter__status-indicator--rejected {
-    width: 5px !important;
+    width: 0.3125rem !important;
     padding: 0;
     margin: 0;
     background-color: ${({ theme }) => theme.red.base};
@@ -56,7 +56,7 @@ export default styled('div')`
     position: absolute;
     top: 50%;
     left: 0;
-    border-bottom: 1px solid ${({ theme }) => theme.red.base};
+    border-bottom: 0.0625rem solid ${({ theme }) => theme.red.base};
     width: 100%;
   }
 
@@ -99,8 +99,8 @@ export default styled('div')`
 
   .ag-menu {
     background-color: ${({ theme }) => theme.backgroundColor};
-    box-shadow: 0 0 0.5px 0 ${({ theme }) => theme.textColor};
-    border-radius: 3px;
+    box-shadow: 0 0 0.3125rem 0 ${({ theme }) => theme.textColor};
+    border-radius: 0.1875rem;
 
     .filter-container__checkbox-container {
       display: flex;
@@ -114,7 +114,7 @@ export default styled('div')`
     }
 
     .filter_container__select-all-option-container {
-      border-bottom: 2px solid ${({ theme }) => theme.textColor};
+      border-bottom: 0.125rem solid ${({ theme }) => theme.textColor};
     }
 
     .filter-container__free-text-input,
@@ -124,12 +124,12 @@ export default styled('div')`
       padding: 0.375rem;
       background-color: ${({ theme }) => theme.backgroundColor};
       border: none;
-      border-bottom: 1px solid ${({ theme }) => theme.textColor};
+      border-bottom: 0.0625rem solid ${({ theme }) => theme.textColor};
       width: auto;
       outline: none;
 
       &:focus {
-        border-bottom: 1px solid ${({ theme }) => theme.blue.base};
+        border-bottom: 0.0625rem solid ${({ theme }) => theme.blue.base};
       }
     }
 
