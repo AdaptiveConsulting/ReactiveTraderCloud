@@ -7,7 +7,6 @@ import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
 import { selectSpotTiles } from './selectors'
 
 const Workspace = styled.div`
-  padding: 0px 8px 0px 16px;
   padding: 0 0.5rem 0 1rem;
   flex-grow: 1;
   overflow-y: auto;
@@ -18,18 +17,19 @@ const Workspace = styled.div`
 const WorkspaceHeader = styled(Flex)`
   padding: 1.25rem 0.875rem 1.25rem 1.25rem;
   color: ${({ theme: { text } }) => text.textPrimary};
-  font-size: 15px;
+  font-size: 1rem;
 `
 
 const WorkspaceItems = styled('div')`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-column-gap: 0.25rem;
+  grid-row-gap: 0.25rem;
 `
 
 const WorkspaceItem = styled('div')`
   flex-grow: 1;
   flex-basis: 20rem;
-  margin: 2px;
 `
 
 type WorkspaceContainerStateProps = ReturnType<typeof mapStateToProps>
