@@ -1,10 +1,17 @@
 import _ from 'lodash'
 
-export const resolvesColor = (color, other) => {
-  color = !color ? null : _.isString(color) ? _.toPath(color) : color
-  other = !other ? null : _.isString(other) ? _.toPath(other) : other
+interface Props { theme: any }
+type Resolve = (props: Props) => string
+type Selector = string | string[] | Resolve | any
 
-  return props => {
+export const resolvesColor: (color: Selector, other?: Selector) => (any) => any = (
+  color: Selector,
+  other?: Selector
+) => {
+  color = (!color ? null : _.isString(color) ? _.toPath(color) : color) as Selector
+  other = (!other ? null : _.isString(other) ? _.toPath(other) : other) as Selector
+
+  return (props: Props) => {
     let value = _.isFunction(color)
       ? color(props)
       : _.get(props.theme, color) || _.get(props.theme.colors, color) || _.get(props, color)

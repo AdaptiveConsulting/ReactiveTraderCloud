@@ -54,7 +54,9 @@ const Root = styled('div')`
   color: ${({ theme }) => theme.header.textColor};
 
   position: relative;
-  z-index: 1;
+  z-index: 10;
+
+  box-shadow: 0 0.125rem 0 ${({ theme }) => theme.shell.backgroundColor};
 `
 
 const Fill = styled('div')`
