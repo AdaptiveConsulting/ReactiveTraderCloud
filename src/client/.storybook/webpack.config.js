@@ -14,7 +14,6 @@ module.exports = (baseConfig, env, defaultConfig) => {
     'rt-storybook': path.resolve(__dirname, '../src', 'rt-storybook'),
     'rt-styleguide': path.resolve(__dirname, '../src', 'rt-styleguide'),
     'rt-system': path.resolve(__dirname, '../src', 'rt-storybook'),
-    'rt-themes': path.resolve(__dirname, '../src', 'rt-themes'),
     'rt-theme': path.resolve(__dirname, '../src', 'rt-theme'),
     'rt-system': path.resolve(__dirname, '../src', 'rt-system'),
     ui: path.resolve(__dirname, '../src', 'ui'),

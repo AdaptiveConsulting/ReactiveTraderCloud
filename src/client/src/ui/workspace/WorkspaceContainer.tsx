@@ -16,7 +16,7 @@ const Workspace = styled.div`
 
 const WorkspaceHeader = styled(Flex)`
   padding: 1.25rem 0.875rem 1.25rem 1.25rem;
-  color: ${({ theme: { text } }) => text.textPrimary};
+  color: ${p => p.theme.shell.textColor};
   font-size: 1rem;
 `
 

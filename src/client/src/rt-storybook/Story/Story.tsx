@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
-import { ThemeState } from 'rt-theme'
+import { styled, ThemeState } from 'rt-theme'
 
 // TODO make styleguide globals?
 import 'rt-theme/globals'
-
-// TODO (8/16/18) remove after removing rt-themes
-import * as DeprecatedUITheme from '../../ui/theme'
 
 class Story extends Component {
   render() {
@@ -14,23 +10,21 @@ class Story extends Component {
 
     return (
       <ThemeState.Provider name="light">
-        <DeprecatedUITheme.ThemeProvider>
-          <StyledStory>
-            <Toolbar>
-              <ThemeState.Consumer>
-                {({ name, setTheme }) => (
-                  <IconButton
-                    onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })}
-                    type={name || 'primary'}
-                  >
-                    <i className={`fa${name === 'light' ? 'r' : 's'} fa-lightbulb`} />
-                  </IconButton>
-                )}
-              </ThemeState.Consumer>
-            </Toolbar>
-            <Content>{children}</Content>
-          </StyledStory>
-        </DeprecatedUITheme.ThemeProvider>
+        <StyledStory>
+          <Toolbar>
+            <ThemeState.Consumer>
+              {({ name, setTheme }) => (
+                <IconButton
+                  onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })}
+                  type={name || 'primary'}
+                >
+                  <i className={`fa${name === 'light' ? 'r' : 's'} fa-lightbulb`} />
+                </IconButton>
+              )}
+            </ThemeState.Consumer>
+          </Toolbar>
+          <Content>{children}</Content>
+        </StyledStory>
       </ThemeState.Provider>
     )
   }
@@ -66,10 +60,10 @@ const StyledStory = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: ${({ theme: { background } }) => background.backgroundPrimary};
-  color: ${({ theme }) => theme.text.primary};
-  transition: background-color ${({ theme }) => theme.animationSpeed.normal}ms,
-    color ${({ theme }) => theme.animationSpeed.normal}ms;
+  background-color: ${p => p.theme.shell.backgroundColor};
+  color: ${p => p.theme.shell.textColor};
+  transition: background-color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing},
+    color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing};
 `
 
 const Toolbar = styled('div')`
@@ -80,11 +74,12 @@ const Toolbar = styled('div')`
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  background-color: ${({ theme }) => theme.background.secondary};
-  will-change: color, background-color;
-  color: ${({ theme }) => theme.text.secondary};
-  transition: background-color ${({ theme }) => theme.animationSpeed.normal}ms,
-    color ${({ theme }) => theme.animationSpeed.normal}ms;
+  background-color: ${({ theme }) => theme.component.backgroundColor};
+  color: ${({ theme }) => theme.component.textColor};
+
+  transition: background-color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing},
+    color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing};
+
   h2 {
     flex: 1;
   }
