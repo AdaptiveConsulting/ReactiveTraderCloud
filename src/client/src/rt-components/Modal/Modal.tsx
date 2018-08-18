@@ -1,12 +1,10 @@
-import { withTheme } from 'emotion-theming'
 import React from 'react'
-import Transition from 'react-addons-css-transition-group'
 
-import { Theme } from 'rt-themes'
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 
-const ModalContainer = styled('div')`
+const ModalContainer = styled.div`
   position: fixed;
+  z-index: 5;
   top: 0;
   left: 0;
   width: 100%;
@@ -14,47 +12,49 @@ const ModalContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.75rem;
 `
-const ModalOverlay = styled('div')`
+const ModalOverlay = styled.div`
   position: absolute;
+
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.75;
+  background: ${({ theme }) => theme.overlay.backgroundColor};
+`
+
+const ModalPanel = styled.div`
+  padding: 1rem 1.5rem;
+
   width: 100%;
-  height: 100%;
-  opacity: 0.7;
-  z-index: 100;
-  background: ${({ theme }) => theme.background.dark};
+  min-width: 16rem;
+  max-width: 22rem;
+
+  position: relative;
+  z-index: 1;
+
+  background: ${({ theme }) => theme.component.backgroundColor};
+  color: ${({ theme }) => theme.component.textColor};
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1rem 1rem ${props => props.theme.overlay.backgroundColor};
 `
 
-const ModalPanel = styled('div')`
-  min-width: 600px;
-  z-index: 101;
-  background: ${({ theme }) => theme.background.primary};
-  color: ${({ theme }) => theme.text.primary};
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
+const Header = styled.div`
+  font-size: 1rem;
+  line-height: 3rem;
+  box-shadow: 0 1px 0 ${({ theme }) => theme.component.textColor};
 `
 
-const Header = styled('h4')`
-  margin: 0px;
-  border-bottom: 2px solid ${({ theme }) => theme.palette.brand.primary};
-  padding: 5px;
-  > span {
-    font-size: ${({ theme }) => theme.fontSize.h4};
-  }
-`
-
-const Body = styled('div')`
-  padding: 5px;
+const Body = styled.div`
+  margin: 1rem 0;
 `
 
 interface Props {
   shouldShow?: boolean
   title?: string
   onDismiss?: () => void
-  theme?: Theme
 }
 
 // TODO disable tabbing outside of the modal
@@ -73,29 +73,19 @@ class Modal extends React.Component<Props> {
   }
 
   render() {
-    const { shouldShow, title, children, theme } = this.props
+    const { shouldShow, title, children } = this.props
     return (
-      <Transition
-        transitionName={`fade${theme.animationSpeed.slow}`}
-        transitionEnterTimeout={theme.animationSpeed.slow}
-        transitionLeaveTimeout={theme.animationSpeed.slow}
-      >
-        {shouldShow && (
-          <ModalContainer>
-            <ModalOverlay onClick={this.onDismiss} />
-            <ModalPanel>
-              {title && (
-                <Header>
-                  <span> {title}</span>
-                </Header>
-              )}
-              <Body>{children}</Body>
-            </ModalPanel>
-          </ModalContainer>
-        )}
-      </Transition>
+      shouldShow && (
+        <ModalContainer>
+          <ModalOverlay onClick={this.onDismiss} />
+          <ModalPanel>
+            {title && <Header>{title}</Header>}
+            <Body>{children}</Body>
+          </ModalPanel>
+        </ModalContainer>
+      )
     )
   }
 }
 
-export default withTheme(Modal)
+export default Modal

@@ -3,6 +3,10 @@ import { mapValues } from 'lodash'
 import colors, { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
 
 export interface Theme {
+  white: Color
+  black: Color
+  transparent: Color
+
   primary: CorePalette
   secondary: CorePalette
   accents: AccentPaletteMap
@@ -15,9 +19,12 @@ export interface Theme {
   }
 
   shell: ColorPair
+
   component: ColorPair & {
     hover: ColorPair
   }
+
+  overlay: ColorPair
 
   button: TouchableIntents
 
@@ -80,6 +87,10 @@ export function createTheme(
   modify: (originalTheme: Theme) => object = (theme: Theme) => theme
 ): Theme {
   const newTheme: Theme = {
+    white: colors.spectrum.white.base,
+    black: colors.spectrum.black.base,
+    transparent: colors.spectrum.transparent.base,
+
     primary,
     secondary,
     accents,
@@ -112,18 +123,21 @@ export function createTheme(
 
     component: {
       backgroundColor: primary.base,
-      textColor: secondary.base,
+      textColor: secondary[2],
       hover: {
         backgroundColor: primary[1]
       }
+    },
+
+    overlay: {
+      backgroundColor: primary[1],
+      textColor: secondary[2]
     },
 
     header: {
       backgroundColor: primary.base,
       textColor: secondary[2]
     },
-
-    white: colors.spectrum.white.base,
 
     tile: {
       backgroundColor: primary.base,
