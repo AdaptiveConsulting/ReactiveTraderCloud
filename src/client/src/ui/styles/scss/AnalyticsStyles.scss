@@ -17,7 +17,7 @@ $default-padding: 0.5rem;
   overflow-x: hidden;
   overflow-y: auto;
   height: 100%;
-  padding: 1rem;
+  padding: 0 1rem;
 
   @import './nvd3';
   #popout-content-container & {
