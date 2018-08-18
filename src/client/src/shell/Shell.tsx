@@ -100,18 +100,17 @@ const Body = styled('div')`
   min-width: 0;
 `
 
-const FooterRoot = styled('div')`
+const FooterRoot = styled.div`
   position: relative;
-  min-height: 3rem;
-  max-height: 3rem;
+  margin-top: 2rem;
 `
 
-const FooterBody = styled('div')`
-  position: absolute;
-  top: 0;
+const FooterBody = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   width: 100%;
-  min-height: 3rem;
-  z-index: 40;
 `
 
 const SplashScreenContainer = styled('div')`

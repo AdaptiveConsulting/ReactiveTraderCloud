@@ -97,22 +97,22 @@ export function createTheme(
     colors,
 
     motion: {
-      duration: 200,
-      easing: 'ease',
+      duration: 16 * 16,
+      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
 
       fast: {
-        duration: 150,
-        easing: 'ease-in'
+        duration: 16 * 16,
+        easing: 'cubic-bezier(0.19, 1, 0.22, 1)'
       },
 
       normal: {
-        duration: 200,
-        easing: 'ease'
+        duration: 16 * 16,
+        easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
       },
 
       slow: {
-        duration: 250,
-        easing: 'ease-out'
+        duration: 16 * 16,
+        easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
       }
     },
 

@@ -40,3 +40,10 @@ export const userSelectButton = (props: { disabled?: boolean }) => css`
 export const touchScroll = css`
   -webkit-overflow-scrolling: touch;
 `
+
+export default {
+  preventStutter,
+  userSelectNone,
+  userSelectButton,
+  touchScroll
+}
