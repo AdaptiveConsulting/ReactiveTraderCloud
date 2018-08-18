@@ -1,7 +1,7 @@
 import React from 'react'
 import Color from 'tinycolor2'
 
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 
 const getBestTextColor = (
   background: string,

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Flex } from 'rt-components'
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 
 interface StyledTickCrossProps {
   isTick: boolean

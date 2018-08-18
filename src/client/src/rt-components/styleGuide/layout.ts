@@ -1,5 +1,5 @@
 import { css } from 'emotion'
-import styled from 'rt-util/styled'
+import { styled } from 'rt-theme'
 
 interface Flex {
   height?: string

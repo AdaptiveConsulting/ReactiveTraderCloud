@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Flex, TearOff } from 'rt-components'
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 import { GlobalState } from '../../combineReducers'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
 import { selectSpotTiles } from './selectors'

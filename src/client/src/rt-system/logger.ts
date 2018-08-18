@@ -8,7 +8,7 @@ enum levels {
 
 type SEVERITY = 'info' | 'warn' | 'error' | 'debug'
 
-let currentLevel = levels.verbose
+let currentLevel = levels.error
 
 let sink = (logEvent: LogParams) => {
   console[logEvent.level].call(null, `${logEvent.logger}:`, ...Array.from(logEvent.args))

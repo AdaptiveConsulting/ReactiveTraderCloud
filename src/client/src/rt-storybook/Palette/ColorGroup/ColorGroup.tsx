@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 
 import ColorTile from './ColorTile'
 
@@ -28,7 +28,11 @@ interface Props {
 const ColorGroup: React.SFC<Props> = ({ name: groupName, colors }) => (
   <StyledColorGroup>
     <h2>{groupName}</h2>
-    <Colors>{colors.map(({ name, color }) => <ColorTile key={name} name={name} color={color} />)}</Colors>
+    <Colors>
+      {colors.map(({ name, color }) => (
+        <ColorTile key={name} name={name} color={color} />
+      ))}
+    </Colors>
   </StyledColorGroup>
 )
 

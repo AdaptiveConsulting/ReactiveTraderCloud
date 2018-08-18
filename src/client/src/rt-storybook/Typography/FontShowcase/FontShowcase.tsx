@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 
 interface StyledFontShowcaseProps {
   font: string

@@ -1,4 +1,4 @@
-import styled from 'rt-util/styled'
+import { styled } from 'rt-theme'
 
 export const TradeButton = styled('button')`
   background-color: ${p => p.theme.palette.primary['0']};

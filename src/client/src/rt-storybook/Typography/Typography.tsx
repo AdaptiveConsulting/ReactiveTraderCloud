@@ -1,8 +1,8 @@
 import { withTheme } from 'emotion-theming'
 import React from 'react'
 
+import { styled } from 'rt-theme'
 import { Theme } from 'rt-themes'
-import { styled } from 'rt-util'
 
 import FontShowcase from './FontShowcase'
 
