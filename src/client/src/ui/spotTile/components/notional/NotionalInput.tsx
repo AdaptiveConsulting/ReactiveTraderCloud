@@ -59,12 +59,17 @@ export default class NotionalInput extends PureComponent<Props> {
           type="text"
           innerRef={this.inputRef}
           defaultValue={formattedSize}
+          onFocus={this.handleFocus}
           onChange={this.handleInputChange}
           onBlur={event => this.processNotional(event.currentTarget.value)}
           onKeyPress={this.handleKeyPressNotionalInput}
         />
       </Flex>
     )
+  }
+
+  handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.target.select()
   }
 
   handleKeyPressNotionalInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
