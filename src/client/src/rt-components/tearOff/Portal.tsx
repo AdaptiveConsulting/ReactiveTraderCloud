@@ -46,11 +46,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
   }
 
   render() {
-    if (!this.state.mounted) {
-      return false
-    }
-
-    return ReactDOM.createPortal(this.wrapChildrenWithPortal(this.props.children), this.container)
+    return this.state.mounted && ReactDOM.createPortal(this.wrapChildrenWithPortal(this.props.children), this.container)
   }
 
   wrapChildrenWithPortal = (children: React.ReactNode) => {
