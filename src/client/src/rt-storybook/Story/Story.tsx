@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { styled, ThemeState } from 'rt-theme'
+import { styled, StyledComponent, ThemeState } from 'rt-theme'
 
 // TODO make styleguide globals?
 import 'rt-theme/globals'
@@ -30,7 +30,7 @@ class Story extends Component {
   }
 }
 
-const IconButton = styled('div')<{ [key: string]: any }>`
+const IconButton: StyledComponent = styled.div`
   width: 2rem;
   height: 2rem;
   font-size: 1rem;
@@ -52,7 +52,7 @@ const IconButton = styled('div')<{ [key: string]: any }>`
   }
 `
 
-const StyledStory = styled('div')`
+const StyledStory = styled.div`
   margin: 0;
   padding: 0;
   width: 100%;
@@ -66,7 +66,7 @@ const StyledStory = styled('div')`
     color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing};
 `
 
-const Toolbar = styled('div')`
+const Toolbar = styled.div`
   z-index: 9999;
   padding: 0 1rem;
   height: 3rem;
@@ -85,7 +85,7 @@ const Toolbar = styled('div')`
   }
 `
 
-const Content = styled('div')`
+const Content = styled.div`
   display: flex;
   flex: 1;
   position: relative;
