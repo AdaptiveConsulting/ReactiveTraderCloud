@@ -27,7 +27,7 @@ interface PortalState {
 }
 
 class NewPortal extends React.Component<PortalProps & { environment: Environment }, PortalState> {
-  private window: Window
+  private externalWindow: Window
 
   state = {
     mounted: false
@@ -40,7 +40,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
   }
 
   componentWillUnmount() {
-    if (this.window) {
+    if (this.externalWindow) {
       this.closeWindow()
     }
   }
@@ -66,21 +66,38 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     )
   }
 
-  createWindow = (window: Window) => {
-    this.window = window
+  createWindow = (createdWindow: Window) => {
+    this.externalWindow = createdWindow
+    createdWindow.addEventListener('beforeunload', () => this.release())
     this.injectIntoWindow()
   }
 
   injectIntoWindow() {
     const { onBlock, title } = this.props
 
-    if (this.window) {
-      this.window.document.title = title
-      this.window.document.body.appendChild(this.container)
+    if (this.externalWindow) {
+      this.externalWindow.document.title = title
 
-      setTimeout(() => copyStyles(document, this.window.document), 0)
+      const parentHead = document.head
+      const childHead = this.externalWindow.document.head
 
-      this.window.addEventListener('beforeunload', () => this.release())
+      childHead.innerHTML = parentHead.innerHTML
+
+      this.externalWindow.document.body.appendChild(this.container)
+
+      // Watch the parent head for changes in style tags
+      // Required for emotion's dynamic styles
+      const observer = new MutationObserver(mutationsList => {
+        mutationsList.forEach(mutationRecord => {
+          const addedNode = mutationRecord.addedNodes[0]
+          if (addedNode.nodeName === 'STYLE') {
+            const newNode = addedNode.cloneNode(true)
+            childHead.appendChild(newNode)
+          }
+        })
+      })
+
+      observer.observe(parentHead, { childList: true })
     } else {
       if (onBlock) {
         onBlock.call(null)
@@ -90,59 +107,15 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     }
   }
 
-  closeWindow = () => this.window.close()
+  closeWindow = () => this.externalWindow.close()
 
-  release() {
+  release = () => {
     const { onUnload } = this.props
 
     if (onUnload) {
       onUnload.call(null)
     }
   }
-}
-
-function copyStyles(source: Document, target: Document) {
-  Array.from(source.styleSheets).forEach((styleSheet: any) => {
-    // For <style> elements
-    let rules
-    try {
-      rules = styleSheet.cssRules
-    } catch (err) {
-      console.error(err)
-    }
-    if (rules) {
-      const newStyleEl = source.createElement('style')
-
-      // Write the text of each rule into the body of the style element
-      Array.from(styleSheet.cssRules).forEach((cssRule: any) => {
-        const { cssText, type } = cssRule
-        let returnText = cssText
-        // Check if the cssRule type is CSSImportRule (3) or CSSFontFaceRule (5) to handle local imports on a about:blank page
-        // '/custom.css' turns to 'http://my-site.com/custom.css'
-        if ([3, 5].includes(type)) {
-          returnText = cssText
-            .split('url(')
-            .map(line => {
-              if (line[1] === '/') {
-                return `${line.slice(0, 1)}${window.location.origin}${line.slice(1)}`
-              }
-              return line
-            })
-            .join('url(')
-        }
-        newStyleEl.appendChild(source.createTextNode(returnText))
-      })
-
-      target.head.appendChild(newStyleEl)
-    } else if (styleSheet.href) {
-      // for <link> elements loading CSS from a URL
-      const newLinkEl = source.createElement('link')
-
-      newLinkEl.rel = 'stylesheet'
-      newLinkEl.href = styleSheet.href
-      target.head.appendChild(newLinkEl)
-    }
-  })
 }
 
 export default withEnvironment(withDefaultProps(defaultPortalProps, NewPortal))
