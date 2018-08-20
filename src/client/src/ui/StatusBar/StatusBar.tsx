@@ -3,7 +3,7 @@ import React, { Component, SFC } from 'react'
 import { connect } from 'react-redux'
 import { ThemeProvider } from 'rt-theme'
 
-import { GlobalState } from 'combineReducers'
+import { GlobalState } from 'StoreTypes'
 import Icon from './Icon'
 import { Body, ExpandToggle, Fill, NodeCount, Root, ServiceList, ServiceName, ServiceRoot } from './styled'
 

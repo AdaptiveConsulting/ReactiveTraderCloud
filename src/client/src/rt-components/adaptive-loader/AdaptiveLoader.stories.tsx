@@ -1,5 +1,4 @@
-import { number } from '@storybook/addon-knobs/react'
-import { withKnobs } from '@storybook/addon-knobs/react'
+import { number, withKnobs } from '@storybook/addon-knobs/react'
 import React from 'react'
 
 import { storiesOf } from '@storybook/react'

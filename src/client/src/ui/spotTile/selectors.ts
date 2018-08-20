@@ -1,6 +1,5 @@
-import { GlobalState } from 'combineReducers'
 import { createSelector } from 'reselect'
-import { selectServiceStatus } from 'ui/compositeStatus'
+import { GlobalState } from 'StoreTypes'
 import { SpotTileContainerOwnProps } from './SpotTileContainer'
 
 const getCurrencyPair = (state: GlobalState, props: SpotTileContainerOwnProps) => state.currencyPairs[props.id]
@@ -8,6 +7,8 @@ const selectCurrencyPair = createSelector([getCurrencyPair], currencyPair => cur
 
 const getSpotTileData = (state: GlobalState, props: SpotTileContainerOwnProps) => state.spotTilesData[props.id]
 const selectSpotTileData = createSelector([getSpotTileData], spotTileData => spotTileData)
+
+const selectServiceStatus = (state: GlobalState) => state.compositeStatusService
 
 const selectExecutionStatus = createSelector(
   [selectServiceStatus],

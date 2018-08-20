@@ -2,7 +2,7 @@ import { withTheme } from 'emotion-theming'
 import React from 'react'
 import styled from 'react-emotion'
 
-import StatusBar from 'ui/StatusBar'
+import StatusBar from '../ui/StatusBar'
 
 import Header from './components/Header'
 import ReconnectModal from './components/ReconnectModal'

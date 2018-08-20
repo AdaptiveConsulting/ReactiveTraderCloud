@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { GlobalState } from '../../combineReducers'
+import { GlobalState } from 'StoreTypes'
 import { RegionsState } from './reducer'
 
 interface RegionProps {

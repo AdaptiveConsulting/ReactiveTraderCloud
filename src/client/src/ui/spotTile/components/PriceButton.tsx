@@ -2,7 +2,6 @@ import React from 'react'
 import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 import { Direction } from 'rt-types'
-import { withDefaultProps } from 'rt-util'
 
 const hoverColors = {
   [Direction.Buy]: 'red',
@@ -54,22 +53,14 @@ const Tenth = styled(Box)`
   margin: 0.125rem 0;
   align-self: flex-end;
 `
-const defaultProps: PriceButtonProps = {
-  big: 0,
-  pip: 0,
-  tenth: 0,
-  rawRate: 0,
-  direction: Direction.Buy,
-  handleClick: () => {}
-}
 
 interface PriceButtonProps {
-  big: number
-  pip: number
-  tenth: number
-  rawRate: number
-  direction: Direction
-  handleClick: (direction: Direction) => void
+  big?: number
+  pip?: number
+  tenth?: number
+  rawRate?: number
+  direction?: Direction
+  handleClick?: (direction: Direction) => void
 }
 
 const renderPips = (pips: number) => (pips.toString().length === 1 ? `0${pips}` : pips)
@@ -78,7 +69,14 @@ const getBigFigureDisplay = (bigFigure: number, rawRate: number) =>
 const renderBigFigureDisplay = (bigFigureDisplay: string) =>
   bigFigureDisplay.toString().length === 3 ? `${bigFigureDisplay}0` : bigFigureDisplay
 
-const PriceButtonComp: React.SFC<PriceButtonProps> = ({ big, pip, tenth, rawRate, direction, handleClick }) => {
+const PriceButtonComp: React.SFC<PriceButtonProps> = ({
+  big = 0,
+  pip = 0,
+  tenth = 0,
+  rawRate = 0,
+  direction = Direction.Buy,
+  handleClick = () => {}
+}) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
   return (
     <TradeButton direction={direction} onClick={() => handleClick(direction)}>
@@ -94,4 +92,4 @@ const PriceButtonComp: React.SFC<PriceButtonProps> = ({ big, pip, tenth, rawRate
   )
 }
 
-export default withDefaultProps(defaultProps, PriceButtonComp)
+export default PriceButtonComp

@@ -1,4 +1,4 @@
-import 'rt-theme/globals'
+import 'rt-theme'
 
 import { parse } from 'query-string'
 import { run } from './notificationBootstrapper'
