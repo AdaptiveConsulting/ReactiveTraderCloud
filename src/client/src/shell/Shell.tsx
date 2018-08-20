@@ -27,6 +27,8 @@ class Shell extends React.Component<Props, State> {
         loaded: props.loaded
       }
     }
+
+    return null
   }
 
   state = {
