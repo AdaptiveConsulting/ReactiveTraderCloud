@@ -1,7 +1,7 @@
 import React from 'react'
 import { keyframes } from 'react-emotion'
 
-import { styled, StyledComponent } from 'rt-theme'
+import { styled } from 'rt-theme'
 
 const ANIMATION_SPEED = 2
 const BAR_NUMBER = 4
@@ -30,7 +30,7 @@ interface BarProps {
   speed: number
   type: LoaderType
 }
-const Bar: StyledComponent<BarProps> = styled('rect')`
+const Bar = styled.rect<BarProps>`
   animation: ${({ moveDistance }) => getBounce(moveDistance)} ${({ speed }) => speed}s infinite;
   animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER)}s;
   fill: ${({ theme, type }) => theme.shell.textColor};
