@@ -5,7 +5,7 @@ import { styled } from 'rt-theme'
 
 const ANIMATION_SPEED = 2
 const BAR_NUMBER = 4
-const bars = []
+const bars: number[] = []
 for (let i = 0; i < BAR_NUMBER; i++) {
   bars.push(i)
 }

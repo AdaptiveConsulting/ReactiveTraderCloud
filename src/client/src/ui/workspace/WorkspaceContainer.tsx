@@ -23,8 +23,7 @@ const WorkspaceHeader = styled(Flex)`
 const WorkspaceItems = styled('div')`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-  grid-column-gap: 0.25rem;
-  grid-row-gap: 0.25rem;
+  grid-gap: 0.25rem;
 `
 
 const WorkspaceItem = styled('div')`

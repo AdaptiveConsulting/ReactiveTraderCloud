@@ -21,7 +21,7 @@ interface Props {
 }
 
 class Shell extends React.Component<Props, State> {
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: Props, state: State) {
     if (state.loaded == null) {
       return {
         loaded: props.loaded
@@ -31,7 +31,7 @@ class Shell extends React.Component<Props, State> {
     return null
   }
 
-  state = {
+  state: State = {
     loaded: null
   }
 
@@ -79,7 +79,7 @@ const ShellRoot = styled('div')`
   width: 100%;
   height: 100%;
   position: absolute;
-  display: flex;
+  display: grid;
   flex-direction: column;
 
   background-color: ${({ theme }) => theme.shell.backgroundColor};

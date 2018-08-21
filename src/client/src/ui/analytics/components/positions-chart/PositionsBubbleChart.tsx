@@ -26,11 +26,17 @@ export interface PositionsBubbleChartProps {
   }
 }
 
-export class PositionsBubbleChart extends React.Component<PositionsBubbleChartProps, any> {
+interface State {
+  nodes: any[]
+  prevPositionsData: any[]
+  updateRequired: boolean
+}
+
+export class PositionsBubbleChart extends React.Component<PositionsBubbleChartProps, State> {
   force: any
   scales: any
   tooltip: any
-  state = {
+  state: State = {
     nodes: [],
     prevPositionsData: [],
     updateRequired: false

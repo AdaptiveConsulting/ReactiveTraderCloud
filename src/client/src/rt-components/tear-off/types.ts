@@ -6,7 +6,7 @@ export interface WindowConfig {
 }
 
 export interface DesktopWindowConfig {
-  createWindow: (window) => void
+  createWindow: (window: Window) => void
   closeWindow: () => void
 }
 

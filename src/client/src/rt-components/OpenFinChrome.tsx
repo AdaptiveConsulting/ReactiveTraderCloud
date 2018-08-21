@@ -5,18 +5,14 @@ import { rules } from 'rt-styleguide'
 import { styled, StyledComponent } from 'rt-theme'
 
 interface OpenFinChromeProps {
-  children: any
-  minimize?: () => {}
-  maximize?: () => {}
-  close: () => {}
-  openFin: any
+  minimize?: () => void
+  maximize?: () => void
+  close: () => void
   showHeaderBar?: boolean
 }
 
 export default class OpenFinChrome extends React.Component<OpenFinChromeProps> {
   // What is going on with this props … uh, value?
-  props
-
   render() {
     const headerClasses = classnames('openfin-chrome__header', {
       'openfin-chrome__header--no-bar': this.props.showHeaderBar === false,

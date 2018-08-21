@@ -19,7 +19,7 @@ interface ThemeSelector {
 }
 
 interface ThemeStateProps extends ThemeSelector {
-  onChange?: (value: ThemeSelector) => void
+  onChange?: (value: string) => void
 }
 
 export interface ThemeStateValue extends ThemeSelector {
@@ -45,7 +45,7 @@ class ThemeStateProvider extends React.Component<ThemeStateProps> {
 }
 
 class ThemeStateManager extends React.Component<ThemeStateProps & { context: ThemeStateValue }, ThemeStateValue> {
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: ThemeStateProps & { context: ThemeStateValue }, state: ThemeStateValue) {
     const { name, context } = props
 
     if (context == null && name == null) {
@@ -63,7 +63,7 @@ class ThemeStateManager extends React.Component<ThemeStateProps & { context: The
     return null
   }
 
-  state = {
+  state: ThemeStateValue = {
     name: null,
     setTheme: ({ name }: ThemeSelector) => {
       this.setState({ name }, () => {

@@ -20,7 +20,7 @@ export interface PositionsChartModel {
   yAxisValuePropertyName: any
 }
 
-export const getPositionsChartModel = data => {
+export const getPositionsChartModel = (data: any) => {
   const baseTradedAmount = 'baseTradedAmount' // from CurrencyPairPosition
 
   return {

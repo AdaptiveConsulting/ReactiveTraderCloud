@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import { css } from 'react-emotion'
-import { resolvesColor, styled, StyledComponent, ThemeProvider } from 'rt-theme'
+import { resolvesColor, styled, StyledComponent, Theme, ThemeProvider } from 'rt-theme'
 
 import { userSelectButton, userSelectNone } from './rules'
 
@@ -27,7 +27,7 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
     intent: 'primary'
   }
 
-  resolveTheme = providedTheme => {
+  resolveTheme = (providedTheme: Theme) => {
     const { intent, outline, active, disabled } = this.props
     let {
       backgroundColor,
@@ -50,7 +50,7 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
     if (outline) {
       palette = {
         ...palette,
-        backgroundColor: colors.transparent,
+        backgroundColor: colors.spectrum.transparent,
         textColor: palette.backgroundColor,
         active: {
           backgroundColor: palette.backgroundColor,

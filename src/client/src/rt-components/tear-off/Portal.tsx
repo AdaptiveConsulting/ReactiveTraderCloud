@@ -122,7 +122,7 @@ function copyStyles(source: Document, target: Document) {
         if ([3, 5].includes(type)) {
           returnText = cssText
             .split('url(')
-            .map(line => {
+            .map((line: string) => {
               if (line[1] === '/') {
                 return `${line.slice(0, 1)}${window.location.origin}${line.slice(1)}`
               }

@@ -39,7 +39,9 @@ export interface BaseTheme {
 }
 
 export type ExtensibleThemeValue = Color | null
-export type Theme = BaseTheme & ReturnType<typeof createTheme>
+export type Theme = BaseTheme & GeneratedTheme
+
+type GeneratedTheme = ReturnType<typeof generateTheme>
 
 export interface TouchableIntents {
   primary: Touchable
@@ -71,25 +73,27 @@ export interface ColorPair {
   textColor?: string
 }
 
-export const themes = {
-  light: createTheme(colors.light, colors.accents),
-  dark: createTheme(colors.dark, colors.accents, (theme: Theme) => ({
-    button: {
-      ...theme.button,
-      secondary: {
-        ...theme.button.secondary,
-        textColor: theme.primary.base
-      }
+const darkGenerated: ReturnType<typeof generateTheme> = generateTheme(colors.dark, colors.accents)
+
+const darkModified = {
+  button: {
+    ...darkGenerated.button,
+    secondary: {
+      ...darkGenerated.button.secondary,
+      textColor: darkGenerated.primary.base
     }
-  }))
+  }
 }
 
-export function createTheme(
-  { primary, secondary }: CorePaletteMap,
-  accents: AccentPaletteMap,
-  modify: (originalTheme) => object = (theme: Theme) => theme
-) {
-  const newTheme = {
+const dark: ReturnType<typeof generateTheme> = { ...darkGenerated, ...darkModified }
+
+export const themes = {
+  light: generateTheme(colors.light, colors.accents),
+  dark
+}
+
+export function generateTheme({ primary, secondary }: CorePaletteMap, accents: AccentPaletteMap) {
+  return {
     white: colors.spectrum.white.base,
     black: colors.spectrum.black.base,
     transparent: colors.spectrum.transparent.base,
@@ -235,11 +239,6 @@ export function createTheme(
         }
       }))
     }
-  }
-
-  return {
-    ...newTheme,
-    ...modify(newTheme)
   }
 }
 

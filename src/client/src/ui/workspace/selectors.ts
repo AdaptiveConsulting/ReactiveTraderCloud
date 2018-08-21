@@ -1,7 +1,7 @@
 import { GlobalState } from 'combineReducers'
 import { createSelector } from 'reselect'
 
-const makePortalProps = key => ({
+const makePortalProps = (key: string) => ({
   title: `${key} Spot`,
   config: {
     name: `${key} Spot`,

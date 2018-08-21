@@ -1,10 +1,12 @@
 import _ from 'lodash'
 
-interface Props { theme: any }
+interface Props {
+  theme: any
+}
 type Resolve = (props: Props) => string
 type Selector = string | string[] | Resolve | any
 
-export const resolvesColor: (color: Selector, other?: Selector) => (any) => any = (
+export const resolvesColor: (color: Selector, other?: Selector) => (_: any) => any = (
   color: Selector,
   other?: Selector
 ) => {
