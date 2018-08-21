@@ -73,26 +73,9 @@ export interface ColorPair {
   textColor?: string
 }
 
-const darkGenerated: ReturnType<typeof generateTheme> = generateTheme(colors.dark, colors.accents)
+type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
 
-const darkModified = {
-  button: {
-    ...darkGenerated.button,
-    secondary: {
-      ...darkGenerated.button.secondary,
-      textColor: darkGenerated.primary.base
-    }
-  }
-}
-
-const dark: ReturnType<typeof generateTheme> = { ...darkGenerated, ...darkModified }
-
-export const themes = {
-  light: generateTheme(colors.light, colors.accents),
-  dark
-}
-
-export function generateTheme({ primary, secondary }: CorePaletteMap, accents: AccentPaletteMap) {
+function generateTheme({ primary, secondary }: CorePaletteMap, accents: AccentPaletteMap) {
   return {
     white: colors.spectrum.white.base,
     black: colors.spectrum.black.base,
@@ -240,6 +223,28 @@ export function generateTheme({ primary, secondary }: CorePaletteMap, accents: A
       }))
     }
   }
+}
+
+export const createTheme = (
+  { primary, secondary }: CorePaletteMap,
+  accents: AccentPaletteMap,
+  modifier: ThemeModifier
+) => modifier(generateTheme({ primary, secondary }, accents))
+
+const modifyDark: ThemeModifier = (theme: GeneratedTheme) => ({
+  ...theme,
+  button: {
+    ...theme.button,
+    secondary: {
+      ...theme.button.secondary,
+      textColor: theme.primary.base
+    }
+  }
+})
+
+export const themes = {
+  light: generateTheme(colors.light, colors.accents),
+  dark: createTheme(colors.dark, colors.accents, modifyDark)
 }
 
 export default themes

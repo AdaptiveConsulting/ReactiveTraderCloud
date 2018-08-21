@@ -79,7 +79,7 @@ const ShellRoot = styled('div')`
   width: 100%;
   height: 100%;
   position: absolute;
-  display: grid;
+  display: flex;
   flex-direction: column;
 
   background-color: ${({ theme }) => theme.shell.backgroundColor};
