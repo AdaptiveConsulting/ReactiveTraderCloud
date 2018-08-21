@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "shellVariables.css",
+	"sources": [
+		"../scss/shellVariables.scss"
+	],
+	"sourcesContent": [
+		"$scrollbar-width: 8px;\r\n$sidebar-width: 440px;\r\n$shell-background-color: #1d2027;\r\n$panel-background-color: #293543;\r\n$blotter-height: 20vh;\r\n$header-height: 30px;\r\n$footer-height: 40px;\r\n$footer-width: 100%;\r\n$workspace-height: calc(100% - #{$blotter-height});\r\n$workspace-height-expanded: 100%;\r\n$analytics-height: 100%;\r\n$workspace-width: calc(100% - #{$scrollbar-width});\r\n$blotter-width: calc(100%);\r\n$splash-logo-height: 400px;\r\n$splash-logo-margin-top: 20vh;\r\n$sidebar-height: $workspace-height;\r\n"
+	],
+	"names": [],
+	"mappings": ""
+}

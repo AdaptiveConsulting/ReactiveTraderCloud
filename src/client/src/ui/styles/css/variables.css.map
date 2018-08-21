@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "variables.css",
+	"sources": [
+		"../scss/variables.scss"
+	],
+	"sourcesContent": [
+		"// base\r\n$error-color: #d32121;\r\n$success-color: #7ed321;\r\n$warning-color: #f8ab02;\r\n\r\n// Spot tile\r\n\r\n$spot-tile-primary-color: white;\r\n$spot-tile-secondary-color: #90afc1;\r\n$spot-tile-error-color: #d32121;\r\n\r\n$primary-color: #00a8cc;\r\n\r\n// blotter\r\n$statusBarHeight: 20px;\r\n$toolbarHeight: 34px;\r\n\r\n// Reactive trade colour themes\r\n$accentColor: #02a8cc;\r\n$rtPositive: #6db812;\r\n$rtNegative: #d80c0a;\r\n\r\n// dark theme\r\n$darkBodyBgColor: #262a33;\r\n$darkAlternateColor: lighten(#1d2027, 10%);\r\n$backgroundAccentColor: #035567;\r\n$darkRowOddBgColor: #2b353d;\r\n$darkRowEvenBgColor: #1e2127;\r\n$darkInputBorderColour: #424646;\r\n\r\n//footer\r\n$error-color: #d32121;\r\n$success-color: #7ed321;\r\n$warning-color: #f8ab02;\r\n"
+	],
+	"names": [],
+	"mappings": ""
+}

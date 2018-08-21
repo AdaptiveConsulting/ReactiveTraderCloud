@@ -1,0 +1,14 @@
+{
+	"version": 3,
+	"file": "PriceMovementIndicatorStyles.css",
+	"sources": [
+		"../scss/PriceMovementIndicatorStyles.scss",
+		"../scss/variables.scss"
+	],
+	"sourcesContent": [
+		"@import 'variables';\r\n\r\n.price-movement {\r\n  position: relative;\r\n  height: 50px;\r\n}\r\n\r\n.price-movement__value,\r\n.price-movement__icon--up,\r\n.price-movement__icon--down {\r\n  position: absolute;\r\n  left: 0;\r\n  right: 0;\r\n  margin: auto;\r\n}\r\n\r\n.price-movement__value {\r\n  top: 14px;\r\n  color: $spot-tile-primary-color;\r\n  font-size: 14px;\r\n}\r\n\r\n.price-movement__icon--inactive {\r\n  display: inherit;\r\n  color: rgba(255, 255, 255, 0.1) !important;\r\n}\r\n\r\n.price-movement__icon--up {\r\n  color: #81d31c;\r\n  font-size: 12px !important;\r\n  top: 7px;\r\n}\r\n\r\n.price-movement__icon--down {\r\n  color: #d90a0a;\r\n  font-size: 12px !important;\r\n  bottom: 7px;\r\n}\r\n",
+		"// base\r\n$error-color: #d32121;\r\n$success-color: #7ed321;\r\n$warning-color: #f8ab02;\r\n\r\n// Spot tile\r\n\r\n$spot-tile-primary-color: white;\r\n$spot-tile-secondary-color: #90afc1;\r\n$spot-tile-error-color: #d32121;\r\n\r\n$primary-color: #00a8cc;\r\n\r\n// blotter\r\n$statusBarHeight: 20px;\r\n$toolbarHeight: 34px;\r\n\r\n// Reactive trade colour themes\r\n$accentColor: #02a8cc;\r\n$rtPositive: #6db812;\r\n$rtNegative: #d80c0a;\r\n\r\n// dark theme\r\n$darkBodyBgColor: #262a33;\r\n$darkAlternateColor: lighten(#1d2027, 10%);\r\n$backgroundAccentColor: #035567;\r\n$darkRowOddBgColor: #2b353d;\r\n$darkRowEvenBgColor: #1e2127;\r\n$darkInputBorderColour: #424646;\r\n\r\n//footer\r\n$error-color: #d32121;\r\n$success-color: #7ed321;\r\n$warning-color: #f8ab02;\r\n"
+	],
+	"names": [],
+	"mappings": "AAEA,AAAA,eAAe,CAAC;EACd,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,IAAI,GACb;;AAED,AAAA,sBAAsB;AACtB,yBAAyB;AACzB,2BAA2B,CAAC;EAC1B,QAAQ,EAAE,QAAQ;EAClB,IAAI,EAAE,CAAC;EACP,KAAK,EAAE,CAAC;EACR,MAAM,EAAE,IAAI,GACb;;AAED,AAAA,sBAAsB,CAAC;EACrB,GAAG,EAAE,IAAI;EACT,KAAK,ECXmB,KAAK;EDY7B,SAAS,EAAE,IAAI,GAChB;;AAED,AAAA,+BAA+B,CAAC;EAC9B,OAAO,EAAE,OAAO;EAChB,KAAK,EAAE,wBAAwB,CAAC,UAAU,GAC3C;;AAED,AAAA,yBAAyB,CAAC;EACxB,KAAK,EAAE,OAAO;EACd,SAAS,EAAE,eAAe;EAC1B,GAAG,EAAE,GAAG,GACT;;AAED,AAAA,2BAA2B,CAAC;EAC1B,KAAK,EAAE,OAAO;EACd,SAAS,EAAE,eAAe;EAC1B,MAAM,EAAE,GAAG,GACZ"
+}

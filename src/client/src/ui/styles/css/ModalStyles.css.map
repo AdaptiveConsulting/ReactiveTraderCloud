@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "ModalStyles.css",
+	"sources": [
+		"../scss/ModalStyles.scss"
+	],
+	"sourcesContent": [
+		".modal__overlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100vw;\r\n  height: 100vh;\r\n  opacity: 0.7;\r\n  z-index: 100;\r\n  background: rgba(0, 0, 0, 0.8);\r\n}\r\n\r\n.modal {\r\n  position: absolute;\r\n  top: 0;\r\n  bottom: 0;\r\n  left: 0;\r\n  right: 0;\r\n  width: 600px;\r\n  height: 150px;\r\n  margin: auto;\r\n  background-color: white;\r\n  text-align: center;\r\n  z-index: 101;\r\n}\r\n\r\n.modal__header {\r\n  border-bottom: 1px solid #da4d2e;\r\n}\r\n\r\n.modal__header-title {\r\n  display: inline-block;\r\n  padding: 5px;\r\n}\r\n\r\n.modal__body {\r\n  padding: 5px;\r\n}\r\n"
+	],
+	"names": [],
+	"mappings": "AAAA,AAAA,eAAe,CAAC;EACd,QAAQ,EAAE,KAAK;EACf,GAAG,EAAE,CAAC;EACN,IAAI,EAAE,CAAC;EACP,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,KAAK;EACb,OAAO,EAAE,GAAG;EACZ,OAAO,EAAE,GAAG;EACZ,UAAU,EAAE,kBAAkB,GAC/B;;AAED,AAAA,MAAM,CAAC;EACL,QAAQ,EAAE,QAAQ;EAClB,GAAG,EAAE,CAAC;EACN,MAAM,EAAE,CAAC;EACT,IAAI,EAAE,CAAC;EACP,KAAK,EAAE,CAAC;EACR,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,KAAK;EACb,MAAM,EAAE,IAAI;EACZ,gBAAgB,EAAE,KAAK;EACvB,UAAU,EAAE,MAAM;EAClB,OAAO,EAAE,GAAG,GACb;;AAED,AAAA,cAAc,CAAC;EACb,aAAa,EAAE,iBAAiB,GACjC;;AAED,AAAA,oBAAoB,CAAC;EACnB,OAAO,EAAE,YAAY;EACrB,OAAO,EAAE,GAAG,GACb;;AAED,AAAA,YAAY,CAAC;EACX,OAAO,EAAE,GAAG,GACb"
+}

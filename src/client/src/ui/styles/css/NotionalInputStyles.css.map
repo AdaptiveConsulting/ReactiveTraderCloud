@@ -1,0 +1,14 @@
+{
+	"version": 3,
+	"file": "NotionalInputStyles.css",
+	"sources": [
+		"../scss/NotionalInputStyles.scss",
+		"../scss/variables.scss"
+	],
+	"sourcesContent": [
+		"@import 'variables';\r\n\r\n.notional__currency-pair {\r\n  float: left;\r\n  padding-right: 10px;\r\n  padding-bottom: 1px;\r\n}\r\n\r\n.notional__size-input {\r\n  float: left;\r\n  padding: 0 0 0 3px;\r\n  background: transparent;\r\n  border: none;\r\n  border-bottom: 1px solid transparent;\r\n  color: inherit;\r\n  font-size: inherit;\r\n  font-family: inherit;\r\n  width: 100px;\r\n  &:hover,\r\n  &:focus {\r\n    border-bottom: 1px solid $primary-color;\r\n  }\r\n  &:focus {\r\n    outline: none;\r\n    background-color: #1d2027;\r\n    color: white;\r\n  }\r\n  &::selection {\r\n    background-color: #00a8cc;\r\n  }\r\n}\r\n",
+		"// base\r\n$error-color: #d32121;\r\n$success-color: #7ed321;\r\n$warning-color: #f8ab02;\r\n\r\n// Spot tile\r\n\r\n$spot-tile-primary-color: white;\r\n$spot-tile-secondary-color: #90afc1;\r\n$spot-tile-error-color: #d32121;\r\n\r\n$primary-color: #00a8cc;\r\n\r\n// blotter\r\n$statusBarHeight: 20px;\r\n$toolbarHeight: 34px;\r\n\r\n// Reactive trade colour themes\r\n$accentColor: #02a8cc;\r\n$rtPositive: #6db812;\r\n$rtNegative: #d80c0a;\r\n\r\n// dark theme\r\n$darkBodyBgColor: #262a33;\r\n$darkAlternateColor: lighten(#1d2027, 10%);\r\n$backgroundAccentColor: #035567;\r\n$darkRowOddBgColor: #2b353d;\r\n$darkRowEvenBgColor: #1e2127;\r\n$darkInputBorderColour: #424646;\r\n\r\n//footer\r\n$error-color: #d32121;\r\n$success-color: #7ed321;\r\n$warning-color: #f8ab02;\r\n"
+	],
+	"names": [],
+	"mappings": "AAEA,AAAA,wBAAwB,CAAC;EACvB,KAAK,EAAE,IAAI;EACX,aAAa,EAAE,IAAI;EACnB,cAAc,EAAE,GAAG,GACpB;;AAED,AAAA,qBAAqB,CAAC;EACpB,KAAK,EAAE,IAAI;EACX,OAAO,EAAE,SAAS;EAClB,UAAU,EAAE,WAAW;EACvB,MAAM,EAAE,IAAI;EACZ,aAAa,EAAE,qBAAqB;EACpC,KAAK,EAAE,OAAO;EACd,SAAS,EAAE,OAAO;EAClB,WAAW,EAAE,OAAO;EACpB,KAAK,EAAE,KAAK,GAab;EAtBD,AAUE,qBAVmB,AAUlB,MAAM,EAVT,qBAAqB,AAWlB,MAAM,CAAC;IACN,aAAa,EAAE,GAAG,CAAC,KAAK,CCTZ,OAAO,GDUpB;EAbH,AAcE,qBAdmB,AAclB,MAAM,CAAC;IACN,OAAO,EAAE,IAAI;IACb,gBAAgB,EAAE,OAAO;IACzB,KAAK,EAAE,KAAK,GACb;EAlBH,AAmBE,qBAnBmB,AAmBlB,WAAW,CAAC;IACX,gBAAgB,EAAE,OAAO,GAC1B"
+}

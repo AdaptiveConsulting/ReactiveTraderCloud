@@ -1,0 +1,14 @@
+{
+	"version": 3,
+	"file": "StatusIndicatorStyles.css",
+	"sources": [
+		"../scss/StatusIndicatorStyles.scss",
+		"../scss/variables.scss"
+	],
+	"sourcesContent": [
+		"@import 'variables';\r\n\r\n.status-indicator {\r\n  border: 2px solid #1d2027;\r\n  border-radius: 12px;\r\n  width: 20px;\r\n  height: 20px;\r\n  color: #1d2027;\r\n  font-size: 14px;\r\n  line-height: 21px;\r\n  text-align: center;\r\n  pointer-events: none;\r\n}\r\n\r\n.status-indicator--healthy {\r\n  background-color: $success-color;\r\n}\r\n\r\n.status-indicator--warning {\r\n  background-color: $warning-color;\r\n}\r\n\r\n.status-indicator--down {\r\n  color: white;\r\n  background-color: $error-color;\r\n}\r\n",
+		"// base\r\n$error-color: #d32121;\r\n$success-color: #7ed321;\r\n$warning-color: #f8ab02;\r\n\r\n// Spot tile\r\n\r\n$spot-tile-primary-color: white;\r\n$spot-tile-secondary-color: #90afc1;\r\n$spot-tile-error-color: #d32121;\r\n\r\n$primary-color: #00a8cc;\r\n\r\n// blotter\r\n$statusBarHeight: 20px;\r\n$toolbarHeight: 34px;\r\n\r\n// Reactive trade colour themes\r\n$accentColor: #02a8cc;\r\n$rtPositive: #6db812;\r\n$rtNegative: #d80c0a;\r\n\r\n// dark theme\r\n$darkBodyBgColor: #262a33;\r\n$darkAlternateColor: lighten(#1d2027, 10%);\r\n$backgroundAccentColor: #035567;\r\n$darkRowOddBgColor: #2b353d;\r\n$darkRowEvenBgColor: #1e2127;\r\n$darkInputBorderColour: #424646;\r\n\r\n//footer\r\n$error-color: #d32121;\r\n$success-color: #7ed321;\r\n$warning-color: #f8ab02;\r\n"
+	],
+	"names": [],
+	"mappings": "AAEA,AAAA,iBAAiB,CAAC;EAChB,MAAM,EAAE,iBAAiB;EACzB,aAAa,EAAE,IAAI;EACnB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,OAAO;EACd,SAAS,EAAE,IAAI;EACf,WAAW,EAAE,IAAI;EACjB,UAAU,EAAE,MAAM;EAClB,cAAc,EAAE,IAAI,GACrB;;AAED,AAAA,0BAA0B,CAAC;EACzB,gBAAgB,ECiBF,OAAO,GDhBtB;;AAED,AAAA,0BAA0B,CAAC;EACzB,gBAAgB,ECcF,OAAO,GDbtB;;AAED,AAAA,uBAAuB,CAAC;EACtB,KAAK,EAAE,KAAK;EACZ,gBAAgB,ECOJ,OAAO,GDNpB"
+}

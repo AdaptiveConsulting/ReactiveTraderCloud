@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "WorkspaceContainerStyles.css",
+	"sources": [
+		"../scss/WorkspaceContainerStyles.scss"
+	],
+	"sourcesContent": [
+		".workspace-region {\r\n  width: 100%;\r\n  height: 100%;\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  align-items: flex-start;\r\n  align-content: flex-start;\r\n  position: relative;\r\n}\r\n\r\n.workspace-region__item {\r\n  @media (max-width: 899px) {\r\n    width: calc(100% - 10px);\r\n  }\r\n\r\n  @media (min-width: 900px) {\r\n    width: calc(50% - 10px);\r\n  }\r\n\r\n  @media (min-width: 1400px) {\r\n    width: calc(33% - 10px);\r\n  }\r\n\r\n  margin: 5px;\r\n}\r\n\r\n.workspace-region__icon--loading {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  margin: auto;\r\n  width: 75px;\r\n  height: 75px;\r\n}\r\n"
+	],
+	"names": [],
+	"mappings": "AAAA,AAAA,iBAAiB,CAAC;EAChB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;EACZ,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,GAAG;EACnB,SAAS,EAAE,IAAI;EACf,WAAW,EAAE,UAAU;EACvB,aAAa,EAAE,UAAU;EACzB,QAAQ,EAAE,QAAQ,GACnB;;AAED,AAAA,uBAAuB,CAAC;EAatB,MAAM,EAAE,GAAG,GACZ;EAbC,MAAM,EAAE,SAAS,EAAE,KAAK;IAD1B,AAAA,uBAAuB,CAAC;MAEpB,KAAK,EAAE,iBAAiB,GAY3B;EATC,MAAM,EAAE,SAAS,EAAE,KAAK;IAL1B,AAAA,uBAAuB,CAAC;MAMpB,KAAK,EAAE,gBAAgB,GAQ1B;EALC,MAAM,EAAE,SAAS,EAAE,MAAM;IAT3B,AAAA,uBAAuB,CAAC;MAUpB,KAAK,EAAE,gBAAgB,GAI1B;;AAED,AAAA,gCAAgC,CAAC;EAC/B,QAAQ,EAAE,QAAQ;EAClB,GAAG,EAAE,CAAC;EACN,IAAI,EAAE,CAAC;EACP,KAAK,EAAE,CAAC;EACR,MAAM,EAAE,CAAC;EACT,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI,GACb"
+}
