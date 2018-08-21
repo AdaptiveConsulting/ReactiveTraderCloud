@@ -27,7 +27,8 @@ interface PortalState {
 }
 
 class NewPortal extends React.Component<PortalProps & { environment: Environment }, PortalState> {
-  private externalWindow: Window
+  externalWindow: Window | null = null
+  mutationObserver: MutationObserver | null = null
 
   state = {
     mounted: false
@@ -64,7 +65,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
 
   createWindow = (createdWindow: Window) => {
     this.externalWindow = createdWindow
-    createdWindow.addEventListener('beforeunload', () => this.release())
+    this.externalWindow.addEventListener('beforeunload', () => this.release())
     this.injectIntoWindow()
   }
 
@@ -83,7 +84,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
 
       // Watch the parent head for changes in style tags
       // Required for emotion's dynamic styles
-      const observer = new MutationObserver(mutationsList => {
+      this.mutationObserver = new MutationObserver(mutationsList => {
         mutationsList.forEach(mutationRecord => {
           const addedNode = mutationRecord.addedNodes[0]
           if (addedNode.nodeName === 'STYLE') {
@@ -93,7 +94,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
         })
       })
 
-      observer.observe(parentHead, { childList: true })
+      this.mutationObserver.observe(parentHead, { childList: true })
     } else {
       if (onBlock) {
         onBlock.call(null)
@@ -107,6 +108,10 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
 
   release = () => {
     const { onUnload } = this.props
+
+    if (this.mutationObserver) {
+      this.mutationObserver.disconnect()
+    }
 
     if (onUnload) {
       onUnload.call(null)
