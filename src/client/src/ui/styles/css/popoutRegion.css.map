@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "popoutRegion.css",
+	"sources": [
+		"../scss/popoutRegion.scss"
+	],
+	"sourcesContent": [
+		"#popout-content-container {\r\n  width: 100vw;\r\n  height: 100vh;\r\n  overflow: hidden;\r\n  background-color: #1d2027;\r\n  > div {\r\n    width: 100%;\r\n    height: 100%;\r\n  }\r\n\r\n  .popout__controls,\r\n  .popout__undock {\r\n    display: none;\r\n  }\r\n\r\n  &:hover .docked {\r\n    .popout__undock {\r\n      display: inline;\r\n    }\r\n  }\r\n}\r\n"
+	],
+	"names": [],
+	"mappings": "AAAA,AAAA,yBAAyB,CAAC;EACxB,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,KAAK;EACb,QAAQ,EAAE,MAAM;EAChB,gBAAgB,EAAE,OAAO,GAgB1B;EApBD,AAKE,yBALuB,GAKrB,GAAG,CAAC;IACJ,KAAK,EAAE,IAAI;IACX,MAAM,EAAE,IAAI,GACb;EARH,AAUE,yBAVuB,CAUvB,iBAAiB;EAVnB,yBAAyB,CAWvB,eAAe,CAAC;IACd,OAAO,EAAE,IAAI,GACd;EAbH,AAgBI,yBAhBqB,AAetB,MAAM,CAAC,OAAO,CACb,eAAe,CAAC;IACd,OAAO,EAAE,MAAM,GAChB"
+}

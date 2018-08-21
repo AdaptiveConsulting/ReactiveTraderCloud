@@ -1,0 +1,3632 @@
+@charset "UTF-8";
+@import url(../../../../node_modules/animate.css/animate.css);
+.analytics__container {
+  align-self: stretch;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  padding: 0 1rem;
+  /* nvd3 version 1.8.1 (https://github.com/novus/nvd3) 2015-06-15 */
+  /* boxplot CSS */
+  /* bullet */
+  /* line plus bar */
+  /********************
+ * SVG CSS
+ */
+  /********************
+  Default CSS for an svg element nvd3 used
+*/
+  /********************
+  Box shadow and border radius styling
+*/
+  /**********
+*  Brush
+*/
+  /**********
+*  Legend
+*/
+  /* focus */
+  /* scatter */
+  /* sparkline */
+  /* stacked area */
+  /*Give tooltips that old fade in transition by
+    putting a "with-transitions" class on the container div.
+*/
+  /****
+Interactive Layer
+*/ }
+  .analytics__container .nvtooltip {
+    transition: opacity 50ms linear;
+    transition-delay: 200ms;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  .analytics__container .nvd3 {
+    color: currentColor !important; }
+  .analytics__container .nvd3 .nv-axis {
+    pointer-events: none;
+    opacity: 1; }
+  .analytics__container .nvd3 .nv-axis path {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: 0.75;
+    shape-rendering: crispEdges; }
+  .analytics__container .nvd3 .nv-axis path.domain {
+    stroke-opacity: 0.75; }
+  .analytics__container .nvd3 .nv-axis.nv-x path.domain {
+    stroke-opacity: 0; }
+  .analytics__container .nvd3 .nv-axis line {
+    fill: none;
+    stroke: rgba(127, 127, 127, 0);
+    shape-rendering: crispEdges; }
+  .analytics__container .nvd3 .nv-axis .zero line,
+  .analytics__container .nvd3 .nv-axis line.zero {
+    stroke-opacity: 0.75; }
+  .analytics__container .nvd3 .nv-axis .nv-axisMaxMin text {
+    font-weight: bold; }
+  .analytics__container .nvd3 .x .nv-axis .nv-axisMaxMin text,
+  .analytics__container .nvd3 .x2 .nv-axis .nv-axisMaxMin text,
+  .analytics__container .nvd3 .x3 .nv-axis .nv-axisMaxMin text {
+    text-anchor: middle; }
+  .analytics__container .nvd3 .nv-axis.nv-disabled {
+    opacity: 0; }
+  .analytics__container .nvd3 .nv-bars rect {
+    fill-opacity: 0.75;
+    transition: fill-opacity 250ms linear;
+    -moz-transition: fill-opacity 250ms linear;
+    -webkit-transition: fill-opacity 250ms linear; }
+  .analytics__container .nvd3 .nv-bars rect.hover {
+    fill-opacity: 1; }
+  .analytics__container .nvd3 .nv-bars .hover rect {
+    fill: lightblue; }
+  .analytics__container .nvd3 .nv-bars text {
+    fill: rgba(0, 0, 0, 0); }
+  .analytics__container .nvd3 .nv-bars .hover text {
+    fill: black; }
+  .analytics__container .nvd3 .nv-multibar .nv-groups rect,
+  .analytics__container .nvd3 .nv-multibarHorizontal .nv-groups rect,
+  .analytics__container .nvd3 .nv-discretebar .nv-groups rect {
+    stroke-opacity: 0;
+    transition: fill-opacity 250ms linear;
+    -moz-transition: fill-opacity 250ms linear;
+    -webkit-transition: fill-opacity 250ms linear; }
+  .analytics__container .nvd3 .nv-multibar .nv-groups rect:hover,
+  .analytics__container .nvd3 .nv-multibarHorizontal .nv-groups rect:hover,
+  .analytics__container .nvd3 .nv-candlestickBar .nv-ticks rect:hover,
+  .analytics__container .nvd3 .nv-discretebar .nv-groups rect:hover {
+    fill-opacity: 1; }
+  .analytics__container .nvd3 .nv-discretebar .nv-groups text,
+  .analytics__container .nvd3 .nv-multibarHorizontal .nv-groups text {
+    font-weight: bold;
+    fill: black;
+    stroke: rgba(0, 0, 0, 0); }
+  .analytics__container .nvd3 .nv-boxplot circle {
+    fill-opacity: 0.5; }
+  .analytics__container .nvd3 .nv-boxplot circle:hover {
+    fill-opacity: 1; }
+  .analytics__container .nvd3 .nv-boxplot rect:hover {
+    fill-opacity: 1; }
+  .analytics__container .nvd3 line.nv-boxplot-median {
+    stroke: black; }
+  .analytics__container .nv-boxplot-tick:hover {
+    stroke-width: 2.5rem; }
+  .analytics__container .nvd3.nv-bullet {
+    font: 10px sans-serif; }
+  .analytics__container .nvd3.nv-bullet .nv-measure {
+    fill-opacity: 0.8; }
+  .analytics__container .nvd3.nv-bullet .nv-measure:hover {
+    fill-opacity: 1; }
+  .analytics__container .nvd3.nv-bullet .nv-marker {
+    stroke: #000;
+    stroke-width: 0.25rem; }
+  .analytics__container .nvd3.nv-bullet .nv-markerTriangle {
+    stroke: #000;
+    fill: #fff;
+    stroke-width: 1.5rem; }
+  .analytics__container .nvd3.nv-bullet .nv-tick line {
+    stroke: #666;
+    stroke-width: 0.5rem; }
+  .analytics__container .nvd3.nv-bullet .nv-range.nv-s0 {
+    fill: #eee; }
+  .analytics__container .nvd3.nv-bullet .nv-range.nv-s1 {
+    fill: #ddd; }
+  .analytics__container .nvd3.nv-bullet .nv-range.nv-s2 {
+    fill: #ccc; }
+  .analytics__container .nvd3.nv-bullet .nv-title {
+    font-size: 1rem;
+    font-weight: bold; }
+  .analytics__container .nvd3.nv-bullet .nv-subtitle {
+    fill: #999; }
+  .analytics__container .nvd3.nv-bullet .nv-range {
+    fill: #bababa;
+    fill-opacity: 0.4; }
+  .analytics__container .nvd3.nv-bullet .nv-range:hover {
+    fill-opacity: 0.7; }
+  .analytics__container .nvd3.nv-candlestickBar .nv-ticks .nv-tick {
+    stroke-width: 1px; }
+  .analytics__container .nvd3.nv-candlestickBar .nv-ticks .nv-tick.hover {
+    stroke-width: 0.25rem; }
+  .analytics__container .nvd3.nv-candlestickBar .nv-ticks .nv-tick.positive rect {
+    stroke: #00cd82;
+    fill: #00cd82; }
+  .analytics__container .nvd3.nv-candlestickBar .nv-ticks .nv-tick.negative rect {
+    stroke: #ff3542;
+    fill: #ff3542; }
+  .analytics__container .with-transitions .nv-candlestickBar .nv-ticks .nv-tick {
+    transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+    -moz-transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+    -webkit-transition: stroke-width 250ms linear, stroke-opacity 250ms linear; }
+  .analytics__container .nvd3.nv-candlestickBar .nv-ticks line {
+    stroke: #333; }
+  .analytics__container .nvd3 .nv-legend .nv-disabled rect {
+    /*fill-opacity: 0;*/ }
+  .analytics__container .nvd3 .nv-check-box .nv-box {
+    fill-opacity: 0;
+    stroke-width: 2; }
+  .analytics__container .nvd3 .nv-check-box .nv-check {
+    fill-opacity: 0;
+    stroke-width: 4; }
+  .analytics__container .nvd3 .nv-series.nv-disabled .nv-check-box .nv-check {
+    fill-opacity: 0;
+    stroke-opacity: 0; }
+  .analytics__container .nvd3 .nv-controlsWrap .nv-legend .nv-check-box .nv-check {
+    opacity: 0; }
+  .analytics__container .nvd3.nv-linePlusBar .nv-bar rect {
+    fill-opacity: 0.75; }
+  .analytics__container .nvd3.nv-linePlusBar .nv-bar rect:hover {
+    fill-opacity: 1; }
+  .analytics__container .nvd3 .nv-groups path.nv-line {
+    fill: none; }
+  .analytics__container .nvd3 .nv-groups path.nv-area {
+    stroke: none; }
+  .analytics__container .nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point {
+    fill-opacity: 0;
+    stroke-opacity: 0; }
+  .analytics__container .nvd3.nv-scatter.nv-single-point .nv-groups .nv-point {
+    fill-opacity: 0.5 !important;
+    stroke-opacity: 0.5 !important; }
+  .analytics__container .with-transitions .nvd3 .nv-groups .nv-point {
+    transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+    -moz-transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+    -webkit-transition: stroke-width 250ms linear, stroke-opacity 250ms linear; }
+  .analytics__container .nvd3.nv-scatter .nv-groups .nv-point.hover,
+  .analytics__container .nvd3 .nv-groups .nv-point.hover {
+    stroke-width: 7px;
+    fill-opacity: 0.95 !important;
+    stroke-opacity: 0.95 !important; }
+  .analytics__container .nvd3 .nv-point-paths path {
+    stroke: #aaa;
+    stroke-opacity: 0;
+    fill: #eee;
+    fill-opacity: 0; }
+  .analytics__container .nvd3 .nv-indexLine {
+    cursor: ew-resize; }
+  .analytics__container svg.nvd3-svg {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    display: block;
+    width: 100%;
+    height: 100%; }
+  .analytics__container .nvtooltip {
+    background: rgba(68, 76, 95, 0.25) !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0.125rem !important; }
+  .analytics__container .nvtooltip.with-3d-shadow,
+  .analytics__container .with-3d-shadow .nvtooltip {
+    border-radius: 0.25rem; }
+  .analytics__container .nvd3 text {
+    font-size: 1rem;
+    fill: rgba(127, 127, 127, 0); }
+  .analytics__container .nvd3 .title {
+    font-size: 1rem; }
+  .analytics__container .nvd3 .nv-background {
+    fill: currentColor;
+    fill-opacity: 0; }
+  .analytics__container .nvd3.nv-noData {
+    font-size: 1rem;
+    font-weight: bold; }
+  .analytics__container .nv-brush .extent {
+    fill-opacity: 0.125;
+    shape-rendering: crispEdges; }
+  .analytics__container .nv-brush .resize path {
+    fill: currentColor;
+    stroke: rgba(127, 127, 127, 0); }
+  .analytics__container .nvd3 .nv-legend .nv-series {
+    cursor: pointer; }
+  .analytics__container .nvd3 .nv-legend .nv-disabled circle {
+    fill-opacity: 0; }
+  .analytics__container .nvd3 .nv-brush .extent {
+    fill-opacity: 0 !important; }
+  .analytics__container .nvd3 .nv-brushBackground rect {
+    stroke: #000;
+    stroke-width: 0.4;
+    fill: rgba(127, 127, 127, 0);
+    fill-opacity: 0.7; }
+  .analytics__container .nvd3.nv-ohlcBar .nv-ticks .nv-tick {
+    stroke-width: 1px; }
+  .analytics__container .nvd3.nv-ohlcBar .nv-ticks .nv-tick.hover {
+    stroke-width: 0.25rem; }
+  .analytics__container .nvd3.nv-ohlcBar .nv-ticks .nv-tick.positive {
+    stroke: #00cd82; }
+  .analytics__container .nvd3.nv-ohlcBar .nv-ticks .nv-tick.negative {
+    stroke: #ff3542; }
+  .analytics__container .nvd3 .background path {
+    fill: none;
+    stroke: currentColor;
+    stroke-opacity: 0.4;
+    shape-rendering: crispEdges; }
+  .analytics__container .nvd3 .foreground path {
+    fill: none;
+    stroke-opacity: 0.7; }
+  .analytics__container .nvd3 .nv-parallelCoordinates-brush .extent {
+    fill: currentColor;
+    fill-opacity: 0.6;
+    stroke: rgba(127, 127, 127, 0);
+    shape-rendering: crispEdges; }
+  .analytics__container .nvd3 .nv-parallelCoordinates .hover {
+    fill-opacity: 1;
+    stroke-width: 3px; }
+  .analytics__container .nvd3 .missingValuesline line {
+    fill: none;
+    stroke-width: 1;
+    stroke-opacity: 1;
+    stroke-dasharray: 5, 5; }
+  .analytics__container .nvd3.nv-pie path {
+    stroke-opacity: 0;
+    transition: fill-opacity 250ms linear, stroke-width 250ms linear, stroke-opacity 250ms linear;
+    -moz-transition: fill-opacity 250ms linear, stroke-width 250ms linear, stroke-opacity 250ms linear;
+    -webkit-transition: fill-opacity 250ms linear, stroke-width 250ms linear, stroke-opacity 250ms linear; }
+  .analytics__container .nvd3.nv-pie .nv-pie-title {
+    font-size: 1rem; }
+  .analytics__container .nvd3.nv-pie .nv-slice text {
+    stroke-width: 0; }
+  .analytics__container .nvd3.nv-pie path {
+    stroke: rgba(127, 127, 127, 0);
+    stroke-width: 1px;
+    stroke-opacity: 1; }
+  .analytics__container .nvd3.nv-pie .hover path {
+    fill-opacity: 0.7; }
+  .analytics__container .nvd3.nv-pie .nv-label {
+    pointer-events: none; }
+  .analytics__container .nvd3.nv-pie .nv-label rect {
+    fill-opacity: 0;
+    stroke-opacity: 0; }
+  .analytics__container .nvd3 .nv-groups .nv-point.hover {
+    stroke-width: 1rem;
+    stroke-opacity: 0.5; }
+  .analytics__container .nvd3 .nv-scatter .nv-point.hover {
+    fill-opacity: 1; }
+  .analytics__container .nv-noninteractive {
+    pointer-events: none; }
+  .analytics__container .nv-distx,
+  .analytics__container .nv-disty {
+    pointer-events: none; }
+  .analytics__container .nvd3.nv-sparkline path {
+    fill: none; }
+  .analytics__container .nvd3.nv-sparklineplus g.nv-hoverValue {
+    pointer-events: none; }
+  .analytics__container .nvd3.nv-sparklineplus .nv-hoverValue line {
+    stroke-width: 1.5rem; }
+  .analytics__container .nvd3.nv-sparklineplus,
+  .analytics__container .nvd3.nv-sparklineplus g {
+    pointer-events: all; }
+  .analytics__container .nvd3 .nv-hoverArea {
+    fill-opacity: 0;
+    stroke-opacity: 0; }
+  .analytics__container .nvd3.nv-sparklineplus .nv-xValue,
+  .analytics__container .nvd3.nv-sparklineplus .nv-yValue {
+    stroke-width: 0;
+    font-size: 0.5rem;
+    font-weight: normal; }
+  .analytics__container .nvd3.nv-sparklineplus .nv-yValue {
+    stroke: #ff3542; }
+  .analytics__container .nvd3.nv-sparklineplus .nv-maxValue {
+    stroke: #00cd82;
+    fill: #00cd82; }
+  .analytics__container .nvd3.nv-sparklineplus .nv-minValue {
+    stroke: #ff3542;
+    fill: #ff3542; }
+  .analytics__container .nvd3.nv-sparklineplus .nv-currentValue {
+    font-weight: bold;
+    font-size: 1.1em; }
+  .analytics__container .nvd3.nv-stackedarea path.nv-area {
+    fill-opacity: 0.7;
+    stroke-opacity: 0;
+    transition: fill-opacity 250ms linear, stroke-opacity 250ms linear;
+    -moz-transition: fill-opacity 250ms linear, stroke-opacity 250ms linear;
+    -webkit-transition: fill-opacity 250ms linear, stroke-opacity 250ms linear; }
+  .analytics__container .nvd3.nv-stackedarea path.nv-area.hover {
+    fill-opacity: 0.9; }
+  .analytics__container .nvd3.nv-stackedarea .nv-groups .nv-point {
+    stroke-opacity: 0;
+    fill-opacity: 0; }
+  .analytics__container .nvtooltip.x-nvtooltip,
+  .analytics__container .nvtooltip.y-nvtooltip {
+    padding: 0.25rem; }
+  .analytics__container .nvtooltip h3 {
+    margin: 0;
+    padding: 0.25rem 1rem;
+    line-height: 1rem;
+    font-weight: normal;
+    color: currentColor;
+    text-align: center;
+    border-radius: 0.5rem 0.5rem 0 0; }
+  .analytics__container .nvtooltip p {
+    margin: 0;
+    padding: 0.25rem;
+    font-size: 0.75rem;
+    text-align: center; }
+  .analytics__container .nvtooltip span {
+    display: inline-block;
+    margin: 0.125rem 0; }
+  .analytics__container .nvtooltip table {
+    margin: 0.5rem;
+    border-spacing: 0; }
+  .analytics__container .nvtooltip table td {
+    padding: 0.25rem 0.5rem 0.25rem 0;
+    vertical-align: middle; }
+  .analytics__container .nvtooltip table td.key {
+    font-weight: normal; }
+  .analytics__container .nvtooltip table td.value {
+    text-align: right;
+    font-weight: bold; }
+  .analytics__container .nvtooltip table tr.highlight td {
+    padding: 1px 0.5rem 1px 0;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-top-style: solid;
+    border-top-width: 1px; }
+  .analytics__container .nvtooltip table td.legend-color-guide div {
+    width: 8px;
+    height: 8px;
+    vertical-align: middle; }
+  .analytics__container .nvtooltip table td.legend-color-guide div {
+    width: 10.25rem;
+    height: 10.25rem;
+    border: 1px solid #999; }
+  .analytics__container .nvtooltip .footer {
+    padding: 3px;
+    text-align: center; }
+  .analytics__container .nvtooltip-pending-removal {
+    pointer-events: none;
+    display: none; }
+  .analytics__container .nvd3 .nv-interactiveGuideLine {
+    pointer-events: none; }
+  .analytics__container .nvd3 line.nv-guideline {
+    stroke: currentColor; }
+  #popout-content-container .analytics__container {
+    height: 100%; }
+
+.analytics__barchart-indicator--negative {
+  background-color: #ff3542; }
+
+.analytics__barchart-indicator--positive {
+  background-color: #00cd82; }
+
+.analytics__controls {
+  float: right; }
+
+.analytics__header {
+  font-size: 1rem;
+  padding-bottom: 0.5rem; }
+
+.analytics__header-value {
+  font-weight: bold; }
+
+.analytics__header-title {
+  display: block;
+  margin-bottom: 1rem;
+  color: currentColor; }
+
+.analytics__header-value--negative {
+  color: #ff3542; }
+
+.analytics__header-value--positive {
+  color: #00cd82; }
+
+.analytics__header-title-icon {
+  margin-right: 17px; }
+
+.analytics__chart-container {
+  position: relative;
+  background: inherit;
+  width: 100%;
+  font-size: 0.75rem; }
+  .analytics__chart-container .nv-lineChart .nv-axis.nv-y text {
+    font-size: 0.5rem;
+    fill: currentColor; }
+  .analytics__chart-container .nv-lineChart .nv-axis.nv-x text {
+    font-size: 0.5rem;
+    fill: currentColor; }
+
+.analytics__barchart-container {
+  vertical-align: middle;
+  padding-top: 2px;
+  padding-bottom: 0.75rem;
+  height: 50px; }
+
+.analytics__barchart-bar {
+  height: 0.25rem;
+  overflow: hidden; }
+
+.analytics__barchart-bar-background {
+  height: 0.25rem;
+  width: 100%;
+  background-color: currentColor;
+  position: absolute;
+  margin-top: 3px; }
+
+.analytics__barchart-bar-wrapper {
+  vertical-align: middle;
+  height: 0.5rem;
+  position: absolute;
+  width: 100%;
+  margin-top: 30px; }
+
+.analytics__barchart-border {
+  height: 0.5rem;
+  width: 2px;
+  background-color: currentColor; }
+
+.analytics__barchart-border--center {
+  position: absolute;
+  left: calc(50% - 2px); }
+
+.analytics__barchart-border--left {
+  float: left;
+  display: inline; }
+
+.analytics__barchart-border--right {
+  right: 0;
+  position: absolute; }
+
+.analytics__barchart-title-wrapper {
+  width: 100%;
+  height: 30px;
+  position: absolute; }
+  .analytics__barchart-title-wrapper:hover .analytics__barchart-pointer-container {
+    transform: scale(1.5); }
+  .analytics__barchart-title-wrapper:hover .analytics__barchart-label {
+    font-size: 0.75rem;
+    cursor: default; }
+  .analytics__barchart-title-wrapper:hover .analytics__barchart-label-amount {
+    display: none; }
+  .analytics__barchart-title-wrapper:hover .analytics__barchart-label-amount--hover {
+    display: inline; }
+  .analytics__barchart-title-wrapper:hover .analytics__barchart-label-currency-terms {
+    display: none; }
+
+.analytics__barchart-pointer-container {
+  position: absolute;
+  margin-top: 1.5rem;
+  transition: left linear 0.2s;
+  z-index: 99; }
+
+.analytics__barchart-pointer {
+  width: 0;
+  height: 0;
+  border-width: 0.5rem 0.25rem 0 0.25rem;
+  border-color: #5193fd transparent transparent transparent;
+  border-style: inset;
+  transform: rotate(360deg);
+  position: absolute;
+  z-index: 100;
+  left: -6px;
+  margin-top: 2px; }
+
+.analytics__barchart-pointer-icon {
+  text-shadow: 0px 0px 0 #5193fd, -1px -1px 0 #5193fd, 1px -1px 0 #5193fd, -1px 1px 0 #5193fd, 1px 1px 0 #5193fd;
+  rotation: 90deg; }
+
+.analytics__barchart-pointer--outline {
+  position: absolute;
+  width: 0;
+  height: 0;
+  z-index: 99;
+  left: -0.5rem;
+  border-width: 0.75rem 0.5rem 0 0.5rem;
+  border-color: #5193fd transparent transparent transparent;
+  border-style: inset;
+  transform: rotate(360deg); }
+
+.analytics__barchart-label {
+  font-size: 13px;
+  margin-top: 3px;
+  white-space: nowrap; }
+
+.analytics__barchart-label-amount--hover {
+  display: none; }
+
+.analytics__barchart-label-pusher {
+  height: 0.5rem;
+  display: inline-block;
+  transition: all linear 0.2s; }
+
+.analytics__barchart-label-wrapper {
+  transition: left linear 0.2s;
+  position: absolute;
+  width: 100%;
+  white-space: nowrap; }
+
+.analytics__barchart-container .analytics__barchart-amount {
+  visibility: hidden;
+  font-size: 18px;
+  display: inline;
+  float: right; }
+
+.analytics__barchart-container:hover .analytics__barchart-amount {
+  visibility: visible; }
+
+.analytics__bubblechart-container {
+  text-anchor: middle;
+  height: 18rem; }
+
+.analytics__chart-title {
+  font-size: 1rem; }
+
+.analytics__bubblechart-title {
+  position: absolute; }
+
+.analytics__bubblechart-container {
+  display: block;
+  position: relative;
+  padding-bottom: 2px; }
+
+.analytics__positions-label {
+  fill: currentColor;
+  font-weight: bold;
+  font-size: 12px;
+  pointer-events: none;
+  select: none; }
+
+.analytics__positions-tooltip {
+  position: absolute;
+  width: auto;
+  height: auto;
+  padding: 2px 0.5rem;
+  font-size: 0.75rem;
+  background-color: currentColor;
+  opacity: 1;
+  box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 100; }
+
+.new-chart-area {
+  stroke-width: 2px !important;
+  fill: url("#areaGradient"); }
+
+.new-chart-stroke {
+  stroke: url("#chartStrokeLinearGradient"); }
+
+.analytics__icon--tearoff {
+  cursor: pointer; }
+
+.analytics__icon--tearoff--hidden {
+  display: none;
+  visibility: hidden; }
+
+.stop1,
+.lineStop1 {
+  stop-color: #00cd82; }
+
+.stop1End,
+.lineStop1End {
+  stop-color: #00cd82; }
+
+.stop2,
+.lineStop2 {
+  stop-color: #ff3542; }
+
+.stop2End,
+.lineStop2End {
+  stop-color: #ff3542; }
+
+.analytics__container .nvd3 .nv-axis path,
+.analytics__container .nvd3 .nv-axis .tick.zero line {
+  stroke: currentColor; }
+
+.analytics__chart-container .nv-lineChart .nv-axis.nv-x text,
+.analytics__chart-container .nv-lineChart .nv-axis.nv-y text {
+  fill: currentColor; }
+
+.analytics__container .nvd3 .nv-axis line {
+  stroke: rgba(127, 127, 127, 0); }
+
+.analytics__chart-tooltip {
+  font-weight: 500;
+  display: block;
+  mix-blend-mode: difference !important; }
+
+.analytics__chart-tooltip-date {
+  font-weight: 600; }
+
+.analytics__container--disconnected {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem; }
+
+.__DEPRECATED_MAGIC .openfin-chrome {
+  height: 100vh;
+  position: relative; }
+  .__DEPRECATED_MAGIC .openfin-chrome .shell__splash {
+    display: none; }
+  .__DEPRECATED_MAGIC .openfin-chrome:hover .openfin-chrome__header-controls {
+    display: block; }
+
+.__DEPRECATED_MAGIC .openfin-chrome__header {
+  width: 100%;
+  height: 2rem;
+  display: flex; }
+
+.__DEPRECATED_MAGIC .openfin-chrome__header--with-bar {
+  background: url("../images/adaptive-logo-light.svg") no-repeat, #dee3e8;
+  background-position: 6px 1px;
+  align-content: center;
+  vertical-align: middle; }
+  .__DEPRECATED_MAGIC .openfin-chrome__header--with-bar .openfin-chrome__header-control:hover {
+    background-color: darkgrey; }
+  .__DEPRECATED_MAGIC .openfin-chrome__header--with-bar .openfin-chrome__header-control--close:hover {
+    background-color: #800000; }
+
+.__DEPRECATED_MAGIC .openfin-chrome__header--no-bar {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  background: transparent; }
+  .__DEPRECATED_MAGIC .openfin-chrome__header--no-bar .openfin-chrome__header-controls-container {
+    color: #90afc1; }
+  .__DEPRECATED_MAGIC .openfin-chrome__header--no-bar .openfin-chrome__header-controls {
+    display: none; }
+  .__DEPRECATED_MAGIC .openfin-chrome__header--no-bar .openfin-chrome__header-title-label {
+    display: none; }
+
+.__DEPRECATED_MAGIC .openfin-chrome__header-title {
+  flex: 10;
+  margin: 5px auto;
+  text-align: center;
+  font-weight: bold;
+  -webkit-app-region: drag; }
+
+@media (max-width: 400px) {
+  .__DEPRECATED_MAGIC .openfin-chrome__header-title-label {
+    display: none; } }
+
+.__DEPRECATED_MAGIC .openfin-chrome__header-controls-container {
+  flex: 0;
+  position: relative;
+  min-width: 6rem; }
+
+.__DEPRECATED_MAGIC .openfin-chrome__header-controls {
+  list-style: none;
+  position: absolute;
+  padding-left: 0;
+  right: 0;
+  padding-right: 5px;
+  margin: 3px 0; }
+
+.__DEPRECATED_MAGIC .openfin-chrome__header-control {
+  display: inline-block;
+  cursor: pointer;
+  line-height: 25px; }
+  .__DEPRECATED_MAGIC .openfin-chrome__header-control > a {
+    padding: 7px; }
+
+.__DEPRECATED_MAGIC .openfin-chrome__content {
+  height: calc(100% - 2rem); }
+  .__DEPRECATED_MAGIC .openfin-chrome__content.openfin-chrome__content--no-header-bar {
+    height: 100%;
+    box-sizing: border-box; }
+    .__DEPRECATED_MAGIC .openfin-chrome__content.openfin-chrome__content--no-header-bar .spot-tile__controls {
+      margin-right: 1rem; }
+  .__DEPRECATED_MAGIC .openfin-chrome__content > div {
+    height: 100%; }
+
+@keyframes hideSplashScreen {
+  0% {
+    opacity: 1;
+    width: 100vw;
+    height: 100vh; }
+  99% {
+    opacity: 0;
+    width: 100vw;
+    height: 100vh; }
+  100% {
+    opacity: 0;
+    width: 0;
+    height: 0; } }
+
+.shell__browser_wrapper {
+  width: 100vw;
+  height: 100vh; }
+
+@media all and (max-width: 700px) {
+  .shell__browser_wrapper {
+    height: auto; } }
+
+.shell__splash {
+  background: url("../images/logo-transparent.png"), #1f2a36;
+  background-size: 400px 400px;
+  background-position: 50% 20vh;
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  position: fixed;
+  z-index: 100;
+  animation: hideSplashScreen 1s ease-out 2s forwards; }
+
+.shell__splash-message {
+  text-align: center;
+  color: white;
+  position: absolute;
+  bottom: calc(100vh - 20vh - 400px - 50px);
+  left: 0;
+  right: 0;
+  width: 100px;
+  margin: auto;
+  font-size: 18px; }
+
+.shell__container {
+  background-color: #1d2027;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+  height: calc(100% - 40px);
+  width: 100%; }
+  .shell__container * {
+    box-sizing: border-box; }
+
+.shell_workspace_blotter {
+  height: 100%;
+  width: 100%;
+  min-height: 20px; }
+  .shell_workspace_blotter * {
+    box-sizing: border-box; }
+
+.shell__sidebar {
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 100%;
+  overflow-y: auto;
+  background: #293543;
+  padding: 0px;
+  display: flex;
+  flex-direction: row; }
+
+.shell__blotter {
+  height: 100%; }
+
+.shell__footer {
+  height: 40px; }
+
+.shell__button--reconnect {
+  min-width: 100px;
+  height: 28px;
+  margin: 20px 10px; }
+
+@media all and (max-width: 700px) {
+  body {
+    overflow-y: auto; }
+  .shell__container {
+    height: 100%;
+    flex-direction: column; }
+  .shell__sidebar,
+  .shell__workspace {
+    height: auto;
+    width: 100%; }
+  .shell__sidebar,
+  .shell__workspace,
+  .shell__blotter {
+    flex: 1; }
+  .shell__sidebar {
+    order: 2; }
+  .shell__blotter {
+    min-height: 400px;
+    width: 100%;
+    order: 3; }
+  .shell__side-bar {
+    display: none; } }
+
+.Resizer {
+  background: #000;
+  opacity: 0.2;
+  z-index: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  background-clip: padding-box; }
+
+.Resizer:hover {
+  -webkit-transition: all 2s ease;
+  transition: all 2s ease; }
+
+.Resizer.horizontal {
+  height: 11px;
+  margin: -5px 0;
+  border-top: 5px solid rgba(255, 255, 255, 0);
+  border-bottom: 5px solid rgba(255, 255, 255, 0);
+  cursor: row-resize;
+  width: 100%; }
+
+.Resizer.horizontal:hover {
+  border-top: 5px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 5px solid rgba(0, 0, 0, 0.5); }
+
+.Resizer.vertical {
+  width: 11px;
+  margin: 0 -5px;
+  border-left: 5px solid rgba(255, 255, 255, 0);
+  border-right: 5px solid rgba(255, 255, 255, 0);
+  cursor: col-resize; }
+
+.Resizer.vertical:hover {
+  border-left: 5px solid rgba(0, 0, 0, 0.5);
+  border-right: 5px solid rgba(0, 0, 0, 0.5); }
+
+.Resizer.disabled {
+  cursor: not-allowed; }
+
+.Resizer.disabled:hover {
+  border-color: transparent; }
+
+div.SplitPane.soloPane1.vertical > .Pane2,
+div.SplitPane.soloPane2.vertical > .Pane1 {
+  width: 0px !important; }
+
+div.SplitPane.soloPane1.vertical > .Pane1,
+div.SplitPane.soloPane2.vertical > .Pane2 {
+  width: 100% !important; }
+
+div.SplitPane.soloPane1.horizontal > .Pane2,
+div.SplitPane.soloPane2.horizontal > .Pane1 {
+  height: 0px !important; }
+
+div.SplitPane.soloPane1.horizontal > .Pane1,
+div.SplitPane.soloPane2.horizontal > .Pane2 {
+  height: 100% !important; }
+
+.status-indicator {
+  border: 2px solid #1d2027;
+  border-radius: 12px;
+  width: 20px;
+  height: 20px;
+  color: #1d2027;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  pointer-events: none; }
+
+.status-indicator--healthy {
+  background-color: #7ed321; }
+
+.status-indicator--warning {
+  background-color: #f8ab02; }
+
+.status-indicator--down {
+  color: white;
+  background-color: #d32121; }
+
+/*!
+ *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+/* FONT PATH
+ * -------------------------- */
+@font-face {
+  font-family: 'FontAwesome';
+  src: url("../fonts/fontawesome-webfont.eot?v=4.5.0");
+  src: url("../fonts/fontawesome-webfont.eot?#iefix&v=4.5.0") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff2?v=4.5.0") format("woff2"), url("../fonts/fontawesome-webfont.woff?v=4.5.0") format("woff"), url("../fonts/fontawesome-webfont.ttf?v=4.5.0") format("truetype"), url("../fonts/fontawesome-webfont.svg?v=4.5.0#fontawesomeregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+/* makes the font 33% larger relative to the icon container */
+.fa-lg {
+  font-size: 1.33333em;
+  line-height: 0.75em;
+  vertical-align: -15%; }
+
+.fa-2x {
+  font-size: 2em; }
+
+.fa-3x {
+  font-size: 3em; }
+
+.fa-4x {
+  font-size: 4em; }
+
+.fa-5x {
+  font-size: 5em; }
+
+.fa-fw {
+  width: 1.28571em;
+  text-align: center; }
+
+.fa-ul {
+  padding-left: 0;
+  margin-left: 2.14286em;
+  list-style-type: none; }
+  .fa-ul > li {
+    position: relative; }
+
+.fa-li {
+  position: absolute;
+  left: -2.14286em;
+  width: 2.14286em;
+  top: 0.14286em;
+  text-align: center; }
+  .fa-li.fa-lg {
+    left: -1.85714em; }
+
+.fa-border {
+  padding: .2em .25em .15em;
+  border: solid 0.08em #eee;
+  border-radius: .1em; }
+
+.fa-pull-left {
+  float: left; }
+
+.fa-pull-right {
+  float: right; }
+
+.fa.fa-pull-left {
+  margin-right: .3em; }
+
+.fa.fa-pull-right {
+  margin-left: .3em; }
+
+/* Deprecated as of 4.4.0 */
+.pull-right {
+  float: right; }
+
+.pull-left {
+  float: left; }
+
+.fa.pull-left {
+  margin-right: .3em; }
+
+.fa.pull-right {
+  margin-left: .3em; }
+
+.fa-spin {
+  -webkit-animation: fa-spin 2s infinite linear;
+  animation: fa-spin 2s infinite linear; }
+
+.fa-pulse {
+  -webkit-animation: fa-spin 1s infinite steps(8);
+  animation: fa-spin 1s infinite steps(8); }
+
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg); } }
+
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg); } }
+
+.fa-rotate-90 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg); }
+
+.fa-rotate-180 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg); }
+
+.fa-rotate-270 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  -webkit-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg); }
+
+.fa-flip-horizontal {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0);
+  -webkit-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1); }
+
+.fa-flip-vertical {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  -webkit-transform: scale(1, -1);
+  -ms-transform: scale(1, -1);
+  transform: scale(1, -1); }
+
+:root .fa-rotate-90,
+:root .fa-rotate-180,
+:root .fa-rotate-270,
+:root .fa-flip-horizontal,
+:root .fa-flip-vertical {
+  filter: none; }
+
+.fa-stack {
+  position: relative;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle; }
+
+.fa-stack-1x, .fa-stack-2x {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center; }
+
+.fa-stack-1x {
+  line-height: inherit; }
+
+.fa-stack-2x {
+  font-size: 2em; }
+
+.fa-inverse {
+  color: #fff; }
+
+/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
+   readers do not read off random characters that represent icons */
+.fa-glass:before {
+  content: ""; }
+
+.fa-music:before {
+  content: ""; }
+
+.fa-search:before {
+  content: ""; }
+
+.fa-envelope-o:before {
+  content: ""; }
+
+.fa-heart:before {
+  content: ""; }
+
+.fa-star:before {
+  content: ""; }
+
+.fa-star-o:before {
+  content: ""; }
+
+.fa-user:before {
+  content: ""; }
+
+.fa-film:before {
+  content: ""; }
+
+.fa-th-large:before {
+  content: ""; }
+
+.fa-th:before {
+  content: ""; }
+
+.fa-th-list:before {
+  content: ""; }
+
+.fa-check:before {
+  content: ""; }
+
+.fa-remove:before,
+.fa-close:before,
+.fa-times:before {
+  content: ""; }
+
+.fa-search-plus:before {
+  content: ""; }
+
+.fa-search-minus:before {
+  content: ""; }
+
+.fa-power-off:before {
+  content: ""; }
+
+.fa-signal:before {
+  content: ""; }
+
+.fa-gear:before,
+.fa-cog:before {
+  content: ""; }
+
+.fa-trash-o:before {
+  content: ""; }
+
+.fa-home:before {
+  content: ""; }
+
+.fa-file-o:before {
+  content: ""; }
+
+.fa-clock-o:before {
+  content: ""; }
+
+.fa-road:before {
+  content: ""; }
+
+.fa-download:before {
+  content: ""; }
+
+.fa-arrow-circle-o-down:before {
+  content: ""; }
+
+.fa-arrow-circle-o-up:before {
+  content: ""; }
+
+.fa-inbox:before {
+  content: ""; }
+
+.fa-play-circle-o:before {
+  content: ""; }
+
+.fa-rotate-right:before,
+.fa-repeat:before {
+  content: ""; }
+
+.fa-refresh:before {
+  content: ""; }
+
+.fa-list-alt:before {
+  content: ""; }
+
+.fa-lock:before {
+  content: ""; }
+
+.fa-flag:before {
+  content: ""; }
+
+.fa-headphones:before {
+  content: ""; }
+
+.fa-volume-off:before {
+  content: ""; }
+
+.fa-volume-down:before {
+  content: ""; }
+
+.fa-volume-up:before {
+  content: ""; }
+
+.fa-qrcode:before {
+  content: ""; }
+
+.fa-barcode:before {
+  content: ""; }
+
+.fa-tag:before {
+  content: ""; }
+
+.fa-tags:before {
+  content: ""; }
+
+.fa-book:before {
+  content: ""; }
+
+.fa-bookmark:before {
+  content: ""; }
+
+.fa-print:before {
+  content: ""; }
+
+.fa-camera:before {
+  content: ""; }
+
+.fa-font:before {
+  content: ""; }
+
+.fa-bold:before {
+  content: ""; }
+
+.fa-italic:before {
+  content: ""; }
+
+.fa-text-height:before {
+  content: ""; }
+
+.fa-text-width:before {
+  content: ""; }
+
+.fa-align-left:before {
+  content: ""; }
+
+.fa-align-center:before {
+  content: ""; }
+
+.fa-align-right:before {
+  content: ""; }
+
+.fa-align-justify:before {
+  content: ""; }
+
+.fa-list:before {
+  content: ""; }
+
+.fa-dedent:before,
+.fa-outdent:before {
+  content: ""; }
+
+.fa-indent:before {
+  content: ""; }
+
+.fa-video-camera:before {
+  content: ""; }
+
+.fa-photo:before,
+.fa-image:before,
+.fa-picture-o:before {
+  content: ""; }
+
+.fa-pencil:before {
+  content: ""; }
+
+.fa-map-marker:before {
+  content: ""; }
+
+.fa-adjust:before {
+  content: ""; }
+
+.fa-tint:before {
+  content: ""; }
+
+.fa-edit:before,
+.fa-pencil-square-o:before {
+  content: ""; }
+
+.fa-share-square-o:before {
+  content: ""; }
+
+.fa-check-square-o:before {
+  content: ""; }
+
+.fa-arrows:before {
+  content: ""; }
+
+.fa-step-backward:before {
+  content: ""; }
+
+.fa-fast-backward:before {
+  content: ""; }
+
+.fa-backward:before {
+  content: ""; }
+
+.fa-play:before {
+  content: ""; }
+
+.fa-pause:before {
+  content: ""; }
+
+.fa-stop:before {
+  content: ""; }
+
+.fa-forward:before {
+  content: ""; }
+
+.fa-fast-forward:before {
+  content: ""; }
+
+.fa-step-forward:before {
+  content: ""; }
+
+.fa-eject:before {
+  content: ""; }
+
+.fa-chevron-left:before {
+  content: ""; }
+
+.fa-chevron-right:before {
+  content: ""; }
+
+.fa-plus-circle:before {
+  content: ""; }
+
+.fa-minus-circle:before {
+  content: ""; }
+
+.fa-times-circle:before {
+  content: ""; }
+
+.fa-check-circle:before {
+  content: ""; }
+
+.fa-question-circle:before {
+  content: ""; }
+
+.fa-info-circle:before {
+  content: ""; }
+
+.fa-crosshairs:before {
+  content: ""; }
+
+.fa-times-circle-o:before {
+  content: ""; }
+
+.fa-check-circle-o:before {
+  content: ""; }
+
+.fa-ban:before {
+  content: ""; }
+
+.fa-arrow-left:before {
+  content: ""; }
+
+.fa-arrow-right:before {
+  content: ""; }
+
+.fa-arrow-up:before {
+  content: ""; }
+
+.fa-arrow-down:before {
+  content: ""; }
+
+.fa-mail-forward:before,
+.fa-share:before {
+  content: ""; }
+
+.fa-expand:before {
+  content: ""; }
+
+.fa-compress:before {
+  content: ""; }
+
+.fa-plus:before {
+  content: ""; }
+
+.fa-minus:before {
+  content: ""; }
+
+.fa-asterisk:before {
+  content: ""; }
+
+.fa-exclamation-circle:before {
+  content: ""; }
+
+.fa-gift:before {
+  content: ""; }
+
+.fa-leaf:before {
+  content: ""; }
+
+.fa-fire:before {
+  content: ""; }
+
+.fa-eye:before {
+  content: ""; }
+
+.fa-eye-slash:before {
+  content: ""; }
+
+.fa-warning:before,
+.fa-exclamation-triangle:before {
+  content: ""; }
+
+.fa-plane:before {
+  content: ""; }
+
+.fa-calendar:before {
+  content: ""; }
+
+.fa-random:before {
+  content: ""; }
+
+.fa-comment:before {
+  content: ""; }
+
+.fa-magnet:before {
+  content: ""; }
+
+.fa-chevron-up:before {
+  content: ""; }
+
+.fa-chevron-down:before {
+  content: ""; }
+
+.fa-retweet:before {
+  content: ""; }
+
+.fa-shopping-cart:before {
+  content: ""; }
+
+.fa-folder:before {
+  content: ""; }
+
+.fa-folder-open:before {
+  content: ""; }
+
+.fa-arrows-v:before {
+  content: ""; }
+
+.fa-arrows-h:before {
+  content: ""; }
+
+.fa-bar-chart-o:before,
+.fa-bar-chart:before {
+  content: ""; }
+
+.fa-twitter-square:before {
+  content: ""; }
+
+.fa-facebook-square:before {
+  content: ""; }
+
+.fa-camera-retro:before {
+  content: ""; }
+
+.fa-key:before {
+  content: ""; }
+
+.fa-gears:before,
+.fa-cogs:before {
+  content: ""; }
+
+.fa-comments:before {
+  content: ""; }
+
+.fa-thumbs-o-up:before {
+  content: ""; }
+
+.fa-thumbs-o-down:before {
+  content: ""; }
+
+.fa-star-half:before {
+  content: ""; }
+
+.fa-heart-o:before {
+  content: ""; }
+
+.fa-sign-out:before {
+  content: ""; }
+
+.fa-linkedin-square:before {
+  content: ""; }
+
+.fa-thumb-tack:before {
+  content: ""; }
+
+.fa-external-link:before {
+  content: ""; }
+
+.fa-sign-in:before {
+  content: ""; }
+
+.fa-trophy:before {
+  content: ""; }
+
+.fa-github-square:before {
+  content: ""; }
+
+.fa-upload:before {
+  content: ""; }
+
+.fa-lemon-o:before {
+  content: ""; }
+
+.fa-phone:before {
+  content: ""; }
+
+.fa-square-o:before {
+  content: ""; }
+
+.fa-bookmark-o:before {
+  content: ""; }
+
+.fa-phone-square:before {
+  content: ""; }
+
+.fa-twitter:before {
+  content: ""; }
+
+.fa-facebook-f:before,
+.fa-facebook:before {
+  content: ""; }
+
+.fa-github:before {
+  content: ""; }
+
+.fa-unlock:before {
+  content: ""; }
+
+.fa-credit-card:before {
+  content: ""; }
+
+.fa-feed:before,
+.fa-rss:before {
+  content: ""; }
+
+.fa-hdd-o:before {
+  content: ""; }
+
+.fa-bullhorn:before {
+  content: ""; }
+
+.fa-bell:before {
+  content: ""; }
+
+.fa-certificate:before {
+  content: ""; }
+
+.fa-hand-o-right:before {
+  content: ""; }
+
+.fa-hand-o-left:before {
+  content: ""; }
+
+.fa-hand-o-up:before {
+  content: ""; }
+
+.fa-hand-o-down:before {
+  content: ""; }
+
+.fa-arrow-circle-left:before {
+  content: ""; }
+
+.fa-arrow-circle-right:before {
+  content: ""; }
+
+.fa-arrow-circle-up:before {
+  content: ""; }
+
+.fa-arrow-circle-down:before {
+  content: ""; }
+
+.fa-globe:before {
+  content: ""; }
+
+.fa-wrench:before {
+  content: ""; }
+
+.fa-tasks:before {
+  content: ""; }
+
+.fa-filter:before {
+  content: ""; }
+
+.fa-briefcase:before {
+  content: ""; }
+
+.fa-arrows-alt:before {
+  content: ""; }
+
+.fa-group:before,
+.fa-users:before {
+  content: ""; }
+
+.fa-chain:before,
+.fa-link:before {
+  content: ""; }
+
+.fa-cloud:before {
+  content: ""; }
+
+.fa-flask:before {
+  content: ""; }
+
+.fa-cut:before,
+.fa-scissors:before {
+  content: ""; }
+
+.fa-copy:before,
+.fa-files-o:before {
+  content: ""; }
+
+.fa-paperclip:before {
+  content: ""; }
+
+.fa-save:before,
+.fa-floppy-o:before {
+  content: ""; }
+
+.fa-square:before {
+  content: ""; }
+
+.fa-navicon:before,
+.fa-reorder:before,
+.fa-bars:before {
+  content: ""; }
+
+.fa-list-ul:before {
+  content: ""; }
+
+.fa-list-ol:before {
+  content: ""; }
+
+.fa-strikethrough:before {
+  content: ""; }
+
+.fa-underline:before {
+  content: ""; }
+
+.fa-table:before {
+  content: ""; }
+
+.fa-magic:before {
+  content: ""; }
+
+.fa-truck:before {
+  content: ""; }
+
+.fa-pinterest:before {
+  content: ""; }
+
+.fa-pinterest-square:before {
+  content: ""; }
+
+.fa-google-plus-square:before {
+  content: ""; }
+
+.fa-google-plus:before {
+  content: ""; }
+
+.fa-money:before {
+  content: ""; }
+
+.fa-caret-down:before {
+  content: ""; }
+
+.fa-caret-up:before {
+  content: ""; }
+
+.fa-caret-left:before {
+  content: ""; }
+
+.fa-caret-right:before {
+  content: ""; }
+
+.fa-columns:before {
+  content: ""; }
+
+.fa-unsorted:before,
+.fa-sort:before {
+  content: ""; }
+
+.fa-sort-down:before,
+.fa-sort-desc:before {
+  content: ""; }
+
+.fa-sort-up:before,
+.fa-sort-asc:before {
+  content: ""; }
+
+.fa-envelope:before {
+  content: ""; }
+
+.fa-linkedin:before {
+  content: ""; }
+
+.fa-rotate-left:before,
+.fa-undo:before {
+  content: ""; }
+
+.fa-legal:before,
+.fa-gavel:before {
+  content: ""; }
+
+.fa-dashboard:before,
+.fa-tachometer:before {
+  content: ""; }
+
+.fa-comment-o:before {
+  content: ""; }
+
+.fa-comments-o:before {
+  content: ""; }
+
+.fa-flash:before,
+.fa-bolt:before {
+  content: ""; }
+
+.fa-sitemap:before {
+  content: ""; }
+
+.fa-umbrella:before {
+  content: ""; }
+
+.fa-paste:before,
+.fa-clipboard:before {
+  content: ""; }
+
+.fa-lightbulb-o:before {
+  content: ""; }
+
+.fa-exchange:before {
+  content: ""; }
+
+.fa-cloud-download:before {
+  content: ""; }
+
+.fa-cloud-upload:before {
+  content: ""; }
+
+.fa-user-md:before {
+  content: ""; }
+
+.fa-stethoscope:before {
+  content: ""; }
+
+.fa-suitcase:before {
+  content: ""; }
+
+.fa-bell-o:before {
+  content: ""; }
+
+.fa-coffee:before {
+  content: ""; }
+
+.fa-cutlery:before {
+  content: ""; }
+
+.fa-file-text-o:before {
+  content: ""; }
+
+.fa-building-o:before {
+  content: ""; }
+
+.fa-hospital-o:before {
+  content: ""; }
+
+.fa-ambulance:before {
+  content: ""; }
+
+.fa-medkit:before {
+  content: ""; }
+
+.fa-fighter-jet:before {
+  content: ""; }
+
+.fa-beer:before {
+  content: ""; }
+
+.fa-h-square:before {
+  content: ""; }
+
+.fa-plus-square:before {
+  content: ""; }
+
+.fa-angle-double-left:before {
+  content: ""; }
+
+.fa-angle-double-right:before {
+  content: ""; }
+
+.fa-angle-double-up:before {
+  content: ""; }
+
+.fa-angle-double-down:before {
+  content: ""; }
+
+.fa-angle-left:before {
+  content: ""; }
+
+.fa-angle-right:before {
+  content: ""; }
+
+.fa-angle-up:before {
+  content: ""; }
+
+.fa-angle-down:before {
+  content: ""; }
+
+.fa-desktop:before {
+  content: ""; }
+
+.fa-laptop:before {
+  content: ""; }
+
+.fa-tablet:before {
+  content: ""; }
+
+.fa-mobile-phone:before,
+.fa-mobile:before {
+  content: ""; }
+
+.fa-circle-o:before {
+  content: ""; }
+
+.fa-quote-left:before {
+  content: ""; }
+
+.fa-quote-right:before {
+  content: ""; }
+
+.fa-spinner:before {
+  content: ""; }
+
+.fa-circle:before {
+  content: ""; }
+
+.fa-mail-reply:before,
+.fa-reply:before {
+  content: ""; }
+
+.fa-github-alt:before {
+  content: ""; }
+
+.fa-folder-o:before {
+  content: ""; }
+
+.fa-folder-open-o:before {
+  content: ""; }
+
+.fa-smile-o:before {
+  content: ""; }
+
+.fa-frown-o:before {
+  content: ""; }
+
+.fa-meh-o:before {
+  content: ""; }
+
+.fa-gamepad:before {
+  content: ""; }
+
+.fa-keyboard-o:before {
+  content: ""; }
+
+.fa-flag-o:before {
+  content: ""; }
+
+.fa-flag-checkered:before {
+  content: ""; }
+
+.fa-terminal:before {
+  content: ""; }
+
+.fa-code:before {
+  content: ""; }
+
+.fa-mail-reply-all:before,
+.fa-reply-all:before {
+  content: ""; }
+
+.fa-star-half-empty:before,
+.fa-star-half-full:before,
+.fa-star-half-o:before {
+  content: ""; }
+
+.fa-location-arrow:before {
+  content: ""; }
+
+.fa-crop:before {
+  content: ""; }
+
+.fa-code-fork:before {
+  content: ""; }
+
+.fa-unlink:before,
+.fa-chain-broken:before {
+  content: ""; }
+
+.fa-question:before {
+  content: ""; }
+
+.fa-info:before {
+  content: ""; }
+
+.fa-exclamation:before {
+  content: ""; }
+
+.fa-superscript:before {
+  content: ""; }
+
+.fa-subscript:before {
+  content: ""; }
+
+.fa-eraser:before {
+  content: ""; }
+
+.fa-puzzle-piece:before {
+  content: ""; }
+
+.fa-microphone:before {
+  content: ""; }
+
+.fa-microphone-slash:before {
+  content: ""; }
+
+.fa-shield:before {
+  content: ""; }
+
+.fa-calendar-o:before {
+  content: ""; }
+
+.fa-fire-extinguisher:before {
+  content: ""; }
+
+.fa-rocket:before {
+  content: ""; }
+
+.fa-maxcdn:before {
+  content: ""; }
+
+.fa-chevron-circle-left:before {
+  content: ""; }
+
+.fa-chevron-circle-right:before {
+  content: ""; }
+
+.fa-chevron-circle-up:before {
+  content: ""; }
+
+.fa-chevron-circle-down:before {
+  content: ""; }
+
+.fa-html5:before {
+  content: ""; }
+
+.fa-css3:before {
+  content: ""; }
+
+.fa-anchor:before {
+  content: ""; }
+
+.fa-unlock-alt:before {
+  content: ""; }
+
+.fa-bullseye:before {
+  content: ""; }
+
+.fa-ellipsis-h:before {
+  content: ""; }
+
+.fa-ellipsis-v:before {
+  content: ""; }
+
+.fa-rss-square:before {
+  content: ""; }
+
+.fa-play-circle:before {
+  content: ""; }
+
+.fa-ticket:before {
+  content: ""; }
+
+.fa-minus-square:before {
+  content: ""; }
+
+.fa-minus-square-o:before {
+  content: ""; }
+
+.fa-level-up:before {
+  content: ""; }
+
+.fa-level-down:before {
+  content: ""; }
+
+.fa-check-square:before {
+  content: ""; }
+
+.fa-pencil-square:before {
+  content: ""; }
+
+.fa-external-link-square:before {
+  content: ""; }
+
+.fa-share-square:before {
+  content: ""; }
+
+.fa-compass:before {
+  content: ""; }
+
+.fa-toggle-down:before,
+.fa-caret-square-o-down:before {
+  content: ""; }
+
+.fa-toggle-up:before,
+.fa-caret-square-o-up:before {
+  content: ""; }
+
+.fa-toggle-right:before,
+.fa-caret-square-o-right:before {
+  content: ""; }
+
+.fa-euro:before,
+.fa-eur:before {
+  content: ""; }
+
+.fa-gbp:before {
+  content: ""; }
+
+.fa-dollar:before,
+.fa-usd:before {
+  content: ""; }
+
+.fa-rupee:before,
+.fa-inr:before {
+  content: ""; }
+
+.fa-cny:before,
+.fa-rmb:before,
+.fa-yen:before,
+.fa-jpy:before {
+  content: ""; }
+
+.fa-ruble:before,
+.fa-rouble:before,
+.fa-rub:before {
+  content: ""; }
+
+.fa-won:before,
+.fa-krw:before {
+  content: ""; }
+
+.fa-bitcoin:before,
+.fa-btc:before {
+  content: ""; }
+
+.fa-file:before {
+  content: ""; }
+
+.fa-file-text:before {
+  content: ""; }
+
+.fa-sort-alpha-asc:before {
+  content: ""; }
+
+.fa-sort-alpha-desc:before {
+  content: ""; }
+
+.fa-sort-amount-asc:before {
+  content: ""; }
+
+.fa-sort-amount-desc:before {
+  content: ""; }
+
+.fa-sort-numeric-asc:before {
+  content: ""; }
+
+.fa-sort-numeric-desc:before {
+  content: ""; }
+
+.fa-thumbs-up:before {
+  content: ""; }
+
+.fa-thumbs-down:before {
+  content: ""; }
+
+.fa-youtube-square:before {
+  content: ""; }
+
+.fa-youtube:before {
+  content: ""; }
+
+.fa-xing:before {
+  content: ""; }
+
+.fa-xing-square:before {
+  content: ""; }
+
+.fa-youtube-play:before {
+  content: ""; }
+
+.fa-dropbox:before {
+  content: ""; }
+
+.fa-stack-overflow:before {
+  content: ""; }
+
+.fa-instagram:before {
+  content: ""; }
+
+.fa-flickr:before {
+  content: ""; }
+
+.fa-adn:before {
+  content: ""; }
+
+.fa-bitbucket:before {
+  content: ""; }
+
+.fa-bitbucket-square:before {
+  content: ""; }
+
+.fa-tumblr:before {
+  content: ""; }
+
+.fa-tumblr-square:before {
+  content: ""; }
+
+.fa-long-arrow-down:before {
+  content: ""; }
+
+.fa-long-arrow-up:before {
+  content: ""; }
+
+.fa-long-arrow-left:before {
+  content: ""; }
+
+.fa-long-arrow-right:before {
+  content: ""; }
+
+.fa-apple:before {
+  content: ""; }
+
+.fa-windows:before {
+  content: ""; }
+
+.fa-android:before {
+  content: ""; }
+
+.fa-linux:before {
+  content: ""; }
+
+.fa-dribbble:before {
+  content: ""; }
+
+.fa-skype:before {
+  content: ""; }
+
+.fa-foursquare:before {
+  content: ""; }
+
+.fa-trello:before {
+  content: ""; }
+
+.fa-female:before {
+  content: ""; }
+
+.fa-male:before {
+  content: ""; }
+
+.fa-gittip:before,
+.fa-gratipay:before {
+  content: ""; }
+
+.fa-sun-o:before {
+  content: ""; }
+
+.fa-moon-o:before {
+  content: ""; }
+
+.fa-archive:before {
+  content: ""; }
+
+.fa-bug:before {
+  content: ""; }
+
+.fa-vk:before {
+  content: ""; }
+
+.fa-weibo:before {
+  content: ""; }
+
+.fa-renren:before {
+  content: ""; }
+
+.fa-pagelines:before {
+  content: ""; }
+
+.fa-stack-exchange:before {
+  content: ""; }
+
+.fa-arrow-circle-o-right:before {
+  content: ""; }
+
+.fa-arrow-circle-o-left:before {
+  content: ""; }
+
+.fa-toggle-left:before,
+.fa-caret-square-o-left:before {
+  content: ""; }
+
+.fa-dot-circle-o:before {
+  content: ""; }
+
+.fa-wheelchair:before {
+  content: ""; }
+
+.fa-vimeo-square:before {
+  content: ""; }
+
+.fa-turkish-lira:before,
+.fa-try:before {
+  content: ""; }
+
+.fa-plus-square-o:before {
+  content: ""; }
+
+.fa-space-shuttle:before {
+  content: ""; }
+
+.fa-slack:before {
+  content: ""; }
+
+.fa-envelope-square:before {
+  content: ""; }
+
+.fa-wordpress:before {
+  content: ""; }
+
+.fa-openid:before {
+  content: ""; }
+
+.fa-institution:before,
+.fa-bank:before,
+.fa-university:before {
+  content: ""; }
+
+.fa-mortar-board:before,
+.fa-graduation-cap:before {
+  content: ""; }
+
+.fa-yahoo:before {
+  content: ""; }
+
+.fa-google:before {
+  content: ""; }
+
+.fa-reddit:before {
+  content: ""; }
+
+.fa-reddit-square:before {
+  content: ""; }
+
+.fa-stumbleupon-circle:before {
+  content: ""; }
+
+.fa-stumbleupon:before {
+  content: ""; }
+
+.fa-delicious:before {
+  content: ""; }
+
+.fa-digg:before {
+  content: ""; }
+
+.fa-pied-piper:before {
+  content: ""; }
+
+.fa-pied-piper-alt:before {
+  content: ""; }
+
+.fa-drupal:before {
+  content: ""; }
+
+.fa-joomla:before {
+  content: ""; }
+
+.fa-language:before {
+  content: ""; }
+
+.fa-fax:before {
+  content: ""; }
+
+.fa-building:before {
+  content: ""; }
+
+.fa-child:before {
+  content: ""; }
+
+.fa-paw:before {
+  content: ""; }
+
+.fa-spoon:before {
+  content: ""; }
+
+.fa-cube:before {
+  content: ""; }
+
+.fa-cubes:before {
+  content: ""; }
+
+.fa-behance:before {
+  content: ""; }
+
+.fa-behance-square:before {
+  content: ""; }
+
+.fa-steam:before {
+  content: ""; }
+
+.fa-steam-square:before {
+  content: ""; }
+
+.fa-recycle:before {
+  content: ""; }
+
+.fa-automobile:before,
+.fa-car:before {
+  content: ""; }
+
+.fa-cab:before,
+.fa-taxi:before {
+  content: ""; }
+
+.fa-tree:before {
+  content: ""; }
+
+.fa-spotify:before {
+  content: ""; }
+
+.fa-deviantart:before {
+  content: ""; }
+
+.fa-soundcloud:before {
+  content: ""; }
+
+.fa-database:before {
+  content: ""; }
+
+.fa-file-pdf-o:before {
+  content: ""; }
+
+.fa-file-word-o:before {
+  content: ""; }
+
+.fa-file-excel-o:before {
+  content: ""; }
+
+.fa-file-powerpoint-o:before {
+  content: ""; }
+
+.fa-file-photo-o:before,
+.fa-file-picture-o:before,
+.fa-file-image-o:before {
+  content: ""; }
+
+.fa-file-zip-o:before,
+.fa-file-archive-o:before {
+  content: ""; }
+
+.fa-file-sound-o:before,
+.fa-file-audio-o:before {
+  content: ""; }
+
+.fa-file-movie-o:before,
+.fa-file-video-o:before {
+  content: ""; }
+
+.fa-file-code-o:before {
+  content: ""; }
+
+.fa-vine:before {
+  content: ""; }
+
+.fa-codepen:before {
+  content: ""; }
+
+.fa-jsfiddle:before {
+  content: ""; }
+
+.fa-life-bouy:before,
+.fa-life-buoy:before,
+.fa-life-saver:before,
+.fa-support:before,
+.fa-life-ring:before {
+  content: ""; }
+
+.fa-circle-o-notch:before {
+  content: ""; }
+
+.fa-ra:before,
+.fa-rebel:before {
+  content: ""; }
+
+.fa-ge:before,
+.fa-empire:before {
+  content: ""; }
+
+.fa-git-square:before {
+  content: ""; }
+
+.fa-git:before {
+  content: ""; }
+
+.fa-y-combinator-square:before,
+.fa-yc-square:before,
+.fa-hacker-news:before {
+  content: ""; }
+
+.fa-tencent-weibo:before {
+  content: ""; }
+
+.fa-qq:before {
+  content: ""; }
+
+.fa-wechat:before,
+.fa-weixin:before {
+  content: ""; }
+
+.fa-send:before,
+.fa-paper-plane:before {
+  content: ""; }
+
+.fa-send-o:before,
+.fa-paper-plane-o:before {
+  content: ""; }
+
+.fa-history:before {
+  content: ""; }
+
+.fa-circle-thin:before {
+  content: ""; }
+
+.fa-header:before {
+  content: ""; }
+
+.fa-paragraph:before {
+  content: ""; }
+
+.fa-sliders:before {
+  content: ""; }
+
+.fa-share-alt:before {
+  content: ""; }
+
+.fa-share-alt-square:before {
+  content: ""; }
+
+.fa-bomb:before {
+  content: ""; }
+
+.fa-soccer-ball-o:before,
+.fa-futbol-o:before {
+  content: ""; }
+
+.fa-tty:before {
+  content: ""; }
+
+.fa-binoculars:before {
+  content: ""; }
+
+.fa-plug:before {
+  content: ""; }
+
+.fa-slideshare:before {
+  content: ""; }
+
+.fa-twitch:before {
+  content: ""; }
+
+.fa-yelp:before {
+  content: ""; }
+
+.fa-newspaper-o:before {
+  content: ""; }
+
+.fa-wifi:before {
+  content: ""; }
+
+.fa-calculator:before {
+  content: ""; }
+
+.fa-paypal:before {
+  content: ""; }
+
+.fa-google-wallet:before {
+  content: ""; }
+
+.fa-cc-visa:before {
+  content: ""; }
+
+.fa-cc-mastercard:before {
+  content: ""; }
+
+.fa-cc-discover:before {
+  content: ""; }
+
+.fa-cc-amex:before {
+  content: ""; }
+
+.fa-cc-paypal:before {
+  content: ""; }
+
+.fa-cc-stripe:before {
+  content: ""; }
+
+.fa-bell-slash:before {
+  content: ""; }
+
+.fa-bell-slash-o:before {
+  content: ""; }
+
+.fa-trash:before {
+  content: ""; }
+
+.fa-copyright:before {
+  content: ""; }
+
+.fa-at:before {
+  content: ""; }
+
+.fa-eyedropper:before {
+  content: ""; }
+
+.fa-paint-brush:before {
+  content: ""; }
+
+.fa-birthday-cake:before {
+  content: ""; }
+
+.fa-area-chart:before {
+  content: ""; }
+
+.fa-pie-chart:before {
+  content: ""; }
+
+.fa-line-chart:before {
+  content: ""; }
+
+.fa-lastfm:before {
+  content: ""; }
+
+.fa-lastfm-square:before {
+  content: ""; }
+
+.fa-toggle-off:before {
+  content: ""; }
+
+.fa-toggle-on:before {
+  content: ""; }
+
+.fa-bicycle:before {
+  content: ""; }
+
+.fa-bus:before {
+  content: ""; }
+
+.fa-ioxhost:before {
+  content: ""; }
+
+.fa-angellist:before {
+  content: ""; }
+
+.fa-cc:before {
+  content: ""; }
+
+.fa-shekel:before,
+.fa-sheqel:before,
+.fa-ils:before {
+  content: ""; }
+
+.fa-meanpath:before {
+  content: ""; }
+
+.fa-buysellads:before {
+  content: ""; }
+
+.fa-connectdevelop:before {
+  content: ""; }
+
+.fa-dashcube:before {
+  content: ""; }
+
+.fa-forumbee:before {
+  content: ""; }
+
+.fa-leanpub:before {
+  content: ""; }
+
+.fa-sellsy:before {
+  content: ""; }
+
+.fa-shirtsinbulk:before {
+  content: ""; }
+
+.fa-simplybuilt:before {
+  content: ""; }
+
+.fa-skyatlas:before {
+  content: ""; }
+
+.fa-cart-plus:before {
+  content: ""; }
+
+.fa-cart-arrow-down:before {
+  content: ""; }
+
+.fa-diamond:before {
+  content: ""; }
+
+.fa-ship:before {
+  content: ""; }
+
+.fa-user-secret:before {
+  content: ""; }
+
+.fa-motorcycle:before {
+  content: ""; }
+
+.fa-street-view:before {
+  content: ""; }
+
+.fa-heartbeat:before {
+  content: ""; }
+
+.fa-venus:before {
+  content: ""; }
+
+.fa-mars:before {
+  content: ""; }
+
+.fa-mercury:before {
+  content: ""; }
+
+.fa-intersex:before,
+.fa-transgender:before {
+  content: ""; }
+
+.fa-transgender-alt:before {
+  content: ""; }
+
+.fa-venus-double:before {
+  content: ""; }
+
+.fa-mars-double:before {
+  content: ""; }
+
+.fa-venus-mars:before {
+  content: ""; }
+
+.fa-mars-stroke:before {
+  content: ""; }
+
+.fa-mars-stroke-v:before {
+  content: ""; }
+
+.fa-mars-stroke-h:before {
+  content: ""; }
+
+.fa-neuter:before {
+  content: ""; }
+
+.fa-genderless:before {
+  content: ""; }
+
+.fa-facebook-official:before {
+  content: ""; }
+
+.fa-pinterest-p:before {
+  content: ""; }
+
+.fa-whatsapp:before {
+  content: ""; }
+
+.fa-server:before {
+  content: ""; }
+
+.fa-user-plus:before {
+  content: ""; }
+
+.fa-user-times:before {
+  content: ""; }
+
+.fa-hotel:before,
+.fa-bed:before {
+  content: ""; }
+
+.fa-viacoin:before {
+  content: ""; }
+
+.fa-train:before {
+  content: ""; }
+
+.fa-subway:before {
+  content: ""; }
+
+.fa-medium:before {
+  content: ""; }
+
+.fa-yc:before,
+.fa-y-combinator:before {
+  content: ""; }
+
+.fa-optin-monster:before {
+  content: ""; }
+
+.fa-opencart:before {
+  content: ""; }
+
+.fa-expeditedssl:before {
+  content: ""; }
+
+.fa-battery-4:before,
+.fa-battery-full:before {
+  content: ""; }
+
+.fa-battery-3:before,
+.fa-battery-three-quarters:before {
+  content: ""; }
+
+.fa-battery-2:before,
+.fa-battery-half:before {
+  content: ""; }
+
+.fa-battery-1:before,
+.fa-battery-quarter:before {
+  content: ""; }
+
+.fa-battery-0:before,
+.fa-battery-empty:before {
+  content: ""; }
+
+.fa-mouse-pointer:before {
+  content: ""; }
+
+.fa-i-cursor:before {
+  content: ""; }
+
+.fa-object-group:before {
+  content: ""; }
+
+.fa-object-ungroup:before {
+  content: ""; }
+
+.fa-sticky-note:before {
+  content: ""; }
+
+.fa-sticky-note-o:before {
+  content: ""; }
+
+.fa-cc-jcb:before {
+  content: ""; }
+
+.fa-cc-diners-club:before {
+  content: ""; }
+
+.fa-clone:before {
+  content: ""; }
+
+.fa-balance-scale:before {
+  content: ""; }
+
+.fa-hourglass-o:before {
+  content: ""; }
+
+.fa-hourglass-1:before,
+.fa-hourglass-start:before {
+  content: ""; }
+
+.fa-hourglass-2:before,
+.fa-hourglass-half:before {
+  content: ""; }
+
+.fa-hourglass-3:before,
+.fa-hourglass-end:before {
+  content: ""; }
+
+.fa-hourglass:before {
+  content: ""; }
+
+.fa-hand-grab-o:before,
+.fa-hand-rock-o:before {
+  content: ""; }
+
+.fa-hand-stop-o:before,
+.fa-hand-paper-o:before {
+  content: ""; }
+
+.fa-hand-scissors-o:before {
+  content: ""; }
+
+.fa-hand-lizard-o:before {
+  content: ""; }
+
+.fa-hand-spock-o:before {
+  content: ""; }
+
+.fa-hand-pointer-o:before {
+  content: ""; }
+
+.fa-hand-peace-o:before {
+  content: ""; }
+
+.fa-trademark:before {
+  content: ""; }
+
+.fa-registered:before {
+  content: ""; }
+
+.fa-creative-commons:before {
+  content: ""; }
+
+.fa-gg:before {
+  content: ""; }
+
+.fa-gg-circle:before {
+  content: ""; }
+
+.fa-tripadvisor:before {
+  content: ""; }
+
+.fa-odnoklassniki:before {
+  content: ""; }
+
+.fa-odnoklassniki-square:before {
+  content: ""; }
+
+.fa-get-pocket:before {
+  content: ""; }
+
+.fa-wikipedia-w:before {
+  content: ""; }
+
+.fa-safari:before {
+  content: ""; }
+
+.fa-chrome:before {
+  content: ""; }
+
+.fa-firefox:before {
+  content: ""; }
+
+.fa-opera:before {
+  content: ""; }
+
+.fa-internet-explorer:before {
+  content: ""; }
+
+.fa-tv:before,
+.fa-television:before {
+  content: ""; }
+
+.fa-contao:before {
+  content: ""; }
+
+.fa-500px:before {
+  content: ""; }
+
+.fa-amazon:before {
+  content: ""; }
+
+.fa-calendar-plus-o:before {
+  content: ""; }
+
+.fa-calendar-minus-o:before {
+  content: ""; }
+
+.fa-calendar-times-o:before {
+  content: ""; }
+
+.fa-calendar-check-o:before {
+  content: ""; }
+
+.fa-industry:before {
+  content: ""; }
+
+.fa-map-pin:before {
+  content: ""; }
+
+.fa-map-signs:before {
+  content: ""; }
+
+.fa-map-o:before {
+  content: ""; }
+
+.fa-map:before {
+  content: ""; }
+
+.fa-commenting:before {
+  content: ""; }
+
+.fa-commenting-o:before {
+  content: ""; }
+
+.fa-houzz:before {
+  content: ""; }
+
+.fa-vimeo:before {
+  content: ""; }
+
+.fa-black-tie:before {
+  content: ""; }
+
+.fa-fonticons:before {
+  content: ""; }
+
+.fa-reddit-alien:before {
+  content: ""; }
+
+.fa-edge:before {
+  content: ""; }
+
+.fa-credit-card-alt:before {
+  content: ""; }
+
+.fa-codiepie:before {
+  content: ""; }
+
+.fa-modx:before {
+  content: ""; }
+
+.fa-fort-awesome:before {
+  content: ""; }
+
+.fa-usb:before {
+  content: ""; }
+
+.fa-product-hunt:before {
+  content: ""; }
+
+.fa-mixcloud:before {
+  content: ""; }
+
+.fa-scribd:before {
+  content: ""; }
+
+.fa-pause-circle:before {
+  content: ""; }
+
+.fa-pause-circle-o:before {
+  content: ""; }
+
+.fa-stop-circle:before {
+  content: ""; }
+
+.fa-stop-circle-o:before {
+  content: ""; }
+
+.fa-shopping-bag:before {
+  content: ""; }
+
+.fa-shopping-basket:before {
+  content: ""; }
+
+.fa-hashtag:before {
+  content: ""; }
+
+.fa-bluetooth:before {
+  content: ""; }
+
+.fa-bluetooth-b:before {
+  content: ""; }
+
+.fa-percent:before {
+  content: ""; }
+
+body,
+html {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  user-select: none;
+  font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+
+.hide {
+  display: none; }
+
+.btn {
+  border: none;
+  background-color: rgba(127, 127, 127, 0.1);
+  color: rgba(127, 127, 127, 0.25);
+  cursor: pointer; }
+  .btn:focus {
+    outline: none; }
+
+/* nvd3 version 1.8.1 (https://github.com/novus/nvd3) 2015-06-15 */
+.nvtooltip {
+  transition: opacity 50ms linear;
+  transition-delay: 200ms;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+.nvd3 {
+  color: currentColor !important; }
+
+.nvd3 .nv-axis {
+  pointer-events: none;
+  opacity: 1; }
+
+.nvd3 .nv-axis path {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: 0.75;
+  shape-rendering: crispEdges; }
+
+.nvd3 .nv-axis path.domain {
+  stroke-opacity: 0.75; }
+
+.nvd3 .nv-axis.nv-x path.domain {
+  stroke-opacity: 0; }
+
+.nvd3 .nv-axis line {
+  fill: none;
+  stroke: rgba(127, 127, 127, 0);
+  shape-rendering: crispEdges; }
+
+.nvd3 .nv-axis .zero line,
+.nvd3 .nv-axis line.zero {
+  stroke-opacity: 0.75; }
+
+.nvd3 .nv-axis .nv-axisMaxMin text {
+  font-weight: bold; }
+
+.nvd3 .x .nv-axis .nv-axisMaxMin text,
+.nvd3 .x2 .nv-axis .nv-axisMaxMin text,
+.nvd3 .x3 .nv-axis .nv-axisMaxMin text {
+  text-anchor: middle; }
+
+.nvd3 .nv-axis.nv-disabled {
+  opacity: 0; }
+
+.nvd3 .nv-bars rect {
+  fill-opacity: 0.75;
+  transition: fill-opacity 250ms linear;
+  -moz-transition: fill-opacity 250ms linear;
+  -webkit-transition: fill-opacity 250ms linear; }
+
+.nvd3 .nv-bars rect.hover {
+  fill-opacity: 1; }
+
+.nvd3 .nv-bars .hover rect {
+  fill: lightblue; }
+
+.nvd3 .nv-bars text {
+  fill: rgba(0, 0, 0, 0); }
+
+.nvd3 .nv-bars .hover text {
+  fill: black; }
+
+.nvd3 .nv-multibar .nv-groups rect,
+.nvd3 .nv-multibarHorizontal .nv-groups rect,
+.nvd3 .nv-discretebar .nv-groups rect {
+  stroke-opacity: 0;
+  transition: fill-opacity 250ms linear;
+  -moz-transition: fill-opacity 250ms linear;
+  -webkit-transition: fill-opacity 250ms linear; }
+
+.nvd3 .nv-multibar .nv-groups rect:hover,
+.nvd3 .nv-multibarHorizontal .nv-groups rect:hover,
+.nvd3 .nv-candlestickBar .nv-ticks rect:hover,
+.nvd3 .nv-discretebar .nv-groups rect:hover {
+  fill-opacity: 1; }
+
+.nvd3 .nv-discretebar .nv-groups text,
+.nvd3 .nv-multibarHorizontal .nv-groups text {
+  font-weight: bold;
+  fill: black;
+  stroke: rgba(0, 0, 0, 0); }
+
+/* boxplot CSS */
+.nvd3 .nv-boxplot circle {
+  fill-opacity: 0.5; }
+
+.nvd3 .nv-boxplot circle:hover {
+  fill-opacity: 1; }
+
+.nvd3 .nv-boxplot rect:hover {
+  fill-opacity: 1; }
+
+.nvd3 line.nv-boxplot-median {
+  stroke: black; }
+
+.nv-boxplot-tick:hover {
+  stroke-width: 2.5rem; }
+
+/* bullet */
+.nvd3.nv-bullet {
+  font: 10px sans-serif; }
+
+.nvd3.nv-bullet .nv-measure {
+  fill-opacity: 0.8; }
+
+.nvd3.nv-bullet .nv-measure:hover {
+  fill-opacity: 1; }
+
+.nvd3.nv-bullet .nv-marker {
+  stroke: #000;
+  stroke-width: 0.25rem; }
+
+.nvd3.nv-bullet .nv-markerTriangle {
+  stroke: #000;
+  fill: #fff;
+  stroke-width: 1.5rem; }
+
+.nvd3.nv-bullet .nv-tick line {
+  stroke: #666;
+  stroke-width: 0.5rem; }
+
+.nvd3.nv-bullet .nv-range.nv-s0 {
+  fill: #eee; }
+
+.nvd3.nv-bullet .nv-range.nv-s1 {
+  fill: #ddd; }
+
+.nvd3.nv-bullet .nv-range.nv-s2 {
+  fill: #ccc; }
+
+.nvd3.nv-bullet .nv-title {
+  font-size: 1rem;
+  font-weight: bold; }
+
+.nvd3.nv-bullet .nv-subtitle {
+  fill: #999; }
+
+.nvd3.nv-bullet .nv-range {
+  fill: #bababa;
+  fill-opacity: 0.4; }
+
+.nvd3.nv-bullet .nv-range:hover {
+  fill-opacity: 0.7; }
+
+.nvd3.nv-candlestickBar .nv-ticks .nv-tick {
+  stroke-width: 1px; }
+
+.nvd3.nv-candlestickBar .nv-ticks .nv-tick.hover {
+  stroke-width: 0.25rem; }
+
+.nvd3.nv-candlestickBar .nv-ticks .nv-tick.positive rect {
+  stroke: #00cd82;
+  fill: #00cd82; }
+
+.nvd3.nv-candlestickBar .nv-ticks .nv-tick.negative rect {
+  stroke: #ff3542;
+  fill: #ff3542; }
+
+.with-transitions .nv-candlestickBar .nv-ticks .nv-tick {
+  transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+  -moz-transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+  -webkit-transition: stroke-width 250ms linear, stroke-opacity 250ms linear; }
+
+.nvd3.nv-candlestickBar .nv-ticks line {
+  stroke: #333; }
+
+.nvd3 .nv-legend .nv-disabled rect {
+  /*fill-opacity: 0;*/ }
+
+.nvd3 .nv-check-box .nv-box {
+  fill-opacity: 0;
+  stroke-width: 2; }
+
+.nvd3 .nv-check-box .nv-check {
+  fill-opacity: 0;
+  stroke-width: 4; }
+
+.nvd3 .nv-series.nv-disabled .nv-check-box .nv-check {
+  fill-opacity: 0;
+  stroke-opacity: 0; }
+
+.nvd3 .nv-controlsWrap .nv-legend .nv-check-box .nv-check {
+  opacity: 0; }
+
+/* line plus bar */
+.nvd3.nv-linePlusBar .nv-bar rect {
+  fill-opacity: 0.75; }
+
+.nvd3.nv-linePlusBar .nv-bar rect:hover {
+  fill-opacity: 1; }
+
+.nvd3 .nv-groups path.nv-line {
+  fill: none; }
+
+.nvd3 .nv-groups path.nv-area {
+  stroke: none; }
+
+.nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point {
+  fill-opacity: 0;
+  stroke-opacity: 0; }
+
+.nvd3.nv-scatter.nv-single-point .nv-groups .nv-point {
+  fill-opacity: 0.5 !important;
+  stroke-opacity: 0.5 !important; }
+
+.with-transitions .nvd3 .nv-groups .nv-point {
+  transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+  -moz-transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+  -webkit-transition: stroke-width 250ms linear, stroke-opacity 250ms linear; }
+
+.nvd3.nv-scatter .nv-groups .nv-point.hover,
+.nvd3 .nv-groups .nv-point.hover {
+  stroke-width: 7px;
+  fill-opacity: 0.95 !important;
+  stroke-opacity: 0.95 !important; }
+
+.nvd3 .nv-point-paths path {
+  stroke: #aaa;
+  stroke-opacity: 0;
+  fill: #eee;
+  fill-opacity: 0; }
+
+.nvd3 .nv-indexLine {
+  cursor: ew-resize; }
+
+/********************
+ * SVG CSS
+ */
+/********************
+  Default CSS for an svg element nvd3 used
+*/
+svg.nvd3-svg {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  display: block;
+  width: 100%;
+  height: 100%; }
+
+/********************
+  Box shadow and border radius styling
+*/
+.nvtooltip {
+  background: rgba(68, 76, 95, 0.25) !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0.125rem !important; }
+
+.nvtooltip.with-3d-shadow,
+.with-3d-shadow .nvtooltip {
+  border-radius: 0.25rem; }
+
+.nvd3 text {
+  font-size: 1rem;
+  fill: rgba(127, 127, 127, 0); }
+
+.nvd3 .title {
+  font-size: 1rem; }
+
+.nvd3 .nv-background {
+  fill: currentColor;
+  fill-opacity: 0; }
+
+.nvd3.nv-noData {
+  font-size: 1rem;
+  font-weight: bold; }
+
+/**********
+*  Brush
+*/
+.nv-brush .extent {
+  fill-opacity: 0.125;
+  shape-rendering: crispEdges; }
+
+.nv-brush .resize path {
+  fill: currentColor;
+  stroke: rgba(127, 127, 127, 0); }
+
+/**********
+*  Legend
+*/
+.nvd3 .nv-legend .nv-series {
+  cursor: pointer; }
+
+.nvd3 .nv-legend .nv-disabled circle {
+  fill-opacity: 0; }
+
+/* focus */
+.nvd3 .nv-brush .extent {
+  fill-opacity: 0 !important; }
+
+.nvd3 .nv-brushBackground rect {
+  stroke: #000;
+  stroke-width: 0.4;
+  fill: rgba(127, 127, 127, 0);
+  fill-opacity: 0.7; }
+
+.nvd3.nv-ohlcBar .nv-ticks .nv-tick {
+  stroke-width: 1px; }
+
+.nvd3.nv-ohlcBar .nv-ticks .nv-tick.hover {
+  stroke-width: 0.25rem; }
+
+.nvd3.nv-ohlcBar .nv-ticks .nv-tick.positive {
+  stroke: #00cd82; }
+
+.nvd3.nv-ohlcBar .nv-ticks .nv-tick.negative {
+  stroke: #ff3542; }
+
+.nvd3 .background path {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.4;
+  shape-rendering: crispEdges; }
+
+.nvd3 .foreground path {
+  fill: none;
+  stroke-opacity: 0.7; }
+
+.nvd3 .nv-parallelCoordinates-brush .extent {
+  fill: currentColor;
+  fill-opacity: 0.6;
+  stroke: rgba(127, 127, 127, 0);
+  shape-rendering: crispEdges; }
+
+.nvd3 .nv-parallelCoordinates .hover {
+  fill-opacity: 1;
+  stroke-width: 3px; }
+
+.nvd3 .missingValuesline line {
+  fill: none;
+  stroke-width: 1;
+  stroke-opacity: 1;
+  stroke-dasharray: 5, 5; }
+
+.nvd3.nv-pie path {
+  stroke-opacity: 0;
+  transition: fill-opacity 250ms linear, stroke-width 250ms linear, stroke-opacity 250ms linear;
+  -moz-transition: fill-opacity 250ms linear, stroke-width 250ms linear, stroke-opacity 250ms linear;
+  -webkit-transition: fill-opacity 250ms linear, stroke-width 250ms linear, stroke-opacity 250ms linear; }
+
+.nvd3.nv-pie .nv-pie-title {
+  font-size: 1rem; }
+
+.nvd3.nv-pie .nv-slice text {
+  stroke-width: 0; }
+
+.nvd3.nv-pie path {
+  stroke: rgba(127, 127, 127, 0);
+  stroke-width: 1px;
+  stroke-opacity: 1; }
+
+.nvd3.nv-pie .hover path {
+  fill-opacity: 0.7; }
+
+.nvd3.nv-pie .nv-label {
+  pointer-events: none; }
+
+.nvd3.nv-pie .nv-label rect {
+  fill-opacity: 0;
+  stroke-opacity: 0; }
+
+/* scatter */
+.nvd3 .nv-groups .nv-point.hover {
+  stroke-width: 1rem;
+  stroke-opacity: 0.5; }
+
+.nvd3 .nv-scatter .nv-point.hover {
+  fill-opacity: 1; }
+
+.nv-noninteractive {
+  pointer-events: none; }
+
+.nv-distx,
+.nv-disty {
+  pointer-events: none; }
+
+/* sparkline */
+.nvd3.nv-sparkline path {
+  fill: none; }
+
+.nvd3.nv-sparklineplus g.nv-hoverValue {
+  pointer-events: none; }
+
+.nvd3.nv-sparklineplus .nv-hoverValue line {
+  stroke-width: 1.5rem; }
+
+.nvd3.nv-sparklineplus,
+.nvd3.nv-sparklineplus g {
+  pointer-events: all; }
+
+.nvd3 .nv-hoverArea {
+  fill-opacity: 0;
+  stroke-opacity: 0; }
+
+.nvd3.nv-sparklineplus .nv-xValue,
+.nvd3.nv-sparklineplus .nv-yValue {
+  stroke-width: 0;
+  font-size: 0.5rem;
+  font-weight: normal; }
+
+.nvd3.nv-sparklineplus .nv-yValue {
+  stroke: #ff3542; }
+
+.nvd3.nv-sparklineplus .nv-maxValue {
+  stroke: #00cd82;
+  fill: #00cd82; }
+
+.nvd3.nv-sparklineplus .nv-minValue {
+  stroke: #ff3542;
+  fill: #ff3542; }
+
+.nvd3.nv-sparklineplus .nv-currentValue {
+  font-weight: bold;
+  font-size: 1.1em; }
+
+/* stacked area */
+.nvd3.nv-stackedarea path.nv-area {
+  fill-opacity: 0.7;
+  stroke-opacity: 0;
+  transition: fill-opacity 250ms linear, stroke-opacity 250ms linear;
+  -moz-transition: fill-opacity 250ms linear, stroke-opacity 250ms linear;
+  -webkit-transition: fill-opacity 250ms linear, stroke-opacity 250ms linear; }
+
+.nvd3.nv-stackedarea path.nv-area.hover {
+  fill-opacity: 0.9; }
+
+.nvd3.nv-stackedarea .nv-groups .nv-point {
+  stroke-opacity: 0;
+  fill-opacity: 0; }
+
+/*Give tooltips that old fade in transition by
+    putting a "with-transitions" class on the container div.
+*/
+.nvtooltip.x-nvtooltip,
+.nvtooltip.y-nvtooltip {
+  padding: 0.25rem; }
+
+.nvtooltip h3 {
+  margin: 0;
+  padding: 0.25rem 1rem;
+  line-height: 1rem;
+  font-weight: normal;
+  color: currentColor;
+  text-align: center;
+  border-radius: 0.5rem 0.5rem 0 0; }
+
+.nvtooltip p {
+  margin: 0;
+  padding: 0.25rem;
+  font-size: 0.75rem;
+  text-align: center; }
+
+.nvtooltip span {
+  display: inline-block;
+  margin: 0.125rem 0; }
+
+.nvtooltip table {
+  margin: 0.5rem;
+  border-spacing: 0; }
+
+.nvtooltip table td {
+  padding: 0.25rem 0.5rem 0.25rem 0;
+  vertical-align: middle; }
+
+.nvtooltip table td.key {
+  font-weight: normal; }
+
+.nvtooltip table td.value {
+  text-align: right;
+  font-weight: bold; }
+
+.nvtooltip table tr.highlight td {
+  padding: 1px 0.5rem 1px 0;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-top-style: solid;
+  border-top-width: 1px; }
+
+.nvtooltip table td.legend-color-guide div {
+  width: 8px;
+  height: 8px;
+  vertical-align: middle; }
+
+.nvtooltip table td.legend-color-guide div {
+  width: 10.25rem;
+  height: 10.25rem;
+  border: 1px solid #999; }
+
+.nvtooltip .footer {
+  padding: 3px;
+  text-align: center; }
+
+.nvtooltip-pending-removal {
+  pointer-events: none;
+  display: none; }
+
+/****
+Interactive Layer
+*/
+.nvd3 .nv-interactiveGuideLine {
+  pointer-events: none; }
+
+.nvd3 line.nv-guideline {
+  stroke: currentColor; }
+
+#popout-content-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #1d2027; }
+  #popout-content-container > div {
+    width: 100%;
+    height: 100%; }
+  #popout-content-container .popout__controls,
+  #popout-content-container .popout__undock {
+    display: none; }
+  #popout-content-container:hover .docked .popout__undock {
+    display: inline; }
+
+.notification {
+  height: 100vh;
+  background-color: #262a33;
+  user-select: none;
+  position: relative; }
+
+.notification__content {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px; }
+
+.notification__status {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 11px;
+  color: #c2c5c9; }
+
+.notification__summary-items {
+  padding: 0;
+  margin: 0;
+  list-style: none; }
+
+.notification__summary-items--rejected .notification__summary-item {
+  text-decoration: line-through; }
+
+.notification__summary-item {
+  color: #c2c5c9;
+  line-height: 14px; }
+
+.notification__summary-item--direction {
+  text-transform: uppercase;
+  font-size: 11px; }
+
+.notification__summary-item--notional {
+  color: #f8ab02; }
+
+.notification__summary-item--currency {
+  font-size: 12px; }
+
+.notification__details-items-container {
+  display: flex;
+  border-top: 1px solid rgba(255, 255, 255, 0.08); }
+
+.notification__details-items {
+  flex: 1;
+  padding: 0;
+  margin-top: 1px; }
+
+.notification__details-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 12px; }
+
+.notification__details-item--label {
+  color: #c2c5c9;
+  font-size: 9px;
+  text-transform: uppercase; }
+
+.notification__details-item--value {
+  color: white;
+  font-size: 11px;
+  text-transform: uppercase; }
+
+.notification__button--dismiss {
+  text-decoration: none;
+  position: absolute;
+  bottom: -5px;
+  right: 0;
+  color: inherit;
+  color: #c2c5c9; }
+
+.notification__button--dismiss-icon {
+  transform: rotate(45deg); }
+
+.notification__status--done {
+  display: none; }
+
+.notification__status--rejected {
+  color: #d32121; }
+
+/*# sourceMappingURL=index.css.map */

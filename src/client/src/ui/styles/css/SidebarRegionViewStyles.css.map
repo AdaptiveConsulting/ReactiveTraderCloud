@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "SidebarRegionViewStyles.css",
+	"sources": [
+		"../scss/SidebarRegionViewStyles.scss"
+	],
+	"sourcesContent": [
+		"$container-bg-color: #30333a;\r\n$active-color: #262a33;\r\n$border-color: #424545;\r\n$button-height: 50px;\r\n\r\n.sidebar-region__content {\r\n  width: 440px;\r\n}\r\n\r\n.sidebar-region__container {\r\n  background-color: $container-bg-color;\r\n  height: 100%;\r\n  display: flex;\r\n  flex-direction: column;\r\n  overflow: hidden;\r\n}\r\n\r\n.sidebar-region__container--no-content {\r\n  display: none;\r\n}\r\n\r\n.sidebar-region__element {\r\n  border-left: 1px solid $border-color;\r\n  width: 100%;\r\n  flex: 1;\r\n}\r\n\r\n.sidebar-region__element--active {\r\n  background-color: $active-color;\r\n  border: 1px solid $border-color;\r\n  border-left-color: $active-color;\r\n  &:hover {\r\n    background-color: $container-bg-color;\r\n    border-right-color: $border-color;\r\n  }\r\n}\r\n\r\n.sidebar-region__element--inactive {\r\n  border: 1px solid $container-bg-color;\r\n  border-left-color: $border-color;\r\n  background-color: $container-bg-color;\r\n  &:hover {\r\n    background-color: $active-color;\r\n    border-bottom-color: $border-color;\r\n    border-top-color: $border-color;\r\n  }\r\n}\r\n\r\n.sidebar-region__element-button {\r\n  height: $button-height;\r\n  color: white;\r\n  text-align: center;\r\n  padding: 20px 10px;\r\n  cursor: pointer;\r\n}\r\n"
+	],
+	"names": [],
+	"mappings": "AAKA,AAAA,wBAAwB,CAAC;EACvB,KAAK,EAAE,KAAK,GACb;;AAED,AAAA,0BAA0B,CAAC;EACzB,gBAAgB,EAVG,OAAO;EAW1B,MAAM,EAAE,IAAI;EACZ,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,MAAM;EACtB,QAAQ,EAAE,MAAM,GACjB;;AAED,AAAA,sCAAsC,CAAC;EACrC,OAAO,EAAE,IAAI,GACd;;AAED,AAAA,wBAAwB,CAAC;EACvB,WAAW,EAAE,GAAG,CAAC,KAAK,CApBT,OAAO;EAqBpB,KAAK,EAAE,IAAI;EACX,IAAI,EAAE,CAAC,GACR;;AAED,AAAA,gCAAgC,CAAC;EAC/B,gBAAgB,EA3BH,OAAO;EA4BpB,MAAM,EAAE,GAAG,CAAC,KAAK,CA3BJ,OAAO;EA4BpB,iBAAiB,EA7BJ,OAAO,GAkCrB;EARD,AAIE,gCAJ8B,AAI7B,MAAM,CAAC;IACN,gBAAgB,EAhCC,OAAO;IAiCxB,kBAAkB,EA/BP,OAAO,GAgCnB;;AAGH,AAAA,kCAAkC,CAAC;EACjC,MAAM,EAAE,GAAG,CAAC,KAAK,CAtCE,OAAO;EAuC1B,iBAAiB,EArCJ,OAAO;EAsCpB,gBAAgB,EAxCG,OAAO,GA8C3B;EATD,AAIE,kCAJgC,AAI/B,MAAM,CAAC;IACN,gBAAgB,EAzCL,OAAO;IA0ClB,mBAAmB,EAzCR,OAAO;IA0ClB,gBAAgB,EA1CL,OAAO,GA2CnB;;AAGH,AAAA,+BAA+B,CAAC;EAC9B,MAAM,EA9CQ,IAAI;EA+ClB,KAAK,EAAE,KAAK;EACZ,UAAU,EAAE,MAAM;EAClB,OAAO,EAAE,SAAS;EAClB,MAAM,EAAE,OAAO,GAChB"
+}

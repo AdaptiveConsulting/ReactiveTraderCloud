@@ -1,0 +1,43 @@
+.sidebar-region__content {
+  width: 440px; }
+
+.sidebar-region__container {
+  background-color: #30333a;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; }
+
+.sidebar-region__container--no-content {
+  display: none; }
+
+.sidebar-region__element {
+  border-left: 1px solid #424545;
+  width: 100%;
+  flex: 1; }
+
+.sidebar-region__element--active {
+  background-color: #262a33;
+  border: 1px solid #424545;
+  border-left-color: #262a33; }
+  .sidebar-region__element--active:hover {
+    background-color: #30333a;
+    border-right-color: #424545; }
+
+.sidebar-region__element--inactive {
+  border: 1px solid #30333a;
+  border-left-color: #424545;
+  background-color: #30333a; }
+  .sidebar-region__element--inactive:hover {
+    background-color: #262a33;
+    border-bottom-color: #424545;
+    border-top-color: #424545; }
+
+.sidebar-region__element-button {
+  height: 50px;
+  color: white;
+  text-align: center;
+  padding: 20px 10px;
+  cursor: pointer; }
+
+/*# sourceMappingURL=SidebarRegionViewStyles.css.map */

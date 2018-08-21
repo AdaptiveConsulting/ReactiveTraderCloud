@@ -1,0 +1,133 @@
+.spot-tile {
+  position: relative;
+  width: 100%;
+  height: 165px;
+  color: #c2c5c9;
+  background-color: #262a33;
+  border: solid 1px #424545; }
+  .spot-tile:hover {
+    background-color: rgba(0, 167, 204, 0.16);
+    border: 1px solid #00a8cc; }
+    .spot-tile:hover .spot-tile__icon--chart,
+    .spot-tile:hover .spot-tile__icon--tearoff,
+    .spot-tile:hover .spot-tile__delivery-date {
+      display: inline; }
+  .spot-tile * {
+    box-sizing: border-box; }
+  .spot-tile .spot-tile__execution-label,
+  .spot-tile .spot-tile__delivery-date {
+    display: none; }
+  .spot-tile.spot-tile--stale, .spot-tile.spot-tile--error {
+    background-color: #d32121;
+    color: white; }
+  .spot-tile.spot-tile--executing .spot-tile__execution-label {
+    color: white;
+    display: inline-block;
+    position: absolute;
+    right: 60px;
+    top: 0;
+    text-transform: uppercase;
+    text-align: right; }
+  .spot-tile.spot-tile--executing .spot-tile__price, .spot-tile.spot-tile--readonly .spot-tile__price {
+    cursor: default; }
+  .spot-tile:not(.spot-tile--readonly) .spot-tile__price:hover {
+    background-color: #00a8cc;
+    color: white; }
+    .spot-tile:not(.spot-tile--readonly) .spot-tile__price:hover .price-button__pip {
+      color: inherit; }
+
+.spot-tile__icon--hidden {
+  display: none; }
+
+.spot-tile__container {
+  position: absolute;
+  top: 10px;
+  bottom: 16px;
+  left: 16px;
+  right: 16px; }
+
+.spot-tile__symbol {
+  color: white;
+  font-family: BrandonRegular;
+  font-weight: 700;
+  font-size: 18px;
+  position: absolute;
+  top: 0;
+  left: 0; }
+
+.spot-tile__price {
+  cursor: pointer;
+  position: absolute;
+  width: calc(50% - 7.5% / 2);
+  top: 35px; }
+
+.spot-tile__price--bid {
+  left: -10px;
+  margin-left: 1px; }
+
+.spot-tile__price--ask {
+  right: -10px;
+  margin-right: 1px; }
+
+.spot-tile__price-movement {
+  position: absolute;
+  left: 45%;
+  text-align: center;
+  top: 41px;
+  width: 10%; }
+
+.spot-tile__notional {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 14px;
+  font-family: BrandonRegular; }
+
+.spot-tile__icon--chart.glyphicon,
+.spot-tile__icon--tearoff.glyphicon,
+.spot-tile__icon--undock.glyphicon {
+  display: none;
+  cursor: pointer;
+  margin-left: 6px; }
+
+.spot-tile__icon--rotate {
+  margin-left: 6px;
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear; }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+
+.spot-tile__icon--hidden {
+  visibility: hidden; }
+
+.spot-tile__notification-message {
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  text-align: center; }
+
+.spot-tile__delivery {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 14px;
+  font-family: BrandonRegular;
+  text-transform: uppercase; }
+
+#popout-content-container .spot-tile {
+  border: none;
+  height: 100%; }
+
+#popout-content-container .workspace-region__item {
+  margin: 0;
+  width: 100%; }
+
+/*# sourceMappingURL=SpotTileStyles.css.map */
