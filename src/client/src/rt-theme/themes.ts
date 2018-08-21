@@ -228,7 +228,7 @@ function generateTheme({ primary, secondary }: CorePaletteMap, accents: AccentPa
 export const createTheme = (
   { primary, secondary }: CorePaletteMap,
   accents: AccentPaletteMap,
-  modifier: ThemeModifier
+  modifier: ThemeModifier = theme => ({ ...theme })
 ) => modifier(generateTheme({ primary, secondary }, accents))
 
 const modifyDark: ThemeModifier = (theme: GeneratedTheme) => ({
@@ -243,7 +243,7 @@ const modifyDark: ThemeModifier = (theme: GeneratedTheme) => ({
 })
 
 export const themes = {
-  light: generateTheme(colors.light, colors.accents),
+  light: createTheme(colors.light, colors.accents),
   dark: createTheme(colors.dark, colors.accents, modifyDark)
 }
 
