@@ -1,10 +1,10 @@
 import { Flex } from 'rt-components'
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 
 export const Notification = styled('div')`
   height: 100%;
-  background-color: ${({ theme: { background } }) => background.backgroundSecondary};
-  color: ${({ theme: { text } }) => text.textPrimary};
+  background-color: ${props => props.theme.component.backgroundColor};
+  color: ${props => props.theme.component.textColor}
   user-select: none;
   display: flex;
   flex-direction: column;
@@ -20,7 +20,7 @@ export const Traded = styled('div')<{ isDone: boolean }>`
 `
 
 export const Status = styled('div')<{ isDone: boolean }>`
-  color: ${({ theme: { palette }, isDone }) => !isDone && palette.accentBad.normal};
+  color: ${({ theme, isDone }) => !isDone && theme.accents.bad.base};
   font-size: 0.75rem;
 `
 
@@ -33,7 +33,7 @@ export const MetaContainer = styled('div')`
   flex-basis: 0;
 `
 export const MetaTitle = styled('div')`
-  color: ${({ theme: { text } }) => text.textMeta};
+  color: ${p => p.theme.component.textColor};
 `
 
 export const CloseContainer = styled(MetaContainer)`

@@ -14,8 +14,6 @@ import { AutobahnConnectionProxy, logger } from './rt-system'
 import { OpenFinProvider } from './shell'
 import { default as FakeUserRepository } from './shell/fakeUserRepository'
 import { OpenFin } from './shell/openFin'
-// TODO (8/16/18) remove after removing rt-themes
-import * as DeprecatedUITheme from './ui/theme'
 
 const log = logger.create('Application Service')
 
@@ -56,15 +54,13 @@ export const run = () => {
     <Provider store={store}>
       <EnvironmentProvider value={environmentContext}>
         <ThemeState.Provider name={window.localStorage.themeName} onChange={updateLocalStorageThemeName}>
-          <DeprecatedUITheme.ThemeProvider>
-            {openFin.isRunningInOpenFin ? (
-              <OpenFinProvider openFin={openFin}>
-                <Router />
-              </OpenFinProvider>
-            ) : (
+          {openFin.isRunningInOpenFin ? (
+            <OpenFinProvider openFin={openFin}>
               <Router />
-            )}
-          </DeprecatedUITheme.ThemeProvider>
+            </OpenFinProvider>
+          ) : (
+            <Router />
+          )}
         </ThemeState.Provider>
       </EnvironmentProvider>
     </Provider>,
