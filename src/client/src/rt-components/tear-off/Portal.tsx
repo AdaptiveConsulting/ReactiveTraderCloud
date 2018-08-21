@@ -30,15 +30,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
   externalWindow: Window | null = null
   mutationObserver: MutationObserver | null = null
 
-  state = {
-    mounted: false
-  }
-
   container = document.createElement('div')
-
-  componentDidMount() {
-    this.setState({ mounted: true })
-  }
 
   componentWillUnmount() {
     if (this.externalWindow) {
@@ -47,7 +39,8 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
   }
 
   render() {
-    return this.state.mounted && ReactDOM.createPortal(this.wrapChildrenWithPortal(this.props.children), this.container)
+    const wrappedChildren = this.wrapChildrenWithPortal(this.props.children)
+    return this.externalWindow ? ReactDOM.createPortal(wrappedChildren, this.container) : wrappedChildren
   }
 
   wrapChildrenWithPortal = (children: React.ReactNode) => {
@@ -81,6 +74,8 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
       childHead.innerHTML = parentHead.innerHTML
 
       this.externalWindow.document.body.appendChild(this.container)
+
+      this.forceUpdate()
 
       // Watch the parent head for changes in style tags
       // Required for emotion's dynamic styles
