@@ -2,7 +2,7 @@ import { mapValues } from 'lodash'
 
 import colors, { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
 
-export interface Theme {
+export interface BaseTheme {
   white: Color
   black: Color
   transparent: Color
@@ -37,6 +37,9 @@ export interface Theme {
   // TODO (8/14/18) remove after theme migration
   [key: string]: any
 }
+
+export type ExtensibleThemeValue = Color | null
+export type Theme = BaseTheme & ReturnType<typeof createTheme>
 
 export interface TouchableIntents {
   primary: Touchable
@@ -84,12 +87,17 @@ export const themes = {
 export function createTheme(
   { primary, secondary }: CorePaletteMap,
   accents: AccentPaletteMap,
-  modify: (originalTheme: Theme) => object = (theme: Theme) => theme
-): Theme {
-  const newTheme: Theme = {
+  modify: (originalTheme) => object = (theme: Theme) => theme
+) {
+  const newTheme = {
     white: colors.spectrum.white.base,
     black: colors.spectrum.black.base,
     transparent: colors.spectrum.transparent.base,
+
+    backgroundColor: null as ExtensibleThemeValue,
+    textColor: null as ExtensibleThemeValue,
+    shadowColor: null as ExtensibleThemeValue,
+    hover: null as ExtensibleThemeValue,
 
     primary,
     secondary,

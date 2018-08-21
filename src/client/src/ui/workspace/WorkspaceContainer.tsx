@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Flex, TearOff } from 'rt-components'
-import { styled } from 'rt-util'
+import { styled } from 'rt-theme'
 import { GlobalState } from '../../combineReducers'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
 import { selectSpotTiles } from './selectors'
@@ -16,7 +16,7 @@ const Workspace = styled.div`
 
 const WorkspaceHeader = styled(Flex)`
   padding: 1.25rem 0.875rem 1.25rem 1.25rem;
-  color: ${({ theme: { text } }) => text.textPrimary};
+  color: ${p => p.theme.shell.textColor};
   font-size: 1rem;
 `
 
