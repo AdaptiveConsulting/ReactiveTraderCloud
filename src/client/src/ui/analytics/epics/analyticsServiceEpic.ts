@@ -1,7 +1,7 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { ignoreElements, tap } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
+import { ApplicationEpic } from 'StoreTypes'
 import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
 import { CurrencyPairPosition } from '../model/currencyPairPosition'
 

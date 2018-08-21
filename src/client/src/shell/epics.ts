@@ -2,8 +2,7 @@ import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { ignoreElements, tap } from 'rxjs/operators'
 
-import { ApplicationEpic } from 'ApplicationEpic'
-
+import { ApplicationEpic } from 'StoreTypes'
 import { SHELL_ACTION_TYPES, ShellActions } from './actions'
 
 const { openLink } = ShellActions

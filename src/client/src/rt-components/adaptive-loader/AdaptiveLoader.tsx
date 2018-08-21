@@ -33,7 +33,7 @@ interface BarProps {
 const Bar = styled.rect<BarProps>`
   animation: ${({ moveDistance }) => getBounce(moveDistance)} ${({ speed }) => speed}s infinite;
   animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER)}s;
-  fill: ${({ theme, type }) => theme.shell.textColor};
+  fill: ${({ theme }) => theme.shell.textColor};
   will-change: transform;
 `
 

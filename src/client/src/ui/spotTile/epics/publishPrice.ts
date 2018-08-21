@@ -1,8 +1,8 @@
+import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { CurrencyPairMap } from 'rt-types'
 import { Observable } from 'rxjs'
 import { ignoreElements, map, mergeMap, switchMapTo, takeUntil, tap } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../../ui/connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 import { SpotPriceTick } from '../model/spotPriceTick'
 
 const addRatePrecisionToPrice = (currencyData: CurrencyPairMap, price: SpotPriceTick) => ({
