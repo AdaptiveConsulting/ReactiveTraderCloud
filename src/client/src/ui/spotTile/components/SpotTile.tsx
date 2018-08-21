@@ -51,6 +51,9 @@ export default class SpotTile extends PureComponent<Props, State> {
       <ThemeProvider theme={theme => theme.tile}>
         <SpotTileWrapper>
           <SpotTileStyle className="spot-tile">
+            {/* The below style tags are required to preload the bold and bold-italic fonts */}
+            <span style={{ fontWeight: 900 }} />
+            <span style={{ fontWeight: 900, fontStyle: 'italic' }} />
             <Flex direction="column" justifyContent="space-between" height="100%">
               <Flex alignItems="center" justifyContent="space-between">
                 <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
