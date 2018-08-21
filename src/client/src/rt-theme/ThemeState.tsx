@@ -7,7 +7,7 @@ import { Theme, themes } from './themes'
 type ThemeName = 'light' | 'dark'
 
 interface ThemeSelector {
-  name?: ThemeName
+  name: ThemeName | null
   /**
    * An unused property — this parallel approach would support
    * custom branding on child components — assuming they
@@ -19,14 +19,14 @@ interface ThemeSelector {
 }
 
 interface ThemeStateProps extends ThemeSelector {
-  onChange?: (value: string) => void
+  onChange?: (value: string | null) => void
 }
 
 export interface ThemeStateValue extends ThemeSelector {
   setTheme: (options: ThemeSelector) => void
 }
 
-const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext(null)
+const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue | null>(null)
 
 /**
  * Set default theme and allow descendants to update selected theme.
@@ -44,7 +44,10 @@ class ThemeStateProvider extends React.Component<ThemeStateProps> {
   }
 }
 
-class ThemeStateManager extends React.Component<ThemeStateProps & { context: ThemeStateValue }, ThemeStateValue> {
+class ThemeStateManager extends React.Component<
+  ThemeStateProps & { context: ThemeStateValue | null },
+  ThemeStateValue
+> {
   static getDerivedStateFromProps(props: ThemeStateProps & { context: ThemeStateValue }, state: ThemeStateValue) {
     const { name, context } = props
 
@@ -77,7 +80,7 @@ class ThemeStateManager extends React.Component<ThemeStateProps & { context: The
   render() {
     const { context, children } = this.props
     const { name } = this.state
-    const theme = themes[name]
+    const theme = themes[name!]
 
     return (
       <ContextProvider value={this.state}>
@@ -112,7 +115,7 @@ class ThemeStateManager extends React.Component<ThemeStateProps & { context: The
 
 export const Provider = ThemeStateProvider
 // TODO (8/14/18) extend ContextConsumer to guard for use without provider
-export const Consumer: React.Consumer<ThemeStateValue> = ContextConsumer
+export const Consumer: React.Consumer<ThemeStateValue | null> = ContextConsumer
 
 export const ThemeState = {
   Provider,
