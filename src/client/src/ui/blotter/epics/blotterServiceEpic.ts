@@ -2,11 +2,11 @@ import moment from 'moment'
 import numeral from 'numeral'
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
+import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { CurrencyPair, CurrencyPairMap, Trade, Trades, TradeStatus } from 'rt-types'
 import { interval } from 'rxjs'
 import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 
 type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>

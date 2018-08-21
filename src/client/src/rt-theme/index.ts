@@ -1,3 +1,4 @@
+import './globals'
 export { colors } from './colors'
 export { themes, Theme } from './themes'
 export { resolvesColor } from './tools'

@@ -1,8 +1,8 @@
+import { applicationConnected } from 'rt-actions'
 import { Direction } from 'rt-types'
 import { bindCallback } from 'rxjs'
 import { map, mergeMapTo, withLatestFrom } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected } from '../../../ui/connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions } from '../actions'
 
 function createTrade(msg: any, price: any) {

@@ -2,14 +2,14 @@ import React from 'react'
 import SplitPane from 'react-split-pane'
 
 import { TearOff } from 'rt-components'
-import { WorkspaceContainer } from 'ui/workspace'
+import { WorkspaceContainer } from '../../ui/workspace'
 
 import { styled } from 'rt-theme'
 import { ShellContainer } from 'shell'
-import { AnalyticsContainer } from 'ui/analytics'
-import { BlotterContainer } from 'ui/blotter'
+import { AnalyticsContainer } from '../../ui/analytics'
+import { BlotterContainer } from '../../ui/blotter'
 
-import SidebarRegionContainer from 'shell/sidebar'
+import { SidebarRegionContainer } from 'shell'
 
 const portalProps = {
   blotterRegion: {

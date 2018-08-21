@@ -1,9 +1,8 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
+import { applicationDisconnected, REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
 import { combineLatest, map, mergeMapTo, takeUntil } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationDisconnected } from '../../connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
 import AnalyticsService from '../analyticsService'
 
