@@ -27,17 +27,10 @@ interface PortalState {
 }
 
 class NewPortal extends React.Component<PortalProps & { environment: Environment }, PortalState> {
-  private externalWindow: Window
-
-  state = {
-    mounted: false
-  }
+  externalWindow: Window | null = null
+  mutationObserver: MutationObserver | null = null
 
   container = document.createElement('div')
-
-  componentDidMount() {
-    this.setState({ mounted: true })
-  }
 
   componentWillUnmount() {
     if (this.externalWindow) {
@@ -46,7 +39,8 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
   }
 
   render() {
-    return this.state.mounted && ReactDOM.createPortal(this.wrapChildrenWithPortal(this.props.children), this.container)
+    const wrappedChildren = this.wrapChildrenWithPortal(this.props.children)
+    return this.externalWindow ? ReactDOM.createPortal(wrappedChildren, this.container) : wrappedChildren
   }
 
   wrapChildrenWithPortal = (children: React.ReactNode) => {
@@ -64,7 +58,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
 
   createWindow = (createdWindow: Window) => {
     this.externalWindow = createdWindow
-    createdWindow.addEventListener('beforeunload', () => this.release())
+    this.externalWindow.addEventListener('beforeunload', () => this.release())
     this.injectIntoWindow()
   }
 
@@ -81,9 +75,11 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
 
       this.externalWindow.document.body.appendChild(this.container)
 
+      this.forceUpdate()
+
       // Watch the parent head for changes in style tags
       // Required for emotion's dynamic styles
-      const observer = new MutationObserver(mutationsList => {
+      this.mutationObserver = new MutationObserver(mutationsList => {
         mutationsList.forEach(mutationRecord => {
           const addedNode = mutationRecord.addedNodes[0]
           if (addedNode.nodeName === 'STYLE') {
@@ -93,7 +89,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
         })
       })
 
-      observer.observe(parentHead, { childList: true })
+      this.mutationObserver.observe(parentHead, { childList: true })
     } else {
       if (onBlock) {
         onBlock.call(null)
@@ -107,6 +103,10 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
 
   release = () => {
     const { onUnload } = this.props
+
+    if (this.mutationObserver) {
+      this.mutationObserver.disconnect()
+    }
 
     if (onUnload) {
       onUnload.call(null)
