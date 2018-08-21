@@ -22,7 +22,7 @@ export interface AnalyticsProps {
 
 const RESIZE_EVENT = 'resize'
 
-export default class Analytics extends React.Component<AnalyticsProps, {}> {
+export default class Analytics extends React.Component<AnalyticsProps> {
   private handleResize = () => this.forceUpdate()
 
   // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
@@ -53,20 +53,22 @@ export default class Analytics extends React.Component<AnalyticsProps, {}> {
         {pnlChartModel && <PNLChart {...pnlChartModel} />}
         <div className="analytics__bubblechart-container">
           <span className="analytics__chart-title analytics__bubblechart-title">Positions</span>
-          {!_.isEmpty(positionsChartModel.seriesData) && (
-            <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
-          )}
+          {positionsChartModel &&
+            !_.isEmpty(positionsChartModel.seriesData) && (
+              <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+            )}
         </div>
         <div>
           <div className="analytics__chart-container">
             <span className="analytics__chart-title">PnL</span>
-            {!_.isEmpty(positionsChartModel.seriesData) && (
-              <AnalyticsBarChart
-                chartData={positionsChartModel.seriesData}
-                currencyPairs={currencyPairs}
-                isPnL={true}
-              />
-            )}
+            {positionsChartModel &&
+              !_.isEmpty(positionsChartModel.seriesData) && (
+                <AnalyticsBarChart
+                  chartData={positionsChartModel.seriesData}
+                  currencyPairs={currencyPairs}
+                  isPnL={true}
+                />
+              )}
           </div>
         </div>
       </Root>

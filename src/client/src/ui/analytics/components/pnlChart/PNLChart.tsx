@@ -42,8 +42,8 @@ export interface PricePoint {
   y: string
 }
 
-export default class PNLChart extends React.Component<PNLChartProps, {}> {
-  chartGradient: ChartGradient
+export default class PNLChart extends React.Component<PNLChartProps> {
+  chartGradient?: ChartGradient
   refs: any
 
   componentDidMount() {
@@ -86,7 +86,7 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
       'analytics__header-value--positive': lastPos > 0
     })
     const formattedLastPos = numeral(lastPos).format()
-    let pnlChart: any = null
+    let pnlChart: JSX.Element | null = null
 
     if (this.props.seriesData.length >= 0) {
       const configurePnLChart = (chart: any) => {
