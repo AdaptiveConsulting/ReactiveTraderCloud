@@ -51,6 +51,7 @@
     ]
   },
   "dependencies": {
+    "@types/react-helmet": "^5.0.7",
     "ag-grid": "18.1.2",
     "ag-grid-react": "18.1.0",
     "autobahn": "17.5.2",

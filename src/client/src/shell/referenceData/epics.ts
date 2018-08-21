@@ -1,7 +1,7 @@
 import { ReferenceActions } from 'rt-actions'
+import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
-import { ApplicationEpic } from '../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../ui/connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 
 const { createReferenceServiceAction } = ReferenceActions
 type ReferenceServiceAction = ReturnType<typeof createReferenceServiceAction>

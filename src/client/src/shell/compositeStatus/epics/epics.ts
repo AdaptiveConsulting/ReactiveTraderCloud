@@ -1,6 +1,6 @@
+import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 import { CompositeStatusServiceActions } from '../actions'
 import CompositeStatusService from '../compositeStatusService'
 

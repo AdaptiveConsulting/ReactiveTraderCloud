@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { GlobalState } from '../../combineReducers'
+import { GlobalState } from 'StoreTypes'
 import { SidebarRegionActions } from './actions'
 import Sidebar from './Sidebar'
 

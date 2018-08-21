@@ -1,7 +1,7 @@
+import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { Observable } from 'rxjs'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../../ui/connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions } from '../actions'
 import { SpotPriceTick } from '../model/spotPriceTick'
 

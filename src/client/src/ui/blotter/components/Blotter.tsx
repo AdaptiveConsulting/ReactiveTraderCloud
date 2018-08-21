@@ -1,5 +1,6 @@
 import { GridApi } from 'ag-grid'
 import { AgGridReact } from 'ag-grid-react'
+// tslint:disable-next-line:no-submodule-imports
 import 'ag-grid/dist/styles/ag-grid.css'
 import React from 'react'
 import { styled, ThemeProvider } from 'rt-theme'
