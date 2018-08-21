@@ -1,8 +1,8 @@
+import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { map, switchMapTo, takeUntil } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
+import { ApplicationEpic } from 'StoreTypes'
 import { ConnectionStatusActions } from '../connectionStatusActions'
 import { ConnectionStatusService } from '../connectionStatusService'
-import { applicationConnected, applicationDisconnected } from '../operators'
 
 type CreateConnectionAction = ReturnType<typeof ConnectionStatusActions.createConnectionStatusUpdateAction>
 

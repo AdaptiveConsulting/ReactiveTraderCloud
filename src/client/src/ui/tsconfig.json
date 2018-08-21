@@ -1,5 +1,5 @@
 {
-  "extends": "../../../tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -7,6 +7,6 @@
     "strictNullChecks": true,
     "noUnusedLocals": true,
     "suppressImplicitAnyIndexErrors": true,
-    "rootDir": "../../src"
+    "rootDir": "../src"
   }
 }

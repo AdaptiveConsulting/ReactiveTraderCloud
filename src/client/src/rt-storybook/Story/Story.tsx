@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { styled, StyledComponent, ThemeState } from 'rt-theme'
 
 // TODO make styleguide globals?
-import 'rt-theme/globals'
+import 'rt-theme'
 
 class Story extends Component {
   render() {

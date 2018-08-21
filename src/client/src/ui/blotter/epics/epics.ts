@@ -1,8 +1,8 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
+import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { combineLatest, map, switchMapTo, takeUntil } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 import BlotterService from '../blotterService'
 type SubscribeToBLotterAction = ReturnType<typeof BlotterActions.subscribeToBlotterAction>

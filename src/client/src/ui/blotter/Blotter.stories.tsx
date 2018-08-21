@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
 
 import { Story } from 'rt-storybook'
-import { Trade } from 'rt-types/trade'
+import { Trade } from 'rt-types'
 import Blotter, { BlotterProps } from './components/Blotter'
 
 const stories = storiesOf('Blotter', module)

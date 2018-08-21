@@ -1,11 +1,11 @@
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
-import { GlobalState } from 'combineReducers'
 import { ConnectionActions } from 'rt-actions'
 import { ConnectionStatus } from 'rt-system'
 import { ShellActions } from 'shell'
 
+import { GlobalState } from 'StoreTypes'
 import Shell from './Shell'
 
 const mapStateToProps = (state: GlobalState) => ({

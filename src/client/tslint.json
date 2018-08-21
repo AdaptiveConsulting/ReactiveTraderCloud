@@ -15,6 +15,7 @@
     "no-console": false,
     "no-string-literal": false,
     "member-ordering": false,
+    "no-submodule-imports": [true, "rxjs/operators", "@storybook/addon-knobs/react"],
     "ter-arrow-parens": false,
     "import-name": false,
     "trailing-comma": false,
