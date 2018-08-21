@@ -12,7 +12,6 @@ interface OpenFinChromeProps {
 }
 
 export default class OpenFinChrome extends React.Component<OpenFinChromeProps> {
-  // What is going on with this props … uh, value?
   render() {
     const headerClasses = classnames('openfin-chrome__header', {
       'openfin-chrome__header--no-bar': this.props.showHeaderBar === false,
