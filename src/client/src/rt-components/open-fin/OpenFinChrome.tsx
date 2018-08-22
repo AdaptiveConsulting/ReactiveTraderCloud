@@ -41,24 +41,23 @@ export const OpenFinHeader: React.SFC<HeaderProps> = ({ hide, ...props }) => (
   </Header>
 )
 
-export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, close }) =>
-  console.log({ close }) || (
-    <React.Fragment>
-      {minimize ? (
-        <HeaderControl intent="aware" onClick={minimize}>
-          <i className="fas fa-minus fa-set-position" />
-        </HeaderControl>
-      ) : null}
-      {maximize ? (
-        <HeaderControl intent="primary" onClick={maximize}>
-          <i className="far fa-window-maximize" />
-        </HeaderControl>
-      ) : null}
-      <HeaderControl intent="bad" onClick={close}>
-        <FontAwesomeIcon icon={faTimes} />
+export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, close }) => (
+  <React.Fragment>
+    {minimize ? (
+      <HeaderControl intent="aware" onClick={minimize}>
+        <i className="fas fa-minus fa-set-position" />
       </HeaderControl>
-    </React.Fragment>
-  )
+    ) : null}
+    {maximize ? (
+      <HeaderControl intent="primary" onClick={maximize}>
+        <i className="far fa-window-maximize" />
+      </HeaderControl>
+    ) : null}
+    <HeaderControl intent="bad" onClick={close}>
+      <FontAwesomeIcon icon={faTimes} />
+    </HeaderControl>
+  </React.Fragment>
+)
 
 const DragRegion = styled.div`
   flex: 1 1 100%;
@@ -96,11 +95,12 @@ const Header: StyledComponent<{ hide?: boolean }> = styled.div`
     !hide
       ? ''
       : css`
+          /*
           position: fixed;
           top: 0;
           left: 0;
           right: 0;
-
+*/
           opacity: 0;
 
           height: 1rem;
