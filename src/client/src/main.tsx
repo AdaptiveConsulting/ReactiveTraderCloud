@@ -52,20 +52,22 @@ export const run = () => {
 
   ReactDOM.render(
     <Provider store={store}>
-      {/* The below style tags are required to preload bold and bold-italic fonts */}
-      <span style={{ fontWeight: 900 }} />
-      <span style={{ fontWeight: 900, fontStyle: 'italic' }} />
-      <EnvironmentProvider value={environmentContext}>
-        <ThemeState.Provider name={window.localStorage.themeName} onChange={updateLocalStorageThemeName}>
-          {openFin.isRunningInOpenFin ? (
-            <OpenFinProvider openFin={openFin}>
+      <React.Fragment>
+        {/* The below style tags are required to preload bold and bold-italic fonts */}
+        <span style={{ fontWeight: 900 }} />
+        <span style={{ fontWeight: 900, fontStyle: 'italic' }} />
+        <EnvironmentProvider value={environmentContext}>
+          <ThemeState.Provider name={window.localStorage.themeName} onChange={updateLocalStorageThemeName}>
+            {openFin.isRunningInOpenFin ? (
+              <OpenFinProvider openFin={openFin}>
+                <Router />
+              </OpenFinProvider>
+            ) : (
               <Router />
-            </OpenFinProvider>
-          ) : (
-            <Router />
-          )}
-        </ThemeState.Provider>
-      </EnvironmentProvider>
+            )}
+          </ThemeState.Provider>
+        </EnvironmentProvider>
+      </React.Fragment>
     </Provider>,
     document.getElementById('root')
   )
