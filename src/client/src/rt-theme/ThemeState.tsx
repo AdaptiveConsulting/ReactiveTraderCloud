@@ -26,7 +26,10 @@ export interface ThemeStateValue extends ThemeSelector {
   setTheme: (options: ThemeSelector) => void
 }
 
-const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue | null>(null)
+const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue>({
+  name: null,
+  setTheme: () => {}
+})
 
 /**
  * Set default theme and allow descendants to update selected theme.
@@ -39,16 +42,15 @@ class ThemeStateProvider extends React.Component<ThemeStateProps> {
     return <ContextConsumer children={this.renderThemeStateManager} />
   }
 
-  renderThemeStateManager = (context: ThemeStateValue | null) => {
+  renderThemeStateManager = (context: ThemeStateValue) => {
     return <ThemeStateManager context={context} {...this.props} />
   }
 }
 
-class ThemeStateManager extends React.Component<
-  ThemeStateProps & { context: ThemeStateValue | null },
-  ThemeStateValue
-> {
-  static getDerivedStateFromProps(props: ThemeStateProps & { context: ThemeStateValue }, state: ThemeStateValue) {
+type ThemeStateManagerProps = ThemeStateProps & { context: ThemeStateValue }
+
+class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeStateValue> {
+  static getDerivedStateFromProps(props: ThemeStateManagerProps, state: ThemeStateValue) {
     const { name, context } = props
 
     if (context == null && name == null) {
@@ -115,7 +117,7 @@ class ThemeStateManager extends React.Component<
 
 export const Provider = ThemeStateProvider
 // TODO (8/14/18) extend ContextConsumer to guard for use without provider
-export const Consumer: React.Consumer<ThemeStateValue | null> = ContextConsumer
+export const Consumer: React.Consumer<ThemeStateValue> = ContextConsumer
 
 export const ThemeState = {
   Provider,
