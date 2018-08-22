@@ -60,7 +60,7 @@ interface Props {
 
 // TODO disable tabbing outside of the modal
 // tslint:disable-next-line:variable-name
-class Modal extends React.Component<Props> {
+export default class Modal extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
     this.onDismiss = this.onDismiss.bind(this)
@@ -88,5 +88,3 @@ class Modal extends React.Component<Props> {
     )
   }
 }
-
-export default Modal
