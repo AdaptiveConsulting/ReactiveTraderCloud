@@ -2,10 +2,10 @@ import { injectGlobal } from 'emotion'
 import {
   barBgColor,
   barchartTextColor,
-  barHeight,
   negativeColor,
   pointerColor,
   positiveColor,
+  transitionDuration,
   transparentColor
 } from './variables'
 
@@ -86,43 +86,44 @@ export default injectGlobal`
 
   .analytics__barchart-container {
     vertical-align: middle;
-    padding-top: 2px;
+    padding-top: 0.5rem;
     padding-bottom: 0.75rem;
-    height: 50px;
-    &:hover {
-    }
+    height: 3rem;
+
   }
 
   .analytics__barchart-bar {
-    height: ${barHeight};
+    height: 0.125rem;
     overflow: hidden;
   }
 
   .analytics__barchart-bar-background {
-    height: ${barHeight};
+    height: 0.125rem;
     width: 100%;
     background-color: ${barBgColor};
     position: absolute;
-    margin-top: 3px;
+    margin-top: 0.125rem;
+    opacity: 0.125;
   }
 
   .analytics__barchart-bar-wrapper {
-    vertical-align: middle;
-    height: 0.5rem;
     position: absolute;
+    height: 0.25rem;
     width: 100%;
-    margin-top: 30px;
+    margin-top: 2rem;
+    vertical-align: middle;
   }
 
   .analytics__barchart-border {
-    height: 0.5rem;
-    width: 2px;
+    height: 0.325rem;
+    width: 0.125rem;
     background-color: currentColor;
+    opacity: 0;
   }
 
   .analytics__barchart-border--center {
     position: absolute;
-    left: calc(50% - 2px);
+    left: calc(50% - 0.125rem);
   }
 
   .analytics__barchart-border--left {
@@ -137,90 +138,54 @@ export default injectGlobal`
 
   .analytics__barchart-title-wrapper {
     width: 100%;
-    height: 30px;
+    height: 2rem;
     position: absolute;
-
-    &:hover {
-      .analytics__barchart-pointer-container {
-        transform: scale(1.5);
-      }
-
-      .analytics__barchart-label {
-        font-size: 0.75rem;
-        cursor: default;
-      }
-
-      .analytics__barchart-label-amount {
-        display: none;
-      }
-      .analytics__barchart-label-amount--hover {
-        display: inline;
-      }
-
-      .analytics__barchart-label-currency-terms {
-        display: none;
-      }
-    }
   }
 
+  
+  .analytics__barchart-pointer-container, .analytics__barchart-label-pusher {
+    transition: all ease ${transitionDuration};
+
+  }
   .analytics__barchart-pointer-container {
     position: absolute;
     margin-top: 1.5rem;
-    transition: left linear $transition-duration;
+    transition: left ease ${transitionDuration};
     z-index: 1;
+    mix-blend-mode: exclusion;
   }
 
   .analytics__barchart-pointer {
+    position: absolute;
     width: 0;
     height: 0;
-    border-width: 0.5rem 0.25rem 0 0.25rem;
-    border-color: ${pointerColor} transparent transparent transparent;
-    border-style: inset;
-    transform: rotate(360deg);
-    position: absolute;
     z-index: 1;
-    left: -6px;
-    margin-top: 2px;
-  }
-
-  .analytics__barchart-pointer-icon {
-    text-shadow: 0px 0px 0 $pointer-color, -1px -1px 0 $pointer-color, 1px -1px 0 $pointer-color,
-      -1px 1px 0 $pointer-color, 1px 1px 0 $pointer-color;
-    rotation: 90deg;
-  }
-
-  .analytics__barchart-pointer--outline {
-    position: absolute;
-    width: 0;
-    height: 0;
-    z-index: 99;
-    left: -0.5rem;
-    border-width: 0.75rem 0.5rem 0 0.5rem;
+    top: 0.125rem;
+    left: -0.375rem;
+    border-width: 0.75rem 0.25rem 0 0.25rem;
     border-color: ${pointerColor} transparent transparent transparent;
     border-style: inset;
+    border-radius: 50%;
     transform: rotate(360deg);
   }
 
   .analytics__barchart-label {
-    font-size: 13px;
-    margin-top: 3px;
+    font-size: 0.75rem;
+    line-height: 2rem;
     white-space: nowrap;
   }
 
   .analytics__barchart-label-amount {
-  }
-
-  .analytics__barchart-label-amount--hover {
-    display: none;
+    
+    font-weight: 900;
+    margin-right: 0.25rem;
   }
 
   .analytics__barchart-label-pusher {
     height: 0.5rem;
     display: inline-block;
-    transition: all linear $transition-duration;
   }
   .analytics__barchart-label-wrapper {
-    transition: left linear $transition-duration;
     position: absolute;
     width: 100%;
     white-space: nowrap;
@@ -244,6 +209,7 @@ export default injectGlobal`
 
   .analytics__chart-title {
     font-size: 1rem;
+    line-height: 2rem;
   }
 
   .analytics__bubblechart-title {
@@ -258,10 +224,10 @@ export default injectGlobal`
 
   .analytics__positions-label {
     fill: currentColor;
-    font-weight: bold;
-    font-size: 12px;
+    font-size: 0.75rem;
     pointer-events: none;
     select: none;
+    user-select: none;
   }
 
   .analytics__positions-tooltip {
@@ -297,6 +263,7 @@ export default injectGlobal`
   .stop1,
   .lineStop1 {
     stop-color: ${positiveColor};
+    stop-opacity: 0.5;
   }
 
   .stop1End,
@@ -312,6 +279,7 @@ export default injectGlobal`
   .stop2End,
   .lineStop2End {
     stop-color: ${negativeColor};
+    stop-opacity: 0.5;
   }
 
   /* axis */
