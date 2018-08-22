@@ -10,8 +10,8 @@ import { Router } from 'shell/Router'
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
+import { OpenFinContext } from './rt-components'
 import { AutobahnConnectionProxy, logger } from './rt-system'
-import { OpenFinProvider } from './shell'
 import { default as FakeUserRepository } from './shell/fakeUserRepository'
 import { OpenFin } from './shell/openFin'
 
@@ -54,13 +54,9 @@ export const run = () => {
     <Provider store={store}>
       <EnvironmentProvider value={environmentContext}>
         <ThemeState.Provider name={window.localStorage.themeName} onChange={updateLocalStorageThemeName}>
-          {openFin.isRunningInOpenFin ? (
-            <OpenFinProvider openFin={openFin}>
-              <Router />
-            </OpenFinProvider>
-          ) : (
+          <OpenFinContext.Provider value={openFin.isRunningInOpenFin ? openFin : null}>
             <Router />
-          )}
+          </OpenFinContext.Provider>
         </ThemeState.Provider>
       </EnvironmentProvider>
     </Provider>,

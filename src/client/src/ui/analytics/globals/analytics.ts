@@ -167,7 +167,7 @@ export default injectGlobal`
     position: absolute;
     margin-top: 1.5rem;
     transition: left linear $transition-duration;
-    z-index: 99;
+    z-index: 1;
   }
 
   .analytics__barchart-pointer {
@@ -178,7 +178,7 @@ export default injectGlobal`
     border-style: inset;
     transform: rotate(360deg);
     position: absolute;
-    z-index: 100;
+    z-index: 1;
     left: -6px;
     margin-top: 2px;
   }
@@ -274,7 +274,7 @@ export default injectGlobal`
     opacity: 1;
     box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.4);
     pointer-events: none;
-    z-index: 100;
+    z-index: 1;
   }
 
   .new-chart-area {

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
+import { sidebarRegionReducer } from 'shell/components/sidebar'
 import { currencyPairReducer } from 'shell/referenceData'
 import { regionsReducer } from 'shell/regions'
-import { sidebarRegionReducer } from 'shell/sidebar'
 import { analyticsReducer } from 'ui/analytics'
 import { blotterReducer } from 'ui/blotter'
 import { compositeStatusServiceReducer } from 'ui/compositeStatus'
