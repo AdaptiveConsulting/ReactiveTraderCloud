@@ -1,8 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
-import styled from 'react-emotion'
 
-import { StyledComponent, ThemeState } from 'rt-theme'
+import { styled, StyledComponent, ThemeState } from 'rt-theme'
 
 import Logo from './Logo'
 
@@ -100,13 +99,13 @@ const Division = styled.div`
   align-items: center;
   justify-content: center;
 
-  &::after {
+  &::before {
     content: '';
     display: block;
     width: 0.125rem;
     height: 100%;
     margin-right: -0.125rem;
-    background-color: rgba(127, 127, 127, 0.2);
+    background-color: ${props => props.theme.shell.backgroundColor};
   }
 `
 
