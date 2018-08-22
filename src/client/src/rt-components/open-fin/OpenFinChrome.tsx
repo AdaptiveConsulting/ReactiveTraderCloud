@@ -54,13 +54,7 @@ export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, c
           <i className="far fa-window-maximize" />
         </HeaderControl>
       ) : null}
-      <HeaderControl
-        intent="bad"
-        onClick={() => {
-          debugger
-          close()
-        }}
-      >
+      <HeaderControl intent="bad" onClick={close}>
         <FontAwesomeIcon icon={faTimes} />
       </HeaderControl>
     </React.Fragment>
