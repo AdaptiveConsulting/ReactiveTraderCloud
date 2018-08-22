@@ -1,6 +1,6 @@
 import { injectGlobal } from 'emotion'
 
-import { barBgColor, gray, negativeColor, positiveColor, strokeColor } from './variables'
+import { barBgColor, gray, negativeColor, positiveColor, strokeColor, transitionDuration } from './variables'
 
 export default injectGlobal`
   .nvtooltip {
@@ -26,13 +26,13 @@ export default injectGlobal`
 
   .nvd3 .nv-axis path {
     fill: none;
-    stroke: #000;
-    stroke-opacity: 0.75;
+    stroke: currentColor;
+    stroke-opacity: 0.5;
     shape-rendering: crispEdges;
   }
 
   .nvd3 .nv-axis path.domain {
-    stroke-opacity: 0.75;
+    stroke-opacity: 0.5;
   }
 
   .nvd3 .nv-axis.nv-x path.domain {
@@ -43,15 +43,11 @@ export default injectGlobal`
     fill: none;
     stroke: ${strokeColor};
     shape-rendering: crispEdges;
+    stroke-opacity: 0.5;
   }
 
-  .nvd3 .nv-axis .zero line,
-    /*this selector may not be necessary*/ .nvd3 .nv-axis line.zero {
-    stroke-opacity: 0.75;
-  }
-
-  .nvd3 .nv-axis .nv-axisMaxMin text {
-    font-weight: bold;
+  .nvd3 .nv-axis .zero line, .nvd3 .nv-axis line.zero {
+    stroke-opacity: 0.5;
   }
 
   .nvd3 .x .nv-axis .nv-axisMaxMin text,
@@ -67,9 +63,7 @@ export default injectGlobal`
   .nvd3 .nv-bars rect {
     fill-opacity: 0.75;
 
-    transition: fill-opacity 250ms linear;
-    -moz-transition: fill-opacity 250ms linear;
-    -webkit-transition: fill-opacity 250ms linear;
+    transition: fill-opacity ${transitionDuration} ease;
   }
 
   .nvd3 .nv-bars rect.hover {
@@ -93,9 +87,7 @@ export default injectGlobal`
   .nvd3 .nv-discretebar .nv-groups rect {
     stroke-opacity: 0;
 
-    transition: fill-opacity 250ms linear;
-    -moz-transition: fill-opacity 250ms linear;
-    -webkit-transition: fill-opacity 250ms linear;
+    transition: fill-opacity ${transitionDuration} ease;
   }
 
   .nvd3 .nv-multibar .nv-groups rect:hover,
@@ -199,9 +191,9 @@ export default injectGlobal`
   }
 
   .with-transitions .nv-candlestickBar .nv-ticks .nv-tick {
-    transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
-    -moz-transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
-    -webkit-transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+    transition: stroke-width ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
+    -moz-transition: stroke-width ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
+    -webkit-transition: stroke-width ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
   }
 
   .nvd3.nv-candlestickBar .nv-ticks line {
@@ -258,9 +250,9 @@ export default injectGlobal`
   }
 
   .with-transitions .nvd3 .nv-groups .nv-point {
-    transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
-    -moz-transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
-    -webkit-transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+    transition: stroke-width ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
+    -moz-transition: stroke-width ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
+    -webkit-transition: stroke-width ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
   }
 
   .nvd3.nv-scatter .nv-groups .nv-point.hover,
@@ -331,9 +323,9 @@ export default injectGlobal`
     fill-opacity: 0;
   }
 
-  .nvd3.nv-noData {
+  .nvd3, .nvd3 text, .nvd3.nv-noData {
     font-size: 1rem;
-    font-weight: bold;
+    fill: currentColor;
   }
 
   /**********
@@ -423,9 +415,9 @@ export default injectGlobal`
   }
   .nvd3.nv-pie path {
     stroke-opacity: 0;
-    transition: fill-opacity 250ms linear, stroke-width 250ms linear, stroke-opacity 250ms linear;
-    -moz-transition: fill-opacity 250ms linear, stroke-width 250ms linear, stroke-opacity 250ms linear;
-    -webkit-transition: fill-opacity 250ms linear, stroke-width 250ms linear, stroke-opacity 250ms linear;
+    transition: fill-opacity ${transitionDuration} ease, stroke-width ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
+    -moz-transition: fill-opacity ${transitionDuration} ease, stroke-width ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
+    -webkit-transition: fill-opacity ${transitionDuration} ease, stroke-width ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
   }
 
   .nvd3.nv-pie .nv-pie-title {
@@ -526,9 +518,9 @@ export default injectGlobal`
   .nvd3.nv-stackedarea path.nv-area {
     fill-opacity: 0.7;
     stroke-opacity: 0;
-    transition: fill-opacity 250ms linear, stroke-opacity 250ms linear;
-    -moz-transition: fill-opacity 250ms linear, stroke-opacity 250ms linear;
-    -webkit-transition: fill-opacity 250ms linear, stroke-opacity 250ms linear;
+    transition: fill-opacity ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
+    -moz-transition: fill-opacity ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
+    -webkit-transition: fill-opacity ${transitionDuration} ease, stroke-opacity ${transitionDuration} ease;
   }
 
   .nvd3.nv-stackedarea path.nv-area.hover {

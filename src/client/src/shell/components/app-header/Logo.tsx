@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'react-emotion'
+import { styled, StyledComponent } from 'rt-theme'
 
 const Logo: React.SFC<{
   fill?: string
@@ -31,4 +31,4 @@ export default styled(Logo)`
   [fill] {
     fill: ${props => props.theme.shell.textColor};
   }
-`
+` as StyledComponent

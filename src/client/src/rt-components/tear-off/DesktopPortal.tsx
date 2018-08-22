@@ -1,5 +1,5 @@
 import React from 'react'
-import OpenFinChrome from '../OpenFinChrome'
+import { OpenFinChrome, OpenFinHeader } from 'rt-components'
 import { DesktopWindowConfig, WindowConfig } from './types'
 
 type DesktopWindowProps = WindowConfig & DesktopWindowConfig
@@ -12,7 +12,8 @@ export default class DesktopWindow extends React.PureComponent<DesktopWindowProp
 
   render() {
     return (
-      <OpenFinChrome showHeaderBar={false} close={this.props.closeWindow}>
+      <OpenFinChrome>
+        <OpenFinHeader hide close={this.props.closeWindow} />
         {this.props.children}
       </OpenFinChrome>
     )

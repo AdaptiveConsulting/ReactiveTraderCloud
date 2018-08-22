@@ -10,7 +10,8 @@ module.exports = function override(config, env) {
       {
         autoLabel: true,
         hoist: env === 'production',
-        labelFormat: '[filename]--[local]'
+        labelFormat: '[filename]--[local]',
+        sourceMap: env !== 'production'
       }
     ],
     config

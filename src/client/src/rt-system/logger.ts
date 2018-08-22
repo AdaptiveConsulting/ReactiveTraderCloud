@@ -1,3 +1,5 @@
+type Severity = 'info' | 'warn' | 'error' | 'debug'
+
 enum levels {
   verbose = 'debug',
   debug = 'debug',
@@ -6,9 +8,9 @@ enum levels {
   error = 'error'
 }
 
-type SEVERITY = 'info' | 'warn' | 'error' | 'debug'
+const order = Object.keys(levels)
 
-let currentLevel = process.env.NODE_ENV === 'production' ? levels.warn : levels.error
+let currentLevel = order.indexOf(process.env.NODE_ENV === 'production' ? levels.warn : levels.error)
 
 let sink = (logEvent: LogParams) => {
   console[logEvent.level].call(null, `${logEvent.logger}:`, ...Array.from(logEvent.args))
@@ -21,15 +23,11 @@ export class Logger {
     this.name = name
   }
 
-  get isVerboseEnabled() {
-    return currentLevel === levels.verbose
-  }
-
   /**
    * verbose(message [, ...args]): expects a string log message and optional additional arguments
    */
   verbose(message: string, message2?: string, message3?: string) {
-    if (this.isVerboseEnabled) {
+    if (currentLevel <= order.indexOf('verbose')) {
       this.log('debug', arguments)
     }
   }
@@ -38,44 +36,38 @@ export class Logger {
    * debug(message [, ...args]): expects a string log message and optional additional arguments
    */
   debug(message?: string, message2?: string, message3?: string) {
-    if (currentLevel <= levels.debug) {
-      this.log('debug', arguments)
-    }
+    this.log('debug', arguments)
   }
 
   /**
    * info(message [, ...args]): expects a string log message and optional additional arguments
    */
   info(message?: string, message2?: any, message3?: any) {
-    if (currentLevel <= levels.info) {
-      this.log('info', arguments)
-    }
+    this.log('info', arguments)
   }
 
   /**
    * warn(message [, ...args]): expects a string log message and optional additional arguments
    */
   warn(message?: string, message2?: string, message3?: string) {
-    if (currentLevel <= levels.warn) {
-      this.log('warn', arguments)
-    }
+    this.log('warn', arguments)
   }
 
   /**
    * error(message [, ...args]): expects a string log message and optional additional arguments
    */
   error(message?: string, message2?: any, message3?: string) {
-    if (currentLevel <= levels.error) {
-      this.log('error', arguments)
-    }
+    this.log('error', arguments)
   }
 
-  log(level: SEVERITY, args: IArguments) {
-    sink({
-      args,
-      level,
-      logger: this.name
-    })
+  log(level: Severity, args: IArguments) {
+    if (currentLevel <= order.indexOf(level)) {
+      sink({
+        args,
+        level,
+        logger: this.name
+      })
+    }
   }
 }
 
@@ -84,12 +76,12 @@ function create(name: string) {
 }
 
 function setLevel(level: levels) {
-  currentLevel = level
+  currentLevel = order.indexOf(level)
 }
 
 interface LogParams {
   args: IArguments
-  level: SEVERITY
+  level: Severity
   logger: string
 }
 
