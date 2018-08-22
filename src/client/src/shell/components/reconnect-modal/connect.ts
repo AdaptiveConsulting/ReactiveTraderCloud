@@ -10,7 +10,7 @@ export default connect(
     connected: state.connectionStatus.status === 'connected',
     loaded: Object.keys(state.compositeStatusService).length >= 3,
     sessionExpired: state.connectionStatus.status === ConnectionStatus.sessionExpired,
-    shouldShow: true || state.connectionStatus.status === ConnectionStatus.sessionExpired
+    shouldShow: state.connectionStatus.status === ConnectionStatus.sessionExpired
   }),
   (dispatch: Dispatch) => ({
     reconnect: () => dispatch(ConnectionActions.connect())
