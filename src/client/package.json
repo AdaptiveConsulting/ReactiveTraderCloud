@@ -51,6 +51,9 @@
     ]
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.2",
+    "@fortawesome/free-solid-svg-icons": "^5.2.0",
+    "@fortawesome/react-fontawesome": "^0.1.2",
     "@types/react-helmet": "^5.0.7",
     "ag-grid": "18.1.2",
     "ag-grid-react": "18.1.0",

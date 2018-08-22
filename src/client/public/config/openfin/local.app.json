@@ -16,7 +16,6 @@
         "frame": false
     },
     "runtime": {
-        "arguments": "--force-device-scale-factor=1",
         "version": "9.61.31.76",
         "futureVersion": "9.61.31.76",
         "forceLatest": true

@@ -1,36 +1,35 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
+import { Provider as ReduxProvider } from 'react-redux'
+import { timer } from 'rxjs'
+
 import { ConnectionActions } from 'rt-actions'
-import { EnvironmentProvider } from 'rt-components'
+import { Environment } from 'rt-components'
+import { AutobahnConnectionProxy, logger } from 'rt-system'
 import { ThemeState } from 'rt-theme'
 import { User } from 'rt-types'
-import { timer } from 'rxjs'
+
 import { Router } from 'shell'
+
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
-import { AutobahnConnectionProxy, logger } from './rt-system'
-import { OpenFinProvider } from './shell'
-import { default as FakeUserRepository } from './shell/fakeUserRepository'
+import FakeUserRepository from './shell/fakeUserRepository'
 import { OpenFin } from './shell/openFin'
-
-const log = logger.create('Application Service')
 
 // When the application is run in openfin then 'fin' will be registered on the global window object.
 declare const window: any
 
+const APPLICATION_DISCONNECT = 15 * 60 * 1000
 const config = getEnvVars(process.env.REACT_APP_ENV!)
 
-const APPLICATION_DISCONNECT = 15 * 60 * 1000
+const log = logger.create('Application Service')
 
-const openFin = new OpenFin()
+const openfin = new OpenFin()
 
-//const isRunningInFinsemble = window.FSBL
-
-const environmentContext = {
-  isRunningDesktop: openFin.isRunningInOpenFin,
-  openFin
+const environment = {
+  isDesktop: openfin.isPresent,
+  openfin: openfin.isPresent ? openfin : null
 }
 
 export const run = () => {
@@ -41,7 +40,7 @@ export const run = () => {
 
   const autobahn = new AutobahnConnectionProxy(url!, realm, +port!)
 
-  const applicationDependencies = createApplicationServices(user, autobahn, openFin)
+  const applicationDependencies = createApplicationServices(user, autobahn, openfin)
 
   const store = (window.store = configureStore(applicationDependencies))
 
@@ -51,19 +50,13 @@ export const run = () => {
   }
 
   ReactDOM.render(
-    <Provider store={store}>
-      <EnvironmentProvider value={environmentContext}>
+    <ReduxProvider store={store}>
+      <Environment.Provider value={environment}>
         <ThemeState.Provider name={window.localStorage.themeName} onChange={updateLocalStorageThemeName}>
-          {openFin.isRunningInOpenFin ? (
-            <OpenFinProvider openFin={openFin}>
-              <Router />
-            </OpenFinProvider>
-          ) : (
-            <Router />
-          )}
+          <Router />
         </ThemeState.Provider>
-      </EnvironmentProvider>
-    </Provider>,
+      </Environment.Provider>
+    </ReduxProvider>,
     document.getElementById('root')
   )
 

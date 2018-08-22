@@ -10,16 +10,16 @@ export default class OpenFin {
   private limitCheckId: number = 1
 
   constructor() {
-    if (this.isRunningInOpenFin) {
+    if (this.isPresent) {
       this.initializeLimitChecker()
     }
   }
 
-  get isRunningInOpenFin() {
+  get isPresent() {
     return typeof fin !== 'undefined'
   }
 
-  close(currentWindow: fin.OpenFinWindow = this.currentWindow) {
+  close = (currentWindow: fin.OpenFinWindow = this.currentWindow) => {
     currentWindow.close(
       true,
       () => log.info('Window closed with success.'),
@@ -27,14 +27,14 @@ export default class OpenFin {
     )
   }
 
-  minimize(currentWindow: fin.OpenFinWindow = this.currentWindow) {
+  minimize = (currentWindow: fin.OpenFinWindow = this.currentWindow) => {
     currentWindow.minimize(
       () => log.info('Window minimized with success.'),
       err => log.error('Failed to minimize window.', err)
     )
   }
 
-  maximize(currentWindow: fin.OpenFinWindow = this.currentWindow) {
+  maximize = (currentWindow: fin.OpenFinWindow = this.currentWindow) => {
     currentWindow.getState(state => {
       switch (state) {
         case 'maximized':
@@ -68,7 +68,7 @@ export default class OpenFin {
   }
 
   addSubscription(name: string, callback: (msg: any, uuid: any) => void) {
-    if (!this.isRunningInOpenFin) {
+    if (!this.isPresent) {
       return
     }
     if (!fin.desktop.InterApplicationBus) {
@@ -223,7 +223,7 @@ export default class OpenFin {
     })
 
   publishCurrentPositions(ccyPairPositions) {
-    if (!this.isRunningInOpenFin) {
+    if (!this.isPresent) {
       return
     }
 
@@ -231,7 +231,7 @@ export default class OpenFin {
   }
 
   publishPrice(price) {
-    if (!this.isRunningInOpenFin) {
+    if (!this.isPresent) {
       return
     }
     fin.desktop.InterApplicationBus.publish('price-update', price)
@@ -242,13 +242,13 @@ export default class OpenFin {
   }
 
   sendPositionClosedNotification(uuid: string, correlationId: string) {
-    if (!this.isRunningInOpenFin) {
+    if (!this.isPresent) {
       return
     }
     fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId)
   }
 
-  openLink(url: string) {
+  open(url: string) {
     fin.desktop.System.openUrlWithBrowser(url)
   }
 }

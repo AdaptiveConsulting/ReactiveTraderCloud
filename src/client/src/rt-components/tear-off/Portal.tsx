@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Environment, withEnvironment } from 'rt-components'
+import { EnvironmentValue, withEnvironment } from 'rt-components'
 import { withDefaultProps } from 'rt-util'
 import BrowserPortal from './BrowserPortal'
 import DesktopPortal from './DesktopPortal'
@@ -26,7 +26,7 @@ interface PortalState {
   mounted: boolean
 }
 
-class NewPortal extends React.Component<PortalProps & { environment: Environment }, PortalState> {
+class NewPortal extends React.Component<PortalProps & { environment: EnvironmentValue }, PortalState> {
   externalWindow: Window | null = null
   mutationObserver: MutationObserver | null = null
 
@@ -45,7 +45,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
 
   wrapChildrenWithPortal = (children: React.ReactNode) => {
     const { environment, config, desktopConfig, browserConfig } = this.props
-    return environment.isRunningDesktop ? (
+    return environment.isDesktop ? (
       <DesktopPortal createWindow={this.createWindow} closeWindow={this.closeWindow} {...config} {...desktopConfig}>
         {children}
       </DesktopPortal>
