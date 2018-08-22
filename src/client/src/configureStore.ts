@@ -1,15 +1,19 @@
 import { Action, applyMiddleware, createStore } from 'redux'
+// tslint:disable-next-line:no-submodule-imports
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import { combineEpics, createEpicMiddleware } from 'redux-observable'
 
+import { GlobalState } from 'StoreTypes'
 import { ApplicationDependencies } from './applicationServices'
-import rootReducer, { GlobalState } from './combineReducers'
+
+import { compositeStatusServiceEpic } from './shell/compositeStatus'
+import { connectionStatusEpic } from './shell/connectionStatus'
 import { referenceServiceEpic } from './shell/referenceData'
 import { analyticsServiceEpic } from './ui/analytics'
 import { blotterEpic } from './ui/blotter/'
-import { compositeStatusServiceEpic } from './ui/compositeStatus'
-import { connectionStatusEpic } from './ui/connectionStatus'
 import { spotTileEpic } from './ui/spotTile'
+
+import rootReducer from './combineReducers'
 
 export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [

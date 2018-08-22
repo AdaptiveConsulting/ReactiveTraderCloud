@@ -248,7 +248,7 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId)
   }
 
-  openLink(url: string) {
+  open(url: string) {
     fin.desktop.System.openUrlWithBrowser(url)
   }
 }

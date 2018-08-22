@@ -1,5 +1,5 @@
-import { GlobalState } from 'combineReducers'
 import { createSelector } from 'reselect'
+import { GlobalState } from 'StoreTypes'
 
 const makePortalProps = key => ({
   title: `${key} Spot`,

@@ -1,18 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { timer } from 'rxjs'
+
 import { ConnectionActions } from 'rt-actions'
-import { EnvironmentProvider } from 'rt-components'
+import { EnvironmentProvider, OpenFinContext } from 'rt-components'
+import { AutobahnConnectionProxy, logger } from 'rt-system'
 import { ThemeState } from 'rt-theme'
 import { User } from 'rt-types'
-import { timer } from 'rxjs'
-import { Router } from 'shell/Router'
+
+import { Router } from 'shell'
+
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
-import { OpenFinContext } from './rt-components'
-import { AutobahnConnectionProxy, logger } from './rt-system'
-import { default as FakeUserRepository } from './shell/fakeUserRepository'
+import FakeUserRepository from './shell/fakeUserRepository'
 import { OpenFin } from './shell/openFin'
 
 const log = logger.create('Application Service')

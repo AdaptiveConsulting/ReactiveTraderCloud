@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
-import { GlobalState } from 'combineReducers'
 import { ConnectionActions } from 'rt-actions'
 import { ConnectionStatus } from 'rt-system'
+import { GlobalState } from 'StoreTypes'
 
 export default connect(
   (state: GlobalState) => ({

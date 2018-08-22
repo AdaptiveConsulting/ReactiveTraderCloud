@@ -1,7 +1,7 @@
 import React, { SFC } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { AnalyticsContainer } from 'ui/analytics'
-import ConnectedBlotterContainer from 'ui/blotter/BlotterContainer'
+import { AnalyticsContainer } from '.././ui/analytics'
+import { BlotterContainer } from '../ui/blotter'
 
 import { OpenFinContext } from 'rt-components'
 import OpenFinRoute from './routes/OpenFin'
@@ -13,7 +13,7 @@ export const Router: SFC = () => (
     <Switch>
       <Route exact path="/" component={ShellSwitchRoute} />
       <Route path="/analytics" component={AnalyticsContainer} />
-      <Route path="/blotter" component={ConnectedBlotterContainer} />
+      <Route path="/blotter" component={BlotterContainer} />
       <Route path="/spot/:symbol" component={SpotRoute} />
     </Switch>
   </BrowserRouter>
