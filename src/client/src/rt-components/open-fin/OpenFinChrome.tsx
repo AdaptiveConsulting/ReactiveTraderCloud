@@ -17,7 +17,7 @@ export interface HeaderProps extends ControlProps {
 }
 
 export const OpenFinChrome = ({ children }) => (
-  <Root>
+  <React.Fragment>
     <Helmet>
       <style type="text/css">{`
         :root,
@@ -28,8 +28,8 @@ export const OpenFinChrome = ({ children }) => (
         }
     `}</style>
     </Helmet>
-    {children}
-  </Root>
+    <Root>{children}</Root>
+  </React.Fragment>
 )
 
 export const OpenFinHeader: React.SFC<HeaderProps> = ({ hide, ...props }) => (
@@ -95,12 +95,12 @@ const Header: StyledComponent<{ hide?: boolean }> = styled.div`
     !hide
       ? ''
       : css`
-          /*
           position: fixed;
           top: 0;
           left: 0;
           right: 0;
-*/
+          z-index: 10;
+
           opacity: 0;
 
           height: 1rem;

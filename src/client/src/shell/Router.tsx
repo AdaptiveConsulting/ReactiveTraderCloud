@@ -3,10 +3,10 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { AnalyticsContainer } from '.././ui/analytics'
 import { BlotterContainer } from '../ui/blotter'
 
-import { OpenFinContext } from 'rt-components'
-import OpenFinRoute from './routes/OpenFin'
-import ShellRoute from './routes/Shell'
-import SpotRoute from './routes/Spot'
+import { Environment } from 'rt-components'
+import OpenFinRoute from './routes/OpenFinRoute'
+import ShellRoute from './routes/ShellRoute'
+import SpotRoute from './routes/SpotRoute'
 
 export const Router: SFC = () => (
   <BrowserRouter>
@@ -20,7 +20,7 @@ export const Router: SFC = () => (
 )
 
 const ShellSwitchRoute = props => (
-  <OpenFinContext.Consumer>
-    {openFin => (openFin ? <OpenFinRoute {...props} /> : <ShellRoute {...props} />)}
-  </OpenFinContext.Consumer>
+  <Environment.Consumer>
+    {({ openfin }) => (openfin ? <OpenFinRoute {...props} /> : <ShellRoute {...props} />)}
+  </Environment.Consumer>
 )
