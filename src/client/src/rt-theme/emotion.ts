@@ -26,4 +26,5 @@ export const {
 )
 
 //Force emotion to run in "production" mode
-sheet.speedy(true)
+//This is temporary until Emotion 10
+sheet.speedy(false)
