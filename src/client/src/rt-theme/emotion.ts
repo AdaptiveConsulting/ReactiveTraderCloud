@@ -14,8 +14,9 @@ export const {
 } = createEmotion({})
 
 /**
- * Force emotion to run in "production" mode
- * This is temporary until Emotion 10
+ * Until Emotion 10, we need to block Emotion from using speedy mode.
+ * This allows us to use a MutationObserver in our portals to watch
+ * for changes in style tags.
  */
 
 sheet.speedy(false)
