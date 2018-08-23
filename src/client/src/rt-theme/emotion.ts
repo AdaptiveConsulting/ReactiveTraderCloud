@@ -1,7 +1,5 @@
 import createEmotion from 'create-emotion'
 
-const context = typeof global !== 'undefined' ? global : {}
-
 export const {
   flush,
   hydrate,
@@ -13,4 +11,4 @@ export const {
   css,
   sheet,
   caches
-} = createEmotion(context)
+} = createEmotion({})

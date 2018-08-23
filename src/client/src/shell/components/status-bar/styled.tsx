@@ -1,7 +1,6 @@
 import { darken } from 'polished'
 import React from 'react'
-import { css } from 'react-emotion'
-import { styled, StyledComponent } from 'rt-theme'
+import { css, styled, StyledComponent } from 'rt-theme'
 import Icon from './Icon'
 
 export const Body = styled.div`
