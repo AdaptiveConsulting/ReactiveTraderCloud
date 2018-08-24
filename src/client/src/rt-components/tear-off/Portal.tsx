@@ -22,11 +22,7 @@ const defaultPortalProps = {
 
 export type PortalProps = typeof defaultPortalProps
 
-interface PortalState {
-  mounted: boolean
-}
-
-class NewPortal extends React.Component<PortalProps & { environment: EnvironmentValue }, PortalState> {
+class NewPortal extends React.Component<PortalProps & { environment: EnvironmentValue }> {
   externalWindow: Window | null = null
   mutationObserver: MutationObserver | null = null
 
