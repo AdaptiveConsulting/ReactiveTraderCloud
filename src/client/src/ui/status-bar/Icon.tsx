@@ -1,6 +1,6 @@
 import React from 'react'
 import { css } from 'react-emotion'
-import { styled, StyledComponent } from 'rt-theme'
+import { styled } from 'rt-theme'
 
 const Icon: React.SFC<{
   name: string
@@ -14,7 +14,7 @@ interface IconProps {
   size?: number
 }
 
-export default styled(Icon)`
+export default styled(Icon)<IconProps>`
   ${({ size = 1.5 }) => css`
     min-width: ${size}rem;
     max-width: ${size}rem;
@@ -30,4 +30,4 @@ export default styled(Icon)`
   border-radius: 50%;
   background-color: ${props => props.theme.backgroundColor || 'inherit'};
   color: ${props => props.theme.textColor || 'inherit'};
-` as StyledComponent<IconProps>
+`

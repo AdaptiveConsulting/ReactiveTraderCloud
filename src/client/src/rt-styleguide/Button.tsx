@@ -1,11 +1,11 @@
 import _ from 'lodash'
-import React from 'react'
+import React, { ButtonHTMLAttributes } from 'react'
 import { css } from 'react-emotion'
-import { resolvesColor, styled, StyledComponent, ThemeProvider } from 'rt-theme'
+import { resolvesColor, styled, ThemeProvider } from 'rt-theme'
 
 import { userSelectButton, userSelectNone } from './rules'
 
-export interface ButtonStyleProps extends React.HTMLProps<React.Component<any, any, any>> {
+export interface ButtonStyleProps {
   intent?: string
   active?: boolean
   outline?: boolean
@@ -13,8 +13,6 @@ export interface ButtonStyleProps extends React.HTMLProps<React.Component<any, a
   pill?: boolean
   size?: number
 }
-
-export type ButtonStyledComponent = StyledComponent<ButtonStyleProps>
 
 const rules = {
   boxShadow: css`
@@ -74,9 +72,9 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
   }
 }
 
-export class Button extends React.Component<ButtonStyleProps> {
+export class Button extends React.Component<ButtonStyleProps & ButtonHTMLAttributes<Element>> {
   render() {
-    const { children, intent, active, disabled, outline, pill, size, ...rest } = this.props as ButtonStyleProps
+    const { children, intent, active, disabled, outline, pill, size, ...rest } = this.props
     const props = {
       intent,
       active,
@@ -118,7 +116,7 @@ export class ButtonGroup extends React.Component<ButtonStyleProps> {
   }
 }
 
-const BaseElement: ButtonStyledComponent = styled.div`
+const BaseElement = styled.button<ButtonStyleProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -187,7 +185,7 @@ const BaseElement: ButtonStyledComponent = styled.div`
     `};
 `
 
-export const StyledButton: ButtonStyledComponent = styled(BaseElement)`
+export const StyledButton = styled(BaseElement)<ButtonStyleProps>`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;
@@ -226,7 +224,7 @@ export const StyledButton: ButtonStyledComponent = styled(BaseElement)`
   }};
 `
 
-export const StyledButtonGroup: ButtonStyledComponent = styled(BaseElement)`
+export const StyledButtonGroup = styled(BaseElement)<ButtonStyleProps>`
   ${StyledButton} {
     min-width: 1rem;
     padding-left: 0.625rem;

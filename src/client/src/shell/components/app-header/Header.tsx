@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 
-import { styled, StyledComponent, ThemeState } from 'rt-theme'
+import { styled, ThemeState } from 'rt-theme'
 
 import Logo from './Logo'
 
@@ -69,7 +69,7 @@ const Fill = styled.div`
   cursor: -webkit-grab;
 `
 
-const IconButton: StyledComponent = styled.div`
+const IconButton = styled.button<{ type: string }>`
   width: 2rem;
   height: 2rem;
   font-size: 1rem;

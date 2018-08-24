@@ -1,7 +1,7 @@
 import { darken } from 'polished'
 import React from 'react'
 import { css } from 'react-emotion'
-import { styled, StyledComponent } from 'rt-theme'
+import { styled } from 'rt-theme'
 import Icon from './Icon'
 
 export const Body = styled.div`
@@ -15,7 +15,7 @@ export const Body = styled.div`
   padding: 0 1rem;
 `
 
-export const Root: StyledComponent<{ expand?: boolean }> = styled.div`
+export const Root = styled.div<{ expand?: boolean }>`
   width: 100%;
   height: min-content;
 

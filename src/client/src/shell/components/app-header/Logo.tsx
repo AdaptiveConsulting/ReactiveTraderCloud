@@ -1,10 +1,12 @@
-import React from 'react'
-import { styled, StyledComponent } from 'rt-theme'
+import React, { SVGAttributes } from 'react'
+import { styled } from 'rt-theme'
 
-const Logo: React.SFC<{
+interface LogoProps extends SVGAttributes<Element> {
   fill?: string
   size?: number
-}> = ({ fill = '#000', size = 2, ...props }) => (
+}
+
+const Logo: React.SFC<LogoProps> = ({ fill = '#000', size = 2, ...props }) => (
   <svg width={size * 70} height={size * 16} viewBox="0 0 140 32" xmlns="http://www.w3.org/2000/svg" {...props}>
     <g fill={fill} fillRule="nonzero">
       <g>
@@ -31,4 +33,4 @@ export default styled(Logo)`
   [fill] {
     fill: ${props => props.theme.shell.textColor};
   }
-` as StyledComponent
+`

@@ -4,7 +4,7 @@ import { css } from 'emotion'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import { rules } from 'rt-styleguide'
-import { styled, StyledComponent } from 'rt-theme'
+import { styled } from 'rt-theme'
 
 export interface ControlProps {
   minimize?: () => void
@@ -77,7 +77,7 @@ const ControlGroup = styled.div`
   z-index: 20;
 `
 
-const Header: StyledComponent<{ hide?: boolean }> = styled.div`
+const Header = styled.div<{ hide?: boolean }>`
   display: flex;
   width: 100%;
   height: 2rem;
@@ -116,7 +116,7 @@ const Header: StyledComponent<{ hide?: boolean }> = styled.div`
         `};
 `
 
-const HeaderControl: StyledComponent<{ intent?: string }> = styled.div`
+const HeaderControl = styled.div<{ intent?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
