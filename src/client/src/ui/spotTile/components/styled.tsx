@@ -32,6 +32,5 @@ export const Icon = styled('i')`
 `
 
 export const Button = styled('button')`
-  font-family: Lato;
   border: none;
 `

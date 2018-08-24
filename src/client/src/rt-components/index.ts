@@ -1,6 +1,6 @@
-export { EnvironmentProvider, withEnvironment, Environment } from './EnvironmentProvider'
+export { Environment, EnvironmentValue, withEnvironment } from './Environment'
 export { TearOff } from './tear-off'
-export { default as OpenFinChrome } from './OpenFinChrome'
+export { OpenFinChrome, OpenFinControls, OpenFinHeader } from './open-fin'
 export { Flex, flexStyle } from './flex'
 export { PopoutIcon, ExpandIcon, LogoIcon } from './icons'
 export { default as Modal } from './modal'

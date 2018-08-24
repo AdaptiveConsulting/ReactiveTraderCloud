@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Environment, withEnvironment } from 'rt-components'
+import { EnvironmentValue, withEnvironment } from 'rt-components'
 import { Direction } from 'rt-types'
 import { GlobalState } from 'StoreTypes'
 import { SpotTileActions } from './actions'
@@ -14,7 +14,7 @@ export interface SpotTileContainerOwnProps {
   id: string
   onPopoutClick?: () => void
   tornOff?: boolean
-  environment: Environment
+  environment: EnvironmentValue
 }
 
 type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>

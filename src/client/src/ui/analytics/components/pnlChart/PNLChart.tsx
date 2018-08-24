@@ -72,7 +72,7 @@ export default class PNLChart extends React.Component<PNLChartProps> {
         series: 'PNL',
         label: 'PNL',
         area: true,
-        color: 'slategray',
+        color: 'rgba(127, 127, 127, 0.1)',
         values: seriesData
       }
     ]
@@ -119,18 +119,15 @@ export default class PNLChart extends React.Component<PNLChartProps> {
           margin={{ left: 16, right: 0, top: 8, bottom: 8 }}
         />
       )
-    } else {
-      pnlChart = <div>No PNL data yet</div>
     }
 
     return (
-      <div>
+      <React.Fragment>
         <div className="analytics__header">
-          <span className="analytics__header-title">Profit and Loss</span>
           <span className={analyticsHeaderClassName}>USD {formattedLastPos}</span>
         </div>
         <div className="analytics__chart-container">{pnlChart}</div>
-      </div>
+      </React.Fragment>
     )
   }
 }

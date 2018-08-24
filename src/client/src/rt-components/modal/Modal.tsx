@@ -1,5 +1,5 @@
+import { darken } from 'polished'
 import React from 'react'
-
 import { styled } from 'rt-theme'
 
 const ModalContainer = styled.div`
@@ -38,7 +38,8 @@ const ModalPanel = styled.div`
   background: ${({ theme }) => theme.component.backgroundColor};
   color: ${({ theme }) => theme.component.textColor};
   border-radius: 0.25rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1rem 1rem ${props => props.theme.overlay.backgroundColor};
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 1rem 3rem -1rem ${props => darken(0.1, props.theme.overlay.backgroundColor)};
 `
 
 const Header = styled.div`
@@ -59,7 +60,7 @@ interface Props {
 
 // TODO disable tabbing outside of the modal
 // tslint:disable-next-line:variable-name
-class Modal extends React.Component<Props> {
+export default class Modal extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
     this.onDismiss = this.onDismiss.bind(this)
@@ -87,5 +88,3 @@ class Modal extends React.Component<Props> {
     )
   }
 }
-
-export default Modal

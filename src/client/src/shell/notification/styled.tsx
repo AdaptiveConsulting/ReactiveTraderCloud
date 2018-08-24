@@ -4,7 +4,7 @@ import { styled } from 'rt-theme'
 export const Notification = styled('div')`
   height: 100%;
   background-color: ${props => props.theme.component.backgroundColor};
-  color: ${props => props.theme.component.textColor}
+  color: ${props => props.theme.component.textColor};
   user-select: none;
   display: flex;
   flex-direction: column;

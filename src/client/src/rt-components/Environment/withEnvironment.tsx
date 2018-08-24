@@ -1,18 +1,10 @@
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import React from 'react'
 
-const environmentContext = {
-  isRunningDesktop: false
-}
-
-export type Environment = typeof environmentContext
-
-export const { Provider: EnvironmentProvider, Consumer: EnvironmentConsumer } = React.createContext<Environment>(
-  environmentContext
-)
+import { Environment, EnvironmentValue } from './EnvironmentContext'
 
 interface EnviromentProps {
-  environment: Environment
+  environment: EnvironmentValue
 }
 
 function getDisplayName(WrappedComponent: React.ComponentType<any>) {
@@ -25,17 +17,19 @@ export const withEnvironment = <OriginalProps extends object>(
   type Props = Pick<OriginalProps, Exclude<keyof OriginalProps, keyof EnviromentProps>>
 
   class EnvironmentComponent extends React.Component<Props> {
-    static readonly displayName = `WithEnvironmentProvider(${getDisplayName(UnwrappedComponent)})`
+    static readonly displayName = `WithEnvironment(${getDisplayName(UnwrappedComponent)})`
     static readonly WrappedComponent = UnwrappedComponent
 
     render() {
       return (
-        <EnvironmentConsumer>
+        <Environment.Consumer>
           {environment => <UnwrappedComponent {...this.props} environment={environment} />}
-        </EnvironmentConsumer>
+        </Environment.Consumer>
       )
     }
   }
 
   return hoistNonReactStatics(EnvironmentComponent, UnwrappedComponent as any)
 }
+
+export default withEnvironment

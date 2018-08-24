@@ -40,7 +40,7 @@ export default class Analytics extends React.Component<AnalyticsProps> {
     if (!isConnected) {
       return (
         <Root className="analytics__container analytics__container--disconnected">
-          <div ref="analyticsInnerContainer">Analytics disconnected</div>
+          <div ref="analyticsInnerContainer">Disconnected</div>
         </Root>
       )
     }
@@ -49,6 +49,10 @@ export default class Analytics extends React.Component<AnalyticsProps> {
       <Root className="analytics analytics__container animated fadeIn">
         <div className="analytics__controls popout__controls">
           <i className={getWindowButtonClassName(canPopout)} onClick={onPopoutClick} />
+        </div>
+
+        <div className="analytics__header">
+          <span className="analytics__header-title">Analytics</span>
         </div>
         {pnlChartModel && <PNLChart {...pnlChartModel} />}
         <div className="analytics__bubblechart-container">
@@ -60,7 +64,7 @@ export default class Analytics extends React.Component<AnalyticsProps> {
         </div>
         <div>
           <div className="analytics__chart-container">
-            <span className="analytics__chart-title">PnL</span>
+            <span className="analytics__chart-title">Profit and Loss</span>
             {positionsChartModel &&
               !_.isEmpty(positionsChartModel.seriesData) && (
                 <AnalyticsBarChart

@@ -30,7 +30,7 @@
     "build": "npm run build:local",
     "build:local": "cross-env REACT_APP_ENV=local npm run build:react-app",
     "build:cloud": "cross-env REACT_APP_ENV=demo npm run build:react-app",
-    "build:react-app": "react-app-rewired build --scripts-version react-scripts-ts",
+    "build:react-app": "cross-env NODE_ENV=development react-app-rewired build --scripts-version react-scripts-ts",
     "test": "react-app-rewired test --scripts-version react-scripts-ts --env=jsdom",
     "analyze": "source-map-explorer build/static/js/main.*",
     "openfin": "openfin -c public/config/openfin/local.app.json -l",
@@ -51,6 +51,9 @@
     ]
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.2",
+    "@fortawesome/free-solid-svg-icons": "^5.2.0",
+    "@fortawesome/react-fontawesome": "^0.1.2",
     "@types/react-helmet": "^5.0.7",
     "ag-grid": "18.1.2",
     "ag-grid-react": "18.1.0",
