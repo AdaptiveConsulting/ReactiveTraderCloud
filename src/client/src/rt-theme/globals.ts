@@ -55,4 +55,8 @@ export default injectGlobal`
     line-height: 1rem;
     text-rendering: geometricPrecision;
   }
+  
+  html {
+    overflow-y: auto;
+  }
 `
