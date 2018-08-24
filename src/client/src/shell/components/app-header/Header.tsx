@@ -28,7 +28,7 @@ class Header extends React.Component {
   }
 }
 
-const ThemeControl = props => (
+const ThemeControl = () => (
   <ThemeState.Consumer>
     {({ name, setTheme }) => (
       <IconButton onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })} type={name || 'primary'}>

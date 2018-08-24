@@ -8,7 +8,7 @@ import { PositionsBubbleChartProps } from './PositionsBubbleChart'
 
 const baseTradedAmountName = 'baseTradedAmount'
 
-export function getPositionsDataFromSeries(series = [], currencyPairs: CurrencyPair[]) {
+export function getPositionsDataFromSeries(series: CurrencyPairPosition[] = [], currencyPairs: CurrencyPair[]) {
   const baseAmountPropertyName = baseTradedAmountName
   const positionsPerCcyObj = series.reduce((aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
     const { symbol } = ccyPairPosition

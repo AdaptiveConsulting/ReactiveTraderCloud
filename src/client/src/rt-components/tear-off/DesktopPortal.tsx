@@ -22,7 +22,7 @@ export default class DesktopWindow extends React.PureComponent<DesktopWindowProp
   openChild() {
     const { url, name, width: defaultWidth, height: defaultHeight } = this.props
 
-    return new Promise(resolve => {
+    return new Promise<Window>(resolve => {
       const win = new fin.desktop.Window(
         {
           name,

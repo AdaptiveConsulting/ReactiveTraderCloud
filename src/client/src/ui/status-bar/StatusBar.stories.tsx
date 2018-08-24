@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React from 'react'
+import React, { SFC } from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
@@ -68,7 +68,7 @@ _.forEach(connectionState, (state, key) =>
   })
 )
 
-const Root = ({ children, state = {} }) => (
+const Root: SFC<{ state: {} }> = ({ children, state = {} }) => (
   <Provider store={createStore(() => state)}>
     <Story>
       <Container>{children}</Container>

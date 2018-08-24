@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, SFC } from 'react'
 import { Transition } from 'react-spring'
 import { CurrencyPair, TradeStatus } from 'rt-types'
 import { LastTradeExecutionStatus } from '../../model/spotTileData'
@@ -34,7 +34,7 @@ export default class NotificationContainer extends PureComponent<Props> {
       )
     }
     if (!lastTradeExecutionStatus || !hasNotification(lastTradeExecutionStatus)) {
-      return () => null
+      return () => null as SFC<void>
     }
     if (lastTradeExecutionStatus.hasError) {
       return (style: React.CSSProperties) => (
@@ -83,6 +83,6 @@ export default class NotificationContainer extends PureComponent<Props> {
         )
       }
     }
-    return () => null
+    return () => null as SFC<void>
   }
 }

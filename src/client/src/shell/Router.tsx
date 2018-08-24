@@ -19,8 +19,8 @@ export const Router: SFC = () => (
   </BrowserRouter>
 )
 
-const ShellSwitchRoute = props => (
+const ShellSwitchRoute = ({ header }: { header: React.ReactChild }) => (
   <Environment.Consumer>
-    {({ openfin }) => (openfin ? <OpenFinRoute {...props} /> : <ShellRoute {...props} />)}
+    {({ openfin }) => (openfin ? <OpenFinRoute /> : <ShellRoute header={header} />)}
   </Environment.Consumer>
 )

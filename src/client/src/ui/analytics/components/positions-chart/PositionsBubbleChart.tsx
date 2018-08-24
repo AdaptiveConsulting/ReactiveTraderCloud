@@ -6,6 +6,7 @@ import { colors } from 'rt-theme'
 import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
 import reactSizeme from 'react-sizeme'
 import { CurrencyPair } from 'rt-types'
+import { CurrencyPairPosition } from '../../model'
 import {
   createScales,
   drawCircles,
@@ -17,7 +18,7 @@ import {
 } from './chartUtil'
 
 export interface PositionsBubbleChartProps {
-  data: any[]
+  data: CurrencyPairPosition[]
   currencyPairs: CurrencyPair[]
   // passed by reactSizeme :
   size: {
@@ -26,11 +27,17 @@ export interface PositionsBubbleChartProps {
   }
 }
 
-export class PositionsBubbleChart extends React.Component<PositionsBubbleChartProps, any> {
+interface State {
+  nodes: any[]
+  prevPositionsData: any[]
+  updateRequired: boolean
+}
+
+export class PositionsBubbleChart extends React.Component<PositionsBubbleChartProps, State> {
   force: any
   scales: any
   tooltip: any
-  state = {
+  state: State = {
     nodes: [],
     prevPositionsData: [],
     updateRequired: false

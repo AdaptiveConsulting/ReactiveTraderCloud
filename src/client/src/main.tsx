@@ -45,7 +45,7 @@ export const run = () => {
   const store = (window.store = configureStore(applicationDependencies))
 
   window.localStorage.themeName = window.localStorage.themeName || 'light'
-  function updateLocalStorageThemeName(name) {
+  function updateLocalStorageThemeName(name: string) {
     window.localStorage.themeName = name
   }
 
