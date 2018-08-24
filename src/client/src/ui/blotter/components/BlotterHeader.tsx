@@ -23,9 +23,7 @@ const BlotterHeaderStyle = styled('div')`
   padding: 0.5rem 0.5rem 1rem 1.25rem;
 `
 
-const BlotterControls = styled('div')`
-  cursor: pointer;
-
+const BlotterControls = styled('button')`
   .svg-icon {
     opacity: 0.59;
     fill: ${({ theme }) => theme.textColor};

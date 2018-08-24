@@ -9,13 +9,8 @@ interface AppliedFiltersProps {
   removeFilter: (key: string) => void
 }
 
-const FilterIcon = styled('i')`
-  line-height: 1rem;
-  font-size: 0.6875rem;
-  height: 0.75rem;
-  width: 0.6875rem;
+const FilterButton = styled('button')`
   opacity: 0.59;
-  cursor: pointer;
 `
 
 const FilterField = styled('div')`
@@ -32,7 +27,7 @@ const FilterField = styled('div')`
 
   &:hover {
     background-color: ${({ theme }) => theme.foregroundColor};
-    ${FilterIcon} {
+    ${FilterButton} {
       opacity: 1;
     }
   }
@@ -40,6 +35,10 @@ const FilterField = styled('div')`
 
 const FilterName = styled('div')`
   padding-right: 0.625rem;
+`
+
+const FilterIcon = styled('i')`
+  line-height: 1rem;
 `
 
 export default class AppliedFilters extends React.Component<AppliedFiltersProps, any> {
@@ -56,7 +55,9 @@ export default class AppliedFilters extends React.Component<AppliedFiltersProps,
         return (
           <FilterField key={colDef.field}>
             <FilterName>{colDef.headerName}</FilterName>
-            <FilterIcon className="fas fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
+            <FilterButton>
+              <FilterIcon className="fas fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
+            </FilterButton>
           </FilterField>
         )
       })
