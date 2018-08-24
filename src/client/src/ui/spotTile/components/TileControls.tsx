@@ -17,9 +17,7 @@ const TileControlsStyle = styled('div')`
   }
 `
 
-const TopRightButton = styled('div')`
-  cursor: pointer;
-
+const TopRightButton = styled('button')`
   .svg-icon {
     stroke: ${({ theme }) => theme.textColor};
     fill: ${({ theme }) => theme.textColor};
