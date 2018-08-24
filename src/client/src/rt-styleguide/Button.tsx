@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
-import { css } from 'react-emotion'
-import { resolvesColor, styled, StyledComponent, ThemeProvider } from 'rt-theme'
+import { css, resolvesColor, styled, StyledComponent, ThemeProvider } from 'rt-theme'
 
 import { userSelectButton, userSelectNone } from './rules'
 

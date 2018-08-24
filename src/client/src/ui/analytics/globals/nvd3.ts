@@ -1,4 +1,4 @@
-import { injectGlobal } from 'emotion'
+import { injectGlobal } from 'rt-theme'
 
 import { barBgColor, gray, negativeColor, positiveColor, strokeColor, transitionDuration } from './variables'
 

@@ -1,10 +1,9 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { css } from 'emotion'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import { rules } from 'rt-styleguide'
-import { styled, StyledComponent } from 'rt-theme'
+import { css, styled, StyledComponent } from 'rt-theme'
 
 export interface ControlProps {
   minimize?: () => void

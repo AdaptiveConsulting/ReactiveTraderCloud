@@ -1,7 +1,5 @@
 import React from 'react'
-import { keyframes } from 'react-emotion'
-
-import { styled } from 'rt-theme'
+import { keyframes, styled } from 'rt-theme'
 
 const ANIMATION_SPEED = 2
 const BAR_NUMBER = 4

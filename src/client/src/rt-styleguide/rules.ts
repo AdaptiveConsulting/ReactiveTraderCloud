@@ -1,4 +1,4 @@
-import { css } from 'react-emotion'
+import { css } from 'rt-theme'
 
 export const preventStutter = css`
   -webkit-backface-visibility: hidden;
