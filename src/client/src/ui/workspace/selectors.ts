@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
 
-const makePortalProps = key => ({
+const makePortalProps = (key: string) => ({
   title: `${key} Spot`,
   config: {
     name: `${key} Spot`,

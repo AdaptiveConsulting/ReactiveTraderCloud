@@ -1,13 +1,13 @@
-import { css } from 'emotion'
 import React from 'react'
 import { Helmet } from 'react-helmet'
+import { css } from 'rt-theme'
 import { ThemeProvider } from './ThemeProvider'
 import { Theme, themes } from './themes'
 
 type ThemeName = 'light' | 'dark'
 
 interface ThemeSelector {
-  name?: ThemeName
+  name: ThemeName | null
   /**
    * An unused property — this parallel approach would support
    * custom branding on child components — assuming they
@@ -19,14 +19,17 @@ interface ThemeSelector {
 }
 
 interface ThemeStateProps extends ThemeSelector {
-  onChange?: (value: ThemeSelector) => void
+  onChange?: (value: string | null) => void
 }
 
 export interface ThemeStateValue extends ThemeSelector {
   setTheme: (options: ThemeSelector) => void
 }
 
-const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext(null)
+const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue>({
+  name: null,
+  setTheme: () => {}
+})
 
 /**
  * Set default theme and allow descendants to update selected theme.
@@ -39,13 +42,15 @@ class ThemeStateProvider extends React.Component<ThemeStateProps> {
     return <ContextConsumer children={this.renderThemeStateManager} />
   }
 
-  renderThemeStateManager = (context: ThemeStateValue | null) => {
+  renderThemeStateManager = (context: ThemeStateValue) => {
     return <ThemeStateManager context={context} {...this.props} />
   }
 }
 
-class ThemeStateManager extends React.Component<ThemeStateProps & { context: ThemeStateValue }, ThemeStateValue> {
-  static getDerivedStateFromProps(props, state) {
+type ThemeStateManagerProps = ThemeStateProps & { context: ThemeStateValue }
+
+class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeStateValue> {
+  static getDerivedStateFromProps(props: ThemeStateManagerProps, state: ThemeStateValue) {
     const { name, context } = props
 
     if (context == null && name == null) {
@@ -63,7 +68,7 @@ class ThemeStateManager extends React.Component<ThemeStateProps & { context: The
     return null
   }
 
-  state = {
+  state: ThemeStateValue = {
     name: null,
     setTheme: ({ name }: ThemeSelector) => {
       this.setState({ name }, () => {
@@ -77,7 +82,7 @@ class ThemeStateManager extends React.Component<ThemeStateProps & { context: The
   render() {
     const { context, children } = this.props
     const { name } = this.state
-    const theme = themes[name]
+    const theme = themes[name!]
 
     return (
       <ContextProvider value={this.state}>

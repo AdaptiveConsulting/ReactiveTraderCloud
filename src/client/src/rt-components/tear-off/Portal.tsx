@@ -71,7 +71,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
       const parentHead = document.head
       const childHead = this.externalWindow.document.head
 
-      childHead.innerHTML = parentHead.innerHTML
+      childHead.innerHTML = parentHead.innerHTML.replace(/\/static/g, window.location.href + 'static')
 
       this.externalWindow.document.body.appendChild(this.container)
 

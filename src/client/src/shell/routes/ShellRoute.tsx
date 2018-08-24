@@ -1,18 +1,18 @@
 import React from 'react'
-import { AnalyticsContainer } from 'ui/analytics'
+import { AnalyticsContainer } from '../../ui/analytics'
 
 import SplitPane from 'react-split-pane'
 
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
-import { BlotterContainer } from 'ui/blotter'
-import StatusBar from 'ui/status-bar'
-import { WorkspaceContainer } from 'ui/workspace'
+import { BlotterContainer } from '../../ui/blotter'
+import StatusBar from '../../ui/status-bar'
+import { WorkspaceContainer } from '../../ui/workspace'
 
 import ReconnectModal from '../components/reconnect-modal'
 import SidebarRegionContainer from '../components/sidebar'
 
-import DefaultLayout from 'shell/layouts/DefaultLayout'
+import DefaultLayout from '../layouts/DefaultLayout'
 
 const portalProps = {
   blotterRegion: {

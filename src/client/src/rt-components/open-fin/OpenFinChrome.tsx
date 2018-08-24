@@ -1,10 +1,9 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { css } from 'emotion'
-import React from 'react'
+import React, { SFC } from 'react'
 import { Helmet } from 'react-helmet'
 import { rules } from 'rt-styleguide'
-import { styled } from 'rt-theme'
+import { css, styled } from 'rt-theme'
 
 export interface ControlProps {
   minimize?: () => void
@@ -16,7 +15,7 @@ export interface HeaderProps extends ControlProps {
   hide?: boolean
 }
 
-export const OpenFinChrome = ({ children }) => (
+export const OpenFinChrome: SFC<{}> = ({ children }) => (
   <React.Fragment>
     <Helmet>
       <style type="text/css">{`

@@ -1,26 +1,8 @@
-export interface PositionsChartModel {
-  seriesData: any[]
-  options: {
-    showYAxis: boolean
-    showXAxis: boolean
-    showLegend: boolean
-    useInteractiveGuideline: boolean
-    duration: number
-    showValues: boolean
-    showControls: boolean
-    tooltip: {
-      enabled: boolean
-    }
-    margin: {
-      top: number
-      right: number
-      bottom: number
-    }
-  }
-  yAxisValuePropertyName: any
-}
+import { CurrencyPairPosition } from './currencyPairPosition'
 
-export const getPositionsChartModel = data => {
+export type PositionsChartModel = ReturnType<typeof getPositionsChartModel>
+
+export const getPositionsChartModel = (data: CurrencyPairPosition[]) => {
   const baseTradedAmount = 'baseTradedAmount' // from CurrencyPairPosition
 
   return {

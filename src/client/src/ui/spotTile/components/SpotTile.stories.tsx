@@ -226,7 +226,7 @@ const options = {
 const tradeOptions = {
   rejected: tradeRejected,
   done: tradeExecuted,
-  none: null
+  none: null as null
 }
 
 stories.add('Switch', () => {

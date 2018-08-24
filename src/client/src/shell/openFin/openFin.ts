@@ -68,9 +68,6 @@ export default class OpenFin {
   }
 
   addSubscription(name: string, callback: (msg: any, uuid: any) => void) {
-    if (!this.isPresent) {
-      return
-    }
     if (!fin.desktop.InterApplicationBus) {
       fin.desktop.main(() => {
         fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
@@ -128,7 +125,7 @@ export default class OpenFin {
    * @param symbol
    * @returns {Promise|Promise<T>}
    */
-  displayCurrencyChart(symbol) {
+  displayCurrencyChart(symbol: string) {
     return new Promise<string>((resolve, reject) => {
       const chartIqAppId = 'ChartIQ'
       fin.desktop.System.getAllApplications(apps => {
@@ -172,7 +169,7 @@ export default class OpenFin {
    * @returns {Promise<void>|Promise.<T>|Promise<T>}
    * @private
    */
-  refreshCurrencyChart(symbol) {
+  refreshCurrencyChart(symbol: string) {
     const interval = 5
     fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', {
       symbol,
@@ -186,14 +183,14 @@ export default class OpenFin {
    * @returns {Promise<T>|Promise}
    * @private
    */
-  launchCurrencyChart(symbol) {
+  launchCurrencyChart(symbol: string) {
     return new Promise<string>((resolve, reject) => {
       const interval = 5
       const chartIqAppId = 'ChartIQ'
       const url = `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/chartiq-shim.html?symbol=${symbol}&period=${interval}`
       const name = `chartiq_${new Date().getTime()}`
       const icon = 'http://adaptiveconsulting.github.io/chartiq/icon.png'
-      const app = new fin.desktop.Application(
+      const app: fin.OpenFinApplication = new fin.desktop.Application(
         {
           url,
           name,
@@ -209,7 +206,7 @@ export default class OpenFin {
     })
   }
 
-  openTradeNotification = tradeNotification =>
+  openTradeNotification = (tradeNotification: any) =>
     // tslint:disable-next-line
     new fin.desktop.Notification({
       url: '/index.html?notification=true',
@@ -222,7 +219,7 @@ export default class OpenFin {
       }
     })
 
-  publishCurrentPositions(ccyPairPositions) {
+  publishCurrentPositions(ccyPairPositions: any) {
     if (!this.isPresent) {
       return
     }
@@ -230,14 +227,11 @@ export default class OpenFin {
     fin.desktop.InterApplicationBus.publish('position-update', ccyPairPositions)
   }
 
-  publishPrice(price) {
-    if (!this.isPresent) {
-      return
-    }
+  publishPrice(price: any) {
     fin.desktop.InterApplicationBus.publish('price-update', price)
   }
 
-  sendAllBlotterData(parsed) {
+  sendAllBlotterData(parsed: any) {
     fin.desktop.InterApplicationBus.publish('blotter-data', parsed)
   }
 
