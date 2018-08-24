@@ -1,6 +1,5 @@
-import createEmotionStyled from 'create-emotion-styled'
+import createEmotionStyled, { CreateStyled, StyledComponent } from 'create-emotion-styled'
 import React from 'react'
-import { CreateStyled, StyledComponent } from 'react-emotion'
 import * as emotion from './emotion'
 import { Theme } from './themes'
 
