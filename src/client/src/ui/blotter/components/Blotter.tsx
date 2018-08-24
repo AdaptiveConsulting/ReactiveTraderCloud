@@ -48,6 +48,8 @@ const icons = {
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {
   private gridApi: GridApi | null = null
 
+  private gridDoc = React.createRef<HTMLDivElement>()
+
   state = {
     displayedRows: 0
   }
@@ -61,7 +63,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
         <BlotterStyle>
           <React.Fragment>
             <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
-            <BlotterGrid>
+            <BlotterGrid innerRef={this.gridDoc}>
               <AgGridReact
                 columnDefs={columnDefinitions}
                 defaultColDef={DEFAULT_COLUMN_DEFINITION}
@@ -78,6 +80,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
                 onModelUpdated={this.onModelUpdated}
                 onGridReady={this.onGridReady}
                 icons={icons}
+                getDocument={() => this.gridDoc.current.ownerDocument}
               />
             </BlotterGrid>
             <BlotterStatus>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatus>
