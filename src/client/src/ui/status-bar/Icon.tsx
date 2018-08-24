@@ -1,6 +1,5 @@
 import React from 'react'
-import { css } from 'react-emotion'
-import { styled, StyledComponent } from 'rt-theme'
+import { css, styled, StyledComponent } from 'rt-theme'
 
 const Icon: React.SFC<{
   name: string
