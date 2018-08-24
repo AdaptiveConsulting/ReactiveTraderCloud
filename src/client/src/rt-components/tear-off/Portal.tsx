@@ -58,7 +58,8 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
 
   createWindow = (createdWindow: Window) => {
     this.externalWindow = createdWindow
-    this.externalWindow.addEventListener('beforeunload', () => this.release())
+    this.externalWindow.addEventListener('beforeunload', this.release)
+    window.addEventListener('beforeunload', this.release)
     this.injectIntoWindow()
   }
 
@@ -103,6 +104,8 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
 
   release = () => {
     const { onUnload } = this.props
+
+    window.removeEventListener('beforeunload', this.release)
 
     if (this.mutationObserver) {
       this.mutationObserver.disconnect()
