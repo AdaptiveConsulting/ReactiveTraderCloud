@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { styled, StyledComponent, ThemeState } from 'rt-theme'
+import { styled, ThemeState } from 'rt-theme'
 
 // TODO make styleguide globals?
 import 'rt-theme'
@@ -30,7 +30,7 @@ class Story extends Component {
   }
 }
 
-const IconButton: StyledComponent = styled.div`
+const IconButton = styled.div<{ type: string }>`
   width: 2rem;
   height: 2rem;
   font-size: 1rem;

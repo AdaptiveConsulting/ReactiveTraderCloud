@@ -10,7 +10,7 @@ enum levels {
 
 const order = Object.keys(levels)
 
-let currentLevel = order.indexOf(process.env.NODE_ENV === 'production' ? levels.warn : levels.error)
+let currentLevel = order.indexOf(process.env.NODE_ENV === 'production' ? levels.error : levels.verbose)
 
 let sink = (logEvent: LogParams) => {
   console[logEvent.level].call(null, `${logEvent.logger}:`, ...Array.from(logEvent.args))
