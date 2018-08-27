@@ -139,7 +139,8 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
 
     blue: {
       base: accents.accent.base,
-      light: accents.accent['2']
+      light: accents.accent['2'],
+      dark: accents.accent['1']
     },
 
     red: {

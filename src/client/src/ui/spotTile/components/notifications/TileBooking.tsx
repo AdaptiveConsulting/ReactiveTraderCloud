@@ -13,13 +13,27 @@ const TileBookingStyle = styled('div')`
 `
 
 const BookingPill = styled(Flex)`
-  background-color: ${({ theme }) => theme.blue.base};
+  background: ${({ theme }) => theme.blue.base};
   padding: 0.75rem 0.9375rem;
   border-radius: 17px;
 
   .svg-icon {
     padding-right: 0.625rem;
     fill: ${({ theme }) => theme.white};
+  }
+
+  animation: pulse 2s infinite;
+
+  @keyframes pulse {
+    0% {
+      background: ${({ theme }) => theme.blue.base};
+    }
+    70% {
+      background: ${({ theme }) => theme.blue.dark};
+    }
+    100% {
+      background: ${({ theme }) => theme.blue.base};
+    }
   }
 `
 
@@ -38,7 +52,7 @@ const TileBooking: React.SFC<Props> = ({ show }) => (
       (styles => (
         <TileBookingStyle style={styles}>
           <BookingPill>
-            <AdaptiveLoader size={14} speed={0.7} seperation={1.5} type="secondary" />
+            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
             <BookingStatus>Executing</BookingStatus>
           </BookingPill>
         </TileBookingStyle>
