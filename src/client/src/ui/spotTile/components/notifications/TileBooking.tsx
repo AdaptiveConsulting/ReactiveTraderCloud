@@ -13,15 +13,9 @@ const TileBookingStyle = styled('div')`
 `
 
 const BookingPill = styled(Flex)`
-  background: ${({ theme }) => theme.blue.base};
   padding: 0.75rem 0.9375rem;
   border-radius: 17px;
-
-  .svg-icon {
-    padding-right: 0.625rem;
-    fill: ${({ theme }) => theme.white};
-  }
-
+  background: ${({ theme }) => theme.blue.base};
   animation: pulse 2s infinite;
 
   @keyframes pulse {
@@ -34,6 +28,10 @@ const BookingPill = styled(Flex)`
     100% {
       background: ${({ theme }) => theme.blue.base};
     }
+  }
+
+  rect {
+    fill: ${({ theme }) => theme.white};
   }
 `
 
