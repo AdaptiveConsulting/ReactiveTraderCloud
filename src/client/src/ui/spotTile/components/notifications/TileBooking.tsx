@@ -14,9 +14,8 @@ const TileBookingStyle = styled('div')`
 
 const BookingPill = styled(Flex)`
   background-color: ${({ theme }) => theme.blue.base};
-  padding: 0.625rem 0.875rem;
+  padding: 0.75rem 0.9375rem;
   border-radius: 17px;
-  box-shadow: 0 0 2rem ${({ theme }) => theme.blue.base}, 0 0 0.5rem ${({ theme }) => theme.blue.light};
 
   .svg-icon {
     padding-right: 0.625rem;
