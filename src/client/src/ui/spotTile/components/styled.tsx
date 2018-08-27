@@ -1,3 +1,4 @@
+import { TearOffContainer } from 'rt-components'
 import { styled } from 'rt-theme'
 
 export interface ColorProps {
@@ -25,6 +26,10 @@ export const TileBaseStyle = styled('div')`
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
+
+  ${TearOffContainer} & {
+    border-radius: 0px;
+  }
 `
 
 export const Icon = styled('i')`

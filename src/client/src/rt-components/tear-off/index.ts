@@ -1,1 +1,1 @@
-export { TearOffConnected as TearOff } from './TearOff'
+export { TearOffConnected as TearOff, TearOffContainer } from './TearOff'
