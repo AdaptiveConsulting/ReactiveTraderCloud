@@ -58,6 +58,7 @@ export default injectGlobal`
   
   html {
     overflow-y: auto;
+  }
 
   ::-webkit-scrollbar {
     width: 6px;
@@ -66,7 +67,7 @@ export default injectGlobal`
 
   ::-webkit-scrollbar-thumb {
     border-radius: 2px;
-    background-color: rgba(212, 221, 232, .3);
+    background-color: rgba(212, 221, 232, .4);
   }
 
   ::-webkit-scrollbar-corner {

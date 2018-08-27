@@ -1,6 +1,6 @@
 import React from 'react'
 import { Transition } from 'react-spring'
-import { Flex, LogoIcon } from 'rt-components'
+import { AdaptiveLoader, Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 
 const TileBookingStyle = styled('div')`
@@ -39,7 +39,7 @@ const TileBooking: React.SFC<Props> = ({ show }) => (
       (styles => (
         <TileBookingStyle style={styles}>
           <BookingPill>
-            <LogoIcon />
+            <AdaptiveLoader size={14} speed={0.7} seperation={1.5} type="secondary" />
             <BookingStatus>Executing</BookingStatus>
           </BookingPill>
         </TileBookingStyle>
