@@ -55,7 +55,11 @@ export default injectGlobal`
     line-height: 1rem;
     text-rendering: geometricPrecision;
   }
-
+  
+  html {
+    overflow-y: auto;
+  }
+  
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
