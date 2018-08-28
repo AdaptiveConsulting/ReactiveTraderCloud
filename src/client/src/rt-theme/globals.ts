@@ -59,7 +59,7 @@ export default injectGlobal`
   html {
     overflow-y: auto;
   }
-
+  
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
