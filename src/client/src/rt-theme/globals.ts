@@ -55,4 +55,18 @@ export default injectGlobal`
     line-height: 1rem;
     text-rendering: geometricPrecision;
   }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: rgba(212, 221, 232, .3);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background-color: rgba(0,0,0,0);
+  }
 `
