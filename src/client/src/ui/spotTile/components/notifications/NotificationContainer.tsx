@@ -17,7 +17,7 @@ const hasNotification = (tradeStatus: LastTradeExecutionStatus) => tradeStatus.h
 export default class NotificationContainer extends PureComponent<Props> {
   render() {
     return (
-      <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
+      <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0, pointerEvents: 'none' }}>
         {this.renderNotifications()}
       </Transition>
     )
