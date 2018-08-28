@@ -1,4 +1,3 @@
-import '@babel/polyfill'
 import 'rt-theme'
 
 import { parse } from 'query-string'
