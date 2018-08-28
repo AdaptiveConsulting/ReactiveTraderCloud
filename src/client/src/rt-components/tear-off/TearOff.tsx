@@ -2,7 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RegionActions } from 'rt-actions'
+import { styled } from 'rt-theme'
 import Portal, { PortalProps } from './Portal'
+
+export const TearOffContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`
 
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
 
@@ -35,7 +41,7 @@ class TearOff extends React.PureComponent<TearOffProps, { tornOff: boolean }> {
     if (tornOff) {
       return (
         <Portal onUnload={() => this.popIn(id)} {...portalProps}>
-          {render(() => this.popOut(id), tornOff)}
+          <TearOffContainer>{render(() => this.popOut(id), tornOff)}</TearOffContainer>
         </Portal>
       )
     }
