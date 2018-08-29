@@ -10,7 +10,7 @@ const TileControlsStyle = styled('div')`
   top: 0;
   opacity: 0;
   transition: opacity 0.2s;
-  padding: 0 0.375rem;
+  padding: 0.25rem;
 
   ${SpotTileWrapper}:hover & {
     opacity: 0.75;

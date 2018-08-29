@@ -1,6 +1,6 @@
 import React from 'react'
 import { Transition } from 'react-spring'
-import { Flex, LogoIcon } from 'rt-components'
+import { AdaptiveLoader, Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 
 const TileBookingStyle = styled('div')`
@@ -13,13 +13,24 @@ const TileBookingStyle = styled('div')`
 `
 
 const BookingPill = styled(Flex)`
-  background-color: ${({ theme }) => theme.blue.base};
-  padding: 0.625rem 0.875rem;
+  padding: 0.75rem 0.9375rem;
   border-radius: 17px;
-  box-shadow: 0 0 2rem ${({ theme }) => theme.blue.base}, 0 0 0.5rem ${({ theme }) => theme.blue.light};
+  background: ${({ theme }) => theme.blue.base};
+  animation: pulse 2s infinite;
 
-  .svg-icon {
-    padding-right: 0.625rem;
+  @keyframes pulse {
+    0% {
+      background: ${({ theme }) => theme.blue.base};
+    }
+    70% {
+      background: ${({ theme }) => theme.blue.dark};
+    }
+    100% {
+      background: ${({ theme }) => theme.blue.base};
+    }
+  }
+
+  rect {
     fill: ${({ theme }) => theme.white};
   }
 `
@@ -39,7 +50,7 @@ const TileBooking: React.SFC<Props> = ({ show }) => (
       (styles => (
         <TileBookingStyle style={styles}>
           <BookingPill>
-            <LogoIcon />
+            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
             <BookingStatus>Executing</BookingStatus>
           </BookingPill>
         </TileBookingStyle>
