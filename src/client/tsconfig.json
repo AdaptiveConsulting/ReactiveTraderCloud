@@ -17,7 +17,7 @@
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
     "declaration": false,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "skipLibCheck": true,
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true
