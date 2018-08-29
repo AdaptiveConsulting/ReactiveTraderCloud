@@ -10,7 +10,7 @@ import PNLChart from './pnlChart/PNLChart'
 
 import { PopoutIcon } from 'rt-components'
 import { ThemeProvider } from 'rt-theme'
-import { AnalyticsStyle, BubbleChart, CloseButton, Controls, Header, Root, Title } from './styled'
+import { AnalyticsStyle, BubbleChart, Chart, Controls, Disconnected, Header, PopoutButton, Root, Title } from './styled'
 
 export interface Props {
   canPopout: boolean
@@ -40,9 +40,9 @@ export default class Analytics extends React.Component<Props> {
 
     if (!isConnected) {
       return (
-        <Root className="analytics__container--disconnected">
+        <Disconnected>
           <div>Disconnected</div>
-        </Root>
+        </Disconnected>
       )
     }
 
@@ -53,23 +53,23 @@ export default class Analytics extends React.Component<Props> {
             <Header>
               {canPopout && (
                 <Controls>
-                  <CloseButton onClick={onPopoutClick}>
+                  <PopoutButton onClick={onPopoutClick}>
                     <PopoutIcon width={0.8125} height={0.75} />
-                  </CloseButton>
+                  </PopoutButton>
                 </Controls>
               )}
               <Title>Analytics</Title>
             </Header>
-            {pnlChartModel && <PNLChart {...pnlChartModel} />}
+            <Chart>{pnlChartModel && <PNLChart {...pnlChartModel} />}</Chart>
+            <Title>Positions</Title>
             <BubbleChart>
-              <Title>Positions</Title>
               {positionsChartModel &&
                 !_.isEmpty(positionsChartModel.seriesData) && (
                   <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
                 )}
             </BubbleChart>
-            <div className="analytics__chart-container">
-              <Title>Profit and Loss</Title>
+            <Title>Profit and Loss</Title>
+            <Chart>
               {positionsChartModel &&
                 !_.isEmpty(positionsChartModel.seriesData) && (
                   <AnalyticsBarChart
@@ -78,7 +78,7 @@ export default class Analytics extends React.Component<Props> {
                     isPnL={true}
                   />
                 )}
-            </div>
+            </Chart>
           </Root>
         </AnalyticsStyle>
       </ThemeProvider>

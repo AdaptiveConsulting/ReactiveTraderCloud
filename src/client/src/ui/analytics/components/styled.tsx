@@ -38,31 +38,42 @@ export const BubbleChart = styled.div`
   height: 18rem;
 `
 
-export const Root = styled.div`
-  height: 100%;
+export const Chart = styled.div`
+  position: relative;
 
-  .analytics__chart-container {
-    position: relative;
-    background: inherit;
-    width: 100%;
-
-    font-size: 0.75rem;
-    .nv-lineChart {
-      .nv-axis.nv-y {
-        text {
-          font-size: 0.5rem;
-          fill: ${({ theme }) => theme.analytics.textColor};
-        }
+  .nv-lineChart {
+    .nv-axis.nv-y {
+      text {
+        font-size: 0.5rem;
+        fill: ${({ theme }) => theme.analytics.textColor};
       }
+    }
 
-      .nv-axis.nv-x {
-        text {
-          font-size: 0.5rem;
-          fill: ${({ theme }) => theme.analytics.textColor};
-        }
+    .nv-axis.nv-x {
+      text {
+        font-size: 0.5rem;
+        fill: ${({ theme }) => theme.analytics.textColor};
       }
     }
   }
+
+  /* axis labels */
+  .nv-lineChart .nv-axis.nv-x text,
+  .nv-lineChart .nv-axis.nv-y text {
+    fill: currentColor;
+  }
+`
+
+export const Disconnected = styled.div`
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+`
+
+export const Root = styled.div`
+  height: 100%;
 
   .analytics__positions-tooltip {
     position: absolute;
@@ -262,12 +273,6 @@ export const Root = styled.div`
     stop-opacity: 0.5;
   }
 
-  /* axis labels */
-  .analytics__chart-container .nv-lineChart .nv-axis.nv-x text,
-  .analytics__chart-container .nv-lineChart .nv-axis.nv-y text {
-    fill: currentColor;
-  }
-
   .analytics__chart-tooltip {
     font-weight: 500;
     display: block;
@@ -276,14 +281,6 @@ export const Root = styled.div`
 
   .analytics__chart-tooltip-date {
     font-weight: 600;
-  }
-
-  .analytics__container--disconnected {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
   }
 `
 
@@ -300,7 +297,7 @@ export const Controls = styled('div')`
   }
 `
 
-export const CloseButton = styled('button')`
+export const PopoutButton = styled('button')`
   .svg-icon {
     stroke: ${({ theme }) => theme.analytics.textColor};
     fill: ${({ theme }) => theme.analytics.textColor};
