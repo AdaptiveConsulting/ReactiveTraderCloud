@@ -10,7 +10,7 @@ interface Props {
 
 const MovementIcon = styled('i')<{ show: boolean; color: string }>`
   text-align: center;
-  color: ${({ theme, color }) => theme[color].base}}};
+  color: ${({ theme, color }) => theme[color].base};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
 `
 
