@@ -5,7 +5,7 @@ import { ThemeProvider } from 'rt-theme'
 
 import { GlobalState } from 'StoreTypes'
 import Icon from './Icon'
-import { Body, ExpandToggle, Fill, NodeCount, Root, ServiceList, ServiceName, ServiceRoot } from './styled'
+import { Content, ExpandToggle, Fill, Header, NodeCount, Root, ServiceList, ServiceName, ServiceRoot } from './styled'
 
 interface ServiceStatus {
   serviceType: string
@@ -43,32 +43,33 @@ class StatusBar extends Component<StatusBarProps, State> {
       <ThemeProvider
         theme={theme => theme.button[mode === 'connected' ? 'good' : mode === 'connecting' ? 'aware' : 'bad']}
       >
-        <Root expand={expanded}>
-          <Body onClick={this.toggleExpanded}>
-            <Icon name="check" />
+        <Root>
+          <Content expand={expanded}>
+            <Header onClick={this.toggleExpanded}>
+              <Icon name="check" />
+              {mode === 'disconnected' ? (
+                'Disconnected'
+              ) : (
+                <React.Fragment>
+                  {_.capitalize(mode)} to {url} ({transportType})
+                </React.Fragment>
+              )}
+              <Fill />
 
-            {mode === 'disconnected' ? (
-              'Disconnected'
-            ) : (
-              <React.Fragment>
-                {_.capitalize(mode)} to {url} ({transportType})
-              </React.Fragment>
-            )}
-            <Fill />
+              <ExpandToggle expand={expanded} />
+            </Header>
 
-            <ExpandToggle expand={expanded} />
-          </Body>
-
-          <ServiceList>
-            {_.map(SERVICES, service => serviceStatus[service.serviceType] || service).map((service, index) => (
-              <ThemeProvider
-                key={service.serviceType}
-                theme={theme => theme.button[service.isConnected ? 'good' : mode === 'connecting' ? 'aware' : 'bad']}
-              >
-                <Service service={service} index={index} />
-              </ThemeProvider>
-            ))}
-          </ServiceList>
+            <ServiceList>
+              {_.map(SERVICES, service => serviceStatus[service.serviceType] || service).map((service, index) => (
+                <ThemeProvider
+                  key={service.serviceType}
+                  theme={theme => theme.button[service.isConnected ? 'good' : mode === 'connecting' ? 'aware' : 'bad']}
+                >
+                  <Service service={service} index={index} />
+                </ThemeProvider>
+              ))}
+            </ServiceList>
+          </Content>
         </Root>
       </ThemeProvider>
     )

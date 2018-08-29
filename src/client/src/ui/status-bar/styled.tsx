@@ -1,53 +1,34 @@
 import { darken } from 'polished'
 import React from 'react'
-import { css, styled } from 'rt-theme'
+import { styled } from 'rt-theme'
 import Icon from './Icon'
 
-export const Body = styled.div`
+const headerHeight = '2rem'
+
+export const Header = styled.div`
   display: flex;
   align-items: center;
-
-  min-height: 3rem;
-  max-height: 3rem;
-
+  height: 2rem;
   cursor: pointer;
   padding: 0 1rem;
 `
 
-export const Root = styled.div<{ expand?: boolean }>`
+const expandedHeight = `calc(-100% + ${headerHeight})`
+export const Content = styled.div<{ expand?: boolean }>`
+  transform-origin: center left;
+  transition: transform ${({ theme }) => theme.motion.duration}ms ease;
+  transform: translateY(${props => (props.expand ? expandedHeight : 0)});
+  background-color: ${props => props.theme.backgroundColor};
+`
+
+export const Root = styled.div`
   width: 100%;
-  height: min-content;
+  min-height: ${headerHeight};
+  max-height: ${headerHeight};
+  z-index: 20;
 
   font-size: 0.75rem;
 
-  &,
-  ${Body} {
-    transform-origin: center left;
-  }
-
-  ${({ theme }) =>
-    css`
-      transition: transform ${theme.motion.duration}ms ${theme.motion.easing};
-    `};
-
-  ${({ expand }) =>
-    expand
-      ? css`
-          transform: translateY(calc(-100% + 2rem));
-
-          ${Body} {
-            transform: translateY(0);
-          }
-        `
-      : css`
-          transform: translateY(0);
-
-          ${Body} {
-            transform: translateY(-0.5rem);
-          }
-        `};
-
-  background-color: ${props => props.theme.backgroundColor};
   color: ${props => props.theme.textColor};
 
   ${Icon} {
