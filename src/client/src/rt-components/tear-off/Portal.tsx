@@ -71,9 +71,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
       childHead.innerHTML = parentHead.innerHTML.replace(/\/static/g, window.location.href + 'static')
       this.externalWindow.document.title = title
 
-      setTimeout(() => {
-        this.externalWindow.document.body.appendChild(this.container)
-      }, 200)
+      setTimeout(() => this.externalWindow.document.body.appendChild(this.container), 200)
 
       this.forceUpdate()
 
