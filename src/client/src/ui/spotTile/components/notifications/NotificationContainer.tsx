@@ -1,4 +1,4 @@
-import React, { PureComponent, SFC } from 'react'
+import React, { PureComponent } from 'react'
 import { Transition } from 'react-spring'
 import { CurrencyPair, TradeStatus } from 'rt-types'
 import { LastTradeExecutionStatus } from '../../model/spotTileData'
@@ -23,7 +23,7 @@ export default class NotificationContainer extends PureComponent<Props> {
     )
   }
 
-  private renderNotifications = () => {
+  private renderNotifications: () => ((style: React.CSSProperties) => JSX.Element | null) = () => {
     const { lastTradeExecutionStatus, currencyPair, onNotificationDismissed, isPriceStale } = this.props
     const symbols = `${currencyPair.base}/${currencyPair.terms}`
     if (isPriceStale) {
@@ -34,7 +34,7 @@ export default class NotificationContainer extends PureComponent<Props> {
       )
     }
     if (!lastTradeExecutionStatus || !hasNotification(lastTradeExecutionStatus)) {
-      return (() => null) as SFC<object>
+      return () => null
     }
     if (lastTradeExecutionStatus.hasError) {
       return (style: React.CSSProperties) => (
@@ -83,6 +83,6 @@ export default class NotificationContainer extends PureComponent<Props> {
         )
       }
     }
-    return (() => null) as SFC<object>
+    return () => null
   }
 }
