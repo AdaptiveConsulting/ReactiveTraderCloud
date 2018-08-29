@@ -6,6 +6,7 @@ export const Root = styled.div`
   color: ${({ theme }) => theme.textColor};
   background-color: ${({ theme }) => theme.backgroundColor};
   height: 100%;
+  position: relative;
 
   .analytics__chart-container {
     position: relative;
@@ -62,10 +63,6 @@ export const Root = styled.div`
 
   .analytics__barchart-indicator--positive {
     background-color: ${({ theme }) => theme.green.normal};
-  }
-
-  .analytics__controls {
-    float: right;
   }
 
   .analytics__header {
@@ -244,15 +241,6 @@ export const Root = styled.div`
     stroke: url('#chartStrokeLinearGradient');
   }
 
-  .analytics__icon--tearoff {
-    cursor: pointer;
-  }
-
-  .analytics__icon--tearoff--hidden {
-    display: none;
-    visibility: hidden;
-  }
-
   .stop1,
   .lineStop1 {
     stop-color: ${({ theme }) => theme.green.normal};
@@ -306,5 +294,25 @@ export const Root = styled.div`
     align-items: center;
     justify-content: center;
     font-size: 1rem;
+  }
+`
+
+export const Controls = styled('div')`
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+  padding: 0.25rem;
+
+  ${Root}:hover & {
+    opacity: 0.75;
+  }
+`
+
+export const CloseButton = styled('button')`
+  .svg-icon {
+    stroke: ${({ theme }) => theme.textColor};
+    fill: ${({ theme }) => theme.textColor};
   }
 `

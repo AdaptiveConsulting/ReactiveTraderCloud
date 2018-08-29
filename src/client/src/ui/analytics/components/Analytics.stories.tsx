@@ -27,7 +27,7 @@ const props: any = {
     EURJPY: { symbol: 'EURJPY', ratePrecision: 3, pipsPosition: 2, base: 'EUR', terms: 'JPY' },
     EURCAD: { symbol: 'EURCAD', ratePrecision: 5, pipsPosition: 4, base: 'EUR', terms: 'CAD' }
   },
-  canPopout: false,
+  canPopout: true,
   isConnected: true,
   pnlChartModel: {
     seriesData: [

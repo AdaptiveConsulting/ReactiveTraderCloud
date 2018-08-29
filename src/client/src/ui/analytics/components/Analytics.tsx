@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import _ from 'lodash'
 import React from 'react'
 import { PNLChartModel } from '../model/pnlChartModel'
@@ -9,8 +8,9 @@ import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 import { CurrencyPairMap } from 'rt-types'
 import PNLChart from './pnlChart/PNLChart'
 
+import { PopoutIcon } from 'rt-components'
 import { ThemeProvider } from 'rt-theme'
-import { Root } from './styled'
+import { CloseButton, Controls, Root } from './styled'
 
 export interface Props {
   canPopout: boolean
@@ -49,10 +49,13 @@ export default class Analytics extends React.Component<Props> {
     return (
       <ThemeProvider theme={theme => theme.analytics}>
         <Root className="analytics analytics__container animated fadeIn">
-          <div className="analytics__controls popout__controls">
-            <i className={getWindowButtonClassName(canPopout)} onClick={onPopoutClick} />
-          </div>
-
+          {canPopout && (
+            <Controls>
+              <CloseButton onClick={onPopoutClick}>
+                <PopoutIcon width={0.8125} height={0.75} />
+              </CloseButton>
+            </Controls>
+          )}
           <div className="analytics__header">
             <span className="analytics__header-title">Analytics</span>
           </div>
@@ -82,9 +85,3 @@ export default class Analytics extends React.Component<Props> {
     )
   }
 }
-
-const getWindowButtonClassName = (canPopout: boolean) =>
-  classnames(
-    'glyphicon glyphicon-new-window',
-    (canPopout && 'analytics__icon--tearoff--hidden') || 'analytics__icon--tearoff'
-  )
