@@ -128,6 +128,7 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
 }
 
 const BarChart = styled.div`
+  position: relative;
   vertical-align: middle;
   padding-top: 0.5rem;
   padding-bottom: 0.75rem;

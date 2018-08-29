@@ -73,9 +73,8 @@ export default class Analytics extends React.Component<Props> {
               )}
               <Title>Analytics</Title>
             </Header>
-            {}
             <LastPosition color={color}>USD {formattedLastPos}</LastPosition>
-            {pnlChartModel && <PNLChart {...pnlChartModel} />}
+            <Chart>{pnlChartModel && <PNLChart {...pnlChartModel} />}</Chart>
             <Title>Positions</Title>
             <BubbleChart>
               {positionsChartModel &&
@@ -84,16 +83,14 @@ export default class Analytics extends React.Component<Props> {
                 )}
             </BubbleChart>
             <Title>Profit and Loss</Title>
-            <Chart>
-              {positionsChartModel &&
-                !_.isEmpty(positionsChartModel.seriesData) && (
-                  <AnalyticsBarChart
-                    chartData={positionsChartModel.seriesData}
-                    currencyPairs={currencyPairs}
-                    isPnL={true}
-                  />
-                )}
-            </Chart>
+            {positionsChartModel &&
+              !_.isEmpty(positionsChartModel.seriesData) && (
+                <AnalyticsBarChart
+                  chartData={positionsChartModel.seriesData}
+                  currencyPairs={currencyPairs}
+                  isPnL={true}
+                />
+              )}
           </Root>
         </AnalyticsStyle>
       </ThemeProvider>

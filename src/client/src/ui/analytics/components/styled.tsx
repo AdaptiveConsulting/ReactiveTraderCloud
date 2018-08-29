@@ -102,9 +102,8 @@ export const Root = styled.div`
 
   .analytics__positions-label {
     fill: ${({ theme }) => theme.white};
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     pointer-events: none;
-    user-select: none;
     user-select: none;
   }
 
