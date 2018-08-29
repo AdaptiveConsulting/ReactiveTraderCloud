@@ -7,7 +7,6 @@ export const gray = rgba(transparentColor, 0.5)
 
 export const positiveColor = colors.accents.good.base
 export const negativeColor = colors.accents.bad.base
-export const barchartTextColor = 'currentColor'
 export const barBgColor = 'currentColor'
 export const pointerColor = 'currentColor'
 

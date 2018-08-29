@@ -1,12 +1,5 @@
 import { styled } from 'rt-theme'
-import {
-  barBgColor,
-  negativeColor,
-  pointerColor,
-  positiveColor,
-  transitionDuration,
-  transparentColor
-} from '../globals/variables'
+import { barBgColor, pointerColor, transparentColor } from '../globals/variables'
 
 export const Root = styled.div`
   flex: 1;
@@ -64,11 +57,11 @@ export const Root = styled.div`
   }
 
   .analytics__barchart-indicator--negative {
-    background-color: ${negativeColor};
+    background-color: ${({ theme }) => theme.red.normal};
   }
 
   .analytics__barchart-indicator--positive {
-    background-color: ${positiveColor};
+    background-color: ${({ theme }) => theme.green.normal};
   }
 
   .analytics__controls {
@@ -91,11 +84,11 @@ export const Root = styled.div`
   }
 
   .analytics__header-value--negative {
-    color: ${negativeColor};
+    color: ${({ theme }) => theme.red.normal};
   }
 
   .analytics__header-value--positive {
-    color: ${positiveColor};
+    color: ${({ theme }) => theme.green.normal};
   }
 
   .analytics__header-title-icon {
@@ -144,7 +137,6 @@ export const Root = styled.div`
   }
 
   .analytics__barchart-border--left {
-    float: left;
     display: inline;
   }
 
@@ -161,12 +153,12 @@ export const Root = styled.div`
 
   .analytics__barchart-pointer-container,
   .analytics__barchart-label-pusher {
-    transition: all ease ${transitionDuration};
+    transition: all ease ${({ theme }) => theme.motion.duration};
   }
   .analytics__barchart-pointer-container {
     position: absolute;
     margin-top: 1.5rem;
-    transition: left ease ${transitionDuration};
+    transition: left ease ${({ theme }) => theme.motion.duration};
     z-index: 1;
     mix-blend-mode: exclusion;
   }
@@ -210,7 +202,6 @@ export const Root = styled.div`
     visibility: hidden;
     font-size: 18px;
     display: inline;
-    float: right;
   }
 
   .analytics__barchart-container:hover .analytics__barchart-amount {
@@ -241,7 +232,7 @@ export const Root = styled.div`
     fill: currentColor;
     font-size: 0.75rem;
     pointer-events: none;
-    select: none;
+    user-select: none;
     user-select: none;
   }
 
@@ -264,23 +255,23 @@ export const Root = styled.div`
 
   .stop1,
   .lineStop1 {
-    stop-color: ${positiveColor};
+    stop-color: ${({ theme }) => theme.green.normal};
     stop-opacity: 0.5;
   }
 
   .stop1End,
   .lineStop1End {
-    stop-color: ${positiveColor};
+    stop-color: ${({ theme }) => theme.green.normal};
   }
 
   .stop2,
   .lineStop2 {
-    stop-color: ${negativeColor};
+    stop-color: ${({ theme }) => theme.red.normal};
   }
 
   .stop2End,
   .lineStop2End {
-    stop-color: ${negativeColor};
+    stop-color: ${({ theme }) => theme.red.normal};
     stop-opacity: 0.5;
   }
 
