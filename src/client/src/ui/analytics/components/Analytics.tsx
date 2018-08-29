@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import numeral from 'numeral'
 import React from 'react'
 import { PNLChartModel } from '../model/pnlChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
@@ -10,7 +11,18 @@ import PNLChart from './pnlChart/PNLChart'
 
 import { PopoutIcon } from 'rt-components'
 import { ThemeProvider } from 'rt-theme'
-import { AnalyticsStyle, BubbleChart, Chart, Controls, Disconnected, Header, PopoutButton, Root, Title } from './styled'
+import {
+  AnalyticsStyle,
+  BubbleChart,
+  Chart,
+  Controls,
+  Disconnected,
+  Header,
+  LastPosition,
+  PopoutButton,
+  Root,
+  Title
+} from './styled'
 
 export interface Props {
   canPopout: boolean
@@ -39,12 +51,13 @@ export default class Analytics extends React.Component<Props> {
     const { canPopout, isConnected, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
 
     if (!isConnected) {
-      return (
-        <Disconnected>
-          <div>Disconnected</div>
-        </Disconnected>
-      )
+      return <Disconnected>Disconnected</Disconnected>
     }
+
+    const lastPos = (pnlChartModel && pnlChartModel.lastPos) || 0
+    const color = getLastPositionColor(lastPos)
+
+    const formattedLastPos = numeral(lastPos).format()
 
     return (
       <ThemeProvider theme={theme => theme.analytics}>
@@ -60,7 +73,9 @@ export default class Analytics extends React.Component<Props> {
               )}
               <Title>Analytics</Title>
             </Header>
-            <Chart>{pnlChartModel && <PNLChart {...pnlChartModel} />}</Chart>
+            {}
+            <LastPosition color={color}>USD {formattedLastPos}</LastPosition>
+            {pnlChartModel && <PNLChart {...pnlChartModel} />}
             <Title>Positions</Title>
             <BubbleChart>
               {positionsChartModel &&
@@ -84,4 +99,15 @@ export default class Analytics extends React.Component<Props> {
       </ThemeProvider>
     )
   }
+}
+
+function getLastPositionColor(lastPos: number) {
+  let color = ''
+  if (lastPos > 0) {
+    color = 'green'
+  }
+  if (lastPos < 0) {
+    color = 'red'
+  }
+  return color
 }

@@ -1,7 +1,6 @@
 /* tslint:disable */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import classnames from 'classnames'
 // tslint:disable-next-line:noImplicitAny
 import NVD3Chart from 'react-nvd3'
 import { timeFormat } from 'd3-time-format'
@@ -66,6 +65,22 @@ export default class PNLChart extends React.Component<PNLChartProps> {
     }
   }
 
+  configurePnLChart = (chart: any) => {
+    const { minPnl, maxPnl } = this.props
+
+    const pnlTooltip = (el: any) => {
+      const date = timeFormat('%X')(new Date(el.value))
+      const formatted = numeral(el.series[0].value).format('0.0a')
+
+      return `<p class="analytics__chart-tooltip">
+        <strong class="analytics__chart-tooltip-date">${date}:</strong>
+        ${formatted}
+      </p>`
+    }
+    chart.yDomain([minPnl, maxPnl]).yRange([150, 0])
+    chart.interactiveLayer.tooltip.contentGenerator(pnlTooltip)
+  }
+
   prepareDatum(seriesData: PricePoint[]) {
     return [
       {
@@ -79,55 +94,27 @@ export default class PNLChart extends React.Component<PNLChartProps> {
   }
 
   render() {
-    const { lastPos, minPnl, maxPnl, options, seriesData } = this.props
-
-    const analyticsHeaderClassName = classnames('analytics__header-value', {
-      'analytics__header-value--negative': lastPos < 0,
-      'analytics__header-value--positive': lastPos > 0
-    })
-    const formattedLastPos = numeral(lastPos).format()
-    let pnlChart: JSX.Element | null = null
+    const { options, seriesData } = this.props
 
     if (this.props.seriesData.length >= 0) {
-      const configurePnLChart = (chart: any) => {
-        const pnlTooltip = (el: any) => {
-          const date = timeFormat('%X')(new Date(el.value))
-          const formatted = numeral(el.series[0].value).format('0.0a')
-
-          return `<p class="analytics__chart-tooltip">
-            <strong class="analytics__chart-tooltip-date">${date}:</strong>
-            ${formatted}
-          </p>`
-        }
-        chart.yDomain([minPnl, maxPnl]).yRange([150, 0])
-        chart.interactiveLayer.tooltip.contentGenerator(pnlTooltip)
-      }
-
       options.xAxis = {
         tickFormat: (d: string) => timeFormat('%X')(new Date(d))
       }
       options.yAxis = { tickFormat: (d: number) => numeral(d).format('0.0a') }
 
-      pnlChart = (
+      return (
         <NVD3Chart
           ref="pnlChart"
           type="lineChart"
           datum={this.prepareDatum(seriesData)}
           options={options}
           height={12 * 16}
-          configure={configurePnLChart}
+          configure={this.configurePnLChart}
           margin={{ left: 16, right: 0, top: 8, bottom: 8 }}
         />
       )
     }
 
-    return (
-      <React.Fragment>
-        <div className="analytics__header">
-          <span className={analyticsHeaderClassName}>USD {formattedLastPos}</span>
-        </div>
-        <div className="analytics__chart-container">{pnlChart}</div>
-      </React.Fragment>
-    )
+    return null
   }
 }

@@ -26,11 +26,13 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
 `
 
-export const Title = styled.div`
-  padding-bottom: 0.5rem;
+export const Title = styled.div``
+
+export const LastPosition = styled.div<{ color?: string }>`
+  color: ${({ theme, color }) => color && theme.analytics[color].normal};
+  margin-bottom: 1rem;
 `
 
 export const BubbleChart = styled.div`
