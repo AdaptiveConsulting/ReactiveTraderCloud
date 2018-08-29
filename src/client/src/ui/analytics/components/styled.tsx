@@ -1,12 +1,45 @@
 import { styled } from 'rt-theme'
 import { barBgColor, pointerColor, transparentColor } from '../globals/variables'
 
-export const Root = styled.div`
+export const AnalyticsStyle = styled.div`
   flex: 1;
-  color: ${({ theme }) => theme.textColor};
-  background-color: ${({ theme }) => theme.backgroundColor};
+  color: ${({ theme }) => theme.analytics.textColor};
+  background-color: ${({ theme }) => theme.analytics.backgroundColor};
   height: 100%;
   position: relative;
+  padding: 0 1rem;
+  font-size: 1rem;
+
+  /* axis */
+  .nvd3 .nv-axis path,
+  .nvd3 .nv-axis .tick.zero line {
+    stroke: currentColor;
+  }
+
+  /* grid */
+  .nvd3 .nv-axis line {
+    stroke: ${transparentColor};
+  }
+`
+
+export const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`
+
+export const Title = styled.div`
+  padding-bottom: 0.5rem;
+`
+
+export const BubbleChart = styled.div`
+  text-anchor: middle;
+  height: 18rem;
+`
+
+export const Root = styled.div`
+  height: 100%;
 
   .analytics__chart-container {
     position: relative;
@@ -18,14 +51,14 @@ export const Root = styled.div`
       .nv-axis.nv-y {
         text {
           font-size: 0.5rem;
-          fill: ${({ theme }) => theme.textColor};
+          fill: ${({ theme }) => theme.analytics.textColor};
         }
       }
 
       .nv-axis.nv-x {
         text {
           font-size: 0.5rem;
-          fill: ${({ theme }) => theme.textColor};
+          fill: ${({ theme }) => theme.analytics.textColor};
         }
       }
     }
@@ -37,55 +70,32 @@ export const Root = styled.div`
     height: auto;
     padding: 2px 0.5rem;
     font-size: 0.75rem;
-    background-color: ${({ theme }) => theme.textColor};
-    color: ${({ theme }) => theme.backgroundColor};
+    background-color: ${({ theme }) => theme.analytics.textColor};
+    color: ${({ theme }) => theme.analytics.backgroundColor};
     opacity: 1;
     box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.4);
     pointer-events: none;
     z-index: 1;
   }
 
-  .analytics__container {
-    align-self: stretch;
-    overflow-x: hidden;
-    overflow-y: auto;
-    height: 100%;
-    padding: 0 1rem;
-
-    #popout-content-container & {
-      height: 100%;
-    }
-  }
-
   .analytics__barchart-indicator--negative {
-    background-color: ${({ theme }) => theme.red.normal};
+    background-color: ${({ theme }) => theme.analytics.red.normal};
   }
 
   .analytics__barchart-indicator--positive {
-    background-color: ${({ theme }) => theme.green.normal};
-  }
-
-  .analytics__header {
-    font-size: 1rem;
-    padding-bottom: 0.5rem;
+    background-color: ${({ theme }) => theme.analytics.green.normal};
   }
 
   .analytics__header-value {
     font-weight: bold;
   }
 
-  .analytics__header-title {
-    display: block;
-    margin-bottom: 1rem;
-    color: currentColor;
-  }
-
   .analytics__header-value--negative {
-    color: ${({ theme }) => theme.red.normal};
+    color: ${({ theme }) => theme.analytics.red.normal};
   }
 
   .analytics__header-value--positive {
-    color: ${({ theme }) => theme.green.normal};
+    color: ${({ theme }) => theme.analytics.green.normal};
   }
 
   .analytics__header-title-icon {
@@ -205,11 +215,6 @@ export const Root = styled.div`
     visibility: visible;
   }
 
-  .analytics__bubblechart-container {
-    text-anchor: middle;
-    height: 18rem;
-  }
-
   .analytics__chart-title {
     font-size: 1rem;
     line-height: 2rem;
@@ -217,12 +222,6 @@ export const Root = styled.div`
 
   .analytics__bubblechart-title {
     position: absolute;
-  }
-
-  .analytics__bubblechart-container {
-    display: block;
-    position: relative;
-    padding-bottom: 2px;
   }
 
   .analytics__positions-label {
@@ -243,39 +242,30 @@ export const Root = styled.div`
 
   .stop1,
   .lineStop1 {
-    stop-color: ${({ theme }) => theme.green.normal};
+    stop-color: ${({ theme }) => theme.analytics.green.normal};
     stop-opacity: 0.5;
   }
 
   .stop1End,
   .lineStop1End {
-    stop-color: ${({ theme }) => theme.green.normal};
+    stop-color: ${({ theme }) => theme.analytics.green.normal};
   }
 
   .stop2,
   .lineStop2 {
-    stop-color: ${({ theme }) => theme.red.normal};
+    stop-color: ${({ theme }) => theme.analytics.red.normal};
   }
 
   .stop2End,
   .lineStop2End {
-    stop-color: ${({ theme }) => theme.red.normal};
+    stop-color: ${({ theme }) => theme.analytics.red.normal};
     stop-opacity: 0.5;
   }
 
-  /* axis */
-  .analytics__container .nvd3 .nv-axis path,
-  .analytics__container .nvd3 .nv-axis .tick.zero line {
-    stroke: currentColor;
-  }
   /* axis labels */
   .analytics__chart-container .nv-lineChart .nv-axis.nv-x text,
   .analytics__chart-container .nv-lineChart .nv-axis.nv-y text {
     fill: currentColor;
-  }
-  /* grid */
-  .analytics__container .nvd3 .nv-axis line {
-    stroke: ${transparentColor};
   }
 
   .analytics__chart-tooltip {
@@ -312,7 +302,7 @@ export const Controls = styled('div')`
 
 export const CloseButton = styled('button')`
   .svg-icon {
-    stroke: ${({ theme }) => theme.textColor};
-    fill: ${({ theme }) => theme.textColor};
+    stroke: ${({ theme }) => theme.analytics.textColor};
+    fill: ${({ theme }) => theme.analytics.textColor};
   }
 `
