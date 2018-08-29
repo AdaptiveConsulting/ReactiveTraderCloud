@@ -5,8 +5,8 @@ import { storiesOf } from '@storybook/react'
 
 import { action } from '@storybook/addon-actions'
 import { Flex } from 'rt-components'
-import { Story } from 'rt-storybook'
-import { styled } from 'rt-theme'
+import { Story as BaseStory } from 'rt-storybook'
+import { styled, ThemeProvider } from 'rt-theme'
 import { Direction } from 'rt-types'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 import NotionalInput from './notional'
@@ -23,6 +23,12 @@ const Centered = styled('div')`
   align-items: center;
   justify-content: center;
 `
+
+const Story: React.SFC = ({ children }) => (
+  <BaseStory>
+    <ThemeProvider theme={theme => theme.tile}>{children}</ThemeProvider>
+  </BaseStory>
+)
 
 const stories = storiesOf('Spot Tile', module)
 stories.addDecorator(withKnobs)

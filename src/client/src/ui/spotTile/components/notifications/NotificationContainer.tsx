@@ -34,7 +34,7 @@ export default class NotificationContainer extends PureComponent<Props> {
       )
     }
     if (!lastTradeExecutionStatus || !hasNotification(lastTradeExecutionStatus)) {
-      return () => null as SFC<void>
+      return (() => null) as SFC<object>
     }
     if (lastTradeExecutionStatus.hasError) {
       return (style: React.CSSProperties) => (
@@ -83,6 +83,6 @@ export default class NotificationContainer extends PureComponent<Props> {
         )
       }
     }
-    return () => null as SFC<void>
+    return (() => null) as SFC<object>
   }
 }
