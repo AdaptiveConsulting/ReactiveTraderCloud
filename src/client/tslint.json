@@ -24,6 +24,8 @@
     "comment-format": false,
     "ban-types": false,
     "no-var-requires": false,
+    "no-unused-variable": true,
+
     "max-classes-per-file": [
       false,
       1

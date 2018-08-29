@@ -62,11 +62,7 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
         )}
       />
     }
-    footer={
-      <StatusBarContainer>
-        <StatusBar />
-      </StatusBarContainer>
-    }
+    footer={<StatusBar />}
     after={<ReconnectModal />}
   />
 )
@@ -74,14 +70,6 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
 const BlotterWrapper = styled.div`
   height: 100%;
   padding: 0 0.5rem 0 1rem;
-`
-
-const StatusBarContainer = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
 `
 
 export default ShellRoute
