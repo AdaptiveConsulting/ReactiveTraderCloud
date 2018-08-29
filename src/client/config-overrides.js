@@ -25,5 +25,7 @@ module.exports = function override(config, env) {
     options: babelLoader.options
   })
 
-  return config
+  config.devtool = env !== 'production' ? 'source-map' : config.devtool
+
+  return config 
 }
