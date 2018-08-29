@@ -101,7 +101,7 @@ export const Root = styled.div`
   }
 
   .analytics__positions-label {
-    fill: currentColor;
+    fill: ${({ theme }) => theme.white};
     font-size: 0.75rem;
     pointer-events: none;
     user-select: none;
