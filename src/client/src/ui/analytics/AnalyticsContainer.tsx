@@ -28,7 +28,7 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps> {
     return (
       <Analytics
         currencyPairs={currencyPairs}
-        canPopout={Environment.isRunningInIE() || tornOff}
+        canPopout={!Environment.isRunningInIE() && !tornOff}
         isConnected={isConnected}
         onPopoutClick={onPopoutClick}
         pnlChartModel={getPnlChartModel(analyticsService.history)}

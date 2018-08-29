@@ -11,7 +11,7 @@ import PNLChart from './pnlChart/PNLChart'
 
 import { Root } from './styled'
 
-export interface AnalyticsProps {
+export interface Props {
   canPopout: boolean
   isConnected: boolean
   pnlChartModel?: PNLChartModel
@@ -22,7 +22,7 @@ export interface AnalyticsProps {
 
 const RESIZE_EVENT = 'resize'
 
-export default class Analytics extends React.Component<AnalyticsProps> {
+export default class Analytics extends React.Component<Props> {
   private handleResize = () => this.forceUpdate()
 
   // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
