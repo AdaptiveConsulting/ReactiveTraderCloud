@@ -9,6 +9,7 @@ import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 import { CurrencyPairMap } from 'rt-types'
 import PNLChart from './pnlChart/PNLChart'
 
+import { ThemeProvider } from 'rt-theme'
 import { Root } from './styled'
 
 export interface Props {
@@ -46,36 +47,38 @@ export default class Analytics extends React.Component<Props> {
     }
 
     return (
-      <Root className="analytics analytics__container animated fadeIn">
-        <div className="analytics__controls popout__controls">
-          <i className={getWindowButtonClassName(canPopout)} onClick={onPopoutClick} />
-        </div>
+      <ThemeProvider theme={theme => theme.analytics}>
+        <Root className="analytics analytics__container animated fadeIn">
+          <div className="analytics__controls popout__controls">
+            <i className={getWindowButtonClassName(canPopout)} onClick={onPopoutClick} />
+          </div>
 
-        <div className="analytics__header">
-          <span className="analytics__header-title">Analytics</span>
-        </div>
-        {pnlChartModel && <PNLChart {...pnlChartModel} />}
-        <div className="analytics__bubblechart-container">
-          <span className="analytics__chart-title analytics__bubblechart-title">Positions</span>
-          {positionsChartModel &&
-            !_.isEmpty(positionsChartModel.seriesData) && (
-              <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
-            )}
-        </div>
-        <div>
-          <div className="analytics__chart-container">
-            <span className="analytics__chart-title">Profit and Loss</span>
+          <div className="analytics__header">
+            <span className="analytics__header-title">Analytics</span>
+          </div>
+          {pnlChartModel && <PNLChart {...pnlChartModel} />}
+          <div className="analytics__bubblechart-container">
+            <span className="analytics__chart-title analytics__bubblechart-title">Positions</span>
             {positionsChartModel &&
               !_.isEmpty(positionsChartModel.seriesData) && (
-                <AnalyticsBarChart
-                  chartData={positionsChartModel.seriesData}
-                  currencyPairs={currencyPairs}
-                  isPnL={true}
-                />
+                <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
               )}
           </div>
-        </div>
-      </Root>
+          <div>
+            <div className="analytics__chart-container">
+              <span className="analytics__chart-title">Profit and Loss</span>
+              {positionsChartModel &&
+                !_.isEmpty(positionsChartModel.seriesData) && (
+                  <AnalyticsBarChart
+                    chartData={positionsChartModel.seriesData}
+                    currencyPairs={currencyPairs}
+                    isPnL={true}
+                  />
+                )}
+            </div>
+          </div>
+        </Root>
+      </ThemeProvider>
     )
   }
 }

@@ -184,6 +184,11 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
     }
   },
 
+  analytics: {
+    backgroundColor: primary.base,
+    textColor: secondary.base
+  },
+
   button: {
     primary: {
       backgroundColor: accents.accent.base,

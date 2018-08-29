@@ -10,7 +10,8 @@ import {
 
 export const Root = styled.div`
   flex: 1;
-  color: ${props => props.theme.shell.textColor};
+  color: ${({ theme }) => theme.textColor};
+  background-color: ${({ theme }) => theme.backgroundColor};
   height: 100%;
 
   .analytics__chart-container {
@@ -23,14 +24,14 @@ export const Root = styled.div`
       .nv-axis.nv-y {
         text {
           font-size: 0.5rem;
-          fill: ${props => props.theme.textColor};
+          fill: ${({ theme }) => theme.textColor};
         }
       }
 
       .nv-axis.nv-x {
         text {
           font-size: 0.5rem;
-          fill: ${props => props.theme.textColor};
+          fill: ${({ theme }) => theme.textColor};
         }
       }
     }
@@ -42,8 +43,8 @@ export const Root = styled.div`
     height: auto;
     padding: 2px 0.5rem;
     font-size: 0.75rem;
-    background-color: ${props => props.theme.shell.textColor};
-    color: ${props => props.theme.shell.backgroundColor};
+    background-color: ${({ theme }) => theme.textColor};
+    color: ${({ theme }) => theme.backgroundColor};
     opacity: 1;
     box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.4);
     pointer-events: none;
