@@ -63,8 +63,6 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     const { onBlock, title } = this.props
 
     if (this.externalWindow) {
-      this.externalWindow.document.title = title
-
       const parentHead = document.head
       const childHead = this.externalWindow.document.head
 
