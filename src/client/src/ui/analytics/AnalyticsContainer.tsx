@@ -12,11 +12,11 @@ const mapStateToProps = (state: GlobalState) => ({
   currencyPairs: selectCurrencyPairs(state)
 })
 
-const mapToDispatch = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   onMount: () => dispatch(AnalyticsActions.subcribeToAnalytics())
 })
 
 export default connect(
   mapStateToProps,
-  mapToDispatch
+  mapDispatchToProps
 )(Analytics)
