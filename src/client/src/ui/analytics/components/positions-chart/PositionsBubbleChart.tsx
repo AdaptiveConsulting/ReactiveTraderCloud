@@ -1,6 +1,5 @@
 import d3 from 'd3'
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { colors } from 'rt-theme'
 
 import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
@@ -34,6 +33,7 @@ interface State {
 }
 
 export class PositionsBubbleChart extends React.Component<PositionsBubbleChartProps, State> {
+  chartRef = React.createRef<HTMLDivElement>()
   force: any
   scales: any
   tooltip: any
@@ -77,9 +77,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     // positions data has changed on the existing nodes
     const modifiedData = reduce(
       positionsData,
-      (result, value, key) => {
-        return isEqual(value, existingPositionsData[key]) ? result : result.concat(key)
-      },
+      (result, value, key) => (isEqual(value, existingPositionsData[key]) ? result : result.concat(key)),
       []
     )
 
@@ -140,7 +138,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   }
 
   redrawChart(nextProps = this.props) {
-    const dom = ReactDOM.findDOMNode(this)
+    const dom = this.chartRef.current
 
     const svg = d3.select(dom).select('svg')
     svg.remove() // clear all child nodes
@@ -154,7 +152,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     if (this.tooltip) {
       return
     }
-    const dom = ReactDOM.findDOMNode(this)
+    const dom = this.chartRef.current
     this.tooltip = d3
       .select(dom)
       .append('div')
@@ -163,7 +161,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   }
 
   createChartForce(nextProps = this.props) {
-    const dom = ReactDOM.findDOMNode(this)
+    const dom = this.chartRef.current
     this.scales = createScales(nextProps)
 
     const tick = () => {
@@ -215,7 +213,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     }
     this.setState({ updateRequired: false })
 
-    const dom = ReactDOM.findDOMNode(this)
+    const dom = this.chartRef.current
     const svg = d3.select(dom).select('svg')
 
     const nodeGroup = svg.selectAll('g.node').data(nodes, (d: any, i: number) => {
@@ -247,7 +245,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   }
 
   render() {
-    return <div className="analytics__bubblechart-container" />
+    return <div ref={this.chartRef} />
   }
 }
 
