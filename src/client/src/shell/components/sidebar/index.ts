@@ -1,2 +1,1 @@
-export { default } from './SidebarContainer'
-export { sidebarRegionReducer } from './reducer'
+export { default } from './Sidebar'

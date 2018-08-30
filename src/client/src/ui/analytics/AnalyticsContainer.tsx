@@ -38,16 +38,10 @@ class AnalyticsContainer extends React.Component<AnalyticsContainerProps> {
   }
 }
 
-const mapStateToProps = ({
-  analyticsService,
-  compositeStatusService,
-  displayAnalytics,
-  currencyPairs
-}: GlobalState) => ({
+const mapStateToProps = ({ analyticsService, compositeStatusService, currencyPairs }: GlobalState) => ({
   analyticsService,
   isConnected:
     compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected,
-  displayAnalytics,
   currencyPairs
 })
 

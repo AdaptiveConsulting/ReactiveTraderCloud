@@ -56,7 +56,6 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
         portalProps={portalProps.analyticsRegion}
         render={(popOut, tornOff) => (
           <SidebarRegionContainer
-            tornOff={tornOff}
             renderContent={() => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} />}
           />
         )}
