@@ -1,6 +1,5 @@
 /* tslint:disable */
 import React from 'react'
-import ReactDOM from 'react-dom'
 // tslint:disable-next-line:noImplicitAny
 import NVD3Chart from 'react-nvd3'
 import { timeFormat } from 'd3-time-format'
@@ -42,8 +41,8 @@ export interface PricePoint {
 }
 
 export default class PNLChart extends React.Component<PNLChartProps> {
-  chartGradient?: ChartGradient
-  refs: any
+  chartGradient = new ChartGradient()
+  pnlChartRef = React.createRef<HTMLDivElement>()
 
   componentDidMount() {
     this.updateGradient()
@@ -53,20 +52,14 @@ export default class PNLChart extends React.Component<PNLChartProps> {
     this.updateGradient()
   }
 
-  updateGradient() {
-    if (this.refs.pnlChart) {
-      if (!this.chartGradient) {
-        this.chartGradient = new ChartGradient()
-      }
-      const chartDomElement = ReactDOM.findDOMNode(this.refs.pnlChart)
-      if (chartDomElement) {
-        this.chartGradient.update(chartDomElement as Element, this.props.minPnl, this.props.maxPnl)
-      }
-    }
-  }
+  updateGradient = () =>
+    this.pnlChartRef.current &&
+    this.chartGradient.update(this.pnlChartRef.current, this.props.minPnl, this.props.maxPnl)
 
   configurePnLChart = (chart: any) => {
     const pnlTooltip = (el: any) => {
+      console.log(chart)
+      console.log(el)
       const date = timeFormat('%X')(new Date(el.value))
       const formatted = numeral(el.series[0].value).format('0.0a')
 
@@ -78,17 +71,13 @@ export default class PNLChart extends React.Component<PNLChartProps> {
     chart.interactiveLayer.tooltip.contentGenerator(pnlTooltip)
   }
 
-  prepareDatum(seriesData: PricePoint[]) {
-    return [
-      {
-        series: 'PNL',
-        label: 'PNL',
-        area: true,
-        color: 'rgba(127, 127, 127, 0.1)',
-        values: seriesData
-      }
-    ]
-  }
+  prepareDatum = (seriesData: PricePoint[]) => ({
+    series: 'PNL',
+    label: 'PNL',
+    area: true,
+    color: 'rgba(127, 127, 127, 0.1)',
+    values: seriesData
+  })
 
   render() {
     const { options, seriesData } = this.props
@@ -100,15 +89,16 @@ export default class PNLChart extends React.Component<PNLChartProps> {
       options.yAxis = { tickFormat: (d: number) => numeral(d).format('0.0a') }
 
       return (
-        <NVD3Chart
-          ref="pnlChart"
-          type="lineChart"
-          datum={this.prepareDatum(seriesData)}
-          options={options}
-          height={12 * 16}
-          configure={this.configurePnLChart}
-          margin={{ left: 16, right: 0, top: 8, bottom: 8 }}
-        />
+        <div ref={this.pnlChartRef}>
+          <NVD3Chart
+            type="lineChart"
+            datum={[this.prepareDatum(seriesData)]}
+            options={options}
+            height={12 * 16}
+            configure={this.configurePnLChart}
+            margin={{ left: 16, right: 0, top: 8, bottom: 8 }}
+          />
+        </div>
       )
     }
 
