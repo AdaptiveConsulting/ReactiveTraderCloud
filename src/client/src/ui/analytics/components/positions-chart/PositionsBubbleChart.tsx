@@ -100,7 +100,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     return modifiedData.length > 0 || stalePositions.length > 0
   }
 
-  updateNodes(data: any) {
+  updateNodes(data: CurrencyPairPosition[]) {
     let nodes = this.state.nodes
     const colours = [colors.accents.good.base, colors.accents.bad.base]
     const positionsData = getPositionsDataFromSeries(data, this.props.currencyPairs)
