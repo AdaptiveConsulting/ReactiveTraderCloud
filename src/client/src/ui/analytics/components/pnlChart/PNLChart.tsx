@@ -80,26 +80,22 @@ export default class PNLChart extends React.Component<PNLChartProps> {
   render() {
     const { options, seriesData } = this.props
 
-    if (this.props.seriesData.length >= 0) {
-      options.xAxis = {
-        tickFormat: (d: string) => timeFormat('%X')(new Date(d))
-      }
-      options.yAxis = { tickFormat: (d: number) => numeral(d).format('0.0a') }
-
-      return (
-        <div ref={this.pnlChartRef}>
-          <NVD3Chart
-            type="lineChart"
-            datum={[this.prepareDatum(seriesData)]}
-            options={options}
-            height={12 * 16}
-            configure={this.configurePnLChart}
-            margin={{ left: 16, right: 0, top: 8, bottom: 8 }}
-          />
-        </div>
-      )
+    options.xAxis = {
+      tickFormat: (d: string) => timeFormat('%X')(new Date(d))
     }
+    options.yAxis = { tickFormat: (d: number) => numeral(d).format('0.0a') }
 
-    return null
+    return (
+      <div ref={this.pnlChartRef}>
+        <NVD3Chart
+          type="lineChart"
+          datum={[this.prepareDatum(seriesData)]}
+          options={options}
+          height={12 * 16}
+          configure={this.configurePnLChart}
+          margin={{ left: 16, right: 0, top: 8, bottom: 8 }}
+        />
+      </div>
+    )
   }
 }
