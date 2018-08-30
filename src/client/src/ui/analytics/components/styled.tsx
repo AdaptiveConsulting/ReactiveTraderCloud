@@ -91,15 +91,6 @@ export const Root = styled.div`
     z-index: 1;
   }
 
-  .analytics__chart-title {
-    font-size: 1rem;
-    line-height: 2rem;
-  }
-
-  .analytics__bubblechart-title {
-    position: absolute;
-  }
-
   .analytics__positions-label {
     fill: ${({ theme }) => theme.white};
     font-size: 0.6875rem;
@@ -135,16 +126,6 @@ export const Root = styled.div`
   .lineStop2End {
     stop-color: ${({ theme }) => theme.analytics.red.normal};
     stop-opacity: 0.5;
-  }
-
-  .analytics__chart-tooltip {
-    font-weight: 500;
-    display: block;
-    mix-blend-mode: difference !important;
-  }
-
-  .analytics__chart-tooltip-date {
-    font-weight: 600;
   }
 `
 
