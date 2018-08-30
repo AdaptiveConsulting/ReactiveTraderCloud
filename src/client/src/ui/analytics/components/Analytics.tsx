@@ -1,5 +1,6 @@
 import numeral from 'numeral'
 import React from 'react'
+import { Environment } from 'rt-system'
 import { PNLChartModel } from '../model/pnlChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
 import AnalyticsBarChart from './AnalyticsBarChart'
@@ -24,18 +25,25 @@ import {
 } from './styled'
 
 export interface Props {
-  canPopout: boolean
+  tornOff: boolean
   isConnected: boolean
+  currencyPairs: CurrencyPairMap
   pnlChartModel?: PNLChartModel
   positionsChartModel?: PositionsChartModel
-  currencyPairs: CurrencyPairMap
-  onPopoutClick: () => void
+  onMount?: () => void
+  onPopoutClick?: () => void
 }
 
 const RESIZE_EVENT = 'resize'
 
 export default class Analytics extends React.Component<Props> {
   private handleResize = () => this.forceUpdate()
+
+  componentDidMount() {
+    if (this.props.onMount) {
+      this.props.onMount()
+    }
+  }
 
   // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
   componentWillMount() {
@@ -47,7 +55,7 @@ export default class Analytics extends React.Component<Props> {
   }
 
   render() {
-    const { canPopout, isConnected, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
+    const { tornOff, isConnected, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
 
     if (!isConnected) {
       return <Disconnected>Disconnected</Disconnected>
@@ -63,13 +71,14 @@ export default class Analytics extends React.Component<Props> {
         <AnalyticsStyle>
           <Root>
             <Header>
-              {canPopout && (
-                <Controls>
-                  <PopoutButton onClick={onPopoutClick}>
-                    <PopoutIcon width={0.8125} height={0.75} />
-                  </PopoutButton>
-                </Controls>
-              )}
+              {!Environment.isRunningInIE() &&
+                !tornOff && (
+                  <Controls>
+                    <PopoutButton onClick={onPopoutClick}>
+                      <PopoutIcon width={0.8125} height={0.75} />
+                    </PopoutButton>
+                  </Controls>
+                )}
               <Title>Analytics</Title>
             </Header>
             <LastPosition color={color}>USD {formattedLastPos}</LastPosition>
