@@ -71,7 +71,7 @@ const BlotterWrapper = styled.div`
 const AnalyticsWrapper = styled.div`
   grid-column: minmax(16rem, 24rem);
   max-width: 24rem;
-  margin: 0.375rem 1.25rem 0 0.5rem;
+  margin: 0.375rem 1.25rem 0 0;
 `
 
 export default ShellRoute
