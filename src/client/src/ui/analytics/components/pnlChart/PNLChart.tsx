@@ -58,8 +58,6 @@ export default class PNLChart extends React.Component<PNLChartProps> {
 
   configurePnLChart = (chart: any) => {
     const pnlTooltip = (el: any) => {
-      console.log(chart)
-      console.log(el)
       const date = timeFormat('%X')(new Date(el.value))
       const formatted = numeral(el.series[0].value).format('0.0a')
 
