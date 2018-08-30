@@ -1,7 +1,5 @@
 import numeral from 'numeral'
 import React from 'react'
-import ReactDOM from 'react-dom'
-
 import { CurrencyPair } from 'rt-types'
 import { barBgColor, pointerColor } from '../globals/variables'
 
@@ -13,30 +11,27 @@ export interface PNLBarProps {
   index: number
   isPnL: boolean
   maxVal: number
-  refs?: any[]
   symbol: string
 }
 
 export default class PNLBar extends React.Component<PNLBarProps, {}> {
-  barChartContainerDOM: any
-  labelDOM: any
+  barChartContainerRef = React.createRef<HTMLDivElement>()
+  labelRef = React.createRef<HTMLSpanElement>()
 
   refreshState() {
     this.setState({ updateRequired: true })
   }
 
   componentDidMount() {
-    this.barChartContainerDOM = ReactDOM.findDOMNode(this.refs.barChartContainer)
-    this.labelDOM = ReactDOM.findDOMNode(this.refs.label)
     this.refreshState()
   }
 
   calculateOffset() {
-    if (!this.refs.barChartContainer || !this.refs.label) {
+    if (!this.barChartContainerRef.current || !this.labelRef.current) {
       return 0
     }
-    const containerBounds = this.barChartContainerDOM.getBoundingClientRect()
-    const labelBounds = this.labelDOM.getBoundingClientRect()
+    const containerBounds = this.barChartContainerRef.current.getBoundingClientRect()
+    const labelBounds = this.labelRef.current.getBoundingClientRect()
 
     const leftPoint = labelBounds.left - containerBounds.left
     const rightPoint = containerBounds.right - labelBounds.right
@@ -46,12 +41,12 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
   }
 
   getPusherRelativePosition() {
-    if (!this.refs.barChartContainer || !this.refs.label) {
+    if (!this.barChartContainerRef.current || !this.labelRef.current) {
       return 0
     }
 
-    const containerBounds = this.barChartContainerDOM.getBoundingClientRect().width
-    const labelBounds = this.labelDOM.getBoundingClientRect().width
+    const containerBounds = this.barChartContainerRef.current.getBoundingClientRect().width
+    const labelBounds = this.labelRef.current.getBoundingClientRect().width
 
     const availableSpace = (1 - labelBounds / containerBounds) * 100
     let relPointerPos = this.getRelativePointerPosition() - ((labelBounds / containerBounds) * 50 - 1)
@@ -84,7 +79,7 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
     const offset = this.calculateOffset() || -(approxLabelWidth / 2)
 
     return (
-      <span ref="label" className="analytics__barchart-label" style={{ left: offset }}>
+      <span ref={this.labelRef} className="analytics__barchart-label" style={{ left: offset }}>
         <span className="analytics__barchart-label-amount">({amount}) </span>
         <span>{currencyPair.base}</span>
         <span className="analytics__barchart-label-currency-terms">{currencyPair.terms}</span>
@@ -101,7 +96,7 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
     const pusherStyle = { width: xPosRelativePusher + '%' }
 
     return (
-      <BarChart>
+      <BarChart innerRef={this.barChartContainerRef}>
         <div>
           <div className="analytics__barchart-title-wrapper">
             <div className="analytics__barchart-label-wrapper">
