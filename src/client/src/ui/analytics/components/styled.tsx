@@ -9,7 +9,7 @@ export const AnalyticsStyle = styled.div`
   position: relative;
   padding: 1.25rem;
   font-size: 1rem;
-  overflow-y: auto;
+  overflow-y: scroll;
 
   /* axis */
   .nvd3 .nv-axis path,
