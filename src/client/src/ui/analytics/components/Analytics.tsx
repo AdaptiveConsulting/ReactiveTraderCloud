@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
 import { PNLChartModel } from '../model/pnlChartModel'
@@ -75,21 +74,20 @@ export default class Analytics extends React.Component<Props> {
             </Header>
             <LastPosition color={color}>USD {formattedLastPos}</LastPosition>
             <Chart>{pnlChartModel && <PNLChart {...pnlChartModel} />}</Chart>
-            <Title>Positions</Title>
-            <BubbleChart>
-              {positionsChartModel &&
-                !_.isEmpty(positionsChartModel.seriesData) && (
-                  <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
-                )}
-            </BubbleChart>
-            <Title>Profit and Loss</Title>
             {positionsChartModel &&
-              !_.isEmpty(positionsChartModel.seriesData) && (
-                <AnalyticsBarChart
-                  chartData={positionsChartModel.seriesData}
-                  currencyPairs={currencyPairs}
-                  isPnL={true}
-                />
+              positionsChartModel.seriesData.length !== 0 && (
+                <React.Fragment>
+                  <Title>Positions</Title>
+                  <BubbleChart>
+                    <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+                  </BubbleChart>
+                  <Title>Profit and Loss</Title>
+                  <AnalyticsBarChart
+                    chartData={positionsChartModel.seriesData}
+                    currencyPairs={currencyPairs}
+                    isPnL={true}
+                  />
+                </React.Fragment>
               )}
           </Root>
         </AnalyticsStyle>

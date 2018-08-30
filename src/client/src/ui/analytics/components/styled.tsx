@@ -7,7 +7,7 @@ export const AnalyticsStyle = styled.div`
   background-color: ${({ theme }) => theme.analytics.backgroundColor};
   height: 100%;
   position: relative;
-  padding: 0 1rem;
+  padding: 1.25rem;
   font-size: 1rem;
 
   /* axis */
@@ -69,6 +69,7 @@ export const Chart = styled.div`
 export const Disconnected = styled.div`
   display: flex;
   height: 100%;
+  width: 100%;
   align-items: center;
   justify-content: center;
   font-size: 1rem;

@@ -1,16 +1,12 @@
 import React from 'react'
-import { RegionContent, Root } from './styled'
+import { Root } from './styled'
 
 interface Props {
   renderContent: () => JSX.Element
 }
 
 const Sidebar: React.SFC<Props> = ({ renderContent }) => {
-  return (
-    <Root>
-      <RegionContent>{renderContent()}</RegionContent>
-    </Root>
-  )
+  return <Root>{renderContent()}</Root>
 }
 
 export default Sidebar

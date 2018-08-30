@@ -1,27 +1,19 @@
 import { styled } from 'rt-theme'
 
 export const Root = styled.div`
-  flex: 0.1 1 16rem;
   grid-column: minmax(16rem, 24rem);
 
   min-width: 16rem;
   max-width: 24rem;
 
-  margin: 0.5rem;
+  margin: 0.375rem 1.25rem 0 0.5rem;
 
-  overflow-y: auto;
+  overflow-y: scroll;
 
-  display: flex;
-  flex-direction: row;
-
-  border-radius: 0.25rem;
+  border-radius: 0.1875rem;
 
   background-color: ${props => props.theme.component.backgroundColor};
   color: ${props => props.theme.component.textColor};
 `
 
-export const RegionContent = styled.div`
-  margin: 1rem 0.25rem;
-  width: 100%;
-  min-width: 16rem;
-`
+export const RegionContent = styled.div``

@@ -16,11 +16,17 @@ export default class AnalyticsBarChart extends React.Component<AnalyticsBarChart
 
   createBars() {
     const { isPnL, chartData } = this.props
+
+    if (chartData.length === 0) {
+      return null
+    }
+
     const baseValues: any[] = chartData.map(x => x.basePnl)
     const maxValue: number = _.max(baseValues)
     const minValue: number = _.min(baseValues)
     const maxWidth = Math.max(Math.abs(maxValue), Math.abs(minValue))
-    const bars = chartData.map((chartItem, index) => {
+
+    return chartData.map((chartItem, index) => {
       const { basePnl, symbol } = chartItem
       const currencyPair = this.props.currencyPairs[symbol]
       return (
@@ -35,6 +41,5 @@ export default class AnalyticsBarChart extends React.Component<AnalyticsBarChart
         />
       )
     })
-    return bars
   }
 }
