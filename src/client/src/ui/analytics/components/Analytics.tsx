@@ -20,7 +20,6 @@ import {
   Header,
   LastPosition,
   PopoutButton,
-  Root,
   Title
 } from './styled'
 
@@ -69,36 +68,34 @@ export default class Analytics extends React.Component<Props> {
     return (
       <ThemeProvider theme={theme => theme.analytics}>
         <AnalyticsStyle>
-          <Root>
-            <Header>
-              {!Environment.isRunningInIE() &&
-                !tornOff && (
-                  <Controls>
-                    <PopoutButton onClick={onPopoutClick}>
-                      <PopoutIcon width={0.8125} height={0.75} />
-                    </PopoutButton>
-                  </Controls>
-                )}
-              <Title>Analytics</Title>
-            </Header>
-            <LastPosition color={color}>USD {formattedLastPos}</LastPosition>
-            <Chart>{pnlChartModel && <PNLChart {...pnlChartModel} />}</Chart>
-            {positionsChartModel &&
-              positionsChartModel.seriesData.length !== 0 && (
-                <React.Fragment>
-                  <Title>Positions</Title>
-                  <BubbleChart>
-                    <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
-                  </BubbleChart>
-                  <Title>Profit and Loss</Title>
-                  <AnalyticsBarChart
-                    chartData={positionsChartModel.seriesData}
-                    currencyPairs={currencyPairs}
-                    isPnL={true}
-                  />
-                </React.Fragment>
+          <Header>
+            {!Environment.isRunningInIE() &&
+              !tornOff && (
+                <Controls>
+                  <PopoutButton onClick={onPopoutClick}>
+                    <PopoutIcon width={0.8125} height={0.75} />
+                  </PopoutButton>
+                </Controls>
               )}
-          </Root>
+            <Title>Analytics</Title>
+          </Header>
+          <LastPosition color={color}>USD {formattedLastPos}</LastPosition>
+          <Chart>{pnlChartModel && <PNLChart {...pnlChartModel} />}</Chart>
+          {positionsChartModel &&
+            positionsChartModel.seriesData.length !== 0 && (
+              <React.Fragment>
+                <Title>Positions</Title>
+                <BubbleChart>
+                  <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+                </BubbleChart>
+                <Title>Profit and Loss</Title>
+                <AnalyticsBarChart
+                  chartData={positionsChartModel.seriesData}
+                  currencyPairs={currencyPairs}
+                  isPnL={true}
+                />
+              </React.Fragment>
+            )}
         </AnalyticsStyle>
       </ThemeProvider>
     )
