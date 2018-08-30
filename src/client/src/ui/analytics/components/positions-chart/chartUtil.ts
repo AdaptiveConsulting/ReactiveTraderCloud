@@ -2,17 +2,17 @@
 import _ from 'lodash'
 import d3 from 'd3'
 import numeral from 'numeral'
-import { CurrencyPair } from 'rt-types'
 import { CurrencyPairPosition } from '../../model/currencyPairPosition'
 import { PositionsBubbleChartProps } from './PositionsBubbleChart'
+import { CurrencyPairs } from '../Analytics'
 
 const baseTradedAmountName = 'baseTradedAmount'
 
-export function getPositionsDataFromSeries(series: CurrencyPairPosition[] = [], currencyPairs: CurrencyPair[]) {
+export function getPositionsDataFromSeries(series: CurrencyPairPosition[] = [], currencyPairs: CurrencyPairs) {
   const baseAmountPropertyName = baseTradedAmountName
   const positionsPerCcyObj = series.reduce((aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
     const { symbol } = ccyPairPosition
-    const ccyPair: CurrencyPair = currencyPairs[symbol]
+    const ccyPair = currencyPairs[symbol]
     const baseCurrency = ccyPair ? ccyPair.base : ''
     aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
       ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmountPropertyName]

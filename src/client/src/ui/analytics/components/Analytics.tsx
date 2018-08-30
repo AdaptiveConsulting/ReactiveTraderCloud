@@ -6,7 +6,7 @@ import { PositionsChartModel } from '../model/positionsChartModel'
 import AnalyticsBarChart from './AnalyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
-import { CurrencyPairMap } from 'rt-types'
+import { CurrencyPair } from 'rt-types'
 import PNLChart from './pnlChart/PNLChart'
 
 import { PopoutIcon } from 'rt-components'
@@ -23,10 +23,14 @@ import {
   Title
 } from './styled'
 
+export interface CurrencyPairs {
+  [id: string]: CurrencyPair
+}
+
 export interface Props {
   tornOff: boolean
   isConnected: boolean
-  currencyPairs: CurrencyPairMap
+  currencyPairs: CurrencyPairs
   pnlChartModel?: PNLChartModel
   positionsChartModel?: PositionsChartModel
   onMount?: () => void

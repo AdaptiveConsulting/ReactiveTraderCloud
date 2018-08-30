@@ -4,8 +4,9 @@ import { colors } from 'rt-theme'
 
 import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
 import reactSizeme from 'react-sizeme'
-import { CurrencyPair } from 'rt-types'
+
 import { CurrencyPairPosition } from '../../model'
+import { CurrencyPairs } from '../Analytics'
 import {
   createScales,
   drawCircles,
@@ -18,7 +19,7 @@ import {
 
 export interface PositionsBubbleChartProps {
   data: CurrencyPairPosition[]
-  currencyPairs: CurrencyPair[]
+  currencyPairs: CurrencyPairs
   // passed by reactSizeme :
   size: {
     width: number
