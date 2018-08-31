@@ -65,9 +65,7 @@ export default class Analytics extends React.Component<Props> {
     }
 
     const lastPos = (pnlChartModel && pnlChartModel.lastPos) || 0
-    const color = getLastPositionColor(lastPos)
-
-    const formattedLastPos = numeral(lastPos).format()
+    const lastPosition = lastPositionWithDirection(lastPos)
 
     return (
       <ThemeProvider theme={theme => theme.analytics}>
@@ -83,7 +81,7 @@ export default class Analytics extends React.Component<Props> {
               )}
             <Title>Analytics</Title>
           </Header>
-          <LastPosition color={color}>USD {formattedLastPos}</LastPosition>
+          <LastPosition color={lastPosition.color}>USD {lastPosition.formattedLastPos}</LastPosition>
           <Chart>{pnlChartModel && <PNLChart {...pnlChartModel} />}</Chart>
           {positionsChartModel &&
             positionsChartModel.seriesData.length !== 0 && (
@@ -106,13 +104,16 @@ export default class Analytics extends React.Component<Props> {
   }
 }
 
-function getLastPositionColor(lastPos: number) {
+function lastPositionWithDirection(lastPos: number) {
+  let formattedLastPos = numeral(lastPos).format()
   let color = ''
   if (lastPos > 0) {
     color = 'green'
+    formattedLastPos = '+' + formattedLastPos
   }
   if (lastPos < 0) {
     color = 'red'
+    formattedLastPos = '-' + formattedLastPos
   }
-  return color
+  return { color, formattedLastPos }
 }
