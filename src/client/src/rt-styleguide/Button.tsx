@@ -123,7 +123,7 @@ const BaseElement = styled.button<ButtonStyleProps>`
   margin-top: 0.375rem;
   margin-bottom: 0.375rem;
 
-  line-height: 1rem;
+  line-height: 0rem;
   font-size: 0.6875rem;
   font-weight: 600;
   overflow: hidden;
@@ -189,6 +189,8 @@ export const StyledButton = styled(BaseElement)<ButtonStyleProps>`
   min-height: 1.75rem;
   max-height: 1.75rem;
 
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
 
