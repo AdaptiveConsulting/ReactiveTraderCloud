@@ -72,7 +72,6 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
     const amount = numeral(basePnl)
       .format('0a')
       .toUpperCase()
-    const amountHover = numeral(basePnl).format('0,0')
     const labelText = `(${amount}) ${symbol}`
 
     const approxLabelWidth = labelText.length * 8
@@ -83,7 +82,6 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
         <span className="analytics__barchart-label-amount">({amount}) </span>
         <span>{currencyPair.base}</span>
         <span className="analytics__barchart-label-currency-terms">{currencyPair.terms}</span>
-        <span className="analytics__barchart-label-amount--hover"> {amountHover}</span>
       </span>
     )
   }
