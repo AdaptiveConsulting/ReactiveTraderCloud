@@ -46,9 +46,6 @@ const AppLayoutRoot = styled.div`
 const Body = styled.div`
   display: flex;
   overflow: hidden;
-
-  background-color: ${({ theme }) => theme.shell.backgroundColor};
-  color: ${({ theme }) => theme.shell.textColor};
 `
 
 export default AppLayout

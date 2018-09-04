@@ -13,15 +13,10 @@ const BodyLayout: React.SFC<Props> = ({ body, aside }) => (
 )
 
 const Layout = styled.div`
-  flex: 1;
-  width: 100%;
-  height: 100%;
-
   display: grid;
-  grid-template-columns: minmax(min-content, 1fr) auto;
-
-  align-items: stretch;
-  justify-content: stretch;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  width: 100%;
 `
 
 export default BodyLayout

@@ -1,8 +1,6 @@
 import React from 'react'
 import { AnalyticsContainer } from '../../ui/analytics'
 
-import SplitPane from 'react-split-pane'
-
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import { BlotterContainer } from '../../ui/blotter'
@@ -38,8 +36,11 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   <DefaultLayout
     header={header}
     body={
-      <SplitPane minSize={300} size={600} maxSize={-50} split="horizontal" style={{ position: 'relative' }}>
-        <WorkspaceContainer />
+      <React.Fragment>
+        <WorkspaceWrapper>
+          <WorkspaceContainer />
+        </WorkspaceWrapper>
+
         <BlotterWrapper>
           <TearOff
             id="blotter"
@@ -47,7 +48,7 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
             render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
           />
         </BlotterWrapper>
-      </SplitPane>
+      </React.Fragment>
     }
     aside={
       <AnalyticsWrapper>
@@ -63,16 +64,33 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   />
 )
 
-const BlotterWrapper = styled.div`
-  height: 100%;
+const WorkspaceWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
+  overflow-y: auto;
+  grid-row: 1 / 4;
+
+  @media (max-width: 750px) {
+    grid-column: 1 / 3;
+  }
 `
 
 const AnalyticsWrapper = styled.div`
-  grid-column: minmax(16rem, 24rem);
-  max-width: 24rem;
-  margin: 0.375rem 1.25rem 0 0;
+  padding: 0.375rem 1.25rem 0 0;
   overflow: hidden;
+  grid-row: 1 / 6;
+
+  @media (max-width: 750px) {
+    display: none;
+  }
+`
+
+const BlotterWrapper = styled.div`
+  padding: 0 0.5rem 0 1rem;
+  grid-row: 4 / 6;
+
+  @media (max-width: 750px) {
+    grid-column: 1 / 3;
+  }
 `
 
 export default ShellRoute
