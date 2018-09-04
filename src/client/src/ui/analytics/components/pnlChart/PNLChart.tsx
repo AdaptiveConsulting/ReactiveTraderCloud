@@ -57,7 +57,8 @@ export default class PNLChart extends React.Component<PNLChartProps> {
     this.chartGradient.update(this.pnlChartRef.current, this.props.minPnl, this.props.maxPnl)
 
   configurePnLChart = (chart: any) => {
-    const pnlTooltip = (el: any) => {
+    chart.interactiveLayer.tooltip.enabled(false)
+    /* const pnlTooltip = (el: any) => {
       const date = timeFormat('%X')(new Date(el.value))
       const formatted = numeral(el.series[0].value).format('0.0a')
 
@@ -66,7 +67,7 @@ export default class PNLChart extends React.Component<PNLChartProps> {
         ${formatted}
       </p>`
     }
-    chart.interactiveLayer.tooltip.contentGenerator(pnlTooltip)
+    chart.interactiveLayer.tooltip.contentGenerator(pnlTooltip) */
   }
 
   prepareDatum = (seriesData: PricePoint[]) => ({
@@ -88,6 +89,7 @@ export default class PNLChart extends React.Component<PNLChartProps> {
     return (
       <div ref={this.pnlChartRef}>
         <NVD3Chart
+          tooltip={{ enabled: true }}
           type="lineChart"
           datum={[this.prepareDatum(seriesData)]}
           options={options}
