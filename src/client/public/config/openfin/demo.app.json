@@ -1,11 +1,11 @@
 {
   "devtools_port": 9090,
-  "splashScreenImage": "https://web-demo.adaptivecluster.com/static/media/splash-screen.jpg",
+  "splashScreenImage": "https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/src/client/public/static/media/splash-screen.jpg",
   "startup_app": {
     "name": "Reactive Trader Cloud",
     "url": "https://web-demo.adaptivecluster.com/",
     "uuid": "reactive-trader-cloud-web-demo",
-    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png",
+    "applicationIcon": "https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/src/client/public/static/media/adaptive-mark-large.png",
     "autoShow": true,
     "defaultWidth": 1280,
     "defaultHeight": 900,
@@ -24,7 +24,7 @@
   "shortcut": {
     "company": "Adaptive Consulting",
     "description": "Desktop Reactive Trader Cloud",
-    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
+    "icon": "https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/src/client/public/static/media/icon.ico",
     "name": "Reactive Trader Cloud"
   },
   "services": [
