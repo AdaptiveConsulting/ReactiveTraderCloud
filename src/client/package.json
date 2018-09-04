@@ -42,8 +42,9 @@
   },
   "license": "MIT",
   "lint-staged": {
-    "*.app.json": [
-      "npm run openfin-build-installer"
+    "public/**/*.app.json": [
+      "npm run openfin-build-installer",
+      "git add"
     ],
     "src/**/*.{ts,tsx,json,scss}": [
       "prettier --write",
