@@ -49,6 +49,9 @@
     "src/**/*.{ts,tsx}": [
       "tslint --fix",
       "git add"
+    ],
+    "public/config/openfin/**/*.{json}": [
+      "npm run openfin-build-installer"
     ]
   },
   "dependencies": {
