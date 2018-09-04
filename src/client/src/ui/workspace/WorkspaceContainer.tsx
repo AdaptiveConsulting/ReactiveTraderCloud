@@ -6,14 +6,6 @@ import { GlobalState } from 'StoreTypes'
 import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
 import { selectSpotTiles } from './selectors'
 
-const Workspace = styled.div`
-  padding: 0 0.5rem 0 1rem;
-  flex-grow: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  order: 1;
-`
-
 const WorkspaceHeader = styled(Flex)`
   padding: 1.25rem 0.875rem 1.25rem 1.25rem;
   color: ${p => p.theme.shell.textColor};
@@ -35,7 +27,7 @@ type WorkspaceContainerStateProps = ReturnType<typeof mapStateToProps>
 type WorkspaceContainerProps = WorkspaceContainerStateProps
 
 const WorkspaceContainer = ({ spotTiles = [] }: WorkspaceContainerProps) => (
-  <Workspace>
+  <React.Fragment>
     <WorkspaceHeader justifyContent="space-between">
       <div>Live Rates</div>
     </WorkspaceHeader>
@@ -54,7 +46,7 @@ const WorkspaceContainer = ({ spotTiles = [] }: WorkspaceContainerProps) => (
         />
       ))}
     </WorkspaceItems>
-  </Workspace>
+  </React.Fragment>
 )
 
 const mapStateToProps = (state: GlobalState) => ({
