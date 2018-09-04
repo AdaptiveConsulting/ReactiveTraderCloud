@@ -44,7 +44,7 @@
   "lint-staged": {
     "public/**/*.app.json": [
       "npm run openfin-build-installer",
-      "git add"
+      "git add ."
     ],
     "src/**/*.{ts,tsx,json,scss}": [
       "prettier --write",
