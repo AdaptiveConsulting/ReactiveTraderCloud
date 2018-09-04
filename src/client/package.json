@@ -42,7 +42,7 @@
   },
   "license": "MIT",
   "lint-staged": {
-    "public/config/openfin/*.*": [
+    "*.app.json": [
       "npm run openfin-build-installer"
     ],
     "src/**/*.{ts,tsx,json,scss}": [
