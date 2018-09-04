@@ -9,18 +9,18 @@ const createinstaller = enviroment => {
   const fileName = `ReactiveTraderCloud-${enviroment}`
   const appJSONUrl = `https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/src/client/public/config/openfin/${enviroment}.app.json`
 
-  const file = fs.createWriteStream(`openfin-installers/ReactiveTraderCloud-${enviroment}.zip`)
+  const file = fs.createWriteStream(`src/install/ReactiveTraderCloud-${enviroment}.zip`)
   const request = https.get(
     `https://install.openfin.co/download/?config=${appJSONUrl}&fileName=${fileName}`,
     response =>
       response.pipe(file).on('finish', () => {
-        var readStream = fs.createReadStream(`openfin-installers/ReactiveTraderCloud-${enviroment}.zip`),
-        writeStream = fstream.Writer('openfin-installers');
+        var readStream = fs.createReadStream(`src/install/ReactiveTraderCloud-${enviroment}.zip`),
+        writeStream = fstream.Writer('src/install/');
         readStream.pipe(unzip.Parse())
         .pipe(writeStream)
       
         writeStream.on('close', () => {
-          fs.unlink(`openfin-installers/ReactiveTraderCloud-${enviroment}.zip`)
+          fs.unlink(`src/install/ReactiveTraderCloud-${enviroment}.zip`)
         });
       })
   )
