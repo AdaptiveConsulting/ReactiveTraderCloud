@@ -12,7 +12,7 @@ class Header extends React.Component {
     const { children } = this.props
     return (
       <Root>
-        <Logo size={2} onClick={this.onClick} />
+        <Logo size={1.75} onClick={this.onClick} />
 
         <Fill />
 

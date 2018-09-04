@@ -1,4 +1,3 @@
-import { sidebarRegionReducer } from './components/sidebar'
 import { compositeStatusServiceReducer } from './compositeStatus'
 import { connectionStatusReducer } from './connectionStatus'
 import { currencyPairReducer } from './referenceData'
@@ -9,6 +8,5 @@ export const reducers = {
   regionsService: regionsReducer,
   currencyPairs: currencyPairReducer,
   compositeStatusService: compositeStatusServiceReducer,
-  connectionStatus: connectionStatusReducer,
-  displayAnalytics: sidebarRegionReducer
+  connectionStatus: connectionStatusReducer
 }

@@ -10,7 +10,6 @@ import StatusBar from '../../ui/status-bar'
 import { WorkspaceContainer } from '../../ui/workspace'
 
 import ReconnectModal from '../components/reconnect-modal'
-import SidebarRegionContainer from '../components/sidebar'
 
 import DefaultLayout from '../layouts/DefaultLayout'
 
@@ -51,16 +50,13 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
       </SplitPane>
     }
     aside={
-      <TearOff
-        id="region"
-        portalProps={portalProps.analyticsRegion}
-        render={(popOut, tornOff) => (
-          <SidebarRegionContainer
-            tornOff={tornOff}
-            renderContent={() => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} />}
-          />
-        )}
-      />
+      <AnalyticsWrapper>
+        <TearOff
+          id="region"
+          portalProps={portalProps.analyticsRegion}
+          render={(popOut, tornOff) => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} />}
+        />
+      </AnalyticsWrapper>
     }
     footer={<StatusBar />}
     after={<ReconnectModal />}
@@ -70,6 +66,13 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
 const BlotterWrapper = styled.div`
   height: 100%;
   padding: 0 0.5rem 0 1rem;
+`
+
+const AnalyticsWrapper = styled.div`
+  grid-column: minmax(16rem, 24rem);
+  max-width: 24rem;
+  margin: 0.375rem 1.25rem 0 0;
+  overflow: hidden;
 `
 
 export default ShellRoute

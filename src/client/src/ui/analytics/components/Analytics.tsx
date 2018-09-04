@@ -1,29 +1,52 @@
-import classnames from 'classnames'
-import _ from 'lodash'
+import numeral from 'numeral'
 import React from 'react'
+import { Environment } from 'rt-system'
 import { PNLChartModel } from '../model/pnlChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
 import AnalyticsBarChart from './AnalyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
-import { CurrencyPairMap } from 'rt-types'
+import { CurrencyPair } from 'rt-types'
 import PNLChart from './pnlChart/PNLChart'
 
-import { Root } from './styled'
+import { PopoutIcon } from 'rt-components'
+import { ThemeProvider } from 'rt-theme'
+import {
+  AnalyticsStyle,
+  BubbleChart,
+  Chart,
+  Controls,
+  Disconnected,
+  Header,
+  LastPosition,
+  PopoutButton,
+  Title
+} from './styled'
 
-export interface AnalyticsProps {
-  canPopout: boolean
+export interface CurrencyPairs {
+  [id: string]: CurrencyPair
+}
+
+export interface Props {
+  tornOff: boolean
   isConnected: boolean
+  currencyPairs: CurrencyPairs
   pnlChartModel?: PNLChartModel
   positionsChartModel?: PositionsChartModel
-  currencyPairs: CurrencyPairMap
-  onPopoutClick: () => void
+  onMount?: () => void
+  onPopoutClick?: () => void
 }
 
 const RESIZE_EVENT = 'resize'
 
-export default class Analytics extends React.Component<AnalyticsProps> {
+export default class Analytics extends React.Component<Props> {
   private handleResize = () => this.forceUpdate()
+
+  componentDidMount() {
+    if (this.props.onMount) {
+      this.props.onMount()
+    }
+  }
 
   // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
   componentWillMount() {
@@ -35,53 +58,62 @@ export default class Analytics extends React.Component<AnalyticsProps> {
   }
 
   render() {
-    const { canPopout, isConnected, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
+    const { tornOff, isConnected, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
 
     if (!isConnected) {
-      return (
-        <Root className="analytics__container analytics__container--disconnected">
-          <div ref="analyticsInnerContainer">Disconnected</div>
-        </Root>
-      )
+      return <Disconnected>Disconnected</Disconnected>
     }
 
-    return (
-      <Root className="analytics analytics__container animated fadeIn">
-        <div className="analytics__controls popout__controls">
-          <i className={getWindowButtonClassName(canPopout)} onClick={onPopoutClick} />
-        </div>
+    const lastPos = (pnlChartModel && pnlChartModel.lastPos) || 0
+    const lastPosition = lastPositionWithDirection(lastPos)
 
-        <div className="analytics__header">
-          <span className="analytics__header-title">Analytics</span>
-        </div>
-        {pnlChartModel && <PNLChart {...pnlChartModel} />}
-        <div className="analytics__bubblechart-container">
-          <span className="analytics__chart-title analytics__bubblechart-title">Positions</span>
+    return (
+      <ThemeProvider theme={theme => theme.analytics}>
+        <AnalyticsStyle>
+          <Header>
+            {!Environment.isRunningInIE() &&
+              !tornOff && (
+                <Controls>
+                  <PopoutButton onClick={onPopoutClick}>
+                    <PopoutIcon width={0.8125} height={0.75} />
+                  </PopoutButton>
+                </Controls>
+              )}
+            <Title>Analytics</Title>
+          </Header>
+          <LastPosition color={lastPosition.color}>USD {lastPosition.formattedLastPos}</LastPosition>
+          <Chart>{pnlChartModel && <PNLChart {...pnlChartModel} />}</Chart>
           {positionsChartModel &&
-            !_.isEmpty(positionsChartModel.seriesData) && (
-              <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
-            )}
-        </div>
-        <div>
-          <div className="analytics__chart-container">
-            <span className="analytics__chart-title">Profit and Loss</span>
-            {positionsChartModel &&
-              !_.isEmpty(positionsChartModel.seriesData) && (
+            positionsChartModel.seriesData.length !== 0 && (
+              <React.Fragment>
+                <Title>Positions</Title>
+                <BubbleChart>
+                  <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+                </BubbleChart>
+                <Title>Profit and Loss</Title>
                 <AnalyticsBarChart
                   chartData={positionsChartModel.seriesData}
                   currencyPairs={currencyPairs}
                   isPnL={true}
                 />
-              )}
-          </div>
-        </div>
-      </Root>
+              </React.Fragment>
+            )}
+        </AnalyticsStyle>
+      </ThemeProvider>
     )
   }
 }
 
-const getWindowButtonClassName = (canPopout: boolean) =>
-  classnames(
-    'glyphicon glyphicon-new-window',
-    (canPopout && 'analytics__icon--tearoff--hidden') || 'analytics__icon--tearoff'
-  )
+function lastPositionWithDirection(lastPos: number) {
+  let formattedLastPos = numeral(lastPos).format()
+  let color = ''
+  if (lastPos > 0) {
+    color = 'green'
+    formattedLastPos = '+' + formattedLastPos
+  }
+  if (lastPos < 0) {
+    color = 'red'
+    formattedLastPos = '-' + formattedLastPos
+  }
+  return { color, formattedLastPos }
+}
