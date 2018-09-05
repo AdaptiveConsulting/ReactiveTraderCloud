@@ -16,7 +16,7 @@ const generateRandomName = function() {
 export const openDesktopWindow = (config: DesktopWindowProps) => {
   const { url, width: defaultWidth, height: defaultHeight } = config
 
-  return new Promise<Window>(resolve => {
+  return new Promise<fin.OpenFinWindow>(resolve => {
     const win = new fin.desktop.Window(
       {
         name: generateRandomName(),
@@ -29,7 +29,7 @@ export const openDesktopWindow = (config: DesktopWindowProps) => {
         saveWindowState: false
       },
       () => {
-        resolve(win.getNativeWindow())
+        resolve(win)
       },
       error => {
         console.log('Error creating window:', error)

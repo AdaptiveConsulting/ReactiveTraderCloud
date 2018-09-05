@@ -31,12 +31,12 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     const { environment, config, desktopConfig, browserConfig } = this.props
 
     if (environment.isDesktop) {
-      this.externalWindow = await openDesktopWindow({ ...config, ...desktopConfig })
+      const win = await openDesktopWindow({ ...config, ...desktopConfig })
+      win.addEventListener('closed', this.release)
+      this.externalWindow = win.getNativeWindow()
     } else {
       this.externalWindow = openBrowserWindow({ ...config, ...browserConfig })
     }
-    this.externalWindow.addEventListener('DOMContentLoaded', () => this.injectIntoWindow)
-
     this.externalWindow.addEventListener('beforeunload', this.release)
     window.addEventListener('beforeunload', this.release)
     this.injectIntoWindow()
@@ -113,7 +113,6 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     if (this.mutationObserver) {
       this.mutationObserver.disconnect()
     }
-
     if (onUnload) {
       onUnload.call(null)
     }
