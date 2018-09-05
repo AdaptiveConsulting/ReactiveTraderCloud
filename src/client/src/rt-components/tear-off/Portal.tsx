@@ -85,7 +85,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
       this.mutationObserver = new MutationObserver(mutationsList => {
         mutationsList.forEach(mutationRecord => {
           const addedNode = mutationRecord.addedNodes[0]
-          if (addedNode.nodeName === 'STYLE') {
+          if (addedNode && addedNode.nodeName === 'STYLE') {
             const newNode = addedNode.cloneNode(true)
             childHead.appendChild(newNode)
           }
