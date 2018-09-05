@@ -35,6 +35,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     } else {
       this.externalWindow = openBrowserWindow({ ...config, ...browserConfig })
     }
+    this.externalWindow.addEventListener('DOMContentLoaded', () => this.injectIntoWindow)
 
     this.externalWindow.addEventListener('beforeunload', this.release)
     window.addEventListener('beforeunload', this.release)
