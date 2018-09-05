@@ -14,7 +14,7 @@ const BodyLayout: React.SFC<Props> = ({ body, aside }) => (
 
 const Layout = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr minmax(20rem, auto);
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
   width: 100%;
 `
