@@ -1,6 +1,6 @@
 export { retryWithBackOff, retryConstantly } from './retryPolicy'
 export { default as Environment } from './environment'
-export { ConnectionStatus } from './connectionStatus'
+export { ConnectionStatus, ConnectionState } from './connectionStatus'
 export { ConnectionType } from './connectionType'
 export { ServiceStub } from './ServiceStub'
 export { default as ServiceClient } from './ServiceStubWithLoadBalancer'

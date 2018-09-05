@@ -1,12 +1,6 @@
 import { CONNECTION_ACTION_TYPES, ConnectionActions } from 'rt-actions'
-import { ConnectionStatus, ConnectionType } from 'rt-system'
+import { ConnectionState, ConnectionStatus, ConnectionType } from 'rt-system'
 import { CONNECTION_STATUS_ACTION_TYPES, ConnectionStatusActions } from './connectionStatusActions'
-
-export interface ConnectionState {
-  status: ConnectionStatus
-  url: string
-  transportType: ConnectionType
-}
 
 const INITIAL_STATE: ConnectionState = {
   status: ConnectionStatus.disconnected,

@@ -5,5 +5,11 @@
 export interface ServiceStatus {
   serviceType: string
   connectedInstanceCount: number
-  isConnected: boolean
+  connectionStatus: ServiceConnectionStatus
+}
+
+export enum ServiceConnectionStatus {
+  CONNECTING = 'CONNECTING',
+  CONNECTED = 'CONNECTED',
+  DISCONNECTED = 'DISCONNECTED'
 }

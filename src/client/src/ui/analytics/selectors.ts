@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
 
+import { ServiceConnectionStatus } from 'rt-types'
 import { getPnlChartModel } from './model/pnlChartModel'
 import { getPositionsChartModel } from './model/positionsChartModel'
 
@@ -16,7 +17,7 @@ const getHistory = ({ analyticsService }: GlobalState) => analyticsService && an
 const selectPnlChartModel = createSelector([getHistory], history => getPnlChartModel(history))
 
 const getConnectionStatus = ({ compositeStatusService }: GlobalState) =>
-  compositeStatusService.analytics && compositeStatusService.analytics.isConnected
+  compositeStatusService.analytics.connectionStatus === ServiceConnectionStatus.CONNECTED
 const selectAnalyticsStatus = createSelector(getConnectionStatus, status => status)
 
 export { selectPositionsChartModel, selectPnlChartModel, selectAnalyticsStatus, selectCurrencyPairs }

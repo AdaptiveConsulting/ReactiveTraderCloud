@@ -1,29 +1,45 @@
 import _ from 'lodash'
 import React, { Component, SFC } from 'react'
-import { connect } from 'react-redux'
 import { ThemeProvider } from 'rt-theme'
 
-import { GlobalState } from 'StoreTypes'
+import { ConnectionState } from 'rt-system'
+import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import Icon from './Icon'
 import { Content, ExpandToggle, Fill, Header, NodeCount, Root, ServiceList, ServiceName, ServiceRoot } from './styled'
-
-interface ServiceStatus {
-  serviceType: string
-  isConnected: boolean | null
-  connectedInstanceCount: number | null
-}
-
-export const SERVICES = ['blotter', 'reference', 'execution', 'pricing', 'analytics'].map(serviceType => ({
-  serviceType,
-  isConnected: null,
-  connectedInstanceCount: 0
-}))
 
 interface State {
   expanded: boolean
 }
 
-class StatusBar extends Component<StatusBarProps, State> {
+const mapToTheme = {
+  [ServiceConnectionStatus.CONNECTED]: 'good',
+  [ServiceConnectionStatus.CONNECTING]: 'aware',
+  [ServiceConnectionStatus.DISCONNECTED]: 'bad'
+}
+
+const mapToIcon = {
+  [ServiceConnectionStatus.CONNECTING]: 'ellipsis-h',
+  [ServiceConnectionStatus.CONNECTED]: 'check',
+  [ServiceConnectionStatus.DISCONNECTED]: 'times'
+}
+
+const getApplicationStatus = (services: ServiceStatus[]) => {
+  if (services.every(s => s.connectionStatus === ServiceConnectionStatus.CONNECTED)) {
+    return ServiceConnectionStatus.CONNECTED
+  } else if (services.some(s => s.connectionStatus === ServiceConnectionStatus.CONNECTING)) {
+    return ServiceConnectionStatus.CONNECTING
+  } else {
+    return ServiceConnectionStatus.DISCONNECTED
+  }
+}
+
+export class StatusBar extends Component<
+  {
+    connectionStatus: ConnectionState
+    services: ServiceStatus[]
+  },
+  State
+> {
   state = {
     expanded: false
   }
@@ -33,21 +49,18 @@ class StatusBar extends Component<StatusBarProps, State> {
   render() {
     const {
       connectionStatus: { url, transportType },
-      mode,
-      serviceStatus
+      services
     } = this.props
 
     const { expanded } = this.state
-
+    const mode = getApplicationStatus(services)
     return (
-      <ThemeProvider
-        theme={theme => theme.button[mode === 'connected' ? 'good' : mode === 'connecting' ? 'aware' : 'bad']}
-      >
+      <ThemeProvider theme={theme => theme.button[mapToTheme[mode]]}>
         <Root>
           <Content expand={expanded}>
             <Header onClick={this.toggleExpanded}>
               <Icon name="check" />
-              {mode === 'disconnected' ? (
+              {mode === ServiceConnectionStatus.DISCONNECTED ? (
                 'Disconnected'
               ) : (
                 <React.Fragment>
@@ -60,10 +73,10 @@ class StatusBar extends Component<StatusBarProps, State> {
             </Header>
 
             <ServiceList>
-              {_.map(SERVICES, service => serviceStatus[service.serviceType] || service).map((service, index) => (
+              {services.map((service, index) => (
                 <ThemeProvider
                   key={service.serviceType}
-                  theme={theme => theme.button[service.isConnected ? 'good' : mode === 'connecting' ? 'aware' : 'bad']}
+                  theme={theme => theme.button[mapToTheme[service.connectionStatus]]}
                 >
                   <Service service={service} index={index} />
                 </ThemeProvider>
@@ -77,15 +90,15 @@ class StatusBar extends Component<StatusBarProps, State> {
 }
 
 const Service: SFC<{ service: ServiceStatus; index: number }> = ({
-  service: { serviceType, isConnected, connectedInstanceCount },
+  service: { serviceType, connectionStatus, connectedInstanceCount },
   index
 }) => (
   <ServiceRoot index={index + 2}>
-    <Icon name={isConnected == null ? 'ellipsis-h' : isConnected ? 'check' : 'times'} />
+    <Icon name={mapToIcon[connectionStatus]} />
     <div>
       <ServiceName>{serviceType}</ServiceName>
 
-      {connectedInstanceCount != null && (
+      {connectionStatus === ServiceConnectionStatus.CONNECTED && (
         <NodeCount>
           ({connectedInstanceCount} {connectedInstanceCount !== 1 ? 'Nodes' : 'Node'})
         </NodeCount>
@@ -93,24 +106,3 @@ const Service: SFC<{ service: ServiceStatus; index: number }> = ({
     </div>
   </ServiceRoot>
 )
-
-const mapStateToProps = ({ compositeStatusService, connectionStatus }: GlobalState) => {
-  const services = Object.values(compositeStatusService).map(s => s.isConnected)
-
-  const mode =
-    services.length < SERVICES.length || (services.some(s => s) && !services.every(s => s))
-      ? 'connecting'
-      : services.every(s => s)
-        ? 'connected'
-        : 'disconnected'
-
-  return {
-    connectionStatus,
-    serviceStatus: compositeStatusService,
-    mode
-  }
-}
-
-type StatusBarProps = ReturnType<typeof mapStateToProps>
-
-export default connect(mapStateToProps)(StatusBar)
