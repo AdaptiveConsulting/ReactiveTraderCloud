@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import { ConnectionOverlay } from 'rt-components'
 import { Environment } from 'rt-system'
-import { styled } from 'rt-theme'
 import { GlobalState } from 'StoreTypes'
 import { BlotterActions } from './actions'
 import Blotter from './components'
@@ -16,15 +16,6 @@ interface BlotterContainerOwnProps {
 type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
 type BlotterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 type BlotterContainerProps = BlotterContainerStateProps & BlotterContainerDispatchProps & BlotterContainerOwnProps
-
-const BlotterDisconnected = styled('div')`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.accents.bad.base};
-  color: ${({ theme }) => theme.white};
-`
 
 class BlotterContainer extends React.Component<BlotterContainerProps> {
   componentDidMount() {
@@ -42,7 +33,7 @@ class BlotterContainer extends React.Component<BlotterContainerProps> {
       )
     }
 
-    return <BlotterDisconnected>Blotter disconnected</BlotterDisconnected>
+    return <ConnectionOverlay>Blotter disconnected</ConnectionOverlay>
   }
 }
 

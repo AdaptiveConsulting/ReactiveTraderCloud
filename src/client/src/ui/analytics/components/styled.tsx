@@ -117,16 +117,6 @@ export const Chart = styled.div`
     fill: currentColor;
   }
 `
-
-export const Disconnected = styled.div`
-  display: flex;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-`
-
 export const Controls = styled('div')`
   position: absolute;
   right: 0;

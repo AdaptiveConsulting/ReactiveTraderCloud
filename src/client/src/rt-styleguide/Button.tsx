@@ -187,7 +187,7 @@ export const StyledButton = styled(BaseElement)<ButtonStyleProps>`
   min-width: 4rem;
   max-width: 26rem;
   min-height: 1.75rem;
-  max-height: 1.75rem;
+  max-height: 2.4rem;
 
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
