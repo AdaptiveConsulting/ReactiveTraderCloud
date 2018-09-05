@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+import { ServiceConnectionStatus } from 'rt-types'
 import { GlobalState } from 'StoreTypes'
 import { SpotTileContainerOwnProps } from './SpotTileContainer'
 
@@ -12,12 +13,13 @@ const selectServiceStatus = (state: GlobalState) => state.compositeStatusService
 
 const selectExecutionStatus = createSelector(
   [selectServiceStatus],
-  serviceStatus => serviceStatus.execution && serviceStatus.execution.isConnected
+  serviceStatus =>
+    serviceStatus.execution && serviceStatus.execution.connectionStatus === ServiceConnectionStatus.CONNECTED
 )
 
 const selectPricingStatus = createSelector(
   [selectServiceStatus],
-  serviceStatus => serviceStatus.pricing && serviceStatus.pricing.isConnected
+  serviceStatus => serviceStatus.pricing && serviceStatus.pricing.connectionStatus === ServiceConnectionStatus.CONNECTED
 )
 
 export { selectCurrencyPair, selectSpotTileData, selectExecutionStatus, selectPricingStatus }

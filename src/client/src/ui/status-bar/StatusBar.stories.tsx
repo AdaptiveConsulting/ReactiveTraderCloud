@@ -7,62 +7,52 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 
 import { Story } from 'rt-storybook'
-import { ConnectionType } from 'rt-system'
+import { ConnectionStatus, ConnectionType } from 'rt-system'
 import { styled } from 'rt-theme'
 
-import StatusBar, { SERVICES } from './StatusBar'
+import { ServiceConnectionStatus } from 'rt-types'
+import { StatusBar } from './StatusBar'
 
 const stories = storiesOf('Status Bar', module)
 
 stories.addDecorator(withKnobs)
 
-const connectionStatus = {
-  status: 'connected',
+const generateConnectionStatus = (status: ConnectionStatus) => ({
+  status,
   url: 'wss://web-demo.adaptivecluster.com:443/ws',
   transportType: ConnectionType.WebSocket
-}
+})
 
-const compositeStatusService = _.mapValues(_.keyBy(SERVICES, 'serviceType'), ({ serviceType }) => ({
-  serviceType,
-  isConnected: true,
-  connectedInstanceCount: 2
-}))
+const generateServiceStatuses = (status: ServiceConnectionStatus) =>
+  ['blotter', 'reference', 'execution', 'pricing', 'analytics'].map(serviceType => ({
+    serviceType,
+    connectionStatus: status,
+    connectedInstanceCount: 0
+  }))
 
 const connectionState = {
   connected: {
-    connectionStatus,
-    compositeStatusService
+    status: generateConnectionStatus(ConnectionStatus.connected),
+    services: generateServiceStatuses(ServiceConnectionStatus.CONNECTED)
   },
 
   disconnected: {
-    connectionStatus: {
-      ...connectionStatus,
-      status: 'disconnected'
-    },
-    compositeStatusService: _.mapValues(compositeStatusService, s => ({
-      ...s,
-      isConnected: false
-    }))
+    status: generateConnectionStatus(ConnectionStatus.disconnected),
+    services: generateServiceStatuses(ServiceConnectionStatus.DISCONNECTED)
   },
 
   connecting: {
-    connectionStatus: {
-      ...connectionStatus,
-      status: 'disconnected'
-    },
-    compositeStatusService: _.mapValues(compositeStatusService, s => ({
-      ...s,
-      isConnected: Math.random() > 0.5
-    }))
+    status: generateConnectionStatus(ConnectionStatus.connected),
+    services: generateServiceStatuses(ServiceConnectionStatus.CONNECTING)
   }
 }
 
-_.forEach(connectionState, (state, key) =>
+Object.entries(connectionState).forEach(([key, state]) =>
   stories.add(_.capitalize(key), () => {
     // const expanded = boolean('expanded', false)
     return (
       <Root state={state}>
-        <StatusBar />
+        <StatusBar connectionStatus={state.status} services={state.services} />
       </Root>
     )
   })
@@ -79,6 +69,6 @@ const Root: SFC<{ state: {} }> = ({ children, state = {} }) => (
 const Container = styled.div`
   display: flex;
   align-items: flex-end;
-  height: 100%;
+  height: 50vh;
   width: 100%;
 `

@@ -1,4 +1,4 @@
-import { ServiceStatus } from 'rt-types'
+import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import { ServiceInstanceStatus } from './serviceInstanceStatus'
 
 export class ServiceInstanceCollection {
@@ -65,7 +65,9 @@ export class ServiceCollectionMap {
       acc[next.serviceType] = {
         serviceType: next.serviceType,
         connectedInstanceCount: next.getServiceInstances().filter(instance => instance.isConnected === true).length,
-        isConnected: !!next.getServiceWithMinLoad()
+        connectionStatus: next.getServiceWithMinLoad()
+          ? ServiceConnectionStatus.CONNECTED
+          : ServiceConnectionStatus.DISCONNECTED
       }
       return acc
     }, {})

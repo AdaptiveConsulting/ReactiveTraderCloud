@@ -1,6 +1,6 @@
 export { CurrencyPair, CurrencyPairMap } from './currencyPair'
 export { Direction } from './direction'
-export { ServiceStatus } from './serviceStatus'
+export { ServiceStatus, ServiceConnectionStatus } from './serviceStatus'
 export { Trade, Trades } from './trade'
 export { TradeStatus } from './tradeStatus'
 export { UpdateType } from './updateType'
