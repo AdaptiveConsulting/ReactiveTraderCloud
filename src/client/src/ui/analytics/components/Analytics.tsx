@@ -9,19 +9,9 @@ import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 import { CurrencyPair } from 'rt-types'
 import PNLChart from './pnlChart/PNLChart'
 
-import { PopoutIcon } from 'rt-components'
+import { ConnectionOverlay, PopoutIcon } from 'rt-components'
 import { ThemeProvider } from 'rt-theme'
-import {
-  AnalyticsStyle,
-  BubbleChart,
-  Chart,
-  Controls,
-  Disconnected,
-  Header,
-  LastPosition,
-  PopoutButton,
-  Title
-} from './styled'
+import { AnalyticsStyle, BubbleChart, Chart, Controls, Header, LastPosition, PopoutButton, Title } from './styled'
 
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
@@ -61,7 +51,7 @@ export default class Analytics extends React.Component<Props> {
     const { tornOff, isConnected, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
 
     if (!isConnected) {
-      return <Disconnected>Disconnected</Disconnected>
+      return <ConnectionOverlay>Analytics Disconnected</ConnectionOverlay>
     }
 
     const lastPos = (pnlChartModel && pnlChartModel.lastPos) || 0
