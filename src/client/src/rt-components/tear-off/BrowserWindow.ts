@@ -1,32 +1,21 @@
-import React from 'react'
 import { BrowserWindowConfig, WindowConfig } from './types'
 
 type BrowserWindowProps = WindowConfig & BrowserWindowConfig
 
-export default class BrowserWindow extends React.PureComponent<BrowserWindowProps> {
-  componentDidMount() {
-    this.props.createWindow(this.openChild())
-  }
+export const openBrowserWindow = (config: BrowserWindowProps) => {
+  const { name, width, height, center } = config
+  const { left, top } = calculatePosition(center, width, height)
 
-  render() {
-    return this.props.children
-  }
-
-  openChild() {
-    const { name, width, height, center } = this.props
-    const { left, top } = calculatePosition(center, width, height)
-
-    return window.open(
-      '',
-      name,
-      toWindowFeatures({
-        width,
-        height,
-        left,
-        top
-      })
-    )
-  }
+  return window.open(
+    '',
+    name,
+    toWindowFeatures({
+      width,
+      height,
+      left,
+      top
+    })
+  )
 }
 
 function calculatePosition(center: string, width: number, height: number) {

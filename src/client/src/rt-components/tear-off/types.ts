@@ -5,12 +5,8 @@ export interface WindowConfig {
   height: number
 }
 
-export interface DesktopWindowConfig {
-  createWindow: (window: Window) => void
-  closeWindow: () => void
-}
+export interface DesktopWindowConfig {}
 
 export interface BrowserWindowConfig {
-  createWindow: (window: Window) => void
   center: 'parent' | 'screen'
 }
