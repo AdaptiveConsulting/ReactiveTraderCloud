@@ -1,6 +1,6 @@
-import { DesktopWindowConfig, WindowConfig } from './types'
+import { WindowConfig } from './types'
 
-type DesktopWindowProps = WindowConfig & DesktopWindowConfig
+type DesktopWindowProps = WindowConfig
 
 const generateRandomName = function() {
   let text = ''

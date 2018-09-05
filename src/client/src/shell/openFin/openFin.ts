@@ -207,16 +207,10 @@ export default class OpenFin {
   }
 
   openTradeNotification = (tradeNotification: any) =>
-    // tslint:disable-next-line
     new fin.desktop.Notification({
       url: '/index.html?notification=true',
       message: tradeNotification,
-      duration: 20000,
-      onClick: () => {
-        this.bringToFront()
-        // highlight trade row
-        // this._router.publishEvent(WellKnownModelIds.blotterModelId, 'highlightTradeRow', { trade })
-      }
+      duration: 20000
     })
 
   publishCurrentPositions(ccyPairPositions: any) {

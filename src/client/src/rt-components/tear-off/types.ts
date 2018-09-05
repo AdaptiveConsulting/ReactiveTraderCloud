@@ -5,7 +5,7 @@ export interface WindowConfig {
   height: number
 }
 
-export interface DesktopWindowConfig {}
+//export interface DesktopWindowConfig {}
 
 export interface BrowserWindowConfig {
   center: 'parent' | 'screen'
