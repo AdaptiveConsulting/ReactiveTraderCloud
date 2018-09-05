@@ -1,0 +1,270 @@
+<!--
+This file is required by sample-template-instant-chart.html and should not be loaded directly.
+It contains html for all of the dialogs that are used by the instant-chart.
+If you have more than one instant-chart on the screen, the dialogs will be shared between the charts.
+This file will be loaded dynamically by instant-chart.html
+-->
+
+<cq-color-picker>
+	<cq-colors></cq-colors>
+	<cq-overrides>
+		<template>
+			<div class="ciq-btn"></div>
+		</template>
+	</cq-overrides>
+</cq-color-picker>
+
+<cq-dialog>
+    <cq-view-dialog>
+	    <h4>Save View</h4>
+	    <div stxtap="close()" class="ciq-icon ciq-close"></div>
+	    <div style="text-align:center;margin-top:10px;">
+		    <i>Enter name of view:</i>
+		    <p>
+		    	<input spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" maxlength="40" placeholder="Name"><br>
+		    </p>
+		    <span class="ciq-btn" stxtap="save()">Save</span>
+		</div>
+	</cq-view-dialog>
+</cq-dialog>
+
+<cq-dialog>
+	<cq-aggregation-dialog>
+		<h4 class="title"></h4>
+		<div stxtap="hide()" class="ciq-icon ciq-close"></div>
+		<div style="text-align:center;margin-top:10px;">
+			<div class="ciqkagi">
+				<i>Enter value and hit "Enter"</i>
+				<p>
+				<input name="kagi" stxtap="Layout.setAggregationEdit('kagi')">
+			</div>
+			<div class="ciqrenko">
+				<i>Enter value and hit "Enter"</i>
+				<p>
+				<input name="renko" stxtap="Layout.setAggregationEdit('renko')">
+			</div>
+			<div class="ciqlinebreak">
+				<i>Enter value and hit "Enter"</i>
+				<p>
+				<input name="priceLines" stxtap="Layout.setAggregationEdit('priceLines')">
+			</div>
+			<div class="ciqrangebars">
+				<i>Enter value and hit "Enter"</i>
+				<p>
+				<input name="range" stxtap="Layout.setAggregationEdit('rangebars')">
+			</div>
+			<div class="ciqpandf">
+				<i>Enter box size and hit "Enter"</i>
+				<p>
+				<input name="box" stxtap="Layout.setAggregationEdit('pandf.box')">
+				<p>
+				<i>Enter reversal and hit "Enter"</i>
+				<p>
+				<input name="reversal" stxtap="Layout.setAggregationEdit('pandf.reversal')">
+			</div>
+			<p>or
+			<p>
+			<div class="ciq-btn" stxtap="Layout.setAggregationEdit('auto')">Auto Select</div>
+		</div>
+	</cq-aggregation-dialog>
+</cq-dialog>
+
+
+<cq-dialog>
+	<cq-study-context>
+		<div stxtap="StudyEdit.edit()">Edit Settings...</div>
+		<div stxtap="StudyEdit.remove()">Delete Study</div>
+	</cq-study-context>
+</cq-dialog>
+
+<cq-dialog>
+	<cq-fib-settings-dialog>
+		<h4 class="title">Settings</h4>
+		<cq-scroll cq-no-maximize>
+			<cq-fibonacci-settings>
+				<template cq-fibonacci-setting>
+					<cq-fibonacci-setting>
+						<div class="ciq-heading"></div>
+						<div class="stx-data">
+							<input type="checkbox">
+						</div>
+					</cq-fibonacci-setting>
+				</template>
+			</cq-fibonacci-settings>
+		</cq-scroll>
+		<div class="ciq-dialog-cntrls">
+			<div class="ciq-btn" stxtap="close()">Done</div>
+		</div>
+	</cq-fib-settings-dialog>
+</cq-dialog>
+
+<cq-dialog>
+	<cq-study-dialog>
+		<h4 class="title">Study</h4>
+		<cq-scroll cq-no-maximize>
+			<cq-study-inputs>
+				<template cq-study-input>
+					<cq-study-input>
+						<div class="ciq-heading"></div>
+						<div class="stx-data">
+							<template cq-menu>
+								<cq-menu class="ciq-select">
+									<cq-selected></cq-selected>
+									<cq-menu-dropdown cq-lift></cq-menu-dropdown>
+								</cq-menu>
+							</template>
+						</div>
+					</cq-study-input>
+				</template>
+			</cq-study-inputs>
+			<hr>
+			<cq-study-outputs>
+				<template cq-study-output>
+					<cq-study-output>
+						<div class="ciq-heading"></div>
+						<cq-swatch cq-overrides="auto"></cq-swatch>
+					</cq-study-output>
+				</template>
+			</cq-study-outputs>
+			<hr>
+			<cq-study-parameters>
+				<template cq-study-parameters>
+					<cq-study-parameter>
+						<div class="ciq-heading"></div>
+						<div class="stx-data"><cq-swatch cq-overrides="auto"></cq-swatch></div>
+					</cq-study-parameter>
+				</template>
+			</cq-study-parameters>
+		</cq-scroll>
+		<div class="ciq-dialog-cntrls">
+			<div class="ciq-btn" stxtap="close()">Done</div>
+		</div>
+	</cq-study-dialog>
+</cq-dialog>
+
+<cq-dialog>
+	<cq-theme-dialog>
+		<h4 class="title">Create Custom Theme</h4>
+		<cq-close></cq-close>
+		<cq-scroll cq-no-maximize>
+			<cq-section>
+				<cq-placeholder>Candle Color
+					<cq-theme-piece cq-piece="cu"><cq-swatch cq-overrides="Hollow"></cq-swatch></cq-theme-piece>
+					<cq-theme-piece cq-piece="cd"><cq-swatch cq-overrides="Hollow"></cq-swatch></cq-theme-piece>
+				</cq-placeholder>
+				<cq-placeholder>Candle Wick
+					<cq-theme-piece cq-piece="wu"><cq-swatch></cq-swatch></cq-theme-piece>
+					<cq-theme-piece cq-piece="wd"><cq-swatch></cq-swatch></cq-theme-piece>
+				</cq-placeholder>
+				<cq-placeholder>Candle Border
+					<cq-theme-piece cq-piece="bu"><cq-swatch cq-overrides="No Border"></cq-swatch></cq-theme-piece>
+					<cq-theme-piece cq-piece="bd"><cq-swatch cq-overrides="No Border"></cq-swatch></cq-theme-piece>
+				</cq-placeholder>
+				<cq-separator></cq-separator>
+				<cq-placeholder>Line/Bar Chart
+					<cq-theme-piece cq-piece="lc"><cq-swatch></cq-swatch></cq-theme-piece>
+				</cq-placeholder>
+				<cq-separator></cq-separator>
+				<cq-placeholder>Mountain Color
+					<cq-theme-piece cq-piece="mc"><cq-swatch></cq-swatch></cq-theme-piece>
+				</cq-placeholder>
+			</cq-section>
+			<cq-section>
+				<cq-placeholder>Background
+					<cq-theme-piece cq-piece="bg"><cq-swatch></cq-swatch></cq-theme-piece>
+				</cq-placeholder>
+				<cq-placeholder>Grid Lines
+					<cq-theme-piece cq-piece="gl"><cq-swatch></cq-swatch></cq-theme-piece>
+				</cq-placeholder>
+				<cq-placeholder>Date Dividers
+					<cq-theme-piece cq-piece="dd"><cq-swatch></cq-swatch></cq-theme-piece>
+				</cq-placeholder>
+				<cq-placeholder>Axis Text<cq-theme-piece cq-piece="at"><cq-swatch></cq-swatch></cq-theme-piece>
+				</cq-placeholder>
+			</cq-section>
+			<cq-action>
+				<input><div stxtap="save()" class="ciq-btn">Save</div>
+			</cq-action>
+		</cq-scroll>
+	</cq-theme-dialog>
+</cq-dialog>
+
+<cq-dialog>
+	<cq-timezone-dialog>
+		<h4 class="title">Choose Timezone</h4>
+		<cq-close></cq-close>
+
+		<p>To set your timezone use the location button below, or scroll through the following list...</p>
+		<p class="currentUserTimeZone"></p>
+    <div class="detect">
+    <div class="ciq-btn" stxtap="removeTimezone()">Use My Current Location</div>
+    </div>
+    <div class="timezoneDialogWrapper" style="max-height:360px; overflow: auto;">
+	        <ul>
+	          <li class="timezoneTemplate" style="display:none;cursor:pointer;"></li>
+	        </ul>
+        </div>
+    <div class="instruct">(Scroll for more options)</div>
+	</cq-timezone-dialog>
+</cq-dialog>
+
+<cq-dialog>
+	<cq-language-dialog>
+		<h4 class="title">Choose language</h4>
+		<cq-close></cq-close>
+		<cq-languages>
+			<template><div><cq-flag></cq-flag><cq-language-name></cq-language-name></div></template>
+		</cq-languages>
+	</cq-language-dialog>
+</cq-dialog>
+
+<cq-dialog>
+	<cq-share-dialog>
+		<div>
+			<h4 class="title">Share Your Chart</h4>
+			<cq-separator></cq-separator>
+			<cq-share-create class="ciq-btn" stxtap="share()">Create Image</cq-share-create>
+			<cq-share-generating style="display:none">Generating Image</cq-share-generating>
+			<cq-share-uploading style="display:none">Uploading Image</cq-share-uploading>
+
+			<div class="share-link-div"></div>
+
+			<cq-separator></cq-separator>
+			<div class="ciq-dialog-cntrls">
+				<div stxtap="close()" class="ciq-btn">Done</div>
+			</div>
+
+		</div>
+	</cq-share-dialog>
+</cq-dialog>
+
+<cq-dialog-dummy></cq-dialog-dummy>
+
+
+<script>
+	var uiManager=$("cq-ui-manager")[0];
+	if(!uiManager){
+		uiManager=$("<cq-ui-manager></cq-ui-manager>")[0];
+		$("body").append($(uiManager));
+	}
+	var _currentScript = document._currentScript || document.currentScript;
+	var doc;
+
+	// This is just a dummy component that is used to create an entry point. When we instantiate this dummy component
+	// it provides the opportunity for moving all of our cq-dialog entries into the main document. The only reason this
+	// is necessary is because we're using a polyfilled HTML5Imports for FF and IE11.
+	var CQDialogDummy = {
+		prototype: Object.create(HTMLElement.prototype)
+	};
+
+	CQDialogDummy.prototype.createdCallback=function(){
+		doc=_currentScript.ownerDocument;
+		var contents=$(doc.body).children();
+		$(document.body).append(contents);
+	};
+
+	document.registerElement("cq-dialog-dummy", CQDialogDummy);
+
+</script>
+
+

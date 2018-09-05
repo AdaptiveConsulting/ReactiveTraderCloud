@@ -42,9 +42,9 @@
  * Type definition for a change. Any other property can be added using
  * the notify() or performChange() methods of the notifier.
  * @typedef  {Object}                     ChangeRecord
- * @property {String}                     type
+ * @property {string}                     type
  * @property {Object}                     object
- * @property {String}                     [name]
+ * @property {string}                     [name]
  * @property {*}                          [oldValue]
  * @property {Number}                     [index]
  */
@@ -217,7 +217,7 @@ Object.observe || (function(O, A, root) {
          * nodes only, so defineProperties is checked instead.
          * @function getDescriptor
          * @param {Object} object
-         * @param {String} property
+         * @param {string} property
          * @returns {Descriptor}
          */
         getDescriptor = O.defineProperties && O.getOwnPropertyDescriptor,
@@ -299,7 +299,7 @@ Object.observe || (function(O, A, root) {
          * @function performPropertyChecks
          * @param {ObjectData} data
          * @param {Object} object
-         * @param {String} [except]  Doesn't deliver the changes to the
+         * @param {string} [except]  Doesn't deliver the changes to the
          *                           handlers that accept this type
          */
         performPropertyChecks = (function() {
@@ -555,7 +555,7 @@ Object.observe || (function(O, A, root) {
                  * @method performChange
                  * @see http://arv.github.io/ecmascript-object-observe/#notifierprototype_.performchange
                  * @memberof Notifier
-                 * @param {String} changeType
+                 * @param {string} changeType
                  * @param {Performer} func     The task performer
                  * @param {*} [thisObj]        Used to set `this` when calling func
                  */
@@ -614,7 +614,7 @@ Object.observe || (function(O, A, root) {
          * @param {Object} object
          * @param {ObjectData} data
          * @param {ChangeRecord} changeRecord
-         * @param {String} [except]
+         * @param {string} [except]
          */
         addChangeRecord = function(object, data, changeRecord, except) {
             data.handlers.forEach(function(hdata) {
@@ -736,4 +736,4 @@ Object.observe || (function(O, A, root) {
         }
     };
 
-})(Object, Array, this);
+})(Object, Array, typeof window!==undefined?window:global);

@@ -1,0 +1,679 @@
+<!--
+This file is required by sample-template-instant-chart.html and should not be loaded directly.
+-->
+<script src="js/componentUI.js"></script>
+<script src="js/components.js"></script>
+
+<template id="cq-instant-chart-template">
+	<cq-context class="no-touch">
+
+		<div class="ciq-nav">
+	<cq-menu class="ciq-search">
+		<cq-lookup cq-keystroke-claim cq-keystroke-default cq-uppercase>
+			<cq-lookup-input cq-no-close>
+				<input type="text" spellcheck="off" autocomplete="off" autocorrect="off" autocapitalize="off" name="symbol" placeholder="Enter Symbol">
+				<cq-lookup-icon></cq-lookup-icon>
+			</cq-lookup-input>
+			<cq-lookup-results>
+				<cq-lookup-filters cq-no-close>
+					<cq-filter class="true">ALL</cq-filter>
+					<cq-filter>STOCKS</cq-filter>
+					<cq-filter>FX</cq-filter>
+					<cq-filter>INDEXES</cq-filter>
+					<cq-filter>FUNDS</cq-filter>
+					<cq-filter>FUTURES</cq-filter>
+				</cq-lookup-filters>
+				<cq-scroll></cq-scroll>
+			</cq-lookup-results>
+		</cq-lookup>
+	</cq-menu>
+
+	<div class="ciq-menu-section">
+		<div class="ciq-dropdowns">
+			<cq-menu class="ciq-menu ciq-period">
+				<span><cq-clickable stxbind="Layout.periodicity">1D</cq-clickable></span>
+				<cq-menu-dropdown>
+					<cq-item stxtap="Layout.setPeriodicity(1, 'day')">1 D</cq-item>
+					<cq-item stxtap="Layout.setPeriodicity(1, 'week')">1 W</cq-item>
+					<cq-item stxtap="Layout.setPeriodicity(1, 'month')">1 Mo</cq-item>
+					<cq-separator></cq-separator>
+					<cq-item stxtap="Layout.setPeriodicity(1, 1)">1 Min</cq-item>
+					<cq-item stxtap="Layout.setPeriodicity(1,5)">5 Min</cq-item>
+					<cq-item stxtap="Layout.setPeriodicity(1,10)">10 Min</cq-item>
+					<cq-item stxtap="Layout.setPeriodicity(3,5)">15 Min</cq-item>
+					<cq-item stxtap="Layout.setPeriodicity(1,30)">30 Min</cq-item>
+					<cq-item stxtap="Layout.setPeriodicity(2,30)">1 Hour</cq-item>
+					<cq-item stxtap="Layout.setPeriodicity(8,30)">4 Hour</cq-item>
+				</cq-menu-dropdown>
+			</cq-menu>
+			<cq-menu class="ciq-menu ciq-views collapse">
+				<span>Views</span>
+				<cq-menu-dropdown>
+					<cq-views>
+						<cq-heading>Saved Views</cq-heading>
+						<cq-views-content>
+							<template cq-view>
+								<cq-item>
+									<cq-label></cq-label>
+									<div class="ciq-icon ciq-close"></div>
+								</cq-item>
+							</template>
+						</cq-views-content>
+						<cq-separator cq-partial></cq-separator>
+						<cq-view-save>
+							<cq-item><cq-plus></cq-plus> Save View </cq-item>
+						</cq-view-save>
+					</cq-views>
+				</cq-menu-dropdown>
+			</cq-menu>
+			<cq-menu class="ciq-menu ciq-display collapse">
+				<span>Display</span>
+				<cq-menu-dropdown>
+					<cq-heading>Chart Style</cq-heading>
+					<cq-item stxsetget="Layout.ChartType('candle')">Candle<span class="ciq-radio"><span></span></span>
+					</cq-item>
+					<cq-item stxsetget="Layout.ChartType('bar')">Bar<span class="ciq-radio"><span></span></span>
+					</cq-item>
+					<cq-item stxsetget="Layout.ChartType('colored_bar')">Colored Bar<span class="ciq-radio"><span></span></span>
+					</cq-item>
+					<cq-item stxsetget="Layout.ChartType('line')">Line<span class="ciq-radio"><span></span></span>
+					</cq-item>
+					<cq-item stxsetget="Layout.ChartType('hollow_candle')">Hollow Candle<span class="ciq-radio"><span></span></span>
+					</cq-item>
+					<cq-item stxsetget="Layout.ChartType('mountain')">Mountain<span class="ciq-radio"><span></span></span>
+					</cq-item>
+					<cq-item stxsetget="Layout.ChartType('baseline_delta')">Baseline<span class="ciq-radio"><span></span></span>
+					</cq-item>
+					<cq-item stxsetget="Layout.ChartType('volume_candle')">Volume Candle<span class="ciq-radio"><span></span></span>
+					</cq-item>
+					<cq-separator></cq-separator>
+					<cq-item>
+						<div stxsetget="Layout.ChartType('heikinashi')">Heikin Ashi<span class="ciq-radio"><span></span></span>
+						</div>
+					</cq-item>
+					<cq-item>
+						<span class="ciq-edit" stxtap="Layout.showAggregationEdit('kagi')"></span>
+						<div stxsetget="Layout.ChartType('kagi')">Kagi<span class="ciq-radio"><span></span></span>
+						</div>
+					</cq-item>
+					<cq-item>
+						<span class="ciq-edit" stxtap="Layout.showAggregationEdit('linebreak')"></span>
+						<div stxsetget="Layout.ChartType('linebreak')">Line Break<span class="ciq-radio"><span></span></span>
+						</div>
+					</cq-item>
+					<cq-item>
+						<span class="ciq-edit" stxtap="Layout.showAggregationEdit('renko')"></span>
+						<div stxsetget="Layout.ChartType('renko')">Renko<span class="ciq-radio"><span></span></span>
+						</div>
+					</cq-item>
+					<cq-item>
+						<span class="ciq-edit" stxtap="Layout.showAggregationEdit('rangebars')"></span>
+						<div stxsetget="Layout.ChartType('rangebars')">Range Bars<span class="ciq-radio"><span></span></span>
+						</div>
+					</cq-item>
+					<cq-item>
+						<span class="ciq-edit" stxtap="Layout.showAggregationEdit('pandf')"></span>
+						<div stxsetget="Layout.ChartType('pandf')">Point & Figure<span class="ciq-radio"><span></span></span>
+						</div>
+					</cq-item>
+					<cq-separator></cq-separator>
+					<cq-heading>Chart Preferences</cq-heading>
+					<cq-item stxsetget="Layout.ChartScale('log')">Log Scale<span class="ciq-checkbox ciq-active"><span></span></span>
+					</cq-item>
+					<cq-item stxsetget="Layout.ExtendedHours()">Extended Hours<span class="ciq-checkbox ciq-active"><span></span></span>
+					</cq-item>
+					<cq-item stxsetget="Layout.RangeSlider()">Range Selector<span class="ciq-checkbox ciq-active"><span></span></span>
+					</cq-item>
+					<cq-separator></cq-separator>
+					<cq-heading>Locale</cq-heading>
+						<cq-item><cq-clickable cq-selector="cq-timezone-dialog" cq-method="open">Change Timezone</cq-clickable></cq-item>
+						<cq-item stxsetget="Layout.Language()"><cq-flag></cq-flag><cq-language-name>Change Language</cq-language-name></cq-item>
+					<cq-separator></cq-separator>
+					<cq-heading>Themes</cq-heading>
+					<cq-themes>
+						<cq-themes-builtin cq-no-close>
+							<template>
+								<cq-item></cq-item>
+							</template>
+						</cq-themes-builtin>
+						<cq-themes-custom cq-no-close>
+							<template>
+								<cq-theme-custom>
+									<cq-item>
+										<cq-label></cq-label>
+										<cq-close></cq-close>
+									</cq-item>
+								</cq-theme-custom>
+							</template>
+						</cq-themes-custom>
+						<cq-separator cq-partial></cq-separator>
+						<cq-item stxtap="newTheme()"><cq-plus></cq-plus> New Theme </cq-item>
+					</cq-themes>
+				</cq-menu-dropdown>
+			</cq-menu>
+			<cq-menu class="ciq-menu ciq-studies collapse">
+				<span>Studies</span>
+				<cq-menu-dropdown cq-no-scroll>
+					<cq-study-legend cq-no-close>
+						<cq-section-dynamic>
+							<cq-heading>Current Studies</cq-heading>
+							<cq-study-legend-content>
+								<template>
+									<cq-item>
+										<cq-label class="click-to-edit"></cq-label>
+										<div class="ciq-icon ciq-close"></div>
+									</cq-item>
+								</template>
+							</cq-study-legend-content>
+							<cq-placeholder>
+								<div stxtap="Layout.clearStudies()" class="ciq-btn sm">Clear All</div>
+							</cq-placeholder>
+						</cq-section-dynamic>
+					</cq-study-legend>
+					<cq-scroll>
+						<cq-studies>
+							<cq-studies-content>
+									<template>
+										<cq-item>
+											<cq-label></cq-label>
+										</cq-item>
+									</template>
+							</cq-studies-content>
+						</cq-studies>
+					</cq-scroll>
+
+				</cq-menu-dropdown>
+			</cq-menu>
+		</div>
+
+		<!-- enables the more button when in break-sm mode -->
+		<div class="sidenav-toggle ciq-toggles">
+			<cq-toggle class="ciq-sidenav" cq-member="sidenav" cq-toggles="sidenavOn,sidenavOff"><span></span>
+				<cq-tooltip>More</cq-tooltip>
+			</cq-toggle>
+		</div>
+
+		<!-- any entry in this div will be shown in the side navigation bar in break-sm mode -->
+		<div class="icon-toggles ciq-toggles">
+			<cq-toggle class="ciq-CH" cq-member="crosshair"><span></span><cq-tooltip>Crosshair</cq-tooltip></cq-toggle>
+			<cq-toggle class="ciq-HU" cq-member="headsUp" cq-toggles="dynamic,static,null"><span></span><cq-tooltip>Info</cq-tooltip></cq-toggle>
+			<cq-toggle class="ciq-draw"><span></span><cq-tooltip>Draw</cq-tooltip></cq-toggle>
+		</div>
+	</div>
+</div>
+
+		<div class="ciq-chart-area">
+			<div class="ciq-chart">
+				<cq-toolbar>
+			<cq-menu class="ciq-select">
+				<span cq-current-tool>Select Tool</span>
+				<cq-menu-dropdown>
+					<cq-item stxtap="noTool()">None</cq-item>
+					<cq-item stxtap="clearDrawings()">Clear Drawings</cq-item>
+					<cq-item stxtap="tool('measure')">Measure</cq-item>
+					<cq-separator></cq-separator>
+					<cq-item stxtap="tool('annotation')">Annotation</cq-item>
+					<cq-item stxtap="tool('average')">Average Line</cq-item>
+					<cq-item stxtap="tool('callout')">Callout</cq-item>
+					<cq-item stxtap="tool('channel')">Channel</cq-item>
+					<cq-item stxtap="tool('continuous')">Continuous</cq-item>
+					<cq-item stxtap="tool('crossline')">Crossline</cq-item>
+					<cq-item stxtap="tool('freeform')">Doodle</cq-item>
+					<cq-item stxtap="tool('ellipse')">Ellipse</cq-item>
+					<cq-item stxtap="tool('fibonacci')">Fibonacci</cq-item>
+					<cq-item stxtap="tool('fibarc')">Fib Arc</cq-item>
+					<cq-item stxtap="tool('fibfan')">Fib Fan</cq-item>
+					<cq-item stxtap="tool('fibtimezone')">Fib Time Zone</cq-item>
+					<cq-item stxtap="tool('gannfan')">Gann Fan</cq-item>
+					<cq-item stxtap="tool('gartley')">Gartley</cq-item>
+					<cq-item stxtap="tool('horizontal')">Horizontal</cq-item>
+					<cq-item stxtap="tool('line')">Line</cq-item>
+					<cq-item stxtap="tool('pitchfork')">Pitchfork</cq-item>
+					<cq-item stxtap="tool('quadrant')">Quadrant Lines</cq-item>
+					<cq-item stxtap="tool('ray')">Ray</cq-item>
+					<cq-item stxtap="tool('rectangle')">Rectangle</cq-item>
+					<cq-item stxtap="tool('regression')">Regression Line</cq-item>
+					<cq-item stxtap="tool('segment')">Segment</cq-item>
+					<cq-item stxtap="tool('arrow')">Shape - Arrow</cq-item>
+					<cq-item stxtap="tool('check')">Shape - Check</cq-item>
+					<cq-item stxtap="tool('xcross')">Shape - Cross</cq-item>
+					<cq-item stxtap="tool('focusarrow')">Shape - Focus</cq-item>
+					<cq-item stxtap="tool('heart')">Shape - Heart</cq-item>
+					<cq-item stxtap="tool('star')">Shape - Star</cq-item>
+					<cq-item stxtap="tool('speedarc')">Speed Resistance Arc</cq-item>
+					<cq-item stxtap="tool('speedline')">Speed Resistance Line</cq-item>
+					<cq-item stxtap="tool('timecycle')">Time Cycle</cq-item>
+					<cq-item stxtap="tool('tirone')">Tirone Levels</cq-item>
+					<cq-item stxtap="tool('vertical')">Vertical</cq-item>
+				</cq-menu-dropdown>
+			</cq-menu>
+			<cq-toolbar-settings>
+				<cq-fill-color cq-section class="ciq-color" stxbind="getFillColor()" stxtap="pickFillColor()">
+					<span></span>
+				</cq-fill-color>
+				<div>
+					<cq-line-color cq-section cq-overrides="auto" class="ciq-color" stxbind="getLineColor()" stxtap="pickLineColor()"><span></span></cq-line-color>
+					<cq-line-style cq-section>
+						<cq-menu class="ciq-select">
+							<span cq-line-style class="ciq-line ciq-selected"></span>
+							<cq-menu-dropdown class="ciq-line-style-menu">
+								<cq-item stxtap="setLine(1,'solid')"><span class="ciq-line-style-option ciq-solid-1"></span></cq-item>
+								<cq-item stxtap="setLine(3,'solid')"><span class="ciq-line-style-option ciq-solid-3"></span></cq-item>
+								<cq-item stxtap="setLine(5,'solid')"><span class="ciq-line-style-option ciq-solid-5"></span></cq-item>
+								<cq-item stxtap="setLine(1,'dotted')"><span class="ciq-line-style-option ciq-dotted-1"></span></cq-item>
+								<cq-item stxtap="setLine(3,'dotted')"><span class="ciq-line-style-option ciq-dotted-3"></span></cq-item>
+								<cq-item stxtap="setLine(5,'dotted')"><span class="ciq-line-style-option ciq-dotted-5"></span></cq-item>
+								<cq-item stxtap="setLine(1,'dashed')"><span class="ciq-line-style-option ciq-dashed-1"></span></cq-item>
+								<cq-item stxtap="setLine(3,'dashed')"><span class="ciq-line-style-option ciq-dashed-3"></span></cq-item>
+								<cq-item stxtap="setLine(5,'dashed')"><span class="ciq-line-style-option ciq-dashed-5"></span></cq-item>
+								<cq-item stxtap="setLine(0,'none')" class="ciq-none">None</cq-item>
+							</cq-menu-dropdown>
+						</cq-menu>
+					</cq-line-style>
+				</div>
+				<cq-axis-label cq-section>
+					<div class="ciq-heading">Axis Label:</div>
+					<span stxtap="toggleAxisLabel()" class="ciq-checkbox ciq-active"><span></span></span>
+				</cq-axis-label>
+				<cq-annotation cq-section>
+					<div stxtap="toggleFontStyle('italic')" class="ciq-btn" style="font-style:italic;">I</div>
+					<div stxtap="toggleFontStyle('bold')" class="ciq-btn" style="font-weight:bold;">B</div>
+					<cq-menu class="ciq-select">
+						<span cq-font-size>12px</span>
+						<cq-menu-dropdown class="ciq-font-size">
+							<cq-item stxtap="setFontSize('8px')">8</cq-item>
+							<cq-item stxtap="setFontSize('10px')">10</cq-item>
+							<cq-item stxtap="setFontSize('12px')">12</cq-item>
+							<cq-item stxtap="setFontSize('13px')">13</cq-item>
+							<cq-item stxtap="setFontSize('14px')">14</cq-item>
+							<cq-item stxtap="setFontSize('16px')">16</cq-item>
+							<cq-item stxtap="setFontSize('20px')">20</cq-item>
+							<cq-item stxtap="setFontSize('28px')">28</cq-item>
+							<cq-item stxtap="setFontSize('36px')">36</cq-item>
+							<cq-item stxtap="setFontSize('48px')">48</cq-item>
+							<cq-item stxtap="setFontSize('64px')">64</cq-item>
+						</cq-menu-dropdown>
+					</cq-menu>
+					<cq-menu class="ciq-select">
+						<span cq-font-family>Default</span>
+						<cq-menu-dropdown class="ciq-font-family">
+							<cq-item stxtap="setFontFamily('Default')">Default</cq-item>
+							<cq-item stxtap="setFontFamily('Helvetica')">Helvetica</cq-item>
+							<cq-item stxtap="setFontFamily('Courier')">Courier</cq-item>
+							<cq-item stxtap="setFontFamily('Garamond')">Garamond</cq-item>
+							<cq-item stxtap="setFontFamily('Palatino')">Palatino</cq-item>
+							<cq-item stxtap="setFontFamily('Times New Roman')">Times New Roman</cq-item>
+						</cq-menu-dropdown>
+					</cq-menu>
+				</cq-annotation>
+				<cq-clickable cq-fib-settings cq-selector="cq-fib-settings-dialog" cq-method="open" cq-section><span class="ciq-btn">Settings</span></cq-clickable>
+			</cq-toolbar-settings>
+			<cq-measure><span class="mMeasure"></span></cq-measure>
+			<cq-undo-section>
+				<cq-undo class="ciq-btn">Undo</cq-undo>
+				<cq-redo class="ciq-btn">Redo</cq-redo>
+			</cq-undo-section>
+		</cq-toolbar>
+		<div class="chartContainer" style="width:100%;height:100%">
+
+			<stx-hu-tooltip>
+				<stx-hu-tooltip-field field="DT">
+					<stx-hu-tooltip-field-name>Date/Time</stx-hu-tooltip-field-name>
+					<stx-hu-tooltip-field-value></stx-hu-tooltip-field-value>
+				</stx-hu-tooltip-field>
+				<stx-hu-tooltip-field field="Close">
+					<stx-hu-tooltip-field-name></stx-hu-tooltip-field-name>
+					<stx-hu-tooltip-field-value></stx-hu-tooltip-field-value>
+				</stx-hu-tooltip-field>
+			</stx-hu-tooltip>
+
+			<cq-chart-title cq-marker cq-browser-tab>
+						<cq-symbol></cq-symbol>
+						<cq-chart-price>
+							<cq-current-price cq-animate></cq-current-price>
+							<cq-change>
+								<div class="ico"></div>
+								<cq-todays-change></cq-todays-change> (
+								<cq-todays-change-pct></cq-todays-change-pct>)
+							</cq-change>
+						</cq-chart-price>
+					</cq-chart-title>
+					<cq-comparison cq-marker>
+						<cq-menu class="cq-comparison-new">
+					<cq-comparison-add-label class="ciq-no-share">
+								<cq-comparison-plus></cq-comparison-plus><span>Compare</span><span>...</span>
+							</cq-comparison-add-label>
+							<cq-comparison-add>
+								<cq-comparison-lookup-frame>
+							<cq-lookup cq-keystroke-claim cq-uppercase>
+										<cq-lookup-input cq-no-close>
+											<input type="text" cq-focus spellcheck="off" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Enter Symbol">
+											<cq-lookup-icon></cq-lookup-icon>
+										</cq-lookup-input>
+											<cq-lookup-results>
+												<cq-scroll></cq-scroll>
+											</cq-lookup-results>
+									</cq-lookup>
+								</cq-comparison-lookup-frame>
+								<cq-swatch cq-no-close></cq-swatch>
+								<span><cq-accept-btn class="stx-btn">ADD</cq-accept-btn></span>
+							</cq-comparison-add>
+						</cq-menu>
+						<cq-comparison-key>
+							<template cq-comparison-item>
+								<cq-comparison-item>
+									<cq-comparison-swatch></cq-comparison-swatch>
+									<cq-comparison-label>AAPL</cq-comparison-label>
+									<cq-comparison-price cq-animate></cq-comparison-price>
+									<cq-comparison-loader></cq-comparison-loader>
+									<div class="stx-btn-ico ciq-close"></div>
+								</cq-comparison-item>
+							</template>
+						</cq-comparison-key>
+					</cq-comparison>
+				<!--- 	Here is an example of how to create a study legend on the chart.
+					We use the cq-marker attribute to ensure that it floats inside the chart.
+					We set the optional cq-panel-only attribute so that only studies from
+					this panel are displayed.
+					-- Comment out if a legend on the chart window is not desired --
+			-->
+			<cq-study-legend cq-marker-label="Studies" cq-overlays-only cq-marker cq-hovershow>
+				<template>
+					<cq-item>
+						<cq-label></cq-label>
+						<span class="ciq-edit"></span>
+						<div class="ciq-icon ciq-close"></div>
+					</cq-item>
+				</template>
+			</cq-study-legend>
+					<cq-loader></cq-loader>
+					<cq-hu-static>
+						<div>
+							<div>Price</div><cq-hu-price></cq-hu-price>
+							<div>Open</div><cq-hu-open></cq-hu-open>
+							<div>Close</div><cq-hu-close></cq-hu-close>
+						</div>
+						<div>
+							<div>Vol</div>
+							<cq-volume-section>
+								<cq-hu-volume></cq-hu-volume>
+								<cq-volume-rollup></cq-volume-rollup>
+							</cq-volume-section>
+							<div>High</div><cq-hu-high></cq-hu-high>
+							<div>Low</div><cq-hu-low></cq-hu-low>
+						</div>
+					</cq-hu-static>
+					
+				</div> <!-- chart Container -->
+			</div> <!-- ciq-chart -->
+		</div> <!-- ciq-chart-area -->
+	
+	<cq-hu-dynamic>
+		<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 140" enable-background="new 0 0 215 140" xml:space="preserve">
+		<defs>
+			<filter id="ciq-hu-shadow" height="130%">
+				<feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+				<feOffset dx="0" dy="1" result="offsetblur"/>
+				<feComponentTransfer>
+					<feFuncA type="linear" slope="0.2"/>
+				</feComponentTransfer>
+				<feMerge>
+					<feMergeNode/>
+					<feMergeNode in="SourceGraphic"/>
+				</feMerge>
+			</filter>
+		</defs>
+		<polygon class="ciq-hu-bg" fill="#2A51D0" points="198.4,124.4 1,124.4 1,1 214,1 214,137.8" filter="url(#ciq-hu-shadow)"/>
+		<path class="ciq-hu-stroke" fill="#398DFF" d="M213,2v133.6l-13.7-11.8l-0.6-0.5H198H2V2H213 M215,0H0v125.4h198l17,14.6V0L215,0z"/>
+	</svg>
+	<div>
+		<cq-hu-col1>
+			<cq-hu-date></cq-hu-date>
+			<cq-hu-price></cq-hu-price>
+			<cq-volume-grouping>
+				<div>Volume</div>
+				<div><cq-volume-visual></cq-volume-visual></div>
+				<div><cq-hu-volume></cq-hu-volume><cq-volume-rollup></cq-volume-rollup></div>
+			</cq-volume-grouping>
+		</cq-hu-col1>
+		<cq-hu-col2>
+			<div>Open</div><cq-hu-open></cq-hu-open>
+			<div>Close</div><cq-hu-close></cq-hu-close>
+			<div>High</div><cq-hu-high></cq-hu-high>
+			<div>Low</div><cq-hu-low></cq-hu-low>
+		</cq-hu-col2>
+	</div>
+
+</cq-hu-dynamic>
+		
+		
+	</cq-context> <!-- context -->
+</template>
+<!-- End Chart Area -->
+<link rel="import" href="instant-dialogs.html">
+
+<script>
+(function(){
+	// Get this document, the one that is being imported into the main document. Note that document._currentScript is
+	// what is available from the polyfill. Also note that the ownerDocument won't be available until later, so we set
+	// doc = _currentScript.ownerDocument in the createdCallback.
+	var _currentScript = document._currentScript || document.currentScript;
+	var doc;
+
+	//var doc=document.currentScript?document.currentScript.ownerDocument:window.HTMLImports.currentScript.ownerDocument;
+
+	var CQDropInChart = {
+		prototype: Object.create(HTMLElement.prototype)
+	};
+
+	// Create a proxy for stx. You can call any valid stx method directly on the component
+	for (var key1 in CIQ.ChartEngine.prototype)  {
+		CQDropInChart.prototype[key1] = (function(fname){
+			return function(){
+				this.stx[fname].apply(this.stx, arguments);
+			};
+		})(key1);
+	}
+	// Create a proxy for context. You can call any valid context method directly on the component
+	for (var key2 in CIQ.UI.Context.prototype)  {
+		CQDropInChart.prototype[key2] = (function(fname){
+			return function(){
+				this.context[fname].apply(this.context, arguments);
+			};
+		})(key2);
+	}
+
+	CQDropInChart.prototype.createdCallback=function(){
+		doc=_currentScript.ownerDocument;
+		this.unique=CIQ.uniqueID();
+		// Make a uiManager if one doesn't exist. UIManager must be a singleton on the page.
+		var uiManager=$("cq-ui-manager")[0];
+		if(!uiManager){
+			uiManager=$("<cq-ui-manager></cq-ui-manager>")[0];
+			$("body").append($(uiManager));
+		}
+		// We'll use this object to register our dropins. When they are detached, we'll destroy the uiManager
+		if(!uiManager.dropins) uiManager.dropins={};
+		uiManager.dropins[this.unique]=this;
+		this.uiManager=uiManager;
+
+		// Make this component from the template
+		var template = doc.querySelector('#cq-instant-chart-template');
+		CIQ.UI.makeFromTemplate(template, this);
+		this.node=$(this);
+	};
+
+	CQDropInChart.prototype.start=function(){
+		var node=this.node;
+		this.stx=new CIQ.ChartEngine({container:this.node.find(".chartContainer")[0]});
+		var context=this.context=new CIQ.UI.Context(this.stx, node.find("cq-context"));
+		var UILayout=new CIQ.UI.Layout(context);
+		var UIHeadsUpDynamic=new CIQ.UI.HeadsUp(node.find("cq-hu-dynamic"), context, {followMouse:true, autoStart: false});
+		var UIHeadsUpStatic=new CIQ.UI.HeadsUp(node.find("cq-hu-static"), context, {autoStart: true});
+
+		context.changeSymbol=function(data){
+			var stx=this.stx;
+			if(this.loader) this.loader.show();
+			data.symbol=data.symbol.toUpperCase(); // set a pretty display version
+
+			var self=this;
+			stx.newChart(data, null, null, function(err){
+				if(self.loader) self.loader.hide();
+			});
+		};
+
+		context.UISymbolLookup=node.find(".ciq-search cq-lookup")[0];
+		context.UISymbolLookup.setCallback(function(context, data){
+			context.changeSymbol(data);
+		});
+
+		var uiManager=this.uiManager;
+		// Make sure we only have one keystrokeHub, in case of multi charts
+		if(!uiManager.keystrokeHub)
+			uiManager.keystrokeHub=new CIQ.UI.KeystrokeHub($("body"), context, {cb:CIQ.UI.KeystrokeHub.defaultHotKeys});
+
+		// Set the active context for the keystrokeHub to the last context we moused over. We 
+		// also set the cq-lookup within that context to be the cq-keystroke-default for body level 
+		// keystrokes
+		context.topNode.addEventListener("mouseover", function(){
+			uiManager.keystrokeHub.setActiveContext(context);
+			$("cq-lookup").removeAttrBetter("cq-keystroke-default");
+			context.node.find("cq-menu.ciq-search cq-lookup").attrBetter("cq-keystroke-default");
+		});
+
+		var UIStudyEdit=new CIQ.UI.StudyEdit(null, context);
+		
+		var UIStorage=new CIQ.NameValueStore();
+
+		var UIThemes=node.find("cq-themes");
+		UIThemes[0].initialize({
+			builtInThemes: {"ciq-day":"Day","ciq-night":"Night"},
+			defaultTheme: "ciq-night",
+			nameValueStore: UIStorage,
+			id: this.id
+		});
+
+		node.find(".ciq-HU")[0].registerCallback(function(value){
+			if(value==="static"){
+				UIHeadsUpDynamic.end();
+				UIHeadsUpStatic.begin();
+				this.node.addClass("active");
+			}else if(value==="dynamic"){
+				UIHeadsUpStatic.end();
+				UIHeadsUpDynamic.begin();
+				this.node.addClass("active");
+			}else{
+				UIHeadsUpStatic.end();
+				UIHeadsUpDynamic.end();
+				this.node.removeClass("active");
+			}
+		});
+		node.find(".ciq-draw")[0].registerCallback(function(value){
+			if(value){
+				this.node.addClass("active");
+				node.find("cq-context").addClass("toolbar-on");
+			}else{
+				this.node.removeClass("active");
+				node.find("cq-context").removeClass("toolbar-on");
+			}
+			var container = node.find('.chartContainer');
+			setHeight(node, container);
+			var stx=this.context.stx;
+			stx.resizeChart();
+
+			// a little code here to remember what the previous drawing tool was
+			// and to re-enable it when the toolbar is reopened
+			if(value){
+				stx.changeVectorType(this.priorVectorType);
+			}else{
+				this.priorVectorType=stx.currentVectorParameters.vectorType;
+				stx.changeVectorType("");
+			}
+		});
+
+		var params={
+			excludedStudies: {
+				"Directional": true,
+				"Gopala":true,
+				"vchart":true
+			},
+			alwaysDisplayDialog: {"ma":true},
+			/*dialogBeforeAddingStudy: {"rsi": true} // here's how to always show a dialog before adding the study*/
+		};		
+		node.find("cq-views").each(function(){
+			this.initialize();
+		});
+
+		node.find("cq-studies").each(function(){
+			this.initialize(params);
+		});
+
+		if(context.loader) context.loader.show();
+	
+		this.checkWidth(node);
+
+		// Check the attribute in case a symbol was declared as an attribute
+		this.initialSymbol=node.attr("symbol");
+	};
+
+	CQDropInChart.prototype.attachQuoteFeed=function(){
+		this.stx.attachQuoteFeed.apply(this.stx, arguments);
+		// Once a quote feed is set, we can then fetch a symbol that was set in the attribute
+		if(this.initialSymbol) this.context.changeSymbol({symbol:this.initialSymbol});
+	};
+
+	CQDropInChart.prototype.attachedCallback=function(){
+		var self=this;
+		// Wait for the page to actually render, otherwise the chart size will be zero
+		setTimeout(function(){
+			self.start();
+		},0);
+	};
+
+	CQDropInChart.prototype.detachedCallback=function(){
+		this.stx.destroy();
+		delete this.uiManager.dropins[this.unique];
+		if(CIQ.isEmpty(this.uiManager.dropins)) $(this.uiManager).remove();
+		//TODO, kill context
+	};
+	
+	function setHeight(currentChart, container) {
+		var windowHeight=currentChart.height();
+		var ciqHeight = currentChart.find('.ciq-chart').height();
+
+		if (currentChart.find('cq-context').hasClass("toolbar-on")) {
+			container.height(ciqHeight - 45);
+		} else {
+			container.height(ciqHeight);
+		}
+	    // This little snippet will ensure that dialog boxes are never larger than the screen height
+		currentChart.find('#maxHeightCSS').remove();
+		currentChart.find('.sidenav').height(ciqHeight);
+		currentChart.find('head').append('<style id="maxHeightCSS">cq-dialog { max-height: ' +  windowHeight + 'px }</style>');
+	}
+	
+	CQDropInChart.prototype.checkWidth=function(currentChart) {
+		if ($(window).width() > 768) {
+			currentChart.find('div[cq-context]').removeClass('break-md break-sm').addClass('break-lg');
+			currentChart.find('.icon-toggles').removeClass('sidenav active').addClass('ciq-toggles');
+			this.stx.layout.sidenav = 'sidenavOff';
+		}
+		if ($(window).width() <= 768) {
+			$('body').removeClass('break-lg break-sm').addClass('break-md');
+			$('.icon-toggles').removeClass('sidenav active').addClass('ciq-toggles');
+			this.stx.layout.sidenav = 'sidenavOff';
+		}
+		if ($(window).width() <= 600) {
+			$('body').removeClass('break-md break-lg').addClass('break-sm');
+			$('.icon-toggles').removeClass('ciq-toggles').addClass('sidenav');
+		}
+	};
+
+	document.registerElement("cq-instant-chart", CQDropInChart);
+
+})();
+
+
+
+
+</script>

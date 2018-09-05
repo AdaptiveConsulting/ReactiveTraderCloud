@@ -1,0 +1,50 @@
+<!--
+This is a fully functional desktop-like example showing how to use ChartIQ's "instant-chart" web component.
+It is intended for larger screens and may not always render optimally and very small devices.
+
+While this template is intended to be used with sample-template-multi-charts.html as the base for each individual chart, it can also be used as a functional chart. In this example add-ons to the chart are disabled.
+
+"instant-chart" supports the same interface as any other declared ChartEngine instance, so you can call any method as you would directly on an 'stxx' object.
+
+Web-Components polyfill is required to use this.
+
+Customize this sample template as needed to meet your use case and fit the screen size of your supported devices.
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="css/normalize.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/page-defaults.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/stx-chart.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/chartiq.css" media="screen" />
+
+<script src="js/thirdparty/object-observe.js"></script>
+<script src="js/thirdparty/webcomponents-lite.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/chartiq.js"></script>
+<script src="js/symbolLookup.js"></script>
+<script src="js/quoteFeedSimulator.js"></script>
+<link rel="import" href="instant-chart.html">
+</head>
+<body>
+<cq-instant-chart symbol="AAPL" style="width:600px;height:480px;position:relative;display:block;"></cq-instant-chart>
+<script>
+
+// Wait for the web components to be ready. Then you can attach your data feeds.
+// This is only necessary if you are trying to use this file on its own, away from sample-template-multi-charts.html
+window.addEventListener('WebComponentsReady', function(e) {
+	// Set your lookup driver
+	$("cq-instant-chart")[0].setLookupDriver(new CIQ.ChartEngine.Driver.Lookup.ChartIQ());
+	// Set your quoteFeed
+	$("cq-instant-chart")[0].attachQuoteFeed(quoteFeedSimulator);
+
+	CIQ.UI.begin(function() {
+		// Remove unused options
+		$('[stxsetget="Layout.Language()"],[stxsetget="Layout.ExtendedHours()"],[stxsetget="Layout.RangeSlider()"]')
+			.remove();
+	});
+});
+
+</script>
+</body>
+</html>

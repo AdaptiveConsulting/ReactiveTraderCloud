@@ -1,0 +1,675 @@
+<!--
+This file provides a user interface for demonstrating how the API calls are made.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		body {
+		    margin: 0;
+		}
+		ul {
+		    list-style-type: none;
+		    margin: 0;
+		    padding: 0;
+		    width: 26%;
+		    background-color: #1a6ecc;
+		    position: fixed;
+		    height: 100%;
+		    overflow: auto;
+		}
+		li a {
+		    display: block;
+		    color: #000;
+		    padding: 8px 16px;
+		    text-decoration: none;
+		}
+		li a.active {
+		    background-color: #1a6ecc;
+		    color: white;
+		}
+		li a:hover:not(.active) {
+		    background-color: #555;
+		    color: white;
+		}
+		hr {
+		    border: none;
+		    height: 1px;
+		    background-color:#e6e6e6;
+		    width:90%;
+		}
+	</style>
+
+	<style>
+		.myMarker {
+			position:absolute;
+			text-align:center;
+			width:25px;
+			height:20px;
+			line-height:20px;
+			color:white;
+		}
+		.myMarker.css-marker1{
+			background-color:red;
+		}
+		.myMarker.css-marker2{
+			background-color:blue;
+		}
+	</style>
+
+	<style>
+		.stx-marker-templates {
+		  position: absolute;
+		  bottom: 20px;
+		  width: 100%;
+		  z-index: 4; }
+
+		.stx-marker {
+		  /* Basic Marker */
+		  position: absolute;
+		  display: inline-block;
+		  cursor: pointer;
+		  text-align: center;
+		  color: #000; }
+
+		.stx-marker p,
+		.stx-marker h4 {
+		  display: inline-block;
+		  margin: 0; }
+
+		.stx-marker p {
+		  font-size: 11px; }
+
+		.stx-marker .stx-marker-expand {
+		  width: 0;
+		  max-height: 0;
+		  overflow: hidden;
+		  z-index: 1; }
+
+		.stx-stem {
+		  /* Basic Stems */
+		  position: relative;
+		  height: 60px;
+		  left: 50%;
+		  border-left: 1px dotted rgba(0, 0, 0, 0.3); }
+
+		.stx-marker.square .stx-visual,
+		.stx-marker.circle .stx-visual {
+		  /* Simple Marker */
+		  width: 25px;
+		  height: 25px;
+		  background-image: url(css/img/stx-sprite-markers.svg); }
+
+		.stx-marker.square .stx-visual:after,
+		.stx-marker.circle .stx-visual:after {
+		  /* Basic Marker */
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  content: "";
+		  display: block;
+		  height: 25px;
+		  width: 25px;
+		  opacity: 0;
+		  transition: opacity .20s 0s, border .20s 0s, width .20s 0s, height .20s 0s, top .20s 0s, left .20s 0s;
+		  -webkit-box-sizing: border-box;
+		  -moz-box-sizing: border-box;
+		  box-sizing: border-box; }
+
+		.no-touch .stx-marker.square:hover .stx-visual:after,
+		.no-touch .stx-marker.circle:hover .stx-visual:after {
+		  height: 35px;
+		  width: 35px;
+		  top: -5px;
+		  left: -5px;
+		  opacity: .2;
+		  border: 1px solid #000; }
+
+		.stx-marker.square.highlight .stx-visual:after,
+		.stx-marker.circle.highlight .stx-visual:after {
+		  height: 35px;
+		  width: 35px;
+		  top: -5px;
+		  left: -5px;
+		  opacity: .1;
+		  border: 5px solid #000; }
+
+		.stx-marker.circle .stx-visual,
+		.stx-marker.circle .stx-visual:after {
+		  /* Basic Marker */
+		  -webkit-border-radius: 50%;
+		  -moz-border-radius: 50%;
+		  -ms-border-radius: 50%;
+		  border-radius: 50%; }
+
+		.stx-marker.news .stx-visual {
+		  background-color: #C600D8;
+		  background-position: -50px -50px; }
+
+		.stx-marker.earningsUp .stx-visual {
+		  background-color: #85c730;
+		  background-position: -100px -50px; }
+
+		.stx-marker.earningsDown .stx-visual {
+		  background-color: #ff002a;
+		  background-position: -100px -50px; }
+
+		.stx-marker.dividend .stx-visual {
+		  background-color: #000;
+		  background-position: -150px -50px; }
+
+		.stx-marker.filing .stx-visual {
+		  background-color: #999;
+		  background-position: -200px -50px; }
+
+		.stx-marker.split .stx-visual {
+		  background-color: #16b0c2;
+		  background-position: -250px -50px; }
+
+		.stx-marker.square .stx-marker-expand,
+		.stx-marker.circle .stx-marker-expand {
+		  position: absolute;
+		  bottom: 30px;
+		  left: 30px;
+		  text-align: left;
+		  background: rgba(255, 255, 255, 0.85);
+		  opacity: 0;
+		  transition: opacity .50s 0s; }
+
+		.stx-marker.highlight.square .stx-marker-expand,
+		.stx-marker.highlight.circle .stx-marker-expand {
+		  width: 200px;
+		  max-height: 200px;
+		  padding: 10px;
+		  border: 1px solid rgba(0, 0, 0, 0.15);
+		  opacity: 1; }
+
+		.stx-marker.square p,
+		.stx-marker.circle p {
+		  margin-top: 6px; }
+
+		.stx-marker.callout .stx-visual {
+		  width: 200px; }
+
+		.stx-marker.callout .stx-marker-content {
+		  position: relative;
+		  display: inline-block;
+		  background: rgba(255, 255, 255, 0.65); }
+
+		.no-touch .stx-marker.highlight.callout .stx-marker-content,
+		.no-touch .stx-marker.callout:hover .stx-marker-content {
+		  background: rgba(255, 255, 255, 0.8); }
+
+		.stx-marker.callout .stx-marker-content h4 {
+		  padding: 4px 10px; }
+
+		.stx-marker.callout.highlight .stx-marker-content h4 {
+		  padding: 8px 10px 4px; }
+
+		.stx-marker.callout .stx-marker-expand {
+		  max-height: 0;
+		  transition: max-height 0s 0s; }
+
+		.stx-marker.callout.highlight .stx-marker-expand {
+		  width: 200px;
+		  max-height: 200px;
+		  padding: 0 10px 8px;
+		  -webkit-box-sizing: border-box;
+		  -moz-box-sizing: border-box;
+		  box-sizing: border-box;
+		  transition: max-height .50s 0s; }
+
+		.stx-marker.callout .stx-marker-content:after {
+		  /* Basic Marker */
+		  position: absolute;
+		  top: -1px;
+		  left: -1px;
+		  bottom: -1px;
+		  right: -1px;
+		  content: "";
+		  display: block;
+		  opacity: .15;
+		  transition: opacity .20s 0s, top .20s 0s, bottom .20s 0s, left .20s 0s, right .20s 0s;
+		  -webkit-box-sizing: border-box;
+		  -moz-box-sizing: border-box;
+		  box-sizing: border-box;
+		  border: 1px solid #000; }
+
+		.stx-marker.callout.highlight .stx-marker-content:after {
+		  top: -5px;
+		  left: -5px;
+		  bottom: -5px;
+		  right: -5px;
+		  border: 5px solid #000; }
+	</style>
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/stx-chart.css" media="screen" />
+	</head>
+
+<body>
+
+<ul>
+	<div id="instantiate">
+		<li><a onclick="createChart()">Instantiate the chart engine</a></li>
+	</div>
+	<div id="showChart" style="display:none">
+		<p style="text-align:center;color:#e6e6e6">Select SDK API Action</p>
+		<li><a onclick="displayChart()">Option A: Display Chart for SPY initalized with a data array</a></li>
+		<li><a onclick="addQuoteFeed()">Option B: Display Chart for SPY initalized with a QuoteFeed</a></li>
+		<div id="chartOptions" style="display:none">
+			<li><a onclick="addMarker()">Option C: Add Marker</a></li>
+			<li><a onclick="changeSymbol()">Option D: Change Symbol to "IBM"</a></li>
+			<li><a onclick="changePeriod()">Option E: Toggle Through Periods</a></li>
+			<li><a onclick="changeChartType()">Option F: Toggle Through Chart Types</a></li>
+			<li><a onclick="changeAggregation()">Option G: Toggle Through Aggregation Types</a></li>
+			<li><a onclick="setSpan()">Option H: Toggle Through Spans</a></li>
+			<li><a onclick="addStudy()">Option I: Toggle Through Studies</a></li>
+			<li><a onclick="toggleDrawingTool()">Option J: Toggle Through Drawing Tools</a></li>
+			<li><a onclick="addSymbolComparison()">Option K: Add/Remove an additional series</a></li>
+			<li><a onclick="toggleCrosshairs()">Option L: Toggle Crosshairs</a></li>
+			<li><a onclick="resizeChart()">Option M: Toggle Chart Size</a></li>
+		</div>
+	</div>
+</ul>
+
+<div style="margin-left:28%;padding:1px 16px;width:400px;height:30px;">
+  <h2 style="text-align:center;">ChartIQ SDK Example Output</h2>
+</div>
+<div style="margin-left:28%;padding:4px 16px;width:400px;height:30px;">
+  <p style="text-align:center;background-color:#4a94e8;padding:6px 16px;"; id="statusbox"></p>
+</div>
+<div style="margin-left:28%;padding:6px 16px;width:282px;height:30px;">
+  <hr>
+</div>
+
+
+<!-- This is your chart container. Position it anywhere, and in any way that you wish on your webpage. Make position style=relative -->
+<div class="chartContainer" style="margin-left:28%;padding:2px 16px;width:800px;height:457px;position:relative;"></div>
+
+<!-- DOM object for Markers -->
+<div id="myMarkerHolder" class="myMarker"></div>
+
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
+
+<script src="js/chartiq.js"></script>
+<script src="js/quoteFeedSimulator.js"></script>
+
+<script src="example-data/STX_SAMPLE_5MIN.js"></script>
+<script src="example-data/STX_SAMPLE_DAILY.js"></script>
+<script>
+
+var ThisExample = {}; // Namespace for these examples
+ThisExample.addedStudies = [];
+ThisExample.counterCC = 0;
+ThisExample.counterAM = 0;
+ThisExample.counterRS = 0;
+ThisExample.counterCP = 0;
+ThisExample.counterCT = 0;
+ThisExample.counterAS = 0;
+ThisExample.counterDT = 0;
+ThisExample.counterSY = 0;
+ThisExample.counterCH = 0;
+ThisExample.counterSP = 0;
+ThisExample.counterAG = 0;
+
+ThisExample.status = function (statusString) {
+	document.getElementById("statusbox").innerHTML = statusString;
+};
+
+var data = sampleData;
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Create Chart (CodeTag:CC)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function createChart() {
+	if(++ThisExample.counterCC == 1){ // Only create new chart if's the first instance it's called.
+		stxx=new STXChart({container:$$$(".chartContainer")});
+		ThisExample.status("You can now display data and add options - Tag:CC");
+		$$$("#showChart").style.display="block";
+		$$$("#instantiate").style.display="none";
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start Display Chart (CodeTag:DC)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function displayChart(){
+	stxx.newChart("SPY", data);
+	ThisExample.status("Chart Displayed with Data Array- CodeTag:DC");
+	$$$("#chartOptions").style.display="block";
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Add QuoteFeed (CodeTag:QF)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+function addQuoteFeed() {
+	data = null;  // get rid of static data
+	stxx.setPeriodicity({period:1, interval:5, timeUnit:"minute"});
+	stxx.setMarketFactory(CIQ.Market.Symbology.factory);
+	stxx.attachQuoteFeed(quoteFeedSimulator,{refreshInterval:1});
+	stxx.newChart("SPY", null);
+	ThisExample.status("Chart Displayed with QuoteFeed attached - CodeTag:QF");
+	$$$("#chartOptions").style.display="block";
+}
+
+// convenience function for QuoteFeed example
+function loadChartData(feeddata) {
+	var newQuotes=[];
+	for(var i=0;i<feeddata.length;i++){
+		newQuotes[i]={};
+		newQuotes[i].Date=feeddata[i].DT;
+		newQuotes[i].Open=feeddata[i].Open;
+		newQuotes[i].High=feeddata[i].High;
+		newQuotes[i].Low=feeddata[i].Low;
+		newQuotes[i].Close=feeddata[i].Close;
+		newQuotes[i].Volume=feeddata[i].Volume;
+		newQuotes[i].Adj_Close=feeddata[i].Adj_Close;
+	}
+	return newQuotes;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Add Marker (CodeTag:Sy)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function addMarker() {
+	var status;
+	if(++ThisExample.counterAM % 2) {
+		var newNode1=$$$("#myMarkerHolder").cloneNode(true);
+		newNode1.innerHTML="M1";
+		CIQ.appendClassName(newNode1, "css-marker1");
+		new CIQ.Marker({
+			stx: stxx,
+			xPositioner: "date",
+			x: CIQ.strToDateTime("2012-11-20"), // the date identifies the X position
+			label: "markerHandle",
+			node: newNode1
+		});
+
+		var newNode2=$$$("#myMarkerHolder").cloneNode(true);
+		newNode2.innerHTML="M2";
+		CIQ.appendClassName(newNode2, "css-marker2");
+		new CIQ.Marker({
+			stx: stxx,
+			xPositioner: "master",
+			x: stxx.masterData.length - 5, // the masterData location identifies the X position
+			label: "markerHandle",
+			node: newNode2,
+		});
+
+		new CIQ.Marker({
+			stx: stxx,
+			xPositioner: "master",
+			x: stxx.masterData.length - 25,
+			label: "markerHandle",
+			node: new CIQ.Marker.Simple({type:"circle", category:"news", headline:"Marker Title:", story: "This is hover text!"}),
+		});
+		stxx.draw();
+
+		ThisExample.status("Marker Added");
+	} else {
+		CIQ.Marker.removeByLabel(stxx, "markerHandle");
+		ThisExample.status("Markers Removed");
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Change Symbol (CodeTag:Sy)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function changeSymbol() {
+	if(stxx.chart.symbol != "IBM"){
+		stxx.newChart("IBM",data,null,function(err){
+			if( data ) ThisExample.status("Symbol Changed using Data Array- CodeTag:Sy");
+			else ThisExample.status("Symbol Changed using Quote Feed- CodeTag:Sy");
+		});
+	} else {
+		alert("The symbol is already IBM.");
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Change Period (CodeTag:CP)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function changePeriod() {
+	if(data){
+		alert("Load the chart using the QuoteFeed to change the period");
+		return;
+	}
+//	var intervals = ['week','month','day'];
+	var intervals = [5,30,60];
+	var interval = intervals[ThisExample.counterCP++ % 3];
+
+	stxx.setPeriodicity({period:1, interval:interval}, function(err){
+		ThisExample.status("Period Changed (" + interval + ") - CodeTag:CP");
+	});
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Change Chart Type (CodeTag:CT)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function changeChartType() {
+	var chartTypes = ['bar', 'colored_bar', 'line', 'hollow_candle', 'mountain', 'candle'];
+	var type = chartTypes[ThisExample.counterCT++ % 6];
+
+	stxx.setChartType(type);
+	ThisExample.status("Type Changed (" + type + ") - CodeTag:CT");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+//Start of Change Aggregation (CodeTag:AG)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function changeAggregation() {
+	var aggregationTypes = ['heikinashi', 'kagi', 'linebreak', 'renko', 'rangebars', 'pandf','ohlc'];
+	var type = aggregationTypes[ThisExample.counterAG++ % 7];
+
+	stxx.setAggregationType(type);
+	ThisExample.status("Aggregation Changed (" + type + ") - CodeTag:AG");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+//Start of Set Span (CodeTag:SP)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function setSpan() {
+	if(data){
+		alert("Load the chart using the QuoteFeed to change the span");
+		return;
+	}
+	var spanObjects = [
+		{multiplier: 1, base: 'today'}, // today's data only
+		{multiplier: 1, base: 'day'}, // data goes back a whole day
+		{multiplier: 1, base: 'month'}, // data for the month
+		{multiplier: 1, base: 'YTD'} // data from January 1st
+	];
+
+	var spanObject = spanObjects[ThisExample.counterSP++ % 4];
+
+	var params={
+			multiplier: spanObject.multiplier,
+			base: spanObject.base,
+	};
+
+	stxx.setSpan(params, function(){
+		ThisExample.status("Span Changed (" + spanObject.base + ") - CodeTag:SP");
+	});
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Add Study (CodeTag:AS)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function addStudy() {
+	var maxStudies = 5;
+	var studies = ['ma', 'ADX', 'Bollinger Bands', 'COG', 'Fractal Chaos'];
+	var studyCount = ThisExample.counterAS++ % (maxStudies + 1);
+	if (studyCount < maxStudies) {
+		var study = studies[studyCount];
+
+		//add the study here and save its returned descriptor so can remove (or modify) later
+		ThisExample.addedStudies[studyCount]=CIQ.Studies.addStudy(stxx, study);
+
+		document.getElementById("statusbox").innerHTML = "Study Added ("  + study + ") - CodeTag:SA";
+	} else {
+		//used the saved study descriptors to remove each study
+		for (var i=0; i<maxStudies; i++) {
+			CIQ.Studies.removeStudy(stxx,ThisExample.addedStudies[i]);
+		}
+		ThisExample.status("Studies Removed - CodeTag:SA");
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Toggle Line Drawing Tool (CodeTag:DT)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function toggleDrawingTool() {
+	var tools = ['line', 'rectangle', 'ellipse', ''];
+	var tool = tools[ThisExample.counterDT++ % 4];
+
+	stxx.changeVectorType(tool);
+	if (tool === '') {
+		var numDrawings = stxx.drawingObjects.length; // changes as each drawing is removed
+		for (var i=0; i < numDrawings; i++) {
+			stxx.removeDrawing(stxx.drawingObjects[0]);
+		}
+		tool = "off";
+	}
+	ThisExample.status(tool + " enabled. Start drawing...- CodeTag:DT");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Add Symbol Comparison (CodeTag:SY)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function addSymbolComparison() {
+	var status;
+	if (++ThisExample.counterSY % 2) {
+
+		stxx.addSeries("CSCO",{color:"red",width:5, data: data});
+		status = "added";
+	} else {
+		stxx.removeSeries("CSCO");
+		status = "deleted";
+	}
+
+	ThisExample.status("Series " + status + " -- CodeTag:SY");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Change Chart Size (CodeTag:CH)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function toggleCrosshairs() {
+	var status;
+	if (++ThisExample.counterCH % 2) {
+		stxx.layout.crosshair = true;
+		//stxx.doDisplayCrosshairs();
+		status = "on";
+	} else {
+		stxx.layout.crosshair = null;
+		//stxx.undisplayCrosshairs();
+		status = "off";
+	}
+	ThisExample.status("Crosshairs Toggled (" + status + ") - CodeTag:CH");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Change Chart Size (CodeTag:RS)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function resizeChart() {
+	var sizes = [700, 500, 900, 800];
+	var size = sizes[ThisExample.counterRS++ % 4];
+
+	var chartContainer=$$$(".chartContainer");
+	chartContainer.style.width=size + "px";
+	chartContainer.style.height=size/1.75 + "px";
+
+	stxx.resizeChart();
+	ThisExample.status("Chart Resized (width=" + size + "px) - CodeTag:RS");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Pagination
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function triggerPagination() {
+	ThisExample.status("...scroll chart too far left");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Save Layout (CodeTag:SL)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function saveLayoutAndDrawing(){
+	var s=JSON.stringify(stxx.exportLayout(true));
+	CIQ.localStorageSetItem("myChartLayout", s);
+
+	var tmp=stxx.serializeDrawings();
+	CIQ.localStorageSetItem(stxx.chart.symbol, JSON.stringify(tmp));
+	ThisExample.status("Layout and Drawing Saved");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Restore Layout (CodeTag:RL)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function restoreLayoutAndDrawing(){
+	var datum=CIQ.localStorage.getItem("myChartLayout");
+	if(datum===null) return;
+	function closure(){
+		restoreDrawings(stxx, stxx.chart.symbol);
+	}
+	stxx.importLayout(JSON.parse(datum), {managePeriodicity:true, cb: closure});
+	ThisExample.status("Layout and Drawing Restored");
+}
+
+function restoreDrawings(stx, symbol){
+	var memory=CIQ.localStorage.getItem(symbol);
+	var parsed=JSON.parse(memory);
+	if(parsed){
+		stx.reconstructDrawings(parsed);
+		stx.draw();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+// Start of Add Injection (CodeTag:AI)
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+function addInjection() {
+	var count = counterIJ++ % 3;
+	ThisExample.status("Injection Added" + count);
+}
+
+////////////////////////////////////////////////////////////////////
+
+</script>
+</body>
+</html>

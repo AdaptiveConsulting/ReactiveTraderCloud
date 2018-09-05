@@ -2,13 +2,13 @@
 	"use strict";
 	// This file will function properly as a <script> tag, or a module
 	// using CommonJS and NodeJS or RequireJS module formats.  In
-	// Common/Node/RequireJS, the module exports the FSBL API and when
-	// executed as a simple <script>, it creates a FSBL global instead.
+	// Common/Node/RequireJS, the module exports SplinePlotter and when
+	// executed as a simple <script>, it creates a SplinePlotter global instead.
 
 	if (typeof exports === "object" && typeof module === "object") {
-		module.exports = definition(require('../core/polyfills'));
+		module.exports = definition(require('../chartiq'));
 	} else if (typeof define === "function" && define.amd) {
-		define(['core/polyfills'], definition);
+		define(['chartiq'], definition);
 	} else if (typeof window !== "undefined" || typeof self !== "undefined") {
 		var global = typeof window !== "undefined" ? window : self;
 		definition(global);
@@ -17,28 +17,30 @@
 	}
 
 })(function(_exports) {
+		if(!_exports.SplinePlotter) _exports.SplinePlotter={};
+
 		/*
-		plotSplinePrimitive function adapted from http://scaledinnovation.com/analytics/splines/spline.html
+		plotSpline function adapted from http://scaledinnovation.com/analytics/splines/spline.html
 		Copyright 2010 by Robin W. Spencer
 		Please refer to above URL for unmodified source code.
-		
+
 		Copyright 2010 by Robin W. Spencer
-	
+
 	    This program is free software: you can redistribute it and/or modify
 	    it under the terms of the GNU General Public License as published by
 	    the Free Software Foundation, either version 3 of the License, or
 	    (at your option) any later version.
-	
+
 	    This program is distributed in the hope that it will be useful,
 	    but WITHOUT ANY WARRANTY; without even the implied warranty of
 	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	    GNU General Public License for more details.
-	
+
 	    You can find a copy of the GNU General Public License
 	    at http://www.gnu.org/licenses/.
 
 		*/
-		_exports.plotSpline=function(points, tension, context) {
+		_exports.SplinePlotter.plotSpline=function(points, tension, context, colorPatternChanges) {
 			function getControlPoints(i){
 				var x0=points[i];
 				var y0=points[i+1];
@@ -73,6 +75,7 @@
 				return [p1x,p1y,p2x,p2y];
 			}
 
+			if(!tension || tension<0) tension=0;
 			var cp=[];	 // array of control points, as x0,y0,x1,y1,...
 			var n=points.length;
 			// Draw an open curve, not connected at the ends
@@ -80,20 +83,39 @@
 				cp=cp.concat(getControlPoints(i));
 			}
 			if(cp===null) return;
+			if(!colorPatternChanges) colorPatternChanges=[];
+			var colorPatternIndex=0;
+			
+			function seeIfStrokeNeeded(i){
+				if(colorPatternIndex==colorPatternChanges.length) return;
+				var colorPatternChange=colorPatternChanges[colorPatternIndex];
+				if(colorPatternChange.coord[0]==points[i] && colorPatternChange.coord[1]==points[i+1]){
+					context.stroke();
+					context.strokeStyle=colorPatternChange.color;
+					context.setLineDash(colorPatternChange.pattern);
+					context.lineDashOffset=0;
+					context.lineWidth=colorPatternChange.width;
+					context.beginPath();
+					context.moveTo(points[i],points[i+1]);  //reset back to last point
+					colorPatternIndex++;
+				}
+			}
 
 			//plot the first segment
+			context.moveTo(points[0],points[1]);
+			seeIfStrokeNeeded(0);
 			context.quadraticCurveTo(cp[0],cp[1],points[2],points[3]);
 
-			for(i=2;i<points.length-5;i+=2){
+			for(i=2;i<n-5;i+=2){
+				seeIfStrokeNeeded(i);
 				context.bezierCurveTo(cp[2*i-2],cp[2*i-1],cp[2*i],cp[2*i+1],points[i+2],points[i+3]);
 			}
 
 			//plot the last segment
-			context.quadraticCurveTo(cp[2*n-10],cp[2*n-9],points[n-4],points[n-3]);
+			seeIfStrokeNeeded(n-4);
+			context.quadraticCurveTo(cp[2*n-10],cp[2*n-9],points[n-2],points[n-1]);
 		};
-		
+
 	return _exports;
 
 });
-	
-

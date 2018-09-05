@@ -1,0 +1,156 @@
+<!--
+This file is intended to be used together with the ios or android Github sample seed projects. Do not call directly as a web page.
+It provides a simple html application that can be put into a mobile WebView to interface with our javascript bridge library (nativeSdkBridge.js).
+-->
+<!doctype html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+<link rel='stylesheet' href='css/perfect-scrollbar.css' />
+<link rel="stylesheet" type="text/css" href="css/normalize.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/page-defaults.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/stx-chart.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/chartiq.css" media="screen" />
+
+</head>
+
+<body>
+
+<cq-ui-manager></cq-ui-manager>
+<cq-context>
+
+<div class="ciq-chart-area">
+	<div class="ciq-chart">
+		<div class="chartContainer">
+			<cq-loader></cq-loader>
+		</div>
+	</div>
+</div>
+<!-- End Chart Area -->
+
+</cq-context>
+
+<script src="js/chartiq.js"></script>
+<script src="js/quoteFeedSimulator.js"></script>
+<script src="js/thirdparty/hammer.js"></script>
+<script src="js/thirdparty/object-observe.js"></script>
+<script src="js/thirdparty/webcomponents-lite.min.js"></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
+<script src='js/thirdparty/perfect-scrollbar.jquery.js'></script>
+<script src="js/componentUI.js"></script>
+<script src="js/nativeSdkAccessibility.js"></script>
+<script src="js/nativeSdkBridge.js"></script>
+<script src="js/components.js"></script>
+
+<script>
+	var stxx=new CIQ.ChartEngine({container:$(".chartContainer")[0]});
+	
+	var quoteFeedCallbacks = {};
+	var studies = {}; 
+	var currentDrawing = ""; 
+
+	var quoteFeedNativeBridge = {
+		fetch: function(parameters, cb){
+			function completion(cb){
+				return function(err, results){
+					if(err){
+						cb({error:err});
+					}else{
+						cb(results);
+					}
+				};
+			}
+			// This should call the native ios or android interface.
+			// For sample app, instantiate an interface that connects to the simulator.
+			// Call the completion closure with a completionHandler (or other mechanism).
+			// Make sure this is done asynchronously so the UI doesn't hang.
+			// Completion assumes the results are in correct JSON format.
+			nativeQuoteFeed(parameters, cb);
+		},
+		fetchInitialData: function(symbol, suggestedStartDate, suggestedEndDate, params, cb) {
+			var parameters = {
+				func: "pullInitialData",
+				symbol: symbol,
+				period: params.period,
+				timeUnit: params.interval,
+				start: suggestedStartDate,
+				end: suggestedEndDate
+			};
+			
+			this.fetch(parameters, cb);
+		},
+
+		fetchUpdateData: function(symbol, startDate, params, cb) {
+			var parameters = {
+				func: "pullUpdate",
+				symbol: symbol,
+				period: params.period,
+				timeUnit: params.interval,
+				start: startDate
+			};
+			this.fetch(parameters, cb);
+		},
+
+		fetchPaginationData: function(symbol, suggestedStartDate, endDate, params, cb) {
+			var parameters = {
+				func: "pullPagination",
+				symbol: symbol,
+				period: params.period,
+				timeUnit: params.interval,
+				start: suggestedStartDate,
+				end: endDate
+			};
+			this.fetch(parameters, cb);
+		}
+	};
+
+	// Please note that, this method is set to use the CIQ.Market.Symbology functions by default, 
+	// which must be reviewed and adjust to comply with your quote feed and symbology format before they can be used.
+	stxx.setMarketFactory(CIQ.Market.Symbology.factory);
+
+	// optionally configure the chart
+	stxx.chart.symbol = " ";
+
+	// used to restore layout on startup
+	function restoreLayout(stx, cb){
+		var datum=CIQ.localStorage.getItem("myChartLayout");
+		if(datum===null) return;
+		stx.importLayout(JSON.parse(datum), {managePeriodicity:true, cb: cb});
+	}
+
+	//save the chart's layout when the symbol or layout changes
+	function saveLayout(obj){
+		var s=JSON.stringify(obj.stx.exportLayout(true));
+		CIQ.localStorageSetItem("myChartLayout", s);
+	}
+	stxx.callbacks.layout=saveLayout;
+	stxx.callbacks.symbolChange=saveLayout;
+
+	function startUI(){
+		UIContext=new CIQ.UI.Context(stxx, $("cq-context"));
+
+		var KeystrokeHub=new CIQ.UI.KeystrokeHub($("body"), UIContext, {cb:CIQ.UI.KeystrokeHub.defaultHotKeys});
+
+		if(UIContext.loader) UIContext.loader.show();
+		restoreLayout(stxx, function(){
+			if(UIContext.loader) UIContext.loader.hide();
+		});
+	}
+
+	function resizeScreen(){
+		$('.chartContainer').css('height', $('.ciq-chart').height()+'px');
+		stxx.resizeChart();
+	}
+
+	window.addEventListener('WebComponentsReady', function(e) {
+		startUI();
+		resizeScreen();
+	});
+
+	$(window).resize(resizeScreen);
+
+</script>
+</body>
+</html>
