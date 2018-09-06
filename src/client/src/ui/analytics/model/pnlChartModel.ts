@@ -3,6 +3,7 @@ import _ from 'lodash'
 import numeral from 'numeral'
 
 import { PnlChartModelOptions } from '../components/pnlChart/PNLChart'
+import { HistoricPosition } from './index'
 
 export interface PricePoint {
   x: any
@@ -21,18 +22,18 @@ const DEFAULT_PNL = {
   lastPos: 0,
   minPnl: 0,
   maxPnl: 0,
-  seriesData: []
+  seriesData: [] as any[]
 }
 
-export const getPnlChartModel = history => {
+export const getPnlChartModel = (history: HistoricPosition[]) => {
   return {
     ...getPnlPositions(history),
     options: {
       xAxis: {
-        tickFormat: d => time.format('%X')(new Date(d))
+        tickFormat: (d: string) => time.format('%X')(new Date(d))
       },
       yAxis: {
-        tickFormat: d => numeral(d).format('0.0a')
+        tickFormat: (d: string) => numeral(d).format('0.0a')
       },
       showYAxis: true,
       showXAxis: true,
@@ -46,15 +47,18 @@ export const getPnlChartModel = history => {
         bottom: 24
       }
     }
-  }
+  } as any
 }
 
-const getLimit = (values: number[], callback) => {
+const getLimit = (values: number[], callback: Function) => {
   return callback(...values, 0)
 }
 
-export const getPnlPositions = (positions = []) => {
-  const allPricePoints: number[] = positions.filter(item => !_.isNull(item.usdPnl)).map(item => item.usdPnl.toFixed(2))
+export const getPnlPositions = (positions: HistoricPosition[] = []) => {
+  if (positions.length === 0) {
+    return DEFAULT_PNL
+  }
+  const allPricePoints = positions.filter(item => item.usdPnl).map(item => +item.usdPnl.toFixed(2))
 
   const seriesData: PricePoint[] = positions
     .filter(item => !_.isNull(item.usdPnl))

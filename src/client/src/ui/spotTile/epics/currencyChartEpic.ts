@@ -2,7 +2,7 @@ import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { from } from 'rxjs'
 import { map, mergeMap } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
+import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 
 const { displayCurrencyChart, currencyChartOpened } = SpotTileActions

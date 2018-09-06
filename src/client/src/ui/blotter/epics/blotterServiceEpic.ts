@@ -2,11 +2,11 @@ import moment from 'moment'
 import numeral from 'numeral'
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
+import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { CurrencyPair, CurrencyPairMap, Trade, Trades, TradeStatus } from 'rt-types'
 import { interval } from 'rxjs'
 import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected, applicationDisconnected } from '../../connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 
 type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
@@ -27,7 +27,7 @@ const formatTradeNotification = (trade: Trade, currencyPair: CurrencyPair) => ({
 
 function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
   if (Object.keys(currencyPairs).length === 0 || Object.keys(blotterData).length === 0) {
-    return
+    return []
   }
   return Object.keys(blotterData).map(x =>
     formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol])
@@ -55,7 +55,7 @@ const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { openF
     skipWhile(trade => !state$.value.currencyPairs[trade.symbol]),
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
     map(trade => formatTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),
-    tap(tradeNotification => openFin.openTradeNotification(tradeNotification)),
+    tap(tradeNotification => openFin.openTradeNotification({ tradeNotification })),
     ignoreElements()
   )
 

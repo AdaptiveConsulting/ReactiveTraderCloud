@@ -1,63 +1,22 @@
-import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { GlobalState } from '../../combineReducers'
-import { Environment } from '../../system'
+import { GlobalState } from 'StoreTypes'
 import { AnalyticsActions } from './actions'
 import Analytics from './components'
-import { getPnlChartModel } from './model/pnlChartModel'
-import { getPositionsChartModel } from './model/positionsChartModel'
+import { selectAnalyticsStatus, selectCurrencyPairs, selectPnlChartModel, selectPositionsChartModel } from './selectors'
 
-interface AnalyticsContainerOwnProps {
-  onPopoutClick: () => void
-  tornOff: boolean
-  subscribeToAnalytics: () => void
-}
-
-type AnalyticsContainerStateProps = ReturnType<typeof mapStateToProps>
-type AnalyticsContainerProps = AnalyticsContainerStateProps & AnalyticsContainerOwnProps
-
-class AnalyticsContainer extends React.Component<AnalyticsContainerProps> {
-  componentDidMount() {
-    this.props.subscribeToAnalytics()
-  }
-
-  render() {
-    const { analyticsService, isConnected, currencyPairs, onPopoutClick, tornOff } = this.props
-
-    return (
-      <Analytics
-        currencyPairs={currencyPairs}
-        canPopout={Environment.isRunningInIE() || tornOff}
-        isConnected={isConnected}
-        onPopoutClick={onPopoutClick}
-        pnlChartModel={getPnlChartModel(analyticsService.history)}
-        positionsChartModel={getPositionsChartModel(analyticsService.currentPositions)}
-      />
-    )
-  }
-}
-
-const mapStateToProps = ({
-  analyticsService,
-  compositeStatusService,
-  displayAnalytics,
-  currencyPairs
-}: GlobalState) => ({
-  analyticsService,
-  isConnected:
-    compositeStatusService && compositeStatusService.analytics && compositeStatusService.analytics.isConnected,
-  displayAnalytics,
-  currencyPairs
+const mapStateToProps = (state: GlobalState) => ({
+  pnlChartModel: selectPnlChartModel(state),
+  positionsChartModel: selectPositionsChartModel(state),
+  isConnected: selectAnalyticsStatus(state),
+  currencyPairs: selectCurrencyPairs(state)
 })
 
-const mapToDispatch = (dispatch: Dispatch) => ({
-  subscribeToAnalytics: () => dispatch(AnalyticsActions.subcribeToAnalytics())
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onMount: () => dispatch(AnalyticsActions.subcribeToAnalytics())
 })
 
-const ConnectedAnalyticsContainer = connect(
+export default connect(
   mapStateToProps,
-  mapToDispatch
-)(AnalyticsContainer)
-
-export default ConnectedAnalyticsContainer
+  mapDispatchToProps
+)(Analytics)

@@ -1,7 +1,5 @@
 /* tslint:disable */
 import React from 'react'
-import ReactDOM from 'react-dom'
-import classnames from 'classnames'
 // tslint:disable-next-line:noImplicitAny
 import NVD3Chart from 'react-nvd3'
 import { timeFormat } from 'd3-time-format'
@@ -42,9 +40,9 @@ export interface PricePoint {
   y: string
 }
 
-export default class PNLChart extends React.Component<PNLChartProps, {}> {
-  chartGradient: ChartGradient
-  refs: any
+export default class PNLChart extends React.Component<PNLChartProps> {
+  chartGradient = new ChartGradient()
+  pnlChartRef = React.createRef<HTMLDivElement>()
 
   componentDidMount() {
     this.updateGradient()
@@ -54,84 +52,51 @@ export default class PNLChart extends React.Component<PNLChartProps, {}> {
     this.updateGradient()
   }
 
-  updateGradient() {
-    if (this.refs.pnlChart) {
-      if (!this.chartGradient) {
-        this.chartGradient = new ChartGradient()
-      }
-      const chartDomElement = ReactDOM.findDOMNode(this.refs.pnlChart)
-      if (chartDomElement) {
-        this.chartGradient.update(chartDomElement as Element, this.props.minPnl, this.props.maxPnl)
-      }
+  updateGradient = () =>
+    this.pnlChartRef.current &&
+    this.chartGradient.update(this.pnlChartRef.current, this.props.minPnl, this.props.maxPnl)
+
+  configurePnLChart = (chart: any) => {
+    chart.interactiveLayer.tooltip.enabled(false)
+    /* const pnlTooltip = (el: any) => {
+      const date = timeFormat('%X')(new Date(el.value))
+      const formatted = numeral(el.series[0].value).format('0.0a')
+
+      return `<p class="analytics__chart-tooltip">
+        <strong class="analytics__chart-tooltip-date">${date}:</strong>
+        ${formatted}
+      </p>`
     }
+    chart.interactiveLayer.tooltip.contentGenerator(pnlTooltip) */
   }
 
-  prepareDatum(seriesData: PricePoint[]) {
-    return [
-      {
-        series: 'PNL',
-        label: 'PNL',
-        area: true,
-        color: 'slategray',
-        values: seriesData
-      }
-    ]
-  }
+  prepareDatum = (seriesData: PricePoint[]) => ({
+    series: 'PNL',
+    label: 'PNL',
+    area: true,
+    color: 'rgba(127, 127, 127, 0.1)',
+    values: seriesData
+  })
 
   render() {
-    const { lastPos, minPnl, maxPnl, options, seriesData } = this.props
+    const { options, seriesData } = this.props
 
-    const analyticsHeaderClassName = classnames('analytics__header-value', {
-      'analytics__header-value--negative': lastPos < 0,
-      'analytics__header-value--positive': lastPos > 0
-    })
-    const formattedLastPos = numeral(lastPos).format()
-    let pnlChart: any = null
-
-    if (this.props.seriesData.length >= 0) {
-      const configurePnLChart = (chart: any) => {
-        const pnlTooltip = (el: any) => {
-          const date = timeFormat('%X')(new Date(el.value))
-          const formatted = numeral(el.series[0].value).format('0.0a')
-
-          return `<p class="analytics__chart-tooltip">
-            <strong class="analytics__chart-tooltip-date">${date}:</strong>
-            ${formatted}
-          </p>`
-        }
-        chart.yDomain([minPnl, maxPnl]).yRange([150, 0])
-        chart.interactiveLayer.tooltip.contentGenerator(pnlTooltip)
-      }
-
-      options.xAxis = {
-        tickFormat: (d: string) => timeFormat('%X')(new Date(d))
-      }
-      options.yAxis = { tickFormat: (d: number) => numeral(d).format('0.0a') }
-
-      pnlChart = (
-        <NVD3Chart
-          ref="pnlChart"
-          type="lineChart"
-          datum={this.prepareDatum(seriesData)}
-          options={options}
-          height={240}
-          configure={configurePnLChart}
-        />
-      )
-    } else {
-      pnlChart = <div>No PNL data yet</div>
+    options.xAxis = {
+      tickFormat: (d: string) => timeFormat('%X')(new Date(d))
     }
+    options.yAxis = { tickFormat: (d: number) => numeral(d).format('0.0a') }
 
     return (
-      <div>
-        <div className="analytics__header">
-          <span className="analytics__header-title">
-            <i className="analytics__header-title-icon glyphicon glyphicon-stats" />
-            Profit &amp; Loss
-          </span>
-          <span className={analyticsHeaderClassName}>USD {formattedLastPos}</span>
-        </div>
-        <div className="analytics__chart-container">{pnlChart}</div>
+      <div ref={this.pnlChartRef}>
+        <NVD3Chart
+          tooltip={{ enabled: true }}
+          type="lineChart"
+          datum={[this.prepareDatum(seriesData)]}
+          options={options}
+          height={12 * 16}
+          configure={this.configurePnLChart}
+          margin={{ left: 16, right: 0, top: 8, bottom: 8 }}
+        />
       </div>
     )
   }

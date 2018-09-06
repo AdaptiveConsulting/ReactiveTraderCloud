@@ -2,17 +2,17 @@
 import _ from 'lodash'
 import d3 from 'd3'
 import numeral from 'numeral'
-import { CurrencyPair } from 'rt-types'
 import { CurrencyPairPosition } from '../../model/currencyPairPosition'
 import { PositionsBubbleChartProps } from './PositionsBubbleChart'
+import { CurrencyPairs } from '../Analytics'
 
 const baseTradedAmountName = 'baseTradedAmount'
 
-export function getPositionsDataFromSeries(series = [], currencyPairs: CurrencyPair[]) {
+export function getPositionsDataFromSeries(series: CurrencyPairPosition[] = [], currencyPairs: CurrencyPairs) {
   const baseAmountPropertyName = baseTradedAmountName
   const positionsPerCcyObj = series.reduce((aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
     const { symbol } = ccyPairPosition
-    const ccyPair: CurrencyPair = currencyPairs[symbol]
+    const ccyPair = currencyPairs[symbol]
     const baseCurrency = ccyPair ? ccyPair.base : ''
     aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
       ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmountPropertyName]
@@ -21,14 +21,12 @@ export function getPositionsDataFromSeries(series = [], currencyPairs: CurrencyP
     return aggregatedPositionsObj
   }, {})
 
-  return _
-    .map(positionsPerCcyObj, (val, key) => {
-      return {
-        symbol: key,
-        [baseAmountPropertyName]: val
-      }
-    })
-    .filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
+  return _.map(positionsPerCcyObj, (val, key) => {
+    return {
+      symbol: key,
+      [baseAmountPropertyName]: val
+    }
+  }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
 }
 
 export function createScales(props: PositionsBubbleChartProps) {

@@ -15,6 +15,7 @@
     "no-console": false,
     "no-string-literal": false,
     "member-ordering": false,
+    "no-submodule-imports": {"severity": "error", "options": ["rxjs/operators", "@storybook/addon-knobs/react"]},
     "ter-arrow-parens": false,
     "import-name": false,
     "trailing-comma": false,
@@ -23,6 +24,8 @@
     "comment-format": false,
     "ban-types": false,
     "no-var-requires": false,
+    "no-unused-variable": true,
+
     "max-classes-per-file": [
       false,
       1

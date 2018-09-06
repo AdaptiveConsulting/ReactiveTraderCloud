@@ -1,61 +1,68 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
-import { ConnectionActions } from 'rt-actions'
-import { EnvironmentProvider } from 'rt-components'
-import { User } from 'rt-types'
+import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
+
+import { ConnectionActions } from 'rt-actions'
+import { Environment } from 'rt-components'
+import { AutobahnConnectionProxy, logger } from 'rt-system'
+import { ThemeState } from 'rt-theme'
+import { User } from 'rt-types'
+
+import { Router } from 'shell'
+
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
 import configureStore from './configureStore'
-import { OpenFinProvider, ShellContainer } from './shell'
-import { default as FakeUserRepository } from './shell/fakeUserRepository'
+import FakeUserRepository from './shell/fakeUserRepository'
 import { OpenFin } from './shell/openFin'
-import { AutobahnConnectionProxy, logger } from './system'
-
-const log = logger.create('Application Service')
 
 // When the application is run in openfin then 'fin' will be registered on the global window object.
 declare const window: any
 
-const config = getEnvVars(process.env.REACT_APP_ENV)
-
 const APPLICATION_DISCONNECT = 15 * 60 * 1000
+const config = getEnvVars(process.env.REACT_APP_ENV!)
 
-const openFin = new OpenFin()
+const log = logger.create('Application Service')
 
-//const isRunningInFinsemble = window.FSBL
+const openfin = new OpenFin()
 
-const environmentContext = {
-  isRunningDesktop: openFin.isRunningInOpenFin,
-  openFin
+const environment = {
+  isDesktop: openfin.isPresent,
+  openfin: openfin.isPresent ? openfin : null
 }
 
-const appBootstrapper = () => {
+export const run = () => {
   const user: User = FakeUserRepository.currentUser
   const realm = 'com.weareadaptive.reactivetrader'
   const url = config.overwriteServerEndpoint ? config.serverEndpointUrl : location.hostname
   const port = config.overwriteServerEndpoint ? config.serverPort : location.port
 
-  const autobahn = new AutobahnConnectionProxy(url, realm, +port)
+  const autobahn = new AutobahnConnectionProxy(url!, realm, +port!)
 
-  const applicationDependencies = createApplicationServices(user, autobahn, openFin)
+  const applicationDependencies = createApplicationServices(user, autobahn, openfin)
 
-  const store = configureStore(applicationDependencies)
-  window.store = store
+  const store = (window.store = configureStore(applicationDependencies))
+
+  window.localStorage.themeName = window.localStorage.themeName || 'light'
+  function updateLocalStorageThemeName(name: string) {
+    window.localStorage.themeName = name
+  }
 
   ReactDOM.render(
-    <Provider store={store}>
-      <EnvironmentProvider value={environmentContext}>
-        {openFin.isRunningInOpenFin ? (
-          <OpenFinProvider openFin={openFin}>
-            <ShellContainer />
-          </OpenFinProvider>
-        ) : (
-          <ShellContainer />
-        )}
-      </EnvironmentProvider>
-    </Provider>,
+    <React.Fragment>
+      {/* The below style tags are required to preload bold and bold-italic fonts */}
+      <span style={{ fontWeight: 900 }} />
+      <span style={{ fontWeight: 900, fontStyle: 'italic' }} />
+      {/* Now back to our regularly scheduled programming 🎉 */}
+      <ReduxProvider store={store}>
+        <Environment.Provider value={environment}>
+          <ThemeState.Provider name={window.localStorage.themeName} onChange={updateLocalStorageThemeName}>
+            <Router />
+          </ThemeState.Provider>
+        </Environment.Provider>
+      </ReduxProvider>
+    </React.Fragment>,
     document.getElementById('root')
   )
 
@@ -65,14 +72,4 @@ const appBootstrapper = () => {
     store.dispatch(ConnectionActions.disconnect())
     log.warn(`Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
   })
-}
-
-const runBootstrapper = location.pathname === '/' && location.hash.length === 0
-
-// if we're not the root we (perhaps a popup) we never re-run the bootstrap logic
-
-export function run() {
-  if (runBootstrapper) {
-    appBootstrapper()
-  }
 }

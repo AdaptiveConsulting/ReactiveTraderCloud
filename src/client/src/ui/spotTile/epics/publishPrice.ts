@@ -1,8 +1,8 @@
+import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { CurrencyPairMap } from 'rt-types'
 import { Observable } from 'rxjs'
 import { ignoreElements, map, mergeMap, switchMapTo, takeUntil, tap } from 'rxjs/operators'
-import { ApplicationDependencies } from '../../../applicationServices'
-import { applicationConnected, applicationDisconnected } from '../../../ui/connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 import { SpotPriceTick } from '../model/spotPriceTick'
 
 const addRatePrecisionToPrice = (currencyData: CurrencyPairMap, price: SpotPriceTick) => ({
@@ -10,10 +10,10 @@ const addRatePrecisionToPrice = (currencyData: CurrencyPairMap, price: SpotPrice
   ratePrecision: currencyData[price.symbol].ratePrecision
 })
 
-export const publishPriceToOpenFinEpic = (pricesForCurrenciesInRefData: Observable<SpotPriceTick>) => (
+export const publishPriceToOpenFinEpic = (pricesForCurrenciesInRefData: Observable<SpotPriceTick>): ApplicationEpic => (
   action$,
   state$,
-  { referenceDataService, openFin }: ApplicationDependencies
+  { referenceDataService, openFin }
 ) =>
   action$.pipe(
     applicationConnected,

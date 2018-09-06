@@ -1,17 +1,19 @@
 import { Action, applyMiddleware, createStore } from 'redux'
+// tslint:disable-next-line:no-submodule-imports
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import { combineEpics, createEpicMiddleware } from 'redux-observable'
 
+import { GlobalState } from 'StoreTypes'
 import { ApplicationDependencies } from './applicationServices'
-import rootReducer, { GlobalState } from './combineReducers'
-import { openfinEpic } from './shell/openFin/epics'
+
+import { compositeStatusServiceEpic } from './shell/compositeStatus'
+import { connectionStatusEpic } from './shell/connectionStatus'
 import { referenceServiceEpic } from './shell/referenceData'
 import { analyticsServiceEpic } from './ui/analytics'
 import { blotterEpic } from './ui/blotter/'
-import { compositeStatusServiceEpic } from './ui/compositeStatus'
-import { connectionStatusEpic } from './ui/connectionStatus'
-import { linkEpic } from './ui/footer'
 import { spotTileEpic } from './ui/spotTile'
+
+import rootReducer from './combineReducers'
 
 export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [
@@ -20,13 +22,8 @@ export default function configureStore(dependencies: ApplicationDependencies) {
     analyticsServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,
-    spotTileEpic(dependencies),
-    linkEpic
+    spotTileEpic(dependencies)
   ]
-
-  if (dependencies.openFin.isRunningInOpenFin) {
-    epics.push(openfinEpic)
-  }
 
   const middleware = createEpicMiddleware<Action, Action, GlobalState, ApplicationDependencies>({
     dependencies

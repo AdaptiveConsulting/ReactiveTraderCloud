@@ -1,5 +1,7 @@
 import { ColDef } from 'ag-grid'
 import React from 'react'
+import { flexStyle } from 'rt-components'
+import { styled } from 'rt-theme'
 import AppliedFilters from './AppliedFilters'
 import QuickFilter from './QuickFilter'
 
@@ -17,25 +19,26 @@ interface BlotterToobarState {
   themeName: string
 }
 
+const BlotterToolbarStyle = styled('div')`
+  ${flexStyle({ alignItems: 'center', justifyContent: 'flex-end' })};
+`
+
 export default class BlotterToolbar extends React.Component<BlotterToolbarProps, BlotterToobarState> {
   render() {
     return (
-      <div className="blotter-toolbar">
-        <div className="blotter-toolbar__left-controls">
-          <QuickFilter
-            isFilterApplied={this.props.isQuickFilterApplied}
-            removeQuickFilter={this.props.removeQuickFilter}
-            quickFilterChangeHandler={this.props.quickFilterChangeHandler}
-          />
-          <AppliedFilters
-            filterModel={this.props.filterModel}
-            columnDefinitions={this.props.columnDefinitions}
-            removeAllFilters={this.props.removeAllFilters}
-            removeFilter={this.props.removeFilter}
-          />
-        </div>
-        <div className="blotter-toolbar__right-controls" />
-      </div>
+      <BlotterToolbarStyle>
+        <AppliedFilters
+          filterModel={this.props.filterModel}
+          columnDefinitions={this.props.columnDefinitions}
+          removeAllFilters={this.props.removeAllFilters}
+          removeFilter={this.props.removeFilter}
+        />
+        <QuickFilter
+          isFilterApplied={this.props.isQuickFilterApplied}
+          removeQuickFilter={this.props.removeQuickFilter}
+          quickFilterChangeHandler={this.props.quickFilterChangeHandler}
+        />
+      </BlotterToolbarStyle>
     )
   }
 }

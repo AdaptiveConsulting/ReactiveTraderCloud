@@ -17,16 +17,16 @@ jobs:
           command: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
       - run:
           name: "Start Docker"
-          command: 'sudo docker info >/dev/null 2>&1 || sudo service docker start;'
+          command: "sudo docker info >/dev/null 2>&1 || sudo service docker start;"
       # RESTORE CACHE
       - restore_cache:
           keys:
-          # This branch if available
-          - v1-dep-{{ .Branch }}-
-          # Default branch if not
-          - v1-dep-master-
-          # Any branch if there are none on the default branch
-          - v1-dep-
+            # This branch if available
+            - v1-dep-{{ .Branch }}-
+            # Default branch if not
+            - v1-dep-master-
+            # Any branch if there are none on the default branch
+            - v1-dep-
       # BUILD
       - run:
           name: "Ensure permissions"
@@ -48,9 +48,9 @@ jobs:
       - save_cache:
           key: v1-dep-{{ .Branch }}-{{ epoch }}
           paths:
-          - ~/docker
-          - deploy/docker/build/servers/dotnetcache
-          - deploy/docker/build/web/.npm
+            - ~/docker
+            - deploy/docker/build/servers/dotnetcache
+            - deploy/docker/build/web/.npm
       # TESTS
       - run: docker ps
       - run:
@@ -67,10 +67,10 @@ jobs:
           path: /tmp/circleci-artifacts
       - store_artifacts:
           path: /tmp/circleci-test-results
-  # PUSH ARTIFACTS
+      # PUSH ARTIFACTS
       - deploy:
           name: "Deployment (Push containers to the repository)"
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "dev" ]; then
+            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "dev" ] || [ "${CIRCLE_BRANCH}" == "story/theming" ]; then
               cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
             fi

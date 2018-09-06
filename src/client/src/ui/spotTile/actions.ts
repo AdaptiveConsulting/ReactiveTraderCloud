@@ -1,13 +1,11 @@
-import { ExecuteTradeRequest, ExecuteTradeResponse, RegionSettings } from 'rt-types'
 import { action, ActionUnion } from 'rt-util'
+import { ExecuteTradeRequest, ExecuteTradeResponse } from './model/executeTradeRequest'
 import { SpotPriceTick } from './model/spotPriceTick'
 import { TradeExectionMeta } from './model/spotTileUtils'
 
 export enum TILE_ACTION_TYPES {
   EXECUTE_TRADE = '@ReactiveTraderCloud/EXECUTE_TRADE',
   TRADE_EXECUTED = '@ReactiveTraderCloud/TRADE_EXECUTED',
-  UNDOCK_TILE = '@ReactiveTraderCloud/UNDOCK_TILE',
-  TILE_UNDOCKED = '@ReactiveTraderCloud/TILE_UNDOCKED',
   DISPLAY_CURRENCY_CHART = '@ReactiveTraderCloud/DISPLAY_CURRENCY_CHART',
   CURRENCY_CHART_OPENED = '@ReactiveTraderCloud/CURRENCY_CHART_OPENED',
   DISMISS_NOTIFICATION = '@ReactiveTraderCloud/DISMISS_NOTIFICATION',
@@ -22,8 +20,6 @@ export const SpotTileActions = {
   tradeExecuted: action<TILE_ACTION_TYPES.TRADE_EXECUTED, ExecuteTradeResponse, TradeExectionMeta | null>(
     TILE_ACTION_TYPES.TRADE_EXECUTED
   ),
-  undockTile: action<TILE_ACTION_TYPES.UNDOCK_TILE, string>(TILE_ACTION_TYPES.UNDOCK_TILE),
-  tileUndocked: action<TILE_ACTION_TYPES.TILE_UNDOCKED>(TILE_ACTION_TYPES.TILE_UNDOCKED),
   displayCurrencyChart: action<TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART, string>(
     TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART
   ),
@@ -34,11 +30,3 @@ export const SpotTileActions = {
 }
 
 export type SpotTileActions = ActionUnion<typeof SpotTileActions>
-
-export const spotRegionSettings = (id: string): RegionSettings => ({
-  title: `${id} Spot`,
-  width: 370,
-  height: 155,
-  dockable: true,
-  resizable: false
-})

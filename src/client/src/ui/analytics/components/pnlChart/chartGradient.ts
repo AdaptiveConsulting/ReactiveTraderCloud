@@ -109,6 +109,7 @@ export default class ChartGradient {
     this.linearGradient.appendChild(stop2)
     const stop2End = document.createElementNS(svgNS, 'stop')
     stop2End.setAttribute('id', 'stop2End')
+    stop2End.setAttribute('class', 'stop2End')
     stop2End.setAttribute('offset', '100%')
     this.linearGradient.appendChild(stop2End)
 

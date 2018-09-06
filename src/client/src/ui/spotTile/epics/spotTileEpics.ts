@@ -1,11 +1,10 @@
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
-import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
-import { ExecuteTradeRequest, ExecuteTradeResponse } from 'rt-types'
-import { of } from 'rxjs'
+// import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
 import { delay, map, mergeMap } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
+import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
+import { ExecuteTradeRequest, ExecuteTradeResponse } from '../model/executeTradeRequest'
 import ExecutionService from './executionService'
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
@@ -35,17 +34,6 @@ const executeTradeEpic: ApplicationEpic = (action$, state$, { loadBalancedServic
   )
 }
 
-type ReferenceDataAction = ReturnType<typeof ReferenceActions.createReferenceServiceAction>
-
-const addSpotTileEpic: ApplicationEpic = (action$, state$) =>
-  action$.pipe(
-    ofType<Action, ReferenceDataAction>(REF_ACTION_TYPES.REFERENCE_SERVICE),
-    mergeMap(refData => {
-      const symbols = Object.keys(refData.payload).map(symbol => SpotTileActions.showSpotTile(symbol))
-      return of(...symbols)
-    })
-  )
-
 export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     ofType<Action, ExecutedTradeAction>(TILE_ACTION_TYPES.TRADE_EXECUTED),
@@ -54,4 +42,4 @@ export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
     map(SpotTileActions.dismissNotification)
   )
 
-export const spotTileEpic = combineEpics(executeTradeEpic, onTradeExecuted, addSpotTileEpic)
+export const spotTileEpic = combineEpics(executeTradeEpic, onTradeExecuted)

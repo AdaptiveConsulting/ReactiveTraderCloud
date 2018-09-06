@@ -1,40 +1,48 @@
-import _ from 'lodash'
 import React from 'react'
 import { CurrencyPairMap } from 'rt-types'
+import { CurrencyPairPosition } from '../model'
 import PNLBar from './PNLBar'
 
-export interface AnalyticsBarChartProps {
-  chartData: any[]
+export interface Props {
+  chartData: CurrencyPairPosition[]
   currencyPairs: CurrencyPairMap
   isPnL: boolean
 }
 
-export default class AnalyticsBarChart extends React.Component<AnalyticsBarChartProps, {}> {
-  render() {
-    return <div>{!_.isEmpty(this.props.chartData) && this.createBars()}</div>
-  }
+const AnalyticsBarChart: React.SFC<Props> = ({ isPnL, chartData, currencyPairs }) => {
+  const { max, min } = getMinMax(chartData)
+  const maxWidth = Math.max(Math.abs(max), Math.abs(min))
 
-  createBars() {
-    const { isPnL, chartData } = this.props
-    const baseValues: any[] = chartData.map(x => x.basePnl)
-    const maxValue: number = _.max(baseValues)
-    const minValue: number = _.min(baseValues)
-    const maxWidth = Math.max(Math.abs(maxValue), Math.abs(minValue))
-    const bars = chartData.map((chartItem, index) => {
-      const { basePnl, symbol } = chartItem
-      const currencyPair = this.props.currencyPairs[symbol]
-      return (
-        <PNLBar
-          key={index}
-          index={index}
-          basePnl={basePnl}
-          symbol={symbol}
-          currencyPair={currencyPair}
-          isPnL={isPnL}
-          maxVal={maxWidth}
-        />
-      )
-    })
-    return bars
-  }
+  return (
+    <React.Fragment>
+      {chartData.map((chartItem, index) => {
+        const { basePnl, symbol } = chartItem
+        const currencyPair = currencyPairs[symbol]
+        return (
+          <PNLBar
+            key={index}
+            index={index}
+            basePnl={basePnl}
+            symbol={symbol}
+            currencyPair={currencyPair}
+            isPnL={isPnL}
+            maxVal={maxWidth}
+          />
+        )
+      })}
+    </React.Fragment>
+  )
 }
+
+export default AnalyticsBarChart
+
+const getMinMax = (chartData: CurrencyPairPosition[]) =>
+  chartData.reduce(
+    (prev, curr) => {
+      const { basePnl } = curr
+      prev.max = Math.max(prev.max, basePnl)
+      prev.min = Math.min(prev.min, basePnl)
+      return prev
+    },
+    { max: 0, min: 0 }
+  )

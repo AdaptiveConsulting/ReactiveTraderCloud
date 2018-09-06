@@ -9,21 +9,27 @@
     "strict": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDirs": ["src", "stories"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": false,
     "noImplicitThis": false,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
     "declaration": false,
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "baseUrl": "src",
-    "paths": {
-      "rt-types": ["rt-types"]
-    },
     "allowSyntheticDefaultImports": true
   },
-  "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "webpack", "jest", "**/*.spec.ts"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "**/*.spec.ts",
+    "storybook-static"
+  ]
 }

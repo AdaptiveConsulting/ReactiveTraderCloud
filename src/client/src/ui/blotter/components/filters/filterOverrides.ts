@@ -6,7 +6,7 @@ const getFilterSelect = (filter: any) => {
   const restrictedFilterTypes = filter.filterParams.filterOptions
   const actualFilterTypes = restrictedFilterTypes ? restrictedFilterTypes : defaultFilterTypes
 
-  const optionsHtml: string[] = actualFilterTypes.map(filterType => {
+  const optionsHtml: string[] = actualFilterTypes.map((filterType: any) => {
     const localeFilterName = filter.translate(filterType)
     return `<option value="${filterType}">${localeFilterName}</option>`
   })
@@ -16,12 +16,12 @@ const getFilterSelect = (filter: any) => {
     optionsHtml.length <= 0
       ? ''
       : `<div class="filter-container__selector-wrapper">
-       <select class="filter-container__select" id="filterType" ${readOnly}>
+          <select class="filter-container__select" id="filterType" ${readOnly}>
             ${optionsHtml.join('')}
             
-        </select>
-        <div class="select_arrow"></div>
-    </div>`
+          </select>
+          <div class="select_arrow"></div>
+        </div>`
 
   return selector
 }

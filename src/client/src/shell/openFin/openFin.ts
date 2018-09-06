@@ -1,5 +1,5 @@
+import { logger } from 'rt-system'
 import { Observable } from 'rxjs'
-import { logger } from '../../system'
 
 const log = logger.create('OpenFin')
 
@@ -10,43 +10,43 @@ export default class OpenFin {
   private limitCheckId: number = 1
 
   constructor() {
-    if (this.isRunningInOpenFin) {
+    if (this.isPresent) {
       this.initializeLimitChecker()
     }
   }
 
-  get isRunningInOpenFin() {
+  get isPresent() {
     return typeof fin !== 'undefined'
   }
 
-  close(currentWindow: fin.OpenFinWindow = this.currentWindow) {
-    currentWindow.close(
+  close = () => {
+    this.currentWindow.close(
       true,
       () => log.info('Window closed with success.'),
       err => log.error('Failed to close window.', err)
     )
   }
 
-  minimize(currentWindow: fin.OpenFinWindow = this.currentWindow) {
-    currentWindow.minimize(
+  minimize = () => {
+    this.currentWindow.minimize(
       () => log.info('Window minimized with success.'),
       err => log.error('Failed to minimize window.', err)
     )
   }
 
-  maximize(currentWindow: fin.OpenFinWindow = this.currentWindow) {
-    currentWindow.getState(state => {
+  maximize = () => {
+    this.currentWindow.getState(state => {
       switch (state) {
         case 'maximized':
         case 'restored':
         case 'minimized':
-          currentWindow.restore(
-            () => currentWindow.bringToFront(() => log.info('Window brought to front.'), err => log.error(err)),
+          this.currentWindow.restore(
+            () => this.currentWindow.bringToFront(() => log.info('Window brought to front.'), err => log.error(err)),
             err => log.error(err)
           )
           break
         default:
-          currentWindow.maximize(
+          this.currentWindow.maximize(
             () => log.info('Window maximized with success.'),
             err => log.error('Failed to maximize window.', err)
           )
@@ -68,9 +68,6 @@ export default class OpenFin {
   }
 
   addSubscription(name: string, callback: (msg: any, uuid: any) => void) {
-    if (!this.isRunningInOpenFin) {
-      return
-    }
     if (!fin.desktop.InterApplicationBus) {
       fin.desktop.main(() => {
         fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
@@ -128,7 +125,7 @@ export default class OpenFin {
    * @param symbol
    * @returns {Promise|Promise<T>}
    */
-  displayCurrencyChart(symbol) {
+  displayCurrencyChart(symbol: string) {
     return new Promise<string>((resolve, reject) => {
       const chartIqAppId = 'ChartIQ'
       fin.desktop.System.getAllApplications(apps => {
@@ -172,7 +169,7 @@ export default class OpenFin {
    * @returns {Promise<void>|Promise.<T>|Promise<T>}
    * @private
    */
-  refreshCurrencyChart(symbol) {
+  refreshCurrencyChart(symbol: string) {
     const interval = 5
     fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', {
       symbol,
@@ -186,14 +183,14 @@ export default class OpenFin {
    * @returns {Promise<T>|Promise}
    * @private
    */
-  launchCurrencyChart(symbol) {
+  launchCurrencyChart(symbol: string) {
     return new Promise<string>((resolve, reject) => {
       const interval = 5
       const chartIqAppId = 'ChartIQ'
       const url = `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/chartiq-shim.html?symbol=${symbol}&period=${interval}`
       const name = `chartiq_${new Date().getTime()}`
       const icon = 'http://adaptiveconsulting.github.io/chartiq/icon.png'
-      const app = new fin.desktop.Application(
+      const app: fin.OpenFinApplication = new fin.desktop.Application(
         {
           url,
           name,
@@ -209,46 +206,37 @@ export default class OpenFin {
     })
   }
 
-  openTradeNotification = tradeNotification =>
-    // tslint:disable-next-line
+  openTradeNotification = (tradeNotification: any) =>
     new fin.desktop.Notification({
       url: '/index.html?notification=true',
       message: tradeNotification,
-      duration: 20000,
-      onClick: () => {
-        this.bringToFront()
-        // highlight trade row
-        // this._router.publishEvent(WellKnownModelIds.blotterModelId, 'highlightTradeRow', { trade })
-      }
+      duration: 20000
     })
 
-  publishCurrentPositions(ccyPairPositions) {
-    if (!this.isRunningInOpenFin) {
+  publishCurrentPositions(ccyPairPositions: any) {
+    if (!this.isPresent) {
       return
     }
 
     fin.desktop.InterApplicationBus.publish('position-update', ccyPairPositions)
   }
 
-  publishPrice(price) {
-    if (!this.isRunningInOpenFin) {
-      return
-    }
+  publishPrice(price: any) {
     fin.desktop.InterApplicationBus.publish('price-update', price)
   }
 
-  sendAllBlotterData(parsed) {
+  sendAllBlotterData(parsed: any) {
     fin.desktop.InterApplicationBus.publish('blotter-data', parsed)
   }
 
   sendPositionClosedNotification(uuid: string, correlationId: string) {
-    if (!this.isRunningInOpenFin) {
+    if (!this.isPresent) {
       return
     }
     fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId)
   }
 
-  openLink(url: string) {
+  open(url: string) {
     fin.desktop.System.openUrlWithBrowser(url)
   }
 }

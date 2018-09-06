@@ -1,11 +1,11 @@
+import { applicationConnected } from 'rt-actions'
 import { Direction } from 'rt-types'
 import { bindCallback } from 'rxjs'
 import { map, mergeMapTo, withLatestFrom } from 'rxjs/operators'
-import { ApplicationEpic } from '../../../ApplicationEpic'
-import { applicationConnected } from '../../../ui/connectionStatus'
+import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions } from '../actions'
 
-function createTrade(msg, price) {
+function createTrade(msg: any, price: any) {
   const direction = msg.amount > 0 ? Direction.Sell : Direction.Buy
   const notional = Math.abs(msg.amount)
 
