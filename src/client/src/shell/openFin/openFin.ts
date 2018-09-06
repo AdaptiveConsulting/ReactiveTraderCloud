@@ -19,34 +19,34 @@ export default class OpenFin {
     return typeof fin !== 'undefined'
   }
 
-  close = (currentWindow: fin.OpenFinWindow = this.currentWindow) => {
-    currentWindow.close(
+  close = () => {
+    this.currentWindow.close(
       true,
       () => log.info('Window closed with success.'),
       err => log.error('Failed to close window.', err)
     )
   }
 
-  minimize = (currentWindow: fin.OpenFinWindow = this.currentWindow) => {
-    currentWindow.minimize(
+  minimize = () => {
+    this.currentWindow.minimize(
       () => log.info('Window minimized with success.'),
       err => log.error('Failed to minimize window.', err)
     )
   }
 
-  maximize = (currentWindow: fin.OpenFinWindow = this.currentWindow) => {
-    currentWindow.getState(state => {
+  maximize = () => {
+    this.currentWindow.getState(state => {
       switch (state) {
         case 'maximized':
         case 'restored':
         case 'minimized':
-          currentWindow.restore(
-            () => currentWindow.bringToFront(() => log.info('Window brought to front.'), err => log.error(err)),
+          this.currentWindow.restore(
+            () => this.currentWindow.bringToFront(() => log.info('Window brought to front.'), err => log.error(err)),
             err => log.error(err)
           )
           break
         default:
-          currentWindow.maximize(
+          this.currentWindow.maximize(
             () => log.info('Window maximized with success.'),
             err => log.error('Failed to maximize window.', err)
           )
