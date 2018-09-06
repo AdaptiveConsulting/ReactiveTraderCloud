@@ -1,7 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
-import { RegionActions } from 'rt-actions'
 import { styled } from 'rt-theme'
 import Portal, { PortalProps } from './Portal'
 
@@ -12,54 +9,37 @@ export const TearOffContainer = styled.div`
 
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
 
-type TearOffDispatchProps = ReturnType<typeof mapDispatchToProps>
-type TearOffProps = TearOffDispatchProps & {
+interface Props {
   id: string
   render: RenderCB
   portalProps: Partial<PortalProps>
 }
 
-class TearOff extends React.PureComponent<TearOffProps, { tornOff: boolean }> {
+interface State {
+  tornOff: boolean
+}
+
+export default class TearOff extends React.PureComponent<Props, State> {
   state = { tornOff: false }
 
-  componentDidMount() {
-    const { id, onMount } = this.props
-    onMount({ id })
+  popOut = () => {
+    this.setState({ tornOff: true })
   }
 
-  popOut = (region: string) => {
-    this.setState({ tornOff: true }, () => this.props.onPopOut({ id: region }))
-  }
-
-  popIn = (region: string) => {
-    this.setState({ tornOff: false }, () => this.props.onPopIn({ id: region }))
+  popIn = () => {
+    this.setState({ tornOff: false })
   }
 
   render() {
-    const { render, portalProps, id } = this.props
+    const { render, portalProps } = this.props
     const { tornOff } = this.state
     if (tornOff) {
       return (
-        <Portal onUnload={() => this.popIn(id)} {...portalProps}>
-          <TearOffContainer>{render(() => this.popOut(id), tornOff)}</TearOffContainer>
+        <Portal onUnload={this.popIn} {...portalProps}>
+          <TearOffContainer>{render(this.popOut, tornOff)}</TearOffContainer>
         </Portal>
       )
     }
-    return render(() => this.popOut(id), tornOff)
+    return render(this.popOut, tornOff)
   }
 }
-
-interface Region {
-  id: string
-}
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onPopOut: (region: Region) => dispatch(RegionActions.popoutOpened(region)),
-  onPopIn: (region: Region) => dispatch(RegionActions.popoutClosed(region)),
-  onMount: (region: Region) => dispatch(RegionActions.addRegion(region))
-})
-
-export const TearOffConnected = connect(
-  null,
-  mapDispatchToProps
-)(TearOff)

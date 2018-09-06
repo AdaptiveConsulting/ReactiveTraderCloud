@@ -29,7 +29,15 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
   }
 
   render() {
-    const { id, currencyPair, spotTileData, onPopoutClick, onNotificationDismissed, tornOff } = this.props
+    const {
+      id,
+      currencyPair,
+      spotTileData,
+      onPopoutClick,
+      onNotificationDismissed,
+      tornOff,
+      displayCurrencyChart
+    } = this.props
     if (!spotTileData || !spotTileData.price || !currencyPair) {
       return null
     }
@@ -42,6 +50,7 @@ class SpotTileContainer extends React.PureComponent<SpotTileContainerProps> {
         onNotificationDismissed={onNotificationDismissed}
         executeTrade={this.executeTrade}
         tornOff={tornOff}
+        displayCurrencyChart={displayCurrencyChart}
       />
     )
   }

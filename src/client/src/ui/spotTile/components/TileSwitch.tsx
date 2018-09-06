@@ -13,6 +13,7 @@ interface Props {
   executeTrade: (direction: Direction, notional: number) => void
   onPopoutClick?: () => void
   onNotificationDismissed: () => void
+  displayCurrencyChart?: () => void
 }
 
 const TileSwitch: React.SFC<Props> = ({
@@ -21,14 +22,15 @@ const TileSwitch: React.SFC<Props> = ({
   executeTrade,
   tornOff,
   onPopoutClick,
-  onNotificationDismissed
+  onNotificationDismissed,
+  displayCurrencyChart
 }) => {
   const { lastTradeExecutionStatus, isTradeExecutionInFlight } = spotTileData
   const isPriceStale = !lastTradeExecutionStatus && spotTileData.price && spotTileData.price.priceStale
 
   return (
     <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade}>
-      {!tornOff && <TileControls onPopoutClick={onPopoutClick} />}
+      {<TileControls tornOff={tornOff} onPopoutClick={onPopoutClick} displayCurrencyChart={displayCurrencyChart} />}
       <TileBooking show={isTradeExecutionInFlight} />
       <NotificationContainer
         isPriceStale={isPriceStale}

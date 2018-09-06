@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { EnvironmentValue, withEnvironment } from 'rt-components'
+import { EnvironmentValue, OpenFinChrome, OpenFinHeader, withEnvironment } from 'rt-components'
 import { withDefaultProps } from 'rt-util'
-import BrowserPortal from './BrowserPortal'
-import DesktopPortal from './DesktopPortal'
+import { openBrowserWindow } from './BrowserWindow'
+import { openDesktopWindow } from './DesktopWindow'
 import { WindowConfig } from './types'
 
 const defaultPortalProps = {
@@ -25,8 +25,22 @@ export type PortalProps = typeof defaultPortalProps
 class NewPortal extends React.Component<PortalProps & { environment: EnvironmentValue }> {
   externalWindow: Window | null = null
   mutationObserver: MutationObserver | null = null
-
   container = document.createElement('div')
+
+  async componentDidMount() {
+    const { environment, config, desktopConfig, browserConfig } = this.props
+
+    if (environment.isDesktop) {
+      const win = await openDesktopWindow({ ...config, ...desktopConfig })
+      win.addEventListener('closed', this.release)
+      this.externalWindow = win.getNativeWindow()
+    } else {
+      this.externalWindow = openBrowserWindow({ ...config, ...browserConfig })
+    }
+    this.externalWindow.addEventListener('beforeunload', this.release)
+    window.addEventListener('beforeunload', this.release)
+    this.injectIntoWindow()
+  }
 
   componentWillUnmount() {
     if (this.externalWindow) {
@@ -35,28 +49,21 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
   }
 
   render() {
-    const wrappedChildren = this.wrapChildrenWithPortal(this.props.children)
-    return this.externalWindow ? ReactDOM.createPortal(wrappedChildren, this.container) : wrappedChildren
+    return this.externalWindow
+      ? ReactDOM.createPortal(this.wrapChildrenWithPortal(this.props.children), this.container)
+      : null
   }
 
   wrapChildrenWithPortal = (children: React.ReactNode) => {
-    const { environment, config, desktopConfig, browserConfig } = this.props
+    const { environment } = this.props
     return environment.isDesktop ? (
-      <DesktopPortal createWindow={this.createWindow} closeWindow={this.closeWindow} {...config} {...desktopConfig}>
+      <OpenFinChrome>
+        <OpenFinHeader hide close={this.closeWindow} />
         {children}
-      </DesktopPortal>
+      </OpenFinChrome>
     ) : (
-      <BrowserPortal createWindow={this.createWindow} {...config} {...browserConfig}>
-        {children}
-      </BrowserPortal>
+      children
     )
-  }
-
-  createWindow = (createdWindow: Window) => {
-    this.externalWindow = createdWindow
-    this.externalWindow.addEventListener('beforeunload', this.release)
-    window.addEventListener('beforeunload', this.release)
-    this.injectIntoWindow()
   }
 
   injectIntoWindow() {
@@ -79,7 +86,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
       this.mutationObserver = new MutationObserver(mutationsList => {
         mutationsList.forEach(mutationRecord => {
           const addedNode = mutationRecord.addedNodes[0]
-          if (addedNode.nodeName === 'STYLE') {
+          if (addedNode && addedNode.nodeName === 'STYLE') {
             const newNode = addedNode.cloneNode(true)
             childHead.appendChild(newNode)
           }
@@ -106,7 +113,6 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     if (this.mutationObserver) {
       this.mutationObserver.disconnect()
     }
-
     if (onUnload) {
       onUnload.call(null)
     }
