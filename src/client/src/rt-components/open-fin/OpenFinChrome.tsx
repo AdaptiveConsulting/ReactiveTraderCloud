@@ -35,53 +35,42 @@ export const OpenFinHeader: React.SFC<ControlProps> = ({ ...props }) => (
 
 export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, close }) => (
   <React.Fragment>
-    {minimize ? (
-      <HeaderControl intent="aware" onClick={minimize}>
-        <i className="fas fa-minus fa-set-position" />
-      </HeaderControl>
-    ) : null}
-    {maximize ? (
-      <HeaderControl intent="primary" onClick={maximize}>
-        <i className="far fa-window-maximize" />
-      </HeaderControl>
-    ) : null}
+    <HeaderControl intent="aware" onClick={minimize}>
+      <i className="fas fa-minus fa-set-position" />
+    </HeaderControl>
+    <HeaderControl intent="primary" onClick={maximize}>
+      <i className="far fa-window-maximize" />
+    </HeaderControl>
     <HeaderControl intent="bad" onClick={close}>
       <FontAwesomeIcon icon={faTimes} />
     </HeaderControl>
   </React.Fragment>
 )
 
-const DragRegion = styled.div`
-  flex-grow: 1;
-  background-color: lime;
-  -webkit-app-region: drag;
-  cursor: -webkit-grab;
-`
-
 const Header = styled.div`
-  display: flex;
-  width: 100%;
+  display: grid;
+  grid-template-columns: 10fr repeat(3, 1fr);
+
+  min-height: 2.5rem;
 
   font-size: 1rem;
-  line-height: 1.5rem;
   font-weight: 600;
 `
 
+const DragRegion = styled.div`
+  -webkit-app-region: drag;
+`
+
 const HeaderControl = styled.div<{ intent?: string }>`
-  display: flex;
+  display: grid;
+  justify-items: center;
   align-items: center;
-  justify-content: center;
 
   color: ${props => props.theme.button.secondary.backgroundColor};
-
-  font-size: 1em;
-  min-width: 2rem;
-  min-height: 2rem;
-
+  min-width: 2.5rem;
   cursor: pointer;
 
   &:hover {
-    background: none;
     color: ${({ theme, intent = 'primary' }) => theme.button[intent].backgroundColor};
   }
 `
