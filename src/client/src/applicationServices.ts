@@ -15,7 +15,13 @@ import { ReferenceDataService } from './shell/referenceData'
 
 const HEARTBEAT_TIMEOUT = 3000
 
-export function createApplicationServices(user: User, autobahn: AutobahnConnection, openFin: OpenFin) {
+export interface ApplicationProps {
+  autobahn: AutobahnConnection
+  openfin: OpenFin
+  user: User
+}
+
+export function createApplicationServices({ autobahn, openfin, user }: ApplicationProps) {
   const connection$ = createConnection$(autobahn).pipe(
     multicast(() => {
       return new ReplaySubject<ConnectionEvent>(1)
@@ -39,7 +45,7 @@ export function createApplicationServices(user: User, autobahn: AutobahnConnecti
   return {
     referenceDataService,
 
-    openFin,
+    openFin: openfin,
     loadBalancedServiceStub,
     serviceStatus$,
     connection$

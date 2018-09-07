@@ -1,0 +1,44 @@
+import React from 'react'
+import { Trade } from 'rt-types'
+
+import { ThemeState } from 'rt-theme'
+import TradeNotification from './shell/notification/TradeNotification'
+
+declare const window: any
+
+interface Message {
+  tradeNotification: Trade
+}
+
+interface State {
+  message: Message | null
+}
+
+export default class NotificationRoute extends React.Component<{}, State> {
+  state: State = {
+    message: null
+  }
+
+  onNotificationMessage = (window.onNotificationMessage = (message: Message) => {
+    this.setState({ message }, () =>
+      // send a message back to the main application - required to restore the main application window if it's minimised
+      window.fin.desktop.Notification.getCurrent().sendMessageToApplication('ack')
+    )
+  })
+
+  onDismissNotification = () => window.fin.desktop.Notification.getCurrent().close()
+
+  render() {
+    const { message } = this.state
+    return message == null ? null : (
+      <ThemeState.Provider
+        name={
+          // Expected global value established by the root container
+          window.localStorage.themeName
+        }
+      >
+        <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
+      </ThemeState.Provider>
+    )
+  }
+}

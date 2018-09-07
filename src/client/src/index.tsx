@@ -1,12 +1,13 @@
+import { parse } from 'query-string'
+import React from 'react'
+import ReactDOM from 'react-dom'
+
 import 'rt-theme'
 
-import { parse } from 'query-string'
-import { run } from './notificationBootstrapper'
+import MainRoute from './MainRoute'
+import NotificationRoute from './NotificationRoute'
 
-const parsed = parse(location.search)
-
-if (parsed.notification) {
-  run()
-} else {
-  import('./main').then(mod => mod.run())
-}
+ReactDOM.render(
+  parse(location.search).notification ? <NotificationRoute /> : <MainRoute />,
+  document.getElementById('root')
+)
