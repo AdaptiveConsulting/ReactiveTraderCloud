@@ -19,18 +19,18 @@ const LoadableStyle = styled.div`
 `
 
 const Spinner = styled.div`
-  margin: 100px auto;
-  width: 50px;
-  height: 40px;
+  margin: 6.25rem auto;
+  width: 3.125rem;
+  height: 2.5rem;
   text-align: center;
-  font-size: 10px;
+  font-size: 0.625rem;
 `
 
 const Rect = styled.div<{ delay?: number }>`
   background-color: ${({ theme }) => theme.component.textColor};
-  margin: 0 1px;
+  margin: 0 0.0625rem;
   height: 100%;
-  width: 6px;
+  width: 0.375rem;
   display: inline-block;
 
   animation: sk-stretchdelay 1.2s infinite ease-in-out;

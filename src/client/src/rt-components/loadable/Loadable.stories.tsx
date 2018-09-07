@@ -13,7 +13,7 @@ stories.addDecorator(withKnobs)
 stories.add('Loading', () => (
   <Story>
     <Centered>
-      <div style={{ width: '360px', height: '160px' }}>
+      <div style={{ width: '22.5rem', height: '10rem' }}>
         <Loadable
           status={select(
             'Status',
