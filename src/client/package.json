@@ -27,7 +27,7 @@
     "start:openfin:local": "npm-run-all -p openfin start:local",
     "start:openfin:cloud": "npm-run-all -p openfin start:cloud",
     "start:react-app": "react-app-rewired start --scripts-version react-scripts-ts",
-    "build": "npm run build:local",
+    "build": "npm run build:react-app",
     "build:local": "cross-env REACT_APP_ENV=local npm run build:react-app",
     "build:cloud": "cross-env REACT_APP_ENV=demo npm run build:react-app",
     "build:react-app": "cross-env NODE_ENV=development react-app-rewired build --scripts-version react-scripts-ts",
