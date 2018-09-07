@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { ConnectionOverlay } from 'rt-components'
+import { Loadable } from 'rt-components'
 import { Environment } from 'rt-system'
 import { GlobalState } from 'StoreTypes'
 import { BlotterActions } from './actions'
 import Blotter from './components'
-import { selectBlotterService, selectBlotterStatus } from './selectors'
+import { selectBlotterRows, selectBlotterStatus } from './selectors'
 
 interface BlotterContainerOwnProps {
   onPopoutClick: () => void
@@ -23,23 +23,21 @@ class BlotterContainer extends React.Component<BlotterContainerProps> {
   }
 
   render() {
-    const { blotterService, isConnected, tornOff, onPopoutClick } = this.props
-    const { trades } = blotterService
-    const gridRows = Object.values(trades).reverse()
-
-    if (isConnected) {
-      return (
-        <Blotter rows={gridRows} onPopoutClick={onPopoutClick} canPopout={!Environment.isRunningInIE() && !tornOff} />
-      )
-    }
-
-    return <ConnectionOverlay>Blotter disconnected</ConnectionOverlay>
+    const { rows, status, tornOff, onPopoutClick } = this.props
+    return (
+      <Loadable
+        status={status}
+        render={() => (
+          <Blotter rows={rows} onPopoutClick={onPopoutClick} canPopout={!Environment.isRunningInIE() && !tornOff} />
+        )}
+      />
+    )
   }
 }
 
 const mapStateToProps = (state: GlobalState) => ({
-  blotterService: selectBlotterService(state),
-  isConnected: selectBlotterStatus(state)
+  rows: selectBlotterRows(state),
+  status: selectBlotterStatus(state)
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

@@ -1,12 +1,10 @@
 import { createSelector } from 'reselect'
-import { ServiceConnectionStatus } from 'rt-types'
 import { GlobalState } from 'StoreTypes'
 
-const getBlotterService = (state: GlobalState) => state.blotterService
+const getBlotterTrades = (state: GlobalState) => state.blotterService && state.blotterService.trades
 const getServiceStatus = ({ compositeStatusService }: GlobalState) =>
-  compositeStatusService.blotter &&
-  compositeStatusService.blotter.connectionStatus === ServiceConnectionStatus.CONNECTED
+  compositeStatusService.blotter && compositeStatusService.blotter.connectionStatus
 
-export const selectBlotterService = createSelector(getBlotterService, blotterService => blotterService)
+export const selectBlotterRows = createSelector(getBlotterTrades, trades => Object.values(trades).reverse())
 
 export const selectBlotterStatus = createSelector(getServiceStatus, status => status)

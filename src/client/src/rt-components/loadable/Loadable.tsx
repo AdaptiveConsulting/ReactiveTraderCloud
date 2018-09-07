@@ -1,5 +1,6 @@
 import React from 'react'
 import { styled } from 'rt-theme'
+import { ServiceConnectionStatus } from 'rt-types'
 import DisconnectIcon from '../icons/DisconnectIcon'
 
 const LoadableStyle = styled.div`
@@ -23,7 +24,7 @@ const Spinner = styled.div`
   font-size: 10px;
 
   & > div {
-    background-color: #333;
+    background-color: ${({ theme }) => theme.component.textColor};
     margin: 0 1px;
     height: 100%;
     width: 6px;
@@ -79,8 +80,7 @@ const Spinner = styled.div`
 `
 
 interface Props {
-  loading: boolean
-  disconnected: boolean
+  status: ServiceConnectionStatus
   render: () => JSX.Element
 }
 
@@ -94,15 +94,20 @@ const Loader = () => (
   </Spinner>
 )
 
-const Loadable: React.SFC<Props> = ({ loading, disconnected, render }) => {
-  if (loading) {
+const Loadable: React.SFC<Props> = ({ status, render }) => {
+  if (status === ServiceConnectionStatus.CONNECTED) {
+    return render()
+  }
+
+  if (status === ServiceConnectionStatus.CONNECTING) {
     return (
       <LoadableStyle>
         <Loader />
       </LoadableStyle>
     )
   }
-  if (disconnected) {
+
+  if (status === ServiceConnectionStatus.DISCONNECTED) {
     return (
       <LoadableStyle>
         <div>
@@ -112,7 +117,8 @@ const Loadable: React.SFC<Props> = ({ loading, disconnected, render }) => {
       </LoadableStyle>
     )
   }
-  return render()
+
+  return null
 }
 
 export default Loadable
