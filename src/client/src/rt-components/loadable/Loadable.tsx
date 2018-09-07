@@ -6,6 +6,8 @@ import DisconnectIcon from '../icons/DisconnectIcon'
 const LoadableStyle = styled.div`
   width: 100%;
   height: 100%;
+  margin: 0.5rem 0;
+  border-radius: 0.1875rem;
   background-color: ${({ theme }) => theme.component.backgroundColor};
   color: ${({ theme }) => theme.component.textColor};
   display: flex;

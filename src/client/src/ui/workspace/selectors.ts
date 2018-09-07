@@ -13,10 +13,15 @@ const makePortalProps = (key: string) => ({
 })
 
 const getSpotTiles = (state: GlobalState) => state.currencyPairs
-
-export const selectSpotTiles = createSelector([getSpotTiles], spotTileKeys =>
+const selectSpotTiles = createSelector([getSpotTiles], spotTileKeys =>
   Object.keys(spotTileKeys).map(key => ({
     key,
     portalProps: makePortalProps(key)
   }))
 )
+
+const getPricingStatus = ({ compositeStatusService }: GlobalState) =>
+  compositeStatusService.pricing && compositeStatusService.pricing.connectionStatus
+const selectPricingStatus = createSelector(getPricingStatus, status => status)
+
+export { selectSpotTiles, selectPricingStatus }
