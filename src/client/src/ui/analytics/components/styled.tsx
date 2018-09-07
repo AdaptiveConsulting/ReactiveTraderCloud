@@ -5,6 +5,7 @@ export const AnalyticsStyle = styled.div`
   flex: 1;
   color: ${({ theme }) => theme.analytics.textColor};
   background-color: ${({ theme }) => theme.analytics.backgroundColor};
+  width: 100%;
   height: 100%;
   position: relative;
   padding: 1.25rem;

@@ -24,59 +24,27 @@ const Spinner = styled.div`
   height: 40px;
   text-align: center;
   font-size: 10px;
+`
 
-  & > div {
-    background-color: ${({ theme }) => theme.component.textColor};
-    margin: 0 1px;
-    height: 100%;
-    width: 6px;
-    display: inline-block;
+const Rect = styled.div<{ delay?: number }>`
+  background-color: ${({ theme }) => theme.component.textColor};
+  margin: 0 1px;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
 
-    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
-    animation: sk-stretchdelay 1.2s infinite ease-in-out;
-  }
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
 
-  .rect2 {
-    -webkit-animation-delay: -1.1s;
-    animation-delay: -1.1s;
-  }
-
-  .rect3 {
-    -webkit-animation-delay: -1s;
-    animation-delay: -1s;
-  }
-
-  .rect4 {
-    -webkit-animation-delay: -0.9s;
-    animation-delay: -0.9s;
-  }
-
-  .rect5 {
-    -webkit-animation-delay: -0.8s;
-    animation-delay: -0.8s;
-  }
-
-  @-webkit-keyframes sk-stretchdelay {
-    0%,
-    40%,
-    100% {
-      -webkit-transform: scaleY(0.4);
-    }
-    20% {
-      -webkit-transform: scaleY(1);
-    }
-  }
+  animation-delay: -${({ delay }) => delay}s;
 
   @keyframes sk-stretchdelay {
     0%,
     40%,
     100% {
       transform: scaleY(0.4);
-      -webkit-transform: scaleY(0.4);
     }
     20% {
       transform: scaleY(1);
-      -webkit-transform: scaleY(1);
     }
   }
 `
@@ -89,11 +57,11 @@ interface Props {
 
 const Loader = () => (
   <Spinner>
-    <div className="rect1" />
-    <div className="rect2" />
-    <div className="rect3" />
-    <div className="rect4" />
-    <div className="rect5" />
+    <Rect />
+    <Rect delay={1.1} />
+    <Rect delay={1} />
+    <Rect delay={0.9} />
+    <Rect delay={0.8} />
   </Spinner>
 )
 
