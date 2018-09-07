@@ -35,12 +35,16 @@ export const OpenFinHeader: React.SFC<ControlProps> = ({ ...props }) => (
 
 export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, close }) => (
   <React.Fragment>
-    <HeaderControl intent="aware" onClick={minimize}>
-      <i className="fas fa-minus fa-set-position" />
-    </HeaderControl>
-    <HeaderControl intent="primary" onClick={maximize}>
-      <i className="far fa-window-maximize" />
-    </HeaderControl>
+    {minimize ? (
+      <HeaderControl intent="aware" onClick={minimize}>
+        <i className="fas fa-minus fa-set-position" />
+      </HeaderControl>
+    ) : null}
+    {maximize ? (
+      <HeaderControl intent="primary" onClick={maximize}>
+        <i className="far fa-window-maximize" />
+      </HeaderControl>
+    ) : null}
     <HeaderControl intent="bad" onClick={close}>
       <FontAwesomeIcon icon={faTimes} />
     </HeaderControl>
@@ -48,8 +52,8 @@ export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, c
 )
 
 const Header = styled.div`
-  display: grid;
-  grid-template-columns: 10fr repeat(3, 1fr);
+  display: flex;
+  width: 100%;
 
   min-height: 2.5rem;
 
@@ -58,6 +62,8 @@ const Header = styled.div`
 `
 
 const DragRegion = styled.div`
+  display: flex;
+  flex-grow: 1;
   -webkit-app-region: drag;
 `
 
