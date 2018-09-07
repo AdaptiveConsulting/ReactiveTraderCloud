@@ -12,6 +12,7 @@ const LoadableStyle = styled.div`
   justify-content: center;
   flex-direction: column;
   opacity: 0.59;
+  fill: ${({ theme }) => theme.component.textColor};
 `
 
 const Spinner = styled.div`
