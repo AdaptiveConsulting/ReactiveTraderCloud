@@ -12,6 +12,8 @@ const makePortalProps = (key: string) => ({
   browserConfig: { center: 'screen' as 'screen' }
 })
 
+export type PortalProps = ReturnType<typeof makePortalProps>
+
 const getSpotTiles = (state: GlobalState) => state.currencyPairs
 const selectSpotTiles = createSelector([getSpotTiles], spotTileKeys =>
   Object.keys(spotTileKeys).map(key => ({

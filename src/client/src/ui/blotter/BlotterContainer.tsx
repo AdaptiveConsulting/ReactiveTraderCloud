@@ -17,17 +17,13 @@ type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
 type BlotterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 type BlotterContainerProps = BlotterContainerStateProps & BlotterContainerDispatchProps & BlotterContainerOwnProps
 
-const BlotterContainer: React.SFC<BlotterContainerProps> = ({ rows, status, tornOff, onPopoutClick, onMount }) => {
-  return (
-    <Loadable
-      onMount={onMount}
-      status={status}
-      render={() => (
-        <Blotter rows={rows} onPopoutClick={onPopoutClick} canPopout={!Environment.isRunningInIE() && !tornOff} />
-      )}
-    />
-  )
-}
+const BlotterContainer: React.SFC<BlotterContainerProps> = ({ status, onMount, tornOff, ...props }) => (
+  <Loadable
+    onMount={onMount}
+    status={status}
+    render={() => <Blotter {...props} canPopout={!Environment.isRunningInIE() && !tornOff} />}
+  />
+)
 
 const mapStateToProps = (state: GlobalState) => ({
   rows: selectBlotterRows(state),
