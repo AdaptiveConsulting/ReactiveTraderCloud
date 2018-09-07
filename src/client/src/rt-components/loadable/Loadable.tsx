@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { styled } from 'rt-theme'
 import { ServiceConnectionStatus } from 'rt-types'
 import DisconnectIcon from '../icons/DisconnectIcon'
@@ -82,6 +82,7 @@ const Spinner = styled.div`
 interface Props {
   status: ServiceConnectionStatus
   render: () => JSX.Element
+  onMount?: () => void
 }
 
 const Loader = () => (
@@ -94,31 +95,35 @@ const Loader = () => (
   </Spinner>
 )
 
-const Loadable: React.SFC<Props> = ({ status, render }) => {
-  if (status === ServiceConnectionStatus.CONNECTED) {
-    return render()
-  }
+export default class Loadable extends Component<Props> {
+  componentDidMount = () => this.props.onMount && this.props.onMount()
 
-  if (status === ServiceConnectionStatus.CONNECTING) {
-    return (
-      <LoadableStyle>
-        <Loader />
-      </LoadableStyle>
-    )
-  }
+  render() {
+    const { status, render } = this.props
 
-  if (status === ServiceConnectionStatus.DISCONNECTED) {
-    return (
-      <LoadableStyle>
-        <div>
-          <DisconnectIcon width={2.75} height={3} />
-        </div>
-        <div>Disconnected</div>
-      </LoadableStyle>
-    )
-  }
+    if (status === ServiceConnectionStatus.CONNECTED) {
+      return render()
+    }
 
-  return null
+    if (status === ServiceConnectionStatus.CONNECTING) {
+      return (
+        <LoadableStyle>
+          <Loader />
+        </LoadableStyle>
+      )
+    }
+
+    if (status === ServiceConnectionStatus.DISCONNECTED) {
+      return (
+        <LoadableStyle>
+          <div>
+            <DisconnectIcon width={2.75} height={3} />
+          </div>
+          <div>Disconnected</div>
+        </LoadableStyle>
+      )
+    }
+
+    return null
+  }
 }
-
-export default Loadable

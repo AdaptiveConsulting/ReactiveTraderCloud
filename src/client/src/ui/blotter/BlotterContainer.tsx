@@ -17,22 +17,16 @@ type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
 type BlotterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 type BlotterContainerProps = BlotterContainerStateProps & BlotterContainerDispatchProps & BlotterContainerOwnProps
 
-class BlotterContainer extends React.Component<BlotterContainerProps> {
-  componentDidMount() {
-    this.props.subscribeToBlotter()
-  }
-
-  render() {
-    const { rows, status, tornOff, onPopoutClick } = this.props
-    return (
-      <Loadable
-        status={status}
-        render={() => (
-          <Blotter rows={rows} onPopoutClick={onPopoutClick} canPopout={!Environment.isRunningInIE() && !tornOff} />
-        )}
-      />
-    )
-  }
+const BlotterContainer: React.SFC<BlotterContainerProps> = ({ rows, status, tornOff, onPopoutClick, onMount }) => {
+  return (
+    <Loadable
+      onMount={onMount}
+      status={status}
+      render={() => (
+        <Blotter rows={rows} onPopoutClick={onPopoutClick} canPopout={!Environment.isRunningInIE() && !tornOff} />
+      )}
+    />
+  )
 }
 
 const mapStateToProps = (state: GlobalState) => ({
@@ -41,7 +35,7 @@ const mapStateToProps = (state: GlobalState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  subscribeToBlotter: () => dispatch(BlotterActions.subscribeToBlotterAction())
+  onMount: () => dispatch(BlotterActions.subscribeToBlotterAction())
 })
 
 export default connect(
