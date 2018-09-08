@@ -54,7 +54,7 @@ export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, c
 const Header = styled.div`
   display: flex;
   width: 100%;
-  min-height: 1.4rem;
+  min-height: 1.5rem;
   font-size: 1rem;
   font-weight: 600;
 `
