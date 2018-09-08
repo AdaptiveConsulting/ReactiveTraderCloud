@@ -30,7 +30,7 @@ stories.add('Openfin chrome', () => (
 stories.add('Openfin Header', () => (
   <Story>
     <Container>
-      <OpenFinHeader close={close} minimize={minimize} maximize={maximize} />
+      <OpenFinHeader close={close} />
     </Container>
   </Story>
 ))

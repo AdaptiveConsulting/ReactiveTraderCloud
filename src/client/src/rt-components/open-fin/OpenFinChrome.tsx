@@ -54,9 +54,7 @@ export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, c
 const Header = styled.div`
   display: flex;
   width: 100%;
-
-  min-height: 2.5rem;
-
+  min-height: 1.4rem;
   font-size: 1rem;
   font-weight: 600;
 `
@@ -68,12 +66,12 @@ const DragRegion = styled.div`
 `
 
 const HeaderControl = styled.div<{ intent?: string }>`
-  display: grid;
-  justify-items: center;
-  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  min-width: 2.5rem;
 
   color: ${props => props.theme.button.secondary.backgroundColor};
-  min-width: 2.5rem;
   cursor: pointer;
 
   &:hover {
