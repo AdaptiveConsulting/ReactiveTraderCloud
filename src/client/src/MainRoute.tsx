@@ -57,10 +57,6 @@ export default class MainRoute extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {/* The below style tags are required to preload bold and bold-italic fonts */}
-        <span style={{ fontWeight: 900 }} />
-        <span style={{ fontWeight: 900, fontStyle: 'italic' }} />
-        {/* Now back to our regularly scheduled programming 🎉 */}
         <ReduxProvider store={this.store}>
           <Environment.Provider value={this.environment}>
             <LocalStorageThemeProvider>
