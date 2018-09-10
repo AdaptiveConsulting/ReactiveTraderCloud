@@ -7,12 +7,12 @@ import { Environment } from 'rt-components'
 import { AutobahnConnectionProxy, logger } from 'rt-system'
 import { ThemeState } from 'rt-theme'
 
-import { createApplicationServices } from './applicationServices'
-import { getEnvVars } from './config/config'
-import configureStore from './configureStore'
-import { Router } from './shell'
-import FakeUserRepository from './shell/fakeUserRepository'
-import { OpenFin } from './shell/openFin'
+import { createApplicationServices } from '../applicationServices'
+import { getEnvVars } from '../config/config'
+import configureStore from '../configureStore'
+import { Router } from '../shell'
+import FakeUserRepository from '../shell/fakeUserRepository'
+import { OpenFin } from '../shell/openFin'
 
 declare const window: any
 
@@ -21,7 +21,7 @@ const APPLICATION_DISCONNECT = 15 * 60 * 1000
 const config = getEnvVars(process.env.REACT_APP_ENV!)
 const log = logger.create('Application Service')
 
-export default class MainRoute extends React.Component {
+export class MainRoute extends React.Component {
   openfin = new OpenFin()
 
   environment = {
@@ -84,3 +84,5 @@ class LocalStorageThemeProvider extends React.Component {
     )
   }
 }
+
+export default MainRoute

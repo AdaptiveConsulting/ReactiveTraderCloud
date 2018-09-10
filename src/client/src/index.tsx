@@ -4,8 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import 'rt-theme'
 
-import MainRoute from './MainRoute'
-import NotificationRoute from './NotificationRoute'
+import { MainRoute, NotificationRoute } from './routes'
 
 ReactDOM.render(
   <BrowserRouter>

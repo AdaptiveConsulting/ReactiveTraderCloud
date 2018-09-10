@@ -2,7 +2,7 @@ import React from 'react'
 import { Trade } from 'rt-types'
 
 import { ThemeState } from 'rt-theme'
-import TradeNotification from './shell/notification/TradeNotification'
+import TradeNotification from '../shell/notification/TradeNotification'
 
 declare const window: any
 
@@ -14,7 +14,7 @@ interface State {
   message: Message | null
 }
 
-export default class NotificationRoute extends React.Component<{}, State> {
+export class NotificationRoute extends React.Component<{}, State> {
   state: State = {
     message: null
   }
@@ -42,3 +42,5 @@ export default class NotificationRoute extends React.Component<{}, State> {
     )
   }
 }
+
+export default NotificationRoute
