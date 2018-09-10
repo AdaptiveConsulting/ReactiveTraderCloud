@@ -4,7 +4,7 @@ import Portal, { PortalProps } from './Portal'
 
 export const TearOffContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100% - 1.5rem);
 `
 
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
