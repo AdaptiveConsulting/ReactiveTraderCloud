@@ -67,12 +67,13 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
 const LeftColumnWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   height: 100%;
 `
 
 const WorkspaceWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
+  height: 100%;
   overflow-y: auto;
 `
 
@@ -88,6 +89,7 @@ const AnalyticsWrapper = styled.div`
 const BlotterWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
   height: 100%;
+  max-height: 350px;
   overflow: hidden;
 `
 
