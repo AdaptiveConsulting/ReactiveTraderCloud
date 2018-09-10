@@ -2,17 +2,12 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { SFC } from 'react'
 import { Helmet } from 'react-helmet'
-import { rules } from 'rt-styleguide'
-import { css, styled } from 'rt-theme'
+import { styled } from 'rt-theme'
 
 export interface ControlProps {
   minimize?: () => void
   maximize?: () => void
   close: () => void
-}
-
-export interface HeaderProps extends ControlProps {
-  hide?: boolean
 }
 
 export const OpenFinChrome: SFC<{}> = ({ children }) => (
@@ -31,12 +26,10 @@ export const OpenFinChrome: SFC<{}> = ({ children }) => (
   </React.Fragment>
 )
 
-export const OpenFinHeader: React.SFC<HeaderProps> = ({ hide, ...props }) => (
-  <Header hide={hide}>
+export const OpenFinHeader: React.SFC<ControlProps> = ({ ...props }) => (
+  <Header>
     <DragRegion />
-    <ControlGroup>
-      <OpenFinControls {...props} />
-    </ControlGroup>
+    <OpenFinControls {...props} />
   </Header>
 )
 
@@ -59,60 +52,19 @@ export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, c
 )
 
 const DragRegion = styled.div`
-  flex: 1 1 100%;
+  flex-grow: 1;
+  background-color: lime;
   -webkit-app-region: drag;
   cursor: -webkit-grab;
 `
 
-const ControlGroup = styled.div`
-  display: flex;
-  flex: 1;
-
-  align-content: center;
-
-  height: 2rem;
-  max-width: 6rem;
-  position: relative;
-  z-index: 20;
-`
-
-const Header = styled.div<{ hide?: boolean }>`
+const Header = styled.div`
   display: flex;
   width: 100%;
-  height: 2rem;
 
   font-size: 1rem;
   line-height: 1.5rem;
   font-weight: 600;
-
-  align-content: center;
-  vertical-align: middle;
-
-  position: relative;
-
-  ${({ hide }) =>
-    !hide
-      ? ''
-      : css`
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          z-index: 10;
-
-          opacity: 0;
-
-          height: 1rem;
-
-          ${HeaderControl} {
-            min-height: 1rem;
-          }
-
-          ${Root}:hover & {
-            opacity: 1;
-            z-index: 20;
-          }
-        `};
 `
 
 const HeaderControl = styled.div<{ intent?: string }>`
@@ -123,21 +75,14 @@ const HeaderControl = styled.div<{ intent?: string }>`
   color: ${props => props.theme.button.secondary.backgroundColor};
 
   font-size: 1em;
-  min-width: 2.5rem;
-  min-height: 2.5rem;
+  min-width: 2rem;
+  min-height: 2rem;
 
   cursor: pointer;
 
   &:hover {
-    ${({ intent = 'primary', theme }) => css`
-      background: none;
-      color: ${theme.button[intent].backgroundColor};
-    `};
-  }
-
-  &,
-  * {
-    ${props => ' ' || rules.userSelectButton};
+    background: none;
+    color: ${({ theme, intent = 'primary' }) => theme.button[intent].backgroundColor};
   }
 `
 
@@ -145,8 +90,8 @@ export const Root = styled.div`
   background-color: ${props => props.theme.shell.backgroundColor};
   color: ${props => props.theme.shell.textColor};
 
-  height: 100vh;
-  position: relative;
+  height: 100%;
+  width: 100%;
 `
 
 export default OpenFinChrome
