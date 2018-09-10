@@ -6,7 +6,6 @@ import DisconnectIcon from '../icons/DisconnectIcon'
 const LoadableStyle = styled.div`
   width: 100%;
   height: 100%;
-  margin: 0.5rem 0;
   border-radius: 0.1875rem;
   background-color: ${({ theme }) => theme.component.backgroundColor};
   color: ${({ theme }) => theme.component.textColor};
@@ -33,11 +32,11 @@ const Rect = styled.div<{ delay?: number }>`
   width: 0.375rem;
   display: inline-block;
 
-  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: stretchdelay 1.2s infinite ease-in-out;
 
   animation-delay: -${({ delay }) => delay}s;
 
-  @keyframes sk-stretchdelay {
+  @keyframes stretchdelay {
     0%,
     40%,
     100% {

@@ -22,8 +22,8 @@ const selectSpotTiles = createSelector([getSpotTiles], spotTileKeys =>
   }))
 )
 
-const getPricingStatus = ({ compositeStatusService }: GlobalState) =>
-  compositeStatusService.pricing && compositeStatusService.pricing.connectionStatus
-const selectPricingStatus = createSelector(getPricingStatus, status => status)
+const getExecutionStatus = ({ compositeStatusService }: GlobalState) =>
+  compositeStatusService.execution && compositeStatusService.execution.connectionStatus
+const selectExecutionStatus = createSelector(getExecutionStatus, status => status)
 
-export { selectSpotTiles, selectPricingStatus }
+export { selectSpotTiles, selectExecutionStatus }
