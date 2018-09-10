@@ -103,7 +103,7 @@ function lastPositionWithDirection(lastPos: number) {
   }
   if (lastPos < 0) {
     color = 'red'
-    formattedLastPos = '-' + formattedLastPos
+    formattedLastPos = formattedLastPos
   }
   return { color, formattedLastPos }
 }
