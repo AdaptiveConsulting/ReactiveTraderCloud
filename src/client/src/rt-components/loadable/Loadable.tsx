@@ -52,6 +52,7 @@ interface Props {
   status: ServiceConnectionStatus
   render: () => JSX.Element
   onMount?: () => void
+  message?: string
 }
 
 const Loader = () => (
@@ -68,7 +69,7 @@ export default class Loadable extends Component<Props> {
   componentDidMount = () => this.props.onMount && this.props.onMount()
 
   render() {
-    const { status, render } = this.props
+    const { status, render, message = 'Disconnected' } = this.props
 
     if (status === ServiceConnectionStatus.CONNECTED) {
       return render()
@@ -88,7 +89,7 @@ export default class Loadable extends Component<Props> {
           <div>
             <DisconnectIcon width={2.75} height={3} />
           </div>
-          <div>Disconnected</div>
+          <div>{message}</div>
         </LoadableStyle>
       )
     }

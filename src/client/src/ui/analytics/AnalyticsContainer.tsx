@@ -23,6 +23,7 @@ const AnalyticsContainer: React.SFC<AnalyticsContainerProps> = ({ status, onMoun
     onMount={onMount}
     status={status}
     render={() => <Analytics {...props} canPopout={!Environment.isRunningInIE() && !tornOff} />}
+    message="Analytics Disconnected"
   />
 )
 

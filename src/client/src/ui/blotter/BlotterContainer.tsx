@@ -22,6 +22,7 @@ const BlotterContainer: React.SFC<BlotterContainerProps> = ({ status, onMount, t
     onMount={onMount}
     status={status}
     render={() => <Blotter {...props} canPopout={!Environment.isRunningInIE() && !tornOff} />}
+    message="Blotter Disconnected"
   />
 )
 
