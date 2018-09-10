@@ -68,7 +68,7 @@
     "emotion": "^9.2.6",
     "emotion-theming": "^9.2.6",
     "hoist-non-react-statics": "^2.5.5",
-    "lodash": "4.17.10",
+    "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "numeral": "1.5.3",
     "nvd3": "1.8.6",
@@ -91,7 +91,7 @@
     "reselect": "3.0.1",
     "ress": "^1.2.2",
     "rxjs": "6.1.0",
-    "rxjs-spy": "^7.0.1",
+    "rxjs-spy": "^7.2.0",
     "typeface-lato": "^0.0.54",
     "typeface-montserrat": "^0.0.54",
     "ua-parser-js": "0.7.10"
