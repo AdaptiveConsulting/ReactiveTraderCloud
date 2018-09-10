@@ -4,8 +4,8 @@ import { styled } from 'rt-theme'
 import { Direction } from 'rt-types'
 
 const hoverColors = {
-  [Direction.Buy]: 'red',
-  [Direction.Sell]: 'blue'
+  [Direction.Buy]: 'blue',
+  [Direction.Sell]: 'red'
 }
 
 export const TradeButton = styled('button')<{ direction: string }>`
