@@ -12,11 +12,18 @@ const makePortalProps = (key: string) => ({
   browserConfig: { center: 'screen' as 'screen' }
 })
 
-const getSpotTiles = (state: GlobalState) => state.currencyPairs
+export type PortalProps = ReturnType<typeof makePortalProps>
 
-export const selectSpotTiles = createSelector([getSpotTiles], spotTileKeys =>
+const getSpotTiles = (state: GlobalState) => state.currencyPairs
+const selectSpotTiles = createSelector([getSpotTiles], spotTileKeys =>
   Object.keys(spotTileKeys).map(key => ({
     key,
     portalProps: makePortalProps(key)
   }))
 )
+
+const getExecutionStatus = ({ compositeStatusService }: GlobalState) =>
+  compositeStatusService.execution && compositeStatusService.execution.connectionStatus
+const selectExecutionStatus = createSelector(getExecutionStatus, status => status)
+
+export { selectSpotTiles, selectExecutionStatus }

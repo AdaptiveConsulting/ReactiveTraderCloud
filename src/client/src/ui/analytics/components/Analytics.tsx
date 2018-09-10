@@ -1,6 +1,5 @@
 import numeral from 'numeral'
 import React from 'react'
-import { Environment } from 'rt-system'
 import { PNLChartModel } from '../model/pnlChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
 import AnalyticsBarChart from './AnalyticsBarChart'
@@ -9,7 +8,7 @@ import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 import { CurrencyPair } from 'rt-types'
 import PNLChart from './pnlChart/PNLChart'
 
-import { ConnectionOverlay, PopoutIcon } from 'rt-components'
+import { PopoutIcon } from 'rt-components'
 import { ThemeProvider } from 'rt-theme'
 import { AnalyticsStyle, BubbleChart, Chart, Controls, Header, LastPosition, PopoutButton, Title } from './styled'
 
@@ -18,12 +17,10 @@ export interface CurrencyPairs {
 }
 
 export interface Props {
-  tornOff: boolean
-  isConnected: boolean
+  canPopout: boolean
   currencyPairs: CurrencyPairs
   pnlChartModel?: PNLChartModel
   positionsChartModel?: PositionsChartModel
-  onMount?: () => void
   onPopoutClick?: () => void
 }
 
@@ -31,12 +28,6 @@ const RESIZE_EVENT = 'resize'
 
 export default class Analytics extends React.Component<Props> {
   private handleResize = () => this.forceUpdate()
-
-  componentDidMount() {
-    if (this.props.onMount) {
-      this.props.onMount()
-    }
-  }
 
   // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
   componentWillMount() {
@@ -48,11 +39,7 @@ export default class Analytics extends React.Component<Props> {
   }
 
   render() {
-    const { tornOff, isConnected, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
-
-    if (!isConnected) {
-      return <ConnectionOverlay>Analytics Disconnected</ConnectionOverlay>
-    }
+    const { canPopout, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
 
     const lastPos = (pnlChartModel && pnlChartModel.lastPos) || 0
     const lastPosition = lastPositionWithDirection(lastPos)
@@ -61,14 +48,13 @@ export default class Analytics extends React.Component<Props> {
       <ThemeProvider theme={theme => theme.analytics}>
         <AnalyticsStyle>
           <Header>
-            {!Environment.isRunningInIE() &&
-              !tornOff && (
-                <Controls>
-                  <PopoutButton onClick={onPopoutClick}>
-                    <PopoutIcon width={0.8125} height={0.75} />
-                  </PopoutButton>
-                </Controls>
-              )}
+            {canPopout && (
+              <Controls>
+                <PopoutButton onClick={onPopoutClick}>
+                  <PopoutIcon width={0.8125} height={0.75} />
+                </PopoutButton>
+              </Controls>
+            )}
             <Title>Analytics</Title>
           </Header>
           <LastPosition color={lastPosition.color}>USD {lastPosition.formattedLastPos}</LastPosition>
