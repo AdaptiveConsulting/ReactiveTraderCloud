@@ -208,7 +208,7 @@ export default class OpenFin {
 
   openTradeNotification = (tradeNotification: any) =>
     new fin.desktop.Notification({
-      url: '/index.html?notification=true',
+      url: '/notification',
       message: tradeNotification,
       duration: 20000
     })
