@@ -36,7 +36,7 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   <DefaultLayout
     header={header}
     body={
-      <React.Fragment>
+      <LeftColumnWrapper>
         <WorkspaceWrapper>
           <WorkspaceContainer />
         </WorkspaceWrapper>
@@ -48,7 +48,7 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
             render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
           />
         </BlotterWrapper>
-      </React.Fragment>
+      </LeftColumnWrapper>
     }
     aside={
       <AnalyticsWrapper>
@@ -64,20 +64,21 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   />
 )
 
+const LeftColumnWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+`
+
 const WorkspaceWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
   overflow-y: auto;
-  grid-row: 1 / 4;
-
-  @media (max-width: 750px) {
-    grid-column: 1 / 3;
-  }
 `
 
 const AnalyticsWrapper = styled.div`
   padding: 0.375rem 1.25rem 0 0;
   overflow: hidden;
-  grid-row: 1 / 6;
 
   @media (max-width: 750px) {
     display: none;
@@ -86,11 +87,8 @@ const AnalyticsWrapper = styled.div`
 
 const BlotterWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
-  grid-row: 4 / 6;
-
-  @media (max-width: 750px) {
-    grid-column: 1 / 3;
-  }
+  height: 100%;
+  overflow: hidden;
 `
 
 export default ShellRoute
