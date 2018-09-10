@@ -1,19 +1,10 @@
 import React from 'react'
-import { css, styled } from 'rt-theme'
+import { styled } from 'rt-theme'
 import Portal, { PortalProps } from './Portal'
-
-interface TearOffContainerHeight {
-  height: number
-}
-
-const tearStyle = ({ height }: TearOffContainerHeight) =>
-  css`
-    height: ${height};
-  `
 
 export const TearOffContainer = styled.div`
   width: 100%;
-  height: ${tearStyle};
+  height: calc(100% - 1.5rem);
 `
 
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
@@ -45,7 +36,7 @@ export default class TearOff extends React.PureComponent<Props, State> {
     if (tornOff) {
       return (
         <Portal onUnload={this.popIn} {...portalProps}>
-          <TearOffContainer height={portalProps.config.height - 24}>{render(this.popOut, tornOff)}</TearOffContainer>
+          <TearOffContainer>{render(this.popOut, tornOff)}</TearOffContainer>
         </Portal>
       )
     }

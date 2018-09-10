@@ -56,7 +56,6 @@ const Header = styled.div`
   width: 100%;
   min-height: 1.5rem;
   font-size: 1rem;
-  font-weight: 600;
 `
 
 const DragRegion = styled.div`
