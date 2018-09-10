@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
 import { styled } from 'rt-theme'
 
-const Wrapper = styled.div<{ height: number }>`
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+`
+
+const Resizable = styled.div<{ height: number }>`
   height: ${({ height }) => height + 'px'};
   max-height: 100%;
 `
@@ -23,16 +30,20 @@ const Bar = styled.div`
   &:hover {
     border-top: 5px solid rgba(0, 0, 0, 0.5);
     border-bottom: 5px solid rgba(0, 0, 0, 0.5);
-    transition: all 2s ease;
+    transition: all 200ms ease;
   }
 `
+
+interface Props {
+  component: () => React.ReactNode
+}
 
 interface State {
   dragging: boolean
   height: number
 }
 
-export default class Resizer extends Component<{}, State> {
+export default class Resizer extends Component<Props, State> {
   wrapperRef = React.createRef<HTMLDivElement>()
 
   state = {
@@ -67,19 +78,22 @@ export default class Resizer extends Component<{}, State> {
       return
     }
 
-    const height = element.parentElement.offsetHeight
-    const top = element.parentElement.offsetTop
+    const height = element.offsetHeight
+    const top = element.offsetTop
     const offset = event.clientY - top
     this.setState({ height: height - offset })
   }
 
   render() {
-    const { children } = this.props
+    const { children, component } = this.props
 
     return (
-      <Wrapper innerRef={this.wrapperRef} onMouseDown={this.handleMouseDown} height={this.state.height}>
-        <Bar />
+      <Wrapper innerRef={this.wrapperRef}>
         {children}
+        <Resizable height={this.state.height}>
+          <Bar onMouseDown={this.handleMouseDown} />
+          {component()}
+        </Resizable>
       </Wrapper>
     )
   }

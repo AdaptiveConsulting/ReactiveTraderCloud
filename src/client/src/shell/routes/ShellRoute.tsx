@@ -36,11 +36,8 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   <DefaultLayout
     header={header}
     body={
-      <LeftColumnWrapper>
-        <WorkspaceWrapper>
-          <WorkspaceContainer />
-        </WorkspaceWrapper>
-        <Resizer>
+      <Resizer
+        component={() => (
           <BlotterWrapper>
             <TearOff
               id="blotter"
@@ -48,8 +45,12 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
               render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
             />
           </BlotterWrapper>
-        </Resizer>
-      </LeftColumnWrapper>
+        )}
+      >
+        <WorkspaceWrapper>
+          <WorkspaceContainer />
+        </WorkspaceWrapper>
+      </Resizer>
     }
     aside={
       <AnalyticsWrapper>
@@ -65,17 +66,11 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   />
 )
 
-const LeftColumnWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-`
-
 const WorkspaceWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
   height: 100%;
   overflow-y: auto;
+  position: relative;
 `
 
 const AnalyticsWrapper = styled.div`
