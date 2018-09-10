@@ -1,7 +1,7 @@
 import React from 'react'
 import { AnalyticsContainer } from '../../ui/analytics'
 
-import { TearOff } from 'rt-components'
+import { Resizer, TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import { BlotterContainer } from '../../ui/blotter'
 import StatusBar from '../../ui/status-bar'
@@ -40,14 +40,15 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
         <WorkspaceWrapper>
           <WorkspaceContainer />
         </WorkspaceWrapper>
-
-        <BlotterWrapper>
-          <TearOff
-            id="blotter"
-            portalProps={portalProps.blotterRegion}
-            render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
-          />
-        </BlotterWrapper>
+        <Resizer>
+          <BlotterWrapper>
+            <TearOff
+              id="blotter"
+              portalProps={portalProps.blotterRegion}
+              render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
+            />
+          </BlotterWrapper>
+        </Resizer>
       </LeftColumnWrapper>
     }
     aside={
