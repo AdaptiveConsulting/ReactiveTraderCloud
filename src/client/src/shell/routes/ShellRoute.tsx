@@ -89,7 +89,6 @@ const AnalyticsWrapper = styled.div`
 const BlotterWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
   height: 100%;
-  max-height: 350px;
   overflow: hidden;
 `
 
