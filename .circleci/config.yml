@@ -13,6 +13,30 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "Set deployment flag and build identity"
+          # If you need to interpolate other environment variables to set an environment variable, the only place to do this at the moment is in bash.
+          # CircleCI 2.0 automatically sets a $BASH_ENV variable to a random name in /tmp, and will source this file for each step.
+          # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
+          command: |
+            DEPLOY=0
+            BUILD_ID=$CIRCLE_BUILD_NUM
+
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              DEPLOY=1
+            elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              DEPLOY=1
+              BUILD_LABEL="develop"
+            elif [ "${CIRCLE_BRANCH}" == "test" ]; then
+              DEPLOY=1
+              BUILD_LABEL="test"
+            fi
+
+            if ! [ -z "$BUILD_LABEL" ]; then
+              BUILD_ID+="-$BUILD_LABEL"
+            fi
+
+            echo "export BUILD_ID=$BUILD_ID" >> $BASH_ENV
+      - run:
           name: "Create artifacts and test results directories"
           command: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
       - run:
@@ -36,11 +60,11 @@ jobs:
           command: cd deploy/e2e && ./loadContainers
       - run:
           name: "Build containers"
-          command: cd deploy/e2e && ./buildContainers $CIRCLE_BUILD_NUM
+          command: cd deploy/e2e && ./buildContainers $BUILD_ID
           no_output_timeout: 1200s
       - run:
           name: "Run containers"
-          command: cd deploy/e2e && ./runContainers $CIRCLE_BUILD_NUM
+          command: cd deploy/e2e && ./runContainers $BUILD_ID
       - run:
           name: "Save containers"
           command: cd deploy/e2e && ./saveContainers
@@ -58,7 +82,7 @@ jobs:
           command: for i in {1..10}; do curl http://localhost:2113/web/index.html && break; sleep 1; if [[ $i == 10 ]];then false;fi; done
       - run:
           name: "Running tests"
-          command: . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$CIRCLE_BUILD_NUM bash -c "dotnet test --configuration Release ./Adaptive.ReactiveTrader.Server.IntegrationTests/Adaptive.ReactiveTrader.Server.IntegrationTests.csproj"
+          command: . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$BUILD_ID bash -c "dotnet test --configuration Release ./Adaptive.ReactiveTrader.Server.IntegrationTests/Adaptive.ReactiveTrader.Server.IntegrationTests.csproj"
       # SAVE RESULTS
       - store_test_results:
           path: /tmp/circleci-test-results
@@ -71,6 +95,6 @@ jobs:
       - deploy:
           name: "Deployment (Push containers to the repository)"
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "dev" ] || [ "${CIRCLE_BRANCH}" == "story/theming" ]; then
-              cd deploy/e2e && ./pushContainers $CIRCLE_BUILD_NUM
+            if [ $DEPLOY == 1 ]; then
+              cd deploy/e2e && ./pushContainers $BUILD_ID
             fi
