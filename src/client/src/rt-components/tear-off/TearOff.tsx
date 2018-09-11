@@ -3,6 +3,7 @@ import { styled } from 'rt-theme'
 import Portal, { PortalProps } from './Portal'
 
 export const TearOffContainer = styled.div`
+  display: flex;
   width: 100%;
   height: 100%;
 `
