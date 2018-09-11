@@ -71,7 +71,6 @@ const WorkspaceWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
   height: 100%;
   overflow-y: auto;
-  position: relative;
 `
 
 const AnalyticsWrapper = styled.div`
