@@ -8,9 +8,13 @@ const Wrapper = styled.div`
   height: 100%;
 `
 
-const Resizable = styled.div<{ height: number }>`
+const Top = styled.div`
+  overflow-y: scroll;
+`
+
+const Bottom = styled.div<{ height: number }>`
   height: ${({ height }) => height + 'px'};
-  max-height: 100%;
+  min-height: 250px;
 `
 
 const Bar = styled.div`
@@ -45,6 +49,7 @@ interface State {
 
 export default class Resizer extends Component<Props, State> {
   wrapperRef = React.createRef<HTMLDivElement>()
+  topRef = React.createRef<HTMLDivElement>()
 
   state = {
     dragging: false,
@@ -72,16 +77,25 @@ export default class Resizer extends Component<Props, State> {
       return
     }
 
-    const element = this.wrapperRef.current
+    const wrapperElement = this.wrapperRef.current
+    const topElement = this.topRef.current
 
-    if (!element) {
+    if (!wrapperElement && !topElement) {
       return
     }
 
-    const height = element.offsetHeight
-    const top = element.offsetTop
-    const offset = event.clientY - top
-    this.setState({ height: height - offset })
+    const wrapperHeight = wrapperElement.offsetHeight
+    const wrapperTop = wrapperElement.offsetTop
+    const wrapperOffset = event.clientY - wrapperTop
+    const diff = wrapperHeight - wrapperOffset
+
+    const topElementHeight = topElement.clientHeight
+
+    if (topElementHeight + diff + 16 > wrapperHeight) {
+      return
+    }
+
+    this.setState({ height: diff })
   }
 
   render() {
@@ -89,11 +103,11 @@ export default class Resizer extends Component<Props, State> {
 
     return (
       <Wrapper innerRef={this.wrapperRef}>
-        {children}
-        <Resizable height={this.state.height}>
+        <Top innerRef={this.topRef}>{children}</Top>
+        <Bottom height={this.state.height}>
           <Bar onMouseDown={this.handleMouseDown} />
           {component()}
-        </Resizable>
+        </Bottom>
       </Wrapper>
     )
   }
