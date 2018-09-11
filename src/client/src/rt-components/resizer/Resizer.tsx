@@ -54,22 +54,39 @@ export default class Resizer extends Component<Props, State> {
   }
 
   componentDidMount = () => {
+    // Add event listeners to mouse and touch movements on component mount
+
     document.addEventListener('mousemove', this.handleMouseMove)
 
-    document.addEventListener('mouseup', this.handleMouseUp)
+    document.addEventListener('mouseup', this.handleStop)
+
+    document.addEventListener('touchmove', this.handleTouchMove)
+
+    document.addEventListener('touchend', this.handleStop)
   }
 
   componentWillUnmount = () => {
+    // Remove event listeners on unmount
+
     document.removeEventListener('mousemove', this.handleMouseMove)
 
-    document.removeEventListener('mouseup', this.handleMouseUp)
+    document.removeEventListener('mouseup', this.handleStop)
+
+    document.removeEventListener('touchmove', this.handleTouchMove)
+
+    document.removeEventListener('touchend', this.handleStop)
   }
 
-  handleMouseUp = () => this.setState({ dragging: false })
+  handleStop = () => this.setState({ dragging: false })
 
-  handleMouseDown = () => this.setState({ dragging: true })
+  handleStart = () => this.setState({ dragging: true })
 
-  handleMouseMove = (event: MouseEvent) => {
+  handleMouseMove = (event: MouseEvent) => this.setHeight(event.clientY)
+
+  handleTouchMove = (event: TouchEvent) => this.setHeight(event.touches[0].clientY)
+
+  setHeight = (clientY: number) => {
+    // If we're not dragging the resize bar, don't do anything
     if (!this.state.dragging) {
       return
     }
@@ -80,17 +97,21 @@ export default class Resizer extends Component<Props, State> {
       return
     }
 
+    // Calculate the height of the bottom div based on cursor position
     const wrapperHeight = wrapperElement.offsetHeight
     const wrapperTop = wrapperElement.offsetTop
-    const wrapperOffset = event.clientY - wrapperTop
-    const diff = wrapperHeight - wrapperOffset
+    const wrapperOffset = clientY - wrapperTop
+    const rawHeight = wrapperHeight - wrapperOffset
 
-    let height = Math.round((diff / wrapperHeight) * 100)
+    // Calculate height as a percentage of parent
+    let height = Math.round((rawHeight / wrapperHeight) * 100)
 
+    // Block heights that would completely overlap top div
     if (height > 90) {
       height = 90
     }
 
+    // Block heights that would hide bottom div
     if (height < 10) {
       height = 10
     }
@@ -106,7 +127,7 @@ export default class Resizer extends Component<Props, State> {
       <Wrapper innerRef={this.wrapperRef}>
         <Resizable height={100 - height}>{children}</Resizable>
         <Resizable height={height}>
-          <Bar onMouseDown={this.handleMouseDown} />
+          <Bar onMouseDown={this.handleStart} onTouchStart={this.handleStart} />
           {component()}
         </Resizable>
       </Wrapper>
