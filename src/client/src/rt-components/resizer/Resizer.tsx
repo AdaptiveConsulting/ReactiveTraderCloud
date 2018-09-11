@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import { styled } from 'rt-theme'
 
 const ResizerStyle = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   height: 100%;
 `
 
