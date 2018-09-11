@@ -58,7 +58,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     const { environment } = this.props
     return environment.isDesktop ? (
       <OpenFinChrome>
-        <OpenFinHeader hide close={this.closeWindow} />
+        <OpenFinHeader close={this.closeWindow} />
         {children}
       </OpenFinChrome>
     ) : (
