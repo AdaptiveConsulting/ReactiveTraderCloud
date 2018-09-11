@@ -57,6 +57,8 @@ export default class PNLChart extends React.Component<PNLChartProps> {
     this.chartGradient.update(this.pnlChartRef.current, this.props.minPnl, this.props.maxPnl)
 
   configurePnLChart = (chart: any) => {
+    const { minPnl, maxPnl } = this.props
+    chart.yDomain([minPnl, maxPnl]).yRange([150, 0])
     chart.interactiveLayer.tooltip.enabled(false)
     /* const pnlTooltip = (el: any) => {
       const date = timeFormat('%X')(new Date(el.value))
