@@ -6,7 +6,7 @@ const makePortalProps = (key: string) => ({
   config: {
     name: `${key} Spot`,
     width: 370,
-    height: 155,
+    height: 184,
     url: `about:${key} Spot`
   },
   browserConfig: { center: 'screen' as 'screen' }
