@@ -82,14 +82,13 @@ export default class Analytics extends React.Component<Props> {
 
 function lastPositionWithDirection(lastPos: number) {
   let formattedLastPos = numeral(lastPos).format()
-  const color = ''
+  let color = ''
   if (lastPos > 0) {
     color = 'green'
     formattedLastPos = '+' + formattedLastPos
   }
   if (lastPos < 0) {
     color = 'red'
-    formattedLastPos = formattedLastPos
   }
   return { color, formattedLastPos }
 }
