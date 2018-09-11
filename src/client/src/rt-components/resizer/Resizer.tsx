@@ -47,7 +47,6 @@ interface State {
 
 export default class Resizer extends Component<Props, State> {
   wrapperRef = React.createRef<HTMLDivElement>()
-  topRef = React.createRef<HTMLDivElement>()
 
   state = {
     dragging: false,
