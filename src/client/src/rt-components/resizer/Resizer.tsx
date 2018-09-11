@@ -42,8 +42,7 @@ interface Props {
 
 interface State {
   dragging: boolean
-  topHeight: number
-  bottomHeight: number
+  height: number
 }
 
 export default class Resizer extends Component<Props, State> {
@@ -52,8 +51,7 @@ export default class Resizer extends Component<Props, State> {
 
   state = {
     dragging: false,
-    topHeight: 100 - this.props.defaultHeight,
-    bottomHeight: this.props.defaultHeight
+    height: this.props.defaultHeight
   }
 
   componentDidMount = () => {
@@ -88,29 +86,27 @@ export default class Resizer extends Component<Props, State> {
     const wrapperOffset = event.clientY - wrapperTop
     const diff = wrapperHeight - wrapperOffset
 
-    let bottomHeight = Math.round((diff / wrapperHeight) * 100)
+    let height = Math.round((diff / wrapperHeight) * 100)
 
-    if (bottomHeight > 90) {
-      bottomHeight = 90
+    if (height > 90) {
+      height = 90
     }
 
-    if (bottomHeight < 10) {
-      bottomHeight = 10
+    if (height < 10) {
+      height = 10
     }
 
-    const topHeight = 100 - bottomHeight
-
-    this.setState({ bottomHeight, topHeight })
+    this.setState({ height })
   }
 
   render() {
     const { children, component } = this.props
-    const { topHeight, bottomHeight } = this.state
+    const { height } = this.state
 
     return (
       <Wrapper innerRef={this.wrapperRef}>
-        <Resizable height={topHeight}>{children}</Resizable>
-        <Resizable height={bottomHeight}>
+        <Resizable height={100 - height}>{children}</Resizable>
+        <Resizable height={height}>
           <Bar onMouseDown={this.handleMouseDown} />
           {component()}
         </Resizable>
