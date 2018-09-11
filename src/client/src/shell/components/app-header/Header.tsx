@@ -61,7 +61,7 @@ const Root = styled.div`
 
 const Fill = styled.div`
   flex: 1;
-  height: 100%;
+  height: 3.5rem;
   /**
     TODO 8/22 extract this extension of header, and the fill outside header layout
   */
