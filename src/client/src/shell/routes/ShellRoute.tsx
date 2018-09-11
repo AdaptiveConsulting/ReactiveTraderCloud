@@ -69,13 +69,11 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
 
 const Wrapper = styled.div`
   user-select: none;
-  height: 100%;
-  width: 100%;
 `
 
 const WorkspaceWrapper = styled(Wrapper)`
   padding: 0 0.5rem 0 1rem;
-  position: absolute;
+  height: 100%;
   overflow: scroll;
 `
 
@@ -90,7 +88,7 @@ const AnalyticsWrapper = styled(Wrapper)`
 
 const BlotterWrapper = styled(Wrapper)`
   padding: 0 0.5rem 0 1rem;
-  position: absolute;
+  height: 100%;
 `
 
 export default ShellRoute
