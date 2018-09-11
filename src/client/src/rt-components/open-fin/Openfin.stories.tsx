@@ -19,8 +19,13 @@ stories.add('Openfin chrome', () => (
       <OpenFinChrome>
         <OpenFinHeader close={close} minimize={minimize} maximize={maximize} />
         <Body>
-          <p>This is the Body</p>
-          <p>More Body</p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum
+          </p>
         </Body>
       </OpenFinChrome>
     </Container>
@@ -44,9 +49,8 @@ stories.add('Openfin Controls', () => (
 ))
 
 const Container = styled.div`
-  height: 155px;
+  height: 184px;
   width: 370px;
-  border: 1px solid red;
 `
 const ControlsContainer = styled.div`
   display: grid;
@@ -57,8 +61,8 @@ const ControlsContainer = styled.div`
 `
 
 const Body = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-items: center;
-  background-color: white;
+  display: flex;
+  background-color: pink;
+  height: 100%;
+  width: 100%;
 `

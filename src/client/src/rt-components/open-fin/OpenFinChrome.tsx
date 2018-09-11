@@ -10,7 +10,7 @@ export interface ControlProps {
   close: () => void
 }
 
-export const OpenFinChrome: SFC<{}> = ({ children }) => (
+export const OpenFinChrome: SFC = ({ children }) => (
   <React.Fragment>
     <Helmet>
       <style type="text/css">{`
@@ -79,6 +79,8 @@ const HeaderControl = styled.div<{ intent?: string }>`
 `
 
 export const Root = styled.div`
+  display: flex;
+  flex-direction: column;
   background-color: ${props => props.theme.shell.backgroundColor};
   color: ${props => props.theme.shell.textColor};
 

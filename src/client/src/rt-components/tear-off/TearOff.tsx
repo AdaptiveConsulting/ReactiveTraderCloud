@@ -3,8 +3,9 @@ import { styled } from 'rt-theme'
 import Portal, { PortalProps } from './Portal'
 
 export const TearOffContainer = styled.div`
+  display: flex;
   width: 100%;
-  height: calc(100% - 1.5rem);
+  height: 100%;
 `
 
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
