@@ -8,13 +8,9 @@ const Wrapper = styled.div`
   height: 100%;
 `
 
-const Top = styled.div`
-  overflow-y: scroll;
-`
-
-const Bottom = styled.div<{ height: number; minHeight: number }>`
-  height: ${({ height }) => height + 'px'};
-  min-height: ${({ minHeight }) => minHeight + 'px'};
+const Resizable = styled.div<{ height: number }>`
+  height: ${({ height }) => height + '%'};
+  overflow-y: hidden;
 `
 
 const Bar = styled.div`
@@ -46,7 +42,8 @@ interface Props {
 
 interface State {
   dragging: boolean
-  height: number
+  topHeight: number
+  bottomHeight: number
 }
 
 export default class Resizer extends Component<Props, State> {
@@ -55,7 +52,8 @@ export default class Resizer extends Component<Props, State> {
 
   state = {
     dragging: false,
-    height: this.props.defaultHeight
+    topHeight: 100 - this.props.defaultHeight,
+    bottomHeight: this.props.defaultHeight
   }
 
   componentDidMount = () => {
@@ -80,9 +78,8 @@ export default class Resizer extends Component<Props, State> {
     }
 
     const wrapperElement = this.wrapperRef.current
-    const topElement = this.topRef.current
 
-    if (!wrapperElement && !topElement) {
+    if (!wrapperElement) {
       return
     }
 
@@ -91,29 +88,32 @@ export default class Resizer extends Component<Props, State> {
     const wrapperOffset = event.clientY - wrapperTop
     const diff = wrapperHeight - wrapperOffset
 
-    const topElementHeight = topElement.clientHeight
+    let bottomHeight = Math.round((diff / wrapperHeight) * 100)
 
-    if (diff < this.props.minHeight) {
-      return
+    if (bottomHeight > 90) {
+      bottomHeight = 90
     }
 
-    if (topElementHeight + diff + 16 > wrapperHeight) {
-      return
+    if (bottomHeight < 10) {
+      bottomHeight = 10
     }
 
-    this.setState({ height: diff })
+    const topHeight = 100 - bottomHeight
+
+    this.setState({ bottomHeight, topHeight })
   }
 
   render() {
-    const { children, component, minHeight = 60 } = this.props
+    const { children, component } = this.props
+    const { topHeight, bottomHeight } = this.state
 
     return (
       <Wrapper innerRef={this.wrapperRef}>
-        <Top innerRef={this.topRef}>{children}</Top>
-        <Bottom height={this.state.height} minHeight={minHeight}>
+        <Resizable height={topHeight}>{children}</Resizable>
+        <Resizable height={bottomHeight}>
           <Bar onMouseDown={this.handleMouseDown} />
           {component()}
-        </Bottom>
+        </Resizable>
       </Wrapper>
     )
   }
