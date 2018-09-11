@@ -10,13 +10,11 @@ const Wrapper = styled.div`
 
 const Top = styled.div`
   overflow-y: scroll;
-  flex: 1;
 `
 
 const Bottom = styled.div<{ height: number; minHeight: number }>`
   height: ${({ height }) => height + 'px'};
   min-height: ${({ minHeight }) => minHeight + 'px'};
-  flex: 1;
 `
 
 const Bar = styled.div`
