@@ -71,11 +71,14 @@ const WorkspaceWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
   height: 100%;
   overflow-y: auto;
+  user-select: none;
+  position: relative;
 `
 
 const AnalyticsWrapper = styled.div`
   padding: 0.375rem 1.25rem 0 0;
   overflow: hidden;
+  user-select: none;
 
   @media (max-width: 750px) {
     display: none;
@@ -86,6 +89,7 @@ const BlotterWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
   height: 100%;
   overflow: hidden;
+  user-select: none;
 `
 
 export default ShellRoute

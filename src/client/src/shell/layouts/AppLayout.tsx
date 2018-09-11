@@ -41,8 +41,6 @@ const AppLayoutRoot = styled.div`
   grid-template-rows: auto 1fr auto;
   background-color: ${({ theme }) => theme.shell.backgroundColor};
   color: ${({ theme }) => theme.shell.textColor};
-
-  user-select: none;
 `
 
 const Body = styled.div`

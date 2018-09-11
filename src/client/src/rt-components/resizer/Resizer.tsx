@@ -1,36 +1,33 @@
 import React, { Component } from 'react'
 import { styled } from 'rt-theme'
 
-const Wrapper = styled.div`
+const ResizerStyle = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
 `
 
-const Resizable = styled.div<{ height: number }>`
+const ResizableSection = styled.div<{ height: number }>`
   height: ${({ height }) => height + '%'};
   overflow-y: hidden;
 `
 
 const Bar = styled.div`
-  background: #000;
-  opacity: 0.2;
-  z-index: 1;
-  box-sizing: border-box;
-  background-clip: padding-box;
-
-  height: 11px;
-  margin: -5px 0;
-  border-top: 5px solid rgba(255, 255, 255, 0);
-  border-bottom: 5px solid rgba(255, 255, 255, 0);
+  background-color: ${({ theme }) => theme.component.textColor};
+  box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.component.textColor},
+    0 0.125rem 0 0 ${({ theme }) => theme.component.textColor};
   cursor: row-resize;
+  opacity: 0.1;
+  z-index: 1;
+  height: 0.25rem;
   width: 100%;
 
   &:hover {
-    border-top: 5px solid rgba(0, 0, 0, 0.5);
-    border-bottom: 5px solid rgba(0, 0, 0, 0.5);
-    transition: all 200ms ease;
+    box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.component.textColor},
+      0 0.125rem 0 0 ${({ theme }) => theme.component.textColor};
+    opacity: 0.3;
+    transition: all 200ms ease-in-out;
   }
 `
 
@@ -124,13 +121,13 @@ export default class Resizer extends Component<Props, State> {
     const { height } = this.state
 
     return (
-      <Wrapper innerRef={this.wrapperRef}>
-        <Resizable height={100 - height}>{children}</Resizable>
-        <Resizable height={height}>
+      <ResizerStyle innerRef={this.wrapperRef}>
+        <ResizableSection height={100 - height}>{children}</ResizableSection>
+        <ResizableSection height={height}>
           <Bar onMouseDown={this.handleStart} onTouchStart={this.handleStart} />
           {component()}
-        </Resizable>
-      </Wrapper>
+        </ResizableSection>
+      </ResizerStyle>
     )
   }
 }
