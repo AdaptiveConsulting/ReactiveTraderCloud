@@ -37,6 +37,8 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
     header={header}
     body={
       <Resizer
+        defaultHeight={300}
+        minHeight={100}
         component={() => (
           <BlotterWrapper>
             <TearOff

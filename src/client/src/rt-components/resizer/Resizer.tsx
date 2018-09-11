@@ -10,11 +10,13 @@ const Wrapper = styled.div`
 
 const Top = styled.div`
   overflow-y: scroll;
+  flex: 1;
 `
 
-const Bottom = styled.div<{ height: number }>`
+const Bottom = styled.div<{ height: number; minHeight: number }>`
   height: ${({ height }) => height + 'px'};
-  min-height: 250px;
+  min-height: ${({ minHeight }) => minHeight + 'px'};
+  flex: 1;
 `
 
 const Bar = styled.div`
@@ -40,6 +42,8 @@ const Bar = styled.div`
 
 interface Props {
   component: () => React.ReactNode
+  minHeight?: number
+  defaultHeight: number
 }
 
 interface State {
@@ -53,7 +57,7 @@ export default class Resizer extends Component<Props, State> {
 
   state = {
     dragging: false,
-    height: 250
+    height: this.props.defaultHeight
   }
 
   componentDidMount = () => {
@@ -91,6 +95,10 @@ export default class Resizer extends Component<Props, State> {
 
     const topElementHeight = topElement.clientHeight
 
+    if (diff < this.props.minHeight) {
+      return
+    }
+
     if (topElementHeight + diff + 16 > wrapperHeight) {
       return
     }
@@ -99,12 +107,12 @@ export default class Resizer extends Component<Props, State> {
   }
 
   render() {
-    const { children, component } = this.props
+    const { children, component, minHeight = 60 } = this.props
 
     return (
       <Wrapper innerRef={this.wrapperRef}>
         <Top innerRef={this.topRef}>{children}</Top>
-        <Bottom height={this.state.height}>
+        <Bottom height={this.state.height} minHeight={minHeight}>
           <Bar onMouseDown={this.handleMouseDown} />
           {component()}
         </Bottom>
