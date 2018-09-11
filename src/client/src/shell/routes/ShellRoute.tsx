@@ -36,24 +36,22 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   <DefaultLayout
     header={header}
     body={
-      <Body>
-        <Resizer
-          defaultHeight={30}
-          component={() => (
-            <BlotterWrapper>
-              <TearOff
-                id="blotter"
-                portalProps={portalProps.blotterRegion}
-                render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
-              />
-            </BlotterWrapper>
-          )}
-        >
-          <WorkspaceWrapper>
-            <WorkspaceContainer />
-          </WorkspaceWrapper>
-        </Resizer>
-      </Body>
+      <Resizer
+        defaultHeight={30}
+        component={() => (
+          <BlotterWrapper>
+            <TearOff
+              id="blotter"
+              portalProps={portalProps.blotterRegion}
+              render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
+            />
+          </BlotterWrapper>
+        )}
+      >
+        <WorkspaceWrapper>
+          <WorkspaceContainer />
+        </WorkspaceWrapper>
+      </Resizer>
     }
     aside={
       <AnalyticsWrapper>
@@ -69,37 +67,30 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   />
 )
 
-const Body = styled.div`
-  max-height: 100%;
-  overflow: hidden;
-
-  @media (max-width: 750px) {
-    height: 100%;
-  }
-`
-
-const WorkspaceWrapper = styled.div`
-  padding: 0 0.5rem 0 1rem;
-  height: 100%;
-  overflow-y: auto;
+const Wrapper = styled.div`
   user-select: none;
+  height: 100%;
+  width: 100%;
 `
 
-const AnalyticsWrapper = styled.div`
+const WorkspaceWrapper = styled(Wrapper)`
+  padding: 0 0.5rem 0 1rem;
+  position: absolute;
+  overflow: scroll;
+`
+
+const AnalyticsWrapper = styled(Wrapper)`
   padding: 0.375rem 1.25rem 0 0;
   overflow: hidden;
-  user-select: none;
 
   @media (max-width: 750px) {
     display: none;
   }
 `
 
-const BlotterWrapper = styled.div`
+const BlotterWrapper = styled(Wrapper)`
   padding: 0 0.5rem 0 1rem;
-  height: 100%;
-  overflow: hidden;
-  user-select: none;
+  position: absolute;
 `
 
 export default ShellRoute

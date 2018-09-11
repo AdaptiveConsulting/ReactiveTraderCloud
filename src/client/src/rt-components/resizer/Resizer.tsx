@@ -7,7 +7,8 @@ const ResizerStyle = styled.div`
 
 const ResizableSection = styled.div<{ height: number }>`
   height: ${({ height }) => height + '%'};
-  overflow-y: hidden;
+  overflow: hidden;
+  position: relative;
 `
 
 const Bar = styled.div`
