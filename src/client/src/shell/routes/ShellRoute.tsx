@@ -36,22 +36,24 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   <DefaultLayout
     header={header}
     body={
-      <Resizer
-        defaultHeight={30}
-        component={() => (
-          <BlotterWrapper>
-            <TearOff
-              id="blotter"
-              portalProps={portalProps.blotterRegion}
-              render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
-            />
-          </BlotterWrapper>
-        )}
-      >
-        <WorkspaceWrapper>
-          <WorkspaceContainer />
-        </WorkspaceWrapper>
-      </Resizer>
+      <Body>
+        <Resizer
+          defaultHeight={30}
+          component={() => (
+            <BlotterWrapper>
+              <TearOff
+                id="blotter"
+                portalProps={portalProps.blotterRegion}
+                render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
+              />
+            </BlotterWrapper>
+          )}
+        >
+          <WorkspaceWrapper>
+            <WorkspaceContainer />
+          </WorkspaceWrapper>
+        </Resizer>
+      </Body>
     }
     aside={
       <AnalyticsWrapper>
@@ -67,12 +69,20 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   />
 )
 
+const Body = styled.div`
+  max-height: 100%;
+  overflow: hidden;
+
+  @media (max-width: 750px) {
+    height: 100%;
+  }
+`
+
 const WorkspaceWrapper = styled.div`
   padding: 0 0.5rem 0 1rem;
   height: 100%;
   overflow-y: auto;
   user-select: none;
-  position: relative;
 `
 
 const AnalyticsWrapper = styled.div`
