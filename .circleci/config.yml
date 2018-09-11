@@ -35,6 +35,7 @@ jobs:
               BUILD_ID+="-$BUILD_LABEL"
             fi
 
+            echo "export DEPLOY=$DEPLOY" >> $BASH_ENV
             echo "export BUILD_ID=$BUILD_ID" >> $BASH_ENV
       - run:
           name: "Create artifacts and test results directories"
