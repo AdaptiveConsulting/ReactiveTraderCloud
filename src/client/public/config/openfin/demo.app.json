@@ -17,8 +17,8 @@
   },
   "runtime": {
     "arguments": "--force-device-scale-factor=1",
-    "version": "9.61.33.32",
-    "futureVersion": "9.61.33.32",
+    "version": "9.61.34.22",
+    "futureVersion": "9.61.34.22",
     "forceLatest": true
   },
   "shortcut": {
