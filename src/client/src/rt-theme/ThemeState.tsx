@@ -26,10 +26,7 @@ export interface ThemeStateValue extends ThemeSelector {
   setTheme: (options: ThemeSelector) => void
 }
 
-const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue>({
-  name: null,
-  setTheme: () => {}
-})
+const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue | null>(null)
 
 /**
  * Set default theme and allow descendants to update selected theme.

@@ -37,7 +37,10 @@ export default class TearOff extends React.PureComponent<Props, State> {
     if (tornOff) {
       return (
         <Portal onUnload={this.popIn} {...portalProps}>
-          <TearOffContainer>{render(this.popOut, tornOff)}</TearOffContainer>
+          <TearOffContainer>
+            <span style={{ fontWeight: 900, fontStyle: 'italic' }} />
+            {render(this.popOut, tornOff)}
+          </TearOffContainer>
         </Portal>
       )
     }
