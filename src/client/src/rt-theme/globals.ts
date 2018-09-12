@@ -53,24 +53,20 @@ export default injectGlobal`
     font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 16px;
     line-height: 1rem;
-    text-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;   
+
+
+    @media all and (max-width: 400px) {
+      font-size: 14px;
+    }
+
+    @media all and (max-width: 320px) {
+      font-size: 12px;
+    }
   }
   
-  html {
-    overflow-y: auto;
-  }
-  
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 2px;
-    background-color: rgba(212, 221, 232, .4);
-  }
-
-  ::-webkit-scrollbar-corner {
-    background-color: rgba(0,0,0,0);
+  body, #root {
+    height: 100vh;
+    overflow-x: hidden;
   }
 `

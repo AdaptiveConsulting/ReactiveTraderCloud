@@ -1,6 +1,6 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { css } from 'rt-theme'
+import { css } from './emotion'
 import { ThemeProvider } from './ThemeProvider'
 import { Theme, themes } from './themes'
 
@@ -26,7 +26,10 @@ export interface ThemeStateValue extends ThemeSelector {
   setTheme: (options: ThemeSelector) => void
 }
 
-const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue | null>(null)
+const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue | null>(
+  // We use null as a semaphore to signify a root component
+  null
+)
 
 /**
  * Set default theme and allow descendants to update selected theme.
@@ -94,13 +97,10 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeSta
               context ? null : (
                 <Helmet>
                   <html
-                    className={css`
-                      :root,
-                      body {
-                        background-color: ${theme.shell.backgroundColor};
-                        color: ${theme.shell.textColor};
-                      }
-                    `}
+                    className={css({
+                      backgroundColor: theme.shell.backgroundColor,
+                      color: theme.shell.textColor
+                    })}
                   />
                 </Helmet>
               )}

@@ -46,6 +46,20 @@ const AppLayoutRoot = styled.div`
 const Body = styled.div`
   display: flex;
   overflow: hidden;
+
+  ::-webkit-scrollbar {
+    min-width: 0.25rem;
+    min-height: 2rem;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: rgba(212, 221, 232, 0.4);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background-color: rgba(127, 127, 127, 0);
+  }
 `
 
 export default AppLayout

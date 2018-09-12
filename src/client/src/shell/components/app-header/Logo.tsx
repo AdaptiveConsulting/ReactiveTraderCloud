@@ -7,7 +7,13 @@ interface LogoProps extends SVGAttributes<Element> {
 }
 
 const Logo: React.SFC<LogoProps> = ({ fill = '#000', size = 2, ...props }) => (
-  <svg width={size * 70} height={size * 16} viewBox="0 0 140 32" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <svg
+    width={size * 4.375 + 'rem'}
+    height={size + 'rem'}
+    viewBox="0 0 140 32"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
     <g fill={fill} fillRule="nonzero">
       <g>
         <rect id="Rectangle-path" x="0.086" y="5.111" width="5.796" height="22.669" />

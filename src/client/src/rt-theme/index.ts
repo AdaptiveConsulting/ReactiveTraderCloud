@@ -2,9 +2,9 @@ export { flush, hydrate, cx, merge, getRegisteredStyles, injectGlobal, keyframes
 
 import './globals'
 
-export { colors } from './colors'
+export { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } from './colors'
 export { themes, Theme } from './themes'
-export { resolvesColor } from './tools'
+export { resolvesColor, Selector } from './tools'
 export { ThemeProvider } from './ThemeProvider'
 export { ThemeState, ThemeStateValue } from './ThemeState'
-export { default as styled } from './styled'
+export { default as styled, Styled, StyledProps } from './styled'
