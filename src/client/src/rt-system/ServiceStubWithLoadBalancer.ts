@@ -1,6 +1,6 @@
 import { defer, Observable } from 'rxjs'
 import { distinctUntilChanged, filter, map, share, switchMap, take } from 'rxjs/operators'
-import logger, { Logger } from './logger'
+import logger from './logger'
 import { ServiceCollectionMap } from './ServiceInstanceCollection'
 import { ServiceStub } from './ServiceStub'
 
@@ -11,14 +11,12 @@ import { ServiceStub } from './ServiceStub'
  */
 
 export default class ServiceStubWithLoadBalancer {
-  private readonly log: Logger
+  private readonly log = logger.create(`ServiceClient: Initiated`)
 
   constructor(
     private connection: ServiceStub,
     private readonly serviceInstanceDictionaryStream: Observable<ServiceCollectionMap>
-  ) {
-    this.log = logger.create(`ServiceClient: Initiated`)
-  }
+  ) {}
 
   private getServiceWithMinLoad$(serviceType: string) {
     return this.serviceInstanceDictionaryStream.pipe(

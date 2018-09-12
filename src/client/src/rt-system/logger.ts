@@ -10,9 +10,9 @@ enum levels {
 
 const order = Object.keys(levels)
 
-let currentLevel = order.indexOf(process.env.NODE_ENV === 'production' ? levels.error : levels.verbose)
+const currentLevel = order.indexOf(process.env.NODE_ENV === 'production' ? levels.error : levels.verbose)
 
-let sink = (logEvent: LogParams) => {
+const sink = (logEvent: LogParams) => {
   console[logEvent.level].call(null, `${logEvent.logger}:`, ...Array.from(logEvent.args))
 }
 
@@ -75,18 +75,10 @@ function create(name: string) {
   return new Logger(name)
 }
 
-function setLevel(level: levels) {
-  currentLevel = order.indexOf(level)
-}
-
 interface LogParams {
   args: IArguments
   level: Severity
   logger: string
 }
 
-function setSink(sinkNew: (params: LogParams) => void) {
-  sink = sinkNew
-}
-
-export default { create, setLevel, setSink, levels, Logger }
+export default { create }
