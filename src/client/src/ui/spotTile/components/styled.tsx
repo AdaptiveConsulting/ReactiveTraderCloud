@@ -11,6 +11,7 @@ export const DeliveryDate = styled('div')`
   font-size: 0.625rem;
   line-height: 1rem;
   opacity: 0.59;
+  display: none;
 `
 
 export const TileSymbol = styled('div')`

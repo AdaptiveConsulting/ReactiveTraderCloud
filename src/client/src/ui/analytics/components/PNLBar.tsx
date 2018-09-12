@@ -72,16 +72,18 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
     const amount = numeral(basePnl)
       .format('0a')
       .toUpperCase()
-    const labelText = `(${amount}) ${symbol}`
+    const hiddenAmount = numeral(basePnl).format('0,000')
 
+    const labelText = `(${amount}) ${symbol}`
     const approxLabelWidth = labelText.length * 8
     const offset = this.calculateOffset() || -(approxLabelWidth / 2)
 
     return (
       <span ref={this.labelRef} className="analytics__barchart-label" style={{ left: offset }}>
-        <span className="analytics__barchart-label-amount">({amount}) </span>
+        <span className="analytics__barchart-label-amount">({amount})</span>
         <span>{currencyPair.base}</span>
         <span className="analytics__barchart-label-currency-terms">{currencyPair.terms}</span>
+        <span className="analytics__barchart-label-amount--hover"> {hiddenAmount}</span>
       </span>
     )
   }
@@ -188,6 +190,7 @@ const BarChart = styled.div`
   .analytics__barchart-label-pusher {
     transition: all ease ${({ theme }) => theme.motion.duration};
   }
+
   .analytics__barchart-pointer-container {
     position: absolute;
     margin-top: 1.5rem;
@@ -207,7 +210,20 @@ const BarChart = styled.div`
     border-color: ${pointerColor} transparent transparent transparent;
     border-style: inset;
     border-radius: 50%;
-    transform: rotate(360deg);
+  }
+
+  .analytics__barchart-label-currency-terms {
+    font-weight: 900;
+  }
+
+  .analytics__barchart-label-amount--hover {
+    font-weight: 900;
+    display: none;
+  }
+
+  .analytics__barchart-label-amount {
+    font-weight: 900;
+    margin-right: 0.25rem;
   }
 
   .analytics__barchart-label {
@@ -216,19 +232,25 @@ const BarChart = styled.div`
     white-space: nowrap;
   }
 
-  .analytics__barchart-label-amount {
-    font-weight: 900;
-    margin-right: 0.25rem;
-  }
-
   .analytics__barchart-label-pusher {
     height: 0.5rem;
     display: inline-block;
   }
+
   .analytics__barchart-label-wrapper {
     position: absolute;
     width: 100%;
     white-space: nowrap;
+    cursor: default;
+    &:hover .analytics__barchart-label-amount--hover {
+      display: inline;
+    }
+    &:hover .analytics__barchart-label-amount {
+      display: none;
+    }
+    &:hover .analytics__barchart-label-currency-terms {
+      display: none;
+    }
   }
 
   .analytics__barchart-container .analytics__barchart-amount {
