@@ -78,7 +78,12 @@ export default class Resizer extends Component<Props, State> {
     document.removeEventListener('touchend', this.handleStop)
   }
 
-  handleStop = () => this.setState({ dragging: false })
+  handleStop = () => {
+    if (!this.state.dragging) {
+      return
+    }
+    this.setState({ dragging: false })
+  }
 
   handleStart = () => this.setState({ dragging: true })
 
