@@ -1,4 +1,4 @@
-import { logger, ServiceClient } from 'rt-system'
+import { ServiceClient } from 'rt-system'
 import { mapFromTradeDto, TradeRaw } from 'rt-types'
 import { merge, Observable, of, timer } from 'rxjs'
 import { map, mapTo, mergeMap, take, takeUntil, tap } from 'rxjs/operators'
@@ -11,7 +11,7 @@ interface RawTradeReponse {
   Trade: TradeRaw
 }
 
-const log = logger.create('ExecutionService')
+const LOG_NAME = 'Execution Service:'
 
 const EXECUTION_CLIENT_TIMEOUT_MS = 2000
 const EXECUTION_REQUEST_TIMEOUT_MS = 30000
@@ -24,7 +24,7 @@ export default class ExecutionService {
 
   executeTrade(executeTradeRequest: ExecuteTradeRequest) {
     return this.limitChecker(executeTradeRequest).pipe(
-      tap(() => log.info('executing: ', executeTradeRequest)),
+      tap(() => console.info(LOG_NAME, 'executing: ', executeTradeRequest)),
       take(1),
       mergeMap(tradeWithinLimit => {
         if (!tradeWithinLimit) {
@@ -38,7 +38,11 @@ export default class ExecutionService {
           )
           .pipe(
             tap(dto =>
-              log.info(`execute response received for: ${executeTradeRequest}. Status: ${dto.Trade.Status}`, dto)
+              console.info(
+                LOG_NAME,
+                `execute response received for: ${executeTradeRequest}. Status: ${dto.Trade.Status}`,
+                dto
+              )
             ),
             map(dto => mapFromTradeDto(dto.Trade)),
             map(trade => createExecuteTradeResponse(trade, executeTradeRequest)),

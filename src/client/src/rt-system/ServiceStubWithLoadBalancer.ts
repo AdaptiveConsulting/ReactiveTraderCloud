@@ -1,6 +1,5 @@
 import { defer, Observable } from 'rxjs'
 import { distinctUntilChanged, filter, map, share, switchMap, take } from 'rxjs/operators'
-import logger from './logger'
 import { ServiceCollectionMap } from './ServiceInstanceCollection'
 import { ServiceStub } from './ServiceStub'
 
@@ -10,9 +9,9 @@ import { ServiceStub } from './ServiceStub'
  * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
 
-export default class ServiceStubWithLoadBalancer {
-  private readonly log = logger.create(`ServiceClient: Initiated`)
+const LOG_NAME = 'ServiceClient: Initiated'
 
+export default class ServiceStubWithLoadBalancer {
   constructor(
     private connection: ServiceStub,
     private readonly serviceInstanceDictionaryStream: Observable<ServiceCollectionMap>
@@ -32,12 +31,13 @@ export default class ServiceStubWithLoadBalancer {
    *
    */
   createRequestResponseOperation<TResponse, TRequest>(service: string, operationName: string, request: TRequest) {
-    this.log.info(`Creating request response operation for [${operationName}]`)
+    console.info(LOG_NAME, `Creating request response operation for [${operationName}]`)
 
     return this.getServiceWithMinLoad$(service).pipe(
       switchMap(serviceInstanceStatus => {
         if (serviceInstanceStatus.serviceId !== 'status') {
-          this.log.info(
+          console.info(
+            LOG_NAME,
             `Will use service instance [${
               serviceInstanceStatus.serviceId
             }] for request/response operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`
@@ -75,7 +75,8 @@ export default class ServiceStubWithLoadBalancer {
               ((Math.random() * Math.pow(36, 8)) << 0).toString(36)
             }`
 
-            this.log.info(
+            console.info(
+              LOG_NAME,
               `Will use service instance [${
                 serviceInstanceStatus.serviceId
               }] for stream operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`
@@ -86,12 +87,12 @@ export default class ServiceStubWithLoadBalancer {
             // tslint:disable-next-line:no-bitwise
             const subscribeTopic$ = this.connection.subscribeToTopic<TResponse>(topicName, {
               next: topic => {
-                this.log.info(`Subscribed to ${topic}, requesting ${remoteProcedure}`)
+                console.info(LOG_NAME, `Subscribed to ${topic}, requesting ${remoteProcedure}`)
                 const req = this.connection
                   .requestResponse<TResponse, {}>(remoteProcedure, request, topicName)
                   .pipe(take(1))
                   .subscribe(() => {
-                    this.log.info(`request acknowledged for ${remoteProcedure}`)
+                    console.info(LOG_NAME, `request acknowledged for ${remoteProcedure}`)
                     req.unsubscribe()
                   })
               }
