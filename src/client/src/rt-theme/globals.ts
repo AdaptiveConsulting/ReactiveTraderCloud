@@ -54,10 +54,12 @@ export default injectGlobal`
     font-size: 16px;
     line-height: 1rem;
     text-rendering: geometricPrecision;
+    height: 100%;
+    overflow: auto;
   }
-  
-  html {
-    overflow-y: auto;
+
+  #root {
+    height: 100%;
   }
   
   ::-webkit-scrollbar {
