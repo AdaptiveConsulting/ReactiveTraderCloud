@@ -26,10 +26,5 @@
     "description": "Desktop Reactive Trader Cloud",
     "icon": "https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/src/client/public/static/media/icon.ico",
     "name": "Reactive Trader Cloud"
-  },
-  "services": [
-    {
-      "name": "layouts"
-    }
-  ]
+  }
 }
