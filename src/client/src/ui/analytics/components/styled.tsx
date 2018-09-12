@@ -15,7 +15,7 @@ export const AnalyticsStyle = styled.div`
   /* axis */
   .nvd3 .nv-axis path,
   .nvd3 .nv-axis .tick.zero line {
-    stroke: currentColor;
+    stroke: ${({ theme }) => theme.analytics.textColor};
   }
 
   /* grid */
@@ -116,7 +116,7 @@ export const Chart = styled.div`
   /* axis labels */
   .nv-lineChart .nv-axis.nv-x text,
   .nv-lineChart .nv-axis.nv-y text {
-    fill: currentColor;
+    fill: ${({ theme }) => theme.analytics.textColor};
   }
 `
 export const Controls = styled('div')`

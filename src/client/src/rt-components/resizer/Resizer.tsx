@@ -7,7 +7,14 @@ const ResizerStyle = styled.div`
 
 const ResizableSection = styled.div<{ height: number }>`
   height: ${({ height }) => height + '%'};
-  overflow-y: hidden;
+  overflow: hidden;
+  position: relative;
+`
+
+const ResizableContent = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
 `
 
 const Bar = styled.div`
@@ -119,10 +126,14 @@ export default class Resizer extends Component<Props, State> {
 
     return (
       <ResizerStyle innerRef={this.wrapperRef}>
-        <ResizableSection height={100 - height}>{children}</ResizableSection>
+        <ResizableSection height={100 - height}>
+          <ResizableContent>{children}</ResizableContent>
+        </ResizableSection>
         <ResizableSection height={height}>
-          <Bar onMouseDown={this.handleStart} onTouchStart={this.handleStart} />
-          {component()}
+          <ResizableContent>
+            <Bar onMouseDown={this.handleStart} onTouchStart={this.handleStart} />
+            {component()}
+          </ResizableContent>
         </ResizableSection>
       </ResizerStyle>
     )
