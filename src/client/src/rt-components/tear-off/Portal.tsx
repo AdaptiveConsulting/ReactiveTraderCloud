@@ -1,6 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { EnvironmentValue, OpenFinChrome, OpenFinHeader, withEnvironment } from 'rt-components'
+import { EnvironmentValue, withEnvironment } from 'rt-components'
 import { withDefaultProps } from 'rt-util'
 import { openBrowserWindow } from './BrowserWindow'
 import { openDesktopWindow } from './DesktopWindow'
@@ -39,7 +38,6 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
     }
     this.externalWindow.addEventListener('beforeunload', this.release)
     window.addEventListener('beforeunload', this.release)
-    this.injectIntoWindow()
   }
 
   componentWillUnmount() {
@@ -49,60 +47,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
   }
 
   render() {
-    return this.externalWindow
-      ? ReactDOM.createPortal(this.wrapChildrenWithPortal(this.props.children), this.container)
-      : null
-  }
-
-  wrapChildrenWithPortal = (children: React.ReactNode) => {
-    const { environment } = this.props
-    return environment.isDesktop ? (
-      <OpenFinChrome>
-        <OpenFinHeader close={this.closeWindow} />
-        {children}
-      </OpenFinChrome>
-    ) : (
-      children
-    )
-  }
-
-  injectIntoWindow() {
-    const { onBlock, title } = this.props
-
-    if (this.externalWindow) {
-      const parentHead = document.head
-      const childHead = this.externalWindow.document.head
-
-      childHead.innerHTML = parentHead.innerHTML.replace(/\/static/g, window.location.href + 'static')
-      this.externalWindow.document.title = title
-
-      // Wait 200ms to allow external window's styles to load
-      // Prevents flash of unstyled content
-      setTimeout(() => {
-        this.externalWindow.document.body.appendChild(this.container)
-        this.forceUpdate()
-      }, 200)
-
-      // Watch the parent head for changes in style tags
-      // Required for emotion's dynamic styles
-      this.mutationObserver = new MutationObserver(mutationsList => {
-        mutationsList.forEach(mutationRecord => {
-          const addedNode = mutationRecord.addedNodes[0]
-          if (addedNode && addedNode.nodeName === 'STYLE') {
-            const newNode = addedNode.cloneNode(true)
-            childHead.appendChild(newNode)
-          }
-        })
-      })
-
-      this.mutationObserver.observe(parentHead, { childList: true })
-    } else {
-      if (onBlock) {
-        onBlock.call(null)
-      } else {
-        console.warn('A new window could not be opened. Maybe it was blocked.')
-      }
-    }
+    return <React.Fragment>{null}</React.Fragment>
   }
 
   closeWindow = () => this.externalWindow.close()

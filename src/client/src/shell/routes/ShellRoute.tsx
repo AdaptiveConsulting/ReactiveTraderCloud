@@ -18,7 +18,7 @@ const portalProps = {
       name: 'blotter',
       width: 850,
       height: 450,
-      url: 'about:Blotter'
+      url: '/blotter'
     }
   },
   analyticsRegion: {
@@ -27,7 +27,7 @@ const portalProps = {
       name: 'analytics',
       width: 400,
       height: 800,
-      url: 'about:Analytics'
+      url: '/analytics'
     }
   }
 }
