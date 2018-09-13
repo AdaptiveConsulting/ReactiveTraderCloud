@@ -2,9 +2,8 @@ import { Observable } from 'rxjs'
 import { AutobahnSessionProxy } from '.'
 import { AutobahnConnection } from './AutoBahnConnection'
 import { ConnectionType } from './connectionType'
-import logger from './logger'
 
-const log = logger.create('ConnectionFactory')
+const LOG_NAME = 'ConnectionFactory: '
 
 export enum ConnectionEventType {
   CONNECTED = 'CONNECTED',
@@ -29,7 +28,7 @@ export type ConnectionEvent = ConnectionOpenEvent | ConnectionClosedEvent
 export function createConnection$(autobahn: AutobahnConnection): Observable<ConnectionEvent> {
   return new Observable(obs => {
     autobahn.onopen(session => {
-      log.info('Connected')
+      console.info(LOG_NAME, 'Connected')
       obs.next({
         type: ConnectionEventType.CONNECTED,
         session,
@@ -40,10 +39,10 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
 
     autobahn.onclose((reason, details) => {
       if (reason === 'closed') {
-        log.warn('Connection closed')
+        console.warn(LOG_NAME, 'Connection closed')
         obs.complete()
       } else {
-        log.error(`Connection lost, details: [${JSON.stringify(details)}]`)
+        console.error(LOG_NAME, `Connection lost, details: [${JSON.stringify(details)}]`)
         obs.error({
           type: ConnectionEventType.DISCONNECTED,
           reason,
@@ -55,7 +54,7 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
     autobahn.open()
 
     return () => {
-      console.log('Disconnected')
+      console.log(LOG_NAME, 'Disconnected')
       obs.complete()
       autobahn.close()
     }
