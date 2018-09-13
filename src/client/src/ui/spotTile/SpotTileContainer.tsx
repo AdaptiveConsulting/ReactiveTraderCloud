@@ -32,9 +32,7 @@ const SpotTileContainer: React.SFC<SpotTileContainerProps> = ({ onMount, executi
 )
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
-  onMount: () => {
-    dispatch(SpotTileActions.subscribeToSpotTile(ownProps.id))
-  },
+  onMount: () => dispatch(SpotTileActions.subscribeToSpotTile(ownProps.id)),
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
   displayCurrencyChart: () => dispatch(SpotTileActions.displayCurrencyChart(ownProps.id)),
   onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id))
