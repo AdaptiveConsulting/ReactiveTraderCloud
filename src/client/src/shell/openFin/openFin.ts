@@ -19,11 +19,7 @@ export default class OpenFin {
   }
 
   close = () => {
-    this.currentWindow.close(
-      true,
-      () => console.info(LOG_NAME, 'Window closed with success.'),
-      err => console.error(LOG_NAME, 'Failed to close window.', err)
-    )
+    fin.desktop.Application.getCurrent().close()
   }
 
   minimize = () => {
