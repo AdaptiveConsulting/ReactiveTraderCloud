@@ -22,7 +22,7 @@ export default function configureStore(dependencies: ApplicationDependencies) {
     analyticsServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,
-    spotTileEpic(dependencies)
+    spotTileEpic
   ]
 
   const middleware = createEpicMiddleware<Action, Action, GlobalState, ApplicationDependencies>({
