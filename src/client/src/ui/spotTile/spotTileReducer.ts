@@ -19,7 +19,7 @@ const spotTileReducer = (
   action: SpotTileActions
 ): SpotTileData => {
   switch (action.type) {
-    case TILE_ACTION_TYPES.SHOW_SPOT_TILE:
+    case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
       return { ...state, price: action.payload }
@@ -51,7 +51,7 @@ export const spotTileDataReducer = (
     case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
     case TILE_ACTION_TYPES.CURRENCY_CHART_OPENED:
     case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
-    case TILE_ACTION_TYPES.SHOW_SPOT_TILE:
+    case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return {
         ...state,
         [action.payload]: spotTileReducer(state[action.payload], action)

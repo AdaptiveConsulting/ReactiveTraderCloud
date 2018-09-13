@@ -15,11 +15,12 @@ export default function epic({ referenceDataService, loadBalancedServiceStub }: 
   const pricesForCurrenciesInRefData = referenceDataService.getCurrencyPairUpdates$().pipe(
     mergeMap(refData =>
       from(Object.values(refData)).pipe(
-        mergeMap(refDataForSymbol =>
-          pricingService.getSpotPriceStream({
+        mergeMap(refDataForSymbol => {
+          console.log(refDataForSymbol.symbol)
+          return pricingService.getSpotPriceStream({
             symbol: refDataForSymbol.symbol
           })
-        ),
+        }),
         share()
       )
     )

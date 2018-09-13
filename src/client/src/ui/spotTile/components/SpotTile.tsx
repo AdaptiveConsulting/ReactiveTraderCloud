@@ -1,11 +1,12 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
+import { Action } from 'redux'
 import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 import { ThemeProvider } from 'rt-theme'
 import { CurrencyPair, Direction } from 'rt-types'
+import { createTradeRequest, DEFAULT_NOTIONAL, ExecuteTradeRequest, SpotTileData, TradeRequest } from '../model'
 import { spotDateFormatter } from '../model/dateUtils'
-import { SpotTileData } from '../model/spotTileData'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import { DeliveryDate, TileBaseStyle, TileSymbol } from './styled'
@@ -24,7 +25,7 @@ export const SpotTileStyle = styled(TileBaseStyle)`
 export interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
-  executeTrade: (direction: Direction, notional: number) => void
+  executeTrade: (tradeRequestObj: ExecuteTradeRequest) => Action
 }
 
 interface State {
@@ -38,7 +39,22 @@ export default class SpotTile extends PureComponent<Props, State> {
 
   updateNotional = (notional: string) => this.setState({ notional })
 
-  executeTrade = (direction: Direction) => this.props.executeTrade(direction, numeral(this.state.notional).value())
+  createTrade = (direction: Direction) => {
+    const { spotTileData, currencyPair, executeTrade } = this.props
+    if (spotTileData.isTradeExecutionInFlight || !spotTileData.price) {
+      return
+    }
+    const notional = numeral(this.state.notional).value() || DEFAULT_NOTIONAL
+    const rawSpotRate = direction === Direction.Buy ? spotTileData.price.ask : spotTileData.price.bid
+    const tradeRequestObj: TradeRequest = {
+      direction,
+      currencyBase: currencyPair.base,
+      symbol: currencyPair.symbol,
+      notional,
+      rawSpotRate
+    }
+    executeTrade(createTradeRequest(tradeRequestObj))
+  }
 
   render() {
     const { currencyPair, spotTileData, children } = this.props
@@ -56,7 +72,7 @@ export default class SpotTile extends PureComponent<Props, State> {
                 <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
                 <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
               </Flex>
-              <PriceControls executeTrade={this.executeTrade} priceData={priceData} currencyPair={currencyPair} />
+              <PriceControls executeTrade={this.createTrade} priceData={priceData} currencyPair={currencyPair} />
               <NotionalInput
                 notional={notional}
                 currencyPairSymbol={currencyPair.base}
