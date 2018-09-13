@@ -17,6 +17,7 @@ export interface BlotterProps {
 
 interface BlotterState {
   displayedRows: number
+  windowWidth: number
 }
 
 const BlotterStyle = styled('div')`
@@ -51,7 +52,17 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
   private gridDoc = React.createRef<HTMLDivElement>()
 
   state = {
-    displayedRows: 0
+    displayedRows: 0,
+    windowWidth: 0
+  }
+
+  componentDidMount() {
+    this.getWindowWidth()
+    window.addEventListener('resize', this.getWindowWidth)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.getWindowWidth)
   }
 
   render() {
@@ -65,7 +76,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
             <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
             <BlotterGrid innerRef={this.gridDoc}>
               <AgGridReact
-                columnDefs={columnDefinitions}
+                columnDefs={columnDefinitions.concat(this.newColumn())}
                 defaultColDef={DEFAULT_COLUMN_DEFINITION}
                 rowData={rows}
                 enableColResize={true}
@@ -96,7 +107,18 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
     api.sizeColumnsToFit()
   }
 
+  private getWindowWidth = () => this.setState({ windowWidth: window.innerWidth })
+
   private onModelUpdated = () => this.gridApi && this.setState({ displayedRows: this.gridApi.getDisplayedRowCount() })
+
+  private newColumn = () => ({
+    colId: 'empty',
+    field: 'empty',
+    headerName: '',
+    width: this.state.windowWidth,
+    suppressSizeToFit: false,
+    suppressFilter: true
+  })
 
   private getRowClass({ data }: { data: Trade }) {
     if (data.status === TradeStatus.Rejected) {

@@ -179,13 +179,5 @@ export const columnDefinitions: ColDef[] = [
     headerName: 'Trader',
     width: 110,
     filterFramework: SetFilter
-  },
-  {
-    colId: 'empty',
-    field: 'empty',
-    headerName: '',
-    width: 80,
-    suppressSizeToFit: false,
-    suppressFilter: true
   }
 ]
