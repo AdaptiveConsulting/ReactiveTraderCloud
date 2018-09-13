@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { styled } from 'rt-theme'
+import { keyframes, styled } from 'rt-theme'
 import { ServiceConnectionStatus } from 'rt-types'
 import DisconnectIcon from '../icons/DisconnectIcon'
 
@@ -25,6 +25,15 @@ const Spinner = styled.div`
   font-size: 0.625rem;
 `
 
+const stretch = keyframes`
+    0%, 40%, 100% {
+      transform: scaleY(0.4);
+    }
+    20% {
+      transform: scaleY(1);
+    }
+`
+
 const Rect = styled.div<{ delay?: number }>`
   background-color: ${({ theme }) => theme.component.textColor};
   margin: 0 0.0625rem;
@@ -32,20 +41,9 @@ const Rect = styled.div<{ delay?: number }>`
   width: 0.375rem;
   display: inline-block;
 
-  animation: stretchdelay 1.2s infinite ease-in-out;
+  animation: ${stretch} 1.2s infinite ease-in-out;
 
   animation-delay: -${({ delay }) => delay}s;
-
-  @keyframes stretchdelay {
-    0%,
-    40%,
-    100% {
-      transform: scaleY(0.4);
-    }
-    20% {
-      transform: scaleY(1);
-    }
-  }
 `
 
 interface Props {

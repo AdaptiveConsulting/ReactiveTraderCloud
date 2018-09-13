@@ -1,7 +1,6 @@
-import { logger } from 'rt-system'
 import { User } from 'rt-types'
 
-const log = logger.create('FakeUserRepository')
+const LOG_NAME = 'FakeUserRepository: '
 
 const fakeUserDetails = [
   {
@@ -114,7 +113,10 @@ const currentUser: User = {
   code: userDetails.shortCode
 }
 
-log.info(`Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`)
+console.info(
+  LOG_NAME,
+  `Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`
+)
 
 export default class FakeUserRepository {
   /**
