@@ -19,6 +19,9 @@ export const SpotTileWrapper = styled('div')`
 
 export const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme }) => theme.backgroundColor};
+  &:hover ${DeliveryDate} {
+    display: block;
+  }
 `
 
 export interface Props {
@@ -54,7 +57,7 @@ export default class SpotTile extends PureComponent<Props, State> {
             <Flex direction="column" justifyContent="space-between" height="100%">
               <Flex alignItems="center" justifyContent="space-between">
                 <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
-                <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
+                <DeliveryDate>{spotDate && `SPT (${spotDate})`} </DeliveryDate>
               </Flex>
               <PriceControls executeTrade={this.executeTrade} priceData={priceData} currencyPair={currencyPair} />
               <NotionalInput
