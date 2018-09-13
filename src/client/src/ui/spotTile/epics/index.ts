@@ -26,7 +26,7 @@ export default function epic({ referenceDataService, loadBalancedServiceStub }: 
     )
   )
 
-  const epics = [spotTileEpic, pricingServiceEpic(pricesForCurrenciesInRefData)]
+  const epics = [spotTileEpic, pricingServiceEpic]
 
   if (typeof fin !== 'undefined') {
     epics.push(
