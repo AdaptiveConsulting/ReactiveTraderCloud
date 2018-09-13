@@ -79,10 +79,9 @@ export default class Resizer extends Component<Props, State> {
   }
 
   handleStop = () => {
-    if (!this.state.dragging) {
-      return
+    if (this.state.dragging) {
+      this.setState({ dragging: false })
     }
-    this.setState({ dragging: false })
   }
 
   handleStart = () => this.setState({ dragging: true })
