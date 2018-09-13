@@ -8,7 +8,7 @@ import { colors } from 'rt-theme'
 import { getColor } from '../tools'
 
 import { H2, H3, H5, NumberedLayout } from '../elements'
-import { Paragraph, SectionBlock, Text } from '../styled'
+import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
 
 export const layout = React.Fragment
 export const props = {}
@@ -98,11 +98,11 @@ const CorePalette: React.SFC<{ fg: string; label: string; palette: any; include?
   label: paletteLabel,
   palette,
   include = ['base', 1, 2, 3, 4],
-  codes = {}
+  codes = {},
 }) => (
   <SwatchArea
     style={{
-      boxShadow: `0 0 0 2px ${rgba(fg, 0.15)}`
+      boxShadow: `0 0 0 2px ${rgba(fg, 0.15)}`,
     }}
   >
     {include.map((key, i) => {
@@ -112,7 +112,7 @@ const CorePalette: React.SFC<{ fg: string; label: string; palette: any; include?
         <Swatch
           className={css({
             gridArea: key,
-            boxShadow: i < 1 && `0 0 2rem ${rgba(palette[include[include.length - 1]], 0.5)}`
+            boxShadow: i < 1 && `0 0 2rem ${rgba(palette[include[include.length - 1]], 0.5)}`,
           })}
           label={`${paletteLabel} ${key}`}
           value={color}
@@ -130,7 +130,7 @@ export interface SwatchColorProps {
   fg?: string
 }
 
-export interface SwatchProps extends SwatchColorProps {
+export interface SwatchProps extends BlockProps, SwatchColorProps {
   className?: string
   style?: object
   is?: Styled<SwatchColorProps>
@@ -148,17 +148,20 @@ export const Swatch: React.SFC<SwatchProps> = ({
   fg,
   ...props
 }) => (
-  <SwatchElement bg={bg} fg={fg} {...props}>
-    <Text fontWeight="bold">{label}</Text>
-    <Text textTransform="uppercase">{value}</Text>
-    <Text opacity={0.75} fontSize={0.75} textTransform="uppercase">
-      {code}
+  <SwatchElement p={2} bg={bg} fg={fg} {...props}>
+    <Text fontSize={0.8125} fontWeight="bold" textTransform="capitalize">
+      {label}
     </Text>
+    <Text fontSize={0.8125} textTransform="uppercase">
+      {value}
+    </Text>
+    {/* <Text fontSize={0.75} textTransform="uppercase" opacity={0.75}>
+      {code}
+    </Text> */}
   </SwatchElement>
 )
 
-export const SwatchColor: Styled<SwatchColorProps> = styled.div`
-  padding: 1.25rem;
+export const SwatchColor: Styled<SwatchColorProps> = styled(Block)`
   line-height: 1.25rem;
 
   display: flex;
@@ -168,7 +171,7 @@ export const SwatchColor: Styled<SwatchColorProps> = styled.div`
   ${({ theme, bg, fg }) =>
     css({
       backgroundColor: getColor(theme, bg),
-      color: getColor(theme, fg, theme.white)
+      color: getColor(theme, fg, theme.white),
     })};
 `
 
@@ -176,8 +179,6 @@ export const LargeSwatchColor: Styled<SwatchColorProps> = styled(SwatchColor)`
   width: 14rem;
   height: 10rem;
   margin: 1.5rem 0;
-  padding: 1.25rem;
-  line-height: 1.25rem;
 
   display: flex;
   justify-content: flex-end;
@@ -188,27 +189,46 @@ export const LargeSwatchColor: Styled<SwatchColorProps> = styled(SwatchColor)`
 
 const SwatchArea = styled.div`
   display: grid;
-
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 5rem);
   grid-template-areas:
-    'base base base base'
-    '1 2 3 4';
+    'base 1'
+    'base 2'
+    'base 3'
+    'base 4';
 
   overflow: hidden;
   border-radius: 0.5rem;
 
   ${SwatchColor} {
-    min-height: 14rem;
     border-radius: initial;
+  }
+
+  @media all and (min-width: 640px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      'base base base base'
+      '1 2 3 4';
+
+    ${SwatchColor} {
+      min-height: 14rem;
+      &:nth-child(n + 2) {
+        /* @media all and (max-width: 640px) {
+        text-orientation: sideways;
+        writing-mode: vertical-rl;
+        text-align: right;
+      } */
+      }
+    }
   }
 `
 
 const ThemePalettes: React.SFC<{ theme: any }> = ({ theme: { primary, secondary }, ...props }) => {
   return (
     <ThemeRow>
-      <CorePalette label="Core Primary" palette={primary} fg={secondary.base} />
-      <CorePalette label="Core Secondary" palette={secondary} fg={primary.base} />
+      <CorePalette label="Primary" palette={primary} fg={secondary.base} />
+      <CorePalette label="Secondary" palette={secondary} fg={primary.base} />
     </ThemeRow>
   )
 }
@@ -217,14 +237,16 @@ const ThemeRow = styled.div`
   margin: 2rem 0;
 
   display: grid;
-  grid-column-gap: 0.5rem;
-  grid-template-columns: 1fr 1fr;
+  grid-gap: 0.5rem;
+  @media all and (min-width: 640px) {
+    grid-template-columns: 1fr 1fr;
 
-  ${SwatchArea}:first-child {
-    border-radius: 0.5rem 0 0.5rem 0.5rem !important;
-  }
+    ${SwatchArea}:first-child {
+      border-radius: 0.5rem 0 0.5rem 0.5rem !important;
+    }
 
-  ${SwatchArea}:last-child {
-    border-radius: 0 0.5rem 0.5rem 0.5rem !important;
+    ${SwatchArea}:last-child {
+      border-radius: 0 0.5rem 0.5rem 0.5rem !important;
+    }
   }
 `

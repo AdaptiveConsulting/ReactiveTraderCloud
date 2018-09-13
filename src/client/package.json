@@ -54,6 +54,12 @@
       "git add"
     ]
   },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120,
+    "trailingComma": "all"
+  },
   "dependencies": {
     "@evanrs/map-props": "^1.1.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.2",

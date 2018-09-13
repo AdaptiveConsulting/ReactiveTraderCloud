@@ -4,7 +4,7 @@ import { styled, ThemeState } from 'rt-theme'
 
 import FloatingTools from './components/FloatingsTools'
 import { SectionRoot } from './styled'
-import Block from './styled/Block'
+import { SectionBlock, Block } from './styled'
 
 import Atoms from './sections/Atoms'
 import ColorSpectrum from './sections/ColorSpectrum'
@@ -14,7 +14,14 @@ import Header from './sections/Header'
 // import Footer from './sections/footer.mdx';
 // import Theme from './sections/theme.md';
 
-const sections = { Header, ColorSpectrum, CoreBranding, FontFamilies, Atoms }
+const sections = {
+  Header,
+  ColorSpectrum,
+  CoreBranding,
+  FontFamilies,
+  Atoms,
+  Ending: () => <SectionBlock mh={5} intent="inverted" />,
+}
 export class StyleguideRoute extends React.Component {
   render() {
     return (
@@ -27,7 +34,7 @@ export class StyleguideRoute extends React.Component {
                   themeName={name}
                   switchTheme={() =>
                     setTheme({
-                      name: name === 'dark' ? 'light' : 'dark'
+                      name: name === 'dark' ? 'light' : 'dark',
                     })
                   }
                 />

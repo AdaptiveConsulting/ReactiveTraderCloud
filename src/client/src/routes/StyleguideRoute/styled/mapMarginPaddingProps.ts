@@ -36,9 +36,9 @@ export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
       ['r', 'right'],
       ['y', 'top', 'bottom'],
       ['t', 'top'],
-      ['b', 'bottom']
+      ['b', 'bottom'],
     ].reduce((acc, [axis, ...variants]) => {
-      ;[0, 0.5, 1, 2, 3].forEach((value, index) => {
+      ;[0, 0.5, 1, 2, 3, 4].forEach((value, index) => {
         const group = `${prop[0]}${axis}`
         const name = `${group}${index}`
         const rule = css`
@@ -46,7 +46,7 @@ export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
             variant =>
               css`
                 ${prop + '-' + variant}: ${value}rem;
-              `
+              `,
           )};
         `
 
@@ -55,7 +55,7 @@ export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
       })
 
       return acc
-    }, {})
+    }, {}),
   )
 
   margin.mx.auto = css`
@@ -73,7 +73,7 @@ export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
 
   return {
     marginPaddingProps,
-    mapMarginPaddingProps: mapp(marginPaddingProps)
+    mapMarginPaddingProps: mapp(marginPaddingProps),
   }
 })()
 

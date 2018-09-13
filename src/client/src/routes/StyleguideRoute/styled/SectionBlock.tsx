@@ -13,12 +13,12 @@ export interface SectionProps extends BlockProps {
 const intents = {
   primary: ['primary.base', 'secondary.base'],
   secondary: ['primary.1', 'secondary.1'],
-  inverted: ['secondary.3', 'primary.1']
+  inverted: ['secondary.3', 'primary.1'],
 }
 
 export class SectionBlock extends React.Component<SectionProps, { error?: boolean }> {
   state = {
-    error: false
+    error: false,
   }
 
   componentDidCatch() {
@@ -43,7 +43,7 @@ export class SectionBlock extends React.Component<SectionProps, { error?: boolea
     }
 
     return (
-      <Section backgroundColor={backgroundColor} textColor={textColor} {...props}>
+      <Section py={2} backgroundColor={backgroundColor} textColor={textColor} {...props}>
         <div>
           <SectionBody>{children}</SectionBody>
         </div>

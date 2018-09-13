@@ -10,7 +10,7 @@ const { spectrum, accents, light, dark } = colors
 
 const SWATCH_KEYS = {
   light: [95, 9, 8, 7, 6, 5, 4, 3, 2, 1].map(v => `L${v}`),
-  dark: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(v => `D${v}`)
+  dark: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(v => `D${v}`),
 }
 
 const ColorBlocks = props => {
@@ -51,8 +51,8 @@ const ColorBlocks = props => {
                   {dark.map(({ color, name }, index) => {
                     const {
                       [dark.length + index - 4]: text = {
-                        color: 'transparent'
-                      }
+                        color: 'transparent',
+                      },
                     } = set
 
                     return (
@@ -77,7 +77,7 @@ const SwatchName = styled.div`
   font-size: 0.825rem;
   text-transform: capitalize;
   ${mapp({
-    color: color => `color: ${color}`
+    color: color => `color: ${color}`,
   })};
 `
 
@@ -91,7 +91,8 @@ const SwatchLevel = styled(SwatchName)`
   font-size: 0.75rem;
 `
 
-const Swatch = styled(props => <Block px={2} {...props} />)`
+const SwatchElement = props => <Block px={2} {...props} />
+const Swatch = styled(Block)`
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -102,6 +103,12 @@ const Swatch = styled(props => <Block px={2} {...props} />)`
   max-width: 7rem;
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.85);
+  padding: 1rem;
+
+  @media all and (max-width: 800px) {
+    min-width: 6rem;
+    max-width: 6rem;
+  }
 
   ${mapp({
     backgroundColor: {
@@ -110,14 +117,14 @@ const Swatch = styled(props => <Block px={2} {...props} />)`
         color =>
           css`
             background-color: ${color};
-          `
+          `,
       ),
       default: (color, key, { theme }) => {
         return css`
           background-color: ${color};
         `
-      }
-    }
+      },
+    },
   })};
 `
 
@@ -155,7 +162,7 @@ const SwatchGroup = styled(Block)`
               opacity: 0.1;
             }
           `
-        }
+        },
       })};
 `
 
@@ -174,13 +181,15 @@ const SwatchSetGroup = styled(Block)`
 `
 
 const Root = styled.div`
-  display: flex;
-  flex-flow: row wrap;
   margin: 1rem 0;
 
-  ${SwatchSetGroup} + ${SwatchSetGroup} {
-    padding-left: 2rem;
-  }
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto;
+  grid-gap: 2rem;
+
+  overflow-x: scroll;
+  max-width: 100%;
 `
 
 const sort = ({ base, ...colors }) => {
@@ -192,7 +201,7 @@ const sort = ({ base, ...colors }) => {
 
       acc[/d/i.test(type) ? 'dark' : /l/i.test(type) ? 'light' : /a/i.test(type) ? 'alpha' : 'unknown'][key] = {
         color,
-        name
+        name,
       }
 
       return acc
@@ -202,8 +211,8 @@ const sort = ({ base, ...colors }) => {
       dark: {},
       light: {},
       alpha: {},
-      unknown: {}
-    }
+      unknown: {},
+    },
   )
 }
 
