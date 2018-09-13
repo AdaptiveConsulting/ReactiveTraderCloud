@@ -21,10 +21,10 @@ export default props => (
     <SectionBlock mh={0} py={0}>
       <Paragraph>
         <i>
-          <strong>Notes & Instructions</strong>: Build up a consistent colour profile for your application by selecting
-          a few base colours to work from. The collection below is setup in such a way that it will generate the varying
-          colour scales for you. From this spectrum you should colour pick and define the final color values to be used
-          in your user interface.
+          <strong>Notes & Instructions</strong>: Build up a consistent color profile for your application by selecting a
+          few base colors to work from. The collection below is setup in such a way that it will generate the varying
+          color scales for you. From this spectrum you should color pick and define the final color values to be used in
+          your user interface.
         </i>
       </Paragraph>
     </SectionBlock>

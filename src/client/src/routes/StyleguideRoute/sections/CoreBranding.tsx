@@ -65,10 +65,10 @@ export default () => (
     </SectionBlock>
 
     <SectionBlock mh={3}>
-      <H2>Accents & Functional Colours</H2>
+      <H2>Accents & Functional colors</H2>
       <Paragraph>
-        Accent colours inject focus points in to the UI and are used to give the UI character and guide users attention.
-        These colours often work with the brand helping to retain the ‘feeling’ of being from the same organisation but
+        Accent colors inject focus points in to the UI and are used to give the UI character and guide users attention.
+        These colors often work with the brand helping to retain the ‘feeling’ of being from the same organisation but
         not always.
       </Paragraph>
 
