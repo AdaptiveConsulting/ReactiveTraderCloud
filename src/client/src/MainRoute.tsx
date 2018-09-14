@@ -5,7 +5,7 @@ import { timer } from 'rxjs'
 import { ConnectionActions } from 'rt-actions'
 import { Environment } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
-import { ThemeState } from 'rt-theme'
+import { ThemeName, ThemeState } from 'rt-theme'
 
 import { createApplicationServices } from './applicationServices'
 import { getEnvVars } from './config/config'
@@ -69,16 +69,43 @@ export default class MainRoute extends React.Component {
   }
 }
 
-class LocalStorageThemeProvider extends React.Component {
-  themeName = (window.localStorage.themeName = window.localStorage.themeName || 'light')
+interface State {
+  themeName: ThemeName
+}
+
+const THEME_STORAGE_KEY = 'themeName'
+
+class LocalStorageThemeProvider extends React.Component<{}, State> {
+  state = {
+    themeName: ThemeName.LIGHT
+  }
+
+  componentDidMount = () => {
+    this.setThemeNameFromStorage()
+    window.addEventListener('storage', this.setThemeNameFromStorage)
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener('storage', this.setThemeNameFromStorage)
+  }
+
+  getThemeNameFromStorage = () => localStorage.getItem(THEME_STORAGE_KEY)
+
+  setThemeNameFromStorage = () => {
+    const themeName = this.getThemeNameFromStorage()
+    if (themeName === ThemeName.LIGHT || themeName === ThemeName.DARK) {
+      this.setState({ themeName })
+    }
+  }
 
   updateLocalStorageThemeName = (name: string) => {
-    this.themeName = window.localStorage.themeName = name
+    localStorage.setItem(THEME_STORAGE_KEY, name)
+    this.setThemeNameFromStorage()
   }
 
   render() {
     return (
-      <ThemeState.Provider name={this.themeName} onChange={this.updateLocalStorageThemeName}>
+      <ThemeState.Provider name={this.state.themeName} onChange={this.updateLocalStorageThemeName}>
         {this.props.children}
       </ThemeState.Provider>
     )
