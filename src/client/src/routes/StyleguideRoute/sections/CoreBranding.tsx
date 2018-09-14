@@ -63,42 +63,45 @@ export default () => (
     </SectionBlock>
 
     <SectionBlock mh={3}>
-      <H2>Accents & Functional colors</H2>
-      <Paragraph>
-        Accent colors inject focus points in to the UI and are used to give the UI character and guide users attention.
-        These colors often work with the brand helping to retain the ‘feeling’ of being from the same organisation but
-        not always.
-      </Paragraph>
+      <QuadrantLayout>
+        <span>
+          <H2>Accents & Functional colors</H2>
+          <Paragraph mb={3}>
+            Accent colors inject focus points in to the UI and are used to give the UI character and guide users
+            attention. These colors often work with the brand helping to retain the ‘feeling’ of being from the same
+            organisation but not always.
+          </Paragraph>
+        </span>
 
-      {
-        // List themes in primary secondary palettes
-      }
-    </SectionBlock>
+        <AccentPalettes accents={colors.accents} />
 
-    <SectionBlock mh={3}>
-      <H2>Unique Collections</H2>
-      <Paragraph>
-        Create separate references for key areas of the application such as trading directions shown below.
-      </Paragraph>
+        <span>
+          <H2>Unique Collections</H2>
+          <Paragraph>
+            Create separate references for key areas of the application such as trading directions shown below.
+          </Paragraph>
+        </span>
 
-      {
-        // List trading buy / sell
-      }
-      <Paragraph>
-        <strong />
-      </Paragraph>
+        <UniquePalettes
+          palettes={{
+            'Trading Buy': { base: colors.accents.accent.base },
+            'Trading Sell': { base: colors.accents.bad.base },
+          }}
+        />
+      </QuadrantLayout>
     </SectionBlock>
   </React.Fragment>
 )
 
-const CorePalette: React.SFC<{ fg: string; label: string; palette: any; include?: any[]; codes?: object }> = ({
-  fg,
-  label: paletteLabel,
-  palette,
-  include = ['base', 1, 2, 3, 4],
-  codes = {},
-}) => (
-  <SwatchArea
+const PaletteLayout: React.SFC<{
+  grid?: Styled
+  fg: string
+  label: string
+  palette: any
+  include?: any[]
+  codes?: object
+}> = ({ grid: SwatchGrid, fg, label: paletteLabel, palette, include = ['base', 1, 2, 3, 4], codes = {} }) => (
+  <SwatchGrid
     style={{
       boxShadow: `0 0 0 4px ${rgba(fg, 0.05)}`,
     }}
@@ -121,7 +124,7 @@ const CorePalette: React.SFC<{ fg: string; label: string; palette: any; include?
         />
       )
     })}
-  </SwatchArea>
+  </SwatchGrid>
 )
 
 export interface SwatchColorProps {
@@ -180,7 +183,7 @@ export const LargeSwatchColor: Styled<SwatchColorProps> = styled(SwatchColor)`
   border-radius: 0.5rem;
 `
 
-const SwatchArea = styled.div`
+const CoreSwatchGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(4, 5rem);
@@ -220,8 +223,8 @@ const SwatchArea = styled.div`
 const ThemePalettes: React.SFC<{ theme: any }> = ({ theme: { primary, secondary }, ...props }) => {
   return (
     <ThemeRow>
-      <CorePalette label="Primary" palette={primary} fg={secondary.base} />
-      <CorePalette label="Secondary" palette={secondary} fg={primary.base} />
+      <PaletteLayout grid={CoreSwatchGrid} label="Primary" palette={primary} fg={secondary.base} />
+      <PaletteLayout grid={CoreSwatchGrid} label="Secondary" palette={secondary} fg={primary.base} />
     </ThemeRow>
   )
 }
@@ -234,12 +237,113 @@ const ThemeRow = styled.div`
   @media all and (min-width: 640px) {
     grid-template-columns: 1fr 1fr;
 
-    ${SwatchArea}:first-child {
+    ${CoreSwatchGrid}:first-child {
       border-radius: 0.5rem 0 0.5rem 0.5rem !important;
     }
 
-    ${SwatchArea}:last-child {
+    ${CoreSwatchGrid}:last-child {
       border-radius: 0 0.5rem 0.5rem 0.5rem !important;
     }
   }
+`
+
+const QuadrantLayout = styled.div`
+  display: grid;
+  grid-row-gap: 1rem;
+  grid-column-gap: 2rem;
+
+  grid-template-rows: auto;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'a1 b1'
+    'a2 b2 ';
+
+  & > :nth-child(1) {
+    grid-area: a1;
+  }
+  & > :nth-child(2) {
+    grid-area: a2;
+  }
+  & > :nth-child(3) {
+    grid-area: b1;
+  }
+  & > :nth-child(4) {
+    grid-area: b2;
+  }
+
+  @media all and (max-width: 720px) {
+    grid-template-columns: auto;
+    grid-template-areas:
+      'a1'
+      'a2'
+      'b1'
+      'b2';
+    grid-row-gap: 2rem;
+  }
+`
+
+const AccentPalettes: React.SFC<{ accents: any }> = ({ accents, ...props }) => {
+  return (
+    <AccentRowGrid>
+      {_.map(accents, (accent, label: string) => (
+        <PaletteLayout
+          key={label}
+          grid={AccentSwatchGrid}
+          label={label}
+          palette={accent}
+          fg="#FFF"
+          include={['base', '1', '2']}
+        />
+      ))}
+    </AccentRowGrid>
+  )
+}
+
+const AccentRowGrid = styled.div`
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: repeat(4, 6.5rem);
+`
+
+const AccentSwatchGrid = styled.div`
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: repeat(3, 8rem);
+  grid-template-areas:
+    'base'
+    '1'
+    '2';
+`
+
+const UniquePalettes: React.SFC<{ palettes: any }> = ({ palettes, ...props }) => {
+  return (
+    <UniqueRowGrid>
+      {_.map(palettes, (palette, label: string) => (
+        <PaletteLayout
+          key={label}
+          grid={UniqueSwatchGrid}
+          label={label}
+          palette={palette}
+          fg="#FFF"
+          include={['base']}
+        />
+      ))}
+    </UniqueRowGrid>
+  )
+}
+
+const UniqueRowGrid = styled.div`
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: repeat(2, 6.5rem);
+`
+
+const UniqueSwatchGrid = styled.div`
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: min-content;
+  display: grid;
+  grid-template-rows: 8rem;
+  grid-template-areas: 'base';
 `

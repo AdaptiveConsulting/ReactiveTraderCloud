@@ -21,7 +21,7 @@ const sections = _.mapKeys(
     Atoms,
     Ending: () => <SectionBlock mh={5} intent="inverted" />,
   },
-  _.kebabCase,
+  (value, key) => _.kebabCase(key),
 )
 
 export class StyleguideRoute extends React.Component {
