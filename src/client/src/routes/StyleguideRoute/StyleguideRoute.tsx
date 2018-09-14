@@ -1,27 +1,29 @@
+import _ from 'lodash'
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { styled, ThemeState } from 'rt-theme'
 
 import FloatingTools from './components/FloatingsTools'
-import { SectionRoot } from './styled'
-import { SectionBlock, Block } from './styled'
+import { Block, SectionBlock } from './styled'
 
 import Atoms from './sections/Atoms'
 import ColorSpectrum from './sections/ColorSpectrum'
 import CoreBranding from './sections/CoreBranding'
 import FontFamilies from './sections/FontFamilies'
-import Header from './sections/Header'
-// import Footer from './sections/footer.mdx';
-// import Theme from './sections/theme.md';
+import Introduction from './sections/Introduction'
 
-const sections = {
-  Header,
-  ColorSpectrum,
-  CoreBranding,
-  FontFamilies,
-  Atoms,
-  Ending: () => <SectionBlock mh={5} intent="inverted" />,
-}
+const sections = _.mapKeys(
+  {
+    Introduction,
+    ColorSpectrum,
+    CoreBranding,
+    FontFamilies,
+    Atoms,
+    Ending: () => <SectionBlock mh={5} intent="inverted" />,
+  },
+  _.kebabCase,
+)
+
 export class StyleguideRoute extends React.Component {
   render() {
     return (
@@ -43,15 +45,16 @@ export class StyleguideRoute extends React.Component {
           </ThemeState.Consumer>
           <BrowserRouter>
             <Switch>
-              {Object.keys(sections).map(path => (
+              {_.map(sections, (Section, path) => (
                 <Route key={path} path={`/styleguide/${path}`}>
-                  <SectionRoot>{React.createElement(sections[path])}</SectionRoot>
+                  <Section />
                 </Route>
               ))}
+
               <Route>
                 <React.Fragment>
-                  {Object.keys(sections).map(path => (
-                    <SectionRoot>{React.createElement(sections[path])}</SectionRoot>
+                  {_.map(sections, (Section, path) => (
+                    <Section key={path} />
                   ))}
                 </React.Fragment>
               </Route>

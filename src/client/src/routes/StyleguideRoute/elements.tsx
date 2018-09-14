@@ -1,21 +1,16 @@
-import mapp from '@evanrs/map-props'
 import _ from 'lodash'
 import React from 'react'
-import { css, styled, Styled } from 'rt-theme'
+import { styled, Styled } from 'rt-theme'
 
 import { resolvesColor } from 'rt-theme'
 
-import { mapMarginPaddingProps, MarginPaddingProps } from './styled'
+import { mapMarginPaddingProps, mapTextProps, MarginPaddingProps, TextProps } from './styled'
 
 export { Paragraph } from './styled'
 
-interface HeaderProps extends MarginPaddingProps {
-  caps?: boolean
-  weight?: number
-}
-
 export const Hashable = ({ is: Element = 'div', ...props }) => <Element {...props} id={_.kebabCase(props.children)} />
 
+interface HeaderProps extends MarginPaddingProps, TextProps {}
 export const Header: Styled<HeaderProps> = styled(Hashable)`
   margin: 1rem 0 1rem;
 
@@ -24,19 +19,8 @@ export const Header: Styled<HeaderProps> = styled(Hashable)`
   font-size: 1.5rem;
   letter-spacing: 0;
 
-  ${mapp({
-    caps: css`
-      text-transform: uppercase;
-      letter-spacing: -0.125em;
-    `,
-
-    weight: ({ weight }) =>
-      css`
-        font-weight: ${weight};
-      `
-  })};
-
-  ${mapMarginPaddingProps};
+  ${mapTextProps};
+  ${props => mapMarginPaddingProps(props) as (props: HeaderProps) => string};
 `
 
 export const H1 = styled(Header)`
@@ -83,7 +67,7 @@ export const Column = styled.div`
   width: 100%;
   height: max-content;
   min-height: 100%;
-  overflow: hidden;
+  overflow: visible;
 `
 
 export const NumberedLayout = styled<{ number: number | string }>(({ number, children, ...props }) => (
@@ -111,27 +95,3 @@ export const SectionNumber = styled.div`
   color: ${resolvesColor('secondary[2]')};
   box-shadow: 0 0 0 0.125rem ${resolvesColor('secondary[2]')};
 `
-
-// export const headers = {
-//   1: {
-//     lineHeight: '3rem',
-//     fontSize: '2.25rem',
-//     fontWeight: 'bold',
-//     textTransform: 'uppercase'
-//   },
-//   2: {
-//     lineHeight: '2rem',
-//     fontSize: '1.5rem',
-//     fontWeight: '300',
-//     textTransform: 'uppercase',
-//     letterSpacing: '0.125rem'
-//   },
-//   3: {
-//     lineHeight: '1.5rem',
-//     fontSize: '1.125rem',
-//     fontWeight: '400',
-//     letterSpacing: '-0.49px'
-//   },
-//   4: {},
-//   5: {}
-// }

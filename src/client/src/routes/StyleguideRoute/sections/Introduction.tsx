@@ -6,7 +6,7 @@ import designTownPNGURL from '../assets/design-town.png'
 import { H1, H3 } from '../elements'
 import { Paragraph, SectionBlock } from '../styled'
 
-export default props => (
+export const Introduction: React.SFC = props => (
   <React.Fragment>
     <SectionBlock intent="secondary" {...props}>
       <Flex>
@@ -57,9 +57,4 @@ const Background = styled.div`
   background-size: contain;
 `
 
-// const HeaderSection = styled(SectionBlock)`
-//   background-image: url(${designTownPNGURL});
-//   background-origin: content-box;
-//   background-position: center right;
-//   background-size: 50% auto;
-// `
+export default Introduction

@@ -1,5 +1,7 @@
 import _ from 'lodash'
 import React, { ButtonHTMLAttributes } from 'react'
+import { withProps } from 'recompose'
+
 import { css, resolvesColor, styled, Styled, Theme, ThemeProvider } from 'rt-theme'
 
 import { userSelectButton, userSelectNone } from '../rules'
@@ -113,7 +115,7 @@ export class ButtonGroup extends React.Component<ButtonStyleProps> {
   }
 }
 
-const BaseElement: Styled<ButtonStyleProps> = styled.button`
+const StyledBase = withProps({ role: 'button' })(styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -153,6 +155,8 @@ const BaseElement: Styled<ButtonStyleProps> = styled.button`
   ${({ pill }) =>
     pill &&
     css`
+      border-radius: 2rem;
+
       &,
       &::before,
       &::after {
@@ -179,10 +183,9 @@ const BaseElement: Styled<ButtonStyleProps> = styled.button`
       & {
         transition: background-color 80ms ease, color 180ms ease;
       }
-    `};
-`
+    `};` as Styled<ButtonStyleProps>)
 
-export const StyledButton: Styled<ButtonStyleProps> = styled(BaseElement)`
+export const StyledButton: Styled<ButtonStyleProps> = styled(StyledBase)`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;
@@ -194,12 +197,6 @@ export const StyledButton: Styled<ButtonStyleProps> = styled(BaseElement)`
   padding-left: 0.75rem;
   padding-right: 0.75rem;
 
-  &,
-  &::before,
-  &::after {
-    border-radius: 0.25rem;
-  }
-
   &:active ${({ active }) => (active ? ', &' : '')} {
     background-color: ${resolvesColor('active.backgroundColor')};
     * {
@@ -207,21 +204,19 @@ export const StyledButton: Styled<ButtonStyleProps> = styled(BaseElement)`
     }
   }
 
-  ${props => userSelectButton(props)};
+  ${({ size }) =>
+    (size || size > 1) &&
+    css`
+      padding-top: ${((size + 1) / 2) * 0.75}rem;
+      padding-bottom: ${((size + 1) / 2) * 0.75}rem;
+      padding-left: ${size * 0.75}rem;
+      padding-right: ${size * 0.75}rem;
+    `};
 
-  ${({ size }) => {
-    return !size || size <= 1
-      ? ''
-      : css`
-          padding-top: ${((size + 1) / 2) * 0.75}rem;
-          padding-bottom: ${((size + 1) / 2) * 0.75}rem;
-          padding-left: ${size * 0.75}rem;
-          padding-right: ${size * 0.75}rem;
-        `
-  }};
+  ${props => userSelectButton(props)};
 `
 
-export const StyledButtonGroup: Styled<ButtonStyleProps> = styled(BaseElement)`
+export const StyledButtonGroup: Styled<ButtonStyleProps> = styled(StyledBase)`
   ${StyledButton} {
     min-width: 1rem;
     padding-left: 0.625rem;
@@ -279,47 +274,5 @@ export const StyledButtonGroup: Styled<ButtonStyleProps> = styled(BaseElement)`
     `};
   )
 `
-
-export const mapButtonProps = _.map(
-  {
-    size: ({ size }) => {
-      return !size || size <= 1
-        ? ''
-        : css`
-            font-size: ${size * 0.5}rem;
-            line-height: ${size * 1}rem;
-          `
-    },
-
-    pill: ({ pill }) =>
-      css`
-        &,
-        &::before,
-        &::after {
-          border-radius: 2rem;
-        }
-      `,
-
-    disabled: ({ disabled }) =>
-      css`
-        opacity: 0.5;
-        pointer-events: none;
-      `,
-
-    outline: ({ outline }) =>
-      css`
-        position: relative;
-        z-index: 1;
-
-        box-shadow: ${rules.boxShadow}, 0 0 0 0.125rem currentColor inset;
-
-        *,
-        & {
-          transition: background-color 80ms ease, color 180ms ease;
-        }
-      `,
-  },
-  (fn, propName) => props => (props[propName] || props[propName] === 0) && fn(props),
-)
 
 export default Button

@@ -5,8 +5,6 @@ import React from 'react'
 import { css, Styled, styled } from 'rt-theme'
 import { colors } from 'rt-theme'
 
-import { getColor } from '../tools'
-
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
 
@@ -23,7 +21,7 @@ export default () => (
       </NumberedLayout>
     </SectionBlock>
 
-    <SectionBlock backgroundColor="white" mh={0} py={0}>
+    <SectionBlock mh={0} py={0}>
       <Paragraph>
         <i>
           <strong>Tip</strong>: Colors used can and will change in a UI therefore resist the temptation to reference the
@@ -102,7 +100,7 @@ const CorePalette: React.SFC<{ fg: string; label: string; palette: any; include?
 }) => (
   <SwatchArea
     style={{
-      boxShadow: `0 0 0 2px ${rgba(fg, 0.15)}`,
+      boxShadow: `0 0 0 4px ${rgba(fg, 0.05)}`,
     }}
   >
     {include.map((key, i) => {
@@ -110,6 +108,7 @@ const CorePalette: React.SFC<{ fg: string; label: string; palette: any; include?
 
       return (
         <Swatch
+          key={key}
           className={css({
             gridArea: key,
             boxShadow: i < 1 && `0 0 2rem ${rgba(palette[include[include.length - 1]], 0.5)}`,
@@ -167,12 +166,6 @@ export const SwatchColor: Styled<SwatchColorProps> = styled(Block)`
   display: flex;
   justify-content: flex-end;
   flex-flow: column nowrap;
-
-  ${({ theme, bg, fg }) =>
-    css({
-      backgroundColor: getColor(theme, bg),
-      color: getColor(theme, fg, theme.white),
-    })};
 `
 
 export const LargeSwatchColor: Styled<SwatchColorProps> = styled(SwatchColor)`

@@ -1,53 +1,56 @@
 import _ from 'lodash'
 import React from 'react'
-import { styled, css } from 'rt-theme'
-import mapp from '@evanrs/map-props'
+import { css, styled, Styled } from 'rt-theme'
 
 import { colors } from 'rt-theme'
-import Block from '../styled/Block'
 
-const { spectrum, accents, light, dark } = colors
+import { Block, BlockProps } from '../styled'
+import { PassThroughProps } from '../tools'
+
+const { spectrum } = colors
 
 const SWATCH_KEYS = {
   light: [95, 9, 8, 7, 6, 5, 4, 3, 2, 1].map(v => `L${v}`),
   dark: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(v => `D${v}`),
 }
 
-const ColorBlocks = props => {
+export interface ColorBlocksProps extends PassThroughProps {}
+
+export const ColorBlocks: React.SFC<ColorBlocksProps> = props => {
   const { brand, offblack, blue, red, yellow, green } = spectrum
   return (
     <Root>
       {[{ brand, offblack }, { blue, red, yellow, green }].map((swatchSetGroup, i) => (
         <SwatchSetGroup key={i}>
           {_.map(swatchSetGroup, (color, name) => {
-            let base = color.base
-            let light = SWATCH_KEYS.light.map(key => ({ color: color[key], name: key }))
-            let dark = SWATCH_KEYS.dark.map(key => ({ color: color[key], name: key }))
+            const base = color.base
+            const light = SWATCH_KEYS.light.map(key => ({ color: color[key], name: key }))
+            const dark = SWATCH_KEYS.dark.map(key => ({ color: color[key], name: key }))
 
             const set = [...light, { color: base }, ...dark]
 
             return (
               <SwatchSet key={name}>
-                <SwatchGroup glow={base}>
+                <SwatchGroup>
                   {light.map(({ color, name }, index) => {
                     const { [index + 4]: text = { color: 'transparent' } } = set
 
                     return (
-                      <Swatch key={name} backgroundColor={color}>
-                        <SwatchLevel color={text.color}>{name}</SwatchLevel>
+                      <Swatch key={name} bg={color}>
+                        <SwatchLevel fg={text.color}>{name}</SwatchLevel>
                       </Swatch>
                     )
                   })}
                 </SwatchGroup>
 
                 <SwatchGroup py={2}>
-                  <Swatch backgroundColor={base}>
+                  <Swatch bg={base}>
                     <SwatchName>{name}</SwatchName>
                     <SwatchValue>{base}</SwatchValue>
                   </Swatch>
                 </SwatchGroup>
 
-                <SwatchGroup glow={base}>
+                <SwatchGroup>
                   {dark.map(({ color, name }, index) => {
                     const {
                       [dark.length + index - 4]: text = {
@@ -56,8 +59,8 @@ const ColorBlocks = props => {
                     } = set
 
                     return (
-                      <Swatch key={name} backgroundColor={color}>
-                        <SwatchLevel color={text.color}>{name}</SwatchLevel>
+                      <Swatch key={name} bg={color}>
+                        <SwatchLevel fg={text.color}>{name}</SwatchLevel>
                       </Swatch>
                     )
                   })}
@@ -71,14 +74,10 @@ const ColorBlocks = props => {
   )
 }
 
-const SwatchName = styled.div`
-  font-family: Lato, sans-serif;
+const SwatchName: Styled<BlockProps> = styled(Block)`
   font-weight: bold;
   font-size: 0.825rem;
   text-transform: capitalize;
-  ${mapp({
-    color: color => `color: ${color}`,
-  })};
 `
 
 const SwatchValue = styled(SwatchName)`
@@ -91,8 +90,7 @@ const SwatchLevel = styled(SwatchName)`
   font-size: 0.75rem;
 `
 
-const SwatchElement = props => <Block px={2} {...props} />
-const Swatch = styled(Block)`
+const Swatch: Styled<BlockProps> = styled(Block)`
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -109,23 +107,6 @@ const Swatch = styled(Block)`
     min-width: 6rem;
     max-width: 6rem;
   }
-
-  ${mapp({
-    backgroundColor: {
-      ..._.mapValues(
-        colors,
-        color =>
-          css`
-            background-color: ${color};
-          `,
-      ),
-      default: (color, key, { theme }) => {
-        return css`
-          background-color: ${color};
-        `
-      },
-    },
-  })};
 `
 
 const SwatchGroup = styled(Block)`
@@ -140,37 +121,13 @@ const SwatchGroup = styled(Block)`
   ${Swatch}:first-of-type:last-of-type {
     border-radius: 0.75rem;
   }
-
-  ${true
-    ? null
-    : mapp({
-        glow: glow => {
-          return css`
-            position: relative;
-            margin-left: 2px;
-
-            &::before {
-              display: block;
-              content: '';
-              position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              box-shadow: 0 0 0 2px ${glow};
-              border-radius: 0.625rem;
-              opacity: 0.1;
-            }
-          `
-        },
-      })};
 `
 
 const SwatchSet = styled(Block)`
   height: 100%;
 `
 
-const SwatchSetGroup = styled(Block)`
+const SwatchSetGroup: Styled<BlockProps & { children: any[] }> = styled(Block)`
   display: grid;
   height: 100%;
 
@@ -188,32 +145,7 @@ const Root = styled.div`
   grid-template-rows: auto;
   grid-gap: 2rem;
 
-  overflow-x: scroll;
   max-width: 100%;
 `
-
-const sort = ({ base, ...colors }) => {
-  return _.reduce(
-    colors,
-    (acc, color, name) => {
-      let [type, level, notch] = [...name.split(''), 0]
-      let key = Number(`${level}${notch}`)
-
-      acc[/d/i.test(type) ? 'dark' : /l/i.test(type) ? 'light' : /a/i.test(type) ? 'alpha' : 'unknown'][key] = {
-        color,
-        name,
-      }
-
-      return acc
-    },
-    {
-      base,
-      dark: {},
-      light: {},
-      alpha: {},
-      unknown: {},
-    },
-  )
-}
 
 export default ColorBlocks

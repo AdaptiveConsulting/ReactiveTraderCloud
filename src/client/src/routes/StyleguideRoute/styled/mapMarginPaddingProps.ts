@@ -1,6 +1,7 @@
-import mapp from '@evanrs/map-props'
 import _ from 'lodash'
 import { css } from 'rt-theme'
+
+import { mapProps } from '../tools'
 
 // export type PropValue = number | string | boolean
 export type PropValue = any
@@ -49,7 +50,6 @@ export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
               `,
           )};
         `
-
         acc[group] = acc[group] || {}
         acc[name] = acc[group][index] = rule
       })
@@ -69,11 +69,26 @@ export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
     margin-right: auto;
   `
 
+  padding.px.viewport = css`
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    @media all and (min-width: 375px) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    @media all and (min-width: 420px) {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  `
+
   const marginPaddingProps = { ...margin, ...padding }
 
   return {
     marginPaddingProps,
-    mapMarginPaddingProps: mapp(marginPaddingProps),
+    mapMarginPaddingProps: mapProps(marginPaddingProps),
   }
 })()
 

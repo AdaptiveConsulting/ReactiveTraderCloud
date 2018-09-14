@@ -1,10 +1,12 @@
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
-import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
-import { styled, css } from 'rt-theme'
+import React from 'react'
 
-import Button, { ButtonGroup } from '../styled/Button'
-import { resolvesColor } from 'rt-theme/tools'
+import { Button, ButtonGroup } from 'rt-styleguide'
+import { resolvesColor, styled } from 'rt-theme'
+
+import { PassThroughProps } from '../tools'
 
 export default class ButtonGrid extends React.Component {
   state = {}
@@ -41,7 +43,7 @@ export default class ButtonGrid extends React.Component {
   }
 }
 
-const ButtonVariants = props => (
+const ButtonVariants: React.SFC<PassThroughProps> = props => (
   <React.Fragment>
     {
       // standard
@@ -80,10 +82,10 @@ const ButtonVariants = props => (
       //  With Icons
       <ButtonRow>
         <Button {...props} intent="primary">
-          Primary
+          <FontAwesomeIcon icon={faCheck} /> Primary
         </Button>
         <Button {...props} intent="secondary">
-          Secondary
+          <FontAwesomeIcon icon={faCheck} /> Secondary
         </Button>
       </ButtonRow>
     }
@@ -122,15 +124,19 @@ const LabelColumn = styled(GridColumn)`
 const ColumnTitle = styled.div``
 const ButtonRow = styled.div`
   display: grid;
-  grid-template-columns: minmax(40%, 45%) 40%;
-  grid-column-gap: 0.25rem;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 0.5rem;
 `
-const ButtonColumn = styled(GridColumn)``
+const ButtonColumn = styled(GridColumn)`
+  min-width: 10rem;
+`
 
 const Root = styled.div`
+  max-width: 60rem;
+
   display: grid;
-  grid-template-columns: 5rem 1fr 1fr 1fr 1fr minmax(0%, 15%);
-  grid-column-gap: 0.5rem;
+  grid-template-columns: 5rem 1fr 1fr 1fr 1fr ;
+  grid-column-gap: 2rem;
 
   padding-bottom: 2rem;
 

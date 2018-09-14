@@ -1,13 +1,15 @@
 import _ from 'lodash'
 import React from 'react'
-import { styled } from 'rt-theme'
+import { css, styled, Styled } from 'rt-theme'
 
 import { Block, BlockProps } from '../styled'
+import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 
-export interface SectionProps extends BlockProps {
+export interface SectionProps extends BlockProps, MarginPaddingProps {
   mh?: any
   invert?: boolean
   intent?: 'primary' | 'secondary' | 'inverted'
+  overflow?: boolean
 }
 
 const intents = {
@@ -43,16 +45,18 @@ export class SectionBlock extends React.Component<SectionProps, { error?: boolea
     }
 
     return (
-      <Section py={2} backgroundColor={backgroundColor} textColor={textColor} {...props}>
-        <div>
+      <SectionBleed py={2} backgroundColor={backgroundColor} textColor={textColor} {...props}>
+        <div
+        // Allows SectionBody margins to collapse with children
+        >
           <SectionBody>{children}</SectionBody>
         </div>
-      </Section>
+      </SectionBleed>
     )
   }
 }
 
-export const Section = styled(Block)<SectionProps>`
+export const SectionBleed: Styled<SectionProps> = styled(Block)`
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -74,6 +78,39 @@ export const Section = styled(Block)<SectionProps>`
     padding-left: 2rem;
     padding-right: 2rem;
   }
+
+  @media all and (min-width: 0) {
+    ${mapMarginPaddingProps};
+  }
+
+  ${({ overflow }: SectionProps): false | ReturnType<typeof css> =>
+    overflow &&
+    css`
+      @media all and (max-width: 960px) {
+        padding-right: 0;
+        padding-left: 0;
+        overflow-x: scroll;
+
+        ${SectionBody} {
+          width: max-content;
+          min-width: 100%;
+          max-width: 60rem;
+
+          padding-left: 1rem;
+          padding-right: 1rem;
+
+          @media all and (min-width: 375px) {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+          }
+
+          @media all and (min-width: 420px) {
+            padding-left: 2rem;
+            padding-right: 2rem;
+          }
+        }
+      }
+    `};
 `
 
 export const SectionBody = styled.div`
@@ -81,10 +118,7 @@ export const SectionBody = styled.div`
   margin-right: auto;
   width: 100%;
   max-width: 60rem;
-`
-
-export const SectionRoot = styled.div`
-  ${Section} + ${Section} ${SectionBody} {
+  ${SectionBleed} + ${SectionBleed} & {
     margin-top: 2rem;
     margin-bottom: 2rem;
   }

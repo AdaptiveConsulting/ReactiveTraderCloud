@@ -4,6 +4,7 @@ import { css, styled, Styled } from 'rt-theme'
 
 import { H2, H3 } from '../elements'
 import { Paragraph, SectionBlock, Text, TextProps } from '../styled'
+import { PassThroughProps } from '../tools'
 
 const SIZES = [
   ['Heading H1', 55, 3.5],
@@ -20,10 +21,6 @@ const CHARACTERS = [
   `1234567890`,
   `‘?’“!”(%)[#]{@}/&\<-+÷×=>®©$€£¥¢:;,.*`,
 ].map(line => line.split('').join(' '))
-
-const WEIGHT_NAME = {
-  100: 'Extra Light',
-}
 
 const LATO = {
   fontFamily: 'lato',
@@ -51,7 +48,7 @@ const MONTSERRAT = {
   ],
 }
 
-export default props => (
+export const FontFamilies: React.SFC<PassThroughProps> = props => (
   <React.Fragment>
     <SectionBlock mh={1}>
       <H2>Font Families</H2>
@@ -93,7 +90,7 @@ export default props => (
 
       <FontSizeGrid>
         {SIZES.map(([label, fontSize, lineHeight]) => (
-          <React.Fragment>
+          <React.Fragment key={label}>
             <Text color="secondary.1">
               {label} — {fontSize}
               px
@@ -120,7 +117,7 @@ const FontFamilySample: React.SFC<{
       <CharacterMap>
         {CHARACTERS.map(
           line =>
-            <CharacterLine>{line}</CharacterLine> || (
+            <CharacterLine key={line}>{line}</CharacterLine> || (
               <React.Fragment>
                 <CharacterLine>{line.slice(0, line.length / 2)}</CharacterLine>{' '}
                 <CharacterLine>{line.slice(line.length / 2)}</CharacterLine>
@@ -132,7 +129,7 @@ const FontFamilySample: React.SFC<{
       <Heading>Styles</Heading>
       <FontWeightGrid fontSize={1} lineHeight={2} fontFamily={fontFamily}>
         {_.map(fontFaces, face => (
-          <div style={{ width: 'min-content' }}>
+          <div key={face.name} style={{ width: 'min-content' }}>
             <FontWeight {...face}>{face.name}</FontWeight>
             <FontWeight {...face} fontStyle="italic">
               {face.name}
@@ -154,7 +151,7 @@ const FontFamilySampleGrid: Styled<TextProps> = styled(Text)`
   overflow: hidden;
 `
 
-const Glyph = props => (
+const Glyph: React.SFC<PassThroughProps> = props => (
   <div>
     <Heading>Glyph</Heading>
     <Paragraph fontSize={5} lineHeight={5} fontWeight="bold" {...props} />
@@ -224,3 +221,5 @@ const FontSizeGrid: Styled<{ children: any[] }> = styled.div`
 
   align-items: baseline;
 `
+
+export default FontFamilies
