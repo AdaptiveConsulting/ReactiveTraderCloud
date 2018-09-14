@@ -22,12 +22,12 @@ type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToPr
 
 type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
 
-const SpotTileContainer: React.SFC<SpotTileContainerProps> = ({ onMount, executionStatus, id, ...props }) => (
+const SpotTileContainer: React.SFC<SpotTileContainerProps> = ({ onMount, pricingStatus, id, ...props }) => (
   <Loadable
     onMount={onMount}
-    status={executionStatus}
+    status={pricingStatus}
     render={() => <TileSwitch key={id} {...props} />}
-    message="Tile Disconnected"
+    message={`${id} Disconnected`}
   />
 )
 

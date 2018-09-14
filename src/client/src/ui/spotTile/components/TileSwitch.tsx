@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Action } from 'redux'
-import { CurrencyPair } from 'rt-types'
+import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
 import { ExecuteTradeRequest, SpotTileData } from '../model'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 import { TileBooking } from './notifications'
@@ -12,7 +11,8 @@ interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
   tornOff?: boolean
-  executeTrade: (tradeRequestObj: ExecuteTradeRequest) => Action
+  executionStatus: ServiceConnectionStatus
+  executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
   onPopoutClick?: () => void
   onNotificationDismissed: () => void
   displayCurrencyChart?: () => void
@@ -31,7 +31,9 @@ export default class TileSwitch extends Component<Props> {
         valueDate: '',
         priceMovementType: PriceMovementTypes.None,
         priceStale: false
-      }
+      },
+      currencyChartIsOpening: false,
+      lastTradeExecutionStatus: null
     },
     currencyPair: {
       symbol: '',
@@ -50,14 +52,20 @@ export default class TileSwitch extends Component<Props> {
       tornOff,
       onPopoutClick,
       onNotificationDismissed,
-      displayCurrencyChart
+      displayCurrencyChart,
+      executionStatus
     } = this.props
 
     const { lastTradeExecutionStatus, isTradeExecutionInFlight } = spotTileData
     const isPriceStale = !lastTradeExecutionStatus && spotTileData.price && spotTileData.price.priceStale
 
     return (
-      <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade}>
+      <SpotTile
+        currencyPair={currencyPair}
+        spotTileData={spotTileData}
+        executeTrade={executeTrade}
+        executionStatus={executionStatus}
+      >
         {<TileControls canPopout={tornOff} onPopoutClick={onPopoutClick} displayCurrencyChart={displayCurrencyChart} />}
         <TileBooking show={isTradeExecutionInFlight} />
         <NotificationContainer
