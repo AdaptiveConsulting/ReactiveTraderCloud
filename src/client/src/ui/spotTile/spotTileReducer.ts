@@ -1,5 +1,6 @@
 import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { SpotTileActions, TILE_ACTION_TYPES } from './actions'
+import { PriceMovementTypes } from './model/priceMovementTypes'
 import { SpotTileData } from './model/spotTileData'
 
 interface SpotTileState {
@@ -11,7 +12,17 @@ const INITIAL_STATE: SpotTileState = {}
 const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   isTradeExecutionInFlight: false,
   currencyChartIsOpening: false,
-  lastTradeExecutionStatus: null
+  lastTradeExecutionStatus: null,
+  price: {
+    ask: 0,
+    bid: 0,
+    mid: 0,
+    creationTimestamp: 0,
+    symbol: '',
+    valueDate: '',
+    priceMovementType: PriceMovementTypes.None,
+    priceStale: false
+  }
 }
 
 const spotTileReducer = (

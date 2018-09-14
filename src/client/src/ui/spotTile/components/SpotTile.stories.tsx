@@ -177,6 +177,7 @@ stories.add('Booking', () => (
         }}
       >
         <TileSwitch
+          executionStatus={ServiceConnectionStatus.CONNECTED}
           onNotificationDismissed={onNotificationDismissedClick}
           currencyPair={currencyPair}
           spotTileData={{ ...spotTileData, isTradeExecutionInFlight: true }}
@@ -198,6 +199,7 @@ stories.add('Executed', () => (
         }}
       >
         <TileSwitch
+          executionStatus={ServiceConnectionStatus.CONNECTED}
           onNotificationDismissed={onNotificationDismissedClick}
           currencyPair={currencyPair}
           spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeExecuted }}
@@ -219,6 +221,7 @@ stories.add('Rejected', () => (
         }}
       >
         <TileSwitch
+          executionStatus={ServiceConnectionStatus.CONNECTED}
           onNotificationDismissed={onNotificationDismissedClick}
           currencyPair={currencyPair}
           spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeRejected }}
@@ -254,6 +257,7 @@ stories.add('Switch', () => {
           }}
         >
           <TileSwitch
+            executionStatus={ServiceConnectionStatus.CONNECTED}
             onNotificationDismissed={onNotificationDismissedClick}
             currencyPair={currencyPair}
             spotTileData={{

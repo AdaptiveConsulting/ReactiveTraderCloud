@@ -64,11 +64,14 @@ export default class SpotTile extends PureComponent<Props, State> {
   }
 
   render() {
-    const { currencyPair, spotTileData, children } = this.props
+    const {
+      currencyPair,
+      spotTileData: { price },
+      children
+    } = this.props
     const { notional } = this.state
 
-    const priceData = spotTileData && spotTileData.price
-    const spotDate = priceData && spotDateFormatter(priceData.valueDate, false).toUpperCase()
+    const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
 
     return (
       <ThemeProvider theme={theme => theme.tile}>
@@ -81,7 +84,7 @@ export default class SpotTile extends PureComponent<Props, State> {
               </Flex>
               <PriceControls
                 executeTrade={this.executeTrade}
-                priceData={priceData}
+                priceData={price}
                 currencyPair={currencyPair}
                 disabled={!this.canExecute()}
               />

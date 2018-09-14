@@ -1,7 +1,6 @@
 import React from 'react'
 import { Flex } from 'rt-components'
 import { CurrencyPair, Direction } from 'rt-types'
-import { PriceMovementTypes } from '../model/priceMovementTypes'
 import { SpotPriceTick } from '../model/spotPriceTick'
 import { getSpread, toRate } from '../model/spotTileUtils'
 import PriceButton from './PriceButton'
@@ -41,19 +40,6 @@ const PriceControls: React.SFC<Props> = ({ currencyPair, priceData, executeTrade
       />
     </Flex>
   )
-}
-
-PriceControls.defaultProps = {
-  priceData: {
-    ask: 0,
-    bid: 0,
-    mid: 0,
-    creationTimestamp: 0,
-    symbol: '',
-    valueDate: '',
-    priceMovementType: PriceMovementTypes.None,
-    priceStale: false
-  }
 }
 
 export default PriceControls
