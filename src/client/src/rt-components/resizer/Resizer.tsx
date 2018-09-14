@@ -51,7 +51,7 @@ export default class Resizer extends Component<Props, State> {
 
   state = {
     dragging: false,
-    height: this.props.defaultHeight
+    height: this.props.defaultHeight,
   }
 
   componentDidMount = () => {
@@ -78,7 +78,11 @@ export default class Resizer extends Component<Props, State> {
     document.removeEventListener('touchend', this.handleStop)
   }
 
-  handleStop = () => this.setState({ dragging: false })
+  handleStop = () => {
+    if (this.state.dragging) {
+      this.setState({ dragging: false })
+    }
+  }
 
   handleStart = () => this.setState({ dragging: true })
 

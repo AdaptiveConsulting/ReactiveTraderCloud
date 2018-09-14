@@ -16,17 +16,19 @@ interface State {
 
 export class NotificationRoute extends React.Component<{}, State> {
   state: State = {
-    message: null
+    message: null,
   }
 
-  onNotificationMessage = (window.onNotificationMessage = (message: Message) => {
-    this.setState({ message }, () =>
-      // send a message back to the main application - required to restore the main application window if it's minimised
-      window.fin.desktop.Notification.getCurrent().sendMessageToApplication('ack')
-    )
-  })
+  componentDidMount = () => {
+    window.onNotificationMessage = (message: Message) => {
+      this.setState({ message }, () =>
+        // send a message back to the main application - required to restore the main application window if it's minimised
+        fin.desktop.Notification.getCurrent().sendMessageToApplication('ack'),
+      )
+    }
+  }
 
-  onDismissNotification = () => window.fin.desktop.Notification.getCurrent().close()
+  onDismissNotification = () => fin.desktop.Notification.getCurrent().close()
 
   render() {
     const { message } = this.state

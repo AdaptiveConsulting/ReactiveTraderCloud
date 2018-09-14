@@ -1,109 +1,108 @@
-import { logger } from 'rt-system'
 import { User } from 'rt-types'
 
-const log = logger.create('FakeUserRepository')
+const LOG_NAME = 'FakeUserRepository: '
 
 const fakeUserDetails = [
   {
     shortCode: 'LMO',
     firstName: 'Lorretta',
-    lastName: 'Moe'
+    lastName: 'Moe',
   },
   {
     shortCode: 'WMO',
     firstName: 'Wenona',
-    lastName: 'Moshier'
+    lastName: 'Moshier',
   },
   {
     shortCode: 'NGA',
     firstName: 'Nita',
-    lastName: 'Garica'
+    lastName: 'Garica',
   },
   {
     shortCode: 'HHA',
     firstName: 'Hyun',
-    lastName: 'Havlik'
+    lastName: 'Havlik',
   },
   {
     shortCode: 'EDO',
     firstName: 'Elizebeth',
-    lastName: 'Doverspike'
+    lastName: 'Doverspike',
   },
   {
     shortCode: 'MDA',
     firstName: 'Magali',
-    lastName: 'Dash'
+    lastName: 'Dash',
   },
   {
     shortCode: 'DGR',
     firstName: 'Dorinda',
-    lastName: 'Granillo'
+    lastName: 'Granillo',
   },
   {
     shortCode: 'JMC',
     firstName: 'Jade',
-    lastName: 'Mccollister'
+    lastName: 'Mccollister',
   },
   {
     shortCode: 'MPE',
     firstName: 'Michiko',
-    lastName: 'Perl'
+    lastName: 'Perl',
   },
   {
     shortCode: 'CZA',
     firstName: 'Chanda',
-    lastName: 'Zager'
+    lastName: 'Zager',
   },
   {
     shortCode: 'JED',
     firstName: 'Jarrett',
-    lastName: 'Eddings'
+    lastName: 'Eddings',
   },
   {
     shortCode: 'HLU',
     firstName: 'Harley',
-    lastName: 'Luther'
+    lastName: 'Luther',
   },
   {
     shortCode: 'DOR',
     firstName: 'Dong',
-    lastName: 'Ortega'
+    lastName: 'Ortega',
   },
   {
     shortCode: 'KLA',
     firstName: 'King',
-    lastName: 'Lamb'
+    lastName: 'Lamb',
   },
   {
     shortCode: 'AZE',
     firstName: 'Andres',
-    lastName: 'Zebrowski'
+    lastName: 'Zebrowski',
   },
   {
     shortCode: 'RNI',
     firstName: 'Rufus',
-    lastName: 'Nilges'
+    lastName: 'Nilges',
   },
   {
     shortCode: 'FAP',
     firstName: 'Fritz',
-    lastName: 'Aparicio'
+    lastName: 'Aparicio',
   },
   {
     shortCode: 'DNA',
     firstName: 'Don',
-    lastName: 'Nason'
+    lastName: 'Nason',
   },
   {
     shortCode: 'ESP',
     firstName: 'Eldridge',
-    lastName: 'Spoor'
+    lastName: 'Spoor',
   },
   {
     shortCode: 'AGE',
     firstName: 'Ambrose',
-    lastName: 'Gerdts'
-  }
+    lastName: 'Gerdts',
+  },
 ]
 
 const userDetails = fakeUserDetails[Math.floor(Math.random() * fakeUserDetails.length)]
@@ -111,10 +110,13 @@ const userDetails = fakeUserDetails[Math.floor(Math.random() * fakeUserDetails.l
 const currentUser: User = {
   firstName: userDetails.firstName,
   lastName: userDetails.lastName,
-  code: userDetails.shortCode
+  code: userDetails.shortCode,
 }
 
-log.info(`Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`)
+console.info(
+  LOG_NAME,
+  `Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`,
+)
 
 export default class FakeUserRepository {
   /**

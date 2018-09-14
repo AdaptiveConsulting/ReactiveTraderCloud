@@ -16,8 +16,9 @@
         "frame": false
     },
     "runtime": {
-        "version": "9.61.33.32",
-        "futureVersion": "9.61.33.32",
+        "arguments": "--force-device-scale-factor=1",
+        "version": "9.61.34.22",
+        "futureVersion": "9.61.34.22",
         "forceLatest": true
     },
     "shortcut": {
@@ -25,10 +26,5 @@
         "description": "Desktop Reactive Trader Cloud",
         "icon": "http://localhost:3000/static/media/icon.ico",
         "name": "Reactive Trader Cloud (LOCAL)"
-    },
-    "services": [
-        {
-            "name": "layouts"
-        }
-    ]
+    }
 }

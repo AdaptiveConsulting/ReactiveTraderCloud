@@ -3,9 +3,9 @@ import React, { PureComponent } from 'react'
 import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 import { ThemeProvider } from 'rt-theme'
-import { CurrencyPair, Direction } from 'rt-types'
+import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
+import { createTradeRequest, DEFAULT_NOTIONAL, ExecuteTradeRequest, SpotTileData, TradeRequest } from '../model'
 import { spotDateFormatter } from '../model/dateUtils'
-import { SpotTileData } from '../model/spotTileData'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import { DeliveryDate, TileBaseStyle, TileSymbol } from './styled'
@@ -24,7 +24,8 @@ export const SpotTileStyle = styled(TileBaseStyle)`
 export interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
-  executeTrade: (direction: Direction, notional: number) => void
+  executionStatus: ServiceConnectionStatus
+  executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
 }
 
 interface State {
@@ -33,19 +34,44 @@ interface State {
 
 export default class SpotTile extends PureComponent<Props, State> {
   state = {
-    notional: '1000000'
+    notional: '1000000',
   }
 
   updateNotional = (notional: string) => this.setState({ notional })
 
-  executeTrade = (direction: Direction) => this.props.executeTrade(direction, numeral(this.state.notional).value())
+  executeTrade = (direction: Direction, rawSpotRate: number) => {
+    const { currencyPair, executeTrade } = this.props
+    const notional = this.getNotional()
+    const tradeRequestObj: TradeRequest = {
+      direction,
+      currencyBase: currencyPair.base,
+      symbol: currencyPair.symbol,
+      notional,
+      rawSpotRate,
+    }
+    executeTrade(createTradeRequest(tradeRequestObj))
+  }
+
+  getNotional = () => numeral(this.state.notional).value() || DEFAULT_NOTIONAL
+
+  canExecute = () => {
+    const { spotTileData, executionStatus } = this.props
+    return Boolean(
+      executionStatus === ServiceConnectionStatus.CONNECTED &&
+        !spotTileData.isTradeExecutionInFlight &&
+        spotTileData.price,
+    )
+  }
 
   render() {
-    const { currencyPair, spotTileData, children } = this.props
+    const {
+      currencyPair,
+      spotTileData: { price },
+      children,
+    } = this.props
     const { notional } = this.state
 
-    const priceData = spotTileData && spotTileData.price
-    const spotDate = priceData && spotDateFormatter(priceData.valueDate, false).toUpperCase()
+    const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
 
     return (
       <ThemeProvider theme={theme => theme.tile}>
@@ -56,7 +82,12 @@ export default class SpotTile extends PureComponent<Props, State> {
                 <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
                 <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
               </Flex>
-              <PriceControls executeTrade={this.executeTrade} priceData={priceData} currencyPair={currencyPair} />
+              <PriceControls
+                executeTrade={this.executeTrade}
+                priceData={price}
+                currencyPair={currencyPair}
+                disabled={!this.canExecute()}
+              />
               <NotionalInput
                 notional={notional}
                 currencyPairSymbol={currencyPair.base}
