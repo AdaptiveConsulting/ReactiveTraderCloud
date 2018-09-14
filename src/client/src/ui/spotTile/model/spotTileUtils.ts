@@ -9,7 +9,7 @@ export function toRate(rawRate: number = 0, ratePrecision: number = 0, pipPrecis
   const rateString = rawRate.toFixed(ratePrecision)
   const priceParts = rateString.split('.')
   const wholeNumber = priceParts[0]
-  const fractions = priceParts[1]
+  const fractions = priceParts[1] || '00000'
 
   return {
     rawRate,

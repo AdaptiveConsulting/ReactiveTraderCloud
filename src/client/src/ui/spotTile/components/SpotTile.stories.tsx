@@ -7,7 +7,8 @@ import { action } from '@storybook/addon-actions'
 import { Flex } from 'rt-components'
 import { Story as BaseStory } from 'rt-storybook'
 import { styled, ThemeProvider } from 'rt-theme'
-import { Direction } from 'rt-types'
+import { Direction, ServiceConnectionStatus } from 'rt-types'
+import { SpotTileData } from '../model/index'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 import NotionalInput from './notional'
 import PriceButton from './PriceButton'
@@ -93,7 +94,7 @@ const currencyPair = {
   terms: 'USD'
 }
 
-const spotTileData = {
+const spotTileData: Required<SpotTileData> = {
   currencyChartIsOpening: false,
   isTradeExecutionInFlight: false,
   price: {
@@ -104,7 +105,8 @@ const spotTileData = {
     priceMovementType: PriceMovementTypes.Up,
     symbol: 'GBPJPY',
     valueDate: '2018-08-04T00:00:00Z'
-  }
+  },
+  lastTradeExecutionStatus: null
 }
 
 const trade = {
@@ -154,7 +156,12 @@ stories.add('Tile', () => (
           height: '150px'
         }}
       >
-        <SpotTile currencyPair={currencyPair} spotTileData={spotTileData} executeTrade={executeTrade} />
+        <SpotTile
+          currencyPair={currencyPair}
+          spotTileData={spotTileData}
+          executeTrade={executeTrade}
+          executionStatus={ServiceConnectionStatus.CONNECTED}
+        />
       </div>
     </Centered>
   </Story>
@@ -170,6 +177,7 @@ stories.add('Booking', () => (
         }}
       >
         <TileSwitch
+          executionStatus={ServiceConnectionStatus.CONNECTED}
           onNotificationDismissed={onNotificationDismissedClick}
           currencyPair={currencyPair}
           spotTileData={{ ...spotTileData, isTradeExecutionInFlight: true }}
@@ -191,6 +199,7 @@ stories.add('Executed', () => (
         }}
       >
         <TileSwitch
+          executionStatus={ServiceConnectionStatus.CONNECTED}
           onNotificationDismissed={onNotificationDismissedClick}
           currencyPair={currencyPair}
           spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeExecuted }}
@@ -212,6 +221,7 @@ stories.add('Rejected', () => (
         }}
       >
         <TileSwitch
+          executionStatus={ServiceConnectionStatus.CONNECTED}
           onNotificationDismissed={onNotificationDismissedClick}
           currencyPair={currencyPair}
           spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeRejected }}
@@ -247,6 +257,7 @@ stories.add('Switch', () => {
           }}
         >
           <TileSwitch
+            executionStatus={ServiceConnectionStatus.CONNECTED}
             onNotificationDismissed={onNotificationDismissedClick}
             currencyPair={currencyPair}
             spotTileData={{

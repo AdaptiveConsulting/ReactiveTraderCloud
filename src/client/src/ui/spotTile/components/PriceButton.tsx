@@ -60,7 +60,8 @@ interface PriceButtonProps {
   tenth?: number
   rawRate?: number
   direction?: Direction
-  handleClick?: (direction: Direction) => void
+  handleClick?: () => void
+  disabled?: boolean
 }
 
 const renderPips = (pips: number) => (pips.toString().length === 1 ? `0${pips}` : pips)
@@ -75,11 +76,12 @@ const PriceButtonComp: React.SFC<PriceButtonProps> = ({
   tenth = 0,
   rawRate = 0,
   direction = Direction.Buy,
-  handleClick = () => {}
+  handleClick = () => {},
+  disabled = false
 }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
   return (
-    <TradeButton direction={direction} onClick={() => handleClick(direction)}>
+    <TradeButton direction={direction} onClick={() => handleClick()} disabled={disabled}>
       <Flex height="34px" direction="row" justifyContent="center" alignItems="center">
         <Flex height="100%" direction="column" justifyContent="center">
           <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>

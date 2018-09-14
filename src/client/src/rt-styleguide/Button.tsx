@@ -13,11 +13,9 @@ export interface ButtonStyleProps {
   size?: number
 }
 
-const rules = {
-  boxShadow: css`
-    0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08)
-  `
-}
+const boxShadow = css`
+  box-shadow: 0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08);
+`
 
 class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
   static defaultProps = {
@@ -133,7 +131,7 @@ const BaseElement = styled.button<ButtonStyleProps>`
 
   transition: background-color 150ms ease;
 
-  box-shadow: ${rules.boxShadow};
+  box-shadow: ${boxShadow};
 
   &,
   &::before,
@@ -173,7 +171,7 @@ const BaseElement = styled.button<ButtonStyleProps>`
       position: relative;
       z-index: 1;
 
-      box-shadow: ${rules.boxShadow}, 0 0 0 0.125rem currentColor inset;
+      box-shadow: ${boxShadow}, 0 0 0 0.125rem currentColor inset;
 
       *,
       & {
@@ -258,7 +256,7 @@ export const StyledButtonGroup = styled(BaseElement)<ButtonStyleProps>`
   ${({ outline }) =>
     outline &&
     css`
-      box-shadow: ${rules.boxShadow}, 0 0 0 0.125rem currentColor inset;
+      box-shadow: ${boxShadow}, 0 0 0 0.125rem currentColor inset;
 
       ${StyledButton} {
         box-shadow: -0.0625rem 0 0 currentColor inset;

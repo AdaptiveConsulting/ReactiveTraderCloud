@@ -9,6 +9,8 @@ import {
   PositionUpdates
 } from './model'
 
+const LOG_NAME = 'Analytics Service:'
+
 function mapFromDto(dto: PositionsRaw): PositionUpdates {
   const positions = mapPositionsFromDto(dto.CurrentPositions)
   const history = mapHistoricPositionFromDto(dto.History)
@@ -39,6 +41,7 @@ export default class AnalyticsService {
   constructor(private readonly serviceClient: ServiceClient) {}
 
   getAnalyticsStream(analyticsRequest: string) {
+    console.info(LOG_NAME, 'Subscribing to analytics stream')
     return this.serviceClient
       .createStreamOperation<PositionsRaw, string>('analytics', 'getAnalytics', analyticsRequest)
       .pipe(

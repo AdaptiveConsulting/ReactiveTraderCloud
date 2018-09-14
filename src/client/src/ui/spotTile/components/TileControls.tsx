@@ -35,19 +35,19 @@ const BottomRightButton = styled('button')`
 `
 
 interface Props {
-  tornOff: boolean
+  canPopout?: boolean
   onPopoutClick?: () => void
   displayCurrencyChart?: () => void
 }
 
 const TileControls: React.SFC<Props & { environment: EnvironmentValue }> = ({
   onPopoutClick,
-  tornOff,
+  canPopout = false,
   environment,
   displayCurrencyChart
 }) => (
   <React.Fragment>
-    {!tornOff &&
+    {!canPopout &&
       !Environment.isRunningInIE() && (
         <TopRightButton onClick={onPopoutClick}>
           <PopoutIcon width={0.8125} height={0.75} />

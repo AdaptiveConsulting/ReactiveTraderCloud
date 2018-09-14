@@ -9,7 +9,7 @@ type WorkspaceContainerStateProps = ReturnType<typeof mapStateToProps>
 type WorkspaceContainerProps = WorkspaceContainerStateProps
 
 const WorkspaceContainer = ({ status, ...props }: WorkspaceContainerProps) => (
-  <Loadable status={status} render={() => <Workspace {...props} />} message="Spot Tiles Disconnected" />
+  <Loadable status={status} render={() => <Workspace {...props} />} message="Pricing Disconnected" />
 )
 
 const mapStateToProps = (state: GlobalState) => ({

@@ -1,8 +1,7 @@
 import { Observable, throwError, timer } from 'rxjs'
 import { finalize, mergeMap } from 'rxjs/operators'
-import logger from './logger'
 
-const log = logger.create('Retry')
+const LOG_NAME = 'Retry: '
 
 export const retryWithBackOff = ({
   maxRetryAttempts = Number.POSITIVE_INFINITY,
@@ -19,7 +18,7 @@ export const retryWithBackOff = ({
       if (retryAttempt > maxRetryAttempts) {
         return throwError(error)
       }
-      log.info(`Attempt ${retryAttempt}: retrying in ${retryAttempt * scalingDuration}ms`)
+      console.info(LOG_NAME, `Attempt ${retryAttempt}: retrying in ${retryAttempt * scalingDuration}ms`)
       // retry after 1s, 2s, etc...
       return timer(retryAttempt * scalingDuration)
     }),
@@ -43,7 +42,7 @@ export const retryConstantly = ({
         return throwError(error)
       }
 
-      log.info(`Attempt ${retryAttempt}`)
+      console.info(LOG_NAME, `Attempt ${retryAttempt}`)
 
       return timer(interval)
     }),
