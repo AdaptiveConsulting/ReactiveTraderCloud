@@ -14,7 +14,7 @@ export const props = {}
 export default () => (
   <React.Fragment>
     <SectionBlock intent="secondary" mh={3}>
-      <NumberedLayout number="2">
+      <NumberedLayout number="1">
         <H5>Design Systems</H5>
         <H3>Adaptive UI Library</H3>
         <Paragraph>Sets the visual tone of the user interface defining the color and font styles to be used.</Paragraph>
@@ -54,11 +54,10 @@ export default () => (
         When switching from a light to a dark theme these are the key color that change.
       </Paragraph>
 
-      <H3>Light</H3>
+      <H3 mt={4}>Light</H3>
       <ThemePalettes theme={colors.light} />
 
-      <H3>Dark</H3>
-
+      <H3 mt={4}>Dark</H3>
       <ThemePalettes theme={colors.dark} />
     </SectionBlock>
 
@@ -209,13 +208,6 @@ const CoreSwatchGrid = styled.div`
 
     ${SwatchColor} {
       min-height: 14rem;
-      &:nth-child(n + 2) {
-        /* @media all and (max-width: 640px) {
-        text-orientation: sideways;
-        writing-mode: vertical-rl;
-        text-align: right;
-      } */
-      }
     }
   }
 `
@@ -253,7 +245,7 @@ const QuadrantLayout = styled.div`
   grid-column-gap: 2rem;
 
   grid-template-rows: auto;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(50%, 1fr) auto;
   grid-template-areas:
     'a1 b1'
     'a2 b2 ';
@@ -271,7 +263,7 @@ const QuadrantLayout = styled.div`
     grid-area: b2;
   }
 
-  @media all and (max-width: 720px) {
+  @media all and (max-width: 800px) {
     grid-template-columns: auto;
     grid-template-areas:
       'a1'
@@ -300,9 +292,11 @@ const AccentPalettes: React.SFC<{ accents: any }> = ({ accents, ...props }) => {
 }
 
 const AccentRowGrid = styled.div`
+  max-width: 30rem;
+
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: repeat(4, 6.5rem);
+  grid-template-columns: repeat(4, minmax(calc(25% - 0.5rem), 7rem));
 `
 
 const AccentSwatchGrid = styled.div`
@@ -336,7 +330,7 @@ const UniquePalettes: React.SFC<{ palettes: any }> = ({ palettes, ...props }) =>
 const UniqueRowGrid = styled.div`
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: repeat(2, 6.5rem);
+  grid-template-columns: repeat(2, minmax(calc(25% - 0.5rem), 7rem));
 `
 
 const UniqueSwatchGrid = styled.div`
