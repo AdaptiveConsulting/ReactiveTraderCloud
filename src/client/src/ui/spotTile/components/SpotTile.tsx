@@ -56,13 +56,6 @@ export default class SpotTile extends PureComponent<Props, State> {
 
   canExecute = () => {
     const { spotTileData, executionStatus } = this.props
-    console.log(
-      Boolean(
-        executionStatus === ServiceConnectionStatus.CONNECTED &&
-          !spotTileData.isTradeExecutionInFlight &&
-          spotTileData.price
-      )
-    )
     return Boolean(
       executionStatus === ServiceConnectionStatus.CONNECTED &&
         !spotTileData.isTradeExecutionInFlight &&
