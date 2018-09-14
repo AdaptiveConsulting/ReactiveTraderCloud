@@ -11,17 +11,24 @@ import { selectBlotterRows, selectBlotterStatus } from './selectors'
 interface BlotterContainerOwnProps {
   onPopoutClick: () => void
   tornOff: boolean
+  tearable?: boolean
 }
 
 type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
 type BlotterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 type BlotterContainerProps = BlotterContainerStateProps & BlotterContainerDispatchProps & BlotterContainerOwnProps
 
-const BlotterContainer: React.SFC<BlotterContainerProps> = ({ status, onMount, tornOff, ...props }) => (
+const BlotterContainer: React.SFC<BlotterContainerProps> = ({
+  status,
+  onMount,
+  tearable = false,
+  tornOff,
+  ...props
+}) => (
   <Loadable
     onMount={onMount}
     status={status}
-    render={() => <Blotter {...props} canPopout={!Environment.isRunningInIE() && !tornOff} />}
+    render={() => <Blotter {...props} canPopout={tearable && !Environment.isRunningInIE() && !tornOff} />}
     message="Blotter Disconnected"
   />
 )

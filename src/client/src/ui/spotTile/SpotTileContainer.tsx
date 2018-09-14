@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { EnvironmentValue, Loadable, withEnvironment } from 'rt-components'
-
+import { Loadable } from 'rt-components'
+import { Environment } from 'rt-system'
 import { GlobalState } from 'StoreTypes'
 import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
@@ -13,7 +13,7 @@ export interface SpotTileContainerOwnProps {
   id: string
   onPopoutClick?: () => void
   tornOff?: boolean
-  environment: EnvironmentValue
+  tearable?: boolean
 }
 
 type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
@@ -22,11 +22,18 @@ type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToPr
 
 type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
 
-const SpotTileContainer: React.SFC<SpotTileContainerProps> = ({ onMount, pricingStatus, id, ...props }) => (
+const SpotTileContainer: React.SFC<SpotTileContainerProps> = ({
+  onMount,
+  pricingStatus,
+  tearable = false,
+  id,
+  tornOff,
+  ...props
+}) => (
   <Loadable
     onMount={onMount}
     status={pricingStatus}
-    render={() => <TileSwitch key={id} {...props} />}
+    render={() => <TileSwitch key={id} canPopout={tearable && !Environment.isRunningInIE() && !tornOff} {...props} />}
     message={`${id} Disconnected`}
   />
 )
@@ -50,4 +57,4 @@ const ConnectedSpotTileContainer = connect(
   mapDispatchToProps
 )(SpotTileContainer)
 
-export default withEnvironment(ConnectedSpotTileContainer)
+export default ConnectedSpotTileContainer

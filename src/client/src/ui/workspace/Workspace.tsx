@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
-import ConnectedSpotTileContainer from '../spotTile/SpotTileContainer'
+import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { PortalProps } from './selectors'
 
 const WorkspaceHeader = styled(Flex)`
@@ -42,7 +42,7 @@ const Workspace: React.SFC<Props> = ({ spotTiles = [] }) => (
           portalProps={portalProps}
           render={(popOut, tornOff) => (
             <WorkspaceItem>
-              <ConnectedSpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} />
+              <SpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} tearable />
             </WorkspaceItem>
           )}
           key={key}
