@@ -15,11 +15,14 @@ export const pricingServiceEpic: ApplicationEpic = (action$, state$, { loadBalan
   return action$.pipe(
     ofType<Action, SubscribeToSpotTileAction>(TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE),
     mergeMap((action: SubscribeToSpotTileAction) =>
-      pricingService.getSpotPriceStream({
-        symbol: action.payload
-      })
-    ),
-    map(priceUpdateAction),
-    takeUntil(action$.pipe(applicationDisconnected))
+      pricingService
+        .getSpotPriceStream({
+          symbol: action.payload
+        })
+        .pipe(
+          map(priceUpdateAction),
+          takeUntil(action$.pipe(applicationDisconnected))
+        )
+    )
   )
 }
