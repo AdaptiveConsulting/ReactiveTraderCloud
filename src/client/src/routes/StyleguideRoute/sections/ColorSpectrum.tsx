@@ -14,7 +14,7 @@ export const ColorSpecturm: React.SFC<PassThroughProps> = props => (
         will show the variants available. These colors are used to populate the basic style guide of the application.
       </Paragraph>
     </SectionBlock>
-    <SectionBlock py={0} pb={2} overflow {...props}>
+    <SectionBlock py={0} pb={2} bleeds {...props}>
       <Column>
         <ColorBlocks />
       </Column>

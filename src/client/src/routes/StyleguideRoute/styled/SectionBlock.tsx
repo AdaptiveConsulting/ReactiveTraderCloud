@@ -9,7 +9,7 @@ export interface SectionProps extends BlockProps, MarginPaddingProps {
   mh?: any
   invert?: boolean
   intent?: 'primary' | 'secondary' | 'inverted'
-  overflow?: boolean
+  bleeds?: boolean
 }
 
 const intents = {
@@ -83,8 +83,8 @@ export const SectionBleed: Styled<SectionProps> = styled(Block)`
     ${mapMarginPaddingProps};
   }
 
-  ${({ overflow }: SectionProps): false | ReturnType<typeof css> =>
-    overflow &&
+  ${({ bleeds }: SectionProps): false | ReturnType<typeof css> =>
+    bleeds &&
     css`
       @media all and (max-width: 960px) {
         padding-right: 0;

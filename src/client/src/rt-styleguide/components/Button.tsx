@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import React, { ButtonHTMLAttributes } from 'react'
-import { withProps } from 'recompose'
 
 import { css, resolvesColor, styled, Styled, Theme, ThemeProvider } from 'rt-theme'
 
@@ -111,7 +110,7 @@ export class ButtonGroup extends React.Component<ButtonStyleProps> {
   }
 }
 
-const StyledBase = withProps({ role: 'button' })(styled.div`
+const StyledBase: Styled<ButtonStyleProps> = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -179,7 +178,8 @@ const StyledBase = withProps({ role: 'button' })(styled.div`
       & {
         transition: background-color 80ms ease, color 180ms ease;
       }
-    `};` as Styled<ButtonStyleProps>)
+    `};
+`
 
 export const StyledButton: Styled<ButtonStyleProps> = styled(StyledBase)`
   width: max-content;
@@ -211,6 +211,9 @@ export const StyledButton: Styled<ButtonStyleProps> = styled(StyledBase)`
 
   ${props => userSelectButton(props)};
 `
+StyledButton.defaultProps = {
+  role: 'button',
+}
 
 export const StyledButtonGroup: Styled<ButtonStyleProps> = styled(StyledBase)`
   ${StyledButton} {
@@ -270,5 +273,9 @@ export const StyledButtonGroup: Styled<ButtonStyleProps> = styled(StyledBase)`
     `};
   )
 `
+
+StyledButtonGroup.defaultProps = {
+  role: 'group',
+}
 
 export default Button

@@ -26,7 +26,7 @@ export default () => (
       </Paragraph>
     </SectionBlock>
 
-    <SectionBlock intent="secondary" py={2} overflow>
+    <SectionBlock intent="secondary" py={2} bleeds>
       <H3>Buttons</H3>
       <ButtonGrid />
     </SectionBlock>
