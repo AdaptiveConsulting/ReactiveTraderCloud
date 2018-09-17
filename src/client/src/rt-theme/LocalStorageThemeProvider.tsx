@@ -25,7 +25,7 @@ export default class LocalStorageThemeProvider extends React.Component<{}, State
 
   setThemeNameFromStorage = () => {
     const themeName = this.getThemeNameFromStorage()
-    if (themeName === ThemeName.LIGHT || themeName === ThemeName.DARK) {
+    if (themeName !== this.state.themeName && (themeName === ThemeName.LIGHT || themeName === ThemeName.DARK)) {
       this.setState({ themeName })
     }
   }
