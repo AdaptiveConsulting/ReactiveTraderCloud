@@ -9,8 +9,8 @@ import Blotter from './components'
 import { selectBlotterRows, selectBlotterStatus } from './selectors'
 
 interface BlotterContainerOwnProps {
-  onPopoutClick: () => void
-  tornOff: boolean
+  onPopoutClick?: () => void
+  tornOff?: boolean
   tearable?: boolean
 }
 

@@ -8,8 +8,8 @@ import { AnalyticsActions } from './actions'
 import Analytics from './components'
 import { selectAnalyticsStatus, selectCurrencyPairs, selectPnlChartModel, selectPositionsChartModel } from './selectors'
 interface AnalyticsContainerOwnProps {
-  onPopoutClick: () => void
-  tornOff: boolean
+  onPopoutClick?: () => void
+  tornOff?: boolean
   tearable?: boolean
 }
 

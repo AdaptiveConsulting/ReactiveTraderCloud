@@ -12,7 +12,7 @@ import { columnDefinitions, DEFAULT_COLUMN_DEFINITION } from './blotterUtils'
 export interface BlotterProps {
   rows: Trade[]
   canPopout: boolean
-  onPopoutClick: () => void
+  onPopoutClick?: () => void
 }
 
 interface BlotterState {
