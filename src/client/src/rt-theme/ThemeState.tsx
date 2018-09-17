@@ -10,7 +10,7 @@ export enum ThemeName {
 }
 
 interface ThemeSelector {
-  name: ThemeName | null
+  name: ThemeName
   /**
    * An unused property — this parallel approach would support
    * custom branding on child components — assuming they
@@ -22,14 +22,16 @@ interface ThemeSelector {
 }
 
 interface ThemeStateProps extends ThemeSelector {
-  onChange?: (value: string | null) => void
+  onChange?: (value: string) => void
 }
 
-export interface ThemeStateValue extends ThemeSelector {
-  setTheme: (options: ThemeSelector) => void
+export interface ThemeContextValue extends ThemeSelector {
+  setTheme?: (options: ThemeSelector) => void
 }
 
-const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue | null>(null)
+const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeContextValue>({
+  name: ThemeName.LIGHT
+})
 
 /**
  * Set default theme and allow descendants to update selected theme.
@@ -42,50 +44,22 @@ class ThemeStateProvider extends React.Component<ThemeStateProps> {
     return <ContextConsumer children={this.renderThemeStateManager} />
   }
 
-  renderThemeStateManager = (context: ThemeStateValue) => {
+  renderThemeStateManager = (context: ThemeContextValue) => {
     return <ThemeStateManager context={context} {...this.props} />
   }
 }
 
-type ThemeStateManagerProps = ThemeStateProps & { context: ThemeStateValue }
+type ThemeStateManagerProps = ThemeStateProps & { context: ThemeContextValue }
 
-class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeStateValue> {
-  static getDerivedStateFromProps(props: ThemeStateManagerProps, state: ThemeStateValue) {
-    const { name, context } = props
-
-    if (context == null && name == null) {
-      throw new Error(`
-        ThemeState requires [name] <ThemeState.Provider name="light"/>
-      `)
-    }
-
-    if (state.name == null) {
-      return {
-        name: name || context.name
-      }
-    }
-
-    return null
-  }
-
-  state: ThemeStateValue = {
-    name: null,
-    setTheme: ({ name }: ThemeSelector) => {
-      this.setState({ name }, () => {
-        if (this.props.onChange) {
-          this.props.onChange(this.state.name)
-        }
-      })
-    }
-  }
+class ThemeStateManager extends React.Component<ThemeStateManagerProps> {
+  setTheme = ({ name }: ThemeSelector) => this.props.onChange && this.props.onChange(name)
 
   render() {
-    const { context, children } = this.props
-    const { name } = this.state
+    const { context, children, name } = this.props
     const theme = themes[name!]
 
     return (
-      <ContextProvider value={this.state}>
+      <ContextProvider value={{ name, setTheme: this.setTheme }}>
         {context && context.name === name ? (
           children
         ) : (
@@ -117,7 +91,7 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeSta
 
 export const Provider = ThemeStateProvider
 // TODO (8/14/18) extend ContextConsumer to guard for use without provider
-export const Consumer: React.Consumer<ThemeStateValue> = ContextConsumer
+export const Consumer: React.Consumer<ThemeContextValue> = ContextConsumer
 
 export const ThemeState = {
   Provider,
