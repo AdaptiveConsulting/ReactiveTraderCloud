@@ -13,8 +13,6 @@ export interface PassThroughProps {
 }
 export type PassThroughFunc = (...args: any[]) => any
 
-export { mapProps } from './mapProps'
-
 export const hasUnit = RegExp.prototype.test.bind(/\d+\w+/)
 
 export const isColor = (value: string) => value[0] === '#' || startsWith(value, 'rgb') || startsWith(value, 'hsl')

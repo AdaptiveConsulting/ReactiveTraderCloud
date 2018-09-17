@@ -1,10 +1,10 @@
+/* An implementation of Styled System m*, p* for maring padding props
+ * https://jxnblk.com/styled-system/getting-started#margin--padding
+ */
+
 import _ from 'lodash'
-import { css } from 'rt-theme'
 
-import { mapProps } from '../tools'
-
-// export type PropValue = number | string | boolean
-export type PropValue = any
+export type PropValue = 0 | 1 | 2 | 3 | 4 | 5
 
 export interface MarginProps {
   m?: PropValue
@@ -26,10 +26,14 @@ export interface PaddingProps {
   pl?: PropValue
 }
 
-export interface MarginPaddingProps extends MarginProps, PaddingProps {}
+export interface MarginPaddingProps extends MarginProps, PaddingProps {
+  [key: string]: any
+}
+
+type MarginPaddingRules = { [key in keyof MarginPaddingProps]?: { [key: string]: string } }
 
 export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
-  const [margin, padding]: MarginPaddingProps[] = ['margin', 'padding'].map(prop =>
+  const [margin, padding]: MarginPaddingRules[] = ['margin', 'padding'].map(prop =>
     [
       ['', 'left', 'right', 'top', 'bottom'],
       ['x', 'left', 'right'],
@@ -41,35 +45,28 @@ export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
     ].reduce((acc, [axis, ...variants]) => {
       ;[0, 0.5, 1, 2, 3, 4].forEach((value, index) => {
         const group = `${prop[0]}${axis}`
-        const name = `${group}${index}`
-        const rule = css`
-          ${variants.map(
-            variant =>
-              css`
-                ${prop + '-' + variant}: ${value}rem;
-              `,
-          )};
-        `
+        const rule = variants.map(variant => `${prop + '-' + variant}: ${value}rem;`).join('')
+
         acc[group] = acc[group] || {}
-        acc[name] = acc[group][index] = rule
+        acc[group][index] = rule
       })
 
       return acc
     }, {}),
   )
 
-  margin.mx.auto = css`
+  margin.mx.auto = `
     margin-left: auto;
     margin-right: auto;
   `
-  margin.ml.auto = css`
+  margin.ml.auto = `
     margin-left: auto;
   `
-  margin.mr.auto = css`
+  margin.mr.auto = `
     margin-right: auto;
   `
 
-  padding.px.viewport = css`
+  padding.px.viewport = `
     padding-left: 1rem;
     padding-right: 1rem;
 
@@ -84,11 +81,20 @@ export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
     }
   `
 
-  const marginPaddingProps = { ...margin, ...padding }
+  const marginPaddingProps = {
+    ...margin,
+    ...padding,
+  }
+
+  const mapMarginPaddingProps = (props: MarginPaddingProps) => {
+    return _.map(props, (v, k) => (k[0] === 'p' || k[0] === 'm') && _.get(marginPaddingProps, [k, v], false))
+      .filter(x => x)
+      .join(';')
+  }
 
   return {
     marginPaddingProps,
-    mapMarginPaddingProps: mapProps(marginPaddingProps),
+    mapMarginPaddingProps,
   }
 })()
 

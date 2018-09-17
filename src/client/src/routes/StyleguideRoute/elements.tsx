@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
-import { styled, Styled } from 'rt-theme'
+import { styled } from 'rt-theme'
 
 import { resolvesColor } from 'rt-theme'
 
@@ -11,7 +11,7 @@ export { Paragraph } from './styled'
 export const Hashable = ({ is: Element = 'div', ...props }) => <Element {...props} id={_.kebabCase(props.children)} />
 
 interface HeaderProps extends MarginPaddingProps, TextProps {}
-export const Header: Styled<HeaderProps> = styled(Hashable)`
+export const Header = styled(Hashable)<HeaderProps>`
   margin: 1rem 0 1rem;
 
   min-width: 100%;
@@ -20,7 +20,7 @@ export const Header: Styled<HeaderProps> = styled(Hashable)`
   letter-spacing: 0;
 
   ${mapTextProps};
-  ${props => mapMarginPaddingProps(props) as (props: HeaderProps) => string};
+  ${props => mapMarginPaddingProps(props)};
 `
 
 export const H1 = styled(Header)`
