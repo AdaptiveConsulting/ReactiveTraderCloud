@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React from 'react'
 import { keyframes, styled } from 'rt-theme'
 
@@ -22,14 +23,17 @@ const getBounce = (moveDistance: number) => keyframes`
   }
 `
 
+const memoizedGetBounce = _.memoize(getBounce)
+
 interface BarProps {
   order: number
   moveDistance: number
   speed: number
   type: LoaderType
 }
+
 const Bar = styled('rect')<BarProps>`
-  animation: ${({ moveDistance }: BarProps) => getBounce(moveDistance)} ${({ speed }) => speed}s infinite;
+  animation: ${({ moveDistance }: BarProps) => memoizedGetBounce(moveDistance)} ${({ speed }) => speed}s infinite;
   animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER)}s;
   fill: ${({ theme }) => theme.shell.textColor};
   will-change: transform;
