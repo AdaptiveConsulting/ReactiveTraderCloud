@@ -104,11 +104,10 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
 
   updateNodes(data: CurrencyPairPosition[]) {
     let nodes = this.state.nodes
-    const colours = [colors.accents.good.base, colors.accents.bad.base]
     const positionsData = getPositionsDataFromSeries(data, this.props.currencyPairs)
 
     nodes = map(positionsData, (dataObj: any, index: number) => {
-      const color = dataObj.baseTradedAmount > 0 ? colours[0] : colours[1]
+      const color = dataObj.baseTradedAmount > 0 ? colors.accents.good.base : colors.accents.bad.base
 
       // update an existing node:
       const existingNode = find(nodes, (node: any) => node.id === dataObj.symbol) as any

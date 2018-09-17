@@ -1,12 +1,12 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { css } from 'rt-theme'
+import { css } from './emotion'
 import { ThemeProvider } from './ThemeProvider'
 import { Theme, themes } from './themes'
 
 export enum ThemeName {
   LIGHT = 'light',
-  DARK = 'dark'
+  DARK = 'dark',
 }
 
 interface ThemeSelector {
@@ -29,7 +29,10 @@ export interface ThemeStateValue extends ThemeSelector {
   setTheme: (options: ThemeSelector) => void
 }
 
-const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue | null>(null)
+const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue | null>(
+  // We use null as a semaphore to signify a root component
+  null,
+)
 
 /**
  * Set default theme and allow descendants to update selected theme.
@@ -61,7 +64,7 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeSta
 
     if (state.name == null) {
       return {
-        name: name || context.name
+        name: name || context.name,
       }
     }
 
@@ -76,7 +79,7 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeSta
           this.props.onChange(this.state.name)
         }
       })
-    }
+    },
   }
 
   render() {
@@ -97,13 +100,10 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeSta
               context ? null : (
                 <Helmet>
                   <html
-                    className={css`
-                      :root,
-                      body {
-                        background-color: ${theme.shell.backgroundColor};
-                        color: ${theme.shell.textColor};
-                      }
-                    `}
+                    className={css({
+                      backgroundColor: theme.shell.backgroundColor,
+                      color: theme.shell.textColor,
+                    })}
                   />
                 </Helmet>
               )}
@@ -121,7 +121,7 @@ export const Consumer: React.Consumer<ThemeStateValue> = ContextConsumer
 
 export const ThemeState = {
   Provider,
-  Consumer
+  Consumer,
 }
 
 export default ThemeState

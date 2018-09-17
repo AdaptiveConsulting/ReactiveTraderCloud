@@ -7,12 +7,12 @@ import { Environment } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { ThemeState } from 'rt-theme'
 
-import { createApplicationServices } from './applicationServices'
-import { getEnvVars } from './config/config'
-import configureStore from './configureStore'
-import { Router } from './shell'
-import FakeUserRepository from './shell/fakeUserRepository'
-import { OpenFin } from './shell/openFin'
+import { createApplicationServices } from '../applicationServices'
+import { getEnvVars } from '../config/config'
+import configureStore from '../configureStore'
+import { Router } from '../shell'
+import FakeUserRepository from '../shell/fakeUserRepository'
+import { OpenFin } from '../shell/openFin'
 
 declare const window: any
 
@@ -21,12 +21,12 @@ const APPLICATION_DISCONNECT = 15 * 60 * 1000
 const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
 
-export default class MainRoute extends React.Component {
+export class MainRoute extends React.Component {
   openfin = new OpenFin()
 
   environment = {
     isDesktop: this.openfin.isPresent,
-    openfin: this.openfin.isPresent ? this.openfin : null
+    openfin: this.openfin.isPresent ? this.openfin : null,
   }
 
   store = configureStore(
@@ -34,11 +34,11 @@ export default class MainRoute extends React.Component {
       autobahn: new AutobahnConnectionProxy(
         (config.overwriteServerEndpoint ? config.serverEndpointUrl : location.hostname)!,
         'com.weareadaptive.reactivetrader',
-        +(config.overwriteServerEndpoint ? config.serverPort : location.port)!
+        +(config.overwriteServerEndpoint ? config.serverPort : location.port)!,
       ),
       openfin: this.openfin,
-      user: FakeUserRepository.currentUser
-    })
+      user: FakeUserRepository.currentUser,
+    }),
   )
 
   componentDidMount() {
@@ -84,3 +84,5 @@ class LocalStorageThemeProvider extends React.Component {
     )
   }
 }
+
+export default MainRoute

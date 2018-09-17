@@ -38,14 +38,14 @@ const mapStateToProps = (state: GlobalState) => ({
   pnlChartModel: selectPnlChartModel(state),
   positionsChartModel: selectPositionsChartModel(state),
   status: selectAnalyticsStatus(state),
-  currencyPairs: selectCurrencyPairs(state)
+  currencyPairs: selectCurrencyPairs(state),
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onMount: () => dispatch(AnalyticsActions.subcribeToAnalytics())
+  onMount: () => dispatch(AnalyticsActions.subcribeToAnalytics()),
 })
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(AnalyticsContainer)

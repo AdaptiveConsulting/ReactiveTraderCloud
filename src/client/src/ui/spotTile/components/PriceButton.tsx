@@ -5,7 +5,7 @@ import { Direction } from 'rt-types'
 
 const hoverColors = {
   [Direction.Buy]: 'blue',
-  [Direction.Sell]: 'red'
+  [Direction.Sell]: 'red',
 }
 
 export const TradeButton = styled('button')<{ direction: string }>`
@@ -77,7 +77,7 @@ const PriceButtonComp: React.SFC<PriceButtonProps> = ({
   rawRate = 0,
   direction = Direction.Buy,
   handleClick = () => {},
-  disabled = false
+  disabled = false,
 }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
   return (

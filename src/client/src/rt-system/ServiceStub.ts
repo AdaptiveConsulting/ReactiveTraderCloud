@@ -65,7 +65,7 @@ export class ServiceStub {
                   // subscription failed, error is an instance of autobahn.Error
                   console.error(LOG_NAME, `Error on topic ${topic}`, error)
                   obs.error(error)
-                }
+                },
               )
 
             return () => {
@@ -83,15 +83,15 @@ export class ServiceStub {
                       //obs.unsubscribe()
                       return console.info(LOG_NAME, `Successfully unsubscribing from topic ${topic}`)
                     },
-                    err => console.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err)
+                    err => console.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err),
                   )
                 }
               } catch (err) {
                 console.error(LOG_NAME, `Error thrown unsubscribing from topic ${topic}`, err)
               }
             }
-          })
-      )
+          }),
+      ),
     )
   }
 
@@ -111,8 +111,8 @@ export class ServiceStub {
               {
                 payload,
                 replyTo: responseTopic,
-                Username: this.userName
-              }
+                Username: this.userName,
+              },
             ]
 
             session.call<TResult>(remoteProcedure, dto).then(
@@ -122,14 +122,14 @@ export class ServiceStub {
               },
               error => {
                 obs.error(error)
-              }
+              },
             )
 
             return () => {
               obs.complete()
             }
-          })
-      )
+          }),
+      ),
     )
   }
 }

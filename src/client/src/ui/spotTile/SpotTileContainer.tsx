@@ -42,19 +42,19 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
   onMount: () => dispatch(SpotTileActions.subscribeToSpotTile(ownProps.id)),
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
   displayCurrencyChart: () => dispatch(SpotTileActions.displayCurrencyChart(ownProps.id)),
-  onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id))
+  onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id)),
 })
 
 const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
   pricingStatus: selectPricingStatus(state),
   executionStatus: selectExecutionStatus(state),
   currencyPair: selectCurrencyPair(state, ownProps),
-  spotTileData: selectSpotTileData(state, ownProps)
+  spotTileData: selectSpotTileData(state, ownProps),
 })
 
 const ConnectedSpotTileContainer = connect(
   makeMapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SpotTileContainer)
 
 export default ConnectedSpotTileContainer

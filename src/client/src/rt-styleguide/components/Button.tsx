@@ -1,8 +1,9 @@
 import _ from 'lodash'
 import React, { ButtonHTMLAttributes } from 'react'
-import { css, resolvesColor, styled, Theme, ThemeProvider } from 'rt-theme'
 
-import { userSelectButton, userSelectNone } from './rules'
+import { css, resolvesColor, styled, Styled, Theme, ThemeProvider } from 'rt-theme'
+
+import { userSelectButton, userSelectNone } from '../rules'
 
 export interface ButtonStyleProps {
   intent?: string
@@ -13,13 +14,11 @@ export interface ButtonStyleProps {
   size?: number
 }
 
-const boxShadow = css`
-  box-shadow: 0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08);
-`
+const boxShadow = `0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08)`
 
 class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
   static defaultProps = {
-    intent: 'primary'
+    intent: 'primary',
   }
 
   resolveTheme = (providedTheme: Theme) => {
@@ -27,7 +26,7 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
 
     const { backgroundColor, textColor, button: theme, colors } = providedTheme
     let {
-      button: { [intent]: palette = { backgroundColor, textColor } }
+      button: { [intent]: palette = { backgroundColor, textColor } },
     } = providedTheme
 
     if (active) {
@@ -36,7 +35,7 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
 
     if (disabled) {
       // We might prefer to set the disabled palette explicitly
-      // and not rely on opacity — as will be done with no change
+      // and not rely on opacity — as will be done with no change
       // palette = { ...palette, ...palette.disabled };
     }
 
@@ -47,8 +46,8 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
         textColor: palette.backgroundColor,
         active: {
           backgroundColor: palette.backgroundColor,
-          textColor: palette.textColor || textColor
-        }
+          textColor: palette.textColor || textColor,
+        },
       }
     }
 
@@ -56,7 +55,7 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
       button: palette,
       ...theme,
       ...theme.primary,
-      ...palette
+      ...palette,
     }
   }
 
@@ -76,7 +75,7 @@ export class Button extends React.Component<ButtonStyleProps & ButtonHTMLAttribu
       outline,
       disabled,
       pill,
-      size
+      size,
     }
 
     return (
@@ -98,7 +97,7 @@ export class ButtonGroup extends React.Component<ButtonStyleProps> {
       outline,
       disabled,
       pill,
-      size
+      size,
     }
 
     return (
@@ -111,7 +110,7 @@ export class ButtonGroup extends React.Component<ButtonStyleProps> {
   }
 }
 
-const BaseElement = styled.button<ButtonStyleProps>`
+const StyledBase: Styled<ButtonStyleProps> = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -151,6 +150,8 @@ const BaseElement = styled.button<ButtonStyleProps>`
   ${({ pill }) =>
     pill &&
     css`
+      border-radius: 2rem;
+
       &,
       &::before,
       &::after {
@@ -161,8 +162,8 @@ const BaseElement = styled.button<ButtonStyleProps>`
   ${({ disabled }) =>
     disabled &&
     css`
-      pointer-events: none;
       opacity: 0.5;
+      pointer-events: none;
     `};
 
   ${({ outline }) =>
@@ -180,23 +181,17 @@ const BaseElement = styled.button<ButtonStyleProps>`
     `};
 `
 
-export const StyledButton = styled(BaseElement)<ButtonStyleProps>`
+export const StyledButton: Styled<ButtonStyleProps> = styled(StyledBase)`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;
   min-height: 1.75rem;
-  max-height: 2.4rem;
+  max-height: 1.75rem;
 
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
-
-  &,
-  &::before,
-  &::after {
-    border-radius: 0.25rem;
-  }
 
   &:active ${({ active }) => (active ? ', &' : '')} {
     background-color: ${resolvesColor('active.backgroundColor')};
@@ -205,21 +200,22 @@ export const StyledButton = styled(BaseElement)<ButtonStyleProps>`
     }
   }
 
+  ${({ size }) =>
+    (size || size > 1) &&
+    css`
+      padding-top: ${((size + 1) / 2) * 0.75}rem;
+      padding-bottom: ${((size + 1) / 2) * 0.75}rem;
+      padding-left: ${size * 0.75}rem;
+      padding-right: ${size * 0.75}rem;
+    `};
+
   ${props => userSelectButton(props)};
-
-  ${({ size }) => {
-    return !size || size <= 1
-      ? ''
-      : css`
-          padding-top: ${((size + 1) / 2) * 0.75}rem;
-          padding-bottom: ${((size + 1) / 2) * 0.75}rem;
-          padding-left: ${size * 0.75}rem;
-          padding-right: ${size * 0.75}rem;
-        `
-  }};
 `
+StyledButton.defaultProps = {
+  role: 'button',
+}
 
-export const StyledButtonGroup = styled(BaseElement)<ButtonStyleProps>`
+export const StyledButtonGroup: Styled<ButtonStyleProps> = styled(StyledBase)`
   ${StyledButton} {
     min-width: 1rem;
     padding-left: 0.625rem;
@@ -277,5 +273,9 @@ export const StyledButtonGroup = styled(BaseElement)<ButtonStyleProps>`
     `};
   )
 `
+
+StyledButtonGroup.defaultProps = {
+  role: 'group',
+}
 
 export default Button

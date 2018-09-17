@@ -34,7 +34,7 @@ interface State {
 
 export default class SpotTile extends PureComponent<Props, State> {
   state = {
-    notional: '1000000'
+    notional: '1000000',
   }
 
   updateNotional = (notional: string) => this.setState({ notional })
@@ -47,7 +47,7 @@ export default class SpotTile extends PureComponent<Props, State> {
       currencyBase: currencyPair.base,
       symbol: currencyPair.symbol,
       notional,
-      rawSpotRate
+      rawSpotRate,
     }
     executeTrade(createTradeRequest(tradeRequestObj))
   }
@@ -59,7 +59,7 @@ export default class SpotTile extends PureComponent<Props, State> {
     return Boolean(
       executionStatus === ServiceConnectionStatus.CONNECTED &&
         !spotTileData.isTradeExecutionInFlight &&
-        spotTileData.price
+        spotTileData.price,
     )
   }
 
@@ -67,7 +67,7 @@ export default class SpotTile extends PureComponent<Props, State> {
     const {
       currencyPair,
       spotTileData: { price },
-      children
+      children,
     } = this.props
     const { notional } = this.state
 

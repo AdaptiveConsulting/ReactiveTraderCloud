@@ -4,12 +4,12 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import 'rt-theme'
 
-import MainRoute from './MainRoute'
-import NotificationRoute from './NotificationRoute'
+import { MainRoute, NotificationRoute, StyleguideRoute } from './routes'
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
+      <Route path="/styleguide" component={StyleguideRoute} />
       <Route path="/notification" component={NotificationRoute} />
       <Route component={MainRoute} />
     </Switch>

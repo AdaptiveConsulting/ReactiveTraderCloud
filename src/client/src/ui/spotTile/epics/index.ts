@@ -13,7 +13,7 @@ if (typeof fin !== 'undefined') {
     publishPriceToOpenFinEpic,
     connectTradeExecutedToOpenFinEpic,
     closePositionEpic,
-    connectCurrencyChartToOpenFinEpic
+    connectCurrencyChartToOpenFinEpic,
   )
 }
 

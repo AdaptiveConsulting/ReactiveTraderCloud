@@ -38,8 +38,8 @@ export default class PricingService {
       .pipe(
         retryWhen(
           retryConstantly({
-            interval: 2000
-          })
+            interval: 2000,
+          }),
         ),
         map(adaptDTO),
         scan<SpotPriceTick>((acc, next) => {
@@ -48,9 +48,9 @@ export default class PricingService {
         }),
         debounceWithSelector<SpotPriceTick>(MS_FOR_LAST_PRICE_TO_BECOME_STALE, item => ({
           ...item,
-          priceStale: true
+          priceStale: true,
         })),
-        share()
+        share(),
       )
   }
 
@@ -79,6 +79,6 @@ function adaptDTO(dto: RawPrice): SpotPriceTick {
     mid: dto.Mid,
     creationTimestamp: dto.CreationTimestamp,
     symbol: dto.Symbol,
-    valueDate: dto.ValueDate
+    valueDate: dto.ValueDate,
   }
 }
