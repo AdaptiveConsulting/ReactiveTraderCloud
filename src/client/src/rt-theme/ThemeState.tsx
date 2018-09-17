@@ -10,7 +10,7 @@ export enum ThemeName {
 }
 
 interface ThemeSelector {
-  name?: ThemeName
+  name: ThemeName
   /**
    * An unused property — this parallel approach would support
    * custom branding on child components — assuming they
@@ -25,11 +25,11 @@ interface ThemeStateProps extends ThemeSelector {
   onChange?: (value: string) => void
 }
 
-export interface ThemeContextValue extends ThemeSelector {
+export interface ThemeContext extends Partial<ThemeSelector> {
   setTheme?: (options: ThemeSelector) => void
 }
 
-const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeContextValue>({})
+const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeContext>({})
 
 /**
  * Set default theme and allow descendants to update selected theme.
@@ -42,12 +42,12 @@ class ThemeStateProvider extends React.Component<ThemeStateProps> {
     return <ContextConsumer children={this.renderThemeStateManager} />
   }
 
-  renderThemeStateManager = (context: ThemeContextValue) => {
+  renderThemeStateManager = (context: ThemeContext) => {
     return <ThemeStateManager context={context} {...this.props} />
   }
 }
 
-type ThemeStateManagerProps = ThemeStateProps & { context: ThemeContextValue }
+type ThemeStateManagerProps = ThemeStateProps & { context: ThemeContext }
 
 class ThemeStateManager extends React.Component<ThemeStateManagerProps> {
   setTheme = ({ name }: ThemeSelector) => name && this.props.onChange && this.props.onChange(name)
@@ -89,7 +89,7 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps> {
 
 export const Provider = ThemeStateProvider
 // TODO (8/14/18) extend ContextConsumer to guard for use without provider
-export const Consumer: React.Consumer<ThemeContextValue> = ContextConsumer
+export const Consumer: React.Consumer<ThemeContext> = ContextConsumer
 
 export const ThemeState = {
   Provider,
