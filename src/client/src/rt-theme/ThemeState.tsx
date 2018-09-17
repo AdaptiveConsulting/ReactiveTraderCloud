@@ -43,17 +43,7 @@ class ThemeStateProvider extends React.Component<ThemeStateProps> {
   }
 
   renderThemeStateManager = (context: ThemeContext) => {
-    return <ThemeStateManager context={context} {...this.props} />
-  }
-}
-
-type ThemeStateManagerProps = ThemeStateProps & { context: ThemeContext }
-
-class ThemeStateManager extends React.Component<ThemeStateManagerProps> {
-  setTheme = ({ name }: ThemeSelector) => name && this.props.onChange && this.props.onChange(name)
-
-  render() {
-    const { context, children, name } = this.props
+    const { children, name } = this.props
     const theme = themes[name!]
 
     return (
@@ -85,6 +75,8 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps> {
       </ContextProvider>
     )
   }
+
+  setTheme = ({ name }: ThemeSelector) => name && this.props.onChange && this.props.onChange(name)
 }
 
 export const Provider = ThemeStateProvider
