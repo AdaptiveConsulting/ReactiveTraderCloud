@@ -39,3 +39,9 @@ export const Icon = styled('i')`
 export const Button = styled('button')`
   border: none;
 `
+
+export const TileHeader = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`

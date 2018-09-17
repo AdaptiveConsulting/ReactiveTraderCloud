@@ -1,6 +1,6 @@
 import React from 'react'
 import { Transition } from 'react-spring'
-import { AdaptiveLoader, Flex } from 'rt-components'
+import { AdaptiveLoader } from 'rt-components'
 import { styled } from 'rt-theme'
 
 const TileBookingStyle = styled('div')`
@@ -12,7 +12,7 @@ const TileBookingStyle = styled('div')`
   justify-content: center;
 `
 
-const BookingPill = styled(Flex)`
+const BookingPill = styled('div')`
   padding: 0.75rem 0.9375rem;
   border-radius: 17px;
   background: ${({ theme }) => theme.blue.base};

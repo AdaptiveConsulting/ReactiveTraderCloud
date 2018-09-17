@@ -1,5 +1,4 @@
 import React from 'react'
-import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 import { Button, Icon, TileBaseStyle } from '../styled'
 
@@ -9,6 +8,11 @@ export const TileNotificationStyle = styled(TileBaseStyle)<{ accentColor: string
   font-size: 0.8125rem;
   text-align: center;
   line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
 `
 
 const TradeSymbol = styled('div')`
@@ -56,23 +60,21 @@ const TileNotification: React.SFC<Props> = ({ style, isWarning, symbols, tradeId
 
   return (
     <TileNotificationStyle accentColor={accentColor} style={style}>
-      <Flex direction="column" alignItems="center" justifyContent="space-between" height="100%">
-        <TradeSymbol>
-          {isWarning ? (
-            <Icon color="white" className="fas fa-lg fa-exclamation-triangle" aria-hidden="true" />
-          ) : (
-            <CheckIcon className="fas fa-check" aria-hidden="true" />
-          )}
-          <HeavyFont>{symbols}</HeavyFont>
-        </TradeSymbol>
-        {tradeId && <HeavyFont>Trade ID: {tradeId}</HeavyFont>}
-        <Content>{children}</Content>
-        {(handleClick && (
-          <PillButton accentColor={accentColor} onClick={handleClick}>
-            Close
-          </PillButton>
-        )) || <div />}
-      </Flex>
+      <TradeSymbol>
+        {isWarning ? (
+          <Icon color="white" className="fas fa-lg fa-exclamation-triangle" aria-hidden="true" />
+        ) : (
+          <CheckIcon className="fas fa-check" aria-hidden="true" />
+        )}
+        <HeavyFont>{symbols}</HeavyFont>
+      </TradeSymbol>
+      {tradeId && <HeavyFont>Trade ID: {tradeId}</HeavyFont>}
+      <Content>{children}</Content>
+      {(handleClick && (
+        <PillButton accentColor={accentColor} onClick={handleClick}>
+          Close
+        </PillButton>
+      )) || <div />}
     </TileNotificationStyle>
   )
 }
