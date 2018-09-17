@@ -1,6 +1,5 @@
 import React from 'react'
 import { EnvironmentValue, PopoutIcon, withEnvironment } from 'rt-components'
-import { Environment } from 'rt-system'
 import { styled } from 'rt-theme'
 import { SpotTileWrapper } from './SpotTile'
 
@@ -42,17 +41,16 @@ interface Props {
 
 const TileControls: React.SFC<Props & { environment: EnvironmentValue }> = ({
   onPopoutClick,
-  canPopout = false,
+  canPopout,
   environment,
   displayCurrencyChart
 }) => (
   <React.Fragment>
-    {!canPopout &&
-      !Environment.isRunningInIE() && (
-        <TopRightButton onClick={onPopoutClick}>
-          <PopoutIcon width={0.8125} height={0.75} />
-        </TopRightButton>
-      )}
+    {canPopout && (
+      <TopRightButton onClick={onPopoutClick}>
+        <PopoutIcon width={0.8125} height={0.75} />
+      </TopRightButton>
+    )}
     {environment.isDesktop && (
       <BottomRightButton onClick={displayCurrencyChart}>
         <i className="fas fa-chart-bar" />

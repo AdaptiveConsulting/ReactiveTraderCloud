@@ -4,7 +4,10 @@ import { css } from 'rt-theme'
 import { ThemeProvider } from './ThemeProvider'
 import { Theme, themes } from './themes'
 
-type ThemeName = 'light' | 'dark'
+export enum ThemeName {
+  LIGHT = 'light',
+  DARK = 'dark'
+}
 
 interface ThemeSelector {
   name: ThemeName | null

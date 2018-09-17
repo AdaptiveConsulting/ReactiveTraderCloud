@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 
-import { styled, ThemeState } from 'rt-theme'
+import { styled, ThemeName, ThemeState } from 'rt-theme'
 
 import Logo from './Logo'
 
@@ -31,8 +31,11 @@ class Header extends React.Component {
 const ThemeControl = () => (
   <ThemeState.Consumer>
     {({ name, setTheme }) => (
-      <IconButton onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })} type={name || 'primary'}>
-        <i className={`fa${name === 'light' ? 'r' : 's'} fa-lightbulb`} />
+      <IconButton
+        onClick={() => setTheme({ name: name === ThemeName.DARK ? ThemeName.LIGHT : ThemeName.DARK })}
+        type={name || 'primary'}
+      >
+        <i className={`fa${name === ThemeName.LIGHT ? 'r' : 's'} fa-lightbulb`} />
       </IconButton>
     )}
   </ThemeState.Consumer>

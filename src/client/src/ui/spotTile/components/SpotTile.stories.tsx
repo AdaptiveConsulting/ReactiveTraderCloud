@@ -177,6 +177,7 @@ stories.add('Booking', () => (
         }}
       >
         <TileSwitch
+          canPopout
           executionStatus={ServiceConnectionStatus.CONNECTED}
           onNotificationDismissed={onNotificationDismissedClick}
           currencyPair={currencyPair}
@@ -199,6 +200,7 @@ stories.add('Executed', () => (
         }}
       >
         <TileSwitch
+          canPopout
           executionStatus={ServiceConnectionStatus.CONNECTED}
           onNotificationDismissed={onNotificationDismissedClick}
           currencyPair={currencyPair}
@@ -221,6 +223,7 @@ stories.add('Rejected', () => (
         }}
       >
         <TileSwitch
+          canPopout
           executionStatus={ServiceConnectionStatus.CONNECTED}
           onNotificationDismissed={onNotificationDismissedClick}
           currencyPair={currencyPair}
@@ -257,6 +260,7 @@ stories.add('Switch', () => {
           }}
         >
           <TileSwitch
+            canPopout
             executionStatus={ServiceConnectionStatus.CONNECTED}
             onNotificationDismissed={onNotificationDismissedClick}
             currencyPair={currencyPair}
