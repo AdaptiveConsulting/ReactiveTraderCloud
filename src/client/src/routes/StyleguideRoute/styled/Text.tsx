@@ -43,7 +43,7 @@ export function mapTextProps(props: TextProps): MappedCSS {
   return filter(textProps, (fn: PassThroughFunc, key) => props[key] && props[key] != null && fn(props)) as MappedCSS
 }
 
-export const Text: Styled<TextProps> = styled.span<TextProps>`
+export const Text: Styled<TextProps> = styled.span`
   max-width: 60em;
 
   ${mapTextProps};

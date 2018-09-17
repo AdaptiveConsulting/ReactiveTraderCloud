@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
-import { css, styled, Styled } from 'rt-theme'
+import { css, styled } from 'rt-theme'
 
 import { H2, H3 } from '../elements'
 import { Paragraph, SectionBlock, Text, TextProps } from '../styled'
@@ -143,7 +143,7 @@ const FontFamilySample: React.SFC<{
 
 const Heading: React.SFC = props => <Paragraph display="block" fontSize={1} lineHeight={2} mt={2} {...props} />
 
-const FontFamilySampleGrid: Styled<TextProps> = styled(Text)`
+const FontFamilySampleGrid = styled(Text)<TextProps>`
   display: grid;
   grid-template-columns: minmax(auto, 0.2fr) 1fr;
   grid-column-gap: 1rem;
@@ -176,7 +176,7 @@ const CharacterLine = styled.div`
   }
 `
 
-const FontWeightGrid: Styled<TextProps> = styled(Text)`
+const FontWeightGrid = styled(Text)<TextProps>`
   display: grid;
   grid-column-gap: 0.5rem;
   grid-template-rows: auto;
@@ -191,7 +191,7 @@ const FontWeightGrid: Styled<TextProps> = styled(Text)`
   }
 `
 
-const FontWeight: Styled<{ advised: boolean } & TextProps> = styled(Text)`
+const FontWeight = styled(Text)<{ advised: boolean } & TextProps>`
   display: block;
   white-space: nowrap;
   overflow: hidden;
@@ -212,7 +212,7 @@ const FontWeight: Styled<{ advised: boolean } & TextProps> = styled(Text)`
     `};
 `
 
-const FontSizeGrid: Styled<{ children: any[] }> = styled.div`
+const FontSizeGrid = styled.div<{ children: any[] }>`
   display: grid;
 
   grid-template-rows: auto;

@@ -1,7 +1,7 @@
 import React from 'react'
 import Switch from 'react-switch'
 
-import { colors, styled, Styled } from 'rt-theme'
+import { colors, styled } from 'rt-theme'
 
 import { Block } from '../styled'
 
@@ -39,7 +39,7 @@ export const FloatingTools: React.SFC<Props> = ({ themeName, switchTheme }) => {
 
 const Root: React.SFC = props => <Block backgroundColor="primary.2" {...props} />
 
-const Bar: Styled = styled(props => <Block px={3} backgroundColor="primary.1" textColor="secondary.3" {...props} />)`
+const Bar = styled(props => <Block px={3} backgroundColor="primary.1" textColor="secondary.3" {...props} />)`
   position: fixed;
   display: flex;
   align-items: center;
