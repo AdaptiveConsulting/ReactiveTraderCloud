@@ -10,7 +10,7 @@ export enum ThemeName {
 }
 
 interface ThemeSelector {
-  name: ThemeName
+  name?: ThemeName
   /**
    * An unused property — this parallel approach would support
    * custom branding on child components — assuming they
@@ -29,9 +29,7 @@ export interface ThemeContextValue extends ThemeSelector {
   setTheme?: (options: ThemeSelector) => void
 }
 
-const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeContextValue>({
-  name: ThemeName.LIGHT
-})
+const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeContextValue>({})
 
 /**
  * Set default theme and allow descendants to update selected theme.
@@ -52,7 +50,7 @@ class ThemeStateProvider extends React.Component<ThemeStateProps> {
 type ThemeStateManagerProps = ThemeStateProps & { context: ThemeContextValue }
 
 class ThemeStateManager extends React.Component<ThemeStateManagerProps> {
-  setTheme = ({ name }: ThemeSelector) => this.props.onChange && this.props.onChange(name)
+  setTheme = ({ name }: ThemeSelector) => name && this.props.onChange && this.props.onChange(name)
 
   render() {
     const { context, children, name } = this.props

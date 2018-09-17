@@ -13,31 +13,39 @@ export default class LocalStorageThemeProvider extends React.Component<{}, State
   }
 
   componentDidMount = () => {
-    this.setThemeNameFromStorage()
-    window.addEventListener('storage', this.setThemeNameFromStorage)
+    this.setThemeFromStorage()
+    window.addEventListener('storage', this.setThemeFromStorage)
   }
 
   componentWillUnmount = () => {
-    window.removeEventListener('storage', this.setThemeNameFromStorage)
+    window.removeEventListener('storage', this.setThemeFromStorage)
   }
 
-  getThemeNameFromStorage = () => localStorage.getItem(THEME_STORAGE_KEY)
+  getStorageThemeName = () => localStorage.getItem(THEME_STORAGE_KEY)
 
-  setThemeNameFromStorage = () => {
-    const themeName = this.getThemeNameFromStorage()
-    if (themeName !== this.state.themeName && (themeName === ThemeName.LIGHT || themeName === ThemeName.DARK)) {
-      this.setState({ themeName })
+  setStorageThemeName = (name: ThemeName) => localStorage.setItem(THEME_STORAGE_KEY, name)
+
+  setThemeFromStorage = () => {
+    const themeName = this.getStorageThemeName()
+    if (themeName) {
+      this.setTheme(themeName)
+    } else {
+      this.setStorageThemeName(this.state.themeName)
     }
   }
 
-  updateLocalStorageThemeName = (name: string) => {
-    localStorage.setItem(THEME_STORAGE_KEY, name)
-    this.setThemeNameFromStorage()
+  setTheme = (themeName: string) => {
+    if (this.isValidThemeUpdate(themeName)) {
+      this.setState({ themeName }, () => localStorage.setItem(THEME_STORAGE_KEY, themeName))
+    }
   }
+
+  isValidThemeUpdate = (themeName: string): themeName is ThemeName =>
+    themeName !== this.state.themeName && (themeName === ThemeName.LIGHT || themeName === ThemeName.DARK)
 
   render() {
     return (
-      <ThemeState.Provider name={this.state.themeName} onChange={this.updateLocalStorageThemeName}>
+      <ThemeState.Provider name={this.state.themeName} onChange={this.setTheme}>
         {this.props.children}
       </ThemeState.Provider>
     )
