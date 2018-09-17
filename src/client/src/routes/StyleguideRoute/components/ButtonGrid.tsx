@@ -8,40 +8,34 @@ import { resolvesColor, styled } from 'rt-theme'
 
 import { PassThroughProps } from '../tools'
 
-export default class ButtonGrid extends React.Component {
-  state = {}
-
-  render() {
-    return (
-      <Root>
-        <LabelColumn>
-          <div />
-          <label>Normal</label>
-          <label>Active</label>
-          <label>Disabled</label>
-          <label>With Icons</label>
-          <label>Grouped</label>
-        </LabelColumn>
-        <ButtonColumn>
-          <ColumnTitle>Standard</ColumnTitle>
-          <ButtonVariants />
-        </ButtonColumn>
-        <ButtonColumn>
-          <ColumnTitle>Standard Outline</ColumnTitle>
-          <ButtonVariants outline />
-        </ButtonColumn>
-        <ButtonColumn>
-          <ColumnTitle>Pill</ColumnTitle>
-          <ButtonVariants pill />
-        </ButtonColumn>
-        <ButtonColumn>
-          <ColumnTitle>Pill Outline</ColumnTitle>
-          <ButtonVariants pill outline />
-        </ButtonColumn>
-      </Root>
-    )
-  }
-}
+export default (() => (
+  <Root>
+    <LabelColumn>
+      <div />
+      <label>Normal</label>
+      <label>Active</label>
+      <label>Disabled</label>
+      <label>With Icons</label>
+      <label>Grouped</label>
+    </LabelColumn>
+    <ButtonColumn>
+      <ColumnTitle>Standard</ColumnTitle>
+      <ButtonVariants />
+    </ButtonColumn>
+    <ButtonColumn>
+      <ColumnTitle>Standard Outline</ColumnTitle>
+      <ButtonVariants outline />
+    </ButtonColumn>
+    <ButtonColumn>
+      <ColumnTitle>Pill</ColumnTitle>
+      <ButtonVariants pill />
+    </ButtonColumn>
+    <ButtonColumn>
+      <ColumnTitle>Pill Outline</ColumnTitle>
+      <ButtonVariants pill outline />
+    </ButtonColumn>
+  </Root>
+)) as React.SFC
 
 const ButtonVariants: React.SFC<PassThroughProps> = props => (
   <React.Fragment>

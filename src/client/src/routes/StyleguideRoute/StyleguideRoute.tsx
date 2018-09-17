@@ -24,47 +24,43 @@ const sections = _.mapKeys(
   (value, key) => _.kebabCase(key),
 )
 
-export class StyleguideRoute extends React.Component {
-  render() {
-    return (
-      <ThemeState.Provider name="light">
-        <Root>
-          <ThemeState.Consumer>
-            {({ name, setTheme }) => {
-              return (
-                <FloatingTools
-                  themeName={name}
-                  switchTheme={() =>
-                    setTheme({
-                      name: name === 'dark' ? 'light' : 'dark',
-                    })
-                  }
-                />
-              )
-            }}
-          </ThemeState.Consumer>
-          <BrowserRouter>
-            <Switch>
-              {_.map(sections, (Section, path) => (
-                <Route key={path} path={`/styleguide/${path}`}>
-                  <Section />
-                </Route>
-              ))}
+export const StyleguideRoute: React.SFC = () => (
+  <ThemeState.Provider name="light">
+    <Root>
+      <ThemeState.Consumer>
+        {({ name, setTheme }) => {
+          return (
+            <FloatingTools
+              themeName={name}
+              switchTheme={() =>
+                setTheme({
+                  name: name === 'dark' ? 'light' : 'dark',
+                })
+              }
+            />
+          )
+        }}
+      </ThemeState.Consumer>
+      <BrowserRouter>
+        <Switch>
+          {_.map(sections, (Section, path) => (
+            <Route key={path} path={`/styleguide/${path}`}>
+              <Section />
+            </Route>
+          ))}
 
-              <Route>
-                <React.Fragment>
-                  {_.map(sections, (Section, path) => (
-                    <Section key={path} />
-                  ))}
-                </React.Fragment>
-              </Route>
-            </Switch>
-          </BrowserRouter>
-        </Root>
-      </ThemeState.Provider>
-    )
-  }
-}
+          <Route>
+            <React.Fragment>
+              {_.map(sections, (Section, path) => (
+                <Section key={path} />
+              ))}
+            </React.Fragment>
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </Root>
+  </ThemeState.Provider>
+)
 
 export const Root = styled(Block)`
   min-height: 100%;

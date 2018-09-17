@@ -53,8 +53,8 @@ const portalProps = {
       name: 'blotter',
       width: 850,
       height: 450,
-      url: 'about:Blotter'
-    }
+      url: 'about:Blotter',
+    },
   },
   analyticsRegion: {
     title: 'Analytics',
@@ -62,9 +62,9 @@ const portalProps = {
       name: 'analytics',
       width: 400,
       height: 800,
-      url: 'about:Analytics'
-    }
-  }
+      url: 'about:Analytics',
+    },
+  },
 }
 
 const Wrapper = styled.div`
@@ -78,7 +78,7 @@ const WorkspaceWrapper = styled(Wrapper)`
 `
 
 const AnalyticsWrapper = styled(Wrapper)`
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem;
   overflow: hidden;
 
   @media (max-width: 750px) {
