@@ -1,80 +1,76 @@
 import _ from 'lodash'
 import React from 'react'
-import { css, styled, Styled } from 'rt-theme'
+import { css, styled } from 'rt-theme'
 
 import { colors } from 'rt-theme'
 
 import { Block, BlockProps } from '../styled'
-import { PassThroughProps } from '../tools'
 
-const { spectrum } = colors
+const {
+  spectrum: { brand, offblack, blue, red, yellow, green },
+} = colors
 
 const SWATCH_KEYS = {
   light: [95, 9, 8, 7, 6, 5, 4, 3, 2, 1].map(v => `L${v}`),
   dark: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(v => `D${v}`),
 }
 
-export interface ColorBlocksProps extends PassThroughProps {}
+export const ColorBlocks = () => (
+  <Root>
+    {[{ brand, offblack }, { blue, red, yellow, green }].map((swatchSetGroup, i) => (
+      <SwatchSetGroup key={i}>
+        {_.map(swatchSetGroup, (color, name) => {
+          const base = color.base
+          const light = SWATCH_KEYS.light.map(key => ({ color: color[key], name: key }))
+          const dark = SWATCH_KEYS.dark.map(key => ({ color: color[key], name: key }))
 
-export const ColorBlocks: React.SFC<ColorBlocksProps> = props => {
-  const { brand, offblack, blue, red, yellow, green } = spectrum
-  return (
-    <Root>
-      {[{ brand, offblack }, { blue, red, yellow, green }].map((swatchSetGroup, i) => (
-        <SwatchSetGroup key={i}>
-          {_.map(swatchSetGroup, (color, name) => {
-            const base = color.base
-            const light = SWATCH_KEYS.light.map(key => ({ color: color[key], name: key }))
-            const dark = SWATCH_KEYS.dark.map(key => ({ color: color[key], name: key }))
+          const set = [...light, { color: base }, ...dark]
 
-            const set = [...light, { color: base }, ...dark]
+          return (
+            <SwatchSet key={name}>
+              <SwatchGroup>
+                {light.map(({ color, name }, index) => {
+                  const { [index + 4]: text = { color: 'transparent' } } = set
 
-            return (
-              <SwatchSet key={name}>
-                <SwatchGroup>
-                  {light.map(({ color, name }, index) => {
-                    const { [index + 4]: text = { color: 'transparent' } } = set
+                  return (
+                    <Swatch key={name} bg={color}>
+                      <SwatchLevel fg={text.color}>{name}</SwatchLevel>
+                    </Swatch>
+                  )
+                })}
+              </SwatchGroup>
 
-                    return (
-                      <Swatch key={name} bg={color}>
-                        <SwatchLevel fg={text.color}>{name}</SwatchLevel>
-                      </Swatch>
-                    )
-                  })}
-                </SwatchGroup>
+              <SwatchGroup py={2}>
+                <Swatch bg={base}>
+                  <SwatchName>{name}</SwatchName>
+                  <SwatchValue>{base}</SwatchValue>
+                </Swatch>
+              </SwatchGroup>
 
-                <SwatchGroup py={2}>
-                  <Swatch bg={base}>
-                    <SwatchName>{name}</SwatchName>
-                    <SwatchValue>{base}</SwatchValue>
-                  </Swatch>
-                </SwatchGroup>
+              <SwatchGroup>
+                {dark.map(({ color, name }, index) => {
+                  const {
+                    [dark.length + index - 4]: text = {
+                      color: 'transparent',
+                    },
+                  } = set
 
-                <SwatchGroup>
-                  {dark.map(({ color, name }, index) => {
-                    const {
-                      [dark.length + index - 4]: text = {
-                        color: 'transparent',
-                      },
-                    } = set
+                  return (
+                    <Swatch key={name} bg={color}>
+                      <SwatchLevel fg={text.color}>{name}</SwatchLevel>
+                    </Swatch>
+                  )
+                })}
+              </SwatchGroup>
+            </SwatchSet>
+          )
+        })}
+      </SwatchSetGroup>
+    ))}
+  </Root>
+)
 
-                    return (
-                      <Swatch key={name} bg={color}>
-                        <SwatchLevel fg={text.color}>{name}</SwatchLevel>
-                      </Swatch>
-                    )
-                  })}
-                </SwatchGroup>
-              </SwatchSet>
-            )
-          })}
-        </SwatchSetGroup>
-      ))}
-    </Root>
-  )
-}
-
-const SwatchName: Styled<BlockProps> = styled(Block)`
+const SwatchName = styled(Block)<BlockProps>`
   font-weight: bold;
   font-size: 0.825rem;
   text-transform: capitalize;
@@ -90,7 +86,7 @@ const SwatchLevel = styled(SwatchName)`
   font-size: 0.75rem;
 `
 
-const Swatch: Styled<BlockProps> = styled(Block)`
+const Swatch = styled(Block)<BlockProps>`
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -127,7 +123,7 @@ const SwatchSet = styled(Block)`
   height: 100%;
 `
 
-const SwatchSetGroup: Styled<BlockProps & { children: any[] }> = styled(Block)`
+const SwatchSetGroup = styled(Block)<BlockProps & { children: any[] }>`
   display: grid;
   height: 100%;
 

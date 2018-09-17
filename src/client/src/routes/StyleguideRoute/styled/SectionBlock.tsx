@@ -6,7 +6,7 @@ import { Block, BlockProps } from '../styled'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 
 export interface SectionProps extends BlockProps, MarginPaddingProps {
-  mh?: any
+  mh?: number
   invert?: boolean
   intent?: 'primary' | 'secondary' | 'inverted'
   bleeds?: boolean
