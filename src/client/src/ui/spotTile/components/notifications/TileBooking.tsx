@@ -1,7 +1,7 @@
 import React from 'react'
 import { Transition } from 'react-spring'
 import { AdaptiveLoader, Flex } from 'rt-components'
-import { keyframes, styled } from 'rt-theme'
+import { styled } from 'rt-theme'
 
 const TileBookingStyle = styled('div')`
   position: absolute;
@@ -12,23 +12,10 @@ const TileBookingStyle = styled('div')`
   justify-content: center;
 `
 
-const pulse = (base: string, dark: string) => keyframes`
-  0% {
-    background: ${base};
-  }
-  70% {
-    background: ${dark};
-  }
-  100% {
-    background: ${base};
-  }
-`
-
 const BookingPill = styled(Flex)`
   padding: 0.75rem 0.9375rem;
   border-radius: 17px;
   background: ${({ theme }) => theme.blue.base};
-  animation: ${({ theme }) => pulse(theme.blue.basename, theme.blue.dark)} 2s infinite;
 
   rect {
     fill: ${({ theme }) => theme.white};
