@@ -4,7 +4,10 @@ import { css } from './emotion'
 import { ThemeProvider } from './ThemeProvider'
 import { Theme, themes } from './themes'
 
-type ThemeName = 'light' | 'dark'
+export enum ThemeName {
+  LIGHT = 'light',
+  DARK = 'dark',
+}
 
 interface ThemeSelector {
   name: ThemeName | null
@@ -28,7 +31,7 @@ export interface ThemeStateValue extends ThemeSelector {
 
 const { Provider: ContextProvider, Consumer: ContextConsumer } = React.createContext<ThemeStateValue | null>(
   // We use null as a semaphore to signify a root component
-  null
+  null,
 )
 
 /**
@@ -61,7 +64,7 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeSta
 
     if (state.name == null) {
       return {
-        name: name || context.name
+        name: name || context.name,
       }
     }
 
@@ -76,7 +79,7 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeSta
           this.props.onChange(this.state.name)
         }
       })
-    }
+    },
   }
 
   render() {
@@ -99,7 +102,7 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps, ThemeSta
                   <html
                     className={css({
                       backgroundColor: theme.shell.backgroundColor,
-                      color: theme.shell.textColor
+                      color: theme.shell.textColor,
                     })}
                   />
                 </Helmet>
@@ -118,7 +121,7 @@ export const Consumer: React.Consumer<ThemeStateValue> = ContextConsumer
 
 export const ThemeState = {
   Provider,
-  Consumer
+  Consumer,
 }
 
 export default ThemeState

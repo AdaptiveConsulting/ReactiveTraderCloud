@@ -22,7 +22,7 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
             <TearOff
               id="blotter"
               portalProps={portalProps.blotterRegion}
-              render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} />}
+              render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}
             />
           </BlotterWrapper>
         )}
@@ -37,7 +37,7 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
         <TearOff
           id="region"
           portalProps={portalProps.analyticsRegion}
-          render={(popOut, tornOff) => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} />}
+          render={(popOut, tornOff) => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}
         />
       </AnalyticsWrapper>
     }
@@ -53,7 +53,7 @@ const portalProps = {
       name: 'blotter',
       width: 850,
       height: 450,
-      url: 'about:Blotter',
+      url: '/blotter',
     },
   },
   analyticsRegion: {
@@ -62,7 +62,7 @@ const portalProps = {
       name: 'analytics',
       width: 400,
       height: 800,
-      url: 'about:Analytics',
+      url: '/analytics',
     },
   },
 }

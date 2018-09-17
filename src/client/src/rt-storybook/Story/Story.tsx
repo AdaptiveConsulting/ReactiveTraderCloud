@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { styled, ThemeState } from 'rt-theme'
+import { styled, ThemeName, ThemeState } from 'rt-theme'
 
 // TODO make styleguide globals?
 import 'rt-theme'
@@ -9,16 +9,16 @@ class Story extends Component {
     const { children } = this.props
 
     return (
-      <ThemeState.Provider name="light">
+      <ThemeState.Provider name={ThemeName.LIGHT}>
         <StyledStory>
           <Toolbar>
             <ThemeState.Consumer>
               {({ name, setTheme }) => (
                 <IconButton
-                  onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })}
+                  onClick={() => setTheme({ name: name === ThemeName.DARK ? ThemeName.LIGHT : ThemeName.DARK })}
                   type={name || 'primary'}
                 >
-                  <i className={`fa${name === 'light' ? 'r' : 's'} fa-lightbulb`} />
+                  <i className={`fa${name === ThemeName.LIGHT ? 'r' : 's'} fa-lightbulb`} />
                 </IconButton>
               )}
             </ThemeState.Consumer>

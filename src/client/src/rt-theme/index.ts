@@ -6,5 +6,6 @@ export { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } f
 export { themes, Theme } from './themes'
 export { resolvesColor, Selector } from './tools'
 export { ThemeProvider } from './ThemeProvider'
-export { ThemeState, ThemeStateValue } from './ThemeState'
+
+export { ThemeState, ThemeStateValue, ThemeName } from './ThemeState'
 export { default as styled, Styled, StyledProps } from './styled'

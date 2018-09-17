@@ -10,6 +10,7 @@ import { selectAnalyticsStatus, selectCurrencyPairs, selectPnlChartModel, select
 interface AnalyticsContainerOwnProps {
   onPopoutClick: () => void
   tornOff: boolean
+  tearable?: boolean
 }
 
 type AnalyticsContainerStateProps = ReturnType<typeof mapStateToProps>
@@ -18,11 +19,17 @@ type AnalyticsContainerProps = AnalyticsContainerStateProps &
   AnalyticsContainerDispatchProps &
   AnalyticsContainerOwnProps
 
-const AnalyticsContainer: React.SFC<AnalyticsContainerProps> = ({ status, onMount, tornOff, ...props }) => (
+const AnalyticsContainer: React.SFC<AnalyticsContainerProps> = ({
+  status,
+  onMount,
+  tearable = false,
+  tornOff,
+  ...props
+}) => (
   <Loadable
     onMount={onMount}
     status={status}
-    render={() => <Analytics {...props} canPopout={!Environment.isRunningInIE() && !tornOff} />}
+    render={() => <Analytics {...props} canPopout={tearable && !Environment.isRunningInIE() && !tornOff} />}
     message="Analytics Disconnected"
   />
 )
@@ -31,14 +38,14 @@ const mapStateToProps = (state: GlobalState) => ({
   pnlChartModel: selectPnlChartModel(state),
   positionsChartModel: selectPositionsChartModel(state),
   status: selectAnalyticsStatus(state),
-  currencyPairs: selectCurrencyPairs(state)
+  currencyPairs: selectCurrencyPairs(state),
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onMount: () => dispatch(AnalyticsActions.subcribeToAnalytics())
+  onMount: () => dispatch(AnalyticsActions.subcribeToAnalytics()),
 })
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(AnalyticsContainer)

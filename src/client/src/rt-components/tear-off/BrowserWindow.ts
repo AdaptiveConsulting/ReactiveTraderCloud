@@ -3,18 +3,18 @@ import { BrowserWindowConfig, WindowConfig } from './types'
 type BrowserWindowProps = WindowConfig & BrowserWindowConfig
 
 export const openBrowserWindow = (config: BrowserWindowProps) => {
-  const { name, width, height, center } = config
+  const { name, width, height, center, url } = config
   const { left, top } = calculatePosition(center, width, height)
 
   return window.open(
-    '',
+    url,
     name,
     toWindowFeatures({
       width,
       height,
       left,
-      top
-    })
+      top,
+    }),
   )
 }
 

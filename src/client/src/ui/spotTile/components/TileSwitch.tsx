@@ -10,7 +10,7 @@ import TileControls from './TileControls'
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
-  tornOff?: boolean
+  canPopout: boolean
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
   onPopoutClick?: () => void
@@ -22,7 +22,7 @@ const TileSwitch: React.SFC<Props> = ({
   currencyPair,
   spotTileData,
   executeTrade,
-  tornOff,
+  canPopout,
   onPopoutClick,
   onNotificationDismissed,
   displayCurrencyChart,
@@ -34,7 +34,7 @@ const TileSwitch: React.SFC<Props> = ({
     executeTrade={executeTrade}
     executionStatus={executionStatus}
   >
-    {<TileControls canPopout={tornOff} onPopoutClick={onPopoutClick} displayCurrencyChart={displayCurrencyChart} />}
+    <TileControls canPopout={canPopout} onPopoutClick={onPopoutClick} displayCurrencyChart={displayCurrencyChart} />
     <TileBooking show={spotTileData.isTradeExecutionInFlight} />
     <NotificationContainer
       isPriceStale={!spotTileData.lastTradeExecutionStatus && spotTileData.price.priceStale}

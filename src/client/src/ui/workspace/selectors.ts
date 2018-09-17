@@ -7,9 +7,9 @@ const makePortalProps = (key: string) => ({
     name: `${key} Spot`,
     width: 370,
     height: 184,
-    url: `about:${key} Spot`
+    url: `/spot/${key}`,
   },
-  browserConfig: { center: 'screen' as 'screen' }
+  browserConfig: { center: 'screen' as 'screen' },
 })
 
 export type PortalProps = ReturnType<typeof makePortalProps>
@@ -18,8 +18,8 @@ const getSpotTiles = (state: GlobalState) => state.currencyPairs
 const selectSpotTiles = createSelector([getSpotTiles], spotTileKeys =>
   Object.keys(spotTileKeys).map(key => ({
     key,
-    portalProps: makePortalProps(key)
-  }))
+    portalProps: makePortalProps(key),
+  })),
 )
 
 const getExecutionStatus = ({ compositeStatusService }: GlobalState) =>
