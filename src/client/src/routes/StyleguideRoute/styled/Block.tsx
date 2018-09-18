@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { css, styled } from 'rt-theme'
 
 import { getColor } from '../tools'
-import { mapMarginPaddingProps, MarginPaddingProps } from './rules'
+import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 import { mapTextProps, TextProps } from './Text'
 
 export interface BlockProps extends TextProps, MarginPaddingProps {
