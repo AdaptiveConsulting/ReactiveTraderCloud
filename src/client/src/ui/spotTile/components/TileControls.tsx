@@ -43,7 +43,7 @@ const TileControls: React.SFC<Props & { environment: EnvironmentValue }> = ({
   onPopoutClick,
   canPopout,
   environment,
-  displayCurrencyChart
+  displayCurrencyChart,
 }) => (
   <React.Fragment>
     {canPopout && (

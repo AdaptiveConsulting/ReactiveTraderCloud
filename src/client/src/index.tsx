@@ -5,17 +5,17 @@ import { LocalStorageThemeProvider } from 'rt-theme'
 
 import 'rt-theme'
 
-import MainRoute from './MainRoute'
-import NotificationRoute from './NotificationRoute'
+import { MainRoute, NotificationRoute, StyleguideRoute } from './routes'
 
 ReactDOM.render(
   <LocalStorageThemeProvider>
     <BrowserRouter>
       <Switch>
+        <Route path="/styleguide" component={StyleguideRoute} />
         <Route path="/notification" component={NotificationRoute} />
         <Route component={MainRoute} />
       </Switch>
     </BrowserRouter>
   </LocalStorageThemeProvider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 )

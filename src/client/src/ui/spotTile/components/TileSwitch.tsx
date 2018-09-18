@@ -26,7 +26,7 @@ const TileSwitch: React.SFC<Props> = ({
   onPopoutClick,
   onNotificationDismissed,
   displayCurrencyChart,
-  executionStatus
+  executionStatus,
 }) => (
   <SpotTile
     currencyPair={currencyPair}
@@ -56,18 +56,18 @@ TileSwitch.defaultProps = {
       symbol: '',
       valueDate: '',
       priceMovementType: PriceMovementTypes.None,
-      priceStale: false
+      priceStale: false,
     },
     currencyChartIsOpening: false,
-    lastTradeExecutionStatus: null
+    lastTradeExecutionStatus: null,
   },
   currencyPair: {
     symbol: '',
     ratePrecision: 0,
     pipsPosition: 0,
     base: '',
-    terms: ''
-  }
+    terms: '',
+  },
 }
 
 export default TileSwitch

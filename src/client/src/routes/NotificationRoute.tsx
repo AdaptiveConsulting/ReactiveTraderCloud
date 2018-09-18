@@ -2,7 +2,7 @@ import React from 'react'
 import { Trade } from 'rt-types'
 
 import { ThemeState } from 'rt-theme'
-import TradeNotification from './shell/notification/TradeNotification'
+import TradeNotification from '../shell/notification/TradeNotification'
 
 declare const window: any
 
@@ -14,16 +14,16 @@ interface State {
   message: Message | null
 }
 
-export default class NotificationRoute extends React.Component<{}, State> {
+export class NotificationRoute extends React.Component<{}, State> {
   state: State = {
-    message: null
+    message: null,
   }
 
   componentDidMount = () => {
     window.onNotificationMessage = (message: Message) => {
       this.setState({ message }, () =>
         // send a message back to the main application - required to restore the main application window if it's minimised
-        fin.desktop.Notification.getCurrent().sendMessageToApplication('ack')
+        fin.desktop.Notification.getCurrent().sendMessageToApplication('ack'),
       )
     }
   }
@@ -44,3 +44,5 @@ export default class NotificationRoute extends React.Component<{}, State> {
     )
   }
 }
+
+export default NotificationRoute

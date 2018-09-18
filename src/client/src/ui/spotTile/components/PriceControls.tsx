@@ -1,10 +1,16 @@
 import React from 'react'
-import { Flex } from 'rt-components'
+import { styled } from 'rt-theme'
 import { CurrencyPair, Direction } from 'rt-types'
 import { SpotPriceTick } from '../model/spotPriceTick'
 import { getSpread, toRate } from '../model/spotTileUtils'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
+
+const PriceControlsStyle = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
 
 interface Props {
   currencyPair: CurrencyPair
@@ -18,7 +24,7 @@ const PriceControls: React.SFC<Props> = ({ currencyPair, priceData, executeTrade
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const spread = getSpread(priceData.bid, priceData.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)
   return (
-    <Flex alignItems="center" justifyContent="space-between">
+    <PriceControlsStyle>
       <PriceButton
         handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
         direction={Direction.Sell}
@@ -38,7 +44,7 @@ const PriceControls: React.SFC<Props> = ({ currencyPair, priceData, executeTrade
         rawRate={askRate.rawRate}
         disabled={disabled}
       />
-    </Flex>
+    </PriceControlsStyle>
   )
 }
 

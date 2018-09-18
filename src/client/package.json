@@ -72,9 +72,9 @@
     "numeral": "1.5.3",
     "nvd3": "1.8.6",
     "polished": "^1.9.3",
-    "react": "^16.3.2",
+    "react": "^16.5.1",
     "react-addons-css-transition-group": "^15.6.2",
-    "react-dom": "^16.3.2",
+    "react-dom": "^16.5.1",
     "react-dom-factories": "1.0.2",
     "react-emotion": "^9.2.6",
     "react-helmet": "^5.2.0",
@@ -83,6 +83,7 @@
     "react-router-dom": "^4.3.1",
     "react-sizeme": "2.3.6",
     "react-spring": "^5.5.4",
+    "react-switch": "^3.0.4",
     "redux": "4.0.0",
     "redux-actions": "2.3.2",
     "redux-observable": "1.0.0-alpha.3",
@@ -143,7 +144,7 @@
     "redux-devtools-extension": "^2.13.2",
     "rxjs-tslint-rules": "^4.1.1",
     "source-map-explorer": "^1.5.0",
-    "unzip": "^0.1.11",
-    "typescript": "^3.0.3"
+    "typescript": "^3.0.3",
+    "unzip": "^0.1.11"
   }
 }

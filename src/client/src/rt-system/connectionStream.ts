@@ -7,7 +7,7 @@ const LOG_NAME = 'ConnectionFactory: '
 
 export enum ConnectionEventType {
   CONNECTED = 'CONNECTED',
-  DISCONNECTED = 'DISCONNECTED'
+  DISCONNECTED = 'DISCONNECTED',
 }
 
 export interface ConnectionOpenEvent {
@@ -33,7 +33,7 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
         type: ConnectionEventType.CONNECTED,
         session,
         url: autobahn.getConnection().transport.info.url,
-        transportType: autobahn.getConnection().transport.info.type
+        transportType: autobahn.getConnection().transport.info.type,
       })
     })
 
@@ -46,7 +46,7 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
         obs.error({
           type: ConnectionEventType.DISCONNECTED,
           reason,
-          details: details.message
+          details: details.message,
         })
       }
     })

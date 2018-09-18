@@ -1,5 +1,6 @@
 import { darken } from 'polished'
 import React from 'react'
+
 import { styled } from 'rt-theme'
 
 const ModalContainer = styled.div`
@@ -14,14 +15,16 @@ const ModalContainer = styled.div`
   justify-content: center;
   font-size: 0.75rem;
 `
+
 const ModalOverlay = styled.div`
   position: absolute;
-
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+
   opacity: 0.75;
+
   background: ${({ theme }) => theme.overlay.backgroundColor};
 `
 

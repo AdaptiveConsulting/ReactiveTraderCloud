@@ -91,7 +91,7 @@ const currencyPair = {
   pipsPosition: 2,
   ratePrecision: 3,
   symbol: 'EURUSD',
-  terms: 'USD'
+  terms: 'USD',
 }
 
 const spotTileData: Required<SpotTileData> = {
@@ -104,9 +104,9 @@ const spotTileData: Required<SpotTileData> = {
     mid: 184.771,
     priceMovementType: PriceMovementTypes.Up,
     symbol: 'GBPJPY',
-    valueDate: '2018-08-04T00:00:00Z'
+    valueDate: '2018-08-04T00:00:00Z',
   },
-  lastTradeExecutionStatus: null
+  lastTradeExecutionStatus: null,
 }
 
 const trade = {
@@ -119,7 +119,7 @@ const trade = {
   spotRate: 184.672,
   tradeDate: new Date('2018-08-09T16:34:52.622Z'),
   valueDate: new Date('2018-08-13T00:00:00.000Z'),
-  status: 'rejected'
+  status: 'rejected',
 }
 
 const lastTradeExecutionStatus = {
@@ -129,18 +129,18 @@ const lastTradeExecutionStatus = {
     SpotRate: 184.672,
     Direction: Direction.Buy,
     Notional: 1000000,
-    DealtCurrency: 'GBP'
-  }
+    DealtCurrency: 'GBP',
+  },
 }
 
 const tradeExecuted = {
   ...lastTradeExecutionStatus,
-  trade: { ...trade, status: 'done' }
+  trade: { ...trade, status: 'done' },
 }
 
 const tradeRejected = {
   ...lastTradeExecutionStatus,
-  trade: { ...trade, status: 'rejected' }
+  trade: { ...trade, status: 'rejected' },
 }
 
 const executeTrade = action('executeTrade')
@@ -153,7 +153,7 @@ stories.add('Tile', () => (
       <div
         style={{
           width: '320px',
-          height: '150px'
+          height: '150px',
         }}
       >
         <SpotTile
@@ -173,7 +173,7 @@ stories.add('Booking', () => (
       <div
         style={{
           width: '320px',
-          height: '150px'
+          height: '150px',
         }}
       >
         <TileSwitch
@@ -196,7 +196,7 @@ stories.add('Executed', () => (
       <div
         style={{
           width: '320px',
-          height: '150px'
+          height: '150px',
         }}
       >
         <TileSwitch
@@ -219,7 +219,7 @@ stories.add('Rejected', () => (
       <div
         style={{
           width: '320px',
-          height: '150px'
+          height: '150px',
         }}
       >
         <TileSwitch
@@ -239,13 +239,13 @@ stories.add('Rejected', () => (
 const options = {
   Rejected: 'rejected',
   Done: 'done',
-  None: 'none'
+  None: 'none',
 }
 
 const tradeOptions = {
   rejected: tradeRejected,
   done: tradeExecuted,
-  none: null as null
+  none: null as null,
 }
 
 stories.add('Switch', () => {
@@ -256,7 +256,7 @@ stories.add('Switch', () => {
         <div
           style={{
             width: '320px',
-            height: '150px'
+            height: '150px',
           }}
         >
           <TileSwitch
@@ -267,7 +267,7 @@ stories.add('Switch', () => {
             spotTileData={{
               ...spotTileData,
               isTradeExecutionInFlight: boolean('Booking', false),
-              lastTradeExecutionStatus: tradeOptions[option]
+              lastTradeExecutionStatus: tradeOptions[option],
             }}
             executeTrade={executeTrade}
             onPopoutClick={action('On popout click')}

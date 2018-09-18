@@ -1,2 +1,2 @@
-export { Button, ButtonGroup } from './Button'
+export { Button, ButtonGroup } from './components/Button'
 export { default as rules } from './rules'

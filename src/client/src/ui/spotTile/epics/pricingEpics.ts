@@ -17,12 +17,12 @@ export const pricingServiceEpic: ApplicationEpic = (action$, state$, { loadBalan
     mergeMap((action: SubscribeToSpotTileAction) =>
       pricingService
         .getSpotPriceStream({
-          symbol: action.payload
+          symbol: action.payload,
         })
         .pipe(
           map(priceUpdateAction),
-          takeUntil(action$.pipe(applicationDisconnected))
-        )
-    )
+          takeUntil(action$.pipe(applicationDisconnected)),
+        ),
+    ),
   )
 }

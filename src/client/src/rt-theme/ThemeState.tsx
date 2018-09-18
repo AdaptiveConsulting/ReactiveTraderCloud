@@ -1,12 +1,12 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { css } from 'rt-theme'
+import { css } from './emotion'
 import { ThemeProvider } from './ThemeProvider'
 import { Theme, themes } from './themes'
 
 export enum ThemeName {
   LIGHT = 'light',
-  DARK = 'dark'
+  DARK = 'dark',
 }
 
 interface ThemeSelector {
@@ -59,13 +59,10 @@ class ThemeStateProvider extends React.Component<ThemeStateProps> {
               context ? null : (
                 <Helmet>
                   <html
-                    className={css`
-                      :root,
-                      body {
-                        background-color: ${theme.shell.backgroundColor};
-                        color: ${theme.shell.textColor};
-                      }
-                    `}
+                    className={css({
+                      backgroundColor: theme.shell.backgroundColor,
+                      color: theme.shell.textColor,
+                    })}
                   />
                 </Helmet>
               )}
@@ -85,7 +82,7 @@ export const Consumer: React.Consumer<ThemeContext> = ContextConsumer
 
 export const ThemeState = {
   Provider,
-  Consumer
+  Consumer,
 }
 
 export default ThemeState

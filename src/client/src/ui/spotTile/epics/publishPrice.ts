@@ -12,7 +12,7 @@ type PriceUpdateAction = ReturnType<typeof priceUpdateAction>
 
 const addRatePrecisionToPrice = (currencyData: CurrencyPairMap, price: SpotPriceTick) => ({
   ...price,
-  ratePrecision: currencyData[price.symbol].ratePrecision
+  ratePrecision: currencyData[price.symbol].ratePrecision,
 })
 
 export const publishPriceToOpenFinEpic: ApplicationEpic = (action$, state$, { referenceDataService, openFin }) =>
@@ -23,8 +23,8 @@ export const publishPriceToOpenFinEpic: ApplicationEpic = (action$, state$, { re
         map(currencyMap => addRatePrecisionToPrice(currencyMap, action.payload)),
         tap(enhancedPrice => openFin.publishPrice(enhancedPrice)),
         ignoreElements(),
-        takeUntil(action$.pipe(applicationDisconnected))
-      )
+        takeUntil(action$.pipe(applicationDisconnected)),
+      ),
     ),
-    ignoreElements()
+    ignoreElements(),
   )
