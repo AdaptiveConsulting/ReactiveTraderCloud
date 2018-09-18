@@ -1,12 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
 import Portal, { PortalProps } from './Portal'
-
-export const TearOffContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-`
 
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
 
@@ -37,10 +30,7 @@ export default class TearOff extends React.PureComponent<Props, State> {
     if (tornOff) {
       return (
         <Portal onUnload={this.popIn} {...portalProps}>
-          <TearOffContainer>
-            <span style={{ fontWeight: 900, fontStyle: 'italic' }} />
-            {render(this.popOut, tornOff)}
-          </TearOffContainer>
+          {render(this.popOut, tornOff)}
         </Portal>
       )
     }

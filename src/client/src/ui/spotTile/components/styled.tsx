@@ -1,4 +1,4 @@
-import { TearOffContainer } from 'rt-components'
+import { RouteStyle } from 'rt-components'
 import { styled } from 'rt-theme'
 
 export interface ColorProps {
@@ -27,7 +27,7 @@ export const TileBaseStyle = styled('div')`
   padding: 1.25rem;
   box-sizing: border-box;
 
-  ${TearOffContainer} & {
+  ${RouteStyle} & {
     border-radius: 0px;
   }
 `
