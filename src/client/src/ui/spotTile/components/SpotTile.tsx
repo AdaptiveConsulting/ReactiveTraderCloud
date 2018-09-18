@@ -1,6 +1,5 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 import { ThemeProvider } from 'rt-theme'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
@@ -8,7 +7,7 @@ import { createTradeRequest, DEFAULT_NOTIONAL, ExecuteTradeRequest, SpotTileData
 import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
-import { DeliveryDate, TileBaseStyle, TileSymbol } from './styled'
+import { DeliveryDate, TileBaseStyle, TileHeader, TileSymbol } from './styled'
 
 export const SpotTileWrapper = styled('div')`
   position: relative;
@@ -19,6 +18,10 @@ export const SpotTileWrapper = styled('div')`
 
 export const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme }) => theme.backgroundColor};
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+  flex-direction: column;
 `
 
 export interface Props {
@@ -77,23 +80,21 @@ export default class SpotTile extends PureComponent<Props, State> {
       <ThemeProvider theme={theme => theme.tile}>
         <SpotTileWrapper>
           <SpotTileStyle className="spot-tile">
-            <Flex direction="column" justifyContent="space-between" height="100%">
-              <Flex alignItems="center" justifyContent="space-between">
-                <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
-                <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
-              </Flex>
-              <PriceControls
-                executeTrade={this.executeTrade}
-                priceData={price}
-                currencyPair={currencyPair}
-                disabled={!this.canExecute()}
-              />
-              <NotionalInput
-                notional={notional}
-                currencyPairSymbol={currencyPair.base}
-                updateNotional={this.updateNotional}
-              />
-            </Flex>
+            <TileHeader>
+              <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
+              <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
+            </TileHeader>
+            <PriceControls
+              executeTrade={this.executeTrade}
+              priceData={price}
+              currencyPair={currencyPair}
+              disabled={!this.canExecute()}
+            />
+            <NotionalInput
+              notional={notional}
+              currencyPairSymbol={currencyPair.base}
+              updateNotional={this.updateNotional}
+            />
           </SpotTileStyle>
           {children}
         </SpotTileWrapper>

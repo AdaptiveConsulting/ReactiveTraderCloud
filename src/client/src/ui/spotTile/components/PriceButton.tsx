@@ -1,5 +1,4 @@
 import React from 'react'
-import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 import { Direction } from 'rt-types'
 
@@ -54,6 +53,20 @@ const Tenth = styled(Box)`
   align-self: flex-end;
 `
 
+const Price = styled('div')`
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const BigWrapper = styled('div')`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`
+
 interface PriceButtonProps {
   big?: number
   pip?: number
@@ -82,14 +95,14 @@ const PriceButtonComp: React.SFC<PriceButtonProps> = ({
   const bigFigure = getBigFigureDisplay(big, rawRate)
   return (
     <TradeButton direction={direction} onClick={() => handleClick()} disabled={disabled}>
-      <Flex height="34px" direction="row" justifyContent="center" alignItems="center">
-        <Flex height="100%" direction="column" justifyContent="center">
+      <Price>
+        <BigWrapper>
           <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
           <Big>{renderBigFigureDisplay(bigFigure)}</Big>
-        </Flex>
+        </BigWrapper>
         <Pip>{renderPips(pip)}</Pip>
         <Tenth>{tenth}</Tenth>
-      </Flex>
+      </Price>
     </TradeButton>
   )
 }

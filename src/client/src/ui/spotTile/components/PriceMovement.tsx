@@ -1,5 +1,4 @@
 import React from 'react'
-import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 
@@ -19,8 +18,16 @@ const MovementValue = styled('div')`
   opacity: 0.59;
 `
 
+const PriceMovementStyle = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+`
+
 const PriceMovement: React.SFC<Props> = ({ priceMovementType, spread }) => (
-  <Flex alignItems="center" justifyContent="center" direction="column" width="100%">
+  <PriceMovementStyle>
     <MovementIcon
       show={priceMovementType === PriceMovementTypes.Up}
       color="green"
@@ -34,7 +41,7 @@ const PriceMovement: React.SFC<Props> = ({ priceMovementType, spread }) => (
       className="fas fa-caret-down"
       aria-hidden="true"
     />
-  </Flex>
+  </PriceMovementStyle>
 )
 
 export default PriceMovement
