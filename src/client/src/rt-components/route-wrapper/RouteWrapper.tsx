@@ -7,6 +7,10 @@ const RouteStyle = styled.div`
   width: 100%;
 `
 
+const closeOpenFinWindow = () => {
+  fin.desktop.Window.getCurrent().close()
+}
+
 interface Props {
   environment: EnvironmentValue
 }
@@ -15,7 +19,7 @@ const RouteWrapperBase: React.SFC<Props> = ({ environment, children }) => (
   <RouteStyle>
     {environment.isDesktop ? (
       <OpenFinChrome>
-        <OpenFinHeader close={() => fin.desktop.Window.getCurrent().close()} />
+        <OpenFinHeader close={closeOpenFinWindow} />
         {children}
       </OpenFinChrome>
     ) : (
