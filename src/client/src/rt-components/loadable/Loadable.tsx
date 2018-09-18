@@ -3,8 +3,9 @@ import { keyframes, styled } from 'rt-theme'
 import { ServiceConnectionStatus } from 'rt-types'
 import DisconnectIcon from '../icons/DisconnectIcon'
 
-const LoadableStyle = styled.div`
+const LoadableStyle = styled.div<{ minWidth?: string }>`
   width: 100%;
+  min-width: ${({ minWidth = '100%' }) => minWidth};
   height: 100%;
   border-radius: 0.1875rem;
   background-color: ${({ theme }) => theme.component.backgroundColor};
@@ -15,6 +16,12 @@ const LoadableStyle = styled.div`
   flex-direction: column;
   opacity: 0.59;
   fill: ${({ theme }) => theme.component.textColor};
+`
+
+const Content = styled.div<{ minWidth?: string }>`
+  height: 100%;
+  width: 100%;
+  min-width: ${({ minWidth = '100%' }) => minWidth};
 `
 
 const Spinner = styled.div`
@@ -51,6 +58,7 @@ interface Props {
   render: () => JSX.Element
   onMount?: () => void
   message?: string
+  minWidth?: number
 }
 
 const Loader = () => (
@@ -67,31 +75,25 @@ export default class Loadable extends Component<Props> {
   componentDidMount = () => this.props.onMount && this.props.onMount()
 
   render() {
-    const { status, render, message = 'Disconnected' } = this.props
+    const { status, render, message = 'Disconnected', minWidth } = this.props
 
     if (status === ServiceConnectionStatus.CONNECTED) {
-      return render()
+      return <Content minWidth={`${minWidth}rem`}>{render()}</Content>
     }
 
-    if (status === ServiceConnectionStatus.CONNECTING) {
-      return (
-        <LoadableStyle>
+    return (
+      <LoadableStyle minWidth={`${minWidth}rem`}>
+        {status === ServiceConnectionStatus.CONNECTING ? (
           <Loader />
-        </LoadableStyle>
-      )
-    }
-
-    if (status === ServiceConnectionStatus.DISCONNECTED) {
-      return (
-        <LoadableStyle>
-          <div>
-            <DisconnectIcon width={2.75} height={3} />
-          </div>
-          <div>{message}</div>
-        </LoadableStyle>
-      )
-    }
-
-    return null
+        ) : (
+          <React.Fragment>
+            <div>
+              <DisconnectIcon width={2.75} height={3} />
+            </div>
+            <div>{message}</div>
+          </React.Fragment>
+        )}
+      </LoadableStyle>
+    )
   }
 }

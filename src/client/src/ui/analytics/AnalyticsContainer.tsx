@@ -27,6 +27,7 @@ const AnalyticsContainer: React.SFC<AnalyticsContainerProps> = ({
   ...props
 }) => (
   <Loadable
+    minWidth={22}
     onMount={onMount}
     status={status}
     render={() => <Analytics {...props} canPopout={tearable && !Environment.isRunningInIE() && !tornOff} />}
