@@ -1,7 +1,7 @@
 import React from 'react'
 import { Trade } from 'rt-types'
 
-import { ThemeState } from 'rt-theme'
+import { ThemeStorage } from 'rt-theme'
 import TradeNotification from '../shell/notification/TradeNotification'
 
 declare const window: any
@@ -33,14 +33,9 @@ export class NotificationRoute extends React.Component<{}, State> {
   render() {
     const { message } = this.state
     return message == null ? null : (
-      <ThemeState.Provider
-        name={
-          // Expected global value established by the root container
-          window.localStorage.themeName
-        }
-      >
+      <ThemeStorage.Provider>
         <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
-      </ThemeState.Provider>
+      </ThemeStorage.Provider>
     )
   }
 }

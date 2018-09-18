@@ -8,6 +8,7 @@ export interface ExtendedThemeProviderProps<T = Theme> {
   theme?: Theme | ((theme: T) => Theme)
 }
 
+export type ExtendedThemeContext<T> = React.Context<T>
 export type ExtendedThemeProviderClass<T> = ComponentClass<ExtendedThemeProviderProps<T>>
 
 /**
@@ -86,13 +87,13 @@ class ExtendTheme extends React.Component<ExtendThemeProps, ExtendThemeState> {
           theme: {
             // TODO (8/14/18) explore how to protect values
             ...parentTheme,
-            ...theme
-          }
+            ...theme,
+          },
         }
   }
 
   state = {
-    theme: this.props.parentTheme
+    theme: this.props.parentTheme,
   }
 
   render() {
@@ -100,4 +101,10 @@ class ExtendTheme extends React.Component<ExtendThemeProps, ExtendThemeState> {
   }
 }
 
-export default ExtendedThemeProvider
+export const Provider = ExtendedThemeProvider
+export const Consumer = ThemeContext.Consumer
+
+export default {
+  Provider,
+  Consumer,
+}

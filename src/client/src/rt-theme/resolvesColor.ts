@@ -4,7 +4,7 @@ interface Props {
   theme: any
 }
 type Resolve = (props: Props) => string
-export type Selector = string | string[] | Resolve | any
+type Selector = string | string[] | Resolve | any
 
 export const resolvesColor: (color: Selector, other?: Selector) => (_: any) => any = (
   color: Selector,

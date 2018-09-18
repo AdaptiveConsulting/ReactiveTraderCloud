@@ -2,8 +2,8 @@ import createEmotionStyled, { CreateStyled } from 'create-emotion-styled'
 import React from 'react'
 import { StyledComponent } from 'react-emotion'
 
+import { Theme } from 'rt-theme'
 import * as emotion from './emotion'
-import { Theme } from './themes'
 
 export interface StyledProps<Props = any> extends React.HTMLProps<React.Component<Props, any, any>> {}
 

@@ -5,6 +5,7 @@ import { timer } from 'rxjs'
 import { ConnectionActions } from 'rt-actions'
 import { Environment } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
+import { ThemeName, ThemeStorage } from 'rt-theme'
 
 import { createApplicationServices } from '../applicationServices'
 import { getEnvVars } from '../config/config'
@@ -55,13 +56,13 @@ export default class MainRoute extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <ThemeStorage.Provider default={ThemeName.Dark}>
         <ReduxProvider store={this.store}>
           <Environment.Provider value={this.environment}>
             <Router />
           </Environment.Provider>
         </ReduxProvider>
-      </React.Fragment>
+      </ThemeStorage.Provider>
     )
   }
 }

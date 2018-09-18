@@ -70,9 +70,9 @@ export const Column = styled.div`
   overflow: visible;
 `
 
-export const NumberedLayout = styled<{ number: number | string }>(({ number, children, ...props }) => (
+export const NumberedLayout = styled<{ number: number | string }>(({ number: n, children, ...props }) => (
   <div {...props}>
-    <SectionNumber>{number}</SectionNumber>
+    <SectionNumber>{n}</SectionNumber>
     <div>{children}</div>
   </div>
 ))`

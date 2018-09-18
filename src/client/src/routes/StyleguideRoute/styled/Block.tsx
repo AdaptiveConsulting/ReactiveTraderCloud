@@ -1,14 +1,14 @@
 import _ from 'lodash'
 
-import { css, Selector, styled } from 'rt-theme'
+import { css, styled } from 'rt-theme'
 
 import { getColor } from '../tools'
 import { mapMarginPaddingProps, MarginPaddingProps } from './rules'
 import { mapTextProps, TextProps } from './Text'
 
 export interface BlockProps extends TextProps, MarginPaddingProps {
-  backgroundColor?: Selector
-  textColor?: Selector
+  backgroundColor?: string
+  textColor?: string
   bg?: string
   fg?: string
 }
