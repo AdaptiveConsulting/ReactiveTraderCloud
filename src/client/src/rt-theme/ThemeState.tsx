@@ -1,12 +1,12 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { css } from 'rt-theme'
+import { css } from './emotion'
 import { ThemeProvider } from './ThemeProvider'
 import { Theme, themes } from './themes'
 
 export enum ThemeName {
   LIGHT = 'light',
-  DARK = 'dark'
+  DARK = 'dark',
 }
 
 interface ThemeSelector {
@@ -43,17 +43,7 @@ class ThemeStateProvider extends React.Component<ThemeStateProps> {
   }
 
   renderThemeStateManager = (context: ThemeContext) => {
-    return <ThemeStateManager context={context} {...this.props} />
-  }
-}
-
-type ThemeStateManagerProps = ThemeStateProps & { context: ThemeContext }
-
-class ThemeStateManager extends React.Component<ThemeStateManagerProps> {
-  setTheme = ({ name }: ThemeSelector) => name && this.props.onChange && this.props.onChange(name)
-
-  render() {
-    const { context, children, name } = this.props
+    const { children, name } = this.props
     const theme = themes[name!]
 
     return (
@@ -69,13 +59,10 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps> {
               context ? null : (
                 <Helmet>
                   <html
-                    className={css`
-                      :root,
-                      body {
-                        background-color: ${theme.shell.backgroundColor};
-                        color: ${theme.shell.textColor};
-                      }
-                    `}
+                    className={css({
+                      backgroundColor: theme.shell.backgroundColor,
+                      color: theme.shell.textColor,
+                    })}
                   />
                 </Helmet>
               )}
@@ -85,6 +72,8 @@ class ThemeStateManager extends React.Component<ThemeStateManagerProps> {
       </ContextProvider>
     )
   }
+
+  setTheme = ({ name }: ThemeSelector) => name && this.props.onChange && this.props.onChange(name)
 }
 
 export const Provider = ThemeStateProvider
@@ -93,7 +82,7 @@ export const Consumer: React.Consumer<ThemeContext> = ContextConsumer
 
 export const ThemeState = {
   Provider,
-  Consumer
+  Consumer,
 }
 
 export default ThemeState

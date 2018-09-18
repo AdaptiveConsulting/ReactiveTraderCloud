@@ -13,10 +13,10 @@ const defaultPortalProps = {
     name: '',
     url: '',
     width: 600,
-    height: 640
+    height: 640,
   } as WindowConfig,
   desktopConfig: {},
-  browserConfig: { center: 'parent' as 'parent' | 'screen' }
+  browserConfig: { center: 'parent' as 'parent' | 'screen' },
 }
 
 export type PortalProps = typeof defaultPortalProps

@@ -6,12 +6,12 @@ import { ConnectionActions } from 'rt-actions'
 import { Environment } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 
-import { createApplicationServices } from './applicationServices'
-import { getEnvVars } from './config/config'
-import configureStore from './configureStore'
-import { Router } from './shell'
-import FakeUserRepository from './shell/fakeUserRepository'
-import { OpenFin } from './shell/openFin'
+import { createApplicationServices } from '../applicationServices'
+import { getEnvVars } from '../config/config'
+import configureStore from '../configureStore'
+import { Router } from '../shell'
+import FakeUserRepository from '../shell/fakeUserRepository'
+import { OpenFin } from '../shell/openFin'
 
 declare const window: any
 
@@ -25,7 +25,7 @@ export default class MainRoute extends React.Component {
 
   environment = {
     isDesktop: this.openfin.isPresent,
-    openfin: this.openfin.isPresent ? this.openfin : null
+    openfin: this.openfin.isPresent ? this.openfin : null,
   }
 
   store = configureStore(
@@ -33,11 +33,11 @@ export default class MainRoute extends React.Component {
       autobahn: new AutobahnConnectionProxy(
         (config.overwriteServerEndpoint ? config.serverEndpointUrl : location.hostname)!,
         'com.weareadaptive.reactivetrader',
-        +(config.overwriteServerEndpoint ? config.serverPort : location.port)!
+        +(config.overwriteServerEndpoint ? config.serverPort : location.port)!,
       ),
       openfin: this.openfin,
-      user: FakeUserRepository.currentUser
-    })
+      user: FakeUserRepository.currentUser,
+    }),
   )
 
   componentDidMount() {

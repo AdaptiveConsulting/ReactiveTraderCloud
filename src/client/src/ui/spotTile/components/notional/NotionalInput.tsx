@@ -1,6 +1,5 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 import { convertNotionalShorthandToNumericValue, hasShorthandInput } from './utils'
 
@@ -19,6 +18,12 @@ const CurrencyPairSymbol = styled('div')`
   font-size: 0.625rem;
   line-height: 1rem;
   padding-right: 0.375rem;
+`
+
+const InputWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 export const Input = styled('input')`
@@ -53,7 +58,7 @@ export default class NotionalInput extends PureComponent<Props> {
     const { currencyPairSymbol, notional } = this.props
     const formattedSize = numeral(notional).format(NUMERAL_FORMAT)
     return (
-      <Flex alignItems="center" justifyContent="center">
+      <InputWrapper>
         <CurrencyPairSymbol>{currencyPairSymbol}</CurrencyPairSymbol>
         <Input
           type="text"
@@ -64,7 +69,7 @@ export default class NotionalInput extends PureComponent<Props> {
           onBlur={event => this.processNotional(event.currentTarget.value)}
           onKeyPress={this.handleKeyPressNotionalInput}
         />
-      </Flex>
+      </InputWrapper>
     )
   }
 

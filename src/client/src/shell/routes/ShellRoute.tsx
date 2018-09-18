@@ -1,36 +1,15 @@
 import React from 'react'
-import { AnalyticsContainer } from '../../ui/analytics'
 
 import { Resizer, TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
+
+import { AnalyticsContainer } from '../../ui/analytics'
 import { BlotterContainer } from '../../ui/blotter'
 import StatusBar from '../../ui/status-bar'
 import { WorkspaceContainer } from '../../ui/workspace'
 
 import ReconnectModal from '../components/reconnect-modal'
-
 import DefaultLayout from '../layouts/DefaultLayout'
-
-const portalProps = {
-  blotterRegion: {
-    title: 'Blotter',
-    config: {
-      name: 'blotter',
-      width: 850,
-      height: 450,
-      url: '/blotter'
-    }
-  },
-  analyticsRegion: {
-    title: 'Analytics',
-    config: {
-      name: 'analytics',
-      width: 400,
-      height: 800,
-      url: '/analytics'
-    }
-  }
-}
 
 export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) => (
   <DefaultLayout
@@ -67,6 +46,27 @@ export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) 
   />
 )
 
+const portalProps = {
+  blotterRegion: {
+    title: 'Blotter',
+    config: {
+      name: 'blotter',
+      width: 850,
+      height: 450,
+      url: '/blotter',
+    },
+  },
+  analyticsRegion: {
+    title: 'Analytics',
+    config: {
+      name: 'analytics',
+      width: 400,
+      height: 800,
+      url: '/analytics',
+    },
+  },
+}
+
 const Wrapper = styled.div`
   user-select: none;
 `
@@ -78,7 +78,7 @@ const WorkspaceWrapper = styled(Wrapper)`
 `
 
 const AnalyticsWrapper = styled(Wrapper)`
-  padding: 0.375rem 1.25rem 0 0;
+  padding: 0.5rem;
   overflow: hidden;
 
   @media (max-width: 750px) {

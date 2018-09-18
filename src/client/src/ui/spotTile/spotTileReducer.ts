@@ -21,13 +21,13 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
     symbol: '',
     valueDate: '',
     priceMovementType: PriceMovementTypes.None,
-    priceStale: false
-  }
+    priceStale: false,
+  },
 }
 
 const spotTileReducer = (
   state: SpotTileData = { ...INITIAL_SPOT_TILE_STATE },
-  action: SpotTileActions
+  action: SpotTileActions,
 ): SpotTileData => {
   switch (action.type) {
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
@@ -44,7 +44,7 @@ const spotTileReducer = (
       return {
         ...state,
         lastTradeExecutionStatus: action.payload,
-        isTradeExecutionInFlight: false
+        isTradeExecutionInFlight: false,
       }
     }
     case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
@@ -56,7 +56,7 @@ const spotTileReducer = (
 
 export const spotTileDataReducer = (
   state: SpotTileState = INITIAL_STATE,
-  action: SpotTileActions | DisconnectAction
+  action: SpotTileActions | DisconnectAction,
 ): SpotTileState => {
   switch (action.type) {
     case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
@@ -65,23 +65,23 @@ export const spotTileDataReducer = (
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return {
         ...state,
-        [action.payload]: spotTileReducer(state[action.payload], action)
+        [action.payload]: spotTileReducer(state[action.payload], action),
       }
     case TILE_ACTION_TYPES.EXECUTE_TRADE:
       return {
         ...state,
-        [action.payload.CurrencyPair]: spotTileReducer(state[action.payload.CurrencyPair], action)
+        [action.payload.CurrencyPair]: spotTileReducer(state[action.payload.CurrencyPair], action),
       }
     case TILE_ACTION_TYPES.TRADE_EXECUTED:
       return {
         ...state,
-        [action.payload.request.CurrencyPair]: spotTileReducer(state[action.payload.request.CurrencyPair], action)
+        [action.payload.request.CurrencyPair]: spotTileReducer(state[action.payload.request.CurrencyPair], action),
       }
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
       return state[action.payload.symbol]
         ? {
             ...state,
-            [action.payload.symbol]: spotTileReducer(state[action.payload.symbol], action)
+            [action.payload.symbol]: spotTileReducer(state[action.payload.symbol], action),
           }
         : state
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:

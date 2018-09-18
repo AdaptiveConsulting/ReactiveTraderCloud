@@ -14,7 +14,7 @@ const WorkspaceContainer = ({ status, ...props }: WorkspaceContainerProps) => (
 
 const mapStateToProps = (state: GlobalState) => ({
   spotTiles: selectSpotTiles(state),
-  status: selectExecutionStatus(state)
+  status: selectExecutionStatus(state),
 })
 
 export default connect(mapStateToProps)(WorkspaceContainer)

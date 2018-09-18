@@ -10,7 +10,7 @@ export const {
   keyframes,
   css,
   sheet,
-  caches
+  caches,
 } = createEmotion({})
 
 //Enable speedy mode for improved dev performance

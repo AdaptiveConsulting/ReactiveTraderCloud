@@ -11,9 +11,9 @@ import 'classlist-polyfill'
  * read about the SVG defs:
  * https://developer.mozilla.org/en-US/docs/Web/SVG/Element/defs
  *
- * There are four colour stops: top, bottom, and the two in the middle that have the same offset value
+ * There are four color stops: top, bottom, and the two in the middle that have the same offset value
  * (this is a relative value that matches 0 on the PnL scale)
- * On each update call it recalculates the zero position and reapplies the value to the offset attributes of the colour stops
+ * On each update call it recalculates the zero position and reapplies the value to the offset attributes of the color stops
  *
  */
 export default class ChartGradient {
@@ -146,7 +146,7 @@ export default class ChartGradient {
   }
 
   updateStops(domainMin: number, domainMax: number) {
-    // update colour stops
+    // update color stops
     // need to modify stop1End and stop2
     const fullRange = Math.abs(domainMin) + Math.abs(domainMax)
     if (isNaN(fullRange) || fullRange === 0) {

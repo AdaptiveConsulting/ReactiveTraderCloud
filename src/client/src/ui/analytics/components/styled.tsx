@@ -8,7 +8,7 @@ export const AnalyticsStyle = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  padding: 1.25rem;
+  padding: 1rem;
   font-size: 1rem;
   overflow-y: scroll;
 
@@ -85,8 +85,9 @@ export const Header = styled.div`
 export const Title = styled.div``
 
 export const LastPosition = styled.div<{ color?: string }>`
+  font-size: 0.75rem;
   color: ${({ theme, color }) => color && theme.analytics[color].normal};
-  margin-bottom: 1rem;
+  margin: 0.5rem 0;
 `
 
 export const BubbleChart = styled.div`

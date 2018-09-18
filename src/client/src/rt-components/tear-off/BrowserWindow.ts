@@ -13,8 +13,8 @@ export const openBrowserWindow = (config: BrowserWindowProps) => {
       width,
       height,
       left,
-      top
-    })
+      top,
+    }),
   )
 }
 

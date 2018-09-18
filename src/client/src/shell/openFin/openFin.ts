@@ -25,7 +25,7 @@ export default class OpenFin {
   minimize = () => {
     this.currentWindow.minimize(
       () => console.info(LOG_NAME, 'Window minimized with success.'),
-      err => console.error(LOG_NAME, 'Failed to minimize window.', err)
+      err => console.error(LOG_NAME, 'Failed to minimize window.', err),
     )
   }
 
@@ -39,15 +39,15 @@ export default class OpenFin {
             () =>
               this.currentWindow.bringToFront(
                 () => console.info(LOG_NAME, 'Window brought to front.'),
-                err => console.error(LOG_NAME, err)
+                err => console.error(LOG_NAME, err),
               ),
-            err => console.error(LOG_NAME, err)
+            err => console.error(LOG_NAME, err),
           )
           break
         default:
           this.currentWindow.maximize(
             () => console.info(LOG_NAME, 'Window maximized with success.'),
-            err => console.error(LOG_NAME, 'Failed to maximize window.', err)
+            err => console.error(LOG_NAME, 'Failed to maximize window.', err),
           )
       }
     })
@@ -60,14 +60,14 @@ export default class OpenFin {
           () =>
             currentWindow.bringToFront(
               () => console.info(LOG_NAME, 'Window brought to front.'),
-              err => console.error(LOG_NAME, err)
+              err => console.error(LOG_NAME, err),
             ),
-          err => console.error(LOG_NAME, err)
+          err => console.error(LOG_NAME, err),
         )
       } else {
         currentWindow.bringToFront(
           () => console.info(LOG_NAME, 'Window brought to front.'),
-          err => console.error(LOG_NAME, err)
+          err => console.error(LOG_NAME, err),
         )
       }
     })
@@ -111,7 +111,7 @@ export default class OpenFin {
       const payload = {
         ...message,
         id: this.limitCheckId,
-        responseTopic: topic
+        responseTopic: topic,
       }
 
       fin.desktop.InterApplicationBus.send(this.limitCheckSubscriber, REQUEST_LIMIT_CHECK_TOPIC, payload)
@@ -179,7 +179,7 @@ export default class OpenFin {
     const interval = 5
     fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', {
       symbol,
-      interval
+      interval,
     })
     return Promise.resolve(symbol)
   }
@@ -203,11 +203,11 @@ export default class OpenFin {
           uuid: chartIqAppId,
           mainWindowOptions: {
             icon,
-            autoShow: false
-          }
+            autoShow: false,
+          },
         },
         () => app.run(() => setTimeout(() => resolve(symbol), 1000), err => reject(err)),
-        err => reject(err)
+        err => reject(err),
       )
     })
   }
@@ -216,7 +216,7 @@ export default class OpenFin {
     new fin.desktop.Notification({
       url: '/notification',
       message: tradeNotification,
-      duration: 20000
+      duration: 20000,
     })
 
   publishCurrentPositions(ccyPairPositions: any) {

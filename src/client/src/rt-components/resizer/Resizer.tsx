@@ -51,7 +51,7 @@ export default class Resizer extends Component<Props, State> {
 
   state = {
     dragging: false,
-    height: this.props.defaultHeight
+    height: this.props.defaultHeight,
   }
 
   componentDidMount = () => {

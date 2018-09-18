@@ -35,14 +35,14 @@ const BlotterContainer: React.SFC<BlotterContainerProps> = ({
 
 const mapStateToProps = (state: GlobalState) => ({
   rows: selectBlotterRows(state),
-  status: selectBlotterStatus(state)
+  status: selectBlotterStatus(state),
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onMount: () => dispatch(BlotterActions.subscribeToBlotterAction())
+  onMount: () => dispatch(BlotterActions.subscribeToBlotterAction()),
 })
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(BlotterContainer)
