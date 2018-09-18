@@ -1,7 +1,7 @@
 import React from 'react'
 import Switch from 'react-switch'
 
-import { colors, styled } from 'rt-theme'
+import { colors, styled, ThemeName } from 'rt-theme'
 
 import { Block } from '../styled'
 
@@ -10,7 +10,7 @@ export interface Props {
   switchTheme: () => void
 }
 export const FloatingTools: React.SFC<Props> = ({ themeName, switchTheme }) => {
-  const isDark = themeName === 'dark'
+  const isDark = themeName === ThemeName.Dark
 
   const { primary, secondary } = colors[themeName]
 

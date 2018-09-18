@@ -39,7 +39,7 @@ export interface BaseTheme {
 }
 
 export type ExtensibleThemeValue = Color | null
-type GeneratedTheme = ReturnType<typeof generateTheme>
+export type GeneratedTheme = ReturnType<typeof generateTheme>
 export type Theme = BaseTheme & GeneratedTheme
 
 export interface TouchableIntents {
@@ -72,7 +72,7 @@ export interface ColorPair {
   textColor?: string
 }
 
-type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
+export type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
 
 const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPaletteMap) => ({
   white: colors.spectrum.white.base,
@@ -95,41 +95,41 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
 
     fast: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.19, 1, 0.22, 1)'
+      easing: 'cubic-bezier(0.19, 1, 0.22, 1)',
     },
 
     normal: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
+      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
     },
 
     slow: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
-    }
+      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+    },
   },
 
   shell: {
     backgroundColor: primary[1],
-    textColor: secondary.base
+    textColor: secondary.base,
   },
 
   component: {
     backgroundColor: primary.base,
     textColor: secondary[2],
     hover: {
-      backgroundColor: primary[1]
-    }
+      backgroundColor: primary[1],
+    },
   },
 
   overlay: {
     backgroundColor: primary[1],
-    textColor: secondary[2]
+    textColor: secondary[2],
   },
 
   header: {
     backgroundColor: primary.base,
-    textColor: secondary[2]
+    textColor: secondary[2],
   },
 
   tile: {
@@ -140,24 +140,24 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
     blue: {
       base: accents.accent.base,
       light: accents.accent['2'],
-      dark: accents.accent['1']
+      dark: accents.accent['1'],
     },
 
     red: {
       base: accents.bad.base,
-      light: accents.bad['3']
+      light: accents.bad['3'],
     },
 
     green: {
       base: accents.good.base,
-      light: accents.good['3']
+      light: accents.good['3'],
     },
 
     priceButton: {
       backgroundColor: primary.base,
       textColor: colors.spectrum.white.base,
-      hoverColor: primary['1']
-    }
+      hoverColor: primary['1'],
+    },
   },
 
   blotter: {
@@ -170,18 +170,18 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
 
     blue: {
       base: accents.accent.base,
-      light: accents.accent['2']
+      light: accents.accent['2'],
     },
 
     red: {
       base: accents.bad.base,
-      light: accents.bad['3']
+      light: accents.bad['3'],
     },
 
     green: {
       base: accents.good.base,
-      light: accents.good['3']
-    }
+      light: accents.good['3'],
+    },
   },
 
   analytics: {
@@ -189,12 +189,12 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
     textColor: secondary.base,
 
     red: {
-      normal: accents.bad.base
+      normal: accents.bad.base,
     },
 
     green: {
-      normal: accents.good.base
-    }
+      normal: accents.good.base,
+    },
   },
 
   button: {
@@ -203,11 +203,11 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
       textColor: colors.light.primary.base,
 
       active: {
-        backgroundColor: accents.accent[1]
+        backgroundColor: accents.accent[1],
       },
       disabled: {
-        backgroundColor: accents.accent[2]
-      }
+        backgroundColor: accents.accent[2],
+      },
     },
 
     secondary: {
@@ -215,11 +215,11 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
       textColor: primary.base,
 
       active: {
-        backgroundColor: secondary[3]
+        backgroundColor: secondary[3],
       },
       disabled: {
-        backgroundColor: secondary[4]
-      }
+        backgroundColor: secondary[4],
+      },
     },
 
     ...mapValues(accents, ({ base, [1]: active, [2]: disabled }) => ({
@@ -227,35 +227,19 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
       textColor: colors.light.primary.base,
 
       active: {
-        backgroundColor: active
+        backgroundColor: active,
       },
       disabled: {
-        backgroundColor: disabled
-      }
-    }))
-  }
+        backgroundColor: disabled,
+      },
+    })),
+  },
 })
 
 export const createTheme = (
   { primary, secondary }: CorePaletteMap,
   accents: AccentPaletteMap,
-  modifier: ThemeModifier = theme => ({ ...theme })
+  modifier: ThemeModifier = theme => ({ ...theme }),
 ) => modifier(generateTheme({ primary, secondary }, accents))
 
-const modifyDark: ThemeModifier = (theme: GeneratedTheme) => ({
-  ...theme,
-  button: {
-    ...theme.button,
-    secondary: {
-      ...theme.button.secondary,
-      textColor: theme.primary.base
-    }
-  }
-})
-
-export const themes = {
-  light: createTheme(colors.light, colors.accents),
-  dark: createTheme(colors.dark, colors.accents, modifyDark)
-}
-
-export default themes
+export default createTheme

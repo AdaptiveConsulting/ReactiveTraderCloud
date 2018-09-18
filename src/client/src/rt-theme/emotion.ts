@@ -14,5 +14,4 @@ export const {
 } = createEmotion({})
 
 //Enable speedy mode for improved dev performance
-
-sheet.speedy(true)
+// sheet.speedy(true)

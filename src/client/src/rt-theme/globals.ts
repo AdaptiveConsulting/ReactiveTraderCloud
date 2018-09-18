@@ -67,7 +67,6 @@ export default injectGlobal`
   
   body, #root {
     height: 100vh;
-    overflow-x: hidden;
     max-width: 100vw;
   }
 `
