@@ -8,7 +8,7 @@ export type Selector = string | string[] | Resolve | any
 
 export const resolvesColor: (color: Selector, other?: Selector) => (_: any) => any = (
   color: Selector,
-  other?: Selector
+  other?: Selector,
 ) => {
   color = (!color ? null : _.isString(color) ? _.toPath(color) : color) as Selector
   other = (!other ? null : _.isString(other) ? _.toPath(other) : other) as Selector

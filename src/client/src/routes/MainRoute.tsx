@@ -5,7 +5,6 @@ import { timer } from 'rxjs'
 import { ConnectionActions } from 'rt-actions'
 import { Environment } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
-import { ThemeState } from 'rt-theme'
 
 import { createApplicationServices } from '../applicationServices'
 import { getEnvVars } from '../config/config'
@@ -21,7 +20,7 @@ const APPLICATION_DISCONNECT = 15 * 60 * 1000
 const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
 
-export class MainRoute extends React.Component {
+export default class MainRoute extends React.Component {
   openfin = new OpenFin()
 
   environment = {
@@ -59,30 +58,10 @@ export class MainRoute extends React.Component {
       <React.Fragment>
         <ReduxProvider store={this.store}>
           <Environment.Provider value={this.environment}>
-            <LocalStorageThemeProvider>
-              <Router />
-            </LocalStorageThemeProvider>
+            <Router />
           </Environment.Provider>
         </ReduxProvider>
       </React.Fragment>
     )
   }
 }
-
-class LocalStorageThemeProvider extends React.Component {
-  themeName = (window.localStorage.themeName = window.localStorage.themeName || 'light')
-
-  updateLocalStorageThemeName = (name: string) => {
-    this.themeName = window.localStorage.themeName = name
-  }
-
-  render() {
-    return (
-      <ThemeState.Provider name={this.themeName} onChange={this.updateLocalStorageThemeName}>
-        {this.props.children}
-      </ThemeState.Provider>
-    )
-  }
-}
-
-export default MainRoute

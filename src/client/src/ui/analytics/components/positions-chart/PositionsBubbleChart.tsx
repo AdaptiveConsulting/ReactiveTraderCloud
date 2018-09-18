@@ -14,7 +14,7 @@ import {
   getPositionsDataFromSeries,
   getPositionValue,
   getRadius,
-  updateNodes
+  updateNodes,
 } from './chartUtil'
 
 export interface PositionsBubbleChartProps {
@@ -41,7 +41,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   state: State = {
     nodes: [],
     prevPositionsData: [],
-    updateRequired: false
+    updateRequired: false,
   }
 
   componentDidMount() {
@@ -80,7 +80,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     const modifiedData = reduce(
       positionsData,
       (result, value, key) => (isEqual(value, existingPositionsData[key]) ? result : result.concat(key)),
-      []
+      [],
     )
 
     function filterStale(existingPos: any) {
@@ -121,7 +121,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
           color,
           id: dataObj.symbol,
           r: getRadius(dataObj, this.scales),
-          cx: this.scales.x(index)
+          cx: this.scales.x(index),
         }
         return newNode
       }
@@ -134,7 +134,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     this.setState({
       nodes: updatedNodes,
       prevPositionsData: positionsData,
-      updateRequired: true
+      updateRequired: true,
     })
   }
 
