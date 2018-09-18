@@ -9,7 +9,8 @@ for (let i = 0; i < BAR_NUMBER; i++) {
   bars.push(i)
 }
 
-const getBounce = (moveDistance: number) => keyframes`
+const getBounce = _.memoize(
+  (moveDistance: number) => keyframes`
   0% {
     transform: translate(0px,0px);
   }
@@ -21,9 +22,8 @@ const getBounce = (moveDistance: number) => keyframes`
   100% {
     transform: translate(0px,0px);
   }
-`
-
-const memoizedGetBounce = _.memoize(getBounce)
+`,
+)
 
 interface BarProps {
   order: number
@@ -33,7 +33,7 @@ interface BarProps {
 }
 
 const Bar = styled('rect')<BarProps>`
-  animation: ${({ moveDistance }: BarProps) => memoizedGetBounce(moveDistance)} ${({ speed }) => speed}s infinite;
+  animation: ${({ moveDistance }: BarProps) => getBounce(moveDistance)} ${({ speed }) => speed}s infinite;
   animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER)}s;
   fill: ${({ theme }) => theme.shell.textColor};
   will-change: transform;
