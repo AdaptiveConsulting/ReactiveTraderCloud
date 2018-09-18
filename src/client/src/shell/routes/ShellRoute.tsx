@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 
 import { Resizer, TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
@@ -11,40 +11,65 @@ import { WorkspaceContainer } from '../../ui/workspace'
 import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
 
-export const ShellRoute: React.SFC<{ header: React.ReactChild }> = ({ header }) => (
-  <DefaultLayout
-    header={header}
-    body={
-      <Resizer
-        defaultHeight={30}
-        component={() => (
-          <BlotterWrapper>
+interface Props {
+  header: React.ReactChild
+}
+
+interface State {
+  displayBlotter: boolean
+}
+
+class ShellRoute extends PureComponent<Props, State> {
+  state = {
+    displayBlotter: true,
+  }
+
+  showBlotter = () => this.setState({ displayBlotter: true })
+
+  hideBlotter = () => this.setState({ displayBlotter: false })
+
+  render() {
+    const { header } = this.props
+    const { displayBlotter } = this.state
+    return (
+      <DefaultLayout
+        header={header}
+        body={
+          <Resizer
+            defaultHeight={30}
+            component={() => (
+              <BlotterWrapper>
+                <TearOff
+                  id="blotter"
+                  portalProps={portalProps.blotterRegion}
+                  render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}
+                  popIn={this.showBlotter}
+                  popOut={this.hideBlotter}
+                />
+              </BlotterWrapper>
+            )}
+            disabled={!displayBlotter}
+          >
+            <WorkspaceWrapper>
+              <WorkspaceContainer />
+            </WorkspaceWrapper>
+          </Resizer>
+        }
+        aside={
+          <AnalyticsWrapper>
             <TearOff
-              id="blotter"
-              portalProps={portalProps.blotterRegion}
-              render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}
+              id="region"
+              portalProps={portalProps.analyticsRegion}
+              render={(popOut, tornOff) => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}
             />
-          </BlotterWrapper>
-        )}
-      >
-        <WorkspaceWrapper>
-          <WorkspaceContainer />
-        </WorkspaceWrapper>
-      </Resizer>
-    }
-    aside={
-      <AnalyticsWrapper>
-        <TearOff
-          id="region"
-          portalProps={portalProps.analyticsRegion}
-          render={(popOut, tornOff) => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}
-        />
-      </AnalyticsWrapper>
-    }
-    footer={<StatusBar />}
-    after={<ReconnectModal />}
-  />
-)
+          </AnalyticsWrapper>
+        }
+        footer={<StatusBar />}
+        after={<ReconnectModal />}
+      />
+    )
+  }
+}
 
 const portalProps = {
   blotterRegion: {

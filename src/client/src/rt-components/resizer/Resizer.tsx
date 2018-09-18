@@ -39,6 +39,7 @@ interface Props {
   component: () => React.ReactNode
   minHeight?: number
   defaultHeight: number
+  disabled?: boolean
 }
 
 interface State {
@@ -125,8 +126,12 @@ export default class Resizer extends Component<Props, State> {
   }
 
   render() {
-    const { children, component } = this.props
-    const { height } = this.state
+    const { children, component, disabled } = this.props
+    let { height } = this.state
+
+    if (disabled) {
+      height = 0
+    }
 
     return (
       <ResizerStyle innerRef={this.wrapperRef}>
