@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React from 'react'
 import { css, styled, Styled } from 'rt-theme'
 
+import { rules } from 'rt-styleguide'
 import { Block, BlockProps } from '../styled'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 
@@ -90,6 +91,8 @@ export const SectionBleed: Styled<SectionProps> = styled(Block)`
         padding-right: 0;
         padding-left: 0;
         overflow-x: scroll;
+
+        ${rules.touchScroll};
 
         ${SectionBody} {
           width: max-content;

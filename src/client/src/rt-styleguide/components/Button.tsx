@@ -3,7 +3,7 @@ import React, { ButtonHTMLAttributes } from 'react'
 
 import { css, resolvesColor, styled, Styled, Theme, ThemeProvider } from 'rt-theme'
 
-import { userSelectButton, userSelectNone } from '../rules'
+import { userSelectButton, userSelectNone } from 'rt-styleguide'
 
 export interface ButtonStyleProps {
   intent?: string
