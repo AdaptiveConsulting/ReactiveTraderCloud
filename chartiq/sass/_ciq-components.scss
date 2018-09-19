@@ -1,0 +1,2478 @@
+
+/* --------------------------------------------------------- FIELDS, SELECTS, INPUTS --------------------------------------------------------- */
+
+/* Inputs */
+
+.stx-textarea,
+.ciq-select {
+	border: $DEFAULT-border-subtle solid 1px;
+	padding: 0 5px 0 10px;
+	@include user-select(text);
+	@include box-sizing(border-box);
+}
+
+.ciq-select {
+	line-height: 25px;
+	height: 27px;
+}
+
+.ciq-select { /* Styled replacement for what might otherwise be a select box input */
+	position:relative;
+	padding-right:20px;
+	text-align:left;
+	@include user-select(none);
+	cursor:pointer;
+	& > span:after {
+		content:"";
+		position: absolute;
+		display: inline-block;
+		margin-top: 8px;
+		margin-left: 6px;
+		width: 5px;
+		height: 5px;
+		border-right:solid thin mix(#000, $DEFAULT-bg, 40% );
+		border-bottom:solid thin mix(#000, $DEFAULT-bg, 40% );
+		@include rotate(45deg);
+	}
+	/* the line style select box is actually a border-top that is offset to look like a vertical line */
+	& > span.ciq-line:after {
+		margin-top: -6px;
+		margin-left: 36px;
+	}
+	& > span {
+		display:block;
+		@include text-truncate;
+	}
+	.break-sm & {
+		position: static;
+	}
+}
+
+
+/* Checkboxes / Radio Buttons */
+
+.ciq-checkbox,
+.ciq-radio,
+.ciq-edit {
+	display:inline-block;
+	width:27px;
+	height:27px;
+	text-align:center;
+	cursor:pointer;
+
+	& span {
+		margin-top:7px;
+		display:inline-block;
+		border:solid 1px $DEFAULT-border-medium;
+		position:relative;
+		width:12px;
+		height:12px;
+	}
+	.no-touch &:hover span {border:solid 1px $DEFAULT-border-strong;}
+
+	.ciq-active & span:after, &.ciq-active span:after {
+		position:absolute;
+		display:block;
+		content:"";
+	}
+}
+
+.ciq-checkbox {
+	.ciq-active &.ciq-active span:after {
+		left:1px;
+		bottom:1px;
+		width:12px;
+		height:12px;
+		background-image:url(img/stx-sprite-ui.svg);
+		background-position: -580px -31px;
+	}
+}
+
+.ciq-radio span {border-radius:50%;}
+.ciq-radio {
+	.ciq-active & span:after, &.ciq-active span:after {
+		left:3px;
+		bottom:3px;
+		width:6px;
+		height:6px;
+		border-radius:50%;
+		background:$DEFAULT-accent;
+	}
+}
+.ciq-edit {
+	background-image: url(img/stx-sprite-panels.svg);
+	background-position: -300px -25px;
+	opacity: .5;
+	transition:opacity 0.2s;
+
+	&:hover {opacity: 1}
+	.ciq-display & {
+		position:absolute;
+		right:40px;
+	}
+}
+
+
+/* Loading */
+cq-loader {
+	display:none;
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    left: 50%;
+    top: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+	background-image:url(img/loading-spin.svg);
+	background-size:cover;
+    z-index: 1;
+}
+cq-loader.stx-show{
+	display:block;
+}
+
+
+
+/* --------------------------------------------------------- BUTTONS --------------------------------------------------------- */
+
+/* Basic Buttons */
+.ciq-btn, #annotationCancel, #annotationSave {
+	background:#fff;
+	font-size:$font-size-button;
+	font-weight:700;
+	text-transform:uppercase;
+	color:$DEFAULT-accent;
+    display: inline-block;
+    position: relative;
+	line-height:27px;
+	height:27px;
+	padding:0 10px;
+	cursor:pointer;
+	border:none;
+	@include box-sizing(border-box);
+	transition: all .2s 0s, opacity .2s 0s;
+	@include border-radius($soft-corners);
+	@include box-shadow(0, 1px, 2px, rgba(0, 0, 0, .2));
+
+	.no-touch &:hover {
+	    border:none;
+		color:darken( $DEFAULT-accent, 8% );
+		@include box-shadow(0, 1px, 2px, rgba(0, 0, 0, .3));
+	}
+	&:active,
+	.no-touch &:active  {
+	    border:none;
+		color:darken( $DEFAULT-accent, 8% );
+		transition: all 0s 0s;
+		@include box-shadow(inset 0, 1px, 2px, rgba(0, 0, 0, .2));
+	}
+
+	&.ciq-primary,
+	&.ciq-primary {
+		background:$DEFAULT-accent;
+		color:#fff;
+		.no-touch &:hover,
+		&:active {color:#fff; background:darken( $DEFAULT-accent, 5% );}
+		}
+
+	&.ciq-simple {
+		border:none;
+		background:transparent;
+		@include box-shadow(0, 0, 0, 0, rgba(0, 0, 0, 0));
+		.no-touch &:hover,
+		&:active {@include box-shadow(0, 0, 0, 0, rgba(0, 0, 0, 0));}
+	}
+
+}
+#annotationCancel, #annotationSave{
+	position:absolute;
+}
+.ciq-btn.fancy { /* Defaults */
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    transform: translateZ(0px);
+    vertical-align: middle;
+	transition: all .20s ease-in 0s;
+
+	&:before {
+		background:rgba(255,255,255,.2);
+		bottom: 0;
+		content: "";
+		left: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: scale(0);
+		z-index: -1;
+		@include border-radius(100%);
+		transition: all .20s ease-in 0s;
+	}
+
+	&:focus:before,
+	&:active:before {
+		transform: scale(2);
+	}
+}
+
+
+/* Icon Buttons */
+.ciq-icon {
+	position:relative;
+	display:inline-block;
+	width:25px;
+	height:25px;
+	cursor:pointer;
+	/* hide text */
+	font: 0/0 a;
+	text-shadow: none;
+	color: transparent;
+
+	&:after {
+		position:absolute;
+		display:inline-block;
+		width:25px;
+		height:25px;
+		content:"";
+		opacity: .5;
+		background-image:url(img/stx-sprite-panels.svg);
+	   -webkit-transition: -webkit-transform .2s;
+		transition: opacity .2s;
+	}
+
+	.no-touch &:hover:after,
+	&:active:after {
+		opacity: 1;
+	}
+	&:active:after {/* Scale up when active */
+		-webkit-transform: scale(1.2, 1.2);
+		-ms-transform: scale(1.2, 1.2);
+		transform: scale(1.2, 1.2);
+	}
+
+	&.ciq-close:after {background-position: -250px -25px;}
+	&.ciq-edit:after {background-position: -300px -25px;}
+	&.ciq-delete:after {background-position: -400px -25px;}
+}
+
+cq-selected,
+cq-toolbar,
+cq-menu,
+cq-menu-dropdown {
+	display:block;
+}
+cq-scroll{
+	display:block;
+	position:relative;
+	overflow-x:hidden;
+}
+
+cq-scroll .ps-scrollbar-y-rail,
+cq-menu-dropdown .ps-scrollbar-y-rail {
+	z-index:1000000;
+}
+
+cq-close {
+	position: absolute;
+	top: 0px;
+	right: 3px;
+	margin: 0px;
+
+	cq-dialog & {
+		top: 3px;
+	}
+}
+
+cq-close.ciq-tight {
+	top:0px;
+	right:0px;
+}
+
+cq-close {
+	position: absolute;
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+	font: 0/0 a;
+	text-shadow: none;
+	color: transparent;
+}
+
+cq-close.ciq-tight {
+	width:20px;
+	height:20px;
+}
+
+cq-close:after {
+	background-position: -253px -25px;
+}
+
+cq-close.ciq-tight:after{
+	background-position: -252px -27px;
+}
+
+cq-close:after {
+	position: absolute;
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	content: "";
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	background-image: url(img/stx-sprite-panels.svg);
+	-webkit-transition: -webkit-transform .2s;
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	transition: all 0.2s;
+}
+
+
+/* --------------------------------------------------------- COLOR PICKER --------------------------------------------------------- */
+
+cq-swatch, .ciq-color, .stx-border-color {/* Swatch / Open Palette Button */
+	position: relative;
+	height:19px;
+	width:19px;
+	background-clip:content-box;
+	cursor: pointer;
+	background-color: $DEFAULT-text;
+}
+
+cq-swatch {
+	display: block;
+	box-sizing: border-box;
+}
+
+cq-color-picker {/* This is the actual color picker container */
+	position: absolute;
+	background: #FFF;
+	padding: 0 2px 2px 5px;
+	border: 1px solid #ccc;
+	@include border-radius($soft-corners);
+	@include box-shadow (0px, 2px, 4px, rgba(0, 0, 0, .2));
+	@include box-sizing(border-box);
+	z-index:5;
+	display:none;
+
+	&.stx-active{
+		display:block;
+	}
+	& cq-overrides {
+		display:flex;
+		justify-content: center;
+		margin: 4px;
+	}
+}
+cq-color-picker ul { /* The unordered list with all the swatches */
+	margin: 5px 0 0 0;
+	padding: 0;
+	list-style-type: none;
+	zoom: 1;
+	&:after { /* Fix display in some browsers */
+		content: ".";
+		display: block;
+		height: 0;
+		visibility: hidden;
+		clear: both;
+	}
+
+	& li { /* List item containing each swatch */
+		float: left;
+		margin: 0 3px 3px 0;
+
+		& span { /* The swatches themselves */
+			display: block;
+			width: 13px;
+			height: 13px;
+			text-decoration: none;
+			outline: 0;
+			border: 1px solid transparent;
+			transition: border .20s 0s;
+
+			.no-touch &:hover,
+			&:active {border-color: #000;}
+		}
+	}
+}
+
+
+/* --------------------------------------------------------- Layout --------------------------------------------------------- */
+
+.ciq-nav,
+cq-toolbar,
+.ciq-chart-area,
+.ciq-chart,
+.stx-panel-side,
+.ciq-footer {
+	@include box-sizing(border-box);
+}
+
+/* Navigation Bar */
+.ciq-nav {
+	height:$nav-height;
+	border-bottom:1px solid $DEFAULT-border-subtle;
+}
+
+cq-toolbar {
+	height:40px;
+	padding:5px 10px 0;
+	border-bottom:1px solid $DEFAULT-border-subtle;
+	z-index:2;
+	body:not(.toolbar-on) & {// Hide Toolbar when the toolbar isn't on, or the app is set to breakpoint-sm
+		height:0px;
+		padding: 0px 10px;
+		border-bottom:none;
+		visibility:hidden;
+	}
+	transition: height .20s 0s, padding .20s 0s;
+}
+
+cq-magnetize cq-toggle span:after{
+	background-position: -482px -25px;
+}
+
+/* Chart Area Block */
+.ciq-chart-area {
+	position:absolute;
+	left:0;
+	right:0;
+	padding:15px;
+	top:$nav-height;
+	bottom:$footer-height;
+	background:$DEFAULT-bg;
+	z-index: 1;
+
+	.break-sm & { /* Remove padding around chart when the app is set to breakpoint-sm*/
+		padding:0px;
+	}
+}
+
+/* Chart Block */
+.ciq-chart {
+	height:100%;
+	width:100%;
+	background: $DEFAULT-main;
+	@include box-shadow (0px, 2px, 5px, rgba(0, 0, 0, .1));
+}
+
+/* The Chart */
+.chartContainer {
+	background: $DEFAULT-main;
+	color: $DEFAULT-text;
+	z-index:1;
+}
+
+cq-side-panel {
+	position:absolute;
+	width:0px;
+	right:0;
+	top:$nav-height;
+	bottom:$footer-height;
+	transition: width .20s 0s;
+	overflow:hidden;
+	z-index: 1;
+}
+
+cq-side-panel[cq-active] {
+	overflow:visible;
+}
+
+
+/* Footer Bar */
+.ciq-footer {
+	position:absolute;
+	height:$footer-height;
+	bottom:0px;
+	width:100%;
+	padding:0 15px;
+	overflow:hidden;
+	text-align:center;
+	border-top:1px solid $DEFAULT-border-subtle;
+}
+
+/* --------------------------------------------------------- Menus --------------------------------------------------------- */
+
+cq-menu-dropdown {
+	position:absolute;
+	margin-top:5px;
+	padding-bottom:6px;
+	padding-top:10px;
+	left:0;
+	background:$DEFAULT-menu-bg;
+	color: $DEFAULT-text-medium;
+	height:0px;
+	overflow:hidden;
+	opacity: 0;
+	@include box-shadow (0px, 2px, 4px, rgba(0, 0, 0, .2));
+	transition: opacity .20s 0s;
+	z-index:6;
+	width:200px;
+	@include border-radius($soft-corners);
+
+	.break-sm & {
+		top:$nav-height;
+		width:auto;
+		left:0;
+		right:0;
+		@include border-radius(0px);
+	}
+	/* cq-menu can be once removed from the menu button but no further. Anything further is a sub-menu */
+	.stxMenuActive > &,
+	.stxMenuActive > * > & {
+		opacity: 1;
+		height:auto;
+	}
+
+	&[cq-lift] {
+		width:auto;
+	}
+}
+
+cq-separator{
+	border-top: 1px solid $DEFAULT-border-medium;
+	margin: 10px 0 10px 0;
+	display: block;
+}
+
+cq-separator[cq-partial]{
+	margin-left:10%;
+	width:80%;
+	border-top-style: dashed;
+}
+
+cq-col {
+	display: inline-block;
+	vertical-align: top;
+}
+
+cq-item {
+	position: relative;
+	cursor:pointer;
+	text-overflow: clip;
+	white-space: nowrap;
+}
+
+cq-item, cq-heading, cq-placeholder {
+	padding:0 20px;
+	clear: both;
+	line-height:27px;
+	height:27px;
+	display:block;
+}
+
+.no-touch cq-item:hover,
+.no-touch cq-item[cq-focused] {
+	background: #efefef;
+	color:$DEFAULT-text-strong;
+}
+
+cq-lookup-filters,
+cq-menu-wrap {
+	display:block;
+}
+cq-heading { /* Remove hover states for headings, dividers, and nested list parents/special content */
+	background: transparent;
+	cursor: default;
+	white-space: normal;
+	color:$DEFAULT-text-medium;
+	display:block;
+}
+
+cq-heading {
+	font-size: 12px;
+	text-transform: uppercase;
+	line-height: 18px;
+	color: #398dff;
+	font-weight: 400;
+	font-family:$heading-font;
+}
+
+cq-item .ciq-radio,
+cq-item .ciq-checkbox { /* Float checkboxes/radio buttons in menu items right */
+	position:absolute;
+	right:10px;
+}
+.no-touch cq-item:hover .ciq-radio span,
+cq-item:active .ciq-radio span,
+.no-touch cq-item:hover .ciq-checkbox span,
+cq-item:active .ciq-checkbox span { /* Float checkboxes/radio buttons in menu items right */
+	border:solid 1px $DEFAULT-border-strong;
+}
+
+
+/* User Injected Menu Content */
+cq-section-dynamic{
+	display:block;
+}
+cq-section-dynamic cq-item {
+	/* border-top: 1px dotted $DEFAULT-border-medium; */
+	width: 100%;
+}
+
+cq-section-dynamic cq-heading,
+cq-section-dynamic > div {
+    border-top: none;
+    padding-top: 10px;
+}
+cq-section-dynamic .ciq-icon { /* Delete button placement for custom item */
+	/*float: right;*/   /* Not working properly for firefox */
+	margin: 0 -3px 0 0;
+}
+
+
+/* --------------------------------------------------------- Navigation --------------------------------------------------------- */
+
+/* Search Area */
+
+cq-lookup{
+	display:block;
+	width:120px;
+	transition: width .50s 0s;
+	z-index:2;
+	.stxMenuActive & {
+		width: 481px;
+	}
+	.break-sm .stxMenuActive & {
+		width: 300px;
+	}
+
+}
+.ciq-search {
+	position:absolute;
+	width: 130px;
+	height:$nav-height;
+	padding:9px 10px 0 10px;
+	float:left;
+	position:relative;
+	z-index:4;
+	@include box-sizing(border-box);
+
+	&.stxMenuActive {
+		//width: 400px;
+		.break-sm &,
+		.break-md & {width: 100%;}
+	}
+
+	& input {
+		height:27px;
+		border:none;
+		//background:rbga($DEFAULT-bg,0);
+	}
+
+}
+cq-lookup-input {
+	position:relative;
+	width:100%;
+	&:hover input {
+		.no-touch & {background: darken( $DEFAULT-main, 2% );}
+	}
+
+	.stxMenuActive & input {
+		background: darken( $DEFAULT-main, 1% );
+	}
+	& input {
+		width: 100%;
+		@include box-sizing(border-box);
+		@include border-radius($soft-corners);
+		transition: background .60s 0s;
+	}
+}
+cq-lookup-icon {
+	position:absolute;
+	height:27px;
+	width: 27px;
+	right:15px;
+	top:-5px;
+	background-image:url(img/stx-sprite-ui.svg);
+	background-position: -45px -25px;
+	opacity: .6;
+	transition: opacity .20s 0s;
+}
+
+.stxMenuActive cq-lookup-icon {opacity:1;}
+
+
+/* Menus/Panel Toggles */
+
+.ciq-dropdowns,
+.ciq-menu {
+	display:inline-block;
+	line-height:40px;
+	@include box-sizing(border-box);
+}
+.ciq-menu-section {float:right;}
+.ciq-dropdowns, .ciq-toggles {float:left;}
+.ciq-menu, cq-toggle {
+	float:left;
+}
+.ciq-menu, cq-toggle {
+	cursor: pointer;
+}
+.ciq-menu,
+cq-toggle {position:relative;}
+
+.break-sm .ciq-menu,
+cq-toggle {
+  position: inherit;
+}
+
+/* Dropdowns */
+
+.ciq-dropdowns {margin-right: 5px;}
+.ciq-menu {
+	color:mix(#000, $DEFAULT-bg, 65% );
+	padding:0 10px;
+	transition: color .20s 0s;
+
+	&:hover {
+		.no-touch & {color:$DEFAULT-text;}
+	}
+	&:active {
+		color:$DEFAULT-text;
+	}
+
+	&.stxMenuActive {
+		color:$DEFAULT-text;
+
+		.break-sm & {
+			border-bottom:solid 3px $DEFAULT-accent;
+		}
+	}
+}
+
+.ciq-menu > span {
+	padding:0 12px 0 0;
+	position:relative;
+	font-weight:400;
+
+}
+
+.ciq-menu{
+	&:after {
+		content:"";
+		position: absolute;
+		right:10px;
+		top:19px;
+		display: block;
+		width: 5px;
+		height: 5px;
+		border-right:solid thin mix(#000, $DEFAULT-bg, 40% );
+		border-bottom:solid thin mix(#000, $DEFAULT-bg, 40% );
+		@include rotate(45deg);
+	}
+}
+
+// Hide carat on small screen
+.break-sm .ciq-menu:after {
+	display:none;
+}
+
+// Hide markers icon on small screen
+.break-sm .stx-markers {
+	display:none;
+}
+
+/* Panel Toggles */
+
+.ciq-toggles {
+	position:relative;
+	padding:0 10px 0 0;
+	&:after {
+		content:"";
+		position:absolute;
+		left:0;
+		top:10px;
+		bottom:10px;
+		width:1px;
+		background:$DEFAULT-border-subtle;
+	}
+}
+
+cq-toggle {
+	position:relative;
+
+	display:none;
+	body:not(.break-sm) &.ciq-draw,
+	body:not(.break-sm) &.ciq-HU {display:block;}
+	&.ciq-CH {display:block;}
+	.break-lg & {display:block;}
+
+	& > * {
+		@include box-sizing(border-box);
+		display:block;
+		width:27px;
+		height:27px;
+		border:solid 1px transparent;
+
+		background-image:url(img/stx-sprite-ui.svg);
+		opacity: .85;
+		transition: opacity .20s 0s;
+	}
+
+	.no-touch &:hover > *,
+	&:active > *{
+		border:solid 1px darken( $DEFAULT-bg, 8% );
+		opacity: 1;
+	}
+
+	&.active {
+		border-bottom:solid 3px $DEFAULT-accent;
+		color:$DEFAULT-text;
+	}
+
+	& cq-tooltip {
+		bottom:-8px;
+		position:absolute;
+		display:block;
+		background:$DEFAULT-accent;
+		transition: opacity .10s .0s, margin .50s .0s;
+		opacity: 0;
+		z-index:4;
+		width:44px;
+		height:16px;
+		left:-8px;
+		text-align:center;
+		font-weight:400;
+		font-size:10px;
+		color:$DEFAULT-bg;
+		@include border-radius($soft-corners);
+	}
+	.no-touch &:hover cq-tooltip{
+		opacity: 1;
+		transition: opacity .10s 1s, bottom .50s 1s;
+		bottom:-24px;
+	}
+
+	.no-touch &:hover:after {margin-top:5px;}
+	//&.stx-watch:after {content:"Lists";}
+	//&.stx-trade:after {content:"Trade";}
+	//cq-magnetize &:after {content:"Snap";}
+}
+
+.break-sm .ciq-menu.collapse {
+	width:40px;
+	margin-left:2px;
+	margin-top:8px;
+}
+/* toggles in the nav bar need some space */
+
+.ciq-nav {
+	& cq-toggle {
+		width: 40px;
+		margin-top: 9px;
+		& > * {
+			margin-left:7px;
+		}
+		&:before {
+			top:35px;
+		}
+		&:after {
+			top:37px;
+		}
+	}
+}
+
+.break-sm .ciq-menu.collapse > span {
+	display:block;
+	width:27px;
+	height:27px;
+	@include box-sizing(border-box);
+	border:solid 1px transparent;
+	font: 0/0 a; /* hide text */
+	text-shadow: none;
+	color: transparent;
+}
+
+.no-touch.break-sm .ciq-menu.collapse:hover > span,
+.break-sm .ciq-menu.collapse:active > span {
+	border:solid 1px darken( $DEFAULT-bg, 8% );
+}
+
+.break-sm .ciq-menu.collapse > span:after {
+	content:"";
+	display:block;
+	width:27px;
+	height:27px;
+	position: static;
+	border-right:none;
+	border-bottom:none;
+	background-image:url(img/stx-sprite-ui.svg);
+	opacity: .85;
+	transition: opacity .20s 0s;
+	@include rotate(0deg);
+}
+
+.no-touch.break-sm .ciq-menu.collapse:hover > span:after,
+.break-sm .ciq-menu.collapse.stxMenuActive > span:after,
+.break-sm .ciq-menu.collapse:active > span:after {
+	opacity: 1;
+}
+
+.stx-watch span {background-position: -150px -25px;}
+.stx-trade span {background-position: -200px -25px;}
+.ciq-draw span{background-position: -250px -25px;}
+.ciq-HU span{background-position: -400px -25px;}
+.ciq-CH span {background-position: -443px -25px;}
+
+
+/* Collapsed Buttons */
+.break-sm .ciq-menu.collapse {
+	position:static;
+	padding:0;
+}
+.break-sm .ciq-menu.collapse > span {
+	padding:0;
+	&:after {
+	}
+}
+.break-sm .ciq-menu.ciq-studies > span:after {background-position: -300px -25px;}
+.break-sm .ciq-menu.ciq-display > span:after {background-position: -350px -25px;}
+.break-sm .ciq-menu.stx-markers > span:after {background-position: -100px -25px;}
+
+.ciq-HU {
+	float:left;
+	&.active {
+		border-bottom:none;
+		& span,
+		.no-touch &:hover span,
+		&:active span {border:solid 1px $DEFAULT-accent;}
+	}
+}
+
+
+.ciq-search cq-menu-dropdown > ul { /* Remove Vertical Padding */
+    padding: 0;
+}
+
+cq-lookup-results {
+	display: block;
+	text-align: left;
+	background-color: $DEFAULT-menu-bg;
+	margin-top: 5px;
+	color: $DEFAULT-text-medium;
+	opacity: 0;
+	transition: opacity .20s .50s;
+	overflow: hidden;
+	height: 0px;
+	@include box-shadow (0px, 2px, 4px, rgba(0, 0, 0, .2));
+
+	.stxMenuActive & {
+		opacity:1;
+		height: auto;
+	}
+}
+
+cq-lookup-filters { /* Results Filter Row */
+	text-align:center;
+	height:45px;
+	padding:0;
+	border-bottom:solid thin $DEFAULT-border-subtle;
+}
+
+cq-lookup-filters cq-filter { /* Filter Options */
+	margin:0 10px;
+	padding:0 5px;
+	display:inline-block;
+	line-height:45px;
+	height:42px;
+	font-size:12px;
+	text-transform: uppercase;
+	color: $DEFAULT-text-subtle;
+	font-weight: 700;
+	font-family:$heading-font;
+	cursor:pointer;
+	transition: color .20s .0s;
+
+	&.true,
+	.no-touch &.true:hover,
+	&.true:active {/* Selected Filter Options */
+		border-bottom:3px solid $DEFAULT-accent;
+		color:$DEFAULT-accent;
+	}
+	.no-touch &:hover,
+	&:active {
+		color: $DEFAULT-text-medium;
+	}
+}
+
+cq-lookup cq-menu-dropdown { /* Search Results Panel */
+	position:relative;
+	padding: 0px;
+	transition: opacity .20s .50s;
+
+	.break-md &,
+	.break-lg & {
+		width: auto;
+	}
+	.break-md & {
+		left:0px;
+		top:$nav-height;
+		right:0px;
+		bottom:auto;
+	}
+	.break-sm & {
+		left:0px;
+		top:10px;
+		right:0px;
+		bottom:auto;
+	}
+}
+cq-lookup cq-scroll {/* Div Containing UL Containing Results */
+	padding:0;
+
+	.break-sm & {
+		padding-bottom: 5px;
+	}
+}
+
+cq-lookup-results{
+	& .cq-iscroller {
+		display:table;
+		width:100%;
+	}
+	& cq-scroll:first-child {
+		display:table;
+		width:100%;
+	}
+	& cq-item {
+		height:27px;
+		display:table-row;
+		cursor:pointer;
+		white-space: normal;
+
+		&:first-child span { padding-top:10px;}
+		&:last-child span { padding-bottom:10px;}
+	}
+	& cq-item span { /* Results Row Content */
+		line-height: 27px;
+		display:table-cell;
+		margin: 0px;
+
+
+		&:nth-of-type(1) { /* Search results Symbol */
+			color: #333333;
+			font-weight: bold;
+			padding-right:10px;
+			padding-left:20px;
+			padding-bottom:10px;
+			line-height:17px;
+			/*white-space: nowrap;*/
+		}
+		&:nth-of-type(2) { /* Search results Company */
+			line-height:normal;
+			padding:3px;
+		}
+		&:nth-of-type(3) { /* Search results exchange */
+			color: #333333;
+			font-size: 10px;
+			min-width: 40px;
+			text-align:right;
+			line-height:normal;
+			padding:3px;
+			white-space:nowrap;
+			padding-right:20px;
+		}
+	}
+}
+
+
+/* Period Menu */
+body:not(.break-sm) .ciq-period cq-menu-dropdown {
+	width:100px;
+}
+
+/* Views Menu */
+cq-views {
+  display: block;
+  overflow: hidden;
+  padding: 0;
+
+  .break-md &, .break-lg & {
+    width: 200px;
+  }
+
+  cq-item {
+    @include box-sizing(border-box);
+  }
+
+  cq-label {
+    display: inline-block;
+    @include text-truncate;
+    width: 140px;
+    vertical-align:text-bottom;
+
+    i {
+	  margin-left:85px;
+	  margin-top:-2px;
+	  font-size:13px;
+    }
+  }
+}
+
+/* Studies Menu */
+.ciq-studies cq-menu-dropdown{
+	padding:0;
+}
+
+cq-study-legend  {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	padding: 0;
+
+	.break-md &,
+	.break-lg & {
+		width: 200px;
+	}
+
+	cq-item {
+		@include box-sizing(border-box);
+	}
+	cq-label {
+		display: inline-block;
+		@include text-truncate;
+		width: 105px;
+		float: left;
+	}
+
+}
+
+cq-study-legend cq-label.click-to-edit {
+	width: 140px;
+}
+
+cq-study-legend cq-section-dynamic {/* Current studies container - height is set based on the height of the current studies content */
+	border-top:1px solid $DEFAULT-border-medium;
+	background:$DEFAULT-submenu-bg;
+	padding-bottom:20px;
+
+	& cq-heading { /* Color heading for current studies to make stand out  */
+		color:$DEFAULT-accent;
+	}
+
+	& .ciq-btn {margin-top:10px;}/* Add space above clear button  */
+}
+
+/* Code below is for study names beneath the comparison element */
+cq-study-legend[cq-marker] > cq-item:hover {
+	background-color:#fafafa;
+	border-radius:1px;
+	box-shadow:0px 1px 1px rgba(0,0,0,0.2);	
+}
+
+cq-study-legend[cq-marker] > cq-item {
+	padding-left:15px;
+	font-weight:bolder;
+}
+
+cq-study-legend[cq-marker] > cq-item > cq-label {
+	width:130px;
+}
+
+cq-study-legend[cq-marker] {
+	height:15px;
+	color:black;
+	margin:5px 0 0 10px;
+	z-index:2;
+
+	.break-sm & {
+		display:none;
+	}
+}
+
+cq-marker-label:after {
+	content:"";
+	display: inline-block;
+	height: 12px;
+	width: 12px;
+	float:left;
+	margin-left:10px;
+	margin-right:4px;
+	background-image: url(img/stx-sprite-ui.svg);
+	background-position: -731px -31px;	
+}
+
+@keyframes hovershow-toggle-animation{
+	0% {
+		transform:  rotate(0deg) ;
+	}
+	100% {
+		transform:  rotate(450deg) ;
+	}
+}
+@keyframes reverse-hovershow-toggle-animation{
+	0% {
+		transform:  rotate(450deg) ;
+	}
+	100% {
+		transform:  rotate(0deg) ;
+	}
+}
+cq-study-legend[cq-marker] > cq-marker-label:after {
+	animation: reverse-hovershow-toggle-animation ease-in-out .5s;
+}
+
+
+cq-study-legend[cq-marker]:hover > cq-marker-label:after {
+	animation: hovershow-toggle-animation ease-in-out .5s;
+	animation-iteration-count: 1;
+	transform-origin: 50% 50%;
+	animation-fill-mode:forwards;
+/*	-webkit-animation: hovershow-toggle-animation ease-in-out .5s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-transform-origin: 50% 50%;
+	-webkit-animation-fill-mode:forwards;
+	-moz-animation: hovershow-toggle-animation ease-in-out .5s;
+	-moz-animation-iteration-count: 1;
+	-moz-transform-origin: 50% 50%;
+	-moz-animation-fill-mode:forwards;
+	-ms-animation: hovershow-toggle-animation ease-in-out .5s;
+	-ms-animation-iteration-count: 1;
+	-ms-transform-origin: 50% 50%;
+	-ms-animation-fill-mode:forwards;
+	*/
+}    
+
+cq-study-legend[cq-marker]:hover {
+	height:auto;
+}
+
+cq-study-legend[cq-marker] cq-item {
+	opacity: 0;
+	transition: opacity .20s .50s, background-color 0.25s ease-in-out;	
+}
+
+cq-study-legend[cq-marker]:hover cq-item {
+	opacity: 1;
+}
+
+cq-marker-label {
+  cursor:pointer;
+}
+
+/* --------------------------------------------------------- TOOLBAR --------------------------------------------------------- */
+
+/* Drawing Tools */
+
+cq-annotation,
+cq-axis-label,
+cq-line-style,
+cq-line-color,
+cq-fill-color,
+cq-magnetize{
+	display:none;
+
+	&.ciq-active{
+		display:block;
+	}
+}
+cq-magnetize {
+	padding-top:.25em;
+	cursor:pointer;
+}
+cq-toolbar-settings *[cq-section] {
+	float: left;
+}
+
+cq-annotation .ciq-btn,
+cq-toolbar .ciq-select { /* Make sure elements don't wrap and space */
+	float: left;
+	margin-left: 6px;
+}
+
+cq-toolbar .ciq-color { /* No space before colors */
+	margin-top: 4px;
+}
+
+cq-toolbar .ciq-heading { /* Background and line color headings */
+	float: left;
+	line-height: 27px;
+	font-size: 11px;
+	text-transform: uppercase;
+	font-family:$heading-font;
+	color:mix(#000, $DEFAULT-main, 40% );
+}
+
+cq-toolbar .ciq-select {/* Menu Triggers in toolbar */
+	.no-touch &:hover,
+	&:active,
+	&.stxMenuActive {color:$DEFAULT-text;}
+}
+
+.no-touch cq-toolbar .ciq-select:not(:hover):not(:active):not(.stxMenuActive) {/* Remove borders from "select" Menus in annotation section */
+	border-color:transparent;
+}
+cq-toolbar cq-menu-dropdown {/* Narrower Menus in toolbar */
+	width:155px;
+}
+
+cq-undo-section {
+	float:right;
+}
+
+cq-undo, cq-redo {
+	opacity:.45;
+}
+
+cq-undo[cq-active], cq-redo[cq-active]{
+	opacity: 1;
+}
+
+cq-annotation .ciq-btn {/* Menu Triggers in toolbar */
+	font-family:Georgia, "Times New Roman", serif;
+	font-size:$font-size-toolbar;
+	font-weight:300;
+	text-align:center;
+	@include box-shadow(0, 0, 0, rgba(0, 0, 0, 0));
+	color:mix(#000, $DEFAULT-main, 70% );
+	border:solid 1px transparent;
+
+	&:hover {
+		.no-touch & {
+			@include box-shadow(0, 0, 0, rgba(0, 0, 0, 0));
+			color:$DEFAULT-text;
+			border:solid 1px $DEFAULT-border-subtle;
+		}
+	}
+	&:ciq-active {
+		color:$DEFAULT-text;
+		border:solid 1px $DEFAULT-border-subtle;
+	}
+
+	&.ciq-active,
+	&.ciq-active:active {
+		color:$DEFAULT-text;
+		border:solid 1px $DEFAULT-accent;
+	}
+}
+
+cq-toolbar .ciq-checkbox {
+	margin: 0 0 0 5px;
+}
+
+
+cq-toolbar-settings > * { /* Line and background color modules */
+	float: left;
+	margin: 0 0 0 10px;
+	padding: 0 7px 0 7px;
+}
+
+
+
+
+cq-menu-dropdown.ciq-line-style-menu li {/* Add padding to line li's since line-height doesn't apply */
+	padding-top:13px;
+	padding-bottom:13px;
+	}
+cq-menu-dropdown.ciq-line-style-menu li.ciq-none {/* Center "none" option */
+	text-align: center;
+	padding-top:0;
+	padding-bottom:0;
+}
+
+span.ciq-line {/* Formatting for line styles */
+	display: block;
+	width: auto;
+	height: 0px;
+	padding: 0px;
+	border-top-color: #666;
+	border-radius:0;
+}
+/*Centers the span inside of its parent so the hover effect looks good*/
+.ciq-line-style-option {
+  top:50%;
+  position:relative;
+}
+/* Line style types */
+cq-toolbar-settings .ciq-solid-1 {@extend span.ciq-line; border-top-style: solid;border-top-width: 1px;}
+cq-toolbar-settings .ciq-dotted-1 {@extend span.ciq-line;border-top-style: dotted;border-top-width: 1px;}
+cq-toolbar-settings .ciq-dashed-1 {@extend span.ciq-line;border-top-style: dashed;border-top-width: 1px;}
+cq-toolbar-settings .ciq-solid-3 {@extend span.ciq-line;border-top-style: solid;border-top-width: 2px;}
+cq-toolbar-settings .ciq-dotted-3 {@extend span.ciq-line;border-top-style: dotted;border-top-width: 2px;}
+cq-toolbar-settings .ciq-dashed-3 {@extend span.ciq-line;border-top-style: dashed;border-top-width: 2px;}
+cq-toolbar-settings .ciq-solid-5 {@extend span.ciq-line;border-top-style: solid;border-top-width: 3px;}
+cq-toolbar-settings .ciq-dotted-5 {@extend span.ciq-line;border-top-style: dotted;border-top-width: 3px;}
+cq-toolbar-settings .ciq-dashed-5 {@extend span.ciq-line;border-top-style: dashed;border-top-width: 3px;}
+
+span.ciq-line.ciq-selected {/* Formatting for selected line */
+	margin: 13px 0 0 0;
+	width:30px;
+}
+
+
+/*  Annotation Formatting */
+
+cq-annotation .ciq-btn {/* Make formatting buttons square */
+	padding:0;
+	width:27px;
+}
+cq-annotation .ciq-btn:first-child {margin-left:0;} /* Fix aligment by removing left margin from first button */
+
+cq-menu-dropdown.ciq-font-size {
+	width: 65px;
+	.break-sm & {
+		width:auto;
+	}
+	text-align:center;
+}
+cq-menu-dropdown.ciq-font-family {
+	width: 144px;
+	.break-sm & {
+		width:auto;
+	}
+}
+
+/*  Measuring tool */
+cq-measure {
+	text-align: right;
+	float:left;
+	margin-right:10px;
+	display: inline-block;
+	height: 27px;
+	line-height: 27px;
+}
+
+
+/* --------------------------------------------------------- HEADS UP --------------------------------------------------------- */
+
+cq-hu-dynamic { /* HU Container Box */
+	position:absolute;
+	display:none;
+	width:215px;
+	height:140px;
+	color:#4ea1fe;
+	font-weight:500;
+	font-family:$heading-font;
+	left:200px;
+	top:0px;
+	z-index:31;
+
+	.break-md &.stx-show,
+	.break-lg &.stx-show {
+		display:block;
+	}
+	transition: left .10s 0s, top .10s 0s, right .10s 0s, bottom .10s 0s;
+}
+/*
+There are two svg images. The first is a simple square (for static display). The second has a callout.
+ */
+
+cq-hu-dynamic svg {
+	position:absolute;
+	display:block;
+}
+
+cq-hu-dynamic.stx-right svg {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: "FlipH";
+    filter: FlipH;
+}
+
+cq-hu-dynamic .ciq-hu-bg { /* HU BG Image Fill */
+	fill:$DEFAULT-hu-bg;
+	@include box-shadow(0px, 1px, 1px, rgba(0, 0, 0, .2));
+}
+
+cq-hu-dynamic .ciq-hu-stroke { /* HU BG Image Border */
+	opacity: 0;
+}
+cq-hu-dynamic > div {
+	position:absolute;
+	height:125px;
+	width:215px;
+	right:0;
+	top:0;
+}
+cq-hu-dynamic.above > div {top:0;}
+cq-hu-dynamic.below > div {bottom:0;}
+
+cq-hu-dynamic cq-hu-col1 { /* First Column of HU */
+	position:absolute;
+	left:10px;
+	bottom:10px;
+	width:90px;
+}
+cq-hu-dynamic cq-hu-date {
+	font-family:$base-font;
+	font-size:10px;
+	color:#666;
+	font-weight:300;
+}
+cq-hu-dynamic cq-hu-price {
+	font-size:24px;
+	font-weight:700;
+	color:#000;
+	line-height:24px;
+}
+
+cq-hu-dynamic cq-volume-grouping > div:nth-of-type(1) { /* Volume Heading */
+	display:inline-block;
+	text-transform:uppercase;
+	font-size:11px;
+	margin-top:9px;
+	padding-top:6px;
+	color:#666;
+	border-top:1px solid #666;
+}
+
+cq-hu-dynamic cq-volume-grouping > div:nth-of-type(2) { /* Volume Bar Area */
+	background:#e7e7e7;
+	height:10px;
+	margin:2px 0;
+}
+
+cq-hu-dynamic cq-volume-visual { /* Volume Bar Fill */
+	display:inline-block;
+	background:#ccc;
+	height:inherit;
+	float:left;
+	width:0%;
+}
+
+cq-hu-dynamic cq-volume-grouping > div:nth-of-type(3) {/* Volume Number Text */
+	font-size:16px;
+	color:#333;
+	font-weight:700;
+}
+
+cq-hu-dynamic cq-volume-rollup {
+	font-size:10px;
+	font-weight:500;
+	margin-left:2px;
+}
+
+cq-hu-dynamic cq-hu-col2 {/* Second column of HU */
+	position:absolute;
+	right:15px;
+	bottom:10px;
+	width:90px;
+	list-style:none;
+}
+cq-hu-dynamic cq-hu-col2 > * { /* Hu Data Groups */
+	text-align:right;
+	font-weight:700;
+	font-size:14px;
+	color:#333;
+	float:left;
+	&:before {/* Add heading for HU data */
+		display:inline-block;
+		text-transform:uppercase;
+		color:#999;
+		font-weight:500;
+		font-size:11px;
+		padding-top:2px;
+	}
+}
+
+cq-hu-dynamic.stx-below.stx-left svg {
+  transform: scaleY(-1);
+}
+
+cq-hu-dynamic.stx-below.stx-right svg {
+  transform: scale(-1, -1);
+}
+
+cq-hu-open:before {content: "Open:";}
+cq-hu-high:before {content: "High:";}
+cq-hu-low:before {content: "Low:";}
+cq-hu-close:before {content: "Close:";}
+
+/* Simple Heads Up */
+
+cq-hu-static {
+	position:absolute;
+	top: 10px;
+	left: 250px;
+	display: none;
+	font-weight:500;
+	font-family:$heading-font;
+	background:#fff;
+    padding-left: 15px;
+
+	.break-md &, .break-lg & {display: block;}
+
+	div {
+		float: right;
+		width:265px;
+	}
+	div > * { /* value */
+		float: left;
+		width: 85px;
+		font-size:11px;
+		color:#000;
+		line-height: 16px;
+		white-space: nowrap;
+		overflow: hidden;
+		margin-right:3px;
+
+		&:before { /* label */
+			display:inline-block;
+			float:left;
+			text-transform:uppercase;
+			color:#666;
+			font-size:10px;
+			width: 32px;
+			padding-top: 1px;
+		}
+	}
+	& cq-hu-price:before {content: "Price:";}
+	& cq-volume-section:before {content: "Vol:";}
+
+}
+
+#mSticky {
+	font-family: $heading-font;
+    font-size: 13px;
+    font-weight: bold;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	color: #000;
+	background-color: #fff;
+    border: solid #398DFF 2px;
+    padding: 5px;
+}
+
+#mStickyInterior {
+	padding: 0;
+}
+
+#mouseDeleteInstructions {
+	text-align: center;
+	font-family: $base-font;
+	padding: 5px 0 0 0;
+}
+
+/* --------------------------------------------------------- FOOTER --------------------------------------------------------- */
+
+.ciq-footer {
+	color:mix(#000, $DEFAULT-bg, 65% );
+}
+
+.ciq-footer > .ciq-btn {/* Share button */
+	float:right;
+	margin:8px 0;
+}
+
+cq-show-range { /* Set Range Button List Container */
+	height:$footer-height;
+	line-height:$footer-height;
+	display:inline-block;
+	margin-left:0;
+	float:right;
+	.ciq-phone & {
+		float: none;
+	}
+	.break-lg & { /* Float Range Buttons Left When Breakpoint is Medium (View will be hidden) */
+		margin:0 15px 0 0;
+	}
+	& > div {
+		display:inline-block;
+		padding:0 10px;
+		cursor:pointer;
+		float:left;
+		font-weight:400;
+		@include box-sizing(border-box);
+
+		&:hover {
+			.no-touch & {color:$DEFAULT-text;}
+		}
+		&:active {
+			color:$DEFAULT-text;
+			border-top:solid 3px $DEFAULT-accent;
+		}
+	}
+}
+
+.hide-sm {
+	.break-sm & {
+		display:none;
+	}
+}
+
+/* --------------------------------------------------------- DIALOGS --------------------------------------------------------- */
+
+.ciq-dialog-overlay {/* Overlay for dialog placement */
+	position: fixed;
+	z-index: 2;
+	width:100%;
+	height:100%;
+	overflow:hidden;
+	opacity:0;
+	/*background: rgba(#151f28, .4);*/
+	transition: opacity .20s 0s;
+	&.stx-active {
+		opacity: 1;
+		top: 0;
+		bottom:0;
+		left: 0;
+		right: 0;
+		width:auto;
+		height:auto;
+	}
+}
+
+cq-dialog {
+	position: fixed;
+	display:none;
+	text-align: left;
+	padding: 30px 10px;
+	width:260px;
+	background:$DEFAULT-menu-bg;
+	color: $DEFAULT-text-medium;
+	@include box-shadow (0px, 2px, 4px, rgba(0, 0, 0, .2));
+	@include border-radius($soft-corners);
+	@include box-sizing(border-box);
+	z-index:3;
+}
+
+cq-dialog.stx-active {
+	display: inline-block;
+}
+
+cq-dialog h4 {
+	display: block;
+	font-size: 14px;
+	font-weight: 400;
+	margin: 0 0 5px 0;
+	color:$DEFAULT-text-strong;
+	text-align:center;
+}
+
+cq-dialog hr {
+	border: none;
+	height: 2px;
+	color:  $DEFAULT-border-medium;
+	background: $DEFAULT-border-medium;
+	margin: 4px 0px 8px 0px;
+	padding: 0px;
+}
+
+cq-dialog .ciq-close {/* Dialog close button */
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	margin: 0px;
+}
+
+.ciq-dialog-cntrls {
+	margin-top:15px;
+	text-align:center;
+}
+.ciq-dialog-cntrls .ciq-btn {
+	margin-left:10px;
+}
+.ciq-dialog-cntrls .ciq-btn:first-child {
+	margin-left:0;
+}
+
+cq-study-output, cq-study-input, cq-study-parameter {
+	display:block;
+}
+cq-study-dialog div.ciq-heading, cq-study-dialog div.stx-data {/* Dialog content columns */
+	display: inline-block;
+	line-height: 24px;
+	margin-bottom: 10px;
+}
+
+cq-study-dialog div.stx-data {/* Dialog content swatches and fields */
+	position:absolute;
+	right:10px;
+	max-width: 150px;
+	text-overflow: clip;
+	white-space: nowrap;
+}
+
+cq-study-dialog div.stx-data input:invalid,{/* input parameter not valid */
+	border-color:#ee5c5c;
+}
+
+cq-study-dialog cq-swatch {/* Dialog color swatch position */
+	float: right;
+}
+
+cq-study-dialog *[cq-study-inputs] { /* Dialog Input area (headings with textfields, etc.) */
+	padding: 8px 0 0 0;
+}
+cq-study-dialog *[cq-study-outputs] {/* Dialog Output area (headings with color swatches) */
+	padding: 0 0 8px 0;
+}
+cq-study-dialog cq-study-input,
+cq-study-dialog cq-study-output {
+	clear: both;
+	/* border-bottom: #ddd 1px solid; */
+	padding: 5px 0 0 0;
+	margin-left:10px;
+	margin-right:10px;
+}
+cq-study-dialog cq-study-input:last-child,
+cq-study-dialog cq-study-output:last-child,
+cq-study-dialog {
+	border: none;
+}
+
+cq-study-dialog .ciq-select {
+	min-width: 75px;
+}
+cq-study-dialog div.stx-data input[type="number"],
+cq-study-dialog div.stx-data input[type="text"]{
+	width:75px;
+	height: 27px;
+}
+cq-study-dialog div.stx-data input:invalid{
+	box-shadow: none;
+}
+cq-study-dialog div.stx-data input[type="checkbox"]{
+	margin: 6px 6px 0 0;
+}
+cq-study-dialog cq-study-parameters div.stx-data input[type="number"]{
+	width: 45px;
+	margin-right: 5px;
+	float: left;
+}
+cq-study-dialog #parameters .outputTemplate div.ciq-heading {/* Dialog Parameters heading columns (RIS overbought/oversold) */
+	width: 120px;
+}
+cq-study-dialog #parameters div.stx-data {
+	width: 70px;
+}
+cq-study-dialog #parameters input {
+	float: none;
+}
+cq-study-dialog #parameters cq-swatch {
+	float: right;
+}
+
+
+/* Context Dialog */
+cq-dialog[cq-study-context] {
+	width: 130px;
+	padding: 0px;
+
+	div { /* Menu Item */
+		padding:0px 20px;
+		cursor:pointer;
+		clear: both;
+		line-height:27px;
+		color:$DEFAULT-text-medium;
+	}
+	.no-touch & div:hover { /* Menu item hover state */
+		background: #efefef;
+		color:$DEFAULT-text-strong;
+	}
+
+
+	.ciq-btn {
+		width: 65px;
+
+		&:first-child {
+			float: left;
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		&:last-child {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+	}
+}
+
+
+
+/* --------------------------------------------------------- Events --------------------------------------------------------- */
+
+.stx-marker-templates {
+	position:absolute;
+	bottom:20px;
+	width:100%;
+	z-index:4
+}
+.stx-marker { /* Basic Marker */
+	position:absolute;
+	display:inline-block;
+    cursor: pointer;
+	text-align:center;
+	color:$DEFAULT-text-strong;
+}
+
+.stx-marker p,
+.stx-marker h4 {
+	display:inline-block;
+	margin:0;
+}
+
+.stx-marker p {font-size:$font-size-button;}
+
+.stx-marker .stx-marker-expand {
+    width: 0;
+    max-height: 0;
+	overflow:hidden;
+	z-index:1;
+}
+
+.stx-stem { /* Basic Stems */
+	position:relative;
+	height:60px;
+	left:50%;
+    border-left: 1px dotted rgba(0, 0, 0, 0.3);
+}
+
+.stx-marker.square .stx-visual,
+.stx-marker.circle .stx-visual { /* Simple Marker */
+    width: 25px;
+    height: 25px;
+	background-image:url(img/stx-sprite-markers.svg);
+
+}
+.stx-marker.square .stx-visual:after,
+.stx-marker.circle .stx-visual:after { /* Basic Marker */
+	position:absolute;
+	top:0;
+	left:0;
+	content:"";
+	display:block;
+    height: 25px;
+    width: 25px;
+	opacity: 0;
+	transition: opacity .20s 0s, border .20s 0s, width .20s 0s, height .20s 0s, top .20s 0s, left .20s 0s;
+	@include box-sizing(border-box);
+}
+.no-touch .stx-marker.square:hover .stx-visual:after,
+.no-touch .stx-marker.circle:hover .stx-visual:after {
+    height: 35px;
+    width: 35px;
+	top:-5px;
+	left:-5px;
+	opacity: .2;
+    border: 1px solid $DEFAULT-text;
+}
+.stx-marker.square.highlight .stx-visual:after,
+.stx-marker.circle.highlight .stx-visual:after {
+    height: 35px;
+    width: 35px;
+	top:-5px;
+	left:-5px;
+	opacity: .1;
+    border: 5px solid $DEFAULT-text;
+}
+.stx-marker.circle .stx-visual,
+.stx-marker.circle .stx-visual:after { /* Basic Marker */
+	@include border-radius(50%);
+}
+.stx-marker.news .stx-visual{
+	background-color:#C600D8;
+	background-position: -50px -50px;
+}
+.stx-marker.earningsUp .stx-visual{
+	background-color:#85c730;
+	background-position: -100px -50px;
+}
+.stx-marker.earningsDown .stx-visual{
+	background-color:#ff002a;
+	background-position: -100px -50px;
+}
+.stx-marker.dividend .stx-visual{
+	background-color:#000;
+	background-position: -150px -50px;
+}
+.stx-marker.filing .stx-visual{
+	background-color:#999;
+	background-position: -200px -50px;
+}
+.stx-marker.split .stx-visual{
+	background-color:#16b0c2;
+	background-position: -250px -50px;
+}
+
+.stx-marker.square .stx-marker-expand,
+.stx-marker.circle .stx-marker-expand {
+	position:absolute;
+	bottom:30px;
+	left:30px;
+	text-align:left;
+	background:rgba(255, 255, 255, 0.85);
+	opacity: 0;
+	transition: opacity .50s 0s;
+}
+.stx-marker.highlight.square .stx-marker-expand,
+.stx-marker.highlight.circle .stx-marker-expand {
+	width: 200px;
+	max-height:200px;
+	padding:10px;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	opacity: 1;
+}
+
+.stx-marker.square p,
+.stx-marker.circle p {
+	margin-top:6px;
+}
+
+.stx-marker.callout .stx-visual {
+	width:200px;
+}
+.stx-marker.callout .stx-marker-content {
+	position:relative;
+	display:inline-block;
+	background:rgba(255, 255, 255, 0.65);
+}
+.no-touch .stx-marker.highlight.callout .stx-marker-content,
+.no-touch .stx-marker.callout:hover .stx-marker-content {
+	background:rgba(255, 255, 255, 0.8);
+}
+
+.stx-marker.callout .stx-marker-content h4 {
+	padding:4px 10px;
+}
+.stx-marker.callout.highlight .stx-marker-content h4 {
+	padding:8px 10px 4px;
+}
+.stx-marker.callout .stx-marker-expand {
+	max-height: 0;
+	transition: max-height 0s 0s;
+}
+.stx-marker.callout.highlight .stx-marker-expand {
+	width: 200px;
+	max-height:200px;
+	padding:0 10px 8px;
+	@include box-sizing(border-box);
+	transition: max-height .50s 0s;
+}
+.stx-marker.callout .stx-marker-content:after { /* Basic Marker */
+	position:absolute;
+	top:-1px;
+	left:-1px;
+	bottom:-1px;
+	right:-1px;
+	content:"";
+	display:block;
+	opacity: .15;
+	transition: opacity .20s 0s, top .20s 0s, bottom .20s 0s, left .20s 0s, right .20s 0s;
+	@include box-sizing(border-box);
+    border: 1px solid $DEFAULT-text;
+}
+.stx-marker.callout.highlight .stx-marker-content:after {
+	top:-5px;
+	left:-5px;
+	bottom:-5px;
+	right:-5px;
+    border: 5px solid $DEFAULT-text;
+}
+
+
+/* --------------------------------------------------------- CHART AREA ELEMENTS --------------------------------------------------------- */
+
+.stx-panel-control {
+	top:0px; /* too much space by default in stx-chart.css */
+}
+
+.cq-stable {
+	transition: all 1s ease-out 0s;
+}
+
+.cq-down {
+	color: #ff002a;
+}
+
+.cq-up {
+	color: #85c730;
+}
+/* Chart Title */
+
+.stx-chart-panel.stx-show {/* Hide default Chart Title and Icons */
+	display:none;
+}
+cq-chart-title {
+	display: none;
+	position:relative;
+	background: #fff;
+	font-family:$heading-font;
+	font-weight:700;
+	float:none;
+	margin:10px 10px;
+	color: #333;
+	padding: 0 10px 0 10px;
+	line-height: 22px;
+	font-size: 12px;
+	text-align: left;
+}
+cq-chart-title.stx-show{
+	display:inline-block;
+}
+cq-chart-title cq-symbol {
+//	display:inline-block;
+	font-size:28px;
+//	text-transform: uppercase;
+//	line-height:30px;
+}
+cq-chart-title cq-chart-price {
+	font-family:$base-font;
+	display:inline-block;
+	line-height:13px;
+	font-size:11px;
+	margin-left:5px;
+	font-weight:500;
+	color:$DEFAULT-text-medium;
+	vertical-align:text-bottom;
+}
+cq-chart-title cq-chart-price > * {position:relative;}
+cq-chart-title cq-chart-price cq-change:after {/* Up/Down Arrow indicators */
+	content:"";
+    display: block;
+    height: 12px;
+    width: 12px;
+	float:left;
+}
+cq-chart-title cq-chart-price.stx-up cq-change:after {
+    background-image: url(img/stx-sprite-ui.svg);
+	background-position: -633px -31px;
+}
+cq-chart-title cq-chart-price.stx-down cq-change:after {
+    background-image: url(img/stx-sprite-ui.svg);
+	background-position: -683px -31px;
+}
+
+
+/* Comparisons */
+cq-comparison {
+	position:relative;
+	margin:5px 0 0 10px;
+	display:none;
+	z-index:3;
+	width:200px;
+	&[cq-show] {
+		display: block;
+	}
+	.break-sm &[cq-show] {
+		display:none;
+	}
+}
+
+
+/* Add Comparison Btn */
+cq-menu.cq-comparison-new {
+	position:relative;
+	display:inline-block;
+	cursor:pointer;
+	color:mix(#000, $DEFAULT-main, 60% );
+	transition: color .20s 0s, opacity .20s .0s;
+	z-index: 1;
+	height: 1px; /* hack so that jquery doesn't think it's 0px */
+}
+
+cq-comparison-add-label {
+	padding-left: 10px;
+	display:inline-block;
+	cq-menu.cq-comparison-new:hover & {/* Brighter text on hover */
+		.no-touch & {color:mix(#000, $DEFAULT-main, 80% );}
+	}
+	& > * {
+		display:inline-block;
+		vertical-align: top;
+	}
+	.stxMenuActive & {
+		height: 0px;
+		display:none;
+	}
+}
+cq-comparison-plus {/* Plus icon image */
+	width:12px;
+	height:12px;
+	background-image:url(img/stx-sprite-ui.svg);
+	background-position: -532px -32px;
+	margin-right:4px;
+}
+
+
+/* Add Comparison Module */
+cq-comparison-add {
+	display: block;
+	position:absolute;
+	top: -15px;
+	white-space: nowrap;
+	min-width: 210px;
+	height: 36px;
+	opacity:0;
+	background:darken( $DEFAULT-main, 2% );
+	@include border-radius($soft-corners);
+	transition: opacity .5s;
+	@include box-shadow(0px, 1px, 1px, rgba(0, 0, 0, .2));
+
+	& .stx-btn {
+		padding:0 10px;
+	}
+	.stxMenuActive & {
+		opacity: 1;
+		& > * {
+			//opacity:1;
+			display:inline-block;
+		}
+	}
+	& > * {
+		display: none;
+		vertical-align: top;
+	}
+	& cq-swatch {
+		margin: 8px;
+	}
+
+	& input {
+		border:none;
+		height:36px;
+		@include box-sizing(border-box);
+		/*@include placeholder {
+			color: mix(#000, $DEFAULT-main, 40% );
+		}*/
+	}
+
+	& .stx-btn {
+		transition: color .20s .2s !important;
+		height:36px !important;
+		line-height:36px !important;
+		border:none !important;
+		color: mix(#000, $DEFAULT-main, 60% );
+
+		&:hover {
+			.no-touch & {color:$DEFAULT-text !important;}
+		}
+
+		&:active {
+			color: $DEFAULT-accent !important;
+		}
+	}
+}
+cq-comparison-lookup-frame {
+}
+
+/* Comparison Key */
+cq-comparison-key {
+	min-width:110px;
+	display:block;
+	position: relative;
+}
+cq-comparison-item {
+	position:relative;
+	display:block;
+	padding-left:10px;
+	padding-right:30px; // space for close X
+	font-size:12px;
+	font-weight:700;
+	height: 28px;
+	line-height: 28px;
+	opacity: 1;
+	transition: background .20s 0s, padding .20s 0s, opacity .20s .20s, height .20s .40s, font-size .0s .40s, margin .2s .40s;
+
+	&:hover {
+		.no-touch & {
+			background:transparent;
+			background:darken( $DEFAULT-main, 2% );
+			@include border-radius($soft-corners);
+			@include box-shadow (0px, 1px, 1px, rgba(0, 0, 0, .2));
+		}
+	}
+	& > * {
+		margin-left: 5px;
+	}
+	&[cq-error] {
+		opacity:.5;
+	}
+}
+cq-comparison-swatch {
+	display:inline-block;
+	position:relative;
+	top:2px;
+	width:12px;
+	height:12px;
+	background:#DD0000;
+}
+
+cq-comparison-price {
+	float:right;
+	color:#8d949a;
+	font-weight:500;
+}
+
+cq-comparison-item .ciq-close {
+	position:absolute;
+	right:0;
+	top:1px;
+	background-position: -250px -25px;
+	transition: opacity .20s .0s;
+	height: 25px;
+    width: 25px;
+    background-image: url(img/stx-sprite-panels.svg);
+    cursor: pointer;
+
+	.no-touch & {
+		opacity: 0;
+	}
+}
+.no-touch cq-comparison-item:hover .ciq-close {opacity: .6;}
+.no-touch cq-comparison-item .ciq-close:hover,
+cq-comparison-item .ciq-close:active {opacity: 1;}
+
+
+cq-comparison-loader {
+	display:none;
+    position: relative;
+    height: 16px;
+    width: 16px;
+    top:4px;
+	background-image:url(img/loading-spin.svg);
+	background-size:cover;
+    z-index: 1;
+}
+cq-comparison-loader.stx-show{
+	display:inline-block;
+}
+
+cq-attrib-container {
+   position: absolute;
+   background:rgba(250,250,250,.9);
+   color: rgba(0,0,0,.4);
+   left: 30px;
+   bottom: 5px;
+   margin: 0;
+   font-size: 10px;
+   padding: 0 5px;
+}
+
+cq-attrib-container cq-attrib-source,
+cq-attrib-container cq-attrib-quote-type {
+   padding: 2px 0;
+}
+
+cq-attrib-container cq-attrib-source a {
+   color: #000;
+}
+
+
+cq-plus {/* Plus icon image */
+	width: 27px;
+	height: 27px;
+	background-image: url(img/stx-sprite-panels.svg);
+	background-position: -100px -25px;
+	opacity: .5;
+}
+
+cq-item cq-plus {
+	display: inline-block;
+	float: left;
+	margin-left: -8px;
+}
+
+cq-dialog[cq-theme-dialog] {
+	width:440px;
+}
+cq-theme-dialog  {
+	& cq-section {
+		display:inline-block;
+		vertical-align:top;
+		margin-top: 15px;
+		&:first-of-type {
+			border-right:dashed 1px rgba(0,0,0,.5);
+			padding-right: 5px;
+		}
+		&:last-of-type {
+			padding-left: 5px;
+		}
+	}
+	& cq-action {
+		display:flex;
+		justify-content:center;
+		height:30px;
+		margin-top:10px;
+		& input {
+			width:200px;
+			padding-left:10px;
+		}
+		& div.ciq-btn {
+			position:absolute;
+			right:40px;
+		}
+	}
+}
+
+cq-theme-dialog cq-placeholder {
+	width:150px;
+}
+cq-theme-piece {
+	display:block;
+	float:right;
+	& cq-swatch {
+		margin-left:5px;
+		margin-top:3px;
+	}
+}
+/* --------------------------------------------------------- CHART SDK --------------------------------------------------------- */
+
+/* Chart */
+
+.stx_mountain_chart {/* Default color for mountain Charts */
+	color: rgba(0,156,255,.01);	/* background color for mountain */
+	background-color: rgba(0,102,255,.5);				/* Optional gradient */
+	border: #009cff;	/* Optional line color */
+	width: 2px;					/* Optional line width */
+}
+
+/* -------- Axis tabs and current Prices -------- */
+
+.stx-float-price, .stx-float-date {
+	border-radius: 0;
+	-webkit-border-radius: 0;
+}
+
+#crossY, .stx_crosshair_y {
+	margin-top: 0px
+}
+
+.stx_annotation {
+	background: transparent;
+	border: solid $DEFAULT-accent 1px;
+}
+
+.stx-btn-panel {
+	opacity:0;
+	transition: opacity .5s;
+	background-color: $DEFAULT-main;
+}
+
+.break-sm .stx-btn-panel {
+	display: none;
+}
+
+.stx-holder:hover .stx-btn-panel {
+	opacity: 1;
+	transition: opacity .5s, height .3s;
+}
+
+.stx-ico-handle {
+	background-color: $DEFAULT-border-subtle;
+	opacity: 0;
+}
+
+.stx-ico-handle:hover {
+	opacity: .3;
+}
+
+.stx-ico-handle.stx-grab {
+	background-color: $DEFAULT-accent;
+	opacity: .3;
+	height:2px;
+}
+/* hide the default panel drag */
+.stx_panel_drag {
+	color: transparent;
+}
+
+.stx_xaxis, .stx_yaxis {
+	font-family: $base-font;
+}
+
+.stx_line_chart {
+	width: 2px;
+}

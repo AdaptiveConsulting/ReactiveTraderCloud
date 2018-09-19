@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"> <!-- for high pixel devices -->
+<link rel="stylesheet" type="text/css" href="css/stx-chart.css" media="screen" />   <!-- Required - default style sheet -->
+</head>
+
+<!-- On load, display the chart -->
+<body onLoad="displayChart()">
+
+<!-- This is your chart container. Position it anywhere, and in any way that you wish on your webpage. Make position style=relative -->
+<div class="chartContainer" style="width:800px;height:460px;position:relative;"></div>
+
+<!--[if IE 8]><script>alert("This template is not compatible with IE8");</script><![endif]-->
+
+<!-- include the charting library -->
+<script src="js/chartiq.js"></script>
+
+<!-- statically define chart data in sampleData object -->
+<script src="example-data/STX_SAMPLE_5MIN.js"></script>
+<script>
+
+// Create a STXChart object, the main object for drawing charts. 
+var stxx=new CIQ.ChartEngine({container:$$$(".chartContainer")}); 
+
+// Display the chart (on-load callback)
+function displayChart(){
+	stxx.newChart("SPY", sample5min);
+}
+
+</script>
+</body>
+</html>

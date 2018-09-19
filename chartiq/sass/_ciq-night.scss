@@ -1,0 +1,537 @@
+$DARK: ciq-night !default;
+$DARK-bg:					#151f28;
+$DARK-main:					#1c2a35;
+$DARK-hu-bg: 				#1C2A35;
+$DARK-hu-bg-dynamic: 		#2a51d0;
+$DARK-text:					#fff;
+
+
+body {	
+	&.#{$DARK} {
+		background:$DARK-bg;
+		color: mix(#fff, $DARK-bg, 100% );
+		}
+	.ciq-phone &.#{$DARK} {background:$DARK-main;}
+}
+
+cq-loader, cq-comparison-loader {
+	.#{$DARK} & {background-image:url(img/loading-spin-white.svg);}
+}
+
+.ciq-color, .stx-border-color {/* Swatch / Open Palette Button */
+	.#{$DARK} & {background-color:$DARK-text;}
+}
+	
+.ciq-nav { 
+	.#{$DARK} & {border-bottom:1px solid darken( $DARK-bg, 20% );}
+}
+
+cq-toolbar { 	
+	.#{$DARK} & {border-bottom:1px solid darken( $DARK-main, 5% );}
+}
+
+.ciq-chart-area {
+	.#{$DARK} & {background:$DARK-bg;} 
+}
+	
+.ciq-chart {
+	.#{$DARK} & {/* Darker Drop-shadow and different background in #{$DARK} mode */
+		background: $DARK-main;
+		@include box-shadow (0px, 2px, 5px, rgba(0, 0, 0, .3));
+	}
+	.break-sm.#{$DARK} & {/* Hide Drop-shadow when app is in break-sm + #{$DARK} mode */
+		@include box-shadow (0px, 2px, 5px, rgba(0, 0, 0, 0));
+	}
+}
+	
+.chartContainer {
+	.#{$DARK} & {
+		background: $DARK-main;
+		color: $DARK-text;
+	}
+}
+		
+.ciq-footer {
+	.#{$DARK} & {border-top:1px solid darken( $DARK-bg, 20% );}
+}
+
+cq-lookup-input {
+	.#{$DARK} & input {
+		background: rgba($DARK-bg, 0);
+		color: $DARK-text;
+	}
+	
+	&:hover input {
+		.no-touch.#{$DARK} & {background: lighten( $DARK-main, 4% );}
+	}
+	
+	.#{$DARK} .stxMenuActive & input {
+		background: lighten( $DARK-main, 4% );
+	}
+}
+
+cq-lookup-icon {
+	.#{$DARK} & {background-position: -45px -50px;}
+}
+
+
+.ciq-menu {
+	.#{$DARK} & {color:mix(#fff, $DARK-bg, 75% );}
+
+	&:hover {
+		.no-touch.#{$DARK} & {color:$DARK-text;}
+	}
+	&:active {
+		.#{$DARK} & {color:$DARK-text;}
+	}
+	
+	&.stxMenuActive {
+		.#{$DARK} & {color:$DARK-text;}	
+		
+		.break-sm & {
+			.#{$DARK} & {color:$DARK-text;}
+		}
+	}
+}
+
+.ciq-menu{
+	&:after {		
+		.#{$DARK} & {
+			border-right:solid thin mix(#fff, $DARK-bg, 50% );
+			border-bottom:solid thin mix(#fff, $DARK-bg, 50% );
+		}
+	}
+}
+
+.ciq-toggles {
+	&:after {
+		.#{$DARK} & {background: darken( $DARK-bg, 20% );}
+		
+	}
+}
+
+cq-toggle {
+	&.active {
+		.#{$DARK} & {color:$DARK-text;}
+	}
+}
+
+	
+.no-touch.#{$DARK} cq-toggle:hover > span,
+.#{$DARK} cq-toggle:active > span,
+.no-touch.#{$DARK}.break-sm .ciq-menu.collapse:hover > span,
+.#{$DARK}.break-sm .ciq-menu.collapse:active > span {
+	border:solid 1px lighten( $DARK-bg, 10% );
+}
+
+.#{$DARK} .stx-watch span {background-position: -150px -50px;}
+.#{$DARK} .stx-trade span {background-position: -200px -50px;}
+.#{$DARK} .ciq-draw span {background-position: -250px -50px;}
+.#{$DARK} .ciq-HU span {background-position: -400px -50px;}
+.#{$DARK} .ciq-CH span {background-position: -443px -50px;}
+
+
+.#{$DARK}.break-sm .ciq-menu.ciq-studies > span:after {background-position: -300px -50px;}
+.#{$DARK}.break-sm .ciq-menu.ciq-display > span:after {background-position: -350px -50px;}
+.#{$DARK}.break-sm .ciq-menu.stx-markers > span:after {background-position: -100px -50px;}
+
+
+cq-toolbar .ciq-heading { /* Background and line color headings */
+	.#{$DARK} & {color:mix(#fff, $DARK-main, 40% );}
+}
+
+cq-toolbar .ciq-select {/* Menu Triggers in toolbar */
+	.#{$DARK} & {
+		background:none;
+		border-color:lighten( $DARK-main, 10% );
+	}	
+	.no-touch.#{$DARK} &:hover,
+	.#{$DARK} &:active,
+	.#{$DARK} &.stxMenuActive {color:$DARK-text;}	
+}
+
+cq-annotation .ciq-btn {/* Menu Triggers in toolbar */	
+	.#{$DARK} & {
+		color:mix(#fff, $DARK-main, 70% );
+		background:none;
+	}
+	
+	&:hover {
+		.no-touch.#{$DARK} & {
+			color:$DARK-text;
+			border-color:lighten( $DARK-main, 10% );
+		}
+	}
+	&:ciq-active {			
+		.#{$DARK} & {
+			color:$DARK-text;
+			border-color:lighten( $DARK-main, 10% );
+		}
+	}
+	
+	&.ciq-active,
+	&.ciq-active:active {
+		.#{$DARK} & {color:$DARK-text;}
+	}
+}
+	
+
+
+
+cq-toolbar .ciq-checkbox {
+	.#{$DARK} & span {border-color:lighten( $DARK-main, 30% );}
+	.no-touch.#{$DARK} &:hover span {border-color:lighten( $DARK-main, 50% );}
+}
+
+
+cq-toolbar-settings > * { /* Line and background color modules */
+	.#{$DARK} & {border-left:1px solid darken( $DARK-main, 5% );}
+}
+
+span.ciq-line.ciq-selected {/* Formatting for selected line */
+	.#{$DARK} & {border-color:$DARK-text;}
+}
+
+cq-hu-dynamic .ciq-hu-bg { /* HU BG Image Fill */
+	.#{$DARK} & {fill:$DARK-hu-bg-dynamic}
+}
+
+cq-hu-dynamic .ciq-hu-stroke { /* HU BG Image Border */
+	.#{$DARK} & {opacity:1;}
+}
+
+cq-hu-dynamic cq-hu-date {
+	.#{$DARK} & {color:#64adff}
+}
+cq-hu-dynamic cq-hu-price {
+	.#{$DARK} & {color:#fff;}
+}
+
+cq-hu-dynamic cq-volume-grouping > div:nth-of-type(1) { /* Volume Heading */
+	.#{$DARK} & {
+		color:#64adff;
+		border-top:1px solid #90c9ff;
+	}
+}
+
+cq-hu-dynamic cq-volume-grouping > div:nth-of-type(2) { /* Volume Bar Area */
+	.#{$DARK} & {background:#2a6ce4;}
+}
+
+cq-hu-dynamic cq-volume-visual { /* Volume Bar Fill */
+	.#{$DARK} & {background:#64adff;}
+}
+
+cq-hu-dynamic cq-volume-grouping > div:nth-of-type(3) {/* Volume Number Text */
+	.#{$DARK} & {color:#b8e2ff;}
+}
+
+cq-hu-dynamic cq-hu-col2 > * { /* Hu Data Groups */
+	.#{$DARK} & {color:#b8e2ff;}
+	.#{$DARK} &:before {color:#4ea1fe;}
+}
+
+
+cq-hu-static {
+	.#{$DARK} & {
+		background: #1c2a35;
+	}	
+	div > * { /* value */
+		.#{$DARK} & {
+			color:#8BD0FF;
+		}
+
+		.#{$DARK} &:before {color:#ccc;}
+	}
+
+}
+
+/* legend will have light icons */
+cq-study-legend {
+	.#{$DARK} & .ciq-icon.ciq-close:after {
+		background-position: -250px -50px;
+	}
+	.#{$DARK} & .ciq-icon.ciq-edit:after, .#{$DARK} & .ciq-edit {
+		background-position: -300px -50px;
+	}
+	.#{$DARK} & .ciq-icon.ciq-delete:after {
+		background-position: -400px -50px;
+	}
+}
+
+cq-study-legend {
+	.#{$DARK} & cq-item:hover .ciq-icon.ciq-close:after {
+		background-position: -250px -25px;
+	}
+	.#{$DARK} & cq-item:hover .ciq-icon.ciq-edit:after, .#{$DARK} & cq-item:hover .ciq-edit {
+		background-position: -300px -25px;
+	}
+	.#{$DARK} & cq-item:hover .ciq-icon.ciq-delete:after {
+		background-position: -400px -25px;
+	}
+}
+
+/* or unless it's in a menu */
+cq-menu cq-study-legend {
+	.#{$DARK} & .ciq-icon.ciq-close:after {
+		background-position: -250px -25px;
+	}
+	.#{$DARK} & .ciq-icon.ciq-edit:after, .#{$DARK} & .ciq-edit {
+		background-position: -300px -25px;
+	}
+	.#{$DARK} & .ciq-icon.ciq-delete:after {
+		background-position: -400px -25px;
+	}
+}
+
+#mSticky {
+	.#{$DARK} & {
+		color: rgb(215, 234, 247);
+    	background-color: #2A51D0;
+	}
+}
+
+
+cq-chart-title {
+	.#{$DARK} & {
+		background: $DARK-main;
+		color: $DARK-text;
+	}
+}
+cq-chart-title cq-chart-price {
+	.#{$DARK} & {color:mix(#fff, $DARK-main, 50%)}	
+}
+
+.#{$DARK} .stx-panel-title {
+	color: #fff;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+cq-comparison-add-label {
+	.#{$DARK}  & {color:mix(#FFF, $DARK-main, 60% );}	
+	cq-menu.cq-comparison-new:hover & {/* Brighter text on hover */
+		.no-touch.#{$DARK} & {color:mix(#FFF, $DARK-main, 100% )}
+	}
+}
+
+cq-comparison-add {
+	.#{$DARK} & {background:lighten( $DARK-main, 5% )}	
+
+	& input {
+		.#{$DARK} & {
+			color:mix(#FFF, $DARK-main, 80% );
+			/*@include placeholder {
+				color: mix(#FFF, $theme2-main, 40% );
+			}*/
+		}
+	}
+
+	& .stx-btn {
+		.#{$DARK} & {color: mix(#FFF,$DARK-main, 60% ) !important;}
+		&:hover {
+			.no-touch.#{$DARK} & {color:$DARK-text !important;}
+		}
+		
+		&:active {
+			.#{$DARK} & {color:$DEFAULT-accent !important;}
+		}
+	}
+}
+
+cq-comparison-item {
+	&:hover {
+		.no-touch.#{$DARK} & {background:lighten( $DARK-main, 3% )}	
+	}
+	.#{$DARK} & .ciq-close {
+		background-position: -250px -50px;	
+	}
+}
+/* Use the white version of the icon for Night Theme */
+.#{$DARK} cq-comparison-key .stx-btn-ico.close:after {background-position: -250px -50px;} 
+
+.#{$DARK} cq-attrib-container {
+  background:rgba(0,0,0,.5);
+  color: rgba(255,255,255,.6);
+}
+	
+.#{$DARK} cq-attrib-container cq-attrib-source a {
+  color: $DARK-text;
+}
+/* --------------------------------------------------------- FOOTER --------------------------------------------------------- */
+
+.ciq-footer {
+	.#{$DARK} & {color:mix(#fff, $DARK-bg, 75% );}
+}
+
+cq-show-range { /* Set Range Button List Container */
+	& > div {		
+		&:hover {
+			.no-touch.#{$DARK} & {color:$DARK-text;}
+		}
+		&:active {
+			.#{$DARK} & {color:$DARK-text;}
+		}
+	}
+}
+
+
+.stx-stem { /* Basic Stems */
+	.#{$DARK} & {border-left: 1px dotted rgba(255, 255, 255, 0.3);}
+}
+
+.no-touch.#{$DARK} .stx-marker.square:hover .stx-visual:after,
+.no-touch.#{$DARK} .stx-marker.circle:hover .stx-visual:after {
+	border-color: #fff;
+}
+.stx-marker.square.highlight .stx-visual:after,
+.stx-marker.circle.highlight .stx-visual:after {
+	.#{$DARK} & {
+		border-color: #fff;
+		opacity: .15;
+	}
+}
+
+.stx-marker.dividend .stx-visual{
+	.#{$DARK} & {
+		background-color:#fff;
+		background-position: -150px -25px;
+	}
+}
+
+.stx-marker.square .stx-marker-expand,
+.stx-marker.circle .stx-marker-expand {	
+	.#{$DARK} & {background:rgba(255, 255, 255, 0.75);}
+}
+.stx-marker.highlight.square .stx-marker-expand,
+.stx-marker.highlight.circle .stx-marker-expand {
+	.#{$DARK} & {border: 1px solid rgba(255, 255, 255, 0.3);}
+}
+
+
+.stx-marker.callout.highlight .stx-marker-content:after {
+	.#{$DARK} & {border-color: #fff;}
+}	
+
+
+
+/* -------- Dark Buttons and Panel Controls -------- */
+
+.#{$DARK} .stx-btn-panel > span.stx-ico-up {background-position: -150px -50px;}
+.#{$DARK} .stx-btn-panel > span.stx-ico-down {background-position: -200px -50px;} 
+.#{$DARK} .stx-btn-panel > span.stx-ico-close {background-position: -250px -50px;} 
+.#{$DARK} .stx-btn-panel > span.stx-ico-edit {background-position: -300px -50px;} 
+.#{$DARK} .stx-btn-panel > span.stx-ico-focus {background-position: -350px -50px;} 
+
+.#{$DARK} #chartSize, .#{$DARK} .stx_jump_today {
+	background:lighten( $DARK-main, 3% );
+	@include box-shadow (0px, 1px, 1px, rgba(0, 0, 0, .3));
+}
+.#{$DARK} #chartSize:after {background:rgba(255,255,255,.1);}
+.#{$DARK} #chartSize .stx-zoom-out {background-position: -45px -50px;}
+.#{$DARK} #chartSize .stx-zoom-in {background-position: -95px -50px;}
+
+.#{$DARK} .stx_jump_today span {background-position: -448px -50px;}
+
+/* ------- chart controls -----*/
+
+
+.#{$DARK} .stx-float-date { background-color: #fff; color: #333;}
+.#{$DARK} .stx-float-price { background-color: #fff; color:#333;}
+
+.#{$DARK} .stx_xaxis {color:mix(#fff, $DARK-bg, 75% )}
+.#{$DARK} .stx_xaxis_dark {color: $DARK-text;}
+.#{$DARK} .stx_yaxis {color:mix(#fff, $DARK-bg, 75% )}
+
+.#{$DARK} .stx_crosshair {background-color:rgba(255,255,255,.4);}
+.#{$DARK} .stx_crosshair_drawing {background-color:rgba(255,255,255,.9);}
+
+.#{$DARK} .stx_panel_border{color:#666;}
+.#{$DARK} .stx_panel_drag {color:#ccc;}
+
+.#{$DARK} .stx_grid {color:lighten( $DARK-main, 3% );}
+.#{$DARK} .stx_grid_dark {color:lighten( $DARK-main, 5% );}
+
+.#{$DARK} .stx_line_chart {color:#fff;}
+.#{$DARK} .stx_bar_chart {color:#fff;}
+
+.#{$DARK} .stx_candle_shadow {color:#ccc;}
+
+.#{$DARK} .stx_candle_down, .#{$DARK} .stx_line_down, .#{$DARK} .stx_histogram_down { border-left-color: #e34621; }
+.#{$DARK} .stx_candle_up, .#{$DARK} .stx_line_up, .#{$DARK} .stx_histogram_up { border-left-color: #b8dea8; }
+
+.#{$DARK} .stx_histogram_even{border-left-color:#cccccc;} 
+
+.#{$DARK} .stx_hollow_candle_even{color:#cccccc;} 
+
+.#{$DARK} .stx_baseline{color:#ccc;}
+
+.#{$DARK} .stx_mountain_chart {/* Default color for mountain Charts */
+	background-color: rgba(0,156,255,.5);	/* background color for mountain */
+	color: rgba(0,102,255,.01);				/* Optional gradient */
+	border: #009cff;	/* Optional line color */
+	width: 2px;					/* Optional line width */
+}
+
+/* Volume underlay styles */
+.#{$DARK} .stx_volume_underlay_up {
+	color: rgb(140, 193, 118);
+	opacity: .4;
+	border-left-color: rgb(148, 201, 126);
+}
+.#{$DARK} .stx_volume_underlay_down {
+	color: rgb(184, 45, 12);
+	opacity: .4;
+	border-left-color: rgb(242, 103, 70);
+}
+
+/* Volume profile styles */
+.#{$DARK} .stx_volume_profile {
+	color: #b64a96;
+	opacity: .3;
+	border-color: rgb(255, 255, 255);	
+}
+
+.#{$DARK} .stx_projection {color: #FFF;}
+
+.#{$DARK} .stx_histogram{
+	color:#fff;
+	opacity:.3;
+}
+
+.#{$DARK} .stx-btn-panel{
+	background-color: $DARK-main;
+}
+
+.#{$DARK} .stx-ico-handle{
+	background-color: lighten( $DARK-main, 30% );
+}
+
+.#{$DARK} table.stx-current-orders tr.tfc-symbol:hover td:nth-of-type(3),
+.#{$DARK} table.stx-current-position tr.tfc-position:hover td:nth-of-type(1):not(.tfc-not-found),
+.#{$DARK} table.stx-current-position tr.tfc-lots-position.sym:hover td:nth-of-type(1):not(.tfc-not-found) {
+	color: #ffffff;
+	font-weight:bold;
+	background-color:transparent;
+}
+
+.#{$DARK} cq-study-legend[cq-hovershow]:hover > cq-marker-label {
+	color:white;
+}
+.#{$DARK} cq-study-legend[cq-hovershow] {
+  color:#a2a8ad;  
+}
+
+.#{$DARK} cq-study-legend[cq-hovershow] > cq-item{
+  color:#fff;  
+}
+.#{$DARK} cq-study-legend[cq-hovershow] > cq-item:hover > .ciq-edit {
+	background-position: -300px -50px;
+}
+.#{$DARK} cq-study-legend[cq-hovershow] > cq-item:hover > .ciq-icon.ciq-close:after {
+	background-position: -250px -50px;
+}
+
+.#{$DARK} cq-study-legend[cq-hovershow] > cq-item:hover {	
+	background:lighten( $DARK-main, 3% );	
+}

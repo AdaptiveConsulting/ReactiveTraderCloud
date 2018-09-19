@@ -1,0 +1,1926 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>ChartIQ Advanced Charts</title>
+<!-- Use these meta tags to bypass safari touch events on ipad, otherwise scrolling and drawing will not work -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- Sample css file may be customized -->
+<link rel="stylesheet" type="text/css" href="css/stx-standard.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="../css/stx-chart.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/stx-advanced.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/stx-print.css" media="print" />
+<link rel="stylesheet" type="text/css" href="../css/font-awesome.css" />
+</head>
+
+<body>
+<!------------------------------------------ PAGE CONTENTS ------------------------------------------>
+
+<div class="stx-wrapper">
+
+    <!-- Nav -->
+    <div class="stx-nav">
+        <div class="stx-search">
+          <input type="text" id="symbol" name="symbol" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="off" class="stx-input-field">
+        </div>
+        <div id="periodBtn" class="stx-btn stx-menu-btn stxMenu">5 Min<em></em>
+            <ul id="periodicity" class="periodicity menuSelect menuOutline" style="display:none">
+              <li stxToggle="changePeriodicity(1,'day')">1 D</li>
+              <li stxToggle="changePeriodicity(1,'week')">1 W</li>
+              <li stxToggle="changePeriodicity(1,'month')">1 Mo</li>
+              <li class="stx-menu-divider"></li>
+              <li stxToggle="changePeriodicity(1,1)">1 Min</li>
+              <li stxToggle="changePeriodicity(1,5)">5 Min</li>
+              <li stxToggle="changePeriodicity(1,30)">30 Min</li>
+            </ul>
+         </div>
+
+        <div class="stx-toggles">
+        	<div class="stx-btn stx-menu.btn toggle" id="btnToggleStocktwits" style="display:none"></div>
+        	<div class="stx-btn stx-menu.btn toggle" id="btnToggleNews" style="display:none"></div>
+        	<div class="stx-btn stx-menu.btn toggle" id="btnToggleAutochartist" style="display:none"><div></div></div>
+
+        	<div class="stx-btn stx-menu.btn toggle" id="btnTogglePTS" style="display:none"><div></div></div>
+        </div>
+        <!-- These are very basic sample menus. You may replace these with another menuing system. Just follow the same onClick convention
+		or provide proxy functions that call the same code-->
+        
+        <div class="stx-menus">
+        
+
+          <div class="stx-btn stx-menu-btn toggle stx-collapsible" id="menuEvents" onclick="toggleEvents()"><span>Events</span></div>
+          <div class="stx-btn stx-menu-btn stxMenu stx-collapsible" id="menuWrapperCompare"><span>Compare</span><em></em>
+              <div id="menuCompare" class="compare menuSelect menuOutline" style="display:none">
+                <ul>
+                  <li class="stx-menu-content add">
+                    <input type="text" id="compareSymbol" name="compareSymbol" autocapitalize="off" autocorrect="off" spellcheck="off" placeholder="Symbol" class="stx-input-field">
+                    <div class="stx-color" style="background-color: rgb(253, 104, 100);"></div>
+                    <div class="stx-btn" stxToggle="STX.Comparison.addComparison();">Add</div>
+                  </li>
+                  <li class="stx-menu-divider"></li>
+                  <li class="stx-heading">Current Symbols</li>
+                  <li id="compareNone" class="stx-menu-content">None available</li>
+                </ul>
+                <ul id="symComparison" class="injected">
+                  <li class="stx-menu-content symComparisonTemplate" style="display:none"><a class="stxItem"></a>
+                    <div class="stx-btn stx-ico"><span class="stx-ico-close"></span></div>
+                  </li>
+                </ul>
+            </div>
+          </div>
+
+          <div id="menuWrapperChart" class="stx-btn stx-menu-btn stxMenu stx-collapsible"><span>Chart</span><em></em>
+            <ul id="chart-display" class="chart-display menuSelect menuOutline" style="display:none">
+              <li class="stx-heading">Chart Style</li>
+              <li stxToggle="stxx.setChartType('candle')">Candle</li>
+              <li stxToggle="stxx.setChartType('bar')">Bar</li>
+              <li stxToggle="stxx.setChartType('colored_bar')">Colored Bar</li>
+              <li stxToggle="stxx.setChartType('line')">Line</li>
+          	  <li stxToggle="stxx.setChartType('colored_line')">Colored Line</li>
+             <li stxToggle="stxx.setChartType('hollow_candle')">Hollow Candle</li>
+              <li stxToggle="stxx.setChartType('volume_candle')">Volume Candle</li>
+              <li stxToggle="stxx.setChartType('mountain')">Mountain</li>
+              <li stxToggle="stxx.setChartType('colored_mountain')">Colored Mountain</li>
+           	  <li stxToggle="stxx.setChartType('baseline_delta')">Baseline Delta</li>
+           	  <li stxToggle="stxx.setChartType('baseline_delta_mountain')">Baseline Mountain</li>
+           	  <li stxToggle="stxx.setChartType('histogram')">Histogram</li>
+           	  <li stxToggle="stxx.setChartType('wave')">Wave</li>
+           	  <li stxToggle="stxx.setChartType('scatterplot')">Scatterplot</li>
+              <li class="stx-menu-divider"></li>
+              <li class="stx-heading">Chart Type</li>
+              <li class="stx-option" stxToggle="toggleChartType('heikinashi')">Heikin-Ashi<span class="stxHeikinashi stx-checkbox"></span></li>
+              <li class="stx-option" stxToggle="toggleChartType('kagi')">Kagi<span class="stxKagi stx-checkbox"></span></li>
+              <li class="stx-option" stxToggle="toggleChartType('linebreak')">Line Break<span class="stxLinebreak stx-checkbox"></span></li>
+              <li class="stx-option" stxToggle="toggleChartType('pandf')">Point & Figure<span class="stxPandf stx-checkbox"></span></li>
+              <li class="stx-option" stxToggle="toggleChartType('rangebars')">Range Bars<span class="stxRangebars stx-checkbox"></span></li>
+              <li class="stx-option" stxToggle="toggleChartType('renko')">Renko<span class="stxRenko stx-checkbox"></span></li>
+              <li class="stx-menu-divider"></li>
+              <li class="stx-heading">Chart Scale</li>
+              <li class="stx-option" stxToggle="toggleLog()">Log Scale<span class="stxLog stx-checkbox"></span></li>
+              <li class="stx-option" stxToggle="toggleExtHours('pre')">Pre-market<span class="stxExtHours-pre stx-checkbox"></span></li>
+              <li class="stx-option" stxToggle="toggleExtHours('post')">After hours<span class="stxExtHours-post stx-checkbox"></span></li>
+            </ul>
+          </div>
+          <div id="menuWrapperStudies" class="stx-btn stx-menu-btn stxMenu stx-collapsible"><span>Studies</span><em></em>
+            <div id="studies" class="studies menuSelect menuOutline" style="display:none">
+              <input type="text" id="studySearch" autocapitalize="off" autocorrect="off" spellcheck="off" placeholder='Don&apos;t see your study below? Type in your search here.' class="stx-input-field"></input>
+              <div id="studySearchAll" class="stx-btn">Show All</div>
+              <ul class="col">
+                <li stxToggle="studyDialog(this, 'ADX');">ADX/DMS</li>
+				<li stxToggle="studyDialog(this, 'Alligator');">Alligator</li>
+				<li stxToggle="studyDialog(this, 'Awesome');">Awesome Oscillator</li>
+                <li stxToggle="studyDialog(this, 'Bollinger Bands');">Bollinger Bands</li>
+                <li stxToggle="studyDialog(this, 'Boll BW');">Bollinger Bandwidth</li>
+                <li stxToggle="studyDialog(this, 'CCI');">Commodity Channel Index</li>
+         		<li stxToggle="studyDialog(this, 'Darvas');">Darvas Box<span class="stx-edit-study" id="Darvas"></span></li>
+         		<li stxToggle="studyDialog(this, 'Elder Impulse');">Elder Impulse System<span class="stx-edit-study" id="Elder-Impulse"></span></li>
+                <li stxToggle="studyDialog(this, 'Fractal Chaos Bands');">Fractal Chaos Bands</li>
+                <li stxToggle="studyDialog(this, 'Ichimoku Clouds');">Ichimoku Clouds</li>
+				<li stxToggle="studyDialog(this, 'Keltner');">Keltner Channel</li>
+                <li stxToggle="studyDialog(this, 'macd');">MACD</li>
+                <li stxToggle="studyDialog(this, 'Momentum');">Momentum Indicator</li>
+              </ul>
+              <ul class="col">
+                <li stxToggle="studyDialog(this, 'M Flow');">Money Flow Index</li>
+                <li stxToggle="studyDialog(this, 'ma');">Moving Average</li>
+                <li stxToggle="studyDialog(this, 'MA Env');">Moving Average Envelope</li>
+                <li stxToggle="studyDialog(this, 'On Bal Vol');">On Balance Volume</li>
+                <li stxToggle="studyDialog(this, 'PSAR');">Parabolic SAR</li>
+                <li stxToggle="studyDialog(this, 'Pivot Points');">Pivot Points</li>
+                <li stxToggle="studyDialog(this, 'rsi');">RSI</li>
+                <li stxToggle="studyDialog(this, 'stochastics');">Stochastics</li>
+                <li stxToggle="studyDialog(this, 'Stch Mtm');">Stochastic Momentum Index</li>
+				<li stxToggle="studyDialog(this, 'vol profile');">Volume Profile<span class="stx-edit-study" id="vol-profile"></span></li>
+                <li stxToggle="studyDialog(this, 'vol undr');">Volume Underlay<span class="stx-edit-study" id="vol-undr"></span></li>
+                <li stxToggle="studyDialog(this, 'vchart');">Volume</li>
+                <li stxToggle="studyDialog(this, 'Williams %R');">Williams %R</li>
+              </ul>
+             </div>
+          </div>
+          <div id="cogBtn" class="stx-btn stx-menu-btn stxMenu stx-collapsible">&nbsp;<em></em>
+              <ul id="cog" class="cog menuSelect menuOutline" style="display:none">
+               <li class="stx-heading">Timezone</li>
+                <li stxToggle="STX.DialogManager.displayDialog('timezoneDialog');displayCurrentZone();STX.TimeZoneWidget.populateDialog('timezoneDialog', true);">Change Timezone</li>
+                <li class="stx-menu-divider">&nbsp;</li>
+                <li class="stx-heading">Default Themes</li>
+                <li class="stx-menu-content">
+                  <ul class="menuSelect" id="builtInThemeSelector">
+                    <li>White</li>
+                    <li>Black</li>
+                  </ul></li>
+                <li class="stx-menu-content">
+                  <ul class="injected" id="customThemeSelector">
+                    <li class="stx-heading">Custom Themes</li>
+                    <li class="themeSelectorTemplate" style="display:none"><a class="stxItem"></a>
+                      <div class="stx-btn stx-ico"><span class="stx-ico-close stxClose">x</span></div>
+                    </li>
+                  </ul>
+                </li>
+                <li class="stx-menu-content"><div class="stx-btn theme" stxToggle="STX.DialogManager.displayDialog('themeDialog');STX.ThemeManager.populateDialog('themeDialog', stxx);">New Custom Theme</div></li>
+             </ul>
+          </div>
+        </div>
+    </div>
+    <!-- End Nav -->
+    
+    <!-- Toolbar -->
+    <div class="stx-toolbar" id="stx-toolbar">
+        <div class="drawOptions">
+          <div id="UndoBtn" class="drawBtn stx-btn" onClick="stxx.undoLast()" style="display:none">Undo</div>
+          <div class="drawBtn stx-btn stx-menu-btn stxMenu"> <span id="toolSelection">Select Tool</span> <em></em>
+            <div id="toolbarDraw" class="draw menuSelect menuOutline" style="display:none">
+              <ul class="col">
+	              <li stxtoggle="STX.DrawingToolbar.setDrawingType('',this);STX.DrawingToolbar.setCrosshairs(false, this)">None</li>
+	              <li stxtoggle="STX.DrawingToolbar.setDrawingType('',this);STX.DrawingToolbar.setCrosshairs(true, this)">Crosshairs</li>
+              	  <li class="stx-menu-divider"></li>
+	              <li stxtoggle="setDrawingType('segment',this);">Segment</li>
+	              <li stxtoggle="setDrawingType('continuous',this);">Continuous</li>
+	              <li stxtoggle="setDrawingType('ray',this);">Ray</li>
+	              <li stxtoggle="setDrawingType('line', this);">Line</li>
+	              <li stxtoggle="setDrawingType('horizontal',this);">Horizontal</li>
+	              <li stxtoggle="setDrawingType('vertical',this);">Vertical</li>
+                  <li class="stx-menu-divider"></li>
+	              <li stxtoggle="setDrawingType('rectangle',this);">Rectangle</li>
+	              <li stxtoggle="setDrawingType('ellipse',this);">Ellipse</li>
+	              <li stxtoggle="setDrawingType('shape',this,'arrow');">Shape</li>
+              </ul>
+              <ul class="col">
+	              <li stxtoggle="stxx.clearDrawings()">Clear Drawings</li>
+	              <li>&nbsp;</li>
+                  <li class="stx-menu-divider"></li>
+	              <li stxtoggle="setDrawingType('measure',this);">Measure</li>
+	              <li stxtoggle="setDrawingType('channel',this);">Channel</li>
+	              <li stxtoggle="setDrawingType('freeform',this);">Doodle</li>
+	              <li stxtoggle="setDrawingType('fibonacci',this,'retracement');">Fibonacci</li>
+	              <li stxtoggle="setDrawingType('gartley',this);">Gartley</li>
+	              <li stxtoggle="setDrawingType('pitchfork',this);">Pitchfork</li>
+                  <li class="stx-menu-divider"></li>
+	              <li stxtoggle="setDrawingType('annotation',this);">Annotation</li>
+	              <li stxtoggle="setDrawingType('callout',this);">Callout</li>
+	              <li>&nbsp;</li>
+              </ul>
+            </div>
+          </div>
+          <div class="stx-drawing">
+            <div class="stx-draw-settings stxToolbarStylePicker" style="display:none">
+              <div class="stx-btn stx-menu-btn stxMenu" style="display:none;"> <span id="styleSelection">Arrow</span><em></em>
+                 <ul class="stx-drawing-style-menu shape-style-list menuSelect menuOutline" style="display:none;">
+                 	<li stxToggle="setDrawingStyle(this,'arrow')">Arrow</li>
+                 	<li stxToggle="setDrawingStyle(this,'check')">Check</li>
+                 	<li stxToggle="setDrawingStyle(this,'xcross','Cross')">Cross</li>
+                 	<li stxToggle="setDrawingStyle(this,'focusarrow','Focus Arrow')">Focus Arrow</li>
+                 	<li stxToggle="setDrawingStyle(this,'heart')">Heart</li>
+                 	<li stxToggle="setDrawingStyle(this,'star')">Star</li>
+                 </ul>
+              </div>
+              <div class="stx-btn stx-menu-btn stxMenu" style="display:none;"> <span id="styleSelection">Retracement</span><em></em>
+                 <ul class="stx-drawing-style-menu fibonacci-style-list menuSelect menuOutline" style="display:none;">
+                 	<li stxToggle="setDrawingStyle(this,'retracement')">Retracement</li>
+                 	<li stxToggle="setDrawingStyle(this,'fibarc','Arc')">Arc</li>
+                 	<li stxToggle="setDrawingStyle(this,'fibfan','Fan')">Fan</li>
+                 	<li stxToggle="setDrawingStyle(this,'fibtimezone','Time Zone')">Time Zone</li>
+                 </ul>
+              </div>
+            </div>
+            <div class="stx-draw-settings stxToolbarFill" style="display:none">
+              <div class="stx-heading"><span>Fill</span>:</div>
+              <div class="stx-color stxFillColorPicker" style="background-color: #7DA6F5;"><span></span></div>
+            </div>
+            <div class="stx-draw-settings stxToolbarLine" style="display:none">
+              <div class="stx-heading"><span>Line</span>:</div>
+              <div class="stx-color stxLineColorPicker" style="background-color: transparent;"><span></span></div>
+              <div class="stx-line-style stx-btn stx-menu-btn stxMenu stxToolbarLinePicker"> <span class="stx-line style1 weight1 stxLineDisplay"></span><em></em>
+                  <ul id="stx-line-style-menu" class="stx-line-style-menu menuSelect menuOutline" style="display:none;">
+                      <li stxToggle="STX.DrawingToolbar.setLine(1,'solid', this)"><span class="stx-line style1 weight1"></span></li>
+                      <li stxToggle="STX.DrawingToolbar.setLine(3,'solid', this)"><span class="stx-line style1 weight3"></span></li>
+                      <li stxToggle="STX.DrawingToolbar.setLine(5,'solid', this)"><span class="stx-line style1 weight5"></span></li>
+                      <li class="stxToolbarDotted stx-menu-divider"></li>
+                      <li class="stxToolbarDotted" stxToggle="STX.DrawingToolbar.setLine(1,'dotted', this)"><span class="stx-line style2 weight1"></span></li>
+                      <li class="stxToolbarDotted" stxToggle="STX.DrawingToolbar.setLine(3,'dotted', this)"><span class="stx-line style2 weight3"></span></li>
+                      <li class="stxToolbarDotted" stxToggle="STX.DrawingToolbar.setLine(5,'dotted', this)"><span class="stx-line style2 weight5"></span></li>
+                      <li class="stxToolbarDashed stx-menu-divider"></li>
+                      <li class="stxToolbarDashed" stxToggle="STX.DrawingToolbar.setLine(1,'dashed', this)"><span class="stx-line style3 weight1"></span></li>
+                      <li class="stxToolbarDashed" stxToggle="STX.DrawingToolbar.setLine(3,'dashed', this)"><span class="stx-line style3 weight3"></span></li>
+                      <li class="stxToolbarDashed" stxToggle="STX.DrawingToolbar.setLine(5,'dashed', this)"><span class="stx-line style3 weight5"></span></li>
+                      <li class="stxToolbarNone stx-menu-divider"></li>
+                      <li class="stxToolbarNone" stxToggle="STX.DrawingToolbar.setLine(0,'none', this)">None</li>
+                  </ul>
+              </div>
+            </div>
+            <div class="stx-draw-settings stxToolbarAxisLabel" style="display:none">
+              <div class="stx-heading">Axis Label:</div>
+              <span class="stx-checkbox stxAxisLabel" onclick="STX.DrawingToolbar.toggleAxisLabel(this);"></span>
+            </div>
+            <div class="stx-draw-settings stxToolbarAnnotation" style="display:none">
+              <div class="stx-btn stx-annotation-italic" onclick="STX.DrawingToolbar.setFont(this, 'italic');">I</div>
+              <div class="stx-btn stx-annotation-bold" onclick="STX.DrawingToolbar.setFont(this, 'bold');">B</div>
+              <div class="stx-btn stx-menu-btn stxMenu stx-annotation-size"> <span>12px</span><em></em>
+                  <ul class="stx-annotation-size-menu menuSelect menuOutline" style="display:none;">
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'8px')">8</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'10px')">10</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'12px')">12</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'14px')">14</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'16px')">16</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'20px')">20</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'28px')">28</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'36px')">36</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'48px')">48</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'64px')">64</li>
+                  </ul>
+              </div>
+              <div class="stx-btn stx-menu-btn stxMenu stx-annotation-family"> <span>Default</span><em></em>
+                  <ul class="stx-annotation-family-menu menuSelect menuOutline" style="display:none;">
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'Default')">Default</li>
+                      <li class="stx-menu-divider"></li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'Arial,Helvetica')">Arial/Helvetica</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'Courier')">Courier</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'Garamond')">Garamond</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'Palatino')">Palatino</li>
+                      <li stxToggle="STX.DrawingToolbar.setFont(this,'Times New Roman')">Times New Roman</li>
+                  </ul>
+              </div>
+            </div>
+          </div>
+          <div class="stx-draw-settings">
+			<div id="stx-toolbar-settings" style="display:none"><span class="stx-btn" onClick="STX.DrawingToolbar.settingsDialog(this)">Settings</span></div>
+          </div>
+          <div class="currentMeasure"><span id="mMeasure" class="measureUnlit"></span></div>
+        </div>
+        <ul class="hu">
+        	<li><span class="huLabel">O: </span><span id="huOpen" class="huField"></span></li>
+        	<li><span class="huLabel">H: </span><span id="huHigh" class="huField"></span></li>
+        	<li><span class="huLabel">V: </span><span id="huVolume" class="huField"></span></li>
+        	<li><span class="huLabel">C: </span><span id="huClose" class="huField"></span></li>
+        	<li><span class="huLabel">L: </span><span id="huLow" class="huField"></span></li>
+        	<li><span class="huLabel">D: </span><span id="huDate" class="huField"></span></li>
+        </ul>
+        <div id="shareBtn" class="stx-btn share" style="display:none;"><span class="stx-ico"></span>Share</div>
+    </div>
+    <!-- End Toolbar -->
+    
+    <!-- Chart -->
+    <div class="chartContainer">
+        <!--[if IE 8]><canvas id="ie8canvas" width="0" height="0" style="display:none"></canvas><![endif]--> 
+        <!--[if IE 8]><canvas id="ie8canvasTemp" width="0" height="0" style="display:none"></canvas><![endif]--> 
+        <!--[if IE 8]><canvas id="ie8canvasFloat" width="0" height="0" style="display:none"></canvas><![endif]--> 
+      <img class="stx-loader" src="img/stx-loading.gif" style="display:none; z-index:100">
+    </div>
+    <!-- End Chart -->
+    
+    <!-- Side Panels -->
+    <div class="stx-panel-selector closed">
+      <div id="btnToggleWatch" class="stx-panel-toggle false"></div>
+      <div id="btnToggleTrade" class="stx-panel-toggle false" style="display:none;"></div>
+    </div>
+	<div class="stx-panel-watch stx-panel-side closed">
+      <div id="stxWatch">
+          <h4>My Lists</h4>
+          <a id="stxNewWatchList" class="stx-btn" onClick="switchToNewList()">+</a>
+
+          <div class="watchListScroller">
+            <div id="stxWatchLists">
+              <ul id="stxWLWrapper">
+                <li></li>
+              </ul>
+              </div>
+          </div>
+  
+          <div id="action">
+            <div class="active-list">
+              <div id="controls"> 
+                <a id="stxWatchPrev" class="stx-btn"><i class="arrow"></i></a>
+                <h6 id="stxWatchSymbol">&nbsp;</h6>
+                <a id="stxWatchNext" class="stx-btn"><i class="arrow"></i></a> 
+              </div>
+            </div>
+          </div>
+          
+          <a id="stxWatchUp"><i class="arrow"></i></a>
+          <div id="symbolScroller">
+            <div id="stxWatch-symbols">
+              <ul id="stxWatch-inner">
+                <li></li>
+              </ul>
+            </div>
+          </div>
+          <a id="stxWatchDown"><i class="arrow"></i></a>
+
+      </div>
+    </div>
+    <!-- End Side Panels -->
+    
+    <!-- Dialog Container -->
+    <div class="stx-dialog-container"> 
+    
+	<!-- Watchlist Dialogs -->
+      <div id="stxWatchEditDialog" style="display:none" class="stx-dialog">
+    	<h4>Watch List Name:</h4>
+    	<input id="stxWatchEditName" class="stx-input-field" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" maxlength="40" placeholder="Enter Watch Name" type="text"> 
+    	<div class="textarea">
+    	  <textarea id="stxWatchEditTA" class="stx-textarea" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" placeholder="Enter symbols separated by spaces"></textarea>
+    	</div>
+    	<span id="stxWatchCancelEdit" class="stx-btn">Cancel</span> <span id="stxWatchSaveEdit" class="stx-btn">Save</span>
+	  </div>
+    
+      <div id="stxViewSaveDialog" style="display:none" class="stx-dialog">
+    	<h4>View Name:</h4>
+    	<input id="stxViewEditName" class="stx-input-field" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" maxlength="40" placeholder="Enter View Name" type="text"> 
+    	<span id="stxViewCancelEdit" class="stx-btn">Cancel</span> <span id="stxViewSaveEdit" class="stx-btn">Save</span>
+	  </div>
+    
+    <div id="contextMenu" style="display:none" class="stx-dialog">
+        <div onClick="STX.DialogManager.dismissDialog()" class="stx-btn stx-ico"><span class="stx-ico-close"></span></div>
+        <div style="text-align:center;margin: 0px auto;">
+        <h4 class="title" style="margin: 0px auto;"></h4><p>
+	        <div class="stx-btn stx-edit" style="width:100px;">Edit</div><p>
+	        <div class="stx-btn stx-delete" style="width:100px;">Delete</div>
+	    </div>
+    </div>
+    <!-- The studyDialog is a general purpose dialog for entering the parameters for studies. It may be customized so long
+    as the id an class names remain the same. Note that it contains templates which are replicated dynamically -->
+      <div id="studyDialog" style="display:none;" class="stx-dialog">
+        <h4 class="title"></h4>
+        <div onClick="STX.DialogManager.dismissDialog()" class="stx-btn stx-ico"><span class="stx-ico-close"></span></div>
+        <div id="inputs">
+          <div class="inputTemplate" style="display:none">
+            <div class="stx-heading"></div>
+            <div class="stx-data"></div>
+          </div>
+        </div>
+        <div id="outputs">
+          <hr/>
+          <div class="outputTemplate" style="display:none">
+            <div class="stx-heading"></div>
+            <div class="stx-color"><span></span></div>
+          </div>
+        </div>
+        <div id="parameters"></div>
+        <div onClick="createStudy();STX.DialogManager.dismissDialog()" class="stx-btn">Create</div>
+      </div>
+    
+      <div id="studyOverZones" style="display:none">Show Zones<input id="studyOverZonesEnabled" type="checkbox">
+	    <div class="outputTemplate">
+	      <div class="stx-heading">OverBought</div>
+	      <div class="stx-data">
+	        <input id="studyOverBoughtValue" type="text" style="width:20px;" class="stx-input-field">
+	        <div class="stx-color" id="studyOverBoughtColor"><span></span></div>
+          </div>
+	    </div>
+	    <div class="outputTemplate">
+	      <div class="stx-heading">OverSold</div>
+          <div class="stx-data">
+	        <input id="studyOverSoldValue" type="text" style="width:20px;" class="stx-input-field">
+	        <div class="stx-color" id="studyOverSoldColor"><span></span></div>
+          </div>
+	    </div>
+      </div>
+
+    <!-- Drawing Dialog -->
+	<div id="drawDialogContainer">
+	  <div id="fibDialog" class="stx-dialog" style="display:none">
+	    <h4 class="title">Fib Settings</h4>
+	    <div onClick="STX.DialogManager.dismissDialog()" class="stx-btn stx-ico stx-ico-close"><span class="stx-ico-close"></span></div>
+	    <div id="drawParams">
+	      <ul>
+	        <!--<li>
+	          <div class="check" style="visibility:hidden"><input type="checkbox"></div>
+	          <div class="stx-fib-level">Trend</div>
+	          <div class="stx-color"></div>
+	          <div class="click select-UI stx-dropdown">
+	            <span class="stx-line style1 weight1 stxLineDisplay" style="z-index: 1"></span><em></em>
+	            <ul id="stx-line-style-menu" class="stx-line-style-menu menu menuSelect menuOutline" style="display:none;">
+	              <li onClick="STX.FibDialog.setLine(1,'solid', this)"><span class="stx-line style1 weight1"></span></li>
+	              <li onClick="STX.FibDialog.setLine(3,'solid', this)"><span class="stx-line style1 weight3"></span></li>
+	              <li onClick="STX.FibDialog.setLine(5,'solid', this)"><span class="stx-line style1 weight5"></span></li>
+	              <li class="stxToolbarDotted divider"></li>
+	              <li class="stxToolbarDotted" onClick="STX.FibDialog.setLine(1,'dotted', this)"><span class="stx-line style2 weight1"></span></li>
+	              <li class="stxToolbarDotted" onClick="STX.FibDialog.setLine(3,'dotted', this)"><span class="stx-line style2 weight3"></span></li>
+	              <li class="stxToolbarDotted" onClick="STX.FibDialog.setLine(5,'dotted', this)"><span class="stx-line style2 weight5"></span></li>
+	              <li class="stxToolbarDashed divider"></li>
+	              <li class="stxToolbarDashed" onClick="STX.FibDialog.setLine(1,'dashed', this)"><span class="stx-line style3 weight1"></span></li>
+	              <li class="stxToolbarDashed" onClick="STX.FibDialog.setLine(3,'dashed', this)"><span class="stx-line style3 weight3"></span></li>
+	              <li class="stxToolbarDashed" onClick="STX.FibDialog.setLine(5,'dashed', this)"><span class="stx-line style3 weight5"></span></li>
+	            </ul>
+	          </div>
+	        </li>-->
+	        <li class="fib-template" style="display:none">
+	          <div class="check"><input type="checkbox"></div>
+	          <div class="stx-fib-level">-.618</div>
+	          <!--<div class="stx-color"></div>
+	          <div class="click select-UI stx-dropdown">
+	            <span class="stx-line style1 weight1 stxLineDisplay" style="z-index: 1"></span><em></em>
+	            <ul id="stx-line-style-menu" class="stx-line-style-menu menu menuSelect menuOutline" style="display:none;">
+	              <li onClick="STX.FibDialog.setLine(1,'solid', this)"><span class="stx-line style1 weight1"></span></li>
+	              <li onClick="STX.FibDialog.setLine(3,'solid', this)"><span class="stx-line style1 weight3"></span></li>
+	              <li onClick="STX.FibDialog.setLine(5,'solid', this)"><span class="stx-line style1 weight5"></span></li>
+	              <li class="stxToolbarDotted divider"></li>
+	              <li class="stxToolbarDotted" onClick="STX.FibDialog.setLine(1,'dotted', this)"><span class="stx-line style2 weight1"></span></li>
+	              <li class="stxToolbarDotted" onClick="STX.FibDialog.setLine(3,'dotted', this)"><span class="stx-line style2 weight3"></span></li>
+	              <li class="stxToolbarDotted" onClick="STX.FibDialog.setLine(5,'dotted', this)"><span class="stx-line style2 weight5"></span></li>
+	              <li class="stxToolbarDashed divider"></li>
+	              <li class="stxToolbarDashed" onClick="STX.FibDialog.setLine(1,'dashed', this)"><span class="stx-line style3 weight1"></span></li>
+	              <li class="stxToolbarDashed" onClick="STX.FibDialog.setLine(3,'dashed', this)"><span class="stx-line style3 weight3"></span></li>
+	              <li class="stxToolbarDashed" onClick="STX.FibDialog.setLine(5,'dashed', this)"><span class="stx-line style3 weight5"></span></li>
+	            </ul>
+	          </div>-->
+	        </li>
+	      </ul>
+	      <!--<hr/>
+	      <ul>
+	        <li>
+	          <div class="check">
+	            <input id="extendFibLines" type="checkbox">
+	          </div>
+	          <div>Extend lines to left of chart</div>
+	        </li>
+	        <li>
+	          <div class="check">
+	            <input id="fibBackground" type="checkbox">
+	          </div>
+	          <div>Fill background between levels</div>
+	        </li>
+	        <li>
+	          <div class="check">
+	            <input id="fibLevels" type="checkbox">
+	          </div>
+	          <div>Print level labels</div>
+	        </li>
+	        <li>
+	          <div class="check">
+	            <input id="fibValues" type="checkbox">
+	          </div>
+	          <div>Print level values</div>
+	        </li>
+	      </ul>-->
+	    </div>
+	    <div onClick="STX.FibDialog.save();STX.DialogManager.dismissDialog()" class="stx-btn">Save Settings</div>
+	  </div>
+	</div>
+
+    <!-- Timezone Dialogs -->
+      <div id="timezoneDialog" style="display:none;" class="stx-dialog">
+        <h4 class="title">Choose Timezone</h4>
+        <div onClick="STX.DialogManager.dismissDialog()" class="stx-btn stx-ico"><span class="stx-ico-close">Close</span></div>
+        <p>To set your timezone use the location button below or scroll through the following list</p>
+        <p id="currentUserTimeZone"></p>
+        <div class="detect">
+    		<div id="currentLocationButton" class="stx-btn" onClick="STX.TimeZoneWidget.removeTimeZone();STX.DialogManager.dismissDialog();">Use My Current Location</div>
+    	</div>
+        <div id="timezoneDialogWrapper" style="max-height:360px;">
+	        <ul>
+	          <li id="timezoneTemplate" style="display:none;cursor:pointer;"></li>
+	        </ul>
+        </div>
+        <div class="instruct">(Scroll for more options)</div>
+      </div>
+
+    <!-- Sharing Dialogs -->
+      <div id="sharedLinkDialog" style="display:none;" class="stx-dialog">
+        <h4 class="title">Chart Shared Successfully!</h4>
+        <div onClick="STX.DialogManager.dismissDialog()" class="stx-btn stx-ico"><span class="stx-ico-close">Close</span></div>
+        <p>Use the following link to share your chart:</p>
+        <div id="shareCopyPaste"></div>
+        <p class="or">or...</p>
+        <p><a id="shareLink" target="_blank" href="">Open shared chart in new window</a></p>
+      </div>
+    
+    <!-- Theme Dialog -->
+      <div id="themeDialog" style="display:none" class="stx-dialog">
+        <h4>Create a New Custom Theme</h4>
+        <div onClick="STX.DialogManager.dismissDialog()" class="stx-btn stx-ico"><span class="stx-ico-close"></span></div>
+        
+        <div class="settings">
+          <ul>
+            <li class="stx-heading">Chart Style</li>
+            <li>
+              <div class="stx-heading"><span>Candle</span>/<span>Bar</span>/<span>Line</span></div>
+              <div class="stx-data">
+                <div class="stx-color stx_candle_up"><span></span></div>
+                <div class="stx-color stx_candle_down"><span></span></div>
+              </div>
+              <div class="stx-heading"><span>Wick</span></div>
+              <div class="stx-data">
+                <div class="stx-color stx_candle_shadow_up"><span></span></div>
+                <div class="stx-color stx_candle_shadow_down"><span></span></div>
+              </div>
+              <div class="stx-heading"><input id="candleBordersOn" type="checkbox" class="stx-input-check" checked> <span>Candle Borders</span></div>
+              <div class="stx-data">
+              	<div class="stx-border-color stx_candle_up"><span></span></div>
+              	<div class="stx-border-color stx_candle_down"><span></span></div>
+              </div>
+            </li>
+            <li>
+              <div class="stx-heading"><span>Monotone</span> <span>Bar</span>/<span>Line</span></div>
+              <div class="stx-data">
+                <div class="stx-color stx_candle_shadow"><span></span></div>
+              </div>
+            </li>
+            <li>
+              <div class="stx-heading"><div><span>Mountain Charts</span></div>
+              <input id="mountainGradientOn" type="checkbox" class="stx-input-check" style="margin-left:5px" checked> <span>Gradient</span></div>
+              <div class="stx-data">
+                <div class="stx-border-color stx_mountain"><span></span></div>
+              </div>
+            </li>
+          </ul>
+          <ul>
+            <li class="stx-heading">Background</li>
+            <li>
+              <div class="stx-heading">Background</div>
+              <div class="stx-data">
+                <div class="stx-color backgroundColor"><span></span></div>
+              </div>
+            </li>
+            <li>
+              <div class="stx-heading">Grid Lines</div>
+              <div class="stx-data">
+                <div class="stx-color stx_grid"><span></span></div>
+              </div>
+            </li>
+            <li>
+              <div class="stx-heading">Date Dividers</div>
+              <div class="stx-data">
+                <div class="stx-color stx_grid_dark"><span></span></div>
+              </div>
+            </li>
+            <li>
+              <div class="stx-heading">Axis Text</div>
+              <div class="stx-data">
+                <div class="stx-color stx_xaxis_dark"><span></span></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <label class="themeName" for="themeName">New Theme Name:</label>
+        <input type="text" id="themeName" name="themeName" autocapitalize="off" autocorrect="off" spellcheck="off" value="My Theme" class="stx-input-field">
+        <div onClick="STX.ThemeManager.saveTheme($$('themeName').value, stxx);STX.DialogManager.dismissDialog()" class="stx-btn">Save Theme</div>
+      </div>
+      
+    </div>
+	<!-- End Dialog Container -->
+
+	<!-- Attribution -->
+    <p class="attribution">
+      <span class="xignite"><a target="_blank" href="http://www.xignite.com">Market Data</a> by Xignite.</span>
+      <span class="real-time">Quote is real-time.</span>
+      <span class="delayed">Data delayed 15 min.</span>
+      <span class="bats">BATS BZX real-time.</span>
+      <span class="eod">End of day quote.</span>
+      <span class="random">This is not real data. Quotes are randomized.</span>
+    </p>
+ 
+</div>
+<!-- End stx-wrapper -->
+ 
+<div class="stx-footer">
+  <div id="stxViews">
+  	<h4>Views</h4>
+	<div id="stxNewView">
+    	<a id="stxNewViewBtn" class="stx-btn">+</a>
+    </div>
+    <div class="viewsScroller">
+      <div id="stxSavedViews">
+      	<ul id="stxViewWrapper">
+        	<li></li>
+     	</ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="stxEventPrototype" class="myEvents">
+</div>
+
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
+
+<script src="../js/chartiq.js"></script>
+<script src="../js/quoteFeedSamples.js"></script>
+<script src="../js/thirdparty/iscroll.js"></script>
+<script src="../js/plugin.js"></script>
+<script src="../js/translations.js"></script>
+<script src="../js/addOns.js"></script>
+<script src="../js/legacy/comparison.js"></script>
+<script src="../js/legacy/quotes.js"></script>
+<script src="../js/legacy/ui.js"></script>
+<script src="../js/legacy/lookupXignite.js"></script>
+<script src="../js/plugin.js"></script>
+
+<script>
+
+var qsParm=STX.qs();	// Query string parameters
+// Declare a STXChart object. This is the main object for drawing charts
+var stxx=new STXChart({container:$$$(".chartContainer"), layout:{"candleWidth": 16, "crosshair":true}});
+stxx.chart.xAxis.axisType="ntb";				// set the x axis to be non-time based ( usually a more desirable look ) 
+stxx.chart.yAxis.goldenRatioYAxis=true;
+stxx.chart.yAxis.position="right";
+//stxx.chart.yAxis.justifyRight=true;			// Optionally further format the y axis 
+//stxx.chart.yAxis.displayBorder=false;			// Optionally further format the y axis 
+//stxx.yaxisLabelStyle="rect"					// Optionally define a different y axis pointer style
+stxx.preferences.whitespace=0;
+//stxx.setTimeZone("Etc/Greenwich");			// Optionally set the timezone for your data feed.
+//STX.I18N.setLocale(stxx, "zh");              	// Optionally set locale in order to localize dates, numbers and months.
+//STX.I18N.setLanguage(stxx, "zh");				// Optionally set translation services
+if ( STX.I18N.language!="en" ) { console.log("Missing " + STX.I18N.language + " words: \n" + STX.I18N.printableMissingWordList()); } // list missing translations
+
+// IE8 doesn't support svg as background image. This will cause a png to be used instead.
+if(!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1"))
+  STX.appendClassName($$$("body"), "no-svg");
+
+function STXLoader(show){
+  var loader=$$$(".stx-loader");
+  if(show){
+    if(stxx.chart.panel && stxx.chart.panel.height>0){
+	  loader.style.top=(stxx.chart.panel.top+(stxx.chart.panel.height/2)-(loader.clientHeight/2))+"px";
+    }else if(stxx.container.style.height){
+	  loader.style.top=((parseInt(stxx.container.style.height,10)/2)-(loader.height/2)-$$$(".stx-footer").clientHeight)+"px";
+    }else{ //ie8
+  	  loader.style.top=screen.height/2+"px";
+    }
+    loader.style.display="block";
+  }else{
+    loader.style.display="none";
+  }
+}
+
+function loadPTS(){
+	STX.loadWidget("../plugins/pts/stx-pts", function(err){
+		if(err) return;
+		PTS.config={
+			stx: stxx,
+			symbolEntry: $$$(".stx-search"),
+			quotefeedBase: "Xignite",
+			hiddenElements: [$$("symbol").parentNode, $$("menuWrapperCompare"), $$("menuEvents"), $$("btnToggleStocktwits"), $$("btnToggleNews"), $$("btnToggleAutochartist"), $$("shareBtn")],
+			beginHook: function(){if(eventsAreDisplayed) toggleEvents();},
+			endHook: function(){displayChart();},
+			startLoad: function(){STXLoader(true);},
+			endLoad: function(){STXLoader(false);showAttribution(stxx);},
+			resizer: function(){resizeScreen();},
+			periodicityChanger: "changePeriodicity",
+			clearAttribution: function(){stxx.chart.attribution=null;showAttribution(stxx);}
+		};
+		var pts=$$$("#btnTogglePTS");
+		pts.style.display="";
+		STX.safeClickTouch(pts, function(){
+			PTS.doit('toggle');
+		});	
+	});
+}
+
+if(!window.isIE8) STX.loadWidget("../plugins/tfc/stx-tfc", function(err){
+	if(err){
+		if(document.location.href.indexOf("file://")!=-1){
+			alert("Some features such as Trade From Chart or Markers will not work when running from the filesystem on Chrome, IE or Safari. Please either install files on a webserver or use Firefox for evaluation purposes.");
+		}
+		return;
+	}
+
+	stxx.account=new STX.Account.Demo();
+	var tfcConfig={
+		stx: stxx,
+ 		account: stxx.account
+	};
+	stxx.tfc=new STX.TFC(tfcConfig);
+	// collapse/expand toggle button
+	stxx.tfc.setResizeCallback(resizeScreen);
+	stxx.tfc.selectSymbol=function(symbol){
+  		var usymbol=symbol.toUpperCase();
+  		STXLoader(true);
+  		stxx.newChart(usymbol, null, null, finishedLoadingNewChart(stxx.chart.symbol, usymbol));
+	};
+	$$$("#btnToggleTrade").style.display="";
+	attachSidePanelEvent($$$("#btnToggleTrade"), $$$(".stx-trade-panel"), function(opening){
+	    if(opening){
+	      stxx.tfc.openTFC();
+	    }else{
+	      stxx.tfc.closeTFC();
+	    }
+	});
+	loadPTS();
+});
+
+STX.loadWidget("../plugins/stocktwits/stx-stocktwits", function(err){
+  if(err){
+    if(document.location.href.indexOf("file://")!=-1){
+      alert("Some features such as Stocktwits or Markers will not work when running from the filesystem on Chrome, IE or Safari. Please either install files on a webserver or use Firefox for evaluation purposes.");
+    }
+    return;
+  }
+	stockTwitsURL="https://app.chartiq.com/stocktwits";
+  initializeSTDialogs();
+  stxx.stocktwits={
+    stx: stxx,
+    changeSymbol:function(){
+      if(currentSTStream.type=="symbol" && !STX.hasClassName($$$(".stx-stocktwits-panel"),"closed")){
+        stStream("symbol", symbologyST(stxx.chart.symbol));
+      }
+    }
+  };
+  $$$("#btnToggleStocktwits").style.display="";
+  attachSidePanelEvent($$$("#btnToggleStocktwits"), $$$(".stx-stocktwits-panel"), function(opening){
+    slideSTStream(!opening);
+  });
+});
+
+STX.loadWidget("../plugins/news/stx-news", function(err){
+  if(err){
+    if(document.location.href.indexOf("file://")!=-1){
+      alert("Some features such as Sidebar News or Markers will not work when running from the filesystem on Chrome, IE or Safari. Please either install files on a webserver or use Firefox for evaluation purposes.");
+    }
+    return;
+  }
+  stxx.news=new STX.News($$$(".stx-news-panel"));
+  stxx.news.addRSSFeed(new STX.News.YahooRSSProcessor());
+
+  $$$("#btnToggleNews").style.display="";
+  attachSidePanelEvent($$$("#btnToggleNews"), $$$(".stx-news-panel"), function(opening){
+    stxx.news.toggle(opening, stxx.chart.symbol);
+  });
+});
+
+
+STX.loadWidget("../plugins/autochartist/stx-autochartist", function(err){
+    if(err){
+      if(document.location.href.indexOf("file://")!=-1){
+        alert("Some features will not work when running from the filesystem on Chrome, IE or Safari. Please either install files on a webserver or use Firefox for evaluation purposes.");
+      }
+      return;
+    }
+    $$$("#btnToggleAutochartist").style.display="";
+    attachSidePanelEvent($$$("#btnToggleAutochartist"), $$$(".stx-autochartist-panel"), function(opening){
+    });
+});
+
+
+function attachSidePanelEvent(button, panel, cb){
+  responsiveMenus(); // in case the panel added a button that pushed over the menu. 
+  if(!STX.sidePanelButtons) STX.sidePanelButtons=[];
+  STX.sidePanelButtons.push(button);
+  STX.unappendClassName(button,"false");
+  function closure(panel, button){
+    return function(){
+      var openMe=false;
+      stxx.preAdjustScroll();
+      var sidePanels=document.querySelectorAll(".stx-panel-side");
+      if(STX.hasClassName(panel, "closed"))
+        openMe=true;
+      for(var i=0;i<sidePanels.length;i++){
+        var sidePanel=sidePanels[i];
+        STX.appendClassName(sidePanel, "closed");
+      }
+      for(i=0;i<STX.sidePanelButtons.length;i++){
+        STX.unappendClassName(STX.sidePanelButtons[i], "active");
+      }
+      if(openMe){
+        STX.unappendClassName(panel, "closed");
+        STX.appendClassName(button, "active");
+      }else{
+		// remove auto chartist injection if it exists
+		if(button.id === 'btnToggleAutochartist' && typeof(injectId) != "undefined"){
+	    	stxx.removeInjection(injectId);
+		}
+	  }
+      resizeScreen();
+      stxx.postAdjustScroll();
+      STX.Watch.refreshDisplay();
+      if(cb) cb(openMe);
+    };
+  }
+  STX.safeClickTouch(button, closure(panel, button));
+  //stxx.home();
+  if(STX.hasClassName(panel, qsParm.side_panel)){ // Open a panel with querystring
+  	setTimeout(function(){ // use a timeout to ensure that page is initialized
+	  	closure(panel, button)();
+	},0);
+  }
+}
+
+var intervalDisplayMap={
+    "day":"1 D",
+    "week":"1 W",
+    "month":"1 Mo",
+    "1":"1 Min",
+    "5":"5 Min",
+    "30":"30 Min"
+};
+
+// There is a distinction between end of day intervals (day, week, month) and intraday intervals.
+// Your periodicity function may be more complex and should load the appropriate time series data
+// based on the user's selection. Note that weekly and monthly data are calculated automatically from daily
+// data by default. If your server already returns weekly and monthly data, set the stxx.dontRoll flag to ture. 
+// Add any additional intervals that you support to the displayMap. 
+// The candle size and number of ticks on the chart will remain constant as periodicity is changed. 
+// As such the time span will change unless you preset the number of ticks to preserve the rendered span. 
+// See http://documentation.chartiq.com/tutorial-Managing%20Chart%20Zoom%20and%20Range.html
+// and http://chartiq.com/licensing/documentation/tutorial-Data%20Loading.html for complete details
+function changePeriodicity(newPeriod, newInterval){
+	STXLoader(true);
+	stxx.setPeriodicityV2(newPeriod, newInterval, function(err){
+    STXLoader(false);
+    if(!err){
+        $$$("#periodBtn").replaceChild(STX.translatableTextNode(stxx,intervalDisplayMap[newInterval]),$$$("#periodBtn").childNodes[0]);
+    }
+  });
+}
+
+// Callback closure for when loading a new chart. This takes care of things that should be done after
+// the chart is loaded, such as restoring previous drawings or resetting comparisons
+function finishedLoadingNewChart(currentSymbol, newSymbol){
+  $$("symbol").value=newSymbol;            // update the value of the symbol input
+  return function(err){
+    STXLoader(false);
+    if(!err){
+
+      resizeScreen();                       // reset position of chart controls
+      restore();                            // restore previous drawings
+      resetUndoBtn();
+      if(currentSymbol!=newSymbol){            // reset the comparison chart, remove to keep comparisons alive
+        STX.Comparison.reset(stxx);
+        stxx.draw();
+        showAttribution(stxx);
+      }       
+      if(stxx.tfc) stxx.tfc.changeSymbol();   // Update trade from chart for new symbol (if available)
+      if(stxx.stocktwits && currentSymbol!=newSymbol) stxx.stocktwits.changeSymbol();
+      if(stxx.news && currentSymbol!=newSymbol) stxx.news.changeSymbol(newSymbol);
+      if( stxx.layout.events && !eventsAreDisplayed ) toggleEvents();	// display events if not already on the screen
+      stxx.home();
+   	  
+      // if autochartist row is clicked give a little extra room for the arrow to be shown
+      if(stxx.chart.autoChartistClick){
+	  	stxx.chart.scroll -= 5;
+	  	stxx.chart.autoChart = false;
+      }
+    }else{
+      $$("symbol").value=currentSymbol;            // Reset the value of the symbol input to original symbol on error    
+    }
+  };
+}
+
+
+STX.Comparison.addComparison=function(){
+  // Alternative comparison types. Set these using your UI if you want to support them
+  //STX.Comparison.type="absolute"; // Shares the same scale between multiple series of data
+  //STX.Comparison.type="overlay"; // Overlays a series of data
+
+  STXLoader(true);
+  STX.Comparison.add(stxx, null, function(){
+    STXLoader(false);
+  });
+};
+
+
+/*
+* Initial function that is called when chart loads. If you want the chart to default to a security, or if you're passing a security in with a query string then load it here
+*/
+function displayChart(){
+  restoreLayout();
+  runSampleUI();
+  
+  var newSymbol = "AAPL";
+
+  if (qsParm.symbol) newSymbol = qsParm.symbol;	// if a symbol was passed in as a query string, then use it.
+
+  if(newSymbol) {
+	  STXLoader(true);
+	  // draw a chart using 5 minute intervals, spanning 2 days
+	  stxx.newChart(newSymbol, null, null, finishedLoadingNewChart(stxx.chart.symbol, newSymbol),{span:{base:'day',multiplier:1},periodicity:{period:1,interval:5}});
+  }
+
+  // If you want to enable a widget by default 
+  // This opens the watch list sidebar panel, for example
+  // STX.unappendClassName($$$(".stx-panel-watch"), "closed");
+  // This highlights the button
+  // STX.appendClassName($$$("#btnToggleWatch"), "active");
+  // This properly places the widget in the right place
+  // resizeScreen();
+
+}
+
+var quoteBehavior={
+  refreshInterval: 1,
+  callback: function(params){
+	  showAttribution(params.stx);
+  }
+};
+stxx.setMarketFactory(STX.Market.Symbology.factory);
+stxx.attachQuoteFeed(new STX.QuoteFeed.Demo(),quoteBehavior);
+
+/*
+* Modify the components in this function to establish the behavior of your UI.
+*/
+function runSampleUI(){
+  if(window.isIE8)
+    STX.appendClassName($$$("BODY"),"IE8");
+	STX.ThemeManager.builtInThemes={
+			"White":"Light",
+			"Black":"Dark"
+	};
+	// Set up menu manager
+	STX.MenuManager.makeMenus();
+	STX.MenuManager.registerChart(stxx);
+
+	var currentTheme=STX.StorageManager.get("themes");
+	if(currentTheme){
+    	STX.ThemeManager.setThemes(JSON.parse(currentTheme), stxx);
+	}else{
+    	STX.ThemeManager.loadBuiltInTheme(stxx, "Light"); // Set "Light" as the default theme
+	}
+	STX.ThemeManager.themesToMenu($$("customThemeSelector"), $$("builtInThemeSelector"), stxx, STX.StorageManager.callbacker("themes"));
+
+	STX.FibDialog.initialize($$$("#fibDialog"));
+
+	var toolbar=new STX.DrawingToolbar($$$(".stx-wrapper .stx-toolbar"), stxx);
+	
+	STX.TimeZoneWidget.initialize(STX.StorageManager.get("timezone"), STX.StorageManager.callbacker("timezone"));
+	
+	
+	/*********** Symbol lookup initialization ***************************************************************************/
+	// If not using the CIQ lookup services, you must add the required functionality in textCallback() to link to your search engine
+	/********************************************************************************************************************/
+	
+	/**
+	* This function gathers and returns the list of symbols to be displayed on the screen
+	* @param  {object} 		that   	STX.LookupWidget
+	* @param  {string} 		txt 	the symbol or description to search for ( or part of it as it is being typed)
+	* @param  {string} 		filter	the filter value (currently supporting "ALL","STOCKS","FOREX","INDEXES")
+	* @param  {boolean} 	clicked false means user typed in input box, true means user clicked in input box
+	* @return {Array}   	Returns an array of objects each with the following minimum items = {symbol:"symbol",description:"description", exchange:"exchange"} 
+	* Note: Additional elements can be added to the end of each result object (symbol ID, etc) 
+	* and the entire result object can be returned if the allowSymbolObject config flag is set to true.
+	* @memberOf STX.LookupWidget
+	*/
+
+	/** ChartIQ service **/
+	function textCallbackChartIQ(that, txt, filter, clicked){
+	    if(clicked) that.config.input.value="";
+
+	    var maxSearchResults=null; //maximum records to return for a search. Default is 50
+	    var exchanges=["XNYS","XASE","XNAS","XASX","mutualfund","INDCBSX","INDXASE","INDXNAS","IND_DJI","ARCX","INDARCX","forex"];  //array of exchanges from highest priority to lowest
+
+		STX.SymbolLookupModule.subscribedExchanges=exchanges;
+	    STX.SymbolLookupModule.loadSymbolLookupTables();
+
+	    STX.SymbolLookupModule.doSymbolLookup(filter,txt, maxSearchResults,function(arr){
+	    	that.displayResults(arr); // Display the results in the drop down
+	    });
+	}
+
+	/** Sample. Cut and paste this to build your own lookup **/
+	function sampleTextCallback(that, txt, filter, clicked){
+		if(clicked) that.config.input.value="";
+
+		// If you will be using your own lookup engine, here is dummy code that demonstrates the format which your lookup module should return
+		// This is sample hard-coded code, but it works. You can see these results from the GUI right now.
+	    
+	    var sampleResults=[
+		    {symbol:"S",description:"Sprint Corporation", exchange:"NYSE"},
+		    {symbol:"SPY",description:"SPDR S&amp;P 500 ETF", exchange:"NYSE"},
+		    {symbol:"^GSPC",description:"SPDR S&amp;P 500", exchange:""},
+		    {symbol:"CSCO",description:"Cisco Systems, Inc.", exchange:"NASDAQ"},
+		    {symbol:"SWKS",description:"Skyworks Solutions Inc.", exchange:"NASDAQ"},
+		    {symbol:"GLD",description:"SPDR Gold Shares", exchange:"NYSE"},
+		    {symbol:"WMT",description:"Wal-Mart Stores Inc.", exchange:"NYSE"},
+		    {symbol:"SLV",description:"iShares Silver Trust", exchange:"NYSE"},
+		    {symbol:"DDD",description:"3D Systems Corp.", exchange:"NYSE"},
+		    {symbol:"GS",description:"The Goldman Sachs Group, Inc.", exchange:"NYSE"},
+		    {symbol:"FMAGX",description:"Fidelity Magellan Fund", exchange:"Mutual Fund"},
+		    {symbol:"^USDCAD",description:"US Dollar Canadian Dollar", exchange:"FX"},
+		    {symbol:"^EURUSD",description:"Euro US Dollar", exchange:"FX"}
+	    ];
+	    
+	    // This is a sample filtering function for sampleResults above.
+	    // You may want to do your filtering within own search method
+		(function(filter){
+			var myResults=[];
+			if(filter){
+				var elems={
+					"STOCKS":[0,1,3,4,5,6,7,8,9],
+					"FOREX":[11,12],
+					"INDEXES":[2],
+					"FUNDS":[10]
+				};
+				if(!elems[filter]) return;
+				for(var i=0;i<elems[filter].length;i++){
+					myResults.push(sampleResults[elems[filter][i]]);
+				}
+				sampleResults=[].concat(myResults);
+			}
+			myResults=[];
+			for(var j=0;j<sampleResults.length;j++){
+				if(sampleResults[j].description.toLowerCase().indexOf(txt.toLowerCase())>-1 ||
+					sampleResults[j].symbol.toLowerCase().indexOf(txt.toLowerCase())===0){
+					myResults.push(sampleResults[j]);
+				}
+			}
+			sampleResults=[].concat(myResults);
+		})(filter);
+	    
+		// Display the results in the drop down
+		that.displayResults(sampleResults); 
+
+	    /*
+	    // this is sample code for enabling simple suggestive search using an ajax query
+	    // have your server return a JSON object in the format of sampleResults above
+	    function processSearchResults(that){
+	      return function(status, results){
+	        if(status==200){
+	          that.displayResults(JSON.parse(results));
+	        }
+	      };
+	    }
+	    var url="http://yourdomain.com?search=" + txt + "&filter=" + filter;
+	    STX.postAjax(url, null, processSearchResults(that));
+	    */
+	}
+	
+	function selectCallback(that, result, filter){
+		if(STX.SymbolLookupModule) STX.SymbolLookupModule.currentRequest=0;
+    	var symbol;
+    	
+    	// remove auto chartist injection if it exists
+		if(typeof(injectId) != "undefined" && injectId){
+	    	stxx.removeInjection(injectId);
+		}
+    	
+    	// If you've set config.allowSymbolObject=true then you'll get the full object here including the stock symbol, exchange and anything else
+    	// otherwise you'll just get the symbol string. It's your choice depending on what your data feed requires.
+		if(typeof result == 'object') {
+      		symbol = result.symbol = result.symbol.toUpperCase();
+      		if(symbol) {
+      			STXLoader(true);
+      			stxx.newChart(result, null, null, finishedLoadingNewChart(stxx.chart.symbol, symbol)); // Send the result object to newChart
+      		}
+		}else{
+      		symbol = result.toUpperCase();
+      		if(symbol) {
+      			STXLoader(true);
+      			stxx.newChart(symbol, null, null, finishedLoadingNewChart(stxx.chart.symbol, symbol)); // Send just a stock symbol to newChart
+      		}
+    	}
+ 	}
+	
+	var config={
+		input: $$$("#symbol"),						// input field from the GUI
+		textCallback: textCallbackChartIQ,			// Function used to do lookup - If you don't have a symbol lookup then just leave this blank
+		selectCallback: selectCallback,             // Function used to act on the symbol selected. Normally used to create a new chart with the new symbol.
+		filters:["ALL","STOCKS","FUNDS","FOREX","INDEXES"],	// Names of the filters you are supporting
+		allowSymbolObject : false,                   // set to true to return a symbol object from the search insted of just a symbol string
+	    stx: stxx									// the chart object -- needed for translations
+	};
+	var stxLookupWidget=new STX.LookupWidget(config);
+	stxLookupWidget.init();
+
+
+	function compareLookupCallback(that, result){
+		if(STX.SymbolLookupModule) STX.SymbolLookupModule.currentRequest=0;
+		STXLoader(true);
+		
+		// If you've set config.allowSymbolObject=true then you'll get the full object here including the stock symbol, exchange and anything else
+    	// otherwise you'll just get the symbol string. It's your choice depending on what your data feed requires.
+		if(typeof result == 'object') {
+      		result.symbol = result.symbol.toUpperCase();
+      	} else {
+      		result = result.toUpperCase();      	
+      	}
+		STX.Comparison.add(stxx, result, function(){
+			STXLoader(false);
+		});
+	}
+
+	var config2={
+		input: $$$("#compareSymbol"),				// input field from the GUI
+		textCallback: textCallbackChartIQ,			// Function used to do lookup - If you don't have a symbol lookup then just leave this blank
+		selectCallback: compareLookupCallback,      // Function used to act on the symbol selected. Normally used to create a new chart with the new symbol.
+		filters:["ALL","STOCKS","FUNDS","FOREX","INDEXES"],	// Names of the filters you are supporting
+		allowSymbolObject : false,                  // set to true to return a symbol object from the search insted of just a symbol string
+	    cascade: true,								// allow the symbol lookup window to cascade on top of the comparison window.
+	    stx: stxx									// the chart object -- needed for translations
+	};
+
+	var stxCompareLookupWidget=new STX.LookupWidget(config2);
+	stxCompareLookupWidget.init();
+	/*********** end of Symbol lookup initialization ******************/
+
+
+	$$$(".stx-footer").style.display="block";
+	STX.Watch.initialize(STX.StorageManager, stxLookupWidget);
+	STX.Views.initialize(stxx, STX.StorageManager, true);
+	attachSidePanelEvent($$$("#btnToggleWatch"), $$$(".stx-panel-watch"));
+	if(!STX.touchDevice) STX.appendClassName(document.body, "no-touch");  // enables default hover states in CSS
+	//STXSocial.brandMyChart(stxx, "yourlogo.png", [10, -10]);
+}
+
+function displayCurrentZone(){
+	var currentUserTimeZone=$$$("#currentUserTimeZone");
+	if( stxx.displayZone ) {
+		var fullZone = stxx.displayZone;
+		for(var zone in STX.timeZoneMap){
+			if( STX.timeZoneMap[zone] === stxx.displayZone ) fullZone = zone;
+		}
+		currentUserTimeZone.innerHTML='Set TimeZone is '+fullZone;
+		$$$("#currentLocationButton").style.display="";
+	} else {
+		currentUserTimeZone.innerHTML='Set TimeZone is your current location';
+		$$$("#currentLocationButton").style.display="none";
+	}
+}
+
+function toggleLog(){
+	stxx.layout.semiLog=!stxx.layout.semiLog;
+	var checkbox=$$$(".stxLog");
+	if(stxx.layout.semiLog){
+		STX.appendClassName(checkbox, "true");
+	}else{
+		STX.unappendClassName(checkbox, "true");
+	}
+	if(!stxx.displayInitialized) return;
+	stxx.draw();
+	stxx.changeOccurred("layout");
+	stxx.doDisplayCrosshairs();
+}
+
+function toggleExtHours(session){
+	if(!stxx.layout.marketSessions) stxx.layout.marketSessions={};
+	stxx.layout.marketSessions[session]=!stxx.layout.marketSessions[session];
+	var checkbox=$$$(".stxExtHours-"+session);
+	if(stxx.layout.marketSessions[session]){
+		STX.appendClassName(checkbox, "true");
+	}else{
+		STX.unappendClassName(checkbox, "true");
+	}
+	stxx.layout.extended=stxx.layout.marketSessions.pre || stxx.layout.marketSessions.post;
+	if(!stxx.displayInitialized) return;
+	stxx.newChart(stxx.chart.symbol, null, null, finishedLoadingNewChart(stxx.chart.symbol, stxx.chart.symbol));
+	stxx.changeOccurred("layout");
+	stxx.doDisplayCrosshairs();
+}
+
+function toggleChartType(type){
+	var checkbox=$$$(".stx"+type.capitalize());
+	if(stxx.layout.aggregationType==type){
+		STX.unappendClassName(checkbox, "true");
+		stxx.setAggregationType(null);
+	}else{
+		if(stxx.layout.aggregationType) STX.unappendClassName($$$(".stx"+stxx.layout.aggregationType.capitalize()), "true");
+		STX.appendClassName(checkbox, "true");
+		stxx.setAggregationType(type);
+	}
+}
+
+function createStudy(){
+	STX.Studies.go($$("studyDialog"), stxx);	// Note, please add stxx as second parameter in order to translate studies
+}
+
+// Please note that these callbacks must be set *before* you call importLayout. Otherwise your
+// imported studies will not have an edit capability
+stxx.callbacks.studyPanelEdit=function(params){
+	var stx=params.stx;
+	var sd=params.sd;
+	if(STX.Studies.studyLibrary[sd.type] && STX.Studies.studyLibrary[sd.type].name) $$("studyDialog").querySelectorAll(".title")[0].innerHTML=stxx.translateIf(STX.Studies.studyLibrary[sd.type].name);
+	else $$("studyDialog").querySelectorAll(".title")[0].innerHTML=sd.type.capitalize();
+	STX.Studies.studyDialog(stx, sd.type, $$("studyDialog"), params);
+	STX.DialogManager.displayDialog("studyDialog");
+};
+
+stxx.callbacks.studyOverlayEdit=function(params){
+	var stx=params.stx;
+	var sd=params.sd;
+	if(stx.openDialog) return; // only allow one dialog to be open
+	if(params.forceEdit){
+		stxx.callbacks.studyPanelEdit(params);
+		return;
+	}
+	STX.DialogManager.displayDialog("contextMenu");
+	if(STX.Studies.studyLibrary[sd.type] && STX.Studies.studyLibrary[sd.type].name) $$("contextMenu").querySelectorAll(".title")[0].innerHTML=stxx.translateIf(STX.Studies.studyLibrary[sd.type].name);
+	else $$("contextMenu").querySelectorAll(".title")[0].innerHTML=sd.type.capitalize();
+	if(STX.Studies.studyLibrary[sd.type] && STX.Studies.studyLibrary[sd.type].name) $$("studyDialog").querySelectorAll(".title")[0].innerHTML=stxx.translateIf(STX.Studies.studyLibrary[sd.type].name);
+	else $$("studyDialog").querySelectorAll(".title")[0].innerHTML=sd.type.capitalize();
+
+	var edit=$$$(".stx-edit", $$("contextMenu"));
+	var remove=$$$(".stx-delete", $$("contextMenu"));
+	STX.safeClickTouch(edit, function(){
+		STX.DialogManager.dismissDialog();
+		STX.Studies.studyDialog(stx, sd.type, $$("studyDialog"), params);
+		STX.DialogManager.displayDialog("studyDialog");
+	});
+	STX.safeClickTouch(remove, function(){
+		STX.DialogManager.dismissDialog();
+        STX.Studies.removeStudy(stx,sd);
+		var closeIcon=document.querySelectorAll("#menuWrapperStudies #" + sd.type.replace(" ","-"));
+		for(var c=0;closeIcon && c<closeIcon.length;c++){
+        	STX.clearSafeClickTouches(closeIcon[c]);
+        	closeIcon[c].style.display="";
+        }
+	});
+};
+
+function studyDialog(obj, study){
+	if(!stxx || !stxx.chart.dataSet) return;
+	if(STX.Studies.studyLibrary[study] && STX.Studies.studyLibrary[study].name) $$("studyDialog").querySelectorAll(".title")[0].innerHTML=stxx.translateIf(STX.Studies.studyLibrary[study].name);
+	else $$("studyDialog").querySelectorAll(".title")[0].innerHTML=study.capitalize();
+	STX.Studies.studyDialog(stxx, study, $$("studyDialog"));
+	var delay=STX.ipad?400:0;  // so that ipad doesn't register taps from menu selection on dialog
+	setTimeout(function(){
+    	STX.DialogManager.displayDialog("studyDialog");
+  	}, delay);
+}
+
+function setDrawingType(type,element,subtype,display){
+	var menu=$$$("."+type+"-style-list");
+	if(menu){
+		p=menu.parentNode.parentNode.children;
+		for(var i=0;i<p.length;i++){
+			if(STX.hasClassName(p[i],"stx-menu-btn")){
+				p[i].style.display="none";
+			}
+		}
+		menu.parentNode.style.display="";
+	}
+	STX.DrawingToolbar.setDrawingType(type,element);
+	if(subtype) setDrawingStyle(menu.firstChild,subtype,display);
+}
+
+function setDrawingStyle(element,type,display){
+	stxx.changeVectorType(type);
+	if(!display) display=type;
+	var prettyDisplay=stxx.translateIf(display.capitalize());
+	$$$("#styleSelection", element.parentNode.parentNode).innerHTML=prettyDisplay;
+}
+
+// Update the head's up display
+function prependHeadsUpHR(){
+	//var tick=Math.floor((STXChart.crosshairX-this.left-this.micropixels)/this.layout.candleWidth);
+	var tick=this.barFromPixel(this.cx);
+	var prices=this.chart.xaxis[tick];
+	$$("huOpen").innerHTML="";
+	$$("huClose").innerHTML="";
+	$$("huHigh").innerHTML="";
+	$$("huLow").innerHTML="";
+	$$("huDate").innerHTML="";
+	$$("huVolume").innerHTML="";
+	if(prices){
+		if(prices.data){
+			$$("huOpen").innerHTML=this.formatPrice(prices.data.Open);
+			$$("huClose").innerHTML=this.formatPrice(prices.data.Close);
+			$$("huHigh").innerHTML=this.formatPrice(prices.data.High);
+			$$("huLow").innerHTML=this.formatPrice(prices.data.Low);
+			$$("huVolume").innerHTML=STX.condenseInt(prices.data.Volume);
+			if(!STXChart.hideDates()){
+				var tickDate = prices.data.displayDate;
+				if (!tickDate) tickDate = prices.data.DT;
+				if(this.chart.xAxis.formatter){
+					$$("huDate").innerHTML=this.chart.xAxis.formatter(tickDate);
+				}else if(this.internationalizer){
+					var str=this.internationalizer.monthDay.format(tickDate);
+					if(!STXChart.isDailyInterval(this.layout.interval))
+						str+=" " + this.internationalizer.hourMinute.format(tickDate);
+					else {
+						str=this.internationalizer.yearMonthDay.format(tickDate);
+					}
+					$$("huDate").innerHTML=str;
+				} else if (STXChart.isDailyInterval(this.layout.interval)){
+					$$("huDate").innerHTML=STX.mmddyyyy(STX.yyyymmddhhmm(tickDate));		
+				} else {
+					$$("huDate").innerHTML=STX.mmddhhmm(STX.yyyymmddhhmm(tickDate));					
+				}
+			}
+		}
+	}
+}
+
+STXChart.prototype.prepend("headsUpHR", prependHeadsUpHR);
+
+
+/** This injection creates a legend for overlays that cannot be deleted with a right click  */
+STXChart.prototype.append("draw", function(){
+  if(!this.layout.studies) return;
+
+  function closure(stx, name){
+	  return function(e){
+		STX.MenuManager.menuOff();
+	    e.stopPropagation();
+	    stx.rightClickOverlay(name);
+	  };
+  }
+  for(var id in this.layout.studies){
+    var sd=this.layout.studies[id];
+    if(!sd.libraryEntry.customRemoval) continue;
+    var closeIcon=document.querySelectorAll("#menuWrapperStudies #" + sd.type.replace(" ","-"));
+    for(var c=0;closeIcon && c<closeIcon.length;c++){
+      closeIcon[c].style.display="inline-block";
+      if(!closeIcon[c].safeClickTouchEvents){
+        STX.safeClickTouch(closeIcon[c], closure(this, sd.name));
+      }
+    }
+  }
+});
+
+//Remove this section to disable after hours trading
+new STX.ExtendedHours(stxx, ["post","pre"]);
+
+function restoreMenuCheckboxes(){
+	if(stxx.layout.semiLog) STX.appendClassName($$$(".stxLog"), "true");
+	if(stxx.layout.marketSessions) {
+		if(stxx.layout.marketSessions.pre) STX.appendClassName($$$(".stxExtHours-pre"), "true");
+		if(stxx.layout.marketSessions.post) STX.appendClassName($$$(".stxExtHours-post"), "true");
+	}
+	if(stxx.layout.aggregationType=="heikinashi") STX.appendClassName($$$(".stxHeikinashi"), "true");
+	else if(stxx.layout.aggregationType=="kagi") STX.appendClassName($$$(".stxKagi"), "true");
+	else if(stxx.layout.aggregationType=="linebreak") STX.appendClassName($$$(".stxLinebreak"), "true");
+	else if(stxx.layout.aggregationType=="pandf") STX.appendClassName($$$(".stxPandf"), "true");
+	else if(stxx.layout.aggregationType=="renko") STX.appendClassName($$$(".stxRenko"), "true");
+	else if(stxx.layout.aggregationType=="rangebars") STX.appendClassName($$$(".stxRangebars"), "true");
+}
+
+STX.Views.updateGUI = function(i){
+	restoreMenuCheckboxes();
+};
+
+function restoreLayout(){
+	var datum=STX.localStorage.getItem("myChartLayout");
+	if(!datum){
+		return;
+	}
+	var d=JSON.parse(datum);
+	stxx.importLayout(d);
+	restoreMenuCheckboxes();
+}
+
+function saveLayout(){
+	var s=stxx.exportLayout();
+	s=JSON.stringify(s);
+	STX.localStorageSetItem("myChartLayout", s);
+}
+
+function restore(){
+	var memory=STX.localStorage.getItem(stxx.chart.symbol);
+	if(memory){
+		var parsed=JSON.parse(memory);
+		if(parsed) stxx.reconstructDrawings(parsed);
+    	stxx.draw();
+	}
+}
+
+function save(){
+	var tmp=stxx.serializeDrawings();
+	if(!tmp.length){
+		STX.localStorage.removeItem(stxx.chart.symbol);
+	}else{
+		STX.localStorageSetItem(stxx.chart.symbol, JSON.stringify(tmp));
+	}
+}
+
+stxx.changeCallback=function(stxx, change){
+	if(change=="layout") {
+	    if(intervalDisplayMap[stxx.layout.interval]) $$$("#periodBtn").replaceChild(STX.translatableTextNode(stxx,intervalDisplayMap[stxx.layout.interval]),$$$("#periodBtn").childNodes[0]);
+		saveLayout();
+	}
+	if(change=="vector") {
+		save();
+		resetUndoBtn();
+	}
+};
+
+function resetUndoBtn(){
+	// manage the drawing undo button -- turn off if nothing to undo.
+	var undoBtn=$$$("#UndoBtn");
+	if ( undoBtn) {	
+		if( stxx.undoStamps && stxx.undoStamps.length )
+	    	undoBtn.style.display="block";
+		else 
+	    	undoBtn.style.display="none";
+	}
+}
+
+function undo(){
+	if(STXChart.drawingLine){
+		stxx.undo();
+    	stxx.changeOccurred("vector");
+		return;
+	}
+}
+
+var capsLock=false;
+
+function keyup(e){
+	var div=STX.getEventDOM(e);
+	if(stxx.editingAnnotation) return;
+	var key = (window.event) ? event.keyCode : e.keyCode;
+	switch(key){
+		case 16:
+			stxx.shift=false;
+			break;
+		case 17:
+		case 18:
+			stxx.ctrl=false;
+			break;
+		case 91:
+			stxx.cmd=false;
+			break;
+		default:
+			break;
+	}
+}
+
+var nokeycapture=false;
+
+function keydown(e){
+	if(stxx.editingAnnotation) return;
+	if(nokeycapture) return;
+	var div=STX.getEventDOM(e);
+	var key = (window.event) ? event.keyCode : e.keyCode;
+	// keys that work when no symbol enabled
+
+	if(key!=27){
+		if(stxx.openDialog) return;
+		if(!STXChart.insideChart) return;
+	}
+	var push;
+	switch(key){
+    case 17:
+    case 18:
+      stxx.ctrl=true;
+      break;
+		case 20:
+			capsLock=!capsLock;
+			break;
+		case 36: // home
+			stxx.home();
+			stxx.headsUpHR();
+			break;
+		case 35: // end
+			stxx.chart.scroll=stxx.chart.dataSet.length;
+			stxx.draw();
+			stxx.headsUpHR();
+			break;
+		case 37: // left
+			if(stxx.ctrl){
+				stxx.zoomOut();
+			}else{
+				push=1;
+				if(stxx.shift) push=Math.max(5,5*(8-Math.round(stxx.layout.candleWidth)));
+				if(stxx.chart.scroll+push>=stxx.chart.dataSet.length)
+					push=stxx.chart.dataSet.length-stxx.chart.scroll;
+				stxx.chart.scroll+=push;
+				stxx.draw();
+				stxx.headsUpHR();
+			}
+			break;
+		case 38: // up
+			stxx.zoomIn();
+			break;
+		case 40: // down
+			stxx.zoomOut();
+			break;
+		case 39: // right
+			if(stxx.ctrl){
+				stxx.zoomIn();
+			}else{
+				push=1;
+				if(stxx.shift) push=Math.max(5,5*(8-Math.round(stxx.layout.candleWidth)));
+				stxx.chart.scroll-=push;
+				stxx.draw();
+				stxx.headsUpHR();
+			}
+			break;
+		case 8: // delete on mac
+		case 46: // delete
+			if(STXChart.drawingLine){
+				undo();
+				if(e.preventDefault) e.preventDefault();
+			}else if(stxx.anyHighlighted){
+				stxx.deleteHighlighted();
+				if(e.preventDefault) e.preventDefault();
+			}
+			break;
+		case 27:
+			if(STXChart.drawingLine){
+				undo();
+			}
+			break;
+		default:
+			//alert(key);
+			break;
+	}
+
+}
+
+$$("symbol").onfocus=function(){
+	nokeycapture=true;
+};
+
+$$("symbol").onblur=function(){
+	nokeycapture=false;
+};
+
+// override default close method
+STX.LookupWidget.prototype.close=function(){
+	$$("symbol").value=stxx.chart.symbol;
+	if(this.div) this.div.style.display="none";
+	STX.MenuManager.menuOff(true);
+};
+
+document.onkeyup=keyup;
+document.onkeydown=keydown;
+
+function resizeContainers(){
+  if(STX.ipad && STX.isIOS7or8){
+    	// IOS7 bug in landscape mode doesn't report the pageHeight correctly. The fix is to fix the height
+    	// in css and then adjust the body height to the new size
+    	STX.appendClassName($$$("html"),"ipad ios7");
+    	$$$("body").style.height=STX.pageHeight()+"px";
+    }
+
+    var chartContainer=$$$(".chartContainer");
+    var chartArea=$$$(".stx-wrapper");
+    var panelSelector=$$$(".stx-panel-selector");
+    var openPanel=null;
+    var sidePanels=document.querySelectorAll(".stx-panel-side");
+    if(sidePanels.length>0){
+      STX.unappendClassName(panelSelector,"closed");
+    }
+    for(var i=0;i<sidePanels.length;i++){
+      sidePanel=sidePanels[i];
+      if(!STX.hasClassName(sidePanel, "closed")){
+        openPanel=sidePanel;
+        break;
+      }
+    }
+    var panelWidth=panelSelector.offsetWidth;
+    if(openPanel && openPanel.offsetWidth){
+      openPanel.style.right=panelWidth+"px";  //Offset panel by size of panel selector
+      panelWidth+=openPanel.offsetWidth;
+    }
+    if(panelWidth===0) panelWidth=2;
+	
+    chartContainer.style.width=(chartArea.offsetWidth-panelWidth)+"px";
+    var bottomMargin=0;
+    if($$$(".stx-footer")) bottomMargin=$$$(".stx-footer").offsetHeight;
+    chartContainer.style.height=(STX.pageHeight()-STX.getPos(chartContainer).y - bottomMargin) + "px";
+    chartArea.style.height=(STX.pageHeight()-STX.getPos(chartArea).y - bottomMargin) + "px";
+    if(stxx && stxx.chart && stxx.chart.canvas){
+      stxx.resizeChart();
+    }
+    responsiveMenus();
+}
+
+
+
+function responsiveMenus(){
+  var stxNav=$$$(".stx-nav");
+  var fullWidth=0;
+  
+  // measure full size nav bar
+  STX.unappendClassName(stxNav, "stx-collapse");
+  for(var i=0;i<stxNav.children.length;i++){
+    var node=stxNav.children[i];
+    fullWidth+=STX.outerWidth(node);
+  }
+  
+  if(fullWidth+5>=STX.outerWidth(stxNav)){
+    STX.appendClassName(stxNav, "stx-collapse");
+  }else{    
+    STX.unappendClassName(stxNav, "stx-collapse");
+  }
+}
+
+function resizeScreen(){
+	if(STX.touchDevice && stxx.editingAnnotation) return;	// Don't resize if annotating, that is when 
+
+	resizeContainers();
+ 
+ 	/******************************************************************/
+   	// code to resize menus when screen height changes.
+   	 
+	var height=window.innerHeight - $$$(".stx-nav").clientHeight-10;
+	
+    // chart type dropdown
+    var m=$$$('.maxHeightCSS');
+    if(m) m.parentNode.removeChild($$$(".maxHeightCSS"));
+    STX.newChild($$$('head'), "style", "maxHeightCSS", '.chart-display { overflow-y: auto; max-height: ' +  height + 'px }');
+    
+    //periodicity dropdown
+    m=$$$('.maxHeightPeriodicity');
+    if(m) m.parentNode.removeChild($$$(".maxHeightPeriodicity"));
+    STX.newChild($$$('head'), "style", "maxHeightPeriodicity", '.menuSelect.periodicity { width: 85px; overflow-y: auto; max-height: ' +  height + 'px }');
+    
+    // studies drop down
+    //var m=$$$('.maxHeightStudies');
+    //if(m) m.parentNode.removeChild($$$(".maxHeightStudies"));
+    //STX.newChild($$$('head'), "style", "maxHeightStudies", '.menuSelect.studies { width: 416px; overflow-y: auto; max-height: ' +  height + 'px }');
+    
+    // study Dialog window
+    m=$$$('.maxHeightStudyDialog');
+    if(m) m.parentNode.removeChild($$$(".maxHeightStudyDialog"));
+    STX.newChild($$$('head'), "style", "maxHeightStudyDialog", '.stx-dialog { width: 210px; overflow-y: auto; max-height: ' +  (height-120) + 'px }');
+    /********************************************************************/
+}
+
+// Default implementation of legend drawing callback for renderings which require a legend
+function drawLegend(stx, panelName, colors, noBase){
+	STX.drawLegend(stx, {
+		"chart": stx.panels[panelName].chart,
+		"legendColorMap": colors,
+		"coordinates": {
+			"x": 260+(panelName=="chart"?0:140),
+			"y": stx.panels[panelName].yAxis.top+(panelName=="chart"?30:5)
+		},
+		"noBase": noBase
+	});
+}
+
+function showAttribution(stx){
+	var attribution=$$$(".attribution");
+	attribution.className="attribution";
+	if(!stx.chart.attribution) return;
+	var source=stx.chart.attribution.source;
+	STX.appendClassName(attribution,source.toLowerCase());
+	if(source && source!="chartiq")
+		STX.appendClassName(attribution,stx.chart.attribution.exchange.toLowerCase());
+	setInterval(function(){
+		attribution.style.bottom=(stx.chart.canvasHeight-stx.panels.chart.bottom+25)+"px";
+		},100);
+}
+
+function showEvents(){
+	if(!stxx.masterData) return;
+	var markerTypes=["dividend","news","earnings"], newNode;
+	for(var i=0;i<stxx.masterData.length;i+=10){
+	    var r=Math.floor(Math.random()*(markerTypes.length+1));
+	    if(r==markerTypes.length) continue; // randomize
+	    newNode=$$$("#stxEventPrototype").cloneNode(true);
+	    newNode.id=null;
+	    newNode.innerHTML=markerTypes[r].capitalize().charAt(0);
+	    STX.appendClassName(newNode, markerTypes[r]);		// make sure there is valid CSS class for markerTypes[r]. 
+		new STX.Marker({
+		    stx: stxx,
+		    xPositioner: "date",
+		    x: stxx.masterData[i].DT,
+		    label: "events",
+		    node: newNode
+		});
+  	}
+  	
+    newNode=$$$("#stxEventPrototype").cloneNode(true);
+    newNode.id=null;
+    newNode.innerHTML='F';	// future tick
+    STX.appendClassName(newNode, "dividend");
+    var someDate = new Date(stxx.masterData[stxx.masterData.length-1].DT);
+    someDate = stxx.getNextInterval(someDate, 5); // 5 bars in the future
+	new STX.Marker({
+	    stx: stxx,
+	    xPositioner: "date",
+	    x: someDate,
+		label: "events",
+	    node: newNode
+	});
+	
+    newNode=$$$("#stxEventPrototype").cloneNode(true);
+    newNode.id=null;
+    newNode.innerHTML='F';	// future tick overlaping an existing location 
+    STX.appendClassName(newNode, "dividend");
+	new STX.Marker({
+	    stx: stxx,
+	    xPositioner: "date",
+	    x: someDate,
+		label: "events",
+	    node: newNode
+	});
+	
+    newNode=$$$("#stxEventPrototype").cloneNode(true);
+    newNode.id=null;
+    newNode.innerHTML='F';	// future tick overlaping an existing location
+    STX.appendClassName(newNode, "dividend");
+	new STX.Marker({
+	    stx: stxx,
+	    xPositioner: "date",
+	    x: someDate,
+		label: "events",
+	    node: newNode
+	});
+
+    newNode=$$$("#stxEventPrototype").cloneNode(true);
+    newNode.id=null;
+    newNode.innerHTML='P';	// past tick
+    STX.appendClassName(newNode, "dividend");
+    someDate = new Date(stxx.masterData[0].DT);
+    someDate = stxx.getNextInterval(someDate, -5); // 5 bars in the past
+	new STX.Marker({
+	    stx: stxx,
+	    xPositioner: "date",
+	    x: someDate,
+		label: "events",
+	    node: newNode
+	});
+
+
+	stxx.draw();
+}
+
+var eventsAreDisplayed=false;
+function toggleEvents(){	// This is called by the menu item
+  if(eventsAreDisplayed){
+    eventsAreDisplayed=false;
+    STX.Marker.removeByLabel(stxx, "events");
+  }else{
+  	showEvents();
+    eventsAreDisplayed=true;
+  }
+  stxx.layout.events=eventsAreDisplayed;
+  stxx.changeOccurred("layout");
+  
+}
+
+if($$("shareBtn") && typeof STXSocial!="undefined") {
+	$$("shareBtn").style.display="";
+	$$("shareBtn").onclick=function(){
+		STXSocial.shareChart(stxx, null,
+			function(link){
+				$$$("#shareLink").href=link;
+				$$$("#shareCopyPaste").innerHTML=link;
+				STX.DialogManager.displayDialog("sharedLinkDialog");
+			},
+			function(err){STX.alert("err=" + err);}
+		);
+	};
+}		
+
+STX.Studies.calculateVolumeChartAm=function(stx, sd){
+	var minMax=STX.Studies.calculateMinMaxForDataPoint(stx, sd.inputs.Symbol, sd.chart.scrubbed);
+	sd.min=0;
+	sd.max=minMax.max;
+};
+
+STX.Studies.createVolumeChartAm=function(stx, sd, quotes){
+	var colorMap={};
+	colorMap[sd.outputs["Down Volume"]]=[];
+	colorMap[sd.outputs["Up Volume"]]=[];
+
+	var previousVol=0;
+	for(var i=0;i<sd.chart.scrubbed.length;i++){
+		var quote=sd.chart.scrubbed[i];
+		var currentVol=quote[sd.inputs.Symbol];
+		if(currentVol<previousVol){
+			colorMap[sd.outputs["Down Volume"]].push(currentVol);
+			colorMap[sd.outputs["Up Volume"]].push(null);
+		}else{	
+			colorMap[sd.outputs["Down Volume"]].push(null);
+			colorMap[sd.outputs["Up Volume"]].push(currentVol);
+		}
+		previousVol=currentVol;
+	}
+	STX.Studies.createYAxis(stx, sd, sd.chart.dataSegment, stx.panels[sd.panel]);
+	STX.Studies.volumeChart(stx, sd, colorMap, null);
+};
+
+STX.Studies.studyLibrary["volume-am"]= { // clone of volume in studyLibrary
+	"name": "Volume AM",
+	"display": "Volume",
+    "range": "0 to max",
+    "yAxis": {"ground":true, "initialMarginTop":0},
+    "seriesFN": STX.Studies.createVolumeChartAm,
+    "calculateFN": STX.Studies.calculateVolumeChartAm,
+    "inputs": {"Symbol":["Volume", "Volume-AAPL","Volume-GOOG"]}, // Dynamically change this when you add or remove a series!
+    "outputs": {"Up Volume":"#8cc176","Down Volume":"#b82c0c"},
+    "parameters": {
+    	"zoom": 0,
+    	"displayBorder": true
+    }
+};
+
+
+window.addEventListener("resize", resizeScreen);
+resizeScreen();
+
+STX.Comparison.initialize(stxx, false);
+
+//Create Study Lookup
+(function(){
+	STX.extend(STX.Studies.studyLibrary,{
+		"rsi": {"keywords": "Relative Strength Index"},
+		"ma": {"keywords": "Simple Exponential Weighted Triangular Welles Wilder Smoothed Variable VIDYA Time Series"},
+		"macd": {"keywords": "Moving Average Convergence Divergence"},
+		"Lin R2": {"keywords": "Regression RSquared Squared"},
+		"Lin Fcst": {"keywords": "Regression"},
+		"ATR": {"keywords": "ATR"},
+		"QStick": {"keywords": "Chande"},
+		"RAVI": {"keywords": "Rapid Adaptive Variance Indicator"},
+		"ADX": {"keywords": "Average Directional Index DMS Movement System"},
+		"Directional": {"noSearch": true},
+		"GAPO": {"keywords": "GAPO"},
+		"Gopala": {"noSearch": true},
+		"PSAR": {"keywords": "Stop And Reverse Welles Wilder"},
+		"W Acc Dist": {"keywords": "Williams Accumulation Distribution"},
+		"vchart": {"noSearch": true},
+		"Awesome": {"keywords": "Bill Williams"},
+		"W MFI": {"keywords": "Bill Williams"},
+		"ATR Bands": {"keywords": "Average True Range"},
+		"STARC Bands": {"keywords": "Stoller Average Range Channels"},
+		"ATR Trailing Stop": {"keywords": "Average True Range"},
+		"Alligator": {"keywords": "Bill Williams Fractals"},
+		"Gator": {"keywords": "Bill Williams"},
+		"Ichimoku Clouds": {"keywords": "Kinko Hyo"},
+		"P Rel": {"keywords": "Relative Strength Comparison"},
+		"VWAP": {"keywords": "Volume Weighted Average Price"},
+		"Twiggs": {"initializeFN": studyAttribution("Twiggs","Formula courtesy <a href='http://www.incrediblecharts.com/indicators/twiggs_money_flow.php' target='_blank'>IncredibleCharts</a>.")}
+	});
+	$$("studySearch").style.display="inline-block";
+	$$("studySearchAll").style.display="inline-block";
+	var studyList=[];
+	for(var s in STX.Studies.studyLibrary){
+		var study=STX.Studies.studyLibrary[s];
+		if(study.noSearch) continue;
+		studyList.push({id:s, name:study.name, keywords:study.keywords, category:study.category});
+	}
+	var studySearchList=new STX.SearchableWordList(studyList,150,false);
+	function studyTextCallback(that, txt, filter, clicked){
+	    if(clicked) that.config.input.value="";
+	    studySearchList.lookup(txt, null, function(arr){
+	    	var res=[];
+	    	for(var r=0;r<arr.length;r++){
+	    		res.push({symbol:arr[r].id,description:stxx.translateIf(arr[r].name),exchange:arr[r].category});
+	    	}
+	    	that.displayResults(res);
+	    });
+	}
+	function studyAttribution(studyType,text){
+		var origInitFN=STX.Studies.studyLibrary[studyType].initializeFN;
+		if(!origInitFN) origInitFN=STX.Studies.initializeFN;
+		return function(stx, type, inputs, outputs, parameters, panel){
+			var sd=origInitFN(stx, type, inputs, outputs, parameters, panel);
+			var attribution=document.createElement("div");
+			attribution.className="stx-study-attribution";
+			attribution.innerHTML=text;
+			var oldAttr=$$$(".stx-study-attribution",stx.panels[sd.panel].subholder);
+			if(oldAttr) stx.panels[sd.panel].subholder.removeChild(oldAttr);
+			stx.panels[sd.panel].subholder.appendChild(attribution);
+			return sd;
+		};
+	}
+	var studyLookupWidget=new STX.LookupWidget({
+		input: $$("studySearch"),
+		className: "stxLookupStudies",
+		textCallback: studyTextCallback,
+		selectCallback: function(that, txt){that.config.input.value=""; studyDialog(null, txt);},
+		mustSelect: true,
+		cascade: true,
+	    stx: stxx
+	});
+	studyLookupWidget.close=function(){
+		this.config.input.value="";
+		if(this.div) this.div.style.display="none";
+		STX.MenuManager.menuOff(true);
+	};
+	studyLookupWidget.init();
+	STX.safeClickTouch($$("studySearchAll"), function(){
+		studyTextCallback(studyLookupWidget,"*");
+	});
+}());
+
+displayChart();
+
+</script>
+</body>
+</html>
