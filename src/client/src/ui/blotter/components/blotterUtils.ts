@@ -1,8 +1,12 @@
 import { ColDef } from 'ag-grid'
+import logdown from 'logdown'
 import numeral from 'numeral'
 import { Trade, TradeStatus } from 'rt-types'
 import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
 import SetFilter from './filters/SetFilter'
+
+const LOG_NAME = 'Trade Status: '
+const logger = logdown(`app:${LOG_NAME}`)
 
 const currencyIconLookup = {
   ['USD']: `fas fa-usd`,
@@ -10,7 +14,7 @@ const currencyIconLookup = {
   ['NZD']: `fas fa-usd`,
   ['GBP']: `fas fa-gbp`,
   ['EUR']: `fas fa-euro`,
-  ['YEN']: `fas fa-yen`
+  ['YEN']: `fas fa-yen`,
 }
 
 const numericCellRenderer = (rowData: any): string => {
@@ -18,7 +22,7 @@ const numericCellRenderer = (rowData: any): string => {
   const dealtCurrency = trade.dealtCurrency
   const icon = currencyIconLookup[dealtCurrency].toString()
   const renderer = `<span></div> ${numeral(rowData.value).format(
-    '0,0'
+    '0,0',
   )}<div class='${icon} rt-blotter__ccy-symbol'></span>`
   return renderer
 }
@@ -51,7 +55,7 @@ const getStatusIndicatorClass = (trade: Trade) => {
     case TradeStatus.Pending:
       return 'rt-blotter__status-indicator--pending'
     default:
-      console.log('unkown trade status')
+      logger.log('unkown trade status')
   }
   return ''
 }
@@ -60,7 +64,7 @@ export const DEFAULT_COLUMN_DEFINITION: ColDef = {
   menuTabs: ['filterMenuTab'],
   suppressSizeToFit: true,
   suppressFilter: false,
-  minWidth: 40
+  minWidth: 40,
 }
 
 export const STATUS_INDICATOR = 'statusIndicator'
@@ -86,7 +90,7 @@ export const COLUMN_FIELDS = [
   NOTIONAL,
   SPOT_RATE,
   VALUE_DATE,
-  TRADER_NAME
+  TRADER_NAME,
 ]
 
 export const columnDefinitions: ColDef[] = [
@@ -100,14 +104,14 @@ export const columnDefinitions: ColDef[] = [
     cellClass: ({ data }) => getStatusIndicatorClass(data),
     suppressSorting: true,
     suppressMenu: true,
-    headerClass: 'rt-status-indicator__header'
+    headerClass: 'rt-status-indicator__header',
   },
   {
     colId: TRADE_ID,
     headerName: 'Trade ID',
     field: TRADE_ID,
     width: 100,
-    filter: 'agNumberColumnFilter'
+    filter: 'agNumberColumnFilter',
   },
   {
     colId: STATUS,
@@ -115,7 +119,7 @@ export const columnDefinitions: ColDef[] = [
     field: STATUS,
     width: 110,
     cellClass: ({ data }) => getStatusCellClass(data),
-    filterFramework: SetFilter
+    filterFramework: SetFilter,
   },
   {
     colId: TRADE_DATE,
@@ -123,28 +127,28 @@ export const columnDefinitions: ColDef[] = [
     field: TRADE_DATE,
     cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
     width: 130,
-    suppressFilter: true
+    suppressFilter: true,
   },
   {
     colId: DIRECTION,
     headerName: 'Direction',
     field: DIRECTION,
     width: 110,
-    filterFramework: SetFilter
+    filterFramework: SetFilter,
   },
   {
     colId: SYMBOL,
     headerName: 'CCYCCY',
     field: SYMBOL,
     width: 110,
-    filterFramework: SetFilter
+    filterFramework: SetFilter,
   },
   {
     colId: DEALT_CURRENCY,
     headerName: 'Dealt CCY',
     field: DEALT_CURRENCY,
     width: 110,
-    filterFramework: SetFilter
+    filterFramework: SetFilter,
   },
   {
     colId: NOTIONAL,
@@ -154,7 +158,7 @@ export const columnDefinitions: ColDef[] = [
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
     width: 120,
-    filter: 'agNumberColumnFilter'
+    filter: 'agNumberColumnFilter',
   },
   {
     colId: SPOT_RATE,
@@ -163,7 +167,7 @@ export const columnDefinitions: ColDef[] = [
     width: 100,
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
-    filter: 'agNumberColumnFilter'
+    filter: 'agNumberColumnFilter',
   },
   {
     colId: VALUE_DATE,
@@ -171,14 +175,14 @@ export const columnDefinitions: ColDef[] = [
     field: VALUE_DATE,
     cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
     width: 120,
-    suppressFilter: true
+    suppressFilter: true,
   },
   {
     colId: TRADER_NAME,
     field: TRADER_NAME,
     headerName: 'Trader',
     width: 110,
-    filterFramework: SetFilter
+    filterFramework: SetFilter,
   },
   {
     colId: 'empty',
@@ -186,6 +190,6 @@ export const columnDefinitions: ColDef[] = [
     headerName: '',
     width: 80,
     suppressSizeToFit: false,
-    suppressFilter: true
-  }
+    suppressFilter: true,
+  },
 ]

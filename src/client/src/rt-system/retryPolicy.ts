@@ -1,7 +1,11 @@
+import logdown from 'logdown'
 import { Observable, throwError, timer } from 'rxjs'
 import { finalize, mergeMap } from 'rxjs/operators'
 
 const LOG_NAME = 'Retry: '
+const LOG_NAME_DONE = 'Done: '
+const retryLogger = logdown(`app${LOG_NAME}`, { prefixColor: 'MediumBlue' })
+const doneLogger = logdown(`app${LOG_NAME_DONE}`, { prefixColor: 'LimeGreen' })
 
 export const retryWithBackOff = ({
   maxRetryAttempts = Number.POSITIVE_INFINITY,
@@ -18,11 +22,11 @@ export const retryWithBackOff = ({
       if (retryAttempt > maxRetryAttempts) {
         return throwError(error)
       }
-      console.info(LOG_NAME, `Attempt ${retryAttempt}: retrying in ${retryAttempt * scalingDuration}ms`)
+      retryLogger.info(`*Attempt* ${retryAttempt}: retrying in ${retryAttempt * scalingDuration}ms`)
       // retry after 1s, 2s, etc...
       return timer(retryAttempt * scalingDuration)
     }),
-    finalize(() => console.log('We are done!')),
+    finalize(() => doneLogger.log('We are done!')),
   )
 }
 
@@ -42,10 +46,10 @@ export const retryConstantly = ({
         return throwError(error)
       }
 
-      console.info(LOG_NAME, `Attempt ${retryAttempt}`)
+      retryLogger.info(`*Attempt* ${retryAttempt}`)
 
       return timer(interval)
     }),
-    finalize(() => console.log('We are done!')),
+    finalize(() => doneLogger.log('We are done!')),
   )
 }

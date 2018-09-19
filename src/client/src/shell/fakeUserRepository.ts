@@ -1,6 +1,9 @@
 import { User } from 'rt-types'
 
+import logdown from 'logdown'
+
 const LOG_NAME = 'FakeUserRepository: '
+const logger = logdown(`app:${LOG_NAME}`, { prefixColor: 'SteelBlue' })
 
 const fakeUserDetails = [
   {
@@ -113,10 +116,7 @@ const currentUser: User = {
   code: userDetails.shortCode,
 }
 
-console.info(
-  LOG_NAME,
-  `Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`,
-)
+logger.info(`Will use user *${currentUser.firstName} ${currentUser.lastName} (${currentUser.code})* for this session`)
 
 export default class FakeUserRepository {
   /**

@@ -1,3 +1,4 @@
+import logdown from 'logdown'
 import { retryConstantly, ServiceClient } from 'rt-system'
 import { map, retryWhen } from 'rxjs/operators'
 import {
@@ -9,7 +10,8 @@ import {
   PositionUpdates,
 } from './model'
 
-const LOG_NAME = 'Analytics Service:'
+const LOG_NAME = 'Analytics Service: '
+const logger = logdown(`app:${LOG_NAME}`, { prefixColor: 'DarkBlue' })
 
 function mapFromDto(dto: PositionsRaw): PositionUpdates {
   const positions = mapPositionsFromDto(dto.CurrentPositions)
@@ -41,7 +43,7 @@ export default class AnalyticsService {
   constructor(private readonly serviceClient: ServiceClient) {}
 
   getAnalyticsStream(analyticsRequest: string) {
-    console.info(LOG_NAME, 'Subscribing to analytics stream')
+    logger.info('*Subscribing* to _analytics stream_')
     return this.serviceClient
       .createStreamOperation<PositionsRaw, string>('analytics', 'getAnalytics', analyticsRequest)
       .pipe(

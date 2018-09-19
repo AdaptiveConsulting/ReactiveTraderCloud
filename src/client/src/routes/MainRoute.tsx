@@ -1,3 +1,4 @@
+import logdown from 'logdown'
 import React from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
@@ -20,6 +21,7 @@ const APPLICATION_DISCONNECT = 15 * 60 * 1000
 
 const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
+const warnLogger = logdown(`app:${LOG_NAME}`, { prefixColor: 'Tomato' })
 
 export default class MainRoute extends React.Component {
   openfin = new OpenFin()
@@ -50,7 +52,7 @@ export default class MainRoute extends React.Component {
 
     timer(APPLICATION_DISCONNECT).subscribe(() => {
       this.store.dispatch(ConnectionActions.disconnect())
-      console.warn(LOG_NAME, `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
+      warnLogger.warn(`Application has reached disconnection time at *${APPLICATION_DISCONNECT}*`)
     })
   }
 

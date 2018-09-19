@@ -1,10 +1,12 @@
+import logdown from 'logdown'
 import { debounceWithSelector, retryConstantly, ServiceClient } from 'rt-system'
 import { Observable } from 'rxjs'
 import { map, retryWhen, scan, share } from 'rxjs/operators'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 import { SpotPriceTick } from '../model/spotPriceTick'
 
-const LOG_NAME = 'Pricing Service:'
+const LOG_NAME = 'Pricing Service: '
+const logger = logdown(`app:${LOG_NAME}`, { prefixColor: 'MediumBlue' })
 const getPriceUpdatesOperationName = 'getPriceUpdates'
 
 interface Request {
@@ -32,7 +34,7 @@ export default class PricingService {
   }
 
   private static createSpotPriceStream = (serviceClient: ServiceClient, request: Request) => {
-    console.debug(LOG_NAME, `Subscribing to spot price stream for [${request.symbol}]`)
+    logger.debug(`*Subscribing* to spot price stream for *[${request.symbol}]*`)
     return serviceClient
       .createStreamOperation<RawPrice, Request>('pricing', getPriceUpdatesOperationName, request)
       .pipe(

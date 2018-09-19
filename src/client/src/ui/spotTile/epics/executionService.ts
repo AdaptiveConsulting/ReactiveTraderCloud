@@ -1,3 +1,4 @@
+import logdown from 'logdown'
 import { ServiceClient } from 'rt-system'
 import { mapFromTradeDto, TradeRaw } from 'rt-types'
 import { merge, Observable, of, timer } from 'rxjs'
@@ -7,11 +8,13 @@ import {
   createExecuteTradeResponseForError,
   ExecuteTradeRequest,
 } from '../model/executeTradeRequest'
+
 interface RawTradeReponse {
   Trade: TradeRaw
 }
 
-const LOG_NAME = 'Execution Service:'
+const LOG_NAME = 'Execution Service: '
+const logger = logdown(`app:${LOG_NAME}`, { prefixColor: 'DarkOrange' })
 
 const EXECUTION_CLIENT_TIMEOUT_MS = 2000
 const EXECUTION_REQUEST_TIMEOUT_MS = 30000
@@ -24,7 +27,7 @@ export default class ExecutionService {
 
   executeTrade(executeTradeRequest: ExecuteTradeRequest) {
     return this.limitChecker(executeTradeRequest).pipe(
-      tap(() => console.info(LOG_NAME, 'executing: ', executeTradeRequest)),
+      tap(() => logger.info('*executing:* ', executeTradeRequest)),
       take(1),
       mergeMap(tradeWithinLimit => {
         if (!tradeWithinLimit) {
@@ -38,9 +41,8 @@ export default class ExecutionService {
           )
           .pipe(
             tap(dto =>
-              console.info(
-                LOG_NAME,
-                `execute response received for: ${executeTradeRequest}. Status: ${dto.Trade.Status}`,
+              logger.info(
+                `execute response received for: *${executeTradeRequest}*. *Status:* ${dto.Trade.Status}`,
                 dto,
               ),
             ),

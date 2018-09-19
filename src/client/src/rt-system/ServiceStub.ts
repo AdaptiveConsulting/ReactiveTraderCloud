@@ -1,4 +1,5 @@
 import { Error, ISubscription } from 'autobahn'
+import logdown from 'logdown'
 import { NextObserver, Observable } from 'rxjs'
 import { filter, mergeMap, switchMap } from 'rxjs/operators'
 
@@ -6,6 +7,10 @@ import './AutoBahnTypeExtensions'
 import { ConnectionEvent, ConnectionEventType, ConnectionOpenEvent } from './connectionStream'
 
 const LOG_NAME = 'Connection:'
+const logger = logdown(`app:${LOG_NAME} Info `, { prefixColor: 'Olive' })
+const subLogger = logdown(`app:${LOG_NAME} Subscribing `, { prefixColor: 'MediumBlue' })
+const debugLogger = logdown(`app:${LOG_NAME}`, { prefixColor: 'ForestGreen' })
+const errorLogger = logdown(`app:${LOG_NAME} Error `, { prefixColor: 'DarkRed' })
 
 //  The format the server accepts
 
@@ -28,7 +33,7 @@ export class ServiceStub {
   logResponse(topic: string, response: any[]): void {
     const payloadString = JSON.stringify(response[0])
     if (topic !== 'status') {
-      console.debug(LOG_NAME, `Received response on topic [${topic}]. Payload[${payloadString}]`)
+      debugLogger.debug(`Received response on topic [${topic}]. *Payload*[${payloadString}]`)
     }
   }
 
@@ -44,7 +49,7 @@ export class ServiceStub {
       switchMap(
         ({ session }) =>
           new Observable<T>(obs => {
-            console.info(LOG_NAME, `Subscribing to topic [${topic}].`)
+            subLogger.info(`to topic [${topic}].`)
 
             let subscription: ISubscription
 
@@ -63,13 +68,13 @@ export class ServiceStub {
                 },
                 (error: Error) => {
                   // subscription failed, error is an instance of autobahn.Error
-                  console.error(LOG_NAME, `Error on topic ${topic}`, error)
+                  errorLogger.error(`on topic ${topic}`, error)
                   obs.error(error)
                 },
               )
 
             return () => {
-              console.info(LOG_NAME, `Tearing down topic ${topic}`)
+              logger.info(`Tearing down topic ${topic}`)
 
               if (!subscription) {
                 return
@@ -81,13 +86,13 @@ export class ServiceStub {
                       obs.complete()
 
                       //obs.unsubscribe()
-                      return console.info(LOG_NAME, `Successfully unsubscribing from topic ${topic}`)
+                      return logger.info(`Successfully unsubscribing from topic ${topic}`)
                     },
-                    err => console.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err),
+                    err => errorLogger.error(`unsubscribing from topic ${topic}`, err),
                   )
                 }
               } catch (err) {
-                console.error(LOG_NAME, `Error thrown unsubscribing from topic ${topic}`, err)
+                errorLogger.error(`thrown unsubscribing from topic ${topic}`, err)
               }
             }
           }),
@@ -105,7 +110,7 @@ export class ServiceStub {
       mergeMap(
         ({ session }) =>
           new Observable<TResult>(obs => {
-            console.debug(LOG_NAME, `Doing a RPC to [${remoteProcedure}]]`)
+            debugLogger.debug(`Doing a RPC to [${remoteProcedure}]]`)
 
             const dto: SubscriptionRequest<TPayload> = [
               {

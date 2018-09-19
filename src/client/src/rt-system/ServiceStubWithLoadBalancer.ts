@@ -1,3 +1,4 @@
+import logdown from 'logdown'
 import { defer, Observable } from 'rxjs'
 import { distinctUntilChanged, filter, map, share, switchMap, take } from 'rxjs/operators'
 import { ServiceCollectionMap } from './ServiceInstanceCollection'
@@ -10,6 +11,7 @@ import { ServiceStub } from './ServiceStub'
  */
 
 const LOG_NAME = 'ServiceClient: Initiated'
+const logger = logdown(`app:${LOG_NAME}`, { prefixColor: 'LightSeaGreen' })
 
 export default class ServiceStubWithLoadBalancer {
   constructor(
@@ -31,13 +33,12 @@ export default class ServiceStubWithLoadBalancer {
    *
    */
   createRequestResponseOperation<TResponse, TRequest>(service: string, operationName: string, request: TRequest) {
-    console.info(LOG_NAME, `Creating request response operation for [${operationName}]`)
+    logger.info(`*Creating* request response operation for [${operationName}]`)
 
     return this.getServiceWithMinLoad$(service).pipe(
       switchMap(serviceInstanceStatus => {
         if (serviceInstanceStatus.serviceId !== 'status') {
-          console.info(
-            LOG_NAME,
+          logger.info(
             `Will use service instance [${
               serviceInstanceStatus.serviceId
             }] for request/response operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`,
@@ -75,8 +76,7 @@ export default class ServiceStubWithLoadBalancer {
               ((Math.random() * Math.pow(36, 8)) << 0).toString(36)
             }`
 
-            console.info(
-              LOG_NAME,
+            logger.info(
               `Will use service instance [${
                 serviceInstanceStatus.serviceId
               }] for stream operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`,
@@ -87,12 +87,12 @@ export default class ServiceStubWithLoadBalancer {
             // tslint:disable-next-line:no-bitwise
             const subscribeTopic$ = this.connection.subscribeToTopic<TResponse>(topicName, {
               next: topic => {
-                console.info(LOG_NAME, `Subscribed to ${topic}, requesting ${remoteProcedure}`)
+                logger.info(`*Subscribed* to ${topic}, requesting ${remoteProcedure}`)
                 const req = this.connection
                   .requestResponse<TResponse, {}>(remoteProcedure, request, topicName)
                   .pipe(take(1))
                   .subscribe(() => {
-                    console.info(LOG_NAME, `request acknowledged for ${remoteProcedure}`)
+                    logger.info(`request acknowledged for ${remoteProcedure}`)
                     req.unsubscribe()
                   })
               },
