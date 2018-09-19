@@ -9,7 +9,7 @@
 /* Copyright 2014-2015-2016-2017 ChartIQ LLC */
 (function() {
 	var trialExpiration = undefined;
-	var licenseExpiration = "2018/06/01";
+	var licenseExpiration = "2019/07/31";
 	var domains = ["127.0.0.1","localhost","adaptiveconsulting.github.io"];
 	var expiration;
 
