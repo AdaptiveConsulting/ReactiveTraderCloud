@@ -26,14 +26,15 @@ export const openDesktopWindow = (config: DesktopWindowProps) => {
         defaultCentered: true,
         autoShow: true,
         frame: false,
-        saveWindowState: false
-      },
+        saveWindowState: false,
+        shadow: true,
+      } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
       () => {
         resolve(win)
       },
       error => {
         console.log('Error creating window:', error)
-      }
+      },
     )
   })
 }
