@@ -100,7 +100,7 @@ const OverflowScroll = styled.div`
 `
 
 const Wrapper = styled.div`
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   user-select: none;
 `
 
@@ -110,7 +110,6 @@ const WorkspaceWrapper = styled(Wrapper)`
 `
 
 const AnalyticsWrapper = styled(Wrapper)`
-  padding-right: 0.5rem;
   padding-left: 0;
   overflow: hidden;
 
