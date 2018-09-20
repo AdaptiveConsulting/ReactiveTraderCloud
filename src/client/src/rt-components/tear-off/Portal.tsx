@@ -29,7 +29,7 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
   async componentDidMount() {
     const { environment, config, desktopConfig, browserConfig } = this.props
 
-    if (environment.isDesktop) {
+    if (environment.provider.type === 'desktop') {
       const win = await openDesktopWindow({ ...config, ...desktopConfig })
       win.addEventListener('closed', this.release)
       this.externalWindow = win.getNativeWindow()

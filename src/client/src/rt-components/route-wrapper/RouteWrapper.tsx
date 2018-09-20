@@ -17,7 +17,7 @@ interface Props {
 
 const RouteWrapperBase: React.SFC<Props> = ({ environment, children }) => (
   <RouteStyle>
-    {environment.isDesktop ? (
+    {environment.provider.platform === 'openfin' ? (
       <OpenFinChrome>
         <OpenFinHeader close={closeOpenFinWindow} />
         {children}

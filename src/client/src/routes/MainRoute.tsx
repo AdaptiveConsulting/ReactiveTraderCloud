@@ -3,7 +3,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
 
 import { ConnectionActions } from 'rt-actions'
-import { Environment } from 'rt-components'
+import { createEnvironment, Environment } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { ThemeName, ThemeStorage } from 'rt-theme'
 
@@ -21,13 +21,8 @@ const APPLICATION_DISCONNECT = 15 * 60 * 1000
 const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
 
-export default class MainRoute extends React.Component {
-  openfin = new OpenFin()
-
-  environment = {
-    isDesktop: this.openfin.isPresent,
-    openfin: this.openfin.isPresent ? this.openfin : null,
-  }
+export class MainRoute extends React.Component {
+  environment = createEnvironment<OpenFin>(new OpenFin())
 
   store = configureStore(
     createApplicationServices({
@@ -36,7 +31,7 @@ export default class MainRoute extends React.Component {
         'com.weareadaptive.reactivetrader',
         +(config.overwriteServerEndpoint ? config.serverPort : location.port)!,
       ),
-      openfin: this.openfin,
+      openfin: this.environment.openfin,
       user: FakeUserRepository.currentUser,
     }),
   )
@@ -66,3 +61,5 @@ export default class MainRoute extends React.Component {
     )
   }
 }
+
+export default MainRoute
