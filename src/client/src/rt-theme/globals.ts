@@ -69,4 +69,8 @@ export default injectGlobal`
     height: 100vh;
     max-width: 100vw;
   }
+
+  button:focus {
+    outline: none;
+  }
 `

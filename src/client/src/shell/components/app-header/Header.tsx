@@ -72,7 +72,7 @@ const Fill = styled.div`
   cursor: -webkit-grab;
 `
 
-const IconButton = styled.div<{ type: string }>`
+const IconButton = styled.button<{ type: string }>`
   width: 2rem;
   height: 2rem;
   font-size: 1rem;
@@ -93,9 +93,6 @@ const IconButton = styled.div<{ type: string }>`
     color: ${({ theme }) => theme.button.secondary.textColor};
   }
 `
-IconButton.defaultProps = {
-  role: 'button',
-}
 
 const Division = styled.div`
   height: 100%;

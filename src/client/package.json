@@ -30,7 +30,7 @@
     "build": "npm run build:react-app",
     "build:local": "cross-env REACT_APP_ENV=local npm run build:react-app",
     "build:cloud": "cross-env REACT_APP_ENV=demo npm run build:react-app",
-    "build:react-app": "cross-env NODE_ENV=development react-app-rewired build --scripts-version react-scripts-ts",
+    "build:react-app": "cross-env react-app-rewired build --scripts-version react-scripts-ts",
     "test": "react-app-rewired test --scripts-version react-scripts-ts --env=jsdom",
     "analyze": "source-map-explorer build/static/js/main.*",
     "openfin": "openfin -c public/config/openfin/local.app.json -l",
