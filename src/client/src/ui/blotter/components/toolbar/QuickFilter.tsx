@@ -12,10 +12,9 @@ interface QuickFilterState {
 }
 
 const QuickFilterStyle = styled('div')`
-  padding: 0 0.625rem;
   width: 10rem;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   height: 1.25rem;
   position: relative;
 `
@@ -65,7 +64,7 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
   private quickFilterInput = React.createRef<HTMLInputElement>()
 
   state = {
-    quickFilterText: ''
+    quickFilterText: '',
   }
 
   render() {

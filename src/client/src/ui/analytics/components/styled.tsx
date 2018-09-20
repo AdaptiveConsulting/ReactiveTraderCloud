@@ -2,6 +2,7 @@ import { styled } from 'rt-theme'
 import { transparentColor } from '../globals/variables'
 
 export const AnalyticsStyle = styled.div`
+  border-radius: 0.25rem;
   flex: 1;
   color: ${({ theme }) => theme.analytics.textColor};
   background-color: ${({ theme }) => theme.analytics.backgroundColor};

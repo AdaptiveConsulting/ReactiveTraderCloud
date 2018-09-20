@@ -4,14 +4,6 @@ import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { PortalProps } from './selectors'
 
-const WorkspaceHeader = styled.div`
-  display: flex;
-  align-items: center;
-  height: 3.5rem;
-  color: ${p => p.theme.shell.textColor};
-  font-size: 1rem;
-`
-
 const WorkspaceItems = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
@@ -33,25 +25,20 @@ interface Props {
 }
 
 const Workspace: React.SFC<Props> = ({ spotTiles = [] }) => (
-  <React.Fragment>
-    <WorkspaceHeader>
-      <div>Live Rates</div>
-    </WorkspaceHeader>
-    <WorkspaceItems>
-      {spotTiles.map(({ key, portalProps }) => (
-        <TearOff
-          id={key}
-          portalProps={portalProps}
-          render={(popOut, tornOff) => (
-            <WorkspaceItem>
-              <SpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} tearable />
-            </WorkspaceItem>
-          )}
-          key={key}
-        />
-      ))}
-    </WorkspaceItems>
-  </React.Fragment>
+  <WorkspaceItems>
+    {spotTiles.map(({ key, portalProps }) => (
+      <TearOff
+        id={key}
+        portalProps={portalProps}
+        render={(popOut, tornOff) => (
+          <WorkspaceItem>
+            <SpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} tearable />
+          </WorkspaceItem>
+        )}
+        key={key}
+      />
+    ))}
+  </WorkspaceItems>
 )
 
 export default Workspace

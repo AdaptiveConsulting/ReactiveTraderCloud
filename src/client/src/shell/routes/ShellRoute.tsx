@@ -51,7 +51,9 @@ class ShellRoute extends PureComponent<Props, State> {
             disabled={!displayBlotter}
           >
             <WorkspaceWrapper>
-              <WorkspaceContainer />
+              <OverflowScroll>
+                <WorkspaceContainer />
+              </OverflowScroll>
             </WorkspaceWrapper>
           </Resizer>
         }
@@ -92,18 +94,24 @@ const portalProps = {
   },
 }
 
+const OverflowScroll = styled.div`
+  overflow-y: scroll;
+  height: 100%;
+`
+
 const Wrapper = styled.div`
+  padding: 0.5rem;
   user-select: none;
 `
 
 const WorkspaceWrapper = styled(Wrapper)`
-  padding: 0 0.5rem 0 1rem;
+  padding-right: 0;
   height: 100%;
-  overflow: scroll;
 `
 
 const AnalyticsWrapper = styled(Wrapper)`
-  padding: 0.5rem;
+  padding-right: 0.5rem;
+  padding-left: 0;
   overflow: hidden;
 
   @media (max-width: 750px) {
@@ -112,7 +120,6 @@ const AnalyticsWrapper = styled(Wrapper)`
 `
 
 const BlotterWrapper = styled(Wrapper)`
-  padding: 0 0.5rem 0 1rem;
   height: 100%;
 `
 
