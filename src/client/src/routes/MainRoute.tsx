@@ -12,6 +12,7 @@ import { getEnvVars } from '../config/config'
 import configureStore from '../configureStore'
 import { Router } from '../shell'
 import FakeUserRepository from '../shell/fakeUserRepository'
+import { GlobalScrollbarStyle } from '../shell/GlobalScrollbarStyle'
 import { OpenFin } from '../shell/openFin'
 
 declare const window: any
@@ -59,7 +60,10 @@ export default class MainRoute extends React.Component {
       <ThemeStorage.Provider default={ThemeName.Dark}>
         <ReduxProvider store={this.store}>
           <Environment.Provider value={this.environment}>
-            <Router />
+            <React.Fragment>
+              <GlobalScrollbarStyle />
+              <Router />
+            </React.Fragment>
           </Environment.Provider>
         </ReduxProvider>
       </ThemeStorage.Provider>

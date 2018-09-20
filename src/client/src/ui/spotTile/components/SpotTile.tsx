@@ -22,6 +22,7 @@ export const SpotTileStyle = styled(TileBaseStyle)`
   height: 100%;
   justify-content: space-between;
   flex-direction: column;
+  overflow: hidden;
 `
 
 export interface Props {
