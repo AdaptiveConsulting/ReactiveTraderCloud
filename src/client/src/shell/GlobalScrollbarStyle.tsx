@@ -6,15 +6,17 @@ export const css = `
     overflow: hidden;
   }
 
-  ::-webkit-scrollbar {
+  body ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
-  ::-webkit-scrollbar-thumb {
+
+  body ::-webkit-scrollbar-thumb {
     border-radius: 2px;
     background-color: rgba(212, 221, 232, .4);
   }
-  ::-webkit-scrollbar-corner {
+  
+  body ::-webkit-scrollbar-corner {
     background-color: rgba(0,0,0,0);
   }
 `
