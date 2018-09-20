@@ -5,6 +5,7 @@ import { styled } from 'rt-theme'
 const RouteStyle = styled.div`
   height: 100%;
   width: 100%;
+  overflow: hidden;
 `
 
 const closeOpenFinWindow = () => {
