@@ -9,10 +9,12 @@ export const Notification = styled('div')`
   user-select: none;
   display: flex;
   flex-direction: column;
-  padding: 0.5625rem;
+  padding: 0.5rem 1rem;
+
+  font-size: 1rem;
+  line-height: 1.25rem;
 `
 export const Top = styled(Flex)`
-  font-size: 0.75rem;
   flex-grow: 1;
 `
 
@@ -22,12 +24,9 @@ export const Traded = styled('div')<{ isDone: boolean }>`
 
 export const Status = styled('div')<{ isDone: boolean }>`
   color: ${({ theme, isDone }) => !isDone && theme.accents.bad.base};
-  font-size: 0.75rem;
 `
 
-export const Bottom = styled(Flex)`
-  font-size: 0.75rem;
-`
+export const Bottom = styled(Flex)``
 
 export const MetaContainer = styled('div')`
   flex-grow: 1;
