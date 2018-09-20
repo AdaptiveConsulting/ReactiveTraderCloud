@@ -1,12 +1,12 @@
 import React from 'react'
 
-export interface EnvironmentValue<Provider extends Window = Window> {
+export interface EnvironmentValue<Provider extends WindowProvider = WindowProvider> {
   provider: Provider
   openfin?: Provider | null
   [key: string]: Provider | null
 }
 
-export interface Window {
+export interface WindowProvider {
   type: string | 'desktop' | 'browser'
   platform: string | 'openfin' | 'browser'
   maximize: () => void
@@ -16,7 +16,7 @@ export interface Window {
   [key: string]: any
 }
 
-export function createEnvironment<Provider extends Window>(provider: any): EnvironmentValue<Provider> {
+export function createEnvironment<Provider extends WindowProvider>(provider: any): EnvironmentValue<Provider> {
   return {
     provider,
     get [provider.platform]() {
@@ -25,8 +25,8 @@ export function createEnvironment<Provider extends Window>(provider: any): Envir
   }
 }
 
-export const Environment = React.createContext<EnvironmentValue<Window>>(
-  createEnvironment<Window>({
+export const Environment = React.createContext<EnvironmentValue<WindowProvider>>(
+  createEnvironment<WindowProvider>({
     type: 'browser',
     platform: 'browser',
     maximize: () => {},
