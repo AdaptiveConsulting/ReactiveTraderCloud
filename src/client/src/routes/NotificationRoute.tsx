@@ -1,7 +1,7 @@
 import React from 'react'
 import { Trade } from 'rt-types'
 
-import { ThemeStorage } from 'rt-theme'
+import { ThemeName, ThemeStorage } from 'rt-theme'
 import TradeNotification from '../shell/notification/TradeNotification'
 
 declare const window: any
@@ -33,7 +33,7 @@ export class NotificationRoute extends React.Component<{}, State> {
   render() {
     const { message } = this.state
     return message == null ? null : (
-      <ThemeStorage.Provider>
+      <ThemeStorage.Provider default={ThemeName.Dark}>
         <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
       </ThemeStorage.Provider>
     )
