@@ -20,7 +20,8 @@ const BlotterHeaderStyle = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0.5rem 1rem 1.25rem;
+  padding: 0 0.5rem;
+  height: 2.5rem;
 `
 
 const BlotterControls = styled('button')`
@@ -39,9 +40,14 @@ const BlotterLeft = styled('div')`
   font-size: 0.9375rem;
 `
 
+const Fill = styled.div`
+  width: 1rem;
+  height: 1rem;
+`
+
 export default class BlotterHeader extends Component<Props, State> {
   state = {
-    quickFilterText: ''
+    quickFilterText: '',
   }
 
   render() {
@@ -62,9 +68,12 @@ export default class BlotterHeader extends Component<Props, State> {
             columnDefinitions={columnDefinitions}
           />
           {canPopout && (
-            <BlotterControls onClick={onPopoutClick}>
-              <PopoutIcon width={0.8125} height={0.75} />
-            </BlotterControls>
+            <React.Fragment>
+              <Fill />
+              <BlotterControls onClick={onPopoutClick}>
+                <PopoutIcon width={0.8125} height={0.75} />
+              </BlotterControls>
+            </React.Fragment>
           )}
         </BlotterRight>
       </BlotterHeaderStyle>

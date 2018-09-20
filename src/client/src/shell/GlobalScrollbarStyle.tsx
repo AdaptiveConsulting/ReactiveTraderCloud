@@ -24,11 +24,19 @@ export const css = memoize(
     border: 4.5px solid rgba(0, 0, 0, 0);
     background-clip: padding-box;
     background-color: ${color};
-    box-shadow: inset -0px -0px 0 ${color}, inset 0px 0px 0 ${color};
   }
   
   body ::-webkit-scrollbar-corner {
     background-color: rgba(0,0,0,0);
+  }
+
+  body .ag-body ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  body .ag-body ::-webkit-scrollbar-thumb {
+    border-width: 2px;
   }
 `,
   color => console.log(color) || color,

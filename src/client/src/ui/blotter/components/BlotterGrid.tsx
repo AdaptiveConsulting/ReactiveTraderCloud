@@ -1,7 +1,7 @@
 import { styled } from 'rt-theme'
 
 export default styled('div')`
-  height: calc(100% - 4.75rem);
+  height: calc(100% - 4.5rem);
   background-color: ${({ theme }) => theme.alternateBackgroundColor};
   border-radius: 0.1875rem;
 

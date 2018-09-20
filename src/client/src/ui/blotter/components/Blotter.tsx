@@ -29,20 +29,21 @@ const BlotterStyle = styled('div')`
 `
 
 const BlotterStatus = styled('div')`
-  height: 1.875rem;
-  color: ${({ theme }) => theme.textColor};
+  height: 2rem;
+  padding: 0 0.5rem;
   font-size: 0.625rem;
   line-height: 1rem;
   display: flex;
   align-items: center;
-  opacity: 0.59;
+  opacity: 0.6;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const icons = {
   menu: '<i class="fas fa-filter" aria-hidden="true" />',
   filter: '<i class="fas fa-filter" aria-hidden="true" />',
   sortAscending: '<i class="fas fa-long-arrow-alt-up" aria-hidden="true" />',
-  sortDescending: '<i class="fas fa-long-arrow-alt-down" aria-hidden="true" />'
+  sortDescending: '<i class="fas fa-long-arrow-alt-down" aria-hidden="true" />',
 }
 
 export default class Blotter extends React.Component<BlotterProps, BlotterState> {
@@ -51,7 +52,7 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
   private gridDoc = React.createRef<HTMLDivElement>()
 
   state = {
-    displayedRows: 0
+    displayedRows: 0,
   }
 
   render() {
