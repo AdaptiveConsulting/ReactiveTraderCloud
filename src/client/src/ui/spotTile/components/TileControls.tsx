@@ -51,7 +51,7 @@ const TileControls: React.SFC<Props & { environment: EnvironmentValue }> = ({
         <PopoutIcon width={0.8125} height={0.75} />
       </TopRightButton>
     )}
-    {environment.isDesktop && (
+    {environment.provider.type === 'desktop' && (
       <BottomRightButton onClick={displayCurrencyChart}>
         <i className="fas fa-chart-bar" />
       </BottomRightButton>

@@ -4,7 +4,10 @@ const LOG_NAME = 'OpenFin: '
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'
 
-export default class OpenFin {
+export class OpenFin {
+  type = 'desktop'
+  platform = 'openfin'
+
   private limitCheckSubscriber: string | null = null
   private limitCheckId: number = 1
 
