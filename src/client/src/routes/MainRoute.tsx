@@ -20,8 +20,6 @@ declare const window: any
 const APPLICATION_DISCONNECT = 15 * 60 * 1000
 
 const config = getEnvVars(process.env.REACT_APP_ENV!)
-const LOG_NAME = 'Application Service:'
-const warningLogger = logger.warn(LOG_NAME, DebugType.Warning)
 
 export default class MainRoute extends React.Component {
   openfin = new OpenFin()
@@ -52,7 +50,9 @@ export default class MainRoute extends React.Component {
 
     timer(APPLICATION_DISCONNECT).subscribe(() => {
       this.store.dispatch(ConnectionActions.disconnect())
-      warningLogger(`Application has reached disconnection time at *${APPLICATION_DISCONNECT}* 😨`)
+      logger.warn('Application Service:', DebugType.Warning)(
+        `Application has reached disconnection time at *${APPLICATION_DISCONNECT}* 😨`,
+      )
     })
   }
 

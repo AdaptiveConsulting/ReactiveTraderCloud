@@ -3,9 +3,6 @@ import { WindowConfig } from './types'
 
 type DesktopWindowProps = WindowConfig
 
-const LOG_NAME = 'DesktopWindow:'
-const errorLogger = logger.error(LOG_NAME, DebugType.Error)
-
 const generateRandomName = function() {
   let text = ''
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -37,7 +34,7 @@ export const openDesktopWindow = (config: DesktopWindowProps) => {
         resolve(win)
       },
       error => {
-        errorLogger('creating window:', error)
+        logger.error('DesktopWindow:', DebugType.Error)('creating window:', error)
       },
     )
   })

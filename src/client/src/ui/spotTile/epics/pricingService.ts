@@ -5,8 +5,6 @@ import { map, retryWhen, scan, share } from 'rxjs/operators'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 import { SpotPriceTick } from '../model/spotPriceTick'
 
-const LOG_NAME = 'Pricing Service:'
-const subLogger = logger.debug(LOG_NAME, DebugType.Subscribing)
 const getPriceUpdatesOperationName = 'getPriceUpdates'
 
 interface Request {
@@ -34,7 +32,7 @@ export default class PricingService {
   }
 
   private static createSpotPriceStream = (serviceClient: ServiceClient, request: Request) => {
-    subLogger(`to spot price stream for *[${request.symbol}]*`)
+    logger.debug('Pricing Service:', DebugType.Subscribing)(`to spot price stream for *[${request.symbol}]*`)
     return serviceClient
       .createStreamOperation<RawPrice, Request>('pricing', getPriceUpdatesOperationName, request)
       .pipe(

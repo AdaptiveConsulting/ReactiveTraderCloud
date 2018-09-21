@@ -2,9 +2,7 @@ import logger from 'logger'
 import { Observable, throwError, timer } from 'rxjs'
 import { finalize, mergeMap } from 'rxjs/operators'
 
-const LOG_NAME = 'Retry: '
-
-const infoLogger = logger.info(LOG_NAME)
+const infoLogger = logger.info('Retry:')
 
 export const retryWithBackOff = ({
   maxRetryAttempts = Number.POSITIVE_INFINITY,

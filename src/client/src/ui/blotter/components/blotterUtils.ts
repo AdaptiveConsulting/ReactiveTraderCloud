@@ -5,9 +5,6 @@ import { Trade, TradeStatus } from 'rt-types'
 import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
 import SetFilter from './filters/SetFilter'
 
-const LOG_NAME = 'Trade Status:'
-const infoLogger = logger.info(LOG_NAME)
-
 const currencyIconLookup = {
   ['USD']: `fas fa-usd`,
   ['AUD']: `fas fa-usd`,
@@ -55,7 +52,7 @@ const getStatusIndicatorClass = (trade: Trade) => {
     case TradeStatus.Pending:
       return 'rt-blotter__status-indicator--pending'
     default:
-      infoLogger('unkown trade status')
+      logger.info('Trade Status:')('unkown trade status')
   }
   return ''
 }
