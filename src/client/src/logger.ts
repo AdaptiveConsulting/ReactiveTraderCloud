@@ -27,10 +27,7 @@ const levelColour = {
 }
 
 export const createLogger = (debugLevel: DebugLevel) => {
-  const colour = Object.keys(levelColour)
-    .filter(key => key === debugLevel)
-    .map(level => levelColour[level])
-    .join()
+  const colour = levelColour[debugLevel]
 
   return (name: string, debugType?: DebugType) =>
     debugType !== undefined
