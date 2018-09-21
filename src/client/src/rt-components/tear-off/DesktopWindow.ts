@@ -1,10 +1,10 @@
-import logdown from 'logdown'
+import logger, { DebugType } from 'logger'
 import { WindowConfig } from './types'
 
 type DesktopWindowProps = WindowConfig
 
 const LOG_NAME = 'DesktopWindow:'
-const errorLogger = logdown(`app:${LOG_NAME}`, { prefixColor: 'DarkRed' })
+const errorLogger = logger.error(LOG_NAME, DebugType.Error)
 
 const generateRandomName = function() {
   let text = ''
@@ -37,7 +37,7 @@ export const openDesktopWindow = (config: DesktopWindowProps) => {
         resolve(win)
       },
       error => {
-        errorLogger.log('Error creating window:', error)
+        errorLogger('creating window:', error)
       },
     )
   })

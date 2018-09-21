@@ -1,9 +1,9 @@
-import logdown from 'logdown'
+import logger, { DebugType } from 'logger'
 import { Observable } from 'rxjs'
 
-const LOG_NAME = 'OpenFin: '
-const logger = logdown(`app:${LOG_NAME}`, { prefixColor: 'Magenta' })
-const errorLogger = logdown(`app:${LOG_NAME} Error `, { prefixColor: 'Tomato' })
+const LOG_NAME = 'OpenFin:'
+const infoLogger = logger.info(LOG_NAME)
+const errorLogger = logger.error(LOG_NAME, DebugType.Error)
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'
 
@@ -27,8 +27,8 @@ export default class OpenFin {
 
   minimize = () => {
     this.currentWindow.minimize(
-      () => logger.info('Window minimized with success.'),
-      err => errorLogger.error('Failed to minimize window.', err),
+      () => infoLogger('Window minimized with success.'),
+      err => errorLogger('Failed to minimize window.', err),
     )
   }
 
@@ -40,17 +40,14 @@ export default class OpenFin {
         case 'minimized':
           this.currentWindow.restore(
             () =>
-              this.currentWindow.bringToFront(
-                () => logger.info('Window brought to front.'),
-                err => errorLogger.error(err),
-              ),
-            err => errorLogger.error(err),
+              this.currentWindow.bringToFront(() => infoLogger('Window brought to front.'), err => errorLogger(err)),
+            err => errorLogger(err),
           )
           break
         default:
           this.currentWindow.maximize(
-            () => logger.info('Window maximized with success.'),
-            err => errorLogger.error('Failed to maximize window.', err),
+            () => infoLogger('Window maximized with success.'),
+            err => errorLogger('Failed to maximize window.', err),
           )
       }
     })
@@ -60,12 +57,11 @@ export default class OpenFin {
     currentWindow.getState(state => {
       if (state === 'minimized') {
         currentWindow.restore(
-          () =>
-            currentWindow.bringToFront(() => logger.info('Window brought to front.'), err => errorLogger.error(err)),
-          err => errorLogger.error(err),
+          () => currentWindow.bringToFront(() => infoLogger('Window brought to front.'), err => errorLogger(err)),
+          err => errorLogger(err),
         )
       } else {
-        currentWindow.bringToFront(() => logger.info('Window brought to front.'), err => errorLogger.error(err))
+        currentWindow.bringToFront(() => infoLogger('Window brought to front.'), err => errorLogger(err))
       }
     })
   }
@@ -87,18 +83,18 @@ export default class OpenFin {
   rpc(message: object) {
     return new Observable<boolean>(observer => {
       if (this.limitCheckSubscriber === null) {
-        logger.info('client side limit check not up, will delegate to to server')
+        infoLogger('client side limit check not up, will delegate to to server')
         observer.next(true)
         observer.complete()
         return
       }
 
-      logger.info(`checking if limit is ok with ${this.limitCheckSubscriber}`)
+      infoLogger(`checking if limit is ok with ${this.limitCheckSubscriber}`)
 
       const topic = `limit-check-response (${this.limitCheckId++})`
 
       const limitCheckResponse = (msg: { result: boolean }) => {
-        logger.info(`${this.limitCheckSubscriber} limit check response was ${msg}`)
+        infoLogger(`${this.limitCheckSubscriber} limit check response was ${msg}`)
         observer.next(msg.result)
         observer.complete()
       }
@@ -152,14 +148,14 @@ export default class OpenFin {
     fin.desktop.main(() => {
       fin.desktop.InterApplicationBus.addSubscribeListener((uuid, topic) => {
         if (topic === REQUEST_LIMIT_CHECK_TOPIC) {
-          logger.info(`${uuid} has subscribed as a limit checker`)
+          infoLogger(`${uuid} has subscribed as a limit checker`)
           // There will only be one. If there are more, last subscriber will be used
           this.limitCheckSubscriber = uuid
         }
       })
       fin.desktop.InterApplicationBus.addUnsubscribeListener((uuid, topic) => {
         if (topic === REQUEST_LIMIT_CHECK_TOPIC) {
-          logger.info(`${uuid} has unsubscribed as a limit checker`)
+          infoLogger(`${uuid} has unsubscribed as a limit checker`)
           this.limitCheckSubscriber = null
         }
       })

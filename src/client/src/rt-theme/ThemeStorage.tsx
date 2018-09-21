@@ -1,9 +1,9 @@
-import logdown from 'logdown'
+import logger, { DebugType } from 'logger'
 import React from 'react'
 import { ThemeProvider, themes } from 'rt-theme'
 
-const LOG_NAME = 'Theme: '
-const warnLogger = logdown(`app${LOG_NAME}`, { prefixColor: 'MistyRose' })
+const LOG_NAME = 'Theme:'
+const warnLogger = logger.warn(LOG_NAME, DebugType.Debug)
 
 export enum ThemeName {
   Light = 'light',
@@ -26,7 +26,7 @@ interface ContextValue {
 }
 
 const Context = React.createContext<ContextValue>({
-  setTheme: () => warnLogger.warn('Missing StorageThemeProvider'),
+  setTheme: () => warnLogger('Missing StorageThemeProvider'),
 })
 
 class ThemeStorageProvider extends React.Component<Props, State> {

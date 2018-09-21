@@ -1,12 +1,12 @@
-import logdown from 'logdown'
+import logger from 'logger'
 import { map, retryWhen } from 'rxjs/operators'
 
 import { retryConstantly, ServiceClient } from 'rt-system'
 import { Trade } from 'rt-types'
 import { mapFromTradeDto, RawTradeUpdate } from 'rt-types'
 
-const LOG_NAME = 'Blotter Service: '
-const logger = logdown(`app:${LOG_NAME}`, { prefixColor: 'Turquoise' })
+const LOG_NAME = 'Blotter Service:'
+const infoLogger = logger.info(LOG_NAME)
 
 export interface TradesUpdate {
   readonly isStateOfTheWorld: boolean
@@ -27,7 +27,7 @@ export default class BlotterService {
   constructor(private readonly serviceClient: ServiceClient) {}
 
   getTradesStream() {
-    logger.info('*Subscribing* to blotter stream')
+    infoLogger('to blotter stream')
     return this.serviceClient.createStreamOperation<RawTradeUpdate>('blotter', 'getTradesStream', {}).pipe(
       retryWhen(retryConstantly({ interval: 3000 })),
       map(dto => mapFromDto(dto)),

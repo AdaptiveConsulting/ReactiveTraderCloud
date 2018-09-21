@@ -1,4 +1,4 @@
-import logdown from 'logdown'
+import logger, { DebugType } from 'logger'
 import { defer, Observable } from 'rxjs'
 import { distinctUntilChanged, filter, map, share, switchMap, take } from 'rxjs/operators'
 import { ServiceCollectionMap } from './ServiceInstanceCollection'
@@ -10,8 +10,9 @@ import { ServiceStub } from './ServiceStub'
  * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
 
-const LOG_NAME = 'ServiceClient: Initiated'
-const logger = logdown(`app:${LOG_NAME}`, { prefixColor: 'LightSeaGreen' })
+const LOG_NAME = 'ServiceClient: Initiated:'
+const infoLogger = logger.info(LOG_NAME)
+const subLogger = logger.info(LOG_NAME, DebugType.Subscribed)
 
 export default class ServiceStubWithLoadBalancer {
   constructor(
@@ -33,12 +34,12 @@ export default class ServiceStubWithLoadBalancer {
    *
    */
   createRequestResponseOperation<TResponse, TRequest>(service: string, operationName: string, request: TRequest) {
-    logger.info(`*Creating* request response operation for [${operationName}]`)
+    infoLogger(`*Creating* request response operation for [${operationName}]`)
 
     return this.getServiceWithMinLoad$(service).pipe(
       switchMap(serviceInstanceStatus => {
         if (serviceInstanceStatus.serviceId !== 'status') {
-          logger.info(
+          infoLogger(
             `Will use service instance [${
               serviceInstanceStatus.serviceId
             }] for request/response operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`,
@@ -76,7 +77,7 @@ export default class ServiceStubWithLoadBalancer {
               ((Math.random() * Math.pow(36, 8)) << 0).toString(36)
             }`
 
-            logger.info(
+            infoLogger(
               `Will use service instance [${
                 serviceInstanceStatus.serviceId
               }] for stream operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`,
@@ -87,12 +88,12 @@ export default class ServiceStubWithLoadBalancer {
             // tslint:disable-next-line:no-bitwise
             const subscribeTopic$ = this.connection.subscribeToTopic<TResponse>(topicName, {
               next: topic => {
-                logger.info(`*Subscribed* to ${topic}, requesting ${remoteProcedure}`)
+                subLogger(`to ${topic}, requesting ${remoteProcedure}`)
                 const req = this.connection
                   .requestResponse<TResponse, {}>(remoteProcedure, request, topicName)
                   .pipe(take(1))
                   .subscribe(() => {
-                    logger.info(`request acknowledged for ${remoteProcedure}`)
+                    infoLogger(`Request acknowledged for ${remoteProcedure}`)
                     req.unsubscribe()
                   })
               },

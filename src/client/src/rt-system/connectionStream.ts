@@ -1,13 +1,13 @@
-import logdown from 'logdown'
+import logger, { DebugType } from 'logger'
 import { Observable } from 'rxjs'
 import { AutobahnSessionProxy } from '.'
 import { AutobahnConnection } from './AutoBahnConnection'
 import { ConnectionType } from './connectionType'
 
-const LOG_NAME = 'ConnectionFactory: '
-const logger = logdown(`app:${LOG_NAME}`, { prefixColor: 'Teal' })
-const warnLogger = logdown(`app:${LOG_NAME} Warning `, { prefixColor: 'Tomato' })
-const errorLogger = logdown(`app:${LOG_NAME} Error `, { prefixColor: 'DarkRed' })
+const LOG_NAME = 'ConnectionFactory:'
+const infoLogger = logger.info(LOG_NAME)
+const warnLogger = logger.warn(LOG_NAME, DebugType.Warning)
+const errorLogger = logger.error(LOG_NAME, DebugType.Error)
 
 export enum ConnectionEventType {
   CONNECTED = 'CONNECTED',
@@ -32,7 +32,7 @@ export type ConnectionEvent = ConnectionOpenEvent | ConnectionClosedEvent
 export function createConnection$(autobahn: AutobahnConnection): Observable<ConnectionEvent> {
   return new Observable(obs => {
     autobahn.onopen(session => {
-      logger.info('*Connected*')
+      infoLogger('*Connected*')
       obs.next({
         type: ConnectionEventType.CONNECTED,
         session,
@@ -43,10 +43,10 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
 
     autobahn.onclose((reason, details) => {
       if (reason === 'closed') {
-        warnLogger.warn('*Connection closed*')
+        warnLogger('*Connection closed*')
         obs.complete()
       } else {
-        errorLogger.error(`*Connection lost*, details: [${JSON.stringify(details)}]`)
+        errorLogger(`*Connection lost*, details: [${JSON.stringify(details)}]`)
         obs.error({
           type: ConnectionEventType.DISCONNECTED,
           reason,
@@ -58,7 +58,7 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
     autobahn.open()
 
     return () => {
-      logger.log('*Disconnected*')
+      infoLogger('*Disconnected*')
       obs.complete()
       autobahn.close()
     }

@@ -1,12 +1,12 @@
 import { ColDef } from 'ag-grid'
-import logdown from 'logdown'
+import logger from 'logger'
 import numeral from 'numeral'
 import { Trade, TradeStatus } from 'rt-types'
 import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
 import SetFilter from './filters/SetFilter'
 
-const LOG_NAME = 'Trade Status: '
-const logger = logdown(`app:${LOG_NAME}`)
+const LOG_NAME = 'Trade Status:'
+const infoLogger = logger.info(LOG_NAME)
 
 const currencyIconLookup = {
   ['USD']: `fas fa-usd`,
@@ -55,7 +55,7 @@ const getStatusIndicatorClass = (trade: Trade) => {
     case TradeStatus.Pending:
       return 'rt-blotter__status-indicator--pending'
     default:
-      logger.log('unkown trade status')
+      infoLogger('unkown trade status')
   }
   return ''
 }
