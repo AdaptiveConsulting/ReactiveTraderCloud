@@ -21965,7 +21965,7 @@ var __js_core_engine_ =
 	var CIQ=_exports.CIQ,
 		$$=_exports.$$,
 		$$$=_exports.$$$,
-		timezoneJS=timezone.timezoneJS;
+		timezoneJS=_exports.timezoneJS;
 
 		/* TOC()************* CIQ.CHARTENGINE CONFIGURATION ************** */
 		/**
