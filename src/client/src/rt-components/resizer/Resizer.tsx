@@ -33,6 +33,8 @@ const Bar = styled.div`
     opacity: 0.3;
     transition: all 200ms ease-in-out;
   }
+
+  user-select: none;
 `
 
 interface Props {
