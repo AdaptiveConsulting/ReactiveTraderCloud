@@ -18,6 +18,7 @@ export const OpenFinChrome: SFC = ({ children }) => (
         body,
         #root {
           overflow: hidden;
+          min-height: 100%;
           max-height: 100vh;
         }
     `}</style>
@@ -79,13 +80,14 @@ const HeaderControl = styled.div<{ intent?: string }>`
 `
 
 export const Root = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
   background-color: ${props => props.theme.shell.backgroundColor};
   color: ${props => props.theme.shell.textColor};
 
   height: 100%;
   width: 100%;
+
+  grid-template-rows: 1.5rem 1fr;
 `
 
 export default OpenFinChrome

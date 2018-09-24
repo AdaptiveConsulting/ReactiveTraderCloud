@@ -1,4 +1,5 @@
 import React from 'react'
+import DefaultWindowProvider from './DefaultWindowProvider'
 
 export interface EnvironmentValue<Provider extends WindowProvider = WindowProvider> {
   provider: Provider
@@ -16,7 +17,9 @@ export interface WindowProvider {
   [key: string]: any
 }
 
-export function createEnvironment<Provider extends WindowProvider>(provider: any): EnvironmentValue<Provider> {
+export function createEnvironment<Provider extends WindowProvider>(provider?: any): EnvironmentValue<Provider> {
+  provider = provider || new DefaultWindowProvider()
+
   return {
     provider,
     get [provider.platform]() {
@@ -25,15 +28,6 @@ export function createEnvironment<Provider extends WindowProvider>(provider: any
   }
 }
 
-export const Environment = React.createContext<EnvironmentValue<WindowProvider>>(
-  createEnvironment<WindowProvider>({
-    type: 'browser',
-    platform: 'browser',
-    maximize: () => {},
-    minimize: () => {},
-    close: () => {},
-    open: () => {},
-  }),
-)
+export const Environment = React.createContext<EnvironmentValue<WindowProvider>>(createEnvironment())
 
 export default Environment
