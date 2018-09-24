@@ -73,4 +73,9 @@ export default injectGlobal`
   button:focus {
     outline: none;
   }
+  
+  /* Undo ress.css overflow-y rule */
+  html {
+    overflow-y: initial;
+  } 
 `
