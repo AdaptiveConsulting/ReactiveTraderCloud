@@ -14,29 +14,29 @@ const configureChart = (interval, symbol) => {
 };
 
 const messageCallback = msg => {
-  const {
-    interval,
-    symbol
-  } = msg;
+  const { interval, symbol } = msg;
   console.log('Received message');
   configureChart(interval, symbol);
 };
 
-const openWindow = (url) => {
+const openWindow = url => {
   return new Promise((resolve, reject) => {
-    openfinWindow = new fin.desktop.Window({
-      url,
-      name: 'main',
-      defaultTop: 100,
-      defaultLeft: 100,
-      defaultWidth: 850,
-      defaultHeight: 600,
-      showTaskbarIcon: true,
-      autoShow: true,
-      frame: false,
-      resizable: true,
-      maximizable: true
-    }, () => resolve());
+    openfinWindow = new fin.desktop.Window(
+      {
+        url,
+        name: 'Reactive Trader Cloud - ChartIQ',
+        defaultTop: 100,
+        defaultLeft: 100,
+        defaultWidth: 850,
+        defaultHeight: 600,
+        showTaskbarIcon: true,
+        autoShow: true,
+        frame: false,
+        resizable: true,
+        maximizable: true
+      },
+      () => resolve()
+    );
   });
 };
 
@@ -56,9 +56,11 @@ const addOpenfinControls = () => {
 
   // create close button
   const menu = nativeWindow.document.querySelector('.ciq-menu-section');
-  const closeButton = menu.appendChild(nativeWindow.document.createElement('div'));
-  closeButton.id ='closeBtn';
-  closeButton.className ='ciq-icon ciq-close';
+  const closeButton = menu.appendChild(
+    nativeWindow.document.createElement('div')
+  );
+  closeButton.id = 'closeBtn';
+  closeButton.className = 'ciq-icon ciq-close';
   closeButton.style['background-color'] = 'grey';
   closeButton.onclick = () => {
     removeMessageHandler();
@@ -87,8 +89,8 @@ const initialize = () => {
   search.split('&').forEach(s => {
     const terms = s.split('=');
     if (terms[0] === 'symbol') {
-      symbol= terms[1];
-    } else if(terms[0] === 'period') {
+      symbol = terms[1];
+    } else if (terms[0] === 'period') {
       interval = terms[1];
     }
   });
@@ -100,6 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
     openWindow('template-advanced.html')
       .then(() => addOpenfinControls())
       .then(() => addMessageHandler())
-      .then(() => initialize())
+      .then(() => initialize());
   });
 });
