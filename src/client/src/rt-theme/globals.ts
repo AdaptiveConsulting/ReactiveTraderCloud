@@ -1,5 +1,3 @@
-import { injectGlobal } from 'rt-theme'
-
 /**
  * Resetting CSS
  *
@@ -48,6 +46,9 @@ import 'typeface-montserrat'
  * line-height explicit in our styles will allow us to
  * achieve a consistent vertical rhythm.
  */
+
+import { injectGlobal } from './emotion'
+
 export default injectGlobal`
   :root, body {
     font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
