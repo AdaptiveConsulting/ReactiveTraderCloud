@@ -197,12 +197,11 @@ export class OpenFin {
       const interval = 5
       const chartIqAppId = 'ChartIQ'
       const url = `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/chartiq-shim.html?symbol=${symbol}&period=${interval}`
-      const name = `chartiq_${new Date().getTime()}`
-      const icon = 'http://adaptiveconsulting.github.io/chartiq/icon.png'
+      const icon = 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/icon.png'
       const app: fin.OpenFinApplication = new fin.desktop.Application(
         {
           url,
-          name,
+          name: chartIqAppId,
           uuid: chartIqAppId,
           mainWindowOptions: {
             icon,
