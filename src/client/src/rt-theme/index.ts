@@ -1,6 +1,6 @@
-export { flush, hydrate, cx, merge, getRegisteredStyles, injectGlobal, keyframes, css, sheet, caches } from './emotion'
-
 import './globals'
+
+export { flush, hydrate, cx, merge, getRegisteredStyles, injectGlobal, keyframes, css, sheet, caches } from './emotion'
 
 export { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } from './colors'
 export { Theme } from './createTheme'
