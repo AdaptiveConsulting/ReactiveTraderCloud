@@ -5,10 +5,8 @@ import { ThemeName, ThemeStorage } from 'rt-theme'
 
 import PlainOrderTicketRoute from './OrderTicketRoute'
 
-import { OpenFin } from '../../shell/openFin'
-
 export class OrderTicketRoute extends PureComponent {
-  environment = createEnvironment(new OpenFin())
+  environment = createEnvironment()
 
   render() {
     return (

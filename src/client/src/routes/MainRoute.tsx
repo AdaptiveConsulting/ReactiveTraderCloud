@@ -23,7 +23,8 @@ const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
 
 export class MainRoute extends React.Component {
-  environment = createEnvironment<OpenFin>(new OpenFin())
+  openfin = new OpenFin()
+  environment = createEnvironment(this.openfin.isPresent ? this.openfin : null)
 
   store = configureStore(
     createApplicationServices({
@@ -32,7 +33,7 @@ export class MainRoute extends React.Component {
         'com.weareadaptive.reactivetrader',
         +(config.overwriteServerEndpoint ? config.serverPort : location.port)!,
       ),
-      openfin: this.environment.openfin,
+      openfin: this.openfin,
       user: FakeUserRepository.currentUser,
     }),
   )

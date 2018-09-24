@@ -39,7 +39,7 @@ export const css = memoize(
     border-width: 2px;
   }
 `,
-  color => console.log(color) || color,
+  color => color,
 )
 
 export const GlobalScrollbarStyle = () => (
