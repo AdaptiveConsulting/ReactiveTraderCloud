@@ -35,6 +35,7 @@ export const ColorBlocks = () => (
                   return (
                     <Swatch key={name} bg={color}>
                       <SwatchLevel fg={text.color}>{name}</SwatchLevel>
+                      <SwatchValue fg={text.color}>{color}</SwatchValue>
                     </Swatch>
                   )
                 })}
@@ -43,7 +44,7 @@ export const ColorBlocks = () => (
               <SwatchGroup py={2}>
                 <Swatch bg={base}>
                   <SwatchName>{name}</SwatchName>
-                  <SwatchValue>{base}</SwatchValue>
+                  <SwatchValueBase>{base}</SwatchValueBase>
                 </Swatch>
               </SwatchGroup>
 
@@ -58,6 +59,7 @@ export const ColorBlocks = () => (
                   return (
                     <Swatch key={name} bg={color}>
                       <SwatchLevel fg={text.color}>{name}</SwatchLevel>
+                      <SwatchValue fg={text.color}>{color}</SwatchValue>
                     </Swatch>
                   )
                 })}
@@ -74,12 +76,6 @@ const SwatchName = styled(Block)<BlockProps>`
   font-weight: bold;
   font-size: 0.825rem;
   text-transform: capitalize;
-`
-
-const SwatchValue = styled(SwatchName)`
-  font-size: 0.875rem;
-  font-weight: 400;
-  text-transform: uppercase;
 `
 
 const SwatchLevel = styled(SwatchName)`
@@ -102,6 +98,19 @@ const Swatch = styled(Block)<BlockProps>`
   @media all and (max-width: 800px) {
     min-width: 6rem;
     max-width: 6rem;
+  }
+`
+
+const SwatchValueBase = styled(SwatchName)`
+  font-size: 0.875rem;
+  font-weight: 400;
+  text-transform: uppercase;
+`
+
+const SwatchValue = styled(SwatchValueBase)`
+  opacity: 0;
+  ${Swatch}:hover & {
+    opacity: 1;
   }
 `
 
