@@ -69,7 +69,7 @@ export type ColorPaletteMaps = typeof colors
 // Some designs will redefine white to achieve different
 // visual effects on the viewers eyes.
 export const white: Palette = {
-  base: rgb(255, 255, 255)
+  base: rgb(255, 255, 255),
 }
 
 // The same is true for black -- because we do not encounter
@@ -77,7 +77,7 @@ export const white: Palette = {
 // employing them in their primary palettes will be
 // less appealing to most people.
 export const black: Palette = {
-  base: rgb(0, 0, 0)
+  base: rgb(0, 0, 0),
 }
 
 // The meaning of transparent varies based on platform.
@@ -88,7 +88,7 @@ export const black: Palette = {
 // You will see this if you transition from or to
 // transparency in a gradient or animation.
 export const transparent: Palette = {
-  base: rgba(255, 255, 255, 0)
+  base: rgba(255, 255, 255, 0),
 }
 
 // For this reasons designers will choose an
@@ -100,7 +100,7 @@ export const transparent: Palette = {
 // to an input or button. Or a subtle boundary
 // between elements.
 export const offwhite = createPalette({
-  base: rgb(244, 246, 249)
+  base: rgb(244, 246, 249),
 })
 
 // We use a base color to generate a complement
@@ -114,20 +114,20 @@ export const offblack = createPalette({
   // insuffcient contrast ratio and inconsistency
   // with the designers intent.
   D3: rgb(46, 53, 67),
-  D4: rgb(39, 45, 58)
+  D4: rgb(39, 45, 58),
 })
 
 export const brand = createPalette({
-  base: rgb(42, 87, 141)
+  base: rgb(42, 87, 141),
 })
 
 export const blue = createPalette({
   base: rgb(81, 147, 253),
-  L95: rgb(244, 246, 249)
+  L95: rgb(244, 246, 249),
 })
 
 export const red = createPalette({
-  base: rgb(255, 53, 66)
+  base: rgb(255, 53, 66),
 })
 
 export const yellow = createPalette({
@@ -135,11 +135,11 @@ export const yellow = createPalette({
   // We are overriding the value for L1 due to
   // insuffcient contrast and inconsistency
   // with the designers intent.
-  L1: rgb(241, 193, 109)
+  L1: rgb(241, 193, 109),
 })
 
 export const green = createPalette({
-  base: rgb(0, 205, 130)
+  base: rgb(0, 205, 130),
 })
 
 export const light: CorePaletteMap = {
@@ -148,15 +148,15 @@ export const light: CorePaletteMap = {
     1: blue.L95,
     2: blue.L9,
     3: blue.L8,
-    4: blue.L7
+    4: blue.L7,
   },
   secondary: {
     base: offblack.base,
     1: offblack.L1,
-    2: mix(0.25, white.base, offblack.base),
+    2: offblack.L25,
     3: offblack.D4,
-    4: offblack.L5
-  }
+    4: offblack.L5,
+  },
 }
 
 export const dark: CorePaletteMap = {
@@ -165,40 +165,40 @@ export const dark: CorePaletteMap = {
     1: offblack.D4,
     2: offblack.base,
     3: offblack.D1,
-    4: offblack.D7
+    4: offblack.D7,
   },
   secondary: {
     base: blue.L10,
     1: blue.L95,
     2: blue.L9,
     3: blue.L8,
-    4: blue.L5
-  }
+    4: blue.L5,
+  },
 }
 
 export const accents: AccentPaletteMap = {
   accent: {
     base: blue.base,
     1: blue.D2,
-    2: blue.L5
+    2: blue.L5,
   },
   good: {
     base: green.base,
     1: green.D1,
     2: green.L5,
-    3: green.L2
+    3: green.L2,
   },
   aware: {
     base: yellow.base,
     1: yellow.D1,
-    2: yellow.L5
+    2: yellow.L5,
   },
   bad: {
     base: red.base,
     1: red.D1,
     2: red.L5,
-    3: red.L2
-  }
+    3: red.L2,
+  },
 }
 
 export const spectrum = {
@@ -211,14 +211,14 @@ export const spectrum = {
   red,
   green,
   yellow,
-  blue
+  blue,
 }
 
 export const colors = {
   spectrum,
   accents,
   light,
-  dark
+  dark,
 }
 
 export default colors
@@ -290,6 +290,6 @@ function createPalette({
     //
     // So we may have to override specific values to achieve a
     // consistent color and color contrast ratio across the shades.
-    ...overrides
+    ...overrides,
   }
 }

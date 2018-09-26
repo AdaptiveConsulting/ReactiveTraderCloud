@@ -1,0 +1,34 @@
+{
+    "startup_app": {
+        "name": "Reactive Trader Cloud (LOCAL)",
+        "url": "http://localhost:3000/launcher",
+        "uuid": "ReactiveLauncher",
+        "defaultWidth": 60,
+        "defaultHeight": 320,
+        "defaultTop": 160,
+        "defaultLeft": 30,
+        "autoShow": true,
+        "saveWindowState": false,
+        "resizable": false,
+        "shadow": true,
+        "frame": false,
+        "backgroundColor": "#444C5F",
+        "alwaysOnTop": true,
+        "icon": "http://localhost:3000/static/media/icon.ico",
+        "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
+        "contextMenu": true,
+        "accelerator": {
+            "devtools": true,
+            "reload": true,
+            "reloadIgnoringCache": true,
+            "zoom": true
+        }
+    },
+    "runtime": {
+        "arguments": "--remote-debugging-port=9222",
+        "version": "9.61.34.22",
+        "futureVersion": "9.61.34.22",
+        "forceLatest": true
+    },
+    "shortcut": {}
+}
