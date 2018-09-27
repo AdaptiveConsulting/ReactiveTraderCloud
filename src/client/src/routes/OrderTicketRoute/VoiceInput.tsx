@@ -1,195 +1,83 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { colors, keyframes, styled, Styled } from 'rt-theme'
+import { styled, Styled } from 'rt-theme'
 import { Block } from '../StyleguideRoute/styled'
 
+import FormantIcon from './assets/Formant'
 import formantSVGURL from './assets/formant.svg'
-import MicrophoneIcon from './assets/Microphone'
 
-import { FormantBars } from './FormantBars'
+import { faMicrophone } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import * as GreenKeyRecognition from './GreenKeyRecognition'
-import { SessionEvent, SimpleSession } from './SimpleSession'
-import { UserMedia } from './UserMedia'
+declare const webkitSpeechRecognition: any
 
-declare const MediaRecorder: any
-declare const requestIdleCallback: any
-
-interface Props {
-  audioContext: AudioContext
-}
-
-export class VoiceInput extends Component<Props, any> {
+export class VoiceInput extends Component<{}, any> {
   state = {
-    sessionRequestCount: 0,
-    sessionRequestActive: false,
-    sessionConnected: null,
-    userPermissionGranted: null,
-    sessionInstance: null,
+    started: false,
     results: [],
   } as any
 
-  get audioContext() {
-    return this.props.audioContext
-  }
-
-  destination = this.audioContext.createMediaStreamDestination()
-  analyser: AnalyserNode = _.assign(this.audioContext.createAnalyser(), {
-    fftSize: 32,
-    smoothingTimeConstant: 0.95,
+  recog = Object.assign(new webkitSpeechRecognition(), {
+    lang: 'en-US',
+    interimResults: true,
+    onresult: ({ results }: any) => {
+      console.log(results)
+      this.setState({ results })
+    },
+    onstart: () => this.setState({ started: true }),
+    onspeechstart: () => {
+      this.setState({ started: true })
+    },
+    onend: () => this.setState({ started: false }),
+    onspeechend: () => this.setState({ started: false }),
   })
 
   toggle = () => {
-    this.setState(({ sessionRequestCount, sessionRequestActive }: any) => ({
-      sessionRequestCount: !sessionRequestActive ? sessionRequestCount + 1 : sessionRequestCount,
-      sessionRequestActive: !sessionRequestActive,
-    }))
-  }
-
-  onPermission = ({ ok }: SessionEvent) => {
-    this.setState({
-      userPermissionGranted: ok,
-    })
-  }
-
-  onSessionStart = (sessionInstance: any) => {
-    this.setState({ sessionInstance: !!sessionInstance })
-  }
-
-  onSessionError = (event: SessionEvent) => {
-    if (event.source == 'media') {
-      this.setState({
-        userPermissionGranted: false,
-      })
-    }
-
-    if (event.source === 'socket') {
-      this.setState({
-        sessionConnected: false,
-      })
-    }
-  }
-
-  onSessionResult = (result: any) => {
-    this.setState({ results: result.transcripts })
-  }
-
-  onSessionEnd = (sessionInstance: any) => {
-    this.reset()
-  }
-
-  reset() {
-    this.setState({
-      sessionRequestActive: false,
-      sessionConnected: null,
-      userPermissionGranted: null,
-      sessionInstance: null,
-    })
+    this.setState(
+      (): null => null,
+      () => {
+        if (this.state.started) {
+          this.recog.stop()
+        } else {
+          this.recog.start()
+          this.setState({ results: [] })
+        }
+      },
+    )
   }
 
   render() {
-    const {
-      sessionRequestCount,
-      sessionRequestActive,
-      sessionConnected,
-      userPermissionGranted,
-      sessionInstance,
-      results,
-    } = this.state
+    const { started, results } = this.state
 
     return (
-      <React.Fragment>
-        {sessionRequestCount > 0 && (
-          <UserMedia.Provider>
-            {sessionRequestActive && (
-              <UserMedia.Consumer>
-                {userMedia => (
-                  <SimpleSession
-                    audioContext={this.audioContext}
-                    userMedia={userMedia}
-                    analyser={this.analyser}
-                    destination={this.destination}
-                    onStart={this.onSessionStart}
-                    onError={this.onSessionError}
-                    onPermission={this.onPermission}
-                    onResult={this.onSessionResult}
-                    onEnd={this.onSessionEnd}
-                  />
-                )}
-              </UserMedia.Consumer>
-            )}
-          </UserMedia.Provider>
-        )}
-
-        <Root bg="primary.4" onClick={this.toggle}>
-          {sessionInstance ? null : (
-            <MicrophoneButton
-              // active={sessionInstance}
-              fg={
-                sessionRequestActive === false
-                  ? 'secondary.4'
-                  : userPermissionGranted === false
-                    ? 'accents.aware.base'
-                    : 'accents.primary.base'
-              }
-            >
-              <MicrophoneIcon />
-            </MicrophoneButton>
-          )}
-
-          {!sessionInstance ? null : (
-            <React.Fragment>
-              <Fill />
-              <FormantBars analyser={this.analyser} count={5} gap={1.5} width={3.5} height={40} />
-              <Fill />
-            </React.Fragment>
-          )}
-
-          {results.length === 0 ? (
-            !sessionRequestActive ? (
-              <StatusText>Press to talk</StatusText>
-            ) : (
-              <React.Fragment>
-                {userPermissionGranted == null ? (
-                  <StatusText>Waiting for permission</StatusText>
-                ) : (
-                  <React.Fragment>
-                    {userPermissionGranted === false && (
-                      <StatusText accent="aware">Check microphone permissions</StatusText>
-                    )}
-                    {userPermissionGranted === true && (
-                      <React.Fragment>
-                        {sessionConnected === false ? (
-                          <StatusText accent="aware">We're having trouble connecting</StatusText>
-                        ) : results.length <= 0 ? (
-                          <StatusText>Listening</StatusText>
-                        ) : null}
-                      </React.Fragment>
-                    )}
-                  </React.Fragment>
-                )}
-              </React.Fragment>
-            )
-          ) : (
+      <Root bg="primary.4">
+        <MicrophoneButton fg={started ? 'accents.accent.base' : 'secondary.base'} onClick={this.toggle}>
+          <FontAwesomeIcon icon={faMicrophone} />
+        </MicrophoneButton>
+        {started || results.length ? (
+          <React.Fragment>
+            <Formant started={started}>
+              <FormantIcon width="2rem" height="2rem" />
+            </Formant>
+            <AutoFill />
             <Input onClick={() => this.setState({ results: [] })}>
               {_.map(results, ([{ transcript }]: any, index: number) => (
-                <React.Fragment key={index}>
-                  {transcript}
-                  <span>&nbsp;</span>
-                </React.Fragment>
+                <React.Fragment key={index}>{transcript}</React.Fragment>
               ))}
             </Input>
-          )}
-        </Root>
-      </React.Fragment>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <AutoFill />
+            <Input onClick={this.toggle} fg="primary.3" fontSize="0.6" letterSpacing="1px" textTransform="uppercase">
+              Press to talk
+            </Input>
+          </React.Fragment>
+        )}
+      </Root>
     )
   }
 }
-
-const Transcript = ({ results }: any) =>
-  function createMediaRecorder(mediaStream: MediaStream, options: any): typeof MediaRecorder {
-    return Object.assign(new MediaRecorder(mediaStream), options)
-  }
 
 const Root = styled(Block)`
   display: flex;
@@ -198,23 +86,20 @@ const Root = styled(Block)`
   border-radius: 1.5rem;
   width: 100%;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1) inset;
-  user-select: none;
-
-  min-width: 36rem;
-  max-width: 36rem;
 `
 
-const Fill = styled(Block)`
+const AutoFill = styled(Block)`
+  fill: 1 1 100%;
   min-height: 1rem;
   max-height: 100%;
   min-width: 1rem;
 `
 
-export const Formant: Styled<{ sessionInstance: boolean }> = styled.div`
+export const Formant: Styled<{ started: boolean }> = styled.div`
   height: 2rem;
   width: 2rem;
   [fill] {
-    fill: ${({ sessionInstance, theme }) => (sessionInstance ? theme.accents.primary.base : theme.secondary.base)};
+    fill: ${({ started, theme }) => (started ? theme.accents.primary.base : theme.secondary.base)};
   }
 `
 
@@ -225,73 +110,18 @@ export const StaicFormant = styled.div`
   background-size: cover;
 `
 
-const MicrophoneButton: Styled<{ active: boolean }> = styled(Block)`
-  height: ${2.75}rem;
-  width: ${2.75}rem;
-  width: ${3.5}rem;
+const MicrophoneButton = styled(Block)`
+  width: 3rem;
 
-  font-size: 1.125rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-radius: 100%;
 `
 
 const Input = styled(Block)`
   flex: 1 1 auto;
   min-width: 20rem;
   display: flex;
-  min-height: 1em;
 `
-
-const AnimatedText: Styled<{ accent?: string }> = styled.span`
-  color: ${p => p.theme.transparent};
-  transition: color 1s ease, background-position 1s ease;
-
-  background-clip: text;
-  -webkit-background-clip: text;
-  background-image: repeating-linear-gradient(
-    45deg,
-    ${p => p.theme.transparent},
-    ${p => (p.theme.accents[p.accent] || p.theme.accents.primary).base},
-    ${p => p.theme.transparent}
-  );
-  background-size: 200%;
-  background-position: 50%;
-
-  animation: ${keyframes`
-    from {
-      background-position: 50%;
-      color: ${colors.spectrum.transparent.base};
-    }
-    40% {
-      background-position: 0%;
-      color: currentColor;
-    }
-    60% {
-      background-position: 100%;
-      color: currentColor;
-    }
-    to {
-      background-position: 50%;
-      color: ${colors.spectrum.transparent.base};
-    }
-  `} infinite 3s linear;
-`
-
-const StatusText: React.SFC<{ accent?: string }> = ({ accent, children }) => (
-  <Input
-    onClick={this.toggle}
-    fg={accent ? `accents.${accent}.base` : 'primary.2'}
-    fontSize="0.625"
-    letterSpacing="1px"
-    textTransform="uppercase"
-  >
-    <AnimatedText accent={accent}>{children}</AnimatedText>
-  </Input>
-)
-
-export const InputResult = styled(Block)`
-  display: inline;
-`
+export const InputResult = styled(Block)``
