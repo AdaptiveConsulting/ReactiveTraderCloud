@@ -20,6 +20,7 @@ export interface TextProps {
   textAlign?: 'initial' | 'left' | 'center' | 'right'
   textTransform?: 'uppercase'
   whiteSpace?: 'initial' | 'nowrap' | 'pre-line' | 'pre-wrap'
+  letterSpacing?: any
   color?: any
   opacity?: 0 | 0.25 | 0.5 | 0.75 | 1
 }
@@ -34,6 +35,7 @@ export const textProps: MappedPropMap = {
   textAlign: ({ textAlign }) => css({ textAlign }),
   textTransform: ({ textTransform }) => css({ textTransform }),
   whiteSpace: ({ whiteSpace }) => css({ whiteSpace }),
+  letterSpacing: ({ letterSpacing }) => css({ letterSpacing }),
   color: ({ color, theme }) =>
     css({ color: (color === true && theme.textColor) || get(theme, color) || get(theme.spectrum, color) }),
   opacity: ({ opacity }) => css({ opacity }),

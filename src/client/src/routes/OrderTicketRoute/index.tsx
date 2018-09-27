@@ -12,11 +12,7 @@ export class OrderTicketRoute extends PureComponent {
     return (
       <ThemeStorage.Provider storage={sessionStorage} default={ThemeName.Dark}>
         <Environment.Provider value={this.environment}>
-          <ThemeProvider
-            theme={theme => ({
-              ruleColor: theme.primary.base,
-            })}
-          >
+          <ThemeProvider theme={theme => ({ ruleColor: theme.primary.base })}>
             <OrderTicket />
           </ThemeProvider>
         </Environment.Provider>
