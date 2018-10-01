@@ -80,7 +80,7 @@ export class FormantBars extends Component<Props, Partial<State>> {
           height,
           gap,
           style: {
-            width: `${_.round((width / scale + gap / scale) * count - gap / scale)}px`,
+            width: `${(width / scale + gap / scale) * count - gap / scale}px`,
             height: `${height / scale}px`,
           },
         },
@@ -96,6 +96,8 @@ export class FormantBars extends Component<Props, Partial<State>> {
 
     return state
   }
+
+  analyserData = new Float32Array(this.props.analyser.frequencyBinCount)
 
   canvas: any
   canvasScale = 2
@@ -121,6 +123,7 @@ export class FormantBars extends Component<Props, Partial<State>> {
     }
 
     const {
+      props,
       props: { analyser },
       state: { bar, grid },
       canvas,
@@ -131,49 +134,52 @@ export class FormantBars extends Component<Props, Partial<State>> {
     analyser.getFloatFrequencyData(data)
 
     if (!Number.isFinite(data[0])) {
-      return
+      return console.log(data)
     }
+    console.log(analyser.maxDecibels, analyser.minDecibels, analyser.maxDecibels - analyser.minDecibels)
 
-    // Move to positive integer
-    data = data.map(v => v + 2 * (analyser.maxDecibels - analyser.minDecibels))
-
-    // Reduce signal from treble and bass
-    data = data.map(
-      (current, i, { length }: any) =>
-        // Weight the values with a moment at the midpoint
-        // current * Math.sin((i / length) * Math.PI),
-        0.2 * current + 0.8 * (current * Math.sin((i / length) * Math.PI)),
-    )
+    data = data
+      // .map(v => v * (1 / (analyser.maxDecibels - analyser.minDecibels)) * bar.height)
+      .map(v => v + 2 * (analyser.maxDecibels - analyser.minDecibels))
+      .map(
+        (
+          current,
+          i,
+          {
+            length,
+            [(length / 2).toFixed()]: middle,
+            [0]: first,
+            [length - 1]: last,
+            [i + 1]: next = current,
+            [i - 1]: prev = current,
+          }: any,
+        ) =>
+          // ) => ((prev + 3 * current + next) / 5) * Math.sin((i / length) * Math.PI),
+          // current * Math.sin((i / length) * Math.PI),
+          0.1 * current + 0.9 * (current * Math.sin((i / length) * Math.PI)),
+      )
 
     const max = _.max(data)
-    const maxDb = analyser.maxDecibels - analyser.minDecibels
-    // const maxDb = (1 - 1 / bar.count) * (analyser.maxDecibels - analyser.minDecibels)
-    data = data.map(
-      v =>
-        1 +
-        // Original
-        0.25 * v +
-        // Relative to maxiumum decibel expected
-        0.25 * v * (maxDb / max) +
-        // Relative to current maximum
-        0.5 * v * (v / max),
-    )
+    // data = data.map(v => v * (50 / max))
+    data = data.map(v => 0.75 * v + 0.25 * v * (50 / max))
 
     // data = _.chunk(data, 2).map(([a, b], i, c) => (a + b) / 2) as any
-    data = _.chunk(data, Math.round(data.length / bar.count)).map((vs, i, c) => _.sum(vs) / vs.length) as any
+    data = _.chunk(data, Math.round(data.length / bar.count)).map(([a, b], i, c) => 0.25 * a + 0.75 * b) as any
 
     if (canvas && canvas.getContext) {
       const canvasCtx = canvas.getContext('2d')
 
       canvasCtx.clearRect(0, 0, grid.width, grid.height)
 
-      data.forEach((value, i) => {
-        const x = i * (bar.width + grid.gap)
-        const magnitude = _.max([2 * value, 3 * bar.width])
+      let x = 0
+
+      for (let i = 0; i < data.length; i++) {
+        const magnitude = _.max([2 * data[i], 4 * bar.width])
         const height = _.min([magnitude, bar.height * 1.5])
 
         canvasCtx.fillStyle =
-          'rgb(' + Math.floor((0.75 + Math.sin(Math.PI * (magnitude / 50))) * magnitude + 95 / 2) + ',148,245)'
+          'rgb(' + Math.floor((0.75 + Math.sin(Math.PI * (magnitude / 50))) * magnitude + 25) + ',148,245)' //95
+        // canvasCtx.fillRect(x, grid.magnitude - magnitude / 2, bar.width, magnitude / 2)
 
         roundRect({
           ctx: canvasCtx,
@@ -185,7 +191,9 @@ export class FormantBars extends Component<Props, Partial<State>> {
           fill: true,
           stroke: false,
         })
-      })
+
+        x += bar.width + grid.gap
+      }
     }
   }
 
@@ -202,7 +210,7 @@ export class FormantBars extends Component<Props, Partial<State>> {
 }
 
 export function roundRect({ ctx, x, y, width, height, radius, fill, stroke }: any) {
-  if (typeof stroke === 'undefined') {
+  if (typeof stroke == 'undefined') {
     stroke = true
   }
   if (typeof radius === 'undefined') {

@@ -9,7 +9,11 @@ import formantSVGURL from './assets/formant.svg'
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-declare const webkitSpeechRecognition: any
+import createSpeechRecognition from './createSpeechRecognition'
+
+import { FormantBars } from './FormantBars'
+
+declare const MediaRecorder: any
 
 export class VoiceInput extends Component<{}, any> {
   state = {
@@ -17,10 +21,41 @@ export class VoiceInput extends Component<{}, any> {
     results: [],
   } as any
 
-  recog = Object.assign(new webkitSpeechRecognition(), {
-    lang: 'en-US',
-    interimResults: true,
-    onresult: ({ results }: any) => {
+  audioContext = new AudioContext()
+  analyser: AnalyserNode = _.assign(this.audioContext.createAnalyser(), {
+    fftSize: 32,
+    smoothingTimeConstant: 0.95,
+  })
+  gainNode = this.audioContext.createGain()
+  analyserData = new Float32Array(this.analyser.frequencyBinCount)
+  mediaStream: MediaStream
+  microphone: MediaStreamAudioSourceNode
+  recorder: any
+
+  // componentDidMount() {
+  //   this.ensureMediaStream()
+  // }
+
+  async ensureMediaStream() {
+    if (!this.mediaStream) {
+      this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      this.microphone = this.audioContext.createMediaStreamSource(this.mediaStream)
+      this.recorder = new MediaRecorder(this.mediaStream)
+
+      this.microphone.connect(this.analyser)
+      this.analyser.connect(this.audioContext.destination)
+
+      console.log(this.recorder.start())
+    }
+
+    return this.mediaStream
+  }
+
+  recog = createSpeechRecognition({
+    // interimResults: true,
+    onresult: (event: any) => {
+      console.log(event)
+      const { results } = event
       console.log(results)
       this.setState({ results })
     },
@@ -32,18 +67,22 @@ export class VoiceInput extends Component<{}, any> {
     onspeechend: () => this.setState({ started: false }),
   })
 
-  toggle = () => {
-    this.setState(
-      (): null => null,
-      () => {
-        if (this.state.started) {
-          this.recog.stop()
-        } else {
-          this.recog.start()
-          this.setState({ results: [] })
-        }
-      },
-    )
+  toggle = async () => {
+    await new Promise(resolve => this.setState(null, resolve))
+
+    try {
+      if (this.state.started) {
+        this.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime)
+
+        this.recog.stop()
+      } else {
+        await this.ensureMediaStream()
+        this.gainNode.gain.setValueAtTime(1, this.audioContext.currentTime)
+
+        this.recog.start()
+        this.setState({ results: [] })
+      }
+    } catch (e) {}
   }
 
   render() {
@@ -54,11 +93,11 @@ export class VoiceInput extends Component<{}, any> {
         <MicrophoneButton fg={started ? 'accents.accent.base' : 'secondary.base'} onClick={this.toggle}>
           <FontAwesomeIcon icon={faMicrophone} />
         </MicrophoneButton>
+
+        <FormantBars analyser={this.analyser} count={7} gap={1.5} width={3.5} height={40} />
+
         {started || results.length ? (
           <React.Fragment>
-            <Formant started={started}>
-              <FormantIcon width="2rem" height="2rem" />
-            </Formant>
             <AutoFill />
             <Input onClick={() => this.setState({ results: [] })}>
               {_.map(results, ([{ transcript }]: any, index: number) => (
@@ -123,5 +162,7 @@ const Input = styled(Block)`
   flex: 1 1 auto;
   min-width: 20rem;
   display: flex;
+  min-height: 1em;
 `
+
 export const InputResult = styled(Block)``

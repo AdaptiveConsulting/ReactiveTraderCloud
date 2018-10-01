@@ -13,15 +13,22 @@ export declare const global: any
 
 const BrowserSpeechRecognition: SpeechRecognitionClass = global.SpeechRecognition || global.webkitSpeechRecognition
 
-// Does not work ☹️
-// BrowserSpeechRecognition.prototype.serviceURI = 'http://localhost:1337'
-// BrowserSpeechRecognition.serviceURI = 'http://localhost:1337'
+BrowserSpeechRecognition.prototype.serviceURI = 'http://localhost:1337'
+;(BrowserSpeechRecognition.prototype as any).speechURI = 'http://localhost:1337'
+
+BrowserSpeechRecognition.serviceURI = 'http://localhost:1337'
+BrowserSpeechRecognition.speechURI = 'http://localhost:1337'
 
 export function createSpeechRecognition(props: Partial<SpeechRecognition>): SpeechRecognition {
   const instance = new BrowserSpeechRecognition()
 
+  console.log(instance.serviceURI)
+  console.log((instance as any).speechURI)
+
   Object.assign(instance, {
-    lang: 'en-US',
+    // lang: 'en-US',
+    serviceURI: 'http://localhost:1337',
+    speechURI: 'http://localhost:1337',
     ...props,
   })
 
