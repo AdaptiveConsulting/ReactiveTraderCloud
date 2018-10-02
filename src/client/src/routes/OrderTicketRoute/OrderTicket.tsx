@@ -7,6 +7,8 @@ import { DrawerMenu } from './DrawerMenu'
 import { VoiceInput } from './VoiceInput'
 
 export class OrderTicket extends PureComponent {
+  audioContext = new AudioContext()
+
   render() {
     return (
       <Viewport bg="shell.backgroundColor" fg="shell.textColor">
@@ -16,7 +18,7 @@ export class OrderTicket extends PureComponent {
             <DrawerMenu />
           </DrawerLayout>
           <VoiceLayout>
-            <VoiceInput />
+            <VoiceInput audioContext={this.audioContext} />
           </VoiceLayout>
           <FormLayout />
           <StatusLayout />

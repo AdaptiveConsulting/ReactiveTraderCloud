@@ -13,74 +13,111 @@ import createSpeechRecognition from './createSpeechRecognition'
 
 import { FormantBars } from './FormantBars'
 
+import * as GreenKeyRecognition from './GreenKeyRecognition'
+
 declare const MediaRecorder: any
 
-export class VoiceInput extends Component<{}, any> {
+interface Props {
+  audioContext: AudioContext
+}
+
+export class VoiceInput extends Component<Props, any> {
   state = {
     started: false,
     results: [],
   } as any
 
-  audioContext = new AudioContext()
+  socket = GreenKeyRecognition.createWebSocket({
+    onmessage: (event: MessageEvent) => {
+      if (event.data) {
+        const data = JSON.parse(event.data)
+        const transcripts = _.map(data.segments, 'clean_transcript').map(transcript => [{ transcript }])
+
+        if (data.segments && data.segments.length) {
+          this.setState({ results: transcripts }, () => console.log(this.state.results))
+        }
+      }
+    },
+  })
+  audioContext = this.props.audioContext
+  destination = this.audioContext.createMediaStreamDestination()
+  recorder = createMediaRecorder(this.destination.stream, {
+    ondataavailable: (evt: any) => {
+      // push each chunk (blobs) in an array
+      if (evt.data instanceof Blob) {
+        if (this.socket.readyState === 1) {
+          console.log('sending')
+          this.socket.send(evt.data)
+        }
+      }
+    },
+    onstop: (evt: any) => {
+      this.socket.send('EOS')
+      // Make blob out of our blobs, and open it.
+      // var blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
+      // document.querySelector('audio').src = URL.createObjectURL(blob)
+      console.log(evt)
+    },
+  })
+
   analyser: AnalyserNode = _.assign(this.audioContext.createAnalyser(), {
     fftSize: 32,
     smoothingTimeConstant: 0.95,
   })
-  gainNode = this.audioContext.createGain()
   analyserData = new Float32Array(this.analyser.frequencyBinCount)
   mediaStream: MediaStream
   microphone: MediaStreamAudioSourceNode
-  recorder: any
 
-  // componentDidMount() {
-  //   this.ensureMediaStream()
-  // }
+  intervalId = setInterval(() => this.recorder.state === 'recording' && this.recorder.requestData(), 500)
+
+  // recognizer = createSpeechRecognition({
+  //   interimResults: true,
+  //   onresult: (event: any) => {
+  //     // console.log(event)
+  //     const { results } = event
+  //     // console.log(results)
+  //     this.setState({ results })
+  //   },
+  //   onstart: () => this.setState({ started: true }),
+  //   // onend: () => this.setState({ started: false }),
+  //   // onspeechstart: () => this.setState({ started: true }),
+  //   // onspeechend: () => this.setState({ started: false }),
+  // })
+
+  componentDidMount() {
+    if (process.env.NODE_ENV === 'development') {
+      this.toggle()
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId)
+    _.attempt(() => this.recorder.stop())
+  }
 
   async ensureMediaStream() {
     if (!this.mediaStream) {
       this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true })
       this.microphone = this.audioContext.createMediaStreamSource(this.mediaStream)
-      this.recorder = new MediaRecorder(this.mediaStream)
 
       this.microphone.connect(this.analyser)
-      this.analyser.connect(this.audioContext.destination)
+      this.analyser.connect(this.destination)
 
-      console.log(this.recorder.start())
+      this.recorder.start()
     }
 
     return this.mediaStream
   }
 
-  recog = createSpeechRecognition({
-    // interimResults: true,
-    onresult: (event: any) => {
-      console.log(event)
-      const { results } = event
-      console.log(results)
-      this.setState({ results })
-    },
-    onstart: () => this.setState({ started: true }),
-    onspeechstart: () => {
-      this.setState({ started: true })
-    },
-    onend: () => this.setState({ started: false }),
-    onspeechend: () => this.setState({ started: false }),
-  })
-
   toggle = async () => {
-    await new Promise(resolve => this.setState(null, resolve))
+    await this.ensureMediaStream()
 
     try {
       if (this.state.started) {
-        this.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime)
-
-        this.recog.stop()
+        // this.recognizer.stop()
       } else {
-        await this.ensureMediaStream()
-        this.gainNode.gain.setValueAtTime(1, this.audioContext.currentTime)
-
-        this.recog.start()
-        this.setState({ results: [] })
+        // this.recognizer.start()
+        // this.setState({ results: [] })
       }
     } catch (e) {}
   }
@@ -94,7 +131,7 @@ export class VoiceInput extends Component<{}, any> {
           <FontAwesomeIcon icon={faMicrophone} />
         </MicrophoneButton>
 
-        <FormantBars analyser={this.analyser} count={7} gap={1.5} width={3.5} height={40} />
+        <FormantBars analyser={this.analyser} count={5} gap={1.5} width={3.5} height={40} />
 
         {started || results.length ? (
           <React.Fragment>
@@ -116,6 +153,10 @@ export class VoiceInput extends Component<{}, any> {
       </Root>
     )
   }
+}
+
+function createMediaRecorder(mediaStream: MediaStream, options: any): typeof MediaRecorder {
+  return Object.assign(new MediaRecorder(mediaStream), options)
 }
 
 const Root = styled(Block)`
