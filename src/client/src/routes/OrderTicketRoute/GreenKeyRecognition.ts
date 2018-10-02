@@ -13,6 +13,8 @@ export function createWebSocket(config: any = {}): WebSocket {
   config = {
     serviceURI: 'ws://localhost:8783/client/ws/speech',
     contentType: 'audio/webm;codecs=opus',
+    // contentType:
+    // 'content-type=audio/x-raw,+layout=(string)interleaved,+rate=(int)44100,+format=(string)S16LE,+channels=(int)1',
     ...config,
   }
 
@@ -20,6 +22,7 @@ export function createWebSocket(config: any = {}): WebSocket {
   const socket = new WebSocket(url)
   Object.assign(socket, {
     onmessage(event: MessageEvent) {
+      // console.log('onmessage', event)
       if (config.onmessage) {
         config.onmessage(event)
       }
@@ -32,8 +35,8 @@ export function createWebSocket(config: any = {}): WebSocket {
     },
     onclose(event: CloseEvent) {
       console.log('onclose', event)
-      if (config.onclose) {
-        config.onclose(event)
+      if (config.onopen) {
+        config.onopen(event)
       }
     },
     onerror(event: Event) {
@@ -47,7 +50,7 @@ export function createWebSocket(config: any = {}): WebSocket {
   return socket
 }
 
-/*
+/**
   {
     intents: [] as string[],
     is_quote: true,
