@@ -1,7 +1,5 @@
 import { ConfigType } from './config'
 
-declare const window: any
-
 export async function open(config: ConfigType): Promise<Window | fin.OpenFinWindow | fin.OpenFinApplication | void> {
   const { provider } = config
   // under openfin
