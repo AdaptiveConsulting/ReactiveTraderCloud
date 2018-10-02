@@ -154,7 +154,7 @@ export const light: CorePaletteMap = {
   secondary: {
     base: offblack.base,
     1: offblack.L1,
-    2: mix(0.25, white.base, offblack.base),
+    2: offblack.L25,
     3: offblack.D4,
     4: offblack.L5,
   },
