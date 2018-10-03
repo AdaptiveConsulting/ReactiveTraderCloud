@@ -1,10 +1,11 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { styled, Styled } from 'rt-theme'
+import { colors, keyframes, styled, Styled } from 'rt-theme'
 import { Block } from '../StyleguideRoute/styled'
 
 import FormantIcon from './assets/Formant'
 import formantSVGURL from './assets/formant.svg'
+import MicrophoneIcon from './assets/Microphone'
 
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,6 +17,7 @@ import { FormantBars } from './FormantBars'
 import * as GreenKeyRecognition from './GreenKeyRecognition'
 
 declare const MediaRecorder: any
+declare const requestIdleCallback: any
 
 interface Props {
   audioContext: AudioContext
@@ -34,7 +36,7 @@ export class VoiceInput extends Component<Props, any> {
         const transcripts = _.map(data.segments, 'clean_transcript').map(transcript => [{ transcript }])
 
         if (data.segments && data.segments.length) {
-          this.setState({ results: transcripts }, () => console.log(this.state.results))
+          this.setState({ results: transcripts })
         }
       }
     },
@@ -46,7 +48,6 @@ export class VoiceInput extends Component<Props, any> {
       // push each chunk (blobs) in an array
       if (evt.data instanceof Blob) {
         if (this.socket.readyState === 1) {
-          console.log('sending')
           this.socket.send(evt.data)
         }
       }
@@ -68,7 +69,11 @@ export class VoiceInput extends Component<Props, any> {
   mediaStream: MediaStream
   microphone: MediaStreamAudioSourceNode
 
-  intervalId = setInterval(() => this.recorder.state === 'recording' && this.recorder.requestData(), 500)
+  intervalId = setInterval(() => {
+    if (this.recorder.state === 'recording') {
+      requestIdleCallback(() => this.recorder.requestData())
+    }
+  }, 500)
 
   // recognizer = createSpeechRecognition({
   //   interimResults: true,
@@ -86,7 +91,7 @@ export class VoiceInput extends Component<Props, any> {
 
   componentDidMount() {
     if (process.env.NODE_ENV === 'development') {
-      this.toggle()
+      // this.toggle()
     }
   }
 
@@ -114,8 +119,11 @@ export class VoiceInput extends Component<Props, any> {
 
     try {
       if (this.state.started) {
+        this.setState({ started: false })
+
         // this.recognizer.stop()
       } else {
+        this.setState({ started: true })
         // this.recognizer.start()
         // this.setState({ results: [] })
       }
@@ -126,29 +134,32 @@ export class VoiceInput extends Component<Props, any> {
     const { started, results } = this.state
 
     return (
-      <Root bg="primary.4">
-        <MicrophoneButton fg={started ? 'accents.accent.base' : 'secondary.base'} onClick={this.toggle}>
-          <FontAwesomeIcon icon={faMicrophone} />
-        </MicrophoneButton>
-
-        <FormantBars analyser={this.analyser} count={5} gap={1.5} width={3.5} height={40} />
-
-        {started || results.length ? (
+      <Root bg="primary.4" onClick={this.toggle}>
+        {started ? (
           <React.Fragment>
-            <AutoFill />
-            <Input onClick={() => this.setState({ results: [] })}>
-              {_.map(results, ([{ transcript }]: any, index: number) => (
-                <React.Fragment key={index}>{transcript}</React.Fragment>
-              ))}
-            </Input>
+            <Fill />
+            <FormantBars analyser={this.analyser} count={5} gap={1.5} width={3.5} height={40} />
+            <Fill />
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            <AutoFill />
-            <Input onClick={this.toggle} fg="primary.3" fontSize="0.6" letterSpacing="1px" textTransform="uppercase">
-              Press to talk
-            </Input>
-          </React.Fragment>
+          <MicrophoneButton active={started} fg={started ? 'accents.primary.base' : 'secondary.base'}>
+            <MicrophoneIcon />
+            {/* <FontAwesomeIcon icon={faMicrophone} /> */}
+          </MicrophoneButton>
+        )}
+
+        {started ? (
+          <Input onClick={() => this.setState({ results: [] })}>
+            {results.length === 0 ? (
+              <StatusText>Listening</StatusText>
+            ) : (
+              _.map(results, ([{ transcript }]: any, index: number) => (
+                <React.Fragment key={index}>{transcript}</React.Fragment>
+              ))
+            )}
+          </Input>
+        ) : (
+          <StatusText>Press to talk</StatusText>
         )}
       </Root>
     )
@@ -166,10 +177,13 @@ const Root = styled(Block)`
   border-radius: 1.5rem;
   width: 100%;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1) inset;
+  user-select: none;
+
+  min-width: 36rem;
+  max-width: 36rem;
 `
 
-const AutoFill = styled(Block)`
-  fill: 1 1 100%;
+const Fill = styled(Block)`
   min-height: 1rem;
   max-height: 100%;
   min-width: 1rem;
@@ -190,13 +204,16 @@ export const StaicFormant = styled.div`
   background-size: cover;
 `
 
-const MicrophoneButton = styled(Block)`
-  width: 3rem;
+const MicrophoneButton: Styled<{ active: boolean }> = styled(Block)`
+  height: ${2.75}rem;
+  width: ${2.75}rem;
 
-  font-size: 1rem;
+  font-size: 1.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border-radius: 100%;
 `
 
 const Input = styled(Block)`
@@ -205,5 +222,46 @@ const Input = styled(Block)`
   display: flex;
   min-height: 1em;
 `
+
+const AnimatedText = styled.span`
+  -webkit-background-clip: text;
+  color: ${p => p.theme.transparent};
+  transition: all 1s ease, background-position 1s ease;
+
+  background-clip: text;
+  background-image: repeating-linear-gradient(
+    45deg,
+    ${p => p.theme.transparent},
+    ${p => p.theme.accents.primary.base},
+    ${p => p.theme.transparent}
+  );
+  background-size: 200%;
+  background-position: 50%;
+
+  animation: ${keyframes`
+    from {
+      background-position: 50%;
+      color: ${colors.spectrum.transparent.base};
+    }
+    40% {
+      background-position: 0%;
+      color: currentColor;
+    }
+    60% {
+      background-position: 100%;
+      color: currentColor;
+    }
+    to {
+      background-position: 50%;
+      color: ${colors.spectrum.transparent.base};
+    }
+  `} infinite 3s linear;
+`
+
+const StatusText: React.SFC = props => (
+  <Input onClick={this.toggle} fg="primary.2" fontSize="0.625" letterSpacing="1px" textTransform="uppercase">
+    <AnimatedText>{props.children}</AnimatedText>
+  </Input>
+)
 
 export const InputResult = styled(Block)``
