@@ -13,8 +13,6 @@ export function createWebSocket(config: any = {}): WebSocket {
   config = {
     serviceURI: 'ws://localhost:8783/client/ws/speech',
     contentType: 'audio/webm;codecs=opus',
-    // contentType:
-    // 'content-type=audio/x-raw,+layout=(string)interleaved,+rate=(int)44100,+format=(string)S16LE,+channels=(int)1',
     ...config,
   }
 
