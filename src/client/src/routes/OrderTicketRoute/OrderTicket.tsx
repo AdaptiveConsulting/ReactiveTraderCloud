@@ -1,10 +1,12 @@
 import { darken } from 'polished'
 import React, { PureComponent } from 'react'
+import { rules } from 'rt-styleguide'
 import { styled } from 'rt-theme'
-import { Block } from '../StyleguideRoute/styled'
+import { Block, Text } from '../StyleguideRoute/styled'
 
 import { DrawerMenu } from './DrawerMenu'
 import { VoiceInput } from './VoiceInput'
+import { WindowControls } from './WindowControls'
 
 export class OrderTicket extends PureComponent {
   audioContext = new AudioContext()
@@ -13,7 +15,12 @@ export class OrderTicket extends PureComponent {
     return (
       <Viewport bg="shell.backgroundColor" fg="shell.textColor">
         <AppLayout bg="shell.backgroundColor">
-          <ChromeLayout bg="primary.base" />
+          <ChromeLayout bg="primary.base">
+            <WindowControls />
+            <Text letterSpacing="1px" fontSize="0.625rem" fontWeight={300}>
+              Order Ticket
+            </Text>
+          </ChromeLayout>
           <DrawerLayout bg="primary.4" fg="primary.2">
             <DrawerMenu />
           </DrawerLayout>
@@ -62,8 +69,18 @@ const AppLayout = styled(Block)`
 
 const ChromeLayout = styled(Block)`
   grid-area: chrome;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: min-content 1fr auto;
+  align-items: center;
+  grid-gap: 1rem;
+  padding: 0 1rem;
+
   height: 2rem;
+
+  ${rules.appRegionDrag};
 `
+
 const DrawerLayout = styled(Block)`
   grid-area: drawer;
   width: 4rem;
@@ -78,7 +95,10 @@ const DrawerLayout = styled(Block)`
   justify-content: center;
   align-content: center;
   justify-items: center;
+
+  ${rules.appRegionDrag};
 `
+
 const VoiceLayout = styled(Block)`
   grid-area: voice;
   height: 5rem;
@@ -88,17 +108,26 @@ const VoiceLayout = styled(Block)`
   align-items: center;
   justify-content: center;
   padding: 0 1rem;
+
+  max-width: 100%;
+
+  ${rules.appRegionNoDrag};
 `
 const FormLayout = styled(Block)`
   grid-area: form;
   height: 14rem;
   box-shadow: -1px 0 0 ${props => props.theme.ruleColor} inset;
+
+  ${rules.appRegionNoDrag};
 `
 
 const StatusLayout = styled(Block)`
   grid-area: status;
   height: 14rem;
+
+  ${rules.appRegionNoDrag};
 `
+
 const InfoLayout = styled(Block)`
   grid-area: info;
   height: 3rem;
@@ -109,6 +138,8 @@ const InfoLayout = styled(Block)`
   padding: 0 1rem;
 
   box-shadow: 0 1px 0 ${props => props.theme.ruleColor} inset;
+
+  ${rules.appRegionDrag};
 `
 
 export default OrderTicket
