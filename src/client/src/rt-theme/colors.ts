@@ -221,6 +221,7 @@ export const spectrum = {
 }
 
 export const colors = {
+  transparent: transparent.base,
   spectrum,
   accents,
   light,
