@@ -1,4 +1,3 @@
-import { rgba } from 'polished'
 import React from 'react'
 import { rules } from 'rt-styleguide'
 import { styled, Styled } from 'rt-theme'
@@ -87,6 +86,7 @@ export const LabelText: Styled<TextProps> = styled(Text)`
   font-size: 0.6875rem;
   font-size: 0.625rem;
   ${mapTextProps};
+  ${mergeProps([curryProps(mapColorProps, { textColor: 'secondary.3' })])};
 `
 
 export const Input = styled.input`
@@ -101,8 +101,6 @@ export const Input = styled.input`
   border: none;
   width: 100%;
   max-width: 100%;
-
-  ${curryProps(mapColorProps, { fg: 'secondary.base' })};
 `
 
 export const LabelLayout: Styled<{ area?: string; focused?: boolean; filled?: boolean } & ColorProps> = styled.label`
@@ -118,30 +116,67 @@ export const LabelLayout: Styled<{ area?: string; focused?: boolean; filled?: bo
   grid-template-rows: auto 1fr;
   grid-template-columns: auto;
 
+  ${rules.userSelectNone}
+
+  /* border-radius: 0.125rem; */
+
   transition: box-shadow ease 200ms, background-color ease 200ms;
 
-  ${rules.userSelectNone};
+  ${({ focused, filled, theme }) => {
+    const { backgroundColor } = mapColorProps({
+      theme,
+      fg: filled ? 'primary.3' : focused ? 'primary.1' : 'primary.base',
+      backgroundColor: filled && !focused ? 'transparent' : 'primary.base',
+    })
 
-  ${({ focused, filled, theme: { transparent, primary, secondary } }) => {
-    const color = secondary[3]
-    const backgroundColor = filled && !focused ? transparent : primary.base
-
-    const boxShadow = {
-      color: focused ? primary[3] : filled ? primary[1] : primary.base,
-      backgroundColor: filled ? primary[3] : focused ? primary[1] : primary[4],
-    }
+    const boxShadow = mapColorProps({
+      theme,
+      fg: filled ? 'primary.3' : focused ? 'primary.1' : 'primary.base',
+      bg: filled && !focused ? 'primary.1' : 'primary.base',
+    })
 
     return {
-      color: rgba(color as string, focused ? 0.8 : 0.4),
       backgroundColor,
-      borderRadius: '2px',
-      boxShadow: `
-        1px 0   0 ${primary[1]},
-       -1px 0   0 ${primary[1]},    
-        0   1px 0 ${boxShadow.color}, 
-        0   0   0  1px ${primary[1]},
-        0   2px 0 ${boxShadow.backgroundColor}
-      `,
+      boxShadow: `0 0.125rem 0 ${boxShadow.backgroundColor}, 0 0.25rem 0 ${boxShadow.color}`,
     }
   }};
+
+  /* ${extendProps(
+    curryProps(mapColorProps, ({ focused }: any) => ({
+      textColor: focused ? 'transparent' : 'primary.base',
+      backgroundColor: focused ? 'primary.base' : 'transparent',
+    })),
+    ([{ textColor, backgroundColor }]) => {
+      return {
+        backgroundColor,
+      }
+    },
+  )}; */
+
+  &::after {
+    /* content: ''; */
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.125rem;
+    display: block;
+    width: 100%;
+    margin-top: -1px;
+    height: 2px;
+
+    ${
+      // Employing a WeakMap<Theme, Result> would effeciently memoize the result
+
+      extendProps(
+        curryProps(mapColorProps, ({ focused }: any) => ({
+          bg: focused ? 'transparent' : 'primary.base',
+        })),
+        ([{ backgroundColor }]) => {
+          return {
+            backgroundColor,
+          }
+        },
+      )
+    };
+  }
 `

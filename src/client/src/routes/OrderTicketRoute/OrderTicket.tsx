@@ -8,6 +8,8 @@ import { DrawerMenu } from './DrawerMenu'
 import { VoiceInput } from './VoiceInput'
 import { WindowControls } from './WindowControls'
 
+import { OrderForm } from './OrderForm'
+
 export class OrderTicket extends PureComponent {
   audioContext = new AudioContext()
 
@@ -27,7 +29,9 @@ export class OrderTicket extends PureComponent {
           <VoiceLayout>
             <VoiceInput audioContext={this.audioContext} />
           </VoiceLayout>
-          <FormLayout />
+          <FormLayout>
+            <OrderForm />
+          </FormLayout>
           <StatusLayout />
           <InfoLayout>Bond Info</InfoLayout>
         </AppLayout>
@@ -117,6 +121,10 @@ const FormLayout = styled(Block)`
   grid-area: form;
   height: 14rem;
   box-shadow: -1px 0 0 ${props => props.theme.ruleColor} inset;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   ${rules.appRegionNoDrag};
 `
