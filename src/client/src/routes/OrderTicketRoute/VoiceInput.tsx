@@ -224,11 +224,11 @@ const Input = styled(Block)`
 `
 
 const AnimatedText = styled.span`
-  -webkit-background-clip: text;
   color: ${p => p.theme.transparent};
-  transition: all 1s ease, background-position 1s ease;
+  transition: color 1s ease, background-position 1s ease;
 
   background-clip: text;
+  -webkit-background-clip: text;
   background-image: repeating-linear-gradient(
     45deg,
     ${p => p.theme.transparent},
