@@ -48,7 +48,7 @@ export function createWebSocket(config: any = {}): WebSocket {
   return socket
 }
 
-/**
+/*
   {
     intents: [] as string[],
     is_quote: true,
