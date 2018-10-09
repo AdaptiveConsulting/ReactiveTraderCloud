@@ -20,7 +20,6 @@ export function createWebSocket(config: any = {}): WebSocket {
   const socket = new WebSocket(url)
   Object.assign(socket, {
     onmessage(event: MessageEvent) {
-      // console.log('onmessage', event)
       if (config.onmessage) {
         config.onmessage(event)
       }
@@ -33,8 +32,8 @@ export function createWebSocket(config: any = {}): WebSocket {
     },
     onclose(event: CloseEvent) {
       console.log('onclose', event)
-      if (config.onopen) {
-        config.onopen(event)
+      if (config.onclose) {
+        config.onclose(event)
       }
     },
     onerror(event: Event) {

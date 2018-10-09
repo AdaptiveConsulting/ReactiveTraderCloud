@@ -80,7 +80,7 @@ export class FormantBars extends Component<Props, Partial<State>> {
           height,
           gap,
           style: {
-            width: `${(width / scale + gap / scale) * count - gap / scale}px`,
+            width: `${_.round((width / scale + gap / scale) * count - gap / scale)}px`,
             height: `${height / scale}px`,
           },
         },

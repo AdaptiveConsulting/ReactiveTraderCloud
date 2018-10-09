@@ -3,18 +3,14 @@ import React, { Component } from 'react'
 import { colors, keyframes, styled, Styled } from 'rt-theme'
 import { Block } from '../StyleguideRoute/styled'
 
-import FormantIcon from './assets/Formant'
 import formantSVGURL from './assets/formant.svg'
 import MicrophoneIcon from './assets/Microphone'
-
-import { faMicrophone } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-import createSpeechRecognition from './createSpeechRecognition'
 
 import { FormantBars } from './FormantBars'
 
 import * as GreenKeyRecognition from './GreenKeyRecognition'
+import { SessionEvent, SimpleSession } from './SimpleSession'
+import { UserMedia } from './UserMedia'
 
 declare const MediaRecorder: any
 declare const requestIdleCallback: any
@@ -25,150 +21,175 @@ interface Props {
 
 export class VoiceInput extends Component<Props, any> {
   state = {
-    started: false,
+    sessionRequestCount: 0,
+    sessionRequestActive: false,
+    sessionConnected: null,
+    userPermissionGranted: null,
+    sessionInstance: null,
     results: [],
   } as any
 
-  socket = GreenKeyRecognition.createWebSocket({
-    onmessage: (event: MessageEvent) => {
-      if (event.data) {
-        const data = JSON.parse(event.data)
-        const transcripts = _.map(data.segments, 'clean_transcript').map(transcript => [{ transcript }])
+  get audioContext() {
+    return this.props.audioContext
+  }
 
-        if (data.segments && data.segments.length) {
-          this.setState({ results: transcripts })
-        }
-      }
-    },
-  })
-  audioContext = this.props.audioContext
   destination = this.audioContext.createMediaStreamDestination()
-  recorder = createMediaRecorder(this.destination.stream, {
-    ondataavailable: (evt: any) => {
-      // push each chunk (blobs) in an array
-      if (evt.data instanceof Blob) {
-        if (this.socket.readyState === 1) {
-          this.socket.send(evt.data)
-        }
-      }
-    },
-    onstop: (evt: any) => {
-      this.socket.send('EOS')
-      // Make blob out of our blobs, and open it.
-      // var blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
-      // document.querySelector('audio').src = URL.createObjectURL(blob)
-      console.log(evt)
-    },
-  })
-
   analyser: AnalyserNode = _.assign(this.audioContext.createAnalyser(), {
     fftSize: 32,
     smoothingTimeConstant: 0.95,
   })
-  analyserData = new Float32Array(this.analyser.frequencyBinCount)
-  mediaStream: MediaStream
-  microphone: MediaStreamAudioSourceNode
 
-  intervalId = setInterval(() => {
-    if (this.recorder.state === 'recording') {
-      requestIdleCallback(() => this.recorder.requestData())
+  toggle = () => {
+    this.setState(({ sessionRequestCount, sessionRequestActive }: any) => ({
+      sessionRequestCount: !sessionRequestActive ? sessionRequestCount + 1 : sessionRequestCount,
+      sessionRequestActive: !sessionRequestActive,
+    }))
+  }
+
+  onPermission = ({ ok }: SessionEvent) => {
+    this.setState({
+      userPermissionGranted: ok,
+    })
+  }
+
+  onSessionStart = (sessionInstance: any) => {
+    this.setState({ sessionInstance: !!sessionInstance })
+  }
+
+  onSessionError = (event: SessionEvent) => {
+    if (event.source == 'media') {
+      this.setState({
+        userPermissionGranted: false,
+      })
     }
-  }, 500)
 
-  // recognizer = createSpeechRecognition({
-  //   interimResults: true,
-  //   onresult: (event: any) => {
-  //     // console.log(event)
-  //     const { results } = event
-  //     // console.log(results)
-  //     this.setState({ results })
-  //   },
-  //   onstart: () => this.setState({ started: true }),
-  //   // onend: () => this.setState({ started: false }),
-  //   // onspeechstart: () => this.setState({ started: true }),
-  //   // onspeechend: () => this.setState({ started: false }),
-  // })
-
-  componentDidMount() {
-    if (process.env.NODE_ENV === 'development') {
-      // this.toggle()
+    if (event.source === 'socket') {
+      this.setState({
+        sessionConnected: false,
+      })
     }
   }
 
-  componentWillUnmount() {
-    clearInterval(this.intervalId)
-    _.attempt(() => this.recorder.stop())
+  onSessionResult = (result: any) => {
+    this.setState({ results: result.transcripts })
   }
 
-  async ensureMediaStream() {
-    if (!this.mediaStream) {
-      this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      this.microphone = this.audioContext.createMediaStreamSource(this.mediaStream)
-
-      this.microphone.connect(this.analyser)
-      this.analyser.connect(this.destination)
-
-      this.recorder.start()
-    }
-
-    return this.mediaStream
+  onSessionEnd = (sessionInstance: any) => {
+    this.reset()
   }
 
-  toggle = async () => {
-    await this.ensureMediaStream()
-
-    try {
-      if (this.state.started) {
-        this.setState({ started: false })
-
-        // this.recognizer.stop()
-      } else {
-        this.setState({ started: true })
-        // this.recognizer.start()
-        // this.setState({ results: [] })
-      }
-    } catch (e) {}
+  reset() {
+    this.setState({
+      sessionRequestActive: false,
+      sessionConnected: null,
+      userPermissionGranted: null,
+      sessionInstance: null,
+    })
   }
 
   render() {
-    const { started, results } = this.state
+    const {
+      sessionRequestCount,
+      sessionRequestActive,
+      sessionConnected,
+      userPermissionGranted,
+      sessionInstance,
+      results,
+    } = this.state
 
     return (
-      <Root bg="primary.4" onClick={this.toggle}>
-        {started ? (
-          <React.Fragment>
-            <Fill />
-            <FormantBars analyser={this.analyser} count={5} gap={1.5} width={3.5} height={40} />
-            <Fill />
-          </React.Fragment>
-        ) : (
-          <MicrophoneButton active={started} fg={started ? 'accents.primary.base' : 'secondary.base'}>
-            <MicrophoneIcon />
-            {/* <FontAwesomeIcon icon={faMicrophone} /> */}
-          </MicrophoneButton>
+      <React.Fragment>
+        {sessionRequestCount > 0 && (
+          <UserMedia.Provider>
+            {sessionRequestActive && (
+              <UserMedia.Consumer>
+                {userMedia => (
+                  <SimpleSession
+                    audioContext={this.audioContext}
+                    userMedia={userMedia}
+                    analyser={this.analyser}
+                    destination={this.destination}
+                    onStart={this.onSessionStart}
+                    onError={this.onSessionError}
+                    onPermission={this.onPermission}
+                    onResult={this.onSessionResult}
+                    onEnd={this.onSessionEnd}
+                  />
+                )}
+              </UserMedia.Consumer>
+            )}
+          </UserMedia.Provider>
         )}
 
-        {started ? (
-          <Input onClick={() => this.setState({ results: [] })}>
-            {results.length === 0 ? (
-              <StatusText>Listening</StatusText>
+        <Root bg="primary.4" onClick={this.toggle}>
+          {sessionInstance ? null : (
+            <MicrophoneButton
+              // active={sessionInstance}
+              fg={
+                sessionRequestActive === false
+                  ? 'secondary.4'
+                  : userPermissionGranted === false
+                    ? 'accents.aware.base'
+                    : 'accents.primary.base'
+              }
+            >
+              <MicrophoneIcon />
+            </MicrophoneButton>
+          )}
+
+          {!sessionInstance ? null : (
+            <React.Fragment>
+              <Fill />
+              <FormantBars analyser={this.analyser} count={5} gap={1.5} width={3.5} height={40} />
+              <Fill />
+            </React.Fragment>
+          )}
+
+          {results.length === 0 ? (
+            !sessionRequestActive ? (
+              <StatusText>Press to talk</StatusText>
             ) : (
-              _.map(results, ([{ transcript }]: any, index: number) => (
-                <React.Fragment key={index}>{transcript}</React.Fragment>
-              ))
-            )}
-          </Input>
-        ) : (
-          <StatusText>Press to talk</StatusText>
-        )}
-      </Root>
+              <React.Fragment>
+                {userPermissionGranted == null ? (
+                  <StatusText>Waiting for permission</StatusText>
+                ) : (
+                  <React.Fragment>
+                    {userPermissionGranted === false && (
+                      <StatusText accent="aware">Check microphone permissions</StatusText>
+                    )}
+                    {userPermissionGranted === true && (
+                      <React.Fragment>
+                        {sessionConnected === false ? (
+                          <StatusText accent="aware">We're having trouble connecting</StatusText>
+                        ) : results.length <= 0 ? (
+                          <StatusText>Listening</StatusText>
+                        ) : null}
+                      </React.Fragment>
+                    )}
+                  </React.Fragment>
+                )}
+              </React.Fragment>
+            )
+          ) : (
+            <Input onClick={() => this.setState({ results: [] })}>
+              {_.map(results, ([{ transcript }]: any, index: number) => (
+                <React.Fragment key={index}>
+                  {transcript}
+                  <span>&nbsp;</span>
+                </React.Fragment>
+              ))}
+            </Input>
+          )}
+        </Root>
+      </React.Fragment>
     )
   }
 }
 
-function createMediaRecorder(mediaStream: MediaStream, options: any): typeof MediaRecorder {
-  return Object.assign(new MediaRecorder(mediaStream), options)
-}
+const Transcript = ({ results }: any) =>
+  function createMediaRecorder(mediaStream: MediaStream, options: any): typeof MediaRecorder {
+    return Object.assign(new MediaRecorder(mediaStream), options)
+  }
 
 const Root = styled(Block)`
   display: flex;
@@ -189,11 +210,11 @@ const Fill = styled(Block)`
   min-width: 1rem;
 `
 
-export const Formant: Styled<{ started: boolean }> = styled.div`
+export const Formant: Styled<{ sessionInstance: boolean }> = styled.div`
   height: 2rem;
   width: 2rem;
   [fill] {
-    fill: ${({ started, theme }) => (started ? theme.accents.primary.base : theme.secondary.base)};
+    fill: ${({ sessionInstance, theme }) => (sessionInstance ? theme.accents.primary.base : theme.secondary.base)};
   }
 `
 
@@ -207,6 +228,7 @@ export const StaicFormant = styled.div`
 const MicrophoneButton: Styled<{ active: boolean }> = styled(Block)`
   height: ${2.75}rem;
   width: ${2.75}rem;
+  width: ${3.5}rem;
 
   font-size: 1.125rem;
   display: flex;
@@ -223,7 +245,7 @@ const Input = styled(Block)`
   min-height: 1em;
 `
 
-const AnimatedText = styled.span`
+const AnimatedText: Styled<{ accent?: string }> = styled.span`
   color: ${p => p.theme.transparent};
   transition: color 1s ease, background-position 1s ease;
 
@@ -232,7 +254,7 @@ const AnimatedText = styled.span`
   background-image: repeating-linear-gradient(
     45deg,
     ${p => p.theme.transparent},
-    ${p => p.theme.accents.primary.base},
+    ${p => (p.theme.accents[p.accent] || p.theme.accents.primary).base},
     ${p => p.theme.transparent}
   );
   background-size: 200%;
@@ -258,10 +280,18 @@ const AnimatedText = styled.span`
   `} infinite 3s linear;
 `
 
-const StatusText: React.SFC = props => (
-  <Input onClick={this.toggle} fg="primary.2" fontSize="0.625" letterSpacing="1px" textTransform="uppercase">
-    <AnimatedText>{props.children}</AnimatedText>
+const StatusText: React.SFC<{ accent?: string }> = ({ accent, children }) => (
+  <Input
+    onClick={this.toggle}
+    fg={accent ? `accents.${accent}.base` : 'primary.2'}
+    fontSize="0.625"
+    letterSpacing="1px"
+    textTransform="uppercase"
+  >
+    <AnimatedText accent={accent}>{children}</AnimatedText>
   </Input>
 )
 
-export const InputResult = styled(Block)``
+export const InputResult = styled(Block)`
+  display: inline;
+`
