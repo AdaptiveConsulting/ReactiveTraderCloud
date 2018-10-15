@@ -9,7 +9,7 @@ import MicrophoneIcon from './assets/Microphone'
 import { FormantBars } from './FormantBars'
 
 import * as GreenKeyRecognition from './GreenKeyRecognition'
-import { SessionEvent, SimpleSession } from './SimpleSession'
+import { SessionEvent, SessionResult, SimpleSession } from './SimpleSession'
 import { UserMedia } from './UserMedia'
 
 declare const MediaRecorder: any
@@ -17,7 +17,10 @@ declare const requestIdleCallback: any
 
 interface Props {
   audioContext: AudioContext
+  onResult?: (data: GreenKeyRecognition.InterpretedQuote) => void
 }
+
+export interface VoiceInputResult extends SessionResult {}
 
 export class VoiceInput extends Component<Props, any> {
   state = {
@@ -26,8 +29,9 @@ export class VoiceInput extends Component<Props, any> {
     sessionConnected: null,
     userPermissionGranted: null,
     sessionInstance: null,
-    results: [],
-  } as any
+    data: null,
+    transcripts: [],
+  } as any & Partial<SessionResult>
 
   get audioContext() {
     return this.props.audioContext
@@ -47,9 +51,7 @@ export class VoiceInput extends Component<Props, any> {
   }
 
   onPermission = ({ ok }: SessionEvent) => {
-    this.setState({
-      userPermissionGranted: ok,
-    })
+    this.setState({ userPermissionGranted: ok })
   }
 
   onSessionStart = (sessionInstance: any) => {
@@ -57,21 +59,19 @@ export class VoiceInput extends Component<Props, any> {
   }
 
   onSessionError = (event: SessionEvent) => {
-    if (event.source == 'media') {
-      this.setState({
-        userPermissionGranted: false,
-      })
+    if (event.source === 'media') {
+      this.setState({ userPermissionGranted: false })
     }
 
     if (event.source === 'socket') {
-      this.setState({
-        sessionConnected: false,
-      })
+      this.setState({ sessionConnected: false })
     }
   }
 
-  onSessionResult = (result: any) => {
-    this.setState({ results: result.transcripts })
+  onSessionResult = (result: SessionResult) => {
+    this.setState(result)
+    if (this.props.onResult) {
+    }
   }
 
   onSessionEnd = (sessionInstance: any) => {
@@ -94,7 +94,7 @@ export class VoiceInput extends Component<Props, any> {
       sessionConnected,
       userPermissionGranted,
       sessionInstance,
-      results,
+      transcripts,
     } = this.state
 
     return (
@@ -123,8 +123,7 @@ export class VoiceInput extends Component<Props, any> {
 
         <Root bg="primary.4" onClick={this.toggle}>
           {sessionInstance ? null : (
-            <MicrophoneButton
-              // active={sessionInstance}
+            <MicrophoneButton // active={sessionInstance}
               fg={
                 sessionRequestActive === false
                   ? 'secondary.4'
@@ -145,7 +144,7 @@ export class VoiceInput extends Component<Props, any> {
             </React.Fragment>
           )}
 
-          {results.length === 0 ? (
+          {transcripts.length === 0 ? (
             !sessionRequestActive ? (
               <StatusText>Press to talk</StatusText>
             ) : (
@@ -161,7 +160,7 @@ export class VoiceInput extends Component<Props, any> {
                       <React.Fragment>
                         {sessionConnected === false ? (
                           <StatusText accent="aware">We're having trouble connecting</StatusText>
-                        ) : results.length <= 0 ? (
+                        ) : transcripts.length <= 0 ? (
                           <StatusText>Listening</StatusText>
                         ) : null}
                       </React.Fragment>
@@ -171,8 +170,8 @@ export class VoiceInput extends Component<Props, any> {
               </React.Fragment>
             )
           ) : (
-            <Input onClick={() => this.setState({ results: [] })}>
-              {_.map(results, ([{ transcript }]: any, index: number) => (
+            <Input onClick={() => this.setState({ transcripts: [] })}>
+              {_.map(transcripts, ([{ transcript }]: any, index: number) => (
                 <React.Fragment key={index}>
                   {transcript}
                   <span>&nbsp;</span>
@@ -202,6 +201,7 @@ const Root = styled(Block)`
 
   min-width: 36rem;
   max-width: 36rem;
+  overflow: hidden;
 `
 
 const Fill = styled(Block)`

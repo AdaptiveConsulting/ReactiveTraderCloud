@@ -208,14 +208,16 @@ export function roundRect({ ctx, x, y, width, height, radius, fill, stroke }: an
   if (typeof radius === 'undefined') {
     radius = 4
   }
+
   if (typeof radius === 'number') {
     radius = { tl: radius, tr: radius, br: radius, bl: radius }
   } else {
-    const defaultRadius = { tl: 0, tr: 0, br: 0, bl: 0 }
-    for (const side in defaultRadius) {
-      radius[side] = radius[side] || defaultRadius[side]
+    radius = {
+      ...{ tl: 0, tr: 0, br: 0, bl: 0 },
+      ...radius,
     }
   }
+
   ctx.beginPath()
   ctx.moveTo(x + radius.tl, y)
   ctx.lineTo(x + width - radius.tr, y)

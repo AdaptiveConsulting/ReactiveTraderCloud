@@ -14,7 +14,7 @@ import {
 } from '../StyleguideRoute/styled'
 
 export interface TextFieldProps {
-  name: string
+  name: any
   value?: string
   onChange: (value: any) => void
 }

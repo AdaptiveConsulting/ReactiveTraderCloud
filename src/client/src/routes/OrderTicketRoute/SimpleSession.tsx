@@ -7,13 +7,20 @@ import { UserMediaState } from './UserMedia'
 declare const MediaRecorder: any
 declare const requestIdleCallback: any
 
+// const WebSocket = (window as any).WebSocket
+
+export interface SessionResult {
+  data: GreenKeyRecognition.Result
+  transcripts: any
+}
+
 export interface Props {
   audioContext: AudioContext
   userMedia: UserMediaState
   destination: MediaStreamAudioDestinationNode
   analyser: AnalyserNode
   onStart?: (e: any) => any
-  onResult?: (e: any) => any
+  onResult?: (e: SessionResult) => any
   onPermission?: (event: SessionEvent) => any
   onError?: (event: SessionEvent) => any
   onEnd?: (e: any) => any
@@ -30,8 +37,8 @@ interface State {
   closed?: boolean
   error?: boolean
 
-  socket?: boolean
-  media?: boolean
+  socket?: any
+  media?: any
 
   [key: string]: boolean
 }
@@ -41,8 +48,21 @@ type Source = 'socket' | 'media' | 'unmount'
 
 export class SimpleSession extends PureComponent<Props, State> {
   async componentDidMount() {
+    let socket: any = this.createSocket()
+
     await this.createMediaStream()
-    this.socket = await this.createSocket()
+
+    try {
+      socket = await socket
+    } catch (e) {
+      socket = null
+    }
+
+    if (socket == null || [WebSocket.CLOSING, WebSocket.CLOSED].includes(socket.readyState)) {
+      socket = await this.createSocket()
+    }
+
+    this.socket = socket
   }
 
   componentWillUnmount() {
@@ -95,7 +115,7 @@ export class SimpleSession extends PureComponent<Props, State> {
       }
     },
     onstop: (event: any) => {
-      console.log('recording stopped')
+      // console.log('recording stopped')
     },
   })
 
@@ -106,7 +126,8 @@ export class SimpleSession extends PureComponent<Props, State> {
   }, 500)
 
   async createMediaStream() {
-    let mediaStream, userMediaError
+    let mediaStream
+    let userMediaError
 
     // Request user media, or wait 20 seconds till resolved
     for (let i = 0; !mediaStream && i < 100; i++) {
@@ -124,6 +145,7 @@ export class SimpleSession extends PureComponent<Props, State> {
     }
 
     if (!mediaStream && userMediaError) {
+      this.setSource('media', false)
       this.onEnd('media')
     } else {
       this.onPermission({ ok: true, source: 'media' })
@@ -136,34 +158,52 @@ export class SimpleSession extends PureComponent<Props, State> {
       // And for some reason connect the analyser to the destination 📈
       this.analyser.connect(this.destination)
 
-      this.onSourceReady('media')
+      this.setSource('media', mediaStream)
     }
 
     return mediaStream
   }
 
-  createSocket() {
-    return GreenKeyRecognition.createWebSocket({
-      onopen: () => this.onSourceReady('socket'),
-      onerror: (event: ErrorEvent) => this.onError('socket', event),
-      onmessage: (event: MessageEvent) => this.onMessage(event),
-      onclose: async (event: CloseEvent) => {
-        if (this.ready && !this.state.error) {
-          this.onEnd('socket')
-        }
-      },
+  async createSocket() {
+    return new Promise((resolve, reject) => {
+      const socket = GreenKeyRecognition.createWebSocket({
+        onopen: () => {
+          resolve(socket)
+          this.setSource('socket', socket)
+        },
+        onerror: (event: ErrorEvent) => {
+          reject(event)
+          this.setSource('socket', false)
+          this.onError('socket', event)
+        },
+        onmessage: (event: MessageEvent) => {
+          this.onMessage(event)
+        },
+        onclose: async (event: CloseEvent) => {
+          if (this.ready && !this.closed && !this.state.error) {
+            this.setSource('socket', false)
+            this.onEnd('socket')
+          }
+        },
+      })
     })
   }
 
   async onMessage(event: MessageEvent) {
     if (!event.data) {
-      return console.log('no data event', event)
+      console.warn('no data event', event)
+      return
     }
 
     if (this.props.onResult) {
       await new Promise(idle => requestIdleCallback(idle, { timeout: 160 }))
 
       const data = JSON.parse(event.data)
+
+      if (console.table && data.result && data.result.interpreted_quote) {
+        console.log(`\n\n${_.repeat(`•\t`, 8)}\n\n\n`, data.result)
+        console.table(flatten(data.result.interpreted_quote))
+      }
 
       this.props.onResult({
         data,
@@ -172,35 +212,30 @@ export class SimpleSession extends PureComponent<Props, State> {
     }
   }
 
-  async onSourceReady(source: Source) {
-    console.log('ready', { source })
+  setSource(source: Source, state: any) {
+    // console.log('setSource', { [source]: state })
 
-    await new Promise(next => this.setState({ [source]: true }, next))
+    this.setState({ [source]: state }, () => {
+      if (this.ready && !this.recording) {
+        this.recorder.start()
 
-    this.onReady()
+        if (this.props.onStart) {
+          this.props.onStart(this)
+        }
+      }
+    })
   }
 
   onPermission = (event: SessionEvent) => {
-    console.log('onPermission', event)
+    // console.log('onPermission', event)
 
     if (this.props.onPermission) {
       this.props.onPermission(event)
     }
   }
 
-  onReady = _.debounce(() => {
-    console.log('on ready')
-    if (this.ready && !this.recording) {
-      this.recorder.start()
-
-      if (this.props.onStart) {
-        this.props.onStart(this)
-      }
-    }
-  }, 500)
-
   onError(source: Dependency, error: Error | ErrorEvent) {
-    console.log('error', { source })
+    // console.log('error', { source })
 
     this.setState({ [source]: false, error: true })
     if (this.props.onError) {
@@ -210,7 +245,7 @@ export class SimpleSession extends PureComponent<Props, State> {
 
   closed: boolean
   onEnd(source: Source) {
-    console.log('onEnd', { source }, this.state)
+    // console.log('onEnd', { source }, this.state)
 
     if (!this.closed) {
       this.closed = true
@@ -243,4 +278,23 @@ export class SimpleSession extends PureComponent<Props, State> {
 
 function createMediaRecorder(mediaStream: MediaStream, options: any): typeof MediaRecorder {
   return Object.assign(new MediaRecorder(mediaStream), options)
+}
+
+export function flatten(accumulator: any, parentValue?: any, parentKey?: any): any {
+  if (arguments.length === 1) {
+    ;[parentValue, accumulator] = [accumulator, {}]
+  }
+  if (!_.isObject(parentValue) && !_.isArray(parentValue)) {
+    accumulator[parentKey] = parentValue
+    return accumulator
+  } else {
+    return _.reduce(
+      parentValue,
+      (a, v, k) => {
+        k = _.isArray(parentValue) ? `[${k}]` : k
+        return flatten(a, v, parentKey ? `${parentKey}.${k}` : k)
+      },
+      accumulator,
+    )
+  }
 }

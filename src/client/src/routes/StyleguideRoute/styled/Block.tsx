@@ -17,10 +17,9 @@ export const mapBlockProps = (propStuff: BlockProps): MappedCSS =>
   )
 
 export const Block = styled.div<BlockProps>`
-  transition: background-color ease-out 0.15s;
-
   ${({ theme, backgroundColor, textColor, bg = backgroundColor, fg = textColor }) =>
     css({
+      transition: bg ? 'background-color ease-out 0.15s' : null,
       backgroundColor: bg && getColor(theme, bg),
       color: fg && getColor(theme, fg, theme.white),
     })};

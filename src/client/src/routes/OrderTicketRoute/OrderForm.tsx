@@ -4,15 +4,38 @@ import { styled } from 'rt-theme'
 
 import { TextField } from './TextField'
 
-export interface OrderFormProps {}
+export interface Fields {
+  product: string
+  client: string
+  direction: string
+  notional: string
+  settlement: string
+}
 
-export class OrderForm extends React.Component<OrderFormProps, any> {
-  state = {
-    product: 'ICIPLC  6.75%  2030',
-    client: 'Joe Bloggs',
-    direction: 'Two-way',
-    notional: '25,000,000',
-    settlement: '08-Mar-2017',
+export interface Props extends Partial<Fields> {}
+
+interface State extends Props {
+  fields: Fields
+  prev: Props | null
+}
+
+export { Props as OrderFormProps }
+export class OrderForm extends React.Component<Props, State> {
+  state: State = {
+    fields: {
+      product: '',
+      client: '',
+      direction: '',
+      notional: '',
+      settlement: '',
+    },
+    prev: null,
+  }
+
+  static getDerivedStateFromProps(props: Props, state: State) {
+    return {
+      prev: props,
+    }
   }
 
   onChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -20,13 +43,15 @@ export class OrderForm extends React.Component<OrderFormProps, any> {
       target: { name, value },
     } = event as any
 
-    this.setState({ [name]: value })
+    this.setState(({ fields }) => ({ fields: { ...fields, [name]: value } }))
   }
 
   render() {
+    const { fields } = this.state
+
     return (
       <Layout>
-        {_.map(this.state, (value, name) => (
+        {_.map(fields as any, (value: any, name) => (
           <TextField key={name} name={name} value={value} onChange={this.onChange} />
         ))}
       </Layout>

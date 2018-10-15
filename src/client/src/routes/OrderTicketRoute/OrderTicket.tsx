@@ -5,15 +5,32 @@ import { styled } from 'rt-theme'
 import { Block, Text } from '../StyleguideRoute/styled'
 
 import { DrawerMenu } from './DrawerMenu'
-import { VoiceInput } from './VoiceInput'
+import { VoiceInput, VoiceInputResult } from './VoiceInput'
 import { WindowControls } from './WindowControls'
 
-import { OrderForm } from './OrderForm'
+import { OrderForm, OrderFormProps } from './OrderForm'
 
-export class OrderTicket extends PureComponent {
+interface State {
+  result?: VoiceInputResult
+  data: Partial<OrderFormProps>
+}
+export class OrderTicket extends PureComponent<{}, State> {
+  state: State = {
+    result: null,
+    data: {},
+  }
+
   audioContext = new AudioContext()
-
+  onResult = (result: VoiceInputResult) => {
+    this.setState({
+      result,
+      data: {
+        product: result.data.interpreted_quote.imString,
+      },
+    })
+  }
   render() {
+    const { data = {} } = this.state
     return (
       <Viewport bg="shell.backgroundColor" fg="shell.textColor">
         <AppLayout bg="shell.backgroundColor">
@@ -30,7 +47,7 @@ export class OrderTicket extends PureComponent {
             <VoiceInput audioContext={this.audioContext} />
           </VoiceLayout>
           <FormLayout>
-            <OrderForm />
+            <OrderForm {...data} />
           </FormLayout>
           <StatusLayout />
           <InfoLayout>Bond Info</InfoLayout>
@@ -53,6 +70,7 @@ const Viewport = styled(Block)`
 const AppLayout = styled(Block)`
   display: grid;
   min-width: 42rem;
+  max-width: 42rem;
   min-height: 22rem;
 
   border-radius: 0.5rem;
@@ -61,7 +79,7 @@ const AppLayout = styled(Block)`
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05),
     0 1rem 2.5rem -1.25rem ${({ theme }) => darken(0.1, theme.overlay.backgroundColor)};
 
-  grid-template-columns: 4rem auto 0.75fr auto 1fr;
+  grid-template-columns: 4rem 8rem 8rem 11rem 11rem;
   grid-template-rows: 2rem 5rem 7rem 7rem 3rem;
   grid-template-areas:
     'chrome chrome chrome chrome chrome '
