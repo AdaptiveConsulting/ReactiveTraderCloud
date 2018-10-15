@@ -1,5 +1,6 @@
 import { darken } from 'polished'
 import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
 import { HotKeys } from 'react-hotkeys'
 import { rules } from 'rt-styleguide'
 import { styled } from 'rt-theme'
@@ -42,10 +43,19 @@ export class OrderTicket extends PureComponent<{}, State> {
     },
   }
 
+  focus = (ref: any) => {
+    if (ref) {
+      const node = ReactDOM.findDOMNode(ref) as any
+      if (node) {
+        node.focus()
+      }
+    }
+  }
+
   render() {
     const { requestSession, data = {} } = this.state
     return (
-      <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys}>
+      <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} ref={this.focus}>
         <AppLayout bg="shell.backgroundColor">
           <ChromeLayout bg="primary.base">
             <WindowControls />
