@@ -1,0 +1,23 @@
+#! /bin/bash
+
+if [[ $# < 1 ]];then
+  echo ""
+  echo -e "\033[0;32m${0}\033[0m -- list all tags for a docker image"
+  echo ""
+  echo "   EXAMPLES:"
+  echo "       - list all tags for web:"
+  echo "          ${0} reactivetrader/web"
+  echo ""
+  echo "       - list all tags for nsgate:"
+  echo "          ${0} weareadaptive/nsgate"
+  echo ""
+  echo "   NOTES:"
+  echo "       - this helper requires access in PATH to:"
+  echo "           - curl    … you should have curl 💁‍"
+  echo "           - jq:     https://stedolan.github.io/jq/"
+  echo ""
+  exit 1
+fi;
+
+image=$1
+curl -sq https://registry.hub.docker.com/v1/repositories/${image}/tags | jq -r ".[].name"
