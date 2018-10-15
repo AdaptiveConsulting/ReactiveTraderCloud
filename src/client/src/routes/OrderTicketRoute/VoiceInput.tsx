@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+
 import { colors, keyframes, styled, Styled } from 'rt-theme'
 import { Block } from '../StyleguideRoute/styled'
 
@@ -16,6 +17,7 @@ declare const MediaRecorder: any
 declare const requestIdleCallback: any
 
 interface Props {
+  requestSession: boolean
   audioContext: AudioContext
   onResult?: (data: GreenKeyRecognition.InterpretedQuote) => void
 }
@@ -23,9 +25,22 @@ interface Props {
 export interface VoiceInputResult extends SessionResult {}
 
 export class VoiceInput extends Component<Props, any> {
+  static getDerivedStateFromProps({ requestSession }: Props, state: any): any | null {
+    if (requestSession === state.requestSession) {
+      return null
+    }
+
+    return {
+      requestSession,
+      sessionRequestActive: requestSession,
+      sessionRequestCount: requestSession ? state.sessionRequestCount + 1 : state.sessionRequestCount,
+    }
+  }
+
   state = {
-    sessionRequestCount: 0,
+    requestSession: false,
     sessionRequestActive: false,
+    sessionRequestCount: 0,
     sessionConnected: null,
     userPermissionGranted: null,
     sessionInstance: null,
@@ -71,6 +86,7 @@ export class VoiceInput extends Component<Props, any> {
   onSessionResult = (result: SessionResult) => {
     this.setState(result)
     if (this.props.onResult) {
+      this.props.onResult(result as any)
     }
   }
 
@@ -82,7 +98,6 @@ export class VoiceInput extends Component<Props, any> {
     this.setState({
       sessionRequestActive: false,
       sessionConnected: null,
-      userPermissionGranted: null,
       sessionInstance: null,
     })
   }
@@ -113,7 +128,7 @@ export class VoiceInput extends Component<Props, any> {
                     onError={this.onSessionError}
                     onPermission={this.onPermission}
                     onResult={this.onSessionResult}
-                    onEnd={this.onSessionEnd}
+                    onEnd={_.once(this.onSessionEnd)}
                   />
                 )}
               </UserMedia.Consumer>
@@ -126,7 +141,7 @@ export class VoiceInput extends Component<Props, any> {
             <MicrophoneButton // active={sessionInstance}
               fg={
                 sessionRequestActive === false
-                  ? 'secondary.4'
+                  ? 'primary.1'
                   : userPermissionGranted === false
                     ? 'accents.aware.base'
                     : 'accents.primary.base'

@@ -11,7 +11,8 @@
 
 export function createWebSocket(config: any = {}): WebSocket {
   config = {
-    serviceURI: 'ws://localhost:8783/client/ws/speech',
+    // serviceURI: process.env.REACT_APP_GREENKEY_URL || 'ws://localhost:8888/client/ws/speech',
+    serviceURI: 'ws://localhost:8888/client/ws/speech',
     contentType: 'audio/webm;codecs=opus',
     ...config,
   }
@@ -25,13 +26,13 @@ export function createWebSocket(config: any = {}): WebSocket {
       }
     },
     onopen(event: Event) {
-      console.log('onopen', event)
+      // console.log('onopen', event)
       if (config.onopen) {
         config.onopen(event)
       }
     },
     onclose(event: CloseEvent) {
-      console.log('onclose', event)
+      // console.log('onclose', event)
       if (config.onclose) {
         config.onclose(event)
       }

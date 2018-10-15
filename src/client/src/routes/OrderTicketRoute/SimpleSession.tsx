@@ -109,7 +109,7 @@ export class SimpleSession extends PureComponent<Props, State> {
     ondataavailable: (event: any) => {
       // push each chunk (blobs) in an array
       if (event.data instanceof Blob) {
-        if (this.socket.readyState === 1) {
+        if (this.socket && this.socket.readyState === WebSocket.OPEN) {
           this.socket.send(event.data)
         }
       }
@@ -122,7 +122,9 @@ export class SimpleSession extends PureComponent<Props, State> {
   microphone: MediaStreamAudioSourceNode
 
   intervalId = setInterval(() => {
-    requestIdleCallback(() => this.recording && this.recorder.requestData())
+    requestIdleCallback(
+      () => this.socket && this.socket.readyState === WebSocket.OPEN && this.recording && this.recorder.requestData(),
+    )
   }, 500)
 
   async createMediaStream() {

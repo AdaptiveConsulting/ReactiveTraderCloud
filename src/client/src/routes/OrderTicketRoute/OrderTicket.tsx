@@ -1,5 +1,6 @@
 import { darken } from 'polished'
 import React, { PureComponent } from 'react'
+import { HotKeys } from 'react-hotkeys'
 import { rules } from 'rt-styleguide'
 import { styled } from 'rt-theme'
 import { Block, Text } from '../StyleguideRoute/styled'
@@ -11,11 +12,13 @@ import { WindowControls } from './WindowControls'
 import { OrderForm, OrderFormProps } from './OrderForm'
 
 interface State {
+  requestSession: boolean
   result?: VoiceInputResult
   data: Partial<OrderFormProps>
 }
 export class OrderTicket extends PureComponent<{}, State> {
   state: State = {
+    requestSession: false,
     result: null,
     data: {},
   }
@@ -29,10 +32,20 @@ export class OrderTicket extends PureComponent<{}, State> {
       },
     })
   }
+
+  hotkeys = {
+    keyMap: {
+      toggle: ['command+o', 'ctrl+o', 'alt+shift+o', 'o'],
+    },
+    handlers: {
+      toggle: () => this.setState(({ requestSession }) => ({ requestSession: !requestSession })),
+    },
+  }
+
   render() {
-    const { data = {} } = this.state
+    const { requestSession, data = {} } = this.state
     return (
-      <Viewport bg="shell.backgroundColor" fg="shell.textColor">
+      <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys}>
         <AppLayout bg="shell.backgroundColor">
           <ChromeLayout bg="primary.base">
             <WindowControls />
@@ -44,7 +57,7 @@ export class OrderTicket extends PureComponent<{}, State> {
             <DrawerMenu />
           </DrawerLayout>
           <VoiceLayout>
-            <VoiceInput audioContext={this.audioContext} />
+            <VoiceInput audioContext={this.audioContext} requestSession={requestSession} />
           </VoiceLayout>
           <FormLayout>
             <OrderForm {...data} />
@@ -57,7 +70,7 @@ export class OrderTicket extends PureComponent<{}, State> {
   }
 }
 
-const Viewport = styled(Block)`
+const Viewport = styled(Block.withComponent(HotKeys))`
   display: flex;
   align-items: center;
   justify-content: center;
