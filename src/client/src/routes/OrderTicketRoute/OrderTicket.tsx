@@ -35,7 +35,7 @@ export class OrderTicket extends PureComponent<{}, State> {
 
   hotkeys = {
     keyMap: {
-      toggle: ['command+o', 'ctrl+o', 'alt+shift+o', 'o'],
+      toggle: ['alt+o', 'alt+shift+o', 'alt+0', 'alt+shift+0'],
     },
     handlers: {
       toggle: () => this.setState(({ requestSession }) => ({ requestSession: !requestSession })),

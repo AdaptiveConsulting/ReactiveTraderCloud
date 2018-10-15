@@ -128,7 +128,7 @@ export class VoiceInput extends Component<Props, any> {
                     onError={this.onSessionError}
                     onPermission={this.onPermission}
                     onResult={this.onSessionResult}
-                    onEnd={_.once(this.onSessionEnd)}
+                    onEnd={this.onSessionEnd}
                   />
                 )}
               </UserMedia.Consumer>
@@ -161,7 +161,7 @@ export class VoiceInput extends Component<Props, any> {
 
           {transcripts.length === 0 ? (
             !sessionRequestActive ? (
-              <StatusText>Press to talk</StatusText>
+              <StatusText>Press to talk &nbsp; ⌥O</StatusText>
             ) : (
               <React.Fragment>
                 {userPermissionGranted == null ? (
