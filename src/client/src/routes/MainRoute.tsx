@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
 
@@ -53,16 +54,25 @@ export class MainRoute extends React.Component {
 
   render() {
     return (
-      <ThemeStorage.Provider default={ThemeName.Dark}>
-        <ReduxProvider store={this.store}>
-          <Environment.Provider value={this.environment}>
-            <React.Fragment>
-              <GlobalScrollbarStyle />
-              <Router />
-            </React.Fragment>
-          </Environment.Provider>
-        </ReduxProvider>
-      </ThemeStorage.Provider>
+      <React.Fragment>
+        <Helmet>
+          <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+            integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+          />
+        </Helmet>
+        <ThemeStorage.Provider default={ThemeName.Dark}>
+          <ReduxProvider store={this.store}>
+            <Environment.Provider value={this.environment}>
+              <React.Fragment>
+                <GlobalScrollbarStyle />
+                <Router />
+              </React.Fragment>
+            </Environment.Provider>
+          </ReduxProvider>
+        </ThemeStorage.Provider>
+      </React.Fragment>
     )
   }
 }
