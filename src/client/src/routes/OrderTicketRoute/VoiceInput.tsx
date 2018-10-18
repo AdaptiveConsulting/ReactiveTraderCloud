@@ -58,9 +58,10 @@ export class VoiceInput extends Component<Props, any> {
   })
 
   toggle = () => {
-    this.setState(({ sessionRequestCount, sessionRequestActive }: any) => ({
-      sessionRequestCount: !sessionRequestActive ? sessionRequestCount + 1 : sessionRequestCount,
+    this.setState(({ sessionRequestActive, sessionRequestCount, transcripts }: any) => ({
       sessionRequestActive: !sessionRequestActive,
+      sessionRequestCount: !sessionRequestActive ? sessionRequestCount + 1 : sessionRequestCount,
+      transcripts: sessionRequestActive ? transcripts : [],
     }))
   }
 
@@ -185,7 +186,7 @@ export class VoiceInput extends Component<Props, any> {
               </React.Fragment>
             )
           ) : (
-            <Input onClick={() => this.setState({ transcripts: [] })}>
+            <Input>
               {_.map(transcripts, ([{ transcript }]: any, index: number) => (
                 <React.Fragment key={index}>
                   {transcript}
@@ -213,6 +214,7 @@ const Root = styled(Block)`
   width: 100%;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1) inset;
   user-select: none;
+  cursor: pointer;
 
   min-width: 36rem;
   max-width: 36rem;

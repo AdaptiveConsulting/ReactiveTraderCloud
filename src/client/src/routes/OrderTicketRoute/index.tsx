@@ -1,3 +1,4 @@
+import { mix } from 'polished'
 import React, { PureComponent } from 'react'
 
 import { createEnvironment, Environment } from 'rt-components'
@@ -12,7 +13,12 @@ export class OrderTicketRoute extends PureComponent {
     return (
       <ThemeStorage.Provider storage={sessionStorage} default={ThemeName.Dark}>
         <Environment.Provider value={this.environment}>
-          <ThemeProvider theme={theme => ({ ruleColor: theme.primary.base })}>
+          <ThemeProvider
+            theme={theme => ({
+              muteColor: mix(0.5, theme.primary.base, theme.secondary[2]),
+              ruleColor: theme.primary.base,
+            })}
+          >
             <OrderTicket />
           </ThemeProvider>
         </Environment.Provider>

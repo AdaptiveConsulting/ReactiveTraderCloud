@@ -13,6 +13,7 @@ import { VoiceInput, VoiceInputResult } from './VoiceInput'
 import { WindowControls } from './WindowControls'
 
 import { OrderForm, OrderFormProps } from './OrderForm'
+import { OrderStatus, OrderStatusProps } from './OrderStatus'
 
 interface State {
   requestSession: boolean
@@ -85,8 +86,10 @@ export class OrderTicket extends PureComponent<{}, State> {
           <FormLayout>
             <OrderForm {...data} />
           </FormLayout>
-          <StatusLayout />
-          <InfoLayout>Bond Info</InfoLayout>
+          <StatusLayout>
+            <OrderStatus ready={!!data.product && !!data.notional} />
+          </StatusLayout>
+          <InfoLayout fg="muteColor">Bond Info</InfoLayout>
         </AppLayout>
       </Viewport>
     )

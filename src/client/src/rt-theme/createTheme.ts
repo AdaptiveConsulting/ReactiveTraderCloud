@@ -198,6 +198,18 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
   },
 
   button: {
+    mute: {
+      backgroundColor: primary.base,
+      textColor: secondary.base,
+
+      active: {
+        backgroundColor: primary[4],
+      },
+      disabled: {
+        backgroundColor: primary[3],
+      },
+    },
+
     primary: {
       backgroundColor: accents.accent.base,
       textColor: colors.light.primary.base,

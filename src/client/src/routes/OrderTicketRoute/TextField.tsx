@@ -85,7 +85,7 @@ export const LabelText: Styled<TextProps> = styled(Text)`
   margin-top: 0.25rem;
   line-height: 0.75rem;
   font-size: 0.6875rem;
-  font-size: 0.625rem;
+  /* font-size: 0.625rem; */
   ${mapTextProps};
 `
 
