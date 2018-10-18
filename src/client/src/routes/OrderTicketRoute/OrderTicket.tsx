@@ -27,19 +27,22 @@ export class OrderTicket extends PureComponent<{}, State> {
   }
 
   audioContext = new AudioContext()
-  onResult = ({ result }: any) => {
+  onResult = ({ result = {} }: any = {}) => {
     const { entities }: any = _.find<any>(result.intents, { label: 'corporate_bonds' }) || {}
-    const [product, client, quantity] = ['product', 'client', 'quantity']
-      .map(label => _.find(entities, { label }))
-      .map(value => _.get(value, ['matches', 0, 0, 'value']))
 
-    // console.log({ product, client, quantity })
+    // Select highest probable match by field within result.intents
+    const [product, client, notional] = ['product', 'client', 'quantity']
+      .map(label => _.find(entities, { label }))
+      .map(value => _.get(value, ['matches', 0]))
+      .map(matches => _.sortBy(matches, v => 1 - v.probability)[0])
+      .map(match => _.get(match, ['value']))
+
     this.setState({
       result,
       data: {
         product,
         client,
-        quantity,
+        notional,
       },
     })
   }

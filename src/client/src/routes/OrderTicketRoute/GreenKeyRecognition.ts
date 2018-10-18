@@ -99,7 +99,6 @@ export function createWebSocket(config: any = {}): WebSocket {
   }
  */
 
-export interface Internts {}
 export interface Result {
   intents: string[]
   is_quote: boolean

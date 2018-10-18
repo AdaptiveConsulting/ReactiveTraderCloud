@@ -17,7 +17,7 @@
         "frame": false,
         "nonPersistent": true,
         "contextMenu": true,
-        "alwaysOnTop": true,
+        "alwaysOnTop": false,
         "accelerator": {
             "devtools": true,
             "reload": true,
