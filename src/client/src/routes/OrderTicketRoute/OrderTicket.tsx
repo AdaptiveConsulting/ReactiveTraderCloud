@@ -26,9 +26,8 @@ export class OrderTicket extends PureComponent<{}, State> {
     data: {},
   }
 
-  audioContext = new AudioContext()
   onResult = ({ result = {} }: any = {}) => {
-    const { entities }: any = _.find<any>(result.intents, { label: 'corporate_bonds' }) || {}
+    const { entities }: any = _.find(result.intents, { label: 'corporate_bonds' }) || {}
 
     // Select highest probable match by field within result.intents
     const [product, client, notional] = ['product', 'client', 'quantity']
@@ -81,7 +80,7 @@ export class OrderTicket extends PureComponent<{}, State> {
             <DrawerMenu />
           </DrawerLayout>
           <VoiceLayout>
-            <VoiceInput audioContext={this.audioContext} requestSession={requestSession} onResult={this.onResult} />
+            <VoiceInput requestSession={requestSession} onResult={this.onResult} />
           </VoiceLayout>
           <FormLayout>
             <OrderForm {...data} />

@@ -214,9 +214,15 @@ export class SimpleSession extends PureComponent<Props, State> {
   async onMessage(event: MessageEvent) {
     await new Promise(next => requestIdleCallback(next, IDLE_PROPS))
 
-    const data = JSON.parse(event.data)
+    if (this.state.unmount) {
+      console.error('SimpleSession.onMessage occured after unmount')
 
+      return
+    }
+
+    const data = JSON.parse(event.data)
     this.setState({
+      data,
       result: data.result,
     })
 

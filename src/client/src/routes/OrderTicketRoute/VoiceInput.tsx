@@ -17,7 +17,6 @@ declare const MediaRecorder: any
 
 interface Props {
   requestSession: boolean
-  audioContext: AudioContext
   onResult?: (data: VoiceInputResult) => void
 }
 
@@ -25,15 +24,19 @@ export interface VoiceInputResult extends SessionResultData {}
 
 export class VoiceInput extends Component<Props, any> {
   static getDerivedStateFromProps({ requestSession }: Props, state: any): any | null {
-    if (requestSession === state.requestSession) {
-      return null
+    let next: any = null
+
+    if (requestSession !== state.requestSession) {
+      next = {
+        requestSession,
+        sessionRequestActive: requestSession,
+        sessionRequestCount: requestSession ? state.sessionRequestCount + 1 : state.sessionRequestCount,
+        // Clear transcripts on new session
+        transcripts: requestSession ? [] : state.transcripts,
+      }
     }
 
-    return {
-      requestSession,
-      sessionRequestActive: requestSession,
-      sessionRequestCount: requestSession ? state.sessionRequestCount + 1 : state.sessionRequestCount,
-    }
+    return next
   }
 
   state = {
@@ -47,10 +50,7 @@ export class VoiceInput extends Component<Props, any> {
     transcripts: [],
   } as any & Partial<SessionResult>
 
-  get audioContext() {
-    return this.props.audioContext
-  }
-
+  audioContext = new AudioContext()
   destination = this.audioContext.createMediaStreamDestination()
   analyser: AnalyserNode = _.assign(this.audioContext.createAnalyser(), {
     fftSize: 32,
