@@ -9,6 +9,13 @@
  * Example phrase: dec eighteen schatz sixty four and a half offered
  */
 
+export const interval = 160
+
+export interface WebSocketProps {
+  serviceURI?: string
+  contentType?: string
+}
+
 export function createWebSocket(config: any = {}): WebSocket {
   config = {
     // serviceURI: process.env.REACT_APP_GREENKEY_URL || 'ws://localhost:8888/client/ws/speech',
@@ -19,7 +26,17 @@ export function createWebSocket(config: any = {}): WebSocket {
 
   const url = `${config.serviceURI}?content-type=${config.contentType}`
   const socket = new WebSocket(url)
-  Object.assign(socket, {
+  const close = socket.close.bind(socket)
+
+  return Object.assign(socket, {
+    ...config,
+    close() {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send('EOS')
+      }
+
+      return close()
+    },
     onmessage(event: MessageEvent) {
       if (config.onmessage) {
         config.onmessage(event)
@@ -44,8 +61,6 @@ export function createWebSocket(config: any = {}): WebSocket {
       }
     },
   })
-
-  return socket
 }
 
 /*
@@ -84,6 +99,7 @@ export function createWebSocket(config: any = {}): WebSocket {
   }
  */
 
+export interface Internts {}
 export interface Result {
   intents: string[]
   is_quote: boolean

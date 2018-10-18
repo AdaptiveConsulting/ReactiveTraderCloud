@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { darken } from 'polished'
 import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
@@ -6,6 +7,7 @@ import { rules } from 'rt-styleguide'
 import { styled } from 'rt-theme'
 import { Block, Text } from '../StyleguideRoute/styled'
 
+import AudioContext from './AudioContext'
 import { DrawerMenu } from './DrawerMenu'
 import { VoiceInput, VoiceInputResult } from './VoiceInput'
 import { WindowControls } from './WindowControls'
@@ -25,11 +27,19 @@ export class OrderTicket extends PureComponent<{}, State> {
   }
 
   audioContext = new AudioContext()
-  onResult = (result: VoiceInputResult) => {
+  onResult = ({ result }: any) => {
+    const { entities }: any = _.find<any>(result.intents, { label: 'corporate_bonds' }) || {}
+    const [product, client, quantity] = ['product', 'client', 'quantity']
+      .map(label => _.find(entities, { label }))
+      .map(value => _.get(value, ['matches', 0, 0, 'value']))
+
+    // console.log({ product, client, quantity })
     this.setState({
       result,
       data: {
-        product: result.data.interpreted_quote.imString,
+        product,
+        client,
+        quantity,
       },
     })
   }
@@ -54,6 +64,7 @@ export class OrderTicket extends PureComponent<{}, State> {
 
   render() {
     const { requestSession, data = {} } = this.state
+
     return (
       <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} ref={this.focus}>
         <AppLayout bg="shell.backgroundColor">
@@ -67,7 +78,7 @@ export class OrderTicket extends PureComponent<{}, State> {
             <DrawerMenu />
           </DrawerLayout>
           <VoiceLayout>
-            <VoiceInput audioContext={this.audioContext} requestSession={requestSession} />
+            <VoiceInput audioContext={this.audioContext} requestSession={requestSession} onResult={this.onResult} />
           </VoiceLayout>
           <FormLayout>
             <OrderForm {...data} />

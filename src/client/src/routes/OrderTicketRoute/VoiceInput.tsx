@@ -10,19 +10,18 @@ import MicrophoneIcon from './assets/Microphone'
 import { FormantBars } from './FormantBars'
 
 import * as GreenKeyRecognition from './GreenKeyRecognition'
-import { SessionEvent, SessionResult, SimpleSession } from './SimpleSession'
+import { SessionEvent, SessionResult, SessionResultData, SimpleSession } from './SimpleSession'
 import { UserMedia } from './UserMedia'
 
 declare const MediaRecorder: any
-declare const requestIdleCallback: any
 
 interface Props {
   requestSession: boolean
   audioContext: AudioContext
-  onResult?: (data: GreenKeyRecognition.InterpretedQuote) => void
+  onResult?: (data: VoiceInputResult) => void
 }
 
-export interface VoiceInputResult extends SessionResult {}
+export interface VoiceInputResult extends SessionResultData {}
 
 export class VoiceInput extends Component<Props, any> {
   static getDerivedStateFromProps({ requestSession }: Props, state: any): any | null {
@@ -86,7 +85,7 @@ export class VoiceInput extends Component<Props, any> {
   onSessionResult = (result: SessionResult) => {
     this.setState(result)
     if (this.props.onResult) {
-      this.props.onResult(result as any)
+      this.props.onResult(result.data as any)
     }
   }
 
@@ -120,6 +119,7 @@ export class VoiceInput extends Component<Props, any> {
               <UserMedia.Consumer>
                 {userMedia => (
                   <SimpleSession
+                    key={`SimpleSession${sessionRequestCount}`}
                     audioContext={this.audioContext}
                     userMedia={userMedia}
                     analyser={this.analyser}

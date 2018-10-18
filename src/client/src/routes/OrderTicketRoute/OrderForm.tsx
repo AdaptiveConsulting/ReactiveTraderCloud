@@ -33,9 +33,18 @@ export class OrderForm extends React.Component<Props, State> {
   }
 
   static getDerivedStateFromProps(props: Props, state: State) {
-    return {
-      prev: props,
+    let next: any
+
+    if (!_.isMatch(props, state.prev)) {
+      next = {
+        fields: {
+          ...state.fields,
+          ..._.pick(props, Object.keys(state.fields)),
+        },
+      }
     }
+
+    return { ...next, prev: props }
   }
 
   onChange = (event: React.FormEvent<HTMLInputElement>) => {

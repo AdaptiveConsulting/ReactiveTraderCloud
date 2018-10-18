@@ -1,14 +1,20 @@
 import _ from 'lodash'
 import React, { PureComponent } from 'react'
 
+import MediaRecorder, { BlobEvent, MediaRecorderInterface } from './MediaRecorder'
+import requestIdleCallback from './requestIdleCallback'
+
 import * as GreenKeyRecognition from './GreenKeyRecognition'
+import { Timer } from './Timer'
 import { UserMediaState } from './UserMedia'
 
-declare const MediaRecorder: any
-declare const requestIdleCallback: any
+const IDLE_PROPS = {
+  timeout: GreenKeyRecognition.interval / 2,
+}
 
 // const WebSocket = (window as any).WebSocket
 
+export interface SessionResultData extends GreenKeyRecognition.Result {}
 export interface SessionResult {
   data: GreenKeyRecognition.Result
   transcripts: any
@@ -40,44 +46,24 @@ interface State {
   socket?: any
   media?: any
 
-  [key: string]: boolean
+  result?: GreenKeyRecognition.Result
+
+  [key: string]: any
 }
 
 type Dependency = 'socket' | 'media'
 type Source = 'socket' | 'media' | 'unmount'
 
 export class SimpleSession extends PureComponent<Props, State> {
-  async componentDidMount() {
-    let socket: any = this.createSocket()
-
-    await this.createMediaStream()
-
-    try {
-      socket = await socket
-    } catch (e) {
-      socket = null
-    }
-
-    if (socket == null || [WebSocket.CLOSING, WebSocket.CLOSED].includes(socket.readyState)) {
-      socket = await this.createSocket()
-    }
-
-    this.socket = socket
-  }
-
-  componentWillUnmount() {
-    this.onEnd('unmount')
-  }
-
-  state = {
+  state: State = {
     recording: false,
     closed: false,
     error: false,
     socket: false,
     media: false,
-  }
 
-  socket: WebSocket
+    result: null,
+  }
 
   get mediaStream(): MediaStream {
     return this.props.userMedia.mediaStream
@@ -102,30 +88,63 @@ export class SimpleSession extends PureComponent<Props, State> {
   }
 
   get recording() {
-    return this.recorder.state === 'recording'
+    return this.recorder && this.recorder.state === 'recording'
   }
 
-  recorder = createMediaRecorder(this.destination.stream, {
-    ondataavailable: (event: any) => {
-      // push each chunk (blobs) in an array
-      if (event.data instanceof Blob) {
-        if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-          this.socket.send(event.data)
-        }
+  socket: WebSocket & GreenKeyRecognition.WebSocketProps
+  recorder: MediaRecorderInterface
+
+  async componentDidMount() {
+    let mediaStream: any = this.createMediaStream()
+    let socket: any = this.createSocket()
+
+    // Close socket on timeout / user interaction
+    try {
+      mediaStream = await Promise.race([mediaStream, new Promise((_, reject) => setTimeout(reject, 500))])
+      socket = await socket
+    } catch (e) {
+      mediaStream = await mediaStream
+      socket = await socket
+      socket.close()
+    }
+
+    // Create recorder and generate first BlobEvent
+    this.recorder = new MediaRecorder(this.destination.stream)
+    const event = await new Promise<BlobEvent>(next => {
+      this.recorder.addEventListener('dataavailable', next)
+      this.recorder.start()
+      this.recorder.requestData()
+    })
+
+    // Ensure socket content-type matches blob content type
+    // Or, open new connection if socket closed prematurely
+    if (event.data.type !== socket.contentType || [WebSocket.CLOSED, WebSocket.CLOSING].includes(socket.readyState)) {
+      socket.close()
+      socket = await this.createSocket({
+        contentType: event.data.type,
+      })
+    }
+
+    // Send first payload
+    this.socket = socket
+    this.socket.send(event.data)
+    // Stream subsequent events
+    this.recorder.addEventListener('dataavailable', event => {
+      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+        this.socket.send(event.data)
       }
-    },
-    onstop: (event: any) => {
-      // console.log('recording stopped')
-    },
-  })
+    })
 
-  microphone: MediaStreamAudioSourceNode
+    // Mount stream interval
+    this.setState({
+      socket: this.socket,
+      requestDataStream: true,
+    })
+  }
 
-  intervalId = setInterval(() => {
-    requestIdleCallback(
-      () => this.socket && this.socket.readyState === WebSocket.OPEN && this.recording && this.recorder.requestData(),
-    )
-  }, 500)
+  componentWillUnmount() {
+    this.onEnd('unmount')
+  }
 
   async createMediaStream() {
     let mediaStream
@@ -152,11 +171,11 @@ export class SimpleSession extends PureComponent<Props, State> {
     } else {
       this.onPermission({ ok: true, source: 'media' })
 
-      // Create the stream! 🏞
-      this.microphone = this.audioContext.createMediaStreamSource(mediaStream)
-
-      // Connect the mic 🎤
-      this.microphone.connect(this.analyser)
+      this.audioContext
+        // Create the stream! 🏞
+        .createMediaStreamSource(mediaStream)
+        // Connect the mic 🎤
+        .connect(this.analyser)
       // And for some reason connect the analyser to the destination 📈
       this.analyser.connect(this.destination)
 
@@ -166,12 +185,13 @@ export class SimpleSession extends PureComponent<Props, State> {
     return mediaStream
   }
 
-  async createSocket() {
-    return new Promise((resolve, reject) => {
+  async createSocket(options?: GreenKeyRecognition.WebSocketProps) {
+    return new Promise<WebSocket & GreenKeyRecognition.WebSocketProps>((resolve, reject) => {
       const socket = GreenKeyRecognition.createWebSocket({
+        ...options,
         onopen: () => {
           resolve(socket)
-          this.setSource('socket', socket)
+          // this.setSource('socket', socket)
         },
         onerror: (event: ErrorEvent) => {
           reject(event)
@@ -192,35 +212,34 @@ export class SimpleSession extends PureComponent<Props, State> {
   }
 
   async onMessage(event: MessageEvent) {
-    if (!event.data) {
-      console.warn('no data event', event)
-      return
-    }
+    await new Promise(next => requestIdleCallback(next, IDLE_PROPS))
+
+    const data = JSON.parse(event.data)
+
+    this.setState({
+      result: data.result,
+    })
 
     if (this.props.onResult) {
-      await new Promise(idle => requestIdleCallback(idle, { timeout: 160 }))
-
-      const data = JSON.parse(event.data)
-
-      if (console.table && data.result && data.result.interpreted_quote) {
-        console.log(`\n\n${_.repeat(`•\t`, 8)}\n\n\n`, data.result)
-        console.table(flatten(data.result.interpreted_quote))
-      }
-
       this.props.onResult({
         data,
         transcripts: _.map(data.segments, 'clean_transcript').map(transcript => [{ transcript }]),
       })
     }
+
+    // requestIdleCallback(() => {
+    //   if (console.table && data.result) {
+    //     console.log(`\n\n${_.repeat(`•\t`, 8)}\n\n\n`, data.result)
+    //     // console.table(_.omitBy(flatten(data.result), (v, k) => /lattice_path|TimeSec/.test(k)))
+    //     console.table(flatten(data.result))
+    //   }
+    // }, IDLE_PROPS)
   }
 
   setSource(source: Source, state: any) {
-    // console.log('setSource', { [source]: state })
-
     this.setState({ [source]: state }, () => {
-      if (this.ready && !this.recording) {
-        this.recorder.start()
-
+      if (this.state.media && !this.recording) {
+        // this.recorder.start()
         if (this.props.onStart) {
           this.props.onStart(this)
         }
@@ -229,16 +248,25 @@ export class SimpleSession extends PureComponent<Props, State> {
   }
 
   onPermission = (event: SessionEvent) => {
-    // console.log('onPermission', event)
-
     if (this.props.onPermission) {
       this.props.onPermission(event)
     }
   }
 
-  onError(source: Dependency, error: Error | ErrorEvent) {
-    // console.log('error', { source })
+  onRequestDataInterval = () => {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      this.recorder.requestData()
+    } else {
+      console.error('Reached unexpected state in SimpleSession')
+    }
+  }
 
+  onMarkedFinalTimeout = () => {
+    console.warn('Marked final')
+    this.onEnd('socket')
+  }
+
+  onError(source: Dependency, error: Error | ErrorEvent) {
     this.setState({ [source]: false, error: true })
     if (this.props.onError) {
       this.props.onError({ ok: false, source, error })
@@ -247,8 +275,6 @@ export class SimpleSession extends PureComponent<Props, State> {
 
   closed: boolean
   onEnd(source: Source) {
-    // console.log('onEnd', { source }, this.state)
-
     if (!this.closed) {
       this.closed = true
       this.destroy()
@@ -261,25 +287,27 @@ export class SimpleSession extends PureComponent<Props, State> {
   }
 
   destroy() {
-    clearInterval(this.intervalId)
-
     if (this.recording) {
       this.recorder.stop()
     }
 
-    if (this.socket && this.socket.readyState === 1) {
-      this.socket.send('EOS')
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.socket.close()
     }
   }
 
-  render(): null {
-    return null
+  render() {
+    const { socket, result } = this.state
+    return (
+      <React.Fragment>
+        {socket &&
+          socket.readyState === WebSocket.OPEN && (
+            <Timer duration={GreenKeyRecognition.interval} interval={this.onRequestDataInterval} />
+          )}
+        {result && result.final && <Timer duration={1000} timeout={this.onMarkedFinalTimeout} />}
+      </React.Fragment>
+    )
   }
-}
-
-function createMediaRecorder(mediaStream: MediaStream, options: any): typeof MediaRecorder {
-  return Object.assign(new MediaRecorder(mediaStream), options)
 }
 
 export function flatten(accumulator: any, parentValue?: any, parentKey?: any): any {

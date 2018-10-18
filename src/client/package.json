@@ -60,6 +60,7 @@
     "@fortawesome/react-fontawesome": "^0.1.2",
     "ag-grid": "18.1.2",
     "ag-grid-react": "18.1.0",
+    "audio-recorder-polyfill": "^0.1.3",
     "autobahn": "17.5.2",
     "classlist-polyfill": "1.0.3",
     "csstype": "^2.5.7",
