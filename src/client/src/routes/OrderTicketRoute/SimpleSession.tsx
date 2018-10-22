@@ -146,43 +146,33 @@ export class SimpleSession extends PureComponent<Props, State> {
     this.onEnd('unmount')
   }
 
+  streamSource: MediaStreamAudioSourceNode
   async createMediaStream() {
-    let mediaStream
-    let userMediaError
+    let { userMedia } = this.props
 
     // Request user media, or wait 20 seconds till resolved
-    for (let i = 0; !mediaStream && i < 100; i++) {
-      try {
-        // Await permission! 🐉
-        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      } catch (error) {
-        if (userMediaError == null) {
-          userMediaError = error
-          this.onPermission({ ok: false, source: 'media', error })
-        }
-
-        await new Promise(next => setTimeout(next, 200))
+    for (let i = 0; !userMedia.ok && i < 100; i++) {
+      userMedia = this.props.userMedia
+      if (!userMedia.ok) {
+        await new Promise(next => setTimeout(next, 100))
       }
     }
 
-    if (!mediaStream && userMediaError) {
+    if (!userMedia.ok) {
       this.setSource('media', false)
       this.onEnd('media')
     } else {
-      this.onPermission({ ok: true, source: 'media' })
-
-      this.audioContext
-        // Create the stream! 🏞
-        .createMediaStreamSource(mediaStream)
-        // Connect the mic 🎤
-        .connect(this.analyser)
+      // Create the stream! 🏞
+      this.streamSource = this.audioContext.createMediaStreamSource(userMedia.mediaStream)
+      // Connect the mic 🎤
+      this.streamSource.connect(this.analyser)
       // And for some reason connect the analyser to the destination 📈
       this.analyser.connect(this.destination)
 
-      this.setSource('media', mediaStream)
+      this.setSource('media', userMedia.mediaStream)
     }
 
-    return mediaStream
+    return userMedia.mediaStream
   }
 
   async createSocket(options?: GreenKeyRecognition.WebSocketProps) {
@@ -253,12 +243,6 @@ export class SimpleSession extends PureComponent<Props, State> {
     })
   }
 
-  onPermission = (event: SessionEvent) => {
-    if (this.props.onPermission) {
-      this.props.onPermission(event)
-    }
-  }
-
   onRequestDataInterval = () => {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.recorder.requestData()
@@ -281,9 +265,10 @@ export class SimpleSession extends PureComponent<Props, State> {
 
   closed: boolean
   onEnd(source: Source) {
+    this.destroy()
+
     if (!this.closed) {
       this.closed = true
-      this.destroy()
       this.setState({ live: false, closed: true })
 
       if (this.props.onEnd) {
@@ -293,6 +278,11 @@ export class SimpleSession extends PureComponent<Props, State> {
   }
 
   destroy() {
+    if (this.streamSource) {
+      this.streamSource.disconnect(this.analyser)
+      this.analyser.disconnect(this.destination)
+    }
+
     if (this.recording) {
       this.recorder.stop()
     }

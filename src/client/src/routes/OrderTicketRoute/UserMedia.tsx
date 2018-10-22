@@ -3,40 +3,58 @@ import React from 'react'
 const Context = React.createContext<UserMediaState | null>(null)
 
 export interface UserMediaState {
-  ok?: boolean
-  error?: Error
+  constraints: MediaStreamConstraints | null
   mediaStream: MediaStream | null
+  error?: Error
+  ok?: boolean
 }
 
-export interface UserMediaProps {
-  audio?: boolean
+export interface UserMediaProps extends MediaStreamConstraints {
+  onPermission?: (event: UserMediaState) => any
 }
 
 class UserMediaProvider extends React.Component<UserMediaProps, UserMediaState> {
   state = {
+    constraints: null,
     mediaStream: null,
   } as any
 
   mounted: boolean
   async componentDidMount() {
     this.mounted = true
+
     // Await permission! 🐉
     while (this.mounted) {
-      let mediaStream
-      try {
-        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const { audio, video, peerIdentity } = this.props
 
-        if (this.state.mediaStream == null) {
-          this.setState({ ok: true, mediaStream, error: null })
-        }
-      } catch (error) {
-        if (this.state.error == null) {
-          this.setState({ mediaStream: null, error })
+      const constraints = { audio, video, peerIdentity }
+      let mediaStream = null
+      let error = null
+      let nextState
+
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia(constraints)
+      } catch (caughtError) {
+        error = caughtError
+      }
+
+      nextState = {
+        constraints,
+        mediaStream,
+        error,
+        ok: error == null && mediaStream != null,
+      }
+
+      if (nextState.ok !== this.state.ok) {
+        this.setState(nextState)
+
+        if (this.props.onPermission) {
+          this.props.onPermission(nextState)
         }
       }
 
       // Poll for changes to permission
-      await new Promise(next => setTimeout(next, 200))
+      await new Promise(next => setTimeout(next, 500))
     }
   }
 

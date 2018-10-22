@@ -9,11 +9,13 @@ import MicrophoneIcon from './assets/Microphone'
 
 import { FormantBars } from './FormantBars'
 
-import * as GreenKeyRecognition from './GreenKeyRecognition'
-import { SessionEvent, SessionResult, SessionResultData, SimpleSession } from './SimpleSession'
-import { UserMedia } from './UserMedia'
+import AudioContext from './AudioContext'
+import { MediaPlayer } from './MediaPlayer'
+import { SessionEvent, SessionResult, SessionResultData, SimpleSession } from './NextSession'
+import { UserMedia, UserMediaState } from './UserMedia'
 
-declare const MediaRecorder: any
+const USE_SAMPLE = process.env.NODE_ENV !== 'production'
+// USE_SAMPLE = false
 
 interface Props {
   requestSession: boolean
@@ -52,10 +54,29 @@ export class VoiceInput extends Component<Props, any> {
 
   audioContext = new AudioContext()
   destination = this.audioContext.createMediaStreamDestination()
-  analyser: AnalyserNode = _.assign(this.audioContext.createAnalyser(), {
-    fftSize: 32,
-    smoothingTimeConstant: 0.95,
-  })
+  analyser: AnalyserNode = (() => {
+    const analyser = _.assign(this.audioContext.createAnalyser(), {
+      fftSize: 32,
+      smoothingTimeConstant: 0.95,
+    })
+
+    analyser.connect(this.destination)
+
+    return analyser
+  })()
+
+  playerDestination = (() => {
+    const merger = this.audioContext.createChannelMerger()
+
+    merger.connect(this.analyser)
+    merger.connect(this.destination)
+
+    if (USE_SAMPLE) {
+      merger.connect(this.audioContext.destination)
+    }
+
+    return merger
+  })()
 
   toggle = () => {
     this.setState(({ sessionRequestActive, sessionRequestCount, transcripts }: any) => ({
@@ -65,8 +86,22 @@ export class VoiceInput extends Component<Props, any> {
     }))
   }
 
-  onPermission = ({ ok }: SessionEvent) => {
-    this.setState({ userPermissionGranted: ok })
+  onPermission = ({ ok, error, mediaStream }: UserMediaState) => {
+    const streamSource = this.audioContext.createMediaStreamSource(mediaStream)
+    // Connect the mic 🎤
+    if (!USE_SAMPLE) {
+      // streamSource.connect(this.analyser)
+      streamSource.connect(this.playerDestination)
+    }
+
+    this.setState({
+      userPermissionGranted: ok,
+      streamSource,
+    })
+
+    if (error) {
+      console.error(error)
+    }
   }
 
   onSessionStart = (sessionInstance: any) => {
@@ -114,25 +149,24 @@ export class VoiceInput extends Component<Props, any> {
 
     return (
       <React.Fragment>
+        <MediaPlayer
+          play={USE_SAMPLE && sessionRequestActive && userPermissionGranted}
+          src="/test.ogg"
+          context={this.audioContext}
+          destination={this.playerDestination}
+        />
         {sessionRequestCount > 0 && (
-          <UserMedia.Provider>
+          <UserMedia.Provider audio onPermission={this.onPermission}>
             {sessionRequestActive && (
-              <UserMedia.Consumer>
-                {userMedia => (
-                  <SimpleSession
-                    key={`SimpleSession${sessionRequestCount}`}
-                    audioContext={this.audioContext}
-                    userMedia={userMedia}
-                    analyser={this.analyser}
-                    destination={this.destination}
-                    onStart={this.onSessionStart}
-                    onError={this.onSessionError}
-                    onPermission={this.onPermission}
-                    onResult={this.onSessionResult}
-                    onEnd={this.onSessionEnd}
-                  />
-                )}
-              </UserMedia.Consumer>
+              <SimpleSession
+                key={`SimpleSession${sessionRequestCount}`}
+                source={this.state.streamSource}
+                destination={this.destination}
+                onStart={this.onSessionStart}
+                onError={this.onSessionError}
+                onResult={this.onSessionResult}
+                onEnd={this.onSessionEnd}
+              />
             )}
           </UserMedia.Provider>
         )}
@@ -200,11 +234,6 @@ export class VoiceInput extends Component<Props, any> {
     )
   }
 }
-
-const Transcript = ({ results }: any) =>
-  function createMediaRecorder(mediaStream: MediaStream, options: any): typeof MediaRecorder {
-    return Object.assign(new MediaRecorder(mediaStream), options)
-  }
 
 const Root = styled(Block)`
   display: flex;

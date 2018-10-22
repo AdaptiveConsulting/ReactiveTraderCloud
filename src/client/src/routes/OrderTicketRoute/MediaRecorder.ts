@@ -77,6 +77,10 @@ export interface MediaRecorderInterface {
     event: MediaRecorderEvents,
     callback: (event: any | BlobEvent | MediaStreamErrorEvent) => void,
   ) => void
+  removeEventListener: (
+    event: MediaRecorderEvents,
+    callback: (event: any | BlobEvent | MediaStreamErrorEvent) => void,
+  ) => void
 }
 
 export const MediaRecorder = (global.MediaRecorder || AudioRecorderPolyfill) as {
