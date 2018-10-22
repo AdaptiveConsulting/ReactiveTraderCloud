@@ -70,6 +70,7 @@
     "emotion-theming": "^9.2.6",
     "hoist-non-react-statics": "^2.5.5",
     "lodash": "^4.17.10",
+    "luxon": "^1.4.4",
     "moment": "^2.22.2",
     "numeral": "1.5.3",
     "nvd3": "1.8.6",

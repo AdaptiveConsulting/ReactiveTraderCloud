@@ -4,6 +4,8 @@ export interface Props {
   src?: string
   at?: number
   play?: boolean
+  loop?: boolean
+  rate?: number
   context: AudioContext
   destination: AudioNode
 }
@@ -22,6 +24,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
   static defaultProps = {
     src: '/test.ogg',
     at: 0,
+    rate: 1,
   }
 
   state: State = {
@@ -32,7 +35,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(
-    { at: startTime, context, destination, play }: Props,
+    { at: startTime, context, destination, play, loop, rate }: Props,
     { active, source, buffer, playback }: State,
   ) {
     if (play == active || buffer == null) {
@@ -45,8 +48,15 @@ class MediaPlayer extends React.PureComponent<Props, State> {
 
       playback = {
         pausedAt: context.currentTime,
-        position: (position || startTime) + (context.currentTime - (pausedAt || context.currentTime)),
+        position: loop
+          ? startTime
+          : (position || startTime) + (context.currentTime - (pausedAt || context.currentTime)),
       }
+
+      if (playback.position > buffer.duration) {
+        playback.position = 0
+      }
+
       source.stop()
       source.disconnect(destination)
       source = null
@@ -55,8 +65,8 @@ class MediaPlayer extends React.PureComponent<Props, State> {
     // on play
     if (play && source == null) {
       source = context.createBufferSource()
-      console.log(source)
       source.buffer = buffer
+      source.playbackRate.value = rate
       source.connect(destination)
       source.start(0, playback.position)
     }

@@ -232,8 +232,7 @@ export class SimpleSession extends PureComponent<Props, State> {
           socket.readyState === WebSocket.OPEN && (
             <Timer duration={GreenKeyRecognition.interval} interval={this.onRequestDataInterval} />
           )}
-        {/* {result && result.final && <Timer duration={1000} timeout={this.onMarkedFinalTimeout} />} */}
-        {result && result.final && <Timer duration={0} timeout={this.onMarkedFinalTimeout} />}
+        {result && result.final && <Timer duration={1000} timeout={this.onMarkedFinalTimeout} />}
       </React.Fragment>
     )
   }

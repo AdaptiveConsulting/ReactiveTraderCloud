@@ -1,8 +1,11 @@
 import _ from 'lodash'
+import { DateTime } from 'luxon'
 import React from 'react'
+
 import { styled } from 'rt-theme'
 
 import { TextField } from './TextField'
+import { Timer } from './Timer'
 
 export interface Fields {
   product: string
@@ -16,7 +19,7 @@ export interface Props extends Partial<Fields> {}
 
 interface State extends Props {
   fields: Fields
-  prev: Props | null
+  props: Props | null
 }
 
 export { Props as OrderFormProps }
@@ -29,22 +32,24 @@ export class OrderForm extends React.Component<Props, State> {
       notional: '',
       settlement: '',
     },
-    prev: null,
+    props: null,
   }
 
   static getDerivedStateFromProps(props: Props, state: State) {
-    let next: any
+    let fields: any = state.fields
 
-    if (!_.isMatch(props, state.prev)) {
-      next = {
-        fields: {
-          ...state.fields,
-          ..._.pick(props, Object.keys(state.fields)),
-        },
+    if (!_.isMatch(props, state.props)) {
+      fields = {
+        ...state.fields,
+        ..._.pick(props, Object.keys(state.fields)),
+      }
+
+      if (!fields.product) {
+        fields.direction = fields.settlement = ''
       }
     }
 
-    return { ...next, prev: props }
+    return { fields, props }
   }
 
   onChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -55,11 +60,28 @@ export class OrderForm extends React.Component<Props, State> {
     this.setState(({ fields }) => ({ fields: { ...fields, [name]: value } }))
   }
 
+  setRemainingFields = () => {
+    let { fields } = this.state
+
+    fields = {
+      ...fields,
+      direction: fields.product ? 'Two Way' : '',
+      settlement: fields.product
+        ? DateTime.local()
+            .plus({ days: 1 } as any)
+            .toISODate()
+        : '',
+    }
+
+    this.setState({ fields })
+  }
+
   render() {
-    const { fields } = this.state
+    const { fields, props: prevProps } = this.state
 
     return (
       <Layout>
+        <Timer key={fields.product + fields.notional} duration={500} timeout={this.setRemainingFields} />
         {_.map(fields as any, (value: any, name) => (
           <TextField key={name} name={name} value={value} onChange={this.onChange} />
         ))}

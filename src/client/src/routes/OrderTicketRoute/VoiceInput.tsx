@@ -65,7 +65,7 @@ export class VoiceInput extends Component<Props, any> {
     return analyser
   })()
 
-  playerDestination = (() => {
+  combinedDestination = (() => {
     const merger = this.audioContext.createChannelMerger()
 
     merger.connect(this.analyser)
@@ -90,8 +90,7 @@ export class VoiceInput extends Component<Props, any> {
     const streamSource = this.audioContext.createMediaStreamSource(mediaStream)
     // Connect the mic 🎤
     if (!USE_SAMPLE) {
-      // streamSource.connect(this.analyser)
-      streamSource.connect(this.playerDestination)
+      streamSource.connect(this.combinedDestination)
     }
 
     this.setState({
@@ -150,10 +149,13 @@ export class VoiceInput extends Component<Props, any> {
     return (
       <React.Fragment>
         <MediaPlayer
+          loop
+          at={63}
+          rate={1.15}
           play={USE_SAMPLE && sessionRequestActive && userPermissionGranted}
           src="/test.ogg"
           context={this.audioContext}
-          destination={this.playerDestination}
+          destination={this.combinedDestination}
         />
         {sessionRequestCount > 0 && (
           <UserMedia.Provider audio onPermission={this.onPermission}>
