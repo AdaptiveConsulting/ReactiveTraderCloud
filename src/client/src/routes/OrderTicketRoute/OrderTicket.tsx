@@ -14,14 +14,17 @@ import { WindowControls } from './WindowControls'
 
 import { OrderForm, OrderFormProps } from './OrderForm'
 import { OrderStatus, OrderStatusProps } from './OrderStatus'
+import { Timer } from './Timer'
 
 interface State {
+  requestQuote: boolean
   requestSession: boolean
   result?: VoiceInputResult
   data: Partial<OrderFormProps>
 }
 export class OrderTicket extends PureComponent<{}, State> {
   state: State = {
+    requestQuote: false,
     requestSession: false,
     result: null,
     data: {},
@@ -65,8 +68,23 @@ export class OrderTicket extends PureComponent<{}, State> {
     }
   }
 
+  onSubmit = () => {
+    this.setState({
+      requestQuote: true,
+    })
+  }
+
+  onCancel = () => {
+    this.setState({
+      requestQuote: false,
+      requestSession: false,
+      result: null,
+      data: _.mapValues(this.state.data, _.constant('')),
+    })
+  }
+
   render() {
-    const { requestSession, data = {} } = this.state
+    const { requestQuote, requestSession, data = {} } = this.state
 
     return (
       <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} ref={this.focus}>
@@ -87,7 +105,12 @@ export class OrderTicket extends PureComponent<{}, State> {
             <OrderForm {...data} />
           </FormLayout>
           <StatusLayout>
-            <OrderStatus ready={!!data.product && !!data.notional} />
+            <OrderStatus
+              ready={!!data.product && !!data.notional}
+              onSubmit={this.onSubmit}
+              onCancel={this.onCancel}
+              requestQuote={requestQuote}
+            />
           </StatusLayout>
           <InfoLayout fg="muteColor">Bond Info</InfoLayout>
         </AppLayout>

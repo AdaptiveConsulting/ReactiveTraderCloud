@@ -15,7 +15,6 @@ import { SessionEvent, SessionResult, SessionResultData, SimpleSession } from '.
 import { UserMedia, UserMediaState } from './UserMedia'
 
 const USE_SAMPLE = process.env.NODE_ENV !== 'production'
-// USE_SAMPLE = false
 
 interface Props {
   requestSession: boolean
@@ -108,13 +107,7 @@ export class VoiceInput extends Component<Props, any> {
   }
 
   onSessionError = (event: SessionEvent) => {
-    if (event.source === 'media') {
-      this.setState({ userPermissionGranted: false })
-    }
-
-    if (event.source === 'socket') {
-      this.setState({ sessionConnected: false })
-    }
+    this.setState({ sessionConnected: false })
   }
 
   onSessionResult = (result: SessionResult) => {
@@ -138,6 +131,7 @@ export class VoiceInput extends Component<Props, any> {
 
   render() {
     const {
+      streamSource,
       sessionRequestCount,
       sessionRequestActive,
       sessionConnected,
@@ -152,17 +146,20 @@ export class VoiceInput extends Component<Props, any> {
           loop
           at={63}
           rate={1.15}
-          play={USE_SAMPLE && sessionRequestActive && userPermissionGranted}
+          play={USE_SAMPLE && sessionInstance}
           src="/test.ogg"
           context={this.audioContext}
           destination={this.combinedDestination}
         />
+
         {sessionRequestCount > 0 && (
-          <UserMedia.Provider audio onPermission={this.onPermission}>
+          <React.Fragment>
+            <UserMedia.Provider audio onPermission={this.onPermission} />
+
             {sessionRequestActive && (
               <SimpleSession
                 key={`SimpleSession${sessionRequestCount}`}
-                source={this.state.streamSource}
+                source={streamSource}
                 destination={this.destination}
                 onStart={this.onSessionStart}
                 onError={this.onSessionError}
@@ -170,7 +167,7 @@ export class VoiceInput extends Component<Props, any> {
                 onEnd={this.onSessionEnd}
               />
             )}
-          </UserMedia.Provider>
+          </React.Fragment>
         )}
 
         <Root bg="primary.4" onClick={this.toggle}>

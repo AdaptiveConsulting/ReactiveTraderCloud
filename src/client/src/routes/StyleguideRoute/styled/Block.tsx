@@ -21,7 +21,7 @@ export const Block = styled.div<BlockProps>`
     css({
       transition: bg ? 'background-color ease-out 0.15s' : null,
       backgroundColor: bg && getColor(theme, bg),
-      color: fg && getColor(theme, fg, theme.white),
+      color: fg && getColor(theme, fg, theme.primary.base),
     })};
 
   ${mapTextProps};

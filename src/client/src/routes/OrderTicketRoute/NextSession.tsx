@@ -101,8 +101,16 @@ export class SimpleSession extends PureComponent<Props, State> {
 
     // Begin recording
     const event = await new Promise<BlobEvent>(next => {
+      let handle: any
+      recorder.addEventListener(
+        'dataavailable',
+        (handle = (event: any) => {
+          recorder.removeEventListener('dataavailable', handle)
+          next(event)
+        }),
+      )
+      // Start recording, and trigger data event to resolve promise
       recorder.start()
-      recorder.addEventListener('dataavailable', next)
       recorder.requestData()
     })
 

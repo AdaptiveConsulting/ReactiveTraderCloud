@@ -12,6 +12,7 @@ export interface ButtonStyleProps {
   disabled?: boolean
   pill?: boolean
   size?: number
+  invert?: boolean
 }
 
 const boxShadow = `0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08)`
@@ -22,7 +23,7 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
   }
 
   resolveTheme = (providedTheme: Theme) => {
-    const { intent, outline, active, disabled } = this.props
+    const { intent, outline, active, disabled, invert } = this.props
 
     const { backgroundColor, textColor, button: theme, colors } = providedTheme
     let {
@@ -36,7 +37,19 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
     if (disabled) {
       // We might prefer to set the disabled palette explicitly
       // and not rely on opacity — as will be done with no change
-      // palette = { ...palette, ...palette.disabled };
+      // palette = { ...palette, ...palette.disabled }
+    }
+
+    if (invert) {
+      palette = {
+        ...palette,
+        backgroundColor: palette.textColor,
+        textColor: palette.backgroundColor,
+        ..._.map(palette, ({ backgroundColor, textColor }) => ({
+          textColor: backgroundColor,
+          backgroundColor: textColor,
+        })),
+      }
     }
 
     if (outline) {
@@ -68,7 +81,7 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
 
 export class Button extends React.Component<ButtonStyleProps & ButtonHTMLAttributes<Element>> {
   render() {
-    const { children, intent, active, disabled, outline, pill, size, ...rest } = this.props
+    const { children, intent, active, disabled, outline, invert, pill, size, ...rest } = this.props
     const props = {
       intent,
       active,
@@ -76,6 +89,7 @@ export class Button extends React.Component<ButtonStyleProps & ButtonHTMLAttribu
       disabled,
       pill,
       size,
+      invert,
     }
 
     return (
@@ -110,7 +124,10 @@ export class ButtonGroup extends React.Component<ButtonStyleProps> {
   }
 }
 
-const StyledBase: Styled<ButtonStyleProps> = styled.div`
+const StyledBase: Styled<ButtonStyleProps> = styled.button`
+  -webkit-appearance: none;
+  border-width: 0;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
