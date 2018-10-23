@@ -17,8 +17,7 @@ export interface SessionResult {
 }
 
 export interface Props {
-  source: MediaStreamAudioSourceNode
-  destination: MediaStreamAudioDestinationNode
+  mediaStream: MediaStream
   onStart?: (e: any) => any
   onResult?: (e: SessionResult) => any
   onPermission?: (event: SessionEvent) => any
@@ -50,11 +49,11 @@ type Dependency = 'socket' | 'media'
 type Source = 'socket' | 'media' | 'unmount'
 
 export class SimpleSession extends PureComponent<Props, State> {
-  static getDerivedStateFromProps({ source, destination }: Props, { recorder }: State) {
+  static getDerivedStateFromProps({ mediaStream }: Props, { recorder }: State) {
     // On UserMedia permission
-    if (source && destination && recorder == null) {
+    if (mediaStream && recorder == null) {
       return {
-        recorder: new MediaRecorder(destination.stream),
+        recorder: new MediaRecorder(mediaStream),
       }
     }
 

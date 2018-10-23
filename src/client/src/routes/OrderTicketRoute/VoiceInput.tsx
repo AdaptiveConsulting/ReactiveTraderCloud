@@ -14,7 +14,12 @@ import { MediaPlayer } from './MediaPlayer'
 import { SessionEvent, SessionResult, SessionResultData, SimpleSession } from './NextSession'
 import { UserMedia, UserMediaState } from './UserMedia'
 
-const USE_SAMPLE = process.env.NODE_ENV !== 'production'
+let USE_SAMPLE = false
+if (process.env.NODE_ENV === 'production') {
+  USE_SAMPLE = true
+} else {
+  USE_SAMPLE = true
+}
 
 interface Props {
   requestSession: boolean
@@ -52,23 +57,17 @@ export class VoiceInput extends Component<Props, any> {
   } as any & Partial<SessionResult>
 
   audioContext = new AudioContext()
-  destination = this.audioContext.createMediaStreamDestination()
-  analyser: AnalyserNode = (() => {
-    const analyser = _.assign(this.audioContext.createAnalyser(), {
-      fftSize: 32,
-      smoothingTimeConstant: 0.95,
-    })
-
-    analyser.connect(this.destination)
-
-    return analyser
-  })()
+  streamDestination = this.audioContext.createMediaStreamDestination()
+  analyser: AnalyserNode = _.assign(this.audioContext.createAnalyser(), {
+    fftSize: 32,
+    smoothingTimeConstant: 0.94,
+  })
 
   combinedDestination = (() => {
     const merger = this.audioContext.createChannelMerger()
 
     merger.connect(this.analyser)
-    merger.connect(this.destination)
+    merger.connect(this.streamDestination)
 
     if (USE_SAMPLE) {
       merger.connect(this.audioContext.destination)
@@ -159,8 +158,7 @@ export class VoiceInput extends Component<Props, any> {
             {sessionRequestActive && (
               <SimpleSession
                 key={`SimpleSession${sessionRequestCount}`}
-                source={streamSource}
-                destination={this.destination}
+                mediaStream={this.streamDestination.stream}
                 onStart={this.onSessionStart}
                 onError={this.onSessionError}
                 onResult={this.onSessionResult}
