@@ -21,16 +21,48 @@ interface State {
   requestSession: boolean
   result?: VoiceInputResult
   data: Partial<OrderFormProps>
+  source: 'microphone' | 'sample'
 }
 export class OrderTicket extends PureComponent<{}, State> {
   state: State = {
     requestQuote: false,
     requestSession: false,
     result: null,
+    source: 'sample',
+    // source: 'microphone',
     data: {},
   }
 
-  onResult = ({ result = {} }: any = {}) => {
+  hotkeys = {
+    keyMap: {
+      toggle: ['alt+o', 'alt+shift+o', 'alt+0', 'alt+shift+0'],
+    },
+    handlers: {
+      toggle: () => this.setState(({ requestSession }) => ({ requestSession: !requestSession })),
+    },
+  }
+
+  focus = (ref: any) => {
+    if (ref) {
+      const node = ReactDOM.findDOMNode(ref) as any
+      if (node) {
+        node.focus()
+      }
+    }
+  }
+
+  onVoiceStart = () => {
+    this.setState({
+      result: null,
+      data: {
+        product: '',
+        client: '',
+        notional: '',
+      },
+    })
+  }
+
+  onVoiceResult = ({ result = {} }: any = {}) => {
     const { entities }: any = _.find(result.intents, { label: 'corporate_bonds' }) || {}
 
     // Select highest probable match by field within result.intents
@@ -50,22 +82,10 @@ export class OrderTicket extends PureComponent<{}, State> {
     })
   }
 
-  hotkeys = {
-    keyMap: {
-      toggle: ['alt+o', 'alt+shift+o', 'alt+0', 'alt+shift+0'],
-    },
-    handlers: {
-      toggle: () => this.setState(({ requestSession }) => ({ requestSession: !requestSession })),
-    },
-  }
-
-  focus = (ref: any) => {
-    if (ref) {
-      const node = ReactDOM.findDOMNode(ref) as any
-      if (node) {
-        node.focus()
-      }
-    }
+  onVoiceEnd = () => {
+    this.setState({
+      // source: this.state.source === 'sample' ? 'microphone' : 'sample',
+    })
   }
 
   onSubmit = () => {
@@ -99,7 +119,13 @@ export class OrderTicket extends PureComponent<{}, State> {
             <DrawerMenu />
           </DrawerLayout>
           <VoiceLayout>
-            <VoiceInput requestSession={requestSession} onResult={this.onResult} />
+            <VoiceInput
+              source={this.state.source}
+              requestSession={requestSession}
+              onStart={this.onVoiceStart}
+              onResult={this.onVoiceResult}
+              onEnd={this.onVoiceEnd}
+            />
           </VoiceLayout>
           <FormLayout>
             <OrderForm {...data} />

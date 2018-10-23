@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash'
 import React from 'react'
 
 const Context = React.createContext<UserMediaState | null>(null)
@@ -26,32 +27,39 @@ class UserMediaProvider extends React.Component<UserMediaProps, UserMediaState> 
     // Await permission! 🐉
     while (this.mounted) {
       const { audio, video, peerIdentity } = this.props
-
       const constraints = { audio, video, peerIdentity }
-      let mediaStream = null
-      let error = null
-      let nextState
 
-      try {
-        mediaStream = await navigator.mediaDevices.getUserMedia(constraints)
-      } catch (caughtError) {
-        error = caughtError
-      }
+      // on user media request
+      if (!this.state.mediaStream || !isEqual(constraints, this.state.constraints)) {
+        let mediaStream = null
+        let error = null
+        let nextState
 
-      nextState = {
-        constraints,
-        mediaStream,
-        error,
-        ok: error == null && mediaStream != null,
-      }
+        try {
+          mediaStream = await navigator.mediaDevices.getUserMedia(constraints)
+        } catch (caughtError) {
+          error = caughtError
+        }
 
-      if (nextState.ok !== this.state.ok) {
-        this.setState(nextState)
+        nextState = {
+          constraints,
+          mediaStream,
+          error,
+          ok: error == null && mediaStream != null,
+        }
 
-        if (this.props.onPermission) {
-          this.props.onPermission(nextState)
+        if (nextState.ok !== this.state.ok) {
+          this.setState(nextState)
+
+          if (this.props.onPermission) {
+            this.props.onPermission(nextState)
+          }
         }
       }
+      // on user media end
+      // else if (this.state.mediaStream && !(audio || video)) {
+      //   this.state.mediaStream.stop()
+      // }
 
       // Poll for changes to permission
       await new Promise(next => setTimeout(next, 500))

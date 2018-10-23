@@ -11,38 +11,32 @@ import { FormantBars } from './FormantBars'
 
 import AudioContext from './AudioContext'
 import { MediaPlayer } from './MediaPlayer'
+import { MediaSourceSelector } from './MediaSourceSelector'
 import { SessionEvent, SessionResult, SessionResultData, SimpleSession } from './NextSession'
 import { UserMedia, UserMediaState } from './UserMedia'
 
-let USE_SAMPLE = false
+let USE_CHANNEL = false
 if (process.env.NODE_ENV === 'production') {
-  USE_SAMPLE = true
+  USE_CHANNEL = true
 } else {
-  USE_SAMPLE = true
+  USE_CHANNEL = true
 }
 
 interface Props {
+  source?: 'microphone' | 'sample'
+  audioContext?: AudioContext
   requestSession: boolean
-  onResult?: (data: VoiceInputResult) => void
+  onStart?: () => any
+  onResult?: (data: VoiceInputResult) => any
+  onEnd?: () => any
 }
 
 export interface VoiceInputResult extends SessionResultData {}
 
 export class VoiceInput extends Component<Props, any> {
-  static getDerivedStateFromProps({ requestSession }: Props, state: any): any | null {
-    let next: any = null
-
-    if (requestSession !== state.requestSession) {
-      next = {
-        requestSession,
-        sessionRequestActive: requestSession,
-        sessionRequestCount: requestSession ? state.sessionRequestCount + 1 : state.sessionRequestCount,
-        // Clear transcripts on new session
-        transcripts: requestSession ? [] : state.transcripts,
-      }
-    }
-
-    return next
+  static defaultProps = {
+    source: 'microphone',
+    audioContext: new AudioContext(),
   }
 
   state = {
@@ -56,25 +50,112 @@ export class VoiceInput extends Component<Props, any> {
     transcripts: [],
   } as any & Partial<SessionResult>
 
-  audioContext = new AudioContext()
-  streamDestination = this.audioContext.createMediaStreamDestination()
-  analyser: AnalyserNode = _.assign(this.audioContext.createAnalyser(), {
-    fftSize: 32,
-    smoothingTimeConstant: 0.94,
-  })
+  static getDerivedStateFromProps({ audioContext, requestSession, source }: Props, state: any): any | null {
+    let next: any = {}
+    let { destination, userMediaStream, userMediaStreamSource }: any = state
 
-  combinedDestination = (() => {
-    const merger = this.audioContext.createChannelMerger()
-
-    merger.connect(this.analyser)
-    merger.connect(this.streamDestination)
-
-    if (USE_SAMPLE) {
-      merger.connect(this.audioContext.destination)
+    if (requestSession !== state.requestSession) {
+      next = {
+        ...next,
+        requestSession,
+        sessionRequestActive: requestSession,
+        sessionRequestCount: requestSession ? state.sessionRequestCount + 1 : state.sessionRequestCount,
+        // Clear transcripts on new session
+        transcripts: requestSession ? [] : state.transcripts,
+      }
     }
 
-    return merger
-  })()
+    if (USE_CHANNEL) {
+      if (destination == null) {
+        const analyser = _.assign(audioContext.createAnalyser(), {
+          fftSize: 32,
+          smoothingTimeConstant: 0.95,
+        })
+        destination = audioContext.createMediaStreamDestination()
+
+        next = {
+          ...next,
+          analyser,
+          destination,
+          forward: [analyser, destination],
+        }
+      }
+    } else {
+      if (destination == null) {
+        const channelMerger = audioContext.createChannelMerger()
+
+        const analyser = _.assign(audioContext.createAnalyser(), {
+          fftSize: 32,
+          smoothingTimeConstant: 0.95,
+        })
+        channelMerger.connect(analyser)
+
+        const mediaStreamDestination = audioContext.createMediaStreamDestination()
+        channelMerger.connect(mediaStreamDestination)
+
+        channelMerger.connect(audioContext.destination)
+
+        next = {
+          ...next,
+          analyser,
+          mediaStreamDestination,
+          destination: Object.assign(channelMerger, {
+            stream: mediaStreamDestination.stream,
+          }),
+        }
+        destination = next.destination
+      }
+
+      // Connect the mic 🎤
+      if (userMediaStream && userMediaStreamSource == null) {
+        userMediaStreamSource = audioContext.createMediaStreamSource(userMediaStream)
+
+        userMediaStreamSource.connect(destination)
+
+        next = {
+          ...next,
+          userMediaStreamSource,
+        }
+      }
+
+      if (source !== state.source && destination && userMediaStreamSource) {
+        switch (source) {
+          case 'microphone': {
+            destination.disconnect(audioContext.destination)
+            userMediaStreamSource.connect(destination)
+            break
+          }
+          case 'sample': {
+            userMediaStreamSource.disconnect(destination)
+            destination.connect(audioContext.destination)
+          }
+        }
+
+        next = {
+          ...next,
+          source,
+        }
+      }
+    }
+
+    return next
+  }
+
+  get audioContext() {
+    return this.props.audioContext
+  }
+
+  get streamDestination() {
+    return this.state.destination
+  }
+
+  get analyser() {
+    return this.state.analyser
+  }
+
+  get combinedDestination() {
+    return this.state.destination
+  }
 
   toggle = () => {
     this.setState(({ sessionRequestActive, sessionRequestCount, transcripts }: any) => ({
@@ -85,15 +166,9 @@ export class VoiceInput extends Component<Props, any> {
   }
 
   onPermission = ({ ok, error, mediaStream }: UserMediaState) => {
-    const streamSource = this.audioContext.createMediaStreamSource(mediaStream)
-    // Connect the mic 🎤
-    if (!USE_SAMPLE) {
-      streamSource.connect(this.combinedDestination)
-    }
-
     this.setState({
       userPermissionGranted: ok,
-      streamSource,
+      userMediaStream: mediaStream,
     })
 
     if (error) {
@@ -103,10 +178,16 @@ export class VoiceInput extends Component<Props, any> {
 
   onSessionStart = (sessionInstance: any) => {
     this.setState({ sessionInstance: !!sessionInstance })
+    if (this.props.onStart) {
+      this.props.onStart()
+    }
   }
 
   onSessionError = (event: SessionEvent) => {
     this.setState({ sessionConnected: false })
+    if (this.props.onEnd) {
+      this.props.onEnd()
+    }
   }
 
   onSessionResult = (result: SessionResult) => {
@@ -118,6 +199,9 @@ export class VoiceInput extends Component<Props, any> {
 
   onSessionEnd = (sessionInstance: any) => {
     this.reset()
+    if (this.props.onEnd) {
+      this.props.onEnd()
+    }
   }
 
   reset() {
@@ -130,7 +214,6 @@ export class VoiceInput extends Component<Props, any> {
 
   render() {
     const {
-      streamSource,
       sessionRequestCount,
       sessionRequestActive,
       sessionConnected,
@@ -141,24 +224,36 @@ export class VoiceInput extends Component<Props, any> {
 
     return (
       <React.Fragment>
-        <MediaPlayer
-          loop
-          at={63}
-          rate={1.15}
-          play={USE_SAMPLE && sessionInstance}
-          src="/test.ogg"
-          context={this.audioContext}
-          destination={this.combinedDestination}
-        />
-
         {sessionRequestCount > 0 && (
           <React.Fragment>
-            <UserMedia.Provider audio onPermission={this.onPermission} />
+            {USE_CHANNEL ? (
+              <MediaSourceSelector
+                source={this.props.source}
+                audioContext={this.props.audioContext}
+                forward={this.state.forward}
+                ready={sessionInstance}
+                onPermission={this.onPermission}
+              />
+            ) : (
+              <React.Fragment>
+                <UserMedia.Provider audio onPermission={this.onPermission} />
+
+                <MediaPlayer
+                  loop
+                  at={63}
+                  rate={1.15}
+                  play={this.props.source === 'sample' && sessionInstance}
+                  src="/test.ogg"
+                  context={this.audioContext}
+                  destination={this.combinedDestination}
+                />
+              </React.Fragment>
+            )}
 
             {sessionRequestActive && (
               <SimpleSession
                 key={`SimpleSession${sessionRequestCount}`}
-                mediaStream={this.streamDestination.stream}
+                mediaStream={this.state.destination.stream}
                 onStart={this.onSessionStart}
                 onError={this.onSessionError}
                 onResult={this.onSessionResult}
