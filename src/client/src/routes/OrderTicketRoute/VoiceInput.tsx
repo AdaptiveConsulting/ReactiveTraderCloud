@@ -11,48 +11,68 @@ import { FormantBars } from './FormantBars'
 
 import AudioContext from './AudioContext'
 import { MediaPlayer } from './MediaPlayer'
-import { MediaSourceSelector } from './MediaSourceSelector'
+import MediaSourceConnector from './MediaSourceSelector'
+import { Microphone } from './Microphone'
 import { SessionEvent, SessionResult, SessionResultData, SimpleSession } from './NextSession'
 import { UserMedia, UserMediaState } from './UserMedia'
 
-let USE_CHANNEL = false
-if (process.env.NODE_ENV === 'production') {
-  USE_CHANNEL = true
-} else {
-  USE_CHANNEL = true
-}
-
+type SourceType = 'microphone' | 'sample'
 interface Props {
-  source?: 'microphone' | 'sample'
-  audioContext?: AudioContext
+  source?: SourceType
+  context?: AudioContext
   requestSession: boolean
   onStart?: () => any
   onResult?: (data: VoiceInputResult) => any
   onEnd?: () => any
 }
 
+interface State {
+  // audio
+  analyser: AnalyserNode
+  destination: MediaStreamAudioDestinationNode
+  outputs: AudioDestinationNode[]
+  source?: SourceType
+  userPermissionGranted: boolean
+  // data
+  requestSession: boolean
+  sessionRequestActive: boolean
+  sessionRequestCount: number
+  sessionConnected: boolean
+  sessionInstance?: any
+  data?: any
+  transcripts: any
+}
+
 export interface VoiceInputResult extends SessionResultData {}
 
-export class VoiceInput extends Component<Props, any> {
+export class VoiceInput extends Component<Props, State> {
   static defaultProps = {
     source: 'microphone',
-    audioContext: new AudioContext(),
+    context: new AudioContext(),
   }
 
-  state = {
+  state: State = {
+    // audio
+    analyser: Object.assign(this.props.context.createAnalyser(), {
+      fftSize: 32,
+      smoothingTimeConstant: 0.95,
+    }),
+    destination: this.props.context.createMediaStreamDestination(),
+    outputs: [],
+    // data
     requestSession: false,
     sessionRequestActive: false,
     sessionRequestCount: 0,
     sessionConnected: null,
-    userPermissionGranted: null,
     sessionInstance: null,
+    userPermissionGranted: null,
     data: null,
     transcripts: [],
-  } as any & Partial<SessionResult>
+  }
 
-  static getDerivedStateFromProps({ audioContext, requestSession, source }: Props, state: any): any | null {
+  static getDerivedStateFromProps({ context, source, requestSession }: Props, state: State): Partial<State> {
     let next: any = {}
-    let { destination, userMediaStream, userMediaStreamSource }: any = state
+    const { analyser, destination }: any = state
 
     if (requestSession !== state.requestSession) {
       next = {
@@ -65,96 +85,17 @@ export class VoiceInput extends Component<Props, any> {
       }
     }
 
-    if (USE_CHANNEL) {
-      if (destination == null) {
-        const analyser = _.assign(audioContext.createAnalyser(), {
-          fftSize: 32,
-          smoothingTimeConstant: 0.95,
-        })
-        destination = audioContext.createMediaStreamDestination()
-
-        next = {
-          ...next,
-          analyser,
-          destination,
-          forward: [analyser, destination],
-        }
-      }
-    } else {
-      if (destination == null) {
-        const channelMerger = audioContext.createChannelMerger()
-
-        const analyser = _.assign(audioContext.createAnalyser(), {
-          fftSize: 32,
-          smoothingTimeConstant: 0.95,
-        })
-        channelMerger.connect(analyser)
-
-        const mediaStreamDestination = audioContext.createMediaStreamDestination()
-        channelMerger.connect(mediaStreamDestination)
-
-        channelMerger.connect(audioContext.destination)
-
-        next = {
-          ...next,
-          analyser,
-          mediaStreamDestination,
-          destination: Object.assign(channelMerger, {
-            stream: mediaStreamDestination.stream,
-          }),
-        }
-        destination = next.destination
-      }
-
-      // Connect the mic 🎤
-      if (userMediaStream && userMediaStreamSource == null) {
-        userMediaStreamSource = audioContext.createMediaStreamSource(userMediaStream)
-
-        userMediaStreamSource.connect(destination)
-
-        next = {
-          ...next,
-          userMediaStreamSource,
-        }
-      }
-
-      if (source !== state.source && destination && userMediaStreamSource) {
-        switch (source) {
-          case 'microphone': {
-            destination.disconnect(audioContext.destination)
-            userMediaStreamSource.connect(destination)
-            break
-          }
-          case 'sample': {
-            userMediaStreamSource.disconnect(destination)
-            destination.connect(audioContext.destination)
-          }
-        }
-
-        next = {
-          ...next,
-          source,
-        }
+    if (source !== state.source) {
+      next = {
+        ...next,
+        source,
+        outputs: [analyser, destination]
+          // Send audio to speakers during playback
+          .concat(source === 'sample' ? context.destination : []),
       }
     }
 
     return next
-  }
-
-  get audioContext() {
-    return this.props.audioContext
-  }
-
-  get streamDestination() {
-    return this.state.destination
-  }
-
-  get analyser() {
-    return this.state.analyser
-  }
-
-  get combinedDestination() {
-    return this.state.destination
   }
 
   toggle = () => {
@@ -165,15 +106,8 @@ export class VoiceInput extends Component<Props, any> {
     }))
   }
 
-  onPermission = ({ ok, error, mediaStream }: UserMediaState) => {
-    this.setState({
-      userPermissionGranted: ok,
-      userMediaStream: mediaStream,
-    })
-
-    if (error) {
-      console.error(error)
-    }
+  onPermission = ({ ok }: UserMediaState) => {
+    this.setState({ userPermissionGranted: ok })
   }
 
   onSessionStart = (sessionInstance: any) => {
@@ -213,6 +147,7 @@ export class VoiceInput extends Component<Props, any> {
   }
 
   render() {
+    const { context, source } = this.props
     const {
       sessionRequestCount,
       sessionRequestActive,
@@ -220,46 +155,54 @@ export class VoiceInput extends Component<Props, any> {
       userPermissionGranted,
       sessionInstance,
       transcripts,
+      outputs,
+      analyser,
+      destination,
     } = this.state
 
     return (
       <React.Fragment>
         {sessionRequestCount > 0 && (
           <React.Fragment>
-            {USE_CHANNEL ? (
-              <MediaSourceSelector
-                source={this.props.source}
-                audioContext={this.props.audioContext}
-                forward={this.state.forward}
-                ready={sessionInstance}
-                onPermission={this.onPermission}
-              />
-            ) : (
-              <React.Fragment>
-                <UserMedia.Provider audio onPermission={this.onPermission} />
-
-                <MediaPlayer
-                  loop
-                  at={63}
-                  rate={1.15}
-                  play={this.props.source === 'sample' && sessionInstance}
-                  src="/test.ogg"
-                  context={this.audioContext}
-                  destination={this.combinedDestination}
-                />
-              </React.Fragment>
-            )}
-
             {sessionRequestActive && (
+              // Open session to recognition backend and stream from output
               <SimpleSession
                 key={`SimpleSession${sessionRequestCount}`}
-                mediaStream={this.state.destination.stream}
+                input={destination.stream}
                 onStart={this.onSessionStart}
                 onError={this.onSessionError}
                 onResult={this.onSessionResult}
                 onEnd={this.onSessionEnd}
               />
             )}
+
+            <MediaSourceConnector context={context} outputs={outputs}>
+              {({ destination }) => (
+                <React.Fragment>
+                  <MediaPlayer
+                    context={context}
+                    output={destination}
+                    src="/test.ogg"
+                    play={source === 'sample' && sessionInstance ? true : false}
+                    loop
+                    at={63}
+                    rate={1.15}
+                  />
+                  <UserMedia.Provider audio onPermission={this.onPermission}>
+                    <UserMedia.Consumer>
+                      {userMedia => (
+                        // Request user permission and output to destination
+                        <Microphone
+                          context={context}
+                          output={source === 'microphone' ? destination : null}
+                          mediaStream={userMedia.mediaStream}
+                        />
+                      )}
+                    </UserMedia.Consumer>
+                  </UserMedia.Provider>
+                </React.Fragment>
+              )}
+            </MediaSourceConnector>
           </React.Fragment>
         )}
 
@@ -281,7 +224,7 @@ export class VoiceInput extends Component<Props, any> {
           {!sessionInstance ? null : (
             <React.Fragment>
               <Fill />
-              <FormantBars analyser={this.analyser} count={5} gap={1.5} width={3.5} height={40} />
+              <FormantBars analyser={analyser} count={5} gap={1.5} width={3.5} height={40} />
               <Fill />
             </React.Fragment>
           )}
@@ -301,7 +244,7 @@ export class VoiceInput extends Component<Props, any> {
                     {userPermissionGranted === true && (
                       <React.Fragment>
                         {sessionConnected === false ? (
-                          <StatusText accent="aware">We're having trouble connecting</StatusText>
+                          <StatusText accent="aware">We're having trouble inputsing</StatusText>
                         ) : transcripts.length <= 0 ? (
                           <StatusText>Listening</StatusText>
                         ) : null}

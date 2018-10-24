@@ -7,7 +7,8 @@ export interface Props {
   loop?: boolean
   rate?: number
   context: AudioContext
-  destination: AudioNode
+  output?: AudioNode
+  children?: (state: State) => any
 }
 
 export interface State {
@@ -35,7 +36,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(
-    { at: startTime, context, destination, play, loop, rate }: Props,
+    { at: startTime, context, output, play, loop, rate }: Props,
     { active, source, buffer, playback }: State,
   ) {
     if (play == active || buffer == null) {
@@ -58,7 +59,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
       }
 
       source.stop()
-      source.disconnect(destination)
+      output && source.disconnect(output)
       source = null
     }
 
@@ -67,7 +68,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
       source = context.createBufferSource()
       source.buffer = buffer
       source.playbackRate.value = rate
-      source.connect(destination)
+      output && source.connect(output)
       source.start(0, playback.position)
     }
 
@@ -94,16 +95,18 @@ class MediaPlayer extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    const { destination } = this.props
+    const { output } = this.props
     const { source } = this.state
     if (source) {
       source.stop()
-      source.disconnect(destination)
+      output && source.disconnect(output)
     }
   }
 
   render(): null {
-    return null
+    const { children } = this.props
+
+    return (children && children(this.state)) || null
   }
 }
 

@@ -28,8 +28,8 @@ export class OrderTicket extends PureComponent<{}, State> {
     requestQuote: false,
     requestSession: false,
     result: null,
-    source: 'sample',
-    // source: 'microphone',
+    // source: 'sample',
+    source: 'microphone',
     data: {},
   }
 
