@@ -19,7 +19,7 @@ interface State {
   outputs: AudioNode[]
 }
 
-class MediaSourceSelector extends PureComponent<Props, State> {
+class ChannelMerger extends PureComponent<Props, State> {
   static defaultProps: Partial<Props> = {
     inputs: [],
     outputs: [],
@@ -64,5 +64,5 @@ class MediaSourceSelector extends PureComponent<Props, State> {
   }
 }
 
-export default MediaSourceSelector
-export { MediaSourceSelector }
+export default ChannelMerger
+export { ChannelMerger }

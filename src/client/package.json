@@ -75,7 +75,7 @@
     "numeral": "1.5.3",
     "nvd3": "1.8.6",
     "polished": "^1.9.3",
-    "react": "^16.5.1",
+    "react": "^16.6.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.5.1",
     "react-dom-factories": "1.0.2",

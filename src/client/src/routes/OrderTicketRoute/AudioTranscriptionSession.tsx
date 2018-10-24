@@ -6,10 +6,6 @@ import MediaRecorder, { BlobEvent, MediaRecorderInterface } from './MediaRecorde
 import * as GreenKeyRecognition from './GreenKeyRecognition'
 import { Timer } from './Timer'
 
-const IDLE_PROPS = {
-  timeout: GreenKeyRecognition.interval / 2,
-}
-
 export interface SessionResultData extends GreenKeyRecognition.Result {}
 export interface SessionResult {
   data: GreenKeyRecognition.Result
@@ -48,7 +44,7 @@ interface State {
 type Dependency = 'socket' | 'media'
 type Source = 'socket' | 'media' | 'unmount'
 
-export class SimpleSession extends PureComponent<Props, State> {
+export class AudioTranscriptionSession extends PureComponent<Props, State> {
   static getDerivedStateFromProps({ input }: Props, { recorder }: State) {
     // On UserMedia permission
     if (input && recorder == null) {
@@ -168,7 +164,7 @@ export class SimpleSession extends PureComponent<Props, State> {
 
   onMessage(event: MessageEvent) {
     if (this.state.unmount) {
-      console.error('SimpleSession.onMessage occured after unmount')
+      console.error('AudioTranscriptionSession.onMessage occured after unmount')
 
       return
     }
@@ -191,7 +187,7 @@ export class SimpleSession extends PureComponent<Props, State> {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.recorder.requestData()
     } else {
-      console.error('Reached unexpected state in SimpleSession')
+      console.error('Reached unexpected state in AudioTranscriptionSession')
     }
   }
 

@@ -1,17 +1,5 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { styled, Styled } from 'rt-theme'
-import { Block } from '../StyleguideRoute/styled'
-
-import FormantIcon from './assets/Formant'
-import formantSVGURL from './assets/formant.svg'
-
-import { faMicrophone } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-import createSpeechRecognition from './createSpeechRecognition'
-
-declare const MediaRecorder: any
 
 export interface Props {
   gap: number

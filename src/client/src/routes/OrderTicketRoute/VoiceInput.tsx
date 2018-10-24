@@ -10,10 +10,10 @@ import MicrophoneIcon from './assets/Microphone'
 import { FormantBars } from './FormantBars'
 
 import AudioContext from './AudioContext'
+import { AudioTranscriptionSession, SessionEvent, SessionResult, SessionResultData } from './AudioTranscriptionSession'
+import { ChannelMerger } from './ChannelMerger'
 import { MediaPlayer } from './MediaPlayer'
-import MediaSourceConnector from './MediaSourceSelector'
 import { Microphone } from './Microphone'
-import { SessionEvent, SessionResult, SessionResultData, SimpleSession } from './NextSession'
 import { UserMedia, UserMediaState } from './UserMedia'
 
 type SourceType = 'microphone' | 'sample'
@@ -166,8 +166,8 @@ export class VoiceInput extends Component<Props, State> {
           <React.Fragment>
             {sessionRequestActive && (
               // Open session to recognition backend and stream from output
-              <SimpleSession
-                key={`SimpleSession${sessionRequestCount}`}
+              <AudioTranscriptionSession
+                key={`Session${sessionRequestCount}`}
                 input={destination.stream}
                 onStart={this.onSessionStart}
                 onError={this.onSessionError}
@@ -176,14 +176,14 @@ export class VoiceInput extends Component<Props, State> {
               />
             )}
 
-            <MediaSourceConnector context={context} outputs={outputs}>
+            <ChannelMerger context={context} outputs={outputs}>
               {({ destination }) => (
                 <React.Fragment>
                   <MediaPlayer
                     context={context}
                     output={destination}
                     src="/test.ogg"
-                    play={source === 'sample' && sessionInstance ? true : false}
+                    play={source === 'sample' && sessionInstance}
                     loop
                     at={63}
                     rate={1.15}
@@ -202,7 +202,7 @@ export class VoiceInput extends Component<Props, State> {
                   </UserMedia.Provider>
                 </React.Fragment>
               )}
-            </MediaSourceConnector>
+            </ChannelMerger>
           </React.Fragment>
         )}
 
