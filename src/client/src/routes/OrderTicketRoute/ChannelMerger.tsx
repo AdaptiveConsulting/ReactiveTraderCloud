@@ -1,9 +1,6 @@
 import _ from 'lodash'
 import React, { PureComponent } from 'react'
 
-import { MediaPlayer } from './MediaPlayer'
-import { UserMedia, UserMediaState } from './UserMedia'
-
 export type Source = 'microphone' | 'sample'
 
 interface Props {
@@ -27,7 +24,7 @@ class ChannelMerger extends PureComponent<Props, State> {
   }
 
   state: State = {
-    destination: this.props.context.createChannelMerger(),
+    destination: this.props.context.createChannelMerger(1),
     inputs: [],
     outputs: [],
   }

@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 export interface Props {
-  src?: string
+  src?: Blob | string
   at?: number
   play?: boolean
   loop?: boolean
@@ -39,7 +39,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
     { at: startTime, context, output, play, loop, rate }: Props,
     { active, source, buffer, playback }: State,
   ) {
-    if (play == active || buffer == null) {
+    if (play === active || buffer == null) {
       return null
     }
 
@@ -84,19 +84,32 @@ class MediaPlayer extends React.PureComponent<Props, State> {
     const { buffer } = this.state
 
     if (buffer == null) {
-      const response = await fetch(src)
-      const arrayBuffer = await response.arrayBuffer()
-      this.setState({
-        buffer: await new Promise<AudioBuffer>((resolve, reject) =>
-          context.decodeAudioData(arrayBuffer, resolve, reject),
-        ),
-      })
+      const arrayBuffer: ArrayBuffer = !(src instanceof Blob)
+        ? await (await fetch(src)).arrayBuffer()
+        : await new Promise<ArrayBuffer>((resolve, reject) =>
+            Object.assign(new FileReader(), {
+              onloadend() {
+                resolve(this.result)
+              },
+            }).readAsArrayBuffer(src),
+          )
+
+      !this.unmounting &&
+        this.setState({
+          buffer: await new Promise<AudioBuffer>((resolve, reject) =>
+            context.decodeAudioData(arrayBuffer, resolve, reject),
+          ),
+        })
     }
   }
 
+  unmounting: boolean
   componentWillUnmount() {
+    this.unmounting = true
+
     const { output } = this.props
     const { source } = this.state
+
     if (source) {
       source.stop()
       output && source.disconnect(output)

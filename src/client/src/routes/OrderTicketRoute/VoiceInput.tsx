@@ -10,17 +10,19 @@ import MicrophoneIcon from './assets/Microphone'
 import { FormantBars } from './FormantBars'
 
 import AudioContext from './AudioContext'
-import { AudioTranscriptionSession, SessionEvent, SessionResult, SessionResultData } from './AudioTranscriptionSession'
 import { ChannelMerger } from './ChannelMerger'
 import { MediaPlayer } from './MediaPlayer'
 import { Microphone } from './Microphone'
+import { ScribeSession, SessionEvent, SessionResult, SessionResultData } from './ScribeSession'
 import { UserMedia, UserMediaState } from './UserMedia'
+
+import BlobDownload from './devtools/BlobDownload'
 
 type SourceType = 'microphone' | 'sample'
 interface Props {
   source?: SourceType
   context?: AudioContext
-  requestSession: boolean
+  requestSession?: boolean
   onStart?: () => any
   onResult?: (data: VoiceInputResult) => any
   onEnd?: () => any
@@ -29,23 +31,23 @@ interface Props {
 interface State {
   // audio
   analyser: AnalyserNode
+  blob?: Blob
   destination: MediaStreamAudioDestinationNode
   outputs: AudioDestinationNode[]
   source?: SourceType
   userPermissionGranted: boolean
   // data
   requestSession: boolean
-  sessionRequestActive: boolean
-  sessionRequestCount: number
+  sessionActive: boolean
+  sessionCount: number
   sessionConnected: boolean
   sessionInstance?: any
-  data?: any
   transcripts: any
 }
 
 export interface VoiceInputResult extends SessionResultData {}
 
-export class VoiceInput extends Component<Props, State> {
+export class VoiceInput extends React.PureComponent<Props, State> {
   static defaultProps = {
     source: 'microphone',
     context: new AudioContext(),
@@ -59,32 +61,36 @@ export class VoiceInput extends Component<Props, State> {
     }),
     destination: this.props.context.createMediaStreamDestination(),
     outputs: [],
+    userPermissionGranted: null,
     // data
     requestSession: false,
-    sessionRequestActive: false,
-    sessionRequestCount: 0,
+    sessionActive: false,
+    sessionCount: 0,
     sessionConnected: null,
     sessionInstance: null,
-    userPermissionGranted: null,
-    data: null,
     transcripts: [],
   }
 
   static getDerivedStateFromProps({ context, source, requestSession }: Props, state: State): Partial<State> {
-    let next: any = {}
+    let next: any = null
     const { analyser, destination }: any = state
 
+    requestSession = Boolean(requestSession)
+
+    // Reset session on session request change
     if (requestSession !== state.requestSession) {
       next = {
         ...next,
         requestSession,
-        sessionRequestActive: requestSession,
-        sessionRequestCount: requestSession ? state.sessionRequestCount + 1 : state.sessionRequestCount,
+        sessionActive: requestSession,
+        sessionCount: requestSession ? state.sessionCount + 1 : state.sessionCount,
         // Clear transcripts on new session
         transcripts: requestSession ? [] : state.transcripts,
+        blob: null,
       }
     }
 
+    // Change output on source change
     if (source !== state.source) {
       next = {
         ...next,
@@ -98,119 +104,166 @@ export class VoiceInput extends Component<Props, State> {
     return next
   }
 
+  getSnapshotBeforeUpdate(prevProps: Props, { sessionActive }: State) {
+    let next = null
+
+    if (this.session && sessionActive && !this.state.sessionActive) {
+      next = {
+        blob: this.session.chunks.length > 0 ? new Blob(this.session.chunks) : null,
+      }
+    }
+
+    return next
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State, snapshot: State) {
+    if (snapshot != null) {
+      this.setState(snapshot)
+    }
+  }
+
   toggle = () => {
-    this.setState(({ sessionRequestActive, sessionRequestCount, transcripts }: any) => ({
-      sessionRequestActive: !sessionRequestActive,
-      sessionRequestCount: !sessionRequestActive ? sessionRequestCount + 1 : sessionRequestCount,
-      transcripts: sessionRequestActive ? transcripts : [],
+    console.log('toggle')
+    this.setState(({ sessionActive, sessionCount, transcripts }: any) => ({
+      sessionActive: !sessionActive,
+      sessionCount: !sessionActive ? sessionCount + 1 : sessionCount,
+      transcripts: sessionActive ? transcripts : [],
     }))
   }
 
   onPermission = ({ ok }: UserMediaState) => {
+    console.log('onPermission')
+
     this.setState({ userPermissionGranted: ok })
   }
 
   onSessionStart = (sessionInstance: any) => {
-    this.setState({ sessionInstance: !!sessionInstance })
     if (this.props.onStart) {
       this.props.onStart()
     }
   }
 
-  onSessionError = (event: SessionEvent) => {
-    this.setState({ sessionConnected: false })
-    if (this.props.onEnd) {
-      this.props.onEnd()
+  onSessionResult = ({ data, transcripts }: SessionResult) => {
+    this.setState({ transcripts })
+
+    if (this.props.onResult) {
+      this.props.onResult(data as any)
     }
   }
 
-  onSessionResult = (result: SessionResult) => {
-    this.setState(result)
-    if (this.props.onResult) {
-      this.props.onResult(result.data as any)
+  onSessionError = (event: SessionEvent) => {
+    console.warn('onSessionError')
+    this.setState({
+      sessionConnected: false,
+      sessionInstance: null,
+    })
+
+    if (this.props.onEnd) {
+      this.props.onEnd()
     }
   }
 
   onSessionEnd = (sessionInstance: any) => {
-    this.reset()
+    this.setState({
+      sessionActive: false,
+      sessionConnected: null,
+      sessionInstance: null,
+    })
+
     if (this.props.onEnd) {
       this.props.onEnd()
     }
   }
 
-  reset() {
+  session?: ScribeSession
+  setSession = (session: any) => {
+    this.session = session
     this.setState({
-      sessionRequestActive: false,
-      sessionConnected: null,
-      sessionInstance: null,
+      sessionInstance: session,
     })
   }
 
   render() {
     const { context, source } = this.props
     const {
-      sessionRequestCount,
-      sessionRequestActive,
-      sessionConnected,
-      userPermissionGranted,
-      sessionInstance,
-      transcripts,
+      // audio
       outputs,
       analyser,
-      destination,
+      destination: input,
+      userPermissionGranted,
+      // session
+      sessionInstance,
+      sessionCount,
+      sessionActive,
+      sessionConnected,
+      transcripts,
     } = this.state
 
     return (
       <React.Fragment>
-        {sessionRequestCount > 0 && (
-          <React.Fragment>
-            {sessionRequestActive && (
-              // Open session to recognition backend and stream from output
-              <AudioTranscriptionSession
-                key={`Session${sessionRequestCount}`}
-                input={destination.stream}
-                onStart={this.onSessionStart}
-                onError={this.onSessionError}
-                onResult={this.onSessionResult}
-                onEnd={this.onSessionEnd}
-              />
-            )}
+        {// Pure data components for session connection and audio graph
 
-            <ChannelMerger context={context} outputs={outputs}>
-              {({ destination }) => (
-                <React.Fragment>
+        sessionCount > 0 && (
+          <ChannelMerger context={context} outputs={outputs}>
+            {({ destination }) => (
+              <React.Fragment>
+                {
+                  // Mount sample audio for testing
+
                   <MediaPlayer
+                    key={`MediaPlayer${sessionCount}`}
                     context={context}
                     output={destination}
-                    src="/test.ogg"
+                    src={this.state.blob ? this.state.blob : '/test.ogg'}
                     play={source === 'sample' && sessionInstance}
-                    loop
-                    at={63}
-                    rate={1.15}
                   />
+                }
+
+                {
+                  // Request user permission and output to destination
+
                   <UserMedia.Provider audio onPermission={this.onPermission}>
                     <UserMedia.Consumer>
                       {userMedia => (
-                        // Request user permission and output to destination
-                        <Microphone
-                          context={context}
-                          output={source === 'microphone' ? destination : null}
-                          mediaStream={userMedia.mediaStream}
-                        />
+                        <React.Fragment>
+                          <Microphone
+                            context={context}
+                            output={source === 'microphone' ? destination : null}
+                            mediaStream={userMedia.mediaStream}
+                          />
+
+                          {userMedia.mediaStream &&
+                            sessionActive && (
+                              // Open session to recognition backend and stream from output
+
+                              <ScribeSession
+                                ref={this.setSession}
+                                key={`Session${sessionCount}`}
+                                input={input.stream}
+                                onStart={this.onSessionStart}
+                                onResult={this.onSessionResult}
+                                onError={this.onSessionError}
+                                onEnd={this.onSessionEnd}
+                              />
+                            )}
+                        </React.Fragment>
                       )}
                     </UserMedia.Consumer>
                   </UserMedia.Provider>
-                </React.Fragment>
-              )}
-            </ChannelMerger>
-          </React.Fragment>
+                }
+              </React.Fragment>
+            )}
+          </ChannelMerger>
         )}
 
+        {
+          // Rendered Output
+        }
         <Root bg="primary.4" onClick={this.toggle}>
           {sessionInstance ? null : (
             <MicrophoneButton // active={sessionInstance}
               fg={
-                sessionRequestActive === false
+                sessionActive === false
                   ? 'primary.1'
                   : userPermissionGranted === false
                     ? 'accents.aware.base'
@@ -230,7 +283,7 @@ export class VoiceInput extends Component<Props, State> {
           )}
 
           {transcripts.length === 0 ? (
-            !sessionRequestActive ? (
+            !sessionActive ? (
               <StatusText>Press to talk &nbsp; ⌥O</StatusText>
             ) : (
               <React.Fragment>
@@ -244,7 +297,7 @@ export class VoiceInput extends Component<Props, State> {
                     {userPermissionGranted === true && (
                       <React.Fragment>
                         {sessionConnected === false ? (
-                          <StatusText accent="aware">We're having trouble inputsing</StatusText>
+                          <StatusText accent="aware">We're having trouble connecting</StatusText>
                         ) : transcripts.length <= 0 ? (
                           <StatusText>Listening</StatusText>
                         ) : null}
@@ -264,6 +317,11 @@ export class VoiceInput extends Component<Props, State> {
               ))}
             </Input>
           )}
+
+          {this.state.blob &&
+            process.env.NODE_ENV === 'development' && (
+              <BlobDownload blob={this.state.blob} download="order-ticket-audio.webm" force />
+            )}
         </Root>
       </React.Fragment>
     )

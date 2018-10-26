@@ -1,13 +1,42 @@
-/* GreenKey Endpoints
- *
- * /dynamic/recognize
- * curl  -T ./quote_detection.mp3  "http://localhost:8783/client/dynamic/recognize"
- * 
- * ws://localhost:8783/client/ws/speech?content-type=audio/x-raw,+layout=(string)interleaved,+rate=(int)44100,+format=(string)S16LE,+channels=(int)1
- * 
- * 
- * Example phrase: dec eighteen schatz sixty four and a half offered
- */
+/* GreenKey Sample Phrases
+ 
+  test: (1)
+  transcript: netflix twenty five at two million for r b c
+  product: Netflix 25
+  quantity: 2M
+  client: RBC
+
+  test: (2)
+  transcript: verizon twenty two at five million for barclays
+  product: Verizon 22
+  quantity: 5M
+  client: Barclays
+
+  test: (3)
+  transcript: apple twenty three at ten million for j p
+  product: Apple 23
+  quantity: 10M
+  client: JP
+
+  test: (4)
+  transcript: snap twenty four at eight million for jeffries
+  product: Snap 24
+  quantity: 8M
+  client: Jeffries
+
+  test: (5)
+  transcript: tesla twenty at one million for b n y
+  product: Tesla 20
+  quantity: 1M
+  client: BNY
+
+  test: (6)
+  transcript: tesla twenty four at two and a half million for b n y
+  product: Tesla 24
+  quantity: 2.5M
+  client: BNY
+
+*/
 
 export const interval = 160
 
@@ -26,7 +55,6 @@ export function createWebSocket(config: any = {}): WebSocket {
   const url = `${config.serviceURI}?content-type=${config.contentType}`
   const socket = new WebSocket(url)
   const close = socket.close.bind(socket)
-
   return Object.assign(socket, {
     ...config,
     close() {
@@ -42,13 +70,11 @@ export function createWebSocket(config: any = {}): WebSocket {
       }
     },
     onopen(event: Event) {
-      // console.log('onopen', event)
       if (config.onopen) {
         config.onopen(event)
       }
     },
     onclose(event: CloseEvent) {
-      // console.log('onclose', event)
       if (config.onclose) {
         config.onclose(event)
       }
@@ -62,42 +88,6 @@ export function createWebSocket(config: any = {}): WebSocket {
   })
 }
 
-/*
-  {
-    intents: [] as string[],
-    is_quote: true,
-    num_quotes: 1,
-    quote_confidence: 99.33031461009725,
-    interpreted_quote: {
-        instrumentId: {},
-        imString: '64.5 / 18',
-        product: '',
-        terms: [],
-        ask2: '',
-        int: '',
-        bid: '64.5',
-        ask: '18',
-        bid2: '',
-        currency: null as null | string,
-        lf: '',
-        forward: null as null | string,
-        hedge: {
-        product: '',
-        price: '',
-        state: false,
-        quantity: '',
-        },
-        quantity: {
-        ask: '',
-        bid: '',
-        },
-        structure: '',
-        strike: '',
-    } as InterpretedQuote,
-    final: true,
-  }
- */
-
 export interface Result {
   intents: string[]
   is_quote: boolean
@@ -109,41 +99,27 @@ export interface Result {
 
 export interface InterpretedQuote {
   instrumentId: any
-  // imString: '64.5 / 18'
   imString: string
   product: string
   terms: string[]
-  // ask2: ''
   ask2: string
-  // int: ''
   int: string
-  // bid: '64.5'
   bid: string
-  // ask: '18'
   ask: string
-  // bid2: ''
   bid2: string
   currency: null | string
-  // lf: ''
   lf: string
   forward: null | string
   hedge: {
-    //   product: ''
-    product: string
-    //   price: ''
+    roduct: string
     price: string
     state: false
-    //   quantity: ''
     quantity: string
   }
   quantity: {
-    //   ask: ''
     ask: string
-    //   bid: ''
     bid: string
   }
-  // structure: ''
   structure: string
-  // strike: '',
   strike: string
 }

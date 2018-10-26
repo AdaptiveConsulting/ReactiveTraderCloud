@@ -19,6 +19,7 @@ import { Timer } from './Timer'
 interface State {
   requestQuote: boolean
   requestSession: boolean
+  listening: boolean
   result?: VoiceInputResult
   data: Partial<OrderFormProps>
   source: 'microphone' | 'sample'
@@ -27,8 +28,8 @@ export class OrderTicket extends PureComponent<{}, State> {
   state: State = {
     requestQuote: false,
     requestSession: false,
+    listening: false,
     result: null,
-    // source: 'sample',
     source: 'microphone',
     data: {},
   }
@@ -38,7 +39,11 @@ export class OrderTicket extends PureComponent<{}, State> {
       toggle: ['alt+o', 'alt+shift+o', 'alt+0', 'alt+shift+0'],
     },
     handlers: {
-      toggle: () => this.setState(({ requestSession }) => ({ requestSession: !requestSession })),
+      toggle: () =>
+        this.setState(({ requestSession, listening }) => {
+          requestSession = !listening
+          return { requestSession, source: requestSession ? 'microphone' : 'sample' }
+        }),
     },
   }
 
@@ -53,6 +58,7 @@ export class OrderTicket extends PureComponent<{}, State> {
 
   onVoiceStart = () => {
     this.setState({
+      listening: true,
       result: null,
       data: {
         product: '',
@@ -84,6 +90,8 @@ export class OrderTicket extends PureComponent<{}, State> {
 
   onVoiceEnd = () => {
     this.setState({
+      requestSession: false,
+      listening: false,
       // source: this.state.source === 'sample' ? 'microphone' : 'sample',
     })
   }
@@ -121,10 +129,10 @@ export class OrderTicket extends PureComponent<{}, State> {
           <VoiceLayout>
             <VoiceInput
               source={this.state.source}
-              requestSession={requestSession}
               onStart={this.onVoiceStart}
               onResult={this.onVoiceResult}
               onEnd={this.onVoiceEnd}
+              requestSession={requestSession}
             />
           </VoiceLayout>
           <FormLayout>
