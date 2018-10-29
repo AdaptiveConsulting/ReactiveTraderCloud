@@ -1,5 +1,7 @@
 import _ from 'lodash'
-import React, { Component } from 'react'
+import React from 'react'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { colors, keyframes, styled, Styled } from 'rt-theme'
 import { Block } from '../StyleguideRoute/styled'
@@ -208,7 +210,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                 {source === 'sample' && (
                   // Mount sample audio for testing
                   <MediaPlayer
-                    key={`MediaPlayer${sessionCount}`}
+                    key={blob ? sessionCount : null}
                     context={context}
                     output={destination}
                     play={sessionInstance}
@@ -275,7 +277,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                     : 'accents.primary.base'
               }
             >
-              <MicrophoneIcon />
+              {source === 'microphone' ? <MicrophoneIcon /> : <FontAwesomeIcon icon={faPlay} />}
             </MicrophoneButton>
           )}
 

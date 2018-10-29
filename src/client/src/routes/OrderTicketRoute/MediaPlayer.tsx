@@ -85,7 +85,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
 
     if (buffer == null) {
       const arrayBuffer: ArrayBuffer = !(src instanceof Blob)
-        ? await (await fetch(src)).arrayBuffer()
+        ? await (await fetch(src, { cache: 'force-cache' })).arrayBuffer()
         : await new Promise<ArrayBuffer>((resolve, reject) =>
             Object.assign(new FileReader(), {
               onloadend() {
@@ -97,7 +97,10 @@ class MediaPlayer extends React.PureComponent<Props, State> {
       const buffer = await new Promise<AudioBuffer>((resolve, reject) =>
         context.decodeAudioData(arrayBuffer, resolve, reject),
       )
-      !this.unmounting && this.setState({ buffer })
+
+      if (!this.unmounting) {
+        this.setState({ buffer })
+      }
     }
   }
 

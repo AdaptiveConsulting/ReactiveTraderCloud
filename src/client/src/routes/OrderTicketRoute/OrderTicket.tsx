@@ -12,7 +12,7 @@ import { VoiceInput, VoiceInputResult } from './VoiceInput'
 import { WindowControls } from './WindowControls'
 
 import { OrderForm, OrderFormProps } from './OrderForm'
-import { OrderStatus, OrderStatusProps } from './OrderStatus'
+import { OrderStatus } from './OrderStatus'
 
 let TEST_QUOTE: boolean = true
 
@@ -34,24 +34,30 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
       source: 'microphone',
       query: {},
     },
-    ...(process.env.NODE_ENV === 'development' && {
-      requestSession: true,
-      // requestQuote: true,
-      source: 'sample',
-    }),
+    ...(process.env.NODE_ENV === 'development' &&
+      {
+        // requestSession: true,
+        // requestQuote: true,
+        // source: 'sample',
+      }),
   }
 
   hotkeys = {
     keyMap: {
       toggle: ['alt+o', 'alt+shift+o', 'alt+0', 'alt+shift+0'],
+      toggleSource: ['alt+i', 'alt+shift+i'],
     },
     handlers: {
       toggle: () =>
         this.setState(({ requestSession, listening }) => {
           requestSession = !listening
 
-          return { requestSession, source: requestSession ? 'microphone' : 'sample' }
+          return { requestSession }
         }),
+      toggleSource: () =>
+        this.setState(({ source }) => ({
+          source: source === 'sample' ? 'microphone' : 'sample',
+        })),
     },
   }
 

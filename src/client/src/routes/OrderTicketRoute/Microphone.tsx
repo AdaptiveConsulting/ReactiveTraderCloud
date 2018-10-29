@@ -29,7 +29,7 @@ class Microphone extends React.PureComponent<Props, State> {
 
       next = { ...next, mediaStream, source }
     }
-
+    // tslint:disable-next-line
     if (source != current.source || output != current.output) {
       if (current.source && current.output) {
         current.source.disconnect(current.output)
