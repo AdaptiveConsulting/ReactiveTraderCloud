@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { PureComponent } from 'react'
 
-import MediaRecorder, { BlobEvent, MediaRecorderInterface } from './MediaRecorder'
+import MediaRecorder, { BlobEvent } from './MediaRecorderComponent'
 
 import * as GreenKeyRecognition from './GreenKeyRecognition'
 import { Timer } from './Timer'
@@ -20,46 +20,26 @@ export interface Props {
   bitsPerSecond: number
   onStart?: (event: any) => any
   onBlob?: (event: BlobEvent) => any
-  onError?: (event: SessionEvent) => any
+  onError?: (event: any) => any
   onResult?: (event: SessionResult) => any
   onEnd?: (event: any) => any
 }
 
 interface State {
-  input?: MediaStream
-  recorder?: MediaRecorderInterface
-  socket?: any
+  recording: boolean
+  recorder?: MediaRecorder
 
   connected: boolean
-  recording: boolean
+  socket?: WebSocket
 
   error?: boolean
   result?: GreenKeyRecognition.Result
 }
 
-export interface SessionEvent {
-  ok: boolean
-  source: Dependency
-  error?: Error | ErrorEvent
-}
-
-type Dependency = 'socket'
-
-export class ScribeSession extends PureComponent<Props, State> {
+export class TranscriptionSession extends PureComponent<Props, State> {
   static defaultProps = {
     mimeType: 'audio/webm;codecs=opus',
     bitsPerSecond: 128 * 1000,
-  }
-
-  static getDerivedStateFromProps({ input, mimeType, bitsPerSecond }: Props, { input: lastInput, recorder }: State) {
-    if (input === lastInput && recorder) {
-      return null
-    }
-
-    return {
-      input,
-      recorder: new MediaRecorder(input, { mimeType, bitsPerSecond }),
-    }
   }
 
   state: State = {
@@ -73,50 +53,17 @@ export class ScribeSession extends PureComponent<Props, State> {
     result: null,
   }
 
-  async componentDidMount() {
-    this.start()
-  }
-
-  async componentDidUpdate() {
-    this.start()
-  }
-
   unmounting: boolean
   componentWillUnmount() {
-    const { recorder, socket } = this.state
-
     this.unmounting = true
-
-    if (recorder && recorder.state === 'recording') {
-      recorder.removeEventListener('start', this.onAudioStart)
-      recorder.removeEventListener('dataavailable', this.onAudioData)
-      recorder.stop()
-    }
-
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.close()
-    }
   }
 
-  recorder: MediaRecorderInterface
-  start() {
-    const { recorder } = this.state
-
-    if (recorder !== this.recorder || (recorder && recorder.state !== 'recording')) {
-      this.recorder = recorder
-
-      if (this.props.onStart) {
-        this.props.onStart(this)
-      }
-
-      // Start recording, and stream subsequent events
-      recorder.addEventListener('start', this.onAudioStart)
-      recorder.addEventListener('dataavailable', this.onAudioData)
-      recorder.start()
-    }
+  recorder?: MediaRecorder
+  setRecorder = (recorder: MediaRecorder | null) => this.setState({ recorder })
+  get chunks(): Blob[] {
+    return this.state.recorder ? this.state.recorder.chunks : []
   }
 
-  chunks: Blob[] = []
   onAudioStart = () => this.setState({ recording: true })
   onAudioData = (event: any) => {
     const { onBlob } = this.props
@@ -136,18 +83,22 @@ export class ScribeSession extends PureComponent<Props, State> {
   createWebSocket = (handles: WebSocketEventHandles) =>
     GreenKeyRecognition.createWebSocket({ contentType: this.props.mimeType, ...handles })
 
-  onOpen = ({ target }: Event) => {
-    this.setState({ socket: target, connected: true })
+  onOpen = ({ target }: Event & { target: WebSocket }) => {
+    this.setState({
+      connected: true,
+      socket: target,
+    })
   }
 
   onMessage = (event: MessageEvent) => {
     if (this.unmounting) {
-      console.error('ScribeSession.onMessage occured after unmount')
+      console.error('TranscriptionSession.onMessage occured after unmount')
 
       return
     }
 
     const data = JSON.parse(event.data)
+
     this.setState({ result: data.result })
 
     if (this.props.onResult) {
@@ -158,32 +109,21 @@ export class ScribeSession extends PureComponent<Props, State> {
     }
   }
 
-  onRequestDataInterval = () => {
-    const { recorder, socket } = this.state
-
-    if (socket && [WebSocket.CONNECTING, WebSocket.OPEN].includes(socket.readyState)) {
-      recorder.requestData()
-    }
-    // This is an unexpected condition
-    else if (socket && [WebSocket.CLOSED, WebSocket.CLOSING].includes(socket.readyState)) {
-      console.error('Reached unexpected state in ScribeSession', socket)
-    }
-  }
-
   onError = (error: Error | ErrorEvent) => {
     if (this.unmounting) {
-      console.error('Unexpected call to ScribeSession.onError')
-      return
-    } else {
-      this.setState({
-        error: true,
-        socket: null,
-        connected: false,
-      })
+      console.error('Unexpected call to TranscriptionSession.onError')
 
-      if (this.props.onError) {
-        this.props.onError({ ok: false, source: 'socket', error })
-      }
+      return
+    }
+
+    this.setState({
+      error: true,
+      socket: null,
+      connected: false,
+    })
+
+    if (this.props.onError) {
+      this.props.onError({ ok: false, source: 'socket', error })
     }
   }
 
@@ -195,7 +135,6 @@ export class ScribeSession extends PureComponent<Props, State> {
 
   onClose = () => {
     if (this.unmounting) {
-      console.warn('ScribeSession', 'onClose', 'skipped')
       return
     }
 
@@ -207,10 +146,21 @@ export class ScribeSession extends PureComponent<Props, State> {
   }
 
   render() {
+    const { input, mimeType, bitsPerSecond } = this.props
     const { recording, connected, result } = this.state
 
     return (
       <React.Fragment>
+        <MediaRecorder
+          input={input}
+          rate={GreenKeyRecognition.interval}
+          mimeType={mimeType}
+          bitsPerSecond={bitsPerSecond}
+          onStart={this.onAudioStart}
+          onDataAvailable={this.onAudioData}
+          requestData={connected}
+        />
+
         {recording && (
           <WebSocketConnection
             create={this.createWebSocket}
@@ -219,11 +169,6 @@ export class ScribeSession extends PureComponent<Props, State> {
             onError={this.onError}
             onClose={this.onClose}
           />
-        )}
-
-        {connected && (
-          // Pipe data over socket on interval
-          <Timer duration={GreenKeyRecognition.interval} interval={this.onRequestDataInterval} />
         )}
 
         {result &&
@@ -236,4 +181,4 @@ export class ScribeSession extends PureComponent<Props, State> {
   }
 }
 
-export default ScribeSession
+export default TranscriptionSession

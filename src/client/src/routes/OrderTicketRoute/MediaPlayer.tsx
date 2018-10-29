@@ -94,12 +94,10 @@ class MediaPlayer extends React.PureComponent<Props, State> {
             }).readAsArrayBuffer(src),
           )
 
-      !this.unmounting &&
-        this.setState({
-          buffer: await new Promise<AudioBuffer>((resolve, reject) =>
-            context.decodeAudioData(arrayBuffer, resolve, reject),
-          ),
-        })
+      const buffer = await new Promise<AudioBuffer>((resolve, reject) =>
+        context.decodeAudioData(arrayBuffer, resolve, reject),
+      )
+      !this.unmounting && this.setState({ buffer })
     }
   }
 

@@ -13,7 +13,7 @@ import AudioContext from './AudioContext'
 import { ChannelMerger } from './ChannelMerger'
 import { MediaPlayer } from './MediaPlayer'
 import { Microphone } from './Microphone'
-import { ScribeSession, SessionEvent, SessionResult, SessionResultData } from './ScribeSession'
+import { TranscriptionSession, SessionResult, SessionResultData } from './TranscriptionSession'
 import { UserMedia, UserMediaState } from './UserMedia'
 
 import BlobDownload from './devtools/BlobDownload'
@@ -104,10 +104,11 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     return next
   }
 
-  getSnapshotBeforeUpdate(prevProps: Props, { sessionActive }: State) {
+  getSnapshotBeforeUpdate({ source }: Props, { sessionInstance, sessionActive }: State) {
     let next = null
 
-    if (this.session && sessionActive && !this.state.sessionActive) {
+    // Capture last voice recording for replay in testing
+    if (source === 'microphone' && sessionInstance && sessionActive && !this.state.sessionActive) {
       next = {
         blob: this.session.chunks.length > 0 ? new Blob(this.session.chunks) : null,
       }
@@ -123,7 +124,6 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   }
 
   toggle = () => {
-    console.log('toggle')
     this.setState(({ sessionActive, sessionCount, transcripts }: any) => ({
       sessionActive: !sessionActive,
       sessionCount: !sessionActive ? sessionCount + 1 : sessionCount,
@@ -132,8 +132,6 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   }
 
   onPermission = ({ ok }: UserMediaState) => {
-    console.log('onPermission')
-
     this.setState({ userPermissionGranted: ok })
   }
 
@@ -151,8 +149,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     }
   }
 
-  onSessionError = (event: SessionEvent) => {
-    console.warn('onSessionError')
+  onSessionError = () => {
     this.setState({
       sessionConnected: false,
       sessionInstance: null,
@@ -175,7 +172,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     }
   }
 
-  session?: ScribeSession
+  session?: TranscriptionSession
   setSession = (session: any) => {
     this.session = session
     this.setState({
@@ -187,9 +184,10 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     const { context, source } = this.props
     const {
       // audio
-      outputs,
       analyser,
+      blob,
       destination: input,
+      outputs,
       userPermissionGranted,
       // session
       sessionInstance,
@@ -207,17 +205,24 @@ export class VoiceInput extends React.PureComponent<Props, State> {
           <ChannelMerger context={context} outputs={outputs}>
             {({ destination }) => (
               <React.Fragment>
-                {
+                {source === 'sample' && (
                   // Mount sample audio for testing
-
                   <MediaPlayer
                     key={`MediaPlayer${sessionCount}`}
                     context={context}
                     output={destination}
-                    src={this.state.blob ? this.state.blob : '/test.ogg'}
-                    play={source === 'sample' && sessionInstance}
+                    play={sessionInstance}
+                    {...(blob
+                      ? { src: blob }
+                      : {
+                          src: '/test.ogg',
+                          at: 118.5,
+                          loop: true,
+                          // rate: 1.2,
+                          rate: 1.3,
+                        })}
                   />
-                }
+                )}
 
                 {
                   // Request user permission and output to destination
@@ -236,7 +241,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                             sessionActive && (
                               // Open session to recognition backend and stream from output
 
-                              <ScribeSession
+                              <TranscriptionSession
                                 ref={this.setSession}
                                 key={`Session${sessionCount}`}
                                 input={input.stream}
@@ -261,7 +266,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
         }
         <Root bg="primary.4" onClick={this.toggle}>
           {sessionInstance ? null : (
-            <MicrophoneButton // active={sessionInstance}
+            <MicrophoneButton
               fg={
                 sessionActive === false
                   ? 'primary.1'
@@ -318,9 +323,10 @@ export class VoiceInput extends React.PureComponent<Props, State> {
             </Input>
           )}
 
-          {this.state.blob &&
+          {blob &&
+            source === 'microphone' &&
             process.env.NODE_ENV === 'development' && (
-              <BlobDownload blob={this.state.blob} download="order-ticket-audio.webm" force />
+              <BlobDownload blob={blob} download="order-ticket-audio.webm" force />
             )}
         </Root>
       </React.Fragment>

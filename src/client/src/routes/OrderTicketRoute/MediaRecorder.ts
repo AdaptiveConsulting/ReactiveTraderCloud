@@ -79,7 +79,7 @@ export interface MediaRecorderInterface {
   ) => void
   removeEventListener: (
     event: MediaRecorderEvents,
-    callback: (event: any | BlobEvent | MediaStreamErrorEvent) => void,
+    callback?: (event: any | BlobEvent | MediaStreamErrorEvent) => void,
   ) => void
 }
 

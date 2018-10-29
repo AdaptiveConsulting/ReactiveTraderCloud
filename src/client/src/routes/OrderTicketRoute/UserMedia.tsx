@@ -20,10 +20,8 @@ class UserMediaProvider extends React.Component<UserMediaProps, UserMediaState> 
     mediaStream: null,
   } as any
 
-  mounted: boolean
+  mounted: boolean = true
   async componentDidMount() {
-    this.mounted = true
-
     // Await permission! 🐉
     while (this.mounted) {
       const { audio, video, peerIdentity } = this.props
@@ -48,7 +46,7 @@ class UserMediaProvider extends React.Component<UserMediaProps, UserMediaState> 
           ok: error == null && mediaStream != null,
         }
 
-        if (nextState.ok !== this.state.ok) {
+        if (this.mounted && nextState.ok !== this.state.ok) {
           this.setState(nextState)
 
           if (this.props.onPermission) {

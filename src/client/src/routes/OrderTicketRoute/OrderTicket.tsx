@@ -7,14 +7,12 @@ import { rules } from 'rt-styleguide'
 import { styled } from 'rt-theme'
 import { Block, Text } from '../StyleguideRoute/styled'
 
-import AudioContext from './AudioContext'
 import { DrawerMenu } from './DrawerMenu'
 import { VoiceInput, VoiceInputResult } from './VoiceInput'
 import { WindowControls } from './WindowControls'
 
 import { OrderForm, OrderFormProps } from './OrderForm'
 import { OrderStatus, OrderStatusProps } from './OrderStatus'
-import { Timer } from './Timer'
 
 interface State {
   requestQuote: boolean
