@@ -27,7 +27,6 @@ export interface Props {
 
 interface State {
   recording: boolean
-  recorder?: MediaRecorder
 
   connected: boolean
   socket?: WebSocket
@@ -38,16 +37,15 @@ interface State {
 
 export class TranscriptionSession extends PureComponent<Props, State> {
   static defaultProps = {
-    mimeType: 'audio/webm;codecs=opus',
+    mimeType: 'audio/webm',
     bitsPerSecond: 128 * 1000,
   }
 
   state: State = {
-    recorder: null,
-    socket: null,
-
     recording: false,
     connected: false,
+
+    socket: null,
 
     error: false,
     result: null,
@@ -58,21 +56,30 @@ export class TranscriptionSession extends PureComponent<Props, State> {
     this.unmounting = true
   }
 
+  //
+  //  MediaRecorder
+  //
   recorder?: MediaRecorder
-  setRecorder = (recorder: MediaRecorder | null) => this.setState({ recorder })
+
   get chunks(): Blob[] {
-    return this.state.recorder ? this.state.recorder.chunks : []
+    return this.recorder ? this.recorder.chunks : []
   }
 
-  onAudioStart = () => this.setState({ recording: true })
-  onAudioData = (event: any) => {
+  setRecorder = (recorder: MediaRecorder | null) => {
+    if (recorder) {
+      this.recorder = recorder
+    }
+  }
+
+  onRecorderStart = () => this.setState({ recording: true })
+  onRecorderData = (event: BlobEvent) => {
     const { onBlob } = this.props
     const { socket } = this.state
 
-    this.chunks.push(event.data)
-
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(event.data)
+    } else {
+      console.warn('TranscriptionSession received audio data but socket in not open')
     }
 
     if (onBlob) {
@@ -80,6 +87,9 @@ export class TranscriptionSession extends PureComponent<Props, State> {
     }
   }
 
+  //
+  //  WebSocket
+  //
   createWebSocket = (handles: WebSocketEventHandles) =>
     GreenKeyRecognition.createWebSocket({ contentType: this.props.mimeType, ...handles })
 
@@ -152,12 +162,13 @@ export class TranscriptionSession extends PureComponent<Props, State> {
     return (
       <React.Fragment>
         <MediaRecorder
+          ref={this.setRecorder}
           input={input}
           rate={GreenKeyRecognition.interval}
           mimeType={mimeType}
           bitsPerSecond={bitsPerSecond}
-          onStart={this.onAudioStart}
-          onDataAvailable={this.onAudioData}
+          onStart={this.onRecorderStart}
+          onDataAvailable={this.onRecorderData}
           requestData={connected}
         />
 

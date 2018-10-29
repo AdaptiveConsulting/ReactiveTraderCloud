@@ -30,8 +30,8 @@ interface State {
 
 class MediaRecorderComponent extends React.PureComponent<Props, any> {
   static defaultProps = {
-    rate: 128,
-    mimeType: 'audio/webm;codecs=opus',
+    rate: 256,
+    mimeType: 'audio/webm',
     bitsPerSecond: 128 * 1000,
   }
 

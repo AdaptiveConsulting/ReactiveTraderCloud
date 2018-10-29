@@ -48,7 +48,7 @@ export interface WebSocketProps {
 export function createWebSocket(config: any = {}): WebSocket {
   config = {
     serviceURI: process.env.REACT_APP_GREENKEY_URL || 'ws://localhost:8888/client/ws/speech',
-    contentType: 'audio/webm;codecs=opus',
+    contentType: 'audio/webm',
     ...config,
   }
 
