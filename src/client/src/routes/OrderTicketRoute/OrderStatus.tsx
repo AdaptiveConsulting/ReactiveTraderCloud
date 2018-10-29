@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import { Duration } from 'luxon'
+import { DateTime, Duration } from 'luxon'
 import React from 'react'
 
-import { Button as StyleguideButton } from 'rt-styleguide'
+import { Button as StyleguideButton, ButtonGroup } from 'rt-styleguide'
 import { styled } from 'rt-theme'
 
 import { Block, Text } from '../StyleguideRoute/styled'
@@ -13,6 +13,7 @@ import { Timer } from './Timer'
 export interface Props {
   ready?: boolean
   requestQuote?: boolean
+  query?: any
   onSubmit?: (event: any) => any
   onCancel?: (event: any) => any
   onBuy?: (event: any) => any
@@ -21,14 +22,33 @@ export interface Props {
 }
 
 interface State extends Props {
-  quote?: number
   countdown?: any
+  quote?: {
+    bid: number
+    ask: number
+    expiry?: any
+  }
+  query?: any
 }
 
 export { Props as OrderStatusProps }
 export class OrderStatus extends React.Component<Props, State> {
   state: State = {
-    countdown: Duration.fromObject({ seconds: 0 }),
+    countdown: null,
+    quote: null,
+  }
+
+  static getDerivedStateFromProps(props: Props, state: State) {
+    let next: State = null
+
+    if (!props.requestQuote && state.quote != null) {
+      next = {
+        countdown: null,
+        quote: null,
+      }
+    }
+
+    return next
   }
 
   onClick = (event: any) => {
@@ -40,15 +60,24 @@ export class OrderStatus extends React.Component<Props, State> {
   }
 
   setQuote = () => {
-    this.setState({ quote: _.random(10, 500), countdown: Duration.fromObject({ seconds: 30 }) })
+    let bid = _.random(10.17, 500.39)
+    let ask = bid - _.random(0.33, bid * 0.1)
+    let countdown = Duration.fromObject({ seconds: 10 })
+
+    this.setState({
+      quote: { bid, ask, exipry: DateTime.local().plus(countdown) },
+      countdown,
+    })
   }
 
   updateCountdown = () => {
     const { countdown } = this.state
-    if (countdown.seconds) {
+    if (countdown.seconds > 1) {
       this.setState({ countdown: this.state.countdown.minus({ seconds: 1 }) })
     } else {
       this.setState({
+        query: null,
+        countdown: null,
         quote: null,
       })
     }
@@ -60,42 +89,64 @@ export class OrderStatus extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        {requestQuote && <Timer duration={500} timeout={this.setQuote} />}
-        {quote && <Timer key={quote} duration={1000} interval={this.updateCountdown} />}
+        {requestQuote && <Timer duration={0} timeout={this.setQuote} />}
+        {quote && <Timer key={quote.expiry} duration={1000} interval={this.updateCountdown} />}
         <StatusLayout fg="muteColor">
-          <div>
+          <StatusBox>
             <LabelText>Status</LabelText>
             {quote ? (
-              <StatusText fg="accents.aware.base">Reviewing price</StatusText>
+              <StatusText fg="accents.aware.base">Reviewing Price</StatusText>
             ) : (
               <StatusText>{ready ? 'Draft' : '— —'}</StatusText>
             )}
-          </div>
-          <div>
+          </StatusBox>
+          <StatusBox>
             <LabelText>Remaining</LabelText>
             {quote ? (
               <StatusText fg="accents.aware.base">{countdown.toFormat('hh:mm:ss')}</StatusText>
             ) : (
               <StatusText>— —</StatusText>
             )}
-          </div>
+          </StatusBox>
           <Progress>
-            <Block>&nbsp;</Block>
             {quote ? (
-              <StatusText fg="accents.aware.base">{countdown.toFormat('ss')}</StatusText>
+              <StatusText fg="accents.aware.base" fontSize={2}>
+                {countdown.toFormat('ss')}
+              </StatusText>
             ) : (
-              <StatusText>— —</StatusText>
+              <React.Fragment>
+                <Block>&nbsp;</Block>
+                <StatusText>— —</StatusText>
+              </React.Fragment>
             )}
           </Progress>
         </StatusLayout>
-        <ButtonLayout>
-          <Button name="submit" intent={ready ? 'good' : 'mute'} disabled={!ready} onClick={this.onClick}>
-            Submit
-          </Button>
-          <Button name="cancel" intent="mute" disabled={!ready} onClick={this.onClick}>
-            Cancel
-          </Button>
-        </ButtonLayout>
+        {quote ? (
+          <ButtonLayout key="execute">
+            <Button name="buy" intent="primary" onClick={this.onClick}>
+              <LabelText>Buy</LabelText>
+              <StatusText fontSize={1.15}>{quote.bid.toFixed(2)}</StatusText>
+            </Button>
+
+            <Button name="self" intent="bad" onClick={this.onClick}>
+              <LabelText>Sell</LabelText>
+              <StatusText fontSize={1.15}>{quote.ask.toFixed(2)}</StatusText>
+            </Button>
+
+            <Button name="cancel" intent="mute" onClick={this.onClick}>
+              Cancel
+            </Button>
+          </ButtonLayout>
+        ) : (
+          <ButtonLayout key="submit">
+            <Button name="submit" intent={ready ? 'good' : 'mute'} disabled={!ready} onClick={this.onClick}>
+              Submit
+            </Button>
+            <Button name="cancel" intent="mute" disabled={!ready} onClick={this.onClick}>
+              Cancel
+            </Button>
+          </ButtonLayout>
+        )}
       </React.Fragment>
     )
   }
@@ -120,22 +171,32 @@ const StatusText = styled(Block)`
   line-height: 1.5rem;
 `
 
+const StatusBox = styled(Block)`
+  min-width: 4rem;
+  height: 4rem;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 1.5rem 2.5rem;
+  align-items: center;
+  line-height: 1.5rem;
+  line-height-step: 1rem;
+
+  ${LabelText} {
+    align-self: flex-end;
+  }
+  /* justify-content: center; */
+`
+
 const Progress = styled(Block)`
   position: relative;
-  width: 2rem;
-  margin: 0 1rem;
+  width: 4rem;
+  height: 4rem;
   display: grid;
   align-content: center;
-  &::before {
-    content: '';
-    position: absolute;
-    top: -0.75rem;
-    left: -1.25rem;
-    height: 4rem;
-    width: 4rem;
-    box-shadow: 0 0 0 0.25rem ${props => props.theme.primary.base};
-    border-radius: 100%;
-  }
+  justify-content: center;
+  box-shadow: 0 0 0 0.25rem ${props => props.theme.primary.base};
+  margin-right: 0.25rem;
+  border-radius: 100%;
 `
 
 const ButtonLayout = styled.div`
@@ -143,7 +204,7 @@ const ButtonLayout = styled.div`
   grid-gap: 0.5rem;
   padding: 0 1rem;
   height: 50%;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(${(props: any) => props.children.length}, 1fr);
   grid-template-rows: auto;
   align-items: center;
   justify-content: center;

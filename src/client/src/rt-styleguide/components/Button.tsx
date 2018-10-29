@@ -124,7 +124,7 @@ export class ButtonGroup extends React.Component<ButtonStyleProps> {
   }
 }
 
-const StyledBase: Styled<ButtonStyleProps> = styled.button`
+const StyledBase: Styled<ButtonStyleProps> = styled.div`
   -webkit-appearance: none;
   border-width: 0;
 
@@ -198,7 +198,8 @@ const StyledBase: Styled<ButtonStyleProps> = styled.button`
     `};
 `
 
-export const StyledButton: Styled<ButtonStyleProps> = styled(StyledBase)`
+const StyledButtonBase = StyledBase.withComponent('button')
+export const StyledButton: Styled<ButtonStyleProps> = styled(StyledButtonBase)`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;

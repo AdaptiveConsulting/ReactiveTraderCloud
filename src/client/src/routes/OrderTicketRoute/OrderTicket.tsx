@@ -14,22 +14,31 @@ import { WindowControls } from './WindowControls'
 import { OrderForm, OrderFormProps } from './OrderForm'
 import { OrderStatus, OrderStatusProps } from './OrderStatus'
 
+let TEST_QUOTE: boolean = true
+
 interface State {
   requestQuote: boolean
   requestSession: boolean
   listening: boolean
   result?: VoiceInputResult
-  data: Partial<OrderFormProps>
+  query: Partial<OrderFormProps>
   source: 'microphone' | 'sample'
 }
-export class OrderTicket extends PureComponent<{}, State> {
+export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
   state: State = {
-    requestQuote: false,
-    requestSession: false,
-    listening: false,
-    result: null,
-    source: 'microphone',
-    data: {},
+    ...{
+      requestSession: false,
+      requestQuote: false,
+      listening: false,
+      result: null,
+      source: 'microphone',
+      query: {},
+    },
+    ...(process.env.NODE_ENV === 'development' && {
+      requestSession: true,
+      // requestQuote: true,
+      source: 'sample',
+    }),
   }
 
   hotkeys = {
@@ -40,6 +49,7 @@ export class OrderTicket extends PureComponent<{}, State> {
       toggle: () =>
         this.setState(({ requestSession, listening }) => {
           requestSession = !listening
+
           return { requestSession, source: requestSession ? 'microphone' : 'sample' }
         }),
     },
@@ -56,9 +66,10 @@ export class OrderTicket extends PureComponent<{}, State> {
 
   onVoiceStart = () => {
     this.setState({
+      requestQuote: false,
       listening: true,
       result: null,
-      data: {
+      query: {
         product: '',
         client: '',
         notional: '',
@@ -78,7 +89,7 @@ export class OrderTicket extends PureComponent<{}, State> {
 
     this.setState({
       result,
-      data: {
+      query: {
         product,
         client,
         notional,
@@ -87,7 +98,10 @@ export class OrderTicket extends PureComponent<{}, State> {
   }
 
   onVoiceEnd = () => {
+    const { query, result } = this.state
+
     this.setState({
+      requestQuote: result && result.final && Object.keys(query).length >= 3,
       requestSession: false,
       listening: false,
       // source: this.state.source === 'sample' ? 'microphone' : 'sample',
@@ -105,12 +119,12 @@ export class OrderTicket extends PureComponent<{}, State> {
       requestQuote: false,
       requestSession: false,
       result: null,
-      data: _.mapValues(this.state.data, _.constant('')),
+      query: _.mapValues(this.state.query, _.constant('')),
     })
   }
 
   render() {
-    const { requestQuote, requestSession, data = {} } = this.state
+    const { requestQuote, requestSession, query = {} } = this.state
 
     return (
       <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} ref={this.focus}>
@@ -122,7 +136,7 @@ export class OrderTicket extends PureComponent<{}, State> {
             </Text>
           </ChromeLayout>
           <DrawerLayout bg="primary.4" fg="primary.2">
-            <DrawerMenu />
+            <DrawerMenu onClick={this.props.reset} />
           </DrawerLayout>
           <VoiceLayout>
             <VoiceInput
@@ -134,14 +148,15 @@ export class OrderTicket extends PureComponent<{}, State> {
             />
           </VoiceLayout>
           <FormLayout>
-            <OrderForm {...data} />
+            <OrderForm {...query} />
           </FormLayout>
           <StatusLayout>
             <OrderStatus
-              ready={!!data.product && !!data.notional}
+              query={query}
+              ready={!!query.product && !!query.notional}
+              requestQuote={TEST_QUOTE ? (!!query.product && !!query.notional) || requestQuote : requestQuote}
               onSubmit={this.onSubmit}
               onCancel={this.onCancel}
-              requestQuote={requestQuote}
             />
           </StatusLayout>
           <InfoLayout fg="muteColor">Bond Info</InfoLayout>

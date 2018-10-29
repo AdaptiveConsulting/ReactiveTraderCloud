@@ -5,11 +5,12 @@ import { Block } from '../StyleguideRoute/styled'
 import { faCog, faKeyboard, faMicrophone, faPhone, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export class DrawerMenu extends PureComponent {
+export class DrawerMenu extends PureComponent<{ onClick?: (e: any) => any }> {
   render() {
+    const { onClick } = this.props
     return (
       <React.Fragment>
-        <Block display="inline" fg="secondary.base">
+        <Block display="inline" fg="secondary.base" onClick={onClick}>
           <FontAwesomeIcon icon={faMicrophone} />
         </Block>
         <FontAwesomeIcon icon={faKeyboard} />

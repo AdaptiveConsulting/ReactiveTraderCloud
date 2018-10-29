@@ -6,8 +6,14 @@ import { ThemeName, ThemeProvider, ThemeStorage } from 'rt-theme'
 
 import { OrderTicket } from './OrderTicket'
 
-export class OrderTicketRoute extends PureComponent {
+export class OrderTicketRoute extends PureComponent<{}, { instance: number }> {
   environment = createEnvironment()
+
+  state = {
+    instance: 0,
+  }
+
+  reset = () => this.setState(({ instance }) => ({ instance: instance + 1 }))
 
   render() {
     return (
@@ -19,7 +25,7 @@ export class OrderTicketRoute extends PureComponent {
               ruleColor: theme.primary.base,
             })}
           >
-            <OrderTicket />
+            <OrderTicket key={'OrderTicket' + this.state.instance} reset={this.reset} />
           </ThemeProvider>
         </Environment.Provider>
       </ThemeStorage.Provider>
