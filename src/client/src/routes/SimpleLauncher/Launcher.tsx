@@ -48,7 +48,7 @@ const Root = styled.div(({ theme }) => {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.shell.backgroundColor,
-    color: theme.shell.textColor,
+    color: theme.component.textColor,
   }
 })
 
