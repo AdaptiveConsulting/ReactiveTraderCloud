@@ -130,6 +130,14 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     })
   }
 
+  onBuy = () => {
+    this.onCancel()
+  }
+
+  onSell = () => {
+    this.onCancel()
+  }
+
   render() {
     const { requestQuote, requestSession, query = {} } = this.state
 
@@ -164,6 +172,8 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
               requestQuote={TEST_QUOTE ? (!!query.product && !!query.notional) || requestQuote : requestQuote}
               onSubmit={this.onSubmit}
               onCancel={this.onCancel}
+              onBuy={this.onBuy}
+              onSell={this.onBuy}
             />
           </StatusLayout>
           <InfoLayout fg="muteColor">Bond Info</InfoLayout>
