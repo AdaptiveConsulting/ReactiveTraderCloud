@@ -137,15 +137,16 @@
     "npm-run-all": "^4.1.2",
     "openfin-cli": "^1.1.6",
     "prettier": "^1.12.1",
-    "react-app-rewired": "^1.5.2",
+    "react-app-rewired": "^1.6.2",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
-    "react-scripts": "^1.1.4",
-    "react-scripts-ts": "^2.17.0",
+    "react-scripts": "^1.1.5",
+    "react-scripts-ts": "^3.1.0",
     "react-test-renderer": "^16.3.2",
     "redux-devtools-extension": "^2.13.2",
     "rxjs-tslint-rules": "^4.1.1",
     "source-map-explorer": "^1.5.0",
     "typescript": "^3.1.1",
-    "unzip": "^0.1.11"
+    "unzip": "^0.1.11",
+    "worker-loader": "^2.0.0"
   }
 }
