@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { PureComponent } from 'react'
+import { PureComponent } from 'react'
 
 export type Source = 'microphone' | 'sample'
 

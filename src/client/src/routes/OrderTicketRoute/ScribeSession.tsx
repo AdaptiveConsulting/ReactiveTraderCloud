@@ -8,6 +8,7 @@ import { Timer } from './Timer'
 
 import { WebSocketConnection, WebSocketEventHandles } from './WebSocketConnection'
 
+// tslint:disable-next-line
 export interface SessionResultData extends GreenKeyRecognition.Result {}
 export interface SessionResult {
   data: GreenKeyRecognition.Result

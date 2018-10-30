@@ -14,7 +14,7 @@ import { WindowControls } from './WindowControls'
 import { OrderForm, OrderFormProps } from './OrderForm'
 import { OrderStatus } from './OrderStatus'
 
-let TEST_QUOTE: boolean = true
+const TEST_QUOTE: boolean = false
 
 interface State {
   requestQuote: boolean

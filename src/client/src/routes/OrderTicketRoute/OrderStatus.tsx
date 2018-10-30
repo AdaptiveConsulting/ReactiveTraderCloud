@@ -2,10 +2,10 @@ import _ from 'lodash'
 import { DateTime, Duration } from 'luxon'
 import React from 'react'
 
-import { Button as StyleguideButton, ButtonGroup } from 'rt-styleguide'
+import { Button as StyleguideButton } from 'rt-styleguide'
 import { styled } from 'rt-theme'
 
-import { Block, Text } from '../StyleguideRoute/styled'
+import { Block } from '../StyleguideRoute/styled'
 import { LabelText } from './TextField'
 
 import { Timer } from './Timer'
@@ -60,9 +60,9 @@ export class OrderStatus extends React.Component<Props, State> {
   }
 
   setQuote = () => {
-    let bid = _.random(10.17, 500.39)
-    let ask = bid - _.random(0.33, bid * 0.1)
-    let countdown = Duration.fromObject({ seconds: 10 })
+    const bid = _.random(10.17, 500.39)
+    const ask = bid - _.random(0.33, bid * 0.1)
+    const countdown = Duration.fromObject({ seconds: 10 })
 
     this.setState({
       quote: { bid, ask, exipry: DateTime.local().plus(countdown) },

@@ -77,7 +77,7 @@ export class OrderForm extends React.Component<Props, State> {
   }
 
   render() {
-    const { fields, props: prevProps } = this.state
+    const { fields } = this.state
 
     return (
       <Layout>

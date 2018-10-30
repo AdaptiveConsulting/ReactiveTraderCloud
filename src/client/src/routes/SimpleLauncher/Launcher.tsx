@@ -22,9 +22,9 @@ export class Launcher extends React.Component {
       <Root>
         <Frame>
           <Fill />
-          {config.map((config, i) => (
-            <ToggleContainer key={config.name}>
-              <Link to={config}>{config.icon}</Link>
+          {config.map(app => (
+            <ToggleContainer key={app.name}>
+              <Link to={app}>{app.icon}</Link>
             </ToggleContainer>
           ))}
 

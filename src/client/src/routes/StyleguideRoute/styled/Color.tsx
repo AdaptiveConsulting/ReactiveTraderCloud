@@ -1,6 +1,6 @@
 import { reduce } from 'lodash'
 
-import { CSSObject, getColor, MappedCSS, MappedPropFn, MappedPropMap } from '../tools'
+import { CSSObject, getColor, MappedPropFn, MappedPropMap } from '../tools'
 
 export interface ColorProps {
   backgroundColor?: string

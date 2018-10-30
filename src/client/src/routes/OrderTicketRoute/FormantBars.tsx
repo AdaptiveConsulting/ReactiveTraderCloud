@@ -30,7 +30,7 @@ interface State {
   data: Float32Array
 }
 
-export class FormantBars extends Component<Props, Partial<State>> {
+class FormantBars extends Component<Props, Partial<State>> {
   state: Partial<State> = {
     data: new Float32Array(),
   }
@@ -44,10 +44,7 @@ export class FormantBars extends Component<Props, Partial<State>> {
     scale: 2,
   }
 
-  static getDerivedStateFromProps(
-    { analyser, count, scale, width, height, radius, gap }: Props,
-    { data, bar, grid }: State,
-  ) {
+  static getDerivedStateFromProps({ analyser, count, scale, width, height, radius, gap }: Props, { data, bar }: State) {
     let state = null
 
     if (analyser.frequencyBinCount !== data.length) {
@@ -148,6 +145,7 @@ export class FormantBars extends Component<Props, Partial<State>> {
     )
 
     // data = _.chunk(data, 2).map(([a, b], i, c) => (a + b) / 2) as any
+    // @ts-ignore
     data = _.chunk(data, Math.round(data.length / bar.count)).map((vs, i, c) => _.sum(vs) / vs.length) as any
 
     if (canvas && canvas.getContext) {
@@ -224,3 +222,6 @@ export function roundRect({ ctx, x, y, width, height, radius, fill, stroke }: an
     ctx.stroke()
   }
 }
+
+export default FormantBars
+export { FormantBars }

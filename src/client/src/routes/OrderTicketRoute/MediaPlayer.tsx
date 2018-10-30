@@ -59,7 +59,9 @@ class MediaPlayer extends React.PureComponent<Props, State> {
       }
 
       source.stop()
-      output && source.disconnect(output)
+      if (output) {
+        source.disconnect(output)
+      }
       source = null
     }
 
@@ -68,7 +70,9 @@ class MediaPlayer extends React.PureComponent<Props, State> {
       source = context.createBufferSource()
       source.buffer = buffer
       source.playbackRate.value = rate
-      output && source.connect(output)
+      if (output) {
+        source.connect(output)
+      }
       source.start(0, playback.position)
     }
 
@@ -81,13 +85,14 @@ class MediaPlayer extends React.PureComponent<Props, State> {
 
   async componentDidMount() {
     const { src, context } = this.props
-    const { buffer } = this.state
 
-    if (buffer == null) {
+    if (this.state.buffer == null) {
       const arrayBuffer: ArrayBuffer = !(src instanceof Blob)
         ? await (await fetch(src, { cache: 'force-cache' })).arrayBuffer()
         : await new Promise<ArrayBuffer>((resolve, reject) =>
             Object.assign(new FileReader(), {
+              onabort: reject,
+              onerror: reject,
               onloadend() {
                 resolve(this.result)
               },
@@ -113,7 +118,9 @@ class MediaPlayer extends React.PureComponent<Props, State> {
 
     if (source) {
       source.stop()
-      output && source.disconnect(output)
+      if (output) {
+        source.disconnect(output)
+      }
     }
   }
 

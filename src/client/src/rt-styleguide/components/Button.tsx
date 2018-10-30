@@ -45,6 +45,7 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
         ...palette,
         backgroundColor: palette.textColor,
         textColor: palette.backgroundColor,
+        // tslint:disable-next-line
         ..._.map(palette, ({ backgroundColor, textColor }) => ({
           textColor: backgroundColor,
           backgroundColor: textColor,

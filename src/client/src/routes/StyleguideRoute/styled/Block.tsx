@@ -1,8 +1,6 @@
-import { filter } from 'lodash'
-
 import { css, styled } from 'rt-theme'
 
-import { getColor, MappedCSS, MappedPropFn, MappedPropMap } from '../tools'
+import { getColor, MappedCSS, MappedPropFn } from '../tools'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 import { mapTextProps, TextProps } from './Text'
 

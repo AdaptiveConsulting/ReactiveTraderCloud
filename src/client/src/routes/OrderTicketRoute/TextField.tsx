@@ -36,11 +36,11 @@ export class TextField extends React.PureComponent<TextFieldProps, TextFieldStat
     value: null,
   }
 
-  onFocus = (event: any) => {
+  onFocus = () => {
     this.setState({ focused: true })
   }
 
-  onBlur = (event: any) => {
+  onBlur = () => {
     this.setState({ focused: false })
   }
 

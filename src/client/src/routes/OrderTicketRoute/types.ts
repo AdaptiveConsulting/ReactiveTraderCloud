@@ -27,7 +27,7 @@ export declare var SpeechGrammar: {
 
 export interface SpeechGrammarList {
   readonly length: number
-  addFromString(string: string, weight?: number): void
+  addFromString(str: string, weight?: number): void
   addFromURI(src: string, weight?: number): void
   item(index: number): SpeechGrammar
   [index: number]: SpeechGrammar

@@ -80,7 +80,7 @@ export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
       padding-right: 2rem;
     }
   `
-
+  // tslint:disable
   const marginPaddingProps = {
     ...margin,
     ...padding,

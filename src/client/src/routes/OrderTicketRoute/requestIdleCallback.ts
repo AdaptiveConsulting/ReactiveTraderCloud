@@ -1,8 +1,10 @@
 declare const window: any
 
-const _requestIdleCallback = function(callback: Function, options: Object) {
+// tslint:disable
+const __requestIdleCallback = function(callback: Function, options?: any) {
   return setTimeout(() => {
     const start = Date.now()
+
     callback({
       didTimeout: false,
       timeRemaining() {
@@ -12,14 +14,14 @@ const _requestIdleCallback = function(callback: Function, options: Object) {
   }, 1)
 }
 
-const _cancelIdleCallback = function(id: number) {
+const __cancelIdleCallback = function(id: number) {
   clearTimeout(id)
 }
 
 const isSupported = typeof window.requestIdleCallback !== 'undefined'
 
-const requestIdleCallback = isSupported ? window.requestIdleCallback : _requestIdleCallback
-const cancelIdleCallback = isSupported ? window.cancelIdleCallback : _cancelIdleCallback
+const requestIdleCallback = isSupported ? window.requestIdleCallback : __requestIdleCallback
+const cancelIdleCallback = isSupported ? window.cancelIdleCallback : __cancelIdleCallback
 
 export default requestIdleCallback
 export { requestIdleCallback, cancelIdleCallback }

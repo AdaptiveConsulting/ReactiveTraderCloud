@@ -1,7 +1,5 @@
 import _ from 'lodash'
-import React, { PureComponent } from 'react'
-
-import * as GreenKeyRecognition from './GreenKeyRecognition'
+import { PureComponent } from 'react'
 
 export interface WebSocketEventHandles {
   onopen: any
@@ -18,7 +16,7 @@ export interface Props {
   onClose?: (event: any) => any
 }
 
-class WebSocketConnection extends React.PureComponent<Props> {
+class WebSocketConnection extends PureComponent<Props> {
   socket: WebSocket
 
   componentDidMount() {
