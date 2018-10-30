@@ -16,6 +16,7 @@ export interface Props {
   query?: any
   onSubmit?: (event: any) => any
   onCancel?: (event: any) => any
+  onExpire?: () => any
   onBuy?: (event: any) => any
   onSell?: (event: any) => any
   onClick?: (event: any) => any
@@ -80,6 +81,10 @@ export class OrderStatus extends React.Component<Props, State> {
         countdown: null,
         quote: null,
       })
+
+      if (this.props.onExpire) {
+        this.props.onExpire()
+      }
     }
   }
 

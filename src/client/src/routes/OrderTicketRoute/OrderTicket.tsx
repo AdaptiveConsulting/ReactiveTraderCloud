@@ -14,25 +14,26 @@ import { WindowControls } from './WindowControls'
 import { OrderForm, OrderFormProps } from './OrderForm'
 import { OrderStatus } from './OrderStatus'
 
-const TEST_QUOTE: boolean = false
-
 interface State {
   requestQuote: boolean
   requestSession: boolean
-  listening: boolean
-  result?: VoiceInputResult
+  sessionActive: boolean
+  sessionResult?: VoiceInputResult
   query: Partial<OrderFormProps>
   source: 'microphone' | 'sample'
+  features: any
 }
+
 export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
   state: State = {
     ...{
       requestSession: false,
       requestQuote: false,
-      listening: false,
-      result: null,
+      sessionActive: false,
+      sessionResult: null,
       source: 'microphone',
       query: {},
+      features: {},
     },
     ...(process.env.NODE_ENV === 'development' &&
       {
@@ -44,20 +45,36 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
 
   hotkeys = {
     keyMap: {
+      escape: ['esc'],
+      submit: ['enter'],
       toggle: ['alt+o', 'alt+shift+o', 'alt+0', 'alt+shift+0'],
       toggleSource: ['alt+i', 'alt+shift+i'],
       toggleNext: ['alt+n'],
     },
     handlers: {
-      toggle: () =>
-        this.setState(({ requestSession, listening }) => {
-          requestSession = !listening || !requestSession
+      submit: () => this.onSubmit(),
 
-          return { requestSession }
+      escape: () => this.onCancel(),
+
+      toggle: () =>
+        this.setState(({ requestSession, sessionActive }) => {
+          requestSession = !sessionActive || !requestSession
+
+          return {
+            requestSession,
+            // TODO de-dupe state flags
+            sessionActive: requestSession,
+          }
         }),
+
       toggleSource: () =>
         this.setState(({ source }) => ({
           source: source === 'sample' ? 'microphone' : 'sample',
+        })),
+
+      toggleNext: () =>
+        this.setState(({ features }) => ({
+          features: { ...features, useNext: true },
         })),
     },
   }
@@ -71,11 +88,11 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     }
   }
 
-  onVoiceStart = () => {
+  onSessionStart = () => {
     this.setState({
+      sessionActive: true,
       requestQuote: false,
-      listening: true,
-      result: null,
+      sessionResult: null,
       query: {
         product: '',
         client: '',
@@ -84,8 +101,18 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     })
   }
 
-  onVoiceResult = ({ result = {} }: any = {}) => {
-    const { entities }: any = _.find(result.intents, { label: 'corporate_bonds' }) || {}
+  onSessionResult = (sessionResult: VoiceInputResult) => {
+    if (!this.state.sessionActive) {
+      console.error('OrderTicket.onSessionResult called while not sessionActive === false')
+      return
+    }
+
+    const {
+      data: { result: { intents } = {} as any },
+    } = sessionResult
+
+    // @ts-ignore
+    const { entities }: any = _.find(intents, { label: 'corporate_bonds' }) || {}
 
     // Select highest probable match by field within result.intents
     const [product, client, notional] = ['product', 'client', 'quantity']
@@ -95,7 +122,7 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
       .map(match => _.get(match, ['value']))
 
     this.setState({
-      result,
+      sessionResult,
       query: {
         product,
         client,
@@ -104,14 +131,13 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     })
   }
 
-  onVoiceEnd = () => {
-    const { query, result } = this.state
+  onSessionEnd = () => {
+    const { query, sessionResult } = this.state
 
     this.setState({
-      requestQuote: result && result.final && Object.keys(query).length >= 3,
+      requestQuote: _.get(sessionResult, 'data.result.final') && Object.keys(query).length >= 3,
       requestSession: false,
-      listening: false,
-      // source: this.state.source === 'sample' ? 'microphone' : 'sample',
+      sessionActive: false,
     })
   }
 
@@ -123,10 +149,17 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
 
   onCancel = () => {
     this.setState({
-      requestQuote: false,
+      sessionActive: false,
       requestSession: false,
-      result: null,
+      requestQuote: false,
+      sessionResult: null,
       query: _.mapValues(this.state.query, _.constant('')),
+    })
+  }
+
+  onExpire = () => {
+    this.setState({
+      requestQuote: false,
     })
   }
 
@@ -155,11 +188,14 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
           </DrawerLayout>
           <VoiceLayout>
             <VoiceInput
+              value={_.get(this.state.sessionResult, 'transcripts[0][0].transcript')}
               source={this.state.source}
-              onStart={this.onVoiceStart}
-              onResult={this.onVoiceResult}
-              onEnd={this.onVoiceEnd}
+              onStart={this.onSessionStart}
+              onResult={this.onSessionResult}
+              onEnd={this.onSessionEnd}
               requestSession={requestSession}
+              // testing
+              features={this.state.features}
             />
           </VoiceLayout>
           <FormLayout>
@@ -167,11 +203,12 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
           </FormLayout>
           <StatusLayout>
             <OrderStatus
-              query={query}
               ready={!!query.product && !!query.notional}
-              requestQuote={TEST_QUOTE ? (!!query.product && !!query.notional) || requestQuote : requestQuote}
+              query={query}
+              requestQuote={requestQuote}
               onSubmit={this.onSubmit}
               onCancel={this.onCancel}
+              onExpire={this.onExpire}
               onBuy={this.onBuy}
               onSell={this.onBuy}
             />

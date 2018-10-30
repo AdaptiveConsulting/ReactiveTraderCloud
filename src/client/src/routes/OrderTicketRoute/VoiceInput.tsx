@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import React from 'react'
-import { HotKeys } from 'react-hotkeys'
 import { mix } from 'polished'
 
 import { faChevronCircleRight, faPlay } from '@fortawesome/free-solid-svg-icons'
@@ -16,7 +15,7 @@ import { MediaPlayer } from './MediaPlayer'
 import { Microphone } from './Microphone'
 import { ScribeSession } from './ScribeSession'
 import { UserMedia, UserMediaState } from './UserMedia'
-import { TranscriptionSession, SessionResult, SessionResultData } from './TranscriptionSession'
+import { TranscriptionSession, SessionResult } from './TranscriptionSession'
 import { Timer } from './Timer'
 
 import FormantBars from './FormantBars'
@@ -24,12 +23,17 @@ import MicrophoneIcon from './assets/Microphone'
 
 type SourceType = 'microphone' | 'sample'
 interface Props {
+  value: string[]
   source?: SourceType
   context?: AudioContext
   requestSession?: boolean
   onStart?: () => any
   onResult?: (data: VoiceInputResult) => any
   onEnd?: () => any
+  // testing
+  features: {
+    [key: string]: any
+  }
 }
 
 interface State {
@@ -48,13 +52,11 @@ interface State {
   sessionInstance?: any
   sessionError?: any
   // data
-  transcripts: any
-  // testing
-  useNext?: boolean
+  value?: any
 }
 
 // tslint:disable-next-line
-export interface VoiceInputResult extends SessionResultData {}
+export interface VoiceInputResult extends SessionResult {}
 
 export class VoiceInput extends React.PureComponent<Props, State> {
   static defaultProps = {
@@ -77,7 +79,6 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     sessionCount: 0,
     sessionConnected: null,
     sessionInstance: null,
-    transcripts: [],
   }
 
   static getDerivedStateFromProps({ context, source, requestSession }: Props, state: State): Partial<State> {
@@ -94,8 +95,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
         sessionActive: requestSession,
         sessionCount: requestSession ? state.sessionCount + 1 : state.sessionCount,
         sessionError: null,
-        // Clear transcripts on new session
-        transcripts: requestSession ? [] : state.transcripts,
+        // Clear value on new session
         blob: null,
       }
     }
@@ -138,12 +138,11 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   }
 
   toggle = () => {
-    this.setState(({ sessionActive, sessionCount, transcripts }) => {
+    this.setState(({ sessionActive, sessionCount, value }) => {
       return {
         sessionActive: !sessionActive,
         sessionCount: !sessionActive ? sessionCount + 1 : sessionCount,
         sessionError: null,
-        transcripts: sessionActive ? transcripts : [],
       }
     })
   }
@@ -158,11 +157,9 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     }
   }
 
-  onSessionResult = ({ data, transcripts }: SessionResult) => {
-    this.setState({ transcripts })
-
+  onSessionResult = (result: SessionResult) => {
     if (this.props.onResult) {
-      this.props.onResult(data as any)
+      this.props.onResult(result)
     }
   }
 
@@ -198,7 +195,13 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { context, source } = this.props
+    const {
+      value,
+      context,
+      source,
+      // testing
+      features,
+    } = this.props
     const {
       // audio
       analyser,
@@ -212,7 +215,6 @@ export class VoiceInput extends React.PureComponent<Props, State> {
       sessionActive,
       sessionError,
       sessionConnected,
-      transcripts,
     } = this.state
 
     return (
@@ -260,8 +262,8 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                             sessionActive &&
                             // Open session to recognition backend and stream from output
 
-                            (!this.state.useNext ? (
-                              <ScribeSession
+                            (features.useNext ? (
+                              <TranscriptionSession
                                 ref={this.setSession}
                                 key={`Session${sessionCount}`}
                                 input={input.stream}
@@ -271,7 +273,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                                 onEnd={this.onSessionEnd}
                               />
                             ) : (
-                              <TranscriptionSession
+                              <ScribeSession
                                 ref={this.setSession}
                                 key={`Session${sessionCount}`}
                                 input={input.stream}
@@ -298,16 +300,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
         {
           // Rendered output
         }
-        <Root
-          bg="primary.4"
-          onClick={this.toggle}
-          handlers={{
-            toggleNext: () => {
-              this.setState(({ useNext }) => ({ useNext: !useNext }))
-              this.toggle()
-            },
-          }}
-        >
+        <Root bg="primary.4" onClick={this.toggle}>
           {sessionInstance ? null : (
             <MicrophoneButton
               fg={
@@ -349,7 +342,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
             </React.Fragment>
           )}
 
-          {transcripts.length === 0 ? (
+          {!value ? (
             !sessionActive ? (
               <StatusText>Press to talk &nbsp; ⌥O</StatusText>
             ) : (
@@ -365,9 +358,9 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                       <React.Fragment>
                         {sessionConnected === false ? (
                           <StatusText accent="aware">We're having trouble connecting</StatusText>
-                        ) : transcripts.length <= 0 ? (
+                        ) : (
                           <StatusText>Listening</StatusText>
-                        ) : null}
+                        )}
                       </React.Fragment>
                     )}
                   </React.Fragment>
@@ -376,16 +369,12 @@ export class VoiceInput extends React.PureComponent<Props, State> {
             )
           ) : (
             <Input>
-              {_.map(transcripts, ([{ transcript }]: any, index: number) => (
-                <React.Fragment key={index}>
-                  {transcript}
-                  <span>&nbsp;</span>
-                </React.Fragment>
-              ))}
+              {value}
+              <span>&nbsp;</span>
             </Input>
           )}
 
-          {this.state.useNext && (
+          {features.useNext && (
             <MicrophoneButton
               fg={
                 sessionActive === false
@@ -410,7 +399,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   }
 }
 
-const Root = styled(Block.withComponent(HotKeys))`
+const Root = styled(Block)`
   display: flex;
   align-items: center;
   height: 2.75rem;

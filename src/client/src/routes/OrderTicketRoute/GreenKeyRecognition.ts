@@ -94,6 +94,11 @@ export interface Result {
   quote_confidence: number
   interpreted_quote: InterpretedQuote
   final: boolean
+  result?: {
+    final: boolean
+    hypothesis: any[]
+    intents: any
+  }
 }
 
 export interface InterpretedQuote {
