@@ -93,6 +93,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
         requestSession,
         sessionActive: requestSession,
         sessionCount: requestSession ? state.sessionCount + 1 : state.sessionCount,
+        sessionError: null,
         // Clear transcripts on new session
         transcripts: requestSession ? [] : state.transcripts,
         blob: null,
@@ -130,6 +131,9 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   componentDidUpdate(prevProps: Props, prevState: State, snapshot: State) {
     if (snapshot != null) {
       this.setState(snapshot)
+    }
+    if (prevProps.requestSession && prevState.sessionActive && this.props.requestSession && !this.state.sessionActive) {
+      this.onSessionEnd()
     }
   }
 

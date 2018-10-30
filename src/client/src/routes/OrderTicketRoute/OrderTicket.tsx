@@ -51,7 +51,7 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     handlers: {
       toggle: () =>
         this.setState(({ requestSession, listening }) => {
-          requestSession = !listening
+          requestSession = !listening || !requestSession
 
           return { requestSession }
         }),
