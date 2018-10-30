@@ -80,7 +80,6 @@ export function createWebSocket(config: any = {}): WebSocket {
       }
     },
     onerror(event: Event) {
-      console.log('onerror', event)
       if (config.onerror) {
         config.onerror(event)
       }

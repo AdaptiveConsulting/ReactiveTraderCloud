@@ -172,16 +172,16 @@ export class ScribeSession extends PureComponent<Props, State> {
     if (this.unmounting) {
       console.error('Unexpected call to ScribeSession.onError')
       return
-    } else {
-      this.setState({
-        error: true,
-        socket: null,
-        connected: false,
-      })
+    }
 
-      if (this.props.onError) {
-        this.props.onError({ ok: false, source: 'socket', error })
-      }
+    this.setState({
+      error: true,
+      socket: null,
+      connected: false,
+    })
+
+    if (this.props.onError) {
+      this.props.onError({ ok: false, source: 'socket', error })
     }
   }
 

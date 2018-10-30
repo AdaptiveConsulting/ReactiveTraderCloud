@@ -22,7 +22,7 @@ class WebSocketConnection extends PureComponent<Props> {
   componentDidMount() {
     this.socket = this.props.create({
       onopen: this.onOpen,
-      onerror: this.onClose,
+      onerror: this.onError,
       onmessage: this.onMessage,
       onclose: this.onClose,
     })

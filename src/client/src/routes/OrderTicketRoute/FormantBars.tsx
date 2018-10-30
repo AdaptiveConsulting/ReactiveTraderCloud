@@ -9,6 +9,7 @@ export interface Props {
   scale?: number
   radius?: number
   analyser?: AnalyserNode
+  color?: (magnitude: number) => string | any
 }
 
 interface State {
@@ -106,7 +107,7 @@ class FormantBars extends Component<Props, Partial<State>> {
     }
 
     const {
-      props: { analyser },
+      props: { analyser, color },
       state: { bar, grid },
       canvas,
     } = this
@@ -159,6 +160,7 @@ class FormantBars extends Component<Props, Partial<State>> {
         const height = _.min([magnitude, bar.height * 1.5])
 
         canvasCtx.fillStyle =
+          (color && color(_.clamp(magnitude / 200, 0, 1))) ||
           'rgb(' + Math.floor((0.75 + Math.sin(Math.PI * (magnitude / 50))) * magnitude + 95 / 2) + ',148,245)'
 
         roundRect({
