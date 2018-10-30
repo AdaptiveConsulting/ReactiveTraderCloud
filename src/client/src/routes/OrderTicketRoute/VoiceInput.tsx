@@ -83,7 +83,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
 
   static getDerivedStateFromProps({ context, source, requestSession }: Props, state: State): Partial<State> {
     let next: any = null
-    const { analyser, destination }: any = state
+    const { analyser, blob, destination }: any = state
 
     requestSession = Boolean(requestSession)
 
@@ -96,7 +96,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
         sessionCount: requestSession ? state.sessionCount + 1 : state.sessionCount,
         sessionError: null,
         // Clear value on new session
-        blob: null,
+        blob: source === 'sample' ? blob : null,
       }
     }
 
@@ -120,7 +120,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     // Capture last voice recording for replay in testing
     if (source === 'microphone' && sessionInstance && sessionActive && !this.state.sessionActive) {
       next = {
-        blob: this.session.chunks.length > 0 ? new Blob(this.session.chunks) : null,
+        blob: this.session.chunks.length > 20 ? new Blob(this.session.chunks) : null,
       }
     }
 
@@ -135,13 +135,18 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     if (prevProps.requestSession && prevState.sessionActive && this.props.requestSession && !this.state.sessionActive) {
       this.onSessionEnd()
     }
+    if (this.state.sessionCount !== prevState.sessionCount) {
+      console.log(this.state.sessionCount)
+    }
   }
 
   toggle = () => {
     this.setState(({ sessionActive, sessionCount, value }) => {
+      sessionActive = !sessionActive
+
       return {
-        sessionActive: !sessionActive,
-        sessionCount: !sessionActive ? sessionCount + 1 : sessionCount,
+        sessionActive,
+        sessionCount: sessionActive ? sessionCount + 1 : sessionCount,
         sessionError: null,
       }
     })
@@ -229,18 +234,17 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                 {source === 'sample' && (
                   // Mount sample audio for testing
                   <MediaPlayer
-                    key={blob ? sessionCount : null}
+                    key={sessionCount}
                     context={context}
                     output={destination}
                     play={sessionInstance}
                     {...(blob
                       ? { src: blob }
                       : {
-                          src: '/test.ogg',
-                          at: 118.5,
+                          src: `/audio/${['netflix', 'apple', 'snap'][sessionCount % 3]}.ogg`,
+                          at: 0,
                           loop: true,
-                          // rate: 1.2,
-                          rate: 1.3,
+                          rate: 1.25,
                         })}
                   />
                 )}
@@ -265,7 +269,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                             (features.useNext ? (
                               <TranscriptionSession
                                 ref={this.setSession}
-                                key={`Session${sessionCount}`}
+                                key={`TranscriptionSession${sessionCount}`}
                                 input={input.stream}
                                 onStart={this.onSessionStart}
                                 onResult={this.onSessionResult}
@@ -275,7 +279,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                             ) : (
                               <ScribeSession
                                 ref={this.setSession}
-                                key={`Session${sessionCount}`}
+                                key={`ScribeSession${sessionCount}`}
                                 input={input.stream}
                                 onStart={this.onSessionStart}
                                 onResult={this.onSessionResult}

@@ -57,15 +57,9 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
       escape: () => this.onCancel(),
 
       toggle: () =>
-        this.setState(({ requestSession, sessionActive }) => {
-          requestSession = !sessionActive || !requestSession
-
-          return {
-            requestSession,
-            // TODO de-dupe state flags
-            sessionActive: requestSession,
-          }
-        }),
+        this.setState(({ requestSession }) => ({
+          requestSession: !requestSession,
+        })),
 
       toggleSource: () =>
         this.setState(({ source }) => ({
@@ -74,15 +68,16 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
 
       toggleNext: () =>
         this.setState(({ features }) => ({
-          features: { ...features, useNext: true },
+          features: { ...features, useNext: !features.useNext },
         })),
     },
   }
 
   focus = (ref: any) => {
     if (ref) {
-      const node = ReactDOM.findDOMNode(ref) as any
+      const node = ReactDOM.findDOMNode(ref)
       if (node) {
+        // @ts-ignore
         node.focus()
       }
     }
@@ -90,8 +85,9 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
 
   onSessionStart = () => {
     this.setState({
-      sessionActive: true,
+      requestSession: true,
       requestQuote: false,
+      sessionActive: true,
       sessionResult: null,
       query: {
         product: '',
@@ -135,8 +131,8 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     const { query, sessionResult } = this.state
 
     this.setState({
-      requestQuote: _.get(sessionResult, 'data.result.final') && Object.keys(query).length >= 3,
       requestSession: false,
+      requestQuote: _.get(sessionResult, 'data.result.final') && Object.keys(query).length >= 3,
       sessionActive: false,
     })
   }
@@ -149,9 +145,9 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
 
   onCancel = () => {
     this.setState({
-      sessionActive: false,
       requestSession: false,
       requestQuote: false,
+      sessionActive: false,
       sessionResult: null,
       query: _.mapValues(this.state.query, _.constant('')),
     })

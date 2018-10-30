@@ -121,7 +121,7 @@ class FormantBars extends Component<Props, Partial<State>> {
     }
 
     // Move to positive integer
-    data = data.map(v => v + 2 * (analyser.maxDecibels - analyser.minDecibels))
+    data = data.map(v => _.clamp(v + 2 * (analyser.maxDecibels - analyser.minDecibels), 0, 255))
 
     // Reduce signal from treble and bass
     data = data.map(

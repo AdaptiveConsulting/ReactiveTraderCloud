@@ -73,7 +73,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
       if (output) {
         source.connect(output)
       }
-      source.start(0, playback.position)
+      source.start(0, playback.position, buffer.duration - playback.position)
     }
 
     return {

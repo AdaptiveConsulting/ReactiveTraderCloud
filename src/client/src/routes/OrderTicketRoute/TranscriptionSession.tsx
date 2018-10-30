@@ -38,7 +38,7 @@ interface State {
 
 export class TranscriptionSession extends PureComponent<Props, State> {
   static defaultProps = {
-    mimeType: 'audio/webm',
+    mimeType: 'audio/webm;codecs=opus',
     bitsPerSecond: 128 * 1000,
   }
 
@@ -72,7 +72,13 @@ export class TranscriptionSession extends PureComponent<Props, State> {
     }
   }
 
-  onRecorderStart = () => this.setState({ recording: true })
+  onRecorderStart = () => {
+    this.setState({ recording: true })
+
+    if (this.props.onStart) {
+      this.props.onStart(this)
+    }
+  }
   onRecorderData = (event: BlobEvent) => {
     const { onBlob } = this.props
     const { socket } = this.state
@@ -95,10 +101,7 @@ export class TranscriptionSession extends PureComponent<Props, State> {
     GreenKeyRecognition.createWebSocket({ contentType: this.props.mimeType, ...handles })
 
   onOpen = ({ target }: Event & { target: WebSocket }) => {
-    this.setState({
-      connected: true,
-      socket: target,
-    })
+    this.setState({ socket: target, connected: true })
   }
 
   onMessage = (event: MessageEvent) => {
@@ -109,7 +112,6 @@ export class TranscriptionSession extends PureComponent<Props, State> {
     }
 
     const data = JSON.parse(event.data)
-
     this.setState({ result: data.result })
 
     if (this.props.onResult) {
@@ -123,7 +125,6 @@ export class TranscriptionSession extends PureComponent<Props, State> {
   onError = (error: Error | ErrorEvent) => {
     if (this.unmounting) {
       console.error('Unexpected call to TranscriptionSession.onError')
-
       return
     }
 
