@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { HotKeys } from 'react-hotkeys'
+import { faPlay, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { colors, keyframes, styled, Styled } from 'rt-theme'
@@ -16,6 +17,7 @@ import { ChannelMerger } from './ChannelMerger'
 import { MediaPlayer } from './MediaPlayer'
 import { Microphone } from './Microphone'
 import { TranscriptionSession, SessionResult, SessionResultData } from './TranscriptionSession'
+import { ScribeSession } from './ScribeSession'
 import { UserMedia, UserMediaState } from './UserMedia'
 
 import BlobDownload from './devtools/BlobDownload'
@@ -45,6 +47,8 @@ interface State {
   sessionConnected: boolean
   sessionInstance?: any
   transcripts: any
+  // testing
+  useNext?: boolean
 }
 
 export interface VoiceInputResult extends SessionResultData {}
@@ -240,9 +244,20 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                           />
 
                           {userMedia.mediaStream &&
-                            sessionActive && (
-                              // Open session to recognition backend and stream from output
+                            sessionActive &&
+                            // Open session to recognition backend and stream from output
 
+                            (!this.state.useNext ? (
+                              <ScribeSession
+                                ref={this.setSession}
+                                key={`Session${sessionCount}`}
+                                input={input.stream}
+                                onStart={this.onSessionStart}
+                                onResult={this.onSessionResult}
+                                onError={this.onSessionError}
+                                onEnd={this.onSessionEnd}
+                              />
+                            ) : (
                               <TranscriptionSession
                                 ref={this.setSession}
                                 key={`Session${sessionCount}`}
@@ -252,7 +267,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                                 onError={this.onSessionError}
                                 onEnd={this.onSessionEnd}
                               />
-                            )}
+                            ))}
                         </React.Fragment>
                       )}
                     </UserMedia.Consumer>
@@ -266,7 +281,16 @@ export class VoiceInput extends React.PureComponent<Props, State> {
         {
           // Rendered Output
         }
-        <Root bg="primary.4" onClick={this.toggle}>
+        <Root
+          bg="primary.4"
+          onClick={this.toggle}
+          handlers={{
+            toggleNext: () => {
+              this.setState(({ useNext }) => ({ useNext: !useNext }))
+              this.toggle()
+            },
+          }}
+        >
           {sessionInstance ? null : (
             <MicrophoneButton
               fg={
@@ -325,6 +349,20 @@ export class VoiceInput extends React.PureComponent<Props, State> {
             </Input>
           )}
 
+          {this.state.useNext && (
+            <MicrophoneButton
+              fg={
+                sessionActive === false
+                  ? 'primary.1'
+                  : userPermissionGranted === false
+                    ? 'accents.aware.base'
+                    : 'accents.primary.base'
+              }
+            >
+              <FontAwesomeIcon icon={faChevronCircleRight} />
+            </MicrophoneButton>
+          )}
+
           {blob &&
             source === 'microphone' &&
             process.env.NODE_ENV === 'development' && (
@@ -336,7 +374,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   }
 }
 
-const Root = styled(Block)`
+const Root = styled(Block.withComponent(HotKeys))`
   display: flex;
   align-items: center;
   height: 2.75rem;
@@ -349,6 +387,8 @@ const Root = styled(Block)`
   min-width: 36rem;
   max-width: 36rem;
   overflow: hidden;
+
+  outline: none;
 `
 
 const Fill = styled(Block)`

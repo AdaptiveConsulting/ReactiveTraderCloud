@@ -46,6 +46,7 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     keyMap: {
       toggle: ['alt+o', 'alt+shift+o', 'alt+0', 'alt+shift+0'],
       toggleSource: ['alt+i', 'alt+shift+i'],
+      toggleNext: ['alt+n'],
     },
     handlers: {
       toggle: () =>
