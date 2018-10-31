@@ -147,9 +147,11 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
   }
 
   onSubmit = () => {
-    this.setState({
-      requestQuote: true,
-    })
+    if (_.filter(this.state.query).length >= 3) {
+      this.setState({
+        requestQuote: true,
+      })
+    }
   }
 
   onCancel = () => {
@@ -199,9 +201,11 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
               Order Ticket
             </Text>
           </ChromeLayout>
+
           <DrawerLayout bg="primary.4" fg="primary.2">
             <DrawerMenu onClick={this.props.reset} />
           </DrawerLayout>
+
           <VoiceLayout>
             <VoiceInput
               value={_.get(this.state.sessionResult, 'transcripts[0][0].transcript')}
@@ -214,9 +218,11 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
               features={this.state.features}
             />
           </VoiceLayout>
+
           <FormLayout>
             <OrderForm {...query} />
           </FormLayout>
+
           <StatusLayout>
             <OrderStatus
               ready={!!query.product && !!query.notional}
@@ -229,44 +235,49 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
               onSell={this.onBuy}
             />
           </StatusLayout>
+
           <InfoLayout fg="muteColor">
             Bond Info
-            {requestExecution && (
-              <Timer
-                duration={_.random(100, 300)}
-                timeout={() =>
-                  this.setState({
-                    requestQuote: false,
-                    executed: _.random(0, 1, false) ? true : false,
-                  })
-                }
-              />
-            )}
-            {executed != null && (
-              <Notification
-                duration={2500}
-                intent={executed ? 'good' : 'bad'}
-                quote={{}}
-                onEnd={() =>
-                  executed
-                    ? this.onCancel()
-                    : this.setState({
-                        requestExecution: false,
-                        executed: null,
+            {
+              <React.Fragment>
+                {requestExecution && (
+                  <Timer
+                    duration={_.random(100, 300)}
+                    timeout={() =>
+                      this.setState({
+                        requestQuote: false,
+                        executed: _.random(0, 1, false) ? true : false,
                       })
-                }
-              >
-                {executed ? (
-                  <Block>
-                    <Text fontWeight="bold">Order Succeeded</Text>
-                  </Block>
-                ) : (
-                  <Block>
-                    <Text fontWeight="bold">Order Failed</Text>
-                  </Block>
+                    }
+                  />
                 )}
-              </Notification>
-            )}
+                {executed != null && (
+                  <Notification
+                    position="bottom"
+                    duration={2500}
+                    intent={executed ? 'good' : 'bad'}
+                    onEnd={() =>
+                      executed && !this.state.requestQuote
+                        ? this.onCancel()
+                        : this.setState({
+                            requestExecution: false,
+                            executed: null,
+                          })
+                    }
+                    // @ts-ignore
+                    mt={5}
+                  >
+                    <Block fontSize={0.875}>
+                      {executed ? (
+                        <Text fontWeight="bold">Order Succeeded</Text>
+                      ) : (
+                        <Text fontWeight="bold">Order Failed</Text>
+                      )}
+                    </Block>
+                  </Notification>
+                )}
+              </React.Fragment>
+            }
           </InfoLayout>
         </AppLayout>
       </Viewport>
@@ -304,6 +315,8 @@ const AppLayout = styled(Block)`
     'drawer form   form   status status '
     'drawer form   form   status status '
     'drawer info   info   info   info   ';
+
+  position: relative;
 `
 
 const ChromeLayout = styled(Block)`
@@ -375,8 +388,6 @@ const InfoLayout = styled(Block)`
   grid-area: info;
   height: 3rem;
 
-  position: relative;
-
   display: flex;
   align-items: center;
 
@@ -385,6 +396,8 @@ const InfoLayout = styled(Block)`
   box-shadow: 0 1px 0 ${props => props.theme.ruleColor} inset;
 
   ${rules.appRegionDrag};
+
+  position: relative;
 `
 
 export default OrderTicket

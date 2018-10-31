@@ -1,3 +1,4 @@
+import { darken } from 'polished'
 import { mapValues } from 'lodash'
 
 import colors, { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
@@ -123,7 +124,7 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
   },
 
   overlay: {
-    backgroundColor: primary[1],
+    backgroundColor: darken(0.1, primary[1]),
     textColor: secondary[2],
   },
 
