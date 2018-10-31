@@ -56,11 +56,7 @@ export class MainRoute extends React.Component {
     return (
       <React.Fragment>
         <Helmet>
-          <link
-            rel="stylesheet"
-            href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-            integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-          />
+          <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
         </Helmet>
         <ThemeStorage.Provider default={ThemeName.Dark}>
           <ReduxProvider store={this.store}>
