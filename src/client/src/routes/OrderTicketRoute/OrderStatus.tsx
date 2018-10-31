@@ -53,7 +53,7 @@ export class OrderStatus extends React.Component<Props, State> {
   }
 
   onClick = (event: any) => {
-    const { onClick, [`on${_.capitalize(event.target.name)}`]: onEventHandler = onClick } = this.props
+    const { onClick, [`on${_.capitalize(event.currentTarget.name)}`]: onEventHandler = onClick } = this.props
 
     if (onEventHandler) {
       onEventHandler(event)
@@ -61,8 +61,8 @@ export class OrderStatus extends React.Component<Props, State> {
   }
 
   setQuote = () => {
-    const bid = _.random(10.17, 500.39)
-    const ask = bid - _.random(0.33, bid * 0.1)
+    const bid = _.random(10.5, 500.5)
+    const ask = bid - _.random(0.1, bid * 0.1)
     const countdown = Duration.fromObject({ seconds: 10 })
 
     this.setState({
@@ -133,7 +133,7 @@ export class OrderStatus extends React.Component<Props, State> {
               <StatusText fontSize={1.15}>{quote.bid.toFixed(2)}</StatusText>
             </Button>
 
-            <Button name="self" intent="bad" onClick={this.onClick}>
+            <Button name="sell" intent="bad" onClick={this.onClick}>
               <LabelText>Sell</LabelText>
               <StatusText fontSize={1.15}>{quote.ask.toFixed(2)}</StatusText>
             </Button>

@@ -35,24 +35,27 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
       query: {},
       features: {},
     },
-    ...(process.env.NODE_ENV === 'development' &&
-      {
-        // requestSession: true,
-        // requestQuote: true,
-        // source: 'sample',
-      }),
+    ...(process.env.NODE_ENV === 'development' && {
+      requestSession: true,
+      requestQuote: true,
+      source: 'sample',
+    }),
   }
 
   hotkeys = {
     keyMap: {
       escape: ['esc'],
       submit: ['enter'],
+      buy: ['alt+b'],
+      sell: ['alt+s'],
       toggle: ['alt+o', 'alt+shift+o', 'alt+0', 'alt+shift+0'],
       toggleSource: ['alt+i', 'alt+shift+i'],
       toggleNext: ['alt+n'],
     },
     handlers: {
       submit: () => this.onSubmit(),
+      buy: () => this.onBuy(),
+      sell: () => this.onBuy(),
 
       escape: () => this.onCancel(),
 
