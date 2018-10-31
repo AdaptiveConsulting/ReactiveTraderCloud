@@ -79,6 +79,7 @@ export class TranscriptionSession extends PureComponent<Props, State> {
       this.props.onStart(this)
     }
   }
+
   onRecorderData = (event: BlobEvent) => {
     const { onBlob } = this.props
     const { socket } = this.state

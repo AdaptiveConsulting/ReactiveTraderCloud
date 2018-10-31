@@ -18,7 +18,7 @@ export interface MarginProps {
 
 export interface PaddingProps {
   p?: PropValue
-  px?: PropValue
+  px?: PropValue | 'viewport'
   py?: PropValue
   pt?: PropValue
   pr?: PropValue

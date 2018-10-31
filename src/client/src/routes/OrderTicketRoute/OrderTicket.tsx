@@ -14,7 +14,12 @@ import { WindowControls } from './WindowControls'
 import { OrderForm, OrderFormProps } from './OrderForm'
 import { OrderStatus } from './OrderStatus'
 
+import { Notification } from './Notification'
+import { Timer } from './Timer'
+
 interface State {
+  executed?: boolean
+  requestExecution?: boolean
   requestQuote: boolean
   requestSession: boolean
   sessionActive: boolean
@@ -35,11 +40,12 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
       query: {},
       features: {},
     },
-    ...(process.env.NODE_ENV === 'development' && {
-      requestSession: true,
-      requestQuote: true,
-      source: 'sample',
-    }),
+    ...(process.env.NODE_ENV === 'development' &&
+      {
+        // requestSession: true,
+        // requestQuote: true,
+        // source: 'sample',
+      }),
   }
 
   hotkeys = {
@@ -54,8 +60,8 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     },
     handlers: {
       submit: () => this.onSubmit(),
-      buy: () => this.onBuy(),
-      sell: () => this.onBuy(),
+      buy: () => this.onBuy(null),
+      sell: () => this.onSell(null),
 
       escape: () => this.onCancel(),
 
@@ -135,8 +141,8 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
 
     this.setState({
       requestSession: false,
-      requestQuote: _.get(sessionResult, 'data.result.final') && Object.keys(query).length >= 3,
       sessionActive: false,
+      // requestQuote: _.get(sessionResult, 'data.result.final') && Object.keys(query).length >= 3,
     })
   }
 
@@ -152,6 +158,8 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
       requestQuote: false,
       sessionActive: false,
       sessionResult: null,
+      requestExecution: false,
+      executed: null,
       query: _.mapValues(this.state.query, _.constant('')),
     })
   }
@@ -162,16 +170,25 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     })
   }
 
-  onBuy = () => {
-    this.onCancel()
+  onBuy = (quote: any) => {
+    this.execute(quote)
   }
 
-  onSell = () => {
-    this.onCancel()
+  onSell = (quote: any) => {
+    this.execute(quote)
+  }
+
+  execute = (quote: any) => {
+    if (this.state.requestQuote) {
+      this.setState({
+        requestExecution: true,
+        executed: null,
+      })
+    }
   }
 
   render() {
-    const { requestQuote, requestSession, query = {} } = this.state
+    const { executed, requestExecution, requestQuote, requestSession, query = {} } = this.state
 
     return (
       <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} ref={this.focus}>
@@ -212,7 +229,45 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
               onSell={this.onBuy}
             />
           </StatusLayout>
-          <InfoLayout fg="muteColor">Bond Info</InfoLayout>
+          <InfoLayout fg="muteColor">
+            Bond Info
+            {requestExecution && (
+              <Timer
+                duration={_.random(100, 300)}
+                timeout={() =>
+                  this.setState({
+                    requestQuote: false,
+                    executed: _.random(0, 1, false) ? true : false,
+                  })
+                }
+              />
+            )}
+            {executed != null && (
+              <Notification
+                duration={2500}
+                intent={executed ? 'good' : 'bad'}
+                quote={{}}
+                onEnd={() =>
+                  executed
+                    ? this.onCancel()
+                    : this.setState({
+                        requestExecution: false,
+                        executed: null,
+                      })
+                }
+              >
+                {executed ? (
+                  <Block>
+                    <Text fontWeight="bold">Order Succeeded</Text>
+                  </Block>
+                ) : (
+                  <Block>
+                    <Text fontWeight="bold">Order Failed</Text>
+                  </Block>
+                )}
+              </Notification>
+            )}
+          </InfoLayout>
         </AppLayout>
       </Viewport>
     )
@@ -319,6 +374,8 @@ const StatusLayout = styled(Block)`
 const InfoLayout = styled(Block)`
   grid-area: info;
   height: 3rem;
+
+  position: relative;
 
   display: flex;
   align-items: center;
