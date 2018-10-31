@@ -8,13 +8,13 @@ import { createEnvironment, Environment } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { ThemeName, ThemeStorage } from 'rt-theme'
 
-import { createApplicationServices } from '../applicationServices'
-import { getEnvVars } from '../config/config'
-import configureStore from '../configureStore'
-import { Router } from '../shell'
-import FakeUserRepository from '../shell/fakeUserRepository'
-import { GlobalScrollbarStyle } from '../shell/GlobalScrollbarStyle'
-import { OpenFin } from '../shell/openFin'
+import { createApplicationServices } from '../../applicationServices'
+import { getEnvVars } from '../../config/config'
+import configureStore from '../../configureStore'
+import { Router } from '../../shell'
+import FakeUserRepository from '../../shell/fakeUserRepository'
+import { GlobalScrollbarStyle } from '../../shell/GlobalScrollbarStyle'
+import { OpenFin } from '../../shell/openFin'
 
 declare const window: any
 

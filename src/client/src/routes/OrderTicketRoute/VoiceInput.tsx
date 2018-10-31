@@ -132,11 +132,9 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     if (snapshot != null) {
       this.setState(snapshot)
     }
+
     if (prevProps.requestSession && prevState.sessionActive && this.props.requestSession && !this.state.sessionActive) {
       this.onSessionEnd()
-    }
-    if (this.state.sessionCount !== prevState.sessionCount) {
-      console.log(this.state.sessionCount)
     }
   }
 
