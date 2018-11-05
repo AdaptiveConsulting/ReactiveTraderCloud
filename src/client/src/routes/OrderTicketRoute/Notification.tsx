@@ -45,7 +45,7 @@ class NotificationLayout extends React.PureComponent<NotificationProps, any> {
   }
 
   render() {
-    const { duration, intent, position, children, ...props } = this.props
+    const { duration, intent, position, children, onEnd, ...props } = this.props
     const { visible } = this.state
 
     return (

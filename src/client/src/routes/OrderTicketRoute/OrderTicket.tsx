@@ -11,7 +11,7 @@ import { DrawerMenu } from './DrawerMenu'
 import { VoiceInput, VoiceInputResult } from './VoiceInput'
 import { WindowControls } from './WindowControls'
 
-import { OrderForm, OrderFormProps } from './OrderForm'
+import { OrderForm, OrderFormFields } from './OrderForm'
 import { OrderStatus } from './OrderStatus'
 
 import { Notification } from './Notification'
@@ -24,7 +24,7 @@ interface State {
   requestSession: boolean
   sessionActive: boolean
   sessionResult?: VoiceInputResult
-  query: Partial<OrderFormProps>
+  query: Partial<OrderFormFields>
   source: 'microphone' | 'sample'
   features: any
 }
@@ -146,6 +146,10 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     })
   }
 
+  onOrderFormChange = ({ target: { name, value } }: any) => {
+    this.setState(({ query }) => ({ query: { ...query, [name]: value } }))
+  }
+
   onSubmit = () => {
     if (_.filter(this.state.query).length >= 3) {
       this.setState({
@@ -220,12 +224,12 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
           </VoiceLayout>
 
           <FormLayout>
-            <OrderForm {...query} />
+            <OrderForm fields={query} onChange={this.onOrderFormChange} />
           </FormLayout>
 
           <StatusLayout>
             <OrderStatus
-              ready={!!query.product && !!query.notional}
+              ready={!!query.product && !!query.notional && !!query.client}
               query={query}
               requestQuote={requestQuote}
               onSubmit={this.onSubmit}
@@ -246,7 +250,7 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
                     timeout={() =>
                       this.setState({
                         requestQuote: false,
-                        executed: _.random(0, 1, false) ? true : false,
+                        executed: _.random(0, 10) <= 8,
                       })
                     }
                   />

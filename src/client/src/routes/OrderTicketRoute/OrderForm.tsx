@@ -15,14 +15,17 @@ export interface Fields {
   settlement: string
 }
 
-export interface Props extends Partial<Fields> {}
+export interface Props {
+  fields: Partial<Fields>
+  onChange?: (e: any) => any
+}
 
-interface State extends Props {
+interface State {
   fields: Fields
   props: Props | null
 }
 
-export { Props as OrderFormProps }
+export { Fields as OrderFormFields }
 export class OrderForm extends React.Component<Props, State> {
   state: State = {
     fields: {
@@ -35,7 +38,7 @@ export class OrderForm extends React.Component<Props, State> {
     props: null,
   }
 
-  static getDerivedStateFromProps(props: Props, state: State) {
+  static getDerivedStateFromProps({ fields: props }: Props, state: State) {
     let fields: any = state.fields
 
     if (!_.isMatch(props, state.props)) {
@@ -58,6 +61,10 @@ export class OrderForm extends React.Component<Props, State> {
     } = event as any
 
     this.setState(({ fields }) => ({ fields: { ...fields, [name]: value } }))
+
+    if (this.props.onChange) {
+      this.props.onChange(event)
+    }
   }
 
   setRemainingFields = () => {
