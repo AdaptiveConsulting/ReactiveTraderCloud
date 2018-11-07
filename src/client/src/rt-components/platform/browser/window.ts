@@ -1,24 +1,27 @@
-import { BrowserWindowConfig, WindowConfig } from './types'
+import { WindowConfig } from '../types'
 
-type BrowserWindowProps = WindowConfig & BrowserWindowConfig
+type BrowserWindowProps = WindowConfig
 
 export const openBrowserWindow = (config: BrowserWindowProps) => {
   const { name, width, height, center, url } = config
+  console.log(center)
   const { left, top } = calculatePosition(center, width, height)
 
-  return window.open(
-    url,
-    name,
-    toWindowFeatures({
-      width,
-      height,
-      left,
-      top,
-    }),
+  return Promise.resolve(
+    window.open(
+      url,
+      name,
+      toWindowFeatures({
+        width,
+        height,
+        left,
+        top,
+      }),
+    ),
   )
 }
 
-function calculatePosition(center: string, width: number, height: number) {
+function calculatePosition(center: string = 'parent', width: number, height: number) {
   let left = 0
   let top = 0
   if (center === 'parent') {

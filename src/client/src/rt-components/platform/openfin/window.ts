@@ -1,4 +1,4 @@
-import { WindowConfig } from './types'
+import { WindowConfig } from '../types'
 
 type DesktopWindowProps = WindowConfig
 
@@ -16,7 +16,7 @@ const generateRandomName = function() {
 export const openDesktopWindow = (config: DesktopWindowProps) => {
   const { url, width: defaultWidth, height: defaultHeight } = config
 
-  return new Promise<fin.OpenFinWindow>(resolve => {
+  return new Promise<Window>(resolve => {
     const win = new fin.desktop.Window(
       {
         name: generateRandomName(),
@@ -30,7 +30,7 @@ export const openDesktopWindow = (config: DesktopWindowProps) => {
         shadow: true,
       } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
       () => {
-        resolve(win)
+        resolve(win.getNativeWindow())
       },
       error => {
         console.log('Error creating window:', error)
