@@ -2,104 +2,104 @@ import { User } from 'rt-types'
 
 const LOG_NAME = 'FakeUserRepository: '
 
-const fakeUserDetails = [
+const fakeUserDetails: User[] = [
   {
-    shortCode: 'LMO',
+    code: 'LMO',
     firstName: 'Lorretta',
     lastName: 'Moe',
   },
   {
-    shortCode: 'WMO',
+    code: 'WMO',
     firstName: 'Wenona',
     lastName: 'Moshier',
   },
   {
-    shortCode: 'NGA',
+    code: 'NGA',
     firstName: 'Nita',
     lastName: 'Garica',
   },
   {
-    shortCode: 'HHA',
+    code: 'HHA',
     firstName: 'Hyun',
     lastName: 'Havlik',
   },
   {
-    shortCode: 'EDO',
+    code: 'EDO',
     firstName: 'Elizebeth',
     lastName: 'Doverspike',
   },
   {
-    shortCode: 'MDA',
+    code: 'MDA',
     firstName: 'Magali',
     lastName: 'Dash',
   },
   {
-    shortCode: 'DGR',
+    code: 'DGR',
     firstName: 'Dorinda',
     lastName: 'Granillo',
   },
   {
-    shortCode: 'JMC',
+    code: 'JMC',
     firstName: 'Jade',
     lastName: 'Mccollister',
   },
   {
-    shortCode: 'MPE',
+    code: 'MPE',
     firstName: 'Michiko',
     lastName: 'Perl',
   },
   {
-    shortCode: 'CZA',
+    code: 'CZA',
     firstName: 'Chanda',
     lastName: 'Zager',
   },
   {
-    shortCode: 'JED',
+    code: 'JED',
     firstName: 'Jarrett',
     lastName: 'Eddings',
   },
   {
-    shortCode: 'HLU',
+    code: 'HLU',
     firstName: 'Harley',
     lastName: 'Luther',
   },
   {
-    shortCode: 'DOR',
+    code: 'DOR',
     firstName: 'Dong',
     lastName: 'Ortega',
   },
   {
-    shortCode: 'KLA',
+    code: 'KLA',
     firstName: 'King',
     lastName: 'Lamb',
   },
   {
-    shortCode: 'AZE',
+    code: 'AZE',
     firstName: 'Andres',
     lastName: 'Zebrowski',
   },
   {
-    shortCode: 'RNI',
+    code: 'RNI',
     firstName: 'Rufus',
     lastName: 'Nilges',
   },
   {
-    shortCode: 'FAP',
+    code: 'FAP',
     firstName: 'Fritz',
     lastName: 'Aparicio',
   },
   {
-    shortCode: 'DNA',
+    code: 'DNA',
     firstName: 'Don',
     lastName: 'Nason',
   },
   {
-    shortCode: 'ESP',
+    code: 'ESP',
     firstName: 'Eldridge',
     lastName: 'Spoor',
   },
   {
-    shortCode: 'AGE',
+    code: 'AGE',
     firstName: 'Ambrose',
     lastName: 'Gerdts',
   },
@@ -110,7 +110,7 @@ const userDetails = fakeUserDetails[Math.floor(Math.random() * fakeUserDetails.l
 const currentUser: User = {
   firstName: userDetails.firstName,
   lastName: userDetails.lastName,
-  code: userDetails.shortCode,
+  code: userDetails.code,
 }
 
 console.info(
