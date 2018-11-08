@@ -1,4 +1,4 @@
 import * as React from 'react'
-import { API } from './api'
+import { PlatformAdapter } from './platformAdapter'
 
-export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = React.createContext<API>(null)
+export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = React.createContext<PlatformAdapter>(null)

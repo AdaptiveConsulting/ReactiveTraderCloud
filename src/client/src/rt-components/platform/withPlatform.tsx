@@ -1,11 +1,11 @@
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import React from 'react'
 
-import { API } from './api'
 import { PlatformConsumer } from './context'
+import { PlatformAdapter } from './platformAdapter'
 
 interface PlatformProps {
-  platform: API
+  platform: PlatformAdapter
 }
 
 function getDisplayName(WrappedComponent: React.ComponentType<any>) {

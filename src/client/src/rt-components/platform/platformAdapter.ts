@@ -1,6 +1,6 @@
 import { WindowConfig } from './types'
 
-export interface API {
+export interface PlatformAdapter {
   type: string
   window: {
     open?: (config: WindowConfig) => Promise<Window | null>

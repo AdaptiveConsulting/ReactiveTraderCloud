@@ -1,5 +1,5 @@
 import React from 'react'
-import { API, withPlatform } from 'rt-components'
+import { PlatformAdapter, withPlatform } from 'rt-components'
 import { withDefaultProps } from 'rt-util'
 import { WindowConfig } from './types'
 
@@ -18,7 +18,7 @@ const defaultPortalProps = {
 
 export type PortalProps = typeof defaultPortalProps
 
-class NewPortal extends React.Component<PortalProps & { platform: API }> {
+class NewPortal extends React.Component<PortalProps & { platform: PlatformAdapter }> {
   externalWindow: Window | null = null
   mutationObserver: MutationObserver | null = null
   container = document.createElement('div')

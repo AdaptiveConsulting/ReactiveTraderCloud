@@ -1,8 +1,8 @@
-import { API } from '../api'
+import { PlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
 
-export default class OpenFin implements API {
+export default class OpenFin implements PlatformAdapter {
   type = 'openfin'
 
   window = {

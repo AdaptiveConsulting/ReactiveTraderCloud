@@ -1,4 +1,4 @@
 export { Platform } from './platform'
-export { API } from './api'
+export { PlatformAdapter } from './platformAdapter'
 export { PlatformProvider } from './context'
 export { withPlatform } from './withPlatform'
