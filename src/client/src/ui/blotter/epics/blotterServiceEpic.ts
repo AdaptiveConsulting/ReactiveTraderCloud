@@ -60,4 +60,4 @@ const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { platf
     ignoreElements(),
   )
 
-export const connectBlotterServiceToOpenFinEpic = combineEpics(connectBlotterToExcel, connectBlotterToNotifications)
+export const publishBlotterEpic = combineEpics(connectBlotterToExcel, connectBlotterToNotifications)
