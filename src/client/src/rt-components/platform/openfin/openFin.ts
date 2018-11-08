@@ -26,7 +26,6 @@ export default class OpenFin implements PlatformAdapter {
     unsubscribe: (sender: string, topic: string, listener: () => void) =>
       fin.desktop.InterApplicationBus.unsubscribe(sender, topic, listener),
 
-    publish: (topic: string, message: string) =>
-      setInterval(() => fin.desktop.InterApplicationBus.publish(topic, message), 5000),
+    publish: (topic: string, message: string) => fin.desktop.InterApplicationBus.publish(topic, message),
   }
 }

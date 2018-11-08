@@ -12,4 +12,6 @@ const getPlatform = () => {
   return Browser
 }
 
-export default getPlatform()
+const Platform = getPlatform()
+
+export default new Platform()

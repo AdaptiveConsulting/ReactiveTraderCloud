@@ -22,8 +22,6 @@ const APPLICATION_DISCONNECT = 15 * 60 * 1000
 const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
 
-const platform = new Platform()
-
 export class MainRoute extends React.Component {
   openfin = new OpenFin()
   environment = createEnvironment(this.openfin.isPresent ? this.openfin : null)
@@ -36,6 +34,7 @@ export class MainRoute extends React.Component {
         +(config.overwriteServerEndpoint ? config.serverPort : location.port)!,
       ),
       openfin: this.openfin,
+      platform: Platform,
       user: FakeUserRepository.currentUser,
     }),
   )
@@ -58,7 +57,7 @@ export class MainRoute extends React.Component {
       <ThemeStorage.Provider default={ThemeName.Dark}>
         <ReduxProvider store={this.store}>
           <Environment.Provider value={this.environment}>
-            <PlatformProvider value={platform}>
+            <PlatformProvider value={Platform}>
               <React.Fragment>
                 <GlobalScrollbarStyle />
                 <Router />
