@@ -1,5 +1,5 @@
 import React from 'react'
-import { EnvironmentValue, PopoutIcon, withEnvironment } from 'rt-components'
+import { PlatformAdapter, PopoutIcon, withPlatform } from 'rt-components'
 import { styled } from 'rt-theme'
 import { SpotTileWrapper } from './SpotTile'
 
@@ -39,10 +39,10 @@ interface Props {
   displayCurrencyChart?: () => void
 }
 
-const TileControls: React.SFC<Props & { environment: EnvironmentValue }> = ({
+const TileControls: React.SFC<Props & { platform: PlatformAdapter }> = ({
   onPopoutClick,
   canPopout,
-  environment,
+  platform,
   displayCurrencyChart,
 }) => (
   <React.Fragment>
@@ -51,7 +51,7 @@ const TileControls: React.SFC<Props & { environment: EnvironmentValue }> = ({
         <PopoutIcon width={0.8125} height={0.75} />
       </TopRightButton>
     )}
-    {environment.provider.type === 'desktop' && (
+    {platform.type !== 'browser' && (
       <BottomRightButton onClick={displayCurrencyChart}>
         <i className="fas fa-chart-bar" />
       </BottomRightButton>
@@ -59,4 +59,4 @@ const TileControls: React.SFC<Props & { environment: EnvironmentValue }> = ({
   </React.Fragment>
 )
 
-export default withEnvironment(TileControls)
+export default withPlatform(TileControls)

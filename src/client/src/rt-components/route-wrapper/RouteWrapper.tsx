@@ -1,5 +1,5 @@
 import React from 'react'
-import { EnvironmentValue, OpenFinChrome, OpenFinHeader, withEnvironment } from 'rt-components'
+import { OpenFinChrome, OpenFinHeader, PlatformAdapter, withPlatform } from 'rt-components'
 import { styled } from 'rt-theme'
 
 const RouteStyle = styled.div`
@@ -8,19 +8,15 @@ const RouteStyle = styled.div`
   overflow: hidden;
 `
 
-const closeOpenFinWindow = () => {
-  fin.desktop.Window.getCurrent().close()
-}
-
 interface Props {
-  environment: EnvironmentValue
+  platform: PlatformAdapter
 }
 
-const RouteWrapperBase: React.SFC<Props> = ({ environment, children }) => (
+const RouteWrapperBase: React.SFC<Props> = ({ children, platform }) => (
   <RouteStyle>
-    {environment.provider.platform === 'openfin' ? (
+    {platform.type === 'openfin' ? (
       <OpenFinChrome>
-        <OpenFinHeader close={closeOpenFinWindow} />
+        <OpenFinHeader close={platform.window.close} />
         {children}
       </OpenFinChrome>
     ) : (
@@ -29,6 +25,6 @@ const RouteWrapperBase: React.SFC<Props> = ({ environment, children }) => (
   </RouteStyle>
 )
 
-const RouteWrapper = withEnvironment(RouteWrapperBase)
+const RouteWrapper = withPlatform(RouteWrapperBase)
 
 export { RouteStyle, RouteWrapper }
