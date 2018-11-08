@@ -17,6 +17,14 @@ export default class OpenFin implements PlatformAdapter {
 
   app = {
     exit: () => fin.desktop.Application.getCurrent().close(),
+    open: (options: object, cb: () => void) => new fin.desktop.Application(options, cb),
+    find: (id: string) =>
+      new Promise<boolean>(resolve => {
+        fin.desktop.System.getAllApplications(apps => {
+          const isRunning = apps.find(app => Boolean(app.isRunning) && app.uuid === id)
+          resolve(Boolean(isRunning))
+        })
+      }),
   }
 
   interop = {
@@ -27,5 +35,14 @@ export default class OpenFin implements PlatformAdapter {
       fin.desktop.InterApplicationBus.unsubscribe(sender, topic, listener),
 
     publish: (topic: string, message: string) => fin.desktop.InterApplicationBus.publish(topic, message),
+  }
+
+  notification = {
+    notify: (message: object) =>
+      new fin.desktop.Notification({
+        url: '/notification',
+        message,
+        duration: 20000,
+      }),
   }
 }

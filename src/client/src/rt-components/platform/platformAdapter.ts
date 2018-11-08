@@ -2,6 +2,7 @@ import { WindowConfig } from './types'
 
 export interface PlatformAdapter {
   type: string
+
   window: {
     open?: (config: WindowConfig) => Promise<Window | null>
     close?: () => void
@@ -9,12 +10,20 @@ export interface PlatformAdapter {
     minimize?: () => void
     resize?: () => void
   }
+
   app?: {
     exit?: () => void
+    open?: (options: object, cb: () => void) => void
+    find?: (id: string) => Promise<boolean>
   }
+
   interop?: {
-    subscribe?: (sender: string, topic: string, listener: () => void) => void
-    unsubscribe?: (sender: string, topic: string, listener: () => void) => void
-    publish?: (topic: string, message: string) => void
+    subscribe: (sender: string, topic: string, listener: () => void) => void
+    unsubscribe: (sender: string, topic: string, listener: () => void) => void
+    publish: (topic: string, message: any) => void
+  }
+
+  notification?: {
+    notify: (message: object) => void
   }
 }

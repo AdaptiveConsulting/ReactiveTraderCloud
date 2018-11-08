@@ -22,7 +22,7 @@ const formatTradeNotification = (trade: Trade, currencyPair: CurrencyPair) => ({
   dealtCurrency: trade.dealtCurrency,
   termsCurrency: currencyPair.terms,
   valueDate: moment.utc(trade.valueDate).format('DD MMM'),
-  traderName: trade.traderName
+  traderName: trade.traderName,
 })
 
 function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
@@ -30,33 +30,34 @@ function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
     return []
   }
   return Object.keys(blotterData).map(x =>
-    formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol])
+    formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol]),
   )
 }
 
-const connectBlotterToExcel: ApplicationEpic = (action$, state$, { openFin }) =>
+const connectBlotterToExcel: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     applicationConnected,
     switchMapTo(
       interval(7500).pipe(
         takeUntil(action$.pipe(applicationDisconnected)),
         tap(() => {
-          openFin.sendAllBlotterData(parseBlotterData(state$.value.blotterService.trades, state$.value.currencyPairs))
+          const parsedData = parseBlotterData(state$.value.blotterService.trades, state$.value.currencyPairs)
+          platform.interop.publish('blotter-data', parsedData)
         }),
-        ignoreElements()
-      )
-    )
+        ignoreElements(),
+      ),
+    ),
   )
 
-const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { openFin }) =>
+const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     ofType<Action, NewTradesAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
     map(action => action.payload.trades[0]),
     skipWhile(trade => !state$.value.currencyPairs[trade.symbol]),
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
     map(trade => formatTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),
-    tap(tradeNotification => openFin.openTradeNotification({ tradeNotification })),
-    ignoreElements()
+    tap(tradeNotification => platform.notification.notify({ tradeNotification })),
+    ignoreElements(),
   )
 
 export const connectBlotterServiceToOpenFinEpic = combineEpics(connectBlotterToExcel, connectBlotterToNotifications)

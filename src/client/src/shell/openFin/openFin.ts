@@ -21,17 +21,6 @@ export class OpenFin {
     return typeof fin !== 'undefined'
   }
 
-  close = () => {
-    fin.desktop.Application.getCurrent().close()
-  }
-
-  minimize = () => {
-    this.currentWindow.minimize(
-      () => console.info(LOG_NAME, 'Window minimized with success.'),
-      err => console.error(LOG_NAME, 'Failed to minimize window.', err),
-    )
-  }
-
   maximize = () => {
     this.currentWindow.getState(state => {
       switch (state) {
@@ -212,29 +201,6 @@ export class OpenFin {
         err => reject(err),
       )
     })
-  }
-
-  openTradeNotification = (tradeNotification: any) =>
-    new fin.desktop.Notification({
-      url: '/notification',
-      message: tradeNotification,
-      duration: 20000,
-    })
-
-  publishCurrentPositions(ccyPairPositions: any) {
-    if (!this.isPresent) {
-      return
-    }
-
-    fin.desktop.InterApplicationBus.publish('position-update', ccyPairPositions)
-  }
-
-  publishPrice(price: any) {
-    fin.desktop.InterApplicationBus.publish('price-update', price)
-  }
-
-  sendAllBlotterData(parsed: any) {
-    fin.desktop.InterApplicationBus.publish('blotter-data', parsed)
   }
 
   sendPositionClosedNotification(uuid: string, correlationId: string) {
