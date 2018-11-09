@@ -9,7 +9,9 @@ export class OpenFinLimitChecker {
   private limitCheckId: number = 1
 
   constructor() {
-    this.initializeLimitChecker()
+    if (typeof fin !== 'undefined') {
+      this.initializeLimitChecker()
+    }
   }
 
   rpc(message: object) {

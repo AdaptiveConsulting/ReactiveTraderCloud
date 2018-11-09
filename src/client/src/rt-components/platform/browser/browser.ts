@@ -3,6 +3,7 @@ import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
 
 export default class Browser implements PlatformAdapter {
+  name = 'browser'
   type = 'browser'
 
   window = {

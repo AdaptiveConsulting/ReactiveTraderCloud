@@ -3,7 +3,8 @@ import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
 
 export default class OpenFin implements PlatformAdapter {
-  type = 'openfin'
+  name = 'openfin'
+  type = 'desktop'
 
   window = {
     close: () => fin.desktop.Window.getCurrent().close(),

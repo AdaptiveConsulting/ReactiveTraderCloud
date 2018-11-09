@@ -1,6 +1,7 @@
 import { AppConfig, WindowConfig } from './types'
 
 export interface PlatformAdapter {
+  name: string
   type: string
 
   window: {
