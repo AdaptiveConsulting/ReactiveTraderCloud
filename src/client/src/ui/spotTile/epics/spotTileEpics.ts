@@ -14,12 +14,12 @@ type ExecutionAction = ReturnType<typeof executeTrade>
 
 export type ExecutedTradeAction = ReturnType<typeof tradeExecuted>
 
-const executeTradeEpic: ApplicationEpic = (action$, state$, { loadBalancedServiceStub, openFin }) => {
+const executeTradeEpic: ApplicationEpic = (action$, state$, { loadBalancedServiceStub, limitChecker }) => {
   const limitCheck = (executeTradeRequest: ExecuteTradeRequest) =>
-    openFin.rpc({
+    limitChecker.rpc({
       tradedCurrencyPair: executeTradeRequest.CurrencyPair,
       notional: executeTradeRequest.Notional,
-      rate: executeTradeRequest.SpotRate
+      rate: executeTradeRequest.SpotRate,
     })
 
   const executionService = new ExecutionService(loadBalancedServiceStub, limitCheck)
@@ -29,8 +29,8 @@ const executeTradeEpic: ApplicationEpic = (action$, state$, { loadBalancedServic
     mergeMap((request: ExecutionAction) =>
       executionService
         .executeTrade(request.payload)
-        .pipe(map((result: ExecuteTradeResponse) => tradeExecuted(result, request.meta)))
-    )
+        .pipe(map((result: ExecuteTradeResponse) => tradeExecuted(result, request.meta))),
+    ),
   )
 }
 
@@ -39,7 +39,7 @@ export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
     ofType<Action, ExecutedTradeAction>(TILE_ACTION_TYPES.TRADE_EXECUTED),
     delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
     map((action: ExecutedTradeAction) => action.payload.request.CurrencyPair),
-    map(SpotTileActions.dismissNotification)
+    map(SpotTileActions.dismissNotification),
   )
 
 export const spotTileEpic = combineEpics(executeTradeEpic, onTradeExecuted)

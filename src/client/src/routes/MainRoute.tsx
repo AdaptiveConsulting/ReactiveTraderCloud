@@ -13,7 +13,7 @@ import configureStore from '../configureStore'
 import { Router } from '../shell'
 import FakeUserRepository from '../shell/fakeUserRepository'
 import { GlobalScrollbarStyle } from '../shell/GlobalScrollbarStyle'
-import { OpenFin } from '../shell/openFin'
+import { OpenFinLimitChecker } from '../shell/openFin'
 
 declare const window: any
 
@@ -23,7 +23,7 @@ const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
 
 export class MainRoute extends React.Component {
-  openfin = new OpenFin()
+  openfin = new OpenFinLimitChecker()
 
   store = configureStore(
     createApplicationServices({
@@ -32,7 +32,7 @@ export class MainRoute extends React.Component {
         'com.weareadaptive.reactivetrader',
         +(config.overwriteServerEndpoint ? config.serverPort : location.port)!,
       ),
-      openfin: this.openfin,
+      limitChecker: this.openfin,
       platform: Platform,
       user: FakeUserRepository.currentUser,
     }),

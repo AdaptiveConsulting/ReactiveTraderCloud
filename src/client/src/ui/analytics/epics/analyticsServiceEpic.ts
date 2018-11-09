@@ -14,12 +14,12 @@ const mapToDto = (ccyPairPosition: CurrencyPairPosition) => ({
   baseTradedAmount: ccyPairPosition.baseTradedAmount,
 })
 
-export const connectAnalyticsServiceToOpenFinEpic: ApplicationEpic = (action$, state$, { platform }) =>
+export const publishPositionUpdateEpic: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     ofType<Action, FetchAnalyticsAction>(ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE),
     tap((action: FetchAnalyticsAction) => {
       const currentPositions = action.payload.currentPositions.map(p => mapToDto(p))
-      platform.interop.publish('position-update', currentPositions)
+      platform.interop!.publish('position-update', currentPositions)
     }),
     ignoreElements(),
   )

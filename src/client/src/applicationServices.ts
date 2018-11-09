@@ -11,7 +11,7 @@ import {
 import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
 import { multicast, refCount } from 'rxjs/operators'
-import { OpenFin } from './shell/openFin'
+import { OpenFinLimitChecker } from './shell/openFin'
 import { ReferenceDataService } from './shell/referenceData'
 
 const HEARTBEAT_TIMEOUT = 3000
@@ -19,11 +19,11 @@ const HEARTBEAT_TIMEOUT = 3000
 export interface ApplicationProps {
   autobahn: AutobahnConnection
   platform: PlatformAdapter
-  openfin: OpenFin
+  limitChecker: OpenFinLimitChecker
   user: User
 }
 
-export function createApplicationServices({ autobahn, openfin, user, platform }: ApplicationProps) {
+export function createApplicationServices({ autobahn, limitChecker, user, platform }: ApplicationProps) {
   const connection$ = createConnection$(autobahn).pipe(
     multicast(() => {
       return new ReplaySubject<ConnectionEvent>(1)
@@ -47,7 +47,7 @@ export function createApplicationServices({ autobahn, openfin, user, platform }:
   return {
     referenceDataService,
     platform,
-    openFin: openfin,
+    limitChecker,
     loadBalancedServiceStub,
     serviceStatus$,
     connection$,
