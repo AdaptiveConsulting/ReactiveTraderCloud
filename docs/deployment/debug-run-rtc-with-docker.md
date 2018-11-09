@@ -184,7 +184,8 @@ Follow the [docker setup instructions](https://github.com/AdaptiveConsulting/Rea
     amq@DESKTOP-P3O36K8 MINGW64 /c/projects/ReactiveTraderCloud/src/client (develop)
     $ npm run start:local
     ```
-    ![RTC running locally](../docs/rtc_localhost.png?raw=true)
+    ![RTC running locally](../rtc_localhost.png?raw=true)
+
 ### Running / Debugging RTC
 - If you have applied changes in RTC you can check those out by running / debugging *server modules* before rebuilding images. The easier way to so is by commenting those images you don't want to use leaving only those images that are really required by all server modules.   
     ```
@@ -266,7 +267,7 @@ Follow the [docker setup instructions](https://github.com/AdaptiveConsulting/Rea
     docker-compose up
     ```
     - And then you can run modules from `command line` or run/debug inside `Rider`. The following show the setup of a module execution inside `Rider`. You must do the same for all modules that will be manually executed.
-    ![Rider module setup](../docs/rtc_rider_setup.png?raw=true) 
+    ![Rider module setup](../rtc_rider_setup.png?raw=true) 
     
     **Note:** Please do not git push changes to the `runAll` script unless you know what you are doing.
 
