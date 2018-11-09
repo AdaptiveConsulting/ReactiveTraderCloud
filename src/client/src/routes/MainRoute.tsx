@@ -3,7 +3,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
 
 import { ConnectionActions } from 'rt-actions'
-import { createEnvironment, Environment, Platform, PlatformProvider } from 'rt-components'
+import { Platform, PlatformProvider } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { ThemeName, ThemeStorage } from 'rt-theme'
 
@@ -24,7 +24,6 @@ const LOG_NAME = 'Application Service: '
 
 export class MainRoute extends React.Component {
   openfin = new OpenFin()
-  environment = createEnvironment(this.openfin.isPresent ? this.openfin : null)
 
   store = configureStore(
     createApplicationServices({
@@ -56,14 +55,12 @@ export class MainRoute extends React.Component {
     return (
       <ThemeStorage.Provider default={ThemeName.Dark}>
         <ReduxProvider store={this.store}>
-          <Environment.Provider value={this.environment}>
-            <PlatformProvider value={Platform}>
-              <React.Fragment>
-                <GlobalScrollbarStyle />
-                <Router />
-              </React.Fragment>
-            </PlatformProvider>
-          </Environment.Provider>
+          <PlatformProvider value={Platform}>
+            <React.Fragment>
+              <GlobalScrollbarStyle />
+              <Router />
+            </React.Fragment>
+          </PlatformProvider>
         </ReduxProvider>
       </ThemeStorage.Provider>
     )

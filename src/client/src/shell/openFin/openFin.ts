@@ -5,54 +5,11 @@ const LOG_NAME = 'OpenFin: '
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'
 
 export class OpenFin {
-  type = 'desktop'
-  platform = 'openfin'
-
   private limitCheckSubscriber: string | null = null
   private limitCheckId: number = 1
 
   constructor() {
-    if (this.isPresent) {
-      this.initializeLimitChecker()
-    }
-  }
-
-  get isPresent() {
-    return typeof fin !== 'undefined'
-  }
-
-  bringToFront(currentWindow: fin.OpenFinWindow = this.currentWindow) {
-    currentWindow.getState(state => {
-      if (state === 'minimized') {
-        currentWindow.restore(
-          () =>
-            currentWindow.bringToFront(
-              () => console.info(LOG_NAME, 'Window brought to front.'),
-              err => console.error(LOG_NAME, err),
-            ),
-          err => console.error(LOG_NAME, err),
-        )
-      } else {
-        currentWindow.bringToFront(
-          () => console.info(LOG_NAME, 'Window brought to front.'),
-          err => console.error(LOG_NAME, err),
-        )
-      }
-    })
-  }
-
-  addSubscription(name: string, callback: (msg: any, uuid: any) => void) {
-    if (!fin.desktop.InterApplicationBus) {
-      fin.desktop.main(() => {
-        fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
-          callback.call(null, msg, uuid)
-        })
-      })
-    } else {
-      fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
-        callback.call(null, msg, uuid)
-      })
-    }
+    this.initializeLimitChecker()
   }
 
   rpc(message: object) {
@@ -90,10 +47,6 @@ export class OpenFin {
     })
   }
 
-  get currentWindow() {
-    return fin.desktop.Window.getCurrent()
-  }
-
   /**
    * Initialize limit checker
    * @private
@@ -114,23 +67,5 @@ export class OpenFin {
         }
       })
     })
-  }
-
-  /**
-   *
-   * @param symbol
-   * @returns {Promise<void>|Promise.<T>|Promise<T>}
-   * @private
-   */
-
-  sendPositionClosedNotification(uuid: string, correlationId: string) {
-    if (!this.isPresent) {
-      return
-    }
-    fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId)
-  }
-
-  open(url: string) {
-    fin.desktop.System.openUrlWithBrowser(url)
   }
 }
