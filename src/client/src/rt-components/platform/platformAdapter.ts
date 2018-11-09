@@ -9,12 +9,12 @@ export interface PlatformAdapter {
     maximize?: () => void
     minimize?: () => void
     resize?: () => void
+    addEventListener?: (type: string, handler: () => void) => void
   }
 
   app?: {
     exit?: () => void
-    open?: (options: object, cb: () => void) => void
-    find?: (id: string, config: AppConfig) => Promise<string>
+    open?: (id: string, config: AppConfig) => Promise<string>
   }
 
   interop?: {

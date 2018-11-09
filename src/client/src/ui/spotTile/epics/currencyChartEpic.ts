@@ -23,7 +23,7 @@ export const displayCurrencyChartEpic: ApplicationEpic = (action$, state$, { pla
   action$.pipe(
     ofType<Action, DisplayChartAction>(TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART),
     mergeMap<DisplayChartAction, string>((action: DisplayChartAction) =>
-      from<string>(platform.app!.find!(CHART_ID, createChartConfig(action.payload, 5))),
+      from<string>(platform.app!.open!(CHART_ID, createChartConfig(action.payload, 5))),
     ),
     map<string, ChartOpenedAction>(symbol => currencyChartOpened(symbol)),
   )

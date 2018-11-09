@@ -17,9 +17,8 @@ export default class OpenFin implements PlatformAdapter {
 
   app = {
     exit: () => fin.desktop.Application.getCurrent().close(),
-    open: (options: object, cb: () => void) => new fin.desktop.Application(options, cb),
-    find: (id: string, config: AppConfig) => {
-      return new Promise<string>((resolve, reject) => {
+    open: (id: string, config: AppConfig) =>
+      new Promise<string>((resolve, reject) => {
         fin.desktop.System.getAllApplications(apps => {
           const isRunning = apps.find(app => app.isRunning && app.uuid === id)
           if (isRunning) {
@@ -42,8 +41,7 @@ export default class OpenFin implements PlatformAdapter {
             )
           }
         })
-      })
-    },
+      }),
   }
 
   interop = {
