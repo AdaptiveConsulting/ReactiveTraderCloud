@@ -185,6 +185,7 @@ Follow the [docker setup instructions](https://github.com/AdaptiveConsulting/Rea
     $ npm run start:local
     ```
     ![RTC running locally](../docs/rtc_localhost.png?raw=true)
+
 ### Running / Debugging RTC
 - If you have applied changes in RTC you can check those out by running / debugging *server modules* before rebuilding images. The easier way to so is by commenting those images you don't want to use leaving only those images that are really required by all server modules.   
     ```
