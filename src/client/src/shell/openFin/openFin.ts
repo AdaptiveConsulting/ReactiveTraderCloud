@@ -21,30 +21,6 @@ export class OpenFin {
     return typeof fin !== 'undefined'
   }
 
-  maximize = () => {
-    this.currentWindow.getState(state => {
-      switch (state) {
-        case 'maximized':
-        case 'restored':
-        case 'minimized':
-          this.currentWindow.restore(
-            () =>
-              this.currentWindow.bringToFront(
-                () => console.info(LOG_NAME, 'Window brought to front.'),
-                err => console.error(LOG_NAME, err),
-              ),
-            err => console.error(LOG_NAME, err),
-          )
-          break
-        default:
-          this.currentWindow.maximize(
-            () => console.info(LOG_NAME, 'Window maximized with success.'),
-            err => console.error(LOG_NAME, 'Failed to maximize window.', err),
-          )
-      }
-    })
-  }
-
   bringToFront(currentWindow: fin.OpenFinWindow = this.currentWindow) {
     currentWindow.getState(state => {
       if (state === 'minimized') {
@@ -119,27 +95,6 @@ export class OpenFin {
   }
 
   /**
-   * Display External Chart
-   * @param symbol
-   * @returns {Promise|Promise<T>}
-   */
-  displayCurrencyChart(symbol: string) {
-    return new Promise<string>((resolve, reject) => {
-      const chartIqAppId = 'ChartIQ'
-      fin.desktop.System.getAllApplications(apps => {
-        const chartIqApp = apps.find((app: any) => {
-          return app.isRunning && app.uuid === chartIqAppId
-        })
-        if (chartIqApp) {
-          resolve(this.refreshCurrencyChart(symbol))
-        } else {
-          resolve(this.launchCurrencyChart(symbol))
-        }
-      })
-    })
-  }
-
-  /**
    * Initialize limit checker
    * @private
    */
@@ -167,41 +122,6 @@ export class OpenFin {
    * @returns {Promise<void>|Promise.<T>|Promise<T>}
    * @private
    */
-  refreshCurrencyChart(symbol: string) {
-    const interval = 5
-    fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', {
-      symbol,
-      interval,
-    })
-    return Promise.resolve(symbol)
-  }
-
-  /**
-   * @param symbol
-   * @returns {Promise<T>|Promise}
-   * @private
-   */
-  launchCurrencyChart(symbol: string) {
-    return new Promise<string>((resolve, reject) => {
-      const interval = 5
-      const chartIqAppId = 'ChartIQ'
-      const url = `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/chartiq-shim.html?symbol=${symbol}&period=${interval}`
-      const icon = 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/icon.png'
-      const app: fin.OpenFinApplication = new fin.desktop.Application(
-        {
-          url,
-          name: chartIqAppId,
-          uuid: chartIqAppId,
-          mainWindowOptions: {
-            icon,
-            autoShow: false,
-          },
-        },
-        () => app.run(() => setTimeout(() => resolve(symbol), 1000), err => reject(err)),
-        err => reject(err),
-      )
-    })
-  }
 
   sendPositionClosedNotification(uuid: string, correlationId: string) {
     if (!this.isPresent) {

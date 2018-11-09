@@ -9,11 +9,29 @@ const { displayCurrencyChart, currencyChartOpened } = SpotTileActions
 type DisplayChartAction = ReturnType<typeof displayCurrencyChart>
 type ChartOpenedAction = ReturnType<typeof currencyChartOpened>
 
-export const connectCurrencyChartToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
+const CHART_ID = 'ChartIQ'
+
+const createChartConfig = (symbol: string, interval: number): AppConfig => ({
+  uuid: CHART_ID,
+  url: `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/chartiq-shim.html?symbol=${symbol}&period=${interval}`,
+  icon: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/icon.png',
+  payload: { symbol, interval },
+  topic: 'chartiq:main:change_symbol',
+})
+
+export const connectCurrencyChartToOpenFinEpic: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     ofType<Action, DisplayChartAction>(TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART),
     mergeMap<DisplayChartAction, string>((action: DisplayChartAction) =>
-      from<string>(openFin.displayCurrencyChart(action.payload))
+      from<string>(platform.app.find(CHART_ID, createChartConfig(action.payload, 5))),
     ),
-    map<string, ChartOpenedAction>(symbol => currencyChartOpened(symbol))
+    map<string, ChartOpenedAction>(symbol => currencyChartOpened(symbol)),
   )
+
+interface AppConfig {
+  url?: string
+  icon?: string
+  uuid?: string
+  payload?: string | object
+  topic?: string
+}

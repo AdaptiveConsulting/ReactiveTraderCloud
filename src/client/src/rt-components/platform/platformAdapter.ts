@@ -1,4 +1,4 @@
-import { WindowConfig } from './types'
+import { AppConfig, WindowConfig } from './types'
 
 export interface PlatformAdapter {
   type: string
@@ -14,7 +14,7 @@ export interface PlatformAdapter {
   app?: {
     exit?: () => void
     open?: (options: object, cb: () => void) => void
-    find?: (id: string) => Promise<boolean>
+    find?: (id: string, config: AppConfig) => Promise<string>
   }
 
   interop?: {
