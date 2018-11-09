@@ -1,5 +1,4 @@
-import Browser from './browser/browser'
-import OpenFin from './openfin/openFin'
+import { Browser, OpenFin } from './adapters'
 
 const isOpenFin = typeof fin !== 'undefined'
 

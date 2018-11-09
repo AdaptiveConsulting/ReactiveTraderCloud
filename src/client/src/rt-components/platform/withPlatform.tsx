@@ -1,8 +1,8 @@
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import React from 'react'
 
+import { PlatformAdapter } from './adapters'
 import { PlatformConsumer } from './context'
-import { PlatformAdapter } from './platformAdapter'
 
 interface PlatformProps {
   platform: PlatformAdapter

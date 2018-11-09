@@ -36,7 +36,7 @@ store.dispatch(ConnectionActions.connect())
 const APPLICATION_DISCONNECT = 15 * 60 * 1000
 
 timer(APPLICATION_DISCONNECT).subscribe(() => {
-  this.store.dispatch(ConnectionActions.disconnect())
+  store.dispatch(ConnectionActions.disconnect())
   console.warn(LOG_NAME, `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
 })
 
