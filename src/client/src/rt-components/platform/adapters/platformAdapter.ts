@@ -5,12 +5,12 @@ export interface PlatformAdapter {
   type: string
 
   window: {
-    open?: (config: WindowConfig) => Promise<Window | null>
+    open: (config: WindowConfig) => Promise<Window | null>
     close?: () => void
     maximize?: () => void
     minimize?: () => void
     resize?: () => void
-    addEventListener?: (type: string, handler: () => void) => void
+    onClose?: (win: Window, handler: () => void) => void
   }
 
   app?: {
