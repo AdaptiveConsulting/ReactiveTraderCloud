@@ -10,7 +10,7 @@ export interface PlatformAdapter {
     maximize?: () => void
     minimize?: () => void
     resize?: () => void
-    onClose?: (win: Window, handler: () => void) => void
+    onClose: (win: Window, handler: () => void) => void
   }
 
   app?: {

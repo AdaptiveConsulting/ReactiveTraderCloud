@@ -10,5 +10,7 @@ export default class Browser implements PlatformAdapter {
     close: () => window.close(),
 
     open: (config: WindowConfig) => openBrowserWindow(config),
+
+    onClose: (win: Window, handler: () => void) => win.addEventListener('beforeunload', handler),
   }
 }
