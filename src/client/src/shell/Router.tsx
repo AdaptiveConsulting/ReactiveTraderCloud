@@ -5,7 +5,7 @@ import { PlatformAdapter, withPlatform } from 'rt-components'
 import { AnalyticsRoute, BlotterRoute, OpenFinRoute, ShellRoute, SpotRoute } from './routes'
 
 const ShellSwitchRoute = ({ header, platform }: { header: React.ReactChild; platform: PlatformAdapter }) =>
-  platform.type === 'openfin' ? <OpenFinRoute /> : <ShellRoute header={header} />
+  platform.name === 'openfin' ? <OpenFinRoute /> : <ShellRoute header={header} />
 
 const ShellSwitchRouteWithPlatform = withPlatform(ShellSwitchRoute)
 
