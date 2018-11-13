@@ -4,7 +4,6 @@ type BrowserWindowProps = WindowConfig
 
 export const openBrowserWindow = (config: BrowserWindowProps, onClose: () => void) => {
   const { name, width, height, center, url } = config
-  console.log(center)
   const { left, top } = calculatePosition(center, width, height)
 
   const win = window.open(
@@ -18,7 +17,9 @@ export const openBrowserWindow = (config: BrowserWindowProps, onClose: () => voi
     }),
   )
 
-  win.addEventListener('beforeunload', onClose)
+  if (onClose) {
+    win.addEventListener('beforeunload', onClose)
+  }
 
   return Promise.resolve(win)
 }
