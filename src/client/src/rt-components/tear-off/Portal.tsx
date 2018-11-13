@@ -48,6 +48,10 @@ class NewPortal extends React.Component<PortalProps & { platform: PlatformAdapte
   release = () => {
     const { onUnload } = this.props
 
+    if (this.externalWindow) {
+      window.removeEventListener('beforeunload', this.release)
+    }
+
     if (this.mutationObserver) {
       this.mutationObserver.disconnect()
     }
