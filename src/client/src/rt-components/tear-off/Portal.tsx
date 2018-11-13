@@ -26,11 +26,10 @@ class NewPortal extends React.Component<PortalProps & { platform: PlatformAdapte
   async componentDidMount() {
     const { config, platform } = this.props
 
-    this.externalWindow = await platform.window.open(config)
+    this.externalWindow = await platform.window.open(config, this.release)
 
     if (this.externalWindow) {
-      platform.window.onClose!(this.externalWindow, this.release)
-      platform.window.onClose!(window, this.release)
+      window.addEventListener('beforeunload', this.release)
     }
   }
 
@@ -48,7 +47,6 @@ class NewPortal extends React.Component<PortalProps & { platform: PlatformAdapte
 
   release = () => {
     const { onUnload } = this.props
-    console.log('YAAAAAAAAYYY')
 
     if (this.mutationObserver) {
       this.mutationObserver.disconnect()

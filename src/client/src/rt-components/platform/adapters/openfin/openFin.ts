@@ -9,28 +9,11 @@ export default class OpenFin implements PlatformAdapter {
   window = {
     close: () => fin.desktop.Window.getCurrent().close(),
 
-    open: (config: WindowConfig) => openDesktopWindow(config),
+    open: (config: WindowConfig, onClose: () => void) => openDesktopWindow(config, onClose),
 
     maximize: () => fin.desktop.Window.getCurrent().maximize(),
 
     minimize: () => fin.desktop.Window.getCurrent().minimize(),
-
-    onClose: (win: any, handler: () => void) => {
-      console.log(handler)
-      win.fin.desktop.Window.getCurrent().addEventListener(
-        'bounds-changed',
-        () => {
-          console.log("I'm being called")
-          handler()
-        },
-        function() {
-          console.log('The registration was successful')
-        },
-        function(reason: any) {
-          console.log('failure:' + reason)
-        },
-      )
-    },
   }
 
   app = {

@@ -2,23 +2,25 @@ import { WindowConfig } from '../types'
 
 type BrowserWindowProps = WindowConfig
 
-export const openBrowserWindow = (config: BrowserWindowProps) => {
+export const openBrowserWindow = (config: BrowserWindowProps, onClose: () => void) => {
   const { name, width, height, center, url } = config
   console.log(center)
   const { left, top } = calculatePosition(center, width, height)
 
-  return Promise.resolve(
-    window.open(
-      url,
-      name,
-      toWindowFeatures({
-        width,
-        height,
-        left,
-        top,
-      }),
-    ),
+  const win = window.open(
+    url,
+    name,
+    toWindowFeatures({
+      width,
+      height,
+      left,
+      top,
+    }),
   )
+
+  win.addEventListener('beforeunload', onClose)
+
+  return Promise.resolve(win)
 }
 
 function calculatePosition(center: string = 'parent', width: number, height: number) {
