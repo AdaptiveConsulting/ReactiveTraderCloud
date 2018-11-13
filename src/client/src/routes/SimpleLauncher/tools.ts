@@ -3,7 +3,7 @@ import { ConfigType } from './config'
 export async function open(config: ConfigType): Promise<Window | fin.OpenFinWindow | fin.OpenFinApplication | void> {
   const { provider } = config
   // under openfin
-  if (typeof fin !== 'undefined') {
+  if (typeof window.FSBL === 'undefined' && typeof fin !== 'undefined') {
     // open as url through openfin
     if (provider.platform === 'browser') {
       return fin.desktop.System.openUrlWithBrowser(config.url)

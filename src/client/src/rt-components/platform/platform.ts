@@ -1,8 +1,13 @@
-import { Browser, OpenFin } from './adapters'
+import { Browser, Finsemble, OpenFin } from './adapters'
 
+const isFinsemble = typeof window.FSBL !== 'undefined'
 const isOpenFin = typeof fin !== 'undefined'
 
 const getPlatform = () => {
+  if (isFinsemble) {
+    console.log('Using Finsemble API')
+    return Finsemble
+  }
   if (isOpenFin) {
     console.log('Using OpenFin API')
     return OpenFin
