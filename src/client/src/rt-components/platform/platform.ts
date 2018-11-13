@@ -13,4 +13,4 @@ const getPlatform = () => {
 
 const Platform = getPlatform()
 
-export default new Platform()
+export default Platform

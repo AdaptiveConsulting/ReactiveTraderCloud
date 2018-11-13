@@ -3,7 +3,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
 
 import { ConnectionActions } from 'rt-actions'
-import { platform, PlatformProvider } from 'rt-components'
+import { Platform, PlatformProvider } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { ThemeName, ThemeStorage } from 'rt-theme'
 
@@ -17,6 +17,8 @@ import { OpenFinLimitChecker } from '../shell/openFin'
 
 const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
+
+const platform = new Platform()
 
 const store = configureStore(
   createApplicationServices({
