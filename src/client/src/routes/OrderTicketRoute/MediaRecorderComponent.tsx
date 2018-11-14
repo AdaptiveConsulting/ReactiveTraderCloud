@@ -13,12 +13,12 @@ export interface Props {
   bitsPerSecond?: number
   rate?: number
   requestData?: boolean
-  onStart?: (e: Event) => any
-  onStop?: (e: Event) => any
-  onDataAvailable?: (e: BlobEvent) => any
-  onPause?: (e: Event) => any
-  onResume?: (e: Event) => any
-  onError?: (e: Event) => any
+  onStart?: (e: Event) => void
+  onStop?: (e: Event) => void
+  onDataAvailable?: (e: BlobEvent) => void
+  onPause?: (e: Event) => void
+  onResume?: (e: Event) => void
+  onError?: (e: Event) => void
 }
 
 interface State {
@@ -28,7 +28,7 @@ interface State {
   recording: boolean
 }
 
-class MediaRecorderComponent extends React.PureComponent<Props, any> {
+class MediaRecorderComponent extends React.PureComponent<Props, State> {
   static defaultProps = {
     rate: 256,
     mimeType: 'audio/webm',
