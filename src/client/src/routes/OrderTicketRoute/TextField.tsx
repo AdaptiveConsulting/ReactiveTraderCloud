@@ -5,9 +5,9 @@ import { styled, Styled } from 'rt-theme'
 import { ColorProps, curryProps, mapColorProps, mapTextProps, Text, TextProps } from '../StyleguideRoute/styled'
 
 export interface TextFieldProps {
-  name: any
+  name: string
   value?: string
-  onChange: (value: any) => void
+  onChange: (event: React.FormEvent<HTMLInputElement>) => void
 }
 
 export interface TextFieldState {
@@ -44,8 +44,8 @@ export class TextField extends React.PureComponent<TextFieldProps, TextFieldStat
     this.setState({ focused: false })
   }
 
-  onChange = (event: any) => {
-    this.setState({ value: event.target.value })
+  onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ value: event.currentTarget.value })
 
     if (this.props.onChange) {
       this.props.onChange(event)
