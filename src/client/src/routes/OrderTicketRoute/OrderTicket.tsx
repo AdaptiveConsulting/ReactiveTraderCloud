@@ -137,7 +137,7 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
   }
 
   onSessionEnd = () => {
-    const { query, sessionResult } = this.state
+    // const { query, sessionResult } = this.state
 
     this.setState({
       requestSession: false,

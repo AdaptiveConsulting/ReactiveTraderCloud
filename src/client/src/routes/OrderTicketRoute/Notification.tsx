@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { ReactNodeLike } from 'prop-types'
 
 import { faExclamationCircle, faCheckCircle, faCircleNotch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,7 +13,7 @@ export interface NotificationProps {
   position: 'bottom' | 'top'
   intent: 'good' | 'aware' | 'bad'
   event?: unknown
-  children: ReactNodeLike
+  children: React.ReactNode
   onEnd?: () => any
 }
 
