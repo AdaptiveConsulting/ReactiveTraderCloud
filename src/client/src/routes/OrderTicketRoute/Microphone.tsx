@@ -4,7 +4,7 @@ export interface Props {
   context: AudioContext
   mediaStream: MediaStream
   output?: AudioNode
-  children?: (state: State) => any
+  children?: (state: State) => React.ReactNode
 }
 
 export interface State {
@@ -54,7 +54,7 @@ class Microphone extends React.PureComponent<Props, State> {
     }
   }
 
-  render(): null {
+  render() {
     const { children } = this.props
 
     return (children && children(this.state)) || null
