@@ -8,7 +8,7 @@ export interface Props {
   rate?: number
   context: AudioContext
   output?: AudioNode
-  children?: (state: State) => any
+  children?: (state: State) => React.ReactNode
 }
 
 export interface State {
@@ -124,7 +124,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
     }
   }
 
-  render(): null {
+  render() {
     const { children } = this.props
 
     return (children && children(this.state)) || null
