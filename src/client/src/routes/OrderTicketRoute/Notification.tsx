@@ -17,6 +17,10 @@ export interface NotificationProps {
   onEnd?: () => any
 }
 
+interface State {
+  visible: boolean
+}
+
 const intents = {
   good: {
     icon: faCheckCircle,
@@ -29,9 +33,7 @@ const intents = {
   },
 }
 
-export interface NotificationProps {}
-
-class NotificationLayout extends React.PureComponent<NotificationProps, any> {
+class Notification extends React.PureComponent<NotificationProps, State> {
   state = {
     visible: true,
   }
@@ -148,5 +150,5 @@ Transistion.from = {
   ],
 }
 
-export default NotificationLayout
-export { NotificationLayout as Notification }
+export default Notification
+export { Notification }
