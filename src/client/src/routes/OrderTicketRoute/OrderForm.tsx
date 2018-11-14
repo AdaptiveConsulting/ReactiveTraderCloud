@@ -17,7 +17,7 @@ export interface Fields {
 
 export interface Props {
   fields: Partial<Fields>
-  onChange?: (e: any) => any
+  onChange?: (event: React.FormEvent<HTMLInputElement>) => void
 }
 
 interface State {
@@ -39,7 +39,7 @@ export class OrderForm extends React.Component<Props, State> {
   }
 
   static getDerivedStateFromProps({ fields: props }: Props, state: State) {
-    let fields: any = state.fields
+    let fields = state.fields
 
     if (!_.isMatch(props, state.props)) {
       fields = {
@@ -57,8 +57,8 @@ export class OrderForm extends React.Component<Props, State> {
 
   onChange = (event: React.FormEvent<HTMLInputElement>) => {
     const {
-      target: { name, value },
-    } = event as any
+      currentTarget: { name, value },
+    } = event
 
     this.setState(({ fields }) => ({ fields: { ...fields, [name]: value } }))
 
@@ -75,7 +75,7 @@ export class OrderForm extends React.Component<Props, State> {
       direction: fields.product ? 'Two Way' : '',
       settlement: fields.product
         ? DateTime.local()
-            .plus({ days: 1 } as any)
+            .plus({ days: 1 })
             .toISODate()
         : '',
     }
@@ -85,12 +85,13 @@ export class OrderForm extends React.Component<Props, State> {
 
   render() {
     const { fields } = this.state
+    console.log(fields)
 
     return (
       <Layout>
         <Timer key={fields.product + fields.notional} duration={500} timeout={this.setRemainingFields} />
-        {_.map(fields as any, (value: any, name) => (
-          <TextField key={name} name={name} value={value} onChange={this.onChange} />
+        {Object.keys(fields).map(name => (
+          <TextField key={name} name={name} value={fields[name]} onChange={this.onChange} />
         ))}
       </Layout>
     )
