@@ -32,14 +32,16 @@ class BlobDownload extends React.PureComponent<Props, State> {
     }
   }
 
+  componentDidUpdate() {
+    if (this.props.force && this.anchorRef) {
+      this.anchorRef.current.click()
+    }
+  }
+
   stopPropagation = (event: React.SyntheticEvent) => event.stopPropagation()
 
   public render() {
     const { blob, force, ...props } = this.props
-
-    if (force) {
-      this.anchorRef.current.click()
-    }
 
     return this.state.url ? (
       <a {...props} href={this.state.url} ref={this.anchorRef} onClick={this.stopPropagation} />
