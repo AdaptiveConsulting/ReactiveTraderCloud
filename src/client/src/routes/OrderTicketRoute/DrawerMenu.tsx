@@ -5,7 +5,11 @@ import { Block } from '../StyleguideRoute/styled'
 import { faCog, faKeyboard, faMicrophone, faPhone, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export class DrawerMenu extends PureComponent<{ onClick?: (e?: any) => any }> {
+interface Props {
+  onClick?: (e?: React.SyntheticEvent) => void
+}
+
+export class DrawerMenu extends PureComponent<Props> {
   render() {
     const { onClick } = this.props
     return (
