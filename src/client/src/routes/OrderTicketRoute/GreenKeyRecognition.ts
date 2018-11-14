@@ -45,7 +45,16 @@ export interface WebSocketProps {
   contentType?: string
 }
 
-export function createWebSocket(config: any = {}): WebSocket {
+interface SocketConfig {
+  serviceURI?: string
+  contentType?: string
+  onclose?: (event: CloseEvent) => void
+  onerror?: (event: Event) => void
+  onmessage?: (event: MessageEvent) => void
+  onopen?: (event: Event) => void
+}
+
+export function createWebSocket(config: SocketConfig = {}): WebSocket {
   config = {
     serviceURI: process.env.REACT_APP_GREENKEY_URL || 'ws://localhost:8888/client/ws/speech',
     contentType: 'audio/webm',
