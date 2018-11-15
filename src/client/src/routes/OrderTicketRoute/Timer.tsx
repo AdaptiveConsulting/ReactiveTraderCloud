@@ -4,9 +4,9 @@ export interface TimerProps {
   name?: string
   duration: number
   immediate?: boolean
-  timeout?: (name?: string) => any
-  interval?: (name?: string) => any
-  children?: (name?: string) => any
+  timeout?: (name?: string) => void
+  interval?: (name?: string) => void
+  children?: (name?: string) => void
 }
 
 export class Timer extends PureComponent<TimerProps> {
