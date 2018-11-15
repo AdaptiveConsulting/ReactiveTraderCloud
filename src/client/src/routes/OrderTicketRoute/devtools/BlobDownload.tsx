@@ -26,15 +26,15 @@ class BlobDownload extends React.PureComponent<Props, State> {
     return { blob, url: URL.createObjectURL(blob) }
   }
 
-  componentWillUnmount() {
-    if (this.state.url) {
-      URL.revokeObjectURL(this.state.url)
+  componentDidMount = () => {
+    if (this.props.force && this.anchorRef) {
+      this.anchorRef.current.click()
     }
   }
 
-  componentDidUpdate() {
-    if (this.props.force && this.anchorRef) {
-      this.anchorRef.current.click()
+  componentWillUnmount() {
+    if (this.state.url) {
+      URL.revokeObjectURL(this.state.url)
     }
   }
 
