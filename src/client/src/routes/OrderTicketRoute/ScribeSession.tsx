@@ -6,7 +6,7 @@ import MediaRecorder, { BlobEvent, MediaRecorderInterface } from './MediaRecorde
 import * as GreenKeyRecognition from './GreenKeyRecognition'
 import { Timer } from './Timer'
 
-import { WebSocketConnection, WebSocketEventHandles } from './WebSocketConnection'
+import { WebSocketConnection, WebSocketEventHandlers } from './WebSocketConnection'
 
 // tslint:disable-next-line
 export interface SessionResultData extends GreenKeyRecognition.Result {}
@@ -41,7 +41,7 @@ interface State {
 export interface SessionEvent {
   ok: boolean
   source: Dependency
-  error?: Error | ErrorEvent
+  error?: Event
 }
 
 type Dependency = 'socket'
@@ -131,7 +131,7 @@ export class ScribeSession extends PureComponent<Props, State> {
     }
   }
 
-  createWebSocket = (handles: WebSocketEventHandles) =>
+  createWebSocket = (handles: WebSocketEventHandlers) =>
     GreenKeyRecognition.createWebSocket({ contentType: this.props.mimeType, ...handles })
 
   onOpen = (socket: WebSocket) => {
@@ -168,7 +168,7 @@ export class ScribeSession extends PureComponent<Props, State> {
     }
   }
 
-  onError = (error: Error | ErrorEvent) => {
+  onError = (error: Event) => {
     if (this.unmounting) {
       console.error('Unexpected call to ScribeSession.onError')
       return

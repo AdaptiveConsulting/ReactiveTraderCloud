@@ -6,7 +6,7 @@ import MediaRecorder, { BlobEvent } from './MediaRecorderComponent'
 import * as GreenKeyRecognition from './GreenKeyRecognition'
 import { Timer } from './Timer'
 
-import { WebSocketConnection, WebSocketEventHandles } from './WebSocketConnection'
+import { WebSocketConnection, WebSocketEventHandlers } from './WebSocketConnection'
 
 // tslint:disable-next-line
 export interface SessionResultData extends GreenKeyRecognition.Result {}
@@ -98,11 +98,11 @@ export class TranscriptionSession extends PureComponent<Props, State> {
   //
   //  WebSocket
   //
-  createWebSocket = (handles: WebSocketEventHandles) =>
+  createWebSocket = (handles: WebSocketEventHandlers) =>
     GreenKeyRecognition.createWebSocket({ contentType: this.props.mimeType, ...handles })
 
-  onOpen = ({ target }: Event & { target: WebSocket }) => {
-    this.setState({ socket: target, connected: true })
+  onOpen = (socket: WebSocket) => {
+    this.setState({ socket, connected: true })
   }
 
   onMessage = (event: MessageEvent) => {
@@ -123,7 +123,7 @@ export class TranscriptionSession extends PureComponent<Props, State> {
     }
   }
 
-  onError = (error: Error | ErrorEvent) => {
+  onError = (error: Event) => {
     if (this.unmounting) {
       console.error('Unexpected call to TranscriptionSession.onError')
       return
