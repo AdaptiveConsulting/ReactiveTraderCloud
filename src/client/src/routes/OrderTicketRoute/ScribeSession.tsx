@@ -19,17 +19,17 @@ export interface Props {
   input: MediaStream
   mimeType: string
   bitsPerSecond: number
-  onStart?: (event: any) => any
-  onBlob?: (event: BlobEvent) => any
-  onError?: (event: SessionEvent) => any
-  onResult?: (event: SessionResult) => any
-  onEnd?: (event: any) => any
+  onStart?: () => void
+  onBlob?: (event: BlobEvent) => void
+  onError?: (event: SessionEvent) => void
+  onResult?: (event: SessionResult) => void
+  onEnd?: () => void
 }
 
 interface State {
   input?: MediaStream
   recorder?: MediaRecorderInterface
-  socket?: any
+  socket?: WebSocket
 
   connected: boolean
   recording: boolean
@@ -105,7 +105,7 @@ export class ScribeSession extends PureComponent<Props, State> {
       this.recorder = recorder
 
       if (this.props.onStart) {
-        this.props.onStart(this)
+        this.props.onStart()
       }
 
       // Start recording, and stream subsequent events
@@ -116,7 +116,7 @@ export class ScribeSession extends PureComponent<Props, State> {
   }
 
   chunks: Blob[] = []
-  onAudioData = (event: any) => {
+  onAudioData = (event: BlobEvent) => {
     const { onBlob } = this.props
     const { socket } = this.state
 
@@ -134,8 +134,8 @@ export class ScribeSession extends PureComponent<Props, State> {
   createWebSocket = (handles: WebSocketEventHandles) =>
     GreenKeyRecognition.createWebSocket({ contentType: this.props.mimeType, ...handles })
 
-  onOpen = ({ target }: Event) => {
-    this.setState({ socket: target, connected: true })
+  onOpen = (socket: WebSocket) => {
+    this.setState({ socket, connected: true })
   }
 
   onMessage = (event: MessageEvent) => {
@@ -199,7 +199,7 @@ export class ScribeSession extends PureComponent<Props, State> {
 
     this.setState({ socket: null, connected: false, recording: false }, () => {
       if (this.props.onEnd) {
-        this.props.onEnd(null)
+        this.props.onEnd()
       }
     })
   }

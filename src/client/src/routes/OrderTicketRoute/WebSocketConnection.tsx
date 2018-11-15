@@ -38,9 +38,9 @@ class WebSocketConnection extends PureComponent<Props> {
     }
   }
 
-  onOpen = (event: any) => {
+  onOpen = (event: Event) => {
     if (!this.umounting && this.props.onOpen) {
-      this.props.onOpen({ ...event, target: this.socket })
+      this.props.onOpen(this.socket)
     }
   }
 
