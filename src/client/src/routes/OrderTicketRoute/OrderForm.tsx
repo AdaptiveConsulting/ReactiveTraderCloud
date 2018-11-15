@@ -85,7 +85,6 @@ export class OrderForm extends React.Component<Props, State> {
 
   render() {
     const { fields } = this.state
-    console.log(fields)
 
     return (
       <Layout>
