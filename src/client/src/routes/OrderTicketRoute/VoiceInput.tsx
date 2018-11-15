@@ -27,9 +27,9 @@ interface Props {
   source?: SourceType
   context?: AudioContext
   requestSession?: boolean
-  onStart?: () => any
-  onResult?: (data: VoiceInputResult) => any
-  onEnd?: () => any
+  onStart?: () => void
+  onResult?: (data: VoiceInputResult) => void
+  onEnd?: () => void
   // testing
   features: {
     [key: string]: any
