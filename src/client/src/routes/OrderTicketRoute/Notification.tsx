@@ -14,7 +14,7 @@ export interface NotificationProps {
   intent: 'good' | 'aware' | 'bad'
   event?: unknown
   children: React.ReactNode
-  onEnd?: () => any
+  onEnd?: () => void
 }
 
 interface State {
