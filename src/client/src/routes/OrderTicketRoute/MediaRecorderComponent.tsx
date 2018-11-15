@@ -94,7 +94,7 @@ class MediaRecorderComponent extends React.PureComponent<Props, State> {
   }
 
   chunks: Blob[] = []
-  onDataAvailable = (event: any) => {
+  onDataAvailable = (event: BlobEvent) => {
     this.chunks.push(event.data)
 
     if (this.props.onDataAvailable) {
