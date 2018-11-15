@@ -58,24 +58,24 @@ export interface SpeechRecognition extends EventTarget {
   interimResults: boolean
   lang: string
   maxAlternatives: number
-  onaudioend: ((this: SpeechRecognition, ev: Event) => any) | null
-  onaudiostart: ((this: SpeechRecognition, ev: Event) => any) | null
-  onend: ((this: SpeechRecognition, ev: Event) => any) | null
-  onerror: ((this: SpeechRecognition, ev: SpeechRecognitionError) => any) | null
-  onnomatch: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => any) | null
-  onresult: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => any) | null
-  onsoundend: ((this: SpeechRecognition, ev: Event) => any) | null
-  onsoundstart: ((this: SpeechRecognition, ev: Event) => any) | null
-  onspeechend: ((this: SpeechRecognition, ev: Event) => any) | null
-  onspeechstart: ((this: SpeechRecognition, ev: Event) => any) | null
-  onstart: ((this: SpeechRecognition, ev: Event) => any) | null
+  onaudioend: (ev: Event) => void
+  onaudiostart: (ev: Event) => void
+  onend: (ev: Event) => void
+  onerror: (ev: SpeechRecognitionError) => void
+  onnomatch: (ev: SpeechRecognitionEvent) => void
+  onresult: (ev: SpeechRecognitionEvent) => void
+  onsoundend: (ev: Event) => void
+  onsoundstart: (ev: Event) => void
+  onspeechend: (ev: Event) => void
+  onspeechstart: (ev: Event) => void
+  onstart: (ev: Event) => void
   serviceURI: string
   abort(): void
   start(): void
   stop(): void
   addEventListener<K extends keyof SpeechRecognitionEventMap>(
     type: K,
-    listener: (this: SpeechRecognition, ev: SpeechRecognitionEventMap[K]) => any,
+    listener: (ev: SpeechRecognitionEventMap[K]) => void,
     options?: boolean | AddEventListenerOptions,
   ): void
   addEventListener(
@@ -85,7 +85,7 @@ export interface SpeechRecognition extends EventTarget {
   ): void
   removeEventListener<K extends keyof SpeechRecognitionEventMap>(
     type: K,
-    listener: (this: SpeechRecognition, ev: SpeechRecognitionEventMap[K]) => any,
+    listener: (ev: SpeechRecognitionEventMap[K]) => void,
     options?: boolean | EventListenerOptions,
   ): void
   removeEventListener(
