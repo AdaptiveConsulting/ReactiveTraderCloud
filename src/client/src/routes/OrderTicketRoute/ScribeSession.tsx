@@ -95,6 +95,9 @@ export class ScribeSession extends PureComponent<Props, State> {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.close()
     }
+
+    recorder.removeEventListener('start', this.startRecording)
+    recorder.removeEventListener('dataavailable', this.onAudioData)
   }
 
   recorder: MediaRecorderInterface
@@ -109,10 +112,14 @@ export class ScribeSession extends PureComponent<Props, State> {
       }
 
       // Start recording, and stream subsequent events
-      recorder.addEventListener('start', () => this.setState({ recording: true }))
+      recorder.addEventListener('start', this.startRecording)
       recorder.addEventListener('dataavailable', this.onAudioData)
       recorder.start()
     }
+  }
+
+  startRecording = () => {
+    this.setState({ recording: true })
   }
 
   chunks: Blob[] = []
