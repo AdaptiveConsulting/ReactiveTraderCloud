@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash'
 import React from 'react'
 
-const Context = React.createContext<UserMediaState | null>(null)
+const Context = React.createContext<UserMediaState>(null)
 
 export interface UserMediaState {
   constraints: MediaStreamConstraints | null
@@ -11,14 +11,14 @@ export interface UserMediaState {
 }
 
 export interface UserMediaProps extends MediaStreamConstraints {
-  onPermission?: (event: UserMediaState) => any
+  onPermission?: (event: UserMediaState) => void
 }
 
 class UserMediaProvider extends React.Component<UserMediaProps, UserMediaState> {
-  state = {
+  state: UserMediaState = {
     constraints: null,
     mediaStream: null,
-  } as any
+  }
 
   mounted: boolean = true
   async componentDidMount() {
