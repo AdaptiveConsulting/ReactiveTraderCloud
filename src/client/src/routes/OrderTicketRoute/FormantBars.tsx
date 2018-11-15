@@ -9,7 +9,7 @@ export interface Props {
   scale?: number
   radius?: number
   analyser?: AnalyserNode
-  color?: (magnitude: number) => string | any
+  color?: (magnitude: number) => string
 }
 
 interface State {
@@ -46,11 +46,11 @@ class FormantBars extends Component<Props, Partial<State>> {
   }
 
   static getDerivedStateFromProps({ analyser, count, scale, width, height, radius, gap }: Props, { data, bar }: State) {
-    let state = null
+    let state = {}
 
     if (analyser.frequencyBinCount !== data.length) {
       state = {
-        ...(state as any),
+        ...state,
         data: new Float32Array(analyser.frequencyBinCount),
       }
     }
@@ -83,21 +83,23 @@ class FormantBars extends Component<Props, Partial<State>> {
     return state
   }
 
-  canvas: any
+  canvas: HTMLCanvasElement
   canvasScale = 2
-  frameID: any
+  frameID: number
 
   componentWillUnmount() {
     cancelAnimationFrame(this.frameID)
   }
 
-  setCanvas = async (canvas: any) => {
-    this.canvas = canvas
+  componentDidMount = () => {
+    this.canvas = this.canvasRef.current
 
     cancelAnimationFrame(this.frameID)
 
     this.draw()
   }
+
+  canvasRef = React.createRef<HTMLCanvasElement>()
 
   draw = () => {
     if (typeof this === 'undefined') {
@@ -147,7 +149,7 @@ class FormantBars extends Component<Props, Partial<State>> {
 
     // data = _.chunk(data, 2).map(([a, b], i, c) => (a + b) / 2) as any
     // @ts-ignore
-    data = _.chunk(data, Math.round(data.length / bar.count)).map((vs, i, c) => _.sum(vs) / vs.length) as any
+    data = _.chunk(data, Math.round(data.length / bar.count)).map((vs, i, c) => _.sum(vs) / vs.length)
 
     if (canvas && canvas.getContext) {
       const canvasCtx = canvas.getContext('2d')
@@ -180,7 +182,7 @@ class FormantBars extends Component<Props, Partial<State>> {
   render() {
     return (
       <canvas
-        ref={this.setCanvas}
+        ref={this.canvasRef}
         width={`${this.state.grid.width}px`}
         height={`${this.state.grid.height}px`}
         style={this.state.grid.style}
@@ -189,7 +191,18 @@ class FormantBars extends Component<Props, Partial<State>> {
   }
 }
 
-export function roundRect({ ctx, x, y, width, height, radius, fill, stroke }: any) {
+interface RoundRectInputs {
+  ctx: CanvasRenderingContext2D
+  x: number
+  y: number
+  width: number
+  height: number
+  radius: number | { tl: number; tr: number; br: number; bl: number }
+  fill: boolean
+  stroke: boolean
+}
+
+export function roundRect({ ctx, x, y, width, height, radius, fill, stroke }: RoundRectInputs) {
   if (typeof stroke === 'undefined') {
     stroke = true
   }
