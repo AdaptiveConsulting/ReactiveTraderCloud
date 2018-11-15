@@ -91,10 +91,9 @@ export class OrderTicket extends PureComponent<Props, State> {
   componentDidMount = () => {
     const { current } = this.viewportRef
 
-    const node = ReactDOM.findDOMNode(current)
+    const node = ReactDOM.findDOMNode(current) as HTMLDivElement
 
     if (node) {
-      // @ts-ignore
       node.focus()
     }
   }
@@ -120,11 +119,20 @@ export class OrderTicket extends PureComponent<Props, State> {
     }
 
     const {
-      data: { result: { intents } = {} as any },
+      data: {
+        result: { intents },
+      },
     } = sessionResult
 
-    // @ts-ignore
-    const { entities }: any = _.find(intents, { label: 'corporate_bonds' }) || {}
+    if (!intents || intents.length < 1) {
+      return
+    }
+
+    const { entities } = _.find(intents, { label: 'corporate_bonds' })
+
+    if (!entities) {
+      return
+    }
 
     // Select highest probable match by field within result.intents
     const [product, client, notional] = ['product', 'client', 'quantity']

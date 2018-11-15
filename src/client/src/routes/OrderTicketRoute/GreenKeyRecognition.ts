@@ -96,6 +96,8 @@ export function createWebSocket(config: SocketConfig = {}): WebSocket {
   })
 }
 
+export type Intents = Array<{ entities: any[]; label: string; probability: number }>
+
 export interface Result {
   intents: string[]
   is_quote: boolean
@@ -106,7 +108,7 @@ export interface Result {
   result?: {
     final: boolean
     hypothesis: any[]
-    intents: any
+    intents: Intents
   }
 }
 
