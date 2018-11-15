@@ -1,13 +1,12 @@
 declare global {
   interface Window {
-    requestIdleCallback: (cb: () => {}) => void
-    cancelIdleCallback: (cb: () => {}) => void
+    requestIdleCallback: (cb: Function) => void
+    cancelIdleCallback: (cb: Function) => void
   }
 }
 
-// tslint:disable
-const __requestIdleCallback = function(callback: Function) {
-  return setTimeout(() => {
+const requestIdleCallbackPolyfill = (callback: Function) =>
+  setTimeout(() => {
     const start = Date.now()
 
     callback({
@@ -17,16 +16,15 @@ const __requestIdleCallback = function(callback: Function) {
       },
     })
   }, 1)
-}
 
-const __cancelIdleCallback = function(id: number) {
+const cancelIdleCallbackPolyfill = (id: number) => {
   clearTimeout(id)
 }
 
 const isSupported = typeof window.requestIdleCallback !== 'undefined'
 
-const requestIdleCallback = isSupported ? window.requestIdleCallback : __requestIdleCallback
-const cancelIdleCallback = isSupported ? window.cancelIdleCallback : __cancelIdleCallback
+const requestIdleCallback = isSupported ? window.requestIdleCallback : requestIdleCallbackPolyfill
+const cancelIdleCallback = isSupported ? window.cancelIdleCallback : cancelIdleCallbackPolyfill
 
 export default requestIdleCallback
 export { requestIdleCallback, cancelIdleCallback }
