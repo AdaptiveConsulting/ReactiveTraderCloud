@@ -119,12 +119,10 @@ export class OrderTicket extends PureComponent<Props, State> {
     }
 
     const {
-      data: { result: { intents } = {} as any },
+      data: { result: { intents = [] } = {} },
     } = sessionResult
 
-    const filtered = _.find(intents, { label: 'corporate_bonds' })
-
-    const entities = filtered || {}
+    const { entities = [] } = _.find(intents, { label: 'corporate_bonds' }) || {}
 
     // Select highest probable match by field within result.intents
     const [product, client, notional] = ['product', 'client', 'quantity']
