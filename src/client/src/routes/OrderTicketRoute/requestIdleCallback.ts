@@ -1,7 +1,12 @@
-declare const window: any
+declare global {
+  interface Window {
+    requestIdleCallback: (cb: () => {}) => void
+    cancelIdleCallback: (cb: () => {}) => void
+  }
+}
 
 // tslint:disable
-const __requestIdleCallback = function(callback: Function, options?: any) {
+const __requestIdleCallback = function(callback: Function) {
   return setTimeout(() => {
     const start = Date.now()
 
