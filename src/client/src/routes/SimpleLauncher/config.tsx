@@ -2,13 +2,18 @@ import React from 'react'
 
 import { faChartArea, faExchangeAlt, faWindowRestore, faMicrophone } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { getEnvVars } from '../../config/config'
+
+const endpointConfig = getEnvVars(process.env.REACT_APP_ENV!)
 
 export type ConfigType = Partial<typeof config[0]>
 
 export const config = [
   {
     name: 'Bond Order Ticket',
-    url: 'http://localhost:3000/order-ticket',
+    url: `${
+      endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname
+    }/order-ticket`,
     icon: <FontAwesomeIcon icon={faMicrophone} />,
     provider: {
       platform: 'openfin',
@@ -41,7 +46,7 @@ export const config = [
 
   {
     name: 'Reactive Trader',
-    url: 'http://localhost:3000/',
+    url: `${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
     icon: <FontAwesomeIcon icon={faExchangeAlt} />,
     provider: {
       platform: 'openfin',
