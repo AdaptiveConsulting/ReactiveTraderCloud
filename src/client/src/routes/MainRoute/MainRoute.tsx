@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
@@ -43,20 +43,24 @@ timer(APPLICATION_DISCONNECT).subscribe(() => {
   console.warn(LOG_NAME, `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
 })
 
-export const MainRoute = () => (
-  <React.Fragment>
-    <Helmet>
-      <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
-    </Helmet>
-    <ThemeStorage.Provider default={ThemeName.Dark}>
-      <ReduxProvider store={store}>
-        <PlatformProvider value={platform}>
-          <React.Fragment>
-            <GlobalScrollbarStyle />
-            <Router />
-          </React.Fragment>
-        </PlatformProvider>
-      </ReduxProvider>
-    </ThemeStorage.Provider>
-  </React.Fragment>
-)
+export default class MainRoute extends Component {
+  render() {
+    return (
+      <React.Fragment>
+        <Helmet>
+          <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
+        </Helmet>
+        <ThemeStorage.Provider default={ThemeName.Dark}>
+          <ReduxProvider store={store}>
+            <PlatformProvider value={platform}>
+              <React.Fragment>
+                <GlobalScrollbarStyle />
+                <Router />
+              </React.Fragment>
+            </PlatformProvider>
+          </ReduxProvider>
+        </ThemeStorage.Provider>
+      </React.Fragment>
+    )
+  }
+}
