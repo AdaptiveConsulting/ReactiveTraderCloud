@@ -25,3 +25,5 @@ const createinstaller = enviroment => {
 
 createinstaller('demo')
 createinstaller('dev')
+createinstaller('launcher-demo')
+createinstaller('launcher-dev')
