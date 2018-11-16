@@ -33,7 +33,10 @@
     "build:react-app": "cross-env react-app-rewired build --scripts-version react-scripts-ts",
     "test": "react-app-rewired test --scripts-version react-scripts-ts --env=jsdom",
     "analyze": "source-map-explorer build/static/js/main.*",
-    "openfin": "openfin -c public/config/openfin/local.app.json -l",
+    "openfin": "openfin -c public/config/openfin/local.json -l",
+    "launcher": "openfin -c public/config/openfin/launcher-demo.json -l",
+    "launcher:dev": "openfin -c public/config/openfin/launcher-dev.json -l",
+    "launcher:local": "openfin -c public/config/openfin/launcher-local.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "precommit": "lint-staged",
     "storybook": "start-storybook -p 6006",
@@ -41,7 +44,7 @@
   },
   "license": "MIT",
   "lint-staged": {
-    "install/**/*.app.json": [
+    "public/config/openfin/*.json": [
       "npm run openfin-build-installer",
       "git add ."
     ],
