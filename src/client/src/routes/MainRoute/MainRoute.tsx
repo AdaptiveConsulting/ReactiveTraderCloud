@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
 
@@ -7,13 +8,13 @@ import { Platform, PlatformProvider } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { ThemeName, ThemeStorage } from 'rt-theme'
 
-import { createApplicationServices } from '../applicationServices'
-import { getEnvVars } from '../config/config'
-import configureStore from '../configureStore'
-import { Router } from '../shell'
-import FakeUserRepository from '../shell/fakeUserRepository'
-import { GlobalScrollbarStyle } from '../shell/GlobalScrollbarStyle'
-import { OpenFinLimitChecker } from '../shell/openFin'
+import { createApplicationServices } from '../../applicationServices'
+import { getEnvVars } from '../../config/config'
+import configureStore from '../../configureStore'
+import { Router } from '../../shell'
+import FakeUserRepository from '../../shell/fakeUserRepository'
+import { GlobalScrollbarStyle } from '../../shell/GlobalScrollbarStyle'
+import { OpenFinLimitChecker } from '../../shell/openFin'
 
 const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
@@ -43,14 +44,19 @@ timer(APPLICATION_DISCONNECT).subscribe(() => {
 })
 
 export const MainRoute = () => (
-  <ThemeStorage.Provider default={ThemeName.Dark}>
-    <ReduxProvider store={store}>
-      <PlatformProvider value={platform}>
-        <React.Fragment>
-          <GlobalScrollbarStyle />
-          <Router />
-        </React.Fragment>
-      </PlatformProvider>
-    </ReduxProvider>
-  </ThemeStorage.Provider>
+  <React.Fragment>
+    <Helmet>
+      <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
+    </Helmet>
+    <ThemeStorage.Provider default={ThemeName.Dark}>
+      <ReduxProvider store={store}>
+        <PlatformProvider value={platform}>
+          <React.Fragment>
+            <GlobalScrollbarStyle />
+            <Router />
+          </React.Fragment>
+        </PlatformProvider>
+      </ReduxProvider>
+    </ThemeStorage.Provider>
+  </React.Fragment>
 )

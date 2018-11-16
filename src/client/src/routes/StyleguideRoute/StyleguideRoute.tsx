@@ -24,7 +24,7 @@ const sections = _.mapKeys(
   (value, key) => _.kebabCase(key),
 )
 
-export const StyleguideRoute: React.SFC = () => (
+const StyleguideRoute: React.SFC = () => (
   <ThemeStorage.Provider storage={sessionStorage}>
     <Root>
       <ThemeStorage.Consumer>
@@ -67,3 +67,6 @@ export const Root = styled(Block)`
   max-width: 100vw;
   overflow: hidden;
 `
+
+export default StyleguideRoute
+export { StyleguideRoute }

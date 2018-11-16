@@ -1,0 +1,95 @@
+apiVersion: extensions/v1beta1
+
+kind: Deployment
+
+metadata:
+  name: "greenkey-scribe"
+  namespace: "{{namespace}}"
+
+spec:
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        name: "greenkey-scribe"
+
+    spec:
+      imagePullSecrets:
+        - name: greenkey-registry-credentials
+
+      volumes:
+        - name: greenkey-cache-volume
+          emptyDir: {}
+
+      containers:
+        - name: "greenkey-custom-intents"
+          image: "reactivetrader/greenkey-custom-intents:0.0.3"
+          volumeMounts:
+            - name: greenkey-cache-volume
+              subPath: 'custom'
+              mountPath: '/corporate_bonds/custom'
+
+        - name: "greenkey-scribe-license"
+          image: "docker.greenkeytech.com/scribelicense"
+          imagePullPolicy: IfNotPresent
+
+          env:
+            - name: GKT_USERNAME
+              value: "{{greenkey.scribe.user}}"
+            - name: GKT_SECRETKEY
+              value: "{{greenkey.scribe.pass}}"
+            - name: GKT_API
+              value: "https://scribeapi.greenkeytech.com/"
+
+          volumeMounts:
+            - name: greenkey-cache-volume
+              subPath: gktlicense
+              mountPath: /gktlicense
+            - name: greenkey-cache-volume
+              subPath: gkt
+              mountPath: /gkt
+
+        - name: "greenkey-scribe"
+          image: "docker.greenkeytech.com/sqcserver"
+          imagePullPolicy: IfNotPresent
+
+          env:
+            # - name: PRODUCT_CLASS
+            #   value: "{{greenkey.scribe.product_class}}"
+            - name: DATA_OUT
+              value: "/data"
+            - name: MODEL_TYPE
+              value: "'tradervoice'"
+            - name: USERS
+              value: "2"
+            # - name: QUOTE_ACTIVATION_KEYWORD
+            #   value: "confirm"
+            - name: DISCOVERY_INTENTS
+              value: "corporate_bonds"
+            - name: DISCOVERY_DOMAINS
+              value: "sales_trader"
+            - name: DISCOVERY
+              value: "True"
+
+
+          volumeMounts:
+            - name: greenkey-cache-volume
+              subPath: gktlicense
+              mountPath: /scribe/gktlicense
+            - name: greenkey-cache-volume
+              subPath: gkt
+              mountPath: /scribe/gkt
+            - name: greenkey-cache-volume
+              subPath: db
+              mountPath: /scribe/db
+            - name: greenkey-cache-volume
+              subPath: data
+              mountPath: /data
+            - name: greenkey-cache-volume
+              subPath: custom
+              mountPath: /custom
+
+          ports:
+            - name: "greenkey-scribe"
+              containerPort: 8888

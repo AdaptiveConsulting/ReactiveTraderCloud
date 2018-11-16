@@ -2,13 +2,7 @@ import { filter, get } from 'lodash'
 
 import { css, styled, Styled } from 'rt-theme'
 
-import { MappedCSS, PassThroughFunc, PassThroughProps } from '../tools'
-
-export type MappedProp = string | MappedPropFn
-export type MappedPropFn = (props: TextProps & PassThroughProps) => MappedCSS
-export interface MappedPropMap {
-  [key: string]: string | MappedProp
-}
+import { MappedCSS, MappedPropMap, PassThroughFunc } from '../tools'
 
 export interface TextProps {
   display?: 'inline' | 'block' | 'inline-block'
@@ -18,13 +12,14 @@ export interface TextProps {
   fontStyle?: 'italic' | string
   fontFamily?: 'lato' | 'montserrat' | string
   textAlign?: 'initial' | 'left' | 'center' | 'right'
-  textTransform?: 'uppercase'
+  textTransform?: 'uppercase' | 'capitalize'
   whiteSpace?: 'initial' | 'nowrap' | 'pre-line' | 'pre-wrap'
+  letterSpacing?: any
   color?: any
   opacity?: 0 | 0.25 | 0.5 | 0.75 | 1
 }
 
-export const textProps: MappedPropMap = {
+export const textProps: MappedPropMap<TextProps> = {
   display: ({ display }) => css({ display }),
   lineHeight: ({ lineHeight }) => css({ lineHeight: `${lineHeight}rem` }),
   fontSize: ({ fontSize }) => css({ fontSize: `${fontSize}rem` }),
@@ -34,6 +29,7 @@ export const textProps: MappedPropMap = {
   textAlign: ({ textAlign }) => css({ textAlign }),
   textTransform: ({ textTransform }) => css({ textTransform }),
   whiteSpace: ({ whiteSpace }) => css({ whiteSpace }),
+  letterSpacing: ({ letterSpacing }) => css({ letterSpacing }),
   color: ({ color, theme }) =>
     css({ color: (color === true && theme.textColor) || get(theme, color) || get(theme.spectrum, color) }),
   opacity: ({ opacity }) => css({ opacity }),
