@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
 
@@ -7,13 +8,13 @@ import { createEnvironment, Environment } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { ThemeName, ThemeStorage } from 'rt-theme'
 
-import { createApplicationServices } from '../applicationServices'
-import { getEnvVars } from '../config/config'
-import configureStore from '../configureStore'
-import { Router } from '../shell'
-import FakeUserRepository from '../shell/fakeUserRepository'
-import { GlobalScrollbarStyle } from '../shell/GlobalScrollbarStyle'
-import { OpenFin } from '../shell/openFin'
+import { createApplicationServices } from '../../applicationServices'
+import { getEnvVars } from '../../config/config'
+import configureStore from '../../configureStore'
+import { Router } from '../../shell'
+import FakeUserRepository from '../../shell/fakeUserRepository'
+import { GlobalScrollbarStyle } from '../../shell/GlobalScrollbarStyle'
+import { OpenFin } from '../../shell/openFin'
 
 declare const window: any
 
@@ -53,16 +54,21 @@ export class MainRoute extends React.Component {
 
   render() {
     return (
-      <ThemeStorage.Provider default={ThemeName.Dark}>
-        <ReduxProvider store={this.store}>
-          <Environment.Provider value={this.environment}>
-            <React.Fragment>
-              <GlobalScrollbarStyle />
-              <Router />
-            </React.Fragment>
-          </Environment.Provider>
-        </ReduxProvider>
-      </ThemeStorage.Provider>
+      <React.Fragment>
+        <Helmet>
+          <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
+        </Helmet>
+        <ThemeStorage.Provider default={ThemeName.Dark}>
+          <ReduxProvider store={this.store}>
+            <Environment.Provider value={this.environment}>
+              <React.Fragment>
+                <GlobalScrollbarStyle />
+                <Router />
+              </React.Fragment>
+            </Environment.Provider>
+          </ReduxProvider>
+        </ThemeStorage.Provider>
+      </React.Fragment>
     )
   }
 }

@@ -1,6 +1,10 @@
-export { Block, BlockProps } from './Block'
-export { SectionBlock, SectionBody } from './SectionBlock'
+// For inclusion in rt-styleguide package
+export { curryProps, extendProps, mergeProps } from '../tools'
+export { mapMarginPaddingProps, MarginPaddingProps, MarginProps, PaddingProps } from './mapMarginPaddingProps'
+export { Block, BlockProps, mapBlockProps } from './Block'
+export { ColorProps, mapColorProps } from './Color'
 export { Paragraph, ParagraphProps } from './Paragraph'
 export { Text, TextProps, mapTextProps } from './Text'
 
-export { mapMarginPaddingProps, MarginPaddingProps, MarginProps, PaddingProps } from './mapMarginPaddingProps'
+// Back to our regularly scheduled exports
+export { SectionBlock, SectionBody } from './SectionBlock'

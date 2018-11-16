@@ -1,0 +1,28 @@
+#! /bin/bash
+
+if [[ $# < 2 ]]; then
+  echo -e "\033[0;32mUsage:\033[0m"
+  echo "  $0 NAME BUILD"
+  echo " "
+  exit 1
+fi
+
+set -euo pipefail
+
+root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
+. ${root_directory}/deploy/config
+
+known_name=$1
+patch_version=${2+".$2"}
+
+image=$(eval "echo \$${known_name}_container_image")
+major_version=$(eval "echo \$${known_name}_container_major")
+minor_version=$(eval "echo \$${known_name}_container_minor")
+version=$major_version.$minor_version$patch_version
+dockerimage=${image}:$version
+
+echo "Validating docker image: $dockerimage"
+if [[ $("$root_directory/deploy/docker/list-tags" $image | grep $version) == "" ]]; then
+  echo "Docker image not found for $dockerimage"
+  exit 1
+fi;

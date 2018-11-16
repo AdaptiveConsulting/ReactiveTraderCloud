@@ -1,25 +1,25 @@
-import _ from 'lodash'
-
 import { css, styled } from 'rt-theme'
 
-import { getColor } from '../tools'
+import { getColor, MappedCSS, MappedPropFn } from '../tools'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 import { mapTextProps, TextProps } from './Text'
 
-export interface BlockProps extends TextProps, MarginPaddingProps {
-  backgroundColor?: string
-  textColor?: string
-  bg?: string
-  fg?: string
-}
+import { ColorProps, mapColorProps } from './Color'
+
+export interface BlockProps extends ColorProps, TextProps, MarginPaddingProps {}
+
+export const mapBlockProps = (propStuff: BlockProps): MappedCSS =>
+  [mapColorProps, mapTextProps, mapMarginPaddingProps].reduce(
+    (acc: MappedCSS, functor: MappedPropFn<BlockProps>) => [].concat(acc, functor(propStuff)),
+    [],
+  )
 
 export const Block = styled.div<BlockProps>`
-  transition: background-color ease-out 0.15s;
-
   ${({ theme, backgroundColor, textColor, bg = backgroundColor, fg = textColor }) =>
     css({
+      transition: bg ? 'background-color ease-out 0.15s' : null,
       backgroundColor: bg && getColor(theme, bg),
-      color: fg && getColor(theme, fg, theme.white),
+      color: fg && getColor(theme, fg, theme.primary.base),
     })};
 
   ${mapTextProps};
