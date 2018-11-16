@@ -1,12 +1,12 @@
-import { BrowserWindowConfig, WindowConfig } from './types'
+import { WindowConfig } from '../types'
 
-type BrowserWindowProps = WindowConfig & BrowserWindowConfig
+type BrowserWindowProps = WindowConfig
 
-export const openBrowserWindow = (config: BrowserWindowProps) => {
+export const openBrowserWindow = (config: BrowserWindowProps, onClose: () => void) => {
   const { name, width, height, center, url } = config
   const { left, top } = calculatePosition(center, width, height)
 
-  return window.open(
+  const win = window.open(
     url,
     name,
     toWindowFeatures({
@@ -16,9 +16,15 @@ export const openBrowserWindow = (config: BrowserWindowProps) => {
       top,
     }),
   )
+
+  if (onClose) {
+    win.addEventListener('beforeunload', onClose)
+  }
+
+  return Promise.resolve(win)
 }
 
-function calculatePosition(center: string, width: number, height: number) {
+function calculatePosition(center: string = 'parent', width: number, height: number) {
   let left = 0
   let top = 0
   if (center === 'parent') {

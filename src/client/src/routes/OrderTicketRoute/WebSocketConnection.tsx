@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { PureComponent } from 'react'
 
-export interface WebSocketEventHandlers {
+export interface WebSocketEventHandles {
   onclose: (ev: CloseEvent) => void
   onerror: (ev: Event) => void
   onmessage: (ev: MessageEvent) => void
@@ -9,7 +9,7 @@ export interface WebSocketEventHandlers {
 }
 
 export interface Props {
-  create: (config: WebSocketEventHandlers) => WebSocket
+  create: (config: WebSocketEventHandles) => WebSocket
   onOpen?: (socket: WebSocket) => void
   onError?: (event: Event) => void
   onMessage?: (event: MessageEvent) => void

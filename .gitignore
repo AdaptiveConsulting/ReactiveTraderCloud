@@ -21,3 +21,4 @@ bin/
 obj/
 docker-compose.yml
 *.pyc
+*.sln

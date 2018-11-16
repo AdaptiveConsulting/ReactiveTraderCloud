@@ -5,8 +5,8 @@ export interface TimerProps {
   duration: number
   immediate?: boolean
   timeout?: (name?: string) => void
-  interval?: (name?: string) => void
-  children?: (name?: string) => void
+  interval?: (name?: string) => unknown
+  children?: (name?: string) => React.ReactNode
 }
 
 export class Timer extends PureComponent<TimerProps> {

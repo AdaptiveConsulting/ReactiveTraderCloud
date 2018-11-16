@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
 
 import { ConnectionActions } from 'rt-actions'
-import { createEnvironment, Environment } from 'rt-components'
+import { Platform, PlatformProvider } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { ThemeName, ThemeStorage } from 'rt-theme'
 
@@ -14,44 +14,36 @@ import configureStore from '../../configureStore'
 import { Router } from '../../shell'
 import FakeUserRepository from '../../shell/fakeUserRepository'
 import { GlobalScrollbarStyle } from '../../shell/GlobalScrollbarStyle'
-import { OpenFin } from '../../shell/openFin'
-
-declare const window: any
-
-const APPLICATION_DISCONNECT = 15 * 60 * 1000
+import { OpenFinLimitChecker } from '../../shell/openFin'
 
 const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
 
-export class MainRoute extends React.Component {
-  openfin = new OpenFin()
-  environment = createEnvironment(this.openfin.isPresent ? this.openfin : null)
+const platform = new Platform()
 
-  store = configureStore(
-    createApplicationServices({
-      autobahn: new AutobahnConnectionProxy(
-        (config.overwriteServerEndpoint ? config.serverEndpointUrl : location.hostname)!,
-        'com.weareadaptive.reactivetrader',
-        +(config.overwriteServerEndpoint ? config.serverPort : location.port)!,
-      ),
-      openfin: this.openfin,
-      user: FakeUserRepository.currentUser,
-    }),
-  )
+const store = configureStore(
+  createApplicationServices({
+    autobahn: new AutobahnConnectionProxy(
+      (config.overwriteServerEndpoint ? config.serverEndpointUrl : location.hostname)!,
+      'com.weareadaptive.reactivetrader',
+      +(config.overwriteServerEndpoint ? config.serverPort : location.port)!,
+    ),
+    limitChecker: new OpenFinLimitChecker(),
+    platform,
+    user: FakeUserRepository.currentUser,
+  }),
+)
 
-  componentDidMount() {
-    if (process.env.NODE_ENV !== 'production') {
-      window.store = this.store
-    }
+store.dispatch(ConnectionActions.connect())
 
-    this.store.dispatch(ConnectionActions.connect())
+const APPLICATION_DISCONNECT = 15 * 60 * 1000
 
-    timer(APPLICATION_DISCONNECT).subscribe(() => {
-      this.store.dispatch(ConnectionActions.disconnect())
-      console.warn(LOG_NAME, `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
-    })
-  }
+timer(APPLICATION_DISCONNECT).subscribe(() => {
+  store.dispatch(ConnectionActions.disconnect())
+  console.warn(LOG_NAME, `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
+})
 
+export default class MainRoute extends Component {
   render() {
     return (
       <React.Fragment>
@@ -59,18 +51,16 @@ export class MainRoute extends React.Component {
           <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
         </Helmet>
         <ThemeStorage.Provider default={ThemeName.Dark}>
-          <ReduxProvider store={this.store}>
-            <Environment.Provider value={this.environment}>
+          <ReduxProvider store={store}>
+            <PlatformProvider value={platform}>
               <React.Fragment>
                 <GlobalScrollbarStyle />
                 <Router />
               </React.Fragment>
-            </Environment.Provider>
+            </PlatformProvider>
           </ReduxProvider>
         </ThemeStorage.Provider>
       </React.Fragment>
     )
   }
 }
-
-export default MainRoute
