@@ -5,7 +5,7 @@ const fstream = require('fstream')
 
 const createinstaller = enviroment => {
   const fileName = `ReactiveTraderCloud-${enviroment}`
-  const appJSONUrl = `https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/src/client/public/config/openfin/${enviroment}.app.json`
+  const appJSONUrl = `https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/src/client/public/config/openfin/${enviroment}.json`
 
   const file = fs.createWriteStream(`install/ReactiveTraderCloud-${enviroment}.zip`)
   const request = https.get(
@@ -19,7 +19,7 @@ const createinstaller = enviroment => {
         writeStream.on('close', () => {
           fs.unlink(`install/ReactiveTraderCloud-${enviroment}.zip`)
         })
-      })
+      }),
   )
 }
 
