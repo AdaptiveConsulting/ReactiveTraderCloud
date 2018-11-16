@@ -1,3 +1,4 @@
+import { PlatformAdapter } from 'rt-components'
 import {
   AutobahnConnection,
   ConnectionEvent,
@@ -5,28 +6,29 @@ import {
   ServiceClient,
   ServiceCollectionMap,
   serviceStatusStream$,
-  ServiceStub
+  ServiceStub,
 } from 'rt-system'
 import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
 import { multicast, refCount } from 'rxjs/operators'
-import { OpenFin } from './shell/openFin'
+import { OpenFinLimitChecker } from './shell/openFin'
 import { ReferenceDataService } from './shell/referenceData'
 
 const HEARTBEAT_TIMEOUT = 3000
 
 export interface ApplicationProps {
   autobahn: AutobahnConnection
-  openfin: OpenFin
+  platform: PlatformAdapter
+  limitChecker: OpenFinLimitChecker
   user: User
 }
 
-export function createApplicationServices({ autobahn, openfin, user }: ApplicationProps) {
+export function createApplicationServices({ autobahn, limitChecker, user, platform }: ApplicationProps) {
   const connection$ = createConnection$(autobahn).pipe(
     multicast(() => {
       return new ReplaySubject<ConnectionEvent>(1)
     }),
-    refCount()
+    refCount(),
   )
 
   const serviceStub = new ServiceStub(user.code, connection$)
@@ -35,7 +37,7 @@ export function createApplicationServices({ autobahn, openfin, user }: Applicati
     multicast(() => {
       return new ReplaySubject<ServiceCollectionMap>(1)
     }),
-    refCount()
+    refCount(),
   )
 
   const loadBalancedServiceStub = new ServiceClient(serviceStub, serviceStatus$)
@@ -44,11 +46,11 @@ export function createApplicationServices({ autobahn, openfin, user }: Applicati
 
   return {
     referenceDataService,
-
-    openFin: openfin,
+    platform,
+    limitChecker,
     loadBalancedServiceStub,
     serviceStatus$,
-    connection$
+    connection$,
   }
 }
 

@@ -1,14 +1,14 @@
 import { mix } from 'polished'
 import React, { PureComponent } from 'react'
 
-import { createEnvironment, Environment } from 'rt-components'
+import { Platform, PlatformProvider } from 'rt-components'
 import { ThemeName, ThemeProvider, ThemeStorage } from 'rt-theme'
 
 import { OrderTicket } from './OrderTicket'
 
-export class OrderTicketRoute extends PureComponent<{}, { instance: number }> {
-  environment = createEnvironment()
+const platform = new Platform()
 
+export class OrderTicketRoute extends PureComponent<{}, { instance: number }> {
   state = {
     instance: 0,
   }
@@ -18,7 +18,7 @@ export class OrderTicketRoute extends PureComponent<{}, { instance: number }> {
   render() {
     return (
       <ThemeStorage.Provider storage={sessionStorage} default={ThemeName.Dark}>
-        <Environment.Provider value={this.environment}>
+        <PlatformProvider value={platform}>
           <ThemeProvider
             theme={theme => ({
               muteColor: mix(0.5, theme.primary.base, theme.secondary[2]),
@@ -27,7 +27,7 @@ export class OrderTicketRoute extends PureComponent<{}, { instance: number }> {
           >
             <OrderTicket key={'OrderTicket' + this.state.instance} reset={this.reset} />
           </ThemeProvider>
-        </Environment.Provider>
+        </PlatformProvider>
       </ThemeStorage.Provider>
     )
   }

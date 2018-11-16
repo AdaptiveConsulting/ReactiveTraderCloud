@@ -1,8 +1,6 @@
 import React from 'react'
-import { EnvironmentValue, withEnvironment } from 'rt-components'
+import { PlatformAdapter, withPlatform } from 'rt-components'
 import { withDefaultProps } from 'rt-util'
-import { openBrowserWindow } from './BrowserWindow'
-import { openDesktopWindow } from './DesktopWindow'
 import { WindowConfig } from './types'
 
 const defaultPortalProps = {
@@ -14,30 +12,25 @@ const defaultPortalProps = {
     url: '',
     width: 600,
     height: 640,
+    center: 'parent' as 'parent' | 'screen',
   } as WindowConfig,
-  desktopConfig: {},
-  browserConfig: { center: 'parent' as 'parent' | 'screen' },
 }
 
 export type PortalProps = typeof defaultPortalProps
 
-class NewPortal extends React.Component<PortalProps & { environment: EnvironmentValue }> {
+class NewPortal extends React.Component<PortalProps & { platform: PlatformAdapter }> {
   externalWindow: Window | null = null
   mutationObserver: MutationObserver | null = null
   container = document.createElement('div')
 
   async componentDidMount() {
-    const { environment, config, desktopConfig, browserConfig } = this.props
+    const { config, platform } = this.props
 
-    if (environment.provider.type === 'desktop') {
-      const win = await openDesktopWindow({ ...config, ...desktopConfig })
-      win.addEventListener('closed', this.release)
-      this.externalWindow = win.getNativeWindow()
-    } else {
-      this.externalWindow = openBrowserWindow({ ...config, ...browserConfig })
+    this.externalWindow = await platform.window.open(config, this.release)
+
+    if (this.externalWindow) {
+      window.addEventListener('beforeunload', this.release)
     }
-    this.externalWindow.addEventListener('beforeunload', this.release)
-    window.addEventListener('beforeunload', this.release)
   }
 
   componentWillUnmount() {
@@ -55,7 +48,9 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
   release = () => {
     const { onUnload } = this.props
 
-    window.removeEventListener('beforeunload', this.release)
+    if (this.externalWindow) {
+      window.removeEventListener('beforeunload', this.release)
+    }
 
     if (this.mutationObserver) {
       this.mutationObserver.disconnect()
@@ -66,4 +61,4 @@ class NewPortal extends React.Component<PortalProps & { environment: Environment
   }
 }
 
-export default withEnvironment(withDefaultProps(defaultPortalProps, NewPortal))
+export default withPlatform(withDefaultProps(defaultPortalProps, NewPortal))
