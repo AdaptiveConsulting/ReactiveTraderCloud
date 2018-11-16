@@ -34,6 +34,7 @@
     "test": "react-app-rewired test --scripts-version react-scripts-ts --env=jsdom",
     "analyze": "source-map-explorer build/static/js/main.*",
     "openfin": "openfin -c public/config/openfin/local.app.json -l",
+    "openfin:launcher": "openfin -c public/config/openfin/launcher.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "precommit": "lint-staged",
     "storybook": "start-storybook -p 6006",
