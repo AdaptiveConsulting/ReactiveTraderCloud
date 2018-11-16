@@ -2,18 +2,18 @@ import _ from 'lodash'
 import { PureComponent } from 'react'
 
 export interface WebSocketEventHandles {
-  onopen: any
-  onerror: any
-  onmessage: any
-  onclose: any
+  onclose: (ev: CloseEvent) => void
+  onerror: (ev: Event) => void
+  onmessage: (ev: MessageEvent) => void
+  onopen: (ev: Event) => void
 }
 
 export interface Props {
-  create: (config: WebSocketEventHandles) => WebSocket & any
-  onOpen?: (event: any) => any
-  onError?: (event: ErrorEvent) => any
-  onMessage?: (event: any) => any
-  onClose?: (event: any) => any
+  create: (config: WebSocketEventHandles) => WebSocket
+  onOpen?: (socket: WebSocket) => void
+  onError?: (event: Event) => void
+  onMessage?: (event: MessageEvent) => void
+  onClose?: (event: CloseEvent) => void
 }
 
 class WebSocketConnection extends PureComponent<Props> {
@@ -38,25 +38,25 @@ class WebSocketConnection extends PureComponent<Props> {
     }
   }
 
-  onOpen = (event: any) => {
+  onOpen = (event: Event) => {
     if (!this.umounting && this.props.onOpen) {
-      this.props.onOpen({ ...event, target: this.socket })
+      this.props.onOpen(this.socket)
     }
   }
 
-  onError = (event: ErrorEvent) => {
+  onError = (event: Event) => {
     if (!this.umounting && this.props.onError) {
       this.props.onError(event)
     }
   }
 
-  onMessage = (event: any) => {
+  onMessage = (event: MessageEvent) => {
     if (!this.umounting && this.props.onMessage) {
       this.props.onMessage(event)
     }
   }
 
-  onClose = (event: any) => {
+  onClose = (event: CloseEvent) => {
     if (!this.umounting && this.props.onClose) {
       this.props.onClose(event)
     }

@@ -29,7 +29,11 @@ interface State {
   features: any
 }
 
-export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
+interface Props {
+  reset: () => void
+}
+
+export class OrderTicket extends PureComponent<Props, State> {
   state: State = {
     ...{
       requestSession: false,
@@ -48,6 +52,8 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
       }),
   }
 
+  viewportRef = React.createRef<HTMLDivElement>()
+
   hotkeys = {
     keyMap: {
       escape: ['esc'],
@@ -60,8 +66,8 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     },
     handlers: {
       submit: () => this.onSubmit(),
-      buy: () => this.onBuy(null),
-      sell: () => this.onSell(null),
+      buy: () => this.onBuy(),
+      sell: () => this.onSell(),
 
       escape: () => this.onCancel(),
 
@@ -82,13 +88,13 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     },
   }
 
-  focus = (ref: any) => {
-    if (ref) {
-      const node = ReactDOM.findDOMNode(ref)
-      if (node) {
-        // @ts-ignore
-        node.focus()
-      }
+  componentDidMount = () => {
+    const { current } = this.viewportRef
+
+    const node = ReactDOM.findDOMNode(current) as HTMLDivElement
+
+    if (node) {
+      node.focus()
     }
   }
 
@@ -113,11 +119,10 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     }
 
     const {
-      data: { result: { intents } = {} as any },
+      data: { result: { intents = [] } = {} },
     } = sessionResult
 
-    // @ts-ignore
-    const { entities }: any = _.find(intents, { label: 'corporate_bonds' }) || {}
+    const { entities = [] } = _.find(intents, { label: 'corporate_bonds' }) || {}
 
     // Select highest probable match by field within result.intents
     const [product, client, notional] = ['product', 'client', 'quantity']
@@ -137,7 +142,7 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
   }
 
   onSessionEnd = () => {
-    const { query, sessionResult } = this.state
+    // const { query, sessionResult } = this.state
 
     this.setState({
       requestSession: false,
@@ -146,7 +151,7 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     })
   }
 
-  onOrderFormChange = ({ target: { name, value } }: any) => {
+  onOrderFormChange = ({ currentTarget: { name, value } }: React.FormEvent<HTMLInputElement>) => {
     this.setState(({ query }) => ({ query: { ...query, [name]: value } }))
   }
 
@@ -176,15 +181,15 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     })
   }
 
-  onBuy = (quote: any) => {
-    this.execute(quote)
+  onBuy = () => {
+    this.execute()
   }
 
-  onSell = (quote: any) => {
-    this.execute(quote)
+  onSell = () => {
+    this.execute()
   }
 
-  execute = (quote: any) => {
+  execute = () => {
     if (this.state.requestQuote) {
       this.setState({
         requestExecution: true,
@@ -197,7 +202,7 @@ export class OrderTicket extends PureComponent<{ reset: () => any }, State> {
     const { executed, requestExecution, requestQuote, requestSession, query = {} } = this.state
 
     return (
-      <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} ref={this.focus}>
+      <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} innerRef={this.viewportRef}>
         <AppLayout bg="shell.backgroundColor">
           <ChromeLayout bg="primary.base">
             <WindowControls />

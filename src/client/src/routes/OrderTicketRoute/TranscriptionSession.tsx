@@ -7,6 +7,7 @@ import * as GreenKeyRecognition from './GreenKeyRecognition'
 import { Timer } from './Timer'
 
 import { WebSocketConnection, WebSocketEventHandles } from './WebSocketConnection'
+import { SessionEvent } from './ScribeSession'
 
 // tslint:disable-next-line
 export interface SessionResultData extends GreenKeyRecognition.Result {}
@@ -19,11 +20,11 @@ export interface Props {
   input: MediaStream
   mimeType: string
   bitsPerSecond: number
-  onStart?: (event: any) => any
-  onBlob?: (event: BlobEvent) => any
-  onError?: (event: any) => any
-  onResult?: (event: SessionResult) => any
-  onEnd?: (event: any) => any
+  onStart?: () => void
+  onBlob?: (event: BlobEvent) => void
+  onError?: (event: SessionEvent) => void
+  onResult?: (event: SessionResult) => void
+  onEnd?: () => void
 }
 
 interface State {
@@ -76,7 +77,7 @@ export class TranscriptionSession extends PureComponent<Props, State> {
     this.setState({ recording: true })
 
     if (this.props.onStart) {
-      this.props.onStart(this)
+      this.props.onStart()
     }
   }
 
@@ -101,8 +102,8 @@ export class TranscriptionSession extends PureComponent<Props, State> {
   createWebSocket = (handles: WebSocketEventHandles) =>
     GreenKeyRecognition.createWebSocket({ contentType: this.props.mimeType, ...handles })
 
-  onOpen = ({ target }: Event & { target: WebSocket }) => {
-    this.setState({ socket: target, connected: true })
+  onOpen = (socket: WebSocket) => {
+    this.setState({ socket, connected: true })
   }
 
   onMessage = (event: MessageEvent) => {
@@ -123,7 +124,7 @@ export class TranscriptionSession extends PureComponent<Props, State> {
     }
   }
 
-  onError = (error: Error | ErrorEvent) => {
+  onError = (error: Event) => {
     if (this.unmounting) {
       console.error('Unexpected call to TranscriptionSession.onError')
       return
@@ -153,7 +154,7 @@ export class TranscriptionSession extends PureComponent<Props, State> {
 
     this.setState({ socket: null, connected: false, recording: false }, () => {
       if (this.props.onEnd) {
-        this.props.onEnd(null)
+        this.props.onEnd()
       }
     })
   }

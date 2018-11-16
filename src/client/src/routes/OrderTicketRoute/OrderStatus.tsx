@@ -14,12 +14,12 @@ export interface Props {
   ready?: boolean
   requestQuote?: boolean
   query?: any
-  onSubmit?: (event: any) => any
-  onCancel?: (event: any) => any
-  onExpire?: () => any
-  onBuy?: (event: any) => any
-  onSell?: (event: any) => any
-  onClick?: (event: any) => any
+  onSubmit?: () => void
+  onCancel?: () => void
+  onExpire?: () => void
+  onBuy?: () => void
+  onSell?: () => void
+  onClick?: () => void
 }
 
 interface State extends Props {
@@ -52,11 +52,11 @@ export class OrderStatus extends React.Component<Props, State> {
     return next
   }
 
-  onClick = (event: any) => {
+  onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { onClick, [`on${_.capitalize(event.currentTarget.name)}`]: onEventHandler = onClick } = this.props
 
     if (onEventHandler) {
-      onEventHandler(event)
+      onEventHandler()
     }
   }
 

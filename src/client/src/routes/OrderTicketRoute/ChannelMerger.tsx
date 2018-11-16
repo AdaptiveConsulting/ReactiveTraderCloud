@@ -5,7 +5,7 @@ export type Source = 'microphone' | 'sample'
 
 interface Props {
   context: AudioContext
-  children: (state: State) => any
+  children: (state: State) => React.ReactNode
   inputs: AudioNode[]
   outputs: AudioDestinationNode[]
 }
@@ -30,7 +30,7 @@ class ChannelMerger extends PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps({ inputs, outputs }: Props, current: State) {
-    let next: any = {}
+    let next: State = { inputs: [], outputs: [] }
 
     if (!_.isEqual(inputs, current.inputs)) {
       current.inputs.map((input: AudioNode) => input && input.disconnect(current.destination))

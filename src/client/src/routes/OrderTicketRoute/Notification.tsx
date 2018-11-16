@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { ReactNodeLike } from 'prop-types'
 
 import { faExclamationCircle, faCheckCircle, faCircleNotch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,8 +13,12 @@ export interface NotificationProps {
   position: 'bottom' | 'top'
   intent: 'good' | 'aware' | 'bad'
   event?: unknown
-  children: ReactNodeLike
-  onEnd?: () => any
+  children: React.ReactNode
+  onEnd?: () => void
+}
+
+interface State {
+  visible: boolean
 }
 
 const intents = {
@@ -30,9 +33,7 @@ const intents = {
   },
 }
 
-export interface NotificationProps {}
-
-class NotificationLayout extends React.PureComponent<NotificationProps, any> {
+class Notification extends React.PureComponent<NotificationProps, State> {
   state = {
     visible: true,
   }
@@ -149,5 +150,5 @@ Transistion.from = {
   ],
 }
 
-export default NotificationLayout
-export { NotificationLayout as Notification }
+export default Notification
+export { Notification }

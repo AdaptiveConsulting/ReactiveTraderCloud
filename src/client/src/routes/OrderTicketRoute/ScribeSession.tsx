@@ -19,17 +19,17 @@ export interface Props {
   input: MediaStream
   mimeType: string
   bitsPerSecond: number
-  onStart?: (event: any) => any
-  onBlob?: (event: BlobEvent) => any
-  onError?: (event: SessionEvent) => any
-  onResult?: (event: SessionResult) => any
-  onEnd?: (event: any) => any
+  onStart?: () => void
+  onBlob?: (event: BlobEvent) => void
+  onError?: (event: SessionEvent) => void
+  onResult?: (event: SessionResult) => void
+  onEnd?: () => void
 }
 
 interface State {
   input?: MediaStream
   recorder?: MediaRecorderInterface
-  socket?: any
+  socket?: WebSocket
 
   connected: boolean
   recording: boolean
@@ -41,7 +41,7 @@ interface State {
 export interface SessionEvent {
   ok: boolean
   source: Dependency
-  error?: Error | ErrorEvent
+  error?: Event
 }
 
 type Dependency = 'socket'
@@ -95,6 +95,9 @@ export class ScribeSession extends PureComponent<Props, State> {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.close()
     }
+
+    recorder.removeEventListener('start', this.startRecording)
+    recorder.removeEventListener('dataavailable', this.onAudioData)
   }
 
   recorder: MediaRecorderInterface
@@ -105,18 +108,22 @@ export class ScribeSession extends PureComponent<Props, State> {
       this.recorder = recorder
 
       if (this.props.onStart) {
-        this.props.onStart(this)
+        this.props.onStart()
       }
 
       // Start recording, and stream subsequent events
-      recorder.addEventListener('start', () => this.setState({ recording: true }))
+      recorder.addEventListener('start', this.startRecording)
       recorder.addEventListener('dataavailable', this.onAudioData)
       recorder.start()
     }
   }
 
+  startRecording = () => {
+    this.setState({ recording: true })
+  }
+
   chunks: Blob[] = []
-  onAudioData = (event: any) => {
+  onAudioData = (event: BlobEvent) => {
     const { onBlob } = this.props
     const { socket } = this.state
 
@@ -134,8 +141,8 @@ export class ScribeSession extends PureComponent<Props, State> {
   createWebSocket = (handles: WebSocketEventHandles) =>
     GreenKeyRecognition.createWebSocket({ contentType: this.props.mimeType, ...handles })
 
-  onOpen = ({ target }: Event) => {
-    this.setState({ socket: target, connected: true })
+  onOpen = (socket: WebSocket) => {
+    this.setState({ socket, connected: true })
   }
 
   onMessage = (event: MessageEvent) => {
@@ -168,7 +175,7 @@ export class ScribeSession extends PureComponent<Props, State> {
     }
   }
 
-  onError = (error: Error | ErrorEvent) => {
+  onError = (error: Event) => {
     if (this.unmounting) {
       console.error('Unexpected call to ScribeSession.onError')
       return
@@ -199,7 +206,7 @@ export class ScribeSession extends PureComponent<Props, State> {
 
     this.setState({ socket: null, connected: false, recording: false }, () => {
       if (this.props.onEnd) {
-        this.props.onEnd(null)
+        this.props.onEnd()
       }
     })
   }

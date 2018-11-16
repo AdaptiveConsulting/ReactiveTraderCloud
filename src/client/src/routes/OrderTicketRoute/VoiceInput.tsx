@@ -13,7 +13,7 @@ import { BlobDownload } from './devtools/BlobDownload'
 import { ChannelMerger } from './ChannelMerger'
 import { MediaPlayer } from './MediaPlayer'
 import { Microphone } from './Microphone'
-import { ScribeSession } from './ScribeSession'
+import { ScribeSession, SessionEvent } from './ScribeSession'
 import { UserMedia, UserMediaState } from './UserMedia'
 import { TranscriptionSession, SessionResult } from './TranscriptionSession'
 import { Timer } from './Timer'
@@ -27,9 +27,9 @@ interface Props {
   source?: SourceType
   context?: AudioContext
   requestSession?: boolean
-  onStart?: () => any
-  onResult?: (data: VoiceInputResult) => any
-  onEnd?: () => any
+  onStart?: () => void
+  onResult?: (data: VoiceInputResult) => void
+  onEnd?: () => void
   // testing
   features: {
     [key: string]: any
@@ -50,7 +50,7 @@ interface State {
   sessionCount: number
   sessionConnected: boolean
   sessionInstance?: any
-  sessionError?: any
+  sessionError?: SessionEvent
   // data
   value?: any
 }
@@ -166,7 +166,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     }
   }
 
-  onSessionError = (event: any) => {
+  onSessionError = (event: SessionEvent) => {
     this.setState({
       sessionError: event,
       sessionConnected: false,

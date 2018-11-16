@@ -12,6 +12,8 @@ interface State {
 class BlobDownload extends React.PureComponent<Props, State> {
   state: State = {}
 
+  anchorRef = React.createRef<HTMLAnchorElement>()
+
   static getDerivedStateFromProps({ blob }: Props, state: State) {
     if (blob === state.blob) {
       return null
@@ -24,19 +26,25 @@ class BlobDownload extends React.PureComponent<Props, State> {
     return { blob, url: URL.createObjectURL(blob) }
   }
 
+  componentDidMount = () => {
+    if (this.props.force && this.anchorRef) {
+      this.anchorRef.current.click()
+    }
+  }
+
   componentWillUnmount() {
     if (this.state.url) {
       URL.revokeObjectURL(this.state.url)
     }
   }
 
-  click = (ref: any) => ref && ref.click()
-  stopPropagation = (event: any) => event.stopPropagation()
+  stopPropagation = (event: React.SyntheticEvent) => event.stopPropagation()
 
   public render() {
     const { blob, force, ...props } = this.props
+
     return this.state.url ? (
-      <a {...props} href={this.state.url} ref={force ? this.click : null} onClick={this.stopPropagation} />
+      <a {...props} href={this.state.url} ref={this.anchorRef} onClick={this.stopPropagation} />
     ) : null
   }
 }
