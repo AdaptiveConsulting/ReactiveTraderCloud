@@ -6,7 +6,7 @@ import MediaRecorder, { BlobEvent } from './MediaRecorderComponent'
 import * as GreenKeyRecognition from './GreenKeyRecognition'
 import { Timer } from './Timer'
 
-import { WebSocketConnection, WebSocketEventHandlers } from './WebSocketConnection'
+import { WebSocketConnection, WebSocketEventHandles } from './WebSocketConnection'
 import { SessionEvent } from './ScribeSession'
 
 // tslint:disable-next-line
@@ -99,7 +99,7 @@ export class TranscriptionSession extends PureComponent<Props, State> {
   //
   //  WebSocket
   //
-  createWebSocket = (handles: WebSocketEventHandlers) =>
+  createWebSocket = (handles: WebSocketEventHandles) =>
     GreenKeyRecognition.createWebSocket({ contentType: this.props.mimeType, ...handles })
 
   onOpen = (socket: WebSocket) => {
