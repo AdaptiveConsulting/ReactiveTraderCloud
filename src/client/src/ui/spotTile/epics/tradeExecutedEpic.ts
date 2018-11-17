@@ -5,12 +5,9 @@ import { ApplicationEpic } from 'StoreTypes'
 import { TILE_ACTION_TYPES } from '../actions'
 import { ExecutedTradeAction } from './spotTileEpics'
 
-export const connectTradeExecutedToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
+export const publishTradeExecutedEpic: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     ofType<Action, ExecutedTradeAction>(TILE_ACTION_TYPES.TRADE_EXECUTED),
-    tap(
-      (action: ExecutedTradeAction) =>
-        action.meta && openFin.sendPositionClosedNotification(action.meta.uuid, action.meta.correlationId)
-    ),
-    ignoreElements()
+    tap((action: ExecutedTradeAction) => action.meta && platform.interop.publish(action.meta.correlationId, null)),
+    ignoreElements(),
   )

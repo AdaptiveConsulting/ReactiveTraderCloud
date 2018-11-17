@@ -8,9 +8,6 @@ import { colors } from 'rt-theme'
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
 
-export const layout = React.Fragment
-export const props = {}
-
 export default () => (
   <React.Fragment>
     <SectionBlock intent="secondary" mh={3}>

@@ -3,10 +3,5 @@ export interface WindowConfig {
   url: string
   width: number
   height: number
-}
-
-//export interface DesktopWindowConfig {}
-
-export interface BrowserWindowConfig {
-  center: 'parent' | 'screen'
+  center?: 'parent' | 'screen'
 }

@@ -71,6 +71,12 @@ export default injectGlobal`
     max-width: 100vw;
   }
 
+  button {
+    -webkit-appearance: none;
+    border-width: 0;
+    border-color: transparent;
+  }
+  
   button:focus {
     outline: none;
   }

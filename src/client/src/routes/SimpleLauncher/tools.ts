@@ -62,12 +62,9 @@ export function createOpenFinApplication({
       } as any,
       () => resolve(app),
       e => {
-        debugger
         reject(e)
       },
     )
-
-    debugger
   })
 }
 

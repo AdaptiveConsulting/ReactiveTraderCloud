@@ -34,6 +34,8 @@ export class Link extends React.Component<LinkProps> {
   onClick = (event: MouseEvent) => {
     open(this.props.to)
 
+    event.preventDefault()
+
     return false
   }
 

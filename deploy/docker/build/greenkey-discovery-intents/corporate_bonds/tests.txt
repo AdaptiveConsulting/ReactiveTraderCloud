@@ -1,0 +1,36 @@
+test: (1)
+transcript: netflix twenty five at two million for r b c
+product: Netflix 25
+quantity: 2M
+client: RBC
+
+test: (2)
+transcript: verizon twenty two at five million for barclays
+product: Verizon 22
+quantity: 5M
+client: Barclays
+
+test: (3)
+transcript: apple twenty three at ten million for j p
+product: Apple 23
+quantity: 10M
+client: JP
+
+test: (4)
+transcript: snap twenty four at eight million for jeffries
+product: Snap 24
+quantity: 8M
+client: Jeffries
+
+test: (5)
+transcript: tesla twenty at one million for b n y
+product: Tesla 20
+quantity: 1M
+client: BNY
+
+test: (6)
+transcript: tesla twenty four at two and a half million for b n y
+product: Tesla 24
+quantity: 2.5M
+client: BNY
+

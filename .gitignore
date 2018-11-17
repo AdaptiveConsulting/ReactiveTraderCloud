@@ -20,4 +20,5 @@ key.pub
 bin/
 obj/
 docker-compose.yml
+*.pyc
 *.sln
