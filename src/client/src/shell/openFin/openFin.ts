@@ -4,89 +4,13 @@ const LOG_NAME = 'OpenFin: '
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'
 
-export class OpenFin {
-  type = 'desktop'
-  platform = 'openfin'
-
+export class OpenFinLimitChecker {
   private limitCheckSubscriber: string | null = null
   private limitCheckId: number = 1
 
   constructor() {
-    if (this.isPresent) {
+    if (typeof fin !== 'undefined') {
       this.initializeLimitChecker()
-    }
-  }
-
-  get isPresent() {
-    return typeof fin !== 'undefined'
-  }
-
-  close = () => {
-    fin.desktop.Application.getCurrent().close()
-  }
-
-  minimize = () => {
-    this.currentWindow.minimize(
-      () => console.info(LOG_NAME, 'Window minimized with success.'),
-      err => console.error(LOG_NAME, 'Failed to minimize window.', err),
-    )
-  }
-
-  maximize = () => {
-    this.currentWindow.getState(state => {
-      switch (state) {
-        case 'maximized':
-        case 'restored':
-        case 'minimized':
-          this.currentWindow.restore(
-            () =>
-              this.currentWindow.bringToFront(
-                () => console.info(LOG_NAME, 'Window brought to front.'),
-                err => console.error(LOG_NAME, err),
-              ),
-            err => console.error(LOG_NAME, err),
-          )
-          break
-        default:
-          this.currentWindow.maximize(
-            () => console.info(LOG_NAME, 'Window maximized with success.'),
-            err => console.error(LOG_NAME, 'Failed to maximize window.', err),
-          )
-      }
-    })
-  }
-
-  bringToFront(currentWindow: fin.OpenFinWindow = this.currentWindow) {
-    currentWindow.getState(state => {
-      if (state === 'minimized') {
-        currentWindow.restore(
-          () =>
-            currentWindow.bringToFront(
-              () => console.info(LOG_NAME, 'Window brought to front.'),
-              err => console.error(LOG_NAME, err),
-            ),
-          err => console.error(LOG_NAME, err),
-        )
-      } else {
-        currentWindow.bringToFront(
-          () => console.info(LOG_NAME, 'Window brought to front.'),
-          err => console.error(LOG_NAME, err),
-        )
-      }
-    })
-  }
-
-  addSubscription(name: string, callback: (msg: any, uuid: any) => void) {
-    if (!fin.desktop.InterApplicationBus) {
-      fin.desktop.main(() => {
-        fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
-          callback.call(null, msg, uuid)
-        })
-      })
-    } else {
-      fin.desktop.InterApplicationBus.subscribe('*', name, (msg, uuid) => {
-        callback.call(null, msg, uuid)
-      })
     }
   }
 
@@ -125,31 +49,6 @@ export class OpenFin {
     })
   }
 
-  get currentWindow() {
-    return fin.desktop.Window.getCurrent()
-  }
-
-  /**
-   * Display External Chart
-   * @param symbol
-   * @returns {Promise|Promise<T>}
-   */
-  displayCurrencyChart(symbol: string) {
-    return new Promise<string>((resolve, reject) => {
-      const chartIqAppId = 'ChartIQ'
-      fin.desktop.System.getAllApplications(apps => {
-        const chartIqApp = apps.find((app: any) => {
-          return app.isRunning && app.uuid === chartIqAppId
-        })
-        if (chartIqApp) {
-          resolve(this.refreshCurrencyChart(symbol))
-        } else {
-          resolve(this.launchCurrencyChart(symbol))
-        }
-      })
-    })
-  }
-
   /**
    * Initialize limit checker
    * @private
@@ -170,81 +69,5 @@ export class OpenFin {
         }
       })
     })
-  }
-
-  /**
-   *
-   * @param symbol
-   * @returns {Promise<void>|Promise.<T>|Promise<T>}
-   * @private
-   */
-  refreshCurrencyChart(symbol: string) {
-    const interval = 5
-    fin.desktop.InterApplicationBus.publish('chartiq:main:change_symbol', {
-      symbol,
-      interval,
-    })
-    return Promise.resolve(symbol)
-  }
-
-  /**
-   * @param symbol
-   * @returns {Promise<T>|Promise}
-   * @private
-   */
-  launchCurrencyChart(symbol: string) {
-    return new Promise<string>((resolve, reject) => {
-      const interval = 5
-      const chartIqAppId = 'ChartIQ'
-      const url = `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/chartiq-shim.html?symbol=${symbol}&period=${interval}`
-      const icon = 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/icon.png'
-      const app: fin.OpenFinApplication = new fin.desktop.Application(
-        {
-          url,
-          name: chartIqAppId,
-          uuid: chartIqAppId,
-          mainWindowOptions: {
-            icon,
-            autoShow: false,
-          },
-        },
-        () => app.run(() => setTimeout(() => resolve(symbol), 1000), err => reject(err)),
-        err => reject(err),
-      )
-    })
-  }
-
-  openTradeNotification = (tradeNotification: any) =>
-    new fin.desktop.Notification({
-      url: '/notification',
-      message: tradeNotification,
-      duration: 20000,
-    })
-
-  publishCurrentPositions(ccyPairPositions: any) {
-    if (!this.isPresent) {
-      return
-    }
-
-    fin.desktop.InterApplicationBus.publish('position-update', ccyPairPositions)
-  }
-
-  publishPrice(price: any) {
-    fin.desktop.InterApplicationBus.publish('price-update', price)
-  }
-
-  sendAllBlotterData(parsed: any) {
-    fin.desktop.InterApplicationBus.publish('blotter-data', parsed)
-  }
-
-  sendPositionClosedNotification(uuid: string, correlationId: string) {
-    if (!this.isPresent) {
-      return
-    }
-    fin.desktop.InterApplicationBus.send(uuid, 'position-closed', correlationId)
-  }
-
-  open(url: string) {
-    fin.desktop.System.openUrlWithBrowser(url)
   }
 }

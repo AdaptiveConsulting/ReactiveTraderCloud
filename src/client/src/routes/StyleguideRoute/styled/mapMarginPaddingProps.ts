@@ -18,7 +18,7 @@ export interface MarginProps {
 
 export interface PaddingProps {
   p?: PropValue
-  px?: PropValue
+  px?: PropValue | 'viewport'
   py?: PropValue
   pt?: PropValue
   pr?: PropValue
@@ -80,7 +80,7 @@ export const { marginPaddingProps, mapMarginPaddingProps } = (() => {
       padding-right: 2rem;
     }
   `
-
+  // tslint:disable
   const marginPaddingProps = {
     ...margin,
     ...padding,

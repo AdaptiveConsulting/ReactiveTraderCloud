@@ -59,6 +59,7 @@ export interface CorePaletteMap extends PaletteMap<CorePalette> {
 
 export interface AccentPaletteMap extends PaletteMap<AccentPalette> {
   accent: AccentPalette
+  primary: AccentPalette
   aware: AccentPalette
   bad: AccentPalette
   good: AccentPalette
@@ -182,6 +183,11 @@ export const accents: AccentPaletteMap = {
     1: blue.D2,
     2: blue.L5,
   },
+  primary: {
+    base: blue.base,
+    1: blue.D2,
+    2: blue.L5,
+  },
   good: {
     base: green.base,
     1: green.D1,
@@ -215,6 +221,7 @@ export const spectrum = {
 }
 
 export const colors = {
+  transparent: transparent.base,
   spectrum,
   accents,
   light,

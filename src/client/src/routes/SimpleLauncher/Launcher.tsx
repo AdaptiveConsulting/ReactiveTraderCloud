@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { rules } from 'rt-styleguide'
 import { injectGlobal, styled, ThemeStorageSwitch } from 'rt-theme'
 
 import { config } from './config'
@@ -21,9 +22,9 @@ export class Launcher extends React.Component {
       <Root>
         <Frame>
           <Fill />
-          {config.map((config, i) => (
-            <ToggleContainer key={config.name}>
-              <Link to={config}>{config.icon}</Link>
+          {config.map(app => (
+            <ToggleContainer key={app.name}>
+              <Link to={app}>{app.icon}</Link>
             </ToggleContainer>
           ))}
 
@@ -47,7 +48,7 @@ const Root = styled.div(({ theme }) => {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.shell.backgroundColor,
-    color: theme.shell.textColor,
+    color: theme.component.textColor,
   }
 })
 
@@ -70,15 +71,15 @@ const Fill = styled.div`
   min-height: 0.75rem;
   max-height: 0.75rem;
   width: 100%;
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
+
+  ${rules.appRegionDrag};
 `
 
 const AutoFill = styled.div`
   flex: 1 1 100%;
   width: 100%;
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
+
+  ${rules.appRegionDrag};
 `
 
 const ToggleContainer = styled.div`
@@ -92,8 +93,7 @@ const ToggleContainer = styled.div`
   justify-content: center;
   flex-direction: column;
 
-  -webkit-user-drag: none;
-  -webkit-app-region: no-drag;
+  ${rules.appRegionNoDrag};
 `
 
 export const Rule = styled.div`
@@ -102,6 +102,5 @@ export const Rule = styled.div`
   height: 0.125rem;
   background-color: rgba(0, 0, 0, 0.1);
 
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
+  ${rules.appRegionDrag};
 `

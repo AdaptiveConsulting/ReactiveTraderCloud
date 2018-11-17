@@ -17,17 +17,17 @@ const SWATCH_KEYS = {
 
 export const ColorBlocks = () => (
   <Root>
-    {[{ brand, offblack }, { blue, red, yellow, green }].map((swatchSetGroup, i) => (
-      <SwatchSetGroup key={i}>
-        {_.map(swatchSetGroup, (color, name) => {
-          const base = color.base
-          const light = SWATCH_KEYS.light.map(key => ({ color: color[key], name: key }))
-          const dark = SWATCH_KEYS.dark.map(key => ({ color: color[key], name: key }))
+    {[{ brand, offblack }, { blue, red, yellow, green }].map((swatchSetGroup, groupKey) => (
+      <SwatchSetGroup key={groupKey}>
+        {_.map(swatchSetGroup, (group, setKey) => {
+          const base = group.base
+          const light = SWATCH_KEYS.light.map(key => ({ color: group[key], name: key }))
+          const dark = SWATCH_KEYS.dark.map(key => ({ color: group[key], name: key }))
 
           const set = [...light, { color: base }, ...dark]
 
           return (
-            <SwatchSet key={name}>
+            <SwatchSet key={setKey}>
               <SwatchGroup>
                 {light.map(({ color, name }, index) => {
                   const { [index + 4]: text = { color: 'transparent' } } = set
