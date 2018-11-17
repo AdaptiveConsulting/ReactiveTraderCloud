@@ -24,7 +24,6 @@ export type PortalProps = typeof defaultPortalProps
 class NewPortal extends React.Component<PortalProps & { environment: EnvironmentValue }> {
   externalWindow: Window | null = null
   mutationObserver: MutationObserver | null = null
-  container = document.createElement('div')
 
   async componentDidMount() {
     const { environment, config, desktopConfig, browserConfig } = this.props

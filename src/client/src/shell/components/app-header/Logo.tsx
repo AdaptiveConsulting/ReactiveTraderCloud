@@ -11,6 +11,7 @@ const Logo: React.SFC<LogoProps> = ({ fill = '#000', size = 2, style, ...props }
     width: size * 4.375 + 'rem',
     height: size + 'rem',
     ...style,
+    cursor: 'pointer',
   }
 
   return (
