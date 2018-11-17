@@ -6,7 +6,7 @@ import { styled, ThemeName, ThemeStorage } from 'rt-theme'
 import Logo from './Logo'
 
 class Header extends React.Component {
-  onClick = () => window.open('http://weareadaptive.com')
+  onClick = () => window.open('https://weareadaptive.com')
 
   render() {
     const { children } = this.props
