@@ -25,7 +25,7 @@ const Centered = styled('div')`
   justify-content: center;
 `
 
-const Story: React.SFC = ({ children }) => (
+const Story: React.FunctionComponent = ({ children }) => (
   <BaseStory>
     <ThemeProvider theme={theme => theme.tile}>{children}</ThemeProvider>
   </BaseStory>

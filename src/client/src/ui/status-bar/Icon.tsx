@@ -1,7 +1,7 @@
 import React from 'react'
 import { css, styled } from 'rt-theme'
 
-const Icon: React.SFC<{
+const Icon: React.FunctionComponent<{
   name: string
 }> = ({ name, ...props }) => (
   <div {...props}>

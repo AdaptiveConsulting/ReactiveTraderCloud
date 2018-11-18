@@ -5,7 +5,7 @@ import { ThemeConsumer, ThemeName, ThemeStorage } from 'rt-theme'
 
 export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
 
-export const ThemeStorageSwitch: React.SFC<ThemeStorageSwitchProps> = props => (
+export const ThemeStorageSwitch: React.FunctionComponent<ThemeStorageSwitchProps> = props => (
   <ThemeStorage.Consumer>
     {({ name, setTheme }) => (
       <ThemeConsumer>

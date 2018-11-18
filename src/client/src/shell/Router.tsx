@@ -1,4 +1,4 @@
-import React, { SFC } from 'react'
+import React, { FunctionComponent } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import { PlatformAdapter, withPlatform } from 'rt-components'
@@ -9,7 +9,7 @@ const ShellSwitchRoute = ({ header, platform }: { header: React.ReactChild; plat
 
 const ShellSwitchRouteWithPlatform = withPlatform(ShellSwitchRoute)
 
-export const Router: SFC = () => (
+export const Router: FunctionComponent = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path="/" component={ShellSwitchRouteWithPlatform} />

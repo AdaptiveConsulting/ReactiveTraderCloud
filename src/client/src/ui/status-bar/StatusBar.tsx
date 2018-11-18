@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { Component, SFC } from 'react'
+import React, { Component, FunctionComponent } from 'react'
 import { ThemeProvider } from 'rt-theme'
 
 import { ConnectionState } from 'rt-system'
@@ -14,13 +14,13 @@ interface State {
 const mapToTheme = {
   [ServiceConnectionStatus.CONNECTED]: 'good',
   [ServiceConnectionStatus.CONNECTING]: 'aware',
-  [ServiceConnectionStatus.DISCONNECTED]: 'bad'
+  [ServiceConnectionStatus.DISCONNECTED]: 'bad',
 }
 
 const mapToIcon = {
   [ServiceConnectionStatus.CONNECTING]: 'ellipsis-h',
   [ServiceConnectionStatus.CONNECTED]: 'check',
-  [ServiceConnectionStatus.DISCONNECTED]: 'times'
+  [ServiceConnectionStatus.DISCONNECTED]: 'times',
 }
 
 const getApplicationStatus = (services: ServiceStatus[]) => {
@@ -41,7 +41,7 @@ export class StatusBar extends Component<
   State
 > {
   state = {
-    expanded: false
+    expanded: false,
   }
 
   toggleExpanded = () => this.setState(({ expanded }) => ({ expanded: !expanded }))
@@ -49,7 +49,7 @@ export class StatusBar extends Component<
   render() {
     const {
       connectionStatus: { url, transportType },
-      services
+      services,
     } = this.props
 
     const { expanded } = this.state
@@ -89,9 +89,9 @@ export class StatusBar extends Component<
   }
 }
 
-const Service: SFC<{ service: ServiceStatus; index: number }> = ({
+const Service: FunctionComponent<{ service: ServiceStatus; index: number }> = ({
   service: { serviceType, connectionStatus, connectedInstanceCount },
-  index
+  index,
 }) => (
   <ServiceRoot index={index + 2}>
     <Icon name={mapToIcon[connectionStatus]} />

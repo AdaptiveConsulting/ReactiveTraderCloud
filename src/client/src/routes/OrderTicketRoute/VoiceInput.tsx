@@ -487,7 +487,7 @@ const AnimatedText: Styled<{ accent?: string }> = styled.span`
   `} infinite 3s linear;
 `
 
-const StatusText: React.SFC<{ accent?: string }> = ({ accent, children }) => (
+const StatusText: React.FunctionComponent<{ accent?: string }> = ({ accent, children }) => (
   <Input
     onClick={this.toggle}
     fg={accent ? `accents.${accent}.base` : 'primary.2'}

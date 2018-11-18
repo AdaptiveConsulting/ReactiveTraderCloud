@@ -19,7 +19,7 @@ type AnalyticsContainerProps = AnalyticsContainerStateProps &
   AnalyticsContainerDispatchProps &
   AnalyticsContainerOwnProps
 
-const AnalyticsContainer: React.SFC<AnalyticsContainerProps> = ({
+const AnalyticsContainer: React.FunctionComponent<AnalyticsContainerProps> = ({
   status,
   onMount,
   tearable = false,

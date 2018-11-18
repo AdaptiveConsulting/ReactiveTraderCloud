@@ -9,7 +9,7 @@ export interface Props {
   isPnL: boolean
 }
 
-const AnalyticsBarChart: React.SFC<Props> = ({ isPnL, chartData, currencyPairs }) => {
+const AnalyticsBarChart: React.FunctionComponent<Props> = ({ isPnL, chartData, currencyPairs }) => {
   const { max, min } = getMinMax(chartData)
   const maxWidth = Math.max(Math.abs(max), Math.abs(min))
 
@@ -44,5 +44,5 @@ const getMinMax = (chartData: CurrencyPairPosition[]) =>
       prev.min = Math.min(prev.min, basePnl)
       return prev
     },
-    { max: 0, min: 0 }
+    { max: 0, min: 0 },
   )

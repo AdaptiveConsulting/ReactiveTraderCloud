@@ -89,7 +89,7 @@ export default () => (
   </React.Fragment>
 )
 
-const PaletteLayout: React.SFC<{
+const PaletteLayout: React.FunctionComponent<{
   grid?: Styled
   fg: string
   label: string
@@ -137,7 +137,7 @@ export interface SwatchProps extends BlockProps, SwatchColorProps {
   code?: string
 }
 
-export const Swatch: React.SFC<SwatchProps> = ({
+export const Swatch: React.FunctionComponent<SwatchProps> = ({
   is: SwatchElement = SwatchColor,
   label,
   value,
@@ -209,7 +209,7 @@ const CoreSwatchGrid = styled.div`
   }
 `
 
-const ThemePalettes: React.SFC<{ theme: any }> = ({ theme: { primary, secondary }, ...props }) => {
+const ThemePalettes: React.FunctionComponent<{ theme: any }> = ({ theme: { primary, secondary }, ...props }) => {
   return (
     <ThemeRow>
       <PaletteLayout grid={CoreSwatchGrid} label="Primary" palette={primary} fg={secondary.base} />
@@ -271,7 +271,7 @@ const QuadrantLayout = styled.div`
   }
 `
 
-const AccentPalettes: React.SFC<{ accents: any }> = ({ accents, ...props }) => {
+const AccentPalettes: React.FunctionComponent<{ accents: any }> = ({ accents, ...props }) => {
   return (
     <AccentRowGrid>
       {_.map(accents, (accent, label: string) => (
@@ -307,7 +307,7 @@ const AccentSwatchGrid = styled.div`
     '2';
 `
 
-const UniquePalettes: React.SFC<{ palettes: any }> = ({ palettes, ...props }) => {
+const UniquePalettes: React.FunctionComponent<{ palettes: any }> = ({ palettes, ...props }) => {
   return (
     <UniqueRowGrid>
       {_.map(palettes, (palette, label: string) => (

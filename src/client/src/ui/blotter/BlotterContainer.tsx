@@ -18,7 +18,7 @@ type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
 type BlotterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 type BlotterContainerProps = BlotterContainerStateProps & BlotterContainerDispatchProps & BlotterContainerOwnProps
 
-const BlotterContainer: React.SFC<BlotterContainerProps> = ({
+const BlotterContainer: React.FunctionComponent<BlotterContainerProps> = ({
   status,
   onMount,
   tearable = false,

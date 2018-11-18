@@ -1,6 +1,6 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { SFC } from 'react'
+import React, { FunctionComponent } from 'react'
 import { Helmet } from 'react-helmet'
 import { styled } from 'rt-theme'
 
@@ -10,7 +10,7 @@ export interface ControlProps {
   close: () => void
 }
 
-export const OpenFinChrome: SFC = ({ children }) => (
+export const OpenFinChrome: FunctionComponent = ({ children }) => (
   <React.Fragment>
     <Helmet>
       <style type="text/css">{`
@@ -27,14 +27,14 @@ export const OpenFinChrome: SFC = ({ children }) => (
   </React.Fragment>
 )
 
-export const OpenFinHeader: React.SFC<ControlProps> = ({ ...props }) => (
+export const OpenFinHeader: React.FunctionComponent<ControlProps> = ({ ...props }) => (
   <Header>
     <DragRegion />
     <OpenFinControls {...props} />
   </Header>
 )
 
-export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, close }) => (
+export const OpenFinControls: React.FunctionComponent<ControlProps> = ({ minimize, maximize, close }) => (
   <React.Fragment>
     {minimize ? (
       <HeaderControl intent="aware" onClick={minimize}>

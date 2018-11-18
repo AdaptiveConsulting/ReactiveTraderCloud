@@ -12,7 +12,7 @@ interface Props {
   platform: PlatformAdapter
 }
 
-const RouteWrapperBase: React.SFC<Props> = ({ children, platform }) => (
+const RouteWrapperBase: React.FunctionComponent<Props> = ({ children, platform }) => (
   <RouteStyle>
     {platform.name === 'openfin' ? (
       <OpenFinChrome>

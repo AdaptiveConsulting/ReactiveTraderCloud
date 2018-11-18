@@ -39,7 +39,7 @@ interface Props {
   displayCurrencyChart?: () => void
 }
 
-const TileControls: React.SFC<Props & { platform: PlatformAdapter }> = ({
+const TileControls: React.FunctionComponent<Props & { platform: PlatformAdapter }> = ({
   onPopoutClick,
   canPopout,
   platform,

@@ -48,7 +48,7 @@ const MONTSERRAT = {
   ],
 }
 
-export const FontFamilies: React.SFC<PassThroughProps> = props => (
+export const FontFamilies: React.FunctionComponent<PassThroughProps> = props => (
   <React.Fragment>
     <SectionBlock mh={1}>
       <H2>Font Families</H2>
@@ -105,7 +105,7 @@ export const FontFamilies: React.SFC<PassThroughProps> = props => (
   </React.Fragment>
 )
 
-const FontFamilySample: React.SFC<{
+const FontFamilySample: React.FunctionComponent<{
   fontFamily: string
   fontFaces: typeof LATO.fontFaces
   characters?: string[]
@@ -141,7 +141,9 @@ const FontFamilySample: React.SFC<{
   </FontFamilySampleGrid>
 )
 
-const Heading: React.SFC = props => <Paragraph display="block" fontSize={1} lineHeight={2} mt={2} {...props} />
+const Heading: React.FunctionComponent = props => (
+  <Paragraph display="block" fontSize={1} lineHeight={2} mt={2} {...props} />
+)
 
 const FontFamilySampleGrid = styled(Text)<TextProps>`
   display: grid;
@@ -151,14 +153,14 @@ const FontFamilySampleGrid = styled(Text)<TextProps>`
   overflow: hidden;
 `
 
-const Glyph: React.SFC<PassThroughProps> = props => (
+const Glyph: React.FunctionComponent<PassThroughProps> = props => (
   <div>
     <Heading>Glyph</Heading>
     <Paragraph fontSize={5} lineHeight={5} fontWeight="bold" {...props} />
   </div>
 )
 
-const CharacterMap: React.SFC<TextProps> = props => (
+const CharacterMap: React.FunctionComponent<TextProps> = props => (
   <Text display="block" fontSize={1} fontWeight="bold" whiteSpace="pre-wrap" {...props} />
 )
 

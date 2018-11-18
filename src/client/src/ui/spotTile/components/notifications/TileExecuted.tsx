@@ -30,10 +30,17 @@ interface Props {
 
 const directionText = {
   [Direction.Buy]: 'bought',
-  [Direction.Sell]: 'sold'
+  [Direction.Sell]: 'sold',
 }
 
-const TileExecuted: React.SFC<Props> = ({ direction, dealtCurrency, rate, notional, counterCurrency, date }) => {
+const TileExecuted: React.FunctionComponent<Props> = ({
+  direction,
+  dealtCurrency,
+  rate,
+  notional,
+  counterCurrency,
+  date,
+}) => {
   const dealtText = `${dealtCurrency} ${numeral(notional).format('0,000,000[.]00')}`
   const counterText = `${counterCurrency} ${numeral(notional * rate).format('0,000,000[.]00')}`
   const formattedDate = `(Spt) ${moment(date).format('D MMM')}`

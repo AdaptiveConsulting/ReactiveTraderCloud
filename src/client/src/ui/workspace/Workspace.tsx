@@ -24,7 +24,7 @@ interface Props {
   spotTiles: SpotTile[]
 }
 
-const Workspace: React.SFC<Props> = ({ spotTiles = [] }) => (
+const Workspace: React.FunctionComponent<Props> = ({ spotTiles = [] }) => (
   <WorkspaceItems>
     {spotTiles.map(({ key, portalProps }) => (
       <TearOff
