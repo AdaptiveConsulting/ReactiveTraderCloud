@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { Component, FunctionComponent } from 'react'
+import React, { Component, FC } from 'react'
 import { ThemeProvider } from 'rt-theme'
 
 import { ConnectionState } from 'rt-system'
@@ -89,7 +89,7 @@ export class StatusBar extends Component<
   }
 }
 
-const Service: FunctionComponent<{ service: ServiceStatus; index: number }> = ({
+const Service: FC<{ service: ServiceStatus; index: number }> = ({
   service: { serviceType, connectionStatus, connectedInstanceCount },
   index,
 }) => (

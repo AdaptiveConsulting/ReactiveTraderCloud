@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { FunctionComponent } from 'react'
+import React, { FC } from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
@@ -58,7 +58,7 @@ Object.entries(connectionState).forEach(([key, state]) =>
   }),
 )
 
-const Root: FunctionComponent<{ state: {} }> = ({ children, state = {} }) => (
+const Root: FC<{ state: {} }> = ({ children, state = {} }) => (
   <Provider store={createStore(() => state)}>
     <Story>
       <Container>{children}</Container>

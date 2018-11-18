@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from 'react'
+import React, { FC } from 'react'
 import { OpenFinChrome, OpenFinControls, PlatformAdapter, withPlatform } from 'rt-components'
 
 import ShellRoute from './ShellRoute'
 
-export const OpenFinRoute: FunctionComponent<{ platform: PlatformAdapter }> = ({ platform, ...props }) => (
+export const OpenFinRoute: FC<{ platform: PlatformAdapter }> = ({ platform, ...props }) => (
   <OpenFinChrome>
     <ShellRoute
       header={

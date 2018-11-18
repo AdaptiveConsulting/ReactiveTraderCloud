@@ -55,14 +55,7 @@ interface Props {
   handleClick?: () => void
 }
 
-const TileNotification: React.FunctionComponent<Props> = ({
-  style,
-  isWarning,
-  symbols,
-  tradeId,
-  handleClick,
-  children,
-}) => {
+const TileNotification: React.FC<Props> = ({ style, isWarning, symbols, tradeId, handleClick, children }) => {
   const accentColor = isWarning ? 'red' : 'green'
 
   return (

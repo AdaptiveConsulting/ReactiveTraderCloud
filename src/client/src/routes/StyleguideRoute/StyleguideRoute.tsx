@@ -24,7 +24,7 @@ const sections = _.mapKeys(
   (value, key) => _.kebabCase(key),
 )
 
-const StyleguideRoute: React.FunctionComponent = () => (
+const StyleguideRoute: React.FC = () => (
   <ThemeStorage.Provider storage={sessionStorage}>
     <Root>
       <ThemeStorage.Consumer>

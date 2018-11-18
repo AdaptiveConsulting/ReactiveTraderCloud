@@ -5,7 +5,7 @@ export interface Props {
   body: React.ReactNode
   aside?: React.ReactNode
 }
-const BodyLayout: React.FunctionComponent<Props> = ({ body, aside }) => (
+const BodyLayout: React.FC<Props> = ({ body, aside }) => (
   <Layout>
     {body}
     {aside}

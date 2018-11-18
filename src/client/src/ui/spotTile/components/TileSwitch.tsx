@@ -18,7 +18,7 @@ interface Props {
   displayCurrencyChart?: () => void
 }
 
-const TileSwitch: React.FunctionComponent<Props> = ({
+const TileSwitch: React.FC<Props> = ({
   currencyPair,
   spotTileData,
   executeTrade,

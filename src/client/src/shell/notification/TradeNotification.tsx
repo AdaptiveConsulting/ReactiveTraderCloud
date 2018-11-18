@@ -8,7 +8,7 @@ export interface Props {
   dismissNotification: () => void
 }
 
-const TradeNotification: React.FunctionComponent<Props> = ({ message: trade, dismissNotification }) => {
+const TradeNotification: React.FC<Props> = ({ message: trade, dismissNotification }) => {
   const formattedValueDate = trade
     ? moment(trade.valueDate)
         .format('DD MMM')

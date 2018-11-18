@@ -38,7 +38,7 @@ export class ThemeProvider extends React.Component<ThemeProviderProps> {
   }
 }
 
-const RootThemeInjection: React.FunctionComponent<{ theme: ThemeType }> = ({ theme }) => (
+const RootThemeInjection: React.FC<{ theme: ThemeType }> = ({ theme }) => (
   <Helmet>
     <html
       className={css({
