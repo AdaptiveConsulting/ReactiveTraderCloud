@@ -43,7 +43,6 @@ export default class Analytics extends React.Component<Props> {
 
     const lastPos = (pnlChartModel && pnlChartModel.lastPos) || 0
     const lastPosition = lastPositionWithDirection(lastPos)
-
     return (
       <ThemeProvider theme={theme => theme.analytics}>
         <AnalyticsStyle>
