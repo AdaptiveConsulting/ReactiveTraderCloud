@@ -67,7 +67,6 @@ const Loader = () => (
     <Rect delay={1.1} />
     <Rect delay={1} />
     <Rect delay={0.9} />
-    <Rect delay={0.8} />
   </Spinner>
 )
 
