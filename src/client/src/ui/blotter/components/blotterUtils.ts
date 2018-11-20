@@ -8,7 +8,7 @@ const dateRenderer = (trade: Trade, field: string) => {
 }
 
 const NotionalRenderer = (trade: Trade, field: string) => {
-  return numeral(trade[field]).format('0,000,000[.]00')
+  return numeral(trade[field]).format('0,0[.]00')
 }
 const UtcDateRenderer = (trade: Trade, field: string, format: string = '%d-%b-%Y') => {
   return UtcFormatDate(trade[field], format)
