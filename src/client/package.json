@@ -22,6 +22,7 @@
   "scripts": {
     "start": "npm run start:cloud",
     "start:local": "cross-env REACT_APP_ENV=local npm run start:react-app",
+    "start:dev": "cross-env REACT_APP_ENV=dev npm run start:react-app",
     "start:cloud": "cross-env REACT_APP_ENV=demo npm run start:react-app",
     "start:docker": "cross-env REACT_APP_ENV=docker npm run start:react-app",
     "start:openfin:local": "npm-run-all -p openfin start:local",
@@ -34,9 +35,7 @@
     "test": "react-app-rewired test --scripts-version react-scripts-ts --env=jsdom",
     "analyze": "source-map-explorer build/static/js/main.*",
     "openfin": "openfin -c public/config/openfin/local.json -l",
-    "launcher": "openfin -c public/config/openfin/launcher-demo.json -l",
-    "launcher:dev": "openfin -c public/config/openfin/launcher-dev.json -l",
-    "launcher:local": "openfin -c public/config/openfin/launcher-local.json -l",
+    "openfin:launcher": "openfin -c public/config/openfin/launcher-local.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "precommit": "lint-staged",
     "storybook": "start-storybook -p 6006",

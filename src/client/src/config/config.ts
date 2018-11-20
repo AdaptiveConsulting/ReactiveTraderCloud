@@ -12,19 +12,23 @@ const configMap: ConfigMap = {
   local: {
     overwriteServerEndpoint: true,
     serverEndpointUrl: 'localhost',
-    serverPort: '8000'
+    serverPort: '8000',
   },
   docker: {
     overwriteServerEndpoint: true,
-    serverEndpointUrl: '192.168.99.100'
+    serverEndpointUrl: '192.168.99.100',
+  },
+  dev: {
+    overwriteServerEndpoint: true,
+    serverEndpointUrl: 'web-dev.adaptivecluster.com',
   },
   demo: {
     overwriteServerEndpoint: true,
-    serverEndpointUrl: 'web-demo.adaptivecluster.com'
+    serverEndpointUrl: 'web-demo.adaptivecluster.com',
   },
   default: {
-    overwriteServerEndpoint: false
-  }
+    overwriteServerEndpoint: false,
+  },
 }
 
 export const getEnvVars = (env: string) => {

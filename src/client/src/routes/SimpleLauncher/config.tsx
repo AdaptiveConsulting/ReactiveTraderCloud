@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { faChartArea, faExchangeAlt, faWindowRestore, faMicrophone } from '@fortawesome/free-solid-svg-icons'
+import { faChartArea, faExchangeAlt, faWindowRestore, faMicrophone, faPalette } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getEnvVars } from '../../config/config'
 
@@ -10,8 +10,88 @@ export type ConfigType = Partial<typeof config[0]>
 
 export const config = [
   {
+    name: 'Reactive Trader',
+    url: `https://${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
+    icon: <FontAwesomeIcon icon={faExchangeAlt} />,
+    provider: {
+      platform: 'openfin',
+      as: 'application',
+      options: {
+        autoShow: true,
+        defaultWidth: 1280,
+        defaultHeight: 900,
+        minWidth: 800,
+        minHeight: 600,
+        resizable: true,
+        maximizable: true,
+        frame: false,
+        nonPersistent: true,
+        accelerator: {
+          devtools: true,
+          reload: true,
+          reloadIgnoringCache: true,
+          zoom: true,
+        },
+      },
+    },
+  },
+  {
+    name: 'Reactive Analytics',
+    url: 'https://demo-reactive-analytics.adaptivecluster.com/',
+    icon: <FontAwesomeIcon icon={faChartArea} />,
+    provider: {
+      platform: 'openfin',
+      as: 'application',
+      options: {
+        autoShow: true,
+        defaultWidth: 1280,
+        defaultHeight: 900,
+        minWidth: 800,
+        minHeight: 600,
+        resizable: true,
+        maximizable: true,
+        frame: true,
+        nonPersistent: true,
+        accelerator: {
+          devtools: true,
+          reload: true,
+          reloadIgnoringCache: true,
+          zoom: true,
+        },
+      },
+    },
+  },
+  {
+    name: 'Adaptive Style Guide',
+    url: `https://${
+      endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname
+    }/styleguide`,
+    icon: <FontAwesomeIcon icon={faPalette} />,
+    provider: {
+      platform: 'openfin',
+      as: 'application',
+      options: {
+        autoShow: true,
+        defaultWidth: 1280,
+        defaultHeight: 900,
+        minWidth: 800,
+        minHeight: 600,
+        resizable: true,
+        maximizable: true,
+        frame: true,
+        nonPersistent: true,
+        accelerator: {
+          devtools: true,
+          reload: true,
+          reloadIgnoringCache: true,
+          zoom: true,
+        },
+      },
+    },
+  },
+  {
     name: 'Bond Order Ticket',
-    url: `${
+    url: `https://${
       endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname
     }/order-ticket`,
     icon: <FontAwesomeIcon icon={faMicrophone} />,
@@ -41,42 +121,6 @@ export const config = [
           width: 8,
         },
       },
-    },
-  },
-
-  {
-    name: 'Reactive Trader',
-    url: `${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
-    icon: <FontAwesomeIcon icon={faExchangeAlt} />,
-    provider: {
-      platform: 'openfin',
-      as: 'application',
-      options: {
-        autoShow: true,
-        defaultWidth: 1280,
-        defaultHeight: 900,
-        minWidth: 800,
-        minHeight: 600,
-        resizable: true,
-        maximizable: true,
-        frame: false,
-        nonPersistent: true,
-        accelerator: {
-          devtools: true,
-          reload: true,
-          reloadIgnoringCache: true,
-          zoom: true,
-        },
-      },
-    },
-  },
-
-  {
-    name: 'Reactive Analytics',
-    url: 'https://demo-reactive-analytics.adaptivecluster.com/',
-    icon: <FontAwesomeIcon icon={faChartArea} />,
-    provider: {
-      platform: 'browser',
     },
   },
 ]
