@@ -33,7 +33,7 @@ export class GlobalScrollbarStyle extends Component {
         
 
         height: 16px;
-        border: 4.5px solid rgba(0, 0, 0, 0);
+        border: 12px solid rgba(0, 0, 0, 0);
         background-clip: padding-box;
       }
       
@@ -42,12 +42,13 @@ export class GlobalScrollbarStyle extends Component {
       }
 
       body .ag-body ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
+        width: 28px;
+        height: 28px;
       }
 
       body .ag-body ::-webkit-scrollbar-thumb {
-        border-width: 2px;
+        width: 8px;
+        height: 80px;
       }
     `
   }
