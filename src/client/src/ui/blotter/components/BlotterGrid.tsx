@@ -69,6 +69,11 @@ export default styled('div')`
     align-items: center;
   }
 
+  .ag-cell:focus {
+    border: none !important;
+    outline: none;
+  }
+
   .ag-filter-icon {
     display: none;
   }
