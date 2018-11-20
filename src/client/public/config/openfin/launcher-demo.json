@@ -1,34 +1,39 @@
 {
-    "startup_app": {
-        "name": "Reactive Trader Cloud",
-        "url": "https://web-demo.adaptivecluster.com/launcher",
-        "uuid": "ReactiveLauncher",
-        "defaultWidth": 60,
-        "defaultHeight": 320,
-        "defaultTop": 160,
-        "defaultLeft": 30,
-        "autoShow": true,
-        "saveWindowState": false,
-        "resizable": false,
-        "shadow": true,
-        "frame": false,
-        "backgroundColor": "#444C5F",
-        "alwaysOnTop": true,
-        "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
-        "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png",
-        "contextMenu": true,
-        "accelerator": {
-            "devtools": true,
-            "reload": true,
-            "reloadIgnoringCache": true,
-            "zoom": true
-        }
-    },
-    "runtime": {
-        "arguments": "--remote-debugging-port=9222",
-        "version": "9.61.34.22",
-        "futureVersion": "9.61.34.22",
-        "forceLatest": true
-    },
-    "shortcut": {}
+  "startup_app": {
+    "name": "Reactive Trader Cloud",
+    "url": "https://web-demo.adaptivecluster.com/launcher",
+    "uuid": "ReactiveLauncher",
+    "defaultWidth": 60,
+    "defaultHeight": 320,
+    "defaultTop": 160,
+    "defaultLeft": 30,
+    "autoShow": true,
+    "saveWindowState": false,
+    "resizable": false,
+    "shadow": true,
+    "frame": false,
+    "backgroundColor": "#444C5F",
+    "alwaysOnTop": true,
+    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
+    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png",
+    "contextMenu": true,
+    "accelerator": {
+      "devtools": true,
+      "reload": true,
+      "reloadIgnoringCache": true,
+      "zoom": true
+    }
+  },
+  "runtime": {
+    "arguments": "--remote-debugging-port=9222",
+    "version": "9.61.34.22",
+    "futureVersion": "9.61.34.22",
+    "forceLatest": true
+  },
+  "shortcut": {
+    "company": "Adaptive Consulting",
+    "description": "Desktop Reactive Trader Cloud",
+    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
+    "name": "Reactive Trader Cloud"
+  }
 }
