@@ -11,7 +11,7 @@ export type ConfigType = Partial<typeof config[0]>
 export const config = [
   {
     name: 'Reactive Trader',
-    url: `https://${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
+    url: `http://${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
     icon: <FontAwesomeIcon icon={faExchangeAlt} />,
     provider: {
       platform: 'openfin',
@@ -37,7 +37,7 @@ export const config = [
   },
   {
     name: 'Reactive Analytics',
-    url: 'https://demo-reactive-analytics.adaptivecluster.com/',
+    url: 'http://demo-reactive-analytics.adaptivecluster.com/',
     icon: <FontAwesomeIcon icon={faChartArea} />,
     provider: {
       platform: 'openfin',
@@ -63,7 +63,7 @@ export const config = [
   },
   {
     name: 'Adaptive Style Guide',
-    url: `https://${
+    url: `http://${
       endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname
     }/styleguide`,
     icon: <FontAwesomeIcon icon={faPalette} />,
@@ -91,7 +91,7 @@ export const config = [
   },
   {
     name: 'Bond Order Ticket',
-    url: `https://${
+    url: `http://${
       endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname
     }/order-ticket`,
     icon: <FontAwesomeIcon icon={faMicrophone} />,

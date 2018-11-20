@@ -30,5 +30,10 @@
     "futureVersion": "9.61.34.22",
     "forceLatest": true
   },
-  "shortcut": {}
+  "shortcut": {
+    "company": "Adaptive Consulting",
+    "description": "Desktop Reactive Trader Cloud",
+    "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
+    "name": "Reactive Trader Cloud"
+  }
 }
