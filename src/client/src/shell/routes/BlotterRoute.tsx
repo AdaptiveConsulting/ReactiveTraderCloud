@@ -3,7 +3,7 @@ import { RouteWrapper } from 'rt-components'
 import { BlotterContainer } from '../../ui/blotter'
 import styled from 'react-emotion'
 
-const BlotterStyle = styled('div')`
+const BlotterContainerStyle = styled('div')`
   height: 100%;
   padding-left: 10px;
   padding-right: 10px;
@@ -12,9 +12,9 @@ const BlotterStyle = styled('div')`
 
 const BlotterRoute = () => (
   <RouteWrapper>
-    <BlotterStyle>
+    <BlotterContainerStyle>
       <BlotterContainer />
-    </BlotterStyle>
+    </BlotterContainerStyle>
   </RouteWrapper>
 )
 
