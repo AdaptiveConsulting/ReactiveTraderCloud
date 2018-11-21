@@ -1,6 +1,6 @@
 import React from 'react'
 import { OpenFinChrome, OpenFinHeader, PlatformAdapter, withPlatform } from 'rt-components'
-import { styled } from 'rt-theme'
+import { styled, ThemeProvider } from 'rt-theme'
 
 const RouteStyle = styled.div`
   height: 100%;
@@ -13,16 +13,18 @@ interface Props {
 }
 
 const RouteWrapperBase: React.SFC<Props> = ({ children, platform }) => (
-  <RouteStyle>
-    {platform.name === 'openfin' ? (
-      <OpenFinChrome>
-        <OpenFinHeader close={platform.window.close} />
-        {children}
-      </OpenFinChrome>
-    ) : (
-      children
-    )}
-  </RouteStyle>
+  <ThemeProvider theme={theme => theme}>
+    <RouteStyle>
+      {platform.name === 'openfin' ? (
+        <OpenFinChrome>
+          <OpenFinHeader close={platform.window.close} />
+          {children}
+        </OpenFinChrome>
+      ) : (
+        children
+      )}
+    </RouteStyle>
+  </ThemeProvider>
 )
 
 const RouteWrapper = withPlatform(RouteWrapperBase)

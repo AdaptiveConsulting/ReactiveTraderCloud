@@ -7,7 +7,7 @@ const BlotterContainerStyle = styled('div')`
   height: 100%;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: #272d3a;
+  background-color: ${({ theme }) => theme.blotter.backgroundColor};
 `
 
 const BlotterRoute = () => (
