@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react'
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid/dist/styles/ag-grid.css'
 import React from 'react'
-import { styled, ThemeProvider } from 'rt-theme'
+import { styled, Styled, ThemeProvider, Theme } from 'rt-theme'
 import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
@@ -15,11 +15,15 @@ export interface BlotterProps {
   onPopoutClick?: () => void
 }
 
+interface BlotterStyleProps {
+  canPopOut: boolean
+}
+
 interface BlotterState {
   displayedRows: number
 }
 
-const BlotterStyleInMainWindow = styled('div')`
+const BlotterMainStyle = styled('div')`
   height: 100%;
   width: 100%;
   min-height: 1.25rem;
@@ -28,19 +32,9 @@ const BlotterStyleInMainWindow = styled('div')`
   font-size: 0.8125rem;
 `
 
-interface BlotterStyleProps {
-  children: JSX.Element
-  canPopOut: boolean
-}
-const BlotterStyleInStandAloneWindow = styled(BlotterStyleInMainWindow)`
-  padding: 16px;
-`
-const BlotterStyle: React.SFC<BlotterStyleProps> = ({ canPopOut, children }) =>
-  canPopOut ? (
-    <BlotterStyleInMainWindow>{children}</BlotterStyleInMainWindow>
-  ) : (
-    <BlotterStyleInStandAloneWindow>{children}</BlotterStyleInStandAloneWindow>
-  )
+const BlotterStyle: Styled<BlotterStyleProps, {}, Theme> = styled(BlotterMainStyle)(props => ({
+  padding: !props.canPopOut ? '16px' : '0px',
+}))
 
 const BlotterStatus = styled('div')`
   height: 2rem;
