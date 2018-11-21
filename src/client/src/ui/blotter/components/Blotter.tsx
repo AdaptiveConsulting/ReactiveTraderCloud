@@ -19,7 +19,7 @@ interface BlotterState {
   displayedRows: number
 }
 
-const BlotterStyle = styled('div')`
+const BlotterStyleInMainWindow = styled('div')`
   height: 100%;
   width: 100%;
   min-height: 1.25rem;
@@ -27,6 +27,20 @@ const BlotterStyle = styled('div')`
   color: ${({ theme }) => theme.textColor};
   font-size: 0.8125rem;
 `
+
+interface BlotterStyleProps {
+  children: JSX.Element
+  canPopOut: boolean
+}
+const BlotterStyleInStandAloneWindow = styled(BlotterStyleInMainWindow)`
+  padding: 16px;
+`
+const BlotterStyle: React.SFC<BlotterStyleProps> = ({ canPopOut, children }) =>
+  canPopOut ? (
+    <BlotterStyleInMainWindow>{children}</BlotterStyleInMainWindow>
+  ) : (
+    <BlotterStyleInStandAloneWindow>{children}</BlotterStyleInStandAloneWindow>
+  )
 
 const BlotterStatus = styled('div')`
   height: 2rem;
@@ -58,10 +72,9 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
   render() {
     const { canPopout, rows, onPopoutClick } = this.props
     const { displayedRows } = this.state
-
     return (
       <ThemeProvider theme={theme => theme.blotter}>
-        <BlotterStyle>
+        <BlotterStyle canPopOut={canPopout}>
           <React.Fragment>
             <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
             <BlotterGrid innerRef={this.gridDoc}>
