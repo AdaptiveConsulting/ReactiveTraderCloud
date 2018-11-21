@@ -39,7 +39,7 @@ class ShellRoute extends PureComponent<Props, State> {
             defaultHeight={30}
             component={() => (
               <BlotterWrapper>
-                <TearOff //what does this do
+                <TearOff
                   id="blotter"
                   portalProps={portalProps.blotterRegion}
                   render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}

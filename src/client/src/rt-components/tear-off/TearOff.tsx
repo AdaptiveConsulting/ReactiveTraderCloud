@@ -1,8 +1,6 @@
 import React from 'react'
 import Portal, { PortalProps } from './Portal'
 
-//Renders content in a portal according to its torn off flag
-
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
 
 interface Props {
