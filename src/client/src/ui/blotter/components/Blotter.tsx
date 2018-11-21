@@ -32,8 +32,8 @@ const BlotterMainStyle = styled('div')`
   font-size: 0.8125rem;
 `
 
-const BlotterStyle: Styled<BlotterStyleProps, {}, Theme> = styled(BlotterMainStyle)(props => ({
-  padding: !props.canPopOut ? '16px' : '0px',
+const BlotterStyle: Styled<BlotterStyleProps, {}, Theme> = styled(BlotterMainStyle)(({ canPopOut }) => ({
+  padding: canPopOut ? '0px' : '16px',
 }))
 
 const BlotterStatus = styled('div')`
