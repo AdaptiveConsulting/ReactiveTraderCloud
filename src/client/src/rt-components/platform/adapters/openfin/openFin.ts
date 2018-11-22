@@ -1,7 +1,7 @@
 import { PlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
-import { initExcel, publishExcel } from './excel/excelAdapter'
+import Excel from './excel'
 
 export default class OpenFin implements PlatformAdapter {
   name = 'openfin'
@@ -71,8 +71,8 @@ export default class OpenFin implements PlatformAdapter {
     },
 
     excel: {
-      init: () => initExcel(),
-      publish: (message: string | object) => publishExcel(message),
+      init: () => Excel.initExcel(),
+      publish: (message: string | object) => Excel.publishExcel(message),
     },
   }
 
