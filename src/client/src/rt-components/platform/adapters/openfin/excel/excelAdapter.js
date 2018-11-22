@@ -1,10 +1,9 @@
 let worksheet
 let connectionStatus = false
 
-fin.desktop.ExcelService.addEventListener('excelConnected', excelConnected)
-
 export const initExcel = () => {
   fin.desktop.ExcelService.init()
+  fin.desktop.ExcelService.addEventListener('excelConnected', excelConnected)
 }
 
 const excelConnected = () => {
