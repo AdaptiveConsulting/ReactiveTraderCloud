@@ -60,17 +60,19 @@ export default class OpenFin implements PlatformAdapter {
   }
 
   interop = {
-    subscribe: (sender: string, topic: string, listener: () => void) => {
-      initExcel()
-      fin.desktop.InterApplicationBus.subscribe(sender, topic, listener)
-    },
+    subscribe: (sender: string, topic: string, listener: () => void) =>
+      fin.desktop.InterApplicationBus.subscribe(sender, topic, listener),
 
     unsubscribe: (sender: string, topic: string, listener: () => void) =>
       fin.desktop.InterApplicationBus.unsubscribe(sender, topic, listener),
 
     publish: (topic: string, message: string | object) => {
-      publishExcel(message)
       fin.desktop.InterApplicationBus.publish(topic, message)
+    },
+
+    excel: {
+      init: () => initExcel(),
+      publish: (message: string | object) => publishExcel(message),
     },
   }
 

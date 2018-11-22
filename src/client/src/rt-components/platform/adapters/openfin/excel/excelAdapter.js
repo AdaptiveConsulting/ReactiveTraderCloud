@@ -1,28 +1,17 @@
+let workbook
 let worksheet
-let connectionStatus = false
 
 export const initExcel = () => {
-  fin.desktop.ExcelService.init()
-  fin.desktop.ExcelService.addEventListener('excelConnected', excelConnected)
-}
-
-const excelConnected = () => {
-  const excelInstance = fin.desktop.Excel
-  fin.desktop.Excel.addWorkbook()
-  excelInstance.addEventListener('workbookAdded', onWorkbookAdded)
-}
-
-const onWorkbookAdded = event => {
-  const workbook = event.workbook
-  workbook.addWorksheet()
-  workbook.addEventListener('sheetAdded', onWorksheetAdded)
-}
-
-const onWorksheetAdded = event => {
-  worksheet = event.worksheet
+  fin.desktop.ExcelService.init().then(() => {
+    const ExcelInstance = fin.desktop.Excel
+    ExcelInstance.addWorkbook().then(res => (workbook = res))
+  })
 }
 
 export const publishExcel = message => {
+  if (workbook) {
+    workbook.getWorksheets(res => (worksheet = res[0]))
+  }
   if (worksheet && message) {
     const keys = Object.keys(message[0])
     const values = message.map(item => Object.values(item))
