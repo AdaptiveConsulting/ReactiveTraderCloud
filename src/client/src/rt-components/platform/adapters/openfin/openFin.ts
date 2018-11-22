@@ -1,6 +1,7 @@
 import { PlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
+import { initExcel, publishExcel } from './excel/excelAdapter'
 
 export default class OpenFin implements PlatformAdapter {
   name = 'openfin'
@@ -59,13 +60,18 @@ export default class OpenFin implements PlatformAdapter {
   }
 
   interop = {
-    subscribe: (sender: string, topic: string, listener: () => void) =>
-      fin.desktop.InterApplicationBus.subscribe(sender, topic, listener),
+    subscribe: (sender: string, topic: string, listener: () => void) => {
+      initExcel()
+      fin.desktop.InterApplicationBus.subscribe(sender, topic, listener)
+    },
 
     unsubscribe: (sender: string, topic: string, listener: () => void) =>
       fin.desktop.InterApplicationBus.unsubscribe(sender, topic, listener),
 
-    publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
+    publish: (topic: string, message: string | object) => {
+      publishExcel(message)
+      fin.desktop.InterApplicationBus.publish(topic, message)
+    },
   }
 
   notification = {
