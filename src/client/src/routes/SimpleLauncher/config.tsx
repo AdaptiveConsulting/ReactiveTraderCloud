@@ -132,8 +132,8 @@ export const config = [
   },
   {
     name: 'OpenFin Limit Checker',
-    url: `http://${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
-    icon: <FontAwesomeIcon icon={faTachometerAlt} />, // change this one as well
+    url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
+    icon: <FontAwesomeIcon icon={faTachometerAlt} />,
     provider: {
       platform: 'openfin',
       as: 'application',
