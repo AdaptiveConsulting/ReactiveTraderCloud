@@ -1,6 +1,13 @@
 import React from 'react'
 
-import { faChartArea, faExchangeAlt, faWindowRestore, faMicrophone, faPalette } from '@fortawesome/free-solid-svg-icons'
+import {
+  faChartArea,
+  faExchangeAlt,
+  faWindowRestore,
+  faMicrophone,
+  faPalette,
+  faTachometerAlt,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getEnvVars } from '../../config/config'
 
@@ -123,6 +130,32 @@ export const config = [
       },
     },
   },
+  {
+    name: 'OpenFin Limit Checker',
+    url: `http://${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
+    icon: <FontAwesomeIcon icon={faTachometerAlt} />, // change this one as well
+    provider: {
+      platform: 'openfin',
+      as: 'application',
+      options: {
+        autoShow: true,
+        defaultWidth: 1280,
+        defaultHeight: 900,
+        minWidth: 800,
+        minHeight: 600,
+        resizable: true,
+        maximizable: true,
+        frame: false,
+        nonPersistent: true,
+        accelerator: {
+          devtools: true,
+          reload: true,
+          reloadIgnoringCache: true,
+          zoom: true,
+        },
+      },
+    },
+  },
 ]
 
 // Demo of opening as window instead of Application
@@ -132,7 +165,7 @@ export const config = [
 if (process.env.NODE_ENV === 'development') {
   config.push({
     name: 'Reactive Trader as Window',
-    url: 'http://localhost:3000/',
+    url: 'http://localhost:3000/', //TODO should get the local page rather than manually setting it up
     icon: <FontAwesomeIcon icon={faWindowRestore} />,
     provider: {
       platform: 'openfin',
