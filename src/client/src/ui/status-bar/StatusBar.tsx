@@ -72,7 +72,6 @@ export class StatusBar extends Component<
               <Fill />
 
               <Logo source={LogoTypes.OpenFin} alt="OpenFin logo" />
-              <Logo source={LogoTypes.Adaptive} alt="Adaptive logo" />
               <ExpandToggle expand={expanded} />
             </Header>
 
