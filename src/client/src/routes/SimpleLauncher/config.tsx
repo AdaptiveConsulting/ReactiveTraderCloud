@@ -6,7 +6,8 @@ import {
   faWindowRestore,
   faMicrophone,
   faPalette,
-  faTachometerAlt,
+  //faTachometerAlt,
+  faDownload,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getEnvVars } from '../../config/config'
@@ -133,7 +134,7 @@ export const config = [
   {
     name: 'OpenFin Limit Checker',
     url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
-    icon: <FontAwesomeIcon icon={faTachometerAlt} />,
+    icon: <FontAwesomeIcon icon={faDownload} />,
     provider: {
       platform: 'openfin',
       as: 'application',
