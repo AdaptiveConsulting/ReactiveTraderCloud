@@ -6,8 +6,8 @@ import { ConnectionState } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import Icon from './Icon'
 import { Content, ExpandToggle, Fill, Header, NodeCount, Root, ServiceList, ServiceName, ServiceRoot } from './styled'
-import Logo from './Logo'
-import LogoTypes from './logoTypes'
+import { OpenFinLogo } from './assets/OpenFinLogo'
+import { PlatformAdapter, withPlatform } from 'rt-components'
 
 interface State {
   expanded: boolean
@@ -34,6 +34,12 @@ const getApplicationStatus = (services: ServiceStatus[]) => {
     return ServiceConnectionStatus.DISCONNECTED
   }
 }
+
+const Logo: React.SFC<{ platform: PlatformAdapter }> = ({ platform }) => (
+  <div>{platform.type === 'desktop' && <OpenFinLogo />}</div>
+)
+
+const LogoWithPlatform = withPlatform(Logo)
 
 export class StatusBar extends Component<
   {
@@ -71,7 +77,7 @@ export class StatusBar extends Component<
               )}
               <Fill />
 
-              <Logo source={LogoTypes.OpenFin} alt="OpenFin logo" />
+              <LogoWithPlatform />
               <ExpandToggle expand={expanded} />
             </Header>
 
