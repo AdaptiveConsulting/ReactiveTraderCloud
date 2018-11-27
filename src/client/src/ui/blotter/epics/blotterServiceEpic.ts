@@ -43,7 +43,7 @@ const connectBlotterToExcel: ApplicationEpic = (action$, state$, { platform }) =
         takeUntil(action$.pipe(applicationDisconnected)),
         tap(() => {
           const parsedData = parseBlotterData(state$.value.blotterService.trades, state$.value.currencyPairs)
-          platform.interop.publish('blotter-data', parsedData)
+          //platform.interop.publish('blotter-data', parsedData)
           platform.interop.excel.publish(parsedData)
         }),
         ignoreElements(),

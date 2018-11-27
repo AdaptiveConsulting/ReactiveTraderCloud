@@ -31,7 +31,10 @@ export default class OpenFin implements PlatformAdapter {
   }
 
   app = {
-    exit: () => fin.desktop.Application.getCurrent().close(),
+    exit: () => {
+      console.log('app closed')
+      fin.desktop.Application.getCurrent().close()
+    },
     open: (id: string, config: AppConfig) =>
       new Promise<string>((resolve, reject) => {
         fin.desktop.System.getAllApplications(apps => {
@@ -66,13 +69,11 @@ export default class OpenFin implements PlatformAdapter {
     unsubscribe: (sender: string, topic: string, listener: () => void) =>
       fin.desktop.InterApplicationBus.unsubscribe(sender, topic, listener),
 
-    publish: (topic: string, message: string | object) => {
-      fin.desktop.InterApplicationBus.publish(topic, message)
-    },
+    publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
 
     excel: {
-      init: () => Excel.initExcel(),
-      publish: (message: string | object) => Excel.publishExcel(message),
+      init: () => Excel.actions.init(),
+      publish: (message: string | object) => Excel.actions.publishExcel(message),
     },
   }
 

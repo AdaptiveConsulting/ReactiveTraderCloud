@@ -1,67 +1,59 @@
-interface ExcelInterface {
+import { styleWorksheet } from './utils'
+
+export interface ExcelInterface {
   workbook: any
   worksheet: any
-  publishExcel: (message: any) => void
-  initExcel: () => void
+  actions: {
+    init: () => void
+    publishExcel: (message: any) => void
+  }
 }
 
-const ExcelModule: ExcelInterface = {
-  workbook: null,
-  worksheet: null,
+class Excel implements ExcelInterface {
+  workbook: any
+  worksheet: any
+  excelOpen: boolean
 
-  initExcel: () => {
-    // @ts-ignore
-    const { ExcelService } = fin.desktop
-
-    // @ts-ignore
-    if (!fin.desktop.Excel) {
-      ExcelService.init().catch((err: string) => console.log(err))
-    }
-
-    ExcelService.addEventListener('excelConnected', () => {
-      console.log('excel init')
+  actions = {
+    init: () => {
       // @ts-ignore
-      const { Excel } = fin.desktop
-      Excel.getWorkbooks((workbooks: any) => {
-        if (!workbooks.length) {
-          Excel.addWorkbook().then((res: any) => {
-            this.workbook = res
-          })
-        } else {
+      if (!fin.desktop.Excel) {
+        // @ts-ignore
+        const { ExcelService } = fin.desktop
+        ExcelService.init().catch((err: string) => console.log(err))
+      }
+      // @ts-ignore
+      fin.desktop.ExcelService.addEventListener('excelConnected', () => (this.excelOpen = true))
+    },
+
+    setupSheet: () => {
+      // @ts-ignore
+      const excelInstance = fin.desktop.Excel
+      excelInstance.getWorkbooks((workbooks: any) => {
+        if (workbooks[0]) {
           this.workbook = workbooks[0]
+          this.workbook.getWorksheets((res: any) => {
+            styleWorksheet(res[0])
+            this.worksheet = res[0]
+          })
         }
       })
-    })
+    },
 
-    ExcelService.addEventListener('excelDisconnected', (data: any) => {
-      console.log('Excel Disconnected: ' + data.connectionUuid)
-    })
-  },
+    publishExcel: (message: any) => {
+      // @ts-ignore
+      if (fin.desktop.Excel && this.excelOpen) {
+        this.actions.setupSheet()
+      }
 
-  publishExcel: (message: any) => {
-    // Forming worksheet if a workbook exist
-    if (!this.worksheet && this.workbook) {
-      this.workbook.getWorksheets((res: any) => {
-        this.worksheet = res[0]
-        styleWorksheet(this.worksheet)
-      })
-    }
-
-    // If a worksheet exists and a message is received
-    if (this.worksheet && message) {
-      const keys = Object.keys(message[0])
-      const values = message.map((item: any) => Object.values(item))
-      this.worksheet.setCells([keys, ...values], 'A1')
-    }
-  },
+      if (this.worksheet && message.length !== 0) {
+        const keys = Object.keys(message[0])
+        const values = message.map((item: any) => Object.values(item))
+        this.worksheet.setCells([keys, ...values], 'A1')
+      }
+    },
+  }
 }
 
-async function styleWorksheet(worksheet: any) {
-  await worksheet.formatRange('A1:K1', {
-    border: { color: '0,0,0,1', style: 'continuous' },
-    font: { color: '100,100,100,1', size: 12, bold: true, name: 'Verdana' },
-    fill: { color: '#4472C4' },
-  })
-}
-
-export default ExcelModule
+const ExcelServiceInstance = new Excel()
+export default ExcelServiceInstance
