@@ -16,7 +16,7 @@ export class OpenFinLimitChecker {
   rpc(message: object) {
     return new Observable<boolean>(observer => {
       if (this.limitCheckSubscriber === null) {
-        console.info(LOG_NAME, 'client side limit check not up, will delegate to to server')
+        console.info(LOG_NAME, 'client side limit check not up, will delegate to server')
         observer.next(true)
         observer.complete()
         return
