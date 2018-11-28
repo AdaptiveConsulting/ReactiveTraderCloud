@@ -3,16 +3,12 @@ const LOG_NAME = 'OpenFin: '
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'
 
-const REACTIVE_LIMIT_CHECK_UUID = 'reactive-trader-cloud-local'
-
 export class OpenFinLimitChecker {
   private limitCheckSubscriber: string | null = null
   private limitCheckId: number = 1
 
   constructor() {
     if (typeof fin !== 'undefined') {
-      this.connectToExistingLimitChecker()
-
       this.initializeLimitChecker()
     }
   }
@@ -76,17 +72,5 @@ export class OpenFinLimitChecker {
       console.info(LOG_NAME, `${uuid} has unsubscribed as a limit checker`)
       this.limitCheckSubscriber = null
     }
-  }
-
-  connectToExistingLimitChecker() {
-    fin.desktop.System.getAllApplications(apps => {
-      const isRunning = apps.find(app => app.isRunning && app.uuid === REACTIVE_LIMIT_CHECK_UUID)
-      if (isRunning.isRunning) {
-        //TODO find out whether there is some message back from the actual application itself
-        // console.log("connectToExistingLimitChecker")
-        // console.log(isRunning)
-        // this.limitCheckSubscriber = isRunning.uuid;
-      }
-    })
   }
 }
