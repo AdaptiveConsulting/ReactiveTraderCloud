@@ -5,43 +5,33 @@ import { ConfigType } from './config'
 import { open } from './tools'
 
 export interface LinkProps {
-  is?: React.ComponentType<any>
   to: ConfigType
 }
 
+const StyledButton = styled.button`
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  font-size: 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: currentColor;
+  position: relative;
+  z-index: 100;
+
+  &:hover {
+    color: ${({ theme }) => theme.button.accent.backgroundColor};
+  }
+`
+
 export class Link extends React.Component<LinkProps> {
-  static defaultProps = {
-    is: styled.button`
-      width: 100%;
-      height: 100%;
-      flex: 1 1 auto;
-      font-size: 1.5rem;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: currentColor;
-      position: relative;
-      z-index: 100;
-
-      &:hover {
-        color: ${({ theme }) => theme.button.accent.backgroundColor};
-      }
-    `,
-  }
-
-  onClick = (event: MouseEvent) => {
+  onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     open(this.props.to)
-
     event.preventDefault()
-
-    return false
   }
 
-  render() {
-    const { is: LinkElement, children } = this.props
-
-    return <LinkElement onClick={this.onClick}>{children}</LinkElement>
-  }
+  render = () => <StyledButton onClick={this.onClick}>{this.props.children}</StyledButton>
 }

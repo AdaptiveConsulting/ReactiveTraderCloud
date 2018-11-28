@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs'
-
 const LOG_NAME = 'OpenFin: '
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'
@@ -12,7 +11,8 @@ export class OpenFinLimitChecker {
 
   constructor() {
     if (typeof fin !== 'undefined') {
-      this.pollLimitCheckerExistence()
+      this.connectToExistingLimitChecker()
+
       this.initializeLimitChecker()
     }
   }
@@ -78,9 +78,15 @@ export class OpenFinLimitChecker {
     }
   }
 
-  pollLimitCheckerExistence() {
+  connectToExistingLimitChecker() {
     fin.desktop.System.getAllApplications(apps => {
-      apps.filter(({ uuid }) => uuid && uuid === REACTIVE_LIMIT_CHECK_UUID)
+      const isRunning = apps.find(app => app.isRunning && app.uuid === REACTIVE_LIMIT_CHECK_UUID)
+      if (isRunning.isRunning) {
+        //TODO find out whether there is some message back from the actual application itself
+        // console.log("connectToExistingLimitChecker")
+        // console.log(isRunning)
+        // this.limitCheckSubscriber = isRunning.uuid;
+      }
     })
   }
 }
