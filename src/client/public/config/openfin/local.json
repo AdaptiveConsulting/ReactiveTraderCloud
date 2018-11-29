@@ -14,7 +14,7 @@
         "resizable": true,
         "maximizable": true,
         "frame": false,
-        // "nonPersistent": true,
+        "nonPersistent": true,
         "contextMenu": true,
         "accelerator": {
             "devtools": true,
