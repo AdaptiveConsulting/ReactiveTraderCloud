@@ -16,6 +16,7 @@ export async function open(config: ConfigType): Promise<Window | fin.OpenFinWind
         case 'download':
           //either download LimitChecker or launches it if it exists.
           return downloadOrLaunchLimitChecker(config)
+
         case 'application':
         default: {
           const app = await createOpenFinApplication(config)
@@ -103,8 +104,9 @@ async function downloadOrLaunchLimitChecker(config: ConfigType) {
       },
       async error => {
         //on error, download it
-        config.provider.as = 'application'
-        app = await createOpenFinApplication(config)
+        app.restart()
+        const config1 = { ...config, provider: { ...config.provider, as: 'application' } }
+        app = await createOpenFinApplication(config1)
         await new Promise((resolve, reject) => app.run(resolve, reject))
       },
     )

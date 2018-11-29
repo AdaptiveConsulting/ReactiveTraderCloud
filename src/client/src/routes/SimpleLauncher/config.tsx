@@ -99,9 +99,9 @@ export const config = [
     url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
     icon: <FontAwesomeIcon icon={faDownload} />,
     provider: {
-      ...provider,
-      options,
+      platform: 'openfin',
       as: 'download',
+      options,
     },
   },
 ]
