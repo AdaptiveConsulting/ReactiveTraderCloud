@@ -18,7 +18,6 @@ export class Launcher extends React.Component {
   `
 
   render() {
-    console.log(config)
     return (
       <Root>
         <Frame>
