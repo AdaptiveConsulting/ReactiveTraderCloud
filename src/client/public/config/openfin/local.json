@@ -22,7 +22,6 @@
                 "url": "http://localhost:3000/plugin/fin.desktop.Excel.js"
             }
         ],
-        "nonPersistent": true,
         "contextMenu": true,
         "accelerator": {
             "devtools": true,

@@ -4,6 +4,7 @@ import React from 'react'
 import { styled, ThemeName, ThemeStorage } from 'rt-theme'
 
 import Logo from './Logo'
+import ExcelLauncher from './ExcelLauncher'
 
 class Header extends React.Component {
   onClick = () => window.open('https://weareadaptive.com/')
@@ -15,7 +16,7 @@ class Header extends React.Component {
         <Logo size={1.75} onClick={this.onClick} />
 
         <Fill />
-
+        <ExcelLauncher />
         <ThemeControl />
         {children == null ? null : (
           <React.Fragment>

@@ -37,14 +37,13 @@ function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
 const connectBlotterToExcel: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     applicationConnected,
-    tap(() => platform.interop.excel.init()),
+    tap(() => platform.interop!.excel.init()),
     switchMapTo(
       interval(7500).pipe(
         takeUntil(action$.pipe(applicationDisconnected)),
         tap(() => {
           const parsedData = parseBlotterData(state$.value.blotterService.trades, state$.value.currencyPairs)
-          //platform.interop.publish('blotter-data', parsedData)
-          platform.interop.excel.publish(parsedData)
+          platform.interop!.excel.publish('blotter-data', parsedData)
         }),
         ignoreElements(),
       ),

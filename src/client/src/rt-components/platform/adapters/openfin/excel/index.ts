@@ -1,18 +1,20 @@
-import { styleWorksheet } from './utils'
+import { formTable } from './utils'
 
 export interface ExcelInterface {
   workbook: any
-  worksheet: any
+
   actions: {
     init: () => void
-    publishExcel: (message: any) => void
+    publishExcel: (topic: string, message: any) => void
+    setupSheet: () => void
+    openExcel: () => void
   }
 }
 
 class Excel implements ExcelInterface {
   workbook: any
-  worksheet: any
-  excelOpen: boolean
+  blotterSheet: any
+  positionSheet: any
 
   actions = {
     init: () => {
@@ -33,23 +35,37 @@ class Excel implements ExcelInterface {
         if (workbooks[0]) {
           this.workbook = workbooks[0]
           this.workbook.getWorksheets((res: any) => {
-            styleWorksheet(res[0])
-            this.worksheet = res[0]
+            ;[this.blotterSheet, this.positionSheet] = res
           })
         }
       })
     },
 
-    publishExcel: (message: any) => {
+    openExcel: () => {
+      // @ts-ignore
+      fin.desktop.Excel ? fin.desktop.Excel.run() : this.actions.init()
+    },
+
+    publishExcel: (topic: string, message: any) => {
       // @ts-ignore
       if (fin.desktop.Excel && this.excelOpen) {
         this.actions.setupSheet()
       }
 
-      if (this.worksheet && message.length !== 0) {
-        const keys = Object.keys(message[0])
-        const values = message.map((item: any) => Object.values(item))
-        this.worksheet.setCells([keys, ...values], 'A1')
+      if (message.length !== 0) {
+        switch (topic) {
+          case 'blotter-data':
+            if (this.blotterSheet) {
+              this.blotterSheet.setCells(formTable.blotter(message), 'A2')
+            }
+            break
+          case 'position-update':
+            if (this.positionSheet) {
+              this.positionSheet.setCells(formTable.positions(message), 'A2')
+              this.positionSheet.setCells(formTable.ccy(message), 'A13')
+            }
+            break
+        }
       }
     },
   }

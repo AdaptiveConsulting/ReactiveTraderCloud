@@ -23,7 +23,8 @@ export interface PlatformAdapter {
     publish: (topic: string, message: any) => void
     excel: {
       init: () => void
-      publish: (message: any) => void
+      publish: (topic: string, message: any) => void
+      open: () => void
     }
   }
 
