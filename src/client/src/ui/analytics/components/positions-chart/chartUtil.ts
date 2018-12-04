@@ -24,7 +24,7 @@ export function getPositionsDataFromSeries(series: CurrencyPairPosition[] = [], 
   return _.map(positionsPerCcyObj, (val, key) => {
     return {
       symbol: key,
-      [baseAmountPropertyName]: val
+      [baseAmountPropertyName]: val,
     }
   }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
 }
@@ -58,7 +58,7 @@ export function createScales(props: PositionsBubbleChartProps) {
     r: d3.scale
       .sqrt()
       .domain([minValue, maxValue])
-      .range([minR, maxR])
+      .range([minR, maxR]),
   }
 
   return scales
@@ -79,7 +79,7 @@ export function updateNodes(nodeGroup: any, nodes: any[], scales: any) {
     },
     id: (d: any, i: any) => {
       return d.id
-    }
+    },
   })
 
   nodes.forEach((node: any) => {
@@ -104,12 +104,13 @@ export function drawCircles(nodeGroup: any, duration: number = 800) {
     .attr({
       r: (d: any) => {
         return d.r
-      }
+      },
     })
+    .style('filter', 'url(#drop-shadow)')
     .style({
       fill: (d: any) => {
         return d.color
-      }
+      },
     })
 }
 
@@ -118,7 +119,7 @@ export function drawLabels(nodeGroup: any) {
     .attr({
       x: 0,
       y: 3,
-      class: 'analytics__positions-label'
+      class: 'analytics__positions-label',
     })
     .text((d: any) => {
       return d.id
@@ -137,9 +138,36 @@ export function getPositionValue(id: string, positionsData: any[]) {
   return ''
 }
 
+export function addShadow(svg: any) {
+  const defs = svg.append('defs')
+
+  const filt = defs
+    .append('filter')
+    .attr('id', 'drop-shadow')
+    .attr('height', '130%')
+
+  filt
+    .append('feGaussianBlur')
+    .attr('in', 'SourceAlpha')
+    .attr('stdDeviation', 1.5)
+    .attr('result', 'blur')
+
+  filt
+    .append('feOffset')
+    .attr('in', 'blur')
+    .attr('dx', 1)
+    .attr('dy', 1)
+    .attr('result', 'offsetBlur')
+
+  const feMerge = filt.append('feMerge')
+
+  feMerge.append('feMergeNode').attr('in', 'offsetBlur')
+  feMerge.append('feMergeNode').attr('in', 'SourceGraphic')
+}
+
 export function collide(alpha: number, nodes: any[], scale?: number) {
   const qt = d3.geom.quadtree(nodes)
-  const padding = 10
+  const padding = -3
 
   return (d: any) => {
     let r = d.r + 10 + padding
