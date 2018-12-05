@@ -6,7 +6,6 @@ import AnalyticsBarChart from './AnalyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
 import { CurrencyPair } from 'rt-types'
-// import PNLChart from './pnlChart/PNLChart'
 
 import {
   HrBar,

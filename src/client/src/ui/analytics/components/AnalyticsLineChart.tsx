@@ -35,12 +35,12 @@ const getGradientOffset = (data: DataPoint[]) => {
   return dataMax / (dataMax - dataMin)
 }
 
-interface Foo {
+interface ToolTipProps {
   payload: any[]
   label: string
 }
 
-const CustomTooltip: React.SFC<Foo> = ({ payload, label }) => {
+const CustomTooltip: React.SFC<ToolTipProps> = ({ payload, label }) => {
   return (
     <ToolTipStyle>
       <ToolTipChildRight>{label}</ToolTipChildRight>
@@ -66,12 +66,7 @@ class LineChartContainer extends React.PureComponent<LineChartProps> {
             <XAxis dataKey="x" tickLine={false} interval={'preserveStartEnd'} />
             <YAxis tickFormatter={tickFormatYAxis} tickLine={false} interval={'preserveStartEnd'} />
             {offset < 1 && <ReferenceLine y={0} stroke="white" strokeOpacity={0.2} />}
-            <Tooltip
-              itemStyle={{ background: '#14161c' }}
-              offset={10}
-              cursor={{ stroke: '#14161c', strokeWidth: 0.8 }}
-              content={CustomTooltip}
-            />
+            <Tooltip offset={10} cursor={{ stroke: '#14161c', strokeWidth: 0.8 }} content={CustomTooltip} />
             <Line type="monotone" dataKey="y" stroke="url(#colorValue)" dot={false} />
           </LineChart>
         </ResponsiveContainer>
