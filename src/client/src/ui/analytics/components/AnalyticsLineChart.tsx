@@ -65,8 +65,8 @@ const LineCharts: React.SFC<LineChartProps> = ({ seriesData }) => {
           <XAxis dataKey="x" tickLine={false} interval={'preserveStartEnd'} />
           <YAxis tickFormatter={tickFormatYAxis} tickLine={false} interval={'preserveStartEnd'} />
           {offset < 1 && <ReferenceLine y={0} stroke="white" strokeOpacity={0.2} />}
-          <Tooltip offset={10} cursor={{ stroke: '#14161c', strokeWidth: 0.8 }} content={CustomTooltip} />
-          <Line type="monotone" dataKey="y" stroke="url(#colorValue)" dot={false} />
+          <Tooltip offset={10} cursor={{ stroke: '#14161c', strokeWidth: 2 }} content={CustomTooltip} />
+          <Line type="monotone" dataKey="y" stroke="url(#colorValue)" dot={false} strokeWidth={2} />
         </LineChart>
       </ResponsiveContainer>
     )
