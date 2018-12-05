@@ -18,7 +18,7 @@ import {
   USDspan,
 } from './styled'
 import AnalyticsHeader from './AnalyticsHeader'
-import LineChart from './AnalyticsLineChart'
+import ProfitLossLineChart from './AnalyticsLineChart'
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
@@ -57,7 +57,7 @@ export default class Analytics extends React.Component<Props> {
           <LastPosition color={lastPosition.color}>{lastPosition.formattedLastPos}</LastPosition>
         </LastPositionWrapper>
         <LinearChartStyle>
-          {pnlChartModel && <LineChart seriesData={pnlChartModel.seriesData} />}
+          {pnlChartModel && <ProfitLossLineChart seriesData={pnlChartModel.seriesData} />}
           <HrBar />
         </LinearChartStyle>
         {positionsChartModel &&
