@@ -1,4 +1,5 @@
 import { styled } from 'rt-theme'
+import { css } from 'emotion'
 import { transparentColor } from '../globals/variables'
 
 export const AnalyticsStyle = styled.div`
@@ -82,43 +83,91 @@ export const Header = styled.div`
   justify-content: space-between;
   margin-bottom: 0.5rem;
 `
+//TODO ML 04/12 Generalize font-family, weight, and anything with normal by moving them to the theme? , font-family,
+export const fontStyle = css`
+  font-family: Lato;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+`
 
-export const Title = styled.div``
-
-export const LastPosition = styled.div<{ color?: string }>`
-  font-size: 0.75rem;
+export const Title = styled.div`
+  width: 84px;
+  height: 18px;
+  font-size: 15px;
+  font-weight: normal;
+  composes: ${fontStyle};
+`
+export const LastPositionWrapper = styled.div``
+export const USDspan = styled.span`
+  width: 29px;
+  height: 17px;
+  opacity: 0.6;
+  font-size: 14px;
+  composes: ${fontStyle};
+  margin-right: 10px;
+  color: #ffffff;
+`
+export const LastPosition = styled.span<{ color?: string }>`
+  width: 44px;
+  height: 17px;
+  font-size: 14px;
+  composes: ${fontStyle};
   color: ${({ theme, color }) => color && theme.analytics[color].normal};
   margin: 0.5rem 0;
+`
+export const HrBar = styled.hr`
+  height: 4px;
+  color: #282d39;
+  background-color: #282d39;
+  margin-top: 20px;
+  border: none;
+`
+
+export const ToolTipStyle = styled.div`
+  background-color: #14161c;
+  width: 116px;
+  height: 30px;
+  border-radius: 3px;
+  font-size: 10px;
+  vertical-align: middle;
+  text-align: center;
+`
+
+export const ToolTipChildRight = styled.span`
+  width: 52px;
+  height: 12px;
+  opacity: 0.6;
+  font-size: 10px;
+  composes: ${fontStyle};
+  text-align: center;
+  float: left;
+`
+export const ToolTipChildLeft = styled.span`
+  width: 30px;
+  height: 12px;
+  font-size: 10px;
+  composes: ${fontStyle};
+  text-align: center;
 `
 
 export const BubbleChart = styled.div`
   text-anchor: middle;
   height: 18rem;
 `
-
-export const Chart = styled.div`
+export const LinearChartStyle = styled.div`
   position: relative;
-
-  .nv-lineChart {
-    .nv-axis.nv-y {
-      text {
-        font-size: 0.5rem;
-        fill: ${({ theme }) => theme.analytics.textColor};
-      }
-    }
-
-    .nv-axis.nv-x {
-      text {
-        font-size: 0.5rem;
-        fill: ${({ theme }) => theme.analytics.textColor};
-      }
-    }
-  }
-
-  /* axis labels */
-  .nv-lineChart .nv-axis.nv-x text,
-  .nv-lineChart .nv-axis.nv-y text {
-    fill: ${({ theme }) => theme.analytics.textColor};
+  width: 100%;
+  height: 20%;
+  margin: auto;
+  .recharts-cartesian-axis-ticks {
+    color: #ffffff;
+    width: 52px;
+    height: 12px;
+    opacity: 1;
+    font-size: 10px;
+    composes: ${fontStyle};
   }
 `
 export const Controls = styled('div')`

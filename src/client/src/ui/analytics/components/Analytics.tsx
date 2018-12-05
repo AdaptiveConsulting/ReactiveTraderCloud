@@ -6,12 +6,20 @@ import AnalyticsBarChart from './AnalyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
 import { CurrencyPair } from 'rt-types'
-import PNLChart from './pnlChart/PNLChart'
+// import PNLChart from './pnlChart/PNLChart'
 
-import { PopoutIcon } from 'rt-components'
-import { ThemeProvider } from 'rt-theme'
-import { AnalyticsStyle, BubbleChart, Chart, Controls, Header, LastPosition, PopoutButton, Title } from './styled'
-
+import {
+  HrBar,
+  AnalyticsStyle,
+  BubbleChart,
+  LinearChartStyle,
+  LastPosition,
+  Title,
+  LastPositionWrapper,
+  USDspan,
+} from './styled'
+import AnalyticsHeader from './AnalyticsHeader'
+import LineChart from './AnalyticsLineChart'
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
@@ -40,41 +48,35 @@ export default class Analytics extends React.Component<Props> {
 
   render() {
     const { canPopout, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
-
     const lastPos = (pnlChartModel && pnlChartModel.lastPos) || 0
     const lastPosition = lastPositionWithDirection(lastPos)
     return (
-      <ThemeProvider theme={theme => theme.analytics}>
-        <AnalyticsStyle>
-          <Header>
-            {canPopout && (
-              <Controls>
-                <PopoutButton onClick={onPopoutClick}>
-                  <PopoutIcon width={0.8125} height={0.75} />
-                </PopoutButton>
-              </Controls>
-            )}
-            <Title>Analytics</Title>
-          </Header>
-          <LastPosition color={lastPosition.color}>USD {lastPosition.formattedLastPos}</LastPosition>
-          <Chart>{pnlChartModel && <PNLChart {...pnlChartModel} />}</Chart>
-          {positionsChartModel &&
-            positionsChartModel.seriesData.length !== 0 && (
-              <React.Fragment>
-                <Title>Positions</Title>
-                <BubbleChart>
-                  <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
-                </BubbleChart>
-                <Title>Profit and Loss</Title>
-                <AnalyticsBarChart
-                  chartData={positionsChartModel.seriesData}
-                  currencyPairs={currencyPairs}
-                  isPnL={true}
-                />
-              </React.Fragment>
-            )}
-        </AnalyticsStyle>
-      </ThemeProvider>
+      <AnalyticsStyle>
+        <AnalyticsHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
+        <LastPositionWrapper>
+          <USDspan>USD</USDspan>
+          <LastPosition color={lastPosition.color}>{lastPosition.formattedLastPos}</LastPosition>
+        </LastPositionWrapper>
+        <LinearChartStyle>
+          {pnlChartModel && <LineChart seriesData={pnlChartModel.seriesData} />}
+          <HrBar />
+        </LinearChartStyle>
+        {positionsChartModel &&
+          positionsChartModel.seriesData.length !== 0 && (
+            <React.Fragment>
+              <Title>Positions</Title>
+              <BubbleChart>
+                <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+              </BubbleChart>
+              <Title>PnL</Title>
+              <AnalyticsBarChart
+                chartData={positionsChartModel.seriesData}
+                currencyPairs={currencyPairs}
+                isPnL={true}
+              />
+            </React.Fragment>
+          )}
+      </AnalyticsStyle>
     )
   }
 }
