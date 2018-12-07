@@ -13,8 +13,7 @@
     "minHeight": 600,
     "resizable": true,
     "maximizable": true,
-    "frame": false,
-    "nonPersistent": true
+    "frame": false
   },
   "runtime": {
     "arguments": "--force-device-scale-factor=1",

@@ -23,8 +23,8 @@ export class GlobalScrollbarStyle extends Component {
       }
 
       body ::-webkit-scrollbar {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
       }
 
       body ::-webkit-scrollbar-thumb {
@@ -42,12 +42,8 @@ export class GlobalScrollbarStyle extends Component {
       }
 
       body .ag-body ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-      }
-
-      body .ag-body ::-webkit-scrollbar-thumb {
-        border-width: 2px;
+        width: 14px;
+        height: 14px;
       }
     `
   }

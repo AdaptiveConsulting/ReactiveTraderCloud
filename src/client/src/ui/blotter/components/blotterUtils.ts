@@ -2,11 +2,14 @@ import { ColDef } from 'ag-grid'
 import { Trade, TradeStatus } from 'rt-types'
 import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
 import SetFilter from './filters/SetFilter'
-
+import numeral from 'numeral'
 const dateRenderer = (trade: Trade, field: string) => {
   return formatDate(trade[field], '%d-%b %H:%M:%S')
 }
 
+const NotionalRenderer = (trade: Trade, field: string) => {
+  return numeral(trade[field]).format('0,0[.]00')
+}
 const UtcDateRenderer = (trade: Trade, field: string, format: string = '%d-%b-%Y') => {
   return UtcFormatDate(trade[field], format)
 }
@@ -134,6 +137,7 @@ export const columnDefinitions: ColDef[] = [
     headerClass: 'rt-header__numeric',
     width: 120,
     filter: 'agNumberColumnFilter',
+    cellRenderer: ({ data }) => NotionalRenderer(data, 'notional'),
   },
   {
     colId: SPOT_RATE,

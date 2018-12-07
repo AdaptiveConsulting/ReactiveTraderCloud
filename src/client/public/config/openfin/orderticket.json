@@ -15,7 +15,6 @@
         "resizable": false,
         "maximizable": false,
         "frame": false,
-        "nonPersistent": true,
         "contextMenu": true,
         "alwaysOnTop": false,
         "accelerator": {

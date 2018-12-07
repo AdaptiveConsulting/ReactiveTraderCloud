@@ -3,8 +3,8 @@
     "name": "Reactive Trader Cloud",
     "url": "https://web-demo.adaptivecluster.com/launcher",
     "uuid": "ReactiveLauncher",
-    "defaultWidth": 60,
-    "defaultHeight": 320,
+    "defaultWidth": 380,
+    "defaultHeight": 60,
     "defaultTop": 160,
     "defaultLeft": 30,
     "autoShow": true,
@@ -30,5 +30,10 @@
     "futureVersion": "9.61.34.22",
     "forceLatest": true
   },
-  "shortcut": {}
+  "shortcut": {
+    "company": "Adaptive Consulting",
+    "description": "Desktop Reactive Trader Cloud",
+    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
+    "name": "Reactive Trader Cloud"
+  }
 }
