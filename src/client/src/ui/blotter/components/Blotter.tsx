@@ -58,7 +58,6 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
   render() {
     const { canPopout, rows, onPopoutClick } = this.props
     const { displayedRows } = this.state
-
     return (
       <ThemeProvider theme={theme => theme.blotter}>
         <BlotterStyle>
