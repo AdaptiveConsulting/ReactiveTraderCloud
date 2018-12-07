@@ -18,9 +18,9 @@ interface DataPoint {
   y: string
 }
 
-const tickFormatYAxis = (x: string) => numeral(x).format('0.0a')
+const tickFormatYAxis: ((x: string) => string) = x => numeral(x).format('0.0a')
 
-const getGradientOffset = (data: DataPoint[]) => {
+const getGradientOffset: ((data: DataPoint[]) => number) = data => {
   const yValues = data.map(i => parseInt(i.y, 10))
   const dataMax = Math.max(...yValues)
   const dataMin = Math.min(...yValues)
@@ -52,25 +52,23 @@ const CustomTooltip: React.SFC<ToolTipProps> = ({ payload, label }) => {
 const LineCharts: React.SFC<LineChartProps> = ({ seriesData }) => {
   const data = seriesData.map(serie => ({ x: moment(serie.x).format('hh:mm:ss A'), y: serie.y }))
   const offset = getGradientOffset(data)
-  return (
-    seriesData.length > 0 && (
-      <ResponsiveContainer width="100%" height="80%">
-        <LineChart data={data} margin={{ top: 15, right: 50 }}>
-          <defs>
-            <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset={offset} stopColor="#28c988" stopOpacity={1} strokeWidth={2} />
-              <stop offset={offset} stopColor="#f94c4c" stopOpacity={1} strokeWidth={2} />
-            </linearGradient>
-          </defs>
-          <XAxis dataKey="x" tickLine={false} interval={'preserveStartEnd'} />
-          <YAxis tickFormatter={tickFormatYAxis} tickLine={false} interval={'preserveStartEnd'} />
-          {offset < 1 && <ReferenceLine y={0} stroke="white" strokeOpacity={0.2} />}
-          <Tooltip offset={10} cursor={{ stroke: '#14161c', strokeWidth: 2 }} content={CustomTooltip} />
-          <Line type="monotone" dataKey="y" stroke="url(#colorValue)" dot={false} strokeWidth={2} />
-        </LineChart>
-      </ResponsiveContainer>
-    )
-  )
+  return seriesData.length > 0 ? (
+    <ResponsiveContainer width="100%" height="80%">
+      <LineChart data={data} margin={{ top: 15, right: 50 }}>
+        <defs>
+          <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+            <stop offset={offset} stopColor="#28c988" stopOpacity={1} strokeWidth={1.2} />
+            <stop offset={offset} stopColor="#f94c4c" stopOpacity={1} strokeWidth={1.2} />
+          </linearGradient>
+        </defs>
+        <XAxis dataKey="x" tickLine={false} interval={'preserveStartEnd'} />
+        <YAxis domain={['dataMin', 'dataMax']} tickFormatter={tickFormatYAxis} tickLine={false} />
+        {offset < 1 && <ReferenceLine y={0} stroke="white" strokeOpacity={0.2} />}
+        <Tooltip offset={10} cursor={{ stroke: '#14161c', strokeWidth: 2 }} content={CustomTooltip} />
+        <Line type="monotone" dataKey="y" stroke="url(#colorValue)" dot={false} strokeWidth={2} />
+      </LineChart>
+    </ResponsiveContainer>
+  ) : null
 }
 
 export default LineCharts
