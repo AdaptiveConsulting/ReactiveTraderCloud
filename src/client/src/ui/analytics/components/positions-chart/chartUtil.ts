@@ -139,27 +139,27 @@ export function getPositionValue(id: string, positionsData: any[]) {
 }
 
 export function addShadow(svg: any) {
-  const defs = svg.append('defs')
+  const definitions = svg.append('defs')
 
-  const filt = defs
+  const filter = definitions
     .append('filter')
     .attr('id', 'drop-shadow')
     .attr('height', '130%')
 
-  filt
+  filter
     .append('feGaussianBlur')
     .attr('in', 'SourceAlpha')
     .attr('stdDeviation', 1.5)
     .attr('result', 'blur')
 
-  filt
+  filter
     .append('feOffset')
     .attr('in', 'blur')
     .attr('dx', 1)
     .attr('dy', 1)
     .attr('result', 'offsetBlur')
 
-  const feMerge = filt.append('feMerge')
+  const feMerge = filter.append('feMerge')
 
   feMerge.append('feMergeNode').attr('in', 'offsetBlur')
   feMerge.append('feMergeNode').attr('in', 'SourceGraphic')
@@ -167,10 +167,10 @@ export function addShadow(svg: any) {
 
 export function collide(alpha: number, nodes: any[], scale?: number) {
   const qt = d3.geom.quadtree(nodes)
-  const padding = -3
+  const offset = -3
 
   return (d: any) => {
-    let r = d.r + 10 + padding
+    let r = d.r + 10 + offset
 
     const nx1 = d.x - r
     const nx2 = d.x + r
@@ -182,7 +182,7 @@ export function collide(alpha: number, nodes: any[], scale?: number) {
         let x = d.x - quad.point.x
         let y = d.y - quad.point.y
         let l = Math.sqrt(x * x + y * y)
-        r = d.r + quad.point.r + padding
+        r = d.r + quad.point.r + offset
         if (l < r) {
           l = ((l - r) / l) * alpha
           d.x -= x *= l
