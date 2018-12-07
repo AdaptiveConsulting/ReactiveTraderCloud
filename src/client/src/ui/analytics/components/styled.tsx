@@ -109,7 +109,7 @@ export const USDspan = styled.span`
   margin-right: 10px;
   color: #ffffff;
 `
-export const LastPosition = styled.span<{ color?: string }>`
+export const LastPositionStyle = styled.span<{ color?: string }>`
   width: 44px;
   height: 17px;
   font-size: 14px;
@@ -156,10 +156,14 @@ export const BubbleChart = styled.div`
   text-anchor: middle;
   height: 18rem;
 `
-export const LinearChartStyle = styled.div`
-  position: relative;
+export const AnalyticsLineChartWrapper = styled.div`
+  width: 300px;
+  height: 200px;
+`
+
+export const AnalyticsLineChartStyle = styled.div`
   width: 100%;
-  height: 20%;
+  height: 100%;
   margin: auto;
   .recharts-cartesian-axis-ticks {
     color: #ffffff;

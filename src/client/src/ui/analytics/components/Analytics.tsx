@@ -1,4 +1,3 @@
-import numeral from 'numeral'
 import React from 'react'
 import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
@@ -7,18 +6,10 @@ import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
 import { CurrencyPair } from 'rt-types'
 
-import {
-  HrBar,
-  AnalyticsStyle,
-  BubbleChart,
-  LinearChartStyle,
-  LastPosition,
-  Title,
-  LastPositionWrapper,
-  USDspan,
-} from './styled'
+import { AnalyticsStyle, BubbleChart, Title, AnalyticsLineChartWrapper } from './styled'
 import AnalyticsHeader from './AnalyticsHeader'
 import AnalyticsLineChart from './AnalyticsLineChart'
+import LastPosition from './LastPosition'
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
@@ -26,7 +17,7 @@ export interface CurrencyPairs {
 export interface Props {
   canPopout: boolean
   currencyPairs: CurrencyPairs
-  analyticsLineChartModel?: AnalyticsLineChartModel
+  analyticsLineChartModel: AnalyticsLineChartModel
   positionsChartModel?: PositionsChartModel
   onPopoutClick?: () => void
 }
@@ -34,9 +25,8 @@ export interface Props {
 const RESIZE_EVENT = 'resize'
 
 export default class Analytics extends React.Component<Props> {
-  private handleResize = () => this.forceUpdate()
+  private handleResize = () => this.forceUpdate() // NVD3 chart redraw
 
-  // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
   componentWillMount() {
     window.addEventListener(RESIZE_EVENT, this.handleResize)
   }
@@ -47,19 +37,14 @@ export default class Analytics extends React.Component<Props> {
 
   render() {
     const { canPopout, currencyPairs, analyticsLineChartModel, positionsChartModel, onPopoutClick } = this.props
-    const lastPos = (analyticsLineChartModel && analyticsLineChartModel.lastPos) || 0
-    const lastPosition = lastPositionWithDirection(lastPos)
+
     return (
       <AnalyticsStyle>
         <AnalyticsHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
-        <LastPositionWrapper>
-          <USDspan>USD</USDspan>
-          <LastPosition color={lastPosition.color}>{lastPosition.formattedLastPos}</LastPosition>
-        </LastPositionWrapper>
-        <LinearChartStyle>
-          {analyticsLineChartModel && <AnalyticsLineChart model={analyticsLineChartModel} />}
-          <HrBar />
-        </LinearChartStyle>
+        <LastPosition lastPos={analyticsLineChartModel.lastPos} />
+        <AnalyticsLineChartWrapper>
+          <AnalyticsLineChart model={analyticsLineChartModel} />
+        </AnalyticsLineChartWrapper>
         {positionsChartModel &&
           positionsChartModel.seriesData.length !== 0 && (
             <React.Fragment>
@@ -78,17 +63,4 @@ export default class Analytics extends React.Component<Props> {
       </AnalyticsStyle>
     )
   }
-}
-
-function lastPositionWithDirection(lastPos: number) {
-  let formattedLastPos = numeral(lastPos).format()
-  let color = ''
-  if (lastPos > 0) {
-    color = 'green'
-    formattedLastPos = '+' + formattedLastPos
-  }
-  if (lastPos < 0) {
-    color = 'red'
-  }
-  return { color, formattedLastPos }
 }
