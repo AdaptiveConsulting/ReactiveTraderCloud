@@ -13,10 +13,12 @@ export async function open(config: ConfigType): Promise<Window | fin.OpenFinWind
       switch (provider.as) {
         case 'window':
           return createOpenFinWindow(config)
+        case 'download':
+          return downloadOrLaunchLimitChecker(config)
+
         case 'application':
         default: {
           const app = await createOpenFinApplication(config)
-
           await new Promise((resolve, reject) => app.run(resolve, reject))
 
           return app
@@ -61,9 +63,7 @@ export function createOpenFinApplication({
         // improper OpenFin type definition
       } as any,
       () => resolve(app),
-      e => {
-        reject(e)
-      },
+      e => reject(e),
     )
   })
 }
@@ -84,4 +84,32 @@ export function createOpenFinWindow({ name, url, provider: { options } }: Config
       reject,
     )
   })
+}
+
+async function downloadOrLaunchLimitChecker(config: ConfigType) {
+  let app = fin.desktop.Application.wrap(config.name)
+  //Get the environement variable
+  fin.desktop.System.getEnvironmentVariable('APPDATA', variable => {
+    const path = variable + '\\LimitChecker.application'
+    //launch the application
+    fin.desktop.System.launchExternalProcess(
+      {
+        path,
+        arguments: '',
+        listener: res => res,
+      },
+      res => {
+        console.log(res)
+      },
+      async error => {
+        //on error, download it
+        app.restart()
+        const config1 = { ...config, provider: { ...config.provider, as: 'application' } }
+        app = await createOpenFinApplication(config1)
+        await new Promise((resolve, reject) => app.run(resolve, reject))
+      },
+    )
+  })
+
+  return app
 }
