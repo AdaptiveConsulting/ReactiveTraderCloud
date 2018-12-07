@@ -3,14 +3,10 @@ import moment from 'moment'
 import numeral from 'numeral'
 import { XAxis, YAxis, ResponsiveContainer, LineChart, Line, ReferenceLine, Tooltip } from 'recharts'
 import { ToolTipStyle, ToolTipChildRight, ToolTipChildLeft } from './styled'
+import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
 
 interface LineChartProps {
-  seriesData: PricePoint[]
-}
-
-interface PricePoint {
-  x: Date
-  y: string
+  model: AnalyticsLineChartModel
 }
 
 interface DataPoint {
@@ -49,7 +45,7 @@ const CustomTooltip: React.SFC<ToolTipProps> = ({ payload, label }) => {
   )
 }
 
-const LineCharts: React.SFC<LineChartProps> = ({ seriesData }) => {
+const LineCharts: React.SFC<LineChartProps> = ({ model: { seriesData } }) => {
   const data = seriesData.map(serie => ({ x: moment(serie.x).format('hh:mm:ss A'), y: serie.y }))
   const offset = getGradientOffset(data)
   return seriesData.length > 0 ? (

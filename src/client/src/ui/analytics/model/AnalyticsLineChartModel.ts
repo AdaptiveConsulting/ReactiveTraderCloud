@@ -2,7 +2,6 @@ import { time } from 'd3'
 import _ from 'lodash'
 import numeral from 'numeral'
 
-import { PnlChartModelOptions } from '../components/pnlChart/PNLChart'
 import { HistoricPosition } from './index'
 
 export interface PricePoint {
@@ -10,7 +9,27 @@ export interface PricePoint {
   y: any
 }
 
-export interface PNLChartModel {
+interface PnlChartModelOptions {
+  xAxis: {
+    tickFormat: (str: string) => string
+  }
+  yAxis: {
+    tickFormat: (numb: number) => string
+  }
+  showYAxis: boolean
+  showXAxis: boolean
+  showLegend: boolean
+  useInteractiveGuideline: boolean
+  duration: number
+  margin: {
+    left: number
+    top: number
+    right: number
+    bottom: number
+  }
+}
+
+export interface AnalyticsLineChartModel {
   lastPos: number
   maxPnl: number
   minPnl: number
@@ -22,7 +41,7 @@ const DEFAULT_PNL = {
   lastPos: 0,
   minPnl: 0,
   maxPnl: 0,
-  seriesData: [] as any[]
+  seriesData: [] as any[],
 }
 
 export const getPnlChartModel = (history: HistoricPosition[]) => {
@@ -30,10 +49,10 @@ export const getPnlChartModel = (history: HistoricPosition[]) => {
     ...getPnlPositions(history),
     options: {
       xAxis: {
-        tickFormat: (d: string) => time.format('%X')(new Date(d))
+        tickFormat: (d: string) => time.format('%X')(new Date(d)),
       },
       yAxis: {
-        tickFormat: (d: string) => numeral(d).format('0.0a')
+        tickFormat: (d: string) => numeral(d).format('0.0a'),
       },
       showYAxis: true,
       showXAxis: true,
@@ -44,9 +63,9 @@ export const getPnlChartModel = (history: HistoricPosition[]) => {
         left: 30,
         top: 10,
         right: 0,
-        bottom: 24
-      }
-    }
+        bottom: 24,
+      },
+    },
   } as any
 }
 
@@ -70,7 +89,7 @@ export const getPnlPositions = (positions: HistoricPosition[] = []) => {
       seriesData,
       lastPos: lastPosition.usdPnl.toFixed(2),
       minPnl: getLimit(allPricePoints, Math.min),
-      maxPnl: getLimit(allPricePoints, Math.max)
+      maxPnl: getLimit(allPricePoints, Math.max),
     }
   }
   return DEFAULT_PNL

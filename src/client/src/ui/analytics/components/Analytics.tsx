@@ -1,6 +1,6 @@
 import numeral from 'numeral'
 import React from 'react'
-import { PNLChartModel } from '../model/pnlChartModel'
+import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
 import AnalyticsBarChart from './AnalyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
@@ -18,7 +18,7 @@ import {
   USDspan,
 } from './styled'
 import AnalyticsHeader from './AnalyticsHeader'
-import LineCharts from './AnalyticsLineChart'
+import AnalyticsLineChart from './AnalyticsLineChart'
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
@@ -26,7 +26,7 @@ export interface CurrencyPairs {
 export interface Props {
   canPopout: boolean
   currencyPairs: CurrencyPairs
-  pnlChartModel?: PNLChartModel
+  analyticsLineChartModel?: AnalyticsLineChartModel
   positionsChartModel?: PositionsChartModel
   onPopoutClick?: () => void
 }
@@ -46,8 +46,8 @@ export default class Analytics extends React.Component<Props> {
   }
 
   render() {
-    const { canPopout, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
-    const lastPos = (pnlChartModel && pnlChartModel.lastPos) || 0
+    const { canPopout, currencyPairs, analyticsLineChartModel, positionsChartModel, onPopoutClick } = this.props
+    const lastPos = (analyticsLineChartModel && analyticsLineChartModel.lastPos) || 0
     const lastPosition = lastPositionWithDirection(lastPos)
     return (
       <AnalyticsStyle>
@@ -57,7 +57,7 @@ export default class Analytics extends React.Component<Props> {
           <LastPosition color={lastPosition.color}>{lastPosition.formattedLastPos}</LastPosition>
         </LastPositionWrapper>
         <LinearChartStyle>
-          {pnlChartModel && <LineCharts seriesData={pnlChartModel.seriesData} />}
+          {analyticsLineChartModel && <AnalyticsLineChart model={analyticsLineChartModel} />}
           <HrBar />
         </LinearChartStyle>
         {positionsChartModel &&

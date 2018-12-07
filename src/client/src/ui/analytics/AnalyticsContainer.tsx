@@ -36,7 +36,7 @@ const AnalyticsContainer: React.SFC<AnalyticsContainerProps> = ({
 )
 
 const mapStateToProps = (state: GlobalState) => ({
-  pnlChartModel: selectPnlChartModel(state),
+  analyticsLineChartModel: selectPnlChartModel(state),
   positionsChartModel: selectPositionsChartModel(state),
   status: selectAnalyticsStatus(state),
   currencyPairs: selectCurrencyPairs(state),
