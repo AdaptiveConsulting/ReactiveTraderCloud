@@ -166,25 +166,25 @@ export function addShadow(svg: any) {
 }
 
 export function collide(alpha: number, nodes: any[], scale?: number) {
-  const qt = d3.geom.quadtree(nodes)
+  const quadtree = d3.geom.quadtree(nodes)
   const offset = -3
 
   return (d: any) => {
-    let r = d.r + 10 + offset
+    let radius = d.r + 10 + offset
 
-    const nx1 = d.x - r
-    const nx2 = d.x + r
-    const ny1 = d.y - r
-    const ny2 = d.y + r
+    const nx1 = d.x - radius
+    const nx2 = d.x + radius
+    const ny1 = d.y - radius
+    const ny2 = d.y + radius
 
-    return qt.visit((quad: any, x1: number, y1: number, x2: number, y2: number) => {
+    return quadtree.visit((quad: any, x1: number, y1: number, x2: number, y2: number) => {
       if (quad.point && quad.point !== d) {
         let x = d.x - quad.point.x
         let y = d.y - quad.point.y
         let l = Math.sqrt(x * x + y * y)
-        r = d.r + quad.point.r + offset
-        if (l < r) {
-          l = ((l - r) / l) * alpha
+        radius = d.r + quad.point.r + offset
+        if (l < radius) {
+          l = ((l - radius) / l) * alpha
           d.x -= x *= l
           d.y -= y *= l
           quad.point.x += x
