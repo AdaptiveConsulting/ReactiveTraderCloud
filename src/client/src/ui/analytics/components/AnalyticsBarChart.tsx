@@ -12,7 +12,6 @@ export interface Props {
 const AnalyticsBarChart: React.SFC<Props> = ({ isPnL, chartData, currencyPairs }) => {
   const { max, min } = getMinMax(chartData)
   const maxWidth = Math.max(Math.abs(max), Math.abs(min))
-
   return (
     <React.Fragment>
       {chartData.map((chartItem, index) => {
@@ -44,5 +43,5 @@ const getMinMax = (chartData: CurrencyPairPosition[]) =>
       prev.min = Math.min(prev.min, basePnl)
       return prev
     },
-    { max: 0, min: 0 }
+    { max: 0, min: 0 },
   )

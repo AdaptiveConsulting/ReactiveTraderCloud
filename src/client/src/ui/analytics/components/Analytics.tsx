@@ -2,7 +2,7 @@ import numeral from 'numeral'
 import React from 'react'
 import { PNLChartModel } from '../model/pnlChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
-import AnalyticsBarChart from './AnalyticsBarChart'
+// import AnalyticsBarChart from './AnalyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
 import { CurrencyPair } from 'rt-types'
@@ -11,7 +11,7 @@ import PNLChart from './pnlChart/PNLChart'
 import { PopoutIcon } from 'rt-components'
 import { ThemeProvider } from 'rt-theme'
 import { AnalyticsStyle, BubbleChart, Chart, Controls, Header, LastPosition, PopoutButton, Title } from './styled'
-
+import FooBarCharts from './FooBarChart'
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
@@ -65,12 +65,8 @@ export default class Analytics extends React.Component<Props> {
                 <BubbleChart>
                   <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
                 </BubbleChart>
-                <Title>Profit and Loss</Title>
-                <AnalyticsBarChart
-                  chartData={positionsChartModel.seriesData}
-                  currencyPairs={currencyPairs}
-                  isPnL={true}
-                />
+                <Title>PnL</Title>
+                <FooBarCharts chartData={positionsChartModel.seriesData} currencyPairs={currencyPairs} isPnL={true} />
               </React.Fragment>
             )}
         </AnalyticsStyle>
