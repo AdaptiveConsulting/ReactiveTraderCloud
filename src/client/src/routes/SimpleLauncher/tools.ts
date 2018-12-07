@@ -14,7 +14,6 @@ export async function open(config: ConfigType): Promise<Window | fin.OpenFinWind
         case 'window':
           return createOpenFinWindow(config)
         case 'download':
-          //either download LimitChecker or launches it if it exists.
           return downloadOrLaunchLimitChecker(config)
 
         case 'application':
