@@ -157,8 +157,8 @@ export const BubbleChart = styled.div`
   height: 18rem;
 `
 export const AnalyticsLineChartWrapper = styled.div`
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  height: 20%;
 `
 
 export const AnalyticsLineChartStyle = styled.div`

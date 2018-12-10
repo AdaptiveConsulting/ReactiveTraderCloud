@@ -15,8 +15,11 @@ interface DataPoint {
 }
 
 const tickFormatYAxis: ((x: string) => string) = x => {
-  const val = numeral(x).format('0.0a')
-  return val.substring(0, val.length - 1)
+  // 5,000,000       5
+  //    50,000   0.05
+  const val = numeral(x).format('0.0a') //.format('0.0')
+  // console.log(val)
+  return val
 }
 
 const getGradientOffset: ((data: DataPoint[]) => number) = data => {
@@ -51,6 +54,8 @@ const CustomTooltip: React.SFC<ToolTipProps> = ({ payload, label }) => {
 const LineCharts: React.SFC<LineChartProps> = ({ model: { seriesData } }) => {
   const data = seriesData.map(serie => ({ x: moment(serie.x).format('hh:mm:ss A'), y: serie.y }))
   const offset = getGradientOffset(data)
+
+  const lineProps = { strokeDasharray: '4 3', stroke: 'white', strokeOpacity: 0.3, strokeWidth: 1 }
   return seriesData.length > 0 ? (
     <AnalyticsLineChartStyle>
       <ResponsiveContainer width="100%" height="100%">
@@ -61,15 +66,21 @@ const LineCharts: React.SFC<LineChartProps> = ({ model: { seriesData } }) => {
               <stop offset={offset} stopColor="#f94c4c" stopOpacity={1} strokeWidth={1.2} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="x" tickLine={false} interval={'preserveStartEnd'} stroke="#444c5f" width={400} />
+          <XAxis dataKey="x" tickLine={false} width={400} ticks={[data[0].x, data[45].x, data[data.length - 1].x]} />
           <YAxis
             tickFormatter={tickFormatYAxis}
             tickLine={false}
-            label={{ value: '(M)', position: 'top', offset: 5, fill: 'white', fontSize: '8' }}
+            // label={{ value: '(M)', position: 'top', offset: 0, fill: 'white', fontSize: '8' }}
             padding={{ top: 35, bottom: 0 }}
+            axisLine={false}
           />
-          {offset < 1 && <ReferenceLine y={0} stroke="white" strokeOpacity={0.2} />}
+          {offset < 1 && <ReferenceLine y={0} {...lineProps} />}
+          <ReferenceLine x={data[Math.round(data.length / 2)].x} {...lineProps} />
+          <ReferenceLine x={data[data.length - 1].x} {...lineProps} />
+          <ReferenceLine x={data[0].x} {...lineProps} />
+
           <Tooltip offset={10} cursor={{ stroke: '#14161c', strokeWidth: 2 }} content={CustomTooltip} />
+
           <Line type="monotone" dataKey="y" stroke="url(#colorValue)" dot={false} strokeWidth={2} />
         </LineChart>
       </ResponsiveContainer>
