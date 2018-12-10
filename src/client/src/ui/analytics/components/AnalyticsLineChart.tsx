@@ -42,8 +42,8 @@ interface ToolTipProps {
 const CustomTooltip: React.SFC<ToolTipProps> = ({ payload, label }) => {
   return (
     <ToolTipStyle>
-      <ToolTipChildRight>{label}</ToolTipChildRight>
-      <ToolTipChildLeft>{payload.length > 0 && tickFormatYAxis(payload[0].value)}</ToolTipChildLeft>
+      <ToolTipChildLeft>{label}</ToolTipChildLeft>
+      <ToolTipChildRight>{payload.length > 0 && numeral(payload[0].value).format('0.0a')}</ToolTipChildRight>
     </ToolTipStyle>
   )
 }

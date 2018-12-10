@@ -131,25 +131,25 @@ export const ToolTipStyle = styled.div`
   height: 30px;
   border-radius: 3px;
   font-size: 10px;
-  vertical-align: middle;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
-export const ToolTipChildRight = styled.span`
+export const ToolTipChildLeft = styled.div`
   width: 52px;
   height: 12px;
   opacity: 0.6;
-  font-size: 10px;
+  font-size: 8px;
   composes: ${fontStyle};
-  text-align: center;
-  float: left;
+  margin: 0;
 `
-export const ToolTipChildLeft = styled.span`
+export const ToolTipChildRight = styled.div`
   width: 30px;
   height: 12px;
   font-size: 10px;
   composes: ${fontStyle};
-  text-align: center;
+  margin: 0;
 `
 
 export const BubbleChart = styled.div`
