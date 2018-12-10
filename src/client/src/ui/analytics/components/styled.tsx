@@ -142,12 +142,12 @@ export const ToolTipChildLeft = styled.div`
   opacity: 0.6;
   font-size: 8px;
   composes: ${fontStyle};
-  margin: 0;
+  margin-left: 2px;
 `
 export const ToolTipChildRight = styled.div`
   width: 30px;
   height: 12px;
-  font-size: 10px;
+  font-size: 9px;
   composes: ${fontStyle};
   margin: 0;
 `

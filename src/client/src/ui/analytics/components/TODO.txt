@@ -6,7 +6,6 @@ TODO
 
 
 * labels Y axis
-* legend Y axis
 * Dashed stroke for Y axis lines
 * Multiple Y reference lines
 * Positioning of tooltip
