@@ -1,10 +1,35 @@
 import React from 'react'
 
-import { faChartArea, faExchangeAlt, faWindowRestore, faMicrophone, faPalette } from '@fortawesome/free-solid-svg-icons'
+import { faChartArea, faExchangeAlt, faMicrophone, faPalette, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getEnvVars } from '../../config/config'
 
 const endpointConfig = getEnvVars(process.env.REACT_APP_ENV!)
+
+const accelerator = {
+  devtools: true,
+  reload: true,
+  reloadIgnoringCache: true,
+  zoom: true,
+}
+
+const options = {
+  autoShow: true,
+  defaultWidth: 1280,
+  defaultHeight: 900,
+  minWidth: 800,
+  minHeight: 600,
+  resizable: true,
+  maximizable: true,
+  frame: false,
+  nonPersistent: true,
+  accelerator,
+}
+
+const provider = {
+  platform: 'openfin',
+  as: 'application',
+}
 
 export type ConfigType = Partial<typeof config[0]>
 
@@ -14,25 +39,8 @@ export const config = [
     url: `http://${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
     icon: <FontAwesomeIcon icon={faExchangeAlt} />,
     provider: {
-      platform: 'openfin',
-      as: 'application',
-      options: {
-        autoShow: true,
-        defaultWidth: 1280,
-        defaultHeight: 900,
-        minWidth: 800,
-        minHeight: 600,
-        resizable: true,
-        maximizable: true,
-        frame: false,
-        nonPersistent: true,
-        accelerator: {
-          devtools: true,
-          reload: true,
-          reloadIgnoringCache: true,
-          zoom: true,
-        },
-      },
+      ...provider,
+      options,
     },
   },
   {
@@ -40,24 +48,10 @@ export const config = [
     url: 'http://demo-reactive-analytics.adaptivecluster.com/',
     icon: <FontAwesomeIcon icon={faChartArea} />,
     provider: {
-      platform: 'openfin',
-      as: 'application',
+      ...provider,
       options: {
-        autoShow: true,
-        defaultWidth: 1280,
-        defaultHeight: 900,
-        minWidth: 800,
-        minHeight: 600,
-        resizable: true,
-        maximizable: true,
+        ...options,
         frame: true,
-        nonPersistent: true,
-        accelerator: {
-          devtools: true,
-          reload: true,
-          reloadIgnoringCache: true,
-          zoom: true,
-        },
       },
     },
   },
@@ -68,24 +62,10 @@ export const config = [
     }/styleguide`,
     icon: <FontAwesomeIcon icon={faPalette} />,
     provider: {
-      platform: 'openfin',
-      as: 'application',
+      ...provider,
       options: {
-        autoShow: true,
-        defaultWidth: 1280,
-        defaultHeight: 900,
-        minWidth: 800,
-        minHeight: 600,
-        resizable: true,
-        maximizable: true,
+        ...options,
         frame: true,
-        nonPersistent: true,
-        accelerator: {
-          devtools: true,
-          reload: true,
-          reloadIgnoringCache: true,
-          zoom: true,
-        },
       },
     },
   },
@@ -96,64 +76,32 @@ export const config = [
     }/order-ticket`,
     icon: <FontAwesomeIcon icon={faMicrophone} />,
     provider: {
-      platform: 'openfin',
-      as: 'application',
+      ...provider,
       options: {
-        autoShow: true,
+        ...options,
         defaultWidth: 672,
         defaultHeight: 384,
         minWidth: 672,
         minHeight: 384,
         resizable: false,
         maximizable: false,
-        frame: false,
-        nonPersistent: true,
         contextMenu: true,
         alwaysOnTop: false,
-        accelerator: {
-          devtools: true,
-          reload: true,
-          reloadIgnoringCache: true,
-          zoom: true,
-        },
-        cornerRounding: {
-          height: 10,
-          width: 8,
-        },
+      },
+      cornerRounding: {
+        height: 10,
+        width: 8,
       },
     },
   },
-]
-
-// Demo of opening as window instead of Application
-//
-// However, this does not work as the app can quit
-// on behalf of the launcher
-if (process.env.NODE_ENV === 'development') {
-  config.push({
-    name: 'Reactive Trader as Window',
-    url: 'http://localhost:3000/',
-    icon: <FontAwesomeIcon icon={faWindowRestore} />,
+  {
+    name: 'OpenFin Limit Checker',
+    url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
+    icon: <FontAwesomeIcon icon={faDownload} />,
     provider: {
       platform: 'openfin',
-      as: 'window',
-      options: {
-        autoShow: true,
-        defaultWidth: 1280,
-        defaultHeight: 900,
-        minWidth: 800,
-        minHeight: 600,
-        resizable: true,
-        maximizable: true,
-        frame: false,
-        nonPersistent: true,
-        accelerator: {
-          devtools: true,
-          reload: true,
-          reloadIgnoringCache: true,
-          zoom: true,
-        },
-      },
+      as: 'download',
+      options,
     },
-  })
-}
+  },
+]

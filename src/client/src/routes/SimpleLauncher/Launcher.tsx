@@ -5,6 +5,7 @@ import { injectGlobal, styled, ThemeStorageSwitch } from 'rt-theme'
 
 import { config } from './config'
 import { Link } from './Link'
+import { LogoIcon } from 'rt-components'
 
 export class Launcher extends React.Component {
   // unset global scaling on mount
@@ -20,87 +21,53 @@ export class Launcher extends React.Component {
   render() {
     return (
       <Root>
-        <Frame>
-          <Fill />
-          {config.map(app => (
-            <ToggleContainer key={app.name}>
-              <Link to={app}>{app.icon}</Link>
-            </ToggleContainer>
-          ))}
+        <LogoContainer>
+          <LogoIcon width={1.5} height={1.5} />
+        </LogoContainer>
+        {config.map(app => (
+          <ButtonContainer key={app.name}>
+            <Link to={app}>{app.icon}</Link>
+          </ButtonContainer>
+        ))}
 
-          <AutoFill />
-
-          <ToggleContainer>
-            <ThemeStorageSwitch />
-          </ToggleContainer>
-
-          <Fill />
-        </Frame>
+        <ButtonContainer>
+          <ThemeStorageSwitch />
+        </ButtonContainer>
       </Root>
     )
   }
 }
 
-const Root = styled.div(({ theme }) => {
-  return {
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.shell.backgroundColor,
-    color: theme.component.textColor,
-  }
-})
-
-const Frame = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: 100%;
+const Root = styled.div`
   height: 100%;
-  max-width: 4rem;
-  max-height: 20rem;
-  border-radius: 0.25rem;
-
-  /* Browser / Prototyping framing: */
-  box-shadow: 0 0 0 0.125rem rgba(127, 127, 127, 0.1);
-`
-
-const Fill = styled.div`
-  min-height: 0.75rem;
-  max-height: 0.75rem;
   width: 100%;
-
-  ${rules.appRegionDrag};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.shell.backgroundColor};
+  color: ${({ theme }) => theme.component.textColor};
 `
 
-const AutoFill = styled.div`
-  flex: 1 1 100%;
+const IconContainer = styled.div`
+  height: 100%;
   width: 100%;
-
-  ${rules.appRegionDrag};
-`
-
-const ToggleContainer = styled.div`
-  min-height: 2.75rem;
-  max-height: 2.75rem;
-  min-width: 3rem;
-  max-width: 3rem;
 
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+`
 
+const ButtonContainer = styled(IconContainer)`
   ${rules.appRegionNoDrag};
 `
 
-export const Rule = styled.div`
-  width: 3rem;
-  display: block;
-  height: 0.125rem;
-  background-color: rgba(0, 0, 0, 0.1);
+const LogoContainer = styled(IconContainer)`
+  background-color: ${({ theme }) => theme.component.backgroundColor};
+
+  .svg-icon {
+    fill: ${({ theme }) => theme.component.textColor};
+  }
 
   ${rules.appRegionDrag};
 `

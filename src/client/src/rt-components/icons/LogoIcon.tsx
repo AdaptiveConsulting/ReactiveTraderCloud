@@ -1,9 +1,14 @@
 import React from 'react'
 
-const LogoIcon = () => (
+interface Props {
+  width: number
+  height: number
+}
+
+const LogoIcon: React.SFC<Props> = ({ width, height }) => (
   <svg
-    width="12px"
-    height="14px"
+    width={width * 16}
+    height={height * 16}
     viewBox="0 0 21 23"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"

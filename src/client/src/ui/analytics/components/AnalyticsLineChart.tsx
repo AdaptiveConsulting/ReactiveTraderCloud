@@ -16,7 +16,7 @@ interface DataPoint {
 
 const tickFormatYAxis: ((x: string) => string) = x => numeral(x).format('0.0a')
 
-const getLineGradientOffset: ((data: DataPoint[]) => number) = data => {
+const getLinearGradientOffset: ((data: DataPoint[]) => number) = data => {
   const yValues = data.map(i => parseInt(i.y, 10))
   const dataMax = Math.max(...yValues)
   const dataMin = Math.min(...yValues)
@@ -73,7 +73,7 @@ class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
       model: { seriesData },
     } = this.props
     const data = seriesData.map(point => ({ x: moment(point.x).format('hh:mm:ss A'), y: point.y }))
-    const offset = getLineGradientOffset(data)
+    const offset = getLinearGradientOffset(data)
     const lineProps = { strokeDasharray: '4 3', stroke: 'white', strokeOpacity: 0.3, strokeWidth: 1 }
     const dataPoints = this.getDataPoint(data)
     return seriesData.length > 0 ? (
