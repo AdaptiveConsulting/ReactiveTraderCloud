@@ -64,17 +64,6 @@ class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
     ...dataPoints.filter((value, index) => (index + this.state.offset) % this.intervalWidth === 0),
   ]
 
-  componentDidMount() {
-    //register the listener
-    window.addEventListener('resize', () => {
-      //update the state
-    })
-  }
-
-  componentWillUnmount() {
-    //remove resize listener
-    window.removeEventListener('resize', () => {})
-  }
   componentDidUpdate(prevProps: LineChartProps) {
     if (prevProps !== this.props) {
       const offset = this.state.offset + 1 === this.intervalWidth ? 0 : this.state.offset + 1

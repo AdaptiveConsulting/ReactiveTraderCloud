@@ -141,14 +141,12 @@ export const ToolTipChildLeft = styled.div`
   opacity: 0.6;
   font-size: 10px;
   composes: ${fontStyle};
-  margin: 0;
 `
 export const ToolTipChildRight = styled.div`
   width: 30px;
   height: 12px;
   font-size: 10px;
   composes: ${fontStyle};
-  margin-left: 2px;
 `
 
 export const BubbleChart = styled.div`
