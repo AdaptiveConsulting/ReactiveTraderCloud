@@ -75,7 +75,7 @@ const CustomizeTick: React.SFC<CustomizeTickProps> = ({ x, y, payload }) => {
   )
 }
 const BarCharts: React.SFC<Props> = ({ chartData, currencyPairs }) => {
-  const { max, min } = getMinMax(chartData)
+  const { max, min } = getBasePnlMinMax(chartData)
   const maxWidth = Math.max(Math.abs(max), Math.abs(min))
   const maxScale = Math.abs(max) > Math.abs(min) ? Math.abs(max) : Math.abs(min)
   return (
@@ -111,7 +111,7 @@ const BarCharts: React.SFC<Props> = ({ chartData, currencyPairs }) => {
 
 export default BarCharts
 
-const getMinMax = (chartData: CurrencyPairPosition[]) =>
+const getBasePnlMinMax = (chartData: CurrencyPairPosition[]) =>
   chartData.reduce(
     (prev, curr) => {
       const { basePnl } = curr
