@@ -46,7 +46,6 @@ const CustomTooltip: React.SFC<ToolTipProps> = ({ payload, label }) => {
 }
 
 interface LineChartState {
-  dataPoints: string[]
   offset: number
 }
 class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
@@ -55,12 +54,11 @@ class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
     super(props)
 
     this.state = {
-      dataPoints: [],
       offset: 0,
     }
   }
 
-  getDataPoint = (dataPoints: DataPoint[], windowSize = 300) => [
+  getDataPoint = (dataPoints: DataPoint[]) => [
     ...dataPoints.filter((value, index) => (index + this.state.offset) % this.intervalWidth === 0),
   ]
 
