@@ -127,29 +127,28 @@ export const HrBar = styled.hr`
 
 export const ToolTipStyle = styled.div`
   background-color: #14161c;
-  width: 116px;
-  height: 30px;
+  width: 120px;
+  height: 20px;
   border-radius: 3px;
-  font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 `
 
 export const ToolTipChildLeft = styled.div`
-  width: 52px;
+  width: 70px;
   height: 12px;
   opacity: 0.6;
-  font-size: 8px;
+  font-size: 10px;
   composes: ${fontStyle};
-  margin-left: 2px;
+  margin: 0;
 `
 export const ToolTipChildRight = styled.div`
   width: 30px;
   height: 12px;
-  font-size: 9px;
+  font-size: 10px;
   composes: ${fontStyle};
-  margin: 0;
+  margin-left: 2px;
 `
 
 export const BubbleChart = styled.div`

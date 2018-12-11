@@ -6,8 +6,8 @@ TODO
 
 
 * labels Y axis
-* Dashed stroke for Y axis lines
-* Multiple Y reference lines
-* Positioning of tooltip
 * Moving time tick 
 * 'Current value' circle on line 
+
+
+label={{ value: '(M)', position: 'top', offset: 0, fill: 'white', fontSize: '8' }}

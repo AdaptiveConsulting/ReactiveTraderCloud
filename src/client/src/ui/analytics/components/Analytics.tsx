@@ -21,12 +21,12 @@ export interface Props {
   positionsChartModel?: PositionsChartModel
   onPopoutClick?: () => void
 }
-
 const RESIZE_EVENT = 'resize'
 
 export default class Analytics extends React.Component<Props> {
-  private handleResize = () => this.forceUpdate() // NVD3 chart redraw
+  private handleResize = () => this.forceUpdate()
 
+  // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
   componentWillMount() {
     window.addEventListener(RESIZE_EVENT, this.handleResize)
   }
@@ -37,7 +37,6 @@ export default class Analytics extends React.Component<Props> {
 
   render() {
     const { canPopout, currencyPairs, analyticsLineChartModel, positionsChartModel, onPopoutClick } = this.props
-
     return (
       <AnalyticsStyle>
         <AnalyticsHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
