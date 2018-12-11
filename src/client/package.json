@@ -146,7 +146,7 @@
     "redux-devtools-extension": "^2.13.2",
     "rxjs-tslint-rules": "^4.1.1",
     "source-map-explorer": "^1.5.0",
-    "typescript": "^3.1.1",
+    "typescript": "3.1.1",
     "unzip": "^0.1.11"
   }
 }
