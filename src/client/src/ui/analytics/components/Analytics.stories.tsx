@@ -4,6 +4,8 @@ import { Story } from 'rt-storybook'
 import { styled } from 'rt-theme'
 import '../globals'
 import Analytics from './Analytics'
+import AnalyticsBarChart from './AnalyticsBarChart'
+import { CurrencyPairPosition } from '../model'
 
 const stories = storiesOf('Analytics', module)
 
@@ -14,19 +16,93 @@ const Centered = styled('div')`
   align-items: center;
   justify-content: center;
 `
+const currencyPairs = {
+  EURUSD: { symbol: 'EURUSD', ratePrecision: 5, pipsPosition: 4, base: 'EUR', terms: 'USD' },
+  USDJPY: { symbol: 'USDJPY', ratePrecision: 3, pipsPosition: 2, base: 'USD', terms: 'JPY' },
+  GBPUSD: { symbol: 'GBPUSD', ratePrecision: 5, pipsPosition: 4, base: 'GBP', terms: 'USD' },
+  GBPJPY: { symbol: 'GBPJPY', ratePrecision: 3, pipsPosition: 2, base: 'GBP', terms: 'JPY' },
+  EURAUD: { symbol: 'EURAUD', ratePrecision: 5, pipsPosition: 4, base: 'EUR', terms: 'AUD' },
+  AUDUSD: { symbol: 'AUDUSD', ratePrecision: 5, pipsPosition: 4, base: 'AUD', terms: 'USD' },
+  NZDUSD: { symbol: 'NZDUSD', ratePrecision: 5, pipsPosition: 4, base: 'NZD', terms: 'USD' },
+  EURJPY: { symbol: 'EURJPY', ratePrecision: 3, pipsPosition: 2, base: 'EUR', terms: 'JPY' },
+  EURCAD: { symbol: 'EURCAD', ratePrecision: 5, pipsPosition: 4, base: 'EUR', terms: 'CAD' },
+}
 
-const props: any = {
-  currencyPairs: {
-    EURUSD: { symbol: 'EURUSD', ratePrecision: 5, pipsPosition: 4, base: 'EUR', terms: 'USD' },
-    USDJPY: { symbol: 'USDJPY', ratePrecision: 3, pipsPosition: 2, base: 'USD', terms: 'JPY' },
-    GBPUSD: { symbol: 'GBPUSD', ratePrecision: 5, pipsPosition: 4, base: 'GBP', terms: 'USD' },
-    GBPJPY: { symbol: 'GBPJPY', ratePrecision: 3, pipsPosition: 2, base: 'GBP', terms: 'JPY' },
-    EURAUD: { symbol: 'EURAUD', ratePrecision: 5, pipsPosition: 4, base: 'EUR', terms: 'AUD' },
-    AUDUSD: { symbol: 'AUDUSD', ratePrecision: 5, pipsPosition: 4, base: 'AUD', terms: 'USD' },
-    NZDUSD: { symbol: 'NZDUSD', ratePrecision: 5, pipsPosition: 4, base: 'NZD', terms: 'USD' },
-    EURJPY: { symbol: 'EURJPY', ratePrecision: 3, pipsPosition: 2, base: 'EUR', terms: 'JPY' },
-    EURCAD: { symbol: 'EURCAD', ratePrecision: 5, pipsPosition: 4, base: 'EUR', terms: 'CAD' }
+const positionsChartModel = {
+  seriesData: [
+    {
+      symbol: 'EURUSD',
+      basePnl: 785577.915612354,
+      baseTradedAmount: 1000000,
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount',
+    },
+    // {
+    //   symbol: 'USDJPY',
+    //   basePnl: 1462492.5923487192,
+    //   baseTradedAmount: 1000000,
+    //   basePnlName: 'basePnl',
+    //   baseTradedAmountName: 'baseTradedAmount'
+    // },
+    // {
+    //   symbol: 'GBPUSD',
+    //   basePnl: -26390.987863709255,
+    //   baseTradedAmount: 12000000,
+    //   basePnlName: 'basePnl',
+    //   baseTradedAmountName: 'baseTradedAmount'
+    // },
+    // {
+    //   symbol: 'EURJPY',
+    //   basePnl: -113173.18142637635,
+    //   baseTradedAmount: -5000000,
+    //   basePnlName: 'basePnl',
+    //   baseTradedAmountName: 'baseTradedAmount'
+    // },
+    // {
+    //   symbol: 'AUDUSD',
+    //   basePnl: 63738605.40001099,
+    //   baseTradedAmount: 6000000,
+    //   basePnlName: 'basePnl',
+    //   baseTradedAmountName: 'baseTradedAmount'
+    // },
+    // {
+    //   symbol: 'NZDUSD',
+    //   basePnl: -198769.7610840366,
+    //   baseTradedAmount: 0,
+    //   basePnlName: 'basePnl',
+    //   baseTradedAmountName: 'baseTradedAmount'
+    // },
+    // {
+    //   symbol: 'EURCAD',
+    //   basePnl: -31847.090799954138,
+    //   baseTradedAmount: 43000000,
+    //   basePnlName: 'basePnl',
+    //   baseTradedAmountName: 'baseTradedAmount'
+    // },
+    // {
+    //   symbol: 'EURAUD',
+    //   basePnl: -5341.076340097365,
+    //   baseTradedAmount: 18000000,
+    //   basePnlName: 'basePnl',
+    //   baseTradedAmountName: 'baseTradedAmount'
+    // }
+  ] as CurrencyPairPosition[],
+  options: {
+    showYAxis: true,
+    showXAxis: true,
+    showLegend: false,
+    useInteractiveGuideline: true,
+    duration: 0,
+    showValues: true,
+    showControls: false,
+    width: 900,
+    tooltip: { enabled: false },
+    margin: { top: 0, right: 0, bottom: 0 },
   },
+  yAxisValuePropertyName: 'baseTradedAmount',
+}
+const props: any = {
+  currencyPairs,
   canPopout: true,
   isConnected: true,
   pnlChartModel: {
@@ -120,7 +196,7 @@ const props: any = {
       { x: '2018-08-29T16:59:50.172Z', y: '48381427.45' },
       { x: '2018-08-29T17:00:00.173Z', y: '48386313.71' },
       { x: '2018-08-29T17:00:10.246Z', y: '48384113.22' },
-      { x: '2018-08-29T17:00:20.173Z', y: '48384501.58' }
+      { x: '2018-08-29T17:00:20.173Z', y: '48384501.58' },
     ],
     lastPos: '48384501.58',
     minPnl: 0,
@@ -133,82 +209,10 @@ const props: any = {
       showLegend: false,
       useInteractiveGuideline: true,
       duration: 0,
-      margin: { left: 0, top: 0, right: 0, bottom: 0 }
-    }
-  },
-  positionsChartModel: {
-    seriesData: [
-      {
-        symbol: 'EURUSD',
-        basePnl: 785577.915612354,
-        baseTradedAmount: 1000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount'
-      },
-      {
-        symbol: 'USDJPY',
-        basePnl: 1462492.5923487192,
-        baseTradedAmount: 1000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount'
-      },
-      {
-        symbol: 'GBPUSD',
-        basePnl: -26390.987863709255,
-        baseTradedAmount: 12000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount'
-      },
-      {
-        symbol: 'EURJPY',
-        basePnl: -113173.18142637635,
-        baseTradedAmount: -5000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount'
-      },
-      {
-        symbol: 'AUDUSD',
-        basePnl: 63738605.40001099,
-        baseTradedAmount: 6000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount'
-      },
-      {
-        symbol: 'NZDUSD',
-        basePnl: -198769.7610840366,
-        baseTradedAmount: 0,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount'
-      },
-      {
-        symbol: 'EURCAD',
-        basePnl: -31847.090799954138,
-        baseTradedAmount: 43000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount'
-      },
-      {
-        symbol: 'EURAUD',
-        basePnl: -5341.076340097365,
-        baseTradedAmount: 18000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount'
-      }
-    ],
-    options: {
-      showYAxis: true,
-      showXAxis: true,
-      showLegend: false,
-      useInteractiveGuideline: true,
-      duration: 0,
-      showValues: true,
-      showControls: false,
-      width: 900,
-      tooltip: { enabled: false },
-      margin: { top: 0, right: 0, bottom: 0 }
+      margin: { left: 0, top: 0, right: 0, bottom: 0 },
     },
-    yAxisValuePropertyName: 'baseTradedAmount'
-  }
+  },
+  positionsChartModel,
 }
 
 stories.add('Default', () => (
@@ -220,3 +224,24 @@ stories.add('Default', () => (
     </Centered>
   </Story>
 ))
+
+stories.add('AnalyticsBarChart', () => (
+  <Story>
+    <Centered>
+      <AnalyticsStyle>
+        <AnalyticsBarChart currencyPairs={currencyPairs} chartData={positionsChartModel.seriesData} isPnL={true} />
+      </AnalyticsStyle>
+    </Centered>
+  </Story>
+))
+
+export const AnalyticsStyle = styled.div`
+  border-radius: 0.25rem;
+  flex: 1;
+  width: 90%;
+  height: 20%;
+  position: relative;
+  padding: 1rem;
+  font-size: 1rem;
+  margin: auto;
+`

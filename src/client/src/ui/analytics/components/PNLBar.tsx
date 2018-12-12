@@ -73,7 +73,6 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
       .format('0a')
       .toUpperCase()
     const labelText = `(${amount}) ${symbol}`
-
     const approxLabelWidth = labelText.length * 8
     const offset = this.calculateOffset() || -(approxLabelWidth / 2)
 
@@ -92,34 +91,80 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
     const xPosRelativePusher = this.getPusherRelativePosition()
     const pointerPosition = { left: xPosRelative + '%' }
     const pusherStyle = { width: xPosRelativePusher + '%' }
+    const { symbol } = this.props
 
     return (
-      <BarChart innerRef={this.barChartContainerRef}>
-        <div>
-          <div className="analytics__barchart-title-wrapper">
-            <div className="analytics__barchart-label-wrapper">
-              <div className="analytics__barchart-label-pusher" style={pusherStyle} />
-              {label}
+      <div>
+        <BarChart innerRef={this.barChartContainerRef}>
+          <div>
+            <div className="analytics__barchart-title-wrapper">
+              <div className="analytics__barchart-label-wrapper">
+                <div className="analytics__barchart-label-pusher" style={pusherStyle} />
+                {label}
+              </div>
+
+              <div className="analytics__barchart-pointer-container" style={pointerPosition}>
+                <div className="analytics__barchart-pointer--outline" />
+                <div className="analytics__barchart-pointer" />
+              </div>
             </div>
 
-            <div className="analytics__barchart-pointer-container" style={pointerPosition}>
-              <div className="analytics__barchart-pointer--outline" />
-              <div className="analytics__barchart-pointer" />
+            <div className="analytics__barchart-bar-wrapper">
+              <div className="analytics__barchart-bar-background" />
+              <div className="analytics__barchart-border analytics__barchart-border--left" />
+              <div className="analytics__barchart-border analytics__barchart-border--center" />
+              <div className="analytics__barchart-border analytics__barchart-border--right" />
             </div>
           </div>
-
-          <div className="analytics__barchart-bar-wrapper">
-            <div className="analytics__barchart-bar-background" />
-            <div className="analytics__barchart-border analytics__barchart-border--left" />
-            <div className="analytics__barchart-border analytics__barchart-border--center" />
-            <div className="analytics__barchart-border analytics__barchart-border--right" />
-          </div>
-        </div>
-      </BarChart>
+        </BarChart>
+        <BarChart2 innerRef={this.barChartContainerRef}>
+          <SymbolLabel>{symbol}</SymbolLabel>
+          <BarWrapper>
+            <Bar />
+          </BarWrapper>
+        </BarChart2>
+      </div>
     )
   }
 }
 
+const BarChart2 = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+`
+
+const SymbolLabel = styled.div`
+  width: 44px;
+  height: 13px;
+  opacity: 0.6;
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
+`
+
+const BarWrapper = styled.div`
+  flex: 0.99;
+  vertical-align: middle;
+  margin: auto 0;
+`
+
+const Bar = styled.div`
+  height: 0.125rem;
+  background-color: ${barBgColor};
+  opacity: 0.125;
+  width: 100%;
+`
+
+/**
+ * Below should be ignored
+ */
 const BarChart = styled.div`
   position: relative;
   vertical-align: middle;
@@ -127,19 +172,14 @@ const BarChart = styled.div`
   padding-bottom: 0.75rem;
   height: 3rem;
 
-  .analytics__barchart-indicator--negative {
-    background-color: ${({ theme }) => theme.analytics.red.normal};
-  }
 
-  .analytics__barchart-indicator--positive {
-    background-color: ${({ theme }) => theme.analytics.green.normal};
-  }
 
   .analytics__barchart-bar {
     height: 0.125rem;
     overflow: hidden;
   }
 
+  
   .analytics__barchart-bar-background {
     height: 0.125rem;
     width: 100%;
@@ -157,37 +197,37 @@ const BarChart = styled.div`
     vertical-align: middle;
   }
 
-  .analytics__barchart-border {
-    height: 0.325rem;
-    width: 0.125rem;
-    background-color: ${({ theme }) => theme.analytics.textColor};
-    opacity: 0;
-  }
+  // .analytics__barchart-border {
+  //   height: 0.325rem;
+  //   width: 0.125rem;
+  //   background-color: ${({ theme }) => theme.analytics.textColor};
+  //   opacity: 0;
+  // }
 
-  .analytics__barchart-border--center {
-    position: absolute;
-    left: calc(50% - 0.125rem);
-  }
+  // .analytics__barchart-border--center {
+  //   position: absolute;
+  //   left: calc(50% - 0.125rem);
+  // }
 
-  .analytics__barchart-border--left {
-    display: inline;
-  }
+  // .analytics__barchart-border--left {
+  //   display: inline;
+  // }
 
-  .analytics__barchart-border--right {
-    right: 0;
-    position: absolute;
-  }
+  // .analytics__barchart-border--right {
+  //   right: 0;
+  //   position: absolute;
+  // }
 
-  .analytics__barchart-title-wrapper {
-    width: 100%;
-    height: 2rem;
-    position: absolute;
-  }
+  // .analytics__barchart-title-wrapper {
+  //   width: 100%;
+  //   height: 2rem;
+  //   position: absolute;
+  // }
 
-  .analytics__barchart-pointer-container,
-  .analytics__barchart-label-pusher {
-    transition: all ease ${({ theme }) => theme.motion.duration};
-  }
+  // .analytics__barchart-pointer-container,
+  // .analytics__barchart-label-pusher {
+  //   transition: all ease ${({ theme }) => theme.motion.duration};
+  // }
   .analytics__barchart-pointer-container {
     position: absolute;
     margin-top: 1.5rem;
@@ -216,10 +256,10 @@ const BarChart = styled.div`
     white-space: nowrap;
   }
 
-  .analytics__barchart-label-amount {
-    font-weight: 900;
-    margin-right: 0.25rem;
-  }
+  // .analytics__barchart-label-amount {
+  //   font-weight: 900;
+  //   margin-right: 0.25rem;
+  // }
 
   .analytics__barchart-label-pusher {
     height: 0.5rem;
@@ -237,7 +277,7 @@ const BarChart = styled.div`
     display: inline;
   }
 
-  .analytics__barchart-container:hover .analytics__barchart-amount {
-    visibility: visible;
-  }
+  // .analytics__barchart-container:hover .analytics__barchart-amount {
+  //   visibility: visible;
+  // }
 `

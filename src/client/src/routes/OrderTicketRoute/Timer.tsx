@@ -10,8 +10,11 @@ export interface TimerProps {
 }
 
 export class Timer extends PureComponent<TimerProps> {
-  id: NodeJS.Timer
-
+  id: number
+  // constructor(props:TimerProps){
+  //   super(props)
+  //   // this.callback = this.callback.bind(this)
+  // }
   callback = () => {
     const { name, children, interval, timeout } = this.props
 
@@ -21,7 +24,7 @@ export class Timer extends PureComponent<TimerProps> {
   componentDidMount() {
     const { interval, duration, immediate } = this.props
 
-    this.id = (interval ? setInterval : setTimeout)(this.callback, duration)
+    this.id = (interval ? window.setInterval : window.setTimeout)(this.callback, duration)
 
     if (immediate) {
       this.callback()
