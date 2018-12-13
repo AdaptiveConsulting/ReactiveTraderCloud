@@ -21,8 +21,8 @@ const getWidthRatio: (maxWidth: number, width: number) => number = (maxWidth, wi
 export default class PNLBar extends React.Component<PNLBarProps> {
   render() {
     const { symbol, basePnl, maxVal } = this.props
-    const basePnlSign = basePnl >= 0 ? 1 : -1
-    const translation = getWidthRatio(maxVal, basePnl) * basePnlSign
+    const color = basePnl >= 0 ? 'green' : 'red'
+    const translation = getWidthRatio(maxVal, basePnl) * (basePnl >= 0 ? 1 : -1)
     const formattedBasePnl = numeral(Math.abs(basePnl)).format('0.0a')
     return (
       <BarChart>
@@ -30,8 +30,8 @@ export default class PNLBar extends React.Component<PNLBarProps> {
           <Label>{symbol}</Label>
           <BarWrapper>
             <PriceDiamondWrapper translation={translation}>
-              <Price colorController={basePnlSign}>{formattedBasePnl}</Price>
-              <Diamond colorController={basePnlSign} />
+              <Price color={color}>{formattedBasePnl}</Price>
+              <Diamond color={color} />
             </PriceDiamondWrapper>
             <Bar />
             <OriginTickWrapper>
@@ -69,22 +69,20 @@ const PriceDiamondWrapper = styled.div<{ translation: number }>`
   transform: translate(${({ translation }) => translation}%);
 `
 
-const Price = styled.div<{ colorController: number }>`
+const Price = styled.div<{ color: string }>`
   flex: 1;
   width: 25px;
   height: 13px;
   font-size: 11px;
   composes: ${FontStyle};
-  color: ${({ theme, colorController }) =>
-    colorController > 0 ? theme.analytics.green.normal : theme.analytics.red.normal};
+  color: ${({ theme, color }) => theme.analytics[color].normal};
 `
 
-const Diamond = styled.div<{ colorController: number }>`
+const Diamond = styled.div<{ color: string }>`
   width: 6px;
   height: 6px;
   transform: rotate(45deg);
-  background-color: ${({ theme, colorController }) =>
-    colorController > 0 ? theme.analytics.green.normal : theme.analytics.red.normal};
+  background-color: ${({ theme, color }) => theme.analytics[color].normal};
 `
 
 const Label = styled.div`
