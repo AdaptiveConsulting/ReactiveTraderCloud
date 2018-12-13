@@ -1,35 +1,34 @@
 import numeral from 'numeral'
 import React from 'react'
-import { CurrencyPair } from 'rt-types'
+// import { CurrencyPair } from 'rt-types'
 import { styled } from 'rt-theme'
 import { css } from 'emotion'
 export interface PNLBarProps {
   basePnl: number
-  currencyPair: CurrencyPair
-  index: number
-  isPnL: boolean
   maxVal: number
   symbol: string
 }
 
+const TRANSLATION_WIDTH: number = 50
+
 const getWidthRatio: (maxWidth: number, width: number) => number = (maxWidth, width) => {
   const logMaxWidth = Math.log10(Math.abs(maxWidth)) + 1
   const logWidth = Math.log10(Math.abs(width))
-  const logWidthRatio = (logWidth / logMaxWidth) * 50
+  const logWidthRatio = logWidth / logMaxWidth
   return logWidthRatio
 }
 export default class PNLBar extends React.Component<PNLBarProps> {
   render() {
     const { symbol, basePnl, maxVal } = this.props
     const color = basePnl >= 0 ? 'green' : 'red'
-    const translation = getWidthRatio(maxVal, basePnl) * (basePnl >= 0 ? 1 : -1)
+    const distance = getWidthRatio(maxVal, basePnl) * (basePnl >= 0 ? 1 : -1) * TRANSLATION_WIDTH
     const formattedBasePnl = numeral(Math.abs(basePnl)).format('0.0a')
     return (
       <BarChart>
         <LabelBarWrapper>
           <Label>{symbol}</Label>
           <BarWrapper>
-            <PriceDiamondWrapper translation={translation}>
+            <PriceDiamondWrapper distance={distance}>
               <Price color={color}>{formattedBasePnl}</Price>
               <Diamond color={color} />
             </PriceDiamondWrapper>
@@ -53,22 +52,21 @@ const FontStyle = css`
   line-height: 1.82;
   letter-spacing: normal;
 `
-
 const BarChart = styled.div``
+const OriginTickWrapper = styled.div``
 
 const LabelBarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 `
-const PriceDiamondWrapper = styled.div<{ translation: number }>`
+const PriceDiamondWrapper = styled.div<{ distance: number }>`
   flex: 0.99;
   margin-bottom: -2px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translate(${({ translation }) => translation}%);
+  transform: translate(${({ distance }) => distance}%);
 `
-
 const Price = styled.div<{ color: string }>`
   flex: 1;
   width: 25px;
@@ -77,14 +75,12 @@ const Price = styled.div<{ color: string }>`
   composes: ${FontStyle};
   color: ${({ theme, color }) => theme.analytics[color].normal};
 `
-
 const Diamond = styled.div<{ color: string }>`
   width: 6px;
   height: 6px;
   transform: rotate(45deg);
   background-color: ${({ theme, color }) => theme.analytics[color].normal};
 `
-
 const Label = styled.div`
   position: relative;
   top: 16px;
@@ -111,9 +107,6 @@ const Bar = styled.div`
   top: 5px;
   border: 1px solid #444c5f;
 `
-
-const OriginTickWrapper = styled.div``
-
 const OriginTick = styled.div`
   position: relative;
   width: 1.6px;

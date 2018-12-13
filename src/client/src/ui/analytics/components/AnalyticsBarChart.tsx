@@ -9,25 +9,14 @@ export interface Props {
   isPnL: boolean
 }
 
-const AnalyticsBarChart: React.SFC<Props> = ({ isPnL, chartData, currencyPairs }) => {
+const AnalyticsBarChart: React.SFC<Props> = ({ chartData }) => {
   const { max, min } = getMinMax(chartData)
   const maxWidth = Math.max(Math.abs(max), Math.abs(min))
   return (
     <React.Fragment>
       {chartData.map((chartItem, index) => {
         const { basePnl, symbol } = chartItem
-        const currencyPair = currencyPairs[symbol]
-        return (
-          <PNLBar
-            key={index}
-            index={index}
-            basePnl={basePnl}
-            symbol={symbol}
-            currencyPair={currencyPair}
-            isPnL={isPnL}
-            maxVal={maxWidth}
-          />
-        )
+        return <PNLBar key={index} basePnl={basePnl} symbol={symbol} maxVal={maxWidth} />
       })}
     </React.Fragment>
   )
