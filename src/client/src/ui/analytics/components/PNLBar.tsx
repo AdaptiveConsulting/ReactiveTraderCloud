@@ -12,27 +12,26 @@ export interface PNLBarProps {
   symbol: string
 }
 
+const getWidthRatio: (maxWidth: number, width: number) => number = (maxWidth, width) => {
+  const logMaxWidth = Math.log10(Math.abs(maxWidth)) + 1
+  const logWidth = Math.log10(Math.abs(width))
+  const logWidthRatio = (logWidth / logMaxWidth) * 50
+  return logWidthRatio
+}
 export default class PNLBar extends React.Component<PNLBarProps> {
-  calculateOffset = () => {
-    const { maxVal, basePnl } = this.props
-    const logMaxVal = Math.log10(Math.abs(maxVal)) + 1
-    const logBasePnl = Math.log10(Math.abs(basePnl))
-    const translatePercent = (logBasePnl / logMaxVal) * 50
-    return Math.round(translatePercent)
-  }
-
   render() {
-    const { symbol, basePnl } = this.props
-    const sign = basePnl >= 0 ? 1 : -1
-    const translation = this.calculateOffset() * sign
+    const { symbol, basePnl, maxVal } = this.props
+    const basePnlSign = basePnl >= 0 ? 1 : -1
+    const translation = getWidthRatio(maxVal, basePnl) * basePnlSign
+    const formattedBasePnl = numeral(Math.abs(basePnl)).format('0.0a')
     return (
       <BarChart>
         <LabelBarWrapper>
           <Label>{symbol}</Label>
           <BarWrapper>
             <PriceDiamondWrapper translation={translation}>
-              <Price colorSign={sign}>{numeral(Math.abs(basePnl)).format('0.0a')}</Price>
-              <Diamond colorSign={sign} />
+              <Price colorController={basePnlSign}>{formattedBasePnl}</Price>
+              <Diamond colorController={basePnlSign} />
             </PriceDiamondWrapper>
             <Bar />
             <OriginTickWrapper>
@@ -46,8 +45,6 @@ export default class PNLBar extends React.Component<PNLBarProps> {
   }
 }
 
-const BarChart = styled.div``
-
 const FontStyle = css`
   font-family: Lato;
   font-weight: normal;
@@ -55,6 +52,13 @@ const FontStyle = css`
   font-stretch: normal;
   line-height: 1.82;
   letter-spacing: normal;
+`
+
+const BarChart = styled.div``
+
+const LabelBarWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
 const PriceDiamondWrapper = styled.div<{ translation: number }>`
   flex: 0.99;
@@ -65,27 +69,24 @@ const PriceDiamondWrapper = styled.div<{ translation: number }>`
   transform: translate(${({ translation }) => translation}%);
 `
 
-const Price = styled.div<{ colorSign: number }>`
+const Price = styled.div<{ colorController: number }>`
   flex: 1;
   width: 25px;
   height: 13px;
   font-size: 11px;
   composes: ${FontStyle};
-  color: ${({ theme, colorSign }) => (colorSign > 0 ? theme.analytics.green.normal : theme.analytics.red.normal)};
+  color: ${({ theme, colorController }) =>
+    colorController > 0 ? theme.analytics.green.normal : theme.analytics.red.normal};
 `
 
-const Diamond = styled.div<{ colorSign: number }>`
+const Diamond = styled.div<{ colorController: number }>`
   width: 6px;
   height: 6px;
   transform: rotate(45deg);
-  background-color: ${({ theme, colorSign }) =>
-    colorSign > 0 ? theme.analytics.green.normal : theme.analytics.red.normal};
+  background-color: ${({ theme, colorController }) =>
+    colorController > 0 ? theme.analytics.green.normal : theme.analytics.red.normal};
 `
 
-const LabelBarWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
 const Label = styled.div`
   position: relative;
   top: 16px;
