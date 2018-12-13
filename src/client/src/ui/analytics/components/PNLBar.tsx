@@ -2,7 +2,7 @@ import numeral from 'numeral'
 import React from 'react'
 import { CurrencyPair } from 'rt-types'
 import { styled } from 'rt-theme'
-
+import { css } from 'emotion'
 export interface PNLBarProps {
   basePnl: number
   currencyPair: CurrencyPair
@@ -48,6 +48,14 @@ export default class PNLBar extends React.Component<PNLBarProps> {
 
 const BarChart = styled.div``
 
+const FontStyle = css`
+  font-family: Lato;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.82;
+  letter-spacing: normal;
+`
 const PriceDiamondWrapper = styled.div<{ translation: number }>`
   flex: 0.99;
   margin-bottom: -2px;
@@ -59,26 +67,19 @@ const PriceDiamondWrapper = styled.div<{ translation: number }>`
 
 const Price = styled.div<{ colorSign: number }>`
   flex: 1;
-  text-align: center;
   width: 25px;
   height: 13px;
-  font-family: Lato;
   font-size: 11px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: center;
+  composes: ${FontStyle};
   color: ${({ theme, colorSign }) => (colorSign > 0 ? theme.analytics.green.normal : theme.analytics.red.normal)};
 `
 
 const Diamond = styled.div<{ colorSign: number }>`
-  background-color: ${({ theme, colorSign }) =>
-    colorSign > 0 ? theme.analytics.green.normal : theme.analytics.red.normal};
   width: 6px;
   height: 6px;
   transform: rotate(45deg);
+  background-color: ${({ theme, colorSign }) =>
+    colorSign > 0 ? theme.analytics.green.normal : theme.analytics.red.normal};
 `
 
 const LabelBarWrapper = styled.div`
@@ -87,19 +88,14 @@ const LabelBarWrapper = styled.div`
 `
 const Label = styled.div`
   position: relative;
-  top: 17px;
+  top: 16px;
   width: 44px;
   height: 13px;
   opacity: 0.6;
-  font-family: Lato;
   font-size: 11px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
   text-align: center;
   color: #ffffff;
+  composes: ${FontStyle};
 `
 const BarWrapper = styled.div`
   flex: 0.99;
@@ -117,10 +113,7 @@ const Bar = styled.div`
   border: 1px solid #444c5f;
 `
 
-const OriginTickWrapper = styled.div`
-  padding: 0px;
-  margin: 0px;
-`
+const OriginTickWrapper = styled.div``
 
 const OriginTick = styled.div`
   position: relative;
@@ -138,12 +131,7 @@ const Origin = styled.div`
   width: 5.9px;
   height: 20px;
   opacity: 0.6;
-  font-family: Lato;
   font-size: 11px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.82;
-  letter-spacing: normal;
   text-align: center;
+  composes: ${FontStyle};
 `
