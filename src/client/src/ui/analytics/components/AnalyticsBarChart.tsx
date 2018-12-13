@@ -1,12 +1,10 @@
 import React from 'react'
-import { CurrencyPairMap } from 'rt-types'
+// import { CurrencyPairMap } from 'rt-types'
 import { CurrencyPairPosition } from '../model'
 import PNLBar from './PNLBar'
 
 export interface Props {
   chartData: CurrencyPairPosition[]
-  currencyPairs: CurrencyPairMap
-  isPnL: boolean
 }
 
 const AnalyticsBarChart: React.SFC<Props> = ({ chartData }) => {

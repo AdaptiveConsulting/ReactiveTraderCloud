@@ -21,7 +21,7 @@ export default class PNLBar extends React.Component<PNLBarProps> {
   render() {
     const { symbol, basePnl, maxVal } = this.props
     const color = basePnl >= 0 ? 'green' : 'red'
-    const distance = getWidthRatio(maxVal, basePnl) * (basePnl >= 0 ? 1 : -1) * TRANSLATION_WIDTH
+    const distance = getWidthRatio(maxVal, basePnl) * TRANSLATION_WIDTH * (basePnl >= 0 ? 1 : -1)
     const formattedBasePnl = numeral(Math.abs(basePnl)).format('0.0a')
     return (
       <BarChart>

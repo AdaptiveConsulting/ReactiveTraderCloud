@@ -240,7 +240,7 @@ stories.add('AnalyticsBarChart', () => (
   <Story>
     <Centered>
       <AnalyticsBarStyle>
-        <AnalyticsBarChart currencyPairs={currencyPairs} chartData={positionsChartModel.seriesData} isPnL={true} />
+        <AnalyticsBarChart chartData={positionsChartModel.seriesData} />
       </AnalyticsBarStyle>
     </Centered>
   </Story>
