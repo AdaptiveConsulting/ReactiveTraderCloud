@@ -1,5 +1,4 @@
 import React from 'react'
-// import { CurrencyPairMap } from 'rt-types'
 import { CurrencyPairPosition } from '../model'
 import PNLBar from './PNLBar'
 

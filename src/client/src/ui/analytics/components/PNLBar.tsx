@@ -13,8 +13,7 @@ const TRANSLATION_WIDTH: number = 50
 const getWidthRatio: (maxWidth: number, width: number) => number = (maxWidth, width) => {
   const logMaxWidth = Math.log10(Math.abs(maxWidth)) + 1
   const logWidth = Math.log10(Math.abs(width))
-  const logWidthRatio = logWidth / logMaxWidth
-  return logWidthRatio
+  return logWidth / logMaxWidth
 }
 export default class PNLBar extends React.Component<PNLBarProps> {
   render() {
@@ -27,10 +26,10 @@ export default class PNLBar extends React.Component<PNLBarProps> {
         <LabelBarWrapper>
           <Label>{symbol}</Label>
           <BarWrapper>
-            <PriceDiamondWrapper distance={distance}>
-              <Price color={color}>{formattedBasePnl}</Price>
-              <Diamond color={color} />
-            </PriceDiamondWrapper>
+            <PriceDiamondLabelWrapper distance={distance}>
+              <PriceLabel color={color}>{formattedBasePnl}</PriceLabel>
+              <DiamondShape color={color} />
+            </PriceDiamondLabelWrapper>
             <Bar />
             <OriginTickWrapper>
               <OriginTick />
@@ -58,7 +57,7 @@ const LabelBarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 `
-const PriceDiamondWrapper = styled.div<{ distance: number }>`
+const PriceDiamondLabelWrapper = styled.div<{ distance: number }>`
   flex: 0.99;
   margin-bottom: -2px;
   display: flex;
@@ -66,7 +65,7 @@ const PriceDiamondWrapper = styled.div<{ distance: number }>`
   align-items: center;
   transform: translate(${({ distance }) => distance}%);
 `
-const Price = styled.div<{ color: string }>`
+const PriceLabel = styled.div<{ color: string }>`
   flex: 1;
   width: 25px;
   height: 13px;
@@ -74,7 +73,7 @@ const Price = styled.div<{ color: string }>`
   composes: ${FontStyle};
   color: ${({ theme, color }) => theme.analytics[color].normal};
 `
-const Diamond = styled.div<{ color: string }>`
+const DiamondShape = styled.div<{ color: string }>`
   width: 6px;
   height: 6px;
   transform: rotate(45deg);
@@ -100,7 +99,6 @@ const BarWrapper = styled.div`
 const Bar = styled.div`
   height: 0.125rem;
   background-color: #444c5f;
-  opacity: 1;
   width: 100%;
   position: relative;
   top: 5px;
