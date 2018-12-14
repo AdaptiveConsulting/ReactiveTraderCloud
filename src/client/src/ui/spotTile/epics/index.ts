@@ -9,7 +9,11 @@ import { publishTradeExecutedEpic } from './tradeExecutedEpic'
 const epics = [spotTileEpic, pricingServiceEpic]
 
 if (typeof window.FSBL === 'undefined' && typeof fin !== 'undefined') {
-  epics.push(publishPriceUpdateEpic, publishTradeExecutedEpic, closePositionEpic, displayCurrencyChartEpic)
+  epics.push(publishPriceUpdateEpic, publishTradeExecutedEpic, closePositionEpic)
+}
+
+if (typeof fin !== 'undefined') {
+  epics.push(displayCurrencyChartEpic)
 }
 
 export default combineEpics(...epics)

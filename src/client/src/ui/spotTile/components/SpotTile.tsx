@@ -12,7 +12,9 @@ import { DeliveryDate, TileBaseStyle, TileHeader, TileSymbol } from './styled'
 export const SpotTileWrapper = styled('div')`
   position: relative;
   min-height: 10rem;
-  height: 100%;
+  height: ${window.FSBL === 'undefined'
+    ? '100%'
+    : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
   color: ${({ theme }) => theme.tile.textColor};
 `
 

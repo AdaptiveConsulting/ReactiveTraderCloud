@@ -14,7 +14,7 @@ interface Props {
 
 const RouteWrapperBase: React.SFC<Props> = ({ children, platform }) => (
   <RouteStyle>
-    {platform.name === 'openfin' ? (
+    {platform.name === 'openfin' && window.FSBL !== 'undefined' ? (
       <OpenFinChrome>
         <OpenFinHeader close={platform.window.close} />
         {children}
