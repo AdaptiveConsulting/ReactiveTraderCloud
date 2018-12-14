@@ -71,9 +71,8 @@ class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
     }
   }
 
-  getDataPoint = (dataPoints: DataPoint[]) => [
-    ...dataPoints.filter((value, index) => (index + this.state.offset) % this.intervalWidth === 0),
-  ]
+  getDataPoint = (dataPoints: DataPoint[]) =>
+    dataPoints.filter((value, index) => (index + this.state.offset) % this.intervalWidth === 0)
 
   componentDidUpdate(prevProps: LineChartProps) {
     if (prevProps !== this.props) {
@@ -85,7 +84,7 @@ class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
     const {
       model: { seriesData },
     } = this.props
-    const data = seriesData.map(point => ({ x: moment(point.x).format('hh:mm:ss A'), y: point.y }))
+    const data = seriesData.map(({ x, y }) => ({ x: moment(x).format('hh:mm:ss A'), y }))
     const offset = getLinearGradientOffset(data)
     const lineProps = { strokeDasharray: '4 3', stroke: 'white', strokeOpacity: 0.3, strokeWidth: 1 }
     const dataPoints = this.getDataPoint(data)
@@ -113,12 +112,12 @@ class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
               dataKey="x"
               tickLine={false}
               width={400}
-              ticks={[dataPoints[0].x, ...dataPoints.map(point => point.x)]}
+              ticks={[...dataPoints.map(({ x }) => x)]}
               interval="preserveStartEnd"
             />
             {offset < 1 && <ReferenceLine y={0} stroke="white" strokeOpacity={0.3} strokeWidth={1} />}
-            {dataPoints.map(point => (
-              <ReferenceLine key={point.x} x={point.x} {...lineProps} />
+            {dataPoints.map(({ x }) => (
+              <ReferenceLine key={x} x={x} {...lineProps} />
             ))}
             <ReferenceLine x={data[0].x} {...lineProps} />
           </LineChart>
