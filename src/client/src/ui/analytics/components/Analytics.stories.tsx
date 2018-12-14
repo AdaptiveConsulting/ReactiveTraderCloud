@@ -6,7 +6,7 @@ import { styled } from 'rt-theme'
 import '../globals/index'
 import initialProps, { analyticsLineChartModel } from '../test-resources/initialProps'
 import Analytics from './Analytics'
-import AnalyticsLineChart from './AnalyticsLineChart'
+import { AnalyticsLineChart } from './analyticsLineChart'
 const stories = storiesOf('Analytics', module)
 
 const Centered = styled('div')`

@@ -8,7 +8,7 @@ import { CurrencyPair } from 'rt-types'
 
 import { AnalyticsStyle, BubbleChart, Title, AnalyticsLineChartWrapper, Header } from './styled'
 import AnalyticsWindowHeader from './AnalyticsHeader'
-import AnalyticsLineChart from './AnalyticsLineChart'
+import { AnalyticsLineChart } from './analyticsLineChart'
 import LastPosition from './LastPosition'
 export interface CurrencyPairs {
   [id: string]: CurrencyPair

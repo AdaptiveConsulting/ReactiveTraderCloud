@@ -2,8 +2,8 @@ import React from 'react'
 import moment from 'moment'
 import numeral from 'numeral'
 import { XAxis, YAxis, ResponsiveContainer, LineChart, ReferenceLine, Tooltip, Line } from 'recharts'
-import { ToolTipStyle, ToolTipChildRight, ToolTipChildLeft } from './styled'
-import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
+import { ToolTipStyle, ToolTipChildRight, ToolTipChildLeft } from '../styled'
+import { AnalyticsLineChartModel } from '../../model/AnalyticsLineChartModel'
 import { styled } from 'rt-theme'
 
 export const AnalyticsLineChartStyle = styled.div`
@@ -112,7 +112,7 @@ class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
               dataKey="x"
               tickLine={false}
               width={400}
-              ticks={[...dataPoints.map(({ x }) => x)]}
+              ticks={dataPoints.map(({ x }) => x)}
               interval="preserveStartEnd"
             />
             {offset < 1 && <ReferenceLine y={0} stroke="white" strokeOpacity={0.3} strokeWidth={1} />}

@@ -22,23 +22,14 @@ interface FormattedLastPosition {
 
 type Colors = 'green' | 'red'
 
-const formatLastPosition: (lastPos: number) => FormattedLastPosition = (lastPos: number) => {
-  let lastPosition = numeral(lastPos).format()
-
-  let color: Colors = 'green'
-
-  if (lastPos >= 0) {
-    color = 'green'
-    lastPosition = `+  ${lastPosition}`
-  }
-  if (lastPos < 0) {
-    color = 'red'
-  }
+const lastPositionColor: (lastPos: number) => FormattedLastPosition = (lastPos: number) => {
+  const lastPosition = lastPos >= 0 ? '+' + numeral(lastPos).format() : numeral(lastPos).format()
+  const color: Colors = lastPos >= 0 ? 'green' : 'red'
   return { color, lastPosition }
 }
 
 const LastPosition: React.SFC<LastPositionProps> = ({ lastPos = 0 }) => {
-  const { color, lastPosition } = formatLastPosition(lastPos)
+  const { color, lastPosition } = lastPositionColor(lastPos)
   return (
     <div>
       <USDspan>USD</USDspan>
