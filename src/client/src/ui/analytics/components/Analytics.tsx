@@ -65,7 +65,7 @@ export default class Analytics extends React.Component<Props> {
                 <BubbleChart>
                   <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
                 </BubbleChart>
-                <Title>Profit and Loss</Title>
+                <Title>PnL</Title>
                 <AnalyticsBarChart chartData={positionsChartModel.seriesData} />
               </React.Fragment>
             )}

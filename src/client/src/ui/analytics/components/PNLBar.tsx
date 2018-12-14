@@ -1,6 +1,5 @@
 import numeral from 'numeral'
 import React from 'react'
-// import { CurrencyPair } from 'rt-types'
 import { styled } from 'rt-theme'
 import { css } from 'emotion'
 export interface PNLBarProps {
