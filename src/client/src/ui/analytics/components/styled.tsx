@@ -1,5 +1,4 @@
 import { styled } from 'rt-theme'
-import { css } from 'emotion'
 import { transparentColor } from '../globals/variables'
 
 export const AnalyticsStyle = styled.div`
@@ -77,19 +76,15 @@ export const AnalyticsStyle = styled.div`
   }
 `
 
+export const AnalyticsLineChartWrapper = styled.div`
+  width: 100%;
+  height: 20%;
+`
+
 export const Header = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
   margin-bottom: 0.5rem;
-`
-//TODO ML 04/12 Generalize font-family, weight, and anything with normal by moving them to the theme? , font-family,
-export const fontStyle = css`
-  font-family: Lato;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
 `
 
 export const Title = styled.div`
@@ -97,26 +92,8 @@ export const Title = styled.div`
   height: 18px;
   font-size: 15px;
   font-weight: normal;
-  composes: ${fontStyle};
 `
-export const LastPositionWrapper = styled.div``
-export const USDspan = styled.span`
-  width: 29px;
-  height: 17px;
-  opacity: 0.6;
-  font-size: 14px;
-  composes: ${fontStyle};
-  margin-right: 10px;
-  color: #ffffff;
-`
-export const LastPositionStyle = styled.span<{ color?: string }>`
-  width: 44px;
-  height: 17px;
-  font-size: 14px;
-  composes: ${fontStyle};
-  color: ${({ theme, color }) => color && theme.analytics[color].normal};
-  margin: 0.5rem 0;
-`
+
 export const HrBar = styled.hr`
   height: 4px;
   color: #282d39;
@@ -140,45 +117,23 @@ export const ToolTipChildLeft = styled.div`
   height: 12px;
   opacity: 0.6;
   font-size: 10px;
-  composes: ${fontStyle};
 `
 export const ToolTipChildRight = styled.div`
   width: 30px;
   height: 12px;
   font-size: 10px;
-  composes: ${fontStyle};
 `
 
 export const BubbleChart = styled.div`
   text-anchor: middle;
   height: 18rem;
 `
-export const AnalyticsLineChartWrapper = styled.div`
-  width: 100%;
-  height: 20%;
-`
 
-export const AnalyticsLineChartStyle = styled.div`
-  width: 100%;
-  height: 100%;
-  margin: auto;
-  .recharts-cartesian-axis-ticks {
-    color: #ffffff;
-    width: 52px;
-    height: 12px;
-    opacity: 1;
-    font-size: 10px;
-    composes: ${fontStyle};
-  }
-`
 export const Controls = styled('div')`
-  position: absolute;
-  right: 0;
-  top: 0;
   opacity: 0;
   transition: opacity 0.2s;
-  padding: 0.25rem;
 
+  /* We want to whow the popout icon when we hover over the whole panel */
   ${AnalyticsStyle}:hover & {
     opacity: 0.75;
   }

@@ -1,4 +1,7 @@
-const analyticsLineChartModel: any = {
+import { Props as AnalyticsProps } from '../components/Analytics'
+import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
+
+const analyticsLineChartModel: AnalyticsLineChartModel = {
   seriesData: [
     {
       x: '2018-12-07T16:10:48.678Z',
@@ -365,12 +368,10 @@ const analyticsLineChartModel: any = {
       y: '-1717348.06',
     },
   ],
-  lastPos: '48384501.58',
-  minPnl: -1717348.06,
-  maxPnl: 7107789.35,
+  lastPos: 48384501.58,
 }
 
-const props: any = {
+const props: AnalyticsProps = {
   currencyPairs: {
     EURUSD: { symbol: 'EURUSD', ratePrecision: 5, pipsPosition: 4, base: 'EUR', terms: 'USD' },
     USDJPY: { symbol: 'USDJPY', ratePrecision: 3, pipsPosition: 2, base: 'USD', terms: 'JPY' },
@@ -383,7 +384,6 @@ const props: any = {
     EURCAD: { symbol: 'EURCAD', ratePrecision: 5, pipsPosition: 4, base: 'EUR', terms: 'CAD' },
   },
   canPopout: true,
-  isConnected: true,
   analyticsLineChartModel,
   positionsChartModel: {
     seriesData: [

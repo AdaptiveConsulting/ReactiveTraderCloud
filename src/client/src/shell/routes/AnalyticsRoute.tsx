@@ -3,7 +3,7 @@ import { RouteWrapper } from 'rt-components'
 import { AnalyticsContainer } from '../../ui/analytics'
 import { ThemeProvider } from 'rt-theme'
 
-const BlotterRoute = () => (
+const AnalyticsRoute = () => (
   <RouteWrapper>
     <ThemeProvider theme={theme => theme.analytics}>
       <AnalyticsContainer />
@@ -11,4 +11,4 @@ const BlotterRoute = () => (
   </RouteWrapper>
 )
 
-export default BlotterRoute
+export default AnalyticsRoute

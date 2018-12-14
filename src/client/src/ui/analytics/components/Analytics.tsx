@@ -6,8 +6,8 @@ import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
 import { CurrencyPair } from 'rt-types'
 
-import { AnalyticsStyle, BubbleChart, Title, AnalyticsLineChartWrapper } from './styled'
-import AnalyticsHeader from './AnalyticsHeader'
+import { AnalyticsStyle, BubbleChart, Title, AnalyticsLineChartWrapper, Header } from './styled'
+import AnalyticsWindowHeader from './AnalyticsHeader'
 import AnalyticsLineChart from './AnalyticsLineChart'
 import LastPosition from './LastPosition'
 export interface CurrencyPairs {
@@ -39,7 +39,10 @@ export default class Analytics extends React.Component<Props> {
     const { canPopout, currencyPairs, analyticsLineChartModel, positionsChartModel, onPopoutClick } = this.props
     return (
       <AnalyticsStyle>
-        <AnalyticsHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
+        <Header>
+          <Title>Profit &amp; Loss</Title>
+          <AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
+        </Header>
         <LastPosition lastPos={analyticsLineChartModel.lastPos} />
         <AnalyticsLineChartWrapper>
           <AnalyticsLineChart model={analyticsLineChartModel} />

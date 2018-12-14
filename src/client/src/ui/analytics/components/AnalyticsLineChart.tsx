@@ -2,8 +2,21 @@ import React from 'react'
 import moment from 'moment'
 import numeral from 'numeral'
 import { XAxis, YAxis, ResponsiveContainer, LineChart, ReferenceLine, Tooltip, Line } from 'recharts'
-import { ToolTipStyle, ToolTipChildRight, ToolTipChildLeft, AnalyticsLineChartStyle } from './styled'
+import { ToolTipStyle, ToolTipChildRight, ToolTipChildLeft } from './styled'
 import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
+import { styled } from 'rt-theme'
+
+export const AnalyticsLineChartStyle = styled.div`
+  width: 100%;
+  height: 100%;
+  .recharts-cartesian-axis-ticks {
+    color: #ffffff;
+    width: 52px;
+    height: 12px;
+    opacity: 1;
+    font-size: 10px;
+  }
+`
 
 interface LineChartProps {
   model: AnalyticsLineChartModel
