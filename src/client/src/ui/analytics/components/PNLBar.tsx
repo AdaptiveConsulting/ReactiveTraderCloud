@@ -1,7 +1,6 @@
 import numeral from 'numeral'
 import React from 'react'
 import { styled } from 'rt-theme'
-import { css } from 'emotion'
 export interface PNLBarProps {
   basePnl: number
   maxVal: number
@@ -20,14 +19,14 @@ export default class PNLBar extends React.Component<PNLBarProps> {
     const { symbol, basePnl, maxVal } = this.props
     const color = basePnl >= 0 ? 'green' : 'red'
     const distance = getWidthRatio(maxVal, basePnl) * TRANSLATION_WIDTH * (basePnl >= 0 ? 1 : -1)
-    const formattedBasePnl = numeral(Math.abs(basePnl)).format('0.0a')
+    const price = numeral(Math.abs(basePnl)).format('0a')
     return (
       <BarChart>
         <LabelBarWrapper>
           <Label>{symbol}</Label>
           <BarWrapper>
             <PriceDiamondLabelWrapper distance={distance}>
-              <PriceLabel color={color}>{formattedBasePnl}</PriceLabel>
+              <PriceLabel color={color}>{price}</PriceLabel>
               <DiamondShape color={color} />
             </PriceDiamondLabelWrapper>
             <Bar />
@@ -42,14 +41,6 @@ export default class PNLBar extends React.Component<PNLBarProps> {
   }
 }
 
-const FontStyle = css`
-  font-family: Lato;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.82;
-  letter-spacing: normal;
-`
 const BarChart = styled.div``
 const OriginTickWrapper = styled.div``
 
@@ -63,14 +54,16 @@ const PriceDiamondLabelWrapper = styled.div<{ distance: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: transform 0.2s;
   transform: translate(${({ distance }) => distance}%);
 `
 const PriceLabel = styled.div<{ color: string }>`
   flex: 1;
   width: 25px;
   height: 13px;
+  text-align: center;
   font-size: 11px;
-  composes: ${FontStyle};
+  margin-bottom: 2px;
   color: ${({ theme, color }) => theme.analytics[color].normal};
 `
 const DiamondShape = styled.div<{ color: string }>`
@@ -88,13 +81,13 @@ const Label = styled.div`
   font-size: 11px;
   text-align: center;
   color: #ffffff;
-  composes: ${FontStyle};
 `
 const BarWrapper = styled.div`
   flex: 0.99;
   vertical-align: middle;
   margin: auto 0;
   color: white;
+  padding-left: 10px;
 `
 const Bar = styled.div`
   height: 0.125rem;
@@ -122,5 +115,4 @@ const Origin = styled.div`
   opacity: 0.6;
   font-size: 11px;
   text-align: center;
-  composes: ${FontStyle};
 `
