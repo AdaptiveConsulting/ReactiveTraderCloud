@@ -1,7 +1,8 @@
 import React from 'react'
 import { OpenFinChrome, OpenFinHeader, PlatformAdapter, withPlatform } from 'rt-components'
-import { styled } from 'rt-theme'
-const RouteStyle = styled.div`
+import { testStyled } from 'test-theme'
+
+const RouteStyle = testStyled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;

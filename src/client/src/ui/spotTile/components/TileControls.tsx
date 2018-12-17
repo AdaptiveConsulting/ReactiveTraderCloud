@@ -1,9 +1,9 @@
 import React from 'react'
 import { PlatformAdapter, PopoutIcon, withPlatform } from 'rt-components'
-import { styled } from 'rt-theme'
+import { testStyled } from 'test-theme'
 import { SpotTileWrapper } from './SpotTile'
 
-const TopRightButton = styled('button')`
+const TopRightButton = testStyled('button')`
   position: absolute;
   right: 0;
   top: 0;
@@ -15,12 +15,12 @@ const TopRightButton = styled('button')`
     opacity: 0.75;
   }
   .svg-icon {
-    stroke: ${({ theme }) => theme.textColor};
+    stroke: ${({ theme }) => theme.tile.textColor};
     fill: ${({ theme }) => theme.textColor};
   }
 `
 
-const BottomRightButton = styled('button')`
+const BottomRightButton = testStyled('button')`
   position: absolute;
   right: 0;
   bottom: 0;

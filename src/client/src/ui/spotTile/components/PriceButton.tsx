@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import { testStyled } from 'test-theme'
 import { Direction } from 'rt-types'
 
 const hoverColors = {
@@ -7,8 +7,8 @@ const hoverColors = {
   [Direction.Sell]: 'red',
 }
 
-export const TradeButton = styled('button')<{ direction: string }>`
-  background-color: ${({ theme }) => theme.priceButton.backgroundColor};
+export const TradeButton = testStyled('button')<{ direction: string }>`
+  background-color: ${({ theme }) => theme.tile.priceButton.backgroundColor};
   border-radius: 3px;
   transition: background-color 0.2s ease;
   cursor: pointer;
@@ -17,50 +17,50 @@ export const TradeButton = styled('button')<{ direction: string }>`
   padding: 0.75rem 1.5rem;
 
   .spot-tile:hover & {
-    background-color: ${({ theme }) => theme.priceButton.hoverColor};
+    background-color: ${({ theme }) => theme.tile.priceButton.hoverColor};
   }
 
   .spot-tile:hover &:hover {
-    background-color: ${({ theme, direction }) => theme[hoverColors[direction]].base};
-    color: ${({ theme }) => theme.priceButton.textColor};
+    background-color: ${({ theme, direction }) => theme.tile[hoverColors[direction]].base};
+    color: ${({ theme }) => theme.tile.priceButton.textColor};
   }
 `
 
-const Box = styled('div')`
+const Box = testStyled.div`
   padding: 0;
   margin: 0;
 `
 
-const DirectionLabel = styled(Box)`
+const DirectionLabel = testStyled(Box)`
   opacity: 0.59;
   margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
 `
 
-const Big = styled(Box)`
+const Big = testStyled(Box)`
   font-size: 0.8125rem;
   line-height: 1rem;
 `
 
-const Pip = styled(Box)`
+const Pip = testStyled(Box)`
   font-size: 2.125rem;
   line-height: 2.5rem;
   margin: 0 0.125rem;
 `
 
-const Tenth = styled(Box)`
+const Tenth = testStyled(Box)`
   margin: 0.125rem 0;
   align-self: flex-end;
 `
 
-const Price = styled('div')`
+const Price = testStyled.div`
   height: 34px;
   display: flex;
   justify-content: center;
   align-items: center;
 `
 
-const BigWrapper = styled('div')`
+const BigWrapper = testStyled.div`
   height: 100%;
   display: flex;
   justify-content: center;

@@ -2,6 +2,7 @@
 import React, { lazy, Suspense } from 'react'
 
 import { styled, ThemeStorage } from 'rt-theme'
+import { TestThemeProvider } from 'test-theme'
 
 const MainRoute = lazy(() => import('./MainRoute'))
 
@@ -13,11 +14,13 @@ const Fallback = styled.div`
 
 export default function MainRouteLoader() {
   return (
-    <ThemeStorage.Provider>
-      <Suspense fallback={<Fallback />}>
-        <MainRoute />
-      </Suspense>
-    </ThemeStorage.Provider>
+    <TestThemeProvider>
+      <ThemeStorage.Provider>
+        <Suspense fallback={<Fallback />}>
+          <MainRoute />
+        </Suspense>
+      </ThemeStorage.Provider>
+    </TestThemeProvider>
   )
 }
 export { MainRouteLoader as MainRoute }

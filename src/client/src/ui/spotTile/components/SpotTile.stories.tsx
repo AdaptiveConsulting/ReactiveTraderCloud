@@ -6,7 +6,6 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { Flex } from 'rt-components'
 import { Story as BaseStory } from 'rt-storybook'
-import { styled, ThemeProvider } from 'rt-theme'
 import { Direction, ServiceConnectionStatus } from 'rt-types'
 import { SpotTileData } from '../model/index'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
@@ -16,8 +15,9 @@ import PriceMovement from './PriceMovement'
 import SpotTile from './SpotTile'
 import { DeliveryDate, TileSymbol } from './styled'
 import TileSwitch from './TileSwitch'
+import { testStyled } from 'test-theme'
 
-const Centered = styled('div')`
+const Centered = testStyled.div`
   height: 100%;
   width: 100%;
   display: flex;
@@ -25,11 +25,7 @@ const Centered = styled('div')`
   justify-content: center;
 `
 
-const Story: React.SFC = ({ children }) => (
-  <BaseStory>
-    <ThemeProvider theme={theme => theme.tile}>{children}</ThemeProvider>
-  </BaseStory>
-)
+const Story: React.SFC = ({ children }) => <BaseStory>{children}</BaseStory>
 
 const stories = storiesOf('Spot Tile', module)
 stories.addDecorator(withKnobs)

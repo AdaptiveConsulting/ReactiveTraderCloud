@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import { testStyled } from 'test-theme'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 
 interface Props {
@@ -7,18 +7,18 @@ interface Props {
   spread: string
 }
 
-const MovementIcon = styled('i')<{ show: boolean; color: string }>`
+const MovementIcon = testStyled('i')<{ show: boolean; color: string }>`
   text-align: center;
-  color: ${({ theme, color }) => theme[color].base};
+  color: ${({ theme, color }) => theme.tile[color].base};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
 `
 
-const MovementValue = styled('div')`
+const MovementValue = testStyled.div`
   font-size: 11px;
   opacity: 0.59;
 `
 
-const PriceMovementStyle = styled('div')`
+const PriceMovementStyle = testStyled.div`
   display: flex;
   align-items: center;
   justify-content: center;

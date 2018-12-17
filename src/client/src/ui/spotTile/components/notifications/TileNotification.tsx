@@ -1,10 +1,10 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import { testStyled } from 'test-theme'
 import { Button, Icon, TileBaseStyle } from '../styled'
 
-export const TileNotificationStyle = styled(TileBaseStyle)<{ accentColor: string }>`
+export const TileNotificationStyle = testStyled(TileBaseStyle)<{ accentColor: string }>`
   color: ${({ theme }) => theme.white};
-  background-color: ${({ theme, accentColor }) => theme[accentColor].base};
+  background-color: ${({ theme, accentColor }) => theme.tile[accentColor].base};
   font-size: 0.8125rem;
   text-align: center;
   line-height: 1.5;
@@ -15,7 +15,7 @@ export const TileNotificationStyle = styled(TileBaseStyle)<{ accentColor: string
   height: 100%;
 `
 
-const TradeSymbol = styled('div')`
+const TradeSymbol = testStyled.div`
   align-self: flex-start;
 
   i {
@@ -23,26 +23,26 @@ const TradeSymbol = styled('div')`
   }
 `
 
-const CheckIcon = styled(Icon)`
-  background-color: ${({ theme }) => theme.green.light};
+const CheckIcon = testStyled(Icon)`
+  background-color: ${({ theme }) => theme.tile.green.light};
   border-radius: 50%;
   padding: 0.3125rem;
 `
 
-const HeavyFont = styled('span')`
+const HeavyFont = testStyled('span')`
   font-weight: 900;
 `
 
-const PillButton = styled(Button)<{ accentColor: string }>`
+const PillButton = testStyled(Button)<{ accentColor: string }>`
   color: ${({ theme }) => theme.white};
-  background-color: ${({ theme, accentColor }) => theme[accentColor].light};
+  background-color: ${({ theme, accentColor }) => theme.tile[accentColor].light};
   border-radius: 17px;
   padding: 0.5rem 0.625rem;
   font-weight: 900;
   cursor: pointer;
 `
 
-const Content = styled('div')`
+const Content = testStyled.div`
   max-width: 280px;
 `
 
