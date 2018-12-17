@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Flex, Modal } from 'rt-components'
 import { Button } from 'rt-styleguide'
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 
 const Message = styled.div`
   display: flex;

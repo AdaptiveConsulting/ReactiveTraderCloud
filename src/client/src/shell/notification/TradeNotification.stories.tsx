@@ -3,7 +3,7 @@ import { select } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { Story } from 'rt-storybook'
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 import TradeNotification, { Props } from './TradeNotification'
 
 const stories = storiesOf('Trade Notification', module)
@@ -18,18 +18,18 @@ const props: Props = {
       'Status',
       {
         Rejected: 'rejected',
-        Done: 'done'
+        Done: 'done',
       },
-      'done'
+      'done',
     ),
     symbol: 'EURJPY',
     tradeDate: new Date('Thu Jul 26 2018 14:46:12 GMT-0400 (Eastern Daylight Time)'),
     tradeId: 2356,
     traderName: 'DOR',
     valueDate: new Date('Sun Jul 29 2018 20:00:00 GMT-0400 (Eastern Daylight Time)'),
-    termsCurrency: 'JPY'
+    termsCurrency: 'JPY',
   },
-  dismissNotification: action('Dismiss notification')
+  dismissNotification: action('Dismiss notification'),
 }
 
 const Centered = styled('div')`

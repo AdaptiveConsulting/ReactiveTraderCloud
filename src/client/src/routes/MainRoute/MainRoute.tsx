@@ -13,7 +13,7 @@ import { getEnvVars } from '../../config/config'
 import configureStore from '../../configureStore'
 import { Router } from '../../shell'
 import FakeUserRepository from '../../shell/fakeUserRepository'
-import { GlobalScrollbarStyle } from '../../shell/GlobalScrollbarStyle'
+import GlobalScrollbarStyle from '../../shell/GlobalScrollbarStyle'
 import { OpenFinLimitChecker } from '../../shell/openFin'
 
 const config = getEnvVars(process.env.REACT_APP_ENV!)

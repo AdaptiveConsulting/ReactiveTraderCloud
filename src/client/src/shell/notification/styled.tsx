@@ -1,5 +1,5 @@
 import { Flex } from 'rt-components'
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 
 export const Notification = styled('div')`
   height: 100vh;

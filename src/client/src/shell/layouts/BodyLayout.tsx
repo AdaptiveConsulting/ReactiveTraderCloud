@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 
 export interface Props {
   body: React.ReactNode
