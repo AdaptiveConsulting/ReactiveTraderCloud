@@ -2,7 +2,7 @@ import numeral from 'numeral'
 import React from 'react'
 import { PNLChartModel } from '../model/pnlChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
-import AnalyticsBarChart from './AnalyticsBarChart'
+import { AnalyticsBarChart } from './analyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
 import { CurrencyPair } from 'rt-types'

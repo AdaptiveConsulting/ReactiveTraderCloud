@@ -4,7 +4,7 @@ import { Story } from 'rt-storybook'
 import { styled } from 'rt-theme'
 import '../globals'
 import Analytics from './Analytics'
-import AnalyticsBarChart from './AnalyticsBarChart'
+import { AnalyticsBarChart } from './analyticsBarChart'
 import { CurrencyPairPosition } from '../model'
 
 const stories = storiesOf('Analytics', module)

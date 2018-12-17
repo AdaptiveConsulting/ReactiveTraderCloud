@@ -83,7 +83,9 @@ export const Header = styled.div`
   margin-bottom: 0.5rem;
 `
 
-export const Title = styled.div``
+export const Title = styled.div`
+  margin-bottom: 1rem;
+`
 
 export const LastPosition = styled.div<{ color?: string }>`
   font-size: 0.75rem;

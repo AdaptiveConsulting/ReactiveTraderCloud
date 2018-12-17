@@ -1,5 +1,5 @@
 import React from 'react'
-import { CurrencyPairPosition } from '../model'
+import { CurrencyPairPosition } from '../../model/index'
 import PNLBar from './PNLBar'
 
 export interface Props {
