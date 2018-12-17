@@ -3,11 +3,12 @@ import { AgGridReact } from 'ag-grid-react'
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid/dist/styles/ag-grid.css'
 import React from 'react'
-import { styled, ThemeProvider } from 'rt-theme'
+import { styled, Theme } from 'test-theme'
 import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION } from './blotterUtils'
+import { withTheme, ThemeProvider } from 'styled-components'
 
 export interface BlotterProps {
   rows: Trade[]
@@ -46,7 +47,7 @@ const icons = {
   sortDescending: '<i class="fas fa-long-arrow-alt-down" aria-hidden="true" />',
 }
 
-export default class Blotter extends React.Component<BlotterProps, BlotterState> {
+class Blotter extends React.Component<BlotterProps & { theme: Theme }, BlotterState> {
   private gridApi: GridApi | null = null
 
   private gridDoc = React.createRef<HTMLDivElement>()
@@ -56,14 +57,14 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
   }
 
   render() {
-    const { canPopout, rows, onPopoutClick } = this.props
+    const { canPopout, rows, onPopoutClick, theme } = this.props
     const { displayedRows } = this.state
     return (
-      <ThemeProvider theme={theme => theme.blotter}>
+      <ThemeProvider theme={theme.blotter}>
         <BlotterStyle>
           <React.Fragment>
             <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
-            <BlotterGrid innerRef={this.gridDoc}>
+            <BlotterGrid ref={this.gridDoc}>
               <AgGridReact
                 columnDefs={columnDefinitions}
                 defaultColDef={DEFAULT_COLUMN_DEFINITION}
@@ -107,3 +108,5 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
     return ''
   }
 }
+
+export default withTheme(Blotter)

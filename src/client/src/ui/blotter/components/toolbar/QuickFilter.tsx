@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 
 interface QuickFilterProps {
   isFilterApplied: boolean
@@ -74,7 +74,7 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
           <i className="fas fa-filter" aria-hidden="true" />
         </QuickFilterIcon>
         <QuickFilterInput
-          innerRef={this.quickFilterInput}
+          ref={this.quickFilterInput}
           type="text"
           placeholder="Filter"
           value={this.state.quickFilterText}
