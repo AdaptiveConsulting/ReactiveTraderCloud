@@ -79,6 +79,7 @@ export const AnalyticsStyle = styled.div`
 export const AnalyticsLineChartWrapper = styled.div`
   width: 100%;
   height: 20%;
+  margin-top: 20px;
 `
 
 export const Header = styled.div`
@@ -100,28 +101,6 @@ export const HrBar = styled.hr`
   background-color: #282d39;
   margin-top: 20px;
   border: none;
-`
-
-export const ToolTipStyle = styled.div`
-  background-color: #14161c;
-  width: 120px;
-  height: 20px;
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-export const ToolTipChildLeft = styled.div`
-  width: 70px;
-  height: 12px;
-  opacity: 0.6;
-  font-size: 10px;
-`
-export const ToolTipChildRight = styled.div`
-  width: 30px;
-  height: 12px;
-  font-size: 10px;
 `
 
 export const BubbleChart = styled.div`

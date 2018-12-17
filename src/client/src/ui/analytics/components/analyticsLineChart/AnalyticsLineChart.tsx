@@ -2,21 +2,8 @@ import React from 'react'
 import moment from 'moment'
 import numeral from 'numeral'
 import { XAxis, YAxis, ResponsiveContainer, LineChart, ReferenceLine, Tooltip, Line } from 'recharts'
-import { ToolTipStyle, ToolTipChildRight, ToolTipChildLeft } from '../styled'
+import { AnalyticsLineChartStyle, ToolTipStyle, ToolTipChildRight, ToolTipChildLeft } from './styled'
 import { AnalyticsLineChartModel } from '../../model/AnalyticsLineChartModel'
-import { styled } from 'rt-theme'
-
-export const AnalyticsLineChartStyle = styled.div`
-  width: 100%;
-  height: 100%;
-  .recharts-cartesian-axis-ticks {
-    color: #ffffff;
-    width: 52px;
-    height: 12px;
-    opacity: 1;
-    font-size: 10px;
-  }
-`
 
 interface LineChartProps {
   model: AnalyticsLineChartModel
@@ -86,7 +73,7 @@ class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
     } = this.props
     const data = seriesData.map(({ x, y }) => ({ x: moment(x).format('hh:mm:ss A'), y }))
     const offset = getLinearGradientOffset(data)
-    const lineProps = { strokeDasharray: '4 3', stroke: 'white', strokeOpacity: 0.3, strokeWidth: 1 }
+    const lineProps = { strokeDasharray: '4 3', stroke: '#444C5F', strokeOpacity: 0.9, strokeWidth: 0.8 }
     const dataPoints = this.getDataPoint(data)
     return seriesData.length > 0 ? (
       <AnalyticsLineChartStyle>
@@ -101,7 +88,7 @@ class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
             <Line type="monotone" dataKey="y" stroke="url(#colorValue)" dot={false} strokeWidth={2} />
             <Tooltip offset={10} cursor={{ stroke: '#14161c', strokeWidth: 2 }} content={CustomTooltip} />
             <YAxis
-              width={42}
+              width={40}
               tickLine={false}
               padding={{ top: 0, bottom: 0 }}
               axisLine={false}
@@ -112,14 +99,14 @@ class LineCharts extends React.PureComponent<LineChartProps, LineChartState> {
               dataKey="x"
               tickLine={false}
               width={400}
-              ticks={dataPoints.map(({ x }) => x)}
+              ticks={[data[0], ...dataPoints].map(({ x }) => x)}
               interval="preserveStartEnd"
+              axisLine={false}
             />
             {offset < 1 && <ReferenceLine y={0} stroke="white" strokeOpacity={0.3} strokeWidth={1} />}
-            {dataPoints.map(({ x }) => (
-              <ReferenceLine key={x} x={x} {...lineProps} />
+            {[data[0], ...dataPoints].map(({ x }, i) => (
+              <ReferenceLine key={i} x={x} {...lineProps} />
             ))}
-            <ReferenceLine x={data[0].x} {...lineProps} />
           </LineChart>
         </ResponsiveContainer>
       </AnalyticsLineChartStyle>
