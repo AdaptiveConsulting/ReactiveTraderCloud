@@ -1,7 +1,6 @@
 import { Direction, Trade } from 'rt-types'
 
 export const sendNotification = (trade: Trade) => {
-  console.log(trade)
   const direction = trade.direction === Direction.Buy ? 'Bought' : 'Sold'
 
   const title = `${direction.toUpperCase()} ${trade.dealtCurrency} ${trade.notional}`
