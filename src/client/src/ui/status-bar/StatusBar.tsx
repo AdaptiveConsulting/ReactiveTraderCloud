@@ -8,6 +8,7 @@ import { Content, ExpandToggle, Fill, Header, NodeCount, Root, ServiceList, Serv
 import { OpenFinLogo } from './assets/OpenFinLogo'
 import { PlatformAdapter, withPlatform } from 'rt-components'
 import { withTheme, ThemeProvider } from 'styled-components'
+import { Theme } from 'test-theme'
 
 interface State {
   expanded: boolean
@@ -45,7 +46,7 @@ class StatusBar extends Component<
   {
     connectionStatus: ConnectionState
     services: ServiceStatus[]
-    theme: any
+    theme: Theme
   },
   State
 > {
