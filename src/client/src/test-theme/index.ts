@@ -1,5 +1,6 @@
 import './globals'
 import baseStyled, { ThemedStyledInterface } from 'styled-components'
+export { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } from './colors'
 
 import { Theme } from './createTheme'
 export { Theme }

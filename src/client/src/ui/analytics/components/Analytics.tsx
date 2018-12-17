@@ -9,8 +9,8 @@ import { CurrencyPair } from 'rt-types'
 import PNLChart from './pnlChart/PNLChart'
 
 import { PopoutIcon } from 'rt-components'
-import { ThemeProvider } from 'rt-theme'
 import { AnalyticsStyle, BubbleChart, Chart, Controls, Header, LastPosition, PopoutButton, Title } from './styled'
+import { AnalyticsGlobalStyle } from '../globals'
 
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
@@ -44,7 +44,8 @@ export default class Analytics extends React.Component<Props> {
     const lastPos = (pnlChartModel && pnlChartModel.lastPos) || 0
     const lastPosition = lastPositionWithDirection(lastPos)
     return (
-      <ThemeProvider theme={theme => theme.analytics}>
+      <React.Fragment>
+        <AnalyticsGlobalStyle />
         <AnalyticsStyle>
           <Header>
             {canPopout && (
@@ -74,7 +75,7 @@ export default class Analytics extends React.Component<Props> {
               </React.Fragment>
             )}
         </AnalyticsStyle>
-      </ThemeProvider>
+      </React.Fragment>
     )
   }
 }

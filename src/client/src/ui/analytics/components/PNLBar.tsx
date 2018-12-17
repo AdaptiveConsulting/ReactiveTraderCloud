@@ -3,7 +3,7 @@ import React from 'react'
 import { CurrencyPair } from 'rt-types'
 import { barBgColor, pointerColor } from '../globals/variables'
 
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 
 export interface PNLBarProps {
   basePnl: number
@@ -94,7 +94,7 @@ export default class PNLBar extends React.Component<PNLBarProps, {}> {
     const pusherStyle = { width: xPosRelativePusher + '%' }
 
     return (
-      <BarChart innerRef={this.barChartContainerRef}>
+      <BarChart ref={this.barChartContainerRef}>
         <div>
           <div className="analytics__barchart-title-wrapper">
             <div className="analytics__barchart-label-wrapper">
