@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import React, { Component, SFC } from 'react'
-import { ThemeProvider } from 'rt-theme'
 
 import { ConnectionState } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
@@ -8,6 +7,7 @@ import Icon from './Icon'
 import { Content, ExpandToggle, Fill, Header, NodeCount, Root, ServiceList, ServiceName, ServiceRoot } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
 import { PlatformAdapter, withPlatform } from 'rt-components'
+import { withTheme, ThemeProvider } from 'styled-components'
 
 interface State {
   expanded: boolean
@@ -41,10 +41,11 @@ const Logo: React.SFC<{ platform: PlatformAdapter }> = ({ platform }) => (
 
 const LogoWithPlatform = withPlatform(Logo)
 
-export class StatusBar extends Component<
+class StatusBar extends Component<
   {
     connectionStatus: ConnectionState
     services: ServiceStatus[]
+    theme: any
   },
   State
 > {
@@ -58,12 +59,13 @@ export class StatusBar extends Component<
     const {
       connectionStatus: { url, transportType },
       services,
+      theme,
     } = this.props
 
     const { expanded } = this.state
     const mode = getApplicationStatus(services)
     return (
-      <ThemeProvider theme={theme => theme.button[mapToTheme[mode]]}>
+      <ThemeProvider theme={theme.button[mapToTheme[mode]]}>
         <Root>
           <Content expand={expanded}>
             <Header onClick={this.toggleExpanded}>
@@ -83,10 +85,7 @@ export class StatusBar extends Component<
 
             <ServiceList>
               {services.map((service, index) => (
-                <ThemeProvider
-                  key={service.serviceType}
-                  theme={theme => theme.button[mapToTheme[service.connectionStatus]]}
-                >
+                <ThemeProvider key={service.serviceType} theme={theme.button[mapToTheme[service.connectionStatus]]}>
                   <Service service={service} index={index} />
                 </ThemeProvider>
               ))}
@@ -97,6 +96,8 @@ export class StatusBar extends Component<
     )
   }
 }
+
+export default withTheme(StatusBar)
 
 const Service: SFC<{ service: ServiceStatus; index: number }> = ({
   service: { serviceType, connectionStatus, connectedInstanceCount },

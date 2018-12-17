@@ -1,6 +1,6 @@
 import { darken } from 'polished'
 import React from 'react'
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 import Icon from './Icon'
 
 const headerHeight = '2rem'

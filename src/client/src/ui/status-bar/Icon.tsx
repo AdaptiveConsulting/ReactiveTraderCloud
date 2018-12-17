@@ -1,5 +1,5 @@
 import React from 'react'
-import { css, styled } from 'rt-theme'
+import { styled } from 'test-theme'
 
 const Icon: React.SFC<{
   name: string
@@ -14,7 +14,7 @@ interface IconProps {
 }
 
 export default styled(Icon)<IconProps>`
-  ${({ size = 1.5 }) => css`
+  ${({ size = 1.5 }) => `
     min-width: ${size}rem;
     max-width: ${size}rem;
     min-height: ${size}rem;

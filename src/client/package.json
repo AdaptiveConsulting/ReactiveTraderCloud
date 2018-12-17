@@ -80,7 +80,7 @@
     "react-helmet": "^5.2.0",
     "react-hotkeys": "^1.1.4",
     "react-nvd3": "0.5.7",
-    "react-redux": "5.0.7",
+    "react-redux": "5.1.0",
     "react-router-dom": "^4.3.1",
     "react-sizeme": "2.3.6",
     "react-spring": "^5.5.4",
