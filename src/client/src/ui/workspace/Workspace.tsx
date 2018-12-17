@@ -1,6 +1,6 @@
 import React from 'react'
 import { TearOff } from 'rt-components'
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { PortalProps } from './selectors'
 
