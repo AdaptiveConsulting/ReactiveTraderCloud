@@ -1,9 +1,9 @@
 import React from 'react'
 import { PlatformAdapter, PopoutIcon, withPlatform } from 'rt-components'
-import { testStyled } from 'test-theme'
+import { styled } from 'test-theme'
 import { SpotTileWrapper } from './SpotTile'
 
-const TopRightButton = testStyled('button')`
+const TopRightButton = styled('button')`
   position: absolute;
   right: 0;
   top: 0;
@@ -20,7 +20,7 @@ const TopRightButton = testStyled('button')`
   }
 `
 
-const BottomRightButton = testStyled('button')`
+const BottomRightButton = styled('button')`
   position: absolute;
   right: 0;
   bottom: 0;

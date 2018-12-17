@@ -15,9 +15,9 @@ import PriceMovement from './PriceMovement'
 import SpotTile from './SpotTile'
 import { DeliveryDate, TileSymbol } from './styled'
 import TileSwitch from './TileSwitch'
-import { testStyled } from 'test-theme'
+import { styled } from 'test-theme'
 
-const Centered = testStyled.div`
+const Centered = styled.div`
   height: 100%;
   width: 100%;
   display: flex;

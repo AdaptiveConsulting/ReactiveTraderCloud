@@ -1,6 +1,6 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import { testStyled } from 'test-theme'
+import { styled } from 'test-theme'
 import { convertNotionalShorthandToNumericValue, hasShorthandInput } from './utils'
 
 const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -13,20 +13,20 @@ const CHAR_CODE_UNIT_SEP = 31
 const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]
 const MAX_NOTIONAL_VALUE = 1000000000
 
-const CurrencyPairSymbol = testStyled.div`
+const CurrencyPairSymbol = styled.div`
   opacity: 0.59;
   font-size: 0.625rem;
   line-height: 1rem;
   padding-right: 0.375rem;
 `
 
-const InputWrapper = testStyled.div`
+const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `
 
-export const Input = testStyled.input`
+export const Input = styled.input`
   background: none;
   outline: none;
   border: none;

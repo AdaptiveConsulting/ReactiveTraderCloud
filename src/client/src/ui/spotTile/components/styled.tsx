@@ -1,25 +1,25 @@
 import { RouteStyle } from 'rt-components'
-import { testStyled } from 'test-theme'
+import { styled } from 'test-theme'
 
 export interface ColorProps {
   color?: string
   backgroundColor?: string
 }
 
-export const DeliveryDate = testStyled.div`
+export const DeliveryDate = styled.div`
   color: ${({ theme }) => theme.tile.textColor};
   font-size: 0.625rem;
   line-height: 1rem;
   opacity: 0.59;
 `
 
-export const TileSymbol = testStyled.div`
+export const TileSymbol = styled.div`
   color: ${({ theme }) => theme.tile.textColor};
   font-size: 0.8125rem;
   line-height: 1rem;
 `
 
-export const TileBaseStyle = testStyled.div`
+export const TileBaseStyle = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
@@ -32,15 +32,15 @@ export const TileBaseStyle = testStyled.div`
   }
 `
 
-export const Icon = testStyled('i')`
+export const Icon = styled('i')`
   color: ${({ theme }) => theme.white};
 `
 
-export const Button = testStyled('button')`
+export const Button = styled('button')`
   border: none;
 `
 
-export const TileHeader = testStyled.div`
+export const TileHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -1,5 +1,5 @@
 import React from 'react'
-import { testStyled } from 'test-theme'
+import { styled } from 'test-theme'
 import { Direction } from 'rt-types'
 
 const hoverColors = {
@@ -7,7 +7,7 @@ const hoverColors = {
   [Direction.Sell]: 'red',
 }
 
-export const TradeButton = testStyled('button')<{ direction: string }>`
+export const TradeButton = styled('button')<{ direction: string }>`
   background-color: ${({ theme }) => theme.tile.priceButton.backgroundColor};
   border-radius: 3px;
   transition: background-color 0.2s ease;
@@ -26,41 +26,41 @@ export const TradeButton = testStyled('button')<{ direction: string }>`
   }
 `
 
-const Box = testStyled.div`
+const Box = styled.div`
   padding: 0;
   margin: 0;
 `
 
-const DirectionLabel = testStyled(Box)`
+const DirectionLabel = styled(Box)`
   opacity: 0.59;
   margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
 `
 
-const Big = testStyled(Box)`
+const Big = styled(Box)`
   font-size: 0.8125rem;
   line-height: 1rem;
 `
 
-const Pip = testStyled(Box)`
+const Pip = styled(Box)`
   font-size: 2.125rem;
   line-height: 2.5rem;
   margin: 0 0.125rem;
 `
 
-const Tenth = testStyled(Box)`
+const Tenth = styled(Box)`
   margin: 0.125rem 0;
   align-self: flex-end;
 `
 
-const Price = testStyled.div`
+const Price = styled.div`
   height: 34px;
   display: flex;
   justify-content: center;
   align-items: center;
 `
 
-const BigWrapper = testStyled.div`
+const BigWrapper = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;

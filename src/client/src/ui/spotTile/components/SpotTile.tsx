@@ -6,16 +6,16 @@ import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import { DeliveryDate, TileBaseStyle, TileHeader, TileSymbol } from './styled'
-import { testStyled } from 'test-theme'
+import { styled } from 'test-theme'
 
-export const SpotTileWrapper = testStyled.div`
+export const SpotTileWrapper = styled.div`
   position: relative;
   min-height: 10rem;
   height: 100%;
   color: ${({ theme }) => theme.tile.textColor};
 `
 
-export const SpotTileStyle = testStyled(TileBaseStyle)`
+export const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme }) => theme.tile.backgroundColor};
   display: flex;
   height: 100%;

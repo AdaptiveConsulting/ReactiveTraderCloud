@@ -1,12 +1,12 @@
 import React from 'react'
-import { testStyled } from 'test-theme'
+import { styled } from 'test-theme'
 import { CurrencyPair, Direction } from 'rt-types'
 import { SpotPriceTick } from '../model/spotPriceTick'
 import { getSpread, toRate } from '../model/spotTileUtils'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
 
-const PriceControlsStyle = testStyled.div`
+const PriceControlsStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;

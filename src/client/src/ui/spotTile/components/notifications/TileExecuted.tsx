@@ -2,17 +2,17 @@ import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
 import { Direction } from 'rt-types'
-import { testStyled } from 'test-theme'
+import { styled } from 'test-theme'
 
-const HeavyFont = testStyled('span')`
+const HeavyFont = styled('span')`
   font-weight: 900;
 `
 
-const HeavyItalicsFont = testStyled(HeavyFont)`
+const HeavyItalicsFont = styled(HeavyFont)`
   font-style: italic;
 `
 
-const InverseFont = testStyled(HeavyFont)`
+const InverseFont = styled(HeavyFont)`
   background-color: ${({ theme }) => theme.white};
   color: ${({ theme }) => theme.tile.green.base};
   border-radius: 2px;
