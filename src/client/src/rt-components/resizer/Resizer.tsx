@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 
 const ResizerStyle = styled.div`
   height: 100%;
@@ -136,7 +136,7 @@ export default class Resizer extends Component<Props, State> {
     }
 
     return (
-      <ResizerStyle innerRef={this.wrapperRef}>
+      <ResizerStyle ref={this.wrapperRef}>
         <ResizableSection height={100 - height}>
           <ResizableContent>{children}</ResizableContent>
         </ResizableSection>

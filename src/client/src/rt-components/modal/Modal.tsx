@@ -1,7 +1,7 @@
 import { darken } from 'polished'
 import React from 'react'
 
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 
 const ModalContainer = styled.div`
   position: fixed;

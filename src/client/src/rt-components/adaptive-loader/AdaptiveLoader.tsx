@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React, { PureComponent } from 'react'
-import { keyframes, styled } from 'rt-theme'
+import { keyframes } from 'styled-components'
+import { styled } from 'test-theme'
 
 const ANIMATION_SPEED = 2
 const BAR_NUMBER = 4
