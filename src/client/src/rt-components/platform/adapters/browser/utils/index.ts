@@ -15,11 +15,3 @@ export const sendNotification = (trade: Trade) => {
   // @ts-ignore
   const notification = new Notification(title, options)
 }
-
-export const requestPermission = (trade: Trade) => {
-  Notification.requestPermission(permission => {
-    if (permission === 'granted') {
-      sendNotification(trade)
-    }
-  })
-}

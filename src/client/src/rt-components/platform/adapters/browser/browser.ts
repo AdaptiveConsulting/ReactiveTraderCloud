@@ -1,7 +1,7 @@
 import { PlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
-import { sendNotification, requestPermission } from './utils'
+import { sendNotification } from './utils'
 
 export default class Browser implements PlatformAdapter {
   name = 'browser'
@@ -16,7 +16,9 @@ export default class Browser implements PlatformAdapter {
   notification = {
     notify: (message: any) => {
       const { tradeNotification } = message
-      Notification.permission === 'granted' ? sendNotification(tradeNotification) : requestPermission(tradeNotification)
+      if (Notification.permission === 'granted') {
+        sendNotification(tradeNotification)
+      }
     },
   }
 }
