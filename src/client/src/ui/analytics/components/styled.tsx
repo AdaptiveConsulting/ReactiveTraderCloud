@@ -76,19 +76,31 @@ export const AnalyticsStyle = styled.div`
   }
 `
 
+export const AnalyticsLineChartWrapper = styled.div`
+  width: 100%;
+  height: 20%;
+  margin-top: 20px;
+`
+
 export const Header = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
   margin-bottom: 0.5rem;
 `
 
-export const Title = styled.div``
+export const Title = styled.div`
+  width: 84px;
+  height: 18px;
+  font-size: 15px;
+  font-weight: normal;
+`
 
-export const LastPosition = styled.div<{ color?: string }>`
-  font-size: 0.75rem;
-  color: ${({ theme, color }) => color && theme.analytics[color].normal};
-  margin: 0.5rem 0;
+export const HrBar = styled.hr`
+  height: 4px;
+  color: #282d39;
+  background-color: #282d39;
+  margin-top: 20px;
+  border: none;
 `
 
 export const BubbleChart = styled.div`
@@ -96,39 +108,11 @@ export const BubbleChart = styled.div`
   height: 18rem;
 `
 
-export const Chart = styled.div`
-  position: relative;
-
-  .nv-lineChart {
-    .nv-axis.nv-y {
-      text {
-        font-size: 0.5rem;
-        fill: ${({ theme }) => theme.analytics.textColor};
-      }
-    }
-
-    .nv-axis.nv-x {
-      text {
-        font-size: 0.5rem;
-        fill: ${({ theme }) => theme.analytics.textColor};
-      }
-    }
-  }
-
-  /* axis labels */
-  .nv-lineChart .nv-axis.nv-x text,
-  .nv-lineChart .nv-axis.nv-y text {
-    fill: ${({ theme }) => theme.analytics.textColor};
-  }
-`
 export const Controls = styled('div')`
-  position: absolute;
-  right: 0;
-  top: 0;
   opacity: 0;
   transition: opacity 0.2s;
-  padding: 0.25rem;
 
+  /* We want to whow the popout icon when we hover over the whole panel */
   ${AnalyticsStyle}:hover & {
     opacity: 0.75;
   }
