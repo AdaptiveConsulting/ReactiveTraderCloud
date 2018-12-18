@@ -25,17 +25,17 @@ export default class PNLBar extends React.Component<PNLBarProps> {
       <BarChart>
         <Label>{symbol}</Label>
         <Offset />
-        <BarContainer>
-          <PriceDiamondWrapper distance={distance}>
+        <BarPriceContainer>
+          <PriceContainer distance={distance}>
             <PriceLabel color={color}>{price}</PriceLabel>
             <DiamondShape color={color} />
-          </PriceDiamondWrapper>
+          </PriceContainer>
           <Bar />
           <OriginTickWrapper>
             <OriginTick />
             <Origin>0</Origin>
           </OriginTickWrapper>
-        </BarContainer>
+        </BarPriceContainer>
       </BarChart>
     )
   }
@@ -44,7 +44,7 @@ export default class PNLBar extends React.Component<PNLBarProps> {
 const BarChart = styled.div`
   display: flex;
 `
-const PriceDiamondWrapper = styled.div<{ distance: number }>`
+const PriceContainer = styled.div<{ distance: number }>`
   width: 100%;
   text-align: center;
   vertical-align: middle;
@@ -84,7 +84,7 @@ const Label = styled.div`
   font-size: 11px;
   color: ${({ theme }) => theme.analytics.textColor};
 `
-const BarContainer = styled.div`
+const BarPriceContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -103,7 +103,6 @@ const OriginTick = styled.div`
   border: 1px solid #444c5f;
 `
 const Origin = styled.div`
-  opacity: 0.6;
   font-size: 11px;
   text-align: center;
   color: ${({ theme }) => theme.analytics.textColor};
