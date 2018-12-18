@@ -1,6 +1,6 @@
 // @ts-ignore
 import React, { lazy, Suspense } from 'react'
-import { ThemeStorage, styled } from 'rt-theme'
+import { TestThemeProvider, styled } from 'test-theme'
 
 const StyleguideRoute = lazy(() => import('./StyleguideRoute'))
 
@@ -12,11 +12,11 @@ const Fallback = styled.div`
 
 export default function StyleguideRouteLoader() {
   return (
-    <ThemeStorage.Provider storage={sessionStorage}>
+    <TestThemeProvider storage={sessionStorage}>
       <Suspense fallback={<Fallback />}>
         <StyleguideRoute />
       </Suspense>
-    </ThemeStorage.Provider>
+    </TestThemeProvider>
   )
 }
 export { StyleguideRouteLoader as StyleguideRoute }

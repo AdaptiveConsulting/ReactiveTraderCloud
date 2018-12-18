@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { styled, ThemeName, ThemeStorage } from 'rt-theme'
+import { styled, ThemeName, TestThemeProvider, TestThemeConsumer } from 'test-theme'
 
 import FloatingTools from './components/FloatingsTools'
 import { Block, SectionBlock } from './styled'
@@ -25,9 +25,9 @@ const sections = _.mapKeys(
 )
 
 const StyleguideRoute: React.SFC = () => (
-  <ThemeStorage.Provider storage={sessionStorage}>
+  <TestThemeProvider storage={sessionStorage}>
     <Root>
-      <ThemeStorage.Consumer>
+      <TestThemeConsumer>
         {({ name, setTheme }) => {
           return (
             <FloatingTools
@@ -40,7 +40,7 @@ const StyleguideRoute: React.SFC = () => (
             />
           )
         }}
-      </ThemeStorage.Consumer>
+      </TestThemeConsumer>
       <BrowserRouter>
         <Switch>
           {_.map(sections, (Section, path) => (
@@ -59,7 +59,7 @@ const StyleguideRoute: React.SFC = () => (
         </Switch>
       </BrowserRouter>
     </Root>
-  </ThemeStorage.Provider>
+  </TestThemeProvider>
 )
 
 export const Root = styled(Block)`

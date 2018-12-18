@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { DateTime } from 'luxon'
 import React from 'react'
 
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 
 import { TextField } from './TextField'
 import { Timer } from './Timer'

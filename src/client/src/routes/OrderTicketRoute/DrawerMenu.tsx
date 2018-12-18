@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { styled } from 'rt-theme'
+import { styled } from 'test-theme'
 import { Block } from '../StyleguideRoute/styled'
 
 import { faCog, faKeyboard, faMicrophone, faPhone, faUser } from '@fortawesome/free-solid-svg-icons'

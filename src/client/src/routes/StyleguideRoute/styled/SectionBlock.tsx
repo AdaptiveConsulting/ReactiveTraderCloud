@@ -1,10 +1,11 @@
 import _ from 'lodash'
 import React from 'react'
-import { css, styled, Styled } from 'rt-theme'
 
 import { rules } from 'rt-styleguide'
 import { Block, BlockProps } from '../styled'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
+import { styled } from 'test-theme'
+import { css } from 'styled-components'
 
 export interface SectionProps extends BlockProps, MarginPaddingProps {
   mh?: number
@@ -57,7 +58,7 @@ export class SectionBlock extends React.Component<SectionProps, { error?: boolea
   }
 }
 
-export const SectionBleed: Styled<SectionProps> = styled(Block)`
+export const SectionBleed = styled(Block)<SectionProps>`
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;

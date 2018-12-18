@@ -6,7 +6,6 @@ import { faChevronCircleRight, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Block } from '../StyleguideRoute/styled'
-import { colors, keyframes, styled, Styled } from 'rt-theme'
 
 import { AudioContext } from './AudioContext'
 import { BlobDownload } from './devtools/BlobDownload'
@@ -20,6 +19,8 @@ import { Timer } from './Timer'
 
 import FormantBars from './FormantBars'
 import MicrophoneIcon from './assets/Microphone'
+import { colors, styled } from 'test-theme'
+import { keyframes } from 'styled-components'
 
 type SourceType = 'microphone' | 'sample'
 interface Props {
@@ -424,7 +425,7 @@ const Fill = styled(Block)`
   min-width: 1rem;
 `
 
-export const Formant: Styled<{ sessionInstance: boolean }> = styled.div`
+export const Formant = styled.div<{ sessionInstance: boolean }>`
   height: 2rem;
   width: 2rem;
   [fill] {
@@ -432,7 +433,7 @@ export const Formant: Styled<{ sessionInstance: boolean }> = styled.div`
   }
 `
 
-const MicrophoneButton: Styled<{ active: boolean }> = styled(Block)`
+const MicrophoneButton = styled(Block)<{ active: boolean }>`
   height: ${2.75}rem;
   width: ${2.75}rem;
   width: ${3.5}rem;
@@ -452,7 +453,7 @@ const Input = styled(Block)`
   min-height: 1em;
 `
 
-const AnimatedText: Styled<{ accent?: string }> = styled.span`
+const AnimatedText = styled.span<{ accent?: string }>`
   color: ${p => p.theme.transparent};
   transition: color 1s ease, background-position 1s ease;
 

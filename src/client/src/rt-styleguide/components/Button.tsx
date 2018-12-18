@@ -1,9 +1,8 @@
 import _ from 'lodash'
 import React, { ButtonHTMLAttributes } from 'react'
-
-import { css, resolvesColor, styled, Styled, Theme, ThemeProvider } from 'rt-theme'
-
 import { userSelectButton, userSelectNone } from 'rt-styleguide'
+import { Theme, styled, resolvesColor } from 'test-theme'
+import { css } from 'styled-components'
 
 export interface ButtonStyleProps {
   intent?: string
@@ -76,7 +75,7 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
   render() {
     const { children } = this.props
 
-    return <ThemeProvider theme={this.resolveTheme}>{children}</ThemeProvider>
+    return { children }
   }
 }
 
@@ -125,7 +124,7 @@ export class ButtonGroup extends React.Component<ButtonStyleProps> {
   }
 }
 
-const StyledBase: Styled<ButtonStyleProps> = styled.div`
+const StyledBase = styled.div<ButtonStyleProps>`
   -webkit-appearance: none;
   border-width: 0;
 
@@ -200,7 +199,7 @@ const StyledBase: Styled<ButtonStyleProps> = styled.div`
 `
 
 const StyledButtonBase = StyledBase.withComponent('button')
-export const StyledButton: Styled<ButtonStyleProps> = styled(StyledButtonBase)`
+export const StyledButton = styled(StyledButtonBase)<ButtonStyleProps>`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;
@@ -232,7 +231,7 @@ StyledButton.defaultProps = {
   role: 'button',
 }
 
-export const StyledButtonGroup: Styled<ButtonStyleProps> = styled(StyledBase)`
+export const StyledButtonGroup = styled(StyledBase)<ButtonStyleProps>`
   ${StyledButton} {
     min-width: 1rem;
     padding-left: 0.625rem;

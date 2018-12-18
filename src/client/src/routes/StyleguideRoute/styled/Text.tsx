@@ -1,8 +1,8 @@
 import { filter, get } from 'lodash'
 
-import { css, styled, Styled } from 'rt-theme'
-
-import { MappedCSS, MappedPropMap, PassThroughFunc } from '../tools'
+import { MappedPropMap, PassThroughFunc } from '../tools'
+import { css } from 'styled-components'
+import { styled } from 'test-theme'
 
 export interface TextProps {
   display?: 'inline' | 'block' | 'inline-block'
@@ -35,11 +35,11 @@ export const textProps: MappedPropMap<TextProps> = {
   opacity: ({ opacity }) => css({ opacity }),
 }
 
-export function mapTextProps(props: TextProps): MappedCSS {
-  return filter(textProps, (fn: PassThroughFunc, key) => props[key] && props[key] != null && fn(props)) as MappedCSS
+export function mapTextProps(props: TextProps) {
+  return filter(textProps, (fn: PassThroughFunc, key) => props[key] && props[key] != null && fn(props))
 }
 
-export const Text: Styled<TextProps> = styled.span`
+export const Text = styled.span<TextProps>`
   max-width: 60em;
 
   ${mapTextProps};

@@ -2,11 +2,10 @@ import _ from 'lodash'
 import { rgba } from 'polished'
 import React from 'react'
 
-import { css, Styled, styled } from 'rt-theme'
-import { colors } from 'rt-theme'
-
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
+import { colors, styled, Theme } from 'test-theme'
+import { StyledComponent } from 'styled-components'
 
 export default () => (
   <React.Fragment>
@@ -90,7 +89,7 @@ export default () => (
 )
 
 const PaletteLayout: React.SFC<{
-  grid?: Styled
+  grid?: StyledComponent<React.ComponentType<any>, Theme, any>
   fg: string
   label: string
   palette: any
@@ -108,10 +107,10 @@ const PaletteLayout: React.SFC<{
       return (
         <Swatch
           key={key}
-          className={css({
+          style={{
             gridArea: key,
             boxShadow: i < 1 && `0 0 2rem ${rgba(palette[include[include.length - 1]], 0.5)}`,
-          })}
+          }}
           label={`${paletteLabel} ${key}`}
           value={color}
           code={codes[key] || key}
@@ -131,10 +130,11 @@ export interface SwatchColorProps {
 export interface SwatchProps extends BlockProps, SwatchColorProps {
   className?: string
   style?: object
-  is?: Styled<SwatchColorProps>
+  is?: StyledComponent<React.ComponentType<any>, Theme, SwatchColorProps>
   label?: string
   value?: string
   code?: string
+  toStyle?: React.CSSProperties
 }
 
 export const Swatch: React.SFC<SwatchProps> = ({
@@ -159,7 +159,7 @@ export const Swatch: React.SFC<SwatchProps> = ({
   </SwatchElement>
 )
 
-export const SwatchColor: Styled<SwatchColorProps> = styled(Block)`
+export const SwatchColor = styled(Block)<SwatchColorProps>`
   line-height: 1.25rem;
 
   display: flex;
@@ -167,7 +167,7 @@ export const SwatchColor: Styled<SwatchColorProps> = styled(Block)`
   flex-flow: column nowrap;
 `
 
-export const LargeSwatchColor: Styled<SwatchColorProps> = styled(SwatchColor)`
+export const LargeSwatchColor = styled(SwatchColor)<SwatchColorProps>`
   width: 14rem;
   height: 10rem;
   margin: 1.5rem 0;
