@@ -128,11 +128,11 @@ const BarChart = styled.div`
   height: 3rem;
 
   .analytics__barchart-indicator--negative {
-    background-color: ${({ theme }) => theme.analytics.red.normal};
+    background-color: ${({ theme }) => theme.template.red.normal};
   }
 
   .analytics__barchart-indicator--positive {
-    background-color: ${({ theme }) => theme.analytics.green.normal};
+    background-color: ${({ theme }) => theme.template.green.normal};
   }
 
   .analytics__barchart-bar {

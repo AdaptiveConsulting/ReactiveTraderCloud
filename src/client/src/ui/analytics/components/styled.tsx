@@ -39,7 +39,7 @@ export const AnalyticsStyle = styled.div`
   }
 
   .analytics__positions-label {
-    fill: ${({ theme }) => theme.white};
+    fill: ${({ theme }) => theme.template.white.normal};
     font-size: 0.6875rem;
     pointer-events: none;
     user-select: none;
@@ -55,23 +55,23 @@ export const AnalyticsStyle = styled.div`
 
   .stop1,
   .lineStop1 {
-    stop-color: ${({ theme }) => theme.analytics.green.normal};
+    stop-color: ${({ theme }) => theme.template.green.normal};
     stop-opacity: 0.5;
   }
 
   .stop1End,
   .lineStop1End {
-    stop-color: ${({ theme }) => theme.analytics.green.normal};
+    stop-color: ${({ theme }) => theme.template.green.normal};
   }
 
   .stop2,
   .lineStop2 {
-    stop-color: ${({ theme }) => theme.analytics.red.normal};
+    stop-color: ${({ theme }) => theme.template.red.normal};
   }
 
   .stop2End,
   .lineStop2End {
-    stop-color: ${({ theme }) => theme.analytics.red.normal};
+    stop-color: ${({ theme }) => theme.template.red.normal};
     stop-opacity: 0.5;
   }
 `
