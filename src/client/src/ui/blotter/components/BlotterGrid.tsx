@@ -35,14 +35,14 @@ export default styled('div')`
     width: 0.3125rem !important;
     padding: 0;
     margin: 0;
-    background-color: ${({ theme }) => theme.blotter.green.base};
+    background-color: ${({ theme }) => theme.template.green.normal};
   }
 
   .rt-blotter__status-indicator--rejected {
     width: 0.3125rem !important;
     padding: 0;
     margin: 0;
-    background-color: ${({ theme }) => theme.blotter.red.base};
+    background-color: ${({ theme }) => theme.template.red.normal};
   }
 
   .rt-blotter__cell-rejected,
@@ -56,7 +56,7 @@ export default styled('div')`
     position: absolute;
     top: 50%;
     left: 0;
-    border-bottom: 0.0625rem solid ${({ theme }) => theme.blotter.red.base};
+    border-bottom: 0.0625rem solid ${({ theme }) => theme.template.red.normal};
     width: 100%;
   }
 
@@ -134,7 +134,7 @@ export default styled('div')`
       outline: none;
 
       &:focus {
-        border-bottom: 0.0625rem solid ${({ theme }) => theme.blotter.blue.base};
+        border-bottom: 0.0625rem solid ${({ theme }) => theme.template.blue.normal};
       }
     }
 

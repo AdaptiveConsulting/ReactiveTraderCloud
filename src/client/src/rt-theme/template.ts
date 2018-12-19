@@ -7,6 +7,7 @@ enum green {
 enum red {
   dark = '#e04444',
   normal = '#f94c4c',
+  light = '#fca5a5',
 }
 
 enum white {
@@ -14,7 +15,15 @@ enum white {
 }
 
 enum blue {
+  dark = '#4c76c4',
   normal = '#5f94f5',
+  light = '#aec9f9',
+}
+
+enum yellow {
+  dark = '#e0a744',
+  normal = '#f94c4c',
+  light = '#f9ba4c',
 }
 
 export default {
@@ -22,4 +31,5 @@ export default {
   red,
   white,
   blue,
+  yellow,
 }
