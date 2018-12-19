@@ -6,9 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Block } from '../StyleguideRoute/styled'
 
 import { Timer } from './Timer'
-import { styled, Theme } from 'test-theme'
+import { styled } from 'test-theme'
 import { keyframes } from 'styled-components'
-import { StyledComponent } from 'react-emotion'
 
 export interface NotificationProps {
   duration: number

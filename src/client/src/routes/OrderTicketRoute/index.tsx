@@ -2,7 +2,7 @@ import { mix } from 'polished'
 import React, { PureComponent } from 'react'
 
 import { Platform, PlatformProvider } from 'rt-components'
-import { TestThemeProvider, the, Theme } from 'test-theme'
+import { TestThemeProvider, Theme } from 'test-theme'
 
 import { OrderTicket } from './OrderTicket'
 import { ThemeProvider } from 'styled-components'
