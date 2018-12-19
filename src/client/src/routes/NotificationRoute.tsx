@@ -1,7 +1,7 @@
 import React from 'react'
 import { Trade } from 'rt-types'
 
-import { TestThemeProvider } from 'test-theme'
+import { ThemeProvider } from 'rt-theme'
 import TradeNotification from '../shell/notification/TradeNotification'
 
 declare const window: any
@@ -33,9 +33,9 @@ export class NotificationRoute extends React.Component<{}, State> {
   render() {
     const { message } = this.state
     return message == null ? null : (
-      <TestThemeProvider>
+      <ThemeProvider>
         <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
-      </TestThemeProvider>
+      </ThemeProvider>
     )
   }
 }

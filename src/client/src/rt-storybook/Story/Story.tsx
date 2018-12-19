@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
-import { styled, ThemeName, TestThemeProvider, TestThemeConsumer } from 'test-theme'
+import { styled, ThemeName, ThemeProvider, ThemeConsumer } from 'rt-theme'
 
 // TODO make styleguide globals?
-import 'test-theme'
+import 'rt-theme'
 
 class Story extends Component {
   render() {
     const { children } = this.props
 
     return (
-      <TestThemeProvider>
+      <ThemeProvider>
         <StyledStory>
           <Toolbar>
-            <TestThemeConsumer>
+            <ThemeConsumer>
               {({ name, setTheme }) => (
                 <IconButton
                   onClick={() => setTheme({ name: name === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark })}
@@ -21,11 +21,11 @@ class Story extends Component {
                   <i className={`fa${name === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
                 </IconButton>
               )}
-            </TestThemeConsumer>
+            </ThemeConsumer>
           </Toolbar>
           <Content>{children}</Content>
         </StyledStory>
-      </TestThemeProvider>
+      </ThemeProvider>
     )
   }
 }

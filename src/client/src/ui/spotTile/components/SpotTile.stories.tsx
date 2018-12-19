@@ -15,7 +15,7 @@ import PriceMovement from './PriceMovement'
 import SpotTile from './SpotTile'
 import { DeliveryDate, TileSymbol } from './styled'
 import TileSwitch from './TileSwitch'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 const Centered = styled.div`
   height: 100%;

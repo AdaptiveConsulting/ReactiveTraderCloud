@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 import { H2, H3 } from '../elements'
 import { Paragraph, SectionBlock, Text, TextProps } from '../styled'

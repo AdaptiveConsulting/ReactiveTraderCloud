@@ -1,6 +1,6 @@
 import React from 'react'
 import { rules } from 'rt-styleguide'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 export const WindowControls = () => (
   <Layout>

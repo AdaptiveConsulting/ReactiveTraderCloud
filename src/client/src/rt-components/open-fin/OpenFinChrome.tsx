@@ -2,7 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { SFC } from 'react'
 import { Helmet } from 'react-helmet'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 export interface ControlProps {
   minimize?: () => void

@@ -6,7 +6,7 @@ import { config } from './config'
 import { Link } from './Link'
 import { LogoIcon } from 'rt-components'
 import { createGlobalStyle } from 'styled-components'
-import { ThemeStorageSwitch, styled } from 'test-theme'
+import { ThemeStorageSwitch, styled } from 'rt-theme'
 
 const LauncherGlobalStyle = createGlobalStyle`
 :root, body {

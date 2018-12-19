@@ -1,4 +1,4 @@
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 const Centered = styled.div`
   height: 100%;

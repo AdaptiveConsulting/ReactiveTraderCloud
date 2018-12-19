@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 import Header from '../components/app-header'
 

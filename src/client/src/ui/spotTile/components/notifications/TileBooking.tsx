@@ -1,7 +1,7 @@
 import React from 'react'
 import { Transition } from 'react-spring'
 import { AdaptiveLoader } from 'rt-components'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 const TileBookingStyle = styled.div`
   position: absolute;

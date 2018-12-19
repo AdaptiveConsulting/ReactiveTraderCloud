@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react'
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid/dist/styles/ag-grid.css'
 import React from 'react'
-import { styled, Theme } from 'test-theme'
+import { styled, Theme } from 'rt-theme'
 import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'

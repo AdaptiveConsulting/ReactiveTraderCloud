@@ -1,14 +1,14 @@
 import React from 'react'
-import { TestThemeProvider } from 'test-theme'
+import { ThemeProvider } from 'rt-theme'
 
 import { Launcher } from './Launcher'
 
 export class SimpleLauncher extends React.Component {
   render() {
     return (
-      <TestThemeProvider>
+      <ThemeProvider>
         <Launcher {...this.props} />
-      </TestThemeProvider>
+      </ThemeProvider>
     )
   }
 }

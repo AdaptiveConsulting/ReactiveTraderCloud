@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 
 import { Resizer, TearOff } from 'rt-components'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 import { AnalyticsContainer } from '../../ui/analytics'
 import { BlotterContainer } from '../../ui/blotter'

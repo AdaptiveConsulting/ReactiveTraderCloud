@@ -4,7 +4,7 @@ import _ from 'lodash'
 import React from 'react'
 
 import { Button, ButtonGroup } from 'rt-styleguide'
-import { resolvesColor, styled } from 'test-theme'
+import { resolvesColor, styled } from 'rt-theme'
 
 import { PassThroughProps } from '../tools'
 

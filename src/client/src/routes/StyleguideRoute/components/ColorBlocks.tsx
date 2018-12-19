@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 
-import { colors, styled } from 'test-theme'
+import { colors, styled } from 'rt-theme'
 
 import { Block, BlockProps } from '../styled'
 import { css } from 'styled-components'

@@ -2,7 +2,7 @@ import { GridApi } from 'ag-grid'
 import React, { Component } from 'react'
 import { flexStyle } from 'rt-components'
 import { PopoutIcon } from 'rt-components'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 import { columnDefinitions } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
 

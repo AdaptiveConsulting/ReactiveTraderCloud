@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react'
 
 import { Story } from 'rt-storybook'
 import { ConnectionStatus, ConnectionType } from 'rt-system'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 import { ServiceConnectionStatus } from 'rt-types'
 import StatusBar from './StatusBar'

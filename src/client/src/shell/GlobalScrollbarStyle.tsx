@@ -3,7 +3,7 @@ import { rgba } from 'polished'
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { withTheme, createGlobalStyle } from 'styled-components'
-import { Theme } from 'test-theme'
+import { Theme } from 'rt-theme'
 
 export const css = memoize(
   color => `

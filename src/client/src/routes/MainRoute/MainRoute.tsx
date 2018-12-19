@@ -6,7 +6,7 @@ import { timer } from 'rxjs'
 import { ConnectionActions } from 'rt-actions'
 import { Platform, PlatformProvider } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
-import { TestThemeProvider } from 'test-theme'
+import { ThemeProvider } from 'rt-theme'
 
 import { createApplicationServices } from '../../applicationServices'
 import { getEnvVars } from '../../config/config'
@@ -50,7 +50,7 @@ export default class MainRoute extends Component {
         <Helmet>
           <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
         </Helmet>
-        <TestThemeProvider>
+        <ThemeProvider>
           <ReduxProvider store={store}>
             <PlatformProvider value={platform}>
               <React.Fragment>
@@ -59,7 +59,7 @@ export default class MainRoute extends Component {
               </React.Fragment>
             </PlatformProvider>
           </ReduxProvider>
-        </TestThemeProvider>
+        </ThemeProvider>
       </React.Fragment>
     )
   }

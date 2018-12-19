@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { Story } from 'rt-storybook'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 import '../globals'
 import Analytics from './Analytics'
 

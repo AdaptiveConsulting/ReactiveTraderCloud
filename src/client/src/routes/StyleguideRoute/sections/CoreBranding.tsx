@@ -4,7 +4,7 @@ import React from 'react'
 
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
-import { colors, styled, Theme } from 'test-theme'
+import { colors, styled, Theme } from 'rt-theme'
 import { StyledComponent } from 'styled-components'
 
 export default () => (

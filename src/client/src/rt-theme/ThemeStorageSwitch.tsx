@@ -1,12 +1,12 @@
 import React from 'react'
 import Switch, { ReactSwitchProps } from 'react-switch'
-import { TestThemeConsumer, ThemeName, Theme } from 'test-theme'
+import { ThemeConsumer, ThemeName, Theme } from 'rt-theme'
 import { withTheme } from 'styled-components'
 
 export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
 
 const ThemeStorageSwitch: React.SFC<ThemeStorageSwitchProps & { theme?: Theme }> = ({ theme, ...props }) => (
-  <TestThemeConsumer>
+  <ThemeConsumer>
     {({ name, setTheme }) => (
       <Switch
         ariaLabel="Switch Theme"
@@ -29,7 +29,7 @@ const ThemeStorageSwitch: React.SFC<ThemeStorageSwitchProps & { theme?: Theme }>
         {...props}
       />
     )}
-  </TestThemeConsumer>
+  </ThemeConsumer>
 )
 
 export default withTheme(ThemeStorageSwitch)

@@ -1,6 +1,6 @@
 import d3 from 'd3'
 import React from 'react'
-import { colors } from 'test-theme'
+import { colors } from 'rt-theme'
 
 import { filter, find, findIndex, isEqual, map, reduce } from 'lodash'
 import reactSizeme from 'react-sizeme'

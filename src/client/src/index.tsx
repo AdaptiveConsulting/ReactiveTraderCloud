@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 // Side-effecting import for rt-theme/globals
-import 'test-theme'
+import 'rt-theme'
 
 import { MainRoute, NotificationRoute, OrderTicketRoute, SimpleLauncher, StyleguideRoute } from './routes'
 

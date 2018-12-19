@@ -1,5 +1,5 @@
 import { rgba } from 'polished'
-import { colors } from 'test-theme'
+import { colors } from 'rt-theme'
 
 export const transparentColor = rgba(colors.spectrum.offblack.base, 0)
 export const strokeColor = transparentColor

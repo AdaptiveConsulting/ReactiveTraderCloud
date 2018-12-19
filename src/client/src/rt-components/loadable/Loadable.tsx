@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 import { ServiceConnectionStatus } from 'rt-types'
 import DisconnectIcon from '../icons/DisconnectIcon'
 import { AdaptiveLoader } from 'rt-components'

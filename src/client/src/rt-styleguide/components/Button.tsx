@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { ButtonHTMLAttributes, ReactChild } from 'react'
 import { userSelectButton, userSelectNone } from 'rt-styleguide'
-import { Theme, styled, resolvesColor } from 'test-theme'
+import { Theme, styled, resolvesColor } from 'rt-theme'
 import { css, ThemeProvider, withTheme } from 'styled-components'
 
 export interface ButtonStyleProps {

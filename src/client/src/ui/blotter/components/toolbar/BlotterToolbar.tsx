@@ -1,7 +1,7 @@
 import { ColDef } from 'ag-grid'
 import React from 'react'
 import { flexStyle } from 'rt-components'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 import AppliedFilters from './AppliedFilters'
 import QuickFilter from './QuickFilter'
 

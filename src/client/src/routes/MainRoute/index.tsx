@@ -1,7 +1,7 @@
 // @ts-ignore
 import React, { lazy, Suspense } from 'react'
 
-import { styled, TestThemeProvider } from 'test-theme'
+import { styled, ThemeProvider } from 'rt-theme'
 
 const MainRoute = lazy(() => import('./MainRoute'))
 
@@ -13,11 +13,11 @@ const Fallback = styled.div`
 
 export default function MainRouteLoader() {
   return (
-    <TestThemeProvider>
+    <ThemeProvider>
       <Suspense fallback={<Fallback />}>
         <MainRoute />
       </Suspense>
-    </TestThemeProvider>
+    </ThemeProvider>
   )
 }
 export { MainRouteLoader as MainRoute }

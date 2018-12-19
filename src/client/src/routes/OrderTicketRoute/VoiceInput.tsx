@@ -19,7 +19,7 @@ import { Timer } from './Timer'
 
 import FormantBars from './FormantBars'
 import MicrophoneIcon from './assets/Microphone'
-import { colors, styled } from 'test-theme'
+import { colors, styled } from 'rt-theme'
 import { keyframes } from 'styled-components'
 
 type SourceType = 'microphone' | 'sample'

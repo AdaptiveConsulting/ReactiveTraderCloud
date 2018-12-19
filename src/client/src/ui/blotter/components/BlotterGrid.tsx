@@ -1,4 +1,4 @@
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 export default styled('div')`
   height: calc(100% - 4.5rem);

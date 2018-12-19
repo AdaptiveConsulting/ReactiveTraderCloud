@@ -1,6 +1,6 @@
 import { darken } from 'polished'
 import React, { FunctionComponent } from 'react'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 import Icon from './Icon'
 
 const headerHeight = '2rem'

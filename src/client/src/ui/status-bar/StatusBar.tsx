@@ -8,7 +8,7 @@ import { Content, ExpandToggle, Fill, Header, NodeCount, Root, ServiceList, Serv
 import { OpenFinLogo } from './assets/OpenFinLogo'
 import { PlatformAdapter, withPlatform } from 'rt-components'
 import { withTheme, ThemeProvider } from 'styled-components'
-import { Theme } from 'test-theme'
+import { Theme } from 'rt-theme'
 
 interface State {
   expanded: boolean

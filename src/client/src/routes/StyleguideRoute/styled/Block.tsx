@@ -1,4 +1,4 @@
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 import { getColor } from '../tools'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'

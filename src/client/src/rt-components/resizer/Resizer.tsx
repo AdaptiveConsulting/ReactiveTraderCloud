@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 const ResizerStyle = styled.div`
   height: 100%;

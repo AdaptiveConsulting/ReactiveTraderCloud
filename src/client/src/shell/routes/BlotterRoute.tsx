@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouteWrapper } from 'rt-components'
 import { BlotterContainer } from '../../ui/blotter'
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 const BlotterContainerStyle = styled('div')`
   height: 100%;

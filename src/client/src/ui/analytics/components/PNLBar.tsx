@@ -3,7 +3,7 @@ import React from 'react'
 import { CurrencyPair } from 'rt-types'
 import { barBgColor, pointerColor } from '../globals/variables'
 
-import { styled } from 'test-theme'
+import { styled } from 'rt-theme'
 
 export interface PNLBarProps {
   basePnl: number
