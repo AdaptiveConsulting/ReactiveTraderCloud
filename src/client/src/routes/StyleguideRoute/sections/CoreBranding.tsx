@@ -5,7 +5,7 @@ import React from 'react'
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
 import { colors, styled, Theme } from 'rt-theme'
-import { StyledComponent } from 'styled-components'
+import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-components'
 
 export default () => (
   <React.Fragment>
@@ -107,10 +107,10 @@ const PaletteLayout: React.SFC<{
       return (
         <Swatch
           key={key}
-          style={{
-            gridArea: key,
+          extra={css({
+            gridArea: (key === 'base' && key) || undefined,
             boxShadow: i < 1 && `0 0 2rem ${rgba(palette[include[include.length - 1]], 0.5)}`,
-          }}
+          })}
           label={`${paletteLabel} ${key}`}
           value={color}
           code={codes[key] || key}
@@ -125,6 +125,7 @@ const PaletteLayout: React.SFC<{
 export interface SwatchColorProps {
   bg?: string
   fg?: string
+  extra?: FlattenSimpleInterpolation
 }
 
 export interface SwatchProps extends BlockProps, SwatchColorProps {
@@ -135,6 +136,7 @@ export interface SwatchProps extends BlockProps, SwatchColorProps {
   value?: string
   code?: string
   toStyle?: React.CSSProperties
+  extra?: FlattenSimpleInterpolation
 }
 
 export const Swatch: React.SFC<SwatchProps> = ({
@@ -165,6 +167,8 @@ export const SwatchColor = styled(Block)<SwatchColorProps>`
   display: flex;
   justify-content: flex-end;
   flex-flow: column nowrap;
+
+  ${({ extra }) => extra};
 `
 
 export const LargeSwatchColor = styled(SwatchColor)<SwatchColorProps>`
