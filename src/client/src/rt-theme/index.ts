@@ -1,4 +1,4 @@
-import './globals'
+export { default as GlobalStyle } from './globals'
 import baseStyled, { ThemedStyledInterface } from 'styled-components'
 export { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } from './colors'
 
