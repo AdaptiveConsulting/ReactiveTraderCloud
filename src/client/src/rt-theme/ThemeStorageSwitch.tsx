@@ -5,7 +5,7 @@ import { withTheme } from 'styled-components'
 
 export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
 
-const ThemeStorageSwitch: React.SFC<ThemeStorageSwitchProps & { theme?: Theme }> = ({ theme, ...props }) => (
+const ThemeStorageSwitch: React.SFC<ThemeStorageSwitchProps & { theme: Theme }> = ({ theme, ...props }) => (
   <ThemeConsumer>
     {({ name, setTheme }) => (
       <Switch

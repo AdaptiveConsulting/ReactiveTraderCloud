@@ -4,9 +4,9 @@ export { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } f
 
 import { Theme } from './createTheme'
 export { Theme }
-export const styled = baseStyled as ThemedStyledInterface<Theme>
+export const styled: ThemedStyledInterface<Theme> = baseStyled
 
-export { ThemeName, ThemeProvider, ThemeConsumer } from './ThemeStorage'
+export { ThemeName, ThemeProvider, ThemeConsumer } from './ThemeContext'
 export { themes } from './themes'
 export { resolvesColor } from './resolvesColor'
 export { default as ThemeStorageSwitch } from './ThemeStorageSwitch'
