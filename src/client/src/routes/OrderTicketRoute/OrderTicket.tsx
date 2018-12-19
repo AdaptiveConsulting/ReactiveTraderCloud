@@ -202,7 +202,7 @@ export class OrderTicket extends PureComponent<Props, State> {
     const { executed, requestExecution, requestQuote, requestSession, query = {} } = this.state
 
     return (
-      <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} innerRef={this.viewportRef}>
+      <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} ref={this.viewportRef}>
         <AppLayout bg="shell.backgroundColor">
           <ChromeLayout bg="primary.base">
             <WindowControls />

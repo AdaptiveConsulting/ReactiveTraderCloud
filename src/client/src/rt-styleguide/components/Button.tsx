@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import React, { ButtonHTMLAttributes } from 'react'
+import React, { ButtonHTMLAttributes, ReactChild } from 'react'
 import { userSelectButton, userSelectNone } from 'rt-styleguide'
 import { Theme, styled, resolvesColor } from 'test-theme'
-import { css } from 'styled-components'
+import { css, ThemeProvider, withTheme } from 'styled-components'
 
 export interface ButtonStyleProps {
   intent?: string
@@ -16,7 +16,7 @@ export interface ButtonStyleProps {
 
 const boxShadow = `0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08)`
 
-class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
+class BaseButtonThemeProvider extends React.Component<ButtonStyleProps & { theme: Theme }> {
   static defaultProps = {
     intent: 'primary',
   }
@@ -75,9 +75,11 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
   render() {
     const { children } = this.props
 
-    return { children }
+    return <ThemeProvider theme={this.resolveTheme(this.props.theme)}>{children as ReactChild}</ThemeProvider>
   }
 }
+
+const ButtonThemeProvider = withTheme(BaseButtonThemeProvider)
 
 export class Button extends React.Component<ButtonStyleProps & ButtonHTMLAttributes<Element>> {
   render() {
