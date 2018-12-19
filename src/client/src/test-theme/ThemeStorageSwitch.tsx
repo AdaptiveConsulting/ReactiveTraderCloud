@@ -1,7 +1,7 @@
 import React from 'react'
 import Switch, { ReactSwitchProps } from 'react-switch'
 import { TestThemeConsumer, ThemeName, Theme } from 'test-theme'
-import { withTheme } from 'emotion-theming'
+import { withTheme } from 'styled-components'
 
 export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
 
