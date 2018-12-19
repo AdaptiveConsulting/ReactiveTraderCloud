@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import { css, styled } from 'rt-theme'
+import ColorClipBoard, { ClipBoardWrapper } from './ColorClipBoard'
 
 import { colors } from 'rt-theme'
 
@@ -25,7 +26,6 @@ export const ColorBlocks = () => (
           const dark = SWATCH_KEYS.dark.map(key => ({ color: group[key], name: key }))
 
           const set = [...light, { color: base }, ...dark]
-
           return (
             <SwatchSet key={setKey}>
               <SwatchGroup>
@@ -34,6 +34,7 @@ export const ColorBlocks = () => (
 
                   return (
                     <Swatch key={name} bg={color}>
+                      <ColorClipBoard color={color} />
                       <SwatchLevel fg={text.color}>{name}</SwatchLevel>
                     </Swatch>
                   )
@@ -42,6 +43,7 @@ export const ColorBlocks = () => (
 
               <SwatchGroup py={2}>
                 <Swatch bg={base}>
+                  <ColorClipBoard color={base} />
                   <SwatchName>{name}</SwatchName>
                   <SwatchValue>{base}</SwatchValue>
                 </Swatch>
@@ -57,6 +59,7 @@ export const ColorBlocks = () => (
 
                   return (
                     <Swatch key={name} bg={color}>
+                      <ColorClipBoard color={color} />
                       <SwatchLevel fg={text.color}>{name}</SwatchLevel>
                     </Swatch>
                   )
@@ -102,6 +105,12 @@ const Swatch = styled(Block)<BlockProps>`
   @media all and (max-width: 800px) {
     min-width: 6rem;
     max-width: 6rem;
+  }
+
+  &:hover {
+    ${ClipBoardWrapper} {
+      visibility: visible;
+    }
   }
 `
 
