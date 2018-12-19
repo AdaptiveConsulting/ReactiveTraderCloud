@@ -7,7 +7,7 @@ const hoverColors = {
   [Direction.Sell]: 'red',
 }
 
-export const TradeButton = styled('button')<{ direction: string }>`
+export const TradeButton = styled('button')<{ direction: Direction }>`
   background-color: ${({ theme }) => theme.tile.priceButton.backgroundColor};
   border-radius: 3px;
   transition: background-color 0.2s ease;
@@ -21,7 +21,7 @@ export const TradeButton = styled('button')<{ direction: string }>`
   }
 
   .spot-tile:hover &:hover {
-    background-color: ${({ theme, direction }) => theme.tile[hoverColors[direction]].base};
+    background-color: ${({ theme, direction }) => theme.template[hoverColors[direction]].normal};
     color: ${({ theme }) => theme.tile.priceButton.textColor};
   }
 `

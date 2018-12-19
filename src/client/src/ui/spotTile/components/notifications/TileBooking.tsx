@@ -15,16 +15,16 @@ const TileBookingStyle = styled.div`
 const BookingPill = styled.div`
   padding: 0.75rem 0.9375rem;
   border-radius: 17px;
-  background: ${({ theme }) => theme.tile.blue.base};
+  background: ${({ theme }) => theme.template.blue.normal};
 
   rect {
-    fill: ${({ theme }) => theme.white};
+    fill: ${({ theme }) => theme.template.white.normal};
   }
 `
 
 const BookingStatus = styled.span`
   margin-left: 0.375rem;
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.template.white.normal};
   font-size: 0.8125rem;
 `
 interface Props {
