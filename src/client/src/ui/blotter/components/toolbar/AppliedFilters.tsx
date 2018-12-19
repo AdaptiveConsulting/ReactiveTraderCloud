@@ -18,7 +18,7 @@ const FilterField = styled('div')`
   align-items: center;
   font-size: 0.6875rem;
   text-transform: uppercase;
-  background-color: ${({ theme }) => theme.alternateBackgroundColor};
+  background-color: ${({ theme }) => theme.blotter.alternateBackgroundColor};
   margin-left: 0.5rem;
   border-radius: 0.25rem;
   height: 1.25rem;
@@ -26,7 +26,7 @@ const FilterField = styled('div')`
   cursor: default;
 
   &:hover {
-    background-color: ${({ theme }) => theme.foregroundColor};
+    background-color: ${({ theme }) => theme.blotter.foregroundColor};
     ${FilterButton} {
       opacity: 1;
     }

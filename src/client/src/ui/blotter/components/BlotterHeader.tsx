@@ -27,8 +27,8 @@ const BlotterHeaderStyle = styled('div')`
 const BlotterControls = styled('button')`
   .svg-icon {
     opacity: 0.59;
-    fill: ${({ theme }) => theme.textColor};
-    stroke: ${({ theme }) => theme.textColor};
+    fill: ${({ theme }) => theme.blotter.textColor};
+    stroke: ${({ theme }) => theme.blotter.textColor};
   }
 `
 
