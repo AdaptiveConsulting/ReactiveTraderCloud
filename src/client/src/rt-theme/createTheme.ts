@@ -1,5 +1,6 @@
 import { darken } from 'polished'
 import { mapValues } from 'lodash'
+import template from './template'
 
 import colors, { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
 
@@ -76,6 +77,7 @@ export interface ColorPair {
 export type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
 
 const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPaletteMap) => ({
+  template,
   white: colors.spectrum.white.base,
   black: colors.spectrum.black.base,
   transparent: colors.spectrum.transparent.base,
