@@ -7,24 +7,24 @@ import { styled } from 'rt-theme'
 library.add(faCopy)
 import CopyToClipboard from 'react-copy-to-clipboard'
 
-interface ColorToClipBoardProps {
+interface ColorToClipboardProps {
   color: string
   iconColor: string
 }
-export const CopyToClipBoardWrapper = styled.div`
+export const CopyToClipboardWrapper = styled.div`
   visibility: hidden;
 `
 const onClick = () => {
   alert('copied to clipboard')
 }
-const ColorToClipBoard: React.SFC<ColorToClipBoardProps> = ({ color, iconColor }) => (
-  <CopyToClipBoardWrapper>
+const ColorToClipboard: React.SFC<ColorToClipboardProps> = ({ color, iconColor }) => (
+  <CopyToClipboardWrapper>
     <CopyToClipboard text={color}>
       <button onClick={onClick}>
         <FontAwesomeIcon icon="copy" style={{ color: iconColor }} />
       </button>
     </CopyToClipboard>
-  </CopyToClipBoardWrapper>
+  </CopyToClipboardWrapper>
 )
 
-export default ColorToClipBoard
+export default ColorToClipboard
