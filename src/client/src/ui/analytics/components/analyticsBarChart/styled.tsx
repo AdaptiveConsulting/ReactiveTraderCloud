@@ -37,7 +37,7 @@ export const DiamondShape = styled.span<{ color: string }>`
   background-color: ${({ theme, color }) => theme.analytics[color].normal};
 `
 export const Label = styled.div`
-  width: 20%;
+  flex: 0 0 60px;
   margin: auto 0;
   opacity: 0.6;
   font-size: 11px;
