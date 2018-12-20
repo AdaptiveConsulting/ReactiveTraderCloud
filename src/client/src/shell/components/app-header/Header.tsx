@@ -53,13 +53,13 @@ const Root = styled.div`
   display: flex;
   align-items: center;
 
-  background-color: ${({ theme }) => theme.header.backgroundColor};
-  color: ${({ theme }) => theme.header.textColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  color: ${({ theme }) => theme.core.textColor};
 
   position: relative;
   z-index: 10;
 
-  box-shadow: 0 0.125rem 0 ${({ theme }) => theme.shell.backgroundColor};
+  box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
 `
 
 const Fill = styled.div`
@@ -108,7 +108,7 @@ const Division = styled.div`
     width: 0.125rem;
     height: 100%;
     margin-right: -0.125rem;
-    background-color: ${props => props.theme.shell.backgroundColor};
+    background-color: ${props => props.theme.core.darkBackground};
   }
 `
 

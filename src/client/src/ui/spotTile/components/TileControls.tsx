@@ -15,8 +15,8 @@ const TopRightButton = styled('button')`
     opacity: 0.75;
   }
   .svg-icon {
-    stroke: ${({ theme }) => theme.tile.textColor};
-    fill: ${({ theme }) => theme.tile.textColor};
+    stroke: ${({ theme }) => theme.core.textColor};
+    fill: ${({ theme }) => theme.core.textColor};
   }
 `
 

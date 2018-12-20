@@ -23,8 +23,7 @@ const BlotterStyle = styled('div')`
   height: 100%;
   width: 100%;
   min-height: 1.25rem;
-  background-color: ${({ theme }) => theme.blotter.backgroundColor};
-  color: ${({ theme }) => theme.blotter.textColor};
+  color: ${({ theme }) => theme.core.textColor};
   font-size: 0.8125rem;
 `
 
@@ -36,7 +35,7 @@ const BlotterStatus = styled('div')`
   display: flex;
   align-items: center;
   opacity: 0.6;
-  color: ${({ theme }) => theme.blotter.textColor};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 const icons = {

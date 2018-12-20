@@ -46,6 +46,6 @@ const Logo: React.SFC<LogoProps> = ({ fill = '#000', size = 2, style, ...props }
 
 export default styled(Logo)`
   [fill] {
-    fill: ${props => props.theme.shell.textColor};
+    fill: ${props => props.theme.core.textColor};
   }
 `

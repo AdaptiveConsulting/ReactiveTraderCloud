@@ -23,7 +23,7 @@ const QuickFilterInput = styled('input')`
   opacity: 0.59;
   background: none;
   border: none;
-  box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.blotter.textColor};
+  box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.core.textColor};
   width: 100%;
   font-size: 0.75rem;
   height: 1.25rem;
@@ -37,7 +37,7 @@ const QuickFilterInput = styled('input')`
 
   &:focus {
     box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.template.blue.normal};
-    color: ${({ theme }) => theme.blotter.textColor};
+    color: ${({ theme }) => theme.core.textColor};
     opacity: 1;
   }
 `
@@ -56,7 +56,7 @@ const QuickFilterClearIcon = styled('i')`
   i {
     opacity: 0.59;
     cursor: pointer;
-    color: ${({ theme }) => theme.blotter.textColor};
+    color: ${({ theme }) => theme.core.textColor};
   }
 `
 

@@ -47,8 +47,8 @@ const Root = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.shell.backgroundColor};
-  color: ${({ theme }) => theme.component.textColor};
+  background-color: ${({ theme }) => theme.core.darkBackground};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 const IconContainer = styled.div`
@@ -66,10 +66,10 @@ const ButtonContainer = styled(IconContainer)`
 `
 
 const LogoContainer = styled(IconContainer)`
-  background-color: ${({ theme }) => theme.component.backgroundColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
 
   .svg-icon {
-    fill: ${({ theme }) => theme.component.textColor};
+    fill: ${({ theme }) => theme.core.textColor};
   }
 
   ${rules.appRegionDrag};

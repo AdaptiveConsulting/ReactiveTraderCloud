@@ -2,11 +2,11 @@ import { styled } from 'rt-theme'
 
 export default styled('div')`
   height: calc(100% - 4.5rem);
-  background-color: ${({ theme }) => theme.blotter.alternateBackgroundColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 0.1875rem;
 
   .ag-header {
-    border-bottom: 0.125rem solid ${({ theme }) => theme.blotter.backgroundColor};
+    border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
     font-size: 0.6875rem;
     text-transform: uppercase;
   }
@@ -16,19 +16,19 @@ export default styled('div')`
   }
 
   .ag-row-odd {
-    background-color: ${({ theme }) => theme.blotter.backgroundColor};
+    background-color: ${({ theme }) => theme.core.darkBackground};
   }
 
   .ag-row-odd:hover {
-    background-color: ${({ theme }) => theme.blotter.foregroundColor};
+    background-color: ${({ theme }) => theme.core.alternateBackground};
   }
 
   .ag-row-even:hover {
-    background-color: ${({ theme }) => theme.blotter.foregroundColor};
+    background-color: ${({ theme }) => theme.core.alternateBackground};
   }
 
   .rt-blotter__row-pending {
-    background-color: ${({ theme }) => theme.blotter.pending};
+    background-color: ${({ theme }) => theme.core.offBackground};
   }
 
   .rt-blotter__status-indicator--done {
@@ -103,8 +103,8 @@ export default styled('div')`
   }
 
   .ag-menu {
-    background-color: ${({ theme }) => theme.blotter.backgroundColor};
-    box-shadow: 0 0 0.3125rem 0 ${({ theme }) => theme.blotter.textColor};
+    background-color: ${({ theme }) => theme.core.darkBackground};
+    box-shadow: 0 0 0.3125rem 0 ${({ theme }) => theme.core.textColor};
     border-radius: 0.1875rem;
 
     .filter-container__checkbox-container {
@@ -114,12 +114,12 @@ export default styled('div')`
       font-size: 0.6875rem;
 
       &:hover {
-        background-color: ${({ theme }) => theme.blotter.foregroundColor};
+        background-color: ${({ theme }) => theme.core.alternateBackground};
       }
     }
 
     .filter_container__select-all-option-container {
-      border-bottom: 0.125rem solid ${({ theme }) => theme.blotter.textColor};
+      border-bottom: 0.125rem solid ${({ theme }) => theme.core.textColor};
     }
 
     .filter-container__free-text-input,
@@ -127,9 +127,9 @@ export default styled('div')`
       margin: 0.625rem;
       font-size: 0.6875rem;
       padding: 0.375rem;
-      background-color: ${({ theme }) => theme.blotter.backgroundColor};
+      background-color: ${({ theme }) => theme.core.darkBackground};
       border: none;
-      border-bottom: 0.0625rem solid ${({ theme }) => theme.blotter.textColor};
+      border-bottom: 0.0625rem solid ${({ theme }) => theme.core.textColor};
       width: auto;
       outline: none;
 
@@ -143,7 +143,7 @@ export default styled('div')`
     }
 
     option:hover {
-      background-color: ${({ theme }) => theme.blotter.foregroundColor};
+      background-color: ${({ theme }) => theme.core.alternateBackground};
     }
 
     input[type='checkbox' i] {

@@ -8,7 +8,7 @@ const hoverColors = {
 }
 
 export const TradeButton = styled('button')<{ direction: Direction }>`
-  background-color: ${({ theme }) => theme.tile.priceButton.backgroundColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
   transition: background-color 0.2s ease;
   cursor: pointer;
@@ -17,12 +17,12 @@ export const TradeButton = styled('button')<{ direction: Direction }>`
   padding: 0.75rem 1.5rem;
 
   .spot-tile:hover & {
-    background-color: ${({ theme }) => theme.tile.priceButton.hoverColor};
+    background-color: ${({ theme }) => theme.core.darkBackground};
   }
 
   .spot-tile:hover &:hover {
     background-color: ${({ theme, direction }) => theme.template[hoverColors[direction]].normal};
-    color: ${({ theme }) => theme.tile.priceButton.textColor};
+    color: ${({ theme }) => theme.template.white.normal};
   }
 `
 

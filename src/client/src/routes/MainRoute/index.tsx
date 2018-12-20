@@ -8,7 +8,7 @@ const MainRoute = lazy(() => import('./MainRoute'))
 const Fallback = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: ${p => p.theme.component.backgroundColor};
+  background-color: ${p => p.theme.core.lightBackground};
 `
 
 export default function MainRouteLoader() {

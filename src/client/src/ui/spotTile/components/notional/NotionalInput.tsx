@@ -36,7 +36,7 @@ export const Input = styled.input`
   padding: 2px 0;
 
   .spot-tile:hover & {
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.tile.textColor};
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.core.textColor};
   }
 
   .spot-tile:hover &:focus,

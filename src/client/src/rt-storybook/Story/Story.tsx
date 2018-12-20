@@ -61,8 +61,8 @@ const StyledStory = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: ${p => p.theme.shell.backgroundColor};
-  color: ${p => p.theme.shell.textColor};
+  background-color: ${p => p.theme.core.darkBackground};
+  color: ${p => p.theme.core.textColor};
   transition: background-color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing},
     color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing};
 `
@@ -75,8 +75,8 @@ const Toolbar = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  background-color: ${({ theme }) => theme.component.backgroundColor};
-  color: ${({ theme }) => theme.component.textColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  color: ${({ theme }) => theme.core.textColor};
 
   transition: background-color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing},
     color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing};

@@ -166,6 +166,8 @@ export const light: CorePaletteMap = {
   core: {
     lightBackground: '#ffffff',
     darkBackground: '#f4f6f9',
+    alternateBackground: 'rgb(220, 233, 254)',
+    offBackground: '#edf4fe',
     textColor: '#333333',
   },
 }
@@ -188,6 +190,8 @@ export const dark: CorePaletteMap = {
   core: {
     lightBackground: '#2f3542',
     darkBackground: '#282d39',
+    alternateBackground: 'rgb(61, 68, 85)',
+    offBackground: '#444c5f',
     textColor: '#ffffff',
   },
 }

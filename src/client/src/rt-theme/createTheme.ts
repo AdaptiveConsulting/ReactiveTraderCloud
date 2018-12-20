@@ -113,53 +113,13 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
     },
   },
 
-  shell: {
-    backgroundColor: primary[1],
-    textColor: secondary.base,
-  },
-
-  component: {
-    backgroundColor: primary.base,
-    textColor: secondary[2],
-    hover: {
-      backgroundColor: primary[1],
-    },
-  },
-
   overlay: {
     backgroundColor: darken(0.1, primary[1]),
     textColor: secondary[2],
   },
 
-  header: {
-    backgroundColor: primary.base,
-    textColor: secondary[2],
-  },
-
   tile: {
-    backgroundColor: primary.base,
-    textColor: secondary.base,
     inputColor: secondary['4'],
-
-    priceButton: {
-      backgroundColor: primary.base,
-      textColor: colors.spectrum.white.base,
-      hoverColor: primary['1'],
-    },
-  },
-
-  blotter: {
-    backgroundColor: primary[1],
-    alternateBackgroundColor: primary.base,
-    foregroundColor: primary['3'],
-    pending: primary['2'],
-
-    textColor: secondary.base,
-  },
-
-  analytics: {
-    backgroundColor: primary.base,
-    textColor: secondary.base,
   },
 
   button: {

@@ -12,11 +12,11 @@ export const SpotTileWrapper = styled.div`
   position: relative;
   min-height: 10rem;
   height: 100%;
-  color: ${({ theme }) => theme.tile.textColor};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 export const SpotTileStyle = styled(TileBaseStyle)`
-  background-color: ${({ theme }) => theme.tile.backgroundColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
   display: flex;
   height: 100%;
   justify-content: space-between;

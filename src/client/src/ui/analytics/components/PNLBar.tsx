@@ -160,7 +160,7 @@ const BarChart = styled.div`
   .analytics__barchart-border {
     height: 0.325rem;
     width: 0.125rem;
-    background-color: ${({ theme }) => theme.analytics.textColor};
+    background-color: ${({ theme }) => theme.core.textColor};
     opacity: 0;
   }
 
