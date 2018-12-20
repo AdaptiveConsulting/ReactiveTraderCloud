@@ -140,22 +140,6 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
     textColor: secondary.base,
     inputColor: secondary['4'],
 
-    blue: {
-      base: accents.accent.base,
-      light: accents.accent['2'],
-      dark: accents.accent['1'],
-    },
-
-    red: {
-      base: accents.bad.base,
-      light: accents.bad['3'],
-    },
-
-    green: {
-      base: accents.good.base,
-      light: accents.good['3'],
-    },
-
     priceButton: {
       backgroundColor: primary.base,
       textColor: colors.spectrum.white.base,
@@ -170,34 +154,11 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
     pending: primary['2'],
 
     textColor: secondary.base,
-
-    blue: {
-      base: accents.accent.base,
-      light: accents.accent['2'],
-    },
-
-    red: {
-      base: accents.bad.base,
-      light: accents.bad['3'],
-    },
-
-    green: {
-      base: accents.good.base,
-      light: accents.good['3'],
-    },
   },
 
   analytics: {
     backgroundColor: primary.base,
     textColor: secondary.base,
-
-    red: {
-      normal: accents.bad.base,
-    },
-
-    green: {
-      normal: accents.good.base,
-    },
   },
 
   button: {
