@@ -13,6 +13,7 @@ interface ColorToClipboardProps {
 }
 export const CopyToClipboardWrapper = styled.div`
   visibility: hidden;
+  transition: visibility 0.1s;
 `
 const onClick = () => {
   alert('copied to clipboard')
