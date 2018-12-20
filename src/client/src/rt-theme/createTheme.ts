@@ -76,8 +76,9 @@ export interface ColorPair {
 
 export type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
 
-const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPaletteMap) => ({
+const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({
   template,
+  core,
   white: colors.spectrum.white.base,
   black: colors.spectrum.black.base,
   transparent: colors.spectrum.transparent.base,
@@ -213,9 +214,9 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
 })
 
 export const createTheme = (
-  { primary, secondary }: CorePaletteMap,
+  { primary, secondary, core }: CorePaletteMap,
   accents: AccentPaletteMap,
   modifier: ThemeModifier = theme => ({ ...theme }),
-) => modifier(generateTheme({ primary, secondary }, accents))
+) => modifier(generateTheme({ primary, secondary, core }, accents))
 
 export default createTheme

@@ -52,9 +52,14 @@ export interface AccentPalette extends Palette {
   2: Color
 }
 
-export interface CorePaletteMap extends PaletteMap<CorePalette> {
-  primary: CorePalette
-  secondary: CorePalette
+interface Colors {
+  [key: string]: string
+}
+
+export interface CorePaletteMap {
+  primary: Colors
+  secondary: Colors
+  core: Colors
 }
 
 export interface AccentPaletteMap extends PaletteMap<AccentPalette> {
@@ -158,6 +163,11 @@ export const light: CorePaletteMap = {
     3: offblack.D4,
     4: offblack.L5,
   },
+  core: {
+    lightBackground: '#ffffff',
+    darkBackground: '#f4f6f9',
+    textColor: '#333333',
+  },
 }
 
 export const dark: CorePaletteMap = {
@@ -174,6 +184,11 @@ export const dark: CorePaletteMap = {
     2: blue.L9,
     3: blue.L8,
     4: blue.L5,
+  },
+  core: {
+    lightBackground: '#2f3542',
+    darkBackground: '#282d39',
+    textColor: '#ffffff',
   },
 }
 
