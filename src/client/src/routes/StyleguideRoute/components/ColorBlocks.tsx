@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import { css, styled } from 'rt-theme'
-import ColorClipBoard, { ClipBoardWrapper } from './ColorClipBoard'
+import ColorClipBoard, { CopyToClipBoardWrapper } from './ColorToClipBoard'
 
 import { colors } from 'rt-theme'
 
@@ -34,7 +34,7 @@ export const ColorBlocks = () => (
 
                   return (
                     <Swatch key={name} bg={color}>
-                      <ColorClipBoard color={color} />
+                      <ColorClipBoard color={color} iconColor="black" />
                       <SwatchLevel fg={text.color}>{name}</SwatchLevel>
                     </Swatch>
                   )
@@ -43,7 +43,7 @@ export const ColorBlocks = () => (
 
               <SwatchGroup py={2}>
                 <Swatch bg={base}>
-                  <ColorClipBoard color={base} />
+                  <ColorClipBoard color={base} iconColor="white" />
                   <SwatchName>{name}</SwatchName>
                   <SwatchValue>{base}</SwatchValue>
                 </Swatch>
@@ -59,7 +59,7 @@ export const ColorBlocks = () => (
 
                   return (
                     <Swatch key={name} bg={color}>
-                      <ColorClipBoard color={color} />
+                      <ColorClipBoard color={color} iconColor="white" />
                       <SwatchLevel fg={text.color}>{name}</SwatchLevel>
                     </Swatch>
                   )
@@ -108,7 +108,7 @@ const Swatch = styled(Block)<BlockProps>`
   }
 
   &:hover {
-    ${ClipBoardWrapper} {
+    ${CopyToClipBoardWrapper} {
       visibility: visible;
     }
   }
