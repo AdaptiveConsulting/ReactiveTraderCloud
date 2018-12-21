@@ -1,6 +1,6 @@
 import { Props as AnalyticsProps } from '../components/Analytics'
 import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
-
+import { PositionsChartModel } from '../model'
 const analyticsLineChartModel: AnalyticsLineChartModel = {
   seriesData: [
     {
@@ -371,6 +371,66 @@ const analyticsLineChartModel: AnalyticsLineChartModel = {
   lastPos: 48384501.58,
 }
 
+const positionsChartModel: PositionsChartModel = {
+  seriesData: [
+    {
+      symbol: 'EURUSD',
+      basePnl: 785577.915612354,
+      baseTradedAmount: 1000000,
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount',
+    },
+    {
+      symbol: 'USDJPY',
+      basePnl: 1462492.5923487192,
+      baseTradedAmount: 1000000,
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount',
+    },
+    {
+      symbol: 'GBPUSD',
+      basePnl: -26390.987863709255,
+      baseTradedAmount: 12000000,
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount',
+    },
+    {
+      symbol: 'EURJPY',
+      basePnl: -113173.18142637635,
+      baseTradedAmount: -5000000,
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount',
+    },
+    {
+      symbol: 'AUDUSD',
+      basePnl: 63738605.40001099,
+      baseTradedAmount: 6000000,
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount',
+    },
+    {
+      symbol: 'NZDUSD',
+      basePnl: -198769.7610840366,
+      baseTradedAmount: 0,
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount',
+    },
+    {
+      symbol: 'EURCAD',
+      basePnl: -31847.090799954138,
+      baseTradedAmount: 43000000,
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount',
+    },
+    {
+      symbol: 'EURAUD',
+      basePnl: -5341.076340097365,
+      baseTradedAmount: 18000000,
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount',
+    },
+  ],
+}
 const props: AnalyticsProps = {
   currencyPairs: {
     EURUSD: { symbol: 'EURUSD', ratePrecision: 5, pipsPosition: 4, base: 'EUR', terms: 'USD' },
@@ -385,80 +445,8 @@ const props: AnalyticsProps = {
   },
   canPopout: true,
   analyticsLineChartModel,
-  positionsChartModel: {
-    seriesData: [
-      {
-        symbol: 'EURUSD',
-        basePnl: 785577.915612354,
-        baseTradedAmount: 1000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount',
-      },
-      {
-        symbol: 'USDJPY',
-        basePnl: 1462492.5923487192,
-        baseTradedAmount: 1000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount',
-      },
-      {
-        symbol: 'GBPUSD',
-        basePnl: -26390.987863709255,
-        baseTradedAmount: 12000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount',
-      },
-      {
-        symbol: 'EURJPY',
-        basePnl: -113173.18142637635,
-        baseTradedAmount: -5000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount',
-      },
-      {
-        symbol: 'AUDUSD',
-        basePnl: 63738605.40001099,
-        baseTradedAmount: 6000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount',
-      },
-      {
-        symbol: 'NZDUSD',
-        basePnl: -198769.7610840366,
-        baseTradedAmount: 0,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount',
-      },
-      {
-        symbol: 'EURCAD',
-        basePnl: -31847.090799954138,
-        baseTradedAmount: 43000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount',
-      },
-      {
-        symbol: 'EURAUD',
-        basePnl: -5341.076340097365,
-        baseTradedAmount: 18000000,
-        basePnlName: 'basePnl',
-        baseTradedAmountName: 'baseTradedAmount',
-      },
-    ],
-    options: {
-      showYAxis: true,
-      showXAxis: true,
-      showLegend: false,
-      useInteractiveGuideline: true,
-      duration: 0,
-      showValues: true,
-      showControls: false,
-      width: 900,
-      tooltip: { enabled: false },
-      margin: { top: 0, right: 0, bottom: 0 },
-    },
-    yAxisValuePropertyName: 'baseTradedAmount',
-  },
+  positionsChartModel,
 }
 
 export default props
-export { analyticsLineChartModel }
+export { analyticsLineChartModel, positionsChartModel }
