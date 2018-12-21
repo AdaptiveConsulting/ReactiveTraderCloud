@@ -1,7 +1,7 @@
 import React from 'react'
 import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
-import AnalyticsBarChart from './AnalyticsBarChart'
+import { AnalyticsBarChart } from './analyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
 import { CurrencyPair } from 'rt-types'
@@ -55,11 +55,7 @@ export default class Analytics extends React.Component<Props> {
                 <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
               </BubbleChart>
               <Title>PnL</Title>
-              <AnalyticsBarChart
-                chartData={positionsChartModel.seriesData}
-                currencyPairs={currencyPairs}
-                isPnL={true}
-              />
+              <AnalyticsBarChart chartData={positionsChartModel.seriesData} />
             </React.Fragment>
           )}
       </AnalyticsStyle>
