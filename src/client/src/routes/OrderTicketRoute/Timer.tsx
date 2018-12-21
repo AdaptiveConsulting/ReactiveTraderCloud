@@ -11,7 +11,6 @@ export interface TimerProps {
 
 export class Timer extends PureComponent<TimerProps> {
   id: number
-
   callback = () => {
     const { name, children, interval, timeout } = this.props
 
