@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { styled, ThemeName, ThemeProvider, ThemeConsumer, GlobalStyle } from 'rt-theme'
 
-// TODO make styleguide globals?
-
 class Story extends Component {
   render() {
     const { children } = this.props

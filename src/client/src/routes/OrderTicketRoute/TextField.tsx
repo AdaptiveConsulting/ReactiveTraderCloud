@@ -93,7 +93,7 @@ export const Input = styled.input`
   width: 100%;
   max-width: 100%;
 
-  ${curryProps<any>(mapColorProps, { fg: 'secondary.base' })};
+  ${curryProps(mapColorProps, { fg: 'secondary.base' })};
 `
 
 export const LabelLayout = styled.label<{ area?: string; focused?: boolean; filled?: boolean } & ColorProps>`
