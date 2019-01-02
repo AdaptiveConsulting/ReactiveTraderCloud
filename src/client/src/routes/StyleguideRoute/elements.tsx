@@ -1,14 +1,14 @@
 import _ from 'lodash'
 import React from 'react'
-import { styled } from 'rt-theme'
-
-import { resolvesColor } from 'rt-theme'
+import { styled, resolvesColor } from 'rt-theme'
 
 import { mapMarginPaddingProps, mapTextProps, MarginPaddingProps, TextProps } from './styled'
 
 export { Paragraph } from './styled'
 
-export const Hashable = ({ is: Element = 'div', ...props }) => <Element {...props} id={_.kebabCase(props.children)} />
+export const Hashable = ({ is: Element = 'div' as any, ...props }) => (
+  <Element {...props} id={_.kebabCase(props.children)} />
+)
 
 interface HeaderProps extends MarginPaddingProps, TextProps {}
 export const Header = styled(Hashable)<HeaderProps>`
@@ -70,12 +70,12 @@ export const Column = styled.div`
   overflow: visible;
 `
 
-export const NumberedLayout = styled<{ number: number | string }>(({ number: n, children, ...props }) => (
+export const NumberedLayout = styled(({ number: n, children, ...props }) => (
   <div {...props}>
     <SectionNumber>{n}</SectionNumber>
     <div>{children}</div>
   </div>
-))`
+))<{ number: number | string }>`
   display: grid;
   grid-template-columns: 5rem 1fr;
 `

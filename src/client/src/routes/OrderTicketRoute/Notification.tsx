@@ -3,10 +3,11 @@ import * as React from 'react'
 import { faExclamationCircle, faCheckCircle, faCircleNotch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { styled, keyframes, Styled } from 'rt-theme'
 import { Block } from '../StyleguideRoute/styled'
 
 import { Timer } from './Timer'
+import { styled } from 'rt-theme'
+import { keyframes } from 'styled-components'
 
 export interface NotificationProps {
   duration: number
@@ -95,7 +96,7 @@ const Body = styled(Block)`
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1rem 4rem -1rem ${props => props.theme.overlay.backgroundColor};
 `
 
-const Position: Styled<{ position?: 'top' | 'bottom' }> = styled(Block)`
+const Position = styled(Block)<{ position?: 'top' | 'bottom' }>`
   position: absolute;
   left: 0;
   right: 0;
@@ -107,7 +108,7 @@ Position.defaultProps = {
   position: 'bottom',
 }
 
-const Transistion: Styled<{ visible?: boolean; position?: 'top' | 'bottom' }> & { [k: string]: any } = styled(Block)`
+const Transistion: any = styled(Block)<{ visible?: boolean; position?: 'top' | 'bottom' }>`
   transition: transform ease 200ms, opacity ease 200ms;
 
   opacity: 0;

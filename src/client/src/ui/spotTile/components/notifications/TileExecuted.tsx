@@ -1,8 +1,8 @@
 import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
-import { styled } from 'rt-theme'
 import { Direction } from 'rt-types'
+import { styled } from 'rt-theme'
 
 const HeavyFont = styled('span')`
   font-weight: 900;
@@ -13,8 +13,8 @@ const HeavyItalicsFont = styled(HeavyFont)`
 `
 
 const InverseFont = styled(HeavyFont)`
-  background-color: ${({ theme }) => theme.white};
-  color: ${({ theme }) => theme.green.base};
+  background-color: ${({ theme }) => theme.template.white.normal};
+  color: ${({ theme }) => theme.template.green.normal};
   border-radius: 2px;
   padding: 0 0.0625rem;
 `
@@ -30,7 +30,7 @@ interface Props {
 
 const directionText = {
   [Direction.Buy]: 'bought',
-  [Direction.Sell]: 'sold'
+  [Direction.Sell]: 'sold',
 }
 
 const TileExecuted: React.SFC<Props> = ({ direction, dealtCurrency, rate, notional, counterCurrency, date }) => {

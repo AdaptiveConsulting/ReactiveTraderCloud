@@ -27,21 +27,21 @@ export const OriginTickWrapper = styled(FlexDiv)`
 export const PriceLabel = styled.div<{ color: string }>`
   align-self: center;
   font-size: 11px;
-  color: ${({ theme, color }) => theme.analytics[color].normal};
+  color: ${({ theme, color }) => theme.template[color].normal};
 `
 export const DiamondShape = styled.div<{ color: string }>`
   align-self: center;
   width: 6px;
   height: 6px;
   transform: rotate(45deg);
-  background-color: ${({ theme, color }) => theme.analytics[color].normal};
+  background-color: ${({ theme, color }) => theme.template[color].normal};
 `
 export const Label = styled.div`
   flex: 0 0 60px;
   align-self: center;
   opacity: 0.6;
   font-size: 11px;
-  color: ${({ theme }) => theme.analytics.textColor};
+  color: ${({ theme }) => theme.core.textColor};
 `
 export const BarPriceContainer = styled.div`
   width: 100%;
@@ -64,5 +64,5 @@ export const OriginTick = styled.div`
 export const Origin = styled.div`
   font-size: 11px;
   text-align: center;
-  color: ${({ theme }) => theme.analytics.textColor};
+  color: ${({ theme }) => theme.core.textColor};
 `
