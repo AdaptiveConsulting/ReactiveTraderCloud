@@ -1,7 +1,5 @@
 import { darken } from 'polished'
-import React from 'react'
 import { styled } from 'rt-theme'
-import Icon from './Icon'
 
 const headerHeight = '2rem'
 
@@ -18,11 +16,11 @@ export const Content = styled.div<{ expand?: boolean }>`
   transform-origin: center left;
   transition: transform ${({ theme }) => theme.motion.duration}ms ease;
   transform: translateY(${props => (props.expand ? expandedHeight : 0)});
-  /*background-color: ${props => props.theme.backgroundColor};*/
+  background-color: ${props => props.theme.backgroundColor};
 `
 
 export const Root = styled.div`
-  width: 100%;
+  float: right;
   min-height: ${headerHeight};
   max-height: ${headerHeight};
   z-index: 20;
@@ -30,15 +28,9 @@ export const Root = styled.div`
   font-size: 0.75rem;
 
   color: ${props => props.theme.textColor};
-
-  ${Icon} {
-    margin-right: 0.5rem;
-  }
 `
 
-export const ChevronIcon = () => <Icon name="chevron" />
-
-export const ExpandToggle = styled(ChevronIcon)`
+export const ExpandToggle = styled.div`
   transform: rotate(${(props: { expand: boolean }) => (props.expand ? 180 : 0)}deg);
   transition: transform ${({ theme }) => theme.motion.duration}ms ease;
 `
@@ -85,10 +77,4 @@ export const ServiceRoot = styled.div<{ index: number }>`
   background-color: ${({ index = 0, theme }) =>
     // it'd be nice if this were selected from the original palette …
     darken(index / 50, theme.backgroundColor)};
-
-  ${Icon} {
-    /* We're using important here. 	
-         But you should see what happens with Emotion when you don't!  */
-    margin-right: 1rem !important;
-  }
 `
