@@ -1,14 +1,10 @@
 import React from 'react'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
 import { CurrencyOptions } from './types'
-// const HeaderWrapper = styled.div`
-//   // display: flex;
-//   width: 100%;
-//   height: 100%;
-// `
+
 interface WorkspaceHeaderProps {
   tradingTileView: string
-  currencyOptionView: CurrencyOptions
+  currencyView: CurrencyOptions
   onCurrencyChange: (currency: CurrencyOptions) => void
   onTileViewChange: (tileView: string) => void
 }
@@ -25,7 +21,7 @@ const tileViews = ['Normal', 'Analytics']
 
 class WorkspaceHeader extends React.Component<WorkspaceHeaderProps> {
   render() {
-    const { currencyOptionView, onCurrencyChange, tradingTileView, onTileViewChange } = this.props
+    const { currencyView, onCurrencyChange, tradingTileView, onTileViewChange } = this.props
     return (
       <Header>
         <LeftNav>
@@ -33,7 +29,7 @@ class WorkspaceHeader extends React.Component<WorkspaceHeaderProps> {
           {currencyOptions.map(currencyOption => (
             <NavItem
               key={currencyOption}
-              active={currencyOption === currencyOptionView}
+              active={currencyOption === currencyView}
               onClick={() => onCurrencyChange(currencyOption)}
             >
               {currencyOption}

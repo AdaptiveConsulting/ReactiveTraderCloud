@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Loadable } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
 import { selectExecutionStatus, selectSpotTiles } from './selectors'
+import { styled } from 'rt-theme'
 import Workspace from './Workspace'
 import { WorkspaceHeader, CurrencyOptions } from './workspaceHeader'
 
@@ -12,7 +13,11 @@ interface WorkspaceContainerState {
   currencyView: CurrencyOptions
   tileView: string
 }
-export class WorkspaceContainer extends React.PureComponent<WorkspaceContainerProps, WorkspaceContainerState> {
+
+const WorkSpaceWrapper = styled.div`
+  height: 100%;
+`
+class WorkspaceContainer extends React.PureComponent<WorkspaceContainerProps, WorkspaceContainerState> {
   constructor(props: WorkspaceContainerProps) {
     super(props)
     this.state = { currencyView: CurrencyOptions.All, tileView: 'Normal' }
@@ -30,15 +35,15 @@ export class WorkspaceContainer extends React.PureComponent<WorkspaceContainerPr
     const { status, ...props } = this.props
     const { currencyView, tileView } = this.state
     return (
-      <div>
+      <WorkSpaceWrapper style={{ height: '100%' }}>
         <WorkspaceHeader
-          currencyOptionView={currencyView}
+          currencyView={currencyView}
           onCurrencyChange={this.updateCurrencyOption}
           tradingTileView={tileView}
           onTileViewChange={this.updateTileView}
         />
         <Loadable status={status} render={() => <Workspace {...props} />} message="Pricing Disconnected" />
-      </div>
+      </WorkSpaceWrapper>
     )
   }
 }
