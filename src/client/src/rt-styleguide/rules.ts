@@ -1,4 +1,4 @@
-import { css } from 'rt-theme'
+import { css } from 'styled-components'
 
 export const preventStutter = css`
   backface-visibility: hidden;

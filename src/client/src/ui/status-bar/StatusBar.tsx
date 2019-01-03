@@ -1,12 +1,13 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { ThemeProvider } from 'rt-theme'
 
 import { ConnectionState } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import { Content, Fill, Header, Root } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
 import { PlatformAdapter, withPlatform } from 'rt-components'
+import { withTheme, ThemeProvider } from 'styled-components'
+import { Theme } from 'rt-theme'
 
 interface State {}
 
@@ -32,10 +33,11 @@ const Logo: React.SFC<{ platform: PlatformAdapter }> = ({ platform }) => (
 
 const LogoWithPlatform = withPlatform(Logo)
 
-export class StatusBar extends Component<
+class StatusBar extends Component<
   {
     connectionStatus: ConnectionState
     services: ServiceStatus[]
+    theme: Theme
   },
   State
 > {
@@ -46,7 +48,7 @@ export class StatusBar extends Component<
 
     const mode = getApplicationStatus(services)
     return (
-      <ThemeProvider theme={theme => theme.button[mapToTheme[mode]]}>
+      <ThemeProvider theme={theme.button[mapToTheme[mode]]}>
         <Root>
           <Content expand={false}>
             <Header>

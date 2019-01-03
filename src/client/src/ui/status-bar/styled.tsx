@@ -1,5 +1,5 @@
 import { darken } from 'polished'
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { styled } from 'rt-theme'
 import Icon from './Icon'
 
@@ -36,7 +36,9 @@ export const Root = styled.div`
   }
 `
 
-export const ChevronIcon = () => <Icon name="chevron" />
+export const ChevronIcon: FunctionComponent<{ expand: boolean }> = ({ expand, ...props }) => (
+  <Icon name="chevron" {...props} />
+)
 
 export const ExpandToggle = styled(ChevronIcon)`
   transform: rotate(${(props: { expand: boolean }) => (props.expand ? 180 : 0)}deg);

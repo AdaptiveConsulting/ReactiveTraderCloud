@@ -18,18 +18,18 @@ const props: Props = {
       'Status',
       {
         Rejected: 'rejected',
-        Done: 'done'
+        Done: 'done',
       },
-      'done'
+      'done',
     ),
     symbol: 'EURJPY',
     tradeDate: new Date('Thu Jul 26 2018 14:46:12 GMT-0400 (Eastern Daylight Time)'),
     tradeId: 2356,
     traderName: 'DOR',
     valueDate: new Date('Sun Jul 29 2018 20:00:00 GMT-0400 (Eastern Daylight Time)'),
-    termsCurrency: 'JPY'
+    termsCurrency: 'JPY',
   },
-  dismissNotification: action('Dismiss notification')
+  dismissNotification: action('Dismiss notification'),
 }
 
 const Centered = styled('div')`

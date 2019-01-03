@@ -1,23 +1,23 @@
 // @ts-ignore
 import React, { lazy, Suspense } from 'react'
 
-import { styled, ThemeStorage } from 'rt-theme'
+import { styled, ThemeProvider } from 'rt-theme'
 
 const MainRoute = lazy(() => import('./MainRoute'))
 
 const Fallback = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: ${p => p.theme.component.backgroundColor};
+  background-color: ${p => p.theme.core.lightBackground};
 `
 
 export default function MainRouteLoader() {
   return (
-    <ThemeStorage.Provider>
+    <ThemeProvider>
       <Suspense fallback={<Fallback />}>
         <MainRoute />
       </Suspense>
-    </ThemeStorage.Provider>
+    </ThemeProvider>
   )
 }
 export { MainRouteLoader as MainRoute }

@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React, { PureComponent } from 'react'
-import { keyframes, styled } from 'rt-theme'
+import { keyframes } from 'styled-components'
+import { styled } from 'rt-theme'
 
 const ANIMATION_SPEED = 2
 const BAR_NUMBER = 4
@@ -35,7 +36,7 @@ interface BarProps {
 const Bar = styled('rect')<BarProps>`
   animation: ${({ moveDistance }: BarProps) => getBounce(moveDistance)} ${({ speed }) => speed}s infinite;
   animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER)}s;
-  fill: ${({ theme }) => theme.shell.textColor};
+  fill: ${({ theme }) => theme.core.textColor};
   will-change: transform;
 `
 
