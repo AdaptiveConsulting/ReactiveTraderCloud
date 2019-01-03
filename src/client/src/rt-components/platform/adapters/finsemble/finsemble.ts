@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-export default class Browser implements PlatformAdapter {
+export default class Finsemble implements PlatformAdapter {
   name = 'finsemble'
   type = 'desktop'
 
@@ -35,5 +35,14 @@ export default class Browser implements PlatformAdapter {
           err => reject(err),
         )
       }),
+  }
+
+  notification = {
+    notify: (message: object) => {
+      window.FSBL.UserNotification.alert('trade', 'ALWAYS', 'trade-excecuted', message, {
+        url: '/notification',
+        duration: 1000 * 3,
+      })
+    },
   }
 }

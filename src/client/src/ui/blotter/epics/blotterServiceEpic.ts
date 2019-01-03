@@ -49,7 +49,7 @@ const connectBlotterToExcel: ApplicationEpic = (action$, state$, { platform }) =
     ),
   )
 
-const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { platform }) =>
+export const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     ofType<Action, NewTradesAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
     map(action => action.payload.trades[0]),
@@ -60,4 +60,4 @@ const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { platf
     ignoreElements(),
   )
 
-export const publishBlotterEpic = combineEpics(connectBlotterToExcel, connectBlotterToNotifications)
+export const publishBlotterEpic = combineEpics(connectBlotterToExcel)
