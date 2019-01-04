@@ -1,19 +1,23 @@
 import _ from 'lodash'
-import React, { Component, SFC } from 'react'
-import { ThemeProvider } from 'rt-theme'
+import React, { Component, SFC, SyntheticEvent } from 'react'
 
 import { ConnectionState } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
-import { Content, ExpandToggle, Fill, Header, NodeCount, Root, ServiceList, ServiceName, ServiceRoot } from './styled'
+import {
+  Button,
+  StatusCircle,
+  StatusLabel,
+  NodeCount,
+  Root,
+  AppUrl,
+  ServiceListPopup,
+  ServiceList,
+  ServiceName,
+  ServiceRoot,
+} from './styled'
 
 interface State {
   expanded: boolean
-}
-
-const mapToTheme = {
-  [ServiceConnectionStatus.CONNECTED]: 'good',
-  [ServiceConnectionStatus.CONNECTING]: 'aware',
-  [ServiceConnectionStatus.DISCONNECTED]: 'bad',
 }
 
 const getApplicationStatus = (services: ServiceStatus[]) => {
@@ -37,7 +41,18 @@ export class StatusButton extends Component<
     expanded: false,
   }
 
-  toggleExpanded = () => this.setState(({ expanded }) => ({ expanded: !expanded }))
+  toggleExpanded = (e: SyntheticEvent) => {
+    if (!this.isAppUrl(e.target)) {
+      this.setState(({ expanded }) => ({ expanded: !expanded }))
+    }
+  }
+
+  isAppUrl = (element: any) => element instanceof HTMLInputElement
+
+  selectAll = (e: SyntheticEvent) => {
+    const input = e.target as HTMLInputElement
+    input.select()
+  }
 
   render() {
     const {
@@ -46,34 +61,29 @@ export class StatusButton extends Component<
     } = this.props
 
     const { expanded } = this.state
-    const mode = getApplicationStatus(services)
+    const appStatus = getApplicationStatus(services)
     return (
       <Root>
-        <Content expand={expanded}>
-          <Header onClick={this.toggleExpanded}>
-            {mode === ServiceConnectionStatus.DISCONNECTED ? (
-              'Disconnected'
-            ) : (
-              <React.Fragment>
-                {_.capitalize(mode)} to {url} ({transportType})
-              </React.Fragment>
-            )}
-            <Fill />
+        <Button onClick={this.toggleExpanded}>
+          <StatusCircle status={appStatus} />
+          <StatusLabel status={appStatus} />
+        </Button>
 
-            <ExpandToggle expand={expanded} />
-          </Header>
-
+        <ServiceListPopup open={expanded} onClick={this.toggleExpanded}>
           <ServiceList>
+            <AppUrl
+              title={`${url} (${transportType})`}
+              readOnly={true}
+              value={`${url} (${transportType})`}
+              onFocus={this.selectAll}
+              onClick={this.selectAll}
+            />
+
             {services.map((service, index) => (
-              <ThemeProvider
-                key={service.serviceType}
-                theme={theme => theme.button[mapToTheme[service.connectionStatus]]}
-              >
-                <Service service={service} index={index} />
-              </ThemeProvider>
+              <Service key={service.serviceType} service={service} index={index} />
             ))}
           </ServiceList>
-        </Content>
+        </ServiceListPopup>
       </Root>
     )
   }
@@ -84,14 +94,15 @@ const Service: SFC<{ service: ServiceStatus; index: number }> = ({
   index,
 }) => (
   <ServiceRoot index={index + 2}>
-    <div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <StatusCircle status={connectionStatus} />
       <ServiceName>{serviceType}</ServiceName>
-
-      {connectionStatus === ServiceConnectionStatus.CONNECTED && (
-        <NodeCount>
-          ({connectedInstanceCount} {connectedInstanceCount !== 1 ? 'Nodes' : 'Node'})
-        </NodeCount>
-      )}
     </div>
+
+    {connectionStatus === ServiceConnectionStatus.CONNECTED && (
+      <NodeCount>
+        ({connectedInstanceCount} {connectedInstanceCount !== 1 ? 'Nodes' : 'Node'})
+      </NodeCount>
+    )}
   </ServiceRoot>
 )

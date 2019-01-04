@@ -9,7 +9,6 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   height: 2rem;
-  cursor: pointer;
   padding: 0 1rem;
 `
 
