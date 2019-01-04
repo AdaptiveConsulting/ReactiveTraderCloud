@@ -21,9 +21,9 @@ enum blue {
 }
 
 enum yellow {
-  dark = '#e0a744',
-  normal = '#f94c4c',
-  light = '#f9ba4c',
+  dark = '#A38D00',
+  normal = '#F7D036',
+  light = '#F4E0A4',
 }
 
 export default {
