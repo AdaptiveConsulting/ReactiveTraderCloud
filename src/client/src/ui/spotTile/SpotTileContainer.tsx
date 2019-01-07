@@ -14,6 +14,7 @@ export interface SpotTileContainerOwnProps {
   onPopoutClick?: () => void
   tornOff?: boolean
   tearable?: boolean
+  tileView?: string
 }
 
 type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>

@@ -6,6 +6,7 @@ import { currencyPair, spotTileData } from '../test-resources/spotTileProps'
 import SpotTile from '../SpotTile'
 
 const executeTrade = action('executeTrade')
+const updateNotional = action('updateNotional')
 
 stories.add('SpotTile', () => (
   <Story>
@@ -21,6 +22,9 @@ stories.add('SpotTile', () => (
           spotTileData={spotTileData}
           executeTrade={executeTrade}
           executionStatus={ServiceConnectionStatus.CONNECTED}
+          notional="1,000,000"
+          updateNotional={updateNotional}
+          canExecute={true}
         />
       </div>
     </Centered>

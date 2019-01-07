@@ -4,6 +4,8 @@ import { ExecuteTradeRequest, SpotTileData, createTradeRequest, DEFAULT_NOTIONAL
 import SpotTile from './SpotTile'
 import { styled, ThemeProvider } from 'rt-theme'
 // import { spotDateFormatter } from './model/dateUtils'
+import numeral from 'numeral'
+import { AnalyticsTile } from './analyticsTile'
 
 export const TileWrapper = styled('div')`
   position: relative;
@@ -17,6 +19,7 @@ interface Props {
   spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
+  tileView?: string
 }
 
 interface State {
@@ -56,34 +59,42 @@ class Tile extends React.Component<Props, State> {
 
   //TODO ML 07/01/2019 change the name of this one
   tileSwitch = () => {
-    const tileViewState: string = '125'
-    const val = '10'
-    const { currencyPair, spotTileData, executeTrade, executionStatus } = this.props
-    switch (tileViewState) {
-      case val:
+    const { currencyPair, spotTileData, executionStatus, tileView } = this.props
+    const { notional } = this.state
+    switch (tileView) {
+      case 'Analytics':
+        return (
+          <AnalyticsTile
+            currencyPair={currencyPair}
+            spotTileData={spotTileData}
+            executeTrade={this.executeTrade}
+            executionStatus={executionStatus}
+            notional={notional}
+            updateNotional={this.updateNotional}
+            canExecute={!this.canExecute()}
+          >
+            {this.props.children}
+          </AnalyticsTile>
+        )
+      default:
         return (
           <SpotTile
             currencyPair={currencyPair}
             spotTileData={spotTileData}
-            executeTrade={executeTrade}
+            executeTrade={this.executeTrade}
             executionStatus={executionStatus}
+            notional={notional}
+            updateNotional={this.updateNotional}
+            canExecute={!this.canExecute()}
             //TODO ML 07/01/2019 also add the notional function
-          />
+          >
+            {this.props.children}
+          </SpotTile>
         )
-      default:
-        return <div>LaLO</div>
     }
   }
   render() {
-    const { children } = this.props
-    return (
-      <ThemeProvider theme={theme => theme.tile}>
-        <TileWrapper>
-          {this.tileSwitch()}
-          {children}
-        </TileWrapper>
-      </ThemeProvider>
-    )
+    return <ThemeProvider theme={theme => theme.tile}>{this.tileSwitch()}</ThemeProvider>
   }
 }
 

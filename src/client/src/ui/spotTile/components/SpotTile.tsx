@@ -1,9 +1,7 @@
-import numeral from 'numeral'
 import React, { PureComponent } from 'react'
 import { styled } from 'rt-theme'
-import { ThemeProvider } from 'rt-theme'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import { createTradeRequest, DEFAULT_NOTIONAL, ExecuteTradeRequest, SpotTileData, TradeRequest } from '../model'
+import { SpotTileData } from '../model'
 import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
@@ -35,80 +33,46 @@ export interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
-  executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
-}
-
-interface State {
+  executeTrade: (direction: Direction, rawSpotRate: number) => void
   notional: string
+  updateNotional: (notional: string) => void
+  canExecute: boolean
+  chartData?: []
 }
 
-export default class SpotTile extends PureComponent<Props, State> {
-  state = {
-    notional: '1000000',
-  }
-
-  updateNotional = (notional: string) => this.setState({ notional })
-
-  executeTrade = (direction: Direction, rawSpotRate: number) => {
-    const { currencyPair, executeTrade } = this.props
-    const notional = this.getNotional()
-    const tradeRequestObj: TradeRequest = {
-      direction,
-      currencyBase: currencyPair.base,
-      symbol: currencyPair.symbol,
-      notional,
-      rawSpotRate,
-    }
-    executeTrade(createTradeRequest(tradeRequestObj))
-  }
-
-  getNotional = () => numeral(this.state.notional).value() || DEFAULT_NOTIONAL
-
-  canExecute = () => {
-    const { spotTileData, executionStatus } = this.props
-    return Boolean(
-      executionStatus === ServiceConnectionStatus.CONNECTED &&
-        !spotTileData.isTradeExecutionInFlight &&
-        spotTileData.price,
-    )
-  }
-
+export default class SpotTile extends PureComponent<Props> {
   render() {
     const {
       currencyPair,
       spotTileData: { price },
+      notional,
+      updateNotional,
+      executeTrade,
+      canExecute,
       children,
     } = this.props
-    const { notional } = this.state
 
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
 
     return (
-      //TODO ML 04/01/2019 move this into the container that will contain everything
-      <ThemeProvider theme={theme => theme.tile}>
-        <SpotTileWrapper>
-          <SpotTileStyle className="spot-tile">
-            <TileHeader>
-              <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
-              <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
-            </TileHeader>
-            <PriceControls
-              executeTrade={this.executeTrade}
-              priceData={price}
-              currencyPair={currencyPair}
-              disabled={!this.canExecute()}
-            />
-            <NotionalInputWrapper>
-              <NotionalInput
-                notional={notional}
-                currencyPairSymbol={currencyPair.base}
-                updateNotional={this.updateNotional}
-              />
-            </NotionalInputWrapper>
-          </SpotTileStyle>
-          {children}
-        </SpotTileWrapper>
-      </ThemeProvider>
+      <SpotTileWrapper>
+        <SpotTileStyle className="spot-tile">
+          <TileHeader>
+            <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
+            <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
+          </TileHeader>
+          <PriceControls
+            executeTrade={executeTrade}
+            priceData={price}
+            currencyPair={currencyPair}
+            disabled={canExecute}
+          />
+          <NotionalInputWrapper>
+            <NotionalInput notional={notional} currencyPairSymbol={currencyPair.base} updateNotional={updateNotional} />
+          </NotionalInputWrapper>
+        </SpotTileStyle>
+        {children}
+      </SpotTileWrapper>
     )
   }
 }

@@ -4,7 +4,8 @@ import { ExecuteTradeRequest, SpotTileData } from '../model'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 import { TileBooking } from './notifications'
 import NotificationContainer from './notifications'
-import SpotTile from './SpotTile'
+// import SpotTile from './SpotTile'
+import Tile from './Tile'
 import TileControls from './TileControls'
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
   onPopoutClick?: () => void
   onNotificationDismissed: () => void
   displayCurrencyChart?: () => void
+  tileView?: string
 }
 
 const TileSwitch: React.SFC<Props> = ({
@@ -27,12 +29,14 @@ const TileSwitch: React.SFC<Props> = ({
   onNotificationDismissed,
   displayCurrencyChart,
   executionStatus,
+  tileView,
 }) => (
-  <SpotTile
+  <Tile
     currencyPair={currencyPair}
     spotTileData={spotTileData}
     executeTrade={executeTrade}
     executionStatus={executionStatus}
+    tileView={tileView}
   >
     <TileControls canPopout={canPopout} onPopoutClick={onPopoutClick} displayCurrencyChart={displayCurrencyChart} />
     <TileBooking show={spotTileData.isTradeExecutionInFlight} />
@@ -42,7 +46,7 @@ const TileSwitch: React.SFC<Props> = ({
       currencyPair={currencyPair}
       onNotificationDismissed={onNotificationDismissed}
     />
-  </SpotTile>
+  </Tile>
 )
 
 TileSwitch.defaultProps = {

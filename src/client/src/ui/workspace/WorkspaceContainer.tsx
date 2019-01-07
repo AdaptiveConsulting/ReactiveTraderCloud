@@ -7,9 +7,9 @@ import { styled } from 'rt-theme'
 import Workspace from './Workspace'
 import { WorkspaceHeader, CurrencyOptions } from './workspaceHeader'
 
-type WorkspaceContainerProps = ReturnType<typeof mapStateToProps>
+type Props = ReturnType<typeof mapStateToProps>
 
-interface WorkspaceContainerState {
+interface State {
   currencyView: CurrencyOptions
   tileView: string
 }
@@ -17,8 +17,8 @@ interface WorkspaceContainerState {
 const WorkSpaceWrapper = styled.div`
   height: 100%;
 `
-class WorkspaceContainer extends React.PureComponent<WorkspaceContainerProps, WorkspaceContainerState> {
-  constructor(props: WorkspaceContainerProps) {
+class WorkspaceContainer extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = { currencyView: CurrencyOptions.All, tileView: 'Normal' }
   }
@@ -33,16 +33,15 @@ class WorkspaceContainer extends React.PureComponent<WorkspaceContainerProps, Wo
 
   render() {
     const { status, ...props } = this.props
-    const { currencyView, tileView } = this.state
+    const { tileView, currencyView } = this.state
     return (
       <WorkSpaceWrapper style={{ height: '100%' }}>
-        <WorkspaceHeader
-          currencyView={currencyView}
-          onCurrencyChange={this.updateCurrencyOption}
-          tradingTileView={tileView}
-          onTileViewChange={this.updateTileView}
+        <WorkspaceHeader onCurrencyChange={this.updateCurrencyOption} onTileViewChange={this.updateTileView} />
+        <Loadable
+          status={status}
+          render={() => <Workspace {...props} tileView={tileView} currencyView={currencyView} />}
+          message="Pricing Disconnected"
         />
-        <Loadable status={status} render={() => <Workspace {...props} />} message="Pricing Disconnected" />
       </WorkSpaceWrapper>
     )
   }

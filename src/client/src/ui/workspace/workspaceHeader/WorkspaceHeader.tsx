@@ -2,13 +2,15 @@ import React from 'react'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
 import { CurrencyOptions } from './types'
 
-interface WorkspaceHeaderProps {
-  tradingTileView: string
-  currencyView: CurrencyOptions
+interface Props {
   onCurrencyChange: (currency: CurrencyOptions) => void
   onTileViewChange: (tileView: string) => void
 }
 
+interface State {
+  activeTileView: string
+  activeCurrencyOption: string
+}
 //TODO ML 03/01 move this somewhere else as constants?
 const currencyOptions: CurrencyOptions[] = [
   CurrencyOptions.All,
@@ -19,9 +21,24 @@ const currencyOptions: CurrencyOptions[] = [
 
 const tileViews = ['Normal', 'Analytics']
 
-class WorkspaceHeader extends React.Component<WorkspaceHeaderProps> {
+class WorkspaceHeader extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props)
+    this.state = { activeTileView: 'Normal', activeCurrencyOption: CurrencyOptions.All }
+  }
+
+  onTileViewChange = (tileView: string) => {
+    this.setState({ activeTileView: tileView })
+    this.props.onTileViewChange(tileView)
+  }
+
+  onCurrencyChange = (currency: CurrencyOptions) => {
+    this.setState({ activeCurrencyOption: currency })
+    this.props.onCurrencyChange(currency)
+  }
+
   render() {
-    const { currencyView, onCurrencyChange, tradingTileView, onTileViewChange } = this.props
+    const { activeTileView, activeCurrencyOption } = this.state
     return (
       <Header>
         <LeftNav>
@@ -29,8 +46,8 @@ class WorkspaceHeader extends React.Component<WorkspaceHeaderProps> {
           {currencyOptions.map(currencyOption => (
             <NavItem
               key={currencyOption}
-              active={currencyOption === currencyView}
-              onClick={() => onCurrencyChange(currencyOption)}
+              active={currencyOption === activeCurrencyOption}
+              onClick={() => this.onCurrencyChange(currencyOption)}
             >
               {currencyOption}
             </NavItem>
@@ -38,7 +55,11 @@ class WorkspaceHeader extends React.Component<WorkspaceHeaderProps> {
         </LeftNav>
         <RightNav>
           {tileViews.map(tileView => (
-            <NavItem key={tileView} active={tileView === tradingTileView} onClick={() => onTileViewChange(tileView)}>
+            <NavItem
+              key={tileView}
+              active={tileView === activeTileView}
+              onClick={() => this.onTileViewChange(tileView)}
+            >
               {tileView}
             </NavItem>
           ))}
