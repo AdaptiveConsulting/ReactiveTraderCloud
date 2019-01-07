@@ -15,6 +15,7 @@ export const TradeButton = styled('button')<{ direction: string }>`
   border: none;
   outline: none;
   padding: 0.75rem 1.5rem;
+  margin-bottom: 2px;
   .spot-tile:hover & {
     background-color: ${({ theme }) => theme.priceButton.hoverColor};
   }

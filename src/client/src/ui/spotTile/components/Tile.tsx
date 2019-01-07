@@ -86,7 +86,6 @@ class Tile extends React.Component<Props, State> {
             notional={notional}
             updateNotional={this.updateNotional}
             canExecute={!this.canExecute()}
-            //TODO ML 07/01/2019 also add the notional function
           >
             {this.props.children}
           </SpotTile>

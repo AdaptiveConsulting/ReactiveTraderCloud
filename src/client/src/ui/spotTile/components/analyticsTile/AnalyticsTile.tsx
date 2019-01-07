@@ -5,18 +5,16 @@ import { spotDateFormatter } from '../../model/dateUtils'
 import AnalyticsPriceControl from './AnalyticsTilePriceControl'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
-
-import { SpotTileStyle } from '../SpotTile'
+//TODO ML 07/01/2019 check this one out
 import {
   AnalyticsTileWrapper,
-  Header,
-  HeaderItem,
-  HeaderItemSmall,
+  AnalyticsTileStyle,
   AnalyticsTileContent,
   GraphNotionalWrapper,
   LineChartWrapper,
 } from './styled'
 
+import TileHeader from '../TileHeader'
 //TODO ML 07/01/2019 move this to another file
 interface Props {
   currencyPair: CurrencyPair
@@ -40,13 +38,12 @@ class AnalyticsTile extends React.PureComponent<Props> {
       canExecute,
     } = this.props
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
+    const date = spotDate && `SPT (${spotDate})`
+    const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     return (
       <AnalyticsTileWrapper className="spot-tile">
-        <SpotTileStyle>
-          <Header>
-            <HeaderItem>{`${currencyPair.base}/${currencyPair.terms}`}</HeaderItem>
-            <HeaderItemSmall>{spotDate && `SPT (${spotDate})`}</HeaderItemSmall>
-          </Header>
+        <AnalyticsTileStyle>
+          <TileHeader baseTerm={baseTerm} date={date} />
           <AnalyticsTileContent>
             <GraphNotionalWrapper>
               <LineChartWrapper>
@@ -65,7 +62,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
               disabled={canExecute}
             />
           </AnalyticsTileContent>
-        </SpotTileStyle>
+        </AnalyticsTileStyle>
         {this.props.children}
       </AnalyticsTileWrapper>
     )
