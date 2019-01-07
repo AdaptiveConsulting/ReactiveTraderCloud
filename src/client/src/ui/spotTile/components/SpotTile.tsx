@@ -9,6 +9,7 @@ import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import { DeliveryDate, TileBaseStyle, TileHeader, TileSymbol } from './styled'
 
+//TODO ML 07/01/2019 this should be TileWrapper and be moved to styled.tsx
 export const SpotTileWrapper = styled('div')`
   position: relative;
   min-height: 10rem;
@@ -23,6 +24,11 @@ export const SpotTileStyle = styled(TileBaseStyle)`
   justify-content: space-between;
   flex-direction: column;
   overflow: hidden;
+`
+const NotionalInputWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 export interface Props {
@@ -78,6 +84,7 @@ export default class SpotTile extends PureComponent<Props, State> {
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
 
     return (
+      //TODO ML 04/01/2019 move this into the container that will contain everything
       <ThemeProvider theme={theme => theme.tile}>
         <SpotTileWrapper>
           <SpotTileStyle className="spot-tile">
@@ -91,11 +98,13 @@ export default class SpotTile extends PureComponent<Props, State> {
               currencyPair={currencyPair}
               disabled={!this.canExecute()}
             />
-            <NotionalInput
-              notional={notional}
-              currencyPairSymbol={currencyPair.base}
-              updateNotional={this.updateNotional}
-            />
+            <NotionalInputWrapper>
+              <NotionalInput
+                notional={notional}
+                currencyPairSymbol={currencyPair.base}
+                updateNotional={this.updateNotional}
+              />
+            </NotionalInputWrapper>
           </SpotTileStyle>
           {children}
         </SpotTileWrapper>

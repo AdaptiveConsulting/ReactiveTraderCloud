@@ -1,5 +1,12 @@
 import React from 'react'
 import { stories, Story, Centered } from './Initialise.stories'
+import { action } from '@storybook/addon-actions'
+import { ServiceConnectionStatus } from 'rt-types'
+import { currencyPair, spotTileData } from '../test-resources/spotTileProps'
+
+import { AnalyticsTile } from '../analyticsTile'
+
+const executeTrade = action('executeTrade')
 
 stories.add('AnalyticsTile', () => (
   <Story>
@@ -10,7 +17,12 @@ stories.add('AnalyticsTile', () => (
           height: '150px',
         }}
       >
-        Dangerous
+        <AnalyticsTile
+          currencyPair={currencyPair}
+          spotTileData={spotTileData}
+          executeTrade={executeTrade}
+          executionStatus={ServiceConnectionStatus.CONNECTED}
+        />
       </div>
     </Centered>
   </Story>
