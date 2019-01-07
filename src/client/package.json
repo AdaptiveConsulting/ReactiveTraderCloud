@@ -33,12 +33,14 @@
     "build:cloud": "cross-env REACT_APP_ENV=demo npm run build",
     "test": "react-scripts-ts test --env=jsdom",
     "analyze": "source-map-explorer build/static/js/main.*",
+    "preopenfin": "npm run sleep",
     "openfin": "openfin -c public/config/openfin/local.json -l",
     "openfin:launcher": "openfin -c public/config/openfin/launcher-local.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "precommit": "lint-staged",
     "storybook": "start-storybook -p 6006",
-    "storybook:build": "build-storybook"
+    "storybook:build": "build-storybook",
+    "sleep": "sleep 5"
   },
   "license": "MIT",
   "lint-staged": {
