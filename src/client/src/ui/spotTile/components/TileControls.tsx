@@ -3,6 +3,7 @@ import { PlatformAdapter, PopoutIcon, withPlatform } from 'rt-components'
 import { styled } from 'rt-theme'
 import { SpotTileWrapper } from './SpotTile'
 
+//TODO ML 07/01/2019 --> There is no differences in removing the hover on the spottileWrapper
 const TopRightButton = styled('button')`
   position: absolute;
   right: 0;

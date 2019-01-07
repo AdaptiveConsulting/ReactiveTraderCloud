@@ -52,7 +52,7 @@ interface State {
 
 const LineChartWrapper = styled.div`
   width: 100%;
-  height: 84%;
+  height: 80%;
 `
 class AnalyticsTile extends React.PureComponent<Props, State> {
   state = {
@@ -92,7 +92,7 @@ class AnalyticsTile extends React.PureComponent<Props, State> {
     const { notional } = this.state
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     return (
-      <AnalyticsTileWrapper>
+      <AnalyticsTileWrapper className="spot-tile">
         <Header>
           <HeaderItem>{`${currencyPair.base}/${currencyPair.terms}`}</HeaderItem>
           <HeaderItemSmall>{spotDate && `SPT (${spotDate})`}</HeaderItemSmall>

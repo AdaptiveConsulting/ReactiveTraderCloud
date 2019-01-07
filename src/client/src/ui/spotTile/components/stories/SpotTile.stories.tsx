@@ -7,7 +7,7 @@ import SpotTile from '../SpotTile'
 
 const executeTrade = action('executeTrade')
 
-stories.add('Tile', () => (
+stories.add('SpotTile', () => (
   <Story>
     <Centered>
       <div
