@@ -201,7 +201,7 @@ const StyledBase = styled.div<ButtonStyleProps>`
 `
 
 const StyledButtonBase = StyledBase.withComponent('button')
-export const StyledButton = styled(StyledButtonBase)<ButtonStyleProps>`
+export const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;
@@ -233,7 +233,7 @@ StyledButton.defaultProps = {
   role: 'button',
 }
 
-export const StyledButtonGroup = styled(StyledBase)<ButtonStyleProps>`
+export const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
   ${StyledButton} {
     min-width: 1rem;
     padding-left: 0.625rem;
