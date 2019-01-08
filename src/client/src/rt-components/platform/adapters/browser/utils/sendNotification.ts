@@ -1,10 +1,20 @@
 import { Direction, Trade } from 'rt-types'
 
-export const sendNotification = (trade: Trade) => {
-  const direction = trade.direction === Direction.Buy ? 'Bought' : 'Sold'
+export enum NotifyPermission {
+  granted = 'granted',
+}
 
-  const title = `${direction.toUpperCase()} ${trade.dealtCurrency} ${trade.notional}`
-  const body = `vs. ${trade.termsCurrency} \n\nRate ${trade.spotRate}    Trade ID ${trade.tradeId}`
+export interface NotificationMessage {
+  tradeNotification?: Trade
+}
+
+export const sendNotification = ({ tradeNotification }: NotificationMessage) => {
+  const direction = tradeNotification.direction === Direction.Buy ? 'Bought' : 'Sold'
+
+  const title = `${direction.toUpperCase()} ${tradeNotification.dealtCurrency} ${tradeNotification.notional}`
+  const body = `vs. ${tradeNotification.termsCurrency} \n\nRate ${tradeNotification.spotRate}    Trade ID ${
+    tradeNotification.tradeId
+  }`
 
   const options = {
     body,
