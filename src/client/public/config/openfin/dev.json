@@ -26,5 +26,6 @@
     "description": "Desktop Reactive Trader Cloud",
     "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
     "name": "Reactive Trader Cloud (DEV)"
-  }
+  },
+  "services": [{ "name": "layouts" }]
 }
