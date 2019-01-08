@@ -96,7 +96,7 @@ const Body = styled(Block)`
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1rem 4rem -1rem ${props => props.theme.overlay.backgroundColor};
 `
 
-const Position = styled(Block)<{ position?: 'top' | 'bottom' }>`
+const Position: any = styled(Block)<{ position?: 'top' | 'bottom' }>`
   position: absolute;
   left: 0;
   right: 0;
