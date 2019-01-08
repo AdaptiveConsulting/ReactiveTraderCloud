@@ -32,7 +32,7 @@ const Workspace: React.SFC<Props> = ({ spotTiles = [], tileView }) => (
     {spotTiles.map(({ key, portalProps }) => (
       <TearOff
         id={key}
-        portalProps={portalProps}
+        portalProps={{ ...portalProps, tileView }}
         render={(popOut, tornOff) => (
           <WorkspaceItem>
             <SpotTileContainer id={key} tileView={tileView} onPopoutClick={popOut} tornOff={tornOff} tearable />

@@ -5,6 +5,7 @@ import { WindowConfig } from './types'
 
 const defaultPortalProps = {
   title: '',
+  tileView: '', //TODO ML 08/01/2019 might remove this one
   onBlock: null as () => void,
   onUnload: null as (region: string) => void,
   config: {
@@ -24,9 +25,11 @@ class NewPortal extends React.Component<PortalProps & { platform: PlatformAdapte
   container = document.createElement('div')
 
   async componentDidMount() {
-    const { config, platform } = this.props
-
-    this.externalWindow = await platform.window.open(config, this.release)
+    const { config, platform, tileView } = this.props
+    //TODO ML 08/01/2019 think of ways you can improve on this one
+    const url = tileView.length > 0 ? config.url + '?tileView=' + tileView : config.url
+    const newConfig = { ...config, url }
+    this.externalWindow = await platform.window.open(newConfig, this.release)
 
     if (this.externalWindow) {
       window.addEventListener('beforeunload', this.release)

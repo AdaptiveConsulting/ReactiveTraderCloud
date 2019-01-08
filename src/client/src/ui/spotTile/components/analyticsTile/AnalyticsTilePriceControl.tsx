@@ -12,8 +12,16 @@ interface Props {
   executeTrade: (direction: Direction, rawSpotRate: number) => void
   disabled: boolean
 }
-const Header = styled.div`
+const AnalyticsPriceControlHeader = styled.div`
   display: flex;
+  width: 40%;
+  justify-content: space-between;
+`
+
+const PriceButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
 const AnalyticsPriceControl: React.SFC<Props> = ({ currencyPair, priceData, executeTrade, disabled }) => {
@@ -21,9 +29,9 @@ const AnalyticsPriceControl: React.SFC<Props> = ({ currencyPair, priceData, exec
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const spread = getSpread(priceData.bid, priceData.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)
   return (
-    <Header>
+    <AnalyticsPriceControlHeader>
       <PriceMovement priceMovementType={priceData.priceMovementType} spread={spread.formattedValue} />
-      <div>
+      <PriceButtonWrapper>
         <PriceButton
           handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
           direction={Direction.Sell}
@@ -42,8 +50,8 @@ const AnalyticsPriceControl: React.SFC<Props> = ({ currencyPair, priceData, exec
           rawRate={askRate.rawRate}
           disabled={disabled}
         />
-      </div>
-    </Header>
+      </PriceButtonWrapper>
+    </AnalyticsPriceControlHeader>
   )
 }
 

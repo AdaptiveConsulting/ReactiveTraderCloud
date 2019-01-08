@@ -3,6 +3,7 @@ import { PlatformAdapter, PopoutIcon, withPlatform } from 'rt-components'
 import { styled } from 'rt-theme'
 import { SpotTileWrapper } from './SpotTile'
 import { AnalyticsTileWrapper } from './analyticsTile/styled'
+
 const TopRightButton = styled('button')`
   position: absolute;
   right: 0;

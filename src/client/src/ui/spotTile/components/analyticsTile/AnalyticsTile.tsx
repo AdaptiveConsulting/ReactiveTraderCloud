@@ -5,7 +5,7 @@ import { spotDateFormatter } from '../../model/dateUtils'
 import AnalyticsPriceControl from './AnalyticsTilePriceControl'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
-//TODO ML 07/01/2019 check this one out
+
 import {
   AnalyticsTileWrapper,
   AnalyticsTileStyle,
