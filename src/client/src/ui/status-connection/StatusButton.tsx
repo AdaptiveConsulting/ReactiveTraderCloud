@@ -1,33 +1,13 @@
 import _ from 'lodash'
-import React, { Component, SFC, SyntheticEvent } from 'react'
+import React, { Component, SyntheticEvent } from 'react'
 
 import { ConnectionState } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
-import {
-  Button,
-  StatusCircle,
-  StatusLabel,
-  NodeCount,
-  Root,
-  AppUrl,
-  ServiceListPopup,
-  ServiceList,
-  ServiceName,
-  ServiceRoot,
-} from './styled'
+import { Button, StatusCircle, StatusLabel, Root, AppUrl, ServiceListPopup, ServiceList } from './styled'
+import Service from './Service'
 
 interface State {
   opened: boolean
-}
-
-const getApplicationStatus = (services: ServiceStatus[]) => {
-  if (services.every(s => s.connectionStatus === ServiceConnectionStatus.CONNECTED)) {
-    return ServiceConnectionStatus.CONNECTED
-  } else if (services.some(s => s.connectionStatus === ServiceConnectionStatus.CONNECTING)) {
-    return ServiceConnectionStatus.CONNECTING
-  } else {
-    return ServiceConnectionStatus.DISCONNECTED
-  }
 }
 
 export class StatusButton extends Component<
@@ -54,6 +34,16 @@ export class StatusButton extends Component<
     input.select()
   }
 
+  getApplicationStatus = (services: ServiceStatus[]) => {
+    if (services.every(s => s.connectionStatus === ServiceConnectionStatus.CONNECTED)) {
+      return ServiceConnectionStatus.CONNECTED
+    } else if (services.some(s => s.connectionStatus === ServiceConnectionStatus.CONNECTING)) {
+      return ServiceConnectionStatus.CONNECTING
+    } else {
+      return ServiceConnectionStatus.DISCONNECTED
+    }
+  }
+
   render() {
     const {
       connectionStatus: { url, transportType },
@@ -61,7 +51,7 @@ export class StatusButton extends Component<
     } = this.props
 
     const { opened } = this.state
-    const appStatus = getApplicationStatus(services)
+    const appStatus = this.getApplicationStatus(services)
     return (
       <Root>
         <Button onClick={this.toggleOpen}>
@@ -88,21 +78,3 @@ export class StatusButton extends Component<
     )
   }
 }
-
-const Service: SFC<{ service: ServiceStatus; index: number }> = ({
-  service: { serviceType, connectionStatus, connectedInstanceCount },
-  index,
-}) => (
-  <ServiceRoot index={index + 2}>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <StatusCircle status={connectionStatus} />
-      <ServiceName>{serviceType}</ServiceName>
-    </div>
-
-    {connectionStatus === ServiceConnectionStatus.CONNECTED && (
-      <NodeCount>
-        ({connectedInstanceCount} {connectedInstanceCount !== 1 ? 'Nodes' : 'Node'})
-      </NodeCount>
-    )}
-  </ServiceRoot>
-)
