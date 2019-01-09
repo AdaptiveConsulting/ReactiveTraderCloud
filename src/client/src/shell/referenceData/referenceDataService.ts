@@ -15,7 +15,6 @@ export default class ReferenceDataService {
         map(referenceDataMapper.mapCurrencyPairsFromDto),
         scan<CurrencyPairUpdates, CurrencyPairMap>((acc, update) => {
           const pairUpdates = update.currencyPairUpdates
-
           pairUpdates.forEach(currencyPairUpdate => {
             if (currencyPairUpdate.updateType === UpdateType.Added) {
               acc[currencyPairUpdate.currencyPair.symbol] = currencyPairUpdate.currencyPair
@@ -27,7 +26,7 @@ export default class ReferenceDataService {
           return acc
         }, {}),
         publishReplay(1),
-        refCount()
+        refCount(),
       )
   }
 

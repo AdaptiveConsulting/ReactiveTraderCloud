@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react'
 import { styled } from 'rt-theme'
-import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import { SpotTileData } from '../model'
 import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import TileHeader from './TileHeader'
 import { TileBaseStyle } from './styled'
-
+import { Props } from './types'
 //TODO ML 07/01/2019 this should be TileWrapper and be moved to styled.tsx
 export const SpotTileWrapper = styled('div')`
   position: relative;
@@ -29,17 +27,6 @@ const NotionalInputWrapper = styled('div')`
   align-items: center;
   justify-content: center;
 `
-
-export interface Props {
-  currencyPair: CurrencyPair
-  spotTileData: SpotTileData
-  executionStatus: ServiceConnectionStatus
-  executeTrade: (direction: Direction, rawSpotRate: number) => void
-  notional: string
-  updateNotional: (notional: string) => void
-  canExecute: boolean
-  chartData?: []
-}
 
 export default class SpotTile extends PureComponent<Props> {
   render() {

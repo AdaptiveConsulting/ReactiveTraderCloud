@@ -29,6 +29,7 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
   return new Observable(obs => {
     autobahn.onopen(session => {
       console.info(LOG_NAME, 'Connected')
+      // console.log("DANGER", autobahn.getConnection().transport.info)
       obs.next({
         type: ConnectionEventType.CONNECTED,
         session,

@@ -67,7 +67,7 @@ export class ServiceCollectionMap {
         connectedInstanceCount: next.getServiceInstances().filter(instance => instance.isConnected === true).length,
         connectionStatus: next.getServiceWithMinLoad()
           ? ServiceConnectionStatus.CONNECTED
-          : ServiceConnectionStatus.DISCONNECTED
+          : ServiceConnectionStatus.DISCONNECTED,
       }
       return acc
     }, {})
