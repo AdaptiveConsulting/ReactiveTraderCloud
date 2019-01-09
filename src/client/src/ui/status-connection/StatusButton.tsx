@@ -17,7 +17,7 @@ import {
 } from './styled'
 
 interface State {
-  expanded: boolean
+  opened: boolean
 }
 
 const getApplicationStatus = (services: ServiceStatus[]) => {
@@ -38,12 +38,12 @@ export class StatusButton extends Component<
   State
 > {
   state = {
-    expanded: false,
+    opened: false,
   }
 
-  toggleExpanded = (e: SyntheticEvent) => {
+  toggleOpen = (e: SyntheticEvent) => {
     if (!this.isAppUrl(e.target)) {
-      this.setState(({ expanded }) => ({ expanded: !expanded }))
+      this.setState(({ opened }) => ({ opened: !opened }))
     }
   }
 
@@ -60,16 +60,16 @@ export class StatusButton extends Component<
       services,
     } = this.props
 
-    const { expanded } = this.state
+    const { opened } = this.state
     const appStatus = getApplicationStatus(services)
     return (
       <Root>
-        <Button onClick={this.toggleExpanded}>
+        <Button onClick={this.toggleOpen}>
           <StatusCircle status={appStatus} />
           <StatusLabel status={appStatus} />
         </Button>
 
-        <ServiceListPopup open={expanded} onClick={this.toggleExpanded}>
+        <ServiceListPopup open={opened} onClick={this.toggleOpen}>
           <ServiceList>
             <AppUrl
               title={`${url} (${transportType})`}
