@@ -81,8 +81,8 @@ const HeaderControl = styled.div<{ intent?: string }>`
 
 export const Root = styled.div`
   display: grid;
-  background-color: ${props => props.theme.shell.backgroundColor};
-  color: ${props => props.theme.shell.textColor};
+  background-color: ${props => props.theme.core.darkBackground};
+  color: ${props => props.theme.core.textColor};
 
   height: 100%;
   width: 100%;

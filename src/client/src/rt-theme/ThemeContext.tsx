@@ -1,5 +1,6 @@
 import React from 'react'
-import { ThemeProvider, themes } from 'rt-theme'
+import { themes } from './themes'
+import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 
 export enum ThemeName {
   Light = 'light',
@@ -7,9 +8,7 @@ export enum ThemeName {
 }
 
 interface Props {
-  default: ThemeName
   storage: typeof localStorage | typeof sessionStorage
-  storageKey: string
 }
 
 interface State {
@@ -21,19 +20,19 @@ interface ContextValue {
   setTheme: (selector: { name: ThemeName }) => void
 }
 
-const Context = React.createContext<ContextValue>({
+const ThemeContext = React.createContext<ContextValue>({
   setTheme: () => console.warn('Missing StorageThemeProvider'),
 })
 
+const STORAGE_KEY = 'themeName'
+
 class ThemeStorageProvider extends React.Component<Props, State> {
   static defaultProps = {
-    default: ThemeName.Light,
     storage: localStorage,
-    storageKey: 'themeName',
   }
 
   state = {
-    name: this.props.default,
+    name: ThemeName.Dark,
   }
 
   componentDidMount = () => {
@@ -46,10 +45,10 @@ class ThemeStorageProvider extends React.Component<Props, State> {
   }
 
   setThemeFromStorage = (event?: StorageEvent) => {
-    const { storage, storageKey } = this.props
+    const { storage } = this.props
 
-    if (event == null || event.key === storageKey) {
-      const name = storage.getItem(storageKey) as ThemeName
+    if (event == null || event.key === STORAGE_KEY) {
+      const name = storage.getItem(STORAGE_KEY) as ThemeName
 
       if (name && themes[name] != null) {
         this.setTheme({ name })
@@ -59,22 +58,20 @@ class ThemeStorageProvider extends React.Component<Props, State> {
 
   setTheme = ({ name }: State) => {
     if (name !== this.state.name) {
-      this.setState({ name }, () => this.props.storage.setItem(this.props.storageKey, name))
+      this.setState({ name }, () => this.props.storage.setItem(STORAGE_KEY, name))
     }
   }
 
   render() {
     return (
-      <Context.Provider value={{ name: this.state.name, setTheme: this.setTheme }}>
-        <ThemeProvider theme={themes[this.state.name]}>{this.props.children}</ThemeProvider>
-      </Context.Provider>
+      <ThemeContext.Provider value={{ name: this.state.name, setTheme: this.setTheme }}>
+        <StyledThemeProvider theme={themes[this.state.name]}>
+          <React.Fragment>{this.props.children}</React.Fragment>
+        </StyledThemeProvider>
+      </ThemeContext.Provider>
     )
   }
 }
 
-export const ThemeStorage = {
-  Provider: ThemeStorageProvider,
-  Consumer: Context.Consumer,
-}
-
-export default ThemeStorage
+export const ThemeProvider = ThemeStorageProvider
+export const ThemeConsumer = ThemeContext.Consumer

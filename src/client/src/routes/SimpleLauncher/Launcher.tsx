@@ -1,39 +1,42 @@
 import React from 'react'
 
 import { rules } from 'rt-styleguide'
-import { injectGlobal, styled, ThemeStorageSwitch } from 'rt-theme'
 
 import { config } from './config'
 import { Link } from './Link'
 import { LogoIcon } from 'rt-components'
+import { createGlobalStyle } from 'styled-components'
+import { ThemeStorageSwitch, styled } from 'rt-theme'
+
+const LauncherGlobalStyle = createGlobalStyle`
+:root, body {
+  @media all {
+    font-size: 16px;
+    -webkit-app-region: drag;
+  }
+}
+`
 
 export class Launcher extends React.Component {
-  // unset global scaling on mount
-  _ = injectGlobal`
-    :root, body {
-      @media all {
-        font-size: 16px;
-        -webkit-app-region: drag;
-      }
-    }
-  `
-
   render() {
     return (
-      <Root>
-        <LogoContainer>
-          <LogoIcon width={1.5} height={1.5} />
-        </LogoContainer>
-        {config.map(app => (
-          <ButtonContainer key={app.name}>
-            <Link to={app}>{app.icon}</Link>
-          </ButtonContainer>
-        ))}
+      <React.Fragment>
+        <LauncherGlobalStyle />
+        <Root>
+          <LogoContainer>
+            <LogoIcon width={1.5} height={1.5} />
+          </LogoContainer>
+          {config.map(app => (
+            <ButtonContainer key={app.name}>
+              <Link to={app}>{app.icon}</Link>
+            </ButtonContainer>
+          ))}
 
-        <ButtonContainer>
-          <ThemeStorageSwitch />
-        </ButtonContainer>
-      </Root>
+          <ButtonContainer>
+            <ThemeStorageSwitch />
+          </ButtonContainer>
+        </Root>
+      </React.Fragment>
     )
   }
 }
@@ -44,8 +47,8 @@ const Root = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.shell.backgroundColor};
-  color: ${({ theme }) => theme.component.textColor};
+  background-color: ${({ theme }) => theme.core.darkBackground};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 const IconContainer = styled.div`
@@ -63,10 +66,10 @@ const ButtonContainer = styled(IconContainer)`
 `
 
 const LogoContainer = styled(IconContainer)`
-  background-color: ${({ theme }) => theme.component.backgroundColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
 
   .svg-icon {
-    fill: ${({ theme }) => theme.component.textColor};
+    fill: ${({ theme }) => theme.core.textColor};
   }
 
   ${rules.appRegionDrag};

@@ -1,7 +1,7 @@
 import { ServiceClient } from 'rt-system'
 import { mapFromTradeDto, TradeRaw } from 'rt-types'
 import { merge, Observable, of, timer } from 'rxjs'
-import { map, mapTo, mergeMap, take, takeUntil, tap } from 'rxjs/operators'
+import { map, mapTo, mergeMap, take, takeUntil, tap, publish } from 'rxjs/operators'
 import {
   createExecuteTradeResponse,
   createExecuteTradeResponseForError,
@@ -30,7 +30,7 @@ export default class ExecutionService {
         if (!tradeWithinLimit) {
           return of(createExecuteTradeResponseForError('Credit limit exceeded', executeTradeRequest))
         }
-        const request = this.serviceClient
+        return this.serviceClient
           .createRequestResponseOperation<RawTradeReponse, ExecuteTradeRequest>(
             'execution',
             'executeTrade',
@@ -40,28 +40,39 @@ export default class ExecutionService {
             tap(dto =>
               console.info(
                 LOG_NAME,
-                `execute response received for: ${executeTradeRequest}. Status: ${dto.Trade.Status}`,
-                dto,
+                `execute response received for ${executeTradeRequest.CurrencyPair}. Status: ${dto.Trade.Status}`,
+                {
+                  Request: executeTradeRequest,
+                  Response: dto,
+                },
               ),
             ),
             map(dto => mapFromTradeDto(dto.Trade)),
             map(trade => createExecuteTradeResponse(trade, executeTradeRequest)),
             takeUntil(timer(EXECUTION_REQUEST_TIMEOUT_MS)),
+            publish(request =>
+              merge(
+                request,
+
+                // When the execution has taken a few seconds but we cannot assume its not going to go through
+                timer(EXECUTION_CLIENT_TIMEOUT_MS).pipe(
+                  mapTo(
+                    createExecuteTradeResponseForError(
+                      'Trade Execution taking longer then Expected',
+                      executeTradeRequest,
+                    ),
+                  ),
+                  takeUntil(request),
+                ),
+
+                // After a longer period of time we know a trade is not coming back
+                timer(EXECUTION_REQUEST_TIMEOUT_MS).pipe(
+                  mapTo(createExecuteTradeResponseForError('Trade execution timeout exceeded', executeTradeRequest)),
+                  takeUntil(request),
+                ),
+              ),
+            ),
           )
-
-        // When the execution has taken a few seconds but we cannot assume its not going to go through
-        const firstTimeout = timer(EXECUTION_CLIENT_TIMEOUT_MS).pipe(
-          mapTo(createExecuteTradeResponseForError('Trade Execution taking longer then Expected', executeTradeRequest)),
-          takeUntil(request),
-        )
-
-        // After a longer period of time we know a trade is not coming back
-        const lastTimeout = timer(EXECUTION_REQUEST_TIMEOUT_MS).pipe(
-          mapTo(createExecuteTradeResponseForError('Trade execution timeout exceeded', executeTradeRequest)),
-          takeUntil(request),
-        )
-
-        return merge(request, firstTimeout, lastTimeout)
       }),
     )
   }

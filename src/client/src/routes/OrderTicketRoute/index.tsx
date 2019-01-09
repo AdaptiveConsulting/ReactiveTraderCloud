@@ -1,14 +1,35 @@
 import { mix } from 'polished'
-import React, { PureComponent } from 'react'
+import React, { PureComponent, FunctionComponent } from 'react'
 
 import { Platform, PlatformProvider } from 'rt-components'
-import { ThemeName, ThemeProvider, ThemeStorage } from 'rt-theme'
+import { ThemeProvider, Theme } from 'rt-theme'
 
 import { OrderTicket } from './OrderTicket'
+import { ThemeProvider as StyledThemeProvider } from 'styled-components'
+import { withTheme } from 'styled-components'
 
 const platform = new Platform()
 
-export class OrderTicketRoute extends PureComponent<{}, { instance: number }> {
+interface Props {
+  theme: Theme
+  reset: () => void
+  instance: number
+}
+
+const BaseOrderTicket: FunctionComponent<Props> = ({ theme, reset, instance }) => (
+  <StyledThemeProvider
+    theme={{
+      muteColor: mix(0.5, theme.primary.base, theme.secondary[2]),
+      ruleColor: theme.primary.base,
+    }}
+  >
+    <OrderTicket key={'OrderTicket' + instance} reset={reset} />
+  </StyledThemeProvider>
+)
+
+const OrderTicketWithTheme = withTheme(BaseOrderTicket)
+
+export default class OrderTicketRoute extends PureComponent<{}, { instance: number }> {
   state = {
     instance: 0,
   }
@@ -17,18 +38,11 @@ export class OrderTicketRoute extends PureComponent<{}, { instance: number }> {
 
   render() {
     return (
-      <ThemeStorage.Provider storage={sessionStorage} default={ThemeName.Dark}>
+      <ThemeProvider storage={sessionStorage}>
         <PlatformProvider value={platform}>
-          <ThemeProvider
-            theme={theme => ({
-              muteColor: mix(0.5, theme.primary.base, theme.secondary[2]),
-              ruleColor: theme.primary.base,
-            })}
-          >
-            <OrderTicket key={'OrderTicket' + this.state.instance} reset={this.reset} />
-          </ThemeProvider>
+          <OrderTicketWithTheme instance={this.state.instance} reset={this.reset} />
         </PlatformProvider>
-      </ThemeStorage.Provider>
+      </ThemeProvider>
     )
   }
 }

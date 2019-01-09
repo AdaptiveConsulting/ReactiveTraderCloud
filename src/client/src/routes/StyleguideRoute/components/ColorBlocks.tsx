@@ -1,12 +1,11 @@
 import _ from 'lodash'
 import React from 'react'
-import { css, styled } from 'rt-theme'
-import ColorClipboard, { CopyToClipboardWrapper } from './ColorToClipboard'
 
-import { colors } from 'rt-theme'
+import { colors, styled } from 'rt-theme'
 
 import { Block, BlockProps } from '../styled'
-
+import { css } from 'styled-components'
+import ColorClipboard, { CopyToClipboardWrapper } from './ColorToClipboard'
 const {
   spectrum: { brand, offblack, blue, red, yellow, green },
 } = colors

@@ -4,9 +4,10 @@ import { Story } from 'rt-storybook'
 import { styled } from 'rt-theme'
 
 import '../globals/index'
-import initialProps, { analyticsLineChartModel } from '../test-resources/initialProps'
+import initialProps, { analyticsLineChartModel, positionsChartModel } from '../test-resources/initialProps'
 import Analytics from './Analytics'
 import { AnalyticsLineChart } from './analyticsLineChart'
+import { AnalyticsBarChart } from './analyticsBarChart'
 const stories = storiesOf('Analytics', module)
 
 const Centered = styled('div')`
@@ -15,6 +16,16 @@ const Centered = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
+`
+export const AnalyticsBarStyle = styled.div`
+  border-radius: 0.25rem;
+  flex: 1;
+  width: 90%;
+  height: 20%;
+  position: relative;
+  padding: 1rem;
+  font-size: 1rem;
+  margin: auto;
 `
 
 const Div = styled('div')`
@@ -37,6 +48,15 @@ stories
       <Centered>
         <Div>
           <AnalyticsLineChart model={analyticsLineChartModel} />
+        </Div>
+      </Centered>
+    </Story>
+  ))
+  .add('AnalyticsBarChart', () => (
+    <Story>
+      <Centered>
+        <Div>
+          <AnalyticsBarChart chartData={positionsChartModel.seriesData} />
         </Div>
       </Centered>
     </Story>

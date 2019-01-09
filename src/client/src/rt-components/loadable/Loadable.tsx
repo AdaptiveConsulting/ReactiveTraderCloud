@@ -9,14 +9,14 @@ const LoadableStyle = styled.div<{ minWidth?: string }>`
   min-width: ${({ minWidth = '100%' }) => minWidth};
   height: 100%;
   border-radius: 0.1875rem;
-  background-color: ${({ theme }) => theme.component.backgroundColor};
-  color: ${({ theme }) => theme.component.textColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  color: ${({ theme }) => theme.core.textColor};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   opacity: 0.59;
-  fill: ${({ theme }) => theme.component.textColor};
+  fill: ${({ theme }) => theme.core.textColor};
 `
 
 const Content = styled.div<{ minWidth?: string }>`

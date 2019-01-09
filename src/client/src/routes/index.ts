@@ -1,5 +1,5 @@
 export { MainRoute } from './MainRoute'
 export { NotificationRoute } from './NotificationRoute'
 export { StyleguideRoute } from './StyleguideRoute'
-export { OrderTicketRoute } from './OrderTicketRoute'
+export { default as OrderTicketRoute } from './OrderTicketRoute'
 export { SimpleLauncher } from './SimpleLauncher'

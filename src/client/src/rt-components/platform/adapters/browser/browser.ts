@@ -1,6 +1,7 @@
 import { PlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
+import { sendNotification, NotifyPermission } from './utils/sendNotification'
 
 export default class Browser implements PlatformAdapter {
   name = 'browser'
@@ -10,5 +11,13 @@ export default class Browser implements PlatformAdapter {
     close: () => window.close(),
 
     open: (config: WindowConfig, onClose: () => void) => openBrowserWindow(config, onClose),
+  }
+
+  notification = {
+    notify: (message: object) => {
+      if (Notification.permission === NotifyPermission.granted) {
+        sendNotification(message)
+      }
+    },
   }
 }

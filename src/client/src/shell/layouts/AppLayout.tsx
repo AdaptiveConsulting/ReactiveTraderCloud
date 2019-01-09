@@ -39,8 +39,8 @@ const AppLayoutRoot = styled.div`
 
   display: grid;
   grid-template-rows: auto 1fr auto;
-  background-color: ${({ theme }) => theme.shell.backgroundColor};
-  color: ${({ theme }) => theme.shell.textColor};
+  background-color: ${({ theme }) => theme.core.darkBackground};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 const Body = styled.div`
