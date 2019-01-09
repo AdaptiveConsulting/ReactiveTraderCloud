@@ -1,9 +1,9 @@
 import { styled } from 'rt-theme'
 
 export default styled('div')`
-  height: calc(100% - 4.5rem);
+  height: calc(100% - 4.75rem);
   background-color: ${({ theme }) => theme.core.lightBackground};
-  border-radius: 0.1875rem;
+  border-radius: 0.25rem 0.25rem 0 0;
 
   .ag-header {
     border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
