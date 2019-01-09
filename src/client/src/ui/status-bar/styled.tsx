@@ -17,7 +17,6 @@ export const Content = styled.div<{ expand?: boolean }>`
   transform-origin: center left;
   transition: transform ${({ theme }) => theme.motion.duration}ms ease;
   transform: translateY(${props => (props.expand ? expandedHeight : 0)});
-  /*background-color: ${props => props.theme.backgroundColor};*/
 `
 
 export const Root = styled.div`
