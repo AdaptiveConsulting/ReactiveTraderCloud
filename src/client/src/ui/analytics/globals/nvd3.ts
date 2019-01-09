@@ -1,8 +1,8 @@
-import { injectGlobal } from 'rt-theme'
+import { createGlobalStyle } from 'styled-components'
 
 import { barBgColor, gray, negativeColor, positiveColor, strokeColor, transitionDuration } from './variables'
 
-export default injectGlobal`
+export default createGlobalStyle`
   .nvtooltip {
     transition: opacity 50ms linear;
     transition-delay: 200ms;

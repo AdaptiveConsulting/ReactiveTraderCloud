@@ -1,10 +1,10 @@
 import _ from 'lodash'
 import React from 'react'
-import { css, styled } from 'rt-theme'
 
-import { colors } from 'rt-theme'
+import { colors, styled } from 'rt-theme'
 
 import { Block, BlockProps } from '../styled'
+import { css } from 'styled-components'
 
 const {
   spectrum: { brand, offblack, blue, red, yellow, green },

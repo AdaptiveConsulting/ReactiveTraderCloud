@@ -1,31 +1,30 @@
 import React, { Component } from 'react'
-import { styled, ThemeName, ThemeStorage } from 'rt-theme'
-
-// TODO make styleguide globals?
-import 'rt-theme'
+import { styled, ThemeName, ThemeProvider, ThemeConsumer, GlobalStyle } from 'rt-theme'
 
 class Story extends Component {
   render() {
     const { children } = this.props
 
     return (
-      <ThemeStorage.Provider default={ThemeName.Light}>
-        <StyledStory>
-          <Toolbar>
-            <ThemeStorage.Consumer>
-              {({ name, setTheme }) => (
-                <IconButton
-                  onClick={() => setTheme({ name: name === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark })}
-                  type={name || 'primary'}
-                >
-                  <i className={`fa${name === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
-                </IconButton>
-              )}
-            </ThemeStorage.Consumer>
-          </Toolbar>
-          <Content>{children}</Content>
-        </StyledStory>
-      </ThemeStorage.Provider>
+      <GlobalStyle>
+        <ThemeProvider>
+          <StyledStory>
+            <Toolbar>
+              <ThemeConsumer>
+                {({ name, setTheme }) => (
+                  <IconButton
+                    onClick={() => setTheme({ name: name === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark })}
+                    type={name || 'primary'}
+                  >
+                    <i className={`fa${name === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
+                  </IconButton>
+                )}
+              </ThemeConsumer>
+            </Toolbar>
+            <Content>{children}</Content>
+          </StyledStory>
+        </ThemeProvider>
+      </GlobalStyle>
     )
   }
 }
@@ -60,8 +59,8 @@ const StyledStory = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: ${p => p.theme.shell.backgroundColor};
-  color: ${p => p.theme.shell.textColor};
+  background-color: ${p => p.theme.core.darkBackground};
+  color: ${p => p.theme.core.textColor};
   transition: background-color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing},
     color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing};
 `
@@ -74,8 +73,8 @@ const Toolbar = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  background-color: ${({ theme }) => theme.component.backgroundColor};
-  color: ${({ theme }) => theme.component.textColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  color: ${({ theme }) => theme.core.textColor};
 
   transition: background-color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing},
     color ${p => p.theme.motion.duration}ms ${p => p.theme.motion.easing};

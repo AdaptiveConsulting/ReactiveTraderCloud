@@ -1,17 +1,15 @@
-import numeral from 'numeral'
 import React from 'react'
-import { PNLChartModel } from '../model/pnlChartModel'
+import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
-import AnalyticsBarChart from './AnalyticsBarChart'
+import { AnalyticsBarChart } from './analyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 
 import { CurrencyPair } from 'rt-types'
-import PNLChart from './pnlChart/PNLChart'
 
-import { PopoutIcon } from 'rt-components'
-import { ThemeProvider } from 'rt-theme'
-import { AnalyticsStyle, BubbleChart, Chart, Controls, Header, LastPosition, PopoutButton, Title } from './styled'
-
+import { AnalyticsStyle, BubbleChart, Title, AnalyticsLineChartWrapper, Header } from './styled'
+import AnalyticsWindowHeader from './AnalyticsHeader'
+import { AnalyticsLineChart } from './analyticsLineChart'
+import LastPosition from './LastPosition'
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
@@ -19,11 +17,10 @@ export interface CurrencyPairs {
 export interface Props {
   canPopout: boolean
   currencyPairs: CurrencyPairs
-  pnlChartModel?: PNLChartModel
+  analyticsLineChartModel: AnalyticsLineChartModel
   positionsChartModel?: PositionsChartModel
   onPopoutClick?: () => void
 }
-
 const RESIZE_EVENT = 'resize'
 
 export default class Analytics extends React.Component<Props> {
@@ -39,55 +36,29 @@ export default class Analytics extends React.Component<Props> {
   }
 
   render() {
-    const { canPopout, currencyPairs, pnlChartModel, positionsChartModel, onPopoutClick } = this.props
-
-    const lastPos = (pnlChartModel && pnlChartModel.lastPos) || 0
-    const lastPosition = lastPositionWithDirection(lastPos)
+    const { canPopout, currencyPairs, analyticsLineChartModel, positionsChartModel, onPopoutClick } = this.props
     return (
-      <ThemeProvider theme={theme => theme.analytics}>
-        <AnalyticsStyle>
-          <Header>
-            {canPopout && (
-              <Controls>
-                <PopoutButton onClick={onPopoutClick}>
-                  <PopoutIcon width={0.8125} height={0.75} />
-                </PopoutButton>
-              </Controls>
-            )}
-            <Title>Analytics</Title>
-          </Header>
-          <LastPosition color={lastPosition.color}>USD {lastPosition.formattedLastPos}</LastPosition>
-          <Chart>{pnlChartModel && <PNLChart {...pnlChartModel} />}</Chart>
-          {positionsChartModel &&
-            positionsChartModel.seriesData.length !== 0 && (
-              <React.Fragment>
-                <Title>Positions</Title>
-                <BubbleChart>
-                  <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
-                </BubbleChart>
-                <Title>Profit and Loss</Title>
-                <AnalyticsBarChart
-                  chartData={positionsChartModel.seriesData}
-                  currencyPairs={currencyPairs}
-                  isPnL={true}
-                />
-              </React.Fragment>
-            )}
-        </AnalyticsStyle>
-      </ThemeProvider>
+      <AnalyticsStyle>
+        <Header>
+          <Title>Profit &amp; Loss</Title>
+          <AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
+        </Header>
+        <LastPosition lastPos={analyticsLineChartModel.lastPos} />
+        <AnalyticsLineChartWrapper>
+          <AnalyticsLineChart model={analyticsLineChartModel} />
+        </AnalyticsLineChartWrapper>
+        {positionsChartModel &&
+          positionsChartModel.seriesData.length !== 0 && (
+            <React.Fragment>
+              <Title>Positions</Title>
+              <BubbleChart>
+                <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+              </BubbleChart>
+              <Title>PnL</Title>
+              <AnalyticsBarChart chartData={positionsChartModel.seriesData} />
+            </React.Fragment>
+          )}
+      </AnalyticsStyle>
     )
   }
-}
-
-function lastPositionWithDirection(lastPos: number) {
-  let formattedLastPos = numeral(lastPos).format()
-  let color = ''
-  if (lastPos > 0) {
-    color = 'green'
-    formattedLastPos = '+' + formattedLastPos
-  }
-  if (lastPos < 0) {
-    color = 'red'
-  }
-  return { color, formattedLastPos }
 }

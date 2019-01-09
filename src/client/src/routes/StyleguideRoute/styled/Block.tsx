@@ -1,18 +1,13 @@
-import { css, styled } from 'rt-theme'
+import { styled } from 'rt-theme'
 
-import { getColor, MappedCSS, MappedPropFn } from '../tools'
+import { getColor } from '../tools'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 import { mapTextProps, TextProps } from './Text'
 
-import { ColorProps, mapColorProps } from './Color'
+import { ColorProps } from './Color'
+import { css } from 'styled-components'
 
 export interface BlockProps extends ColorProps, TextProps, MarginPaddingProps {}
-
-export const mapBlockProps = (propStuff: BlockProps): MappedCSS =>
-  [mapColorProps, mapTextProps, mapMarginPaddingProps].reduce(
-    (acc: MappedCSS, functor: MappedPropFn<BlockProps>) => [].concat(acc, functor(propStuff)),
-    [],
-  )
 
 export const Block = styled.div<BlockProps>`
   ${({ theme, backgroundColor, textColor, bg = backgroundColor, fg = textColor }) =>
