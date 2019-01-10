@@ -18,11 +18,11 @@ interface State {
   notional: string
 }
 
-class Tile extends React.Component<Props, State> {
+class Tile extends React.PureComponent<Props, State> {
   state = {
     notional: '1000000',
   }
-  components = {
+  tileComponents = {
     [TileViews.Normal]: SpotTile,
     [TileViews.Analytics]: AnalyticsTile,
   }
@@ -55,10 +55,10 @@ class Tile extends React.Component<Props, State> {
   render() {
     const { currencyPair, spotTileData, executionStatus, tileView } = this.props
     const { notional } = this.state
-    const Component = tileView ? this.components[tileView] : SpotTile
+    const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
     return (
       <ThemeProvider theme={theme => theme.tile}>
-        <Component
+        <TileViewComponent
           currencyPair={currencyPair}
           spotTileData={spotTileData}
           executeTrade={this.executeTrade}
@@ -68,7 +68,7 @@ class Tile extends React.Component<Props, State> {
           canExecute={!this.canExecute()}
         >
           {this.props.children}
-        </Component>
+        </TileViewComponent>
       </ThemeProvider>
     )
   }
