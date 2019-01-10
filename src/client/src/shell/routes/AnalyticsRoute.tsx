@@ -3,7 +3,7 @@ import { RouteWrapper } from 'rt-components'
 import { AnalyticsContainer } from '../../ui/analytics'
 import { styled } from 'rt-theme'
 
-const AnalyticsStyle = styled.div`
+const AnalyticsRouteStyle = styled.div`
   height: 100%;
   padding: 10px;
   background-color: ${({ theme }) => theme.core.darkBackground};
@@ -11,9 +11,9 @@ const AnalyticsStyle = styled.div`
 `
 const AnalyticsRoute = () => (
   <RouteWrapper>
-    <AnalyticsStyle>
+    <AnalyticsRouteStyle>
       <AnalyticsContainer />
-    </AnalyticsStyle>
+    </AnalyticsRouteStyle>
   </RouteWrapper>
 )
 
