@@ -7,7 +7,7 @@ import { Rect, IconWrapper } from './styled'
 
 library.add(faChartLine)
 
-const Wrapper = styled.div`
+const RectWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -26,10 +26,10 @@ const AnalyticsViewIcon: React.SFC = () => (
     <ChartLineIconWrapper>
       <FontAwesomeIcon icon="chart-line" />
     </ChartLineIconWrapper>
-    <Wrapper>
+    <RectWrapper>
       <FirstRect />
       <Rect />
-    </Wrapper>
+    </RectWrapper>
   </IconWrapper>
 )
 
