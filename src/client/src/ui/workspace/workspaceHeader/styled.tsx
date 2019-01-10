@@ -39,3 +39,15 @@ export const RightNav = styled.ul`
   display: flex;
   flex-wrap: wrap;
 `
+
+export const Rect = styled.div`
+  background-color: transparent;
+  border: 1px solid white;
+  width: 10px;
+  height: 10px;
+`
+
+export const IconWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`

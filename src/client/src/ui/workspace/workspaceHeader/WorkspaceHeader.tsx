@@ -2,7 +2,7 @@ import React from 'react'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
 import { CurrencyOptions, TileViews } from './types'
 import AnalyticsViewIcon from './AnalyticsTileViewIcon'
-
+import SpotTileViewIcon from './SpotTileViewIcon'
 interface Props {
   onCurrencyChange: (currency: CurrencyOptions) => void
   onTileViewChange: (tileView: TileViews) => void
@@ -21,7 +21,7 @@ const currencyOptions: CurrencyOptions[] = [
 ]
 
 const tileViews = {
-  [TileViews.Normal]: AnalyticsViewIcon,
+  [TileViews.Normal]: SpotTileViewIcon,
   [TileViews.Analytics]: AnalyticsViewIcon,
 }
 

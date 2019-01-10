@@ -3,35 +3,18 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartLine } from '@fortawesome/free-solid-svg-icons'
 import { styled } from 'rt-theme'
+import { Rect, IconWrapper } from './styled'
 
 library.add(faChartLine)
-
-const Foo = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `
-
-const Rect = styled.div`
-  background-color: transparent;
-  border: 1px solid white;
-  width: 10px;
-  height: 10px;
+const FirstRect = styled(Rect)`
   margin-bottom: 2px;
 `
-//TODO I must remove this one here
-export const HR = styled.hr`
-  width: 80%;
-  margin: 0 auto;
-  height: 2px;
-  background-color: black;
-`
-
 const ChartLineIconWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,15 +22,15 @@ const ChartLineIconWrapper = styled.div`
 `
 
 const AnalyticsViewIcon: React.SFC = () => (
-  <Foo>
+  <IconWrapper>
     <ChartLineIconWrapper>
       <FontAwesomeIcon icon="chart-line" />
     </ChartLineIconWrapper>
     <Wrapper>
-      <Rect />
+      <FirstRect />
       <Rect />
     </Wrapper>
-  </Foo>
+  </IconWrapper>
 )
 
 export default AnalyticsViewIcon
