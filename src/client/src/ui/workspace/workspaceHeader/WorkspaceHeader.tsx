@@ -1,7 +1,7 @@
 import React from 'react'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
 import { CurrencyOptions, TileViews } from './types'
-import AnalyticsViewIcon from './AnalyticsViewIcon'
+import AnalyticsViewIcon from './AnalyticsTileViewIcon'
 
 interface Props {
   onCurrencyChange: (currency: CurrencyOptions) => void
