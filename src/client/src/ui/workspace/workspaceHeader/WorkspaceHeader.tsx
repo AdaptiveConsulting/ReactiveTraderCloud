@@ -1,6 +1,7 @@
 import React from 'react'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
 import { CurrencyOptions, TileViews } from './types'
+import AnalyticsViewIcon from './AnalyticsViewIcon'
 
 interface Props {
   onCurrencyChange: (currency: CurrencyOptions) => void
@@ -19,7 +20,10 @@ const currencyOptions: CurrencyOptions[] = [
   CurrencyOptions.USD,
 ]
 
-const tileViews: TileViews[] = [TileViews.Normal, TileViews.Analytics]
+const tileViews = {
+  [TileViews.Normal]: AnalyticsViewIcon,
+  [TileViews.Analytics]: AnalyticsViewIcon,
+}
 
 class WorkspaceHeader extends React.PureComponent<Props, State> {
   constructor(props: Props) {
@@ -39,6 +43,7 @@ class WorkspaceHeader extends React.PureComponent<Props, State> {
 
   render() {
     const { activeTileView, activeCurrencyOption } = this.state
+    const keys = Object.keys(tileViews) as TileViews[]
     return (
       <Header>
         <LeftNav>
@@ -54,15 +59,18 @@ class WorkspaceHeader extends React.PureComponent<Props, State> {
           ))}
         </LeftNav>
         <RightNav>
-          {tileViews.map(tileView => (
-            <NavItem
-              key={tileView}
-              active={tileView === activeTileView}
-              onClick={() => this.onTileViewChange(tileView)}
-            >
-              {tileView}
-            </NavItem>
-          ))}
+          {keys.map(tileView => {
+            const Icon = tileViews[tileView]
+            return (
+              <NavItem
+                key={tileView}
+                active={tileView === activeTileView}
+                onClick={() => this.onTileViewChange(tileView)}
+              >
+                <Icon />
+              </NavItem>
+            )
+          })}
         </RightNav>
       </Header>
     )
