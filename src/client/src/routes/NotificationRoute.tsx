@@ -20,6 +20,8 @@ export class NotificationRoute extends React.Component<{}, State> {
   }
 
   componentDidMount = () => {
+    console.log('Mounted')
+
     window.onNotificationMessage = (message: Message) => {
       this.setState({ message }, () =>
         // send a message back to the main application - required to restore the main application window if it's minimised
@@ -32,10 +34,12 @@ export class NotificationRoute extends React.Component<{}, State> {
 
   render() {
     const { message } = this.state
-    return message == null ? null : (
-      <ThemeProvider>
-        <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
-      </ThemeProvider>
+    return (
+      message && (
+        <ThemeProvider>
+          <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
+        </ThemeProvider>
+      )
     )
   }
 }
