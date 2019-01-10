@@ -5,13 +5,13 @@ import SpotTile from './SpotTile'
 import { ThemeProvider } from 'rt-theme'
 import numeral from 'numeral'
 import { AnalyticsTile } from './analyticsTile'
-
+import { TileViews } from '../../workspace/workspaceHeader'
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
-  tileView?: string
+  tileView?: TileViews
 }
 
 interface State {
@@ -23,8 +23,8 @@ class Tile extends React.Component<Props, State> {
     notional: '1000000',
   }
   components = {
-    Normal: SpotTile,
-    Analytics: AnalyticsTile,
+    [TileViews.Normal]: SpotTile,
+    [TileViews.Analytics]: AnalyticsTile,
   }
   updateNotional = (notional: string) => this.setState({ notional })
 

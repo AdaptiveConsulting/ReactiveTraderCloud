@@ -6,6 +6,6 @@ export enum CurrencyOptions {
 }
 
 export enum TileViews {
-  Normal,
-  Analytics,
+  Normal = 'Normal',
+  Analytics = 'Analytics',
 }

@@ -5,13 +5,13 @@ import { GlobalState } from 'StoreTypes'
 import { selectExecutionStatus, selectSpotTiles } from './selectors'
 import { styled } from 'rt-theme'
 import Workspace from './Workspace'
-import { WorkspaceHeader, CurrencyOptions } from './workspaceHeader'
+import { WorkspaceHeader, CurrencyOptions, TileViews } from './workspaceHeader'
 
 type Props = ReturnType<typeof mapStateToProps>
 
 interface State {
   currencyView: CurrencyOptions
-  tileView: string
+  tileView: TileViews
 }
 
 const WorkSpaceWrapper = styled.div`
@@ -20,14 +20,14 @@ const WorkSpaceWrapper = styled.div`
 class WorkspaceContainer extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.state = { currencyView: CurrencyOptions.All, tileView: 'Normal' }
+    this.state = { currencyView: CurrencyOptions.All, tileView: TileViews.Normal }
   }
 
   updateCurrencyOption = (currency: CurrencyOptions) => {
     this.setState({ currencyView: currency })
   }
 
-  updateTileView = (tileView: string) => {
+  updateTileView = (tileView: TileViews) => {
     this.setState({ tileView })
   }
 

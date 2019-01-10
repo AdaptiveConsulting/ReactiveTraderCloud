@@ -1,17 +1,17 @@
 import React from 'react'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
-import { CurrencyOptions } from './types'
+import { CurrencyOptions, TileViews } from './types'
 
 interface Props {
   onCurrencyChange: (currency: CurrencyOptions) => void
-  onTileViewChange: (tileView: string) => void
+  onTileViewChange: (tileView: TileViews) => void
 }
 
 interface State {
-  activeTileView: string
-  activeCurrencyOption: string
+  activeTileView: TileViews
+  activeCurrencyOption: CurrencyOptions
 }
-//TODO ML 03/01 move this somewhere else as constants?
+
 const currencyOptions: CurrencyOptions[] = [
   CurrencyOptions.All,
   CurrencyOptions.EUR,
@@ -19,15 +19,15 @@ const currencyOptions: CurrencyOptions[] = [
   CurrencyOptions.USD,
 ]
 
-const tileViews = ['Normal', 'Analytics']
+const tileViews: TileViews[] = [TileViews.Normal, TileViews.Analytics]
 
 class WorkspaceHeader extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.state = { activeTileView: 'Normal', activeCurrencyOption: CurrencyOptions.All }
+    this.state = { activeTileView: TileViews.Normal, activeCurrencyOption: CurrencyOptions.All }
   }
 
-  onTileViewChange = (tileView: string) => {
+  onTileViewChange = (tileView: TileViews) => {
     this.setState({ activeTileView: tileView })
     this.props.onTileViewChange(tileView)
   }

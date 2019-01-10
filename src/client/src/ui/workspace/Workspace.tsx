@@ -3,7 +3,7 @@ import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { PortalProps } from './selectors'
-import { CurrencyOptions } from './workspaceHeader/types'
+import { CurrencyOptions, TileViews } from './workspaceHeader'
 
 const WorkspaceItems = styled.div`
   display: grid;
@@ -23,7 +23,7 @@ interface SpotTile {
 
 interface Props {
   spotTiles: SpotTile[]
-  tileView: string
+  tileView: TileViews
   currencyView: CurrencyOptions
 }
 

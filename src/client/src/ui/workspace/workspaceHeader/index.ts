@@ -1,3 +1,3 @@
 import WorkspaceHeader from './WorkspaceHeader'
-import { CurrencyOptions } from './types'
-export { WorkspaceHeader, CurrencyOptions }
+import { CurrencyOptions, TileViews } from './types'
+export { WorkspaceHeader, CurrencyOptions, TileViews }
