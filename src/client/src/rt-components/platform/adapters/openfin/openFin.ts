@@ -2,6 +2,8 @@ import { PlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
 
+export const openFinNotifications: any[] = []
+
 export default class OpenFin implements PlatformAdapter {
   name = 'openfin'
   type = 'desktop'
