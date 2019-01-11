@@ -7,9 +7,11 @@ export const Header = styled.div`
   padding: 6px;
 `
 export const LeftNav = styled.ul`
+  width: 250px;
   display: flex;
   align-self: flex-start;
   flex-wrap: wrap;
+  justify-content: space-between;
 `
 export const LiStyle = styled.li`
   display: flex;
@@ -28,17 +30,17 @@ export const LeftNavItemFirst = styled(LiStyle)`
 `
 
 export const NavItem = styled(LiStyle)<{ active: boolean }>`
-  height: 34px;
   list-style-type: none;
-  margin-left: 10px;
-  background-color: ${({ active, theme }) => (active ? theme.tile.backgroundColor : 'transparent')};
+  height: 34px;
   opacity: ${({ active }) => (active ? '1' : '0.52')};
 `
 
 export const RightNav = styled.ul`
+  width: 70px;
   align-self: flex-end;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 `
 
 export const Rect = styled.div`
