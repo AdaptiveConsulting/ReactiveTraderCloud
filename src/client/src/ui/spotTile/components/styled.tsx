@@ -45,3 +45,10 @@ export const TileHeader = styled('div')`
   align-items: center;
   justify-content: space-between;
 `
+
+export const TileWrapper = styled('div')`
+  position: relative;
+  min-height: 10rem;
+  height: 100%;
+  color: ${({ theme }) => theme.tile.textColor};
+`

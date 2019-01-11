@@ -1,12 +1,6 @@
 import { styled } from 'rt-theme'
 import { TileBaseStyle } from '../styled'
 
-export const AnalyticsTileWrapper = styled.div`
-  position: relative;
-  min-height: 10rem;
-  height: 100%;
-  color: ${({ theme }) => theme.tile.textColor};
-`
 export const AnalyticsTileContent = styled.div`
   display: flex;
   height: 85%;

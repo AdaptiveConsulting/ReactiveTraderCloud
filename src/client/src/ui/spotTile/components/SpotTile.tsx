@@ -4,15 +4,8 @@ import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import TileHeader from './TileHeader'
-import { TileBaseStyle } from './styled'
+import { TileBaseStyle, TileWrapper } from './styled'
 import { Props } from './types'
-//TODO ML 07/01/2019 this should be TileWrapper and be moved to styled.tsx
-export const SpotTileWrapper = styled('div')`
-  position: relative;
-  min-height: 10rem;
-  height: 100%;
-  color: ${({ theme }) => theme.tile.textColor};
-`
 
 export const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme }) => theme.backgroundColor};
@@ -44,7 +37,7 @@ export default class SpotTile extends PureComponent<Props> {
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     return (
-      <SpotTileWrapper>
+      <TileWrapper>
         <SpotTileStyle className="spot-tile">
           <TileHeader baseTerm={baseTerm} date={date} />
           <PriceControls
@@ -58,7 +51,7 @@ export default class SpotTile extends PureComponent<Props> {
           </NotionalInputWrapper>
         </SpotTileStyle>
         {children}
-      </SpotTileWrapper>
+      </TileWrapper>
     )
   }
 }

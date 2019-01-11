@@ -4,13 +4,8 @@ import AnalyticsPriceControl from './AnalyticsTilePriceControl'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
 
-import {
-  AnalyticsTileWrapper,
-  AnalyticsTileStyle,
-  AnalyticsTileContent,
-  GraphNotionalWrapper,
-  LineChartWrapper,
-} from './styled'
+import { AnalyticsTileStyle, AnalyticsTileContent, GraphNotionalWrapper, LineChartWrapper } from './styled'
+import { TileWrapper } from '../styled'
 import { Props } from '../types'
 import TileHeader from '../TileHeader'
 
@@ -29,7 +24,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     return (
-      <AnalyticsTileWrapper className="spot-tile">
+      <TileWrapper className="spot-tile">
         <AnalyticsTileStyle>
           <TileHeader baseTerm={baseTerm} date={date} />
           <AnalyticsTileContent>
@@ -52,7 +47,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
           </AnalyticsTileContent>
         </AnalyticsTileStyle>
         {children}
-      </AnalyticsTileWrapper>
+      </TileWrapper>
     )
   }
 }

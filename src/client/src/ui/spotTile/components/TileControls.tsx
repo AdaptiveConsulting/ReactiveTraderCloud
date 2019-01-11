@@ -1,8 +1,7 @@
 import React from 'react'
 import { PlatformAdapter, PopoutIcon, withPlatform } from 'rt-components'
 import { styled } from 'rt-theme'
-import { SpotTileWrapper } from './SpotTile'
-import { AnalyticsTileWrapper } from './analyticsTile/styled'
+import { TileWrapper } from './styled'
 
 const TopRightButton = styled('button')`
   position: absolute;
@@ -12,12 +11,10 @@ const TopRightButton = styled('button')`
   transition: opacity 0.2s;
   padding: 0.25rem;
 
-  ${SpotTileWrapper}:hover & {
+  ${TileWrapper}:hover & {
     opacity: 0.75;
   }
-  ${AnalyticsTileWrapper}:hover & {
-    opacity: 0.75;
-  }
+
   .svg-icon {
     stroke: ${({ theme }) => theme.textColor};
     fill: ${({ theme }) => theme.textColor};
@@ -32,10 +29,7 @@ const BottomRightButton = styled('button')`
   transition: opacity 0.2s;
   padding: 0.25rem;
 
-  ${SpotTileWrapper}:hover & {
-    opacity: 0.75;
-  }
-  ${AnalyticsTileWrapper}:hover & {
+  ${TileWrapper}:hover & {
     opacity: 0.75;
   }
 `
