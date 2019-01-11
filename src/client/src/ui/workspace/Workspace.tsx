@@ -4,7 +4,7 @@ import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { PortalProps } from './selectors'
 import { CurrencyOptions, TileViews } from './workspaceHeader'
-
+import { appendTileViewToUrl } from './utils'
 const WorkspaceItems = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
@@ -32,7 +32,7 @@ const Workspace: React.SFC<Props> = ({ spotTiles = [], tileView }) => (
     {spotTiles.map(({ key, portalProps }) => (
       <TearOff
         id={key}
-        portalProps={{ ...portalProps, tileView }}
+        portalProps={appendTileViewToUrl(portalProps, tileView)}
         render={(popOut, tornOff) => (
           <WorkspaceItem>
             <SpotTileContainer id={key} tileView={tileView} onPopoutClick={popOut} tornOff={tornOff} tearable />

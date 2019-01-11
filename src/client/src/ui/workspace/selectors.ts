@@ -3,7 +3,6 @@ import { GlobalState } from 'StoreTypes'
 
 const makePortalProps = (key: string) => ({
   title: `${key} Spot`,
-  tileView: 'Normal',
   config: {
     name: `${key} Spot`,
     width: 370,
