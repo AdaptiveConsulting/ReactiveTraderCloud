@@ -1,5 +1,5 @@
 import React from 'react'
-import Portal, { PortalProps } from './Portal'
+import Portal, { PortalProps } from './ExternalWindow'
 
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
 
