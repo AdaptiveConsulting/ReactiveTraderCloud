@@ -1,6 +1,6 @@
-import { ConfigType } from './config'
+import { Config } from './config'
 
-export async function open(config: ConfigType): Promise<Window | fin.OpenFinWindow | fin.OpenFinApplication | void> {
+export async function open(config: Config): Promise<Window | fin.OpenFinWindow | fin.OpenFinApplication | void> {
   const { provider } = config
   // under openfin
   if (typeof fin !== 'undefined') {
@@ -36,7 +36,7 @@ export function createOpenFinApplication({
   name,
   url,
   provider: { options = {} as fin.WindowOptions | any },
-}: ConfigType): Promise<fin.OpenFinApplication> {
+}: Config): Promise<fin.OpenFinApplication> {
   return new Promise((resolve, reject) => {
     const app: fin.OpenFinApplication = new fin.desktop.Application(
       {
@@ -68,7 +68,7 @@ export function createOpenFinApplication({
   })
 }
 
-export function createOpenFinWindow({ name, url, provider: { options } }: ConfigType): Promise<fin.OpenFinWindow> {
+export function createOpenFinWindow({ name, url, provider: { options } }: Config): Promise<fin.OpenFinWindow> {
   return new Promise((resolve, reject) => {
     const window: fin.OpenFinWindow = new fin.desktop.Window(
       {
@@ -86,7 +86,7 @@ export function createOpenFinWindow({ name, url, provider: { options } }: Config
   })
 }
 
-async function downloadOrLaunchLimitChecker(config: ConfigType) {
+async function downloadOrLaunchLimitChecker(config: Config) {
   let app = fin.desktop.Application.wrap(config.name)
   //Get the environement variable
   fin.desktop.System.getEnvironmentVariable('APPDATA', variable => {

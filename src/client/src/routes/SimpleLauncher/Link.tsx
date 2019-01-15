@@ -1,11 +1,11 @@
 import React from 'react'
 import { styled } from 'rt-theme'
-import { ConfigType } from './config'
+import { Config } from './config'
 
 import { open } from './tools'
 
 export interface LinkProps {
-  to: ConfigType
+  to: Config
 }
 
 const StyledButton = styled.button`
