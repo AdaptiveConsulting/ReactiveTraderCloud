@@ -1,12 +1,12 @@
 import React from 'react'
-import Portal, { PortalProps } from './ExternalWindow'
+import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
 
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
 
 interface Props {
   id: string
   render: RenderCB
-  portalProps: Partial<PortalProps>
+  externalWindowProps: Partial<ExternalWindowProps>
   popIn?: () => void
   popOut?: () => void
 }
@@ -33,14 +33,10 @@ export default class TearOff extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { render, portalProps } = this.props
+    const { render, externalWindowProps } = this.props
     const { tornOff } = this.state
     if (tornOff) {
-      return (
-        <Portal onUnload={this.popIn} {...portalProps}>
-          {render(this.popOut, tornOff)}
-        </Portal>
-      )
+      return <ExternalWindow onUnload={this.popIn} {...externalWindowProps} />
     }
     return render(this.popOut, tornOff)
   }
