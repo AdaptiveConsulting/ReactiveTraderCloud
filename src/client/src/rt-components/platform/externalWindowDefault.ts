@@ -1,4 +1,10 @@
-const blotterRegion = {
+import { WindowConfig } from './adapters'
+interface ExternalWindow {
+  title: string
+  config: WindowConfig
+}
+
+const blotterRegion: ExternalWindow = {
   title: 'Blotter',
   config: {
     name: 'blotter',
@@ -8,7 +14,7 @@ const blotterRegion = {
   },
 }
 
-const analyticsRegion = {
+const analyticsRegion: ExternalWindow = {
   title: 'Analytics',
   config: {
     name: 'analytics',
