@@ -1,7 +1,7 @@
 import React from 'react'
-import { PlatformAdapter, withPlatform } from 'rt-components'
+import { PlatformAdapter, withPlatform, WindowConfig } from 'rt-components'
 import { withDefaultProps } from 'rt-util'
-import { WindowConfig, WindowCenterStatus } from './types'
+import { WindowCenterStatus } from './types'
 
 const defaultConfig: WindowConfig = {
   name: '',
