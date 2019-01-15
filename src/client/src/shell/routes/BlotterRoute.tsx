@@ -4,9 +4,9 @@ import { BlotterContainer } from '../../ui/blotter'
 import { styled } from 'rt-theme'
 
 const BlotterContainerStyle = styled('div')`
-  height: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
+  height: 450px;
+  min-width: 850px;
+  padding: 0rem 0.625rem;
   background-color: ${({ theme }) => theme.core.darkBackground};
 `
 

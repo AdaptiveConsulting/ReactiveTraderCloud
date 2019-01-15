@@ -5,7 +5,6 @@ import { styled } from 'rt-theme'
 
 const AnalyticsRouteStyle = styled.div`
   height: 100%;
-  padding: 0.625rem;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: auto;
 `
