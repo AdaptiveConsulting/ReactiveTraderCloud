@@ -6,14 +6,35 @@ import { getEnvVars } from '../../config/config'
 
 const endpointConfig = getEnvVars(process.env.REACT_APP_ENV!)
 
-const accelerator = {
+interface Accelerator {
+  devtools: boolean
+  reload: boolean
+  reloadIgnoringCache: boolean
+  zoom: boolean
+}
+const accelerator: Accelerator = {
   devtools: true,
   reload: true,
   reloadIgnoringCache: true,
   zoom: true,
 }
 
-const options = {
+interface Options {
+  autoShow: boolean
+  defaultWidth: number
+  defaultHeight: number
+  minWidth: number
+  minHeight: number
+  resizable: boolean
+  maximizable: boolean
+  contextMenu?: boolean
+  alwaysOnTop?: boolean
+  frame: boolean
+  nonPersistent: boolean
+  accelerator: Accelerator
+}
+
+const options: Options = {
   autoShow: true,
   defaultWidth: 1280,
   defaultHeight: 900,
@@ -26,14 +47,29 @@ const options = {
   accelerator,
 }
 
+interface Provider {
+  platform: string
+  as: string
+  options: Options
+  cornerRounding?: {
+    height: number
+    width: number
+  }
+}
 const provider = {
   platform: 'openfin',
   as: 'application',
-}
+} as Provider
 
 export type ConfigType = Partial<typeof config[0]>
+interface Config {
+  name: string
+  url: string
+  icon: JSX.Element
+  provider: Provider
+}
 
-export const config = [
+export const config: Config[] = [
   {
     name: 'Reactive Trader',
     url: `http://${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
