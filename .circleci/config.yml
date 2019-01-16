@@ -73,18 +73,33 @@ jobs:
           command: 'docker run ${DOCKER_ID}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
       - run:
           name: Push images to dockerhub
-          command: 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_ID --password-stdin && 
-          docker push ${DOCKER_ID}/client:${CIRCLE_BUILD_NUM} && 
-          docker push ${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM} && 
-          docker push ${DOCKER_ID}/broker:${CIRCLE_BUILD_NUM} && 
-          docker push ${DOCKER_ID}/eventstore:${CIRCLE_BUILD_NUM} && 
-          docker push ${DOCKER_ID}/nginx:${CIRCLE_BUILD_NUM}'
+          command:
+            'echo $DOCKER_PASSWORD | docker login -u $DOCKER_ID --password-stdin &&
+            docker push ${DOCKER_ID}/client:${CIRCLE_BUILD_NUM} &&
+            docker push ${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM} &&
+            docker push ${DOCKER_ID}/broker:${CIRCLE_BUILD_NUM} &&
+            docker push ${DOCKER_ID}/eventstore:${CIRCLE_BUILD_NUM} &&
+            docker push ${DOCKER_ID}/nginx:${CIRCLE_BUILD_NUM}'
+      - run:
+          name: Store build number
+          command: |
+            mkdir -p envs
+            echo "export BUILD_NUM=${CIRCLE_BUILD_NUM}" >> envs/env_build_num
+      - persist_to_workspace:
+          root: envs
+          paths:
+            - env_build_num
 
   deploy:
     docker:
       - image: google/cloud-sdk
     steps:
       - checkout
+      - attach_workspace:
+          at: /envs
+      - run:
+          name: Restore build number
+          command: cat /envs/env_build_num >> $BASH_ENV;
       - run:
           name: Authenticate with gcloud
           command: |
@@ -99,16 +114,15 @@ jobs:
           name: Update images
           command: |
             kubectl --namespace=${NAMESPACE} apply -f ./src/services/kubernetes
-            kubectl --namespace=${NAMESPACE} set image deployments/client-deployment client=${DOCKER_ID}/client:${CIRCLE_BUILD_NUM} 
-            kubectl --namespace=${NAMESPACE} set image deployments/analytics-deployment analytics=${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/blotter-deployment blotter=${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/pricing-deployment pricing=${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/referencedataread-deployment referencedataread=${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_ID}/broker:${CIRCLE_BUILD_NUM} 
-            kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_ID}/eventstore:${CIRCLE_BUILD_NUM} 
-            kubectl --namespace=${NAMESPACE} set image deployments/web-deployment web=${DOCKER_ID}/nginx:${CIRCLE_BUILD_NUM}
-
+            kubectl --namespace=${NAMESPACE} set image deployments/client-deployment client=${DOCKER_ID}/client:${BUILD_NUM} 
+            kubectl --namespace=${NAMESPACE} set image deployments/analytics-deployment analytics=${DOCKER_ID}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/blotter-deployment blotter=${DOCKER_ID}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/pricing-deployment pricing=${DOCKER_ID}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/referencedataread-deployment referencedataread=${DOCKER_ID}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_ID}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_ID}/broker:${BUILD_NUM} 
+            kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_ID}/eventstore:${BUILD_NUM} 
+            kubectl --namespace=${NAMESPACE} set image deployments/web-deployment web=${DOCKER_ID}/nginx:${BUILD_NUM}
 
 workflows:
   version: 2
