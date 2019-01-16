@@ -20,8 +20,6 @@ export class NotificationRoute extends React.Component<{}, State> {
   }
 
   componentDidMount = () => {
-    console.log('Mounted')
-
     window.onNotificationMessage = (message: Message) => {
       this.setState({ message }, () =>
         // send a message back to the main application - required to restore the main application window if it's minimised
