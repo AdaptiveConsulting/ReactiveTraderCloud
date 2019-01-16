@@ -165,7 +165,7 @@ export const light: CorePaletteMap = {
   },
   core: {
     lightBackground: '#ffffff',
-    darkBackground: 'purple',
+    darkBackground: 'rgb(244, 246, 249)',
     alternateBackground: 'rgb(220, 233, 254)',
     offBackground: '#edf4fe',
     textColor: '#333333',
@@ -189,7 +189,7 @@ export const dark: CorePaletteMap = {
   },
   core: {
     lightBackground: 'rgb(46, 53, 67)',
-    darkBackground: 'red',
+    darkBackground: 'rgb(39, 45, 58)',
     alternateBackground: 'rgb(61, 68, 85)',
     offBackground: '#444c5f',
     textColor: '#ffffff',
