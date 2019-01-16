@@ -10,52 +10,52 @@ jobs:
           command: 'docker network create -d bridge circleci'
       - run:
           name: Build client
-          command: 'cd ./src/client  && docker build -t ${DOCKER_ID}/client:${CIRCLE_WORKFLOW_ID} .'
+          command: 'cd ./src/client  && docker build -t ${DOCKER_ID}/client:${CIRCLE_BUILD_NUM} .'
       - run:
           name: Build servers
-          command: 'cd ./src/server && docker build -t ${DOCKER_ID}/servers:${CIRCLE_WORKFLOW_ID} .'
+          command: 'cd ./src/server && docker build -t ${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM} .'
       - run:
           name: Build nginx
-          command: 'cd ./src/services/nginx  && docker build -t ${DOCKER_ID}/nginx:${CIRCLE_WORKFLOW_ID} .'
+          command: 'cd ./src/services/nginx  && docker build -t ${DOCKER_ID}/nginx:${CIRCLE_BUILD_NUM} .'
       - run:
           name: Build broker
-          command: 'cd ./src/services/broker  && docker build -t ${DOCKER_ID}/broker:${CIRCLE_WORKFLOW_ID} .'
+          command: 'cd ./src/services/broker  && docker build -t ${DOCKER_ID}/broker:${CIRCLE_BUILD_NUM} .'
       - run:
           name: Build eventstore
           command: 'cd ./src/services/eventstore  && docker build -t ${DOCKER_ID}/baseeventstore .'
       - run:
           name: Run broker
-          command: 'docker run -d --net circleci --name broker ${DOCKER_ID}/broker:${CIRCLE_WORKFLOW_ID}'
+          command: 'docker run -d --net circleci --name broker ${DOCKER_ID}/broker:${CIRCLE_BUILD_NUM}'
       - run:
           name: Run eventstore
           command: 'docker run -d --net circleci --name eventstore ${DOCKER_ID}/baseeventstore'
       - run:
           name: Populate eventstore
-          command: 'docker run --net circleci --name servers ${DOCKER_ID}/servers:${CIRCLE_WORKFLOW_ID} dotnet ./Adaptive.ReactiveTrader.Server.Launcher.dll config.prod.json --populate-eventstore'
+          command: 'docker run --net circleci --name servers ${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Launcher.dll config.prod.json --populate-eventstore'
       - run:
           name: Save eventstore
-          command: 'docker commit eventstore ${DOCKER_ID}/eventstore:${CIRCLE_WORKFLOW_ID}'
+          command: 'docker commit eventstore ${DOCKER_ID}/eventstore:${CIRCLE_BUILD_NUM}'
       - run:
           name: Run analytics
-          command: 'docker run -d --net circleci --name analytics ${DOCKER_ID}/servers:${CIRCLE_WORKFLOW_ID} dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json'
+          command: 'docker run -d --net circleci --name analytics ${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json'
       - run:
           name: Run pricing
-          command: 'docker run -d --net circleci --name pricing ${DOCKER_ID}/servers:${CIRCLE_WORKFLOW_ID} dotnet ./Adaptive.ReactiveTrader.Server.Pricing.dll config.prod.json'
+          command: 'docker run -d --net circleci --name pricing ${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Pricing.dll config.prod.json'
       - run:
           name: Run referencedataread
-          command: 'docker run -d --net circleci --name referencedataread ${DOCKER_ID}/servers:${CIRCLE_WORKFLOW_ID} dotnet ./Adaptive.ReactiveTrader.Server.ReferenceDataRead.dll config.prod.json'
+          command: 'docker run -d --net circleci --name referencedataread ${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.ReferenceDataRead.dll config.prod.json'
       - run:
           name: Run tradeexecution
-          command: 'docker run -d --net circleci --name tradeexecution ${DOCKER_ID}/servers:${CIRCLE_WORKFLOW_ID} dotnet ./Adaptive.ReactiveTrader.Server.TradeExecution.dll config.prod.json'
+          command: 'docker run -d --net circleci --name tradeexecution ${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.TradeExecution.dll config.prod.json'
       - run:
           name: Run blotter
-          command: 'docker run -d --net circleci --name blotter ${DOCKER_ID}/servers:${CIRCLE_WORKFLOW_ID} dotnet ./Adaptive.ReactiveTrader.Server.Blotter.dll config.prod.json'
+          command: 'docker run -d --net circleci --name blotter ${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Blotter.dll config.prod.json'
       - run:
           name: Run nginx
-          command: 'docker run -d --net circleci -p 80:80 --name nginx ${DOCKER_ID}/nginx:${CIRCLE_WORKFLOW_ID}'
+          command: 'docker run -d --net circleci -p 80:80 --name nginx ${DOCKER_ID}/nginx:${CIRCLE_BUILD_NUM}'
       - run:
           name: Run client
-          command: 'docker run -d --net circleci --name client ${DOCKER_ID}/client:${CIRCLE_WORKFLOW_ID}'
+          command: 'docker run -d --net circleci --name client ${DOCKER_ID}/client:${CIRCLE_BUILD_NUM}'
       - run:
           name: List containers
           command: 'docker ps'
@@ -64,13 +64,13 @@ jobs:
           command: 'docker ps -q -a | xargs -t -L 1 docker logs'
       - run:
           name: Run server tests
-          command: 'docker run --net circleci --name tests ${DOCKER_ID}/servers:${CIRCLE_WORKFLOW_ID} dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll'
+          command: 'docker run --net circleci --name tests ${DOCKER_ID}/servers:${CIRCLE_BUILD_NUM} dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll'
       - run:
           name: Build client tests
-          command: 'cd ./src/client && docker build -t ${DOCKER_ID}/client-test${CIRCLE_WORKFLOW_ID} -f ./Dockerfile.dev .'
+          command: 'cd ./src/client && docker build -t ${DOCKER_ID}/client-test${CIRCLE_BUILD_NUM} -f ./Dockerfile.dev .'
       - run:
           name: Run client tests
-          command: 'docker run ${DOCKER_ID}/client-test${CIRCLE_WORKFLOW_ID} npm run test -- --coverage'
+          command: 'docker run ${DOCKER_ID}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
       - run:
           name: Push images to dockerhub
           command:
