@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build_test_and_push:
+  build_and_test:
     machine:
       enabled: true
     steps:
@@ -128,10 +128,10 @@ workflows:
   version: 2
   main:
     jobs:
-      - build_test_and_push
+      - build_and_test
       - deploy:
           requires:
-            - build_test_and_push
+            - build_and_test
           filters:
             branches:
               only:
