@@ -113,15 +113,15 @@ jobs:
       - run:
           name: Update images
           command: |
+            kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_ID}/broker:${BUILD_NUM} 
+            kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_ID}/eventstore:${BUILD_NUM} 
+            kubectl --namespace=${NAMESPACE} set image deployments/web-deployment web=${DOCKER_ID}/nginx:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/client-deployment client=${DOCKER_ID}/client:${BUILD_NUM} 
             kubectl --namespace=${NAMESPACE} set image deployments/analytics-deployment analytics=${DOCKER_ID}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/blotter-deployment blotter=${DOCKER_ID}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/pricing-deployment pricing=${DOCKER_ID}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/referencedataread-deployment referencedataread=${DOCKER_ID}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_ID}/servers:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_ID}/broker:${BUILD_NUM} 
-            kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_ID}/eventstore:${BUILD_NUM} 
-            kubectl --namespace=${NAMESPACE} set image deployments/web-deployment web=${DOCKER_ID}/nginx:${BUILD_NUM}
 
 workflows:
   version: 2
