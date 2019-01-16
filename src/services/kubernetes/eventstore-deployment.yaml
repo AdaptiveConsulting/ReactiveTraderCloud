@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: eventstore
-          image: keshaldesai/eventstore:90
+          image: reactivetrader/eventstore:90
           ports:
             - containerPort: 1113
             - containerPort: 2113

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: referencedataread
-          image: keshaldesai/servers:90
+          image: reactivetrader/servers:90
           env:
             - name: BROKER_HOST
               value: broker
