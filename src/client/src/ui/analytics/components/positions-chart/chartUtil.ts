@@ -24,7 +24,7 @@ export function getPositionsDataFromSeries(series: CurrencyPairPosition[] = [], 
   return _.map(positionsPerCcyObj, (val, key) => {
     return {
       symbol: key,
-      [baseAmountPropertyName]: val
+      [baseAmountPropertyName]: val,
     }
   }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
 }
@@ -58,7 +58,7 @@ export function createScales(props: PositionsBubbleChartProps) {
     r: d3.scale
       .sqrt()
       .domain([minValue, maxValue])
-      .range([minR, maxR])
+      .range([minR, maxR]),
   }
 
   return scales
@@ -79,7 +79,7 @@ export function updateNodes(nodeGroup: any, nodes: any[], scales: any) {
     },
     id: (d: any, i: any) => {
       return d.id
-    }
+    },
   })
 
   nodes.forEach((node: any) => {
@@ -104,12 +104,13 @@ export function drawCircles(nodeGroup: any, duration: number = 800) {
     .attr({
       r: (d: any) => {
         return d.r
-      }
+      },
     })
+    .style('filter', 'url(#drop-shadow)')
     .style({
       fill: (d: any) => {
         return d.color
-      }
+      },
     })
 }
 
@@ -118,7 +119,7 @@ export function drawLabels(nodeGroup: any) {
     .attr({
       x: 0,
       y: 3,
-      class: 'analytics__positions-label'
+      class: 'analytics__positions-label',
     })
     .text((d: any) => {
       return d.id
@@ -137,26 +138,53 @@ export function getPositionValue(id: string, positionsData: any[]) {
   return ''
 }
 
+export function addShadow(svg: any) {
+  const definitions = svg.append('defs')
+
+  const filter = definitions
+    .append('filter')
+    .attr('id', 'drop-shadow')
+    .attr('height', '130%')
+
+  filter
+    .append('feGaussianBlur')
+    .attr('in', 'SourceAlpha')
+    .attr('stdDeviation', 1.5)
+    .attr('result', 'blur')
+
+  filter
+    .append('feOffset')
+    .attr('in', 'blur')
+    .attr('dx', 1)
+    .attr('dy', 1)
+    .attr('result', 'offsetBlur')
+
+  const feMerge = filter.append('feMerge')
+
+  feMerge.append('feMergeNode').attr('in', 'offsetBlur')
+  feMerge.append('feMergeNode').attr('in', 'SourceGraphic')
+}
+
 export function collide(alpha: number, nodes: any[], scale?: number) {
-  const qt = d3.geom.quadtree(nodes)
-  const padding = 10
+  const quadtree = d3.geom.quadtree(nodes)
+  const offset = -3
 
   return (d: any) => {
-    let r = d.r + 10 + padding
+    let radius = d.r + 10 + offset
 
-    const nx1 = d.x - r
-    const nx2 = d.x + r
-    const ny1 = d.y - r
-    const ny2 = d.y + r
+    const nx1 = d.x - radius
+    const nx2 = d.x + radius
+    const ny1 = d.y - radius
+    const ny2 = d.y + radius
 
-    return qt.visit((quad: any, x1: number, y1: number, x2: number, y2: number) => {
+    return quadtree.visit((quad: any, x1: number, y1: number, x2: number, y2: number) => {
       if (quad.point && quad.point !== d) {
         let x = d.x - quad.point.x
         let y = d.y - quad.point.y
         let l = Math.sqrt(x * x + y * y)
-        r = d.r + quad.point.r + padding
-        if (l < r) {
-          l = ((l - r) / l) * alpha
+        radius = d.r + quad.point.r + offset
+        if (l < radius) {
+          l = ((l - radius) / l) * alpha
           d.x -= x *= l
           d.y -= y *= l
           quad.point.x += x

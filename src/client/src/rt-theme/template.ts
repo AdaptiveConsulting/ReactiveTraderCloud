@@ -11,6 +11,7 @@ enum red {
 }
 
 enum white {
+  dark = '#dfdfdf',
   normal = '#ffffff',
 }
 

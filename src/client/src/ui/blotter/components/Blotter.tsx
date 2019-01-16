@@ -29,13 +29,18 @@ const BlotterStyle = styled('div')`
 
 const BlotterStatus = styled('div')`
   height: 2rem;
-  padding: 0 0.5rem;
+  padding: 0.5rem 0 0.5rem 0.75rem;
   font-size: 0.625rem;
   line-height: 1rem;
   display: flex;
   align-items: center;
-  opacity: 0.6;
   color: ${({ theme }) => theme.core.textColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  border-radius: 0 0 0.25rem 0.25rem;
+`
+
+const BlotterStatusText = styled.span`
+  opacity: 0.6;
 `
 
 const icons = {
@@ -59,30 +64,30 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
     const { displayedRows } = this.state
     return (
       <BlotterStyle>
-        <React.Fragment>
-          <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
-          <BlotterGrid ref={this.gridDoc}>
-            <AgGridReact
-              columnDefs={columnDefinitions}
-              defaultColDef={DEFAULT_COLUMN_DEFINITION}
-              rowData={rows}
-              enableColResize={true}
-              suppressMovableColumns={true}
-              enableSorting={true}
-              enableFilter={true}
-              rowSelection="multiple"
-              suppressDragLeaveHidesColumns={true}
-              getRowClass={this.getRowClass}
-              headerHeight={38}
-              rowHeight={28}
-              onModelUpdated={this.onModelUpdated}
-              onGridReady={this.onGridReady}
-              icons={icons}
-              getDocument={() => this.gridDoc.current.ownerDocument}
-            />
-          </BlotterGrid>
-          <BlotterStatus>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatus>
-        </React.Fragment>
+        <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
+        <BlotterGrid ref={this.gridDoc}>
+          <AgGridReact
+            columnDefs={columnDefinitions}
+            defaultColDef={DEFAULT_COLUMN_DEFINITION}
+            rowData={rows}
+            enableColResize={true}
+            suppressMovableColumns={true}
+            enableSorting={true}
+            enableFilter={true}
+            rowSelection="multiple"
+            suppressDragLeaveHidesColumns={true}
+            getRowClass={this.getRowClass}
+            headerHeight={38}
+            rowHeight={28}
+            onModelUpdated={this.onModelUpdated}
+            onGridReady={this.onGridReady}
+            icons={icons}
+            getDocument={() => this.gridDoc.current.ownerDocument}
+          />
+        </BlotterGrid>
+        <BlotterStatus>
+          <BlotterStatusText>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatusText>
+        </BlotterStatus>
       </BlotterStyle>
     )
   }
