@@ -73,7 +73,7 @@ export default class OpenFin implements PlatformAdapter {
       new fin.desktop.Notification({
         url: '/notification',
         message,
-        timeout: 20000,
+        timeout: 8000,
       } as any),
   }
 }
