@@ -1,4 +1,3 @@
-import { darken } from 'polished'
 import { styled } from 'rt-theme'
 
 export const PopupContainer = styled.div<{ open: boolean }>`
@@ -10,8 +9,7 @@ export const PopupContainer = styled.div<{ open: boolean }>`
   font-size: 0.75rem;
   border-radius: 0.25rem;
   background: ${({ theme }) => theme.core.alternateBackground};
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
-    0 1rem 3rem -1rem ${props => darken(0.1, props.theme.overlay.backgroundColor)};
+  box-shadow: 0 0.05rem 0.05rem rgba(0, 0, 0, 0.05), 0 1rem 3rem -1rem ${props => props.theme.overlay.backgroundColor};
 `
 
 export const PopupPanel = styled.div`

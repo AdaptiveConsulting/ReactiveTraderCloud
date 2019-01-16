@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { Component, SyntheticEvent } from 'react'
 
 import { ConnectionState } from 'rt-system'
@@ -52,6 +51,7 @@ export class StatusButton extends Component<
 
     const { opened } = this.state
     const appStatus = this.getApplicationStatus(services)
+    const appUrl = `${url} (${transportType})`
     return (
       <Root>
         <Button onClick={this.toggleOpen}>
@@ -61,13 +61,7 @@ export class StatusButton extends Component<
 
         <ServiceListPopup open={opened} onClick={this.toggleOpen}>
           <ServiceList>
-            <AppUrl
-              title={`${url} (${transportType})`}
-              readOnly={true}
-              value={`${url} (${transportType})`}
-              onFocus={this.selectAll}
-              onClick={this.selectAll}
-            />
+            <AppUrl title={appUrl} readOnly={true} value={appUrl} onFocus={this.selectAll} onClick={this.selectAll} />
 
             {services.map((service, index) => (
               <Service key={service.serviceType} service={service} index={index} />
