@@ -2,9 +2,6 @@ import React from 'react'
 
 import { faChartArea, faExchangeAlt, faMicrophone, faPalette, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getEnvVars } from '../../config/config'
-
-const endpointConfig = getEnvVars(process.env.REACT_APP_ENV!)
 
 const accelerator = {
   devtools: true,
@@ -36,7 +33,7 @@ export type ConfigType = Partial<typeof config[0]>
 export const config = [
   {
     name: 'Reactive Trader',
-    url: `http://${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
+    url: `http://${location.host}`,
     icon: <FontAwesomeIcon icon={faExchangeAlt} />,
     provider: {
       ...provider,
@@ -57,9 +54,7 @@ export const config = [
   },
   {
     name: 'Adaptive Style Guide',
-    url: `http://${
-      endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname
-    }/styleguide`,
+    url: `http://${location.host}/styleguide`,
     icon: <FontAwesomeIcon icon={faPalette} />,
     provider: {
       ...provider,
@@ -71,9 +66,7 @@ export const config = [
   },
   {
     name: 'Bond Order Ticket',
-    url: `http://${
-      endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname
-    }/order-ticket`,
+    url: `http://${location.host}/order-ticket`,
     icon: <FontAwesomeIcon icon={faMicrophone} />,
     provider: {
       ...provider,
