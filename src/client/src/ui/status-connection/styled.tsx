@@ -47,7 +47,7 @@ const StatusLabelCore: FunctionComponent<{ className?: string; status: ServiceCo
   status,
 }) => <span className={className}>{_.capitalize(status)}</span>
 export const StatusLabel = styled(StatusLabelCore)`
-  margin-left: 10px;
+  margin-left: 0.75rem;
 `
 
 export const Root = styled.div`
@@ -66,7 +66,6 @@ export const ServiceListPopup = styled(Popup)`
   bottom: calc(${buttonHeight} + 0.25rem);
   right: 0;
   border-radius: 0.5rem;
-  box-shadow: none;
 `
 
 export const ServiceName = styled.div`

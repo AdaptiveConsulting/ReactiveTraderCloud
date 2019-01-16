@@ -8,11 +8,6 @@ interface Props {
 }
 
 export default class Popup extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props)
-    this.onClick = this.onClick.bind(this)
-  }
-
   onClick(e: MouseEvent<HTMLDivElement>) {
     const { onClick } = this.props
     if (onClick) {
@@ -23,7 +18,7 @@ export default class Popup extends React.Component<Props> {
   render() {
     const { className, open = false, children } = this.props
     return (
-      <PopupContainer className={className} open={open} onClick={this.onClick}>
+      <PopupContainer className={className} open={open} onClick={e => this.onClick(e)}>
         <PopupPanel>
           <Body>{children}</Body>
         </PopupPanel>
