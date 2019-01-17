@@ -2,8 +2,8 @@ import React from 'react'
 
 import { rules } from 'rt-styleguide'
 
-import { config } from './config'
-import { Link } from './Link'
+import { appConfigs } from './applicationConfigurations'
+import { LaunchButton } from './LaunchButton'
 import { LogoIcon } from 'rt-components'
 import { createGlobalStyle } from 'styled-components'
 import { ThemeStorageSwitch, styled } from 'rt-theme'
@@ -26,9 +26,9 @@ export class Launcher extends React.Component {
           <LogoContainer>
             <LogoIcon width={1.5} height={1.5} />
           </LogoContainer>
-          {config.map(app => (
+          {appConfigs.map(app => (
             <ButtonContainer key={app.name}>
-              <Link to={app}>{app.icon}</Link>
+              <LaunchButton appConfig={app}>{app.icon}</LaunchButton>
             </ButtonContainer>
           ))}
 

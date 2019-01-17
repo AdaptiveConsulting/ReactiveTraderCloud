@@ -3,18 +3,10 @@ import React from 'react'
 import { faChartArea, faExchangeAlt, faMicrophone, faPalette, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getEnvVars } from '../../config/config'
-import { Provider, Options, Accelerator } from './types'
 
 const endpointConfig = getEnvVars(process.env.REACT_APP_ENV!)
 
-const accelerator: Accelerator = {
-  devtools: true,
-  reload: true,
-  reloadIgnoringCache: true,
-  zoom: true,
-}
-
-const options: Options = {
+const options = {
   autoShow: true,
   defaultWidth: 1280,
   defaultHeight: 900,
@@ -24,27 +16,38 @@ const options: Options = {
   maximizable: true,
   frame: false,
   nonPersistent: true,
-  accelerator,
+  accelerator: {
+    devtools: true,
+    reload: true,
+    reloadIgnoringCache: true,
+    zoom: true,
+  },
+}
+export type ApplicationType = 'window' | 'download' | 'application'
+
+interface Provider {
+  as: ApplicationType
+  options: fin.WindowOptions
+  cornerRounding?: {
+    height: number
+    width: number
+  }
 }
 
-const provider = {
-  platform: 'openfin',
-  as: 'application',
-} as Provider
-export interface Config {
+export interface ApplicationConfig {
   name: string
   url: string
   icon: JSX.Element
   provider: Provider
 }
 
-export const config: Config[] = [
+export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Trader',
     url: `http://${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
     icon: <FontAwesomeIcon icon={faExchangeAlt} />,
     provider: {
-      ...provider,
+      as: 'application',
       options,
     },
   },
@@ -53,7 +56,7 @@ export const config: Config[] = [
     url: 'http://demo-reactive-analytics.adaptivecluster.com/',
     icon: <FontAwesomeIcon icon={faChartArea} />,
     provider: {
-      ...provider,
+      as: 'application',
       options: {
         ...options,
         frame: true,
@@ -67,7 +70,7 @@ export const config: Config[] = [
     }/styleguide`,
     icon: <FontAwesomeIcon icon={faPalette} />,
     provider: {
-      ...provider,
+      as: 'application',
       options: {
         ...options,
         frame: true,
@@ -81,7 +84,7 @@ export const config: Config[] = [
     }/order-ticket`,
     icon: <FontAwesomeIcon icon={faMicrophone} />,
     provider: {
-      ...provider,
+      as: 'application',
       options: {
         ...options,
         defaultWidth: 672,
@@ -104,7 +107,6 @@ export const config: Config[] = [
     url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
     icon: <FontAwesomeIcon icon={faDownload} />,
     provider: {
-      platform: 'openfin',
       as: 'download',
       options,
     },
