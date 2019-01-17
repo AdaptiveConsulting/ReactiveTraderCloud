@@ -19,6 +19,12 @@ if (typeof fin !== 'undefined') {
   window.onNotificationMessage = (message: any) => openFinNotifications.push(message)
 }
 
+const MainRoute = lazy(() => import('./routes/MainRoute'))
+const NotificationRoute = lazy(() => import('./routes/NotificationRoute'))
+const StyleguideRoute = lazy(() => import('./routes/StyleguideRoute'))
+const OrderTicketRoute = lazy(() => import('./routes/OrderTicketRoute'))
+const SimpleLauncher = lazy(() => import('./routes/SimpleLauncher'))
+
 ReactDOM.render(
   <React.Fragment>
     <GlobalStyle />

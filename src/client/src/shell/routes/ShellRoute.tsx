@@ -88,7 +88,7 @@ const portalProps = {
     config: {
       name: 'analytics',
       width: 400,
-      height: 800,
+      height: 990,
       url: '/analytics',
     },
   },
