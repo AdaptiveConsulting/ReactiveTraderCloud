@@ -4,11 +4,11 @@ import { Direction, Trade, TradeStatus } from 'rt-types'
 import { Bottom, Close, CloseContainer, MetaContainer, MetaTitle, Notification, Status, Top, Traded } from './styled'
 
 export interface Props {
-  message: Trade
+  trade: Trade
   dismissNotification: () => void
 }
 
-const TradeNotification: React.SFC<Props> = ({ message: trade, dismissNotification }) => {
+const TradeNotification: React.SFC<Props> = ({ trade: trade, dismissNotification }) => {
   const formattedValueDate = trade
     ? moment(trade.valueDate)
         .format('DD MMM')
@@ -51,6 +51,21 @@ const TradeNotification: React.SFC<Props> = ({ message: trade, dismissNotificati
       </Bottom>
     </Notification>
   )
+}
+
+TradeNotification.defaultProps = {
+  trade: {
+    tradeId: 0,
+    traderName: '',
+    symbol: '',
+    notional: 0,
+    dealtCurrency: '',
+    direction: '',
+    spotRate: 0,
+    tradeDate: new Date(),
+    valueDate: new Date(),
+    status: '',
+  },
 }
 
 export default TradeNotification
