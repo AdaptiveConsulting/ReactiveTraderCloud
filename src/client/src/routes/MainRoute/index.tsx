@@ -2,8 +2,7 @@
 import React, { lazy, Suspense } from 'react'
 
 import { styled, ThemeProvider } from 'rt-theme'
-
-const MainRoute = lazy(() => import('./MainRoute'))
+import MainRoute from './MainRoute'
 
 const Fallback = styled.div`
   width: 100vw;
