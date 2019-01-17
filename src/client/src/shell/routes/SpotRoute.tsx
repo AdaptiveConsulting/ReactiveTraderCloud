@@ -5,8 +5,8 @@ import SpotTileContainer from '../../ui/spotTile/SpotTileContainer'
 import { styled } from 'rt-theme'
 
 const SpotTileStyle = styled.div`
-  width: 380px;
-  height: 210px;
+  width: 26rem;
+  height: 13.125rem;
   padding: 0.625rem;
 `
 

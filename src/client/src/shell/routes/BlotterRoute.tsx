@@ -4,8 +4,8 @@ import { BlotterContainer } from '../../ui/blotter'
 import { styled } from 'rt-theme'
 
 const BlotterContainerStyle = styled('div')`
-  height: 450px;
-  min-width: 850px;
+  height: 28.125rem;
+  min-width: 53.125rem;
   padding: 0.625rem;
 `
 
