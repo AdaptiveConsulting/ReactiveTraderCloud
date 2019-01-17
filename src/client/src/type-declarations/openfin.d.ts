@@ -1,9 +1,9 @@
 declare namespace fin {
   interface WindowOptions {
-    shadow: boolean
+    shadow?: boolean
   }
 
   interface ApplicationOptions {
-    nonPersistent: boolean
+    nonPersistent?: boolean
   }
 }
