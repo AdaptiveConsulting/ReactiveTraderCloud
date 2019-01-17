@@ -13,19 +13,6 @@ interface State {
   message: Message | null
 }
 
-const debugTrade: Trade = {
-  tradeId: 1,
-  traderName: 'Test',
-  symbol: 'TST',
-  notional: 100,
-  dealtCurrency: 'USD',
-  direction: 'BUY',
-  spotRate: 101,
-  tradeDate: new Date(),
-  valueDate: new Date(),
-  status: 'PENDING',
-}
-
 export class NotificationRoute extends React.Component<{}, State> {
   state: State = {
     message: null,
@@ -46,14 +33,11 @@ export class NotificationRoute extends React.Component<{}, State> {
   onDismissNotification = () => fin.desktop.Notification.getCurrent().close()
 
   render() {
-    const { message } = this.state
-    return message ? (
+    let { message } = this.state
+    if (!message) { message = { tradeNotification: undefined } }
+    return (
       <ThemeProvider>
-        <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
-      </ThemeProvider>
-    ) : (
-      <ThemeProvider>
-        <TradeNotification message={debugTrade} dismissNotification={() => console.log('Dismiss notification')} />
+        <TradeNotification trade={message.tradeNotification} dismissNotification={this.onDismissNotification} />
       </ThemeProvider>
     )
   }
