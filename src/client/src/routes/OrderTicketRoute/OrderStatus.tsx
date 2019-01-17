@@ -53,7 +53,11 @@ export class OrderStatus extends React.Component<Props, State> {
   }
 
   onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const { onClick, [`on${_.capitalize(event.currentTarget.name)}`]: onEventHandler = onClick } = this.props
+    const { onClick, ...leftover } = this.props
+
+    const eventHandlerName = `on${_.capitalize(event.currentTarget.name)}`
+
+    const onEventHandler = leftover[eventHandlerName] || onClick
 
     if (onEventHandler) {
       onEventHandler()
