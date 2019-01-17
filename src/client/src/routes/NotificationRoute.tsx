@@ -32,10 +32,12 @@ export class NotificationRoute extends React.Component<{}, State> {
 
   render() {
     const { message } = this.state
-    return message == null ? null : (
-      <ThemeProvider>
-        <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
-      </ThemeProvider>
+    return (
+      message && (
+        <ThemeProvider>
+          <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
+        </ThemeProvider>
+      )
     )
   }
 }
