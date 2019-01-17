@@ -1,4 +1,17 @@
 import { styled } from 'rt-theme'
+import { keyframes } from 'styled-components'
+
+export const animateRow = keyframes`
+  0% {
+    background-color: rgb(46, 53, 67);
+  }
+  50% {
+    background-color: rgb(61, 68, 85);
+  }
+  100% {
+    background-color: rgb(46, 53, 67);
+  }
+`
 
 export default styled('div')`
   height: calc(100% - 4.75rem);
@@ -29,6 +42,10 @@ export default styled('div')`
 
   .rt-blotter__row-pending {
     background-color: ${({ theme }) => theme.core.offBackground};
+  }
+
+  .rt-blotter__row-highlight {
+    animation: ${animateRow} 1s ease-in-out 0s infinite;
   }
 
   .rt-blotter__status-indicator--done {

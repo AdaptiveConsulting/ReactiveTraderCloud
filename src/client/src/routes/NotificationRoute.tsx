@@ -45,11 +45,17 @@ export class NotificationRoute extends React.Component<{}, State> {
 
   onDismissNotification = () => fin.desktop.Notification.getCurrent().close()
 
+  highlightTradeInBlotter = () => fin.desktop.InterApplicationBus.publish('highlight-blotter', this.state.message)
+
   render() {
     const { message } = this.state
     return message ? (
       <ThemeProvider>
-        <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
+        <TradeNotification
+          message={message.tradeNotification}
+          dismissNotification={this.onDismissNotification}
+          highlightTradeInBlotter={this.highlightTradeInBlotter}
+        />
       </ThemeProvider>
     ) : (
       <ThemeProvider>
