@@ -52,6 +52,7 @@ const connectBlotterToExcel: ApplicationEpic = (action$, state$, { platform }) =
 export const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     ofType<Action, NewTradesAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
+    filter(action => action.payload.trades.length > 0),
     map(action => action.payload.trades[0]),
     skipWhile(trade => !state$.value.currencyPairs[trade.symbol]),
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
