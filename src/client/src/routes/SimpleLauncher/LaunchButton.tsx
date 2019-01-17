@@ -1,11 +1,11 @@
 import React from 'react'
 import { styled } from 'rt-theme'
-import { ConfigType } from './config'
+import { ApplicationConfig } from './applicationConfigurations'
 
 import { open } from './tools'
 
-export interface LinkProps {
-  to: ConfigType
+export interface LaunchButtonProps {
+  appConfig: ApplicationConfig
 }
 
 const StyledButton = styled.button`
@@ -27,9 +27,9 @@ const StyledButton = styled.button`
   }
 `
 
-export class Link extends React.Component<LinkProps> {
+export class LaunchButton extends React.Component<LaunchButtonProps> {
   onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    open(this.props.to)
+    open(this.props.appConfig)
     event.preventDefault()
   }
 

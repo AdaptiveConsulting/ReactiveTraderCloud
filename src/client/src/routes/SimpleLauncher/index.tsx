@@ -12,3 +12,5 @@ export class SimpleLauncher extends React.Component {
     )
   }
 }
+
+export default SimpleLauncher
