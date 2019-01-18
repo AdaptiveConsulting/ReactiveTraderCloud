@@ -3,25 +3,34 @@ import { ApplicationConfig, ApplicationType } from './applicationConfigurations'
 export async function open(
   config: ApplicationConfig,
 ): Promise<Window | fin.OpenFinWindow | fin.OpenFinApplication | void> {
-  const {
-    provider: { as },
-  } = config
-
+  const { provider } = config
+  // under openfin
   if (typeof fin !== 'undefined') {
-    return window.open(config.url, config.name)
-  }
-  switch (as) {
-    case 'window':
-      return createOpenFinWindow(config)
-    case 'download':
-      return downloadOrLaunchLimitChecker(config)
-    case 'application':
-    default: {
-      const app = await createOpenFinApplication(config)
-      await new Promise((resolve, reject) => app.run(resolve, reject))
-
-      return app
+    // open as url through openfin
+    if (provider.platform === 'browser') {
+      return fin.desktop.System.openUrlWithBrowser(config.url)
     }
+    // open new openfin application
+    else if (provider.platform === 'openfin') {
+      switch (provider.as) {
+        case 'window':
+          return createOpenFinWindow(config)
+        case 'download':
+          return downloadOrLaunchLimitChecker(config)
+
+        case 'application':
+        default: {
+          const app = await createOpenFinApplication(config)
+          await new Promise((resolve, reject) => app.run(resolve, reject))
+
+          return app
+        }
+      }
+    }
+  }
+  // open as url
+  else {
+    return window.open(config.url, config.name)
   }
 }
 
