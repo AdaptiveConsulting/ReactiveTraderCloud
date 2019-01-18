@@ -25,9 +25,8 @@ class BaseButtonThemeProvider extends React.Component<ButtonStyleProps & { theme
     const { intent, outline, active, disabled, invert } = this.props
 
     const { backgroundColor, textColor, button: theme, colors } = providedTheme
-    let {
-      button: { [intent]: palette = { backgroundColor, textColor } },
-    } = providedTheme
+
+    let palette = providedTheme.button[intent] || { backgroundColor, textColor }
 
     if (active) {
       palette = { ...palette, ...palette.active }

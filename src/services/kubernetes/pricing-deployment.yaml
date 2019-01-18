@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pricing-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: pricing
+  template:
+    metadata:
+      labels:
+        component: pricing
+    spec:
+      containers:
+        - name: pricing
+          image: reactivetrader/servers:90
+          env:
+            - name: BROKER_HOST
+              value: broker
+            - name: BROKER_PORT
+              value: '8000'
+            - name: EVENTSTORE_HOST
+              value: eventstore
+            - name: EVENTSTORE_PORT
+              value: '1113'
+          command:
+            [
+              'sh',
+              '-c',
+              'dotnet ./Adaptive.ReactiveTrader.Server.Pricing.dll config.prod.json',
+            ]
