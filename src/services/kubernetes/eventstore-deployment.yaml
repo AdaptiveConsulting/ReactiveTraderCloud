@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventstore-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: eventstore
+  template:
+    metadata:
+      labels:
+        component: eventstore
+    spec:
+      containers:
+        - name: eventstore
+          image: reactivetrader/eventstore:90
+          ports:
+            - containerPort: 1113
+            - containerPort: 2113

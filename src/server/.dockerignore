@@ -1,0 +1,13 @@
+# directories
+**/bin/
+**/obj/
+**/out/
+.vs
+
+# files
+Dockerfile*
+**/*.trx
+**/*.md
+
+key.priv
+key.pub

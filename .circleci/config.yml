@@ -1,101 +1,139 @@
 version: 2
 jobs:
-  build:
-    branches:
-      ignore:
-        - gh-pages
-    environment:
-      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
-      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+  build_and_test:
     machine:
       enabled: true
-      docker_layer_caching: true
     steps:
       - checkout
       - run:
-          name: "Set deployment flag and build identity"
-          # If you need to interpolate other environment variables to set an environment variable, the only place to do this at the moment is in bash.
-          # CircleCI 2.0 automatically sets a $BASH_ENV variable to a random name in /tmp, and will source this file for each step.
-          # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
+          name: Create network
+          command: 'docker network create -d bridge circleci'
+      - run:
+          name: Build client
+          command: 'cd ./src/client  && docker build -t ${DOCKER_USER}/client:${CIRCLE_BUILD_NUM} .'
+      - run:
+          name: Build servers
+          command: 'cd ./src/server && docker build -t ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} .'
+      - run:
+          name: Build nginx
+          command: 'cd ./src/services/nginx  && docker build -t ${DOCKER_USER}/nginx:${CIRCLE_BUILD_NUM} .'
+      - run:
+          name: Build broker
+          command: 'cd ./src/services/broker  && docker build -t ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM} .'
+      - run:
+          name: Build eventstore
+          command: 'cd ./src/services/eventstore  && docker build -t ${DOCKER_USER}/baseeventstore .'
+      - run:
+          name: Run broker
+          command: 'docker run -d --net circleci --name broker ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM}'
+      - run:
+          name: Run eventstore
+          command: 'docker run -d --net circleci --name eventstore ${DOCKER_USER}/baseeventstore'
+      - run:
+          name: Populate eventstore
+          command: 'docker run --net circleci --name servers ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Launcher.dll config.prod.json --populate-eventstore'
+      - run:
+          name: Save eventstore
+          command: 'docker commit eventstore ${DOCKER_USER}/eventstore:${CIRCLE_BUILD_NUM}'
+      - run:
+          name: Run analytics
+          command: 'docker run -d --net circleci --name analytics ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json'
+      - run:
+          name: Run pricing
+          command: 'docker run -d --net circleci --name pricing ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Pricing.dll config.prod.json'
+      - run:
+          name: Run referencedataread
+          command: 'docker run -d --net circleci --name referencedataread ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.ReferenceDataRead.dll config.prod.json'
+      - run:
+          name: Run tradeexecution
+          command: 'docker run -d --net circleci --name tradeexecution ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.TradeExecution.dll config.prod.json'
+      - run:
+          name: Run blotter
+          command: 'docker run -d --net circleci --name blotter ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Blotter.dll config.prod.json'
+      - run:
+          name: Run nginx
+          command: 'docker run -d --net circleci -p 80:80 --name nginx ${DOCKER_USER}/nginx:${CIRCLE_BUILD_NUM}'
+      - run:
+          name: Run client
+          command: 'docker run -d --net circleci --name client ${DOCKER_USER}/client:${CIRCLE_BUILD_NUM}'
+      - run:
+          name: List containers
+          command: 'docker ps'
+      - run:
+          name: Print container logs
+          command: 'docker ps -q -a | xargs -t -L 1 docker logs'
+      - run:
+          name: Run server tests
+          command: 'docker run --net circleci --name tests ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll'
+      - run:
+          name: Build client tests
+          command: 'cd ./src/client && docker build -t ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} -f ./Dockerfile.dev .'
+      - run:
+          name: Run client tests
+          command: 'docker run ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
+      - run:
+          name: Push images to dockerhub
+          command:
+            'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin &&
+            docker push ${DOCKER_USER}/client:${CIRCLE_BUILD_NUM} &&
+            docker push ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} &&
+            docker push ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM} &&
+            docker push ${DOCKER_USER}/eventstore:${CIRCLE_BUILD_NUM} &&
+            docker push ${DOCKER_USER}/nginx:${CIRCLE_BUILD_NUM}'
+      - run:
+          name: Store build number
           command: |
-            DEPLOY=0
-            BUILD_ID=$CIRCLE_BUILD_NUM
-
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              DEPLOY=1
-            elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
-              DEPLOY=1
-              BUILD_LABEL="develop"
-            elif [ "${CIRCLE_BRANCH}" == "test" ]; then
-              DEPLOY=1
-              BUILD_LABEL="test"
-            fi
-
-            if ! [ -z "$BUILD_LABEL" ]; then
-              BUILD_ID+="-$BUILD_LABEL"
-            fi
-
-            echo "export DEPLOY=$DEPLOY" >> $BASH_ENV
-            echo "export BUILD_ID=$BUILD_ID" >> $BASH_ENV
-      - run:
-          name: "Create artifacts and test results directories"
-          command: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
-      - run:
-          name: "Start Docker"
-          command: "sudo docker info >/dev/null 2>&1 || sudo service docker start;"
-      # RESTORE CACHE
-      - restore_cache:
-          keys:
-            # This branch if available
-            - v1-dep-{{ .Branch }}-
-            # Default branch if not
-            - v1-dep-master-
-            # Any branch if there are none on the default branch
-            - v1-dep-
-      # BUILD
-      - run:
-          name: "Ensure permissions"
-          command: cd deploy/e2e && chmod 755 ensurePermissions && ./ensurePermissions
-      - run:
-          name: "Load containers"
-          command: cd deploy/e2e && ./loadContainers
-      - run:
-          name: "Build containers"
-          command: cd deploy/e2e && ./buildContainers $BUILD_ID
-          no_output_timeout: 1200s
-      - run:
-          name: "Run containers"
-          command: cd deploy/e2e && ./runContainers $BUILD_ID
-      - run:
-          name: "Save containers"
-          command: cd deploy/e2e && ./saveContainers
-      # SAVE CACHE
-      - save_cache:
-          key: v1-dep-{{ .Branch }}-{{ epoch }}
+            mkdir -p envs
+            echo "export BUILD_NUM=${CIRCLE_BUILD_NUM}" >> envs/env_build_num
+      - persist_to_workspace:
+          root: envs
           paths:
-            - ~/docker
-            - deploy/docker/build/servers/dotnetcache
-            - deploy/docker/build/web/.npm
-      # TESTS
-      - run: docker ps
+            - env_build_num
+
+  deploy:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /envs
       - run:
-          name: "Check connectivity"
-          command: for i in {1..10}; do curl http://localhost:2113/web/index.html && break; sleep 1; if [[ $i == 10 ]];then false;fi; done
+          name: Restore build number
+          command: cat /envs/env_build_num >> $BASH_ENV;
       - run:
-          name: "Running tests"
-          command: . ./deploy/config && docker run -a STDOUT --net=host $serversContainer.$BUILD_ID bash -c "dotnet test --configuration Release ./Adaptive.ReactiveTrader.Server.IntegrationTests/Adaptive.ReactiveTrader.Server.IntegrationTests.csproj"
-      # SAVE RESULTS
-      - store_test_results:
-          path: /tmp/circleci-test-results
-      # SAVE ARTIFACTS
-      - store_artifacts:
-          path: /tmp/circleci-artifacts
-      - store_artifacts:
-          path: /tmp/circleci-test-results
-      # PUSH ARTIFACTS
-      - deploy:
-          name: "Deployment (Push containers to the repository)"
+          name: Authenticate with gcloud
           command: |
-            if [ $DEPLOY == 1 ]; then
-              cd deploy/e2e && ./pushContainers $BUILD_ID
-            fi
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud config set project ${GOOGLE_PROJECT_ID}
+            gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+            gcloud container clusters get-credentials cluster
+      - run:
+          name: Set namespace
+          command: declare -A envs=( ["develop"]="dev" ["master"]="demo"); echo "export NAMESPACE='${envs[$CIRCLE_BRANCH]}'" >> $BASH_ENV;
+      - run:
+          name: Update images
+          command: |
+            kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${BUILD_NUM} 
+            kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${BUILD_NUM} 
+            kubectl --namespace=${NAMESPACE} set image deployments/web-deployment web=${DOCKER_USER}/nginx:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/client-deployment client=${DOCKER_USER}/client:${BUILD_NUM} 
+            kubectl --namespace=${NAMESPACE} set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/pricing-deployment pricing=${DOCKER_USER}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${BUILD_NUM}
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build_and_test
+      - deploy:
+          requires:
+            - build_and_test
+          filters:
+            branches:
+              only:
+                - master
+                - develop

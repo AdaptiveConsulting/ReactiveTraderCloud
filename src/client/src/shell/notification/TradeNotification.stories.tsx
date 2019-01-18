@@ -9,7 +9,7 @@ import TradeNotification, { Props } from './TradeNotification'
 const stories = storiesOf('Trade Notification', module)
 
 const props: Props = {
-  message: {
+  trade: {
     dealtCurrency: 'EUR',
     direction: 'Sell',
     notional: 1000000,
