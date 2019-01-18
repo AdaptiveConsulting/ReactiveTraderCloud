@@ -273,8 +273,6 @@ export class OrderTicket extends PureComponent<Props, State> {
                             executed: null,
                           })
                     }
-                    // @ts-ignore
-                    mt={5}
                   >
                     <Block fontSize={0.875}>
                       {executed ? (

@@ -18,7 +18,7 @@ export default class NotificationContainer extends PureComponent<Props> {
   render() {
     return (
       <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0, pointerEvents: 'none' }}>
-        {this.renderNotifications()}
+        {this.renderNotifications() as any}
       </Transition>
     )
   }

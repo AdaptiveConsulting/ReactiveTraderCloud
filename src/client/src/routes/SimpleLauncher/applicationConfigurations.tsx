@@ -2,9 +2,6 @@ import React from 'react'
 
 import { faChartArea, faExchangeAlt, faMicrophone, faPalette, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getEnvVars } from '../../config/config'
-
-const endpointConfig = getEnvVars(process.env.REACT_APP_ENV!)
 
 const options = {
   autoShow: true,
@@ -44,7 +41,7 @@ export interface ApplicationConfig {
 export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Trader',
-    url: `http://${endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname}`,
+    url: `http://${location.host}`,
     icon: <FontAwesomeIcon icon={faExchangeAlt} />,
     provider: {
       as: 'application',
@@ -65,9 +62,7 @@ export const appConfigs: ApplicationConfig[] = [
   },
   {
     name: 'Adaptive Style Guide',
-    url: `http://${
-      endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname
-    }/styleguide`,
+    url: `http://${location.host}/styleguide`,
     icon: <FontAwesomeIcon icon={faPalette} />,
     provider: {
       as: 'application',
@@ -79,9 +74,7 @@ export const appConfigs: ApplicationConfig[] = [
   },
   {
     name: 'Bond Order Ticket',
-    url: `http://${
-      endpointConfig.overwriteServerEndpoint ? endpointConfig.serverEndpointUrl : location.hostname
-    }/order-ticket`,
+    url: `http://${location.host}/order-ticket`,
     icon: <FontAwesomeIcon icon={faMicrophone} />,
     provider: {
       as: 'application',

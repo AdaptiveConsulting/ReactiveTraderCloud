@@ -6,7 +6,7 @@ import { WindowConfig } from './types'
 const defaultPortalProps = {
   title: '',
   onBlock: null as () => void,
-  onUnload: null as (region: string) => void,
+  onUnload: null as (region?: string) => void,
   config: {
     name: '',
     url: '',

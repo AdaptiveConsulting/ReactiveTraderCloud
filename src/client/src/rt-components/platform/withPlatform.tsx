@@ -23,7 +23,9 @@ export const withPlatform = <OriginalProps extends object>(
 
     render() {
       return (
-        <PlatformConsumer>{platform => <UnwrappedComponent {...this.props} platform={platform} />}</PlatformConsumer>
+        <PlatformConsumer>
+          {platform => <UnwrappedComponent {...this.props as OriginalProps} platform={platform} />}
+        </PlatformConsumer>
       )
     }
   }
