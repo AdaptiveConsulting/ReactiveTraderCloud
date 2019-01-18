@@ -1,8 +1,7 @@
 // @ts-ignore
 import React, { lazy, Suspense } from 'react'
 import { ThemeProvider, styled } from 'rt-theme'
-
-const StyleguideRoute = lazy(() => import('./StyleguideRoute'))
+import StyleguideRoute from './StyleguideRoute'
 
 const Fallback = styled.div`
   width: 100vw;
