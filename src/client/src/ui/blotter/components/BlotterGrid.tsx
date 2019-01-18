@@ -101,6 +101,10 @@ export default styled('div')`
     }
   }
 
+  .ag-body-container {
+    min-width: 100%;
+  }
+
   .ag-cell-label-container {
     display: flex;
     align-items: center;

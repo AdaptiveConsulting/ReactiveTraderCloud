@@ -1,6 +1,0 @@
-#! /bin/bash
-
-docker run --rm -ti \
-  -v rtc-gcloud-config:/root/.config \
-  -v rtc-kubectl-config:/root/.kube \
-  weareadaptive/gcloud gsutil $@
