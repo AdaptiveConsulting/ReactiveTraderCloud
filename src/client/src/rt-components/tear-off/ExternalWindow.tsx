@@ -45,7 +45,7 @@ class ExternalWindow extends React.Component<ExternalWindowProps & { platform: P
   }
 
   render() {
-    return <React.Fragment>{null}</React.Fragment>
+    return null as JSX.Element
   }
 
   closeWindow = () => this.externalWindow.close()
