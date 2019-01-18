@@ -6,6 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: test
+          command: 'echo $DOCKER_USER'
+      - run:
           name: Create network
           command: 'docker network create -d bridge circleci'
       - run:
