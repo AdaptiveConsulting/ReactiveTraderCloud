@@ -34,7 +34,9 @@ export class NotificationRoute extends React.Component<{}, State> {
 
   render() {
     let { message } = this.state
-    if (!message) { message = { tradeNotification: undefined } }
+    if (!message) {
+      message = { tradeNotification: undefined }
+    }
     return (
       <ThemeProvider>
         <TradeNotification trade={message.tradeNotification} dismissNotification={this.onDismissNotification} />
