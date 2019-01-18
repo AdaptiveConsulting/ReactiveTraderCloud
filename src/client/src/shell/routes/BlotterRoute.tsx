@@ -7,6 +7,7 @@ const BlotterContainerStyle = styled('div')`
   height: 28.125rem;
   min-width: 53.125rem;
   padding: 0.625rem;
+  margin: auto;
 `
 
 const BlotterRoute = () => (
