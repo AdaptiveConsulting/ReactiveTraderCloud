@@ -5,6 +5,7 @@ import { Resizer, TearOff, externalWindowDefault } from 'rt-components'
 import { AnalyticsContainer } from '../../ui/analytics'
 import { BlotterContainer } from '../../ui/blotter'
 import StatusBar from '../../ui/status-bar'
+import StatusButton from '../../ui/status-connection'
 import { WorkspaceContainer } from '../../ui/workspace'
 
 import ReconnectModal from '../components/reconnect-modal'
@@ -66,7 +67,11 @@ class ShellRoute extends PureComponent<Props, State> {
             />
           </AnalyticsWrapper>
         }
-        footer={<StatusBar />}
+        footer={
+          <StatusBar>
+            <StatusButton />
+          </StatusBar>
+        }
         after={<ReconnectModal />}
       />
     )
