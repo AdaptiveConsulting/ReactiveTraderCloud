@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: broker
-          image: reactivetrader/broker:90
+          image: reactivetradercloud/broker:3810
           ports:
             - containerPort: 8000
