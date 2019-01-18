@@ -21,8 +21,9 @@ const options = {
   },
 }
 export type ApplicationType = 'window' | 'download' | 'application'
-
+type Platform = 'browser' | 'openfin'
 interface Provider {
+  platform: Platform
   as: ApplicationType
   options: fin.WindowOptions
   cornerRounding?: {
@@ -44,6 +45,7 @@ export const appConfigs: ApplicationConfig[] = [
     url: `http://${location.host}`,
     icon: <FontAwesomeIcon icon={faExchangeAlt} />,
     provider: {
+      platform: 'openfin',
       as: 'application',
       options,
     },
@@ -53,6 +55,7 @@ export const appConfigs: ApplicationConfig[] = [
     url: 'http://demo-reactive-analytics.adaptivecluster.com/',
     icon: <FontAwesomeIcon icon={faChartArea} />,
     provider: {
+      platform: 'openfin',
       as: 'application',
       options: {
         ...options,
@@ -65,6 +68,7 @@ export const appConfigs: ApplicationConfig[] = [
     url: `http://${location.host}/styleguide`,
     icon: <FontAwesomeIcon icon={faPalette} />,
     provider: {
+      platform: 'openfin',
       as: 'application',
       options: {
         ...options,
@@ -77,6 +81,7 @@ export const appConfigs: ApplicationConfig[] = [
     url: `http://${location.host}/order-ticket`,
     icon: <FontAwesomeIcon icon={faMicrophone} />,
     provider: {
+      platform: 'openfin',
       as: 'application',
       options: {
         ...options,
@@ -100,6 +105,7 @@ export const appConfigs: ApplicationConfig[] = [
     url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
     icon: <FontAwesomeIcon icon={faDownload} />,
     provider: {
+      platform: 'openfin',
       as: 'download',
       options,
     },
