@@ -6,7 +6,9 @@ import { styled } from 'rt-theme'
 
 const SpotTileStyle = styled.div`
   min-width: 26rem;
-  min-height: 13.125rem;
+  width: 26rem;
+  min-height: 12rem;
+  height: 12rem;
   padding: 0.625rem;
   margin: auto;
 `
