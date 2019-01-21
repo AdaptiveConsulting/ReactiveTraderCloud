@@ -30,11 +30,20 @@ export class NotificationRoute extends React.Component<{}, State> {
 
   onDismissNotification = () => fin.desktop.Notification.getCurrent().close()
 
+  highlightTrade = () => {
+    window.FSBL.Clients.RouterClient.publish('test-topic', { test: 'test' })
+    console.log('clicked')
+  }
+
   render() {
     const { message } = this.state
     return message == null ? null : (
       <ThemeStorage.Provider default={ThemeName.Dark}>
-        <TradeNotification message={message.tradeNotification} dismissNotification={this.onDismissNotification} />
+        <TradeNotification
+          message={message.tradeNotification}
+          dismissNotification={this.onDismissNotification}
+          highlight={this.highlightTrade}
+        />
       </ThemeStorage.Provider>
     )
   }

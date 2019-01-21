@@ -10,6 +10,7 @@ declare global {
 export default class Finsemble implements PlatformAdapter {
   name = 'finsemble'
   type = 'desktop'
+  pubSubResponders: any = []
 
   window = {
     close: () => window.close(),
@@ -35,6 +36,24 @@ export default class Finsemble implements PlatformAdapter {
           err => reject(err),
         )
       }),
+  }
+
+  interop = {
+    publish: (topic: string, message: string | object) => {
+      console.log(topic, message)
+      if (this.pubSubResponders.includes(topic)) {
+        window.FSBL.Clients.RouterClient.publish(topic, message)
+      } else {
+        window.FSBL.Clients.RouterClient.addPubSubResponder(topic, { State: 'start' }, (error: any) => {
+          if (!error) {
+            this.pubSubResponders.push(topic)
+          }
+        })
+      }
+    },
+    subscribe: (sender: string, topic: string, listener: () => void) => {
+      window.FSBL.Clients.RouterClient.subscribe(topic, listener)
+    },
   }
 
   notification = {

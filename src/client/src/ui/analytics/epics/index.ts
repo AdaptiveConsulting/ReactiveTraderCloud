@@ -4,7 +4,7 @@ import { analyticsServiceEpic } from './epics'
 
 const epics = [analyticsServiceEpic]
 
-if (typeof window.FSBL === 'undefined' && typeof fin !== 'undefined') {
+if (typeof fin !== 'undefined') {
   epics.push(publishPositionUpdateEpic)
 }
 

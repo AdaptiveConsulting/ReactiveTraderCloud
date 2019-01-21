@@ -6,9 +6,10 @@ import { Bottom, Close, CloseContainer, MetaContainer, MetaTitle, Notification, 
 export interface Props {
   message: Trade
   dismissNotification: () => void
+  highlight?: any
 }
 
-const TradeNotification: React.SFC<Props> = ({ message: trade, dismissNotification }) => {
+const TradeNotification: React.SFC<Props> = ({ message: trade, dismissNotification, highlight }) => {
   const formattedValueDate = trade
     ? moment(trade.valueDate)
         .format('DD MMM')
@@ -21,7 +22,7 @@ const TradeNotification: React.SFC<Props> = ({ message: trade, dismissNotificati
   const direction = trade.direction === Direction.Buy ? 'Bought' : 'Sold'
 
   return (
-    <Notification>
+    <Notification onClick={highlight}>
       <Top justifyContent="space-between">
         <Traded isDone={isDone}>
           <div>{`${direction.toUpperCase()} ${trade.dealtCurrency} ${trade.notional}`}</div>

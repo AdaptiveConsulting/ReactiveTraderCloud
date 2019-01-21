@@ -4,10 +4,13 @@ import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { CurrencyPair, CurrencyPairMap, Trade, Trades, TradeStatus } from 'rt-types'
-import { interval } from 'rxjs'
+
 import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
+
+import { fromEventPattern, interval } from 'rxjs'
 
 type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
 
@@ -59,5 +62,21 @@ export const connectBlotterToNotifications: ApplicationEpic = (action$, state$, 
     tap(tradeNotification => platform.notification.notify({ tradeNotification })),
     ignoreElements(),
   )
+
+export const testInteropEpic: ApplicationEpic = (action$, state$, { platform }) => {
+  const interopObservable$ = fromEventPattern(
+    (handler: any) => platform.interop!.subscribe('*', 'position-update', handler),
+    // @ts-ignore
+    (handler: any) => platform.interop!.unsubscribe('*', 'position-update', handler),
+  )
+
+  return action$.pipe(
+    applicationConnected,
+    switchMapTo(interopObservable$),
+    tap((message: any) => {
+      console.log(message)
+    }),
+  )
+}
 
 export const publishBlotterEpic = combineEpics(connectBlotterToExcel)
