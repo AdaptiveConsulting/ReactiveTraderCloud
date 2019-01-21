@@ -1,6 +1,7 @@
 import { darken } from 'polished'
 import { mapValues } from 'lodash'
 import template from './template'
+import { keyframes } from 'styled-components'
 
 import colors, { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
 
@@ -76,6 +77,18 @@ export interface ColorPair {
 
 export type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
 
+export const animateRowDark = keyframes`
+  0% {
+    background-color: rgb(46, 53, 67);
+  }
+  50% {
+    background-color: rgb(61, 68, 85);
+  }
+  100% {
+    background-color: rgb(46, 53, 67);
+  }
+`
+
 const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({
   template,
   core,
@@ -121,6 +134,18 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
   tile: {
     inputColor: secondary['4'],
   },
+
+  flash: keyframes`
+    0% {
+      background-color: ${primary.base};
+    }
+    50% {
+      background-color: ${accents.accent[1]};
+    }
+    100% {
+      background-color: ${primary.base};
+    }
+  `,
 
   button: {
     mute: {
