@@ -12,6 +12,10 @@ export interface TradesUpdate {
   readonly trades: Trade[]
 }
 
+export interface HighlightRow {
+  trades: Trade[]
+}
+
 function mapFromDto(dto: RawTradeUpdate): TradesUpdate {
   const trades = dto.Trades.map<Trade>(trade => mapFromTradeDto(trade))
   return {

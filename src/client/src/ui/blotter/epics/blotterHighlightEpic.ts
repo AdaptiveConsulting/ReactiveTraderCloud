@@ -10,6 +10,8 @@ import { Trade } from 'rt-types'
 const { highlightTradeAction, removeHighlightTradeAction } = BlotterActions
 const TRADE_HIGHLIGHT_TIME_IN_MS = 3000
 
+type HighlightTradeAction = ReturnType<typeof highlightTradeAction>
+
 const switchHighlight = (trade: Trade) => ({
   ...trade,
   highlight: !trade.highlight,
@@ -35,7 +37,7 @@ const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
 
 const removeHighlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
   return action$.pipe(
-    ofType<Action, any>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_HIGHLIGHT_TRADE),
+    ofType<Action, HighlightTradeAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_HIGHLIGHT_TRADE),
     delay(TRADE_HIGHLIGHT_TIME_IN_MS),
     map(({ payload }) => {
       const trade = switchHighlight(payload.trades[0])

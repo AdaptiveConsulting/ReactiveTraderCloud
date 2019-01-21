@@ -77,18 +77,6 @@ export interface ColorPair {
 
 export type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
 
-export const animateRowDark = keyframes`
-  0% {
-    background-color: rgb(46, 53, 67);
-  }
-  50% {
-    background-color: rgb(61, 68, 85);
-  }
-  100% {
-    background-color: rgb(46, 53, 67);
-  }
-`
-
 const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({
   template,
   core,

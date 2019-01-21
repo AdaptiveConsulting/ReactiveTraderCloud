@@ -1,5 +1,5 @@
 import { action, ActionUnion } from 'rt-util'
-import { TradesUpdate } from './blotterService'
+import { TradesUpdate, HighlightRow } from './blotterService'
 
 export enum BLOTTER_ACTION_TYPES {
   SUBSCRIBE_TO_BLOTTER_ACTION = '@ReactiveTraderCloud/SUBSCRIBE_TO_BLOTTER_ACTION',
@@ -13,10 +13,10 @@ export const BlotterActions = {
     BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES,
   ),
   subscribeToBlotterAction: action(BLOTTER_ACTION_TYPES.SUBSCRIBE_TO_BLOTTER_ACTION),
-  highlightTradeAction: action<BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_HIGHLIGHT_TRADE, any>(
+  highlightTradeAction: action<BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_HIGHLIGHT_TRADE, HighlightRow>(
     BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_HIGHLIGHT_TRADE,
   ),
-  removeHighlightTradeAction: action<BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_REMOVE_HIGHLIGHT_TRADE, any>(
+  removeHighlightTradeAction: action<BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_REMOVE_HIGHLIGHT_TRADE, HighlightRow>(
     BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_REMOVE_HIGHLIGHT_TRADE,
   ),
 }
