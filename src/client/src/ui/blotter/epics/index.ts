@@ -1,10 +1,10 @@
 import { combineEpics } from 'redux-observable'
-import { connectBlotterToNotifications } from './blotterServiceEpic'
-import { publishBlotterEpic, testInteropEpic } from './blotterServiceEpic'
+import { publishBlotterEpic } from './blotterServiceEpic'
 import { blotterServiceEpic } from './epics'
+import { connectBlotterToNotifications, requestBrowserNotificationPermission } from './blotterServiceEpic'
 
-const epics = [blotterServiceEpic, connectBlotterToNotifications, testInteropEpic]
-if (typeof window.FSBL === 'undefined' && typeof fin !== 'undefined') {
+const epics = [blotterServiceEpic, connectBlotterToNotifications, requestBrowserNotificationPermission]
+if (typeof fin !== 'undefined') {
   epics.push(publishBlotterEpic)
 }
 

@@ -5,7 +5,12 @@ import { styled } from 'rt-theme'
 const RouteStyle = styled.div`
   height: 100%;
   width: 100%;
+  background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `
 
 interface Props {

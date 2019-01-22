@@ -7,8 +7,8 @@ const hoverColors = {
   [Direction.Sell]: 'red',
 }
 
-export const TradeButton = styled('button')<{ direction: string }>`
-  background-color: ${({ theme }) => theme.priceButton.backgroundColor};
+export const TradeButton = styled('button')<{ direction: Direction }>`
+  background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
   transition: background-color 0.2s ease;
   cursor: pointer;
@@ -17,16 +17,16 @@ export const TradeButton = styled('button')<{ direction: string }>`
   padding: 0.75rem 1.5rem;
 
   .spot-tile:hover & {
-    background-color: ${({ theme }) => theme.priceButton.hoverColor};
+    background-color: ${({ theme }) => theme.core.darkBackground};
   }
 
   .spot-tile:hover &:hover {
-    background-color: ${({ theme, direction }) => theme[hoverColors[direction]].base};
-    color: ${({ theme }) => theme.priceButton.textColor};
+    background-color: ${({ theme, direction }) => theme.template[hoverColors[direction]].normal};
+    color: ${({ theme }) => theme.template.white.normal};
   }
 `
 
-const Box = styled('div')`
+const Box = styled.div`
   padding: 0;
   margin: 0;
 `
@@ -53,14 +53,14 @@ const Tenth = styled(Box)`
   align-self: flex-end;
 `
 
-const Price = styled('div')`
+const Price = styled.div`
   height: 34px;
   display: flex;
   justify-content: center;
   align-items: center;
 `
 
-const BigWrapper = styled('div')`
+const BigWrapper = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;

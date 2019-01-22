@@ -15,6 +15,7 @@ import {
   getPositionValue,
   getRadius,
   updateNodes,
+  addShadow,
 } from './chartUtil'
 
 export interface PositionsBubbleChartProps {
@@ -183,6 +184,8 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
       .append('svg')
       .attr('width', this.props.size.width)
       .attr('height', this.props.size.height)
+
+    addShadow(svg)
 
     this.force = d3.layout
       .force()

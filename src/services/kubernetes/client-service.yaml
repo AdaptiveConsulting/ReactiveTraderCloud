@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+spec:
+  type: ClusterIP
+  selector:
+    component: client
+  ports:
+    - port: 3000
+      targetPort: 3000

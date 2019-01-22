@@ -47,9 +47,9 @@ import 'typeface-montserrat'
  * achieve a consistent vertical rhythm.
  */
 
-import { injectGlobal } from './emotion'
+import { createGlobalStyle } from 'styled-components'
 
-export default injectGlobal`
+export default createGlobalStyle`
   :root, body {
     font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 16px;
@@ -71,6 +71,12 @@ export default injectGlobal`
     max-width: 100vw;
   }
 
+  button {
+    -webkit-appearance: none;
+    border-width: 0;
+    border-color: transparent;
+  }
+  
   button:focus {
     outline: none;
   }

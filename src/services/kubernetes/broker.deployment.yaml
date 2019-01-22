@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: broker
+  template:
+    metadata:
+      labels:
+        component: broker
+    spec:
+      containers:
+        - name: broker
+          image: reactivetradercloud/broker:3810
+          ports:
+            - containerPort: 8000

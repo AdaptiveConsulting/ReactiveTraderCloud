@@ -1,11 +1,19 @@
 import React from 'react'
 import { RouteWrapper } from 'rt-components'
 import { AnalyticsContainer } from '../../ui/analytics'
+import { styled } from 'rt-theme'
 
-const BlotterRoute = () => (
+const AnalyticsRouteStyle = styled.div`
+  height: 100%;
+  padding: 0.625rem 0rem;
+  overflow: auto;
+`
+const AnalyticsRoute = () => (
   <RouteWrapper>
-    <AnalyticsContainer />
+    <AnalyticsRouteStyle>
+      <AnalyticsContainer />
+    </AnalyticsRouteStyle>
   </RouteWrapper>
 )
 
-export default BlotterRoute
+export default AnalyticsRoute

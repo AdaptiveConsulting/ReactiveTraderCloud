@@ -126,6 +126,10 @@ export class ServiceStub {
             )
 
             return () => {
+              // TODO: Cancellation is not the same as completion; typically, complete should not be called on cancellation.
+              //       Consider removing the call to obs.complete() from this unsubscription function, if it can be confirmed
+              //       that doing so does not prevent any necessary side-effects from occurring. If we can't, then consider
+              //       using the "finally" operator in the downstream queries instead of calling complete() here.  - D.S.
               obs.complete()
             }
           }),

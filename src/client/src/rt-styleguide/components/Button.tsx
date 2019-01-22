@@ -1,9 +1,8 @@
 import _ from 'lodash'
-import React, { ButtonHTMLAttributes } from 'react'
-
-import { css, resolvesColor, styled, Styled, Theme, ThemeProvider } from 'rt-theme'
-
+import React, { ButtonHTMLAttributes, ReactChild } from 'react'
 import { userSelectButton, userSelectNone } from 'rt-styleguide'
+import { Theme, styled, resolvesColor } from 'rt-theme'
+import { css, ThemeProvider, withTheme } from 'styled-components'
 
 export interface ButtonStyleProps {
   intent?: string
@@ -12,22 +11,22 @@ export interface ButtonStyleProps {
   disabled?: boolean
   pill?: boolean
   size?: number
+  invert?: boolean
 }
 
 const boxShadow = `0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08)`
 
-class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
+class BaseButtonThemeProvider extends React.Component<ButtonStyleProps & { theme: Theme }> {
   static defaultProps = {
     intent: 'primary',
   }
 
   resolveTheme = (providedTheme: Theme) => {
-    const { intent, outline, active, disabled } = this.props
+    const { intent, outline, active, disabled, invert } = this.props
 
     const { backgroundColor, textColor, button: theme, colors } = providedTheme
-    let {
-      button: { [intent]: palette = { backgroundColor, textColor } },
-    } = providedTheme
+
+    let palette = providedTheme.button[intent] || { backgroundColor, textColor }
 
     if (active) {
       palette = { ...palette, ...palette.active }
@@ -36,7 +35,20 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
     if (disabled) {
       // We might prefer to set the disabled palette explicitly
       // and not rely on opacity — as will be done with no change
-      // palette = { ...palette, ...palette.disabled };
+      // palette = { ...palette, ...palette.disabled }
+    }
+
+    if (invert) {
+      palette = {
+        ...palette,
+        backgroundColor: palette.textColor,
+        textColor: palette.backgroundColor,
+        // tslint:disable-next-line
+        ..._.map(palette, ({ backgroundColor, textColor }) => ({
+          textColor: backgroundColor,
+          backgroundColor: textColor,
+        })),
+      }
     }
 
     if (outline) {
@@ -62,13 +74,15 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
   render() {
     const { children } = this.props
 
-    return <ThemeProvider theme={this.resolveTheme}>{children}</ThemeProvider>
+    return <ThemeProvider theme={this.resolveTheme(this.props.theme)}>{children as ReactChild}</ThemeProvider>
   }
 }
 
+const ButtonThemeProvider = withTheme(BaseButtonThemeProvider)
+
 export class Button extends React.Component<ButtonStyleProps & ButtonHTMLAttributes<Element>> {
   render() {
-    const { children, intent, active, disabled, outline, pill, size, ...rest } = this.props
+    const { children, intent, active, disabled, outline, invert, pill, size, ...rest } = this.props
     const props = {
       intent,
       active,
@@ -76,6 +90,7 @@ export class Button extends React.Component<ButtonStyleProps & ButtonHTMLAttribu
       disabled,
       pill,
       size,
+      invert,
     }
 
     return (
@@ -110,7 +125,10 @@ export class ButtonGroup extends React.Component<ButtonStyleProps> {
   }
 }
 
-const StyledBase: Styled<ButtonStyleProps> = styled.div`
+const StyledBase = styled.div<ButtonStyleProps>`
+  -webkit-appearance: none;
+  border-width: 0;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -181,15 +199,14 @@ const StyledBase: Styled<ButtonStyleProps> = styled.div`
     `};
 `
 
-export const StyledButton: Styled<ButtonStyleProps> = styled(StyledBase)`
+const StyledButtonBase = StyledBase.withComponent('button')
+export const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;
   min-height: 1.75rem;
   max-height: 1.75rem;
 
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
 
@@ -215,7 +232,7 @@ StyledButton.defaultProps = {
   role: 'button',
 }
 
-export const StyledButtonGroup: Styled<ButtonStyleProps> = styled(StyledBase)`
+export const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
   ${StyledButton} {
     min-width: 1rem;
     padding-left: 0.625rem;

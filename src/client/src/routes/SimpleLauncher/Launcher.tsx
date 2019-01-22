@@ -1,107 +1,76 @@
 import React from 'react'
 
-import { injectGlobal, styled, ThemeStorageSwitch } from 'rt-theme'
+import { rules } from 'rt-styleguide'
 
-import { config } from './config'
-import { Link } from './Link'
+import { appConfigs } from './applicationConfigurations'
+import { LaunchButton } from './LaunchButton'
+import { LogoIcon } from 'rt-components'
+import { createGlobalStyle } from 'styled-components'
+import { ThemeStorageSwitch, styled } from 'rt-theme'
+
+const LauncherGlobalStyle = createGlobalStyle`
+:root, body {
+  @media all {
+    font-size: 16px;
+    -webkit-app-region: drag;
+  }
+}
+`
 
 export class Launcher extends React.Component {
-  // unset global scaling on mount
-  _ = injectGlobal`
-    :root, body {
-      @media all {
-        font-size: 16px;
-        -webkit-app-region: drag;
-      }
-    }
-  `
-
   render() {
     return (
-      <Root>
-        <Frame>
-          <Fill />
-          {config.map((config, i) => (
-            <ToggleContainer key={config.name}>
-              <Link to={config}>{config.icon}</Link>
-            </ToggleContainer>
+      <React.Fragment>
+        <LauncherGlobalStyle />
+        <Root>
+          <LogoContainer>
+            <LogoIcon width={1.5} height={1.5} />
+          </LogoContainer>
+          {appConfigs.map(app => (
+            <ButtonContainer key={app.name}>
+              <LaunchButton appConfig={app}>{app.icon}</LaunchButton>
+            </ButtonContainer>
           ))}
 
-          <AutoFill />
-
-          <ToggleContainer>
+          <ButtonContainer>
             <ThemeStorageSwitch />
-          </ToggleContainer>
-
-          <Fill />
-        </Frame>
-      </Root>
+          </ButtonContainer>
+        </Root>
+      </React.Fragment>
     )
   }
 }
 
-const Root = styled.div(({ theme }) => {
-  return {
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.shell.backgroundColor,
-    color: theme.shell.textColor,
-  }
-})
-
-const Frame = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: 100%;
+const Root = styled.div`
   height: 100%;
-  max-width: 4rem;
-  max-height: 20rem;
-  border-radius: 0.25rem;
-
-  /* Browser / Prototyping framing: */
-  box-shadow: 0 0 0 0.125rem rgba(127, 127, 127, 0.1);
-`
-
-const Fill = styled.div`
-  min-height: 0.75rem;
-  max-height: 0.75rem;
   width: 100%;
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.core.darkBackground};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
-const AutoFill = styled.div`
-  flex: 1 1 100%;
+const IconContainer = styled.div`
+  height: 100%;
   width: 100%;
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
-`
-
-const ToggleContainer = styled.div`
-  min-height: 2.75rem;
-  max-height: 2.75rem;
-  min-width: 3rem;
-  max-width: 3rem;
 
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
-  -webkit-user-drag: none;
-  -webkit-app-region: no-drag;
 `
 
-export const Rule = styled.div`
-  width: 3rem;
-  display: block;
-  height: 0.125rem;
-  background-color: rgba(0, 0, 0, 0.1);
+const ButtonContainer = styled(IconContainer)`
+  ${rules.appRegionNoDrag};
+`
 
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
+const LogoContainer = styled(IconContainer)`
+  background-color: ${({ theme }) => theme.core.lightBackground};
+
+  .svg-icon {
+    fill: ${({ theme }) => theme.core.textColor};
+  }
+
+  ${rules.appRegionDrag};
 `

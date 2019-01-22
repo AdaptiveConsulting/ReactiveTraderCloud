@@ -1,15 +1,14 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import { styled } from 'rt-theme'
-import { ThemeProvider } from 'rt-theme'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
 import { createTradeRequest, DEFAULT_NOTIONAL, ExecuteTradeRequest, SpotTileData, TradeRequest } from '../model'
 import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import { DeliveryDate, TileBaseStyle, TileHeader, TileSymbol } from './styled'
+import { styled } from 'rt-theme'
 
-export const SpotTileWrapper = styled('div')`
+export const SpotTileWrapper = styled.div`
   position: relative;
   min-height: 10rem;
   height: ${window.FSBL === 'undefined'
@@ -19,7 +18,7 @@ export const SpotTileWrapper = styled('div')`
 `
 
 export const SpotTileStyle = styled(TileBaseStyle)`
-  background-color: ${({ theme }) => theme.backgroundColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
   display: flex;
   height: 100%;
   justify-content: space-between;
@@ -80,28 +79,26 @@ export default class SpotTile extends PureComponent<Props, State> {
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
 
     return (
-      <ThemeProvider theme={theme => theme.tile}>
-        <SpotTileWrapper>
-          <SpotTileStyle className="spot-tile">
-            <TileHeader>
-              <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
-              <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
-            </TileHeader>
-            <PriceControls
-              executeTrade={this.executeTrade}
-              priceData={price}
-              currencyPair={currencyPair}
-              disabled={!this.canExecute()}
-            />
-            <NotionalInput
-              notional={notional}
-              currencyPairSymbol={currencyPair.base}
-              updateNotional={this.updateNotional}
-            />
-          </SpotTileStyle>
-          {children}
-        </SpotTileWrapper>
-      </ThemeProvider>
+      <SpotTileWrapper>
+        <SpotTileStyle className="spot-tile">
+          <TileHeader>
+            <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
+            <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
+          </TileHeader>
+          <PriceControls
+            executeTrade={this.executeTrade}
+            priceData={price}
+            currencyPair={currencyPair}
+            disabled={!this.canExecute()}
+          />
+          <NotionalInput
+            notional={notional}
+            currencyPairSymbol={currencyPair.base}
+            updateNotional={this.updateNotional}
+          />
+        </SpotTileStyle>
+        {children}
+      </SpotTileWrapper>
     )
   }
 }

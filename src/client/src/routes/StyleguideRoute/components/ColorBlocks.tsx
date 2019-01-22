@@ -1,11 +1,11 @@
 import _ from 'lodash'
 import React from 'react'
-import { css, styled } from 'rt-theme'
 
-import { colors } from 'rt-theme'
+import { colors, styled } from 'rt-theme'
 
 import { Block, BlockProps } from '../styled'
-
+import { css } from 'styled-components'
+import ColorClipboard, { CopyToClipboardWrapper } from './ColorToClipboard'
 const {
   spectrum: { brand, offblack, blue, red, yellow, green },
 } = colors
@@ -17,23 +17,23 @@ const SWATCH_KEYS = {
 
 export const ColorBlocks = () => (
   <Root>
-    {[{ brand, offblack }, { blue, red, yellow, green }].map((swatchSetGroup, i) => (
-      <SwatchSetGroup key={i}>
-        {_.map(swatchSetGroup, (color, name) => {
-          const base = color.base
-          const light = SWATCH_KEYS.light.map(key => ({ color: color[key], name: key }))
-          const dark = SWATCH_KEYS.dark.map(key => ({ color: color[key], name: key }))
+    {[{ brand, offblack }, { blue, red, yellow, green }].map((swatchSetGroup, groupKey) => (
+      <SwatchSetGroup key={groupKey}>
+        {_.map(swatchSetGroup, (group, setKey) => {
+          const base = group.base
+          const light = SWATCH_KEYS.light.map(key => ({ color: group[key], name: key }))
+          const dark = SWATCH_KEYS.dark.map(key => ({ color: group[key], name: key }))
 
           const set = [...light, { color: base }, ...dark]
-
           return (
-            <SwatchSet key={name}>
+            <SwatchSet key={setKey}>
               <SwatchGroup>
                 {light.map(({ color, name }, index) => {
                   const { [index + 4]: text = { color: 'transparent' } } = set
 
                   return (
                     <Swatch key={name} bg={color}>
+                      <ColorClipboard color={color} iconColor="black" />
                       <SwatchLevel fg={text.color}>{name}</SwatchLevel>
                     </Swatch>
                   )
@@ -42,6 +42,7 @@ export const ColorBlocks = () => (
 
               <SwatchGroup py={2}>
                 <Swatch bg={base}>
+                  <ColorClipboard color={base} iconColor="white" />
                   <SwatchName>{name}</SwatchName>
                   <SwatchValue>{base}</SwatchValue>
                 </Swatch>
@@ -57,6 +58,7 @@ export const ColorBlocks = () => (
 
                   return (
                     <Swatch key={name} bg={color}>
+                      <ColorClipboard color={color} iconColor="white" />
                       <SwatchLevel fg={text.color}>{name}</SwatchLevel>
                     </Swatch>
                   )
@@ -102,6 +104,12 @@ const Swatch = styled(Block)<BlockProps>`
   @media all and (max-width: 800px) {
     min-width: 6rem;
     max-width: 6rem;
+  }
+
+  &:hover {
+    ${CopyToClipboardWrapper} {
+      visibility: visible;
+    }
   }
 `
 

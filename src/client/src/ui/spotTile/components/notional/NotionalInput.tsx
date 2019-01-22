@@ -13,20 +13,20 @@ const CHAR_CODE_UNIT_SEP = 31
 const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]
 const MAX_NOTIONAL_VALUE = 1000000000
 
-const CurrencyPairSymbol = styled('div')`
+const CurrencyPairSymbol = styled.div`
   opacity: 0.59;
   font-size: 0.625rem;
   line-height: 1rem;
   padding-right: 0.375rem;
 `
 
-const InputWrapper = styled('div')`
+const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `
 
-export const Input = styled('input')`
+export const Input = styled.input`
   background: none;
   outline: none;
   border: none;
@@ -36,12 +36,12 @@ export const Input = styled('input')`
   padding: 2px 0;
 
   .spot-tile:hover & {
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.textColor};
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.core.textColor};
   }
 
   .spot-tile:hover &:focus,
   &:focus {
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.blue.base};
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.template.blue.normal};
   }
 `
 
@@ -62,7 +62,7 @@ export default class NotionalInput extends PureComponent<Props> {
         <CurrencyPairSymbol>{currencyPairSymbol}</CurrencyPairSymbol>
         <Input
           type="text"
-          innerRef={this.inputRef}
+          ref={this.inputRef}
           defaultValue={formattedSize}
           onFocus={this.handleFocus}
           onChange={this.handleInputChange}

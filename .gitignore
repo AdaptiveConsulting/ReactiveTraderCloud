@@ -19,5 +19,6 @@ key.priv
 key.pub
 bin/
 obj/
-docker-compose.yml
+deploy/**/docker-compose.yml
+*.pyc
 *.sln
