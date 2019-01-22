@@ -6,6 +6,10 @@ import { sendNotification, NotifyPermission } from './utils/sendNotification'
 export default class Browser implements PlatformAdapter {
   name = 'browser'
   type = 'browser'
+  interopServices = {
+    excel: false,
+    chartIQ: false,
+  }
 
   window = {
     close: () => window.close(),

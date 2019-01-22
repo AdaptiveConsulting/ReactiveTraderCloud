@@ -16,6 +16,10 @@ if (typeof fin !== 'undefined' && !window.onNotificationMessage) {
 export default class OpenFin implements PlatformAdapter {
   name = 'openfin'
   type = 'desktop'
+  interopServices = {
+    excel: true,
+    chartIQ: true,
+  }
 
   window = {
     close: () => fin.desktop.Window.getCurrent().close(),

@@ -13,3 +13,8 @@ export interface AppConfig {
   payload?: string | object
   topic?: string
 }
+
+export interface InteropServices {
+  excel: boolean
+  chartIQ: boolean
+}

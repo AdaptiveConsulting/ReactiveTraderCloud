@@ -2,10 +2,13 @@ import { combineEpics } from 'redux-observable'
 import { publishPositionUpdateEpic } from './analyticsServiceEpic'
 import { analyticsServiceEpic } from './epics'
 
-const epics = [analyticsServiceEpic]
+export default ({ platform }: any) => {
+  const { interopServices } = platform
+  const epics = [analyticsServiceEpic]
 
-if (typeof fin !== 'undefined') {
-  epics.push(publishPositionUpdateEpic)
+  if (interopServices.excel) {
+    epics.push(publishPositionUpdateEpic)
+  }
+
+  return combineEpics(...epics)
 }
-
-export default combineEpics(...epics)
