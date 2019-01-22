@@ -19,8 +19,8 @@ const switchHighlight = (trade: Trade) => ({
 
 const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
   const interopObservable$ = fromEventPattern(
-    (handler: any) => platform.interop!.subscribe('*', 'highlight-blotter', handler),
-    (handler: any) => platform.interop!.unsubscribe('*', 'highlight-blotter', handler),
+    (handler: Function) => platform.interop!.subscribe('*', 'highlight-blotter', handler as () => void),
+    (handler: Function) => platform.interop!.unsubscribe('*', 'highlight-blotter', handler as () => void),
   )
 
   return action$.pipe(
