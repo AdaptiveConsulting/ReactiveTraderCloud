@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: client
-          image: reactivetrader/client:90
+          image: reactivetradercloud/client:3810
           ports:
             - containerPort: 3000

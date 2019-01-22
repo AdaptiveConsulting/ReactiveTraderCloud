@@ -1,8 +1,0 @@
-cache
-kubernetes/manifests
-garbage
-jq
-certificates
-
-# Minikube
-minikube/minikube_data

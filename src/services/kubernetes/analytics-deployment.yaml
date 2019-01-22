@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: analytics
-          image: reactivetrader/servers:90
+          image: reactivetradercloud/servers:3810
           env:
             - name: BROKER_HOST
               value: broker
