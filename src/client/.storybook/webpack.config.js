@@ -3,7 +3,12 @@ const path = require('path')
 module.exports = (baseConfig, env, defaultConfig) => {
   defaultConfig.module.rules.push({
     test: /\.(ts|tsx)$/,
-    use: [require.resolve('awesome-typescript-loader')]
+    use: [{
+      loader: require.resolve('awesome-typescript-loader'),
+      options: { configFileName: path.resolve(__dirname, './tsconfig.json') }
+    }, {
+      loader: require.resolve('react-docgen-typescript-loader')
+    }]
   })
   defaultConfig.resolve.extensions.push('.ts', '.tsx', '.js')
   defaultConfig.resolve.alias = {
