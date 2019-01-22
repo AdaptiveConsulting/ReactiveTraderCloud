@@ -1,22 +1,12 @@
-// export {
-//   Platform,
-//   PlatformAdapter,
-//   withPlatform,
-//   PlatformProvider,
-//   WindowConfig,
-//   externalWindowDefault,
-//   openFinNotifications
-// } from './platform'
 export {
   Platform,
-  PlatformAdapter,
   withPlatform,
-  WindowConfig,
   externalWindowDefault,
   PlatformProvider,
   openFinNotifications,
   setupGlobalOpenfinNotifications,
 } from './platform'
+export * from './platform'
 export { TearOff } from './tear-off'
 export { OpenFinChrome, OpenFinControls, OpenFinHeader } from './open-fin'
 export { Flex, flexStyle } from './flex'

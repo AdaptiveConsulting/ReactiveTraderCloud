@@ -1,11 +1,10 @@
 import * as React from 'react'
 
 import MediaRecorder, { BlobEvent, MediaRecorderInterface } from './MediaRecorder'
+export * from './MediaRecorder'
 import { Timer } from './Timer'
 
 export const mediaRecorderEvents = ['start', 'stop', 'dataavailable', 'pause', 'resume', 'error']
-
-export { BlobEvent }
 
 export interface Props {
   input: MediaStream
@@ -129,4 +128,3 @@ class MediaRecorderComponent extends React.PureComponent<Props, State> {
 }
 
 export default MediaRecorderComponent
-export { MediaRecorderComponent as MediaRecorder }

@@ -1,9 +1,9 @@
 export { default as GlobalStyle } from './globals'
 import baseStyled, { ThemedStyledInterface } from 'styled-components'
-export { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } from './colors'
+export * from './colors'
 
 import { Theme } from './createTheme'
-export { Theme }
+export * from './createTheme'
 export const styled: ThemedStyledInterface<Theme> = baseStyled
 
 export { ThemeName, ThemeProvider, ThemeConsumer } from './ThemeContext'

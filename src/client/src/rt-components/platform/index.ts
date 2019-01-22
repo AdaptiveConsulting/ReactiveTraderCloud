@@ -1,5 +1,6 @@
 export { default as Platform } from './platform'
-export { PlatformAdapter, WindowConfig, openFinNotifications, setupGlobalOpenfinNotifications } from './adapters'
+export { openFinNotifications, setupGlobalOpenfinNotifications } from './adapters'
+export * from './adapters'
 export { PlatformProvider } from './context'
 export { withPlatform } from './withPlatform'
 export { externalWindowDefault } from './externalWindowDefault'

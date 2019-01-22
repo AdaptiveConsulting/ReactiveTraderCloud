@@ -32,7 +32,7 @@ interface State extends Props {
   query?: any
 }
 
-export { Props as OrderStatusProps }
+export type OrderStatusProps = Props
 export class OrderStatus extends React.Component<Props, State> {
   state: State = {
     countdown: null,

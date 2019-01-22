@@ -25,7 +25,7 @@ interface State {
   props: Props | null
 }
 
-export { Fields as OrderFormFields }
+export type OrderFormFields = Fields
 export class OrderForm extends React.Component<Props, State> {
   state: State = {
     fields: {
