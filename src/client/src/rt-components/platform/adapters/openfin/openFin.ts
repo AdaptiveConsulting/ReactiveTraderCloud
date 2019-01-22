@@ -6,11 +6,13 @@ export const openFinNotifications: any[] = []
 
 declare const window: any
 
-if (typeof fin !== 'undefined' && !window.onNotificationMessage) {
-  // openfin requires a global onNotificationMessage function to be defined before its notification structure is initialized in the platform adapter.
-  // NotificationRoute is imported lazily, thus we cannot define the function in that file. (Testing has shown it's already too late.)
-  // - D.S.
-  window.onNotificationMessage = (message: any) => openFinNotifications.push(message)
+export const setupGlobalOpenfinNotifications = () => {
+  if (typeof fin !== 'undefined' && !window.onNotificationMessage) {
+    // openfin requires a global onNotificationMessage function to be defined before its notification structure is initialized in the platform adapter.
+    // NotificationRoute is imported lazily, thus we cannot define the function in that file. (Testing has shown it's already too late.)
+    // - D.S.
+    window.onNotificationMessage = (message: any) => openFinNotifications.push(message)
+  }
 }
 
 export default class OpenFin implements PlatformAdapter {
