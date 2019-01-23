@@ -23,11 +23,7 @@ export const displayCurrencyChartEpic: ApplicationEpic = (action$, state$, { pla
   action$.pipe(
     ofType<Action, DisplayChartAction>(TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART),
     mergeMap<DisplayChartAction, string>((action: DisplayChartAction) =>
-      from<string>(
-        platform.name === 'openfin' // this epic is only pushed if the openfin platform is present, if there is another platform present it is assumed to be Finsemble
-          ? platform.app!.open!(CHART_ID, createChartConfig(action.payload, 5))
-          : platform.app!.open!(CHART_ID, createChartConfig(action.payload, 5)),
-      ),
+      from<string>(platform.app!.open!(CHART_ID, createChartConfig(action.payload, 5))),
     ),
     map<string, ChartOpenedAction>(symbol => currencyChartOpened(symbol)),
   )

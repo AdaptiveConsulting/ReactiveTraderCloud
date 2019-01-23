@@ -6,7 +6,6 @@ import { Bottom, Close, CloseContainer, MetaContainer, MetaTitle, Notification, 
 export interface Props {
   trade: Trade
   dismissNotification: () => void
-  highlight?: any
 }
 
 const TradeNotification: React.SFC<Props> = ({ trade: trade, dismissNotification }) => {

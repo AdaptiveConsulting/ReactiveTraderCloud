@@ -32,11 +32,6 @@ export class NotificationRoute extends React.Component<{}, State> {
 
   onDismissNotification = () => fin.desktop.Notification.getCurrent().close()
 
-  highlightTrade = () => {
-    window.FSBL.Clients.RouterClient.publish('test-topic', { test: 'test' })
-    console.log('clicked')
-  }
-
   render() {
     let { message } = this.state
     if (!message) {
