@@ -61,13 +61,4 @@ export const connectBlotterToNotifications: ApplicationEpic = (action$, state$, 
     ignoreElements(),
   )
 
-export const requestBrowserNotificationPermission: ApplicationEpic = (action$, state$, { platform }) =>
-  action$.pipe(
-    applicationConnected,
-    tap(() => {
-      Notification.requestPermission()
-    }),
-    ignoreElements(),
-  )
-
 export const publishBlotterEpic = combineEpics(connectBlotterToExcel)
