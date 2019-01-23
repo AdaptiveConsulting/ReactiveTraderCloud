@@ -62,7 +62,6 @@
     "lodash": "^4.17.10",
     "luxon": "^1.4.4",
     "moment": "^2.22.2",
-    "nodejs": "0.0.0",
     "polished": "^1.9.3",
     "react": "^16.7.0",
     "react-addons-css-transition-group": "^15.6.2",
