@@ -14,7 +14,10 @@ export default class Browser implements PlatformAdapter {
   window = {
     close: () => window.close(),
 
-    open: (config: WindowConfig, onClose: () => void) => openBrowserWindow(config, onClose),
+    open: (config: WindowConfig, onClose: () => void) => {
+      console.log(config)
+      return openBrowserWindow(config, onClose)
+    },
   }
 
   notification = {

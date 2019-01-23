@@ -10,7 +10,7 @@ import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap } f
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 
-import { fromEventPattern, interval } from 'rxjs'
+import { interval } from 'rxjs'
 
 type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
 

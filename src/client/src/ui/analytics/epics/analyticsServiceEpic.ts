@@ -19,7 +19,6 @@ export const publishPositionUpdateEpic: ApplicationEpic = (action$, state$, { pl
     ofType<Action, FetchAnalyticsAction>(ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE),
     tap((action: FetchAnalyticsAction) => {
       const currentPositions = action.payload.currentPositions.map(p => mapToDto(p))
-      console.log('test')
       platform.interop!.publish('position-update', currentPositions)
     }),
     ignoreElements(),

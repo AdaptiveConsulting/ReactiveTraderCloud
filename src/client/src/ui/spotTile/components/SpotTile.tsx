@@ -14,7 +14,7 @@ export const SpotTileWrapper = styled.div`
   height: ${window.FSBL === 'undefined'
     ? '100%'
     : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
-  color: ${({ theme }) => theme.tile.textColor};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 export const SpotTileStyle = styled(TileBaseStyle)`
