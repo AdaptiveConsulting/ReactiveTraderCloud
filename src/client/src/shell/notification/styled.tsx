@@ -10,7 +10,7 @@ export const Notification = styled('div')`
   display: flex;
   flex-direction: column;
   padding: 0.5rem 1rem;
-
+  cursor: pointer;
   font-size: 1rem;
   line-height: 1.25rem;
 `

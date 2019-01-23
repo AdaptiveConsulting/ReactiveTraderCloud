@@ -4,9 +4,10 @@ import { AnalyticsContainer } from '../../ui/analytics'
 import { styled } from 'rt-theme'
 
 const AnalyticsRouteStyle = styled.div`
+  max-width: 25rem;
   height: 100%;
-  padding: 0.625rem 0rem;
-  overflow: auto;
+  padding: 0.625rem;
+  margin: auto;
 `
 const AnalyticsRoute = () => (
   <RouteWrapper>

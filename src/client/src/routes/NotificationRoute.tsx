@@ -32,6 +32,8 @@ export class NotificationRoute extends React.Component<{}, State> {
 
   onDismissNotification = () => fin.desktop.Notification.getCurrent().close()
 
+  highlightTradeInBlotter = () => fin.desktop.InterApplicationBus.publish('highlight-blotter', this.state.message)
+
   render() {
     let { message } = this.state
     if (!message) {
@@ -39,7 +41,11 @@ export class NotificationRoute extends React.Component<{}, State> {
     }
     return (
       <ThemeProvider>
-        <TradeNotification trade={message.tradeNotification} dismissNotification={this.onDismissNotification} />
+        <TradeNotification
+          trade={message.tradeNotification}
+          dismissNotification={this.onDismissNotification}
+          highlightTradeInBlotter={this.highlightTradeInBlotter}
+        />
       </ThemeProvider>
     )
   }
