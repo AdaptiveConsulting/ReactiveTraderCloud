@@ -20,7 +20,6 @@ module.exports = (baseConfig, env, defaultConfig) => {
     system: path.resolve(__dirname, '../src', 'system'),
     shell: path.resolve(__dirname, '../src', 'shell')
   }
-  // defaultConfig = require('../config-overrides')(defaultConfig, env)
 
   return defaultConfig
 }
