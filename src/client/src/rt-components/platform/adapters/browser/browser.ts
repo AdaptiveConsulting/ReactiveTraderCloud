@@ -15,7 +15,7 @@ export default class Browser implements PlatformAdapter {
 
   notification = {
     notify: (message: object) => {
-      if (Notification) {
+      if ('Notification' in window) {
         if (Notification.permission === NotifyPermission.granted) {
           sendNotification(message)
         }

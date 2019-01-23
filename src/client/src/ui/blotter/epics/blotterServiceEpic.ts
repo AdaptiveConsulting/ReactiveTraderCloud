@@ -68,7 +68,7 @@ export const requestBrowserNotificationPermission: ApplicationEpic = (action$, s
   action$.pipe(
     applicationConnected,
     tap(() => {
-      if (Notification) {
+      if ('Notification' in window) {
         Notification.requestPermission()
       }
     }),
