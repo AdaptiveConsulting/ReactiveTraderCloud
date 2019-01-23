@@ -5,10 +5,10 @@ import { pricingServiceEpic } from './pricingEpics'
 import { publishPriceUpdateEpic } from './publishPrice'
 import { spotTileEpic } from './spotTileEpics'
 import { publishTradeExecutedEpic } from './tradeExecutedEpic'
-import { InteropServices, PlatformAdapter } from 'rt-components'
+import { ApplicationDependencies } from 'applicationServices'
 
-export default ({ platform }: { platform: PlatformAdapter }) => {
-  const { interopServices }: { interopServices: InteropServices } = platform
+export default ({ platform }: ApplicationDependencies) => {
+  const interopServices = platform.interopServices
   const epics = [spotTileEpic, pricingServiceEpic]
 
   if (interopServices.excel) {

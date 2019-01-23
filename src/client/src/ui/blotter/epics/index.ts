@@ -2,10 +2,10 @@ import { combineEpics } from 'redux-observable'
 import { publishBlotterEpic } from './blotterServiceEpic'
 import { blotterServiceEpic } from './epics'
 import { connectBlotterToNotifications, requestBrowserNotificationPermission } from './blotterServiceEpic'
-import { InteropServices, PlatformAdapter } from 'rt-components'
+import { ApplicationDependencies } from 'applicationServices'
 
-export default ({ platform }: { platform: PlatformAdapter }) => {
-  const { interopServices }: { interopServices: InteropServices } = platform
+export default ({ platform }: ApplicationDependencies) => {
+  const interopServices = platform.interopServices
   const epics = [blotterServiceEpic, connectBlotterToNotifications, requestBrowserNotificationPermission]
 
   if (interopServices.excel) {

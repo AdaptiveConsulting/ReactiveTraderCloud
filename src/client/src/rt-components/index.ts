@@ -12,7 +12,6 @@ export {
   PlatformAdapter,
   withPlatform,
   WindowConfig,
-  InteropServices,
   externalWindowDefault,
   PlatformProvider,
   openFinNotifications,
