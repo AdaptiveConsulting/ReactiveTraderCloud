@@ -18,11 +18,11 @@ import rootReducer from './combineReducers'
 export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [
     referenceServiceEpic,
-    blotterEpic,
-    analyticsServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,
-    spotTileEpic,
+    blotterEpic(dependencies),
+    analyticsServiceEpic(dependencies),
+    spotTileEpic(dependencies),
   ]
 
   const middleware = createEpicMiddleware<Action, Action, GlobalState, ApplicationDependencies>({
