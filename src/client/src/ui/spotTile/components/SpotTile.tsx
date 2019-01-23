@@ -6,7 +6,7 @@ import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import { DeliveryDate, TileBaseStyle, TileHeader, TileSymbol } from './styled'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export const SpotTileWrapper = styled.div`
   position: relative;

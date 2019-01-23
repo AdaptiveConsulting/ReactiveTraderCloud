@@ -1,4 +1,4 @@
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export const OverflowScroll = styled.div`
   overflow-y: scroll;

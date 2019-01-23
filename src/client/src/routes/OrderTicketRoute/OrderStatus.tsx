@@ -3,7 +3,7 @@ import { DateTime, Duration } from 'luxon'
 import React from 'react'
 
 import { Button as StyleguideButton } from 'rt-styleguide'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 import { Block } from '../StyleguideRoute/styled'
 import { LabelText } from './TextField'

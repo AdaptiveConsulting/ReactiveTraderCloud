@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { CurrencyPair, Direction } from 'rt-types'
 import { SpotPriceTick } from '../model/spotPriceTick'
 import { getSpread, toRate } from '../model/spotTileUtils'

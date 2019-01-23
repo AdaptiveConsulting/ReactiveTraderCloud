@@ -4,8 +4,9 @@ import React from 'react'
 
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
-import { colors, styled, Theme } from 'rt-theme'
-import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-components'
+import styled from 'styled-components/macro'
+import { colors, Theme } from 'rt-theme'
+import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-components/macro'
 
 export default () => (
   <React.Fragment>

@@ -6,7 +6,8 @@ import { appConfigs } from './applicationConfigurations'
 import { LaunchButton } from './LaunchButton'
 import { LogoIcon } from 'rt-components'
 import { createGlobalStyle } from 'styled-components'
-import { ThemeStorageSwitch, styled } from 'rt-theme'
+import styled from 'styled-components/macro'
+import { ThemeStorageSwitch } from 'rt-theme'
 
 const LauncherGlobalStyle = createGlobalStyle`
 :root, body {

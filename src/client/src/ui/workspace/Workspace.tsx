@@ -1,6 +1,6 @@
 import React from 'react'
 import { TearOff } from 'rt-components'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { ExternalWindowProps } from './selectors'
 

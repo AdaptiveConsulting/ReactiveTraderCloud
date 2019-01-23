@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 import { HotKeys } from 'react-hotkeys'
 import { rules } from 'rt-styleguide'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { Block, Text } from '../StyleguideRoute/styled'
 
 import { DrawerMenu } from './DrawerMenu'

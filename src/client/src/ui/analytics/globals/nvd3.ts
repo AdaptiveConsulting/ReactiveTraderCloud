@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components/macro'
 
 import { barBgColor, gray, negativeColor, positiveColor, strokeColor, transitionDuration } from './variables'
 

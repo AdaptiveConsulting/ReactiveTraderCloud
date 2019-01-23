@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Block } from '../StyleguideRoute/styled'
 
 import { Timer } from './Timer'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { keyframes } from 'styled-components'
 
 export interface NotificationProps {

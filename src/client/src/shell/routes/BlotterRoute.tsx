@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouteWrapper } from 'rt-components'
 import { BlotterContainer } from '../../ui/blotter'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 const BlotterContainerStyle = styled('div')`
   min-height: 28.125rem;

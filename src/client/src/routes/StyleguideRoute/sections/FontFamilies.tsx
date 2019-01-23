@@ -1,11 +1,11 @@
 import _ from 'lodash'
 import React from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 import { H2, H3 } from '../elements'
 import { Paragraph, SectionBlock, Text, TextProps } from '../styled'
 import { PassThroughProps } from '../tools'
-import { css } from 'styled-components'
+import { css } from 'styled-components/macro'
 
 const SIZES = [
   ['Heading H1', 55, 3.5],

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { styled, ThemeName, ThemeProvider, ThemeConsumer, GlobalStyle } from 'rt-theme'
+import styled from 'styled-components/macro'
+import { ThemeName, ThemeProvider, ThemeConsumer, GlobalStyle } from 'rt-theme'
 
 class Story extends Component {
   render() {

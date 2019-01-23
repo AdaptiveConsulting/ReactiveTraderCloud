@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { FunctionComponent } from 'react'
 import React from 'react'
 import { Popup } from 'rt-components'
@@ -37,8 +37,8 @@ export const StatusCircle = styled(StatusCircleCore)<{ status: ServiceConnection
       status === ServiceConnectionStatus.CONNECTED
         ? theme.template.green.normal
         : status === ServiceConnectionStatus.CONNECTING
-          ? theme.template.yellow.normal
-          : theme.template.red.normal};
+        ? theme.template.yellow.normal
+        : theme.template.red.normal};
   }
 `
 

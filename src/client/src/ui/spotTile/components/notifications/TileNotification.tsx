@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { Button, Icon, TileBaseStyle } from '../styled'
 
 type AccentColor = 'red' | 'green'

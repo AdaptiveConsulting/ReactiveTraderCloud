@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { Story } from 'rt-storybook'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 import '../globals/index'
 import initialProps, { analyticsLineChartModel, positionsChartModel } from '../test-resources/initialProps'

@@ -1,6 +1,6 @@
 import React from 'react'
 import numeral from 'numeral'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 type Colors = 'green' | 'red'
 

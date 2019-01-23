@@ -1,8 +1,7 @@
 import { filter, get } from 'lodash'
 
 import { MappedPropMap, PassThroughFunc } from '../tools'
-import { css } from 'styled-components'
-import { styled } from 'rt-theme'
+import styled, { css } from 'styled-components/macro'
 
 export interface TextProps {
   display?: 'inline' | 'block' | 'inline-block'

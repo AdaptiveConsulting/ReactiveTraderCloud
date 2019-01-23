@@ -1,5 +1,4 @@
-import { css } from 'styled-components'
-import { styled } from 'rt-theme'
+import styled, { css } from 'styled-components/macro'
 
 interface Flex {
   height?: string

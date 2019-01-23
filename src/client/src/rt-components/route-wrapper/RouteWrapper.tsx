@@ -1,6 +1,6 @@
 import React from 'react'
 import { OpenFinChrome, OpenFinHeader, PlatformAdapter, withPlatform } from 'rt-components'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 const RouteStyle = styled.div`
   height: 100%;

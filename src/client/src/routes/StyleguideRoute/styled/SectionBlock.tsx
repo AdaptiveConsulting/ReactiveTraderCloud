@@ -4,8 +4,7 @@ import React from 'react'
 import { rules } from 'rt-styleguide'
 import { Block, BlockProps } from '../styled'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
-import { styled } from 'rt-theme'
-import { css } from 'styled-components'
+import styled, { css } from 'styled-components/macro'
 
 export interface SectionProps extends BlockProps, MarginPaddingProps {
   mh?: number

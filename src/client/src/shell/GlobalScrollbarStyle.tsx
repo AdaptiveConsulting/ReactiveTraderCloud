@@ -2,7 +2,7 @@ import { memoize } from 'lodash'
 import { rgba } from 'polished'
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
-import { withTheme, createGlobalStyle } from 'styled-components'
+import { withTheme, createGlobalStyle } from 'styled-components/macro'
 import { Theme } from 'rt-theme'
 
 export const css = memoize(

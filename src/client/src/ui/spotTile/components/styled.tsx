@@ -1,5 +1,5 @@
 import { RouteStyle } from 'rt-components'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export interface ColorProps {
   color?: string

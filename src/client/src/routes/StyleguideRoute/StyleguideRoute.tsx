@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { styled, ThemeName, ThemeProvider, ThemeConsumer } from 'rt-theme'
+import { ThemeName, ThemeProvider, ThemeConsumer } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 import FloatingTools from './components/FloatingsTools'
 import { Block, SectionBlock } from './styled'

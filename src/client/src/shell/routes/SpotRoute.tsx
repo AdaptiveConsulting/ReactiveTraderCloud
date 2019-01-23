@@ -2,7 +2,7 @@ import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
 import SpotTileContainer from '../../ui/spotTile/SpotTileContainer'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 const SpotTileStyle = styled.div`
   min-width: 26rem;

@@ -1,4 +1,4 @@
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export const PopupContainer = styled.div<{ open: boolean }>`
   display: ${({ open }) => (open ? 'flex' : 'none')};

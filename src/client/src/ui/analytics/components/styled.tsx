@@ -1,4 +1,4 @@
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { transparentColor } from '../globals/variables'
 
 export const AnalyticsStyle = styled.div`

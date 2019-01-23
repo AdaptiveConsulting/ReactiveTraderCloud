@@ -1,6 +1,6 @@
 import { ColDef } from 'ag-grid'
 import React from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 interface AppliedFiltersProps {
   filterModel: any

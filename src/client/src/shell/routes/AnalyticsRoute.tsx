@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouteWrapper } from 'rt-components'
 import { AnalyticsContainer } from '../../ui/analytics'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 const AnalyticsRouteStyle = styled.div`
   max-width: 25rem;

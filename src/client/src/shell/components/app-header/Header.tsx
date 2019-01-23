@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import React from 'react'
 
-import { styled, ThemeName, ThemeConsumer } from 'rt-theme'
+import styled from 'styled-components/macro'
+import { ThemeName, ThemeConsumer } from 'rt-theme'
 
 import Logo from './Logo'
 

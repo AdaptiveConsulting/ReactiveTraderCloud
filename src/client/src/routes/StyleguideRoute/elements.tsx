@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
-import { styled, resolvesColor } from 'rt-theme'
+import styled from 'styled-components/macro'
+import { resolvesColor } from 'rt-theme'
 
 import { mapMarginPaddingProps, mapTextProps, MarginPaddingProps, TextProps } from './styled'
 

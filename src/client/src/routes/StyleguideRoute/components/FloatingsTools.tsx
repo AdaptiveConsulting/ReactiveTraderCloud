@@ -1,7 +1,8 @@
 import React from 'react'
 import Switch from 'react-switch'
 
-import { colors, styled, ThemeName } from 'rt-theme'
+import styled from 'styled-components/macro'
+import { colors, ThemeName } from 'rt-theme'
 
 import { Block } from '../styled'
 

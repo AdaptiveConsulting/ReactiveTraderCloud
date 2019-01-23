@@ -1,6 +1,6 @@
 import React from 'react'
 import { PlatformAdapter, PopoutIcon, withPlatform } from 'rt-components'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { SpotTileWrapper } from './SpotTile'
 
 const TopRightButton = styled('button')`
