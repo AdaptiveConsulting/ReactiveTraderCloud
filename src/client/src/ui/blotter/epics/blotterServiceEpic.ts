@@ -4,10 +4,13 @@ import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { CurrencyPair, CurrencyPairMap, Trade, Trades, TradeStatus } from 'rt-types'
-import { interval } from 'rxjs'
+
 import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
+
+import { interval } from 'rxjs'
 
 type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
 
@@ -58,6 +61,17 @@ export const connectBlotterToNotifications: ApplicationEpic = (action$, state$, 
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
     map(trade => formatTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),
     tap(tradeNotification => platform.notification!.notify({ tradeNotification })),
+    ignoreElements(),
+  )
+
+export const requestBrowserNotificationPermission: ApplicationEpic = (action$, state$, { platform }) =>
+  action$.pipe(
+    applicationConnected,
+    tap(() => {
+      if ('Notification' in window) {
+        Notification.requestPermission()
+      }
+    }),
     ignoreElements(),
   )
 
