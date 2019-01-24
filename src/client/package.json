@@ -33,7 +33,7 @@
     "openfin:launcher": "openfin -c public/config/openfin/launcher-local.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "precommit": "lint-staged",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 -c .storybook",
     "storybook:build": "build-storybook",
     "sleep": "sleep 5"
   },
@@ -91,9 +91,12 @@
     "ua-parser-js": "0.7.10"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^4.1.7",
-    "@storybook/addon-info": "^4.1.7",
-    "@storybook/addon-knobs": "^4.1.7",
+    "@babel/core": "^7.2.2",
+    "@storybook/addon-actions": "^4.1.11",
+    "@storybook/addon-knobs": "^4.1.11",
+    "@storybook/addon-links": "^4.1.11",
+    "@storybook/addon-notes": "^4.1.11",
+    "@storybook/addons": "^4.1.11",
     "@storybook/react": "^4.1.9",
     "@types/autobahn": "^0.9.38",
     "@types/d3-time-format": "^2.1.0",
