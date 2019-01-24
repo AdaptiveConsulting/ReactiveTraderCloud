@@ -9,6 +9,7 @@ export default class Browser implements PlatformAdapter {
   interopServices = {
     excel: false,
     chartIQ: false,
+    notificationHighlight: false,
   }
 
   window = {
