@@ -94,7 +94,7 @@
     "@storybook/addon-actions": "^4.1.7",
     "@storybook/addon-info": "^4.1.7",
     "@storybook/addon-knobs": "^4.1.7",
-    "@storybook/react": "^4.1.7",
+    "@storybook/react": "^4.1.9",
     "@types/autobahn": "^0.9.38",
     "@types/d3-time-format": "^2.1.0",
     "@types/enzyme": "^3.1.10",
