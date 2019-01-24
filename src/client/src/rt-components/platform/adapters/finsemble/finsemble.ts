@@ -1,6 +1,7 @@
 import { PlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
 
+// types not currently available for FSBL - 1/24/2019
 declare global {
   interface Window {
     FSBL: any
@@ -13,6 +14,7 @@ export default class Finsemble implements PlatformAdapter {
   interopServices = {
     excel: false,
     chartIQ: true,
+    notificationHighlight: false,
   }
 
   window = {
