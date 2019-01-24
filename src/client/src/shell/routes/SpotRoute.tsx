@@ -5,9 +5,12 @@ import SpotTileContainer from '../../ui/spotTile/SpotTileContainer'
 import { styled } from 'rt-theme'
 
 const SpotTileStyle = styled.div`
+  min-width: 26rem;
   width: 26rem;
-  height: 13.125rem;
+  min-height: 12rem;
+  height: 12rem;
   padding: 0.625rem;
+  margin: auto;
 `
 
 export default ({ match }: RouteComponentProps<{ symbol: string }>) => (
