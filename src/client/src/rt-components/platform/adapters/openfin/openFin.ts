@@ -18,6 +18,11 @@ export const setupGlobalOpenfinNotifications = () => {
 export default class OpenFin implements PlatformAdapter {
   name = 'openfin'
   type = 'desktop'
+  interopServices = {
+    excel: true,
+    chartIQ: true,
+    notificationHighlight: true,
+  }
 
   window = {
     close: () => fin.desktop.Window.getCurrent().close(),
