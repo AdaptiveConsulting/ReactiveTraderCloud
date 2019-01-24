@@ -105,6 +105,8 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
       return 'rt-blotter__row-rejected'
     } else if (data.status === TradeStatus.Pending) {
       return 'rt-blotter__row-pending'
+    } else if (data.highlight) {
+      return 'rt-blotter__row-highlight'
     }
     return ''
   }

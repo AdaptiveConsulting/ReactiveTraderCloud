@@ -30,7 +30,7 @@ export function mapFromTradeDto(tradeDto: TradeRaw): Trade {
     tradeDto.SpotRate,
     new Date(tradeDto.TradeDate),
     new Date(tradeDto.ValueDate),
-    status
+    status,
   )
 }
 
@@ -68,7 +68,8 @@ function createTrade(
   spotRate: number,
   tradeDate: Date,
   valueDate: Date,
-  status: string
+  status: string,
+  highlight: boolean = false,
 ): Trade {
   return {
     tradeId,
@@ -80,6 +81,7 @@ function createTrade(
     spotRate,
     tradeDate,
     valueDate,
-    status
+    status,
+    highlight,
   }
 }

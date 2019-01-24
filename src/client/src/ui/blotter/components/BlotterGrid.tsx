@@ -31,6 +31,10 @@ export default styled('div')`
     background-color: ${({ theme }) => theme.core.offBackground};
   }
 
+  .rt-blotter__row-highlight {
+    animation: ${({ theme }) => theme.flash} 1s ease-in-out 0s infinite;
+  }
+
   .rt-blotter__status-indicator--done {
     width: 0.3125rem !important;
     padding: 0;

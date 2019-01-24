@@ -9,6 +9,7 @@ export default class Browser implements PlatformAdapter {
   interopServices = {
     excel: false,
     chartIQ: false,
+    notificationHighlight: false,
   }
 
   window = {
@@ -22,8 +23,10 @@ export default class Browser implements PlatformAdapter {
 
   notification = {
     notify: (message: object) => {
-      if (Notification.permission === NotifyPermission.granted) {
-        sendNotification(message)
+      if ('Notification' in window) {
+        if (Notification.permission === NotifyPermission.granted) {
+          sendNotification(message)
+        }
       }
     },
   }

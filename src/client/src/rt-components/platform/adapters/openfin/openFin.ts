@@ -21,6 +21,7 @@ export default class OpenFin implements PlatformAdapter {
   interopServices = {
     excel: true,
     chartIQ: true,
+    notificationHighlight: true,
   }
 
   window = {

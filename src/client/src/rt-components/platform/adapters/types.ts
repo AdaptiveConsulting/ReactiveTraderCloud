@@ -17,4 +17,5 @@ export interface AppConfig {
 export interface InteropServices {
   excel: boolean
   chartIQ: boolean
+  notificationHighlight: boolean
 }
