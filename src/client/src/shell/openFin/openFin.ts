@@ -8,7 +8,7 @@ export class OpenFinLimitChecker {
   private limitCheckId: number = 1
 
   constructor() {
-    if (typeof window.FSBL === 'undefined' && typeof fin !== 'undefined') {
+    if (typeof fin !== 'undefined') {
       this.initializeLimitChecker()
     }
   }
