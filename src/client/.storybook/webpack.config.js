@@ -3,11 +3,10 @@ const path = require('path')
 module.exports = (baseConfig, env, defaultConfig) => {
   defaultConfig.module.rules.push({
     test: /\.(ts|tsx)$/,
+    exclude: /(node_modules)/,
     use: [{
       loader: require.resolve('awesome-typescript-loader'),
       options: { configFileName: path.resolve(__dirname, './tsconfig.json') }
-    }, {
-      loader: require.resolve('react-docgen-typescript-loader')
     }]
   })
   defaultConfig.resolve.extensions.push('.ts', '.tsx', '.js')
@@ -18,14 +17,12 @@ module.exports = (baseConfig, env, defaultConfig) => {
     'rt-actions': path.resolve(__dirname, '../src', 'rt-actions'),
     'rt-storybook': path.resolve(__dirname, '../src', 'rt-storybook'),
     'rt-styleguide': path.resolve(__dirname, '../src', 'rt-styleguide'),
-    'rt-system': path.resolve(__dirname, '../src', 'rt-storybook'),
     'rt-theme': path.resolve(__dirname, '../src', 'rt-theme'),
     'rt-system': path.resolve(__dirname, '../src', 'rt-system'),
     ui: path.resolve(__dirname, '../src', 'ui'),
     system: path.resolve(__dirname, '../src', 'system'),
     shell: path.resolve(__dirname, '../src', 'shell')
   }
-  // defaultConfig = require('../config-overrides')(defaultConfig, env)
 
   return defaultConfig
 }
