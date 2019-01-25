@@ -15,10 +15,10 @@ import { TopRightButton, BottomRightButton } from './TileControls'
 export const SpotTileWrapper = withPlatform(styled.div<{ platform: PlatformAdapter }>`
   position: relative;
   min-height: 10rem;
-  height: ${({ platform: { name } }) => {
-    console.log(name)
-    return name !== 'finsemble' ? '100%' : 'calc(100% - 25px)'
-  }}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
+  height: ${({ platform: { name } }) =>
+    name !== 'finsemble'
+      ? '100%'
+      : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
   &:hover ${TopRightButton} {
     opacity: 0.75;
   }
