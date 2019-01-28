@@ -1,9 +1,14 @@
+import { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } from './colors'
+export { colors }
+export type CorePalette = CorePalette
+export type CorePaletteMap = CorePaletteMap
+export type ColorPalette = ColorPalette
+export type ColorPaletteMaps = ColorPaletteMaps
 export { default as GlobalStyle } from './globals'
 import baseStyled, { ThemedStyledInterface } from 'styled-components'
-export { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } from './colors'
 
 import { Theme } from './createTheme'
-export { Theme }
+export type Theme = Theme
 export const styled: ThemedStyledInterface<Theme> = baseStyled
 
 export { ThemeName, ThemeProvider, ThemeConsumer } from './ThemeContext'

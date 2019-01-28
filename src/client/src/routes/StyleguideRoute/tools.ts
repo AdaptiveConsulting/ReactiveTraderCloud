@@ -2,7 +2,7 @@ import { assignWith, get, startsWith } from 'lodash'
 
 import { FlattenInterpolation, CSSObject } from 'styled-components'
 
-export { CSSObject }
+export type CSSObject = CSSObject
 export type CSS = string | CSSObject
 export type MappedCSS = null | false | CSS | CSS[]
 
