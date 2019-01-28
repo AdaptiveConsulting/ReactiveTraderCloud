@@ -123,6 +123,7 @@
     "@types/ua-parser-js": "^0.7.32",
     "awesome-typescript-loader": "^5.2.1",
     "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
     "cross-env": "^5.1.4",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
