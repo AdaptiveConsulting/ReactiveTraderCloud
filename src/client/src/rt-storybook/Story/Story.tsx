@@ -1,30 +1,35 @@
 import React, { Component } from 'react'
+import { Platform, PlatformProvider } from 'rt-components'
 import { styled, ThemeName, ThemeProvider, ThemeConsumer, GlobalStyle } from 'rt-theme'
 
+const platform = new Platform()
 class Story extends Component {
   render() {
     const { children } = this.props
 
     return (
-      <GlobalStyle>
+      <React.Fragment>
+        <GlobalStyle />
         <ThemeProvider>
-          <StyledStory>
-            <Toolbar>
-              <ThemeConsumer>
-                {({ name, setTheme }) => (
-                  <IconButton
-                    onClick={() => setTheme({ name: name === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark })}
-                    type={name || 'primary'}
-                  >
-                    <i className={`fa${name === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
-                  </IconButton>
-                )}
-              </ThemeConsumer>
-            </Toolbar>
-            <Content>{children}</Content>
-          </StyledStory>
+          <PlatformProvider value={platform}>
+            <StyledStory>
+              <Toolbar>
+                <ThemeConsumer>
+                  {({ name, setTheme }) => (
+                    <IconButton
+                      onClick={() => setTheme({ name: name === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark })}
+                      type={name || 'primary'}
+                    >
+                      <i className={`fa${name === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
+                    </IconButton>
+                  )}
+                </ThemeConsumer>
+              </Toolbar>
+              <Content>{children}</Content>
+            </StyledStory>
+          </PlatformProvider>
         </ThemeProvider>
-      </GlobalStyle>
+      </React.Fragment>
     )
   }
 }
