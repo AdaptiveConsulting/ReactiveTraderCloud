@@ -6,7 +6,6 @@ import { faChevronCircleRight, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Block } from '../StyleguideRoute/styled'
-
 import { AudioContext } from './AudioContext'
 import { BlobDownload } from './devtools/BlobDownload'
 import { ChannelMerger } from './ChannelMerger'
@@ -310,8 +309,8 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                 sessionActive === false
                   ? 'primary.1'
                   : sessionError || userPermissionGranted === false
-                    ? 'accents.aware.base'
-                    : 'accents.primary.base'
+                  ? 'accents.aware.base'
+                  : 'accents.primary.base'
               }
             >
               {source === 'microphone' ? <MicrophoneIcon /> : <FontAwesomeIcon icon={faPlay} />}
@@ -383,19 +382,17 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                 sessionActive === false
                   ? 'primary.1'
                   : userPermissionGranted === false
-                    ? 'accents.aware.base'
-                    : 'accents.primary.base'
+                  ? 'accents.aware.base'
+                  : 'accents.primary.base'
               }
             >
               <FontAwesomeIcon icon={faChevronCircleRight} />
             </MicrophoneButton>
           )}
 
-          {blob &&
-            source === 'microphone' &&
-            process.env.NODE_ENV === 'development' && (
-              <BlobDownload blob={blob} download="order-ticket-audio.webm" force />
-            )}
+          {blob && source === 'microphone' && process.env.NODE_ENV === 'development' && (
+            <BlobDownload blob={blob} download="order-ticket-audio.webm" force />
+          )}
         </Root>
       </React.Fragment>
     )
