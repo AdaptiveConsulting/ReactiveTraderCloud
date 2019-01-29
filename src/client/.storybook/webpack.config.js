@@ -5,6 +5,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
     test: /\.(ts|tsx)$/,
     loader: require.resolve('babel-loader'),
     options: {
+      plugins: ["babel-plugin-styled-components"],
       presets: [['react-app', { flow: false, typescript: true }]]
     }
   })
