@@ -46,7 +46,7 @@ describe('blotterServiceEpic', () => {
     scheduler.run(helpers => {
       // scenario
       const lifetimeAct1 = BlotterActions.subscribeToBlotterAction
-      const lifetimeAct = '     --0--1|'
+      const lifetimeAct = '--0--1|'
       const tradeStream = '     --a--b----c'
       const oooexpected = '-------a--b----c'
       const mapToExpect: any = ({ payload: { trades } }: ActionWithPayload<any, TradesUpdate>) =>
@@ -73,7 +73,7 @@ describe('blotterServiceEpic', () => {
     scheduler.run(helpers => {
       // scenario
       const lifetimeAct1 = BlotterActions.subscribeToBlotterAction
-      const lifetimeAct = '     --0--1-------2'
+      const lifetimeAct = '--0--1-------2'
       const tradeStream = '     --a--b----c----d---e'
       const oooexpected = '-------a--b----c--'
       const mapToExpect: any = ({ payload: { trades } }: ActionWithPayload<any, TradesUpdate>) =>
