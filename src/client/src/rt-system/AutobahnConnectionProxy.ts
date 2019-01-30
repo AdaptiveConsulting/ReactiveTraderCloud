@@ -69,7 +69,7 @@ export default class AutobahnConnectionProxy implements AutobahnConnection {
     }
 
     this.connection.open()
-    return false
+    return true
   }
 
   getConnection() {
