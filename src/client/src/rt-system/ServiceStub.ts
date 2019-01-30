@@ -1,6 +1,6 @@
 import { Error, ISubscription } from 'autobahn'
-import { NextObserver, Observable } from 'rxjs'
-import { filter, mergeMap, switchMap } from 'rxjs/operators'
+import { NextObserver, Observable, EMPTY } from 'rxjs'
+import { map, filter, mergeMap, switchMap } from 'rxjs/operators'
 
 import './AutoBahnTypeExtensions'
 import { ConnectionEvent, ConnectionEventType, ConnectionOpenEvent } from './connectionStream'
@@ -40,57 +40,58 @@ export class ServiceStub {
    */
   subscribeToTopic<T>(topic: string, acknowledgementObs?: NextObserver<string>): Observable<T> {
     return this.connection$.pipe(
-      filter((connection): connection is ConnectionOpenEvent => connection.type === ConnectionEventType.CONNECTED),
-      switchMap(
-        ({ session }) =>
-          new Observable<T>(obs => {
-            console.info(LOG_NAME, `Subscribing to topic [${topic}].`)
+      map(connection => (connection.type === ConnectionEventType.CONNECTED ? connection.session : null)),
+      switchMap(session =>
+        !session
+          ? EMPTY
+          : new Observable<T>(obs => {
+              console.info(LOG_NAME, `Subscribing to topic [${topic}].`)
 
-            let subscription: ISubscription
+              let subscription: ISubscription
 
-            session
-              .subscribe<T>(topic, response => {
-                this.logResponse(topic, response)
-                obs.next(response[0])
-              })
-              .then(
-                sub => {
-                  // subscription succeeded, subscription is an instance of autobahn.Subscription
-                  if (acknowledgementObs) {
-                    acknowledgementObs.next(topic)
-                  }
-                  subscription = sub
-                },
-                (error: Error) => {
-                  // subscription failed, error is an instance of autobahn.Error
-                  console.error(LOG_NAME, `Error on topic ${topic}`, error)
-                  obs.error(error)
-                },
-              )
+              session
+                .subscribe<T>(topic, response => {
+                  this.logResponse(topic, response)
+                  obs.next(response[0])
+                })
+                .then(
+                  sub => {
+                    // subscription succeeded, subscription is an instance of autobahn.Subscription
+                    if (acknowledgementObs) {
+                      acknowledgementObs.next(topic)
+                    }
+                    subscription = sub
+                  },
+                  (error: Error) => {
+                    // subscription failed, error is an instance of autobahn.Error
+                    console.error(LOG_NAME, `Error on topic ${topic}`, error)
+                    obs.error(error)
+                  },
+                )
 
-            return () => {
-              console.info(LOG_NAME, `Tearing down topic ${topic}`)
+              return () => {
+                console.info(LOG_NAME, `Tearing down topic ${topic}`)
 
-              if (!subscription) {
-                return
-              }
-              try {
-                if (session && session.isOpen()) {
-                  session.unsubscribe(subscription).then(
-                    () => {
-                      obs.complete()
-
-                      //obs.unsubscribe()
-                      return console.info(LOG_NAME, `Successfully unsubscribing from topic ${topic}`)
-                    },
-                    err => console.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err),
-                  )
+                if (!subscription) {
+                  return
                 }
-              } catch (err) {
-                console.error(LOG_NAME, `Error thrown unsubscribing from topic ${topic}`, err)
+                try {
+                  if (session && session.isOpen()) {
+                    // It appears that AutoBahn's unsubscribe function is not implemented properly. In the case of an internal websocket exception,
+                    // due to disconnection for example, the promise that is returned never completes; i.e., neither callback passed to `then` is
+                    // ever invoked. I would at least have expected the rejected callback to have been invoked with the error. -D.S.
+                    session
+                      .unsubscribe(subscription)
+                      .then(
+                        () => console.info(LOG_NAME, `Successfully unsubscribing from topic ${topic}`),
+                        err => console.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err),
+                      )
+                  }
+                } catch (err) {
+                  console.error(LOG_NAME, `Error thrown unsubscribing from topic ${topic}`, err)
+                }
               }
-            }
-          }),
+            }),
       ),
     )
   }
@@ -124,14 +125,6 @@ export class ServiceStub {
                 obs.error(error)
               },
             )
-
-            return () => {
-              // TODO: Cancellation is not the same as completion; typically, complete should not be called on cancellation.
-              //       Consider removing the call to obs.complete() from this unsubscription function, if it can be confirmed
-              //       that doing so does not prevent any necessary side-effects from occurring. If we can't, then consider
-              //       using the "finally" operator in the downstream queries instead of calling complete() here.  - D.S.
-              obs.complete()
-            }
           }),
       ),
     )

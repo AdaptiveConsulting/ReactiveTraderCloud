@@ -1,6 +1,6 @@
-import { debounceWithSelector, retryConstantly, ServiceClient } from 'rt-system'
+import { debounceWithSelector, ServiceClient } from 'rt-system'
 import { Observable } from 'rxjs'
-import { map, retryWhen, scan, share } from 'rxjs/operators'
+import { map, scan, share } from 'rxjs/operators'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 import { SpotPriceTick } from '../model/spotPriceTick'
 
@@ -36,11 +36,6 @@ export default class PricingService {
     return serviceClient
       .createStreamOperation<RawPrice, Request>('pricing', getPriceUpdatesOperationName, request)
       .pipe(
-        retryWhen(
-          retryConstantly({
-            interval: 2000,
-          }),
-        ),
         map(adaptDTO),
         scan<SpotPriceTick>((acc, next) => {
           next.priceMovementType = PricingService.getPriceMovementType(acc, next)

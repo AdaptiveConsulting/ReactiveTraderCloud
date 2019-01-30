@@ -1,16 +1,17 @@
 import { PlatformAdapter } from 'rt-components'
 import {
   AutobahnConnection,
-  ConnectionEvent,
   createConnection$,
   ServiceClient,
-  ServiceCollectionMap,
   serviceStatusStream$,
   ServiceStub,
+  ConnectionEvent,
+  ServiceCollectionMap,
+  retryWithBackOff,
 } from 'rt-system'
 import { User } from 'rt-types'
-import { ReplaySubject } from 'rxjs'
-import { multicast, refCount } from 'rxjs/operators'
+import { ConnectableObservable } from 'rxjs'
+import { publishReplay, retryWhen } from 'rxjs/operators'
 import { OpenFinLimitChecker } from './shell/openFin'
 import { ReferenceDataService } from './shell/referenceData'
 
@@ -24,25 +25,22 @@ export interface ApplicationProps {
 }
 
 export function createApplicationServices({ autobahn, limitChecker, user, platform }: ApplicationProps) {
-  const connection$ = createConnection$(autobahn).pipe(
-    multicast(() => {
-      return new ReplaySubject<ConnectionEvent>(1)
-    }),
-    refCount(),
-  )
+  const connection$ = publishReplay(1)(
+    createConnection$(autobahn).pipe(retryWhen(retryWithBackOff())),
+  ) as ConnectableObservable<ConnectionEvent>
 
   const serviceStub = new ServiceStub(user.code, connection$)
 
-  const serviceStatus$ = serviceStatusStream$(serviceStub, HEARTBEAT_TIMEOUT).pipe(
-    multicast(() => {
-      return new ReplaySubject<ServiceCollectionMap>(1)
-    }),
-    refCount(),
-  )
+  const serviceStatus$ = publishReplay(1)(
+    serviceStatusStream$(serviceStub, HEARTBEAT_TIMEOUT),
+  ) as ConnectableObservable<ServiceCollectionMap>
 
   const loadBalancedServiceStub = new ServiceClient(serviceStub, serviceStatus$)
 
   const referenceDataService = new ReferenceDataService(loadBalancedServiceStub)
+
+  connection$.connect()
+  serviceStatus$.connect()
 
   return {
     referenceDataService,
