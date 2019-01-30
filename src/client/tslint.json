@@ -20,7 +20,8 @@
       "options": [
         "rxjs/operators",
         "@storybook/addon-knobs/react",
-        "styled-components/macro"
+        "styled-components/macro",
+        "rxjs/testing"
       ]
     },
     "ter-arrow-parens": false,
