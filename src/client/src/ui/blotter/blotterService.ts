@@ -1,6 +1,6 @@
-import { map } from 'rxjs/operators'
+import { map, retryWhen } from 'rxjs/operators'
 
-import { ServiceClient } from 'rt-system'
+import { ServiceClient, retryWithBackOff } from 'rt-system'
 import { Trade } from 'rt-types'
 import { mapFromTradeDto, RawTradeUpdate } from 'rt-types'
 
@@ -30,8 +30,9 @@ export default class BlotterService {
 
   getTradesStream() {
     console.info(LOG_NAME, 'Subscribing to blotter stream')
-    return this.serviceClient
-      .createStreamOperation<RawTradeUpdate>('blotter', 'getTradesStream', {})
-      .pipe(map(dto => mapFromDto(dto)))
+    return this.serviceClient.createStreamOperation<RawTradeUpdate>('blotter', 'getTradesStream', {}).pipe(
+      retryWhen(retryWithBackOff()),
+      map(dto => mapFromDto(dto)),
+    )
   }
 }
