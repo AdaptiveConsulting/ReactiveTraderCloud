@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators'
 import { TestScheduler } from 'rxjs/testing'
 import { Action, ActionWithPayload } from 'rt-util'
 
-export const createScheduler = (assertDeepEqual?: (actual: any, expected: any) => boolean | void) =>
+export const createTestScheduler = (assertDeepEqual?: (actual: any, expected: any) => boolean | void) =>
   new TestScheduler(assertDeepEqual || ((actual, expected) => expect(actual).toEqual(expected)))
 
 export function fromMarbles<TResult>(

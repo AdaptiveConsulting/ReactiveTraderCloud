@@ -1,6 +1,6 @@
 import { ActionsObservable } from 'redux-observable'
 import { MockServiceClient } from 'rt-system'
-import { createScheduler, fromMarbles, mockLifetimeAction$ } from 'rt-testing'
+import { createTestScheduler, fromMarbles, mockLifetimeAction$ } from 'rt-testing'
 import MockApplicationDependencies from 'applicationServices.mock'
 import { blotterServiceEpic } from './epics'
 import { BlotterActions } from '../actions'
@@ -8,7 +8,7 @@ import { fromTradeActionsToMarbles, toRawTradeUpdate } from '../testing'
 
 describe('blotterServiceEpic', () => {
   it("returns an observable that contains no actions when the component hasn't mounted", () => {
-    const scheduler = createScheduler()
+    const scheduler = createTestScheduler()
     scheduler.run(helpers => {
       // scenario
       const lifetimeAct = '--C--' // See AppLifetimeEvent enum
@@ -32,7 +32,7 @@ describe('blotterServiceEpic', () => {
   })
 
   it('returns an observable that contains new trade actions for incoming trades', () => {
-    const scheduler = createScheduler()
+    const scheduler = createTestScheduler()
     scheduler.run(helpers => {
       // scenario
       const lifetimeAct1 = BlotterActions.subscribeToBlotterAction
@@ -57,7 +57,7 @@ describe('blotterServiceEpic', () => {
   })
 
   it('returns an observable that stops generating trade actions when the application disconnects', () => {
-    const scheduler = createScheduler()
+    const scheduler = createTestScheduler()
     scheduler.run(helpers => {
       // scenario
       const lifetimeAct1 = BlotterActions.subscribeToBlotterAction
