@@ -6,7 +6,7 @@ import { Action } from 'rt-util'
 /*
  * The marbles for custom actions such as mount/subscription must be specified
  * between the 'C' and 'D' marbles within your marble diagram, although both of
- * the 'C' and 'D' marbles theselves are optional.
+ * the 'C' and 'D' marbles themselves are optional.
  *
  *
  * The marbles that represent your custom actions MUST be monotonically
