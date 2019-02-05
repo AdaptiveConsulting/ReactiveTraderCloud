@@ -71,13 +71,8 @@ const IconContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   &:hover {
-    svg {
-      transition-timing-function: ease-out;
-      transition: transform 0.3s;
-      transform: translateY(-25%);
-    }
     span {
-      color: white;
+      color: ${({ theme }) => theme.core.textColor};
     }
   }
 `
@@ -91,7 +86,7 @@ const ThemeSwitchContainer = styled(ButtonContainer)`
 
 const LogoContainer = styled(IconContainer)`
   width: 50%;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) => theme.core.darkBackground};
   .svg-icon {
     fill: ${({ theme }) => theme.core.textColor};
   }

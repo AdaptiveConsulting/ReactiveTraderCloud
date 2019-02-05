@@ -72,13 +72,25 @@ export const appConfigs: ApplicationConfig[] = [
   },
   {
     name: 'GreenKey',
-    url: `http://${location.host}/blotter`,
+    url: `http://${location.host}/order-ticket`,
     icon: icons.greenkey,
     provider: {
       platform: 'openfin',
       as: 'application',
       options: {
         ...options,
+        defaultWidth: 672,
+        defaultHeight: 384,
+        minWidth: 672,
+        minHeight: 384,
+        resizable: false,
+        maximizable: false,
+        contextMenu: true,
+        alwaysOnTop: false,
+      },
+      cornerRounding: {
+        height: 10,
+        width: 8,
       },
     },
   },
