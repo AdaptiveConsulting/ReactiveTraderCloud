@@ -24,8 +24,7 @@ export class Launcher extends React.Component {
         <LauncherGlobalStyle />
         <Root>
           <LogoContainer>
-            <LogoIcon width={1.5} height={1.5} />
-            <IconTitle>Adaptive</IconTitle>
+            <LogoIcon width={1.3} height={1.3} />
           </LogoContainer>
           {appConfigs.map(app => (
             <ButtonContainer key={app.name}>
@@ -61,6 +60,9 @@ const IconTitle = styled.span`
   font-family: Lato;
   color: transparent;
   transition: color 0.3s ease;
+
+  /* avoids text highlighting on icon titles */
+  user-select: none;
 `
 
 const IconContainer = styled.div`

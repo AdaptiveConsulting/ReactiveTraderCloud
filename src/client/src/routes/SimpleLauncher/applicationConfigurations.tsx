@@ -32,7 +32,7 @@ interface Provider {
 export interface ApplicationConfig {
   name: string
   url: string
-  icon: any
+  icon: JSX.Element
   provider: Provider
 }
 
@@ -40,7 +40,7 @@ export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Trader',
     url: `http://${location.host}`,
-    icon: icons.rt,
+    icon: icons.reactiveTrader,
     provider: {
       platform: 'openfin',
       as: 'application',
@@ -50,7 +50,7 @@ export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Analytics',
     url: 'http://demo-reactive-analytics.adaptivecluster.com/',
-    icon: icons.ra,
+    icon: icons.reactiveAnalytics,
     provider: {
       platform: 'openfin',
       as: 'application',

@@ -13,8 +13,8 @@ export default {
       </g>
     </svg>
   ),
-  rt: (
-    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="26" viewBox="0 0 25 26">
+  reactiveTrader: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="23" viewBox="0 0 25 26">
       <g fill="none" fillRule="evenodd">
         <path d="M-10-9h44v44h-44z" />
         <path
@@ -45,7 +45,7 @@ export default {
       </g>
     </svg>
   ),
-  ra: (
+  reactiveAnalytics: (
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="18" viewBox="0 0 32 18">
       <g fill="none" fillRule="evenodd">
         <path d="M-6-13h44v44H-6z" />
