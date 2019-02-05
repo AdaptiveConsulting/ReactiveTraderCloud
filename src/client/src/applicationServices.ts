@@ -1,16 +1,17 @@
 import { PlatformAdapter } from 'rt-components'
 import {
   AutobahnConnection,
-  ConnectionEvent,
   createConnection$,
   ServiceClient,
-  ServiceCollectionMap,
   serviceStatusStream$,
   ServiceStub,
+  ConnectionEvent,
+  ServiceCollectionMap,
+  retryWithBackOff,
 } from 'rt-system'
 import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
-import { multicast, refCount } from 'rxjs/operators'
+import { retryWhen, multicast, refCount } from 'rxjs/operators'
 import { OpenFinLimitChecker } from './shell/openFin'
 import { ReferenceDataService } from './shell/referenceData'
 
@@ -25,6 +26,7 @@ export interface ApplicationProps {
 
 export function createApplicationServices({ autobahn, limitChecker, user, platform }: ApplicationProps) {
   const connection$ = createConnection$(autobahn).pipe(
+    retryWhen(retryWithBackOff()),
     multicast(() => {
       return new ReplaySubject<ConnectionEvent>(1)
     }),

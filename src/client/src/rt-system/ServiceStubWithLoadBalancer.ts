@@ -106,10 +106,9 @@ export default class ServiceStubWithLoadBalancer {
                 map(currentStatus => currentStatus.getServiceInstanceStatus(service, serviceInstanceStatus.serviceId)),
                 filter(currentStatus => !(currentStatus && currentStatus.isConnected)),
               )
-              .subscribe(() => obs.error('Service timeout out'))
+              .subscribe(() => console.log('Topic timed out: ' + topicName))
 
             return () => {
-              obs.complete()
               subscription.unsubscribe()
               detectInstanceTimout.unsubscribe()
             }
