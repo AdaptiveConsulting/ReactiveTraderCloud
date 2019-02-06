@@ -15,12 +15,13 @@ type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
 type SubscribeToAnalyticsAction = ReturnType<typeof subcribeToAnalytics>
 
 export const analyticsServiceEpic: ApplicationEpic = (action$, $state, { loadBalancedServiceStub }) => {
+  //this is a wrapper of the service, TODO ML what is the loadBalancedServiceStub
   const analyticsService = new AnalyticsService(loadBalancedServiceStub)
 
   const refAction$ = action$.pipe(ofType<Action, ReferenceServiceAction>(REF_ACTION_TYPES.REFERENCE_SERVICE))
 
   const subscribeAction$ = action$.pipe(
-    ofType<Action, SubscribeToAnalyticsAction>(ANALYTICS_ACTION_TYPES.SUBCRIBE_TO_ANALYTICS)
+    ofType<Action, SubscribeToAnalyticsAction>(ANALYTICS_ACTION_TYPES.SUBCRIBE_TO_ANALYTICS),
   )
 
   const combined$ = refAction$.pipe(combineLatest(subscribeAction$))
@@ -29,8 +30,15 @@ export const analyticsServiceEpic: ApplicationEpic = (action$, $state, { loadBal
     mergeMapTo<FetchAnalyticsAction>(
       analyticsService.getAnalyticsStream(CURRENCY).pipe(
         map(fetchAnalytics),
-        takeUntil(action$.pipe(applicationDisconnected))
-      )
-    )
+        takeUntil(action$.pipe(applicationDisconnected)),
+      ),
+    ),
   )
 }
+
+/**
+ * loadBalanceServiceStub?
+ * --^--
+ *
+ * When we are disconnected, we should not receive any action.
+ */
