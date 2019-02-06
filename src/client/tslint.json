@@ -19,6 +19,8 @@
       "severity": "error",
       "options": [
         "rxjs/operators",
+        "rxjs/internal/testing/ColdObservable",
+        "rxjs/testing",
         "@storybook/addon-knobs/react",
         "styled-components/macro"
       ]
