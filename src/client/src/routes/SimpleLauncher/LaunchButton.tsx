@@ -11,19 +11,36 @@ export interface LaunchButtonProps {
 const StyledButton = styled.button`
   width: 100%;
   height: 100%;
-  flex: 1 1 auto;
   font-size: 1.5rem;
-
+  text-align: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: currentColor;
   position: relative;
   z-index: 100;
 
+  border-radius: 4px;
+  border: 0.5px solid ${({ theme }) => theme.core.darkBackground};
+
+  background-color: ${({ theme }) => theme.core.alternateBackground};
+
+  .svg-fill {
+    fill: ${({ theme }) => theme.core.textColor};
+  }
+
+  .svg-stroke {
+    stroke: ${({ theme }) => theme.core.textColor};
+  }
+
   &:hover {
-    color: ${({ theme }) => theme.button.accent.backgroundColor};
+    background-color: ${({ theme }) => theme.button.accent.backgroundColor};
+    svg {
+      transition-timing-function: ease-out;
+      transition: transform 0.3s;
+      transform: translateY(-20%);
+    }
   }
 `
 

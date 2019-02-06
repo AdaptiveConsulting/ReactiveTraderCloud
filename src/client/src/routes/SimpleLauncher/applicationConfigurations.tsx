@@ -1,7 +1,4 @@
-import React from 'react'
-
-import { faChartArea, faExchangeAlt, faMicrophone, faPalette, faDownload } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon } from './icons'
 
 const options = {
   autoShow: true,
@@ -43,7 +40,7 @@ export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Trader',
     url: `http://${location.host}`,
-    icon: <FontAwesomeIcon icon={faExchangeAlt} />,
+    icon: reactiveTraderIcon,
     provider: {
       platform: 'openfin',
       as: 'application',
@@ -53,7 +50,7 @@ export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Analytics',
     url: 'http://demo-reactive-analytics.adaptivecluster.com/',
-    icon: <FontAwesomeIcon icon={faChartArea} />,
+    icon: reactiveAnalyticsIcon,
     provider: {
       platform: 'openfin',
       as: 'application',
@@ -64,22 +61,19 @@ export const appConfigs: ApplicationConfig[] = [
     },
   },
   {
-    name: 'Adaptive Style Guide',
-    url: `http://${location.host}/styleguide`,
-    icon: <FontAwesomeIcon icon={faPalette} />,
+    name: 'Limit Checker',
+    url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
+    icon: limitCheckerIcon,
     provider: {
       platform: 'openfin',
-      as: 'application',
-      options: {
-        ...options,
-        frame: true,
-      },
+      as: 'download',
+      options,
     },
   },
   {
-    name: 'Bond Order Ticket',
+    name: 'GreenKey',
     url: `http://${location.host}/order-ticket`,
-    icon: <FontAwesomeIcon icon={faMicrophone} />,
+    icon: greenKeyIcon,
     provider: {
       platform: 'openfin',
       as: 'application',
@@ -98,16 +92,6 @@ export const appConfigs: ApplicationConfig[] = [
         height: 10,
         width: 8,
       },
-    },
-  },
-  {
-    name: 'OpenFin Limit Checker',
-    url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
-    icon: <FontAwesomeIcon icon={faDownload} />,
-    provider: {
-      platform: 'openfin',
-      as: 'download',
-      options,
     },
   },
 ]
