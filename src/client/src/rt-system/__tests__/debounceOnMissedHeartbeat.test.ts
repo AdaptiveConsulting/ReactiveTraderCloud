@@ -8,7 +8,7 @@ const testScheduler = new TestScheduler((actual, expected) => {
 })
 
 describe('DebounceOnMissedHeartbeat', () => {
-  it('should emits an item after time delta 2 has been specified', () => {
+  it('should merge the source observable and also emit after due time', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const dueTime = 2
       const source$: ColdObservable<number> = cold('--a|', { a: 10 })
