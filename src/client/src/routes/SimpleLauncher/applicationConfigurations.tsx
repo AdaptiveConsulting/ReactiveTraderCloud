@@ -1,4 +1,4 @@
-import icons from './Icons'
+import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon } from './icons'
 
 const options = {
   autoShow: true,
@@ -40,7 +40,7 @@ export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Trader',
     url: `http://${location.host}`,
-    icon: icons.reactiveTrader,
+    icon: reactiveTraderIcon,
     provider: {
       platform: 'openfin',
       as: 'application',
@@ -50,7 +50,7 @@ export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Analytics',
     url: 'http://demo-reactive-analytics.adaptivecluster.com/',
-    icon: icons.reactiveAnalytics,
+    icon: reactiveAnalyticsIcon,
     provider: {
       platform: 'openfin',
       as: 'application',
@@ -63,7 +63,7 @@ export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Limit Checker',
     url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
-    icon: icons.limitChecker,
+    icon: limitCheckerIcon,
     provider: {
       platform: 'openfin',
       as: 'download',
@@ -73,7 +73,7 @@ export const appConfigs: ApplicationConfig[] = [
   {
     name: 'GreenKey',
     url: `http://${location.host}/order-ticket`,
-    icon: icons.greenkey,
+    icon: greenKeyIcon,
     provider: {
       platform: 'openfin',
       as: 'application',
