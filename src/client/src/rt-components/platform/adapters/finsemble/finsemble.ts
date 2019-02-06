@@ -26,21 +26,30 @@ export default class Finsemble implements PlatformAdapter {
   app = {
     open: (id: string, config: any) =>
       new Promise<string>((resolve, reject) => {
-        const appConfig = {
-          name: config.uuid,
-          uuid: config.uuid,
-          url: config.url,
-          mainWindowOptions: {
-            icon: config.icon,
-            autoShow: false,
-          },
-        }
-        const app: fin.OpenFinApplication = new fin.desktop.Application(
-          appConfig,
-          () => app.run(() => setTimeout(() => resolve(id), 1000), err => reject(err)),
-          err => reject(err),
-        )
+        window.FSBL.Clients.LauncherClient.getActiveDescriptors((error: any, activeWindows: any) => {
+          const isRunning = config.uuid in activeWindows ? true : false
+          if (isRunning) {
+            this.interop.publish(config.topic, config.payload)
+          } else {
+            window.FSBL.Clients.LauncherClient.spawn(config.uuid, {
+              url: config.url,
+              name: config.uuid,
+              options: {
+                frame: true,
+                icon: config.icon,
+              },
+              addToWorkspace: true,
+            })
+          }
+        })
       }),
+  }
+
+  interop = {
+    subscribe: (sender: string, topic: string, listener: () => void) =>
+      window.FSBL.Clients.RouterClient.addListener(topic, listener),
+
+    publish: (topic: string, message: string | object) => window.FSBL.Clients.RouterClient.transmit(topic, message),
   }
 
   notification = {
