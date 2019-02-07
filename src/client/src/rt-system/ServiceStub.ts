@@ -41,6 +41,7 @@ export class ServiceStub {
   subscribeToTopic<T>(topic: string, acknowledgementObs?: NextObserver<string>): Observable<T> {
     return this.connection$.pipe(
       map(connection => (connection.type === ConnectionEventType.CONNECTED ? connection.session : null)),
+      //Maintain only one session at time
       switchMap(session =>
         !session
           ? EMPTY
@@ -48,7 +49,6 @@ export class ServiceStub {
               console.info(LOG_NAME, `Subscribing to topic [${topic}].`)
 
               let subscription: ISubscription
-
               session
                 .subscribe<T>(topic, response => {
                   this.logResponse(topic, response)
