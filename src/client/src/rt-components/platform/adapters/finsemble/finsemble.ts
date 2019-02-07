@@ -26,7 +26,7 @@ export default class Finsemble implements PlatformAdapter {
   app = {
     open: (id: string, config: any) =>
       new Promise<string>((resolve, reject) => {
-        window.FSBL.Clients.LauncherClient.getActiveDescriptors((error: any, activeWindows: any) => {
+        window.FSBL.Clients.LauncherClient.getActiveDescriptors((error: string, activeWindows: object) => {
           const isRunning = config.uuid in activeWindows ? true : false
           if (isRunning) {
             this.interop.publish(config.topic, config.payload)
