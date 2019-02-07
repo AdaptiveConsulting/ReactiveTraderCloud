@@ -31,15 +31,19 @@ export default class Finsemble implements PlatformAdapter {
           if (isRunning) {
             this.interop.publish(config.topic, config.payload)
           } else {
-            window.FSBL.Clients.LauncherClient.spawn(config.uuid, {
-              url: config.url,
-              name: config.uuid,
-              options: {
-                frame: true,
-                icon: config.icon,
+            window.FSBL.Clients.LauncherClient.spawn(
+              config.uuid,
+              {
+                url: config.url,
+                name: config.uuid,
+                options: {
+                  icon: config.icon,
+                  autoShow: false,
+                },
+                addToWorkspace: true,
               },
-              addToWorkspace: true,
-            })
+              (err: string) => (err ? reject(err) : resolve()),
+            )
           }
         })
       }),
