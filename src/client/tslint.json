@@ -19,6 +19,7 @@
       "severity": "error",
       "options": [
         "rxjs/operators",
+        "rxjs/testing",
         "@storybook/addon-knobs/react",
         "styled-components/macro"
       ]
