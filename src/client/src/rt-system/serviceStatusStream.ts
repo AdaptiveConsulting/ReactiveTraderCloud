@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs'
-import { distinctUntilChanged, groupBy, map, mergeMap, scan } from 'rxjs/operators'
+import { distinctUntilChanged, groupBy, map, mergeMap, scan, tap } from 'rxjs/operators'
 import { debounceWithSelector } from './debounceOnMissedHeartbeat'
 import { ServiceCollectionMap, ServiceInstanceCollection } from './ServiceInstanceCollection'
 import { RawServiceStatus, ServiceInstanceStatus } from './serviceInstanceStatus'
@@ -12,13 +12,16 @@ function addHeartBeatToServiceInstanceStatus(
       groupBy(serviceStatus => serviceStatus.serviceId),
       mergeMap(service$ =>
         service$.pipe(
+          tap(x => console.log('Want to check the other case 0', x)),
           debounceWithSelector<ServiceInstanceStatus>(heartBeatTimeout, lastValue =>
             createServiceInstanceForDisconnected(lastValue.serviceType, lastValue.serviceId),
           ),
+          tap(x => console.log('Want to check the other case 1', x)),
           distinctUntilChanged<ServiceInstanceStatus>(
             (status, statusNew) =>
               status.isConnected === statusNew.isConnected && status.serviceLoad === statusNew.serviceLoad,
           ),
+          tap(x => console.log('Want to check the other case 2', x)),
         ),
       ),
     )

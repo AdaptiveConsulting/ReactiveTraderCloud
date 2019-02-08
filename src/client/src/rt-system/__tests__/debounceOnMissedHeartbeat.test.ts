@@ -11,8 +11,8 @@ describe('DebounceOnMissedHeartbeat', () => {
   it('should merge the source observable and also emit after due time', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const dueTime = 2
-      const source$: ColdObservable<number> = cold('--a|', { a: 10 })
-      const expected = '--b-(b|)'
+      const source$: ColdObservable<number> = cold('--a-a-|', { a: 10 })
+      const expected = '--b-b-(b|)'
       const obs = debounceWithSelector(dueTime, (x: number) => x)(source$)
 
       expectObservable(obs).toBe(expected, { b: 10 })

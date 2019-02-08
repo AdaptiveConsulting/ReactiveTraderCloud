@@ -46,4 +46,8 @@ describe('ServiceStatusStream', () => {
   it('should return a serviceCollectionMap of disconnected services', () => {
     expect(1).toBe(1)
   })
+
+  it('creates an entry for service  status', () => {
+    expect(1).toBe(1)
+  })
 })
