@@ -10,6 +10,7 @@ export { default as Environment } from './environment'
 export { ConnectionType } from './connectionType'
 export { ServiceStub } from './ServiceStub'
 export { default as ServiceClient } from './ServiceStubWithLoadBalancer'
+export { default as MockServiceClient } from './ServiceStubWithLoadBalancer.mock'
 export { ConnectionEventType } from './connectionStream'
 import { AutobahnConnection } from './AutoBahnConnection'
 export type AutobahnConnection = AutobahnConnection
