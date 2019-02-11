@@ -36,20 +36,18 @@ const MockCollectionMap = () => {
 }
 
 describe('ServiceStatusStream', () => {
-  // it('should return a serviceCollectionMap of disconnected servicestatus instance', () => {
-  //   // testScheduler().run(({ cold, expectObservable, flush }) => {
-  //   //   const rawServiceDict = {
-  //   //     a: MockRawServiceStatus,
-  //   //   }
-  //   //   const statusUpdates$: ColdObservable<RawServiceStatus> = cold('--a-|', rawServiceDict)
-  //   //   const serviceStatus$ = serviceStatusStream$(statusUpdates$, 2)
-  //   //   const expectedStream = '--d-(d|)'
-  //   //   const collectionMap = MockCollectionMap()
-  //   //   expectObservable(serviceStatus$).toBe(expectedStream, { d: collectionMap })
-  //   //   flush()
-  //   expect(1).toBe(1)
-  //   // })
-  // })
+  it('should return a serviceCollectionMap of disconnected servicestatus instance', () => {
+    testScheduler().run(({ cold, expectObservable }) => {
+      const rawServiceDict = {
+        a: MockRawServiceStatus,
+      }
+      const statusUpdates$: ColdObservable<RawServiceStatus> = cold('--a-|', rawServiceDict)
+      const serviceStatus$ = serviceStatusStream$(statusUpdates$, 2)
+      const expectedStream = '--d-(d|)'
+      const collectionMap = MockCollectionMap()
+      expectObservable(serviceStatus$).toBe(expectedStream, { d: collectionMap })
+    })
+  })
 
   describe('mapToServiceInstanceCollection', () => {
     it('should group serviceInstanceStatus according to their serviceId and map to ServiceInstanceCollection', () => {
