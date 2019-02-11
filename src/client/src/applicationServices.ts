@@ -25,7 +25,6 @@ export interface ApplicationProps {
 }
 
 export function createApplicationServices({ autobahn, limitChecker, user, platform }: ApplicationProps) {
-  //Establishes one single entry of connection
   const connection$ = createConnection$(autobahn).pipe(
     retryWhen(retryWithBackOff()),
     multicast(() => {
@@ -34,11 +33,8 @@ export function createApplicationServices({ autobahn, limitChecker, user, platfo
     refCount(),
   )
 
-  //wraps the server to client interactions
   const serviceStub = new ServiceStub(user.code, connection$)
-  //subscribe to a raw service topics
   const statusUpdates$ = serviceStub.subscribeToTopic<RawServiceStatus>('status')
-  //the serviceStatus should be performed only once
   const serviceStatus$ = serviceStatusStream$(statusUpdates$, HEARTBEAT_TIMEOUT).pipe(
     multicast(() => {
       return new ReplaySubject<ServiceCollectionMap>(1)

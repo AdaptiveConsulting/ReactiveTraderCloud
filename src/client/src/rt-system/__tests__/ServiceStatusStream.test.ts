@@ -1,6 +1,5 @@
 import { serviceStatusStream$, RawServiceStatus, ServiceCollectionMap, ServiceInstanceCollection } from 'rt-system'
 import { TestScheduler } from 'rxjs/testing'
-import { ColdObservable } from 'rxjs/internal/testing/ColdObservable'
 import { ServiceInstanceStatus } from '../serviceInstanceStatus'
 import { mapToServiceCollectionMap$, mapToServiceInstanceCollection$ } from '../serviceStatusStream'
 import { groupBy } from 'rxjs/operators'
@@ -39,7 +38,7 @@ describe('ServiceStatusStream', () => {
       const rawServiceDict = {
         a: MockRawServiceStatus,
       }
-      const statusUpdates$: ColdObservable<RawServiceStatus> = cold('--a-|', rawServiceDict)
+      const statusUpdates$ = cold<RawServiceStatus>('--a-|', rawServiceDict)
       const serviceStatus$ = serviceStatusStream$(statusUpdates$, 2)
       const expectedStream = '--d-(d|)'
       const collectionMap = MockCollectionMap()
@@ -53,7 +52,7 @@ describe('ServiceStatusStream', () => {
         const a = MockServiceInstanceStatus
         const b = { ...MockServiceInstanceStatus, serviceId: 'b789', timestamp: 6000, isConnected: true }
         const c = { ...MockServiceInstanceStatus, serviceType: 'blotter', serviceId: '4drf', timestamp: 4000 }
-        const source: ColdObservable<ServiceInstanceStatus> = cold('--abc-|', { a, b, c })
+        const source = cold<ServiceInstanceStatus>('--abc-|', { a, b, c })
         const source$ = source.pipe(groupBy(serviceInstanceStatus => serviceInstanceStatus.serviceType))
         const serviceInstanceCollection$ = mapToServiceInstanceCollection$(source$, 3)
         const expected = '--ffgff(g|)'
@@ -84,7 +83,7 @@ describe('ServiceStatusStream', () => {
         collection2.update(a)
         const collection3 = new ServiceInstanceCollection('blotter')
         collection3.update(c)
-        const source$: ColdObservable<ServiceInstanceCollection> = cold('--a--b-c|', {
+        const source$ = cold<ServiceInstanceCollection>('--a--b-c|', {
           a: collection1,
           b: collection2,
           c: collection3,
