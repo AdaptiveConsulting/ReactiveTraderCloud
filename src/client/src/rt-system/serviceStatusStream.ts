@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs'
-import { distinctUntilChanged, groupBy, map, mergeMap, scan, tap } from 'rxjs/operators'
+import { Observable, GroupedObservable } from 'rxjs'
+import { distinctUntilChanged, groupBy, map, mergeMap, scan } from 'rxjs/operators'
 import { debounceWithSelector } from './debounceOnMissedHeartbeat'
 import { ServiceCollectionMap, ServiceInstanceCollection } from './ServiceInstanceCollection'
 import { RawServiceStatus, ServiceInstanceStatus } from './serviceInstanceStatus'
@@ -12,26 +12,23 @@ function addHeartBeatToServiceInstanceStatus(
       groupBy(serviceStatus => serviceStatus.serviceId),
       mergeMap(service$ =>
         service$.pipe(
-          tap(x => console.log('Want to check the other case 0', x)),
           debounceWithSelector<ServiceInstanceStatus>(heartBeatTimeout, lastValue =>
             createServiceInstanceForDisconnected(lastValue.serviceType, lastValue.serviceId),
           ),
-          tap(x => console.log('Want to check the other case 1', x)),
           distinctUntilChanged<ServiceInstanceStatus>(
             (status, statusNew) =>
               status.isConnected === statusNew.isConnected && status.serviceLoad === statusNew.serviceLoad,
           ),
-          tap(x => console.log('Want to check the other case 2', x)),
         ),
       ),
     )
 }
 
-export function serviceStatusStream$(statusUpdate$: Observable<RawServiceStatus>, heartBeatTimeout: number) {
-  return statusUpdate$.pipe(
-    map(convertFromRawMessage),
-    groupBy(serviceInstanceStatus => serviceInstanceStatus.serviceType),
-    //we have a list of observables that are grouped by their serviceInstanceStatus.serviceType
+export function mapToServiceInstanceCollection$(
+  source$: Observable<GroupedObservable<string, ServiceInstanceStatus>>,
+  heartBeatTimeout: number,
+): Observable<ServiceInstanceCollection> {
+  return source$.pipe(
     mergeMap(serviceInstanceStatus =>
       serviceInstanceStatus.pipe(
         addHeartBeatToServiceInstanceStatus(heartBeatTimeout),
@@ -41,12 +38,23 @@ export function serviceStatusStream$(statusUpdate$: Observable<RawServiceStatus>
         ),
       ),
     ),
-    //we have a collection of serviceInstanceStatus observables
+  )
+}
+export function mapToServiceCollectionMap$(source$: Observable<ServiceInstanceCollection>) {
+  return source$.pipe(
     scan<ServiceInstanceCollection, ServiceCollectionMap>((serviceCollectionMap, serviceInstanceCollection) => {
       return serviceCollectionMap.add(serviceInstanceCollection.serviceType, serviceInstanceCollection)
     }, new ServiceCollectionMap()),
-    //We have a collection of ServiceInstanceCollection, a map {service instance stuff}?
   )
+}
+
+export function serviceStatusStream$(statusUpdate$: Observable<RawServiceStatus>, heartBeatTimeout: number) {
+  const groupedServiceInstanceStatus$ = statusUpdate$.pipe(
+    map(convertFromRawMessage),
+    groupBy(serviceInstanceStatus => serviceInstanceStatus.serviceType),
+  )
+  const serviceInstanceCollection$ = mapToServiceInstanceCollection$(groupedServiceInstanceStatus$, heartBeatTimeout)
+  return mapToServiceCollectionMap$(serviceInstanceCollection$)
 }
 
 function convertFromRawMessage(serviceStatus: RawServiceStatus): ServiceInstanceStatus {

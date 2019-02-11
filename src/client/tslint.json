@@ -20,6 +20,7 @@
       "options": [
         "rxjs/operators",
         "rxjs/internal/testing/ColdObservable",
+        "rxjs/internal/testing/HotObservable",
         "rxjs/testing",
         "@storybook/addon-knobs/react",
         "styled-components/macro"

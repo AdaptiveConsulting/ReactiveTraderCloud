@@ -6,7 +6,7 @@ const testScheduler = new TestScheduler((actual, expected) => {
   expect(actual).toEqual(expected)
 })
 
-describe('DebounceOnMissedHeartbeat observable', () => {
+describe('debounceWithSelector', () => {
   it('should emit source observable values if values emitted from source are within the due time', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       //More things need to be added here
