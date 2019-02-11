@@ -23,3 +23,8 @@ export const publishPositionUpdateEpic: ApplicationEpic = (action$, state$, { pl
     }),
     ignoreElements(),
   )
+
+/**
+ * listens to type of action FetchAnalytics
+ * action, we also want to get the
+ */
