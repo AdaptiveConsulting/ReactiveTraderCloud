@@ -1,9 +1,8 @@
 import _ from 'lodash'
-import React, { ButtonHTMLAttributes } from 'react'
-
-import { css, resolvesColor, styled, Styled, Theme, ThemeProvider } from 'rt-theme'
-
+import React, { ButtonHTMLAttributes, ReactChild } from 'react'
 import { userSelectButton, userSelectNone } from 'rt-styleguide'
+import { Theme, styled, resolvesColor } from 'rt-theme'
+import { css, ThemeProvider, withTheme } from 'styled-components'
 
 export interface ButtonStyleProps {
   intent?: string
@@ -17,7 +16,7 @@ export interface ButtonStyleProps {
 
 const boxShadow = `0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08)`
 
-class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
+class BaseButtonThemeProvider extends React.Component<ButtonStyleProps & { theme: Theme }> {
   static defaultProps = {
     intent: 'primary',
   }
@@ -26,9 +25,8 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
     const { intent, outline, active, disabled, invert } = this.props
 
     const { backgroundColor, textColor, button: theme, colors } = providedTheme
-    let {
-      button: { [intent]: palette = { backgroundColor, textColor } },
-    } = providedTheme
+
+    let palette = providedTheme.button[intent] || { backgroundColor, textColor }
 
     if (active) {
       palette = { ...palette, ...palette.active }
@@ -76,9 +74,11 @@ class ButtonThemeProvider extends React.Component<ButtonStyleProps> {
   render() {
     const { children } = this.props
 
-    return <ThemeProvider theme={this.resolveTheme}>{children}</ThemeProvider>
+    return <ThemeProvider theme={this.resolveTheme(this.props.theme)}>{children as ReactChild}</ThemeProvider>
   }
 }
+
+const ButtonThemeProvider = withTheme(BaseButtonThemeProvider)
 
 export class Button extends React.Component<ButtonStyleProps & ButtonHTMLAttributes<Element>> {
   render() {
@@ -125,7 +125,7 @@ export class ButtonGroup extends React.Component<ButtonStyleProps> {
   }
 }
 
-const StyledBase: Styled<ButtonStyleProps> = styled.div`
+const StyledBase = styled.div<ButtonStyleProps>`
   -webkit-appearance: none;
   border-width: 0;
 
@@ -200,7 +200,7 @@ const StyledBase: Styled<ButtonStyleProps> = styled.div`
 `
 
 const StyledButtonBase = StyledBase.withComponent('button')
-export const StyledButton: Styled<ButtonStyleProps> = styled(StyledButtonBase)`
+export const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;
@@ -232,7 +232,7 @@ StyledButton.defaultProps = {
   role: 'button',
 }
 
-export const StyledButtonGroup: Styled<ButtonStyleProps> = styled(StyledBase)`
+export const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
   ${StyledButton} {
     min-width: 1rem;
     padding-left: 0.625rem;

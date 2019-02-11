@@ -10,6 +10,7 @@ export interface Trade {
   tradeDate: Date
   valueDate: Date
   status: any
+  highlight?: boolean
 }
 
 export interface Trades {

@@ -1,9 +1,21 @@
-export { CurrencyPair, CurrencyPairMap } from './currencyPair'
+import { CurrencyPair, CurrencyPairMap } from './currencyPair'
+export type CurrencyPair = CurrencyPair
+export type CurrencyPairMap = CurrencyPairMap
 export { Direction } from './direction'
-export { ServiceStatus, ServiceConnectionStatus } from './serviceStatus'
-export { Trade, Trades } from './trade'
+import { ServiceStatus, ServiceConnectionStatus } from './serviceStatus'
+export { ServiceConnectionStatus }
+export type ServiceStatus = ServiceStatus
+import { Trade, Trades } from './trade'
+export type Trade = Trade
+export type Trades = Trades
 export { TradeStatus } from './tradeStatus'
 export { UpdateType } from './updateType'
-export { User } from './user'
-export { CollectionUpdate, CollectionUpdates } from './CollectionUpdate'
-export { mapFromTradeDto, TradeRaw, RawTradeUpdate } from './tradeMapper'
+import { User } from './user'
+export type User = User
+import { CollectionUpdate, CollectionUpdates } from './CollectionUpdate'
+export type CollectionUpdate = CollectionUpdate
+export type CollectionUpdates = CollectionUpdates
+import { mapFromTradeDto, TradeRaw, RawTradeUpdate } from './tradeMapper'
+export { mapFromTradeDto }
+export type TradeRaw = TradeRaw
+export type RawTradeUpdate = RawTradeUpdate

@@ -202,8 +202,8 @@ export class OrderTicket extends PureComponent<Props, State> {
     const { executed, requestExecution, requestQuote, requestSession, query = {} } = this.state
 
     return (
-      <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} innerRef={this.viewportRef}>
-        <AppLayout bg="shell.backgroundColor">
+      <Viewport bg="core.darkBackground" fg="core.textColor" {...this.hotkeys} ref={this.viewportRef}>
+        <AppLayout bg="core.darkBackground">
           <ChromeLayout bg="primary.base">
             <WindowControls />
             <Text letterSpacing="1px" fontSize="0.625rem" fontWeight={300}>
@@ -273,8 +273,6 @@ export class OrderTicket extends PureComponent<Props, State> {
                             executed: null,
                           })
                     }
-                    // @ts-ignore
-                    mt={5}
                   >
                     <Block fontSize={0.875}>
                       {executed ? (

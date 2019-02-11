@@ -1,31 +1,5 @@
-const { injectBabelPlugin, getLoader, getBabelLoader, loaderNameMatches } = require('react-app-rewired')
+const rewireStyledComponents = require('react-app-rewire-styled-components')
 
 module.exports = function override(config, env) {
-  // Inject all babel plugins before rewiring typescript
-
-  // Inject babel-plugin-emotion
-  config = injectBabelPlugin(
-    [
-      'emotion',
-      {
-        autoLabel: true,
-        hoist: env === 'production',
-        labelFormat: '[filename]--[local]',
-        sourceMap: env !== 'production'
-      }
-    ],
-    config
-  )
-
-  // Rewire typescript with our rewired babel config
-  const babelLoader = getBabelLoader(config.module.rules)
-  const tsLoader = getLoader(config.module.rules, rule => /ts|tsx/.test(rule.test))
-  tsLoader.use.unshift({
-    loader: babelLoader.loader,
-    options: babelLoader.options
-  })
-
-  config.devtool = env !== 'production' ? 'source-map' : config.devtool
-
-  return config 
+    return rewireStyledComponents(config, env);
 }

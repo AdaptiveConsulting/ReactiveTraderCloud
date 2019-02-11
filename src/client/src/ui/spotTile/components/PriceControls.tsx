@@ -6,7 +6,7 @@ import { getSpread, toRate } from '../model/spotTileUtils'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
 
-const PriceControlsStyle = styled('div')`
+const PriceControlsStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;

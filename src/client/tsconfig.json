@@ -1,15 +1,23 @@
 {
+  "extends": "./tsconfig.extension.json",
   "compilerOptions": {
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
-    "lib": ["es2015", "es2017", "dom"],
+    "lib": [
+      "es2015",
+      "es2017",
+      "dom"
+    ],
     "sourceMap": true,
     "allowJs": true,
     "strict": true,
-    "jsx": "react",
+    "jsx": "preserve",
     "moduleResolution": "node",
-    "rootDirs": ["src", "stories"],
+    "rootDirs": [
+      "src",
+      "stories"
+    ],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": false,
     "noImplicitThis": false,
@@ -19,8 +27,11 @@
     "declaration": false,
     "noUnusedLocals": true,
     "skipLibCheck": true,
-    "baseUrl": "src",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
   "exclude": [
     "node_modules",
@@ -31,5 +42,8 @@
     "jest",
     "**/*.spec.ts",
     "storybook-static"
+  ],
+  "include": [
+    "src"
   ]
 }

@@ -11,6 +11,5 @@ interface TransportDefinition {
 declare module 'autobahn' {
   interface Connection {
     transport: TransportDefinition
-    session: Session
   }
 }

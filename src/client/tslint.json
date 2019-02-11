@@ -1,7 +1,13 @@
 {
-  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier"
+  ],
   "rules": {
-    "interface-name": [true, "never-prefix"],
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
     "member-access": false,
     "no-misused-new": false,
     "object-literal-sort-keys": false,
@@ -9,7 +15,15 @@
     "no-console": false,
     "no-string-literal": false,
     "member-ordering": false,
-    "no-submodule-imports": { "severity": "error", "options": ["rxjs/operators", "@storybook/addon-knobs/react"] },
+    "no-submodule-imports": {
+      "severity": "error",
+      "options": [
+        "rxjs/operators",
+        "rxjs/testing",
+        "@storybook/addon-knobs/react",
+        "styled-components/macro"
+      ]
+    },
     "ter-arrow-parens": false,
     "import-name": false,
     "trailing-comma": false,
@@ -18,7 +32,10 @@
     "comment-format": false,
     "ban-types": false,
     "no-var-requires": false,
-    "max-classes-per-file": [false, 1],
+    "max-classes-per-file": [
+      false,
+      1
+    ],
     "ordered-imports": [
       true,
       {
@@ -29,6 +46,9 @@
   },
   "defaultSeverity": "warning",
   "linterOptions": {
-    "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
   }
 }

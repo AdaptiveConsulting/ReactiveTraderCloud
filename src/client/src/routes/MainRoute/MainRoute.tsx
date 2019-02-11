@@ -6,17 +6,15 @@ import { timer } from 'rxjs'
 import { ConnectionActions } from 'rt-actions'
 import { Platform, PlatformProvider } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
-import { ThemeName, ThemeStorage } from 'rt-theme'
+import { ThemeProvider } from 'rt-theme'
 
 import { createApplicationServices } from '../../applicationServices'
-import { getEnvVars } from '../../config/config'
 import configureStore from '../../configureStore'
 import { Router } from '../../shell'
 import FakeUserRepository from '../../shell/fakeUserRepository'
-import { GlobalScrollbarStyle } from '../../shell/GlobalScrollbarStyle'
+import GlobalScrollbarStyle from '../../shell/GlobalScrollbarStyle'
 import { OpenFinLimitChecker } from '../../shell/openFin'
 
-const config = getEnvVars(process.env.REACT_APP_ENV!)
 const LOG_NAME = 'Application Service: '
 
 const platform = new Platform()
@@ -24,9 +22,9 @@ const platform = new Platform()
 const store = configureStore(
   createApplicationServices({
     autobahn: new AutobahnConnectionProxy(
-      (config.overwriteServerEndpoint ? config.serverEndpointUrl : location.hostname)!,
+      process.env.REACT_APP_BROKER_HOST || location.hostname,
       'com.weareadaptive.reactivetrader',
-      +(config.overwriteServerEndpoint ? config.serverPort : location.port)!,
+      +(process.env.REACT_APP_BROKER_PORT || location.port),
     ),
     limitChecker: new OpenFinLimitChecker(),
     platform,
@@ -50,7 +48,7 @@ export default class MainRoute extends Component {
         <Helmet>
           <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
         </Helmet>
-        <ThemeStorage.Provider default={ThemeName.Dark}>
+        <ThemeProvider>
           <ReduxProvider store={store}>
             <PlatformProvider value={platform}>
               <React.Fragment>
@@ -59,7 +57,7 @@ export default class MainRoute extends Component {
               </React.Fragment>
             </PlatformProvider>
           </ReduxProvider>
-        </ThemeStorage.Provider>
+        </ThemeProvider>
       </React.Fragment>
     )
   }

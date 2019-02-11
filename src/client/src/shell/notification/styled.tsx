@@ -4,13 +4,13 @@ import { styled } from 'rt-theme'
 export const Notification = styled('div')`
   height: 100vh;
   width: 100vw;
-  background-color: ${props => props.theme.component.backgroundColor};
-  color: ${props => props.theme.component.textColor};
+  background-color: ${props => props.theme.core.lightBackground};
+  color: ${props => props.theme.core.textColor};
   user-select: none;
   display: flex;
   flex-direction: column;
   padding: 0.5rem 1rem;
-
+  cursor: pointer;
   font-size: 1rem;
   line-height: 1.25rem;
 `
@@ -33,7 +33,7 @@ export const MetaContainer = styled('div')`
   flex-basis: 0;
 `
 export const MetaTitle = styled('div')`
-  color: ${p => p.theme.component.textColor};
+  color: ${p => p.theme.core.textColor};
 `
 
 export const CloseContainer = styled(MetaContainer)`

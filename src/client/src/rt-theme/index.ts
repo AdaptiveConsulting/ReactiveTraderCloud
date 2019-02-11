@@ -1,12 +1,17 @@
-import './globals'
+import { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } from './colors'
+export { colors }
+export type CorePalette = CorePalette
+export type CorePaletteMap = CorePaletteMap
+export type ColorPalette = ColorPalette
+export type ColorPaletteMaps = ColorPaletteMaps
+export { default as GlobalStyle } from './globals'
+import baseStyled, { ThemedStyledInterface } from 'styled-components'
 
-export { flush, hydrate, cx, merge, getRegisteredStyles, injectGlobal, keyframes, css, sheet, caches } from './emotion'
+import { Theme } from './createTheme'
+export type Theme = Theme
+export const styled: ThemedStyledInterface<Theme> = baseStyled
 
-export { colors, CorePalette, CorePaletteMap, ColorPalette, ColorPaletteMaps } from './colors'
-export { resolvesColor } from './resolvesColor'
-export { styled, Styled, StyledProps } from './styled'
-export { Theme } from './createTheme'
-export { ThemeName, ThemeStorage } from './ThemeStorage'
-export { ThemeProvider, ThemeConsumer } from './ThemeProvider'
+export { ThemeName, ThemeProvider, ThemeConsumer } from './ThemeContext'
 export { themes } from './themes'
-export { ThemeStorageSwitch } from './ThemeStorageSwitch'
+export { resolvesColor } from './resolvesColor'
+export { default as ThemeStorageSwitch } from './ThemeStorageSwitch'

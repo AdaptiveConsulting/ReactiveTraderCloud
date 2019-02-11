@@ -13,22 +13,24 @@ export interface BlotterState {
 }
 
 const INITIAL_STATE: BlotterState = {
-  trades: {}
+  trades: {},
 }
 
 export const blotterServiceReducer = (
   state: BlotterState = INITIAL_STATE,
-  action: BlotterActions | DisconnectAction
+  action: BlotterActions | DisconnectAction,
 ): BlotterState => {
   switch (action.type) {
+    case BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_REMOVE_HIGHLIGHT_TRADE:
+    case BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_HIGHLIGHT_TRADE:
     case BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES:
       const newTradesById = _.keyBy(action.payload.trades, `tradeId`)
       return {
         ...state,
         trades: {
           ...state.trades,
-          ...newTradesById
-        }
+          ...newTradesById,
+        },
       }
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
       return INITIAL_STATE

@@ -1,7 +1,15 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
+import { WindowConfig } from 'rt-components'
 
-const makePortalProps = (key: string) => ({
+type Center = 'screen' | 'parent'
+export interface ExternalWindowProps {
+  title: string
+  config: WindowConfig
+  browserConfig: { center: Center }
+}
+
+const makeExternalWindowProps: (key: string) => ExternalWindowProps = (key: string) => ({
   title: `${key} Spot`,
   config: {
     name: `${key} Spot`,
@@ -9,21 +17,24 @@ const makePortalProps = (key: string) => ({
     height: 184,
     url: `/spot/${key}`,
   },
-  browserConfig: { center: 'screen' as 'screen' },
+  browserConfig: { center: 'screen' },
 })
 
-export type PortalProps = ReturnType<typeof makePortalProps>
-
 const getSpotTiles = (state: GlobalState) => state.currencyPairs
-const selectSpotTiles = createSelector([getSpotTiles], spotTileKeys =>
-  Object.keys(spotTileKeys).map(key => ({
-    key,
-    portalProps: makePortalProps(key),
-  })),
+const selectSpotTiles = createSelector(
+  [getSpotTiles],
+  spotTileKeys =>
+    Object.keys(spotTileKeys).map(key => ({
+      key,
+      externalWindowProps: makeExternalWindowProps(key),
+    })),
 )
 
 const getExecutionStatus = ({ compositeStatusService }: GlobalState) =>
   compositeStatusService.execution && compositeStatusService.execution.connectionStatus
-const selectExecutionStatus = createSelector(getExecutionStatus, status => status)
+const selectExecutionStatus = createSelector(
+  getExecutionStatus,
+  status => status,
+)
 
 export { selectSpotTiles, selectExecutionStatus }

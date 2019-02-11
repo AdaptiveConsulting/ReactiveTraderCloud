@@ -1,4 +1,4 @@
-import { retryConstantly, ServiceClient } from 'rt-system'
+import { ServiceClient, retryWithBackOff } from 'rt-system'
 import { map, retryWhen } from 'rxjs/operators'
 import {
   CurrencyPairPosition,
@@ -45,7 +45,7 @@ export default class AnalyticsService {
     return this.serviceClient
       .createStreamOperation<PositionsRaw, string>('analytics', 'getAnalytics', analyticsRequest)
       .pipe(
-        retryWhen(retryConstantly({ interval: 3000 })),
+        retryWhen(retryWithBackOff()),
         map(dto => mapFromDto(dto)),
       )
   }

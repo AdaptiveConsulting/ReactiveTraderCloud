@@ -22,13 +22,14 @@ const BlotterHeaderStyle = styled('div')`
   align-items: center;
   padding: 0 0.5rem;
   height: 2.5rem;
+  background-color: ${({ theme }) => theme.core.darkBackground};
 `
 
 const BlotterControls = styled('button')`
   .svg-icon {
     opacity: 0.59;
-    fill: ${({ theme }) => theme.textColor};
-    stroke: ${({ theme }) => theme.textColor};
+    fill: ${({ theme }) => theme.core.textColor};
+    stroke: ${({ theme }) => theme.core.textColor};
   }
 `
 

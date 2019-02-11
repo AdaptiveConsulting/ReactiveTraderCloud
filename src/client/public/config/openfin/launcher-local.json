@@ -3,10 +3,14 @@
         "name": "Reactive Trader Cloud (LOCAL)",
         "url": "http://localhost:3000/launcher",
         "uuid": "ReactiveLauncher",
-        "defaultWidth": 60,
-        "defaultHeight": 320,
+        "defaultWidth": 550,
+        "defaultHeight": 52,
         "defaultTop": 160,
         "defaultLeft": 30,
+        "cornerRounding": {
+            "width": 5,
+            "height": 5
+        },
         "autoShow": true,
         "saveWindowState": false,
         "resizable": false,
@@ -30,5 +34,10 @@
         "futureVersion": "9.61.34.22",
         "forceLatest": true
     },
-    "shortcut": {}
+    "shortcut": {
+        "company": "Adaptive Consulting",
+        "description": "Desktop Reactive Trader Cloud",
+        "icon": "http://localhost:3000/static/media/icon.ico",
+        "name": "Reactive Trader Cloud"
+    }
 }

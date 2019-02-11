@@ -1,9 +1,0 @@
-#! /bin/bash
-
-echo ""
-echo "=============================="
-echo "Stop ReactiveTrader containers"
-echo ""
-
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
-${root_directory}/deploy/e2e/circleci.killAll
