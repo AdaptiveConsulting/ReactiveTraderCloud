@@ -3,9 +3,7 @@ import { TestScheduler } from 'rxjs/testing'
 import { ColdObservable } from 'rxjs/internal/testing/ColdObservable'
 import { ServiceInstanceStatus } from '../serviceInstanceStatus'
 import { mapToServiceCollectionMap$, mapToServiceInstanceCollection$ } from '../serviceStatusStream'
-// import { of } from 'rxjs';
 import { groupBy } from 'rxjs/operators'
-// import { HotObservable } from 'rxjs/internal/testing/HotObservable';
 
 jest.clearAllMocks()
 const testScheduler = () =>
