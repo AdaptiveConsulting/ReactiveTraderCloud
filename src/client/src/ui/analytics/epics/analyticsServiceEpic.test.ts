@@ -1,10 +1,11 @@
 import { publishPositionUpdateEpic } from './analyticsServiceEpic'
 import { TestScheduler } from 'rxjs/testing'
-import { map } from 'rxjs/operators'
 import { PlatformAdapter } from 'rt-components'
 import { AnalyticsActions } from '../actions'
 import { ActionsObservable } from 'redux-observable'
 import { ApplicationDependencies } from 'applicationServices'
+import { Action } from 'redux'
+import { PositionUpdates } from '../model'
 
 const MockPlatformAdapter = jest.fn<PlatformAdapter>(() => ({
   window: {
@@ -14,9 +15,9 @@ const MockPlatformAdapter = jest.fn<PlatformAdapter>(() => ({
     resize: () => jest.fn(),
   },
   interop: {
-    subscribe: (sender: string, topic: string, listener: () => void) => jest.fn(),
-    unsubscribe: (sender: string, topic: string, listener: () => void) => jest.fn(),
-    publish: (topic: string, message: any) => jest.fn(),
+    subscribe: (sender: string, topic: string, listener: () => void) => jest.fn(() => 'values'),
+    unsubscribe: (sender: string, topic: string, listener: () => void) => {},
+    publish: jest.fn(), //(topic: string, message: any) => {},
   },
   notification: {
     notify: (message: object) => jest.fn(),
@@ -25,35 +26,81 @@ const MockPlatformAdapter = jest.fn<PlatformAdapter>(() => ({
 
 describe('publishPositionUpdateEpic', () => {
   it('should ignore actions that are not FetchAnalytics', () => {
-    const randomAction = AnalyticsActions.subcribeToAnalytics
-    const action$ = ActionsObservable.of({
-      type: randomAction,
+    const testScheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected)
     })
-    const epics$ = publishPositionUpdateEpic(action$, undefined, {
-      platform: new MockPlatformAdapter(),
-    } as ApplicationDependencies)
+    testScheduler.run(({ cold, expectObservable }) => {
+      const randomAction = AnalyticsActions.subcribeToAnalytics
+      const coldAction = cold<Action<any>>('--a--|', { a: { type: randomAction } })
+      const action$ = ActionsObservable.from(coldAction, testScheduler) //Initiatted to push time forward
+      const epics$ = publishPositionUpdateEpic(action$, undefined, {
+        platform: new MockPlatformAdapter(),
+      } as ApplicationDependencies)
+
+      expectObservable(epics$).toBe('-----|')
+    })
   })
 
-  it('should map object of type  ', () => {})
+  it('should only accept action of type FetchAnalytics  ', () => {})
+  it('should only emit nothing when action is of type FetchAnalytics', () => {})
 
-  it('calls platform publish on FetchAnalyticsAction with arguments publishUpdate and currentPositions', () => {})
-
-  it('foo test', () => {
+  it('calls platform publish on FetchAnalyticsAction with arguments publishUpdate and currentPositions', () => {
     const testScheduler = new TestScheduler((actual, expected) => {
       console.log(actual, expected)
       expect(actual).toEqual(expected)
     })
     testScheduler.run(({ cold, expectObservable }) => {
-      const source$ = cold<number>('--a--b|', { a: 5, b: 10 })
-      const expectedMarble = '--x--y|'
-      const expectedValue = { x: 10, y: 20 }
-      const result$ = source$.pipe(map(x => x * 2))
-      expectObservable(result$).toBe(expectedMarble, expectedValue)
+      const { fetchAnalytics } = AnalyticsActions
+      const payload: PositionUpdates = {
+        currentPositions: [],
+        history: [],
+      }
+      const st = fetchAnalytics(payload)
+      console.log(st)
+      const coldAction = cold<Action<any>>('--a-a-|', { a: st })
+      const action$ = ActionsObservable.from(coldAction, testScheduler)
+      const platform = new MockPlatformAdapter()
+      const appDependencies = new MockApplicationDependency(platform)
+      const epics$ = publishPositionUpdateEpic(action$, undefined, appDependencies)
+      // platform.interop.publish('', '')
+      // console.log(platform.interop.publish)
+      expect(platform.interop!.publish).toHaveBeenCalledTimes(1)
+      // expect(platform.interop.publish).toHaveBeenCalledWith(['position-update', []]) //toBeCalledWith('position-update', [])
+      expectObservable(epics$).toBe('------|')
     })
   })
+
+  const MockApplicationDependency = jest.fn<ApplicationDependencies>(
+    (referenceDataService?, platform?, limitChecker?, loadBalancedServiceStub?, serviceStatus$?, connection$?) => ({
+      referenceDataService,
+      platform,
+      limitChecker,
+      loadBalancedServiceStub,
+      serviceStatus$,
+      connection$,
+    }),
+  )
+  // it('foo test', () => {
+  //   const testScheduler = new TestScheduler((actual, expected) => {
+  //     // console.log(actual, expected)
+  //     expect(actual).toEqual(expected)
+  //   })
+  //   testScheduler.run(({ cold, expectObservable }) => {
+  //     const source$ = cold<number>('--a--b|', { a: 5, b: 10 })
+  //     const expectedMarble = '--x--y|'
+  //     const expectedValue = { x: 10, y: 20 }
+  //     const result$ = source$.pipe(map(x => x * 2))
+  //     expectObservable(result$).toBe(expectedMarble, expectedValue)
+  //   })
+  // })
 })
 
 /**
  * TODO
  * Mock state, mock platform, mock ActionObservable
+ */
+
+/**
+ * listens to type of action FetchAnalytics
+ * action, we also want to get the
  */

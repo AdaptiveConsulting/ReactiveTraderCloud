@@ -16,15 +16,12 @@ const mapToDto = (ccyPairPosition: CurrencyPairPosition) => ({
 
 export const publishPositionUpdateEpic: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
+    tap(x => console.log(x)),
     ofType<Action, FetchAnalyticsAction>(ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE),
+    tap(x => console.log(x)),
     tap((action: FetchAnalyticsAction) => {
       const currentPositions = action.payload.currentPositions.map(p => mapToDto(p))
       platform.interop!.publish('position-update', currentPositions)
     }),
     ignoreElements(),
   )
-
-/**
- * listens to type of action FetchAnalytics
- * action, we also want to get the
- */
