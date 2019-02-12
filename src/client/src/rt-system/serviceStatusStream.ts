@@ -1,4 +1,4 @@
-import { Observable, GroupedObservable } from 'rxjs'
+import { Observable } from 'rxjs'
 import { distinctUntilChanged, groupBy, map, mergeMap, scan } from 'rxjs/operators'
 import { debounceWithSelector } from './debounceOnMissedHeartbeat'
 import { ServiceCollectionMap, ServiceInstanceCollection } from './ServiceInstanceCollection'
@@ -22,30 +22,6 @@ function addHeartBeatToServiceInstanceStatus(
         ),
       ),
     )
-}
-
-export function mapToServiceInstanceCollection$(
-  source$: Observable<GroupedObservable<string, ServiceInstanceStatus>>,
-  heartBeatTimeout: number,
-): Observable<ServiceInstanceCollection> {
-  return source$.pipe(
-    mergeMap(serviceInstanceStatus =>
-      serviceInstanceStatus.pipe(
-        addHeartBeatToServiceInstanceStatus(heartBeatTimeout),
-        scan<ServiceInstanceStatus, ServiceInstanceCollection>(
-          (serviceInstanceCollection, next) => serviceInstanceCollection.update(next),
-          new ServiceInstanceCollection(serviceInstanceStatus.key),
-        ),
-      ),
-    ),
-  )
-}
-export function mapToServiceCollectionMap$(source$: Observable<ServiceInstanceCollection>) {
-  return source$.pipe(
-    scan<ServiceInstanceCollection, ServiceCollectionMap>((serviceCollectionMap, serviceInstanceCollection) => {
-      return serviceCollectionMap.add(serviceInstanceCollection.serviceType, serviceInstanceCollection)
-    }, new ServiceCollectionMap()),
-  )
 }
 
 export function serviceStatusStream$(statusUpdate$: Observable<RawServiceStatus>, heartBeatTimeout: number) {

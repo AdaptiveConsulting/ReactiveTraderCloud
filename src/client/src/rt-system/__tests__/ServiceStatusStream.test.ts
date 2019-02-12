@@ -1,88 +1,58 @@
-import { serviceStatusStream$, RawServiceStatus, ServiceInstanceCollection, ServiceCollectionMap } from 'rt-system'
-import { TestScheduler } from 'rxjs/testing'
-import { ServiceInstanceStatus } from '../serviceInstanceStatus'
-
-jest.clearAllMocks()
-const testScheduler = () =>
-  new TestScheduler((actual, expected) => {
-    expect(actual).toEqual(expected)
-  })
+import { serviceStatusStream$, RawServiceStatus } from 'rt-system'
+import { MockScheduler } from 'rt-testing'
+import { map, tap } from 'rxjs/operators'
 
 const MockRawServiceStatus = (overrides: Partial<RawServiceStatus>): RawServiceStatus => ({
   Type: 'Analytics',
   Instance: 'b356',
   TimeStamp: 4500,
-  Load: 0,
-  ...overrides,
-})
-
-const MockServiceInstanceStatus = (overrides: Partial<ServiceInstanceStatus>) => ({
-  serviceType: 'Analytics',
-  serviceId: 'b356',
-  timestamp: 4500,
-  serviceLoad: 0,
-  isConnected: true,
+  Load: 4,
   ...overrides,
 })
 
 describe('ServiceStatusStream', () => {
-  it('should show which services are currently running and what their loads are', () => {})
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
-  it('should group similar services together', () => {
-    const scheduler = testScheduler()
-    scheduler.run(({ cold, expectObservable }) => {
-      const rss1 = MockRawServiceStatus({})
-      const rss2 = MockRawServiceStatus({ Instance: 'b789' })
-      const rss3 = MockRawServiceStatus({ Type: 'Blotter' })
+  it('should show which services are currently running and what their loads are', () => {
+    new MockScheduler().run(({ cold, expectObservable }) => {
+      const rawStatusService = MockRawServiceStatus({})
 
-      const sistats1 = MockServiceInstanceStatus({ isConnected: false, timestamp: NaN, serviceLoad: NaN })
-      const sistats2 = MockServiceInstanceStatus({
-        serviceId: 'b789',
-        isConnected: false,
-        timestamp: NaN,
-        serviceLoad: NaN,
-      })
-      const sistats3 = MockServiceInstanceStatus({
-        serviceType: 'Blotter',
-        isConnected: false,
-        timestamp: NaN,
-        serviceLoad: NaN,
-      })
+      const source$ = cold<RawServiceStatus>('a', { a: rawStatusService })
 
-      const siCollection1 = new ServiceInstanceCollection(sistats1.serviceType)
-      siCollection1.update(sistats1)
-      siCollection1.update(sistats2)
+      const serviceStatus$ = serviceStatusStream$(source$, 3000).pipe(
+        map(x => x.getServiceInstanceStatus('Analytics', 'b356')!.serviceLoad),
+      )
 
-      const siCollection2 = new ServiceInstanceCollection(sistats3.serviceType)
-      siCollection2.update(sistats3)
-
-      const sc = new ServiceCollectionMap()
-      sc.add(siCollection1.serviceType, siCollection1)
-      sc.add(siCollection2.serviceType, siCollection2)
-
-      const source$ = cold<RawServiceStatus>('-abc-b--', { a: rss1, b: rss2, c: rss3 })
-      const serviceStatus$ = serviceStatusStream$(source$, 3)
-      expectObservable(serviceStatus$).toBe('-dddd-d-d', { d: sc })
+      expectObservable(serviceStatus$, '--!').toBe('r', { r: 4 })
     })
   })
 
-  it('should mark a service as disconnected if a update has not been received for 3 secs', () => {
-    const scheduler = testScheduler()
-    scheduler.run(({ cold, expectObservable }) => {
-      const rss = MockRawServiceStatus({})
-      const sistatus = MockServiceInstanceStatus({ isConnected: false, timestamp: NaN, serviceLoad: NaN })
+  it('should mark a service as disconnected if a update has not been received for 4 secs', () => {
+    new MockScheduler().run(({ cold, expectObservable }) => {
+      const connectedServiceUpdate = MockRawServiceStatus({ Type: 'Analytics', Instance: 'Analytics01' })
 
-      const sicollection = new ServiceInstanceCollection(sistatus.serviceType)
-      sicollection.update(sistatus)
+      const source$ = cold<RawServiceStatus>('a 4s ', { a: connectedServiceUpdate })
 
-      const sc = new ServiceCollectionMap()
-      sc.add(sistatus.serviceType, sicollection)
+      const serviceStatus$ = serviceStatusStream$(source$, 4001).pipe(
+        map(x => x.getServiceInstanceStatus('Analytics', 'Analytics01')!.isConnected),
+      )
 
-      const source$ = cold<RawServiceStatus>('-a---', { a: rss })
-      const serviceStatus$ = serviceStatusStream$(source$, 3)
-      expectObservable(serviceStatus$).toBe('-b--b-', { b: sc })
+      expectObservable(serviceStatus$).toBe('c 4s e', { c: true, e: false })
     })
   })
 
-  it('should mark a disconnected service as connected after receiving an update', () => {})
+  it('should mark a disconnected service as connected after receiving an update', () => {
+    new MockScheduler().run(({ cold, expectObservable }) => {
+      const connectedServiceUpdate = MockRawServiceStatus({ Type: 'Analytics', Instance: 'Analytics01' })
+      const source$ = cold<RawServiceStatus>('a 100ms a', { a: connectedServiceUpdate })
+
+      const serviceStatus$ = serviceStatusStream$(source$, 100).pipe(
+        map(x => x.getServiceInstanceStatus('Analytics', 'Analytics01')!.isConnected),
+      )
+
+      expectObservable(serviceStatus$).toBe('c 99ms ec 99ms e', { c: true, e: false })
+    })
+  })
 })
