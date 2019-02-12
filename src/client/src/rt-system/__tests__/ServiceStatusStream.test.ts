@@ -26,9 +26,9 @@ const MockServiceInstanceStatus = (overrides: Partial<ServiceInstanceStatus>) =>
 })
 
 describe('ServiceStatusStream', () => {
-  it('shows which services are currently running and what their loads are', () => {})
+  it('should show which services are currently running and what their loads are', () => {})
 
-  it('should group similar services together in the serviceCollectionMap', () => {
+  it('should group similar services together', () => {
     const scheduler = testScheduler()
     scheduler.run(({ cold, expectObservable }) => {
       const rss1 = MockRawServiceStatus({})
@@ -66,13 +66,15 @@ describe('ServiceStatusStream', () => {
     })
   })
 
-  it('marks a service as disconnected if a update has not been received for 3 secs', () => {
+  it('should mark a service as disconnected if a update has not been received for 3 secs', () => {
     const scheduler = testScheduler()
     scheduler.run(({ cold, expectObservable }) => {
       const rss = MockRawServiceStatus({})
       const sistatus = MockServiceInstanceStatus({ isConnected: false, timestamp: NaN, serviceLoad: NaN })
+
       const sicollection = new ServiceInstanceCollection(sistatus.serviceType)
       sicollection.update(sistatus)
+
       const sc = new ServiceCollectionMap()
       sc.add(sistatus.serviceType, sicollection)
 
@@ -82,5 +84,5 @@ describe('ServiceStatusStream', () => {
     })
   })
 
-  it('marks a disconnected service as connected after receiving an update', () => {})
+  it('should mark a disconnected service as connected after receiving an update', () => {})
 })
