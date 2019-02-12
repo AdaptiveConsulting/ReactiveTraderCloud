@@ -17,7 +17,7 @@ const MockPlatformAdapter = jest.fn<PlatformAdapter>(() => ({
   interop: {
     subscribe: (sender: string, topic: string, listener: () => void) => jest.fn(() => 'values'),
     unsubscribe: (sender: string, topic: string, listener: () => void) => {},
-    publish: jest.fn(), //(topic: string, message: any) => {},
+    publish: jest.fn((topic: string, message: any) => {}),
   },
   notification: {
     notify: (message: object) => jest.fn(),
@@ -26,19 +26,18 @@ const MockPlatformAdapter = jest.fn<PlatformAdapter>(() => ({
 
 describe('publishPositionUpdateEpic', () => {
   it('should ignore actions that are not FetchAnalytics', () => {
-    const testScheduler = new TestScheduler((actual, expected) => {
-      expect(actual).toEqual(expected)
-    })
-    testScheduler.run(({ cold, expectObservable }) => {
-      const randomAction = AnalyticsActions.subcribeToAnalytics
-      const coldAction = cold<Action<any>>('--a--|', { a: { type: randomAction } })
-      const action$ = ActionsObservable.from(coldAction, testScheduler) //Initiatted to push time forward
-      const epics$ = publishPositionUpdateEpic(action$, undefined, {
-        platform: new MockPlatformAdapter(),
-      } as ApplicationDependencies)
-
-      expectObservable(epics$).toBe('-----|')
-    })
+    // const testScheduler = new TestScheduler((actual, expected) => {
+    //   expect(actual).toEqual(expected)
+    // })
+    // testScheduler.run(({ cold, expectObservable }) => {
+    //   const randomAction = AnalyticsActions.subcribeToAnalytics
+    //   const coldAction = cold<Action<any>>('--a--|', { a: { type: randomAction } })
+    //   const action$ = ActionsObservable.from(coldAction, testScheduler)
+    //   const epics$ = publishPositionUpdateEpic(action$, undefined, {
+    //     platform: new MockPlatformAdapter(),
+    //   } as ApplicationDependencies)
+    //   expectObservable(epics$).toBe('-----|')
+    // })
   })
 
   it('should only accept action of type FetchAnalytics  ', () => {})
@@ -56,9 +55,9 @@ describe('publishPositionUpdateEpic', () => {
         history: [],
       }
       const st = fetchAnalytics(payload)
-      console.log(st)
-      const coldAction = cold<Action<any>>('--a-a-|', { a: st })
+      const coldAction = cold<Action<any>>('--a-a-|', { a: { type: 'Lala' } })
       const action$ = ActionsObservable.from(coldAction, testScheduler)
+      action$.subscribe(x => console.log('Lala' + x))
       const platform = new MockPlatformAdapter()
       const appDependencies = new MockApplicationDependency(platform)
       const epics$ = publishPositionUpdateEpic(action$, undefined, appDependencies)
@@ -80,19 +79,6 @@ describe('publishPositionUpdateEpic', () => {
       connection$,
     }),
   )
-  // it('foo test', () => {
-  //   const testScheduler = new TestScheduler((actual, expected) => {
-  //     // console.log(actual, expected)
-  //     expect(actual).toEqual(expected)
-  //   })
-  //   testScheduler.run(({ cold, expectObservable }) => {
-  //     const source$ = cold<number>('--a--b|', { a: 5, b: 10 })
-  //     const expectedMarble = '--x--y|'
-  //     const expectedValue = { x: 10, y: 20 }
-  //     const result$ = source$.pipe(map(x => x * 2))
-  //     expectObservable(result$).toBe(expectedMarble, expectedValue)
-  //   })
-  // })
 })
 
 /**
