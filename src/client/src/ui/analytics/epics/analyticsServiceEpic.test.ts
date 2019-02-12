@@ -1,11 +1,11 @@
 import { publishPositionUpdateEpic } from './analyticsServiceEpic'
 import { TestScheduler } from 'rxjs/testing'
 import { PlatformAdapter } from 'rt-components'
-import { AnalyticsActions } from '../actions'
 import { ActionsObservable } from 'redux-observable'
 import { ApplicationDependencies } from 'applicationServices'
 import { Action } from 'redux'
 import { PositionUpdates } from '../model'
+import { ANALYTICS_ACTION_TYPES } from '../actions'
 
 const MockPlatformAdapter = jest.fn<PlatformAdapter>(() => ({
   window: {
@@ -45,24 +45,23 @@ describe('publishPositionUpdateEpic', () => {
 
   it('calls platform publish on FetchAnalyticsAction with arguments publishUpdate and currentPositions', () => {
     const testScheduler = new TestScheduler((actual, expected) => {
-      console.log(actual, expected)
       expect(actual).toEqual(expected)
     })
     testScheduler.run(({ cold, expectObservable }) => {
-      const { fetchAnalytics } = AnalyticsActions
       const payload: PositionUpdates = {
         currentPositions: [],
         history: [],
       }
-      const st = fetchAnalytics(payload)
-      const coldAction = cold<Action<any>>('--a-a-|', { a: { type: 'Lala' } })
+
+      const coldAction = cold<Action<any>>('--a-a-|', {
+        a: { type: ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE, payload },
+      })
       const action$ = ActionsObservable.from(coldAction, testScheduler)
-      action$.subscribe(x => console.log('Lala' + x))
+      // action$.subscribe(x => console.log('Lala' + x))
       const platform = new MockPlatformAdapter()
       const appDependencies = new MockApplicationDependency(platform)
       const epics$ = publishPositionUpdateEpic(action$, undefined, appDependencies)
-      // platform.interop.publish('', '')
-      // console.log(platform.interop.publish)
+      // platform.interop!.publish("", "")
       expect(platform.interop!.publish).toHaveBeenCalledTimes(1)
       // expect(platform.interop.publish).toHaveBeenCalledWith(['position-update', []]) //toBeCalledWith('position-update', [])
       expectObservable(epics$).toBe('------|')
