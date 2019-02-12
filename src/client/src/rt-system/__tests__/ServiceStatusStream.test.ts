@@ -1,6 +1,6 @@
 import { serviceStatusStream$, RawServiceStatus } from 'rt-system'
 import { MockScheduler } from 'rt-testing'
-import { map, tap } from 'rxjs/operators'
+import { map } from 'rxjs/operators'
 
 const MockRawServiceStatus = (overrides: Partial<RawServiceStatus>): RawServiceStatus => ({
   Type: 'Analytics',
@@ -29,7 +29,7 @@ describe('ServiceStatusStream', () => {
     })
   })
 
-  it('should mark a service as disconnected if a update has not been received for 4 secs', () => {
+  it('should mark a service as disconnected if an update has not been received for 4 secs', () => {
     new MockScheduler().run(({ cold, expectObservable }) => {
       const connectedServiceUpdate = MockRawServiceStatus({ Type: 'Analytics', Instance: 'Analytics01' })
 
