@@ -49,12 +49,22 @@ export function mapToServiceCollectionMap$(source$: Observable<ServiceInstanceCo
 }
 
 export function serviceStatusStream$(statusUpdate$: Observable<RawServiceStatus>, heartBeatTimeout: number) {
-  const groupedServiceInstanceStatus$ = statusUpdate$.pipe(
+  return statusUpdate$.pipe(
     map(convertFromRawMessage),
     groupBy(serviceInstanceStatus => serviceInstanceStatus.serviceType),
+    mergeMap(serviceInstanceStatus =>
+      serviceInstanceStatus.pipe(
+        addHeartBeatToServiceInstanceStatus(heartBeatTimeout),
+        scan<ServiceInstanceStatus, ServiceInstanceCollection>(
+          (serviceInstanceCollection, next) => serviceInstanceCollection.update(next),
+          new ServiceInstanceCollection(serviceInstanceStatus.key),
+        ),
+      ),
+    ),
+    scan<ServiceInstanceCollection, ServiceCollectionMap>((serviceCollectionMap, serviceInstanceCollection) => {
+      return serviceCollectionMap.add(serviceInstanceCollection.serviceType, serviceInstanceCollection)
+    }, new ServiceCollectionMap()),
   )
-  const serviceInstanceCollection$ = mapToServiceInstanceCollection$(groupedServiceInstanceStatus$, heartBeatTimeout)
-  return mapToServiceCollectionMap$(serviceInstanceCollection$)
 }
 
 function convertFromRawMessage(serviceStatus: RawServiceStatus): ServiceInstanceStatus {
