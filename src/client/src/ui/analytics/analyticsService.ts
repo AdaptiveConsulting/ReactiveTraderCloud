@@ -39,14 +39,17 @@ function mapHistoricPositionFromDto(dtos: HistoryRaw[]): HistoricPosition[] {
 
 export default class AnalyticsService {
   constructor(private readonly serviceClient: ServiceClient) {}
-
+  //This is an observable of PositionUpdates
+  /**
+   *
+   */
   getAnalyticsStream(analyticsRequest: string) {
     console.info(LOG_NAME, 'Subscribing to analytics stream')
     return this.serviceClient
-      .createStreamOperation<PositionsRaw, string>('analytics', 'getAnalytics', analyticsRequest)
+      .createStreamOperation<PositionsRaw, string>('analytics', 'getAnalytics', analyticsRequest) //Ana observable of response from backend
       .pipe(
-        retryWhen(retryWithBackOff()),
-        map(dto => mapFromDto(dto)),
+        retryWhen(retryWithBackOff()), //Should be tested when there is an error
+        map(dto => mapFromDto(dto)), //Should check that we have correctly mapped the values
       )
   }
 }
