@@ -6,7 +6,7 @@ const testScheduler = new TestScheduler((actual, expected) => {
 })
 
 describe('debounceWithSelector', () => {
-  it('should emit source observable values if values emitted from source are within the due time', () => {
+  it('should let source observable values pass through as long as the values are emitted within due time ', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const dueTime = 4
       const source$ = cold<number>('--a-a|', { a: 10 })
@@ -17,7 +17,7 @@ describe('debounceWithSelector', () => {
     })
   })
 
-  it('should emit another value if source source observable does emit value within specified timeframe', () => {
+  it('should emit the value of the item selector if there is no value emitted from the source observable within due time', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const dueTime = 3
       const source$ = cold<number>('--a---a|', { a: 10 })
