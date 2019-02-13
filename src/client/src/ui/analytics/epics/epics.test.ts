@@ -27,6 +27,7 @@ describe('Analytics epics', () => {
         s: subscribeAction,
         d: disconnectAction,
       })
+
       const serviceStubWithLoadBalancer = new MockServiceClient(getResponse)
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
       const epics$ = analyticsServiceEpic(action$, undefined, { serviceStubWithLoadBalancer })
@@ -41,4 +42,6 @@ describe('Analytics epics', () => {
   })
 })
 
-const mockServiceLoader = jest.fn<ServiceStubWithLoadBalancer>(() => {})
+const mockServiceLoader = jest.fn<ServiceStubWithLoadBalancer>(() => ({
+  1: 2,
+}))
