@@ -1,11 +1,11 @@
 import { publishPositionUpdateEpic } from './analyticsServiceEpic'
-import { TestScheduler } from 'rxjs/testing'
 import { PlatformAdapter } from 'rt-components'
 import { ActionsObservable } from 'redux-observable'
-import { ApplicationDependencies } from 'applicationServices'
 import { Action } from 'redux'
 import { PositionUpdates } from '../model'
-import { ANALYTICS_ACTION_TYPES } from '../actions'
+import { AnalyticsActions } from '../actions'
+import { MockScheduler } from 'rt-testing'
+import { CurrencyPairPosition } from '../model/currencyPairPosition'
 
 const MockPlatformAdapter = jest.fn<PlatformAdapter>(() => ({
   window: {
@@ -26,66 +26,76 @@ const MockPlatformAdapter = jest.fn<PlatformAdapter>(() => ({
 
 describe('publishPositionUpdateEpic', () => {
   it('should ignore actions that are not FetchAnalytics', () => {
-    // const testScheduler = new TestScheduler((actual, expected) => {
-    //   expect(actual).toEqual(expected)
-    // })
-    // testScheduler.run(({ cold, expectObservable }) => {
-    //   const randomAction = AnalyticsActions.subcribeToAnalytics
-    //   const coldAction = cold<Action<any>>('--a--|', { a: { type: randomAction } })
-    //   const action$ = ActionsObservable.from(coldAction, testScheduler)
-    //   const epics$ = publishPositionUpdateEpic(action$, undefined, {
-    //     platform: new MockPlatformAdapter(),
-    //   } as ApplicationDependencies)
-    //   expectObservable(epics$).toBe('-----|')
-    // })
-  })
+    const testScheduler = new MockScheduler()
+    const platform = new MockPlatformAdapter()
 
-  it('should only accept action of type FetchAnalytics  ', () => {})
-  it('should only emit nothing when action is of type FetchAnalytics', () => {})
-
-  it('calls platform publish on FetchAnalyticsAction with arguments publishUpdate and currentPositions', () => {
-    const testScheduler = new TestScheduler((actual, expected) => {
-      expect(actual).toEqual(expected)
-    })
-    testScheduler.run(({ cold, expectObservable }) => {
-      const payload: PositionUpdates = {
-        currentPositions: [],
-        history: [],
-      }
-
-      const coldAction = cold<Action<any>>('--a-a-|', {
-        a: { type: ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE, payload },
+    testScheduler.run(({ cold, expectObservable, flush }) => {
+      const coldAction = cold<Action<any>>('--a-b-a-|', {
+        a: { type: 'Random1' },
+        b: { type: 'Random2' },
       })
       const action$ = ActionsObservable.from(coldAction, testScheduler)
-      // action$.subscribe(x => console.log('Lala' + x))
-      const platform = new MockPlatformAdapter()
-      const appDependencies = new MockApplicationDependency(platform)
-      const epics$ = publishPositionUpdateEpic(action$, undefined, appDependencies)
-      // platform.interop!.publish("", "")
-      expect(platform.interop!.publish).toHaveBeenCalledTimes(1)
-      // expect(platform.interop.publish).toHaveBeenCalledWith(['position-update', []]) //toBeCalledWith('position-update', [])
-      expectObservable(epics$).toBe('------|')
+      const epics$ = publishPositionUpdateEpic(action$, undefined, { platform })
+      expectObservable(epics$).toBe('--------|')
+      flush()
+      expect(platform.interop!.publish).toHaveBeenCalledTimes(0)
     })
   })
 
-  const MockApplicationDependency = jest.fn<ApplicationDependencies>(
-    (referenceDataService?, platform?, limitChecker?, loadBalancedServiceStub?, serviceStatus$?, connection$?) => ({
-      referenceDataService,
-      platform,
-      limitChecker,
-      loadBalancedServiceStub,
-      serviceStatus$,
-      connection$,
-    }),
-  )
+  it('should correctly map currencyPairPosition if action is of type FetchAnalytics ', () => {
+    const testScheduler = new MockScheduler()
+    const platform = new MockPlatformAdapter()
+    const currencyPairPos = {
+      symbol: 'AAPL',
+      basePnl: 10,
+      baseTradedAmount: 120,
+      basePnlName: 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount',
+    } as CurrencyPairPosition
+
+    const payload: PositionUpdates = {
+      currentPositions: [currencyPairPos],
+      history: [],
+    }
+    const expected = {
+      symbol: currencyPairPos.symbol,
+      basePnl: currencyPairPos.basePnl,
+      baseTradedAmount: currencyPairPos.baseTradedAmount,
+    }
+    testScheduler.run(({ cold, expectObservable, flush }) => {
+      const coldAction = cold<Action<any>>('--a--|', {
+        a: AnalyticsActions.fetchAnalytics(payload),
+      })
+      const action$ = ActionsObservable.from(coldAction, testScheduler)
+      const epics$ = publishPositionUpdateEpic(action$, undefined, { platform })
+      expectObservable(epics$).toBe('-----|')
+      flush()
+      expect(platform.interop!.publish).toHaveBeenCalledTimes(1)
+      expect(platform.interop!.publish).toHaveBeenCalledWith('position-update', [expected])
+    })
+  })
+
+  it('should call platform publish on FetchAnalyticsAction with arguments publishUpdate and currentPositions', () => {
+    const testScheduler = new MockScheduler()
+    const payload: PositionUpdates = {
+      currentPositions: [],
+      history: [],
+    }
+    const platform = new MockPlatformAdapter()
+
+    testScheduler.run(({ cold, expectObservable, flush }) => {
+      const coldAction = cold<Action<any>>('--a--|', {
+        a: AnalyticsActions.fetchAnalytics(payload),
+      })
+      const action$ = ActionsObservable.from(coldAction, testScheduler)
+
+      const epics$ = publishPositionUpdateEpic(action$, undefined, { platform })
+
+      expectObservable(epics$).toBe('-----|')
+      flush()
+
+      expect(platform.interop!.publish).toHaveBeenCalledTimes(1)
+      expect(platform.interop!.publish).toHaveBeenCalledWith('position-update', [])
+    })
+  })
 })
-
-/**
- * TODO
- * Mock state, mock platform, mock ActionObservable
- */
-
-/**
- * listens to type of action FetchAnalytics
- * action, we also want to get the
- */
