@@ -10,14 +10,12 @@ import { Observable, of } from 'rxjs'
 import { ServiceCollectionMap } from 'rt-system'
 
 describe('ServiceStubWithLoadBalancer', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
   describe('createRequestResponseOperation', () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
     it('should call requestResponse with remoteProcedure and request', () => {
       const testScheduler = new MockScheduler()
-
       const s1 = MockServiceInstanceStatus({ serviceLoad: 1 })
       const s2 = MockServiceInstanceStatus({ serviceId: 'B.547', serviceLoad: 0 })
       const s3 = MockServiceInstanceStatus({ serviceId: 'C.57', serviceLoad: 3 })
@@ -76,7 +74,6 @@ describe('ServiceStubWithLoadBalancer', () => {
 
     it('should call requestResponse with remote  when a service subscribed to topics', () => {
       const testScheduler = new MockScheduler()
-      //TODO should move this somewhere else
       const s1 = MockServiceInstanceStatus({ serviceType: 'Blotter', serviceLoad: 1 })
       const s2 = MockServiceInstanceStatus({ serviceId: 'B.547', serviceLoad: 0 })
       const s3 = MockServiceInstanceStatus({ serviceType: 'Blotter', serviceId: 'C.57', serviceLoad: 3 })
