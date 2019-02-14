@@ -1,4 +1,4 @@
-import { ServiceClient } from 'rt-system'
+import { ServiceStubWithLoadBalancer as ServiceClient } from 'rt-system'
 import { CurrencyPairMap, UpdateType } from 'rt-types'
 import { Observable } from 'rxjs'
 import { map, publishReplay, refCount, scan } from 'rxjs/operators'
@@ -27,7 +27,7 @@ export default class ReferenceDataService {
           return acc
         }, {}),
         publishReplay(1),
-        refCount()
+        refCount(),
       )
   }
 

@@ -2,7 +2,7 @@ import { PlatformAdapter } from 'rt-components'
 import {
   AutobahnConnection,
   createConnection$,
-  ServiceClient,
+  ServiceStubWithLoadBalancer,
   serviceStatusStream$,
   ServiceStub,
   ConnectionEvent,
@@ -42,7 +42,7 @@ export function createApplicationServices({ autobahn, limitChecker, user, platfo
     refCount(),
   )
 
-  const loadBalancedServiceStub = new ServiceClient(serviceStub, serviceStatus$)
+  const loadBalancedServiceStub = new ServiceStubWithLoadBalancer(serviceStub, serviceStatus$)
 
   const referenceDataService = new ReferenceDataService(loadBalancedServiceStub)
 
