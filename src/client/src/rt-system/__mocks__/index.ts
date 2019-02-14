@@ -3,5 +3,6 @@ import {
   MockServiceInstanceCollection,
   MockServiceInstanceStatus,
 } from './ServiceInstanceStats.mock'
+import MockServiceStub from './ServiceStub'
 
-export { MockServiceCollectionMap, MockServiceInstanceCollection, MockServiceInstanceStatus }
+export { MockServiceStub, MockServiceCollectionMap, MockServiceInstanceCollection, MockServiceInstanceStatus }
