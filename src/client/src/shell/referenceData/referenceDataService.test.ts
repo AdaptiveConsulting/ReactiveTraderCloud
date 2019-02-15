@@ -2,33 +2,83 @@ import ReferenceDataService from './referenceDataService'
 import { MockScheduler } from 'rt-testing'
 import { ServiceClient } from 'rt-system'
 import { Observable } from 'rxjs'
-import {
-  default as referenceDataMapper,
-  RawCurrencyPairUpdates,
-  CurrencyRaw,
-  RawCurrencyPairUpdate,
-} from './referenceDataMapper'
+import { default as referenceDataMapper, RawCurrencyPairUpdates } from './referenceDataMapper'
+import { MockCurrencyRaw } from './__mocks__'
 
 describe('ReferenceDataService', () => {
   it('On initialization should correctly call createStreamOperation with reference, getCurrencyPairUpdatesStream and {}', () => {
     const testScheduler = new MockScheduler()
     testScheduler.run(({ cold, flush }) => {
-      const callBack = jest.fn<any>((s: string, o: string, r: any) =>
+      const createStreamOperation = jest.fn<any>((s: string, o: string, r: any) =>
         cold<RawCurrencyPairUpdates>('--a--', { a: { update: [] } }),
       )
-      const serviceClient = new MockServiceClient(callBack)
+      const serviceClient = new MockServiceClient(createStreamOperation)
       const referenceDataService = new ReferenceDataService(serviceClient)
       flush()
-      expect(callBack).toHaveBeenCalledTimes(1)
-      expect(callBack).toHaveBeenCalledWith('reference', 'getCurrencyPairUpdatesStream', {})
+      expect(createStreamOperation).toHaveBeenCalledTimes(1)
+      expect(createStreamOperation).toHaveBeenCalledWith('reference', 'getCurrencyPairUpdatesStream', {})
     })
   })
 
-  it('getCurrencyPairUpdates$ should return observable of ', () => {})
+  it('referenceDataStream should correctly map rawCurrencyPairUpdates to CurrencyPairMap', () => {
+    const testScheduler = new MockScheduler()
+    const currencyRaw = MockCurrencyRaw({})
+    const Updates = {
+      Updates: [
+        {
+          UpdateType: 'Added',
+          IsStateOfTheWorld: true,
+          IsStale: true,
+          CurrencyPair: currencyRaw,
+        },
+      ],
+    }
+    const currencyMap = {
+      USDYAN: {
+        base: 'USD',
+        pipsPosition: 4.6,
+        ratePrecision: 2,
+        symbol: 'USDYAN',
+        terms: 'YAN',
+      },
+    }
+    testScheduler.run(({ cold, expectObservable }) => {
+      const createStreamOperation = jest.fn<Observable<RawCurrencyPairUpdates>>((s: string, o: string, r: any) =>
+        cold<RawCurrencyPairUpdates>('--a--', {
+          a: Updates,
+        }),
+      )
+      const serviceClient = new MockServiceClient(createStreamOperation)
+      const referenceData$ = new ReferenceDataService(serviceClient).getCurrencyPairUpdates$()
+      expectObservable(referenceData$).toBe('--a--', { a: currencyMap })
+    })
+  })
 
-  it('referenceDataStream should correctly map rawCurrencyPairUpdates to CurrencyPairMap', () => {})
+  it('should remove currencyPairUpdate with updateType Remove', () => {
+    const testScheduler = new MockScheduler()
+    const currencyRaw = MockCurrencyRaw({})
+    const Updates = {
+      Updates: [
+        {
+          UpdateType: 'Removed',
+          IsStateOfTheWorld: true,
+          IsStale: true,
+          CurrencyPair: currencyRaw,
+        },
+      ],
+    }
 
-  it('should remove currencyPairUpdate with updateType Remove', () => {})
+    testScheduler.run(({ cold, expectObservable }) => {
+      const createStreamOperation = jest.fn<Observable<RawCurrencyPairUpdates>>((s: string, o: string, r: any) =>
+        cold<RawCurrencyPairUpdates>('--a--', {
+          a: Updates,
+        }),
+      )
+      const serviceClient = new MockServiceClient(createStreamOperation)
+      const referenceData$ = new ReferenceDataService(serviceClient).getCurrencyPairUpdates$()
+      expectObservable(referenceData$).toBe('--a--', { a: {} })
+    })
+  })
 })
 
 type CallBack = (service: string, operationName: string, request: any) => Observable<any>
