@@ -13,7 +13,7 @@ describe('ReferenceDataService', () => {
         cold<RawCurrencyPairUpdates>('--a--', { a: { update: [] } }),
       )
       const serviceClient = new MockServiceClient(createStreamOperation)
-      const referenceDataService = new ReferenceDataService(serviceClient)
+      new ReferenceDataService(serviceClient)
       flush()
       expect(createStreamOperation).toHaveBeenCalledTimes(1)
       expect(createStreamOperation).toHaveBeenCalledWith('reference', 'getCurrencyPairUpdatesStream', {})
