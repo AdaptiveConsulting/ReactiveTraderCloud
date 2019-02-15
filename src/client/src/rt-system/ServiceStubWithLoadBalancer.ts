@@ -2,6 +2,7 @@ import { defer, Observable } from 'rxjs'
 import { distinctUntilChanged, filter, map, share, switchMap, take } from 'rxjs/operators'
 import { ServiceCollectionMap } from './ServiceInstanceCollection'
 import { ServiceStub } from './ServiceStub'
+// import { ServiceInstanceStatus } from './serviceInstanceStatus';
 
 /**
  * Abstracts a back end service for which there can be multiple instances.

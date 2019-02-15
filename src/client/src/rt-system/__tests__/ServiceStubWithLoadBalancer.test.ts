@@ -1,11 +1,6 @@
 import ServiceStubWithLoadBalancer from '../ServiceStubWithLoadBalancer'
 import { MockScheduler } from 'rt-testing'
-import {
-  MockServiceStub,
-  MockServiceCollectionMap,
-  MockServiceInstanceCollection,
-  MockServiceInstanceStatus,
-} from '../__mocks__'
+import { MockServiceStub, MockServiceInstanceStatus, MockServiceCollectionMap } from '../__mocks__'
 import { Observable, of } from 'rxjs'
 import { ServiceCollectionMap } from 'rt-system'
 
@@ -16,12 +11,8 @@ describe('ServiceStubWithLoadBalancer', () => {
     })
     it('should call requestResponse with remoteProcedure and request', () => {
       const testScheduler = new MockScheduler()
-      const s1 = MockServiceInstanceStatus({ serviceLoad: 1 })
-      const s2 = MockServiceInstanceStatus({ serviceId: 'B.547', serviceLoad: 0 })
-      const s3 = MockServiceInstanceStatus({ serviceId: 'C.57', serviceLoad: 3 })
-
-      const serviceInstanceCollection = new MockServiceInstanceCollection(s1, s2, s3)
-      const serviceCollection = new MockServiceCollectionMap(serviceInstanceCollection)
+      const serviceInstance = MockServiceInstanceStatus({ serviceType: 'Analytics', serviceId: 'A.1', serviceLoad: 0 })
+      const serviceCollection = new MockServiceCollectionMap(serviceInstance)
 
       const cb = jest.fn<Observable<string>>((r: string, p: any, resp: string) => of('result'))
 
@@ -33,7 +24,7 @@ describe('ServiceStubWithLoadBalancer', () => {
         expectObservable(req$).toBe('-(s|)', { s: 'result' })
         flush()
         expect(cb).toHaveBeenCalledTimes(1)
-        expect(cb).toHaveBeenCalledWith('B.547.getAnalytics', 'request', '')
+        expect(cb).toHaveBeenCalledWith('A.1.getAnalytics', 'request', '')
       })
     })
   })
@@ -50,13 +41,9 @@ describe('ServiceStubWithLoadBalancer', () => {
     })
     it('should call serviceStub subscribeToTopic', () => {
       const testScheduler = new MockScheduler()
+      const serviceInstance = MockServiceInstanceStatus({ serviceType: 'Blotter', serviceId: 'B.547', serviceLoad: 0 })
 
-      const s1 = MockServiceInstanceStatus({ serviceType: 'Blotter', serviceLoad: 1 })
-      const s2 = MockServiceInstanceStatus({ serviceId: 'B.547', serviceLoad: 0 })
-      const s3 = MockServiceInstanceStatus({ serviceType: 'Blotter', serviceId: 'C.57', serviceLoad: 3 })
-
-      const serviceInstanceCollection = new MockServiceInstanceCollection(s1, s2, s3)
-      const serviceCollection = new MockServiceCollectionMap(serviceInstanceCollection)
+      const serviceCollection = new MockServiceCollectionMap(serviceInstance)
       const cb1 = jest.fn<Observable<any>>((r: string, p: any, resp: any) => of('result'))
       const cb2 = jest.fn<Observable<any>>((r: string, p: any, resp: any) => of('mal'))
 
@@ -72,32 +59,30 @@ describe('ServiceStubWithLoadBalancer', () => {
       })
     })
 
-    it('should call requestResponse with remote  when a service subscribed to topics', () => {
+    it('should call requestResponse with remote when a service subscribed to topics', () => {
       const testScheduler = new MockScheduler()
-      const s1 = MockServiceInstanceStatus({ serviceType: 'Blotter', serviceLoad: 1 })
-      const s2 = MockServiceInstanceStatus({ serviceId: 'B.547', serviceLoad: 0 })
-      const s3 = MockServiceInstanceStatus({ serviceType: 'Blotter', serviceId: 'C.57', serviceLoad: 3 })
+      const serviceInstance = MockServiceInstanceStatus({ serviceType: 'Blotter', serviceId: 'B.547', serviceLoad: 0 })
 
-      const serviceInstanceCollection = new MockServiceInstanceCollection(s1, s2, s3)
-      const serviceCollection = new MockServiceCollectionMap(serviceInstanceCollection)
+      const serviceCollection = new MockServiceCollectionMap(serviceInstance)
+
       //Attempts to mimick the minal requirements as possible for ServiceStub subscribeTopics method
-      const cb1 = jest.fn<Observable<any>>((r: string, p: any, resp: any) => {
+      const subscribeTopics = jest.fn<Observable<any>>((r: string, p: any, resp: any) => {
         p.next(r)
         return of('result')
       })
-      const cb2 = jest.fn<Observable<any>>((r: string, p: any, resp: any) => of('mal'))
+      const requestResponse = jest.fn<Observable<any>>((r: string, p: any, resp: any) => of('response'))
 
       testScheduler.run(({ cold, expectObservable, flush }) => {
         const serviceInstanceDictionary$ = cold<ServiceCollectionMap>('-s-', { s: serviceCollection })
-        const serviceStub = new MockServiceStub(cb1, cb2)
+        const serviceStub = new MockServiceStub(subscribeTopics, requestResponse)
         const serviceStubWithLoadBalancer = new ServiceStubWithLoadBalancer(serviceStub, serviceInstanceDictionary$)
 
         const response$ = serviceStubWithLoadBalancer.createStreamOperation('Blotter', 'getBlotter', { symbol: 'AAPL' })
         expectObservable(response$).toBe('-(s|)', { s: 'result' })
         flush()
-        expect(cb1).toHaveBeenCalledTimes(1)
-        expect(cb2).toHaveBeenCalledTimes(1)
-        expect(cb2).toHaveBeenCalledWith('B.547.getBlotter', { symbol: 'AAPL' }, 'topic_Blotter_tv203k')
+        expect(subscribeTopics).toHaveBeenCalledTimes(1)
+        expect(requestResponse).toHaveBeenCalledTimes(1)
+        expect(requestResponse).toHaveBeenCalledWith('B.547.getBlotter', { symbol: 'AAPL' }, 'topic_Blotter_tv203k')
       })
     })
   })

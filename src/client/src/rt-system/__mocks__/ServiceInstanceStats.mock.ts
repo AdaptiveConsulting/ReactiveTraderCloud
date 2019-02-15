@@ -1,4 +1,4 @@
-import { ServiceInstanceCollection, ServiceCollectionMap } from '../ServiceInstanceCollection'
+import { ServiceCollectionMap } from '../ServiceInstanceCollection'
 import { ServiceInstanceStatus } from '../serviceInstanceStatus'
 
 const initServiceInstanceStatus: ServiceInstanceStatus = {
@@ -13,20 +13,12 @@ const MockServiceInstanceStatus = (overrides: Partial<ServiceInstanceStatus>) =>
   ...overrides,
 })
 
-const MockServiceInstanceCollection = jest.fn<ServiceInstanceCollection>((...args: ServiceInstanceStatus[]) => {
-  const servinceInstanceCollection = new ServiceInstanceCollection(args[0].serviceType)
-  for (const e of args) {
-    servinceInstanceCollection.update(e)
-  }
-  return servinceInstanceCollection
-})
-
-const MockServiceCollectionMap = jest.fn<ServiceCollectionMap>((...args: ServiceInstanceCollection[]) => {
+const MockServiceCollectionMap = jest.fn<ServiceCollectionMap>((serviceInstance: ServiceInstanceStatus) => {
+  ServiceCollectionMap.prototype.getServiceInstanceStatus = jest.fn((type: string, instance: string) => serviceInstance)
+  ServiceCollectionMap.prototype.getServiceInstanceWithMinimumLoad = jest.fn((serviceType: string) => serviceInstance)
   const serviceMapCollection = new ServiceCollectionMap()
-  for (const e of args) {
-    serviceMapCollection.add(e.serviceType, e)
-  }
+
   return serviceMapCollection
 })
 
-export { MockServiceCollectionMap, MockServiceInstanceCollection, MockServiceInstanceStatus }
+export { MockServiceCollectionMap, MockServiceInstanceStatus }
