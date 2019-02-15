@@ -39,12 +39,15 @@ describe('Reference Epics', () => {
   it('Should stop generating trade actions when the application disconnects', () => {
     const testScheduler = new MockScheduler()
     const connectAction = ConnectionActions.connect()
+    const disconnectAction = ConnectionActions.disconnect()
     const data = { Updates: MockCurrencyPair({}) }
+
     const expectedAction = ReferenceActions.createReferenceServiceAction(data)
     delete expectedAction['error']
+
     testScheduler.run(({ cold, expectObservable }) => {
       const referenceDataService = new MockReferenceDataService()
-      const st = cold<Action<any>>('c-a--', { c: connectAction, a: data })
+      const st = cold<Action<any>>('c-a-da-a', { c: connectAction, a: data, d: disconnectAction })
       const action$ = ActionsObservable.from(st, testScheduler)
       const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService } as ApplicationDependencies)
       expectObservable(epics$).toBe('a----', { a: expectedAction })
