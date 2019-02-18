@@ -2,7 +2,7 @@ import ReferenceDataService from './referenceDataService'
 import { MockScheduler } from 'rt-testing'
 import { ServiceClient } from 'rt-system'
 import { Observable } from 'rxjs'
-import { default as referenceDataMapper, RawCurrencyPairUpdates } from './referenceDataMapper'
+import { RawCurrencyPairUpdates } from './referenceDataMapper'
 import { MockCurrencyRaw } from './__mocks__'
 
 describe('ReferenceDataService', () => {
