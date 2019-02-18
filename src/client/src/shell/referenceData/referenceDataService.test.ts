@@ -23,7 +23,7 @@ describe('ReferenceDataService', () => {
   it('referenceDataStream should correctly map rawCurrencyPairUpdates to CurrencyPairMap', () => {
     const testScheduler = new MockScheduler()
     const currencyRaw = MockCurrencyRaw({})
-    const Updates = {
+    const input = {
       Updates: [
         {
           UpdateType: 'Added',
@@ -43,21 +43,20 @@ describe('ReferenceDataService', () => {
       },
     }
     testScheduler.run(({ cold, expectObservable }) => {
-      const createStreamOperation = jest.fn<Observable<RawCurrencyPairUpdates>>((s: string, o: string, r: any) =>
+      const createStreamOperation$ = jest.fn<Observable<RawCurrencyPairUpdates>>((s: string, o: string, r: any) =>
         cold<RawCurrencyPairUpdates>('--a--', {
-          a: Updates,
+          a: input,
         }),
       )
-      const serviceClient = new MockServiceClient(createStreamOperation)
+      const serviceClient = new MockServiceClient(createStreamOperation$)
       const referenceData$ = new ReferenceDataService(serviceClient).getCurrencyPairUpdates$()
       expectObservable(referenceData$).toBe('--a--', { a: currencyMap })
     })
   })
 
   it('should remove currencyPairUpdate with updateType Remove', () => {
-    const testScheduler = new MockScheduler()
     const currencyRaw = MockCurrencyRaw({})
-    const Updates = {
+    const input = {
       Updates: [
         {
           UpdateType: 'Removed',
@@ -68,15 +67,17 @@ describe('ReferenceDataService', () => {
       ],
     }
 
+    const testScheduler = new MockScheduler()
     testScheduler.run(({ cold, expectObservable }) => {
-      const createStreamOperation = jest.fn<Observable<RawCurrencyPairUpdates>>((s: string, o: string, r: any) =>
+      const createStreamOperation$ = jest.fn<Observable<RawCurrencyPairUpdates>>((s: string, o: string, r: any) =>
         cold<RawCurrencyPairUpdates>('--a--', {
-          a: Updates,
+          a: input,
         }),
       )
-      const serviceClient = new MockServiceClient(createStreamOperation)
+      const serviceClient = new MockServiceClient(createStreamOperation$)
       const referenceData$ = new ReferenceDataService(serviceClient).getCurrencyPairUpdates$()
       expectObservable(referenceData$).toBe('--a--', { a: {} })
+      expect(createStreamOperation$).toHaveBeenCalledTimes(1)
     })
   })
 })

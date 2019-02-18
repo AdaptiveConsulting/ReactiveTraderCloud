@@ -20,15 +20,15 @@ describe('Reference Epics', () => {
   it('Should start generating trade actions only when application connects', () => {
     const testScheduler = new MockScheduler()
     const connectAction = ConnectionActions.connect()
-    const data = { Updates: MockCurrencyPair({}) }
-    const expectedAction = ReferenceActions.createReferenceServiceAction(data)
+    const currencyPair = { Updates: MockCurrencyPair({}) }
+    const expectedAction = ReferenceActions.createReferenceServiceAction(currencyPair)
     delete expectedAction['error']
 
     testScheduler.run(({ cold, expectObservable }) => {
       const referenceDataService = new MockReferenceDataService()
       const actionLifetime = '-a-a-c-a--'
       const expectedLitetime = '-----a--'
-      const source$ = cold<Action<any>>(actionLifetime, { c: connectAction, a: data })
+      const source$ = cold<Action<any>>(actionLifetime, { c: connectAction, a: currencyPair })
       const action$ = ActionsObservable.from(source$, testScheduler)
       const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService } as ApplicationDependencies)
       expectObservable(epics$).toBe(expectedLitetime, { a: expectedAction })
@@ -39,14 +39,14 @@ describe('Reference Epics', () => {
     const testScheduler = new MockScheduler()
     const connectAction = ConnectionActions.connect()
     const disconnectAction = ConnectionActions.disconnect()
-    const data = { Updates: MockCurrencyPair({}) }
+    const currencyPair = { Updates: MockCurrencyPair({}) }
 
-    const expectedAction = ReferenceActions.createReferenceServiceAction(data)
+    const expectedAction = ReferenceActions.createReferenceServiceAction(currencyPair)
     delete expectedAction['error']
 
     testScheduler.run(({ cold, expectObservable }) => {
       const referenceDataService = new MockReferenceDataService()
-      const st = cold<Action<any>>('c-a-daaa', { c: connectAction, a: data, d: disconnectAction })
+      const st = cold<Action<any>>('c-a-daaa', { c: connectAction, a: currencyPair, d: disconnectAction })
       const action$ = ActionsObservable.from(st, testScheduler)
       const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService } as ApplicationDependencies)
       expectObservable(epics$).toBe('a----', { a: expectedAction })
