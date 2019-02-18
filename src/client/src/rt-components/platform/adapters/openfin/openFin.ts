@@ -91,8 +91,8 @@ export default class OpenFin implements PlatformAdapter {
 
     excel: {
       init: () => Excel.actions.init(),
-      publish: (topic: string, message: string | object) => Excel.actions.publishExcel(topic, message),
       open: () => Excel.actions.openExcel(),
+      publish: (topic: string, message: string | object) => Excel.actions.publishToExcel(topic, message),
     },
   }
 

@@ -1,75 +1,119 @@
 import { formTable } from './utils'
+import { ExcelWorkbook, ExcelWorksheet, ExcelInterface } from './types'
+import { InteropTopics } from 'rt-components'
 
-export interface ExcelInterface {
-  workbook: any
+/*
+  ACTIONS
+  init           - initializes the Excel object - called on application connect/through rt-launcher
+  openExcel      - opens the Excel, exits Menu view then opens the template
+  publishToExcel - cells set here + polling incase of Excel open after/before launch
 
-  actions: {
-    init: () => void
-    publishExcel: (topic: string, message: any) => void
-    setupSheet: () => void
-    openExcel: () => void
-  }
+  UTILS
+  addOnCloseListener - cleans up, sets Excel variables to null on Excel close
+  setWorkVariables   - the only location where Excel variables are set
+  isAlreadyRunning   - 1. checks if Excel object initialized
+                       2. checks if Excel connected (opened)
+                       3. returns Excel workbook object if name matches EXCEL_SHEET_NAME
+  pollForExcelOpen   - called repeatedly if no workbook exists - if the correct workbook
+                       is found the Excel variables are set            
+*/
+
+const EXCEL_HOST_URL = 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/excel'
+const EXCEL_SHEET_NAME = 'RTExcel.xlsx'
+
+enum ExcelPageSetup {
+  Blotter = 'A2',
+  Poisitins = 'A2',
+  CcyPairs = 'G2',
 }
 
-class Excel implements ExcelInterface {
-  workbook: any
-  blotterSheet: any
-  positionSheet: any
+class ExcelAdapter implements ExcelInterface {
+  blotterSheet: ExcelWorksheet
+  positionalSheet: ExcelWorksheet
+  excelWorkbook: ExcelWorkbook
 
   actions = {
-    init: () => {
-      // @ts-ignore
-      if (!fin.desktop.Excel) {
-        // @ts-ignore
-        const { ExcelService } = fin.desktop
-        ExcelService.init().catch((err: string) => console.log(err))
-      }
-      // @ts-ignore
-      fin.desktop.ExcelService.addEventListener('excelConnected', () => (this.excelOpen = true))
+    init: async () => {
+      await fin.desktop.ExcelService.init()
+      this.utils.addOnCloseListener()
     },
 
-    setupSheet: () => {
-      // @ts-ignore
-      const excelInstance = fin.desktop.Excel
-      excelInstance.getWorkbooks((workbooks: any) => {
-        if (workbooks[0]) {
-          this.workbook = workbooks[0]
-          this.workbook.getWorksheets((res: any) => {
-            ;[this.blotterSheet, this.positionSheet] = res
-          })
-        }
-      })
+    openExcel: async () => {
+      const { Excel } = fin.desktop
+
+      await Excel.run()
+      const menuView = await Excel.addWorkbook()
+      menuView.close()
+
+      const RTExcel = await Excel.openWorkbook(`${EXCEL_HOST_URL}/${EXCEL_SHEET_NAME}`)
+      this.utils.setWorkVariables(RTExcel)
     },
 
-    openExcel: () => {
-      // @ts-ignore
-      fin.desktop.Excel ? fin.desktop.Excel.run() : this.actions.init()
-    },
-
-    publishExcel: (topic: string, message: any) => {
-      // @ts-ignore
-      if (fin.desktop.Excel && this.excelOpen) {
-        this.actions.setupSheet()
+    publishToExcel: async (topic: string, message: any) => {
+      if (!this.excelWorkbook) {
+        this.utils.pollForExcelOpen()
       }
 
-      if (message.length !== 0) {
-        switch (topic) {
-          case 'blotter-data':
-            if (this.blotterSheet) {
-              this.blotterSheet.setCells(formTable.blotter(message), 'A2')
-            }
-            break
-          case 'position-update':
-            if (this.positionSheet) {
-              this.positionSheet.setCells(formTable.positions(message), 'A2')
-              this.positionSheet.setCells(formTable.ccy(message), 'A13')
-            }
-            break
-        }
+      switch (topic) {
+        case InteropTopics.Blotter:
+          return this.blotterSheet && this.blotterSheet.setCells(formTable.blotter(message), ExcelPageSetup.Blotter)
+        case InteropTopics.Analytics:
+          return (
+            this.positionalSheet &&
+            (this.positionalSheet.setCells(formTable.positions(message), ExcelPageSetup.Poisitins),
+            this.positionalSheet.setCells(formTable.ccy(message), ExcelPageSetup.CcyPairs))
+          )
+      }
+    },
+  }
+
+  private utils = {
+    addOnCloseListener: () => {
+      fin.desktop.Excel.addEventListener(
+        'workbookClosed',
+        ({ workbook: { name } }: any): void => {
+          if (name === EXCEL_SHEET_NAME) {
+            this.blotterSheet = null
+            this.positionalSheet = null
+            this.excelWorkbook = null
+          }
+        },
+      )
+    },
+
+    setWorkVariables: async (RTExcel: ExcelWorkbook) => {
+      this.excelWorkbook = RTExcel
+      const worksheets = await this.excelWorkbook.getWorksheets()
+      this.blotterSheet = worksheets[0]
+      this.positionalSheet = worksheets[1]
+      this.utils.addOnCloseListener()
+    },
+
+    isAlreadyRunning: async () => {
+      const { Excel } = fin.desktop
+      if (!Excel) {
+        await fin.desktop.ExcelService.init()
+        return
+      }
+
+      const connected = await Excel.getConnectionStatus()
+      if (!connected) {
+        return
+      }
+
+      const workbooks = await Excel.getWorkbooks()
+      const RTExcel = workbooks.filter((workbook: any) => (workbook.name === EXCEL_SHEET_NAME ? workbook : null))
+      return RTExcel[0]
+    },
+
+    pollForExcelOpen: async () => {
+      const RTExcel = await this.utils.isAlreadyRunning()
+      if (RTExcel) {
+        this.utils.setWorkVariables(RTExcel)
       }
     },
   }
 }
 
-const ExcelServiceInstance = new Excel()
+const ExcelServiceInstance = new ExcelAdapter()
 export default ExcelServiceInstance

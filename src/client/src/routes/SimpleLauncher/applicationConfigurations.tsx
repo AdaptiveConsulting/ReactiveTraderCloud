@@ -1,4 +1,5 @@
-import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon } from './icons'
+import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon, excelIcon } from './icons'
+import { ExcelService } from 'rt-components'
 
 const options = {
   autoShow: true,
@@ -16,7 +17,24 @@ const options = {
     reloadIgnoringCache: true,
     zoom: true,
   },
+  preload: [
+    {
+      url: `http://${location.host}/plugin/service-loader.js`,
+    },
+    {
+      url: `http://${location.host}/plugin/fin.desktop.Excel.js`,
+    },
+  ],
+  appAssets: [
+    {
+      src: `http://${location.host}/plugin/add-in.zip`,
+      alias: 'excel-api-addin',
+      version: '2.0.0',
+      forceDownload: true,
+    },
+  ],
 }
+
 export type ApplicationType = 'window' | 'download' | 'application'
 type Platform = 'browser' | 'openfin'
 interface Provider {
@@ -31,9 +49,10 @@ interface Provider {
 
 export interface ApplicationConfig {
   name: string
-  url: string
+  url?: string
+  launch?: () => void
   icon: JSX.Element
-  provider: Provider
+  provider?: Provider
 }
 
 export const appConfigs: ApplicationConfig[] = [
@@ -93,5 +112,10 @@ export const appConfigs: ApplicationConfig[] = [
         width: 8,
       },
     },
+  },
+  {
+    name: 'Excel',
+    icon: excelIcon,
+    launch: () => ExcelService.actions.init().then(() => ExcelService.actions.openExcel()),
   },
 ]

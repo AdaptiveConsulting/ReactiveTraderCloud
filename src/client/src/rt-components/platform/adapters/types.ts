@@ -19,3 +19,8 @@ export interface InteropServices {
   chartIQ: boolean
   notificationHighlight: boolean
 }
+
+export enum InteropTopics {
+  Analytics = 'position-update',
+  Blotter = 'blotter-data',
+}

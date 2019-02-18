@@ -6,4 +6,9 @@ declare namespace fin {
   interface ApplicationOptions {
     nonPersistent?: boolean
   }
+
+  interface OpenFinDesktop {
+    ExcelService: any
+    Excel: any
+  }
 }

@@ -4,7 +4,7 @@ import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { CurrencyPair, CurrencyPairMap, Trade, Trades, TradeStatus } from 'rt-types'
-
+import { InteropTopics } from 'rt-components'
 import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 
 import { ApplicationEpic } from 'StoreTypes'
@@ -46,7 +46,7 @@ const connectBlotterToExcel: ApplicationEpic = (action$, state$, { platform }) =
         takeUntil(action$.pipe(applicationDisconnected)),
         tap(() => {
           const parsedData = parseBlotterData(state$.value.blotterService.trades, state$.value.currencyPairs)
-          platform.interop!.excel.publish('blotter-data', parsedData)
+          platform.interop!.excel.publish(InteropTopics.Blotter, parsedData)
         }),
         ignoreElements(),
       ),

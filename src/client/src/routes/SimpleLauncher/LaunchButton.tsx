@@ -8,7 +8,7 @@ export interface LaunchButtonProps {
   appConfig: ApplicationConfig
 }
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   width: 100%;
   height: 100%;
   font-size: 1.5rem;
@@ -45,10 +45,9 @@ const StyledButton = styled.button`
 `
 
 export class LaunchButton extends React.Component<LaunchButtonProps> {
-  onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    open(this.props.appConfig)
-    event.preventDefault()
-  }
+  onClick = (event: React.MouseEvent<HTMLButtonElement>) => (
+    this.props.appConfig.launch ? this.props.appConfig.launch() : open(this.props.appConfig), event.preventDefault()
+  )
 
   render = () => <StyledButton onClick={this.onClick}>{this.props.children}</StyledButton>
 }
