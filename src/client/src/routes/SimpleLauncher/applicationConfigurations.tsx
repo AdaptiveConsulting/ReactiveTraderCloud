@@ -1,5 +1,5 @@
 import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon, excelIcon } from './icons'
-import { ExcelService } from 'rt-components'
+import { excelAdapter } from 'rt-components'
 
 const options = {
   autoShow: true,
@@ -116,6 +116,6 @@ export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Excel',
     icon: excelIcon,
-    launch: () => ExcelService.actions.init().then(() => ExcelService.actions.openExcel()),
+    launch: () => excelAdapter.actions.init().then(() => excelAdapter.actions.openExcel()),
   },
 ]
