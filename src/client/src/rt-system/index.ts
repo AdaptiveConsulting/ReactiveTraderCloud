@@ -1,6 +1,7 @@
 import { ConnectionStatus, ConnectionState } from './connectionStatus'
 import { ServiceInstanceCollection, ServiceCollectionMap, ServiceConnectionInfo } from './ServiceInstanceCollection'
-
+import { RawServiceStatus } from './serviceInstanceStatus'
+export type RawServiceStatus = RawServiceStatus
 export { ServiceInstanceCollection, ServiceCollectionMap }
 export type ServiceConnectionInfo = ServiceConnectionInfo
 export { ConnectionStatus }
