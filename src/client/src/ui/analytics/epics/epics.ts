@@ -16,15 +16,13 @@ type SubscribeToAnalyticsAction = ReturnType<typeof subcribeToAnalytics>
 
 export const analyticsServiceEpic: ApplicationEpic = (action$, $state, { loadBalancedServiceStub }) => {
   const analyticsService = new AnalyticsService(loadBalancedServiceStub)
-  //only emits when we have an action of type REFERENCE_SERVICE
+
   const refAction$ = action$.pipe(ofType<Action, ReferenceServiceAction>(REF_ACTION_TYPES.REFERENCE_SERVICE))
 
-  //only emits when we have an action of type subscribe to analytics
   const subscribeAction$ = action$.pipe(
     ofType<Action, SubscribeToAnalyticsAction>(ANALYTICS_ACTION_TYPES.SUBCRIBE_TO_ANALYTICS),
   )
 
-  //Only when we have a refAction that we can combine with the latest subscription
   const combined$ = refAction$.pipe(combineLatest(subscribeAction$))
 
   return combined$.pipe(
@@ -36,10 +34,3 @@ export const analyticsServiceEpic: ApplicationEpic = (action$, $state, { loadBal
     ),
   )
 }
-
-/**
- * loadBalanceServiceStub?
- * --^--
- *
- * When we are disconnected, we should not receive any action.
- */

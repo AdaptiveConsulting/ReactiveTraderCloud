@@ -20,7 +20,8 @@
       "options": [
         "rxjs/operators",
         "rxjs/testing",
-        "@storybook/addon-knobs/react"
+        "@storybook/addon-knobs/react",
+        "rt-system/__mocks__"
       ]
     },
     "ter-arrow-parens": false,

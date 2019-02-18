@@ -48,8 +48,8 @@ export default class AnalyticsService {
     return this.serviceClient
       .createStreamOperation<PositionsRaw, string>('analytics', 'getAnalytics', analyticsRequest) //Ana observable of response from backend
       .pipe(
-        retryWhen(retryWithBackOff()), //Should be tested when there is an error
-        map(dto => mapFromDto(dto)), //Should check that we have correctly mapped the values
+        retryWhen(retryWithBackOff()),
+        map(dto => mapFromDto(dto)),
       )
   }
 }

@@ -4,44 +4,76 @@ import { analyticsServiceEpic } from './epics'
 import { ActionsObservable } from 'redux-observable'
 import { AnalyticsActions } from '../actions'
 import { Action } from 'redux'
-import { ServiceStubWithLoadBalancer, MockServiceClient } from 'rt-system'
+import { MockServiceClient } from 'rt-system/__mocks__'
+import { of } from 'rxjs'
+import { map } from 'rxjs/operators'
+
+const position = {
+  CurrentPositions: [],
+  History: [],
+}
+const serviceType = '@ReactiveTraderCloud/ANALYTICS_SERVICE'
 
 describe('Analytics epics', () => {
-  it('should call the getAnalyticsStream with currency as the argument', () => {
-    expect(1).toBe(1)
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
-  it('should not emit value if the application is not connected', () => {
-    expect(1).toBe(1)
-  })
-
-  it('should not emit action after applicationDisconnected Asction', () => {
+  it('should only emit after it subscribes and references the service', () => {
     const testScheduler = new MockScheduler()
-    const getResponse = (s: string, o: string, r: any) => 'result'
+
     const referenceAction = ReferenceActions.createReferenceServiceAction({})
     const subscribeAction = AnalyticsActions.subcribeToAnalytics()
-    const disconnectAction = ConnectionActions.disconnect()
-    testScheduler.run(({ cold, flush, expectObservable }) => {
-      const coldAction$ = cold<Action<any>>('rs-d--rs-', {
-        r: referenceAction,
-        s: subscribeAction,
-        d: disconnectAction,
-      })
 
-      const serviceStubWithLoadBalancer = new MockServiceClient(getResponse)
+    const actionsReference = {
+      r: referenceAction,
+      s: subscribeAction,
+      a: position,
+    }
+    const createStreamOperation$ = jest.fn((s: string, o: string, r: any) => of(position))
+
+    testScheduler.run(({ cold, expectObservable }) => {
+      const actionlifteTime = '-a-a-(rs)a--'
+      const expecteLifetime = '-----a--'
+
+      const loadBalancedServiceStub = new MockServiceClient(createStreamOperation$)
+
+      const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
-      const epics$ = analyticsServiceEpic(action$, undefined, { serviceStubWithLoadBalancer })
-
-      expectObservable(epics$).toBe('a-----')
-      flush()
+      const epics$ = analyticsServiceEpic(action$, undefined, { loadBalancedServiceStub }).pipe(
+        map(x => x.type === serviceType),
+      )
+      expectObservable(epics$).toBe(expecteLifetime, { a: true })
     })
   })
 
-  it('should map position update to fetchAnalytics', () => {
-    expect(1).toBe(1)
+  it('should not emit action after application has been disconnected', () => {
+    const testScheduler = new MockScheduler()
+
+    const referenceAction = ReferenceActions.createReferenceServiceAction({})
+    const subscribeAction = AnalyticsActions.subcribeToAnalytics()
+    const disconnectAction = ConnectionActions.disconnect()
+    const actionsReference = {
+      r: referenceAction,
+      s: subscribeAction,
+      d: disconnectAction,
+      a: position,
+    }
+    const createStreamOperation$ = jest.fn((s: string, o: string, r: any) => of(position))
+
+    testScheduler.run(({ cold, expectObservable }) => {
+      const actionlifteTime = '(rs)-a-d-aa-'
+      const expecteLifetime = 'a-----'
+
+      const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
+
+      const loadBalancedServiceStub = new MockServiceClient(createStreamOperation$)
+
+      const action$ = ActionsObservable.from(coldAction$, testScheduler)
+      const epics$ = analyticsServiceEpic(action$, undefined, { loadBalancedServiceStub }).pipe(
+        map(x => x.type === serviceType),
+      )
+      expectObservable(epics$).toBe(expecteLifetime, { a: true })
+    })
   })
 })
-
-const mockServiceLoader = jest.fn<ServiceStubWithLoadBalancer>(() => ({
-  1: 2,
-}))
