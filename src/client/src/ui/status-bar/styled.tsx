@@ -92,3 +92,9 @@ export const ServiceRoot = styled.div<{ index: number }>`
     margin-right: 1rem !important;
   }
 `
+
+export const OpenFinLogoContainer = styled.div`
+  .svg-fill {
+    fill: ${({ theme }) => theme.core.textColor};
+  }
+`
