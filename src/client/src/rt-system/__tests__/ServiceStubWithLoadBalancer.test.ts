@@ -1,10 +1,28 @@
 import ServiceStubWithLoadBalancer from '../ServiceStubWithLoadBalancer'
 import { MockScheduler } from 'rt-testing'
-import { MockServiceStub, MockServiceInstanceStatus } from '../__mocks__'
 import { Observable, of } from 'rxjs'
-import { IServiceStatusCollection } from 'rt-system'
+import { ServiceInstanceStatus } from '../serviceInstanceStatus'
+import { IServiceStatusCollection, ServiceStub } from 'rt-system'
+
+const initServiceInstanceStatus: ServiceInstanceStatus = {
+  serviceType: 'Analytics',
+  serviceId: 'A.256',
+  timestamp: 400,
+  serviceLoad: 0,
+  isConnected: true,
+}
+const MockServiceInstanceStatus = (overrides: Partial<ServiceInstanceStatus>) => ({
+  ...initServiceInstanceStatus,
+  ...overrides,
+})
 
 describe('ServiceStubWithLoadBalancer', () => {
+  type CallBack = (r: string, p: any, resp: string) => Observable<any>
+
+  const MockServiceStub = jest.fn<ServiceStub>((c1?: CallBack, c2?: CallBack) => ({
+    subscribeToTopic: (r: string, p: any, resp: string) => c1!(r, p, resp),
+    requestResponse: (r: string, p: any, resp = '') => c2!(r, p, resp),
+  }))
   describe('createRequestResponseOperation', () => {
     afterEach(() => {
       jest.clearAllMocks()
