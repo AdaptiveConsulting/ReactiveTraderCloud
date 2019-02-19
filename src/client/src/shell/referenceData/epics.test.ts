@@ -9,6 +9,13 @@ import { ConnectionActions, ReferenceActions } from 'rt-actions'
 import { MockCurrencyPair } from './__mocks__'
 
 describe('Reference Epics', () => {
+  const connectAction = ConnectionActions.connect()
+  const disconnectAction = ConnectionActions.disconnect()
+  const currencyPair = { Updates: MockCurrencyPair({}) }
+
+  const expectedAction = ReferenceActions.createReferenceServiceAction(currencyPair)
+  delete expectedAction['error']
+
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -19,37 +26,32 @@ describe('Reference Epics', () => {
 
   it('Should start generating trade actions only when application connects', () => {
     const testScheduler = new MockScheduler()
-    const connectAction = ConnectionActions.connect()
-    const currencyPair = { Updates: MockCurrencyPair({}) }
-    const expectedAction = ReferenceActions.createReferenceServiceAction(currencyPair)
-    delete expectedAction['error']
+    const actionReference = { c: connectAction, a: currencyPair }
+    const expectReference = { a: expectedAction }
 
     testScheduler.run(({ cold, expectObservable }) => {
       const referenceDataService = new MockReferenceDataService()
       const actionLifetime = '-a-a-c-a--'
       const expectedLitetime = '-----a--'
-      const source$ = cold<Action<any>>(actionLifetime, { c: connectAction, a: currencyPair })
+      const source$ = cold<Action<any>>(actionLifetime, actionReference)
       const action$ = ActionsObservable.from(source$, testScheduler)
       const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService } as ApplicationDependencies)
-      expectObservable(epics$).toBe(expectedLitetime, { a: expectedAction })
+      expectObservable(epics$).toBe(expectedLitetime, expectReference)
     })
   })
 
   it('Should not generate trade actions when the application disconnects', () => {
     const testScheduler = new MockScheduler()
-    const connectAction = ConnectionActions.connect()
-    const disconnectAction = ConnectionActions.disconnect()
-    const currencyPair = { Updates: MockCurrencyPair({}) }
-
-    const expectedAction = ReferenceActions.createReferenceServiceAction(currencyPair)
-    delete expectedAction['error']
-
+    const referenceDataService = new MockReferenceDataService()
+    const actionReference = { c: connectAction, a: currencyPair, d: disconnectAction }
+    const expectReference = { a: expectedAction }
     testScheduler.run(({ cold, expectObservable }) => {
-      const referenceDataService = new MockReferenceDataService()
-      const st = cold<Action<any>>('c-a-daaa', { c: connectAction, a: currencyPair, d: disconnectAction })
-      const action$ = ActionsObservable.from(st, testScheduler)
+      const actionLifetime = 'c-a-daaa'
+      const expectLifetime = 'a----'
+      const source$ = cold<Action<any>>(actionLifetime, actionReference)
+      const action$ = ActionsObservable.from(source$, testScheduler)
       const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService } as ApplicationDependencies)
-      expectObservable(epics$).toBe('a----', { a: expectedAction })
+      expectObservable(epics$).toBe(expectLifetime, expectReference)
     })
   })
 })
