@@ -1,8 +1,7 @@
 import { defer, Observable } from 'rxjs'
 import { distinctUntilChanged, filter, map, share, switchMap, take } from 'rxjs/operators'
-import { ServiceCollectionMap } from './ServiceInstanceCollection'
+import { IServiceStatusCollection } from './ServiceInstanceCollection'
 import { ServiceStub } from './ServiceStub'
-// import { ServiceInstanceStatus } from './serviceInstanceStatus';
 
 /**
  * Abstracts a back end service for which there can be multiple instances.
@@ -15,7 +14,7 @@ const LOG_NAME = 'ServiceClient: Initiated'
 export default class ServiceStubWithLoadBalancer {
   constructor(
     private connection: ServiceStub,
-    private readonly serviceInstanceDictionaryStream: Observable<ServiceCollectionMap>,
+    private readonly serviceInstanceDictionaryStream: Observable<IServiceStatusCollection>,
   ) {}
 
   private getServiceWithMinLoad$(serviceType: string) {

@@ -1,88 +1,115 @@
 import ServiceStubWithLoadBalancer from '../ServiceStubWithLoadBalancer'
 import { MockScheduler } from 'rt-testing'
-import { MockServiceStub, MockServiceInstanceStatus, MockServiceCollectionMap } from '../__mocks__'
+import { MockServiceStub, MockServiceInstanceStatus } from '../__mocks__'
 import { Observable, of } from 'rxjs'
-import { ServiceCollectionMap } from 'rt-system'
+import { IServiceStatusCollection } from 'rt-system'
 
 describe('ServiceStubWithLoadBalancer', () => {
   describe('createRequestResponseOperation', () => {
-    beforeEach(() => {
+    afterEach(() => {
       jest.clearAllMocks()
     })
-    it('should call requestResponse with remoteProcedure and request', () => {
-      const testScheduler = new MockScheduler()
-      const serviceInstance = MockServiceInstanceStatus({ serviceType: 'Analytics', serviceId: 'A.1', serviceLoad: 0 })
-      const serviceCollection = new MockServiceCollectionMap(serviceInstance)
 
-      const cb = jest.fn<Observable<string>>((r: string, p: any, resp: string) => of('result'))
+    it('should get the service with minimum load and call the method requestResponse with parameters A.1.getAnalytics and request', () => {
+      const analytics = 'Analytics'
+      const request = 'request'
+      const getAnalytics = 'getAnalytics'
+      const result = 'result'
 
-      testScheduler.run(({ cold, expectObservable, flush }) => {
-        const serviceInstanceDictionary$ = cold<ServiceCollectionMap>('-s-', { s: serviceCollection })
-        const serviceStub = new MockServiceStub(null, cb)
+      const serviceInstance = MockServiceInstanceStatus({ serviceType: analytics, serviceId: 'A.1', serviceLoad: 0 })
+      const serviceCollection = {
+        getServiceInstanceWithMinimumLoad: () => serviceInstance,
+        getServiceInstanceStatus: () => serviceInstance,
+      }
+
+      const requestResponse = jest.fn<Observable<string>>((r: string, p: any, resp: string) => of(result))
+      const actionReference = { s: serviceCollection }
+      const expectReference = { s: result }
+      new MockScheduler().run(({ cold, expectObservable, flush }) => {
+        const actionTimeLine = '-s-'
+        const expectTimeLine = '-(s|)'
+
+        const serviceInstanceDictionary$ = cold<IServiceStatusCollection>(actionTimeLine, actionReference)
+        const serviceStub = new MockServiceStub(null, requestResponse)
         const serviceStubWithLoadBalancer = new ServiceStubWithLoadBalancer(serviceStub, serviceInstanceDictionary$)
-        const req$ = serviceStubWithLoadBalancer.createRequestResponseOperation('Analytics', 'getAnalytics', 'request')
-        expectObservable(req$).toBe('-(s|)', { s: 'result' })
+
+        const req$ = serviceStubWithLoadBalancer.createRequestResponseOperation(analytics, getAnalytics, request)
+
+        expectObservable(req$).toBe(expectTimeLine, expectReference)
         flush()
-        expect(cb).toHaveBeenCalledTimes(1)
-        expect(cb).toHaveBeenCalledWith('A.1.getAnalytics', 'request', '')
+        expect(requestResponse).toHaveBeenCalledTimes(1)
+        expect(requestResponse).toHaveBeenCalledWith(`A.1.${getAnalytics}`, request, '')
       })
     })
   })
 
   describe('createStreamOperation', () => {
+    const blotter = 'Blotter'
+    const remoteProcedure = 'B.547.getBlotter'
+    const payload = { symbol: 'AAPL' }
+    const responseTopic = `topic_${blotter}_tv203k`
+    const request = 'getBlotter'
+    const serviceInstance = MockServiceInstanceStatus({ serviceType: blotter, serviceId: 'B.547', serviceLoad: 0 })
+    let subscribeTopics$: any = null
+    let requestResponse: any = null
+
+    const serviceCollection = {
+      getServiceInstanceWithMinimumLoad: () => serviceInstance,
+      getServiceInstanceStatus: () => serviceInstance,
+    }
+
     beforeEach(() => {
       const mockMath = Object.create(global.Math)
       mockMath.random = () => 0.5
       global.Math = mockMath
+
+      subscribeTopics$ = jest.fn<Observable<any>>((r: string, p: any, resp: any) => {
+        p.next(r)
+        return of('result')
+      })
+      requestResponse = jest.fn<Observable<any>>((r: string, p: any, resp: any) => of('response'))
     })
 
     afterEach(() => {
       jest.clearAllMocks()
     })
-    it('should call serviceStub subscribeToTopic', () => {
-      const testScheduler = new MockScheduler()
-      const serviceInstance = MockServiceInstanceStatus({ serviceType: 'Blotter', serviceId: 'B.547', serviceLoad: 0 })
 
-      const serviceCollection = new MockServiceCollectionMap(serviceInstance)
-      const cb1 = jest.fn<Observable<any>>((r: string, p: any, resp: any) => of('result'))
-      const cb2 = jest.fn<Observable<any>>((r: string, p: any, resp: any) => of('mal'))
+    it('should subscribe to a topic with topicName Blotter', () => {
+      const actionReference = { s: serviceCollection }
+      new MockScheduler().run(({ cold, expectObservable, flush }) => {
+        const actionTimeLine = '-s-'
+        const expectTimeLine = '-(s|)'
 
-      testScheduler.run(({ cold, expectObservable, flush }) => {
-        const serviceInstanceDictionary$ = cold<ServiceCollectionMap>('-s-', { s: serviceCollection })
-        const serviceStub = new MockServiceStub(cb1, cb2)
+        const serviceInstanceDictionary$ = cold<IServiceStatusCollection>(actionTimeLine, actionReference)
+        const serviceStub = new MockServiceStub(subscribeTopics$, requestResponse)
         const serviceStubWithLoadBalancer = new ServiceStubWithLoadBalancer(serviceStub, serviceInstanceDictionary$)
 
-        const response$ = serviceStubWithLoadBalancer.createStreamOperation('Blotter', 'getBlotter', { symbol: 'AAPL' })
-        expectObservable(response$).toBe('-(s|)', { s: 'result' })
+        const response$ = serviceStubWithLoadBalancer.createStreamOperation(blotter, request, { symbol: 'AAPL' })
+        expectObservable(response$).toBe(expectTimeLine, { s: 'result' })
         flush()
-        expect(cb1).toHaveBeenCalledTimes(1)
+        expect(subscribeTopics$).toHaveBeenCalledTimes(1)
       })
     })
 
-    it('should call requestResponse with remote when a service subscribed to topics', () => {
-      const testScheduler = new MockScheduler()
-      const serviceInstance = MockServiceInstanceStatus({ serviceType: 'Blotter', serviceId: 'B.547', serviceLoad: 0 })
+    it('should on successful subscription call requestRemote with parameters remoteProcedure, payload, responseTopic', () => {
+      const actionReference = { s: serviceCollection }
+      const expectedReference = { s: 'result' }
 
-      const serviceCollection = new MockServiceCollectionMap(serviceInstance)
+      new MockScheduler().run(({ cold, expectObservable, flush }) => {
+        const actionTimeLine = '-s-'
+        const expectTimeLine = '-(s|)'
 
-      //Attempts to mimick the minal requirements as possible for ServiceStub subscribeTopics method
-      const subscribeTopics = jest.fn<Observable<any>>((r: string, p: any, resp: any) => {
-        p.next(r)
-        return of('result')
-      })
-      const requestResponse = jest.fn<Observable<any>>((r: string, p: any, resp: any) => of('response'))
-
-      testScheduler.run(({ cold, expectObservable, flush }) => {
-        const serviceInstanceDictionary$ = cold<ServiceCollectionMap>('-s-', { s: serviceCollection })
-        const serviceStub = new MockServiceStub(subscribeTopics, requestResponse)
+        const serviceInstanceDictionary$ = cold<IServiceStatusCollection>(actionTimeLine, actionReference)
+        const serviceStub = new MockServiceStub(subscribeTopics$, requestResponse)
         const serviceStubWithLoadBalancer = new ServiceStubWithLoadBalancer(serviceStub, serviceInstanceDictionary$)
 
-        const response$ = serviceStubWithLoadBalancer.createStreamOperation('Blotter', 'getBlotter', { symbol: 'AAPL' })
-        expectObservable(response$).toBe('-(s|)', { s: 'result' })
+        const response$ = serviceStubWithLoadBalancer.createStreamOperation(blotter, request, payload)
+
+        expectObservable(response$).toBe(expectTimeLine, expectedReference)
         flush()
-        expect(subscribeTopics).toHaveBeenCalledTimes(1)
+        expect(subscribeTopics$).toHaveBeenCalledTimes(1)
         expect(requestResponse).toHaveBeenCalledTimes(1)
-        expect(requestResponse).toHaveBeenCalledWith('B.547.getBlotter', { symbol: 'AAPL' }, 'topic_Blotter_tv203k')
+        expect(requestResponse).toHaveBeenCalledWith(remoteProcedure, payload, responseTopic)
       })
     })
   })

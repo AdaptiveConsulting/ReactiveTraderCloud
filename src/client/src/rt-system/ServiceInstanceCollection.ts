@@ -26,7 +26,7 @@ export class ServiceInstanceCollection {
   }
 }
 
-interface IServiceStatusCollection {
+export interface IServiceStatusCollection {
   getServiceInstanceWithMinimumLoad: (serviceType: string) => ServiceInstanceStatus | undefined
   getServiceInstanceStatus: (type: string, instance: string) => ServiceInstanceStatus | undefined
 }
