@@ -10,7 +10,7 @@ describe('ServiceStubWithLoadBalancer', () => {
       jest.clearAllMocks()
     })
 
-    it('should get the service with minimum load and call the method requestResponse with parameters A.1.getAnalytics and request', () => {
+    it('should call requestResponse on the minimum load service', () => {
       const analytics = 'Analytics'
       const request = 'request'
       const getAnalytics = 'getAnalytics'
@@ -74,7 +74,7 @@ describe('ServiceStubWithLoadBalancer', () => {
       jest.clearAllMocks()
     })
 
-    it('should subscribe to a topic with topicName Blotter', () => {
+    it('should subscribe to the minimum load service', () => {
       const actionReference = { s: serviceCollection }
       new MockScheduler().run(({ cold, expectObservable, flush }) => {
         const actionTimeLine = '-s-'
