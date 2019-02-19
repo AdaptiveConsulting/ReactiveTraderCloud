@@ -59,10 +59,6 @@ describe('ServiceStubWithLoadBalancer', () => {
     }
 
     beforeEach(() => {
-      const mockMath = Object.create(global.Math)
-      mockMath.random = () => 0.5
-      global.Math = mockMath
-
       subscribeTopics$ = jest.fn<Observable<any>>((r: string, p: any, resp: any) => {
         p.next(r)
         return of('result')
@@ -94,7 +90,7 @@ describe('ServiceStubWithLoadBalancer', () => {
     it('should on successful subscription call requestRemote with parameters remoteProcedure, payload, responseTopic', () => {
       const actionReference = { s: serviceCollection }
       const expectedReference = { s: 'result' }
-
+      const topicGenerator = (service: string) => responseTopic
       new MockScheduler().run(({ cold, expectObservable, flush }) => {
         const actionTimeLine = '-s-'
         const expectTimeLine = '-(s|)'
@@ -103,7 +99,7 @@ describe('ServiceStubWithLoadBalancer', () => {
         const serviceStub = new MockServiceStub(subscribeTopics$, requestResponse)
         const serviceStubWithLoadBalancer = new ServiceStubWithLoadBalancer(serviceStub, serviceInstanceDictionary$)
 
-        const response$ = serviceStubWithLoadBalancer.createStreamOperation(blotter, request, payload)
+        const response$ = serviceStubWithLoadBalancer.createStreamOperation(blotter, request, payload, topicGenerator)
 
         expectObservable(response$).toBe(expectTimeLine, expectedReference)
         flush()
