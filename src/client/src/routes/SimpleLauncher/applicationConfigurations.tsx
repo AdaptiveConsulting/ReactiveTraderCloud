@@ -1,5 +1,4 @@
 import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon, excelIcon } from './icons'
-import { excelAdapter } from 'rt-components'
 
 const options = {
   autoShow: true,
@@ -18,6 +17,7 @@ const options = {
     zoom: true,
   },
   preload: [
+    // OpenFin Excel API not included here (not included in standard package)
     {
       url: `http://${location.host}/plugin/service-loader.js`,
     },
@@ -36,11 +36,11 @@ const options = {
 }
 
 export type ApplicationType = 'window' | 'download' | 'application'
-type Platform = 'browser' | 'openfin'
+type Platform = 'browser' | 'openfin' | 'excel'
 interface Provider {
   platform: Platform
   as: ApplicationType
-  options: fin.WindowOptions
+  options?: fin.WindowOptions
   cornerRounding?: {
     height: number
     width: number
@@ -50,7 +50,6 @@ interface Provider {
 export interface ApplicationConfig {
   name: string
   url?: string
-  launch?: () => void
   icon: JSX.Element
   provider?: Provider
 }
@@ -116,6 +115,9 @@ export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Excel',
     icon: excelIcon,
-    launch: () => excelAdapter.actions.init().then(() => excelAdapter.actions.openExcel()),
+    provider: {
+      platform: 'excel',
+      as: 'application',
+    },
   },
 ]

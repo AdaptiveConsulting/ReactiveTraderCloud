@@ -1,7 +1,7 @@
 export interface ExcelInterface {
-  blotterSheet: any
-  positionalSheet: any
-  excelWorkbook: any
+  blotterSheet: ExcelWorksheet
+  positionalSheet: ExcelWorksheet
+  excelWorkbook: ExcelWorkbook
 
   actions: {
     init: () => void

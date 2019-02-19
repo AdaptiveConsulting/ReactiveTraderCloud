@@ -49,10 +49,7 @@ export default class OpenFin implements PlatformAdapter {
   }
 
   app = {
-    exit: () => {
-      console.log('app closed')
-      fin.desktop.Application.getCurrent().close()
-    },
+    exit: () => fin.desktop.Application.getCurrent().close(),
     open: (id: string, config: AppConfig) =>
       new Promise<string>((resolve, reject) => {
         fin.desktop.System.getAllApplications(apps => {

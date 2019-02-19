@@ -1,4 +1,4 @@
-import { AppConfig, WindowConfig, InteropServices } from './types'
+import { AppConfig, WindowConfig, InteropServices, ExcelInterop } from './types'
 
 export interface PlatformAdapter {
   name: string
@@ -22,11 +22,7 @@ export interface PlatformAdapter {
     subscribe: (sender: string, topic: string, listener: () => void) => void
     unsubscribe: (sender: string, topic: string, listener: () => void) => void
     publish: (topic: string, message: any) => void
-    excel?: {
-      init: () => void
-      open: () => void
-      publish: (topic: string, message: any) => void
-    }
+    excel?: ExcelInterop
   }
 
   notification?: {

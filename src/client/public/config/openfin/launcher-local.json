@@ -16,6 +16,7 @@
         "resizable": false,
         "shadow": true,
         "frame": false,
+        "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
         "preload": [
             {
                 "url": "http://localhost:3000/plugin/service-loader.js"

@@ -45,9 +45,9 @@ export const StyledButton = styled.button`
 `
 
 export class LaunchButton extends React.Component<LaunchButtonProps> {
-  onClick = (event: React.MouseEvent<HTMLButtonElement>) => (
-    this.props.appConfig.launch ? this.props.appConfig.launch() : open(this.props.appConfig), event.preventDefault()
-  )
+  onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    open(this.props.appConfig)
+  }
 
   render = () => <StyledButton onClick={this.onClick}>{this.props.children}</StyledButton>
 }

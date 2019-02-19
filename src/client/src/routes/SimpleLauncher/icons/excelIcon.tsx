@@ -10,7 +10,7 @@ export default (
       <path
         fillRule="nonzero"
         stroke="#FFF"
-        stroke-width="1.949"
+        strokeWidth="1.949"
         d="M1.355 5.876a.585.585 0 0 0-.38.548v12.152c0 .244.151.463.38.548l12.882 4.803a.585.585 0 0 0 .789-.548V1.621a.585.585 0 0 0-.79-.548L1.356 5.876z"
       />
     </g>
