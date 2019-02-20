@@ -14,7 +14,7 @@ import { Microphone } from './Microphone'
 import { ScribeSession, SessionEvent } from './ScribeSession'
 import { UserMedia, UserMediaState } from './UserMedia'
 import { TranscriptionSession, SessionResult } from './TranscriptionSession'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 import FormantBars from './FormantBars'
 import MicrophoneIcon from './assets/Microphone'

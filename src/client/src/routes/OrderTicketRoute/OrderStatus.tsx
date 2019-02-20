@@ -8,7 +8,7 @@ import { styled } from 'rt-theme'
 import { Block } from '../StyleguideRoute/styled'
 import { LabelText } from './TextField'
 
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 interface OrderStatusButtonClickHandler {
   onSubmit?: () => void

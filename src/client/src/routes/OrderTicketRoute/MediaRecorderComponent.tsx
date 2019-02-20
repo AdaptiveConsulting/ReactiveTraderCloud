@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import MediaRecorder, { BlobEvent, MediaRecorderInterface } from './MediaRecorder'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 export type BlobEvent = BlobEvent
 export const mediaRecorderEvents = ['start', 'stop', 'dataavailable', 'pause', 'resume', 'error']
