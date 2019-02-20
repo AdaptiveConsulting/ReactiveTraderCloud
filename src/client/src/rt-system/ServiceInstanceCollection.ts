@@ -26,7 +26,11 @@ export class ServiceInstanceCollection {
   }
 }
 
-export class ServiceCollectionMap {
+export interface IServiceStatusCollection {
+  getServiceInstanceWithMinimumLoad: (serviceType: string) => ServiceInstanceStatus | undefined
+  getServiceInstanceStatus: (type: string, instance: string) => ServiceInstanceStatus | undefined
+}
+export class ServiceCollectionMap implements IServiceStatusCollection {
   private readonly serviceInstanceCollections = new Map<string, ServiceInstanceCollection>()
 
   add(service: string, serviceInstanceCollection: ServiceInstanceCollection) {
@@ -67,7 +71,7 @@ export class ServiceCollectionMap {
         connectedInstanceCount: next.getServiceInstances().filter(instance => instance.isConnected === true).length,
         connectionStatus: next.getServiceWithMinLoad()
           ? ServiceConnectionStatus.CONNECTED
-          : ServiceConnectionStatus.DISCONNECTED
+          : ServiceConnectionStatus.DISCONNECTED,
       }
       return acc
     }, {})
