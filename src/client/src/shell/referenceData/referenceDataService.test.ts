@@ -1,4 +1,4 @@
-import ReferenceDataService from './referenceDataService'
+import { referenceDataService } from './referenceDataService'
 import { MockScheduler } from 'rt-testing'
 import { ServiceClient } from 'rt-system'
 import { Observable } from 'rxjs'
@@ -42,7 +42,7 @@ const rawCurrencyPairAdded = {
 describe('ReferenceDataService', () => {
   it('should on initialization call createStreamOperation', () => {
     const testScheduler = new MockScheduler()
-    const actionReference = { a: { update: [] } }
+    const actionReference = { a: { update: [] as any } }
 
     testScheduler.run(({ cold, flush }) => {
       const actionLifetime = '--a--'
@@ -52,7 +52,7 @@ describe('ReferenceDataService', () => {
       )
 
       const serviceClient = new MockServiceClient(createStreamOperation)
-      new ReferenceDataService(serviceClient)
+      referenceDataService(serviceClient)
       flush()
       expect(createStreamOperation).toHaveBeenCalledTimes(1)
       expect(createStreamOperation).toHaveBeenCalledWith('reference', 'getCurrencyPairUpdatesStream', {})
@@ -74,9 +74,7 @@ describe('ReferenceDataService', () => {
         cold<RawCurrencyPairUpdates>(actionLifetime, actionReference),
       )
       const serviceClient = new MockServiceClient(createStreamOperation$)
-      const referenceData$ = new ReferenceDataService(serviceClient)
-        .getCurrencyPairUpdates$()
-        .pipe(map(refData => refData.hasOwnProperty('USDYAN')))
+      const referenceData$ = referenceDataService(serviceClient).pipe(map(refData => refData.hasOwnProperty('USDYAN')))
 
       expectObservable(referenceData$).toBe(expectLifetime, expectReference)
     })
@@ -97,7 +95,7 @@ describe('ReferenceDataService', () => {
       )
       const serviceClient = new MockServiceClient(createStreamOperation$)
 
-      const referenceData$ = new ReferenceDataService(serviceClient).getCurrencyPairUpdates$()
+      const referenceData$ = referenceDataService(serviceClient)
       expectObservable(referenceData$).toBe(expectLifetime, expectReference)
     })
   })

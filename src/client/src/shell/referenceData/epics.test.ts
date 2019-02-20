@@ -2,11 +2,9 @@ import { MockScheduler } from 'rt-testing'
 import { referenceServiceEpic } from './epics'
 import { Action } from 'redux'
 import { ActionsObservable } from 'redux-observable'
-import ReferenceDataService from './referenceDataService'
 import { of } from 'rxjs'
-import { ApplicationDependencies } from 'applicationServices'
 import { ConnectionActions, ReferenceActions } from 'rt-actions'
-import { CurrencyPair } from 'rt-types'
+import { CurrencyPair, CurrencyPairMap } from 'rt-types'
 
 const currencyPair = {
   symbol: 'USDYAN',
@@ -24,7 +22,7 @@ const MockCurrencyPair = (overrides: Partial<CurrencyPair>) => ({
 describe('Reference Epics', () => {
   const connectAction = ConnectionActions.connect()
   const disconnectAction = ConnectionActions.disconnect()
-  const currencyPair = { Updates: MockCurrencyPair({}) }
+  const currencyPair = { USDYAN: MockCurrencyPair({}) }
 
   const expectedAction = ReferenceActions.createReferenceServiceAction(currencyPair)
   delete expectedAction['error']
@@ -38,23 +36,21 @@ describe('Reference Epics', () => {
     const actionReference = { c: connectAction, a: currencyPair }
     const expectReference = { a: expectedAction }
 
-    const referenceDataService = new MockReferenceDataService()
-
     testScheduler.run(({ cold, expectObservable }) => {
       const actionLifetime = '-a-a-c-a--'
-      const expectedLitetime = '-----a--'
+      const expectLitetime = '-----a'
 
+      const referenceDataService$ = of<CurrencyPairMap>(currencyPair)
       const source$ = cold<Action<any>>(actionLifetime, actionReference)
       const action$ = ActionsObservable.from(source$, testScheduler)
 
-      const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService } as ApplicationDependencies)
-      expectObservable(epics$).toBe(expectedLitetime, expectReference)
+      const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService$ })
+      expectObservable(epics$).toBe(expectLitetime, expectReference)
     })
   })
 
   it('Should not generate trade actions when the application disconnects', () => {
     const testScheduler = new MockScheduler()
-    const referenceDataService = new MockReferenceDataService()
 
     const actionReference = { c: connectAction, a: currencyPair, d: disconnectAction }
     const expectReference = { a: expectedAction }
@@ -63,18 +59,13 @@ describe('Reference Epics', () => {
       const actionLifetime = 'c-a-daaa'
       const expectLifetime = 'a----'
 
+      const referenceDataService$ = of<CurrencyPairMap>(currencyPair)
+
       const source$ = cold<Action<any>>(actionLifetime, actionReference)
       const action$ = ActionsObservable.from(source$, testScheduler)
 
-      const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService } as ApplicationDependencies)
+      const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService$ })
       expectObservable(epics$).toBe(expectLifetime, expectReference)
     })
   })
 })
-
-const MockReferenceDataService = jest.fn<ReferenceDataService>(() => ({
-  getCurrencyPairUpdates$: () =>
-    of({
-      Updates: MockCurrencyPair({}),
-    }),
-}))
