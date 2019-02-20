@@ -40,13 +40,14 @@ const rawCurrencyPairAdded = {
 }
 
 describe('ReferenceDataService', () => {
-  it('should, on initialization call createStreamOperation', () => {
+  it('should on initialization call createStreamOperation', () => {
     const testScheduler = new MockScheduler()
     const actionReference = { a: { update: [] } }
 
     testScheduler.run(({ cold, flush }) => {
       const actionLifetime = '--a--'
-      const createStreamOperation = jest.fn<any>((s: string, o: string, r: any) =>
+
+      const createStreamOperation = jest.fn((s: string, o: string, r: any) =>
         cold<RawCurrencyPairUpdates>(actionLifetime, actionReference),
       )
 
@@ -76,6 +77,7 @@ describe('ReferenceDataService', () => {
       const referenceData$ = new ReferenceDataService(serviceClient)
         .getCurrencyPairUpdates$()
         .pipe(map(refData => refData.hasOwnProperty('USDYAN')))
+
       expectObservable(referenceData$).toBe(expectLifetime, expectReference)
     })
   })
