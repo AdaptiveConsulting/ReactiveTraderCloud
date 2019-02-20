@@ -2,6 +2,7 @@ import ReferenceDataService from './referenceDataService'
 import { MockScheduler } from 'rt-testing'
 import { ServiceClient } from 'rt-system'
 import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 import { RawCurrencyPairUpdates, CurrencyRaw } from './referenceDataMapper'
 
 const initcurrencyRaw = {
@@ -37,20 +38,11 @@ const rawCurrencyPairAdded = {
     },
   ],
 }
-const currencyMap = {
-  USDYAN: {
-    base: 'USD',
-    pipsPosition: 4.6,
-    ratePrecision: 2,
-    symbol: 'USDYAN',
-    terms: 'YAN',
-  },
-}
 
 describe('ReferenceDataService', () => {
   it('should, on initialization call createStreamOperation', () => {
     const testScheduler = new MockScheduler()
-    const actionReference = { a: { update: [] as any } }
+    const actionReference = { a: { update: [] } }
 
     testScheduler.run(({ cold, flush }) => {
       const actionLifetime = '--a--'
@@ -72,7 +64,7 @@ describe('ReferenceDataService', () => {
     const actionReference = {
       a: rawCurrencyPairAdded,
     }
-    const expectReference = { a: currencyMap }
+    const expectReference = { a: true }
 
     testScheduler.run(({ cold, expectObservable }) => {
       const actionLifetime = '--a--'
@@ -81,7 +73,9 @@ describe('ReferenceDataService', () => {
         cold<RawCurrencyPairUpdates>(actionLifetime, actionReference),
       )
       const serviceClient = new MockServiceClient(createStreamOperation$)
-      const referenceData$ = new ReferenceDataService(serviceClient).getCurrencyPairUpdates$()
+      const referenceData$ = new ReferenceDataService(serviceClient)
+        .getCurrencyPairUpdates$()
+        .pipe(map(refData => refData.hasOwnProperty('USDYAN')))
       expectObservable(referenceData$).toBe(expectLifetime, expectReference)
     })
   })
@@ -95,13 +89,14 @@ describe('ReferenceDataService', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const actionLifetime = '--a--'
       const expectLifetime = '--a--'
+
       const createStreamOperation$ = jest.fn<Observable<RawCurrencyPairUpdates>>((s: string, o: string, r: any) =>
         cold<RawCurrencyPairUpdates>(actionLifetime, actionReference),
       )
       const serviceClient = new MockServiceClient(createStreamOperation$)
+
       const referenceData$ = new ReferenceDataService(serviceClient).getCurrencyPairUpdates$()
       expectObservable(referenceData$).toBe(expectLifetime, expectReference)
-      expect(createStreamOperation$).toHaveBeenCalledTimes(1)
     })
   })
 })
