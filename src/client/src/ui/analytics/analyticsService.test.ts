@@ -1,8 +1,9 @@
 import AnalyticsService from './analyticsService'
 import { MockScheduler } from 'rt-testing'
-import { MockServiceClient } from 'rt-system/__mocks__'
 import { PositionsRaw } from './model/index'
 import { map } from 'rxjs/operators'
+import { ServiceStubWithLoadBalancer } from 'rt-system'
+import { Observable } from 'rxjs'
 
 const positionRaw = {
   CurrentPositions: [],
@@ -23,7 +24,7 @@ describe('AnalyticsService getAnalyticsStream', () => {
       const createStreamOperation$ = jest.fn((s: string, o: string, r: any) =>
         cold<PositionsRaw>(actionLifetime, actionReference),
       )
-      const serviceClient = new MockServiceClient(createStreamOperation$)
+      const serviceClient = new MockServiceStubWithLoadBalancer(createStreamOperation$)
       const analyticsService = new AnalyticsService(serviceClient)
       const epics$ = analyticsService
         .getAnalyticsStream('USD')
@@ -48,7 +49,7 @@ describe('AnalyticsService getAnalyticsStream', () => {
         cold<PositionsRaw>(actionLifetime, actionReference),
       )
 
-      const serviceClient = new MockServiceClient(createStreamOperation$)
+      const serviceClient = new MockServiceStubWithLoadBalancer(createStreamOperation$)
       const analyticsService = new AnalyticsService(serviceClient)
       const epics$ = analyticsService
         .getAnalyticsStream('USD')
@@ -58,3 +59,9 @@ describe('AnalyticsService getAnalyticsStream', () => {
     })
   })
 })
+
+const MockServiceStubWithLoadBalancer = jest.fn<ServiceStubWithLoadBalancer>(
+  (getResponses: (service: string, operationName: string, request: any) => Observable<any>) => ({
+    createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
+  }),
+)

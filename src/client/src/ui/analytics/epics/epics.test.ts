@@ -4,9 +4,9 @@ import { analyticsServiceEpic } from './epics'
 import { ActionsObservable } from 'redux-observable'
 import { AnalyticsActions } from '../actions'
 import { Action } from 'redux'
-import { MockServiceClient } from 'rt-system/__mocks__'
-import { of } from 'rxjs'
+import { of, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
+import { ServiceStubWithLoadBalancer } from 'rt-system'
 
 const position = {
   CurrentPositions: [],
@@ -36,7 +36,7 @@ describe('Analytics epics', () => {
       const actionlifteTime = '-a-a-(rs)a--'
       const expecteLifetime = '-----a--'
 
-      const loadBalancedServiceStub = new MockServiceClient(createStreamOperation$)
+      const loadBalancedServiceStub = new MockServiceStubWithLoadBalancer(createStreamOperation$)
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
@@ -67,7 +67,7 @@ describe('Analytics epics', () => {
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
 
-      const loadBalancedServiceStub = new MockServiceClient(createStreamOperation$)
+      const loadBalancedServiceStub = new MockServiceStubWithLoadBalancer(createStreamOperation$)
 
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
       const epics$ = analyticsServiceEpic(action$, undefined, { loadBalancedServiceStub }).pipe(
@@ -77,3 +77,9 @@ describe('Analytics epics', () => {
     })
   })
 })
+
+const MockServiceStubWithLoadBalancer = jest.fn<ServiceStubWithLoadBalancer>(
+  (getResponses: (service: string, operationName: string, request: any) => Observable<any>) => ({
+    createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
+  }),
+)
