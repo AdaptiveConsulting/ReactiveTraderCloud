@@ -1,11 +1,11 @@
 import { applicationConnected } from 'rt-actions'
-import { fromEventPattern } from 'rxjs'
 import { map, switchMapTo, withLatestFrom, delay } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 import { combineEpics, ofType } from 'redux-observable'
 import { Action } from 'redux'
 import { Trade } from 'rt-types'
+import { InteropTopics } from 'rt-components'
 
 const { highlightTradeAction, removeHighlightTradeAction } = BlotterActions
 const TRADE_HIGHLIGHT_TIME_IN_MS = 3000
@@ -18,10 +18,7 @@ const switchHighlight = (trade: Trade) => ({
 })
 
 const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  const interopObservable$ = fromEventPattern(
-    (handler: Function) => platform.interop!.subscribe('*', 'highlight-blotter', handler as () => void),
-    (handler: Function) => platform.interop!.unsubscribe('*', 'highlight-blotter', handler as () => void),
-  )
+  const interopObservable$ = platform.interop!.subscribeTest(InteropTopics.HighlightBlotter)
 
   return action$.pipe(
     applicationConnected,

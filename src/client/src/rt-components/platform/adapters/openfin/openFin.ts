@@ -1,6 +1,7 @@
 import { PlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
+import { fromEventPattern } from 'rxjs'
 
 export const openFinNotifications: any[] = []
 
@@ -84,6 +85,8 @@ export default class OpenFin implements PlatformAdapter {
       fin.desktop.InterApplicationBus.unsubscribe(sender, topic, listener),
 
     publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
+
+    subscribeTest: (topic: string) => interopAdapter(topic),
   }
 
   notification = {
@@ -95,3 +98,9 @@ export default class OpenFin implements PlatformAdapter {
       } as any),
   }
 }
+
+const interopAdapter = (topic: string) =>
+  fromEventPattern(
+    (handler: Function) => fin.desktop.InterApplicationBus.subscribe('*', topic, handler as () => void),
+    (handler: Function) => fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void),
+  )

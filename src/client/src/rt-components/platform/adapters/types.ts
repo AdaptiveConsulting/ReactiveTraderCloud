@@ -19,3 +19,13 @@ export interface InteropServices {
   chartIQ: boolean
   notificationHighlight: boolean
 }
+
+export enum InteropTopics {
+  /* Excel interop data feeds */
+  Analytics = 'position-update',
+  Blotter = 'blotter-data',
+
+  /* onClick message bus for trade
+  highlight on notification click  */
+  HighlightBlotter = 'highlight-blotter',
+}
