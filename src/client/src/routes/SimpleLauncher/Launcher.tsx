@@ -7,6 +7,7 @@ import { LaunchButton } from './LaunchButton'
 import { LogoIcon } from 'rt-components'
 import { createGlobalStyle } from 'styled-components'
 import { ThemeStorageSwitch, styled } from 'rt-theme'
+import { open } from './tools'
 
 const LauncherGlobalStyle = createGlobalStyle`
 :root, body {
@@ -28,7 +29,7 @@ export class Launcher extends React.Component {
           </LogoContainer>
           {appConfigs.map(app => (
             <ButtonContainer key={app.name}>
-              <LaunchButton appConfig={app}>
+              <LaunchButton onClick={() => open(app)}>
                 {app.icon}
                 <IconTitle>{app.name}</IconTitle>
               </LaunchButton>

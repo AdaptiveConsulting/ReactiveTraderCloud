@@ -47,17 +47,16 @@ export default class Analytics extends React.Component<Props> {
         <AnalyticsLineChartWrapper>
           <AnalyticsLineChart model={analyticsLineChartModel} />
         </AnalyticsLineChartWrapper>
-        {positionsChartModel &&
-          positionsChartModel.seriesData.length !== 0 && (
-            <React.Fragment>
-              <Title>Positions</Title>
-              <BubbleChart>
-                <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
-              </BubbleChart>
-              <Title>PnL</Title>
-              <AnalyticsBarChart chartData={positionsChartModel.seriesData} />
-            </React.Fragment>
-          )}
+        {positionsChartModel && positionsChartModel.seriesData.length !== 0 && (
+          <React.Fragment>
+            <Title>Positions</Title>
+            <BubbleChart>
+              <PositionsBubbleChart data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+            </BubbleChart>
+            <Title>PnL</Title>
+            <AnalyticsBarChart chartData={positionsChartModel.seriesData} />
+          </React.Fragment>
+        )}
       </AnalyticsStyle>
     )
   }
