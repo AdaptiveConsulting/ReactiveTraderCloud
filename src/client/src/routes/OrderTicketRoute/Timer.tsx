@@ -1,35 +1,31 @@
 import { PureComponent } from 'react'
+import { RequireOnlyOne } from 'rt-util'
 
-export interface TimerProps {
-  name?: string
+interface Props {
   duration: number
   immediate?: boolean
-  timeout?: (name?: string) => void
-  interval?: (name?: string) => unknown
-  children?: (name?: string) => React.ReactNode
+  timeout: () => unknown
+  interval: () => unknown
 }
+
+export type TimerProps = RequireOnlyOne<Props, 'timeout' | 'interval'>
 
 export class Timer extends PureComponent<TimerProps> {
   id: number
-  callback = () => {
-    const { name, children, interval, timeout } = this.props
-
-    return (children || interval || timeout)(name)
-  }
 
   componentDidMount() {
-    const { interval, duration, immediate } = this.props
+    const { interval, timeout, duration, immediate } = this.props
 
-    this.id = (interval ? window.setInterval : window.setTimeout)(this.callback, duration)
+    this.id = interval ? window.setInterval(interval, duration) : window.setTimeout(timeout, duration)
 
     if (immediate) {
-      this.callback()
+      ;(interval || timeout)()
     }
   }
 
   componentWillUnmount() {
-    const { interval } = this.props
-    ;(interval ? clearInterval : clearTimeout)(this.id)
+    const clearFn = this.props.interval ? clearInterval : clearTimeout
+    clearFn(this.id)
   }
 
   render(): null {
