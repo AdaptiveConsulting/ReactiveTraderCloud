@@ -38,7 +38,7 @@ export const StyledButton = styled.button`
 `
 
 interface LaunchButtonProps {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onClick: () => void
   children: JSX.Element[] | JSX.Element
 }
 
