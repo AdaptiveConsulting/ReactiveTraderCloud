@@ -42,7 +42,7 @@ export default class AnalyticsService {
   getAnalyticsStream(analyticsRequest: string) {
     console.info(LOG_NAME, 'Subscribing to analytics stream')
     return this.serviceClient
-      .createStreamOperation<PositionsRaw, string>('analytics', 'getAnalytics', analyticsRequest) //Ana observable of response from backend
+      .createStreamOperation<PositionsRaw, string>('analytics', 'getAnalytics', analyticsRequest)
       .pipe(
         retryWhen(retryWithBackOff()),
         map(dto => mapFromDto(dto)),

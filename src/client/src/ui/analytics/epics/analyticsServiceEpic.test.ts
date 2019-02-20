@@ -5,7 +5,6 @@ import { Action } from 'redux'
 import { PositionUpdates } from '../model'
 import { AnalyticsActions } from '../actions'
 import { MockScheduler } from 'rt-testing'
-import { CurrencyPairPosition } from '../model/currencyPairPosition'
 
 const MockPlatformAdapter = jest.fn<PlatformAdapter>(() => ({
   interop: {
@@ -53,7 +52,7 @@ describe('publishPositionUpdateEpic', () => {
       baseTradedAmount: 120,
       basePnlName: 'basePnl',
       baseTradedAmountName: 'baseTradedAmount',
-    } as CurrencyPairPosition
+    }
 
     const payload: PositionUpdates = {
       currentPositions: [currencyPairPos],
