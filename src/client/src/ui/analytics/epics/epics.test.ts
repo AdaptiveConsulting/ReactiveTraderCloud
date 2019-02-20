@@ -19,7 +19,7 @@ describe('Analytics epics', () => {
     jest.clearAllMocks()
   })
 
-  it('should only emit after it subscribes and references the service', () => {
+  it('should emit only after it has subscribed and has a reference to the analytics service', () => {
     const testScheduler = new MockScheduler()
 
     const referenceAction = ReferenceActions.createReferenceServiceAction({})
