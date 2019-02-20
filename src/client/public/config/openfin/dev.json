@@ -13,7 +13,16 @@
         "minHeight": 600,
         "resizable": true,
         "maximizable": true,
-        "frame": false
+        "frame": false,
+        "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+        "preload": [
+          {
+            "url": "https://web-dev.adaptivecluster.com/plugin/service-loader.js"
+          },
+          {
+            "url": "https://web-dev.adaptivecluster.com/plugin/fin.desktop.Excel.js"
+          }
+        ]
     },
     "runtime": {
         "arguments": "--force-device-scale-factor=1",
@@ -30,6 +39,14 @@
     "services": [
         {
             "name": "layouts"
+        }
+    ],
+    "appAssets": [
+        {
+          "src": "https://web-dev.adaptivecluster.com/plugin/add-in.zip",
+          "alias": "excel-api-addin",
+          "version": "2.0.0",
+          "forceDownload": true
         }
     ]
 }

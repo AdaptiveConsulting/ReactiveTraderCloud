@@ -1,14 +1,7 @@
 import React from 'react'
 import { styled } from 'rt-theme'
-import { ApplicationConfig } from './applicationConfigurations'
 
-import { open } from './tools'
-
-export interface LaunchButtonProps {
-  appConfig: ApplicationConfig
-}
-
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   width: 100%;
   height: 100%;
   font-size: 1.5rem;
@@ -44,11 +37,11 @@ const StyledButton = styled.button`
   }
 `
 
-export class LaunchButton extends React.Component<LaunchButtonProps> {
-  onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    open(this.props.appConfig)
-    event.preventDefault()
-  }
-
-  render = () => <StyledButton onClick={this.onClick}>{this.props.children}</StyledButton>
+interface LaunchButtonProps {
+  onClick: () => void
+  children: JSX.Element[] | JSX.Element
 }
+
+export const LaunchButton = (props: LaunchButtonProps) => (
+  <StyledButton onClick={props.onClick}>{props.children}</StyledButton>
+)

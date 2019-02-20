@@ -21,15 +21,20 @@ const makeExternalWindowProps: (key: string) => ExternalWindowProps = (key: stri
 })
 
 const getSpotTiles = (state: GlobalState) => state.currencyPairs
-const selectSpotTiles = createSelector([getSpotTiles], spotTileKeys =>
-  Object.keys(spotTileKeys).map(key => ({
-    key,
-    externalWindowProps: makeExternalWindowProps(key),
-  })),
+const selectSpotTiles = createSelector(
+  [getSpotTiles],
+  spotTileKeys =>
+    Object.keys(spotTileKeys).map(key => ({
+      key,
+      externalWindowProps: makeExternalWindowProps(key),
+    })),
 )
 
 const getExecutionStatus = ({ compositeStatusService }: GlobalState) =>
   compositeStatusService.execution && compositeStatusService.execution.connectionStatus
-const selectExecutionStatus = createSelector(getExecutionStatus, status => status)
+const selectExecutionStatus = createSelector(
+  getExecutionStatus,
+  status => status,
+)
 
 export { selectSpotTiles, selectExecutionStatus }
