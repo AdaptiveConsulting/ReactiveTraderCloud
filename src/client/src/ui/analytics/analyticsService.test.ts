@@ -2,7 +2,7 @@ import AnalyticsService from './analyticsService'
 import { MockScheduler } from 'rt-testing'
 import { MockServiceClient } from 'rt-system/__mocks__'
 import { PositionsRaw } from './model/index'
-import { map, tap } from 'rxjs/operators'
+import { map } from 'rxjs/operators'
 
 const position = {
   CurrentPositions: [],
@@ -30,10 +30,9 @@ describe('AnalyticsService getAnalyticsStream', () => {
       )
       const serviceClient = new MockServiceClient(createStreamOperation$)
       const analyticsService = new AnalyticsService(serviceClient)
-      const epics$ = analyticsService.getAnalyticsStream('USD').pipe(
-        tap(pos => console.log(pos)),
-        map(pos => pos.currentPositions === [] && pos.history === []),
-      )
+      const epics$ = analyticsService
+        .getAnalyticsStream('USD')
+        .pipe(map(({ currentPositions, history }) => currentPositions.length == 0 && history.length == 0))
       expectObservable(epics$).toBe('--p--', { p: true })
       expect(createStreamOperation$).toHaveBeenCalled()
       expect(1).toBe(1)
