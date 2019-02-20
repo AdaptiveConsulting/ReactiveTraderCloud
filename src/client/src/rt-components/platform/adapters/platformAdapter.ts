@@ -19,10 +19,8 @@ export interface PlatformAdapter {
   }
 
   interop?: {
-    subscribe: (sender: string, topic: string, listener: () => void) => void
-    unsubscribe?: (sender: string, topic: string, listener: () => void) => void
+    subscribe$: (topic: string) => any
     publish: (topic: string, message: any) => void
-    subscribeTest?: (topic: string) => any
   }
 
   notification?: {

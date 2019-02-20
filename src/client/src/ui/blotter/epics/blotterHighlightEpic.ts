@@ -18,7 +18,7 @@ const switchHighlight = (trade: Trade) => ({
 })
 
 const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  const interopObservable$ = platform.interop!.subscribeTest(InteropTopics.HighlightBlotter)
+  const interopObservable$ = platform.interop!.subscribe$(InteropTopics.HighlightBlotter)
 
   return action$.pipe(
     applicationConnected,

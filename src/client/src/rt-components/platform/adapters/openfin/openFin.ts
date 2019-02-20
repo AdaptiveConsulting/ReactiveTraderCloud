@@ -78,15 +78,13 @@ export default class OpenFin implements PlatformAdapter {
   }
 
   interop = {
-    subscribe: (sender: string, topic: string, listener: () => void) =>
-      fin.desktop.InterApplicationBus.subscribe(sender, topic, listener),
-
-    unsubscribe: (sender: string, topic: string, listener: () => void) =>
-      fin.desktop.InterApplicationBus.unsubscribe(sender, topic, listener),
+    subscribe$: (topic: string) =>
+      fromEventPattern(
+        (handler: Function) => fin.desktop.InterApplicationBus.subscribe('*', topic, handler as () => void),
+        (handler: Function) => fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void),
+      ),
 
     publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
-
-    subscribeTest: (topic: string) => interopAdapter(topic),
   }
 
   notification = {
@@ -98,9 +96,3 @@ export default class OpenFin implements PlatformAdapter {
       } as any),
   }
 }
-
-const interopAdapter = (topic: string) =>
-  fromEventPattern(
-    (handler: Function) => fin.desktop.InterApplicationBus.subscribe('*', topic, handler as () => void),
-    (handler: Function) => fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void),
-  )

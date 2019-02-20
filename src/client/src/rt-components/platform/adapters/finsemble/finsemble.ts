@@ -1,5 +1,6 @@
 import { PlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
+import { fromEventPattern } from 'rxjs'
 
 // types not currently available for FSBL - 1/24/2019
 declare global {
@@ -50,8 +51,8 @@ export default class Finsemble implements PlatformAdapter {
   }
 
   interop = {
-    subscribe: (sender: string, topic: string, listener: () => void) =>
-      window.FSBL.Clients.RouterClient.addListener(topic, listener),
+    subscribe$: (topic: string) =>
+      fromEventPattern((handler: Function) => window.FSBL.Clients.RouterClient.addListener(topic, handler)),
 
     publish: (topic: string, message: string | object) => window.FSBL.Clients.RouterClient.transmit(topic, message),
   }
@@ -60,7 +61,7 @@ export default class Finsemble implements PlatformAdapter {
     notify: (message: object) => {
       window.FSBL.UserNotification.alert('trade', 'ALWAYS', 'trade-excecuted', message, {
         url: '/notification',
-        duration: 1000 * 3,
+        duration: 1000 * 50,
       })
     },
   }
