@@ -5,6 +5,7 @@ import { PopoutIcon } from 'rt-components'
 import { styled } from 'rt-theme'
 import { columnDefinitions } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
+import ExcelLauncher from './toolbar/ExcelLauncher'
 
 interface Props {
   canPopout: boolean
@@ -59,6 +60,7 @@ export default class BlotterHeader extends Component<Props, State> {
       <BlotterHeaderStyle>
         <BlotterLeft>Executed Trades</BlotterLeft>
         <BlotterRight>
+          <ExcelLauncher />
           <BlotterToolbar
             isQuickFilterApplied={quickFilterText.length !== 0}
             quickFilterChangeHandler={this.quickFilterChangeHandler}
