@@ -1,4 +1,5 @@
 import { AppConfig, WindowConfig, InteropServices } from './types'
+import { Observable } from 'rxjs'
 
 export interface PlatformAdapter {
   name: string
@@ -19,7 +20,7 @@ export interface PlatformAdapter {
   }
 
   interop?: {
-    subscribe$: (topic: string) => any
+    subscribe$: (topic: string) => Observable<any>
     publish: (topic: string, message: any) => void
   }
 
