@@ -19,3 +19,14 @@ export interface InteropServices {
   chartIQ: boolean
   notificationHighlight: boolean
 }
+
+export enum InteropTopics {
+  Analytics = 'position-update',
+  Blotter = 'blotter-data',
+}
+
+export interface ExcelInterop {
+  init: () => void
+  open: () => void
+  publish: (topic: string, message: string | object) => void
+}

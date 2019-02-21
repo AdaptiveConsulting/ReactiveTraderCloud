@@ -1,16 +1,23 @@
 import { ConnectionStatus, ConnectionState } from './connectionStatus'
-import { ServiceInstanceCollection, ServiceCollectionMap, ServiceConnectionInfo } from './ServiceInstanceCollection'
-
+import {
+  ServiceInstanceCollection,
+  ServiceCollectionMap,
+  ServiceConnectionInfo,
+  IServiceStatusCollection,
+} from './ServiceInstanceCollection'
+import { RawServiceStatus } from './serviceInstanceStatus'
+export type RawServiceStatus = RawServiceStatus
 export { ServiceInstanceCollection, ServiceCollectionMap }
 export type ServiceConnectionInfo = ServiceConnectionInfo
 export { ConnectionStatus }
 export type ConnectionState = ConnectionState
+export type IServiceStatusCollection = IServiceStatusCollection
 export { retryWithBackOff, retryConstantly } from './retryPolicy'
 export { default as Environment } from './environment'
 export { ConnectionType } from './connectionType'
 export { ServiceStub } from './ServiceStub'
 export { default as ServiceClient } from './ServiceStubWithLoadBalancer'
-export { default as MockServiceClient } from './ServiceStubWithLoadBalancer.mock'
+// export { default as MockServiceClient } from './ServiceStubWithLoadBalancer.mock'
 export { ConnectionEventType } from './connectionStream'
 import { AutobahnConnection } from './AutoBahnConnection'
 export type AutobahnConnection = AutobahnConnection

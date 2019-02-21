@@ -1,10 +1,18 @@
 import { ActionsObservable } from 'redux-observable'
-import { MockServiceClient } from 'rt-system'
 import { createTestScheduler, fromMarbles, mockLifetimeAction$ } from 'rt-testing'
-import MockApplicationDependencies from 'applicationServices.mock'
 import { blotterServiceEpic } from './epics'
 import { BlotterActions } from '../actions'
+import { ServiceStubWithLoadBalancer } from 'rt-system'
 import { fromTradeActionsToMarbles, toRawTradeUpdate } from '../testing'
+import { Observable } from 'rxjs'
+
+const MockServiceClient = jest.fn<ServiceStubWithLoadBalancer>(
+  (getResponses: (service: string, operationName: string, request: any) => Observable<any>) => ({
+    createStreamOperation: jest
+      .fn((s: string, o: string, r: any) => getResponses(s, o, r))
+      .mockName('createStreamOperation'),
+  }),
+)
 
 describe('blotterServiceEpic', () => {
   it("returns an observable that contains no actions when the component hasn't mounted", () => {
@@ -18,11 +26,12 @@ describe('blotterServiceEpic', () => {
       // arrange
       const { cold, expectObservable } = helpers
       const loadBalancedServiceStub = new MockServiceClient(() => fromMarbles(toRawTradeUpdate, cold, tradeStream))
-      const appDependencies = new MockApplicationDependencies(loadBalancedServiceStub)
       const action$ = mockLifetimeAction$(cold(lifetimeAct))
 
       // act
-      const epic = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, appDependencies)
+      const epic = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, {
+        loadBalancedServiceStub,
+      })
 
       // assert
       expect(loadBalancedServiceStub.createStreamOperation).toHaveBeenCalledTimes(1)
@@ -43,11 +52,12 @@ describe('blotterServiceEpic', () => {
       // arrange
       const { cold, expectObservable } = helpers
       const loadBalancedServiceStub = new MockServiceClient(() => fromMarbles(toRawTradeUpdate, cold, tradeStream))
-      const appDependencies = new MockApplicationDependencies(loadBalancedServiceStub)
       const action$ = mockLifetimeAction$(cold(lifetimeAct), lifetimeAct1)
 
       // act
-      const epic = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, appDependencies)
+      const epic = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, {
+        loadBalancedServiceStub,
+      })
 
       // assert
       expect(loadBalancedServiceStub.createStreamOperation).toHaveBeenCalledTimes(1)
@@ -69,11 +79,12 @@ describe('blotterServiceEpic', () => {
       // arrange
       const { cold, expectObservable } = helpers
       const loadBalancedServiceStub = new MockServiceClient(() => fromMarbles(toRawTradeUpdate, cold, tradeStream))
-      const appDependencies = new MockApplicationDependencies(loadBalancedServiceStub)
       const action$ = mockLifetimeAction$(cold(lifetimeAct), lifetimeAct1)
 
       // act
-      const epic = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, appDependencies)
+      const epic = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, {
+        loadBalancedServiceStub,
+      })
 
       // assert
       expect(loadBalancedServiceStub.createStreamOperation).toHaveBeenCalledTimes(1)
