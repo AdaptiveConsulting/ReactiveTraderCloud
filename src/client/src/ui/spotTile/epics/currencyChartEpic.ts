@@ -13,7 +13,7 @@ const CHART_ID = 'ChartIQ'
 
 const createChartConfig = (symbol: string, interval: number): AppConfig => ({
   uuid: CHART_ID,
-  url: `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/chartiq-shim.html?symbol=${symbol}&period=${interval}`,
+  url: `http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/template-advanced.html?symbol=${symbol}&period=${interval}`,
   icon: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/chartiq/icon.png',
   payload: { symbol, interval },
   topic: 'chartiq:main:change_symbol',

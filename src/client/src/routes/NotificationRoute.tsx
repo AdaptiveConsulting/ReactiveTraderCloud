@@ -3,7 +3,7 @@ import { Trade } from 'rt-types'
 
 import { ThemeProvider } from 'rt-theme'
 import TradeNotification from '../shell/notification/TradeNotification'
-import { openFinNotifications } from 'rt-components'
+import { openFinNotifications, InteropTopics } from 'rt-components'
 
 interface Message {
   tradeNotification: Trade
@@ -32,7 +32,8 @@ export class NotificationRoute extends React.Component<{}, State> {
 
   onDismissNotification = () => fin.desktop.Notification.getCurrent().close()
 
-  highlightTradeInBlotter = () => fin.desktop.InterApplicationBus.publish('highlight-blotter', this.state.message)
+  highlightTradeInBlotter = () =>
+    fin.desktop.InterApplicationBus.publish(InteropTopics.HighlightBlotter, this.state.message)
 
   render() {
     let { message } = this.state
