@@ -75,7 +75,7 @@ describe('blotterServiceEpic', () => {
     })
   })
 
-  it.only('returns an observable that stops generating trade actions when the application disconnects', () => {
+  it('returns an observable that stops generating trade actions when the application disconnects', () => {
     const scheduler = new MockScheduler()
     const connectionAction = ConnectionActions.connect()
     const subscribeAction = BlotterActions.subscribeToBlotterAction()
