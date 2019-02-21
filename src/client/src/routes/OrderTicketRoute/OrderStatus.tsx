@@ -27,11 +27,11 @@ interface Props extends OrderStatusButtonClickHandler {
 }
 
 interface State extends Props {
-  countdown?: any
+  countdown?: Duration
   quote?: {
     bid: number
     ask: number
-    expiry?: any
+    expiry?: DateTime
   }
   query?: any
 }
@@ -99,7 +99,9 @@ export class OrderStatus extends React.Component<Props, State> {
     return (
       <React.Fragment>
         {requestQuote && <Timer duration={0} timeout={this.setQuote} />}
-        {quote && <Timer key={quote.expiry} duration={1000} interval={this.updateCountdown} />}
+        {quote && (
+          <Timer key={quote.expiry && quote.expiry.toString()} duration={1000} interval={this.updateCountdown} />
+        )}
         <StatusLayout fg="muteColor">
           <StatusBox>
             <LabelText>Status</LabelText>

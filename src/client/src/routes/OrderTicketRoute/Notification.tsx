@@ -58,7 +58,7 @@ class Notification extends React.PureComponent<NotificationProps, State> {
           <Timer key="end" duration={500} timeout={this.onEnd} />
         )}
         <Position position={position} p={1}>
-          <Transistion key={visible ? 'show' : 'hide'} visible={visible} position={position}>
+          <Transition key={visible ? 'show' : 'hide'} visible={visible} position={position}>
             <Body bg={`button.${intent}.backgroundColor`} fg={`button.${intent}.textColor`} p={2} {...props}>
               <Block fontSize={2.5} color={`accents.${intent}.2`}>
                 <FontAwesomeIcon icon={intents[intent].icon} />
@@ -68,7 +68,7 @@ class Notification extends React.PureComponent<NotificationProps, State> {
                 <FontAwesomeIcon icon={faTimes} />
               </Block>
             </Body>
-          </Transistion>
+          </Transition>
         </Position>
       </React.Fragment>
     )
@@ -96,7 +96,7 @@ const Body = styled(Block)`
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1rem 4rem -1rem ${props => props.theme.overlay.backgroundColor};
 `
 
-const Position: any = styled(Block)<{ position?: 'top' | 'bottom' }>`
+const Position = styled(Block)<{ position?: 'top' | 'bottom' }>`
   position: absolute;
   left: 0;
   right: 0;
@@ -108,19 +108,19 @@ Position.defaultProps = {
   position: 'bottom',
 }
 
-const Transistion: any = styled(Block)<{ visible?: boolean; position?: 'top' | 'bottom' }>`
+const Transition = styled(Block)<{ visible?: boolean; position?: 'top' | 'bottom' }>`
   transition: transform ease 200ms, opacity ease 200ms;
 
   opacity: 0;
   animation-duration: 200ms;
   animation-fill-mode: both;
   animation-direction: ${({ visible }) => (visible ? 'normal' : 'reverse')};
-  ${({ position }) => Transistion.from[position]};
+  ${({ position }) => TransitionFrom[position]};
 `
-Transistion.defaultProps = {
+Transition.defaultProps = {
   position: 'bottom',
 }
-Transistion.from = {
+const TransitionFrom = {
   top: [
     `transform: translateY(-100%);`,
     `animation-name:`,
