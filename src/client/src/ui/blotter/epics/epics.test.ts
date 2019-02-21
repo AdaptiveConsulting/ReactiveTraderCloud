@@ -4,39 +4,51 @@ import { blotterServiceEpic } from './epics'
 import { BlotterActions } from '../actions'
 import { ServiceStubWithLoadBalancer } from 'rt-system'
 import { fromTradeActionsToMarbles, toRawTradeUpdate } from '../testing'
-import { Observable } from 'rxjs'
+import { Observable, of } from 'rxjs'
+import { Direction } from 'rt-types'
+// import { ConnectionActions } from 'rt-actions'
+import { MockScheduler } from 'rt-testing'
 
+const st = {
+  IsStateOfTheWorld: true,
+  IsStale: false,
+  Trades: [
+    {
+      TradeId: 0,
+      CurrencyPair: 'USD/EUP',
+      TraderName: 'bob',
+      Notional: 100,
+      DealtCurrency: 'USD',
+      Direction: Direction.Buy,
+      Status: 'PENDING',
+      SpotRate: 100,
+      TradeDate: new Date().toString(),
+      ValueDate: new Date().toString(),
+    },
+  ],
+}
 const MockServiceClient = jest.fn<ServiceStubWithLoadBalancer>(
   (getResponses: (service: string, operationName: string, request: any) => Observable<any>) => ({
-    createStreamOperation: jest
-      .fn((s: string, o: string, r: any) => getResponses(s, o, r))
-      .mockName('createStreamOperation'),
+    createStreamOperation: jest.fn((s: string, o: string, r: any) => getResponses(s, o, r)),
   }),
 )
 
 describe('blotterServiceEpic', () => {
-  it("returns an observable that contains no actions when the component hasn't mounted", () => {
-    const scheduler = createTestScheduler()
-    scheduler.run(helpers => {
-      // scenario
-      const lifetimeAct = '--C--' // See AppLifetimeEvent enum
-      const tradeStream = '--0--1--2' // trade IDs (generated as raw trade objects)
-      const eeeexpected = '' // no output from the epic
+  it('should ignore any action when there is no connection and subscription', () => {
+    const randomAction = 'randomAction'
+    const actionLifetime = '-a-b---'
+    const expectLifetime = ''
 
-      // arrange
-      const { cold, expectObservable } = helpers
-      const loadBalancedServiceStub = new MockServiceClient(() => fromMarbles(toRawTradeUpdate, cold, tradeStream))
-      const action$ = mockLifetimeAction$(cold(lifetimeAct))
-
+    const scheduler = new MockScheduler()
+    scheduler.run(({ cold, expectObservable, flush }) => {
+      const actionReference = { a: { type: `${randomAction}1` }, b: { type: `${randomAction}2` } }
+      const loadBalancedServiceStub = new MockServiceClient(() => of(st))
+      const action$ = cold(actionLifetime, actionReference)
       // act
-      const epic = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, {
+      const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, {
         loadBalancedServiceStub,
       })
-
-      // assert
-      expect(loadBalancedServiceStub.createStreamOperation).toHaveBeenCalledTimes(1)
-      expect(loadBalancedServiceStub.createStreamOperation).toHaveBeenCalledWith('blotter', 'getTradesStream', {})
-      expectObservable(fromTradeActionsToMarbles(epic)).toBe(eeeexpected)
+      expectObservable(epics$).toBe(expectLifetime)
     })
   })
 
