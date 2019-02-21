@@ -15,11 +15,11 @@ const addRatePrecisionToPrice = (currencyData: CurrencyPairMap, price: SpotPrice
   ratePrecision: currencyData[price.symbol].ratePrecision,
 })
 
-export const publishPriceUpdateEpic: ApplicationEpic = (action$, state$, { referenceDataService, platform }) =>
+export const publishPriceUpdateEpic: ApplicationEpic = (action$, _, { referenceDataService$, platform }) =>
   action$.pipe(
     ofType<Action, PriceUpdateAction>(TILE_ACTION_TYPES.SPOT_PRICES_UPDATE),
     map(action =>
-      referenceDataService.getCurrencyPairUpdates$().pipe(
+      referenceDataService$.pipe(
         map(currencyMap => addRatePrecisionToPrice(currencyMap, action.payload)),
         tap(enhancedPrice => platform.interop.publish('price-update', enhancedPrice)),
         ignoreElements(),

@@ -5,7 +5,7 @@ import { combineLatest, map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 import BlotterService from '../blotterService'
-type SubscribeToBLotterAction = ReturnType<typeof BlotterActions.subscribeToBlotterAction>
+type SubscribeToBlotterAction = ReturnType<typeof BlotterActions.subscribeToBlotterAction>
 
 const { createNewTradesAction } = BlotterActions
 
@@ -15,7 +15,7 @@ export const blotterServiceEpic: ApplicationEpic = (action$, state$, { loadBalan
   const connectAction$ = action$.pipe(applicationConnected)
 
   const subscribeAction$ = action$.pipe(
-    ofType<Action, SubscribeToBLotterAction>(BLOTTER_ACTION_TYPES.SUBSCRIBE_TO_BLOTTER_ACTION)
+    ofType<Action, SubscribeToBlotterAction>(BLOTTER_ACTION_TYPES.SUBSCRIBE_TO_BLOTTER_ACTION),
   )
 
   const combined$ = connectAction$.pipe(combineLatest(subscribeAction$))
@@ -24,8 +24,8 @@ export const blotterServiceEpic: ApplicationEpic = (action$, state$, { loadBalan
     switchMapTo(
       blotterService.getTradesStream().pipe(
         map(createNewTradesAction),
-        takeUntil(action$.pipe(applicationDisconnected))
-      )
-    )
+        takeUntil(action$.pipe(applicationDisconnected)),
+      ),
+    ),
   )
 }

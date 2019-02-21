@@ -1,7 +1,6 @@
 import { Error, ISubscription } from 'autobahn'
 import { NextObserver, Observable } from 'rxjs'
-import { filter, mergeMap, switchMap } from 'rxjs/operators'
-
+import { filter, switchMap, take } from 'rxjs/operators'
 import './AutoBahnTypeExtensions'
 import { ConnectionEvent, ConnectionEventType, ConnectionOpenEvent } from './connectionStream'
 
@@ -21,11 +20,9 @@ type SubscriptionRequest<TPayload> = Array<SubscriptionDTO<TPayload>>
  * A stub Used to call services. Hides the complexity of server interactions
  */
 export class ServiceStub {
-  constructor(private readonly userName: string, private connection$: Observable<ConnectionEvent>) {
-    this.userName = userName
-  }
+  constructor(private readonly userName: string, private connection$: Observable<ConnectionEvent>) {}
 
-  logResponse(topic: string, response: any[]): void {
+  private logResponse(topic: string, response: any[]): void {
     const payloadString = JSON.stringify(response[0])
     if (topic !== 'status') {
       console.debug(LOG_NAME, `Received response on topic [${topic}]. Payload[${payloadString}]`)
@@ -76,15 +73,15 @@ export class ServiceStub {
               }
               try {
                 if (session && session.isOpen()) {
-                  session.unsubscribe(subscription).then(
-                    () => {
-                      obs.complete()
-
-                      //obs.unsubscribe()
-                      return console.info(LOG_NAME, `Successfully unsubscribing from topic ${topic}`)
-                    },
-                    err => console.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err),
-                  )
+                  // It appears that AutoBahn's unsubscribe function is not implemented properly. In the case of an internal websocket exception,
+                  // due to disconnection for example, the promise that is returned never completes; i.e., neither callback passed to `then` is
+                  // ever invoked. I would at least have expected the rejected callback to have been invoked with the error. -D.S.
+                  session
+                    .unsubscribe(subscription)
+                    .then(
+                      () => console.info(LOG_NAME, `Successfully unsubscribing from topic ${topic}`),
+                      err => console.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err),
+                    )
                 }
               } catch (err) {
                 console.error(LOG_NAME, `Error thrown unsubscribing from topic ${topic}`, err)
@@ -102,7 +99,7 @@ export class ServiceStub {
   requestResponse<TResult, TPayload>(remoteProcedure: string, payload: TPayload, responseTopic: string = '') {
     return this.connection$.pipe(
       filter((connection): connection is ConnectionOpenEvent => connection.type === ConnectionEventType.CONNECTED),
-      mergeMap(
+      switchMap(
         ({ session }) =>
           new Observable<TResult>(obs => {
             console.debug(LOG_NAME, `Doing a RPC to [${remoteProcedure}]]`)
@@ -124,16 +121,9 @@ export class ServiceStub {
                 obs.error(error)
               },
             )
-
-            return () => {
-              // TODO: Cancellation is not the same as completion; typically, complete should not be called on cancellation.
-              //       Consider removing the call to obs.complete() from this unsubscription function, if it can be confirmed
-              //       that doing so does not prevent any necessary side-effects from occurring. If we can't, then consider
-              //       using the "finally" operator in the downstream queries instead of calling complete() here.  - D.S.
-              obs.complete()
-            }
           }),
       ),
+      take(1),
     )
   }
 }

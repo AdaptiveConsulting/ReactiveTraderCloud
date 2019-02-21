@@ -2,6 +2,7 @@ import { PlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
+import { excelAdapter } from './excel'
 
 export const openFinNotifications: any[] = []
 
@@ -85,6 +86,12 @@ export default class OpenFin implements PlatformAdapter {
       ),
 
     publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
+
+    excel: {
+      init: () => excelAdapter.actions.init(),
+      open: () => excelAdapter.actions.openExcel(),
+      publish: (topic: string, message: string | object) => excelAdapter.actions.publishToExcel(topic, message),
+    },
   }
 
   notification = {

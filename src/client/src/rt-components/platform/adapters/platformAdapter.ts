@@ -1,4 +1,4 @@
-import { AppConfig, WindowConfig, InteropServices } from './types'
+import { AppConfig, WindowConfig, InteropServices, ExcelInterop } from './types'
 import { Observable } from 'rxjs'
 
 export interface PlatformAdapter {
@@ -22,6 +22,7 @@ export interface PlatformAdapter {
   interop?: {
     subscribe$: (topic: string) => Observable<any>
     publish: (topic: string, message: any) => void
+    excel?: ExcelInterop
   }
 
   notification?: {

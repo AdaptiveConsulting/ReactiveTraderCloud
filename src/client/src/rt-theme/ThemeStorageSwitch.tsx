@@ -19,8 +19,8 @@ const ThemeStorageSwitch: React.SFC<ThemeStorageSwitchProps & { theme: Theme }> 
         checkedIcon={false}
         uncheckedIcon={false}
         height={12}
-        width={32}
-        handleDiameter={16}
+        width={27}
+        handleDiameter={12}
         offColor={theme.secondary[4]}
         offHandleColor={theme.secondary.base}
         onColor={theme.primary[4]}

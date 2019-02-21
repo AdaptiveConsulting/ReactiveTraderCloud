@@ -346,22 +346,26 @@ export class VoiceInput extends React.PureComponent<Props, State> {
 
           {!value ? (
             !sessionActive ? (
-              <StatusText>Press to talk &nbsp; ⌥O</StatusText>
+              <StatusText toggle={this.toggle}>Press to talk &nbsp; ⌥O</StatusText>
             ) : (
               <React.Fragment>
                 {userPermissionGranted == null ? (
-                  <StatusText>Waiting for permission</StatusText>
+                  <StatusText toggle={this.toggle}>Waiting for permission</StatusText>
                 ) : (
                   <React.Fragment>
                     {userPermissionGranted === false && (
-                      <StatusText accent="aware">Check microphone permissions</StatusText>
+                      <StatusText accent="aware" toggle={this.toggle}>
+                        Check microphone permissions
+                      </StatusText>
                     )}
                     {userPermissionGranted === true && (
                       <React.Fragment>
                         {sessionConnected === false ? (
-                          <StatusText accent="aware">We're having trouble connecting</StatusText>
+                          <StatusText accent="aware" toggle={this.toggle}>
+                            We're having trouble connecting
+                          </StatusText>
                         ) : (
-                          <StatusText>Listening</StatusText>
+                          <StatusText toggle={this.toggle}>Listening</StatusText>
                         )}
                       </React.Fragment>
                     )}
@@ -485,9 +489,9 @@ const AnimatedText = styled.span<{ accent?: string }>`
   `} infinite 3s linear;
 `
 
-const StatusText: React.SFC<{ accent?: string }> = ({ accent, children }) => (
+const StatusText: React.SFC<{ accent?: string; toggle: () => void }> = ({ accent, children, toggle }) => (
   <Input
-    onClick={this.toggle}
+    onClick={toggle}
     fg={accent ? `accents.${accent}.base` : 'primary.2'}
     fontSize="0.625"
     letterSpacing="1px"

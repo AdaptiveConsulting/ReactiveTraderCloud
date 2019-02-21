@@ -37,8 +37,8 @@ export const StatusCircle = styled(StatusCircleCore)<{ status: ServiceConnection
       status === ServiceConnectionStatus.CONNECTED
         ? theme.template.green.normal
         : status === ServiceConnectionStatus.CONNECTING
-          ? theme.template.yellow.normal
-          : theme.template.red.normal};
+        ? theme.template.yellow.normal
+        : theme.template.red.normal};
   }
 `
 

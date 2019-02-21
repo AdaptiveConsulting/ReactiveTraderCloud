@@ -7,6 +7,7 @@ import { LaunchButton } from './LaunchButton'
 import { LogoIcon } from 'rt-components'
 import { createGlobalStyle } from 'styled-components'
 import { ThemeStorageSwitch, styled } from 'rt-theme'
+import { open } from './tools'
 
 const LauncherGlobalStyle = createGlobalStyle`
 :root, body {
@@ -24,17 +25,19 @@ export class Launcher extends React.Component {
         <LauncherGlobalStyle />
         <Root>
           <LogoContainer>
-            <LogoIcon width={1.5} height={1.5} />
+            <LogoIcon width={1.3} height={1.3} />
           </LogoContainer>
           {appConfigs.map(app => (
             <ButtonContainer key={app.name}>
-              <LaunchButton appConfig={app}>{app.icon}</LaunchButton>
+              <LaunchButton onClick={() => open(app)}>
+                {app.icon}
+                <IconTitle>{app.name}</IconTitle>
+              </LaunchButton>
             </ButtonContainer>
           ))}
-
-          <ButtonContainer>
+          <ThemeSwitchContainer>
             <ThemeStorageSwitch />
-          </ButtonContainer>
+          </ThemeSwitchContainer>
         </Root>
       </React.Fragment>
     )
@@ -51,26 +54,44 @@ const Root = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 `
 
+const IconTitle = styled.span`
+  position: absolute;
+  bottom: 2px;
+  font-size: 9px;
+  font-family: Lato;
+  color: transparent;
+  transition: color 0.3s ease;
+
+  /* avoids text highlighting on icon titles */
+  user-select: none;
+`
+
 const IconContainer = styled.div`
   height: 100%;
   width: 100%;
-
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  &:hover {
+    span {
+      color: ${({ theme }) => theme.core.textColor};
+    }
+  }
 `
 
 const ButtonContainer = styled(IconContainer)`
   ${rules.appRegionNoDrag};
 `
+const ThemeSwitchContainer = styled(ButtonContainer)`
+  width: 35%;
+`
 
 const LogoContainer = styled(IconContainer)`
-  background-color: ${({ theme }) => theme.core.lightBackground};
-
+  width: 50%;
+  background-color: ${({ theme }) => theme.core.darkBackground};
   .svg-icon {
     fill: ${({ theme }) => theme.core.textColor};
   }
-
   ${rules.appRegionDrag};
 `
