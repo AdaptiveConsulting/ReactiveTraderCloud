@@ -39,7 +39,8 @@ export default class Finsemble implements PlatformAdapter {
                 name: config.uuid,
                 options: {
                   icon: config.icon,
-                  autoShow: false,
+                  autoShow: true,
+                  frame: true,
                 },
                 addToWorkspace: true,
               },

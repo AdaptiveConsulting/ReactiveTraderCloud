@@ -65,7 +65,8 @@ export default class OpenFin implements PlatformAdapter {
               url: config.url,
               mainWindowOptions: {
                 icon: config.icon,
-                autoShow: false,
+                autoShow: true,
+                frame: true,
               },
             }
             const app: fin.OpenFinApplication = new fin.desktop.Application(
