@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { PureComponent } from 'react'
 
-import MediaRecorder, { BlobEvent, MediaRecorderInterface } from './MediaRecorder'
+import MediaRecorder from './MediaRecorder'
 
 import * as GreenKeyRecognition from './GreenKeyRecognition'
 import { Timer } from 'rt-components'
@@ -28,7 +28,7 @@ export interface Props {
 
 interface State {
   input?: MediaStream
-  recorder?: MediaRecorderInterface
+  recorder?: MediaRecorder
   socket?: WebSocket
 
   connected: boolean
@@ -100,7 +100,7 @@ export class ScribeSession extends PureComponent<Props, State> {
     recorder.removeEventListener('dataavailable', this.onAudioData)
   }
 
-  recorder: MediaRecorderInterface
+  recorder: MediaRecorder
   start() {
     const { recorder } = this.state
 
