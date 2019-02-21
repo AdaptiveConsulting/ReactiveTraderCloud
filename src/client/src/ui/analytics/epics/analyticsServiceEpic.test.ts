@@ -43,15 +43,15 @@ describe('publishPositionUpdateEpic', () => {
     })
   })
 
-  it('should correctly map currencyPairPosition if action is of type FetchAnalytics ', () => {
+  it.only('should correctly map currencyPairPosition if action is of type FetchAnalytics ', () => {
     const testScheduler = new MockScheduler()
     const platform = new MockPlatformAdapter()
     const currencyPairPos = {
       symbol: 'AAPL',
       basePnl: 10,
       baseTradedAmount: 120,
-      basePnlName: 'basePnl',
-      baseTradedAmountName: 'baseTradedAmount',
+      basePnlName: 'basePnl' as 'basePnl',
+      baseTradedAmountName: 'baseTradedAmount' as 'baseTradedAmount',
     }
 
     const payload: PositionUpdates = {
