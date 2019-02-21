@@ -39,7 +39,6 @@ function mapHistoricPositionFromDto(dtos: HistoryRaw[]): HistoricPosition[] {
 
 export default class AnalyticsService {
   constructor(private readonly serviceClient: ServiceClient) {}
-
   getAnalyticsStream(analyticsRequest: string) {
     console.info(LOG_NAME, 'Subscribing to analytics stream')
     return this.serviceClient
