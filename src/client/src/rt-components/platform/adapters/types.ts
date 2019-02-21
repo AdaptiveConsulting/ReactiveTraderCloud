@@ -33,3 +33,9 @@ export enum InteropTopics {
   not in use */
   ClosePosition = 'close-position',
 }
+
+export interface ExcelInterop {
+  init: () => void
+  open: () => void
+  publish: (topic: string, message: string | object) => void
+}
