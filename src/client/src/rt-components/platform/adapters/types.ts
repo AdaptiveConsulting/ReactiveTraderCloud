@@ -21,8 +21,17 @@ export interface InteropServices {
 }
 
 export enum InteropTopics {
+  /* excel interop data feeds */
   Analytics = 'position-update',
   Blotter = 'blotter-data',
+
+  /* onClick message bus for trade
+  highlight on notification click  */
+  HighlightBlotter = 'highlight-blotter',
+
+  /* closing trades from Excel, currently 
+  not in use */
+  ClosePosition = 'close-position',
 }
 
 export interface ExcelInterop {

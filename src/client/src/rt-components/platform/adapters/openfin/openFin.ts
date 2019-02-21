@@ -1,6 +1,7 @@
 import { PlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
+import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
 
 export const openFinNotifications: any[] = []
@@ -64,7 +65,8 @@ export default class OpenFin implements PlatformAdapter {
               url: config.url,
               mainWindowOptions: {
                 icon: config.icon,
-                autoShow: false,
+                autoShow: true,
+                frame: true,
               },
             }
             const app: fin.OpenFinApplication = new fin.desktop.Application(
@@ -78,11 +80,11 @@ export default class OpenFin implements PlatformAdapter {
   }
 
   interop = {
-    subscribe: (sender: string, topic: string, listener: () => void) =>
-      fin.desktop.InterApplicationBus.subscribe(sender, topic, listener),
-
-    unsubscribe: (sender: string, topic: string, listener: () => void) =>
-      fin.desktop.InterApplicationBus.unsubscribe(sender, topic, listener),
+    subscribe$: (topic: string) =>
+      fromEventPattern(
+        (handler: Function) => fin.desktop.InterApplicationBus.subscribe('*', topic, handler as () => void),
+        (handler: Function) => fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void),
+      ),
 
     publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
 

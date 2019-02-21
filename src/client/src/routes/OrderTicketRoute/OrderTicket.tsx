@@ -15,7 +15,7 @@ import { OrderForm, OrderFormFields } from './OrderForm'
 import { OrderStatus } from './OrderStatus'
 
 import { Notification } from './Notification'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 interface State {
   executed?: boolean
@@ -35,15 +35,13 @@ interface Props {
 
 export class OrderTicket extends PureComponent<Props, State> {
   state: State = {
-    ...{
-      requestSession: false,
-      requestQuote: false,
-      sessionActive: false,
-      sessionResult: null,
-      source: 'microphone',
-      query: {},
-      features: {},
-    },
+    requestSession: false,
+    requestQuote: false,
+    sessionActive: false,
+    sessionResult: null,
+    source: 'microphone',
+    query: {},
+    features: {},
     ...(process.env.NODE_ENV === 'development' &&
       {
         // requestSession: true,
