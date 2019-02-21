@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Block } from '../StyleguideRoute/styled'
 
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 import { styled } from 'rt-theme'
 import { keyframes } from 'styled-components'
 

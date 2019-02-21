@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react'
 import MediaRecorder, { BlobEvent, MediaRecorderInterface } from './MediaRecorder'
 
 import * as GreenKeyRecognition from './GreenKeyRecognition'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 import { WebSocketConnection, WebSocketEventHandles } from './WebSocketConnection'
 
@@ -231,11 +231,10 @@ export class ScribeSession extends PureComponent<Props, State> {
           <Timer duration={GreenKeyRecognition.interval} interval={this.onRequestDataInterval} />
         )}
 
-        {result &&
-          result.final && (
-            // Provide time 1s window for user to continue speaking
-            <Timer duration={1000} timeout={this.onMarkedFinalTimeout} />
-          )}
+        {result && result.final && (
+          // Provide time 1s window for user to continue speaking
+          <Timer duration={1000} timeout={this.onMarkedFinalTimeout} />
+        )}
       </React.Fragment>
     )
   }
