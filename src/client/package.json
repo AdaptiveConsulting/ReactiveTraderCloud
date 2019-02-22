@@ -146,7 +146,7 @@
     "tslint-react-hooks": "^1.1.0",
     "typescript": "^3.2.4",
     "unzip": "^0.1.11",
-    "webpack": "^4.28.3"
+    "webpack": "4.28.3"
   },
   "browserslist": [
     "> 1%",
