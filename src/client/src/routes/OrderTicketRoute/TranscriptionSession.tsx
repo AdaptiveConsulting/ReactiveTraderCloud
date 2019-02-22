@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { PureComponent } from 'react'
 
-import MediaRecorder, { BlobEvent } from './MediaRecorderComponent'
+import MediaRecorder from './MediaRecorderComponent'
 
 import * as GreenKeyRecognition from './GreenKeyRecognition'
 import { Timer } from 'rt-components'

@@ -7,7 +7,7 @@ import { Content, Fill, Header, Root, OpenFinLogoContainer } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
 import { PlatformAdapter, withPlatform } from 'rt-components'
 
-const Logo: React.SFC<{ platform: PlatformAdapter }> = ({ platform }) => (
+const Logo: React.FC<{ platform: PlatformAdapter }> = ({ platform }) => (
   <div>
     {platform.name === 'openfin' && (
       <OpenFinLogoContainer>

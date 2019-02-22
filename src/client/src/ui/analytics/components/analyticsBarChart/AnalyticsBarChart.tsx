@@ -6,7 +6,7 @@ export interface Props {
   chartData: CurrencyPairPosition[]
 }
 
-const AnalyticsBarChart: React.SFC<Props> = ({ chartData }) => {
+const AnalyticsBarChart: React.FC<Props> = ({ chartData }) => {
   const { max, min } = getMinMax(chartData)
   const maxWidth = Math.max(Math.abs(max), Math.abs(min))
   return (

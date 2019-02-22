@@ -25,7 +25,7 @@ const Centered = styled.div`
   justify-content: center;
 `
 
-const Story: React.SFC = ({ children }) => <BaseStory>{children}</BaseStory>
+const Story: React.FC = ({ children }) => <BaseStory>{children}</BaseStory>
 
 const stories = storiesOf('Spot Tile', module)
 stories.addDecorator(withKnobs)
