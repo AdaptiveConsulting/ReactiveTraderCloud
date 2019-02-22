@@ -4,6 +4,9 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./services/eventstore
+    ports:
+      - '2113:2113'
+      - '1113:1113'
   broker:
     build:
       dockerfile: Dockerfile
