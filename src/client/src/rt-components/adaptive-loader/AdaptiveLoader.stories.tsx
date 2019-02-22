@@ -8,7 +8,7 @@ import { Story } from 'rt-storybook'
 
 import AdaptiveLoader from './AdaptiveLoader'
 
-const AdaptiveLoaderStory: React.SFC = ({ children }) => (
+const AdaptiveLoaderStory: React.FC = ({ children }) => (
   <Story>
     <Flex width="100%" height="100%" direction="column" alignItems="center" justifyContent="center">
       {children}

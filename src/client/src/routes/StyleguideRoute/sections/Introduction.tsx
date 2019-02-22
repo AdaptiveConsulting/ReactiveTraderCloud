@@ -6,7 +6,7 @@ import designTownPNGURL from '../assets/design-town.png'
 import { H1, H3 } from '../elements'
 import { Paragraph, SectionBlock } from '../styled'
 
-export const Introduction: React.SFC = props => (
+export const Introduction: React.FC = props => (
   <React.Fragment>
     <SectionBlock intent="secondary" {...props}>
       <Flex>

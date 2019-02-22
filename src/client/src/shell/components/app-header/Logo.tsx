@@ -6,7 +6,7 @@ interface LogoProps extends SVGAttributes<Element> {
   size?: number
 }
 
-const Logo: React.SFC<LogoProps> = ({ fill = '#000', size = 2, style, ...props }) => {
+const Logo: React.FC<LogoProps> = ({ fill = '#000', size = 2, style, ...props }) => {
   style = {
     width: size * 4.375 + 'rem',
     height: size + 'rem',

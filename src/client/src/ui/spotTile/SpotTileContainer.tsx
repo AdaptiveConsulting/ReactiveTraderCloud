@@ -22,7 +22,7 @@ type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToPr
 
 type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
 
-const SpotTileContainer: React.SFC<SpotTileContainerProps> = ({
+const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   onMount,
   pricingStatus,
   tearable = false,

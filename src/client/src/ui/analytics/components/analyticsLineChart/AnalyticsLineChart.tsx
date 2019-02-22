@@ -36,7 +36,7 @@ interface ToolTipProps {
   label: string
 }
 
-const CustomTooltip: React.SFC<ToolTipProps> = ({ payload, label }) => {
+const CustomTooltip: React.FC<ToolTipProps> = ({ payload, label }) => {
   return (
     <ToolTipStyle>
       <ToolTipChildLeft>{label}</ToolTipChildLeft>

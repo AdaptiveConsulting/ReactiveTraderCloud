@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Microphone: React.SFC = props => (
+export const Microphone: React.FC = props => (
   <svg viewBox="0 0 16 16" xmlnsXlink="http://www.w3.org/1999/xlink" width="1em" height="1em" {...props}>
     <title>Artboard</title>
     <defs>

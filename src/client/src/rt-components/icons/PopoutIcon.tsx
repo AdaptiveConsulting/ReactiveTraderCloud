@@ -5,7 +5,7 @@ interface Props {
   height: number
 }
 
-const PopoutIcon: React.SFC<Props> = ({ width, height }) => (
+const PopoutIcon: React.FC<Props> = ({ width, height }) => (
   <svg
     width={width * 16}
     height={height * 16}

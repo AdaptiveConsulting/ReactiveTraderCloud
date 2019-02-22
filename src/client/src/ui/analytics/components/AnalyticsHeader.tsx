@@ -7,7 +7,7 @@ interface AnalyticsHeaderProps {
   onPopoutClick: (() => void) | undefined
 }
 
-const AnalyticsWindowHeader: React.SFC<AnalyticsHeaderProps> = ({ canPopout, onPopoutClick }) =>
+const AnalyticsWindowHeader: React.FC<AnalyticsHeaderProps> = ({ canPopout, onPopoutClick }) =>
   canPopout ? (
     <Controls>
       <PopoutButton onClick={onPopoutClick}>

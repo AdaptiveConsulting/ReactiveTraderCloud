@@ -18,7 +18,7 @@ export const CopyToClipboardWrapper = styled.div`
 const onClick = () => {
   alert('copied to clipboard')
 }
-const ColorToClipboard: React.SFC<ColorToClipboardProps> = ({ color, iconColor }) => (
+const ColorToClipboard: React.FC<ColorToClipboardProps> = ({ color, iconColor }) => (
   <CopyToClipboardWrapper>
     <CopyToClipboard text={color}>
       <button onClick={onClick}>

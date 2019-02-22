@@ -21,7 +21,7 @@ const ExcelButton = styled('button')`
   }
 `
 
-const ExcelLauncher: React.SFC<{ platform: PlatformAdapter }> = ({ platform }) =>
+const ExcelLauncher: React.FC<{ platform: PlatformAdapter }> = ({ platform }) =>
   platform.name === 'openfin' ? (
     <ExcelButton onClick={() => platform.interop!.excel!.open()}>
       <ExcelIcon />

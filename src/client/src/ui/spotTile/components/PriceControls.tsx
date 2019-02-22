@@ -19,7 +19,7 @@ interface Props {
   disabled: boolean
 }
 
-const PriceControls: React.SFC<Props> = ({ currencyPair, priceData, executeTrade, disabled }) => {
+const PriceControls: React.FC<Props> = ({ currencyPair, priceData, executeTrade, disabled }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const spread = getSpread(priceData.bid, priceData.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)
