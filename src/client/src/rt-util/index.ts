@@ -1,5 +1,4 @@
 import { ActionCreatorsMapObject } from 'redux'
-export { withDefaultProps } from './reactTypes'
 import { action, ActionUnion } from './ActionHelper'
 import { RequireAtLeastOne, RequireOnlyOne } from './utilityTypes'
 export { action }
