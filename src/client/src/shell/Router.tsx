@@ -1,14 +1,14 @@
-import React, { FunctionComponent, SFC } from 'react';
+import React, { FC } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { AnalyticsRoute, BlotterRoute, SpotRoute, OpenFinRoute, ShellRoute } from './routes';
 import { usePlatform } from 'rt-components';
 
-const ShellSwitchRoute:FunctionComponent = ()=>{
+const ShellSwitchRoute:FC = ()=>{
   const platform = usePlatform()
   return platform.name === 'openfin' ? <OpenFinRoute /> : <ShellRoute />
 }
 
-export const Router: SFC = () => (
+export const Router: FC = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path="/" component={ShellSwitchRoute} />
