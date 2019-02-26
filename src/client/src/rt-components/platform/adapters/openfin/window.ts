@@ -13,7 +13,7 @@ const generateRandomName = function() {
   return text
 }
 
-export const openDesktopWindow = (config: DesktopWindowProps, onClose: () => void) => {
+export const openDesktopWindow = (config: DesktopWindowProps, onClose?: () => void) => {
   const { url, width: defaultWidth, height: defaultHeight } = config
 
   return new Promise<Window>(resolve => {

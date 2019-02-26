@@ -21,7 +21,7 @@ export default class Finsemble implements PlatformAdapter {
   window = {
     close: () => window.close(),
 
-    open: (config: WindowConfig, onClose: () => void) => Promise.resolve(window.open()),
+    open: (config: WindowConfig, onClose?: () => void) => Promise.resolve(window.open()),
   }
 
   app = {

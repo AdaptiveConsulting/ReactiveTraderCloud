@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlatformAdapter, PopoutIcon, withPlatform } from 'rt-components'
+import { PopoutIcon, usePlatform } from 'rt-components'
 import { styled } from 'rt-theme'
 
 export const TopRightButton = styled('button')`
@@ -31,24 +31,27 @@ interface Props {
   displayCurrencyChart?: () => void
 }
 
-const TileControls: React.FC<Props & { platform: PlatformAdapter }> = ({
+const TileControls: React.FC<Props> = ({
   onPopoutClick,
   canPopout,
-  platform,
   displayCurrencyChart,
-}) => (
-  <React.Fragment>
-    {canPopout && (
-      <TopRightButton onClick={onPopoutClick}>
-        <PopoutIcon width={0.8125} height={0.75} />
-      </TopRightButton>
-    )}
-    {platform.type !== 'browser' && (
-      <BottomRightButton onClick={displayCurrencyChart}>
-        <i className="fas fa-chart-bar" />
-      </BottomRightButton>
-    )}
-  </React.Fragment>
-)
+}) => {
 
-export default withPlatform(TileControls)
+  const platform = usePlatform()
+  return (
+    <React.Fragment>
+      {canPopout && (
+        <TopRightButton onClick={onPopoutClick}>
+          <PopoutIcon width={0.8125} height={0.75} />
+        </TopRightButton>
+      )}
+      {platform.type !== 'browser' && (
+        <BottomRightButton onClick={displayCurrencyChart}>
+          <i className="fas fa-chart-bar" />
+        </BottomRightButton>
+      )}
+    </React.Fragment>
+  )
+}
+
+export default TileControls

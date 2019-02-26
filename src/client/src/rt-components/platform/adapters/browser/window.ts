@@ -2,7 +2,7 @@ import { WindowConfig } from '../types'
 
 type BrowserWindowProps = WindowConfig
 
-export const openBrowserWindow = (config: BrowserWindowProps, onClose: () => void) => {
+export const openBrowserWindow = (config: BrowserWindowProps, onClose?: () => void) => {
   const { name, width, height, center, url } = config
   const { left, top } = calculatePosition(center, width, height)
 
@@ -17,7 +17,7 @@ export const openBrowserWindow = (config: BrowserWindowProps, onClose: () => voi
     }),
   )
 
-  if (onClose) {
+  if (onClose && win) {
     win.addEventListener('beforeunload', onClose)
   }
 

@@ -3,6 +3,10 @@ import React, { PureComponent } from 'react'
 import { styled } from 'rt-theme'
 import { convertNotionalShorthandToNumericValue, hasShorthandInput } from './utils'
 
+let foo: number = 123;
+foo = null;
+console.log(foo)
+
 const NUMERAL_FORMAT = '0,000,000[.]00'
 const DOT = '.'
 const ENTER = 'Enter'

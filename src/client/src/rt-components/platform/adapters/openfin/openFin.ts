@@ -29,7 +29,7 @@ export default class OpenFin implements PlatformAdapter {
   window = {
     close: () => fin.desktop.Window.getCurrent().close(),
 
-    open: (config: WindowConfig, onClose: () => void) => openDesktopWindow(config, onClose),
+    open: (config: WindowConfig, onClose?: () => void) => openDesktopWindow(config, onClose),
 
     maximize: () => {
       const win = fin.desktop.Window.getCurrent()

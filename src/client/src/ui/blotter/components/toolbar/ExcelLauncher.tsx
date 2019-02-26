@@ -1,7 +1,7 @@
-import React from 'react'
-import { styled } from 'rt-theme'
-import { PlatformAdapter, withPlatform } from 'rt-components'
-import ExcelIcon from './assets/ExcelIcon'
+import React, { FC } from 'react';
+import { usePlatform } from 'rt-components';
+import { styled } from 'rt-theme';
+import ExcelIcon from './assets/ExcelIcon';
 
 const ExcelButton = styled('button')`
   opacity: 0.59;
@@ -21,11 +21,13 @@ const ExcelButton = styled('button')`
   }
 `
 
-const ExcelLauncher: React.FC<{ platform: PlatformAdapter }> = ({ platform }) =>
-  platform.name === 'openfin' ? (
+const ExcelLauncher: FC = () => {
+  const platform  = usePlatform()
+  return platform.name === 'openfin' ? (
     <ExcelButton onClick={() => platform.interop!.excel!.open()}>
       <ExcelIcon />
     </ExcelButton>
-  ) : null
+  ) : null 
+}
 
-export default withPlatform(ExcelLauncher)
+export default ExcelLauncher

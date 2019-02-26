@@ -13,7 +13,7 @@ import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
 
 interface Props {
-  header: React.ReactChild
+  header?: React.ReactChild
 }
 
 interface State {
