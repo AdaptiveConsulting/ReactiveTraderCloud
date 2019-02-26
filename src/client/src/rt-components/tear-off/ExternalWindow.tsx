@@ -33,7 +33,9 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
 
         window.removeEventListener('beforeunload', release)
       }
-      onUnload.call(null)
+      if (typeof onUnload === 'function') {
+        onUnload.call(null)
+      }
     }
 
     const getWindow = async () => {
