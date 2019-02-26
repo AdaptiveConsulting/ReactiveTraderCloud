@@ -1,4 +1,4 @@
-import { PureComponent } from 'react'
+import { useEffect } from 'react'
 import { RequireOnlyOne } from 'rt-util'
 
 interface Props {
@@ -10,27 +10,19 @@ interface Props {
 
 export type TimerProps = RequireOnlyOne<Props, 'timeout' | 'interval'>
 
-export class Timer extends PureComponent<TimerProps> {
-  id: number
-
-  componentDidMount() {
-    const { interval, timeout, duration, immediate } = this.props
-
-    this.id = interval ? window.setInterval(interval, duration) : window.setTimeout(timeout, duration)
-
+export const Timer: React.FC<TimerProps> = ({ interval, timeout, duration, immediate }) => {
+  useEffect(() => {
+    const id = interval ? window.setInterval(interval, duration) : window.setTimeout(timeout, duration)
     if (immediate) {
       ;(interval || timeout)()
     }
-  }
+    return () => {
+      const clearFn = interval ? clearInterval : clearTimeout
+      clearFn(id)
+    }
+  }, [duration, immediate])
 
-  componentWillUnmount() {
-    const clearFn = this.props.interval ? clearInterval : clearTimeout
-    clearFn(this.id)
-  }
-
-  render(): null {
-    return null
-  }
+  return null
 }
 
 export default Timer
