@@ -136,12 +136,12 @@ export class OrderStatus extends React.Component<Props, State> {
           <ButtonLayout key="execute">
             <Button intent="primary" onClick={this.clickHandler('onBuy')}>
               <LabelText>Buy</LabelText>
-              <StatusText fontSize={1.15}>{quote.bid.toFixed(2)}</StatusText>
+              <StatusText fontSize={1.125}>{quote.bid.toFixed(2)}</StatusText>
             </Button>
 
             <Button intent="bad" onClick={this.clickHandler('onSell')}>
               <LabelText>Sell</LabelText>
-              <StatusText fontSize={1.15}>{quote.ask.toFixed(2)}</StatusText>
+              <StatusText fontSize={1.125}>{quote.ask.toFixed(2)}</StatusText>
             </Button>
 
             <Button intent="mute" onClick={this.clickHandler('onCancel')}>

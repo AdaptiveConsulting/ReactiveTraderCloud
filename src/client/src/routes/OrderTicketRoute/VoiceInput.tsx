@@ -434,7 +434,7 @@ export const Formant = styled.div<{ sessionInstance: boolean }>`
   }
 `
 
-const MicrophoneButton = styled(Block)<{ active: boolean }>`
+const MicrophoneButton = styled(Block)<{ active?: boolean }>`
   height: ${2.75}rem;
   width: ${2.75}rem;
   width: ${3.5}rem;
@@ -493,7 +493,7 @@ const StatusText: React.FC<{ accent?: string; toggle: () => void }> = ({ accent,
   <Input
     onClick={toggle}
     fg={accent ? `accents.${accent}.base` : 'primary.2'}
-    fontSize="0.625"
+    fontSize={0.625}
     letterSpacing="1px"
     textTransform="uppercase"
   >
