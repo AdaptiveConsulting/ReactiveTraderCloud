@@ -45,7 +45,7 @@ export const RightNav = styled.ul`
 
 export const Rect = styled.div`
   background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.tile.inputColor};
+  border: 1px solid ${({ theme }) => theme.core.textColor};
   width: 10px;
   height: 10px;
 `
@@ -53,5 +53,5 @@ export const Rect = styled.div`
 export const IconWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  color: ${({ theme }) => theme.tile.inputColor};
+  color: ${({ theme }) => theme.core.textColor};
 `

@@ -18,11 +18,16 @@ export const LineChartWrapper = styled.div`
   height: 80%;
 `
 
+//TODO ML 26/02 move the color property to theme
 export const AnalyticsTileStyle = styled(TileBaseStyle)`
-  background-color: ${({ theme }) => theme.tile.inputColor};
+  position: relative;
+  background-color: #2f3542;
   height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  &:hover {
+    background-color: #3d4455;
+  }
 `

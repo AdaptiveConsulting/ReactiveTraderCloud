@@ -8,7 +8,7 @@ import { TileBaseStyle, TileWrapper } from './styled'
 import { Props } from './types'
 
 export const SpotTileStyle = styled(TileBaseStyle)`
-  background-color: ${({ theme }) => theme.backgroundColor};
+  background-color: #2f3542;
   display: flex;
   height: 100%;
   justify-content: space-between;

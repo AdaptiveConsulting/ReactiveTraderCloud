@@ -1,7 +1,6 @@
 import React from 'react'
 import { PopoutIcon, usePlatform } from 'rt-components'
 import { styled } from 'rt-theme'
-import { TileWrapper } from './styled'
 
 export const TopRightButton = styled('button')`
   position: absolute;
@@ -10,10 +9,6 @@ export const TopRightButton = styled('button')`
   opacity: 0;
   transition: opacity 0.2s;
   padding: 0.25rem;
-
-  ${TileWrapper}:hover & {
-    opacity: 0.75;
-  }
 
   .svg-icon {
     stroke: ${({ theme }) => theme.core.textColor};
@@ -28,10 +23,6 @@ export const BottomRightButton = styled('button')`
   opacity: 0;
   transition: opacity 0.2s;
   padding: 0.25rem;
-
-  ${TileWrapper}:hover & {
-    opacity: 0.75;
-  }
 `
 
 interface Props {

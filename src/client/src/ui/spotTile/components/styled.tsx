@@ -51,7 +51,17 @@ export const TileWrapper = styled('div')`
   position: relative;
   min-height: 10rem;
   height: 100%;
-  color: ${({ theme }) => theme.tile.inputColor};
+  color: ${({ theme }) => theme.core.textColor};
+  &:hover ${TopRightButton} {
+    opacity: 0.75;
+  }
+  &:hover ${BottomRightButton} {
+    opacity: 0.75;
+  }
+
+  &:hover {
+    background-color: #3d4455;
+  }
 `
 
 export const SpotTileWrapper = styled.div<{ platform: PlatformAdapter }>`
@@ -70,8 +80,9 @@ export const SpotTileWrapper = styled.div<{ platform: PlatformAdapter }>`
   color: ${({ theme }) => theme.core.textColor};
 `
 
+//${({ theme }) => theme.core.lightBackground};
 export const SpotTileStyle = styled(TileBaseStyle)`
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: #2f3542;
   display: flex;
   height: 100%;
   justify-content: space-between;
