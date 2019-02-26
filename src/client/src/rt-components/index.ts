@@ -1,17 +1,17 @@
 import {
-  Platform,
-  withPlatform,
+  platform,
   PlatformAdapter,
   externalWindowDefault,
   PlatformProvider,
   WindowConfig,
   openFinNotifications,
   setupGlobalOpenfinNotifications,
+  usePlatform
 } from './platform'
 
 export {
-  Platform,
-  withPlatform,
+  platform,
+  usePlatform,
   externalWindowDefault,
   PlatformProvider,
   openFinNotifications,

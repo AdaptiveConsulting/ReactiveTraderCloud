@@ -1,10 +1,13 @@
-import React, { SFC } from 'react'
-import { OpenFinChrome, OpenFinControls, PlatformAdapter, withPlatform } from 'rt-components'
+import React, { FC } from 'react'
+import { OpenFinChrome, OpenFinControls, usePlatform } from 'rt-components'
 
 import ShellRoute from './ShellRoute'
 
-export const OpenFinRoute: SFC<{ platform: PlatformAdapter }> = ({ platform, ...props }) => (
-  <OpenFinChrome>
+export const OpenFinRoute: FC = ({ ...props }) => {
+  
+  const platform = usePlatform()
+
+  return <OpenFinChrome>
     <ShellRoute
       header={
         <OpenFinControls
@@ -16,6 +19,7 @@ export const OpenFinRoute: SFC<{ platform: PlatformAdapter }> = ({ platform, ...
       {...props}
     />
   </OpenFinChrome>
-)
 
-export default withPlatform(OpenFinRoute)
+}
+
+export default OpenFinRoute
