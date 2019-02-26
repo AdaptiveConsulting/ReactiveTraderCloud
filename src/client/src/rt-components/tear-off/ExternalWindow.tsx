@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react'
 import { usePlatform, WindowConfig } from 'rt-components'
 import { WindowCenterStatus } from './types'
+import { Component } from 'ag-grid';
 
 const defaultConfig: WindowConfig = {
   name: '',
@@ -25,23 +26,24 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
 }) => {
   const platform = usePlatform()
 
-  let externalWindow: Window
-
-  const release = () => {
-    if (externalWindow) {
-      window.removeEventListener('beforeunload', release)
-    }
-    onUnload.call(null)
-  }
-
-  const getWindow = async () => {
-    externalWindow = await platform.window.open(config, release)
-    if (externalWindow) {
-      window.addEventListener('beforeunload', release)
-    }
-  }
-
   useEffect(() => {
+    let externalWindow: Window
+
+    const release = () => {
+      if (externalWindow) {
+
+        window.removeEventListener('beforeunload', release)
+      }
+      onUnload.call(null)
+    }
+
+    const getWindow = async () => {
+      externalWindow = await platform.window.open(config, release)
+      if (externalWindow) {
+        window.addEventListener('beforeunload', release)
+      }
+    }
+
     getWindow()
     return () => {
       if (externalWindow) {
@@ -50,7 +52,7 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
     }
   }, [])
 
-  return null as JSX.Element
+  return null
 }
 
 export default ExternalWindow
