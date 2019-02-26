@@ -1,5 +1,5 @@
 import { darken } from 'polished'
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { styled } from 'rt-theme'
 import Icon from './Icon'
 
@@ -9,7 +9,6 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   height: 2rem;
-  cursor: pointer;
   padding: 0 1rem;
 `
 
@@ -18,7 +17,6 @@ export const Content = styled.div<{ expand?: boolean }>`
   transform-origin: center left;
   transition: transform ${({ theme }) => theme.motion.duration}ms ease;
   transform: translateY(${props => (props.expand ? expandedHeight : 0)});
-  background-color: ${props => props.theme.backgroundColor};
 `
 
 export const Root = styled.div`
@@ -36,7 +34,9 @@ export const Root = styled.div`
   }
 `
 
-export const ChevronIcon = () => <Icon name="chevron" />
+export const ChevronIcon: FunctionComponent<{ expand: boolean }> = ({ expand, ...props }) => (
+  <Icon name="chevron" {...props} />
+)
 
 export const ExpandToggle = styled(ChevronIcon)`
   transform: rotate(${(props: { expand: boolean }) => (props.expand ? 180 : 0)}deg);
@@ -90,5 +90,11 @@ export const ServiceRoot = styled.div<{ index: number }>`
     /* We're using important here. 	
          But you should see what happens with Emotion when you don't!  */
     margin-right: 1rem !important;
+  }
+`
+
+export const OpenFinLogoContainer = styled.div`
+  .svg-fill {
+    fill: ${({ theme }) => theme.core.textColor};
   }
 `

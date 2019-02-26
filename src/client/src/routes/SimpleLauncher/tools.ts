@@ -1,6 +1,9 @@
-import { ConfigType } from './config'
+import { ApplicationConfig, ApplicationType } from './applicationConfigurations'
+import { excelAdapter } from 'rt-components'
 
-export async function open(config: ConfigType): Promise<Window | fin.OpenFinWindow | fin.OpenFinApplication | void> {
+export async function open(
+  config: ApplicationConfig,
+): Promise<Window | fin.OpenFinWindow | fin.OpenFinApplication | void> {
   const { provider } = config
   // under openfin
   if (typeof fin !== 'undefined') {
@@ -15,15 +18,16 @@ export async function open(config: ConfigType): Promise<Window | fin.OpenFinWind
           return createOpenFinWindow(config)
         case 'download':
           return downloadOrLaunchLimitChecker(config)
-
         case 'application':
         default: {
           const app = await createOpenFinApplication(config)
           await new Promise((resolve, reject) => app.run(resolve, reject))
-
           return app
         }
       }
+    } else if (provider.platform === 'excel') {
+      await excelAdapter.actions.init()
+      excelAdapter.actions.openExcel()
     }
   }
   // open as url
@@ -32,11 +36,11 @@ export async function open(config: ConfigType): Promise<Window | fin.OpenFinWind
   }
 }
 
-export function createOpenFinApplication({
+function createOpenFinApplication({
   name,
   url,
-  provider: { options = {} as fin.WindowOptions | any },
-}: ConfigType): Promise<fin.OpenFinApplication> {
+  provider: { options },
+}: ApplicationConfig): Promise<fin.OpenFinApplication> {
   return new Promise((resolve, reject) => {
     const app: fin.OpenFinApplication = new fin.desktop.Application(
       {
@@ -61,32 +65,31 @@ export function createOpenFinApplication({
               : {},
         },
         // improper OpenFin type definition
-      } as any,
+      },
       () => resolve(app),
       e => reject(e),
     )
   })
 }
 
-export function createOpenFinWindow({ name, url, provider: { options } }: ConfigType): Promise<fin.OpenFinWindow> {
+function createOpenFinWindow({ name, url, provider: { options } }: ApplicationConfig): Promise<fin.OpenFinWindow> {
   return new Promise((resolve, reject) => {
     const window: fin.OpenFinWindow = new fin.desktop.Window(
       {
         url,
         name,
-        uuid: name,
         ...options,
         defaultCentered: true,
         autoShow: true,
         shadow: true,
-      } as any,
+      },
       () => resolve(window),
       reject,
     )
   })
 }
 
-async function downloadOrLaunchLimitChecker(config: ConfigType) {
+async function downloadOrLaunchLimitChecker(config: ApplicationConfig) {
   let app = fin.desktop.Application.wrap(config.name)
   //Get the environement variable
   fin.desktop.System.getEnvironmentVariable('APPDATA', variable => {
@@ -104,7 +107,10 @@ async function downloadOrLaunchLimitChecker(config: ConfigType) {
       async error => {
         //on error, download it
         app.restart()
-        const config1 = { ...config, provider: { ...config.provider, as: 'application' } }
+        const config1 = {
+          ...config,
+          provider: { ...config.provider, as: 'application' as ApplicationType },
+        }
         app = await createOpenFinApplication(config1)
         await new Promise((resolve, reject) => app.run(resolve, reject))
       },

@@ -1,16 +1,13 @@
 import { assignWith, get, startsWith } from 'lodash'
 
-import { CSSObject, Interpolation } from 'create-emotion'
+import { FlattenInterpolation, CSSObject } from 'styled-components'
 
-import { css } from 'rt-theme'
-
-export { CSSObject }
+export type CSSObject = CSSObject
 export type CSS = string | CSSObject
 export type MappedCSS = null | false | CSS | CSS[]
-export type StyledCSS = Interpolation | ReturnType<typeof css>
 
 export type MappedProp<PropsType> = string | MappedPropFn<PropsType>
-export type MappedPropFn<PropsType> = (props: PropsType & PassThroughProps) => MappedCSS | CSSObject
+export type MappedPropFn<PropsType> = (props: PropsType & PassThroughProps) => FlattenInterpolation<PropsType>
 export interface MappedPropMap<PropsType> {
   [key: string]: string | MappedProp<PropsType>
 }
@@ -29,18 +26,18 @@ export const getColor = (theme: PassThroughProps, color: string, fallback?: stri
     ? color
     : get(theme, color) || get(theme.colors, color) || get(theme.colors.spectrum, color) || fallback
 
-export function curryProps<R = CSSObject>(functor: (props: any) => R, curriedProps: any): (p: any) => R {
+export function curryProps<R = CSS>(functor: (props: any) => R, curriedProps: any): (p: any) => R {
   return props => functor({ ...props, ...(typeof curriedProps === 'function' ? curriedProps(props) : curriedProps) })
 }
 
-export function extendProps<R = CSSObject>(...functors: Array<(props: any) => R>): (p: any) => R {
+export function extendProps<R = CSS>(...functors: Array<(props: any) => R>): (p: any) => R {
   const { length, [length - 1]: finalFunctor } = functors
   return props => {
     return finalFunctor(functors.slice(0, -1).map(fn => fn(props)))
   }
 }
 
-export function mergeProps<R = CSSObject>(
+export function mergeProps<R = CSS>(
   functors: Array<(props: any) => R>,
   merge: (results: R[]) => R = results => assignWith({}, ...results, (next: any, prev: any) => next || prev),
 ): (p: any) => R {

@@ -5,9 +5,9 @@ import { styled } from 'rt-theme'
 
 const BlotterContainerStyle = styled('div')`
   height: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: ${({ theme }) => theme.blotter.backgroundColor};
+  width: 100%;
+  padding: 0.625rem;
+  margin: auto;
 `
 
 const BlotterRoute = () => (

@@ -1,10 +1,10 @@
 import _ from 'lodash'
 import React, { PureComponent } from 'react'
 
-import MediaRecorder, { BlobEvent, MediaRecorderInterface } from './MediaRecorder'
+import MediaRecorder from './MediaRecorder'
 
 import * as GreenKeyRecognition from './GreenKeyRecognition'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 import { WebSocketConnection, WebSocketEventHandles } from './WebSocketConnection'
 
@@ -28,7 +28,7 @@ export interface Props {
 
 interface State {
   input?: MediaStream
-  recorder?: MediaRecorderInterface
+  recorder?: MediaRecorder
   socket?: WebSocket
 
   connected: boolean
@@ -100,7 +100,7 @@ export class ScribeSession extends PureComponent<Props, State> {
     recorder.removeEventListener('dataavailable', this.onAudioData)
   }
 
-  recorder: MediaRecorderInterface
+  recorder: MediaRecorder
   start() {
     const { recorder } = this.state
 
@@ -231,11 +231,10 @@ export class ScribeSession extends PureComponent<Props, State> {
           <Timer duration={GreenKeyRecognition.interval} interval={this.onRequestDataInterval} />
         )}
 
-        {result &&
-          result.final && (
-            // Provide time 1s window for user to continue speaking
-            <Timer duration={1000} timeout={this.onMarkedFinalTimeout} />
-          )}
+        {result && result.final && (
+          // Provide time 1s window for user to continue speaking
+          <Timer duration={1000} timeout={this.onMarkedFinalTimeout} />
+        )}
       </React.Fragment>
     )
   }

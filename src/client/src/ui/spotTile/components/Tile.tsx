@@ -2,7 +2,7 @@ import React from 'react'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
 import { ExecuteTradeRequest, SpotTileData, createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from '../model/index'
 import SpotTile from './SpotTile'
-import { ThemeProvider } from 'rt-theme'
+// import { ThemeProvider } from 'rt-theme'
 import numeral from 'numeral'
 import { AnalyticsTile } from './analyticsTile'
 import { TileViews } from '../../workspace/workspaceHeader'
@@ -57,19 +57,17 @@ class Tile extends React.PureComponent<Props, State> {
     const { notional } = this.state
     const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
     return (
-      <ThemeProvider theme={theme => theme.tile}>
-        <TileViewComponent
-          currencyPair={currencyPair}
-          spotTileData={spotTileData}
-          executeTrade={this.executeTrade}
-          executionStatus={executionStatus}
-          notional={notional}
-          updateNotional={this.updateNotional}
-          canExecute={!this.canExecute()}
-        >
-          {this.props.children}
-        </TileViewComponent>
-      </ThemeProvider>
+      <TileViewComponent
+        currencyPair={currencyPair}
+        spotTileData={spotTileData}
+        executeTrade={this.executeTrade}
+        executionStatus={executionStatus}
+        notional={notional}
+        updateNotional={this.updateNotional}
+        canExecute={!this.canExecute()}
+      >
+        {this.props.children}
+      </TileViewComponent>
     )
   }
 }

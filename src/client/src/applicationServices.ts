@@ -1,19 +1,20 @@
 import { PlatformAdapter } from 'rt-components'
 import {
   AutobahnConnection,
-  ConnectionEvent,
   createConnection$,
-  ServiceClient,
-  ServiceCollectionMap,
+  ServiceStubWithLoadBalancer,
   serviceStatusStream$,
   ServiceStub,
+  ConnectionEvent,
+  ServiceCollectionMap,
+  retryWithBackOff,
+  RawServiceStatus,
 } from 'rt-system'
 import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
-import { multicast, refCount } from 'rxjs/operators'
+import { retryWhen, multicast, refCount } from 'rxjs/operators'
 import { OpenFinLimitChecker } from './shell/openFin'
-import { ReferenceDataService } from './shell/referenceData'
-
+import { referenceDataService } from './shell/referenceData'
 const HEARTBEAT_TIMEOUT = 3000
 
 export interface ApplicationProps {
@@ -25,6 +26,7 @@ export interface ApplicationProps {
 
 export function createApplicationServices({ autobahn, limitChecker, user, platform }: ApplicationProps) {
   const connection$ = createConnection$(autobahn).pipe(
+    retryWhen(retryWithBackOff()),
     multicast(() => {
       return new ReplaySubject<ConnectionEvent>(1)
     }),
@@ -32,20 +34,20 @@ export function createApplicationServices({ autobahn, limitChecker, user, platfo
   )
 
   const serviceStub = new ServiceStub(user.code, connection$)
-
-  const serviceStatus$ = serviceStatusStream$(serviceStub, HEARTBEAT_TIMEOUT).pipe(
+  const statusUpdates$ = serviceStub.subscribeToTopic<RawServiceStatus>('status')
+  const serviceStatus$ = serviceStatusStream$(statusUpdates$, HEARTBEAT_TIMEOUT).pipe(
     multicast(() => {
       return new ReplaySubject<ServiceCollectionMap>(1)
     }),
     refCount(),
   )
 
-  const loadBalancedServiceStub = new ServiceClient(serviceStub, serviceStatus$)
+  const loadBalancedServiceStub = new ServiceStubWithLoadBalancer(serviceStub, serviceStatus$)
 
-  const referenceDataService = new ReferenceDataService(loadBalancedServiceStub)
+  const referenceDataService$ = referenceDataService(loadBalancedServiceStub)
 
   return {
-    referenceDataService,
+    referenceDataService$,
     platform,
     limitChecker,
     loadBalancedServiceStub,

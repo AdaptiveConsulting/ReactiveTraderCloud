@@ -9,7 +9,7 @@ export interface Props {
   themeName?: string
   switchTheme: () => void
 }
-export const FloatingTools: React.SFC<Props> = ({ themeName, switchTheme }) => {
+export const FloatingTools: React.FC<Props> = ({ themeName, switchTheme }) => {
   const isDark = themeName === ThemeName.Dark
 
   const { primary, secondary } = colors[themeName]
@@ -37,7 +37,7 @@ export const FloatingTools: React.SFC<Props> = ({ themeName, switchTheme }) => {
   )
 }
 
-const Root: React.SFC = props => <Block backgroundColor="primary.2" {...props} />
+const Root: React.FC = props => <Block backgroundColor="primary.2" {...props} />
 
 const Bar = styled(props => <Block px={3} backgroundColor="primary.1" textColor="secondary.3" {...props} />)`
   position: fixed;

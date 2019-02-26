@@ -17,7 +17,7 @@ interface Props {
   reconnect: () => void
 }
 
-const ReconnectModal: React.SFC<Props> = ({ reconnect, shouldShow }) => (
+const ReconnectModal: React.FC<Props> = ({ reconnect, shouldShow }) => (
   <Modal shouldShow={shouldShow} title="Session expired">
     <Flex direction="column" justifyContent="center" alignItems="center">
       <Message>Your 15 minute session expired, you are now disconnected from the server.</Message>

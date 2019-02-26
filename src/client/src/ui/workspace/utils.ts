@@ -1,7 +1,7 @@
-import { PortalProps } from './selectors'
+import { ExternalWindowProps } from './selectors'
 import { TileViews } from './workspaceHeader/index'
 
-export const appendTileViewToUrl: (portalProps: PortalProps, tileView: TileViews) => PortalProps = (
+export const appendTileViewToUrl: (portalProps: ExternalWindowProps, tileView: TileViews) => ExternalWindowProps = (
   portalProps,
   tileView,
 ) => {

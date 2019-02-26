@@ -5,7 +5,7 @@ interface Props {
   height: number
 }
 
-const LogoIcon: React.SFC<Props> = ({ width, height }) => (
+const LogoIcon: React.FC<Props> = ({ width, height }) => (
   <svg
     width={width * 16}
     height={height * 16}

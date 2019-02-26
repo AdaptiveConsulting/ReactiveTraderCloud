@@ -20,11 +20,11 @@ const CurrencyPairSymbol = styled('span')`
   padding-right: 0.375rem;
 `
 
-const InputWrapper = styled('div')`
+const InputWrapper = styled.div`
   display: flex;
 `
 
-export const Input = styled('input')`
+export const Input = styled.input`
   background: none;
   text-align: center;
   outline: none;
@@ -35,12 +35,12 @@ export const Input = styled('input')`
   padding: 2px 0;
 
   .spot-tile:hover & {
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.textColor};
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.core.textColor};
   }
 
   .spot-tile:hover &:focus,
   &:focus {
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.blue.base};
+    box-shadow: 0px 1px 0px ${({ theme }) => theme.template.blue.normal};
   }
 `
 
@@ -61,7 +61,7 @@ export default class NotionalInput extends PureComponent<Props> {
         <CurrencyPairSymbol>{currencyPairSymbol}</CurrencyPairSymbol>
         <Input
           type="text"
-          innerRef={this.inputRef}
+          ref={this.inputRef}
           defaultValue={formattedSize}
           onFocus={this.handleFocus}
           onChange={this.handleInputChange}

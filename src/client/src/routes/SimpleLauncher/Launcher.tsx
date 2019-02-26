@@ -1,39 +1,45 @@
 import React from 'react'
 
 import { rules } from 'rt-styleguide'
-import { injectGlobal, styled, ThemeStorageSwitch } from 'rt-theme'
 
-import { config } from './config'
-import { Link } from './Link'
+import { appConfigs } from './applicationConfigurations'
+import { LaunchButton } from './LaunchButton'
 import { LogoIcon } from 'rt-components'
+import { createGlobalStyle } from 'styled-components'
+import { ThemeStorageSwitch, styled } from 'rt-theme'
+import { open } from './tools'
+
+const LauncherGlobalStyle = createGlobalStyle`
+:root, body {
+  @media all {
+    font-size: 16px;
+    -webkit-app-region: drag;
+  }
+}
+`
 
 export class Launcher extends React.Component {
-  // unset global scaling on mount
-  _ = injectGlobal`
-    :root, body {
-      @media all {
-        font-size: 16px;
-        -webkit-app-region: drag;
-      }
-    }
-  `
-
   render() {
     return (
-      <Root>
-        <LogoContainer>
-          <LogoIcon width={1.5} height={1.5} />
-        </LogoContainer>
-        {config.map(app => (
-          <ButtonContainer key={app.name}>
-            <Link to={app}>{app.icon}</Link>
-          </ButtonContainer>
-        ))}
-
-        <ButtonContainer>
-          <ThemeStorageSwitch />
-        </ButtonContainer>
-      </Root>
+      <React.Fragment>
+        <LauncherGlobalStyle />
+        <Root>
+          <LogoContainer>
+            <LogoIcon width={1.3} height={1.3} />
+          </LogoContainer>
+          {appConfigs.map(app => (
+            <ButtonContainer key={app.name}>
+              <LaunchButton onClick={() => open(app)}>
+                {app.icon}
+                <IconTitle>{app.name}</IconTitle>
+              </LaunchButton>
+            </ButtonContainer>
+          ))}
+          <ThemeSwitchContainer>
+            <ThemeStorageSwitch />
+          </ThemeSwitchContainer>
+        </Root>
+      </React.Fragment>
     )
   }
 }
@@ -44,30 +50,48 @@ const Root = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.shell.backgroundColor};
-  color: ${({ theme }) => theme.component.textColor};
+  background-color: ${({ theme }) => theme.core.darkBackground};
+  color: ${({ theme }) => theme.core.textColor};
+`
+
+const IconTitle = styled.span`
+  position: absolute;
+  bottom: 2px;
+  font-size: 9px;
+  font-family: Lato;
+  color: transparent;
+  transition: color 0.3s ease;
+
+  /* avoids text highlighting on icon titles */
+  user-select: none;
 `
 
 const IconContainer = styled.div`
   height: 100%;
   width: 100%;
-
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  &:hover {
+    span {
+      color: ${({ theme }) => theme.core.textColor};
+    }
+  }
 `
 
 const ButtonContainer = styled(IconContainer)`
   ${rules.appRegionNoDrag};
 `
+const ThemeSwitchContainer = styled(ButtonContainer)`
+  width: 35%;
+`
 
 const LogoContainer = styled(IconContainer)`
-  background-color: ${({ theme }) => theme.component.backgroundColor};
-
+  width: 50%;
+  background-color: ${({ theme }) => theme.core.darkBackground};
   .svg-icon {
-    fill: ${({ theme }) => theme.component.textColor};
+    fill: ${({ theme }) => theme.core.textColor};
   }
-
   ${rules.appRegionDrag};
 `

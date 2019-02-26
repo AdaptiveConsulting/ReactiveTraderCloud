@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: analytics
+  template:
+    metadata:
+      labels:
+        component: analytics
+    spec:
+      containers:
+        - name: analytics
+          image: reactivetradercloud/servers:3810
+          env:
+            - name: BROKER_HOST
+              value: broker
+            - name: BROKER_PORT
+              value: '8000'
+            - name: EVENTSTORE_HOST
+              value: eventstore
+            - name: EVENTSTORE_PORT
+              value: '1113'
+          command:
+            [
+              'sh',
+              '-c',
+              'dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json',
+            ]

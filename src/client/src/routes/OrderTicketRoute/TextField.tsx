@@ -1,8 +1,8 @@
 import { rgba } from 'polished'
 import React from 'react'
 import { rules } from 'rt-styleguide'
-import { styled, Styled } from 'rt-theme'
-import { ColorProps, curryProps, mapColorProps, mapTextProps, Text, TextProps } from '../StyleguideRoute/styled'
+import { styled } from 'rt-theme'
+import { ColorProps, curryProps, mapColorProps, mapTextProps, Text } from '../StyleguideRoute/styled'
 
 export interface TextFieldProps {
   name: string
@@ -57,7 +57,7 @@ export class TextField extends React.PureComponent<TextFieldProps, TextFieldStat
     const { value, focused } = this.state
 
     return (
-      <LabelLayout htmlFor={name} area={name} focused={focused} filled={focused || value} {...props}>
+      <LabelLayout htmlFor={name} area={name} focused={focused} filled={Boolean(focused || value)} {...props}>
         <LabelText textTransform="capitalize">{name}</LabelText>
         <Input
           id={name}
@@ -72,7 +72,7 @@ export class TextField extends React.PureComponent<TextFieldProps, TextFieldStat
   }
 }
 
-export const LabelText: Styled<TextProps> = styled(Text)`
+export const LabelText = styled(Text)`
   margin-top: 0.25rem;
   line-height: 0.75rem;
   font-size: 0.6875rem;
@@ -96,7 +96,7 @@ export const Input = styled.input`
   ${curryProps(mapColorProps, { fg: 'secondary.base' })};
 `
 
-export const LabelLayout: Styled<{ area?: string; focused?: boolean; filled?: boolean } & ColorProps> = styled.label`
+export const LabelLayout = styled.label<{ area?: string; focused?: boolean; filled?: boolean } & ColorProps>`
   height: 2.5rem;
   padding: 0 0.5rem;
 

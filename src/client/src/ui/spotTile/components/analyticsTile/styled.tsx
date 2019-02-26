@@ -19,7 +19,7 @@ export const LineChartWrapper = styled.div`
 `
 
 export const AnalyticsTileStyle = styled(TileBaseStyle)`
-  background-color: ${({ theme }) => theme.tile.backgroundColor};
+  background-color: ${({ theme }) => theme.tile.inputColor};
   height: 100%;
   overflow: hidden;
   display: flex;

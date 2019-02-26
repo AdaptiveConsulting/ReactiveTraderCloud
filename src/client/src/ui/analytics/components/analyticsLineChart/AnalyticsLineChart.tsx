@@ -14,9 +14,9 @@ interface DataPoint {
   y: string
 }
 
-const tickFormatYAxis: ((x: string) => string) = x => numeral(x).format('0.0a')
+const tickFormatYAxis: (x: string) => string = x => numeral(x).format('0.0a')
 
-const getLinearGradientOffset: ((data: DataPoint[]) => number) = data => {
+const getLinearGradientOffset: (data: DataPoint[]) => number = data => {
   const yValues = data.map(i => parseInt(i.y, 10))
   const dataMax = Math.max(...yValues)
   const dataMin = Math.min(...yValues)
@@ -36,7 +36,7 @@ interface ToolTipProps {
   label: string
 }
 
-const CustomTooltip: React.SFC<ToolTipProps> = ({ payload, label }) => {
+const CustomTooltip: React.FC<ToolTipProps> = ({ payload, label }) => {
   return (
     <ToolTipStyle>
       <ToolTipChildLeft>{label}</ToolTipChildLeft>

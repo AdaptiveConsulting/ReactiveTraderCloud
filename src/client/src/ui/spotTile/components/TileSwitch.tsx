@@ -19,7 +19,7 @@ interface Props {
   tileView?: TileViews
 }
 
-const TileSwitch: React.SFC<Props> = ({
+const TileSwitch: React.FC<Props> = ({
   currencyPair,
   spotTileData,
   executeTrade,

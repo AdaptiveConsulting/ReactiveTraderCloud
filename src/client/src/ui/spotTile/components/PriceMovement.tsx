@@ -9,16 +9,16 @@ interface Props {
 
 const MovementIcon = styled('i')<{ show: boolean; color: string }>`
   text-align: center;
-  color: ${({ theme, color }) => theme[color].base};
+  color: ${({ theme, color }) => theme.template[color].normal};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
 `
 
-const MovementValue = styled('div')`
+const MovementValue = styled.div`
   font-size: 11px;
   opacity: 0.59;
 `
 
-const PriceMovementStyle = styled('div')`
+const PriceMovementStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,7 +26,7 @@ const PriceMovementStyle = styled('div')`
   width: 100%;
 `
 
-const PriceMovement: React.SFC<Props> = ({ priceMovementType, spread }) => (
+const PriceMovement: React.FC<Props> = ({ priceMovementType, spread }) => (
   <PriceMovementStyle>
     <MovementIcon
       show={priceMovementType === PriceMovementTypes.Up}

@@ -15,7 +15,7 @@ import { OrderForm, OrderFormFields } from './OrderForm'
 import { OrderStatus } from './OrderStatus'
 
 import { Notification } from './Notification'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 interface State {
   executed?: boolean
@@ -35,15 +35,13 @@ interface Props {
 
 export class OrderTicket extends PureComponent<Props, State> {
   state: State = {
-    ...{
-      requestSession: false,
-      requestQuote: false,
-      sessionActive: false,
-      sessionResult: null,
-      source: 'microphone',
-      query: {},
-      features: {},
-    },
+    requestSession: false,
+    requestQuote: false,
+    sessionActive: false,
+    sessionResult: null,
+    source: 'microphone',
+    query: {},
+    features: {},
     ...(process.env.NODE_ENV === 'development' &&
       {
         // requestSession: true,
@@ -202,8 +200,8 @@ export class OrderTicket extends PureComponent<Props, State> {
     const { executed, requestExecution, requestQuote, requestSession, query = {} } = this.state
 
     return (
-      <Viewport bg="shell.backgroundColor" fg="shell.textColor" {...this.hotkeys} innerRef={this.viewportRef}>
-        <AppLayout bg="shell.backgroundColor">
+      <Viewport bg="core.darkBackground" fg="core.textColor" {...this.hotkeys} ref={this.viewportRef}>
+        <AppLayout bg="core.darkBackground">
           <ChromeLayout bg="primary.base">
             <WindowControls />
             <Text letterSpacing="1px" fontSize="0.625rem" fontWeight={300}>
@@ -273,8 +271,6 @@ export class OrderTicket extends PureComponent<Props, State> {
                             executed: null,
                           })
                     }
-                    // @ts-ignore
-                    mt={5}
                   >
                     <Block fontSize={0.875}>
                       {executed ? (

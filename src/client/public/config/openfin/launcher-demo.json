@@ -17,6 +17,15 @@
     "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
     "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png",
     "contextMenu": true,
+    "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+    "preload": [
+      {
+        "url": "https://web-demo.adaptivecluster.com/plugin/service-loader.js"
+      },
+      {
+        "url": "https://web-demo.adaptivecluster.com/plugin/fin.desktop.Excel.js"
+      }
+    ],
     "accelerator": {
       "devtools": true,
       "reload": true,
@@ -35,5 +44,13 @@
     "description": "Desktop Reactive Trader Cloud",
     "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
     "name": "Reactive Trader Cloud"
-  }
+  },
+  "appAssets": [
+    {
+      "src": "https://web-demo.adaptivecluster.com/plugin/add-in.zip",
+      "alias": "excel-api-addin",
+      "version": "2.0.0",
+      "forceDownload": true
+    }
+  ]
 }

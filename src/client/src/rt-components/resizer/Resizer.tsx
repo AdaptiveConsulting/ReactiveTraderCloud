@@ -18,9 +18,9 @@ const ResizableContent = styled.div`
 `
 
 const Bar = styled.div`
-  background-color: ${({ theme }) => theme.component.textColor};
-  box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.component.textColor},
-    0 0.125rem 0 0 ${({ theme }) => theme.component.textColor};
+  background-color: ${({ theme }) => theme.core.textColor};
+  box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
+    0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
   cursor: row-resize;
   opacity: 0.1;
   z-index: 1;
@@ -28,8 +28,8 @@ const Bar = styled.div`
   width: 100%;
 
   &:hover {
-    box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.component.textColor},
-      0 0.125rem 0 0 ${({ theme }) => theme.component.textColor};
+    box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
+      0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
     opacity: 0.3;
     transition: all 200ms ease-in-out;
   }
@@ -136,7 +136,7 @@ export default class Resizer extends Component<Props, State> {
     }
 
     return (
-      <ResizerStyle innerRef={this.wrapperRef}>
+      <ResizerStyle ref={this.wrapperRef}>
         <ResizableSection height={100 - height}>
           <ResizableContent>{children}</ResizableContent>
         </ResizableSection>

@@ -2,9 +2,10 @@ import React from 'react'
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
-import { PortalProps } from './selectors'
 import { CurrencyOptions, TileViews } from './workspaceHeader'
-import { appendTileViewToUrl } from './utils'
+// import { appendTileViewToUrl } from './utils'
+import { ExternalWindowProps } from './selectors'
+
 const WorkspaceItems = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
@@ -18,7 +19,7 @@ const WorkspaceItem = styled.div`
 
 interface SpotTile {
   key: string
-  portalProps: PortalProps
+  externalWindowProps: ExternalWindowProps
 }
 
 interface Props {
@@ -29,10 +30,10 @@ interface Props {
 
 const Workspace: React.SFC<Props> = ({ spotTiles = [], tileView }) => (
   <WorkspaceItems>
-    {spotTiles.map(({ key, portalProps }) => (
+    {spotTiles.map(({ key, externalWindowProps }) => (
       <TearOff
         id={key}
-        portalProps={appendTileViewToUrl(portalProps, tileView)}
+        externalWindowProps={externalWindowProps}
         render={(popOut, tornOff) => (
           <WorkspaceItem>
             <SpotTileContainer id={key} tileView={tileView} onPopoutClick={popOut} tornOff={tornOff} tearable />

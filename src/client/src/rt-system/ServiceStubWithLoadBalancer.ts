@@ -1,6 +1,6 @@
 import { defer, Observable } from 'rxjs'
 import { distinctUntilChanged, filter, map, share, switchMap, take } from 'rxjs/operators'
-import { ServiceCollectionMap } from './ServiceInstanceCollection'
+import { IServiceStatusCollection } from './ServiceInstanceCollection'
 import { ServiceStub } from './ServiceStub'
 
 /**
@@ -14,7 +14,7 @@ const LOG_NAME = 'ServiceClient: Initiated'
 export default class ServiceStubWithLoadBalancer {
   constructor(
     private connection: ServiceStub,
-    private readonly serviceInstanceDictionaryStream: Observable<ServiceCollectionMap>,
+    private readonly serviceInstanceDictionaryStream: Observable<IServiceStatusCollection>,
   ) {}
 
   private getServiceWithMinLoad$(serviceType: string) {
@@ -52,10 +52,20 @@ export default class ServiceStubWithLoadBalancer {
     )
   }
 
+  static generateTopicName = (service: string) =>
+    `topic_${service}_${
+      // tslint:disable-next-line:no-bitwise
+      ((Math.random() * Math.pow(36, 8)) << 0).toString(36)
+    }`
   /**
    * Gets a request-responses observable that will act against a service which currently has the min load
    */
-  createStreamOperation<TResponse, TRequest = {}>(service: string, operationName: string, request: TRequest) {
+  createStreamOperation<TResponse, TRequest = {}>(
+    service: string,
+    operationName: string,
+    request: TRequest,
+    topicGenerator = ServiceStubWithLoadBalancer.generateTopicName,
+  ) {
     return defer(() =>
       this.getServiceWithMinLoad$(service).pipe(
         switchMap(serviceInstanceStatus => {
@@ -70,10 +80,7 @@ export default class ServiceStubWithLoadBalancer {
             // Such an envelope could denote if the message stream should terminate, this would negate the need to distinguish between
             // tslint:disable-next-line:no-bitwise
 
-            const topicName = `topic_${service}_${
-              // tslint:disable-next-line:no-bitwise
-              ((Math.random() * Math.pow(36, 8)) << 0).toString(36)
-            }`
+            const topicName = topicGenerator(service)
 
             console.info(
               LOG_NAME,
@@ -106,10 +113,9 @@ export default class ServiceStubWithLoadBalancer {
                 map(currentStatus => currentStatus.getServiceInstanceStatus(service, serviceInstanceStatus.serviceId)),
                 filter(currentStatus => !(currentStatus && currentStatus.isConnected)),
               )
-              .subscribe(() => obs.error('Service timeout out'))
+              .subscribe(() => console.log('Topic timed out: ' + topicName))
 
             return () => {
-              obs.complete()
               subscription.unsubscribe()
               detectInstanceTimout.unsubscribe()
             }

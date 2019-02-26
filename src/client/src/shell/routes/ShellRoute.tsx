@@ -1,18 +1,19 @@
 import React, { PureComponent } from 'react'
 
-import { Resizer, TearOff } from 'rt-components'
-import { styled } from 'rt-theme'
+import { Resizer, TearOff, externalWindowDefault } from 'rt-components'
 
 import { AnalyticsContainer } from '../../ui/analytics'
 import { BlotterContainer } from '../../ui/blotter'
 import StatusBar from '../../ui/status-bar'
+import StatusButton from '../../ui/status-connection'
 import { WorkspaceContainer } from '../../ui/workspace'
 
 import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
+import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
 
 interface Props {
-  header: React.ReactChild
+  header?: React.ReactChild
 }
 
 interface State {
@@ -41,7 +42,7 @@ class ShellRoute extends PureComponent<Props, State> {
               <BlotterWrapper>
                 <TearOff
                   id="blotter"
-                  portalProps={portalProps.blotterRegion}
+                  externalWindowProps={externalWindowDefault.blotterRegion}
                   render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}
                   popIn={this.showBlotter}
                   popOut={this.hideBlotter}
@@ -61,65 +62,20 @@ class ShellRoute extends PureComponent<Props, State> {
           <AnalyticsWrapper>
             <TearOff
               id="region"
-              portalProps={portalProps.analyticsRegion}
+              externalWindowProps={externalWindowDefault.analyticsRegion}
               render={(popOut, tornOff) => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}
             />
           </AnalyticsWrapper>
         }
-        footer={<StatusBar />}
+        footer={
+          <StatusBar>
+            <StatusButton />
+          </StatusBar>
+        }
         after={<ReconnectModal />}
       />
     )
   }
 }
-
-const portalProps = {
-  blotterRegion: {
-    title: 'Blotter',
-    config: {
-      name: 'blotter',
-      width: 850,
-      height: 450,
-      url: '/blotter',
-    },
-  },
-  analyticsRegion: {
-    title: 'Analytics',
-    config: {
-      name: 'analytics',
-      width: 400,
-      height: 800,
-      url: '/analytics',
-    },
-  },
-}
-
-const OverflowScroll = styled.div`
-  overflow-y: scroll;
-  height: 100%;
-`
-
-const Wrapper = styled.div`
-  padding: 0.5rem 1rem;
-  user-select: none;
-`
-
-const WorkspaceWrapper = styled(Wrapper)`
-  padding-right: 0;
-  height: 100%;
-`
-
-const AnalyticsWrapper = styled(Wrapper)`
-  padding-left: 0;
-  overflow: hidden;
-
-  @media (max-width: 750px) {
-    display: none;
-  }
-`
-
-const BlotterWrapper = styled(Wrapper)`
-  height: 100%;
-`
 
 export default ShellRoute

@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 
-import { styled, ThemeName, ThemeStorage } from 'rt-theme'
+import { styled, ThemeName, ThemeConsumer } from 'rt-theme'
 
 import Logo from './Logo'
 
@@ -29,7 +29,7 @@ class Header extends React.Component {
 }
 
 const ThemeControl = () => (
-  <ThemeStorage.Consumer>
+  <ThemeConsumer>
     {({ name, setTheme }) => (
       <IconButton
         onClick={() => setTheme({ name: name === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark })}
@@ -38,7 +38,7 @@ const ThemeControl = () => (
         <i className={`fa${name === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
       </IconButton>
     )}
-  </ThemeStorage.Consumer>
+  </ThemeConsumer>
 )
 
 const Root = styled.div`
@@ -53,13 +53,13 @@ const Root = styled.div`
   display: flex;
   align-items: center;
 
-  background-color: ${({ theme }) => theme.header.backgroundColor};
-  color: ${({ theme }) => theme.header.textColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  color: ${({ theme }) => theme.core.textColor};
 
   position: relative;
   z-index: 10;
 
-  box-shadow: 0 0.125rem 0 ${({ theme }) => theme.shell.backgroundColor};
+  box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
 `
 
 const Fill = styled.div`
@@ -108,7 +108,7 @@ const Division = styled.div`
     width: 0.125rem;
     height: 100%;
     margin-right: -0.125rem;
-    background-color: ${props => props.theme.shell.backgroundColor};
+    background-color: ${props => props.theme.core.darkBackground};
   }
 `
 

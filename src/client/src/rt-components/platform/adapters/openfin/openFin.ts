@@ -1,15 +1,35 @@
 import { PlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
+import { fromEventPattern } from 'rxjs'
+import { excelAdapter } from './excel'
+
+export const openFinNotifications: any[] = []
+
+declare const window: any
+
+export const setupGlobalOpenfinNotifications = () => {
+  if (typeof fin !== 'undefined' && !window.onNotificationMessage) {
+    // openfin requires a global onNotificationMessage function to be defined before its notification structure is initialized in the platform adapter.
+    // NotificationRoute is imported lazily, thus we cannot define the function in that file. (Testing has shown it's already too late.)
+    // - D.S.
+    window.onNotificationMessage = (message: any) => openFinNotifications.push(message)
+  }
+}
 
 export default class OpenFin implements PlatformAdapter {
   name = 'openfin'
   type = 'desktop'
+  interopServices = {
+    excel: true,
+    chartIQ: true,
+    notificationHighlight: true,
+  }
 
   window = {
     close: () => fin.desktop.Window.getCurrent().close(),
 
-    open: (config: WindowConfig, onClose: () => void) => openDesktopWindow(config, onClose),
+    open: (config: WindowConfig, onClose?: () => void) => openDesktopWindow(config, onClose),
 
     maximize: () => {
       const win = fin.desktop.Window.getCurrent()
@@ -45,7 +65,8 @@ export default class OpenFin implements PlatformAdapter {
               url: config.url,
               mainWindowOptions: {
                 icon: config.icon,
-                autoShow: false,
+                autoShow: true,
+                frame: true,
               },
             }
             const app: fin.OpenFinApplication = new fin.desktop.Application(
@@ -59,13 +80,19 @@ export default class OpenFin implements PlatformAdapter {
   }
 
   interop = {
-    subscribe: (sender: string, topic: string, listener: () => void) =>
-      fin.desktop.InterApplicationBus.subscribe(sender, topic, listener),
-
-    unsubscribe: (sender: string, topic: string, listener: () => void) =>
-      fin.desktop.InterApplicationBus.unsubscribe(sender, topic, listener),
+    subscribe$: (topic: string) =>
+      fromEventPattern(
+        (handler: Function) => fin.desktop.InterApplicationBus.subscribe('*', topic, handler as () => void),
+        (handler: Function) => fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void),
+      ),
 
     publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
+
+    excel: {
+      init: () => excelAdapter.actions.init(),
+      open: () => excelAdapter.actions.openExcel(),
+      publish: (topic: string, message: string | object) => excelAdapter.actions.publishToExcel(topic, message),
+    },
   }
 
   notification = {
@@ -73,7 +100,7 @@ export default class OpenFin implements PlatformAdapter {
       new fin.desktop.Notification({
         url: '/notification',
         message,
-        duration: 20000,
-      }),
+        timeout: 8000,
+      } as any),
   }
 }

@@ -6,8 +6,6 @@ import { faChevronCircleRight, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Block } from '../StyleguideRoute/styled'
-import { colors, keyframes, styled, Styled } from 'rt-theme'
-
 import { AudioContext } from './AudioContext'
 import { BlobDownload } from './devtools/BlobDownload'
 import { ChannelMerger } from './ChannelMerger'
@@ -16,10 +14,12 @@ import { Microphone } from './Microphone'
 import { ScribeSession, SessionEvent } from './ScribeSession'
 import { UserMedia, UserMediaState } from './UserMedia'
 import { TranscriptionSession, SessionResult } from './TranscriptionSession'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 import FormantBars from './FormantBars'
 import MicrophoneIcon from './assets/Microphone'
+import { colors, styled } from 'rt-theme'
+import { keyframes } from 'styled-components'
 
 type SourceType = 'microphone' | 'sample'
 interface Props {
@@ -309,8 +309,8 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                 sessionActive === false
                   ? 'primary.1'
                   : sessionError || userPermissionGranted === false
-                    ? 'accents.aware.base'
-                    : 'accents.primary.base'
+                  ? 'accents.aware.base'
+                  : 'accents.primary.base'
               }
             >
               {source === 'microphone' ? <MicrophoneIcon /> : <FontAwesomeIcon icon={faPlay} />}
@@ -346,22 +346,26 @@ export class VoiceInput extends React.PureComponent<Props, State> {
 
           {!value ? (
             !sessionActive ? (
-              <StatusText>Press to talk &nbsp; ⌥O</StatusText>
+              <StatusText toggle={this.toggle}>Press to talk &nbsp; ⌥O</StatusText>
             ) : (
               <React.Fragment>
                 {userPermissionGranted == null ? (
-                  <StatusText>Waiting for permission</StatusText>
+                  <StatusText toggle={this.toggle}>Waiting for permission</StatusText>
                 ) : (
                   <React.Fragment>
                     {userPermissionGranted === false && (
-                      <StatusText accent="aware">Check microphone permissions</StatusText>
+                      <StatusText accent="aware" toggle={this.toggle}>
+                        Check microphone permissions
+                      </StatusText>
                     )}
                     {userPermissionGranted === true && (
                       <React.Fragment>
                         {sessionConnected === false ? (
-                          <StatusText accent="aware">We're having trouble connecting</StatusText>
+                          <StatusText accent="aware" toggle={this.toggle}>
+                            We're having trouble connecting
+                          </StatusText>
                         ) : (
-                          <StatusText>Listening</StatusText>
+                          <StatusText toggle={this.toggle}>Listening</StatusText>
                         )}
                       </React.Fragment>
                     )}
@@ -382,19 +386,17 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                 sessionActive === false
                   ? 'primary.1'
                   : userPermissionGranted === false
-                    ? 'accents.aware.base'
-                    : 'accents.primary.base'
+                  ? 'accents.aware.base'
+                  : 'accents.primary.base'
               }
             >
               <FontAwesomeIcon icon={faChevronCircleRight} />
             </MicrophoneButton>
           )}
 
-          {blob &&
-            source === 'microphone' &&
-            process.env.NODE_ENV === 'development' && (
-              <BlobDownload blob={blob} download="order-ticket-audio.webm" force />
-            )}
+          {blob && source === 'microphone' && process.env.NODE_ENV === 'development' && (
+            <BlobDownload blob={blob} download="order-ticket-audio.webm" force />
+          )}
         </Root>
       </React.Fragment>
     )
@@ -424,7 +426,7 @@ const Fill = styled(Block)`
   min-width: 1rem;
 `
 
-export const Formant: Styled<{ sessionInstance: boolean }> = styled.div`
+export const Formant = styled.div<{ sessionInstance: boolean }>`
   height: 2rem;
   width: 2rem;
   [fill] {
@@ -432,7 +434,7 @@ export const Formant: Styled<{ sessionInstance: boolean }> = styled.div`
   }
 `
 
-const MicrophoneButton: Styled<{ active: boolean }> = styled(Block)`
+const MicrophoneButton = styled(Block)<{ active: boolean }>`
   height: ${2.75}rem;
   width: ${2.75}rem;
   width: ${3.5}rem;
@@ -452,7 +454,7 @@ const Input = styled(Block)`
   min-height: 1em;
 `
 
-const AnimatedText: Styled<{ accent?: string }> = styled.span`
+const AnimatedText = styled.span<{ accent?: string }>`
   color: ${p => p.theme.transparent};
   transition: color 1s ease, background-position 1s ease;
 
@@ -487,9 +489,9 @@ const AnimatedText: Styled<{ accent?: string }> = styled.span`
   `} infinite 3s linear;
 `
 
-const StatusText: React.SFC<{ accent?: string }> = ({ accent, children }) => (
+const StatusText: React.FC<{ accent?: string; toggle: () => void }> = ({ accent, children, toggle }) => (
   <Input
-    onClick={this.toggle}
+    onClick={toggle}
     fg={accent ? `accents.${accent}.base` : 'primary.2'}
     fontSize="0.625"
     letterSpacing="1px"

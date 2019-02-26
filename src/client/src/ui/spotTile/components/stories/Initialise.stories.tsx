@@ -4,7 +4,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 
 import { Story as BaseStory } from 'rt-storybook'
-import { styled, ThemeProvider } from 'rt-theme'
+import { styled } from 'rt-theme'
 
 export const Centered = styled('div')`
   height: 100%;
@@ -15,9 +15,7 @@ export const Centered = styled('div')`
 `
 
 export const Story: React.SFC = ({ children }) => (
-  <BaseStory>
-    <ThemeProvider theme={theme => theme.tile}>{children}</ThemeProvider>
-  </BaseStory>
+  <BaseStory>{/* <ThemeProvider theme={theme => theme.tile}>{children}</ThemeProvider> */}</BaseStory>
 )
 
 export const stories = storiesOf('Spot Tile', module)

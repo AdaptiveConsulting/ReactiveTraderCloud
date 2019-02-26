@@ -1,10 +1,10 @@
 import _ from 'lodash'
 import React, { PureComponent } from 'react'
 
-import MediaRecorder, { BlobEvent } from './MediaRecorderComponent'
+import MediaRecorder from './MediaRecorderComponent'
 
 import * as GreenKeyRecognition from './GreenKeyRecognition'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 import { WebSocketConnection, WebSocketEventHandles } from './WebSocketConnection'
 import { SessionEvent } from './ScribeSession'
@@ -186,11 +186,10 @@ export class TranscriptionSession extends PureComponent<Props, State> {
           />
         )}
 
-        {result &&
-          result.final && (
-            // Provide time 1s window for user to continue speaking
-            <Timer duration={1000} timeout={this.onMarkedFinalTimeout} />
-          )}
+        {result && result.final && (
+          // Provide time 1s window for user to continue speaking
+          <Timer duration={1000} timeout={this.onMarkedFinalTimeout} />
+        )}
       </React.Fragment>
     )
   }

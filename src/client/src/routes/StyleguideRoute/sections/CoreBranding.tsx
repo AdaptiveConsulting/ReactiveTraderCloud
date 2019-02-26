@@ -2,11 +2,10 @@ import _ from 'lodash'
 import { rgba } from 'polished'
 import React from 'react'
 
-import { css, Styled, styled } from 'rt-theme'
-import { colors } from 'rt-theme'
-
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
+import { colors, styled, Theme } from 'rt-theme'
+import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-components'
 
 export default () => (
   <React.Fragment>
@@ -89,8 +88,8 @@ export default () => (
   </React.Fragment>
 )
 
-const PaletteLayout: React.SFC<{
-  grid?: Styled
+const PaletteLayout: React.FC<{
+  grid?: StyledComponent<React.ComponentType<any>, Theme, any>
   fg: string
   label: string
   palette: any
@@ -108,8 +107,8 @@ const PaletteLayout: React.SFC<{
       return (
         <Swatch
           key={key}
-          className={css({
-            gridArea: key,
+          extra={css({
+            gridArea: (key === 'base' && key) || undefined,
             boxShadow: i < 1 && `0 0 2rem ${rgba(palette[include[include.length - 1]], 0.5)}`,
           })}
           label={`${paletteLabel} ${key}`}
@@ -126,18 +125,21 @@ const PaletteLayout: React.SFC<{
 export interface SwatchColorProps {
   bg?: string
   fg?: string
+  extra?: FlattenSimpleInterpolation
 }
 
 export interface SwatchProps extends BlockProps, SwatchColorProps {
   className?: string
   style?: object
-  is?: Styled<SwatchColorProps>
+  is?: StyledComponent<React.ComponentType<any>, Theme, SwatchColorProps>
   label?: string
   value?: string
   code?: string
+  toStyle?: React.CSSProperties
+  extra?: FlattenSimpleInterpolation
 }
 
-export const Swatch: React.SFC<SwatchProps> = ({
+export const Swatch: React.FC<SwatchProps> = ({
   is: SwatchElement = SwatchColor,
   label,
   value,
@@ -159,15 +161,17 @@ export const Swatch: React.SFC<SwatchProps> = ({
   </SwatchElement>
 )
 
-export const SwatchColor: Styled<SwatchColorProps> = styled(Block)`
+export const SwatchColor = styled(Block)<SwatchColorProps>`
   line-height: 1.25rem;
 
   display: flex;
   justify-content: flex-end;
   flex-flow: column nowrap;
+
+  ${({ extra }) => extra};
 `
 
-export const LargeSwatchColor: Styled<SwatchColorProps> = styled(SwatchColor)`
+export const LargeSwatchColor = styled(SwatchColor)<SwatchColorProps>`
   width: 14rem;
   height: 10rem;
   margin: 1.5rem 0;
@@ -209,7 +213,7 @@ const CoreSwatchGrid = styled.div`
   }
 `
 
-const ThemePalettes: React.SFC<{ theme: any }> = ({ theme: { primary, secondary }, ...props }) => {
+const ThemePalettes: React.FC<{ theme: any }> = ({ theme: { primary, secondary }, ...props }) => {
   return (
     <ThemeRow>
       <PaletteLayout grid={CoreSwatchGrid} label="Primary" palette={primary} fg={secondary.base} />
@@ -271,7 +275,7 @@ const QuadrantLayout = styled.div`
   }
 `
 
-const AccentPalettes: React.SFC<{ accents: any }> = ({ accents, ...props }) => {
+const AccentPalettes: React.FC<{ accents: any }> = ({ accents, ...props }) => {
   return (
     <AccentRowGrid>
       {_.map(accents, (accent, label: string) => (
@@ -307,7 +311,7 @@ const AccentSwatchGrid = styled.div`
     '2';
 `
 
-const UniquePalettes: React.SFC<{ palettes: any }> = ({ palettes, ...props }) => {
+const UniquePalettes: React.FC<{ palettes: any }> = ({ palettes, ...props }) => {
   return (
     <UniqueRowGrid>
       {_.map(palettes, (palette, label: string) => (

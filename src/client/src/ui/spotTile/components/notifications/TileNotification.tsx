@@ -2,9 +2,11 @@ import React from 'react'
 import { styled } from 'rt-theme'
 import { Button, Icon, TileBaseStyle } from '../styled'
 
-export const TileNotificationStyle = styled(TileBaseStyle)<{ accentColor: string }>`
-  color: ${({ theme }) => theme.white};
-  background-color: ${({ theme, accentColor }) => theme[accentColor].base};
+type AccentColor = 'red' | 'green'
+
+export const TileNotificationStyle = styled(TileBaseStyle)<{ accentColor: AccentColor }>`
+  color: ${({ theme }) => theme.template.white.normal};
+  background-color: ${({ theme, accentColor }) => theme.template[accentColor].dark};
   font-size: 0.8125rem;
   text-align: center;
   line-height: 1.5;
@@ -15,7 +17,7 @@ export const TileNotificationStyle = styled(TileBaseStyle)<{ accentColor: string
   height: 100%;
 `
 
-const TradeSymbol = styled('div')`
+const TradeSymbol = styled.div`
   align-self: flex-start;
 
   i {
@@ -24,7 +26,7 @@ const TradeSymbol = styled('div')`
 `
 
 const CheckIcon = styled(Icon)`
-  background-color: ${({ theme }) => theme.green.light};
+  background-color: ${({ theme }) => theme.template.green.normal};
   border-radius: 50%;
   padding: 0.3125rem;
 `
@@ -33,16 +35,16 @@ const HeavyFont = styled('span')`
   font-weight: 900;
 `
 
-const PillButton = styled(Button)<{ accentColor: string }>`
-  color: ${({ theme }) => theme.white};
-  background-color: ${({ theme, accentColor }) => theme[accentColor].light};
+const PillButton = styled(Button)<{ accentColor: AccentColor }>`
+  color: ${({ theme }) => theme.template.white.normal};
+  background-color: ${({ theme, accentColor }) => theme.template[accentColor].normal};
   border-radius: 17px;
   padding: 0.5rem 0.625rem;
   font-weight: 900;
   cursor: pointer;
 `
 
-const Content = styled('div')`
+const Content = styled.div`
   max-width: 280px;
 `
 
@@ -55,7 +57,7 @@ interface Props {
   handleClick?: () => void
 }
 
-const TileNotification: React.SFC<Props> = ({ style, isWarning, symbols, tradeId, handleClick, children }) => {
+const TileNotification: React.FC<Props> = ({ style, isWarning, symbols, tradeId, handleClick, children }) => {
   const accentColor = isWarning ? 'red' : 'green'
 
   return (

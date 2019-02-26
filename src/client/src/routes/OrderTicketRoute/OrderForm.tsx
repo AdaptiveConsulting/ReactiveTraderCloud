@@ -5,7 +5,7 @@ import React from 'react'
 import { styled } from 'rt-theme'
 
 import { TextField } from './TextField'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 export interface Fields {
   product: string
@@ -25,7 +25,7 @@ interface State {
   props: Props | null
 }
 
-export { Fields as OrderFormFields }
+export type OrderFormFields = Fields
 export class OrderForm extends React.Component<Props, State> {
   state: State = {
     fields: {

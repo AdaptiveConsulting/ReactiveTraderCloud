@@ -1,5 +1,7 @@
 import { darken } from 'polished'
 import { mapValues } from 'lodash'
+import template from './template'
+import { keyframes } from 'styled-components'
 
 import colors, { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
 
@@ -75,7 +77,9 @@ export interface ColorPair {
 
 export type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
 
-const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPaletteMap) => ({
+const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({
+  template,
+  core,
   white: colors.spectrum.white.base,
   black: colors.spectrum.black.base,
   transparent: colors.spectrum.transparent.base,
@@ -110,93 +114,26 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
     },
   },
 
-  shell: {
-    backgroundColor: primary[1],
-    textColor: secondary.base,
-  },
-
-  component: {
-    backgroundColor: primary.base,
-    textColor: secondary[2],
-    hover: {
-      backgroundColor: primary[1],
-    },
-  },
-
   overlay: {
     backgroundColor: darken(0.1, primary[1]),
     textColor: secondary[2],
   },
 
-  header: {
-    backgroundColor: primary.base,
-    textColor: secondary[2],
-  },
-
   tile: {
-    backgroundColor: primary.base,
-    textColor: secondary.base,
     inputColor: secondary['4'],
-
-    blue: {
-      base: accents.accent.base,
-      light: accents.accent['2'],
-      dark: accents.accent['1'],
-    },
-
-    red: {
-      base: accents.bad.base,
-      light: accents.bad['3'],
-    },
-
-    green: {
-      base: accents.good.base,
-      light: accents.good['3'],
-    },
-
-    priceButton: {
-      backgroundColor: primary.base,
-      textColor: colors.spectrum.white.base,
-      hoverColor: primary['1'],
-    },
   },
 
-  blotter: {
-    backgroundColor: primary[1],
-    alternateBackgroundColor: primary.base,
-    foregroundColor: primary['3'],
-    pending: primary['2'],
-
-    textColor: secondary.base,
-
-    blue: {
-      base: accents.accent.base,
-      light: accents.accent['2'],
-    },
-
-    red: {
-      base: accents.bad.base,
-      light: accents.bad['3'],
-    },
-
-    green: {
-      base: accents.good.base,
-      light: accents.good['3'],
-    },
-  },
-
-  analytics: {
-    backgroundColor: primary.base,
-    textColor: secondary.base,
-
-    red: {
-      normal: accents.bad.base,
-    },
-
-    green: {
-      normal: accents.good.base,
-    },
-  },
+  flash: keyframes`
+    0% {
+      background-color: ${primary.base};
+    }
+    50% {
+      background-color: ${accents.accent[1]};
+    }
+    100% {
+      background-color: ${primary.base};
+    }
+  `,
 
   button: {
     mute: {
@@ -250,9 +187,9 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
 })
 
 export const createTheme = (
-  { primary, secondary }: CorePaletteMap,
+  { primary, secondary, core }: CorePaletteMap,
   accents: AccentPaletteMap,
   modifier: ThemeModifier = theme => ({ ...theme }),
-) => modifier(generateTheme({ primary, secondary }, accents))
+) => modifier(generateTheme({ primary, secondary, core }, accents))
 
 export default createTheme

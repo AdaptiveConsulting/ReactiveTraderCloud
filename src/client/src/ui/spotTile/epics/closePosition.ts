@@ -1,11 +1,11 @@
 import { applicationConnected } from 'rt-actions'
 import { Direction } from 'rt-types'
 import { CurrencyPair } from 'rt-types'
-import { bindCallback, Observable } from 'rxjs'
 import { ignoreElements, map, switchMapTo, withLatestFrom } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions } from '../actions'
 import { SpotTileData } from '../model/spotTileData'
+import { InteropTopics } from 'rt-components'
 
 interface Msg {
   amount: number
@@ -32,7 +32,7 @@ export function createTrade(msg: Msg, priceData: SpotTileData, currencyPair: Cur
 }
 
 export const closePositionEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  const interopSubscribe$: Observable<unknown> = bindCallback(platform.interop.subscribe)('*', 'close-position')
+  const interopSubscribe$ = platform.interop!.subscribe$(InteropTopics.ClosePosition)
 
   return action$.pipe(
     applicationConnected,

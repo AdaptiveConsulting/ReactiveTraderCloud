@@ -1,3 +1,5 @@
 export { referenceServiceEpic } from './epics'
-export { currencyPairReducer, CurrencyPairState } from './reducer'
-export { default as ReferenceDataService } from './referenceDataService'
+import { currencyPairReducer, CurrencyPairState } from './reducer'
+export { currencyPairReducer }
+export type CurrencyPairState = CurrencyPairState
+export { referenceDataService } from './referenceDataService'

@@ -10,7 +10,7 @@ const Hr = styled.hr`
   width: 80%;
   margin: 0 auto;
   height: 2px;
-  background-color: ${({ theme }) => theme.tile.textColor};
+  background-color: ${({ theme }) => theme.tile.inputColor};
   margin-top: 2px;
 `
 

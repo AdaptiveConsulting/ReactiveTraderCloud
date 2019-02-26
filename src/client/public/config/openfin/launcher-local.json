@@ -3,15 +3,28 @@
         "name": "Reactive Trader Cloud (LOCAL)",
         "url": "http://localhost:3000/launcher",
         "uuid": "ReactiveLauncher",
-        "defaultWidth": 380,
-        "defaultHeight": 60,
+        "defaultWidth": 550,
+        "defaultHeight": 52,
         "defaultTop": 160,
         "defaultLeft": 30,
+        "cornerRounding": {
+            "width": 5,
+            "height": 5
+        },
         "autoShow": true,
         "saveWindowState": false,
         "resizable": false,
         "shadow": true,
         "frame": false,
+        "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+        "preload": [
+            {
+                "url": "http://localhost:3000/plugin/service-loader.js"
+            },
+            {
+                "url": "http://localhost:3000/plugin/fin.desktop.Excel.js"
+            }
+        ],
         "backgroundColor": "#444C5F",
         "alwaysOnTop": true,
         "icon": "http://localhost:3000/static/media/icon.ico",
@@ -35,5 +48,13 @@
         "description": "Desktop Reactive Trader Cloud",
         "icon": "http://localhost:3000/static/media/icon.ico",
         "name": "Reactive Trader Cloud"
-    }
+    },
+    "appAssets": [
+        {
+            "src": "http://localhost:3000/plugin/add-in.zip",
+            "alias": "excel-api-addin",
+            "version": "2.0.0",
+            "forceDownload": true
+        }
+    ]
 }

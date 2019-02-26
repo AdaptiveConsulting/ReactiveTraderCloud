@@ -1,0 +1,7 @@
+{
+    "extends": "../tsconfig",
+    "compilerOptions": {
+        "strict": true,
+        "jsx": "react",
+    }
+}

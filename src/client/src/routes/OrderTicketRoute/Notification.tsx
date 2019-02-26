@@ -1,12 +1,11 @@
-import * as React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { faExclamationCircle, faCheckCircle, faCircleNotch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { keyframes } from 'styled-components'
 
-import { styled, keyframes, Styled } from 'rt-theme'
+import { styled } from 'rt-theme'
 import { Block } from '../StyleguideRoute/styled'
-
-import { Timer } from './Timer'
 
 export interface NotificationProps {
   duration: number
@@ -15,10 +14,6 @@ export interface NotificationProps {
   event?: unknown
   children: React.ReactNode
   onEnd?: () => void
-}
-
-interface State {
-  visible: boolean
 }
 
 const intents = {
@@ -33,45 +28,44 @@ const intents = {
   },
 }
 
-class Notification extends React.PureComponent<NotificationProps, State> {
-  state = {
-    visible: true,
+const Notification: React.FC<NotificationProps> = ({ duration, intent, position, children, onEnd, ...bodyProps }) => {
+  const [visible, setVisible] = useState(true)
+
+  const timeoutRef = useRef(0)
+  function onSeen() {
+    clearTimeout(timeoutRef.current)
+    timeoutRef.current = window.setTimeout(onHideNotification, 500)
+    setVisible(false)
   }
 
-  onSeen = () => this.setState({ visible: false })
-  onEnd = () => {
-    if (this.props.onEnd) {
-      this.props.onEnd()
+  function onHideNotification() {
+    clearTimeout(timeoutRef.current)
+    if (onEnd) {
+      onEnd()
     }
   }
 
-  render() {
-    const { duration, intent, position, children, onEnd, ...props } = this.props
-    const { visible } = this.state
+  useEffect(() => {
+    timeoutRef.current = window.setTimeout(onSeen, duration)
 
-    return (
-      <React.Fragment>
-        {visible ? (
-          <Timer key="start" duration={duration} timeout={this.onSeen} />
-        ) : (
-          <Timer key="end" duration={500} timeout={this.onEnd} />
-        )}
-        <Position position={position} p={1}>
-          <Transistion key={visible ? 'show' : 'hide'} visible={visible} position={position}>
-            <Body bg={`button.${intent}.backgroundColor`} fg={`button.${intent}.textColor`} p={2} {...props}>
-              <Block fontSize={2.5} color={`accents.${intent}.2`}>
-                <FontAwesomeIcon icon={intents[intent].icon} />
-              </Block>
-              <Summary>{children}</Summary>
-              <Block onClick={this.onSeen} fontSize={1}>
-                <FontAwesomeIcon icon={faTimes} />
-              </Block>
-            </Body>
-          </Transistion>
-        </Position>
-      </React.Fragment>
-    )
-  }
+    return () => clearTimeout(timeoutRef.current)
+  }, [])
+
+  return (
+    <Position position={position} p={1}>
+      <Transition key={visible ? 'show' : 'hide'} visible={visible} position={position}>
+        <Body bg={`button.${intent}.backgroundColor`} fg={`button.${intent}.textColor`} p={2} {...bodyProps}>
+          <Block fontSize={2.5} color={`accents.${intent}.2`}>
+            <FontAwesomeIcon icon={intents[intent].icon} />
+          </Block>
+          <Summary>{children}</Summary>
+          <Block onClick={onSeen} fontSize={1}>
+            <FontAwesomeIcon icon={faTimes} />
+          </Block>
+        </Body>
+      </Transition>
+    </Position>
+  )
 }
 
 const Summary = styled(Block)`
@@ -95,11 +89,11 @@ const Body = styled(Block)`
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1rem 4rem -1rem ${props => props.theme.overlay.backgroundColor};
 `
 
-const Position: Styled<{ position?: 'top' | 'bottom' }> = styled(Block)`
+const Position = styled(Block)<{ position?: 'top' | 'bottom' }>`
   position: absolute;
   left: 0;
   right: 0;
-  ${({ position }) => ({ [position]: 0 })} bottom: 0;
+  ${({ position }) => ({ [position]: 0 })};
 
   z-index: 10;
 `
@@ -107,19 +101,19 @@ Position.defaultProps = {
   position: 'bottom',
 }
 
-const Transistion: Styled<{ visible?: boolean; position?: 'top' | 'bottom' }> & { [k: string]: any } = styled(Block)`
+const Transition = styled(Block)<{ visible?: boolean; position?: 'top' | 'bottom' }>`
   transition: transform ease 200ms, opacity ease 200ms;
 
   opacity: 0;
   animation-duration: 200ms;
   animation-fill-mode: both;
   animation-direction: ${({ visible }) => (visible ? 'normal' : 'reverse')};
-  ${({ position }) => Transistion.from[position]};
+  ${({ position }) => TransitionFrom[position]};
 `
-Transistion.defaultProps = {
+Transition.defaultProps = {
   position: 'bottom',
 }
-Transistion.from = {
+const TransitionFrom = {
   top: [
     `transform: translateY(-100%);`,
     `animation-name:`,
