@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react'
 import { usePlatform, WindowConfig } from 'rt-components'
 import { WindowCenterStatus } from './types'
-import { Component } from 'ag-grid';
 
 const defaultConfig: WindowConfig = {
   name: '',
