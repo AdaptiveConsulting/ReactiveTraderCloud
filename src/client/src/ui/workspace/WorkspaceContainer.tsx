@@ -33,13 +33,16 @@ class WorkspaceContainer extends React.PureComponent<Props, State> {
 
   render() {
     const { status, ...props } = this.props
-    const { tileView, currencyView } = this.state
     return (
       <WorkSpaceWrapper style={{ height: '100%' }}>
-        <WorkspaceHeader onCurrencyChange={this.updateCurrencyOption} onTileViewChange={this.updateTileView} />
+        <WorkspaceHeader
+          {...this.state}
+          onCurrencyChange={this.updateCurrencyOption}
+          onTileViewChange={this.updateTileView}
+        />
         <Loadable
           status={status}
-          render={() => <Workspace {...props} tileView={tileView} currencyView={currencyView} />}
+          render={() => <Workspace {...props} {...this.state} />}
           message="Pricing Disconnected"
         />
       </WorkSpaceWrapper>
