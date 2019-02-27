@@ -1,5 +1,6 @@
 import { styled } from 'rt-theme'
-import { TileBaseStyle } from '../styled'
+import { TileWrapperBase, SpotTileStyle } from '../styled'
+import { PlatformAdapter } from 'rt-components'
 
 export const AnalyticsTileContent = styled.div`
   display: flex;
@@ -18,15 +19,18 @@ export const LineChartWrapper = styled.div`
   height: 80%;
 `
 
-//TODO ML 26/02 move the color property to theme
-export const AnalyticsTileStyle = styled(TileBaseStyle)`
-  position: relative;
+export const AnalyticsTileStyle = styled(SpotTileStyle)`
   background-color: #2f3542;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  &:hover {
+    background-color: #3d4455;
+  }
+`
+export const AnalyticsTileWrapper = styled(TileWrapperBase)<{ platform: PlatformAdapter }>`
+  min-height: 11rem;
+  height: ${({ platform: { name } }) =>
+    name !== 'finsemble'
+      ? '100%'
+      : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
   &:hover {
     background-color: #3d4455;
   }

@@ -34,7 +34,7 @@ class WorkspaceContainer extends React.PureComponent<Props, State> {
   render() {
     const { status, ...props } = this.props
     return (
-      <WorkSpaceWrapper style={{ height: '100%' }}>
+      <WorkSpaceWrapper>
         <WorkspaceHeader
           {...this.state}
           onCurrencyChange={this.updateCurrencyOption}

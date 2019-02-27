@@ -1,14 +1,24 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { spotDateFormatter } from '../../model/dateUtils'
 import AnalyticsPriceControl from './AnalyticsTilePriceControl'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
+import { usePlatform } from 'rt-components'
 
-import { AnalyticsTileStyle, AnalyticsTileContent, GraphNotionalWrapper, LineChartWrapper } from './styled'
-import { TileWrapper } from '../styled'
+import {
+  AnalyticsTileStyle,
+  AnalyticsTileContent,
+  GraphNotionalWrapper,
+  LineChartWrapper,
+  AnalyticsTileWrapper,
+} from './styled'
 import { Props } from '../types'
 import TileHeader from '../TileHeader'
 
+const AnalyticsWrapperWithPlatform: FC = props => {
+  const platform = usePlatform()
+  return <AnalyticsTileWrapper {...props} platform={platform} />
+}
 class AnalyticsTile extends React.PureComponent<Props> {
   render() {
     const {
@@ -24,8 +34,8 @@ class AnalyticsTile extends React.PureComponent<Props> {
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     return (
-      <TileWrapper className="spot-tile">
-        <AnalyticsTileStyle>
+      <AnalyticsWrapperWithPlatform>
+        <AnalyticsTileStyle className="spot-tile">
           <TileHeader baseTerm={baseTerm} date={date} />
           <AnalyticsTileContent>
             <GraphNotionalWrapper>
@@ -47,7 +57,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
           </AnalyticsTileContent>
         </AnalyticsTileStyle>
         {children}
-      </TileWrapper>
+      </AnalyticsWrapperWithPlatform>
     )
   }
 }
