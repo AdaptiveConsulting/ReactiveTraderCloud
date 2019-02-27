@@ -80,9 +80,9 @@ export type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
 const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({
   template,
   core,
-  white: colors.spectrum.white.base,
-  black: colors.spectrum.black.base,
-  transparent: colors.spectrum.transparent.base,
+  white: colors.static.white,
+  black: colors.static.black,
+  transparent: colors.static.transparent,
 
   backgroundColor: null as ExtensibleThemeValue,
   textColor: null as ExtensibleThemeValue,

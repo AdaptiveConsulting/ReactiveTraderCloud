@@ -7,17 +7,17 @@ import { Block, BlockProps } from '../styled'
 import { css } from 'styled-components'
 import ColorClipboard, { CopyToClipboardWrapper } from './ColorToClipboard'
 const {
-  spectrum: { brand, offblack, blue, red, yellow, green },
+  spectrum: { brand, offblack, offwhite, blue, red, yellow, green },
 } = colors
 
 const SWATCH_KEYS = {
   light: [95, 9, 8, 7, 6, 5, 4, 3, 2, 1].map(v => `L${v}`),
-  dark: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(v => `D${v}`),
+  dark: [1, 2, 3, 4, 5, 6, 7, 8, 9, 95].map(v => `D${v}`),
 }
 
 export const ColorBlocks = () => (
   <Root>
-    {[{ brand, offblack }, { blue, red, yellow, green }].map((swatchSetGroup, groupKey) => (
+    {[{ brand, offblack, offwhite }, { blue, red, yellow, green }].map((swatchSetGroup, groupKey) => (
       <SwatchSetGroup key={groupKey}>
         {_.map(swatchSetGroup, (group, setKey) => {
           const base = group.base

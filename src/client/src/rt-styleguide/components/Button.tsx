@@ -54,7 +54,7 @@ class BaseButtonThemeProvider extends React.Component<ButtonStyleProps & { theme
     if (outline) {
       palette = {
         ...palette,
-        backgroundColor: colors.spectrum.transparent,
+        backgroundColor: colors.static.transparent,
         textColor: palette.backgroundColor,
         active: {
           backgroundColor: palette.backgroundColor,

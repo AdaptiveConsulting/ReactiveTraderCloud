@@ -442,16 +442,16 @@ const Input = styled(Block)`
 `
 
 const AnimatedText = styled.span<{ accent?: string }>`
-  color: ${p => p.theme.transparent};
+  color: ${p => colors.static.transparent};
   transition: color 1s ease, background-position 1s ease;
 
   background-clip: text;
   -webkit-background-clip: text;
   background-image: repeating-linear-gradient(
     45deg,
-    ${p => p.theme.transparent},
+    ${p => colors.static.transparent},
     ${p => (p.theme.accents[p.accent] || p.theme.accents.primary).base},
-    ${p => p.theme.transparent}
+    ${p => colors.static.transparent}
   );
   background-size: 200%;
   background-position: 50%;
@@ -459,7 +459,7 @@ const AnimatedText = styled.span<{ accent?: string }>`
   animation: ${keyframes`
     from {
       background-position: 50%;
-      color: ${colors.spectrum.transparent.base};
+      color: ${colors.static.transparent};
     }
     40% {
       background-position: 0%;
@@ -471,7 +471,7 @@ const AnimatedText = styled.span<{ accent?: string }>`
     }
     to {
       background-position: 50%;
-      color: ${colors.spectrum.transparent.base};
+      color: ${colors.static.transparent};
     }
   `} infinite 3s linear;
 `
