@@ -68,7 +68,7 @@ export const SpotTileWrapper = styled(TileWrapperBase)<{ platform: PlatformAdapt
 `
 
 export const SpotTileStyle = styled(TileBaseStyle)`
-  background-color: #2f3542;
+  background-color: ${({ theme }) => theme.core.lightBackground};
   display: flex;
   height: 100%;
   justify-content: space-between;

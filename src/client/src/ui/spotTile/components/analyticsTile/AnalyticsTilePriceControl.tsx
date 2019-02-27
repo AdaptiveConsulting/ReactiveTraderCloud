@@ -18,12 +18,6 @@ const AnalyticsPriceControlHeader = styled.div`
   justify-content: space-between;
 `
 
-const PriceButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`
-
 const AnalyticsPriceControl: React.SFC<Props> = ({ currencyPair, priceData, executeTrade, disabled }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
@@ -31,7 +25,7 @@ const AnalyticsPriceControl: React.SFC<Props> = ({ currencyPair, priceData, exec
   return (
     <AnalyticsPriceControlHeader>
       <PriceMovement priceMovementType={priceData.priceMovementType} spread={spread.formattedValue} />
-      <PriceButtonWrapper>
+      <div>
         <PriceButton
           handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
           direction={Direction.Sell}
@@ -50,7 +44,7 @@ const AnalyticsPriceControl: React.SFC<Props> = ({ currencyPair, priceData, exec
           rawRate={askRate.rawRate}
           disabled={disabled}
         />
-      </PriceButtonWrapper>
+      </div>
     </AnalyticsPriceControlHeader>
   )
 }

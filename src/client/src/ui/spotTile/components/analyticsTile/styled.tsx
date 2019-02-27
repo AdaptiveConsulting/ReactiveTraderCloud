@@ -8,7 +8,7 @@ export const AnalyticsTileContent = styled.div`
   justify-content: space-between;
 `
 export const GraphNotionalWrapper = styled.div`
-  width: 58%;
+  width: 55%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -20,9 +20,9 @@ export const LineChartWrapper = styled.div`
 `
 
 export const AnalyticsTileStyle = styled(SpotTileStyle)`
-  background-color: #2f3542;
+  background-color: ${({ theme }) => theme.core.lightBackground};
   &:hover {
-    background-color: #3d4455;
+    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
   }
 `
 export const AnalyticsTileWrapper = styled(TileWrapperBase)<{ platform: PlatformAdapter }>`
@@ -32,6 +32,6 @@ export const AnalyticsTileWrapper = styled(TileWrapperBase)<{ platform: Platform
       ? '100%'
       : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
   &:hover {
-    background-color: #3d4455;
+    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
   }
 `
