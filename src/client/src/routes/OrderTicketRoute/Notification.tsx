@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React from 'react'
 
 import { faExclamationCircle, faCheckCircle, faCircleNotch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { keyframes } from 'styled-components'
 
 import { styled } from 'rt-theme'
+import { useMultiTimeout } from 'rt-util'
 import { Block } from '../StyleguideRoute/styled'
 
 export interface NotificationProps {
@@ -29,37 +30,26 @@ const intents = {
 }
 
 const Notification: React.FC<NotificationProps> = ({ duration, intent, position, children, onEnd, ...bodyProps }) => {
-  const [visible, setVisible] = useState(true)
-
-  const timeoutRef = useRef(0)
-  function onSeen() {
-    clearTimeout(timeoutRef.current)
-    timeoutRef.current = window.setTimeout(onHideNotification, 500)
-    setVisible(false)
-  }
-
-  function onHideNotification() {
-    clearTimeout(timeoutRef.current)
-    if (onEnd) {
-      onEnd()
-    }
-  }
-
-  useEffect(() => {
-    timeoutRef.current = window.setTimeout(onSeen, duration)
-
-    return () => clearTimeout(timeoutRef.current)
-  }, [])
+  const [stage, goToStage] = useMultiTimeout(
+    {
+      duration,
+    },
+    {
+      duration: 250,
+      onLeave: onEnd,
+    },
+  )
+  const visible = stage === 0
 
   return (
     <Position position={position} p={1}>
-      <Transition key={visible ? 'show' : 'hide'} visible={visible} position={position}>
+      <Transition key={visible ? 'show' : 'hide'} visible={visible} position={position} duration={200}>
         <Body bg={`button.${intent}.backgroundColor`} fg={`button.${intent}.textColor`} p={2} {...bodyProps}>
           <Block fontSize={2.5} color={`accents.${intent}.2`}>
             <FontAwesomeIcon icon={intents[intent].icon} />
           </Block>
           <Summary>{children}</Summary>
-          <Block onClick={onSeen} fontSize={1}>
+          <Block onClick={() => goToStage(1)} fontSize={1}>
             <FontAwesomeIcon icon={faTimes} />
           </Block>
         </Body>
@@ -101,11 +91,11 @@ Position.defaultProps = {
   position: 'bottom',
 }
 
-const Transition = styled(Block)<{ visible?: boolean; position?: 'top' | 'bottom' }>`
-  transition: transform ease 200ms, opacity ease 200ms;
+const Transition = styled(Block)<{ visible?: boolean; position?: 'top' | 'bottom'; duration?: number }>`
+  transition: transform ease ${({ duration = 200 }) => duration}ms, opacity ease ${({ duration = 200 }) => duration}ms;
 
   opacity: 0;
-  animation-duration: 200ms;
+  animation-duration: ${({ duration = 200 }) => duration}ms;
   animation-fill-mode: both;
   animation-direction: ${({ visible }) => (visible ? 'normal' : 'reverse')};
   ${({ position }) => TransitionFrom[position]};

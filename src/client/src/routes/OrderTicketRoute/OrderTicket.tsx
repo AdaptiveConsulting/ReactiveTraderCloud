@@ -204,7 +204,7 @@ export class OrderTicket extends PureComponent<Props, State> {
         <AppLayout bg="core.darkBackground">
           <ChromeLayout bg="primary.base">
             <WindowControls />
-            <Text letterSpacing="1px" fontSize="0.625rem" fontWeight={300}>
+            <Text letterSpacing="1px" fontSize={0.75} fontWeight={300}>
               Order Ticket
             </Text>
           </ChromeLayout>
@@ -290,7 +290,7 @@ export class OrderTicket extends PureComponent<Props, State> {
   }
 }
 
-const Viewport = styled(Block.withComponent(HotKeys))`
+const Viewport = styled(Block.withComponent(HotKeys) as typeof Block)`
   display: flex;
   align-items: center;
   justify-content: center;

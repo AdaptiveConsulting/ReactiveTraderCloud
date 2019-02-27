@@ -197,9 +197,43 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     })
   }
 
+  renderInput(): React.ReactNode {
+    const { value } = this.props
+    const { userPermissionGranted, sessionActive, sessionConnected } = this.state
+
+    if (value) {
+      return (
+        <Input>
+          {value}
+          <span>&nbsp;</span>
+        </Input>
+      )
+    }
+    if (!sessionActive) {
+      return <StatusText toggle={this.toggle}>Press to talk &nbsp; ⌥O</StatusText>
+    }
+    if (userPermissionGranted == null) {
+      return <StatusText toggle={this.toggle}>Waiting for permission</StatusText>
+    }
+    if (userPermissionGranted === false) {
+      return (
+        <StatusText accent="aware" toggle={this.toggle}>
+          Check microphone permissions
+        </StatusText>
+      )
+    }
+    if (sessionConnected === false) {
+      return (
+        <StatusText accent="aware" toggle={this.toggle}>
+          We're having trouble connecting
+        </StatusText>
+      )
+    }
+    return <StatusText toggle={this.toggle}>Listening</StatusText>
+  }
+
   render() {
     const {
-      value,
       context,
       source,
       // testing
@@ -217,18 +251,15 @@ export class VoiceInput extends React.PureComponent<Props, State> {
       sessionCount,
       sessionActive,
       sessionError,
-      sessionConnected,
     } = this.state
 
     return (
-      <React.Fragment>
-        {
-          // Pure data components for session connection and audio graph
-        }
+      <>
+        {/* Pure data components for session connection and audio graph */}
         {sessionCount > 0 && (
           <ChannelMerger context={context} outputs={outputs}>
             {({ destination }) => (
-              <React.Fragment>
+              <>
                 {source === 'sample' && (
                   // Mount sample audio for testing
                   <MediaPlayer
@@ -247,63 +278,80 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                   />
                 )}
 
-                {
-                  // Request user permission and output to destination
+                {/* Request user permission and output to destination */}
+                <UserMedia.Provider audio onPermission={this.onPermission}>
+                  <UserMedia.Consumer>
+                    {userMedia => (
+                      <>
+                        <Microphone
+                          context={context}
+                          output={source === 'microphone' ? destination : null}
+                          mediaStream={userMedia.mediaStream}
+                        />
 
-                  <UserMedia.Provider audio onPermission={this.onPermission}>
-                    <UserMedia.Consumer>
-                      {userMedia => (
-                        <React.Fragment>
-                          <Microphone
-                            context={context}
-                            output={source === 'microphone' ? destination : null}
-                            mediaStream={userMedia.mediaStream}
-                          />
+                        {userMedia.mediaStream &&
+                          sessionActive &&
+                          // Open session to recognition backend and stream from output
 
-                          {userMedia.mediaStream &&
-                            sessionActive &&
-                            // Open session to recognition backend and stream from output
-
-                            (features.useNext ? (
-                              <TranscriptionSession
-                                ref={this.setSession}
-                                key={`TranscriptionSession${sessionCount}`}
-                                input={input.stream}
-                                onStart={this.onSessionStart}
-                                onResult={this.onSessionResult}
-                                onError={this.onSessionError}
-                                onEnd={this.onSessionEnd}
-                              />
-                            ) : (
-                              <ScribeSession
-                                ref={this.setSession}
-                                key={`ScribeSession${sessionCount}`}
-                                input={input.stream}
-                                onStart={this.onSessionStart}
-                                onResult={this.onSessionResult}
-                                onError={this.onSessionError}
-                                onEnd={this.onSessionEnd}
-                              />
-                            ))}
-                        </React.Fragment>
-                      )}
-                    </UserMedia.Consumer>
-                  </UserMedia.Provider>
-                }
-              </React.Fragment>
+                          (features.useNext ? (
+                            <TranscriptionSession
+                              ref={this.setSession}
+                              key={`TranscriptionSession${sessionCount}`}
+                              input={input.stream}
+                              onStart={this.onSessionStart}
+                              onResult={this.onSessionResult}
+                              onError={this.onSessionError}
+                              onEnd={this.onSessionEnd}
+                            />
+                          ) : (
+                            <ScribeSession
+                              ref={this.setSession}
+                              key={`ScribeSession${sessionCount}`}
+                              input={input.stream}
+                              onStart={this.onSessionStart}
+                              onResult={this.onSessionResult}
+                              onError={this.onSessionError}
+                              onEnd={this.onSessionEnd}
+                            />
+                          ))}
+                      </>
+                    )}
+                  </UserMedia.Consumer>
+                </UserMedia.Provider>
+              </>
             )}
           </ChannelMerger>
         )}
 
-        {////////////////////////////////////
-        // Reset after error and user message
-        sessionError && <Timer duration={5000} timeout={this.toggle} />}
+        {/* Reset after error and user message */}
+        {sessionError && <Timer duration={5000} timeout={this.toggle} />}
 
-        {
-          // Rendered output
-        }
+        {/* Rendered output */}
         <Root bg="primary.4" onClick={this.toggle}>
-          {sessionInstance ? null : (
+          {sessionInstance ? (
+            <>
+              <Fill />
+              <FormantBars
+                analyser={analyser}
+                count={5}
+                gap={1.5}
+                width={3.5}
+                height={40}
+                color={
+                  !sessionError
+                    ? null
+                    : magnitude => {
+                        return mix(
+                          1 - Math.sin(magnitude * magnitude),
+                          colors.accents.aware.base,
+                          colors.accents.bad.base,
+                        )
+                      }
+                }
+              />
+              <Fill />
+            </>
+          ) : (
             <MicrophoneButton
               fg={
                 sessionActive === false
@@ -317,68 +365,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
             </MicrophoneButton>
           )}
 
-          {!sessionInstance ? null : (
-            <React.Fragment>
-              <Fill />
-              <FormantBars
-                analyser={analyser}
-                count={5}
-                gap={1.5}
-                width={3.5}
-                height={40}
-                // @ts-ignore
-                color={
-                  !sessionError
-                    ? null
-                    : magnitude => {
-                        // @ts-ignore
-                        return mix(
-                          1 - Math.sin(magnitude * magnitude),
-                          colors.accents.aware.base,
-                          colors.accents.bad.base,
-                        )
-                      }
-                }
-              />
-              <Fill />
-            </React.Fragment>
-          )}
-
-          {!value ? (
-            !sessionActive ? (
-              <StatusText toggle={this.toggle}>Press to talk &nbsp; ⌥O</StatusText>
-            ) : (
-              <React.Fragment>
-                {userPermissionGranted == null ? (
-                  <StatusText toggle={this.toggle}>Waiting for permission</StatusText>
-                ) : (
-                  <React.Fragment>
-                    {userPermissionGranted === false && (
-                      <StatusText accent="aware" toggle={this.toggle}>
-                        Check microphone permissions
-                      </StatusText>
-                    )}
-                    {userPermissionGranted === true && (
-                      <React.Fragment>
-                        {sessionConnected === false ? (
-                          <StatusText accent="aware" toggle={this.toggle}>
-                            We're having trouble connecting
-                          </StatusText>
-                        ) : (
-                          <StatusText toggle={this.toggle}>Listening</StatusText>
-                        )}
-                      </React.Fragment>
-                    )}
-                  </React.Fragment>
-                )}
-              </React.Fragment>
-            )
-          ) : (
-            <Input>
-              {value}
-              <span>&nbsp;</span>
-            </Input>
-          )}
+          {this.renderInput()}
 
           {features.useNext && (
             <MicrophoneButton
@@ -398,7 +385,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
             <BlobDownload blob={blob} download="order-ticket-audio.webm" force />
           )}
         </Root>
-      </React.Fragment>
+      </>
     )
   }
 }
@@ -434,7 +421,7 @@ export const Formant = styled.div<{ sessionInstance: boolean }>`
   }
 `
 
-const MicrophoneButton = styled(Block)<{ active: boolean }>`
+const MicrophoneButton = styled(Block)<{ active?: boolean }>`
   height: ${2.75}rem;
   width: ${2.75}rem;
   width: ${3.5}rem;
@@ -493,7 +480,7 @@ const StatusText: React.FC<{ accent?: string; toggle: () => void }> = ({ accent,
   <Input
     onClick={toggle}
     fg={accent ? `accents.${accent}.base` : 'primary.2'}
-    fontSize="0.625"
+    fontSize={0.625}
     letterSpacing="1px"
     textTransform="uppercase"
   >

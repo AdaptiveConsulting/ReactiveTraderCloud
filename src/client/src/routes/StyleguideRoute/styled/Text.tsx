@@ -4,10 +4,40 @@ import { MappedPropMap, PassThroughFunc } from '../tools'
 import { css } from 'styled-components'
 import { styled } from 'rt-theme'
 
+// Normalized font sizes are `rem` values corresponding to whole pixel values (i.e. rem*16 is integer)
+type NormalizedFontSize =
+  | 0.5
+  | 0.625
+  | 0.6875
+  | 0.75
+  | 0.8125
+  | 0.875
+  | 1
+  | 1.125
+  | 1.25
+  | 1.3125
+  | 1.5
+  | 1.75
+  | 2
+  | 2.125
+  | 2.25
+  | 2.5
+  | 3
+  | 3.4375
+  | 5
+
+type NormalizedLineHeight = 1 | 1.25 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 5
+
 export interface TextProps {
   display?: 'inline' | 'block' | 'inline-block'
-  lineHeight?: 1 | 1.25 | 1.5 | 2 | 2.5 | 3 | 4 | 5
-  fontSize?: 0.625 | 0.75 | 0.875 | 1 | 1.25 | 1.5 | 1.75 | 2 | 2.25 | 2.5 | 3 | any
+  /**
+   * Expressed in `rem`
+   */
+  lineHeight?: NormalizedLineHeight
+  /**
+   * Expressed in `rem`
+   */
+  fontSize?: NormalizedFontSize
   fontWeight?: 'bold' | number
   fontStyle?: 'italic' | string
   fontFamily?: 'lato' | 'montserrat' | string
