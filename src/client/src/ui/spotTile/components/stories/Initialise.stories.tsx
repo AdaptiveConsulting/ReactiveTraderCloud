@@ -16,7 +16,7 @@ export const Centered = styled('div')`
 
 export const Story: React.SFC = ({ children }) => (
   <BaseStory>
-    <ThemeProvider theme={theme => theme.tile}>{children}</ThemeProvider>
+    <ThemeProvider>{children}</ThemeProvider>
   </BaseStory>
 )
 
