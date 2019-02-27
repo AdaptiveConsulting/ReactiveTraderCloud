@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
@@ -28,7 +28,7 @@ interface Props {
   currencyView: CurrencyOptions
 }
 
-const Workspace: React.SFC<Props> = ({ spotTiles = [], tileView }) => (
+const Workspace: FC<Props> = ({ spotTiles = [], tileView }) => (
   <WorkspaceItems>
     {spotTiles.map(({ key, externalWindowProps }) => (
       <TearOff
