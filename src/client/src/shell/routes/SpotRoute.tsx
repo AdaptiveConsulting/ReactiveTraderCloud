@@ -1,4 +1,5 @@
 import React from 'react'
+import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
 import SpotTileContainer from '../../ui/spotTile/SpotTileContainer'
@@ -13,10 +14,17 @@ const SpotTileStyle = styled.div`
   padding: 0.625rem;
   margin: auto;
 `
-
-export default ({ location, match }: RouteComponentProps<{ symbol: string }>) => {
-  const queryString = location.search.split('?')[1]
-  const tileView = queryString.split('=')[1] as TileViews
+const getTileViewFromQueryStr: (queryStr: string) => TileViews = queryStr => {
+  const parsedQueryString = queryString.parse(queryStr)
+  const tileView = parsedQueryString['tileView']
+  return !tileView
+    ? TileViews.Normal
+    : Object.values(TileViews).includes(tileView)
+    ? (tileView as TileViews)
+    : TileViews.Normal
+}
+export default ({ location: { search }, match }: RouteComponentProps<{ symbol: string }>) => {
+  const tileView = getTileViewFromQueryStr(search)
   return (
     <RouteWrapper>
       <SpotTileStyle>
