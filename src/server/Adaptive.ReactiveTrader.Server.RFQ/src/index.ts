@@ -1,80 +1,96 @@
-import { Connection } from 'autobahn'
-import {
-  createConnection,
-  UserCredentials,
-  EventStoreNodeConnection,
-  FileLogger,
-  Logger,
-  EventAppearedCallback,
-  RecordedEvent,
-} from 'node-eventstore-client'
-import { EventEmitter } from 'events'
-import { Observable } from 'rxjs'
+import dotEnv from 'dotenv'
+import { interval, NextObserver } from 'rxjs'
+import { filter, map, mapTo, shareReplay, switchMap, scan } from 'rxjs/operators'
+import uuid from 'uuid/v1'
+import AutobahnConnectionProxy from './AutobahnConnectionProxy'
+import { ConnectionEventType, ConnectionOpenEvent, createConnection$ } from './connectionStream'
+import { RawPrice } from './domain'
+import { RawServiceStatus } from './domain'
+import { ServiceStub } from './ServiceStub'
 
-const TradeCompletedEvent = 'TradeCompletedEvent'
-const TradeRejectedEvent = 'TradeRejectedEvent'
-const TradeCreatedEvent = 'TradeCreatedEvent'
+if (process.env.NODE_ENV !== 'production') {
+  dotEnv.load()
+}
 
-const TradeEvents = [TradeCompletedEvent, TradeRejectedEvent, TradeCreatedEvent]
+const HOST_TYPE = 'priceHistory'
+const hostInstance = `${HOST_TYPE}.${uuid().substring(0, 4)}`
 
-const credentials = new UserCredentials('admin', 'changeit')
-
-const esConnection = createConnection(
-  { verboseLogging: false, log: console, defaultUserCredentials: credentials },
-  'tcp://localhost:1113',
+const autobahn = new AutobahnConnectionProxy(
+  process.env.BROKER_HOST!,
+  process.env.WAMP_REALM!,
+  +process.env.BROKER_PORT!,
 )
-const subscriptionDropped = (subscription: any, reason: any, error: any) =>
-  console.log(error ? error : 'Subscription dropped.')
 
-const createEventStream = (esConnection: EventStoreNodeConnection) =>
-  new Observable<Trade>(obs => {
-    const eventAppeared: EventAppearedCallback<any> = (subscription, event) => {
-      if (event && event.event && event.event.data && TradeEvents.includes(event.event.eventType)) {
-        obs.next(JSON.parse(event.event.data.toString()))
-      }
-    }
+const connection$ = createConnection$(autobahn).pipe(shareReplay(1))
 
-    esConnection.subscribeToAllFrom(null, false, eventAppeared, undefined, subscriptionDropped, credentials)
+const stub = new ServiceStub('BHA', connection$)
+
+const HISTORY_LENGTH = 10000
+
+console.info('Subscribing to Pricing')
+
+let latest: ReadonlyMap<string, RawPrice[]>
+
+const savePrices = scan<RawPrice, Map<string, RawPrice[]>>((acc, price) => {
+  if (!acc.has(price.Symbol)) {
+    acc.set(price.Symbol, [])
+  }
+
+  const history = acc.get(price.Symbol)!
+  if (history.length >= HISTORY_LENGTH) {
+    history.shift()
+  }
+
+  history.push(price)
+  return acc
+}, new Map())
+
+const priceSubsription$ = stub
+  .subscribeToTopic<RawPrice>('prices')
+  .pipe(savePrices)
+  .subscribe(newPrices => {
+    latest = newPrices
   })
 
-esConnection.connect().then(_ => {
-  createEventStream(esConnection).subscribe(x => {
-    console.log(x)
+const session$ = connection$.pipe(
+  filter((connection): connection is ConnectionOpenEvent => connection.type === ConnectionEventType.CONNECTED),
+  map(connection => connection.session),
+)
+
+console.info('Starting heart beat')
+
+const heartbeat$ = session$.pipe(switchMap(session => interval(1000).pipe(mapTo(session)))).subscribe(session => {
+  const status: RawServiceStatus = {
+    Type: 'priceHistory',
+    Load: 1,
+    TimeStamp: Date.now(),
+    Instance: hostInstance,
+  }
+  session.publish('status', [status])
+})
+
+type PriceHistoryRequest = [{ payload: string }]
+
+session$.subscribe(session => {
+  console.info('Connection Established')
+  console.info('Registering getPriceHistory')
+
+  session.register('getPriceHistory', (request: PriceHistoryRequest) => {
+    console.info('Request recieved')
+
+    if (!request || !request[0] || !request[0].payload) {
+      throw new Error(`The request for price history was malformed: ${request}`)
+    }
+    const symbol = request[0].payload
+
+    if (latest.has(symbol)) {
+      throw Error(`The currency pair requested was not recognised: ${symbol}`)
+    }
+    return latest.get(symbol)
   })
 })
 
-interface Trade {
-  TradeId: number
-  CurrencyPair: string
-  TraderName: string
-  Notional: number
-  DealtCurrency: string
-  Direction: string
-  Status: string
-  SpotRate: number
-  TradeDate: string
-  ValueDate: string
-}
-//esConnection.subscribeToAllFrom(null, false, eventAppeared, libeProcessingStarted, subscriptionDropped, credentials)
-
-// const connection = new Connection({
-//   url: 'ws://web-dev.adaptivecluster.com:80/ws',
-//   realm: 'com.weareadaptive.reactivetrader',
-//   use_es6_promises: true,
-// })
-
-// connection.onopen = session => {
-//     console.log('tick')
-//   setInterval(() => {
-//     session.publish('status', [
-//       { Type: 'newService', Instance: 'new one', Timestamp: new Date().toUTCString(), Load: 0 },
-//     ])
-//   }, 1000)
-// }
-
-// connection.onclose = (reason: string, details: any) => {
-//   console.error(reason, details)
-//   return false
-// }
-
-// connection.open()
+process.on('exit', () => {
+  heartbeat$.unsubscribe()
+  priceSubsription$.unsubscribe()
+})
