@@ -79,13 +79,12 @@ export interface CorePaletteMap {
  * A set of theme-agnostic palettes
  */
 export interface AccentPaletteMap {
-  accent: AccentPalette
   primary: AccentPalette
   aware: AccentPalette
   bad: AccentPalette
   good: AccentPalette
 }
-export type Accent = keyof AccentPaletteMap
+export type AccentName = keyof AccentPaletteMap
 
 export type ColorPaletteMaps = typeof colors
 
@@ -201,11 +200,6 @@ export const dark: CorePaletteMap = {
 }
 
 const accents: AccentPaletteMap = {
-  accent: {
-    base: blue.base,
-    1: blue.D2,
-    2: blue.L5,
-  },
   primary: {
     base: blue.base,
     1: blue.D2,

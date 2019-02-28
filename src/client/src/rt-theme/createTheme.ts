@@ -48,7 +48,6 @@ export type Theme = BaseTheme & GeneratedTheme
 export interface TouchableIntents {
   primary: Touchable
   secondary: Touchable
-  accent: Touchable
   good: Touchable
   aware: Touchable
   bad: Touchable
@@ -128,7 +127,7 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
       background-color: ${primary.base};
     }
     50% {
-      background-color: ${accents.accent[1]};
+      background-color: ${accents.primary[1]};
     }
     100% {
       background-color: ${primary.base};
@@ -149,14 +148,14 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
     },
 
     primary: {
-      backgroundColor: accents.accent.base,
+      backgroundColor: accents.primary.base,
       textColor: colors.light.primary.base,
 
       active: {
-        backgroundColor: accents.accent[1],
+        backgroundColor: accents.primary[1],
       },
       disabled: {
-        backgroundColor: accents.accent[2],
+        backgroundColor: accents.primary[2],
       },
     },
 

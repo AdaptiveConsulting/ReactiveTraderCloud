@@ -4,7 +4,7 @@ import React from 'react'
 
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
-import { colors, styled, Theme } from 'rt-theme'
+import { colors, styled, Theme, AccentPaletteMap, AccentName } from 'rt-theme'
 import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-components'
 
 export default () => (
@@ -79,7 +79,7 @@ export default () => (
 
         <UniquePalettes
           palettes={{
-            'Trading Buy': { base: colors.accents.accent.base },
+            'Trading Buy': { base: colors.accents.primary.base },
             'Trading Sell': { base: colors.accents.bad.base },
           }}
         />
@@ -275,15 +275,15 @@ const QuadrantLayout = styled.div`
   }
 `
 
-const AccentPalettes: React.FC<{ accents: any }> = ({ accents, ...props }) => {
+const AccentPalettes: React.FC<{ accents: AccentPaletteMap }> = ({ accents, ...props }) => {
   return (
     <AccentRowGrid>
-      {_.map(accents, (accent, label: string) => (
+      {(Object.keys(accents) as AccentName[]).map(accentName => (
         <PaletteLayout
-          key={label}
+          key={accentName}
           grid={AccentSwatchGrid}
-          label={label}
-          palette={accent}
+          label={accentName}
+          palette={accents[accentName]}
           fg="#FFF"
           include={['base', '1', '2']}
         />

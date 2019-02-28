@@ -1,23 +1,33 @@
 import React from 'react'
 
-import { faExclamationCircle, faCheckCircle, faCircleNotch, faTimes } from '@fortawesome/free-solid-svg-icons'
+import {
+  faExclamationCircle,
+  faCheckCircle,
+  faCircleNotch,
+  faTimes,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { keyframes } from 'styled-components'
 
 import { styled } from 'rt-theme'
-import { useMultiTimeout } from 'rt-util'
+import { useMultiTimeout, Extends } from 'rt-util'
 import { Block } from '../StyleguideRoute/styled'
+import { AccentName } from 'rt-theme'
+
+// Subset of accents that make sense as intent semantically
+type Intent = Extends<AccentName, 'good' | 'bad' | 'aware'>
 
 export interface NotificationProps {
   duration: number
   position: 'bottom' | 'top'
-  intent: 'good' | 'aware' | 'bad'
+  intent: Intent
   event?: unknown
   children: React.ReactNode
   onEnd?: () => void
 }
 
-const intents = {
+const intents: { [intent in Intent]: { icon: IconDefinition } } = {
   good: {
     icon: faCheckCircle,
   },

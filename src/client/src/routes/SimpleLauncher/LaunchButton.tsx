@@ -28,7 +28,7 @@ export const StyledButton = styled.button`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.button.accent.backgroundColor};
+    background-color: ${({ theme }) => theme.button.primary.backgroundColor};
     svg {
       transition-timing-function: ease-out;
       transition: transform 0.3s;

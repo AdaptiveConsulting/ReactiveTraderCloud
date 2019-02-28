@@ -18,7 +18,7 @@ import { Timer } from 'rt-components'
 
 import FormantBars from './FormantBars'
 import MicrophoneIcon from './assets/Microphone'
-import { colors, styled } from 'rt-theme'
+import { colors, styled, AccentName } from 'rt-theme'
 import { keyframes } from 'styled-components'
 
 type SourceType = 'microphone' | 'sample'
@@ -441,7 +441,7 @@ const Input = styled(Block)`
   min-height: 1em;
 `
 
-const AnimatedText = styled.span<{ accent?: string }>`
+const AnimatedText = styled.span<{ accent?: AccentName }>`
   color: ${p => colors.static.transparent};
   transition: color 1s ease, background-position 1s ease;
 
@@ -450,7 +450,7 @@ const AnimatedText = styled.span<{ accent?: string }>`
   background-image: repeating-linear-gradient(
     45deg,
     ${p => colors.static.transparent},
-    ${p => (p.theme.accents[p.accent] || p.theme.accents.primary).base},
+    ${({ theme, accent = 'primary' }) => theme.accents[accent].base},
     ${p => colors.static.transparent}
   );
   background-size: 200%;
@@ -476,7 +476,7 @@ const AnimatedText = styled.span<{ accent?: string }>`
   `} infinite 3s linear;
 `
 
-const StatusText: React.FC<{ accent?: string; toggle: () => void }> = ({ accent, children, toggle }) => (
+const StatusText: React.FC<{ accent?: AccentName; toggle: () => void }> = ({ accent, children, toggle }) => (
   <Input
     onClick={toggle}
     fg={accent ? `accents.${accent}.base` : 'primary.2'}
