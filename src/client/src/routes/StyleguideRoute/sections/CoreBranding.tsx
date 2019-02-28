@@ -285,7 +285,7 @@ const AccentPalettes: React.FC<{ accents: AccentPaletteMap }> = ({ accents, ...p
           label={accentName}
           palette={accents[accentName]}
           fg="#FFF"
-          include={['base', '1', '2']}
+          include={['base', 'darker', 'lighter']}
         />
       ))}
     </AccentRowGrid>
@@ -307,8 +307,8 @@ const AccentSwatchGrid = styled.div`
   grid-template-rows: repeat(3, 8rem);
   grid-template-areas:
     'base'
-    '1'
-    '2';
+    'darker'
+    'lighter';
 `
 
 const UniquePalettes: React.FC<{ palettes: any }> = ({ palettes, ...props }) => {

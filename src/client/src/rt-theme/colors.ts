@@ -9,7 +9,6 @@ export type Color = string
 
 interface BasePalette {
   base: Color
-  // [shade: string]: Color
 }
 
 interface LightShadeSet {
@@ -61,8 +60,8 @@ export interface CorePalette extends BasePalette {
  * A theme palette consisting of a `base` and 2 variants
  */
 interface AccentPalette extends BasePalette {
-  1: Color
-  2: Color
+  darker: Color
+  lighter: Color
 }
 
 interface Colors {
@@ -85,8 +84,6 @@ export interface AccentPaletteMap {
   good: AccentPalette
 }
 export type AccentName = keyof AccentPaletteMap
-
-export type ColorPaletteMaps = typeof colors
 
 // Some designs will redefine white to achieve different
 // visual effects on the viewers eyes.
@@ -202,23 +199,23 @@ export const dark: CorePaletteMap = {
 const accents: AccentPaletteMap = {
   primary: {
     base: blue.base,
-    1: blue.D2,
-    2: blue.L5,
+    darker: blue.D2,
+    lighter: blue.L5,
   },
   good: {
     base: green.base,
-    1: green.D1,
-    2: green.L5,
+    darker: green.D1,
+    lighter: green.L5,
   },
   aware: {
     base: yellow.base,
-    1: yellow.D1,
-    2: yellow.L5,
+    darker: yellow.D1,
+    lighter: yellow.L5,
   },
   bad: {
     base: red.base,
-    1: red.D1,
-    2: red.L5,
+    darker: red.D1,
+    lighter: red.L5,
   },
 }
 

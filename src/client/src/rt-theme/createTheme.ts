@@ -3,7 +3,7 @@ import { mapValues } from 'lodash'
 import template from './template'
 import { keyframes } from 'styled-components'
 
-import colors, { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
+import colors, { AccentPaletteMap, Color, CorePalette, CorePaletteMap } from './colors'
 
 export interface BaseTheme {
   white: Color
@@ -13,7 +13,7 @@ export interface BaseTheme {
   primary: CorePalette
   secondary: CorePalette
   accents: AccentPaletteMap
-  colors: ColorPaletteMaps
+  colors: typeof colors
 
   motion: Motion & {
     fast: Motion
@@ -127,7 +127,7 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
       background-color: ${primary.base};
     }
     50% {
-      background-color: ${accents.primary[1]};
+      background-color: ${accents.primary.darker};
     }
     100% {
       background-color: ${primary.base};
@@ -152,10 +152,10 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
       textColor: colors.light.primary.base,
 
       active: {
-        backgroundColor: accents.primary[1],
+        backgroundColor: accents.primary.darker,
       },
       disabled: {
-        backgroundColor: accents.primary[2],
+        backgroundColor: accents.primary.lighter,
       },
     },
 
@@ -171,15 +171,15 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
       },
     },
 
-    ...mapValues(accents, ({ base, [1]: active, [2]: disabled }) => ({
+    ...mapValues(accents, ({ base, darker, lighter }) => ({
       backgroundColor: base,
       textColor: colors.light.primary.base,
 
       active: {
-        backgroundColor: active,
+        backgroundColor: darker,
       },
       disabled: {
-        backgroundColor: disabled,
+        backgroundColor: lighter,
       },
     })),
   },
