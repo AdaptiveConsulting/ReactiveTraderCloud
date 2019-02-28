@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'

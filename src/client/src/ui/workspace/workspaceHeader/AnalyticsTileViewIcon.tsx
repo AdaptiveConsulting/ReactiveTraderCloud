@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartLine } from '@fortawesome/free-solid-svg-icons'
@@ -21,7 +21,7 @@ const ChartLineIconWrapper = styled.div`
   justify-content: center;
 `
 
-const AnalyticsViewIcon: React.SFC = () => (
+const AnalyticsViewIcon: FC = () => (
   <IconWrapper>
     <ChartLineIconWrapper>
       <FontAwesomeIcon icon="chart-line" />

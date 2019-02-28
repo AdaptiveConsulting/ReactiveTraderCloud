@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { styled } from 'rt-theme'
 import { IconWrapper, Rect } from './styled'
 
@@ -14,7 +14,7 @@ const Hr = styled.hr`
   margin-top: 2px;
 `
 
-const SpotTileViewIcon: React.SFC = () => (
+const SpotTileViewIcon: FC = () => (
   <div>
     <IconWrapper>
       <FirstRect />
