@@ -6,7 +6,7 @@ import {
   WindowConfig,
   openFinNotifications,
   setupGlobalOpenfinNotifications,
-  usePlatform
+  usePlatform,
 } from './platform'
 
 export {

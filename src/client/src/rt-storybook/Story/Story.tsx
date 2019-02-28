@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { platform, PlatformProvider } from 'rt-components'
 import { styled, ThemeName, ThemeProvider, ThemeConsumer, GlobalStyle } from 'rt-theme'
 
-
 class Story extends Component {
   render() {
     const { children } = this.props

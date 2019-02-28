@@ -2,7 +2,6 @@ import { AppConfig, WindowConfig, InteropServices, ExcelInterop } from './types'
 import { Observable } from 'rxjs'
 
 export interface PlatformAdapter {
-
   name: string
   type: string
   interopServices: InteropServices

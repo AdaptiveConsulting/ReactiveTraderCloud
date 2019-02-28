@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
+import { CurrencyOptions, TileViews } from './workspaceHeader'
+import { appendTileViewToUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
 
 const WorkspaceItems = styled.div`
@@ -22,17 +24,19 @@ interface SpotTile {
 
 interface Props {
   spotTiles: SpotTile[]
+  tileView: TileViews
+  currencyView: CurrencyOptions
 }
 
-const Workspace: React.FC<Props> = ({ spotTiles = [] }) => (
+const Workspace: FC<Props> = ({ spotTiles = [], tileView }) => (
   <WorkspaceItems>
     {spotTiles.map(({ key, externalWindowProps }) => (
       <TearOff
         id={key}
-        externalWindowProps={externalWindowProps}
+        externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
         render={(popOut, tornOff) => (
           <WorkspaceItem>
-            <SpotTileContainer id={key} onPopoutClick={popOut} tornOff={tornOff} tearable />
+            <SpotTileContainer id={key} tileView={tileView} onPopoutClick={popOut} tornOff={tornOff} tearable />
           </WorkspaceItem>
         )}
         key={key}

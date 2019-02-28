@@ -31,12 +31,7 @@ interface Props {
   displayCurrencyChart?: () => void
 }
 
-const TileControls: React.FC<Props> = ({
-  onPopoutClick,
-  canPopout,
-  displayCurrencyChart,
-}) => {
-
+const TileControls: React.FC<Props> = ({ onPopoutClick, canPopout, displayCurrencyChart }) => {
   const platform = usePlatform()
   return (
     <React.Fragment>

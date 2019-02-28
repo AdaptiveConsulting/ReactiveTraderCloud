@@ -8,7 +8,6 @@ import { OrderTicket } from './OrderTicket'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import { withTheme } from 'styled-components'
 
-
 interface Props {
   theme: Theme
   reset: () => void

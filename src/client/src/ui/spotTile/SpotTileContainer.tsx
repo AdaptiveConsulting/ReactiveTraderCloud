@@ -8,9 +8,11 @@ import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
 import { ExecuteTradeRequest } from './model/executeTradeRequest'
 import { selectCurrencyPair, selectExecutionStatus, selectPricingStatus, selectSpotTileData } from './selectors'
+import { TileViews } from '../workspace/workspaceHeader'
 
 export interface SpotTileContainerOwnProps {
   id: string
+  tileView: TileViews
   onPopoutClick?: () => void
   tornOff?: boolean
   tearable?: boolean

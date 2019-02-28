@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { AnalyticsRoute, BlotterRoute, SpotRoute, OpenFinRoute, ShellRoute } from './routes';
-import { usePlatform } from 'rt-components';
+import React, { FC } from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { AnalyticsRoute, BlotterRoute, SpotRoute, OpenFinRoute, ShellRoute } from './routes'
+import { usePlatform } from 'rt-components'
 
-const ShellSwitchRoute:FC = ()=>{
+const ShellSwitchRoute: FC = () => {
   const platform = usePlatform()
   return platform.name === 'openfin' ? <OpenFinRoute /> : <ShellRoute />
 }

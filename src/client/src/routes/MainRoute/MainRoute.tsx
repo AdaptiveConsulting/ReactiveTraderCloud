@@ -17,7 +17,6 @@ import { OpenFinLimitChecker } from '../../shell/openFin'
 
 const LOG_NAME = 'Application Service: '
 
-
 const store = configureStore(
   createApplicationServices({
     autobahn: new AutobahnConnectionProxy(

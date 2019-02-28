@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { PlatformAdapter } from './adapters'
 import { useContext } from 'react'
-import { platform } from './index';
+import { platform } from './index'
 
 export const PlatformContext = React.createContext<PlatformAdapter>(platform)
 export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = PlatformContext

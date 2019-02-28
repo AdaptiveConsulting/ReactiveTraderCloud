@@ -46,13 +46,9 @@ export const TileHeader = styled.div`
   align-items: center;
   justify-content: space-between;
 `
-export const SpotTileWrapper = styled.div<{ platform: PlatformAdapter }>`
+
+export const TileWrapperBase = styled.div`
   position: relative;
-  min-height: 10rem;
-  height: ${({ platform: { name } }) =>
-    name !== 'finsemble'
-      ? '100%'
-      : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
   &:hover ${TopRightButton} {
     opacity: 0.75;
   }
@@ -62,6 +58,15 @@ export const SpotTileWrapper = styled.div<{ platform: PlatformAdapter }>`
   color: ${({ theme }) => theme.core.textColor};
 `
 
+export const SpotTileWrapper = styled(TileWrapperBase)<{ platform: PlatformAdapter }>`
+  position: relative;
+  min-height: 10rem;
+  height: ${({ platform: { name } }) =>
+    name !== 'finsemble'
+      ? '100%'
+      : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
+`
+
 export const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme }) => theme.core.lightBackground};
   display: flex;
@@ -69,4 +74,9 @@ export const SpotTileStyle = styled(TileBaseStyle)`
   justify-content: space-between;
   flex-direction: column;
   overflow: hidden;
+`
+export const NotionalInputWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `

@@ -36,13 +36,13 @@ function calculatePosition(center: string = 'parent', width: number, height: num
     const windowWidth = window.innerWidth
       ? window.innerWidth
       : document.documentElement.clientWidth
-        ? document.documentElement.clientWidth
-        : screen.width
+      ? document.documentElement.clientWidth
+      : screen.width
     const windowHeight = window.innerHeight
       ? window.innerHeight
       : document.documentElement.clientHeight
-        ? document.documentElement.clientHeight
-        : screen.height
+      ? document.documentElement.clientHeight
+      : screen.height
     left = windowWidth / 2 - width / 2 + screenLeft
     top = windowHeight / 2 - height / 2 + screenTop
   }
