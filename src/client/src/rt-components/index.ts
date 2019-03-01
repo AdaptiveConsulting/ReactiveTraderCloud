@@ -1,17 +1,17 @@
 import {
-  Platform,
-  withPlatform,
+  platform,
   PlatformAdapter,
   externalWindowDefault,
   PlatformProvider,
   WindowConfig,
   openFinNotifications,
   setupGlobalOpenfinNotifications,
+  usePlatform,
 } from './platform'
 
 export {
-  Platform,
-  withPlatform,
+  platform,
+  usePlatform,
   externalWindowDefault,
   PlatformProvider,
   openFinNotifications,
@@ -27,5 +27,7 @@ export { default as Modal } from './modal'
 export { default as AdaptiveLoader } from './adaptive-loader'
 export { default as Loadable } from './loadable'
 export { default as Resizer } from './resizer'
+export { Timer } from './timer'
 export { RouteWrapper, RouteStyle } from './route-wrapper'
 export { default as Popup } from './popup'
+export { excelAdapter, InteropTopics } from './platform'

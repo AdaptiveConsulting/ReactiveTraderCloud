@@ -1,9 +1,8 @@
 import * as React from 'react'
 
-import MediaRecorder, { BlobEvent, MediaRecorderInterface } from './MediaRecorder'
-import { Timer } from './Timer'
+import MediaRecorder from './MediaRecorder'
+import { Timer } from 'rt-components'
 
-export type BlobEvent = BlobEvent
 export const mediaRecorderEvents = ['start', 'stop', 'dataavailable', 'pause', 'resume', 'error']
 
 export interface Props {
@@ -22,7 +21,7 @@ export interface Props {
 
 interface State {
   input?: MediaStream
-  recorder?: MediaRecorderInterface
+  recorder?: MediaRecorder
 
   recording: boolean
 }
@@ -48,7 +47,7 @@ class MediaRecorderComponent extends React.PureComponent<Props, State> {
     })
   }
 
-  recorder: MediaRecorderInterface
+  recorder: MediaRecorder
   async componentDidUpdate() {
     const { recorder } = this.state
 

@@ -8,26 +8,30 @@ import { styled } from 'rt-theme'
 import { Block } from '../StyleguideRoute/styled'
 import { LabelText } from './TextField'
 
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
-export interface Props {
+interface OrderStatusButtonClickHandler {
+  onSubmit?: () => void
+  onCancel?: () => void
+  onBuy?: () => void
+  onSell?: () => void
+}
+type OrderStatusButtonClickHandlerType = keyof OrderStatusButtonClickHandler
+
+interface Props extends OrderStatusButtonClickHandler {
   ready?: boolean
   requestQuote?: boolean
   query?: any
-  onSubmit?: () => void
-  onCancel?: () => void
-  onExpire?: () => void
-  onBuy?: () => void
-  onSell?: () => void
   onClick?: () => void
+  onExpire?: () => void
 }
 
 interface State extends Props {
-  countdown?: any
+  countdown?: Duration
   quote?: {
     bid: number
     ask: number
-    expiry?: any
+    expiry?: DateTime
   }
   query?: any
 }
@@ -52,12 +56,8 @@ export class OrderStatus extends React.Component<Props, State> {
     return next
   }
 
-  onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const { onClick, ...leftover } = this.props
-
-    const eventHandlerName = `on${_.capitalize(event.currentTarget.name)}`
-
-    const onEventHandler = leftover[eventHandlerName] || onClick
+  clickHandler = (handlerName: OrderStatusButtonClickHandlerType) => () => {
+    const onEventHandler = this.props[handlerName] || this.props.onClick
 
     if (onEventHandler) {
       onEventHandler()
@@ -70,7 +70,7 @@ export class OrderStatus extends React.Component<Props, State> {
     const countdown = Duration.fromObject({ seconds: 10 })
 
     this.setState({
-      quote: { bid, ask, exipry: DateTime.local().plus(countdown) },
+      quote: { bid, ask, expiry: DateTime.local().plus(countdown) },
       countdown,
     })
   }
@@ -99,7 +99,9 @@ export class OrderStatus extends React.Component<Props, State> {
     return (
       <React.Fragment>
         {requestQuote && <Timer duration={0} timeout={this.setQuote} />}
-        {quote && <Timer key={quote.expiry} duration={1000} interval={this.updateCountdown} />}
+        {quote && (
+          <Timer key={quote.expiry && quote.expiry.toString()} duration={1000} interval={this.updateCountdown} />
+        )}
         <StatusLayout fg="muteColor">
           <StatusBox>
             <LabelText>Status</LabelText>
@@ -132,26 +134,26 @@ export class OrderStatus extends React.Component<Props, State> {
         </StatusLayout>
         {quote ? (
           <ButtonLayout key="execute">
-            <Button name="buy" intent="primary" onClick={this.onClick}>
+            <Button intent="primary" onClick={this.clickHandler('onBuy')}>
               <LabelText>Buy</LabelText>
-              <StatusText fontSize={1.15}>{quote.bid.toFixed(2)}</StatusText>
+              <StatusText fontSize={1.125}>{quote.bid.toFixed(2)}</StatusText>
             </Button>
 
-            <Button name="sell" intent="bad" onClick={this.onClick}>
+            <Button intent="bad" onClick={this.clickHandler('onSell')}>
               <LabelText>Sell</LabelText>
-              <StatusText fontSize={1.15}>{quote.ask.toFixed(2)}</StatusText>
+              <StatusText fontSize={1.125}>{quote.ask.toFixed(2)}</StatusText>
             </Button>
 
-            <Button name="cancel" intent="mute" onClick={this.onClick}>
+            <Button intent="mute" onClick={this.clickHandler('onCancel')}>
               Cancel
             </Button>
           </ButtonLayout>
         ) : (
           <ButtonLayout key="submit">
-            <Button name="submit" intent={ready ? 'good' : 'mute'} disabled={!ready} onClick={this.onClick}>
+            <Button intent={ready ? 'good' : 'mute'} disabled={!ready} onClick={this.clickHandler('onSubmit')}>
               Submit
             </Button>
-            <Button name="cancel" intent="mute" disabled={!ready} onClick={this.onClick}>
+            <Button intent="mute" disabled={!ready} onClick={this.clickHandler('onCancel')}>
               Cancel
             </Button>
           </ButtonLayout>

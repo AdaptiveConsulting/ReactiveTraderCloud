@@ -15,7 +15,7 @@ export const TradeButton = styled('button')<{ direction: Direction }>`
   border: none;
   outline: none;
   padding: 0.75rem 1.5rem;
-
+  margin-bottom: 2px;
   .spot-tile:hover & {
     background-color: ${({ theme }) => theme.core.darkBackground};
   }
@@ -83,7 +83,7 @@ const getBigFigureDisplay = (bigFigure: number, rawRate: number) =>
 const renderBigFigureDisplay = (bigFigureDisplay: string) =>
   bigFigureDisplay.toString().length === 3 ? `${bigFigureDisplay}0` : bigFigureDisplay
 
-const PriceButtonComp: React.SFC<PriceButtonProps> = ({
+const PriceButtonComp: React.FC<PriceButtonProps> = ({
   big = 0,
   pip = 0,
   tenth = 0,

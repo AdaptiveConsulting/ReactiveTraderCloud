@@ -8,9 +8,11 @@ import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
 import { ExecuteTradeRequest } from './model/executeTradeRequest'
 import { selectCurrencyPair, selectExecutionStatus, selectPricingStatus, selectSpotTileData } from './selectors'
+import { TileViews } from '../workspace/workspaceHeader'
 
 export interface SpotTileContainerOwnProps {
   id: string
+  tileView: TileViews
   onPopoutClick?: () => void
   tornOff?: boolean
   tearable?: boolean
@@ -22,7 +24,7 @@ type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToPr
 
 type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
 
-const SpotTileContainer: React.SFC<SpotTileContainerProps> = ({
+const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   onMount,
   pricingStatus,
   tearable = false,

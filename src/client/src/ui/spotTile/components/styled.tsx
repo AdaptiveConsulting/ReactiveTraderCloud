@@ -1,5 +1,6 @@
-import { RouteStyle } from 'rt-components'
+import { RouteStyle, PlatformAdapter } from 'rt-components'
 import { styled } from 'rt-theme'
+import { TopRightButton, BottomRightButton } from './TileControls'
 
 export interface ColorProps {
   color?: string
@@ -44,4 +45,38 @@ export const TileHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`
+
+export const TileWrapperBase = styled.div`
+  position: relative;
+  &:hover ${TopRightButton} {
+    opacity: 0.75;
+  }
+  &:hover ${BottomRightButton} {
+    opacity: 0.75;
+  }
+  color: ${({ theme }) => theme.core.textColor};
+`
+
+export const SpotTileWrapper = styled(TileWrapperBase)<{ platform: PlatformAdapter }>`
+  position: relative;
+  min-height: 10rem;
+  height: ${({ platform: { name } }) =>
+    name !== 'finsemble'
+      ? '100%'
+      : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
+`
+
+export const SpotTileStyle = styled(TileBaseStyle)`
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+  flex-direction: column;
+  overflow: hidden;
+`
+export const NotionalInputWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `

@@ -27,14 +27,14 @@ export const OpenFinChrome: SFC = ({ children }) => (
   </React.Fragment>
 )
 
-export const OpenFinHeader: React.SFC<ControlProps> = ({ ...props }) => (
+export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
   <Header>
     <DragRegion />
     <OpenFinControls {...props} />
   </Header>
 )
 
-export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, close }) => (
+export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close }) => (
   <React.Fragment>
     {minimize ? (
       <HeaderControl intent="aware" onClick={minimize}>

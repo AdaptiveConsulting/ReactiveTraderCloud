@@ -13,21 +13,20 @@ const CHAR_CODE_UNIT_SEP = 31
 const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]
 const MAX_NOTIONAL_VALUE = 1000000000
 
-const CurrencyPairSymbol = styled.div`
+const CurrencyPairSymbol = styled('span')`
   opacity: 0.59;
   font-size: 0.625rem;
-  line-height: 1rem;
+  line-height: 1.2rem;
   padding-right: 0.375rem;
 `
 
 const InputWrapper = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 export const Input = styled.input`
   background: none;
+  text-align: center;
   outline: none;
   border: none;
   font-size: 0.75rem;

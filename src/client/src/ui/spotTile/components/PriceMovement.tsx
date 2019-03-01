@@ -26,7 +26,7 @@ const PriceMovementStyle = styled.div`
   width: 100%;
 `
 
-const PriceMovement: React.SFC<Props> = ({ priceMovementType, spread }) => (
+const PriceMovement: React.FC<Props> = ({ priceMovementType, spread }) => (
   <PriceMovementStyle>
     <MovementIcon
       show={priceMovementType === PriceMovementTypes.Up}

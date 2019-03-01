@@ -20,7 +20,7 @@ export const analyticsServiceEpic: ApplicationEpic = (action$, $state, { loadBal
   const refAction$ = action$.pipe(ofType<Action, ReferenceServiceAction>(REF_ACTION_TYPES.REFERENCE_SERVICE))
 
   const subscribeAction$ = action$.pipe(
-    ofType<Action, SubscribeToAnalyticsAction>(ANALYTICS_ACTION_TYPES.SUBCRIBE_TO_ANALYTICS)
+    ofType<Action, SubscribeToAnalyticsAction>(ANALYTICS_ACTION_TYPES.SUBCRIBE_TO_ANALYTICS),
   )
 
   const combined$ = refAction$.pipe(combineLatest(subscribeAction$))
@@ -29,8 +29,8 @@ export const analyticsServiceEpic: ApplicationEpic = (action$, $state, { loadBal
     mergeMapTo<FetchAnalyticsAction>(
       analyticsService.getAnalyticsStream(CURRENCY).pipe(
         map(fetchAnalytics),
-        takeUntil(action$.pipe(applicationDisconnected))
-      )
-    )
+        takeUntil(action$.pipe(applicationDisconnected)),
+      ),
+    ),
   )
 }

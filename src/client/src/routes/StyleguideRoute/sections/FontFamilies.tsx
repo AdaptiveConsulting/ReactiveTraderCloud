@@ -7,13 +7,13 @@ import { Paragraph, SectionBlock, Text, TextProps } from '../styled'
 import { PassThroughProps } from '../tools'
 import { css } from 'styled-components'
 
-const SIZES = [
-  ['Heading H1', 55, 3.5],
-  ['Heading H2', 34, 2.5],
-  ['Heading H3', 21, 1.5],
-  ['Heading H4', 13, 1],
-  ['Body', 11, 1],
-  ['Caption', 8, 1],
+const SIZES: Array<[string, TextProps['fontSize'], TextProps['lineHeight']]> = [
+  ['Heading H1', 3.4375, 3.5],
+  ['Heading H2', 2.125, 2.5],
+  ['Heading H3', 1.3125, 1.5],
+  ['Heading H4', 0.8125, 1],
+  ['Body', 0.6875, 1],
+  ['Caption', 0.5, 1],
 ]
 
 const CHARACTERS = [
@@ -49,7 +49,7 @@ const MONTSERRAT = {
   ],
 }
 
-export const FontFamilies: React.SFC<PassThroughProps> = props => (
+export const FontFamilies: React.FC<PassThroughProps> = props => (
   <React.Fragment>
     <SectionBlock mh={1}>
       <H2>Font Families</H2>
@@ -96,7 +96,7 @@ export const FontFamilies: React.SFC<PassThroughProps> = props => (
               {label} — {fontSize}
               px
             </Text>
-            <Paragraph fontSize={(fontSize as number) / 16} lineHeight={lineHeight}>
+            <Paragraph fontSize={fontSize} lineHeight={lineHeight}>
               Adaptive Financial
             </Paragraph>
           </React.Fragment>
@@ -106,7 +106,7 @@ export const FontFamilies: React.SFC<PassThroughProps> = props => (
   </React.Fragment>
 )
 
-const FontFamilySample: React.SFC<{
+const FontFamilySample: React.FC<{
   fontFamily: string
   fontFaces: typeof LATO.fontFaces
   characters?: string[]
@@ -142,7 +142,7 @@ const FontFamilySample: React.SFC<{
   </FontFamilySampleGrid>
 )
 
-const Heading: React.SFC = props => <Paragraph display="block" fontSize={1} lineHeight={2} mt={2} {...props} />
+const Heading: React.FC = props => <Paragraph display="block" fontSize={1} lineHeight={2} mt={2} {...props} />
 
 const FontFamilySampleGrid = styled(Text)<TextProps>`
   display: grid;
@@ -152,14 +152,14 @@ const FontFamilySampleGrid = styled(Text)<TextProps>`
   overflow: hidden;
 `
 
-const Glyph: React.SFC<PassThroughProps> = props => (
+const Glyph: React.FC<PassThroughProps> = props => (
   <div>
     <Heading>Glyph</Heading>
     <Paragraph fontSize={5} lineHeight={5} fontWeight="bold" {...props} />
   </div>
 )
 
-const CharacterMap: React.SFC<TextProps> = props => (
+const CharacterMap: React.FC<TextProps> = props => (
   <Text display="block" fontSize={1} fontWeight="bold" whiteSpace="pre-wrap" {...props} />
 )
 

@@ -9,7 +9,7 @@ export interface Props {
   highlightTradeInBlotter?: () => void
 }
 
-const TradeNotification: React.SFC<Props> = ({ trade: trade, dismissNotification, highlightTradeInBlotter }) => {
+const TradeNotification: React.FC<Props> = ({ trade: trade, dismissNotification, highlightTradeInBlotter }) => {
   const formattedValueDate = trade
     ? moment(trade.valueDate)
         .format('DD MMM')

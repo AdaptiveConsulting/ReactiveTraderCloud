@@ -1,4 +1,5 @@
 import { ApplicationConfig, ApplicationType } from './applicationConfigurations'
+import { excelAdapter } from 'rt-components'
 
 export async function open(
   config: ApplicationConfig,
@@ -17,15 +18,16 @@ export async function open(
           return createOpenFinWindow(config)
         case 'download':
           return downloadOrLaunchLimitChecker(config)
-
         case 'application':
         default: {
           const app = await createOpenFinApplication(config)
           await new Promise((resolve, reject) => app.run(resolve, reject))
-
           return app
         }
       }
+    } else if (provider.platform === 'excel') {
+      await excelAdapter.actions.init()
+      excelAdapter.actions.openExcel()
     }
   }
   // open as url

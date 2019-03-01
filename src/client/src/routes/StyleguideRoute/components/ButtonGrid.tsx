@@ -35,9 +35,9 @@ export default (() => (
       <ButtonVariants pill outline />
     </ButtonColumn>
   </Root>
-)) as React.SFC
+)) as React.FC
 
-const ButtonVariants: React.SFC<PassThroughProps> = props => (
+const ButtonVariants: React.FC<PassThroughProps> = props => (
   <React.Fragment>
     {
       // standard

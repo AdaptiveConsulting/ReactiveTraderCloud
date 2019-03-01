@@ -1,6 +1,5 @@
-import React from 'react'
-import { PlatformAdapter, withPlatform, WindowConfig } from 'rt-components'
-import { withDefaultProps } from 'rt-util'
+import { FC, useEffect } from 'react'
+import { usePlatform, WindowConfig } from 'rt-components'
 import { WindowCenterStatus } from './types'
 
 const defaultConfig: WindowConfig = {
@@ -12,51 +11,48 @@ const defaultConfig: WindowConfig = {
 }
 
 export interface ExternalWindowProps {
-  title: string
-  onBlock: () => void
+  title?: string
+  onBlock?: () => void
   onUnload: () => void
-  config: WindowConfig
+  config?: WindowConfig
 }
 
-const defaultWindowProps: ExternalWindowProps = {
-  title: '',
-  onBlock: null as () => void,
-  onUnload: null as () => void,
-  config: defaultConfig,
+const ExternalWindow: FC<ExternalWindowProps> = ({
+  title = '',
+  onBlock = null as () => void,
+  onUnload = null as () => void,
+  config = defaultConfig,
+}) => {
+  const platform = usePlatform()
+
+  useEffect(() => {
+    let externalWindow: Window
+
+    const release = () => {
+      if (externalWindow) {
+        window.removeEventListener('beforeunload', release)
+      }
+      if (typeof onUnload === 'function') {
+        onUnload.call(null)
+      }
+    }
+
+    const getWindow = async () => {
+      externalWindow = await platform.window.open(config, release)
+      if (externalWindow) {
+        window.addEventListener('beforeunload', release)
+      }
+    }
+
+    getWindow()
+    return () => {
+      if (externalWindow) {
+        externalWindow.close()
+      }
+    }
+  }, [])
+
+  return null
 }
 
-class ExternalWindow extends React.Component<ExternalWindowProps & { platform: PlatformAdapter }> {
-  externalWindow: Window | null = null
-
-  async componentDidMount() {
-    const { config, platform } = this.props
-
-    this.externalWindow = await platform.window.open(config, this.release)
-
-    if (this.externalWindow) {
-      window.addEventListener('beforeunload', this.release)
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.externalWindow) {
-      this.closeWindow()
-    }
-  }
-
-  render() {
-    return null as JSX.Element
-  }
-
-  closeWindow = () => this.externalWindow.close()
-
-  release = () => {
-    const { onUnload } = this.props
-    if (this.externalWindow) {
-      window.removeEventListener('beforeunload', this.release)
-    }
-    onUnload.call(null)
-  }
-}
-
-export default withPlatform(withDefaultProps(defaultWindowProps, ExternalWindow))
+export default ExternalWindow

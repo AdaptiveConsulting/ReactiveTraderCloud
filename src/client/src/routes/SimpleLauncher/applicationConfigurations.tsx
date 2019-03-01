@@ -1,4 +1,4 @@
-import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon } from './icons'
+import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon, excelIcon } from './icons'
 
 const options = {
   autoShow: true,
@@ -16,13 +16,31 @@ const options = {
     reloadIgnoringCache: true,
     zoom: true,
   },
+  preload: [
+    // OpenFin Excel API not included here (not included in standard package)
+    {
+      url: `http://${location.host}/plugin/service-loader.js`,
+    },
+    {
+      url: `http://${location.host}/plugin/fin.desktop.Excel.js`,
+    },
+  ],
+  appAssets: [
+    {
+      src: `http://${location.host}/plugin/add-in.zip`,
+      alias: 'excel-api-addin',
+      version: '2.0.0',
+      forceDownload: true,
+    },
+  ],
 }
+
 export type ApplicationType = 'window' | 'download' | 'application'
-type Platform = 'browser' | 'openfin'
+type Platform = 'browser' | 'openfin' | 'excel'
 interface Provider {
   platform: Platform
   as: ApplicationType
-  options: fin.WindowOptions
+  options?: fin.WindowOptions
   cornerRounding?: {
     height: number
     width: number
@@ -31,9 +49,9 @@ interface Provider {
 
 export interface ApplicationConfig {
   name: string
-  url: string
+  url?: string
   icon: JSX.Element
-  provider: Provider
+  provider?: Provider
 }
 
 export const appConfigs: ApplicationConfig[] = [
@@ -92,6 +110,14 @@ export const appConfigs: ApplicationConfig[] = [
         height: 10,
         width: 8,
       },
+    },
+  },
+  {
+    name: 'Excel',
+    icon: excelIcon,
+    provider: {
+      platform: 'excel',
+      as: 'application',
     },
   },
 ]

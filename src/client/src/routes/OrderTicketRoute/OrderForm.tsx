@@ -5,7 +5,7 @@ import React from 'react'
 import { styled } from 'rt-theme'
 
 import { TextField } from './TextField'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 export interface Fields {
   product: string

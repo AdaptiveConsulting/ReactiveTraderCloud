@@ -27,7 +27,7 @@ class BlobDownload extends React.PureComponent<Props, State> {
   }
 
   componentDidMount = () => {
-    if (this.props.force && this.anchorRef) {
+    if (this.props.force && this.anchorRef.current) {
       this.anchorRef.current.click()
     }
   }

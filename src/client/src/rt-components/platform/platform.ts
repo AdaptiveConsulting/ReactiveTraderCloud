@@ -1,21 +1,21 @@
 import { Browser, Finsemble, OpenFin } from './adapters'
+import { PlatformAdapter } from 'rt-components'
 
 const isFinsemble = typeof window.FSBL !== 'undefined'
 const isOpenFin = typeof fin !== 'undefined'
 
-const getPlatform = () => {
+const getPlatform: () => PlatformAdapter = () => {
   if (isFinsemble) {
     console.info('Using Finsemble API')
-    return Finsemble
+    return new Finsemble()
   }
   if (isOpenFin) {
     console.info('Using OpenFin API')
-    return OpenFin
+    return new OpenFin()
   }
   console.info('Using Browser API')
-  return Browser
+  return new Browser()
 }
 
-const Platform = getPlatform()
-
-export default Platform
+const platform = getPlatform()
+export default platform

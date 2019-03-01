@@ -15,7 +15,7 @@ import { OrderForm, OrderFormFields } from './OrderForm'
 import { OrderStatus } from './OrderStatus'
 
 import { Notification } from './Notification'
-import { Timer } from './Timer'
+import { Timer } from 'rt-components'
 
 interface State {
   executed?: boolean
@@ -35,15 +35,13 @@ interface Props {
 
 export class OrderTicket extends PureComponent<Props, State> {
   state: State = {
-    ...{
-      requestSession: false,
-      requestQuote: false,
-      sessionActive: false,
-      sessionResult: null,
-      source: 'microphone',
-      query: {},
-      features: {},
-    },
+    requestSession: false,
+    requestQuote: false,
+    sessionActive: false,
+    sessionResult: null,
+    source: 'microphone',
+    query: {},
+    features: {},
     ...(process.env.NODE_ENV === 'development' &&
       {
         // requestSession: true,
@@ -206,7 +204,7 @@ export class OrderTicket extends PureComponent<Props, State> {
         <AppLayout bg="core.darkBackground">
           <ChromeLayout bg="primary.base">
             <WindowControls />
-            <Text letterSpacing="1px" fontSize="0.625rem" fontWeight={300}>
+            <Text letterSpacing="1px" fontSize={0.75} fontWeight={300}>
               Order Ticket
             </Text>
           </ChromeLayout>
@@ -292,7 +290,7 @@ export class OrderTicket extends PureComponent<Props, State> {
   }
 }
 
-const Viewport = styled(Block.withComponent(HotKeys))`
+const Viewport = styled(Block.withComponent(HotKeys) as typeof Block)`
   display: flex;
   align-items: center;
   justify-content: center;

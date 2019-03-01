@@ -5,7 +5,7 @@ import { Column, H2 } from '../elements'
 import { Paragraph, SectionBlock } from '../styled'
 import { PassThroughProps } from '../tools'
 
-export const ColorSpecturm: React.SFC<PassThroughProps> = props => (
+export const ColorSpecturm: React.FC<PassThroughProps> = props => (
   <React.Fragment>
     <SectionBlock py={0} pt={2} mh={0} {...props}>
       <H2>Full Color Spectrum</H2>

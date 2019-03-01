@@ -3,15 +3,22 @@ import React, { Component } from 'react'
 
 import { ConnectionState } from 'rt-system'
 import { ServiceStatus } from 'rt-types'
-import { Content, Fill, Header, Root } from './styled'
+import { Content, Fill, Header, Root, OpenFinLogoContainer } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
-import { PlatformAdapter, withPlatform } from 'rt-components'
+import { usePlatform } from 'rt-components'
 
-const Logo: React.SFC<{ platform: PlatformAdapter }> = ({ platform }) => (
-  <div>{platform.type === 'desktop' && <OpenFinLogo />}</div>
-)
-
-const LogoWithPlatform = withPlatform(Logo)
+const LogoWithPlatform: React.FC = () => {
+  const platform = usePlatform()
+  return (
+    <div>
+      {platform.name === 'openfin' && (
+        <OpenFinLogoContainer>
+          <OpenFinLogo />
+        </OpenFinLogoContainer>
+      )}
+    </div>
+  )
+}
 
 export default class StatusBar extends Component<
   {

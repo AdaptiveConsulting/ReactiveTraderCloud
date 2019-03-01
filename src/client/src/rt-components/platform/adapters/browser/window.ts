@@ -2,7 +2,7 @@ import { WindowConfig } from '../types'
 
 type BrowserWindowProps = WindowConfig
 
-export const openBrowserWindow = (config: BrowserWindowProps, onClose: () => void) => {
+export const openBrowserWindow = (config: BrowserWindowProps, onClose?: () => void) => {
   const { name, width, height, center, url } = config
   const { left, top } = calculatePosition(center, width, height)
 
@@ -17,7 +17,7 @@ export const openBrowserWindow = (config: BrowserWindowProps, onClose: () => voi
     }),
   )
 
-  if (onClose) {
+  if (onClose && win) {
     win.addEventListener('beforeunload', onClose)
   }
 
@@ -36,13 +36,13 @@ function calculatePosition(center: string = 'parent', width: number, height: num
     const windowWidth = window.innerWidth
       ? window.innerWidth
       : document.documentElement.clientWidth
-        ? document.documentElement.clientWidth
-        : screen.width
+      ? document.documentElement.clientWidth
+      : screen.width
     const windowHeight = window.innerHeight
       ? window.innerHeight
       : document.documentElement.clientHeight
-        ? document.documentElement.clientHeight
-        : screen.height
+      ? document.documentElement.clientHeight
+      : screen.height
     left = windowWidth / 2 - width / 2 + screenLeft
     top = windowHeight / 2 - height / 2 + screenTop
   }

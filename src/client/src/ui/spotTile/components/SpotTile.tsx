@@ -1,115 +1,47 @@
-/* tslint:disable */
-
-import numeral from 'numeral'
-import React, { PureComponent } from 'react'
-import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import { createTradeRequest, DEFAULT_NOTIONAL, ExecuteTradeRequest, SpotTileData, TradeRequest } from '../model'
+import React, { PureComponent, FC } from 'react'
 import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
-import { DeliveryDate, TileBaseStyle, TileHeader, TileSymbol } from './styled'
-import { styled } from 'rt-theme'
-import { withPlatform, PlatformAdapter } from 'rt-components'
-import { TopRightButton, BottomRightButton } from './TileControls'
+import TileHeader from './TileHeader'
+import { NotionalInputWrapper, SpotTileWrapper, SpotTileStyle } from './styled'
+import { Props } from './types'
+import { usePlatform } from 'rt-components'
 
-export const SpotTileWrapper = withPlatform(styled.div<{ platform: PlatformAdapter }>`
-  position: relative;
-  min-height: 10rem;
-  height: ${({ platform: { name } }) =>
-    name !== 'finsemble'
-      ? '100%'
-      : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
-  &:hover ${TopRightButton} {
-    opacity: 0.75;
-  }
-  &:hover ${BottomRightButton} {
-    opacity: 0.75;
-  }
-  color: ${({ theme }) => theme.core.textColor};
-`)
-
-export const SpotTileStyle = styled(TileBaseStyle)`
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  display: flex;
-  height: 100%;
-  justify-content: space-between;
-  flex-direction: column;
-  overflow: hidden;
-`
-
-export interface Props {
-  currencyPair: CurrencyPair
-  spotTileData: SpotTileData
-  executionStatus: ServiceConnectionStatus
-  executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
+const SpotTileWrapperWithPlatform: FC = props => {
+  const platform = usePlatform()
+  return <SpotTileWrapper {...props} platform={platform} />
 }
-
-interface State {
-  notional: string
-}
-
-export default class SpotTile extends PureComponent<Props, State> {
-  state = {
-    notional: '1000000',
-  }
-
-  updateNotional = (notional: string) => this.setState({ notional })
-
-  executeTrade = (direction: Direction, rawSpotRate: number) => {
-    const { currencyPair, executeTrade } = this.props
-    const notional = this.getNotional()
-    const tradeRequestObj: TradeRequest = {
-      direction,
-      currencyBase: currencyPair.base,
-      symbol: currencyPair.symbol,
-      notional,
-      rawSpotRate,
-    }
-    executeTrade(createTradeRequest(tradeRequestObj))
-  }
-
-  getNotional = () => numeral(this.state.notional).value() || DEFAULT_NOTIONAL
-
-  canExecute = () => {
-    const { spotTileData, executionStatus } = this.props
-    return Boolean(
-      executionStatus === ServiceConnectionStatus.CONNECTED &&
-        !spotTileData.isTradeExecutionInFlight &&
-        spotTileData.price,
-    )
-  }
-
+export default class SpotTile extends PureComponent<Props> {
   render() {
     const {
       currencyPair,
       spotTileData: { price },
+      notional,
+      updateNotional,
+      executeTrade,
+      canExecute,
       children,
     } = this.props
-    const { notional } = this.state
 
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
-
+    const date = spotDate && `SPT (${spotDate})`
+    const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     return (
-      <SpotTileWrapper>
+      <SpotTileWrapperWithPlatform>
         <SpotTileStyle className="spot-tile">
-          <TileHeader>
-            <TileSymbol>{`${currencyPair.base}/${currencyPair.terms}`}</TileSymbol>
-            <DeliveryDate className="delivery-date">{spotDate && `SPT (${spotDate})`} </DeliveryDate>
-          </TileHeader>
+          <TileHeader baseTerm={baseTerm} date={date} />
           <PriceControls
-            executeTrade={this.executeTrade}
+            executeTrade={executeTrade}
             priceData={price}
             currencyPair={currencyPair}
-            disabled={!this.canExecute()}
+            disabled={canExecute}
           />
-          <NotionalInput
-            notional={notional}
-            currencyPairSymbol={currencyPair.base}
-            updateNotional={this.updateNotional}
-          />
+          <NotionalInputWrapper>
+            <NotionalInput notional={notional} currencyPairSymbol={currencyPair.base} updateNotional={updateNotional} />
+          </NotionalInputWrapper>
         </SpotTileStyle>
         {children}
-      </SpotTileWrapper>
+      </SpotTileWrapperWithPlatform>
     )
   }
 }

@@ -2,7 +2,7 @@ import { PlatformAdapter } from 'rt-components'
 import {
   AutobahnConnection,
   createConnection$,
-  ServiceClient,
+  ServiceStubWithLoadBalancer,
   serviceStatusStream$,
   ServiceStub,
   ConnectionEvent,
@@ -14,7 +14,7 @@ import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
 import { retryWhen, multicast, refCount } from 'rxjs/operators'
 import { OpenFinLimitChecker } from './shell/openFin'
-import { ReferenceDataService } from './shell/referenceData'
+import { referenceDataService } from './shell/referenceData'
 const HEARTBEAT_TIMEOUT = 3000
 
 
@@ -50,12 +50,12 @@ export function createApplicationServices({ autobahn, limitChecker, user, platfo
     refCount(),
   )
 
-  const loadBalancedServiceStub = new ServiceClient(serviceStub, serviceStatus$)
+  const loadBalancedServiceStub = new ServiceStubWithLoadBalancer(serviceStub, serviceStatus$)
 
-  const referenceDataService = new ReferenceDataService(loadBalancedServiceStub)
+  const referenceDataService$ = referenceDataService(loadBalancedServiceStub)
 
   return {
-    referenceDataService,
+    referenceDataService$,
     platform,
     limitChecker,
     loadBalancedServiceStub,

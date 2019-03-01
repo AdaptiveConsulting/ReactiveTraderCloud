@@ -28,7 +28,7 @@ const lastPositionColor: (lastPos: number) => FormattedLastPosition = (lastPos: 
   return { color, lastPosition }
 }
 
-const LastPosition: React.SFC<LastPositionProps> = ({ lastPos = 0 }) => {
+const LastPosition: React.FC<LastPositionProps> = ({ lastPos = 0 }) => {
   const { color, lastPosition } = lastPositionColor(lastPos)
   return (
     <div>

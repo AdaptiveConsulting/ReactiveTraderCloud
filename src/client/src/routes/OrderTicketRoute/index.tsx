@@ -1,14 +1,12 @@
 import { mix } from 'polished'
 import React, { PureComponent, FunctionComponent } from 'react'
 
-import { Platform, PlatformProvider } from 'rt-components'
+import { platform, PlatformProvider } from 'rt-components'
 import { ThemeProvider, Theme } from 'rt-theme'
 
 import { OrderTicket } from './OrderTicket'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import { withTheme } from 'styled-components'
-
-const platform = new Platform()
 
 interface Props {
   theme: Theme
