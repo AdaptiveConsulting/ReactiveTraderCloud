@@ -4,7 +4,7 @@ import uuid from 'uuid/v1'
 import AutobahnConnectionProxy from './connection'
 import { ConnectionEventType, ConnectionOpenEvent, createConnection$ } from './connection'
 import { ServiceStub } from './connection'
-import { RawPrice } from './domain'
+import { convertToPrice, Price, RawPrice } from './domain'
 import { RawServiceStatus } from './domain'
 import logger from './logger'
 
@@ -20,18 +20,18 @@ const connection$ = createConnection$(autobahn).pipe(shareReplay(1))
 
 const stub = new ServiceStub('BHA', connection$)
 
-const HISTORY_LENGTH = 10000
+const HISTORY_LENGTH = 1000
 
 logger.info('Subscribing to Pricing')
 
-let latest: ReadonlyMap<string, RawPrice[]>
+let latest: ReadonlyMap<string, Price[]>
 
-const savePrices = scan<RawPrice, Map<string, RawPrice[]>>((acc, price) => {
-  if (!acc.has(price.Symbol)) {
-    acc.set(price.Symbol, [])
+const savePrices = scan<Price, Map<string, Price[]>>((acc, price) => {
+  if (!acc.has(price.symbol)) {
+    acc.set(price.symbol, [])
   }
 
-  const history = acc.get(price.Symbol)!
+  const history = acc.get(price.symbol)!
   if (history.length >= HISTORY_LENGTH) {
     history.shift()
   }
@@ -42,7 +42,9 @@ const savePrices = scan<RawPrice, Map<string, RawPrice[]>>((acc, price) => {
 
 const priceSubsription$ = stub
   .subscribeToTopic<RawPrice>('prices')
-  .pipe(savePrices)
+  .pipe(
+    map(price=>convertToPrice(price)),
+    savePrices)
   .subscribe(newPrices => {
     latest = newPrices
   })
@@ -71,10 +73,13 @@ type PriceHistoryRequest = [{ payload: string }]
 
 session$.subscribe(session => {
   logger.info('Connection Established')
-  logger.info('Registering getPriceHistory')
+  const registration = `${hostInstance}.getPriceHistory`
+  logger.info(`Registering ${registration}`)
 
-  session.register('getPriceHistory', (request: PriceHistoryRequest) => {
-    logger.info('Request recieved')
+
+  logger.info('Connection Established')
+
+  session.register(registration, (request: PriceHistoryRequest) => {
 
     if (!request || !request[0] || !request[0].payload) {
       throw new Error(`The request for price history was malformed: ${request}`)
@@ -84,6 +89,9 @@ session$.subscribe(session => {
     if (!latest.has(symbol)) {
       throw Error(`The currency pair requested was not recognised: ${symbol}`)
     }
+    logger.info(`Request recieved ${symbol}`)
+
+
     return latest.get(symbol)
   })
 })

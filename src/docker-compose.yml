@@ -73,10 +73,10 @@ services:
   pricehistory:
     build:
       dockerfile: Dockerfile.dev
-      context: ./server/Adaptive.ReactiveTrader.Server.RFQ
+      context: ./server/Adaptive.ReactiveTrader.Server.PriceHistory
     volumes:
       - /app/node_modules
-      - ./server/Adaptive.ReactiveTrader.Server.RFQ:/app
+      - ./server/Adaptive.ReactiveTrader.Server.PriceHistory:/app
     depends_on:
       - broker
       - pricing

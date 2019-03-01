@@ -51,6 +51,7 @@ const TileSwitch: React.FC<Props> = ({
 TileSwitch.defaultProps = {
   spotTileData: {
     isTradeExecutionInFlight: false,
+    historicPrices:[],
     price: {
       ask: 0,
       bid: 0,

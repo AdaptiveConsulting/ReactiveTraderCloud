@@ -11,6 +11,7 @@ export enum TILE_ACTION_TYPES {
   DISMISS_NOTIFICATION = '@ReactiveTraderCloud/DISMISS_NOTIFICATION',
   SPOT_TILE_SUBSCRIBE = '@ReactiveTraderCloud/SPOT_TILE_SUBSCRIBE',
   SPOT_PRICES_UPDATE = '@ReactiveTraderCloud/SPOT_PRICES_UPDATE',
+  PRICE_HISTORY_RECIEVED= '@ReactiveTraderCloud/PRICE_HISTORY_RECIEVED'
 }
 
 export const SpotTileActions = {
@@ -27,6 +28,7 @@ export const SpotTileActions = {
   dismissNotification: action<TILE_ACTION_TYPES.DISMISS_NOTIFICATION, string>(TILE_ACTION_TYPES.DISMISS_NOTIFICATION),
   subscribeToSpotTile: action<TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE, string>(TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE),
   priceUpdateAction: action<TILE_ACTION_TYPES.SPOT_PRICES_UPDATE, SpotPriceTick>(TILE_ACTION_TYPES.SPOT_PRICES_UPDATE),
+  priceHistoryReceieved: action<TILE_ACTION_TYPES.PRICE_HISTORY_RECIEVED, SpotPriceTick[], string>(TILE_ACTION_TYPES.PRICE_HISTORY_RECIEVED),
 }
 
 export type SpotTileActions = ActionUnion<typeof SpotTileActions>

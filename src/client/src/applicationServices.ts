@@ -35,13 +35,7 @@ export function createApplicationServices({ autobahn, limitChecker, user, platfo
   )
 
   const serviceStub = new ServiceStub(user.code, connection$)
-  serviceStub.requestResponse('getPriceHistory', 'EURUSD').subscribe(
-    (x)=>{
-      console.error(x)
-    },(e)=>{
-      console.error(e)
-    }
-  )
+ 
   const statusUpdates$ = serviceStub.subscribeToTopic<RawServiceStatus>('status')
   const serviceStatus$ = serviceStatusStream$(statusUpdates$, HEARTBEAT_TIMEOUT).pipe(
     multicast(() => {
