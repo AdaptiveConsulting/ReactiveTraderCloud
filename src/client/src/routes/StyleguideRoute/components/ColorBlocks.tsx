@@ -51,7 +51,8 @@ const ShadeSwatchStrip: React.FC<{ shadeSet: Array<LightShade | DarkShade>; pale
       return (
         <Swatch key={shadeName} bg={color}>
           <ColorClipboard color={color} iconColor={fgColor} />
-          <SwatchLevel fg={fgColor}>{shadeName}</SwatchLevel>
+          <SwatchShadeName fg={fgColor}>{shadeName}</SwatchShadeName>
+          <SwatchValue fg={fgColor}>{color}</SwatchValue>
         </Swatch>
       )
     })}
@@ -70,7 +71,7 @@ const SwatchValue = styled(SwatchName)`
   text-transform: uppercase;
 `
 
-const SwatchLevel = styled(SwatchName)`
+const SwatchShadeName = styled(SwatchName)`
   font-size: 0.75rem;
 `
 

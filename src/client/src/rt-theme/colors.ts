@@ -5,6 +5,8 @@ import { mix, rgb, rgba } from 'polished'
 ////////////////////////////////////////////////////////////////////////////////
 export type Color = string
 
+/*----------------------------- 1.1 Single colors ----------------------------*/
+
 // Some designs will redefine white to achieve different
 // visual effects on the viewers eyes.
 const WHITE: Color = rgb(255, 255, 255)
@@ -36,6 +38,37 @@ const OFFBLACK = rgb(68, 76, 95) // sRGB
 const DARKGREY = '#333333' // For text over light background
 const BRAND = rgb(42, 87, 141) // Adaptive blue a.k.a. #2A578D
 
+/*---------------------------- 1.2 Template colors ---------------------------*/
+
+// TODO: Kept for backward compatibility purposes. Consider unifying as accent palettes
+
+export const template = {
+  green: {
+    dark: '#23b47a',
+    normal: '#28c988',
+    light: '#93e4c3',
+  },
+  red: {
+    dark: '#e04444',
+    normal: '#f94c4c',
+    light: '#fca5a5',
+  },
+  white: {
+    dark: '#dfdfdf',
+    normal: '#ffffff',
+  },
+  blue: {
+    dark: '#4c76c4',
+    normal: '#5f94f5',
+    light: '#aec9f9',
+  },
+  yellow: {
+    dark: '#A38D00',
+    normal: '#F7D036',
+    light: '#F4E0A4',
+  },
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// 2. Palettes //////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +88,7 @@ type PaletteShadeSet = LightShadeSet & DarkShadeSet
  */
 export type ColorPalette = BasePalette & PaletteShadeSet
 
-/*-------------------------- 2.1 Base color palettes --------------------------*/
+/*-------------------------- 2.1 Base color palettes -------------------------*/
 
 // We use a base color to generate a complement
 // of shades above and below at 10% increments.
@@ -212,8 +245,6 @@ export const colors = {
   light,
   dark,
 }
-
-export default colors
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////   🐲   ///////////////////////////////////////////

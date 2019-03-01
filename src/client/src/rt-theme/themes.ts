@@ -1,9 +1,8 @@
 import { darken } from 'polished'
 import { mapValues } from 'lodash'
-import template from './template'
 import { keyframes } from 'styled-components'
 
-import colors, { AccentPaletteMap, Color, CorePalette, CorePaletteMap } from './colors'
+import { colors, template, AccentPaletteMap, Color, CorePalette, CorePaletteMap } from './colors'
 
 interface BaseTheme {
   white: Color
@@ -104,7 +103,7 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
   },
 
   tile: {
-    inputColor: secondary['4'],
+    inputColor: secondary[4],
   },
 
   flash: keyframes`
