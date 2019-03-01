@@ -11,14 +11,13 @@ export type AccentPaletteMap = AccentPaletteMap
 export { default as GlobalStyle } from './globals'
 import baseStyled, { ThemedStyledInterface } from 'styled-components'
 
-import { Theme } from './createTheme'
-export type Theme = Theme
 export const styled: ThemedStyledInterface<Theme> = baseStyled
 
 export { ThemeName, ThemeProvider, ThemeConsumer } from './ThemeContext'
-import { themes } from './themes'
+import { Theme, themes } from './themes'
+export type Theme = Theme
 export { themes }
-export { resolvesColor } from './resolvesColor'
+export { resolvesColor, getColor } from './resolvesColor'
 export { default as ThemeStorageSwitch } from './ThemeStorageSwitch'
 
 // @ts-ignore

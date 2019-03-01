@@ -1,10 +1,18 @@
 import _ from 'lodash'
+import { Theme } from './themes'
 
 interface Props {
   theme: any
 }
 type Resolve = (props: Props) => string
 type Selector = string | string[] | Resolve | any
+
+const isColor = (value: string) => value[0] === '#' || _.startsWith(value, 'rgb') || _.startsWith(value, 'hsl')
+
+export const getColor = (theme: Theme, color: string, fallback?: string) =>
+  isColor(color)
+    ? color
+    : _.get(theme, color) || _.get(theme.colors, color) || _.get(theme.colors.spectrum, color) || fallback
 
 export const resolvesColor: (color: Selector, other?: Selector) => (_: any) => any = (
   color: Selector,
@@ -14,19 +22,20 @@ export const resolvesColor: (color: Selector, other?: Selector) => (_: any) => a
   other = (!other ? null : _.isString(other) ? _.toPath(other) : other) as Selector
 
   return (props: Props) => {
-    let value = _.isFunction(color)
-      ? color(props)
-      : _.get(props.theme, color) || _.get(props.theme.colors, color) || _.get(props, color)
+    let value =
+      typeof color === 'function'
+        ? color(props)
+        : _.get(props.theme, color) || _.get(props.theme.colors, color) || _.get(props, color)
 
     if (value == null && other == null) {
       return color
     }
 
     if (value == null) {
-      value = _.isFunction(other) ? other(props) : resolvesColor(other, null)(props)
+      value = typeof other === 'function' ? other(props) : resolvesColor(other, null)(props)
     }
 
-    if (value[0] === '#' || _.startsWith(value, 'rgb') || _.startsWith(value, 'hsl')) {
+    if (isColor(value)) {
       return value
     }
 

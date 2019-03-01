@@ -1,4 +1,4 @@
-import { assignWith, get, startsWith } from 'lodash'
+import { assignWith } from 'lodash'
 
 import { FlattenInterpolation, CSSObject } from 'styled-components'
 
@@ -18,13 +18,6 @@ export interface PassThroughProps {
 export type PassThroughFunc = (...args: any[]) => any
 
 export const hasUnit = RegExp.prototype.test.bind(/\d+\w+/)
-
-export const isColor = (value: string) => value[0] === '#' || startsWith(value, 'rgb') || startsWith(value, 'hsl')
-
-export const getColor = (theme: PassThroughProps, color: string, fallback?: string) =>
-  isColor(color)
-    ? color
-    : get(theme, color) || get(theme.colors, color) || get(theme.colors.spectrum, color) || fallback
 
 export function curryProps<R = CSS>(functor: (props: any) => R, curriedProps: any): (p: any) => R {
   return props => functor({ ...props, ...(typeof curriedProps === 'function' ? curriedProps(props) : curriedProps) })

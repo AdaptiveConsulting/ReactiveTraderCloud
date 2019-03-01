@@ -1,6 +1,5 @@
-import { styled } from 'rt-theme'
+import { styled, getColor } from 'rt-theme'
 
-import { getColor } from '../tools'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 import { mapTextProps, TextProps } from './Text'
 
