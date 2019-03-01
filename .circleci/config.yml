@@ -24,6 +24,9 @@ jobs:
           name: Build eventstore
           command: 'cd ./src/services/eventstore  && docker build -t ${DOCKER_USER}/baseeventstore .'
       - run:
+          name: Build pricehistory
+          command: 'cd ./src/server/Adaptive.ReactiveTrader.Server.PriceHistory/ && docker build -t ${DOCKER_USER}/pricehistory:${CIRCLE_BUILD_NUM} .'
+      - run:
           name: Run broker
           command: 'docker run -d --net circleci --name broker ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM}'
       - run:
@@ -76,6 +79,7 @@ jobs:
           command:
             'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin &&
             docker push ${DOCKER_USER}/client:${CIRCLE_BUILD_NUM} &&
+            docker push ${DOCKER_USER}/pricehistory:${CIRCLE_BUILD_NUM} &&
             docker push ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} &&
             docker push ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM} &&
             docker push ${DOCKER_USER}/eventstore:${CIRCLE_BUILD_NUM} &&
