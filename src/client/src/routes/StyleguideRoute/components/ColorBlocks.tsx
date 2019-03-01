@@ -75,6 +75,7 @@ const SwatchLevel = styled(SwatchName)`
 `
 
 const Swatch = styled(Block)<BlockProps>`
+  position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: center;

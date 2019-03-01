@@ -12,6 +12,10 @@ interface ColorToClipboardProps {
   iconColor: string
 }
 export const CopyToClipboardWrapper = styled.div`
+  position: absolute;
+  padding: inherit;
+  top: 0;
+  right: 0;
   visibility: hidden;
   transition: visibility 0.1s;
 `
