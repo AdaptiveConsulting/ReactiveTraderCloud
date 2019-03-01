@@ -1,99 +1,19 @@
 import { mix, rgb, rgba } from 'polished'
 
-/**
- * Colors, the things you see, or don't if you're color blind!
- *
- * @example #123456, rgba(0, 0, 0, 0.5), salmon, or royalblue
- */
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// 1. Colors ///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 export type Color = string
-
-interface BasePalette {
-  base: Color
-}
-
-interface LightShadeSet {
-  L95: Color
-  L9: Color
-  L8: Color
-  L7: Color
-  L6: Color
-  L5: Color
-  L4: Color
-  L3: Color
-  L2: Color
-  L1: Color
-}
-
-interface DarkShadeSet {
-  D1: Color
-  D2: Color
-  D3: Color
-  D4: Color
-  D5: Color
-  D6: Color
-  D7: Color
-  D8: Color
-  D9: Color
-  D95: Color
-}
-
-type PaletteShadeSet = LightShadeSet & DarkShadeSet
-
-/**
- * A palette formed by a `base` color plus:
- * - a number of darker (D1..D10) shades
- * - a number of lighter (L1..L95) shades
- */
-export type ColorPalette = BasePalette & PaletteShadeSet
-
-/**
- * A palette consisting of a `base` and 4 variants
- */
-export interface CorePalette extends BasePalette {
-  1: Color
-  2: Color
-  3: Color
-  4: Color
-}
-
-/**
- * A theme palette consisting of a `base` and 2 variants
- */
-interface AccentPalette extends BasePalette {
-  darker: Color
-  lighter: Color
-}
-
-interface Colors {
-  [key: string]: string
-}
-
-export interface CorePaletteMap {
-  primary: Colors
-  secondary: Colors
-  core: Colors
-}
-
-/**
- * A set of theme-agnostic palettes
- */
-export interface AccentPaletteMap {
-  primary: AccentPalette
-  aware: AccentPalette
-  bad: AccentPalette
-  good: AccentPalette
-}
-export type AccentName = keyof AccentPaletteMap
 
 // Some designs will redefine white to achieve different
 // visual effects on the viewers eyes.
-const white: Color = rgb(255, 255, 255)
+const WHITE: Color = rgb(255, 255, 255)
 
 // The same is true for black -- because we do not encounter
 // true black or true white in natural conditions designs
 // employing them in their primary palettes will be
 // less appealing to most people.
-const black: Color = rgb(0, 0, 0)
+const BLACK: Color = rgb(0, 0, 0)
 // The meaning of transparent varies based on platform.
 //
 // Unlike most browsers Apple defines transparent as
@@ -101,9 +21,9 @@ const black: Color = rgb(0, 0, 0)
 //
 // You will see this if you transition from or to
 // transparency in a gradient or animation.
-const transparent: Color = rgba(255, 255, 255, 0)
+const TRANSPARENT: Color = rgba(255, 255, 255, 0)
 
-// For this reasons designers will choose an
+// For these reasons designers will choose an
 // offwhite and offblack color to set the
 // range on their designs.
 //
@@ -111,44 +31,85 @@ const transparent: Color = rgba(255, 255, 255, 0)
 // contrast with offwhite and draw attention
 // to an input or button. Or a subtle boundary
 // between elements.
-const offwhite = createPalette(rgb(244, 246, 249))
+const OFFWHITE = rgb(244, 246, 249)
+const OFFBLACK = rgb(68, 76, 95) // sRGB
+const DARKGREY = '#333333' // For text over light background
+const BRAND = rgb(42, 87, 141) // Adaptive blue a.k.a. #2A578D
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////// 2. Palettes //////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+interface BasePalette {
+  base: Color
+}
+
+export type LightShade = 'L95' | 'L9' | 'L8' | 'L7' | 'L6' | 'L5' | 'L4' | 'L3' | 'L2' | 'L1'
+type LightShadeSet = { [shade in LightShade]: Color }
+export type DarkShade = 'D1' | 'D2' | 'D3' | 'D4' | 'D5' | 'D6' | 'D7' | 'D8' | 'D9' | 'D95'
+type DarkShadeSet = { [shade in DarkShade]: Color }
+type PaletteShadeSet = LightShadeSet & DarkShadeSet
+/**
+ * A basic palette formed by a `base` color plus:
+ * - a number of darker (D1..D95) shades
+ * - a number of lighter (L1..L95) shades
+ */
+export type ColorPalette = BasePalette & PaletteShadeSet
+
+/*-------------------------- 2.1 Base color palettes --------------------------*/
 
 // We use a base color to generate a complement
 // of shades above and below at 10% increments.
-const offblack = createPalette(
-  rgb(68, 76, 95), // sRGB
-  {
-    // We can provide additional shades or override
-    // the generated shades.
-    L3: mix(0.25, white, rgb(85, 93, 112)),
-    // We are overriding these values due to
-    // insuffcient contrast ratio and inconsistency
-    // with the designers intent.
-    D3: rgb(46, 53, 67),
-    D4: rgb(39, 45, 58),
-  },
-)
-const blue = createPalette(rgb(81, 147, 253), { L95: rgb(244, 246, 249) })
+const offblack = createPalette(OFFBLACK, {
+  // We can override the generated shades.
+  L3: mix(0.25, WHITE, rgb(85, 93, 112)),
+  // We are overriding these values due to insuffcient contrast ratio
+  // and inconsistency with the designers intent.
+  D3: rgb(46, 53, 67),
+  D4: rgb(39, 45, 58),
+})
+const blue = createPalette(rgb(81, 147, 253), { L95: OFFWHITE })
 
 const red = createPalette(rgb(255, 53, 66))
 
 const yellow = createPalette(
   rgb(255, 184, 40),
-  // We are overriding the value for L1 due to
-  // insuffcient contrast and inconsistency
-  // with the designers intent.
+  // We are overriding the value for L1 due to insuffcient contrast
+  // and inconsistency with the designers intent.
   { L1: rgb(241, 193, 109) },
 )
 
 const green = createPalette(rgb(0, 205, 130))
 
-const brand = createPalette(
-  rgb(42, 87, 141), // Adaptive blue a.k.a. #2A578D
-)
+const brand = createPalette(BRAND)
+
+/*---------------------------- 2.2 Core palettes -----------------------------*/
+
+type CorePaletteVariant = 'base' | 1 | 2 | 3 | 4
+/**
+ * A palette consisting of a `base` and 4 variants
+ */
+
+export type CorePalette = { [variant in CorePaletteVariant]: Color }
+
+/* TODO: Find a more suitable name */
+interface SemanticColors {
+  lightBackground: Color
+  darkBackground: Color
+  alternateBackground: Color
+  offBackground: Color
+  textColor: Color
+  backgroundHoverColor: Color
+}
+
+export interface CorePaletteMap {
+  primary: CorePalette
+  secondary: CorePalette
+  core: SemanticColors
+}
 
 export const light: CorePaletteMap = {
   primary: {
-    base: white,
+    base: WHITE,
     1: blue.L95,
     2: blue.L9,
     3: blue.L8,
@@ -162,12 +123,12 @@ export const light: CorePaletteMap = {
     4: offblack.L5,
   },
   core: {
-    lightBackground: '#ffffff',
-    darkBackground: 'rgb(244, 246, 249)',
-    alternateBackground: 'rgb(220, 233, 254)',
-    offBackground: '#edf4fe',
-    textColor: '#333333',
-    backgroundHoverColor: '#ffffff',
+    lightBackground: WHITE,
+    darkBackground: blue.L95,
+    alternateBackground: blue.L8,
+    offBackground: blue.L9,
+    textColor: DARKGREY,
+    backgroundHoverColor: WHITE,
   },
 }
 
@@ -180,7 +141,7 @@ export const dark: CorePaletteMap = {
     4: offblack.D7,
   },
   secondary: {
-    base: white,
+    base: WHITE,
     1: blue.L95,
     2: blue.L9,
     3: blue.L8,
@@ -189,12 +150,28 @@ export const dark: CorePaletteMap = {
   core: {
     lightBackground: offblack.D3,
     darkBackground: offblack.D4,
-    alternateBackground: 'rgb(61, 68, 85)',
-    offBackground: '#444c5f',
-    textColor: white,
-    backgroundHoverColor: '#3d4455',
+    alternateBackground: offblack.D1,
+    offBackground: offblack.base,
+    textColor: WHITE,
+    backgroundHoverColor: offblack.D1,
   },
 }
+
+/*--------------------------- 2.3 Accent palettes ----------------------------*/
+
+/**
+ * A theme agnostic palette consisting of a `base` and 2 variants
+ */
+interface AccentPalette extends BasePalette {
+  darker: Color
+  lighter: Color
+}
+
+export type AccentName = 'primary' | 'good' | 'aware' | 'bad'
+/**
+ * A set of theme-agnostic palettes
+ */
+export type AccentPaletteMap = { [accent in AccentName]: AccentPalette }
 
 const accents: AccentPaletteMap = {
   primary: {
@@ -220,7 +197,6 @@ const accents: AccentPaletteMap = {
 }
 
 const spectrum = {
-  offwhite,
   offblack,
   brand,
   red,
@@ -230,7 +206,7 @@ const spectrum = {
 }
 
 export const colors = {
-  static: { white, black, transparent },
+  static: { white: WHITE, black: BLACK, transparent: TRANSPARENT },
   spectrum,
   accents,
   light,
@@ -249,7 +225,7 @@ type CreatePaletteParams = {
 } & Partial<PaletteShadeSet>
 function createPalette(
   base: Color,
-  { whitePoint = white, blackPoint = black, ...shadeOverrides }: CreatePaletteParams = {},
+  { whitePoint = WHITE, blackPoint = BLACK, ...shadeOverrides }: CreatePaletteParams = {},
 ): ColorPalette {
   return {
     // Light shades

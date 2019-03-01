@@ -23,19 +23,14 @@ export interface BaseTheme {
 
   shell: ColorPair
 
-  component: ColorPair & {
-    hover: ColorPair
-  }
-
   overlay: ColorPair
 
-  button: TouchableIntents
+  button: TouchableStyleSet
 
   // Known extensible properties
   backgroundColor?: Color
   textColor?: Color
-  shadowColor?: Color
-  hover?: ColorPair
+  // shadowColor?: Color
 
   // TODO (8/14/18) remove after theme migration
   [key: string]: any
@@ -45,24 +40,15 @@ export type ExtensibleThemeValue = Color | null
 export type GeneratedTheme = ReturnType<typeof generateTheme>
 export type Theme = BaseTheme & GeneratedTheme
 
-export interface TouchableIntents {
-  primary: Touchable
-  secondary: Touchable
-  good: Touchable
-  aware: Touchable
-  bad: Touchable
-}
-
 export interface Touchable {
   backgroundColor: Color
   textColor: Color
 
   active: ColorPair
   disabled: ColorPair
-
-  // Hover states don't transfer to mobile
-  hover?: ColorPair
 }
+export type TouchableStyle = 'primary' | 'secondary' | 'good' | 'aware' | 'bad'
+export type TouchableStyleSet = { [style in TouchableStyle]: Touchable }
 
 export interface Motion {
   duration: number
@@ -85,8 +71,7 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
 
   backgroundColor: null as ExtensibleThemeValue,
   textColor: null as ExtensibleThemeValue,
-  shadowColor: null as ExtensibleThemeValue,
-  hover: null as ExtensibleThemeValue,
+  // shadowColor: null as ExtensibleThemeValue,
 
   primary,
   secondary,
