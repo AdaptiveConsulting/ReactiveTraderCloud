@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs'
-import AutobahnSessionProxy from './AutobahnSessionProxy'
 import { AutobahnConnection } from './AutoBahnConnection'
+import AutobahnSessionProxy from './AutobahnSessionProxy'
+import './AutoBahnTypeExtensions'
 import { ConnectionType } from './connectionType'
 import { DisconnectionReason } from './DisconnectionReason'
-import './AutoBahnTypeExtensions'
 const LOG_NAME = 'Service Broker: '
-
+import logger from '../logger'
 export enum ConnectionEventType {
   CONNECTED = 'CONNECTED',
   DISCONNECTED = 'DISCONNECTED',
@@ -28,13 +28,13 @@ export type ConnectionEvent = ConnectionOpenEvent | ConnectionClosedEvent
 
 export function createConnection$(autobahn: AutobahnConnection): Observable<ConnectionEvent> {
   return new Observable(obs => {
-    console.info(LOG_NAME, 'Connection Subscribing')
+    logger.info(LOG_NAME, 'Connection Subscribing')
 
     let unsubscribed = false
 
     autobahn.onopen(session => {
       if (!unsubscribed) {
-        console.info(LOG_NAME, 'Connected')
+        logger.info(LOG_NAME, 'Connected')
         obs.next({
           type: ConnectionEventType.CONNECTED,
           session,
@@ -48,19 +48,19 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
       if (!unsubscribed) {
         switch (reason) {
           case DisconnectionReason.Closed:
-            console.info(LOG_NAME, `Connection ${reason}`, details)
+            logger.info(LOG_NAME, `Connection ${reason}`, details)
             obs.complete()
             break
           default:
             if (willRetry) {
-              console.warn(LOG_NAME, `Connection ${reason}`, details)
+              logger.warn(LOG_NAME, `Connection ${reason}`, details)
               obs.next({
                 type: ConnectionEventType.DISCONNECTED,
                 reason: details.reason || reason,
                 details: details.message,
               })
             } else {
-              console.error(LOG_NAME, `Connection ${reason}`, details)
+              logger.error(LOG_NAME, `Connection ${reason}`, details)
               obs.error({ reason, details })
             }
             break
@@ -72,7 +72,7 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
 
     return () => {
       unsubscribed = true
-      console.warn(LOG_NAME, 'Connection Unsubscribed')
+      logger.warn(LOG_NAME, 'Connection Unsubscribed')
 
       // NOTE: It seems that once AutoBahn enters its automatic retry-loop, calling close does not stop it. While the service
       //       remains unreachable, it will continue to attempt to connect until the connection has succeeded. Thus, there is

@@ -17,6 +17,7 @@ import { OpenFinLimitChecker } from './shell/openFin'
 import { ReferenceDataService } from './shell/referenceData'
 const HEARTBEAT_TIMEOUT = 3000
 
+
 export interface ApplicationProps {
   autobahn: AutobahnConnection
   platform: PlatformAdapter
@@ -36,9 +37,9 @@ export function createApplicationServices({ autobahn, limitChecker, user, platfo
   const serviceStub = new ServiceStub(user.code, connection$)
   serviceStub.requestResponse('getPriceHistory', 'EURUSD').subscribe(
     (x)=>{
-      debugger
-    },()=>{
-      debugger
+      console.error(x)
+    },(e)=>{
+      console.error(e)
     }
   )
   const statusUpdates$ = serviceStub.subscribeToTopic<RawServiceStatus>('status')

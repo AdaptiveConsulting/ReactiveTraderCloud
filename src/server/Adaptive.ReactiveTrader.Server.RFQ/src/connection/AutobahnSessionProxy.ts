@@ -1,5 +1,4 @@
 import { Session, Subscription } from 'autobahn'
-import { Observable } from 'rxjs'
 
 /**
  * AutobahnSessionProxy: makes the autobahn session api more explicit, aids testing

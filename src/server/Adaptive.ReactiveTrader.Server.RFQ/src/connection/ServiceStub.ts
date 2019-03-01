@@ -1,6 +1,7 @@
 import { Error, ISubscription } from 'autobahn'
 import { NextObserver, Observable } from 'rxjs'
 import { filter, switchMap, take } from 'rxjs/operators'
+import logger from '../logger'
 import './AutoBahnTypeExtensions'
 import { ConnectionEvent, ConnectionEventType, ConnectionOpenEvent } from './connectionStream'
 
@@ -21,13 +22,6 @@ type SubscriptionRequest<TPayload> = Array<SubscriptionDTO<TPayload>>
 export class ServiceStub {
   constructor(private readonly userName: string, private connection$: Observable<ConnectionEvent>) {}
 
-  private logResponse(topic: string, response: any[]): void {
-    const payloadString = JSON.stringify(response[0])
-    if (topic !== 'status') {
-      //console.debug(LOG_NAME, `Received response on topic [${topic}]. Payload[${payloadString}]`)
-    }
-  }
-
   /**
    * Get an observable subscription to a well known topic/stream
    * @param topic
@@ -40,7 +34,7 @@ export class ServiceStub {
       switchMap(
         ({ session }) =>
           new Observable<T>(obs => {
-            console.info(LOG_NAME, `Subscribing to topic [${topic}].`)
+            logger.info(LOG_NAME, `Subscribing to topic [${topic}].`)
 
             let subscription: ISubscription
 
@@ -59,13 +53,13 @@ export class ServiceStub {
                 },
                 (error: Error) => {
                   // subscription failed, error is an instance of autobahn.Error
-                  console.error(LOG_NAME, `Error on topic ${topic}`, error)
+                  logger.error(LOG_NAME, `Error on topic ${topic}`, error)
                   obs.error(error)
                 },
               )
 
             return () => {
-              console.info(LOG_NAME, `Tearing down topic ${topic}`)
+              logger.info(LOG_NAME, `Tearing down topic ${topic}`)
 
               if (!subscription) {
                 return
@@ -78,12 +72,12 @@ export class ServiceStub {
                   session
                     .unsubscribe(subscription)
                     .then(
-                      () => console.info(LOG_NAME, `Successfully unsubscribing from topic ${topic}`),
-                      err => console.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err),
+                      () => logger.info(LOG_NAME, `Successfully unsubscribing from topic ${topic}`),
+                      err => logger.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err),
                     )
                 }
               } catch (err) {
-                console.error(LOG_NAME, `Error thrown unsubscribing from topic ${topic}`, err)
+                logger.error(LOG_NAME, `Error thrown unsubscribing from topic ${topic}`, err)
               }
             }
           }),
@@ -91,37 +85,10 @@ export class ServiceStub {
     )
   }
 
-  /**
-   * wraps a RPC up as an observable stream
-   */
-
-  requestResponse<TResult, TPayload>(remoteProcedure: string, payload: TPayload) {
-    return this.connection$.pipe(
-      filter((connection): connection is ConnectionOpenEvent => connection.type === ConnectionEventType.CONNECTED),
-      switchMap(
-        ({ session }) =>
-          new Observable<TResult>(obs => {
-            console.debug(LOG_NAME, `Doing a RPC to [${remoteProcedure}]]`)
-
-            const dto: SubscriptionRequest<TPayload> = [
-              {
-                payload,
-                Username: this.userName,
-              },
-            ]
-
-            session.call<TResult>(remoteProcedure, dto).then(
-              result => {
-                obs.next(result)
-                obs.complete()
-              },
-              error => {
-                obs.error(error)
-              },
-            )
-          }),
-      ),
-      take(1),
-    )
+  private logResponse(topic: string, response: any[]): void {
+    const payloadString = JSON.stringify(response[0])
+    if (topic !== 'status') {
+      logger.debug(LOG_NAME, `Received response on topic [${topic}]. Payload[${payloadString}]`)
+    }
   }
 }

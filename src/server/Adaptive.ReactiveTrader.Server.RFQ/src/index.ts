@@ -1,25 +1,20 @@
-import dotEnv from 'dotenv'
 import { interval, NextObserver } from 'rxjs'
-import { filter, map, mapTo, shareReplay, switchMap, scan } from 'rxjs/operators'
+import { filter, map, mapTo, scan, shareReplay, switchMap } from 'rxjs/operators'
 import uuid from 'uuid/v1'
-import AutobahnConnectionProxy from './AutobahnConnectionProxy'
-import { ConnectionEventType, ConnectionOpenEvent, createConnection$ } from './connectionStream'
+import AutobahnConnectionProxy from './connection'
+import { ConnectionEventType, ConnectionOpenEvent, createConnection$ } from './connection'
+import { ServiceStub } from './connection'
 import { RawPrice } from './domain'
 import { RawServiceStatus } from './domain'
-import { ServiceStub } from './ServiceStub'
+import logger from './logger'
 
-if (process.env.NODE_ENV !== 'production') {
-  dotEnv.load()
-}
+const host = process.env.BROKER_HOST || 'broker'
+const realm = process.env.WAMP_REALM || 'com.weareadaptive.reactivetrader'
+const port = process.env.BROKER_PORT || 8000
 
-const HOST_TYPE = 'priceHistory'
-const hostInstance = `${HOST_TYPE}.${uuid().substring(0, 4)}`
+logger.info(`Started priceHistory service for ${host}:${port} on realm ${realm}`)
 
-const autobahn = new AutobahnConnectionProxy(
-  process.env.BROKER_HOST!,
-  process.env.WAMP_REALM!,
-  +process.env.BROKER_PORT!,
-)
+const autobahn = new AutobahnConnectionProxy(host, realm!, +port!)
 
 const connection$ = createConnection$(autobahn).pipe(shareReplay(1))
 
@@ -27,7 +22,7 @@ const stub = new ServiceStub('BHA', connection$)
 
 const HISTORY_LENGTH = 10000
 
-console.info('Subscribing to Pricing')
+logger.info('Subscribing to Pricing')
 
 let latest: ReadonlyMap<string, RawPrice[]>
 
@@ -57,7 +52,10 @@ const session$ = connection$.pipe(
   map(connection => connection.session),
 )
 
-console.info('Starting heart beat')
+const HOST_TYPE = 'priceHistory'
+const hostInstance = `${HOST_TYPE}.${uuid().substring(0, 4)}`
+
+logger.info(`Starting heart beat with ${HOST_TYPE} and ${hostInstance}`)
 
 const heartbeat$ = session$.pipe(switchMap(session => interval(1000).pipe(mapTo(session)))).subscribe(session => {
   const status: RawServiceStatus = {
@@ -72,18 +70,18 @@ const heartbeat$ = session$.pipe(switchMap(session => interval(1000).pipe(mapTo(
 type PriceHistoryRequest = [{ payload: string }]
 
 session$.subscribe(session => {
-  console.info('Connection Established')
-  console.info('Registering getPriceHistory')
+  logger.info('Connection Established')
+  logger.info('Registering getPriceHistory')
 
   session.register('getPriceHistory', (request: PriceHistoryRequest) => {
-    console.info('Request recieved')
+    logger.info('Request recieved')
 
     if (!request || !request[0] || !request[0].payload) {
       throw new Error(`The request for price history was malformed: ${request}`)
     }
     const symbol = request[0].payload
 
-    if (latest.has(symbol)) {
+    if (!latest.has(symbol)) {
       throw Error(`The currency pair requested was not recognised: ${symbol}`)
     }
     return latest.get(symbol)
