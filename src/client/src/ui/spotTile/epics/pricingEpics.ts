@@ -5,8 +5,9 @@ import { map, mergeMap, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import PricingService from './pricingService'
+import { getHistoricPrices } from './historicPriceService';
 
-const { priceUpdateAction, subscribeToSpotTile } = SpotTileActions
+const { priceUpdateAction, subscribeToSpotTile, priceHistoryReceieved } = SpotTileActions
 type SubscribeToSpotTileAction = ReturnType<typeof subscribeToSpotTile>
 
 export const pricingServiceEpic: ApplicationEpic = (action$, state$, { loadBalancedServiceStub }) => {
@@ -26,3 +27,19 @@ export const pricingServiceEpic: ApplicationEpic = (action$, state$, { loadBalan
     ),
   )
 }
+
+
+export const pricingHistoryEpic: ApplicationEpic = (action$, state$, { loadBalancedServiceStub }) => {
+
+  return action$.pipe(
+    ofType<Action, SubscribeToSpotTileAction>(TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE),
+    mergeMap((action: SubscribeToSpotTileAction) =>
+        getHistoricPrices(loadBalancedServiceStub, action.payload)
+        .pipe(
+          map(priceData=>priceHistoryReceieved(priceData, action.payload)),
+          takeUntil(action$.pipe(applicationDisconnected)),
+        ),
+    ),
+  )
+}
+

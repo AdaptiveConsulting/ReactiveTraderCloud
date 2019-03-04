@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "start:local": "cross-env REACT_APP_BROKER_HOST=localhost REACT_APP_BROKER_PORT=8000 npm run start",
+    "start:local": "cross-env REACT_APP_BROKER_HOST=localhost REACT_APP_BROKER_PORT=80 npm run start",
     "start:openfin:local": "npm-run-all -p openfin start:local",
     "start:openfin:cloud": "npm-run-all -p openfin start",
     "build": "react-app-rewired build",

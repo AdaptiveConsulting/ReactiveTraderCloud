@@ -70,3 +70,16 @@ services:
       - broker
       - eventstore
       - tradeexecution
+  pricehistory:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server/Adaptive.ReactiveTrader.Server.PriceHistory
+    volumes:
+      - /app/node_modules
+      - ./server/Adaptive.ReactiveTrader.Server.PriceHistory:/app
+    depends_on:
+      - broker
+      - pricing
+    environment:
+     - BROKER_HOST=broker
+     - BROKER_PORT=8000

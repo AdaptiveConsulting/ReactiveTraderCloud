@@ -17,6 +17,7 @@ import { OpenFinLimitChecker } from './shell/openFin'
 import { referenceDataService } from './shell/referenceData'
 const HEARTBEAT_TIMEOUT = 3000
 
+
 export interface ApplicationProps {
   autobahn: AutobahnConnection
   platform: PlatformAdapter
@@ -34,6 +35,7 @@ export function createApplicationServices({ autobahn, limitChecker, user, platfo
   )
 
   const serviceStub = new ServiceStub(user.code, connection$)
+ 
   const statusUpdates$ = serviceStub.subscribeToTopic<RawServiceStatus>('status')
   const serviceStatus$ = serviceStatusStream$(statusUpdates$, HEARTBEAT_TIMEOUT).pipe(
     multicast(() => {
