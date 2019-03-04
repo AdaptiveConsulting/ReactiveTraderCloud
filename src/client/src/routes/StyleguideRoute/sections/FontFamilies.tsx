@@ -54,7 +54,7 @@ export const FontFamilies: React.FC<PassThroughProps> = props => (
     <SectionBlock mh={1}>
       <H2>Font Families</H2>
     </SectionBlock>
-    <SectionBlock intent="inverted" {...props}>
+    <SectionBlock colorScheme="inverted" {...props}>
       <H3>Primary — LATO</H3>
 
       <Paragraph>
@@ -64,7 +64,7 @@ export const FontFamilies: React.FC<PassThroughProps> = props => (
       </Paragraph>
       <FontFamilySample {...LATO} />
     </SectionBlock>
-    <SectionBlock intent="secondary" {...props}>
+    <SectionBlock colorScheme="secondary" {...props}>
       <H3>Secondary — MONTSERRAT</H3>
 
       <Paragraph>

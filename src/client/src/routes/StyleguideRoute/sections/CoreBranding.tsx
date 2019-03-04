@@ -9,7 +9,7 @@ import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-compone
 
 export default () => (
   <React.Fragment>
-    <SectionBlock intent="secondary" mh={3}>
+    <SectionBlock colorScheme="secondary" mh={3}>
       <NumberedLayout number="1">
         <H5>Design Systems</H5>
         <H3>Adaptive UI Library</H3>
@@ -27,7 +27,7 @@ export default () => (
       </Paragraph>
     </SectionBlock>
     <div>
-      <SectionBlock intent="secondary" mh={0.125 / 5} py={0} />
+      <SectionBlock colorScheme="secondary" mh={0.125 / 5} py={0} />
     </div>
 
     <SectionBlock mh={3}>

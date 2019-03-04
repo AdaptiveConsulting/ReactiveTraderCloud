@@ -19,7 +19,7 @@ const sections = _.mapKeys(
     CoreBranding,
     FontFamilies,
     Atoms,
-    Ending: () => <SectionBlock mh={5} intent="inverted" />,
+    Ending: () => <SectionBlock mh={5} colorScheme="inverted" />,
   },
   (value, key) => _.kebabCase(key),
 )

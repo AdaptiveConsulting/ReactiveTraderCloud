@@ -10,11 +10,11 @@ import { css } from 'styled-components'
 export interface SectionProps extends BlockProps, MarginPaddingProps {
   mh?: number
   invert?: boolean
-  intent?: 'primary' | 'secondary' | 'inverted'
+  colorScheme?: keyof typeof colorSchemes
   bleeds?: boolean
 }
 
-const intents = {
+const colorSchemes = {
   primary: ['primary.base', 'secondary.base'],
   secondary: ['primary.1', 'secondary.1'],
   inverted: ['secondary.3', 'primary.1'],
@@ -38,16 +38,16 @@ export class SectionBlock extends React.Component<SectionProps, { error?: boolea
       )
     }
 
-    const { children, intent = 'primary', invert, ...props } = this.props
+    const { children, colorScheme = 'primary', invert, ...props } = this.props
 
-    let [backgroundColor, textColor] = intents[intent]
+    let [backgroundColor, textColor] = colorSchemes[colorScheme]
 
     if (invert) {
       ;[textColor, backgroundColor] = [backgroundColor, textColor]
     }
 
     return (
-      <SectionBleed py={2} backgroundColor={backgroundColor} textColor={textColor} {...props}>
+      <SectionBleed py={2} bg={backgroundColor} fg={textColor} {...props}>
         <div
         // Allows SectionBody margins to collapse with children
         >
