@@ -35,7 +35,7 @@ const spotTileReducer = (
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
-      return { ...state, price: action.payload }
+      return { ...state, price: action.payload, historicPrices: [...state.historicPrices.slice(0), action.payload] }
     case TILE_ACTION_TYPES.PRICE_HISTORY_RECIEVED:
       return { ...state, historicPrices: action.payload }
     case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:

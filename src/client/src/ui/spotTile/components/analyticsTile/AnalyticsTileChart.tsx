@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
-import { LineChart, ResponsiveContainer, Line, YAxis, ReferenceLine } from 'recharts'
+import { LineChart, ResponsiveContainer, Line, YAxis, ReferenceLine, Tooltip } from 'recharts'
 import { styled } from 'rt-theme'
 import { SpotPriceTick } from '../../model'
-// import { seriesData } from '../test-resources/spotTileProps'
+import AnalyticsTileTooltip from './AnalyticsTileToolTip'
 
 const AnalyticsTileChartWrapper = styled.div`
   width: 100%;
@@ -25,6 +25,7 @@ const AnalyticsTileChart: FC<Props> = ({ history }) => {
             </linearGradient>
           </defs>
           <Line dataKey="mid" dot={false} stroke="url(#lineColour)" />
+          <Tooltip offset={10} cursor={{ stroke: '#14161c', strokeWidth: 2 }} content={AnalyticsTileTooltip} />
           <YAxis
             width={0}
             domain={['dataMin', 'dataMax']}
