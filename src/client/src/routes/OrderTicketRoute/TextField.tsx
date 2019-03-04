@@ -2,7 +2,7 @@ import { rgba } from 'polished'
 import React from 'react'
 import { rules } from 'rt-styleguide'
 import { styled } from 'rt-theme'
-import { ColorProps, curryProps, mapColorProps, mapTextProps, Text } from '../StyleguideRoute/styled'
+import { ColorProps, mapTextProps, Text } from '../StyleguideRoute/styled'
 
 export interface TextFieldProps {
   name: string
@@ -80,7 +80,7 @@ export const LabelText = styled(Text)`
   ${mapTextProps};
 `
 
-export const Input = styled.input`
+const Input = styled.input`
   min-height: 1.5rem;
   font-size: 0.875rem;
   line-height: 1rem;
@@ -93,10 +93,9 @@ export const Input = styled.input`
   width: 100%;
   max-width: 100%;
 
-  ${curryProps(mapColorProps, { fg: 'secondary.base' })};
 `
 
-export const LabelLayout = styled.label<{ area?: string; focused?: boolean; filled?: boolean } & ColorProps>`
+const LabelLayout = styled.label<{ area?: string; focused?: boolean; filled?: boolean } & ColorProps>`
   height: 2.5rem;
   padding: 0 0.5rem;
 

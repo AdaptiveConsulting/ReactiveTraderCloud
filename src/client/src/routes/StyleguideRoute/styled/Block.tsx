@@ -9,7 +9,7 @@ import { css } from 'styled-components'
 export interface BlockProps extends ColorProps, TextProps, MarginPaddingProps {}
 
 export const Block = styled.div<BlockProps>`
-  ${({ theme, backgroundColor, textColor, bg = backgroundColor, fg = textColor }) =>
+  ${({ theme, bg, fg }) =>
     css({
       transition: bg ? 'background-color ease-out 0.15s' : null,
       backgroundColor: bg && getColor(theme, bg),

@@ -55,7 +55,7 @@ const Notification: React.FC<NotificationProps> = ({ duration, intent, position,
     <Position position={position} p={1}>
       <Transition key={visible ? 'show' : 'hide'} visible={visible} position={position} duration={200}>
         <Body bg={`button.${intent}.backgroundColor`} fg={`button.${intent}.textColor`} p={2} {...bodyProps}>
-          <Block fontSize={2.5} color={`accents.${intent}.lighter`}>
+          <Block fontSize={2.5} fg={`accents.${intent}.lighter`}>
             <FontAwesomeIcon icon={intents[intent].icon} />
           </Block>
           <Summary>{children}</Summary>
