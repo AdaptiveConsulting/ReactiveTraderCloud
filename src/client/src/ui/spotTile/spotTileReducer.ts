@@ -2,6 +2,7 @@ import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { SpotTileActions, TILE_ACTION_TYPES } from './actions'
 import { PriceMovementTypes } from './model/priceMovementTypes'
 import { SpotTileData } from './model/spotTileData'
+// import console = require('console');
 
 interface SpotTileState {
   [currencyPair: string]: SpotTileData
@@ -13,7 +14,7 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   isTradeExecutionInFlight: false,
   currencyChartIsOpening: false,
   lastTradeExecutionStatus: null,
-  historicPrices:[],
+  historicPrices: [],
   price: {
     ask: 0,
     bid: 0,

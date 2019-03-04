@@ -23,7 +23,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { price },
+      spotTileData: { price, historicPrices },
       notional,
       updateNotional,
       executeTrade,
@@ -40,7 +40,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
           <AnalyticsTileContent>
             <GraphNotionalWrapper>
               <LineChartWrapper>
-                <AnalyticsTileChart />
+                <AnalyticsTileChart history={historicPrices} />
               </LineChartWrapper>
               <NotionalInput
                 notional={notional}
