@@ -111,7 +111,7 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
       background-color: ${primary.base};
     }
     50% {
-      background-color: ${accents.primary.darker};
+      background-color: ${accents.dominant.darker};
     }
     100% {
       background-color: ${primary.base};
@@ -132,14 +132,14 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
     },
 
     primary: {
-      backgroundColor: accents.primary.base,
+      backgroundColor: accents.dominant.base,
       textColor: colors.light.primary.base,
 
       active: {
-        backgroundColor: accents.primary.darker,
+        backgroundColor: accents.dominant.darker,
       },
       disabled: {
-        backgroundColor: accents.primary.lighter,
+        backgroundColor: accents.dominant.lighter,
       },
     },
 

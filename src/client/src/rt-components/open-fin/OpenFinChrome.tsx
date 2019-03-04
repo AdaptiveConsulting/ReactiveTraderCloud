@@ -42,7 +42,7 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
       </HeaderControl>
     ) : null}
     {maximize ? (
-      <HeaderControl accent="primary" onClick={maximize}>
+      <HeaderControl accent="dominant" onClick={maximize}>
         <i className="far fa-window-maximize" />
       </HeaderControl>
     ) : null}
@@ -75,7 +75,7 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
   cursor: pointer;
 
   &:hover {
-    color: ${({ theme, accent = 'primary' }) => theme.button[accent].backgroundColor};
+    color: ${({ theme, accent = 'dominant' }) => theme.button[accent].backgroundColor};
   }
 `
 

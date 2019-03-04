@@ -417,7 +417,7 @@ export const Formant = styled.div<{ sessionInstance: boolean }>`
   height: 2rem;
   width: 2rem;
   [fill] {
-    fill: ${({ sessionInstance, theme }) => (sessionInstance ? theme.accents.primary.base : theme.secondary.base)};
+    fill: ${({ sessionInstance, theme }) => (sessionInstance ? theme.accents.dominant.base : theme.secondary.base)};
   }
 `
 
@@ -450,7 +450,7 @@ const AnimatedText = styled.span<{ accent?: AccentName }>`
   background-image: repeating-linear-gradient(
     45deg,
     ${p => colors.static.transparent},
-    ${({ theme, accent = 'primary' }) => theme.accents[accent].base},
+    ${({ theme, accent = 'dominant' }) => theme.accents[accent].base},
     ${p => colors.static.transparent}
   );
   background-size: 200%;

@@ -200,14 +200,14 @@ interface AccentPalette extends BasePalette {
   lighter: Color
 }
 
-export type AccentName = 'primary' | 'good' | 'aware' | 'bad'
+export type AccentName = 'dominant' | 'good' | 'aware' | 'bad'
 /**
  * A set of theme-agnostic palettes
  */
 export type AccentPaletteMap = { [accent in AccentName]: AccentPalette }
 
 const accents: AccentPaletteMap = {
-  primary: {
+  dominant: {
     base: blue.base,
     darker: blue.D2,
     lighter: blue.L5,

@@ -79,7 +79,7 @@ export default () => (
 
         <UniquePalettes
           palettes={{
-            'Trading Buy': { base: colors.accents.primary.base },
+            'Trading Buy': { base: colors.accents.dominant.base },
             'Trading Sell': { base: colors.accents.bad.base },
           }}
         />
