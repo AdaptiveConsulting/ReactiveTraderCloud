@@ -1,4 +1,6 @@
+import { ThemeSelector } from 'rt-theme'
+
 export interface ColorProps {
-  bg?: string
-  fg?: string
+  bg?: ThemeSelector
+  fg?: ThemeSelector
 }

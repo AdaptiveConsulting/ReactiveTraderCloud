@@ -327,7 +327,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
         {sessionError && <Timer duration={5000} timeout={this.toggle} />}
 
         {/* Rendered output */}
-        <Root bg="primary.4" onClick={this.toggle}>
+        <Root bg={t => t.primary[4]} onClick={this.toggle}>
           {sessionInstance ? (
             <>
               <Fill />
@@ -355,10 +355,10 @@ export class VoiceInput extends React.PureComponent<Props, State> {
             <MicrophoneButton
               fg={
                 sessionActive === false
-                  ? 'primary.1'
+                  ? t => t.primary[1]
                   : sessionError || userPermissionGranted === false
-                  ? 'accents.aware.base'
-                  : 'accents.primary.base'
+                  ? t => t.accents.aware.base
+                  : t => t.accents.dominant.base
               }
             >
               {source === 'microphone' ? <MicrophoneIcon /> : <FontAwesomeIcon icon={faPlay} />}
@@ -371,10 +371,10 @@ export class VoiceInput extends React.PureComponent<Props, State> {
             <MicrophoneButton
               fg={
                 sessionActive === false
-                  ? 'primary.1'
+                  ? t => t.primary[1]
                   : userPermissionGranted === false
-                  ? 'accents.aware.base'
-                  : 'accents.primary.base'
+                  ? t => t.accents.aware.base
+                  : t => t.accents.dominant.base
               }
             >
               <FontAwesomeIcon icon={faChevronCircleRight} />
@@ -479,7 +479,7 @@ const AnimatedText = styled.span<{ accent?: AccentName }>`
 const StatusText: React.FC<{ accent?: AccentName; toggle: () => void }> = ({ accent, children, toggle }) => (
   <Input
     onClick={toggle}
-    fg={accent ? `accents.${accent}.base` : 'primary.2'}
+    fg={t => accent ? t.accents[accent].base : t.primary[2]}
     fontSize={0.625}
     letterSpacing="1px"
     textTransform="uppercase"

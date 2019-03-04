@@ -102,11 +102,11 @@ export class OrderStatus extends React.Component<Props, State> {
         {quote && (
           <Timer key={quote.expiry && quote.expiry.toString()} duration={1000} interval={this.updateCountdown} />
         )}
-        <StatusLayout fg="muteColor">
+        <StatusLayout fg={t => t.muteColor}>
           <StatusBox>
             <LabelText>Status</LabelText>
             {quote ? (
-              <StatusText fg="accents.aware.base">Reviewing Price</StatusText>
+              <StatusText fg={t => t.accents.aware.base}>Reviewing Price</StatusText>
             ) : (
               <StatusText>{ready ? 'Draft' : '— —'}</StatusText>
             )}
@@ -114,14 +114,14 @@ export class OrderStatus extends React.Component<Props, State> {
           <StatusBox>
             <LabelText>Remaining</LabelText>
             {quote ? (
-              <StatusText fg="accents.aware.base">{countdown.toFormat('hh:mm:ss')}</StatusText>
+              <StatusText fg={t => t.accents.aware.base}>{countdown.toFormat('hh:mm:ss')}</StatusText>
             ) : (
               <StatusText>— —</StatusText>
             )}
           </StatusBox>
           <Progress>
             {quote ? (
-              <StatusText fg="accents.aware.base" fontSize={2}>
+              <StatusText fg={t => t.accents.aware.base} fontSize={2}>
                 {countdown.toFormat('ss')}
               </StatusText>
             ) : (

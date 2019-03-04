@@ -37,9 +37,9 @@ export const FloatingTools: React.FC<Props> = ({ themeName, switchTheme }) => {
   )
 }
 
-const Root: React.FC = props => <Block bg="primary.2" {...props} />
+const Root: React.FC = props => <Block bg={t => t.primary[2]} {...props} />
 
-const Bar = styled(props => <Block px={3} bg="primary.1" fg="secondary.3" {...props} />)`
+const Bar = styled(props => <Block px={3} bg={t => t.primary[1]} fg={t => t.secondary[3]} {...props} />)`
   position: fixed;
   display: flex;
   align-items: center;

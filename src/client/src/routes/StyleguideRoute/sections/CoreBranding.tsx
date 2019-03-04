@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { rgba } from 'polished'
 import React from 'react'
 
@@ -37,8 +36,8 @@ export default () => (
         is={LargeSwatchColor}
         label="Brand Primary"
         value={colors.spectrum.brand.base}
-        bg="brand.base"
-        fg="white"
+        bg={t => t.colors.spectrum.brand.base}
+        fg={t => t.colors.static.white}
         code="Base"
       />
     </SectionBlock>
@@ -114,8 +113,8 @@ const PaletteLayout: React.FC<{
           label={`${paletteLabel} ${key}`}
           value={color}
           code={codes[key] || key}
-          bg={color}
-          fg={fg}
+          bg={_ => color}
+          fg={_ => fg}
         />
       )
     })}
@@ -123,8 +122,6 @@ const PaletteLayout: React.FC<{
 )
 
 export interface SwatchColorProps {
-  bg?: string
-  fg?: string
   extra?: FlattenSimpleInterpolation
 }
 
@@ -314,12 +311,12 @@ const AccentSwatchGrid = styled.div`
 const UniquePalettes: React.FC<{ palettes: any }> = ({ palettes, ...props }) => {
   return (
     <UniqueRowGrid>
-      {_.map(palettes, (palette, label: string) => (
+      {Object.keys(palettes).map(label => (
         <PaletteLayout
           key={label}
           grid={UniqueSwatchGrid}
           label={label}
-          palette={palette}
+          palette={palettes[label]}
           fg="#FFF"
           include={['base']}
         />

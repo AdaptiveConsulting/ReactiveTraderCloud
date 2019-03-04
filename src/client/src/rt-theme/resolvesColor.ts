@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import { Theme } from './themes'
+import { Theme, ThemeSelector } from './themes'
+import { Color } from './colors'
 
 interface Props {
   theme: any
@@ -7,12 +8,11 @@ interface Props {
 type Resolve = (props: Props) => string
 type Selector = string | string[] | Resolve | any
 
-const isColor = (value: string) => value[0] === '#' || _.startsWith(value, 'rgb') || _.startsWith(value, 'hsl')
-
-export const getColor = (theme: Theme, color: string, fallback?: string) =>
-  isColor(color)
-    ? color
-    : _.get(theme, color) || _.get(theme.colors, color) || _.get(theme.colors.spectrum, color) || fallback
+function isColor(value: string | ThemeSelector): value is Color {
+  return typeof value === 'string' && /^(#|rgb|hsl)/.test(value)
+}
+export const getColor = (theme: Theme, color: Color | ThemeSelector, fallback?: Color) =>
+  typeof color === 'function' ? color(theme) || fallback : isColor(color) ? color : fallback
 
 export const resolvesColor: (color: Selector, other?: Selector) => (_: any) => any = (
   color: Selector,

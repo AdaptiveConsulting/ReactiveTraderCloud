@@ -24,7 +24,7 @@ export const ColorBlocks = () => (
               <ShadeSwatchStrip shadeSet={LIGHT_SHADES} palette={palette} />
 
               <SwatchGroup py={2}>
-                <Swatch bg={palette.base}>
+                <Swatch bg={_ => palette.base}>
                   <ColorClipboard color={palette.base} iconColor={textColor(palette.base)} />
                   <SwatchName>{paletteName}</SwatchName>
                   <SwatchValue>{palette.base}</SwatchValue>
@@ -49,10 +49,10 @@ const ShadeSwatchStrip: React.FC<{ shadeSet: Array<LightShade | DarkShade>; pale
       const color = palette[shadeName]
       const fgColor = textColor(color)
       return (
-        <Swatch key={shadeName} bg={color}>
+        <Swatch key={shadeName} bg={_ => color}>
           <ColorClipboard color={color} iconColor={fgColor} />
-          <SwatchShadeName fg={fgColor}>{shadeName}</SwatchShadeName>
-          <SwatchValue fg={fgColor}>{color}</SwatchValue>
+          <SwatchShadeName fg={_ => fgColor}>{shadeName}</SwatchShadeName>
+          <SwatchValue fg={_ => fgColor}>{color}</SwatchValue>
         </Swatch>
       )
     })}

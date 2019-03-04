@@ -14,7 +14,7 @@ export class DrawerMenu extends PureComponent<Props> {
     const { onClick } = this.props
     return (
       <React.Fragment>
-        <Block display="inline" fg="secondary.base" onClick={onClick}>
+        <Block display="inline" fg={t => t.secondary.base} onClick={onClick}>
           <FontAwesomeIcon icon={faMicrophone} />
         </Block>
         <FontAwesomeIcon icon={faKeyboard} />

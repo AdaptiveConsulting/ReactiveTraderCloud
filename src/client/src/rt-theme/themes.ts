@@ -59,6 +59,8 @@ interface ColorPair {
   textColor?: string
 }
 
+export type ThemeSelector = (theme: Theme) => Color
+
 type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
 
 const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({
