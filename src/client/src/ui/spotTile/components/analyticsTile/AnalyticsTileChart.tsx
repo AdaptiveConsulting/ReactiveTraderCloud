@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { LineChart, ResponsiveContainer, Line, YAxis, ReferenceLine } from 'recharts'
 import { styled } from 'rt-theme'
 import { SpotPriceTick } from '../../model'
@@ -11,7 +11,7 @@ const AnalyticsTileChartWrapper = styled.div`
 interface Props {
   history: SpotPriceTick[]
 }
-const AnalyticsTileChart: FC<Props> = ({ history }) => {
+const AnalyticsTileChart: React.FC<Props> = ({ history }) => {
   const data = history.slice(history.length - 100, history.length)
   const lineProps = { strokeDasharray: '4 3', stroke: '#737987', strokeOpacity: 0.9, strokeWidth: 0.8 }
   return (
