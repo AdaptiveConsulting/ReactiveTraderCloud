@@ -1,8 +1,8 @@
 import { rgba } from 'polished'
 import React from 'react'
 import { rules } from 'rt-styleguide'
-import { styled } from 'rt-theme'
-import { ColorProps, mapTextProps, Text } from '../StyleguideRoute/styled'
+import { styled, ColorProps } from 'rt-theme'
+import { mapTextProps, Text } from '../StyleguideRoute/styled'
 
 export interface TextFieldProps {
   name: string

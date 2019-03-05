@@ -288,7 +288,6 @@ export const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
       opacity: 0.5;
       ${userSelectNone};
     `};
-  )
 `
 
 StyledButtonGroup.defaultProps = {

@@ -61,6 +61,11 @@ interface ColorPair {
 
 export type ThemeSelector = (theme: Theme) => Color
 
+export interface ColorProps {
+  bg?: ThemeSelector
+  fg?: ThemeSelector
+}
+
 type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
 
 const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({

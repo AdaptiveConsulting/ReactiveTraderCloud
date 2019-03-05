@@ -15,8 +15,9 @@ import baseStyled, { ThemedStyledInterface } from 'styled-components'
 export const styled: ThemedStyledInterface<Theme> = baseStyled
 
 export { ThemeName, ThemeProvider, ThemeConsumer } from './ThemeContext'
-import { Theme, ThemeSelector, themes } from './themes'
+import { Theme, ColorProps, ThemeSelector, themes } from './themes'
 export type Theme = Theme
+export type ColorProps = ColorProps
 export type ThemeSelector = ThemeSelector
 export { themes }
 export { resolvesColor, getColor } from './resolvesColor'
