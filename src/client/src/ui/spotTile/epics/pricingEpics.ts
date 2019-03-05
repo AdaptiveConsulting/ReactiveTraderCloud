@@ -1,7 +1,7 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { applicationDisconnected } from 'rt-actions'
-import { map, mergeMap, takeUntil, tap } from 'rxjs/operators'
+import { map, mergeMap, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import PricingService from './pricingService'
@@ -33,7 +33,6 @@ export const pricingHistoryEpic: ApplicationEpic = (action$, state$, { loadBalan
     ofType<Action, SubscribeToSpotTileAction>(TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE),
     mergeMap((action: SubscribeToSpotTileAction) =>
       getHistoricPrices(loadBalancedServiceStub, action.payload).pipe(
-        tap(x => console.log(x)),
         map(priceData => priceHistoryReceieved(priceData, action.payload)),
         takeUntil(action$.pipe(applicationDisconnected)),
       ),
