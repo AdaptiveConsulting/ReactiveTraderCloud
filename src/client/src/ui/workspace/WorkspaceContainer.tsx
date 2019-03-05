@@ -1,58 +1,45 @@
-import React from 'react'
+import React, { FC, useState } from 'react'
 import { connect } from 'react-redux'
 import { Loadable } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
-import { selectExecutionStatus, selectSpotTiles } from './selectors'
+import { selectExecutionStatus, selectSpotTiles, selectSpotCurrencies } from './selectors'
 import { styled } from 'rt-theme'
 import Workspace from './Workspace'
-import { WorkspaceHeader, CurrencyOptions, TileViews } from './workspaceHeader'
+import { WorkspaceHeader, TileViews } from './workspaceHeader'
 
 type Props = ReturnType<typeof mapStateToProps>
-
-interface State {
-  currencyView: CurrencyOptions
-  tileView: TileViews
-}
 
 const WorkSpaceWrapper = styled.div`
   height: 100%;
 `
-class WorkspaceContainer extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.state = { currencyView: CurrencyOptions.All, tileView: TileViews.Normal }
-  }
 
-  updateCurrencyOption = (currency: CurrencyOptions) => {
-    this.setState({ currencyView: currency })
-  }
+const ALL = 'ALL'
 
-  updateTileView = (tileView: TileViews) => {
-    this.setState({ tileView })
-  }
-
-  render() {
-    const { status, ...props } = this.props
-    return (
-      <WorkSpaceWrapper>
-        <WorkspaceHeader
-          {...this.state}
-          onCurrencyChange={this.updateCurrencyOption}
-          onTileViewChange={this.updateTileView}
-        />
-        <Loadable
-          status={status}
-          render={() => <Workspace {...props} {...this.state} />}
-          message="Pricing Disconnected"
-        />
-      </WorkSpaceWrapper>
-    )
-  }
+const WorkspaceContainer: FC<Props> = ({ status, spotTiles, children, currencyOptions }) => {
+  const [currency, setCurrencyOption] = useState(ALL)
+  const [tileView, setTileView] = useState(TileViews.Normal)
+  return (
+    <WorkSpaceWrapper>
+      <WorkspaceHeader
+        currencyOptions={currencyOptions}
+        currency={currency}
+        defaultOption={ALL}
+        tileView={tileView}
+        onCurrencyChange={setCurrencyOption}
+        onTileViewChange={setTileView}
+      />
+      <Loadable
+        status={status}
+        render={() => <Workspace children={children} spotTiles={spotTiles} currency={currency} tileView={tileView} />}
+        message="Pricing Disconnected"
+      />
+    </WorkSpaceWrapper>
+  )
 }
-
 const mapStateToProps = (state: GlobalState) => ({
   spotTiles: selectSpotTiles(state),
   status: selectExecutionStatus(state),
+  currencyOptions: selectSpotCurrencies(state),
 })
 
 export default connect(mapStateToProps)(WorkspaceContainer)

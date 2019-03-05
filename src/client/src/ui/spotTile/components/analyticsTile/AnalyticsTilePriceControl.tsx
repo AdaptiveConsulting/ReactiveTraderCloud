@@ -14,7 +14,7 @@ interface Props {
 }
 const AnalyticsPriceControlHeader = styled.div`
   display: flex;
-  width: 40%;
+  width: 50%;
   justify-content: space-between;
 `
 

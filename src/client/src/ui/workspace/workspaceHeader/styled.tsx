@@ -7,7 +7,6 @@ export const Header = styled.div`
   padding: 6px;
 `
 export const LeftNav = styled.ul`
-  width: 250px;
   display: flex;
   align-self: flex-start;
   flex-wrap: wrap;
@@ -33,10 +32,10 @@ export const NavItem = styled(LiStyle)<{ active: boolean }>`
   list-style-type: none;
   height: 34px;
   opacity: ${({ active }) => (active ? '1' : '0.52')};
+  margin-left: 15px;
 `
 
 export const RightNav = styled.ul`
-  width: 70px;
   align-self: flex-end;
   display: flex;
   flex-wrap: wrap;
