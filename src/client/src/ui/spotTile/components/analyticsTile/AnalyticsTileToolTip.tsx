@@ -2,8 +2,11 @@ import React, { FC } from 'react'
 import { styled } from 'rt-theme'
 import numeral from 'numeral'
 
+interface Data {
+  value: number
+}
 interface ToolTipProps {
-  payload: any[]
+  payload: Data[]
 }
 
 export const ToolTipStyle = styled.div`
