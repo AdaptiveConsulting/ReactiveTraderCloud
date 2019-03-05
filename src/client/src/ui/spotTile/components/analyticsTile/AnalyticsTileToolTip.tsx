@@ -15,7 +15,7 @@ export const ToolTipStyle = styled.div`
   justify-content: center;
 `
 
-export const ToolTipChildRight = styled.div`
+export const ToolTipChildCenter = styled.div`
   width: 30px;
   font-size: 10px;
   color: ${({ theme }) => theme.template.white.normal};
@@ -24,7 +24,7 @@ export const ToolTipChildRight = styled.div`
 const AnalyticsTileTooltip: FC<ToolTipProps> = ({ payload }) => {
   return (
     <ToolTipStyle>
-      <ToolTipChildRight>{payload.length > 0 && numeral(payload[0].value).format('0.00a')}</ToolTipChildRight>
+      <ToolTipChildCenter>{payload.length > 0 && numeral(payload[0].value).format('0.00a')}</ToolTipChildCenter>
     </ToolTipStyle>
   )
 }

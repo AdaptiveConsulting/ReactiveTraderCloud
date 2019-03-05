@@ -2,7 +2,6 @@ import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { SpotTileActions, TILE_ACTION_TYPES } from './actions'
 import { PriceMovementTypes } from './model/priceMovementTypes'
 import { SpotTileData } from './model/spotTileData'
-// import console = require('console');
 
 interface SpotTileState {
   [currencyPair: string]: SpotTileData
