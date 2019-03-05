@@ -54,7 +54,7 @@ class Tile extends React.PureComponent<Props, State> {
   render() {
     const { currencyPair, spotTileData, executionStatus, tileView } = this.props
     const { notional } = this.state
-    const TileViewComponent = tileView ? this.tileComponents[tileView] :SpotTile //TODO ML 28/02, only the spotTile has to be shown until we get the data from backend side. tileView ? this.tileComponents[tileView] :
+    const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
     return (
       <TileViewComponent
         currencyPair={currencyPair}

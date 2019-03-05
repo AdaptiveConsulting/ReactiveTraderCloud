@@ -13,7 +13,7 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   isTradeExecutionInFlight: false,
   currencyChartIsOpening: false,
   lastTradeExecutionStatus: null,
-  historicPrices:[],
+  historicPrices: [],
   price: {
     ask: 0,
     bid: 0,
@@ -34,7 +34,7 @@ const spotTileReducer = (
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
-      return { ...state, price: action.payload }
+      return { ...state, price: action.payload, historicPrices: [...state.historicPrices.slice(1), action.payload] }
     case TILE_ACTION_TYPES.PRICE_HISTORY_RECIEVED:
       return { ...state, historicPrices: action.payload }
     case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
