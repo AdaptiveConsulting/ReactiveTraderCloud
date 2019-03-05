@@ -4,7 +4,7 @@ import _ from 'lodash'
 import React from 'react'
 
 import { Button, ButtonGroup } from 'rt-styleguide'
-import { resolvesColor, styled } from 'rt-theme'
+import { styled } from 'rt-theme'
 
 import { PassThroughProps } from '../tools'
 
@@ -112,7 +112,7 @@ const GridColumn = styled.div`
 
 const LabelColumn = styled(GridColumn)`
   font-size: 0.6875rem;
-  color: ${resolvesColor('secondary.base')};
+  color: ${({theme}) => theme.secondary.base};
 `
 
 const ColumnTitle = styled.div``
@@ -144,7 +144,7 @@ const Root = styled.div`
       left: 0;
       top: 0;
       bottom: 0;
-      box-shadow: 2rem 0 0 ${resolvesColor('primary.1')};
+      box-shadow: 2rem 0 0 ${({theme}) => theme.primary[1]};
       box-shadow: 2rem 0 0 black;
     }
   }

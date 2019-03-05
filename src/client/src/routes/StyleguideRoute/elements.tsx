@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
-import { styled, resolvesColor } from 'rt-theme'
+import { styled } from 'rt-theme'
 
 import { mapMarginPaddingProps, mapTextProps, MarginPaddingProps, TextProps } from './styled'
 
@@ -92,6 +92,6 @@ export const SectionNumber = styled.div`
 
   font-size: 1.5rem;
 
-  color: ${resolvesColor('secondary[2]')};
-  box-shadow: 0 0 0 0.125rem ${resolvesColor('secondary[2]')};
+  color: ${({theme}) => theme.secondary[2]};
+  box-shadow: 0 0 0 0.125rem ${({theme}) => theme.secondary[2]};
 `

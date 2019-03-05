@@ -2,7 +2,7 @@ import { darken } from 'polished'
 import { mapValues } from 'lodash'
 import { keyframes } from 'styled-components'
 
-import { colors, template, AccentPaletteMap, Color, CorePalette, CorePaletteMap } from './colors'
+import { colors, template, AccentPaletteMap, Color, CorePalette, CorePaletteMap, AccentName } from './colors'
 
 interface BaseTheme {
   white: Color
@@ -27,16 +27,14 @@ interface BaseTheme {
   button: TouchableStyleSet
 
   // Known extensible properties
-  backgroundColor?: Color
-  textColor?: Color
-  // shadowColor?: Color
+  backgroundColor: Color
+  textColor: Color
 
   // TODO (8/14/18) remove after theme migration
   [key: string]: any
 }
 
-type ExtensibleThemeValue = Color | null
-type GeneratedTheme = ReturnType<typeof generateTheme>
+type GeneratedTheme = ReturnType<typeof createTheme>
 export type Theme = BaseTheme & GeneratedTheme
 
 interface Touchable {
@@ -46,8 +44,8 @@ interface Touchable {
   active: ColorPair
   disabled: ColorPair
 }
-type TouchableStyle = 'primary' | 'secondary' | 'good' | 'aware' | 'bad'
-type TouchableStyleSet = { [style in TouchableStyle]: Touchable }
+export type TouchableIntentName = AccentName | 'primary' | 'secondary' | 'mute'
+type TouchableStyleSet = { [style in TouchableIntentName]: Touchable }
 
 interface Motion {
   duration: number
@@ -66,18 +64,21 @@ export interface ColorProps {
   fg?: ThemeSelector
 }
 
-type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
+function isColor(value: string | ThemeSelector): value is Color {
+  return typeof value === 'string' && /^(#|rgb|hsl)/.test(value)
+}
+export const getThemeColor = (theme: Theme, color: Color | ThemeSelector, fallback?: Color) =>
+  typeof color === 'function' ? color(theme) || fallback : isColor(color) ? color : fallback
 
-const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({
+const createTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({
   template,
   core,
   white: colors.static.white,
   black: colors.static.black,
   transparent: colors.static.transparent,
 
-  backgroundColor: null as ExtensibleThemeValue,
-  textColor: null as ExtensibleThemeValue,
-  // shadowColor: null as ExtensibleThemeValue,
+  backgroundColor: core.darkBackground,
+  textColor: core.textColor,
 
   primary,
   secondary,
@@ -173,25 +174,15 @@ const generateTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Ac
         backgroundColor: lighter,
       },
     })),
-  },
+  } as TouchableStyleSet,
 })
 
-const createTheme = (
-  { primary, secondary, core }: CorePaletteMap,
-  accents: AccentPaletteMap,
-  modifier: ThemeModifier = theme => ({ ...theme }),
-) => modifier(generateTheme({ primary, secondary, core }, accents))
+const lightTheme = createTheme(colors.light, colors.accents)
+const darkTheme = createTheme(colors.dark, colors.accents)
+// Manual overrides
+darkTheme.button.secondary.textColor = darkTheme.primary.base
 
 export const themes = {
-  light: createTheme(colors.light, colors.accents),
-  dark: createTheme(colors.dark, colors.accents, ((theme: GeneratedTheme) => ({
-    ...theme,
-    button: {
-      ...theme.button,
-      secondary: {
-        ...theme.button.secondary,
-        textColor: theme.primary.base,
-      },
-    },
-  })) as ThemeModifier),
+  light: lightTheme,
+  dark: darkTheme,
 }
