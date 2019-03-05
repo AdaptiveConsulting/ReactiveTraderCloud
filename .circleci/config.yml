@@ -120,7 +120,8 @@ jobs:
             kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${BUILD_NUM} 
             kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${BUILD_NUM} 
             kubectl --namespace=${NAMESPACE} set image deployments/web-deployment web=${DOCKER_USER}/nginx:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/client-deployment client=${DOCKER_USER}/client:${BUILD_NUM} 
+            kubectl --namespace=${NAMESPACE} set image deployments/client-deployment client=${DOCKER_USER}/client:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/pricehistory-deployment client=${DOCKER_USER}/client:${BUILD_NUM}  
             kubectl --namespace=${NAMESPACE} set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/pricing-deployment pricing=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${BUILD_NUM}
