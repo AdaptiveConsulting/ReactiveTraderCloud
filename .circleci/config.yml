@@ -127,7 +127,7 @@ jobs:
             kubectl --namespace=${NAMESPACE} set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/pricehistory-deployment client=${DOCKER_USER}/client:${BUILD_NUM}  
+            kubectl --namespace=${NAMESPACE} set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/client:${BUILD_NUM}  
 
 workflows:
   version: 2
