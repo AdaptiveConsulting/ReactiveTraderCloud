@@ -6,7 +6,7 @@ import React from 'react'
 import { Button, ButtonGroup } from 'rt-styleguide'
 import { styled } from 'rt-theme'
 
-import { PassThroughProps } from '../tools'
+import { ButtonStyleProps } from 'rt-styleguide';
 
 export default (() => (
   <Root>
@@ -37,7 +37,7 @@ export default (() => (
   </Root>
 )) as React.FC
 
-const ButtonVariants: React.FC<PassThroughProps> = props => (
+const ButtonVariants: React.FC<ButtonStyleProps> = props => (
   <React.Fragment>
     {
       // standard

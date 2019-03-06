@@ -1,4 +1,3 @@
-import { MappedPropMap } from '../tools'
 import { css } from 'styled-components'
 import { styled, Theme, ThemeSelector } from 'rt-theme'
 
@@ -50,13 +49,16 @@ export interface TextProps {
    When using standard attribute names like 'color', styled-components injects them 
    into the rendered html element (e.g <span color="">)! With literal attributes 
    this is no big deal, but since this is a Theme=>string selector React warns when
-   rendering a function as an attribute. As a workaround we rename to `textColor`
+   trying to use a function as the value of an attribute.
+   As a workaround we rename to `textColor`
    */
   textColor?: ThemeSelector
   opacity?: 0 | 0.25 | 0.5 | 0.75 | 1
 }
 
-const textProps: MappedPropMap<TextProps> = {
+type TextPropsToCssMapper = { [k in keyof TextProps]: (props: TextProps & { theme: Theme }) => ReturnType<typeof css> }
+
+const textPropsToCSS: TextPropsToCssMapper = {
   display: ({ display }) => css({ display }),
   lineHeight: ({ lineHeight }) => css({ lineHeight: `${lineHeight}rem` }),
   fontSize: ({ fontSize }) => css({ fontSize: `${fontSize}rem` }),
@@ -79,14 +81,14 @@ const textProps: MappedPropMap<TextProps> = {
   opacity: ({ opacity }) => css({ opacity }),
 }
 
-function isTextProp(rule: string): rule is keyof TextProps {
-  return textProps[rule] !== undefined
+function isTextProp(propName: string): propName is keyof TextProps {
+  return textPropsToCSS[propName] !== undefined
 }
 
 export function mapTextProps(props: TextProps & { theme: Theme }) {
   return Object.keys(props)
     .filter(isTextProp)
-    .map(key => textProps[key](props))
+    .map(propName => textPropsToCSS[propName](props))
     .filter(Boolean)
     .join(';')
 }
