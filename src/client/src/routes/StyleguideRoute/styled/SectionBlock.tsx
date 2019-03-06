@@ -4,7 +4,7 @@ import React from 'react'
 import { rules } from 'rt-styleguide'
 import { Block, BlockProps } from '../styled'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
-import { styled, ThemeSelector } from 'rt-theme'
+import { styled, ColorProps as ThemeSelectorPair } from 'rt-theme'
 import { css } from 'styled-components'
 
 type ColorSchemeName = 'primary' | 'secondary' | 'inverted'
@@ -15,10 +15,6 @@ export interface SectionProps extends BlockProps, MarginPaddingProps {
   bleeds?: boolean
 }
 
-interface ThemeSelectorPair {
-  bg: ThemeSelector
-  fg: ThemeSelector
-}
 const colorSchemes: { [scheme in ColorSchemeName]: ThemeSelectorPair } = {
   primary: { bg: t => t.primary.base, fg: t => t.secondary.base },
   secondary: { bg: t => t.primary[1], fg: t => t.secondary[1] },

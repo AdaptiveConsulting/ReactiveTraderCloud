@@ -86,7 +86,7 @@ export const NodeCount = styled.div`
   opacity: 0.6;
 `
 
-export const ServiceRoot = styled.div<{ index: number }>`
+export const ServiceRoot = styled.div`
   min-height: 3rem;
   max-height: 3rem;
   padding: 0.5rem 0.5rem;

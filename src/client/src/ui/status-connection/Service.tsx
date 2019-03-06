@@ -1,14 +1,12 @@
-import _ from 'lodash'
-import React, { SFC } from 'react'
+import React from 'react'
 
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import { StatusCircle, NodeCount, ServiceName, ServiceRoot } from './styled'
 
-const Service: SFC<{ service: ServiceStatus; index: number }> = ({
+const Service: React.FC<{ service: ServiceStatus }> = ({
   service: { serviceType, connectionStatus, connectedInstanceCount },
-  index,
 }) => (
-  <ServiceRoot index={index + 2}>
+  <ServiceRoot>
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <StatusCircle status={connectionStatus} />
       <ServiceName>{serviceType}</ServiceName>
