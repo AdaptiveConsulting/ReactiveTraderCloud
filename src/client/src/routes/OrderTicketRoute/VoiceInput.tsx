@@ -481,7 +481,7 @@ const StatusText: React.FC<{ accent?: AccentName; toggle: () => void }> = ({ acc
     onClick={toggle}
     fg={t => accent ? t.accents[accent].base : t.primary[2]}
     fontSize={0.625}
-    letterSpacing="1px"
+    letterSpacing={1}
     textTransform="uppercase"
   >
     <AnimatedText accent={accent}>{children}</AnimatedText>

@@ -1,8 +1,6 @@
-import { filter, get } from 'lodash'
-
-import { MappedPropMap, PassThroughFunc } from '../tools'
+import { MappedPropMap } from '../tools'
 import { css } from 'styled-components'
-import { styled } from 'rt-theme'
+import { styled, Theme, ThemeSelector } from 'rt-theme'
 
 // Normalized font sizes are `rem` values corresponding to whole pixel values (i.e. rem*16 is integer)
 type NormalizedFontSize =
@@ -44,12 +42,21 @@ export interface TextProps {
   textAlign?: 'initial' | 'left' | 'center' | 'right'
   textTransform?: 'uppercase' | 'capitalize'
   whiteSpace?: 'initial' | 'nowrap' | 'pre-line' | 'pre-wrap'
-  letterSpacing?: any
-  color?: any
+  /**
+   * Expressed in `px`
+   */
+  letterSpacing?: number
+  /*
+   When using standard attribute names like 'color', styled-components injects them 
+   into the rendered html element (e.g <span color="">)! With literal attributes 
+   this is no big deal, but since this is a Theme=>string selector React warns when
+   rendering a function as an attribute. As a workaround we rename to `textColor`
+   */
+  textColor?: ThemeSelector
   opacity?: 0 | 0.25 | 0.5 | 0.75 | 1
 }
 
-export const textProps: MappedPropMap<TextProps> = {
+const textProps: MappedPropMap<TextProps> = {
   display: ({ display }) => css({ display }),
   lineHeight: ({ lineHeight }) => css({ lineHeight: `${lineHeight}rem` }),
   fontSize: ({ fontSize }) => css({ fontSize: `${fontSize}rem` }),
@@ -59,14 +66,29 @@ export const textProps: MappedPropMap<TextProps> = {
   textAlign: ({ textAlign }) => css({ textAlign }),
   textTransform: ({ textTransform }) => css({ textTransform }),
   whiteSpace: ({ whiteSpace }) => css({ whiteSpace }),
-  letterSpacing: ({ letterSpacing }) => css({ letterSpacing }),
-  color: ({ color, theme }) =>
-    css({ color: (color === true && theme.textColor) || get(theme, color) || get(theme.spectrum, color) }),
+  letterSpacing: ({ letterSpacing }) => css({ letterSpacing: `${letterSpacing}px` }),
+  textColor: ({ textColor, theme }) => {
+    if (typeof textColor === 'string') {
+      return css({ color: textColor })
+    }
+    if (typeof textColor === 'function') {
+      return css({ color: textColor(theme as Theme) })
+    }
+    return undefined
+  },
   opacity: ({ opacity }) => css({ opacity }),
 }
 
-export function mapTextProps(props: TextProps) {
-  return filter(textProps, (fn: PassThroughFunc, key) => props[key] && props[key] != null && fn(props))
+function isTextProp(rule: string): rule is keyof TextProps {
+  return textProps[rule] !== undefined
+}
+
+export function mapTextProps(props: TextProps & { theme: Theme }) {
+  return Object.keys(props)
+    .filter(isTextProp)
+    .map(key => textProps[key](props))
+    .filter(Boolean)
+    .join(';')
 }
 
 export const Text = styled.span<TextProps>`

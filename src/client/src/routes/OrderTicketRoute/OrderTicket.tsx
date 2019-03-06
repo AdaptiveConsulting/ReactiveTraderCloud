@@ -205,7 +205,7 @@ export class OrderTicket extends PureComponent<Props, State> {
           <AppLayout bg={t => t.core.darkBackground}>
             <ChromeLayout bg={t => t.primary.base}>
               <WindowControls />
-              <Text letterSpacing="1px" fontSize={0.75} fontWeight={300}>
+              <Text letterSpacing={1} fontSize={0.75} fontWeight={300}>
                 Order Ticket
               </Text>
             </ChromeLayout>
