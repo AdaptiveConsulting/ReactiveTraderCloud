@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Loadable } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
@@ -7,13 +7,10 @@ import Workspace from './Workspace'
 
 type Props = ReturnType<typeof mapStateToProps>
 
-const WorkspaceContainer: FC<Props> = props => {
-  return (
-    <div>
-      <Loadable status={props.status} render={() => <Workspace {...props} />} message="Pricing Disconnected" />
-    </div>
-  )
-}
+const WorkspaceContainer: React.FC<Props> = props => (
+  <Loadable status={props.status} render={() => <Workspace {...props} />} message="Pricing Disconnected" />
+)
+
 const mapStateToProps = (state: GlobalState) => ({
   spotTiles: selectSpotTiles(state),
   status: selectExecutionStatus(state),

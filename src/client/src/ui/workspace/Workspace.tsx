@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { useState } from 'react'
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
@@ -29,7 +29,7 @@ interface Props {
 
 const ALL = 'ALL'
 
-const Workspace: FC<Props> = ({ spotTiles = [], currencyOptions }) => {
+const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
   const [currency, setCurrencyOption] = useState(ALL)
   const [tileView, setTileView] = useState(TileViews.Normal)
   return (

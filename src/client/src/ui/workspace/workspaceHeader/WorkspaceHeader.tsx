@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
 import { TileViews } from './types'
 import AnalyticsViewIcon from './AnalyticsTileViewIcon'
@@ -17,7 +17,7 @@ const tileViews = {
   [TileViews.Analytics]: AnalyticsViewIcon,
 }
 
-const WorkspaceHeader: FC<Props> = ({
+const WorkspaceHeader: React.FC<Props> = ({
   defaultOption,
   tileView,
   currency,
