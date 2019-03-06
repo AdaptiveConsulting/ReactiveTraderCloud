@@ -102,7 +102,7 @@ export class OrderStatus extends React.Component<Props, State> {
         {quote && (
           <Timer key={quote.expiry && quote.expiry.toString()} duration={1000} interval={this.updateCountdown} />
         )}
-        <StatusLayout fg={t => t.muteColor}>
+        <StatusLayout fg={t => t.secondary[3]}>
           <StatusBox>
             <LabelText>Status</LabelText>
             {quote ? (
@@ -175,7 +175,7 @@ const StatusLayout = styled(Block)`
   align-content: center;
   box-shadow: 0 -1px 0 0 ${/* align-items: center; */
     /* justify-content: center; */
-    props => props.theme.ruleColor} inset;
+    props => props.theme.primary.base} inset;
 `
 
 const StatusText = styled(Block)`

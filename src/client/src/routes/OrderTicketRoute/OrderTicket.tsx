@@ -244,7 +244,7 @@ export class OrderTicket extends PureComponent<Props, State> {
               />
             </StatusLayout>
 
-            <InfoLayout fg={t => t.muteColor}>
+            <InfoLayout fg={t => t.secondary[3]}>
               Bond Info
               {
                 <React.Fragment>
@@ -369,7 +369,7 @@ const DrawerLayout = styled(Block)`
 const VoiceLayout = styled(Block)`
   grid-area: voice;
   height: 5rem;
-  box-shadow: 0 1px 0 ${props => props.theme.ruleColor};
+  box-shadow: 0 1px 0 ${props => props.theme.primary.base};
 
   display: flex;
   align-items: center;
@@ -383,7 +383,7 @@ const VoiceLayout = styled(Block)`
 const FormLayout = styled(Block)`
   grid-area: form;
   height: 14rem;
-  box-shadow: -1px 0 0 ${props => props.theme.ruleColor} inset;
+  box-shadow: -1px 0 0 ${props => props.theme.primary.base} inset;
 
   display: flex;
   align-items: center;
@@ -408,7 +408,7 @@ const InfoLayout = styled(Block)`
 
   padding: 0 1rem;
 
-  box-shadow: 0 1px 0 ${props => props.theme.ruleColor} inset;
+  box-shadow: 0 1px 0 ${props => props.theme.primary.base} inset;
 
   ${rules.appRegionDrag};
 
