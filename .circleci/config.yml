@@ -121,13 +121,13 @@ jobs:
             kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${BUILD_NUM} 
             kubectl --namespace=${NAMESPACE} set image deployments/web-deployment web=${DOCKER_USER}/nginx:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/client-deployment client=${DOCKER_USER}/client:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/pricehistory-deployment client=${DOCKER_USER}/client:${BUILD_NUM}  
             kubectl --namespace=${NAMESPACE} set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/pricing-deployment pricing=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/pricehistory-deployment client=${DOCKER_USER}/client:${BUILD_NUM}  
 
 workflows:
   version: 2
