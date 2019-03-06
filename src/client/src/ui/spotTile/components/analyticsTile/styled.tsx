@@ -8,7 +8,7 @@ export const AnalyticsTileContent = styled.div`
   justify-content: space-between;
 `
 export const GraphNotionalWrapper = styled.div`
-  width: 55%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

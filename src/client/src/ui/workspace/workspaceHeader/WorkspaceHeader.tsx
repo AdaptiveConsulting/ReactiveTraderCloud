@@ -1,36 +1,39 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
-import { CurrencyOptions, TileViews } from './types'
+import { TileViews } from './types'
 import AnalyticsViewIcon from './AnalyticsTileViewIcon'
 import SpotTileViewIcon from './SpotTileViewIcon'
 interface Props {
+  currencyOptions: string[]
   tileView: TileViews
-  currencyView: CurrencyOptions
-  onCurrencyChange: (currency: CurrencyOptions) => void
+  currency: string
+  defaultOption: string
+  onCurrencyChange: (currency: string) => void
   onTileViewChange: (tileView: TileViews) => void
 }
-
-const currencyOptions: CurrencyOptions[] = [
-  CurrencyOptions.All,
-  CurrencyOptions.EUR,
-  CurrencyOptions.GBP,
-  CurrencyOptions.USD,
-]
 
 const tileViews = {
   [TileViews.Normal]: SpotTileViewIcon,
   [TileViews.Analytics]: AnalyticsViewIcon,
 }
 
-const WorkspaceHeader: FC<Props> = ({ tileView, currencyView, onCurrencyChange, onTileViewChange }) => {
+const WorkspaceHeader: React.FC<Props> = ({
+  defaultOption,
+  tileView,
+  currency,
+  onCurrencyChange,
+  onTileViewChange,
+  currencyOptions,
+}) => {
+  const options = [defaultOption, ...currencyOptions]
   return (
     <Header>
       <LeftNav>
         <LeftNavItemFirst>Live Rates</LeftNavItemFirst>
-        {currencyOptions.map(currencyOption => (
+        {options.map(currencyOption => (
           <NavItem
             key={currencyOption}
-            active={currencyOption === currencyView}
+            active={currencyOption === currency}
             onClick={() => onCurrencyChange(currencyOption)}
           >
             {currencyOption}

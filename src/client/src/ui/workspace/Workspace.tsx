@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
+import React, { useState } from 'react'
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
-import { CurrencyOptions, TileViews } from './workspaceHeader'
+import { WorkspaceHeader, TileViews } from './workspaceHeader'
 import { appendTileViewToUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
 
@@ -24,25 +24,42 @@ interface SpotTile {
 
 interface Props {
   spotTiles: SpotTile[]
-  tileView: TileViews
-  currencyView: CurrencyOptions
+  currencyOptions: string[]
 }
 
-const Workspace: FC<Props> = ({ spotTiles = [], tileView }) => (
-  <WorkspaceItems>
-    {spotTiles.map(({ key, externalWindowProps }) => (
-      <TearOff
-        id={key}
-        externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
-        render={(popOut, tornOff) => (
-          <WorkspaceItem>
-            <SpotTileContainer id={key} tileView={tileView} onPopoutClick={popOut} tornOff={tornOff} tearable />
-          </WorkspaceItem>
-        )}
-        key={key}
+const ALL = 'ALL'
+
+const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
+  const [currency, setCurrencyOption] = useState(ALL)
+  const [tileView, setTileView] = useState(TileViews.Normal)
+  return (
+    <div>
+      <WorkspaceHeader
+        currencyOptions={currencyOptions}
+        currency={currency}
+        defaultOption={ALL}
+        tileView={tileView}
+        onCurrencyChange={setCurrencyOption}
+        onTileViewChange={setTileView}
       />
-    ))}
-  </WorkspaceItems>
-)
+      <WorkspaceItems>
+        {spotTiles
+          .filter(({ key }) => key.includes(currency) || currency === 'ALL')
+          .map(({ key, externalWindowProps }) => (
+            <TearOff
+              id={key}
+              externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
+              render={(popOut, tornOff) => (
+                <WorkspaceItem>
+                  <SpotTileContainer id={key} tileView={tileView} onPopoutClick={popOut} tornOff={tornOff} tearable />
+                </WorkspaceItem>
+              )}
+              key={key}
+            />
+          ))}
+      </WorkspaceItems>
+    </div>
+  )
+}
 
 export default Workspace
