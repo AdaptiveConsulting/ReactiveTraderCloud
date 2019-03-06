@@ -11,7 +11,7 @@ import baseStyled, { ThemedStyledInterface } from 'styled-components'
 
 export const styled: ThemedStyledInterface<Theme> = baseStyled
 
-export { ThemeName, ThemeProvider, ThemeConsumer } from './ThemeContext'
+export { ThemeName, ThemeProvider, ThemeConsumer, useTheme } from './ThemeContext'
 import { Theme, ColorProps, ThemeSelector, TouchableIntentName, themes, getThemeColor } from './themes'
 export type Theme = Theme
 export type TouchableIntentName = TouchableIntentName

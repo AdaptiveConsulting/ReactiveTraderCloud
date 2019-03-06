@@ -1,36 +1,31 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { platform, PlatformProvider } from 'rt-components'
-import { styled, ThemeName, ThemeProvider, ThemeConsumer, GlobalStyle } from 'rt-theme'
+import { styled, ThemeName, ThemeProvider, GlobalStyle, useTheme } from 'rt-theme'
 
-class Story extends Component {
-  render() {
-    const { children } = this.props
+const Story: React.FC = ({ children }) => (
+  <>
+    <GlobalStyle />
+    <ThemeProvider>
+      <PlatformProvider value={platform}>
+        <StyledStory>
+          <StoryToolbar />
+          <Content>{children}</Content>
+        </StyledStory>
+      </PlatformProvider>
+    </ThemeProvider>
+  </>
+)
 
-    return (
-      <React.Fragment>
-        <GlobalStyle />
-        <ThemeProvider>
-          <PlatformProvider value={platform}>
-            <StyledStory>
-              <Toolbar>
-                <ThemeConsumer>
-                  {({ name, setTheme }) => (
-                    <IconButton
-                      onClick={() => setTheme({ name: name === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark })}
-                      type={name || 'primary'}
-                    >
-                      <i className={`fa${name === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
-                    </IconButton>
-                  )}
-                </ThemeConsumer>
-              </Toolbar>
-              <Content>{children}</Content>
-            </StyledStory>
-          </PlatformProvider>
-        </ThemeProvider>
-      </React.Fragment>
-    )
-  }
+const StoryToolbar: React.FC = () => {
+  const { themeName, toggleTheme } = useTheme()
+
+  return (
+    <Toolbar>
+      <IconButton onClick={toggleTheme} type={themeName || 'primary'}>
+        <i className={`fa${themeName === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
+      </IconButton>
+    </Toolbar>
+  )
 }
 
 const IconButton = styled.div<{ type: string }>`

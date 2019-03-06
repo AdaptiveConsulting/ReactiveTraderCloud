@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { themes } from './themes'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 
@@ -12,12 +12,12 @@ interface Props {
 }
 
 interface State {
-  name: ThemeName
+  themeName: ThemeName
 }
 
 interface ContextValue {
-  name?: string
-  setTheme: (selector: { name: ThemeName }) => void
+  themeName?: string
+  setTheme: (selector: { themeName: ThemeName }) => void
 }
 
 const ThemeContext = React.createContext<ContextValue>({
@@ -32,7 +32,7 @@ class ThemeStorageProvider extends React.Component<Props, State> {
   }
 
   state = {
-    name: ThemeName.Dark,
+    themeName: ThemeName.Dark,
   }
 
   componentDidMount = () => {
@@ -48,29 +48,38 @@ class ThemeStorageProvider extends React.Component<Props, State> {
     const { storage } = this.props
 
     if (event == null || event.key === STORAGE_KEY) {
-      const name = storage.getItem(STORAGE_KEY) as ThemeName
+      const themeName = storage.getItem(STORAGE_KEY) as ThemeName
 
-      if (name && themes[name] != null) {
-        this.setTheme({ name })
+      if (themeName && themes[themeName] != null) {
+        this.setTheme({ themeName })
       }
     }
   }
 
-  setTheme = ({ name }: State) => {
-    if (name !== this.state.name) {
-      this.setState({ name }, () => this.props.storage.setItem(STORAGE_KEY, name))
+  setTheme = ({ themeName }: State) => {
+    if (themeName !== this.state.themeName) {
+      this.setState({ themeName }, () => this.props.storage.setItem(STORAGE_KEY, themeName))
     }
   }
 
   render() {
     return (
-      <ThemeContext.Provider value={{ name: this.state.name, setTheme: this.setTheme }}>
-        <StyledThemeProvider theme={themes[this.state.name]}>
-          <React.Fragment>{this.props.children}</React.Fragment>
+      <ThemeContext.Provider value={{ themeName: this.state.themeName, setTheme: this.setTheme }}>
+        <StyledThemeProvider theme={themes[this.state.themeName]}>
+          <>{this.props.children}</>
         </StyledThemeProvider>
       </ThemeContext.Provider>
     )
   }
+}
+
+export const useTheme = () => {
+  const { themeName, setTheme } = useContext(ThemeContext)
+  const toggleTheme = () =>
+    setTheme({
+      themeName: themeName === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark,
+    })
+  return { themeName, setTheme, toggleTheme }
 }
 
 export const ThemeProvider = ThemeStorageProvider
