@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { ButtonHTMLAttributes, ReactChild } from 'react'
 import { userSelectButton, userSelectNone } from 'rt-styleguide'
 import { Theme, styled, TouchableIntentName } from 'rt-theme'
@@ -190,7 +189,7 @@ const StyledBase = styled.div<ButtonStyleProps>`
 `
 
 const StyledButtonBase = StyledBase.withComponent('button')
-export const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
+const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;
@@ -223,7 +222,7 @@ StyledButton.defaultProps = {
   role: 'button',
 }
 
-export const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
+const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
   ${StyledButton} {
     min-width: 1rem;
     padding-left: 0.625rem;

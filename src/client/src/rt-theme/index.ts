@@ -20,7 +20,3 @@ export type ThemeSelector = ThemeSelector
 export { themes, getThemeColor }
 export { default as ThemeStorageSwitch } from './ThemeStorageSwitch'
 
-// @ts-ignore
-window.themes = themes
-// @ts-ignore
-window.colors = colors

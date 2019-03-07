@@ -169,7 +169,7 @@ export class OrderTicket extends PureComponent<Props, State> {
       sessionResult: null,
       requestExecution: false,
       executed: null,
-      query: _.mapValues(this.state.query, _.constant('')),
+      query: _.mapValues(this.state.query, () => ''),
     })
   }
 
@@ -196,6 +196,13 @@ export class OrderTicket extends PureComponent<Props, State> {
     }
   }
 
+  tryGetSessionResultTranscript() {
+    try {
+      return this.state.sessionResult.transcripts[0][0].transcript
+    } catch {}
+    return undefined
+  }
+
   render() {
     const { executed, requestExecution, requestQuote, requestSession, query = {} } = this.state
 
@@ -216,7 +223,7 @@ export class OrderTicket extends PureComponent<Props, State> {
 
             <VoiceLayout>
               <VoiceInput
-                value={_.get(this.state.sessionResult, 'transcripts[0][0].transcript')}
+                value={this.tryGetSessionResultTranscript()}
                 source={this.state.source}
                 onStart={this.onSessionStart}
                 onResult={this.onSessionResult}
@@ -250,11 +257,11 @@ export class OrderTicket extends PureComponent<Props, State> {
                 <React.Fragment>
                   {requestExecution && (
                     <Timer
-                      duration={_.random(100, 300)}
+                      duration={100 + Math.random() * 200}
                       timeout={() =>
                         this.setState({
                           requestQuote: false,
-                          executed: _.random(0, 10) <= 8,
+                          executed: Math.random() < 0.8,
                         })
                       }
                     />

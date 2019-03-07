@@ -132,8 +132,7 @@ export type PaddingProps = { [P in keyof AllPaddingRules]: keyof AllPaddingRules
 export type MarginPaddingProps = MarginProps & PaddingProps
 type MarginPaddingRuleType = keyof MarginPaddingProps
 
-// tslint:disable
-export const marginPaddingProps: AllMarginRules & AllPaddingRules = {
+const marginPaddingProps: AllMarginRules & AllPaddingRules = {
   ...STANDARD_MARGIN_RULES,
   ...STANDARD_PADDING_RULES,
 }
