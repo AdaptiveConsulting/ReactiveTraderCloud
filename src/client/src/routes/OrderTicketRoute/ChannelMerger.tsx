@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isEqual } from 'lodash'
 import { PureComponent } from 'react'
 
 export type Source = 'microphone' | 'sample'
@@ -32,14 +32,14 @@ class ChannelMerger extends PureComponent<Props, State> {
   static getDerivedStateFromProps({ inputs, outputs }: Props, current: State) {
     let next: State = { inputs: [], outputs: [] }
 
-    if (!_.isEqual(inputs, current.inputs)) {
+    if (!isEqual(inputs, current.inputs)) {
       current.inputs.map((input: AudioNode) => input && input.disconnect(current.destination))
       inputs.map((input: AudioNode) => input && input.connect(current.destination))
 
       next = { ...next, inputs }
     }
 
-    if (!_.isEqual(outputs, current.outputs)) {
+    if (!isEqual(outputs, current.outputs)) {
       current.outputs.map((output: AudioNode) => output && current.destination.disconnect(output))
       outputs.map((output: AudioNode) => output && current.destination.connect(output))
 

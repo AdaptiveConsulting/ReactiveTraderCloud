@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { capitalize } from 'lodash'
 import React, { SFC } from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
@@ -48,7 +48,7 @@ const connectionState = {
 }
 
 Object.entries(connectionState).forEach(([key, state]) =>
-  stories.add(_.capitalize(key), () => {
+  stories.add(capitalize(key), () => {
     // const expanded = boolean('expanded', false)
     return (
       <Root state={state}>

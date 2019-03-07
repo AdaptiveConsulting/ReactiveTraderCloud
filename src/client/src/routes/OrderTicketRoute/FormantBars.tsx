@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { clamp, chunk } from 'lodash'
 import React, { Component } from 'react'
 
 export interface Props {
@@ -66,7 +66,7 @@ class FormantBars extends Component<Props, Partial<State>> {
           height,
           gap,
           style: {
-            width: `${_.round((width / scale + gap / scale) * count - gap / scale)}px`,
+            width: `${Math.round((width / scale + gap / scale) * count - gap / scale)}px`,
             height: `${height / scale}px`,
           },
         },
@@ -123,17 +123,17 @@ class FormantBars extends Component<Props, Partial<State>> {
     }
 
     // Move to positive integer
-    data = data.map(v => _.clamp(v + 2 * (analyser.maxDecibels - analyser.minDecibels), 0, 255))
+    data = data.map(v => clamp(v + 2 * (analyser.maxDecibels - analyser.minDecibels), 0, 255))
 
     // Reduce signal from treble and bass
     data = data.map(
-      (current, i, { length }: any) =>
+      (current, i, { length }) =>
         // Weight the values with a moment at the midpoint
         // current * Math.sin((i / length) * Math.PI),
         0.2 * current + 0.8 * (current * Math.sin((i / length) * Math.PI)),
     )
 
-    const max = _.max(data)
+    const max = Math.max(...Array.prototype.slice.call(data))
     const maxDb = analyser.maxDecibels - analyser.minDecibels
     // const maxDb = (1 - 1 / bar.count) * (analyser.maxDecibels - analyser.minDecibels)
     data = data.map(
@@ -149,7 +149,7 @@ class FormantBars extends Component<Props, Partial<State>> {
 
     // data = _.chunk(data, 2).map(([a, b], i, c) => (a + b) / 2) as any
     // @ts-ignore
-    data = _.chunk(data, Math.round(data.length / bar.count)).map((vs, i, c) => _.sum(vs) / vs.length)
+    data = chunk(data, Math.round(data.length / bar.count)).map((vs, i, c) => _.sum(vs) / vs.length)
 
     if (canvas && canvas.getContext) {
       const canvasCtx = canvas.getContext('2d')
@@ -158,11 +158,11 @@ class FormantBars extends Component<Props, Partial<State>> {
 
       data.forEach((value, i) => {
         const x = i * (bar.width + grid.gap)
-        const magnitude = _.max([2 * value, 3 * bar.width])
-        const height = _.min([magnitude, bar.height * 1.5])
+        const magnitude = Math.max(2 * value, 3 * bar.width)
+        const height = Math.min(magnitude, bar.height * 1.5)
 
         canvasCtx.fillStyle =
-          (color && color(_.clamp(magnitude / 200, 0, 1))) ||
+          (color && color(clamp(magnitude / 200, 0, 1))) ||
           'rgb(' + Math.floor((0.75 + Math.sin(Math.PI * (magnitude / 50))) * magnitude + 95 / 2) + ',148,245)'
 
         roundRect({

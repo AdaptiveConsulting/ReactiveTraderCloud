@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { DateTime, Duration } from 'luxon'
 import React from 'react'
 
@@ -65,8 +64,8 @@ export class OrderStatus extends React.Component<Props, State> {
   }
 
   setQuote = () => {
-    const bid = _.random(10.5, 500.5)
-    const ask = bid - _.random(0.1, bid * 0.1)
+    const bid = 10 + Math.random() * 490
+    const ask = bid * (0.89 + 0.1 * Math.random()) // 89-99% of bid
     const countdown = Duration.fromObject({ seconds: 10 })
 
     this.setState({

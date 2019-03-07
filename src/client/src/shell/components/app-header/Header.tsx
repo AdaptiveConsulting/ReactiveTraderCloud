@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React from 'react'
 
 import { styled, ThemeName, useTheme } from 'rt-theme'

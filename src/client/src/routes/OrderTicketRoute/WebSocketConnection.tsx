@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { PureComponent } from 'react'
 
 export interface WebSocketEventHandles {

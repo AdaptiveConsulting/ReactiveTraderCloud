@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { styled, ThemeProvider } from 'rt-theme'
@@ -12,17 +11,14 @@ import CoreBranding from './sections/CoreBranding'
 import FontFamilies from './sections/FontFamilies'
 import Introduction from './sections/Introduction'
 
-const sections = _.mapKeys(
-  {
-    Introduction,
-    ColorSpectrum,
-    CoreBranding,
-    FontFamilies,
-    Atoms,
-    Ending: () => <SectionBlock mh={5} colorScheme="inverted" />,
-  },
-  (value, key) => _.kebabCase(key),
-)
+const sections: Array<{ path: string; Section: React.ComponentType }> = [
+  { path: 'introduction', Section: Introduction },
+  { path: 'color-spectrum', Section: ColorSpectrum },
+  { path: 'core-branding', Section: CoreBranding },
+  { path: 'font-families', Section: FontFamilies },
+  { path: 'atoms', Section: Atoms },
+  { path: 'ending', Section: () => <SectionBlock mh={5} colorScheme="inverted" /> },
+]
 
 const StyleguideRoute: React.FC = () => (
   <ThemeProvider>
@@ -30,7 +26,7 @@ const StyleguideRoute: React.FC = () => (
       <FloatingTools />
       <BrowserRouter>
         <Switch>
-          {_.map(sections, (Section, path) => (
+          {sections.map(({ path, Section }) => (
             <Route key={path} path={`/styleguide/${path}`}>
               <Section />
             </Route>
@@ -38,7 +34,7 @@ const StyleguideRoute: React.FC = () => (
 
           <Route>
             <React.Fragment>
-              {_.map(sections, (Section, path) => (
+              {sections.map(({ path, Section }) => (
                 <Section key={path} />
               ))}
             </React.Fragment>

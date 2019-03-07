@@ -1,6 +1,5 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import _ from 'lodash'
 import React from 'react'
 
 import { Button, ButtonGroup } from 'rt-styleguide'

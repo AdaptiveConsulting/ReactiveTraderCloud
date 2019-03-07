@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { Component } from 'react'
 
 import { ConnectionState } from 'rt-system'

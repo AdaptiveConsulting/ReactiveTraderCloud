@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { memoize } from 'lodash'
 import React, { PureComponent } from 'react'
 import { keyframes } from 'styled-components'
 import { styled } from 'rt-theme'
@@ -10,7 +10,7 @@ for (let i = 0; i < BAR_NUMBER; i++) {
   bars.push(i)
 }
 
-const getBounce = _.memoize(
+const getBounce = memoize(
   (moveDistance: number) => keyframes`
   0% {
     transform: translate(0px,0px);
