@@ -50,7 +50,7 @@ export class OrderTicket extends PureComponent<Props, State> {
       }),
   }
 
-  viewportRef = React.createRef<HTMLDivElement>()
+  viewportRef = React.createRef<any>()
 
   hotkeys = {
     keyMap: {
@@ -89,7 +89,7 @@ export class OrderTicket extends PureComponent<Props, State> {
   componentDidMount = () => {
     const { current } = this.viewportRef
 
-    const node = ReactDOM.findDOMNode(current) as HTMLDivElement
+    const node = ReactDOM.findDOMNode(current) as HTMLElement
 
     if (node) {
       node.focus()
@@ -169,7 +169,7 @@ export class OrderTicket extends PureComponent<Props, State> {
       sessionResult: null,
       requestExecution: false,
       executed: null,
-      query: _.mapValues(this.state.query, _.constant('')),
+      query: _.mapValues(this.state.query, () => ''),
     })
   }
 
@@ -196,104 +196,121 @@ export class OrderTicket extends PureComponent<Props, State> {
     }
   }
 
+  tryGetSessionResultTranscript() {
+    try {
+      return this.state.sessionResult.transcripts[0][0].transcript
+    } catch {}
+    return undefined
+  }
+
   render() {
     const { executed, requestExecution, requestQuote, requestSession, query = {} } = this.state
 
     return (
-      <Viewport bg="core.darkBackground" fg="core.textColor" {...this.hotkeys} ref={this.viewportRef}>
-        <AppLayout bg="core.darkBackground">
-          <ChromeLayout bg="primary.base">
-            <WindowControls />
-            <Text letterSpacing="1px" fontSize={0.75} fontWeight={300}>
-              Order Ticket
-            </Text>
-          </ChromeLayout>
+      <Viewport bg={t => t.core.darkBackground} fg={t => t.core.textColor}>
+        <StyledHotKeys {...this.hotkeys} ref={this.viewportRef}>
+          <AppLayout bg={t => t.core.darkBackground}>
+            <ChromeLayout bg={t => t.primary.base}>
+              <WindowControls />
+              <Text letterSpacing={1} fontSize={0.75} fontWeight={300}>
+                Order Ticket
+              </Text>
+            </ChromeLayout>
 
-          <DrawerLayout bg="primary.4" fg="primary.2">
-            <DrawerMenu onClick={this.props.reset} />
-          </DrawerLayout>
+            <DrawerLayout bg={t => t.primary[4]} fg={t => t.primary[2]}>
+              <DrawerMenu onClick={this.props.reset} />
+            </DrawerLayout>
 
-          <VoiceLayout>
-            <VoiceInput
-              value={_.get(this.state.sessionResult, 'transcripts[0][0].transcript')}
-              source={this.state.source}
-              onStart={this.onSessionStart}
-              onResult={this.onSessionResult}
-              onEnd={this.onSessionEnd}
-              requestSession={requestSession}
-              // testing
-              features={this.state.features}
-            />
-          </VoiceLayout>
+            <VoiceLayout>
+              <VoiceInput
+                value={this.tryGetSessionResultTranscript()}
+                source={this.state.source}
+                onStart={this.onSessionStart}
+                onResult={this.onSessionResult}
+                onEnd={this.onSessionEnd}
+                requestSession={requestSession}
+                // testing
+                features={this.state.features}
+              />
+            </VoiceLayout>
 
-          <FormLayout>
-            <OrderForm fields={query} onChange={this.onOrderFormChange} />
-          </FormLayout>
+            <FormLayout>
+              <OrderForm fields={query} onChange={this.onOrderFormChange} />
+            </FormLayout>
 
-          <StatusLayout>
-            <OrderStatus
-              ready={!!query.product && !!query.notional && !!query.client}
-              query={query}
-              requestQuote={requestQuote}
-              onSubmit={this.onSubmit}
-              onCancel={this.onCancel}
-              onExpire={this.onExpire}
-              onBuy={this.onBuy}
-              onSell={this.onBuy}
-            />
-          </StatusLayout>
+            <StatusLayout>
+              <OrderStatus
+                ready={!!query.product && !!query.notional && !!query.client}
+                query={query}
+                requestQuote={requestQuote}
+                onSubmit={this.onSubmit}
+                onCancel={this.onCancel}
+                onExpire={this.onExpire}
+                onBuy={this.onBuy}
+                onSell={this.onBuy}
+              />
+            </StatusLayout>
 
-          <InfoLayout fg="muteColor">
-            Bond Info
-            {
-              <React.Fragment>
-                {requestExecution && (
-                  <Timer
-                    duration={_.random(100, 300)}
-                    timeout={() =>
-                      this.setState({
-                        requestQuote: false,
-                        executed: _.random(0, 10) <= 8,
-                      })
-                    }
-                  />
-                )}
-                {executed != null && (
-                  <Notification
-                    position="bottom"
-                    duration={2500}
-                    intent={executed ? 'good' : 'bad'}
-                    onEnd={() =>
-                      executed && !this.state.requestQuote
-                        ? this.onCancel()
-                        : this.setState({
-                            requestExecution: false,
-                            executed: null,
-                          })
-                    }
-                  >
-                    <Block fontSize={0.875}>
-                      {executed ? (
-                        <Text fontWeight="bold">Order Succeeded</Text>
-                      ) : (
-                        <Text fontWeight="bold">Order Failed</Text>
-                      )}
-                    </Block>
-                  </Notification>
-                )}
-              </React.Fragment>
-            }
-          </InfoLayout>
-        </AppLayout>
+            <InfoLayout fg={t => t.secondary[3]}>
+              Bond Info
+              {
+                <React.Fragment>
+                  {requestExecution && (
+                    <Timer
+                      duration={100 + Math.random() * 200}
+                      timeout={() =>
+                        this.setState({
+                          requestQuote: false,
+                          executed: Math.random() < 0.8,
+                        })
+                      }
+                    />
+                  )}
+                  {executed != null && (
+                    <Notification
+                      position="bottom"
+                      duration={2500}
+                      intent={executed ? 'good' : 'bad'}
+                      onEnd={() =>
+                        executed && !this.state.requestQuote
+                          ? this.onCancel()
+                          : this.setState({
+                              requestExecution: false,
+                              executed: null,
+                            })
+                      }
+                    >
+                      <Block fontSize={0.875}>
+                        {executed ? (
+                          <Text fontWeight="bold">Order Succeeded</Text>
+                        ) : (
+                          <Text fontWeight="bold">Order Failed</Text>
+                        )}
+                      </Block>
+                    </Notification>
+                  )}
+                </React.Fragment>
+              }
+            </InfoLayout>
+          </AppLayout>
+        </StyledHotKeys>
       </Viewport>
     )
   }
 }
 
-const Viewport = styled(Block.withComponent(HotKeys) as typeof Block)`
+const StyledHotKeys = styled(HotKeys)`
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 100%;
+  height: 100%;
+  width: 100%;
+`
+
+const Viewport = styled(Block)`
+  display: flex;
+  align-items: center;
   min-height: 100%;
   height: 100%;
 
@@ -359,7 +376,7 @@ const DrawerLayout = styled(Block)`
 const VoiceLayout = styled(Block)`
   grid-area: voice;
   height: 5rem;
-  box-shadow: 0 1px 0 ${props => props.theme.ruleColor};
+  box-shadow: 0 1px 0 ${props => props.theme.primary.base};
 
   display: flex;
   align-items: center;
@@ -373,7 +390,7 @@ const VoiceLayout = styled(Block)`
 const FormLayout = styled(Block)`
   grid-area: form;
   height: 14rem;
-  box-shadow: -1px 0 0 ${props => props.theme.ruleColor} inset;
+  box-shadow: -1px 0 0 ${props => props.theme.primary.base} inset;
 
   display: flex;
   align-items: center;
@@ -398,7 +415,7 @@ const InfoLayout = styled(Block)`
 
   padding: 0 1rem;
 
-  box-shadow: 0 1px 0 ${props => props.theme.ruleColor} inset;
+  box-shadow: 0 1px 0 ${props => props.theme.primary.base} inset;
 
   ${rules.appRegionDrag};
 

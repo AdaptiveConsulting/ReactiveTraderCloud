@@ -1,7 +1,6 @@
-import _ from 'lodash'
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { styled, ThemeName, ThemeProvider, ThemeConsumer } from 'rt-theme'
+import { styled, ThemeProvider } from 'rt-theme'
 
 import FloatingTools from './components/FloatingsTools'
 import { Block, SectionBlock } from './styled'
@@ -12,38 +11,22 @@ import CoreBranding from './sections/CoreBranding'
 import FontFamilies from './sections/FontFamilies'
 import Introduction from './sections/Introduction'
 
-const sections = _.mapKeys(
-  {
-    Introduction,
-    ColorSpectrum,
-    CoreBranding,
-    FontFamilies,
-    Atoms,
-    Ending: () => <SectionBlock mh={5} intent="inverted" />,
-  },
-  (value, key) => _.kebabCase(key),
-)
+const sections: Array<{ path: string; Section: React.ComponentType }> = [
+  { path: 'introduction', Section: Introduction },
+  { path: 'color-spectrum', Section: ColorSpectrum },
+  { path: 'core-branding', Section: CoreBranding },
+  { path: 'font-families', Section: FontFamilies },
+  { path: 'atoms', Section: Atoms },
+  { path: 'ending', Section: () => <SectionBlock mh={5} colorScheme="inverted" /> },
+]
 
 const StyleguideRoute: React.FC = () => (
-  <ThemeProvider storage={sessionStorage}>
+  <ThemeProvider>
     <Root>
-      <ThemeConsumer>
-        {({ name, setTheme }) => {
-          return (
-            <FloatingTools
-              themeName={name}
-              switchTheme={() =>
-                setTheme({
-                  name: name === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark,
-                })
-              }
-            />
-          )
-        }}
-      </ThemeConsumer>
+      <FloatingTools />
       <BrowserRouter>
         <Switch>
-          {_.map(sections, (Section, path) => (
+          {sections.map(({ path, Section }) => (
             <Route key={path} path={`/styleguide/${path}`}>
               <Section />
             </Route>
@@ -51,7 +34,7 @@ const StyleguideRoute: React.FC = () => (
 
           <Route>
             <React.Fragment>
-              {_.map(sections, (Section, path) => (
+              {sections.map(({ path, Section }) => (
                 <Section key={path} />
               ))}
             </React.Fragment>

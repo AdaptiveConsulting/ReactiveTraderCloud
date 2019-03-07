@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React from 'react'
 import { mix } from 'polished'
 
@@ -18,7 +17,7 @@ import { Timer } from 'rt-components'
 
 import FormantBars from './FormantBars'
 import MicrophoneIcon from './assets/Microphone'
-import { colors, styled } from 'rt-theme'
+import { colors, styled, AccentName } from 'rt-theme'
 import { keyframes } from 'styled-components'
 
 type SourceType = 'microphone' | 'sample'
@@ -327,7 +326,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
         {sessionError && <Timer duration={5000} timeout={this.toggle} />}
 
         {/* Rendered output */}
-        <Root bg="primary.4" onClick={this.toggle}>
+        <Root bg={t => t.primary[4]} onClick={this.toggle}>
           {sessionInstance ? (
             <>
               <Fill />
@@ -355,10 +354,10 @@ export class VoiceInput extends React.PureComponent<Props, State> {
             <MicrophoneButton
               fg={
                 sessionActive === false
-                  ? 'primary.1'
+                  ? t => t.primary[1]
                   : sessionError || userPermissionGranted === false
-                  ? 'accents.aware.base'
-                  : 'accents.primary.base'
+                  ? t => t.accents.aware.base
+                  : t => t.accents.dominant.base
               }
             >
               {source === 'microphone' ? <MicrophoneIcon /> : <FontAwesomeIcon icon={faPlay} />}
@@ -371,10 +370,10 @@ export class VoiceInput extends React.PureComponent<Props, State> {
             <MicrophoneButton
               fg={
                 sessionActive === false
-                  ? 'primary.1'
+                  ? t => t.primary[1]
                   : userPermissionGranted === false
-                  ? 'accents.aware.base'
-                  : 'accents.primary.base'
+                  ? t => t.accents.aware.base
+                  : t => t.accents.dominant.base
               }
             >
               <FontAwesomeIcon icon={faChevronCircleRight} />
@@ -417,7 +416,7 @@ export const Formant = styled.div<{ sessionInstance: boolean }>`
   height: 2rem;
   width: 2rem;
   [fill] {
-    fill: ${({ sessionInstance, theme }) => (sessionInstance ? theme.accents.primary.base : theme.secondary.base)};
+    fill: ${({ sessionInstance, theme }) => (sessionInstance ? theme.accents.dominant.base : theme.secondary.base)};
   }
 `
 
@@ -441,17 +440,17 @@ const Input = styled(Block)`
   min-height: 1em;
 `
 
-const AnimatedText = styled.span<{ accent?: string }>`
-  color: ${p => p.theme.transparent};
+const AnimatedText = styled.span<{ accent?: AccentName }>`
+  color: ${p => colors.static.transparent};
   transition: color 1s ease, background-position 1s ease;
 
   background-clip: text;
   -webkit-background-clip: text;
   background-image: repeating-linear-gradient(
     45deg,
-    ${p => p.theme.transparent},
-    ${p => (p.theme.accents[p.accent] || p.theme.accents.primary).base},
-    ${p => p.theme.transparent}
+    ${p => colors.static.transparent},
+    ${({ theme, accent = 'dominant' }) => theme.accents[accent].base},
+    ${p => colors.static.transparent}
   );
   background-size: 200%;
   background-position: 50%;
@@ -459,7 +458,7 @@ const AnimatedText = styled.span<{ accent?: string }>`
   animation: ${keyframes`
     from {
       background-position: 50%;
-      color: ${colors.spectrum.transparent.base};
+      color: ${colors.static.transparent};
     }
     40% {
       background-position: 0%;
@@ -471,17 +470,17 @@ const AnimatedText = styled.span<{ accent?: string }>`
     }
     to {
       background-position: 50%;
-      color: ${colors.spectrum.transparent.base};
+      color: ${colors.static.transparent};
     }
   `} infinite 3s linear;
 `
 
-const StatusText: React.FC<{ accent?: string; toggle: () => void }> = ({ accent, children, toggle }) => (
+const StatusText: React.FC<{ accent?: AccentName; toggle: () => void }> = ({ accent, children, toggle }) => (
   <Input
     onClick={toggle}
-    fg={accent ? `accents.${accent}.base` : 'primary.2'}
+    fg={t => accent ? t.accents[accent].base : t.primary[2]}
     fontSize={0.625}
-    letterSpacing="1px"
+    letterSpacing={1}
     textTransform="uppercase"
   >
     <AnimatedText accent={accent}>{children}</AnimatedText>

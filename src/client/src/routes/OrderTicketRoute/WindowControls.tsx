@@ -24,12 +24,12 @@ const Control = styled.div<{ color?: string }>`
   width: 0.75rem;
   height: 0.75rem;
 
-  background-color: ${p => p.theme.primary['3']};
+  background-color: ${p => p.theme.primary[3]};
   border-radius: 100%;
 
-  background-color: ${p => p.color || p.theme.primary['3']};
+  background-color: ${p => p.color || p.theme.primary[3]};
 
   ${Layout}:hover & {
-    background-color: ${p => p.color || p.theme.primary['3']};
+    background-color: ${p => p.color || p.theme.primary[3]};
   }
 `

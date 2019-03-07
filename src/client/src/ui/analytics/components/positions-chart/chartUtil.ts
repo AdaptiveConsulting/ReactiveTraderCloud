@@ -41,8 +41,8 @@ export function createScales(props: PositionsBubbleChartProps) {
     return Math.abs(val[baseTradedAmountName])
   })
 
-  const maxValue = _.max(baseValues) || 0
-  let minValue = _.min(baseValues) || 0
+  const maxValue = Math.max(...baseValues) || 0
+  let minValue = Math.min(...baseValues) || 0
 
   if (minValue === maxValue) minValue = 0
 

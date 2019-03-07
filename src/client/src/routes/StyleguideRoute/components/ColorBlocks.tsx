@@ -1,75 +1,62 @@
-import _ from 'lodash'
 import React from 'react'
 
-import { colors, styled } from 'rt-theme'
+import { colors, styled, DarkShade, LightShade, ColorPalette } from 'rt-theme'
 
 import { Block, BlockProps } from '../styled'
+import { readableColor, transparentize } from 'polished'
 import { css } from 'styled-components'
 import ColorClipboard, { CopyToClipboardWrapper } from './ColorToClipboard'
-const {
-  spectrum: { brand, offblack, blue, red, yellow, green },
-} = colors
 
-const SWATCH_KEYS = {
-  light: [95, 9, 8, 7, 6, 5, 4, 3, 2, 1].map(v => `L${v}`),
-  dark: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(v => `D${v}`),
-}
+const { brand, offblack, blue, red, yellow, green } = colors.spectrum
+const LIGHT_SHADES: LightShade[] = ['L95', 'L9', 'L8', 'L7', 'L6', 'L5', 'L4', 'L3', 'L2', 'L1']
+const DARK_SHADES: DarkShade[] = ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D95']
+const textColor = (c: string) => transparentize(0.6, readableColor(c))
 
 export const ColorBlocks = () => (
   <Root>
-    {[{ brand, offblack }, { blue, red, yellow, green }].map((swatchSetGroup, groupKey) => (
-      <SwatchSetGroup key={groupKey}>
-        {_.map(swatchSetGroup, (group, setKey) => {
-          const base = group.base
-          const light = SWATCH_KEYS.light.map(key => ({ color: group[key], name: key }))
-          const dark = SWATCH_KEYS.dark.map(key => ({ color: group[key], name: key }))
+    {[{ brand, offblack }, { blue, red, yellow, green }].map((paletteGroup, groupIndex) => (
+      <SwatchSetGroup key={groupIndex}>
+        {Object.keys(paletteGroup).map(paletteName => {
+          const palette = paletteGroup[paletteName] as ColorPalette
 
-          const set = [...light, { color: base }, ...dark]
           return (
-            <SwatchSet key={setKey}>
-              <SwatchGroup>
-                {light.map(({ color, name }, index) => {
-                  const { [index + 4]: text = { color: 'transparent' } } = set
-
-                  return (
-                    <Swatch key={name} bg={color}>
-                      <ColorClipboard color={color} iconColor="black" />
-                      <SwatchLevel fg={text.color}>{name}</SwatchLevel>
-                    </Swatch>
-                  )
-                })}
-              </SwatchGroup>
+            <SwatchSet key={paletteName}>
+              <ShadeSwatchStrip shadeSet={LIGHT_SHADES} palette={palette} />
 
               <SwatchGroup py={2}>
-                <Swatch bg={base}>
-                  <ColorClipboard color={base} iconColor="white" />
-                  <SwatchName>{name}</SwatchName>
-                  <SwatchValue>{base}</SwatchValue>
+                <Swatch bg={_ => palette.base}>
+                  <ColorClipboard color={palette.base} iconColor={textColor(palette.base)} />
+                  <SwatchName>{paletteName}</SwatchName>
+                  <SwatchValue>{palette.base}</SwatchValue>
                 </Swatch>
               </SwatchGroup>
 
-              <SwatchGroup>
-                {dark.map(({ color, name }, index) => {
-                  const {
-                    [dark.length + index - 4]: text = {
-                      color: 'transparent',
-                    },
-                  } = set
-
-                  return (
-                    <Swatch key={name} bg={color}>
-                      <ColorClipboard color={color} iconColor="white" />
-                      <SwatchLevel fg={text.color}>{name}</SwatchLevel>
-                    </Swatch>
-                  )
-                })}
-              </SwatchGroup>
+              <ShadeSwatchStrip shadeSet={DARK_SHADES} palette={palette} />
             </SwatchSet>
           )
         })}
       </SwatchSetGroup>
     ))}
   </Root>
+)
+
+const ShadeSwatchStrip: React.FC<{ shadeSet: Array<LightShade | DarkShade>; palette: ColorPalette }> = ({
+  shadeSet,
+  palette,
+}) => (
+  <SwatchGroup>
+    {shadeSet.map(shadeName => {
+      const color = palette[shadeName]
+      const fgColor = textColor(color)
+      return (
+        <Swatch key={shadeName} bg={_ => color}>
+          <ColorClipboard color={color} iconColor={fgColor} />
+          <SwatchShadeName fg={_ => fgColor}>{shadeName}</SwatchShadeName>
+          <SwatchValue fg={_ => fgColor}>{color}</SwatchValue>
+        </Swatch>
+      )
+    })}
+  </SwatchGroup>
 )
 
 const SwatchName = styled(Block)<BlockProps>`
@@ -84,11 +71,12 @@ const SwatchValue = styled(SwatchName)`
   text-transform: uppercase;
 `
 
-const SwatchLevel = styled(SwatchName)`
+const SwatchShadeName = styled(SwatchName)`
   font-size: 0.75rem;
 `
 
 const Swatch = styled(Block)<BlockProps>`
+  position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: center;

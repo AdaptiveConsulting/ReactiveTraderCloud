@@ -1,45 +1,25 @@
 import React from 'react'
-import Switch from 'react-switch'
 
-import { colors, styled, ThemeName } from 'rt-theme'
+import { styled, ThemeName, ThemeStorageSwitch, useTheme } from 'rt-theme'
 
 import { Block } from '../styled'
 
-export interface Props {
-  themeName?: string
-  switchTheme: () => void
-}
-export const FloatingTools: React.FC<Props> = ({ themeName, switchTheme }) => {
+export const FloatingTools: React.FC = () => {
+  const { themeName } = useTheme()
   const isDark = themeName === ThemeName.Dark
-
-  const { primary, secondary } = colors[themeName]
-
   return (
     <Root>
       <Bar>
         <Label>Switch to {isDark ? 'Light' : 'Dark'} mode </Label>
-        <Switch
-          className="switch"
-          onChange={switchTheme}
-          checked={isDark}
-          checkedIcon={false}
-          uncheckedIcon={false}
-          height={12}
-          width={32}
-          handleDiameter={18}
-          offColor={secondary[4]}
-          offHandleColor={secondary.base}
-          onColor={primary.base}
-          onHandleColor={primary[2]}
-        />
+        <ThemeStorageSwitch handleDiameter={18} />
       </Bar>
     </Root>
   )
 }
 
-const Root: React.FC = props => <Block backgroundColor="primary.2" {...props} />
+const Root: React.FC = props => <Block bg={t => t.primary[2]} {...props} />
 
-const Bar = styled(props => <Block px={3} backgroundColor="primary.1" textColor="secondary.3" {...props} />)`
+const Bar = styled(props => <Block px={3} bg={t => t.primary[1]} fg={t => t.secondary[3]} {...props} />)`
   position: fixed;
   display: flex;
   align-items: center;

@@ -1,91 +1,21 @@
 import { mix, rgb, rgba } from 'polished'
 
-/**
- * Colors, the things you see, or don't if you're color blind!
- *
- * @example #123456, rgba(0, 0, 0, 0.5), salmon, or royalblue
- */
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// 1. Colors ///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 export type Color = string
 
-export interface Palette {
-  base: Color
-  [shade: string]: Color
-}
-
-export interface PaletteMap<PaletteType = Palette> {
-  [palette: string]: PaletteType
-}
-
-export interface ColorPalette extends Palette {
-  L10: Color
-  L95: Color
-  L9: Color
-  L8: Color
-  L7: Color
-  L6: Color
-  L5: Color
-  L4: Color
-  L3: Color
-  L2: Color
-  L1: Color
-  D1: Color
-  D2: Color
-  D3: Color
-  D4: Color
-  D5: Color
-  D6: Color
-  D7: Color
-  D8: Color
-  D9: Color
-  D10: Color
-}
-
-export interface CorePalette extends Palette {
-  1: Color
-  2: Color
-  3: Color
-  4: Color
-}
-
-export interface AccentPalette extends Palette {
-  1: Color
-  2: Color
-}
-
-interface Colors {
-  [key: string]: string
-}
-
-export interface CorePaletteMap {
-  primary: Colors
-  secondary: Colors
-  core: Colors
-}
-
-export interface AccentPaletteMap extends PaletteMap<AccentPalette> {
-  accent: AccentPalette
-  primary: AccentPalette
-  aware: AccentPalette
-  bad: AccentPalette
-  good: AccentPalette
-}
-
-export type ColorPaletteMaps = typeof colors
+/*----------------------------- 1.1 Single colors ----------------------------*/
 
 // Some designs will redefine white to achieve different
 // visual effects on the viewers eyes.
-export const white: Palette = {
-  base: rgb(255, 255, 255),
-}
+const WHITE: Color = rgb(255, 255, 255)
 
 // The same is true for black -- because we do not encounter
 // true black or true white in natural conditions designs
 // employing them in their primary palettes will be
 // less appealing to most people.
-export const black: Palette = {
-  base: rgb(0, 0, 0),
-}
-
+const BLACK: Color = rgb(0, 0, 0)
 // The meaning of transparent varies based on platform.
 //
 // Unlike most browsers Apple defines transparent as
@@ -93,11 +23,9 @@ export const black: Palette = {
 //
 // You will see this if you transition from or to
 // transparency in a gradient or animation.
-export const transparent: Palette = {
-  base: rgba(255, 255, 255, 0),
-}
+const TRANSPARENT: Color = rgba(255, 255, 255, 0)
 
-// For this reasons designers will choose an
+// For these reasons designers will choose an
 // offwhite and offblack color to set the
 // range on their designs.
 //
@@ -105,52 +33,116 @@ export const transparent: Palette = {
 // contrast with offwhite and draw attention
 // to an input or button. Or a subtle boundary
 // between elements.
-export const offwhite = createPalette({
-  base: rgb(244, 246, 249),
-})
+const OFFWHITE = rgb(244, 246, 249)
+const OFFBLACK = rgb(68, 76, 95) // sRGB
+const DARKGREY = '#333333' // For text over light background
+const BRAND = rgb(42, 87, 141) // Adaptive blue a.k.a. #2A578D
+
+/*---------------------------- 1.2 Template colors ---------------------------*/
+
+// TODO: Kept for backward compatibility purposes. Consider unifying as accent palettes
+
+export const template = {
+  green: {
+    dark: '#23b47a',
+    normal: '#28c988',
+    light: '#93e4c3',
+  },
+  red: {
+    dark: '#e04444',
+    normal: '#f94c4c',
+    light: '#fca5a5',
+  },
+  white: {
+    dark: '#dfdfdf',
+    normal: '#ffffff',
+  },
+  blue: {
+    dark: '#4c76c4',
+    normal: '#5f94f5',
+    light: '#aec9f9',
+  },
+  yellow: {
+    dark: '#A38D00',
+    normal: '#F7D036',
+    light: '#F4E0A4',
+  },
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////// 2. Palettes //////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+interface BasePalette {
+  base: Color
+}
+
+export type LightShade = 'L95' | 'L9' | 'L8' | 'L7' | 'L6' | 'L5' | 'L4' | 'L3' | 'L2' | 'L1'
+type LightShadeSet = { [shade in LightShade]: Color }
+export type DarkShade = 'D1' | 'D2' | 'D3' | 'D4' | 'D5' | 'D6' | 'D7' | 'D8' | 'D9' | 'D95'
+type DarkShadeSet = { [shade in DarkShade]: Color }
+type PaletteShadeSet = LightShadeSet & DarkShadeSet
+/**
+ * A basic palette formed by a `base` color plus:
+ * - a number of darker (D1..D95) shades
+ * - a number of lighter (L1..L95) shades
+ */
+export type ColorPalette = BasePalette & PaletteShadeSet
+
+/*-------------------------- 2.1 Base color palettes -------------------------*/
 
 // We use a base color to generate a complement
 // of shades above and below at 10% increments.
-export const offblack = createPalette({
-  base: rgb(68, 76, 95), // sRGB
-  // We can provide additional shades or override
-  // the generated shades.
-  L25: mix(0.25, white.base, rgb(85, 93, 112)),
-  // We are overriding these values due to
-  // insuffcient contrast ratio and inconsistency
-  // with the designers intent.
+const offblack = createPalette(OFFBLACK, {
+  // We can override the generated shades.
+  L3: mix(0.25, WHITE, rgb(85, 93, 112)),
+  // We are overriding these values due to insuffcient contrast ratio
+  // and inconsistency with the designers intent.
   D3: rgb(46, 53, 67),
   D4: rgb(39, 45, 58),
 })
+const blue = createPalette(rgb(81, 147, 253), { L95: OFFWHITE })
 
-export const brand = createPalette({
-  base: rgb(42, 87, 141),
-})
+const red = createPalette(rgb(255, 53, 66))
 
-export const blue = createPalette({
-  base: rgb(81, 147, 253),
-  L95: rgb(244, 246, 249),
-})
+const yellow = createPalette(
+  rgb(255, 184, 40),
+  // We are overriding the value for L1 due to insuffcient contrast
+  // and inconsistency with the designers intent.
+  { L1: rgb(241, 193, 109) },
+)
 
-export const red = createPalette({
-  base: rgb(255, 53, 66),
-})
+const green = createPalette(rgb(0, 205, 130))
 
-export const yellow = createPalette({
-  base: rgb(255, 184, 40),
-  // We are overriding the value for L1 due to
-  // insuffcient contrast and inconsistency
-  // with the designers intent.
-  L1: rgb(241, 193, 109),
-})
+const brand = createPalette(BRAND)
 
-export const green = createPalette({
-  base: rgb(0, 205, 130),
-})
+/*---------------------------- 2.2 Core palettes -----------------------------*/
+
+type CorePaletteVariant = 'base' | 1 | 2 | 3 | 4
+/**
+ * A palette consisting of a `base` and 4 variants
+ */
+
+export type CorePalette = { [variant in CorePaletteVariant]: Color }
+
+/* TODO: Find a more suitable name */
+interface SemanticColors {
+  lightBackground: Color
+  darkBackground: Color
+  alternateBackground: Color
+  offBackground: Color
+  textColor: Color
+  backgroundHoverColor: Color
+}
+
+export interface CorePaletteMap {
+  primary: CorePalette
+  secondary: CorePalette
+  core: SemanticColors
+}
 
 export const light: CorePaletteMap = {
   primary: {
-    base: blue.L10,
+    base: WHITE,
     1: blue.L95,
     2: blue.L9,
     3: blue.L8,
@@ -159,17 +151,17 @@ export const light: CorePaletteMap = {
   secondary: {
     base: offblack.base,
     1: offblack.L1,
-    2: offblack.L25,
+    2: offblack.L3,
     3: offblack.D4,
     4: offblack.L5,
   },
   core: {
-    lightBackground: '#ffffff',
-    darkBackground: 'rgb(244, 246, 249)',
-    alternateBackground: 'rgb(220, 233, 254)',
-    offBackground: '#edf4fe',
-    textColor: '#333333',
-    backgroundHoverColor: '#ffffff',
+    lightBackground: WHITE,
+    darkBackground: blue.L95,
+    alternateBackground: blue.L8,
+    offBackground: blue.L9,
+    textColor: DARKGREY,
+    backgroundHoverColor: WHITE,
   },
 }
 
@@ -182,59 +174,64 @@ export const dark: CorePaletteMap = {
     4: offblack.D7,
   },
   secondary: {
-    base: blue.L10,
+    base: WHITE,
     1: blue.L95,
     2: blue.L9,
     3: blue.L8,
     4: blue.L5,
   },
   core: {
-    lightBackground: 'rgb(46, 53, 67)',
-    darkBackground: 'rgb(39, 45, 58)',
-    alternateBackground: 'rgb(61, 68, 85)',
-    offBackground: '#444c5f',
-    textColor: '#ffffff',
-    backgroundHoverColor: '#3d4455',
+    lightBackground: offblack.D3,
+    darkBackground: offblack.D4,
+    alternateBackground: offblack.D1,
+    offBackground: offblack.base,
+    textColor: WHITE,
+    backgroundHoverColor: offblack.D1,
   },
 }
 
-export const accents: AccentPaletteMap = {
-  accent: {
+/*--------------------------- 2.3 Accent palettes ----------------------------*/
+
+/**
+ * A theme agnostic palette consisting of a `base` and 2 variants
+ */
+interface AccentPalette extends BasePalette {
+  darker: Color
+  lighter: Color
+}
+
+export type AccentName = 'dominant' | 'good' | 'aware' | 'bad'
+/**
+ * A set of theme-agnostic palettes
+ */
+export type AccentPaletteMap = { [accent in AccentName]: AccentPalette }
+
+const accents: AccentPaletteMap = {
+  dominant: {
     base: blue.base,
-    1: blue.D2,
-    2: blue.L5,
-  },
-  primary: {
-    base: blue.base,
-    1: blue.D2,
-    2: blue.L5,
+    darker: blue.D2,
+    lighter: blue.L5,
   },
   good: {
     base: green.base,
-    1: green.D1,
-    2: green.L5,
-    3: green.L2,
+    darker: green.D1,
+    lighter: green.L5,
   },
   aware: {
     base: yellow.base,
-    1: yellow.D1,
-    2: yellow.L5,
+    darker: yellow.D1,
+    lighter: yellow.L5,
   },
   bad: {
     base: red.base,
-    1: red.D1,
-    2: red.L5,
-    3: red.L2,
+    darker: red.D1,
+    lighter: red.L5,
   },
 }
 
-export const spectrum = {
-  transparent,
-  white,
-  black,
-  offwhite,
-  brand,
+const spectrum = {
   offblack,
+  brand,
   red,
   green,
   yellow,
@@ -242,28 +239,27 @@ export const spectrum = {
 }
 
 export const colors = {
-  transparent: transparent.base,
+  static: { white: WHITE, black: BLACK, transparent: TRANSPARENT },
   spectrum,
   accents,
   light,
   dark,
 }
 
-export default colors
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////   🐲   ///////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-function createPalette({
-  base,
-  white: whitePoint = white.base,
-  black: blackPoint = black.base,
-  ...overrides
-}: Palette): ColorPalette {
+type CreatePaletteParams = {
+  whitePoint?: Color
+  blackPoint?: Color
+} & Partial<PaletteShadeSet>
+function createPalette(
+  base: Color,
+  { whitePoint = WHITE, blackPoint = BLACK, ...shadeOverrides }: CreatePaletteParams = {},
+): ColorPalette {
   return {
     // Light shades
-    L10: mix(1, whitePoint, base),
     L95: mix(0.95, whitePoint, base),
     L9: mix(9 / 10, whitePoint, base),
     L8: mix(8 / 10, whitePoint, base),
@@ -287,7 +283,7 @@ function createPalette({
     D7: mix(7 / 10, blackPoint, base),
     D8: mix(8 / 10, blackPoint, base),
     D9: mix(9 / 10, blackPoint, base),
-    D10: mix(10 / 10, blackPoint, base),
+    D95: mix(0.95, blackPoint, base),
 
     // Overriding Computed Values
     //
@@ -318,6 +314,6 @@ function createPalette({
     //
     // So we may have to override specific values to achieve a
     // consistent color and color contrast ratio across the shades.
-    ...overrides,
+    ...shadeOverrides,
   }
 }

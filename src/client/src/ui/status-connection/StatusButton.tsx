@@ -63,8 +63,8 @@ export class StatusButton extends Component<
           <ServiceList>
             <AppUrl title={appUrl} readOnly={true} value={appUrl} onFocus={this.selectAll} onClick={this.selectAll} />
 
-            {services.map((service, index) => (
-              <Service key={service.serviceType} service={service} index={index} />
+            {services.map(service => (
+              <Service key={service.serviceType} service={service} />
             ))}
           </ServiceList>
         </ServiceListPopup>

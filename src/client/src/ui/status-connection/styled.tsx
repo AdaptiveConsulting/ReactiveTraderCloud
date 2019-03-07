@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { capitalize } from 'lodash'
 import { styled } from 'rt-theme'
 import { FunctionComponent } from 'react'
 import React from 'react'
@@ -45,7 +45,7 @@ export const StatusCircle = styled(StatusCircleCore)<{ status: ServiceConnection
 const StatusLabelCore: FunctionComponent<{ className?: string; status: ServiceConnectionStatus }> = ({
   className,
   status,
-}) => <span className={className}>{_.capitalize(status)}</span>
+}) => <span className={className}>{capitalize(status)}</span>
 export const StatusLabel = styled(StatusLabelCore)`
   margin-left: 0.75rem;
 `
@@ -86,7 +86,7 @@ export const NodeCount = styled.div`
   opacity: 0.6;
 `
 
-export const ServiceRoot = styled.div<{ index: number }>`
+export const ServiceRoot = styled.div`
   min-height: 3rem;
   max-height: 3rem;
   padding: 0.5rem 0.5rem;

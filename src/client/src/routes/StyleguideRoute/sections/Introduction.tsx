@@ -8,7 +8,7 @@ import { Paragraph, SectionBlock } from '../styled'
 
 export const Introduction: React.FC = props => (
   <React.Fragment>
-    <SectionBlock intent="secondary" {...props}>
+    <SectionBlock colorScheme="secondary" {...props}>
       <Flex>
         <Content>
           <H3>Design Systems</H3>
@@ -29,7 +29,7 @@ export const Introduction: React.FC = props => (
       </Paragraph>
     </SectionBlock>
     <div>
-      <SectionBlock intent="secondary" mh={0.125 / 5} py={0} />
+      <SectionBlock colorScheme="secondary" mh={0.125 / 5} py={0} />
     </div>
   </React.Fragment>
 )

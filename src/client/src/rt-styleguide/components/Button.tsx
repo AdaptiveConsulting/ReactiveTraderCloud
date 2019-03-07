@@ -1,11 +1,10 @@
-import _ from 'lodash'
 import React, { ButtonHTMLAttributes, ReactChild } from 'react'
 import { userSelectButton, userSelectNone } from 'rt-styleguide'
-import { Theme, styled, resolvesColor } from 'rt-theme'
+import { Theme, styled, TouchableIntentName } from 'rt-theme'
 import { css, ThemeProvider, withTheme } from 'styled-components'
 
 export interface ButtonStyleProps {
-  intent?: string
+  intent?: TouchableIntentName
   active?: boolean
   outline?: boolean
   disabled?: boolean
@@ -16,71 +15,61 @@ export interface ButtonStyleProps {
 
 const boxShadow = `0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08)`
 
+function getButtonColors({ theme, intent, outline, active, disabled, invert }: ButtonStyleProps & { theme: Theme }) {
+  const buttonStyleSet = theme.button[intent]
+  let fg = buttonStyleSet.textColor || theme.textColor
+  let bg = buttonStyleSet.backgroundColor || theme.backgroundColor
+
+  if (active) {
+    bg = buttonStyleSet.active.backgroundColor
+  }
+
+  if (disabled) {
+    // Disabled flag only affects to opacity and pointer events - colors don't change
+  }
+
+  if (invert) {
+    ;[fg, bg] = [bg, fg]
+  }
+
+  if (outline) {
+    if (active) {
+      bg = buttonStyleSet.backgroundColor
+      fg = buttonStyleSet.textColor || theme.textColor
+    } else {
+      bg = theme.colors.static.transparent
+      fg = buttonStyleSet.backgroundColor
+    }
+  }
+
+  return {
+    ...theme,
+    bg,
+    fg,
+  }
+}
+
+const bgColor = (props: ButtonStyleProps & { theme: Theme }) => getButtonColors(props).bg
+const fgColor = (props: ButtonStyleProps & { theme: Theme }) => getButtonColors(props).fg
+
 class BaseButtonThemeProvider extends React.Component<ButtonStyleProps & { theme: Theme }> {
   static defaultProps = {
     intent: 'primary',
   }
 
-  resolveTheme = (providedTheme: Theme) => {
-    const { intent, outline, active, disabled, invert } = this.props
-
-    const { backgroundColor, textColor, button: theme, colors } = providedTheme
-
-    let palette = providedTheme.button[intent] || { backgroundColor, textColor }
-
-    if (active) {
-      palette = { ...palette, ...palette.active }
-    }
-
-    if (disabled) {
-      // We might prefer to set the disabled palette explicitly
-      // and not rely on opacity — as will be done with no change
-      // palette = { ...palette, ...palette.disabled }
-    }
-
-    if (invert) {
-      palette = {
-        ...palette,
-        backgroundColor: palette.textColor,
-        textColor: palette.backgroundColor,
-        // tslint:disable-next-line
-        ..._.map(palette, ({ backgroundColor, textColor }) => ({
-          textColor: backgroundColor,
-          backgroundColor: textColor,
-        })),
-      }
-    }
-
-    if (outline) {
-      palette = {
-        ...palette,
-        backgroundColor: colors.spectrum.transparent,
-        textColor: palette.backgroundColor,
-        active: {
-          backgroundColor: palette.backgroundColor,
-          textColor: palette.textColor || textColor,
-        },
-      }
-    }
-
-    return {
-      button: palette,
-      ...theme,
-      ...theme.primary,
-      ...palette,
-    }
-  }
-
   render() {
-    const { children } = this.props
+    const { children, theme } = this.props
 
-    return <ThemeProvider theme={this.resolveTheme(this.props.theme)}>{children as ReactChild}</ThemeProvider>
+    return <ThemeProvider theme={theme}>{children as ReactChild}</ThemeProvider>
   }
 }
 
 const ButtonThemeProvider = withTheme(BaseButtonThemeProvider)
 
 export class Button extends React.Component<ButtonStyleProps & ButtonHTMLAttributes<Element>> {
+  static defaultProps = {
+    intent: 'primary',
+  }
   render() {
     const { children, intent, active, disabled, outline, invert, pill, size, ...rest } = this.props
     const props = {
@@ -143,8 +132,8 @@ const StyledBase = styled.div<ButtonStyleProps>`
   font-weight: 600;
   overflow: hidden;
 
-  background-color: ${resolvesColor('backgroundColor')};
-  color: ${resolvesColor('textColor')};
+  background-color: ${bgColor};
+  color: ${fgColor};
 
   transition: background-color 150ms ease;
 
@@ -200,7 +189,7 @@ const StyledBase = styled.div<ButtonStyleProps>`
 `
 
 const StyledButtonBase = StyledBase.withComponent('button')
-export const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
+const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;
@@ -211,9 +200,10 @@ export const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
   padding-right: 0.75rem;
 
   &:active ${({ active }) => (active ? ', &' : '')} {
-    background-color: ${resolvesColor('active.backgroundColor')};
+    background-color: ${({ active, ...props }) => bgColor({ active: true, ...props })};
+    box-shadow: ${boxShadow};
     * {
-      color: ${resolvesColor('active.textColor')};
+      color: ${({ active, ...props }) => fgColor({ active: true, ...props })};
     }
   }
 
@@ -232,7 +222,7 @@ StyledButton.defaultProps = {
   role: 'button',
 }
 
-export const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
+const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
   ${StyledButton} {
     min-width: 1rem;
     padding-left: 0.625rem;
@@ -241,7 +231,16 @@ export const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
     margin-top: 0;
     margin-bottom: 0;
     box-shadow: none;
+    background-color: ${bgColor};
+    color: ${fgColor};
 
+    &:active ${({ active }) => (active ? ', &' : '')} {
+      background-color: ${props => bgColor({ ...props, active: true })};
+      box-shadow: none;
+      * {
+        color: ${props => fgColor({ ...props, active: true })};
+      }
+    }
   }
 
   ${StyledButton}:first-child {
@@ -266,9 +265,9 @@ export const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
       }
     `};
 
-  ${({ outline }) =>
-    outline &&
-    css`
+    ${({ outline }) =>
+      outline &&
+      css`
       box-shadow: ${boxShadow}, 0 0 0 0.125rem currentColor inset;
 
       ${StyledButton} {
@@ -288,7 +287,6 @@ export const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
       opacity: 0.5;
       ${userSelectNone};
     `};
-  )
 `
 
 StyledButtonGroup.defaultProps = {

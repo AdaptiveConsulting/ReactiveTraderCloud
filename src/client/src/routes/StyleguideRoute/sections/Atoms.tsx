@@ -9,7 +9,7 @@ export const props = {}
 
 export default () => (
   <React.Fragment>
-    <SectionBlock intent="secondary" mh={3}>
+    <SectionBlock colorScheme="secondary" mh={3}>
       <NumberedLayout number="2">
         <H5>Design Systems</H5>
         <H3>Adaptive UI Library</H3>
@@ -26,7 +26,7 @@ export default () => (
       </Paragraph>
     </SectionBlock>
 
-    <SectionBlock intent="secondary" py={2} bleeds>
+    <SectionBlock colorScheme="secondary" py={2} bleeds>
       <H3>Buttons</H3>
       <ButtonGrid />
     </SectionBlock>

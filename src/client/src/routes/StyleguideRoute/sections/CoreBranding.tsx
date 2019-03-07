@@ -1,15 +1,14 @@
-import _ from 'lodash'
 import { rgba } from 'polished'
 import React from 'react'
 
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
-import { colors, styled, Theme } from 'rt-theme'
+import { colors, styled, Theme, AccentPaletteMap, AccentName } from 'rt-theme'
 import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-components'
 
 export default () => (
   <React.Fragment>
-    <SectionBlock intent="secondary" mh={3}>
+    <SectionBlock colorScheme="secondary" mh={3}>
       <NumberedLayout number="1">
         <H5>Design Systems</H5>
         <H3>Adaptive UI Library</H3>
@@ -27,7 +26,7 @@ export default () => (
       </Paragraph>
     </SectionBlock>
     <div>
-      <SectionBlock intent="secondary" mh={0.125 / 5} py={0} />
+      <SectionBlock colorScheme="secondary" mh={0.125 / 5} py={0} />
     </div>
 
     <SectionBlock mh={3}>
@@ -37,8 +36,8 @@ export default () => (
         is={LargeSwatchColor}
         label="Brand Primary"
         value={colors.spectrum.brand.base}
-        bg="brand.base"
-        fg="white"
+        bg={t => t.colors.spectrum.brand.base}
+        fg={t => t.colors.static.white}
         code="Base"
       />
     </SectionBlock>
@@ -79,7 +78,7 @@ export default () => (
 
         <UniquePalettes
           palettes={{
-            'Trading Buy': { base: colors.accents.accent.base },
+            'Trading Buy': { base: colors.accents.dominant.base },
             'Trading Sell': { base: colors.accents.bad.base },
           }}
         />
@@ -114,8 +113,8 @@ const PaletteLayout: React.FC<{
           label={`${paletteLabel} ${key}`}
           value={color}
           code={codes[key] || key}
-          bg={color}
-          fg={fg}
+          bg={_ => color}
+          fg={_ => fg}
         />
       )
     })}
@@ -123,8 +122,6 @@ const PaletteLayout: React.FC<{
 )
 
 export interface SwatchColorProps {
-  bg?: string
-  fg?: string
   extra?: FlattenSimpleInterpolation
 }
 
@@ -275,17 +272,17 @@ const QuadrantLayout = styled.div`
   }
 `
 
-const AccentPalettes: React.FC<{ accents: any }> = ({ accents, ...props }) => {
+const AccentPalettes: React.FC<{ accents: AccentPaletteMap }> = ({ accents, ...props }) => {
   return (
     <AccentRowGrid>
-      {_.map(accents, (accent, label: string) => (
+      {(Object.keys(accents) as AccentName[]).map(accentName => (
         <PaletteLayout
-          key={label}
+          key={accentName}
           grid={AccentSwatchGrid}
-          label={label}
-          palette={accent}
+          label={accentName}
+          palette={accents[accentName]}
           fg="#FFF"
-          include={['base', '1', '2']}
+          include={['base', 'darker', 'lighter']}
         />
       ))}
     </AccentRowGrid>
@@ -307,19 +304,19 @@ const AccentSwatchGrid = styled.div`
   grid-template-rows: repeat(3, 8rem);
   grid-template-areas:
     'base'
-    '1'
-    '2';
+    'darker'
+    'lighter';
 `
 
 const UniquePalettes: React.FC<{ palettes: any }> = ({ palettes, ...props }) => {
   return (
     <UniqueRowGrid>
-      {_.map(palettes, (palette, label: string) => (
+      {Object.keys(palettes).map(label => (
         <PaletteLayout
           key={label}
           grid={UniqueSwatchGrid}
           label={label}
-          palette={palette}
+          palette={palettes[label]}
           fg="#FFF"
           include={['base']}
         />

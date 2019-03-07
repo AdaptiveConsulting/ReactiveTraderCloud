@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { DateTime, Duration } from 'luxon'
 import React from 'react'
 
@@ -65,8 +64,8 @@ export class OrderStatus extends React.Component<Props, State> {
   }
 
   setQuote = () => {
-    const bid = _.random(10.5, 500.5)
-    const ask = bid - _.random(0.1, bid * 0.1)
+    const bid = 10 + Math.random() * 490
+    const ask = bid * (0.89 + 0.1 * Math.random()) // 89-99% of bid
     const countdown = Duration.fromObject({ seconds: 10 })
 
     this.setState({
@@ -102,11 +101,11 @@ export class OrderStatus extends React.Component<Props, State> {
         {quote && (
           <Timer key={quote.expiry && quote.expiry.toString()} duration={1000} interval={this.updateCountdown} />
         )}
-        <StatusLayout fg="muteColor">
+        <StatusLayout fg={t => t.secondary[3]}>
           <StatusBox>
             <LabelText>Status</LabelText>
             {quote ? (
-              <StatusText fg="accents.aware.base">Reviewing Price</StatusText>
+              <StatusText fg={t => t.accents.aware.base}>Reviewing Price</StatusText>
             ) : (
               <StatusText>{ready ? 'Draft' : '— —'}</StatusText>
             )}
@@ -114,14 +113,14 @@ export class OrderStatus extends React.Component<Props, State> {
           <StatusBox>
             <LabelText>Remaining</LabelText>
             {quote ? (
-              <StatusText fg="accents.aware.base">{countdown.toFormat('hh:mm:ss')}</StatusText>
+              <StatusText fg={t => t.accents.aware.base}>{countdown.toFormat('hh:mm:ss')}</StatusText>
             ) : (
               <StatusText>— —</StatusText>
             )}
           </StatusBox>
           <Progress>
             {quote ? (
-              <StatusText fg="accents.aware.base" fontSize={2}>
+              <StatusText fg={t => t.accents.aware.base} fontSize={2}>
                 {countdown.toFormat('ss')}
               </StatusText>
             ) : (
@@ -175,7 +174,7 @@ const StatusLayout = styled(Block)`
   align-content: center;
   box-shadow: 0 -1px 0 0 ${/* align-items: center; */
     /* justify-content: center; */
-    props => props.theme.ruleColor} inset;
+    props => props.theme.primary.base} inset;
 `
 
 const StatusText = styled(Block)`

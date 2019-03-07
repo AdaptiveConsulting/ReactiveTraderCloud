@@ -1,7 +1,6 @@
-import _ from 'lodash'
 import React from 'react'
 
-import { styled, ThemeName, ThemeConsumer } from 'rt-theme'
+import { styled, ThemeName, useTheme } from 'rt-theme'
 
 import Logo from './Logo'
 
@@ -28,18 +27,14 @@ class Header extends React.Component {
   }
 }
 
-const ThemeControl = () => (
-  <ThemeConsumer>
-    {({ name, setTheme }) => (
-      <IconButton
-        onClick={() => setTheme({ name: name === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark })}
-        type={name || 'primary'}
-      >
-        <i className={`fa${name === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
-      </IconButton>
-    )}
-  </ThemeConsumer>
-)
+const ThemeControl = () => {
+  const { themeName, toggleTheme } = useTheme()
+  return (
+    <IconButton onClick={toggleTheme} type={themeName || 'primary'}>
+      <i className={`fa${themeName === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
+    </IconButton>
+  )
+}
 
 const Root = styled.div`
   width: 100%;

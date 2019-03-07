@@ -1,23 +1,23 @@
-import _ from 'lodash'
 import React from 'react'
 
 import { rules } from 'rt-styleguide'
 import { Block, BlockProps } from '../styled'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
-import { styled } from 'rt-theme'
+import { styled, ColorProps as ThemeSelectorPair } from 'rt-theme'
 import { css } from 'styled-components'
 
+type ColorSchemeName = 'primary' | 'secondary' | 'inverted'
 export interface SectionProps extends BlockProps, MarginPaddingProps {
   mh?: number
   invert?: boolean
-  intent?: 'primary' | 'secondary' | 'inverted'
+  colorScheme?: ColorSchemeName
   bleeds?: boolean
 }
 
-const intents = {
-  primary: ['primary.base', 'secondary.base'],
-  secondary: ['primary.1', 'secondary.1'],
-  inverted: ['secondary.3', 'primary.1'],
+const colorSchemes: { [scheme in ColorSchemeName]: ThemeSelectorPair } = {
+  primary: { bg: t => t.primary.base, fg: t => t.secondary.base },
+  secondary: { bg: t => t.primary[1], fg: t => t.secondary[1] },
+  inverted: { bg: t => t.secondary[3], fg: t => t.primary[1] },
 }
 
 export class SectionBlock extends React.Component<SectionProps, { error?: boolean }> {
@@ -38,16 +38,11 @@ export class SectionBlock extends React.Component<SectionProps, { error?: boolea
       )
     }
 
-    const { children, intent = 'primary', invert, ...props } = this.props
-
-    let [backgroundColor, textColor] = intents[intent]
-
-    if (invert) {
-      ;[textColor, backgroundColor] = [backgroundColor, textColor]
-    }
+    const { children, colorScheme = 'primary', invert, ...props } = this.props
+    const { bg, fg } = colorSchemes[colorScheme]
 
     return (
-      <SectionBleed py={2} backgroundColor={backgroundColor} textColor={textColor} {...props}>
+      <SectionBleed py={2} bg={invert ? fg : bg} fg={invert ? bg : fg} {...props}>
         <div
         // Allows SectionBody margins to collapse with children
         >

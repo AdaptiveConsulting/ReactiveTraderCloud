@@ -1,6 +1,4 @@
-import _ from 'lodash'
-
-import { HistoricPosition } from './index'
+import { HistoricPosition } from './historicPosition'
 
 export interface PricePoint {
   x: any
@@ -23,10 +21,10 @@ export const getModel: (positions: HistoricPosition[]) => AnalyticsLineChartMode
   }
 
   const seriesData: PricePoint[] = positions
-    .filter(item => !_.isNull(item.usdPnl))
+    .filter(item => item != null)
     .map(item => ({ x: new Date(item.timestamp), y: item.usdPnl.toFixed(2) }))
 
-  const lastPosition = _.last(positions)
+  const lastPosition = positions.slice(-1)[0]
   if (lastPosition) {
     return {
       seriesData,

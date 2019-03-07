@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from 'rt-theme'
 
-export const StyledButton = styled.button`
+const StyledButton = styled.button`
   width: 100%;
   height: 100%;
   font-size: 1.5rem;
@@ -28,7 +28,7 @@ export const StyledButton = styled.button`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.button.accent.backgroundColor};
+    background-color: ${({ theme }) => theme.button.dominant.backgroundColor};
     svg {
       transition-timing-function: ease-out;
       transition: transform 0.3s;

@@ -1,5 +1,4 @@
-import { darken } from 'polished'
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { styled } from 'rt-theme'
 import Icon from './Icon'
 
@@ -34,7 +33,7 @@ export const Root = styled.div`
   }
 `
 
-export const ChevronIcon: FunctionComponent<{ expand: boolean }> = ({ expand, ...props }) => (
+export const ChevronIcon: React.FC<{ expand: boolean }> = ({ expand, ...props }) => (
   <Icon name="chevron" {...props} />
 )
 
@@ -69,28 +68,6 @@ export const NodeCount = styled.div`
   line-height: 1rem;
   font-size: 0.5rem;
   opacity: 0.6;
-`
-
-export const ServiceRoot = styled.div<{ index: number }>`
-  min-height: 4.5rem;
-  max-height: 4.5rem;
-  padding: 0.5rem 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: 0.25rem 0 0.5rem -0.5rem rgba(0, 0, 0, 0.5) inset;
-  color: ${props => props.theme.textColor};
-  background-color: ${({ index = 0, theme }) =>
-    // it'd be nice if this were selected from the original palette …
-    darken(index / 50, theme.backgroundColor)};
-
-  ${Icon} {
-    /* We're using important here. 	
-         But you should see what happens with Emotion when you don't!  */
-    margin-right: 1rem !important;
-  }
 `
 
 export const OpenFinLogoContainer = styled.div`

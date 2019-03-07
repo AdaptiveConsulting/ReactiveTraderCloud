@@ -1,20 +1,18 @@
-import { styled } from 'rt-theme'
+import { styled, getThemeColor, ColorProps } from 'rt-theme'
 
-import { getColor } from '../tools'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 import { mapTextProps, TextProps } from './Text'
 
-import { ColorProps } from './Color'
 import { css } from 'styled-components'
 
 export interface BlockProps extends ColorProps, TextProps, MarginPaddingProps {}
 
 export const Block = styled.div<BlockProps>`
-  ${({ theme, backgroundColor, textColor, bg = backgroundColor, fg = textColor }) =>
+  ${({ theme, bg, fg }) =>
     css({
       transition: bg ? 'background-color ease-out 0.15s' : null,
-      backgroundColor: bg && getColor(theme, bg),
-      color: fg && getColor(theme, fg, theme.primary.base),
+      backgroundColor: bg && getThemeColor(theme, bg, theme.primary.base),
+      color: fg && getThemeColor(theme, fg, theme.secondary.base),
     })};
 
   ${mapTextProps};

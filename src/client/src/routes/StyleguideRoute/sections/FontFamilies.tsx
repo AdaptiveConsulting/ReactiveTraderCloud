@@ -1,10 +1,8 @@
-import _ from 'lodash'
 import React from 'react'
 import { styled } from 'rt-theme'
 
 import { H2, H3 } from '../elements'
 import { Paragraph, SectionBlock, Text, TextProps } from '../styled'
-import { PassThroughProps } from '../tools'
 import { css } from 'styled-components'
 
 const SIZES: Array<[string, TextProps['fontSize'], TextProps['lineHeight']]> = [
@@ -49,12 +47,12 @@ const MONTSERRAT = {
   ],
 }
 
-export const FontFamilies: React.FC<PassThroughProps> = props => (
+export const FontFamilies: React.FC = () => (
   <React.Fragment>
     <SectionBlock mh={1}>
       <H2>Font Families</H2>
     </SectionBlock>
-    <SectionBlock intent="inverted" {...props}>
+    <SectionBlock colorScheme="inverted">
       <H3>Primary — LATO</H3>
 
       <Paragraph>
@@ -64,7 +62,7 @@ export const FontFamilies: React.FC<PassThroughProps> = props => (
       </Paragraph>
       <FontFamilySample {...LATO} />
     </SectionBlock>
-    <SectionBlock intent="secondary" {...props}>
+    <SectionBlock colorScheme="secondary">
       <H3>Secondary — MONTSERRAT</H3>
 
       <Paragraph>
@@ -92,8 +90,8 @@ export const FontFamilies: React.FC<PassThroughProps> = props => (
       <FontSizeGrid>
         {SIZES.map(([label, fontSize, lineHeight]) => (
           <React.Fragment key={label}>
-            <Text color="secondary.1">
-              {label} — {fontSize}
+            <Text textColor={theme => theme.secondary[1]}>
+              {label} — {fontSize * 16 /* Assuming :root font-size is 16px!*/}
               px
             </Text>
             <Paragraph fontSize={fontSize} lineHeight={lineHeight}>
@@ -129,7 +127,7 @@ const FontFamilySample: React.FC<{
       </CharacterMap>
       <Heading>Styles</Heading>
       <FontWeightGrid fontSize={1} lineHeight={2} fontFamily={fontFamily}>
-        {_.map(fontFaces, face => (
+        {fontFaces.map(face => (
           <div key={face.name} style={{ width: 'min-content' }}>
             <FontWeight {...face}>{face.name}</FontWeight>
             <FontWeight {...face} fontStyle="italic">
@@ -152,7 +150,7 @@ const FontFamilySampleGrid = styled(Text)<TextProps>`
   overflow: hidden;
 `
 
-const Glyph: React.FC<PassThroughProps> = props => (
+const Glyph: React.FC<{ fontFamily: string }> = props => (
   <div>
     <Heading>Glyph</Heading>
     <Paragraph fontSize={5} lineHeight={5} fontWeight="bold" {...props} />

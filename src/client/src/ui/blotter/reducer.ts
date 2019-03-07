@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { keyBy } from 'lodash'
 
 import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
 import { Trade } from 'rt-types'
@@ -24,7 +24,7 @@ export const blotterServiceReducer = (
     case BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_REMOVE_HIGHLIGHT_TRADE:
     case BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_HIGHLIGHT_TRADE:
     case BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES:
-      const newTradesById = _.keyBy(action.payload.trades, `tradeId`)
+      const newTradesById = keyBy(action.payload.trades, `tradeId`)
       return {
         ...state,
         trades: {

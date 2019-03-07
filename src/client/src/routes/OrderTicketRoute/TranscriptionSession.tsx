@@ -13,7 +13,7 @@ import { SessionEvent } from './ScribeSession'
 export interface SessionResultData extends GreenKeyRecognition.Result {}
 export interface SessionResult {
   data: GreenKeyRecognition.Result
-  transcripts: any
+  transcripts: Array<Array<{ transcript: any }>>
 }
 
 export interface Props {
@@ -114,7 +114,7 @@ export class TranscriptionSession extends PureComponent<Props, State> {
     }
 
     const data = JSON.parse(event.data)
-    this.setState({ result: data.result })
+    this.setState({ result: data.result as GreenKeyRecognition.Result })
 
     if (this.props.onResult) {
       this.props.onResult({
