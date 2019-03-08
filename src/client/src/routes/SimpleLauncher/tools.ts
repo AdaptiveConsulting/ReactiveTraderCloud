@@ -53,6 +53,7 @@ function createOpenFinApplication({
           defaultCentered: true,
           autoShow: true,
           shadow: true,
+          icon: 'http://localhost:3000/static/media/icon.ico',
           // devtools
           accelerator:
             process.env.NODE_ENV === 'development'
