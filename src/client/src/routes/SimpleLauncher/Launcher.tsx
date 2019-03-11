@@ -50,7 +50,7 @@ const Root = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.core.darkBackground};
+  background-color: ${({ theme }) => theme.core.lightBackground};
   color: ${({ theme }) => theme.core.textColor};
 `
 
@@ -89,7 +89,7 @@ const ThemeSwitchContainer = styled(ButtonContainer)`
 
 const LogoContainer = styled(IconContainer)`
   width: 50%;
-  background-color: ${({ theme }) => theme.core.darkBackground};
+  background-color: ${({ theme }) => theme.core.lightBackground};
   .svg-icon {
     fill: ${({ theme }) => theme.core.textColor};
   }

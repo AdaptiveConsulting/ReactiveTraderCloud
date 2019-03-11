@@ -9,6 +9,7 @@ const options = {
   resizable: true,
   maximizable: true,
   frame: false,
+  shadow: true,
   nonPersistent: true,
   accelerator: {
     devtools: true,
