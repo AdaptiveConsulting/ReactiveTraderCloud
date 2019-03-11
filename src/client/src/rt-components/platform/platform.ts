@@ -1,5 +1,4 @@
-import { Browser, Finsemble, OpenFin } from './adapters'
-import { PlatformAdapter } from 'rt-components'
+import { Browser, Finsemble, OpenFin, PlatformAdapter } from './adapters'
 
 const isFinsemble = typeof window.FSBL !== 'undefined'
 const isOpenFin = typeof fin !== 'undefined'
