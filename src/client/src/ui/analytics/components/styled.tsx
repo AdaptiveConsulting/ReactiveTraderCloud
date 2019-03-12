@@ -11,6 +11,7 @@ export const AnalyticsStyle = styled.div`
   position: relative;
   padding: 1rem;
   font-size: 1rem;
+  overflow-x: hidden;
   overflow-y: scroll;
 
   /* axis */

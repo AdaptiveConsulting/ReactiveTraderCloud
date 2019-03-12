@@ -63,7 +63,7 @@ export const appConfigs: ApplicationConfig[] = [
     provider: {
       platform: 'openfin',
       as: 'application',
-      options,
+      options: { ...options, icon: `http://${location.host}/static/media/rt-icon.ico` },
     },
   },
   {
@@ -76,6 +76,7 @@ export const appConfigs: ApplicationConfig[] = [
       options: {
         ...options,
         frame: true,
+        icon: `http://${location.host}/static/media/ra-icon.ico`,
       },
     },
   },
@@ -86,7 +87,7 @@ export const appConfigs: ApplicationConfig[] = [
     provider: {
       platform: 'openfin',
       as: 'download',
-      options,
+      options: { ...options, icon: `http://${location.host}/static/media/limit-checker-icon.ico` },
     },
   },
   {
@@ -106,6 +107,7 @@ export const appConfigs: ApplicationConfig[] = [
         maximizable: false,
         contextMenu: true,
         alwaysOnTop: false,
+        icon: `http://${location.host}/static/media/ic-mic_1.ico`,
       },
       cornerRounding: {
         height: 10,
@@ -119,6 +121,9 @@ export const appConfigs: ApplicationConfig[] = [
     provider: {
       platform: 'excel',
       as: 'application',
+      options: {
+        icon: `http://${location.host}/static/media/excel-icon.ico`,
+      },
     },
   },
 ]
