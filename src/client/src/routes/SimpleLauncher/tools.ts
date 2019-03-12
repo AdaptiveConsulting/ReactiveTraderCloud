@@ -1,45 +1,44 @@
-import { ApplicationConfig, ApplicationType } from './applicationConfigurations'
+import { ApplicationConfig } from './applicationConfigurations'
 import { excelAdapter } from 'rt-components'
 
 export async function open(
   config: ApplicationConfig,
 ): Promise<Window | fin.OpenFinWindow | fin.OpenFinApplication | void> {
   const { provider } = config
-  // under openfin
-  if (typeof fin !== 'undefined') {
-    // open as url through openfin
-    if (provider.platform === 'browser') {
-      return fin.desktop.System.openUrlWithBrowser(config.url)
-    }
-    // open new openfin application
-    else if (provider.platform === 'openfin') {
-      switch (provider.as) {
-        case 'window':
-          return createOpenFinWindow(config)
-        case 'download':
-          return downloadOrLaunchLimitChecker(config)
-        case 'application':
-        default: {
-          const app = await createOpenFinApplication(config)
-          await new Promise((resolve, reject) => app.run(resolve, reject))
-          return app
-        }
-      }
-    } else if (provider.platform === 'excel') {
-      await excelAdapter.actions.init()
-      excelAdapter.actions.openExcel()
-    }
-  }
-  // open as url
-  else {
+
+  // Not under openfin -> open as url on browser
+  if (typeof fin === 'undefined') {
     return window.open(config.url, config.name)
+  }
+
+  // open as url through openfin
+  if (provider.platformType === 'browser') {
+    return new Promise((resolve, reject) => fin.desktop.System.openUrlWithBrowser(config.url, resolve, reject))
+  }
+  if (provider.platformType === 'excel') {
+    await excelAdapter.actions.init()
+    return excelAdapter.actions.openExcel()
+  }
+  // open new openfin application
+  if (provider.platformType === 'openfin') {
+    switch (provider.applicationType) {
+      case 'window':
+        return createOpenFinWindow(config)
+      case 'download':
+        return downloadOrLaunchLimitChecker(config)
+      case 'application':
+      default:
+        const app = await createOpenFinApplication(config)
+        await new Promise((resolve, reject) => app.run(resolve, reject))
+        return app
+    }
   }
 }
 
 function createOpenFinApplication({
   name,
   url,
-  provider: { options },
+  provider: { windowOptions },
 }: ApplicationConfig): Promise<fin.OpenFinApplication> {
   return new Promise((resolve, reject) => {
     const app: fin.OpenFinApplication = new fin.desktop.Application(
@@ -48,23 +47,7 @@ function createOpenFinApplication({
         url,
         uuid: name,
         nonPersistent: false,
-        mainWindowOptions: {
-          ...options,
-          defaultCentered: true,
-          autoShow: true,
-          shadow: true,
-          // devtools
-          accelerator:
-            process.env.NODE_ENV === 'development'
-              ? {
-                  devtools: true,
-                  zoom: true,
-                  reload: true,
-                  reloadIgnoreCache: true,
-                }
-              : {},
-        },
-        // improper OpenFin type definition
+        mainWindowOptions: windowOptions,
       },
       () => resolve(app),
       e => reject(e),
@@ -72,16 +55,17 @@ function createOpenFinApplication({
   })
 }
 
-function createOpenFinWindow({ name, url, provider: { options } }: ApplicationConfig): Promise<fin.OpenFinWindow> {
+function createOpenFinWindow({
+  name,
+  url,
+  provider: { windowOptions },
+}: ApplicationConfig): Promise<fin.OpenFinWindow> {
   return new Promise((resolve, reject) => {
     const window: fin.OpenFinWindow = new fin.desktop.Window(
       {
         url,
         name,
-        ...options,
-        defaultCentered: true,
-        autoShow: true,
-        shadow: true,
+        ...windowOptions,
       },
       () => resolve(window),
       reject,
@@ -107,9 +91,9 @@ async function downloadOrLaunchLimitChecker(config: ApplicationConfig) {
       async error => {
         //on error, download it
         app.restart()
-        const config1 = {
+        const config1: ApplicationConfig = {
           ...config,
-          provider: { ...config.provider, as: 'application' as ApplicationType },
+          provider: { ...config.provider, applicationType: 'application' },
         }
         app = await createOpenFinApplication(config1)
         await new Promise((resolve, reject) => app.run(resolve, reject))

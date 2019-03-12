@@ -2,13 +2,6 @@ import { PlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
 import { fromEventPattern } from 'rxjs'
 
-// types not currently available for FSBL - 1/24/2019
-declare global {
-  interface Window {
-    FSBL: any
-  }
-}
-
 export default class Finsemble implements PlatformAdapter {
   name = 'finsemble'
   type = 'desktop'
