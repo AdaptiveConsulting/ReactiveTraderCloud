@@ -8,12 +8,16 @@ const FlexDiv = styled.div`
 export const BarChart = styled.div`
   display: flex;
 `
-export const PriceContainer = styled(FlexDiv)<{ distance: number }>`
+
+export const PriceContainer = styled(FlexDiv).attrs((props: { distance: number }) => ({
+  style: {
+    transform: `translate(${props.distance}%)`,
+  },
+}))<{ distance: number }>`
   width: 100%;
   font-size: 11px;
   transition: transform 0.5s;
   transition-timing-function: ${({ theme }) => theme.motion.easing};
-  transform: translate(${({ distance }) => distance}%);
 `
 
 export const Offset = styled.div`
