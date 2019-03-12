@@ -14,6 +14,7 @@
         "resizable": true,
         "maximizable": true,
         "frame": false,
+        "shadow": true,
         "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
         "preload": [
             {
