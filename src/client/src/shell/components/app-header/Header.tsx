@@ -59,7 +59,8 @@ const Root = styled.div`
 
 const Fill = styled.div`
   flex: 1;
-  height: 3.5rem;
+  height: calc(3.5rem - 5px);
+  margin-top: 5px;
   /**
     TODO 8/22 extract this extension of header, and the fill outside header layout
   */
@@ -67,7 +68,7 @@ const Fill = styled.div`
   cursor: -webkit-grab;
 `
 
-const IconButton = styled.button<{ type: string }>`
+const IconButton = styled.button`
   width: 2rem;
   height: 2rem;
   font-size: 1rem;
