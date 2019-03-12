@@ -11,6 +11,7 @@ const defaultWindowOptions: OpenFinWindowOptions = {
   defaultCentered: true,
   frame: false,
   shadow: true,
+  icon: 'http://localhost:3000/static/media/icon.ico',
   accelerator:
     process.env.NODE_ENV !== 'development'
       ? {}
