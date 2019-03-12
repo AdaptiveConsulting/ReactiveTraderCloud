@@ -11,12 +11,15 @@ const defaultWindowOptions: OpenFinWindowOptions = {
   defaultCentered: true,
   frame: false,
   shadow: true,
-  accelerator: process.env.NODE_ENV !== 'development' ? {} : {
-    devtools: true,
-    reload: true,
-    reloadIgnoringCache: true,
-    zoom: true,
-  }
+  accelerator:
+    process.env.NODE_ENV !== 'development'
+      ? {}
+      : {
+          devtools: true,
+          reload: true,
+          reloadIgnoringCache: true,
+          zoom: true,
+        },
 }
 
 export type ApplicationType = 'window' | 'download' | 'application'
@@ -42,7 +45,10 @@ export const appConfigs: ApplicationConfig[] = [
     provider: {
       platformType: 'openfin',
       applicationType: 'application',
-      windowOptions: defaultWindowOptions,
+      windowOptions: {
+        ...defaultWindowOptions,
+        icon: `http://${location.host}/static/media/rt-icon.ico`,
+      },
     },
   },
   {
@@ -55,6 +61,7 @@ export const appConfigs: ApplicationConfig[] = [
       windowOptions: {
         ...defaultWindowOptions,
         frame: true,
+        icon: `http://${location.host}/static/media/ra-icon.ico`,
       },
     },
   },
@@ -65,7 +72,10 @@ export const appConfigs: ApplicationConfig[] = [
     provider: {
       platformType: 'openfin',
       applicationType: 'download',
-      windowOptions: defaultWindowOptions,
+      windowOptions: {
+        ...defaultWindowOptions,
+        icon: `http://${location.host}/static/media/limit-checker-icon.ico`,
+      },
     },
   },
   {
@@ -85,6 +95,7 @@ export const appConfigs: ApplicationConfig[] = [
         maximizable: false,
         contextMenu: true,
         alwaysOnTop: false,
+        icon: `http://${location.host}/static/media/ic-mic_1.ico`,
         cornerRounding: {
           height: 10,
           width: 8,
@@ -108,6 +119,7 @@ export const appConfigs: ApplicationConfig[] = [
             url: `http://${location.host}/plugin/fin.desktop.Excel.js`,
           },
         ],
+        icon: `http://${location.host}/static/media/excel-icon.ico`,
       },
     },
   },
