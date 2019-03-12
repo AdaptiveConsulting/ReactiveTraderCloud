@@ -23,6 +23,16 @@ const defaultWindowOptions: OpenFinWindowOptions = {
         },
 }
 
+const excelPreloadScripts: fin.DownloadPreloadOption[] = [
+  // OpenFin Excel API not included here (not included in standard package)
+  {
+    url: `http://${location.host}/plugin/service-loader.js`,
+  },
+  {
+    url: `http://${location.host}/plugin/fin.desktop.Excel.js`,
+  },
+]
+
 export type ApplicationType = 'window' | 'download' | 'application'
 type PlatformType = 'browser' | 'openfin' | 'excel'
 interface Provider {
@@ -48,6 +58,7 @@ export const appConfigs: ApplicationConfig[] = [
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
+        preloadScripts: excelPreloadScripts,
         icon: `http://${location.host}/static/media/rt-icon.ico`,
       },
     },
@@ -111,15 +122,7 @@ export const appConfigs: ApplicationConfig[] = [
       platformType: 'excel',
       applicationType: 'application',
       windowOptions: {
-        preloadScripts: [
-          // OpenFin Excel API not included here (not included in standard package)
-          {
-            url: `http://${location.host}/plugin/service-loader.js`,
-          },
-          {
-            url: `http://${location.host}/plugin/fin.desktop.Excel.js`,
-          },
-        ],
+        preloadScripts: excelPreloadScripts,
         icon: `http://${location.host}/static/media/excel-icon.ico`,
       },
     },
