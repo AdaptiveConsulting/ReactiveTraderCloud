@@ -5,6 +5,7 @@ import SpotTile from './SpotTile'
 import numeral from 'numeral'
 import { AnalyticsTile } from './analyticsTile'
 import { TileViews } from '../../workspace/workspaceHeader'
+import { DEFAULT_NOTIONAL_VALUE } from './notional/NotionalInput'
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
@@ -19,7 +20,7 @@ interface State {
 
 class Tile extends React.PureComponent<Props, State> {
   state = {
-    notional: '1000000',
+    notional: DEFAULT_NOTIONAL_VALUE,
   }
   tileComponents = {
     [TileViews.Normal]: SpotTile,
