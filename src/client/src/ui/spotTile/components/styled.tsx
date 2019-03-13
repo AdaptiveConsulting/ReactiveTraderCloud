@@ -60,7 +60,7 @@ export const TileWrapperBase = styled.div`
 
 export const SpotTileWrapper = styled(TileWrapperBase)<{ platform: PlatformAdapter }>`
   position: relative;
-  min-height: 10rem;
+  min-height: 11rem;
   height: ${({ platform: { name } }) =>
     name !== 'finsemble'
       ? '100%'
