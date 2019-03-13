@@ -9,8 +9,8 @@ import { Block, Text } from '../StyleguideRoute/styled'
 
 import { DrawerMenu } from './DrawerMenu'
 import { VoiceInput, VoiceInputResult } from './VoiceInput'
-import { WindowControls } from './WindowControls'
 
+import { Chrome } from './Chrome'
 import { OrderForm, OrderFormFields } from './OrderForm'
 import { OrderStatus } from './OrderStatus'
 
@@ -30,10 +30,14 @@ interface State {
 }
 
 interface Props {
+  showChrome: boolean
   reset: () => void
 }
 
 export class OrderTicket extends PureComponent<Props, State> {
+  static defaultProps = {
+    showChrome: true,
+  }
   state: State = {
     requestSession: false,
     requestQuote: false,
@@ -210,12 +214,7 @@ export class OrderTicket extends PureComponent<Props, State> {
       <Viewport bg={t => t.core.darkBackground} fg={t => t.core.textColor}>
         <StyledHotKeys {...this.hotkeys} ref={this.viewportRef}>
           <AppLayout bg={t => t.core.darkBackground}>
-            <ChromeLayout bg={t => t.primary.base}>
-              <WindowControls />
-              <Text letterSpacing={1} fontSize={0.75} fontWeight={300}>
-                Order Ticket
-              </Text>
-            </ChromeLayout>
+            {this.props.showChrome && <Chrome />}
 
             <DrawerLayout bg={t => t.primary[4]} fg={t => t.primary[2]}>
               <DrawerMenu onClick={this.props.reset} />
@@ -317,7 +316,7 @@ const Viewport = styled(Block)`
   font-size: 0.75rem;
 `
 
-const AppLayout = styled(Block)`
+const AppLayout = styled(Block)<{ showChrome?: boolean }>`
   display: grid;
   min-width: 42rem;
   max-width: 42rem;
@@ -330,7 +329,7 @@ const AppLayout = styled(Block)`
     0 1rem 2.5rem -1.25rem ${({ theme }) => darken(0.1, theme.overlay.backgroundColor)};
 
   grid-template-columns: 4rem 8rem 8rem 11rem 11rem;
-  grid-template-rows: 2rem 5rem 7rem 7rem 3rem;
+  grid-template-rows: ${({ showChrome }) => (showChrome ? 2 : 0)}rem 5rem 7rem 7rem 3rem;
   grid-template-areas:
     'chrome chrome chrome chrome chrome '
     'drawer voice  voice  voice  voice  '
@@ -339,20 +338,6 @@ const AppLayout = styled(Block)`
     'drawer info   info   info   info   ';
 
   position: relative;
-`
-
-const ChromeLayout = styled(Block)`
-  grid-area: chrome;
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: min-content 1fr auto;
-  align-items: center;
-  grid-gap: 1rem;
-  padding: 0 1rem;
-
-  height: 2rem;
-
-  ${rules.appRegionDrag};
 `
 
 const DrawerLayout = styled(Block)`

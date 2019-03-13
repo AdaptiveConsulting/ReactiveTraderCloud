@@ -1,12 +1,18 @@
+// Augment OpenFin types with more precise typings
+declare interface OpenFinWindowOptions extends fin.WindowOption {
+  accelerator?: {
+    devtools?: boolean
+    reload?: boolean
+    reloadIgnoringCache?: boolean
+    zoom?: boolean
+  }
+  cornerRounding?: {
+    width?: number
+    height?: number
+  }
+}
+
 declare namespace fin {
-  interface WindowOptions {
-    shadow?: boolean
-  }
-
-  interface ApplicationOptions {
-    nonPersistent?: boolean
-  }
-
   interface OpenFinDesktop {
     ExcelService: {
       init(): Promise<void>

@@ -1,6 +1,6 @@
-import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon, excelIcon } from './icons'
+import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon, excelIcon } from './icons/index'
 
-const options = {
+const defaultWindowOptions: OpenFinWindowOptions = {
   autoShow: true,
   defaultWidth: 1280,
   defaultHeight: 900,
@@ -8,44 +8,37 @@ const options = {
   minHeight: 600,
   resizable: true,
   maximizable: true,
+  defaultCentered: true,
   frame: false,
   shadow: true,
-  nonPersistent: true,
-  accelerator: {
-    devtools: true,
-    reload: true,
-    reloadIgnoringCache: true,
-    zoom: true,
-  },
-  preload: [
-    // OpenFin Excel API not included here (not included in standard package)
-    {
-      url: `http://${location.host}/plugin/service-loader.js`,
-    },
-    {
-      url: `http://${location.host}/plugin/fin.desktop.Excel.js`,
-    },
-  ],
-  appAssets: [
-    {
-      src: `http://${location.host}/plugin/add-in.zip`,
-      alias: 'excel-api-addin',
-      version: '2.0.0',
-      forceDownload: true,
-    },
-  ],
+  icon: 'http://localhost:3000/static/media/icon.ico',
+  accelerator:
+    process.env.NODE_ENV !== 'development'
+      ? {}
+      : {
+          devtools: true,
+          reload: true,
+          reloadIgnoringCache: true,
+          zoom: true,
+        },
 }
 
+const excelPreloadScripts: fin.DownloadPreloadOption[] = [
+  // OpenFin Excel API not included here (not included in standard package)
+  {
+    url: `http://${location.host}/plugin/service-loader.js`,
+  },
+  {
+    url: `http://${location.host}/plugin/fin.desktop.Excel.js`,
+  },
+]
+
 export type ApplicationType = 'window' | 'download' | 'application'
-type Platform = 'browser' | 'openfin' | 'excel'
+type PlatformType = 'browser' | 'openfin' | 'excel'
 interface Provider {
-  platform: Platform
-  as: ApplicationType
-  options?: fin.WindowOptions
-  cornerRounding?: {
-    height: number
-    width: number
-  }
+  platformType: PlatformType
+  applicationType: ApplicationType
+  windowOptions?: OpenFinWindowOptions
 }
 
 export interface ApplicationConfig {
@@ -61,9 +54,13 @@ export const appConfigs: ApplicationConfig[] = [
     url: `http://${location.host}`,
     icon: reactiveTraderIcon,
     provider: {
-      platform: 'openfin',
-      as: 'application',
-      options: { ...options, icon: `http://${location.host}/static/media/rt-icon.ico` },
+      platformType: 'openfin',
+      applicationType: 'application',
+      windowOptions: {
+        ...defaultWindowOptions,
+        preloadScripts: excelPreloadScripts,
+        icon: `http://${location.host}/static/media/rt-icon.ico`,
+      },
     },
   },
   {
@@ -71,10 +68,10 @@ export const appConfigs: ApplicationConfig[] = [
     url: 'http://demo-reactive-analytics.adaptivecluster.com/',
     icon: reactiveAnalyticsIcon,
     provider: {
-      platform: 'openfin',
-      as: 'application',
-      options: {
-        ...options,
+      platformType: 'openfin',
+      applicationType: 'application',
+      windowOptions: {
+        ...defaultWindowOptions,
         frame: true,
         icon: `http://${location.host}/static/media/ra-icon.ico`,
       },
@@ -85,9 +82,12 @@ export const appConfigs: ApplicationConfig[] = [
     url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
     icon: limitCheckerIcon,
     provider: {
-      platform: 'openfin',
-      as: 'download',
-      options: { ...options, icon: `http://${location.host}/static/media/limit-checker-icon.ico` },
+      platformType: 'openfin',
+      applicationType: 'download',
+      windowOptions: {
+        ...defaultWindowOptions,
+        icon: `http://${location.host}/static/media/limit-checker-icon.ico`,
+      },
     },
   },
   {
@@ -95,10 +95,10 @@ export const appConfigs: ApplicationConfig[] = [
     url: `http://${location.host}/order-ticket`,
     icon: greenKeyIcon,
     provider: {
-      platform: 'openfin',
-      as: 'application',
-      options: {
-        ...options,
+      platformType: 'openfin',
+      applicationType: 'application',
+      windowOptions: {
+        ...defaultWindowOptions,
         defaultWidth: 672,
         defaultHeight: 384,
         minWidth: 672,
@@ -108,10 +108,10 @@ export const appConfigs: ApplicationConfig[] = [
         contextMenu: true,
         alwaysOnTop: false,
         icon: `http://${location.host}/static/media/ic-mic_1.ico`,
-      },
-      cornerRounding: {
-        height: 10,
-        width: 8,
+        cornerRounding: {
+          height: 10,
+          width: 8,
+        },
       },
     },
   },
@@ -119,9 +119,10 @@ export const appConfigs: ApplicationConfig[] = [
     name: 'Excel',
     icon: excelIcon,
     provider: {
-      platform: 'excel',
-      as: 'application',
-      options: {
+      platformType: 'excel',
+      applicationType: 'application',
+      windowOptions: {
+        preloadScripts: excelPreloadScripts,
         icon: `http://${location.host}/static/media/excel-icon.ico`,
       },
     },

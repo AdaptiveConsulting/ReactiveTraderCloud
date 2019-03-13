@@ -22,7 +22,7 @@ const EXCEL_SHEET_NAME = 'RTExcel.xlsx'
 
 enum ExcelPageSetup {
   Blotter = 'A2',
-  Poisitins = 'A2',
+  Poisitions = 'A2',
   CcyPairs = 'G2',
 }
 
@@ -59,7 +59,7 @@ class ExcelAdapter implements ExcelInterface {
         case InteropTopics.Analytics:
           return (
             this.positionalSheet &&
-            (this.positionalSheet.setCells(formTable.positions(message), ExcelPageSetup.Poisitins),
+            (this.positionalSheet.setCells(formTable.positions(message), ExcelPageSetup.Poisitions),
             this.positionalSheet.setCells(formTable.ccy(message), ExcelPageSetup.CcyPairs))
           )
       }

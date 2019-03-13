@@ -3,6 +3,7 @@ import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
+import { FunctionParams } from 'rt-util';
 
 export const openFinNotifications: any[] = []
 
@@ -17,6 +18,7 @@ export const setupGlobalOpenfinNotifications = () => {
   }
 }
 
+type OpenFinWindowState = FunctionParams<FunctionParams<fin.OpenFinWindow['getState']>[0]>[0]
 export default class OpenFin implements PlatformAdapter {
   name = 'openfin'
   type = 'desktop'
@@ -33,10 +35,10 @@ export default class OpenFin implements PlatformAdapter {
 
     maximize: () => {
       const win = fin.desktop.Window.getCurrent()
-      win.getState(state => {
+      win.getState((state: OpenFinWindowState) => {
         switch (state) {
           case 'maximized':
-          case 'restored':
+          case 'normal':
           case 'minimized':
             win.restore(() => win.bringToFront())
             break

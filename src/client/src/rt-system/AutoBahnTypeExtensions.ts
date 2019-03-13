@@ -3,7 +3,7 @@ import { ConnectionType } from './connectionType'
 interface TransportDefinition {
   info: {
     url: string
-    protocols?: string[]
+    protocol?: string
     type: ConnectionType
   }
 }
