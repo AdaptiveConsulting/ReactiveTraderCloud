@@ -76,7 +76,7 @@ export default class NotionalInput extends PureComponent<Props> {
           defaultValue={formattedSize}
           onFocus={this.handleFocus}
           onChange={this.handleInputChange}
-          onBlur={this.handleBlur}
+          onBlur={this.handleUpdateCausedByEvent}
           onKeyPress={this.handleKeyPressNotionalInput}
           inputIsValid={inputIsValid}
         />
@@ -92,7 +92,7 @@ export default class NotionalInput extends PureComponent<Props> {
     const charCode = event.charCode
 
     if (event.key === ENTER) {
-      this.formatAndUpdateValue(event.currentTarget.value)
+      this.handleUpdateCausedByEvent(event)
     } else if (charCode === CHAR_CODE_DOT) {
       // only allow one dot
       if (event.currentTarget.value.match(/\./g)) {
@@ -124,7 +124,7 @@ export default class NotionalInput extends PureComponent<Props> {
     }
   }
 
-  handleBlur = (event: React.FormEvent<HTMLInputElement>) => {
+  handleUpdateCausedByEvent = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
     this.formatAndUpdateValue(value !== '.' ? value : DEFAULT_NOTIONAL_VALUE)
   }
