@@ -3,7 +3,6 @@ import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
-import { FunctionParams } from 'rt-util';
 
 export const openFinNotifications: any[] = []
 
@@ -18,7 +17,7 @@ export const setupGlobalOpenfinNotifications = () => {
   }
 }
 
-type OpenFinWindowState = FunctionParams<FunctionParams<fin.OpenFinWindow['getState']>[0]>[0]
+type OpenFinWindowState = Parameters<Parameters<fin.OpenFinWindow['getState']>[0]>[0]
 export default class OpenFin implements PlatformAdapter {
   name = 'openfin'
   type = 'desktop'
