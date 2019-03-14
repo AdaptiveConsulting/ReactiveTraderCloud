@@ -3,6 +3,7 @@ import {
   PlatformAdapter,
   externalWindowDefault,
   PlatformProvider,
+  PlatformName,
   WindowConfig,
   openFinNotifications,
   setupGlobalOpenfinNotifications,
@@ -18,6 +19,7 @@ export {
   setupGlobalOpenfinNotifications,
 }
 export type PlatformAdapter = PlatformAdapter
+export type PlatformName = PlatformName
 export type WindowConfig = WindowConfig
 export { TearOff } from './tear-off'
 export { OpenFinChrome, OpenFinControls, OpenFinHeader } from './open-fin'

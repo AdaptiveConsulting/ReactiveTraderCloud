@@ -1,4 +1,5 @@
 import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon, excelIcon } from './icons/index'
+import { PlatformName } from 'rt-components';
 
 const defaultWindowOptions: OpenFinWindowOptions = {
   autoShow: true,
@@ -33,10 +34,9 @@ const excelPreloadScripts: fin.DownloadPreloadOption[] = [
   },
 ]
 
-export type ApplicationType = 'window' | 'download' | 'application'
-type PlatformType = 'browser' | 'openfin' | 'excel'
+type ApplicationType = 'window' | 'download' | 'application' | 'excel'
 interface Provider {
-  platformType: PlatformType
+  platformName: PlatformName
   applicationType: ApplicationType
   windowOptions?: OpenFinWindowOptions
 }
@@ -54,7 +54,7 @@ export const appConfigs: ApplicationConfig[] = [
     url: `http://${location.host}`,
     icon: reactiveTraderIcon,
     provider: {
-      platformType: 'openfin',
+      platformName: 'openfin',
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
@@ -68,7 +68,7 @@ export const appConfigs: ApplicationConfig[] = [
     url: 'http://demo-reactive-analytics.adaptivecluster.com/',
     icon: reactiveAnalyticsIcon,
     provider: {
-      platformType: 'openfin',
+      platformName: 'openfin',
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
@@ -82,7 +82,7 @@ export const appConfigs: ApplicationConfig[] = [
     url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
     icon: limitCheckerIcon,
     provider: {
-      platformType: 'openfin',
+      platformName: 'openfin',
       applicationType: 'download',
       windowOptions: {
         ...defaultWindowOptions,
@@ -95,7 +95,7 @@ export const appConfigs: ApplicationConfig[] = [
     url: `http://${location.host}/order-ticket`,
     icon: greenKeyIcon,
     provider: {
-      platformType: 'openfin',
+      platformName: 'openfin',
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
@@ -119,8 +119,8 @@ export const appConfigs: ApplicationConfig[] = [
     name: 'Excel',
     icon: excelIcon,
     provider: {
-      platformType: 'excel',
-      applicationType: 'application',
+      platformName: 'openfin',
+      applicationType: 'excel',
       windowOptions: {
         preloadScripts: excelPreloadScripts,
         icon: `http://${location.host}/static/media/excel-icon.ico`,

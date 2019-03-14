@@ -12,20 +12,20 @@ export async function open(
   }
 
   // open as url through openfin
-  if (provider.platformType === 'browser') {
+  if (provider.platformName === 'browser') {
     return new Promise((resolve, reject) => fin.desktop.System.openUrlWithBrowser(config.url, resolve, reject))
   }
-  if (provider.platformType === 'excel') {
-    await excelAdapter.actions.init()
-    return excelAdapter.actions.openExcel()
-  }
+
   // open new openfin application
-  if (provider.platformType === 'openfin') {
+  if (provider.platformName === 'openfin') {
     switch (provider.applicationType) {
       case 'window':
         return createOpenFinWindow(config)
       case 'download':
         return downloadOrLaunchLimitChecker(config)
+      case 'excel':
+        await excelAdapter.actions.init()
+        return excelAdapter.actions.openExcel()
       case 'application':
       default:
         const app = await createOpenFinApplication(config)
