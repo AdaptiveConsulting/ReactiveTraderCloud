@@ -12,6 +12,7 @@ const CHAR_CODE_9 = 57
 const CHAR_CODE_UNIT_SEP = 31
 const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]
 const MAX_NOTIONAL_VALUE = 1000000000
+const RESET_NOTIONAL_VALUE = '0'
 export const DEFAULT_NOTIONAL_VALUE = '1000000'
 
 const CurrencyPairSymbol = styled('span')`
@@ -21,11 +22,21 @@ const CurrencyPairSymbol = styled('span')`
   padding-right: 0.375rem;
 `
 
+const ErrorMessagePlaceholder = styled.div`
+  position: absolute;
+  right: 45px;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+  padding-right: 0.375rem;
+  text-transform: uppercase;
+  ${({ theme }) => `color: ${theme.template.red.normal}`};
+`
+
 const InputWrapper = styled.div`
   display: flex;
 `
 
-export const Input = styled.input<{ inputIsValid: boolean }>`
+export const Input = styled.input<{ inError: boolean }>`
   background: none;
   text-align: center;
   outline: none;
@@ -34,8 +45,8 @@ export const Input = styled.input<{ inputIsValid: boolean }>`
   width: 85px;
   transition: box-shadow 0.2s ease;
   padding: 2px 0;
-  ${({ inputIsValid, theme }) =>
-    inputIsValid
+  ${({ inError, theme }) =>
+    !inError
       ? `
   .spot-tile:hover & {
     box-shadow: 0px 1px 0px ${theme.core.textColor};
@@ -55,18 +66,15 @@ interface Props {
   currencyPairSymbol: string
   notional: string
   updateNotional: (notional: string) => void
+  setInErrorStatus: (inError: boolean) => void
+  inError: boolean
 }
 
 export default class NotionalInput extends PureComponent<Props> {
   private inputRef = React.createRef<HTMLInputElement>()
 
-  state = {
-    inputIsValid: true,
-  }
-
   render() {
-    const { currencyPairSymbol, notional } = this.props
-    const { inputIsValid } = this.state
+    const { currencyPairSymbol, notional, inError } = this.props
     const formattedSize = numeral(notional).format(NUMERAL_FORMAT)
     return (
       <InputWrapper>
@@ -79,8 +87,9 @@ export default class NotionalInput extends PureComponent<Props> {
           onChange={this.handleInputChange}
           onBlur={this.handleUpdateCausedByEvent}
           onKeyPress={this.handleKeyPressNotionalInput}
-          inputIsValid={inputIsValid}
+          inError={inError}
         />
+        {inError && <ErrorMessagePlaceholder>* max exceeded</ErrorMessagePlaceholder>}
       </InputWrapper>
     )
   }
@@ -108,30 +117,30 @@ export default class NotionalInput extends PureComponent<Props> {
   }
 
   handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
-    let value = event.currentTarget.value.trim()
-
-    // if empty string, no thing
-    if (value) {
-      const numericValue = convertNotionalShorthandToNumericValue(value)
-      if (numericValue >= MAX_NOTIONAL_VALUE) {
-        value = DEFAULT_NOTIONAL_VALUE
-        this.triggerInputWarningMessage()
-      }
-
-      if (!isNaN(numericValue)) {
-        // user may be trying to enter decimals. In that case, format and update only when completed.
-        const lastTwoChars = value.substr(-2)
-        if (lastTwoChars.indexOf(DOT) === -1) {
-          // propagate change back to dom node's value
-          this.formatAndUpdateValue(value)
-        }
+    const value = event.currentTarget.value.trim()
+    const numericValue = convertNotionalShorthandToNumericValue(value)
+    if (numericValue >= MAX_NOTIONAL_VALUE) {
+      // if entered value bigger than max, show error.
+      this.setInErrorStatus(true)
+    } else if (this.props.inError) {
+      // if in error and value entered becomes smaller, remove error.
+      this.setInErrorStatus(false)
+    }
+    if (!isNaN(numericValue)) {
+      // user may be trying to enter decimals or
+      // user may be deleting previous entry (empty string)
+      // in those cases, format and update only when completed.
+      const lastTwoChars = value.substr(-2)
+      if (value !== '' && lastTwoChars.indexOf(DOT) === -1) {
+        // propagate change back
+        this.formatAndUpdateValue(value)
       }
     }
   }
 
   handleUpdateCausedByEvent = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
-    this.formatAndUpdateValue(value !== DOT && value !== '' ? value : DEFAULT_NOTIONAL_VALUE)
+    this.formatAndUpdateValue(value !== DOT && value !== '' ? value : RESET_NOTIONAL_VALUE)
   }
 
   formatAndUpdateValue = (inputValue: string) => {
@@ -143,16 +152,9 @@ export default class NotionalInput extends PureComponent<Props> {
     }
   }
 
-  // Temporary, need to validate UI and bahaviour
-  triggerInputWarningMessage = () => {
-    this.setState({
-      inputIsValid: false,
-    })
-    setTimeout(() => {
-      this.setState({
-        inputIsValid: true,
-      })
-    }, 2000)
+  setInErrorStatus = (inError: boolean) => {
+    const { setInErrorStatus } = this.props
+    setInErrorStatus(inError)
   }
 
   inputIsAllowed = (charCode: number) => {

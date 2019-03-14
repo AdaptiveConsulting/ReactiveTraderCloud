@@ -6,6 +6,7 @@ import numeral from 'numeral'
 import { AnalyticsTile } from './analyticsTile'
 import { TileViews } from '../../workspace/workspaceHeader'
 import { DEFAULT_NOTIONAL_VALUE } from './notional/NotionalInput'
+
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
@@ -16,17 +17,23 @@ interface Props {
 
 interface State {
   notional: string
+  inError: boolean
 }
 
 class Tile extends React.PureComponent<Props, State> {
   state = {
     notional: DEFAULT_NOTIONAL_VALUE,
+    inError: false, // should probably be a list of errors at some point
   }
+
   tileComponents = {
     [TileViews.Normal]: SpotTile,
     [TileViews.Analytics]: AnalyticsTile,
   }
+
   updateNotional = (notional: string) => this.setState({ notional })
+
+  setInErrorStatus = (inError: boolean) => this.setState({ inError })
 
   executeTrade = (direction: Direction, rawSpotRate: number) => {
     const { currencyPair, executeTrade } = this.props
@@ -43,8 +50,9 @@ class Tile extends React.PureComponent<Props, State> {
 
   getNotional = () => numeral(this.state.notional).value() || DEFAULT_NOTIONAL
 
-  canExecute = () => {
+  get canExecute() {
     const { spotTileData, executionStatus } = this.props
+
     return Boolean(
       executionStatus === ServiceConnectionStatus.CONNECTED &&
         !spotTileData.isTradeExecutionInFlight &&
@@ -54,7 +62,7 @@ class Tile extends React.PureComponent<Props, State> {
 
   render() {
     const { currencyPair, spotTileData, executionStatus, tileView } = this.props
-    const { notional } = this.state
+    const { notional, inError } = this.state
     const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
     return (
       <TileViewComponent
@@ -64,7 +72,9 @@ class Tile extends React.PureComponent<Props, State> {
         executionStatus={executionStatus}
         notional={notional}
         updateNotional={this.updateNotional}
-        canExecute={!this.canExecute()}
+        setInErrorStatus={this.setInErrorStatus}
+        canExecute={this.canExecute}
+        inError={inError}
       >
         {this.props.children}
       </TileViewComponent>
