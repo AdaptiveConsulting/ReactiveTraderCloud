@@ -89,18 +89,19 @@ export default class NotionalInput extends PureComponent<Props> {
   }
 
   handleKeyPressNotionalInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const charCode = event.charCode
-
+    const { charCode, currentTarget, nativeEvent } = event
     if (event.key === ENTER) {
       this.handleUpdateCausedByEvent(event)
     } else if (charCode === CHAR_CODE_DOT) {
-      // only allow one dot
-      if (event.currentTarget.value.match(/\./g)) {
-        event.nativeEvent.stopImmediatePropagation()
+      // only allow one dot unless the existing dot is in the text selection while replacing existing text.
+      const { value, selectionStart, selectionEnd } = currentTarget
+      const textWithoutSelection = value.replace(value.substring(selectionStart, selectionEnd), '')
+      if (textWithoutSelection.match(/\./g)) {
+        nativeEvent.stopImmediatePropagation()
         event.preventDefault()
       }
     } else if (!this.inputIsAllowed(charCode)) {
-      event.nativeEvent.stopImmediatePropagation()
+      nativeEvent.stopImmediatePropagation()
       event.preventDefault()
     }
   }
