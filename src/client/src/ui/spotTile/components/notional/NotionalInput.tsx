@@ -108,27 +108,30 @@ export default class NotionalInput extends PureComponent<Props> {
   }
 
   handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
-    // If user deletes all chars, set value back to DEFAULT_NOTIONAL_VALUE instead of empty string
-    let value = event.currentTarget.value.trim() || DEFAULT_NOTIONAL_VALUE
-    const numericValue = convertNotionalShorthandToNumericValue(value)
-    if (numericValue >= MAX_NOTIONAL_VALUE) {
-      value = DEFAULT_NOTIONAL_VALUE
-      this.triggerInputWarningMessage()
-    }
+    let value = event.currentTarget.value.trim()
 
-    if (!isNaN(numericValue)) {
-      // user may be trying to enter decimals. In that case, format and update only when completed.
-      const lastTwoChars = value.substr(-2)
-      if (lastTwoChars.indexOf(DOT) === -1) {
-        // propagate change back to dom node's value
-        this.formatAndUpdateValue(value)
+    // if empty string, no thing
+    if (value) {
+      const numericValue = convertNotionalShorthandToNumericValue(value)
+      if (numericValue >= MAX_NOTIONAL_VALUE) {
+        value = DEFAULT_NOTIONAL_VALUE
+        this.triggerInputWarningMessage()
+      }
+
+      if (!isNaN(numericValue)) {
+        // user may be trying to enter decimals. In that case, format and update only when completed.
+        const lastTwoChars = value.substr(-2)
+        if (lastTwoChars.indexOf(DOT) === -1) {
+          // propagate change back to dom node's value
+          this.formatAndUpdateValue(value)
+        }
       }
     }
   }
 
   handleUpdateCausedByEvent = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
-    this.formatAndUpdateValue(value !== DOT ? value : DEFAULT_NOTIONAL_VALUE)
+    this.formatAndUpdateValue(value !== DOT && value !== '' ? value : DEFAULT_NOTIONAL_VALUE)
   }
 
   formatAndUpdateValue = (inputValue: string) => {
