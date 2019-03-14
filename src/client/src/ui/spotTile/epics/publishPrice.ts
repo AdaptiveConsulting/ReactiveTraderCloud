@@ -6,6 +6,7 @@ import { ignoreElements, map, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import { SpotPriceTick } from '../model/spotPriceTick'
+import { EMPTY } from 'rxjs'
 
 const { priceUpdateAction } = SpotTileActions
 type PriceUpdateAction = ReturnType<typeof priceUpdateAction>
@@ -15,8 +16,15 @@ const addRatePrecisionToPrice = (currencyData: CurrencyPairMap, price: SpotPrice
   ratePrecision: currencyData[price.symbol].ratePrecision,
 })
 
-export const publishPriceUpdateEpic: ApplicationEpic = (action$, _, { referenceDataService$, platform }) =>
-  action$.pipe(
+export const publishPriceUpdateEpic: ApplicationEpic = (
+  action$,
+  _,
+  { referenceDataService$, platform },
+) => {
+  if (!platform.hasFeature('interop')) {
+    return EMPTY
+  }
+  return action$.pipe(
     ofType<Action, PriceUpdateAction>(TILE_ACTION_TYPES.SPOT_PRICES_UPDATE),
     map(action =>
       referenceDataService$.pipe(
@@ -28,3 +36,4 @@ export const publishPriceUpdateEpic: ApplicationEpic = (action$, _, { referenceD
     ),
     ignoreElements(),
   )
+}

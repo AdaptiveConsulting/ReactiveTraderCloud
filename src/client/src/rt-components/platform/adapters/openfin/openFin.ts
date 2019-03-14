@@ -1,5 +1,5 @@
 import { BasePlatformAdapter } from '../platformAdapter'
-import { AppConfig, WindowConfig } from '../types'
+import { AppConfig, WindowConfig, InteropTopics } from '../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
@@ -22,10 +22,12 @@ export default class OpenFin extends BasePlatformAdapter {
   readonly name = 'openfin'
   readonly type = 'desktop'
 
-  interopServices = {
-    excel: true,
-    chartIQ: true,
-    notificationHighlight: true,
+  notificationHighlight = {
+    init: () => this.interop.subscribe$(InteropTopics.HighlightBlotter)
+  }
+  
+  chartIQ = {
+    open: (id: string, config: AppConfig) => this.app.open(id, config)
   }
 
   window = {

@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { from } from 'rxjs'
+import { from, EMPTY } from 'rxjs'
 import { map, mergeMap } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
@@ -19,14 +19,18 @@ const createChartConfig = (symbol: string, interval: number): AppConfig => ({
   topic: 'chartiq:main:change_symbol',
 })
 
-export const displayCurrencyChartEpic: ApplicationEpic = (action$, state$, { platform }) =>
-  action$.pipe(
+export const displayCurrencyChartEpic: ApplicationEpic = (action$, state$, { platform }) => {
+  if (!platform.hasFeature('chartIQ')) {
+    return EMPTY
+  }
+  return action$.pipe(
     ofType<Action, DisplayChartAction>(TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART),
     mergeMap<DisplayChartAction, string>((action: DisplayChartAction) =>
-      from<string>(platform.app!.open!(CHART_ID, createChartConfig(action.payload, 5))),
+      from<string>(platform.chartIQ.open(CHART_ID, createChartConfig(action.payload, 5))),
     ),
     map<string, ChartOpenedAction>(symbol => currencyChartOpened(symbol)),
   )
+}
 
 interface AppConfig {
   url?: string

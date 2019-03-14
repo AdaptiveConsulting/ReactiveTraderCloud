@@ -6,14 +6,13 @@ import { ApplicationDependencies } from 'applicationServices'
 import { blotterHighlightEpic } from './blotterHighlightEpic'
 
 export default ({ platform }: ApplicationDependencies) => {
-  const interopServices = platform.interopServices
   const epics = [blotterServiceEpic, connectBlotterToNotifications, requestBrowserNotificationPermission]
 
-  if (interopServices.excel) {
+  if (platform.hasFeature('excel')) {
     epics.push(publishBlotterToExcelEpic)
   }
 
-  if (interopServices.notificationHighlight) {
+  if (platform.hasFeature('notificationHighlight')) {
     epics.push(blotterHighlightEpic)
   }
 

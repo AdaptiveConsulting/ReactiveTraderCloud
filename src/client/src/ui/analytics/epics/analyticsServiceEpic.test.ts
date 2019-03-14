@@ -42,7 +42,9 @@ describe('publishPositionUpdateEpic', () => {
       expectObservable(epics$).toBe(expectedAction)
       flush()
 
-      expect(platform.interop!.excel!.publish).toHaveBeenCalledTimes(0)
+      if (platform.hasFeature('excel')) {
+        expect(platform.excel.publish).toHaveBeenCalledTimes(0)
+      }
     })
   })
 
@@ -78,8 +80,10 @@ describe('publishPositionUpdateEpic', () => {
       expectObservable(epics$).toBe(expectedAction)
       flush()
 
-      expect(platform.interop!.excel!.publish).toHaveBeenCalledTimes(1)
-      expect(platform.interop!.excel!.publish).toHaveBeenCalledWith(Update, [currencyPairPos])
+      if (platform.hasFeature('excel')) {
+        expect(platform.excel.publish).toHaveBeenCalledTimes(1)
+        expect(platform.excel.publish).toHaveBeenCalledWith(Update, [currencyPairPos])
+      }
     })
   })
 })

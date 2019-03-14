@@ -7,11 +7,6 @@ export default class Browser extends BasePlatformAdapter {
   readonly name = 'browser'
   readonly type = 'browser'
 
-  interopServices = {
-    excel: false,
-    chartIQ: false,
-    notificationHighlight: false,
-  }
 
   window = {
     close: () => window.close(),
@@ -28,4 +23,13 @@ export default class Browser extends BasePlatformAdapter {
       }
     },
   }
+
+  /* 
+    TODO: Browser can subscribe and publish via autobahn, so it would make sense to implement these methods.
+    In that case the interop object could be promoted as abstract to the base class
+  */
+  // interop?: {
+  //   subscribe$: (topic: string) => Observable<any>
+  //   publish: (topic: string, message: any) => void
+  // }
 }

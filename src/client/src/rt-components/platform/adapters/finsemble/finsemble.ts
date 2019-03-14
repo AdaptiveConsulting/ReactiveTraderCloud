@@ -1,14 +1,13 @@
 import { BasePlatformAdapter } from '../platformAdapter'
-import { WindowConfig } from '../types'
+import { WindowConfig, AppConfig } from '../types'
 import { fromEventPattern } from 'rxjs'
 
 export default class Finsemble extends BasePlatformAdapter {
   readonly name = 'finsemble'
   readonly type = 'desktop'
-  interopServices = {
-    excel: false,
-    chartIQ: true,
-    notificationHighlight: false,
+
+  chartIQ = {
+    open: (id: string, config: AppConfig) => this.app.open(id, config)
   }
 
   window = {
@@ -18,7 +17,7 @@ export default class Finsemble extends BasePlatformAdapter {
   }
 
   app = {
-    open: (id: string, config: any) =>
+    open: (id: string, config: AppConfig) =>
       new Promise<string>((resolve, reject) => {
         window.FSBL.Clients.LauncherClient.getActiveDescriptors((error: string, activeWindows: object) => {
           const isRunning = config.uuid in activeWindows ? true : false

@@ -4,10 +4,9 @@ import { analyticsServiceEpic } from './epics'
 import { ApplicationDependencies } from 'applicationServices'
 
 export default ({ platform }: ApplicationDependencies) => {
-  const interopServices = platform.interopServices
   const epics = [analyticsServiceEpic]
 
-  if (interopServices.excel) {
+  if (platform.hasFeature('excel')) {
     epics.push(publishPositionUpdateEpic)
   }
 
