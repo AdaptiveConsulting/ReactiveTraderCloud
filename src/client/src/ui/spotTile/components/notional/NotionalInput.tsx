@@ -4,6 +4,7 @@ import { styled } from 'rt-theme'
 import { convertNotionalShorthandToNumericValue } from './utils'
 
 const NUMERAL_FORMAT = '0,000,000[.]00'
+const DOT = '.'
 const ENTER = 'Enter'
 const CHAR_CODE_DOT = 46
 const CHAR_CODE_0 = 48
@@ -117,7 +118,7 @@ export default class NotionalInput extends PureComponent<Props> {
     if (!isNaN(numericValue)) {
       // user may be trying to enter decimals. In that case, format and update only when completed.
       const lastTwoChars = value.substr(-2)
-      if (lastTwoChars.indexOf('.') === -1) {
+      if (lastTwoChars.indexOf(DOT) === -1) {
         // propagate change back to dom node's value
         this.formatAndUpdateValue(value)
       }
@@ -126,7 +127,7 @@ export default class NotionalInput extends PureComponent<Props> {
 
   handleUpdateCausedByEvent = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
-    this.formatAndUpdateValue(value !== '.' ? value : DEFAULT_NOTIONAL_VALUE)
+    this.formatAndUpdateValue(value !== DOT ? value : DEFAULT_NOTIONAL_VALUE)
   }
 
   formatAndUpdateValue = (inputValue: string) => {
