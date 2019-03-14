@@ -1,5 +1,4 @@
 import { formTable } from './utils/index'
-import { ExcelWorkbook, ExcelWorksheet, ExcelInterface } from './types'
 import { InteropTopics } from 'rt-components'
 
 /*
@@ -22,14 +21,14 @@ const EXCEL_SHEET_NAME = 'RTExcel.xlsx'
 
 enum ExcelPageSetup {
   Blotter = 'A2',
-  Poisitions = 'A2',
+  Positions = 'A2',
   CcyPairs = 'G2',
 }
 
-class ExcelAdapter implements ExcelInterface {
-  blotterSheet: ExcelWorksheet
-  positionalSheet: ExcelWorksheet
-  excelWorkbook: ExcelWorkbook
+class ExcelAdapter {
+  blotterSheet: fin.ExcelWorksheet
+  positionalSheet: fin.ExcelWorksheet
+  excelWorkbook: fin.ExcelWorkbook
 
   actions = {
     init: async () => {
@@ -38,30 +37,32 @@ class ExcelAdapter implements ExcelInterface {
     },
 
     openExcel: async () => {
-      const { Excel } = fin.desktop
-
-      await Excel.run()
-      const menuView = await Excel.addWorkbook()
+      await fin.desktop.Excel.run()
+      const menuView = await fin.desktop.Excel.addWorkbook()
       menuView.close()
 
-      const RTExcel = await Excel.openWorkbook(`${EXCEL_HOST_URL}/${EXCEL_SHEET_NAME}`)
+      const RTExcel = await fin.desktop.Excel.openWorkbook(`${EXCEL_HOST_URL}/${EXCEL_SHEET_NAME}`)
       this.setWorkVariables(RTExcel)
     },
 
-    publishToExcel: async (topic: string, message: any) => {
+    publishToExcel: async <T = string | object>(topic: string, message: T) => {
       if (!this.excelWorkbook) {
         this.pollForExcelOpen()
       }
 
       switch (topic) {
         case InteropTopics.Blotter:
-          return this.blotterSheet && this.blotterSheet.setCells(formTable.blotter(message), ExcelPageSetup.Blotter)
+          if (this.blotterSheet) {
+            //@ts-ignore
+            await this.blotterSheet.setCells(formTable.blotter(message), ExcelPageSetup.Blotter)
+          }
         case InteropTopics.Analytics:
-          return (
-            this.positionalSheet &&
-            (this.positionalSheet.setCells(formTable.positions(message), ExcelPageSetup.Poisitions),
-            this.positionalSheet.setCells(formTable.ccy(message), ExcelPageSetup.CcyPairs))
-          )
+          if (this.positionalSheet) {
+            //@ts-ignore
+            await this.positionalSheet.setCells(formTable.positions(message), ExcelPageSetup.Positions)
+            //@ts-ignore
+            await this.positionalSheet.setCells(formTable.ccy(message), ExcelPageSetup.CcyPairs)
+          }
       }
     },
   }
@@ -79,7 +80,7 @@ class ExcelAdapter implements ExcelInterface {
     )
   }
 
-  private setWorkVariables = async (RTExcel: ExcelWorkbook) => {
+  private setWorkVariables = async (RTExcel: fin.ExcelWorkbook) => {
     this.excelWorkbook = RTExcel
     const worksheets = await this.excelWorkbook.getWorksheets()
     this.blotterSheet = worksheets[0]
@@ -88,18 +89,17 @@ class ExcelAdapter implements ExcelInterface {
   }
 
   private isAlreadyRunning = async () => {
-    const { Excel } = fin.desktop
-    if (!Excel) {
+    if (typeof fin.desktop.Excel === 'undefined' || !fin.desktop.Excel) {
       await fin.desktop.ExcelService.init()
       return
     }
 
-    const connected = await Excel.getConnectionStatus()
+    const connected = await fin.desktop.Excel.getConnectionStatus()
     if (!connected) {
       return
     }
 
-    const workbooks = await Excel.getWorkbooks()
+    const workbooks = await fin.desktop.Excel.getWorkbooks()
     const RTExcel = workbooks.filter((workbook: any) => (workbook.name === EXCEL_SHEET_NAME ? workbook : null))
     return RTExcel[0]
   }

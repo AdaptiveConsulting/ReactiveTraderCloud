@@ -35,7 +35,7 @@ export enum InteropTopics {
 }
 
 export interface ExcelInterop {
-  init: () => void
-  open: () => void
-  publish: (topic: string, message: string | object) => void
+  init(): void
+  open(): void
+  publish<T = string | object>(topic: string, message: T): void
 }
