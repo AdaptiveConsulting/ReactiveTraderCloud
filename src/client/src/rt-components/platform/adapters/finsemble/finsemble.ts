@@ -1,10 +1,10 @@
-import { PlatformAdapter } from '../platformAdapter'
+import { BasePlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
 import { fromEventPattern } from 'rxjs'
 
-export default class Finsemble implements PlatformAdapter {
-  name = 'finsemble'
-  type = 'desktop'
+export default class Finsemble extends BasePlatformAdapter {
+  readonly name = 'finsemble'
+  readonly type = 'desktop'
   interopServices = {
     excel: false,
     chartIQ: true,

@@ -1,3 +1,6 @@
+export type PlatformName = 'browser' | 'openfin' | 'finsemble'
+export type PlatformType = 'browser' | 'desktop'
+
 export interface WindowConfig {
   name: string
   url: string

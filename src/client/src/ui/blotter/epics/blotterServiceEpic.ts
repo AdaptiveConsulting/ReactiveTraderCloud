@@ -37,16 +37,18 @@ function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
   )
 }
 
-const connectBlotterToExcel: ApplicationEpic = (action$, state$, { platform }) =>
+export const publishBlotterToExcelEpic: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     applicationConnected,
-    tap(() => platform.interop!.excel!.init()),
+    tap(() => platform.name === 'openfin' && platform.excel.init()),
     switchMapTo(
       interval(7500).pipe(
         takeUntil(action$.pipe(applicationDisconnected)),
         tap(() => {
-          const parsedData = parseBlotterData(state$.value.blotterService.trades, state$.value.currencyPairs)
-          platform.interop!.excel!.publish(InteropTopics.Blotter, parsedData)
+          if (platform.name === 'openfin') {
+            const parsedData = parseBlotterData(state$.value.blotterService.trades, state$.value.currencyPairs)
+            platform.excel.publish(InteropTopics.Blotter, parsedData)
+          }
         }),
         ignoreElements(),
       ),
@@ -75,5 +77,3 @@ export const requestBrowserNotificationPermission: ApplicationEpic = (action$, s
     }),
     ignoreElements(),
   )
-
-export const publishBlotterEpic = combineEpics(connectBlotterToExcel)

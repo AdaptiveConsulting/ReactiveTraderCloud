@@ -1,4 +1,4 @@
-import { PlatformAdapter } from '../platformAdapter'
+import { BasePlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig } from '../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
@@ -6,7 +6,7 @@ import { excelAdapter } from './excel'
 
 export const openFinNotifications: any[] = []
 
-declare const window: any
+declare const window: Window & { onNotificationMessage: any }
 
 export const setupGlobalOpenfinNotifications = () => {
   if (typeof fin !== 'undefined' && !window.onNotificationMessage) {
@@ -18,9 +18,10 @@ export const setupGlobalOpenfinNotifications = () => {
 }
 
 type OpenFinWindowState = Parameters<Parameters<fin.OpenFinWindow['getState']>[0]>[0]
-export default class OpenFin implements PlatformAdapter {
-  name = 'openfin'
-  type = 'desktop'
+export default class OpenFin extends BasePlatformAdapter {
+  readonly name = 'openfin'
+  readonly type = 'desktop'
+
   interopServices = {
     excel: true,
     chartIQ: true,
@@ -88,12 +89,12 @@ export default class OpenFin implements PlatformAdapter {
       ),
 
     publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
+  }
 
-    excel: {
-      init: () => excelAdapter.actions.init(),
-      open: () => excelAdapter.actions.openExcel(),
-      publish: <T = string | object>(topic: string, message: T) => excelAdapter.actions.publishToExcel(topic, message),
-    },
+  excel = {
+    init: () => excelAdapter.actions.init(),
+    open: () => excelAdapter.actions.openExcel(),
+    publish: <T = string | object>(topic: string, message: T) => excelAdapter.actions.publishToExcel(topic, message),
   }
 
   notification = {

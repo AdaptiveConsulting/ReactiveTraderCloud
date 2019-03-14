@@ -12,8 +12,10 @@ export const publishPositionUpdateEpic: ApplicationEpic = (action$, state$, { pl
   action$.pipe(
     ofType<Action, FetchAnalyticsAction>(ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE),
     tap((action: FetchAnalyticsAction) => {
-      const currentPositions = action.payload.currentPositions
-      platform.interop!.excel!.publish(InteropTopics.Analytics, currentPositions)
+      if (platform.name === 'openfin') {
+        const currentPositions = action.payload.currentPositions
+        platform.excel.publish(InteropTopics.Analytics, currentPositions)
+      }
     }),
     ignoreElements(),
   )

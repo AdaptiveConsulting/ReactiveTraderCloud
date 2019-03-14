@@ -6,14 +6,14 @@ import ShellRoute from './ShellRoute'
 export const OpenFinRoute: FC = ({ ...props }) => {
   const platform = usePlatform()
 
-  return (
+  return platform.name === 'openfin' && (
     <OpenFinChrome>
       <ShellRoute
         header={
           <OpenFinControls
-            minimize={platform.window.minimize!}
-            maximize={platform.window.maximize!}
-            close={platform.window.close!}
+            minimize={platform.window.minimize}
+            maximize={platform.window.maximize}
+            close={platform.window.close}
           />
         }
         {...props}

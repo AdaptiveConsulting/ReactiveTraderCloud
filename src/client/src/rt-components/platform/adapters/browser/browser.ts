@@ -1,11 +1,12 @@
-import { PlatformAdapter } from '../platformAdapter'
+import { BasePlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
 import { sendNotification, NotifyPermission } from './utils/sendNotification'
 
-export default class Browser implements PlatformAdapter {
-  name = 'browser'
-  type = 'browser'
+export default class Browser extends BasePlatformAdapter {
+  readonly name = 'browser'
+  readonly type = 'browser'
+
   interopServices = {
     excel: false,
     chartIQ: false,
