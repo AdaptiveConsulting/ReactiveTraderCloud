@@ -1,3 +1,9 @@
+/*
+!!!
+These declaration files were obtained from https://github.com/openfin/excel-api-example and amended for better typing
+!!!
+*/
+
 import { RpcDispatcher } from './RpcDispatcher';
 import { ExcelApplication } from './ExcelApplication';
 export declare class ExcelService extends RpcDispatcher {

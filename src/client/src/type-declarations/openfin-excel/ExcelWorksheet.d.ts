@@ -1,8 +1,15 @@
+/*
+!!!
+These declaration files were obtained from https://github.com/openfin/excel-api-example and amended for better typing
+!!!
+*/
+
 import { RpcDispatcher } from './RpcDispatcher';
 import { ExcelWorkbook } from './ExcelWorkbook';
 export declare class ExcelWorksheet extends RpcDispatcher {
     workbook: ExcelWorkbook;
     worksheetName: string;
+    name?: string; // the `toObject` version uses this instead of worksheetName!
     private objectInstance;
     constructor(name: string, workbook: ExcelWorkbook);
     getDefaultMessage(): any;
