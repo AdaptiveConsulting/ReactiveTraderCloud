@@ -16,6 +16,7 @@ const RESET_NOTIONAL_VALUE = '0'
 export const DEFAULT_NOTIONAL_VALUE = '1000000'
 
 const CurrencyPairSymbol = styled('span')`
+  grid-area: Currency;
   opacity: 0.59;
   font-size: 0.625rem;
   line-height: 1.2rem;
@@ -23,27 +24,29 @@ const CurrencyPairSymbol = styled('span')`
 `
 
 const ErrorMessagePlaceholder = styled.div`
-  position: absolute;
-  right: 45px;
-  font-size: 0.625rem;
-  line-height: 1.2rem;
-  padding-right: 0.375rem;
-  text-transform: uppercase;
   ${({ theme }) => `color: ${theme.template.red.normal}`};
+  grid-area: Message;
+  font-size: 0.6rem;
+  line-height: normal;
+  padding-top: 2px;
+  margin-bottom: -1rem; /* Prevents the layout to change in Tile when this ErrorMessagePlaceholder is rendered */
 `
 
 const InputWrapper = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1auto 1auto;
+  grid-template-rows: 1auto 1auto;
+  grid-template-areas: 'Currency Input' '. Message';
 `
 
 export const Input = styled.input<{ inError: boolean }>`
+  grid-area: Input;
   background: none;
   text-align: center;
   outline: none;
   border: none;
   font-size: 0.75rem;
-  width: 85px;
-  transition: box-shadow 0.2s ease;
+  width: 80px;
   padding: 2px 0;
   ${({ inError, theme }) =>
     !inError
@@ -89,7 +92,7 @@ export default class NotionalInput extends PureComponent<Props> {
           onKeyPress={this.handleKeyPressNotionalInput}
           inError={inError}
         />
-        {inError && <ErrorMessagePlaceholder>* max exceeded</ErrorMessagePlaceholder>}
+        {inError && <ErrorMessagePlaceholder>Max exceeded</ErrorMessagePlaceholder>}
       </InputWrapper>
     )
   }
