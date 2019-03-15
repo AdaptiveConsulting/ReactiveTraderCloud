@@ -9,6 +9,8 @@ export class OpenFinLimitChecker {
 
   constructor() {
     if (typeof fin !== 'undefined') {
+      this.setLimitCheckSubscriber = this.setLimitCheckSubscriber.bind(this)
+      this.removeLimitCheckSubscriber = this.removeLimitCheckSubscriber.bind(this)
       this.initializeLimitChecker()
     }
   }
