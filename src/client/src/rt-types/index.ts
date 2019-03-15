@@ -1,6 +1,8 @@
 import { CurrencyPair, CurrencyPairMap } from './currencyPair'
 export type CurrencyPair = CurrencyPair
 export type CurrencyPairMap = CurrencyPairMap
+import { CurrencyPairPosition } from './currencyPairPosition'
+export type CurrencyPairPosition = CurrencyPairPosition
 export { Direction } from './direction'
 import { ServiceStatus, ServiceConnectionStatus } from './serviceStatus'
 export { ServiceConnectionStatus }

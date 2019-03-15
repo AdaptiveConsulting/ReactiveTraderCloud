@@ -1,12 +1,4 @@
-import { Trade } from 'rt-types'
-
-export interface CurrencyPairPosition {
-  symbol: string
-  basePnl: number
-  baseTradedAmount: number
-  basePnlName: 'basePnl'
-  baseTradedAmountName: 'baseTradedAmount'
-}
+import { Trade, CurrencyPairPosition } from 'rt-types'
 
 export const formTable = {
   positions: (data: CurrencyPairPosition[], initialBid = 10000, initialOffer = 100000) =>
