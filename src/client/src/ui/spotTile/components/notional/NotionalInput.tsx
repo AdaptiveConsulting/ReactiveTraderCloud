@@ -14,7 +14,6 @@ const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]
 const MAX_NOTIONAL_VALUE = 1000000000
 export const DEFAULT_NOTIONAL_VALUE = '1000000'
 const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
-const RESET_MATCH_CASES = /(^$|[.,0])/g
 
 const CurrencyPairSymbol = styled('span')`
   grid-area: Currency;
@@ -144,7 +143,8 @@ export default class NotionalInput extends PureComponent<Props> {
 
   handleUpdateCausedByEvent = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
-    this.formatAndUpdateValue(!value.match(RESET_MATCH_CASES) ? value : RESET_NOTIONAL_VALUE)
+    const shouldReset = value === DOT || value === '0' || value === ''
+    this.formatAndUpdateValue(shouldReset ? RESET_NOTIONAL_VALUE : value)
   }
 
   formatAndUpdateValue = (inputValue: string) => {
