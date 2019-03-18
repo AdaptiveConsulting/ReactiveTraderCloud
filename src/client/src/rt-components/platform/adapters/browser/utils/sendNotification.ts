@@ -1,4 +1,4 @@
-import { Direction, Trade } from 'rt-types'
+import { Trade } from 'rt-types'
 
 export enum NotifyPermission {
   granted = 'granted',
@@ -9,9 +9,10 @@ export interface NotificationMessage {
 }
 
 export const sendNotification = ({ tradeNotification }: NotificationMessage) => {
-  const direction = tradeNotification.direction === Direction.Buy ? 'Buy' : 'Sell'
   const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
-  const title = `Trade ${status}: ${direction} ${tradeNotification.dealtCurrency} ${tradeNotification.notional}`
+  const title = `Trade ${status}: ${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${
+    tradeNotification.notional
+  }`
   const body = `vs. ${tradeNotification.termsCurrency} \nRate ${tradeNotification.spotRate}    Trade ID ${
     tradeNotification.tradeId
   }`
