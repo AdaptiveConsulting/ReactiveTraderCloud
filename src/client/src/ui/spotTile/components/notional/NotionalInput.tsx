@@ -20,7 +20,6 @@ const CurrencyPairSymbol = styled('span')`
   opacity: 0.59;
   font-size: 0.625rem;
   line-height: 1.2rem;
-  padding-right: 0.375rem;
 `
 
 const MessagePlaceholder = styled.div`
@@ -34,8 +33,8 @@ const MessagePlaceholder = styled.div`
 
 const InputWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1auto 1auto;
-  grid-template-rows: 1auto 1auto;
+  grid-template-columns: 30px auto;
+  grid-template-rows: auto auto;
   grid-template-areas: 'Currency Input' '. Message';
 `
 
